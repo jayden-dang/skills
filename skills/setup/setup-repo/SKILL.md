@@ -167,7 +167,7 @@ Repo config the skills read:
 
 ## 5. Offer the opt-ins
 
-Two optional installs — offer each, act only on a yes:
+Three optional installs — offer each, act only on a yes:
 
 1. **Session-start hook.** If this skill set was installed without plugin hook support, offer to add a `SessionStart` hook (matcher `startup|clear|compact`) so the skill-usage gate survives `/clear` and compaction. **Vendor the hook into the repo — never reference a path outside it.** An absolute path (e.g. to the skill set's own working copy) is committed into `.claude/settings.json` and breaks on any other machine, in CI, or if that copy moves. Instead:
    - Copy `templates/session-start.sh` to `.claude/hooks/session-start.sh` in the repo and `chmod +x` it. It is dependency-free (plain `cat`), so it runs in any project regardless of toolchain.
@@ -179,6 +179,11 @@ Two optional installs — offer each, act only on a yes:
      ```
    - Merge into any existing `SessionStart` block additively; do not clobber other hooks.
 2. **Trace check in CI.** Offer to append a step to the existing CI workflow that runs `check-trace.mjs` (with `--strict` if the user wants warnings to fail too). Edit the existing workflow additively; do not author a new pipeline.
+3. **Git verify hooks (pre-commit / pre-push).** Offer to wire the configured verify commands to git events so a broken change never lands locally. Be additive and dependency-free:
+   - If the repo already runs a hook manager (`.husky/`, `lefthook.yml`, `.pre-commit-config.yaml`, or `simple-git-hooks` in `package.json`), add the verify commands into **that** — never install a competing mechanism.
+   - Otherwise vendor `templates/githooks/pre-commit` and `templates/githooks/pre-push` into `.githooks/`, `chmod +x` both, and set `git config core.hooksPath .githooks`. Commit `.githooks/` so the team shares them. For a JS repo also add a `"prepare": "git config core.hooksPath .githooks"` script so fresh clones apply it on install; otherwise document the one-time command in the README (`core.hooksPath` is local config, not carried by a clone).
+   - Fill each hook with this repo's commands from `docs/agents/project.md`: **pre-commit** gets the FAST gates (format staged, lint, typecheck) so commits stay quick; **pre-push** gets the fuller suite (tests) plus `check-trace.mjs`. A hook slow enough to be routinely `--no-verify`'d is worse than none — keep the split, and move a slow typecheck to pre-push if it drags.
+   - After installing, prove the pre-commit fires once (stage a throwaway change and run the hook, or make a dry commit), then report it works.
 
 **Done when:** each offer has an explicit yes/no, and any yes is implemented.
 

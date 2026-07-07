@@ -161,7 +161,9 @@ Repo config the skills read:
 - Triage label mapping: `docs/agents/triage-labels.md`
 ```
 
-**Done when:** all files are written and `git status` shows only the expected additions/edits.
+5. Ensure the local working dirs are git-ignored: the skills' scratch artifacts — `execute-plan`'s ledger and briefs, and the scan/review digests the spec skills write — live under `.skills/`, and isolated workspaces under `.worktrees/`; neither belongs in version control. Idempotently, for each pattern: `grep -qxF '.skills/' .gitignore 2>/dev/null || printf '.skills/\n' >> .gitignore` (same for `.worktrees/`), then stage `.gitignore`. (A line-presence check, not `git check-ignore` — a trailing-slash pattern only matches an *existing* directory, so `check-ignore` would re-append before the dir exists.)
+
+**Done when:** all files are written, `.skills/` and `.worktrees/` are git-ignored, and `git status` shows only the expected additions/edits.
 
 ## 5. Offer the opt-ins
 

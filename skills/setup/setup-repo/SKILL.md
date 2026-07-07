@@ -118,9 +118,21 @@ Let them edit. **Done when:** the user approves the drafts.
 1. Write `docs/agents/project.md`, `docs/agents/issue-tracker.md`, and `docs/agents/triage-labels.md`, seeded from `templates/agents/project.md`, `templates/agents/issue-tracker.md`, and `templates/agents/triage-labels.md`. In the issue-tracker file keep only the chosen tracker's operations section, and record the PR-surface answer.
 2. If `docs/specs/INDEX.md` is missing, create it from `templates/specs-INDEX.md`.
 3. If the glossary is missing, create `CONTEXT.md` from `templates/CONTEXT.md` (or a `CONTEXT-MAP.md` for multi-context, per the user's answer).
-4. Add the `## Agent skills` block:
-   - If `CLAUDE.md` exists, edit it. Else if `AGENTS.md` exists, edit that. **Never create `AGENTS.md` when `CLAUDE.md` exists** (or vice versa). If neither exists, ask the user which to create — do not pick for them.
-   - If an `## Agent skills` section already exists, update it in place — never append a duplicate, never touch the surrounding sections.
+4. Add the `## Agent skills` block. It lives in exactly **one** canonical file; any second file is a thin pointer, never a copy of the block.
+   - **Neither `CLAUDE.md` nor `AGENTS.md` exists** (the default): make `AGENTS.md` canonical (it holds the block) and write a short `CLAUDE.md` whose entire body points at `AGENTS.md` — so Claude Code finds instructions by its native filename without duplicating them. Do not ask which to create; this pattern serves both.
+   - **Only one exists:** that file is canonical — add or update the block in it. If it is `AGENTS.md` and Claude Code is a target, also add the `CLAUDE.md` pointer. If it is `CLAUDE.md`, leave it canonical — do not demote it to a pointer or create a competing `AGENTS.md`.
+   - **Both exist:** put the block in whichever already carries real agent instructions; make the other a pointer only if it is not already substantive. Never place the block in both.
+   - If an `## Agent skills` section already exists in the canonical file, update it in place — never append a duplicate, never touch surrounding sections.
+
+   The `CLAUDE.md` pointer, when you create one:
+
+   ```markdown
+   # CLAUDE.md
+
+   The canonical agent instructions for this repo live in **[AGENTS.md](AGENTS.md)** —
+   read it first. It applies to Claude too; this file exists only so Claude Code
+   finds it by its native name.
+   ```
 
 The block:
 

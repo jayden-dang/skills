@@ -57,7 +57,7 @@ Lost? Invoke `ask` — it routes any situation to the right entry point.
 | setup | `setup-repo`, `scaffold-project` |
 | discovery | `brainstorm`, `grilling`, `research`, `prototype`, `domain-modeling` |
 | spec | `write-requirements`, `write-design`, `write-plan` |
-| build | `execute-plan`, `tdd`, `debug`, `verify`, `worktrees` |
+| execution | `execute-plan`, `tdd`, `debug`, `verify`, `worktrees` |
 | review | `code-review`, `receive-review` |
 | ship | `finish-branch`, `release` |
 | track | `triage`, `sync-spec`, `improve-architecture`, `handoff` |

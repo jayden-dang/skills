@@ -36,7 +36,7 @@ skills/
   setup/       setup-repo, scaffold-project
   discovery/   brainstorm, grilling, research, prototype, domain-modeling
   spec/        write-requirements, write-design, write-plan
-  build/       execute-plan, tdd, debug, verify, worktrees
+  execution/   execute-plan, tdd, debug, verify, worktrees
   review/      code-review, receive-review
   ship/        finish-branch, release
   track/       triage, sync-spec, improve-architecture, handoff
@@ -209,7 +209,7 @@ Legend: (U) user-invoked, (m) model-invoked.
     starts. Optional final step: publish tasks as tracker issues (native
     sub-issues + blocking edges) with `Requirements covered` in each body.
 
-### build/
+### execution/
 14. **execute-plan** (m) — fresh subagent per task via file handoffs
     (`scripts/task-brief`, `scripts/review-package`; artifacts in `.skills/`);
     implementer contract with four statuses (DONE / DONE_WITH_CONCERNS /

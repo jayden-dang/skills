@@ -12,6 +12,10 @@ This is a conversation, not a script: explore, present what you found, decide on
 
 Template seeds live in this skill set's `templates/` directory — resolve it as `${CLAUDE_PLUGIN_ROOT}/templates` when installed as a plugin, otherwise `../../../templates` relative to this SKILL.md.
 
+## Track progress
+
+This skill has seven steps and skipping one is the common failure — an unconfigured tracker, or the Step 6 verification gate never run. Before Step 1, create a todo for each numbered step below and complete them in order, checking each off only when its **Done when** is met. Step 6 (prove the configuration works) is not optional.
+
 ## 1. Explore
 
 Before asking anything, learn the repo's starting state:

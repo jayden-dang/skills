@@ -10,6 +10,10 @@ Bootstrap a greenfield repository to a verified baseline: a skeleton where every
 
 Do not skip ahead to feature code. The deliverable is the harness, proven by one passing example test — nothing more.
 
+## Track progress
+
+Create a todo for each step below (0–4) and complete them in order, checking each off only when its **Done when** is met. Step 0 is a gate: if it stops you (not greenfield), abandon the list and redirect. Otherwise the failure this guards against is a skipped step — the baseline never verified, or the `setup-repo` hand-off forgotten.
+
 ## 0. Confirm the target is greenfield — GATE
 
 Scaffolding writes a project root (git repo, root manifest, root README, root CI, root pre-commit hook). Doing that on top of an existing project collides with or overwrites real config. So before anything else, resolve **where** you are scaffolding and prove it is empty. This gate is not optional and it is not a judgment call you make by feel — run the check.

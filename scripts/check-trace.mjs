@@ -112,9 +112,11 @@ for (const file of requirementFiles) {
   if (!statusMatch && !rel.endsWith('fixes.md')) warnings.push(`W2 ${rel}: missing "Status:" line`);
   if (!codeMatch && !rel.endsWith('fixes.md')) warnings.push(`W2 ${rel}: missing "Feature code:" line`);
 
-  // Only bold-defined IDs (**CODE-N.M**) count as definitions; struck-through (~~) are retired.
+  // Only bold-defined IDs (**CODE-N.M**) count as definitions; struck-through
+  // (~~**CODE-N.M**~~) are retired and deliberately excluded from coverage.
   const ids = [];
-  for (const m of text.matchAll(/\*\*([A-Z][A-Z0-9]{1,11}-\d+\.\d+)\*\*/g)) {
+  const scannable = text.replace(/~~.*?~~/g, '');
+  for (const m of scannable.matchAll(/\*\*([A-Z][A-Z0-9]{1,11}-\d+\.\d+)\*\*/g)) {
     const id = m[1];
     ids.push(id);
     if (!definitionSites.has(id)) definitionSites.set(id, []);

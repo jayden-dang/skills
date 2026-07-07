@@ -52,6 +52,19 @@ bug. Fix it before the plan ships.
 - Run `check-trace`: every Approved requirement must be cited by ≥1 task
   footer. Uncited IDs mean the plan is incomplete (or the requirement should
   be struck through with a reason).
+- **Test coverage, not just citation:** every requirement ID must also appear
+  in a **test annotation** inside some task's steps (`[CODE-N.M]` in a Vitest
+  title, `/// REQ: CODE-N.M` on a Rust test, `@CODE-N.M` in a Playwright tag) —
+  not merely in a footer. A footer citation with no tagged test passes
+  check-trace now (Approved → W1) but fails **E2** the moment the feature is
+  marked Implemented. A guard or negative requirement counts only if a real
+  test asserts it; when a behavior can't be unit-tested in isolation, tag the
+  e2e task or an existing test that already exercises it — one test may carry
+  several IDs.
+- **Reconcile against the design's seam table:** if `design.md` has a "Seams
+  for testing" table, every ID in every row must be tagged on a test in the
+  plan. An ID the design promised to cover but the plan left untagged is
+  *dropped coverage* — add the test, don't renumber.
 - Type/name consistency across tasks: the same function must have the same
   name and signature in every task that mentions it.
 - Spec alignment: re-read requirements.md once, checking each criterion
@@ -61,7 +74,17 @@ bug. Fix it before the plan ships.
   re-surface for approval. Do not bury a workaround in a task that leaves the
   requirement lying; a plan that satisfies a false requirement ships the falsehood.
 
-**Done when:** check-trace reports no uncited Approved requirements and the
+**Independent plan review — dispatch, don't self-review.** The checks above are
+doc-only and stay here; the codebase comparison does not. Dispatch a review
+subagent with the plan, requirements.md, design.md, and the repo; have it verify
+against real code every symbol, signature, path, import, and **hardcoded test
+value** the plan asserts — a fabricated golden or a guessed API is the classic
+plan defect — citing `file:line` and defaulting to flag. Findings to
+`.skills/<slug>-review.md`; fix before offering execution. (No subagents? Do the
+comparison yourself against the code.)
+
+**Done when:** every requirement ID has both a task footer and a tagged test,
+check-trace is clean, the design's seam-table IDs are all covered, and the
 placeholder scan is clean.
 
 ## Step 5 (optional): Publish to the issue tracker

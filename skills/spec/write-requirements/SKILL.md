@@ -57,6 +57,14 @@ Self-review before showing the user:
 - **Testability scan:** can each criterion be verified by an automated test or
   a concrete manual check? Rewrite any that can't.
 - **Placeholder scan:** no "TBD", "etc.", "handle errors appropriately".
+- **Code-claim check (independent):** if any criterion asserts how the system
+  currently works — a data format, an existing behavior, a constraint —
+  dispatch a review subagent to verify each such claim against the real code
+  (grep/read the files, cite `file:line`, flag any that don't hold), writing
+  findings to `.skills/<slug>-review.md`. A false premise here — "the body is
+  ProseMirror-JSON" when it is Markdown — poisons design, plan, and code.
+  Correct the criterion before the gate; do not read the code yourself. (No
+  subagents? Do the check yourself against the code.)
 
 Then present the FILE to the user for review and STOP. Do not proceed to
 design on the strength of conversational agreement — the written requirements

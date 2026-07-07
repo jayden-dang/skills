@@ -33,7 +33,7 @@ Create a todo for each item and complete them in order.
 
 ### 1. Explore project context
 
-Read what exists before asking anything: relevant files, docs, recent commits, `CONTEXT.md` (use its vocabulary from here on), and `docs/specs/INDEX.md` (know which feature codes and specs already exist). If `docs/agents/project.md` or these files are missing, say so, suggest running `setup-repo`, and continue with what you have.
+Read `CONTEXT.md` (use its vocabulary from here on) and `docs/specs/INDEX.md` (the feature codes and specs that already exist) directly — they are small and you need them in context. For anything heavier — code, docs, and recent commits near this idea — dispatch a **scan subagent** that explores and writes a findings digest to `.skills/<slug>-scan.md` (what exists near the idea, the files and seams it touches, applicable constraints — findings, not file dumps), returning only that path; work from the digest instead of pulling raw files into this conversation. (No subagents in this harness? Read the few relevant files directly.) If `docs/agents/project.md` or these files are missing, say so, suggest running `setup-repo`, and continue with what you have.
 
 **Done when:** you can state in one paragraph what the project is, what already exists near this idea, and which glossary terms apply.
 

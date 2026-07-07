@@ -10,7 +10,13 @@ input contract — read it fully first.
 ## Step 1: Context and decisions
 
 Explain in 2–4 paragraphs what exists today and which constraint shapes the
-approach. Record the decisions locked during discovery as a numbered list.
+approach. To learn "what exists today" without flooding this context, dispatch
+a **scan subagent** to map the touched surface — the seams the design will name:
+current signatures, data shapes, save/load paths — returning a digest file
+(`.skills/<slug>-scan.md`), not raw source. Design against the digest; pull a
+specific file into context only when a decision hinges on its exact contents.
+(No subagents? Read the surface directly, but only the parts a decision needs.)
+Record the decisions locked during discovery as a numbered list.
 Any decision that is hard to reverse AND surprising without context AND a real
 trade-off also gets an ADR (REQUIRED SUB-SKILL: `domain-modeling` owns the ADR
 gate).
@@ -51,6 +57,16 @@ Walk requirements.md top to bottom: every ID appears in exactly one Satisfies
 line (or is listed as deliberately unmapped, with a reason). Then scan for
 placeholders and internal contradictions (a name used two ways, a data flow
 that skips a component).
+
+**Independent design review — dispatch, don't self-review.** Fresh context has
+no stake in your framing (the bias that reinterprets a stale requirement rather
+than catching it). Dispatch a review subagent with this design, requirements.md,
+and the repo; have it verify every code-facing claim — each named seam,
+signature, and data path exists as described, and each `Satisfies:` mapping is
+achievable at that seam — grepping/reading real files, citing `file:line`,
+defaulting to flag. Findings go to `.skills/<slug>-review.md`; you fix them
+without loading the code here. (No subagents? Do this pass yourself in a fresh
+read of the code.)
 
 **Upstream sync-back — do not skip.** Designing routinely surfaces a fact that
 contradicts an *approved* requirement: a premise that turned out false, a

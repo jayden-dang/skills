@@ -2,7 +2,7 @@
 
 Written by `setup-repo`. Skills that read or write issues consult this file.
 
-**Tracker:** <github | gitlab | local>
+**Tracker:** <github | gitlab | linear | local>
 
 ## Wayfinding operations
 
@@ -16,6 +16,31 @@ configured tracker's section.>
 - Create issue: `gh issue create --title <t> --body-file <f> --label <l>`
 - Sub-issues / blocking: `gh api` dependency endpoints (fill in per repo)
 - Comment: `gh issue comment <n> --body-file <f>`
+
+### linear
+
+Prefer a connected **Linear MCP server** — use its tools to search, read, create,
+and comment on issues; it handles auth and Linear's schema for you. Discover the
+available tools rather than assuming their names.
+
+If no MCP server is connected, use the **GraphQL API** directly:
+
+- Endpoint: `https://api.linear.app/graphql` (POST, `Content-Type: application/json`)
+- Auth: header `Authorization: $LINEAR_API_KEY` — a personal API key from the
+  environment; never commit it or paste it into a file
+- List open issues: a `query` on `issues(filter: {...})` returning `identifier`,
+  `title`, `state { name type }`, `labels { nodes { name } }`
+- Read an issue: `query { issue(id: "<identifier or UUID>") { title description comments { nodes { body } } } }`
+- Create an issue: the `issueCreate` mutation (`teamId`, `title`, `description`,
+  `labelIds`, optional `parentId` for a sub-issue)
+- Comment: the `commentCreate` mutation (`issueId`, `body`)
+- Dependencies: set `parentId` for sub-issues and use `issueRelationCreate` with
+  `type: blocks` for blocking edges — `write-plan` relies on these for ordering
+
+Consult Linear's live GraphQL schema for exact field names rather than guessing.
+Requirement IDs and `Status:` live in Linear's native fields: map roles to
+workflow **states** and **labels** per `triage-labels.md`, not to a `Status:` line
+in the body.
 
 ### local
 

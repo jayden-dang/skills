@@ -17,6 +17,7 @@ Template seeds live in this skill set's `templates/` directory — resolve it as
 Before asking anything, learn the repo's starting state:
 
 - `git remote -v` — GitHub? GitLab? No remote?
+- Is a **Linear** MCP server connected, or a `LINEAR_API_KEY` set in the environment? Either signals a team that tracks work in Linear rather than the code host.
 - `CLAUDE.md` and `AGENTS.md` at the root — which exists? Does either already contain an `## Agent skills` section?
 - `docs/agents/` — has this skill already run here?
 - `docs/specs/`, `docs/adr/`, `CONTEXT.md`, `CONTEXT-MAP.md`, `.scratch/`, `.out-of-scope/`
@@ -38,12 +39,13 @@ Options:
 
 - **github** — repo issues via the `gh` CLI
 - **gitlab** — repo issues via the `glab` CLI
+- **linear** — issues in Linear, via a connected Linear MCP server (preferred) or the Linear GraphQL API; for teams that track work in Linear rather than in the code host
 - **local** — markdown files under `.scratch/<feature>/`, each carrying a `Status:` line; good for solo repos or repos without a remote
 - **other** — the user describes their workflow in a paragraph; record it as freeform prose
 
-Recommend based on the remote: GitHub remote → github, GitLab host → gitlab, no remote → local.
+Recommend based on what you found: GitHub remote → github, GitLab host → gitlab, a connected Linear MCP server or a `LINEAR_API_KEY` → linear, no remote and no tracker signal → local. Linear is a separate service and will not appear in `git remote`, so offer it whenever the user says the team lives in Linear even if the code host is GitHub/GitLab.
 
-Follow-up (github/gitlab only): **are external pull requests a request surface?** Explainer: open-source repos often receive feature requests as PRs — a PR is an issue with attached code. If yes, `triage` pulls external PRs into the same queue and state machine. Default: no. Skip the question entirely for local/other.
+Follow-up (github/gitlab only): **are external pull requests a request surface?** Explainer: open-source repos often receive feature requests as PRs — a PR is an issue with attached code. If yes, `triage` pulls external PRs into the same queue and state machine. Default: no. Skip the question entirely for linear/local/other — for a Linear shop, requests arrive as Linear issues and any PRs stay in the linked code host, not the triage queue.
 
 **Done when:** tracker choice and the PR-surface answer are confirmed.
 
@@ -63,7 +65,7 @@ The canonical roles — five states and two categories:
 | bug | something is broken |
 | enhancement | new capability or improvement |
 
-Show the repo's existing labels next to the roles and propose a mapping (default: each role's string equals its name). For any mapped label that does not exist in the tracker yet, offer to create it — only with the user's explicit consent. For local trackers, the role names themselves are the vocabulary; defaults are fine.
+Show the repo's existing labels next to the roles and propose a mapping (default: each role's string equals its name). For any mapped label that does not exist in the tracker yet, offer to create it — only with the user's explicit consent. For local trackers, the role names themselves are the vocabulary; defaults are fine. For **linear**, list the team's existing workflow states and labels first (via the MCP server or API), then map the state roles to Linear workflow states where one fits (e.g. `ready-for-agent` → a "Todo"/"Ready" state, `wontfix` → a "Canceled" state) and the category roles (`bug`/`enhancement`) to Linear labels.
 
 **Done when:** every canonical role maps to a confirmed label string.
 

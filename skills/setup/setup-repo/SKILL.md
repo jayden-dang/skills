@@ -149,11 +149,40 @@ Repo config the skills read:
 
 Two optional installs — offer each, act only on a yes:
 
-1. **Session-start hook.** If this skill set was installed without plugin hook support, offer to add a `SessionStart` hook (matcher `startup|clear|compact`) to the project's `.claude/settings.json` invoking the skill set's `hooks/session-start.sh`, so the skill-usage gate survives `/clear` and compaction.
+1. **Session-start hook.** If this skill set was installed without plugin hook support, offer to add a `SessionStart` hook (matcher `startup|clear|compact`) so the skill-usage gate survives `/clear` and compaction. **Vendor the hook into the repo — never reference a path outside it.** An absolute path (e.g. to the skill set's own working copy) is committed into `.claude/settings.json` and breaks on any other machine, in CI, or if that copy moves. Instead:
+   - Copy `templates/session-start.sh` to `.claude/hooks/session-start.sh` in the repo and `chmod +x` it. It is dependency-free (plain `cat`), so it runs in any project regardless of toolchain.
+   - Reference it in `.claude/settings.json` via the project-dir variable, not an absolute path:
+     ```json
+     { "hooks": { "SessionStart": [ { "matcher": "startup|clear|compact",
+       "hooks": [ { "type": "command",
+         "command": "\"$CLAUDE_PROJECT_DIR/.claude/hooks/session-start.sh\"" } ] } ] } }
+     ```
+   - Merge into any existing `SessionStart` block additively; do not clobber other hooks.
 2. **Trace check in CI.** Offer to append a step to the existing CI workflow that runs `check-trace.mjs` (with `--strict` if the user wants warnings to fail too). Edit the existing workflow additively; do not author a new pipeline.
 
 **Done when:** each offer has an explicit yes/no, and any yes is implemented.
 
-## 6. Finish
+## 6. Prove the configuration actually works — GATE
 
-Tell the user setup is complete, which skills now read the config, and that `docs/agents/*.md` can be edited directly later — re-running this wizard is only needed to switch trackers or start over.
+Confirmed-with-the-user is not the same as works-in-this-project. Commands were pre-filled from what you detected; a wrong manifest path, a missing script, or a tool that is not installed will surface as a mid-task failure in `tdd`, `verify`, or `release` weeks from now. Prove them now, while you own the context. This is the discipline of the `verify` skill applied to the config you just wrote: run the command, read the output, believe the output — not the config.
+
+Run each configured verify command fresh and classify the result. The distinction that matters is **wiring vs content**:
+
+- **Wiring failure** — the command could not run as written: "command not found" / exit 127, "missing script", "no such file or directory", a bad `--manifest-path` or unknown flag, an uninstalled tool. **This is a config bug you must fix**: re-detect, correct `docs/agents/project.md`, and re-run until it is gone. Setup is not done while any command is mis-wired.
+- **Content failure** — the tool ran correctly but reported problems (type errors, lint warnings, failing tests). The command is wired right; the repo has pre-existing issues. Record these for the user; they do **not** block setup.
+- **Pass** — wired and green.
+
+Be cost-aware — do not run the whole suite to prove wiring:
+
+- Typecheck and lint: run in full (bounded).
+- Unit/e2e runners: prove the runner resolves its config cheaply — run the **single-test-file pattern** from `project.md` against one existing test file, or the runner's collect-only/list mode. Never trigger a full e2e run during setup; state that the full run is the user's to do later.
+- `check-trace.mjs`: run it — it must execute and exit 0 (zero requirements is a valid clean state). If it fails to run at all (e.g. no `node`), that is a wiring failure worth flagging: this repo needs that runtime for the trace lint, or the lint must be adapted.
+- If you installed the session-start hook, execute `.claude/hooks/session-start.sh` and confirm it prints one line of valid JSON.
+
+Report a small table: each command → wired? → passed / failed / pre-existing.
+
+**Done when:** every configured command is proven **wired** (no wiring failures remain), `check-trace` runs clean, the hook (if installed) fires, and any content failures are listed for the user.
+
+## 7. Finish
+
+Tell the user setup is complete, which skills now read the config, that the verify table shows what is wired vs pre-existing, and that `docs/agents/*.md` can be edited directly later — re-running this wizard is only needed to switch trackers or start over.

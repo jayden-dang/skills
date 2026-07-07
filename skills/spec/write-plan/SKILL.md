@@ -56,6 +56,10 @@ bug. Fix it before the plan ships.
   name and signature in every task that mentions it.
 - Spec alignment: re-read requirements.md once, checking each criterion
   against the task that claims it.
+- Upstream sync-back: if planning reveals a requirement is *wrong or infeasible
+  as written* — not merely uncovered — correct it in requirements.md and
+  re-surface for approval. Do not bury a workaround in a task that leaves the
+  requirement lying; a plan that satisfies a false requirement ships the falsehood.
 
 **Done when:** check-trace reports no uncited Approved requirements and the
 placeholder scan is clean.

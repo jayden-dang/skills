@@ -52,6 +52,18 @@ line (or is listed as deliberately unmapped, with a reason). Then scan for
 placeholders and internal contradictions (a name used two ways, a data flow
 that skips a component).
 
+**Upstream sync-back — do not skip.** Designing routinely surfaces a fact that
+contradicts an *approved* requirement: a premise that turned out false, a
+mechanism the requirement named wrong, a constraint that does not hold (e.g. the
+requirement says the stored body is ProseMirror-JSON but you discover it is
+Markdown). When that happens you MUST correct the requirement's own text and
+re-surface it for approval — never satisfy a requirement by quietly
+reinterpreting words you now know are false. A `Satisfies:` line pointing at a
+requirement whose wording is wrong makes the trace spine cite a lie, and the
+error survives all the way to code. The same holds for an ADR you are writing
+that contradicts an existing one: supersede it explicitly by number. If you
+changed any requirement, say exactly which and why when you present for approval.
+
 Present the FILE to the user, section by section for large designs, and STOP
 for approval. On approval set `Status: Approved`.
 

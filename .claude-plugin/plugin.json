@@ -1,0 +1,9 @@
+{
+  "name": "skills",
+  "version": "0.1.0",
+  "description": "A-to-Z agentic development skill set: ideation to release with requirements traceability as the spine.",
+  "author": {
+    "name": "Jayden Dang"
+  },
+  "hooks": "./hooks/hooks.json"
+}

@@ -1,0 +1,59 @@
+---
+name: code-review
+description: Use when a branch, PR, or set of changes needs review before merging, when execute-plan reaches its final whole-branch review, or when the user asks to review work since some ref.
+---
+
+# Code Review
+
+Review a diff on two independent axes, each run by its own subagent:
+
+- **Standards** — does the code follow this repo's documented conventions and avoid the baseline smells?
+- **Spec** — does the code implement what the requirements asked for, ID by ID?
+
+The axes are deliberately separate because a change can pass one and fail the other: flawless code that builds the wrong thing (Standards pass, Spec fail), or a faithful implementation that tramples the repo's conventions (Spec pass, Standards fail). Merged reports let one axis mask the other.
+
+## 1. Pin the range — fail fast
+
+Take the base ref the caller supplied (a sha, branch, tag, or merge-base). Confirm it resolves — `git rev-parse <base>` — and that `git diff <base>...HEAD` is non-empty. A bad ref or empty diff must fail HERE, not inside two parallel subagents. Also capture `git log <base>..HEAD --oneline`. If no base was given, ask. *Done when: the ref resolves and the diff is non-empty.*
+
+## 2. Locate the spec
+
+Find the governing requirements, in order:
+
+1. Requirement-ID trailers in the commits (`Implements:`, `Guards:`) — the feature code maps to a spec folder via `docs/specs/INDEX.md`.
+2. A `docs/specs/<date>-<feature>/requirements.md` matching the branch or feature name.
+3. A path the caller handed you.
+4. Otherwise ask the user. If they confirm no spec exists, skip the Spec axis and say so in the final report.
+
+*Done when: you hold a requirements.md path, or an explicit "no spec".*
+
+## 3. Gather the standards sources
+
+Collect whatever documents how code here should be written: CLAUDE.md, lint and formatter configs, CONTRIBUTING-style docs, plus CONTEXT.md for the repo's canonical vocabulary. If `docs/agents/project.md` is missing, note it and suggest running `setup-repo`, then proceed with what exists.
+
+On top of the repo's own documents, the Standards axis always carries `standards-baseline.md` (beside this file) — twelve smells that apply even when the repo documents nothing. Two rules bind it: a documented repo standard always overrides the baseline, and every baseline hit is a labeled judgment call, never a hard violation. Skip anything tooling already enforces — a reviewer repeating the linter is noise. *Done when: the source list and the baseline path are in hand.*
+
+## 4. Dispatch both subagents in parallel
+
+Send ONE message containing both dispatches so they run concurrently and neither pollutes the other's context. Both are **read-only**: no mutation of the working tree, index, HEAD, or branch state; to inspect another revision, use a temporary worktree (`git worktree add <tmpdir> <sha>`), never move HEAD. Keep each brief under 400 words. Never pre-judge findings in a dispatch — no "do not flag", no pre-rated severities.
+
+**Standards subagent** gets: the diff command and commit list; the standards-source paths; the path to `standards-baseline.md`; the brief — report (a) every place the diff breaks a documented standard, citing the document and rule, and (b) every baseline smell spotted, naming the smell and quoting the hunk; documented breaches may be hard findings, baseline smells are always judgment calls; the repo's documents override the baseline; skip anything tooling enforces; include CONTEXT.md vocabulary drift (a diff that renames or re-terms a glossary concept is a finding).
+
+**Spec subagent** gets: the diff command and commit list; the requirements.md path; the brief — walk the requirements and report (a) IDs that are missing or only partially implemented, (b) behavior in the diff no requirement asked for (scope creep), (c) IDs that look implemented but wrong; quote the requirement ID on every finding; also verify each covered ID has a test tagged with it per the conventions in `docs/agents/project.md`, and flag untagged coverage.
+
+*Done when: both reports are back.*
+
+## 5. Aggregate
+
+Present the reports under `## Standards` and `## Spec` headings — lightly cleaned at most. Do NOT merge, dedupe across axes, or rerank one axis's findings against the other's; that reranking is exactly what the separation prevents.
+
+Every finding carries: severity (Critical / Important / Minor), file:line, why it matters, and a suggested fix unless obvious.
+
+End with the verdict:
+
+```
+Ready to merge? Yes | No | With fixes
+[1–2 sentences of technical reasoning]
+```
+
+*Done when: both axis sections and the verdict are delivered.*

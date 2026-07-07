@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+# review-package <base> <head> — bundle everything a task reviewer needs into one
+# file: commit list, diffstat, and full diff with context. Prints the path.
+#
+# BASE must be the commit recorded BEFORE dispatching the implementer — never
+# HEAD~1, which silently drops all but the last commit.
+set -euo pipefail
+
+BASE="${1:?usage: review-package <base-sha> <head-sha>}"
+HEAD="${2:?usage: review-package <base-sha> <head-sha>}"
+OUT_DIR=".skills"
+B7="$(git rev-parse --short "$BASE")"
+H7="$(git rev-parse --short "$HEAD")"
+OUT="$OUT_DIR/review-$B7..$H7.diff"
+
+mkdir -p "$OUT_DIR"
+{
+  echo "# Review package: $B7..$H7"
+  echo
+  echo "## Commits"
+  git log --oneline "$BASE..$HEAD"
+  echo
+  echo "## Stat"
+  git diff --stat "$BASE" "$HEAD"
+  echo
+  echo "## Diff"
+  git diff -U10 "$BASE" "$HEAD"
+} > "$OUT"
+
+echo "$OUT"

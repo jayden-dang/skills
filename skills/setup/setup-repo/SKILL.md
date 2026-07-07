@@ -192,10 +192,11 @@ Be cost-aware — do not run the whole suite to prove wiring:
 - Unit/e2e runners: prove the runner resolves its config cheaply — run the **single-test-file pattern** from `project.md` against one existing test file, or the runner's collect-only/list mode. Never trigger a full e2e run during setup; state that the full run is the user's to do later.
 - `check-trace.mjs`: run it — it must execute and exit 0 (zero requirements is a valid clean state). If it fails to run at all (e.g. no `node`), that is a wiring failure worth flagging: this repo needs that runtime for the trace lint, or the lint must be adapted.
 - If you installed the session-start hook, execute `.claude/hooks/session-start.sh` and confirm it prints one line of valid JSON.
+- If the tracker is a remote service (`github` / `gitlab` / `linear`), prove it is reachable and authenticated with **one read-only call** — `gh issue list` / `glab issue list`, or for Linear a single MCP list call (or a minimal `issues` GraphQL query). A missing CLI, an unauthenticated session, a bad `LINEAR_API_KEY`, or a disconnected MCP server is a wiring failure; it would otherwise stay hidden until `triage` fails weeks later. `local` and `other` need no reachability check.
 
 Report a small table: each command → wired? → passed / failed / pre-existing.
 
-**Done when:** every configured command is proven **wired** (no wiring failures remain), `check-trace` runs clean, the hook (if installed) fires, and any content failures are listed for the user.
+**Done when:** every configured command is proven **wired** (no wiring failures remain), `check-trace` runs clean, the hook (if installed) fires, the configured tracker answers a read-only call, and any content failures are listed for the user.
 
 ## 7. Finish
 

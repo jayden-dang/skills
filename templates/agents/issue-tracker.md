@@ -19,28 +19,29 @@ configured tracker's section.>
 
 ### linear
 
-Prefer a connected **Linear MCP server** — use its tools to search, read, create,
-and comment on issues; it handles auth and Linear's schema for you. Discover the
-available tools rather than assuming their names.
+Two access paths: a connected **Linear MCP server** (preferred — lower friction,
+handles auth) or the **GraphQL API**. Whichever you use, you must be able to
+perform every operation below. Find the MCP tool for each; **fall back to the API
+for any operation the MCP server does not expose.** Blocking relations are the
+common MCP gap, and `write-plan` needs them — so if no relation tool exists, use
+the API for that edge specifically rather than skipping dependency ordering.
 
-If no MCP server is connected, use the **GraphQL API** directly:
+| Operation | GraphQL |
+|---|---|
+| List open issues | `query` on `issues(filter: {...})` → `identifier`, `title`, `state { name type }`, `labels { nodes { name } }` |
+| Read an issue | `issue(id: "<UUID>")` → `title description comments { nodes { body } }` — resolve a human identifier like `ENG-123` via an `issues` filter, not the `id:` argument (which takes the UUID) |
+| Create an issue | `issueCreate` mutation: `teamId`, `title`, `description`, `labelIds`, optional `parentId` for a sub-issue |
+| Comment | `commentCreate` mutation: `issueId`, `body` |
+| Blocking edge | `issueRelationCreate` mutation with `type: blocks` |
 
-- Endpoint: `https://api.linear.app/graphql` (POST, `Content-Type: application/json`)
-- Auth: header `Authorization: $LINEAR_API_KEY` — a personal API key from the
-  environment; never commit it or paste it into a file
-- List open issues: a `query` on `issues(filter: {...})` returning `identifier`,
-  `title`, `state { name type }`, `labels { nodes { name } }`
-- Read an issue: `query { issue(id: "<identifier or UUID>") { title description comments { nodes { body } } } }`
-- Create an issue: the `issueCreate` mutation (`teamId`, `title`, `description`,
-  `labelIds`, optional `parentId` for a sub-issue)
-- Comment: the `commentCreate` mutation (`issueId`, `body`)
-- Dependencies: set `parentId` for sub-issues and use `issueRelationCreate` with
-  `type: blocks` for blocking edges — `write-plan` relies on these for ordering
+GraphQL endpoint: `https://api.linear.app/graphql` (POST, `Content-Type: application/json`).
+Auth: header `Authorization: <key>` — a **personal API key is used raw** (no
+prefix); an OAuth access token needs a `Bearer ` prefix. Read the key from the
+environment (`LINEAR_API_KEY`); never commit it or paste it into a file. Consult
+Linear's live GraphQL schema for exact field names rather than guessing.
 
-Consult Linear's live GraphQL schema for exact field names rather than guessing.
-Requirement IDs and `Status:` live in Linear's native fields: map roles to
-workflow **states** and **labels** per `triage-labels.md`, not to a `Status:` line
-in the body.
+Roles live in Linear's native fields: map them to workflow **states** and
+**labels** per `triage-labels.md`, not to a `Status:` line in an issue body.
 
 ### local
 

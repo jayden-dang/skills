@@ -1,7 +1,6 @@
 ---
 name: brainstorm
 description: Use when the user brings an idea for a feature, a behavior change, a new component, or a new project and implementation has not started yet — the entry point of the idea-to-ship chain.
-disable-model-invocation: true
 ---
 
 # Brainstorm

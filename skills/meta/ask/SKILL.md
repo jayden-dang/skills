@@ -33,6 +33,8 @@ to a fresh session. Execution sessions are context-isolated per task by design.
 
 - Unit tests green but unsure it truly works end-to-end → **`acceptance-check`**
   (drives the running system through the spec's behaviors as a real user).
+- Want to try a finished feature by hand in the real app → **`dogfood`**
+  (builds a checkable, app-grounded guide you tick off while testing).
 - Something is broken → **`debug`** (it exits into the tier-1 mini-spec flow).
 - Incoming issues/PRs you didn't author → **`triage`**.
 - Codebase feels muddy → **`improve-architecture`** (periodic; its output

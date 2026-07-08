@@ -38,7 +38,7 @@ skills/
   spec/        write-requirements, write-design, write-plan
   execution/   execute-plan, tdd, debug, verify, worktrees
   review/      code-review, receive-review
-  acceptance/  acceptance-check, acceptance-api, acceptance-ui
+  acceptance/  acceptance-check, acceptance-api, acceptance-ui, dogfood
   ship/        finish-branch, release
   track/       triage, sync-spec, improve-architecture, handoff
 scripts/       check-trace.mjs, task-brief, review-package
@@ -275,12 +275,18 @@ Legend: (U) user-invoked, (m) model-invoked.
     write a user-driven spec per flow (role/label locators, reload-persistence),
     run headless on Chromium, fix via `debug`, commit the tagged specs into the
     verify suite.
+24. **dogfood** (m) — the manual sibling: scope every user-facing ability from
+    the spec (happy + edge + deliberate non-behaviors, keyed to requirement ID),
+    ground each case in the real code (exact vocabulary and rendering, not
+    guessed), boot the app, and build a persistent, checkable HTML artifact
+    (`artifact-design`) the user keeps open beside the app and ticks off — for
+    the judgment an automated test cannot make.
 
 ### ship/
-24. **finish-branch** (m) — verify tests → exactly four options (merge locally /
+25. **finish-branch** (m) — verify tests → exactly four options (merge locally /
     push + PR / keep / discard, "discard" must be typed), provenance-checked
     worktree cleanup, re-run tests after merge.
-25. **release** (U) — release-prep gate: full verify (all verify commands from
+26. **release** (U) — release-prep gate: full verify (all verify commands from
     docs/agents/project.md) + check-trace clean → changelog assembled from
     commit trailers (requirement IDs give requirement-level release notes for
     free) → version bump → tag → build → smoke-check → release notes.
@@ -288,24 +294,24 @@ Legend: (U) user-invoked, (m) model-invoked.
     CI/CD authoring in v1.
 
 ### track/
-26. **triage** (U) — issue state machine (needs-triage / needs-info /
+27. **triage** (U) — issue state machine (needs-triage / needs-info /
     ready-for-agent / ready-for-human / wontfix + bug/enhancement); redundancy +
     prior-rejection checks; verify claims before recommending; **agent briefs**
     as the contract (durable: behavioral contracts and interfaces, never file
     paths; independently verifiable acceptance criteria — which cite
     requirement IDs when touching spec'd behavior); wontfix → `.out-of-scope/`
     KB. AI-generated comments labeled as such.
-27. **sync-spec** (m) — realign the triad after requirements change or
+28. **sync-spec** (m) — realign the triad after requirements change or
     implementation drifts: diff requirements ↔ design ↔ tasks ↔ tests; create
     tasks for new requirements; flag orphaned tests/tasks citing dead IDs;
     update Status fields (Draft → Approved → Implemented → Shipped); print the
     trace report. The anti-spec-rot skill — run whenever a spec'd feature
     changes outside its plan.
-28. **improve-architecture** (U) — periodic deepening scan (friction: shallow
+29. **improve-architecture** (U) — periodic deepening scan (friction: shallow
     modules, poor locality, untested seams; deletion test), self-contained HTML
     report of candidates, grill through the chosen one; feeds back into
     brainstorm.
-29. **handoff** (U) — compact the conversation into a handoff doc in OS tmp
+30. **handoff** (U) — compact the conversation into a handoff doc in OS tmp
     (reference artifacts by path, never duplicate; redact secrets;
     suggested-skills section); optional background-agent continuation.
 
@@ -330,6 +336,8 @@ using-skills (session gate)
 → code-review           whole-branch, two-axis (Standards + Spec-by-ID)
 → acceptance-check      drive the running system through the spec's user-facing
                         behaviors (API + UI); fix, then promote to tagged tests
+                        (+ dogfood for a manual, human-eyeball pass with a
+                        checkable app-grounded artifact)
 → finish-branch         merge / PR / keep / discard
 → release               when shipping: verify + trace gate, changelog, tag, build
 → sync-spec             mark requirements Implemented/Shipped

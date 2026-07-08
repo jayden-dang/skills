@@ -60,7 +60,7 @@ Lost? Invoke `ask` — it routes any situation to the right entry point.
 | spec | `write-requirements`, `write-design`, `write-plan` |
 | execution | `execute-plan`, `tdd`, `debug`, `verify`, `worktrees` |
 | review | `code-review`, `receive-review` |
-| acceptance | `acceptance-check`, `acceptance-api`, `acceptance-ui` |
+| acceptance | `acceptance-check`, `acceptance-api`, `acceptance-ui`, `dogfood` |
 | ship | `finish-branch`, `release` |
 | track | `triage`, `sync-spec`, `improve-architecture`, `handoff` |
 

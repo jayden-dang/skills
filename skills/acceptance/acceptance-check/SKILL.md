@@ -2,10 +2,9 @@
 name: acceptance-check
 description: Use before merging or finishing a branch, when a feature's unit
   tests are green but its user-facing behavior has not been driven through the
-  running system — API calls, browser flows, happy paths and edge cases that
-  pass in isolation yet break against a real client. Also when the repo has no
-  documented way to run the app locally, or no browser end-to-end harness, and
-  one is needed to validate a change the way a real user would.
+  running system — the happy paths and edge cases that pass in isolation yet
+  break against a real client. Also when the repo has no documented way to run
+  the app locally.
 ---
 
 # Acceptance Check

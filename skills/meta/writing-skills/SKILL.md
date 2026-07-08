@@ -26,7 +26,7 @@ Writing skills is test-driven development applied to process documentation. The 
 
 Wrote the text before running the baseline? You documented what you *guess* agents do wrong, not what they do wrong. Run the baseline now, before keeping a word of it.
 
-Testing methodology — scenario construction, pressure types, micro-tests, meta-testing — is in `pressure-testing.md` beside this file. Read it before any test run. Wording techniques that recruit compliance are in `influence-principles.md`.
+Testing methodology — scenario construction, pressure types, micro-tests, description triggering, non-gate (technique/reference) tests, meta-testing — is in `pressure-testing.md` beside this file. Read it before any test run. Wording techniques that recruit compliance are in `influence-principles.md`.
 
 ## Match the form to the failure
 
@@ -46,6 +46,7 @@ Classify the baseline failure before writing anything; the form that fixes one f
 - The `description` states **triggering conditions only — never the workflow.** A description that summarizes the process hands the agent a shortcut: it follows the summary and skips the body. "Use when executing a plan with independent tasks" gets the body read; "use when executing plans — dispatches a reviewer between tasks" gets the summary obeyed and the body ignored.
 - **Verb-first names**: `writing-skills`, `receive-review`, `debug` — name the action, not the topic.
 - **Keyword coverage**: pack the description with the words an agent or user would actually search or think — symptoms, error text, tool names, synonyms. Discovery is keyword match; a skill nobody finds is a skill that doesn't exist.
+- **Two failure directions, both tested not guessed.** *Over*-summarizing the workflow hands the agent a shortcut it obeys instead of the body (above); *under*-specifying is the commoner failure — the skill never fires at all. Keyword coverage fights the second; omitting the workflow fights the first. The description is the highest-leverage line in the skill and the one field you cannot eyeball — trigger-test it per `pressure-testing.md`.
 - User-invoked skills carry `disable-model-invocation: true`.
 
 ## Vocabulary
@@ -58,6 +59,10 @@ Write skills with these terms; review skills against them.
 - **Negation trap** — a prohibition names the banned behavior into context, where it half-reads as an instruction. Prompt the positive ("write one-line comments") so the banned pattern is never spoken. The one exception is pressure-gate skills, where hard prohibitions plus explicit counters are exactly the right tool — see the failure table above.
 - **Information hierarchy** — in-skill steps, then in-skill reference, then disclosed reference behind a context pointer. Inline what every run needs; push behind a pointer what only some branches reach. The pointer's *wording*, not its target, decides whether the material is ever loaded — a must-read file behind a limp pointer is a variance bug: sharpen the pointer before inlining the content.
 - **Token budget** — session-injected skills stay minimal: every token is paid on every turn. Discipline skills keep the core body to ~500 words or fewer (tables and code blocks excluded). Length is a failure mode in itself, even when every line is live.
+
+## When not to write one at all
+
+If the rule is mechanically enforceable — a regex, a linter, a schema check, a git hook — automate it and skip the skill. Documentation is for the judgment calls a check cannot make; a skill that only restates what a validator already guarantees is context the agent pays for every run to enforce what the machine could have enforced for free.
 
 ## When to split
 
@@ -99,6 +104,7 @@ Create a todo for each item.
 **GREEN**
 - [ ] Failure classified; form matches it (prohibition set / recipe / REQUIRED slot / observable conditional)
 - [ ] Description = triggering conditions only; verb-first name; keywords present
+- [ ] Description trigger-tested: should-fire / should-not-fire queries run, both directions checked (per `pressure-testing.md`)
 - [ ] Minimal text addressing the recorded failures; one worked example at most
 - [ ] Re-run with the skill: compliance observed
 

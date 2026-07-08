@@ -62,6 +62,31 @@ Full pressure scenarios are the final gate but are slow per iteration. When choo
 - **Read every flagged transcript yourself.** Automated counts mistake template echoes and quoted counter-examples for violations, in both directions.
 - **Variance is a signal.** When wording binds, repetitions converge on one shape. Five reps producing five interpretations means the form isn't binding — tighten the form before adding words.
 
+## Testing non-gate skills
+
+Not every skill is a gate, and pressure scenarios are the wrong tool for the ones that aren't. Match the test to the type:
+
+- **Technique / recipe** — hand a fresh agent a *new* scenario the skill applies to (not the one written into the skill) and check the output takes the right shape. Vary the inputs to surface instruction gaps — a step that silently assumed context the example happened to supply. Success: the agent applies the technique correctly to an unseen case.
+- **Reference** — the axis is retrieval, not compliance. Can a fresh agent find the right fact and use it correctly? Gap-test the common use cases by name; a reference is judged by what a reader can and cannot locate in it.
+
+Both are cheaper than pressure runs and catch a different defect — not "the agent cut a corner" but "the text had a hole."
+
+## Testing the description (triggering)
+
+The `description` decides whether the skill is ever loaded — it carries more behavioral weight than any line in the body, and reading it proves nothing about whether it fires. Test it empirically, on the same RED discipline as the body.
+
+Assemble ~15–20 realistic queries — the concrete, messy things a real user types (file paths, casual phrasing, a typo), not tidy abstractions. Split them:
+
+- **should-fire** (8–10): different phrasings of the real intent, including ones that never name the skill or its nouns; a couple of uncommon cases; one where this skill competes with a neighbor and should still win.
+- **should-not-fire** (8–10): the *near-misses* — queries sharing keywords or domain with the skill but genuinely needing something else. Obviously irrelevant queries test nothing; the value is entirely in the traps.
+
+Run each query fresh-context, several reps, and record which skill the agent reaches for. Two failure directions, both real:
+
+- **misses on should-fire → undertriggering**, the commoner failure. Fix with keyword coverage — the symptoms, error text, and synonyms the user actually types.
+- **fires on should-not-fire → overtriggering.** Usually a description reaching past its scope, or a workflow summary the agent pattern-matches too eagerly. Tighten the triggering conditions.
+
+Hold a few queries out while you edit the description, so you are not tuning to the same set you score against.
+
 ## Meta-testing
 
 After any run — pass or fail — ask the tested agent:

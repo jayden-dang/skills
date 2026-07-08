@@ -22,8 +22,8 @@ invoke its first skill and let it take over.
    triad in `docs/specs/<date>-<feature>/`. Approval gates between each.
 3. **`worktrees`** → **`execute-plan`** — isolated workspace, then task-by-task
    execution (subagent-per-task, ledgered progress).
-4. **`code-review`** → **`finish-branch`** → (when shipping) **`release`** →
-   **`sync-spec`**.
+4. **`code-review`** → **`acceptance-check`** → **`finish-branch`** →
+   (when shipping) **`release`** → **`sync-spec`**.
 
 **Context hygiene:** keep steps 1–2 (discovery through plan) in one unbroken
 context window. If the window is filling up before the plan is done, `handoff`
@@ -31,6 +31,8 @@ to a fresh session. Execution sessions are context-isolated per task by design.
 
 ## On-ramps
 
+- Unit tests green but unsure it truly works end-to-end → **`acceptance-check`**
+  (drives the running system through the spec's behaviors as a real user).
 - Something is broken → **`debug`** (it exits into the tier-1 mini-spec flow).
 - Incoming issues/PRs you didn't author → **`triage`**.
 - Codebase feels muddy → **`improve-architecture`** (periodic; its output

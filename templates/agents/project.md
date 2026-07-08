@@ -24,6 +24,19 @@ Single test file: `<command pattern, e.g. npx vitest run <path>>`
 | <unit framework> | <e.g. Vitest: annotate('CODE-N.M', 'requirement') or ID in test name> |
 | <other> | <e.g. Rust: /// REQ: CODE-N.M doc comment> |
 
+## Run locally (dev)
+
+How to start the app for user-facing acceptance checks (read by `acceptance-api`
+and `acceptance-ui`). Fill in once the app can be run locally; leave a row blank
+if that surface does not exist.
+
+| Surface | Start command | Ready signal |
+|---|---|---|
+| Backend / API | `<command>` | `<e.g. GET http://localhost:<port>/health → 200>` |
+| Frontend | `<command>` | `<e.g. http://localhost:5173 serves the app>` |
+
+Browser E2E (Playwright, Chromium): `<e.g. pnpm exec playwright test --project=chromium>`
+
 ## Release steps
 
 <Ordered list of project-specific release steps (build commands, bundling,

@@ -39,7 +39,8 @@ brainstorm ──► write-requirements ──► write-design ──► write-p
         ▼                                                       │
   debug / tdd / verify  ◄── discipline skills govern ──────────┘
                                                                 │
-                              code-review ──► finish-branch ──► release ──► sync-spec
+              code-review ──► acceptance-check ──► finish-branch ──► release ──► sync-spec
+                          (drive the running system as a real user)
 ```
 
 - **Tier 0** (trivial): skip specs — `tdd` + `verify`.
@@ -59,6 +60,7 @@ Lost? Invoke `ask` — it routes any situation to the right entry point.
 | spec | `write-requirements`, `write-design`, `write-plan` |
 | execution | `execute-plan`, `tdd`, `debug`, `verify`, `worktrees` |
 | review | `code-review`, `receive-review` |
+| acceptance | `acceptance-check`, `acceptance-api`, `acceptance-ui` |
 | ship | `finish-branch`, `release` |
 | track | `triage`, `sync-spec`, `improve-architecture`, `handoff` |
 

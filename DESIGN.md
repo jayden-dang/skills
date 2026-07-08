@@ -38,6 +38,7 @@ skills/
   spec/        write-requirements, write-design, write-plan
   execution/   execute-plan, tdd, debug, verify, worktrees
   review/      code-review, receive-review
+  acceptance/  acceptance-check, acceptance-api, acceptance-ui
   ship/        finish-branch, release
   track/       triage, sync-spec, improve-architecture, handoff
 scripts/       check-trace.mjs, task-brief, review-package
@@ -258,11 +259,28 @@ Legend: (U) user-invoked, (m) model-invoked.
     when the reviewer is wrong, clarify ALL items before implementing any,
     YAGNI-check "implement properly" suggestions.
 
+### acceptance/
+21. **acceptance-check** (m) — pre-merge validation from the user's seat: derive
+    a requirement-ID-keyed checklist of user-facing behaviors (happy + edge)
+    from the spec triad, dispatch by surface, then close the loop. Green units
+    prove assertions pass, not that the feature works; runs after code-review,
+    before finish-branch.
+22. **acceptance-api** (m) — drive the running backend as a real client: get the
+    server up and persist the run command to `docs/agents/project.md`, turn each
+    checklist item into a real request (status + body shape + persistence),
+    exercise it live, fix breaks via `debug`, promote to a committed ID-tagged
+    integration test.
+23. **acceptance-ui** (m) — drive the frontend in a real browser: persist the
+    run command, ensure a Playwright/Chromium harness (set it up if absent),
+    write a user-driven spec per flow (role/label locators, reload-persistence),
+    run headless on Chromium, fix via `debug`, commit the tagged specs into the
+    verify suite.
+
 ### ship/
-21. **finish-branch** (m) — verify tests → exactly four options (merge locally /
+24. **finish-branch** (m) — verify tests → exactly four options (merge locally /
     push + PR / keep / discard, "discard" must be typed), provenance-checked
     worktree cleanup, re-run tests after merge.
-22. **release** (U) — release-prep gate: full verify (all verify commands from
+25. **release** (U) — release-prep gate: full verify (all verify commands from
     docs/agents/project.md) + check-trace clean → changelog assembled from
     commit trailers (requirement IDs give requirement-level release notes for
     free) → version bump → tag → build → smoke-check → release notes.
@@ -270,24 +288,24 @@ Legend: (U) user-invoked, (m) model-invoked.
     CI/CD authoring in v1.
 
 ### track/
-23. **triage** (U) — issue state machine (needs-triage / needs-info /
+26. **triage** (U) — issue state machine (needs-triage / needs-info /
     ready-for-agent / ready-for-human / wontfix + bug/enhancement); redundancy +
     prior-rejection checks; verify claims before recommending; **agent briefs**
     as the contract (durable: behavioral contracts and interfaces, never file
     paths; independently verifiable acceptance criteria — which cite
     requirement IDs when touching spec'd behavior); wontfix → `.out-of-scope/`
     KB. AI-generated comments labeled as such.
-24. **sync-spec** (m) — realign the triad after requirements change or
+27. **sync-spec** (m) — realign the triad after requirements change or
     implementation drifts: diff requirements ↔ design ↔ tasks ↔ tests; create
     tasks for new requirements; flag orphaned tests/tasks citing dead IDs;
     update Status fields (Draft → Approved → Implemented → Shipped); print the
     trace report. The anti-spec-rot skill — run whenever a spec'd feature
     changes outside its plan.
-25. **improve-architecture** (U) — periodic deepening scan (friction: shallow
+28. **improve-architecture** (U) — periodic deepening scan (friction: shallow
     modules, poor locality, untested seams; deletion test), self-contained HTML
     report of candidates, grill through the chosen one; feeds back into
     brainstorm.
-26. **handoff** (U) — compact the conversation into a handoff doc in OS tmp
+29. **handoff** (U) — compact the conversation into a handoff doc in OS tmp
     (reference artifacts by path, never duplicate; redact secrets;
     suggested-skills section); optional background-agent continuation.
 
@@ -310,6 +328,8 @@ using-skills (session gate)
                         two-verdict review → fixes → ledger
                         [debug on failures; verify before any claim]
 → code-review           whole-branch, two-axis (Standards + Spec-by-ID)
+→ acceptance-check      drive the running system through the spec's user-facing
+                        behaviors (API + UI); fix, then promote to tagged tests
 → finish-branch         merge / PR / keep / discard
 → release               when shipping: verify + trace gate, changelog, tag, build
 → sync-spec             mark requirements Implemented/Shipped
@@ -340,7 +360,8 @@ triage (incoming issues) → ready-for-agent brief → execute or implement dire
 3. **Meta + discovery:** using-skills, ask, grilling, brainstorm, domain-modeling,
    research, prototype.
 4. **Build + review:** tdd, debug, verify, worktrees, execute-plan (+ task-brief /
-   review-package scripts), code-review, receive-review.
+   review-package scripts), code-review, receive-review, acceptance-check /
+   acceptance-api / acceptance-ui.
 5. **Setup + ship + track:** setup-repo, scaffold-project, finish-branch, release,
    triage, sync-spec, improve-architecture, handoff, writing-skills.
 6. **Validation:** pressure-test the gate skills with subagents; dogfood on a real

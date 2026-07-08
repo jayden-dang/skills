@@ -63,6 +63,9 @@ When asked "what needs attention", query the tracker and present three buckets, 
 
 One file per **concept**, kebab-case (`plugin-system.md`), never one per issue — repeat requests append to the existing file's prior-request list. Each file carries: a heading naming the concept, the decision, a **durable** reason (project scope, architectural constraint, deliberate trade-off — never "no time right now", which is a deferral, not a rejection), and a `Prior requests` list linking every issue that asked. Written in plain prose a future maintainer can act on. If the user reverses a past rejection, delete or rewrite the file and triage the new issue normally.
 
-## Quick overrides
+## Direct state changes
 
-If the user says "move #42 to ready-for-agent", trust them: confirm what you are about to do (labels, comment, close), then apply it without the full pipeline. When skipping straight to `ready-for-agent`, ask whether they want a brief written — an unbriefed agent-ready issue is a trap for the next agent.
+When the user names an issue and its target state ("move #42 to ready-for-agent"), that is a decision, not a triage request — it skips the investigate/verify/recommend pipeline (steps 1–3), but not the guardrails:
+
+1. State back exactly what the change is — the label edits, any comment, whether it closes — and get the user's go-ahead before touching the tracker.
+2. For a jump straight to `ready-for-agent`, offer to write the brief from [agent-brief-template.md](agent-brief-template.md); an unbriefed agent-ready issue is a trap for the next agent.

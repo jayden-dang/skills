@@ -304,8 +304,31 @@ function collectFlag(args, name) {
   return out;
 }
 
-// TEMPORARY stub — Task 8 replaces this with the real --verify lint pass.
-function runVerify() { console.error('check-graph: --verify implemented in Task 8'); process.exit(2); }
+/**
+ * --verify lint: (1) freshness — the committed GRAPH.md must be byte-identical
+ * to a fresh renderGraphMd(harvest(...)) render, and (2) registration — every
+ * harvested feature code must appear in <specsDir>/INDEX.md. Exits 1 and
+ * reports on either failure; exits 0 when both hold.
+ */
+function runVerify(root, cfg, specsDir, asJson) {
+  const errors = [];
+  const graph = harvest(specsDir, cfg);
+  const graphMd = path.join(specsDir, 'GRAPH.md');
+  const committed = fs.existsSync(graphMd) ? fs.readFileSync(graphMd, 'utf8') : null;
+  const fresh = renderGraphMd(graph);
+  if (committed !== fresh) errors.push('GRAPH.md is stale — run `check-graph --harvest` and commit the result.');
+
+  const indexMd = path.join(specsDir, 'INDEX.md');
+  const indexText = fs.existsSync(indexMd) ? fs.readFileSync(indexMd, 'utf8') : '';
+  for (const f of graph.features) {
+    const registered = new RegExp(`\\b${f.code}\\b`).test(indexText);
+    if (!registered) errors.push(`E: feature code ${f.code} is not registered in INDEX.md`);
+  }
+
+  if (asJson) console.log(JSON.stringify({ errors }, null, 2));
+  else { console.log(`check-graph --verify: ${errors.length ? 'FAIL' : 'OK'}`); for (const e of errors) console.log(`  ${e}`); }
+  process.exit(errors.length ? 1 : 0);
+}
 
 function main() {
   const args = process.argv.slice(2);

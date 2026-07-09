@@ -289,3 +289,22 @@ test('[FGRAPH-9.3] missing trace.json falls back to docs/specs', () => {
   assert.equal(fs.existsSync(path.join(root, 'docs/agents/trace.json')), false);
   assert.equal(runCli(root, ['--harvest']).code, 0);
 });
+
+test('[FGRAPH-6.1][FGRAPH-6.2] --verify fails on stale, passes when fresh', () => {
+  const root = cliFixture([{ slug: 'a', code: 'AAA', name: 'A', tasks: '- Create: `src/a.ts`\n' }]);
+  fs.writeFileSync(path.join(root, 'docs/specs/INDEX.md'), '| AAA | A | ./a/ | Approved |');
+  assert.equal(runCli(root, ['--verify']).code, 1, 'no GRAPH.md yet → stale');
+  runCli(root, ['--harvest']);
+  assert.equal(runCli(root, ['--verify']).code, 0, 'after harvest → fresh');
+  fs.appendFileSync(path.join(root, 'docs/specs/GRAPH.md'), '\nhand edit\n');
+  assert.equal(runCli(root, ['--verify']).code, 1, 'hand edit → stale again');
+});
+
+test('[FGRAPH-6.3] --verify fails on a code absent from INDEX.md', () => {
+  const root = cliFixture([{ slug: 'a', code: 'GHOST', name: 'Ghost', tasks: '- Create: `src/g.ts`\n' }]);
+  fs.writeFileSync(path.join(root, 'docs/specs/INDEX.md'), '| OTHER | x | ./x/ | Draft |');
+  runCli(root, ['--harvest']);
+  const { code, err, out } = runCli(root, ['--verify']);
+  assert.equal(code, 1);
+  assert.match(err + out, /GHOST/);
+});

@@ -235,3 +235,15 @@ test('[FGRAPH-5.3] query by path ranks a 2-overlap feature above a 1-overlap fea
   assert.deepEqual(res.map((r) => r.code), ['AAA', 'ZZZ'], 'higher overlap count ranks first regardless of code order');
   assert.deepEqual(res[0].overlapPaths, ['src/one.ts', 'src/two.ts'], 'overlapPaths lists the actually-overlapping paths, sorted');
 });
+
+test('[FGRAPH-5.3] query breaks a genuine overlap-count tie by code ascending', () => {
+  const specs = specFixture([
+    { slug: 'z', code: 'ZEBRA', name: 'Zebra widget', oos: [] },
+    { slug: 'a', code: 'ALPHA', name: 'Alpha widget', oos: [] },
+  ]);
+  const g = harvest(specs);
+  // Both match the keyword and neither owns/touches any path, so both tie
+  // at overlapPaths.length === 0 — the tie-break must fall to code order.
+  const res = query(g, { keywords: ['widget'] });
+  assert.deepEqual(res.map((r) => r.code), ['ALPHA', 'ZEBRA'], 'equal overlap count → ascending by code');
+});

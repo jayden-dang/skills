@@ -7,3 +7,4 @@ retired code).
 | Code | Feature | Spec | Status |
 |---|---|---|---|
 | FGRAPH | Horizontal feature-graph layer (surface manifest, reverse index, summary cards) | ./2026-07-09-feature-graph/ (requirements + design + tasks) | Approved |
+| TRACE | check-trace `ignore` capability — exclude fixture-bearing test files from the trace scan | ./2026-07-09-check-trace-ignore/ | Approved |

@@ -133,12 +133,23 @@ manifest, Reverse index, Shared surface, Summary card.
 - **FGRAPH-9.5** (guard) WHEN the feature-graph layer is present, THE SYSTEM SHALL CONTINUE TO require no new fields or annotations in `requirements.md`, `design.md`, or `tasks.md` for any existing skill to function.
 - **FGRAPH-9.6** (guard) WHEN brainstorm runs in a harness without subagents, THE SYSTEM SHALL CONTINUE TO complete step 1, degrading the graph query to a direct in-context invocation.
 
+## 10. Code-review duplication check (advisory)
+
+**Story:** As a reviewer, I want code-review to surface which existing features share the diff's surface, so I catch a change that rebuilds behavior a neighbor already owns — a second dedup net after brainstorm's step-1 check. _(amend — reclaims the deferred Out-of-Scope item; advisory: the graph gives surface overlap, the reviewer judges semantic duplication.)_
+
+- **FGRAPH-10.1** WHEN code-review runs, THE SYSTEM SHALL query the feature graph (`check-graph --query`) with the diff's changed source files and obtain the overlapping features and their summary cards.
+- **FGRAPH-10.2** WHEN the Spec axis runs and the query returns overlapping features, THE SYSTEM SHALL include those features' summary cards (owned paths + Out-of-Scope) in the Spec subagent's brief as context.
+- **FGRAPH-10.3** THE Spec review brief SHALL direct the reviewer to flag, as a reuse-miss finding citing the neighbor's feature code, any place the diff reimplements behavior a shares-surface neighbor already owns.
+- **FGRAPH-10.4** IF no changed file overlaps any feature, THEN THE SYSTEM SHALL state that no existing feature shares the diff's surface and inject no cards.
+- **FGRAPH-10.5** IF the graph query fails or `check-graph` is unavailable, THEN code-review SHALL note the automated overlap check was unavailable and continue the two-axis review.
+- **FGRAPH-10.6** (guard) WHEN this check is added, THE SYSTEM SHALL CONTINUE TO run the Standards + Spec two-axis review unchanged when the graph query yields nothing, is unavailable, or when no requirements spec exists (Spec axis skipped).
+
 ## Out of Scope
 
 - **Manually-declared typed edges** (`extends`, `depends-on`, `supersedes`) and their automatic reversal — the fast-follow. v1 derives only the untyped `shares-surface` relationship, which is free from the harvest.
 - **Authoritative owns-vs-touches precision.** v1 role classification is best-effort; the dedup signal depends only on shared-surface presence (FGRAPH-2.3).
 - **Card-based context loading in other skills** — write-design, execute-plan, and code-review consuming cards to bound their context is a fast-follow. v1's only card consumer is brainstorm.
-- **A code-review "reimplements a neighbor?" check.**
+- ~~**A code-review "reimplements a neighbor?" check.**~~ Reclaimed — now specified as Story 10 (advisory).
 - **Harvesting surface from committed code or import graphs.** The source of truth is specs only; the spike proved specs carry enough signal.
 - **Semantic or embedding-based matching.** Keyword matching only (FGRAPH-5.2).
 - **setup-repo / scaffold-project auto-wiring** check-graph into CI and seeding an initial `GRAPH.md` — manual for v1.

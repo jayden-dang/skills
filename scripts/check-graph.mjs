@@ -67,7 +67,7 @@ export function dedupeByFullest(paths) {
   return kept;
 }
 
-const OWN_HINT = /\b(create|new file|adds? a? ?new file|scaffold)\b|\badd(?:ing)?\b.*\bnew\b/i;
+const OWN_HINT = /\b(create|new file|adds? a? ?new file|scaffold)\b/i;
 const CREATE_LABEL = /^\s*-?\s*create:/i;
 const MODIFY_LABEL = /^\s*-?\s*modify:/i;
 

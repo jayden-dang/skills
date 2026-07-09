@@ -35,4 +35,6 @@ test('[FGRAPH-1.6] classifyRole: create signal owns, else touches', () => {
   assert.equal(classifyRole('reuse `src/x.ts` from the plugin', null), 'touches');
   assert.equal(classifyRole('`src/x.ts` is referenced here', 'create'), 'owns');  // block wins
   assert.equal(classifyRole('`src/x.ts` mentioned in prose', null), 'touches');   // safe default
+  assert.equal(classifyRole('Modify the config to add a new dependency version check', null), 'touches');
+  assert.equal(classifyRole('Add a toggle for the new settings pane while modifying things', null), 'touches');
 });

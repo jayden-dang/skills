@@ -236,14 +236,20 @@ test('[FGRAPH-5.3] query by path ranks a 2-overlap feature above a 1-overlap fea
   assert.deepEqual(res[0].overlapPaths, ['src/one.ts', 'src/two.ts'], 'overlapPaths lists the actually-overlapping paths, sorted');
 });
 
-test('[FGRAPH-5.3] query breaks a genuine overlap-count tie by code ascending', () => {
+test('[FGRAPH-5.3] query breaks a genuine overlap-count tie by code ascending, not path-argument order', () => {
   const specs = specFixture([
-    { slug: 'z', code: 'ZEBRA', name: 'Zebra widget', oos: [] },
-    { slug: 'a', code: 'ALPHA', name: 'Alpha widget', oos: [] },
+    { slug: 'z', code: 'ZZZ', name: 'Zebra widget', tasks: '- Create: `src/z.ts`\n' },
+    { slug: 'a', code: 'AAA', name: 'Alpha widget', tasks: '- Create: `src/a.ts`\n' },
   ]);
   const g = harvest(specs);
-  // Both match the keyword and neither owns/touches any path, so both tie
-  // at overlapPaths.length === 0 — the tie-break must fall to code order.
-  const res = query(g, { keywords: ['widget'] });
-  assert.deepEqual(res.map((r) => r.code), ['ALPHA', 'ZEBRA'], 'equal overlap count → ascending by code');
+  // ZZZ and AAA each own exactly one distinct file, so querying both paths
+  // ties them at overlapPaths.length === 1. The path-argument order lists
+  // ZZZ's file first, so a stable sort with the tie-break comparator
+  // deleted would preserve that path-argument order (['ZZZ','AAA']) —
+  // JS's keyword-loop iteration happens to sort by code already, which is
+  // why a keyword-based tie test can't detect a missing tie-break, but a
+  // path-based tie in a non-code order can. Only the explicit
+  // `|| a.code.localeCompare(b.code)` clause forces ascending-code order.
+  const res = query(g, { paths: ['src/z.ts', 'src/a.ts'] });
+  assert.deepEqual(res.map((r) => r.code), ['AAA', 'ZZZ'], 'equal overlap count → ascending by code, not path-argument order');
 });

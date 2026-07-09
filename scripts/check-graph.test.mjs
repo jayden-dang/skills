@@ -322,3 +322,10 @@ test('[FGRAPH-9.5] harvest needs no new fields — vanilla specs yield a non-emp
   const f = harvest(specs).features.find((x) => x.code === 'PLAIN');
   assert.ok(f.owns.length + f.touches.length >= 2, 'surface harvested from standard specs alone');
 });
+
+test('[FGRAPH-5.6] check-graph reads only markdown — no network/build/child_process', () => {
+  const src = fs.readFileSync(path.join(import.meta.dirname, 'check-graph.mjs'), 'utf8');
+  assert.doesNotMatch(src, /from ['"](?:node:)?(?:child_process|http|https|net|dns|dgram)['"]/, 'no network/process imports');
+  assert.doesNotMatch(src, /\bfetch\s*\(/, 'no fetch');
+  assert.doesNotMatch(src, /\b(?:execSync|spawnSync|spawn|exec)\s*\(/, 'no subprocess/build calls');
+});

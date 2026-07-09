@@ -1043,6 +1043,32 @@ _Requirements: (integration — no new IDs; closes out FGRAPH coverage)_
 
 ---
 
+### Task 12: Harvest-quality amendment (tier-1, post-ship)
+
+Added after dogfooding `check-graph --harvest` on the bot repo's 4 real features surfaced
+four harvest-quality defects. Built as one `amend` via `tdd` (not discrete planned tasks);
+each criterion carries a `[FGRAPH-N.M]` test in `scripts/check-graph.test.mjs`.
+
+**Files:**
+- Modify: `scripts/check-graph.mjs` (isSourcePath glob reject; scanSurface command-line filter + anchored `CMD_LINE_RE`; global cross-feature `canon` map in `harvest`; lean `extractInterfaces`)
+- Test: `scripts/check-graph.test.mjs`
+
+**Delivered (test-first, all tagged):**
+- [x] **FGRAPH-1.7** reject glob tokens (`e2e/*.spec.ts`) — `[FGRAPH-1.7]`
+- [x] **FGRAPH-1.8** exclude paths appearing only in command-invocation lines (anchored) — `[FGRAPH-1.8]`
+- [x] **FGRAPH-1.9** guard: unfenced Files/Create/Modify bullets + prose backticks still harvested (incl. command-word-as-prose) — `[FGRAPH-1.9]`
+- [x] **FGRAPH-2.4** cross-feature basename↔fullpath merge in reverse index/shared surface — `[FGRAPH-2.4]`
+- [x] **FGRAPH-2.5** guard: CHIPUI↔INLTASK-style shared surface still detected — `[FGRAPH-2.5]`
+- [x] **FGRAPH-3.5** interfaces as short single-line entries (drop labels/nesting/prose) — `[FGRAPH-3.5]`
+- [x] **FGRAPH-4.4** guard: GRAPH.md stays deterministic/byte-stable — `[FGRAPH-4.4]`
+
+Commits: `31df422` (amendment), `72225b9` (anchor command detection). Acceptance: re-harvested
+the bot's 4 features; all four noise classes gone, shared-surface table clean.
+
+_Requirements: FGRAPH-1.7, FGRAPH-1.8, FGRAPH-1.9, FGRAPH-2.4, FGRAPH-2.5, FGRAPH-3.5, FGRAPH-4.4_
+
+---
+
 ## Coverage check
 
 Every FGRAPH requirement ID is cited by exactly one task footer **and** carries a tagged

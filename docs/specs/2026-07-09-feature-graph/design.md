@@ -212,6 +212,28 @@ FGRAPH-9.5 (no new authoring burden): structural — `harvest` reads only existi
 `requirements/design/tasks.md` content and mandates no new fields; guarded by running the
 harvest against the untouched `bot` repo specs and asserting a non-empty graph.
 
+### Harvest-quality amendment (post-ship, tier-1)
+
+Satisfies: FGRAPH-1.7, FGRAPH-1.8, FGRAPH-1.9, FGRAPH-2.4, FGRAPH-2.5, FGRAPH-3.5, FGRAPH-4.4
+
+Dogfooding `check-graph --harvest` on the bot repo's 4 real features exposed four harvest-quality
+defects; each is a refinement of an existing component above, at the same seams (no new seam):
+
+- **Glob rejection (1.7)** — `isSourcePath` rejects any token containing `*` before the extension/root checks.
+- **Command-path exclusion (1.8) + guard (1.9)** — `scanSurface` tracks, per path, whether it had a
+  non-command occurrence; a path seen only on command-invocation lines is dropped. `CMD_LINE_RE` is
+  **anchored** — a command word counts only at line-start (with optional `-*>` bullet / `$` prompt) or
+  immediately after a backtick — so ordinary prose containing "node"/"git"/etc. is not misread as a command
+  (the 1.9 guard). Real surface in unfenced `Files:`/`Create:`/`Modify:` bullets and prose backticks is preserved.
+- **Cross-feature dedup (2.4) + guard (2.5)** — `harvest` builds a global `canon` map (basename → fullest
+  path seen across ALL features) and keys the reverse index / shared surface by the canonical form, so a file
+  referenced bare in one spec and full-path in another is one shared surface. Distinct files sharing a basename
+  (`a/util.ts` vs `b/util.ts`) are not merged (suffix match only). The validated CHIPUI↔INLTASK surface still resolves.
+- **Lean interfaces (3.5)** — `extractInterfaces` keeps only top-level `Interfaces:` bullets, drops bare
+  `Produces:`/`Consumes:` labels (promoting their child substance), and truncates each entry at the first ` — `
+  to keep the signature, not the prose.
+- **Determinism guard (4.4)** — all of the above preserve total ordering; `renderGraphMd(harvest(x))` stays byte-stable.
+
 ## Seams for testing
 
 Unit seams are the exported pure functions; the integration seam is the CLI black-box

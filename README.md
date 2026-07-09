@@ -62,7 +62,7 @@ Lost? Invoke `ask` — it routes any situation to the right entry point.
 | review | `code-review`, `receive-review` |
 | acceptance | `acceptance-check`, `acceptance-api`, `acceptance-ui`, `dogfood` |
 | ship | `finish-branch`, `release` |
-| track | `triage`, `sync-spec`, `improve-architecture`, `handoff` |
+| track | `amend`, `triage`, `sync-spec`, `improve-architecture`, `handoff` |
 
 ## Traceability tooling
 

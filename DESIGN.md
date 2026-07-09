@@ -40,7 +40,7 @@ skills/
   review/      code-review, receive-review
   acceptance/  acceptance-check, acceptance-api, acceptance-ui, dogfood
   ship/        finish-branch, release
-  track/       triage, sync-spec, improve-architecture, handoff
+  track/       amend, triage, sync-spec, improve-architecture, handoff
 scripts/       check-trace.mjs, task-brief, review-package
 templates/     requirements.md, design.md, tasks.md, docs/agents seeds, CONTEXT.md seed
 hooks/         session-start (injects meta/using-skills)
@@ -294,6 +294,12 @@ Legend: (U) user-invoked, (m) model-invoked.
     CI/CD authoring in v1.
 
 ### track/
+31. **amend** (m) — the iteration lane for an already-shipped, spec'd feature: read
+    the existing triad, classify the change against it out loud, and route to the
+    lightest lane — tier 0 → `tdd`; tier 1 → mini-spec (`write-requirements`) →
+    `tdd`; genuinely new scope → escalate to `brainstorm`. A fast lane, not a gate
+    bypass (always exits through `tdd`; `sync-spec` keeps the trace honest). Fills
+    the gap left when `brainstorm` narrowed to greenfield-only.
 27. **triage** (U) — issue state machine (needs-triage / needs-info /
     ready-for-agent / ready-for-human / wontfix + bug/enhancement); redundancy +
     prior-rejection checks; verify claims before recommending; **agent briefs**
@@ -355,6 +361,8 @@ debug (red-capable command → root cause → fix via tdd)
 
 ### Maintenance loop
 ```
+amend (small in-scope change to a shipped feature) → tier 0: tdd / tier 1:
+  mini-spec → tdd / genuinely new scope: escalate to brainstorm
 improve-architecture (periodic) → picked candidate → brainstorm → ...
 triage (incoming issues) → ready-for-agent brief → execute or implement directly
 ```

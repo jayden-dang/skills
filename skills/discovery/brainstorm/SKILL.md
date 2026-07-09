@@ -11,6 +11,8 @@ description: Use at the very start of the idea-to-ship chain — when the user w
 
 Turn a raw idea into an agreed shape ready for spec work, through dialogue — not code.
 
+Shaping a *new* feature or project (nothing spec'd yet) is this skill. A small in-scope change to an **already-shipped, spec'd** feature is `amend` instead — it reads the existing spec and routes the change to the light lane, escalating back here only when the change is genuinely new scope. If you were handed such a change, hand it to `amend`.
+
 <HARD-GATE>
 Write NO code, scaffold NOTHING, and invoke NO implementation skill until this checklist has run and you have stated the ceremony tier out loud. For tier 0 the only permitted exit is `tdd`, and only after the tier is spoken; for tier ≥1, requirements are written and approved first. The only artifacts this skill may touch are notes, the glossary (CONTEXT.md), ADRs, and — via its sub-skills — research notes and explicitly-marked throwaway prototypes. This holds for EVERY request, no matter how simple it looks.
 </HARD-GATE>

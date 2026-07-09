@@ -39,6 +39,9 @@ context-isolated per task by design.
 
 ## On-ramps
 
+- Small in-scope change to an already-shipped, spec'd feature (a tweak, recolor,
+  or follow-on) → **`amend`** (reads the existing spec, routes to the light lane;
+  escalates to `brainstorm` only for genuinely new scope).
 - Unit tests green but unsure it truly works end-to-end → **`acceptance-check`**
   (drives the running system through the spec's behaviors as a real user).
 - Want to try a finished feature by hand in the real app → **`dogfood`**

@@ -35,7 +35,7 @@ Skip any step and you are lying, not verifying.
 | "The feature works" | The affected flow driven through the running system and observed (REQUIRED SUB-SKILL: use `acceptance-check`, or `dogfood` for a manual pass) | Green unit tests alone |
 | "The bug is fixed" | Original symptom re-tested and gone | The code changed |
 | "The agent/subagent completed X" | You inspected the diff yourself | The agent's own success report |
-| "Requirements met" | `check-trace` passes AND each acceptance criterion checked off individually against observed behavior | Green tests alone |
+| "Requirements met" | `check-trace` **and** `check-graph --verify` pass AND each acceptance criterion checked off individually against observed behavior | Green tests alone |
 
 ## Regression-proof pattern
 

@@ -44,4 +44,8 @@ Apply any transition whose evidence exists: update the `Status:` line in `requir
 
 **f. After picture.** Re-run `check-trace.mjs` and print both reports side by side — errors and warnings resolved, anything remaining, and what you changed to get there.
 
+Then regenerate the feature graph: `node scripts/check-graph.mjs --harvest`. If `GRAPH.md`
+changed, stage it into this sync-spec commit alongside the `Status:`/`INDEX.md` edits so
+the committed graph tracks the triad.
+
 **Done when:** the after-report is no worse than the before-report on errors, every flagged item has either an edit or an explicit user decision pending, and INDEX.md agrees with every spec's `Status:` line.

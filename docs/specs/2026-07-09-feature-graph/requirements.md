@@ -148,7 +148,7 @@ manifest, Reverse index, Shared surface, Summary card.
 
 - **Manually-declared typed edges** (`extends`, `depends-on`, `supersedes`) and their automatic reversal — the fast-follow. v1 derives only the untyped `shares-surface` relationship, which is free from the harvest.
 - **Authoritative owns-vs-touches precision.** v1 role classification is best-effort; the dedup signal depends only on shared-surface presence (FGRAPH-2.3).
-- **Card-based context loading in other skills** — write-design, execute-plan, and code-review consuming cards to bound their context is a fast-follow. v1's only card consumer is brainstorm.
+- **Card-based context loading in write-design / execute-plan** — **evaluated 2026-07-09 and DECLINED.** write-design already bounds context via its scan-subagent digest; execute-plan's task-briefs already carry exact per-task neighbor `file:line` references (write-plan bakes them in). A throwaway A/B prototype on a real cross-feature task (bot CONVMK Task 3, which modifies CHIPUI's files) confirmed a best-effort card is redundant-to-noise: two cold planners made identical reuse decisions with and without the card, and the card's interfaces field omitted the interfaces the task needed while including irrelevant ones. Neighbor-awareness is already delivered at the gates that matter — `brainstorm` step-1 and `code-review` step-3a (Story 10, which DOES consume cards). Not a fast-follow; closed.
 - ~~**A code-review "reimplements a neighbor?" check.**~~ Reclaimed — now specified as Story 10 (advisory).
 - **Harvesting surface from committed code or import graphs.** The source of truth is specs only; the spike proved specs carry enough signal.
 - **Semantic or embedding-based matching.** Keyword matching only (FGRAPH-5.2).

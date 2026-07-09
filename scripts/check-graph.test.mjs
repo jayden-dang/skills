@@ -201,3 +201,37 @@ test('[FGRAPH-4.3] renderGraphMd is a pure string function — no file side effe
   assert.deepEqual(before, after, 'renderGraphMd must not write any file into specsDir');
   assert.ok(!fs.existsSync(path.join(specs, 'GRAPH.md')), 'renderGraphMd must never write GRAPH.md itself');
 });
+
+import { query } from './check-graph.mjs';
+
+test('[FGRAPH-5.1][FGRAPH-5.3] query by path returns ranked overlapping features', () => {
+  const specs = specFixture([
+    { slug: 'a', code: 'AAA', name: 'A', tasks: '- Create: `src/x.ts`\n- Create: `src/y.ts`\n' },
+    { slug: 'b', code: 'BBB', name: 'B', tasks: '- Create: `src/y.ts`\n' },
+  ]);
+  const g = harvest(specs);
+  const res = query(g, { paths: ['src/x.ts', 'src/y.ts'] });
+  assert.equal(res[0].code, 'AAA', 'AAA overlaps 2 → ranked first');
+  assert.equal(res[1].code, 'BBB', 'BBB overlaps 1');
+  assert.ok(res[0].card, 'result carries the card');
+});
+
+test('[FGRAPH-5.2] query by keyword matches name and out-of-scope', () => {
+  const specs = specFixture([{ slug: 'a', code: 'PICK', name: 'Picker widget',
+    oos: ['No time zones'], tasks: '- Create: `src/p.ts`\n' }]);
+  const g = harvest(specs);
+  assert.equal(query(g, { keywords: ['picker'] })[0].code, 'PICK');
+  assert.equal(query(g, { keywords: ['time zone'] })[0].code, 'PICK');
+  assert.deepEqual(query(g, { keywords: ['nonexistent'] }), []);
+});
+
+test('[FGRAPH-5.3] query by path ranks a 2-overlap feature above a 1-overlap feature, with deterministic tie-break', () => {
+  const specs = specFixture([
+    { slug: 'z', code: 'ZZZ', name: 'Z', tasks: '- Create: `src/only.ts`\n' },
+    { slug: 'a', code: 'AAA', name: 'A', tasks: '- Create: `src/one.ts`\n- Create: `src/two.ts`\n' },
+  ]);
+  const g = harvest(specs);
+  const res = query(g, { paths: ['src/one.ts', 'src/two.ts', 'src/only.ts'] });
+  assert.deepEqual(res.map((r) => r.code), ['AAA', 'ZZZ'], 'higher overlap count ranks first regardless of code order');
+  assert.deepEqual(res[0].overlapPaths, ['src/one.ts', 'src/two.ts'], 'overlapPaths lists the actually-overlapping paths, sorted');
+});

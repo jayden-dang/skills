@@ -253,6 +253,37 @@ export function renderGraphMd(graph) {
   return L.join('\n');
 }
 
+/**
+ * Query the Graph for features overlapping a set of paths (via the Reverse
+ * index) or matching a keyword against name/out-of-scope (case-insensitive
+ * substring). Results are ranked by overlapPaths.length descending, tied
+ * broken by code for determinism. Each result carries the feature's full
+ * Summary card.
+ */
+export function query(graph, { paths = [], keywords = [] } = {}) {
+  const pathSet = new Set(paths);
+  const kws = keywords.map((k) => k.toLowerCase()).filter(Boolean);
+  const scored = new Map(); // code -> {feature, overlapPaths:Set}
+  const bump = (code) => {
+    if (!scored.has(code)) {
+      const feature = graph.features.find((f) => f.code === code);
+      scored.set(code, { feature, overlapPaths: new Set() });
+    }
+    return scored.get(code);
+  };
+  for (const p of pathSet) for (const ref of graph.reverse[p] || []) bump(ref.code).overlapPaths.add(p);
+  for (const f of graph.features) {
+    const hay = (f.name + ' ' + f.oos.join(' ')).toLowerCase();
+    if (kws.some((k) => hay.includes(k))) bump(f.code);
+  }
+  return [...scored.values()]
+    .map(({ feature, overlapPaths }) => ({
+      code: feature.code, name: feature.name, card: feature,
+      overlapPaths: [...overlapPaths].sort(),
+    }))
+    .sort((a, b) => b.overlapPaths.length - a.overlapPaths.length || a.code.localeCompare(b.code));
+}
+
 function main() {
   console.error('check-graph: CLI not yet implemented');
   process.exit(2);

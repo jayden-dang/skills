@@ -106,9 +106,9 @@ function scanSurface(text, cfg) {
   const found = new Map(); // path -> role (owns beats touches)
   let blockLabel = null;
   for (const line of text.split('\n')) {
-    if (/^\s*-?\s*create:/i.test(line)) blockLabel = 'create';
-    else if (/^\s*-?\s*modify:/i.test(line)) blockLabel = 'modify';
-    else if (/^\s*\*?\*?(files|interfaces|steps)\b/i.test(line)) blockLabel = null;
+    if (CREATE_LABEL.test(line)) blockLabel = 'create';
+    else if (MODIFY_LABEL.test(line)) blockLabel = 'modify';
+    else if (/^\s*$/.test(line) || /^\s*#{1,6}\s/.test(line) || /^\s*\*?\*?(files|interfaces|steps)\b/i.test(line)) blockLabel = null;
     const cands = new Set();
     for (const m of line.matchAll(BACKTICK_RE)) cands.add(m[1]);
     for (const m of line.matchAll(WORD_RE)) cands.add(m[0]);
@@ -141,10 +141,16 @@ export function harvest(specsDir, cfg = DEFAULTS) {
         if (role === 'owns' || !surface.has(p)) surface.set(p, role);
       }
     }
-    // basename/full dedup within this feature, keeping the winning role
-    const fullest = new Set(dedupeByFullest([...surface.keys()]));
+    // basename/full dedup within this feature, keeping the winning role: a
+    // path is `owns` if EITHER the surviving fullest form, OR any basename
+    // form of it that got collapsed away, was itself recorded as `owns`.
+    const surfaceKeys = [...surface.keys()];
+    const fullest = new Set(dedupeByFullest(surfaceKeys));
     const owns = [], touches = [];
-    for (const p of fullest) (surface.get(p) === 'owns' ? owns : touches).push(p);
+    for (const p of fullest) {
+      const isOwned = surfaceKeys.some((k) => (k === p || p.endsWith('/' + k)) && surface.get(k) === 'owns');
+      (isOwned ? owns : touches).push(p);
+    }
     features.push({ code, name, owns: owns.sort(), touches: touches.sort(), interfaces: [], oos: [] });
   }
   features.sort((a, b) => a.code.localeCompare(b.code));

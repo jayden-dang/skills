@@ -91,3 +91,27 @@ test('[FGRAPH-9.1] a feature with only requirements.md yields an empty manifest,
   assert.deepEqual(f.owns, []);
   assert.deepEqual(f.touches, []);
 });
+
+test('[FGRAPH-1.6] scanSurface: blockLabel does not leak past a blank line or heading', () => {
+  const specs = specFixture([
+    { slug: 'a-leak', code: 'LEAK', name: 'Leak',
+      design: '**Files:**\n- Create: `src/new/thing.ts`\n\n## Notes\nSee also `src/old/legacy.ts`.\n' },
+  ]);
+  const g = harvest(specs);
+  const f = g.features.find((x) => x.code === 'LEAK');
+  assert.ok(f.owns.includes('src/new/thing.ts'), 'the actually-created file is owned');
+  assert.ok(f.touches.includes('src/old/legacy.ts'), 'a mere reference after the block ended is only touched');
+  assert.ok(!f.owns.includes('src/old/legacy.ts'), 'stale create block label must not leak onto later prose');
+});
+
+test('[FGRAPH-1.6] harvest: owns beats touches across basename/fullpath dedup within a feature', () => {
+  const specs = specFixture([
+    { slug: 'a-dedup', code: 'DEDUP', name: 'Dedup',
+      tasks: '- Create: `engine.ts`\n',
+      design: 'This references the existing `src/core/engine.ts` module.\n' },
+  ]);
+  const g = harvest(specs);
+  const f = g.features.find((x) => x.code === 'DEDUP');
+  assert.ok(f.owns.includes('src/core/engine.ts'), 'owns must win over touches after dedup collapses basename into full path');
+  assert.ok(!f.touches.includes('src/core/engine.ts'));
+});

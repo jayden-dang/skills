@@ -38,6 +38,7 @@ export function normalizePath(token) {
     t = t.replace(/\s*~?\d[\d,\s-]*$/, '');  // trailing "(~208-221)" tail after paren-strip
     t = t.trim();
   } while (t !== prev);
+  t = t.replace(/^\.\//, ''); // leading "./" so "./check-graph.mjs" dedups with "check-graph.mjs"
   return t;
 }
 
@@ -124,7 +125,9 @@ export function extractInterfaces(bodies) {
     for (let i = 0; i < lines.length; i++) {
       if (!re.test(lines[i])) continue;
       for (let j = i + 1; j < lines.length && /^\s*[-*]\s+/.test(lines[j]); j++) {
-        out.push(lines[j].replace(/^\s*[-*]\s+/, '').replace(/`/g, '').trim());
+        let s = lines[j].replace(/^\s*[-*]\s+/, '').replace(/`/g, '').trim();
+        s = s.replace(/^(?:produces|consumes|provides|exposes):\s*/i, '').trim();
+        if (s && !/^(?:produces|consumes|provides|exposes):?$/i.test(s)) out.push(s);
       }
     }
   }
@@ -135,7 +138,10 @@ export function extractInterfaces(bodies) {
 function scanSurface(text, cfg) {
   const found = new Map(); // path -> role (owns beats touches)
   let blockLabel = null;
+  let inFence = false;
   for (const line of text.split('\n')) {
+    if (/^\s*(```|~~~)/.test(line)) { inFence = !inFence; blockLabel = null; continue; }
+    if (inFence) continue;
     if (CREATE_LABEL.test(line)) blockLabel = 'create';
     else if (MODIFY_LABEL.test(line)) blockLabel = 'modify';
     else if (/^\s*$/.test(line) || /^\s*#{1,6}\s/.test(line) || /^\s*\*?\*?(files|interfaces|steps)\b/i.test(line)) blockLabel = null;

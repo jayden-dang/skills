@@ -13,6 +13,7 @@ test('[FGRAPH-1.3] normalizePath strips locators and quoting', () => {
   assert.equal(normalizePath('src/components/Editor.tsx (~208-221)'), 'src/components/Editor.tsx');
   assert.equal(normalizePath('"src/lib/x.ts"'), 'src/lib/x.ts');
   assert.equal(normalizePath('`Editor.tsx:208` (~208-221)'), 'Editor.tsx');
+  assert.equal(normalizePath('./check-graph.mjs'), 'check-graph.mjs');
 });
 
 test('[FGRAPH-1.5] isSourcePath accepts real paths, rejects junk', () => {
@@ -104,6 +105,15 @@ test('[FGRAPH-1.6] scanSurface: blockLabel does not leak past a blank line or he
   assert.ok(!f.owns.includes('src/old/legacy.ts'), 'stale create block label must not leak onto later prose');
 });
 
+test('[FGRAPH-1.2] scanSurface ignores paths inside fenced code blocks', () => {
+  const specs = specFixture([{ slug: 'a', code: 'FENCE', name: 'Fence',
+    tasks: '**Files:**\n- Create: `src/real.ts`\n\n```js\nimport x from "src/fake.ts";\nconst p = "App.tsx";\n```\n' }]);
+  const f = harvest(specs).features.find((x) => x.code === 'FENCE');
+  assert.ok(f.owns.includes('src/real.ts'), 'unfenced Create path kept');
+  assert.ok(!f.owns.includes('src/fake.ts') && !f.touches.includes('src/fake.ts'), 'fenced path excluded');
+  assert.ok(!f.owns.includes('App.tsx') && !f.touches.includes('App.tsx'), 'fenced path excluded');
+});
+
 test('[FGRAPH-1.6] harvest: owns beats touches across basename/fullpath dedup within a feature', () => {
   const specs = specFixture([
     { slug: 'a-dedup', code: 'DEDUP', name: 'Dedup',
@@ -131,6 +141,15 @@ test('[FGRAPH-3.3] interfaces harvested best-effort from Interfaces: blocks', ()
     design: '**Interfaces:**\n- `applyChipEdit(view, action)`\n- `ChipEditAction` union\n' }]);
   const f = harvest(specs).features.find((x) => x.code === 'IFACE');
   assert.ok(f.interfaces.some((s) => s.includes('applyChipEdit')));
+});
+
+test('[FGRAPH-3.3] interfaces drop bare Produces/Consumes labels, keep substance', () => {
+  const specs = specFixture([{ slug: 'a', code: 'IF2', name: 'If2',
+    design: '**Interfaces:**\n- Produces:\n  - `doThing(x) → y`\n- Consumes: `helper()`\n' }]);
+  const f = harvest(specs).features.find((x) => x.code === 'IF2');
+  assert.ok(f.interfaces.some((s) => s.includes('doThing')), 'substance kept');
+  assert.ok(f.interfaces.some((s) => s.includes('helper')), 'inline consumes substance kept');
+  assert.ok(!f.interfaces.some((s) => /^(produces|consumes):?$/i.test(s.trim())), 'no bare label entries');
 });
 
 test('[FGRAPH-3.4] card lists are capped at cardCap', () => {

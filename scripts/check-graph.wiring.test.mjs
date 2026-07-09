@@ -10,7 +10,7 @@ test('[FGRAPH-7.1][FGRAPH-7.2][FGRAPH-7.5][FGRAPH-9.6] brainstorm wires the grap
   const t = read('skills/discovery/brainstorm/SKILL.md');
   assert.match(t, /check-graph(?:\.mjs)? --query/, 'FGRAPH-7.1: brainstorm calls the query');
   assert.match(t, /card/i, 'FGRAPH-7.2: presents cards');
-  assert.match(t, /unavailable|fail-open|continue/i, 'FGRAPH-7.5/9.6: fail-open note');
+  assert.match(t, /overlap check unavailable/i, 'FGRAPH-7.5/9.6: fail-open note');
 });
 
 test('[FGRAPH-7.3][FGRAPH-7.4] brainstorm step-1 Done-when states overlaps', () => {
@@ -21,7 +21,7 @@ test('[FGRAPH-7.3][FGRAPH-7.4] brainstorm step-1 Done-when states overlaps', () 
 test('[FGRAPH-8.1][FGRAPH-8.2] sync-spec regenerates and stages GRAPH.md', () => {
   const t = read('skills/track/sync-spec/SKILL.md');
   assert.match(t, /check-graph(?:\.mjs)? --harvest/, 'FGRAPH-8.1: regenerates');
-  assert.match(t, /GRAPH\.md/, 'FGRAPH-8.2: stages GRAPH.md into the commit');
+  assert.match(t, /GRAPH\.md[\s\S]{0,40}stage it into this sync-spec commit/i, 'FGRAPH-8.2: stages GRAPH.md into the commit');
 });
 
 test('[FGRAPH-6.4] verify runs check-graph --verify', () => {

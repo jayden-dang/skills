@@ -284,9 +284,50 @@ export function query(graph, { paths = [], keywords = [] } = {}) {
     .sort((a, b) => b.overlapPaths.length - a.overlapPaths.length || a.code.localeCompare(b.code));
 }
 
+/** Load docs/agents/trace.json (optional), deep-merging the nested `graph` key over DEFAULTS.graph. */
+export function loadConfig(root) {
+  const p = path.join(root, 'docs/agents/trace.json');
+  if (!fs.existsSync(p)) return DEFAULTS;
+  try {
+    const user = JSON.parse(fs.readFileSync(p, 'utf8'));
+    return { ...DEFAULTS, ...user, graph: { ...DEFAULTS.graph, ...(user.graph || {}) } };
+  } catch (e) {
+    console.error(`check-graph: could not parse ${p}: ${e.message}`);
+    process.exit(1);
+  }
+}
+
+/** Collect every value that follows a repeatable flag, e.g. --path a --path b -> ['a','b']. */
+function collectFlag(args, name) {
+  const out = [];
+  for (let i = 0; i < args.length; i++) if (args[i] === name) out.push(args[i + 1]);
+  return out;
+}
+
+// TEMPORARY stub — Task 8 replaces this with the real --verify lint pass.
+function runVerify() { console.error('check-graph: --verify implemented in Task 8'); process.exit(2); }
+
 function main() {
-  console.error('check-graph: CLI not yet implemented');
-  process.exit(2);
+  const args = process.argv.slice(2);
+  const rootIdx = args.indexOf('--root');
+  const root = rootIdx !== -1 ? path.resolve(args[rootIdx + 1]) : process.cwd();
+  const asJson = args.includes('--json');
+  const cfg = loadConfig(root);
+  const specsDir = path.join(root, cfg.specsDir);
+
+  if (args.includes('--query')) {
+    const graph = harvest(specsDir, cfg);
+    const res = query(graph, { paths: collectFlag(args, '--path'), keywords: collectFlag(args, '--keyword') });
+    console.log(asJson ? JSON.stringify(res, null, 2) : res.map((r) => `${r.code} (${r.overlapPaths.length})`).join('\n'));
+    process.exit(0);
+  }
+  if (args.includes('--verify')) { runVerify(root, cfg, specsDir, asJson); return; } // Task 8
+  // default: --harvest
+  const graph = harvest(specsDir, cfg);
+  if (!fs.existsSync(specsDir)) { console.error(`check-graph: no specs dir at ${cfg.specsDir}`); process.exit(0); }
+  fs.writeFileSync(path.join(specsDir, 'GRAPH.md'), renderGraphMd(graph));
+  console.log(`check-graph: wrote GRAPH.md — ${graph.features.length} features, ${graph.shared.length} shared paths.`);
+  process.exit(0);
 }
 
 if (import.meta.url === pathToFileURL(process.argv[1]).href) main();

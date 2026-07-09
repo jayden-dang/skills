@@ -253,3 +253,39 @@ test('[FGRAPH-5.3] query breaks a genuine overlap-count tie by code ascending, n
   const res = query(g, { paths: ['src/z.ts', 'src/a.ts'] });
   assert.deepEqual(res.map((r) => r.code), ['AAA', 'ZZZ'], 'equal overlap count → ascending by code, not path-argument order');
 });
+
+import { spawnSync } from 'node:child_process';
+
+const CLI = path.join(import.meta.dirname, 'check-graph.mjs');
+
+/** specFixture() returns <root>/docs/specs; walk back up to <root> for CLI --root. */
+function cliFixture(features) { return path.dirname(path.dirname(specFixture(features))); }
+
+function runCli(root, args) {
+  const r = spawnSync('node', [CLI, ...args, '--root', root], { encoding: 'utf8' });
+  return { code: r.status, out: r.stdout, err: r.stderr };
+}
+
+test('[FGRAPH-4.1][FGRAPH-4.3] --harvest writes GRAPH.md and leaves INDEX.md untouched', () => {
+  const root = cliFixture([{ slug: 'a', code: 'AAA', name: 'A', tasks: '- Create: `src/a.ts`\n' }]);
+  fs.writeFileSync(path.join(root, 'docs/specs/INDEX.md'), 'ORIGINAL');
+  const { code } = runCli(root, ['--harvest']);
+  assert.equal(code, 0);
+  assert.match(fs.readFileSync(path.join(root, 'docs/specs/GRAPH.md'), 'utf8'), /AAA/);
+  assert.equal(fs.readFileSync(path.join(root, 'docs/specs/INDEX.md'), 'utf8'), 'ORIGINAL');
+});
+
+test('[FGRAPH-5.4][FGRAPH-5.5] --query emits fresh JSON to stdout', () => {
+  const root = cliFixture([{ slug: 'a', code: 'AAA', name: 'A', tasks: '- Create: `src/a.ts`\n' }]);
+  // No GRAPH.md written; query must still work (fresh harvest).
+  const { code, out } = runCli(root, ['--query', '--path', 'src/a.ts', '--json']);
+  assert.equal(code, 0);
+  const parsed = JSON.parse(out);
+  assert.equal(parsed[0].code, 'AAA');
+});
+
+test('[FGRAPH-9.3] missing trace.json falls back to docs/specs', () => {
+  const root = cliFixture([{ slug: 'a', code: 'AAA', name: 'A', tasks: '- Create: `src/a.ts`\n' }]);
+  assert.equal(fs.existsSync(path.join(root, 'docs/agents/trace.json')), false);
+  assert.equal(runCli(root, ['--harvest']).code, 0);
+});

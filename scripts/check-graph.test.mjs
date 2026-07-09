@@ -195,6 +195,15 @@ test('[FGRAPH-1.9] guard: the 1.7/1.8 filters do not over-reach on ordinary unfe
   assert.ok(surface.includes('src/keep3.ts'), 'prose backtick path kept');
 });
 
+test('[FGRAPH-1.9] guard: a command word used as ordinary prose (mid-line, not line-leading) must not misclassify the line as a command invocation and drop a real surface path', () => {
+  const specs = specFixture([{ slug: 'a-prose', code: 'PROSE', name: 'Prose',
+    design: 'See the git log entry referencing `src/onlyhere.ts` for context on this node in the tree.\n' }]);
+  const f = harvest(specs).features.find((x) => x.code === 'PROSE');
+  const surface = [...f.owns, ...f.touches];
+  assert.ok(surface.includes('src/onlyhere.ts'),
+    'prose use of "git"/"node" as ordinary English words must not exclude a real path (over-filtering, FGRAPH-1.8 regression)');
+});
+
 test('[FGRAPH-3.1][FGRAPH-3.2] card carries name, owns, and out-of-scope', () => {
   const specs = specFixture([{ slug: 'a', code: 'CARD', name: 'Card feature',
     oos: ['No time zones', 'No recurrence'],

@@ -90,9 +90,14 @@ const WORD_RE = /[A-Za-z0-9_./-]+/g;
 
 // A command-invocation line names a tool being run, not a surface being
 // owned/touched — a path that appears ONLY on such lines is not surface.
-const CMD_LINE_RE = /(^|\s)(node|npm|pnpm|npx|yarn|git|bash|sh|deno|bun)\s/;
+// The command word must sit at a genuine command-START position — line
+// start (optionally after a `- `/`* `/`> ` list prefix), right after a
+// backtick, or right after a `$ ` shell prompt — NOT anywhere mid-line
+// (FGRAPH-1.9): plain prose like "the git log" or "this node in the tree"
+// uses these words as ordinary English and must not be treated as a command.
+const CMD_LINE_RE = /(?:^\s*(?:[-*>]\s+)?|`|\$\s*)(?:node|npm|pnpm|npx|yarn|git|bash|sh|deno|bun)\s/;
 function isCommandLine(line) {
-  return CMD_LINE_RE.test(line) || /^\s*Run\b/i.test(line) || /^\s*\$ /.test(line);
+  return CMD_LINE_RE.test(line) || /^\s*(?:[-*>]\s+)?run\b/i.test(line) || /^\s*\$ /.test(line);
 }
 
 /** Recursively collect files under dir for which predicate(fullPath) is true. */

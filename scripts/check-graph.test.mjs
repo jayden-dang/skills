@@ -308,3 +308,17 @@ test('[FGRAPH-6.3] --verify fails on a code absent from INDEX.md', () => {
   assert.equal(code, 1);
   assert.match(err + out, /GHOST/);
 });
+
+test('[FGRAPH-9.4] the existing check-trace test suite still passes', () => {
+  const r = spawnSync('node', ['--test', path.join(import.meta.dirname, 'check-trace.test.mjs')], { encoding: 'utf8' });
+  assert.equal(r.status, 0, 'check-graph must not disturb check-trace: ' + r.stdout + r.stderr);
+});
+
+test('[FGRAPH-9.5] harvest needs no new fields — vanilla specs yield a non-empty graph', () => {
+  // A spec authored to the STANDARD templates only (no graph-specific annotations).
+  const specs = specFixture([{ slug: 'plain', code: 'PLAIN', name: 'Plain feature',
+    design: '### Component\nSatisfies: PLAIN-1.1\nLives in `src/plain/core.ts`.\n',
+    tasks: '**Files:**\n- Create: `src/plain/core.ts`\n- Modify: `src/plain/wire.ts`\n' }]);
+  const f = harvest(specs).features.find((x) => x.code === 'PLAIN');
+  assert.ok(f.owns.length + f.touches.length >= 2, 'surface harvested from standard specs alone');
+});

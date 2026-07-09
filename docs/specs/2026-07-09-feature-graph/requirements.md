@@ -52,6 +52,9 @@ manifest, Reverse index, Shared surface, Summary card.
 - **FGRAPH-1.4** WHEN the same file is referenced within one feature both by bare basename and by a fuller path, THE SYSTEM SHALL record it as a single surface entry under the fullest path seen.
 - **FGRAPH-1.5** IF a candidate token is not a source path — it has no recognized code file extension and does not sit under a recognized source root, or it lacks a real path segment (e.g. a bare `src-tauri/` or a bare `.spec.ts`) — THEN THE SYSTEM SHALL exclude it from the manifest.
 - **FGRAPH-1.6** THE SYSTEM SHALL classify each surface entry's role as `owns` or `touches` on a best-effort basis: a create/new-file signal in the feature's `tasks.md` yields `owns`; a modify/reference signal yields `touches`.
+- **FGRAPH-1.7** IF a candidate token contains a glob wildcard character (`*`), THEN THE SYSTEM SHALL exclude it from the manifest (e.g. `e2e/*.spec.ts`, `noteListHelpers.*.test.ts` are not concrete surface paths). _(amend — dogfooding)_
+- **FGRAPH-1.8** IF a source path appears in a spec only within a command-invocation context — a line invoking a CLI, recognized by a leading `node`/`npm`/`pnpm`/`npx`/`yarn`/`git`/`bash`/`sh`/`deno`/`bun` command word or a `Run:`-style step — THEN THE SYSTEM SHALL exclude that path from the manifest, since running a tool is neither owning nor touching feature surface. _(amend — dogfooding: every feature's `tasks.md` runs `node scripts/check-trace.mjs`, forging a false shared-surface edge across all features.)_
+- **FGRAPH-1.9** (guard) WHEN the FGRAPH-1.7/1.8 exclusions run, THE SYSTEM SHALL CONTINUE TO harvest concrete source paths declared in unfenced `Files:` / `- Create:` / `- Modify:` bullets and in prose backticks — real surface must not be over-filtered. _(amend — dogfooding)_
 
 ## 2. Reverse index and shared-surface detection
 
@@ -60,6 +63,8 @@ manifest, Reverse index, Shared surface, Summary card.
 - **FGRAPH-2.1** WHEN `--harvest` runs, THE SYSTEM SHALL produce a reverse index mapping each surface path to the list of features that reference it, each paired with its role.
 - **FGRAPH-2.2** WHEN a surface path is referenced by two or more distinct features, THE SYSTEM SHALL mark that path as a shared surface.
 - **FGRAPH-2.3** THE SYSTEM SHALL determine shared-surface status from the presence of ≥2 referencing features alone, independent of role-classification accuracy.
+- **FGRAPH-2.4** WHEN building the reverse index, THE SYSTEM SHALL treat a bare basename and a fuller path to the same file as a single surface path ACROSS features (not only within one feature, as FGRAPH-1.4 does), so a file referenced as `mathInputExtension.ts` in one spec and `src/components/mathInputExtension.ts` in another is counted as one shared surface, not two. _(amend — dogfooding)_
+- **FGRAPH-2.5** (guard) WHEN cross-feature dedup runs, THE SYSTEM SHALL CONTINUE TO detect the already-validated shared surface between features that extend one another (e.g. CHIPUI↔INLTASK sharing the inline-task files). _(amend — dogfooding)_
 
 ## 3. Summary cards
 
@@ -69,6 +74,7 @@ manifest, Reverse index, Shared surface, Summary card.
 - **FGRAPH-3.2** THE SYSTEM SHALL populate a card's Out-of-Scope items from the feature's `requirements.md` `## Out of Scope` section.
 - **FGRAPH-3.3** THE SYSTEM SHALL populate a card's public interfaces on a best-effort basis from the `Interfaces:` blocks present in the feature's `design.md` and `tasks.md`.
 - **FGRAPH-3.4** THE SYSTEM SHALL cap each enumerated list in a card (owned paths, interfaces, Out-of-Scope items) at a configurable maximum, default 12 entries, so a card stays materially smaller than the feature's `requirements.md`.
+- **FGRAPH-3.5** THE SYSTEM SHALL populate a card's interfaces as short, single-line entries — the signature or first line of each top-level `Interfaces:` bullet — excluding nested sub-bullets, multi-line prose continuations, and bare section-lead labels (e.g. a lone `Produces:` / `Consumes:`), so the interfaces field stays a bounded card summary rather than a verbatim dump. This refines the best-effort extraction of FGRAPH-3.3. _(amend — dogfooding)_
 
 ## 4. The GRAPH.md artifact
 
@@ -77,6 +83,7 @@ manifest, Reverse index, Shared surface, Summary card.
 - **FGRAPH-4.1** WHEN `--harvest` runs, THE SYSTEM SHALL write the reverse index and all summary cards to `GRAPH.md` in the specs directory (a sibling of `INDEX.md`).
 - **FGRAPH-4.2** THE SYSTEM SHALL write `GRAPH.md` deterministically, with stable ordering, so re-running `--harvest` without any spec change produces a byte-identical file.
 - **FGRAPH-4.3** WHEN generating `GRAPH.md`, THE SYSTEM SHALL leave `INDEX.md` unmodified.
+- **FGRAPH-4.4** (guard) WHEN the FGRAPH-1.7/1.8/2.4/3.5 harvest changes are applied, THE SYSTEM SHALL CONTINUE TO produce a deterministic, byte-stable `GRAPH.md` (total ordering preserved). _(amend — dogfooding)_
 
 ## 5. Query mode
 

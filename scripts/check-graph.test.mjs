@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { normalizePath, isSourcePath, dedupeByFullest } from './check-graph.mjs';
+import { normalizePath, isSourcePath, dedupeByFullest, classifyRole } from './check-graph.mjs';
 
 const CFG = {
   sourceRoots: ['src', 'src-tauri', 'tests', 'test', 'crates', 'app', 'lib', 'packages'],
@@ -26,4 +26,13 @@ test('[FGRAPH-1.5] isSourcePath accepts real paths, rejects junk', () => {
 test('[FGRAPH-1.4] dedupeByFullest collapses basename into full path', () => {
   const out = dedupeByFullest(['Editor.tsx', 'src/components/Editor.tsx', 'src/lib/x.ts']);
   assert.deepEqual([...out].sort(), ['src/components/Editor.tsx', 'src/lib/x.ts']);
+});
+
+test('[FGRAPH-1.6] classifyRole: create signal owns, else touches', () => {
+  assert.equal(classifyRole('- Create: `src/x.ts` — new picker', null), 'owns');
+  assert.equal(classifyRole('add a new file src/y.ts', null), 'owns');
+  assert.equal(classifyRole('- Modify: `src/x.ts` (extract helper)', null), 'touches');
+  assert.equal(classifyRole('reuse `src/x.ts` from the plugin', null), 'touches');
+  assert.equal(classifyRole('`src/x.ts` is referenced here', 'create'), 'owns');  // block wins
+  assert.equal(classifyRole('`src/x.ts` mentioned in prose', null), 'touches');   // safe default
 });

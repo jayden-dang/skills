@@ -67,6 +67,21 @@ export function dedupeByFullest(paths) {
   return kept;
 }
 
+const OWN_HINT = /\b(create|new file|adds? a? ?new file|scaffold)\b|\badd(?:ing)?\b.*\bnew\b/i;
+const CREATE_LABEL = /^\s*-?\s*create:/i;
+const MODIFY_LABEL = /^\s*-?\s*modify:/i;
+
+// Best-effort role classification: a `create` block label, or a create/new
+// verb in the line itself, means the feature owns the surface; a `modify`
+// block label means it only touches it. Everything else defaults to the
+// safer "touches" (no false ownership claims from ambiguous prose).
+export function classifyRole(line, blockLabel) {
+  if (blockLabel === 'create' || CREATE_LABEL.test(line)) return 'owns';
+  if (blockLabel === 'modify' || MODIFY_LABEL.test(line)) return 'touches';
+  if (OWN_HINT.test(line)) return 'owns';
+  return 'touches';
+}
+
 function main() {
   console.error('check-graph: CLI not yet implemented');
   process.exit(2);

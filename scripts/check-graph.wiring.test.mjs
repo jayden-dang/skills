@@ -27,3 +27,28 @@ test('[FGRAPH-8.1][FGRAPH-8.2] sync-spec regenerates and stages GRAPH.md', () =>
 test('[FGRAPH-6.4] verify runs check-graph --verify', () => {
   assert.match(read('skills/execution/verify/SKILL.md'), /check-graph --verify/);
 });
+
+test('[FGRAPH-10.1][FGRAPH-10.5] code-review runs the duplication query and fails open', () => {
+  const t = read('skills/review/code-review/SKILL.md');
+  assert.match(t, /check-graph(?:\.mjs)? --query/, 'FGRAPH-10.1: code-review calls the query on changed files');
+  assert.match(t, /overlap check unavailable/i, 'FGRAPH-10.5: fail-open note');
+});
+
+test('[FGRAPH-10.2][FGRAPH-10.3] Spec subagent gets neighbor cards and a reuse-miss directive', () => {
+  const t = read('skills/review/code-review/SKILL.md');
+  assert.match(t, /overlapping feature/i, 'FGRAPH-10.2: overlapping features named');
+  assert.match(t, /neighbor cards/i, 'FGRAPH-10.2: neighbor cards injected into the Spec brief');
+  assert.match(t, /reuse-miss/i, 'FGRAPH-10.3: reuse-miss finding directive');
+  assert.match(t, /reimplement/i, 'FGRAPH-10.3: cites reimplementing neighbor behavior');
+});
+
+test('[FGRAPH-10.4] no-overlap statement', () => {
+  const t = read('skills/review/code-review/SKILL.md');
+  assert.match(t, /no existing feature shares/i, 'FGRAPH-10.4: states no overlap and injects nothing');
+});
+
+test('[FGRAPH-10.6] two-axis review is preserved', () => {
+  const t = read('skills/review/code-review/SKILL.md');
+  assert.match(t, /\*\*Standards subagent\*\*/, 'FGRAPH-10.6: Standards subagent still present');
+  assert.match(t, /\*\*Spec subagent\*\*/, 'FGRAPH-10.6: Spec subagent still present');
+});

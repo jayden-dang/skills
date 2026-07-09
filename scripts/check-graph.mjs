@@ -27,12 +27,18 @@ const EXT_RE = (exts) => new RegExp(`\\.(${exts.join('|')})$`);
 
 export function normalizePath(token) {
   let t = String(token).replace(/[`'"()]/g, '').trim();
-  // Order matters: strip the colon-form locator (:208 or :127,172) before the
-  // paren-tail form, so "Editor.tsx:208" doesn't lose only the digits and
-  // leave a dangling ":".
-  t = t.replace(/:\d+(?:[,\d]*)?$/, '');     // trailing :208 or :127,172 locator
-  t = t.replace(/\s*~?\d[\d,\s-]*$/, '');    // trailing "(~208-221)" tail after paren-strip
-  return t.trim();
+  // Apply both strip regexes repeatedly to a fixpoint: a token can carry a
+  // colon-form locator (:208 or :127,172) AND a paren-tail (~208-221) at the
+  // same time, in either order, so a single fixed pass can't be trusted to
+  // fully reduce it (e.g. "Editor.tsx:208 (~208-221)" needs both applied).
+  let prev;
+  do {
+    prev = t;
+    t = t.replace(/:\d+(?:[,\d]*)?$/, '');   // trailing :208 or :127,172 locator
+    t = t.replace(/\s*~?\d[\d,\s-]*$/, '');  // trailing "(~208-221)" tail after paren-strip
+    t = t.trim();
+  } while (t !== prev);
+  return t;
 }
 
 export function isSourcePath(token, cfg) {

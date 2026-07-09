@@ -12,6 +12,7 @@ test('[FGRAPH-1.3] normalizePath strips locators and quoting', () => {
   assert.equal(normalizePath('App.tsx:127,172'), 'App.tsx');
   assert.equal(normalizePath('src/components/Editor.tsx (~208-221)'), 'src/components/Editor.tsx');
   assert.equal(normalizePath('"src/lib/x.ts"'), 'src/lib/x.ts');
+  assert.equal(normalizePath('`Editor.tsx:208` (~208-221)'), 'Editor.tsx');
 });
 
 test('[FGRAPH-1.5] isSourcePath accepts real paths, rejects junk', () => {

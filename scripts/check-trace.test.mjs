@@ -153,6 +153,31 @@ test('[TRACE-1.5] with no trace.json at all, an unknown-ID test file fires E1 ex
   }
 });
 
+test('[TRACE-1.1] a blank ignore entry ("") does not exclude every test file', () => {
+  const root = fixture({
+    requirements: [
+      '# Requirements: ignore blank entries',
+      'Feature code: IGN',
+      'Status: Implemented',
+      '',
+      '- **IGN-2.1** THE SYSTEM SHALL do something unrelated to the fixture file.',
+      '',
+    ].join('\n'),
+    files: { 'src/good.test.ts': "it('[IGN-2.1] covered', () => {})" },
+    // A stray/blank entry in `ignore` must be a no-op, not `rel.includes("")` (always true).
+    traceJson: { ignore: [''] },
+  });
+  try {
+    const { code, summary } = run(root);
+    assert.ok(summary.testFilesScanned >= 1, 'the real test file is still scanned; an empty ignore entry must not match every path');
+    assert.equal(summary.testedRequirements, 1, 'IGN-2.1 is still discovered as covered, not silently excluded');
+    assert.deepEqual(summary.errors, [], 'Implemented IGN-2.1 has a covering test, so no E2 fires');
+    assert.equal(code, 0, 'clean exit');
+  } finally {
+    fs.rmSync(root, { recursive: true, force: true });
+  }
+});
+
 test('[TRACE-1.4] ignore only adds an exclusion — testGlobs/testFilePattern selection and coverage still work for non-ignored files', () => {
   const root = fixture({
     requirements: IGNORE_REQUIREMENTS,

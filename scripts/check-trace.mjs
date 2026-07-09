@@ -155,7 +155,9 @@ for (const file of taskFiles) {
 // Test references: any defined-looking ID appearing in a test file.
 const testRefs = new Map(); // id -> [file]
 const fileRe = new RegExp(cfg.testFilePattern);
-const ignoreList = cfg.ignore || [];
+// Blank/empty entries must be no-ops: rel.includes("") is always true, so a
+// stray "" in `ignore` would otherwise silently exclude every test file.
+const ignoreList = (cfg.ignore || []).filter((s) => typeof s === 'string' && s.length > 0);
 const roots = cfg.testGlobs.map((g) => path.join(ROOT, g)).filter((p) => fs.existsSync(p));
 const testFiles = [];
 for (const r of roots) walk(r, (rel) => fileRe.test(rel) && !ignoreList.some((s) => rel.includes(s)), testFiles);

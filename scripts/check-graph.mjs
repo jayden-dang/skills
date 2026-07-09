@@ -82,6 +82,85 @@ export function classifyRole(line, blockLabel) {
   return 'touches';
 }
 
+const SKIP_DIRS = new Set(['node_modules', '.git', 'dist', 'build', 'target', 'coverage', '.next', '.skills', 'vendor']);
+const BACKTICK_RE = /`([^`]+)`/g;
+const WORD_RE = /[A-Za-z0-9_./-]+/g;
+
+/** Recursively collect files under dir for which predicate(fullPath) is true. */
+function walk(dir, predicate, out = []) {
+  let entries;
+  try { entries = fs.readdirSync(dir, { withFileTypes: true }); } catch { return out; }
+  for (const e of entries) {
+    if (e.name.startsWith('.') && e.name !== '.') continue;
+    const full = path.join(dir, e.name);
+    if (e.isDirectory()) { if (!SKIP_DIRS.has(e.name)) walk(full, predicate, out); }
+    else if (predicate(full)) out.push(full);
+  }
+  return out;
+}
+
+function readMaybe(p) { try { return fs.readFileSync(p, 'utf8'); } catch { return null; } }
+
+/** Extract normalized source paths (with roles) from one design.md/tasks.md body. */
+function scanSurface(text, cfg) {
+  const found = new Map(); // path -> role (owns beats touches)
+  let blockLabel = null;
+  for (const line of text.split('\n')) {
+    if (/^\s*-?\s*create:/i.test(line)) blockLabel = 'create';
+    else if (/^\s*-?\s*modify:/i.test(line)) blockLabel = 'modify';
+    else if (/^\s*\*?\*?(files|interfaces|steps)\b/i.test(line)) blockLabel = null;
+    const cands = new Set();
+    for (const m of line.matchAll(BACKTICK_RE)) cands.add(m[1]);
+    for (const m of line.matchAll(WORD_RE)) cands.add(m[0]);
+    for (const c of cands) {
+      const p = normalizePath(c);
+      if (!isSourcePath(p, cfg.graph)) continue;
+      const role = classifyRole(line, blockLabel);
+      if (role === 'owns' || !found.has(p)) found.set(p, role);
+    }
+  }
+  return found; // Map<path, role>
+}
+
+/** Harvest the Surface manifest, Reverse index, and Shared surface from <specsDir>. */
+export function harvest(specsDir, cfg = DEFAULTS) {
+  const features = [];
+  if (!fs.existsSync(specsDir)) return { features, reverse: {}, shared: [] };
+  const reqFiles = walk(specsDir, (p) => p.endsWith('requirements.md'));
+  for (const req of reqFiles.sort()) {
+    const text = fs.readFileSync(req, 'utf8');
+    const code = (text.match(/^Feature code:\s*([A-Z][A-Z0-9]{1,11})/m) || [])[1];
+    if (!code) continue;
+    const name = (text.match(/^#\s*Requirements:\s*(.+)$/m) || [])[1]?.trim() || code;
+    const dir = path.dirname(req);
+    const surface = new Map();
+    for (const f of ['design.md', 'tasks.md']) {
+      const body = readMaybe(path.join(dir, f));
+      if (!body) continue;
+      for (const [p, role] of scanSurface(body, cfg)) {
+        if (role === 'owns' || !surface.has(p)) surface.set(p, role);
+      }
+    }
+    // basename/full dedup within this feature, keeping the winning role
+    const fullest = new Set(dedupeByFullest([...surface.keys()]));
+    const owns = [], touches = [];
+    for (const p of fullest) (surface.get(p) === 'owns' ? owns : touches).push(p);
+    features.push({ code, name, owns: owns.sort(), touches: touches.sort(), interfaces: [], oos: [] });
+  }
+  features.sort((a, b) => a.code.localeCompare(b.code));
+
+  const reverse = {};
+  for (const f of features) {
+    for (const [p, role] of [...f.owns.map((p) => [p, 'owns']), ...f.touches.map((p) => [p, 'touches'])]) {
+      (reverse[p] ||= []).push({ code: f.code, role });
+    }
+  }
+  for (const p of Object.keys(reverse)) reverse[p].sort((a, b) => a.code.localeCompare(b.code));
+  const shared = Object.keys(reverse).filter((p) => reverse[p].length >= 2).sort()
+    .map((p) => ({ path: p, refs: reverse[p] }));
+  return { features, reverse, shared };
+}
+
 function main() {
   console.error('check-graph: CLI not yet implemented');
   process.exit(2);

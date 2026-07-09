@@ -38,3 +38,56 @@ test('[FGRAPH-1.6] classifyRole: create signal owns, else touches', () => {
   assert.equal(classifyRole('Modify the config to add a new dependency version check', null), 'touches');
   assert.equal(classifyRole('Add a toggle for the new settings pane while modifying things', null), 'touches');
 });
+
+import { harvest } from './check-graph.mjs';
+import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
+
+function specFixture(features) {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'check-graph-'));
+  const specs = path.join(root, 'docs/specs');
+  for (const f of features) {
+    const dir = path.join(specs, f.slug);
+    fs.mkdirSync(dir, { recursive: true });
+    fs.writeFileSync(path.join(dir, 'requirements.md'),
+      `# Requirements: ${f.name}\nFeature code: ${f.code}\nStatus: Approved\n\n## Out of Scope\n${(f.oos||[]).map(x=>`- ${x}`).join('\n')}\n`);
+    if (f.design) fs.writeFileSync(path.join(dir, 'design.md'), f.design);
+    if (f.tasks) fs.writeFileSync(path.join(dir, 'tasks.md'), f.tasks);
+  }
+  return specs;
+}
+
+test('[FGRAPH-1.1][FGRAPH-1.2] harvest builds owns/touches from design+tasks', () => {
+  const specs = specFixture([
+    { slug: 'a-base', code: 'BASE', name: 'Base',
+      tasks: '**Files:**\n- Create: `src/core/engine.ts`\n- Create: `src/core/util.ts`\n' },
+    { slug: 'b-ext', code: 'EXT', name: 'Extension',
+      tasks: '**Files:**\n- Modify: `src/core/engine.ts` (extend)\n- Create: `src/ext/plugin.ts`\n' },
+  ]);
+  const g = harvest(specs);
+  const base = g.features.find((f) => f.code === 'BASE');
+  const ext = g.features.find((f) => f.code === 'EXT');
+  assert.ok(base.owns.includes('src/core/engine.ts'));
+  assert.ok(ext.touches.includes('src/core/engine.ts'));
+  assert.ok(ext.owns.includes('src/ext/plugin.ts'));
+});
+
+test('[FGRAPH-2.1][FGRAPH-2.2][FGRAPH-2.3] reverse index + shared surface', () => {
+  const specs = specFixture([
+    { slug: 'a-base', code: 'BASE', name: 'Base', tasks: '- Create: `src/core/engine.ts`\n' },
+    { slug: 'b-ext', code: 'EXT', name: 'Extension', tasks: '- Modify: `src/core/engine.ts`\n' },
+  ]);
+  const g = harvest(specs);
+  assert.deepEqual(g.reverse['src/core/engine.ts'].map((r) => r.code).sort(), ['BASE', 'EXT']);
+  const shared = g.shared.find((s) => s.path === 'src/core/engine.ts');
+  assert.equal(shared.refs.length, 2, 'referenced by 2 features → shared');
+});
+
+test('[FGRAPH-9.1] a feature with only requirements.md yields an empty manifest, no error', () => {
+  const specs = specFixture([{ slug: 'a', code: 'ONLY', name: 'Only' }]);
+  const g = harvest(specs);
+  const f = g.features.find((x) => x.code === 'ONLY');
+  assert.deepEqual(f.owns, []);
+  assert.deepEqual(f.touches, []);
+});

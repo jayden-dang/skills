@@ -20,7 +20,7 @@ import path from 'node:path';
 const CHECK_TRACE = path.join(import.meta.dirname, 'check-trace.mjs');
 
 /** Build a throwaway repo root with one spec file (and optional test files). */
-function fixture({ requirements, files = {} }) {
+function fixture({ requirements, files = {}, traceJson }) {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'check-trace-'));
   const specDir = path.join(root, 'docs/specs/feature');
   fs.mkdirSync(specDir, { recursive: true });
@@ -29,6 +29,11 @@ function fixture({ requirements, files = {} }) {
     const p = path.join(root, rel);
     fs.mkdirSync(path.dirname(p), { recursive: true });
     fs.writeFileSync(p, body);
+  }
+  if (traceJson) {
+    const agentsDir = path.join(root, 'docs/agents');
+    fs.mkdirSync(agentsDir, { recursive: true });
+    fs.writeFileSync(path.join(agentsDir, 'trace.json'), JSON.stringify(traceJson));
   }
   return root;
 }
@@ -81,6 +86,87 @@ test('the same ID left bold (not struck) still fires E2 — strip is strikethrou
     assert.equal(summary.errors.length, 1, 'exactly one error');
     assert.match(summary.errors[0], /^E2 RET-9\.9\b/, 'E2 still fires for a genuinely uncovered requirement');
     assert.equal(code, 1, 'non-zero exit on error');
+  } finally {
+    fs.rmSync(root, { recursive: true, force: true });
+  }
+});
+
+// ---------------------------------------------------------------- ignore list (TRACE-1.x)
+
+const IGNORE_REQUIREMENTS = [
+  '# Requirements: ignore',
+  'Feature code: IGN',
+  'Status: Approved',
+  '',
+  '- **IGN-1.1** THE SYSTEM SHALL do something unrelated to the fixture file.',
+  '',
+].join('\n');
+
+test('[TRACE-1.1][TRACE-1.2] docs/agents/trace.json ignore excludes matching test files, so their fixture IDs never fire E1', () => {
+  const root = fixture({
+    requirements: IGNORE_REQUIREMENTS,
+    files: { 'src/x.test.ts': "it('[GHOST-9.9] x', () => {})" },
+    traceJson: { ignore: ['x.test.ts'] },
+  });
+  try {
+    const { code, summary } = run(root);
+    assert.deepEqual(summary.errors, [], 'the ignored file contributes no reference to GHOST-9.9, so no E1 fires');
+    assert.equal(code, 0, 'clean exit');
+  } finally {
+    fs.rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test('[TRACE-1.3] an empty ignore array scans every test file — unknown ID still fires E1', () => {
+  const root = fixture({
+    requirements: IGNORE_REQUIREMENTS,
+    files: { 'src/x.test.ts': "it('[GHOST-9.9] x', () => {})" },
+    traceJson: { ignore: [] },
+  });
+  try {
+    const { code, summary } = run(root);
+    assert.equal(summary.errors.length, 1, 'exactly one error');
+    assert.match(summary.errors[0], /^E1 test cites unknown requirement GHOST-9\.9/, 'E1 fires — ignore is off by default');
+    assert.equal(code, 1, 'non-zero exit on error');
+  } finally {
+    fs.rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test('[TRACE-1.5] with no trace.json at all, an unknown-ID test file fires E1 exactly as before this change', () => {
+  const root = fixture({
+    requirements: IGNORE_REQUIREMENTS,
+    files: { 'src/x.test.ts': "it('[GHOST-9.9] x', () => {})" },
+    // no traceJson — docs/agents/trace.json does not exist
+  });
+  try {
+    const { code, summary } = run(root);
+    assert.deepEqual(
+      summary.errors,
+      ['E1 test cites unknown requirement GHOST-9.9 (src/x.test.ts)'],
+      'byte-identical error text to pre-ignore behavior'
+    );
+    assert.equal(summary.testFilesScanned, 1, 'the file is still scanned');
+    assert.equal(code, 1, 'non-zero exit on error');
+  } finally {
+    fs.rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test('[TRACE-1.4] ignore only adds an exclusion — testGlobs/testFilePattern selection and coverage still work for non-ignored files', () => {
+  const root = fixture({
+    requirements: IGNORE_REQUIREMENTS,
+    files: {
+      'src/good.test.ts': "it('[IGN-1.1] covered', () => {})",
+      'src/x.test.ts': "it('[GHOST-9.9] x', () => {})",
+    },
+    traceJson: { ignore: ['x.test.ts'] },
+  });
+  try {
+    const { code, summary } = run(root);
+    assert.equal(summary.testedRequirements, 1, 'IGN-1.1 is still discovered and counted as tested via normal testGlobs/testFilePattern selection');
+    assert.deepEqual(summary.errors, [], 'the ignored file still contributes nothing, and the non-ignored file cites a known ID');
+    assert.equal(code, 0, 'clean exit');
   } finally {
     fs.rmSync(root, { recursive: true, force: true });
   }

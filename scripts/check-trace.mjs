@@ -22,7 +22,11 @@
  *
  * Usage: node check-trace.mjs [--strict] [--json] [--root <repo-root>]
  * Config (optional): docs/agents/trace.json
- *   { "specsDir": "docs/specs", "testGlobs": ["tests/", "e2e/", "src/"], "testFilePattern": "\\.(test|spec)\\.|/tests?/|/e2e/|_test\\." }
+ *   { "specsDir": "docs/specs", "testGlobs": ["tests/", "e2e/", "src/"], "testFilePattern": "\\.(test|spec)\\.|/tests?/|/e2e/|_test\\.",
+ *     "ignore": ["fixtures/", "some.test.ts"] }
+ *   ignore: repo-relative path substrings additionally excluded from the test-file
+ *   scan (e.g. fixture-bearing files that legitimately cite unknown/example IDs).
+ *   Off by default; applied on top of testGlobs/testFilePattern, never in place of them.
  */
 
 import fs from 'node:fs';
@@ -40,6 +44,9 @@ const DEFAULTS = {
   testGlobs: ['tests', 'test', 'e2e', 'src', 'src-tauri', 'crates', 'app', 'lib', 'packages'],
   // A file is a test file if its path matches this regex.
   testFilePattern: '(\\.(test|spec)\\.[cm]?[jt]sx?$)|([/\\\\]tests?[/\\\\])|([/\\\\]e2e[/\\\\])|(_test\\.(rs|go|py)$)|(\\.rs$)',
+  // Repo-relative path substrings to additionally exclude from the test-file scan
+  // (e.g. fixture-bearing files that legitimately mention unknown/example IDs).
+  ignore: [],
 };
 
 function loadConfig() {
@@ -148,9 +155,10 @@ for (const file of taskFiles) {
 // Test references: any defined-looking ID appearing in a test file.
 const testRefs = new Map(); // id -> [file]
 const fileRe = new RegExp(cfg.testFilePattern);
+const ignoreList = cfg.ignore || [];
 const roots = cfg.testGlobs.map((g) => path.join(ROOT, g)).filter((p) => fs.existsSync(p));
 const testFiles = [];
-for (const r of roots) walk(r, (rel) => fileRe.test(rel), testFiles);
+for (const r of roots) walk(r, (rel) => fileRe.test(rel) && !ignoreList.some((s) => rel.includes(s)), testFiles);
 for (const file of [...new Set(testFiles)]) {
   const rel = path.relative(ROOT, file);
   let text;

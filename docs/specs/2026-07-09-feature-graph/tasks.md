@@ -1069,6 +1069,31 @@ _Requirements: FGRAPH-1.7, FGRAPH-1.8, FGRAPH-1.9, FGRAPH-2.4, FGRAPH-2.5, FGRAP
 
 ---
 
+### Task 13: Code-review duplication check — Story 10 (tier-1, post-ship)
+
+The 4th graph consumer, reclaiming Out-of-Scope item #4. Advisory: code-review queries the
+graph with the diff's changed files and injects overlapping features' cards into the Spec
+subagent's brief; the reviewer flags reuse-misses citing the neighbor's feature code. Built
+as one wiring change via `tdd`; guarded by a wiring regression test.
+
+**Files:**
+- Modify: `skills/review/code-review/SKILL.md` (new `## 3a` graph-query step; Spec-subagent brief gains neighbor cards + reuse-miss directive)
+- Test: `scripts/check-graph.wiring.test.mjs` (asserts the code-review wiring markers)
+
+**Delivered (test-first, all tagged in `check-graph.wiring.test.mjs`):**
+- [x] **FGRAPH-10.1** code-review queries `check-graph --query` with the diff's changed source files — `[FGRAPH-10.1]`
+- [x] **FGRAPH-10.2** overlapping features' cards injected into the Spec subagent brief — `[FGRAPH-10.2]`
+- [x] **FGRAPH-10.3** Spec brief directs reuse-miss findings citing the neighbor's feature code — `[FGRAPH-10.3]`
+- [x] **FGRAPH-10.4** no overlap → state none, inject nothing — `[FGRAPH-10.4]`
+- [x] **FGRAPH-10.5** fail-open when check-graph unavailable — `[FGRAPH-10.5]`
+- [x] **FGRAPH-10.6** guard: Standards+Spec two-axis review unchanged — `[FGRAPH-10.6]`
+
+Commit: `dba5244`. Reviewed clean (two-axis structure + "never pre-judge" rule verified untouched).
+
+_Requirements: FGRAPH-10.1, FGRAPH-10.2, FGRAPH-10.3, FGRAPH-10.4, FGRAPH-10.5, FGRAPH-10.6_
+
+---
+
 ## Coverage check
 
 Every FGRAPH requirement ID is cited by exactly one task footer **and** carries a tagged

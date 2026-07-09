@@ -234,6 +234,21 @@ defects; each is a refinement of an existing component above, at the same seams 
   to keep the signature, not the prose.
 - **Determinism guard (4.4)** — all of the above preserve total ordering; `renderGraphMd(harvest(x))` stays byte-stable.
 
+### Code-review duplication check (post-ship, tier-1) — Story 10
+
+Satisfies: FGRAPH-10.1, FGRAPH-10.2, FGRAPH-10.3, FGRAPH-10.4, FGRAPH-10.5, FGRAPH-10.6
+
+The 4th graph consumer, alongside brainstorm/sync-spec/verify — a purely advisory wiring of the
+existing `--query` mode into `skills/review/code-review/SKILL.md`, at the same seam as the other
+consumers (a wiring regression test in `check-graph.wiring.test.mjs` asserting the durable markers).
+A new controller step `## 3a` runs `check-graph --query` on the diff's changed source files (from the
+range pinned in step 1); when overlaps are found and the Spec axis runs, the overlapping features'
+summary cards are added to the Spec subagent's brief, which is directed to raise a **reuse-miss**
+finding — citing the neighbor's feature code — where the diff rebuilds behavior a shares-surface
+neighbor owns. No new `check-graph` capability: it consumes `query`'s existing output. Fail-open and
+empty-overlap paths mirror brainstorm (FGRAPH-7.4/7.5). The Standards axis, aggregate step, verdict,
+and the "never pre-judge findings" rule are untouched (FGRAPH-10.6).
+
 ## Seams for testing
 
 Unit seams are the exported pure functions; the integration seam is the CLI black-box

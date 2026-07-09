@@ -4,7 +4,7 @@
 > this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 Feature code: FGRAPH
-Status: Approved
+Status: Implemented
 Date: 2026-07-09
 Requirements: ./requirements.md
 Design: ./design.md
@@ -81,7 +81,7 @@ already requires — zero dependencies, `node --test` (built-in) with
   - `dedupeByFullest(paths: string[]) → string[]` — collapses basename + fuller path to the
     fullest form.
 
-- [ ] **Step 1: Create the glossary.** Create `CONTEXT.md`:
+- [x] **Step 1: Create the glossary.** Create `CONTEXT.md`:
 
 ```markdown
 # Glossary
@@ -97,7 +97,7 @@ Domain terms for this repo. Keep definitions tight; challenge fuzzy usage.
   out-of-scope) used to load a neighbor's essence without its full spec.
 ```
 
-- [ ] **Step 2: Write the failing test.** Create `scripts/check-graph.test.mjs`:
+- [x] **Step 2: Write the failing test.** Create `scripts/check-graph.test.mjs`:
 
 ```js
 import { test } from 'node:test';
@@ -133,7 +133,7 @@ test('[FGRAPH-1.4] dedupeByFullest collapses basename into full path', () => {
 Run: `node --test scripts/check-graph.test.mjs` — expect: fails, cannot import from
 `./check-graph.mjs` (module missing).
 
-- [ ] **Step 3: Implement the scaffold + helpers.** Create `scripts/check-graph.mjs`:
+- [x] **Step 3: Implement the scaffold + helpers.** Create `scripts/check-graph.mjs`:
 
 ```js
 #!/usr/bin/env node
@@ -203,7 +203,7 @@ if (import.meta.url === pathToFileURL(process.argv[1]).href) main();
 
 Run: `node --test scripts/check-graph.test.mjs` — expect: 3 tests pass.
 
-- [ ] **Step 4: Commit.**
+- [x] **Step 4: Commit.**
 
 `git commit -m "feat(check-graph): path-token helpers + scaffold + glossary" # trailers: Implements: FGRAPH-1.3, Implements: FGRAPH-1.4, Implements: FGRAPH-1.5`
 
@@ -221,7 +221,7 @@ _Requirements: FGRAPH-1.3, FGRAPH-1.4, FGRAPH-1.5_
 - Produces: `classifyRole(line: string, blockLabel: 'create'|'modify'|null) → 'owns'|'touches'`
   — a `create` block label OR a create/new verb ⇒ `owns`; otherwise `touches`.
 
-- [ ] **Step 1: Write the failing test.** Append to `scripts/check-graph.test.mjs`:
+- [x] **Step 1: Write the failing test.** Append to `scripts/check-graph.test.mjs`:
 
 ```js
 import { classifyRole } from './check-graph.mjs';
@@ -238,7 +238,7 @@ test('[FGRAPH-1.6] classifyRole: create signal owns, else touches', () => {
 
 Run: `node --test scripts/check-graph.test.mjs` — expect: import of `classifyRole` fails.
 
-- [ ] **Step 2: Implement.** Add to `scripts/check-graph.mjs` (before `main`):
+- [x] **Step 2: Implement.** Add to `scripts/check-graph.mjs` (before `main`):
 
 ```js
 const OWN_HINT = /\b(create|new file|adds? a? ?new file|scaffold)\b|\badd(?:ing)?\b.*\bnew\b/i;
@@ -255,7 +255,7 @@ export function classifyRole(line, blockLabel) {
 
 Run: `node --test scripts/check-graph.test.mjs` — expect: all pass.
 
-- [ ] **Step 3: Commit.**
+- [x] **Step 3: Commit.**
 
 `git commit -m "feat(check-graph): best-effort role classification" # trailer: Implements: FGRAPH-1.6`
 
@@ -276,7 +276,7 @@ _Requirements: FGRAPH-1.6_
   (Cards — `interfaces`/`oos` — are populated in Task 4; Task 3 fills `owns`/`touches` and
   leaves `interfaces: []`, `oos: []`.)
 
-- [ ] **Step 1: Write the failing test.** Append to `scripts/check-graph.test.mjs`:
+- [x] **Step 1: Write the failing test.** Append to `scripts/check-graph.test.mjs`:
 
 ```js
 import { harvest } from './check-graph.mjs';
@@ -335,7 +335,7 @@ test('[FGRAPH-9.1] a feature with only requirements.md yields an empty manifest,
 
 Run: `node --test scripts/check-graph.test.mjs` — expect: import of `harvest` fails.
 
-- [ ] **Step 2: Implement `harvest`.** Add to `scripts/check-graph.mjs` (before `main`):
+- [x] **Step 2: Implement `harvest`.** Add to `scripts/check-graph.mjs` (before `main`):
 
 ```js
 const SKIP_DIRS = new Set(['node_modules', '.git', 'dist', 'build', 'target', 'coverage', '.next', '.skills', 'vendor']);
@@ -418,7 +418,7 @@ export function harvest(specsDir, cfg = DEFAULTS) {
 
 Run: `node --test scripts/check-graph.test.mjs` — expect: all pass.
 
-- [ ] **Step 3: Commit.**
+- [x] **Step 3: Commit.**
 
 `git commit -m "feat(check-graph): harvest manifest + reverse index + shared surface" # trailers: Implements: FGRAPH-1.1, FGRAPH-1.2, FGRAPH-2.1, FGRAPH-2.2, FGRAPH-2.3, FGRAPH-9.1`
 
@@ -437,7 +437,7 @@ _Requirements: FGRAPH-1.1, FGRAPH-1.2, FGRAPH-2.1, FGRAPH-2.2, FGRAPH-2.3, FGRAP
   blocks) and `oos: string[]` (from the `## Out of Scope` section), each capped at
   `cfg.graph.cardCap` with a trailing `…(+N more)` marker when truncated.
 
-- [ ] **Step 1: Write the failing test.** Append to `scripts/check-graph.test.mjs`:
+- [x] **Step 1: Write the failing test.** Append to `scripts/check-graph.test.mjs`:
 
 ```js
 test('[FGRAPH-3.1][FGRAPH-3.2] card carries name, owns, and out-of-scope', () => {
@@ -470,7 +470,7 @@ test('[FGRAPH-3.4] card lists are capped at cardCap', () => {
 Run: `node --test scripts/check-graph.test.mjs` — expect: the three new tests fail
 (`interfaces` empty, `oos` empty, no cap).
 
-- [ ] **Step 2: Implement.** In `scripts/check-graph.mjs`, add helpers and call them inside
+- [x] **Step 2: Implement.** In `scripts/check-graph.mjs`, add helpers and call them inside
 the `harvest` per-feature loop (replace the `interfaces: [], oos: []` literals):
 
 ```js
@@ -524,7 +524,7 @@ file is never dropped from the index. Keep the capped values only on the card fi
 
 Run: `node --test scripts/check-graph.test.mjs` — expect: all pass.
 
-- [ ] **Step 3: Commit.**
+- [x] **Step 3: Commit.**
 
 `git commit -m "feat(check-graph): summary cards with interfaces, out-of-scope, cap" # trailers: Implements: FGRAPH-3.1, FGRAPH-3.2, FGRAPH-3.3, FGRAPH-3.4`
 
@@ -543,7 +543,7 @@ _Requirements: FGRAPH-3.1, FGRAPH-3.2, FGRAPH-3.3, FGRAPH-3.4_
   a generated-banner, a `## Cards` section (one `###` block per feature), and a
   `## Shared surface` table. Byte-identical across runs on identical input.
 
-- [ ] **Step 1: Write the failing test.** Append to `scripts/check-graph.test.mjs`:
+- [x] **Step 1: Write the failing test.** Append to `scripts/check-graph.test.mjs`:
 
 ```js
 import { renderGraphMd } from './check-graph.mjs';
@@ -573,7 +573,7 @@ test('[FGRAPH-9.2] empty specs render a well-formed empty graph', () => {
 
 Run: `node --test scripts/check-graph.test.mjs` — expect: import of `renderGraphMd` fails.
 
-- [ ] **Step 2: Implement.** Add to `scripts/check-graph.mjs`:
+- [x] **Step 2: Implement.** Add to `scripts/check-graph.mjs`:
 
 ```js
 export function renderGraphMd(graph) {
@@ -608,7 +608,7 @@ Run: `node --test scripts/check-graph.test.mjs` — expect: all pass.
 (FGRAPH-4.3 — INDEX.md never written — is guaranteed structurally: `renderGraphMd` returns
 a string and touches no file; the CLI in Task 7 writes only GRAPH.md. Asserted in Task 7.)
 
-- [ ] **Step 3: Commit.**
+- [x] **Step 3: Commit.**
 
 `git commit -m "feat(check-graph): deterministic GRAPH.md renderer" # trailers: Implements: FGRAPH-4.2, FGRAPH-4.3, FGRAPH-9.2`
 
@@ -628,7 +628,7 @@ _Requirements: FGRAPH-4.2, FGRAPH-4.3, FGRAPH-9.2_
   keyword (case-insensitive substring), ranked by `overlapPaths.length` descending. Each
   result carries the feature's full card.
 
-- [ ] **Step 1: Write the failing test.** Append to `scripts/check-graph.test.mjs`:
+- [x] **Step 1: Write the failing test.** Append to `scripts/check-graph.test.mjs`:
 
 ```js
 import { query } from './check-graph.mjs';
@@ -657,7 +657,7 @@ test('[FGRAPH-5.2] query by keyword matches name and out-of-scope', () => {
 
 Run: `node --test scripts/check-graph.test.mjs` — expect: import of `query` fails.
 
-- [ ] **Step 2: Implement.** Add to `scripts/check-graph.mjs`:
+- [x] **Step 2: Implement.** Add to `scripts/check-graph.mjs`:
 
 ```js
 export function query(graph, { paths = [], keywords = [] } = {}) {
@@ -687,7 +687,7 @@ export function query(graph, { paths = [], keywords = [] } = {}) {
 
 Run: `node --test scripts/check-graph.test.mjs` — expect: all pass.
 
-- [ ] **Step 3: Commit.**
+- [x] **Step 3: Commit.**
 
 `git commit -m "feat(check-graph): ranked query by path and keyword" # trailers: Implements: FGRAPH-5.1, FGRAPH-5.2, FGRAPH-5.3`
 
@@ -707,7 +707,7 @@ _Requirements: FGRAPH-5.1, FGRAPH-5.2, FGRAPH-5.3_
   `--harvest` writes `<specsDir>/GRAPH.md`. `--query` prints the `query` result as JSON to
   stdout. `loadConfig(root)` reads `docs/agents/trace.json` (optional), merging `graph`.
 
-- [ ] **Step 1: Write the failing test.** Append to `scripts/check-graph.test.mjs`:
+- [x] **Step 1: Write the failing test.** Append to `scripts/check-graph.test.mjs`:
 
 ```js
 import { spawnSync } from 'node:child_process';
@@ -748,7 +748,7 @@ does only `fs.readFileSync`. No separate assertion.)
 
 Run: `node --test scripts/check-graph.test.mjs` — expect: the CLI tests fail (stub exits 2).
 
-- [ ] **Step 2: Implement the CLI.** In `scripts/check-graph.mjs`, replace `main` and add
+- [x] **Step 2: Implement the CLI.** In `scripts/check-graph.mjs`, replace `main` and add
 `loadConfig`:
 
 ```js
@@ -803,7 +803,7 @@ function runVerify() { console.error('check-graph: --verify implemented in Task 
 Run: `node --test scripts/check-graph.test.mjs` — expect: all pass (verify tests arrive in
 Task 8).
 
-- [ ] **Step 3: Commit.**
+- [x] **Step 3: Commit.**
 
 `git commit -m "feat(check-graph): CLI harvest + query + config" # trailers: Implements: FGRAPH-4.1, FGRAPH-5.4, FGRAPH-5.5, FGRAPH-5.6, FGRAPH-9.3`
 
@@ -822,7 +822,7 @@ _Requirements: FGRAPH-4.1, FGRAPH-5.4, FGRAPH-5.5, FGRAPH-5.6, FGRAPH-9.3_
   differs from a fresh render, or if any harvested feature code is absent from `INDEX.md`;
   exit 0 when fresh and all codes registered.
 
-- [ ] **Step 1: Write the failing test.** Append to `scripts/check-graph.test.mjs`:
+- [x] **Step 1: Write the failing test.** Append to `scripts/check-graph.test.mjs`:
 
 ```js
 test('[FGRAPH-6.1][FGRAPH-6.2] --verify fails on stale, passes when fresh', () => {
@@ -847,7 +847,7 @@ test('[FGRAPH-6.3] --verify fails on a code absent from INDEX.md', () => {
 
 Run: `node --test scripts/check-graph.test.mjs` — expect: verify tests fail (stub exits 2).
 
-- [ ] **Step 2: Implement.** In `scripts/check-graph.mjs`, replace the `runVerify` stub:
+- [x] **Step 2: Implement.** In `scripts/check-graph.mjs`, replace the `runVerify` stub:
 
 ```js
 function runVerify(root, cfg, specsDir, asJson) {
@@ -873,7 +873,7 @@ function runVerify(root, cfg, specsDir, asJson) {
 
 Run: `node --test scripts/check-graph.test.mjs` — expect: all pass.
 
-- [ ] **Step 3: Commit.**
+- [x] **Step 3: Commit.**
 
 `git commit -m "feat(check-graph): --verify freshness + unregistered-code lint" # trailers: Implements: FGRAPH-6.1, FGRAPH-6.2, FGRAPH-6.3`
 
@@ -890,7 +890,7 @@ _Requirements: FGRAPH-6.1, FGRAPH-6.2, FGRAPH-6.3_
 **Interfaces:**
 - Consumes: existing `scripts/check-trace.test.mjs`, `harvest`.
 
-- [ ] **Step 1: Write the tests (these should PASS immediately — they assert guards hold).**
+- [x] **Step 1: Write the tests (these should PASS immediately — they assert guards hold).**
 Append to `scripts/check-graph.test.mjs`:
 
 ```js
@@ -912,7 +912,7 @@ test('[FGRAPH-9.5] harvest needs no new fields — vanilla specs yield a non-emp
 Run: `node --test scripts/check-graph.test.mjs` — expect: both pass. If FGRAPH-9.4 fails,
 check-graph has coupled to check-trace — stop and fix the coupling, do not edit the test.
 
-- [ ] **Step 2: Commit.**
+- [x] **Step 2: Commit.**
 
 `git commit -m "test(check-graph): guard check-trace and no-authoring-burden" # trailers: Guards: FGRAPH-9.4, Guards: FGRAPH-9.5`
 
@@ -932,7 +932,7 @@ _Requirements: FGRAPH-9.4, FGRAPH-9.5_
 **Interfaces:**
 - Consumes: the three SKILL.md files (asserts durable wiring markers exist in them).
 
-- [ ] **Step 1: Write the failing test.** Create `scripts/check-graph.wiring.test.mjs`:
+- [x] **Step 1: Write the failing test.** Create `scripts/check-graph.wiring.test.mjs`:
 
 ```js
 import { test } from 'node:test';
@@ -969,7 +969,7 @@ test('[FGRAPH-6.4] verify runs check-graph --verify', () => {
 Run: `node --test scripts/check-graph.wiring.test.mjs` — expect: all four fail (markers
 absent).
 
-- [ ] **Step 2: Wire brainstorm.** In `skills/discovery/brainstorm/SKILL.md`, step 1
+- [x] **Step 2: Wire brainstorm.** In `skills/discovery/brainstorm/SKILL.md`, step 1
 ("Explore project context"), after the scan-subagent sentence, add:
 
 ```markdown
@@ -986,7 +986,7 @@ And extend the step-1 **Done when** to: "… and you have stated which existing 
 share this idea's surface and how the new idea differs (citing feature codes), or that no
 existing feature shares its surface."
 
-- [ ] **Step 3: Wire sync-spec.** In `skills/track/sync-spec/SKILL.md`, step **f (After
+- [x] **Step 3: Wire sync-spec.** In `skills/track/sync-spec/SKILL.md`, step **f (After
 picture)**, add after the check-trace re-run:
 
 ```markdown
@@ -995,14 +995,14 @@ changed, stage it into this sync-spec commit alongside the `Status:`/`INDEX.md` 
 the committed graph tracks the triad.
 ```
 
-- [ ] **Step 4: Wire verify.** In `skills/execution/verify/SKILL.md`, the claim→evidence
+- [x] **Step 4: Wire verify.** In `skills/execution/verify/SKILL.md`, the claim→evidence
 table "Requirements met" row, change the evidence cell to: ``check-trace` **and**
 `check-graph --verify` pass AND each acceptance criterion checked off individually against
 observed behavior`.
 
 Run: `node --test scripts/check-graph.wiring.test.mjs` — expect: all pass.
 
-- [ ] **Step 5: Commit.**
+- [x] **Step 5: Commit.**
 
 `git commit -m "feat(fgraph): wire feature graph into brainstorm, sync-spec, verify" # trailers: Implements: FGRAPH-6.4, FGRAPH-7.1, FGRAPH-7.2, FGRAPH-7.3, FGRAPH-7.4, FGRAPH-7.5, FGRAPH-8.1, FGRAPH-8.2, FGRAPH-9.6`
 
@@ -1020,22 +1020,22 @@ _Requirements: FGRAPH-6.4, FGRAPH-7.1, FGRAPH-7.2, FGRAPH-7.3, FGRAPH-7.4, FGRAP
 
 **Interfaces:** none (integration/cleanup).
 
-- [ ] **Step 1: Generate the committed graph.** Run
+- [x] **Step 1: Generate the committed graph.** Run
 `node scripts/check-graph.mjs --harvest` at the repo root. Confirm `docs/specs/GRAPH.md`
 now exists and contains an `FGRAPH` card. Run `node scripts/check-graph.mjs --verify` —
 expect exit 0.
-- [ ] **Step 2: Full suite green.** Run
+- [x] **Step 2: Full suite green.** Run
 `node --test scripts/check-graph.test.mjs scripts/check-graph.wiring.test.mjs scripts/check-trace.test.mjs`
 — expect all pass. Run `node scripts/check-trace.mjs` — expect no new errors.
-- [ ] **Step 3: Confirm the spike is gone.** Verify `scratchpad/surface-spike.mjs` was
+- [x] **Step 3: Confirm the spike is gone.** Verify `scratchpad/surface-spike.mjs` was
 never copied into the repo (`git ls-files | grep surface-spike` returns nothing). The
 scratchpad copy is throwaway and left untracked.
-- [ ] **Step 4: Transition status** (this is what makes E2 apply — every FGRAPH ID must now
+- [x] **Step 4: Transition status** (this is what makes E2 apply — every FGRAPH ID must now
 have a covering test). Set `Status: Implemented` in `requirements.md` and `design.md`, and
 update the FGRAPH row in `docs/specs/INDEX.md` to `Implemented`. Run
 `node scripts/check-trace.mjs` — expect: zero E2 errors for FGRAPH (every ID has a tagged
 test).
-- [ ] **Step 5: Commit.**
+- [x] **Step 5: Commit.**
 
 `git commit -m "chore(fgraph): generate GRAPH.md, mark FGRAPH Implemented"`
 

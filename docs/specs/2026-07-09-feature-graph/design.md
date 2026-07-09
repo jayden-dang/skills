@@ -1,7 +1,7 @@
 # Design: Horizontal feature-graph layer
 
 Feature code: FGRAPH
-Status: Approved
+Status: Implemented
 Date: 2026-07-09
 Requirements: ./requirements.md
 

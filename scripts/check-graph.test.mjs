@@ -24,6 +24,12 @@ test('[FGRAPH-1.5] isSourcePath accepts real paths, rejects junk', () => {
   assert.equal(isSourcePath('the quick brown', CFG), false);
 });
 
+test('[FGRAPH-1.7] isSourcePath rejects glob tokens', () => {
+  assert.equal(isSourcePath('e2e/*.spec.ts', CFG), false, 'glob token is not a concrete path');
+  assert.equal(isSourcePath('src/*.ts', CFG), false);
+  assert.equal(isSourcePath('src/real.ts', CFG), true, 'concrete path is unaffected');
+});
+
 test('[FGRAPH-1.4] dedupeByFullest collapses basename into full path', () => {
   const out = dedupeByFullest(['Editor.tsx', 'src/components/Editor.tsx', 'src/lib/x.ts']);
   assert.deepEqual([...out].sort(), ['src/components/Editor.tsx', 'src/lib/x.ts']);
@@ -85,6 +91,35 @@ test('[FGRAPH-2.1][FGRAPH-2.2][FGRAPH-2.3] reverse index + shared surface', () =
   assert.equal(shared.refs.length, 2, 'referenced by 2 features → shared');
 });
 
+test('[FGRAPH-2.4] cross-feature basename/fullpath merge in the reverse index', () => {
+  const specs = specFixture([
+    { slug: 'a-aaa', code: 'AAA', name: 'Aaa',
+      tasks: '- Create: `mathInputExtension.ts`\n' },
+    { slug: 'b-bbb', code: 'BBB', name: 'Bbb',
+      tasks: '- Modify: `src/components/mathInputExtension.ts`\n' },
+  ]);
+  const g = harvest(specs);
+  const keys = Object.keys(g.reverse).filter((k) => k.includes('mathInputExtension.ts'));
+  assert.deepEqual(keys, ['src/components/mathInputExtension.ts'], 'one merged key, canonicalized to the fullest form');
+  assert.deepEqual(g.reverse['src/components/mathInputExtension.ts'].map((r) => r.code).sort(), ['AAA', 'BBB']);
+  const shared = g.shared.find((s) => s.path === 'src/components/mathInputExtension.ts');
+  assert.ok(shared, 'merged path appears in shared surface');
+  assert.equal(shared.refs.length, 2, 'shared with 2 refs, not 2 separate 1-ref entries');
+});
+
+test('[FGRAPH-2.5] guard: ordinary same-full-path sharing across features still detected after cross-feature dedup', () => {
+  const specs = specFixture([
+    { slug: 'a-inltask', code: 'INLTASK', name: 'InlTask',
+      tasks: '- Create: `src/components/inlineTaskDecorations.ts`\n' },
+    { slug: 'b-chipui', code: 'CHIPUI', name: 'ChipUi',
+      tasks: '- Modify: `src/components/inlineTaskDecorations.ts`\n' },
+  ]);
+  const g = harvest(specs);
+  const shared = g.shared.find((s) => s.path === 'src/components/inlineTaskDecorations.ts');
+  assert.ok(shared, 'already-identical full paths across features must still be detected as shared');
+  assert.deepEqual(shared.refs.map((r) => r.code).sort(), ['CHIPUI', 'INLTASK']);
+});
+
 test('[FGRAPH-9.1] a feature with only requirements.md yields an empty manifest, no error', () => {
   const specs = specFixture([{ slug: 'a', code: 'ONLY', name: 'Only' }]);
   const g = harvest(specs);
@@ -126,6 +161,40 @@ test('[FGRAPH-1.6] harvest: owns beats touches across basename/fullpath dedup wi
   assert.ok(!f.touches.includes('src/core/engine.ts'));
 });
 
+test('[FGRAPH-1.7] harvest excludes glob-token paths from owns/touches', () => {
+  const specs = specFixture([{ slug: 'a-glob', code: 'GLOB', name: 'Glob',
+    tasks: '**Files:**\n- Modify: `e2e/*.spec.ts`\n- Create: `src/real.ts`\n' }]);
+  const f = harvest(specs).features.find((x) => x.code === 'GLOB');
+  assert.ok(f.owns.includes('src/real.ts') || f.touches.includes('src/real.ts'), 'concrete path kept');
+  assert.ok(!f.owns.includes('e2e/*.spec.ts') && !f.touches.includes('e2e/*.spec.ts'), 'glob token excluded');
+});
+
+test('[FGRAPH-1.8] a path appearing only on a command-invocation line is excluded', () => {
+  const specs = specFixture([{ slug: 'a-cmd', code: 'CMDONLY', name: 'CmdOnly',
+    tasks: '**Steps:**\nRun `node scripts/check-trace.mjs`\n' }]);
+  const f = harvest(specs).features.find((x) => x.code === 'CMDONLY');
+  assert.ok(!f.owns.includes('scripts/check-trace.mjs') && !f.touches.includes('scripts/check-trace.mjs'),
+    'path seen only on a command-invocation line must be excluded from the manifest');
+});
+
+test('[FGRAPH-1.8] a path in both a Modify bullet and a command line is still kept', () => {
+  const specs = specFixture([{ slug: 'a-mix', code: 'CMDMIX', name: 'CmdMix',
+    tasks: '**Files:**\n- Modify: `src/x.ts`\n\n**Steps:**\nRun `vitest src/x.ts`\n' }]);
+  const f = harvest(specs).features.find((x) => x.code === 'CMDMIX');
+  assert.ok(f.owns.includes('src/x.ts') || f.touches.includes('src/x.ts'),
+    'a path with at least one non-command occurrence must still be kept');
+});
+
+test('[FGRAPH-1.9] guard: the 1.7/1.8 filters do not over-reach on ordinary unfenced paths', () => {
+  const specs = specFixture([{ slug: 'a-keep', code: 'KEEPALL', name: 'KeepAll',
+    design: '- Create: `src/keep1.ts`\n- Modify: `src/keep2.ts`\nSee also `src/keep3.ts` for context.\n' }]);
+  const f = harvest(specs).features.find((x) => x.code === 'KEEPALL');
+  const surface = [...f.owns, ...f.touches];
+  assert.ok(surface.includes('src/keep1.ts'), 'unfenced Create bullet path kept');
+  assert.ok(surface.includes('src/keep2.ts'), 'unfenced Modify bullet path kept');
+  assert.ok(surface.includes('src/keep3.ts'), 'prose backtick path kept');
+});
+
 test('[FGRAPH-3.1][FGRAPH-3.2] card carries name, owns, and out-of-scope', () => {
   const specs = specFixture([{ slug: 'a', code: 'CARD', name: 'Card feature',
     oos: ['No time zones', 'No recurrence'],
@@ -150,6 +219,17 @@ test('[FGRAPH-3.3] interfaces drop bare Produces/Consumes labels, keep substance
   assert.ok(f.interfaces.some((s) => s.includes('doThing')), 'substance kept');
   assert.ok(f.interfaces.some((s) => s.includes('helper')), 'inline consumes substance kept');
   assert.ok(!f.interfaces.some((s) => /^(produces|consumes):?$/i.test(s.trim())), 'no bare label entries');
+});
+
+test('[FGRAPH-3.5] interfaces are lean single-line entries: top-level bullets, no bare labels, no prose after em-dash', () => {
+  const specs = specFixture([{ slug: 'a', code: 'LEAN', name: 'Lean',
+    design: '**Interfaces:**\n- Produces:\n  - `doThing(x) → y` — long prose description that should be dropped after the em dash\n- `helper()` — details\n' }]);
+  const f = harvest(specs).features.find((x) => x.code === 'LEAN');
+  assert.ok(f.interfaces.includes('doThing(x) → y'), 'nested substance kept as a signature-only entry, prose after em-dash dropped');
+  assert.ok(f.interfaces.includes('helper()'), 'top-level bullet truncated at the em-dash to its signature');
+  assert.ok(!f.interfaces.some((s) => /^produces:?$/i.test(s.trim())), 'bare section-lead label dropped');
+  assert.ok(!f.interfaces.some((s) => s.includes('long prose')), 'prose after em-dash never leaks into any entry');
+  assert.equal(f.interfaces.length, 2, 'no nested-vs-top-level duplication — exactly the two substantive entries');
 });
 
 test('[FGRAPH-3.4] card lists are capped at cardCap', () => {
@@ -200,6 +280,19 @@ test('[FGRAPH-4.2] renderGraphMd is deterministic and banner-marked', () => {
   assert.match(once, /GENERATED/);
   assert.ok(once.indexOf('AAA') < once.indexOf('BBB'), 'cards ordered by code');
   assert.match(once, /src\/shared\.ts.*AAA:owns.*BBB:touches/s);
+});
+
+test('[FGRAPH-4.4] guard: renderGraphMd(harvest(fixture)) is byte-identical across two independent harvests, with all the 1.7/1.8/2.4/3.5 fixes active', () => {
+  const specs = specFixture([
+    { slug: 'a-aaa', code: 'AAA', name: 'Aaa',
+      tasks: '- Create: `mathInputExtension.ts`\n- Modify: `e2e/*.spec.ts`\n',
+      design: '**Interfaces:**\n- Produces:\n  - `doThing(x) → y` — long prose\n' },
+    { slug: 'b-bbb', code: 'BBB', name: 'Bbb',
+      tasks: 'Run `node scripts/build.mjs`\n- Modify: `src/components/mathInputExtension.ts`\n' },
+  ]);
+  const once = renderGraphMd(harvest(specs));
+  const twice = renderGraphMd(harvest(specs));
+  assert.equal(once, twice, 'two independent harvests of the same fixture must render byte-identical markdown');
 });
 
 test('[FGRAPH-9.2] empty specs render a well-formed empty graph', () => {

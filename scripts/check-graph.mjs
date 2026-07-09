@@ -45,6 +45,7 @@ export function normalizePath(token) {
 export function isSourcePath(token, cfg) {
   const t = token;
   if (!t || /\s/.test(t)) return false;
+  if (t.includes('*')) return false; // glob token, not a concrete path (FGRAPH-1.7)
   const hasExt = EXT_RE(cfg.sourceExts).test(t);
   const seg = t.split('/');
   const filename = seg[seg.length - 1];
@@ -87,6 +88,13 @@ const SKIP_DIRS = new Set(['node_modules', '.git', 'dist', 'build', 'target', 'c
 const BACKTICK_RE = /`([^`]+)`/g;
 const WORD_RE = /[A-Za-z0-9_./-]+/g;
 
+// A command-invocation line names a tool being run, not a surface being
+// owned/touched — a path that appears ONLY on such lines is not surface.
+const CMD_LINE_RE = /(^|\s)(node|npm|pnpm|npx|yarn|git|bash|sh|deno|bun)\s/;
+function isCommandLine(line) {
+  return CMD_LINE_RE.test(line) || /^\s*Run\b/i.test(line) || /^\s*\$ /.test(line);
+}
+
 /** Recursively collect files under dir for which predicate(fullPath) is true. */
 function walk(dir, predicate, out = []) {
   let entries;
@@ -115,19 +123,65 @@ export function extractOutOfScope(reqText) {
   return [...m[1].matchAll(/^\s*[-*]\s+(.+?)\s*$/gm)].map((x) => x[1].replace(/\*\*/g, '').trim());
 }
 
-/** Extract bullet items under any `Interfaces:` heading across design.md/tasks.md bodies (best-effort). */
+const INTERFACE_LABEL_ONLY_RE = /^(?:produces|consumes|provides|exposes):?$/i;
+const INTERFACE_LABEL_PREFIX_RE = /^(?:produces|consumes|provides|exposes):\s*/i;
+
+/** A bullet whose text is just a bare section-lead label (`Produces:` etc), with no substance of its own. */
+function isBareInterfaceLabel(text) { return INTERFACE_LABEL_ONLY_RE.test(text.trim()); }
+
+/** Reduce a kept bullet's text to a short single-line entry: strip a leading
+ * label prefix, truncate at the first ` — ` em-dash (drop trailing prose),
+ * strip backticks, trim. */
+function cleanInterfaceEntry(text) {
+  let s = text.replace(INTERFACE_LABEL_PREFIX_RE, '');
+  const dashIdx = s.indexOf(' — ');
+  if (dashIdx !== -1) s = s.slice(0, dashIdx);
+  return s.replace(/`/g, '').trim();
+}
+
+/** Extract bullet items under any `Interfaces:` heading across design.md/tasks.md bodies (best-effort).
+ * Each entry is a short single-line signature: only the top-level bullets
+ * under the heading are considered (a bare section-lead label like
+ * `Produces:` has no substance of its own, so its direct children are
+ * promoted instead); nested sub-bullets under a substantive top-level entry
+ * are prose/detail and are skipped to avoid duplicating the entry. */
 export function extractInterfaces(bodies) {
   const out = [];
+  const HEADING_RE = /^\s*\*?\*?interfaces:?\*?\*?\s*$/im;
   for (const body of bodies) {
     if (!body) continue;
-    const re = /^\s*\*?\*?interfaces:?\*?\*?\s*$/im;
     const lines = body.split('\n');
     for (let i = 0; i < lines.length; i++) {
-      if (!re.test(lines[i])) continue;
-      for (let j = i + 1; j < lines.length && /^\s*[-*]\s+/.test(lines[j]); j++) {
-        let s = lines[j].replace(/^\s*[-*]\s+/, '').replace(/`/g, '').trim();
-        s = s.replace(/^(?:produces|consumes|provides|exposes):\s*/i, '').trim();
-        if (s && !/^(?:produces|consumes|provides|exposes):?$/i.test(s)) out.push(s);
+      if (!HEADING_RE.test(lines[i])) continue;
+      const group = [];
+      let j = i + 1;
+      for (; j < lines.length && /^\s*[-*]\s+/.test(lines[j]); j++) {
+        group.push({
+          indent: lines[j].match(/^\s*/)[0].length,
+          text: lines[j].replace(/^\s*[-*]\s+/, ''),
+        });
+      }
+      if (group.length === 0) continue;
+      const minIndent = Math.min(...group.map((g) => g.indent));
+      for (let k = 0; k < group.length; k++) {
+        if (group[k].indent !== minIndent) continue; // only top-level bullets
+        const { text } = group[k];
+        if (isBareInterfaceLabel(text)) {
+          // Pass-through: this bullet contributes no signal of its own —
+          // promote its direct children (the next indent level down) instead.
+          const children = [];
+          for (let m = k + 1; m < group.length && group[m].indent > minIndent; m++) children.push(group[m]);
+          if (children.length === 0) continue;
+          const childMin = Math.min(...children.map((c) => c.indent));
+          for (const c of children) {
+            if (c.indent !== childMin || isBareInterfaceLabel(c.text)) continue;
+            const cleaned = cleanInterfaceEntry(c.text);
+            if (cleaned) out.push(cleaned);
+          }
+          continue;
+        }
+        const cleaned = cleanInterfaceEntry(text);
+        if (cleaned) out.push(cleaned);
       }
     }
   }
@@ -136,7 +190,12 @@ export function extractInterfaces(bodies) {
 
 /** Extract normalized source paths (with roles) from one design.md/tasks.md body. */
 function scanSurface(text, cfg) {
-  const found = new Map(); // path -> role (owns beats touches)
+  // path -> {role, keep}: `keep` tracks whether the path had at least one
+  // NON-command-line occurrence (FGRAPH-1.8) — a path seen ONLY on
+  // command-invocation lines (e.g. `Run \`node scripts/x.mjs\``) is not
+  // surface, but a path that also appears in a Create/Modify bullet or
+  // prose line must still be kept even if it's ALSO named on a command line.
+  const raw = new Map();
   let blockLabel = null;
   let inFence = false;
   for (const line of text.split('\n')) {
@@ -145,6 +204,7 @@ function scanSurface(text, cfg) {
     if (CREATE_LABEL.test(line)) blockLabel = 'create';
     else if (MODIFY_LABEL.test(line)) blockLabel = 'modify';
     else if (/^\s*$/.test(line) || /^\s*#{1,6}\s/.test(line) || /^\s*\*?\*?(files|interfaces|steps)\b/i.test(line)) blockLabel = null;
+    const isCmd = isCommandLine(line);
     const cands = new Set();
     for (const m of line.matchAll(BACKTICK_RE)) cands.add(m[1]);
     for (const m of line.matchAll(WORD_RE)) cands.add(m[0]);
@@ -152,10 +212,15 @@ function scanSurface(text, cfg) {
       const p = normalizePath(c);
       if (!isSourcePath(p, cfg.graph)) continue;
       const role = classifyRole(line, blockLabel);
-      if (role === 'owns' || !found.has(p)) found.set(p, role);
+      const prev = raw.get(p);
+      const keep = !!(prev && prev.keep) || !isCmd;
+      const finalRole = (role === 'owns' || !prev) ? role : prev.role;
+      raw.set(p, { role: finalRole, keep });
     }
   }
-  return found; // Map<path, role>
+  const found = new Map(); // path -> role (owns beats touches)
+  for (const [p, v] of raw) if (v.keep) found.set(p, v.role);
+  return found;
 }
 
 /** Harvest the Surface manifest, Reverse index, and Shared surface from <specsDir>. */
@@ -202,10 +267,27 @@ export function harvest(specsDir, cfg = DEFAULTS) {
   }
   features.sort((a, b) => a.code.localeCompare(b.code));
 
+  // FGRAPH-2.4: canonicalize each path to the FULLEST form of that file seen
+  // across ALL features before indexing, so a bare basename in one feature
+  // (`mathInputExtension.ts`) and the full path to the same file in another
+  // feature (`src/components/mathInputExtension.ts`) merge into a single
+  // reverse-index / shared-surface key instead of two separate ones.
+  const allSurfacePaths = features.flatMap((f) => [...f.owns, ...f.touches]);
+  const uniqAll = [...new Set(allSurfacePaths)];
+  const canon = new Map(); // path -> fullest path seen for that file
+  for (const p of uniqAll) {
+    let fullest = p;
+    for (const q of uniqAll) {
+      if (q !== p && q.endsWith('/' + p) && q.length > fullest.length) fullest = q;
+    }
+    canon.set(p, fullest);
+  }
+
   const reverse = {};
   for (const f of features) {
     for (const [p, role] of [...f.owns.map((p) => [p, 'owns']), ...f.touches.map((p) => [p, 'touches'])]) {
-      (reverse[p] ||= []).push({ code: f.code, role });
+      const key = canon.get(p) ?? p;
+      (reverse[key] ||= []).push({ code: f.code, role });
     }
   }
   for (const p of Object.keys(reverse)) reverse[p].sort((a, b) => a.code.localeCompare(b.code));

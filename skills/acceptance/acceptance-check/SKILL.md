@@ -1,10 +1,12 @@
 ---
 name: acceptance-check
-description: Use before merging or finishing a branch, when a feature's unit
-  tests are green but its user-facing behavior has not been driven through the
-  running system — the happy paths and edge cases that pass in isolation yet
-  break against a real client. Also when the repo has no documented way to run
-  the app locally.
+description: Use before merging or finishing a branch, when a feature's unit tests are
+  green but its user-facing behavior has not been driven through the running
+  system as a real client — the acceptance / end-to-end pass over the happy
+  paths and edge cases that pass in isolation yet break in practice.
+  Orchestrates API- and UI-surface validation and leaves committed tests
+  behind, unlike a manual dogfooding pass. Also when the repo has no
+  documented way to run the app locally.
 ---
 
 # Acceptance Check
@@ -42,6 +44,10 @@ features need both:
   **REQUIRED SUB-SKILL: use `acceptance-api`**.
 - The change has a frontend a user drives →
   **REQUIRED SUB-SKILL: use `acceptance-ui`**.
+- The behavior is neither an API nor a UI (a CLI, a library, a batch/cron job) →
+  drive it directly against the running system yourself, record each observed
+  result in the ledger, and promote the passing checks into committed, ID-tagged
+  tests. For human-eyeball qualities (visuals, feel) hand off to `dogfood`.
 
 Each child locates (and persists) how to run its surface, exercises its slice of
 the checklist against the live system, fixes failures through `debug`, and

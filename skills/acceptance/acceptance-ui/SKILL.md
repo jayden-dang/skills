@@ -1,11 +1,11 @@
 ---
 name: acceptance-ui
-description: Use to validate a frontend against its spec by driving it in a real
-  browser the way a user would — Playwright on Chromium, asserting visible state
-  and persistence across reload — before merging. Covers the happy-path and
-  edge-case flows that component unit tests mock away. Also checks for and sets
-  up a Playwright/Chromium harness, and persists the local run command, when the
-  repo has none.
+description: Use to validate a frontend against its spec by driving it end-to-end (e2e)
+  in a real browser the way a user would — automated Playwright specs on
+  Chromium, asserting visible state and persistence across reload — before
+  merging. Covers the happy-path and edge-case flows that component unit tests
+  mock away. Also checks for and sets up a Playwright/Chromium harness, and
+  persists the local run command, when the repo has none.
 ---
 
 # Acceptance — UI

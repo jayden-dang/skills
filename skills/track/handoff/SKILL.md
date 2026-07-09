@@ -1,6 +1,9 @@
 ---
 name: handoff
-description: Use when the current conversation must continue elsewhere — the context window is filling up, the user is ending the session with work unfinished, or another agent should pick the work up.
+description: Use when the current conversation must continue elsewhere — context is
+  filling up or nearing compaction, the user is ending a session with work
+  unfinished, or another agent must pick the work up — to produce a
+  self-contained handoff document a fresh agent can resume from.
 disable-model-invocation: true
 ---
 

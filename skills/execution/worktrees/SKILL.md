@@ -1,8 +1,8 @@
 ---
 name: worktrees
-description: Use when starting feature work, executing a plan, or making any
-  multi-commit change that should not touch the user's current checkout — before
-  the first file is edited.
+description: Use when starting feature work, executing a plan, or making any multi-commit
+  change that should not touch the user's current checkout — set up an
+  isolated git worktree before the first file is edited.
 ---
 
 # Worktrees
@@ -21,7 +21,7 @@ GIT_COMMON=$(cd "$(git rev-parse --git-common-dir)" && pwd -P)
 - `GIT_DIR != GIT_COMMON` → likely a linked worktree, **but guard against submodules first**: if `git rev-parse --show-superproject-working-tree` prints a path, you are in a submodule — treat it as a normal checkout. Otherwise you are already isolated: report the path and branch, skip creation, go to Step 2.
 - `GIT_DIR == GIT_COMMON` → normal checkout. If the user has a stated worktree preference, honor it silently. If not, ask: "Want me to set this up in an isolated worktree so your current branch stays untouched?" Declined → work in place, go to Step 2.
 
-Completion criterion: you know which of the three cases you are in, and you have consent if creating.
+Done when: you know which of the three cases you are in, and you have consent if creating.
 
 ## Step 1 — Create the workspace
 
@@ -34,21 +34,27 @@ Completion criterion: you know which of the three cases you are in, and you have
 3. An existing `worktrees/` (if both exist, `.worktrees/` wins)
 4. Neither → create `.worktrees/`
 
-Before creating anything inside a project-local directory, you MUST confirm it is git-ignored:
+Bind the chosen directory to `$DIR` and use it in every command below — the priority list above is real only if the commands honor it:
 
 ```bash
-git check-ignore -q .worktrees || { echo ".worktrees/" >> .gitignore; git add .gitignore; git commit -m "chore: ignore worktree directory"; }
+DIR=.worktrees   # or DIR=worktrees if that existing dir was selected above
+```
+
+Before creating anything inside a project-local directory, you MUST confirm it is git-ignored. Leave the entry as an uncommitted working-tree change — git honors it immediately, and committing `.gitignore` here would write a commit to the user's **current** branch, the exact thing this skill promises not to touch:
+
+```bash
+git check-ignore -q "$DIR" || printf '%s/\n' "$DIR" >> .gitignore
 ```
 
 Then create and enter:
 
 ```bash
-git worktree add ".worktrees/<branch-name>" -b "<branch-name>"
+git worktree add "$DIR/<branch-name>" -b "<branch-name>"
 ```
 
 If creation fails on a sandbox/permission error, tell the user and work in place instead.
 
-Completion criterion: you are in the workspace (or have reported why not).
+Done when: you are in the workspace (or have reported why not).
 
 ## Step 2 — Install dependencies
 

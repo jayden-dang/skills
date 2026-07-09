@@ -1,6 +1,9 @@
 ---
 name: improve-architecture
-description: Use when the user asks for an architecture review, a codebase-health scan, "where should we refactor next", or a periodic look at accumulated design friction.
+description: Use when the user asks for an architecture review, a codebase-health or
+  technical-debt scan, wants to know where to refactor next, or asks for a
+  periodic look at accumulated design friction across the whole codebase — a
+  codebase-wide scan, not a single diff or PR.
 disable-model-invocation: true
 ---
 
@@ -8,7 +11,7 @@ disable-model-invocation: true
 
 Scan the codebase for accumulated friction, present deepening candidates as a visual report, and carry the one the user picks into the normal spec cycle. The goal is testability and navigability — modules deep enough that their interface is the test surface.
 
-Vocabulary is strict throughout: **module, interface, implementation, seam, adapter** (plus depth/locality/leverage as qualities). Never drift into "component", "service", "layer", or "boundary" — precision in the nouns is what keeps the findings comparable run over run.
+Vocabulary is strict throughout: **module, interface, implementation, seam, adapter** (plus depth/locality/leverage as qualities) — a *seam* is a public boundary where behavior is both observable and substitutable (the same seam `tdd` and `write-design` name). Never drift into "component", "service", "layer", or "boundary" — precision in the nouns is what keeps the findings comparable run over run.
 
 ## 1. Explore for friction
 
@@ -55,6 +58,6 @@ Once the user picks:
 
 ## 4. Feed the spec cycle
 
-Tier 0 (mechanical, no behavior change) can proceed directly under `tdd`/`verify` discipline. Anything tier 1 or above: hand the shaped improvement to `brainstorm` and let it run the normal cycle to requirements — architecture work earns no exemption from the spec gate.
+Tier 0 (mechanical, no behavior change) can proceed directly under `tdd`/`verify` discipline. Anything tier 1 or above: REQUIRED SUB-SKILL: use `brainstorm` — hand it the shaped improvement and let it run the normal cycle to requirements; architecture work earns no exemption from the spec gate.
 
 **Done when:** the work has an owner flow — either in progress under tier 0 discipline, or handed to `brainstorm`.

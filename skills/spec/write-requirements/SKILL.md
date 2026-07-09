@@ -1,6 +1,9 @@
 ---
 name: write-requirements
-description: Use when discovery is complete and a tier-1 or tier-2 change needs its requirements written — after brainstorm, before any design or code
+description: Use when discovery is complete and a tier-1 or tier-2 change needs its
+  requirements written — the user stories and EARS acceptance criteria in
+  requirements.md that every later task, test, and commit cites by ID. After
+  brainstorm, before any design or code.
 ---
 
 Produce `docs/specs/<YYYY-MM-DD>-<feature>/requirements.md` from the approved

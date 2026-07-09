@@ -1,6 +1,10 @@
 ---
 name: code-review
-description: Use when a branch, PR, or set of changes needs review before merging, when execute-plan reaches its final whole-branch review, or when the user asks to review work since some ref.
+description: Use when a branch, PR, diff, or set of changes needs review before merging —
+  produces a two-axis verdict (repo-standards conformance plus
+  spec/requirements conformance, reported separately) — when execute-plan
+  reaches its final whole-branch review, or when the user asks to review work
+  since some ref.
 ---
 
 # Code Review
@@ -37,7 +41,7 @@ On top of the repo's own documents, the Standards axis always carries `standards
 
 Send ONE message containing both dispatches so they run concurrently and neither pollutes the other's context. Both are **read-only**: no mutation of the working tree, index, HEAD, or branch state; to inspect another revision, use a temporary worktree (`git worktree add <tmpdir> <sha>`), never move HEAD. Keep each brief under 400 words. Never pre-judge findings in a dispatch — no "do not flag", no pre-rated severities.
 
-**Standards subagent** gets: the diff command and commit list; the standards-source paths; the path to `standards-baseline.md`; the brief — report (a) every place the diff breaks a documented standard, citing the document and rule, and (b) every baseline smell spotted, naming the smell and quoting the hunk; documented breaches may be hard findings, baseline smells are always judgment calls; the repo's documents override the baseline; skip anything tooling enforces; include CONTEXT.md vocabulary drift (a diff that renames or re-terms a glossary concept is a finding).
+**Standards subagent** gets: the diff command and commit list; the standards-source paths; the path to `standards-baseline.md`, which it MUST read first and check the diff against each of its twelve smells in turn; the brief — report (a) every place the diff breaks a documented standard, citing the document and rule, and (b) for each of the twelve baseline smells, every hit spotted, naming the smell and quoting the hunk; documented breaches may be hard findings, baseline smells are always judgment calls; the repo's documents override the baseline; skip anything tooling enforces; include CONTEXT.md vocabulary drift (a diff that renames or re-terms a glossary concept is a finding).
 
 **Spec subagent** gets: the diff command and commit list; the requirements.md path; the brief — walk the requirements and report (a) IDs that are missing or only partially implemented, (b) behavior in the diff no requirement asked for (scope creep), (c) IDs that look implemented but wrong; quote the requirement ID on every finding; also verify each covered ID has a test tagged with it per the conventions in `docs/agents/project.md`, and flag untagged coverage.
 

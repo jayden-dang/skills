@@ -1,6 +1,8 @@
 ---
 name: write-design
-description: Use when requirements are approved and the technical design needs to be written — after write-requirements, before write-plan
+description: Use when approved requirements need their technical design — the design.md /
+  architecture doc spelling out HOW the requirements get built. After
+  write-requirements, before write-plan.
 ---
 
 Produce `docs/specs/<date>-<feature>/design.md`: HOW the approved requirements

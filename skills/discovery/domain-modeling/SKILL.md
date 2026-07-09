@@ -1,6 +1,11 @@
 ---
 name: domain-modeling
-description: Use when domain terminology needs to be pinned down or is being used inconsistently, when an architectural decision worth recording is being made, or when another skill (e.g. an interview) asks for glossary and ADR upkeep as a side effect.
+description: Use when a domain term needs defining, a glossary term is being used
+  inconsistently or fuzzily, or a hard-to-reverse architectural decision worth
+  an ADR is being made — maintains the project glossary (CONTEXT.md) and
+  architecture decision records (docs/adr). Also runs as a side-effect
+  sub-skill when an interview or design skill calls for glossary and ADR
+  upkeep.
 ---
 
 # Domain Modeling

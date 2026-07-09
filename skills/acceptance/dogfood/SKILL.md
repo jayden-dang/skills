@@ -1,11 +1,12 @@
 ---
 name: dogfood
-description: Use when you want to manually exercise a finished feature in the
-  real running app from the user's seat — a hands-on dogfooding pass, case by
-  case, over every user-facing ability, including the visuals, feel, and edge
-  cases a human must eyeball rather than an automated test. Reach for it to try a
-  feature for real, walk the whole user-facing surface, or produce a checkable
-  test guide you keep open beside the app and tick off as you go.
+description: Use when manually exercising a finished feature in the real running app from
+  the user's seat — a hands-on dogfooding pass, case by case, over every
+  user-facing ability, including the visuals, feel, and edge cases a human
+  must eyeball rather than an automated test or a quick launch. Reach for it
+  to try a feature for real, walk the whole user-facing surface, or produce a
+  checkable, resumable HTML test guide kept open beside the app and ticked off
+  as you go — not a one-off run.
 ---
 
 # Dogfood
@@ -50,8 +51,8 @@ is running and every not-yet-visible behavior has an observation method.*
 
 ## 4. Build the checkable artifact
 
-Load the `artifact-design` skill, then build a self-contained HTML page and
-publish it with the Artifact tool. Contract:
+REQUIRED SUB-SKILL: load `artifact-design` before building the page, then build a
+self-contained HTML page and publish it with the Artifact tool. Contract:
 
 - Sectioned by ability area; **one row per case**, each carrying its requirement
   ID so a failing box routes straight back to the spec.

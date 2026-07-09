@@ -1,12 +1,19 @@
 ---
 name: ask
-description: Use when the user is unsure which skill or flow fits their situation, or asks "how do I start", "what's the workflow", or "which skill should I use"
+description: Use when the user is unsure which skill or flow in this set fits their task,
+  asks "how do I start", "what's the workflow", "which skill should I use", or
+  "what comes next" — routes among the already-installed development skills
+  (not for discovering or installing new ones).
 disable-model-invocation: true
 ---
 
 You are the router. Read the situation, name the entry point, and explain the
-chain that follows. Do not start executing the chosen flow inside this skill —
-invoke its first skill and let it take over.
+chain that follows. Do not start executing the chosen flow inside this skill.
+If the entry point is model-invocable (`brainstorm`, `debug`, `acceptance-check`,
+`dogfood`), invoke it and let it take over. If it is a user-invoked skill
+(`triage`, `improve-architecture`, `setup-repo`, `scaffold-project`, `handoff`,
+`release`), you cannot invoke it — name it and tell the user to run its command,
+e.g. `/triage`.
 
 ## The main flow: idea → ship
 
@@ -26,8 +33,9 @@ invoke its first skill and let it take over.
    (when shipping) **`release`** → **`sync-spec`**.
 
 **Context hygiene:** keep steps 1–2 (discovery through plan) in one unbroken
-context window. If the window is filling up before the plan is done, `handoff`
-to a fresh session. Execution sessions are context-isolated per task by design.
+context window. If the window is filling up before the plan is done, tell the
+user to run `/handoff` to move to a fresh session. Execution sessions are
+context-isolated per task by design.
 
 ## On-ramps
 

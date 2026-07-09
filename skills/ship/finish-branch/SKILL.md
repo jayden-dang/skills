@@ -1,15 +1,19 @@
 ---
 name: finish-branch
-description: Use when implementation on a branch is complete, the work is committed, and an integration decision is needed — the branch must be merged, turned into a PR, kept, or discarded.
+description: Use when implementation on a branch is complete and committed and an
+  integration decision is needed — done with a feature branch and choosing
+  whether to merge it, open a PR, keep it as-is, or discard the work.
 ---
 
 # Finish a Branch
 
 Decide what happens to completed work: gate on the verify suite, detect the environment, offer a fixed menu, execute the choice, clean up safely.
 
-## 1. Gate: full verify
+## 1. Gate: verify, trace, and acceptance
 
-Run every verify command from `docs/agents/project.md` (typecheck, lint, unit, e2e), fresh. If that file is missing, ask the user for the repo's test command and suggest `setup-repo`.
+REQUIRED SUB-SKILL: use `verify` to run every verify command from `docs/agents/project.md` (typecheck, lint, unit, e2e) fresh AND to confirm `check-trace` is clean — a branch must not merge with untraced requirements, the same gate `release` enforces. If no test command is discoverable, ask the user for it and suggest `setup-repo`.
+
+If the branch has user-facing behavior that has not been driven through the running system, REQUIRED SUB-SKILL: use `acceptance-check` before offering Merge or PR — green units prove assertions pass, not that the feature works.
 
 **Any failure = STOP.** Show the failures and state that no integration option is available until they pass. Do not present the menu.
 
@@ -26,7 +30,7 @@ GIT_COMMON=$(cd "$(git rev-parse --git-common-dir)" && pwd -P)
 | differ, named branch | linked worktree — provenance-checked cleanup applies |
 | differ, detached HEAD | externally managed workspace — no merge option, no cleanup |
 
-Determine the base branch (`git merge-base HEAD main` / `master`), or confirm with the user if ambiguous.
+Determine the base branch — `git symbolic-ref --quiet --short refs/remotes/origin/HEAD` (strip the leading `origin/`), falling back to `git rev-parse --verify --quiet main || git rev-parse --verify --quiet master`. Confirm with the user if still ambiguous. (`git merge-base` returns a commit SHA, not a branch name — do not use it here.)
 
 ## 3. Present the menu
 
@@ -83,7 +87,7 @@ Never:
 - Remove a worktree outside `.worktrees/`/`worktrees/`, or from inside itself
 - Force-push, ever, unless the user explicitly asked
 
-| Tempting thought | Reality |
+| Thought | Reality |
 |---|---|
 | "Tests were green an hour ago, skip the gate" | Stale evidence. Anything merged on old green is unverified. |
 | "The user obviously wants a PR, skip the menu" | The decision is theirs. Four options, every time. |

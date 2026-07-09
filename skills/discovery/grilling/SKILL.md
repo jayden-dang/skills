@@ -1,6 +1,9 @@
 ---
 name: grilling
-description: Use when a plan, design, or feature idea needs to be stress-tested before anything gets built, when the user's intent is underspecified and decisions must be drawn out of them, or when another skill calls for an interview.
+description: Use to interview the user to stress-test a plan, design, or feature idea
+  before anything is built, when their intent is underspecified and the
+  decisions must be drawn out of them, when the user asks to be grilled or
+  interviewed, or when another skill calls for an interview.
 ---
 
 # Grilling

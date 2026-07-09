@@ -1,11 +1,11 @@
 ---
 name: acceptance-api
-description: Use to validate a backend HTTP/RPC API against its spec by driving
-  the running server as a real client — curl/http requests asserting status,
-  body shape, and persistence — before merging. Covers the happy paths and the
-  edge/error criteria that unit tests pass in isolation but miss against a live
-  server. Also discovers and persists the local run command when the repo does
-  not document how to start the backend.
+description: Use to validate a backend HTTP/RPC API — REST or RPC endpoints — against its
+  spec by driving the running server as a real client — curl/http requests
+  asserting status codes, body shape, and persistence — before merging. Covers
+  the happy paths and the edge/error criteria that unit tests pass in
+  isolation but miss against a live server. Also discovers and persists the
+  local run command when the repo does not document how to start the backend.
 ---
 
 # Acceptance — API
@@ -14,8 +14,10 @@ Exercise the running server the way a real client will. A unit test passes
 against the code's own assumptions; this proves the wire behavior — the status
 codes, the JSON shape, the side effects that survive a reload.
 
-Invoked by `acceptance-check` with a slice of the acceptance ledger, or run
-directly against an API change. Work through the ledger in order.
+Invoked by `acceptance-check` with a slice of the acceptance ledger — or run
+directly against an API change, in which case first derive the checklist from the
+change's acceptance criteria (the spec, or the endpoints touched). Either way,
+work through the items in order.
 
 ## 1. Get the server running — and persist how
 

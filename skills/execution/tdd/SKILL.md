@@ -1,9 +1,9 @@
 ---
 name: tdd
-description: Use when writing or changing any production code — a new feature, a
-  bugfix, a behavior change, or a refactor — and before the first line of
-  implementation exists. Also use when about to add a mock, a test utility, or a
-  test to existing untested code.
+description: Use when writing or changing any production code — a new feature, a bugfix,
+  a behavior change, or a refactor — and before the first line of
+  implementation exists; the test-first (TDD) gate. Also use when about to add
+  a mock, a test utility, or a test to existing untested code.
 ---
 
 # TDD
@@ -26,7 +26,7 @@ A seam is a public boundary where behavior is observable without reaching into i
 
 Work one vertical slice at a time: one behavior → one test → one minimal implementation → repeat. Each cycle responds to what the previous one taught you. Never write all the tests up front and then all the code — bulk-written tests verify imagined behavior.
 
-**RED — write one failing test.** One behavior, a name that states the behavior, expectations against real code at an agreed seam. Tag it with the requirement ID it verifies (see below).
+**RED — write one failing test.** One behavior, a name that states the behavior, expectations against real code at an agreed seam. Tag it with the requirement ID it verifies (see below). Fixing a bug? REQUIRED SUB-SKILL: use `debug` to establish the root cause first — the RED test must reproduce *that* bug, failing for the bug's reason, before any fix.
 
 **Verify RED — mandatory, never skip.** Run the test (single-file command from `docs/agents/project.md`). Confirm it fails, that the failure message is the one you expected, and that it fails because the behavior is missing — not because of a typo or import error. **Test passes immediately?** You are testing behavior that already exists — fix the test, not the code. Test errors instead of failing? Fix the error and re-run until it fails correctly.
 

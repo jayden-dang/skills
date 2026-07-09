@@ -1,6 +1,9 @@
 ---
 name: triage
-description: Use when the user wants to process incoming issues or external PRs — evaluate what needs attention, classify a specific issue, write an agent-ready brief, or record a rejection.
+description: Use when the user wants to triage incoming tracker issues, bug reports, or
+  external PRs — show what needs attention in the backlog, classify and
+  investigate a specific issue, write an agent-ready implementation brief, or
+  close and record an out-of-scope rejection.
 disable-model-invocation: true
 ---
 

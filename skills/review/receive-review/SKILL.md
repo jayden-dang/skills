@@ -1,6 +1,8 @@
 ---
 name: receive-review
-description: Use when review feedback arrives — from the user, a reviewer subagent, or an external reviewer on a PR — before implementing any of it, especially when an item seems unclear or technically wrong.
+description: Use when review feedback or PR comments arrive — from the user, a reviewer
+  subagent, or an external reviewer — and before implementing or replying to
+  any of it, especially when an item seems unclear or technically wrong.
 ---
 
 # Receive Review
@@ -14,7 +16,7 @@ Treat review feedback as technical claims to evaluate, not orders to follow and 
 3. **VERIFY** each claim against the actual codebase before accepting it. The reviewer says the function ignores errors? Open the function. The reviewer says a path is dead? Trace the callers. *Done when: each item is confirmed, refuted, or marked unverifiable.*
 4. **EVALUATE** — is the suggestion right for THIS codebase? Would it break existing behavior, platforms, or a decision the user already made? Does YAGNI apply: when a reviewer says "implement this properly", grep for real usage first — if nothing calls it, the correct fix is removal, and you propose that instead. *Done when: each item has a position: agree, push back, or remove-instead.*
 5. **RESPOND** with technical reasoning. Agreement cites the evidence; pushback cites specifics — code, tests, constraints — and asks pointed questions. If you cannot verify a claim, say exactly that and ask how to proceed. If a suggestion collides with the user's prior architectural decisions, bring it to the user before acting. *Done when: every item has a stated position.*
-6. **IMPLEMENT** one item at a time, testing each before the next, in this order: blocking items (breakage, security) → simple corrections (typos, imports) → complex changes (logic, refactoring). *Done when: each fix has its own passing test run and no regressions.*
+6. **IMPLEMENT** one item at a time, in this order: blocking items (breakage, security) → simple corrections (typos, imports) → complex changes (logic, refactoring). Each fix is production code — REQUIRED SUB-SKILL: use `tdd`. *Done when: each fix has its own passing test run and no regressions.*
 
 ## Forbidden Responses
 

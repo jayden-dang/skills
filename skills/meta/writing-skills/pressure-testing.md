@@ -2,6 +2,16 @@
 
 Load this file when running the RED, GREEN, or REFACTOR phase of `writing-skills` — it defines how to test a skill on subagents.
 
+- [Test behavior, not recall](#test-behavior-not-recall)
+- [Building a scenario](#building-a-scenario) — pressure types
+- [Protocol](#protocol) — RED / GREEN / REFACTOR
+- [Micro-tests for wording](#micro-tests-for-wording)
+- [Testing non-gate skills](#testing-non-gate-skills) — technique, reference
+- [Testing the description (triggering)](#testing-the-description-triggering)
+- [Meta-testing](#meta-testing)
+- [When a skill is bulletproof](#when-a-skill-is-bulletproof)
+- [Worked example: hardening a verification gate](#worked-example-hardening-a-verification-gate)
+
 ## Test behavior, not recall
 
 A quiz ("what does the skill say about X?") measures whether an agent can recite the text. It cannot tell you whether the agent will *follow* the text when following it is expensive. Test with realistic scenarios in which the agent believes it is doing real work and has a live incentive to cut the corner the skill protects.
@@ -78,7 +88,7 @@ The `description` decides whether the skill is ever loaded — it carries more b
 Assemble ~15–20 realistic queries — the concrete, messy things a real user types (file paths, casual phrasing, a typo), not tidy abstractions. Split them:
 
 - **should-fire** (8–10): different phrasings of the real intent, including ones that never name the skill or its nouns; a couple of uncommon cases; one where this skill competes with a neighbor and should still win.
-- **should-not-fire** (8–10): the *near-misses* — queries sharing keywords or domain with the skill but genuinely needing something else. Obviously irrelevant queries test nothing; the value is entirely in the traps.
+- **should-not-fire** (8–10): the *near-misses* — queries sharing keywords or domain with the skill but genuinely needing something else. Obviously irrelevant queries test nothing; the value is entirely in the traps. In a skill *set*, draw these from the **neighboring skills** whose scope abuts this one — the pairs that share a trigger surface (`acceptance-check` vs `acceptance-api`/`-ui`, `brainstorm` vs `grilling`, `debug` vs `tdd`). A description earns its keep only when exactly one of a colliding pair fires; test the pair together, not each alone.
 
 Run each query fresh-context, several reps, and record which skill the agent reaches for. Two failure directions, both real:
 

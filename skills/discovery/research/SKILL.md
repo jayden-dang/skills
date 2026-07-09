@@ -1,6 +1,10 @@
 ---
 name: research
-description: Use when a design or planning question turns on external facts — library capabilities, API behavior, standards, platform limits — rather than opinion, or when the user asks to have a topic investigated and written up.
+description: Use when a design, planning, or implementation question turns on external
+  facts — how a library or API actually behaves, what a standard, spec, or RFC
+  says, platform limits, version differences — rather than opinion, or when
+  the user asks to look into or investigate a topic and write it up with
+  citations.
 ---
 
 # Research
@@ -24,7 +28,7 @@ Exactly **one markdown file**:
 
 ## High-stakes questions
 
-When the answer will steer an architecture choice or something else expensive to reverse, escalate the rigor:
+When the answer will steer an architecture choice or something else expensive to reverse, escalate the rigor. If a `deep-research` skill is installed, prefer it — it already implements this fan-out + adversarial-verify loop end to end. Otherwise do it inline:
 
 1. Fan out 2–4 parallel search angles (e.g. official docs, source code, issue tracker, spec text) as separate subagents.
 2. Adversarially verify before reporting: for each key claim, actively look for a source that contradicts it or a version/context in which it stops being true. Note conflicts explicitly rather than picking a side silently.

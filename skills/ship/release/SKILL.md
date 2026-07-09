@@ -1,6 +1,9 @@
 ---
 name: release
-description: Use when the user wants to cut a release — publish a version, tag the repo, ship what is on the main branch — and the work needs the release gate walked end to end.
+description: Use when the user wants to cut a release — publish a version, bump semver,
+  tag the repo, and draft the changelog and release notes — for work already
+  merged to the release branch. Distinct from finish-branch, which only
+  integrates a branch.
 disable-model-invocation: true
 ---
 

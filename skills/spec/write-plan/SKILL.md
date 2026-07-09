@@ -1,6 +1,9 @@
 ---
 name: write-plan
-description: Use when a design is approved and the implementation plan needs to be written — after write-design, before any implementation starts
+description: Use when a design is approved and the implementation plan — the tasks.md
+  that breaks the design into buildable, test-tagged, traceable tasks — needs
+  to be written, after write-design and before any implementation or
+  execute-plan.
 ---
 
 Produce `docs/specs/<date>-<feature>/tasks.md` from the approved requirements

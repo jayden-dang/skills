@@ -1,6 +1,10 @@
 ---
 name: brainstorm
-description: Use when the user brings an idea for a feature, a behavior change, a new component, or a new project and implementation has not started yet — the entry point of the idea-to-ship chain.
+description: Use at the very start of the idea-to-ship chain — when the user wants to
+  add, build, or change a feature, behavior, or component, or to start a whole
+  new project, and no requirements, design, or code exist yet. Triggers on
+  "let's add…", "can we build…", "I'm thinking about…", "we should support…"
+  before implementation has begun.
 ---
 
 # Brainstorm
@@ -8,14 +12,14 @@ description: Use when the user brings an idea for a feature, a behavior change, 
 Turn a raw idea into an agreed shape ready for spec work, through dialogue — not code.
 
 <HARD-GATE>
-Write NO code, scaffold NOTHING, and invoke NO implementation skill until requirements are approved. The only artifacts this skill may touch are notes, the glossary (CONTEXT.md), ADRs, and — via its sub-skills — research notes and explicitly-marked throwaway prototypes. This holds for EVERY request, no matter how simple it looks.
+Write NO code, scaffold NOTHING, and invoke NO implementation skill until this checklist has run and you have stated the ceremony tier out loud. For tier 0 the only permitted exit is `tdd`, and only after the tier is spoken; for tier ≥1, requirements are written and approved first. The only artifacts this skill may touch are notes, the glossary (CONTEXT.md), ADRs, and — via its sub-skills — research notes and explicitly-marked throwaway prototypes. This holds for EVERY request, no matter how simple it looks.
 </HARD-GATE>
 
 ## "Too simple to need a design" is the trap
 
 Small requests are exactly where unexamined assumptions burn the most work, because nobody bothered to check them. The output can be tiny — a tier decision and three sentences — but the process runs every time.
 
-| Rationalization | Reality |
+| Thought | Reality |
 |---|---|
 | "This is a one-liner, designing it is overhead" | Deciding it is tier 0 IS the design step — say so explicitly and move on. Skipping the decision is the overhead. |
 | "The user already told me exactly what to build" | They told you a solution. You haven't confirmed the problem, the constraints, or what must keep working. |

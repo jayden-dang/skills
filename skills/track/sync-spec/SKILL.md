@@ -1,6 +1,10 @@
 ---
 name: sync-spec
-description: Use when a feature's spec and its reality have diverged — requirements changed mid-implementation, the implementation deviated from the plan with approval, the feature just shipped, or check-trace is failing in CI — and the requirements/design/tasks triad needs realigning.
+description: Use when a feature's spec has drifted from reality — requirements changed
+  mid-implementation, the implementation deviated from the approved plan, the
+  feature just shipped, the specs have gone stale or out of sync, or
+  check-trace is failing in CI — and the requirements/design/tasks triad needs
+  realigning back to what the code and tests actually do.
 ---
 
 # Sync a Spec

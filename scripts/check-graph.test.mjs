@@ -166,3 +166,38 @@ test('[FGRAPH-3.4] cap on owns/touches does not drop a shared path from the reve
   assert.ok(sharedEntry, 'the 13th file must still appear in the shared-surface list');
   assert.equal(sharedEntry.refs.length, 2);
 });
+
+import { renderGraphMd } from './check-graph.mjs';
+
+test('[FGRAPH-4.2] renderGraphMd is deterministic and banner-marked', () => {
+  const specs = specFixture([
+    { slug: 'b', code: 'BBB', name: 'B', tasks: '- Create: `src/b.ts`\n- Modify: `src/shared.ts`\n' },
+    { slug: 'a', code: 'AAA', name: 'A', tasks: '- Create: `src/shared.ts`\n' },
+  ]);
+  const g = harvest(specs);
+  const once = renderGraphMd(g);
+  const twice = renderGraphMd(harvest(specs));
+  assert.equal(once, twice, 'identical input → byte-identical output');
+  assert.match(once, /GENERATED/);
+  assert.ok(once.indexOf('AAA') < once.indexOf('BBB'), 'cards ordered by code');
+  assert.match(once, /src\/shared\.ts.*AAA:owns.*BBB:touches/s);
+});
+
+test('[FGRAPH-9.2] empty specs render a well-formed empty graph', () => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'check-graph-empty-'));
+  const g = harvest(path.join(root, 'docs/specs'));
+  const md = renderGraphMd(g);
+  assert.match(md, /GENERATED/);
+  assert.match(md, /## Cards/);
+});
+
+test('[FGRAPH-4.3] renderGraphMd is a pure string function — no file side effects', () => {
+  const specs = specFixture([{ slug: 'a', code: 'PURE', name: 'Pure', tasks: '- Create: `src/pure.ts`\n' }]);
+  const g = harvest(specs);
+  const before = new Set(fs.readdirSync(path.join(specs)));
+  const result = renderGraphMd(g);
+  assert.equal(typeof result, 'string');
+  const after = new Set(fs.readdirSync(path.join(specs)));
+  assert.deepEqual(before, after, 'renderGraphMd must not write any file into specsDir');
+  assert.ok(!fs.existsSync(path.join(specs, 'GRAPH.md')), 'renderGraphMd must never write GRAPH.md itself');
+});

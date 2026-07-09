@@ -101,6 +101,36 @@ function walk(dir, predicate, out = []) {
 
 function readMaybe(p) { try { return fs.readFileSync(p, 'utf8'); } catch { return null; } }
 
+/** Cap a Summary card list at `cap` entries, appending a "…(+N more)" elision marker. */
+export function capList(items, cap) {
+  if (items.length <= cap) return items;
+  return [...items.slice(0, cap), `…(+${items.length - cap} more)`];
+}
+
+/** Extract the `## Out of Scope` bullet list from a requirements.md body (best-effort). */
+export function extractOutOfScope(reqText) {
+  const m = reqText.match(/##\s*Out of Scope\s*\n([\s\S]*?)(\n##\s|\n#\s|$)/i);
+  if (!m) return [];
+  return [...m[1].matchAll(/^\s*[-*]\s+(.+?)\s*$/gm)].map((x) => x[1].replace(/\*\*/g, '').trim());
+}
+
+/** Extract bullet items under any `Interfaces:` heading across design.md/tasks.md bodies (best-effort). */
+export function extractInterfaces(bodies) {
+  const out = [];
+  for (const body of bodies) {
+    if (!body) continue;
+    const re = /^\s*\*?\*?interfaces:?\*?\*?\s*$/im;
+    const lines = body.split('\n');
+    for (let i = 0; i < lines.length; i++) {
+      if (!re.test(lines[i])) continue;
+      for (let j = i + 1; j < lines.length && /^\s*[-*]\s+/.test(lines[j]); j++) {
+        out.push(lines[j].replace(/^\s*[-*]\s+/, '').replace(/`/g, '').trim());
+      }
+    }
+  }
+  return out;
+}
+
 /** Extract normalized source paths (with roles) from one design.md/tasks.md body. */
 function scanSurface(text, cfg) {
   const found = new Map(); // path -> role (owns beats touches)
@@ -133,9 +163,10 @@ export function harvest(specsDir, cfg = DEFAULTS) {
     if (!code) continue;
     const name = (text.match(/^#\s*Requirements:\s*(.+)$/m) || [])[1]?.trim() || code;
     const dir = path.dirname(req);
+    const designBody = readMaybe(path.join(dir, 'design.md'));
+    const tasksBody = readMaybe(path.join(dir, 'tasks.md'));
     const surface = new Map();
-    for (const f of ['design.md', 'tasks.md']) {
-      const body = readMaybe(path.join(dir, f));
+    for (const body of [designBody, tasksBody]) {
       if (!body) continue;
       for (const [p, role] of scanSurface(body, cfg)) {
         if (role === 'owns' || !surface.has(p)) surface.set(p, role);
@@ -151,7 +182,17 @@ export function harvest(specsDir, cfg = DEFAULTS) {
       const isOwned = surfaceKeys.some((k) => (k === p || p.endsWith('/' + k)) && surface.get(k) === 'owns');
       (isOwned ? owns : touches).push(p);
     }
-    features.push({ code, name, owns: owns.sort(), touches: touches.sort(), interfaces: [], oos: [] });
+    // owns/touches stay UNCAPPED here: the reverse index and shared surface
+    // below are built from these raw arrays, so a 13th shared file is never
+    // silently dropped from FGRAPH-2.x just because the Summary card elides
+    // it. The cap is applied in a separate pass, after reverse/shared exist.
+    features.push({
+      code, name,
+      owns: owns.sort(),
+      touches: touches.sort(),
+      interfaces: extractInterfaces([designBody, tasksBody]),
+      oos: extractOutOfScope(text),
+    });
   }
   features.sort((a, b) => a.code.localeCompare(b.code));
 
@@ -164,6 +205,17 @@ export function harvest(specsDir, cfg = DEFAULTS) {
   for (const p of Object.keys(reverse)) reverse[p].sort((a, b) => a.code.localeCompare(b.code));
   const shared = Object.keys(reverse).filter((p) => reverse[p].length >= 2).sort()
     .map((p) => ({ path: p, refs: reverse[p] }));
+
+  // Summary cards: cap each list AFTER reverse/shared have been derived from
+  // the uncapped owns/touches above, so the capped card fields never feed
+  // back into the index.
+  const cap = cfg.graph.cardCap;
+  for (const f of features) {
+    f.owns = capList(f.owns, cap);
+    f.touches = capList(f.touches, cap);
+    f.interfaces = capList(f.interfaces, cap);
+    f.oos = capList(f.oos, cap);
+  }
   return { features, reverse, shared };
 }
 

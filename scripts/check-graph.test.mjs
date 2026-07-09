@@ -39,7 +39,7 @@ test('[FGRAPH-1.6] classifyRole: create signal owns, else touches', () => {
   assert.equal(classifyRole('Add a toggle for the new settings pane while modifying things', null), 'touches');
 });
 
-import { harvest } from './check-graph.mjs';
+import { harvest, DEFAULTS } from './check-graph.mjs';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
@@ -114,4 +114,55 @@ test('[FGRAPH-1.6] harvest: owns beats touches across basename/fullpath dedup wi
   const f = g.features.find((x) => x.code === 'DEDUP');
   assert.ok(f.owns.includes('src/core/engine.ts'), 'owns must win over touches after dedup collapses basename into full path');
   assert.ok(!f.touches.includes('src/core/engine.ts'));
+});
+
+test('[FGRAPH-3.1][FGRAPH-3.2] card carries name, owns, and out-of-scope', () => {
+  const specs = specFixture([{ slug: 'a', code: 'CARD', name: 'Card feature',
+    oos: ['No time zones', 'No recurrence'],
+    tasks: '- Create: `src/card.ts`\n' }]);
+  const f = harvest(specs).features.find((x) => x.code === 'CARD');
+  assert.equal(f.name, 'Card feature');
+  assert.ok(f.owns.includes('src/card.ts'));
+  assert.deepEqual(f.oos, ['No time zones', 'No recurrence']);
+});
+
+test('[FGRAPH-3.3] interfaces harvested best-effort from Interfaces: blocks', () => {
+  const specs = specFixture([{ slug: 'a', code: 'IFACE', name: 'Iface',
+    design: '**Interfaces:**\n- `applyChipEdit(view, action)`\n- `ChipEditAction` union\n' }]);
+  const f = harvest(specs).features.find((x) => x.code === 'IFACE');
+  assert.ok(f.interfaces.some((s) => s.includes('applyChipEdit')));
+});
+
+test('[FGRAPH-3.4] card lists are capped at cardCap', () => {
+  const many = Array.from({ length: 20 }, (_, i) => `No feature number ${i}`);
+  const specs = specFixture([{ slug: 'a', code: 'CAP', name: 'Cap', oos: many }]);
+  const cfg = { ...DEFAULTS, graph: { ...DEFAULTS.graph, cardCap: 5 } };
+  const f = harvest(specs, cfg).features.find((x) => x.code === 'CAP');
+  assert.equal(f.oos.length, 6, '5 items + 1 elision marker');
+  assert.match(f.oos[5], /\+15 more/);
+});
+
+test('[FGRAPH-3.4] cap on owns/touches does not drop a shared path from the reverse index', () => {
+  // BASE owns 13 files (over the default cardCap of 12); the 13th (by sort
+  // order) is also touched by EXT, making it a shared surface. The capped
+  // card field must elide it, but the reverse index / shared list — built
+  // from the uncapped surface — must still carry the full reference.
+  const owned = Array.from({ length: 13 }, (_, i) => `src/gen/file${String(i).padStart(2, '0')}.ts`);
+  const specs = specFixture([
+    { slug: 'a-base', code: 'BASE', name: 'Base',
+      tasks: owned.map((p) => `- Create: \`${p}\`\n`).join('') },
+    { slug: 'b-ext', code: 'EXT', name: 'Extension',
+      tasks: `- Modify: \`${owned[owned.length - 1]}\`\n` },
+  ]);
+  const g = harvest(specs);
+  const base = g.features.find((f) => f.code === 'BASE');
+  const shared = owned[owned.length - 1];
+  assert.equal(base.owns.length, 13, 'card field is capped at 12 + 1 elision marker');
+  assert.match(base.owns[12], /\+1 more/);
+  assert.ok(!base.owns.includes(shared), 'the 13th file is elided from the capped card field');
+  assert.ok(g.reverse[shared], 'the 13th file must still appear in the reverse index');
+  assert.deepEqual(g.reverse[shared].map((r) => r.code).sort(), ['BASE', 'EXT']);
+  const sharedEntry = g.shared.find((s) => s.path === shared);
+  assert.ok(sharedEntry, 'the 13th file must still appear in the shared-surface list');
+  assert.equal(sharedEntry.refs.length, 2);
 });

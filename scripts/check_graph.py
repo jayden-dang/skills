@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# @skills-linter: check-graph sha256:b9171baad503
+# @skills-linter: check-graph sha256:ed2049b6462b
 """check-graph — horizontal feature-graph layer.
 
 Harvests, from each feature's existing design.md/tasks.md (NO new authoring):
@@ -615,9 +615,10 @@ def render_all(graph, cfg):
 def query(graph, paths=None, keywords=None):
     """Query the Graph for features overlapping a set of paths (via the Reverse
     index) or matching a keyword against name/out-of-scope (case-insensitive
-    substring). Results are ranked by overlapPaths length descending, tied
-    broken by code for determinism. Each result carries the feature's full
-    Summary card.
+    substring). Results are ranked by IDF score descending — each overlapping
+    path contributes 1/df, where df is the number of features referencing that
+    path in the Reverse index — tied broken by code for determinism. Each
+    result carries the feature's full Summary card and its score.
     """
     path_set = set(paths or [])
     # Filter out falsy tokens before lowercasing, so a trailing valueless
@@ -642,15 +643,18 @@ def query(graph, paths=None, keywords=None):
     results = []
     for entry in scored.values():
         feature = entry["feature"]
+        score = sum(1.0 / len(graph["reverse"][p]) for p in entry["overlapPaths"]
+                    if graph["reverse"].get(p))
         results.append(
             {
                 "code": feature["code"],
                 "name": feature["name"],
                 "card": feature,
                 "overlapPaths": sorted(entry["overlapPaths"]),
+                "score": score,
             }
         )
-    results.sort(key=lambda r: (-len(r["overlapPaths"]), r["code"]))
+    results.sort(key=lambda r: (-r["score"], r["code"]))
     return results
 
 

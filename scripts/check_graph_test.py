@@ -771,6 +771,35 @@ class QueryTest(_FixtureTestCase):
         self.assertEqual([r["code"] for r in res], ["AAA", "ZZZ"], "equal overlap count -> ascending by code, not path-argument order")
 
 
+class QueryIdfTest(unittest.TestCase):
+    def test_rare_overlap_outranks_hub_MODGRAPH_3_1_3_2(self):
+        # covers MODGRAPH-3.1, MODGRAPH-3.2
+        def feats(*cs):
+            return [{"code": c, "name": c, "owns": [], "touches": [],
+                     "interfaces": [], "oos": []} for c in cs]
+        graph = {
+            "features": feats("HUB", "RARE", "X", "Y", "Z"),
+            "reverse": {
+                "hub.ts": [{"code": c, "role": "owns"} for c in ("HUB", "RARE", "X", "Y")],  # df=4
+                "rare.ts": [{"code": c, "role": "owns"} for c in ("RARE", "Z")],             # df=2
+            },
+            "shared": [],
+        }
+        res = check_graph.query(graph, paths=["hub.ts", "rare.ts"])
+        self.assertEqual(res[0]["code"], "RARE")               # 0.25 + 0.5 beats hub-only 0.25
+        self.assertGreater(res[0]["score"], res[1]["score"])
+        self.assertIn("card", res[0])                          # MODGRAPH-4.5 fields preserved
+
+    def test_result_keeps_existing_fields_MODGRAPH_4_5(self):
+        # covers MODGRAPH-4.5
+        graph = {"features": [{"code": "A", "name": "A", "owns": [], "touches": [],
+                               "interfaces": [], "oos": []}],
+                 "reverse": {"p.ts": [{"code": "A", "role": "owns"}]}, "shared": []}
+        r = check_graph.query(graph, paths=["p.ts"])[0]
+        for k in ("code", "name", "card", "overlapPaths"):
+            self.assertIn(k, r)
+
+
 class CliTest(_FixtureTestCase):
     """CLI black-box tests: subprocess against check_graph.py, no reach into internals."""
 

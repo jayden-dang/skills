@@ -34,7 +34,7 @@ For Task N:
 5. **Handle the status** per the table below. *Done when: status is DONE and the work is committed.*
 6. **Package the diff.** Run `review-package $BASE $(git rev-parse HEAD)` (repo script; prints the path of the bundle it wrote). BASE is the sha from step 1 — **never `HEAD~1`**, which silently drops every commit of a multi-commit task except the last. *Done when: the package path is printed.*
 7. **Dispatch a task reviewer** using `task-reviewer-prompt.md` (beside this file) with: the brief path, the report path, the diff package path, the Global Constraints verbatim, and an explicit model. *Done when: both verdicts are back.*
-8. **Fix loop.** Critical or Important findings → dispatch a fix subagent (implementer contract: it re-runs the covering tests — name them in the dispatch; a one-line fix does not need the whole suite — and appends its results to the same report file) → **re-review**. Repeat until the reviewer approves. Never fix findings yourself in the controller context — that pollutes it. Minor findings → record in the ledger for the final review to triage; an unrecorded roll-up is a silent discard. *Done when: the re-review is clean.*
+8. **Fix loop.** Critical or Important findings → dispatch a fix subagent (implementer contract: it re-runs the covering tests — name them in the dispatch; a one-line fix does not need the whole suite — and appends its results to the same report file) → **re-review**. Repeat until the reviewer approves. **Circuit breaker:** if the same finding survives 3 fix→re-review cycles, stop looping — the fix approach is wrong or the task is mis-scoped. Escalate to the user with the finding and the three attempts, exactly as for BLOCKED; never spend a fourth cycle on it. Never fix findings yourself in the controller context — that pollutes it. Minor findings → record in the ledger for the final review to triage; an unrecorded roll-up is a silent discard. *Done when: the re-review is clean or the breaker has tripped and the user has ruled.*
 9. **Resolve ⚠️ items.** Requirements the reviewer could not verify from the diff (they live in unchanged code or span tasks) come back to you flagged — you hold the plan context the reviewer lacks. Confirm each yourself; a real gap counts as a failed spec verdict: back to step 8. *Done when: every flagged item is confirmed covered or fixed.*
 10. **Ledger.** Append one line to `.skills/progress.md`: `Task N: complete (commits <base7>..<head7>, review clean)`. Mark the todo done. *Done when: the line is written.*
 11. **Next task.** Go straight to Task N+1. *Done when: the loop restarts or no tasks remain.*
@@ -48,7 +48,7 @@ For Task N:
 | **NEEDS_CONTEXT** | Supply the missing file, interface, or decision it named, then re-dispatch on the same model. |
 | **BLOCKED** | Diagnose: missing context → supply it and re-dispatch; reasoning ceiling → re-dispatch on a stronger model; task too large → split it into smaller dispatches; the plan itself is wrong → escalate to the user. |
 
-Never ignore an escalation, and never force the same model to retry with nothing changed. A stuck implementer means something must change before the next attempt.
+Never ignore an escalation, and never force the same model to retry with nothing changed. A stuck implementer means something must change before the next attempt. Cap redispatches at 2 for the same task; if it is still not DONE after the second, escalate to the user rather than burning a third.
 
 ## Model Tiering
 

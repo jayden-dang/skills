@@ -61,6 +61,8 @@ A test that survives the revert is testing nothing.
 | "I just ran it ten minutes ago" | The code changed since; run it again |
 | "The agent said success" | Read the diff |
 | "Partial check is enough" | Partial proves nothing about the rest |
+| "I'll batch-verify everything at the end" | Each claim is verified when made; a batch at the end lets earlier false claims stand as fact meanwhile |
+| "CI will catch it after merge" | CI runs after the claim ships; the gate is before you claim, not after someone else pays |
 | "Different phrasing, so the rule doesn't apply" | The rule covers paraphrases and implications |
 
 Run the command. Read the output. Then — and only then — say it.

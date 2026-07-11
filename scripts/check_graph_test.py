@@ -655,6 +655,71 @@ class RenderGraphMdTest(_FixtureTestCase):
         )
 
 
+class RenderAllTest(_FixtureTestCase):
+    def _sharded(self):
+        specs = self._spec_fixture([
+            {"slug": "a", "code": "AA", "name": "Aye",
+             "tasks": "**Files:**\n- Create: src/auth/a.ts\n- Modify: src/shared/util.ts"},
+            {"slug": "b", "code": "BB", "name": "Bee",
+             "tasks": "**Files:**\n- Create: src/billing/b.ts\n- Modify: src/shared/util.ts"}])
+        cfg = {"specsDir": "docs/specs",
+               "graph": {"sourceRoots": ["src"], "sourceExts": ["ts"], "cardCap": 12, "queryCap": 8},
+               "modules": [{"code": "AUTH", "name": "Auth", "owns": ["src/auth/**", "src/shared/**"]},
+                           {"code": "BILL", "name": "Bill", "owns": ["src/billing/**"]}]}
+        return check_graph.harvest(specs, cfg), cfg
+
+    def test_shards_by_module_MODGRAPH_2_1_2_2_2_3(self):
+        # covers MODGRAPH-2.1, MODGRAPH-2.2, MODGRAPH-2.3
+        graph, cfg = self._sharded()
+        files = check_graph.render_all(graph, cfg)
+        self.assertIn("modules/AUTH.md", files)
+        self.assertIn("modules/BILL.md", files)
+        self.assertIn("## Modules", files["GRAPH.md"])
+        self.assertIn("src/shared/util.ts", files["GRAPH.md"])   # cross-module shared
+        self.assertIn("| AA |", files["modules/AUTH.md"])
+
+    def test_unassigned_shard_MODGRAPH_2_4(self):
+        # covers MODGRAPH-2.4
+        specs = self._spec_fixture([
+            {"slug": "x", "code": "XX", "name": "Ex",
+             "tasks": "**Files:**\n- Create: src/auth/a.ts\n- Create: src/billing/b.ts"}])
+        cfg = {"specsDir": "docs/specs",
+               "graph": {"sourceRoots": ["src"], "sourceExts": ["ts"], "cardCap": 12, "queryCap": 8},
+               "modules": [{"code": "AUTH", "name": "A", "owns": ["src/auth/**"]},
+                           {"code": "BILL", "name": "B", "owns": ["src/billing/**"]}]}
+        files = check_graph.render_all(check_graph.harvest(specs, cfg), cfg)
+        self.assertIn("modules/_unassigned.md", files)
+        self.assertIn("| XX |", files["modules/_unassigned.md"])
+        self.assertNotIn("modules/AUTH.md", files)               # AUTH has no homed feature
+
+    def test_flat_when_no_manifest_MODGRAPH_4_2(self):
+        # covers MODGRAPH-4.2
+        specs = self._spec_fixture([
+            {"slug": "a", "code": "AA", "name": "Aye", "tasks": "**Files:**\n- Create: src/auth/a.ts"}])
+        cfg = {"specsDir": "docs/specs",
+               "graph": {"sourceRoots": ["src"], "sourceExts": ["ts"], "cardCap": 12, "queryCap": 8}}
+        graph = check_graph.harvest(specs, cfg)
+        self.assertEqual(check_graph.render_all(graph, cfg),
+                         {"GRAPH.md": check_graph.render_graph_md(graph)})
+
+    def test_deterministic_and_banner_MODGRAPH_2_5_2_7(self):
+        # covers MODGRAPH-2.5, MODGRAPH-2.7
+        graph, cfg = self._sharded()
+        f1 = check_graph.render_all(graph, cfg)
+        self.assertEqual(f1, check_graph.render_all(graph, cfg))
+        self.assertIn("Do not edit by hand", f1["GRAPH.md"])
+        self.assertIn("Do not edit by hand", f1["modules/AUTH.md"])
+
+    def test_import_has_no_side_effects_MODGRAPH_4_6(self):
+        # covers MODGRAPH-4.6
+        import importlib, io, contextlib
+        buf = io.StringIO()
+        with contextlib.redirect_stdout(buf):
+            mod = importlib.reload(check_graph)
+        self.assertEqual(buf.getvalue(), "")
+        self.assertTrue(hasattr(mod, "render_all"))
+
+
 class QueryTest(_FixtureTestCase):
     def test_query_by_path_returns_ranked_overlapping_features(self):
         """query by path returns ranked overlapping features."""

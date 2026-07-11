@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# @skills-linter: check-graph sha256:b24d90258dba
+# @skills-linter: check-graph sha256:2911566d738c
 """check-graph — horizontal feature-graph layer.
 
 Harvests, from each feature's existing design.md/tasks.md (NO new authoring):
@@ -664,9 +664,11 @@ def render_all(graph, cfg):
     files = {"GRAPH.md": "\n".join(idx)}
 
     def shard(title, feats):
-        rows = [f"# Module {title}", "", _GRAPH_BANNER, "", "| Feature | Name | Owns |", "|---|---|---|"]
+        rows = [f"# Module {title}", "", _GRAPH_BANNER, "",
+                "| Feature | Name | Owns | Facets |", "|---|---|---|---|"]
         for f in sorted(feats, key=lambda x: x["code"]):
-            rows.append(f"| {f['code']} | {f['name']} | {', '.join(f['owns']) or '—'} |")
+            facets = ", ".join(f.get("facets") or []) or "—"
+            rows.append(f"| {f['code']} | {f['name']} | {', '.join(f['owns']) or '—'} | {facets} |")
         rows.append("")
         return "\n".join(rows)
 

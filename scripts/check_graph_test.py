@@ -861,6 +861,45 @@ class RenderAllTest(_FixtureTestCase):
         self.assertEqual(err_buf.getvalue(), "")
         self.assertTrue(hasattr(mod, "render_all"))
 
+    def test_facets_render_in_shard_row_MODHOME_2_5(self):
+        # covers MODHOME-2.5
+        specs = self._spec_fixture([
+            {"slug": "aa", "code": "AA", "name": "Aye",
+             "tasks": "**Files:**\n- Create: src/auth/a.ts\n- Modify: src/billing/b.ts"}])
+        cfg = {"specsDir": "docs/specs",
+               "graph": {"sourceRoots": ["src"], "sourceExts": ["ts"], "cardCap": 12, "queryCap": 8},
+               "modules": [{"code": "AUTH", "name": "Auth", "owns": ["src/auth/**"]},
+                           {"code": "BILL", "name": "Bill", "owns": ["src/billing/**"]}]}
+        files = check_graph.render_all(check_graph.harvest(specs, cfg), cfg)
+        self.assertIn("Facets", files["modules/AUTH.md"])
+        # AA's row carries its BILL facet
+        auth_rows = [ln for ln in files["modules/AUTH.md"].splitlines() if ln.startswith("| AA ")]
+        self.assertTrue(auth_rows and "BILL" in auth_rows[0])
+
+    def test_spanning_feature_renders_in_unassigned_MODHOME_1_4(self):
+        # covers MODHOME-1.4
+        specs = self._spec_fixture([
+            {"slug": "sp", "code": "SP", "name": "Span",
+             "tasks": "**Files:**\n- Create: src/auth/a.ts\n- Create: src/billing/b.ts"}])
+        cfg = {"specsDir": "docs/specs",
+               "graph": {"sourceRoots": ["src"], "sourceExts": ["ts"], "cardCap": 12, "queryCap": 8},
+               "modules": [{"code": "AUTH", "name": "Auth", "owns": ["src/auth/**"]},
+                           {"code": "BILL", "name": "Bill", "owns": ["src/billing/**"]}]}
+        files = check_graph.render_all(check_graph.harvest(specs, cfg), cfg)
+        self.assertIn("modules/_unassigned.md", files)
+        self.assertIn("| SP |", files["modules/_unassigned.md"])
+
+    def test_flat_render_byte_identical_with_new_fields_MODHOME_4_1(self):
+        # covers MODHOME-4.1
+        specs = self._spec_fixture([
+            {"slug": "aa", "code": "AA", "name": "Aye", "tasks": "**Files:**\n- Create: src/auth/a.ts"}])
+        cfg = {"specsDir": "docs/specs",
+               "graph": {"sourceRoots": ["src"], "sourceExts": ["ts"], "cardCap": 12, "queryCap": 8}}
+        graph = check_graph.harvest(specs, cfg)   # no manifest -> facets/home degraded
+        self.assertEqual(
+            check_graph.render_all(graph, cfg),
+            {"GRAPH.md": check_graph.render_graph_md(graph)})
+
 
 class QueryTest(_FixtureTestCase):
     def test_query_by_path_returns_ranked_overlapping_features(self):

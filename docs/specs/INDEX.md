@@ -6,4 +6,4 @@ retired code).
 
 | Code | Feature | Spec | Status |
 |---|---|---|---|
-| MODMAP | Module manifest & boundary linting | ./2026-07-11-module-manifest/ | Planned |
+| MODMAP | Module manifest & boundary linting | ./2026-07-11-module-manifest/ | Implemented |

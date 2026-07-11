@@ -707,6 +707,22 @@ class HarvestHomingTest(_FixtureTestCase):
         f = next(x for x in graph["features"] if x["code"] == "OV")
         self.assertEqual(f["home"], "AUTH")   # derived would be BILL; override wins
 
+    def test_override_only_read_from_header_MODHOME_3_1(self):
+        # covers MODHOME-3.1
+        # a `Module:` line in the BODY (after the first `##` section) must NOT
+        # override — only the metadata header counts, per MODHOME-3.1's wording.
+        specs = self._spec_fixture([
+            {"slug": "bd", "code": "BD", "name": "Body",
+             "oos": ["Module: AUTH is only mentioned as prose here"],
+             "tasks": "**Files:**\n- Create: src/billing/b.ts"}])
+        # inject a body-level line that starts exactly with `Module: AUTH`
+        req = os.path.join(specs, "bd", "requirements.md")
+        with open(req, "a", encoding="utf-8") as fh:
+            fh.write("\n## Notes\nModule: AUTH\n")
+        f = next(x for x in check_graph.harvest(specs, self._cfg())["features"]
+                 if x["code"] == "BD")
+        self.assertEqual(f["home"], "BILL")   # derived from owns; body line ignored
+
     def test_harvest_adds_facets_and_homing_fields_MODHOME_4_4(self):
         # covers MODHOME-4.4
         specs = self._spec_fixture([

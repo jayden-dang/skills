@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# @skills-linter: check-graph sha256:50ff105b0440
+# @skills-linter: check-graph sha256:21ed66617df8
 """check-graph — horizontal feature-graph layer.
 
 Harvests, from each feature's existing design.md/tasks.md (NO new authoring):
@@ -494,6 +494,7 @@ def _scan_surface(text, cfg):
 _FEATURE_CODE_RE = re.compile(r"^Feature code:\s*([A-Z][A-Z0-9]{1,11})", re.MULTILINE)
 _REQUIREMENTS_TITLE_RE = re.compile(r"^#\s*Requirements:\s*(.+)$", re.MULTILINE)
 _MODULE_OVERRIDE_RE = re.compile(r"^Module:\s*([A-Z][A-Z0-9]{1,11})", re.MULTILINE)
+_HEADER_SECTION_RE = re.compile(r"^##\s", re.MULTILINE)
 
 
 def harvest(specs_dir, cfg=DEFAULTS):
@@ -539,7 +540,12 @@ def harvest(specs_dir, cfg=DEFAULTS):
         # it. The cap is applied in a separate pass, after reverse/shared exist.
         override_code = None
         if _manifest_modules:
-            om = _MODULE_OVERRIDE_RE.search(text)
+            # Scope the override to the metadata header (text before the first
+            # `##` section), per MODHOME-3.1 — a stray `Module:` line in prose or
+            # a fenced example must not silently re-home the feature.
+            sec = _HEADER_SECTION_RE.search(text)
+            header = text[:sec.start()] if sec else text
+            om = _MODULE_OVERRIDE_RE.search(header)
             override_code = om.group(1) if om else None
         _hom = _home_feature(sorted(owns), sorted(touches), override_code,
                              _module_codes, _manifest_modules)

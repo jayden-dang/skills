@@ -10,6 +10,12 @@
 - interfaces: resolve_module(path, modules) and load_manifest(cfg) (M1)., _home_module(owned_paths, modules) -> str|None; each harvested, graph (features carry home from Task 1), render_graph_md,, render_all(graph, cfg) (Task 2)., --harvest writes every rendered file and deletes any, graph["reverse"] (per-path {code, role} lists, query(...) (Task 4), cfg["graph"]["queryCap"]., _first_sentence(s) -> str; --query --json emits, render_all(graph, cfg) (Task 2)., --verify compares every rendered file to its committed copy and
 - out-of-scope: Rich feature homing — the split-signal on owns-spanning, cross-cutting | Per-module standards (M5) and gate integration (M6): M2 changes the | The brownfield on-ramp (M4): M2 assumes the manifest already exists. | Semantic/embedding ranking — the IDF weight is purely structural | Changing the manifest format or boundary checks — those are M1; M2 only
 
+### MODHOME — Feature Homing Refinement & Facets
+- owns: —
+- touches: evals/evals.py, scripts/check_graph.py, scripts/check_graph_test.py, scripts/check_trace.py, scripts/vendor_linters.py, scripts/vendor_linters_test.py, scripts/wiring_test.py
+- interfaces: _home_feature(owned_paths, touched_paths, override_code,, _home_feature(...) (Task 1); load_manifest(cfg) -> (modules,, harvested features carrying home, facets (Task 2);, graph["features"] each carrying homing = {"spanned", "unknown_override"}
+- out-of-scope: Splitting a spanning feature automatically. M3 only *flags* a span; it | A second home. A feature has at most one home; facets are edges, not | Facets for un-homed features. A spanning or orphan feature has no home, so | Ranking or query changes. Facets are rendered, not scored; the M2 IDF | Per-module standards, brownfield on-ramp, gate wiring. Those are M4–M6. | A manifest schema field for facets. Facets are derived from touched paths
+
 ### MODMAP — Module Manifest & Boundary Linting
 - owns: —
 - touches: check_trace.py, evals/evals.py, scripts/check_graph.py, scripts/check_graph_test.py, scripts/vendor_linters.py, scripts/vendor_linters_test.py, scripts/wiring_test.py
@@ -20,10 +26,10 @@
 
 | Path | Features |
 |---|---|
-| evals/evals.py | MODGRAPH:touches, MODMAP:touches |
-| scripts/check_graph.py | MODGRAPH:touches, MODMAP:touches |
-| scripts/check_graph_test.py | MODGRAPH:touches, MODMAP:touches |
-| scripts/check_trace.py | MODGRAPH:touches, MODMAP:touches |
-| scripts/vendor_linters.py | MODGRAPH:touches, MODMAP:touches |
-| scripts/vendor_linters_test.py | MODGRAPH:touches, MODMAP:touches |
-| scripts/wiring_test.py | MODGRAPH:touches, MODMAP:touches |
+| evals/evals.py | MODGRAPH:touches, MODHOME:touches, MODMAP:touches |
+| scripts/check_graph.py | MODGRAPH:touches, MODHOME:touches, MODMAP:touches |
+| scripts/check_graph_test.py | MODGRAPH:touches, MODHOME:touches, MODMAP:touches |
+| scripts/check_trace.py | MODGRAPH:touches, MODHOME:touches, MODMAP:touches |
+| scripts/vendor_linters.py | MODGRAPH:touches, MODHOME:touches, MODMAP:touches |
+| scripts/vendor_linters_test.py | MODGRAPH:touches, MODHOME:touches, MODMAP:touches |
+| scripts/wiring_test.py | MODGRAPH:touches, MODHOME:touches, MODMAP:touches |

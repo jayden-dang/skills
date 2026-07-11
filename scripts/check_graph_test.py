@@ -1451,6 +1451,61 @@ class VerifyIntegrationTest(_FixtureTestCase):
         self.assertEqual(buf.getvalue(), "")    # importing runs no CLI/output
         self.assertTrue(hasattr(mod, "_run_verify"))
 
+    def _homing_repo(self, files):
+        import io, contextlib
+        root = self._tmp_repo(files)
+        os.makedirs(os.path.join(root, "docs/agents"), exist_ok=True)
+        with open(os.path.join(root, "docs/agents/trace.json"), "w") as fh:
+            json.dump({"specsDir": "docs/specs",
+                       "graph": {"sourceRoots": ["src"], "sourceExts": ["ts"]},
+                       "modules": [{"code": "AUTH", "name": "A", "owns": ["src/auth/**"]},
+                                   {"code": "BILL", "name": "B", "owns": ["src/billing/**"]}]},
+                      fh)
+        check_graph.main(["--harvest", "--root", root])   # write non-stale shards
+        buf = io.StringIO()
+        with contextlib.redirect_stdout(buf):
+            rc = check_graph.main(["--verify", "--root", root, "--json"])
+        return rc, json.loads(buf.getvalue())
+
+    def test_split_signal_is_advisory_MODHOME_1_2_1_3(self):
+        # covers MODHOME-1.2, MODHOME-1.3
+        rc, payload = self._homing_repo({
+            "docs/specs/INDEX.md": "| SPAN | Span | ./span/ | Approved |\n",
+            "docs/specs/span/requirements.md":
+                "# Requirements: Span\nFeature code: SPAN\nStatus: Approved\n\n## Out of Scope\n",
+            "docs/specs/span/tasks.md":
+                "**Files:**\n- Create: src/auth/a.ts\n- Create: src/billing/b.ts\n",
+            "src/auth/a.ts": "x", "src/billing/b.ts": "x"})
+        self.assertEqual(rc, 0)                           # advisory, no gate change (1.3)
+        self.assertEqual(payload["errors"], [])
+        self.assertTrue(any("SPAN" in w and "AUTH" in w and "BILL" in w
+                            for w in payload["warnings"]))   # (1.2)
+
+    def test_invalid_override_is_advisory_MODHOME_3_3_3_4(self):
+        # covers MODHOME-3.3, MODHOME-3.4
+        rc, payload = self._homing_repo({
+            "docs/specs/INDEX.md": "| OV | Ov | ./ov/ | Approved |\n",
+            "docs/specs/ov/requirements.md":
+                "# Requirements: Ov\nFeature code: OV\nModule: NOPE\nStatus: Approved\n\n## Out of Scope\n",
+            "docs/specs/ov/tasks.md": "**Files:**\n- Create: src/auth/a.ts\n",
+            "src/auth/a.ts": "x"})
+        self.assertEqual(rc, 0)                           # advisory (3.4)
+        self.assertEqual(payload["errors"], [])
+        self.assertTrue(any("OV" in w and "NOPE" in w for w in payload["warnings"]))  # (3.3)
+
+    def test_boundary_error_still_fails_with_span_present_MODHOME_4_3(self):
+        # covers MODHOME-4.3
+        rc, payload = self._homing_repo({
+            "docs/specs/INDEX.md": "| SPAN | Span | ./span/ | Approved |\n",
+            "docs/specs/span/requirements.md":
+                "# Requirements: Span\nFeature code: SPAN\nStatus: Approved\n\n## Out of Scope\n",
+            "docs/specs/span/tasks.md":
+                "**Files:**\n- Create: src/auth/a.ts\n- Create: src/billing/b.ts\n",
+            "src/auth/a.ts": "x", "src/billing/b.ts": "x",
+            "src/orphan/z.ts": "x"})                       # orphan source folder -> error
+        self.assertEqual(rc, 1)                            # boundary error still fails the gate
+        self.assertTrue(any("orphan" in e for e in payload["errors"]))
+
 
 class HarvestWriteTest(_FixtureTestCase):
     def _module_repo(self):

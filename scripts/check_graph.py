@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# @skills-linter: check-graph sha256:2911566d738c
+# @skills-linter: check-graph sha256:50ff105b0440
 """check-graph — horizontal feature-graph layer.
 
 Harvests, from each feature's existing design.md/tasks.md (NO new authoring):
@@ -899,6 +899,17 @@ def _run_verify(root, cfg, specs_dir, as_json):
         berrors, bwarnings = _verify_boundaries(root, cfg, modules)
         errors.extend(berrors)
         warnings.extend(bwarnings)
+        for f in graph["features"]:
+            hom = f.get("homing") or {}
+            if hom.get("spanned"):
+                warnings.append(
+                    f"W: feature {f['code']} owns files spanning modules "
+                    f"{', '.join(hom['spanned'])} — split it per module or "
+                    f"declare a home with a `Module:` header line")
+            if hom.get("unknown_override"):
+                warnings.append(
+                    f"W: feature {f['code']} declares Module: {hom['unknown_override']} "
+                    f"which is not a known module — override ignored")
 
     if as_json:
         print(json.dumps({"errors": errors, "warnings": warnings}, indent=2, ensure_ascii=False))

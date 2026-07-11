@@ -995,5 +995,37 @@ class EnumerateFoldersTest(_FixtureTestCase):
         self.assertTrue(all("node_modules" not in f for f in repo))
 
 
+class VerifyBoundariesTest(_FixtureTestCase):
+    def _cfg(self):
+        return {"graph": {"sourceRoots": ["src"], "sourceExts": ["ts"], "cardCap": 12}}
+
+    def test_orphan_folder_is_error_MODMAP_3_2(self):
+        root = self._tmp_repo({"src/auth/a.ts": "x", "src/lonely/b.ts": "x"})
+        mods = [{"code": "AUTH", "name": "A", "owns": ["src/auth/**"]}]
+        errs, warns = check_graph._verify_boundaries(root, self._cfg(), mods)
+        self.assertTrue(any("src/lonely" in e and "orphan" in e.lower() for e in errs))
+
+    def test_double_mapped_folder_is_error_MODMAP_3_3(self):
+        root = self._tmp_repo({"src/shared/a.ts": "x"})
+        mods = [{"code": "AAA", "name": "A", "owns": ["src/shared/**"]},
+                {"code": "BBB", "name": "B", "owns": ["src/**"]}]
+        errs, _ = check_graph._verify_boundaries(root, self._cfg(), mods)
+        self.assertTrue(any("src/shared" in e and "AAA" in e and "BBB" in e for e in errs))
+
+    def test_stale_glob_is_warning_not_error_MODMAP_3_4(self):
+        root = self._tmp_repo({"src/auth/a.ts": "x"})
+        mods = [{"code": "AUTH", "name": "A", "owns": ["src/auth/**", "src/ghost/**"]}]
+        errs, warns = check_graph._verify_boundaries(root, self._cfg(), mods)
+        self.assertEqual(errs, [])
+        self.assertTrue(any("src/ghost" in w and "AUTH" in w for w in warns))
+
+    def test_full_coverage_is_clean_MODMAP_3_5(self):
+        root = self._tmp_repo({"src/auth/a.ts": "x", "src/auth/sub/b.ts": "x"})
+        mods = [{"code": "AUTH", "name": "A", "owns": ["src/auth/**"]}]
+        errs, warns = check_graph._verify_boundaries(root, self._cfg(), mods)
+        self.assertEqual(errs, [])
+        self.assertEqual(warns, [])
+
+
 if __name__ == "__main__":
     unittest.main()

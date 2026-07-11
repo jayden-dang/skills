@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# @skills-linter: check-graph sha256:9a91ccaeb7ae
+# @skills-linter: check-graph sha256:d1242a210513
 """check-graph — horizontal feature-graph layer.
 
 Harvests, from each feature's existing design.md/tasks.md (NO new authoring):
@@ -669,6 +669,33 @@ def _collect_flag(args, name):
         if args[i] == name:
             out.append(args[i + 1] if i + 1 < len(args) else None)
     return out
+
+
+def _verify_boundaries(root, cfg, modules):
+    """Check module coverage of the source tree. Returns (errors, warnings).
+
+    Orphan and double-mapped SOURCE folders are errors; a module 'owns' pattern
+    matching no REPO folder is a warning (aligns with 'no folder in the repo').
+    """
+    errors = []
+    warnings = []
+    repo_folders, source_folders = enumerate_folders(root, cfg)
+    for folder in source_folders:
+        hits = resolve_module(folder, modules)
+        if not hits:
+            errors.append(f"E: source folder {folder} maps to no module (orphan)")
+        elif len(hits) > 1:
+            errors.append(
+                f"E: source folder {folder} is double-mapped to modules "
+                f"{', '.join(hits)}")
+    for m in modules:
+        code = m.get("code")
+        for g in m.get("owns", []):
+            rx = _glob_to_re(g)
+            if not any(rx.match(f) for f in repo_folders):
+                warnings.append(
+                    f"W: module {code} owns '{g}' which matches no folder in the repo")
+    return errors, warnings
 
 
 def _run_verify(root, cfg, specs_dir, as_json):

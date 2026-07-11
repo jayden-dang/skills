@@ -7,4 +7,4 @@ retired code).
 | Code | Feature | Spec | Status |
 |---|---|---|---|
 | MODMAP | Module manifest & boundary linting | ./2026-07-11-module-manifest/ | Implemented |
-| MODGRAPH | Sharded module graph | ./2026-07-11-module-graph/ | Planned |
+| MODGRAPH | Sharded module graph | ./2026-07-11-module-graph/ | Implemented |

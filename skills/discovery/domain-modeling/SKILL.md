@@ -14,6 +14,8 @@ Actively build and sharpen the project's glossary while designing. Merely *readi
 
 ## During the conversation
 
+**When another skill owns the interview** (e.g. `grilling` inside `brainstorm`), you run as a passive side effect, not a second interviewer. Do the silent work directly — record a settled term to `CONTEXT.md`, cross-reference the code — but anything that needs the user (a challenge, a disambiguation, an edge-case probe) does **not** get its own turn: hand it to the interview's single question channel as the next question, asked one at a time in dependency order. Only when you are invoked standalone do you drive the questions yourself.
+
 **Challenge terms against the glossary.** When the user's usage conflicts with `CONTEXT.md`, call it out on the spot: "Your glossary defines *cancellation* as voiding the whole order, but you seem to mean removing one line item — which is it?"
 
 **Sharpen fuzzy language.** When a term is vague or overloaded, propose a precise canonical one: "You keep saying *account* — is that the Customer or the User? They differ here."

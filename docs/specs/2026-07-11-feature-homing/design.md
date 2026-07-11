@@ -1,7 +1,7 @@
 # Design: Feature Homing Refinement & Facets
 
 Feature code: MODHOME
-Status: Approved
+Status: Implemented
 Date: 2026-07-11
 Requirements: ./requirements.md
 

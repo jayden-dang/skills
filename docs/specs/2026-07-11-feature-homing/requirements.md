@@ -1,7 +1,7 @@
 # Requirements: Feature Homing Refinement & Facets
 
 Feature code: MODHOME
-Status: Approved
+Status: Implemented
 Date: 2026-07-11
 
 Slice M3 of the enterprise context layer. Refines the **basic homing** M2

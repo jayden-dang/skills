@@ -70,8 +70,9 @@ from the real folder layout the way a prose architecture doc would.
 - **MODMAP-3.3** IF a source folder resolves to more than one module THEN THE
   SYSTEM SHALL report a double-mapped-folder error naming the folder and the
   competing module codes.
-- **MODMAP-3.4** IF a module's `owns` pattern matches no folder in the repo THEN
-  THE SYSTEM SHALL report a stale-glob warning naming the module and the pattern.
+- **MODMAP-3.4** IF a module's `owns` pattern matches no folder under a
+  configured source root THEN THE SYSTEM SHALL report a stale-glob warning naming
+  the module and the pattern.
 - **MODMAP-3.5** WHEN every source folder resolves to exactly one module and no
   manifest-validity, duplicate-code, malformed-code, orphan-folder, or
   double-mapped-folder finding exists THE SYSTEM SHALL report boundary

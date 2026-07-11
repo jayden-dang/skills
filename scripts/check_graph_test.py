@@ -937,6 +937,23 @@ class LoadManifestTest(unittest.TestCase):
         _, errs = check_graph.load_manifest(cfg)
         self.assertTrue(any("malformed" in e.lower() and "lower" in e for e in errs))
 
+    def test_code_length_bounds_MODMAP_1_5(self):
+        # covers MODMAP-1.5
+        def errs_for(code):
+            return check_graph.load_manifest(
+                {"modules": [{"code": code, "name": "n", "owns": ["src/**"]}]})[1]
+        self.assertTrue(any("malformed" in e for e in errs_for("A")))       # 1 char
+        self.assertTrue(any("malformed" in e for e in errs_for("A" * 13)))  # 13 chars
+        self.assertEqual(errs_for("AB"), [])                                # 2 chars ok
+        self.assertEqual(errs_for("A" * 12), [])                            # 12 chars ok
+
+    def test_non_list_modules_is_error_not_crash_MODMAP_1_3(self):
+        # covers MODMAP-1.3
+        for bad in (True, 5, "AUTH"):
+            mods, errs = check_graph.load_manifest({"modules": bad})
+            self.assertEqual(mods, [])
+            self.assertTrue(errs, f"a non-list modules value {bad!r} must yield an error, not a crash")
+
     def test_load_config_keeps_config_when_modules_present_MODMAP_4_4(self):
         # covers MODMAP-4.4
         root = tempfile.mkdtemp()
@@ -1094,10 +1111,31 @@ class VerifyIntegrationTest(_FixtureTestCase):
         rc = check_graph.main(["--verify", "--root", root])
         self.assertEqual(rc, 1)
 
+    def test_invalid_manifest_fails_and_skips_coverage_MODMAP_1_3(self):
+        # covers MODMAP-1.3
+        import io
+        import contextlib
+        root = self._repo_with_specs(
+            {"src/orphan/a.ts": "x"},
+            {"specsDir": "docs/specs",
+             "modules": [{"code": "AUTH", "owns": ["src/auth/**"]}]})  # missing name
+        buf = io.StringIO()
+        with contextlib.redirect_stdout(buf):
+            rc = check_graph.main(["--verify", "--root", root])
+        out = buf.getvalue()
+        self.assertEqual(rc, 1)                 # validity error fails the gate
+        self.assertIn("missing 'name'", out)    # validity error reported
+        self.assertNotIn("orphan", out)         # coverage pass was skipped
+
     def test_import_has_no_side_effects_MODMAP_4_5(self):
         # covers MODMAP-4.5
         import importlib
-        mod = importlib.reload(check_graph)
+        import io
+        import contextlib
+        buf = io.StringIO()
+        with contextlib.redirect_stdout(buf):
+            mod = importlib.reload(check_graph)
+        self.assertEqual(buf.getvalue(), "")    # importing runs no CLI/output
         self.assertTrue(hasattr(mod, "_run_verify"))
 
 

@@ -147,11 +147,11 @@ Satisfies: MODMAP-3.2, MODMAP-3.3, MODMAP-3.4, MODMAP-3.5
    `None` → append an **orphan-folder error** naming the folder (3.2);
    `Ambiguous(codes)` → append a **double-mapped-folder error** naming the
    folder and the competing codes (3.3).
-2. For each module `owns` pattern, test it against every **repo folder**; a
-   pattern matching none → append a **stale-glob warning** naming the module and
-   pattern (3.4). Ranging over repo folders (not just source folders) matches
-   3.4's "no folder in the repo" and avoids false staleness on container-owning
-   globs.
+2. For each module `owns` pattern, test it against every **repo folder** (every
+   directory under a `sourceRoot`, source-bearing or not); a pattern matching
+   none → append a **stale-glob warning** naming the module and pattern (3.4).
+   Ranging over all source-rooted folders (not just source-bearing ones) avoids
+   false staleness on a glob that owns a container/asset folder.
 3. When the source-folder set is non-empty, every source folder resolved to
    exactly one module, and there are no errors, the pass contributes nothing —
    leaving `_run_verify` to report OK (3.5).

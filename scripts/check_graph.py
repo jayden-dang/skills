@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# @skills-linter: check-graph sha256:4157a9ed74cc
+# @skills-linter: check-graph sha256:c310066a5b63
 """check-graph — horizontal feature-graph layer.
 
 Harvests, from each feature's existing design.md/tasks.md (NO new authoring):
@@ -626,6 +626,8 @@ def load_manifest(cfg):
     raw = cfg.get("modules")
     if not raw:
         return [], []
+    if not isinstance(raw, list):
+        return [], ["E: 'modules' must be a list of module entries"]
     modules = []
     errors = []
     seen = set()
@@ -694,7 +696,7 @@ def _verify_boundaries(root, cfg, modules):
             rx = _glob_to_re(g)
             if not any(rx.match(f) for f in repo_folders):
                 warnings.append(
-                    f"W: module {code} owns '{g}' which matches no folder in the repo")
+                    f"W: module {code} owns '{g}' which matches no folder under a configured source root")
     return errors, warnings
 
 

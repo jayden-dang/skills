@@ -69,6 +69,12 @@ Then, once per repo, run `/setup-repo` to configure the issue tracker, verify
 commands, and docs layout. For a brand-new project, start with
 `/scaffold-project`. See [Adopting the skill set](docs/guide/resources/adopting.md).
 
+**Other platforms.** Nothing here is Claude-specific — the skills are plain
+`SKILL.md`, the linters are Python stdlib, the tooling is bash. `AGENTS.md` at
+the repo root is the portable behavior contract; Codex CLI reads it natively and
+Cursor picks up `.cursor/rules/using-skills.mdc`. See
+[Running on other platforms](docs/guide/resources/platforms.md).
+
 ## The flow
 
 ```

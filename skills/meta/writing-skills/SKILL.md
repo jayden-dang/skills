@@ -121,5 +121,6 @@ Create a todo for each item.
 - [ ] Core body within token budget (≤~500 lines / 5k words); reference disclosed behind well-worded pointers, one level deep; any reference >100 lines has a TOC
 - [ ] Cross-references are REQUIRED SUB-SKILL prose; supporting files referenced by relative name
 - [ ] Every hand-off invokes only a model-invocable skill; any `disable-model-invocation` target is named for the user to run, never invoked
+- [ ] Structural + routing evals green: `python3 evals/evals.py --strict` passes (frontmatter, naming, line budget, and the description's should-fire/should-not-fire cases in `evals/triggers.json` — add the new skill's cases in this same commit)
 
 **Do not batch-create skills.** Finish, test, and validate one skill completely before starting the next.

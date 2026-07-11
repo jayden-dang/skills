@@ -1,0 +1,24 @@
+---
+description: Skill-check gate — find and invoke the relevant skill before acting
+alwaysApply: true
+---
+
+This repository ships an A-to-Z agentic development skill set. Its behavior
+contract lives in [AGENTS.md](../../AGENTS.md) at the repo root — read it first.
+
+**The gate (from `meta/using-skills`):** if there is even a 1% chance a skill in
+`skills/**/SKILL.md` applies to what you are about to do, invoke that skill
+first — before clarifying questions, before exploring the codebase, before
+editing a file. Announce "Using [skill] to [purpose]", then follow the skill
+body exactly.
+
+**The four Iron Laws are hard prohibitions, not guidelines:**
+
+- **NO-CODE** — `brainstorm` and a stated ceremony tier before any spec work.
+- **TEST-FIRST** — no production code without a failing test first (`tdd`).
+- **ROOT-CAUSE** — no fix without root-cause investigation (`debug`).
+- **EVIDENCE** — no completion claim without fresh verification (`verify`).
+
+Cursor has no session-start hook, so this rule is the injection path that keeps
+the gate alive. The full skill inventory, trace-spine contract, and subagent
+protocol are in AGENTS.md.

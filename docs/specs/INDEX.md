@@ -9,4 +9,4 @@ retired code).
 | MODMAP | Module manifest & boundary linting | ./2026-07-11-module-manifest/ | Implemented |
 | MODGRAPH | Sharded module graph | ./2026-07-11-module-graph/ | Implemented |
 | MODHOME | Feature homing refinement & facets | ./2026-07-11-feature-homing/ | Implemented |
-| MODSEED | Brownfield on-ramp — manifest seed | ./2026-07-11-manifest-seed/ | Planned |
+| MODSEED | Brownfield on-ramp — manifest seed | ./2026-07-11-manifest-seed/ | Implemented |

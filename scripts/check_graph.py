@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# @skills-linter: check-graph sha256:c90da49dd59e
+# @skills-linter: check-graph sha256:9a91ccaeb7ae
 """check-graph — horizontal feature-graph layer.
 
 Harvests, from each feature's existing design.md/tasks.md (NO new authoring):
@@ -317,6 +317,45 @@ def _walk(dir_, predicate):
 
     _recurse(dir_)
     return out
+
+
+def enumerate_folders(root, cfg):
+    """Walk each existing sourceRoot under `root`; return (repo_folders,
+    source_folders) as sorted repo-relative directory paths. source_folders
+    directly contain a file whose extension is in graph.sourceExts. Uses the
+    same dotfile/_SKIP_DIRS exclusions as _walk. Never called at import time.
+    """
+    graph = cfg["graph"]
+    exts = tuple("." + e for e in graph["sourceExts"])
+    repo_folders = set()
+    source_folders = set()
+
+    def walk(abs_dir, rel_dir):
+        try:
+            entries = list(os.scandir(abs_dir))
+        except OSError:
+            return
+        has_source = False
+        for e in entries:
+            if e.name.startswith("."):
+                continue
+            if e.is_dir(follow_symlinks=False):
+                if e.name in _SKIP_DIRS:
+                    continue
+                child_rel = e.name if not rel_dir else rel_dir + "/" + e.name
+                repo_folders.add(child_rel)
+                walk(e.path, child_rel)
+            elif e.is_file(follow_symlinks=False) and e.name.endswith(exts):
+                has_source = True
+        if rel_dir and has_source:
+            source_folders.add(rel_dir)
+
+    for r in graph["sourceRoots"]:
+        abs_r = os.path.join(root, r)
+        if os.path.isdir(abs_r):
+            repo_folders.add(r)
+            walk(abs_r, r)
+    return sorted(repo_folders), sorted(source_folders)
 
 
 def _read_maybe(p):

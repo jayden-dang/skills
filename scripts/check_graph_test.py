@@ -975,5 +975,25 @@ class GlobResolveTest(unittest.TestCase):
         self.assertEqual(check_graph.resolve_module("src/store2/db", mods), ["STORE"])
 
 
+class EnumerateFoldersTest(_FixtureTestCase):
+    def test_enumerates_repo_and_source_folders_MODMAP_3_1(self):
+        root = self._tmp_repo({
+            "src/auth/login.ts": "x",
+            "src/auth/helpers/util.ts": "x",
+            "src/assets/logo.png": "x",
+            "src/container/inner/svc.ts": "x",
+            "node_modules/pkg/index.ts": "x",
+        })
+        cfg = {"graph": {"sourceRoots": ["src"], "sourceExts": ["ts"], "cardCap": 12}}
+        repo, source = check_graph.enumerate_folders(root, cfg)
+        self.assertIn("src/auth", source)
+        self.assertIn("src/auth/helpers", source)
+        self.assertIn("src/container/inner", source)
+        self.assertNotIn("src/assets", source)
+        self.assertNotIn("src/container", source)
+        self.assertIn("src/container", repo)
+        self.assertTrue(all("node_modules" not in f for f in repo))
+
+
 if __name__ == "__main__":
     unittest.main()

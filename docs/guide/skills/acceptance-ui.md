@@ -6,7 +6,7 @@
 |---|---|
 | **Bucket** | acceptance |
 | **Invocation** | model-invocable (the agent calls it on its own) |
-| **Reads** | `docs/agents/project.md` (the `## Run locally (dev)` entry, requirement-tag conventions); a slice of `.skills/<feature>-acceptance.md`; the spec when run directly |
+| **Reads** | `docs/agents/project.md` (the `## Run locally (dev)` entry, requirement-tag conventions); a slice of `.skills/<slug>-acceptance.md`; the spec when run directly |
 | **Writes** | committed, ID-tagged Playwright specs (the durable artifact); a Playwright/Chromium harness and its run command when absent; the `## Run locally (dev)` entry when missing; results into the ledger |
 | **Calls** | [`debug`](debug.md) (the failing spec is the red loop) |
 | **Called by** | [`acceptance-check`](acceptance-check.md) |

@@ -55,7 +55,7 @@ Step 4 has three parts before the gate.
 
 The **coverage self-check** walks `requirements.md` top to bottom: every ID appears in exactly one Satisfies line, or is listed as deliberately unmapped with a reason. Then it scans for placeholders and internal contradictions — a name used two ways, a data flow that skips a component.
 
-The **independent design review** is dispatched, not self-run. A fresh context has no stake in your framing — it will not fall into the bias that reinterprets a stale requirement rather than catching it. The review subagent gets the design, `requirements.md`, and the repo, and verifies every code-facing claim: each named seam, signature, and data path exists as described, and each Satisfies mapping is actually achievable at that seam. It cites `file:line`, defaults to flagging, and writes to `.skills/<slug>-review.md`; you fix the findings without loading the code into the design context.
+The **independent design review** is dispatched, not self-run. A fresh context has no stake in your framing — it will not fall into the bias that reinterprets a stale requirement rather than catching it. The review subagent gets the design, `requirements.md`, and the repo, and verifies every code-facing claim: each named seam, signature, and data path exists as described, and each Satisfies mapping is actually achievable at that seam. It cites `file:line`, defaults to flagging, and writes to `.skills/<slug>-design-review.md`; you fix the findings without loading the code into the design context.
 
 The **upstream sync-back** is the step the skill insists you never skip.
 

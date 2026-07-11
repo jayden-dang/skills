@@ -75,7 +75,7 @@ The gap is concrete: an API that returns `201` where the client reads `200`. A c
 
 Read `requirements.md`, `design.md`, and `tasks.md`. For every requirement describing user-observable behavior, list its concrete checks — the happy path **and** each edge/error criterion — keyed to the requirement ID.
 
-The spec is the source: *a behavior nobody hand-fed you is still on the hook, and an untraced one is a gap to raise, not to skip.* The checklist becomes `.skills/<feature>-acceptance.md`, a git-ignored working ledger, plus one todo per item.
+The spec is the source: *a behavior nobody hand-fed you is still on the hook, and an untraced one is a gap to raise, not to skip.* The checklist becomes `.skills/<slug>-acceptance.md`, a git-ignored working ledger, plus one todo per item.
 
 ### 2. Dispatch by surface
 

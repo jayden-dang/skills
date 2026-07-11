@@ -6,7 +6,7 @@
 |---|---|
 | **Bucket** | acceptance |
 | **Invocation** | model-invocable (the agent calls it on its own) |
-| **Reads** | `docs/agents/project.md` (the `## Run locally (dev)` entry, requirement-tag conventions); a slice of `.skills/<feature>-acceptance.md`; the spec when run directly |
+| **Reads** | `docs/agents/project.md` (the `## Run locally (dev)` entry, requirement-tag conventions); a slice of `.skills/<slug>-acceptance.md`; the spec when run directly |
 | **Writes** | the `## Run locally (dev)` entry in `docs/agents/project.md` when missing; observed results back into the ledger; a committed ID-tagged API test |
 | **Calls** | [`debug`](debug.md) (the failing request is the red loop) |
 | **Called by** | [`acceptance-check`](acceptance-check.md) |

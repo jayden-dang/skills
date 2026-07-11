@@ -7,7 +7,7 @@
 | **Bucket** | spec |
 | **Invocation** | model-invocable (the agent calls it on its own) |
 | **Reads** | `templates/requirements.md`, `docs/specs/INDEX.md`, the approved brainstorm outcome |
-| **Writes** | `docs/specs/<date>-<feature>/requirements.md`, a row in `docs/specs/INDEX.md`, an independent review to `.skills/<slug>-review.md` (via subagent) |
+| **Writes** | `docs/specs/<date>-<feature>/requirements.md`, a row in `docs/specs/INDEX.md`, an independent review to `.skills/<slug>-req-review.md` (via subagent) |
 | **Calls** | a review subagent (independent code-claim check), then [`write-design`](write-design.md) (tier 2) or [`tdd`](tdd.md) (tier 1) |
 | **Called by** | [`brainstorm`](brainstorm.md) |
 
@@ -58,7 +58,7 @@ Before showing the user anything, the skill runs four scans:
 - **Ambiguity scan** — could any criterion be read two ways? Pick one reading and write it in.
 - **Testability scan** — can each criterion be verified by an automated test or a concrete manual check? Rewrite any that cannot.
 - **Placeholder scan** — no "TBD", "etc.", "handle errors appropriately".
-- **Code-claim check (independent)** — if any criterion asserts how the system *currently* works (a data format, an existing behavior, a constraint), dispatch a review subagent to verify each claim against the real code, cite `file:line`, and flag any that do not hold. The findings land in `.skills/<slug>-review.md`, and you correct the criterion before the gate. You do **not** read the code yourself: a false premise here — "the body is ProseMirror-JSON" when it is actually Markdown — would poison the design, the plan, and the code that follow. (With no subagents available, you do the check yourself against the code.)
+- **Code-claim check (independent)** — if any criterion asserts how the system *currently* works (a data format, an existing behavior, a constraint), dispatch a review subagent to verify each claim against the real code, cite `file:line`, and flag any that do not hold. The findings land in `.skills/<slug>-req-review.md`, and you correct the criterion before the gate. You do **not** read the code yourself: a false premise here — "the body is ProseMirror-JSON" when it is actually Markdown — would poison the design, the plan, and the code that follow. (With no subagents available, you do the check yourself against the code.)
 
 Then the skill presents the **written file** and stops. Conversational agreement is not approval — the file is what gets approved, and on approval its `Status` becomes Approved. The template carries an **Open Questions** section for anything still unresolved; every entry must be settled before the status flips, and the section is deleted once empty. Approving a file with open questions would leave the design step to guess, which is exactly the ambiguity the scans exist to remove.
 

@@ -10,8 +10,28 @@ Produce `docs/specs/<YYYY-MM-DD>-<feature>/requirements.md` from the approved
 brainstorm outcome. Requirements are the durable source of intent: they outlive
 this conversation, and every task, test, and commit will cite their IDs.
 
-Start from `templates/requirements.md` (in this skill set's repo). Create a
-todo per step.
+## Two modes — pick by what you were handed
+
+**Tier-1 mini-spec** — a fix plus a guard for an **already-approved** feature
+(you came from `amend` or `debug`). You are not authoring a new
+`requirements.md`. Append to the owning feature's `requirements.md` (or
+`docs/specs/fixes.md` if no feature owns it):
+
+- the **fix requirement** — one EARS criterion (Step 2's forms) for the
+  corrected behavior;
+- its **`SHALL CONTINUE TO` guard** — Step 3, for the behavior the fix must not
+  break.
+
+Then self-review just those two criteria: the ambiguity and testability scans,
+plus the code-claim check (Step 5) only when a criterion asserts how the system
+*currently* works — a guard usually does. Present the two appended criteria for
+approval, keep the feature's `Status`, and exit to `tdd`. **Skip Steps 1 and 4
+and the whole-file review** — a new feature code, an Out-of-Scope section, and a
+full-file self-review are for a new feature, not a two-line mini-spec.
+
+**New feature** — tier 2, or anything nothing has spec'd yet. Start from
+`templates/requirements.md` (in this skill set's repo) and run the full sequence
+below. Create a todo per step.
 
 ## Step 1: Register the feature code
 
@@ -64,7 +84,7 @@ Self-review before showing the user:
   currently works — a data format, an existing behavior, a constraint —
   dispatch a review subagent to verify each such claim against the real code
   (grep/read the files, cite `file:line`, flag any that don't hold), writing
-  findings to `.skills/<slug>-review.md`. A false premise here — "the body is
+  findings to `.skills/<slug>-req-review.md`. A false premise here — "the body is
   ProseMirror-JSON" when it is Markdown — poisons design, plan, and code.
   Correct the criterion before the gate; do not read the code yourself. (No
   subagents? Do the check yourself against the code.)

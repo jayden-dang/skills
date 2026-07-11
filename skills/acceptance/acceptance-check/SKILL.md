@@ -29,7 +29,7 @@ happy path AND each edge/error criterion — keyed to the requirement ID. The sp
 is the source: a behavior nobody hand-fed you is still on the hook, and an
 untraced one is a gap to raise, not to skip.
 
-Write the checklist to `.skills/<feature>-acceptance.md` (a working ledger,
+Write the checklist to `.skills/<slug>-acceptance.md` (a working ledger,
 git-ignored) and create one todo per item. Heavy reading? Dispatch a scan
 subagent to map the touched surface and digest it to the ledger; keep this
 context lean. *Done when: every user-facing requirement ID has at least one

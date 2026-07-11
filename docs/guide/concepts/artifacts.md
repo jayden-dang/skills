@@ -123,8 +123,10 @@ Working artifacts that pass between agents as **file paths**, never as pasted te
 | `task-N-report.md` | the implementer subagent | Status, TDD evidence (RED and GREEN commands and outputs), files changed, concerns |
 | `review-<base>..<head>.diff` | `scripts/review-package` | Commit list, diffstat, and full diff with context — the reviewer's view |
 | `<slug>-scan.md` | scan subagents | A findings digest of a touched surface, so raw source never floods the controller's context |
-| `<slug>-review.md` | review subagents | Independent verification of a spec/design/plan's code-facing claims |
-| `<feature>-acceptance.md` | `acceptance-check` | The acceptance ledger, sliced between `acceptance-api` and `acceptance-ui` |
+| `<slug>-req-review.md`, `<slug>-design-review.md`, `<slug>-plan-review.md` | review subagents | Independent verification of a spec/design/plan's code-facing claims. One file **per phase** so the requirements, design, and plan reviews never clobber each other |
+| `<slug>-acceptance.md` | `acceptance-check` | The acceptance ledger, sliced between `acceptance-api` and `acceptance-ui` |
+
+Every per-feature scratch file is keyed by `<slug>` — the feature's short identifier (its feature code once one exists) — and suffixed by the phase that writes it, so concurrent features and successive phases never share a filename.
 
 ## What deliberately does *not* land in the repo
 

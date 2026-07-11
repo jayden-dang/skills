@@ -66,7 +66,7 @@ than catching it). Dispatch a review subagent with this design, requirements.md,
 and the repo; have it verify every code-facing claim — each named seam,
 signature, and data path exists as described, and each `Satisfies:` mapping is
 achievable at that seam — grepping/reading real files, citing `file:line`,
-defaulting to flag. Findings go to `.skills/<slug>-review.md`; you fix them
+defaulting to flag. Findings go to `.skills/<slug>-design-review.md`; you fix them
 without loading the code here. (No subagents? Do this pass yourself in a fresh
 read of the code.)
 

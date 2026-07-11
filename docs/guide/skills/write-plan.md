@@ -69,7 +69,7 @@ The five checks the coverage step is reconciling against, from [`check-trace`](.
 
 The plan is written while the spec is Approved, so the linter is enforcing W1 — every requirement cited by a task. But the plan must be built to survive the flip to Implemented, when E2 turns on and a footer without a tagged test becomes a hard error. That is why "footer citation is not test coverage" is a check the plan runs *now*, against a failure that only fires *later*.
 
-Then the **independent plan review**, dispatched not self-run. The doc-only checks above stay in this context; the codebase comparison does not. A review subagent gets the plan, `requirements.md`, `design.md`, and the repo, and verifies against real code every symbol, signature, path, import, and **hardcoded test value** the plan asserts — a fabricated golden or a guessed API is the classic plan defect. It cites `file:line`, defaults to flag, writes to `.skills/<slug>-review.md`, and you fix before offering execution.
+Then the **independent plan review**, dispatched not self-run. The doc-only checks above stay in this context; the codebase comparison does not. A review subagent gets the plan, `requirements.md`, `design.md`, and the repo, and verifies against real code every symbol, signature, path, import, and **hardcoded test value** the plan asserts — a fabricated golden or a guessed API is the classic plan defect. It cites `file:line`, defaults to flag, writes to `.skills/<slug>-plan-review.md`, and you fix before offering execution.
 
 The step is done when every requirement ID has both a task footer and a tagged test, check-trace is clean, the design's seam-table IDs are all covered, and the placeholder scan is clean.
 

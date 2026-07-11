@@ -6,8 +6,8 @@
 |---|---|
 | **Bucket** | acceptance |
 | **Invocation** | model-invocable (the agent calls it on its own) |
-| **Reads** | the spec triad — `requirements.md`, `design.md`, `tasks.md`; the working ledger `.skills/<feature>-acceptance.md` |
-| **Writes** | `.skills/<feature>-acceptance.md` (a git-ignored acceptance ledger, one todo per item); committed ID-tagged tests for non-API/non-UI surfaces |
+| **Reads** | the spec triad — `requirements.md`, `design.md`, `tasks.md`; the working ledger `.skills/<slug>-acceptance.md` |
+| **Writes** | `.skills/<slug>-acceptance.md` (a git-ignored acceptance ledger, one todo per item); committed ID-tagged tests for non-API/non-UI surfaces |
 | **Calls** | [`acceptance-api`](acceptance-api.md), [`acceptance-ui`](acceptance-ui.md), [`dogfood`](dogfood.md), [`debug`](debug.md) (through its children) |
 | **Called by** | [`execute-plan`](execute-plan.md), [`finish-branch`](finish-branch.md), [`verify`](verify.md) |
 
@@ -37,7 +37,7 @@ Read the feature's `requirements.md`, `design.md`, and `tasks.md`. For every req
 
 The spec is the source, and that has two teeth. A behavior nobody hand-fed you is still on the hook: if the requirements describe it, it belongs on the checklist whether or not anyone mentioned it. And an untraced behavior — one in the running system that no requirement covers — is a gap to **raise**, not to skip.
 
-Write the checklist to `.skills/<feature>-acceptance.md`, a git-ignored working ledger, and create one todo per item. When the reading is heavy, dispatch a scan subagent to map the touched surface and digest it into the ledger so this context stays lean. The step is done when every user-facing requirement ID has at least one concrete, observable check with an expected result.
+Write the checklist to `.skills/<slug>-acceptance.md`, a git-ignored working ledger, and create one todo per item. When the reading is heavy, dispatch a scan subagent to map the touched surface and digest it into the ledger so this context stays lean. The step is done when every user-facing requirement ID has at least one concrete, observable check with an expected result.
 
 The ledger is the spine of the whole run. It is git-ignored because it is scaffolding, not a deliverable — the deliverables are the tests the children commit. But while the run is live it is the single shared record: the orchestrator writes the checklist into it, each child writes its observed results back into it by path, and the closing report reads out of it.
 

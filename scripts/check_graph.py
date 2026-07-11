@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# @skills-linter: check-graph sha256:eec47d5e9e52
+# @skills-linter: check-graph sha256:c90da49dd59e
 """check-graph — horizontal feature-graph layer.
 
 Harvests, from each feature's existing design.md/tasks.md (NO new authoring):
@@ -91,6 +91,70 @@ def dedupe_by_fullest(paths):
         if not is_basename_of_another:
             kept.append(p)
     return kept
+
+
+_glob_cache = {}
+
+
+def _glob_to_re(pattern):
+    """Compile an owns-glob to an anchored regex matched against a repo-relative
+    folder path. Dialect: a trailing '/**' owns the folder and every descendant;
+    a bare '**' owns everything; '*' matches a single path segment; everything
+    else is literal.
+    """
+    cached = _glob_cache.get(pattern)
+    if cached is not None:
+        return cached
+    p = pattern.strip()
+    if p.startswith("./"):
+        p = p[2:]
+    p = p.strip("/")
+    if p == "**":
+        _glob_cache[pattern] = re.compile("^.*$")
+        return _glob_cache[pattern]
+    trailing_subtree = p.endswith("/**")
+    if trailing_subtree:
+        p = p[:-3]
+    out = ["^"]
+    i, n = 0, len(p)
+    while i < n:
+        if p[i:i + 2] == "**":
+            out.append(".*")
+            i += 2
+        elif p[i] == "*":
+            out.append("[^/]*")
+            i += 1
+        else:
+            out.append(re.escape(p[i]))
+            i += 1
+    if trailing_subtree:
+        out.append("(?:/.*)?")
+    out.append("$")
+    regex = re.compile("".join(out))
+    _glob_cache[pattern] = regex
+    return regex
+
+
+def resolve_module(path, modules):
+    """Return the sorted list of module codes whose 'owns' globs match a
+    repo-relative folder path: [] = orphan, [code] = home, [a, b, ...] =
+    ambiguous (double-mapped). Neutral by design — callers decide severity.
+
+    Normalize minimally (leading './' and trailing '/'): do NOT use
+    normalize_path here — its locator-stripping rules would corrupt a
+    digit-suffixed folder segment (e.g. 'src/store2' -> 'src/store').
+    """
+    folder = _LEADING_DOT_SLASH_RE.sub("", str(path)).strip("/")
+    hits = set()
+    for m in modules:
+        code = m.get("code")
+        if not code:
+            continue
+        for g in m.get("owns", []):
+            if _glob_to_re(g).match(folder):
+                hits.add(code)
+                break
+    return sorted(hits)
 
 
 _OWN_HINT_RE = re.compile(r"\b(create|new file|adds? a? ?new file|scaffold)\b", re.ASCII | re.IGNORECASE)

@@ -947,5 +947,33 @@ class LoadManifestTest(unittest.TestCase):
         self.assertEqual(mods[0]["code"], "M1")
 
 
+class GlobResolveTest(unittest.TestCase):
+    def test_glob_subtree_and_segment_MODMAP_2_1(self):
+        self.assertTrue(check_graph._glob_to_re("src/auth/**").match("src/auth"))
+        self.assertTrue(check_graph._glob_to_re("src/auth/**").match("src/auth/login"))
+        self.assertFalse(check_graph._glob_to_re("src/auth").match("src/auth/login"))
+        self.assertTrue(check_graph._glob_to_re("packages/*").match("packages/api"))
+        self.assertFalse(check_graph._glob_to_re("packages/*").match("packages/api/core"))
+
+    def test_resolve_single_owner_MODMAP_2_1(self):
+        mods = [{"code": "AUTH", "owns": ["src/auth/**"]},
+                {"code": "BILL", "owns": ["src/billing/**"]}]
+        self.assertEqual(check_graph.resolve_module("src/auth/login", mods), ["AUTH"])
+
+    def test_resolve_double_mapped_MODMAP_2_2(self):
+        mods = [{"code": "AAA", "owns": ["src/shared/**"]},
+                {"code": "BBB", "owns": ["src/shared/**"]}]
+        self.assertEqual(check_graph.resolve_module("src/shared/util", mods), ["AAA", "BBB"])
+
+    def test_resolve_orphan_MODMAP_2_3(self):
+        mods = [{"code": "AUTH", "owns": ["src/auth/**"]}]
+        self.assertEqual(check_graph.resolve_module("src/unclaimed", mods), [])
+
+    def test_resolve_preserves_digit_suffixed_folder_MODMAP_2_1(self):
+        # guards against normalize_path stripping the trailing digit (store2->store)
+        mods = [{"code": "STORE", "owns": ["src/store2/**"]}]
+        self.assertEqual(check_graph.resolve_module("src/store2/db", mods), ["STORE"])
+
+
 if __name__ == "__main__":
     unittest.main()

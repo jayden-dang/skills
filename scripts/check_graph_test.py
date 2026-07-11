@@ -893,5 +893,59 @@ class CliTest(_FixtureTestCase):
         )
 
 
+class LoadManifestTest(unittest.TestCase):
+    def test_absent_modules_key_disables_layer_MODMAP_1_1_4_1(self):
+        mods, errs = check_graph.load_manifest({"specsDir": "docs/specs", "graph": {}})
+        self.assertEqual(mods, [])
+        self.assertEqual(errs, [])
+
+    def test_valid_entry_parsed_with_optional_fields_MODMAP_1_1_1_2(self):
+        cfg = {"modules": [
+            {"code": "BILLING", "name": "Billing", "owns": ["src/billing/**"],
+             "layer": "domain", "owner": "@team-pay"}]}
+        mods, errs = check_graph.load_manifest(cfg)
+        self.assertEqual(errs, [])
+        self.assertEqual(len(mods), 1)
+        self.assertEqual(mods[0]["code"], "BILLING")
+        self.assertEqual(mods[0]["owns"], ["src/billing/**"])
+        self.assertEqual(mods[0]["layer"], "domain")
+        self.assertEqual(mods[0]["owner"], "@team-pay")
+
+    def test_missing_required_fields_error_MODMAP_1_3(self):
+        cfg = {"modules": [{"code": "A1", "owns": ["src/**"]},
+                           {"code": "B1", "name": "B", "owns": []},
+                           {"name": "C", "owns": ["src/c/**"]}]}
+        mods, errs = check_graph.load_manifest(cfg)
+        blob = "\n".join(errs)
+        self.assertIn("A1", blob)
+        self.assertIn("B1", blob)
+        self.assertIn("missing", blob.lower())
+
+    def test_duplicate_code_error_MODMAP_1_4(self):
+        cfg = {"modules": [{"code": "DUP", "name": "One", "owns": ["src/a/**"]},
+                           {"code": "DUP", "name": "Two", "owns": ["src/b/**"]}]}
+        _, errs = check_graph.load_manifest(cfg)
+        self.assertTrue(any("duplicate" in e.lower() and "DUP" in e for e in errs))
+
+    def test_malformed_code_error_MODMAP_1_5(self):
+        cfg = {"modules": [{"code": "lower", "name": "L", "owns": ["src/l/**"]}]}
+        _, errs = check_graph.load_manifest(cfg)
+        self.assertTrue(any("malformed" in e.lower() and "lower" in e for e in errs))
+
+    def test_load_config_keeps_config_when_modules_present_MODMAP_4_4(self):
+        root = tempfile.mkdtemp()
+        self.addCleanup(shutil.rmtree, root)
+        os.makedirs(os.path.join(root, "docs/agents"))
+        with open(os.path.join(root, "docs/agents/trace.json"), "w") as fh:
+            json.dump({"specsDir": "docs/specs",
+                       "modules": [{"code": "M1", "name": "M", "owns": ["src/**"]}]}, fh)
+        cfg = check_graph.load_config(root)
+        self.assertEqual(cfg["specsDir"], "docs/specs")
+        self.assertIn("sourceRoots", cfg["graph"])
+        mods, errs = check_graph.load_manifest(cfg)
+        self.assertEqual(errs, [])
+        self.assertEqual(mods[0]["code"], "M1")
+
+
 if __name__ == "__main__":
     unittest.main()

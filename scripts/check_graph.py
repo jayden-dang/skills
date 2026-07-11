@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# @skills-linter: check-graph sha256:3b8efb7e8782
+# @skills-linter: check-graph sha256:eec47d5e9e52
 """check-graph — horizontal feature-graph layer.
 
 Harvests, from each feature's existing design.md/tasks.md (NO new authoring):
@@ -508,6 +508,55 @@ def load_config(root):
     merged = {**DEFAULTS, **user}
     merged["graph"] = {**DEFAULTS["graph"], **(user.get("graph") or {})}
     return merged
+
+
+_MODULE_CODE_RE = re.compile(r"^[A-Z][A-Z0-9]{1,11}$")
+
+
+def load_manifest(cfg):
+    """Parse and validate the module manifest from cfg['modules'].
+
+    Returns (modules, validity_errors). Absent/empty 'modules' -> ([], []). A
+    module is {"code", "name", "owns":[str], "layer":str|None, "owner":str|None}.
+    Validity errors are collected, never raised.
+    """
+    raw = cfg.get("modules")
+    if not raw:
+        return [], []
+    modules = []
+    errors = []
+    seen = set()
+    for i, entry in enumerate(raw):
+        if not isinstance(entry, dict):
+            errors.append(f"E: module entry #{i + 1} is not an object")
+            continue
+        code = entry.get("code")
+        name = entry.get("name")
+        owns = entry.get("owns")
+        label = code if isinstance(code, str) and code else f"#{i + 1}"
+        if not (isinstance(code, str) and code):
+            errors.append(f"E: module entry {label} is missing 'code'")
+        if not (isinstance(name, str) and name):
+            errors.append(f"E: module {label} is missing 'name'")
+        if not (isinstance(owns, list) and owns
+                and all(isinstance(g, str) and g for g in owns)):
+            errors.append(f"E: module {label} is missing a non-empty 'owns' list")
+        if isinstance(code, str) and code:
+            if not _MODULE_CODE_RE.match(code):
+                errors.append(
+                    f"E: module code {code} is malformed "
+                    f"(need 2-12 chars, A-Z0-9, starting with a letter)")
+            if code in seen:
+                errors.append(f"E: duplicate module code {code}")
+            seen.add(code)
+        modules.append({
+            "code": code,
+            "name": name,
+            "owns": owns if isinstance(owns, list) else [],
+            "layer": entry.get("layer"),
+            "owner": entry.get("owner"),
+        })
+    return modules, errors
 
 
 def _collect_flag(args, name):

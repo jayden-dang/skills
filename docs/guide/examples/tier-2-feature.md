@@ -174,6 +174,8 @@ Written for an implementer who is skilled but knows **nothing** about this codeb
 - Consumes: `Store` from `@tauri-apps/plugin-store`
 - Produces: `moduleStore.setActive(id: ModuleId): Promise<void>`
 
+**Depends-on:** Task 1
+
 - [ ] **Step 1: Write the failing test**
       test('restores the persisted module after hydration [SHELL-1.2]', …)
       Run: `pnpm vitest run src/shell/module-store.test.ts` — expect:

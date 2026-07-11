@@ -39,6 +39,10 @@ task. A file not listed here should not be touched.>
 - Consumes: <names + types this task uses from neighboring tasks>
 - Produces: <names + types neighboring tasks will use>
 
+**Depends-on:** <earlier tasks that must land first, e.g. `Task 1`; or `none`.
+Omit the line for strict serial order. Tasks sharing no files or interfaces
+declare no edge — `execute-plan` runs those together in one parallel wave.>
+
 - [ ] **Step 1: Write the failing test**
 
 <complete test code block>

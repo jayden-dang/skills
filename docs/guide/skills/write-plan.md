@@ -21,7 +21,7 @@ Starting from `templates/tasks.md`, the skill walks five steps.
 
 1. **Header and Global Constraints** — the constraints block copied verbatim, travelling with every task.
 2. **File structure first** — the map that bounds what any task may touch.
-3. **Tasks as vertical slices** — each with Files, Interfaces, TDD steps, and a footer.
+3. **Tasks as vertical slices** — each with Files, Interfaces, Depends-on, TDD steps, and a footer.
 4. **Coverage and consistency check** — the subtle one, plus an independent plan review.
 5. **Optional publish to the issue tracker**, then the exit offering two execution routes.
 
@@ -37,10 +37,11 @@ Before writing a single task, the skill maps every file the plan creates or modi
 
 The right-sizing rule: a task is the smallest unit that carries its own test cycle and deserves its own review verdict — split only where a reviewer could reject one task while approving its neighbor. Tasks are **vertical slices** (demoable end-to-end) rather than horizontal layers; if a slice needs prefactoring, that prefactoring is its own earlier task — "make the change easy, then make the easy change".
 
-Each task carries four blocks:
+Each task carries five blocks:
 
 - **Files** — Create / Modify (exact paths, line ranges when known) / Test.
 - **Interfaces** — Consumes and Produces: the names and types neighboring tasks share. This is how an isolated implementer learns what to call things.
+- **Depends-on** — the earlier tasks this one truly needs (interface it Consumes, files it builds on), as `Depends-on: Task 2, Task 4` or `Depends-on: none`. This is the parallelism signal: tasks that share no files or interfaces declare no edge, so [`execute-plan`](execute-plan.md) runs them together in one wave. Omit the line to fall back to strict serial order. Over-declaring serializes needlessly; under-declaring is caught by the executor's disjoint-surface check before it can collide.
 - **Steps** — bite-sized checkboxes, 2 to 5 minutes each, following the TDD cycle: write the failing test (complete code) → run and expect the stated failure → implement (complete code) → run and expect pass → commit with an `Implements: CODE-N.M` trailer. Exact commands and expected output, every time.
 - **Footer** — `_Requirements: CODE-N.M, CODE-N.M_`, the IDs this task implements or guards. Every task has one.
 

@@ -39,6 +39,14 @@ Each task:
 - **Files:** Create / Modify (exact paths, line ranges when known) / Test.
 - **Interfaces:** Consumes / Produces — the names and types neighboring tasks
   share. This block is how an isolated implementer learns what to call things.
+- **Depends-on:** the earlier tasks this one truly needs — those whose
+  interface it Consumes or whose files it builds on — as `Depends-on: Task 2,
+  Task 4`, or `Depends-on: none` when it has no prerequisite. This is the
+  parallelism signal: two tasks that share no files and no interface declare no
+  edge, so `execute-plan` runs them together in one wave. Omit the line and the
+  task falls back to depending on every prior task — safe but fully serial.
+  Over-declaring needlessly serializes; under-declaring is caught by the
+  executor's file-disjoint check before it can collide.
 - **Steps:** bite-sized checkboxes (2–5 min each) following the TDD cycle:
   failing test (complete code) → run, expect the stated failure → implement
   (complete code) → run, expect pass → commit with an

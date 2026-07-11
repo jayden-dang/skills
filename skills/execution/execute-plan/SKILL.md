@@ -7,7 +7,7 @@ description: Use when an approved tasks.md exists and it is time to implement, e
 
 # Execute Plan
 
-Drive an approved plan to completion: one fresh implementer subagent per task, a two-verdict review of each task's diff, a whole-branch review at the end.
+Drive an approved plan to completion: independent tasks run concurrently in dependency-ordered waves, one fresh implementer subagent per task, a two-verdict review of each task's diff, a whole-branch review at the end.
 
 **Why fresh subagents:** each worker receives exactly the context its task needs and nothing else, so it stays focused; your own context stays reserved for coordination. Subagents never inherit session history — you construct their world. Bulk artifacts (briefs, reports, diffs) travel between agents as file paths under `.skills/`, never as pasted text.
 
@@ -22,6 +22,7 @@ Drive an approved plan to completion: one fresh implementer subagent per task, a
 3. **Read the plan.** Read tasks.md in full, once. Copy the **Global Constraints** section verbatim — you will paste it into every reviewer dispatch unmodified. If `docs/agents/project.md` is missing, say so, suggest running `setup-repo`, and take verify commands from the plan's Global Constraints instead. *Done when: constraints are captured word-for-word.*
 4. **Todos.** Create one todo per task. *Done when: the todo list mirrors the plan.*
 5. **Pre-flight plan review.** Scan the plan once for internal defects: tasks that contradict each other or the Global Constraints, and anything the plan explicitly mandates that a reviewer would flag as a defect (an assertion-free test, a copy-pasted logic block). Batch ALL findings into ONE question to the user — each finding shown beside the plan text that mandates it, asking which governs — before any dispatch. One interrupt, not one per discovery mid-run. A clean scan needs no comment. *Done when: the user has ruled on every conflict, or the scan found none.*
+6. **Wave planning.** Read each task's `Depends-on:` line. A line names the tasks that must land first (`Depends-on: Task 2, Task 4`); `Depends-on: none` marks a task with no prerequisite; an **absent** line falls back to depending on every earlier task. Topo-sort into waves — wave 0 is every task whose dependencies are already met, wave 1 the tasks freed once wave 0 lands, and so on. A plan that declares no dependencies collapses to one task per wave: the strict serial order, unchanged. *Done when: every task sits in a wave.*
 
 ## Per-Task Loop
 
@@ -37,7 +38,17 @@ For Task N:
 8. **Fix loop.** Critical or Important findings → dispatch a fix subagent (implementer contract: it re-runs the covering tests — name them in the dispatch; a one-line fix does not need the whole suite — and appends its results to the same report file) → **re-review**. Repeat until the reviewer approves. **Circuit breaker:** if the same finding survives 3 fix→re-review cycles, stop looping — the fix approach is wrong or the task is mis-scoped. Escalate to the user with the finding and the three attempts, exactly as for BLOCKED; never spend a fourth cycle on it. Never fix findings yourself in the controller context — that pollutes it. Minor findings → record in the ledger for the final review to triage; an unrecorded roll-up is a silent discard. *Done when: the re-review is clean or the breaker has tripped and the user has ruled.*
 9. **Resolve ⚠️ items.** Requirements the reviewer could not verify from the diff (they live in unchanged code or span tasks) come back to you flagged — you hold the plan context the reviewer lacks. Confirm each yourself; a real gap counts as a failed spec verdict: back to step 8. *Done when: every flagged item is confirmed covered or fixed.*
 10. **Ledger.** Append one line to `.skills/progress.md`: `Task N: complete (commits <base7>..<head7>, review clean)`. Mark the todo done. *Done when: the line is written.*
-11. **Next task.** Go straight to Task N+1. *Done when: the loop restarts or no tasks remain.*
+11. **Next.** Advance by wave order (see **Parallel waves**), not raw task number — within a serial wave that is simply Task N+1. For a parallel wave, steps 10–11 move to the wave barrier. *Done when: the loop restarts on the next task or no tasks remain.*
+
+## Parallel waves
+
+A single-task wave runs the Per-Task Loop inline on the branch — the common case, and exactly the prior serial behavior. A wave holding two or more independent tasks runs them concurrently, each isolated in its own worktree, **only when `git worktree` is usable**; if it is not, run that wave's tasks serially instead.
+
+1. **Record the wave base.** `WBASE=$(git rev-parse HEAD)`. Every task in the wave branches from this one sha. *Done when: WBASE is noted.*
+2. **Prove the surfaces are disjoint.** Read the wave's task briefs; confirm no two of them Create or Modify the same file. An overlap means a `Depends-on` edge was missed — demote those tasks to serial and note it, never run them in parallel. *Done when: the parallel set is provably file-disjoint.*
+3. **Fan out — one worktree per task.** You stay in the primary worktree throughout (the feature branch, sitting at WBASE); the tasks get their own. For each task, `git worktree add .worktrees/<branch>-taskN -b <branch>-taskN WBASE`, then run **Per-Task Loop steps 1–9** inside that worktree — hold steps 10–11 (ledger, advance) for the barrier. On a fresh task branch, step 1's `BASE=$(git rev-parse HEAD)` already equals WBASE, so the brief, dispatch, diff package, review, and fix loop all work unchanged, just scoped to the worktree. The implementers run at the same time; you coordinate them, holding each task's Minor findings until the barrier. *Done when: every task in the wave is DONE with a clean task review.*
+4. **Barrier, then merge in task order.** Only once every task in the wave has passed review, and back in the primary worktree, merge each task branch into the **feature branch** — never main/master — in ascending task number (`git merge --no-ff <branch>-taskN`). A conflict here means two tasks shared a surface the disjoint check missed — STOP and escalate; never resolve a wave merge blind. *Done when: all wave branches are merged into the feature branch.*
+5. **Ledger once, worktrees down.** For each wave task append one line to `.skills/progress.md` naming its merge commit as the head — `Task N: complete (merged <branch>-taskN at <merge7>, review clean)` — and roll up its held Minor findings. You are the sole writer and write only here, so there is no race. Then `git worktree remove` each. *Done when: the ledger records the whole wave and its worktrees are gone.*
 
 ## Implementer Status Handling
 
@@ -75,6 +86,7 @@ Conversation memory does not survive compaction. Controllers that lost their pla
 - On skill start, read `.skills/progress.md` if present; resume after the last complete task.
 - After compaction or resume, trust the ledger and `git log` over your own recollection — the commits the ledger names exist in git even when your context no longer remembers writing them.
 - Never re-dispatch a task the ledger marks complete.
+- A crash mid-wave leaves uncommitted, unmerged worktrees: discard them and re-run the whole wave off WBASE. Nothing is ledgered or merged until the barrier, so the re-run is idempotent.
 - `.skills/` is git-ignored scratch; if it is wiped, reconstruct progress from `git log`.
 
 ## After the Last Task
@@ -90,7 +102,8 @@ Same loop, no dispatches: implement each task yourself, in order, from its brief
 
 ## Red Flags — Never
 
-- Run two implementers on the same plan in parallel (they will collide).
+- Run two implementers in the **same worktree**, or run a wave in parallel without isolated worktrees and a disjoint-surface check — that is the collision the wave machinery exists to prevent.
+- Merge a parallel wave, or ledger it, before every task in it has passed review.
 - Hand a subagent the whole plan file — the brief from `task-brief` is its world.
 - Use `HEAD~1` as a review base.
 - Skip the re-review after a fix, or accept a review missing either verdict.

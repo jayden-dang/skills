@@ -895,11 +895,13 @@ class CliTest(_FixtureTestCase):
 
 class LoadManifestTest(unittest.TestCase):
     def test_absent_modules_key_disables_layer_MODMAP_1_1_4_1(self):
+        # covers MODMAP-1.1, MODMAP-4.1
         mods, errs = check_graph.load_manifest({"specsDir": "docs/specs", "graph": {}})
         self.assertEqual(mods, [])
         self.assertEqual(errs, [])
 
     def test_valid_entry_parsed_with_optional_fields_MODMAP_1_1_1_2(self):
+        # covers MODMAP-1.1, MODMAP-1.2
         cfg = {"modules": [
             {"code": "BILLING", "name": "Billing", "owns": ["src/billing/**"],
              "layer": "domain", "owner": "@team-pay"}]}
@@ -912,6 +914,7 @@ class LoadManifestTest(unittest.TestCase):
         self.assertEqual(mods[0]["owner"], "@team-pay")
 
     def test_missing_required_fields_error_MODMAP_1_3(self):
+        # covers MODMAP-1.3
         cfg = {"modules": [{"code": "A1", "owns": ["src/**"]},
                            {"code": "B1", "name": "B", "owns": []},
                            {"name": "C", "owns": ["src/c/**"]}]}
@@ -922,17 +925,20 @@ class LoadManifestTest(unittest.TestCase):
         self.assertIn("missing", blob.lower())
 
     def test_duplicate_code_error_MODMAP_1_4(self):
+        # covers MODMAP-1.4
         cfg = {"modules": [{"code": "DUP", "name": "One", "owns": ["src/a/**"]},
                            {"code": "DUP", "name": "Two", "owns": ["src/b/**"]}]}
         _, errs = check_graph.load_manifest(cfg)
         self.assertTrue(any("duplicate" in e.lower() and "DUP" in e for e in errs))
 
     def test_malformed_code_error_MODMAP_1_5(self):
+        # covers MODMAP-1.5
         cfg = {"modules": [{"code": "lower", "name": "L", "owns": ["src/l/**"]}]}
         _, errs = check_graph.load_manifest(cfg)
         self.assertTrue(any("malformed" in e.lower() and "lower" in e for e in errs))
 
     def test_load_config_keeps_config_when_modules_present_MODMAP_4_4(self):
+        # covers MODMAP-4.4
         root = tempfile.mkdtemp()
         self.addCleanup(shutil.rmtree, root)
         os.makedirs(os.path.join(root, "docs/agents"))
@@ -949,6 +955,7 @@ class LoadManifestTest(unittest.TestCase):
 
 class GlobResolveTest(unittest.TestCase):
     def test_glob_subtree_and_segment_MODMAP_2_1(self):
+        # covers MODMAP-2.1
         self.assertTrue(check_graph._glob_to_re("src/auth/**").match("src/auth"))
         self.assertTrue(check_graph._glob_to_re("src/auth/**").match("src/auth/login"))
         self.assertFalse(check_graph._glob_to_re("src/auth").match("src/auth/login"))
@@ -956,20 +963,24 @@ class GlobResolveTest(unittest.TestCase):
         self.assertFalse(check_graph._glob_to_re("packages/*").match("packages/api/core"))
 
     def test_resolve_single_owner_MODMAP_2_1(self):
+        # covers MODMAP-2.1
         mods = [{"code": "AUTH", "owns": ["src/auth/**"]},
                 {"code": "BILL", "owns": ["src/billing/**"]}]
         self.assertEqual(check_graph.resolve_module("src/auth/login", mods), ["AUTH"])
 
     def test_resolve_double_mapped_MODMAP_2_2(self):
+        # covers MODMAP-2.2
         mods = [{"code": "AAA", "owns": ["src/shared/**"]},
                 {"code": "BBB", "owns": ["src/shared/**"]}]
         self.assertEqual(check_graph.resolve_module("src/shared/util", mods), ["AAA", "BBB"])
 
     def test_resolve_orphan_MODMAP_2_3(self):
+        # covers MODMAP-2.3
         mods = [{"code": "AUTH", "owns": ["src/auth/**"]}]
         self.assertEqual(check_graph.resolve_module("src/unclaimed", mods), [])
 
     def test_resolve_preserves_digit_suffixed_folder_MODMAP_2_1(self):
+        # covers MODMAP-2.1
         # guards against normalize_path stripping the trailing digit (store2->store)
         mods = [{"code": "STORE", "owns": ["src/store2/**"]}]
         self.assertEqual(check_graph.resolve_module("src/store2/db", mods), ["STORE"])
@@ -977,6 +988,7 @@ class GlobResolveTest(unittest.TestCase):
 
 class EnumerateFoldersTest(_FixtureTestCase):
     def test_enumerates_repo_and_source_folders_MODMAP_3_1(self):
+        # covers MODMAP-3.1
         root = self._tmp_repo({
             "src/auth/login.ts": "x",
             "src/auth/helpers/util.ts": "x",
@@ -1000,12 +1012,14 @@ class VerifyBoundariesTest(_FixtureTestCase):
         return {"graph": {"sourceRoots": ["src"], "sourceExts": ["ts"], "cardCap": 12}}
 
     def test_orphan_folder_is_error_MODMAP_3_2(self):
+        # covers MODMAP-3.2
         root = self._tmp_repo({"src/auth/a.ts": "x", "src/lonely/b.ts": "x"})
         mods = [{"code": "AUTH", "name": "A", "owns": ["src/auth/**"]}]
         errs, warns = check_graph._verify_boundaries(root, self._cfg(), mods)
         self.assertTrue(any("src/lonely" in e and "orphan" in e.lower() for e in errs))
 
     def test_double_mapped_folder_is_error_MODMAP_3_3(self):
+        # covers MODMAP-3.3
         root = self._tmp_repo({"src/shared/a.ts": "x"})
         mods = [{"code": "AAA", "name": "A", "owns": ["src/shared/**"]},
                 {"code": "BBB", "name": "B", "owns": ["src/**"]}]
@@ -1013,6 +1027,7 @@ class VerifyBoundariesTest(_FixtureTestCase):
         self.assertTrue(any("src/shared" in e and "AAA" in e and "BBB" in e for e in errs))
 
     def test_stale_glob_is_warning_not_error_MODMAP_3_4(self):
+        # covers MODMAP-3.4
         root = self._tmp_repo({"src/auth/a.ts": "x"})
         mods = [{"code": "AUTH", "name": "A", "owns": ["src/auth/**", "src/ghost/**"]}]
         errs, warns = check_graph._verify_boundaries(root, self._cfg(), mods)
@@ -1020,11 +1035,70 @@ class VerifyBoundariesTest(_FixtureTestCase):
         self.assertTrue(any("src/ghost" in w and "AUTH" in w for w in warns))
 
     def test_full_coverage_is_clean_MODMAP_3_5(self):
+        # covers MODMAP-3.5
         root = self._tmp_repo({"src/auth/a.ts": "x", "src/auth/sub/b.ts": "x"})
         mods = [{"code": "AUTH", "name": "A", "owns": ["src/auth/**"]}]
         errs, warns = check_graph._verify_boundaries(root, self._cfg(), mods)
         self.assertEqual(errs, [])
         self.assertEqual(warns, [])
+
+
+class VerifyIntegrationTest(_FixtureTestCase):
+    def _repo_with_specs(self, extra, trace):
+        files = dict(extra)
+        root = self._tmp_repo(files)
+        os.makedirs(os.path.join(root, "docs/agents"), exist_ok=True)
+        with open(os.path.join(root, "docs/agents/trace.json"), "w") as fh:
+            json.dump(trace, fh)
+        os.makedirs(os.path.join(root, "docs/specs"), exist_ok=True)
+        open(os.path.join(root, "docs/specs/INDEX.md"), "w").close()
+        # generate a non-stale GRAPH.md through the real harvest path so the two
+        # existing --verify checks pass (no features -> empty, self-consistent).
+        check_graph.main(["--harvest", "--root", root])
+        return root
+
+    def test_warnings_do_not_fail_the_gate_MODMAP_3_4_3_7(self):
+        # covers MODMAP-3.4, MODMAP-3.7
+        root = self._repo_with_specs(
+            {"src/auth/a.ts": "x"},
+            {"specsDir": "docs/specs",
+             "modules": [{"code": "AUTH", "name": "A",
+                          "owns": ["src/auth/**", "src/ghost/**"]}]})
+        rc = check_graph.main(["--verify", "--root", root])
+        self.assertEqual(rc, 0)
+
+    def test_orphan_fails_the_gate_MODMAP_3_6(self):
+        # covers MODMAP-3.6
+        root = self._repo_with_specs(
+            {"src/auth/a.ts": "x", "src/orphan/b.ts": "x"},
+            {"specsDir": "docs/specs",
+             "modules": [{"code": "AUTH", "name": "A", "owns": ["src/auth/**"]}]})
+        rc = check_graph.main(["--verify", "--root", root])
+        self.assertEqual(rc, 1)
+
+    def test_no_manifest_behaves_as_before_MODMAP_4_2(self):
+        # covers MODMAP-4.2
+        root = self._repo_with_specs(
+            {"src/whatever/a.ts": "x"}, {"specsDir": "docs/specs"})
+        rc = check_graph.main(["--verify", "--root", root])
+        self.assertEqual(rc, 0)
+
+    def test_existing_checks_still_run_with_manifest_MODMAP_4_3(self):
+        # covers MODMAP-4.3
+        root = self._repo_with_specs(
+            {"src/auth/a.ts": "x"},
+            {"specsDir": "docs/specs",
+             "modules": [{"code": "AUTH", "name": "A", "owns": ["src/auth/**"]}]})
+        with open(os.path.join(root, "docs/specs/GRAPH.md"), "w") as fh:
+            fh.write("stale content")
+        rc = check_graph.main(["--verify", "--root", root])
+        self.assertEqual(rc, 1)
+
+    def test_import_has_no_side_effects_MODMAP_4_5(self):
+        # covers MODMAP-4.5
+        import importlib
+        mod = importlib.reload(check_graph)
+        self.assertTrue(hasattr(mod, "_run_verify"))
 
 
 if __name__ == "__main__":

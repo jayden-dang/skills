@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# @skills-linter: check-graph sha256:d1242a210513
+# @skills-linter: check-graph sha256:4157a9ed74cc
 """check-graph — horizontal feature-graph layer.
 
 Harvests, from each feature's existing design.md/tasks.md (NO new authoring):
@@ -705,6 +705,7 @@ def _run_verify(root, cfg, specs_dir, as_json):
     reports on either failure; returns 0 when both hold.
     """
     errors = []
+    warnings = []
     graph = harvest(specs_dir, cfg)
     graph_md_path = os.path.join(specs_dir, "GRAPH.md")
     committed = None
@@ -725,12 +726,23 @@ def _run_verify(root, cfg, specs_dir, as_json):
         if not registered:
             errors.append(f"E: feature code {f['code']} is not registered in INDEX.md")
 
+    # boundary verification (MODMAP): only when a valid manifest is present.
+    modules, validity_errors = load_manifest(cfg)
+    if validity_errors:
+        errors.extend(validity_errors)
+    elif modules:
+        berrors, bwarnings = _verify_boundaries(root, cfg, modules)
+        errors.extend(berrors)
+        warnings.extend(bwarnings)
+
     if as_json:
-        print(json.dumps({"errors": errors}, indent=2, ensure_ascii=False))
+        print(json.dumps({"errors": errors, "warnings": warnings}, indent=2, ensure_ascii=False))
     else:
         print(f"check-graph --verify: {'FAIL' if errors else 'OK'}")
         for e in errors:
             print(f"  {e}")
+        for w in warnings:
+            print(f"  {w}")
     return 1 if errors else 0
 
 

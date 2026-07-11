@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# @skills-linter: check-graph sha256:ed2049b6462b
+# @skills-linter: check-graph sha256:5a7dabec5a9b
 """check-graph — horizontal feature-graph layer.
 
 Harvests, from each feature's existing design.md/tasks.md (NO new authoring):
@@ -24,6 +24,7 @@ DEFAULTS = {
         "sourceRoots": ["src", "src-tauri", "tests", "test", "e2e", "crates", "app", "lib", "packages"],
         "sourceExts": ["ts", "tsx", "js", "jsx", "mjs", "cjs", "rs", "css", "scss", "go", "py"],
         "cardCap": 12,
+        "queryCap": 8,
     },
 }
 
@@ -196,6 +197,15 @@ def cap_list(items, cap):
     if len(items) <= cap:
         return items
     return list(items[:cap]) + [f"…(+{len(items) - cap} more)"]
+
+
+_SENTENCE_END_RE = re.compile(r"[.!?](?:\s|$)")
+
+
+def _first_sentence(s):
+    """Text up to and including the first sentence terminator, else the whole string."""
+    m = _SENTENCE_END_RE.search(s)
+    return s[:m.end()].strip() if m else s.strip()
 
 
 _OUT_OF_SCOPE_RE = re.compile(r"##\s*Out of Scope\s*\n([\s\S]*?)(\n##\s|\n#\s|$)", re.IGNORECASE)
@@ -848,10 +858,16 @@ def main(argv):
     if "--query" in argv:
         graph = harvest(specs_dir, cfg)
         res = query(graph, paths=_collect_flag(argv, "--path"), keywords=_collect_flag(argv, "--keyword"))
+        cap = cfg["graph"]["queryCap"]
+        kept, omitted = res[:cap], max(0, len(res) - cap)
+        for r in kept:
+            r["card"] = dict(r["card"], oos=[_first_sentence(x) for x in r["card"]["oos"]])
         if as_json:
-            print(json.dumps(res, indent=2, ensure_ascii=False))
+            print(json.dumps({"results": kept, "omitted": omitted}, indent=2, ensure_ascii=False))
         else:
-            print("\n".join(f"{r['code']} ({len(r['overlapPaths'])})" for r in res))
+            print("\n".join(f"{r['code']} ({len(r['overlapPaths'])})" for r in kept))
+            if omitted:
+                print(f"(+{omitted} more omitted)")
         return 0
 
     if "--verify" in argv:

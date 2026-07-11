@@ -894,7 +894,7 @@ class CliTest(_FixtureTestCase):
             text=True,
         )
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
-        self.assertEqual(json.loads(result.stdout), [])
+        self.assertEqual(json.loads(result.stdout), {"results": [], "omitted": 0})
 
     def test_flags_accepted_unchanged(self):
         """every documented flag is accepted; unknown flags are ignored."""
@@ -922,7 +922,7 @@ class CliTest(_FixtureTestCase):
         )
         self.assertEqual(query_result.returncode, 0, query_result.stderr)
         parsed = json.loads(query_result.stdout)
-        self.assertEqual(parsed[0]["code"], "FLAGT")
+        self.assertEqual(parsed["results"][0]["code"], "FLAGT")
 
         harvest_result = subprocess.run(
             [sys.executable, PY_CLI, "--harvest", "--root", root], capture_output=True, text=True
@@ -968,7 +968,7 @@ class CliTest(_FixtureTestCase):
         )
         self.assertEqual(result.returncode, 0, result.stderr)
         parsed = json.loads(result.stdout)
-        self.assertEqual(parsed[0]["code"], "AAA")
+        self.assertEqual(parsed["results"][0]["code"], "AAA")
 
     def test_verify_fails_on_stale_passes_when_fresh(self):
         """--verify fails on stale, passes when fresh."""
@@ -1344,6 +1344,33 @@ class VerifyShardsTest(_FixtureTestCase):
         self.assertEqual(rc, 1)
         self.assertIn("orphan", out.lower())                 # M1 boundary still runs (4.3)
         self.assertIn("not registered in INDEX.md", out)     # registration still runs (4.4)
+
+
+class FirstSentenceTest(unittest.TestCase):
+    def test_first_sentence_MODGRAPH_3_5(self):
+        # covers MODGRAPH-3.5
+        self.assertEqual(check_graph._first_sentence("One thing. Two thing."), "One thing.")
+        self.assertEqual(check_graph._first_sentence("no terminator"), "no terminator")
+
+
+class QueryCliTest(_FixtureTestCase):
+    def test_cap_and_omitted_and_oos_truncation_MODGRAPH_3_3_3_4_3_5(self):
+        # covers MODGRAPH-3.3, MODGRAPH-3.4, MODGRAPH-3.5
+        import io, contextlib
+        feats = [{"slug": f"f{i}", "code": f"WID{i}", "name": "Widget maker",
+                  "oos": ["First sentence. Second sentence."]} for i in range(4)]
+        specs = self._spec_fixture(feats)
+        root = os.path.dirname(os.path.dirname(specs))
+        os.makedirs(os.path.join(root, "docs/agents"), exist_ok=True)
+        with open(os.path.join(root, "docs/agents/trace.json"), "w") as fh:
+            json.dump({"specsDir": "docs/specs", "graph": {"queryCap": 2}}, fh)
+        buf = io.StringIO()
+        with contextlib.redirect_stdout(buf):
+            check_graph.main(["--query", "--json", "--root", root, "--keyword", "widget"])
+        parsed = json.loads(buf.getvalue())
+        self.assertEqual(len(parsed["results"]), 2)          # capped
+        self.assertEqual(parsed["omitted"], 2)               # 4 matched, 2 shown
+        self.assertEqual(parsed["results"][0]["card"]["oos"], ["First sentence."])  # truncated
 
 
 if __name__ == "__main__":

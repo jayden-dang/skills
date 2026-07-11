@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# @skills-linter: check-graph sha256:3c1d1f877144
+# @skills-linter: check-graph sha256:55008d7c5cf5
 """check-graph — horizontal feature-graph layer.
 
 Harvests, from each feature's existing design.md/tasks.md (NO new authoring):
@@ -158,19 +158,63 @@ def resolve_module(path, modules):
     return sorted(hits)
 
 
+def _home_feature(owned_paths, touched_paths, override_code, module_codes, modules):
+    """Classify a feature's module homing from its owned + touched paths and an
+    optional authored `Module:` override. `module_codes` is the set of valid
+    module codes, used only to validate the override. Pure — no I/O.
+
+    Returns {home, facets, spanned, unknown_override}:
+      home             module code or None
+      facets           sorted modules (!= home) each the sole resolution of a
+                       touched path; [] when home is None
+      spanned          sorted modules the owned paths fall in, ONLY when every
+                       owned path resolves to exactly one module, >=2 distinct
+                       modules result, and no valid override applies; else []
+      unknown_override the override code when one was declared but is not a known
+                       module; else None
+    """
+    derived_home = None
+    spanned = []
+    if owned_paths:
+        codes = []
+        clean = True
+        for p in owned_paths:
+            hits = resolve_module(p, modules)
+            if len(hits) != 1:
+                clean = False
+                break
+            codes.append(hits[0])
+        if clean:
+            uniq = sorted(set(codes))
+            if len(uniq) == 1:
+                derived_home = uniq[0]
+            elif len(uniq) >= 2:
+                spanned = uniq
+    home = derived_home
+    unknown_override = None
+    if override_code is not None:
+        if override_code in module_codes:
+            home = override_code
+            spanned = []
+        else:
+            unknown_override = override_code
+    facets = []
+    if home is not None:
+        fset = set()
+        for p in touched_paths:
+            hits = resolve_module(p, modules)
+            if len(hits) == 1 and hits[0] != home:
+                fset.add(hits[0])
+        facets = sorted(fset)
+    return {"home": home, "facets": facets, "spanned": spanned,
+            "unknown_override": unknown_override}
+
+
 def _home_module(owned_paths, modules):
-    """Home a feature by its owned paths: the single module code iff every owned
-    path resolves to that one module; else None (orphan, double-mapped, spanning,
-    or empty owns → unassigned)."""
-    if not owned_paths:
-        return None
-    codes = set()
-    for p in owned_paths:
-        hits = resolve_module(p, modules)
-        if len(hits) != 1:
-            return None
-        codes.add(hits[0])
-    return next(iter(codes)) if len(codes) == 1 else None
+    """Home a feature by its owned paths alone (no override, no touches): the
+    single module code iff every owned path resolves to that one module; else
+    None. Thin wrapper over _home_feature preserving the MODGRAPH-1.x contract."""
+    return _home_feature(owned_paths, [], None, set(), modules)["home"]
 
 
 _OWN_HINT_RE = re.compile(r"\b(create|new file|adds? a? ?new file|scaffold)\b", re.ASCII | re.IGNORECASE)

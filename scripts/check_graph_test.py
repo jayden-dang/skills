@@ -575,6 +575,104 @@ class HomeModuleTest(unittest.TestCase):
         self.assertIsNone(check_graph._home_module([], mods))
 
 
+class HomeFeatureTest(unittest.TestCase):
+    MODS = [{"code": "AUTH", "owns": ["src/auth/**"]},
+            {"code": "BILL", "owns": ["src/billing/**"]}]
+
+    def test_all_owned_one_module_homes_there_MODHOME_4_2(self):
+        # covers MODHOME-4.2
+        rec = check_graph._home_feature(
+            ["src/auth/a.ts", "src/auth/b.ts"], [], None, {"AUTH", "BILL"}, self.MODS)
+        self.assertEqual(rec["home"], "AUTH")
+        self.assertEqual(rec["spanned"], [])
+        # delegation: _home_module returns the same home
+        self.assertEqual(
+            check_graph._home_module(["src/auth/a.ts", "src/auth/b.ts"], self.MODS), "AUTH")
+
+    def test_spanning_detected_MODHOME_1_1(self):
+        # covers MODHOME-1.1
+        rec = check_graph._home_feature(
+            ["src/auth/a.ts", "src/billing/b.ts"], [], None, {"AUTH", "BILL"}, self.MODS)
+        self.assertIsNone(rec["home"])
+        self.assertEqual(rec["spanned"], ["AUTH", "BILL"])
+
+    def test_orphan_owned_is_not_spanning_MODHOME_1_1(self):
+        # covers MODHOME-1.1
+        # an orphan owned path makes the feature UNRESOLVED, not spanning
+        rec = check_graph._home_feature(
+            ["src/auth/a.ts", "src/nowhere/x.ts"], [], None, {"AUTH", "BILL"}, self.MODS)
+        self.assertIsNone(rec["home"])
+        self.assertEqual(rec["spanned"], [])
+
+    def test_facets_from_touched_modules_MODHOME_2_1(self):
+        # covers MODHOME-2.1
+        rec = check_graph._home_feature(
+            ["src/auth/a.ts"], ["src/billing/b.ts"], None, {"AUTH", "BILL"}, self.MODS)
+        self.assertEqual(rec["home"], "AUTH")
+        self.assertEqual(rec["facets"], ["BILL"])
+
+    def test_facets_exclude_home_MODHOME_2_2(self):
+        # covers MODHOME-2.2
+        rec = check_graph._home_feature(
+            ["src/auth/a.ts"], ["src/auth/other.ts"], None, {"AUTH"},
+            [{"code": "AUTH", "owns": ["src/auth/**"]}])
+        self.assertEqual(rec["home"], "AUTH")
+        self.assertEqual(rec["facets"], [])
+
+    def test_facets_sorted_and_deduped_MODHOME_2_3(self):
+        # covers MODHOME-2.3
+        mods = [{"code": "AUTH", "owns": ["src/auth/**"]},
+                {"code": "BILL", "owns": ["src/billing/**"]},
+                {"code": "CORE", "owns": ["src/core/**"]}]
+        rec = check_graph._home_feature(
+            ["src/auth/a.ts"],
+            ["src/core/x.ts", "src/billing/b.ts", "src/billing/c.ts"],
+            None, {"AUTH", "BILL", "CORE"}, mods)
+        self.assertEqual(rec["facets"], ["BILL", "CORE"])
+
+    def test_touched_orphan_or_ambiguous_yields_no_facet_MODHOME_2_4(self):
+        # covers MODHOME-2.4
+        mods = [{"code": "AUTH", "owns": ["src/auth/**"]},
+                {"code": "DUP", "owns": ["src/shared/**"]},
+                {"code": "DUP2", "owns": ["src/shared/**"]}]
+        rec = check_graph._home_feature(
+            ["src/auth/a.ts"],
+            ["src/nowhere/x.ts", "src/shared/s.ts"],  # orphan + double-mapped
+            None, {"AUTH", "DUP", "DUP2"}, mods)
+        self.assertEqual(rec["facets"], [])
+
+    def test_valid_override_sets_home_MODHOME_3_1(self):
+        # covers MODHOME-3.1
+        rec = check_graph._home_feature(
+            ["src/billing/b.ts"], [], "AUTH", {"AUTH", "BILL"}, self.MODS)
+        self.assertEqual(rec["home"], "AUTH")
+
+    def test_valid_override_suppresses_span_MODHOME_3_2(self):
+        # covers MODHOME-3.2
+        rec = check_graph._home_feature(
+            ["src/auth/a.ts", "src/billing/b.ts"], [], "AUTH",
+            {"AUTH", "BILL"}, self.MODS)
+        self.assertEqual(rec["home"], "AUTH")
+        self.assertEqual(rec["spanned"], [])
+
+    def test_invalid_override_keeps_derived_and_flags_MODHOME_3_3(self):
+        # covers MODHOME-3.3
+        rec = check_graph._home_feature(
+            ["src/auth/a.ts"], [], "NOPE", {"AUTH", "BILL"}, self.MODS)
+        self.assertEqual(rec["home"], "AUTH")            # derived home retained
+        self.assertEqual(rec["unknown_override"], "NOPE")
+
+    def test_import_still_inert_with_homing_symbols_MODHOME_4_5(self):
+        # covers MODHOME-4.5
+        import importlib, io, contextlib
+        out_buf, err_buf = io.StringIO(), io.StringIO()
+        with contextlib.redirect_stdout(out_buf), contextlib.redirect_stderr(err_buf):
+            mod = importlib.reload(check_graph)
+        self.assertEqual(out_buf.getvalue(), "")
+        self.assertEqual(err_buf.getvalue(), "")
+        self.assertTrue(hasattr(mod, "_home_feature"))
+
+
 class HarvestHomingTest(_FixtureTestCase):
     def test_harvest_homes_on_uncapped_owns_MODGRAPH_1_1(self):
         # covers MODGRAPH-1.1

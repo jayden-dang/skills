@@ -17,6 +17,17 @@ import check_graph
 _SCRIPTS_DIR = os.path.dirname(os.path.abspath(__file__))
 PY_CLI = os.path.join(_SCRIPTS_DIR, "check_graph.py")
 
+
+def _tree_snapshot(root):
+    """Map every file under `root` to its bytes — for asserting nothing changed."""
+    snap = {}
+    for dirpath, _dirs, filenames in os.walk(root):
+        for fn in filenames:
+            p = os.path.join(dirpath, fn)
+            with open(p, "rb") as fh:
+                snap[os.path.relpath(p, root)] = fh.read()
+    return snap
+
 CFG = {
     "sourceRoots": ["src", "src-tauri", "tests", "test", "crates", "app", "lib", "packages"],
     "sourceExts": ["ts", "tsx", "js", "jsx", "mjs", "rs", "css", "scss"],
@@ -1610,6 +1621,52 @@ class VerifyIntegrationTest(_FixtureTestCase):
             "src/orphan/z.ts": "x"})                       # orphan source folder -> error
         self.assertEqual(rc, 1)                            # boundary error still fails the gate
         self.assertTrue(any("orphan" in e for e in payload["errors"]))
+
+
+class SeedCliTest(_FixtureTestCase):
+    def test_seed_emits_modules_json_MODSEED_2_1_2_3(self):
+        # covers MODSEED-2.1, MODSEED-2.3
+        import io, contextlib
+        root = self._tmp_repo({"src/auth/a.ts": "x"})
+        buf = io.StringIO()
+        with contextlib.redirect_stdout(buf):
+            rc = check_graph.main(["--seed", "--root", root])
+        self.assertEqual(rc, 0)                                     # 2.3
+        payload = json.loads(buf.getvalue())                        # 2.1 one JSON object
+        self.assertEqual(payload["modules"][0]["code"], "AUTH")
+
+    def test_seed_empty_when_no_source_root_MODSEED_2_4(self):
+        # covers MODSEED-2.4
+        import io, contextlib
+        root = self._tmp_repo({"docs/readme.md": "x"})              # no src/ etc.
+        buf = io.StringIO()
+        with contextlib.redirect_stdout(buf):
+            rc = check_graph.main(["--seed", "--root", root])
+        self.assertEqual(rc, 0)
+        self.assertEqual(json.loads(buf.getvalue()), {"modules": []})
+
+    def test_seed_writes_nothing_MODSEED_4_1(self):
+        # covers MODSEED-4.1
+        import io, contextlib
+        root = self._tmp_repo({"src/auth/a.ts": "x"})
+        before = _tree_snapshot(root)
+        with contextlib.redirect_stdout(io.StringIO()):
+            check_graph.main(["--seed", "--root", root])
+        self.assertEqual(_tree_snapshot(root), before)              # nothing created/changed
+
+    def test_seed_short_circuits_before_harvest_MODSEED_4_3(self):
+        # covers MODSEED-4.3
+        import io, contextlib
+        root = self._tmp_repo({"src/auth/a.ts": "x", "docs/specs/INDEX.md": ""})
+        with contextlib.redirect_stdout(io.StringIO()):
+            rc = check_graph.main(["--seed", "--root", root])
+        self.assertEqual(rc, 0)
+        # --seed must not fall through to --harvest: no GRAPH.md written
+        self.assertFalse(os.path.exists(os.path.join(root, "docs/specs/GRAPH.md")))
+        # and --harvest itself still works, unchanged, when invoked directly
+        with contextlib.redirect_stdout(io.StringIO()):
+            check_graph.main(["--harvest", "--root", root])
+        self.assertTrue(os.path.exists(os.path.join(root, "docs/specs/GRAPH.md")))
 
 
 class HarvestWriteTest(_FixtureTestCase):

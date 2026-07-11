@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# @skills-linter: check-graph sha256:6e3e0052e40c
+# @skills-linter: check-graph sha256:89b8ee77724c
 """check-graph — horizontal feature-graph layer.
 
 Harvests, from each feature's existing design.md/tasks.md (NO new authoring):
@@ -1011,6 +1011,10 @@ def main(argv):
 
     if "--verify" in argv:
         return _run_verify(root, cfg, specs_dir, as_json)
+
+    if "--seed" in argv:
+        print(json.dumps(seed(root, cfg), indent=2, ensure_ascii=False))
+        return 0
 
     # default: --harvest
     graph = harvest(specs_dir, cfg)

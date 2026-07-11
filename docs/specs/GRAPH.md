@@ -22,14 +22,20 @@
 - interfaces: cfg dict from load_config (has specsDir, graph, and an, a module list of {"code", "owns":[str]} dicts (the shape Task 1, root (absolute repo path), cfg (with graph.sourceRoots,, enumerate_folders (Task 3), resolve_module (Task 2), and a, load_manifest (Task 1), _verify_boundaries (Task 4), and the
 - out-of-scope: Seeding/drafting the manifest from CODEOWNERS, workspace config, or | Sharding the graph or per-module rendering — the module-scoped | Feature-to-module homing and cross-cutting facets — M3. | Per-module standards and their consumption by review/briefs — M5. | Gate integration — brainstorm dedup, code-review reuse-miss/boundary, | Enforcing layering rules between modules (e.g., "UI must not import | Any authoring UI or migration tool — in M1 the manifest is hand-edited.
 
+### MODSEED — Brownfield On-Ramp — Manifest Seed
+- owns: —
+- touches: evals/evals.py, scripts/check_graph.py, scripts/check_graph_test.py, scripts/check_trace.py, scripts/vendor_linters.py, scripts/vendor_linters_test.py, scripts/wiring_test.py
+- interfaces: _seed_code(name: str) -> str, _seed_code(name) (Task 1); enumerate_folders(root, cfg) ->, seed(root, cfg) (Task 2); main(argv) -> int (existing, :931);
+- out-of-scope: CODEOWNERS and workspace-config parsing. M4 drafts only from top-level | Writing to `trace.json`. The seed only prints; a human pastes and refines. | Loose files directly under a source root. Only child *directories* become | Generating specs, deepening module cards, or harvesting code interfaces. | Merging a drafted module into an existing manifest. The seed emits a fresh
+
 ## Shared surface
 
 | Path | Features |
 |---|---|
-| evals/evals.py | MODGRAPH:touches, MODHOME:touches, MODMAP:touches |
-| scripts/check_graph.py | MODGRAPH:touches, MODHOME:touches, MODMAP:touches |
-| scripts/check_graph_test.py | MODGRAPH:touches, MODHOME:touches, MODMAP:touches |
-| scripts/check_trace.py | MODGRAPH:touches, MODHOME:touches, MODMAP:touches |
-| scripts/vendor_linters.py | MODGRAPH:touches, MODHOME:touches, MODMAP:touches |
-| scripts/vendor_linters_test.py | MODGRAPH:touches, MODHOME:touches, MODMAP:touches |
-| scripts/wiring_test.py | MODGRAPH:touches, MODHOME:touches, MODMAP:touches |
+| evals/evals.py | MODGRAPH:touches, MODHOME:touches, MODMAP:touches, MODSEED:touches |
+| scripts/check_graph.py | MODGRAPH:touches, MODHOME:touches, MODMAP:touches, MODSEED:touches |
+| scripts/check_graph_test.py | MODGRAPH:touches, MODHOME:touches, MODMAP:touches, MODSEED:touches |
+| scripts/check_trace.py | MODGRAPH:touches, MODHOME:touches, MODMAP:touches, MODSEED:touches |
+| scripts/vendor_linters.py | MODGRAPH:touches, MODHOME:touches, MODMAP:touches, MODSEED:touches |
+| scripts/vendor_linters_test.py | MODGRAPH:touches, MODHOME:touches, MODMAP:touches, MODSEED:touches |
+| scripts/wiring_test.py | MODGRAPH:touches, MODHOME:touches, MODMAP:touches, MODSEED:touches |

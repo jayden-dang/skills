@@ -713,10 +713,11 @@ class RenderAllTest(_FixtureTestCase):
     def test_import_has_no_side_effects_MODGRAPH_4_6(self):
         # covers MODGRAPH-4.6
         import importlib, io, contextlib
-        buf = io.StringIO()
-        with contextlib.redirect_stdout(buf):
+        out_buf, err_buf = io.StringIO(), io.StringIO()
+        with contextlib.redirect_stdout(out_buf), contextlib.redirect_stderr(err_buf):
             mod = importlib.reload(check_graph)
-        self.assertEqual(buf.getvalue(), "")
+        self.assertEqual(out_buf.getvalue(), "")
+        self.assertEqual(err_buf.getvalue(), "")
         self.assertTrue(hasattr(mod, "render_all"))
 
 
@@ -1288,10 +1289,31 @@ class HarvestWriteTest(_FixtureTestCase):
         root = self._module_repo()
         os.makedirs(os.path.join(root, "docs/specs/modules"))
         with open(os.path.join(root, "docs/specs/modules/OLD.md"), "w") as fh:
-            fh.write("stale")
+            fh.write(check_graph._GRAPH_BANNER + "\nstale")  # a previously generated shard
         check_graph.main(["--harvest", "--root", root])
         self.assertTrue(os.path.exists(os.path.join(root, "docs/specs/modules/AUTH.md")))
         self.assertFalse(os.path.exists(os.path.join(root, "docs/specs/modules/OLD.md")))
+
+    def test_flat_mode_keeps_authored_modules_files_MODGRAPH_4_2(self):
+        # covers MODGRAPH-4.2
+        root = self._tmp_repo({
+            "src/a.ts": "x",
+            "docs/agents/trace.json": json.dumps({"specsDir": "docs/specs"}),
+            "docs/specs/INDEX.md": "| F1 |\n",
+            "docs/specs/f/requirements.md":
+                "# Requirements: F\nFeature code: F1\nStatus: Approved\n\n## Out of Scope\n- none\n",
+            "docs/specs/f/tasks.md": "## Tasks\n\n**Files:**\n- Create: src/a.ts\n",
+            "docs/specs/modules/notes.md": "hand-authored notes, no banner\n",
+        })
+        check_graph.main(["--harvest", "--root", root])
+        self.assertTrue(
+            os.path.exists(os.path.join(root, "docs/specs/modules/notes.md")),
+            "flat-mode --harvest must not delete hand-authored (bannerless) modules/ files",
+        )
+        self.assertEqual(
+            check_graph.main(["--verify", "--root", root]), 0,
+            "flat-mode --verify must not flag hand-authored modules/ files as stale shards",
+        )
 
 
 class VerifyShardsTest(_FixtureTestCase):
@@ -1324,7 +1346,7 @@ class VerifyShardsTest(_FixtureTestCase):
         # covers MODGRAPH-4.1
         root = self._built_module_repo()
         with open(os.path.join(root, "docs/specs/modules/GHOST.md"), "w") as fh:
-            fh.write("leftover")
+            fh.write(check_graph._GRAPH_BANNER + "\nleftover")  # a previously generated shard
         self.assertEqual(check_graph.main(["--verify", "--root", root]), 1)
 
     def test_boundary_and_registration_still_run_MODGRAPH_4_3_4_4(self):
@@ -1351,6 +1373,8 @@ class FirstSentenceTest(unittest.TestCase):
         # covers MODGRAPH-3.5
         self.assertEqual(check_graph._first_sentence("One thing. Two thing."), "One thing.")
         self.assertEqual(check_graph._first_sentence("no terminator"), "no terminator")
+        self.assertEqual(check_graph._first_sentence("Stop! Go."), "Stop!")
+        self.assertEqual(check_graph._first_sentence("Really? Yes."), "Really?")
 
 
 class QueryCliTest(_FixtureTestCase):
@@ -1371,6 +1395,13 @@ class QueryCliTest(_FixtureTestCase):
         self.assertEqual(len(parsed["results"]), 2)          # capped
         self.assertEqual(parsed["omitted"], 2)               # 4 matched, 2 shown
         self.assertEqual(parsed["results"][0]["card"]["oos"], ["First sentence."])  # truncated
+        buf2 = io.StringIO()
+        with contextlib.redirect_stdout(buf2):
+            check_graph.main(["--query", "--root", root, "--keyword", "widget"])
+        self.assertTrue(
+            buf2.getvalue().endswith("(+2 more omitted)\n"),
+            "text-mode query output must end with the omitted-count trailer when results overflow the cap",
+        )
 
 
 if __name__ == "__main__":

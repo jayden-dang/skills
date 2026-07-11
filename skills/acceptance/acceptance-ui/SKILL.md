@@ -57,12 +57,23 @@ an error message shown. Where the criterion says "persists", `page.reload()` and
 assert the state survives. Tag each spec with its requirement ID per the
 project.md conventions (e.g. `test('…', { tag: '@CODE-N.M' }, …)`).
 
-## 4. Run on Chromium and fix what breaks
+## 4. Run on Chromium and triage what breaks
 
-Run the specs headless on Chromium. Any failure is a real defect.
-REQUIRED SUB-SKILL: use `debug` — the failing spec is your red-capable loop. Fix
-the root cause, keep the spec as the regression, re-run. *Done when: every UI
-flow passes in a fresh Chromium run.*
+Run the specs headless on Chromium. No failure is waved away — but route it by
+an observable test. Re-run the failing spec:
+
+- **Deterministic failure on a user-visible assertion** — wrong text, wrong
+  status, a missing element that should render — is a **product defect**.
+  REQUIRED SUB-SKILL: use `debug`; the failing spec is your red-capable loop.
+  Fix the root cause, keep the spec as the regression.
+- **Non-deterministic** (passes on re-run) or a **harness fault** — a locator
+  that no longer matches, a missing wait or race, absent seed state — is a
+  defect in the **spec**, not the product. Make it deterministic (role/label
+  locators, awaited assertions, real fixtures) and re-run.
+
+A flaky spec is fixed at the harness level, never dismissed and never blamed on
+the product; only a deterministic failure on a real assertion goes to `debug`.
+*Done when: every UI flow passes in a fresh Chromium run.*
 
 ## 5. Commit the specs
 

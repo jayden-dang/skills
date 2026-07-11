@@ -36,7 +36,12 @@ For the genuinely hard parts, design it twice: dispatch 2–3 parallel subagents
 with divergent constraints (minimize the interface / maximize flexibility /
 optimize the common caller), compare on interface depth and seam placement,
 and commit to one with a stated reason. Be opinionated — the user wants a
-strong recommendation, not a menu.
+strong recommendation, not a menu. "Genuinely hard" means the interface itself
+is in question — a new persistence boundary, a concurrency model, a plugin
+seam. A part with one obvious shape does not qualify: adding a field to an
+existing store, wiring a new route through an established pattern, or a plain
+CRUD form is a single-design job, and spawning three subagents to converge on
+the same answer is wasted motion.
 
 Design for depth: a module's interface should be much simpler than what it
 hides. Apply the deletion test — if this module vanished, how much would

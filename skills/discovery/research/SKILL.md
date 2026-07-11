@@ -28,7 +28,7 @@ Exactly **one markdown file**:
 
 ## High-stakes questions
 
-When the answer will steer an architecture choice or something else expensive to reverse, escalate the rigor. If a `deep-research` skill is installed, prefer it — it already implements this fan-out + adversarial-verify loop end to end. Otherwise do it inline:
+When the answer will steer an architecture choice or something else expensive to reverse, escalate the rigor. Not every unknown qualifies: "which date-formatting library" feels weighty but is cheap to swap behind a thin wrapper, so it takes the standard path — a careful trace to the owning source, no fan-out. Reserve the escalation for facts that steer something costly to undo: a storage format, a concurrency model, a public API contract, a security boundary. If a `deep-research` skill is installed, prefer it — it already implements this fan-out + adversarial-verify loop end to end. Otherwise do it inline:
 
 1. Fan out 2–4 parallel search angles (e.g. official docs, source code, issue tracker, spec text) as separate subagents.
 2. Adversarially verify before reporting: for each key claim, actively look for a source that contradicts it or a version/context in which it stops being true. Note conflicts explicitly rather than picking a side silently.

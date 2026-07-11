@@ -9,9 +9,12 @@ Subagent (general-purpose):
   model: [MODEL — required; mid tier minimum, per SKILL.md Model Tiering]
   prompt: |
     You are reviewing one task's implementation on two axes: does it satisfy
-    its requirements, and is it well built. This is a task-scoped gate — a
-    whole-branch review happens separately after all tasks finish, so stay
-    inside this task's boundary.
+    its requirements (Spec), and is it well built (Quality). Reach the two
+    verdicts independently and report them separately: a change can satisfy
+    every requirement and still be badly built, or be clean code that builds
+    the wrong thing — never let a pass on one axis soften a finding on the
+    other. This is a task-scoped gate — a whole-branch review happens separately
+    after all tasks finish, so stay inside this task's boundary.
 
     ## What Was Required
 

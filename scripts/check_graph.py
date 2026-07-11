@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# @skills-linter: check-graph sha256:c310066a5b63
+# @skills-linter: check-graph sha256:9ad425cec488
 """check-graph — horizontal feature-graph layer.
 
 Harvests, from each feature's existing design.md/tasks.md (NO new authoring):
@@ -155,6 +155,21 @@ def resolve_module(path, modules):
                 hits.add(code)
                 break
     return sorted(hits)
+
+
+def _home_module(owned_paths, modules):
+    """Home a feature by its owned paths: the single module code iff every owned
+    path resolves to that one module; else None (orphan, double-mapped, spanning,
+    or empty owns → unassigned)."""
+    if not owned_paths:
+        return None
+    codes = set()
+    for p in owned_paths:
+        hits = resolve_module(p, modules)
+        if len(hits) != 1:
+            return None
+        codes.add(hits[0])
+    return next(iter(codes)) if len(codes) == 1 else None
 
 
 _OWN_HINT_RE = re.compile(r"\b(create|new file|adds? a? ?new file|scaffold)\b", re.ASCII | re.IGNORECASE)
@@ -431,6 +446,9 @@ def harvest(specs_dir, cfg=DEFAULTS):
     features = []
     if not os.path.exists(specs_dir):
         return {"features": features, "reverse": {}, "shared": []}
+    _manifest_modules, _manifest_errs = load_manifest(cfg)
+    if _manifest_errs:
+        _manifest_modules = []
     req_files = _walk(specs_dir, lambda p: p.endswith("requirements.md"))
     for req in sorted(req_files):
         text = _read_maybe(req)
@@ -471,6 +489,7 @@ def harvest(specs_dir, cfg=DEFAULTS):
                 "touches": sorted(touches),
                 "interfaces": extract_interfaces([design_body, tasks_body]),
                 "oos": extract_out_of_scope(text),
+                "home": _home_module(sorted(owns), _manifest_modules),
             }
         )
     features.sort(key=lambda f: f["code"])

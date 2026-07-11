@@ -555,6 +555,44 @@ class HarvestTest(_FixtureTestCase):
         self.assertGreaterEqual(len(f["owns"]) + len(f["touches"]), 2, "surface harvested from standard specs alone")
 
 
+class HomeModuleTest(unittest.TestCase):
+    def test_all_paths_one_module_homes_there_MODGRAPH_1_2(self):
+        # covers MODGRAPH-1.2
+        mods = [{"code": "AUTH", "owns": ["src/auth/**"]}]
+        self.assertEqual(
+            check_graph._home_module(["src/auth/a.ts", "src/auth/b.ts"], mods), "AUTH")
+
+    def test_spanning_is_unassigned_MODGRAPH_1_3(self):
+        # covers MODGRAPH-1.3
+        mods = [{"code": "AUTH", "owns": ["src/auth/**"]},
+                {"code": "BILL", "owns": ["src/billing/**"]}]
+        self.assertIsNone(check_graph._home_module(["src/auth/a.ts", "src/billing/b.ts"], mods))
+
+    def test_orphan_and_empty_are_unassigned_MODGRAPH_1_3(self):
+        # covers MODGRAPH-1.3
+        mods = [{"code": "AUTH", "owns": ["src/auth/**"]}]
+        self.assertIsNone(check_graph._home_module(["src/auth/a.ts", "src/x/c.ts"], mods))
+        self.assertIsNone(check_graph._home_module([], mods))
+
+
+class HarvestHomingTest(_FixtureTestCase):
+    def test_harvest_homes_on_uncapped_owns_MODGRAPH_1_1(self):
+        # covers MODGRAPH-1.1
+        # 12 auth files + 1 billing file: capped owns (first 12) would look
+        # all-AUTH; only the UNCAPPED set reveals the billing span -> unassigned.
+        paths = [f"src/auth/f{i}.ts" for i in range(12)] + ["src/billing/x.ts"]
+        tasks_body = "## Tasks\n\n**Files:**\n" + "\n".join(f"- Create: {p}" for p in paths)
+        specs = self._spec_fixture([
+            {"slug": "wide", "code": "WIDE", "name": "Wide", "tasks": tasks_body}])
+        cfg = {"specsDir": "docs/specs",
+               "graph": {"sourceRoots": ["src"], "sourceExts": ["ts"], "cardCap": 12},
+               "modules": [{"code": "AUTH", "name": "A", "owns": ["src/auth/**"]},
+                           {"code": "BILL", "name": "B", "owns": ["src/billing/**"]}]}
+        graph = check_graph.harvest(specs, cfg)
+        f = next(x for x in graph["features"] if x["code"] == "WIDE")
+        self.assertIsNone(f["home"])
+
+
 class RenderGraphMdTest(_FixtureTestCase):
     def test_render_graph_md_deterministic_and_banner_marked(self):
         """renderGraphMd is deterministic and banner-marked."""

@@ -1299,6 +1299,25 @@ class LoadManifestTest(unittest.TestCase):
         self.assertEqual(mods[0]["code"], "M1")
 
 
+class SeedCodeTest(unittest.TestCase):
+    CODE_RE = r"^[A-Z][A-Z0-9]{1,11}$"
+
+    def test_normalizes_names_to_valid_codes_MODSEED_1_3(self):
+        # covers MODSEED-1.3
+        cases = {"auth": "AUTH", "my-service": "MYSERVICE",
+                 "AUTHENTICATION": "AUTHENTICATI"}   # 14 chars -> first 12
+        for name, code in cases.items():
+            self.assertEqual(check_graph._seed_code(name), code)
+            self.assertRegex(code, self.CODE_RE)
+
+    def test_repairs_and_pads_to_valid_code_MODSEED_1_4(self):
+        # covers MODSEED-1.4
+        cases = {"2024": "M2024", "a": "A0", "___": "M0", "x": "X0", "": "M0"}
+        for name, code in cases.items():
+            self.assertEqual(check_graph._seed_code(name), code)
+            self.assertRegex(code, self.CODE_RE)
+
+
 class GlobResolveTest(unittest.TestCase):
     def test_glob_subtree_and_segment_MODMAP_2_1(self):
         # covers MODMAP-2.1

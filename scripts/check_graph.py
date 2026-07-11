@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# @skills-linter: check-graph sha256:21ed66617df8
+# @skills-linter: check-graph sha256:06e5c43d6052
 """check-graph — horizontal feature-graph layer.
 
 Harvests, from each feature's existing design.md/tasks.md (NO new authoring):
@@ -827,6 +827,19 @@ def load_manifest(cfg):
             "owner": entry.get("owner"),
         })
     return modules, errors
+
+
+def _seed_code(name):
+    """Normalize a directory name to a valid module code matching _MODULE_CODE_RE
+    (2-12 chars, uppercase alnum, letter-first). Total and deterministic: defined
+    for every string."""
+    s = "".join(c for c in name.upper() if "A" <= c <= "Z" or "0" <= c <= "9")
+    if not s or not s[0].isalpha():
+        s = "M" + s               # ensure a leading letter (also covers empty)
+    s = s[:12]                     # ensure <= 12 chars
+    if len(s) < 2:
+        s = s + "0"               # ensure >= 2 chars (single-letter / 'M'-only)
+    return s
 
 
 def _collect_flag(args, name):

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# @skills-linter: check-graph sha256:06e5c43d6052
+# @skills-linter: check-graph sha256:6e3e0052e40c
 """check-graph — horizontal feature-graph layer.
 
 Harvests, from each feature's existing design.md/tasks.md (NO new authoring):
@@ -840,6 +840,40 @@ def _seed_code(name):
     if len(s) < 2:
         s = s + "0"               # ensure >= 2 chars (single-letter / 'M'-only)
     return s
+
+
+def seed(root, cfg):
+    """Draft a module manifest from the repo's source tree. Pure and read-only:
+    returns {"modules": [...]} sorted by code (each 'owns' sorted); writes
+    nothing; ignores any existing cfg['modules']."""
+    repo_folders, _ = enumerate_folders(root, cfg)
+    folderset = set(repo_folders)
+    existing_roots = [r for r in cfg["graph"]["sourceRoots"] if r in folderset]
+    drafts = []  # (code, {name, owns})
+    for f in repo_folders:
+        for r in existing_roots:
+            if f.startswith(r + "/") and "/" not in f[len(r) + 1:]:
+                name = f.rsplit("/", 1)[-1]
+                drafts.append((_seed_code(name), {"name": name, "owns": [f + "/**"]}))
+                break
+    # deterministic collision suffixing over sorted drafts
+    drafts.sort(key=lambda d: (d[0], d[1]["owns"]))
+    used = set()
+    modules = []
+    for code, mod in drafts:
+        if code in used:
+            n = 2
+            while True:
+                suffix = str(n)
+                cand = code[:12 - len(suffix)] + suffix
+                if cand not in used and _MODULE_CODE_RE.match(cand):
+                    break
+                n += 1
+            code = cand
+        used.add(code)
+        modules.append({"code": code, "name": mod["name"], "owns": sorted(mod["owns"])})
+    modules.sort(key=lambda m: m["code"])
+    return {"modules": modules}
 
 
 def _collect_flag(args, name):

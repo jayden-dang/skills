@@ -1318,6 +1318,76 @@ class SeedCodeTest(unittest.TestCase):
             self.assertRegex(code, self.CODE_RE)
 
 
+class SeedTest(_FixtureTestCase):
+    def _cfg(self):
+        return {"specsDir": "docs/specs",
+                "graph": {"sourceRoots": ["src"], "sourceExts": ["ts"],
+                          "cardCap": 12, "queryCap": 8}}
+
+    def test_drafts_one_module_per_child_dir_MODSEED_1_1_1_2_1_5(self):
+        # covers MODSEED-1.1, MODSEED-1.2, MODSEED-1.5
+        root = self._tmp_repo({"src/auth/a.ts": "x", "src/billing/b.ts": "x"})
+        out = check_graph.seed(root, self._cfg())
+        by_code = {m["code"]: m for m in out["modules"]}
+        self.assertEqual(set(by_code), {"AUTH", "BILLING"})
+        self.assertEqual(by_code["AUTH"]["owns"], ["src/auth/**"])   # 1.2
+        self.assertEqual(by_code["AUTH"]["name"], "auth")            # 1.5
+
+    def test_ignores_grandchildren_and_loose_files_MODSEED_1_1(self):
+        # covers MODSEED-1.1
+        root = self._tmp_repo({"src/auth/deep/c.ts": "x", "src/top.ts": "x"})
+        out = check_graph.seed(root, self._cfg())
+        # only the immediate child 'auth' becomes a module; 'deep' (grandchild)
+        # and loose root files do not.
+        self.assertEqual([m["code"] for m in out["modules"]], ["AUTH"])
+        self.assertEqual(out["modules"][0]["owns"], ["src/auth/**"])
+
+    def test_code_collision_gets_suffix_MODSEED_1_6(self):
+        # covers MODSEED-1.6
+        # 'auth' and 'au.th' are distinct dirs that both normalize to AUTH ->
+        # one keeps AUTH, the other becomes AUTH2 (case-insensitive-FS safe).
+        root = self._tmp_repo({"src/auth/a.ts": "x", "src/au.th/b.ts": "x"})
+        out = check_graph.seed(root, self._cfg())
+        self.assertEqual(sorted(m["code"] for m in out["modules"]),
+                         ["AUTH", "AUTH2"])
+
+    def test_output_is_deterministic_and_sorted_MODSEED_2_2(self):
+        # covers MODSEED-2.2
+        root = self._tmp_repo({"src/zebra/z.ts": "x", "src/alpha/a.ts": "x"})
+        out1 = check_graph.seed(root, self._cfg())
+        self.assertEqual(out1, check_graph.seed(root, self._cfg()))
+        codes = [m["code"] for m in out1["modules"]]
+        self.assertEqual(codes, sorted(codes))          # modules sorted by code
+
+    def test_draft_round_trips_through_load_manifest_MODSEED_3_1_3_2(self):
+        # covers MODSEED-3.1, MODSEED-3.2
+        root = self._tmp_repo({"src/auth/a.ts": "x", "src/2fa/b.ts": "x",
+                               "src/x/c.ts": "x"})
+        out = check_graph.seed(root, self._cfg())
+        for m in out["modules"]:
+            self.assertTrue(m["code"] and m["name"] and m["owns"])   # 3.2 non-empty
+        mods, errs = check_graph.load_manifest({"modules": out["modules"]})
+        self.assertEqual(errs, [])                                   # 3.1 zero errors
+
+    def test_ignores_existing_manifest_MODSEED_4_2(self):
+        # covers MODSEED-4.2
+        cfg = dict(self._cfg(),
+                   modules=[{"code": "OLD", "name": "Old", "owns": ["legacy/**"]}])
+        root = self._tmp_repo({"src/auth/a.ts": "x"})
+        out = check_graph.seed(root, cfg)
+        self.assertEqual([m["code"] for m in out["modules"]], ["AUTH"])  # OLD ignored
+
+    def test_import_still_inert_MODSEED_4_4(self):
+        # covers MODSEED-4.4
+        import importlib, io, contextlib
+        out_buf, err_buf = io.StringIO(), io.StringIO()
+        with contextlib.redirect_stdout(out_buf), contextlib.redirect_stderr(err_buf):
+            mod = importlib.reload(check_graph)
+        self.assertEqual(out_buf.getvalue(), "")
+        self.assertEqual(err_buf.getvalue(), "")
+        self.assertTrue(hasattr(mod, "seed"))
+
+
 class GlobResolveTest(unittest.TestCase):
     def test_glob_subtree_and_segment_MODMAP_2_1(self):
         # covers MODMAP-2.1

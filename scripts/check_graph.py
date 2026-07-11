@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# @skills-linter: check-graph sha256:335414f4e1aa
+# @skills-linter: check-graph sha256:1c1aba092e65
 """check-graph — horizontal feature-graph layer.
 
 Harvests, from each feature's existing design.md/tasks.md (NO new authoring):
@@ -851,8 +851,17 @@ def main(argv):
     if not os.path.exists(specs_dir):
         print(f"check-graph: no specs dir at {cfg['specsDir']}", file=sys.stderr)
         return 0
-    with open(os.path.join(specs_dir, "GRAPH.md"), "w", encoding="utf-8") as fh:
-        fh.write(render_graph_md(graph))
+    files = render_all(graph, cfg)
+    for relpath, content in files.items():
+        dest = os.path.join(specs_dir, relpath)
+        os.makedirs(os.path.dirname(dest), exist_ok=True)
+        with open(dest, "w", encoding="utf-8") as fh:
+            fh.write(content)
+    modules_dir = os.path.join(specs_dir, "modules")
+    if os.path.isdir(modules_dir):
+        for name in sorted(os.listdir(modules_dir)):
+            if name.endswith(".md") and f"modules/{name}" not in files:
+                os.remove(os.path.join(modules_dir, name))
     print(f"check-graph: wrote GRAPH.md — {len(graph['features'])} features, {len(graph['shared'])} shared paths.")
     return 0
 

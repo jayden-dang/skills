@@ -1242,5 +1242,28 @@ class VerifyIntegrationTest(_FixtureTestCase):
         self.assertTrue(hasattr(mod, "_run_verify"))
 
 
+class HarvestWriteTest(_FixtureTestCase):
+    def _module_repo(self):
+        return self._tmp_repo({
+            "src/auth/a.ts": "x",
+            "docs/agents/trace.json": json.dumps({"specsDir": "docs/specs",
+                "modules": [{"code": "AUTH", "name": "Auth", "owns": ["src/auth/**"]}]}),
+            "docs/specs/INDEX.md": "| AUTH1 |\n",
+            "docs/specs/f/requirements.md":
+                "# Requirements: F\nFeature code: AUTH1\nStatus: Approved\n\n## Out of Scope\n- none\n",
+            "docs/specs/f/tasks.md": "## Tasks\n\n**Files:**\n- Create: src/auth/a.ts\n",
+        })
+
+    def test_harvest_writes_shards_and_prunes_MODGRAPH_2_6(self):
+        # covers MODGRAPH-2.6
+        root = self._module_repo()
+        os.makedirs(os.path.join(root, "docs/specs/modules"))
+        with open(os.path.join(root, "docs/specs/modules/OLD.md"), "w") as fh:
+            fh.write("stale")
+        check_graph.main(["--harvest", "--root", root])
+        self.assertTrue(os.path.exists(os.path.join(root, "docs/specs/modules/AUTH.md")))
+        self.assertFalse(os.path.exists(os.path.join(root, "docs/specs/modules/OLD.md")))
+
+
 if __name__ == "__main__":
     unittest.main()

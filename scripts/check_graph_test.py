@@ -1265,5 +1265,57 @@ class HarvestWriteTest(_FixtureTestCase):
         self.assertFalse(os.path.exists(os.path.join(root, "docs/specs/modules/OLD.md")))
 
 
+class VerifyShardsTest(_FixtureTestCase):
+    def _built_module_repo(self):
+        root = self._tmp_repo({
+            "src/auth/a.ts": "x",
+            "docs/agents/trace.json": json.dumps({"specsDir": "docs/specs",
+                "modules": [{"code": "AUTH", "name": "Auth", "owns": ["src/auth/**"]}]}),
+            "docs/specs/INDEX.md": "| AUTH1 |\n",
+            "docs/specs/f/requirements.md":
+                "# Requirements: F\nFeature code: AUTH1\nStatus: Approved\n\n## Out of Scope\n- none\n",
+            "docs/specs/f/tasks.md": "## Tasks\n\n**Files:**\n- Create: src/auth/a.ts\n",
+        })
+        check_graph.main(["--harvest", "--root", root])   # write index + shards
+        return root
+
+    def test_clean_after_harvest_MODGRAPH_4_1(self):
+        # covers MODGRAPH-4.1
+        root = self._built_module_repo()
+        self.assertEqual(check_graph.main(["--verify", "--root", root]), 0)
+
+    def test_edited_shard_is_stale_MODGRAPH_4_1(self):
+        # covers MODGRAPH-4.1
+        root = self._built_module_repo()
+        with open(os.path.join(root, "docs/specs/modules/AUTH.md"), "w") as fh:
+            fh.write("tampered")
+        self.assertEqual(check_graph.main(["--verify", "--root", root]), 1)
+
+    def test_extra_shard_is_stale_MODGRAPH_4_1(self):
+        # covers MODGRAPH-4.1
+        root = self._built_module_repo()
+        with open(os.path.join(root, "docs/specs/modules/GHOST.md"), "w") as fh:
+            fh.write("leftover")
+        self.assertEqual(check_graph.main(["--verify", "--root", root]), 1)
+
+    def test_boundary_and_registration_still_run_MODGRAPH_4_3_4_4(self):
+        # covers MODGRAPH-4.3, MODGRAPH-4.4
+        import io, contextlib
+        root = self._built_module_repo()
+        # orphan a source folder (M1 boundary error) + drop the INDEX registration
+        os.makedirs(os.path.join(root, "src/orphan"))
+        with open(os.path.join(root, "src/orphan/z.ts"), "w") as fh:
+            fh.write("x")
+        with open(os.path.join(root, "docs/specs/INDEX.md"), "w") as fh:
+            fh.write("(empty)\n")
+        buf = io.StringIO()
+        with contextlib.redirect_stdout(buf):
+            rc = check_graph.main(["--verify", "--root", root])
+        out = buf.getvalue()
+        self.assertEqual(rc, 1)
+        self.assertIn("orphan", out.lower())                 # M1 boundary still runs (4.3)
+        self.assertIn("not registered in INDEX.md", out)     # registration still runs (4.4)
+
+
 if __name__ == "__main__":
     unittest.main()

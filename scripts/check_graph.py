@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# @skills-linter: check-graph sha256:1c1aba092e65
+# @skills-linter: check-graph sha256:b9171baad503
 """check-graph — horizontal feature-graph layer.
 
 Harvests, from each feature's existing design.md/tasks.md (NO new authoring):
@@ -768,22 +768,29 @@ def _verify_boundaries(root, cfg, modules):
 
 
 def _run_verify(root, cfg, specs_dir, as_json):
-    """--verify lint: (1) freshness — the committed GRAPH.md must be byte-identical
-    to a fresh render_graph_md(harvest(...)) render, and (2) registration — every
-    harvested feature code must appear in <specsDir>/INDEX.md. Returns 1 and
-    reports on either failure; returns 0 when both hold.
+    """--verify lint: (1) freshness — every file in render_all(harvest(...), cfg)
+    must be byte-identical to its committed copy, with no stale modules/*.md
+    shards left behind, and (2) registration — every harvested feature code must
+    appear in <specsDir>/INDEX.md. Returns 1 and reports on either failure;
+    returns 0 when both hold.
     """
     errors = []
     warnings = []
     graph = harvest(specs_dir, cfg)
-    graph_md_path = os.path.join(specs_dir, "GRAPH.md")
-    committed = None
-    if os.path.exists(graph_md_path):
-        with open(graph_md_path, "r", encoding="utf-8") as fh:
-            committed = fh.read()
-    fresh = render_graph_md(graph)
-    if committed != fresh:
-        errors.append("GRAPH.md is stale — run `check-graph --harvest` and commit the result.")
+    files = render_all(graph, cfg)
+    for relpath, content in files.items():
+        p = os.path.join(specs_dir, relpath)
+        committed = None
+        if os.path.exists(p):
+            with open(p, "r", encoding="utf-8") as fh:
+                committed = fh.read()
+        if committed != content:
+            errors.append(f"{relpath} is stale — run `check-graph --harvest` and commit the result.")
+    modules_dir = os.path.join(specs_dir, "modules")
+    if os.path.isdir(modules_dir):
+        for name in sorted(os.listdir(modules_dir)):
+            if name.endswith(".md") and f"modules/{name}" not in files:
+                errors.append(f"E: stale shard modules/{name} — run `check-graph --harvest`.")
 
     index_md_path = os.path.join(specs_dir, "INDEX.md")
     index_text = ""

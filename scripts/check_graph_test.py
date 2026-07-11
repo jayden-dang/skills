@@ -1355,12 +1355,18 @@ class SeedTest(_FixtureTestCase):
 
     def test_code_collision_gets_suffix_MODSEED_1_6(self):
         # covers MODSEED-1.6
-        # 'auth' and 'au.th' are distinct dirs that both normalize to AUTH ->
-        # one keeps AUTH, the other becomes AUTH2 (case-insensitive-FS safe).
-        root = self._tmp_repo({"src/auth/a.ts": "x", "src/au.th/b.ts": "x"})
+        # three distinct dirs that all normalize to AUTH -> unique codes via the
+        # incrementing suffix (AUTH, AUTH2, AUTH3). Distinct names differing by
+        # more than case, so this holds on a case-insensitive filesystem too.
+        root = self._tmp_repo({"src/auth/a.ts": "x", "src/au.th/b.ts": "x",
+                               "src/a-u-t-h/c.ts": "x"})
         out = check_graph.seed(root, self._cfg())
-        self.assertEqual(sorted(m["code"] for m in out["modules"]),
-                         ["AUTH", "AUTH2"])
+        codes = sorted(m["code"] for m in out["modules"])
+        self.assertEqual(codes, ["AUTH", "AUTH2", "AUTH3"])
+        for code in codes:                                   # suffixed codes stay valid
+            self.assertRegex(code, r"^[A-Z][A-Z0-9]{1,11}$")
+        _mods, errs = check_graph.load_manifest({"modules": out["modules"]})
+        self.assertEqual(errs, [])                           # unique -> no dup-code error
 
     def test_output_is_deterministic_and_sorted_MODSEED_2_2(self):
         # covers MODSEED-2.2

@@ -2,7 +2,7 @@
 
 Five scripts. Two are linters that enforce the spine, two support `execute-plan`'s subagent engine, and one distributes the linters into consuming repos.
 
-All are zero-dependency and offline. `check-trace.mjs`, `check-graph.mjs`, and `vendor-linters.mjs` are Node ESM; `task-brief` and `review-package` are bash.
+All are zero-dependency and offline. `check_trace.py`, `check_graph.py`, and `vendor_linters.py` run on the Python 3 (3.9+) that ships with your machine — stdlib only, no third-party package; `task-brief` and `review-package` are bash.
 
 ---
 
@@ -11,7 +11,7 @@ All are zero-dependency and offline. `check-trace.mjs`, `check-graph.mjs`, and `
 The requirements traceability linter. The vertical layer: one feature's requirements, tasks, and tests must agree.
 
 ```bash
-node scripts/check-trace.mjs [--strict] [--json] [--root <repo-root>]
+python3 scripts/check_trace.py [--strict] [--json] [--root <repo-root>]
 ```
 
 ### Sources of truth
@@ -73,9 +73,9 @@ Three constraints on `ignore`, from its own spec (`TRACE`): it is a plain path-s
 The [feature graph](../concepts/feature-graph.md) linter. The horizontal layer: which features touch the same code.
 
 ```bash
-node scripts/check-graph.mjs --harvest                              # write GRAPH.md
-node scripts/check-graph.mjs --query --json --path P --keyword K    # overlaps as JSON
-node scripts/check-graph.mjs --verify                               # lint
+python3 scripts/check_graph.py --harvest                              # write GRAPH.md
+python3 scripts/check_graph.py --query --json --path P --keyword K    # overlaps as JSON
+python3 scripts/check_graph.py --verify                               # lint
 ```
 
 It harvests from each feature's **existing** `design.md` and `tasks.md` — it authors nothing new — producing a surface manifest (`owns` / `touches`), a reverse index, and summary cards.
@@ -114,17 +114,17 @@ Shares `docs/agents/trace.json`, under an optional `graph` key:
 Installs the two linters into a consuming repo, and detects drift between the two copies.
 
 ```bash
-node scripts/vendor-linters.mjs --install --to <repo> --scripts-dir <path>
-node scripts/vendor-linters.mjs --check   --to <repo> --scripts-dir <path>
-node scripts/vendor-linters.mjs --stamp
+python3 scripts/vendor_linters.py --install --to <repo> --scripts-dir <path>
+python3 scripts/vendor_linters.py --check   --to <repo> --scripts-dir <path>
+python3 scripts/vendor_linters.py --stamp
 ```
 
 The skill set's own `scripts/` is the **single canonical copy** — deliberately not mirrored into `templates/` — so there is exactly one axis of drift to police.
 
 Each linter carries a stamp of its own body, excluding the stamp line itself, which makes re-stamping idempotent:
 
-```js
-// @skills-linter: check-graph sha256:8897837c7133
+```python
+# @skills-linter: check-graph sha256:8897837c7133
 ```
 
 `--check` reports each linter as one of four states, and exits 1 on any drift:
@@ -138,7 +138,7 @@ Each linter carries a stamp of its own body, excluding the stamp line itself, wh
 
 ### Why it exists
 
-The skills read `check-trace.mjs` and `check-graph.mjs` **from the consuming repo**, not from the skill set. A repo that lacks them silently loses the trace spine and the feature graph — and an uninstalled `check-graph` makes `brainstorm` and `code-review` skip their duplication checks forever, which *looks exactly like "no overlapping features"*.
+The skills read `check_trace.py` and `check_graph.py` **from the consuming repo**, not from the skill set. A repo that lacks them silently loses the trace spine and the feature graph — and an uninstalled `check-graph` makes `brainstorm` and `code-review` skip their duplication checks forever, which *looks exactly like "no overlapping features"*.
 
 That is why `setup-repo`'s step 6 treats a `check-graph` that prints nothing, exits non-zero, or never writes its file as a **wiring failure** that must be fixed before setup can complete.
 
@@ -185,7 +185,7 @@ A reviewer handed a `HEAD~1` package sees a fraction of a multi-commit task and 
 `setup-repo` offers to install both linters into the repo's configured scripts directory, then to wire them into:
 
 - **CI** — appended to an existing workflow, additively. It does not author a pipeline.
-- **Git hooks** — `pre-commit` gets the *fast* gates (format staged, lint, typecheck) so commits stay quick; `pre-push` gets the fuller suite plus `check-trace.mjs` and `check-graph.mjs --verify`.
+- **Git hooks** — `pre-commit` gets the *fast* gates (format staged, lint, typecheck) so commits stay quick; `pre-push` gets the fuller suite plus `check_trace.py` and `check_graph.py --verify`.
 
 The split matters: *a hook slow enough to be routinely `--no-verify`'d is worse than none.*
 

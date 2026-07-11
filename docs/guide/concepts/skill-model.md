@@ -100,7 +100,7 @@ Never `@`-links or markdown links into another skill's folder. A link force-load
 
 > If the rule is mechanically enforceable — a regex, a linter, a schema check, a git hook — automate it and skip the skill.
 
-Documentation is for the judgment calls a check cannot make. A skill that only restates what a validator already guarantees is context the agent pays for on every run, to enforce what the machine could have enforced for free. This is precisely why `check-trace.mjs` exists instead of a "remember to keep the trace matrix updated" skill.
+Documentation is for the judgment calls a check cannot make. A skill that only restates what a validator already guarantees is context the agent pays for on every run, to enforce what the machine could have enforced for free. This is precisely why `check_trace.py` exists instead of a "remember to keep the trace matrix updated" skill.
 
 ## When to split one
 

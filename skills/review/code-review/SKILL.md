@@ -65,3 +65,7 @@ Ready to merge? Yes | No | With fixes
 ```
 
 *Done when: both axis sections and the verdict are delivered.*
+
+## Inline fallback (no subagent capability)
+
+No subagent capability in this harness? Run the two axes yourself, sequentially, in one context: **Standards first** — read `standards-baseline.md`, walk the diff against each of its twelve smells and the Security section — then **Spec** — walk the requirements ID by ID. Finish and record one axis completely before starting the next, and still present them under separate `## Standards` and `## Spec` headings without reranking one against the other. This loses the context isolation two subagents provide, so the discipline of closing out one axis before opening the next is what keeps them from bleeding together.

@@ -21,7 +21,7 @@ Work one feature at a time. Identify the spec directory first (from the user, th
 
 ## Steps
 
-**a. Baseline.** Run `check-trace.mjs` (path per `docs/agents/project.md`) and capture the output — this is the "before" picture.
+**a. Baseline.** Run `python3 scripts/check_trace.py` (path per `docs/agents/project.md`) and capture the output — this is the "before" picture.
 
 **b. Requirements ↔ tasks.** Compare `requirements.md` against `tasks.md`:
 
@@ -42,9 +42,9 @@ Work one feature at a time. Identify the spec directory first (from the user, th
 
 Apply any transition whose evidence exists: update the `Status:` line in `requirements.md` and the feature's row in `docs/specs/INDEX.md`. If evidence is partial, say exactly what is missing instead of transitioning.
 
-**f. After picture.** Re-run `check-trace.mjs` and print both reports side by side — errors and warnings resolved, anything remaining, and what you changed to get there.
+**f. After picture.** Re-run `python3 scripts/check_trace.py` and print both reports side by side — errors and warnings resolved, anything remaining, and what you changed to get there.
 
-Then regenerate the feature graph: `node scripts/check-graph.mjs --harvest`. If `GRAPH.md`
+Then regenerate the feature graph: `python3 scripts/check_graph.py --harvest`. If `GRAPH.md`
 changed, stage it into this sync-spec commit alongside the `Status:`/`INDEX.md` edits so
 the committed graph tracks the triad.
 

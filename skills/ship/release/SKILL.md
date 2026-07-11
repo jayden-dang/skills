@@ -17,7 +17,7 @@ Read the repo's commands from `docs/agents/project.md` (verify commands, release
 
 ## a. Verify gate
 
-Run every verify command in order — typecheck, lint, unit, e2e — plus the trace check (`check-trace.mjs`). All must pass fresh, now; prior green runs do not count. The trace check must be **clean**: an implemented requirement with no covering test is an untraced requirement, and untraced requirements block a release.
+Run every verify command in order — typecheck, lint, unit, e2e — plus the trace check (`python3 scripts/check_trace.py`). All must pass fresh, now; prior green runs do not count. The trace check must be **clean**: an implemented requirement with no covering test is an untraced requirement, and untraced requirements block a release.
 
 **Done when:** every command has a fresh passing run you have read the output of.
 

@@ -23,7 +23,7 @@ The corollary matters more than the principle: **a script, not diligence, keeps 
 > *"If it isn't in an approved requirements.md, it lives only in this chat and dies with it."*
 > — `brainstorm`, rationalization table
 
-**Enforced by:** `check-trace.mjs`, run by `verify`, `finish-branch`, `release`, and CI.
+**Enforced by:** `check_trace.py`, run by `verify`, `finish-branch`, `release`, and CI.
 
 ## 3. Gates, not vibes
 

@@ -26,10 +26,22 @@ start the app, confirm it loads in a browser, then WRITE them into project.md
 under `## Run locally (dev)`. *Done when: the app loads AND the commands are
 recorded.*
 
-## 2. Ensure a Playwright/Chromium harness
+**Preconditions — auth, data, environment.** If the flows need a logged-in
+session, a seeded account or fixture data, or environment configuration (env
+vars, a test database), discover how the repo provides them and record it in
+project.md — capture a reusable signed-in state (e.g. a saved `storageState`)
+rather than logging in by hand in every spec. A run that stalls on a login wall
+or an empty screen is testing the harness, not the feature.
 
-Check for one: `@playwright/test` installed and a `playwright.config.*` with a
-Chromium project. If present, use it. If not, set it up: install
+## 2. Ensure an e2e harness
+
+If the repo already standardizes on a different e2e framework (Cypress,
+WebdriverIO, Nightwatch, a native mobile driver), write the flows in **that**
+harness — do not install a second, competing e2e stack alongside it. Only when
+there is no incumbent e2e harness, default to Playwright/Chromium.
+
+Check for a Playwright harness: `@playwright/test` installed and a
+`playwright.config.*` with a Chromium project. If present, use it. If not, set it up: install
 `@playwright/test`, add a config with a `chromium` project and the dev-server
 `baseURL`, a test directory, and record the run command
 (`… playwright test --project=chromium`) in project.md. *Done when: the

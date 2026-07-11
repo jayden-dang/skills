@@ -61,7 +61,7 @@ Each item is a todo, completed in order. The order matters: context before quest
 
 ## The feature-graph dedup check
 
-Step 1 runs `node scripts/check-graph.mjs --query --json`, passing the scan's candidate files as `--path` and the idea's key terms as `--keyword`. Returned features are presented as their summary **cards** (not full specs) — each card's owned paths and Out-of-Scope list show what the neighbor already covers, so the new idea can be positioned against or distinguished from them.
+Step 1 runs `python3 scripts/check_graph.py --query --json`, passing the scan's candidate files as `--path` and the idea's key terms as `--keyword`. Returned features are presented as their summary **cards** (not full specs) — each card's owned paths and Out-of-Scope list show what the neighbor already covers, so the new idea can be positioned against or distinguished from them.
 
 The check is a convenience, not a gate, so it degrades gracefully and never blocks progress:
 
@@ -88,7 +88,7 @@ If the work spans multiple independent subsystems, this is also where it is deco
 
 A user opens with "we should let people export their notes as PDF." Nothing is spec'd, so `brainstorm` fires and the hard gate is in force from the first word.
 
-**Step 1.** Read `CONTEXT.md` and `docs/specs/INDEX.md` directly; dispatch a scan subagent that writes its digest to `.skills/pdf-export-scan.md` and reports the notes module already owns a Markdown export at `src/export/`. Run `node scripts/check-graph.mjs --query --json --path src/export/markdown.ts --keyword export --keyword pdf`. It returns one card, `EXPORT-2`, owning `src/export/` with "PDF rendering" on its Out-of-Scope list.
+**Step 1.** Read `CONTEXT.md` and `docs/specs/INDEX.md` directly; dispatch a scan subagent that writes its digest to `.skills/pdf-export-scan.md` and reports the notes module already owns a Markdown export at `src/export/`. Run `python3 scripts/check_graph.py --query --json --path src/export/markdown.ts --keyword export --keyword pdf`. It returns one card, `EXPORT-2`, owning `src/export/` with "PDF rendering" on its Out-of-Scope list.
 
 State the one-paragraph context: "The project is a notes app; `EXPORT-2` already owns Markdown export and explicitly excludes PDF, so this idea is adjacent-but-new, and the glossary term *export* already applies."
 

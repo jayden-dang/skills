@@ -33,7 +33,7 @@ For anything heavier, dispatch a **scan subagent** that explores the code, docs,
 Then run the [feature-graph](../concepts/feature-graph.md) dedup check:
 
 ```bash
-node scripts/check-graph.mjs --query --json --path <candidate-file> --keyword <term>
+python3 scripts/check_graph.py --query --json --path <candidate-file> --keyword <term>
 ```
 
 Any returned features are presented as their **summary cards, not their full specs**. Each card's owned paths and Out-of-Scope list show what the neighbor already covers.

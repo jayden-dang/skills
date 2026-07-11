@@ -37,7 +37,7 @@ The skill creates one todo per step and works them in order. No gate begins unti
 
 ### a. Verify gate
 
-Run every verify command in order — typecheck, lint, unit, e2e — plus the trace check (`check-trace.mjs`). All must pass **clean**, not merely green: an implemented requirement with no covering test is an untraced requirement, and untraced requirements block a release. Prior green runs do not count; everything runs fresh, now, and the skill reads the output of each command. This is the same gate [`finish-branch`](finish-branch.md) enforces before a branch may merge, applied here to the release branch as a whole. **Done when:** every command has a fresh passing run whose output you have read.
+Run every verify command in order — typecheck, lint, unit, e2e — plus the trace check (`check_trace.py`). All must pass **clean**, not merely green: an implemented requirement with no covering test is an untraced requirement, and untraced requirements block a release. Prior green runs do not count; everything runs fresh, now, and the skill reads the output of each command. This is the same gate [`finish-branch`](finish-branch.md) enforces before a branch may merge, applied here to the release branch as a whole. **Done when:** every command has a fresh passing run whose output you have read.
 
 ### b. Assemble the changelog
 
@@ -75,7 +75,7 @@ Hand off to [`sync-spec`](sync-spec.md) to move the shipped features' requiremen
 
 The user runs `/release` on a repo whose last tag was `v1.3.0`. Since that tag, four commits landed on the release branch: three carrying `Implements:` or `Guards:` trailers for the `SHELL` feature, and one untrailered chore.
 
-Gate a passes clean — typecheck, lint, unit, e2e, and `check-trace.mjs` all fresh, no untraced `SHELL` requirements. Gate b collects `git log v1.3.0..HEAD`, reads the requirement-ID trailers, and resolves each ID to its text in `docs/specs/`, producing this draft:
+Gate a passes clean — typecheck, lint, unit, e2e, and `check_trace.py` all fresh, no untraced `SHELL` requirements. Gate b collects `git log v1.3.0..HEAD`, reads the requirement-ID trailers, and resolves each ID to its text in `docs/specs/`, producing this draft:
 
 ```markdown
 ## Unreleased

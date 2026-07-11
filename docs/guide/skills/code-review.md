@@ -8,7 +8,7 @@
 | **Invocation** | model-invocable (the agent calls it on its own) |
 | **Reads** | the diff `git diff <base>...HEAD`, commit list, `docs/specs/INDEX.md`, a feature's `requirements.md`, CLAUDE.md, lint/formatter configs, CONTRIBUTING docs, `CONTEXT.md`, `docs/agents/project.md`, `standards-baseline.md` (beside the skill) |
 | **Writes** | nothing — the review is read-only; it produces a report, not commits |
-| **Calls** | two READ-ONLY subagents (Standards, Spec) dispatched in parallel; `scripts/check-graph.mjs` for the duplication check |
+| **Calls** | two READ-ONLY subagents (Standards, Spec) dispatched in parallel; `python3 scripts/check_graph.py` for the duplication check |
 | **Called by** | [`execute-plan`](execute-plan.md) (final whole-branch review), or the user asking to review work since some ref |
 
 ## When it fires
@@ -52,7 +52,7 @@ On top of the repo's own documents, the Standards axis always carries `standards
 
 ### 3a. Check for duplication against existing features
 
-Run the duplication check against the diff's changed source files: `node scripts/check-graph.mjs --query --json --path <changed-file> [--path <changed-file> ...]`. It returns the overlapping features and their summary cards. The step degrades gracefully and never blocks the review:
+Run the duplication check against the diff's changed source files: `python3 scripts/check_graph.py --query --json --path <changed-file> [--path <changed-file> ...]`. It returns the overlapping features and their summary cards. The step degrades gracefully and never blocks the review:
 
 - If `check-graph` is **absent**, the [feature graph](../concepts/feature-graph.md) is not installed — note that, name [`setup-repo`](setup-repo.md) as the remedy, and say it **at most once per session** rather than on every review.
 - If it **errors**, note that the automated overlap check was unavailable.

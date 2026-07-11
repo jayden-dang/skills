@@ -41,7 +41,7 @@ The requirements file has no `Status:` or `Feature code:` header. `check-trace` 
 A test file that legitimately contains ID-shaped example strings that no test asserts. Those are **fixture IDs**, not citations. Add the file's path substring to `ignore` in `docs/agents/trace.json`:
 
 ```json
-{ "ignore": ["check-trace.test.mjs", "fixtures/"] }
+{ "ignore": ["test_check_trace.py", "fixtures/"] }
 ```
 
 `ignore` filters the *test-file walk only*. It cannot exclude a requirements file from defining IDs, so it cannot be used to hide a real requirement from coverage checking.
@@ -55,7 +55,7 @@ A test file that legitimately contains ID-shaped example strings that no test as
 A spec changed and the committed graph was not regenerated. `sync-spec` normally does this and stages the result into the same commit. Run:
 
 ```bash
-node scripts/check-graph.mjs --harvest
+python3 scripts/check_graph.py --harvest
 git add docs/specs/GRAPH.md
 ```
 
@@ -65,11 +65,11 @@ A `requirements.md` declares a feature code with no row in `docs/specs/INDEX.md`
 
 ### `brainstorm` never mentions overlapping features
 
-Most likely `check-graph.mjs` is not installed in the repo. This is the failure mode `setup-repo`'s step 6 calls out specifically:
+Most likely `check_graph.py` is not installed in the repo. This is the failure mode `setup-repo`'s step 6 calls out specifically:
 
 > An uninstalled or unrunnable graph linter makes `brainstorm` and `code-review` silently skip their duplication checks forever, which looks exactly like "no overlapping features".
 
-Check for it, then re-run `/setup-repo`, which vendors both linters via `vendor-linters.mjs` and proves they run.
+Check for it, then re-run `/setup-repo`, which vendors both linters via `vendor_linters.py` and proves they run.
 
 Note that both consuming skills are *designed* to say this at most once per session. A repo that has declined the graph must not be nagged on every query.
 

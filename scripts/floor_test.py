@@ -1,5 +1,5 @@
-"""floor_test.py — guards the 3.9 floor and the stdlib-only rule for the
-Python ports (Task 7 of docs/specs/2026-07-10-python-linters).
+"""floor_test.py — guards the Python 3.9 floor and the stdlib-only rule for
+the linters.
 
 Why this can't be `py_compile`: `py_compile` validates against the
 **running** interpreter, so a `match` statement compiles clean on a 3.12
@@ -107,10 +107,10 @@ def scan_source(src, filename="<string>"):
 
 
 class FloorTest(unittest.TestCase):
-    """[PYPORT-1.2][PYPORT-1.3] the 3.9-floor / stdlib-only guard for the ported linters."""
+    """the 3.9-floor / stdlib-only guard for the linters."""
 
     def test_no_310_only_syntax(self):
-        """[PYPORT-1.3] no module uses syntax newer than CPython 3.9."""
+        """no module uses syntax newer than CPython 3.9."""
         for mod in MODULES:
             src = (SCRIPTS / mod).read_text(encoding="utf-8")
             try:
@@ -129,7 +129,7 @@ class FloorTest(unittest.TestCase):
             self.assertEqual(violations, [], "; ".join(violations))
 
     def test_detects_pep604_union_nested_in_parameter_annotation(self):
-        """[PYPORT-1.3] a PEP 604 union nested inside a subscripted parameter
+        """a PEP 604 union nested inside a subscripted parameter
         annotation (e.g. `List[int | str]`) is flagged, not just a bare
         top-level union."""
         src = "from typing import List\ndef f(x: List[int | str]):\n    pass\n"
@@ -140,7 +140,7 @@ class FloorTest(unittest.TestCase):
         )
 
     def test_detects_pep604_union_nested_in_variable_annotation(self):
-        """[PYPORT-1.3] a PEP 604 union nested inside a subscripted variable
+        """a PEP 604 union nested inside a subscripted variable
         annotation (e.g. `Dict[str, int | None]`) is flagged, not just a bare
         top-level union."""
         src = "from typing import Dict\nx: Dict[str, int | None] = {}\n"
@@ -151,7 +151,7 @@ class FloorTest(unittest.TestCase):
         )
 
     def test_does_not_flag_bitwise_or_used_as_a_value(self):
-        """[PYPORT-1.3] a bitwise-or used as an ordinary expression VALUE
+        """a bitwise-or used as an ordinary expression VALUE
         (never an annotation) is not a PEP 604 union and must not be flagged."""
         src = (
             "import re\n"
@@ -162,7 +162,7 @@ class FloorTest(unittest.TestCase):
         self.assertEqual(violations, [], f"unexpected violation(s): {violations}")
 
     def test_only_stdlib_imports(self):
-        """[PYPORT-1.2] the linters import nothing outside the standard library."""
+        """the linters import nothing outside the standard library."""
         # sys.stdlib_module_names is 3.10+. STDLIB_ALLOWLIST is the PRIMARY
         # check; widen it opportunistically only when the richer set exists.
         known = getattr(sys, "stdlib_module_names", None) or STDLIB_ALLOWLIST
@@ -173,7 +173,7 @@ class FloorTest(unittest.TestCase):
                 self.assertIn(name, known, f"{mod} imports non-stdlib module {name!r}")
 
     def test_compiles_under_a_real_39_interpreter_if_present(self):
-        """[PYPORT-1.3] opportunistic: compile under python3.9 when discoverable."""
+        """opportunistic: compile under python3.9 when discoverable."""
         interpreter = shutil.which("python3.9")
         if not interpreter:
             candidate = "/usr/bin/python3"

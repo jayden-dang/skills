@@ -42,8 +42,8 @@ The generated file has two parts — the cards and the shared-surface table:
 ## Cards
 
 ### FGRAPH — Horizontal feature-graph layer
-- owns: scripts/check-graph.mjs, scripts/vendor-linters.mjs, …
-- touches: scripts/check-trace.mjs, scripts/check-trace.test.mjs
+- owns: scripts/check_graph.py, scripts/vendor_linters.py, …
+- touches: scripts/check_trace.py, scripts/check_trace_test.py
 - interfaces: harvest(specsDir, cfg) → Graph, query(graph, {paths, keywords}) → …
 - out-of-scope: Manually-declared typed edges … | Semantic or embedding-based matching …
 
@@ -51,7 +51,7 @@ The generated file has two parts — the cards and the shared-surface table:
 
 | Path | Features |
 |---|---|
-| scripts/check-trace.mjs | FGRAPH:touches, TRACE:touches |
+| scripts/check_trace.py | FGRAPH:touches, TRACE:touches |
 ```
 
 ## The three modes
@@ -88,10 +88,10 @@ The graph is an advisory signal. It never fails a review and it never stops a br
 
 The linters live in the skill set's own `scripts/` — a single canonical copy, deliberately not mirrored into `templates/`, so there is exactly one axis of drift to police. But the *consuming repo* runs them, which means they must be copied in.
 
-`scripts/vendor-linters.mjs` does that, and stamps each installed file with a hash of its own body:
+`scripts/vendor_linters.py` does that, and stamps each installed file with a hash of its own body:
 
-```js
-// @skills-linter: check-graph sha256:8897837c7133
+```python
+# @skills-linter: check-graph sha256:8897837c7133
 ```
 
 `setup-repo` calls it with `--install` on first setup and with `--check` on re-runs. The check reports each linter as one of four states:

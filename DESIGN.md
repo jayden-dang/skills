@@ -372,7 +372,7 @@ triage (incoming issues) → ready-for-agent brief → execute or implement dire
 ## Build plan
 
 1. **Foundation:** repo scaffolding, plugin manifest, session-start hook,
-   templates/, scripts/ (check-trace.mjs first — it defines the ID grammar).
+   templates/, scripts/ (check_trace.py first — it defines the ID grammar).
 2. **Spec layer:** write-requirements, write-design, write-plan (+ INDEX.md
    registry convention).
 3. **Meta + discovery:** using-skills, ask, grilling, brainstorm, domain-modeling,

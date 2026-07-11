@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-# @skills-linter: check-graph sha256:2d7763494411
-"""check-graph — horizontal feature-graph layer (Python port of check-graph.mjs).
+# @skills-linter: check-graph sha256:3b8efb7e8782
+"""check-graph — horizontal feature-graph layer.
 
 Harvests, from each feature's existing design.md/tasks.md (NO new authoring):
   - a Surface manifest  (files a feature owns/touches)
@@ -47,7 +47,7 @@ def normalize_path(token):
         t = t.strip()
         if t == prev:
             break
-    t = _LEADING_DOT_SLASH_RE.sub("", t)  # leading "./" so "./check-graph.mjs" dedups with "check-graph.mjs"
+    t = _LEADING_DOT_SLASH_RE.sub("", t)  # leading "./" so "./scripts/x.py" dedups with "scripts/x.py"
     return t
 
 
@@ -84,7 +84,7 @@ def is_source_path(token, cfg):
 
 
 def dedupe_by_fullest(paths):
-    uniq = list(dict.fromkeys(paths))  # de-dupe, preserve first-seen order (JS Set semantics)
+    uniq = list(dict.fromkeys(paths))  # de-dupe, preserve first-seen order
     kept = []
     for p in uniq:
         is_basename_of_another = any(q != p and q.endswith("/" + p) for q in uniq)
@@ -274,11 +274,11 @@ def _scan_surface(text, cfg):
 
     path -> role: `keep` (tracked internally) records whether the path had at
     least one NON-command-line occurrence (FGRAPH-1.8) — a path seen ONLY on
-    command-invocation lines (e.g. `Run \\`node scripts/x.mjs\\``) is not
+    command-invocation lines (e.g. `Run \\`bash scripts/build.sh\\``) is not
     surface, but a path that also appears in a Create/Modify bullet or prose
     line must still be kept even if it's ALSO named on a command line.
     """
-    raw = {}  # path -> {"role", "keep"}; dict insertion order == JS Map order
+    raw = {}  # path -> {"role", "keep"}; dict preserves insertion order
     block_label = None
     in_fence = False
     for line in text.split("\n"):
@@ -450,10 +450,9 @@ def query(graph, paths=None, keywords=None):
     Summary card.
     """
     path_set = set(paths or [])
-    # Deliberate divergence from the oracle: check-graph.mjs lowercases first
-    # and filters after, so a trailing valueless --keyword (undefined) throws
-    # there. Filtering falsy tokens before lowercasing here means the same
-    # input degrades to "no keyword" instead of crashing.
+    # Filter out falsy tokens before lowercasing, so a trailing valueless
+    # --keyword (no argument after it) degrades to "no keyword" instead of
+    # crashing on a None.
     kws = [k.lower() for k in (keywords or []) if k]
     scored = {}  # code -> {"feature", "overlapPaths": set()}
 

@@ -8,7 +8,7 @@
 | **Invocation** | model-invocable (the agent calls it on its own) |
 | **Reads** | the feature's `requirements.md` / `design.md` / `tasks.md` triad, `docs/specs/INDEX.md`, `docs/agents/project.md` (the `check-trace` path), the code and tests |
 | **Writes** | edits to the triad (retired/added requirements, task boxes, `Status:`), the feature's row in `docs/specs/INDEX.md`, a regenerated `GRAPH.md` staged into the same commit |
-| **Calls** | [`check-trace`](../resources/scripts.md#check-trace) (before and after), `scripts/check-graph.mjs --harvest` |
+| **Calls** | [`check-trace`](../resources/scripts.md#check-trace) (before and after), `python3 scripts/check_graph.py --harvest` |
 | **Called by** | [`finish-branch`](finish-branch.md), [`amend`](amend.md), [`release`](release.md); or the user when a spec has drifted or CI's trace check is red |
 
 ## When it fires
@@ -35,7 +35,7 @@ Together these mean the requirement set only ever grows or retires — it never 
 
 ## Steps
 
-**a. Baseline.** Run `check-trace.mjs` (path per `docs/agents/project.md`) and capture the output — this is the "before" picture.
+**a. Baseline.** Run `check_trace.py` (path per `docs/agents/project.md`) and capture the output — this is the "before" picture.
 
 **b. Requirements ↔ tasks.** Compare `requirements.md` against `tasks.md`:
 
@@ -56,12 +56,12 @@ Together these mean the requirement set only ever grows or retires — it never 
 
 A transition updates the `Status:` line in `requirements.md` and the feature's row in `docs/specs/INDEX.md`.
 
-**f. After picture.** Re-run `check-trace.mjs` and print both reports side by side — errors and warnings resolved, anything remaining, and what you changed to get there.
+**f. After picture.** Re-run `check_trace.py` and print both reports side by side — errors and warnings resolved, anything remaining, and what you changed to get there.
 
 Then regenerate the feature graph:
 
 ```bash
-node scripts/check-graph.mjs --harvest
+python3 scripts/check_graph.py --harvest
 ```
 
 If `GRAPH.md` changed, stage it into this sync-spec commit alongside the `Status:` / `INDEX.md` edits, so the committed graph tracks the triad.
@@ -97,7 +97,7 @@ A feature whose code is `SHELL` shipped last week, but during implementation the
 
 **e. Status.** Every task box is now checked and the after-trace covers every live requirement, so `Approved → Implemented` has its evidence; `Implemented → Shipped` waits for [`release`](release.md). The `Status:` line and the `INDEX.md` row are updated to Implemented.
 
-**f. After.** `check-trace` re-runs clean; both reports print side by side. `node scripts/check-graph.mjs --harvest` regenerates `GRAPH.md`, which changed, so it is staged into the same commit as the `Status:` and `INDEX.md` edits.
+**f. After.** `check-trace` re-runs clean; both reports print side by side. `python3 scripts/check_graph.py --harvest` regenerates `GRAPH.md`, which changed, so it is staged into the same commit as the `Status:` and `INDEX.md` edits.
 
 ## Why it is written the way it is
 

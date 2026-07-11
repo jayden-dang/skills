@@ -38,7 +38,7 @@ Classify the baseline failure before writing anything; the form that fixes one f
 | Complies, but the output has the wrong shape | Positive recipe or contract: what the output IS — its parts, in order | Prohibitions. Under a competing incentive agents negotiate with "don't X"; in head-to-head wording tests the prohibition arm produced *more* of the unwanted content than no guidance at all. A recipe leaves nothing to negotiate |
 | Omits an element from something it already produces | A REQUIRED slot in the template it fills in | Prose reminders near the template |
 | Behavior should depend on a condition | A conditional keyed to an observable predicate ("if `design.md` exists, cite its seams") | An unconditional rule plus exemption clauses |
-| A check that must never be skipped or misjudged | A bundled deterministic script the skill runs and acts on (`check-trace.mjs`, a `classify-*.sh`) | Prose steps describing the check — code is deterministic, language interpretation isn't |
+| A check that must never be skipped or misjudged | A bundled deterministic script the skill runs and acts on (`check_trace.py`, a `classify-*.sh`) | Prose steps describing the check — code is deterministic, language interpretation isn't |
 
 **No nuance clauses.** "Don't X unless it matters" reopens the negotiation the rule just closed — appending one nuance clause to a winning recipe degrades it from consistent to noisy. A real exception becomes its own conditional on an observable predicate. Exemption clauses don't scope, either: "the limit doesn't apply to code blocks" still suppresses code blocks — restructure so the rule can't reach the exempt part.
 

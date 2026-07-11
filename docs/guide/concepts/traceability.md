@@ -48,7 +48,7 @@ Every project that has ever maintained a requirements traceability matrix by han
 
 So the system makes a different bet: **the trace is enforced by a linter or it does not exist.**
 
-[`check-trace.mjs`](../resources/scripts.md#check-trace) is a zero-dependency Node script. It parses the requirements files for definitions, the task footers and test files for citations, and it fails:
+[`check_trace.py`](../resources/scripts.md#check-trace) is a zero-dependency Python script. It parses the requirements files for definitions, the task footers and test files for citations, and it fails:
 
 | Code | Meaning |
 |---|---|

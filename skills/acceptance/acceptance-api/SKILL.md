@@ -29,6 +29,14 @@ returning anything), then WRITE the command and its ready-signal into project.md
 under `## Run locally (dev)`. *Done when: the server answers a request AND the
 start command is recorded in project.md.*
 
+**Preconditions — auth, data, environment.** If any endpoint needs
+authentication (a token, a seeded test account), fixture/seed data, or
+environment configuration (env vars, a test database), discover how the repo
+provides them and record it in project.md alongside the run command. An
+acceptance run that stalls on a `401` or an empty database is testing the
+harness, not the feature — resolve the precondition and note it, rather than
+marking the item unverifiable.
+
 ## 2. Turn each checklist item into a real request
 
 For each API item in the ledger, write the concrete request a client sends —

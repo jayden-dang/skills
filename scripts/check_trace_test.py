@@ -1,16 +1,13 @@
-"""Regression tests for check_trace.py — the requirements traceability linter.
+"""Regression tests for check_trace.py — the requirements-traceability linter.
 
-Ported from scripts/check-trace.test.mjs (the oracle). Expected values are copied from the
-oracle's expectations, never recomputed from the Python port under test.
+Expected values are asserted independently, not recomputed from check_trace.py under test.
 
 This file is itself scanned by check-trace (testGlobs = ["scripts"], testFilePattern matches
 `_test.py`), so it is a Fixture-ID-bearing file: it must be listed in docs/agents/trace.json's
 `ignore` array (see CONTEXT.md's Fixture ID vs Citation distinction). The retirement fixture's
 `RET`-coded IDs below are assembled at runtime — never written as a contiguous literal — so
 the raw source text never contains a full ID-shaped match; other fixture IDs (`IGN`- and
-`GHOST`-coded) are left as literals, matching the oracle's own test file, and are covered by
-the `ignore` entry instead. The bracketed `[PYPORT-N.M]` tags in docstrings are genuine
-Citations for this porting task and are meant to be found.
+`GHOST`-coded) are left as literals and are covered by the `ignore` entry instead.
 """
 import json
 import os
@@ -27,7 +24,7 @@ PY_CLI = os.path.join(_SCRIPTS_DIR, "check_trace.py")
 
 
 class _FixtureTestCase(unittest.TestCase):
-    """Shared fixture builder + CLI runner, mirroring check-trace.test.mjs's fixture()/run()."""
+    """Shared fixture builder + CLI runner: builds a throwaway repo and runs the CLI."""
 
     def _fixture(self, requirements, files=None, trace_json=None):
         """Build a throwaway repo root with one spec file (and optional test files)."""
@@ -61,7 +58,7 @@ class _FixtureTestCase(unittest.TestCase):
 
 class RetirementTest(_FixtureTestCase):
     def test_struck_through_requirement_is_retired_not_counted_cannot_fire_e2(self):
-        """[PYPORT-1.1] a struck-through requirement is retired: not counted, cannot fire E2."""
+        """a struck-through requirement is retired: not counted, cannot fire E2."""
         RET = "RET"
         requirements = "\n".join(
             [
@@ -85,7 +82,7 @@ class RetirementTest(_FixtureTestCase):
         self.assertEqual(code, 0, "clean exit")
 
     def test_bold_not_struck_id_still_fires_e2(self):
-        """[PYPORT-1.1] the same ID left bold (not struck) still fires E2 — strip is strikethrough-specific."""
+        """the same ID left bold (not struck) still fires E2 — strip is strikethrough-specific."""
         RET = "RET"
         requirements = "\n".join(
             [
@@ -119,13 +116,12 @@ IGNORE_REQUIREMENTS = "\n".join(
 
 
 class IgnoreListTest(_FixtureTestCase):
-    """Ports check-trace.test.mjs's TRACE-1.x-labeled tests. TRACE stays uncovered/Out of Scope
-    per docs/specs/2026-07-10-python-linters/design.md; these tests exist to guard PYPORT-5.3
-    (the port carries the `ignore` behavior forward), not to cite TRACE requirement IDs.
+    """Tests for the docs/agents/trace.json `ignore` behavior: an excluded test
+    file contributes no citations, so its fixture IDs never fire E1.
     """
 
     def test_ignore_excludes_matching_test_files_so_fixture_ids_never_fire_e1(self):
-        """[PYPORT-5.3] docs/agents/trace.json ignore excludes matching test files, so their fixture IDs never fire E1."""
+        """docs/agents/trace.json ignore excludes matching test files, so their fixture IDs never fire E1."""
         root = self._fixture(
             IGNORE_REQUIREMENTS,
             files={"src/x.test.ts": "it('[GHOST-9.9] x', () => {})"},
@@ -136,7 +132,7 @@ class IgnoreListTest(_FixtureTestCase):
         self.assertEqual(code, 0, "clean exit")
 
     def test_empty_ignore_array_scans_every_test_file_unknown_id_still_fires_e1(self):
-        """[PYPORT-5.3] an empty ignore array scans every test file — unknown ID still fires E1."""
+        """an empty ignore array scans every test file — unknown ID still fires E1."""
         root = self._fixture(
             IGNORE_REQUIREMENTS,
             files={"src/x.test.ts": "it('[GHOST-9.9] x', () => {})"},
@@ -148,7 +144,7 @@ class IgnoreListTest(_FixtureTestCase):
         self.assertEqual(code, 1, "non-zero exit on error")
 
     def test_no_trace_json_at_all_unknown_id_test_file_fires_e1_as_before(self):
-        """[PYPORT-5.3] with no trace.json at all, an unknown-ID test file fires E1 exactly as before this change."""
+        """with no trace.json at all, an unknown-ID test file fires E1 exactly as before this change."""
         root = self._fixture(
             IGNORE_REQUIREMENTS,
             files={"src/x.test.ts": "it('[GHOST-9.9] x', () => {})"},
@@ -164,7 +160,7 @@ class IgnoreListTest(_FixtureTestCase):
         self.assertEqual(code, 1, "non-zero exit on error")
 
     def test_blank_ignore_entry_does_not_exclude_every_test_file(self):
-        """[PYPORT-5.3] a blank ignore entry ("") does not exclude every test file."""
+        """a blank ignore entry ("") does not exclude every test file."""
         requirements = "\n".join(
             [
                 "# Requirements: ignore blank entries",
@@ -188,7 +184,7 @@ class IgnoreListTest(_FixtureTestCase):
         self.assertEqual(code, 0, "clean exit")
 
     def test_ignore_only_adds_exclusion_non_ignored_files_still_selected_and_covered(self):
-        """[PYPORT-5.3] ignore only adds an exclusion — testGlobs/testFilePattern selection and coverage still work for non-ignored files."""
+        """ignore only adds an exclusion — testGlobs/testFilePattern selection and coverage still work for non-ignored files."""
         root = self._fixture(
             IGNORE_REQUIREMENTS,
             files={
@@ -204,20 +200,18 @@ class IgnoreListTest(_FixtureTestCase):
 
 
 class WalkOrderTest(_FixtureTestCase):
-    """Guards PYPORT-1.1: check_trace.py's directory walk must visit entries in the
-    same order the oracle does. check-trace.mjs walks via fs.readdirSync, which
-    libuv implements as scandir(3) + alphasort — Node always yields directory
-    entries alphabetically. Python's os.scandir makes no such promise and, on
+    """check_trace.py's directory walk must visit entries in a deterministic
+    alphabetical order. Python's os.scandir makes no ordering promise and, on
     this filesystem, returns raw (non-alphabetical) order once a directory holds
     enough entries. When two candidate files in the same directory both cite the
     same unknown ID, which one becomes the E1's example filename — and the order
-    of the errors array itself — depends entirely on this.
+    of the errors array itself — depends entirely on the walk sorting its entries.
     """
 
-    def test_walk_visits_entries_in_the_same_alphabetical_order_as_the_oracle(self):
-        """[PYPORT-1.1] the E1 example file for an unknown ID cited by two candidate
-        files must be the alphabetically-first one, matching fs.readdirSync — not
-        whichever file os.scandir happens to yield first."""
+    def test_walk_visits_entries_in_alphabetical_order(self):
+        """the E1 example file for an unknown ID cited by two candidate files
+        must be the alphabetically-first one — not whichever file os.scandir
+        happens to yield first."""
         ZED = "ZED"
         cite = f"it('[{ZED}-3.3] x')"
         candidate_words = (
@@ -250,7 +244,7 @@ class WalkOrderTest(_FixtureTestCase):
             raw_target_order,
             sorted(raw_target_order),
             "fixture's raw os.scandir order coincidentally matches alphabetical order on this "
-            "filesystem, so it can't exercise PYPORT-1.1 — adjust the filler/target file names",
+            "filesystem, so it can't exercise the walk-ordering guard — adjust the filler/target file names",
         )
 
         code, summary = self._run(root)
@@ -259,16 +253,16 @@ class WalkOrderTest(_FixtureTestCase):
         self.assertEqual(
             zed_errors,
             [f"E1 test cites unknown requirement {ZED}-3.3 (src/{expected_first}, +1 more)"],
-            "the cited example file must be the alphabetically-first candidate, matching "
-            "fs.readdirSync's alphasort order, regardless of raw scandir order",
+            "the cited example file must be the alphabetically-first candidate, "
+            "regardless of raw scandir order",
         )
 
 
 class GuardTest(_FixtureTestCase):
-    """New tests required by Task 5's brief, beyond the ported oracle suite."""
+    """Additional guards for the ignore list and empty-repo edge cases."""
 
     def test_ignore_excludes_a_fixture_bearing_file(self):
-        """[PYPORT-5.3] the ignore substring list still excludes test files."""
+        """the ignore substring list still excludes test files."""
         root = self._fixture(
             IGNORE_REQUIREMENTS,
             files={"src/fixture.test.ts": "it('[GHOST-1.1] uses a fixture id', () => {})"},
@@ -280,7 +274,7 @@ class GuardTest(_FixtureTestCase):
         self.assertEqual(code, 0, "clean exit")
 
     def test_zero_requirements_exits_zero(self):
-        """[PYPORT-5.4] a repo with no requirements is a clean state."""
+        """a repo with no requirements is a clean state."""
         root = tempfile.mkdtemp(prefix="check-trace-")
         self.addCleanup(shutil.rmtree, root, ignore_errors=True)
         os.makedirs(os.path.join(root, "docs", "specs"), exist_ok=True)
@@ -291,7 +285,7 @@ class GuardTest(_FixtureTestCase):
         self.assertEqual(code, 0, "clean exit")
 
     def test_no_specs_directory_at_all_exits_zero(self):
-        """[PYPORT-5.4] a repo with no docs/specs directory at all also exits zero."""
+        """a repo with no docs/specs directory at all also exits zero."""
         root = tempfile.mkdtemp(prefix="check-trace-")
         self.addCleanup(shutil.rmtree, root, ignore_errors=True)
         result = subprocess.run(

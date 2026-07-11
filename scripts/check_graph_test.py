@@ -1,7 +1,7 @@
 """Unit tests for scripts/check_graph.py pure functions.
 
-Expected values are copied from scripts/check-graph.test.mjs (the oracle),
-never recomputed from the Python port under test.
+Expected values are asserted independently, not recomputed from check_graph.py
+under test.
 """
 import json
 import os
@@ -16,7 +16,6 @@ import check_graph
 
 _SCRIPTS_DIR = os.path.dirname(os.path.abspath(__file__))
 PY_CLI = os.path.join(_SCRIPTS_DIR, "check_graph.py")
-NODE_CLI = os.path.join(_SCRIPTS_DIR, "check-graph.mjs")
 
 CFG = {
     "sourceRoots": ["src", "src-tauri", "tests", "test", "crates", "app", "lib", "packages"],
@@ -39,11 +38,11 @@ class _FixtureTestCase(unittest.TestCase):
         return root
 
     def _spec_fixture(self, features):
-        """Mirror of the oracle's specFixture(): build a docs/specs tree, return its path.
+        """Build a docs/specs tree from `features`, return its path.
 
         Each `features` entry is a dict with keys slug, code, name, and optionally
-        oos (list), design (str), tasks (str) — matching check-graph.test.mjs's
-        specFixture() helper exactly, including its requirements.md template.
+        oos (list), design (str), tasks (str), used to render each feature's
+        requirements.md (and optional design.md / tasks.md).
         """
         root = tempfile.mkdtemp(prefix="check-graph-")
         self.addCleanup(shutil.rmtree, root, ignore_errors=True)
@@ -72,7 +71,7 @@ class _FixtureTestCase(unittest.TestCase):
 
 class NormalizePathTest(unittest.TestCase):
     def test_normalize_path_strips_locators_and_quoting(self):
-        """[PYPORT-1.1][FGRAPH-1.3] normalizePath strips locators and quoting."""
+        """normalizePath strips locators and quoting."""
         self.assertEqual(check_graph.normalize_path("`Editor.tsx:208`"), "Editor.tsx")
         self.assertEqual(check_graph.normalize_path("App.tsx:127,172"), "App.tsx")
         self.assertEqual(
@@ -81,12 +80,12 @@ class NormalizePathTest(unittest.TestCase):
         )
         self.assertEqual(check_graph.normalize_path('"src/lib/x.ts"'), "src/lib/x.ts")
         self.assertEqual(check_graph.normalize_path("`Editor.tsx:208` (~208-221)"), "Editor.tsx")
-        self.assertEqual(check_graph.normalize_path("./check-graph.mjs"), "check-graph.mjs")
+        self.assertEqual(check_graph.normalize_path("./scripts/check_graph.py"), "scripts/check_graph.py")
 
 
 class IsSourcePathTest(unittest.TestCase):
     def test_is_source_path_accepts_real_paths_rejects_junk(self):
-        """[PYPORT-1.1][FGRAPH-1.5] isSourcePath accepts real paths, rejects junk."""
+        """isSourcePath accepts real paths, rejects junk."""
         self.assertTrue(check_graph.is_source_path("src/components/Editor.tsx", CFG))
         self.assertTrue(check_graph.is_source_path("raki-domain/src/inline.rs", CFG))
         self.assertFalse(check_graph.is_source_path("src-tauri/", CFG))  # bare root, no filename
@@ -94,7 +93,7 @@ class IsSourcePathTest(unittest.TestCase):
         self.assertFalse(check_graph.is_source_path("the quick brown", CFG))
 
     def test_is_source_path_rejects_glob_tokens(self):
-        """[PYPORT-1.1] isSourcePath rejects glob tokens."""
+        """isSourcePath rejects glob tokens."""
         self.assertFalse(check_graph.is_source_path("e2e/*.spec.ts", CFG), "glob token is not a concrete path")
         self.assertFalse(check_graph.is_source_path("src/*.ts", CFG))
         self.assertTrue(check_graph.is_source_path("src/real.ts", CFG), "concrete path is unaffected")
@@ -102,7 +101,7 @@ class IsSourcePathTest(unittest.TestCase):
 
 class DedupeByFullestTest(unittest.TestCase):
     def test_dedupe_by_fullest_collapses_basename_into_full_path(self):
-        """[PYPORT-1.1][FGRAPH-1.4] dedupeByFullest collapses basename into full path."""
+        """dedupeByFullest collapses basename into full path."""
         out = check_graph.dedupe_by_fullest(
             ["Editor.tsx", "src/components/Editor.tsx", "src/lib/x.ts"]
         )
@@ -113,7 +112,7 @@ class DedupeByFullestTest(unittest.TestCase):
 
 class ClassifyRoleTest(unittest.TestCase):
     def test_classify_role_create_signal_owns_else_touches(self):
-        """[PYPORT-1.1] classifyRole: create signal owns, else touches."""
+        """classifyRole: create signal owns, else touches."""
         self.assertEqual(
             check_graph.classify_role("- Create: `src/x.ts` — new picker", None), "owns"
         )
@@ -146,14 +145,14 @@ class ClassifyRoleTest(unittest.TestCase):
 
 class CapListTest(unittest.TestCase):
     def test_cap_list_under_cap_returns_items_unchanged(self):
-        """[PYPORT-1.1] capList leaves a list at or under cap untouched."""
+        """capList leaves a list at or under cap untouched."""
         items = ["a", "b", "c"]
         self.assertEqual(check_graph.cap_list(items, 5), items)
 
     def test_cap_list_over_cap_truncates_with_elision_marker(self):
-        """[PYPORT-1.1] capList truncates over-cap lists with a "+N more" marker."""
-        # Sourced from the FGRAPH-3.4 oracle test: 20 items, cardCap 5 ->
-        # 5 items + 1 elision marker, marker text matches /\+15 more/.
+        """capList truncates over-cap lists with a "+N more" marker."""
+        # 20 items, cardCap 5 -> 5 items + 1 elision marker, marker text
+        # matches /\+15 more/.
         many = [f"No feature number {i}" for i in range(20)]
         result = check_graph.cap_list(many, 5)
         self.assertEqual(len(result), 6, "5 items + 1 elision marker")
@@ -163,9 +162,9 @@ class CapListTest(unittest.TestCase):
 
 class ExtractOutOfScopeTest(unittest.TestCase):
     def test_extract_out_of_scope_reads_bullet_list(self):
-        """[PYPORT-1.1] extractOutOfScope reads the Out of Scope bullet list."""
-        # Sourced from the FGRAPH-3.1/3.2 oracle test's specFixture() template
-        # (requirements.md body) and its expected f.oos result.
+        """extractOutOfScope reads the Out of Scope bullet list."""
+        # A requirements.md body with an Out of Scope bullet list and its
+        # expected extract_out_of_scope result.
         req_text = (
             "# Requirements: Card feature\n"
             "Feature code: CARD\n"
@@ -179,18 +178,17 @@ class ExtractOutOfScopeTest(unittest.TestCase):
         )
 
     def test_extract_out_of_scope_missing_heading_returns_empty(self):
-        """[PYPORT-1.1] extractOutOfScope returns [] when no heading is present."""
+        """extractOutOfScope returns [] when no heading is present."""
         req_text = "# Requirements: Only\nFeature code: ONLY\nStatus: Approved\n"
         self.assertEqual(check_graph.extract_out_of_scope(req_text), [])
 
 
 class ExtractInterfacesTest(unittest.TestCase):
     def test_extract_interfaces_lean_single_line_entries(self):
-        """[PYPORT-1.1][FGRAPH-3.5] extractInterfaces yields lean single-line entries:
+        """extractInterfaces yields lean single-line entries:
         top-level bullets, no bare labels, no prose after em-dash, no nested-vs-top-level
         duplication."""
-        # Sourced verbatim from the oracle test's design.md body and its expected
-        # f.interfaces result.
+        # A design.md Interfaces body and its expected extract_interfaces result.
         body = (
             "**Interfaces:**\n"
             "- Produces:\n"
@@ -207,18 +205,18 @@ class ExtractInterfacesTest(unittest.TestCase):
 
 class LoadConfigTest(_FixtureTestCase):
     def test_load_config_raises_never_exits(self):
-        """[PYPORT-1.8] load_config raises ConfigError instead of killing the process."""
+        """load_config raises ConfigError instead of killing the process."""
         root = self._tmp_repo({"docs/agents/trace.json": "{ not json"})
         with self.assertRaises(check_graph.ConfigError):
             check_graph.load_config(root)
 
     def test_load_config_missing_file_falls_back_to_defaults(self):
-        """[PYPORT-1.8] a repo with no trace.json falls back to DEFAULTS (FGRAPH-9.3)."""
+        """a repo with no trace.json falls back to DEFAULTS."""
         root = self._tmp_repo({})
         self.assertEqual(check_graph.load_config(root), check_graph.DEFAULTS)
 
     def test_load_config_deep_merges_graph_key_over_defaults(self):
-        """[PYPORT-1.8] load_config deep-merges the nested "graph" key over DEFAULTS.graph."""
+        """load_config deep-merges the nested "graph" key over DEFAULTS.graph."""
         root = self._tmp_repo(
             {"docs/agents/trace.json": '{"specsDir": "specs", "graph": {"cardCap": 3}}'}
         )
@@ -231,7 +229,7 @@ class LoadConfigTest(_FixtureTestCase):
 
 class HarvestTest(_FixtureTestCase):
     def test_harvest_builds_owns_touches_from_design_and_tasks(self):
-        """[PYPORT-1.1] harvest builds owns/touches from design+tasks (FGRAPH-1.1/1.2)."""
+        """harvest builds owns/touches from design+tasks."""
         specs = self._spec_fixture(
             [
                 {
@@ -256,7 +254,7 @@ class HarvestTest(_FixtureTestCase):
         self.assertIn("src/ext/plugin.ts", ext["owns"])
 
     def test_harvest_reverse_index_and_shared_surface(self):
-        """[PYPORT-1.1][FGRAPH-2.1][FGRAPH-2.2][FGRAPH-2.3] reverse index + shared surface."""
+        """reverse index + shared surface."""
         specs = self._spec_fixture(
             [
                 {"slug": "a-base", "code": "BASE", "name": "Base", "tasks": "- Create: `src/core/engine.ts`\n"},
@@ -271,7 +269,7 @@ class HarvestTest(_FixtureTestCase):
         self.assertEqual(len(shared["refs"]), 2, "referenced by 2 features -> shared")
 
     def test_harvest_cross_feature_basename_fullpath_merge(self):
-        """[PYPORT-1.1] cross-feature basename/full-path merge in the reverse index (FGRAPH-2.4)."""
+        """cross-feature basename/full-path merge in the reverse index."""
         specs = self._spec_fixture(
             [
                 {"slug": "a-aaa", "code": "AAA", "name": "Aaa", "tasks": "- Create: `mathInputExtension.ts`\n"},
@@ -296,7 +294,7 @@ class HarvestTest(_FixtureTestCase):
         self.assertEqual(len(shared["refs"]), 2, "shared with 2 refs, not 2 separate 1-ref entries")
 
     def test_harvest_guard_ordinary_same_full_path_sharing_still_detected(self):
-        """[PYPORT-1.1] guard: same-full-path sharing across features still detected after cross-feature dedup (FGRAPH-2.5)."""
+        """guard: same-full-path sharing across features still detected after cross-feature dedup."""
         specs = self._spec_fixture(
             [
                 {
@@ -318,14 +316,14 @@ class HarvestTest(_FixtureTestCase):
         self.assertEqual(sorted(r["code"] for r in shared["refs"]), ["CHIPUI", "INLTASK"])
 
     def test_harvest_requirements_only_yields_empty_manifest(self):
-        """[PYPORT-1.1] a feature with only requirements.md yields an empty manifest, no error (FGRAPH-9.1)."""
+        """a feature with only requirements.md yields an empty manifest, no error."""
         specs = self._spec_fixture([{"slug": "a", "code": "ONLY", "name": "Only"}])
         f = next(x for x in check_graph.harvest(specs)["features"] if x["code"] == "ONLY")
         self.assertEqual(f["owns"], [])
         self.assertEqual(f["touches"], [])
 
     def test_harvest_block_label_does_not_leak_past_blank_line_or_heading(self):
-        """[PYPORT-1.1] scanSurface: blockLabel does not leak past a blank line or heading (FGRAPH-1.6)."""
+        """scanSurface: blockLabel does not leak past a blank line or heading."""
         specs = self._spec_fixture(
             [
                 {
@@ -342,7 +340,7 @@ class HarvestTest(_FixtureTestCase):
         self.assertNotIn("src/old/legacy.ts", f["owns"], "stale create block label must not leak onto later prose")
 
     def test_harvest_ignores_paths_inside_fenced_code_blocks(self):
-        """[PYPORT-1.1] scanSurface ignores paths inside fenced code blocks (FGRAPH-1.2)."""
+        """scanSurface ignores paths inside fenced code blocks."""
         specs = self._spec_fixture(
             [
                 {
@@ -359,7 +357,7 @@ class HarvestTest(_FixtureTestCase):
         self.assertNotIn("App.tsx", f["owns"] + f["touches"], "fenced path excluded")
 
     def test_harvest_owns_beats_touches_across_dedup_within_feature(self):
-        """[PYPORT-1.1] owns beats touches across basename/fullpath dedup within a feature (FGRAPH-1.6)."""
+        """owns beats touches across basename/fullpath dedup within a feature."""
         specs = self._spec_fixture(
             [
                 {
@@ -378,7 +376,7 @@ class HarvestTest(_FixtureTestCase):
         self.assertNotIn("src/core/engine.ts", f["touches"])
 
     def test_harvest_excludes_glob_token_paths(self):
-        """[PYPORT-1.1] harvest excludes glob-token paths from owns/touches (FGRAPH-1.7)."""
+        """harvest excludes glob-token paths from owns/touches."""
         specs = self._spec_fixture(
             [
                 {
@@ -394,26 +392,26 @@ class HarvestTest(_FixtureTestCase):
         self.assertNotIn("e2e/*.spec.ts", f["owns"] + f["touches"], "glob token excluded")
 
     def test_harvest_excludes_command_only_paths(self):
-        """[PYPORT-1.1] a path appearing only on a command-invocation line is excluded (FGRAPH-1.8)."""
+        """a path appearing only on a command-invocation line is excluded."""
         specs = self._spec_fixture(
             [
                 {
                     "slug": "a-cmd",
                     "code": "CMDONLY",
                     "name": "CmdOnly",
-                    "tasks": "**Steps:**\nRun `node scripts/check-trace.mjs`\n",
+                    "tasks": "**Steps:**\nRun `node scripts/check-trace.js`\n",
                 }
             ]
         )
         f = next(x for x in check_graph.harvest(specs)["features"] if x["code"] == "CMDONLY")
         self.assertNotIn(
-            "scripts/check-trace.mjs",
+            "scripts/check-trace.js",
             f["owns"] + f["touches"],
             "path seen only on a command-invocation line must be excluded from the manifest",
         )
 
     def test_harvest_keeps_path_in_both_modify_bullet_and_command_line(self):
-        """[PYPORT-1.1] a path in both a Modify bullet and a command line is still kept (FGRAPH-1.8)."""
+        """a path in both a Modify bullet and a command line is still kept."""
         specs = self._spec_fixture(
             [
                 {
@@ -431,7 +429,7 @@ class HarvestTest(_FixtureTestCase):
         )
 
     def test_harvest_guard_unfenced_paths_not_over_filtered(self):
-        """[PYPORT-1.1] guard: the 1.7/1.8 filters do not over-reach on ordinary unfenced paths (FGRAPH-1.9)."""
+        """guard: the 1.7/1.8 filters do not over-reach on ordinary unfenced paths."""
         specs = self._spec_fixture(
             [
                 {
@@ -449,7 +447,7 @@ class HarvestTest(_FixtureTestCase):
         self.assertIn("src/keep3.ts", surface, "prose backtick path kept")
 
     def test_harvest_guard_mid_line_command_word_not_misclassified(self):
-        """[PYPORT-1.1] guard: a command word used as ordinary prose must not drop a real surface path (FGRAPH-1.9)."""
+        """guard: a command word used as ordinary prose must not drop a real surface path."""
         specs = self._spec_fixture(
             [
                 {
@@ -469,7 +467,7 @@ class HarvestTest(_FixtureTestCase):
         )
 
     def test_harvest_card_carries_name_owns_out_of_scope(self):
-        """[PYPORT-1.1][FGRAPH-3.1][FGRAPH-3.2] card carries name, owns, and out-of-scope."""
+        """card carries name, owns, and out-of-scope."""
         specs = self._spec_fixture(
             [
                 {
@@ -487,7 +485,7 @@ class HarvestTest(_FixtureTestCase):
         self.assertEqual(f["oos"], ["No time zones", "No recurrence"])
 
     def test_harvest_interfaces_drop_bare_labels_keep_substance(self):
-        """[PYPORT-1.1] interfaces drop bare Produces/Consumes labels, keep substance (FGRAPH-3.3)."""
+        """interfaces drop bare Produces/Consumes labels, keep substance."""
         specs = self._spec_fixture(
             [
                 {
@@ -507,7 +505,7 @@ class HarvestTest(_FixtureTestCase):
         )
 
     def test_harvest_card_lists_capped_at_card_cap(self):
-        """[PYPORT-1.1] card lists are capped at cardCap (FGRAPH-3.4)."""
+        """card lists are capped at cardCap."""
         many = [f"No feature number {i}" for i in range(20)]
         specs = self._spec_fixture([{"slug": "a", "code": "CAP", "name": "Cap", "oos": many}])
         cfg = {**check_graph.DEFAULTS, "graph": {**check_graph.DEFAULTS["graph"], "cardCap": 5}}
@@ -516,7 +514,7 @@ class HarvestTest(_FixtureTestCase):
         self.assertRegex(f["oos"][5], r"\+15 more")
 
     def test_harvest_cap_does_not_drop_shared_path_from_reverse_index(self):
-        """[PYPORT-1.1] cap on owns/touches does not drop a shared path from the reverse index (FGRAPH-3.4)."""
+        """cap on owns/touches does not drop a shared path from the reverse index."""
         owned = [f"src/gen/file{str(i).zfill(2)}.ts" for i in range(13)]
         specs = self._spec_fixture(
             [
@@ -541,7 +539,7 @@ class HarvestTest(_FixtureTestCase):
         self.assertEqual(len(shared_entry["refs"]), 2)
 
     def test_harvest_vanilla_specs_yield_nonempty_graph(self):
-        """[PYPORT-1.1] harvest needs no new fields — vanilla specs yield a non-empty graph (FGRAPH-9.5)."""
+        """harvest needs no new fields — vanilla specs yield a non-empty graph."""
         specs = self._spec_fixture(
             [
                 {
@@ -559,7 +557,7 @@ class HarvestTest(_FixtureTestCase):
 
 class RenderGraphMdTest(_FixtureTestCase):
     def test_render_graph_md_deterministic_and_banner_marked(self):
-        """[PYPORT-1.1] renderGraphMd is deterministic and banner-marked (FGRAPH-4.2)."""
+        """renderGraphMd is deterministic and banner-marked."""
         specs = self._spec_fixture(
             [
                 {"slug": "b", "code": "BBB", "name": "B", "tasks": "- Create: `src/b.ts`\n- Modify: `src/shared.ts`\n"},
@@ -575,7 +573,7 @@ class RenderGraphMdTest(_FixtureTestCase):
         self.assertRegex(once, r"(?s)src/shared\.ts.*AAA:owns.*BBB:touches")
 
     def test_render_graph_md_byte_identical_across_independent_harvests(self):
-        """[PYPORT-1.1] guard: renderGraphMd(harvest(fixture)) is byte-identical across two independent harvests (FGRAPH-4.4)."""
+        """guard: renderGraphMd(harvest(fixture)) is byte-identical across two independent harvests."""
         specs = self._spec_fixture(
             [
                 {
@@ -589,7 +587,7 @@ class RenderGraphMdTest(_FixtureTestCase):
                     "slug": "b-bbb",
                     "code": "BBB",
                     "name": "Bbb",
-                    "tasks": "Run `node scripts/build.mjs`\n- Modify: `src/components/mathInputExtension.ts`\n",
+                    "tasks": "Run `node scripts/build.js`\n- Modify: `src/components/mathInputExtension.ts`\n",
                 },
             ]
         )
@@ -598,7 +596,7 @@ class RenderGraphMdTest(_FixtureTestCase):
         self.assertEqual(once, twice, "two independent harvests of the same fixture must render byte-identical markdown")
 
     def test_render_graph_md_empty_specs_well_formed(self):
-        """[PYPORT-1.1] empty specs render a well-formed empty graph (FGRAPH-9.2)."""
+        """empty specs render a well-formed empty graph."""
         root = self._tmp_repo({})
         g = check_graph.harvest(os.path.join(root, "docs", "specs"))
         md = check_graph.render_graph_md(g)
@@ -606,7 +604,7 @@ class RenderGraphMdTest(_FixtureTestCase):
         self.assertRegex(md, r"## Cards")
 
     def test_render_graph_md_pure_no_file_side_effects(self):
-        """[PYPORT-1.1] renderGraphMd is a pure string function — no file side effects (FGRAPH-4.3)."""
+        """renderGraphMd is a pure string function — no file side effects."""
         specs = self._spec_fixture([{"slug": "a", "code": "PURE", "name": "Pure", "tasks": "- Create: `src/pure.ts`\n"}])
         g = check_graph.harvest(specs)
         before = set(os.listdir(specs))
@@ -621,7 +619,7 @@ class RenderGraphMdTest(_FixtureTestCase):
 
 class QueryTest(_FixtureTestCase):
     def test_query_by_path_returns_ranked_overlapping_features(self):
-        """[PYPORT-1.1] query by path returns ranked overlapping features (FGRAPH-5.1/5.3)."""
+        """query by path returns ranked overlapping features."""
         specs = self._spec_fixture(
             [
                 {"slug": "a", "code": "AAA", "name": "A", "tasks": "- Create: `src/x.ts`\n- Create: `src/y.ts`\n"},
@@ -635,7 +633,7 @@ class QueryTest(_FixtureTestCase):
         self.assertTrue(res[0]["card"], "result carries the card")
 
     def test_query_by_keyword_matches_name_and_out_of_scope(self):
-        """[PYPORT-1.1] query by keyword matches name and out-of-scope (FGRAPH-5.2)."""
+        """query by keyword matches name and out-of-scope."""
         specs = self._spec_fixture(
             [{"slug": "a", "code": "PICK", "name": "Picker widget", "oos": ["No time zones"], "tasks": "- Create: `src/p.ts`\n"}]
         )
@@ -645,7 +643,7 @@ class QueryTest(_FixtureTestCase):
         self.assertEqual(check_graph.query(g, keywords=["nonexistent"]), [])
 
     def test_query_by_path_ranks_higher_overlap_first(self):
-        """[PYPORT-1.1] query by path ranks a 2-overlap feature above a 1-overlap feature, deterministic tie-break (FGRAPH-5.3)."""
+        """query by path ranks a 2-overlap feature above a 1-overlap feature, deterministic tie-break."""
         specs = self._spec_fixture(
             [
                 {"slug": "z", "code": "ZZZ", "name": "Z", "tasks": "- Create: `src/only.ts`\n"},
@@ -658,7 +656,7 @@ class QueryTest(_FixtureTestCase):
         self.assertEqual(res[0]["overlapPaths"], ["src/one.ts", "src/two.ts"], "overlapPaths lists the actually-overlapping paths, sorted")
 
     def test_query_ties_broken_by_code_ascending_not_path_argument_order(self):
-        """[PYPORT-1.1] query breaks a genuine overlap-count tie by code ascending, not path-argument order (FGRAPH-5.3)."""
+        """query breaks a genuine overlap-count tie by code ascending, not path-argument order."""
         specs = self._spec_fixture(
             [
                 {"slug": "z", "code": "ZZZ", "name": "Zebra widget", "tasks": "- Create: `src/z.ts`\n"},
@@ -673,40 +671,8 @@ class QueryTest(_FixtureTestCase):
 class CliTest(_FixtureTestCase):
     """CLI black-box tests: subprocess against check_graph.py, no reach into internals."""
 
-    @unittest.skipUnless(
-        shutil.which("node") is not None and os.path.exists(NODE_CLI),
-        "oracle unavailable: node absent or .mjs deleted",
-    )
-    def test_json_is_byte_identical_to_node(self):
-        """[PYPORT-1.5] --query --json output matches JSON.stringify(x, null, 2)."""
-        # ensure_ascii=False is mandatory: the capList marker '…' and interface '—'
-        # would otherwise be escaped to … / —, breaking byte-identity.
-        owned = [f"src/gen/file{i:02d}.ts" for i in range(13)]  # 13 > cardCap(12) -> "…(+1 more)"
-        specs = self._spec_fixture(
-            [
-                {
-                    "slug": "a-many",
-                    "code": "MANYFILE",
-                    "name": "Manyfile widget",
-                    "tasks": "".join(f"- Create: `{p}`\n" for p in owned),
-                    # no spaces around the dash: extractInterfaces only truncates at
-                    # " — " (space-emdash-space), so this literal em dash survives.
-                    "design": "**Interfaces:**\n- `signature()—note`\n",
-                }
-            ]
-        )
-        root = os.path.dirname(os.path.dirname(specs))
-        args = ["--query", "--json", "--keyword", "manyfile", "--root", root]
-        node_result = subprocess.run(["node", NODE_CLI] + args, capture_output=True, text=True)
-        py_result = subprocess.run([sys.executable, PY_CLI] + args, capture_output=True, text=True)
-        self.assertEqual(node_result.returncode, 0, node_result.stderr)
-        self.assertEqual(py_result.returncode, 0, py_result.stderr)
-        self.assertEqual(py_result.stdout, node_result.stdout)
-        self.assertIn("…(+1 more)", py_result.stdout)
-        self.assertIn("—", py_result.stdout)
-
     def test_runs_from_a_symlinked_path(self):
-        """[PYPORT-1.6] a linter under a symlinked dir executes its CLI."""
+        """a linter under a symlinked dir executes its CLI."""
         specs = self._spec_fixture(
             [{"slug": "a", "code": "SYMLINK", "name": "Symlink widget", "tasks": "- Create: `src/s.ts`\n"}]
         )
@@ -732,7 +698,7 @@ class CliTest(_FixtureTestCase):
         )
 
     def test_import_does_not_run_main(self):
-        """[PYPORT-1.7] importing the module executes no CLI."""
+        """importing the module executes no CLI."""
         result = subprocess.run(
             [
                 sys.executable,
@@ -751,7 +717,7 @@ class CliTest(_FixtureTestCase):
         self.assertEqual(result.stderr, "", "importing the module must produce no stderr")
 
     def test_bad_trace_json_exits_1_with_our_wording(self):
-        """[PYPORT-1.9][PYPORT-1.10] the CLI converts ConfigError to exit 1."""
+        """the CLI converts ConfigError to exit 1."""
         root = self._tmp_repo({"docs/agents/trace.json": "{ not json"})
         result = subprocess.run(
             [sys.executable, PY_CLI, "--harvest", "--root", root], capture_output=True, text=True
@@ -760,12 +726,12 @@ class CliTest(_FixtureTestCase):
         self.assertEqual(result.returncode, 1)
         self.assertEqual(result.stdout, "")
         self.assertEqual(result.stderr, f"check-graph: could not parse {expected_path}: invalid JSON\n")
-        # PYPORT-1.10: no runtime-authored exception text (e.g. CPython's
+        # no runtime-authored exception text (e.g. CPython's
         # "Expecting property name enclosed in double quotes...").
         self.assertNotIn("Expecting", result.stderr)
 
     def test_verify_exits_zero_on_fresh_harvest(self):
-        """[PYPORT-5.2] --verify exits 0 when GRAPH.md is fresh."""
+        """--verify exits 0 when GRAPH.md is fresh."""
         specs = self._spec_fixture(
             [{"slug": "a", "code": "FRESH", "name": "Fresh widget", "tasks": "- Create: `src/fresh.ts`\n"}]
         )
@@ -784,7 +750,7 @@ class CliTest(_FixtureTestCase):
         self.assertIn("OK", verify_result.stdout)
 
     def test_valueless_keyword_flag_exits_zero_with_empty_result(self):
-        """[PYPORT-1.4] a trailing --keyword with no value degrades to no keyword, not a crash."""
+        """a trailing --keyword with no value degrades to no keyword, not a crash."""
         specs = self._spec_fixture(
             [{"slug": "a", "code": "NOVAL", "name": "Noval widget", "tasks": "- Create: `src/n.ts`\n"}]
         )
@@ -799,7 +765,7 @@ class CliTest(_FixtureTestCase):
         self.assertEqual(json.loads(result.stdout), [])
 
     def test_flags_accepted_unchanged(self):
-        """[PYPORT-1.4] every documented flag is accepted; unknown flags are ignored."""
+        """every documented flag is accepted; unknown flags are ignored."""
         specs = self._spec_fixture(
             [{"slug": "a", "code": "FLAGT", "name": "Flag test", "tasks": "- Create: `src/f.ts`\n"}]
         )
@@ -845,7 +811,7 @@ class CliTest(_FixtureTestCase):
         )
 
     def test_harvest_writes_graph_md_and_leaves_index_untouched(self):
-        """[PYPORT-1.1][FGRAPH-4.1] --harvest writes GRAPH.md and leaves INDEX.md untouched."""
+        """--harvest writes GRAPH.md and leaves INDEX.md untouched."""
         specs = self._spec_fixture([{"slug": "a", "code": "AAA", "name": "A", "tasks": "- Create: `src/a.ts`\n"}])
         root = os.path.dirname(os.path.dirname(specs))
         with open(os.path.join(specs, "INDEX.md"), "w", encoding="utf-8") as fh:
@@ -858,7 +824,7 @@ class CliTest(_FixtureTestCase):
             self.assertEqual(fh.read(), "ORIGINAL")
 
     def test_query_emits_fresh_json_to_stdout_without_a_prior_harvest(self):
-        """[PYPORT-1.1][FGRAPH-5.4][FGRAPH-5.5] --query emits fresh JSON to stdout."""
+        """--query emits fresh JSON to stdout."""
         specs = self._spec_fixture([{"slug": "a", "code": "AAA", "name": "A", "tasks": "- Create: `src/a.ts`\n"}])
         root = os.path.dirname(os.path.dirname(specs))
         # No GRAPH.md written; query must still work via a fresh harvest.
@@ -873,7 +839,7 @@ class CliTest(_FixtureTestCase):
         self.assertEqual(parsed[0]["code"], "AAA")
 
     def test_verify_fails_on_stale_passes_when_fresh(self):
-        """[PYPORT-1.1][FGRAPH-6.1][FGRAPH-6.2] --verify fails on stale, passes when fresh."""
+        """--verify fails on stale, passes when fresh."""
         specs = self._spec_fixture([{"slug": "a", "code": "AAA", "name": "A", "tasks": "- Create: `src/a.ts`\n"}])
         root = os.path.dirname(os.path.dirname(specs))
         with open(os.path.join(specs, "INDEX.md"), "w", encoding="utf-8") as fh:
@@ -891,7 +857,7 @@ class CliTest(_FixtureTestCase):
         self.assertEqual(verify().returncode, 1, "hand edit -> stale again")
 
     def test_verify_fails_on_a_code_absent_from_index(self):
-        """[PYPORT-1.1][FGRAPH-6.3] --verify fails on a code absent from INDEX.md."""
+        """--verify fails on a code absent from INDEX.md."""
         specs = self._spec_fixture([{"slug": "a", "code": "GHOST", "name": "Ghost", "tasks": "- Create: `src/g.ts`\n"}])
         root = os.path.dirname(os.path.dirname(specs))
         with open(os.path.join(specs, "INDEX.md"), "w", encoding="utf-8") as fh:
@@ -902,7 +868,7 @@ class CliTest(_FixtureTestCase):
         self.assertRegex(result.stdout + result.stderr, "GHOST")
 
     def test_reads_only_markdown_no_network_build_or_subprocess(self):
-        """[PYPORT-1.1][FGRAPH-5.6] check_graph.py reads only markdown — no network/build/subprocess calls."""
+        """check_graph.py reads only markdown — no network/build/subprocess calls."""
         with open(os.path.join(_SCRIPTS_DIR, "check_graph.py"), "r", encoding="utf-8") as fh:
             src = fh.read()
         self.assertNotRegex(
@@ -915,7 +881,7 @@ class CliTest(_FixtureTestCase):
         self.assertNotRegex(src, r"\bos\.(system|popen)\s*\(", "no shell-out calls")
 
     def test_check_trace_test_suite_still_passes(self):
-        """[PYPORT-1.1][FGRAPH-9.4] the existing check_trace_test.py suite still passes."""
+        """the existing check_trace_test.py suite still passes."""
         result = subprocess.run(
             [sys.executable, "-m", "unittest", "check_trace_test"],
             cwd=_SCRIPTS_DIR,

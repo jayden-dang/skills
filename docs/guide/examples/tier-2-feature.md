@@ -17,7 +17,7 @@ No code. No scaffolding. No implementation skill. Not yet.
 Then the [feature-graph](../concepts/feature-graph.md) dedup check:
 
 ```bash
-node scripts/check-graph.mjs --query --json \
+python3 scripts/check_graph.py --query --json \
   --path src/app/Layout.tsx --keyword module --keyword rail
 ```
 

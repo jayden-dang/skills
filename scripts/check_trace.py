@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-# @skills-linter: check-trace sha256:9a0bfc0396b6
-"""check-trace — requirements traceability linter (Python port of check-trace.mjs).
+# @skills-linter: check-trace sha256:b3245a8b8de8
+"""check-trace — requirements traceability linter.
 
 Sources of truth:
   <specsDir>/<feature>/requirements.md   defines requirement IDs (**CODE-N.M**)
@@ -63,14 +63,11 @@ def _walk(dir_, predicate, root):
 
     Entries are visited in name-sorted order at each directory level (files and
     subdirectories interleaved, recursing into a subdirectory as soon as it's
-    reached) to match the oracle: check-trace.mjs's walk() iterates
-    fs.readdirSync(dir, { withFileTypes: true }), and libuv's readdir
-    implementation is scandir(3) + alphasort — Node yields entries
-    alphabetically, not in raw filesystem/inode order. os.scandir() makes no
-    such guarantee, so this must sort explicitly or the two implementations
-    can disagree on which file is "first" whenever a directory holds more
-    than one matching candidate (e.g. which file an E1's example citation
-    names, or the order of the errors/warnings arrays)."""
+    reached). os.scandir() yields entries in raw filesystem/inode order, which
+    is not stable across machines, so this sorts explicitly: the sort is what
+    makes "first" deterministic whenever a directory holds more than one
+    matching candidate (e.g. which file an E1's example citation names, or the
+    order of the errors/warnings arrays)."""
     out = []
 
     def _recurse(d):
@@ -192,7 +189,7 @@ def _collect_test_refs(root, cfg):
     collect id -> [rel, ...] from every defined-looking ID appearing in a test file.
 
     Returns (test_refs, test_files) where test_files may contain duplicates across roots
-    (deduped by the caller exactly as the oracle dedupes via `new Set`).
+    (deduped by the caller via dict.fromkeys, preserving first-seen order).
     """
     test_refs = {}
     file_re = re.compile(cfg["testFilePattern"])

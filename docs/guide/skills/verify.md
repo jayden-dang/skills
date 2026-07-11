@@ -47,7 +47,7 @@ Each claim has a required proof and a set of things that are never sufficient fo
 | "The feature works" | The affected flow driven through the running system and observed ([`acceptance-check`](acceptance-check.md), or [`dogfood`](dogfood.md) for a manual pass) | Green unit tests alone |
 | "The bug is fixed" | Original symptom re-tested and gone | The code changed |
 | "The agent/subagent completed X" | You inspected the diff yourself | The agent's own success report |
-| "Requirements met" | `node scripts/check-trace.mjs` **and** `node scripts/check-graph.mjs --verify` pass, AND each acceptance criterion checked off individually against observed behavior | Green tests alone |
+| "Requirements met" | `python3 scripts/check_trace.py` **and** `python3 scripts/check_graph.py --verify` pass, AND each acceptance criterion checked off individually against observed behavior | Green tests alone |
 
 ## Regression-proof pattern
 

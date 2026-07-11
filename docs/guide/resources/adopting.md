@@ -81,7 +81,7 @@ Each maps to the label string *this repo actually uses*, so `triage` never creat
 
 `docs/agents/project.md`, `issue-tracker.md`, and `triage-labels.md`; `docs/specs/INDEX.md` if missing; `CONTEXT.md` if missing; and an `## Agent skills` block into **exactly one canonical file** — `AGENTS.md` by default, with a short `CLAUDE.md` pointing at it, so Claude Code finds instructions by its native filename without duplicating them.
 
-It also vendors the two linters via `vendor-linters.mjs`, and ensures `.skills/` and `.worktrees/` are git-ignored.
+It also vendors the two linters via `vendor_linters.py`, and ensures `.skills/` and `.worktrees/` are git-ignored.
 
 **The additive rule governs everything:** existing files are edited in place, never clobbered.
 
@@ -114,6 +114,8 @@ You get a table: each command → wired? → passed / failed / pre-existing.
 ## Adopting incrementally
 
 You do not have to spec the whole codebase. The skill set works on a per-feature basis, and `check-trace` treats zero requirements as a clean state.
+
+**The fastest first pass.** You do not have to answer every question deeply or take every opt-in on day one. Accept each of `setup-repo`'s recommended defaults, choose the `local` markdown tracker if you have no strong preference, and decline the three opt-ins (session hook, CI, git hooks) for now. That gets you a working trace spine and detected verify commands with the fewest decisions — enough to take one feature through the chain. Re-run `/setup-repo` later to add the hook, CI, and git hooks once the workflow has earned its place; it is additive and never clobbers your earlier answers.
 
 A reasonable path:
 

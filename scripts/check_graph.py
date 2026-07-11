@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# @skills-linter: check-graph sha256:55008d7c5cf5
+# @skills-linter: check-graph sha256:b24d90258dba
 """check-graph — horizontal feature-graph layer.
 
 Harvests, from each feature's existing design.md/tasks.md (NO new authoring):
@@ -493,6 +493,7 @@ def _scan_surface(text, cfg):
 
 _FEATURE_CODE_RE = re.compile(r"^Feature code:\s*([A-Z][A-Z0-9]{1,11})", re.MULTILINE)
 _REQUIREMENTS_TITLE_RE = re.compile(r"^#\s*Requirements:\s*(.+)$", re.MULTILINE)
+_MODULE_OVERRIDE_RE = re.compile(r"^Module:\s*([A-Z][A-Z0-9]{1,11})", re.MULTILINE)
 
 
 def harvest(specs_dir, cfg=DEFAULTS):
@@ -503,6 +504,7 @@ def harvest(specs_dir, cfg=DEFAULTS):
     _manifest_modules, _manifest_errs = load_manifest(cfg)
     if _manifest_errs:
         _manifest_modules = []
+    _module_codes = {m["code"] for m in _manifest_modules if m.get("code")}
     req_files = _walk(specs_dir, lambda p: p.endswith("requirements.md"))
     for req in sorted(req_files):
         text = _read_maybe(req)
@@ -535,6 +537,12 @@ def harvest(specs_dir, cfg=DEFAULTS):
         # below are built from these raw lists, so a 13th shared file is never
         # silently dropped from FGRAPH-2.x just because the Summary card elides
         # it. The cap is applied in a separate pass, after reverse/shared exist.
+        override_code = None
+        if _manifest_modules:
+            om = _MODULE_OVERRIDE_RE.search(text)
+            override_code = om.group(1) if om else None
+        _hom = _home_feature(sorted(owns), sorted(touches), override_code,
+                             _module_codes, _manifest_modules)
         features.append(
             {
                 "code": code,
@@ -543,7 +551,10 @@ def harvest(specs_dir, cfg=DEFAULTS):
                 "touches": sorted(touches),
                 "interfaces": extract_interfaces([design_body, tasks_body]),
                 "oos": extract_out_of_scope(text),
-                "home": _home_module(sorted(owns), _manifest_modules),
+                "home": _hom["home"],
+                "facets": _hom["facets"],
+                "homing": {"spanned": _hom["spanned"],
+                           "unknown_override": _hom["unknown_override"]},
             }
         )
     features.sort(key=lambda f: f["code"])

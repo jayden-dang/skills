@@ -51,9 +51,11 @@ class _FixtureTestCase(unittest.TestCase):
             d = os.path.join(specs, f["slug"])
             os.makedirs(d, exist_ok=True)
             oos_bullets = "\n".join(f"- {x}" for x in f.get("oos", []))
+            module_line = f"Module: {f['module']}\n" if f.get("module") else ""
             req_text = (
                 f"# Requirements: {f['name']}\n"
                 f"Feature code: {f['code']}\n"
+                f"{module_line}"
                 "Status: Approved\n\n"
                 "## Out of Scope\n"
                 f"{oos_bullets}\n"
@@ -689,6 +691,47 @@ class HarvestHomingTest(_FixtureTestCase):
         graph = check_graph.harvest(specs, cfg)
         f = next(x for x in graph["features"] if x["code"] == "WIDE")
         self.assertIsNone(f["home"])
+
+    def _cfg(self):
+        return {"specsDir": "docs/specs",
+                "graph": {"sourceRoots": ["src"], "sourceExts": ["ts"], "cardCap": 12},
+                "modules": [{"code": "AUTH", "name": "A", "owns": ["src/auth/**"]},
+                            {"code": "BILL", "name": "B", "owns": ["src/billing/**"]}]}
+
+    def test_module_override_wins_over_derivation_MODHOME_3_1(self):
+        # covers MODHOME-3.1
+        specs = self._spec_fixture([
+            {"slug": "ov", "code": "OV", "name": "Override", "module": "AUTH",
+             "tasks": "**Files:**\n- Create: src/billing/b.ts"}])
+        graph = check_graph.harvest(specs, self._cfg())
+        f = next(x for x in graph["features"] if x["code"] == "OV")
+        self.assertEqual(f["home"], "AUTH")   # derived would be BILL; override wins
+
+    def test_harvest_adds_facets_and_homing_fields_MODHOME_4_4(self):
+        # covers MODHOME-4.4
+        specs = self._spec_fixture([
+            {"slug": "aa", "code": "AA", "name": "Aye",
+             "tasks": "**Files:**\n- Create: src/auth/a.ts\n- Modify: src/billing/b.ts"}])
+        f = next(x for x in check_graph.harvest(specs, self._cfg())["features"]
+                 if x["code"] == "AA")
+        self.assertEqual(f["home"], "AUTH")
+        self.assertEqual(f["facets"], ["BILL"])
+        self.assertEqual(f["homing"], {"spanned": [], "unknown_override": None})
+        for key in ("code", "name", "owns", "touches", "interfaces", "oos", "home"):
+            self.assertIn(key, f)             # existing card fields preserved
+
+    def test_no_manifest_degrades_homing_MODHOME_4_1(self):
+        # covers MODHOME-4.1
+        specs = self._spec_fixture([
+            {"slug": "aa", "code": "AA", "name": "Aye", "module": "AUTH",
+             "tasks": "**Files:**\n- Create: src/auth/a.ts"}])
+        cfg = {"specsDir": "docs/specs",
+               "graph": {"sourceRoots": ["src"], "sourceExts": ["ts"], "cardCap": 12}}
+        f = next(x for x in check_graph.harvest(specs, cfg)["features"]
+                 if x["code"] == "AA")
+        self.assertIsNone(f["home"])
+        self.assertEqual(f["facets"], [])
+        self.assertEqual(f["homing"], {"spanned": [], "unknown_override": None})
 
 
 class RenderGraphMdTest(_FixtureTestCase):

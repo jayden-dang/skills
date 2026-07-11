@@ -1043,6 +1043,56 @@ _Requirements: (integration — no new IDs; closes out FGRAPH coverage)_
 
 ---
 
+## Task 12: Distribution — vendor the linters and wire setup-repo (Story 11)
+
+**Files:**
+- Create: `scripts/vendor-linters.mjs`, `scripts/vendor-linters.test.mjs`
+- Modify: `scripts/check-graph.mjs` (symlink-safe entry-point guard), `scripts/check-trace.mjs` (stamp)
+- Modify: `scripts/check-graph.wiring.test.mjs`
+- Modify: `templates/agents/project.md`, `templates/githooks/pre-push`
+- Modify: `skills/setup/setup-repo/SKILL.md`, `skills/discovery/brainstorm/SKILL.md`,
+  `skills/review/code-review/SKILL.md`, `skills/execution/verify/SKILL.md`
+
+**Interfaces:**
+- `computeStamp(src: string) → string` — 12-hex sha256 of the body, stamp line excluded
+- `readStamp(src: string) → {name, digest} | null`
+- `restamp(src: string, name: string) → string` — idempotent
+- `install(from, to, {scriptsDir}) → {name, dest, digest, action}[]`
+- `checkDrift(from, to, {scriptsDir}) → {name, status, expected, found}[]` — status is `ok`|`missing`|`outdated`|`modified`
+- CLI: `vendor-linters.mjs (--install|--check|--stamp) [--from R] [--to R] [--scripts-dir D]`
+
+- [x] **Step 1: Stamp the linters (RED→GREEN).** Assert each of `check-graph.mjs` /
+`check-trace.mjs` carries `// @skills-linter: <name> sha256:<12hex>` matching an
+independently-computed `node:crypto` digest of its body. Add the stamp lines below the shebang.
+- [x] **Step 2: `vendor-linters.mjs` (RED→GREEN).** E2E seam: scratch skill-set root + scratch
+consumer repo. Cover install byte-identity, a vendored linter that actually *runs*, and the four
+drift verdicts — `missing`, `outdated` (the bot-repo case), `modified` (hand-edited, stamp
+untouched), `ok`. `checkDrift` must not mutate the consumer repo.
+- [x] **Step 3: Fix the entry-point guard.** The E2E run exposed
+`import.meta.url === pathToFileURL(process.argv[1]).href` failing under a symlinked path
+(macOS `/var` → `/private/var`): `main()` never ran, so the CLI printed nothing and exited **0**.
+Compare `fs.realpathSync` of both sides, and guard `argv[1] === undefined`. Re-stamp after.
+- [x] **Step 4: Templates (RED→GREEN).** Graph row in `templates/agents/project.md`;
+`check-graph.mjs --verify` in `templates/githooks/pre-push`.
+- [x] **Step 5: setup-repo wiring (RED→GREEN).** Vendoring + drift-report step; graph lint in the
+existing-CI opt-in and the pre-push fill; proving gate seeds `GRAPH.md` and classifies a dead
+`check-graph` as a wiring failure.
+- [x] **Step 6: Loud-once remedy (RED→GREEN).** brainstorm + code-review name `setup-repo` when
+`check-graph` is *absent*, once per session, still failing open. Fix `verify/SKILL.md`'s
+nonexistent bare `check-graph` binary to `node scripts/check-graph.mjs --verify`, and retarget the
+wiring assertion that had enshrined the broken spelling.
+- [x] **Step 7: Mutation-check every new test.** For each: revert the behavior in a scratch copy,
+confirm the mapped test fails. The FGRAPH-11.14 guard initially survived — its fixture was an
+empty dir, so `check-trace` early-exited and both copies trivially agreed. Rebuilt on a real
+spec + covering test; its fixture requirement ID is assembled at runtime so this file's own
+string does not fire a bogus E1.
+- [x] **Step 8: Gates.** `node --test scripts/*.test.mjs` (74 pass) and `node scripts/check-trace.mjs`
+(exit 0). Note the suite command: `node --test scripts/` runs `check-trace.mjs` *as* a test file.
+
+_Requirements: FGRAPH-11.1, FGRAPH-11.2, FGRAPH-11.3, FGRAPH-11.4, FGRAPH-11.5, FGRAPH-11.6, FGRAPH-11.7, FGRAPH-11.8, FGRAPH-11.9, FGRAPH-11.10, FGRAPH-11.11, FGRAPH-11.12, FGRAPH-11.13, FGRAPH-11.14_
+
+---
+
 ### Task 12: Harvest-quality amendment (tier-1, post-ship)
 
 Added after dogfooding `check-graph --harvest` on the bot repo's 4 real features surfaced
@@ -1126,6 +1176,11 @@ test:
 | 9.3 | 7 | `[FGRAPH-9.3]` config fallback |
 | 9.4, 9.5 | 9 | `[FGRAPH-9.4][FGRAPH-9.5]` guards |
 | 9.6 | 10 | `[FGRAPH-9.6]` brainstorm no-subagent path |
+| 11.1, 11.2, 11.3 | 12 | `[FGRAPH-11.1..11.3]` stamp, install, four drift verdicts (E2E) |
+| 11.4, 11.5 | 12 | `[FGRAPH-11.4][FGRAPH-11.5]` project.md Graph row, pre-push graph lint |
+| 11.6–11.9 | 12 | `[FGRAPH-11.6..11.9]` setup-repo CI opt-in + proving gate |
+| 11.10, 11.11, 11.12 | 12 | `[FGRAPH-11.10..11.12]` loud-once remedy, still fails open |
+| 11.13, 11.14 | 12 | `[FGRAPH-11.13][FGRAPH-11.14]` guards: no authoring burden; check-trace behavior identical |
 
 **Reconciliation with the design seam table:** design listed 7.x/8.x/6.4 as *pressure-test*;
 this plan strengthens them to an automatable **wiring regression test**

@@ -144,6 +144,25 @@ manifest, Reverse index, Shared surface, Summary card.
 - **FGRAPH-10.5** IF the graph query fails or `check-graph` is unavailable, THEN code-review SHALL note the automated overlap check was unavailable and continue the two-axis review.
 - **FGRAPH-10.6** (guard) WHEN this check is added, THE SYSTEM SHALL CONTINUE TO run the Standards + Spec two-axis review unchanged when the graph query yields nothing, is unavailable, or when no requirements spec exists (Spec axis skipped).
 
+## 11. Distribution — the graph runs where it is consumed
+
+**Story:** As the maintainer of a repo that installed this skill set, I want `setup-repo` to install and wire the graph linter, so the dedup gates actually run in my repo instead of failing open silently forever. _(amend — reclaims the deferred Out-of-Scope item; dogfooding found `check-graph.mjs` absent from every consuming repo, so FGRAPH-7.5 and FGRAPH-10.5 fire on every query and the feature is inert outside the repo that authored it.)_
+
+- **FGRAPH-11.1** WHEN `setup-repo` writes a repo's configuration, THE SYSTEM SHALL vendor each linter script the skill set ships (`check-trace.mjs`, `check-graph.mjs`) into that repo's configured scripts location.
+- **FGRAPH-11.2** WHEN `setup-repo` vendors a linter script, THE SYSTEM SHALL write into the vendored copy a version stamp identifying the skill-set revision it was copied from.
+- **FGRAPH-11.3** IF a repo's vendored linter carries a version stamp differing from the skill set's current copy, THEN `setup-repo` SHALL report the drift and offer to update the vendored copy.
+- **FGRAPH-11.4** WHEN `setup-repo` writes `docs/agents/project.md`, THE SYSTEM SHALL include a `Graph` row whose command runs `check-graph.mjs --verify`, beside the existing `Trace` row.
+- **FGRAPH-11.5** WHERE the user accepts the git-verify-hooks opt-in, THE SYSTEM SHALL include `check-graph.mjs --verify` in the vendored `pre-push` hook alongside the trace lint.
+- **FGRAPH-11.6** WHERE the user accepts the CI opt-in, THE SYSTEM SHALL append a `check-graph.mjs --verify` step to the repo's existing CI workflow.
+- **FGRAPH-11.7** (guard) WHEN the CI opt-in appends the graph step, THE SYSTEM SHALL CONTINUE TO edit the existing workflow additively, authoring no new pipeline.
+- **FGRAPH-11.8** WHEN `setup-repo` reaches its configuration-proving gate, THE SYSTEM SHALL run `check-graph.mjs --harvest` once to seed the repo's `GRAPH.md`.
+- **FGRAPH-11.9** IF `check-graph.mjs` cannot execute at `setup-repo`'s proving gate, THEN THE SYSTEM SHALL classify it as a wiring failure and fix it before setup completes.
+- **FGRAPH-11.10** IF a consumer skill's graph query finds `check-graph.mjs` absent, THEN THE SYSTEM SHALL state that the feature graph is not installed and name `setup-repo` as the remedy. _(amends the bare "overlap check unavailable" note of FGRAPH-7.5 and FGRAPH-10.5.)_
+- **FGRAPH-11.11** WHILE a consumer skill has already reported the graph as not installed in the current session, THE SYSTEM SHALL omit the remedy from subsequent queries in that session.
+- **FGRAPH-11.12** (guard) IF `check-graph.mjs` is absent or errors, THEN THE SYSTEM SHALL CONTINUE TO complete `brainstorm` step 1 and `code-review`'s two-axis review without blocking.
+- **FGRAPH-11.13** (guard) WHEN the distribution wiring is added, THE SYSTEM SHALL CONTINUE TO require no new fields or annotations in `requirements.md`, `design.md`, or `tasks.md`.
+- **FGRAPH-11.14** (guard) WHEN `setup-repo` vendors the graph linter, THE SYSTEM SHALL CONTINUE TO leave `check-trace`'s behavior, outputs, and exit codes unchanged.
+
 ## Out of Scope
 
 - **Manually-declared typed edges** (`extends`, `depends-on`, `supersedes`) and their automatic reversal — the fast-follow. v1 derives only the untyped `shares-surface` relationship, which is free from the harvest.
@@ -152,5 +171,9 @@ manifest, Reverse index, Shared surface, Summary card.
 - ~~**A code-review "reimplements a neighbor?" check.**~~ Reclaimed — now specified as Story 10 (advisory).
 - **Harvesting surface from committed code or import graphs.** The source of truth is specs only; the spike proved specs carry enough signal.
 - **Semantic or embedding-based matching.** Keyword matching only (FGRAPH-5.2).
-- **setup-repo / scaffold-project auto-wiring** check-graph into CI and seeding an initial `GRAPH.md` — manual for v1.
+- ~~**setup-repo / scaffold-project auto-wiring** check-graph into CI and seeding an initial `GRAPH.md` — manual for v1.~~ Reclaimed — now specified as Story 11 (distribution). `scaffold-project` is covered transitively: it hands `docs/agents/` to `setup-repo` and writes none of it itself.
 - **Dogfooding the graph across the skills repo's own future features** beyond bootstrapping this one spec and its `docs/specs/INDEX.md`.
+- **Graph scale rework** — the committed-manifest / on-demand-card split, IDF-weighted ranking with a hub-degree cutoff, query result caps, and byte-bounded card fields. Measured 2026-07-10 on the `bot` repo: 4 features render a 15.7 KB `GRAPH.md` with per-card Out-of-Scope prose at 35–53% of card bytes; a 52-feature simulation renders 140.6 KB (~36k tokens), one hub path returns 38 full cards (97.3 KB), and FGRAPH-5.3's raw-overlap ranking degenerates to alphabetical order when every candidate overlaps on the same hub file. Fixing this **supersedes approved criteria** (FGRAPH-2.2/2.3, 3.4, 4.1, 5.3) and has live design alternatives, so it escalated to `brainstorm` rather than being decided inside this amendment.
+- **Authoring a CI pipeline where none exists.** FGRAPH-11.6 appends to an existing workflow only; full CI/CD authoring is excluded from the skill set's v1 (`DESIGN.md`).
+- **Silently auto-updating a drifted vendored linter.** FGRAPH-11.3 reports drift and offers; it never rewrites a repo's script without consent.
+- **A package-manager distribution channel** (e.g. an npm `bin`) for the linters. Vendoring into the consuming repo keeps them dependency-free and offline, as `check-trace` already is.

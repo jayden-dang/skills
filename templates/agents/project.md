@@ -12,7 +12,8 @@ Run in this order; all must pass before any completion claim.
 | Lint | `<command>` |
 | Unit tests | `<command>` |
 | E2E / smoke | `<command>` |
-| Trace | `node <path-to>/check-trace.mjs` |
+| Trace | `python3 <path-to>/check_trace.py` |
+| Graph | `python3 <path-to>/check_graph.py --verify` |
 
 Single test file: `<command pattern, e.g. npx vitest run <path>>`
 

@@ -40,13 +40,15 @@ Create a todo for each item and complete them in order.
 
 Read `CONTEXT.md` (use its vocabulary from here on) and `docs/specs/INDEX.md` (the feature codes and specs that already exist) directly — they are small and you need them in context. For anything heavier — code, docs, and recent commits near this idea — dispatch a **scan subagent** that explores and writes a findings digest to `.skills/<slug>-scan.md` (what exists near the idea, the files and seams it touches, applicable constraints — findings, not file dumps), returning only that path; work from the digest instead of pulling raw files into this conversation. (No subagents in this harness? Read the few relevant files directly.) If `docs/agents/project.md` or these files are missing, say so, suggest running `setup-repo`, and continue with what you have.
 
-Then run the feature-graph dedup check: `node scripts/check-graph.mjs --query --json`
+Then run the feature-graph dedup check: `python3 scripts/check_graph.py --query --json`
 passing the scan's candidate files as `--path` and the idea's key terms as `--keyword`.
 Present any returned features as their summary **cards** (not full specs) — each card's
-owned paths and Out-of-Scope list show what the neighbor already covers. If `check-graph`
-is absent or errors, note "automated overlap check unavailable" and continue with manual
-exploration (this also covers harnesses without subagents — query on the idea's terms
-directly).
+owned paths and Out-of-Scope list show what the neighbor already covers. If `check_graph.py`
+is **absent**, the feature graph is not installed in this repo: say so, name `setup-repo` as
+the remedy, and say it at most once per session — a repo that has declined the graph must not
+be nagged on every query. If it errors, note "automated overlap check unavailable". Either
+way, continue with manual exploration and never block the gate on it (this also covers
+harnesses without subagents — query on the idea's terms directly).
 
 **Done when:** you can state in one paragraph what the project is, what already exists near this idea, and which glossary terms apply — and you have stated which existing features share this idea's surface and how the new idea differs (citing feature codes), or that no existing feature shares its surface.
 

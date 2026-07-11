@@ -249,6 +249,44 @@ neighbor owns. No new `check-graph` capability: it consumes `query`'s existing o
 empty-overlap paths mirror brainstorm (FGRAPH-7.4/7.5). The Standards axis, aggregate step, verdict,
 and the "never pre-judge findings" rule are untouched (FGRAPH-10.6).
 
+### Distribution — the graph runs where it is consumed (post-ship, tier-1) — Story 11
+
+Satisfies: FGRAPH-11.1, FGRAPH-11.2, FGRAPH-11.3, FGRAPH-11.4, FGRAPH-11.5, FGRAPH-11.6, FGRAPH-11.7, FGRAPH-11.8, FGRAPH-11.9, FGRAPH-11.10, FGRAPH-11.11, FGRAPH-11.12, FGRAPH-11.13, FGRAPH-11.14
+
+Dogfooding found FGRAPH inert everywhere it was meant to run: no consuming repo has
+`scripts/check-graph.mjs`, so every `--query` hits the FGRAPH-7.5/10.5 fail-open path and the
+dedup gates silently never fire. The `bot` repo's hand-placed `check-trace.mjs` had likewise
+frozen before the TRACE `ignore` capability existed. Both are one defect — nothing installs or
+version-checks the linters.
+
+- **One canonical copy.** The skill set's own `scripts/` holds the only copy of each linter;
+  `templates/` mirrors none of them. A `templates/scripts/` mirror would add a second in-repo
+  copy and a third drift axis — the disease, not the cure.
+- **`scripts/vendor-linters.mjs`** (new) is the mechanical half, extracted from `setup-repo`'s
+  prose so it is executable and testable: `--install` copies each linter into the consuming
+  repo, `--check` classifies each as `ok`/`missing`/`outdated`/`modified`, `--stamp` re-stamps
+  the canonical copies after an edit. No `process.exit` in any exported function.
+- **Stamp = content hash (11.2/11.3).** Each linter carries `// @skills-linter: <name>
+  sha256:<12hex>` over its own body, the stamp line excluded so stamping is idempotent.
+  `modified` is checked *before* `outdated`: a local edit that leaves the stamp line untouched
+  would otherwise masquerade as `ok` — the failure mode a hand-bumped semver constant cannot
+  see.
+- **`setup-repo` wiring (11.1, 11.3–11.9).** Vendoring joins step 4 (Write); the Graph row
+  joins `templates/agents/project.md` beside Trace; `check-graph --verify` joins the pre-push
+  template and the *existing*-CI opt-in (11.7 — DESIGN.md excludes CI/CD authoring); step 6's
+  proving gate seeds `GRAPH.md` with one `--harvest` and treats a non-executing `check-graph`
+  as a wiring failure, exactly as it already treats `check-trace`.
+- **Loud once (11.10/11.11).** An *absent* `check-graph` now names `setup-repo` as the remedy,
+  once per session; an *erroring* one keeps the old "overlap check unavailable" note. Both
+  still fail open (11.12).
+- **Entry-point guard (fixed en route).** `import.meta.url === pathToFileURL(process.argv[1]).href`
+  is false whenever the script sits under a symlinked path — on macOS `/var` → `/private/var`,
+  since the loader realpaths `import.meta.url` but not `argv[1]`. A vendored `check-graph` under
+  `/tmp` therefore printed nothing and exited **0**: a silent false negative that reads as "no
+  overlapping features". Both `check-graph.mjs` and `vendor-linters.mjs` now compare
+  `fs.realpathSync` of each side, and guard the `argv[1]`-undefined case that made
+  `pathToFileURL` throw. The E2E vendoring seam is what caught it.
+
 ## Seams for testing
 
 Unit seams are the exported pure functions; the integration seam is the CLI black-box
@@ -266,10 +304,14 @@ Skill-behavior requirements are verified by acceptance/pressure-test, not check-
 | brainstorm SKILL.md behavior | pressure-test | FGRAPH-7.1, 7.2, 7.3, 7.4, 7.5, 9.6 |
 | sync-spec SKILL.md behavior | pressure-test | FGRAPH-8.1, 8.2 |
 | verify SKILL.md behavior | pressure-test | FGRAPH-6.4 |
+| `computeStamp`/`install`/`checkDrift` (exported) | unit | FGRAPH-11.1, 11.2, 11.3 |
+| vendored linter run in a scratch repo (`spawnSync`) | integration (E2E) | FGRAPH-11.1, 11.14 |
+| `templates/` file contents | unit | FGRAPH-11.4, 11.5, 11.13 |
+| setup-repo / brainstorm / code-review SKILL.md markers | wiring regression | FGRAPH-11.1, 11.3, 11.6–11.12 |
 
 ## Coverage check
 
-Every FGRAPH ID 1.1–9.6 appears in exactly one `Satisfies:` line above. No deliberately
+Every FGRAPH ID 1.1–11.14 appears in exactly one `Satisfies:` line above. No deliberately
 unmapped requirements. Cross-check: 2.1/2.2/2.3 → Graph data model; 1.1–1.6 + 9.1 →
 Harvest parser; 3.x → Cards; 4.x + 9.2 → GRAPH.md renderer; 5.x → Query; 6.1–6.3 →
 Verify mode; 6.4 → verify wiring; 7.x + 9.6 → brainstorm wiring; 8.x → sync-spec wiring;

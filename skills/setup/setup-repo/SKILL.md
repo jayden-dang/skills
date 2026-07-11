@@ -77,7 +77,7 @@ Show the repo's existing labels next to the roles and propose a mapping (default
 
 Explainer: `tdd`, `verify`, `execute-plan`, and `release` all run this repo's proof commands; they must be exact, not guessed.
 
-Confirm each, pre-filled from what you detected: typecheck, lint, unit tests, e2e/smoke, and the **single-test-file pattern** (the command shape for running one test file — the tight loop `tdd` lives in). Also confirm where `check-trace.mjs` will be invoked from.
+Confirm each, pre-filled from what you detected: typecheck, lint, unit tests, e2e/smoke, and the **single-test-file pattern** (the command shape for running one test file — the tight loop `tdd` lives in). Also confirm where `check_trace.py` will be invoked from, and which interpreter command resolves on this machine (`python3`, `python`, or `py`).
 
 **Done when:** each command has been confirmed by the user (or explicitly marked "none").
 
@@ -123,8 +123,22 @@ Let them edit. **Done when:** the user approves the drafts.
 
 1. Write `docs/agents/project.md`, `docs/agents/issue-tracker.md`, and `docs/agents/triage-labels.md`, seeded from `templates/agents/project.md`, `templates/agents/issue-tracker.md`, and `templates/agents/triage-labels.md`. In the issue-tracker file keep only the chosen tracker's operations section, and record the PR-surface answer.
 2. If `docs/specs/INDEX.md` is missing, create it from `templates/specs-INDEX.md`.
-3. If the glossary is missing, create `CONTEXT.md` from `templates/CONTEXT.md` (or a `CONTEXT-MAP.md` for multi-context, per the user's answer).
-4. Add the `## Agent skills` block. It lives in exactly **one** canonical file; any second file is a thin pointer, never a copy of the block.
+
+3. **Vendor the linters.** The skills read `check_trace.py` and `check_graph.py` from the repo itself, so a repo that lacks them silently loses the trace spine and the feature graph. Both are Python 3.9+ stdlib scripts — only `python3` is required, no Node. Install both from the skill set into the configured scripts location:
+
+   ```bash
+   python3 <skill-set>/scripts/vendor_linters.py --install --to . --scripts-dir <configured path>
+   ```
+
+   Each linter is stamped with a `sha256` of its own body. Re-running `setup-repo` on a configured repo, check for **drift** first:
+
+   ```bash
+   python3 <skill-set>/scripts/vendor_linters.py --check --to . --scripts-dir <configured path>
+   ```
+
+   It reports each linter as `ok`, `missing`, `outdated` (the skill set moved on), or `modified` (someone edited the repo's copy). On any drift, report which linters drifted and **offer to update** them — never overwrite a `modified` copy without the user's explicit yes, since it may carry a local fix worth upstreaming.
+4. If the glossary is missing, create `CONTEXT.md` from `templates/CONTEXT.md` (or a `CONTEXT-MAP.md` for multi-context, per the user's answer).
+5. Add the `## Agent skills` block. It lives in exactly **one** canonical file; any second file is a thin pointer, never a copy of the block.
    - **Neither `CLAUDE.md` nor `AGENTS.md` exists** (the default): make `AGENTS.md` canonical (it holds the block) and write a short `CLAUDE.md` whose entire body points at `AGENTS.md` — so Claude Code finds instructions by its native filename without duplicating them. Do not ask which to create; this pattern serves both.
    - **Only one exists:** that file is canonical — add or update the block in it. If it is `AGENTS.md` and Claude Code is a target, also add the `CLAUDE.md` pointer. If it is `CLAUDE.md`, leave it canonical — do not demote it to a pointer or create a competing `AGENTS.md`.
    - **Both exist:** put the block in whichever already carries real agent instructions; make the other a pointer only if it is not already substantive. Never place the block in both.
@@ -151,7 +165,7 @@ This repo is configured for a spec-driven skill set.
   `write-plan` → `execute-plan`
 - Bug on-ramp: `debug` (root cause first, then a guarded fix)
 - Incoming issues and PRs: `triage`
-- Traceability lint: `node <configured path>/check-trace.mjs` — run by
+- Traceability lint: `python3 <configured path>/check_trace.py` — run by
   `verify` and `release`; keep it green
 
 Repo config the skills read:
@@ -161,7 +175,7 @@ Repo config the skills read:
 - Triage label mapping: `docs/agents/triage-labels.md`
 ```
 
-5. Ensure the local working dirs are git-ignored: the skills' scratch artifacts — `execute-plan`'s ledger and briefs, and the scan/review digests the spec skills write — live under `.skills/`, and isolated workspaces under `.worktrees/`; neither belongs in version control. Idempotently, for each pattern: `grep -qxF '.skills/' .gitignore 2>/dev/null || printf '.skills/\n' >> .gitignore` (same for `.worktrees/`), then stage `.gitignore`. (A line-presence check, not `git check-ignore` — a trailing-slash pattern only matches an *existing* directory, so `check-ignore` would re-append before the dir exists.)
+6. Ensure the local working dirs are git-ignored: the skills' scratch artifacts — `execute-plan`'s ledger and briefs, and the scan/review digests the spec skills write — live under `.skills/`, and isolated workspaces under `.worktrees/`; neither belongs in version control. Idempotently, for each pattern: `grep -qxF '.skills/' .gitignore 2>/dev/null || printf '.skills/\n' >> .gitignore` (same for `.worktrees/`), then stage `.gitignore`. (A line-presence check, not `git check-ignore` — a trailing-slash pattern only matches an *existing* directory, so `check-ignore` would re-append before the dir exists.)
 
 **Done when:** all files are written, `.skills/` and `.worktrees/` are git-ignored, and `git status` shows only the expected additions/edits.
 
@@ -178,11 +192,11 @@ Three optional installs — offer each, act only on a yes:
          "command": "\"$CLAUDE_PROJECT_DIR/.claude/hooks/session-start.sh\"" } ] } ] } }
      ```
    - Merge into any existing `SessionStart` block additively; do not clobber other hooks.
-2. **Trace check in CI.** Offer to append a step to the existing CI workflow that runs `check-trace.mjs` (with `--strict` if the user wants warnings to fail too). Edit the existing workflow additively; do not author a new pipeline.
+2. **Trace + graph checks in CI.** Offer to append steps to the existing CI workflow that run `python3 <configured path>/check_trace.py` (with `--strict` if the user wants warnings to fail too) and `python3 <configured path>/check_graph.py --verify` (fails when the committed `GRAPH.md` has gone stale). Edit the existing workflow additively; do not author a new pipeline. No CI workflow exists? Say so and skip — authoring one is out of scope for this skill set.
 3. **Git verify hooks (pre-commit / pre-push).** Offer to wire the configured verify commands to git events so a broken change never lands locally. Be additive and dependency-free:
    - If the repo already runs a hook manager (`.husky/`, `lefthook.yml`, `.pre-commit-config.yaml`, or `simple-git-hooks` in `package.json`), add the verify commands into **that** — never install a competing mechanism.
    - Otherwise vendor `templates/githooks/pre-commit` and `templates/githooks/pre-push` into `.githooks/`, `chmod +x` both, and set `git config core.hooksPath .githooks`. Commit `.githooks/` so the team shares them. For a JS repo also add a `"prepare": "git config core.hooksPath .githooks"` script so fresh clones apply it on install; otherwise document the one-time command in the README (`core.hooksPath` is local config, not carried by a clone).
-   - Fill each hook with this repo's commands from `docs/agents/project.md`: **pre-commit** gets the FAST gates (format staged, lint, typecheck) so commits stay quick; **pre-push** gets the fuller suite (tests) plus `check-trace.mjs`. A hook slow enough to be routinely `--no-verify`'d is worse than none — keep the split, and move a slow typecheck to pre-push if it drags.
+   - Fill each hook with this repo's commands from `docs/agents/project.md`: **pre-commit** gets the FAST gates (format staged, lint, typecheck) so commits stay quick; **pre-push** gets the fuller suite (tests) plus both linters, `check_trace.py` and `check_graph.py --verify`, invoked via the configured interpreter (`python3` by default). A hook slow enough to be routinely `--no-verify`'d is worse than none — keep the split, and move a slow typecheck to pre-push if it drags.
    - After installing, prove the pre-commit fires once (stage a throwaway change and run the hook, or make a dry commit), then report it works.
 
 **Done when:** each offer has an explicit yes/no, and any yes is implemented.
@@ -201,7 +215,8 @@ Be cost-aware — do not run the whole suite to prove wiring:
 
 - Typecheck and lint: run in full (bounded).
 - Unit/e2e runners: prove the runner resolves its config cheaply — run the **single-test-file pattern** from `project.md` against one existing test file, or the runner's collect-only/list mode. Never trigger a full e2e run during setup; state that the full run is the user's to do later.
-- `check-trace.mjs`: run it — it must execute and exit 0 (zero requirements is a valid clean state). If it fails to run at all (e.g. no `node`), that is a wiring failure worth flagging: this repo needs that runtime for the trace lint, or the lint must be adapted.
+- `check_trace.py`: run it — it must execute and exit 0 (zero requirements is a valid clean state). If it fails to run at all (e.g. no `python3` on this machine, or whichever interpreter command was confirmed in step C), that is a wiring failure worth flagging: this repo needs that interpreter for the trace lint, or the lint must be adapted.
+- `check_graph.py`: seed the feature graph by running `python3 <configured path>/check_graph.py --harvest` once — it writes `docs/specs/GRAPH.md` (an empty registry is a valid clean state) — then run `python3 <configured path>/check_graph.py --verify` and confirm exit 0. If `check_graph.py` prints nothing, exits non-zero, or the file never appears, that is a **wiring failure** you must fix before setup completes: an uninstalled or unrunnable graph linter makes `brainstorm` and `code-review` silently skip their duplication checks forever, which looks exactly like "no overlapping features".
 - If you installed the session-start hook, execute `.claude/hooks/session-start.sh` and confirm it prints one line of valid JSON.
 - If the tracker is a remote service (`github` / `gitlab` / `linear`), prove it is reachable and authenticated with **one read-only call** — `gh issue list` / `glab issue list`, or for Linear a single MCP list call (or a minimal `issues` GraphQL query). A missing CLI, an unauthenticated session, a bad `LINEAR_API_KEY`, or a disconnected MCP server is a wiring failure; it would otherwise stay hidden until `triage` fails weeks later. `local` and `other` need no reachability check.
 

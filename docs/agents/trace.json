@@ -1,5 +1,5 @@
 {
   "specsDir": "docs/specs",
   "testGlobs": ["scripts"],
-  "ignore": ["check-trace.test.mjs"]
+  "ignore": ["check_trace_test.py"]
 }

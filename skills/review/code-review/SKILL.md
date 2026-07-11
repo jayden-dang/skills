@@ -39,7 +39,7 @@ On top of the repo's own documents, the Standards axis always carries `standards
 
 ## 3a. Check for duplication against existing features
 
-Run the duplication check against the diff's changed source files (from the range pinned in step 1): `node scripts/check-graph.mjs --query --json --path <changed-file> [--path <changed-file> ...]`. It returns the overlapping features and their summary cards. If `check-graph` is absent or errors, note that the automated overlap check was unavailable and continue — this never blocks the review. If no changed file overlaps any feature, state that no existing feature shares the diff's surface and inject nothing into step 4. *Done when: you hold the overlapping features' cards, or an explicit "no overlap" / "overlap check unavailable".*
+Run the duplication check against the diff's changed source files (from the range pinned in step 1): `python3 scripts/check_graph.py --query --json --path <changed-file> [--path <changed-file> ...]`. It returns the overlapping features and their summary cards. If `check_graph.py` is **absent**, the feature graph is not installed in this repo — note that, name `setup-repo` as the remedy, and state it at most once per session rather than on every review. If it errors, note that the automated overlap check was unavailable. Either way, continue — this never blocks the review. If no changed file overlaps any feature, state that no existing feature shares the diff's surface and inject nothing into step 4. *Done when: you hold the overlapping features' cards, or an explicit "no overlap" / "overlap check unavailable".*
 
 ## 4. Dispatch both subagents in parallel
 

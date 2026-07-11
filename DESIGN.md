@@ -41,7 +41,8 @@ skills/
   acceptance/  acceptance-check, acceptance-api, acceptance-ui, dogfood
   ship/        finish-branch, release
   track/       amend, triage, sync-spec, improve-architecture, handoff
-scripts/       check-trace.mjs, task-brief, review-package
+scripts/       check_trace.py, check_graph.py, vendor_linters.py, task-brief,
+               review-package     (Python 3.9+ stdlib linters; no Node runtime)
 templates/     requirements.md, design.md, tasks.md, docs/agents seeds, CONTEXT.md seed
 hooks/         session-start (injects meta/using-skills)
 docs/          per-skill human docs (optional, later)
@@ -68,6 +69,7 @@ docs/specs/<YYYY-MM-DD>-<feature>/
   requirements.md      # WHAT — EARS acceptance criteria with hierarchical IDs
   design.md            # HOW — architecture, each section cites the REQ IDs it satisfies
   tasks.md             # PLAN — checkbox tasks, each ending `_Requirements: CODE-N.M, ..._`
+docs/specs/GRAPH.md    # harvested feature-graph registry (check_graph.py --harvest)
 CONTEXT.md             # domain glossary (terms + tight definitions + Avoid-lists)
 docs/adr/NNNN-slug.md  # minimal ADRs (1–3 sentences; three-part gate)
 docs/agents/           # per-repo config written by setup-repo:
@@ -112,7 +114,7 @@ The ID then flows through everything:
 | Commit message | `Implements: SHELL-1.2` / `Guards: SHELL-1.3` trailer |
 | Issue (if tracker used) | `Requirements covered` section in issue body |
 
-`scripts/check-trace.mjs` parses the spec inventory + test files/reports + task
+`scripts/check_trace.py` parses the spec inventory + test files/reports + task
 footers and **fails** on: implemented requirements with zero covering tests; tests
 or tasks citing nonexistent IDs; approved specs with uncovered requirements
 (warning tier). Run by `verify`, `release`, and CI. Unchecked trace matrices rot —

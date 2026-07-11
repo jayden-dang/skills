@@ -8,6 +8,9 @@
 set -e
 
 # setup-repo replaces the lines below with this repo's full verify commands from
-# docs/agents/project.md, plus the trace lint (fails on untraced requirements).
+# docs/agents/project.md, plus the two linters: the trace lint (fails on untraced
+# requirements) and the graph lint (fails on a stale committed GRAPH.md). The
+# linters are Python 3.9+ stdlib scripts, so only `python3` is required — no node.
 pnpm test
-node scripts/check-trace.mjs
+python3 scripts/check_trace.py
+python3 scripts/check_graph.py --verify

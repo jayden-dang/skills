@@ -28,14 +28,20 @@
 - interfaces: _seed_code(name: str) -> str, _seed_code(name) (Task 1); enumerate_folders(root, cfg) ->, seed(root, cfg) (Task 2); main(argv) -> int (existing, :931);
 - out-of-scope: CODEOWNERS and workspace-config parsing. M4 drafts only from top-level | Writing to `trace.json`. The seed only prints; a human pastes and refines. | Loose files directly under a source root. Only child *directories* become | Generating specs, deepening module cards, or harvesting code interfaces. | Merging a drafted module into an existing manifest. The seed emits a fresh
 
+### MODSTD — Per-Module Standards Resolution
+- owns: —
+- touches: evals/evals.py, scripts/check_graph.py, scripts/check_graph_test.py, scripts/check_trace.py, scripts/vendor_linters.py, scripts/vendor_linters_test.py, scripts/wiring_test.py
+- interfaces: each loaded module dict gains "standards": entry.get("standards"), _standards_errors(cfg) -> [error_str, ...], resolve_standards(code, cfg) -> [rule_str, ...], _standards_errors(cfg) (Task 2); the existing errors list and, resolve_standards(code, cfg) (Task 3); load_manifest(cfg)
+- out-of-scope: Consuming standards in `code-review` or `execute-plan`. The conformance | Auto-harvesting standards from code. Inferring conventions by scanning a | External standards files (`standardsRef`) or per-file standards. M5 stores | Per-feature standards overrides. Standards attach to the baseline and to | Standards inheritance across a module hierarchy. Modules do not nest;
+
 ## Shared surface
 
 | Path | Features |
 |---|---|
-| evals/evals.py | MODGRAPH:touches, MODHOME:touches, MODMAP:touches, MODSEED:touches |
-| scripts/check_graph.py | MODGRAPH:touches, MODHOME:touches, MODMAP:touches, MODSEED:touches |
-| scripts/check_graph_test.py | MODGRAPH:touches, MODHOME:touches, MODMAP:touches, MODSEED:touches |
-| scripts/check_trace.py | MODGRAPH:touches, MODHOME:touches, MODMAP:touches, MODSEED:touches |
-| scripts/vendor_linters.py | MODGRAPH:touches, MODHOME:touches, MODMAP:touches, MODSEED:touches |
-| scripts/vendor_linters_test.py | MODGRAPH:touches, MODHOME:touches, MODMAP:touches, MODSEED:touches |
-| scripts/wiring_test.py | MODGRAPH:touches, MODHOME:touches, MODMAP:touches, MODSEED:touches |
+| evals/evals.py | MODGRAPH:touches, MODHOME:touches, MODMAP:touches, MODSEED:touches, MODSTD:touches |
+| scripts/check_graph.py | MODGRAPH:touches, MODHOME:touches, MODMAP:touches, MODSEED:touches, MODSTD:touches |
+| scripts/check_graph_test.py | MODGRAPH:touches, MODHOME:touches, MODMAP:touches, MODSEED:touches, MODSTD:touches |
+| scripts/check_trace.py | MODGRAPH:touches, MODHOME:touches, MODMAP:touches, MODSEED:touches, MODSTD:touches |
+| scripts/vendor_linters.py | MODGRAPH:touches, MODHOME:touches, MODMAP:touches, MODSEED:touches, MODSTD:touches |
+| scripts/vendor_linters_test.py | MODGRAPH:touches, MODHOME:touches, MODMAP:touches, MODSEED:touches, MODSTD:touches |
+| scripts/wiring_test.py | MODGRAPH:touches, MODHOME:touches, MODMAP:touches, MODSEED:touches, MODSTD:touches |

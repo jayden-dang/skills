@@ -12,7 +12,7 @@ chain that follows. Do not start executing the chosen flow inside this skill.
 If the entry point is model-invocable (`brainstorm`, `amend`, `debug`,
 `acceptance-check`, `dogfood`), invoke it and let it take over. If it is a user-invoked skill
 (`triage`, `file-issues`, `improve-architecture`, `setup-repo`,
-`scaffold-project`, `handoff`, `release`), you cannot invoke it — name it and
+`scaffold-project`, `establish-project`, `handoff`, `release`), you cannot invoke it — name it and
 tell the user to run its command, e.g. `/triage`.
 
 ## The main flow: idea → ship
@@ -54,6 +54,9 @@ context-isolated per task by design.
 - Codebase feels muddy → **`improve-architecture`** (periodic; its output
   re-enters at `brainstorm`).
 - New repo, no config → **`setup-repo`**. No repo at all → **`scaffold-project`**.
+- Starting a large/long-lived project and want a product vision + architecture-invariant
+  spine above the feature loop → **`establish-project`** (optional; the layer the feature
+  skills consult when present, off by default).
 - Session is ending mid-work → **`handoff`**.
 - Cutting a version → **`release`**.
 

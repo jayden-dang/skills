@@ -90,6 +90,14 @@ brainstorm ──► write-requirements ──► write-design ──► write-p
   tagged regression test.
 - **Tier 2** (feature): the full triad.
 
+**Optional project layer** (large projects, off by default): `establish-project`
+maintains a repo-level product vision plus an IDed architecture-invariant spine
+(`docs/architecture/`, each rule an `**ARCH-N**`) that `brainstorm`, `write-design`,
+`write-plan`, `execute-plan`, and `code-review` consult when present. Feature
+`design.md` files cite the invariants they rely on as `Respects: ARCH-N`, and `trace`
+checks those citations the same way it checks requirement IDs. A repo that opts into
+nothing behaves exactly as above.
+
 Lost? Invoke `/ask` — it routes any situation to the right entry point.
 
 ## The four gates
@@ -115,10 +123,11 @@ and countered by name. See [The gates](docs/guide/concepts/gates.md).
 | discovery | `brainstorm`, `grilling`, `research`, `prototype`, `domain-modeling` |
 | spec | `write-requirements`, `write-design`, `write-plan` |
 | execution | `execute-plan`, `tdd`, `debug`, `verify`, `trace`, `worktrees` |
-| review | `code-review`, `receive-review` |
+| review | `code-review`, `receive-review`, `check-invariants` |
 | acceptance | `acceptance-check`, `acceptance-api`, `acceptance-ui`, `dogfood` |
 | ship | `finish-branch`, `release` |
-| track | `amend`, `triage`, `sync-spec`, `improve-architecture`, `handoff` |
+| track | `amend`, `triage`, `sync-spec`, `improve-architecture`, `handoff`, `file-issues` |
+| project | `establish-project` (optional project-documentation layer) |
 
 One page per skill in the [skill reference](docs/guide/skills/README.md).
 

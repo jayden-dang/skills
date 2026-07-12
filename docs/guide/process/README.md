@@ -82,6 +82,9 @@ amend                        small in-scope change to a shipped, spec'd feature
 /improve-architecture        periodic codebase-wide friction scan → HTML report
                              → grilling on the chosen candidate → brainstorm
 
+/file-issues                 a conversation, spec, or idea → tracer-bullet issues
+                             on the tracker → execute or implement directly
+
 /triage                      incoming issues and external PRs → the state machine
                              → ready-for-agent brief → execute or implement directly
 
@@ -96,7 +99,7 @@ sync-spec                    whenever a spec'd feature changed outside its plan
 | Specification | `write-requirements`, `write-design`, `write-plan` | [Specification](specification.md) |
 | Execution | `worktrees`, `execute-plan`, `tdd`, `debug`, `verify`, `trace` | [Execution](execution.md) |
 | Review & acceptance | `code-review`, `receive-review`, `acceptance-*`, `dogfood` | [Review and acceptance](review-and-acceptance.md) |
-| Ship & maintain | `finish-branch`, `release`, `sync-spec`, `amend`, `triage`, `improve-architecture`, `handoff` | [Ship and maintain](ship-and-maintain.md) |
+| Ship & maintain | `finish-branch`, `release`, `sync-spec`, `amend`, `file-issues`, `triage`, `improve-architecture`, `handoff` | [Ship and maintain](ship-and-maintain.md) |
 
 ## Context hygiene — the operational rule
 

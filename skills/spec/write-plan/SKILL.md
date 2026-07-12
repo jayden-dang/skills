@@ -105,6 +105,11 @@ issue in dependency order — native sub-issues and blocking links where
 supported; body describes behavior and interfaces (never file paths), includes
 acceptance criteria and a `Requirements covered:` list.
 
+This is the heavyweight, traceable publish path — each issue carries its
+requirement IDs. For capturing work that never went through the spec triad (a
+raw conversation or idea), the user runs `file-issues` instead; do not duplicate
+these tasks there.
+
 ## Exit
 
 Offer exactly two execution routes: `execute-plan` (recommended) in an

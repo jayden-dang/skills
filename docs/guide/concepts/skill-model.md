@@ -136,4 +136,4 @@ When installed without plugin hook support, `setup-repo` offers to copy `templat
 - [The gates](gates.md) — the four skills that guard rules the agent breaks under pressure
 - [`writing-skills`](../skills/writing-skills.md) — the full authoring doctrine and its deployment checklist
 - [`using-skills`](../skills/using-skills.md) — the session gate
-- [Skill reference](../skills/README.md) — all 32 skills
+- [Skill reference](../skills/README.md) — all 33 skills

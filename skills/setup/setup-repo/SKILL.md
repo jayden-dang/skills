@@ -37,7 +37,7 @@ Walk the six decisions below strictly one at a time: give a two-or-three-sentenc
 
 ### A. Issue tracker
 
-Explainer: skills that read or write issues (`triage`, `write-plan` when publishing tasks, `release`) need to know where issues live and which commands touch them.
+Explainer: skills that read or write issues (`triage`, `file-issues`, `write-plan` when publishing tasks, `release`) need to know where issues live and which commands touch them.
 
 Options:
 
@@ -151,6 +151,7 @@ This repo is configured for a spec-driven skill set.
 - Feature flow: `brainstorm` → `write-requirements` → `write-design` →
   `write-plan` → `execute-plan`
 - Bug on-ramp: `debug` (root cause first, then a guarded fix)
+- Capture a conversation/spec/idea into tracker issues: `file-issues`
 - Incoming issues and PRs: `triage`
 - Traceability check: the `trace` skill — run by `verify` and `release`;
   keep it clean

@@ -11,9 +11,9 @@ You are the router. Read the situation, name the entry point, and explain the
 chain that follows. Do not start executing the chosen flow inside this skill.
 If the entry point is model-invocable (`brainstorm`, `debug`, `acceptance-check`,
 `dogfood`), invoke it and let it take over. If it is a user-invoked skill
-(`triage`, `improve-architecture`, `setup-repo`, `scaffold-project`, `handoff`,
-`release`), you cannot invoke it — name it and tell the user to run its command,
-e.g. `/triage`.
+(`triage`, `file-issues`, `improve-architecture`, `setup-repo`,
+`scaffold-project`, `handoff`, `release`), you cannot invoke it — name it and
+tell the user to run its command, e.g. `/triage`.
 
 ## The main flow: idea → ship
 
@@ -47,6 +47,9 @@ context-isolated per task by design.
 - Want to try a finished feature by hand in the real app → **`dogfood`**
   (builds a checkable, app-grounded guide you tick off while testing).
 - Something is broken → **`debug`** (it exits into the tier-1 mini-spec flow).
+- A conversation/spec/idea to capture as tracker issues (the fast lane, skipping
+  the full spec triad) → **`file-issues`** (tracer-bullet slices with blocking
+  edges, published agent-ready).
 - Incoming issues/PRs you didn't author → **`triage`**.
 - Codebase feels muddy → **`improve-architecture`** (periodic; its output
   re-enters at `brainstorm`).

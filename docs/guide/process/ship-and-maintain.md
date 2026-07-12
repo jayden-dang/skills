@@ -1,6 +1,6 @@
 # Phase 5 — Ship and maintain
 
-**Skills:** [`finish-branch`](../skills/finish-branch.md) · [`release`](../skills/release.md) · [`sync-spec`](../skills/sync-spec.md) · [`amend`](../skills/amend.md) · [`triage`](../skills/triage.md) · [`improve-architecture`](../skills/improve-architecture.md) · [`handoff`](../skills/handoff.md)
+**Skills:** [`finish-branch`](../skills/finish-branch.md) · [`release`](../skills/release.md) · [`sync-spec`](../skills/sync-spec.md) · [`amend`](../skills/amend.md) · [`file-issues`](../skills/file-issues.md) · [`triage`](../skills/triage.md) · [`improve-architecture`](../skills/improve-architecture.md) · [`handoff`](../skills/handoff.md)
 
 ## `finish-branch` — the integration decision
 
@@ -99,6 +99,14 @@ The honest test for escalation: **does the existing spec's intent already cover 
 
 If the feature has no spec at all, `amend` is the wrong skill — a brand-new capability is `brainstorm`, a break is `debug`.
 
+## `/file-issues` — the outgoing capture
+
+The mirror of `/triage`. Where triage moves work *in* from the tracker, `file-issues` pushes work *out* onto it — turning the current conversation, an approved spec, or a rough idea into **tracer-bullet issues**, each declaring the issues that block it. It is the fast lane that skips the full requirements → design → plan triad; `write-plan` remains the heavyweight, traceable publish path for tier-2 features.
+
+The slices follow the same discipline as a plan: each cuts a **vertical** path through every layer, is demoable on its own, and fits one fresh context window; a **wide refactor** is sequenced expand → migrate → contract instead of forced into one slice. After the user approves the breakdown, the issues publish in dependency order — blockers first — with native blocking links (or local `.scratch/` files) and the `ready-for-agent` label.
+
+Every published issue opens with `> *This issue was drafted by AI with `file-issues`.*` — which discloses AI authorship and is the marker that keeps `triage` from re-triaging its own agent-ready output.
+
 ## `/triage` — the incoming queue
 
 Issues (and, when configured, external PRs — *a PR is an issue with attached code*) move through a two-axis state machine. Every triaged issue carries **exactly one label from each axis**:
@@ -114,7 +122,7 @@ Then **verify the claim** — reproduce the bug from the reporter's steps, or ch
 
 Two rules that are easy to get backwards:
 
-- **Issues born agent-ready are out of scope.** Anything published from a plan (recognizable by a `Requirements covered:` section) already has a real spec. Running it through triage adds a second, weaker one.
+- **Issues born agent-ready are out of scope.** Anything published from a plan (recognizable by a `Requirements covered:` section) or by `file-issues` (recognizable by its AI-drafted marker line) already has a real spec. Running it through triage adds a second, weaker one.
 - **An "already implemented" close does not write to `.out-of-scope/`.** That knowledge base records *rejections*; logging built features there poisons future dedup checks.
 
 ## `/improve-architecture` — the periodic scan

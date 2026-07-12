@@ -53,6 +53,7 @@ Three ways in: by role, by problem, or by phase.
 | …review a branch before merging | [`code-review`](skills/code-review.md) |
 | …respond to review feedback | [`receive-review`](skills/receive-review.md) |
 | …cut a release | [`/release`](skills/release.md) |
+| …capture a conversation or idea into tracker issues | [`/file-issues`](skills/file-issues.md) |
 | …handle an incoming issue | [`/triage`](skills/triage.md) |
 | …find where to refactor next | [`/improve-architecture`](skills/improve-architecture.md) |
 | …hand off before my context fills | [`/handoff`](skills/handoff.md) |
@@ -72,7 +73,7 @@ Three ways in: by role, by problem, or by phase.
 | **2. Specification** | `write-requirements`, `write-design`, `write-plan` | [Specification](process/specification.md) |
 | **3. Execution** | `worktrees`, `execute-plan`, `tdd`, `debug`, `verify`, `trace` | [Execution](process/execution.md) |
 | **4. Review & acceptance** | `code-review`, `receive-review`, `acceptance-*`, `dogfood` | [Review and acceptance](process/review-and-acceptance.md) |
-| **5. Ship & maintain** | `finish-branch`, `/release`, `sync-spec`, `amend`, `/triage`, `/improve-architecture`, `/handoff` | [Ship and maintain](process/ship-and-maintain.md) |
+| **5. Ship & maintain** | `finish-branch`, `/release`, `sync-spec`, `amend`, `/file-issues`, `/triage`, `/improve-architecture`, `/handoff` | [Ship and maintain](process/ship-and-maintain.md) |
 
 ---
 
@@ -101,7 +102,7 @@ Three ways in: by role, by problem, or by phase.
 - [Phase 5 — Ship and maintain](process/ship-and-maintain.md)
 
 ### Skills — one page each
-- [Skill reference](skills/README.md) — all 32, indexed
+- [Skill reference](skills/README.md) — all 33, indexed
 
 ### Examples
 - [Tier 0: a tweak](examples/tier-0-tweak.md)

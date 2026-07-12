@@ -32,7 +32,7 @@ Two axes; every triaged issue carries **exactly one label from each**:
 
 ## Scope rule
 
-Only triage issues the user did **not** produce through this skill set's own planning. Issues published from a plan (recognizable by a `Requirements covered:` section in the body) were born agent-ready — running them through triage adds a second, weaker spec on top of a real one. Skip them and say why.
+Only triage issues the user did **not** produce through this skill set's own planning. Issues born agent-ready are recognizable by a marker in the body — a `Requirements covered:` section (published by `write-plan`) or a marker line beginning `> *This issue was drafted by AI with` (published by `file-issues`). Running either through triage adds a second, weaker spec on top of a real one. Skip them and say why.
 
 ## Showing the queue
 

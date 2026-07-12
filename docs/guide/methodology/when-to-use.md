@@ -37,6 +37,7 @@ If you are unsure, run `/ask` — it is a router whose entire job is mapping a s
 | Something is broken | [`debug`](../skills/debug.md) |
 | Unit tests green, unsure it truly works | [`acceptance-check`](../skills/acceptance-check.md) |
 | Want to try a finished feature by hand | [`dogfood`](../skills/dogfood.md) |
+| A conversation, spec, or idea to capture as tracker issues | [`/file-issues`](../skills/file-issues.md) |
 | Incoming issue or external PR you did not author | [`/triage`](../skills/triage.md) |
 | Codebase feels muddy, want a refactor target | [`/improve-architecture`](../skills/improve-architecture.md) |
 | Session ending with work unfinished | [`/handoff`](../skills/handoff.md) |

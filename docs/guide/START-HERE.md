@@ -33,7 +33,7 @@ over `docs/specs/`.
               code-review ─► acceptance-check ─► finish-branch ─► release ─► sync-spec
              (Standards+Spec)  (api/ui + dogfood)  (merge/PR)    (tag)   (mark Implemented/Shipped)
 
- MAINTENANCE LOOP:  amend (small change) · triage (incoming issues) · improve-architecture (periodic)
+ MAINTENANCE LOOP:  amend (small change) · file-issues (context → issues) · triage (incoming issues) · improve-architecture (periodic)
 ```
 
 **Ceremony tiers** decide how much of the chain you run (see
@@ -106,11 +106,12 @@ questions; the rest chains automatically:
 add the mini-spec + guard, `tdd` writes the regression test, `verify` proves it,
 `finish-branch` lands it.
 
-**Maintaining:** `amend` for small in-scope changes, **`/triage`** for incoming
-issues, **`/improve-architecture`** for periodic deepening scans, **`/handoff`** to
+**Maintaining:** `amend` for small in-scope changes, **`/file-issues`** to capture
+a conversation or idea into tracker issues, **`/triage`** for incoming issues,
+**`/improve-architecture`** for periodic deepening scans, **`/handoff`** to
 compact a long session.
 
-## 3. Behavior of every skill (all 32)
+## 3. Behavior of every skill (all 33)
 
 `U` = user-invoked slash command · `m` = model-invoked (fires on its trigger)
 
@@ -177,6 +178,7 @@ compact a long session.
 | Skill | Kind | Fires when | Core behavior | Produces |
 |---|---|---|---|---|
 | [`amend`](skills/amend.md) | m | Small in-scope change to a shipped feature | Read the triad, classify the change out loud, route to the lightest lane (tier 0 → `tdd`; tier 1 → mini-spec → `tdd`; new scope → escalate to `brainstorm`); always exits through `tdd` | A routed, traced change |
+| [`file-issues`](skills/file-issues.md) | U | A conversation / spec / idea to capture as tracker work | Break into tracer-bullet vertical slices with blocking edges, quiz the user, publish agent-ready issues in dependency order (native blocking links or local `.scratch/` files); AI-marked so `triage` skips them | Agent-ready tracker issues |
 | [`triage`](skills/triage.md) | U | Incoming issues / PRs | Issue state machine, redundancy + prior-rejection checks, verify claims before recommending, agent briefs as the contract; wontfix → `.out-of-scope/` | Triaged issues + agent briefs |
 | [`sync-spec`](skills/sync-spec.md) | m | A feature's spec has drifted from reality | Diff requirements ↔ design ↔ tasks ↔ tests via `trace`; add tasks for new requirements; flag orphans; update `Status:` + `INDEX.md` | A realigned triad |
 | [`improve-architecture`](skills/improve-architecture.md) | U | Periodic deepening scan | Friction scan (shallow modules, poor locality, untested seams, deletion test), self-contained HTML report, grill through the chosen candidate; feeds back into `brainstorm` | Improvement candidates |

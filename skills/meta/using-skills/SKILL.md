@@ -27,7 +27,9 @@ a checklist, create one todo per item.
 `brainstorm` before anything. "This is broken" → `debug` before any fix. Small
 in-scope change to an already-shipped, spec'd feature (a tweak, recolor, or
 follow-on) → `amend`, not `brainstorm`. For an incoming issue or external PR,
-suggest the user run `/triage` (it is user-invoked — you cannot auto-invoke it).
+suggest the user run `/triage`; to capture the current conversation, spec, or
+idea into tracker issues, suggest `/file-issues` (both are user-invoked — you
+cannot auto-invoke them).
 Unsure which flow fits → suggest `/ask`. Only auto-invoke model-invocable skills;
 name a user-invoked one for the user to run.
 

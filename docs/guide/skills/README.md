@@ -1,6 +1,6 @@
 # Skill reference
 
-Thirty-two skills in nine buckets. Each has its own page.
+Thirty-three skills in nine buckets. Each has its own page.
 
 **Invocation** is the thing to check first. A **model-invocable** skill is invoked by the agent on its own when its description matches the situation. A **user-invoked** skill carries `disable-model-invocation: true` in its frontmatter — the agent *cannot* invoke it, so you run it as a slash command.
 
@@ -91,6 +91,7 @@ Green units prove assertions pass. These prove the feature works.
 |---|---|---|
 | [`amend`](amend.md) | model | The maintenance fast lane for a shipped, spec'd feature. Not a gate bypass |
 | [`sync-spec`](sync-spec.md) | model | The anti-rot skill. Realigns the triad with what the code actually does |
+| [`file-issues`](file-issues.md) | `/file-issues` | Context → tracker issues. Tracer-bullet slices with blocking edges, published agent-ready |
 | [`triage`](triage.md) | `/triage` | A two-axis issue state machine. Verify the claim before recommending |
 | [`improve-architecture`](improve-architecture.md) | `/improve-architecture` | Codebase-wide friction scan → an HTML report of deepening candidates |
 | [`handoff`](handoff.md) | `/handoff` | A resumable document in the OS temp dir. Reference, never duplicate |

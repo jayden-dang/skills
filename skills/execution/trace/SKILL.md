@@ -3,7 +3,7 @@ name: trace
 description: Use when checking that every requirement ID traces to a task and a
   covering test — the traceability / check-trace pass invoked by verify, release,
   sync-spec, and write-plan's coverage check, or whenever requirements, tasks, and
-  tests may have drifted out of agreement. Produces a traceability finding set:
+  tests may have drifted out of agreement. Produces a traceability finding set —
   IDs cited but never defined, Implemented/Shipped requirements with no covering
   test, duplicate definitions, and approved-but-uncited warnings.
 ---

@@ -18,18 +18,23 @@ This skill has seven steps and skipping one is the common failure — an unconfi
 
 ## 1. Explore
 
-Before asking anything, learn the repo's starting state:
+Inspect the repository and the tools connected to *this* session — never read the user's shell environment. No `env`, no probing for `*_API_KEY` variables: modern setups drive integrations through MCP servers, not exported env vars, so detect a capability by what is connected and confirm everything else by asking in Step 2.
+
+**First, decide whether the repo is already configured** — this branch shapes the rest of the run. Check for `docs/agents/` and an `## Agent skills` section in `CLAUDE.md` / `AGENTS.md` (note which of the two exists):
+
+- **Already configured** — treat this as a *reconfigure*. Read the existing `docs/agents/*.md`, summarize what is currently set, and ask the user which decision(s) they want to change. Walk only the Step 2 sections they name; leave the rest untouched.
+- **Not configured** — treat this as a *first-time setup*. Finish the scan below, then in Step 2 ask the user what they want, one section at a time.
+
+Then learn the rest of the starting state:
 
 - `git remote -v` — GitHub? GitLab? No remote?
-- Is a **Linear** MCP server connected, or a `LINEAR_API_KEY` set in the environment? Either signals a team that tracks work in Linear rather than the code host.
-- `CLAUDE.md` and `AGENTS.md` at the root — which exists? Does either already contain an `## Agent skills` section?
-- `docs/agents/` — has this skill already run here?
+- Is a **Linear** MCP server connected to this session? A connected Linear server signals a team that tracks work in Linear rather than the code host. Detect it from the session's connected tools — do not read env vars; if it is ambiguous, ask rather than probe.
 - `docs/specs/`, `docs/adr/`, `CONTEXT.md`, `CONTEXT-MAP.md`, `.scratch/`, `.out-of-scope/`
 - Package manager and toolchain (lockfiles, `package.json` scripts, `Cargo.toml`, `pyproject.toml`, `Makefile`, …)
 - Test runners and their configs; existing CI workflows
 - Existing tracker labels (`gh label list` / `glab label list`) if a remote tracker is plausible
 
-**Done when:** you have presented a short findings summary — what exists, what is missing, what you can pre-fill.
+**Done when:** you have determined whether the repo is already configured, chosen the first-time-vs-reconfigure path, and presented a short findings summary — what exists, what is missing, what you can pre-fill.
 
 ## 2. Decide, one section at a time
 
@@ -47,7 +52,7 @@ Options:
 - **local** — markdown files under `.scratch/<feature>/`, each carrying a `Status:` line; good for solo repos or repos without a remote
 - **other** — the user describes their workflow in a paragraph; record it as freeform prose
 
-Recommend based on what you found: GitHub remote → github, GitLab host → gitlab, a connected Linear MCP server or a `LINEAR_API_KEY` → linear, no remote and no tracker signal → local. Linear is a separate service and will not appear in `git remote`, so offer it whenever the user says the team lives in Linear even if the code host is GitHub/GitLab.
+Recommend based on what you found: GitHub remote → github, GitLab host → gitlab, a connected Linear MCP server → linear, no remote and no tracker signal → local. Linear is a separate service and will not appear in `git remote`, so offer it whenever the user says the team lives in Linear even if the code host is GitHub/GitLab.
 
 Follow-up (github/gitlab only): **are external pull requests a request surface?** Explainer: open-source repos often receive feature requests as PRs — a PR is an issue with attached code. If yes, `triage` pulls external PRs into the same queue and state machine. Default: no. Skip the question entirely for linear/local/other — for a Linear shop, requests arrive as Linear issues and any PRs stay in the linked code host, not the triage queue.
 
@@ -201,7 +206,7 @@ Be cost-aware — do not run the whole suite to prove wiring:
 - Unit/e2e runners: prove the runner resolves its config cheaply — run the **single-test-file pattern** from `project.md` against one existing test file, or the runner's collect-only/list mode. Never trigger a full e2e run during setup; state that the full run is the user's to do later.
 - Trace check: run it (REQUIRED SUB-SKILL: use `trace`) and confirm it reports a clean finding set — zero requirements is a valid clean state. The check is `grep`/`git` over `docs/specs/` and the test globs, so there is nothing to install; if the test globs it searches don't match this repo's layout, record the right ones in `docs/agents/project.md` now.
 - If you installed the session-start hook, execute `.claude/hooks/session-start.sh` and confirm it prints one line of valid JSON.
-- If the tracker is a remote service (`github` / `gitlab` / `linear`), prove it is reachable and authenticated with **one read-only call** — `gh issue list` / `glab issue list`, or for Linear a single MCP list call (or a minimal `issues` GraphQL query). A missing CLI, an unauthenticated session, a bad `LINEAR_API_KEY`, or a disconnected MCP server is a wiring failure; it would otherwise stay hidden until `triage` fails weeks later. `local` and `other` need no reachability check.
+- If the tracker is a remote service (`github` / `gitlab` / `linear`), prove it is reachable and authenticated with **one read-only call** — `gh issue list` / `glab issue list`, or for Linear a single MCP list call (or a minimal `issues` GraphQL query). A missing CLI, an unauthenticated session, or a disconnected or unauthenticated MCP server is a wiring failure; it would otherwise stay hidden until `triage` fails weeks later. `local` and `other` need no reachability check.
 
 Report a small table: each command → wired? → passed / failed / pre-existing.
 

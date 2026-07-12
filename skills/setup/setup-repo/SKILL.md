@@ -38,7 +38,7 @@ You may still read the repo's own manifests (lockfiles, `package.json` scripts, 
 
 ## 2. Decide, one section at a time
 
-Walk the six decisions below strictly one at a time: give a two-or-three-sentence explainer (what this is, which skills consume it, what changes with each choice), state your recommendation with a one-line reason, then wait for the user's answer before moving on. Never dump all sections at once. Assume the user has not seen these concepts before.
+Walk the seven decisions below strictly one at a time: give a two-or-three-sentence explainer (what this is, which skills consume it, what changes with each choice), state your recommendation with a one-line reason, then wait for the user's answer before moving on. Never dump all sections at once. Assume the user has not seen these concepts before.
 
 ### A. Issue tracker
 
@@ -113,6 +113,16 @@ Confirm:
 
 **Done when:** layout is confirmed.
 
+### G. Project-docs layer (optional — default No)
+
+Explainer: large or long-lived projects can add an optional repo-level layer above the feature workflow — a product vision (`docs/product/vision.md`), an IDed architecture-invariant spine (`docs/architecture/`), and engineering guidelines (`docs/product/guidelines.md`), all authored by `establish-project`. When these exist, `brainstorm`, `write-design`, `write-plan`, `execute-plan`, and `code-review` consult them; when they do not, nothing changes. Small repos should decline — it can be added later with `/establish-project`.
+
+Recommendation: **No** unless this is a large, multi-feature project.
+
+If **Yes**: note it for Step 4 (seed the three docs + the Agent-skills line). If `docs/agents/project.md` or an existing `CLAUDE.md`/`AGENTS.md` already carries engineering guidelines, offer to migrate them into `docs/product/guidelines.md`, leaving a pointer behind.
+
+**Done when:** the layer is opted in or declined.
+
 ## 3. Draft and confirm
 
 Show the user, before writing anything:
@@ -130,7 +140,8 @@ Let them edit. **Done when:** the user approves the drafts.
 2. If `docs/specs/INDEX.md` is missing, create it from `templates/specs-INDEX.md`.
 
 3. If the glossary is missing, create `CONTEXT.md` from `templates/CONTEXT.md` (or a `CONTEXT-MAP.md` for multi-context, per the user's answer).
-4. Add the `## Agent skills` block. It lives in exactly **one** canonical file; any second file is a thin pointer, never a copy of the block.
+4. **If the project-docs layer was opted in (decision G):** seed `docs/product/vision.md`, `docs/architecture/INDEX.md`, and `docs/product/guidelines.md` from `templates/product-vision.md`, `templates/architecture-INDEX.md`, and `templates/product-guidelines.md` (additive — never clobber an existing file). If migrating, move the existing engineering rules into `docs/product/guidelines.md` and leave a pointer in `docs/agents/project.md`. If the layer was declined, skip this — write none of these files.
+5. Add the `## Agent skills` block. It lives in exactly **one** canonical file; any second file is a thin pointer, never a copy of the block.
    - **Neither `CLAUDE.md` nor `AGENTS.md` exists** (the default): make `AGENTS.md` canonical (it holds the block) and write a short `CLAUDE.md` whose entire body points at `AGENTS.md` — so Claude Code finds instructions by its native filename without duplicating them. Do not ask which to create; this pattern serves both.
    - **Only one exists:** that file is canonical — add or update the block in it. If it is `AGENTS.md` and Claude Code is a target, also add the `CLAUDE.md` pointer. If it is `CLAUDE.md`, leave it canonical — do not demote it to a pointer or create a competing `AGENTS.md`.
    - **Both exist:** put the block in whichever already carries real agent instructions; make the other a pointer only if it is not already substantive. Never place the block in both.
@@ -146,7 +157,7 @@ Let them edit. **Done when:** the user approves the drafts.
    finds it by its native name.
    ```
 
-The block:
+The block (include the project-docs bullet only if decision G was Yes):
 
 ```markdown
 ## Agent skills
@@ -160,6 +171,9 @@ This repo is configured for a spec-driven skill set.
 - Incoming issues and PRs: `/triage` (user-run)
 - Traceability check: the `trace` skill — run by `verify` and `release`;
   keep it clean
+- Project docs (layer enabled): `/establish-project` maintains
+  `docs/product/vision.md`, the `docs/architecture/` invariant spine, and
+  `docs/product/guidelines.md`; the feature skills consult them
 
 Repo config the skills read:
 
@@ -168,7 +182,7 @@ Repo config the skills read:
 - Triage label mapping: `docs/agents/triage-labels.md`
 ```
 
-5. Ensure the local working dirs are git-ignored: the skills' scratch artifacts — `execute-plan`'s ledger and briefs, and the scan/review digests the spec skills write — live under `.skills/`, and isolated workspaces under `.worktrees/`; neither belongs in version control. Idempotently, for each pattern: `grep -qxF '.skills/' .gitignore 2>/dev/null || printf '.skills/\n' >> .gitignore` (same for `.worktrees/`), then stage `.gitignore`. (A line-presence check, not `git check-ignore` — a trailing-slash pattern only matches an *existing* directory, so `check-ignore` would re-append before the dir exists.)
+6. Ensure the local working dirs are git-ignored: the skills' scratch artifacts — `execute-plan`'s ledger and briefs, and the scan/review digests the spec skills write — live under `.skills/`, and isolated workspaces under `.worktrees/`; neither belongs in version control. Idempotently, for each pattern: `grep -qxF '.skills/' .gitignore 2>/dev/null || printf '.skills/\n' >> .gitignore` (same for `.worktrees/`), then stage `.gitignore`. (A line-presence check, not `git check-ignore` — a trailing-slash pattern only matches an *existing* directory, so `check-ignore` would re-append before the dir exists.)
 
 **Done when:** all files are written, `.skills/` and `.worktrees/` are git-ignored, and `git status` shows only the expected additions/edits.
 

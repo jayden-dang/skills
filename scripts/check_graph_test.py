@@ -1338,10 +1338,12 @@ class StandardsErrorsTest(unittest.TestCase):
     def test_malformed_module_standards_flagged_MODSTD_1_3(self):
         # covers MODSTD-1.3
         cfg = {"modules": [{"code": "AUTH", "standards": "notalist"},
-                           {"code": "BILL", "standards": [""]}]}
+                           {"code": "BILL", "standards": [""]},
+                           {"standards": [1]}]}          # code-less entry -> "#3" label
         errs = check_graph._standards_errors(cfg)
         self.assertTrue(any("AUTH" in e for e in errs))
         self.assertTrue(any("BILL" in e for e in errs))
+        self.assertTrue(any("#3" in e for e in errs))    # code-less entry labelled by index
 
     def test_never_raises_on_junk(self):
         # defensive: non-list modules / non-dict entries never crash
@@ -1827,6 +1829,73 @@ class HarvestWriteTest(_FixtureTestCase):
             check_graph.main(["--verify", "--root", root]), 0,
             "flat-mode --verify must not flag hand-authored modules/ files as stale shards",
         )
+
+
+class StandardsCliTest(_FixtureTestCase):
+    def _repo(self, standards=None, module_standards=None):
+        trace = {"specsDir": "docs/specs",
+                 "graph": {"sourceRoots": ["src"], "sourceExts": ["ts"]},
+                 "modules": [{"code": "AUTH", "name": "Auth", "owns": ["src/auth/**"]}]}
+        if standards is not None:
+            trace["standards"] = standards
+        if module_standards is not None:
+            trace["modules"][0]["standards"] = module_standards
+        return self._tmp_repo({"docs/agents/trace.json": json.dumps(trace)})
+
+    def test_standards_emits_resolved_json_MODSTD_3_1(self):
+        # covers MODSTD-3.1
+        import io, contextlib
+        root = self._repo(standards=["No default exports"],
+                          module_standards=["Auth behind AuthGuard"])
+        buf = io.StringIO()
+        with contextlib.redirect_stdout(buf):
+            rc = check_graph.main(["--standards", "AUTH", "--root", root])
+        self.assertEqual(rc, 0)
+        self.assertEqual(json.loads(buf.getvalue()),
+                         {"module": "AUTH",
+                          "standards": ["No default exports", "Auth behind AuthGuard"]})
+
+    def test_unknown_code_errors_MODSTD_3_2(self):
+        # covers MODSTD-3.2
+        import io, contextlib
+        root = self._repo()
+        out, err = io.StringIO(), io.StringIO()
+        with contextlib.redirect_stdout(out), contextlib.redirect_stderr(err):
+            rc = check_graph.main(["--standards", "NOPE", "--root", root])
+        self.assertEqual(rc, 1)
+        self.assertEqual(out.getvalue(), "")           # nothing on stdout
+        self.assertIn("NOPE", err.getvalue())
+
+    def test_missing_code_errors_MODSTD_3_3(self):
+        # covers MODSTD-3.3
+        # --standards is the LAST token, so _collect_flag yields [None]
+        import io, contextlib
+        root = self._repo()
+        err = io.StringIO()
+        with contextlib.redirect_stderr(err):
+            rc = check_graph.main(["--root", root, "--standards"])
+        self.assertEqual(rc, 1)
+        self.assertTrue(err.getvalue())
+
+    def test_output_deterministic_MODSTD_3_4(self):
+        # covers MODSTD-3.4
+        import io, contextlib
+        root = self._repo(standards=["A", "B"], module_standards=["C"])
+        def run():
+            buf = io.StringIO()
+            with contextlib.redirect_stdout(buf):
+                check_graph.main(["--standards", "AUTH", "--root", root])
+            return buf.getvalue()
+        self.assertEqual(run(), run())
+
+    def test_standards_writes_nothing_MODSTD_4_3(self):
+        # covers MODSTD-4.3
+        import io, contextlib
+        root = self._repo(standards=["A"])
+        before = _tree_snapshot(root)
+        with contextlib.redirect_stdout(io.StringIO()):
+            check_graph.main(["--standards", "AUTH", "--root", root])
+        self.assertEqual(_tree_snapshot(root), before)
 
 
 class VerifyShardsTest(_FixtureTestCase):

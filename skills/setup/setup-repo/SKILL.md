@@ -16,25 +16,25 @@ Template seeds live in this skill set's `templates/` directory — resolve it as
 
 This skill has seven steps and skipping one is the common failure — an unconfigured tracker, or the Step 6 verification gate never run. Before Step 1, create a todo for each numbered step below and complete them in order, checking each off only when its **Done when** is met. Step 6 (prove the configuration works) is not optional.
 
-## 1. Explore
+## 1. Read the setup state
 
-Inspect the repository and the tools connected to *this* session — never read the user's shell environment. No `env`, no probing for `*_API_KEY` variables: modern setups drive integrations through MCP servers, not exported env vars, so detect a capability by what is connected and confirm everything else by asking in Step 2.
+This step does one thing: determine whether the repo is already configured for the skill set, and how completely. Read the repo's **own files only** — do not probe external services or their auth (no `gh auth`, `gh label list`, `glab`, no Linear MCP call) and do not read the user's shell environment (no `env`, no `*_API_KEY` probing). Detection is not the job here: the *user* drives what gets set up in Step 2, and any service or toolchain specifics are gathered later, in service of a choice the user has already made.
 
-**First, decide whether the repo is already configured** — this branch shapes the rest of the run. Check for `docs/agents/` and an `## Agent skills` section in `CLAUDE.md` / `AGENTS.md` (note which of the two exists):
+Check the setup markers — all by reading files in the repo:
 
-- **Already configured** — treat this as a *reconfigure*. Read the existing `docs/agents/*.md`, summarize what is currently set, and ask the user which decision(s) they want to change. Walk only the Step 2 sections they name; leave the rest untouched.
-- **Not configured** — treat this as a *first-time setup*. Finish the scan below, then in Step 2 ask the user what they want, one section at a time.
+- `docs/agents/project.md`, `docs/agents/issue-tracker.md`, `docs/agents/triage-labels.md` — present and filled in, or missing?
+- An `## Agent skills` section in `CLAUDE.md` / `AGENTS.md` (note which of the two files exists)
+- Seed files the skill set expects: `docs/specs/INDEX.md`, a glossary (`CONTEXT.md` or `CONTEXT-MAP.md`)
+- `.skills/` and `.worktrees/` present in `.gitignore`
 
-Then learn the rest of the starting state:
+Then branch on what you found:
 
-- `git remote -v` — GitHub? GitLab? No remote?
-- Is a **Linear** MCP server connected to this session? A connected Linear server signals a team that tracks work in Linear rather than the code host. Detect it from the session's connected tools — do not read env vars; if it is ambiguous, ask rather than probe.
-- `docs/specs/`, `docs/adr/`, `CONTEXT.md`, `CONTEXT-MAP.md`, `.scratch/`, `.out-of-scope/`
-- Package manager and toolchain (lockfiles, `package.json` scripts, `Cargo.toml`, `pyproject.toml`, `Makefile`, …)
-- Test runners and their configs; existing CI workflows
-- Existing tracker labels (`gh label list` / `glab label list`) if a remote tracker is plausible
+- **Already configured (fully or partly)** — this is a *fill-the-gaps* run, not a rebuild. List exactly what exists and what is missing or stale, show the user that summary, and offer to fill only the gaps. Walk only the Step 2 sections whose output is missing or that the user explicitly asks to change; leave everything already written untouched (the additive rule, Step 4).
+- **Not configured** — go straight to the user-driven flow in Step 2. Do **not** guess the tracker from the git remote or a connected MCP server, and do not auto-detect anything the user should choose. Ask the user how they want to set the repo up, one decision at a time.
 
-**Done when:** you have determined whether the repo is already configured, chosen the first-time-vs-reconfigure path, and presented a short findings summary — what exists, what is missing, what you can pre-fill.
+You may still read the repo's own manifests (lockfiles, `package.json` scripts, `Cargo.toml`, `pyproject.toml`, `Makefile`, test configs) to *pre-fill suggestions* in later steps — but reading a file in the repo is not the same as probing a service, and a pre-filled suggestion is never a decision made on the user's behalf.
+
+**Done when:** you have classified the repo as configured / partly-configured / not-configured, listed any gaps, and presented that summary to the user.
 
 ## 2. Decide, one section at a time
 
@@ -52,7 +52,7 @@ Options:
 - **local** — markdown files under `.scratch/<feature>/`, each carrying a `Status:` line; good for solo repos or repos without a remote
 - **other** — the user describes their workflow in a paragraph; record it as freeform prose
 
-Recommend based on what you found: GitHub remote → github, GitLab host → gitlab, a connected Linear MCP server → linear, no remote and no tracker signal → local. Linear is a separate service and will not appear in `git remote`, so offer it whenever the user says the team lives in Linear even if the code host is GitHub/GitLab.
+Recommend only from the repo's local git remote — a GitHub remote → github, a GitLab remote → gitlab, no remote → local — and always let the user overrule it. Do not probe a service or its auth to guess the tracker. Linear is a separate service and will not appear in `git remote`, so present it as an option and pick it whenever the user says the team lives in Linear, even if the code host is GitHub/GitLab.
 
 Follow-up (github/gitlab only): **are external pull requests a request surface?** Explainer: open-source repos often receive feature requests as PRs — a PR is an issue with attached code. If yes, `triage` pulls external PRs into the same queue and state machine. Default: no. Skip the question entirely for linear/local/other — for a Linear shop, requests arrive as Linear issues and any PRs stay in the linked code host, not the triage queue.
 
@@ -74,7 +74,7 @@ The canonical roles — five states and two categories:
 | bug | something is broken |
 | enhancement | new capability or improvement |
 
-Show the repo's existing labels next to the roles and propose a mapping (default: each role's string equals its name). For any mapped label that does not exist in the tracker yet, offer to create it — only with the user's explicit consent. For local trackers, the role names themselves are the vocabulary; defaults are fine. For **linear**, list the team's existing workflow states and labels first (via the MCP server or API), then map the state roles to Linear workflow states where one fits (e.g. `ready-for-agent` → a "Todo"/"Ready" state, `wontfix` → a "Canceled" state) and the category roles (`bug`/`enhancement`) to Linear labels.
+The user has now chosen the tracker, so reading it here is in service of that choice, not a probe to make one. List the repo's existing labels next to the roles and propose a mapping (default: each role's string equals its name) — the mapping is a proposal the user confirms, never one you apply on their behalf. For any mapped label that does not exist in the tracker yet, offer to create it — only with the user's explicit consent. For local trackers, the role names themselves are the vocabulary; defaults are fine. For **linear**, list the team's existing workflow states and labels first (via the MCP server or API), then map the state roles to Linear workflow states where one fits (e.g. `ready-for-agent` → a "Todo"/"Ready" state, `wontfix` → a "Canceled" state) and the category roles (`bug`/`enhancement`) to Linear labels.
 
 **Done when:** every canonical role maps to a confirmed label string.
 
@@ -206,7 +206,7 @@ Be cost-aware — do not run the whole suite to prove wiring:
 - Unit/e2e runners: prove the runner resolves its config cheaply — run the **single-test-file pattern** from `project.md` against one existing test file, or the runner's collect-only/list mode. Never trigger a full e2e run during setup; state that the full run is the user's to do later.
 - Trace check: run it (REQUIRED SUB-SKILL: use `trace`) and confirm it reports a clean finding set — zero requirements is a valid clean state. The check is `grep`/`git` over `docs/specs/` and the test globs, so there is nothing to install; if the test globs it searches don't match this repo's layout, record the right ones in `docs/agents/project.md` now.
 - If you installed the session-start hook, execute `.claude/hooks/session-start.sh` and confirm it prints one line of valid JSON.
-- If the tracker is a remote service (`github` / `gitlab` / `linear`), prove it is reachable and authenticated with **one read-only call** — `gh issue list` / `glab issue list`, or for Linear a single MCP list call (or a minimal `issues` GraphQL query). A missing CLI, an unauthenticated session, or a disconnected or unauthenticated MCP server is a wiring failure; it would otherwise stay hidden until `triage` fails weeks later. `local` and `other` need no reachability check.
+- If the tracker is a remote service (`github` / `gitlab` / `linear`), prove it is reachable and authenticated with **one read-only call** — `gh issue list` / `glab issue list`, or for Linear a single MCP list call (or a minimal `issues` GraphQL query). This verifies the tracker the *user already chose*; it is not the setup-time detection Step 1 forbids — the choice is made, and this call only proves it works. A missing CLI, an unauthenticated session, or a disconnected or unauthenticated MCP server is a wiring failure; it would otherwise stay hidden until `triage` fails weeks later. `local` and `other` need no reachability check.
 
 Report a small table: each command → wired? → passed / failed / pre-existing.
 

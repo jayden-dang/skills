@@ -60,14 +60,14 @@ bug. Fix it before the plan ships.
 
 ## Step 4: Coverage and consistency check
 
-- Run `check-trace`: every Approved requirement must be cited by ≥1 task
-  footer. Uncited IDs mean the plan is incomplete (or the requirement should
-  be struck through with a reason).
+- Run the trace check (REQUIRED SUB-SKILL: use `trace`): every Approved
+  requirement must be cited by ≥1 task footer. Uncited IDs mean the plan is
+  incomplete (or the requirement should be struck through with a reason).
 - **Test coverage, not just citation:** every requirement ID must also appear
   in a **test annotation** inside some task's steps (`[CODE-N.M]` in a Vitest
   title, `/// REQ: CODE-N.M` on a Rust test, `@CODE-N.M` in a Playwright tag) —
   not merely in a footer. A footer citation with no tagged test passes
-  check-trace now (Approved → W1) but fails **E2** the moment the feature is
+  the trace check now (Approved → W1) but fails **E2** the moment the feature is
   marked Implemented. A guard or negative requirement counts only if a real
   test asserts it; when a behavior can't be unit-tested in isolation, tag the
   e2e task or an existing test that already exercises it — one test may carry
@@ -95,7 +95,7 @@ plan defect — citing `file:line` and defaulting to flag. Findings to
 comparison yourself against the code.)
 
 **Done when:** every requirement ID has both a task footer and a tagged test,
-check-trace is clean, the design's seam-table IDs are all covered, and the
+the trace check is clean, the design's seam-table IDs are all covered, and the
 placeholder scan is clean.
 
 ## Step 5 (optional): Publish to the issue tracker

@@ -37,7 +37,7 @@ The skill creates one todo per step and works them in order. No gate begins unti
 
 ### a. Verify gate
 
-Run every verify command in order — typecheck, lint, unit, e2e — plus the trace check (`check_trace.py`). All must pass **clean**, not merely green: an implemented requirement with no covering test is an untraced requirement, and untraced requirements block a release. Prior green runs do not count; everything runs fresh, now, and the skill reads the output of each command. This is the same gate [`finish-branch`](finish-branch.md) enforces before a branch may merge, applied here to the release branch as a whole. **Done when:** every command has a fresh passing run whose output you have read.
+Run every verify command in order — typecheck, lint, unit, e2e — plus the [`trace`](trace.md) check. All must pass **clean**, not merely green: an implemented requirement with no covering test is an untraced requirement, and untraced requirements block a release. Prior green runs do not count; everything runs fresh, now, and the skill reads the output of each command. This is the same gate [`finish-branch`](finish-branch.md) enforces before a branch may merge, applied here to the release branch as a whole. **Done when:** every command has a fresh passing run whose output you have read.
 
 ### b. Assemble the changelog
 
@@ -75,7 +75,7 @@ Hand off to [`sync-spec`](sync-spec.md) to move the shipped features' requiremen
 
 The user runs `/release` on a repo whose last tag was `v1.3.0`. Since that tag, four commits landed on the release branch: three carrying `Implements:` or `Guards:` trailers for the `SHELL` feature, and one untrailered chore.
 
-Gate a passes clean — typecheck, lint, unit, e2e, and `check_trace.py` all fresh, no untraced `SHELL` requirements. Gate b collects `git log v1.3.0..HEAD`, reads the requirement-ID trailers, and resolves each ID to its text in `docs/specs/`, producing this draft:
+Gate a passes clean — typecheck, lint, unit, e2e, and the [`trace`](trace.md) check all fresh, no untraced `SHELL` requirements. Gate b collects `git log v1.3.0..HEAD`, reads the requirement-ID trailers, and resolves each ID to its text in `docs/specs/`, producing this draft:
 
 ```markdown
 ## Unreleased
@@ -104,7 +104,7 @@ Had gate e's build failed instead, the stop rule would apply: report the failing
 
 `release` is user-invoked by design. Cutting a version is irreversible in practice — a pushed tag and published notes are public facts — so the set forbids any skill from auto-invoking it and requires the user to type `/release`. The nine gates are ordered so that no artifact of the release exists until the thing it describes is proven: the changelog is assembled before the version is chosen, the build runs before the tag, the smoke check runs against the artifact rather than the source, and the tag is pushed only on explicit approval.
 
-The requirement-grouped changelog is the direct dividend of the trace spine that [`tdd`](tdd.md) and [`check-trace`](../resources/scripts.md#check-trace) maintain across the whole methodology. Because every commit carries the ID of the requirement it implements or guards, and every ID resolves to requirement text in `docs/specs/`, the release notes can be assembled at the level of shipped behavior for free — no one has to hand-write them from commit prose. Gate a's insistence that the trace check be clean is what keeps that dividend honest: a release cannot ship an implemented requirement that has no covering test.
+The requirement-grouped changelog is the direct dividend of the trace spine that [`tdd`](tdd.md) and the [`trace`](trace.md) check maintain across the whole methodology. Because every commit carries the ID of the requirement it implements or guards, and every ID resolves to requirement text in `docs/specs/`, the release notes can be assembled at the level of shipped behavior for free — no one has to hand-write them from commit prose. Gate a's insistence that the trace check be clean is what keeps that dividend honest: a release cannot ship an implemented requirement that has no covering test.
 
 ## Distinct from `finish-branch`
 

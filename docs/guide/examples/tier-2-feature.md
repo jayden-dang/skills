@@ -14,14 +14,13 @@ No code. No scaffolding. No implementation skill. Not yet.
 
 `CONTEXT.md` and `docs/specs/INDEX.md` are read directly — small, and needed in context. Everything heavier goes to a **scan subagent**, which writes a digest to `.skills/module-rail-scan.md` and returns only that path.
 
-Then the [feature-graph](../concepts/feature-graph.md) dedup check:
+Then the [feature-overlap](../concepts/feature-graph.md) search — an inline `grep` over `docs/specs/` for the idea's key terms and candidate paths:
 
 ```bash
-python3 scripts/check_graph.py --query --json \
-  --path src/app/Layout.tsx --keyword module --keyword rail
+grep -rli -e 'module' -e 'rail' -e 'src/app/Layout.tsx' docs/specs/
 ```
 
-It returns one card: `CHIPUI`, which owns `src/ui/Chip.tsx` and `src/ui/Rail.tsx`, and whose Out-of-Scope section says *"Navigation behavior — Rail is presentational only."*
+One spec matches. Read as its Summary card, it is `CHIPUI`, which owns `src/ui/Chip.tsx` and `src/ui/Rail.tsx`, and whose Out-of-Scope section says *"Navigation behavior — Rail is presentational only."*
 
 That is exactly the information the check exists to surface. The new feature will *consume* `CHIPUI`'s rail component rather than build one, and `CHIPUI` explicitly declined to own the navigation behavior.
 
@@ -187,7 +186,7 @@ Written for an implementer who is skilled but knows **nothing** about this codeb
 _Requirements: SHELL-1.2, SHELL-1.5_
 ```
 
-**The coverage check goes further than the linter can.** `check-trace` confirms every Approved ID is cited by a task footer. But a footer is not a test — a footer-only citation passes as a `W1` warning now and fails as an **`E2` error** the moment the spec flips to `Implemented`. So `write-plan` also requires every ID to appear in a **test annotation inside a task's steps**, and reconciles that against the design's seam table. An ID the design promised and the plan left untagged is *dropped coverage*.
+**The coverage check goes further than the trace check can.** The trace check confirms every Approved ID is cited by a task footer. But a footer is not a test — a footer-only citation passes as a `W1` warning now and fails as an **`E2` error** the moment the spec flips to `Implemented`. So `write-plan` also requires every ID to appear in a **test annotation inside a task's steps**, and reconciles that against the design's seam table. An ID the design promised and the plan left untagged is *dropped coverage*.
 
 An **independent plan review subagent** then verifies every symbol, signature, path, import, and **hardcoded test value** against real code. A fabricated golden value is the classic plan defect.
 
@@ -201,12 +200,12 @@ Then the loop, per task:
 
 ```
 BASE=$(git rev-parse HEAD)              ← before dispatch, always
-task-brief tasks.md 2                   → .skills/task-2-brief.md
+assemble .skills/task-2-brief.md        (copy the task block + Global Constraints verbatim)
 dispatch a FRESH implementer            (model stated explicitly; mid tier — prose task)
   → it reads only the brief, works test-first via tdd,
     commits with the trailer, writes .skills/task-2-report.md
     with RED and GREEN evidence, and returns DONE in ≤15 lines
-review-package $BASE $(git rev-parse HEAD)   → .skills/review-a1b2c3d..e4f5g6h.diff
+git diff $BASE..HEAD                     → .skills/review-a1b2c3d..e4f5g6h.diff
 dispatch a task reviewer                (two verdicts: Spec Compliance, Code Quality)
 ```
 
@@ -268,7 +267,7 @@ That is the `code-review` Spec finding above, confirmed live. The guard requirem
 
 ## `finish-branch` → `release` → `sync-spec`
 
-`verify` runs every command fresh, and `check-trace` must be clean. Then exactly four options, verbatim, with no added commentary: merge locally, push and PR, keep, or discard — and discard requires typing the word `discard`.
+`verify` runs every command fresh, and the trace check must be clean. Then exactly four options, verbatim, with no added commentary: merge locally, push and PR, keep, or discard — and discard requires typing the word `discard`.
 
 When the version ships, `/release` assembles the changelog by grouping commits under their trailers and looking up each requirement's own text:
 
@@ -283,7 +282,7 @@ When the version ships, `/release` assembles the changelog by grouping commits u
 
 Nobody wrote those lines. They were derived, and they are derivable only because `SHELL-1.3` is the same string in the requirement, the Playwright tag, and the commit trailer.
 
-Finally `sync-spec` flips `Status: Shipped`, updates `INDEX.md`, re-runs `check-trace`, and regenerates `GRAPH.md` — so the *next* feature's `brainstorm` sees `SHELL`'s card, its owned paths, and its Out-of-Scope note that keyboard shortcuts were deliberately deferred.
+Finally `sync-spec` flips `Status: Shipped`, updates `INDEX.md`, and re-runs the trace check — so the *next* feature's `brainstorm`, searching `docs/specs/`, finds `SHELL`'s spec: its Summary card, its owned paths, and its Out-of-Scope note that keyboard shortcuts were deliberately deferred.
 
 The loop closes.
 

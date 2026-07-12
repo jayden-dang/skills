@@ -30,13 +30,13 @@ Read `CONTEXT.md` (and use its vocabulary from here on) and `docs/specs/INDEX.md
 
 For anything heavier, dispatch a **scan subagent** that explores the code, docs, and recent commits near the idea, writes a findings digest to `.skills/<slug>-scan.md`, and returns only that path. Work from the digest. The point is to keep raw source out of the conversation that is about to hold every design decision.
 
-Then run the [feature-graph](../concepts/feature-graph.md) dedup check:
+Then run the [feature-overlap](../concepts/feature-graph.md) search — an inline `grep` over `docs/specs/` for the new idea's key terms and candidate file paths:
 
 ```bash
-python3 scripts/check_graph.py --query --json --path <candidate-file> --keyword <term>
+grep -rli -e '<term>' -e '<candidate-path>' docs/specs/
 ```
 
-Any returned features are presented as their **summary cards, not their full specs**. Each card's owned paths and Out-of-Scope list show what the neighbor already covers.
+Any feature whose spec matches is read as its **Summary card, not its full spec** — the digest at the top of the spec (code, name, owned paths, Out of Scope). Those owned paths and the Out-of-Scope list show what the neighbor already covers.
 
 **Done when** you can state in one paragraph what the project is, what already exists near this idea, and which glossary terms apply — *and* you have named which existing features share this idea's surface and how the new idea differs, citing feature codes, or stated that none do.
 
@@ -113,4 +113,4 @@ If you were handed such a change, hand it to `amend`.
 
 - [The gates](../concepts/gates.md) — why the hard gate is written as a prohibition
 - [Ceremony tiers](../methodology/ceremony-tiers.md) — the decision this phase exists to make
-- [The feature graph](../concepts/feature-graph.md) — the dedup check in step 1
+- [Feature overlap](../concepts/feature-graph.md) — the `docs/specs/` search in step 1

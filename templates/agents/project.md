@@ -12,10 +12,16 @@ Run in this order; all must pass before any completion claim.
 | Lint | `<command>` |
 | Unit tests | `<command>` |
 | E2E / smoke | `<command>` |
-| Trace | `python3 <path-to>/check_trace.py` |
-| Graph | `python3 <path-to>/check_graph.py --verify` |
 
 Single test file: `<command pattern, e.g. npx vitest run <path>>`
+
+The traceability check is not a command here — the `trace` skill runs it as
+`grep`/`git` over `docs/specs/` and the test globs. If this repo's tests live
+outside the default globs (`tests test e2e src src-tauri crates app lib packages`),
+record the real locations below so `trace` searches the right paths.
+
+Test globs: `<override, or leave blank for defaults>`
+Trace ignore (files whose IDs are fixtures, not coverage): `<optional>`
 
 ## Test annotation conventions
 

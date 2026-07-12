@@ -30,7 +30,7 @@ To learn "what exists today" without flooding the design context with raw source
 
 ## Satisfies lines and designing it twice
 
-Every `###` architecture section carries a `Satisfies: CODE-N.M, CODE-N.M` line naming the requirement IDs it exists to meet. This is a hard rule with a sharp consequence: a section with no Satisfies line is either infrastructure — and you say so explicitly — or it does not belong in this feature at all. The line is what lets the coverage check and [`check-trace`](../resources/scripts.md#check-trace) prove the design accounts for every requirement.
+Every `###` architecture section carries a `Satisfies: CODE-N.M, CODE-N.M` line naming the requirement IDs it exists to meet. This is a hard rule with a sharp consequence: a section with no Satisfies line is either infrastructure — and you say so explicitly — or it does not belong in this feature at all. The line is what lets the coverage check and [`trace`](trace.md) prove the design accounts for every requirement.
 
 For the genuinely hard parts, the skill designs it twice. It dispatches two or three parallel subagents with **divergent constraints** — minimize the interface, maximize flexibility, optimize the common caller — compares their results on interface depth and seam placement, and commits to one with a stated reason. The user wants a strong recommendation, not a menu.
 

@@ -55,7 +55,7 @@ The tell for each case is concrete. Tier 0 is where *every existing acceptance c
 
 ## 3. Keep the trace honest
 
-After the change lands through [`tdd`](tdd.md), its new or changed requirement carries its ID into the test tag and the commit trailer like any other. If the edit touched the triad, run [`sync-spec`](sync-spec.md) to realign `Status:` and the trace. [`check-trace`](../resources/scripts.md#check-trace) stays clean, or the change is not done.
+After the change lands through [`tdd`](tdd.md), its new or changed requirement carries its ID into the test tag and the commit trailer like any other. If the edit touched the triad, run [`sync-spec`](sync-spec.md) to realign `Status:` and the trace. The [`trace`](trace.md) check stays clean, or the change is not done.
 
 Concretely, before the amend is done:
 
@@ -63,9 +63,9 @@ Concretely, before the amend is done:
 - The new or changed requirement's ID is in the test tag and in the commit trailer.
 - Any tier-1 requirement carries its `SHALL CONTINUE TO` guard, and the guard has a test.
 - If the triad moved, [`sync-spec`](sync-spec.md) has realigned `Status:` and `INDEX.md`.
-- [`check-trace`](../resources/scripts.md#check-trace) is clean.
+- [`trace`](trace.md) is clean.
 
-**Done when** the change is implemented test-first, its requirement ID traces end to end, and `check-trace` is clean.
+**Done when** the change is implemented test-first, its requirement ID traces end to end, and [`trace`](trace.md) is clean.
 
 ## Red flags — you are in the wrong lane
 
@@ -98,7 +98,7 @@ style(shell): render the active-module header label in bold
 Guards: SHELL-3.1
 ```
 
-[`check-trace`](../resources/scripts.md#check-trace) stays clean, and the tweak is done — while the unread-count half is off in [`brainstorm`](brainstorm.md) earning its own requirements.
+[`trace`](trace.md) stays clean, and the tweak is done — while the unread-count half is off in [`brainstorm`](brainstorm.md) earning its own requirements.
 
 ## Why it is written the way it is
 

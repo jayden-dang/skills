@@ -131,13 +131,13 @@ Subagent (general-purpose):
 
 **Placeholders:**
 - `[MODEL]` — required on every dispatch
-- `[BRIEF_FILE]` — the same brief the implementer worked from (`task-brief` printed it)
+- `[BRIEF_FILE]` — the same brief the implementer worked from (`.skills/task-N-brief.md`)
 - `[GLOBAL_CONSTRAINTS]` — the plan's Global Constraints, copied verbatim: exact
   values, formats, stated relationships — never process rules (the template has
   those), never your pre-judgments of findings
 - `[REPORT_FILE]` — the implementer's full report
 - `[BASE_SHA]` / `[HEAD_SHA]` — the sha recorded before dispatch / current commit
-- `[DIFF_FILE]` — the path `review-package` printed
+- `[DIFF_FILE]` — the review bundle path (`.skills/review-<base7>..<head7>.diff`)
 
 A single fix dispatch may address spec gaps and quality findings together; the
 re-review after it covers both verdicts again.

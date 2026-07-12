@@ -7,8 +7,8 @@
 | **Bucket** | setup |
 | **Invocation** | user-invoked — run as `/setup-repo`; no skill may auto-invoke it, others only name it for the user to run |
 | **Reads** | `git remote`, `CLAUDE.md` / `AGENTS.md`, existing lockfiles and CI, tracker labels, `docs/agents/` |
-| **Writes** | `docs/agents/project.md`, `docs/agents/issue-tracker.md`, `docs/agents/triage-labels.md`, seed spec files, the `## Agent skills` block, vendored linters, opt-in hooks |
-| **Calls** | [`vendor-linters`](../resources/scripts.md) (Step 4.3), the discipline of [`verify`](verify.md) (Step 6 gate) |
+| **Writes** | `docs/agents/project.md`, `docs/agents/issue-tracker.md`, `docs/agents/triage-labels.md`, seed spec files, the `## Agent skills` block, the opt-in session-start hook |
+| **Calls** | the discipline of [`verify`](verify.md) (Step 6 gate) |
 | **Called by** | nothing — it is user-invoked; [`scaffold-project`](scaffold-project.md) redirects the user here when a directory is not greenfield |
 
 ## When it fires
@@ -43,8 +43,8 @@ Six decisions, walked strictly one at a time: a two-or-three-sentence explainer,
   | enhancement | new capability or improvement |
 
   The repo's existing labels are shown next to the roles and a mapping proposed (default: each role's string equals its name). Missing labels are created only with explicit consent. For local trackers the role names are the vocabulary. For linear the team's existing workflow states and labels are listed first, then state roles are mapped to workflow states and category roles to Linear labels. Done when every role maps to a confirmed label string.
-- **C. Verify commands.** The proof commands `tdd`, `verify`, `execute-plan`, and `release` run — exact, not guessed. Confirm typecheck, lint, unit tests, e2e/smoke, and the **single-test-file pattern** (the tight loop `tdd` lives in), plus where `check_trace.py` is invoked from. Done when each is confirmed or explicitly marked "none".
-- **D. Test annotation conventions.** Every test carries the requirement ID it covers, and `check-trace` greps for those IDs, so the convention must be greppable and match the repo's frameworks — an e2e tag like `{ tag: ['@CODE-N.M'] }`, a unit annotation or the ID in the test name, a `/// REQ: CODE-N.M` doc comment for compiled languages. Done when every test layer has a confirmed convention.
+- **C. Verify commands.** The proof commands `tdd`, `verify`, `execute-plan`, and `release` run — exact, not guessed. Confirm typecheck, lint, unit tests, e2e/smoke, and the **single-test-file pattern** (the tight loop `tdd` lives in), plus the test locations and any ignore list the [`trace`](trace.md) check reads. Done when each is confirmed or explicitly marked "none".
+- **D. Test annotation conventions.** Every test carries the requirement ID it covers, and the [`trace`](trace.md) check greps for those IDs, so the convention must be greppable and match the repo's frameworks — an e2e tag like `{ tag: ['@CODE-N.M'] }`, a unit annotation or the ID in the test name, a `/// REQ: CODE-N.M` doc comment for compiled languages. Done when every test layer has a confirmed convention.
 - **E. Release steps.** `release` executes an ordered list of project-specific commands — build, bundle, sign, publish — and refuses to improvise them. Draft the list from the build scripts and packaging config found, including any smoke-check command. Done when the ordered steps are confirmed; an empty list is valid for a library with no build.
 - **F. Docs layout.** Confirm specs at `docs/specs/` and ADRs at `docs/adr/` (creating the directories if missing), and the glossary layout: **single-context** (one root `CONTEXT.md`, most repos) or **multi-context** (a root `CONTEXT-MAP.md` pointing at per-context `CONTEXT.md` files, typically monorepos). Done when the layout is confirmed.
 
@@ -56,19 +56,17 @@ Before writing anything, show the user the three `docs/agents/*.md` files' conte
 
 **The additive rule: existing files are edited in place, never clobbered** — if a target already exists, content is merged and everything the user wrote is preserved. The step writes `docs/agents/project.md`, `docs/agents/issue-tracker.md`, and `docs/agents/triage-labels.md` from the matching `templates/agents/*` seeds, keeping only the chosen tracker's operations section and recording the PR-surface answer; creates `docs/specs/INDEX.md` if missing; and creates the glossary (`CONTEXT.md` or `CONTEXT-MAP.md`) if missing.
 
-**Step 4.3 — vendor the linters.** The skills read `check_trace.py` and `check_graph.py` from the repo itself, so a repo that lacks them silently loses the trace spine and the feature graph. `python3 scripts/vendor_linters.py --install` copies both from the skill set into the configured scripts location. Each linter is stamped with a `sha256` of its own body; re-running `setup-repo` on a configured repo runs `--check` first, which reports each linter as `ok`, `missing`, `outdated` (the skill set moved on), or `modified` (someone edited the repo's copy). On any drift the skill reports which linters drifted and offers to update them — never overwriting a `modified` copy without an explicit yes, since it may carry a local fix worth upstreaming.
-
 The `## Agent skills` block lives in exactly **one** canonical file; any second file is a thin pointer, never a copy. When neither `CLAUDE.md` nor `AGENTS.md` exists (the default), `AGENTS.md` becomes canonical and a short `CLAUDE.md` points at it. When only one exists it is canonical. When both exist the block goes in whichever already carries real agent instructions, and never in both; an existing `## Agent skills` section is updated in place, never duplicated. Finally the step git-ignores `.skills/` (the `execute-plan` ledger and scan digests) and `.worktrees/` idempotently by line-presence check. Done when all files are written, both dirs are ignored, and `git status` shows only expected changes.
 
-### 5. Offer the opt-ins
+### 5. Offer the session-start hook
 
-Three optional installs — each offered, acted on only with a yes:
+One optional install — offered, acted on only with a yes:
 
-1. **Session-start hook.** If the set was installed without plugin hook support, a `SessionStart` hook (matcher `startup|clear|compact`) keeps the skill-usage gate alive across `/clear` and compaction. The hook is **vendored into the repo** — `templates/session-start.sh` copied to `.claude/hooks/` and `chmod +x`'d, then referenced in `.claude/settings.json` via `$CLAUDE_PROJECT_DIR`, never an absolute path (which would break on any other machine or in CI). Merged additively into any existing `SessionStart` block.
-2. **Trace + graph checks in CI.** Steps appended to the existing workflow that run `check_trace.py` (with `--strict` if warnings should also fail) and `check_graph.py --verify` (fails when the committed `GRAPH.md` has gone stale). The existing workflow is edited additively; if no CI workflow exists the skill says so and skips, because authoring one is out of scope.
-3. **Git verify hooks (pre-commit / pre-push).** The configured verify commands are wired to git events. If the repo already runs a hook manager (husky, lefthook, pre-commit, simple-git-hooks) the commands go into that; otherwise `templates/githooks/pre-commit` and `pre-push` are vendored into `.githooks/`, `chmod +x`'d, and activated with `git config core.hooksPath .githooks`. The split matters: **pre-commit** gets the fast gates (format staged, lint, typecheck) so commits stay quick, and **pre-push** gets the fuller suite plus both linters. After installing, the pre-commit is proven to fire once.
+**Session-start hook.** If the set was installed without plugin hook support, a `SessionStart` hook (matcher `startup|clear|compact`) keeps the skill-usage gate alive across `/clear` and compaction. The hook is copied into the repo — `templates/session-start.sh` to `.claude/hooks/` and `chmod +x`'d, then referenced in `.claude/settings.json` via `$CLAUDE_PROJECT_DIR`, never an absolute path (which would break on any other machine). Merged additively into any existing `SessionStart` block.
 
-Done when each offer has an explicit yes/no and any yes is implemented.
+The set installs nothing else — no scripts, no CI steps, no git hooks. The [`trace`](trace.md) check is a set of `grep`/`git` passes an agent runs directly, so there is nothing to install and nothing to wire; `verify` and `release` run it inline when they need it. A repo that wants a hard headless gate can add its own CI step, but authoring one is out of scope here.
+
+Done when the offer has an explicit yes/no and a yes is implemented.
 
 ### 6. Prove the configuration actually works — GATE
 
@@ -80,7 +78,7 @@ Each configured verify command is run fresh and classified. The distinction that
 - **Content failure** — the tool ran correctly but reported problems: type errors, lint warnings, failing tests. The command is wired right; the repo has pre-existing issues. These are recorded for the user and do **not** block setup.
 - **Pass** — wired and green.
 
-The gate is cost-aware. Typecheck and lint run in full. Test runners are proven cheaply — the single-test-file pattern against one existing file, or collect-only mode — never a full e2e run during setup. `check_trace.py` must execute and exit 0 (zero requirements is a valid clean state). `check_graph.py` is seeded with one `--harvest` run (which writes `docs/specs/GRAPH.md`) then proven with `--verify` exiting 0; if it prints nothing, exits non-zero, or the file never appears, that is a wiring failure to fix, because an unrunnable graph linter makes `brainstorm` and `code-review` silently skip their duplication checks forever. An installed session-start hook is executed and must print one line of valid JSON. A remote tracker (github / gitlab / linear) is proven reachable and authenticated with one read-only call; local and other need no check. The step reports a small table: each command → wired? → passed / failed / pre-existing. Done when every command is proven wired, `check-trace` runs clean, any installed hook fires, the tracker answers, and content failures are listed.
+The gate is cost-aware. Typecheck and lint run in full. Test runners are proven cheaply — the single-test-file pattern against one existing file, or collect-only mode — never a full e2e run during setup. The [`trace`](trace.md) check needs no wiring proof — it is a set of `grep`/`git` passes, not an installed tool — so the gate instead confirms its inputs: the specs directory exists and the test globs and ignore list from Decision C are recorded (with zero requirements the check is trivially clean). An installed session-start hook is executed and must print one line of valid JSON. A remote tracker (github / gitlab / linear) is proven reachable and authenticated with one read-only call; local and other need no check. The step reports a small table: each command → wired? → passed / failed / pre-existing. Done when every command is proven wired, the trace inputs are recorded, any installed hook fires, the tracker answers, and content failures are listed.
 
 ### 7. Finish
 
@@ -94,11 +92,11 @@ Adopting the set into an existing TypeScript + Vitest library with a GitHub remo
 
 **Decide.** A is **github**; external PRs are a request surface, so `triage` will pull them in. B maps the five state roles to new labels (offered for creation with consent) and `bug`/`enhancement` to the existing GitHub defaults. C confirms `pnpm exec tsc -b`, `pnpm lint`, `pnpm test`, no e2e, single-file pattern `pnpm exec vitest run <path>`. D records a single Vitest layer using `annotate('CODE-N.M', 'requirement')`. E is an empty release list — a library with no bundling. F is single-context `CONTEXT.md`.
 
-**Write.** The three `docs/agents/*.md` files land, the issue-tracker file keeps only the github section, `AGENTS.md` is created canonical with the `## Agent skills` block and a thin `CLAUDE.md` pointer, `python3 scripts/vendor_linters.py --install --to . --scripts-dir scripts` drops `check_trace.py` and `check_graph.py` into `scripts/`, and `.skills/` and `.worktrees/` are added to `.gitignore`.
+**Write.** The three `docs/agents/*.md` files land, the issue-tracker file keeps only the github section, `AGENTS.md` is created canonical with the `## Agent skills` block and a thin `CLAUDE.md` pointer, and `.skills/` and `.worktrees/` are added to `.gitignore`. Nothing is copied into the repo but markdown config.
 
-**Opt-ins.** The user takes CI checks (steps appended to `ci.yml`) and git hooks (vendored into `.githooks/`, with a `prepare` script so fresh clones apply them), and declines the session-start hook.
+**Opt-in.** The user accepts the session-start hook — `templates/session-start.sh` copied into `.claude/hooks/` and referenced in `.claude/settings.json` via `$CLAUDE_PROJECT_DIR`.
 
-**Prove — GATE.** `pnpm exec tsc -b` and `pnpm lint` run in full: lint reports three pre-existing warnings — a **content** failure, recorded not blocking. `pnpm exec vitest run` against one existing spec resolves the config: pass. `check_trace.py` exits 0 on zero requirements. `check_graph.py --harvest` writes an empty `GRAPH.md`, `--verify` exits 0. `gh issue list` returns cleanly, proving the tracker is authenticated. The table shows every command wired, the three lint warnings flagged as pre-existing.
+**Prove — GATE.** `pnpm exec tsc -b` and `pnpm lint` run in full: lint reports three pre-existing warnings — a **content** failure, recorded not blocking. `pnpm exec vitest run` against one existing spec resolves the config: pass. The [`trace`](trace.md) check needs no wiring — its inputs are recorded (specs at `docs/specs/`, the Vitest test glob), and with zero requirements it is trivially clean. `gh issue list` returns cleanly, proving the tracker is authenticated. The table shows every command wired, the three lint warnings flagged as pre-existing.
 
 ## Why it is written the way it is
 
@@ -108,5 +106,5 @@ The whole skill is built around a single failure mode: a config that reads plaus
 
 - [Adopting the skill set](../resources/adopting.md) — the wider story of bringing an existing repo under the set
 - [`scaffold-project`](scaffold-project.md) — the greenfield sibling that hands off here
-- [Templates](../resources/templates.md) — the `docs/agents/*` and githook seeds this skill writes from
-- [Scripts](../resources/scripts.md) — `vendor-linters`, `check-trace`, and `check-graph`
+- [Templates](../resources/templates.md) — the `docs/agents/*` and session-start seeds this skill writes from
+- [`trace`](trace.md) — the traceability check the configured specs directory and test globs feed

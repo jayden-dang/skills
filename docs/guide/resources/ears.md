@@ -54,7 +54,7 @@ Status: Approved
 
 `SHELL-1.2` above is borderline — "persist the selection **and** restore it on next launch" — and it survives only because persist-then-restore is one round-trip behavior a single test can observe. Split it the moment a test would need two assertions in two different runs.
 
-The reason is mechanical, not aesthetic. A criterion is the unit a test tag points at. If `SHELL-1.2` names two behaviors, a test tagged `@SHELL-1.2` proves one of them and `check-trace` reports the requirement as covered.
+The reason is mechanical, not aesthetic. A criterion is the unit a test tag points at. If `SHELL-1.2` names two behaviors, a test tagged `@SHELL-1.2` proves one of them and the trace check reports the requirement as covered.
 
 ### Every criterion must be independently verifiable
 
@@ -92,7 +92,7 @@ A guard requirement is the only thing standing between an agent and load-bearing
 Three things follow from that ID existing:
 
 1. Some task must cite it in a `_Requirements:_` footer.
-2. Some test must be tagged with it, or `check-trace` reports **E2** once the feature is `Implemented`.
+2. Some test must be tagged with it, or the trace check reports **E2** once the feature is `Implemented`.
 3. The commit that touches the behavior carries `Guards: SHELL-1.3`, and `release` files it under **Protected behavior** in the changelog.
 
 `write-requirements` will not accept an empty guard section by default. Its completion criterion for that step:
@@ -109,7 +109,7 @@ Once `Status: Approved`, a criterion's ID never changes meaning and is never ren
 - ~~**SHELL-1.2**~~ superseded by SHELL-1.8
 ```
 
-`check-trace` treats a struck-through ID as **undefined**, so every test and task still citing it surfaces immediately as an E1 error. Retirement cannot happen quietly.
+The trace check treats a struck-through ID as **undefined**, so every test and task still citing it surfaces immediately as an E1 error. Retirement cannot happen quietly.
 
 ## Out of Scope is part of the spec
 
@@ -122,7 +122,7 @@ Not an EARS form, but it lives in the same file and it is read by three later sk
 - Reordering modules in the rail.
 ```
 
-[`code-review`](../skills/code-review.md)'s Spec axis reads it to identify scope creep. [`dogfood`](../skills/dogfood.md) turns each entry into a *deliberate non-behavior* the tester checks does **not** happen. And [`check-graph`](scripts.md#check-graph) harvests it into the feature's summary card, so a future `brainstorm` on an adjacent idea sees what this feature already declined.
+[`code-review`](../skills/code-review.md)'s Spec axis reads it to identify scope creep. [`dogfood`](../skills/dogfood.md) turns each entry into a *deliberate non-behavior* the tester checks does **not** happen. And a future [`brainstorm`](../skills/brainstorm.md) on an adjacent idea reads it — the inline `docs/specs/` search surfaces what this feature already declined before proposing to build it again.
 
 ## See also
 

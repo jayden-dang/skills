@@ -64,12 +64,12 @@ Written once by [`setup-repo`](../skills/setup-repo.md) into `docs/agents/`.
 | Template | Becomes | Notes |
 |---|---|---|
 | [`CONTEXT.md`](../../../templates/CONTEXT.md) | root `CONTEXT.md` | The domain glossary. Created *lazily* by [`domain-modeling`](../skills/domain-modeling.md) when the first term settles, if `setup-repo` did not already seed it |
-| [`specs-INDEX.md`](../../../templates/specs-INDEX.md) | `docs/specs/INDEX.md` | The feature-code registry |
-| [`session-start.sh`](../../../templates/session-start.sh) | `.claude/hooks/session-start.sh` | Vendored **into the repo**, never referenced by absolute path |
-| [`githooks/pre-commit`](../../../templates/githooks/pre-commit) | `.githooks/pre-commit` | The *fast* gates: format staged, lint, typecheck |
-| [`githooks/pre-push`](../../../templates/githooks/pre-push) | `.githooks/pre-push` | The fuller suite, plus `check-trace` and `check-graph --verify` |
+| [`specs-INDEX.md`](../../../templates/specs-INDEX.md) | `docs/specs/INDEX.md` | The feature-code registry `brainstorm` and `code-review` search for overlap |
+| [`session-start.sh`](../../../templates/session-start.sh) | `.claude/hooks/session-start.sh` | Copied **into the repo**, never referenced by absolute path |
 
-### Why the session hook is vendored
+This is the whole seed set. Nothing executable beyond the session-start hook lands in a consuming repo — no linters, no CI, no git hooks — and even that hook is a single opt-in.
+
+### Why the session hook is copied into the repo
 
 An absolute path to the skill set's own working copy would be committed into `.claude/settings.json` and break on every other machine, in CI, and if that copy ever moves. So `setup-repo` copies the script into the repo and references it through the project-dir variable:
 
@@ -81,27 +81,17 @@ An absolute path to the skill set's own working copy would be committed into `.c
 
 The script is dependency-free, so it runs in any project regardless of toolchain.
 
-### Why the git hooks are split
-
-`pre-commit` gets only the fast gates. `pre-push` gets the tests and both linters.
-
-> A hook slow enough to be routinely `--no-verify`'d is worse than none.
-
-If a typecheck drags, move it to pre-push. And if the repo already runs a hook manager — `.husky/`, `lefthook.yml`, `.pre-commit-config.yaml`, or `simple-git-hooks` — the verify commands go into **that**, never into a competing mechanism.
-
-Because `core.hooksPath` is local config and is not carried by a clone, a JS repo also gets a `"prepare": "git config core.hooksPath .githooks"` script so fresh clones apply it on install.
-
 ## The additive rule
 
 Every template application obeys one rule, stated in `setup-repo`:
 
 > **Existing files are edited in place, never clobbered.** If a target file already exists, merge your content into it and preserve everything the user wrote.
 
-This applies to `.gitignore` (idempotent line-presence checks), to `CLAUDE.md` / `AGENTS.md` (the `## Agent skills` block lives in exactly one canonical file; any second file is a thin pointer, never a copy), to CI workflows (append steps, do not author a pipeline), and to hook configs (merge into an existing `SessionStart` block).
+This applies to `.gitignore` (idempotent line-presence checks), to `CLAUDE.md` / `AGENTS.md` (the `## Agent skills` block lives in exactly one canonical file; any second file is a thin pointer, never a copy), and to the hook config (merge into an existing `SessionStart` block, never overwrite it).
 
 ## See also
 
 - [The artifact model](../concepts/artifacts.md) — where each of these lands
 - [EARS reference](ears.md) — the criterion grammar `requirements.md` uses
 - [`setup-repo`](../skills/setup-repo.md) — the wizard that applies most of these
-- [Scripts](scripts.md) — the linters the hooks and CI run
+- [Traceability — the spine](../concepts/traceability.md) — the trace check `verify` and `release` run

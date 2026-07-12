@@ -39,7 +39,7 @@ One observable behavior per criterion. **If a sentence needs "and", it is usuall
 
 Guards are what stop an agent from breaking load-bearing behavior nobody mentioned. And the completion criterion for this step forbids the lazy answer: *you have actively searched the touched surface for behaviors to guard — not merely found none by default.*
 
-**Write Out of Scope.** What this feature deliberately does not do. This section is read again later, by `code-review` (as the scope-creep reference), by `dogfood` (as deliberate non-behaviors to check), and by `check-graph` (as a summary-card field a neighboring feature's `brainstorm` will read).
+**Write Out of Scope.** What this feature deliberately does not do. This section is read again later, by `code-review` (as the scope-creep reference), by `dogfood` (as deliberate non-behaviors to check), and by the feature-overlap search (as a Summary-card field a neighboring feature's `brainstorm` reads straight out of `docs/specs/`).
 
 **Self-review, then gate.** Four passes before the user sees it:
 
@@ -50,7 +50,7 @@ Guards are what stop an agent from breaking load-bearing behavior nobody mention
 
 Then present the file and **stop**. On approval, `Status: Approved`.
 
-**IDs are immutable from that moment.** Retire by strikethrough (`~~**SHELL-1.2**~~ superseded by SHELL-1.4`), never by renumbering. `check-trace` treats struck-through IDs as undefined, so every test or task still citing one surfaces immediately as an E1 error.
+**IDs are immutable from that moment.** Retire by strikethrough (`~~**SHELL-1.2**~~ superseded by SHELL-1.4`), never by renumbering. The trace check treats struck-through IDs as undefined, so every test or task still citing one surfaces immediately as an E1 error.
 
 ## Step 2 — `design.md`: HOW
 
@@ -104,11 +104,11 @@ Per task: **Files** (create / modify with line ranges / test), **Interfaces** (C
 
 **No placeholders.** "TBD", "add appropriate error handling", "similar to Task 3", or a type referenced but defined in no task — each is a plan bug, fixed before the plan ships.
 
-### The coverage check that goes further than the linter
+### The coverage check that goes further than the trace check
 
 This is the subtlest thing in the phase.
 
-`check-trace` verifies every `Approved` requirement is cited by at least one task footer. But **a footer is not a test.** A footer citation with no tagged test passes `check-trace` today (Approved → W1 warning) and fails **E2** the moment the feature is marked `Implemented`.
+The trace check verifies every `Approved` requirement is cited by at least one task footer. But **a footer is not a test.** A footer citation with no tagged test passes the trace check today (Approved → W1 warning) and fails **E2** the moment the feature is marked `Implemented`.
 
 So `write-plan` requires more: every requirement ID must also appear in a **test annotation inside some task's steps** — `[SHELL-1.2]` in a Vitest title, `/// REQ: SHELL-1.2` on a Rust test, `@SHELL-1.2` in a Playwright tag. And it reconciles against the design's seam table: an ID the design *promised* to cover but the plan left untagged is **dropped coverage**. Add the test; never renumber.
 
@@ -131,4 +131,4 @@ Finally, an **independent plan review subagent** verifies against real code ever
 - [Requirement IDs](../concepts/requirement-ids.md) — the grammar and the status lifecycle
 - [EARS reference](../resources/ears.md) — the five criterion forms
 - [Templates](../resources/templates.md) — the three seed files
-- [`check-trace`](../resources/scripts.md#check-trace) — W1 versus E2, and why the distinction bites
+- [The trace check](../resources/scripts.md#the-trace-check) — W1 versus E2, and why the distinction bites

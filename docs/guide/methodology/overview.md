@@ -28,9 +28,9 @@ Every feature gets a **spec triad** in `docs/specs/<date>-<feature>/`:
 
 That ID then flows outward into everything downstream: the test that verifies the behavior carries it as a tag, the commit that implements it carries it as a trailer, the issue that tracks it carries it in a `Requirements covered:` section, and the changelog entry that announces it is assembled from those trailers.
 
-And then — this is the part that makes it real rather than aspirational — a **script**, not human diligence, keeps the chain honest. [`check-trace`](../resources/scripts.md#check-trace) fails CI when a task cites a requirement that does not exist, when a shipped requirement has no covering test, or when an ID is defined twice. Unchecked trace matrices rot. This one is automated lint.
+And then — this is the part that makes it real rather than aspirational — a **deterministic check**, not human diligence, keeps the chain honest. The [`trace`](../resources/scripts.md#the-trace-check) skill runs a fixed sequence of `grep` and `git` passes — invoked by `verify`, `release`, and `sync-spec` — and reports it when a task cites a requirement that does not exist, when a shipped requirement has no covering test, or when an ID is defined twice. Unchecked trace matrices rot; this one is machine-checked from primitives every repo already has.
 
-Around that spine sit **31 skills** in nine buckets, each one a piece of process the agent is required to follow, and four **hard gates** that cannot be talked past.
+Around that spine sit **32 skills** in nine buckets, each one a piece of process the agent is required to follow, and four **hard gates** that cannot be talked past.
 
 ## The four gates
 
@@ -78,7 +78,7 @@ Each arrow is a hand-off written into the skill body as a `REQUIRED SUB-SKILL:` 
 
 Plenty of methodologies say "write requirements first." Three things here are unusual:
 
-1. **The requirement ID is a first-class runtime object.** It is not a heading in a document. It is a string that appears in a test tag, a commit trailer, an issue body, and a changelog line, and a linter fails the build when those uses disagree with the definition.
+1. **The requirement ID is a first-class runtime object.** It is not a heading in a document. It is a string that appears in a test tag, a commit trailer, an issue body, and a changelog line, and the trace check surfaces it the moment those uses disagree with the definition.
 
 2. **The process is written for an agent, not a human.** Skill bodies are shaped by their observed failure mode: a skill that guards a rule the agent breaks under pressure gets a prohibition and a rationalization table; a skill whose output has the wrong shape gets a positive recipe instead, because in head-to-head tests prohibitions produced *more* of the unwanted content than no guidance at all. This doctrine is itself a skill — [`writing-skills`](../skills/writing-skills.md) — and every skill in the set was pressure-tested against it.
 

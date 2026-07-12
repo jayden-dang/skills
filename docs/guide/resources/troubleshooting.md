@@ -2,7 +2,9 @@
 
 Symptoms, causes, and where to look.
 
-## The trace check fails
+## The trace check reports a finding
+
+The trace check is the [`trace`](../concepts/traceability.md) skill: a set of deterministic `grep`/`git` passes over `docs/specs/` and the test tree, each finding decided by a fixed rule. `verify`, `release`, `sync-spec`, and `write-plan`'s coverage check all run it. Two agents running it on the same repo reach the same finding set.
 
 ### `E1 task cites unknown requirement SHELL-1.2`
 
@@ -12,11 +14,11 @@ Three causes, in descending order of likelihood:
 
 1. **The requirement was retired.** A struck-through ID (`~~**SHELL-1.2**~~`) counts as *undefined* — that is the mechanism working. Something still cites it. Run [`sync-spec`](../skills/sync-spec.md), which lists orphans with a suggested disposition per item. Orphans are decisions, not cleanup: repoint the citation to a live ID, retire the test, or resurrect the requirement.
 2. **A typo** in the tag or footer.
-3. **The requirements file is outside `specsDir`.** Check `docs/agents/trace.json`.
+3. **The requirements file is outside the spec root.** Check the `specsDir` named in `docs/agents/project.md`.
 
 ### `E2 SHELL-1.2 (…, Implemented) has no covering test`
 
-The feature is marked `Implemented` (or `Shipped`) and this requirement has zero test references.
+The feature is marked `Implemented` (or `Shipped`) and this requirement's ID string appears in no test file.
 
 This usually means a task footer cited the ID but no *test* was ever tagged with it. [`write-plan`](../skills/write-plan.md) is supposed to catch that at plan time — its coverage check requires every ID to appear in a **test annotation inside some task's steps**, not merely in a footer, precisely because a footer-only citation passes as a W1 warning while `Approved` and fails as an E2 error the moment the status flips.
 
@@ -34,44 +36,30 @@ The plan is incomplete. Either add a covering task, or strike the requirement th
 
 ### `W2 … missing "Status:" line`
 
-The requirements file has no `Status:` or `Feature code:` header. `check-trace` needs `Status:` to know whether E2 applies.
+The requirements file has no `Status:` or `Feature code:` header. The trace check needs `Status:` to know whether E2 applies.
 
 ### The check finds phantom IDs in a fixture file
 
-A test file that legitimately contains ID-shaped example strings that no test asserts. Those are **fixture IDs**, not citations. Add the file's path substring to `ignore` in `docs/agents/trace.json`:
+A test file that legitimately contains ID-shaped example strings that no test asserts. Those are **fixture IDs**, not citations. Coverage is textual — an ID counts as covered when its string appears anywhere in a test file — so a fixture that carries IDs as data reads as coverage unless it is excluded.
 
-```json
-{ "ignore": ["test_check_trace.py", "fixtures/"] }
-```
-
-`ignore` filters the *test-file walk only*. It cannot exclude a requirements file from defining IDs, so it cannot be used to hide a real requirement from coverage checking.
+The only sanctioned exclusion is the **ignore list** in `docs/agents/project.md`: name the fixture or test-support file there and it drops out of the test-file walk wholesale. That is the walk *only* — it cannot exclude a requirements file from defining IDs, so it cannot hide a real requirement from coverage checking. Never exclude an ID by hand, one at a time.
 
 ---
 
-## The graph check fails
+## Overlapping features are not flagged
 
-### `GRAPH.md is stale — run check-graph --harvest and commit the result`
+Duplication is caught by an inline `docs/specs/` search: [`brainstorm`](../skills/brainstorm.md) and [`code-review`](../skills/code-review.md) grep the existing specs for a feature that already covers the idea, and `docs/specs/INDEX.md` is the feature-code registry they read.
 
-A spec changed and the committed graph was not regenerated. `sync-spec` normally does this and stages the result into the same commit. Run:
+### `brainstorm` never mentions an overlapping feature
 
-```bash
-python3 scripts/check_graph.py --harvest
-git add docs/specs/GRAPH.md
-```
+Two likely causes:
 
-### `E: feature code XYZ is not registered in INDEX.md`
+1. **`INDEX.md` is empty or stale.** `write-requirements` registers each feature code in `docs/specs/INDEX.md` *before* writing the file. A code that was never registered leaves nothing for the search to match — the overlap is invisible. Register the missing rows.
+2. **The spec text does not name the shared concept.** The search is textual; two features that solve the same problem in different words will not collide. Say the shared term out loud in the requirements so a future search finds it.
 
-A `requirements.md` declares a feature code with no row in `docs/specs/INDEX.md`. `write-requirements` registers the code *before* writing the file; this means that step was skipped.
+### A feature code is missing from `INDEX.md`
 
-### `brainstorm` never mentions overlapping features
-
-Most likely `check_graph.py` is not installed in the repo. This is the failure mode `setup-repo`'s step 6 calls out specifically:
-
-> An uninstalled or unrunnable graph linter makes `brainstorm` and `code-review` silently skip their duplication checks forever, which looks exactly like "no overlapping features".
-
-Check for it, then re-run `/setup-repo`, which vendors both linters via `vendor_linters.py` and proves they run.
-
-Note that both consuming skills are *designed* to say this at most once per session. A repo that has declined the graph must not be nagged on every query.
+A `requirements.md` declares a feature code with no row in `docs/specs/INDEX.md`. `write-requirements` registers the code *before* writing the file; this means that step was skipped. Add the row so the registry stays complete.
 
 ---
 
@@ -82,7 +70,7 @@ Note that both consuming skills are *designed* to say this at most once per sess
 The [`using-skills`](../skills/using-skills.md) gate is not in context. It is injected by a `SessionStart` hook with matcher `startup|clear|compact`.
 
 - Installed as a plugin? The hook ships in `hooks/hooks.json`.
-- Installed via skills.sh (no hook support)? Re-run `/setup-repo` and accept opt-in 1, which vendors `templates/session-start.sh` into `.claude/hooks/` and wires it through `$CLAUDE_PROJECT_DIR`.
+- Installed by symlink, or into a harness with no hook support? Re-run `/setup-repo` and accept the session-start hook, which copies `templates/session-start.sh` into `.claude/hooks/` and wires it through `$CLAUDE_PROJECT_DIR`.
 
 Verify it fires: execute `.claude/hooks/session-start.sh` and confirm it prints one line of valid JSON.
 
@@ -120,9 +108,9 @@ After compaction or resume, trust the ledger and `git log`. Never re-dispatch a 
 
 ### The reviewer approved a task that was obviously broken
 
-Check the diff package base. If `review-package` was called with `HEAD~1` instead of the sha recorded *before* the implementer was dispatched, the reviewer saw only the last commit of a multi-commit task.
+Check the review bundle's diff base. The controller builds the bundle itself — `git log`/`git diff` from a recorded base into `.skills/review-<base7>..<head7>.diff` — and if that base is `HEAD~1` instead of the sha recorded *before* the implementer was dispatched, the reviewer saw only the last commit of a multi-commit task.
 
-Both `execute-plan` and `review-package` itself warn about this. `BASE=$(git rev-parse HEAD)` is step 1 of the per-task loop for exactly this reason.
+`execute-plan` warns about this: `BASE=$(git rev-parse HEAD)` is step 1 of the per-task loop for exactly this reason.
 
 ### An implementer keeps returning BLOCKED
 
@@ -151,11 +139,11 @@ That is the expected state, not an anomaly. Green unit tests prove that the asse
 
 Run [`acceptance-check`](../skills/acceptance-check.md): derive the user-facing behaviors from the spec, drive the running system through every one as a real client, and promote the passing checks into committed ID-tagged tests.
 
-### `check-trace` passes but the code is wrong
+### The trace check passes but the code is wrong
 
-The spine proves that a test citing an ID ran and passed. It cannot prove the test is a *good* test.
+The spine proves that an ID is defined, cited, and present in a test file. It cannot prove the test is a *good* test.
 
-A tautological test — one whose expected value is recomputed the same way the code computes it — satisfies `check-trace` completely and proves nothing. That is [`tdd`](../skills/tdd.md)'s anti-pattern table's job, and `code-review`'s Standards axis, and the acceptance skills'.
+A tautological test — one whose expected value is recomputed the same way the code computes it — satisfies the trace check completely and proves nothing. That is [`tdd`](../skills/tdd.md)'s anti-pattern table's job, and `code-review`'s Standards axis, and the acceptance skills'.
 
 ### A regression test that never catches anything
 
@@ -191,19 +179,9 @@ For a non-deterministic bug, do not chase a clean repro. Raise the reproduction 
 
 `docs/agents/project.md` records commands that were *pre-filled from detection* and may never have been run. Re-run `/setup-repo` and pay attention to step 6, which classifies each command as a wiring failure, a content failure, or a pass. Setup is not done while any command is mis-wired.
 
-### `vendor-linters --check` reports `modified`
-
-Someone edited the repo's copy of a linter. `setup-repo` will offer to update it but **never overwrites a `modified` copy without an explicit yes** — the local edit may carry a fix worth upstreaming back into the skill set.
-
-### The pre-commit hook is so slow people use `--no-verify`
-
-> A hook slow enough to be routinely `--no-verify`'d is worse than none.
-
-Move the slow gate to pre-push. `pre-commit` should hold only format-staged, lint, and typecheck; `pre-push` holds the tests plus both linters.
-
 ## See also
 
-- [Scripts](scripts.md) — every flag, config key, and exit code
+- [Traceability — the spine](../concepts/traceability.md) — what the trace check is and the finding codes
 - [The gates](../concepts/gates.md) — what each Iron Law is preventing
 - [`sync-spec`](../skills/sync-spec.md) — the skill for realigning a drifted spec
 - [`ask`](../skills/ask.md) — the router, when you do not know which flow you are in

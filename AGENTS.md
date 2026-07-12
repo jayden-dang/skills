@@ -112,11 +112,12 @@ are immutable once approved — retire by striking through
 | Commit message | `Implements: CODE-N.M` or `Guards: CODE-N.M` trailer | |
 | Issue body | `Requirements covered` section | |
 
-**Trace checking:** `python3 scripts/check_trace.py` is automated lint, not manual
-audit. It fails on: tasks/tests citing unknown IDs; implemented/shipped
-requirements with zero covering tests; duplicate ID definitions. It warns on
-approved requirements not yet cited by any task. Run by `verify`, `release`, and
-CI.
+**Trace checking:** the `trace` skill is the traceability check — a fixed set of
+`grep`/`git` passes with fixed rules, not a manual audit and not a bundled linter.
+It fails on: tasks/tests citing unknown IDs; implemented/shipped requirements with
+zero covering tests; duplicate ID definitions. It warns on approved requirements
+not yet cited by any task. Run by `verify` and `release`, where an agent is present
+to run it.
 
 **Coverage definition:** a requirement is covered when ≥1 test citing its ID ran
 and passed, as attested by a test runner's report. A skipped, failing, or
@@ -151,11 +152,12 @@ text.
 
 **Task handoff protocol:**
 1. Record `BASE=$(git rev-parse HEAD)` before dispatch
-2. Build brief: `task-brief <tasks.md> N` → `.skills/task-N-brief.md`
+2. Build brief: copy Task N's block + verbatim Global Constraints into
+   `.skills/task-N-brief.md`
 3. Dispatch fresh implementer with brief path, interfaces from prior tasks,
    report path (`.skills/task-N-report.md`), explicit model tier
-4. On DONE: package diff with `review-package $BASE $(git rev-parse HEAD)` —
-   never `HEAD~1`
+4. On DONE: package the diff into `.skills/review-<base7>..<head7>.diff`
+   (`git log`/`git diff --stat`/`git diff` over `$BASE..HEAD`) — never `HEAD~1`
 5. Two-verdict review: **Standards** (repo standards + code-smell baseline) +
    **Spec** (diff vs requirement IDs)
 6. Fix loop: ONE fix subagent for all findings, then re-review. Circuit breaker:
@@ -221,13 +223,11 @@ skills/                  # skill definitions (31 skills, 9 categories)
   setup/                 # setup-repo, scaffold-project
   discovery/             # brainstorm, grilling, research, prototype, domain-modeling
   spec/                  # write-requirements, write-design, write-plan
-  execution/             # execute-plan, tdd, debug, verify, worktrees
+  execution/             # execute-plan, tdd, debug, verify, trace, worktrees
   review/                # code-review, receive-review
   acceptance/            # acceptance-check, acceptance-api, acceptance-ui, dogfood
   ship/                  # finish-branch, release
   track/                 # amend, triage, sync-spec, improve-architecture, handoff
-scripts/                 # check_trace.py, check_graph.py, task-brief, review-package,
-                         # vendor_linters.py — Python 3.9+ stdlib + bash only, no Node runtime
 templates/               # requirements.md, design.md, tasks.md, CONTEXT.md seeds
 hooks/                   # session-start.sh + hooks.json (injection on startup/clear/compact)
 docs/
@@ -254,7 +254,7 @@ runtime; if missing, say so once per session and suggest `setup-repo`.
 - Skip the tier-decision gate and start coding (Gate 1)
 - Auto-invoke a user-invoked skill (`disable-model-invocation: true`)
 - Run two implementers on the same plan in parallel (collision guaranteed)
-- Hand a subagent the whole plan file — the `task-brief` output is its world
+- Hand a subagent the whole plan file — the brief in `.skills/task-N-brief.md` is its world
 - Use `HEAD~1` as a review base — use `git rev-parse HEAD` recorded before dispatch
 - Skip re-review after a fix, or accept a review missing either verdict
 - Move to the next task with open Critical/Important findings
@@ -284,9 +284,8 @@ A change is done ONLY when ALL of the following are true:
 - Mocks only at system boundaries, complete data structures, no assertions on
   mocks
 - Edge cases and error paths covered
-- `check_trace.py` passes (no orphaned IDs, no uncovered requirements, no
-  duplicate definitions)
-- `check_graph.py --verify` passes (no surface conflicts)
+- `trace` check clean (no orphaned IDs, no uncovered requirements, no duplicate
+  definitions)
 - Progress ledger appended for every completed task
 - Code-review two-verdict clean (Standards + Spec axes)
 - `acceptance-check` confirms user-facing behaviors on the running system

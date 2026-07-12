@@ -3,7 +3,7 @@ name: sync-spec
 description: Use when a feature's spec has drifted from reality — requirements changed
   mid-implementation, the implementation deviated from the approved plan, the
   feature just shipped, the specs have gone stale or out of sync, or
-  check-trace is failing in CI — and the requirements/design/tasks triad needs
+  the trace check is failing — and the requirements/design/tasks triad needs
   realigning back to what the code and tests actually do.
 ---
 
@@ -21,7 +21,7 @@ Work one feature at a time. Identify the spec directory first (from the user, th
 
 ## Steps
 
-**a. Baseline.** Run `python3 scripts/check_trace.py` (path per `docs/agents/project.md`) and capture the output — this is the "before" picture.
+**a. Baseline.** Run the trace check (REQUIRED SUB-SKILL: use `trace`) and capture the finding set — this is the "before" picture.
 
 **b. Requirements ↔ tasks.** Compare `requirements.md` against `tasks.md`:
 
@@ -37,15 +37,11 @@ Work one feature at a time. Identify the spec directory first (from the user, th
 | Transition | Required evidence |
 |---|---|
 | Draft → Approved | the user explicitly approved the spec — never inferred |
-| Approved → Implemented | every task box checked AND check-trace shows every live requirement covered by a test |
+| Approved → Implemented | every task box checked AND the trace check shows every live requirement covered by a test |
 | Implemented → Shipped | the feature went out in a release (this step is normally invoked by `release`) |
 
 Apply any transition whose evidence exists: update the `Status:` line in `requirements.md` and the feature's row in `docs/specs/INDEX.md`. If evidence is partial, say exactly what is missing instead of transitioning.
 
-**f. After picture.** Re-run `python3 scripts/check_trace.py` and print both reports side by side — errors and warnings resolved, anything remaining, and what you changed to get there.
-
-Then regenerate the feature graph: `python3 scripts/check_graph.py --harvest`. If `GRAPH.md`
-changed, stage it into this sync-spec commit alongside the `Status:`/`INDEX.md` edits so
-the committed graph tracks the triad.
+**f. After picture.** Re-run the trace check and print both finding sets side by side — errors and warnings resolved, anything remaining, and what you changed to get there. Confirm `docs/specs/INDEX.md` reflects every spec's current `Status:` line, staged into this same commit.
 
 **Done when:** the after-report is no worse than the before-report on errors, every flagged item has either an edit or an explicit user decision pending, and INDEX.md agrees with every spec's `Status:` line.

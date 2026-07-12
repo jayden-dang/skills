@@ -52,23 +52,23 @@ The skill carries a six-row rationalization table, each row a shortcut it exists
 
 Each item is a todo, completed in order. The order matters: context before questions, questions before evidence, evidence before approaches, approaches before the tier. Skipping ahead is how unexamined assumptions survive to the spec.
 
-1. **Explore project context.** Read `CONTEXT.md` (adopt its vocabulary from here on) and `docs/specs/INDEX.md` directly — they are small and needed in context. For anything heavier, dispatch a scan subagent that writes a findings digest to `.skills/<slug>-scan.md` and returns only that path; work from the digest, not raw files. Then run the feature-graph dedup check (below). If `docs/agents/project.md` or these files are missing, say so, suggest [`setup-repo`](setup-repo.md), and continue with what you have.
+1. **Explore project context.** Read `CONTEXT.md` (adopt its vocabulary from here on) and `docs/specs/INDEX.md` directly — they are small and needed in context. For anything heavier, dispatch a scan subagent that writes a findings digest to `.skills/<slug>-scan.md` and returns only that path; work from the digest, not raw files. Then run the overlap check (below). If `docs/agents/project.md` or these files are missing, say so, suggest [`setup-repo`](setup-repo.md), and continue with what you have.
 2. **Interview.** REQUIRED SUB-SKILL [`grilling`](grilling.md) — one question at a time, a recommended answer per question, every branch walked. Keep [`domain-modeling`](domain-modeling.md) active as a side effect throughout: challenge terms against the glossary, sharpen fuzzy language, and update `CONTEXT.md` the moment a term settles. If the request spans multiple independent subsystems, stop refining and decompose first (step 5).
 3. **Detour when a question needs evidence, not opinion.** When the honest answer is "we'd have to check": facts about external systems, APIs, libraries, or standards go to [`research`](research.md) (primary sources, cited note); "does this model or flow actually feel right?" goes to [`prototype`](prototype.md) (a runnable throwaway answer). Return with the evidence and put the decision back to the user.
 4. **Propose approaches.** Present 2–3 genuinely different approaches with trade-offs, lead with your recommendation and why, YAGNI-prune every option. The user picks.
 5. **Decide the ceremony tier — out loud.** State the tier and why (table below). If the work spans multiple independent subsystems, decompose here: name the sub-features, their relationships, and build order; each gets its own full spec cycle and brainstorm continues with the first only.
 6. **Terminal state.** Tier ≥ 1: invoke `write-requirements` — the ONLY exit; do not write code, scaffold, or invoke any implementation or design skill directly, because requirements come first and carry their own approval gate. Tier 0: hand off to `tdd` directly and say so.
 
-## The feature-graph dedup check
+## The overlap check
 
-Step 1 runs `python3 scripts/check_graph.py --query --json`, passing the scan's candidate files as `--path` and the idea's key terms as `--keyword`. Returned features are presented as their summary **cards** (not full specs) — each card's owned paths and Out-of-Scope list show what the neighbor already covers, so the new idea can be positioned against or distinguished from them.
+Step 1 searches the specs directly for a feature that already covers this surface. `docs/specs/INDEX.md` is the registry — it maps every feature code to its spec folder and the surface it owns — so start there, then `grep docs/specs/` for the idea's key terms and for the scan's candidate paths. Each hit points at a neighboring feature; read that feature's `requirements.md` header and present it as a short summary (not the full spec) — its owned paths and Out-of-Scope list show what the neighbor already covers, so the new idea can be positioned against or distinguished from them.
 
-The check is a convenience, not a gate, so it degrades gracefully and never blocks progress:
+The check is a convenience, not a gate, so it never blocks progress:
 
-- **Absent** — the feature graph is not installed in this repo. Say so once, name [`setup-repo`](setup-repo.md) as the remedy, and say it **at most once per session**: a repo that has declined the graph must not be nagged on every query.
-- **Errors** — note "automated overlap check unavailable" and continue.
+- **No `INDEX.md`** — the registry has not been set up in this repo. Say so once, name [`setup-repo`](setup-repo.md) as the remedy, and say it **at most once per session**: a repo without the registry must not be nagged on every idea. Fall back to grepping `docs/specs/` directly.
+- **No `docs/specs/` at all** — note there is nothing to check against yet and continue.
 
-This also covers harnesses without subagents: when the scan step cannot dispatch one, read the few relevant files directly and query on the idea's terms by hand. The overlap check is there to catch a duplicate feature early; missing it costs a manual read, not the gate.
+This also covers harnesses without subagents: when the scan step cannot dispatch one, read the few relevant files directly and grep the specs on the idea's terms by hand. The overlap check is there to catch a duplicate feature early; missing it costs a manual read, not the gate.
 
 Either way, continue with manual exploration. Step 1 is done when you can state in one paragraph what the project is, what already exists near the idea, and which glossary terms apply — and you have named which existing features share the idea's surface and how the new idea differs (citing feature codes), or that none does.
 
@@ -88,7 +88,7 @@ If the work spans multiple independent subsystems, this is also where it is deco
 
 A user opens with "we should let people export their notes as PDF." Nothing is spec'd, so `brainstorm` fires and the hard gate is in force from the first word.
 
-**Step 1.** Read `CONTEXT.md` and `docs/specs/INDEX.md` directly; dispatch a scan subagent that writes its digest to `.skills/pdf-export-scan.md` and reports the notes module already owns a Markdown export at `src/export/`. Run `python3 scripts/check_graph.py --query --json --path src/export/markdown.ts --keyword export --keyword pdf`. It returns one card, `EXPORT-2`, owning `src/export/` with "PDF rendering" on its Out-of-Scope list.
+**Step 1.** Read `CONTEXT.md` and `docs/specs/INDEX.md` directly; dispatch a scan subagent that writes its digest to `.skills/pdf-export-scan.md` and reports the notes module already owns a Markdown export at `src/export/`. `INDEX.md` lists a feature owning that path, so grep `docs/specs/` for `export` and `pdf` and read its `requirements.md` header: `EXPORT-2`, owning `src/export/` with "PDF rendering" on its Out-of-Scope list.
 
 State the one-paragraph context: "The project is a notes app; `EXPORT-2` already owns Markdown export and explicitly excludes PDF, so this idea is adjacent-but-new, and the glossary term *export* already applies."
 
@@ -115,6 +115,5 @@ The tier decision is forced to be spoken out loud so it cannot be quietly skippe
 ## See also
 
 - [Ceremony tiers](../methodology/ceremony-tiers.md) — the 0/1/2 decision in full
-- [The feature graph](../concepts/feature-graph.md) — what the dedup check queries
 - [`amend`](amend.md) — the sibling for changes to already-shipped features
 - [`write-requirements`](write-requirements.md) — the tier ≥ 1 exit

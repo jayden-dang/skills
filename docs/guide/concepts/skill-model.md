@@ -49,7 +49,7 @@ You can see the rule being obeyed in the wild. `debug` hands architectural findi
 | setup | `setup-repo`, `scaffold-project` | user |
 | discovery | `brainstorm`, `grilling`, `research`, `prototype`, `domain-modeling` | model |
 | spec | `write-requirements`, `write-design`, `write-plan` | model |
-| execution | `execute-plan`, `tdd`, `debug`, `verify`, `worktrees` | model |
+| execution | `execute-plan`, `tdd`, `debug`, `verify`, `trace`, `worktrees` | model |
 | review | `code-review`, `receive-review` | model |
 | acceptance | `acceptance-check`, `acceptance-api`, `acceptance-ui`, `dogfood` | model |
 | ship | `finish-branch` | model |
@@ -100,7 +100,7 @@ Never `@`-links or markdown links into another skill's folder. A link force-load
 
 > If the rule is mechanically enforceable — a regex, a linter, a schema check, a git hook — automate it and skip the skill.
 
-Documentation is for the judgment calls a check cannot make. A skill that only restates what a validator already guarantees is context the agent pays for on every run, to enforce what the machine could have enforced for free. This is precisely why `check_trace.py` exists instead of a "remember to keep the trace matrix updated" skill.
+Documentation is for the judgment calls a check cannot make. A skill that only restates what a deterministic check already guarantees is context the agent pays for on every run, to enforce what fixed rules could have enforced for free. This is precisely why the `trace` skill runs a fixed sequence of `grep` and `git` passes instead of a "remember to keep the trace matrix updated" skill.
 
 ## When to split one
 
@@ -129,11 +129,11 @@ This is why the rationalization tables in `tdd`, `debug`, `verify`, and `brainst
 
 The set ships as a Claude Code plugin. `hooks/hooks.json` registers a `SessionStart` hook with matcher `startup|clear|compact` that injects the full text of `using-skills` into context — so the skill-check gate survives `/clear` and compaction, the two moments it would otherwise silently disappear.
 
-When installed without plugin hook support, `setup-repo` offers to vendor `templates/session-start.sh` into the project's own `.claude/hooks/` and reference it via `$CLAUDE_PROJECT_DIR` — never an absolute path, which would be committed into `.claude/settings.json` and break on every other machine.
+When installed without plugin hook support, `setup-repo` offers to copy `templates/session-start.sh` into the project's own `.claude/hooks/` and reference it via `$CLAUDE_PROJECT_DIR` — never an absolute path, which would be committed into `.claude/settings.json` and break on every other machine.
 
 ## See also
 
 - [The gates](gates.md) — the four skills that guard rules the agent breaks under pressure
 - [`writing-skills`](../skills/writing-skills.md) — the full authoring doctrine and its deployment checklist
 - [`using-skills`](../skills/using-skills.md) — the session gate
-- [Skill reference](../skills/README.md) — all 31 skills
+- [Skill reference](../skills/README.md) — all 32 skills

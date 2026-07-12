@@ -41,7 +41,7 @@ If you are unsure, run `/ask` — it is a router whose entire job is mapping a s
 | Codebase feels muddy, want a refactor target | [`/improve-architecture`](../skills/improve-architecture.md) |
 | Session ending with work unfinished | [`/handoff`](../skills/handoff.md) |
 | Cutting a version | [`/release`](../skills/release.md) |
-| Spec has drifted from the code, or `check-trace` fails in CI | [`sync-spec`](../skills/sync-spec.md) |
+| Spec has drifted from the code, or the trace check comes back dirty | [`sync-spec`](../skills/sync-spec.md) |
 
 Two rules of thumb resolve most remaining ambiguity, and both come from `ask`:
 

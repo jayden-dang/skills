@@ -23,7 +23,7 @@ Most process documentation is written as advice: *prefer*, *consider*, *it is us
 | Complies, but the output has the wrong shape | A positive recipe: what the output **is**, its parts, in order | Prohibitions — under a competing incentive agents negotiate with "don't X"; in head-to-head tests the prohibition arm produced *more* of the unwanted content than no guidance at all |
 | Omits an element from something it already produces | A REQUIRED slot in the template it fills | Prose reminders near the template |
 | Behavior should depend on a condition | A conditional keyed to an observable predicate | An unconditional rule plus exemption clauses |
-| A check that must never be skipped or misjudged | A bundled deterministic script | Prose steps describing the check |
+| A check that must never be skipped or misjudged | A deterministic check the agent runs — fixed `grep`/`git` passes with fixed rules | Prose steps describing the check |
 
 The four gates all sit in row one. They guard rules the agent *knows* and breaks anyway, under the pressure of wanting to be helpful and fast. So they get the row-one treatment: a prohibition, plus an explicit counter to every rationalization observed in a real baseline run.
 
@@ -86,7 +86,7 @@ Its claim-to-evidence table is the most quoted thing in the set:
 | "The feature works" | The affected flow driven through the running system and observed | Green unit tests alone |
 | "The bug is fixed" | Original symptom re-tested and gone | The code changed |
 | "The agent completed X" | You inspected the diff yourself | The agent's own success report |
-| "Requirements met" | `check-trace` **and** `check-graph --verify` pass, **and** each acceptance criterion checked off individually against observed behavior | Green tests alone |
+| "Requirements met" | the trace check passes, **and** each acceptance criterion checked off individually against observed behavior | Green tests alone |
 
 And the regression-proof pattern, which is the only thing that makes a regression test worth its name:
 

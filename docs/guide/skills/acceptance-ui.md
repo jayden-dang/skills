@@ -44,7 +44,7 @@ For each UI item in the ledger, write a Playwright spec that acts as a user. Loc
 
 Assert what the user sees, not internal state — a locator by role or label is how a user finds a control, and a visible-text assertion is what a user confirms; both keep the spec from coupling to markup the user never sees.
 
-Where the criterion says "persists", call `page.reload()` and assert the state survives the reload — a reload is the browser-side equivalent of the API skill's fresh `GET`, the difference between "it rendered" and "it was actually saved". Tag each spec with its requirement ID per the `project.md` conventions, for example `test('…', { tag: '@CODE-N.M' }, …)`, so [`check-trace`](../resources/scripts.md) can prove the flow is covered.
+Where the criterion says "persists", call `page.reload()` and assert the state survives the reload — a reload is the browser-side equivalent of the API skill's fresh `GET`, the difference between "it rendered" and "it was actually saved". Tag each spec with its requirement ID per the `project.md` conventions, for example `test('…', { tag: '@CODE-N.M' }, …)`, so [`trace`](trace.md) can prove the flow is covered.
 
 ## 4. Run on Chromium and fix what breaks
 
@@ -52,7 +52,7 @@ Run the specs headless on Chromium. Any failure is a real defect. The **required
 
 "A real defect" is meant literally: a spec that drove the real app and did not see the expected screen has found something a user would hit. It is never a reason to loosen the assertion — the fix goes into the code, not the expectation.
 
-The tag on each spec carries the requirement ID per the `project.md` conventions, which is what lets [`check-trace`](../resources/scripts.md) prove the flow is covered once the spec is committed.
+The tag on each spec carries the requirement ID per the `project.md` conventions, which is what lets [`trace`](trace.md) prove the flow is covered once the spec is committed.
 
 ## 5. Commit the specs
 

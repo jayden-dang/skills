@@ -6,8 +6,9 @@ ideation to release, with **requirements traceability as the spine**.
 Every feature gets a spec triad — `requirements.md` (EARS acceptance criteria
 with hierarchical IDs), `design.md` (each section says which requirements it
 satisfies), `tasks.md` (each task cites the IDs it implements). The same IDs
-flow into test tags, commit trailers, and issue bodies, and a trace-check
-script keeps the whole chain honest in CI.
+flow into test tags, commit trailers, and issue bodies, and the `trace` skill
+keeps the whole chain honest — a `grep`-and-`git` check the agent runs, no
+linter to install.
 
 📖 **[Read the guide →](docs/guide/NAVIGATION.md)**
 
@@ -21,9 +22,11 @@ go green while the feature is broken.
 Each of those failures has a defense here, and the defenses are the point.
 
 The load-bearing idea: **a requirement ID is a first-class runtime object.**
-Not a heading in a document — a string that appears in a test tag, a commit
-trailer, an issue body, and a changelog line, with a linter that fails the
-build when those uses disagree with its definition.
+Not a heading in a document — a `grep`-selectable string that appears in a test
+tag, a commit trailer, an issue body, and a changelog line. Because every use is
+the same literal string, checking that those uses agree with the ID's definition
+is `grep` plus set-difference — deterministic work the agent runs directly,
+with no bundled linter to carry.
 
 ```
 requirements.md   **SHELL-1.2** WHEN the user selects a module THE SYSTEM SHALL …
@@ -46,33 +49,25 @@ npx skills@latest add jayden-dang/skills
 Or as a Claude Code plugin (this repo is a valid plugin: skills + a
 session-start hook that keeps the skill-check gate active across compaction).
 
-**No Node runtime required.** The `npx` path above needs Node only to fetch the
-package; the skill set itself — including its two linters — runs on the Python 3
-(3.9+) that ships with your machine. To install with no Node at all, clone the
-repo and symlink the skills directly:
+**Nothing to install into your repo.** The skill set is pure `SKILL.md` — no
+Python, no linters to vendor, no build step, no runtime. To run from a local
+clone (so `git pull` updates skills in place), symlink the skill folders into
+`~/.claude/skills`:
 
 ```bash
 git clone https://github.com/jayden-dang/skills ~/dev/skills
-~/dev/skills/scripts/link-skills.sh
-```
-
-`scripts/link-skills.sh` (and the rest of the shell tooling) is plain
-`bash` — no dependency of its own either way.
-
-Dev mode — symlink so `git pull` updates skills in place:
-
-```bash
-./scripts/link-skills.sh
+for d in ~/dev/skills/skills/*/*/; do ln -sfn "$d" ~/.claude/skills/"$(basename "$d")"; done
 ```
 
 Then, once per repo, run `/setup-repo` to configure the issue tracker, verify
-commands, and docs layout. For a brand-new project, start with
-`/scaffold-project`. See [Adopting the skill set](docs/guide/resources/adopting.md).
+commands, and docs layout. It writes markdown config only — it vendors no
+scripts and wires no CI. For a brand-new project, start with `/scaffold-project`.
+See [Adopting the skill set](docs/guide/resources/adopting.md).
 
 **Other platforms.** Nothing here is Claude-specific — the skills are plain
-`SKILL.md`, the linters are Python stdlib, the tooling is bash. `AGENTS.md` at
-the repo root is the portable behavior contract; Codex CLI reads it natively and
-Cursor picks up `.cursor/rules/using-skills.mdc`. See
+`SKILL.md` and the traceability check is `grep`/`git` the agent drives.
+`AGENTS.md` at the repo root is the portable behavior contract; Codex CLI reads
+it natively and Cursor picks up `.cursor/rules/using-skills.mdc`. See
 [Running on other platforms](docs/guide/resources/platforms.md).
 
 ## The flow
@@ -119,7 +114,7 @@ and countered by name. See [The gates](docs/guide/concepts/gates.md).
 | setup | `setup-repo`, `scaffold-project` |
 | discovery | `brainstorm`, `grilling`, `research`, `prototype`, `domain-modeling` |
 | spec | `write-requirements`, `write-design`, `write-plan` |
-| execution | `execute-plan`, `tdd`, `debug`, `verify`, `worktrees` |
+| execution | `execute-plan`, `tdd`, `debug`, `verify`, `trace`, `worktrees` |
 | review | `code-review`, `receive-review` |
 | acceptance | `acceptance-check`, `acceptance-api`, `acceptance-ui`, `dogfood` |
 | ship | `finish-branch`, `release` |
@@ -127,29 +122,26 @@ and countered by name. See [The gates](docs/guide/concepts/gates.md).
 
 One page per skill in the [skill reference](docs/guide/skills/README.md).
 
-## Traceability tooling
+## Traceability, without a linter
 
-```bash
-python3 scripts/check_trace.py [--strict] [--json]     # the vertical layer
-python3 scripts/check_graph.py [--harvest|--query|--verify]   # the horizontal layer
-```
+The vertical layer — does every requirement trace to a task and a test? — is the
+`trace` skill. It runs a fixed sequence of `grep` passes (bold `**CODE-N.M**`
+definitions, `_Requirements:` task citations, ID strings across the test globs)
+and diffs the sets: it reports tasks or tests citing unknown IDs, implemented or
+shipped requirements with no covering test, and duplicate definitions; it warns on
+approved requirements no task cites. Because the passes are `grep` and the rules
+are set operations, the result is the same whoever runs it — the determinism is in
+the primitives, not in a bundled script. `verify`, `release`, `sync-spec`, and
+`write-plan` invoke it.
 
-Both are Python 3.9+ stdlib scripts — no third-party package, no network access.
+The horizontal layer — "does this idea already exist?" for `brainstorm`, "does
+this diff reimplement a neighbor?" for `code-review` — is an inline search over
+`docs/specs/`, with `docs/specs/INDEX.md` as the feature registry. No generated
+graph to keep fresh.
 
-`check_trace.py` fails on: tasks or tests citing unknown requirement IDs;
-implemented/shipped requirements with no covering test; duplicate ID
-definitions. Warns on approved requirements not yet cited by any task.
-
-`check_graph.py` harvests each feature's surface from its existing specs and
-answers "does this idea already exist?" for `brainstorm` and "does this diff
-reimplement a neighbor?" for `code-review`.
-
-`scripts/task-brief` and `scripts/review-package` support `execute-plan`'s
-subagent-per-task engine (briefs, diffs, and reports are handed over as files,
-never pasted text). `scripts/vendor_linters.py` installs the two linters into
-a consuming repo and detects drift.
-
-Full reference: [Scripts](docs/guide/resources/scripts.md).
+Teams that want a build-failing gate in CI (which runs with no agent present) can
+opt into a documented CI job; it is outside the default path. See
+[Traceability](docs/guide/concepts/traceability.md).
 
 ## Documentation
 
@@ -157,7 +149,7 @@ Full reference: [Scripts](docs/guide/resources/scripts.md).
 |---|---|
 | **[Navigation](docs/guide/NAVIGATION.md)** | by role, by problem, by phase |
 | [Overview](docs/guide/methodology/overview.md) | what this is and what it defends against |
-| [Philosophy](docs/guide/methodology/philosophy.md) | six principles, and what enforces each |
+| [Philosophy](docs/guide/methodology/philosophy.md) | the principles, and what enforces each |
 | [When to use it](docs/guide/methodology/when-to-use.md) | the honest boundaries |
 | [Traceability](docs/guide/concepts/traceability.md) | the spine |
 | [The process](docs/guide/process/README.md) | the chain, phase by phase |

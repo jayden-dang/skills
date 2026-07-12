@@ -41,11 +41,11 @@ Five steps, of which two are easy to skip and expensive to have skipped:
 
 ```
  1. BASE=$(git rev-parse HEAD)              ← before dispatch, always
- 2. task-brief <tasks.md> N                 → .skills/task-N-brief.md
+ 2. assemble .skills/task-N-brief.md        (copy the task block + Global Constraints verbatim)
  3. dispatch a FRESH implementer            (implementer-prompt.md; model stated explicitly)
  4. answer its questions completely         never rush it into implementation
  5. handle the status                       DONE / DONE_WITH_CONCERNS / NEEDS_CONTEXT / BLOCKED
- 6. review-package $BASE $(git rev-parse HEAD)   → .skills/review-<b>..<h>.diff
+ 6. write .skills/review-<b>..<h>.diff      (git diff $BASE..HEAD)
  7. dispatch a task reviewer                (task-reviewer-prompt.md; two verdicts)
  8. fix loop                                → fix subagent → RE-REVIEW → repeat until clean
  9. resolve ⚠️ cannot-verify-from-diff items

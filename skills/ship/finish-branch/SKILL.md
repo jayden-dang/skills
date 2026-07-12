@@ -11,7 +11,7 @@ Decide what happens to completed work: gate on the verify suite, detect the envi
 
 ## 1. Gate: verify, trace, and acceptance
 
-REQUIRED SUB-SKILL: use `verify` to run every verify command from `docs/agents/project.md` (typecheck, lint, unit, e2e) fresh AND to confirm `check-trace` is clean — a branch must not merge with untraced requirements, the same gate `release` enforces. If no test command is discoverable, ask the user for it and suggest `setup-repo`.
+REQUIRED SUB-SKILL: use `verify` to run every verify command from `docs/agents/project.md` (typecheck, lint, unit, e2e) fresh AND to confirm the `trace` check is clean — a branch must not merge with untraced requirements, the same gate `release` enforces. If no test command is discoverable, ask the user for it and suggest `setup-repo`.
 
 If the branch has user-facing behavior that has not been driven through the running system, REQUIRED SUB-SKILL: use `acceptance-check` before offering Merge or PR — green units prove assertions pass, not that the feature works.
 

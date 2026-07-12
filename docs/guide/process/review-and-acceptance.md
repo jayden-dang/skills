@@ -31,7 +31,7 @@ At aggregation time this is enforced rather than merely suggested. The reports a
 
 Two rules bind the baseline. **A documented repo standard always overrides it**, and **every baseline hit is a labeled judgment call**, never a hard violation. And: skip anything tooling already enforces. A reviewer repeating the linter is noise.
 
-**Check for duplication.** `check-graph --query` against the diff's changed files returns overlapping features and their [summary cards](../concepts/feature-graph.md). When overlaps exist, the Spec subagent additionally receives those cards and is directed to flag — as a **reuse-miss** finding citing the neighbor's feature code — any place the diff reimplements behavior a shares-surface neighbor already owns.
+**Check for duplication.** An inline `grep` over `docs/specs/` for the diff's changed file paths returns overlapping features and their [Summary cards](../concepts/feature-graph.md). When overlaps exist, the Spec subagent additionally receives those cards and is directed to flag — as a **reuse-miss** finding citing the neighbor's feature code — any place the diff reimplements behavior a shares-surface neighbor already owns.
 
 **Dispatch.** Both subagents are **read-only**: no mutation of the working tree, index, HEAD, or branch state. To inspect another revision, use a temporary worktree — never move HEAD. Each brief stays under 400 words. Never pre-judge findings: no "do not flag", no pre-rated severities.
 
@@ -117,4 +117,4 @@ It scopes the happy path, the edge cases, **and the deliberate non-behaviors** �
 - [Traceability](../concepts/traceability.md) — what "covered" means, and what it does not prove
 - [`code-review`](../skills/code-review.md) — the twelve baseline smells
 - [`acceptance-check`](../skills/acceptance-check.md) — the orchestrator
-- [The feature graph](../concepts/feature-graph.md) — the reuse-miss check
+- [Feature overlap](../concepts/feature-graph.md) — the reuse-miss check

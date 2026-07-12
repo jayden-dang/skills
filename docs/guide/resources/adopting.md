@@ -8,13 +8,11 @@ npx skills@latest add jayden-dang/skills
 
 Or install it as a Claude Code plugin — this repo is a valid plugin, shipping the skills plus a `SessionStart` hook that keeps the skill-check gate alive across `/clear` and compaction.
 
-**Dev mode**, so `git pull` updates the skills in place:
+**Dev mode**, so `git pull` updates the skills in place: clone the repo and symlink each skill folder into `~/.claude/skills`:
 
 ```bash
-./scripts/link-skills.sh
+for d in skills/*/*/; do ln -sfn "$PWD/$d" ~/.claude/skills/$(basename "$d"); done
 ```
-
-This symlinks the skill directories into `~/.claude/skills`.
 
 ## Then configure the repo, once
 
@@ -71,7 +69,7 @@ Each maps to the label string *this repo actually uses*, so `triage` never creat
 
 **C. Verify commands.** typecheck, lint, unit, e2e — plus the **single-test-file pattern**, the command shape for running one test file. That is the tight loop `tdd` lives in.
 
-**D. Test annotation conventions.** One per test layer, chosen to be greppable and to match the repo's frameworks. This is what lets `check-trace` find requirement IDs in tests.
+**D. Test annotation conventions.** One per test layer, chosen to be greppable and to match the repo's frameworks. This is what lets the trace check find requirement IDs in tests.
 
 **E. Release steps.** The ordered, project-specific commands `release` executes and refuses to improvise. An empty list is a valid answer for a library with no build.
 
@@ -81,17 +79,15 @@ Each maps to the label string *this repo actually uses*, so `triage` never creat
 
 `docs/agents/project.md`, `issue-tracker.md`, and `triage-labels.md`; `docs/specs/INDEX.md` if missing; `CONTEXT.md` if missing; and an `## Agent skills` block into **exactly one canonical file** — `AGENTS.md` by default, with a short `CLAUDE.md` pointing at it, so Claude Code finds instructions by its native filename without duplicating them.
 
-It also vendors the two linters via `vendor_linters.py`, and ensures `.skills/` and `.worktrees/` are git-ignored.
+It writes markdown only — no scripts, no linters, no CI, no git hooks land in the repo. It also ensures `.skills/` and `.worktrees/` are git-ignored.
 
 **The additive rule governs everything:** existing files are edited in place, never clobbered.
 
-### The three opt-ins
+### The one opt-in
 
-Each is offered; each acts only on a yes.
+Offered, and applied only on a yes: the **session-start hook** — copied into the repo at `.claude/hooks/session-start.sh` and referenced via `$CLAUDE_PROJECT_DIR`, never an absolute path (which would break on every other machine). It is dependency-free and re-injects the [`using-skills`](../skills/using-skills.md) gate on `startup | clear | compact`.
 
-1. **Session-start hook** — vendored into the repo at `.claude/hooks/session-start.sh` and referenced via `$CLAUDE_PROJECT_DIR`, never an absolute path (which would break on every other machine).
-2. **Trace and graph checks in CI** — appended to an *existing* workflow. No CI workflow exists? It says so and skips; authoring one is out of scope.
-3. **Git verify hooks** — `pre-commit` gets the fast gates, `pre-push` gets tests plus both linters. If you already run a hook manager, the commands go into that one.
+A hard headless gate — running the trace check in CI, or a git pre-push hook — is optional and team-specific. It lives outside the default path, so `setup-repo` does not wire one; the trace check runs inside `verify` and `release` regardless.
 
 ### Step 6 is the step that matters
 
@@ -107,28 +103,28 @@ So every configured command gets run, and the result classified:
 | **Content failure** | the tool ran correctly and reported problems — type errors, lint warnings, failing tests | No. The repo has pre-existing issues; they get recorded |
 | **Pass** | wired and green | No |
 
-It is cost-aware: typecheck and lint run in full; test runners are proven cheaply via the single-test-file pattern or a collect-only mode, never a full e2e run. `check-trace` must execute and exit 0 (zero requirements is a valid clean state). `check-graph --harvest` must write `GRAPH.md`, and `--verify` must exit 0 — because an unrunnable graph linter makes `brainstorm` and `code-review` skip their duplication checks forever, *which looks exactly like "no overlapping features"*. And a remote tracker gets one read-only call to prove it is reachable and authenticated.
+It is cost-aware: typecheck and lint run in full; test runners are proven cheaply via the single-test-file pattern or a collect-only mode, never a full e2e run. And a remote tracker gets one read-only call to prove it is reachable and authenticated. The trace check needs nothing wired — the agent drives it with `grep`/`git` — so there is no command to prove; zero requirements is already a valid clean state.
 
 You get a table: each command → wired? → passed / failed / pre-existing.
 
 ## Adopting incrementally
 
-You do not have to spec the whole codebase. The skill set works on a per-feature basis, and `check-trace` treats zero requirements as a clean state.
+You do not have to spec the whole codebase. The skill set works on a per-feature basis, and the trace check treats zero requirements as a clean state.
 
-**The fastest first pass.** You do not have to answer every question deeply or take every opt-in on day one. Accept each of `setup-repo`'s recommended defaults, choose the `local` markdown tracker if you have no strong preference, and decline the three opt-ins (session hook, CI, git hooks) for now. That gets you a working trace spine and detected verify commands with the fewest decisions — enough to take one feature through the chain. Re-run `/setup-repo` later to add the hook, CI, and git hooks once the workflow has earned its place; it is additive and never clobbers your earlier answers.
+**The fastest first pass.** You do not have to answer every question deeply on day one. Accept each of `setup-repo`'s recommended defaults, choose the `local` markdown tracker if you have no strong preference, and decline the session-start hook for now. That gets you a working trace spine and detected verify commands with the fewest decisions — enough to take one feature through the chain. Re-run `/setup-repo` later to add the hook once the workflow has earned its place; it is additive and never clobbers your earlier answers.
 
 A reasonable path:
 
-1. Run `/setup-repo`. Take the CI and hook opt-ins.
+1. Run `/setup-repo`. Take the session-start hook opt-in.
 2. Take the **next** feature through the full chain — `brainstorm` → the triad → `execute-plan`. One feature code, one spec folder.
 3. Take the next **bug** through `debug` and let it write its tier-1 mini-spec into `docs/specs/fixes.md`.
 4. Leave the existing code alone. Untraced code is not an error; only an *implemented requirement without a covering test* is.
 
-The spine grows from the edges inward. `check-graph --harvest` will pick up each new feature's surface as its spec lands, and the dedup check gets more useful with every one.
+The spine grows from the edges inward. Each new feature registers its code in `docs/specs/INDEX.md` as its spec lands, so `brainstorm`'s inline `docs/specs/` search finds more prior art with every one.
 
 ## Afterwards
 
-`docs/agents/*.md` can be edited directly. Re-running `/setup-repo` is only needed to switch trackers or start over — and when you do, it checks the vendored linters for drift first and offers to update them.
+`docs/agents/*.md` can be edited directly. Re-running `/setup-repo` is only needed to switch trackers or start over.
 
 ## See also
 

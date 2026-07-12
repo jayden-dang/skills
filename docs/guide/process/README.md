@@ -9,7 +9,7 @@ using-skills                 session gate, injected on startup/clear/compact
       │
       ▼
 brainstorm                   grilling + domain-modeling; research/prototype detours;
-                             feature-graph dedup check; tier decision; approach chosen
+                             docs/specs/ overlap search; tier decision; approach chosen
                              ══ HARD GATE: no code, no scaffolding ══
       │
       ▼
@@ -28,7 +28,7 @@ write-plan                   vertical-slice tasks with _Requirements:_ footers;
 worktrees                    isolated workspace, clean baseline
       │
       ▼
-execute-plan                 per task: brief → implementer (tdd) → review-package →
+execute-plan                 per task: brief → implementer (tdd) → review diff →
                              two-verdict review → fixes → ledger
                              [debug on failures; verify before any claim]
       │
@@ -94,7 +94,7 @@ sync-spec                    whenever a spec'd feature changed outside its plan
 |---|---|---|
 | Discovery | `brainstorm`, `grilling`, `research`, `prototype`, `domain-modeling` | [Discovery](discovery.md) |
 | Specification | `write-requirements`, `write-design`, `write-plan` | [Specification](specification.md) |
-| Execution | `worktrees`, `execute-plan`, `tdd`, `debug`, `verify` | [Execution](execution.md) |
+| Execution | `worktrees`, `execute-plan`, `tdd`, `debug`, `verify`, `trace` | [Execution](execution.md) |
 | Review & acceptance | `code-review`, `receive-review`, `acceptance-*`, `dogfood` | [Review and acceptance](review-and-acceptance.md) |
 | Ship & maintain | `finish-branch`, `release`, `sync-spec`, `amend`, `triage`, `improve-architecture`, `handoff` | [Ship and maintain](ship-and-maintain.md) |
 
@@ -114,7 +114,7 @@ The chain is not one-way. Several skills feed back into earlier phases:
 - `debug` exits into the tier-1 mini-spec flow, which means it re-enters `write-requirements`.
 - `improve-architecture` ends by handing its chosen candidate to `brainstorm`. Architecture work earns no exemption from the spec gate.
 - `amend` escalates to `brainstorm` the moment a "small" change turns out to be new scope.
-- `sync-spec` is invoked from `finish-branch`, `release`, and `amend` — and directly, whenever `check-trace` fails in CI.
+- `sync-spec` is invoked from `finish-branch`, `release`, and `amend` — and directly, whenever the trace check comes back dirty.
 
 ## See also
 

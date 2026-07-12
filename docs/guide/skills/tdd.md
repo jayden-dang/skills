@@ -51,7 +51,7 @@ Then take the next slice.
 
 ## Requirement tagging
 
-Every test carries the ID of the requirement it verifies, using the conventions recorded in `docs/agents/project.md` by [`setup-repo`](setup-repo.md). This is the link that makes [`check-trace`](../resources/scripts.md#check-trace) able to prove coverage.
+Every test carries the ID of the requirement it verifies, using the conventions recorded in `docs/agents/project.md` by [`setup-repo`](setup-repo.md). This is the link that makes the [`trace`](trace.md) check able to prove coverage.
 
 | Layer | Convention |
 |---|---|
@@ -116,7 +116,7 @@ Implements: SHELL-1.4
 Guards: SHELL-1.2
 ```
 
-The ID in the test name and the ID in the trailer are what let `check-trace` prove `SHELL-1.4` is covered, and what let [`release`](release.md) write the changelog entry as shipped behavior rather than commit prose.
+The ID in the test name and the ID in the trailer are what let [`trace`](trace.md) prove `SHELL-1.4` is covered, and what let [`release`](release.md) write the changelog entry as shipped behavior rather than commit prose.
 
 Note what the expected value is *not*: `store.read('activeModule')`. That would be a tautological test — recomputing the expectation the same way the code computes it. The literal `'notes'` comes from an independent source of truth, the requirement text itself.
 

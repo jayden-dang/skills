@@ -59,7 +59,7 @@ Implements: SHELL-1.4
 Guards: SHELL-1.5
 ```
 
-If no existing feature owns the behavior, the mini-spec lands in `docs/specs/fixes.md` instead — a shared home that `check-trace` reads for ID definitions like any other requirements file.
+If no existing feature owns the behavior, the mini-spec lands in `docs/specs/fixes.md` instead — a shared home the trace check reads for ID definitions like any other requirements file.
 
 ## What escalation looks like
 

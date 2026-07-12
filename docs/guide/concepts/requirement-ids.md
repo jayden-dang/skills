@@ -2,7 +2,7 @@
 
 The requirement ID is the single most important object in this system. Everything else is scaffolding around it.
 
-It is not a heading in a document. It is a string that appears in a test tag, a commit trailer, an issue body, a design section, a task footer, and a changelog line — and a linter fails the build when those uses disagree with its definition.
+It is not a heading in a document. It is a string that appears in a test tag, a commit trailer, an issue body, a design section, a task footer, and a changelog line — and the [trace check](traceability.md) reports a failure when those uses disagree with its definition.
 
 ## The grammar
 
@@ -20,7 +20,7 @@ SHELL-1.2
 
 **Criterion number.** One observable behavior. If an acceptance criterion needs the word "and", it is usually two criteria.
 
-The regex `check-trace` actually matches is `\b([A-Z][A-Z0-9]{1,11})-(\d+)\.(\d+)(?![.\d])`. Two details in there are deliberate. There is no trailing `\b`, because a markdown italics footer ends with `_` — a word character — which would silently drop the last ID on the line. And the negative lookahead `(?![.\d])` guards against matching a prefix of a longer number.
+The pattern the [trace check](../resources/scripts.md#the-trace-check) matches is `\b([A-Z][A-Z0-9]{1,11})-(\d+)\.(\d+)(?![.\d])`. Two details in there are deliberate. There is no trailing `\b`, because a markdown italics footer ends with `_` — a word character — which would silently drop the last ID on the line. And the negative lookahead `(?![.\d])` guards against matching a prefix of a longer number.
 
 ## Where a definition lives
 
@@ -31,7 +31,7 @@ An ID is *defined* in exactly one place: a `requirements.md` file, as a bolded c
   selection and restore it on next launch.
 ```
 
-Tier-1 fixes that no feature owns may instead be defined in `docs/specs/fixes.md`, a shared home `check-trace` reads the same way.
+Tier-1 fixes that no feature owns may instead be defined in `docs/specs/fixes.md`, a shared home the trace check reads the same way.
 
 Defining the same ID twice is error **E3**.
 
@@ -48,7 +48,7 @@ Defining the same ID twice is error **E3**.
 | Issue body | a `Requirements covered:` section |
 | Changelog entry | assembled from the trailers, rendered as the requirement's own text |
 
-The per-layer test conventions are not hardcoded. [`setup-repo`](../skills/setup-repo.md) asks which convention each test layer in *this* repo uses and records the answers in `docs/agents/project.md`; [`tdd`](../skills/tdd.md) and [`check-trace`](../resources/scripts.md) both read from there. The only hard requirement is that the convention be **greppable**.
+The per-layer test conventions are not hardcoded. [`setup-repo`](../skills/setup-repo.md) asks which convention each test layer in *this* repo uses and records the answers in `docs/agents/project.md`; [`tdd`](../skills/tdd.md) and the [trace check](../resources/scripts.md#the-trace-check) both read from there. The only hard requirement is that the convention be **greppable**.
 
 ## Immutability
 
@@ -62,13 +62,13 @@ So requirements are never deleted and never renumbered. They are **retired by st
 - ~~**SHELL-1.2**~~ superseded by SHELL-1.4
 ```
 
-`check-trace` treats a struck-through ID as **undefined**. That is the clever part: the moment you retire a requirement, every test and task still citing it surfaces immediately as an **E1** error ("cites unknown requirement"). Retirement cannot be done quietly.
+The trace check treats a struck-through ID as **undefined**. That is the clever part: the moment you retire a requirement, every test and task still citing it surfaces immediately as an **E1** error ("cites unknown requirement"). Retirement cannot be done quietly.
 
 New requirements take the next free number under their story. [`sync-spec`](../skills/sync-spec.md) enforces both rules as its Iron Rules, and treats the orphans that strikethrough surfaces as *decisions to put to the user*, not cleanup to perform silently.
 
 ## The checks that enforce it
 
-`check-trace` emits three errors and two warnings. Exit code 1 on any error, and on any warning under `--strict`.
+The [trace check](../resources/scripts.md#the-trace-check) reports three errors and two warnings. Any error is a failure the invoking skill acts on; warnings are surfaced but do not fail the gate on their own.
 
 | Code | Meaning |
 |---|---|
@@ -80,7 +80,7 @@ New requirements take the next free number under their story. [`sync-spec`](../s
 
 The interplay between W1 and E2 is the one to understand, and [`write-plan`](../skills/write-plan.md) calls it out explicitly. A task footer citing an ID satisfies W1 while the spec is merely `Approved`. But a footer is not a test. The moment the feature flips to `Implemented`, that same uncovered ID becomes an **E2 error**.
 
-So `write-plan`'s coverage check goes further than `check-trace` can at plan time: every requirement ID must appear not only in a task footer, but in a **test annotation inside some task's steps**. An ID the design promised to cover but the plan left untagged is *dropped coverage* — the fix is to add the test, never to renumber.
+So `write-plan`'s coverage check goes further than the trace check can at plan time: every requirement ID must appear not only in a task footer, but in a **test annotation inside some task's steps**. An ID the design promised to cover but the plan left untagged is *dropped coverage* — the fix is to add the test, never to renumber.
 
 ## Status lifecycle
 
@@ -93,7 +93,7 @@ Draft ──► Approved ──► Implemented ──► Shipped
 | Transition | Evidence required |
 |---|---|
 | Draft → Approved | the user explicitly approved the written file — never inferred from conversation |
-| Approved → Implemented | every task box checked **and** `check-trace` shows every live requirement covered by a test |
+| Approved → Implemented | every task box checked **and** the trace check shows every live requirement covered by a test |
 | Implemented → Shipped | the feature went out in a release (normally applied by [`release`](../skills/release.md)) |
 
 `sync-spec` applies a transition only when its evidence exists. If the evidence is partial, it says exactly what is missing rather than transitioning.
@@ -110,7 +110,7 @@ And the companion term:
 
 > **Citation** — an occurrence of a requirement ID that a runner attests to. Distinct from a **fixture ID**: an ID-shaped string appearing in source (example data, documentation) that no test ever asserts.
 
-That distinction is why `check-trace` supports an `ignore` list in `docs/agents/trace.json` — a repo's own test files for `check-trace` itself contain ID-shaped fixture strings, and scanning them would produce phantom citations.
+That distinction matters because the trace check's citation pass is a textual `grep`: an ID string present in a test file counts, and the check cannot tell a real assertion from a fixture. So its coverage signal is textual — necessary but not sufficient. A repo whose own fixtures carry ID-shaped strings can name those files in the trace ignore list in `docs/agents/project.md` so the pass skips them and does not report phantom citations.
 
 ## Worked example
 
@@ -157,5 +157,5 @@ Nobody wrote that changelog line. It was derived, and it is derivable precisely 
 
 - [Traceability](traceability.md) — why the spine exists and what it buys
 - [EARS reference](../resources/ears.md) — the criterion syntax the IDs attach to
-- [`check-trace`](../resources/scripts.md#check-trace) — the linter, its flags and config
+- [The trace check](../resources/scripts.md#the-trace-check) — the grep/git passes and their rules
 - [`write-requirements`](../skills/write-requirements.md) — where IDs are minted

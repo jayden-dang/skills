@@ -17,7 +17,7 @@ When implementation on a branch is complete and committed and an integration dec
 
 ## The gate comes first
 
-Before any option is offered, [`verify`](verify.md) runs every verify command from `docs/agents/project.md` — typecheck, lint, unit, e2e — **fresh**, and confirms [`check-trace`](../resources/scripts.md#check-trace) is clean. A branch must not merge with untraced requirements; this is the same gate [`release`](release.md) enforces. If no test command is discoverable, the skill asks the user for it and suggests [`setup-repo`](setup-repo.md).
+Before any option is offered, [`verify`](verify.md) runs every verify command from `docs/agents/project.md` — typecheck, lint, unit, e2e — **fresh**, and confirms the [`trace`](trace.md) check is clean. A branch must not merge with untraced requirements; this is the same gate [`release`](release.md) enforces. If no test command is discoverable, the skill asks the user for it and suggests [`setup-repo`](setup-repo.md).
 
 If the branch has user-facing behavior that has not been driven through the running system, [`acceptance-check`](acceptance-check.md) runs before Merge or PR is even offered — green units prove assertions pass, not that the feature works.
 
@@ -110,7 +110,7 @@ Never:
 
 ## Worked example
 
-A feature branch `feat/shell-module-persistence` is complete in a linked worktree at `.worktrees/shell-module-persistence`. The skill runs [`verify`](verify.md): typecheck, lint, and the unit suite pass fresh, and `check-trace` reports every `SHELL` requirement covered. The feature is user-facing, so [`acceptance-check`](acceptance-check.md) drives module persistence through the running app — it passes and leaves committed tests behind.
+A feature branch `feat/shell-module-persistence` is complete in a linked worktree at `.worktrees/shell-module-persistence`. The skill runs [`verify`](verify.md): typecheck, lint, and the unit suite pass fresh, and [`trace`](trace.md) reports every `SHELL` requirement covered. The feature is user-facing, so [`acceptance-check`](acceptance-check.md) drives module persistence through the running app — it passes and leaves committed tests behind.
 
 The environment probe finds `GIT_DIR` differs from `GIT_COMMON` on a named branch: a linked worktree, provenance-checked cleanup applies. The base branch resolves to `main` via `refs/remotes/origin/HEAD`. The four-option menu is presented verbatim, and the user picks option 1.
 

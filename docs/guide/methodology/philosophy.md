@@ -18,12 +18,12 @@ Intent lives in persisted, individually addressable requirements — not in chat
 
 Chat history is the worst possible place to store what a project is supposed to do. It is unaddressable, unsearchable, and it is deleted by compaction at exactly the moment the work gets long enough to need it. So intent gets written to `requirements.md`, given an immutable ID, and every downstream artifact points back at that ID.
 
-The corollary matters more than the principle: **a script, not diligence, keeps this honest.** Every project that has ever kept a requirements traceability matrix by hand has watched it rot. [`check-trace`](../resources/scripts.md#check-trace) runs in `verify`, in `release`, and in CI, and it fails the build.
+The corollary matters more than the principle: **a deterministic check, not diligence, keeps this honest.** Every project that has ever kept a requirements traceability matrix by hand has watched it rot. The [`trace`](../resources/scripts.md#the-trace-check) skill runs a fixed sequence of `grep` and `git` passes — invoked by `verify`, by `release`, and by `sync-spec` — and a dirty result blocks the claim.
 
 > *"If it isn't in an approved requirements.md, it lives only in this chat and dies with it."*
 > — `brainstorm`, rationalization table
 
-**Enforced by:** `check_trace.py`, run by `verify`, `finish-branch`, `release`, and CI.
+**Enforced by:** the `trace` skill's `grep`/`git` passes, run by `verify`, `finish-branch`, `release`, and `sync-spec`.
 
 ## 3. Gates, not vibes
 
@@ -54,7 +54,7 @@ Skills read repo config from `docs/agents/*.md`. GitHub Issues, GitLab, Linear, 
 
 No skill hardcodes a test command, a lint command, a label string, or a release step. [`setup-repo`](../skills/setup-repo.md) asks once, writes the answers to `docs/agents/project.md`, `issue-tracker.md`, and `triage-labels.md`, and then *proves each command actually runs* before declaring setup complete. Every other skill reads from there.
 
-The distinction that step-6 gate draws is worth internalizing: a **wiring failure** (command not found, missing script, bad manifest path) is a config bug you must fix now. A **content failure** (type errors, failing tests) means the command is wired right and the repo has pre-existing issues; record it and move on. Confirmed-with-the-user is not the same as works-in-this-project.
+The distinction that step-6 gate draws is worth internalizing: a **wiring failure** (command not found, a wrong path, a misconfigured command) is a config bug you must fix now. A **content failure** (type errors, failing tests) means the command is wired right and the repo has pre-existing issues; record it and move on. Confirmed-with-the-user is not the same as works-in-this-project.
 
 **Enforced by:** `setup-repo` step 6, which runs every configured command and classifies the result.
 

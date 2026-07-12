@@ -98,7 +98,7 @@ are what get approved. On approval, set `Status: Approved`.
 
 Once Status is Approved, IDs never change meaning and are never renumbered.
 Retire a requirement by striking it through (`~~**CODE-1.2**~~ superseded by
-CODE-1.4`). `check-trace` treats struck-through IDs as undefined, so citing
+CODE-1.4`). the `trace` check treats struck-through IDs as undefined, so citing
 tests/tasks surface immediately.
 
 ## Exit

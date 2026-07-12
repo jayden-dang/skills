@@ -64,7 +64,7 @@ Then the skill presents the **written file** and stops. Conversational agreement
 
 ## ID immutability
 
-Once `Status` is Approved, an ID never changes meaning and is never renumbered. To retire a requirement you strike it through: `~~**CODE-1.2**~~ superseded by CODE-1.4`. [`check-trace`](../resources/scripts.md#check-trace) treats a struck-through ID as undefined, so any test or task still citing it surfaces immediately as an E1 error rather than rotting silently. This is why the ID, not the prose, is the unit of reference across the whole system — see [Requirement IDs](../concepts/requirement-ids.md).
+Once `Status` is Approved, an ID never changes meaning and is never renumbered. To retire a requirement you strike it through: `~~**CODE-1.2**~~ superseded by CODE-1.4`. The [`trace`](trace.md) check treats a struck-through ID as undefined, so any test or task still citing it surfaces immediately as an E1 error rather than rotting silently. This is why the ID, not the prose, is the unit of reference across the whole system — see [Requirement IDs](../concepts/requirement-ids.md).
 
 ## Worked example
 

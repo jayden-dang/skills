@@ -40,15 +40,15 @@ issue / changelog        Requirements covered: SHELL-1.2
                          "Module selection persists across launches — SHELL-1.2"
 ```
 
-Every link is a citation. Every citation is machine-checkable. And the check runs on every `verify`, every `finish-branch`, every `release`, and in CI.
+Every link is a citation. Every citation is checkable by a fixed rule. And the check runs on every `verify`, every `release`, every `sync-spec`, and inside `write-plan`'s coverage check.
 
-## Why a script, not diligence
+## Why a check, not diligence
 
 Every project that has ever maintained a requirements traceability matrix by hand has watched it rot. The matrix is correct on the day it is written and wrong within a month, because keeping it correct is unpaid work that nobody notices until an audit.
 
-So the system makes a different bet: **the trace is enforced by a linter or it does not exist.**
+So the system makes a different bet: **the trace is enforced by a mechanical check or it does not exist.**
 
-[`check_trace.py`](../resources/scripts.md#check-trace) is a zero-dependency Python script. It parses the requirements files for definitions, the task footers and test files for citations, and it fails:
+The [trace check](../resources/scripts.md#the-trace-check) is a fixed sequence of `grep` and `git` passes with a fixed rule on their output — nothing to install into the repo, no program and no interpreter. It reads the requirements files for definitions and the task footers and test files for citations, and it reports:
 
 | Code | Meaning |
 |---|---|
@@ -56,15 +56,11 @@ So the system makes a different bet: **the trace is enforced by a linter or it d
 | **E2** | a requirement in an `Implemented`/`Shipped` spec has zero covering tests |
 | **E3** | the same ID is defined twice |
 | **W1** | an `Approved` requirement is cited by no task |
-| **W2** | a requirements file lacks a `Status:` or `Feature code:` line |
+| **W2** | a requirements file lacks a `Status:` or `Feature-code:` line |
 
-This is [`writing-skills`](../skills/writing-skills.md)' doctrine applied to itself. From its table of what form fixes what failure:
+Determinism comes from the primitives: `grep` and `git` produce the same output every run, and the rule applied to that output leaves nothing to interpretation. This is [`writing-skills`](../skills/writing-skills.md)' doctrine applied to itself — a check that must never be skipped or misjudged is expressed as a set sequence of deterministic passes the skill runs and acts on, not as prose steps describing a check, because the output of a primitive is deterministic and language interpretation is not.
 
-| Baseline failure | Write this | Not this |
-|---|---|---|
-| A check that must never be skipped or misjudged | A bundled deterministic script the skill runs and acts on | Prose steps describing the check — **code is deterministic, language interpretation is not** |
-
-And the corollary, from the same skill: *if the rule is mechanically enforceable, automate it and skip the skill.* Documentation is for the judgment calls a check cannot make.
+One consequence is load-bearing: because the citation pass is a textual `grep`, **coverage is textual**. An ID string present in a test file counts; the check does not judge whether the test truly asserts the behavior. That judgement is the job of the surrounding skills.
 
 ## What "covered" actually means
 
@@ -74,7 +70,7 @@ The word does real work here, so the repo's glossary pins it down:
 >
 > *Avoid:* "has a test" (a string in a file is not a test), "tagged" (tagging is the mechanism, coverage is the outcome).
 
-This is why [`verify`](../skills/verify.md) will not accept "requirements met" on green tests alone. Its claim-to-evidence table demands `check-trace` **and** `check-graph --verify` passing **and** each acceptance criterion checked off individually against observed behavior.
+This is why [`verify`](../skills/verify.md) will not accept "requirements met" on green tests alone. Its claim-to-evidence table demands the trace check passing **and** each acceptance criterion checked off individually against observed behavior.
 
 And it is why [`acceptance-check`](../skills/acceptance-check.md) exists at all. Green unit tests prove that the assertions someone wrote pass. They do not prove the feature works.
 
@@ -96,13 +92,13 @@ Concretely: an agent implements `SHELL-1.2`, a later refactor breaks it, and the
 
 Without the spine, nothing notices. The requirement is still in the document, still reading as true.
 
-With it: `requirements.md` says `Status: Implemented`, `SHELL-1.2` has zero covering tests, and `check-trace` exits 1 with `E2 SHELL-1.2 (docs/specs/…/requirements.md, Implemented) has no covering test`. CI is red. `finish-branch` refuses to present the merge menu. `release` refuses to tag.
+With it: `requirements.md` says `Status: Implemented`, `SHELL-1.2` has zero covering tests, and the trace check reports `E2 SHELL-1.2 (docs/specs/…/requirements.md, Implemented) has no covering test`. [`verify`](../skills/verify.md) refuses to say "requirements met". [`release`](../skills/release.md) refuses to tag. The gap surfaces at the moment someone tries to claim the work is done.
 
 ## Its limits
 
-The spine proves that a *test citing an ID ran and passed*. It cannot prove the test is a good test.
+The spine proves that a *test citing an ID exists*. It cannot prove the test ran, passed, or is a good test.
 
-That is the job of the surrounding skills, and it is worth being clear that they are doing separate work: [`tdd`](../skills/tdd.md)'s anti-pattern table (tautological tests, tests that assert on mocks, tests coupled to implementation), `code-review`'s Standards axis, and the acceptance family driving the running system as a real client. A tautological test tagged `@SHELL-1.2` satisfies `check-trace` completely and proves nothing at all.
+That is the job of the surrounding skills, and it is worth being clear that they are doing separate work: [`verify`](../skills/verify.md) demands each criterion checked against observed behavior; [`tdd`](../skills/tdd.md)'s anti-pattern table (tautological tests, tests that assert on mocks, tests coupled to implementation); `code-review`'s Standards axis; and the acceptance family driving the running system as a real client. A tautological test tagged `@SHELL-1.2` satisfies the trace check completely and proves nothing at all.
 
 Traceability guarantees the *presence* of an attested link. The rest of the system guarantees the link is worth having.
 
@@ -110,5 +106,5 @@ Traceability guarantees the *presence* of an attested link. The rest of the syst
 
 - [Requirement IDs](requirement-ids.md) — the grammar, immutability, and status lifecycle
 - [The gates](gates.md) — the four Iron Laws the spine supports
-- [`check-trace`](../resources/scripts.md#check-trace) — flags, config, exit codes
-- [The feature graph](feature-graph.md) — the horizontal layer built on the same specs
+- [The trace check](../resources/scripts.md#the-trace-check) — the grep/git passes and their rules
+- [Feature overlap](feature-graph.md) — the horizontal layer built on the same specs

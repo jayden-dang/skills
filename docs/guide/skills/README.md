@@ -1,6 +1,6 @@
 # Skill reference
 
-Thirty-one skills in nine buckets. Each has its own page.
+Thirty-two skills in nine buckets. Each has its own page.
 
 **Invocation** is the thing to check first. A **model-invocable** skill is invoked by the agent on its own when its description matches the situation. A **user-invoked** skill carries `disable-model-invocation: true` in its frontmatter — the agent *cannot* invoke it, so you run it as a slash command.
 
@@ -24,7 +24,7 @@ Run once per repo.
 
 | Skill | Invocation | What it does |
 |---|---|---|
-| [`setup-repo`](setup-repo.md) | `/setup-repo` | The seven-step wizard. Writes `docs/agents/*.md`, vendors the linters, and **proves every configured command actually runs** |
+| [`setup-repo`](setup-repo.md) | `/setup-repo` | The seven-step wizard. Writes `docs/agents/*.md` markdown config and **proves every configured command actually runs** |
 | [`scaffold-project`](scaffold-project.md) | `/scaffold-project` | Greenfield bootstrap to a verified baseline: one passing example test, every tool wired |
 
 ## discovery
@@ -57,6 +57,7 @@ The triad. Each file approved before the next is written.
 | [`tdd`](tdd.md) | model | **Iron Law:** no production code without a failing test first |
 | [`debug`](debug.md) | model | **Iron Law:** no fixes without root cause. Phase 1 is the red-capable command gate |
 | [`verify`](verify.md) | model | **Iron Law:** no completion claims without fresh evidence |
+| [`trace`](trace.md) | model | Deterministic traceability check — grep/git passes, fixed rules, zero errors to pass |
 | [`worktrees`](worktrees.md) | model | Isolated workspace, clean baseline. Never fight the harness |
 
 ## review

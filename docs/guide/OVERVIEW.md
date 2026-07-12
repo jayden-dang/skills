@@ -27,7 +27,7 @@ Three ways in: by role, by problem, or by phase.
 1. [Philosophy](methodology/philosophy.md) — the six principles and what enforces each
 2. [The skill model](concepts/skill-model.md) — invocation kinds, the description rule, the authoring vocabulary
 3. [`writing-skills`](skills/writing-skills.md) — the Iron Law, and the deployment checklist
-4. [Scripts](resources/scripts.md) — the linters, their flags and config
+4. [Enforcement and tooling](resources/scripts.md) — the `trace` skill and the session hook
 5. [`DESIGN.md`](../../DESIGN.md) — the architecture spec of record
 
 ### I'm evaluating this from the outside
@@ -49,7 +49,7 @@ Three ways in: by role, by problem, or by phase.
 | …start a brand-new project | [`/scaffold-project`](skills/scaffold-project.md) |
 | …adopt this on an existing repo | [`/setup-repo`](skills/setup-repo.md) → [Adopting](resources/adopting.md) |
 | …understand why my tests aren't enough | [`acceptance-check`](skills/acceptance-check.md) → [Review and acceptance](process/review-and-acceptance.md) |
-| …know why `check-trace` is failing | [Troubleshooting](resources/troubleshooting.md#the-trace-check-fails) |
+| …know why the trace check is failing | [Troubleshooting](resources/troubleshooting.md#the-trace-check-fails) |
 | …review a branch before merging | [`code-review`](skills/code-review.md) |
 | …respond to review feedback | [`receive-review`](skills/receive-review.md) |
 | …cut a release | [`/release`](skills/release.md) |
@@ -70,7 +70,7 @@ Three ways in: by role, by problem, or by phase.
 | **0. Setup** | `/setup-repo`, `/scaffold-project` | [Adopting](resources/adopting.md) |
 | **1. Discovery** | `brainstorm`, `grilling`, `research`, `prototype`, `domain-modeling` | [Discovery](process/discovery.md) |
 | **2. Specification** | `write-requirements`, `write-design`, `write-plan` | [Specification](process/specification.md) |
-| **3. Execution** | `worktrees`, `execute-plan`, `tdd`, `debug`, `verify` | [Execution](process/execution.md) |
+| **3. Execution** | `worktrees`, `execute-plan`, `tdd`, `debug`, `verify`, `trace` | [Execution](process/execution.md) |
 | **4. Review & acceptance** | `code-review`, `receive-review`, `acceptance-*`, `dogfood` | [Review and acceptance](process/review-and-acceptance.md) |
 | **5. Ship & maintain** | `finish-branch`, `/release`, `sync-spec`, `amend`, `/triage`, `/improve-architecture`, `/handoff` | [Ship and maintain](process/ship-and-maintain.md) |
 
@@ -90,7 +90,7 @@ Three ways in: by role, by problem, or by phase.
 - [The artifact model](concepts/artifacts.md) — every file the system produces
 - [The gates](concepts/gates.md) — the four Iron Laws
 - [The skill model](concepts/skill-model.md) — how skills are built and how they compose
-- [The feature graph](concepts/feature-graph.md) — the horizontal layer
+- [Feature overlap](concepts/feature-graph.md) — the horizontal layer: searching `docs/specs/` for neighbors
 
 ### Process — the chain
 - [The process](process/README.md) — all three flows, with diagrams
@@ -101,7 +101,7 @@ Three ways in: by role, by problem, or by phase.
 - [Phase 5 — Ship and maintain](process/ship-and-maintain.md)
 
 ### Skills — one page each
-- [Skill reference](skills/README.md) — all 31, indexed
+- [Skill reference](skills/README.md) — all 32, indexed
 
 ### Examples
 - [Tier 0: a tweak](examples/tier-0-tweak.md)
@@ -110,7 +110,7 @@ Three ways in: by role, by problem, or by phase.
 
 ### Resources
 - [Adopting the skill set](resources/adopting.md)
-- [Scripts](resources/scripts.md) — `check-trace`, `check-graph`, `vendor-linters`, `task-brief`, `review-package`
+- [Enforcement and tooling](resources/scripts.md) — the `trace` skill and the session hook
 - [Templates](resources/templates.md)
 - [EARS reference](resources/ears.md)
 - [Troubleshooting](resources/troubleshooting.md)

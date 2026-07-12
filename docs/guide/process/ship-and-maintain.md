@@ -4,7 +4,7 @@
 
 ## `finish-branch` — the integration decision
 
-**Gate first.** `verify` runs every verify command from `docs/agents/project.md` fresh, **and** confirms `check-trace` is clean — a branch must not merge with untraced requirements, the same gate `release` enforces. If the branch has user-facing behavior that has not been driven through the running system, `acceptance-check` runs *before* Merge or PR is even offered.
+**Gate first.** `verify` runs every verify command from `docs/agents/project.md` fresh, **and** confirms the trace check is clean — a branch must not merge with untraced requirements, the same gate `release` enforces. If the branch has user-facing behavior that has not been driven through the running system, `acceptance-check` runs *before* Merge or PR is even offered.
 
 **Any failure means stop.** Show the failures. Do not present the menu.
 
@@ -37,7 +37,7 @@ User-invoked (`/release`). Distinct from `finish-branch`, which only integrates 
 
 | Gate | What it does |
 |---|---|
-| **a. Verify** | every verify command, fresh, plus `check-trace` **clean**. An implemented requirement with no covering test is an untraced requirement, and untraced requirements block a release |
+| **a. Verify** | every verify command, fresh, plus the trace check **clean**. An implemented requirement with no covering test is an untraced requirement, and untraced requirements block a release |
 | **b. Changelog** | group `git log <last-tag>..HEAD` by requirement-ID trailers; look up each ID's requirement text so the entry reads as *shipped behavior* |
 | **c. Version bump** | reason in semver from the changelog. **The user approves the number** — never proceed on silence |
 | **d. Update files** | version files + changelog, committed together |
@@ -67,23 +67,23 @@ Nobody wrote those lines, and nobody could have, without the ID being the same s
 
 > Specs that are not resynced after change become fiction, and fiction is worse than no spec.
 
-Run it whenever a spec'd feature changes outside its plan: requirements changed mid-implementation, the implementation deviated, the feature just shipped, or `check-trace` is failing in CI.
+Run it whenever a spec'd feature changes outside its plan: requirements changed mid-implementation, the implementation deviated, the feature just shipped, or the trace check comes back dirty.
 
 **Iron rules.** Never renumber requirement IDs — everything downstream cites them. Never delete a requirement; retire it as `~~**CODE-N.M**~~ <reason>`, so struck-through IDs stop counting as defined while the history stays legible.
 
-**Steps.** Capture a `check-trace` baseline. Compare requirements against tasks (a live requirement no task cites gets a covering task). Compare requirements against the design's `Satisfies:` lines — and *flag* gaps to the user rather than inventing design content silently. List orphans: task footers and test annotations citing struck-through or nonexistent IDs, each with a suggested disposition, because **orphans are decisions, not cleanup.**
+**Steps.** Capture a trace-check baseline. Compare requirements against tasks (a live requirement no task cites gets a covering task). Compare requirements against the design's `Satisfies:` lines — and *flag* gaps to the user rather than inventing design content silently. List orphans: task footers and test annotations citing struck-through or nonexistent IDs, each with a suggested disposition, because **orphans are decisions, not cleanup.**
 
 **Status transitions, with evidence only:**
 
 | Transition | Required evidence |
 |---|---|
 | Draft → Approved | the user explicitly approved the spec — never inferred |
-| Approved → Implemented | every task box checked **and** `check-trace` shows every live requirement covered by a test |
+| Approved → Implemented | every task box checked **and** the trace check shows every live requirement covered by a test |
 | Implemented → Shipped | the feature went out in a release |
 
 If evidence is partial, say exactly what is missing instead of transitioning.
 
-Finally, re-run `check-trace` and print the before and after reports side by side, then regenerate the feature graph with `check-graph --harvest` and stage a changed `GRAPH.md` into the same commit.
+Finally, re-run the trace check and print the before and after reports side by side, and update the feature's `docs/specs/INDEX.md` entry. Feature overlap is answered by searching `docs/specs/` directly, so the refreshed spec and its `INDEX.md` registration are all the next feature's `brainstorm` reads — there is nothing to harvest or regenerate.
 
 ## `amend` — the maintenance fast lane
 

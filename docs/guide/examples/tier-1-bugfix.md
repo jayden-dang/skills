@@ -139,9 +139,9 @@ The post-mortem answer here is architectural: `init()` had no seam at which "hyd
 ## `verify`, then finish
 
 ```
-IDENTIFY → the full suite plus check-trace
+IDENTIFY → the full suite plus the trace check
 RUN      → fresh, complete
-READ     → exit 0, 50 passing, zero warnings; check-trace clean
+READ     → exit 0, 50 passing, zero warnings; trace check clean
 CONFIRM  → SHELL-1.8 and SHELL-1.9 each have a covering test
 ```
 

@@ -1,29 +1,39 @@
-# Scripts
+# Enforcement and tooling
 
-Five scripts. Two are linters that enforce the spine, two support `execute-plan`'s subagent engine, and one distributes the linters into consuming repos.
+The skill set installs nothing into a consuming repo — no scripts, no linters, no CI job, no git hooks. Enforcement rests on two mechanisms, and both are built from primitives that already exist in any repo:
 
-All are zero-dependency and offline. `check_trace.py`, `check_graph.py`, and `vendor_linters.py` run on the Python 3 (3.9+) that ships with your machine — stdlib only, no third-party package; `task-brief` and `review-package` are bash.
+- **The `trace` skill** — a fixed sequence of `grep` and `git` passes with fixed rules on their output, enforcing that one feature's requirements, tasks, and tests agree.
+- **Feature-overlap search** — an inline `grep` over `docs/specs/` that answers *does this idea or diff already exist?*
+
+Determinism comes from the primitives — `grep` and `git` produce the same output every run — and from the fixed rules applied to that output. There is no interpreter to install and no program to keep in sync.
 
 ---
 
-## `check-trace`
+## The trace check
 
-The requirements traceability linter. The vertical layer: one feature's requirements, tasks, and tests must agree.
-
-```bash
-python3 scripts/check_trace.py [--strict] [--json] [--root <repo-root>]
-```
+The requirements traceability check. The vertical layer: one feature's requirements, tasks, and tests must agree. It is not a linter and not a program — it is a fixed routine the `trace` skill runs, a set sequence of greps and git reads with a fixed verdict rule on each.
 
 ### Sources of truth
 
 | Path | Role |
 |---|---|
-| `<specsDir>/<feature>/requirements.md` | **defines** requirement IDs (`**CODE-N.M**`) |
-| `<specsDir>/fixes.md` | optional shared home for tier-1 fix and guard requirements |
-| `<specsDir>/<feature>/tasks.md` | **references** them, via `_Requirements: CODE-N.M_` footers |
-| test files (per `testGlobs` + `testFilePattern`) | **reference** them, via tags, annotations, names, or comments |
+| `docs/specs/<feature>/requirements.md` | **defines** requirement IDs (`**CODE-N.M**`) |
+| `docs/specs/fixes.md` | optional shared home for tier-1 fix and guard requirements |
+| `docs/specs/<feature>/tasks.md` | **references** them, via `_Requirements: CODE-N.M_` footers |
+| test files | **reference** them, via tags, annotations, names, or comments |
 
-### Checks
+### The passes
+
+The check runs a fixed sequence and never varies it:
+
+1. **Collect definitions.** `grep` every `requirements.md` (and `fixes.md`) for bolded criterion IDs. A struck-through ID (`~~**SHELL-1.2**~~`) is deliberately excluded, so it reads as **undefined**.
+2. **Collect citations.** `grep` the `tasks.md` footers and the repo's test files (enumerated with `git ls-files`, scoped by the configured test globs) for ID-shaped strings.
+3. **Read status.** `grep` each `requirements.md` for its `Status:` and `Feature-code:` lines.
+4. **Apply the rules** below to the three sets.
+
+Because step 2 is a textual `grep`, **coverage is textual**: an ID string present in a test file counts as covering that requirement. The check does not — and cannot — judge whether the test actually asserts the behavior. That judgement belongs to [`tdd`](../skills/tdd.md), [`code-review`](../skills/code-review.md), and the acceptance family.
+
+### The rules
 
 | Code | Meaning |
 |---|---|
@@ -31,169 +41,50 @@ python3 scripts/check_trace.py [--strict] [--json] [--root <repo-root>]
 | **E2** | a requirements file with `Status: Implemented` or `Shipped` has a requirement with zero test references |
 | **E3** | the same ID is defined more than once |
 | **W1** | a requirements file with `Status: Approved` has a requirement not cited by any task |
-| **W2** | a requirements file is missing a `Status:` line or a `Feature code:` line |
+| **W2** | a requirements file is missing a `Status:` line or a `Feature-code:` line |
 
-**Exit code 1** on any error, and on warnings too under `--strict`. Otherwise 0. Zero requirements is a valid clean state.
+Any **E** is a failure the invoking skill must act on; **W** findings are surfaced but do not fail the gate on their own. Zero requirements is a valid clean state.
 
 ### The ID grammar
 
+The pattern the passes match is:
+
 ```
-/\b([A-Z][A-Z0-9]{1,11})-(\d+)\.(\d+)(?![.\d])/g
+\b([A-Z][A-Z0-9]{1,11})-(\d+)\.(\d+)(?![.\d])
 ```
 
 Two deliberate details. There is **no trailing `\b`**, because a markdown italics footer ends with `_` — a word character — which would silently drop the last ID on the line. And the negative lookahead `(?![.\d])` prevents matching a prefix of a longer number.
 
-A struck-through ID (`~~**SHELL-1.2**~~`) counts as **undefined**, so retiring a requirement immediately surfaces every test and task still citing it as an E1.
+A struck-through ID counts as **undefined**, so retiring a requirement immediately surfaces every test and task still citing it as an E1.
 
-### Config — `docs/agents/trace.json`
+### Fixture IDs
 
-Optional. Every key falls back to a default.
+A [citation](../concepts/traceability.md) is an ID the trace check counts; a **fixture ID** is an ID-shaped string that appears in source (example data, documentation) that no test asserts. Because the collect-citations pass is textual, a repo whose own fixtures contain ID-shaped strings can name those files in the **trace ignore** list in `docs/agents/project.md` so the pass skips them. That list filters the test-file scan only — it never stops a `requirements.md` from *defining* IDs.
 
-```json
-{
-  "specsDir": "docs/specs",
-  "testGlobs": ["tests", "test", "e2e", "src", "src-tauri", "crates", "app", "lib", "packages"],
-  "testFilePattern": "(\\.(test|spec)\\.[cm]?[jt]sx?$)|([/\\\\]tests?[/\\\\])|…",
-  "ignore": []
-}
-```
-
-**`ignore`** is a list of repo-relative path *substrings* additionally excluded from the test-file scan. It exists for fixture-bearing files — a test file for `check-trace` itself contains ID-shaped example strings that no test asserts. Those are **fixture IDs**, not [citations](../concepts/traceability.md), and scanning them would produce phantom coverage.
-
-Three constraints on `ignore`, from its own spec (`TRACE`): it is a plain path-substring list, not a glob or regex engine; it filters the **test-file walk only** and never excludes a requirements file from *defining* IDs; and it excludes a whole file rather than suppressing an individual error code. It is off by default and applied *on top of* `testGlobs`/`testFilePattern`, never in place of them.
+The trace check reads two optional settings from `docs/agents/project.md` — the **test globs** it searches and the **trace ignore** list — and falls back to defaults when they are absent. The default globs are `tests test e2e src src-tauri crates app lib packages`; the default ignore list is empty.
 
 ### Who runs it
 
-`verify` (before any "requirements met" claim), `write-plan` (coverage check), `finish-branch` (the merge gate), `release` (gate a), `sync-spec` (before and after pictures), the pre-push git hook, and CI.
+The `trace` skill is invoked by [`verify`](../skills/verify.md) (before any "requirements met" claim), [`write-plan`](../skills/write-plan.md) (its coverage check), [`release`](../skills/release.md) (its gate), and [`sync-spec`](../skills/sync-spec.md) (the before-and-after pictures). Each of these runs with an agent present to read and act on the findings.
+
+There is no mandatory headless gate. A team that wants a hard CI or pre-push check can add one as its own choice, but it sits outside the default path — the trace check does its work at the moments a skill is already about to make a claim.
 
 ---
 
-## `check-graph`
+## Feature-overlap search
 
-The [feature graph](../concepts/feature-graph.md) linter. The horizontal layer: which features touch the same code.
+The horizontal question — *which existing features touch this same surface, and does this idea already exist?* — is answered by an inline `grep` over `docs/specs/`, not by any generated artifact. Nothing is derived and nothing goes stale; the specs that already exist are the source of truth, and [`docs/specs/INDEX.md`](../concepts/artifacts.md) is the feature registry.
 
-```bash
-python3 scripts/check_graph.py --harvest                              # write GRAPH.md
-python3 scripts/check_graph.py --query --json --path P --keyword K    # overlaps as JSON
-python3 scripts/check_graph.py --verify                               # lint
-```
+Two skills run this search:
 
-It harvests from each feature's **existing** `design.md` and `tasks.md` — it authors nothing new — producing a surface manifest (`owns` / `touches`), a reverse index, and summary cards.
+- **[`brainstorm`](../skills/brainstorm.md)** greps `docs/specs/` with the new idea's key terms and candidate file paths before the interview begins. Any feature whose spec matches is read as its **Summary card** — the top-of-spec digest (code, name, owned paths, out-of-scope) — so the agent can state which existing features share the idea's surface and how the new idea differs, citing feature codes, or that none do.
+- **[`code-review`](../skills/code-review.md)** greps `docs/specs/` with the diff's changed file paths, so its Spec subagent can flag any place the diff reimplements behavior a neighboring feature already owns.
 
-### `--verify` checks two things
-
-1. **Freshness** — the committed `<specsDir>/GRAPH.md` must be byte-identical to a fresh render. If it is not: `GRAPH.md is stale — run check-graph --harvest and commit the result.`
-2. **Registration** — every harvested feature code must appear in `<specsDir>/INDEX.md`.
-
-Exits 1 on either failure.
-
-### Config
-
-Shares `docs/agents/trace.json`, under an optional `graph` key:
-
-```json
-{
-  "graph": {
-    "sourceRoots": ["src", "src-tauri", "tests", "test", "e2e", "crates", "app", "lib", "packages"],
-    "sourceExts": ["ts", "tsx", "js", "jsx", "mjs", "cjs", "rs", "css", "scss", "go", "py"],
-    "cardCap": 12
-  }
-}
-```
-
-### Who runs it
-
-`brainstorm` step 1 (`--query`, the dedup check), `code-review` step 3a (`--query`, the reuse-miss check), `sync-spec` (`--harvest`, staged into the sync commit), `verify` (`--verify`, required before "requirements met"), the pre-push hook, and CI.
-
-**Both consuming skills degrade gracefully.** If `check-graph` is absent, the graph is not installed: say so, name `setup-repo` as the remedy, and say it **at most once per session**. If it errors, note that the overlap check was unavailable. Either way, continue — it never blocks a gate.
-
----
-
-## `vendor-linters`
-
-Installs the two linters into a consuming repo, and detects drift between the two copies.
-
-```bash
-python3 scripts/vendor_linters.py --install --to <repo> --scripts-dir <path>
-python3 scripts/vendor_linters.py --check   --to <repo> --scripts-dir <path>
-python3 scripts/vendor_linters.py --stamp
-```
-
-The skill set's own `scripts/` is the **single canonical copy** — deliberately not mirrored into `templates/` — so there is exactly one axis of drift to police.
-
-Each linter carries a stamp of its own body, excluding the stamp line itself, which makes re-stamping idempotent:
-
-```python
-# @skills-linter: check-graph sha256:8897837c7133
-```
-
-`--check` reports each linter as one of four states, and exits 1 on any drift:
-
-| State | Meaning | `setup-repo`'s response |
-|---|---|---|
-| `ok` | current | nothing |
-| `missing` | never installed | install it |
-| `outdated` | the skill set moved on | offer to update |
-| `modified` | someone edited the repo's copy | **offer**, never overwrite without an explicit yes — that copy may carry a local fix worth upstreaming |
-
-### Why it exists
-
-The skills read `check_trace.py` and `check_graph.py` **from the consuming repo**, not from the skill set. A repo that lacks them silently loses the trace spine and the feature graph — and an uninstalled `check-graph` makes `brainstorm` and `code-review` skip their duplication checks forever, which *looks exactly like "no overlapping features"*.
-
-That is why `setup-repo`'s step 6 treats a `check-graph` that prints nothing, exits non-zero, or never writes its file as a **wiring failure** that must be fixed before setup can complete.
-
----
-
-## `task-brief`
-
-```bash
-task-brief <tasks.md> <N>     # writes .skills/task-N-brief.md, prints the path
-```
-
-Extracts Task N plus the `## Global Constraints` section into a single file. The implementer subagent reads *this*, never the whole plan.
-
-The brief opens with a line that is doing real work:
-
-```markdown
-# Task Brief
-
-This brief is your requirements. Read it fully before starting.
-```
-
-Exits 1 if the plan file is missing or Task N is not found.
-
----
-
-## `review-package`
-
-```bash
-review-package <base-sha> <head-sha>    # writes .skills/review-<b7>..<h7>.diff, prints the path
-```
-
-Bundles everything a task reviewer needs into one file: the commit list, a diffstat, and the full diff with generous context.
-
-The script's own header carries the warning that `execute-plan` repeats as a red flag:
-
-> **BASE must be the commit recorded BEFORE dispatching the implementer — never `HEAD~1`, which silently drops all but the last commit.**
-
-A reviewer handed a `HEAD~1` package sees a fraction of a multi-commit task and approves it.
-
----
-
-## Wiring them up
-
-`setup-repo` offers to install both linters into the repo's configured scripts directory, then to wire them into:
-
-- **CI** — appended to an existing workflow, additively. It does not author a pipeline.
-- **Git hooks** — `pre-commit` gets the *fast* gates (format staged, lint, typecheck) so commits stay quick; `pre-push` gets the fuller suite plus `check_trace.py` and `check_graph.py --verify`.
-
-The split matters: *a hook slow enough to be routinely `--no-verify`'d is worse than none.*
-
-If the repo already runs a hook manager (`.husky/`, `lefthook.yml`, `.pre-commit-config.yaml`, `simple-git-hooks`), the commands go into **that** — never a competing mechanism.
+See [feature overlap](../concepts/feature-graph.md) for the concept in full.
 
 ## See also
 
-- [Traceability](../concepts/traceability.md) — what `check-trace` is enforcing and why
-- [The feature graph](../concepts/feature-graph.md) — what `check-graph` harvests
-- [`setup-repo`](../skills/setup-repo.md) — the wizard that installs and proves all of this
-- [Troubleshooting](troubleshooting.md) — when a check fails
+- [Traceability](../concepts/traceability.md) — what the trace check is enforcing and why
+- [Feature overlap](../concepts/feature-graph.md) — how neighbors are found by searching `docs/specs/`
+- [Requirement IDs](../concepts/requirement-ids.md) — the string the trace check follows
+- [Troubleshooting](troubleshooting.md) — when a check reports a finding

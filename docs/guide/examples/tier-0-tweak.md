@@ -72,7 +72,7 @@ The trailer cites `SHELL-1.7` because that is the requirement this change serves
 
 ## Step 4 — `verify`
 
-Before the word "done" is spoken. `check-trace` is clean; `SHELL-1.7` still has a covering test; the full suite ran fresh in this session and its output was read.
+Before the word "done" is spoken. The trace check is clean; `SHELL-1.7` still has a covering test; the full suite ran fresh in this session and its output was read.
 
 ---
 

@@ -8,7 +8,7 @@
 | **Invocation** | model-invocable (the agent calls it on its own) |
 | **Reads** | `requirements.md`, `design.md`, `templates/tasks.md`, `docs/agents/project.md`, `docs/agents/issue-tracker.md` |
 | **Writes** | `docs/specs/<date>-<feature>/tasks.md`, the spec's `INDEX.md` row, an independent review under `.skills/`, optionally issues in the tracker |
-| **Calls** | [`check-trace`](../resources/scripts.md#check-trace), an independent plan review subagent, then [`execute-plan`](execute-plan.md) or [`worktrees`](worktrees.md) |
+| **Calls** | [`trace`](trace.md), an independent plan review subagent, then [`execute-plan`](execute-plan.md) or [`worktrees`](worktrees.md) |
 | **Called by** | [`write-design`](write-design.md) |
 
 ## When it fires
@@ -51,14 +51,14 @@ Each task carries five blocks:
 
 Step 4 is the subtle one, and getting it right is the point of the skill.
 
-- **Run [`check-trace`](../resources/scripts.md#check-trace):** every Approved requirement must be cited by at least one task footer. An uncited ID means the plan is incomplete, or the requirement should be struck through with a reason.
-- **Test coverage, not just citation.** Every requirement ID must *also* appear in a **test annotation** inside some task's steps — `[CODE-N.M]` in a Vitest title, `/// REQ: CODE-N.M` on a Rust test, `@CODE-N.M` in a Playwright tag — not merely in a footer. This is the trap: a footer citation with no tagged test **passes check-trace now** (Approved satisfies the W1 warning) but **fails E2** the instant the feature is marked Implemented, because E2 requires every requirement in an Implemented spec to have a test reference. A guard or negative requirement counts only if a real test asserts it; when a behavior cannot be unit-tested in isolation, tag the e2e task or an existing test that already exercises it — one test may carry several IDs.
+- **Run the [`trace`](trace.md) check:** every Approved requirement must be cited by at least one task footer. An uncited ID means the plan is incomplete, or the requirement should be struck through with a reason.
+- **Test coverage, not just citation.** Every requirement ID must *also* appear in a **test annotation** inside some task's steps — `[CODE-N.M]` in a Vitest title, `/// REQ: CODE-N.M` on a Rust test, `@CODE-N.M` in a Playwright tag — not merely in a footer. This is the trap: a footer citation with no tagged test **passes trace now** (Approved satisfies the W1 warning) but **fails E2** the instant the feature is marked Implemented, because E2 requires every requirement in an Implemented spec to have a test reference. A guard or negative requirement counts only if a real test asserts it; when a behavior cannot be unit-tested in isolation, tag the e2e task or an existing test that already exercises it — one test may carry several IDs.
 - **Reconcile against the design's seam table.** Every ID in every row of `design.md`'s seam table must be tagged on a test in the plan. An ID the design promised to cover but the plan left untagged is *dropped coverage* — you add the test, you do not renumber.
 - **Type/name consistency** across tasks: the same function has the same name and signature everywhere it is mentioned.
 - **Spec alignment:** re-read `requirements.md` once, checking each criterion against the task that claims it.
 - **Upstream sync-back:** if planning reveals a requirement is *wrong or infeasible as written* — not merely uncovered — you correct it in `requirements.md` and re-surface for approval. You never bury a workaround in a task that leaves the requirement lying.
 
-The five checks the coverage step is reconciling against, from [`check-trace`](../resources/scripts.md#check-trace)'s own header:
+The five checks the coverage step is reconciling against, from the [`trace`](trace.md) check's own finding set:
 
 | Code | Meaning |
 |---|---|
@@ -72,7 +72,7 @@ The plan is written while the spec is Approved, so the linter is enforcing W1 �
 
 Then the **independent plan review**, dispatched not self-run. The doc-only checks above stay in this context; the codebase comparison does not. A review subagent gets the plan, `requirements.md`, `design.md`, and the repo, and verifies against real code every symbol, signature, path, import, and **hardcoded test value** the plan asserts — a fabricated golden or a guessed API is the classic plan defect. It cites `file:line`, defaults to flag, writes to `.skills/<slug>-plan-review.md`, and you fix before offering execution.
 
-The step is done when every requirement ID has both a task footer and a tagged test, check-trace is clean, the design's seam-table IDs are all covered, and the placeholder scan is clean.
+The step is done when every requirement ID has both a task footer and a tagged test, [`trace`](trace.md) is clean, the design's seam-table IDs are all covered, and the placeholder scan is clean.
 
 ## Publishing and the two exits
 
@@ -119,7 +119,7 @@ Reading the task against the five steps:
 - **Step 1's** Global Constraints — the Vitest command, the lint rule, the forbidden changes — are copied at the top of the file, so this implementer needs nothing but the task and that block.
 - **Step 2's** file map already listed `src/shell/module-store.ts`, so touching it here is legal; a file the map omitted could not be touched.
 - **Step 3** made this a vertical slice from click to state change, right-sized to one test cycle, with complete test and implementation code and a footer.
-- **Step 4** is where both `[SHELL-1.1]` in the title and `SHELL-1.1` in the footer matter: the footer alone satisfies check-trace's W1 while `SHELL` is Approved, but only the tagged test keeps it clean under E2 once `SHELL` is Implemented.
+- **Step 4** is where both `[SHELL-1.1]` in the title and `SHELL-1.1` in the footer matter: the footer alone satisfies trace's W1 while `SHELL` is Approved, but only the tagged test keeps it clean under E2 once `SHELL` is Implemented.
 
 The footer cites `SHELL-1.1` and the test title tags `[SHELL-1.1]` — both are required. `SHELL-1.2` and `SHELL-1.3` from the design's seam table each get their own tagged test in their own task; the coverage check confirms none of the three seam-table IDs was left with a footer citation but no tagged test, the failure that would surface as E2 the moment `SHELL` is marked Implemented.
 
@@ -130,6 +130,6 @@ The plan is where an approved intent becomes something a stranger can build with
 ## See also
 
 - [Traceability](../concepts/traceability.md) — footer citation versus tagged-test coverage
-- [`check-trace`](../resources/scripts.md#check-trace) — the linter this step runs, and its E1/E2/E3/W1/W2 checks
+- [`trace`](trace.md) — the check this step runs, and its E1/E2/E3/W1/W2 findings
 - [`write-design`](write-design.md) — the seam table this plan must reconcile against
 - [`execute-plan`](execute-plan.md) — the recommended route out of the plan

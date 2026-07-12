@@ -38,7 +38,7 @@ Classify the baseline failure before writing anything; the form that fixes one f
 | Complies, but the output has the wrong shape | Positive recipe or contract: what the output IS — its parts, in order | Prohibitions. Under a competing incentive agents negotiate with "don't X"; in head-to-head wording tests the prohibition arm produced *more* of the unwanted content than no guidance at all. A recipe leaves nothing to negotiate |
 | Omits an element from something it already produces | A REQUIRED slot in the template it fills in | Prose reminders near the template |
 | Behavior should depend on a condition | A conditional keyed to an observable predicate ("if `design.md` exists, cite its seams") | An unconditional rule plus exemption clauses |
-| A check that must never be skipped or misjudged | A bundled deterministic script the skill runs and acts on (`check_trace.py`, a `classify-*.sh`) | Prose steps describing the check — code is deterministic, language interpretation isn't |
+| A check that must never be skipped or misjudged | A recipe of deterministic primitives the skill has the agent run and read — fixed `grep`/`git`/schema passes plus fixed rules on their output (see `trace`) | Prose describing the check in the abstract — "confirm coverage" invites interpretation; a named pass over a named input, with a rule on the result, does not |
 
 **No nuance clauses.** "Don't X unless it matters" reopens the negotiation the rule just closed — appending one nuance clause to a winning recipe degrades it from consistent to noisy. A real exception becomes its own conditional on an observable predicate. Exemption clauses don't scope, either: "the limit doesn't apply to code blocks" still suppresses code blocks — restructure so the rule can't reach the exempt part.
 
@@ -64,7 +64,7 @@ Write skills with these terms; review skills against them.
 
 ## When not to write one at all
 
-If the rule is mechanically enforceable — a regex, a linter, a schema check, a git hook — automate it and skip the skill. Documentation is for the judgment calls a check cannot make; a skill that only restates what a validator already guarantees is context the agent pays for every run to enforce what the machine could have enforced for free.
+A mechanically-checkable rule is not a reason to skip a skill — it is a reason to make the skill *run the check* rather than describe it. When a repo carries an ambient enforcer (a pre-existing linter, a CI schema check, a git hook) the skill just names it and reads its result. When it does not — the common case, since this set installs nothing into a consuming repo — the skill carries the deterministic recipe itself: the exact `grep`/`git`/schema passes the agent runs and the exact rule on their output. What a skill must never be is a wordy restatement that adds no rule the passes don't already encode. Documentation earns its context budget on the judgment calls a check cannot make; the deterministic parts belong in exact passes, not prose.
 
 ## When to split
 
@@ -121,6 +121,6 @@ Create a todo for each item.
 - [ ] Core body within token budget (≤~500 lines / 5k words); reference disclosed behind well-worded pointers, one level deep; any reference >100 lines has a TOC
 - [ ] Cross-references are REQUIRED SUB-SKILL prose; supporting files referenced by relative name
 - [ ] Every hand-off invokes only a model-invocable skill; any `disable-model-invocation` target is named for the user to run, never invoked
-- [ ] Structural + routing evals green: `python3 evals/evals.py --strict` passes (frontmatter, naming, line budget, and the description's should-fire/should-not-fire cases in `evals/triggers.json` — add the new skill's cases in this same commit)
+- [ ] Structural + routing check (agent-run): frontmatter valid (name + description; `disable-model-invocation: true` on user-invoked skills), verb-first name, body within the line budget; and the description trigger-tested by hand — run its should-fire and should-not-fire queries per `pressure-testing.md` and confirm each routes as intended
 
 **Do not batch-create skills.** Finish, test, and validate one skill completely before starting the next.

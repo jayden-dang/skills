@@ -8,7 +8,7 @@
 | **Invocation** | model-invocable (the agent calls it on its own) |
 | **Reads** | `docs/agents/project.md` (the proving commands); the full output of whatever command it runs |
 | **Writes** | nothing — it runs proving commands and reads their output; it produces evidence, not files |
-| **Calls** | [`acceptance-check`](acceptance-check.md) or [`dogfood`](dogfood.md) (to prove "the feature works"), the `check-trace` and `check-graph` scripts (to prove "requirements met") |
+| **Calls** | [`acceptance-check`](acceptance-check.md) or [`dogfood`](dogfood.md) (to prove "the feature works"), the [`trace`](trace.md) check (to prove "requirements met") |
 | **Called by** | nearly every skill before a completion claim — [`tdd`](tdd.md), [`debug`](debug.md), [`execute-plan`](execute-plan.md), [`finish-branch`](finish-branch.md), [`handoff`](handoff.md), and more |
 
 ## When it fires
@@ -38,7 +38,7 @@ The steps are ordered on purpose: you cannot run a command you have not identifi
 
 ## Claim → evidence
 
-Each claim has a required proof and a set of things that are never sufficient for it. The last row is the strictest: "requirements met" needs **both** trace scripts to pass **and** every acceptance criterion checked off individually.
+Each claim has a required proof and a set of things that are never sufficient for it. The last row is the strictest: "requirements met" needs the [`trace`](trace.md) check to pass with zero errors **and** every acceptance criterion checked off individually.
 
 | Claim | Requires | Never sufficient |
 |---|---|---|
@@ -47,7 +47,7 @@ Each claim has a required proof and a set of things that are never sufficient fo
 | "The feature works" | The affected flow driven through the running system and observed ([`acceptance-check`](acceptance-check.md), or [`dogfood`](dogfood.md) for a manual pass) | Green unit tests alone |
 | "The bug is fixed" | Original symptom re-tested and gone | The code changed |
 | "The agent/subagent completed X" | You inspected the diff yourself | The agent's own success report |
-| "Requirements met" | `python3 scripts/check_trace.py` **and** `python3 scripts/check_graph.py --verify` pass, AND each acceptance criterion checked off individually against observed behavior | Green tests alone |
+| "Requirements met" | the [`trace`](trace.md) check passes with zero errors, AND each acceptance criterion checked off individually against observed behavior | Green tests alone |
 
 ## Regression-proof pattern
 
@@ -97,4 +97,4 @@ The claim was never the agent's to make from memory. The fresh run and the inspe
 - [The gates](../concepts/gates.md) — how this Iron Law relates to the other three
 - [`tdd`](tdd.md) — hands off to `verify` before any completion claim
 - [`acceptance-check`](acceptance-check.md) — what proves "the feature works"
-- [Traceability](../concepts/traceability.md) — why "requirements met" needs the trace scripts
+- [Traceability](../concepts/traceability.md) — why "requirements met" needs the trace check

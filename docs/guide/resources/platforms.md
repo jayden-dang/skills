@@ -1,10 +1,12 @@
 # Running on other platforms
 
-The skill set was built for Claude Code, but nothing in it is Claude-specific:
-the skills are plain `SKILL.md` files, the linters are Python 3.9+ stdlib, and
-the shell tooling is bash. The only platform-specific part is *how the gate gets
-injected* — the mechanism that reminds the agent to check for a skill before it
-acts. This page covers that per platform.
+The skill set was built for Claude Code, but nothing in it is Claude-specific.
+Everything is plain text a reasoning agent acts on: the skills are `SKILL.md`
+files, the portable behavior contract is `AGENTS.md`, and the trace check is a
+set of `grep`/`git` passes the agent drives itself — there is no interpreter or
+binary to port. The only platform-specific part is *how the gate gets injected* —
+the mechanism that reminds the agent to check for a skill before it acts. This
+page covers that per platform.
 
 The portable contract for every platform is [`AGENTS.md`](../../../AGENTS.md) at
 the repo root: the Four Iron Laws, the 1% rule, the trace-spine citation rules,
@@ -15,11 +17,12 @@ repo file can run this system by reading that one.
 
 Full support. The `SessionStart` hook in `hooks/hooks.json` injects
 `meta/using-skills` on every `startup | clear | compact`, so the gate survives
-compaction automatically. Install as a plugin, or symlink the skills:
+compaction automatically. Install as a plugin, or clone the repo and symlink the
+skill folders into `~/.claude/skills`:
 
 ```bash
 git clone https://github.com/jayden-dang/skills ~/dev/skills
-~/dev/skills/scripts/link-skills.sh   # symlinks into ~/.claude/skills
+cd ~/dev/skills && for d in skills/*/*/; do ln -sfn "$PWD/$d" ~/.claude/skills/$(basename "$d"); done
 ```
 
 ## Codex CLI
@@ -34,16 +37,15 @@ after compaction; after a long session, re-point it at `AGENTS.md` if it drifts.
 Cursor loads `.cursor/rules/*.mdc`. This repo ships
 [`.cursor/rules/using-skills.mdc`](../../../.cursor/rules/using-skills.mdc) as an
 `alwaysApply` rule that carries the gate and points at `AGENTS.md`. Copy the
-`.cursor/` directory (and `AGENTS.md`, `skills/`, `scripts/`) into the target
-repo, or open this repo directly. That rule is Cursor's substitute for the
-session-start hook.
+`.cursor/` directory (and `AGENTS.md`, `skills/`) into the target repo, or open
+this repo directly. That rule is Cursor's substitute for the session-start hook.
 
 ## Any other harness
 
 If the harness can load a repo-root convention file (`AGENTS.md`, `CLAUDE.md`,
 or similar), point it there. If it supports an always-on rule or system-prompt
 append, give it the gate paragraph from `.cursor/rules/using-skills.mdc`. The
-skills, linters, and templates work unchanged — only the injection path differs.
+skills and templates work unchanged — only the injection path differs.
 
 ## What is not portable
 

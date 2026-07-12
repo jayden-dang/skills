@@ -40,7 +40,7 @@ Six steps run once before any task:
 3. **Read the plan.** Read `tasks.md` in full, once, and copy the **Global Constraints** section verbatim — it gets pasted into every reviewer dispatch unmodified. If `docs/agents/project.md` is missing, say so, suggest `setup-repo`, and take verify commands from the plan's Global Constraints instead.
 4. **Todos.** One todo per task, mirroring the plan.
 5. **Pre-flight plan review.** Scan the plan once for internal defects — tasks that contradict each other or the Global Constraints, and anything the plan explicitly mandates that a reviewer would flag as a defect (an assertion-free test, a copy-pasted logic block). **Batch ALL findings into ONE question to the user**, each shown beside the plan text that mandates it, asking which governs — before any dispatch. One interrupt, not one per discovery mid-run. A clean scan needs no comment.
-6. **Wave planning.** Read each task's `Depends-on:` line and topo-sort the tasks into waves — wave 0 is every task with no unmet dependency, wave 1 the tasks freed once wave 0 lands, and so on. `Depends-on: none` marks a wave-0 task; an absent line falls back to depending on every earlier task. A plan that declares no dependencies collapses to one task per wave — the strict serial order, unchanged.
+6. **Wave planning.** Read each task's `Depends-on:` line and topo-sort the tasks into waves — wave 0 is every task with no unmet dependency, wave 1 the tasks freed once wave 0 lands, and so on. `Depends-on: none` marks a wave-0 task; an absent line falls back to depending on every earlier task. A plan that declares no dependencies collapses to one task per wave — the strict serial order.
 
 ## The per-task loop
 
@@ -60,7 +60,7 @@ Eleven steps run for each Task N. The precise ones are load-bearing:
 
 ## Parallel waves
 
-A single-task wave runs the loop above inline on the branch — the common case, and identical to the prior serial behavior. A wave holding two or more independent tasks runs them concurrently, each isolated in its own worktree, and **only when `git worktree` is usable**; otherwise that wave's tasks run serially.
+A single-task wave runs the loop above inline on the branch — the common case. A wave holding two or more independent tasks runs them concurrently, each isolated in its own worktree, and **only when `git worktree` is usable**; otherwise that wave's tasks run serially.
 
 1. **Record the wave base.** `WBASE=$(git rev-parse HEAD)` — every task in the wave branches from this one sha.
 2. **Prove the surfaces are disjoint.** Confirm from the briefs that no two tasks in the wave Create or Modify the same file. An overlap means a `Depends-on` edge was missed — those tasks drop back to serial rather than run in parallel.

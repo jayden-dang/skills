@@ -38,7 +38,7 @@ The deliverable is fixed: exactly **one markdown file**, no more and no less, so
 - It is placed where the repo already keeps such notes, matching the existing convention. If none exists, pick a sensible spot (e.g. `docs/research/<date>-<topic>.md`) and state where you put it and why.
 - It **ends with an "Open decisions" section**: the judgment calls the findings surface but do not settle. This is the seam between research and deciding — the note carries the facts right up to the decision and then stops, leaving the call to whoever owns it.
 
-The file is placed by convention rather than by rule: match wherever the repo already keeps such notes, and only invent a location when none exists. The point is that a future reader — including a future you — finds it where they would look, not where this one run happened to drop it.
+The point of placing it by convention rather than by rule is that a future reader — including a future you — finds it where they would look, not where this one run happened to drop it.
 
 ## High-stakes questions
 

@@ -66,8 +66,6 @@ No artifact tooling in your environment? Write the same page to an `.html` file 
 
 Give the fastest way in — a roughly 30-second first pass that lights the feature up — then the degraded-feature notes and how to enable them, and note that ticks save. The 30-second pass matters because a guide the user never starts checks nothing; the first win is what earns the rest of the walkthrough. The step, and the skill, is done when the artifact is published, grounded, resumable, and every ability and non-behavior is a checkable, ID-tagged case.
 
-Where no artifact tooling exists in the environment, the same page is written to an `.html` file and its path handed over — the deliverable does not degrade back into a chat message just because the publish step is unavailable.
-
 ## Worked example
 
 The note-taking app's `NOTE` feature is finished; dogfood produces the guide the user keeps open beside the app. Step 2 reads the source to ground the rendering: the "Add" button label comes from the component, the empty-note error text `Note cannot be empty` from the validation, and the error chip's red from a theme token, `--color-danger: #d4351c`. The artifact mirrors those exactly rather than paraphrasing them.

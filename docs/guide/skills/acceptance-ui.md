@@ -52,8 +52,6 @@ Run the specs headless on Chromium. Any failure is a real defect. The **required
 
 "A real defect" is meant literally: a spec that drove the real app and did not see the expected screen has found something a user would hit. It is never a reason to loosen the assertion — the fix goes into the code, not the expectation.
 
-The tag on each spec carries the requirement ID per the `project.md` conventions, which is what lets [`trace`](trace.md) prove the flow is covered once the spec is committed.
-
 ## 5. Commit the specs
 
 The specs are the durable artifact — commit them, tagged, so they join the verify suite and [`finish-branch`](finish-branch.md) re-runs them. Record any new run command in `project.md` and note results in the ledger. The step is done when the specs are committed, tagged, and green.

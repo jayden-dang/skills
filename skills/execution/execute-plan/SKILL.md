@@ -22,7 +22,7 @@ Drive an approved plan to completion: independent tasks run concurrently in depe
 3. **Read the plan.** Read tasks.md in full, once. Copy the **Global Constraints** section verbatim — you will paste it into every reviewer dispatch unmodified. If `docs/agents/project.md` is missing, say so, suggest running `setup-repo`, and take verify commands from the plan's Global Constraints instead. *Done when: constraints are captured word-for-word.*
 4. **Todos.** Create one todo per task. *Done when: the todo list mirrors the plan.*
 5. **Pre-flight plan review.** Scan the plan once for internal defects: tasks that contradict each other or the Global Constraints, and anything the plan explicitly mandates that a reviewer would flag as a defect (an assertion-free test, a copy-pasted logic block). Batch ALL findings into ONE question to the user — each finding shown beside the plan text that mandates it, asking which governs — before any dispatch. One interrupt, not one per discovery mid-run. A clean scan needs no comment. *Done when: the user has ruled on every conflict, or the scan found none.*
-6. **Wave planning.** Read each task's `Depends-on:` line. A line names the tasks that must land first (`Depends-on: Task 2, Task 4`); `Depends-on: none` marks a task with no prerequisite; an **absent** line falls back to depending on every earlier task. Topo-sort into waves — wave 0 is every task whose dependencies are already met, wave 1 the tasks freed once wave 0 lands, and so on. A plan that declares no dependencies collapses to one task per wave: the strict serial order, unchanged. *Done when: every task sits in a wave.*
+6. **Wave planning.** Read each task's `Depends-on:` line. A line names the tasks that must land first (`Depends-on: Task 2, Task 4`); `Depends-on: none` marks a task with no prerequisite; an **absent** line falls back to depending on every earlier task. Topo-sort into waves — wave 0 is every task whose dependencies are already met, wave 1 the tasks freed once wave 0 lands, and so on. A plan that declares no dependencies collapses to one task per wave: the strict serial order. *Done when: every task sits in a wave.*
 
 ## Per-Task Loop
 
@@ -42,7 +42,7 @@ For Task N:
 
 ## Parallel waves
 
-A single-task wave runs the Per-Task Loop inline on the branch — the common case, and exactly the prior serial behavior. A wave holding two or more independent tasks runs them concurrently, each isolated in its own worktree, **only when `git worktree` is usable**; if it is not, run that wave's tasks serially instead.
+A single-task wave runs the Per-Task Loop inline on the branch — the common case. A wave holding two or more independent tasks runs them concurrently, each isolated in its own worktree, **only when `git worktree` is usable**; if it is not, run that wave's tasks serially instead.
 
 1. **Record the wave base.** `WBASE=$(git rev-parse HEAD)`. Every task in the wave branches from this one sha. *Done when: WBASE is noted.*
 2. **Prove the surfaces are disjoint.** Read the wave's task briefs; confirm no two of them Create or Modify the same file. An overlap means a `Depends-on` edge was missed — demote those tasks to serial and note it, never run them in parallel. *Done when: the parallel set is provably file-disjoint.*

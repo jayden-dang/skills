@@ -306,7 +306,7 @@ Can't tick a box? The work is not done.
 | **discovery** | `brainstorm` (m), `grilling` (m), `research` (m), `prototype` (m), `domain-modeling` (m) |
 | **spec** | `write-requirements` (m), `write-design` (m), `write-plan` (m) |
 | **execution** | `execute-plan` (m), `tdd` (m), `debug` (m), `verify` (m), `worktrees` (m) |
-| **review** | `code-review` (m), `receive-review` (m) |
+| **review** | `code-review` (m), `receive-review` (m), `check-invariants` (m) |
 | **acceptance** | `acceptance-check` (m), `acceptance-api` (m), `acceptance-ui` (m), `dogfood` (m) |
 | **ship** | `finish-branch` (m), `release` (U) |
 | **track** | `amend` (m), `triage` (U), `sync-spec` (m), `improve-architecture` (U), `handoff` (U) |

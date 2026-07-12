@@ -27,6 +27,7 @@
     "./skills/acceptance/dogfood",
     "./skills/review/code-review",
     "./skills/review/receive-review",
+    "./skills/review/check-invariants",
     "./skills/ship/finish-branch",
     "./skills/ship/release",
     "./skills/track/amend",

@@ -62,15 +62,15 @@ skill's workflow only when the user has explicitly told you to.
 ## 3. Skill Types & Invocation Rules
 
 **User-invoked skills** (carry `disable-model-invocation: true` in frontmatter):
-`ask`, `writing-skills`, `setup-repo`, `scaffold-project`, `triage`,
-`improve-architecture`, `handoff`, `release`. Agents MUST NOT auto-invoke these.
-Name them for the user to run, e.g. `/triage`.
+`ask`, `writing-skills`, `setup-repo`, `scaffold-project`, `establish-project`,
+`triage`, `improve-architecture`, `handoff`, `file-issues`, `release`. Agents MUST
+NOT auto-invoke these. Name them for the user to run, e.g. `/triage`.
 
 **Model-invoked skills** (no `disable-model-invocation`): agents auto-invoke
 these when conditions match. This includes `using-skills`, `brainstorm`,
 `grilling`, `research`, `prototype`, `domain-modeling`, the full spec triad,
 `execute-plan`, `tdd`, `debug`, `verify`, `worktrees`, `code-review`,
-`receive-review`, the acceptance suite, `finish-branch`, `amend`, and
+`receive-review`, `check-invariants`, the acceptance suite, `finish-branch`, `amend`, and
 `sync-spec`.
 
 **Session-injected skill:** `using-skills` is injected by the `SessionStart` hook
@@ -296,7 +296,7 @@ Can't tick a box? The work is not done.
 
 ---
 
-## 11. Quick Reference: The 31 Skills
+## 11. Quick Reference: The 35 Skills
 
 **Legend:** (m) model-invoked · (U) user-invoked · (si) session-injected
 
@@ -304,14 +304,14 @@ Can't tick a box? The work is not done.
 |---|---|
 | **meta** | `using-skills` (m, si), `ask` (U), `writing-skills` (U) |
 | **setup** | `setup-repo` (U), `scaffold-project` (U) |
-| **project** | `establish-project` (U) |
 | **discovery** | `brainstorm` (m), `grilling` (m), `research` (m), `prototype` (m), `domain-modeling` (m) |
 | **spec** | `write-requirements` (m), `write-design` (m), `write-plan` (m) |
-| **execution** | `execute-plan` (m), `tdd` (m), `debug` (m), `verify` (m), `worktrees` (m) |
+| **execution** | `execute-plan` (m), `tdd` (m), `debug` (m), `verify` (m), `trace` (m), `worktrees` (m) |
 | **review** | `code-review` (m), `receive-review` (m), `check-invariants` (m) |
 | **acceptance** | `acceptance-check` (m), `acceptance-api` (m), `acceptance-ui` (m), `dogfood` (m) |
 | **ship** | `finish-branch` (m), `release` (U) |
-| **track** | `amend` (m), `triage` (U), `sync-spec` (m), `improve-architecture` (U), `handoff` (U) |
+| **track** | `amend` (m), `triage` (U), `sync-spec` (m), `improve-architecture` (U), `handoff` (U), `file-issues` (U) |
+| **project** | `establish-project` (U) |
 
 **Main flow:** `brainstorm` → `write-requirements` → `write-design` →
 `write-plan` → `worktrees` → `execute-plan` → `code-review` → `acceptance-check`

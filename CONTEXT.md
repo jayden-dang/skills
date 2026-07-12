@@ -15,10 +15,19 @@ Domain terms for this repo. Keep definitions tight; challenge fuzzy usage.
   whose IDs are fixtures, not coverage, is excluded via the trace ignore list, not
   case by case. _Avoid:_ "has a test" as if it meant more than the string being
   present; "ran and passed" — the trace check does not read test reports.
-- **Citation** — an occurrence of a requirement ID that the `trace` check counts:
-  an ID on a task's `_Requirements:_` footer, or an ID string in a test file.
-  _Avoid:_ "reference"/"mention" as vaguer synonyms — a citation is exactly what the
-  grep passes collect.
+- **Citation** — an occurrence of an ID that the `trace` check counts: a requirement
+  ID on a task's `_Requirements:_` footer, a requirement ID string in a test file, or
+  an **invariant** ID on a `design.md`'s `Respects: ARCH-N` line. _Avoid:_
+  "reference"/"mention" as vaguer synonyms — a citation is exactly what the grep passes
+  collect.
+- **Invariant** — a cross-cutting architecture rule that keeps independently-built
+  features consistent, written as a bold `**ARCH-N**` ID plus one imperative sentence in
+  the `docs/architecture/` spine. A feature's `design.md` cites the ones it relies on as
+  `Respects: ARCH-N`; the `trace` check verifies that citation points at a *live* (not
+  struck-through) invariant. Part of the optional project-documentation layer. _Avoid:_
+  "constraint" as a synonym (a Global-Constraint is a per-plan rule, not a repo-wide
+  invariant); conflating the deterministic `trace` citation check with the advisory
+  semantic `check-invariants` verdict.
 - **Fixture ID** — an ID-shaped string that is not real coverage (example data, a
   doc comment, a commented-out test). The `trace` check cannot tell a fixture from
   coverage by reading it, so a file full of fixture IDs is named in the trace ignore

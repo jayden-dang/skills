@@ -43,7 +43,7 @@ For the diff's changed source files (from the range pinned in step 1), search `d
 
 ## 3b. Invariant conformance (advisory)
 
-WHERE `docs/architecture/` exists, REQUIRED SUB-SKILL: use `check-invariants` on the diff — it returns a per-`Respects: ARCH-N` verdict (respects / violates / unclear). Hold the violates/unclear verdicts for step 5. This lane is advisory by construction and stays OUT of the two hard axes — it never becomes a merge blocker. If `docs/architecture/` does not exist, skip this step and inject nothing. *Done when: you hold the invariant verdicts, or an explicit "no spine".*
+When `docs/architecture/` exists, REQUIRED SUB-SKILL: use `check-invariants` on the diff — it returns a per-`Respects: ARCH-N` verdict (respects / violates / unclear). Hold the violates/unclear verdicts for step 5. This lane is advisory by construction and stays OUT of the two hard axes — it never becomes a merge blocker. If `docs/architecture/` does not exist, skip this step and inject nothing. *Done when: you hold the invariant verdicts, or an explicit "no spine".*
 
 ## 4. Dispatch both subagents in parallel
 

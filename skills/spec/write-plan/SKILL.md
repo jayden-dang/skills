@@ -24,11 +24,11 @@ Constraints**: project-wide rules copied verbatim from the design and
 rules, forbidden changes. Every task's requirements implicitly include this
 section; it travels with each task brief.
 
-WHERE a `docs/architecture/` spine exists, also fold its hard `**ARCH-N**` invariants
-into Global Constraints so every task inherits them. And source the human-facing
-engineering rules (naming, i18n, house rules) from `docs/product/guidelines.md` when it
-exists, otherwise from `docs/agents/project.md` as above — the guidelines doc, when
-present, is where those rules live.
+When a `docs/architecture/` spine exists, also fold its hard `**ARCH-N**` invariants
+into Global Constraints so every task inherits them; no spine, nothing to fold. And
+source the human-facing engineering rules (naming, i18n, house rules) from
+`docs/product/guidelines.md` when it exists, otherwise from `docs/agents/project.md` as
+above — the guidelines doc, when present, is where those rules live.
 
 ## Step 2: File structure first
 

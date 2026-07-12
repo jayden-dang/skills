@@ -24,6 +24,12 @@ Record the decisions locked during discovery as a numbered list.
 Any decision that is hard to reverse AND surprising without context AND a real
 trade-off also gets an ADR (REQUIRED SUB-SKILL: `domain-modeling` owns the ADR
 gate).
+
+WHERE a `docs/architecture/` spine exists, its `**ARCH-N**` invariants are inputs to
+this design: read them and note which ones this feature relies on (you will cite them
+in Step 2). If a design decision must *contradict* an invariant, that is an
+ADR-or-supersede event — record the ADR, or supersede the invariant by strikethrough
+in the spine — never a silent violation. No spine? Skip this; the layer is optional.
 **Done when:** a newcomer could state why this approach over the obvious
 alternative.
 
@@ -32,7 +38,9 @@ alternative.
 One `###` section per component or area. Every section carries a
 `Satisfies: CODE-N.M, CODE-N.M` line naming the requirement IDs it exists to
 meet. A section with no Satisfies line is either infrastructure (say so) or
-does not belong in this feature.
+does not belong in this feature. WHERE the design relies on an architecture
+invariant (Step 1), the section also carries a `Respects: ARCH-N` line — the
+`trace` check verifies that citation points at a live invariant.
 
 For the genuinely hard parts, design it twice: dispatch 2–3 parallel subagents
 with divergent constraints (minimize the interface / maximize flexibility /

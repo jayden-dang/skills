@@ -1350,6 +1350,51 @@ class StandardsErrorsTest(unittest.TestCase):
         self.assertIsInstance(check_graph._standards_errors({}), list)
 
 
+class ResolveStandardsTest(unittest.TestCase):
+    def _cfg(self, baseline=None, module_standards=None):
+        cfg = {"modules": [{"code": "AUTH", "name": "M", "owns": ["src/x/**"]}]}
+        if baseline is not None:
+            cfg["standards"] = baseline
+        if module_standards is not None:
+            cfg["modules"][0]["standards"] = module_standards
+        return cfg
+
+    def test_baseline_then_module_MODSTD_1_1_2_1(self):
+        # covers MODSTD-1.1, MODSTD-2.1
+        cfg = self._cfg(baseline=["A", "B"], module_standards=["C"])
+        self.assertEqual(check_graph.resolve_standards("AUTH", cfg), ["A", "B", "C"])
+
+    def test_dedupe_first_occurrence_MODSTD_2_2(self):
+        # covers MODSTD-2.2
+        cfg = self._cfg(baseline=["A"], module_standards=["A", "B"])
+        self.assertEqual(check_graph.resolve_standards("AUTH", cfg), ["A", "B"])
+
+    def test_unknown_code_baseline_only_MODSTD_2_3(self):
+        # covers MODSTD-2.3
+        cfg = self._cfg(baseline=["A"], module_standards=["C"])
+        self.assertEqual(check_graph.resolve_standards("NOPE", cfg), ["A"])
+
+    def test_nothing_declared_empty_MODSTD_2_4(self):
+        # covers MODSTD-2.4
+        self.assertEqual(check_graph.resolve_standards("AUTH", {"modules": []}), [])
+        self.assertEqual(check_graph.resolve_standards("AUTH", {}), [])
+
+    def test_malformed_values_skipped_not_crashing(self):
+        # resolve is total/defensive (validity is a separate --verify concern)
+        cfg = self._cfg(baseline="foo", module_standards=["", "ok", 1])
+        self.assertEqual(check_graph.resolve_standards("AUTH", cfg), ["ok"])
+
+    def test_import_still_inert_MODSTD_4_4(self):
+        # covers MODSTD-4.4
+        import importlib, io, contextlib
+        out_buf, err_buf = io.StringIO(), io.StringIO()
+        with contextlib.redirect_stdout(out_buf), contextlib.redirect_stderr(err_buf):
+            mod = importlib.reload(check_graph)
+        self.assertEqual(out_buf.getvalue(), "")
+        self.assertEqual(err_buf.getvalue(), "")
+        self.assertTrue(hasattr(mod, "resolve_standards"))
+
+
 class SeedCodeTest(unittest.TestCase):
     CODE_RE = r"^[A-Z][A-Z0-9]{1,11}$"
 

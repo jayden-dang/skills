@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# @skills-linter: check-graph sha256:30f9609b6453
+# @skills-linter: check-graph sha256:b666aed67ca7
 """check-graph — horizontal feature-graph layer.
 
 Harvests, from each feature's existing design.md/tasks.md (NO new authoring):
@@ -853,6 +853,33 @@ def _standards_errors(cfg):
                 errors.append(
                     f"E: module {label} 'standards' must be a list of non-empty strings")
     return errors
+
+
+def resolve_standards(code, cfg):
+    """Resolve a module's effective standards: the baseline standards followed
+    by that module's own standards, deduplicated (first occurrence kept). Total
+    and defensive — non-list values and non-string/empty items are skipped, so a
+    malformed config never crashes resolution (validity is a --verify concern).
+    An unknown code yields the baseline alone."""
+    def clean(value):
+        if not isinstance(value, list):
+            return []
+        return [s for s in value if isinstance(s, str) and s]
+
+    baseline = clean(cfg.get("standards"))
+    module = []
+    raw = cfg.get("modules")
+    if isinstance(raw, list):
+        for entry in raw:
+            if isinstance(entry, dict) and entry.get("code") == code:
+                module = clean(entry.get("standards"))
+                break
+    out, seen = [], set()
+    for s in baseline + module:
+        if s not in seen:
+            seen.add(s)
+            out.append(s)
+    return out
 
 
 def _seed_code(name):

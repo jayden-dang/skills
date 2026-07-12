@@ -28,7 +28,7 @@ Actively build and sharpen the project's glossary while designing. Merely *readi
 
 Update `CONTEXT.md` **inline, the instant a term is settled** — never batch glossary edits for later; batched terms get forgotten. If no `CONTEXT.md` exists yet, create it lazily when the first term settles (seed from the skill set's `templates/CONTEXT.md` — `${CLAUDE_PLUGIN_ROOT}/templates` when installed as a plugin, otherwise `../../../templates` relative to this SKILL.md).
 
-`CONTEXT.md` is a **glossary only**. No implementation details, no decisions, no spec fragments, no scratch notes — those belong in specs and ADRs. Term format:
+`CONTEXT.md` holds exactly one kind of entry: a term definition. Decisions go to ADRs; implementation detail and spec fragments go to the specs. Term format:
 
 ```md
 **Workspace**:

@@ -20,7 +20,7 @@ Exceptions exist only with the user's explicit permission: throwaway prototypes,
 
 ## Where tests go: pre-agreed seams
 
-A seam is a public boundary where behavior is observable without reaching into internals. Tests live only at seams listed in the feature's `design.md` under **Seams for testing**. Refuse to write a test at a seam that table does not confirm. No `design.md` for this work (tier 0/1 change, legacy area)? Propose the seam(s) to the user and get agreement before the first test. Testing effort is a budget — agreed seams put it on critical paths instead of on every internal detail.
+A seam is a public surface where behavior is observable without reaching into internals. Tests live only at seams listed in the feature's `design.md` under **Seams for testing**. Refuse to write a test at a seam that table does not confirm. No `design.md` for this work (tier 0/1 change, legacy area)? Propose the seam(s) to the user and get agreement before the first test. Testing effort is a budget — agreed seams put it on critical paths instead of on every internal detail.
 
 ## The loop
 

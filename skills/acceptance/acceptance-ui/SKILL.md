@@ -39,8 +39,7 @@ or an empty screen is testing the harness, not the feature.
 
 If the repo already standardizes on a different e2e framework (Cypress,
 WebdriverIO, Nightwatch, a native mobile driver), write the flows in **that**
-harness — do not install a second, competing e2e stack alongside it. Only when
-there is no incumbent e2e harness, default to Playwright/Chromium.
+harness. With no incumbent e2e harness, default to Playwright/Chromium.
 
 Check for a Playwright harness: `@playwright/test` installed and a
 `playwright.config.*` with a Chromium project. If present, use it. If not, set it up: install

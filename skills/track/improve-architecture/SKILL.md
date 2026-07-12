@@ -11,7 +11,7 @@ disable-model-invocation: true
 
 Scan the codebase for accumulated friction, present deepening candidates as a visual report, and carry the one the user picks into the normal spec cycle. The goal is testability and navigability — modules deep enough that their interface is the test surface.
 
-Vocabulary is strict throughout: **module, interface, implementation, seam, adapter** (plus depth/locality/leverage as qualities) — a *seam* is a public boundary where behavior is both observable and substitutable (the same seam `tdd` and `write-design` name). Never drift into "component", "service", "layer", or "boundary" — precision in the nouns is what keeps the findings comparable run over run.
+Vocabulary is strict throughout: **module, interface, implementation, seam, adapter** (plus depth/locality/leverage as qualities) — a *seam* is a public surface where behavior is both observable and substitutable (the same seam `tdd` and `write-design` name). Never drift into "component", "service", "layer", or "boundary" — precision in the nouns is what keeps the findings comparable run over run.
 
 ## 1. Explore for friction
 

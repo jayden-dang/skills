@@ -95,11 +95,14 @@ sync-spec                    whenever a spec'd feature changed outside its plan
 
 | Phase | Skills | Page |
 |---|---|---|
+| Project layer *(optional, above the feature loop)* | `establish-project`, `check-invariants` | [`establish-project`](../skills/establish-project.md) |
 | Discovery | `brainstorm`, `grilling`, `research`, `prototype`, `domain-modeling` | [Discovery](discovery.md) |
 | Specification | `write-requirements`, `write-design`, `write-plan` | [Specification](specification.md) |
 | Execution | `worktrees`, `execute-plan`, `tdd`, `debug`, `verify`, `trace` | [Execution](execution.md) |
-| Review & acceptance | `code-review`, `receive-review`, `acceptance-*`, `dogfood` | [Review and acceptance](review-and-acceptance.md) |
+| Review & acceptance | `code-review`, `receive-review`, `check-invariants`, `acceptance-*`, `dogfood` | [Review and acceptance](review-and-acceptance.md) |
 | Ship & maintain | `finish-branch`, `release`, `sync-spec`, `amend`, `file-issues`, `triage`, `improve-architecture`, `handoff` | [Ship and maintain](ship-and-maintain.md) |
+
+The **project layer** is optional and sits above the per-feature chain: on a large project, [`establish-project`](../skills/establish-project.md) writes a repo-level product vision and an IDed architecture-invariant spine that the discovery, spec, execution, and review phases consult when present — and ignore cleanly when absent. See [the artifact model](../concepts/artifacts.md#docsproduct-and-docsarchitecture--the-optional-project-layer).
 
 ## Context hygiene — the operational rule
 

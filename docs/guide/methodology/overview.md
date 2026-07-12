@@ -30,7 +30,7 @@ That ID then flows outward into everything downstream: the test that verifies th
 
 And then — this is the part that makes it real rather than aspirational — a **deterministic check**, not human diligence, keeps the chain honest. The [`trace`](../resources/scripts.md#the-trace-check) skill runs a fixed sequence of `grep` and `git` passes — invoked by `verify`, `release`, and `sync-spec` — and reports it when a task cites a requirement that does not exist, when a shipped requirement has no covering test, or when an ID is defined twice. Unchecked trace matrices rot; this one is machine-checked from primitives every repo already has.
 
-Around that spine sit **35 skills** in ten buckets, each one a piece of process the agent is required to follow, and four **hard gates** that cannot be talked past.
+Around that spine sit **35 skills** in ten buckets, each one a piece of process the agent is required to follow, and four **hard gates** that cannot be talked past. One of those buckets, `project/`, is an **optional layer above the feature loop**: on a large project, [`establish-project`](../skills/establish-project.md) maintains a repo-level product vision and an IDed architecture-invariant spine that the feature skills consult when present and ignore when absent.
 
 ## The four gates
 

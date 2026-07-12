@@ -62,6 +62,18 @@ Determinism comes from the primitives: `grep` and `git` produce the same output 
 
 One consequence is load-bearing: because the citation pass is a textual `grep`, **coverage is textual**. An ID string present in a test file counts; the check does not judge whether the test truly asserts the behavior. That judgement is the job of the surrounding skills.
 
+## Extending the spine upward — architecture invariants (optional)
+
+A repo that opts into the [project layer](../skills/establish-project.md) gets a second, parallel spine. Architecture invariants live in `docs/architecture/` as bold `**ARCH-N**` IDs — exactly the shape of a requirement ID — and a feature `design.md` cites the ones it relies on as `Respects: ARCH-N`. The same `trace` check extends one level up, gated on `docs/architecture/` existing so a repo without it sees no change:
+
+| Code | Meaning |
+|---|---|
+| **E4** | a `Respects: ARCH-N` cites an invariant defined nowhere |
+| **E5** | a `Respects: ARCH-N` cites a retired (struck-through) invariant |
+| **W3** | a live invariant is cited by no `design.md` |
+
+This is deliberately *referential integrity only* — does the cited invariant exist, and is it live — never whether the design genuinely respects it. That judgement is a separate, advisory, LLM-judged check ([`check-invariants`](../skills/check-invariants.md)), kept out of `trace` so the determinism principle holds.
+
 ## What "covered" actually means
 
 The word does real work here, so the repo's glossary pins it down:

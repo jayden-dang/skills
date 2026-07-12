@@ -48,6 +48,7 @@ Three ways in: by role, by problem, or by phase.
 | …fix a bug | [`debug`](skills/debug.md) → [Tier 1 example](examples/tier-1-bugfix.md) |
 | …start a brand-new project | [`/scaffold-project`](skills/scaffold-project.md) |
 | …adopt this on an existing repo | [`/setup-repo`](skills/setup-repo.md) → [Adopting](resources/adopting.md) |
+| …set up a product vision + architecture spine for a large project | [`/establish-project`](skills/establish-project.md) |
 | …understand why my tests aren't enough | [`acceptance-check`](skills/acceptance-check.md) → [Review and acceptance](process/review-and-acceptance.md) |
 | …know why the trace check is failing | [Troubleshooting](resources/troubleshooting.md#the-trace-check-fails) |
 | …review a branch before merging | [`code-review`](skills/code-review.md) |
@@ -102,7 +103,7 @@ Three ways in: by role, by problem, or by phase.
 - [Phase 5 — Ship and maintain](process/ship-and-maintain.md)
 
 ### Skills — one page each
-- [Skill reference](skills/README.md) — all 33, indexed
+- [Skill reference](skills/README.md) — all 35, indexed
 
 ### Examples
 - [Tier 0: a tweak](examples/tier-0-tweak.md)

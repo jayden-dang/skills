@@ -44,6 +44,13 @@ over `docs/specs/`.
   guard) → tagged regression test → `verify` → `code-review` → `finish-branch`.
 - **Tier 2 (feature):** the full triad + `execute-plan`.
 
+**Optional project layer** (large projects, off by default): before feature work,
+`/establish-project` writes a repo-level product vision and an IDed
+architecture-invariant spine (`docs/architecture/`, each rule an `**ARCH-N**`). The
+discovery, spec, execution, and review skills consult it when present — a `design.md`
+cites `Respects: ARCH-N`, and `trace` checks those citations — and ignore it cleanly when
+absent. See [the artifact model](concepts/artifacts.md#docsproduct-and-docsarchitecture--the-optional-project-layer).
+
 **The gates** — hard prohibitions written to survive an agent under pressure (see
 [the gates](concepts/gates.md)):
 
@@ -111,7 +118,7 @@ a conversation or idea into tracker issues, **`/triage`** for incoming issues,
 **`/improve-architecture`** for periodic deepening scans, **`/handoff`** to
 compact a long session.
 
-## 3. Behavior of every skill (all 33)
+## 3. Behavior of every skill (all 35)
 
 `U` = user-invoked slash command · `m` = model-invoked (fires on its trigger)
 
@@ -127,6 +134,11 @@ compact a long session.
 |---|---|---|---|---|
 | [`setup-repo`](skills/setup-repo.md) | U | Once per repo | One-decision wizard: tracker, labels, verify commands, release steps; writes `docs/agents/*.md` + Agent-skills block; offers the session-start hook; proves the config runs | A configured repo (markdown only) |
 | [`scaffold-project`](skills/scaffold-project.md) | U | Brand-new / greenfield project | Grills stack & layout, scaffolds test harness/linter/CI stub/`INDEX.md`/`CONTEXT.md`, then runs `setup-repo`; ends on a passing hello-world | A bootstrapped baseline |
+
+### project *(optional layer, off by default)*
+| Skill | Kind | Fires when | Core behavior | Produces |
+|---|---|---|---|---|
+| [`establish-project`](skills/establish-project.md) | U | Large/long-lived project, before feature work | Tri-modal (create/update/validate): grills out a product vision and an IDed `**ARCH-N**` architecture-invariant spine + engineering guidelines; feature skills consult them when present | `docs/product/vision.md`, `docs/architecture/`, `docs/product/guidelines.md` |
 
 ### discovery
 | Skill | Kind | Fires when | Core behavior | Produces |
@@ -159,6 +171,7 @@ compact a long session.
 |---|---|---|---|---|
 | [`code-review`](skills/code-review.md) | m | A branch/diff needs review | Two parallel read-only subagents — Standards (repo standards + code-smell baseline) and Spec (diff vs requirement IDs); inline `docs/specs/` overlap search; calibrated verdict | A two-axis merge verdict |
 | [`receive-review`](skills/receive-review.md) | m | Review feedback / PR comments arrive | Anti-sycophancy: verify each item against the code, push back when the reviewer is wrong, clarify all items before implementing any | A vetted action list |
+| [`check-invariants`](skills/check-invariants.md) | m | A design/diff cites `Respects: ARCH-N` (repo has `docs/architecture/`) | Advisory, LLM-judged conformance: per citation, a respects/violates/unclear verdict + rationale; the semantic counterpart to `trace`, never a hard gate | Invariant verdicts |
 
 ### acceptance
 | Skill | Kind | Fires when | Core behavior | Produces |

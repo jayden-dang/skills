@@ -16,6 +16,10 @@ docs/specs/
 CONTEXT.md                     # domain glossary: terms, tight definitions, _Avoid_ lists
 docs/adr/NNNN-slug.md          # minimal ADRs — 1–3 sentences, behind a three-part gate
 
+docs/product/vision.md         # optional project layer — repo-level product vision
+docs/architecture/INDEX.md     # optional project layer — IDed **ARCH-N** invariant spine
+docs/product/guidelines.md     # optional project layer — engineering guidelines
+
 docs/agents/                   # per-repo config, written once by setup-repo
   project.md                   #   verify commands, test annotation conventions,
                                #   release steps, "Run locally (dev)",
@@ -87,6 +91,18 @@ Offered only when **all three** hold:
 Any one missing means no ADR. The body is a short title plus **one to three sentences**: context, decision, why. Recording *that* and *why* is the value, not filling sections.
 
 A new decision that contradicts an existing ADR supersedes it explicitly by number. Never silently override a recorded decision.
+
+## `docs/product/` and `docs/architecture/` — the optional project layer
+
+For large or long-lived projects only, and **absent by default**. Authored and maintained by [`establish-project`](../skills/establish-project.md):
+
+| File | Contents | Read by |
+|---|---|---|
+| `docs/product/vision.md` | the repo-level product north star — problem, users, goals, non-goals, scope | `brainstorm` (checks a new idea's product scope) |
+| `docs/architecture/INDEX.md` (+ per-domain files) | the architecture spine: cross-cutting invariants, each a bold `**ARCH-N**` ID plus one imperative rule | `write-design` (cites `Respects: ARCH-N`), `write-plan`, `execute-plan`, `code-review`, `trace` |
+| `docs/product/guidelines.md` | human-facing engineering guidelines — coding standards, naming/i18n, house rules | `write-plan` (sources Global Constraints from here, else `project.md`) |
+
+ADRs are the *decisions*; the architecture spine is the *current invariant set* those decisions produced. Every consult is no-op-if-absent, so a repo that never creates these files behaves exactly as it did before the layer existed. See [`establish-project`](../skills/establish-project.md) and the [traceability spine](traceability.md).
 
 ## `docs/agents/` — the per-repo config
 

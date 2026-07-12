@@ -41,6 +41,10 @@ On top of the repo's own documents, the Standards axis always carries `standards
 
 For the diff's changed source files (from the range pinned in step 1), search `docs/specs/` for specs that already name those paths — `grep -rl <changed-file> docs/specs` over `design.md`/`tasks.md`, plus a term search across `requirements.md` for the diff's key concepts. Read any match and hold it as a summary card (feature code, owned paths, Out-of-Scope). `docs/specs/INDEX.md` is the registry to start from. This never blocks the review: if no changed file appears in any spec, state that no existing feature shares the diff's surface and inject nothing into step 4; if `docs/specs/` does not exist, note it and continue. *Done when: you hold the overlapping features' cards, or an explicit "no overlap".*
 
+## 3b. Invariant conformance (advisory)
+
+WHERE `docs/architecture/` exists, REQUIRED SUB-SKILL: use `check-invariants` on the diff — it returns a per-`Respects: ARCH-N` verdict (respects / violates / unclear). Hold the violates/unclear verdicts for step 5. This lane is advisory by construction and stays OUT of the two hard axes — it never becomes a merge blocker. If `docs/architecture/` does not exist, skip this step and inject nothing. *Done when: you hold the invariant verdicts, or an explicit "no spine".*
+
 ## 4. Dispatch both subagents in parallel
 
 Send ONE message containing both dispatches so they run concurrently and neither pollutes the other's context. Both are **read-only**: no mutation of the working tree, index, HEAD, or branch state; to inspect another revision, use a temporary worktree (`git worktree add <tmpdir> <sha>`), never move HEAD. Keep each brief under 400 words. Never pre-judge findings in a dispatch — no "do not flag", no pre-rated severities.
@@ -53,7 +57,7 @@ Send ONE message containing both dispatches so they run concurrently and neither
 
 ## 5. Aggregate
 
-Present the reports under `## Standards` and `## Spec` headings — lightly cleaned at most. Do NOT merge, dedupe across axes, or rerank one axis's findings against the other's; that reranking is exactly what the separation prevents.
+Present the reports under `## Standards` and `## Spec` headings — lightly cleaned at most. Do NOT merge, dedupe across axes, or rerank one axis's findings against the other's; that reranking is exactly what the separation prevents. When step 3b produced invariant verdicts, present them under a separate `## Invariants (advisory)` heading — a third lane, never merged into or reranked against Standards/Spec, and never a merge blocker (it is advisory by construction).
 
 Every finding carries: severity (Critical / Important / Minor), file:line, why it matters, and a suggested fix unless obvious.
 

@@ -1,0 +1,20 @@
+# Git hooks for the skills repo.
+#
+# Guards against a malformed SKILL.md silently disappearing from the skills
+# catalog: the vercel `skills` CLI skips any file whose frontmatter YAML fails
+# to parse, with no error, so `npx skills add` would quietly find N-1 skills.
+# See scripts/lint-skill-frontmatter.py.
+#
+# Run `lefthook install` once to wire these into .git/hooks.
+
+pre-commit:
+  commands:
+    skill-frontmatter:
+      glob: "skills/**/SKILL.md"
+      run: python3 scripts/lint-skill-frontmatter.py {staged_files}
+
+pre-push:
+  commands:
+    skill-frontmatter:
+      # Full scan before anything reaches origin (where the CLI reads).
+      run: python3 scripts/lint-skill-frontmatter.py

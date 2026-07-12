@@ -28,6 +28,12 @@ A finding set, each item an ERROR or a WARNING:
 | **E3** | error | The same ID is defined (bold) in more than one file |
 | **W1** | warn | An `Approved` requirement is cited by no task |
 | **W2** | warn | A `requirements.md` is missing its `Status:` or `Feature code:` line |
+| **E4** | error | A `Respects:` line cites an `ARCH-N` no `docs/architecture/` file defines |
+| **E5** | error | A `Respects:` line cites a retired (struck-through) `ARCH-N` |
+| **W3** | warn | A live `**ARCH-N**` invariant is cited by no `design.md` |
+
+E4/E5/W3 exist only when the repo has a `docs/architecture/` spine; without one they
+never fire and the finding set is exactly E1–E3 / W1–W2.
 
 Errors mean the trace is broken. Warnings mean the trace is incomplete but not
 wrong. `verify`/`release` treat any error as a failing gate; warnings are reported,
@@ -107,6 +113,35 @@ the roots/includes to the repo's actual layout. The ID grammar is
 two-level tokens, so a three-level ID like `CODE-1.2.3` can never be read as a
 citation of `CODE-1.2`.
 
+### Invariant passes — only when `docs/architecture/` exists
+
+If the repo has no `docs/architecture/` directory, skip passes 5–6 entirely; the
+finding set is passes 1–4, unchanged. When the spine exists, add:
+
+**5. Invariant definitions** — bold `**ARCH-N**` in the spine, split into a *retired*
+set (struck) and a *live* set (survivors), exactly as pass 1 handles requirements.
+
+```bash
+# retired invariants — the E5 set (struck-through, captured BEFORE deletion)
+grep -rhoE '~~\*\*ARCH-[0-9]+\*\*~~' docs/architecture | grep -oE 'ARCH-[0-9]+' | sort -u
+# live invariants — strike spans deleted first, then match (as in pass 1)
+grep -rh '' docs/architecture --include='*.md' \
+  | sed -E 's/~~[^~]*~~//g' \
+  | grep -oE '\*\*ARCH-[0-9]+\*\*' | grep -oE 'ARCH-[0-9]+' | sort -u
+```
+
+The first grep is the **retired** set; the second (struck spans removed) is the
+**live** set. An `ARCH-N` in neither is undefined.
+
+**6. Respects citations** — each `ARCH-N` on a `Respects:` line in any `design.md`.
+
+```bash
+grep -rnE 'Respects:.*ARCH-[0-9]+' docs/specs --include='*design.md' \
+  | grep -oE '^[^:]+:|ARCH-[0-9]+'
+```
+
+Each cited `ARCH-N` belongs to the `design.md` it sits in.
+
 ## The rules
 
 With the four sets in hand — `defined` (ID → {file, status}), `taskCited`,
@@ -123,6 +158,15 @@ With the four sets in hand — `defined` (ID → {file, status}), `taskCited`,
   `taskCited`: report it.
 - **W2** — for each `requirements.md` (never `fixes.md`) missing a `Status:` or a
   `Feature code:` line: report which line is missing.
+
+When `docs/architecture/` exists, also — with `liveArch`, `retiredArch`, and
+`respectsCited` (ARCH-N → citing design) in hand:
+
+- **E4** — for each `ARCH-N` in `respectsCited` that is in neither `liveArch` nor
+  `retiredArch`: report it and the citing `design.md`.
+- **E5** — for each `ARCH-N` in `respectsCited` that is in `retiredArch`: report it
+  and the citing `design.md`.
+- **W3** — for each `ARCH-N` in `liveArch` not in `respectsCited`: report it.
 
 Status obligations at a glance:
 
@@ -147,6 +191,11 @@ dropped from the test search wholesale — never ID-by-ID by hand.
 Likewise: gather **every** matching file. Missing one test file invents a false E2;
 missing one requirements file invents a false E1. Grep the whole tree; do not
 sample or reason about which files "probably" matter.
+
+The same rule binds the invariant passes: E4/E5/W3 check only that a `Respects: ARCH-N`
+citation names a *live* invariant — existence and liveness. Never judge whether the
+design *actually* respects the invariant; that semantic call is `check-invariants` /
+`code-review`, not `trace`.
 
 ## Output
 

@@ -303,6 +303,7 @@ Can't tick a box? The work is not done.
 |---|---|
 | **meta** | `using-skills` (m, si), `ask` (U), `writing-skills` (U) |
 | **setup** | `setup-repo` (U), `scaffold-project` (U) |
+| **project** | `establish-project` (U) |
 | **discovery** | `brainstorm` (m), `grilling` (m), `research` (m), `prototype` (m), `domain-modeling` (m) |
 | **spec** | `write-requirements` (m), `write-design` (m), `write-plan` (m) |
 | **execution** | `execute-plan` (m), `tdd` (m), `debug` (m), `verify` (m), `worktrees` (m) |

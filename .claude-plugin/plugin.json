@@ -38,6 +38,7 @@
     "./skills/track/improve-architecture",
     "./skills/setup/setup-repo",
     "./skills/setup/scaffold-project",
+    "./skills/project/establish-project",
     "./skills/meta/using-skills",
     "./skills/meta/writing-skills",
     "./skills/meta/ask"

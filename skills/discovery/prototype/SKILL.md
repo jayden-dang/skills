@@ -14,8 +14,10 @@ A prototype is throwaway code whose only job is to answer one design question. T
 
 Identify the question first — from the request, the surrounding code, or by asking:
 
-- **"Does this logic / state model hold up?"** → [LOGIC.md](LOGIC.md): an interactive terminal app over a pure logic module the user can drive by hand.
-- **"What should this look like?"** → [UI.md](UI.md): several structurally different variants of one screen, switchable in the browser.
+- **"Does this logic / state model hold up?"** → read `LOGIC.md`.
+- **"What should this look like?"** → read `UI.md`.
+
+Read that branch's file end to end before writing a line of prototype code — the constraints that keep the prototype throwaway live there, not here.
 
 Picking the wrong branch wastes the whole prototype. If it's genuinely ambiguous and the user is unreachable, choose by proximity (backend module → logic; page or component → UI) and record the assumption at the top of the prototype.
 

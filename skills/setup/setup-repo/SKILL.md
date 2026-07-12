@@ -74,7 +74,7 @@ The canonical roles — five states and two categories:
 | bug | something is broken |
 | enhancement | new capability or improvement |
 
-The user has now chosen the tracker, so reading it here is in service of that choice, not a probe to make one. List the repo's existing labels next to the roles and propose a mapping (default: each role's string equals its name) — the mapping is a proposal the user confirms, never one you apply on their behalf. For any mapped label that does not exist in the tracker yet, offer to create it — only with the user's explicit consent. For local trackers, the role names themselves are the vocabulary; defaults are fine. For **linear**, list the team's existing workflow states and labels first (via the MCP server or API), then map the state roles to Linear workflow states where one fits (e.g. `ready-for-agent` → a "Todo"/"Ready" state, `wontfix` → a "Canceled" state) and the category roles (`bug`/`enhancement`) to Linear labels.
+List the tracker's existing labels next to the roles and propose a mapping (default: each role's string equals its name); the user confirms it. For any mapped label the tracker does not have yet, offer to create it — only with the user's explicit consent. For local trackers, the role names themselves are the vocabulary; defaults are fine. For **linear**, list the team's existing workflow states and labels first (via the MCP server or API), then map the state roles to Linear workflow states where one fits (e.g. `ready-for-agent` → a "Todo"/"Ready" state, `wontfix` → a "Canceled" state) and the category roles (`bug`/`enhancement`) to Linear labels.
 
 **Done when:** every canonical role maps to a confirmed label string.
 
@@ -156,8 +156,8 @@ This repo is configured for a spec-driven skill set.
 - Feature flow: `brainstorm` → `write-requirements` → `write-design` →
   `write-plan` → `execute-plan`
 - Bug on-ramp: `debug` (root cause first, then a guarded fix)
-- Capture a conversation/spec/idea into tracker issues: `file-issues`
-- Incoming issues and PRs: `triage`
+- Capture a conversation/spec/idea into tracker issues: `/file-issues` (user-run)
+- Incoming issues and PRs: `/triage` (user-run)
 - Traceability check: the `trace` skill — run by `verify` and `release`;
   keep it clean
 
@@ -185,8 +185,6 @@ The skill set installs nothing else into the repo — no linters, no CI steps, n
          "command": "\"$CLAUDE_PROJECT_DIR/.claude/hooks/session-start.sh\"" } ] } ] } }
      ```
    - Merge into any existing `SessionStart` block additively; do not clobber other hooks.
-
-The trace check runs inside `verify` and `release`, where an agent is present to run it. A build-failing gate for CI or git hooks (which run with no agent) is a separate, team-specific choice — out of scope here; point the user at it only if they ask.
 
 **Done when:** the hook offer has an explicit yes/no, and a yes is implemented.
 

@@ -9,8 +9,8 @@ disable-model-invocation: true
 
 You are the router. Read the situation, name the entry point, and explain the
 chain that follows. Do not start executing the chosen flow inside this skill.
-If the entry point is model-invocable (`brainstorm`, `debug`, `acceptance-check`,
-`dogfood`), invoke it and let it take over. If it is a user-invoked skill
+If the entry point is model-invocable (`brainstorm`, `amend`, `debug`,
+`acceptance-check`, `dogfood`), invoke it and let it take over. If it is a user-invoked skill
 (`triage`, `file-issues`, `improve-architecture`, `setup-repo`,
 `scaffold-project`, `handoff`, `release`), you cannot invoke it — name it and
 tell the user to run its command, e.g. `/triage`.

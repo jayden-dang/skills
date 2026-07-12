@@ -1,9 +1,13 @@
 # Git hooks for the skills repo.
 #
-# Guards against a malformed SKILL.md silently disappearing from the skills
-# catalog: the vercel `skills` CLI skips any file whose frontmatter YAML fails
-# to parse, with no error, so `npx skills add` would quietly find N-1 skills.
-# See scripts/lint-skill-frontmatter.py.
+# skill-frontmatter guards against a malformed SKILL.md silently disappearing
+# from the skills catalog: the vercel `skills` CLI skips any file whose
+# frontmatter YAML fails to parse, with no error, so `npx skills add` would
+# quietly find N-1 skills. See scripts/lint-skill-frontmatter.py.
+#
+# handoffs guards against a dead-end hand-off: a body telling the agent to
+# invoke a skill carrying `disable-model-invocation: true`, which it cannot do.
+# See scripts/lint-handoffs.py.
 #
 # Run `lefthook install` once to wire these into .git/hooks.
 
@@ -12,9 +16,15 @@ pre-commit:
     skill-frontmatter:
       glob: "skills/**/SKILL.md"
       run: python3 scripts/lint-skill-frontmatter.py {staged_files}
+    handoffs:
+      glob: "skills/**/SKILL.md"
+      # Cross-skill check — always scans the whole set, not just staged files.
+      run: python3 scripts/lint-handoffs.py
 
 pre-push:
   commands:
     skill-frontmatter:
       # Full scan before anything reaches origin (where the CLI reads).
       run: python3 scripts/lint-skill-frontmatter.py
+    handoffs:
+      run: python3 scripts/lint-handoffs.py

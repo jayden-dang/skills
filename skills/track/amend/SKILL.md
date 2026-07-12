@@ -36,9 +36,9 @@ The honest test for the escalation: **does the existing spec's intent already co
 
 ## 3. Keep the trace honest
 
-After the change lands through `tdd`, its new or changed requirement carries its ID into the test tag and the commit trailer like any other. If the edit touched the triad, REQUIRED SUB-SKILL: use `sync-spec` to realign `Status:` and the trace. The `trace` check stays clean, or the change is not done.
+After the change lands through `tdd`, its new or changed requirement carries its ID into the test tag and the commit trailer like any other. If you edited `requirements.md`, `design.md`, or `tasks.md`, REQUIRED SUB-SKILL: use `sync-spec` to realign `Status:` and the trace. Otherwise REQUIRED SUB-SKILL: use `trace` directly and read its finding set. The check stays clean, or the change is not done.
 
-**Done when:** the change is implemented test-first, its requirement ID traces end to end, and the `trace` check is clean.
+**Done when:** the change is implemented test-first, its requirement ID traces end to end, and the `trace` check reports no errors.
 
 ## Red flags — you are in the wrong lane
 

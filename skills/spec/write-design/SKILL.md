@@ -5,9 +5,11 @@ description: Use when approved requirements need their technical design — the 
   write-requirements, before write-plan.
 ---
 
-Produce `docs/specs/<date>-<feature>/design.md`: HOW the approved requirements
-get satisfied. Start from `templates/design.md`. The requirements file is your
-input contract — read it fully first.
+Produce `docs/specs/<YYYY-MM-DD>-<feature>/design.md`: HOW the approved requirements
+get satisfied. Start from the skill set's `templates/design.md` — resolve
+`templates/` as `${CLAUDE_PLUGIN_ROOT}/templates` when installed as a plugin,
+otherwise `../../../templates` relative to this SKILL.md. Every heading in it is a
+REQUIRED slot. The requirements file is your input contract — read it fully first.
 
 ## Step 1: Context and decisions
 

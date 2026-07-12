@@ -1,8 +1,7 @@
 # Implementer Dispatch Template
 
 Fill this template when dispatching an implementer subagent. Placeholders in
-`[BRACKETS]`. The model line is mandatory — an omitted model silently inherits
-the session's most expensive one (see Model Tiering in SKILL.md).
+`[BRACKETS]`.
 
 ```
 Subagent (general-purpose):
@@ -41,11 +40,9 @@ Subagent (general-purpose):
        test carries its requirement ID using the tagging convention in
        docs/agents/project.md (or the brief's Global Constraints if that
        file is absent).
-    3. While iterating, run only the focused test for what you are changing;
-       run the full suite once before committing, not after every edit.
-    4. Commit, with the requirement-ID trailer the brief's commit step names
+    3. Commit, with the requirement-ID trailer the brief's commit step names
        (e.g. `Implements: [CODE]-N.M`).
-    5. Self-review (below), then write your report.
+    4. Self-review (below), then write your report.
 
     ## Code Organization
 

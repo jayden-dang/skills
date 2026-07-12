@@ -69,7 +69,7 @@ Hypothesis falsified? Strike it, move to the next. Don't pile a new fix on top o
 - Tier-1 mini-spec: add a fix requirement plus a `SHALL CONTINUE TO` guard requirement to the owning feature's `requirements.md` (or `docs/specs/fixes.md` if no feature owns it). Tag the regression test with the new ID.
 - Remove ALL instrumentation: grep for your `[DBG-...]` prefixes; delete throwaway harnesses.
 - State the confirmed root cause in the commit message.
-- Ask: "what would have prevented this bug?" If the answer is architectural (no good seam, hidden coupling, tangled callers), hand the specifics to `improve-architecture` — after the fix lands, when you know the most.
+- Ask: "what would have prevented this bug?" If the answer is architectural (no good seam, hidden coupling, tangled callers), write the specifics down and tell the user to run `/improve-architecture` — after the fix lands, when you know the most.
 - REQUIRED SUB-SKILL: use `verify` before claiming the bug fixed.
 
 ## Rationalizations

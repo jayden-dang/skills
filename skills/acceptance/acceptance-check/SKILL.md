@@ -15,9 +15,7 @@ Green unit tests prove that the assertions someone wrote pass. They do not prove
 the feature works. The gap between the two — an API that returns `201` where the
 client reads `200`, a checkbox that flips in memory but never reaches the store,
 a form that clears on a failed submit — is where features ship broken. This
-skill closes it: derive the user-facing behaviors from the spec, drive the
-**running** system through every one as a real user would, fix what breaks, and
-leave behind a repeatable harness so the next run is cheap.
+skill closes it: drive the **running** system, not the test suite.
 
 Run this after `code-review`, before `finish-branch`.
 
@@ -49,10 +47,8 @@ features need both:
   result in the ledger, and promote the passing checks into committed, ID-tagged
   tests. For human-eyeball qualities (visuals, feel) hand off to `dogfood`.
 
-Each child locates (and persists) how to run its surface, exercises its slice of
-the checklist against the live system, fixes failures through `debug`, and
-promotes the passing checks into committed, ID-tagged tests. Hand each child its
-slice of the ledger by path; it writes results back to the same file.
+Hand each child its slice of the ledger by path; it writes results back to the
+same file.
 
 ## 3. Close the loop
 

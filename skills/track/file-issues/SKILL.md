@@ -12,7 +12,7 @@ disable-model-invocation: true
 
 # File Issues
 
-Turn what is in front of you — this conversation, a spec, or an idea the user just described — into a set of **tracer-bullet issues** on the repo's tracker, each declaring the issues that **block** it. Context goes in; agent-ready issues come out. This is the outgoing counterpart to `triage`'s incoming queue.
+Turn what is in front of you — this conversation, a spec, or an idea the user just described — into a set of **tracer-bullet issues** on the repo's tracker, each declaring the issues that **block** it. This is the outgoing counterpart to `triage`'s incoming queue.
 
 Read the tracker operations from `docs/agents/issue-tracker.md` and the label strings from `docs/agents/triage-labels.md`. If either is missing, say so and suggest `setup-repo`; you can still draft to local `.scratch/` files in the meantime, but a remote tracker needs its config.
 
@@ -32,7 +32,7 @@ Pick the right skill before drafting; do not duplicate a heavier one.
 |---|---|---|
 | A conversation / idea / spec to capture as grabbable work | **`file-issues`** (this) | — |
 | A tier-2 feature needing traceable `requirements.md` → `design.md` → `tasks.md` | `write-plan` (it publishes its own tasks) | `file-issues` |
-| A raw incoming issue or external PR to evaluate | `triage` | `file-issues` |
+| A raw incoming issue or external PR to evaluate | `/triage` — user-invoked; name it for the user to run | `file-issues` |
 
 If the user already ran the full spec triad, `write-plan` publishes those tasks with `Requirements covered:` footers — do not re-file them here. `file-issues` is for work that never went through the triad.
 
@@ -133,4 +133,4 @@ In either form, describe **behavior and interfaces, never file paths or line num
 
 ## Exit
 
-Tell the user the frontier — which slices can start now. Point them at the next step: work each slice with `execute-plan` (or inline `tdd`), clearing context between slices. Note that these issues carry the AI marker, so `triage` will skip them.
+Tell the user the frontier — which slices can start now. Point them at the next step: work each slice with `execute-plan` (or inline `tdd`), clearing context between slices.

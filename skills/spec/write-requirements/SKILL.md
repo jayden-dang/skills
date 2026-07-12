@@ -29,9 +29,12 @@ approval, keep the feature's `Status`, and exit to `tdd`. **Skip Steps 1 and 4
 and the whole-file review** — a new feature code, an Out-of-Scope section, and a
 full-file self-review are for a new feature, not a two-line mini-spec.
 
-**New feature** — tier 2, or anything nothing has spec'd yet. Start from
-`templates/requirements.md` (in this skill set's repo) and run the full sequence
-below. Create a todo per step.
+**New feature** — tier 2, or anything nothing has spec'd yet. Start from the skill
+set's `templates/requirements.md` — resolve `templates/` as
+`${CLAUDE_PLUGIN_ROOT}/templates` when installed as a plugin, otherwise
+`../../../templates` relative to this SKILL.md. Every heading in that template is a
+REQUIRED slot: fill it, or write `None` under it — never drop one. Then run the full
+sequence below. Create a todo per step.
 
 ## Step 1: Register the feature code
 

@@ -6,8 +6,11 @@ description: Use when a design is approved and the implementation plan — the t
   execute-plan.
 ---
 
-Produce `docs/specs/<date>-<feature>/tasks.md` from the approved requirements
-and design. Start from `templates/tasks.md`.
+Produce `docs/specs/<YYYY-MM-DD>-<feature>/tasks.md` from the approved requirements
+and design. Start from the skill set's `templates/tasks.md` — resolve `templates/`
+as `${CLAUDE_PLUGIN_ROOT}/templates` when installed as a plugin, otherwise
+`../../../templates` relative to this SKILL.md. Every slot in a task block
+(**Files**, **Interfaces**, **Depends-on**, **Steps**, `_Requirements:_`) is REQUIRED.
 
 Write for an implementer who is skilled but knows NOTHING about this codebase
 or problem domain, and will see ONLY their own task plus the Global
@@ -112,6 +115,13 @@ these tasks there.
 
 ## Exit
 
-Offer exactly two execution routes: `execute-plan` (recommended) in an
-isolated workspace via `worktrees`, or inline execution for environments
-without subagents. Update the spec's INDEX.md row to note the plan exists.
+Present the FILE to the user and STOP for approval — conversational agreement is not
+approval; the written plan is what gets approved, and `execute-plan` runs only on an
+approved `tasks.md`. On approval set `Status: Approved` and offer exactly two
+execution routes: `execute-plan` (recommended) in an isolated workspace via
+`worktrees`, or inline execution for environments without subagents. Confirm the
+feature's row in `docs/specs/INDEX.md` carries the same `Status:` as its
+`requirements.md`.
+
+**Done when:** the user has approved the written `tasks.md`, its `Status:` line reads
+`Approved`, and the INDEX.md row agrees.

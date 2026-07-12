@@ -16,11 +16,7 @@ ability and judging what they see. The deliverable is a **persistent, checkable
 HTML artifact** — grounded in the app's own rendering, one row per ability, each
 tagged with the requirement ID it exercises — that the user keeps open beside
 the app and ticks off as they go. Build the artifact; a chat message is not the
-deliverable — it saves no progress, cannot show the real badge the user checks
-against, and scrolls away.
-
-Complements `acceptance-ui`, which automates flows into tests; dogfood is the
-manual, eyeball-it sibling for the judgment a test cannot make.
+deliverable.
 
 ## 1. Scope every ability from the spec
 

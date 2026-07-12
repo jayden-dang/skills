@@ -36,18 +36,17 @@ Small requests are exactly where unexamined assumptions burn the most work, beca
 
 Create a todo for each item and complete them in order.
 
-**Right-size the checklist with an early tier read.** Once step 1 gives you the
-context, make a *provisional* tier call and let it size what follows. A change
-that is plainly **tier 0** — a typo, recolor, label, or copy edit with no
-behavior change, no unconfirmed assumption, and nothing to guard — needs only a
-brief confirmation in step 2 (confirm the problem, the one constraint, and what
-must keep working), then skips steps 3–4 and goes straight to stating the tier
-(step 5) and `tdd`. Anything with a behavior change, an unknown, or a real
-design choice runs the full interview and approach exploration. The read is
-**provisional**: if the step-2 confirmation surfaces any of those, it was never
-tier 0 — escalate to the full path. This right-sizes the process; it never skips
-the tier decision or the gate — "too simple to need a design" is still the trap
-above.
+**Right-size with an early tier read.** Once step 1 gives you the context, make a
+*provisional* tier call:
+
+- **Plainly tier 0** — a typo, recolor, label, or copy edit, with no behavior
+  change, no unconfirmed assumption, and nothing to guard → brief step 2, skip
+  steps 3–4, then step 5.
+- **Anything else** — a behavior change, an unknown, or a real design choice →
+  the full path.
+
+Provisional means provisional: if step 2 surfaces any of those, it was never tier 0
+— escalate to the full path.
 
 ### 1. Explore project context
 
@@ -66,7 +65,7 @@ continue with manual exploration.
 
 ### 2. Interview
 
-REQUIRED SUB-SKILL: use `grilling` — one question at a time, recommended answer per question, every branch walked. `grilling` owns the single question channel. (Provisional tier 0 from the early read? Right-size this: confirm the problem, the one constraint, and what must keep working in a question or two — not a full decision-tree walk — and if nothing new surfaces, proceed to step 5.)
+REQUIRED SUB-SKILL: use `grilling` — it owns the single question channel. (Provisional tier 0 from the early read? Right-size this: confirm the problem, the one constraint, and what must keep working in a question or two — not a full decision-tree walk — and if nothing new surfaces, proceed to step 5.)
 
 Keep `domain-modeling` active as a **passive** side effect for the whole interview: record a term to `CONTEXT.md` the instant it settles and cross-reference the code — but it does not open a second question channel. A term that needs the user (a challenge, a disambiguation, an edge-case probe) becomes the next question in `grilling`'s one-at-a-time stream, never a competing interruption (REQUIRED SUB-SKILL: use `domain-modeling`).
 
@@ -76,7 +75,7 @@ Before drilling into details, check scope: if the request spans multiple indepen
 
 ### 3. Detour when a question needs evidence, not opinion
 
-*Full-path only — a confirmed tier-0 change has no open questions and skips this.*
+*Full-path only; tier 0 skips this.*
 
 Some questions can't be answered by preference. When the honest answer is "we'd have to check":
 
@@ -89,7 +88,7 @@ Return to the interview with the evidence and put the decision back to the user.
 
 ### 4. Propose approaches
 
-*Full-path only — a confirmed tier-0 change has one obvious approach and skips this.*
+*Full-path only; tier 0 skips this.*
 
 Present 2–3 genuinely different approaches with trade-offs. Lead with your recommendation and why. YAGNI-prune every option. The user picks.
 
@@ -112,6 +111,6 @@ If the work spans multiple independent subsystems, decompose it here: name the s
 ### 6. Terminal state
 
 - **Tier ≥ 1:** REQUIRED SUB-SKILL: use `write-requirements`. This is the ONLY exit. Do not write code, do not scaffold, do not invoke any implementation or design skill directly — requirements come first and carry their own approval gate.
-- **Tier 0:** hand off to `tdd` directly and say so.
+- **Tier 0:** state the tier, then REQUIRED SUB-SKILL: use `tdd`.
 
 **Done when:** `write-requirements` has been invoked (tier ≥1) or the tier-0 handoff is stated.

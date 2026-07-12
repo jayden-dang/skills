@@ -56,14 +56,16 @@ gathering *every* matching file, not a sample.
 **1. Definitions** — bold IDs in requirements/fixes files, minus retired ones.
 
 ```bash
-# every bold **CODE-N.M** in a requirements/fixes file
-grep -rnoE '\*\*[A-Z][A-Z0-9]{1,11}-[0-9]+\.[0-9]+\*\*' docs/specs \
-  --include='*requirements.md' --include='fixes.md'
+# every bold **CODE-N.M** in a requirements/fixes file, retired (~~struck~~) ones deleted first
+grep -rnE '\*\*[A-Z][A-Z0-9]{1,11}-[0-9]+\.[0-9]+\*\*' docs/specs \
+  --include='*requirements.md' --include='fixes.md' \
+  | sed -E 's/~~[^~]*~~//g' \
+  | grep -E '\*\*[A-Z][A-Z0-9]{1,11}-[0-9]+\.[0-9]+\*\*'
 ```
 
-A bold ID inside a `~~ … ~~` strikethrough is **retired** — it is not a definition.
-Strip strikethrough spans before counting a line's bold IDs. A plain (non-bold) ID
-in a requirements file is prose, not a definition.
+Each surviving line is `path:line:text`; every bold ID left on it is a definition,
+owned by `path`. The `sed` deletes `~~ … ~~` spans, so a **retired** ID cannot reach
+the result. A plain (non-bold) ID in a requirements file is prose, not a definition.
 
 **2. Statuses and feature codes** — per requirements file.
 
@@ -77,26 +79,33 @@ grep -rnE '^(Status:|Feature code:)' docs/specs --include='*requirements.md'
 **3. Task citations** — IDs on `_Requirements:` lines.
 
 ```bash
-grep -rhoE '_Requirements:.*' docs/specs --include='*tasks.md' \
-  | grep -oE '[A-Z][A-Z0-9]{1,11}-[0-9]+\.[0-9]+'
+grep -roE '_Requirements:.*' docs/specs --include='*tasks.md' \
+  | grep -oE '^[^:]+:|[A-Z][A-Z0-9]{1,11}-[0-9]+(\.[0-9]+)+' \
+  | grep -E '^[^:]+:$|^[A-Z][A-Z0-9]{1,11}-[0-9]+\.[0-9]+$'
 ```
 
-Only IDs on a line containing the literal `_Requirements:` are task citations.
+Only IDs on a line containing the literal `_Requirements:` are task citations. The
+output alternates a `path:` line and the IDs cited in it — each ID belongs to the
+`path:` above it. The trailing `grep` keeps only whole two-level tokens, so a
+three-level `CODE-1.2.3` can never be read as a citation of `CODE-1.2`.
 
 **4. Test coverage** — every ID string appearing anywhere in a test file. Search
 each existing test root; here is the JS/TS + Rust default:
 
 ```bash
-grep -rhoE '[A-Z][A-Z0-9]{1,11}-[0-9]+\.[0-9]+' \
+grep -roE '[A-Z][A-Z0-9]{1,11}-[0-9]+(\.[0-9]+)+' \
   $(printf '%s ' tests test e2e src src-tauri crates app lib packages) 2>/dev/null \
   --include='*.test.*' --include='*.spec.*' --include='*_test.rs' \
   --include='*_test.go' --include='*_test.py' --include='*.rs' \
+  | grep -E ':[A-Z][A-Z0-9]{1,11}-[0-9]+\.[0-9]+$' \
   | sort -u
 ```
 
-Adjust the roots/includes to the repo's actual layout. The ID grammar is
-`[A-Z][A-Z0-9]{1,11}-<major>.<minor>`; a three-level ID like `CODE-1.2.3` is a
-different token — do not let `CODE-1.2` match inside it.
+Each output line is `path:ID` — the covering test file and the ID it covers. Adjust
+the roots/includes to the repo's actual layout. The ID grammar is
+`[A-Z][A-Z0-9]{1,11}-<major>.<minor>`; the trailing `grep` keeps only whole
+two-level tokens, so a three-level ID like `CODE-1.2.3` can never be read as a
+citation of `CODE-1.2`.
 
 ## The rules
 

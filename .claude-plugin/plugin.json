@@ -1,9 +1,44 @@
 {
-  "name": "skills",
+  "name": "jayden-skills",
   "version": "0.1.0",
   "description": "A-to-Z agentic development skill set: ideation to release with requirements traceability as the spine.",
   "author": {
     "name": "Jayden Dang"
   },
-  "hooks": "./hooks/hooks.json"
+  "hooks": "./hooks/hooks.json",
+  "skills": [
+    "./skills/discovery/brainstorm",
+    "./skills/discovery/grilling",
+    "./skills/discovery/research",
+    "./skills/discovery/domain-modeling",
+    "./skills/discovery/prototype",
+    "./skills/spec/write-requirements",
+    "./skills/spec/write-design",
+    "./skills/spec/write-plan",
+    "./skills/execution/execute-plan",
+    "./skills/execution/tdd",
+    "./skills/execution/debug",
+    "./skills/execution/verify",
+    "./skills/execution/trace",
+    "./skills/execution/worktrees",
+    "./skills/acceptance/acceptance-check",
+    "./skills/acceptance/acceptance-api",
+    "./skills/acceptance/acceptance-ui",
+    "./skills/acceptance/dogfood",
+    "./skills/review/code-review",
+    "./skills/review/receive-review",
+    "./skills/ship/finish-branch",
+    "./skills/ship/release",
+    "./skills/track/amend",
+    "./skills/track/sync-spec",
+    "./skills/track/triage",
+    "./skills/track/file-issues",
+    "./skills/track/handoff",
+    "./skills/track/improve-architecture",
+    "./skills/setup/setup-repo",
+    "./skills/setup/scaffold-project",
+    "./skills/meta/using-skills",
+    "./skills/meta/writing-skills",
+    "./skills/meta/ask"
+  ]
 }

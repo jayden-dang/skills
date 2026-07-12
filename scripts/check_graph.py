@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# @skills-linter: check-graph sha256:9c08c76ed178
+# @skills-linter: check-graph sha256:e4a58310727f
 """check-graph — horizontal feature-graph layer.
 
 Harvests, from each feature's existing design.md/tasks.md (NO new authoring):
@@ -1069,6 +1069,21 @@ def main(argv):
 
     if "--seed" in argv:
         print(json.dumps(seed(root, cfg), indent=2, ensure_ascii=False))
+        return 0
+
+    if "--standards" in argv:
+        values = _collect_flag(argv, "--standards")
+        code = values[0] if values else None
+        if not code:
+            print("check-graph: --standards requires a module code", file=sys.stderr)
+            return 1
+        modules, _errs = load_manifest(cfg)
+        known = {m["code"] for m in modules if m.get("code")}
+        if code not in known:
+            print(f"check-graph: unknown module code {code}", file=sys.stderr)
+            return 1
+        print(json.dumps({"module": code, "standards": resolve_standards(code, cfg)},
+                         indent=2, ensure_ascii=False))
         return 0
 
     # default: --harvest

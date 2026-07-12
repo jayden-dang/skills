@@ -1760,6 +1760,31 @@ class SeedCliTest(_FixtureTestCase):
         self.assertTrue(os.path.exists(os.path.join(root, "docs/specs/GRAPH.md")))
 
 
+class StandardsVerifyTest(_FixtureTestCase):
+    def _verify(self, trace):
+        import io, contextlib
+        root = self._tmp_repo({"docs/agents/trace.json": json.dumps(trace)})
+        os.makedirs(os.path.join(root, "docs/specs"), exist_ok=True)
+        open(os.path.join(root, "docs/specs/INDEX.md"), "w").close()
+        check_graph.main(["--harvest", "--root", root])   # non-stale GRAPH.md
+        buf = io.StringIO()
+        with contextlib.redirect_stdout(buf):
+            rc = check_graph.main(["--verify", "--root", root, "--json"])
+        return rc, json.loads(buf.getvalue())
+
+    def test_no_standards_verify_unchanged_MODSTD_4_1(self):
+        # covers MODSTD-4.1
+        rc, payload = self._verify({"specsDir": "docs/specs"})
+        self.assertEqual(rc, 0)
+        self.assertEqual(payload["errors"], [])
+
+    def test_malformed_baseline_fails_verify_without_modules_MODSTD_1_4(self):
+        # covers MODSTD-1.4 (end-to-end: reported even with NO modules declared)
+        rc, payload = self._verify({"specsDir": "docs/specs", "standards": "notalist"})
+        self.assertEqual(rc, 1)
+        self.assertTrue(any("baseline" in e for e in payload["errors"]))
+
+
 class HarvestWriteTest(_FixtureTestCase):
     def _module_repo(self):
         return self._tmp_repo({

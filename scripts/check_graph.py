@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# @skills-linter: check-graph sha256:b666aed67ca7
+# @skills-linter: check-graph sha256:9c08c76ed178
 """check-graph — horizontal feature-graph layer.
 
 Harvests, from each feature's existing design.md/tasks.md (NO new authoring):
@@ -1016,6 +1016,8 @@ def _run_verify(root, cfg, specs_dir, as_json):
                 warnings.append(
                     f"W: feature {f['code']} declares Module: {hom['unknown_override']} "
                     f"which is not a known module — override ignored")
+
+    errors.extend(_standards_errors(cfg))
 
     if as_json:
         print(json.dumps({"errors": errors, "warnings": warnings}, indent=2, ensure_ascii=False))

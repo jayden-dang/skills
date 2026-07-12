@@ -118,4 +118,4 @@ See [The gates](../concepts/gates.md) for why each is written as a prohibition r
 
 - [The process](../process/README.md) — how these skills chain together
 - [The skill model](../concepts/skill-model.md) — invocation kinds, descriptions, and the authoring vocabulary
-- [Navigation](../NAVIGATION.md) — by role, by problem, by phase
+- [Start here](../START-HERE.md) — the workflow, new-repo setup, and every skill's behavior

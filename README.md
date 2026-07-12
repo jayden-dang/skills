@@ -10,7 +10,7 @@ flow into test tags, commit trailers, and issue bodies, and the `trace` skill
 keeps the whole chain honest — a `grep`-and-`git` check the agent runs, no
 linter to install.
 
-📖 **[Read the guide →](docs/guide/NAVIGATION.md)**
+📖 **[Read the guide →](docs/guide/START-HERE.md)**
 
 ## Why
 
@@ -147,7 +147,7 @@ opt into a documented CI job; it is outside the default path. See
 
 | | |
 |---|---|
-| **[Navigation](docs/guide/NAVIGATION.md)** | by role, by problem, by phase |
+| **[Start here](docs/guide/START-HERE.md)** | the workflow, new-repo setup, and every skill's behavior |
 | [Overview](docs/guide/methodology/overview.md) | what this is and what it defends against |
 | [Philosophy](docs/guide/methodology/philosophy.md) | the principles, and what enforces each |
 | [When to use it](docs/guide/methodology/when-to-use.md) | the honest boundaries |

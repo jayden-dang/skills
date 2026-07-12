@@ -158,6 +158,21 @@ opt into a documented CI job; it is outside the default path. See
 | [Troubleshooting](docs/guide/resources/troubleshooting.md) | symptoms and causes |
 | [DESIGN.md](./DESIGN.md) | the architecture spec of record |
 
+## Developing this repo
+
+Editing skills here? Run this once after cloning:
+
+```bash
+lefthook install
+```
+
+It wires a `pre-commit` / `pre-push` hook that lints every `SKILL.md`
+frontmatter (`scripts/lint-skill-frontmatter.py`, needs `lefthook` and PyYAML).
+The `skills` CLI silently skips any `SKILL.md` whose YAML won't parse, so a stray
+unquoted colon can drop a skill from `npx skills add` with no error — this catches
+that before it reaches `origin`. This tooling is for *this* repo only; a repo that
+*consumes* the skill set still installs nothing.
+
 ## License
 
 MIT

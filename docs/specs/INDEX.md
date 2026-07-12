@@ -10,4 +10,4 @@ retired code).
 | MODGRAPH | Sharded module graph | ./2026-07-11-module-graph/ | Implemented |
 | MODHOME | Feature homing refinement & facets | ./2026-07-11-feature-homing/ | Implemented |
 | MODSEED | Brownfield on-ramp — manifest seed | ./2026-07-11-manifest-seed/ | Implemented |
-| MODSTD | Per-module standards resolution | ./2026-07-11-module-standards/ | Planned |
+| MODSTD | Per-module standards resolution | ./2026-07-11-module-standards/ | Implemented |

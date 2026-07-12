@@ -1,7 +1,7 @@
 # Requirements: Optional project-documentation layer
 
 Feature code: PROJDOC
-Status: Approved
+Status: Implemented
 Date: 2026-07-12
 
 <!--

@@ -4,7 +4,7 @@
 > this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 Feature code: PROJDOC
-Status: Approved
+Status: Implemented
 Date: 2026-07-12
 Requirements: ./requirements.md
 Design: ./design.md

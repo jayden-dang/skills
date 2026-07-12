@@ -6,4 +6,4 @@ retired code).
 
 | Code | Feature | Spec | Status |
 |---|---|---|---|
-| PROJDOC | Optional project-documentation layer | ./2026-07-12-project-docs-layer/ | Approved |
+| PROJDOC | Optional project-documentation layer | ./2026-07-12-project-docs-layer/ | Implemented |

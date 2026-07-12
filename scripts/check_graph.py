@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# @skills-linter: check-graph sha256:e590845da3e8
+# @skills-linter: check-graph sha256:30f9609b6453
 """check-graph — horizontal feature-graph layer.
 
 Harvests, from each feature's existing design.md/tasks.md (NO new authoring):
@@ -828,6 +828,31 @@ def load_manifest(cfg):
             "standards": entry.get("standards"),
         })
     return modules, errors
+
+
+def _standards_errors(cfg):
+    """Validate the baseline and per-module `standards` lists. Returns a list of
+    error strings (empty when all valid); never raises. A `standards` value,
+    when present, must be a list of non-empty strings ([] is valid)."""
+    errors = []
+
+    def bad(value):
+        return value is not None and not (
+            isinstance(value, list) and all(isinstance(s, str) and s for s in value))
+
+    if bad(cfg.get("standards")):
+        errors.append("E: baseline 'standards' must be a list of non-empty strings")
+    raw = cfg.get("modules")
+    if isinstance(raw, list):
+        for i, entry in enumerate(raw):
+            if not isinstance(entry, dict):
+                continue
+            if bad(entry.get("standards")):
+                code = entry.get("code")
+                label = code if isinstance(code, str) and code else f"#{i + 1}"
+                errors.append(
+                    f"E: module {label} 'standards' must be a list of non-empty strings")
+    return errors
 
 
 def _seed_code(name):

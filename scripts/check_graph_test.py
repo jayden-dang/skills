@@ -1321,6 +1321,35 @@ class LoadManifestTest(unittest.TestCase):
             self.assertIn(key, m)
 
 
+class StandardsErrorsTest(unittest.TestCase):
+    def test_valid_and_absent_standards_no_error_MODSTD_1_5(self):
+        # covers MODSTD-1.5
+        cfg = {"standards": ["A", "B"],
+               "modules": [{"code": "AUTH", "standards": []},   # [] is valid
+                           {"code": "BILL"}]}                    # omitted is valid
+        self.assertEqual(check_graph._standards_errors(cfg), [])
+
+    def test_malformed_baseline_flagged_MODSTD_1_4(self):
+        # covers MODSTD-1.4
+        for bad in ("nope", [""], [1], ["ok", ""]):
+            errs = check_graph._standards_errors({"standards": bad})
+            self.assertTrue(any("baseline" in e for e in errs), bad)
+
+    def test_malformed_module_standards_flagged_MODSTD_1_3(self):
+        # covers MODSTD-1.3
+        cfg = {"modules": [{"code": "AUTH", "standards": "notalist"},
+                           {"code": "BILL", "standards": [""]}]}
+        errs = check_graph._standards_errors(cfg)
+        self.assertTrue(any("AUTH" in e for e in errs))
+        self.assertTrue(any("BILL" in e for e in errs))
+
+    def test_never_raises_on_junk(self):
+        # defensive: non-list modules / non-dict entries never crash
+        self.assertIsInstance(check_graph._standards_errors({"modules": "x"}), list)
+        self.assertIsInstance(check_graph._standards_errors({"modules": [1, "y"]}), list)
+        self.assertIsInstance(check_graph._standards_errors({}), list)
+
+
 class SeedCodeTest(unittest.TestCase):
     CODE_RE = r"^[A-Z][A-Z0-9]{1,11}$"
 

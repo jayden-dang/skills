@@ -1,6 +1,9 @@
 # Project configuration (agent-facing)
 
-Written by `setup-repo`. Skills read this file for repo-specific commands.
+Written by `setup-repo`. Skills read this file for repo-specific **machine config** —
+commands, globs, paths. Human-facing engineering guidelines (coding standards, naming,
+house rules) live in `docs/product/guidelines.md` when the project-docs layer is
+enabled; `write-plan` sources them from there and falls back to this file otherwise.
 
 ## Verify commands
 
@@ -55,3 +58,5 @@ signing), consumed by the release skill.>
 - ADRs: `docs/adr/`
 - Glossary: `CONTEXT.md`
 - Out-of-scope KB: `.out-of-scope/`
+- Engineering guidelines (project-docs layer, optional): `docs/product/guidelines.md`
+- Product vision / architecture spine (project-docs layer, optional): `docs/product/vision.md`, `docs/architecture/`

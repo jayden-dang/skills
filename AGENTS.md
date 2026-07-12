@@ -1,6 +1,6 @@
 # AGENTS.md — Agent Behavior Constitution
 
-> **A-to-Z Agentic Development Skill Set** | 31 skills across 9 categories |
+> **A-to-Z Agentic Development Skill Set** | 35 skills across 10 categories |
 > `jayden-dang/skills` | v1.0
 
 This file is the single source of truth for agent behavior when working with this
@@ -218,16 +218,17 @@ content moves to a sibling file in the same directory.
 ## 8. File Organization
 
 ```
-skills/                  # skill definitions (31 skills, 9 categories)
+skills/                  # skill definitions (35 skills, 10 categories)
   meta/                  # using-skills, ask, writing-skills
   setup/                 # setup-repo, scaffold-project
   discovery/             # brainstorm, grilling, research, prototype, domain-modeling
   spec/                  # write-requirements, write-design, write-plan
   execution/             # execute-plan, tdd, debug, verify, trace, worktrees
-  review/                # code-review, receive-review
+  review/                # code-review, receive-review, check-invariants
   acceptance/            # acceptance-check, acceptance-api, acceptance-ui, dogfood
   ship/                  # finish-branch, release
-  track/                 # amend, triage, sync-spec, improve-architecture, handoff
+  track/                 # amend, triage, sync-spec, improve-architecture, handoff, file-issues
+  project/               # establish-project (optional project-documentation layer)
 templates/               # requirements.md, design.md, tasks.md, CONTEXT.md seeds
 hooks/                   # session-start.sh + hooks.json (injection on startup/clear/compact)
 docs/

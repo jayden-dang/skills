@@ -1,6 +1,6 @@
 # Skill reference
 
-Thirty-three skills in nine buckets. Each has its own page.
+Thirty-five skills in ten buckets. Each has its own page.
 
 **Invocation** is the thing to check first. A **model-invocable** skill is invoked by the agent on its own when its description matches the situation. A **user-invoked** skill carries `disable-model-invocation: true` in its frontmatter — the agent *cannot* invoke it, so you run it as a slash command.
 
@@ -66,6 +66,7 @@ The triad. Each file approved before the next is written.
 |---|---|---|
 | [`code-review`](code-review.md) | model | Two axes — Standards and Spec — run by separate subagents and never merged |
 | [`receive-review`](receive-review.md) | model | Anti-sycophancy. Verify every claim before implementing or replying |
+| [`check-invariants`](check-invariants.md) | model | Advisory, LLM-judged invariant conformance — the semantic counterpart to `trace` |
 
 ## acceptance
 
@@ -95,6 +96,14 @@ Green units prove assertions pass. These prove the feature works.
 | [`triage`](triage.md) | `/triage` | A two-axis issue state machine. Verify the claim before recommending |
 | [`improve-architecture`](improve-architecture.md) | `/improve-architecture` | Codebase-wide friction scan → an HTML report of deepening candidates |
 | [`handoff`](handoff.md) | `/handoff` | A resumable document in the OS temp dir. Reference, never duplicate |
+
+## project
+
+The optional documentation layer above the feature workflow. Absent by default.
+
+| Skill | Invocation | What it does |
+|---|---|---|
+| [`establish-project`](establish-project.md) | `/establish-project` | Authors and maintains the optional project layer — product vision, IDed architecture-invariant spine, and engineering guidelines |
 
 ---
 

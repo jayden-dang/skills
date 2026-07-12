@@ -75,6 +75,7 @@ the spine is the *current invariant set* those decisions produced.
 ### establish-project — the tri-modal authoring skill
 
 Satisfies: PROJDOC-1.1, PROJDOC-1.3, PROJDOC-1.4, PROJDOC-2.1, PROJDOC-2.3, PROJDOC-7.1, PROJDOC-8.3
+Respects: ARCH-5
 
 New user-invoked skill at `skills/project/establish-project/SKILL.md` (new `project/`
 bucket), frontmatter `disable-model-invocation: true`. Three modes routed on entry:
@@ -98,6 +99,7 @@ target.
 ### The architecture spine format — ARCH-N invariants
 
 Satisfies: PROJDOC-1.2, PROJDOC-1.5, PROJDOC-2.2
+Respects: ARCH-4
 
 `docs/architecture/INDEX.md` holds invariants, each a bold `**ARCH-N**` ID followed
 by one imperative sentence (the rule) — grammar deliberately parallel to
@@ -135,6 +137,7 @@ part of `trace`: `trace` stays deterministic, this skill makes the judgment call
 ### trace — referential-integrity extension for ARCH citations
 
 Satisfies: PROJDOC-3.1, PROJDOC-3.2, PROJDOC-3.3, PROJDOC-3.4, PROJDOC-3.5
+Respects: ARCH-1
 
 Extend `skills/execution/trace/SKILL.md` with two passes and three finding codes,
 all **gated on `docs/architecture/` existing** — when it does not, the passes are
@@ -160,6 +163,7 @@ invariant; that judgment belongs to `check-invariants`/`code-review` (PROJDOC-3.
 ### Consult hooks — the shared no-op idiom
 
 Satisfies: PROJDOC-4.1, PROJDOC-4.2, PROJDOC-4.3, PROJDOC-4.5, PROJDOC-4.6, PROJDOC-4.7, PROJDOC-6.1
+Respects: ARCH-2
 
 Every hook is `WHERE <doc> exists … ; else say so once and continue`, mirroring
 `brainstorm/SKILL.md:53`. Insertion points (verified `file:line`):
@@ -231,6 +235,7 @@ Satisfies: PROJDOC-5.1, PROJDOC-5.2, PROJDOC-5.3, PROJDOC-5.4, PROJDOC-7.4
 ### Optionality and dogfood invariants
 
 Satisfies: PROJDOC-6.2
+Respects: ARCH-3
 
 The layer adds no mandatory tooling, no artifact that must be kept fresh (the spine
 is read live, never generated), and no new hard gate — the one deterministic

@@ -52,11 +52,13 @@ skills/
   discovery/   brainstorm, grilling, research, prototype, domain-modeling
   spec/        write-requirements, write-design, write-plan
   execution/   execute-plan, tdd, debug, verify, trace, worktrees
-  review/      code-review, receive-review
+  review/      code-review, receive-review, check-invariants
   acceptance/  acceptance-check, acceptance-api, acceptance-ui, dogfood
   ship/        finish-branch, release
-  track/       amend, triage, sync-spec, improve-architecture, handoff
-templates/     requirements.md, design.md, tasks.md, docs/agents seeds, CONTEXT.md seed
+  track/       amend, triage, sync-spec, improve-architecture, handoff, file-issues
+  project/     establish-project              (optional project-documentation layer)
+templates/     requirements.md, design.md, tasks.md, docs/agents seeds, CONTEXT.md seed,
+               product-vision.md, architecture-INDEX.md, product-guidelines.md seeds
 hooks/         session-start (injects meta/using-skills)
 docs/          per-skill human docs
 .claude-plugin/plugin.json   (Claude Code plugin manifest)
@@ -193,9 +195,39 @@ artifact to keep fresh, so nothing can go stale.
 `brainstorm` and `ask` decide the tier explicitly and say so. Never spec what you
 don't understand yet — spike via `prototype`/`research` first.
 
+## The project layer (optional)
+
+Above the per-feature workflow sits an **optional** repo-level documentation layer, for
+large or long-lived projects. It is authored by one user-invoked skill,
+`establish-project` (create/update/validate), and consists of three durable docs:
+
+```
+docs/product/vision.md      # the product north star — problem, users, goals, non-goals, scope
+docs/architecture/INDEX.md  # the architecture spine: IDed **ARCH-N** invariants (+ per-domain files)
+docs/product/guidelines.md  # human-facing engineering guidelines (write-plan sources these)
+```
+
+The load-bearing idea is the **architecture spine as invariants**: not a diagram doc, but
+the small set of cross-cutting rules that keep independently-built features from
+diverging — each a greppable `**ARCH-N**` ID, exactly like a requirement ID. A feature
+`design.md` cites the ones it relies on as `Respects: ARCH-N`, and the `trace` check
+extends **one level up**: it verifies each citation points at a *live* invariant
+(referential integrity — codes E4/E5/W3), while the *semantic* judgment of whether a
+design truly respects an invariant is a separate, advisory, LLM-judged check
+(`check-invariants`), never folded into deterministic `trace`.
+
+The layer is **optional by construction**. Feature skills consult it through
+observable-predicate, no-op-if-absent hooks (`brainstorm` checks product scope;
+`write-design` cites invariants; `write-plan` folds them into Global Constraints;
+`execute-plan` surfaces them per task; `code-review` runs the advisory lane). A repo that
+opts into nothing behaves exactly as before — `setup-repo` gates the whole layer behind a
+default-**No** decision. This repo dogfoods it: `docs/architecture/INDEX.md` holds
+`ARCH-1..5` (determinism-of-trace, optionality, zero-tooling, ID immutability, sub-skill
+composition), and this feature's own `design.md` cites them.
+
 ## Skill inventory
 
-Legend: (U) user-invoked, (m) model-invoked.
+Legend: (U) user-invoked, (m) model-invoked. **35 skills.**
 
 ### meta/
 1. **using-skills** (m, session-injected) — the gate. 1%-rule, skill-check before
@@ -260,31 +292,46 @@ Legend: (U) user-invoked, (m) model-invoked.
 20. **code-review** (m) — two parallel subagents: **Standards** (repo standards +
     code-smell baseline) and **Spec** (diff vs requirements, every finding quotes
     the ID). Includes an inline feature-overlap search (grep `docs/specs/` for the
-    diff's paths) so a diff reimplementing a neighbor is caught.
+    diff's paths) so a diff reimplementing a neighbor is caught. Runs the advisory
+    `check-invariants` lane when an architecture spine exists.
 21. **receive-review** (m) — anti-sycophancy; verify each item before implementing.
+22. **check-invariants** (m) — advisory, LLM-judged invariant conformance: per
+    `Respects: ARCH-N` citation, a respects/violates/unclear verdict. The semantic
+    counterpart to `trace`; never a hard gate.
 
 ### acceptance/
-22. **acceptance-check** (m) — pre-merge validation from the user's seat; ID-keyed
+23. **acceptance-check** (m) — pre-merge validation from the user's seat; ID-keyed
     checklist dispatched by surface.
-23. **acceptance-api** (m) — drive the running backend as a real client.
-24. **acceptance-ui** (m) — drive the frontend in a real browser.
-25. **dogfood** (m) — the manual sibling; checkable HTML artifact.
+24. **acceptance-api** (m) — drive the running backend as a real client.
+25. **acceptance-ui** (m) — drive the frontend in a real browser.
+26. **dogfood** (m) — the manual sibling; checkable HTML artifact.
 
 ### ship/
-26. **finish-branch** (m) — verify → merge/PR/keep/discard → worktree cleanup.
-27. **release** (U) — full verify + `trace` clean → changelog from commit trailers
+27. **finish-branch** (m) — verify → merge/PR/keep/discard → worktree cleanup.
+28. **release** (U) — full verify + `trace` clean → changelog from commit trailers
     → version bump → tag → build → smoke-check → release notes.
 
 ### track/
-28. **amend** (m) — the iteration lane for a shipped feature; routes to the lightest
+29. **amend** (m) — the iteration lane for a shipped feature; routes to the lightest
     tier, always exits through `tdd`, `sync-spec` keeps the trace honest.
-29. **triage** (U) — issue state machine; agent briefs as the contract.
-30. **sync-spec** (m) — realign the triad after drift: diff requirements ↔ design ↔
+30. **triage** (U) — issue state machine; agent briefs as the contract.
+31. **sync-spec** (m) — realign the triad after drift: diff requirements ↔ design ↔
     tasks ↔ tests via the `trace` skill; update Status fields; update INDEX.md.
-31. **improve-architecture** (U) — periodic deepening scan.
-32. **handoff** (U) — compact the conversation into a handoff doc.
+32. **improve-architecture** (U) — periodic deepening scan; the natural home for
+    promoting a recurring cross-cutting pattern into an architecture invariant.
+33. **handoff** (U) — compact the conversation into a handoff doc.
+34. **file-issues** (U) — capture a conversation, spec, or idea into tracker issues.
 
-**Deliberately not in v1:** multi-session planning maps, full CI/CD authoring.
+### project/
+35. **establish-project** (U) — the optional project-documentation layer: authors and
+    maintains `docs/product/vision.md`, the `docs/architecture/` invariant spine, and
+    `docs/product/guidelines.md` (create/update/validate modes). Consulted by
+    `brainstorm`, `write-design`, `write-plan`, `execute-plan`, and `code-review`;
+    entirely optional — absent, the feature workflow is unchanged.
+
+**Deliberately not in v1:** full CI/CD authoring. (The project-documentation layer —
+repo-level vision + IDed architecture invariants — is now the `project/` bucket; see
+"The project layer" above.)
 
 ## The workflow chains
 

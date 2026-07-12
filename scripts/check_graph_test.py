@@ -1309,6 +1309,17 @@ class LoadManifestTest(unittest.TestCase):
         self.assertEqual(errs, [])
         self.assertEqual(mods[0]["code"], "M1")
 
+    def test_load_manifest_carries_standards_MODSTD_1_2_4_2(self):
+        # covers MODSTD-1.2, MODSTD-4.2
+        cfg = {"modules": [{"code": "AUTH", "name": "Auth", "owns": ["src/auth/**"],
+                            "standards": ["Rule one"]}]}
+        mods, errs = check_graph.load_manifest(cfg)
+        self.assertEqual(errs, [])
+        m = mods[0]
+        self.assertEqual(m["standards"], ["Rule one"])          # 1.2 carried
+        for key in ("code", "name", "owns", "layer", "owner"):  # 4.2 existing fields intact
+            self.assertIn(key, m)
+
 
 class SeedCodeTest(unittest.TestCase):
     CODE_RE = r"^[A-Z][A-Z0-9]{1,11}$"

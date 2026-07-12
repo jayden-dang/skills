@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# @skills-linter: check-graph sha256:89b8ee77724c
+# @skills-linter: check-graph sha256:e590845da3e8
 """check-graph — horizontal feature-graph layer.
 
 Harvests, from each feature's existing design.md/tasks.md (NO new authoring):
@@ -825,6 +825,7 @@ def load_manifest(cfg):
             "owns": owns if isinstance(owns, list) else [],
             "layer": entry.get("layer"),
             "owner": entry.get("owner"),
+            "standards": entry.get("standards"),
         })
     return modules, errors
 

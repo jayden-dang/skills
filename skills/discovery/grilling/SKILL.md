@@ -15,7 +15,3 @@ Interview the user about every aspect of the plan until you both hold the same p
 - **Walk every branch of the decision tree.** Decisions depend on each other — an early answer opens some branches and closes others. Resolve them in dependency order and keep going until no unexplored branch remains.
 - **Facts are yours; decisions are the user's.** If the answer already exists in the codebase or the docs, look it up — never ask the user to recall what you can read. Anything that is a judgment call goes to the user, one at a time, and you wait.
 - **Do not enact anything** — no code, no files, no plan execution — until the user explicitly confirms you have reached a shared understanding.
-
-## Done when
-
-You have played the settled decisions back as a numbered list and the user has explicitly confirmed it, with no branch left unexplored. Silence is not confirmation; an assumption you never put to them is an unasked question.

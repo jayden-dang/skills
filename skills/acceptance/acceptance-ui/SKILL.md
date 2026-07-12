@@ -15,10 +15,8 @@ reload, and assert on what's actually on screen. Component tests mock the
 network and prove the component's own logic; this proves the wired stack —
 render, request, response, re-render, persistence.
 
-Invoked by `acceptance-check` with a slice of the acceptance ledger — or run
-directly against a frontend change, in which case first derive the checklist from
-the change's acceptance criteria (the spec, or the screens touched). Either way,
-work through the items in order.
+Invoked by `acceptance-check` with a slice of the acceptance ledger, or run
+directly against a frontend change. Work through the ledger in order.
 
 ## 1. Get the app running — and persist how
 

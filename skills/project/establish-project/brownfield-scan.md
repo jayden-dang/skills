@@ -36,6 +36,13 @@ above, plus any root a manifest declares (e.g. a `pyproject.toml`
 `workspaces` array in `package.json`). Each detected root is one lane for the
 [Select](#select) pass.
 
+**Number the detected roots by sorting their root paths lexically
+(byte-wise).** Root 1 is the detected root whose path string sorts first,
+root 2 the next, and so on — the same fixed order every time the same
+repository is scanned, independent of filesystem listing order or detection
+sequence. This numbering is what "root 1, root 2, ..." means in the
+[Select](#select) pass below.
+
 **Enumerate within a git working tree** — prefer this; it already respects
 `.gitignore` and skips `.git/` itself:
 
@@ -69,8 +76,10 @@ When the candidate set is larger than the [Read budget](#read-budget), decide
 *which* files get read using this order — never lexical order alone, which
 would starve every root but the alphabetically first.
 
-**Round-robin across detected roots.** Take one file from root 1, then one
-from root 2, and so on, wrapping back to root 1, until the read budget is
+**Round-robin across detected roots, in lexical root-path order.** Using the
+root numbering fixed in [Enumerate](#enumerate) (root 1 = the detected root
+whose path sorts first byte-wise, and so on), take one file from root 1, then
+one from root 2, and so on, wrapping back to root 1, until the read budget is
 exhausted. A repo with one detected root degenerates to that root's own
 priority order below.
 

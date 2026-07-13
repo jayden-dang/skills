@@ -1,7 +1,7 @@
 # Design: Correct-course — mid-flight plan-invalidation router
 
 Feature code: CCOURSE
-Status: Approved
+Status: Implemented
 Date: 2026-07-13
 Requirements: ./requirements.md
 

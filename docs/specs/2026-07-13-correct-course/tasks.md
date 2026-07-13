@@ -1,10 +1,10 @@
 # Tasks: Correct-course — mid-flight plan-invalidation router
 
 > **For agentic workers:** REQUIRED SUB-SKILL: use `execute-plan` to implement
-> this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
+> this plan task-by-task. Steps use checkbox (`- [x]`) syntax for tracking.
 
 Feature code: CCOURSE
-Status: Approved
+Status: Implemented
 Date: 2026-07-13
 Requirements: ./requirements.md
 Design: ./design.md
@@ -102,7 +102,7 @@ Copied verbatim from the design and repo conventions; every task inherits these.
 
 **Depends-on:** none
 
-- [ ] **Step 1 (scenario):** Write baseline B01 to
+- [x] **Step 1 (scenario):** Write baseline B01 to
   `baselines/B01-correct-course-skill.md` with scenarios: (a) skill is model-invoked, at
   `skills/track/correct-course/`, frontmatter description has no colon-space
   `[CCOURSE-1.3] [CCOURSE-7.3]`; (b) Phase 1 emits a What/Where/Why/How+impact notice and
@@ -117,7 +117,7 @@ Copied verbatim from the design and repo conventions; every task inherits these.
   conditional ADR, resume `execute-plan` (with ledger re-baselining) `[CCOURSE-5.1]
   [CCOURSE-5.2] [CCOURSE-5.3] [CCOURSE-5.4] [CCOURSE-5.5]`; (g) Red Flags carve it from
   `amend`/`debug`/`sync-spec` `[CCOURSE-6.1] [CCOURSE-6.2]`.
-- [ ] **Step 2 (implement):** Write `skills/track/correct-course/SKILL.md`. Frontmatter:
+- [x] **Step 2 (implement):** Write `skills/track/correct-course/SKILL.md`. Frontmatter:
   `name: correct-course`; a `description` (triggers + outcome noun, **no unquoted `: `**)
   keyed to "a mid-execution discovery invalidates an approved plan" with search keywords
   ("the plan is wrong", "re-plan", "mid-execution", "scope changed") and NO
@@ -135,7 +135,7 @@ Copied verbatim from the design and repo conventions; every task inherits these.
   never for an unapproved proposal, never for Task-local/Plan; return to `execute-plan`,
   re-baselining `.skills/progress.md` on a tasks.md rewrite; resume). A `## Red Flags —
   wrong skill` block naming `amend`/`debug`/`sync-spec` boundaries. Keep body < 500 lines.
-- [ ] **Step 3 (verify + commit):** Walk B01 against the authored skill; confirm the
+- [x] **Step 3 (verify + commit):** Walk B01 against the authored skill; confirm the
   frontmatter passes `scripts/lint-skill-frontmatter.py`. Commit `Implements: CCOURSE-1.3,
   CCOURSE-2.1, CCOURSE-2.2, CCOURSE-2.3, CCOURSE-3.1, CCOURSE-3.2, CCOURSE-3.3, CCOURSE-3.4,
   CCOURSE-3.5, CCOURSE-3.6, CCOURSE-4.1, CCOURSE-4.2, CCOURSE-4.3, CCOURSE-4.4, CCOURSE-4.5,
@@ -160,7 +160,7 @@ _Requirements: CCOURSE-1.3, CCOURSE-2.1, CCOURSE-2.2, CCOURSE-2.3, CCOURSE-3.1, 
 
 **Depends-on:** Task 1
 
-- [ ] **Step 1 (scenario):** Write baseline B02 to
+- [x] **Step 1 (scenario):** Write baseline B02 to
   `baselines/B02-execute-plan-edit.md`: (a) the BLOCKED "the plan itself is wrong" branch
   now pauses and hands off to `correct-course` instead of dead-ending at escalate-to-user
   `[CCOURSE-1.1]`; (b) the circuit breaker (finding survives 3 fix→re-review cycles) runs a
@@ -170,14 +170,14 @@ _Requirements: CCOURSE-1.3, CCOURSE-2.1, CCOURSE-2.2, CCOURSE-2.3, CCOURSE-3.1, 
   ambiguity, and all-tasks-complete still behave as today `[CCOURSE-1.4]`; (d) GUARD — the
   pre-flight plan review (step 5) still batches findings into one pre-dispatch question,
   unaffected `[CCOURSE-1.5]`.
-- [ ] **Step 2 (implement):** In the BLOCKED table (line 60), change the final diagnose
+- [x] **Step 2 (implement):** In the BLOCKED table (line 60), change the final diagnose
   branch to "…the plan itself is wrong → pause and REQUIRED SUB-SKILL: use `correct-course`"
   (leave the other three branches and the redispatch cap unchanged). In the Fix-loop
   circuit breaker (line 38), after "stop looping," insert a root-cause step: determine the
   lowest invalidated artifact; IF it is above the current task, REQUIRED SUB-SKILL: use
   `correct-course`; ELSE continue "escalate to the user with the finding and the three
   attempts" as today. Touch nothing at line 24 (pre-flight) or line 14 (legitimate stops).
-- [ ] **Step 3 (verify + commit):** Walk B02 (all four scenarios), confirming the guard
+- [x] **Step 3 (verify + commit):** Walk B02 (all four scenarios), confirming the guard
   branches read byte-unchanged except the two named edits. Commit `Implements: CCOURSE-1.1,
   CCOURSE-1.2, CCOURSE-1.4, CCOURSE-1.5`.
 
@@ -204,14 +204,14 @@ _Requirements: CCOURSE-1.1, CCOURSE-1.2, CCOURSE-1.4, CCOURSE-1.5_
 
 **Depends-on:** Task 1
 
-- [ ] **Step 1 (scenario):** Write baseline B03 to
+- [x] **Step 1 (scenario):** Write baseline B03 to
   `baselines/B03-registration.md`: (a) `correct-course` appears in `plugin.json` `skills[]`,
   the `AGENTS.md` §8 tree and §11 `track` row, both `DESIGN.md` `track/` inventories, and a
   new `docs/guide/skills/correct-course.md` page + README `track` row, with every skill-count
   surface reading thirty-six and none disagreeing `[CCOURSE-7.1]`; (b)
   `skills/meta/ask/SKILL.md` routes "a mid-execution discovery invalidated my approved plan"
   → `correct-course` `[CCOURSE-7.2]`.
-- [ ] **Step 2 (implement):** Append `"./skills/track/correct-course"` to `plugin.json`
+- [x] **Step 2 (implement):** Append `"./skills/track/correct-course"` to `plugin.json`
   `skills[]`. In `AGENTS.md`: add the `track/` tree entry (§8), a `correct-course` row to the
   §11 quick-ref `track` group, and bump **all three** count surfaces 35 → 36 — the header
   (line 3), the §8 comment (line 221), and the §11 heading "The 35 Skills" (line 299). In
@@ -225,7 +225,7 @@ _Requirements: CCOURSE-1.1, CCOURSE-1.2, CCOURSE-1.4, CCOURSE-1.5_
   `docs/guide/skills/README.md`, and change the spelled-out opening count "Thirty-five skills"
   → "Thirty-six skills". In `skills/meta/ask/SKILL.md`, add a bullet under `## On-ramps`
   (line 40) keyed to a mid-execution plan-invalidation discovery → `correct-course`.
-- [ ] **Step 3 (verify + commit):** Walk B03; grep every surface to confirm one consistent
+- [x] **Step 3 (verify + commit):** Walk B03; grep every surface to confirm one consistent
   count of 36 (digit forms) / "Thirty-six" (README word form) and no stale "35"/"Thirty-five"
   anywhere. Run `trace` (REQUIRED SUB-SKILL) and confirm no new errors. Commit `Implements:
   CCOURSE-7.1, CCOURSE-7.2`.

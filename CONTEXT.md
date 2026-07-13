@@ -32,6 +32,14 @@ Domain terms for this repo. Keep definitions tight; challenge fuzzy usage.
   doc comment, a commented-out test). The `trace` check cannot tell a fixture from
   coverage by reading it, so a file full of fixture IDs is named in the trace ignore
   list and dropped from the test search wholesale.
+- **Lowest invalidated artifact** — the classification law of `correct-course`: when a
+  mid-execution discovery falsifies an approved plan, the divergence is routed to the
+  *lowest* level in the chain that is genuinely invalidated (task / plan / design /
+  requirements / vision), with cited evidence — never higher. It is the rule that keeps a
+  rewind from over-correcting: a task-local discovery goes back to execution, not to
+  re-design. "Blast radius" is the informal umbrella for the same idea (note: `file-issues`
+  already uses "blast radius" in an unrelated refactor-sizing sense). _Avoid:_ rewinding to
+  the highest plausibly-affected artifact "to be safe" — the law is lowest-with-evidence.
 - **Definition** — a requirement ID written in bold (`**CODE-N.M**`) in a
   `requirements.md`/`fixes.md`, and not struck through. A struck-through ID
   (`~~**CODE-N.M**~~`) is *retired* — it stops counting as defined. A plain,

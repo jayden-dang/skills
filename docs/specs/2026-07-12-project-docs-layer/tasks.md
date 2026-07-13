@@ -444,7 +444,7 @@ Matches the design seam table. No ID uncited; none double-cited.
 
 # Increment: Brownfield scan (Tasks 13–15)
 
-Status: Approved · Date: 2026-07-13
+Status: Implemented · Date: 2026-07-13
 
 Implements the approved **Brownfield-scan increment** in `design.md` (PROJDOC-1.6–1.10,
 2.4–2.5, 9.1–9.11). Appended, not merged into the tasks above — the B01–B12 work is

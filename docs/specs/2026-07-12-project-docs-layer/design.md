@@ -300,7 +300,7 @@ All 36 criteria mapped; none deliberately unmapped.
 
 # Brownfield-scan increment (Story 1 extensions + Story 9)
 
-Status: Approved · Date: 2026-07-13 · Requirements: PROJDOC-1.6–1.10, 2.4–2.5, 9.1–9.11
+Status: Implemented · Date: 2026-07-13 · Requirements: PROJDOC-1.6–1.10, 2.4–2.5, 9.1–9.11
 
 ## Context (increment)
 

@@ -59,6 +59,40 @@ usually two criteria.
 **Done when:** every story has ≥1 criterion and every criterion has exactly
 one WHEN/WHILE/IF/WHERE/ubiquitous form.
 
+## Step 2b: Non-functional requirements (quality attributes)
+
+Behavioral criteria (Step 2) say *what* the system does; non-functional
+requirements (NFRs) say *how well* it must do it — and unstated quality
+attributes are where features quietly fail. After the behavioral criteria, walk
+the four quality attributes and capture each one that applies:
+
+- **Performance** — latency, throughput, resource ceilings.
+- **Security** — authn/authz, data protection, the trust boundaries crossed.
+- **Reliability** — availability, error budget, recovery, durability.
+- **Accessibility** — conformance target (e.g. WCAG 2.1 AA), keyboard and
+  screen-reader support.
+
+Write each applicable one as an EARS criterion (Step 2's forms) that names a
+**measurable-or-checkable target AND its verification method**, carrying a
+hierarchical `**CODE-N.M**` ID so it traces through tasks and tests exactly like
+a behavioral criterion. Example:
+
+- `**CODE-3.1** WHEN the notes list renders 1,000 items THE SYSTEM SHALL paint
+  the first screen within 200 ms at p95 — verified by a CI performance trace.`
+
+An attribute that does not apply is **not silently dropped**: record it as
+`None` with a short reason (e.g. "Accessibility: None — headless CLI") so the
+skip is a visible decision, not an oversight.
+
+The category is **additive, never a new gate**: a feature with no quality-attribute
+concerns records `None` across the four and its behavioral criteria, structure,
+and both authoring modes are unchanged — NFRs surface quality concerns, they do
+not block on them. In tier-1 mini-spec mode, capture an NFR only when the fix
+itself is a quality-attribute change; the category adds no NFR obligation to a
+behavioral mini-spec.
+**Done when:** each of the four quality attributes is either captured as an IDed
+NFR criterion or explicitly recorded as `None`.
+
 ## Step 3: Guard existing behavior
 
 For every existing behavior this feature touches, add a guard:

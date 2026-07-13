@@ -12,7 +12,7 @@ Code: FIX
 
 ## 1. Non-functional requirements as a first-class category
 
-Status: Approved
+Status: Implemented
 Date: 2026-07-13
 
 Extends `write-requirements` (`skills/spec/write-requirements/SKILL.md`) so quality

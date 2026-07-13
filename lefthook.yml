@@ -28,3 +28,6 @@ pre-push:
       run: python3 scripts/lint-skill-frontmatter.py
     handoffs:
       run: python3 scripts/lint-handoffs.py
+    tests:
+      # The linters are the only enforcement in this repo, so they get tests.
+      run: python3 -m unittest discover -s tests

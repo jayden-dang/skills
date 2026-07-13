@@ -47,7 +47,7 @@ vendored linters, no CI or hook wiring.
 
 ```
 skills/
-  meta/        using-skills, ask, writing-skills
+  meta/        using-skills, ask, writing-skills, teach
   setup/       setup-repo, scaffold-project
   discovery/   brainstorm, grilling, research, prototype, domain-modeling
   spec/        write-requirements, write-design, write-plan
@@ -227,7 +227,7 @@ composition), and this feature's own `design.md` cites them.
 
 ## Skill inventory
 
-Legend: (U) user-invoked, (m) model-invoked. **36 skills.**
+Legend: (U) user-invoked, (m) model-invoked. **37 skills.**
 
 ### meta/
 1. **using-skills** (m, session-injected) — the gate. 1%-rule, skill-check before

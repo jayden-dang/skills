@@ -118,7 +118,7 @@ and countered by name. See [The gates](docs/guide/concepts/gates.md).
 
 | Bucket | Skills |
 |---|---|
-| meta | `using-skills` (session gate), `ask` (router), `writing-skills` |
+| meta | `using-skills` (session gate), `ask` (router), `writing-skills`, `teach` |
 | setup | `setup-repo`, `scaffold-project` |
 | discovery | `brainstorm`, `grilling`, `research`, `prototype`, `domain-modeling` |
 | spec | `write-requirements`, `write-design`, `write-plan` |

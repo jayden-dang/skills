@@ -32,7 +32,7 @@ That budget is why discipline skills keep their core body to roughly 500 words, 
 
 **Model-invocable** skills have no special frontmatter. The agent invokes them on its own when the description matches the situation. These hold reusable discipline: `tdd`, `verify`, `debug`, `grilling`, `write-design`.
 
-**User-invoked** skills carry `disable-model-invocation: true`. The agent *cannot* auto-invoke them; the user runs them as a slash command. These orchestrate: `/ask`, `/setup-repo`, `/scaffold-project`, `/triage`, `/improve-architecture`, `/handoff`, `/release`, `/writing-skills`.
+**User-invoked** skills carry `disable-model-invocation: true`. The agent *cannot* auto-invoke them; the user runs them as a slash command. These orchestrate: `/ask`, `/setup-repo`, `/scaffold-project`, `/establish-project`, `/triage`, `/improve-architecture`, `/handoff`, `/file-issues`, `/release`, `/writing-skills`, `/teach`.
 
 The composition rule falls out of that:
 
@@ -45,7 +45,7 @@ You can see the rule being obeyed in the wild. `debug` hands architectural findi
 | Bucket | Skills | Kind |
 |---|---|---|
 | meta | `using-skills` | model (session-injected) |
-| | `ask`, `writing-skills` | user |
+| | `ask`, `writing-skills`, `teach` | user |
 | setup | `setup-repo`, `scaffold-project` | user |
 | discovery | `brainstorm`, `grilling`, `research`, `prototype`, `domain-modeling` | model |
 | spec | `write-requirements`, `write-design`, `write-plan` | model |

@@ -1,6 +1,6 @@
 # AGENTS.md — Agent Behavior Constitution
 
-> **A-to-Z Agentic Development Skill Set** | 36 skills across 10 categories |
+> **A-to-Z Agentic Development Skill Set** | 37 skills across 10 categories |
 > `jayden-dang/skills` | v1.0
 
 This file is the single source of truth for agent behavior when working with this
@@ -62,9 +62,10 @@ skill's workflow only when the user has explicitly told you to.
 ## 3. Skill Types & Invocation Rules
 
 **User-invoked skills** (carry `disable-model-invocation: true` in frontmatter):
-`ask`, `writing-skills`, `setup-repo`, `scaffold-project`, `establish-project`,
-`triage`, `improve-architecture`, `handoff`, `file-issues`, `release`. Agents MUST
-NOT auto-invoke these. Name them for the user to run, e.g. `/triage`.
+`ask`, `writing-skills`, `teach`, `setup-repo`, `scaffold-project`,
+`establish-project`, `triage`, `improve-architecture`, `handoff`, `file-issues`,
+`release`. Agents MUST NOT auto-invoke these. Name them for the user to run, e.g.
+`/triage`.
 
 **Model-invoked skills** (no `disable-model-invocation`): agents auto-invoke
 these when conditions match. This includes `using-skills`, `brainstorm`,
@@ -218,7 +219,7 @@ content moves to a sibling file in the same directory.
 ## 8. File Organization
 
 ```
-skills/                  # skill definitions (36 skills, 10 categories)
+skills/                  # skill definitions (37 skills, 10 categories)
   meta/                  # using-skills, ask, writing-skills
   setup/                 # setup-repo, scaffold-project
   discovery/             # brainstorm, grilling, research, prototype, domain-modeling
@@ -302,7 +303,7 @@ Can't tick a box? The work is not done.
 
 | Category | Skills |
 |---|---|
-| **meta** | `using-skills` (m, si), `ask` (U), `writing-skills` (U) |
+| **meta** | `using-skills` (m, si), `ask` (U), `writing-skills` (U), `teach` (U) |
 | **setup** | `setup-repo` (U), `scaffold-project` (U) |
 | **discovery** | `brainstorm` (m), `grilling` (m), `research` (m), `prototype` (m), `domain-modeling` (m) |
 | **spec** | `write-requirements` (m), `write-design` (m), `write-plan` (m) |

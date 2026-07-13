@@ -1,7 +1,7 @@
 # Design: Reuse-first ladder in write-design and write-plan
 
 Feature code: REUSE
-Status: Approved
+Status: Implemented
 Date: 2026-07-13
 Requirements: ./requirements.md
 

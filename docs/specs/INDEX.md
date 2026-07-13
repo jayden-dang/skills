@@ -8,4 +8,4 @@ retired code).
 |---|---|---|---|
 | PROJDOC | Optional project-documentation layer | ./2026-07-12-project-docs-layer/ | Implemented |
 | CCOURSE | Correct-course — mid-flight plan-invalidation router | ./2026-07-13-correct-course/ | Implemented |
-| REUSE | Reuse-first ladder in write-design and write-plan | ./2026-07-13-reuse-ladder/ | Approved |
+| REUSE | Reuse-first ladder in write-design and write-plan | ./2026-07-13-reuse-ladder/ | Implemented |

@@ -1,10 +1,10 @@
 # Tasks: Reuse-first ladder in write-design and write-plan
 
 > **For agentic workers:** REQUIRED SUB-SKILL: use `execute-plan` to implement
-> this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
+> this plan task-by-task. Steps use checkbox (`- [x]`) syntax for tracking.
 
 Feature code: REUSE
-Status: Approved
+Status: Implemented
 Date: 2026-07-13
 Requirements: ./requirements.md
 Design: ./design.md
@@ -78,7 +78,7 @@ Copied verbatim from the design and repo conventions; every task inherits these.
 
 **Depends-on:** none
 
-- [ ] **Step 1 (scenario):** Write baseline B01 to `baselines/B01-write-design.md`:
+- [x] **Step 1 (scenario):** Write baseline B01 to `baselines/B01-write-design.md`:
   (a) Step 2 presents a 7-rung ladder (need-it/in-codebase/stdlib/platform/installed-dep/
   one-line/new-code), stop at highest rung that holds, fed by the Step-1 scan digest and
   climbed after understanding the problem `[REUSE-1.1] [REUSE-1.2]`; (b) the ladder must not
@@ -90,7 +90,7 @@ Copied verbatim from the design and repo conventions; every task inherits these.
   verifies every section has a Reuse line + justification `[REUSE-4.1]`; (e) the
   scan→ladder→deletion-test chain is stated and the deletion test is scoped to rung-7 output,
   with the scan subagent and deletion test otherwise unchanged `[REUSE-5.1] [REUSE-5.2]`.
-- [ ] **Step 2 (implement):** In `skills/spec/write-design/SKILL.md`: (a) insert the
+- [x] **Step 2 (implement):** In `skills/spec/write-design/SKILL.md`: (a) insert the
   ladder sub-gate into Step 2 after the "design it twice"/"single-design job" guidance and
   BEFORE the "Design for depth / deletion test" paragraph — the 7 rungs, "stop at highest
   rung that holds", "fed by the Step-1 scan digest, applied after tracing the real flow — a
@@ -103,7 +103,7 @@ Copied verbatim from the design and repo conventions; every task inherits these.
   callout are advisory (never a hard blocker). (c) Add a bullet to the Step-4 coverage
   self-check: verify every architecture section has a `Reuse:` line and every rung-7/new-dep
   line has its justification. Touch no frontmatter.
-- [ ] **Step 3 (verify + commit):** Walk B01 against the edited skill; confirm frontmatter
+- [x] **Step 3 (verify + commit):** Walk B01 against the edited skill; confirm frontmatter
   untouched and `python3 scripts/lint-skill-frontmatter.py skills/spec/write-design/SKILL.md`
   passes. Commit `Implements: REUSE-1.1, REUSE-1.2, REUSE-1.3, REUSE-2.1, REUSE-2.2,
   REUSE-2.3, REUSE-2.4, REUSE-4.1, REUSE-5.1, REUSE-5.2`.
@@ -128,14 +128,14 @@ _Requirements: REUSE-1.1, REUSE-1.2, REUSE-1.3, REUSE-2.1, REUSE-2.2, REUSE-2.3,
 
 **Depends-on:** none
 
-- [ ] **Step 1 (scenario):** Write baseline B02 to `baselines/B02-write-plan.md`:
+- [x] **Step 1 (scenario):** Write baseline B02 to `baselines/B02-write-plan.md`:
   (a) each task's Files block carries a `Reuse:` line naming the concrete existing code/lib/
   pattern the task builds on, and it is kept consistent with the design section it implements
   `[REUSE-3.1] [REUSE-3.2]`; (b) Step-4 flags as a component-level reuse-miss any task whose
   Files Create something the scan digest or an already-installed dependency already provides
   `[REUSE-4.2]`; (c) Step-4 flags any task whose Reuse line is inconsistent with its design
   section `[REUSE-4.3]`.
-- [ ] **Step 2 (implement):** In `skills/spec/write-plan/SKILL.md`: (d) add a `Reuse:`
+- [x] **Step 2 (implement):** In `skills/spec/write-plan/SKILL.md`: (d) add a `Reuse:`
   sub-bullet to the task **Files** bullet (beside `Create / Modify … / Test`) — the concrete
   existing code, library, or pattern the task builds on, so the implementer is told to build
   on it, not reimplement it; note it must stay consistent with the design section's `Reuse:`
@@ -145,7 +145,7 @@ _Requirements: REUSE-1.1, REUSE-1.2, REUSE-1.3, REUSE-2.1, REUSE-2.2, REUSE-2.3,
   `code-review`'s reuse-miss term at task granularity); and a **Reuse-consistency** check —
   flag a task whose `Reuse:` line disagrees with the design section it implements. Both
   advisory findings in the existing pass. Touch no frontmatter.
-- [ ] **Step 3 (verify + commit):** Walk B02 against the edited skill; confirm frontmatter
+- [x] **Step 3 (verify + commit):** Walk B02 against the edited skill; confirm frontmatter
   untouched and `python3 scripts/lint-skill-frontmatter.py skills/spec/write-plan/SKILL.md`
   passes. Commit `Implements: REUSE-3.1, REUSE-3.2, REUSE-4.2, REUSE-4.3`.
 
@@ -164,17 +164,17 @@ _Requirements: REUSE-3.1, REUSE-3.2, REUSE-4.2, REUSE-4.3_
 
 **Depends-on:** Task 1, Task 2
 
-- [ ] **Step 1 (scenario):** Write baseline B03 to `baselines/B03-additivity.md`: a feature
+- [x] **Step 1 (scenario):** Write baseline B03 to `baselines/B03-additivity.md`: a feature
   with no reuse opportunity walked through the edited `write-design` and `write-plan` produces
   their existing structure unchanged — `Satisfies:` lines, Files Create/Modify/Test,
   Interfaces, Depends-on, Steps, footers — with an empty-or-`none` `Reuse:` line, and NO new
   hard approval gate is introduced (the reuse findings are advisory, never blocking).
   `[REUSE-5.3]`
-- [ ] **Step 2 (implement):** No new content edit — confirm the additive/advisory/no-new-gate
+- [x] **Step 2 (implement):** No new content edit — confirm the additive/advisory/no-new-gate
   wording landed in Task 1's and Task 2's edits (grep both skills for the advisory/"never a
   hard blocker"/additive phrasing), and record the walk as B03. If either edit reads as a hard
   gate rather than advisory, fix the wording in the owning skill (Task 1 or Task 2's file).
-- [ ] **Step 3 (verify + commit):** Confirm B03 walks clean. Commit `Implements: REUSE-5.3`.
+- [x] **Step 3 (verify + commit):** Confirm B03 walks clean. Commit `Implements: REUSE-5.3`.
 
 _Requirements: REUSE-5.3_
 

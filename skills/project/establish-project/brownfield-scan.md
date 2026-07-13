@@ -43,11 +43,15 @@ repository is scanned, independent of filesystem listing order or detection
 sequence. This numbering is what "root 1, root 2, ..." means in the
 [Select](#select) pass below.
 
-**Enumerate within a git working tree** — prefer this; it already respects
+**Enumerate per root, then merge fairly — never enumerate all roots
+concatenated into one list.** Run the command below separately for *each*
+detected root, producing one ordered candidate list per root:
+
+**Within a git working tree** — prefer this; it already respects
 `.gitignore` and skips `.git/` itself:
 
 ```
-git ls-files -- <root-1> <root-2> ... \
+git ls-files -- <root-i> \
   | grep -Ev '(^|/)(node_modules|vendor|dist|build|target|coverage|\.next)/'
 ```
 
@@ -55,20 +59,31 @@ git ls-files -- <root-1> <root-2> ... \
 directories explicitly so they are never descended into:
 
 ```
-find <root-1> <root-2> ... \
+find <root-i> \
   \( -name node_modules -o -name vendor -o -name dist -o -name build \
      -o -name target -o -name coverage -o -name .next -o -name .git \) -prune \
   -o -type f -print
 ```
 
-**Cap enumeration at 10,000 candidate paths.** Count paths as they are
-produced; stop collecting the instant the 10,000th is reached, even if the
-command above would have produced more. Record two metrics for the digest
-header:
+**Merge the per-root lists by round-robin, in the fixed lexical root order**
+established above (root 1, root 2, ..., wrapping back to root 1 after the
+last root): take one path from root 1's list, then one from root 2's, and
+so on, skipping any root whose list is already exhausted, until either
+10,000 total paths have been collected or every root's list is exhausted.
+This is the same round-robin discipline the [Select](#select) pass uses
+below, applied one step earlier — it guarantees the 10,000 cap cannot be
+spent entirely on one early root before a later root is ever represented in
+the candidate set.
 
-- `paths_considered` — `min(total candidate paths found, 10000)`.
-- `paths_truncated` — `true` if the true candidate count exceeds 10,000 (some
-  paths exist that enumeration never reached), `false` otherwise.
+**Cap the merged total at 10,000 candidate paths.** Record two metrics for
+the digest header:
+
+- `paths_considered` — the total number of paths actually collected by the
+  round-robin merge (≤ 10000, counted across all roots).
+- `paths_truncated` — `true` if the round-robin merge stopped at the 10,000
+  cap while at least one root's list still had unenumerated paths remaining
+  (some paths exist, in some root, that enumeration never reached), `false`
+  otherwise.
 
 ## Select
 
@@ -147,9 +162,10 @@ place.
 
 Replace with the literal token `[REDACTED]`:
 
-- **A PEM private-key block** — everything from a `-----BEGIN ... PRIVATE
-  KEY-----` line through its matching `-----END ... PRIVATE KEY-----` line,
-  replaced as one unit.
+- **A PEM or PGP private-key block** — everything from a `-----BEGIN ...
+  PRIVATE KEY-----` line (including `-----BEGIN PGP PRIVATE KEY BLOCK-----`)
+  through its matching terminator — `-----END .* PRIVATE KEY( BLOCK)?-----`
+  — replaced as one unit.
 - **A value assigned to a key matching this regex** (case-insensitive,
   applied to the key/variable name on the left of an `=`, `:`, or similar
   assignment):
@@ -162,6 +178,18 @@ Replace with the literal token `[REDACTED]`:
   "hunter2"` → `"password": "[REDACTED]"`. Redact the value only — the key
   name itself is not secret and stays legible so the citation still means
   something.
+- **A credential embedded in a URL's userinfo** — a value matching
+  `://<user>:<secret>@`: replace only the `<secret>` segment, e.g.
+  `postgres://app:hunter2@host` → `postgres://app:[REDACTED]@host`.
+
+These two additional rules (PGP-block coverage, URL-userinfo credentials)
+extend the PROJDOC-9.6 floor — the key-name regex above plus the PEM block
+rule — as defense-in-depth; they do not replace it, and the key-name regex
+stays exactly as specified. A residual risk remains even with all three
+rules applied: a bare high-entropy token that carries no matching key name
+and no URL userinfo context (e.g. a secret pasted alone on its own line) is
+not caught by any of them — a known limitation of this pass, not a silent
+gap.
 
 Redaction happens before the [Digest contract](#digest-contract) pass, not
 after — no unredacted value is ever assembled into digest text and then

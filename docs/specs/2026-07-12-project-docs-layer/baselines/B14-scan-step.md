@@ -39,27 +39,34 @@ convention)
 **Walk (verify):** — executed against the edited `SKILL.md` Create Step 1 / Update /
 Validate sections:
 
-- **(a)** Step 1's detect clause matches `src/app.py` under root `src/` against the
-  source predicate → brownfield branch. The brownfield clause reads "dispatch a
-  **scan subagent** per `brownfield-scan.md` (beside this file) ... writing
-  `.skills/<slug>-scan.md` — before Step 2's interview begins." With subagent
+- **(a)** Step 1's detect clause now reads "Detect brownfield via the brownfield
+  source predicate defined in `brownfield-scan.md` (beside this file) — the single
+  operational source of truth ..." — `brownfield-scan.md`'s Enumerate section defines
+  that predicate as a regular file beneath `src/`/`app/`/`backend/`/`lib/`/`packages/`/
+  `crates/` or a manifest-declared root, excluding `.git/ node_modules/ vendor/ dist/
+  build/ target/ coverage/ .next/`, which matches `src/app.py` under root `src/` →
+  brownfield branch. The **Brownfield →** sub-bullet reads "dispatch a **scan
+  subagent** per `brownfield-scan.md` (beside this file), writing
+  `.skills/<slug>-scan.md` before Step 2's interview begins ..." With subagent
   capability available, dispatch happens and the digest is complete before Step 2.
   Expected = observed. `[PROJDOC-1.6]` **PASS.**
-- **(b)** Step 1's detect clause finds no file beneath any named/declared source root
-  in the fixture → greenfield branch: "**Greenfield** — skip the scan, proceed
-  straight to Step 2." No scan clause is reached; Step 2 runs next. Expected =
-  observed. `[PROJDOC-1.10]` **PASS.**
-- **(c)** Step 1's brownfield clause carries the parenthetical "(No subagents? Run
-  the same scan inline under the `brownfield-scan.md` contract.)" — same fixture as
-  (a), same predicate match, same target file and contract, only the dispatch
-  mechanism differs (inline vs. subagent); the recipe itself is not restated or
-  altered. Expected = observed. `[PROJDOC-9.7]` **PASS.**
-- **(d)** Step 1's failure clause reads: "**Failure → blocker:** if the scan fails,
-  times out, or cannot write a complete digest, report it as a blocker and STOP here
-  — do not proceed to Step 2, do not classify the repo as greenfield, and write
-  nothing durable." This is a single control-flow branch off the same Step 1 dispatch
-  (not a separate gate elsewhere), so all four sub-checks are satisfied by one
-  sentence: reported as blocker (`9.8`), STOP before Step 2 (`9.9`), no greenfield
+- **(b)** Step 1's detect clause, now pointed at `brownfield-scan.md`'s predicate,
+  finds no file beneath any named/declared source root in the fixture → greenfield
+  branch: "**Greenfield →** skip the scan, proceed straight to Step 2." No scan
+  clause is reached; Step 2 runs next. Expected = observed. `[PROJDOC-1.10]` **PASS.**
+- **(c)** Step 1's **Brownfield →** sub-bullet carries the parenthetical "(No
+  subagents? Run the same scan inline under the `brownfield-scan.md` contract.)" —
+  wording unchanged by the Task-14-brief-vs-Fix-3 rewrite — same fixture as (a), same
+  predicate match, same target file and contract, only the dispatch mechanism differs
+  (inline vs. subagent); the recipe itself is not restated or altered. Expected =
+  observed. `[PROJDOC-9.7]` **PASS.**
+- **(d)** Step 1's **Failure →** sub-bullet reads: "if the scan fails, times out, or
+  cannot write a complete digest, report a blocker and STOP before Step 2 — do not
+  classify the repo as greenfield, and write nothing durable." This is now its own
+  sub-bullet under Step 1 (previously inline prose; reformatted by Fix 3 for
+  scannability, meaning unchanged) — a single control-flow branch off the same Step 1
+  dispatch (not a separate gate elsewhere), so all four sub-checks are satisfied by
+  one sentence: reported as blocker (`9.8`), STOP before Step 2 (`9.9`), no greenfield
   reclassification (`9.10` — the sentence is a third branch off detection, not a
   fallthrough to the greenfield branch), nothing durable written (`9.11` — STOP fires
   before Steps 3–6, which are the only steps that write durable files). Expected =
@@ -72,7 +79,16 @@ Validate sections:
   whether the repo is brownfield. Everything else in both sections is byte-identical
   to before this task (ARCH-2). Expected = observed. `[PROJDOC-2.4]` `[PROJDOC-2.5]`
   **PASS.**
+- **Re-check (Fix 3 bug fix, informational):** Step 1's detect clause no longer
+  paraphrases the source-root list inline (the old paraphrase omitted the exclusion
+  list, so a repo whose only files sat under a nested excluded dir like
+  `src/node_modules/foo.js` could misclassify as brownfield); it now references
+  `brownfield-scan.md`'s predicate, which carries the full exclusion list. None of
+  B14's fixtures (a)–(e) hit that nested-exclusion edge case, so no fixture's PASS
+  verdict changes — this re-check confirms the fix removes a latent bug without
+  altering any asserted outcome above.
 
 **Result:** PASS — all 5 sub-scenarios verified by direct reading of the edited
 `skills/project/establish-project/SKILL.md` Create Step 1, Update, and Validate
-sections; all 9 requirement IDs covered.
+sections; all 9 requirement IDs covered. (Re-walked after Fix 3's Step 1 rewrite and
+Fix 4's Step 2 addition — see re-check note above and B15's re-walk for Step 2.)

@@ -295,3 +295,177 @@ Every PROJDOC ID appears in exactly one Satisfies line:
 - Story 8: 8.1,8.4 (check-invariants) · 8.2,8.5 (code-review) · 8.3 (establish-project)
 
 All 36 criteria mapped; none deliberately unmapped.
+
+---
+
+# Brownfield-scan increment (Story 1 extensions + Story 9)
+
+Status: Approved · Date: 2026-07-13 · Requirements: PROJDOC-1.6–1.10, 2.4–2.5, 9.1–9.11
+
+## Context (increment)
+
+`establish-project` create mode's Step 1 "Brownfield check"
+(`establish-project/SKILL.md:37-40`) detects brownfield but does no code mapping —
+it only *colors* the Step 2 `grilling` interview toward ratifying existing structure,
+which the human must then recall unaided. This increment makes that step actually
+*scan* a large existing codebase and feed the evidence into the interview, so the
+ratified vision/glossary/invariants/guidelines are grounded in what the code really
+does — the "bring an existing codebase under the methodology" onramp, reduced to
+filling in this one thin step rather than a new skill.
+
+Two constraints shape every decision. First, **ARCH-3** — a consuming repo installs
+nothing executable — forbids shipping a `scripts/brownfield-scan.py` helper into the
+user's project (`writing-skills/SKILL.md:67`: the skill *carries the deterministic
+recipe itself*, the exact passes the agent runs). So budgets, truncation, and
+redaction are expressed as **deterministic instructions the scan executes**, not a
+wrapper program. Second, **ARCH-2** — every consult is optional, never a new gate —
+holds because the scan runs only *inside* the already user-invoked `establish-project`
+create path on a brownfield repo; greenfield, update, and validate are untouched.
+
+The scan reads untrusted third-party source, and its `.skills/<slug>-scan.md` digest
+becomes the interview's prompt context — so the digest is a prompt-injection surface
+and a secret-leak surface. The design treats repository content as untrusted data
+(never as instructions) and redacts credentials before they can reach the digest,
+reusing the repo's existing trust-boundary and redaction vocabulary rather than
+inventing new framing.
+
+## Decisions (increment)
+
+7. **Agent-run recipe, no shipped script.** Budget enforcement (path/file/byte
+   ceilings), the truncation-selection order, and secret redaction are exact
+   find/git/grep/regex passes the scan performs and records — not a runtime helper
+   executable. Forced by ARCH-3; there is no precedent for a repo-side runtime script
+   (`scripts/*.py` are authoring-time catalog guards only).
+8. **Heavy detail lives in a sibling reference file** `brownfield-scan.md` (beside
+   `establish-project/SKILL.md`), pointed to with "(beside this file)" — mirroring
+   `execute-plan/implementer-prompt.md` and `code-review/standards-baseline.md`. The
+   create-mode step stays terse; the budget recipe, truncation algorithm, digest
+   contract, and untrusted-content/redaction brief live in the reference. This is a
+   new *reference file*, **not a new skill** — the skill count stays **36** and no
+   count surface changes (mirroring `reuse-ladder` which "extends two existing skills;
+   the skill count stays 36").
+9. **Capability detection reuses the existing fallback reflex.** The scan is dispatched
+   as a subagent per the established convention; where the harness cannot spawn one, the
+   same step performs the scan **inline** under identical contracts — the "(No subagents?
+   …)" branch every scan-subagent instance already carries, now with the budget/redaction
+   clauses attached (PROJDOC-9.7).
+10. **Scan failure is a hard blocker, not a silent greenfield fall-through.** A failed,
+    timed-out, or incomplete scan stops the create workflow *before* the interview,
+    is never reclassified as greenfield, and writes nothing durable — so hostile or
+    truncated input can never become project policy by default (PROJDOC-9.8–9.11).
+11. **Ratification gate on every durable write.** The digest only ever supplies
+    *candidates*; no scan-derived line reaches `vision.md`, `CONTEXT.md`,
+    `docs/architecture/`, or `guidelines.md` until the user ratifies it through the
+    `grilling` channel — the existing interview→write flow, now evidence-seeded and
+    gated (PROJDOC-1.8, 1.9).
+
+None of these puts an *interface* in question — the scan reuses the established
+scan-subagent grammar and the sibling-prompt-file pattern, so this is single-design
+work, not a 3-variant bake-off.
+
+## Architecture (increment)
+
+### Create-mode scan step — dispatch, fallback, and failure control flow
+
+Satisfies: PROJDOC-1.6, PROJDOC-1.10, PROJDOC-2.4, PROJDOC-2.5, PROJDOC-9.7, PROJDOC-9.8, PROJDOC-9.9, PROJDOC-9.10, PROJDOC-9.11
+Respects: ARCH-2
+Reuse: existing — extends `establish-project/SKILL.md:37-44` Create steps + the scan-subagent fallback convention `write-design/SKILL.md:17-22` (rung 2)
+
+Rewrite Step 1 "Brownfield check" so detection is followed, on the brownfield branch,
+by the scan; the greenfield branch is unchanged. Control flow:
+
+1. **Detect** brownfield via the requirements' source predicate (regular file under a
+   source root `src/`/`app/`/`backend/`/`lib/`/`packages/`/`crates/` or a
+   manifest-declared root, excluding `.git/ node_modules/ vendor/ dist/ build/ target/
+   coverage/ .next/`).
+2. **Greenfield → skip** the scan entirely and proceed directly to the Step 2
+   interview (PROJDOC-1.10 guard — no source, nothing to map).
+3. **Brownfield → scan.** Dispatch the **brownfield scan subagent** per
+   `brownfield-scan.md` (beside this file), which writes the digest to
+   `.skills/<slug>-scan.md`. Where the harness cannot spawn a subagent, perform the
+   same scan inline under the identical `brownfield-scan.md` contract (PROJDOC-9.7).
+4. **Failure → blocker.** If the scan fails, times out, or cannot write a complete
+   digest, report the failure as a blocker and **stop before the Step 2 interview**;
+   do **not** classify the repo as greenfield; write nothing durable
+   (PROJDOC-9.8/9.9/9.10/9.11).
+
+Guards PROJDOC-2.4/2.5 are one sentence each in the Update and Validate sections:
+those modes "CONTINUE TO avoid dispatching the create-mode brownfield scan" — Update
+stays change-signal-driven, Validate stays a conformance/referential-integrity check.
+
+### `brownfield-scan.md` — the bounded, security-hardened scan recipe and digest contract
+
+Satisfies: PROJDOC-1.7, PROJDOC-9.1, PROJDOC-9.2, PROJDOC-9.3, PROJDOC-9.4, PROJDOC-9.5, PROJDOC-9.6
+Respects: ARCH-3
+Reuse: existing — composes `handoff/SKILL.md:27` redaction rationale + `code-review/standards-baseline.md:70` untrusted-boundary vocabulary + the numeric-cap idiom `execute-plan/SKILL.md:62`, over the shared scan-subagent grammar (rung 2); the assembled bounded-scan procedure itself is new prose (rung 7 — no existing artifact specifies a budgeted, redacting brownfield scan)
+
+New reference file beside `establish-project/SKILL.md`. It carries, as exact
+agent-run passes (no shipped executable — ARCH-3):
+
+- **Enumeration budget (PROJDOC-9.1):** enumerate ≤ 10,000 candidate paths; record
+  `paths_considered` and `paths_truncated` in the digest header.
+- **Read budget (PROJDOC-9.2):** read ≤ 200 files and ≤ 2 MiB total content; record
+  `files_read` and `bytes_read`.
+- **Truncation selection (PROJDOC-9.4):** when either budget truncates, select files
+  round-robin across detected source roots, and *within* each root prioritize
+  manifests, build configuration, documented entry points, and tests before remaining
+  paths in lexical order — the exact ordered recipe lives here (this is the algorithm
+  the scan §3 flagged as belonging in the sibling file).
+- **Digest shape (PROJDOC-9.3, 1.7):** a summary-only artifact ≤ 300 lines / 30 KiB,
+  no raw file dump; candidates grouped as **product-scope facts / glossary terms /
+  architecture invariants / engineering guidelines**, each citing ≥ 1 concrete
+  repository path and labeled **observation** or **inference**.
+- **Untrusted content (PROJDOC-9.5):** instruction-like text in repository files is
+  treated only as untrusted data — never executed, never followed — using the repo's
+  existing "trust boundary / untrusted input" framing (`standards-baseline.md:70`).
+- **Redaction (PROJDOC-9.6):** before any value reaches the digest, replace a PEM
+  private-key block, or a value assigned to a key matching
+  `(?i)(api[_-]?key|secret|token|password|passwd|client[_-]?secret)`, with
+  `[REDACTED]` — mirroring `handoff/SKILL.md:27` ("the doc may become another agent's
+  prompt").
+
+### Evidence-seeded, ratification-gated interview
+
+Satisfies: PROJDOC-1.8, PROJDOC-1.9
+Respects: ARCH-2
+Reuse: existing — extends the Step 2 `grilling` interview and Steps 3–5 durable writes + the passive `domain-modeling` glossary side-effect already in `establish-project/SKILL.md:41-54` (rung 2)
+
+The Step 2 interview gains one input: where a brownfield digest exists, its grouped
+candidates are presented to the user as **evidence** for the invariant/vision/glossary/
+guideline decisions the interview already makes (PROJDOC-1.8). The durable writes in
+Steps 3–5 (and the passive `domain-modeling` glossary writes) are gated: a scan-derived
+candidate becomes content in `vision.md`, `CONTEXT.md`, `docs/architecture/`, or
+`guidelines.md` **only after** the user ratifies it in the `grilling` channel
+(PROJDOC-1.9). Unratified candidates are discarded with the ephemeral digest; the scan
+proposes, the user disposes.
+
+## Seams for testing (increment)
+
+Baseline scenarios only (no automated test code), per the feature's verification
+convention; each row is a documented baseline under `baselines/` tagged `[PROJDOC-N.M]`.
+
+| Seam | Kind | Covers |
+|---|---|---|
+| `establish-project` create on a brownfield fixture → digest produced, feeds interview | baseline | PROJDOC-1.6, 1.7, 1.8 |
+| create on a greenfield fixture → no scan dispatched | baseline | PROJDOC-1.10 |
+| create; unratified candidate never written to a durable doc | baseline | PROJDOC-1.9 |
+| update / validate runs → no brownfield scan dispatched | baseline | PROJDOC-2.4, 2.5 |
+| >10,000-path fixture → enumeration capped, metrics recorded | baseline | PROJDOC-9.1 |
+| oversize fixture (>200 files / >2 MiB) → read budget capped, metrics recorded | baseline | PROJDOC-9.2 |
+| large-repo fixtures → digest ≤ 300 lines / 30 KiB, summary-only | baseline | PROJDOC-9.3 |
+| multi-root fixture exceeding both budgets → round-robin priority selection | baseline | PROJDOC-9.4 |
+| adversarial fixture with instruction-like source/docs → treated as data | baseline | PROJDOC-9.5 |
+| adversarial fixture with PEM key + credential assignments → `[REDACTED]` | baseline | PROJDOC-9.6 |
+| no-subagent harness → scan performed inline under the same contract | baseline | PROJDOC-9.7 |
+| failure-injection fixture → blocker, stop before interview, not greenfield, no durable write | baseline | PROJDOC-9.8, 9.9, 9.10, 9.11 |
+
+## Coverage check (increment)
+
+Every new PROJDOC ID appears in exactly one increment Satisfies line:
+
+- Story 1 ext: 1.6, 1.10 (scan step) · 1.7 (brownfield-scan.md) · 1.8, 1.9 (interview)
+- Story 2 ext: 2.4, 2.5 (scan step guards)
+- Story 9: 9.1, 9.2, 9.3, 9.4, 9.5, 9.6 (brownfield-scan.md) · 9.7, 9.8, 9.9, 9.10, 9.11 (scan step)
+
+All 18 new criteria mapped; none deliberately unmapped. Skill count unchanged (36) —
+this adds one *reference file* beside an existing skill, no new skill.

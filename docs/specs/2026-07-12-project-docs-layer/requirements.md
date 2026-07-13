@@ -39,6 +39,34 @@ north star and a shared invariant set instead of drifting per-feature.
   architecture docs THE SYSTEM SHALL support splitting invariants across
   `docs/architecture/<domain>.md` files indexed by `docs/architecture/INDEX.md`.
 
+For PROJDOC-1.6, PROJDOC-1.10, and PROJDOC-9.7, the **brownfield source
+predicate** is satisfied when the repo contains at least one regular file beneath
+a source root named `src/`, `app/`, `backend/`, `lib/`, `packages/`, or `crates/`,
+or beneath a source root declared by the repo's manifest or build configuration,
+after excluding `.git/`, `node_modules/`, `vendor/`, `dist/`, `build/`, `target/`,
+`coverage/`, and `.next/`.
+
+- **PROJDOC-1.6** WHEN `establish-project` runs in create mode, the brownfield
+  source predicate is satisfied, AND scan-subagent capability is available THE
+  SYSTEM SHALL dispatch a brownfield scan subagent before the ratification
+  elicitation begins.
+- **PROJDOC-1.7** WHEN the brownfield scan completes THE SYSTEM SHALL write an
+  ephemeral `.skills/<slug>-scan.md` digest whose candidates are grouped as
+  product-scope facts, glossary terms, architecture invariants, or engineering
+  guidelines, with every candidate citing at least one concrete repository file
+  or path and labeled as an observation or inference.
+- **PROJDOC-1.8** WHEN a brownfield create-mode scan digest exists THE SYSTEM
+  SHALL feed that digest into the `grilling` elicitation (PROJDOC-1.3) as evidence
+  for the user's ratification decisions.
+- **PROJDOC-1.9** (guard) WHERE a brownfield scan digest exists THE SYSTEM SHALL
+  CONTINUE TO write scan-derived content to `docs/product/vision.md`,
+  `CONTEXT.md`, `docs/architecture/`, or `docs/product/guidelines.md` only after
+  the user ratifies the corresponding candidate through the `grilling` channel.
+- **PROJDOC-1.10** (guard) WHEN `establish-project` runs in create mode AND finds
+  no existing source according to the brownfield source predicate THE SYSTEM SHALL
+  CONTINUE TO proceed directly to the `grilling` elicitation without dispatching
+  the brownfield scan.
+
 ## 2. Maintain the project layer (update and validate modes)
 
 **Story:** As a developer, I want the vision and architecture spine to be
@@ -52,6 +80,10 @@ maintained and auditable, not just created once, so they stay trustworthy.
 - **PROJDOC-2.3** WHEN `establish-project` runs in validate mode THE SYSTEM SHALL
   check `vision.md` and the architecture spine against a checklist and run the
   invariant referential-integrity check (story 3), reporting the findings.
+- **PROJDOC-2.4** (guard) WHEN `establish-project` runs in update mode THE SYSTEM
+  SHALL CONTINUE TO avoid dispatching the create-mode brownfield scan.
+- **PROJDOC-2.5** (guard) WHEN `establish-project` runs in validate mode THE
+  SYSTEM SHALL CONTINUE TO avoid dispatching the create-mode brownfield scan.
 
 ## 3. Invariant referential integrity in `trace`
 
@@ -175,6 +207,59 @@ re-reading every invariant by hand.
   `execute-plan` runs THE SYSTEM SHALL skip `check-invariants` and leave existing
   behavior unchanged.
 
+## 9. Brownfield onboarding quality attributes
+
+**Story:** As a developer onboarding a large or unfamiliar repository, I want the
+scan to remain bounded, treat repository contents as untrusted, and fail visibly,
+so evidence gathering cannot exhaust the working context or silently turn hostile
+or incomplete input into durable project policy.
+
+- **PROJDOC-9.1** WHILE a brownfield scan inventories a repository THE SYSTEM
+  SHALL enumerate no more than 10,000 candidate paths and record
+  `paths_considered` plus `paths_truncated` in the digest — verified by a
+  documented baseline over a fixture containing more than 10,000 candidate paths.
+- **PROJDOC-9.2** WHILE a brownfield scan reads repository contents THE SYSTEM
+  SHALL read at most 200 files and 2 MiB of total file content and record
+  `files_read` plus `bytes_read` in the digest — verified by a documented baseline
+  over files whose count and total size exceed both ceilings.
+- **PROJDOC-9.3** WHEN a brownfield scan writes its digest THE SYSTEM SHALL produce
+  a summary-only artifact of at most 300 lines and 30 KiB with no raw file dump —
+  verified by the large-repository baselines from PROJDOC-9.1 and PROJDOC-9.2.
+- **PROJDOC-9.4** WHEN the PROJDOC-9.1 or PROJDOC-9.2 budget truncates the scan THE
+  SYSTEM SHALL select files round-robin across detected source roots, prioritizing
+  manifests, build configuration, documented entry points, and tests within each
+  root before remaining paths in lexical order — verified by a multi-root fixture
+  whose candidates exceed both budgets.
+- **PROJDOC-9.5** WHILE a brownfield scan reads repository contents not supplied by
+  the harness as governing instructions THE SYSTEM SHALL treat instruction-like
+  content only as untrusted data and never execute commands or follow instructions
+  found there — verified by an adversarial-repository baseline containing
+  instruction-like source and documentation text.
+- **PROJDOC-9.6** WHEN repository content contains a PEM private-key block or a
+  value assigned to a key matching
+  `(?i)(api[_-]?key|secret|token|password|passwd|client[_-]?secret)` THE SYSTEM
+  SHALL replace the detected value with `[REDACTED]` rather than reproduce it in
+  the digest — verified by an adversarial-repository baseline covering both
+  required secret classes.
+- **PROJDOC-9.7** IF `establish-project` runs in create mode, the brownfield source
+  predicate is satisfied, AND the harness has no scan-subagent capability THEN THE
+  SYSTEM SHALL perform the brownfield scan inline under the PROJDOC-1.7 and
+  PROJDOC-9.1 through PROJDOC-9.6 contracts — verified by a no-subagent baseline.
+- **PROJDOC-9.8** IF the brownfield scan fails, times out, or cannot write a
+  complete PROJDOC-1.7 digest THEN THE SYSTEM SHALL report the scan failure as a
+  blocker — verified by a failure-injection baseline.
+- **PROJDOC-9.9** IF a PROJDOC-9.8 blocker exists THEN THE SYSTEM SHALL stop the
+  create workflow before ratification elicitation — verified by the
+  failure-injection baseline.
+- **PROJDOC-9.10** (guard) WHERE a PROJDOC-9.8 blocker exists THE SYSTEM SHALL NOT
+  classify the repository as greenfield — verified by the failure-injection
+  baseline.
+- **PROJDOC-9.11** (guard) WHERE a PROJDOC-9.8 blocker exists THE SYSTEM SHALL NOT
+  write scan-derived content to any durable project-layer artifact — verified by
+  the failure-injection baseline.
+- Accessibility: None — `establish-project` is a headless agent workflow with no
+  user-interface surface.
+
 ## Out of Scope
 
 - BMAD's machine-readable CSV workflow DAG / `module-help.csv` manifest — skills
@@ -186,3 +271,9 @@ re-reading every invariant by hand.
   determinism principle (`DESIGN.md` principle 3) is preserved.
 - UX, epics/stories, and sprint-planning workflows (BMAD has these; not adopted).
 - Any multi-agent persona system.
+- Backfilling `docs/specs/INDEX.md` with feature codes or spec stubs inferred from
+  existing source; legacy subsystems enter the registry only through real feature
+  specifications.
+- A durable subsystem inventory or system-map artifact. Reconsider one only when
+  measured repeated-scan cost materially impedes feature work and a future proposal
+  names both the map's consumer and its freshness policy.

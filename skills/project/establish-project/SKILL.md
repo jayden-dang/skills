@@ -50,18 +50,30 @@ slot — fill it or write `None`.
    reported and the workflow has stopped.*
 2. **Interview.** REQUIRED SUB-SKILL: use `grilling` — one question at a time — to draw
    out the product vision (problem, users, goals, non-goals, scope) and the load-bearing
-   architecture invariants. Keep `domain-modeling` active as a passive side effect
-   (record glossary terms the instant they settle). *Done when: no open decision remains.*
+   architecture invariants. WHERE a brownfield scan digest exists, present its grouped
+   candidates (product-scope facts, glossary terms, architecture invariants, engineering
+   guidelines) to the user as evidence for the invariant / vision / glossary / guideline
+   decisions this interview makes. Keep `domain-modeling` active as a passive side effect
+   (record glossary terms the instant they settle) — a scan-derived candidate becomes a
+   `CONTEXT.md` glossary entry only after the user ratifies it in the `grilling` channel;
+   unratified candidates are discarded with the ephemeral digest. *Done when: no open
+   decision remains.*
 3. **Write the vision.** Fill `templates/product-vision.md` → `docs/product/vision.md`.
-   *Done when: the file exists, every slot filled or `None`.*
+   A scan-derived candidate becomes content in `vision.md` only after the user ratifies
+   it in the `grilling` channel; unratified candidates are discarded with the ephemeral
+   digest. *Done when: the file exists, every slot filled or `None`.*
 4. **Write the spine.** Fill `templates/architecture-INDEX.md` → `docs/architecture/INDEX.md`.
    Each invariant is a bold `**ARCH-N**` ID plus one imperative rule; keep the set small.
    Split into per-domain `docs/architecture/<domain>.md` files only for a large project.
-   *Done when: the spine exists with at least one invariant.*
+   A scan-derived candidate becomes content in `docs/architecture/` only after the user
+   ratifies it in the `grilling` channel; unratified candidates are discarded with the
+   ephemeral digest. *Done when: the spine exists with at least one invariant.*
 5. **Write the guidelines.** Fill `templates/product-guidelines.md` →
    `docs/product/guidelines.md`. If engineering rules already live in
-   `docs/agents/project.md`, move them here and leave a pointer. *Done when: the file
-   exists.*
+   `docs/agents/project.md`, move them here and leave a pointer. A scan-derived candidate
+   becomes content in `guidelines.md` only after the user ratifies it in the `grilling`
+   channel; unratified candidates are discarded with the ephemeral digest. *Done when:
+   the file exists.*
 6. **Register.** Add the project-docs line to the `## Agent skills` block so the feature
    skills discover the layer (or suggest `/setup-repo` if no such block exists yet).
    *Done when: the layer is discoverable.*

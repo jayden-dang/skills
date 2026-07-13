@@ -46,6 +46,10 @@ easy change").
 
 Each task:
 - **Files:** Create / Modify (exact paths, line ranges when known) / Test.
+- **Reuse:** the concrete existing code, library, or pattern this task builds on — carried down
+  from the design section's `Reuse:` line — so the implementer is told to build on it, not
+  reimplement it (e.g. `Reuse: src/util/dates (parseISO), zod`). Keep it consistent with the
+  `Reuse:` line of the design section this task implements.
 - **Interfaces:** Consumes / Produces — the names and types neighboring tasks
   share. This block is how an isolated implementer learns what to call things.
 - **Depends-on:** the earlier tasks this one truly needs — those whose
@@ -87,6 +91,12 @@ bug. Fix it before the plan ships.
   *dropped coverage* — add the test, don't renumber.
 - Type/name consistency across tasks: the same function must have the same
   name and signature in every task that mentions it.
+- **Component-level reuse-miss:** flag any task whose Files **Create** something the scan digest
+  or an already-installed dependency already provides — build on it instead of rebuilding it.
+  This is the task-granularity sibling of the `reuse-miss` `code-review` raises for feature
+  overlap; it is an advisory finding, not a hard block.
+- **Reuse consistency:** flag any task whose `Reuse:` line disagrees with the `Reuse:` line of
+  the design section it implements.
 - Spec alignment: re-read requirements.md once, checking each criterion
   against the task that claims it.
 - Upstream sync-back: if planning reveals a requirement is *wrong or infeasible

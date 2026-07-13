@@ -34,10 +34,20 @@ slot — fill it or write `None`.
 
 ## Create
 
-1. **Brownfield check.** If the repo already has source (`src/`, `app/`, `backend/`, or
-   similar), this is brownfield — the architecture spine RATIFIES what already exists
-   (name the invariants the current code already honors) rather than designing
-   greenfield. *Done when: you know greenfield vs brownfield.*
+1. **Brownfield check.** Detect brownfield via the source predicate: at least one
+   regular file beneath a source root (`src/`, `app/`, `backend/`, `lib/`, `packages/`,
+   `crates/`, or one a manifest or build configuration declares). **Greenfield** (no
+   such file) — skip the scan, proceed straight to Step 2. **Brownfield** — dispatch a
+   **scan subagent** per `brownfield-scan.md` (beside this file), writing
+   `.skills/<slug>-scan.md` before Step 2's interview begins — the architecture spine
+   then RATIFIES what already exists (name the invariants the current code already
+   honors) rather than designing greenfield. (No subagents? Run the same scan inline
+   under the `brownfield-scan.md` contract.) **Failure → blocker:** if the scan fails,
+   times out, or cannot write a complete digest, report it as a blocker and STOP here —
+   do not proceed to Step 2, do not classify the repo as greenfield, and write nothing
+   durable. *Done when: greenfield has proceeded to Step 2, or a complete brownfield
+   digest exists at `.skills/<slug>-scan.md` before Step 2 begins, or a blocker has been
+   reported and the workflow has stopped.*
 2. **Interview.** REQUIRED SUB-SKILL: use `grilling` — one question at a time — to draw
    out the product vision (problem, users, goals, non-goals, scope) and the load-bearing
    architecture invariants. Keep `domain-modeling` active as a passive side effect
@@ -67,6 +77,8 @@ found.
 - **Never renumber an `ARCH-N`.** Retire an invariant by strikethrough
   (`~~**ARCH-3**~~ superseded by ARCH-7`) — the `trace` check then flags any design still
   citing it. Add new invariants with fresh IDs.
+- Update mode CONTINUES TO avoid dispatching the create-mode brownfield scan — Step 1
+  above is create-only.
 
 *Done when: the docs reflect the change and any superseding ADR is recorded.*
 
@@ -77,6 +89,8 @@ found.
 - REQUIRED SUB-SKILL: use `check-invariants` across the feature `design.md` files to
   surface any design that violates an invariant it cites.
 - Run the `trace` check for invariant referential integrity (E4/E5/W3).
+- Validate mode CONTINUES TO avoid dispatching the create-mode brownfield scan — Step 1
+  above is create-only.
 
 *Done when: the checklist is walked and the findings are reported.*
 

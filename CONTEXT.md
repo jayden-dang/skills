@@ -32,6 +32,21 @@ Domain terms for this repo. Keep definitions tight; challenge fuzzy usage.
   doc comment, a commented-out test). The `trace` check cannot tell a fixture from
   coverage by reading it, so a file full of fixture IDs is named in the trace ignore
   list and dropped from the test search wholesale.
+- **Reuse ladder** — the seven-rung reuse-before-build check `write-design` climbs in Step 2
+  (fed by the Step-1 scan digest) before committing to any component: (1) need it at all
+  (YAGNI) (2) already in this codebase (3) stdlib/language builtin (4) platform/framework/
+  runtime feature (5) already-installed dependency (6) one line (7) only then new code. Stop
+  at the highest rung that holds; the chosen rung + concrete target is recorded on a `Reuse:`
+  line that flows into the implementing task. _Avoid:_ conflating it with the deletion test
+  (the ladder decides *whether* to build; the deletion test keeps rung-7 *new* code's
+  interface deep) or with feature-level `[[feature-overlap]]` (the ladder is component/library
+  granularity, overlap is whole-feature).
+- **Reuse-miss** — a place where work reimplements something that already exists rather than
+  reusing it. `code-review` emits it at the *feature* level (a diff rebuilds what a neighbour
+  spec owns); `write-plan`'s Step-4 self-check emits it at the *component* level (a task
+  Creates what the scan digest or an installed dependency already provides). Same term, two
+  granularities. _Avoid:_ treating a deliberate rung-7 new-code decision (justified on its
+  `Reuse:` line) as a reuse-miss — a miss is unjustified duplication, not a considered build.
 - **Lowest invalidated artifact** — the classification law of `correct-course`: when a
   mid-execution discovery falsifies an approved plan, the divergence is routed to the
   *lowest* level in the chain that is genuinely invalidated (task / plan / design /

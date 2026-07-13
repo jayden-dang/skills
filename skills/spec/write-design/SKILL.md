@@ -41,6 +41,13 @@ meet. A section with no Satisfies line is either infrastructure (say so) or
 does not belong in this feature. When the design relies on an architecture
 invariant (Step 1), the section also carries a `Respects: ARCH-N` line — the
 `trace` check verifies that citation points at a live invariant.
+Every section also carries a `Reuse: <rung> — <concrete target>` line beside its `Satisfies:`
+line, naming the highest ladder rung that held and the concrete existing artifact it builds on
+(e.g. `Reuse: existing — extends src/util/dates:parseISO (rung 2)`, `Reuse: dependency — zod
+(rung 5)`), or `Reuse: none — new code (rung 7)` carrying a one-line reason no lower rung held.
+A component that introduces a brand-new third-party dependency gets a distinct callout so the
+dependency is visible at the approval gate. The `Reuse:` line and the new-dependency callout
+are advisory — surfaced for the user, never a hard blocker.
 
 For the genuinely hard parts, design it twice: dispatch 2–3 parallel subagents
 with divergent constraints (minimize the interface / maximize flexibility /
@@ -53,8 +60,31 @@ existing store, wiring a new route through an established pattern, or a plain
 CRUD form is a single-design job, and spawning three subagents to converge on
 the same answer is wasted motion.
 
-Design for depth: a module's interface should be much simpler than what it
-hides. Apply the deletion test — if this module vanished, how much would
+Before committing to build any component, climb the **reuse ladder** and stop at the highest
+rung that holds — the cheapest thing that already works beats new code:
+
+1. **Does it need to exist at all?** No requirement forces it → cut it (YAGNI).
+2. **Already in this codebase?** A helper, util, type, or pattern the Step-1 scan found →
+   reuse or extend it; re-implementing what is a few files over is the most common slop.
+3. **Standard library or language builtin does it?** Use it.
+4. **A platform / framework / runtime feature covers it?** Prefer it over hand-rolled code.
+5. **An already-installed dependency solves it?** Use it — never add a new dependency for what
+   a few lines do.
+6. **Can it be one line?** One line.
+7. **Only then** — the minimum new code that works.
+
+The ladder is a reflex, not a research project: it climbs the Step-1 scan digest ("what
+exists today") and runs only *after* you understand the problem — trace the real flow the
+change touches first, then climb. It never licenses cutting a corner that matters: do not
+prune away input validation at trust boundaries, error handling that prevents data loss,
+security, accessibility, or anything the requirements explicitly asked for.
+
+The three levers chain, each with a distinct job: the **scan** (Step 1) gathers what exists;
+the **ladder** decides *whether* to build; the **deletion test** (below) refines *how deep*
+to build — and applies only to a rung-7 new component.
+
+Design for depth: for a rung-7 new component, a module's interface should be much simpler
+than what it hides. Apply the deletion test — if this module vanished, how much would
 callers need to know to rebuild it? If the answer is "everything it did", the
 interface is shallow; redesign it.
 **Done when:** every architecture section has a Satisfies line.
@@ -74,6 +104,9 @@ Walk requirements.md top to bottom: every ID appears in exactly one Satisfies
 line (or is listed as deliberately unmapped, with a reason). Then scan for
 placeholders and internal contradictions (a name used two ways, a data flow
 that skips a component).
+
+- **Reuse coverage:** every architecture section carries a `Reuse:` line, and every rung-7 or
+  new-dependency line carries its one-line justification.
 
 **Independent design review — dispatch, don't self-review.** Fresh context has
 no stake in your framing (the bias that reinterprets a stale requirement rather

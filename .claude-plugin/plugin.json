@@ -31,6 +31,7 @@
     "./skills/ship/finish-branch",
     "./skills/ship/release",
     "./skills/track/amend",
+    "./skills/track/correct-course",
     "./skills/track/sync-spec",
     "./skills/track/triage",
     "./skills/track/file-issues",

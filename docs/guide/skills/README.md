@@ -1,6 +1,6 @@
 # Skill reference
 
-Thirty-five skills in ten buckets. Each has its own page.
+Thirty-six skills in ten buckets. Each has its own page.
 
 **Invocation** is the thing to check first. A **model-invocable** skill is invoked by the agent on its own when its description matches the situation. A **user-invoked** skill carries `disable-model-invocation: true` in its frontmatter — the agent *cannot* invoke it, so you run it as a slash command.
 
@@ -91,6 +91,7 @@ Green units prove assertions pass. These prove the feature works.
 | Skill | Invocation | What it does |
 |---|---|---|
 | [`amend`](amend.md) | model | The maintenance fast lane for a shipped, spec'd feature. Not a gate bypass |
+| [`correct-course`](correct-course.md) | model | The mid-flight rewind decision. Classifies a plan-invalidating discovery to the lowest broken artifact and routes the re-entry |
 | [`sync-spec`](sync-spec.md) | model | The anti-rot skill. Realigns the triad with what the code actually does |
 | [`file-issues`](file-issues.md) | `/file-issues` | Context → tracker issues. Tracer-bullet slices with blocking edges, published agent-ready |
 | [`triage`](triage.md) | `/triage` | A two-axis issue state machine. Verify the claim before recommending |

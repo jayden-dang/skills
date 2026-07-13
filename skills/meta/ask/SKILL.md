@@ -42,6 +42,9 @@ context-isolated per task by design.
 - Small in-scope change to an already-shipped, spec'd feature (a tweak, recolor,
   or follow-on) → **`amend`** (reads the existing spec, routes to the light lane;
   escalates to `brainstorm` only for genuinely new scope).
+- A mid-execution discovery invalidated your already-approved plan (the plan is wrong, scope
+  changed mid-flight, the design no longer holds) → **`correct-course`** (it classifies the
+  lowest invalidated artifact and routes the re-entry; `execute-plan` also hands off to it).
 - Unit tests green but unsure it truly works end-to-end → **`acceptance-check`**
   (drives the running system through the spec's behaviors as a real user).
 - Want to try a finished feature by hand in the real app → **`dogfood`**

@@ -55,7 +55,7 @@ skills/
   review/      code-review, receive-review, check-invariants
   acceptance/  acceptance-check, acceptance-api, acceptance-ui, dogfood
   ship/        finish-branch, release
-  track/       amend, triage, sync-spec, improve-architecture, handoff, file-issues
+  track/       amend, correct-course, triage, sync-spec, improve-architecture, handoff, file-issues
   project/     establish-project              (optional project-documentation layer)
 templates/     requirements.md, design.md, tasks.md, docs/agents seeds, CONTEXT.md seed,
                product-vision.md, architecture-INDEX.md, product-guidelines.md seeds
@@ -227,7 +227,7 @@ composition), and this feature's own `design.md` cites them.
 
 ## Skill inventory
 
-Legend: (U) user-invoked, (m) model-invoked. **35 skills.**
+Legend: (U) user-invoked, (m) model-invoked. **36 skills.**
 
 ### meta/
 1. **using-skills** (m, session-injected) — the gate. 1%-rule, skill-check before
@@ -321,9 +321,12 @@ Legend: (U) user-invoked, (m) model-invoked. **35 skills.**
     promoting a recurring cross-cutting pattern into an architecture invariant.
 33. **handoff** (U) — compact the conversation into a handoff doc.
 34. **file-issues** (U) — capture a conversation, spec, or idea into tracker issues.
+35. **correct-course** (m) — the mid-flight rewind decision: classifies a discovery that
+    invalidates an approved plan to the lowest invalidated artifact and routes to the right
+    re-entry, delegating content to `write-*` and reconciliation to `sync-spec`.
 
 ### project/
-35. **establish-project** (U) — the optional project-documentation layer: authors and
+36. **establish-project** (U) — the optional project-documentation layer: authors and
     maintains `docs/product/vision.md`, the `docs/architecture/` invariant spine, and
     `docs/product/guidelines.md` (create/update/validate modes). Consulted by
     `brainstorm`, `write-design`, `write-plan`, `execute-plan`, and `code-review`;

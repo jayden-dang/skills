@@ -1,6 +1,6 @@
 # AGENTS.md — Agent Behavior Constitution
 
-> **A-to-Z Agentic Development Skill Set** | 35 skills across 10 categories |
+> **A-to-Z Agentic Development Skill Set** | 36 skills across 10 categories |
 > `jayden-dang/skills` | v1.0
 
 This file is the single source of truth for agent behavior when working with this
@@ -218,7 +218,7 @@ content moves to a sibling file in the same directory.
 ## 8. File Organization
 
 ```
-skills/                  # skill definitions (35 skills, 10 categories)
+skills/                  # skill definitions (36 skills, 10 categories)
   meta/                  # using-skills, ask, writing-skills
   setup/                 # setup-repo, scaffold-project
   discovery/             # brainstorm, grilling, research, prototype, domain-modeling
@@ -227,7 +227,7 @@ skills/                  # skill definitions (35 skills, 10 categories)
   review/                # code-review, receive-review, check-invariants
   acceptance/            # acceptance-check, acceptance-api, acceptance-ui, dogfood
   ship/                  # finish-branch, release
-  track/                 # amend, triage, sync-spec, improve-architecture, handoff, file-issues
+  track/                 # amend, correct-course, triage, sync-spec, improve-architecture, handoff, file-issues
   project/               # establish-project (optional project-documentation layer)
 templates/               # requirements.md, design.md, tasks.md, CONTEXT.md seeds
 hooks/                   # session-start.sh + hooks.json (injection on startup/clear/compact)
@@ -296,7 +296,7 @@ Can't tick a box? The work is not done.
 
 ---
 
-## 11. Quick Reference: The 35 Skills
+## 11. Quick Reference: The 36 Skills
 
 **Legend:** (m) model-invoked · (U) user-invoked · (si) session-injected
 
@@ -310,7 +310,7 @@ Can't tick a box? The work is not done.
 | **review** | `code-review` (m), `receive-review` (m), `check-invariants` (m) |
 | **acceptance** | `acceptance-check` (m), `acceptance-api` (m), `acceptance-ui` (m), `dogfood` (m) |
 | **ship** | `finish-branch` (m), `release` (U) |
-| **track** | `amend` (m), `triage` (U), `sync-spec` (m), `improve-architecture` (U), `handoff` (U), `file-issues` (U) |
+| **track** | `amend` (m), `correct-course` (m), `triage` (U), `sync-spec` (m), `improve-architecture` (U), `handoff` (U), `file-issues` (U) |
 | **project** | `establish-project` (U) |
 
 **Main flow:** `brainstorm` → `write-requirements` → `write-design` →

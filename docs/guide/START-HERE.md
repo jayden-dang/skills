@@ -118,7 +118,7 @@ a conversation or idea into tracker issues, **`/triage`** for incoming issues,
 **`/improve-architecture`** for periodic deepening scans, **`/handoff`** to
 compact a long session.
 
-## 3. Behavior of every skill (all 35)
+## 3. Behavior of every skill (all 36)
 
 `U` = user-invoked slash command · `m` = model-invoked (fires on its trigger)
 
@@ -191,6 +191,7 @@ compact a long session.
 | Skill | Kind | Fires when | Core behavior | Produces |
 |---|---|---|---|---|
 | [`amend`](skills/amend.md) | m | Small in-scope change to a shipped feature | Read the triad, classify the change out loud, route to the lightest lane (tier 0 → `tdd`; tier 1 → mini-spec → `tdd`; new scope → escalate to `brainstorm`); always exits through `tdd` | A routed, traced change |
+| [`correct-course`](skills/correct-course.md) | m | A mid-execution discovery invalidated the approved plan | Diagnose (What/Where/Why/How), classify the lowest invalidated artifact with evidence, route to the matching re-entry skill; delegate content to `write-*` and reconciliation to `sync-spec` | A classified, routed plan correction |
 | [`file-issues`](skills/file-issues.md) | U | A conversation / spec / idea to capture as tracker work | Break into tracer-bullet vertical slices with blocking edges, quiz the user, publish agent-ready issues in dependency order (native blocking links or local `.scratch/` files); AI-marked so `triage` skips them | Agent-ready tracker issues |
 | [`triage`](skills/triage.md) | U | Incoming issues / PRs | Issue state machine, redundancy + prior-rejection checks, verify claims before recommending, agent briefs as the contract; wontfix → `.out-of-scope/` | Triaged issues + agent briefs |
 | [`sync-spec`](skills/sync-spec.md) | m | A feature's spec has drifted from reality | Diff requirements ↔ design ↔ tasks ↔ tests via `trace`; add tasks for new requirements; flag orphans; update `Status:` + `INDEX.md` | A realigned triad |

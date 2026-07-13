@@ -103,7 +103,7 @@ Three ways in: by role, by problem, or by phase.
 - [Phase 5 — Ship and maintain](process/ship-and-maintain.md)
 
 ### Skills — one page each
-- [Skill reference](skills/README.md) — all 35, indexed
+- [Skill reference](skills/README.md) — all 36, indexed
 
 ### Examples
 - [Tier 0: a tweak](examples/tier-0-tweak.md)

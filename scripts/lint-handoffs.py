@@ -23,6 +23,12 @@ ROOT = Path(__file__).resolve().parent.parent
 INVOKE = [
     r"REQUIRED SUB-SKILL:\s*(?:use|load)\s*`/?{name}`",
     r"hand(?:\s+\w+){0,4}\s+to\s+`/?{name}`",
+    # Conjugations are spelled out rather than `delegat\w*`: a bare stem would
+    # also swallow the noun ("delegation is the user's call"), and a bare
+    # `delegate\s+to` would miss the conjugated form that already exists in
+    # correct-course — a pattern that never fires looks exactly like a pattern
+    # that isn't there.
+    r"\bdelegat(?:e|es|ed|ing)(?:\s+\w+){0,4}\s+to\s+`/?{name}`",
     r"\binvoke\s+`/?{name}`",
     r"\buse\s+`/?{name}`(?!\s*[-—]*\s*user-invoked)",
 ]

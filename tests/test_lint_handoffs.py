@@ -162,6 +162,49 @@ class TestSlashForm(unittest.TestCase):
             self.assertEqual(lint_handoffs.scan(root), [])
 
 
+class TestDelegatePhrasing(unittest.TestCase):
+    """LINT-6: `delegate to `x`` is an invoke phrasing and must be caught.
+
+    The trap: the only `delegate` in the repo is *conjugated* — "delegates to" —
+    so the obvious `delegate\\s+to` pattern would match nothing at all. A pattern
+    that never fires looks exactly like a pattern that isn't there.
+    """
+
+    def _scan_body(self, body: str):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = make_tree(
+                Path(tmp),
+                {
+                    "triage": skill("triage", "\n# Triage\n", user_invoked=True),
+                    "caller": skill("caller", f"\n# Caller\n\n{body}\n"),
+                },
+            )
+            return lint_handoffs.scan(root)
+
+    def test_LINT_6_bare_delegate_to(self):
+        self.assertEqual(len(self._scan_body("Just delegate to `triage`.")), 1)
+
+    def test_LINT_6_conjugated_delegates_to(self):
+        """The exact shape that already exists in correct-course/SKILL.md:79."""
+        self.assertEqual(len(self._scan_body("It delegates to `triage`.")), 1)
+
+    def test_LINT_6_delegating_to(self):
+        self.assertEqual(len(self._scan_body("Consider delegating to `triage`.")), 1)
+
+    def test_LINT_6_intervening_words(self):
+        self.assertEqual(len(self._scan_body("Delegate the whole job to `triage`.")), 1)
+
+    def test_LINT_6_slash_form(self):
+        self.assertEqual(len(self._scan_body("Delegate to `/triage`.")), 1)
+
+    def test_LINT_6_delegation_to_the_user_is_legal(self):
+        """The guard: naming the command for the human is the CORRECT phrasing."""
+        self.assertEqual(
+            self._scan_body("Delegation is the user's call — tell them to run `/triage`."),
+            [],
+        )
+
+
 class TestDeduplication(unittest.TestCase):
     def test_LINT_3_one_bad_line_is_reported_once(self):
         """"hand off to `x`" matches two INVOKE patterns; it is still one defect."""

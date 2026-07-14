@@ -28,6 +28,7 @@
     "./skills/review/code-review",
     "./skills/review/receive-review",
     "./skills/review/check-invariants",
+    "./skills/review/polish",
     "./skills/ship/finish-branch",
     "./skills/ship/release",
     "./skills/track/amend",

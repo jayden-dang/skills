@@ -70,6 +70,24 @@ See [Adopting the skill set](docs/guide/resources/adopting.md).
 it natively and Cursor picks up `.cursor/rules/using-skills.mdc`. See
 [Running on other platforms](docs/guide/resources/platforms.md).
 
+### Recommended prerequisite: the Context7 MCP
+
+The library-reasoning skills — `research`, `brainstorm`, and `write-design` —
+prefer the **[Context7 MCP](https://github.com/upstash/context7)** for current,
+version-accurate library and API facts instead of a model's training-cutoff
+memory (which drifts stale: a version bumped, an API renamed, a package moved).
+When it is present the skills reach for it before answering; when it is absent
+they fall back to fetching official docs directly, so it is a recommendation,
+not a hard dependency — but installing it is strongly advised for any project
+that pulls in third-party libraries.
+
+`/setup-repo` offers to install it and records the choice in
+`docs/agents/project.md`. To add it yourself, follow the setup instructions at
+**[github.com/upstash/context7](https://github.com/upstash/context7)** — for
+Claude Code, register the server in the project's `.mcp.json` (or your user MCP
+config); for another harness (Codex, Kimi, …), add it to that harness's MCP
+configuration.
+
 ## The flow
 
 ```

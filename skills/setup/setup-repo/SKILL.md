@@ -188,7 +188,7 @@ Repo config the skills read:
 
 ## 5. Offer the session-start hook
 
-The skill set installs nothing else into the repo — no linters, no CI steps, no git hooks. The one optional install keeps the skill-usage gate alive:
+The skill set installs nothing else into the repo — no linters, no CI steps, no git hooks. Two optional offers remain — one keeps the skill-usage gate alive, the other gives the skills current library facts:
 
 **Session-start hook.** If this skill set was installed without plugin hook support, offer to add a `SessionStart` hook (matcher `startup|clear|compact`) so the gate survives `/clear` and compaction. **Vendor the hook into the repo — never reference a path outside it.** An absolute path (e.g. to the skill set's own working copy) is committed into `.claude/settings.json` and breaks on any other machine, in CI, or if that copy moves. Instead:
    - Copy `templates/session-start.sh` to `.claude/hooks/session-start.sh` in the repo and `chmod +x` it. It is dependency-free (plain `cat`), so it runs in any project regardless of toolchain.
@@ -200,7 +200,9 @@ The skill set installs nothing else into the repo — no linters, no CI steps, n
      ```
    - Merge into any existing `SessionStart` block additively; do not clobber other hooks.
 
-**Done when:** the hook offer has an explicit yes/no, and a yes is implemented.
+**Context7 MCP — for live library docs.** Several skills reason about third-party libraries — `research` when a question turns on how a library behaves, `write-design` when the reuse ladder reaches a new dependency. Left to training knowledge alone, an agent cites versions and APIs that may be months stale. Recommend the user install the **Context7 MCP server**, which serves current, version-specific documentation from the source; explain that the library skills prefer it when present and fall back to fetching official docs when it is absent. It is an agent-environment tool, not a repo file: for Claude Code add it to the project's `.mcp.json` (or the user's MCP config); for another harness (Kimi, Codex, …) add it to that harness's MCP configuration. When the user opts in, record it in `docs/agents/project.md` (a one-line "Library docs: Context7 MCP (preferred)" note) so the skills know to reach for it. This is a recommendation only — never block setup on it, and do not attempt to install or authenticate it yourself.
+
+**Done when:** both offers — the session-start hook and the Context7 MCP recommendation — have an explicit yes/no, and any yes is implemented (the hook installed, or the Context7 note written to `docs/agents/project.md`).
 
 ## 6. Prove the configuration actually works — GATE
 

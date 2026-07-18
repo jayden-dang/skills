@@ -11,6 +11,8 @@ get satisfied. Start from the skill set's `templates/design.md` — resolve
 otherwise `../../../templates` relative to this SKILL.md. Every heading in it is a
 REQUIRED slot. The requirements file is your input contract — read it fully first.
 
+Create a todo per step (1–4) before starting, and complete them in order — this skill owns its own list, distinct from `write-requirements`' upstream and `write-plan`'s downstream. Check each off only when its **Done when:** is met.
+
 ## Step 1: Context and decisions
 
 Explain in 2–4 paragraphs what exists today and which constraint shapes the
@@ -45,9 +47,19 @@ Every section also carries a `Reuse: <rung> — <concrete target>` line beside i
 line, naming the highest ladder rung that held and the concrete existing artifact it builds on
 (e.g. `Reuse: existing — extends src/util/dates:parseISO (rung 2)`, `Reuse: dependency — zod
 (rung 5)`), or `Reuse: none — new code (rung 7)` carrying a one-line reason no lower rung held.
-A component that introduces a brand-new third-party dependency gets a distinct callout so the
-dependency is visible at the approval gate. The `Reuse:` line and the new-dependency callout
-are advisory — surfaced for the user, never a hard blocker.
+Adopting a brand-new third-party dependency — one the project does not already use — is the
+**user's decision, not yours to make silently**. When the ladder lands on a library the project
+hasn't adopted, stop and put it to the user as an explicit choice: *"I want to add `<library>`
+to handle `<problem>`"* — in plain language, say what the library is, why it fits this problem
+better than hand-rolling it, and what it costs (a new dependency to maintain, its footprint and
+supply-chain surface). Ground that pitch in current facts, not memory: look up the library's
+latest stable version and present API through the **Context7 MCP** (or `research`, which uses
+it) before you name it — a pitch built on a training-cutoff recollection can cite a version,
+package name, or API that no longer exists. Wait for their agreement before writing it into the
+design as the chosen approach; if they decline, fall back down the ladder — an already-installed
+dependency, or the minimum new code that works. An *already-installed* dependency (rung 5) needs no such ask —
+reuse it freely. The `Reuse:` line itself stays advisory; it is the new-dependency *adoption*
+that is the user's call.
 
 For the genuinely hard parts, design it twice: dispatch 2–3 parallel subagents
 with divergent constraints (minimize the interface / maximize flexibility /

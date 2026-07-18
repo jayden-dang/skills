@@ -17,6 +17,8 @@ Prefer dispatching a background subagent so the main conversation keeps moving; 
 
 Answer from the source that *owns* the fact: official documentation, the library's actual source code, published specs and RFCs, first-party APIs and changelogs. Tutorials, blog posts, and aggregated summaries are leads, not evidence — when one makes a claim, chase the claim back to the primary source and cite that. If a claim cannot be traced to an owning source, report it as unverified, not as fact.
 
+**For library, framework, and API facts, reach for the Context7 MCP first when it is available.** Your training knowledge has a cutoff and drifts stale — a version bumped, an API renamed, a method deprecated since. Context7 serves current, version-specific documentation straight from the source, so you answer from today's stable release instead of recollection. Resolve the library, pull the docs for the version the project already pins (read the lockfile) — or the latest stable when the question is *which* library to adopt — and cite them like any other primary source. Fall back to fetching the official docs or source directly when Context7 is not installed or does not cover the library. Never state a version number or API shape from memory when a live source is one call away.
+
 ## Output contract
 
 Exactly **one markdown file**:

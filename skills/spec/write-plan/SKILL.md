@@ -12,6 +12,8 @@ as `${CLAUDE_PLUGIN_ROOT}/templates` when installed as a plugin, otherwise
 `../../../templates` relative to this SKILL.md. Every slot in a task block
 (**Files**, **Interfaces**, **Depends-on**, **Steps**, `_Requirements:_`) is REQUIRED.
 
+Create a todo per step (1–4, plus 5 if the repo uses an issue tracker) before starting, and complete them in order — this skill owns its own list, distinct from `write-design`'s upstream and `execute-plan`'s downstream. Check each off only when its **Done when:** is met.
+
 Write for an implementer who is skilled but knows NOTHING about this codebase
 or problem domain, and will see ONLY their own task plus the Global
 Constraints. Every name, path, command, and type they need must be in the task.

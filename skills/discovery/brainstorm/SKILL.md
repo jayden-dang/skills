@@ -11,6 +11,8 @@ description: Use at the very start of the idea-to-ship chain — when the user w
 
 Turn a raw idea into an agreed shape ready for spec work, through dialogue — not code.
 
+**Where this sits:** `brainstorm → (write-requirements → write-design → write-plan) → execute-plan`. You are at **brainstorm** — the first stage. Which later stages run is decided by the tier in step 5 (tier 0 skips straight to `tdd`; tier 1 stops at a mini-spec in `write-requirements`; only tier 2 walks the full triad). Each of those stages owns its own todo list and creates it when invoked — do **not** pre-load their steps into this skill's list.
+
 Shaping a *new* feature or project (nothing spec'd yet) is this skill. A small in-scope change to an **already-shipped, spec'd** feature is `amend` instead — it reads the existing spec and routes the change to the light lane, escalating back here only when the change is genuinely new scope. If you were handed such a change, hand it to `amend`.
 
 <HARD-GATE>
@@ -34,7 +36,7 @@ Small requests are exactly where unexamined assumptions burn the most work, beca
 
 ## Checklist
 
-Create a todo for each item and complete them in order.
+**Todos first — GATE.** The very first action of every brainstorm — before you read `CONTEXT.md`, dispatch a scan, or ask a single question — is to create the todo list: one todo per checklist item below (steps 1–6) via your harness's todo tool (`TodoWrite` in Claude Code; the equivalent in Kimi, Codex, or wherever this runs). This fires for EVERY request, no matter how simple it looks — the HARD-GATE above is what you must NOT do; this is what you MUST do first. The list holds this skill's six steps only; do not add downstream stages (`write-requirements`, `write-design`, `write-plan`) — each creates its own list on handoff. Do not proceed until the list exists, then complete the items in order, checking each off only when its **Done when** is met.
 
 **Right-size with an early tier read.** Once step 1 gives you the context, make a
 *provisional* tier call:
@@ -79,7 +81,7 @@ Before drilling into details, check scope: if the request spans multiple indepen
 
 Some questions can't be answered by preference. When the honest answer is "we'd have to check":
 
-- Facts about external systems, APIs, libraries, or standards → REQUIRED SUB-SKILL: use `research` (primary sources, cited note).
+- Facts about external systems, APIs, libraries, or standards → REQUIRED SUB-SKILL: use `research` (primary sources, cited note — it reaches for the Context7 MCP for current, version-accurate library facts rather than training-cutoff memory).
 - "Does this model/flow actually feel right?" → REQUIRED SUB-SKILL: use `prototype` (runnable throwaway answer).
 
 Return to the interview with the evidence and put the decision back to the user.

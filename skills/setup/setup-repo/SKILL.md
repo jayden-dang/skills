@@ -38,7 +38,7 @@ You may still read the repo's own manifests (lockfiles, `package.json` scripts, 
 
 ## 2. Decide, one section at a time
 
-Walk the seven decisions below strictly one at a time: give a two-or-three-sentence explainer (what this is, which skills consume it, what changes with each choice), state your recommendation with a one-line reason, then wait for the user's answer before moving on. Never dump all sections at once. Assume the user has not seen these concepts before.
+Walk the eight decisions below strictly one at a time: give a two-or-three-sentence explainer (what this is, which skills consume it, what changes with each choice), state your recommendation with a one-line reason, then wait for the user's answer before moving on. Never dump all sections at once. Assume the user has not seen these concepts before.
 
 ### A. Issue tracker
 
@@ -113,7 +113,18 @@ Confirm:
 
 **Done when:** layout is confirmed.
 
-### G. Project-docs layer (optional — default No)
+### G. Project posture
+
+Explainer: two standing facts about the project — its **delivery intent** (how robust the output must be) and its **lifecycle stage** (where it is in its life). `brainstorm` and `grilling` read them to right-size ceremony (a prototype need not weigh data migration or deprecation; a released, scaling system weighs them heavily), and `interpret` reuses them so it never re-asks. They live in `docs/agents/project.md` and the user edits those two lines directly as the project moves phase.
+
+Confirm both, pre-filled from repo signals — never invented:
+
+- **Delivery intent** — Production / MVP / Prototype / Research / Learning. Recommend from what the repo shows (a published package or release workflow → Production; a bare greenfield spike → Prototype); default **MVP** when unclear.
+- **Lifecycle stage** — Idea / Early development / Active development / Released / Scaling / Maintenance. Recommend from git signals (tags or a release history → Released; a young repo with few commits → Early development); default **Early development** when unclear.
+
+**Done when:** both posture values are confirmed by the user.
+
+### H. Project-docs layer (optional — default No)
 
 Explainer: large or long-lived projects can add an optional repo-level layer above the feature workflow — a product vision (`docs/product/vision.md`), an IDed architecture-invariant spine (`docs/architecture/`), and engineering guidelines (`docs/product/guidelines.md`), all authored by `establish-project`. When these exist, `brainstorm`, `write-design`, `write-plan`, `execute-plan`, and `code-review` consult them; when they do not, nothing changes. Small repos should decline — it can be added later with `/establish-project`.
 
@@ -140,8 +151,9 @@ Let them edit. **Done when:** the user approves the drafts.
 2. If `docs/specs/INDEX.md` is missing, create it from `templates/specs-INDEX.md`.
 
 3. If the glossary is missing, create `CONTEXT.md` from `templates/CONTEXT.md` (or a `CONTEXT-MAP.md` for multi-context, per the user's answer).
-4. **If the project-docs layer was opted in (decision G):** seed `docs/product/vision.md`, `docs/architecture/INDEX.md`, and `docs/product/guidelines.md` from `templates/product-vision.md`, `templates/architecture-INDEX.md`, and `templates/product-guidelines.md` (additive — never clobber an existing file). If migrating, move the existing engineering rules into `docs/product/guidelines.md` and leave a pointer in `docs/agents/project.md`. If the layer was declined, skip this — write none of these files.
-5. Add the `## Agent skills` block. It lives in exactly **one** canonical file; any second file is a thin pointer, never a copy of the block.
+4. Fill the **Project posture** section of `docs/agents/project.md` with the confirmed delivery intent and lifecycle stage (decision G) — two lines, replacing the template placeholders. (Additive: if the section already carries real values, update only what the user changed.)
+5. **If the project-docs layer was opted in (decision H):** seed `docs/product/vision.md`, `docs/architecture/INDEX.md`, and `docs/product/guidelines.md` from `templates/product-vision.md`, `templates/architecture-INDEX.md`, and `templates/product-guidelines.md` (additive — never clobber an existing file). If migrating, move the existing engineering rules into `docs/product/guidelines.md` and leave a pointer in `docs/agents/project.md`. If the layer was declined, skip this — write none of these files.
+6. Add the `## Agent skills` block. It lives in exactly **one** canonical file; any second file is a thin pointer, never a copy of the block.
    - **Neither `CLAUDE.md` nor `AGENTS.md` exists** (the default): make `AGENTS.md` canonical (it holds the block) and write a short `CLAUDE.md` whose entire body points at `AGENTS.md` — so Claude Code finds instructions by its native filename without duplicating them. Do not ask which to create; this pattern serves both.
    - **Only one exists:** that file is canonical — add or update the block in it. If it is `AGENTS.md` and Claude Code is a target, also add the `CLAUDE.md` pointer. If it is `CLAUDE.md`, leave it canonical — do not demote it to a pointer or create a competing `AGENTS.md`.
    - **Both exist:** put the block in whichever already carries real agent instructions; make the other a pointer only if it is not already substantive. Never place the block in both.
@@ -157,7 +169,7 @@ Let them edit. **Done when:** the user approves the drafts.
    finds it by its native name.
    ```
 
-The block (include the project-docs bullet only if decision G was Yes):
+The block (include the project-docs bullet only if decision H was Yes):
 
 ```markdown
 ## Agent skills
@@ -182,7 +194,7 @@ Repo config the skills read:
 - Triage label mapping: `docs/agents/triage-labels.md`
 ```
 
-6. Ensure the local working dirs are git-ignored: the skills' scratch artifacts — `execute-plan`'s ledger and briefs, and the scan/review digests the spec skills write — live under `.skills/`, and isolated workspaces under `.worktrees/`; neither belongs in version control. Idempotently, for each pattern: `grep -qxF '.skills/' .gitignore 2>/dev/null || printf '.skills/\n' >> .gitignore` (same for `.worktrees/`), then stage `.gitignore`. (A line-presence check, not `git check-ignore` — a trailing-slash pattern only matches an *existing* directory, so `check-ignore` would re-append before the dir exists.)
+7. Ensure the local working dirs are git-ignored: the skills' scratch artifacts — `execute-plan`'s ledger and briefs, and the scan/review digests the spec skills write — live under `.skills/`, and isolated workspaces under `.worktrees/`; neither belongs in version control. Idempotently, for each pattern: `grep -qxF '.skills/' .gitignore 2>/dev/null || printf '.skills/\n' >> .gitignore` (same for `.worktrees/`), then stage `.gitignore`. (A line-presence check, not `git check-ignore` — a trailing-slash pattern only matches an *existing* directory, so `check-ignore` would re-append before the dir exists.)
 
 **Done when:** all files are written, `.skills/` and `.worktrees/` are git-ignored, and `git status` shows only the expected additions/edits.
 

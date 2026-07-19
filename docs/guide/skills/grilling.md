@@ -17,13 +17,14 @@ Whenever intent is underspecified and the decisions must be drawn out of the use
 
 [`brainstorm`](brainstorm.md) invokes it as a required sub-skill for its whole interview step, and other design skills reach for it the same way. It is a primitive — it does one thing, holds no state of its own, and hands the picture it draws to whatever skill called it.
 
-## The five rules
+## The six rules
 
 The skill is short and every line is load-bearing.
 
 - **One question per message.** Ask, then wait for the answer before the next question. A wall of questions is bewildering; a single question gets a real answer.
 - **Every question ships with your recommended answer** and a one-line reason. The user can accept in two words or push back.
 - **Walk every branch of the decision tree.** Decisions depend on each other — an early answer opens some branches and closes others. Resolve them in dependency order and keep going until no unexplored branch remains.
+- **Right-size to the project's posture.** When the parent supplies it or `docs/agents/project.md` carries a **Project posture** section, prune branches that do not apply: skip data migration, backward compatibility, and deprecation on a Prototype / Research / Learning project; press on them for a Released / Scaling / Maintenance one. Absent a posture, walk every branch.
 - **Facts are yours; decisions are the user's.** If the answer already exists in the codebase or the docs, look it up — never ask the user to recall what you can read. Anything that is a judgment call goes to the user, one at a time, and you wait.
 - **Do not enact anything** — no code, no files, no plan execution — until the user explicitly confirms you have reached a shared understanding.
 

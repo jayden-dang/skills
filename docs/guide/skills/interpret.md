@@ -22,7 +22,8 @@ It is deliberately **user-invoked**: a companion mode you switch on, not somethi
 Two intake asks fix the session's standing context:
 
 - **Target language** — Vietnamese (default), Chinese, Japanese, Korean, Spanish, or other. Every section header and every word of explanation is written in this language from then on; only the reply-to-send-back and verbatim code stay in English.
-- **Discussion context** — the goal (Production / MVP / Prototype / Research / Learning), the stage (Idea → Maintenance), and the kind of feedback wanted (critical review, alternatives, architecture, product, trade-offs, understanding). These tune every later analysis, so `interpret` never re-asks them.
+- **Project posture** — the delivery intent (Production / MVP / Prototype / Research / Learning) and lifecycle stage (Idea → Maintenance). `interpret` *reuses* these from the **Project posture** section of `docs/agents/project.md` when it is present — reading, not re-asking — and only falls back to asking when the repo has no posture recorded. They tune how hard section 4 leans on migration, backward-compat, and deprecation.
+- **Feedback wanted** — critical review, alternatives, architecture, product, trade-offs, or understanding. This one is per-session, so it is always asked. Answers become standing session context and are not re-asked.
 
 ## The five-part loop
 

@@ -1,9 +1,23 @@
 # Project configuration (agent-facing)
 
 Written by `setup-repo`. Skills read this file for repo-specific **machine config** —
-commands, globs, paths. Human-facing engineering guidelines (coding standards, naming,
-house rules) live in `docs/product/guidelines.md` when the project-docs layer is
-enabled; `write-plan` sources them from there and falls back to this file otherwise.
+commands, globs, paths — and the project's **posture** (below). Human-facing engineering
+guidelines (coding standards, naming, house rules) live in `docs/product/guidelines.md`
+when the project-docs layer is enabled; `write-plan` sources them from there and falls
+back to this file otherwise.
+
+## Project posture
+
+The project's standing intent and lifecycle phase. Skills read this instead of re-asking:
+`brainstorm` and `grilling` right-size how much they weigh data migration, backward
+compatibility, and deprecation against it; `interpret` reuses it as session context.
+Edit these two lines directly whenever the project moves phase — no wizard needed.
+
+- **Delivery intent:** `<Production | MVP | Prototype | Research | Learning>` — how robust and complete the output must be.
+- **Lifecycle stage:** `<Idea | Early development | Active development | Released | Scaling | Maintenance>` — where the project is in its life.
+
+These are distinct from the product **Goals** in `docs/product/vision.md` (what success
+looks like): posture is *how carefully to build right now*, not *what to build*.
 
 ## Verify commands
 

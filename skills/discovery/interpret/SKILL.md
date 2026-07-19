@@ -32,11 +32,9 @@ Be the user's native-language thinking partner beside an English brainstorm or g
    1. Vietnamese *(default)*  2. Chinese  3. Japanese  4. Korean  5. Spanish  6. Other
    From the loop onward, every section header and every word of explanation is written in this language. Only the step-5 reply-to-send-back and verbatim code/identifiers stay in English.
 
-2. **Discussion context** (batch these; they tune every later analysis):
-   - **Goal** — Production / MVP / Prototype / Research / Learning / Other
-   - **Stage** — Idea / Early development / Active development / Released / Scaling / Maintenance
-   - **Feedback wanted** — Critical review / Alternative ideas / Architecture / Product / Trade-off analysis / General understanding
-   - Ask 1–2 more only if they would materially sharpen the analysis (e.g. team size, hard constraints, the decision on the table). Do not interrogate — this is a quick intake.
+2. **Project posture — reuse, don't re-ask.** Read the **Project posture** section of `docs/agents/project.md` (delivery intent + lifecycle stage). When it's there, adopt those values silently and just state the one line you read ("Reusing project posture: MVP, early development") — do not ask. Only when the file or that section is absent, ask the two directly, in English: delivery intent (Production / MVP / Prototype / Research / Learning) and lifecycle stage (Idea / Early development / Active development / Released / Scaling / Maintenance). This posture tunes how hard section 4 leans on migration, backward-compat, and deprecation.
+
+3. **Feedback wanted** (ask, in English — this is per-session, not a project fact): Critical review / Alternative ideas / Architecture / Product / Trade-off analysis / General understanding. Ask 1–2 more only if they would materially sharpen the analysis (e.g. the decision on the table). Do not interrogate — this is a quick intake.
 
 Record the answers as the session's standing context and apply them to every response without re-asking.
 

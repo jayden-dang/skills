@@ -26,11 +26,11 @@ Be the user's native-language thinking partner beside an English brainstorm or g
 
 ## Setup — run once, at the start
 
-Ask two things before the loop begins. Prefer `AskUserQuestion` (or a numbered list) so answers are one tap.
+**Ask these setup questions in English** — the target language is not chosen yet and does not apply here. It takes effect only in the loop, on the content you produce *after* setup. Prefer `AskUserQuestion` (or a numbered list) so answers are one tap.
 
 1. **Target language.** Which language do you want every explanation in?
    1. Vietnamese *(default)*  2. Chinese  3. Japanese  4. Korean  5. Spanish  6. Other
-   Everything from here on — every section header and every word of explanation — is written in this language. Only the step-5 reply-to-send-back and verbatim code/identifiers stay in English.
+   From the loop onward, every section header and every word of explanation is written in this language. Only the step-5 reply-to-send-back and verbatim code/identifiers stay in English.
 
 2. **Discussion context** (batch these; they tune every later analysis):
    - **Goal** — Production / MVP / Prototype / Research / Learning / Other

@@ -148,6 +148,7 @@ compact a long session.
 | [`research`](skills/research.md) | m | A question turns on external facts | Investigate primary sources, every claim cited; fan-out + adversarial verify for high-stakes questions | A cited notes file |
 | [`prototype`](skills/prototype.md) | m | A design question needs a runnable answer | Throwaway spike — a logic TUI or 3 structurally different UI variants; capture the answer, then delete/absorb | The answer (as ADR/req/commit) |
 | [`domain-modeling`](skills/domain-modeling.md) | m | A term is fuzzy, or a hard-to-reverse decision | Challenge terms against `CONTEXT.md`, update the glossary inline; ADRs only when hard-to-reverse + surprising | Glossary / ADR updates |
+| [`interpret`](skills/interpret.md) | U | Brainstorming in English but thinking/deciding in another language | Companion session: per pasted response, translate → simplify → Feynman → independent critique of the options → a copy-ready reply to send back | Native-language analysis + a reply to paste back |
 
 ### spec
 | Skill | Kind | Fires when | Core behavior | Produces |

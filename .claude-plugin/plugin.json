@@ -9,6 +9,7 @@
   "skills": [
     "./skills/discovery/brainstorm",
     "./skills/discovery/grilling",
+    "./skills/discovery/interpret",
     "./skills/discovery/research",
     "./skills/discovery/domain-modeling",
     "./skills/discovery/prototype",

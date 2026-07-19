@@ -70,7 +70,7 @@ Three ways in: by role, by problem, or by phase.
 | Phase | Skills | Guide page |
 |---|---|---|
 | **0. Setup** | `/setup-repo`, `/scaffold-project` | [Adopting](resources/adopting.md) |
-| **1. Discovery** | `brainstorm`, `grilling`, `research`, `prototype`, `domain-modeling` | [Discovery](process/discovery.md) |
+| **1. Discovery** | `brainstorm`, `grilling`, `research`, `prototype`, `domain-modeling`, `interpret` | [Discovery](process/discovery.md) |
 | **2. Specification** | `write-requirements`, `write-design`, `write-plan` | [Specification](process/specification.md) |
 | **3. Execution** | `worktrees`, `execute-plan`, `tdd`, `debug`, `verify`, `trace` | [Execution](process/execution.md) |
 | **4. Review & acceptance** | `code-review`, `receive-review`, `acceptance-*`, `dogfood` | [Review and acceptance](process/review-and-acceptance.md) |

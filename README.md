@@ -138,7 +138,7 @@ and countered by name. See [The gates](docs/guide/concepts/gates.md).
 |---|---|
 | meta | `using-skills` (session gate), `ask` (router), `writing-skills`, `teach` |
 | setup | `setup-repo`, `scaffold-project` |
-| discovery | `brainstorm`, `grilling`, `research`, `prototype`, `domain-modeling` |
+| discovery | `brainstorm`, `grilling`, `research`, `prototype`, `domain-modeling`, `interpret` |
 | spec | `write-requirements`, `write-design`, `write-plan` |
 | execution | `execute-plan`, `tdd`, `debug`, `verify`, `trace`, `worktrees` |
 | review | `code-review`, `receive-review`, `check-invariants` |

@@ -25,12 +25,12 @@ Solo / Small / Multi packaging derived from the Team roster in
 **Architecture spine**:
 The greppable ARCH-N invariants in `docs/architecture/INDEX.md`. Feature designs
 cite them as `Respects: ARCH-N`. Not a diagram doc.
-_Avoid_: DESIGN.md (redirect only), informal "architecture notes" outside this tree
+_Avoid_: informal "architecture notes" outside `docs/architecture/`
 
 **Architecture SSOT**:
 `docs/architecture/` as a whole — INDEX (invariants) plus domain files (system,
 artifacts, skills, workflows). Product intent stays in `docs/product/`.
-_Avoid_: repo-root DESIGN.md as a second design narrative
+_Avoid_: a second top-level design narrative (former repo-root DESIGN.md)
 
 ## Relationships
 

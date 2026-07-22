@@ -9,9 +9,9 @@ The architecture SSOT for this skill set.
 1. This file is the INVARIANT SPINE — greppable **ARCH-N** rules that feature
    design.md files cite as `Respects: ARCH-N`. The `trace` check verifies those
    citations (E4/E5/W3). Semantic conformance is advisory via `check-invariants`.
-2. Domain files under this directory hold the rest of the system design (formerly
-   DESIGN.md at repo root). Product north star remains docs/product/vision.md;
-   engineering house rules remain docs/product/guidelines.md.
+2. Domain files under this directory hold the rest of the system design (SSOT;
+   no parallel design doc at repo root). Product north star remains
+   docs/product/vision.md; engineering house rules remain docs/product/guidelines.md.
 
 Rules for invariants:
 - ID grammar: **ARCH-<n>**, flat and repo-wide (unique forever, never reuse).
@@ -37,7 +37,7 @@ ID immutability, sub-skill composition.
 
 ## Domains
 
-System design of this skill set (single source of truth — not a second DESIGN.md):
+System design of this skill set (single source of truth):
 
 | Domain | File | Holds |
 |---|---|---|

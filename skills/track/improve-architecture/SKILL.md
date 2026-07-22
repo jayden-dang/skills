@@ -28,6 +28,8 @@ Apply the **deletion test** to anything suspect: if this module vanished, how mu
 
 ## 2. Present the report
 
+REQUIRED SUB-SKILL: use `design-page` before writing any markup. The treatment is utilitarian — a real type scale, a chosen palette, no hero — and the report is scanned, not read: the confidence badge and the before/after sketch have to read at a glance.
+
 Write a **self-contained HTML file** (inline CSS/SVG only — no external scripts, stylesheets, or CDNs) to the OS temp directory (`$TMPDIR`, falling back to `/tmp`; `%TEMP%` on Windows) as `architecture-review-<timestamp>.html`, so nothing lands in the repo. Open it (`open` / `xdg-open` / `start`) and tell the user the absolute path.
 
 One card per candidate:

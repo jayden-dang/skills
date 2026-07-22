@@ -143,6 +143,7 @@ and countered by name. See [The gates](docs/guide/concepts/gates.md).
 | execution | `execute-plan`, `tdd`, `debug`, `verify`, `trace`, `worktrees` |
 | review | `code-review`, `receive-review`, `check-invariants` |
 | acceptance | `acceptance-check`, `acceptance-api`, `acceptance-ui`, `dogfood` |
+| craft | `design-page` |
 | ship | `finish-branch`, `release` |
 | track | `amend`, `triage`, `sync-spec`, `improve-architecture`, `handoff`, `file-issues` |
 | project | `establish-project` (optional project-documentation layer) |

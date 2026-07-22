@@ -52,6 +52,7 @@ You can see the rule being obeyed in the wild. `debug` hands architectural findi
 | execution | `execute-plan`, `tdd`, `debug`, `verify`, `trace`, `worktrees` | model |
 | review | `code-review`, `receive-review` | model |
 | acceptance | `acceptance-check`, `acceptance-api`, `acceptance-ui`, `dogfood` | model |
+| craft | `design-page` | model |
 | ship | `finish-branch` | model |
 | | `release` | user |
 | track | `amend`, `sync-spec` | model |
@@ -136,4 +137,4 @@ When installed without plugin hook support, `setup-repo` offers to copy `templat
 - [The gates](gates.md) — the four skills that guard rules the agent breaks under pressure
 - [`writing-skills`](../skills/writing-skills.md) — the full authoring doctrine and its deployment checklist
 - [`using-skills`](../skills/using-skills.md) — the session gate
-- [Skill reference](../skills/README.md) — all 36 skills
+- [Skill reference](../skills/README.md) — all 40 skills

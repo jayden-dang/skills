@@ -8,7 +8,7 @@
 | **Invocation** | **user-invoked only** — run `/improve-architecture`. `disable-model-invocation: true`: no skill may auto-invoke it; other skills only name it for the user to run |
 | **Reads** | `CONTEXT.md` (the domain names good seams), `docs/adr/` (decisions not to re-litigate), the codebase (via an explore subagent) |
 | **Writes** | a self-contained HTML report in the OS temp directory (never the repo); no code changes of its own |
-| **Calls** | an explore subagent, [`grilling`](grilling.md), [`domain-modeling`](domain-modeling.md), then [`tdd`](tdd.md)/[`verify`](verify.md) (tier 0) or [`brainstorm`](brainstorm.md) (tier 1+) |
+| **Calls** | an explore subagent, [`design-page`](design-page.md) (required, before the report's markup), [`grilling`](grilling.md), [`domain-modeling`](domain-modeling.md), then [`tdd`](tdd.md)/[`verify`](verify.md) (tier 0) or [`brainstorm`](brainstorm.md) (tier 1+) |
 | **Called by** | nobody — the user runs it directly |
 
 ## When it fires
@@ -44,6 +44,8 @@ The four kinds share a root — a module that fails to hold complexity behind it
 **Done when** you hold 3–7 candidates, each tied to specific modules and a named kind of friction.
 
 ## 2. Present the report
+
+The **required sub-skill** is [`design-page`](design-page.md), loaded before any markup. The treatment is utilitarian — a real type scale, a chosen palette, no hero — and the report is scanned rather than read top-to-bottom, so its UI-not-a-document guidance is the part that bites: the confidence badge and the before/after sketch have to read at a glance.
 
 Write a **self-contained HTML file** — inline CSS/SVG only, no external scripts, stylesheets, or CDNs — to the OS temp directory (`$TMPDIR`, falling back to `/tmp`; `%TEMP%` on Windows) as `architecture-review-<timestamp>.html`, so **nothing lands in the repo**. Open it and tell the user the absolute path.
 

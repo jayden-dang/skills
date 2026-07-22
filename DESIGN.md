@@ -54,6 +54,7 @@ skills/
   execution/   execute-plan, tdd, debug, verify, trace, worktrees
   review/      code-review, receive-review, check-invariants
   acceptance/  acceptance-check, acceptance-api, acceptance-ui, dogfood
+  craft/       design-page
   ship/        finish-branch, release
   track/       amend, correct-course, triage, sync-spec, improve-architecture, handoff, file-issues
   project/     establish-project              (optional project-documentation layer)
@@ -306,27 +307,34 @@ Legend: (U) user-invoked, (m) model-invoked. **37 skills.**
 25. **acceptance-ui** (m) — drive the frontend in a real browser.
 26. **dogfood** (m) — the manual sibling; checkable HTML artifact.
 
+### craft/
+27. **design-page** (m) — the visual-craft gate before any human-facing HTML: names
+    the treatment (utilitarian vs editorial), writes the color/type/layout plan, and
+    holds the fundamentals (both themes at token level, self-contained assets, copy).
+    Required by `dogfood`; renamed and rewritten from Claude's built-in
+    `artifact-design` so both can coexist.
+
 ### ship/
-27. **finish-branch** (m) — verify → merge/PR/keep/discard → worktree cleanup.
-28. **release** (U) — full verify + `trace` clean → changelog from commit trailers
+28. **finish-branch** (m) — verify → merge/PR/keep/discard → worktree cleanup.
+29. **release** (U) — full verify + `trace` clean → changelog from commit trailers
     → version bump → tag → build → smoke-check → release notes.
 
 ### track/
-29. **amend** (m) — the iteration lane for a shipped feature; routes to the lightest
+30. **amend** (m) — the iteration lane for a shipped feature; routes to the lightest
     tier, always exits through `tdd`, `sync-spec` keeps the trace honest.
-30. **triage** (U) — issue state machine; agent briefs as the contract.
-31. **sync-spec** (m) — realign the triad after drift: diff requirements ↔ design ↔
+31. **triage** (U) — issue state machine; agent briefs as the contract.
+32. **sync-spec** (m) — realign the triad after drift: diff requirements ↔ design ↔
     tasks ↔ tests via the `trace` skill; update Status fields; update INDEX.md.
-32. **improve-architecture** (U) — periodic deepening scan; the natural home for
+33. **improve-architecture** (U) — periodic deepening scan; the natural home for
     promoting a recurring cross-cutting pattern into an architecture invariant.
-33. **handoff** (U) — compact the conversation into a handoff doc.
-34. **file-issues** (U) — capture a conversation, spec, or idea into tracker issues.
-35. **correct-course** (m) — the mid-flight rewind decision: classifies a discovery that
+34. **handoff** (U) — compact the conversation into a handoff doc.
+35. **file-issues** (U) — capture a conversation, spec, or idea into tracker issues.
+36. **correct-course** (m) — the mid-flight rewind decision: classifies a discovery that
     invalidates an approved plan to the lowest invalidated artifact and routes to the right
     re-entry, delegating content to `write-*` and reconciliation to `sync-spec`.
 
 ### project/
-36. **establish-project** (U) — the optional project-documentation layer: authors and
+37. **establish-project** (U) — the optional project-documentation layer: authors and
     maintains `docs/product/vision.md`, the `docs/architecture/` invariant spine, and
     `docs/product/guidelines.md` (create/update/validate modes). Consulted by
     `brainstorm`, `write-design`, `write-plan`, `execute-plan`, and `code-review`;

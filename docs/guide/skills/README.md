@@ -1,6 +1,6 @@
 # Skill reference
 
-Thirty-six skills in ten buckets. Each has its own page.
+Forty skills in eleven buckets. Each has its own page.
 
 **Invocation** is the thing to check first. A **model-invocable** skill is invoked by the agent on its own when its description matches the situation. A **user-invoked** skill carries `disable-model-invocation: true` in its frontmatter — the agent *cannot* invoke it, so you run it as a slash command.
 
@@ -78,6 +78,14 @@ Green units prove assertions pass. These prove the feature works.
 | [`acceptance-api`](acceptance-api.md) | model | Drives the running backend as a real client. Promotes checks to tagged tests |
 | [`acceptance-ui`](acceptance-ui.md) | model | Drives the frontend in real Chromium via Playwright. Commits the specs |
 | [`dogfood`](dogfood.md) | model | The manual sibling. Builds a persistent, checkable HTML artifact |
+
+## craft
+
+The visual layer. Fires before any HTML a human will look at.
+
+| Skill | Invocation | What it does |
+|---|---|---|
+| [`design-page`](design-page.md) | model | Names the treatment, writes the color/type/layout plan, holds the page fundamentals |
 
 ## ship
 

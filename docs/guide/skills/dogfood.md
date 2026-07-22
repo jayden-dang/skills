@@ -8,7 +8,7 @@
 | **Invocation** | model-invocable (the agent calls it on its own) |
 | **Reads** | the spec triad — `requirements.md`, `design.md`, `tasks.md`; the source (theme tokens, CSS, keyword and label definitions); `docs/agents/project.md` (the `## Run locally (dev)` command) |
 | **Writes** | a self-contained, theme-aware HTML artifact published with the Artifact tool (or an `.html` file when artifact tooling is absent) |
-| **Calls** | `artifact-design` (required, loaded before building the page) |
+| **Calls** | [`design-page`](design-page.md) (required, loaded before building the page) |
 | **Called by** | [`acceptance-check`](acceptance-check.md), [`verify`](verify.md) |
 
 ## When it fires
@@ -53,7 +53,7 @@ A behavior with no UI surface still gets a case — with a **real** way to obser
 
 ## 4. Build the checkable artifact
 
-The **required sub-skill** is `artifact-design`, loaded before building the page. Then build a self-contained HTML page and publish it with the Artifact tool. The contract:
+The **required sub-skill** is [`design-page`](design-page.md), loaded before building the page. Then build a self-contained HTML page and publish it with the Artifact tool. The contract:
 
 - Sectioned by ability area; **one row per case**, each carrying its requirement ID so a failing box routes straight back to the spec.
 - Each row is **Try** — what to type or click, copy-pasteable — then **Expect** — shown in the app's real rendering, not described in prose.

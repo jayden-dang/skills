@@ -219,7 +219,7 @@ content moves to a sibling file in the same directory.
 ## 8. File Organization
 
 ```
-skills/                  # skill definitions (37 skills, 10 categories)
+skills/                  # skill definitions (40 skills, 11 categories)
   meta/                  # using-skills, ask, writing-skills
   setup/                 # setup-repo, scaffold-project
   discovery/             # brainstorm, grilling, research, prototype, domain-modeling
@@ -227,6 +227,7 @@ skills/                  # skill definitions (37 skills, 10 categories)
   execution/             # execute-plan, tdd, debug, verify, trace, worktrees
   review/                # code-review, receive-review, check-invariants
   acceptance/            # acceptance-check, acceptance-api, acceptance-ui, dogfood
+  craft/                 # design-page
   ship/                  # finish-branch, release
   track/                 # amend, correct-course, triage, sync-spec, improve-architecture, handoff, file-issues
   project/               # establish-project (optional project-documentation layer)
@@ -297,7 +298,7 @@ Can't tick a box? The work is not done.
 
 ---
 
-## 11. Quick Reference: The 36 Skills
+## 11. Quick Reference: The 40 Skills
 
 **Legend:** (m) model-invoked · (U) user-invoked · (si) session-injected
 
@@ -310,6 +311,7 @@ Can't tick a box? The work is not done.
 | **execution** | `execute-plan` (m), `tdd` (m), `debug` (m), `verify` (m), `trace` (m), `worktrees` (m) |
 | **review** | `code-review` (m), `receive-review` (m), `check-invariants` (m) |
 | **acceptance** | `acceptance-check` (m), `acceptance-api` (m), `acceptance-ui` (m), `dogfood` (m) |
+| **craft** | `design-page` (m) |
 | **ship** | `finish-branch` (m), `release` (U) |
 | **track** | `amend` (m), `correct-course` (m), `triage` (U), `sync-spec` (m), `improve-architecture` (U), `handoff` (U), `file-issues` (U) |
 | **project** | `establish-project` (U) |

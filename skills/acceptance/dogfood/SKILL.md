@@ -47,7 +47,7 @@ is running and every not-yet-visible behavior has an observation method.*
 
 ## 4. Build the checkable artifact
 
-REQUIRED SUB-SKILL: load `artifact-design` before building the page, then build a
+REQUIRED SUB-SKILL: load `design-page` before building the page, then build a
 self-contained HTML page and publish it with the Artifact tool. Contract:
 
 - Sectioned by ability area; **one row per case**, each carrying its requirement

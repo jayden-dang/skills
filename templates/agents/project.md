@@ -1,7 +1,7 @@
 # Project configuration (agent-facing)
 
 Written by `setup-repo`. Skills read this file for repo-specific **machine config** —
-commands, globs, paths — and the project's **posture** (below). Human-facing engineering
+commands, globs, paths — plus **posture** and **team** (below). Human-facing engineering
 guidelines (coding standards, naming, house rules) live in `docs/product/guidelines.md`
 when the project-docs layer is enabled; `write-plan` sources them from there and falls
 back to this file otherwise.
@@ -18,6 +18,48 @@ Edit these two lines directly whenever the project moves phase — no wizard nee
 
 These are distinct from the product **Goals** in `docs/product/vision.md` (what success
 looks like): posture is *how carefully to build right now*, not *what to build*.
+
+## Team
+
+Who works on this repo and how skills should package collaboration.
+Skills that plan, review, or hand off read this section when present and
+right-size **packaging** only (Solo / Small / Multi) — Iron Law gates never
+change. Edit freely; re-run `/setup-repo` to re-draft from git/CODEOWNERS.
+If this section is absent, skills do not invent a team.
+
+**SSOT:** **band** derivation and the **packaging** matrix live only here.
+Consumers **read** this section; they do not re-copy these rules into skill bodies.
+
+### Roster
+
+- <Role — Name | N × Role>
+- …
+
+Suggested roles (freeform allowed): Tech Lead, Backend Engineer, Frontend Engineer, Full-stack Engineer, Designer, Product Manager, QA, DevOps/SRE, Docs.
+
+### Ownership notes (optional)
+
+- `<path-or-pattern>` → <owner-token>   <!-- all CODEOWNERS owners, including @org/team -->
+
+### Workflow band
+
+- **Override (optional):** `<blank | Solo | Small | Multi>` — when non-blank, skills use this.
+- **Derive (when override blank):**
+  1. Headcount from **Roster only**: each `Role — Name` = 1; each `N × Role` / `N Role(s)` adds N.
+     Ignore Ownership notes and placeholders (`<…>`).
+  2. Buckets: empty roster → **no band** (same packaging as Team absent); 1 → **Solo**;
+     2–4 → **Small**; ≥5 → **Multi**.
+  3. Specialty upgrade only: if **Small** and ≥3 distinct role titles (case-insensitive, trimmed),
+     upgrade to **Multi**. Never downgrade Multi→Small.
+
+### Packaging matrix
+
+| Band | Packaging |
+|---|---|
+| **Solo** | Lean multi-person ritual language; no invented peer reviewers/assignees; agent-as-pair; full gates |
+| **Small** | Design-review checkpoints; ownership boundaries via optional freeform notes; name people when roster has names |
+| **Multi** | CODEOWNERS-aware review language when ownership notes exist; explicit review responsibilities as prose; handoff/docs emphasis |
+| **(no band)** | Team absent, or empty roster with blank override — pre-feature default; do not invent a team; do not hard-fail |
 
 ## Verify commands
 

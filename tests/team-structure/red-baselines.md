@@ -20,4 +20,14 @@ Recorded before skill/template prose for each slice. Methodology: writing-skills
 Post-edit GREEN: structural greps in `scenarios.md` S-setup-repo.
 
 ## RED-consumers
-<!-- Task 3 appends here -->
+
+### Pre-edit (before Task 3 packaging patches)
+
+| Case | Expected baseline failure without Team packaging |
+|---|---|
+| Solo | Invent multi-reviewer theater or rationalize skipping review |
+| Small/Multi | Plans/reviews omit ownership language when names/notes exist |
+| Team absent | Invent roster or hard-fail |
+| Posture Prototype + Multi | Confuse band with posture (migration questions wrongly added) |
+
+GREEN: S-consumers greps pass; Iron Law language remains in execute-plan/code-review.

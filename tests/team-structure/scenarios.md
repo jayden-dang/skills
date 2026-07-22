@@ -53,7 +53,30 @@ rg -n "CODEOWNERS|confirm|Forbidden|shortlog|top 10" skills/setup/setup-repo/tea
 **Pass when:** all greps match; no `### H. Project-docs`.
 
 ## S-consumers
-<!-- Task 3 appends here -->
+
+### S-TEAM-3.x packaging conditionals
+<!-- TEAM-3.1 TEAM-3.2 TEAM-3.3 TEAM-3.4 TEAM-3.5 TEAM-3.6 TEAM-6.2 TEAM-6.4 -->
+
+Each skill must mention `## Team` (or team band/packaging) and not invent a team when absent:
+
+- `skills/discovery/brainstorm/SKILL.md`
+- `skills/discovery/grilling/SKILL.md` (posture orthogonal; additive Small/Multi probes)
+- `skills/spec/write-plan/SKILL.md` (optional freeform notes only)
+- `skills/execution/execute-plan/SKILL.md` (load band; dual review never skipped)
+- `skills/review/code-review/SKILL.md`
+- `skills/ship/finish-branch/SKILL.md` (Option 2 PR packaging)
+- `skills/track/handoff/SKILL.md` (Team context content line)
+
+```bash
+for f in skills/discovery/brainstorm/SKILL.md skills/discovery/grilling/SKILL.md \
+  skills/spec/write-plan/SKILL.md skills/execution/execute-plan/SKILL.md \
+  skills/review/code-review/SKILL.md skills/ship/finish-branch/SKILL.md \
+  skills/track/handoff/SKILL.md; do
+  rg -q "Team|packaging|band" "$f" || echo "MISS $f"
+done
+```
+
+**Pass when:** zero MISS; execute-plan still requires dual-verdict language; no skill requires a new Owner task field.
 
 ## S-docs
 <!-- Task 4 appends here -->

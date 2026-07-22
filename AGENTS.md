@@ -330,3 +330,25 @@ Can't tick a box? The work is not done.
 ---
 
 *This constitution is enforced. Read it first. Follow it always. No exceptions.*
+
+## Agent skills
+
+This repo is configured for a spec-driven skill set.
+
+- Feature flow: `brainstorm` → `write-requirements` → `write-design` →
+  `write-plan` → `execute-plan`
+- Bug on-ramp: `debug` (root cause first, then a guarded fix)
+- Capture a conversation/spec/idea into tracker issues: `/file-issues` (user-run)
+- Incoming issues and PRs: `/triage` (user-run)
+- Traceability check: the `trace` skill — run by `verify` and `release`;
+  keep it clean
+- Project docs (layer enabled): `/establish-project` maintains
+  `docs/product/vision.md`, the `docs/architecture/` invariant spine, and
+  `docs/product/guidelines.md`; the feature skills consult them
+
+Repo config the skills read:
+
+- Verify commands, test annotations, release steps: `docs/agents/project.md`
+- Team composition (roster, ownership notes, workflow band): `docs/agents/project.md` (`## Team`)
+- Issue tracker operations: `docs/agents/issue-tracker.md`
+- Triage label mapping: `docs/agents/triage-labels.md`

@@ -8,6 +8,8 @@ description: Use to interview the user to stress-test a plan, design, or feature
 
 # Grilling
 
+**What this is:** a reusable **interview protocol**, not a pipeline stage. Nested under a parent (e.g. `brainstorm` step 2, `establish-project`, `triage`) you stay in that parent's conversation and checklist — apply these rules; do not announce a mode switch, do not open a competing todo list, do not treat the parent as finished. Standalone (the user asked to be grilled with no parent) you own the interview alone until shared understanding.
+
 Interview the user about every aspect of the plan until you both hold the same picture of it.
 
 - **One question per message.** Ask, then wait for the answer before the next question. A wall of questions is bewildering; a single question gets a real answer.
@@ -20,4 +22,14 @@ Interview the user about every aspect of the plan until you both hold the same p
 
 ## Todos
 
-This skill does **not** own a todo list. When a parent skill invokes it (e.g. `brainstorm`'s interview step), you are running *inside* that skill's checklist — keep its todo list live and do not open a competing one. The interview is one item on the parent's list; mark it in-progress while you grill and check it off only once no unexplored branch remains. As branches resolve, that progress belongs to the parent's list, not a new one. Invoked standalone (the user just asked to be grilled with no parent skill), a short todo list of the decision areas you plan to walk is fine — but still one question per message, and still no second channel once you're inside another skill's flow.
+This skill does **not** own a todo list when nested. You are running *inside* the parent's checklist — keep that list live. The interview is one item on the parent's list; mark it in-progress while you grill and check it off only once no unexplored branch remains. As branches resolve, that progress belongs to the parent's list, not a new one.
+
+Invoked standalone: a short todo list of the decision areas you plan to walk is fine — still one question per message. If a parent skill is already in flight, never open a second channel.
+
+## Nested under pressure
+
+| Thought | Reality |
+|---|---|
+| "Senior said switch cleanly into grilling and park the parent" | Nesting *is* the clean switch. Parking the parent and opening a grilling checklist is dual-channel thrash under a new name. |
+| "A short decision checklist under grilling isn't a competing list" | It is a second list. Decision areas live as the parent's in-progress interview item, not a sibling todo list. |
+| "Announce Using grilling so the user sees the handoff" | Nested: no mode-switch announcement. Standalone (no parent): you may name grilling once. |

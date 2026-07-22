@@ -67,9 +67,15 @@ continue with manual exploration.
 
 ### 2. Interview
 
-REQUIRED SUB-SKILL: use `grilling` — it owns the single question channel. (Provisional tier 0 from the early read? Right-size this: confirm the problem, the one constraint, and what must keep working in a question or two — not a full decision-tree walk — and if nothing new surfaces, proceed to step 5.)
+This remains brainstorm step 2 — **not** a stage handoff and not a new skill session. Apply the `grilling` **protocol** for the single question channel; keep this skill's todo list live; do not open a competing list or re-announce that you are "switching to grilling."
 
-Keep `domain-modeling` active as a **passive** side effect for the whole interview: record a term to `CONTEXT.md` the instant it settles and cross-reference the code — but it does not open a second question channel. A term that needs the user (a challenge, a disambiguation, an edge-case probe) becomes the next question in `grilling`'s one-at-a-time stream, never a competing interruption (REQUIRED SUB-SKILL: use `domain-modeling`).
+**Protocol (always):** one question per message · every question ships a recommended answer and one-line reason · wait for the reply · walk the decision tree in dependency order until no branch remains · look up facts yourself; only judgment calls go to the user.
+
+REQUIRED SUB-SKILL: use `grilling` for the full rules (posture pruning, team-band packaging, no-enact gate, nested-todo contract). Load it once when this step starts if it is not already in context; then stay on this checklist.
+
+(Provisional tier 0 from the early read? Right-size this: confirm the problem, the one constraint, and what must keep working in a question or two — not a full decision-tree walk — and if nothing new surfaces, proceed to step 5.)
+
+Keep `domain-modeling` active as a **passive** side effect for the whole interview: record a term to `CONTEXT.md` the instant it settles and cross-reference the code — but it does not open a second question channel. A term that needs the user (a challenge, a disambiguation, an edge-case probe) becomes the next question in the interview's one-at-a-time stream, never a competing interruption (REQUIRED SUB-SKILL: use `domain-modeling`).
 
 Before drilling into details, check scope: if the request spans multiple independent subsystems, stop refining and decompose first (step 5).
 

@@ -20,6 +20,7 @@ If the user passed an argument to this skill, treat it as what the next session 
 - **Tried and rejected** — every approach that was attempted or considered and dropped, each with *why*. This section saves the successor from re-walking dead ends; it is usually the most valuable one.
 - **Next actions** — concrete, ordered, starting with the very next command or edit.
 - **Suggested skills** — which skills of this set the successor should invoke, and at which step (e.g. "resume `execute-plan` at task 4", "run `verify` before claiming task 3 done").
+- **Team context (when present)** — if `docs/agents/project.md` has `## Team` with a non-empty **roster** or band override, one line: band + how packaging applies; Small/Multi: who owns next actions when the roster/ownership notes make that clear. Missing Team → omit (do not invent a team).
 
 ## Rules
 

@@ -47,7 +47,7 @@ Its completion criterion: from the repo root, one command installs dependencies 
 
 A seven-step conversation, not a script. It explores first, presents what it found, then decides **one thing at a time** with you — each with a two-or-three-sentence explainer, a recommendation, and a one-line reason.
 
-### The six decisions
+### The decisions (A–I)
 
 **A. Issue tracker.** `github` (via `gh`), `gitlab` (via `glab`), `linear` (via a connected MCP server or the GraphQL API), `local` (markdown under `.scratch/`), or `other` (freeform prose). It recommends from what it found — but Linear will never appear in `git remote`, so it offers Linear whenever you say the team lives there.
 
@@ -75,9 +75,15 @@ Each maps to the label string *this repo actually uses*, so `triage` never creat
 
 **F. Docs layout.** Specs at `docs/specs/`, ADRs at `docs/adr/`, and a glossary that is either single-context (one root `CONTEXT.md`) or multi-context (a `CONTEXT-MAP.md` pointing at per-context files, typically a monorepo).
 
+**G. Project posture.** Delivery intent and lifecycle stage in `docs/agents/project.md` — how carefully to build right now.
+
+**H. Team composition.** Roster and optional ownership notes in `docs/agents/project.md` `## Team`, drafted from local git/CODEOWNERS/manifests then confirmed. Skills package collaboration by Solo/Small/Multi **band** without changing process gates.
+
+**I. Project-docs layer (optional).** Product vision, architecture invariants, engineering guidelines — default No.
+
 ### What it writes
 
-`docs/agents/project.md`, `issue-tracker.md`, and `triage-labels.md`; `docs/specs/INDEX.md` if missing; `CONTEXT.md` if missing; and an `## Agent skills` block into **exactly one canonical file** — `AGENTS.md` by default, with a short `CLAUDE.md` pointing at it, so Claude Code finds instructions by its native filename without duplicating them.
+`docs/agents/project.md` (including posture and Team), `issue-tracker.md`, and `triage-labels.md`; `docs/specs/INDEX.md` if missing; `CONTEXT.md` if missing; and an `## Agent skills` block into **exactly one canonical file** — `AGENTS.md` by default, with a short `CLAUDE.md` pointing at it, so Claude Code finds instructions by its native filename without duplicating them.
 
 It writes markdown only — no scripts, no linters, no CI, no git hooks land in the repo. It also ensures `.skills/` and `.worktrees/` are git-ignored.
 

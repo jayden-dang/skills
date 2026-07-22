@@ -61,7 +61,7 @@ git checkout <base-branch> && git pull && git merge <feature-branch>
 
 Re-run the verify suite **on the merged result, before removing any worktree**. Only after it passes: clean up the worktree (step 5), then `git branch -d <feature-branch>`.
 
-**Option 2 — push + PR.** `git push -u origin <feature-branch>`, then create the PR. **Keep the worktree** — the user needs it to iterate on review feedback.
+**Option 2 — push + PR.** `git push -u origin <feature-branch>`, then create the PR. **Keep the worktree** — the user needs it to iterate on review feedback. **Team packaging:** when `docs/agents/project.md` has `## Team` with a non-empty **roster** or band override, read **band**/**packaging** from that section — Solo: no invented reviewer list in PR body language; Small/Multi: suggest reviewers from roster/ownership notes in PR prose. No new menu item. Missing Team → pre-feature default.
 
 **Option 3 — keep.** Report the branch name and worktree path. Touch nothing.
 

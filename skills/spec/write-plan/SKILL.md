@@ -24,7 +24,11 @@ Goal (one sentence), Architecture (2–3 sentences), Tech Stack. Then **Global
 Constraints**: project-wide rules copied verbatim from the design and
 `docs/agents/project.md` — test/lint/typecheck commands, naming and i18n
 rules, forbidden changes. Every task's requirements implicitly include this
-section; it travels with each task brief.
+section; it travels with each task brief. When `## Team` is present with a
+non-empty **roster** or band override, derive the **band** and apply
+**packaging** from that section only: Solo tasks avoid fake multi-assignee
+theater; Small/Multi may add optional freeform owner/review notes (never a new
+required task field). Missing Team → pre-feature default.
 
 When a `docs/architecture/` spine exists, also fold its hard `**ARCH-N**` invariants
 into Global Constraints so every task inherits them; no spine, nothing to fold. And

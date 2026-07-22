@@ -9,7 +9,7 @@
 | **Reads** | the templates; the existing layer docs (update/validate); the codebase (brownfield ratification) |
 | **Writes** | `docs/product/vision.md`, `docs/architecture/INDEX.md` (+ per-domain files), `docs/product/guidelines.md` |
 | **Calls** | [`grilling`](grilling.md), [`domain-modeling`](domain-modeling.md) (ADR gate), [`check-invariants`](check-invariants.md) (validate mode) |
-| **Called by** | nobody — it is user-invoked. Offered by [`setup-repo`](setup-repo.md) (decision G) and [`scaffold-project`](scaffold-project.md) at init |
+| **Called by** | nobody — it is user-invoked. Offered by [`setup-repo`](setup-repo.md) (decision **I**) and [`scaffold-project`](scaffold-project.md) at init |
 
 ## When it fires
 

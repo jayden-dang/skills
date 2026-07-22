@@ -33,7 +33,7 @@ Find the governing requirements, in order:
 
 ## 3. Gather the standards sources
 
-Collect whatever documents how code here should be written: CLAUDE.md, lint and formatter configs, CONTRIBUTING-style docs, plus CONTEXT.md for the repo's canonical vocabulary. If `docs/agents/project.md` is missing, note it and suggest running `setup-repo`, then proceed with what exists.
+Collect whatever documents how code here should be written: CLAUDE.md, lint and formatter configs, CONTRIBUTING-style docs, plus CONTEXT.md for the repo's canonical vocabulary. If `docs/agents/project.md` is missing, note it and suggest running `setup-repo`, then proceed with what exists. When `## Team` is present with a non-empty **roster** or band override, read **band** and **packaging** from that section: dual-axis review always; Solo report addresses the solo author; Small/Multi emphasize path ownership using ownership notes when present. Missing Team → pre-feature default.
 
 On top of the repo's own documents, the Standards axis always carries `standards-baseline.md` (beside this file) — twelve code-quality smells that apply even when the repo documents nothing, plus a Security section that applies whenever the diff crosses a trust boundary. Two rules bind it: a documented repo standard always overrides the baseline, and every baseline hit is a labeled judgment call, never a hard violation. Skip anything tooling already enforces — a reviewer repeating the linter is noise. *Done when: the source list and the baseline path are in hand.*
 

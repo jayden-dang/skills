@@ -13,8 +13,9 @@ citations point at a live invariant.
 Rules:
 - ID grammar: **ARCH-<n>**, flat and repo-wide (unique forever, never reuse).
 - One rule per invariant. If it needs "and", it is usually two invariants.
-- IDs are immutable once relied upon. Retire by strikethrough, never renumber:
-    ~~**ARCH-3**~~ superseded by ARCH-7
+- IDs are immutable once relied upon. Retire by strikethrough, never renumber.
+  Example form (do NOT use a real struck **ARCH-N** token in comments — it pollutes
+  the retired-set grep): write "struck ARCH-N superseded by ARCH-M" in prose only.
   The `trace` check treats a struck invariant as retired — a design still citing it
   surfaces as an error.
 - Large project? Split invariants into per-domain files (`docs/architecture/<domain>.md`)

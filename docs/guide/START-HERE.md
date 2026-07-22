@@ -2,7 +2,7 @@
 
 How the skill set works end to end: the A–Z workflow, the steps to use it in a new
 repo, and what every skill does. For the architecture behind it, see
-[DESIGN.md](../../DESIGN.md); for one page per skill, see
+[`docs/architecture/`](../architecture/INDEX.md); for one page per skill, see
 [the skill reference](skills/README.md).
 
 The whole set is script-free. A consuming repo installs nothing executable beyond
@@ -205,4 +205,4 @@ compact a long session.
 - [Traceability](concepts/traceability.md) — the spine, and how the `trace` check keeps it honest
 - [The process, phase by phase](process/README.md)
 - [Examples](examples/tier-2-feature.md) — tier 0, 1, and 2 walkthroughs
-- [DESIGN.md](../../DESIGN.md) — the architecture spec of record
+- [`docs/architecture/`](../architecture/INDEX.md) — architecture SSOT (invariants + system design)

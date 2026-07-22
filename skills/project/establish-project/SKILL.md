@@ -93,7 +93,9 @@ found.
 - A hard-to-reverse, surprising architecture decision gets an ADR (REQUIRED SUB-SKILL:
   use `domain-modeling` — it owns the ADR gate).
 - **Never renumber an `ARCH-N`.** Retire an invariant by strikethrough
-  (`~~**ARCH-3**~~ superseded by ARCH-7`) — the `trace` check then flags any design still
+  (struck ARCH-N superseded by a fresh ARCH-M — never put a struck `**ARCH-N**` token
+  in comments/templates; it pollutes the retired-set grep) — the `trace` check then
+  flags any design still
   citing it. Add new invariants with fresh IDs.
 - Update mode CONTINUES TO avoid dispatching the create-mode brownfield scan — Step 1
   above is create-only.

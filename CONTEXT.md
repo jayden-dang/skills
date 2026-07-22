@@ -22,11 +22,22 @@ Decided by `brainstorm` or `amend`, never silently by the agent.
 Solo / Small / Multi packaging derived from the Team roster in
 `docs/agents/project.md`. Affects collaboration packaging only, never Iron Law gates.
 
+**Architecture spine**:
+The greppable ARCH-N invariants in `docs/architecture/INDEX.md`. Feature designs
+cite them as `Respects: ARCH-N`. Not a diagram doc.
+_Avoid_: DESIGN.md (redirect only), informal "architecture notes" outside this tree
+
+**Architecture SSOT**:
+`docs/architecture/` as a whole — INDEX (invariants) plus domain files (system,
+artifacts, skills, workflows). Product intent stays in `docs/product/`.
+_Avoid_: repo-root DESIGN.md as a second design narrative
+
 ## Relationships
 
 - A **spec triad** defines one feature and owns many **requirement IDs**
 - A **requirement ID** is covered by ≥1 test that cites it and passed
 - **Workflow band** is derived from the **Team** roster (or an explicit override)
+- The **architecture spine** is the invariant subset of the **architecture SSOT**
 
 ## Flagged ambiguities
 

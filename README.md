@@ -184,7 +184,8 @@ opt into a documented CI job; it is outside the default path. See
 | [Skill reference](docs/guide/skills/README.md) | one page per skill |
 | [Examples](docs/guide/examples/tier-2-feature.md) | tier 0, 1, and 2 walkthroughs |
 | [Troubleshooting](docs/guide/resources/troubleshooting.md) | symptoms and causes |
-| [DESIGN.md](./DESIGN.md) | the architecture spec of record |
+| [docs/architecture/](./docs/architecture/INDEX.md) | architecture SSOT (invariants + system design) |
+| [docs/product/vision.md](./docs/product/vision.md) | product north star |
 
 ## Developing this repo
 

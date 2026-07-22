@@ -18,7 +18,7 @@ At the start of a **large or long-lived project**, before feature work, to estab
 ## The three modes
 
 - **create** — nothing exists yet. Brownfield check (if source already exists, the spine *ratifies* it rather than designing greenfield), then a [`grilling`](grilling.md) interview draws out the vision and the load-bearing invariants, then the three docs are written from templates.
-- **update** — revise against a change signal. Hard-to-reverse decisions get an ADR via [`domain-modeling`](domain-modeling.md); a retired invariant is struck (`~~**ARCH-3**~~`), never renumbered.
+- **update** — revise against a change signal. Hard-to-reverse decisions get an ADR via [`domain-modeling`](domain-modeling.md); a retired invariant is struck (strikethrough on the live `**ARCH-N**` line only — never in comments/templates), never renumbered.
 - **validate** — walk each doc against its template, run [`check-invariants`](check-invariants.md) across the feature `design.md` files, and run the [`trace`](trace.md) invariant integrity check.
 
 ## The architecture spine

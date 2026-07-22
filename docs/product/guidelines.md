@@ -1,6 +1,6 @@
 # Engineering Guidelines: Skills
 
-Status: Draft
+Status: Approved
 Date: 2026-07-22
 
 <!--
@@ -17,12 +17,14 @@ file). Every heading is a REQUIRED slot — fill it or write `None`.
 - SKILL.md under 500 lines (prefer under 300); split implementer/reviewer prompts into sibling files when needed.
 - Python linters for this repo only: frontmatter parse safety, dead handoffs to user-invoked skills, Context7 references on library-reasoning skills.
 - No production app code in this repository — content is skills, templates, hooks, and docs.
+- Deterministic checks driven by an LLM (fixed `grep`/`git` under a precise skill) are a first-class form — do not replace them with freeform judgment when a set-difference will do.
 
 ## Naming and i18n
 
 - Skills: verb-first kebab-case (`write-requirements`, `execute-plan`).
 - Feature codes: short uppercase prefix registered in `docs/specs/INDEX.md`.
 - Requirement IDs: `CODE-N.M` — never renumber; retire with strikethrough.
+- Architecture invariants: `ARCH-N` — same immutability rules; cite as `Respects: ARCH-N` from feature `design.md`.
 - User-facing install docs in English; no i18n pipeline.
 
 ## House rules
@@ -30,4 +32,6 @@ file). Every heading is a REQUIRED slot — fill it or write `None`.
 - Cross-skill references use `REQUIRED SUB-SKILL:` prose, never `@`-links.
 - Skill `description` frontmatter states triggering conditions only — never summarize the workflow.
 - Additive edits to consumer-facing config: never clobber existing user content when writing templates.
+- Skills never invent project configuration — they read `docs/agents/` (or stop and suggest `/setup-repo`).
+- Iron Law gates (NO-CODE, TEST-FIRST, ROOT-CAUSE, EVIDENCE) are not weakened by workflow band, ceremony tier, or convenience.
 - Pre-push gate (lefthook): frontmatter lint, handoffs lint, context7 lint, full unit suite.

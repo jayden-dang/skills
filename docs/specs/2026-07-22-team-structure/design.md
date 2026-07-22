@@ -13,7 +13,9 @@ The constraint that shapes this design is the established **posture pattern**: d
 
 Inference stays inside the same **local-only** boundary as `setup-repo` Step 1: git history, `CODEOWNERS`, AUTHORS/CONTRIBUTORS, and package manifests. No code-host collaborator APIs. Incomplete drafts are normal; the user confirms before any write. Workflow band (Solo / Small / Multi) is **derived** from the roster with an optional override line, and only changes **packaging** of high-impact skills — never Iron Law gates.
 
-Scan digest: `.skills/team-structure-design-scan.md`. Independent design review: `.skills/team-structure-design-review.md` (findings C1, I1–I6 incorporated below). No `docs/architecture/` spine in this repo; no ADR required (decisions mirror existing posture and probe-ban patterns rather than creating a surprising new boundary).
+Scan digest: `.skills/team-structure-design-scan.md`. Independent design review: `.skills/team-structure-design-review.md` (findings C1, I1–I6 incorporated below). Architecture spine: `docs/architecture/INDEX.md` (dogfood ARCH-1..5). No ADR required (decisions mirror existing posture and probe-ban patterns rather than creating a surprising new boundary).
+
+Respects: ARCH-2, ARCH-3, ARCH-4, ARCH-5
 
 ## Decisions
 

@@ -236,6 +236,8 @@ hooks/                   # session-start.sh + hooks.json (injection on startup/c
 docs/
   agents/                # per-repo config (project.md, issue-tracker.md, triage-labels.md)
   adr/                   # architecture decision records (1–3 sentences, three-part gate)
+  architecture/          # SSOT: INDEX.md ARCH-N spine + system design domains
+  product/               # vision.md + guidelines.md (optional project-docs layer)
   specs/                 # spec triads per feature + INDEX.md (feature-code registry)
   guide/                 # human documentation (concepts, methodology, process, skills)
 .skills/                 # git-ignored ephemera: task briefs, reports, review diffs, ledger

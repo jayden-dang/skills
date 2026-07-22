@@ -28,7 +28,7 @@ Three ways in: by role, by problem, or by phase.
 2. [The skill model](concepts/skill-model.md) — invocation kinds, the description rule, the authoring vocabulary
 3. [`writing-skills`](skills/writing-skills.md) — the Iron Law, and the deployment checklist
 4. [Enforcement and tooling](resources/scripts.md) — the `trace` skill and the session hook
-5. [`DESIGN.md`](../../DESIGN.md) — the architecture spec of record
+5. [`docs/architecture/`](../architecture/INDEX.md) — architecture SSOT (invariants + system design)
 
 ### I'm evaluating this from the outside
 

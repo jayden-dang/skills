@@ -79,7 +79,23 @@ done
 **Pass when:** zero MISS; execute-plan still requires dual-verdict language; no skill requires a new Owner task field.
 
 ## S-docs
-<!-- Task 4 appends here -->
+
+### S-TEAM-4.x guides and AGENTS
+<!-- TEAM-4.1 TEAM-4.2 -->
+
+- `docs/guide/skills/setup-repo.md` documents Decision **H** Team and **I** project-docs
+- `docs/guide/resources/adopting.md` mentions team composition (not only A–F)
+- `docs/guide/skills/establish-project.md` points at setup-repo decision **I**
+- `AGENTS.md` per-repo config mentions Team / posture
+
+```bash
+rg -n "Decision \*\*H\*\*|Team|infer-then-confirm|A–I" docs/guide/skills/setup-repo.md
+rg -n "Team composition|H\. Team" docs/guide/resources/adopting.md
+rg -n "decision \*\*I\*\*" docs/guide/skills/establish-project.md
+rg -n "Team|posture" AGENTS.md
+```
+
+**Pass when:** all greps match.
 
 ## Coverage
 <!-- Task 5 fills full ID matrix -->

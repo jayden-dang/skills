@@ -243,9 +243,10 @@ docs/
 ```
 
 **Per-repo config** (`docs/agents/`, written by `setup-repo`): `project.md`
-(verify commands, release steps), `issue-tracker.md` (tracker choice +
-wayfinding), `triage-labels.md` (role → label mapping). Skills read these at
-runtime; if missing, say so once per session and suggest `setup-repo`.
+(verify commands, release steps, **Project posture**, and **Team** roster/band),
+`issue-tracker.md` (tracker choice + wayfinding), `triage-labels.md` (role →
+label mapping). Skills read these at runtime; if missing, say so once per session
+and suggest `setup-repo`.
 
 ---
 

@@ -98,4 +98,36 @@ rg -n "Team|posture" AGENTS.md
 **Pass when:** all greps match.
 
 ## Coverage
-<!-- Task 5 fills full ID matrix -->
+
+All requirement IDs (TEAM-1.1 through TEAM-6.4) appear in this file as greppable tokens.
+
+| ID | Primary surface |
+|---|---|
+| TEAM-1.1–1.8 | setup-repo Decision H + team-inference.md |
+| TEAM-2.1, 2.3, 2.4, 2.6 | templates/agents/project.md ## Team |
+| TEAM-2.2, 2.5 | setup-repo Step 4 / Agent-skills |
+| TEAM-3.1–3.6 | high-impact consumer skills |
+| TEAM-4.1–4.2 | docs/guide + AGENTS.md |
+| TEAM-5.1 | team-inference Forbidden |
+| TEAM-6.1, 6.3 | setup-repo Step 1 + A–I |
+| TEAM-6.2, 6.4 | consumers (posture orthogonal; no hard-fail) |
+
+### writing-skills ship checklist (Task 5)
+
+- [x] setup-repo description: trigger + outcome, keywords team/CODEOWNERS/contributors/roster, no workflow dump
+- [x] setup-repo body ~265 lines; team-inference disclosed one level deep
+- [x] SSOT: band algorithm only in ## Team template; consumers read, do not re-copy
+- [x] setup-repo remains `disable-model-invocation: true`
+- [x] Cross-refs remain REQUIRED SUB-SKILL prose
+- [x] All 27 TEAM IDs present in this scenarios file
+
+```bash
+for id in TEAM-1.1 TEAM-1.2 TEAM-1.3 TEAM-1.4 TEAM-1.5 TEAM-1.6 TEAM-1.7 TEAM-1.8 \
+  TEAM-2.1 TEAM-2.2 TEAM-2.3 TEAM-2.4 TEAM-2.5 TEAM-2.6 \
+  TEAM-3.1 TEAM-3.2 TEAM-3.3 TEAM-3.4 TEAM-3.5 TEAM-3.6 \
+  TEAM-4.1 TEAM-4.2 TEAM-5.1 TEAM-6.1 TEAM-6.2 TEAM-6.3 TEAM-6.4; do
+  rg -q "$id" tests/team-structure/scenarios.md || echo "MISSING scenario: $id"
+done
+```
+
+**Pass when:** zero MISSING.

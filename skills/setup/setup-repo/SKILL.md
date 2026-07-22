@@ -1,6 +1,6 @@
 ---
 name: setup-repo
-description: Use when a repository has not been configured for this skill set yet (no docs/agents/ directory, verify commands unknown, triage labels unmapped), or when the user wants to change the repo's tracker, labels, verify commands, or release steps. This is the entry point for adopting the skill set into an existing or mature repo — where `scaffold-project` redirects when the directory is not greenfield.
+description: Use when a repository has not been configured for this skill set yet (no docs/agents/ directory, verify commands unknown, triage labels unmapped, team roster unknown), or when the user wants to change the repo's tracker, labels, verify commands, release steps, team, CODEOWNERS-derived ownership, or contributors roster. This is the entry point for adopting the skill set into an existing or mature repo — where `scaffold-project` redirects when the directory is not greenfield.
 disable-model-invocation: true
 ---
 
@@ -23,6 +23,7 @@ This step does one thing: determine whether the repo is already configured for t
 Check the setup markers — all by reading files in the repo:
 
 - `docs/agents/project.md`, `docs/agents/issue-tracker.md`, `docs/agents/triage-labels.md` — present and filled in, or missing?
+- `## Team` section inside `docs/agents/project.md` — present and filled, or a gap?
 - An `## Agent skills` section in `CLAUDE.md` / `AGENTS.md` (note which of the two files exists)
 - Seed files the skill set expects: `docs/specs/INDEX.md`, a glossary (`CONTEXT.md` or `CONTEXT-MAP.md`)
 - `.skills/` and `.worktrees/` present in `.gitignore`
@@ -38,7 +39,7 @@ You may still read the repo's own manifests (lockfiles, `package.json` scripts, 
 
 ## 2. Decide, one section at a time
 
-Walk the eight decisions below strictly one at a time: give a two-or-three-sentence explainer (what this is, which skills consume it, what changes with each choice), state your recommendation with a one-line reason, then wait for the user's answer before moving on. Never dump all sections at once. Assume the user has not seen these concepts before.
+Walk the nine decisions below (A–I; I is optional project-docs) strictly one at a time: give a two-or-three-sentence explainer (what this is, which skills consume it, what changes with each choice), state your recommendation with a one-line reason, then wait for the user's answer before moving on. Never dump all sections at once. Assume the user has not seen these concepts before.
 
 ### A. Issue tracker
 
@@ -124,7 +125,26 @@ Confirm both, pre-filled from repo signals — never invented:
 
 **Done when:** both posture values are confirmed by the user.
 
-### H. Project-docs layer (optional — default No)
+### H. Team
+
+Explainer: **team** composition — the **roster** of people/roles and optional CODEOWNERS ownership notes — is standing context for `brainstorm`, `grilling`, `write-plan`, `execute-plan`, `code-review`, `finish-branch`, and `handoff`. Those skills **package** collaboration by **band** (Solo / Small / Multi) using the rules written in `docs/agents/project.md` `## Team`. Wrong band → wrong packaging (invented reviewers on a solo repo, or silent ownership on a multi-person one). Same class of fact as Project posture; orthogonal to delivery intent / lifecycle stage.
+
+**WHEN Decision H runs, read `team-inference.md` beside this file and follow it exactly** — local git / CODEOWNERS / AUTHORS / CONTRIBUTORS / package manifests only; **infer-then-confirm**.
+
+Explainer for the user (short): you will see a draft roster from local metadata; edit names, roles, or switch to count form (`N × Role`); nothing is written until you confirm.
+
+Recommend: accept the draft after re-roling placeholders to real titles when you know them; use count form when privacy matters; set a **Workflow band override** only when the roster does not match how this repo is actually run (e.g. monorepo with one agent user).
+
+| Thought | Reality |
+|---|---|
+| "I'll pull collaborators from `gh api`" | Local metadata only — no collaborator APIs |
+| "Commit volume proves who the tech lead is" | Never invent titles; default `Contributor` until the user re-roles |
+| "Empty git history — invent a solo developer" | Empty draft + ask; never invent names |
+| "Write the draft and fix it later" | Confirm gate: no Team write without explicit confirm in this run |
+
+**Done when:** the user has confirmed the roster (named and/or count form), optional ownership notes, and optional band override — or explicitly deferred Team (remain a gap).
+
+### I. Project-docs layer (optional — default No)
 
 Explainer: large or long-lived projects can add an optional repo-level layer above the feature workflow — a product vision (`docs/product/vision.md`), an IDed architecture-invariant spine (`docs/architecture/`), and engineering guidelines (`docs/product/guidelines.md`), all authored by `establish-project`. When these exist, `brainstorm`, `write-design`, `write-plan`, `execute-plan`, and `code-review` consult them; when they do not, nothing changes. Small repos should decline — it can be added later with `/establish-project`.
 
@@ -138,7 +158,7 @@ If **Yes**: note it for Step 4 (seed the three docs + the Agent-skills line). If
 
 Show the user, before writing anything:
 
-- the three `docs/agents/*.md` files' contents
+- the three `docs/agents/*.md` files' contents (including confirmed `## Team` when Decision H was confirmed)
 - the `## Agent skills` block destined for CLAUDE.md/AGENTS.md
 
 Let them edit. **Done when:** the user approves the drafts.
@@ -152,8 +172,9 @@ Let them edit. **Done when:** the user approves the drafts.
 
 3. If the glossary is missing, create `CONTEXT.md` from `templates/CONTEXT.md` (or a `CONTEXT-MAP.md` for multi-context, per the user's answer).
 4. Fill the **Project posture** section of `docs/agents/project.md` with the confirmed delivery intent and lifecycle stage (decision G) — two lines, replacing the template placeholders. (Additive: if the section already carries real values, update only what the user changed.)
-5. **If the project-docs layer was opted in (decision H):** seed `docs/product/vision.md`, `docs/architecture/INDEX.md`, and `docs/product/guidelines.md` from `templates/product-vision.md`, `templates/architecture-INDEX.md`, and `templates/product-guidelines.md` (additive — never clobber an existing file). If migrating, move the existing engineering rules into `docs/product/guidelines.md` and leave a pointer in `docs/agents/project.md`. If the layer was declined, skip this — write none of these files.
-6. Add the `## Agent skills` block. It lives in exactly **one** canonical file; any second file is a thin pointer, never a copy of the block.
+5. Fill **`## Team`** from the confirmed Decision H content (roster, ownership notes, optional band override), merging into the template shape from `templates/agents/project.md`. Replace only the Team section's confirmed fields; do not clobber other sections. If the user deferred Team, leave the section as template placeholders or omit until a fill-the-gaps run.
+6. **If the project-docs layer was opted in (decision I):** seed `docs/product/vision.md`, `docs/architecture/INDEX.md`, and `docs/product/guidelines.md` from `templates/product-vision.md`, `templates/architecture-INDEX.md`, and `templates/product-guidelines.md` (additive — never clobber an existing file). If migrating, move the existing engineering rules into `docs/product/guidelines.md` and leave a pointer in `docs/agents/project.md`. If the layer was declined, skip this — write none of these files.
+7. Add the `## Agent skills` block. It lives in exactly **one** canonical file; any second file is a thin pointer, never a copy of the block.
    - **Neither `CLAUDE.md` nor `AGENTS.md` exists** (the default): make `AGENTS.md` canonical (it holds the block) and write a short `CLAUDE.md` whose entire body points at `AGENTS.md` — so Claude Code finds instructions by its native filename without duplicating them. Do not ask which to create; this pattern serves both.
    - **Only one exists:** that file is canonical — add or update the block in it. If it is `AGENTS.md` and Claude Code is a target, also add the `CLAUDE.md` pointer. If it is `CLAUDE.md`, leave it canonical — do not demote it to a pointer or create a competing `AGENTS.md`.
    - **Both exist:** put the block in whichever already carries real agent instructions; make the other a pointer only if it is not already substantive. Never place the block in both.
@@ -169,7 +190,7 @@ Let them edit. **Done when:** the user approves the drafts.
    finds it by its native name.
    ```
 
-The block (include the project-docs bullet only if decision H was Yes):
+The block (include the project-docs bullet only if decision I was Yes):
 
 ```markdown
 ## Agent skills
@@ -190,11 +211,12 @@ This repo is configured for a spec-driven skill set.
 Repo config the skills read:
 
 - Verify commands, test annotations, release steps: `docs/agents/project.md`
+- Team composition (roster, ownership notes, workflow band): `docs/agents/project.md` (`## Team`)
 - Issue tracker operations: `docs/agents/issue-tracker.md`
 - Triage label mapping: `docs/agents/triage-labels.md`
 ```
 
-7. Ensure the local working dirs are git-ignored: the skills' scratch artifacts — `execute-plan`'s ledger and briefs, and the scan/review digests the spec skills write — live under `.skills/`, and isolated workspaces under `.worktrees/`; neither belongs in version control. Idempotently, for each pattern: `grep -qxF '.skills/' .gitignore 2>/dev/null || printf '.skills/\n' >> .gitignore` (same for `.worktrees/`), then stage `.gitignore`. (A line-presence check, not `git check-ignore` — a trailing-slash pattern only matches an *existing* directory, so `check-ignore` would re-append before the dir exists.)
+8. Ensure the local working dirs are git-ignored: the skills' scratch artifacts — `execute-plan`'s ledger and briefs, and the scan/review digests the spec skills write — live under `.skills/`, and isolated workspaces under `.worktrees/`; neither belongs in version control. Idempotently, for each pattern: `grep -qxF '.skills/' .gitignore 2>/dev/null || printf '.skills/\n' >> .gitignore` (same for `.worktrees/`), then stage `.gitignore`. (A line-presence check, not `git check-ignore` — a trailing-slash pattern only matches an *existing* directory, so `check-ignore` would re-append before the dir exists.)
 
 **Done when:** all files are written, `.skills/` and `.worktrees/` are git-ignored, and `git status` shows only the expected additions/edits.
 

@@ -1,7 +1,7 @@
 # Requirements: Team structure in setup-repo
 
 Feature code: TEAM
-Status: Implemented
+Status: Shipped
 Date: 2026-07-22
 
 ## 1. Infer and confirm team during setup

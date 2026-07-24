@@ -72,6 +72,19 @@ floor is ignored with a one-line notice. Absent section → core table only.
 |---|---|---|
 | *(none pinned — core table only)* | | |
 
+## Attention signals
+
+Read by `allocate-attention`'s binding pass. Optional — absent, the built-in
+defaults in `skills/review/allocate-attention/references/signals.md` apply.
+
+Declared here because this repo's risk does not look like an application's. The
+default globs watch auth, migrations, and payments; **this repo ships skill
+bodies**, so a change to `skills/` is the thing that most needs human eyes, and
+without these lines the feature under-samples its own product surface.
+
+- **Partition depth:** 2
+- **Risk globs:** `skills/**`, `hooks/**`, `scripts/**`, `templates/**`, `AGENTS.md`
+
 ## Verify commands
 
 Run in this order; all must pass before any completion claim.

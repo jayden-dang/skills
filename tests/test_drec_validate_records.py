@@ -39,6 +39,11 @@ def run_validator(
     return proc.returncode, proc.stdout + proc.stderr
 
 
+def _fixture_text(rel: str) -> str:
+    """Load text from trace-ignored fixtures (fabricated CODE-N.M strings live there)."""
+    return (FIXTURES / rel).read_text(encoding="utf-8").strip()
+
+
 def _payload_and_envelope(
     *,
     depth: str = "Accountable",
@@ -384,7 +389,7 @@ class TestDRECPassesAdvanced(unittest.TestCase):
         """DREC-11.4"""
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
-            body = _payload_and_envelope(scope="UNKNOWN-9.9")
+            body = _payload_and_envelope(scope=_fixture_text("e-spine/unknown-scope.id"))
             _write_substrate(root, {"DEC-20260724-A1B2C3.md": body})
             # no docs/specs
             code, out = run_validator(["--mode=trace", "--root", str(root)])
@@ -395,12 +400,12 @@ class TestDRECPassesAdvanced(unittest.TestCase):
         """DREC-11.3"""
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
-            body = _payload_and_envelope(scope="ZZZZ-9.9")
+            body = _payload_and_envelope(scope=_fixture_text("e-spine/zzzz-scope.id"))
             _write_substrate(root, {"DEC-20260724-A1B2C3.md": body})
             req = root / "docs" / "specs" / "x" / "requirements.md"
             req.parent.mkdir(parents=True)
             req.write_text(
-                "# Requirements\nFeature code: ZZZZ\nStatus: Approved\n\n- **ZZZZ-1.1** x\n",
+                _fixture_text("e-spine/zzzz-requirements.md") + "\n",
                 encoding="utf-8",
             )
             code, out = run_validator(["--mode=trace", "--root", str(root)])

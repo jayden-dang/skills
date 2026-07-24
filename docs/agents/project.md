@@ -92,7 +92,7 @@ outside the default globs (`tests test e2e src src-tauri crates app lib packages
 record the real locations below so `trace` searches the right paths.
 
 Test globs: *(defaults — `tests` covers this repo)*
-Trace ignore (files whose IDs are fixtures, not coverage): `tests/team-structure/red-baselines.md`, `tests/decision-records/red-baselines.md`, `tests/decision-records/fixtures/`, `tests/comprehend-change/red-baselines.md`
+Trace ignore (files whose IDs are fixtures, not coverage): `tests/team-structure/red-baselines.md`, `tests/decision-records/red-baselines.md`, `tests/decision-records/fixtures/`, `tests/comprehend-change/red-baselines.md`, `tests/attention-allocation/red-baselines.md`
 
 ## Test annotation conventions
 

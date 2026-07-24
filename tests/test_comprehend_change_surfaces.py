@@ -81,6 +81,8 @@ class TestComprehendChangeSurfaces(unittest.TestCase):
     def test_XDIFF_skill_body_cascade_and_gates(self):
         """XDIFF-1.3 XDIFF-1.4 XDIFF-1.5 XDIFF-1.6 XDIFF-2.1 XDIFF-2.2 XDIFF-2.3 XDIFF-2.4 XDIFF-2.5 XDIFF-2.6 XDIFF-2.7 XDIFF-3.1 XDIFF-3.2 XDIFF-3.3 XDIFF-3.4 XDIFF-3.5 XDIFF-4.3 XDIFF-4.4 XDIFF-4.5 XDIFF-4.6 XDIFF-4.7 XDIFF-4.8 XDIFF-4.9 XDIFF-4.10 XDIFF-4.12 XDIFF-5.1 XDIFF-5.2 XDIFF-5.5 XDIFF-5.6 XDIFF-5.7 XDIFF-5.8 XDIFF-5.9 XDIFF-6.6 XDIFF-6.7 XDIFF-9.1 XDIFF-10.6 body contracts."""
         text = SKILL.read_text(encoding="utf-8")
+        self.assertRegex(text, r"(?i)The Iron Law")
+        self.assertRegex(text, r"(?i)## Red flags")
         self.assertRegex(text, r"(?i)pure.?untracked")
         self.assertRegex(text, r"(?i)tracked.?dirty|working tree vs")
         self.assertRegex(text, r"(?i)truly.?clean")
@@ -101,9 +103,11 @@ class TestComprehendChangeSurfaces(unittest.TestCase):
         self.assertRegex(text, r"(?i)Background")
         self.assertRegex(text, r"(?i)Intuition")
         self.assertRegex(text, r"(?i)ASCII")
-        self.assertRegex(text, r"(?i)auto-run|soft-prompt|ship gate|finish-branch")
+        self.assertRegex(text, r"(?i)auto-run|soft-prompt|ship-menu|finish-branch")
         self.assertRegex(text, r"(?i)outbound")
-        self.assertRegex(text, r"(?i)partial.*HTML|no partial")
+        self.assertRegex(text, r"(?i)partial.*HTML|PARTIAL SUCCESS HTML")
+        self.assertRegex(text, r"(?i)WHEN.*quiz-quality\.md|load `references/quiz-quality")
+        self.assertRegex(text, r"(?i)silent-fallthrough|silent fallthrough")
 
     def test_XDIFF_dec_protocol(self):
         """XDIFF-6.1 XDIFF-6.2 XDIFF-6.3 XDIFF-6.4 XDIFF-6.5 XDIFF-6.8 XDIFF-6.9 XDIFF-6.10 DEC enrichment."""

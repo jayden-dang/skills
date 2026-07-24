@@ -1,6 +1,7 @@
 # Quiz quality rules
 
-Load when authoring the five quiz items for a comprehension packet.
+WHEN `comprehend-change` is authoring the five quiz items, read this file and
+follow it exactly.
 
 ## Contract
 

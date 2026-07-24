@@ -1,6 +1,7 @@
 # DEC field whitelist (read-only)
 
-Load when enriching a packet from `docs/decisions/`.
+WHEN `comprehend-change` is enriching a packet from `docs/decisions/` or citing
+a DEC, read this file and follow it exactly.
 
 ## Selection
 

@@ -1,5 +1,8 @@
 # HTML packet constraints
 
+WHEN filling or validating `shell/packet.html`, read this file and follow it
+exactly.
+
 - One continuous page; TOC → Background, Intuition, Code, Quiz.
 - **Offline:** no required CDN fonts, scripts, or images.
 - Code blocks: `<pre><code>` with CSS `white-space: pre` or `pre-wrap`.

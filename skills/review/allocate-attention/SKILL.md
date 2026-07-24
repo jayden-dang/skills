@@ -203,6 +203,22 @@ quietly writes into the repo becomes an archive, then an expectation.
 Want it again in a later session? **Re-run** over the same range — the allocation
 is a function of the range and repo state, not of a stored file.
 
+## Boundaries
+
+This skill **blocks no merge**, PR, release, or decision record, and adds no
+requirement to any of them.
+
+- **Publishes no decision record.** Nothing is written under `docs/decisions/`
+  and `record-decision` gains no emitter. When you carry an allocation summary
+  into a terminal decision, it travels as text you already hold.
+- **Names, never invokes.** For deeper comprehension of a sampled unit, run
+  `/comprehend-change` — user-invoked, so it is named here, never invoked.
+- **Participant boundary.** Work this skill set **did not mediate** is outside
+  this skill's concern. A range with no allocation is not a finding, and an
+  external contributor owes nothing here.
+- **No config, no problem.** A repo without an `## Attention signals` section
+  runs on the defaults in `references/signals.md`, with no warning.
+
 ## Red flags
 
 Stop if you notice yourself:

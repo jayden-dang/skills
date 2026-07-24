@@ -7,6 +7,13 @@ ROOT = Path(__file__).resolve().parents[1]
 SKILL = ROOT / "skills/review/allocate-attention/SKILL.md"
 REFS = ROOT / "skills/review/allocate-attention/references"
 PLUGIN = ROOT / ".claude-plugin/plugin.json"
+EXECUTE_PLAN = ROOT / "skills/execution/execute-plan/SKILL.md"
+UNTOUCHED = [
+    ROOT / "skills/ship/finish-branch/SKILL.md",
+    ROOT / "skills/review/code-review/SKILL.md",
+    ROOT / "skills/ship/release/SKILL.md",
+    ROOT / "skills/ship/record-decision/SKILL.md",
+]
 
 
 class TestAttnSurfaces(unittest.TestCase):
@@ -197,6 +204,79 @@ class TestAttnSurfaces(unittest.TestCase):
         """ATTN-11.4 a step that cannot complete yields no partial allocation."""
         text = SKILL.read_text(encoding="utf-8")
         self.assertRegex(text, r"(?i)no\s+\W*partial\s+allocation")
+
+    def test_ATTN_9_1_9_2_offer_after_acceptance_before_finish(self):
+        """ATTN-9.1 ATTN-9.2 one optional aside, sited after Acceptance."""
+        text = EXECUTE_PLAN.read_text(encoding="utf-8")
+        self.assertEqual(text.count("/allocate-attention"), 1)
+        at = text.index("/allocate-attention")
+        self.assertGreater(at, text.index("**Acceptance.**"))
+        self.assertLess(at, text.index("**Finish.**"))
+        self.assertRegex(text, r"(?i)not a gate|skip it freely")
+
+    def test_ATTN_9_3_10_5_neighbours_untouched(self):
+        """ATTN-9.3 ATTN-10.5 no mention in finish-branch/code-review/release/record-decision."""
+        for p in UNTOUCHED:
+            self.assertNotIn(
+                "allocate-attention", p.read_text(encoding="utf-8"), f"{p.name} mentions ATTN"
+            )
+
+    def test_ATTN_9_4_offer_is_not_a_required_sub_skill(self):
+        """ATTN-9.4 the aside is prose, never a REQUIRED SUB-SKILL hand-off."""
+        text = EXECUTE_PLAN.read_text(encoding="utf-8")
+        self.assertNotRegex(text, r"REQUIRED SUB-SKILL:\s*use\s*`/?allocate-attention`")
+
+    def test_ATTN_12_1_execute_plan_tail_order_intact(self):
+        """ATTN-12.1 code-review -> polish -> acceptance-check -> finish-branch order holds."""
+        text = EXECUTE_PLAN.read_text(encoding="utf-8")
+        order = [
+            text.index("use `code-review`"),
+            text.index("use `polish`"),
+            text.index("use `acceptance-check`"),
+            text.index("use `finish-branch`"),
+        ]
+        self.assertEqual(order, sorted(order))
+
+    def test_ATTN_12_2_continuous_execution_intact(self):
+        """ATTN-12.2 execute-plan still forbids pausing between tasks."""
+        text = EXECUTE_PLAN.read_text(encoding="utf-8")
+        self.assertIn("Do not pause between tasks", text)
+        self.assertIn("Pause between tasks to ask permission to continue.", text)
+
+    def test_ATTN_12_3_dual_verdict_intact(self):
+        """ATTN-12.3 dual-verdict review is never skipped for Solo."""
+        text = EXECUTE_PLAN.read_text(encoding="utf-8")
+        self.assertIn("skip dual-verdict / Standards+Spec review", text)
+
+    def test_ATTN_12_4_12_5_finish_branch_intact(self):
+        """ATTN-12.4 ATTN-12.5 five verbatim options and record-before-crossing hold."""
+        text = (ROOT / "skills/ship/finish-branch/SKILL.md").read_text(encoding="utf-8")
+        self.assertIn("Present exactly these five options, verbatim", text)
+        self.assertIn("Crossing executes only after `record-decision` publishes", text)
+
+    def test_ATTN_12_6_comprehend_change_intact(self):
+        """ATTN-12.6 XDIFF still emits one packet with exactly five quiz items."""
+        text = (ROOT / "skills/review/comprehend-change/SKILL.md").read_text(encoding="utf-8")
+        self.assertIn("ALWAYS EXACTLY FIVE QUIZ ITEMS", text)
+        self.assertIn("ONE PACKET OR AN HONEST HARD-STOP", text)
+
+    def test_ATTN_10_2_no_decision_record_emitter(self):
+        """ATTN-10.2 record-decision's caller set is unchanged; ATTN writes no record."""
+        rd = (ROOT / "skills/ship/record-decision/SKILL.md").read_text(encoding="utf-8")
+        self.assertIn("Caller is `finish-branch` or `release` (closed set)", rd)
+        skill = SKILL.read_text(encoding="utf-8")
+        self.assertRegex(skill, r"(?i)publishes?\s+no\s+decision\s+record")
+
+    def test_ATTN_10_1_10_4_boundaries_stated(self):
+        """ATTN-10.1 ATTN-10.4 participant boundary; comprehend-change named not invoked."""
+        text = SKILL.read_text(encoding="utf-8")
+        self.assertIn("/comprehend-change", text)
+        self.assertRegex(text, r"(?i)did\s+not\s+\W*mediate|unmediated")
+
+    def test_ATTN_1_3_no_gate_added(self):
+        """ATTN-1.3 no neighbour gates on an allocation existing."""
+        text = SKILL.read_text(encoding="utf-8").lower()
+        self.assertRegex(text, r"blocks\s+no\s+merge")
 
 
 if __name__ == "__main__":

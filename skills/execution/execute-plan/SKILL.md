@@ -94,6 +94,7 @@ Conversation memory does not survive compaction. Controllers that lost their pla
 2. **One fixer.** If it returns findings, dispatch ONE fix subagent carrying the complete findings list — never one fixer per finding; each extra fixer rebuilds context and re-runs suites, and a per-finding fix wave can cost more than the whole plan did. Re-review after. *Done when: the review is clean.*
 3. **Polish.** REQUIRED SUB-SKILL: use `polish` on the whole-branch diff — a plan built task by task accretes duplication and bandaid depth that no single task review could see, because each one was only ever shown its own slice. It is behavior-preserving, so it runs *before* acceptance, never after: acceptance then drives the code that will actually ship. *Done when: the cleanups are applied and the suite is green, or the branch was already clean.*
 4. **Acceptance.** REQUIRED SUB-SKILL: use `acceptance-check` — drive the feature through the running system as a real user; green units prove assertions pass, not that it works. Fix any break via `debug`, then promote the check to a committed, ID-tagged test. *Done when: the spec's user-facing behaviors are confirmed live.*
+   Optional: `/allocate-attention` ranks a human sample over this branch. Not a gate — skip it freely.
 5. **Finish.** REQUIRED SUB-SKILL: use `finish-branch`. *Done when: the user has chosen merge / PR / keep / discard / block.*
 
 ## Inline Fallback (no subagent capability)

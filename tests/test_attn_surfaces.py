@@ -111,6 +111,36 @@ class TestAttnSurfaces(unittest.TestCase):
         self.assertIn("## Attention signals", text)
         self.assertRegex(text, r"(?i)absent.{0,80}default")
 
+    def test_ATTN_4_2_binding_hits_are_immovable(self):
+        """ATTN-4.2 a binding hit is never removed from the sample."""
+        text = SKILL.read_text(encoding="utf-8").lower()
+        self.assertIn("never remove", text)
+
+    def test_ATTN_4_3_reason_must_be_distinct_and_concrete(self):
+        """ATTN-4.3 agent-add reasons: normalized-unique AND name a path in the unit."""
+        text = SKILL.read_text(encoding="utf-8")
+        self.assertRegex(text, r"(?i)distinct")
+        self.assertRegex(text, r"(?i)concrete")
+        self.assertIn("git diff --name-only", text)
+        self.assertRegex(text, r"(?i)stays in the residue|remains in the residue")
+
+    def test_ATTN_4_5_declined_unit_becomes_residue(self):
+        """ATTN-4.5 declining a sampled unit moves it to residue, never 'sampled'."""
+        text = SKILL.read_text(encoding="utf-8").lower()
+        self.assertIn("declin", text)
+        # `\s+` not a literal space: prose wraps these phrases across lines, and
+        # markdown bold can sit between the words. Same reason lint-handoffs.py
+        # spells its phrasings with `\s+`.
+        self.assertRegex(text, r"moves?\s+it\s+to\s+the\W*\s*residue|moves?\s+to\s+the\W*\s*residue")
+
+    def test_ATTN_5_1_5_2_floor_of_one_total_order(self):
+        """ATTN-5.1 ATTN-5.2 floor pick uses a three-key total order, never empty."""
+        text = SKILL.read_text(encoding="utf-8")
+        self.assertRegex(text, r"(?i)changed lines")
+        self.assertRegex(text, r"(?i)files changed")
+        self.assertRegex(text, r"(?i)unit key.{0,40}ascending|ascending.{0,40}byte order")
+        self.assertRegex(text, r"(?i)never present an empty sample")
+
 
 if __name__ == "__main__":
     unittest.main()

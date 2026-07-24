@@ -1,70 +1,48 @@
 # Changelog
 
-All notable changes to this project are documented in this file.
+## 0.1.1 — 2026-07-24
 
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
-and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+### New requirements shipped
 
-## [0.1.0] — 2026-07-22
+#### Outbound comprehend-change (XDIFF)
 
-First public release of the A-to-Z agentic development skill set: ideation →
-spec triad → execution → acceptance → ship, with requirements traceability as
-the spine. **40 skills** across **11 categories**, installable as a Claude Code
-plugin or via `npx skills@latest add jayden-dang/skills`.
+User-invoked `/comprehend-change` builds one self-contained HTML comprehension
+packet (Background → Intuition → Code → Quiz) for a resolved git range —
+outbound self-check aid, never a ship gate.
 
-No prior git tag — this entry covers the whole history to `HEAD`.
+- On-demand user-invoked skill with explicit triggers; no auto-run, soft-prompt, or ship-menu coupling — **XDIFF-1.1–1.6**
+- D! range cascade with pure-untracked hard-stop, tracked-dirty + scope notice, truly-clean branch vs default base, empty hard-fail — **XDIFF-2.1–2.7**
+- A+ untracked policy (exclude by default; flag/paths; untracked-only honest stop) — **XDIFF-3.1–3.5**
+- Single offline HTML packet via checked-in shell template; optional design-page craft only — **XDIFF-4.1–4.12**
+- Fixed five-question interactive quiz; personal pass only; never omit for “trivial” — **XDIFF-5.1–5.9**
+- Optional DREC read-only enrichment (forward-cite + explicit ids; no emit) — **XDIFF-6.1–6.10**
+- Passive-data safety and HTML escape constraints — **XDIFF-7.1–7.3**
+- Package, plugin inventory, guide, ARCH-3 pure skill path — **XDIFF-8.1–8.4**
+- No partial success HTML; quiz a11y basics — **XDIFF-9.1–9.2**
+- Neighbor isolation guards (DREC emitters, finish-branch/release, code-review, digest term, ARCH-6) — **XDIFF-10.1–10.9**
 
-### Shipped behavior
+#### Boundary Decision Records (DREC)
 
-Grouped from requirement-ID trailers (`Implements:`) against
-`docs/specs/2026-07-22-team-structure/requirements.md`.
+Immutable decision records at production boundaries (`finish-branch` / `release`)
+with validator, record-before-crossing, and ARCH-6 participant model.
 
-#### Team structure in setup-repo (TEAM)
-
-- **TEAM-1.1** — `setup-repo` walks a Team decision (same explainer → recommend → wait pattern) before writing team content
-- **TEAM-1.2** — Team draft is built from local git / `CODEOWNERS` / common manifests only — never code-host collaborator APIs
-- **TEAM-1.3** — Active authors inferred from last-12-month git history (or all history if younger), ranked, capped
-- **TEAM-1.4** — `CODEOWNERS` owners surface with path notes even outside top-N commit rank
-- **TEAM-1.5** — Incomplete metadata presents an incomplete draft and asks; never invents names/titles
-- **TEAM-1.6** — User can add/remove/rename/re-role; named (`Role — Name`) or count (`N Role(s)`) form
-- **TEAM-1.7** — User confirmation is the sole write authority for Team
-- **TEAM-1.8** — Fill-the-gaps can add or change Team without clobbering other confirmed sections
-- **TEAM-2.1** — `templates/agents/project.md` seeds structured `## Team` (roster, ownership, band, packaging matrix)
-- **TEAM-2.2** — Confirmed Team is written/merged into `docs/agents/project.md` without clobbering other sections
-- **TEAM-2.3** — Roster entries stay structured (`Role — Name` or `N × Role`), not free-text-only blobs
-- **TEAM-2.4** — Suggested role vocabulary with freeform roles allowed
-- **TEAM-2.5** — Agent-skills block discovers Team composition in `docs/agents/project.md`
-- **TEAM-2.6** — Workflow band Solo / Small / Multi derived from headcount (or override)
-- **TEAM-3.1** — High-impact skills read `## Team` and right-size packaging (not gates)
-- **TEAM-3.2** — Solo packaging: lean multi-person ritual language; no invented reviewers
-- **TEAM-3.3** — Small packaging: design-review checkpoints and ownership language
-- **TEAM-3.4** — Multi packaging: ownership-aware review and handoff emphasis
-- **TEAM-3.5** — Missing Team does not invent a roster or hard-fail
-- **TEAM-3.6** — Band never weakens Iron Laws
-- **TEAM-4.1** — Setup-repo guide documents Team decision and band packaging
-- **TEAM-4.2** — Adopting docs mention team composition as a setup concern
-- **TEAM-5.1** — No external identity-service auth required to populate Team
+- Record substrate, identity/reissue, depth classification — **DREC-1.x–3.x**
+- Verbatim human provenance and storage classes — **DREC-4.x–5.x**
+- Emission rules for finish-branch and release — **DREC-6.x–7.x**
+- Durable evidence, record-decision skill, participant SSOT — **DREC-8.x–10.x**
+- Trace extension, validator, adoption anchor — **DREC-11.x**
+- interpret ledger/labels/digest upgrades — **DREC-12.x**
+- Spec-folder discovery convention; NFR secret scan / determinism — **DREC-13.x–14.x**
+- Record-before-crossing ordering and publication failure — **DREC-15.x**
 
 ### Protected behavior
 
-- **TEAM-6.1** — `setup-repo` continues A–H one-at-a-time, additive writes, Step-6 wiring, no Step-1 service probing
-- **TEAM-6.2** — Project posture remains orthogonal to Team band for brainstorm / grilling / interpret
-- **TEAM-6.3** — Step 1 still classifies from repo files only (no remote tracker probe)
-- **TEAM-6.4** — Missing `docs/agents/` still suggests setup-repo and proceeds rather than hard-failing on Team alone
+- Record-before-crossing and caller gate pressure hardening — **Guards: DREC-15.1, DREC-9.5, DREC-6.3**
+- Doctrine SSOT / description trigger polish — **Guards: DREC-9.1, DREC-9.4, DREC-15.1**
 
-### Initial skill set (Misc)
+### Misc
 
-Commits without requirement trailers, summarized for the first cut:
-
-- Full lifecycle skill set: discovery (`brainstorm`, `grilling`, `research`, `prototype`, `domain-modeling`, `interpret`), spec triad, execution (`execute-plan`, `tdd`, `debug`, `verify`, `trace`, `worktrees`), review, acceptance, ship, track, setup, project docs layer (`establish-project`), meta (`using-skills`, `writing-skills`, `ask`, `teach`)
-- Requirements traceability spine (`CODE-N.M` through specs → tests → commits) with agent-run `trace` check
-- Optional project-docs layer: vision, architecture invariant spine (`ARCH-N`), guidelines
-- Project posture (delivery intent + lifecycle stage) captured by `setup-repo` and reused by interview skills
-- Context7 MCP preferred for live library facts; lint guards against silent drift
-- Plugin manifest integrity tests; handoff and skill-frontmatter linters on lefthook
-- Architecture SSOT under `docs/architecture/` (root `DESIGN.md` removed)
-- Nested-protocol handoff: `brainstorm` interview applies `grilling` as protocol, not a stage switch (pressure-tested)
-- Craft: `design-page` before human-facing HTML; polish lane for behavior-preserving cleanup
-- Human guide (`docs/guide/`), `AGENTS.md` constitution, install via plugin or `npx skills`
-
-[0.1.0]: https://github.com/jayden-dang/skills/releases/tag/v0.1.0
+- `sync-spec(DREC)`: mark triad Implemented; ARCH-6 design citation
+- `fix(drec)`: move e-spine fixture IDs out of unittest source (trace E1)
+- `refactor(xdiff)`: writing-skills checklist hardening (Iron Law, red flags, pointers)
+- `docs(xdiff)`: pressure-test results; range decision-tree callout

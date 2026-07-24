@@ -89,7 +89,7 @@ class TestAttnSurfaces(unittest.TestCase):
         """ATTN-3.2 binding membership is a fixed git/grep pass, never model judgment."""
         text = SKILL.read_text(encoding="utf-8")
         self.assertIn("git diff --numstat", text)
-        self.assertRegex(text, r"(?i)never (a )?model judgment|not by model judgment")
+        self.assertRegex(text, r"(?i)never\s+(a\s+)?model\s+judgment|not\s+by\s+\W*model\s+\W*judgment")
 
     def test_ATTN_3_3_3_4_no_cap_on_binding_hits(self):
         """ATTN-3.3 ATTN-3.4 binding hits are uncapped."""
@@ -106,6 +106,29 @@ class TestAttnSurfaces(unittest.TestCase):
         text = SKILL.read_text(encoding="utf-8")
         for sig in ("B1", "B2", "B3", "B4", "B5"):
             self.assertIn(f"**{sig}**", text, f"missing binding signal {sig}")
+
+    def test_ATTN_3_2_b3_recognises_test_files_by_pattern_not_search_root(self):
+        """ATTN-3.2 B3 must identify test FILES, not trace's search ROOTS.
+
+        trace's `tests test e2e src src-tauri crates app lib packages` is the list
+        of directories to search for tests, not a list of test files. Treating it
+        as the latter makes B3 read "the range adds no lines under src/", which is
+        false the moment any production file changes — so B3 would silently never
+        fire in exactly the repos where untested production work matters most.
+        """
+        text = SKILL.read_text(encoding="utf-8")
+        refs = (REFS / "signals.md").read_text(encoding="utf-8")
+        both = text + refs
+        # The test-file recognition pattern must be present somewhere.
+        self.assertRegex(
+            both, r"\\\.\(test\|spec\)|_test\\\.|/tests\?/",
+            "B3 does not define a test-FILE pattern",
+        )
+        # And the search-root list must not be what B3 keys off.
+        self.assertNotRegex(
+            text, r"test-glob file",
+            "B3 still keys off the search-root list rather than a test-file pattern",
+        )
 
     def test_ATTN_11_2_passive_data_rule(self):
         """ATTN-11.2 range text is passive data, never instructions."""

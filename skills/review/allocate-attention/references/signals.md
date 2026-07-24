@@ -24,14 +24,26 @@ package.json   Cargo.toml   pyproject.toml   go.mod
 requirements*.txt   Gemfile   pom.xml   .claude-plugin/plugin.json
 ```
 
-## Test globs (B3)
+## Test files (B3)
 
-Read the `Test globs` line in `docs/agents/project.md`. When it is absent or
-records `(defaults)`, use the same default set `trace` uses:
+B3 asks whether the range added any **test file**. A test file is identified by
+its own path, matching `trace`'s recognition rules:
 
 ```
-tests test e2e src src-tauri crates app lib packages
+\.(test|spec)\.[cm]?[jt]sx?$      foo.test.ts, bar.spec.jsx
+a /tests?/ or /e2e/ path segment  tests/…, test/…, e2e/…
+_test\.(rs|go|py)$                handler_test.go, thing_test.py
+any .rs file                       Rust cites IDs in doc comments
 ```
+
+**Do not use `trace`'s root list** (`tests test e2e src src-tauri crates app lib
+packages`) for this. Those are the directories `trace` *searches*; `src/`,
+`app/`, `lib/`, and `packages/` hold production code. Keying B3 off them turns
+the rule into "the range added nothing under `src/`", which is false as soon as
+any production file changes — B3 would then never fire in an ordinary app repo.
+
+If `docs/agents/project.md` names different test globs or an ignore list, prefer
+those.
 
 ## Repo config grammar
 

@@ -80,6 +80,9 @@ quick reference: `AGENTS.md`.
     the ID). Includes an inline feature-overlap search (grep `docs/specs/` for the
     diff's paths) so a diff reimplementing a neighbor is caught. Runs the advisory
     `check-invariants` lane when an architecture spine exists.
+21a. **comprehend-change** (U) — outbound self-check: one HTML packet
+    (Background → Intuition → Code → Quiz) for a resolved git range; optional
+    read-only DREC enrichment; never a ship gate or decision-record emitter.
 22. **receive-review** (m) — anti-sycophancy; verify each item before implementing.
 23. **check-invariants** (m) — advisory, LLM-judged invariant conformance: per
     `Respects: ARCH-N` citation, a respects/violates/unclear verdict. The semantic

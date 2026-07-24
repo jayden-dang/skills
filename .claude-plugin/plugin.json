@@ -28,6 +28,7 @@
     "./skills/acceptance/dogfood",
     "./skills/craft/design-page",
     "./skills/review/code-review",
+    "./skills/review/comprehend-change",
     "./skills/review/receive-review",
     "./skills/review/check-invariants",
     "./skills/review/polish",

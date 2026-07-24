@@ -1,6 +1,6 @@
 # AGENTS.md — Agent Behavior Constitution
 
-> **A-to-Z Agentic Development Skill Set** | 41 skills across 11 categories |
+> **A-to-Z Agentic Development Skill Set** | 42 skills across 11 categories |
 > `jayden-dang/skills` | v1.0
 
 This file is the single source of truth for agent behavior when working with this
@@ -64,8 +64,8 @@ skill's workflow only when the user has explicitly told you to.
 **User-invoked skills** (carry `disable-model-invocation: true` in frontmatter):
 `ask`, `writing-skills`, `teach`, `setup-repo`, `scaffold-project`,
 `establish-project`, `triage`, `improve-architecture`, `handoff`, `file-issues`,
-`release`. Agents MUST NOT auto-invoke these. Name them for the user to run, e.g.
-`/triage`.
+`release`, `comprehend-change`. Agents MUST NOT auto-invoke these. Name them for
+the user to run, e.g. `/triage` or `/comprehend-change`.
 
 **Model-invoked skills** (no `disable-model-invocation`): agents auto-invoke
 these when conditions match. This includes `using-skills`, `brainstorm`,
@@ -226,13 +226,13 @@ content moves to a sibling file in the same directory.
 ## 8. File Organization
 
 ```
-skills/                  # skill definitions (41 skills, 11 categories)
+skills/                  # skill definitions (42 skills, 11 categories)
   meta/                  # using-skills, ask, writing-skills
   setup/                 # setup-repo, scaffold-project
   discovery/             # brainstorm, grilling, research, prototype, domain-modeling
   spec/                  # write-requirements, write-design, write-plan
   execution/             # execute-plan, tdd, debug, verify, trace, worktrees
-  review/                # code-review, receive-review, check-invariants
+  review/                # code-review, comprehend-change, receive-review, check-invariants
   acceptance/            # acceptance-check, acceptance-api, acceptance-ui, dogfood
   craft/                 # design-page
   ship/                  # finish-branch, release
@@ -308,7 +308,7 @@ Can't tick a box? The work is not done.
 
 ---
 
-## 11. Quick Reference: The 41 Skills
+## 11. Quick Reference: The 42 Skills
 
 **Legend:** (m) model-invoked · (U) user-invoked · (si) session-injected
 
@@ -319,7 +319,7 @@ Can't tick a box? The work is not done.
 | **discovery** | `brainstorm` (m), `grilling` (m), `research` (m), `prototype` (m), `domain-modeling` (m) |
 | **spec** | `write-requirements` (m), `write-design` (m), `write-plan` (m) |
 | **execution** | `execute-plan` (m), `tdd` (m), `debug` (m), `verify` (m), `trace` (m), `worktrees` (m) |
-| **review** | `code-review` (m), `receive-review` (m), `check-invariants` (m) |
+| **review** | `code-review` (m), `comprehend-change` (U), `receive-review` (m), `check-invariants` (m) |
 | **acceptance** | `acceptance-check` (m), `acceptance-api` (m), `acceptance-ui` (m), `dogfood` (m) |
 | **craft** | `design-page` (m) |
 | **ship** | `finish-branch` (m), `record-decision` (m), `release` (U) |

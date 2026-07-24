@@ -92,7 +92,8 @@ review are unchanged by band.
 | `tests/attention-allocation/scenarios.md` | Create | Greppable `ATTN-N.M` behavioural scenarios (acceptance-markdown convention) |
 | `tests/attention-allocation/red-baselines.md` | Create | Recorded baseline failures + description trigger traps; trace-ignored |
 | `.claude-plugin/plugin.json` | Modify | Register `./skills/review/allocate-attention` in the `skills` array |
-| `docs/agents/project.md` | Modify | Add `red-baselines.md` to the `Trace ignore` line |
+| `docs/agents/project.md` | Modify | Add `red-baselines.md` to the `Trace ignore` line; add the `## Attention signals` section (Task 9) |
+| `CONTEXT.md` | Modify | Glossary entries for sampling unit / sample set / residue / binding pass (Task 9) |
 | `skills/execution/execute-plan/SKILL.md` | Modify (between :96 and :97) | One optional aside naming `/allocate-attention` after Acceptance, before Finish |
 | `docs/guide/skills/allocate-attention.md` | Create | Human guide page for the skill |
 | `docs/guide/skills/README.md` | Modify (:68 region) | Add the guide-index row |
@@ -117,7 +118,7 @@ review are unchanged by band.
 
 **Depends-on:** none
 
-- [ ] **Step 1: Run the baseline — no skill text exists yet**
+- [x] **Step 1: Run the baseline — no skill text exists yet**
 
 For each row below, run the scenario against a fresh agent with **no**
 `allocate-attention` skill present, and record the failure **verbatim**. Do not
@@ -134,7 +135,7 @@ Scenarios to run (3+ combined pressures each, per `pressure-testing.md`):
 6. User says "just sample one thing so we can move on" when 6 units bind
 7. User declines to review a bound unit, then asks "so we're good?"
 
-- [ ] **Step 2: Write the record**
+- [x] **Step 2: Write the record**
 
 Create `tests/attention-allocation/red-baselines.md` with this exact skeleton,
 filling the right-hand column from Step 1's verbatim observations:
@@ -174,7 +175,7 @@ Neighbour near-misses — the skill must **not** own these alone:
 - "Record the merge decision" → `finish-branch` / `record-decision`
 ```
 
-- [ ] **Step 3: Trace-ignore the baseline record**
+- [x] **Step 3: Trace-ignore the baseline record**
 
 In `docs/agents/project.md`, append to the existing `Trace ignore` line so it
 reads (one line, comma-separated, existing entries preserved):
@@ -183,7 +184,7 @@ reads (one line, comma-separated, existing entries preserved):
 Trace ignore (files whose IDs are fixtures, not coverage): `tests/team-structure/red-baselines.md`, `tests/decision-records/red-baselines.md`, `tests/decision-records/fixtures/`, `tests/comprehend-change/red-baselines.md`, `tests/attention-allocation/red-baselines.md`
 ```
 
-- [ ] **Step 4: Verify the baseline actually failed**
+- [x] **Step 4: Verify the baseline actually failed**
 
 Confirm every row of the `RED-skill-body` table records a real observed failure.
 If any scenario did **not** fail, delete that row and note it — `writing-skills`:
@@ -192,7 +193,7 @@ If any scenario did **not** fail, delete that row and note it — `writing-skill
 Run: `python3 -m unittest discover -s tests` — expect: pass (74 tests, unchanged;
 this task adds no test).
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 `git commit -m "test(attn): record RED baselines before any skill text" # trailer: Guards: ATTN-1.1`
 
@@ -217,7 +218,7 @@ _Requirements: ATTN-1.1_
 
 **Depends-on:** Task 1
 
-- [ ] **Step 1: Write the failing test**
+- [x] **Step 1: Write the failing test**
 
 Create `tests/test_attn_surfaces.py`:
 
@@ -273,7 +274,7 @@ Run: `python3 -m unittest tests.test_attn_surfaces` — expect:
 `FileNotFoundError: .../skills/review/allocate-attention/SKILL.md` on all four
 tests.
 
-- [ ] **Step 2: Implement — SKILL.md frontmatter and posture section**
+- [x] **Step 2: Implement — SKILL.md frontmatter and posture section**
 
 Create `skills/review/allocate-attention/SKILL.md`:
 
@@ -318,7 +319,7 @@ Run: `python3 scripts/lint-skill-frontmatter.py && python3 scripts/lint-handoffs
 `OK — 43 skills, 14 user-invoked, 0 dead hand-offs.`
 Run: `python3 -m unittest discover -s tests` — expect: pass.
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 `git commit -m "feat(attn): skill package, frontmatter, and optional posture" # trailer: Implements: ATTN-1.1, ATTN-1.2, ATTN-1.5, ATTN-12.7`
 
@@ -343,7 +344,7 @@ _Requirements: ATTN-1.1, ATTN-1.2, ATTN-1.5, ATTN-12.7_
 
 **Depends-on:** Task 2
 
-- [ ] **Step 1: Write the failing test**
+- [x] **Step 1: Write the failing test**
 
 Append to `TestAttnSurfaces` in `tests/test_attn_surfaces.py`:
 
@@ -383,7 +384,7 @@ Append to `TestAttnSurfaces` in `tests/test_attn_surfaces.py`:
 Run: `python3 -m unittest tests.test_attn_surfaces` — expect: 5 failures
 (`AssertionError: 'refs/remotes/origin/HEAD' not found in …` and siblings).
 
-- [ ] **Step 2: Implement — append to SKILL.md**
+- [x] **Step 2: Implement — append to SKILL.md**
 
 ```markdown
 ## Range resolver
@@ -434,7 +435,7 @@ the range resolves to `merge-base(main, HEAD)..HEAD`. ATTN-2.2
 
 Run: `python3 -m unittest tests.test_attn_surfaces` — expect: pass (9 tests).
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 `git commit -m "feat(attn): PR-shaped range resolver" # trailer: Implements: ATTN-2.1, ATTN-2.2, ATTN-2.3, ATTN-2.4, ATTN-2.5, ATTN-2.6, ATTN-2.7`
 
@@ -459,7 +460,7 @@ _Requirements: ATTN-2.1, ATTN-2.2, ATTN-2.3, ATTN-2.4, ATTN-2.5, ATTN-2.6, ATTN-
 
 **Depends-on:** Task 3
 
-- [ ] **Step 1: Write the failing test**
+- [x] **Step 1: Write the failing test**
 
 Append to `TestAttnSurfaces`:
 
@@ -509,7 +510,7 @@ Append to `TestAttnSurfaces`:
 Run: `python3 -m unittest tests.test_attn_surfaces` — expect: 7 failures, the
 last being `FileNotFoundError: .../references/signals.md`.
 
-- [ ] **Step 2: Implement — append to SKILL.md**
+- [x] **Step 2: Implement — append to SKILL.md**
 
 ```markdown
 ## Sampling units
@@ -539,7 +540,7 @@ A unit is admitted if **any** signal fires. There is **no cap** on hits.
 |---|---|---|
 | **B1** | Risk path | a file in the unit matches a glob in the risk set |
 | **B2** | Dependency surface | a file in the unit matches a manifest glob |
-| **B3** | Untested production change | the unit adds ≥1 line to a non-test file **and** `RANGE` adds 0 lines to any test-glob file |
+| **B3** | Untested production change | the unit adds ≥1 line to a **non-test file** **and** `RANGE` adds 0 lines to any **test file** |
 | **B4** | Deletion-heavy | the unit's deleted lines ≥ 3× added **and** deleted ≥ 50 |
 | **B5** | Spec or invariant surface | a file in the unit is under `docs/specs/`, `docs/architecture/`, or `docs/decisions/` |
 
@@ -586,13 +587,15 @@ package.json   Cargo.toml   pyproject.toml   go.mod
 requirements*.txt   Gemfile   pom.xml   .claude-plugin/plugin.json
 ```
 
-## Test globs (B3)
+## Test files (B3)
 
-Read the `Test globs` line in `docs/agents/project.md`. When it is absent or
-records `(defaults)`, use the same default set `trace` uses:
+B3 asks whether the range added any **test file**, identified by its own path
+using `trace`'s recognition rules — never by `trace`'s search-root list, which
+contains production directories:
 
 ```
-tests test e2e src src-tauri crates app lib packages
+\.(test|spec)\.[cm]?[jt]sx?$   ·   a /tests?/ or /e2e/ segment
+_test\.(rs|go|py)$             ·   any .rs file
 ```
 
 ## Repo config grammar
@@ -604,15 +607,13 @@ Optional. A repo may add this section to `docs/agents/project.md`:
 
 - **Partition depth:** 2
 - **Risk globs:** `**/auth/**`, `src/payments/**`
-- **Risk globs mode:** replace | extend
 ```
 
 Rules:
 
 - The section is **optional**. When it is **absent**, the defaults above apply
   with no warning and no failure.
-- `Risk globs mode: extend` (the default when the key is missing) unions the
-  repo's globs with the defaults; `replace` uses only the repo's.
+- `Risk globs` **extend** the defaults; they never replace them.
 - `Partition depth` accepts an integer ≥ 1. Anything else → use 2 and say so once.
 - A repo may narrow the risk set. It may not disable the binding pass: an empty
   risk set still leaves B2–B5 live.
@@ -629,7 +630,7 @@ the identical binding set both times. ATTN-3.6
 
 Run: `python3 -m unittest tests.test_attn_surfaces` — expect: pass (16 tests).
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 `git commit -m "feat(attn): depth-2 partition and the five-signal binding pass" # trailer: Implements: ATTN-3.1, ATTN-3.2, ATTN-3.3, ATTN-3.4, ATTN-3.5, ATTN-3.6, ATTN-11.2, ATTN-11.3`
 
@@ -652,7 +653,7 @@ _Requirements: ATTN-3.1, ATTN-3.2, ATTN-3.3, ATTN-3.4, ATTN-3.5, ATTN-3.6, ATTN-
 
 **Depends-on:** Task 4
 
-- [ ] **Step 1: Write the failing test**
+- [x] **Step 1: Write the failing test**
 
 Append to `TestAttnSurfaces`:
 
@@ -687,7 +688,7 @@ Append to `TestAttnSurfaces`:
 
 Run: `python3 -m unittest tests.test_attn_surfaces` — expect: 4 failures.
 
-- [ ] **Step 2: Implement — append to SKILL.md**
+- [x] **Step 2: Implement — append to SKILL.md**
 
 ```markdown
 ## Escalation — add only
@@ -758,7 +759,7 @@ ATTN-4.5 ATTN-1.4
 
 Run: `python3 -m unittest tests.test_attn_surfaces` — expect: pass (20 tests).
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 `git commit -m "feat(attn): monotone escalation and the floor selector" # trailer: Implements: ATTN-4.1, ATTN-4.2, ATTN-4.3, ATTN-4.4, ATTN-4.5, ATTN-5.1, ATTN-5.2`
 
@@ -782,7 +783,7 @@ _Requirements: ATTN-4.1, ATTN-4.2, ATTN-4.3, ATTN-4.4, ATTN-4.5, ATTN-5.1, ATTN-
 
 **Depends-on:** Task 5
 
-- [ ] **Step 1: Write the failing test**
+- [x] **Step 1: Write the failing test**
 
 Append to `TestAttnSurfaces`:
 
@@ -847,7 +848,7 @@ Append to `TestAttnSurfaces`:
 
 Run: `python3 -m unittest tests.test_attn_surfaces` — expect: 10 failures.
 
-- [ ] **Step 2: Implement — append to SKILL.md**
+- [x] **Step 2: Implement — append to SKILL.md**
 
 ```markdown
 ## The allocation
@@ -931,7 +932,7 @@ naming the in-tree path and does not fall through to a temp location. ATTN-8.2
 
 Run: `python3 -m unittest tests.test_attn_surfaces` — expect: pass (30 tests).
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 `git commit -m "feat(attn): allocation presenter, residue rules, output packaging" # trailer: Implements: ATTN-6.1, ATTN-6.2, ATTN-6.3, ATTN-6.4, ATTN-7.1, ATTN-7.2, ATTN-7.3, ATTN-7.4, ATTN-8.1, ATTN-8.2, ATTN-8.3, ATTN-8.4, ATTN-11.4`
 
@@ -955,7 +956,7 @@ _Requirements: ATTN-6.1, ATTN-6.2, ATTN-6.3, ATTN-6.4, ATTN-7.1, ATTN-7.2, ATTN-
 
 **Depends-on:** Task 6
 
-- [ ] **Step 1: Write the failing test**
+- [x] **Step 1: Write the failing test**
 
 Append to `tests/test_attn_surfaces.py` — note the new module constants at the top:
 
@@ -1051,7 +1052,7 @@ Run: `python3 -m unittest tests.test_attn_surfaces` — expect: failures on
 `test_ATTN_1_3_…`; the pure-guard tests pass already, which is correct — they
 exist to catch a later regression.
 
-- [ ] **Step 2a: Implement — the aside in `execute-plan`**
+- [x] **Step 2a: Implement — the aside in `execute-plan`**
 
 In `skills/execution/execute-plan/SKILL.md`, between step 4 (Acceptance, line 96)
 and step 5 (Finish, line 97), insert exactly one line:
@@ -1063,7 +1064,7 @@ and step 5 (Finish, line 97), insert exactly one line:
 Do **not** renumber steps 1–5, and do **not** phrase it as
 `REQUIRED SUB-SKILL: use ...` — that would trip `scripts/lint-handoffs.py`.
 
-- [ ] **Step 2b: Implement — append `## Boundaries` to the skill**
+- [x] **Step 2b: Implement — append `## Boundaries` to the skill**
 
 ```markdown
 ## Boundaries
@@ -1087,7 +1088,7 @@ Run: `python3 -m unittest tests.test_attn_surfaces` — expect: pass (41 tests).
 Run: `python3 scripts/lint-handoffs.py` — expect:
 `OK — 43 skills, 14 user-invoked, 0 dead hand-offs.`
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 `git commit -m "feat(attn): execute-plan aside and boundary guards" # trailer: Implements: ATTN-1.3, ATTN-1.4, ATTN-9.1, ATTN-9.2, ATTN-9.3, ATTN-9.4, ATTN-10.1, ATTN-10.2, ATTN-10.3, ATTN-10.4, ATTN-10.5, ATTN-12.1, ATTN-12.2, ATTN-12.3, ATTN-12.4, ATTN-12.5, ATTN-12.6`
 
@@ -1112,7 +1113,7 @@ _Requirements: ATTN-1.3, ATTN-1.4, ATTN-9.1, ATTN-9.2, ATTN-9.3, ATTN-9.4, ATTN-
 
 **Depends-on:** Task 7
 
-- [ ] **Step 1: Write the failing test**
+- [x] **Step 1: Write the failing test**
 
 Append to `TestAttnSurfaces`:
 
@@ -1137,7 +1138,7 @@ Append to `TestAttnSurfaces`:
 
 Run: `python3 -m unittest tests.test_attn_surfaces` — expect: 2 failures.
 
-- [ ] **Step 2: Implement — the four doc surfaces**
+- [x] **Step 2: Implement — the four doc surfaces**
 
 Create `docs/guide/skills/allocate-attention.md` following the shape of
 `docs/guide/skills/comprehend-change.md`: what it is, when to reach for it, the
@@ -1161,11 +1162,79 @@ In `AGENTS.md`, four edits:
 Run: `python3 -m unittest discover -s tests` — expect: pass.
 Run: `python3 scripts/lint-skill-frontmatter.py && python3 scripts/lint-handoffs.py && python3 scripts/lint-context7.py` — expect: OK.
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 `git commit -m "docs(attn): guide page and AGENTS registration" # trailer: Implements: ATTN-1.1, ATTN-1.5`
 
 _Requirements: ATTN-1.1, ATTN-1.5_
+
+---
+
+### Task 9: Post-plan corrections (appended by `sync-spec`, 2026-07-24)
+
+Work that actually happened after Task 8, recorded here so the plan matches
+reality rather than the intent it was approved with.
+
+**Files:**
+- Modify: `skills/review/allocate-attention/SKILL.md`, `references/signals.md`
+- Modify: `tests/test_attn_surfaces.py`, `tests/attention-allocation/scenarios.md`
+- Modify: `CONTEXT.md`, `docs/agents/project.md`, `docs/guide/skills/allocate-attention.md`
+- Test: `tests/test_attn_surfaces.py`
+
+**Reuse:** existing — `scripts/lint-handoffs.py` run as a subprocess for ATTN-1.2/12.7 coverage (rung 2)
+
+**Interfaces:**
+- Consumes: the complete skill (Tasks 2–8)
+- Produces: nothing consumed downstream
+
+**Depends-on:** Task 8
+
+- [x] **Step 1: whole-branch `code-review` findings**
+
+ATTN-10.3 had zero coverage against its own design seam table — the plan's
+coverage table wrongly claimed it under S6. Added scenario **S8**. Added the four
+glossary terms to `CONTEXT.md` (`domain-modeling` never ran during brainstorm).
+Signal ids now print their name beside `B<n>`. Added the untrusted-range rule
+(an explicit range reaches `git` as a single argument, rev-shape only).
+
+- [x] **Step 2: `polish`**
+
+Guide page adopted the house metadata table and a `When not to` section. Two
+findings dropped as structurally unfixable — both needed test-file edits, which
+`polish` step 6 forbids: repeated `SKILL.read_text()` per test, and
+`test_agents_quick_reference_matches_disk` sitting in a feature module while
+asserting a repo-wide invariant (it belongs beside `tests/test_plugin_manifest.py`).
+
+- [x] **Step 3: `acceptance-check` against the real repo**
+
+Ten checks observed green, four named as not exercised. The run found that under
+the default risk globs the binding pass dropped the 290-line `skills/review`
+unit — the feature itself — into the residue. Declared `## Attention signals` in
+`docs/agents/project.md`; the re-run samples 5 of 10 units.
+
+- [x] **Step 4: `writing-skills` pass — B3 semantics bug**
+
+`B3` keyed off `trace`'s **search roots** (`tests test e2e src src-tauri crates
+app lib packages`) instead of its **test-file patterns**. Since `src/`, `app/`,
+`lib/`, `packages/` hold production code, the condition went false the moment any
+production file changed, so B3 could never fire in an ordinary app repo. This
+repo masked it. Fixed to match on the file's own path; verified both directions.
+
+- [x] **Step 5: `writing-skills` authoring bar**
+
+Added the Iron Law (`EVERY UNIT IS SAMPLED OR NAMED AS RESIDUE — NEVER NEITHER`),
+a seven-step pipeline each with a `Done when:`, a nine-row rationalization table
+built from the recorded baselines, one worked example from the acceptance run,
+and dropped the false `grep` claim.
+
+- [x] **Step 6: close the ATTN-1.2 / ATTN-12.7 coverage gap**
+
+Both were lint-enforced but invisible to `trace`. Added
+`test_ATTN_1_2_12_7_no_skill_invokes_this_user_invoked_skill`, which runs
+`scripts/lint-handoffs.py` as a subprocess. Proven non-vacuous: injecting
+`REQUIRED SUB-SKILL: use \`allocate-attention\`` into `code-review` turns it red.
+
+_Requirements: ATTN-1.2, ATTN-3.2, ATTN-6.2, ATTN-7.1, ATTN-10.3, ATTN-12.7_
 
 ---
 

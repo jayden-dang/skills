@@ -1,5 +1,7 @@
 """Structural surfaces for allocate-attention (ATTN)."""
 import json
+import subprocess
+import sys
 import unittest
 from pathlib import Path
 
@@ -300,6 +302,20 @@ class TestAttnSurfaces(unittest.TestCase):
         """ATTN-1.3 no neighbour gates on an allocation existing."""
         text = SKILL.read_text(encoding="utf-8").lower()
         self.assertRegex(text, r"blocks\s+no\s+merge")
+
+    def test_ATTN_1_2_12_7_no_skill_invokes_this_user_invoked_skill(self):
+        """ATTN-1.2 ATTN-12.7 no model-invoked skill may invoke allocate-attention.
+
+        The guarantee lives in scripts/lint-handoffs.py rather than in prose here,
+        so run it: adding `REQUIRED SUB-SKILL: use \\`allocate-attention\\`` anywhere
+        in the tree fails this test, which a text assertion could never catch.
+        """
+        proc = subprocess.run(
+            [sys.executable, str(ROOT / "scripts/lint-handoffs.py")],
+            capture_output=True, text=True, cwd=ROOT,
+        )
+        self.assertEqual(proc.returncode, 0, f"dead hand-off detected:\n{proc.stdout}{proc.stderr}")
+        self.assertIn("0 dead hand-offs", proc.stdout)
 
     def test_ATTN_1_1_registered_in_docs_surfaces(self):
         """ATTN-1.1 the skill is discoverable in AGENTS.md and the guide index."""

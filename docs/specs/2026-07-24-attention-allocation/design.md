@@ -402,14 +402,14 @@ no new interface.
 
 ## Coverage check
 
-All 58 approved criteria are mapped. Two are deliberately unmapped, both by
-their own text:
+All 56 live criteria are mapped. Two IDs were **retired** by `sync-spec` on
+2026-07-24 — `ATTN-11.1` (performance) and `ATTN-11.5` (accessibility) — because
+a `None` quality attribute is a recorded non-applicability rather than a
+requirement, and giving it an ID created a live requirement no test could cover.
+Both attributes remain recorded in `requirements.md` in the house form (no ID),
+matching DREC and XDIFF.
 
-- **ATTN-11.1** (performance) — recorded as `None` in requirements; no component
-  implements a `None`.
-- **ATTN-11.5** (accessibility) — recorded as `None` in requirements; same.
-
-Every other ID appears in exactly one `Satisfies:` line. Guard criteria
+Every live ID appears in exactly one `Satisfies:` line. Guard criteria
 ATTN-12.1 … ATTN-12.6 map to §10, which holds them by absence rather than by
 mechanism; ATTN-12.7 maps to §1, where `lint-handoffs.py` enforces it directly.
 

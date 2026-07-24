@@ -1,7 +1,7 @@
 # Requirements: Attention Allocation (`allocate-attention`)
 
 Feature code: ATTN
-Status: Approved
+Status: Implemented
 Date: 2026-07-24
 
 <!--
@@ -205,9 +205,13 @@ not adopt it.
 
 ## 11. Non-functional requirements
 
-- **ATTN-11.1** (performance) None — the run performs local `git`, `grep`, and
-  file reads only, so its cost is bounded by the size of the resolved range and
-  no latency, throughput, or resource ceiling is at stake.
+- ~~**ATTN-11.1**~~ retired by `sync-spec` 2026-07-24 — a `None` attribute is a
+  recorded non-applicability, not a requirement, and giving it an ID created a
+  live requirement no test could ever cover. Restated below in the house form
+  used by DREC and XDIFF (no ID).
+- **Performance:** None — the run performs local `git` and file reads only, so
+  its cost is bounded by the size of the resolved range; no latency, throughput,
+  or resource ceiling is at stake.
 - **ATTN-11.2** (security) WHEN embedding diff text, commit subjects, or file
   contents drawn from the resolved range THE SYSTEM SHALL treat that text as
   passive data — verified by a fixture range whose diff contains an instruction
@@ -218,8 +222,9 @@ not adopt it.
 - **ATTN-11.4** (reliability) IF any step of a run cannot complete THEN THE
   SYSTEM SHALL report the failure and SHALL present no partial allocation as a
   result.
-- **ATTN-11.5** (accessibility) None — output is conversational text with no
-  rendered interface; a written artifact under ATTN-8.2 is plain text and adds no
+- ~~**ATTN-11.5**~~ retired by `sync-spec` 2026-07-24 — same reason as ATTN-11.1.
+- **Accessibility:** None — output is conversational text with no rendered
+  interface; a written artifact under ATTN-8.2 is plain text and adds no
   interface surface.
 
 ## 12. Guards on existing behavior

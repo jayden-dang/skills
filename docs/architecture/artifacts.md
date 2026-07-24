@@ -14,7 +14,9 @@ docs/specs/<YYYY-MM-DD>-<feature>/
   requirements.md      # WHAT — EARS acceptance criteria with hierarchical IDs
   design.md            # HOW — architecture, each section cites the REQ IDs it satisfies
   tasks.md             # PLAN — checkbox tasks, each ending `_Requirements: CODE-N.M, ..._`
+  discovery.md         # optional, non-normative discovery handoff
 docs/specs/INDEX.md    # the feature registry — feature codes, names, statuses (LLM-maintained)
+docs/decisions/        # boundary decision records (DEC-*.md) + adoption anchor
 CONTEXT.md             # domain glossary (terms + tight definitions + Avoid-lists)
 docs/adr/NNNN-slug.md  # minimal ADRs (1–3 sentences; three-part gate)
 docs/agents/           # per-repo config written by setup-repo:
@@ -26,9 +28,30 @@ docs/agents/           # per-repo config written by setup-repo:
                        #   progress ledger (crash/compaction recovery)
 ```
 
-`docs/specs/INDEX.md` is the sole feature registry. Feature overlap is discovered
-on demand by searching `docs/specs/` — a live read of the specs themselves, not a
-generated artifact that has to be kept fresh.
+`requirements.md` remains the **sole normative specification** for a feature; a
+`discovery.md` record is never required. `docs/specs/INDEX.md` is the sole feature
+registry. Feature overlap is discovered on demand by searching `docs/specs/` — a
+live read of the specs themselves, not a generated artifact that has to be kept
+fresh.
+
+## Participant roles (skill-mediated boundary)
+
+Three roles qualify who is accountable for methodology discipline:
+
+1. **Skill-mediated actor** — a human (or agent on their behalf) acting *through*
+   this skill set's workflows. Skills may enforce gates and emit decision records
+   for these actions only.
+2. **External contributor** — someone contributing outside this skill set's
+   mediation (e.g. an inbound PR author who never adopted the process). Absence of
+   decision records, requirement IDs, or TDD reports on their contribution is
+   **not** a methodology violation.
+3. **Accountable reviewer** — the person responsible for accepting or rejecting
+   work at a boundary; judgment provenance is theirs when they act through a
+   mediated workflow.
+
+Membership in the skill-mediated set is never inferred from repository membership,
+roster, CODEOWNERS, branch ownership, PR authorship, or supplied artifacts alone
+(see **ARCH-6**).
 
 ## Requirement IDs and the trace spine
 

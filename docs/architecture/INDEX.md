@@ -23,8 +23,8 @@ Rules for invariants:
   and is defined only under "## Invariants" below (do not re-bold ARCH definitions
   in domain files).
 
-Dogfood set: ARCH-1..5 = determinism-of-trace, optionality, zero-tooling,
-ID immutability, sub-skill composition.
+Dogfood set: ARCH-1..6 = determinism-of-trace, optionality, zero-tooling,
+ID immutability, sub-skill composition, participant boundary.
 -->
 
 ## Invariants
@@ -34,6 +34,7 @@ ID immutability, sub-skill composition.
 - **ARCH-3** Consumer-repo adoption MUST require only the skills (plugin or npx) and markdown config — never mandate Python, vendored linters, CI jobs, or git-hook wiring for the full methodology; any hard headless gate is an optional documented add-on only.
 - **ARCH-4** Requirement IDs (`CODE-N.M`) and architecture IDs (`ARCH-N`) are immutable once defined: never renumber or reuse; retire only by strikethrough; every task, test, commit trailer, and `Respects:` line MUST use the same greppable string as the definition.
 - **ARCH-5** User-invoked skills may invoke model-invoked skills only; model-invoked skills must never invoke user-invoked skills; agents must never auto-invoke a skill marked `disable-model-invocation: true`.
+- **ARCH-6** Skills MUST enforce and record only actions this skill set mediates; membership is never inferred from repository membership, roster, CODEOWNERS, branch ownership, PR authorship, or supplied artifacts.
 
 ## Domains
 

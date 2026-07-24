@@ -1,6 +1,6 @@
 # AGENTS.md — Agent Behavior Constitution
 
-> **A-to-Z Agentic Development Skill Set** | 37 skills across 10 categories |
+> **A-to-Z Agentic Development Skill Set** | 41 skills across 11 categories |
 > `jayden-dang/skills` | v1.0
 
 This file is the single source of truth for agent behavior when working with this
@@ -71,7 +71,8 @@ skill's workflow only when the user has explicitly told you to.
 these when conditions match. This includes `using-skills`, `brainstorm`,
 `grilling`, `research`, `prototype`, `domain-modeling`, the full spec triad,
 `execute-plan`, `tdd`, `debug`, `verify`, `worktrees`, `code-review`,
-`receive-review`, `check-invariants`, the acceptance suite, `finish-branch`, `amend`, and
+`receive-review`, `check-invariants`, the acceptance suite, `finish-branch`,
+`record-decision`, `amend`, and
 `sync-spec`.
 
 **Session-injected skill:** `using-skills` is injected by the `SessionStart` hook
@@ -82,6 +83,12 @@ that role.
 **Orchestration rule:** a user-invoked skill may invoke model-invoked skills; a
 model-invoked skill must never invoke a user-invoked skill. A model-invoked skill
 may invoke other model-invoked skills via `REQUIRED SUB-SKILL:` prose.
+
+**Participant boundary:** skills enforce and record only actions this skill set
+mediates. Never infer skill-set membership from repository membership, roster,
+CODEOWNERS, branch ownership, PR authorship, or supplied artifacts. External
+contributors are not policed by a process they never adopted — missing decision
+records or requirement IDs on unmediated work is not a methodology violation.
 
 ---
 
@@ -219,7 +226,7 @@ content moves to a sibling file in the same directory.
 ## 8. File Organization
 
 ```
-skills/                  # skill definitions (40 skills, 11 categories)
+skills/                  # skill definitions (41 skills, 11 categories)
   meta/                  # using-skills, ask, writing-skills
   setup/                 # setup-repo, scaffold-project
   discovery/             # brainstorm, grilling, research, prototype, domain-modeling
@@ -301,7 +308,7 @@ Can't tick a box? The work is not done.
 
 ---
 
-## 11. Quick Reference: The 40 Skills
+## 11. Quick Reference: The 41 Skills
 
 **Legend:** (m) model-invoked · (U) user-invoked · (si) session-injected
 
@@ -315,7 +322,7 @@ Can't tick a box? The work is not done.
 | **review** | `code-review` (m), `receive-review` (m), `check-invariants` (m) |
 | **acceptance** | `acceptance-check` (m), `acceptance-api` (m), `acceptance-ui` (m), `dogfood` (m) |
 | **craft** | `design-page` (m) |
-| **ship** | `finish-branch` (m), `release` (U) |
+| **ship** | `finish-branch` (m), `record-decision` (m), `release` (U) |
 | **track** | `amend` (m), `correct-course` (m), `triage` (U), `sync-spec` (m), `improve-architecture` (U), `handoff` (U), `file-issues` (U) |
 | **project** | `establish-project` (U) |
 

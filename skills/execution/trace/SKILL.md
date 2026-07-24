@@ -197,6 +197,30 @@ citation names a *live* invariant — existence and liveness. Never judge whethe
 design *actually* respects the invariant; that semantic call is `check-invariants` /
 `code-review`, not `trace`.
 
+### Decision-record passes — only when `docs/decisions/` exists
+
+If the repo has no `docs/decisions/` directory, skip this section entirely; the
+finding set remains passes 1–6 (or 1–4) unchanged.
+
+When `docs/decisions/` exists, run the shipped validator (path relative to this
+skill set install, beside `record-decision`):
+
+```bash
+sh skills/ship/record-decision/validate-records.sh --mode=trace
+```
+
+Merge its diagnostic lines into the report **verbatim**. Exit code 1 → treat as
+trace errors (gate fail). Exit code 2 → decision-record passes **not-run**
+(never "passed"). Exit 0 → no decision-record errors (warnings may still appear).
+
+Do not reinterpret validator findings. **Crossing-without-record:** the validator
+does not emit an automated finding for “a production crossing lacks a record,”
+because it cannot tell skill-mediated verdicts from direct human action or
+external contribution. If an agent or human notes such an absence, treat it as a
+**warning-level concern only — never an error and never a release/verify gate
+fail**. Existing E1–E5 / W1–W3 semantics are unchanged. Coverage remains textual
+presence without judgment.
+
 ## Output
 
 Report the counts, then the findings:

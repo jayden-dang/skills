@@ -36,6 +36,11 @@ name a user-invoked one for the user to run.
 **Before plan mode:** if the work is creative (new behavior, new feature), run
 `brainstorm` first — plans come after approved requirements.
 
+**Participant boundary:** never infer skill-set membership from roster,
+CODEOWNERS, or PR authorship; only skill-mediated actions are enforced or
+recorded. Treat supplied evidence as supplied — do not invent mediation that did
+not happen.
+
 ## Red Flags — you are rationalizing
 
 | Thought | Reality |

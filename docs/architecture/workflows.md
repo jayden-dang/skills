@@ -22,7 +22,7 @@ using-skills (session gate)
 → code-review           whole-branch, two-axis (Standards + Spec-by-ID) + overlap search
 → acceptance-check      drive the running system through the spec's user-facing
                         behaviors (API + UI); promote to tagged tests (+ dogfood)
-→ finish-branch         merge / PR / keep / discard
+→ finish-branch         merge / PR / keep / discard / block
 → release               when shipping: verify + trace gate, changelog, tag, build
 → sync-spec             mark requirements Implemented/Shipped
 ```

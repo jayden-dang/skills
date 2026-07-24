@@ -102,28 +102,32 @@ quick reference: `AGENTS.md`.
 
 ## ship/
 
-29. **finish-branch** (m) — verify → merge/PR/keep/discard → worktree cleanup.
-30. **release** (U) — full verify + `trace` clean → changelog from commit trailers
-    → version bump → tag → build → smoke-check → release notes.
+29. **finish-branch** (m) — verify → merge/PR/keep/discard/block → worktree cleanup;
+    terminal verdicts hand off to `record-decision` before crossings.
+30. **record-decision** (m) — publish an immutable boundary decision record after a
+    named emitter (finish-branch or release) obtains a terminal human verdict.
+31. **release** (U) — full verify + `trace` clean → changelog from commit trailers
+    → version bump → tag → build → smoke-check → release notes; terminal verdict
+    emits one decision record.
 
 ## track/
 
-31. **amend** (m) — the iteration lane for a shipped feature; routes to the lightest
+32. **amend** (m) — the iteration lane for a shipped feature; routes to the lightest
     tier, always exits through `tdd`, `sync-spec` keeps the trace honest.
-32. **triage** (U) — issue state machine; agent briefs as the contract.
-33. **sync-spec** (m) — realign the triad after drift: diff requirements ↔ design ↔
+33. **triage** (U) — issue state machine; agent briefs as the contract.
+34. **sync-spec** (m) — realign the triad after drift: diff requirements ↔ design ↔
     tasks ↔ tests via the `trace` skill; update Status fields; update INDEX.md.
-34. **improve-architecture** (U) — periodic deepening scan; the natural home for
+35. **improve-architecture** (U) — periodic deepening scan; the natural home for
     promoting a recurring cross-cutting pattern into an architecture invariant.
-35. **handoff** (U) — compact the conversation into a handoff doc.
-36. **file-issues** (U) — capture a conversation, spec, or idea into tracker issues.
-37. **correct-course** (m) — the mid-flight rewind decision: classifies a discovery that
+36. **handoff** (U) — compact the conversation into a handoff doc.
+37. **file-issues** (U) — capture a conversation, spec, or idea into tracker issues.
+38. **correct-course** (m) — the mid-flight rewind decision: classifies a discovery that
     invalidates an approved plan to the lowest invalidated artifact and routes to the right
     re-entry, delegating content to `write-*` and reconciliation to `sync-spec`.
 
 ## project/
 
-38. **establish-project** (U) — the optional project-documentation layer: authors and
+39. **establish-project** (U) — the optional project-documentation layer: authors and
     maintains `docs/product/vision.md`, this `docs/architecture/` tree, and
     `docs/product/guidelines.md` (create/update/validate modes). Consulted by
     `brainstorm`, `write-design`, `write-plan`, `execute-plan`, and `code-review`;

@@ -61,6 +61,16 @@ Suggested roles (freeform allowed): Tech Lead, Backend Engineer, Frontend Engine
 | **Multi** | CODEOWNERS-aware review language when ownership notes exist; explicit review responsibilities as prose; handoff/docs emphasis |
 | **(no band)** | Team absent, or empty roster with blank override — pre-feature default; do not invent a team; do not hard-fail |
 
+## Decision boundaries
+
+Optional. When present, `record-decision` reads this table. Pins may raise a
+floor or bind an action to a boundary type. An entry that would lower a core
+floor is ignored with a one-line notice. Absent section → core table only.
+
+| Action | Boundary-Type | Floor |
+|---|---|---|
+| <e.g. finish-branch:discard> | <disposal> | <Accountable> |
+
 ## Verify commands
 
 Run in this order; all must pass before any completion claim.

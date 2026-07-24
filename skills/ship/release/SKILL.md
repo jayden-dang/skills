@@ -13,6 +13,10 @@ Prepare and cut a release as a strict sequence of gates. Create one todo per ste
 
 **The stop rule:** any step that fails means STOP — report exactly what failed and what remains, and leave the repo un-released. There are no partial releases: no tag without a passing build, no notes for artifacts that do not exist, no "we'll fix it after tagging."
 
+After a stop-rule failure, ask once whether the user is issuing an **explicit terminal reject** of this release. Yes → REQUIRED SUB-SKILL: use `record-decision` with verdict `release-reject`, `Boundary-Type: release`, and durable evidence inline; then leave the repo un-released. No / silence / "fix later" → **no** decision record (mechanical stop alone is not a terminal verdict).
+
+When proposing the version string or tag approval, an explicit "reject this release" answer is also a `release-reject` terminal verdict (same handoff) — still no partial release side effects.
+
 Read the repo's commands from `docs/agents/project.md` (verify commands, release steps, smoke command). If it is missing, say so, suggest `setup-repo`, and ask the user for the commands before proceeding.
 
 ## a. Verify gate
@@ -55,9 +59,15 @@ Exercise the built artifact, not the source tree: run the project's smoke comman
 
 ## g. Tag and push
 
-Only after explicit user approval: create the tag (`git tag <version>`) and push the release commit and tag. Never push a tag on your own initiative.
+Only after explicit user approval (this approval **is** the successful terminal verdict for the release):
 
-**Done when:** the tag exists on the remote.
+1. REQUIRED SUB-SKILL: use `record-decision` with verdict `release-approve`, `Boundary-Type: release`, Accountable depth inputs, and evidence lines folding version / build / smoke / tag approvals (one record for the whole release — never separate records per intermediate approval). Publish **before** creating the tag.
+2. On publication failure: do **not** create or push the tag; report the verdict was not enacted.
+3. On success: create the tag (`git tag <version>`), push the release commit and tag, then append to the record envelope:
+   `Execution-Outcome: tag <ref-name>@<object-id> pushed <UTC>`.
+4. Never push a tag on your own initiative.
+
+**Done when:** the tag exists on the remote and the release decision record cites it (or the release was explicitly rejected/stopped without a tag).
 
 ## h. Draft release notes
 

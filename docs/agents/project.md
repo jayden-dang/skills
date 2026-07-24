@@ -62,6 +62,16 @@ Suggested roles (freeform allowed): Tech Lead, Backend Engineer, Frontend Engine
 | **Multi** | CODEOWNERS-aware review language when ownership notes exist; explicit review responsibilities as prose; handoff/docs emphasis |
 | **(no band)** | Team absent, or empty roster with blank override — pre-feature default; do not invent a team; do not hard-fail |
 
+## Decision boundaries
+
+Optional. When present, `record-decision` reads this table. Pins may raise a
+floor or bind an action to a boundary type. An entry that would lower a core
+floor is ignored with a one-line notice. Absent section → core table only.
+
+| Action | Boundary-Type | Floor |
+|---|---|---|
+| *(none pinned — core table only)* | | |
+
 ## Verify commands
 
 Run in this order; all must pass before any completion claim.
@@ -82,7 +92,7 @@ outside the default globs (`tests test e2e src src-tauri crates app lib packages
 record the real locations below so `trace` searches the right paths.
 
 Test globs: *(defaults — `tests` covers this repo)*
-Trace ignore (files whose IDs are fixtures, not coverage): `tests/team-structure/red-baselines.md`
+Trace ignore (files whose IDs are fixtures, not coverage): `tests/team-structure/red-baselines.md`, `tests/decision-records/red-baselines.md`, `tests/decision-records/fixtures/`
 
 ## Test annotation conventions
 

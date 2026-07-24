@@ -32,6 +32,7 @@
     "./skills/review/check-invariants",
     "./skills/review/polish",
     "./skills/ship/finish-branch",
+    "./skills/ship/record-decision",
     "./skills/ship/release",
     "./skills/track/amend",
     "./skills/track/correct-course",

@@ -52,7 +52,16 @@ Rewrite the same idea in much simpler, more natural language — short sentences
 Explain it again as if to someone with little background, building from a concrete example or a simple analogy. If you can't ground it in something familiar, that's a signal the idea is still fuzzy — say so.
 
 ### 4. Independent analysis — the reason this skill exists
-Do **not** simply restate or endorse the other session's recommendation. Evaluate it as one option among several. This section MUST contain:
+Do **not** simply restate or endorse the other session's recommendation. Evaluate it as one option among several. Label analysis blocks with exactly these claim prefixes where they apply:
+
+- **Source claim**
+- **Verified fact**
+- **Inference**
+- **Recommendation**
+- **User decision**
+- **Open question**
+
+This section MUST contain:
 - **Alternatives** — at least one genuinely different approach the other session did not lead with (say plainly if, after real thought, its choice is in fact the strongest — but only after weighing others).
 - **Trade-offs / pros & cons** — for each live option, side by side.
 - **Hidden assumptions** — what the pasted response takes for granted that may not hold here.
@@ -60,6 +69,8 @@ Do **not** simply restate or endorse the other session's recommendation. Evaluat
 - **When each wins** — the conditions under which each option is the right call, tied to the setup context (goal, stage).
 
 Ground this in *their* situation: read the relevant codebase and use `research` (below) when a claim turns on external fact rather than opinion. The aim is an informed decision, not dependence on the original recommendation.
+
+**Rationale rule:** when ≥2 live options exist, the user's choice closes a meaningful branch or fixes a constraint, and they have not already stated a reason — ask **one** short rationale question. If they already supplied a reason, quote it **verbatim** without re-asking. If they decline, record `Human rationale: not supplied`. **Never** infer rationale from an accepted recommendation.
 
 ### 5. Prepare the reply to send back
 After presenting the analysis, **ask the user which direction they want** (in the target language). Once they choose, write a concise, high-quality message **in English** they can paste straight back into the original session to continue it — clear, specific, carrying their decision and any question or constraint that moves the discussion forward. Put it in a code block so it copies cleanly.
@@ -69,6 +80,25 @@ After presenting the analysis, **ask the user which direction they want** (in th
 This loop repeats many times in one sitting; treat it as one conversation, not independent pastes.
 
 - Keep a running mental ledger of what's been decided, what's still open, and the shape of the project — so section 4 builds on earlier turns instead of restarting cold.
+- **Decision-event ledger (compact):** after any loop turn that contains a **decision event**, render a compact fenced ledger with three lines — `Decided` / `Open` / `Rejected-deferred` — one line each. No decision event → do not render the ledger. Full rationale stays for the end-of-session digest; keep this ledger compact.
 - **Read the codebase** when a response touches code that exists here — real files beat guesses about how the analysis applies.
 - REQUIRED SUB-SKILL: use `research` when an assumption or an alternative turns on external fact — how a library, API, standard, or platform actually behaves (it reaches for the Context7 MCP for current, version-accurate library facts rather than training-cutoff memory). Return with the evidence folded into section 4.
 - Combine project context, implementation detail, and outside knowledge into each analysis — that combination is what makes this a thinking partner rather than a translator.
+
+## End-of-session digest
+
+When the interpret session ends (user says they're done, or the companion work is clearly finished), produce a digest with exactly these seven provenance labels:
+
+1. **User decisions**
+2. **Human rationale — verbatim**
+3. **Verified evidence**
+4. **Interpret analysis — agent-authored**
+5. **Open questions**
+6. **Prepared reply — agent-authored**
+7. **Transport-adoption status**
+
+Human-carried transport of the digest proves **adoption**, never authorship — agent analysis stays agent-authored after the user carries it elsewhere.
+
+## Read-only posture
+
+While an interpret session runs, remain **read-only** toward the project repo: never commit, never publish, never emit decision records. You are a companion beside brainstorm/grilling — you do not drive spec or code.

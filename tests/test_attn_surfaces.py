@@ -71,6 +71,46 @@ class TestAttnSurfaces(unittest.TestCase):
         self.assertIn("git ls-files --others --exclude-standard", text)
         self.assertRegex(text, r"(?i)uncommitted work is not included")
 
+    def test_ATTN_3_1_partition_depth_two(self):
+        """ATTN-3.1 every changed file maps to exactly one depth-2 unit key."""
+        text = SKILL.read_text(encoding="utf-8")
+        self.assertIn("git diff --name-only", text)
+        self.assertRegex(text, r"(?i)first two segments")
+        self.assertRegex(text, r"(?i)exactly one")
+
+    def test_ATTN_3_2_binding_is_mechanical_not_judgment(self):
+        """ATTN-3.2 binding membership is a fixed git/grep pass, never model judgment."""
+        text = SKILL.read_text(encoding="utf-8")
+        self.assertIn("git diff --numstat", text)
+        self.assertRegex(text, r"(?i)never (a )?model judgment|not by model judgment")
+
+    def test_ATTN_3_3_3_4_no_cap_on_binding_hits(self):
+        """ATTN-3.3 ATTN-3.4 binding hits are uncapped."""
+        text = SKILL.read_text(encoding="utf-8").lower()
+        self.assertIn("no cap", text)
+
+    def test_ATTN_3_5_all_units_bind_means_whole_range(self):
+        """ATTN-3.5 if every unit fires, the whole range is the sample."""
+        text = SKILL.read_text(encoding="utf-8")
+        self.assertRegex(text, r"(?i)whole range is the sample|the whole range as the sample")
+
+    def test_ATTN_3_6_five_binding_signals_present(self):
+        """ATTN-3.6 the five signals B1..B5 are defined with fixed rules."""
+        text = SKILL.read_text(encoding="utf-8")
+        for sig in ("B1", "B2", "B3", "B4", "B5"):
+            self.assertIn(f"**{sig}**", text, f"missing binding signal {sig}")
+
+    def test_ATTN_11_2_passive_data_rule(self):
+        """ATTN-11.2 range text is passive data, never instructions."""
+        text = SKILL.read_text(encoding="utf-8").lower()
+        self.assertIn("passive data", text)
+
+    def test_ATTN_3_2_signals_reference_exists(self):
+        """ATTN-3.2 ARCH-2 risk globs live in a reference with an absent-section no-op."""
+        text = (REFS / "signals.md").read_text(encoding="utf-8")
+        self.assertIn("## Attention signals", text)
+        self.assertRegex(text, r"(?i)absent.{0,80}default")
+
 
 if __name__ == "__main__":
     unittest.main()

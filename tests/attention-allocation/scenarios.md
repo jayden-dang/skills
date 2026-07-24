@@ -12,3 +12,8 @@ the allocation covers exactly that range and no default cascade runs. ATTN-2.1
 
 Given `/allocate-attention` on a feature branch three commits ahead of `main`,
 the range resolves to `merge-base(main, HEAD)..HEAD`. ATTN-2.2
+
+## S3 — same range, same hits
+
+Running `/allocate-attention` twice over an unchanged range and repo state admits
+the identical binding set both times. ATTN-3.6

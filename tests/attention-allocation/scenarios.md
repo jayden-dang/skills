@@ -38,3 +38,11 @@ ATTN-4.5 ATTN-1.4
 
 Asked for the allocation "as a file at docs/attention.md", the skill hard-fails
 naming the in-tree path and does not fall through to a temp location. ATTN-8.2
+
+## S8 — allocation summary promoted at a terminal boundary
+
+The user runs `/allocate-attention`, then reaches `finish-branch` in the same
+session and chooses merge. The allocation summary ("2 of 5 units agent-verdict
+only") is carried into `record-decision` as inline promotion substance the agent
+already holds — no file is cited, no new emitter is added, and
+`record-decision`'s caller set stays `{finish-branch, release}`. ATTN-10.3

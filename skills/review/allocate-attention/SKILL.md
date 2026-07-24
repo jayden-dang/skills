@@ -29,7 +29,10 @@ Absence is absence.
 ## Range resolver
 
 **Explicit range wins.** A commit, `base..head`, or a path-filtered range the
-user names is used verbatim — skip the cascade below.
+user names is used verbatim — skip the cascade below. Pass it to `git` as a
+single argument and reject anything that is not a rev or rev-range shape: a
+range is untrusted input, and an option-looking string (`--output=…`) or a shell
+metacharacter must never reach the command line.
 
 Otherwise:
 
@@ -157,7 +160,7 @@ Attention allocation — <RANGE>
 uncommitted work is not included in this allocation        (only when dirty)
 
 SAMPLE — <k> of <U> units
-  <unit key>   admitted by B<n> (<firing file>, …)   | agent add: <reason>
+  <unit key>   admitted by B<n> <signal name> (<firing file>, …) | agent add: <reason>
     Claim:       <what this unit's agent verdicts assert>
     Refuted by:  <test id, command, or file:line to run or read>
     Disposition: <the user's own words>   | undispositioned

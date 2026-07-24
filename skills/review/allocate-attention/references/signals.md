@@ -42,15 +42,13 @@ Optional. A repo may add this section to `docs/agents/project.md`:
 
 - **Partition depth:** 2
 - **Risk globs:** `**/auth/**`, `src/payments/**`
-- **Risk globs mode:** replace | extend
 ```
 
 Rules:
 
 - The section is **optional**. When it is absent, the defaults above apply with
   no warning and no failure.
-- `Risk globs mode: extend` (the default when the key is missing) unions the
-  repo's globs with the defaults; `replace` uses only the repo's.
+- `Risk globs` **extend** the defaults — they never replace them. A repo adds
+  the paths its own risk lives behind; it does not switch the built-in set off.
 - `Partition depth` accepts an integer ≥ 1. Anything else → use 2 and say so once.
-- A repo may narrow the risk set. It may not disable the binding pass: an empty
-  risk set still leaves B2–B5 live.
+- Nothing here can disable the binding pass: B2–B5 stay live regardless.

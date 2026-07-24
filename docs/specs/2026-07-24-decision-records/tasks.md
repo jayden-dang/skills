@@ -1,10 +1,10 @@
 # Tasks: Boundary Decision Records
 
 > **For agentic workers:** REQUIRED SUB-SKILL: use `execute-plan` to implement
-> this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
+> this plan task-by-task. Steps use checkbox (`- [x]`) syntax for tracking.
 
 Feature code: DREC
-Status: Approved
+Status: Implemented
 Date: 2026-07-24
 Requirements: ./requirements.md
 Design: ./design.md
@@ -117,7 +117,7 @@ A path not listed here is out of scope for this plan.
 
 **Depends-on:** none
 
-- [ ] **Step 1: Write the failing unittest harness + golden fixture outline**
+- [x] **Step 1: Write the failing unittest harness + golden fixture outline**
 
 Create `tests/test_drec_validate_records.py` (must stay flat under `tests/` so
 `python3 -m unittest discover -s tests` picks it up — do **not** nest `test_*.py`
@@ -226,7 +226,7 @@ Stub `red-baselines.md` with empty `## RED-record-decision`, `## RED-finish-bran
 
 Run: `python3 -m unittest tests.test_drec_validate_records -v` — expect: FAIL (missing validator and/or fixtures).
 
-- [ ] **Step 2: Author RECORD.md (complete grammar)**
+- [x] **Step 2: Author RECORD.md (complete grammar)**
 
 Write `skills/ship/record-decision/RECORD.md` covering every field in Interfaces, with:
 
@@ -247,7 +247,7 @@ Write `skills/ship/record-decision/RECORD.md` covering every field in Interfaces
 
 Done when: an implementer can mint a valid record from RECORD.md alone.
 
-- [ ] **Step 3: Implement validate-records.sh skeleton**
+- [x] **Step 3: Implement validate-records.sh skeleton**
 
 POSIX `sh` only. Required behavior in this task:
 
@@ -275,7 +275,7 @@ Digest helper for fixture authoring (host side, not shipped): compute payload by
 Run: `python3 -m unittest tests.test_drec_validate_records -v` — expect: PASS for Task 1 tests.
 Also confirm discover picks it up: `python3 -m unittest discover -s tests -v 2>&1 | rg drec_validate` — expect: test names listed.
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```
 git add skills/ship/record-decision/RECORD.md \
@@ -313,7 +313,7 @@ _Requirements: DREC-1.1, DREC-1.2, DREC-1.6, DREC-1.7, DREC-2.2, DREC-3.4, DREC-
 
 **Depends-on:** Task 1
 
-- [ ] **Step 1: Write failing tests**
+- [x] **Step 1: Write failing tests**
 
 Add methods to `tests/test_drec_validate_records.py` (docstrings carry IDs):
 
@@ -340,7 +340,7 @@ def test_DREC_publish_mode_includes_candidate(self):
 
 Run — expect: FAIL until rules exist.
 
-- [ ] **Step 2: Implement rules in validate-records.sh**
+- [x] **Step 2: Implement rules in validate-records.sh**
 
 Implement:
 
@@ -353,7 +353,7 @@ Implement:
 
 Run unittest — expect: PASS.
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 Trailers: `Implements: DREC-1.4, DREC-1.8, DREC-2.1, DREC-2.4, DREC-2.5, DREC-2.6, DREC-2.7, DREC-2.8, DREC-2.9, DREC-8.1, DREC-8.2, DREC-11.1, DREC-14.2`.
 
@@ -378,7 +378,7 @@ _Requirements: DREC-1.4, DREC-1.8, DREC-2.1, DREC-2.4, DREC-2.5, DREC-2.6, DREC-
 
 **Depends-on:** Task 2
 
-- [ ] **Step 1: Write failing tests**
+- [x] **Step 1: Write failing tests**
 
 | Method | Expect | IDs |
 |---|---|---|
@@ -401,15 +401,15 @@ For E-spine positive test, build a tiny fake `docs/specs/x/requirements.md` insi
 
 For tag tests: prefer a **test-only** env `DREC_VISIBLE_TAGS` (newline-separated `name@objectid`) so tests do not need a real git tag database; when unset, use `git tag -l` + `git rev-list -n1 <tag>` (or `git rev-parse <tag>^{}`). Document in script header.
 
-- [ ] **Step 2: Implement remaining passes**
+- [x] **Step 2: Implement remaining passes**
 
 Implement E-spine, W-* passes, anchor counting, no-op branches exactly per design §10–11. Ensure exit 2 when digest algorithm unavailable (add a test that forces a fake algorithm name `unavailable-algo` → exit 2) — DREC-11.19.
 
-- [ ] **Step 3: GREEN + scenarios notes**
+- [x] **Step 3: GREEN + scenarios notes**
 
 Append §S-validator-passes listing each pass name and pointing at the unittest methods. Run full validator unittest module — PASS.
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 `Implements: DREC-11.3, DREC-11.4, DREC-11.5, DREC-11.6, DREC-11.7, DREC-11.8, DREC-11.9, DREC-11.10, DREC-11.11, DREC-11.12, DREC-11.13, DREC-11.14, DREC-11.15, DREC-11.17, DREC-11.18, DREC-11.19, DREC-11.22, DREC-11.24`  
 (Note: DREC-11.14 is fixture+RECORD presence of Baseline-Tag grammar; assert in unittest that a valid anchor without Baseline-Tag when tags existed is still parseable — baseline may be empty if zero tags at adoption.)
@@ -435,7 +435,7 @@ _Requirements: DREC-11.3, DREC-11.4, DREC-11.5, DREC-11.6, DREC-11.7, DREC-11.8,
 
 **Depends-on:** Task 1
 
-- [ ] **Step 1: Failing tests**
+- [x] **Step 1: Failing tests**
 
 ```python
 class TestDRECScan(unittest.TestCase):
@@ -458,9 +458,9 @@ Patterns (fixed list — implement all):
 4. Slack `xox[baprs]-`
 5. Generic assignment: `(?i)(api[_-]?key|token|secret|password)\s*=\s*\S+`
 
-- [ ] **Step 2: Implement `--scan` in the validator** using POSIX `grep -E` / `awk` only — no Python.
+- [x] **Step 2: Implement `--scan` in the validator** using POSIX `grep -E` / `awk` only — no Python.
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 `Implements: DREC-5.10, DREC-14.1`
 
@@ -486,7 +486,7 @@ _Requirements: DREC-5.10, DREC-14.1_
 
 **Depends-on:** Task 1, Task 3, Task 4
 
-- [ ] **Step 1: RED baselines (before writing SKILL.md body)**
+- [x] **Step 1: RED baselines (before writing SKILL.md body)**
 
 In `red-baselines.md` §RED-record-decision, record expected baseline failures against *absence* of the skill (or empty stub):
 
@@ -504,7 +504,7 @@ In `red-baselines.md` §RED-record-decision, record expected baseline failures a
 12. **§15 pressure — block/reject record fails to publish** → treated as recorded completion (must not; incomplete accountability). `DREC-15.5`
 13. **§15 pressure — publish succeeds, crossing fails** → mutates payload or discards record instead of `Execution-Outcome:` append (must not). `DREC-15.7`
 
-- [ ] **Step 2: Failing structural asserts**
+- [x] **Step 2: Failing structural asserts**
 
 In `tests/test_drec_doc_surfaces.py`:
 
@@ -552,7 +552,7 @@ class TestDRECRecordDecisionSkill(unittest.TestCase):
 
 Run — expect: FAIL.
 
-- [ ] **Step 3: Author SKILL.md (doctrine only)**
+- [x] **Step 3: Author SKILL.md (doctrine only)**
 
 Structure (imperative voice):
 
@@ -572,7 +572,7 @@ Structure (imperative voice):
 
 Done when: line count under 500; no grammar field dump; RED rationalizations addressed.
 
-- [ ] **Step 4: Register plugin + GREEN**
+- [x] **Step 4: Register plugin + GREEN**
 
 Add `"./skills/ship/record-decision"` to `plugin.json` skills array (near other ship skills).
 
@@ -588,7 +588,7 @@ Expect: PASS.
 
 Scenarios §S-record-decision: list structural bullets matching the HARD-GATE, depth formula, publication order, mint recipe presence; greppable IDs for all Task 5 requirement footers.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 `Implements: DREC-1.3, DREC-1.5, DREC-2.3, DREC-3.1, DREC-3.2, DREC-3.3, DREC-3.5, DREC-3.6, DREC-3.7, DREC-3.8, DREC-3.9, DREC-3.10, DREC-3.11, DREC-3.12, DREC-3.13, DREC-3.14, DREC-3.17, DREC-3.18, DREC-3.19, DREC-3.20, DREC-4.1, DREC-4.2, DREC-4.3, DREC-4.5, DREC-5.2, DREC-5.3, DREC-5.4, DREC-5.5, DREC-5.6, DREC-5.7, DREC-5.8, DREC-5.9, DREC-5.11, DREC-6.1, DREC-6.2, DREC-6.11, DREC-8.3, DREC-8.4, DREC-8.6, DREC-9.1, DREC-9.2, DREC-9.4, DREC-9.5, DREC-9.6, DREC-9.7, DREC-9.8, DREC-9.9, DREC-15.1, DREC-15.2, DREC-15.3, DREC-15.4, DREC-15.5, DREC-15.6, DREC-15.7`
 
@@ -613,7 +613,7 @@ _Requirements: DREC-1.3, DREC-1.5, DREC-2.3, DREC-3.1, DREC-3.2, DREC-3.3, DREC-
 
 **Depends-on:** Task 5
 
-- [ ] **Step 1: RED baselines**
+- [x] **Step 1: RED baselines**
 
 Against current finish-branch text:
 
@@ -624,7 +624,7 @@ Against current finish-branch text:
 
 Record in red-baselines.
 
-- [ ] **Step 2: Failing asserts**
+- [x] **Step 2: Failing asserts**
 
 ```python
 def test_DREC_6_4_6_14_block_option_and_guards(self):
@@ -638,7 +638,7 @@ def test_DREC_6_4_6_14_block_option_and_guards(self):
         self.assertIn(phrase, text)
 ```
 
-- [ ] **Step 3: Patch finish-branch (minimal)**
+- [x] **Step 3: Patch finish-branch (minimal)**
 
 1. **Gate (§1) — rewrite the STOP paragraph** (live text today says “Do not present the menu” — that must change). On verify/trace/acceptance failure:
    - Do **not** offer merge or PR (integration options stay withheld — DREC-6.12).
@@ -652,7 +652,7 @@ def test_DREC_6_4_6_14_block_option_and_guards(self):
 5. **Red flags:** replace “Present the menu while any verify command fails” with “Offer merge or PR while any verify command fails” (block/discard on red remain allowed). Update rationalization “Four options, every time” → five options including block.
 6. Do **not** copy depth/storage doctrine into finish-branch.
 
-- [ ] **Step 4: GREEN + commit**
+- [x] **Step 4: GREEN + commit**
 
 `Implements: DREC-6.3, DREC-6.4, DREC-6.5, DREC-6.6, DREC-6.7, DREC-6.8, DREC-6.9, DREC-6.10, DREC-6.12, DREC-6.13, DREC-6.14, DREC-9.3`  
 (`DREC-9.3` shared with release — cite here for finish-branch handoff line.)
@@ -678,13 +678,13 @@ _Requirements: DREC-6.3, DREC-6.4, DREC-6.5, DREC-6.6, DREC-6.7, DREC-6.8, DREC-
 
 **Depends-on:** Task 5
 
-- [ ] **Step 1: RED baselines**
+- [x] **Step 1: RED baselines**
 
 1. Successful tag path creates no decision record.
 2. Mechanical stop might be mis-recorded as release-reject.
 3. Risk of multiple records per version/build/smoke approvals.
 
-- [ ] **Step 2: Failing asserts**
+- [x] **Step 2: Failing asserts**
 
 ```python
 def test_DREC_7_release_hooks(self):
@@ -697,7 +697,7 @@ def test_DREC_7_release_hooks(self):
     self.assertIn("Only after explicit user approval", text)
 ```
 
-- [ ] **Step 3: Patch release**
+- [x] **Step 3: Patch release**
 
 1. After smoke gate + explicit user approval to tag (step g approval = successful terminal verdict): invoke record-decision with `release-approve`, `Boundary-Type: release`, Accountable depth inputs, and evidence lines folding version/build/smoke/tag approvals (DREC-7.1/7.2) — **before** `git tag` / push.
 2. After tag exists: append `Execution-Outcome: tag <ref-name>@<object-id> pushed <UTC>` to the published record envelope.
@@ -708,7 +708,7 @@ def test_DREC_7_release_hooks(self):
 5. Guards: stop rule and dual explicit approvals remain (DREC-7.4/7.5) — do not reword into softer language. Keep the literal “Only after explicit user approval” tag gate.
 6. No doctrine copy.
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 `Implements: DREC-7.1, DREC-7.2, DREC-7.3, DREC-7.4, DREC-7.5, DREC-7.6`  
 (If Task 6 already claimed DREC-9.3 for finish-branch, release still must contain the same handoff line — coverage already tagged; re-list `DREC-9.3` in scenarios for release path.)
@@ -733,7 +733,7 @@ _Requirements: DREC-7.1, DREC-7.2, DREC-7.3, DREC-7.4, DREC-7.5, DREC-7.6_
 
 **Depends-on:** Task 3
 
-- [ ] **Step 1: Failing asserts**
+- [x] **Step 1: Failing asserts**
 
 ```python
 def test_DREC_11_20_11_21_trace_guards(self):
@@ -754,7 +754,7 @@ def test_DREC_11_20_11_21_trace_guards(self):
     )
 ```
 
-- [ ] **Step 2: Patch trace**
+- [x] **Step 2: Patch trace**
 
 Add section after invariant passes (mirror ARCH-2 conditional):
 
@@ -786,7 +786,7 @@ unchanged. Coverage remains textual presence without judgment.
 
 Path resolution note: when installed as a plugin, agents should invoke the validator from the skill directory discovered beside `record-decision` (same pattern consumers use for other skill-local files). Document one resolution recipe; do not require a PATH install.
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 `Implements: DREC-11.20, DREC-11.21` / `Guards: DREC-11.10` (doctrine ceiling also tested here; mechanical half in Task 3).
 
@@ -813,7 +813,7 @@ _Requirements: DREC-11.10, DREC-11.20, DREC-11.21_
 
 **Depends-on:** none (file-disjoint from Tasks 1–4, 6–8; may parallel Task 5 after plugin exists is fine — no interface dependency)
 
-- [ ] **Step 1: Failing drift test**
+- [x] **Step 1: Failing drift test**
 
 ```python
 class TestDRECParticipantSurfaces(unittest.TestCase):
@@ -848,14 +848,14 @@ class TestDRECParticipantSurfaces(unittest.TestCase):
         # (spot-check brainstorm does not contain "accountable reviewer" narrative block)
 ```
 
-- [ ] **Step 2: Write the four surfaces**
+- [x] **Step 2: Write the four surfaces**
 
 1. **ARCH-6** (one greppable sentence in INDEX.md invariants): skills MUST enforce and record only actions this skill set mediates; membership is never inferred from repository membership, roster, CODEOWNERS, branch ownership, PR authorship, or supplied artifacts.
 2. **artifacts.md**: three-role narrative + external-contribution non-violation (absence of records/IDs/TDD reports is not a methodology violation for external contributors) — DREC-10.2, 10.6.
 3. **AGENTS.md**: short "Participant boundary" subsection with the ratified runtime law semantically complete (DREC-10.3); place beside orchestration rules; do not edit Iron Laws body (DREC-10.8).
 4. **using-skills**: exactly two sentences distilling never-infer + supplied-evidence-only (DREC-10.4); do not touch SUBAGENT-EXEMPT or 1% NON-NEGOTIABLE blocks (DREC-10.7).
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 `Implements: DREC-10.1, DREC-10.2, DREC-10.3, DREC-10.4, DREC-10.5, DREC-10.6, DREC-10.7, DREC-10.8`
 
@@ -880,14 +880,14 @@ _Requirements: DREC-10.1, DREC-10.2, DREC-10.3, DREC-10.4, DREC-10.5, DREC-10.6,
 
 **Depends-on:** none (parallelizable with Tasks 1–9)
 
-- [ ] **Step 1: RED baselines**
+- [x] **Step 1: RED baselines**
 
 1. Ledger not rendered on decision events.
 2. Claim labels missing / freeform.
 3. Infers rationale from accepted recommendation.
 4. Might emit/commit (read-only not explicit).
 
-- [ ] **Step 2: Failing asserts**
+- [x] **Step 2: Failing asserts**
 
 ```python
 def test_DREC_12_interpret_doctrine(self):
@@ -914,7 +914,7 @@ def test_DREC_12_interpret_doctrine(self):
     self.assertIn("companion", text.lower())
 ```
 
-- [ ] **Step 3: Patch interpret**
+- [x] **Step 3: Patch interpret**
 
 Add:
 
@@ -925,7 +925,7 @@ Add:
 5. Explicit read-only: never commit, publish, or emit decision records (DREC-12.10).
 6. Leave five-section order and companion framing intact (DREC-12.11/12.12). Keep `disable-model-invocation: true`.
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 `Implements: DREC-12.1, DREC-12.2, DREC-12.3, DREC-12.4, DREC-12.5, DREC-12.6, DREC-12.7, DREC-12.8, DREC-12.9, DREC-12.10, DREC-12.11, DREC-12.12`
 
@@ -952,7 +952,7 @@ _Requirements: DREC-12.1, DREC-12.2, DREC-12.3, DREC-12.4, DREC-12.5, DREC-12.6,
 
 **Depends-on:** Task 5 (for pin-read doctrine consistency), Task 9 if artifacts.md already open
 
-- [ ] **Step 1: Failing asserts**
+- [x] **Step 1: Failing asserts**
 
 ```python
 def test_DREC_3_15_3_16_pin_schema(self):
@@ -970,7 +970,7 @@ def test_DREC_13_1_13_2_discovery_convention(self):
     self.assertRegex(art, r"requirements\.md.*sole normative|sole normative")
 ```
 
-- [ ] **Step 2: Implement**
+- [x] **Step 2: Implement**
 
 1. Template section:
 
@@ -990,7 +990,7 @@ floor is ignored with a one-line notice. Absent section → core table only.
 
 3. Live `docs/agents/project.md`: add the section as documentation of the optional hook (may be empty table or omit rows) — additive only.
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 `Implements: DREC-3.15, DREC-3.16, DREC-13.1, DREC-13.2`
 
@@ -1016,7 +1016,7 @@ _Requirements: DREC-3.15, DREC-3.16, DREC-13.1, DREC-13.2_
 
 **Depends-on:** Task 1, Task 2, Task 3, Task 4, Task 5, Task 6, Task 7, Task 8, Task 9, Task 10, Task 11
 
-- [ ] **Step 1: Coverage grep**
+- [x] **Step 1: Coverage grep**
 
 Every ID below MUST appear in `tests/decision-records/scenarios.md` **and** in at least one of: `tests/test_drec_validate_records.py`, `tests/test_drec_doc_surfaces.py`, or a scenario structural section:
 
@@ -1040,7 +1040,7 @@ test "$miss" -eq 0
 
 Expect: zero MISSING. Fill any gap by tagging an existing test or adding a structural scenario bullet — do not invent new product behavior.
 
-- [ ] **Step 2: Full verify**
+- [x] **Step 2: Full verify**
 
 ```bash
 python3 scripts/lint-skill-frontmatter.py
@@ -1053,7 +1053,7 @@ python3 -m unittest discover -s tests -v 2>&1 | rg -c "test_DREC_|test_drec_"
 
 Expect: all pass, pristine output; discover runs DREC tests (count > 0).
 
-- [ ] **Step 3: Inventory + AGENTS quick reference**
+- [x] **Step 3: Inventory + AGENTS quick reference**
 
 - Ship category lists `record-decision` (m) beside finish-branch / release.
 - `workflows.md` and `execute-plan` inventory strings include **block** as the fifth finish-branch outcome.
@@ -1061,7 +1061,7 @@ Expect: all pass, pristine output; discover runs DREC tests (count > 0).
 - Confirm no root-level record template appeared.
 - Do **not** flip design.md Status here — plan approval is a human gate before execute-plan.
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 Coverage/inventory-only commit. Trailers for any repaired IDs, else message notes coverage gate only.
 

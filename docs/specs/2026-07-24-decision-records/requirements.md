@@ -1,7 +1,7 @@
 # Requirements: Boundary Decision Records
 
 Feature code: DREC
-Status: Approved
+Status: Implemented
 Date: 2026-07-24
 
 Discovery handoff (non-normative): [`discovery.md`](./discovery.md) including

@@ -1,7 +1,7 @@
 # Design: Boundary Decision Records
 
 Feature code: DREC
-Status: Approved
+Status: Implemented
 Date: 2026-07-24
 Requirements: ./requirements.md
 
@@ -484,7 +484,7 @@ floor is below the core table's is ignored with a one-line notice
 ### 16. Participant-model surfaces
 
 Satisfies: DREC-10.1, DREC-10.2, DREC-10.3, DREC-10.4, DREC-10.5, DREC-10.6, DREC-10.7, DREC-10.8
-Respects: ARCH-2
+Respects: ARCH-2, ARCH-6
 Reuse: existing — each surface extends an existing document in place (rung 2)
 
 Four surfaces, one doctrine (Correction 1): (a) `docs/architecture/INDEX.md`

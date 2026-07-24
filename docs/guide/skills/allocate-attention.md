@@ -1,7 +1,17 @@
 # `allocate-attention`
 
-**User-invoked** — run it yourself with `/allocate-attention`. Agents never
-invoke it; they may only name it.
+> Decide what gets human eyes on a finished range, and say plainly what nobody
+> looked at — a bounded sample set plus its explicit residue. Aid first, never a
+> gate.
+
+|  |  |
+|---|---|
+| **Bucket** | review |
+| **Invocation** | user-invoked (`/allocate-attention`) |
+| **Reads** | Local git (resolved range), optional `## Attention signals` in `docs/agents/project.md` |
+| **Writes** | Nothing by default; one file **outside** the worktree on explicit request |
+| **Calls** | none — names [`comprehend-change`](comprehend-change.md) for you to run |
+| **Called by** | none — [`execute-plan`](execute-plan.md) names it once as an optional aside |
 
 ## What it is
 
@@ -21,10 +31,12 @@ It produces **one allocation** over a git range:
 - "Spot check this PR."
 - A branch came out of a long agent run and you have twenty minutes, not two hours.
 
-Not for a Standards+Spec merge verdict — that is [`code-review`](code-review.md).
-Not for understanding a change deeply — that is
-[`comprehend-change`](comprehend-change.md), which this skill will name for you
-on a sampled unit.
+## When not to
+
+- You need a **Standards + Spec** merge verdict → [`code-review`](code-review.md)
+- You want to understand one change deeply → [`comprehend-change`](comprehend-change.md), which this skill names for you on a sampled unit
+- You want duplication and dead code cleaned up → `polish`
+- You need a production-boundary decision record → [`finish-branch`](finish-branch.md) / `record-decision`
 
 ## Not a gate
 

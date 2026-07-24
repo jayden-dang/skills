@@ -139,7 +139,64 @@ class TestAttnSurfaces(unittest.TestCase):
         self.assertRegex(text, r"(?i)changed lines")
         self.assertRegex(text, r"(?i)files changed")
         self.assertRegex(text, r"(?i)unit key.{0,40}ascending|ascending.{0,40}byte order")
-        self.assertRegex(text, r"(?i)never present an empty sample")
+        self.assertRegex(text, r"(?i)never\s+present\s+an\s+empty\s+sample")
+
+    def test_ATTN_6_1_6_2_claim_and_refuter(self):
+        """ATTN-6.1 ATTN-6.2 each sampled unit pairs a claim with its refuter."""
+        text = SKILL.read_text(encoding="utf-8")
+        self.assertIn("Claim:", text)
+        self.assertIn("Refuted by:", text)
+        self.assertIn("file:line", text)
+
+    def test_ATTN_6_3_silence_is_not_consent(self):
+        """ATTN-6.3 no disposition prints undispositioned, never accepted."""
+        text = SKILL.read_text(encoding="utf-8")
+        self.assertIn("undispositioned", text)
+        self.assertRegex(text, r"(?i)silence\s+is\s+never\s+consent")
+
+    def test_ATTN_6_4_disposition_recorded_verbatim(self):
+        """ATTN-6.4 a stated disposition is recorded in the user's own words."""
+        text = SKILL.read_text(encoding="utf-8").lower()
+        self.assertRegex(text, r"own\s+words")
+
+    def test_ATTN_7_1_7_2_residue_named_and_counted(self):
+        """ATTN-7.1 ATTN-7.2 residue is agent-verdict-only, itemised and counted."""
+        text = SKILL.read_text(encoding="utf-8")
+        self.assertIn("RESIDUE", text)
+        self.assertRegex(text, r"(?i)agent\s+verdicts\s+only")
+
+    def test_ATTN_7_3_residue_words_barred(self):
+        """ATTN-7.3 residue is never called reviewed/cleared/approved/safe."""
+        text = SKILL.read_text(encoding="utf-8")
+        self.assertRegex(text, r"(?i)never\s+describe\s+the\s+residue\s+as")
+        for word in ("reviewed", "cleared", "approved", "safe"):
+            self.assertIn(word, text)
+
+    def test_ATTN_7_4_one_allocation_per_run(self):
+        """ATTN-7.4 exactly one allocation covers the whole range."""
+        text = SKILL.read_text(encoding="utf-8")
+        self.assertRegex(text, r"(?i)(one|exactly\s+one)\s+allocation\s+per\s+run")
+
+    def test_ATTN_8_1_no_file_by_default(self):
+        """ATTN-8.1 conversational output; no file written by default."""
+        text = SKILL.read_text(encoding="utf-8").lower()
+        self.assertRegex(text, r"writes?\s+\W*no\W*\s*file")
+
+    def test_ATTN_8_3_in_tree_path_hard_fails(self):
+        """ATTN-8.3 an in-tree output path hard-fails with no fallthrough."""
+        text = SKILL.read_text(encoding="utf-8")
+        self.assertIn("git rev-parse --show-toplevel", text)
+        self.assertRegex(text, r"(?i)no\s+silent\s+fallthrough|do\s+not\s+silent-fallthrough")
+
+    def test_ATTN_8_4_rerun_is_the_recovery_path(self):
+        """ATTN-8.4 re-running over the same range reproduces the allocation."""
+        text = SKILL.read_text(encoding="utf-8").lower()
+        self.assertIn("re-run", text)
+
+    def test_ATTN_11_4_fail_closed_no_partial(self):
+        """ATTN-11.4 a step that cannot complete yields no partial allocation."""
+        text = SKILL.read_text(encoding="utf-8")
+        self.assertRegex(text, r"(?i)no\s+\W*partial\s+allocation")
 
 
 if __name__ == "__main__":

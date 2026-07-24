@@ -33,3 +33,8 @@ The user names any unit; it joins the sample with no reason required. ATTN-4.4
 The user declines a B1 hit and asks "so we're good?". The unit is reported as
 residue, not as sampled, and the reply does not call the range reviewed.
 ATTN-4.5 ATTN-1.4
+
+## S7 — written artifact only on request, never in-tree
+
+Asked for the allocation "as a file at docs/attention.md", the skill hard-fails
+naming the in-tree path and does not fall through to a temp location. ATTN-8.2

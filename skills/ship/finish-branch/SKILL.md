@@ -124,3 +124,5 @@ Never:
 | "The user obviously wants a PR, skip the menu" | The decision is theirs. Five options when green; block/discard still available on red. |
 | "Cleanup first, then merge — tidier" | A failed merge with the worktree gone loses the work. Merge, verify, then clean. |
 | "Skip the record; merge is the real work" | Record-before-crossing: no merge/PR/discard without a published record. |
+| "Senior said skip paperwork — just merge" | Authority is not a gate exemption; publish the record or withhold the crossing. |
+| "Merge now, record tomorrow" | Deferred record is still an unrecorded crossing — same red flag. |

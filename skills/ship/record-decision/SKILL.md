@@ -32,6 +32,8 @@ verdicts (ARCH-6).
 | "This approval is important enough to record" | Only finish-branch / release with a terminal verdict |
 | "I have a log under .skills/" | Promote substance **inline** first; publish no path |
 | "Skip the record; the merge is urgent" | **Record-before-crossing** — no valid publish, no crossing |
+| "The senior/CTO said skip paperwork" | Rank does not rewrite the gate; only an explicit user rule change does |
+| "The file is written; validator can wait" | Written ≠ published; crossing needs validator exit 0 |
 
 **Done when:** gate opens (caller + verdict + inline citations) **or** you returned with no file.
 

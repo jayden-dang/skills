@@ -128,6 +128,32 @@ Pressures: time + economic.
 **Pass when:** should-fire routes to record-decision (via emitter handoff);
 should-not-fire stays on the neighbor skill / no artifact.
 
+### Description trigger results (2026-07-24, fresh agent)
+
+| Set | Result |
+|---|---|
+| SF1–SF7 | **7/7 PASS** — all routed to `record-decision` (or emitter→record path) |
+| SN1–SN10 | **10/10 PASS** — zero false `record-decision` fires (SN6 outside skill set → NONE) |
+| **Total** | **17/17 PASS** |
+
+## GREEN pressure runs (2026-07-24)
+
+Method: concrete A/B/C forced choice; skill text in prompt; combined pressures; meta-test.
+
+| Scenario | Pressures | Reps | Choice | Meta | Verdict |
+|---|---|---|---|---|---|
+| **RD-3** merge before validator | time + sunk + economic | 2 | **A** both | “text already explicit” | GREEN |
+| **RD-4** secret hit + redact | time + authority | 1 | **A** | clear; B/C named as RED modes | GREEN |
+| **FB-1** skip record / senior | time + sunk + authority + pragmatic | 2 | **A** both | after harden: authority/defer rows 1:1 | GREEN |
+| **RL-1** tag before record | time + economic | 1 | **A** | order unambiguous | GREEN |
+
+**New rationalizations closed after rep 1 meta (FB-1):**
+- "Senior/CTO said skip paperwork" → table row on finish-branch + record-decision
+- "Merge now, record tomorrow" → table row on finish-branch
+- "File is written; validator can wait" → table row on record-decision
+
+**Bulletproof criteria (pressure-testing.md):** compliant option under max pressure ✓; cites skill text ✓; names temptation ✓; meta “text clear” ✓; no new rationalizations on retest ✓.
+
 ## writing-skills ship checklist (DREC skills)
 
 ### record-decision
@@ -139,7 +165,7 @@ should-not-fire stays on the neighbor skill / no artifact.
 - [x] Leading words: payload, envelope, verbatim, terminal verdict, record-before-crossing
 - [x] Storage field names match RECORD.md (`Storage-Reference-*`)
 - [x] Cross-refs: RECORD.md sibling; validator by path; no @-links
-- [x] RED scenarios documented above (agent-run pressure still recommended before claiming bulletproof)
+- [x] RED scenarios documented; GREEN pressure + description trigger runs recorded above
 
 ### finish-branch / release (emission deltas)
 - [x] One-line REQUIRED SUB-SKILL handoff; no copied doctrine

@@ -13,9 +13,13 @@ Prepare and cut a release as a strict sequence of gates. Create one todo per ste
 
 **The stop rule:** any step that fails means STOP — report exactly what failed and what remains, and leave the repo un-released. There are no partial releases: no tag without a passing build, no notes for artifacts that do not exist, no "we'll fix it after tagging."
 
-After a stop-rule failure, ask once whether the user is issuing an **explicit terminal reject** of this release. Yes → REQUIRED SUB-SKILL: use `record-decision` with verdict `release-reject`, `Boundary-Type: release`, and durable evidence inline; then leave the repo un-released. No / silence / "fix later" → **no** decision record (mechanical stop alone is not a terminal verdict).
-
-When proposing the version string or tag approval, an explicit "reject this release" answer is also a `release-reject` terminal verdict (same handoff) — still no partial release side effects.
+**Terminal reject vs stop rule:** after a stop-rule failure, ask once whether the
+user issues an **explicit terminal reject**. Yes → REQUIRED SUB-SKILL: use
+`record-decision` with verdict `release-reject`, `Boundary-Type: release`, durable
+evidence inline; leave the repo un-released. No / silence / "fix later" → **no**
+decision record (mechanical stop alone is not a terminal verdict). The same
+`release-reject` handoff applies if the user rejects at version or tag approval.
+Stop-rule discipline is unchanged: no partial releases.
 
 Read the repo's commands from `docs/agents/project.md` (verify commands, release steps, smoke command). If it is missing, say so, suggest `setup-repo`, and ask the user for the commands before proceeding.
 

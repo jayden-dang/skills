@@ -3,6 +3,18 @@
 Sole grammar for boundary decision records. Operational doctrine lives in
 sibling `SKILL.md` — this file defines structure only.
 
+**Leading words:** **payload**, **envelope**, **effective identity**, **verbatim**.
+
+## Contents
+
+- [Substrate](#substrate)
+- [File shape](#file-shape)
+- [Payload fields](#payload-fields)
+- [Envelope fields](#envelope-fields)
+- [Adoption anchor](#adoption-anchor)
+- [Verbatim guarantee](#verbatim-guarantee)
+- [Prohibited evidence locator classes](#prohibited-evidence-locator-classes)
+
 ## Substrate
 
 - One record = one file: `docs/decisions/DEC-YYYYMMDD-XXXXXX.md`

@@ -1,14 +1,15 @@
 ---
 name: finish-branch
-description: Use when implementation on a branch is complete and committed and an
-  integration decision is needed — done with a feature branch and choosing
-  whether to merge it, open a PR, keep it as-is, discard the work, or block
-  it at this boundary.
+description: Use when a feature branch is complete and committed and an integration
+  decision is needed — merge, PR, keep, discard, or block at this boundary
+  (publishes a decision record before crossings).
 ---
 
 # Finish a Branch
 
-Decide what happens to completed work: gate on the verify suite, detect the environment, offer a fixed menu, execute the choice, clean up safely.
+Decide what happens to completed work: gate on verify, detect the environment,
+offer a fixed menu, execute the choice, clean up safely. Terminal crossings use
+**record-before-crossing** via `record-decision`.
 
 ## 1. Gate: verify, trace, and acceptance
 
@@ -16,7 +17,13 @@ REQUIRED SUB-SKILL: use `verify` to run every verify command from `docs/agents/p
 
 If the branch has user-facing behavior that has not been driven through the running system, REQUIRED SUB-SKILL: use `acceptance-check` before offering Merge or PR — green units prove assertions pass, not that the feature works.
 
-**On failure:** show the failures. **Do not offer merge or PR** while any verify, trace, or required acceptance check fails. You **may** still offer terminal **block** and **discard** so the user can issue those verdicts against red evidence (emit a decision record; never execute merge/PR on red). Mechanical failure alone without an explicit terminal block/discard → no decision record. Pause/defer → no decision record.
+**On failure:** show the failures. While any verify, trace, or required acceptance
+check fails: withhold **merge** and **PR**; still offer terminal **block** and
+**discard** (emit a decision record against red evidence). Mechanical failure alone,
+or pause/defer, without an explicit terminal block/discard → no decision record.
+
+**Done when:** green path can offer the full menu, or red path has offered only
+block/discard (or the user paused).
 
 ## 2. Detect the environment
 
@@ -53,6 +60,8 @@ When the gate is red, present only options 4 and 5 (discard / block), renumbered
 
 On a detached HEAD with a green gate, drop option 1 (merge is not possible) and present the remaining four, renumbered. On detached HEAD with a red gate, still only discard/block.
 
+**Done when:** the user has picked one menu option.
+
 ## 4. Execute
 
 For options **1 (merge), 2 (PR), 4 (discard), and 5 (block)** — **before** any git/gh side effect — REQUIRED SUB-SKILL: use `record-decision` with:
@@ -83,6 +92,9 @@ Re-run the verify suite **on the merged result, before removing any worktree**. 
 **Option 4 — discard.** After a successful record: list exactly what will be permanently deleted (branch, commits, worktree path) and require the user to literally type `discard`. Anything else — including "yes", "confirm", "do it" — is not confirmation. On confirmation: from the main repo root, clean up the worktree (step 5), then `git branch -D <feature-branch>`.
 
 **Option 5 — block.** After a successful record: report the terminal block; do not merge, PR, or discard. Leave the branch in place unless the user separately asks otherwise.
+
+**Done when:** the chosen option has been executed (or withheld with an honest
+publication-failure report), including any required `record-decision` publish.
 
 ## 5. Worktree cleanup (options 1 and 4 only)
 

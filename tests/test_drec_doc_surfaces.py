@@ -75,7 +75,11 @@ class TestDRECFinishBranch(unittest.TestCase):
         self.assertIn("discard", text)
         for phrase in ["Merge", "Pull Request", "Keep", "Discard"]:
             self.assertIn(phrase, text)
-        self.assertIn("Do not offer merge or PR", text)
+        self.assertTrue(
+            "Do not offer merge or PR" in text
+            or "withhold **merge** and **PR**" in text
+            or "withhold merge and PR" in text.lower()
+        )
         self.assertIn("literally type `discard`", text)
 
 

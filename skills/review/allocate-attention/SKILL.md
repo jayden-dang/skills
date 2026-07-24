@@ -25,3 +25,31 @@ allocation — that **carries no adverse claim** about the work.
 
 Not running it also never licenses the claim that a range was human-sampled.
 Absence is absence.
+
+## Range resolver
+
+**Explicit range wins.** A commit, `base..head`, or a path-filtered range the
+user names is used verbatim — skip the cascade below.
+
+Otherwise:
+
+```
+BASE  = default_base()
+RANGE = merge-base(BASE, HEAD)..HEAD
+```
+
+`default_base()` — local git only, **no network**, no `gh`:
+
+1. `git symbolic-ref --quiet --short refs/remotes/origin/HEAD` → strip `origin/`
+2. else the first of `main`, `master` that `git rev-parse --verify` accepts
+3. else **hard-fail**: ask the user to name an explicit base. Do not
+   confirm-and-guess.
+
+**Empty range.** `git rev-list --count RANGE` returning `0` → **hard-fail**
+naming the empty range. Produce no allocation. Never substitute a different
+range — not recent commits, not the branch name.
+
+**Dirty tree.** When `git diff --quiet HEAD` exits non-zero, or
+`git ls-files --others --exclude-standard` is non-empty, print exactly one
+line — `uncommitted work is not included in this allocation` — then continue
+over the committed range.

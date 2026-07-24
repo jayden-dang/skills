@@ -107,6 +107,11 @@ HTML presented as success.
 
 ## Range resolver (D! + A+)
 
+**Decision tree (omit range):** `pure_untracked` → **stop, no HTML** → else
+`tracked_dirty` → WT vs HEAD (+ **scope notice** if branch ahead) → else
+`truly_clean` → `default_base..HEAD` → else empty → **stop**. Commits ahead of
+base do **not** count until you leave the pure-untracked stop.
+
 **Leading words:** `tracked_dirty`, `untracked_ni`, `pure_untracked`,
 `truly_clean`, `default_base`, **scope notice**.
 

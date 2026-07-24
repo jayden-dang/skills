@@ -66,6 +66,7 @@ The triad. Each file approved before the next is written.
 |---|---|---|
 | [`code-review`](code-review.md) | model | Two axes — Standards and Spec — run by separate subagents and never merged |
 | [`comprehend-change`](comprehend-change.md) | `/comprehend-change` | Outbound self-check: Background → Intuition → Code → Quiz HTML packet |
+| [`allocate-attention`](allocate-attention.md) | `/allocate-attention` | Bounded human sample over a range, plus the explicit residue |
 | [`receive-review`](receive-review.md) | model | Anti-sycophancy. Verify every claim before implementing or replying |
 | [`check-invariants`](check-invariants.md) | model | Advisory, LLM-judged invariant conformance — the semantic counterpart to `trace` |
 

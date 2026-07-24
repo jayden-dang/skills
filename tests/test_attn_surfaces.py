@@ -278,6 +278,31 @@ class TestAttnSurfaces(unittest.TestCase):
         text = SKILL.read_text(encoding="utf-8").lower()
         self.assertRegex(text, r"blocks\s+no\s+merge")
 
+    def test_ATTN_1_1_registered_in_docs_surfaces(self):
+        """ATTN-1.1 the skill is discoverable in AGENTS.md and the guide index."""
+        agents = (ROOT / "AGENTS.md").read_text(encoding="utf-8")
+        self.assertIn("`allocate-attention`", agents)
+        self.assertIn("43 skills", agents)
+        # It must appear in the user-invoked roster paragraph, not only in a table.
+        roster = agents.split("Agents MUST NOT auto-invoke these")[0]
+        self.assertIn("allocate-attention", roster)
+        index = (ROOT / "docs/guide/skills/README.md").read_text(encoding="utf-8")
+        self.assertIn("allocate-attention.md", index)
+        self.assertTrue((ROOT / "docs/guide/skills/allocate-attention.md").is_file())
+
+    def test_ATTN_1_5_guide_states_optional_posture(self):
+        """ATTN-1.5 the guide page states the aid-not-gate posture."""
+        page = (ROOT / "docs/guide/skills/allocate-attention.md").read_text(encoding="utf-8")
+        self.assertRegex(page, r"(?i)not\s+a\s+gate")
+
+    def test_agents_quick_reference_matches_disk(self):
+        """ATTN-1.1 the AGENTS.md skill count equals the skills actually on disk."""
+        agents = (ROOT / "AGENTS.md").read_text(encoding="utf-8")
+        on_disk = len(list(ROOT.glob("skills/*/*/SKILL.md")))
+        self.assertIn(f"{on_disk} skills", agents)
+        for name in ("polish", "interpret", "allocate-attention"):
+            self.assertIn(f"`{name}`", agents, f"AGENTS.md quick reference omits {name}")
+
 
 if __name__ == "__main__":
     unittest.main()

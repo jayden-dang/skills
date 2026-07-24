@@ -1,6 +1,6 @@
 # AGENTS.md — Agent Behavior Constitution
 
-> **A-to-Z Agentic Development Skill Set** | 42 skills across 11 categories |
+> **A-to-Z Agentic Development Skill Set** | 43 skills across 11 categories |
 > `jayden-dang/skills` | v1.0
 
 This file is the single source of truth for agent behavior when working with this
@@ -64,8 +64,9 @@ skill's workflow only when the user has explicitly told you to.
 **User-invoked skills** (carry `disable-model-invocation: true` in frontmatter):
 `ask`, `writing-skills`, `teach`, `setup-repo`, `scaffold-project`,
 `establish-project`, `triage`, `improve-architecture`, `handoff`, `file-issues`,
-`release`, `comprehend-change`. Agents MUST NOT auto-invoke these. Name them for
-the user to run, e.g. `/triage` or `/comprehend-change`.
+`release`, `interpret`, `comprehend-change`, `allocate-attention`. Agents MUST
+NOT auto-invoke these. Name them for the user to run, e.g. `/triage` or
+`/allocate-attention`.
 
 **Model-invoked skills** (no `disable-model-invocation`): agents auto-invoke
 these when conditions match. This includes `using-skills`, `brainstorm`,
@@ -232,7 +233,7 @@ skills/                  # skill definitions (42 skills, 11 categories)
   discovery/             # brainstorm, grilling, research, prototype, domain-modeling
   spec/                  # write-requirements, write-design, write-plan
   execution/             # execute-plan, tdd, debug, verify, trace, worktrees
-  review/                # code-review, comprehend-change, receive-review, check-invariants
+  review/                # code-review, allocate-attention, comprehend-change, polish, receive-review, check-invariants
   acceptance/            # acceptance-check, acceptance-api, acceptance-ui, dogfood
   craft/                 # design-page
   ship/                  # finish-branch, release
@@ -316,10 +317,10 @@ Can't tick a box? The work is not done.
 |---|---|
 | **meta** | `using-skills` (m, si), `ask` (U), `writing-skills` (U), `teach` (U) |
 | **setup** | `setup-repo` (U), `scaffold-project` (U) |
-| **discovery** | `brainstorm` (m), `grilling` (m), `research` (m), `prototype` (m), `domain-modeling` (m) |
+| **discovery** | `brainstorm` (m), `grilling` (m), `interpret` (U), `research` (m), `prototype` (m), `domain-modeling` (m) |
 | **spec** | `write-requirements` (m), `write-design` (m), `write-plan` (m) |
 | **execution** | `execute-plan` (m), `tdd` (m), `debug` (m), `verify` (m), `trace` (m), `worktrees` (m) |
-| **review** | `code-review` (m), `comprehend-change` (U), `receive-review` (m), `check-invariants` (m) |
+| **review** | `code-review` (m), `allocate-attention` (U), `comprehend-change` (U), `polish` (m), `receive-review` (m), `check-invariants` (m) |
 | **acceptance** | `acceptance-check` (m), `acceptance-api` (m), `acceptance-ui` (m), `dogfood` (m) |
 | **craft** | `design-page` (m) |
 | **ship** | `finish-branch` (m), `record-decision` (m), `release` (U) |

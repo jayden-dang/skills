@@ -121,5 +121,11 @@ A independently did the same thing while authoring, elevating the shared storage
 into its own milestone rather than duplicating it under two dependents.
 
 Both behaviors appeared without any skill. Per `writing-skills`, text with no failure
-behind it is a no-op — so these two criteria are candidates for retirement by
-strikethrough. **Pending the user's ruling; not yet acted on.**
+behind it is a no-op.
+
+**Ruled 2026-07-25: both retired by strikethrough** in `requirements.md`, with this file
+as the stated evidence. Neither rule is written into `write-roadmap`. What survives:
+forward dependencies are still caught structurally by S4 in the template rule block, the
+authoring gate (RMAP-1.18), and `check-roadmap`'s R11; the `Surfaces:` slot is retained by
+RMAP-1.20 because it is the input that makes overlap visible — the retired part is the
+instruction to reason about it, not the data.

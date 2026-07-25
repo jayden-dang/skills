@@ -29,8 +29,8 @@ that it outlives the conversation that produced it and later work can cite it.
 - **RMAP-1.2** THE SYSTEM SHALL give every milestone a `MILE-N` ID, one testable outcome sentence, a member list, a `Depends-on` field, and a commitment state of `Planned`, `Committed`, or `Closed`.
 - **RMAP-1.3** THE SYSTEM SHALL give every roadmap item a `ROAD-N` ID and a slug, and record it under exactly one milestone.
 - **RMAP-1.4** THE SYSTEM SHALL identify a roadmap item by its `ROAD-N` ID and slug, leaving feature-code registration to `write-requirements`.
-- **RMAP-1.5** IF a milestone's `Depends-on` names a milestone that appears later in the roadmap's milestone table THEN THE SYSTEM SHALL report the forward dependency, which withholds approval under RMAP-1.18.
-- **RMAP-1.6** WHEN the `Surfaces:` slots of items in two or more proposed milestones name the same component or path THE SYSTEM SHALL surface the overlap and offer to consolidate those milestones into one with ordered items.
+- ~~**RMAP-1.5**~~ retired 2026-07-25: no baseline failure. A fresh agent caught a forward dependency unprompted as its first finding. The structural check survives as S4 in the template rule block and as `check-roadmap` finding R11 — only the authoring-time rule is retired. Evidence: `tests/roadmap/red-baselines.md`.
+- ~~**RMAP-1.6**~~ retired 2026-07-25: no baseline failure. Two independent baseline agents consolidated a surface repeated across milestones without prompting — one while reviewing, one while authoring. The `Surfaces:` slot that made the overlap visible is retained by RMAP-1.20. Evidence: `tests/roadmap/red-baselines.md`.
 - **RMAP-1.7** WHEN a roadmap item leaves a milestone's membership THE SYSTEM SHALL record it under that milestone's `Deferred` slot with a date and a reason.
 - **RMAP-1.8** WHERE `docs/product/vision.md` exists THE SYSTEM SHALL cite the goals each milestone serves by `GOAL-N` ID.
 - **RMAP-1.9** WHERE `docs/product/vision.md` does not exist THE SYSTEM SHALL author the roadmap from the decomposition it was handed and record its goal citations as `None`.

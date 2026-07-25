@@ -132,7 +132,7 @@ whole layer no-ops (ARCH-2).
 
 ### `write-roadmap` — authoring and the approval gate
 
-Satisfies: RMAP-1.4, RMAP-1.5, RMAP-1.6, RMAP-1.7, RMAP-1.8, RMAP-1.9, RMAP-1.10, RMAP-1.11, RMAP-1.12, RMAP-1.13, RMAP-1.14, RMAP-1.17, RMAP-1.18, RMAP-1.19
+Satisfies: RMAP-1.4, RMAP-1.7, RMAP-1.8, RMAP-1.9, RMAP-1.10, RMAP-1.11, RMAP-1.12, RMAP-1.13, RMAP-1.14, RMAP-1.17, RMAP-1.18, RMAP-1.19
 Respects: ARCH-2, ARCH-5
 Reuse: existing — `establish-project`'s create/update mode split plus `write-requirements`' present-the-file-and-STOP gate (rung 2)
 
@@ -142,10 +142,17 @@ feature's spec triad.
 
 **Create** — fill the template, then run the decomposition discipline, ported from the
 researched BMAD `step-02-design-epics.md` and stated as positive rules: group milestones
-by user value; make each one standalone and enabling of those after it; consolidate
-milestones whose members' `Surfaces:` overlap on the same component or path (RMAP-1.6);
-prefer fewer and larger when the design is settled, splitting at a genuine risk boundary.
-Cite `GOAL-N` per milestone when a vision exists, else record `Goals: None`.
+by user value; make each one standalone and enabling of those after it; prefer fewer and
+larger when the design is settled, splitting at a genuine risk boundary. Cite `GOAL-N` per
+milestone when a vision exists, else record `Goals: None`.
+
+**Two rules the baseline retired.** Forward-dependency detection (struck RMAP-1.5) and
+surface-overlap consolidation (struck RMAP-1.6) are **not** written into this skill: fresh
+agents performed both unprompted, so the text would be a no-op. Forward dependencies are
+still caught structurally — S4 in the template rule block, enforced by this skill's gate
+(RMAP-1.18) and by `check-roadmap`'s R11. The `Surfaces:` slot stays (RMAP-1.20) because it
+is the input that makes overlap visible in the first place; what is retired is the
+instruction to reason about it, not the data.
 
 **Update** — a material change (outcome, membership, ordering, commitment state, goal
 citations) sets `Status: Draft`, preserves every existing ID, and re-enters the gate
@@ -360,7 +367,7 @@ two existing lint scripts and the scenario-markdown convention declared in
 | Seam | Kind | Covers |
 |---|---|---|
 | `templates/roadmap-INDEX.md` required-slot lint | unit | RMAP-1.1, RMAP-1.2, RMAP-1.3, RMAP-1.15, RMAP-1.16, RMAP-1.20 |
-| `write-roadmap` gate over fixture roadmaps | scenario | RMAP-1.5, RMAP-1.6, RMAP-1.7, RMAP-1.8, RMAP-1.9, RMAP-1.10, RMAP-1.11, RMAP-1.12, RMAP-1.14, RMAP-1.17, RMAP-1.18, RMAP-1.19 |
+| `write-roadmap` gate over fixture roadmaps | scenario | RMAP-1.7, RMAP-1.8, RMAP-1.9, RMAP-1.10, RMAP-1.11, RMAP-1.12, RMAP-1.14, RMAP-1.17, RMAP-1.18, RMAP-1.19 |
 | `scripts/lint-skill-frontmatter.py` (existing) | unit | RMAP-1.13, RMAP-3.13 |
 | `brainstorm` decomposition scenarios (multi- and single-subsystem) | scenario | RMAP-2.1, RMAP-2.2, RMAP-2.3 |
 | `write-requirements` Step 1 binding scenarios (roadmap present / absent) | scenario | RMAP-2.4, RMAP-2.5, RMAP-2.6 |
@@ -379,11 +386,15 @@ two existing lint scripts and the scenario-markdown convention declared in
 
 ## Coverage check
 
-All 54 requirement IDs appear in exactly one `Satisfies:` line — verified mechanically by
-diffing the bold definitions in `requirements.md` against the IDs on every `Satisfies:`
-line in this file. Story 1: 20/20. Story 2: 10/10. Story 3: 20/20. Story 4: 4/4. No
-deliberately unmapped IDs, no ID cited twice, no `Satisfies:` line citing an ID the
-requirements do not define.
+All **52 live** requirement IDs appear in exactly one `Satisfies:` line — verified
+mechanically by diffing the bold definitions in `requirements.md` against the IDs on every
+`Satisfies:` line in this file. Story 1: 18/18 live. Story 2: 10/10. Story 3: 20/20.
+Story 4: 4/4. No deliberately unmapped IDs, no ID cited twice, no `Satisfies:` line citing
+an ID the requirements do not define.
+
+`RMAP-1.5` and `RMAP-1.6` were retired by strikethrough on 2026-07-25 after their RED
+baseline showed no failure. A struck ID counts as undefined, so no `Satisfies:` line, seam
+row, or task footer may cite either one.
 
 One section carries no `Satisfies:` line and declares itself infrastructure: the test
 harness, which builds the means of verification rather than a required behavior.

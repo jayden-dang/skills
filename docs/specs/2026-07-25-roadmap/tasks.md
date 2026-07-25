@@ -252,8 +252,7 @@ _Requirements: RMAP-1.1, RMAP-1.2, RMAP-1.3, RMAP-1.15, RMAP-1.16, RMAP-1.20_
 - [ ] **Step 1: Write the failing test — RED baseline**
 
 Author `tests/roadmap/scenarios-write-roadmap.md` with one scenario per behavior,
-each carrying its bare ID token: forward dependency refused (`RMAP-1.5`), overlapping
-`Surfaces:` prompt consolidation (`RMAP-1.6`), deferral records date and reason
+each carrying its bare ID token: deferral records date and reason
 (`RMAP-1.7`), goal citation present / `None` without a vision (`RMAP-1.8`,
 `RMAP-1.9`), `Closed:` records the tag (`RMAP-1.10`), retirement by strikethrough
 (`RMAP-1.11`), ID survives a milestone move (`RMAP-1.12`), model-invocable
@@ -291,7 +290,7 @@ Run: `python3 scripts/lint-skill-frontmatter.py && python3 scripts/lint-handoffs
 
 `git commit -m "feat(roadmap): add write-roadmap authoring skill with approval gate" # trailer: Implements: RMAP-1.4`
 
-_Requirements: RMAP-1.4, RMAP-1.5, RMAP-1.6, RMAP-1.7, RMAP-1.8, RMAP-1.9, RMAP-1.10, RMAP-1.11, RMAP-1.12, RMAP-1.13, RMAP-1.14, RMAP-1.17, RMAP-1.18, RMAP-1.19_
+_Requirements: RMAP-1.4, RMAP-1.7, RMAP-1.8, RMAP-1.9, RMAP-1.10, RMAP-1.11, RMAP-1.12, RMAP-1.13, RMAP-1.14, RMAP-1.17, RMAP-1.18, RMAP-1.19_
 
 ---
 

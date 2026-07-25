@@ -41,7 +41,14 @@ sequence below. Create a todo per step.
 Pick a short unique prefix (2–12 chars, A–Z0–9, starts with a letter — e.g.
 `SHELL`, `SYNC2`). Check `docs/specs/INDEX.md`; add a row there BEFORE writing
 requirements. Never reuse a retired code.
-**Done when:** the code has a row in INDEX.md with status Draft.
+
+**Bind the roadmap item.** WHERE `docs/roadmap/INDEX.md` exists and this work implements one
+of its items, record that item's `ROAD-N` in the row's **Roadmap item** column. WHERE there
+is no roadmap, or the work was never planned as an item, write `—` and register the feature
+otherwise unchanged. This column is the only link between plan and spec, and this step is
+its only writer — a `ROAD-N` is never invented here, only cited.
+**Done when:** the code has a row in INDEX.md with status Draft, and its Roadmap item cell
+holds a `ROAD-N` or `—`.
 
 ## Step 2: Write stories and EARS criteria
 

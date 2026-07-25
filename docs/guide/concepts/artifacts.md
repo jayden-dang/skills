@@ -57,10 +57,12 @@ Templates for all three live in [`templates/`](../resources/templates.md).
 The sole feature registry. A feature code is unique repo-wide, forever. `write-requirements` registers it here *before* writing the requirements file, and never reuses a retired code.
 
 ```markdown
-| Code | Feature | Spec | Status |
-|---|---|---|---|
-| SHELL | Left icon rail for module switching | ./2026-07-09-shell/ | Implemented |
+| Code | Feature | Spec | Status | Roadmap item |
+|---|---|---|---|---|
+| SHELL | Left icon rail for module switching | ./2026-07-09-shell/ | Implemented | ROAD-3 |
 ```
+
+The last column binds the feature to the [roadmap](../skills/write-roadmap.md) item it implements, or `—` when the project has no roadmap layer. It is the join [`check-roadmap`](../skills/check-roadmap.md) reads to tell a planned item from a specced one.
 
 Because it enumerates every feature, it is what the [feature-overlap](feature-graph.md) search reads to know the full set of neighbors when [`brainstorm`](../skills/brainstorm.md) or [`code-review`](../skills/code-review.md) checks whether an idea or a diff already exists.
 

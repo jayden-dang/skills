@@ -39,11 +39,13 @@ That single Out-of-Scope line is often the whole answer: the new idea was alread
 `INDEX.md` is the sole feature registry. Every feature code is unique repo-wide, forever, and is registered here — by [`write-requirements`](../skills/write-requirements.md) — before the requirements file that uses it is written. It is the one place that enumerates every feature, so an overlap search always knows the full set of neighbors to consider.
 
 ```markdown
-| Code | Feature | Spec | Status |
-|---|---|---|---|
-| SHELL | Left icon rail for module switching | ./2026-07-09-shell/ | Implemented |
-| CHIPUI | Module chip rail | ./2026-04-02-chip-rail/ | Shipped |
+| Code | Feature | Spec | Status | Roadmap item |
+|---|---|---|---|---|
+| SHELL | Left icon rail for module switching | ./2026-07-09-shell/ | Implemented | ROAD-3 |
+| CHIPUI | Module chip rail | ./2026-04-02-chip-rail/ | Shipped | — |
 ```
+
+The **Roadmap item** column binds each feature to the [`ROAD-N`](../skills/write-roadmap.md) it implements, or `—` when the project has no roadmap layer or the work was never planned as an item. Overlap search ignores it; it exists for [`check-roadmap`](../skills/check-roadmap.md)'s plan-to-spec join.
 
 ## Where overlap is consumed
 

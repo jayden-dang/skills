@@ -261,3 +261,21 @@ edit that grows `trace` into planning-ID territory.
 
 Recorded here so the absent RED phase is a stated decision rather than a gap someone finds
 later and has to reconstruct.
+
+## Task 7 — weak RED, and why
+
+`tests/test_priority_ladder.py` had **6 of 7 tests pass on first run**. The cause is a
+sequencing slip of mine, not a property of the work: the plan allocated the ten-row ladder to
+Task 7, and I wrote it into `check-roadmap`'s body during Task 6. By the time the ladder test
+existed, its subject already did.
+
+Deleting a verified ladder to manufacture a red bar would have been theatre, so the content
+stands and the slip is recorded here instead. The test keeps its value as a **regression
+guard** on ordering, tie-breaks, the withholding branch, and the ARCH-5 boundary at row 7.
+
+The one genuine failure it did catch: the standup card's phrase "the milestone in flight"
+wraps across a newline in the source, so a plain substring check for `in flight` failed. The
+fix belonged in the test — collapsing whitespace before prose assertions — because a test that
+breaks whenever a paragraph reflows is coupled to formatting rather than behaviour. The
+table-row assertions stay line-scoped, since markdown table rows are single lines by
+construction.

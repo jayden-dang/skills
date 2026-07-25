@@ -249,3 +249,15 @@ carries build order; identity stays the ID. No new slot.
 - `write-roadmap` is not a harness-registered tool in this repo, so the agent followed it by
   reading the file. Correct behavior; noted because it confirms `AGENTS.md` registration plus
   the on-disk body — not tool registration — is what makes an in-repo skill effective.
+
+## Task 9 — no RED phase, by design
+
+`tests/test_trace_scope.py` guards RMAP-2.10, a `SHALL CONTINUE TO` criterion. It protects a
+boundary that already holds, so it passes on its first run. `tdd` lists "a new test passed on
+its first run" as a red flag, and that flag is correct for a test meant to *drive* new
+behaviour — this one engages no production change at all, and `write-requirements` Step 3
+mandates exactly this shape for guard criteria. The failure mode it exists for is a future
+edit that grows `trace` into planning-ID territory.
+
+Recorded here so the absent RED phase is a stated decision rather than a gap someone finds
+later and has to reconstruct.

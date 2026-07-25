@@ -1,0 +1,8 @@
+# scale — 50 milestones, 200 items, 200 bound features, structurally clean
+# No findings from structure: every item sits under exactly one milestone, every
+# feature binds a live item, no milestone is Closed, and GOAL-1 is cited throughout.
+#
+# Scope note: this fixture carries no per-feature requirements.md files. It exists to
+# measure the PASS BUDGET (RMAP-4.1) — that the documented pass set is a fixed count
+# independent of scale — not to exercise R10 status-drift derivation, which the
+# status-mismatch fixture covers at size one.

@@ -1,6 +1,6 @@
 # Skill reference
 
-Forty-two skills in eleven buckets. Each has its own page.
+Forty-four skills in eleven buckets. Each has its own page.
 
 **Invocation** is the thing to check first. A **model-invocable** skill is invoked by the agent on its own when its description matches the situation. A **user-invoked** skill carries `disable-model-invocation: true` in its frontmatter — the agent *cannot* invoke it, so you run it as a slash command.
 
@@ -115,6 +115,7 @@ The optional documentation layer above the feature workflow. Absent by default.
 | Skill | Invocation | What it does |
 |---|---|---|
 | [`establish-project`](establish-project.md) | `/establish-project` | Authors and maintains the optional project layer — product vision, IDed architecture-invariant spine, and engineering guidelines |
+| [`write-roadmap`](write-roadmap.md) | model-invocable | Authors and maintains `docs/roadmap/INDEX.md` — `MILE-N` milestones and `ROAD-N` items, intent only, progress never stored |
 
 ---
 

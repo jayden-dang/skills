@@ -1,6 +1,6 @@
 # AGENTS.md — Agent Behavior Constitution
 
-> **A-to-Z Agentic Development Skill Set** | 43 skills across 11 categories |
+> **A-to-Z Agentic Development Skill Set** | 44 skills across 11 categories |
 > `jayden-dang/skills` | v1.0
 
 This file is the single source of truth for agent behavior when working with this
@@ -73,7 +73,7 @@ these when conditions match. This includes `using-skills`, `brainstorm`,
 `grilling`, `research`, `prototype`, `domain-modeling`, the full spec triad,
 `execute-plan`, `tdd`, `debug`, `verify`, `worktrees`, `code-review`,
 `receive-review`, `check-invariants`, the acceptance suite, `finish-branch`,
-`record-decision`, `amend`, and
+`record-decision`, `amend`, `write-roadmap`, and
 `sync-spec`.
 
 **Session-injected skill:** `using-skills` is injected by the `SessionStart` hook
@@ -227,7 +227,7 @@ content moves to a sibling file in the same directory.
 ## 8. File Organization
 
 ```
-skills/                  # skill definitions (42 skills, 11 categories)
+skills/                  # skill definitions (44 skills, 11 categories)
   meta/                  # using-skills, ask, writing-skills
   setup/                 # setup-repo, scaffold-project
   discovery/             # brainstorm, grilling, research, prototype, domain-modeling
@@ -238,7 +238,8 @@ skills/                  # skill definitions (42 skills, 11 categories)
   craft/                 # design-page
   ship/                  # finish-branch, release
   track/                 # amend, correct-course, triage, sync-spec, improve-architecture, handoff, file-issues
-  project/               # establish-project (optional project-documentation layer)
+  project/               # establish-project, write-roadmap (optional project-documentation
+                         #   and milestone-intent layers)
 templates/               # requirements.md, design.md, tasks.md, CONTEXT.md seeds
 hooks/                   # session-start.sh + hooks.json (injection on startup/clear/compact)
 docs/
@@ -309,7 +310,7 @@ Can't tick a box? The work is not done.
 
 ---
 
-## 11. Quick Reference: The 42 Skills
+## 11. Quick Reference: The 44 Skills
 
 **Legend:** (m) model-invoked · (U) user-invoked · (si) session-injected
 
@@ -325,11 +326,17 @@ Can't tick a box? The work is not done.
 | **craft** | `design-page` (m) |
 | **ship** | `finish-branch` (m), `record-decision` (m), `release` (U) |
 | **track** | `amend` (m), `correct-course` (m), `triage` (U), `sync-spec` (m), `improve-architecture` (U), `handoff` (U), `file-issues` (U) |
-| **project** | `establish-project` (U) |
+| **project** | `establish-project` (U), `write-roadmap` (m) |
 
 **Main flow:** `brainstorm` → `write-requirements` → `write-design` →
 `write-plan` → `worktrees` → `execute-plan` → `code-review` → `acceptance-check`
 → `finish-branch` → `release` → `sync-spec`.
+
+**Program layer (optional):** `establish-project` (vision + `ARCH-N` spine) →
+`write-roadmap` (`MILE-N` milestones and `ROAD-N` items in `docs/roadmap/INDEX.md`) →
+the feature flow above, one roadmap item at a time. Every edit to an existing roadmap —
+dropping an item, reordering milestones, committing or closing one — goes through
+`write-roadmap`, never a direct file edit.
 
 **Bugfix flow:** `debug` → mini-spec → `tdd` → `verify` → `code-review` →
 `finish-branch`.

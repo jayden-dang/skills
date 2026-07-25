@@ -129,3 +129,62 @@ forward dependencies are still caught structurally by S4 in the template rule bl
 authoring gate (RMAP-1.18), and `check-roadmap`'s R11; the `Surfaces:` slot is retained by
 RMAP-1.20 because it is the input that makes overlap visible — the retired part is the
 instruction to reason about it, not the data.
+
+## GREEN — `write-roadmap`
+
+Same prompts, same sanitized repo, with the skill and template added and still no spec to
+read. Three runs were needed; the two failures were both **discoverability**, not
+body loopholes.
+
+| Run | Outcome |
+|---|---|
+| GREEN A (author) | full compliance, first attempt. Cited the skill by name |
+| GREEN C attempt 1 (update) | **failed** RMAP-1.7 and RMAP-1.19. Never mentioned the skill |
+| GREEN C attempt 2 (update) | **failed** the same two. Reported "no AGENTS.md gate applies" |
+| GREEN C attempt 3 (update) | full compliance. Cited `skills/project/write-roadmap/SKILL.md` by path |
+
+**GREEN A** wrote to `docs/roadmap/INDEX.md`, filled every slot, kept `Status: Draft`,
+preserved every pre-existing ID and continued past the highest in use (`ROAD-6`, `ROAD-7`),
+left the `ROAD-4` gap alone rather than reusing it, and folded the storage rework into
+Search because "a milestone whose outcome is only 'the storage layer is reworked' isn't a
+testable user outcome". It invented no status column and no change log — the strongest
+baseline failure, fixed.
+
+**Why C failed twice.** Attempt 1's report never named the skill. Attempt 2 said it
+outright:
+
+> "the roadmap-edit skills in this repo's AGENTS.md (brainstorm/write-requirements/etc.)
+> gate *feature/code* work, not roadmap-document edits — there's no gate here requiring a
+> check-in"
+
+`write-roadmap` was not yet registered in `AGENTS.md`. Skills in this repo are source, not
+harness-installed, so **`AGENTS.md` §11 is the discovery surface** — an agent that trusts
+the index and finds nothing listed correctly concludes nothing applies. Two fixes, both
+kept:
+
+1. The `description` had only create-shaped triggers. Added update-branch triggers —
+   "update the roadmap", "drop this item", "reorder the milestones", "move sharing ahead of
+   search", and any request that edits `docs/roadmap/INDEX.md`.
+2. Registered the skill in `AGENTS.md` §3, §8, §11, the main-flow block, and the guide
+   index.
+
+**Lesson worth keeping:** for an in-repo dogfooding agent, registration in `AGENTS.md` is a
+harder trigger than description keywords. A skill that exists on disk but not in the index
+is invisible to an agent that reads the index first.
+
+**Incidental catch.** The first description rewrite failed
+`scripts/lint-skill-frontmatter.py` on an unquoted colon — the precise failure its
+docstring says once silently dropped `trace` from the catalog. Rephrased without colons.
+
+**GREEN C attempt 3, verbatim on the two previously-failing behaviors:**
+
+> "I did not delete it. Changed `Members: ROAD-3 search-index, ROAD-4 search-ui` to
+> `Members: ROAD-3 search-index, ~~ROAD-4 search-ui~~ — dropped 2026-07-25: no custom
+> search UI` — struck through in place, with a date and reason, so the record that it was
+> considered and rejected survives."
+
+> "`Status: Approved` → `Status: Draft`: I demoted it. […] a prior sign-off does not
+> pre-approve a new edited version ('an amended plan is a different plan')."
+
+No new rationalizations appeared in attempt 3, so REFACTOR closed with the description and
+registration fixes above.

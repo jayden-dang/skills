@@ -1,7 +1,7 @@
 # Design: Roadmap layer
 
 Feature code: RMAP
-Status: Approved
+Status: Implemented
 Date: 2026-07-25
 Requirements: ./requirements.md
 
@@ -160,7 +160,7 @@ citations) sets `Status: Draft`, preserves every existing ID, and re-enters the 
 rather than disappearing (RMAP-1.7).
 
 **The gate** — validate S1–S7 from the template's rule block; any defect is reported and
-withholds the gate (RMAP-1.18, and RMAP-1.5 for the forward-dependency case). When clean,
+withholds the gate (RMAP-1.18, which covers the forward-dependency case as S4). When clean,
 present the whole file and STOP; only explicit user approval writes `Status: Approved`
 (RMAP-1.17).
 

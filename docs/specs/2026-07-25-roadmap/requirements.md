@@ -1,7 +1,7 @@
 # Requirements: Roadmap layer
 
 Feature code: RMAP
-Status: Approved
+Status: Implemented
 Date: 2026-07-25
 
 Adds the program band between `docs/product/vision.md` and a single feature's

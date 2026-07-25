@@ -10,4 +10,4 @@ not planned as a roadmap item.
 
 | Code | Feature | Spec | Status | Roadmap item |
 |---|---|---|---|---|
-| RMAP | Roadmap layer — milestone intent and derived roadmap health | ./2026-07-25-roadmap/ | Approved | — |
+| RMAP | Roadmap layer — milestone intent and derived roadmap health | ./2026-07-25-roadmap/ | Implemented | — |

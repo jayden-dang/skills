@@ -1,10 +1,10 @@
 # Tasks: Roadmap layer
 
 > **For agentic workers:** REQUIRED SUB-SKILL: use `execute-plan` to implement
-> this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
+> this plan task-by-task. Steps use checkbox (`- [x]`) syntax for tracking.
 
 Feature code: RMAP
-Status: Approved
+Status: Implemented
 Date: 2026-07-25
 Requirements: ./requirements.md
 Design: ./design.md
@@ -162,7 +162,7 @@ A file not in this map should not be touched by any task.
 
 **Depends-on:** none
 
-- [ ] **Step 1: Write the failing test**
+- [x] **Step 1: Write the failing test**
 
 ```python
 """Roadmap template slot contract."""
@@ -212,7 +212,7 @@ if __name__ == "__main__":
 
 Run: `python3 -m unittest tests.test_roadmap_template` — expect: `ModuleNotFoundError` or three failures on the missing template.
 
-- [ ] **Step 2: Implement**
+- [x] **Step 2: Implement**
 
 Create `templates/roadmap-INDEX.md` exactly as specified in `design.md` §"The roadmap
 artifact and its template", including the `S1`–`S7` comment block verbatim and the
@@ -221,7 +221,7 @@ a `ROAD-N` keeps its ID across a milestone move).
 
 Run: `python3 -m unittest tests.test_roadmap_template` — expect: pass.
 
-- [ ] **Step 3: Full verify and commit**
+- [x] **Step 3: Full verify and commit**
 
 Run: `python3 scripts/lint-skill-frontmatter.py && python3 scripts/lint-handoffs.py && python3 scripts/lint-context7.py && python3 -m unittest discover -s tests` — expect: pass, output pristine.
 
@@ -249,7 +249,7 @@ _Requirements: RMAP-1.1, RMAP-1.2, RMAP-1.3, RMAP-1.15, RMAP-1.16, RMAP-1.20_
 
 **Depends-on:** Task 1
 
-- [ ] **Step 1: Write the failing test — RED baseline**
+- [x] **Step 1: Write the failing test — RED baseline**
 
 Author `tests/roadmap/scenarios-write-roadmap.md` with one scenario per behavior,
 each carrying its bare ID token: deferral records date and reason
@@ -268,7 +268,7 @@ Expect: the baseline agent invents its own roadmap shape, skips the approval gat
 renumbers freely. If any scenario passes without the skill, delete it — there is
 nothing to fix there.
 
-- [ ] **Step 2: Implement**
+- [x] **Step 2: Implement**
 
 Write `skills/project/write-roadmap/SKILL.md`: frontmatter with a trigger-and-outcome
 `description` naming the `docs/roadmap/INDEX.md` deliverable and **no**
@@ -286,7 +286,7 @@ each new rationalization verbatim, add an explicit counter, re-run until none ap
 
 Run: `python3 scripts/lint-skill-frontmatter.py && python3 scripts/lint-handoffs.py && python3 scripts/lint-context7.py && python3 -m unittest discover -s tests` — expect: pass.
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 `git commit -m "feat(roadmap): add write-roadmap authoring skill with approval gate" # trailer: Implements: RMAP-1.4`
 
@@ -308,7 +308,7 @@ _Requirements: RMAP-1.4, RMAP-1.7, RMAP-1.8, RMAP-1.9, RMAP-1.10, RMAP-1.11, RMA
 
 **Depends-on:** Task 2
 
-- [ ] **Step 1: Write the failing test — RED baseline**
+- [x] **Step 1: Write the failing test — RED baseline**
 
 Author `tests/roadmap/scenarios-brainstorm.md`: a multi-subsystem request that must
 persist its decomposition (`RMAP-2.1`), a second one against an existing roadmap that
@@ -320,7 +320,7 @@ Run against the **current** `brainstorm`. Append failures verbatim to
 `tests/roadmap/red-baselines.md`. Expect: the decomposition is named in conversation and
 never written down.
 
-- [ ] **Step 2: Implement**
+- [x] **Step 2: Implement**
 
 Add one conditional to step 5: when the decomposition names two or more independent
 sub-features, `REQUIRED SUB-SKILL: use \`write-roadmap\`` to persist them as `ROAD-N`
@@ -332,7 +332,7 @@ unchanged path. REFACTOR against new rationalizations.
 
 Run: full verify — expect pass.
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 `git commit -m "feat(roadmap): persist brainstorm decomposition through write-roadmap" # trailer: Implements: RMAP-2.1`
 
@@ -358,7 +358,7 @@ _Requirements: RMAP-2.1, RMAP-2.2, RMAP-2.3_
 
 **Depends-on:** none
 
-- [ ] **Step 1: Write the failing test — RED baseline**
+- [x] **Step 1: Write the failing test — RED baseline**
 
 Author `tests/roadmap/scenarios-binding.md`: registering a feature that implements a
 roadmap item records its `ROAD-N` (`RMAP-2.4`); registering with no roadmap present
@@ -368,7 +368,7 @@ code uniqueness, and the `Draft` initial status are unchanged (`RMAP-2.6`).
 Run against the **current** `write-requirements`. Append failures verbatim to
 `red-baselines.md`. Expect: no column exists, so no binding is recorded.
 
-- [ ] **Step 2: Implement**
+- [x] **Step 2: Implement**
 
 Add the fifth column to `templates/specs-INDEX.md` and to `docs/specs/INDEX.md`. Add one
 sentence to `write-requirements` Step 1: record the implemented item's `ROAD-N` in that
@@ -381,7 +381,7 @@ the `Status` cell semantically.
 
 Run: full verify — expect pass.
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 `git commit -m "feat(roadmap): bind feature codes to roadmap items in the spec index" # trailer: Implements: RMAP-2.4`
 
@@ -405,7 +405,7 @@ _Requirements: RMAP-2.4, RMAP-2.5, RMAP-2.6_
 
 **Depends-on:** none
 
-- [ ] **Step 1: Write the failing test — RED baseline**
+- [x] **Step 1: Write the failing test — RED baseline**
 
 Author `tests/roadmap/scenarios-vision.md`: create mode assigns `GOAL-N` as it writes
 (`RMAP-2.7`); update mode on un-IDed goals assigns IDs in document order and reports the
@@ -415,7 +415,7 @@ strikethrough rather than renumbered (`RMAP-2.9`).
 Run against the **current** `establish-project`. Append failures verbatim to
 `red-baselines.md`. Expect: goals are written as bare bullets with no IDs.
 
-- [ ] **Step 2: Implement**
+- [x] **Step 2: Implement**
 
 Make `## Goals` bold-IDed in `templates/product-vision.md`. Add ID assignment to
 `establish-project`'s create step, the un-IDed migration to update mode, and the
@@ -425,7 +425,7 @@ immutable on landing.
 
 Run: full verify — expect pass.
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 `git commit -m "feat(roadmap): give vision goals stable GOAL-N identity" # trailer: Implements: RMAP-2.7`
 
@@ -454,7 +454,7 @@ _Requirements: RMAP-2.7, RMAP-2.8, RMAP-2.9_
 
 **Depends-on:** Task 1, Task 4, Task 5
 
-- [ ] **Step 1: Write the failing test**
+- [x] **Step 1: Write the failing test**
 
 **What this test can and cannot prove.** A markdown skill has no entry point a Python
 test can call, so this test does **not** assert that `check-roadmap` emits R1–R11 — that
@@ -547,7 +547,7 @@ if __name__ == "__main__":
 
 Run: `python3 -m unittest tests.test_check_roadmap_rules` — expect: failures on every missing fixture directory.
 
-- [ ] **Step 2: Implement**
+- [x] **Step 2: Implement**
 
 Build the fixture set, each case a miniature repo plus its `expected-findings.txt`. Then
 write `skills/track/check-roadmap/SKILL.md` with `disable-model-invocation: true`,
@@ -568,7 +568,7 @@ the scenario-markdown include on its Test globs line so `trace`'s coverage pass 
 
 Run: `python3 -m unittest tests.test_check_roadmap_rules` — expect: pass. Then full verify.
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 `git commit -m "feat(roadmap): add check-roadmap derivation with findings R1-R11" # trailer: Implements: RMAP-3.1`
 
@@ -590,7 +590,7 @@ _Requirements: RMAP-3.1, RMAP-3.2, RMAP-3.3, RMAP-3.4, RMAP-3.5, RMAP-3.6, RMAP-
 
 **Depends-on:** Task 6
 
-- [ ] **Step 1: Write the failing test**
+- [x] **Step 1: Write the failing test**
 
 ```python
 """Priority ladder: identical artifact state must yield an identical recommendation."""
@@ -653,7 +653,7 @@ if __name__ == "__main__":
 
 Run: `python3 -m unittest tests.test_priority_ladder` — expect: failures on the absent ladder rows.
 
-- [ ] **Step 2: Implement**
+- [x] **Step 2: Implement**
 
 Add the ten-row ladder to `check-roadmap` exactly as tabled in `design.md` §"The priority
 ladder", with the stated tie-breaks (milestone table order, then lowest `ROAD-N`), row 0's
@@ -662,7 +662,7 @@ standup mode as a rendering of the same derivation.
 
 Run: `python3 -m unittest tests.test_priority_ladder` — expect: pass. Then full verify.
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 `git commit -m "feat(roadmap): add deterministic priority ladder and standup mode" # trailer: Implements: RMAP-3.10`
 
@@ -684,7 +684,7 @@ _Requirements: RMAP-3.10, RMAP-3.11, RMAP-3.16_
 
 **Depends-on:** Task 6, Task 7
 
-- [ ] **Step 1: Write the failing test**
+- [x] **Step 1: Write the failing test**
 
 Assert that the documented pass set is a fixed count independent of scale: parse
 `check-roadmap`'s SKILL.md for its numbered passes, confirm there are exactly six plus at
@@ -694,14 +694,14 @@ confirm the same six passes cover it. Docstring: `RMAP-4.1`.
 
 Run: `python3 -m unittest tests.test_check_roadmap_scale` — expect: failure on the missing fixture.
 
-- [ ] **Step 2: Implement**
+- [x] **Step 2: Implement**
 
 Generate the fixture; adjust the pass recipes only if a pass turns out to be per-item —
 which would be a design violation, not a test to loosen.
 
 Run: `python3 -m unittest tests.test_check_roadmap_scale` — expect: pass. Then full verify.
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 `git commit -m "test(roadmap): prove check-roadmap passes are bounded at scale" # trailer: Implements: RMAP-4.1`
 
@@ -722,7 +722,7 @@ _Requirements: RMAP-4.1_
 
 **Depends-on:** none
 
-- [ ] **Step 1: Write the failing test**
+- [x] **Step 1: Write the failing test**
 
 ```python
 """Guard: trace's ID scope stays CODE-N.M and ARCH-N only."""
@@ -754,13 +754,13 @@ if __name__ == "__main__":
 
 Run: `python3 -m unittest tests.test_trace_scope` — expect: `ModuleNotFoundError` before the file exists; both tests pass immediately once it does, because they guard current behavior. Record in `red-baselines.md` that this is a **guard test with no RED phase** — it protects behavior that already holds, and its failure mode is a future edit, not today's code.
 
-- [ ] **Step 2: Implement**
+- [x] **Step 2: Implement**
 
 No production change. The test *is* the deliverable.
 
 Run: full verify — expect pass.
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 `git commit -m "test(roadmap): guard trace's ID scope against planning namespaces" # trailer: Guards: RMAP-2.10`
 

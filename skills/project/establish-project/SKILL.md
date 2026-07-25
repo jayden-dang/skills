@@ -65,9 +65,12 @@ slot — fill it or write `None`.
    after the user ratifies it in the `grilling` channel; unratified candidates are
    discarded with the ephemeral digest. *Done when: no open decision remains.*
 3. **Write the vision.** Fill `templates/product-vision.md` → `docs/product/vision.md`.
-   A scan-derived candidate becomes content in `vision.md` only after the user ratifies
-   it in the `grilling` channel; unratified candidates are discarded with the ephemeral
-   digest. *Done when: the file exists, every slot filled or `None`.*
+   Every goal in `## Goals` gets a bold `**GOAL-N**` ID, flat and repo-wide, assigned as
+   you write — a roadmap milestone cites those IDs, and an unIDed goal cannot be cited or
+   dispositioned. A scan-derived candidate becomes content in `vision.md` only after the
+   user ratifies it in the `grilling` channel; unratified candidates are discarded with the
+   ephemeral digest. *Done when: the file exists, every slot filled or `None`, and every
+   goal carries a unique `**GOAL-N**`.*
 4. **Write the spine.** Fill `templates/architecture-INDEX.md` → `docs/architecture/INDEX.md`.
    Each invariant is a bold `**ARCH-N**` ID plus one imperative rule; keep the set small.
    Split into per-domain `docs/architecture/<domain>.md` files only for a large project.
@@ -92,6 +95,15 @@ found.
 - Revise the affected doc(s) only.
 - A hard-to-reverse, surprising architecture decision gets an ADR (REQUIRED SUB-SKILL:
   use `domain-modeling` — it owns the ADR gate).
+- **Migrate un-IDed goals on first touch.** WHERE `## Goals` holds bullets carrying no
+  `**GOAL-N**`, assign IDs in **document order** — first bullet becomes `GOAL-1` — and
+  report the migration to the user, naming each goal and the ID it received. Document order
+  is the rule so the assignment is reproducible rather than a judgment call.
+- **A goal already recorded in an approved vision is immutable.** Retire it by
+  strikethrough with a reason (`~~**GOAL-2**~~ superseded by GOAL-7`); never renumber and
+  never reuse. Add new goals with fresh IDs continuing past the highest in use, including
+  past any retired one. A roadmap milestone citing a struck goal is a finding, so a
+  renumber silently invalidates the citation rather than breaking loudly.
 - **Never renumber an `ARCH-N`.** Retire an invariant by strikethrough
   (struck ARCH-N superseded by a fresh ARCH-M — never put a struck `**ARCH-N**` token
   in comments/templates; it pollutes the retired-set grep) — the `trace` check then

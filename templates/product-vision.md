@@ -21,7 +21,13 @@ missing in the world without it.>
 
 ## Goals
 
-<The outcomes that define success. Bullet list, each a concrete, checkable aim.>
+<The outcomes that define success. Each carries a bold **GOAL-N** ID, flat and repo-wide,
+so a roadmap milestone can cite the goals it serves. Same immutability rules as **ARCH-N**:
+unique forever, never renumbered, never reused; retire one by striking it through with a
+reason. Each goal is a concrete, checkable aim.>
+
+- **GOAL-1** <a concrete, checkable outcome that defines success>
+- **GOAL-2** <another>
 
 ## Non-goals
 

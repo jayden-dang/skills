@@ -27,11 +27,11 @@ vendored toolchains.
 
 ## Goals
 
-- Ship a complete ideation-to-release skill set with requirements traceability as the spine
-- Keep gates (NO-CODE, TEST-FIRST, ROOT-CAUSE, EVIDENCE) enforceable under agent pressure
-- Stay harness-portable (plain SKILL.md + AGENTS.md) and LLM-native: enforcement is skill-specified `grep`/`git` passes, not bundled linters
-- Make `/setup-repo` configure each consumer repo once so skills stop guessing (tracker-agnostic)
-- Keep ceremony proportional (tiers 0–2) so trivial changes do not require pages of spec
+- **GOAL-1** Ship a complete ideation-to-release skill set with requirements traceability as the spine
+- **GOAL-2** Keep gates (NO-CODE, TEST-FIRST, ROOT-CAUSE, EVIDENCE) enforceable under agent pressure
+- **GOAL-3** Stay harness-portable (plain SKILL.md + AGENTS.md) and LLM-native: enforcement is skill-specified `grep`/`git` passes, not bundled linters
+- **GOAL-4** Make `/setup-repo` configure each consumer repo once so skills stop guessing (tracker-agnostic)
+- **GOAL-5** Keep ceremony proportional (tiers 0–2) so trivial changes do not require pages of spec
 
 ## Non-goals
 

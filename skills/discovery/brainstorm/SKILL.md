@@ -16,7 +16,7 @@ Turn a raw idea into an agreed shape ready for spec work, through dialogue — n
 Shaping a *new* feature or project (nothing spec'd yet) is this skill. A small in-scope change to an **already-shipped, spec'd** feature is `amend` instead — it reads the existing spec and routes the change to the light lane, escalating back here only when the change is genuinely new scope. If you were handed such a change, hand it to `amend`.
 
 <HARD-GATE>
-Write NO code, scaffold NOTHING, and invoke NO implementation skill until this checklist has run and you have stated the ceremony tier out loud. For tier 0 the only permitted exit is `tdd`, and only after the tier is spoken; for tier ≥1, requirements are written and approved first. The only artifacts this skill may touch are notes, the glossary (CONTEXT.md), ADRs, and — via its sub-skills — research notes and explicitly-marked throwaway prototypes. This holds for EVERY request, no matter how simple it looks.
+Write NO code, scaffold NOTHING, and invoke NO implementation skill until this checklist has run and you have stated the ceremony tier out loud. For tier 0 the only permitted exit is `tdd`, and only after the tier is spoken; for tier ≥1, requirements are written and approved first. The only artifacts this skill may touch are notes, the glossary (CONTEXT.md), ADRs, the roadmap (`docs/roadmap/INDEX.md`, and only via `write-roadmap` at step 5), and — via its sub-skills — research notes and explicitly-marked throwaway prototypes. This holds for EVERY request, no matter how simple it looks.
 </HARD-GATE>
 
 ## "Too simple to need a design" is the trap
@@ -31,6 +31,7 @@ Small requests are exactly where unexamined assumptions burn the most work, beca
 | "I'll write requirements after I confirm the approach compiles" | Code-first inverts the gate. Evidence questions get a research/prototype detour; requirements still come first. |
 | "Scaffolding isn't really implementation" | A repo skeleton is a stack decision enacted without approval. It's implementation. |
 | "We talked enough, I basically know the answer" | If it isn't in an approved requirements.md, it lives only in this chat and dies with it. |
+| "The other sub-features aren't in scope right now, so Out-of-Scope is the right home" | Out-of-Scope and an ADR record a *rejection*. Work you intend to do later is deferred to a milestone via `write-roadmap` — declining it destroys the plan you just made. |
 
 **Red flags — stop and return to the checklist if you notice yourself:** opening an editor to "just try something"; running a generator/scaffolder; answering your own open question instead of asking; presenting one approach as the only option; drifting from interviewing into implementing.
 
@@ -112,9 +113,13 @@ State the tier explicitly and why:
 | **1** | behavior change ≤ ~half a day | mini-spec: fix REQ + SHALL-CONTINUE-TO guard in the owning requirements.md |
 | **2** | multi-task feature | full requirements → design → plan triad |
 
-If the work spans multiple independent subsystems, decompose it here: name the sub-features, their relationships, and build order. Each sub-feature gets its own full spec cycle; brainstorm continues with the first one only.
+If the work spans multiple independent subsystems, decompose it here: name the sub-features, their relationships, and build order. Each sub-feature gets its own full spec cycle.
 
-**Done when:** you have said "This is tier N because ..." and, if decomposed, listed the sub-features and which one goes first.
+**Two or more sub-features means the decomposition gets written down before you go any further.** REQUIRED SUB-SKILL: use `write-roadmap` to persist every sub-feature as a `ROAD-N` item — appending to `docs/roadmap/INDEX.md` when it already exists, authoring it when it does not. A sub-feature you are not building first is **deferred to a later milestone**, not declined: an Out-of-Scope line or an ADR records a *rejection*, and a decomposition is not a rejection. Then continue with the first item only.
+
+Without this, the sub-features you are not starting on exist in this conversation and nowhere else — and the pressure to tidy them away turns them into rejections of work nobody actually decided against.
+
+**Done when:** you have said "This is tier N because ..." and, if decomposed, every sub-feature exists as a `ROAD-N` in `docs/roadmap/INDEX.md` and you have named which one goes first.
 
 ### 6. Terminal state
 

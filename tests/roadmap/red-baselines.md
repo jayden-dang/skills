@@ -188,3 +188,64 @@ docstring says once silently dropped `trace` from the catalog. Rephrased without
 
 No new rationalizations appeared in attempt 3, so REFACTOR closed with the description and
 registration fixes above.
+
+## RED — `brainstorm` step-5 handoff
+
+One agent, current `brainstorm` (no handoff), `write-roadmap` present and registered, spec
+removed. Request: a four-subsystem feature (roster, approval permissions, invitation flow,
+spec-approval audit log).
+
+**It decomposed correctly and then destroyed two of the four pieces.** Verbatim:
+
+> "**B. Per-person permission levels controlling who may approve a spec** — declined.
+> Recorded at `docs/adr/0002-defer-enforced-approval-permissions-and-invitations.md` and in
+> […] requirements.md, 'Out of Scope' section, first bullet."
+
+> "**C. Invitation flow for adding a new person to a repo** — declined"
+
+Two of four sub-features became *rejections* — an ADR and Out-of-Scope bullets — not
+deferrals. No build order was persisted anywhere. Corroborating, unprompted, in the same
+report:
+
+> "There's no clean home for a 'flag a pre-existing repo inconsistency' note […] so it's
+> only recorded here, in this report."
+
+The agent then spent 176k tokens writing a full triad for the one surviving piece — correct
+under the current skill, and the reason the other three had to be disposed of somehow.
+
+## GREEN — `brainstorm` step-5 handoff
+
+**Attempt 1 failed on a harness error of mine.** The prompt said "Do not write any spec
+triad", which the agent generalized: *"This was read-only discovery. No file in the repo was
+created or edited."* I had forbidden the artifact under test. Re-ran with the stop boundary
+named by the flow's own steps instead of by "don't write files".
+
+**Attempt 2 complied.** Verbatim:
+
+> "Created: […] `docs/roadmap/INDEX.md` — the program-layer roadmap (Status: Draft) […]
+> S1–S7 structural validation was run against it and is clean"
+
+> "**ROAD-2** and **ROAD-3** remain `Planned` (not yet committed) under the same `MILE-1`
+> milestone in `docs/roadmap/INDEX.md`, each to get its own brainstorm→spec cycle once
+> ROAD-1 ships."
+
+Three sub-features, three tracked items, zero rejections — against RED's four pieces with
+two declined.
+
+### A real gap the GREEN run found
+
+> "The fine-grained dependency chain (ROAD-2 and ROAD-3 both depend on ROAD-1) has **no
+> field in the roadmap template at ROAD-N granularity** (`Depends-on` exists only at the
+> `MILE-N` level) — that ordering is only in this conversation."
+
+`brainstorm` step 5 mandates recording build order, but the template could only express
+dependencies between milestones, so within-milestone ordering was unrepresentable. Fixed by
+extending the existing positional convention to members — item order is list position and
+carries build order; identity stays the ID. No new slot.
+
+### Two findings routed elsewhere, not defects here
+
+- The vision has no `**GOAL-N**` IDs, so `Goals:` citation is vacuous today. That is Task 5.
+- `write-roadmap` is not a harness-registered tool in this repo, so the agent followed it by
+  reading the file. Correct behavior; noted because it confirms `AGENTS.md` registration plus
+  the on-disk body — not tool registration — is what makes an in-repo skill effective.

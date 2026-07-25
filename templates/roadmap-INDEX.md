@@ -34,6 +34,9 @@ ID rules:
 - A ROAD-N keeps its ID when it moves between milestones.
 - Milestone ORDER is table row order; milestone IDENTITY is the MILE-N. Reordering the
   table never renumbers anything.
+- ITEM order is list position within a milestone's Members, and it carries the build
+  order: an item is buildable once the items above it are done. Same rule as milestones —
+  order is position, identity is the ID, so resequencing members renumbers nothing.
 - GOAL-N is defined in docs/product/vision.md and only cited here. Feature codes are
   defined in docs/specs/INDEX.md and never written here — a roadmap item is identified
   by its ROAD-N and slug until a feature spec binds to it.

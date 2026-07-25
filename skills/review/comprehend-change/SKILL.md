@@ -31,7 +31,7 @@ diff, or claiming the user "passed" all violate the law.
 
 ```
 NO PARTIAL SUCCESS HTML ON HARD-STOP
-NO record-decision / NO writes under docs/decisions/
+NO record-decision / NO writes under .skills/decisions/
 NO auto-run / soft-prompt / ship-menu coupling
 ALWAYS EXACTLY FIVE QUIZ ITEMS (never omit for "trivial")
 NEVER claim the user passed the quiz; no score files in the repo
@@ -70,7 +70,7 @@ Stop and re-read the Iron Law if you notice yourself:
 - Writing any HTML after a pure-untracked or empty-range hard-stop
 - Omitting the quiz or writing fewer/more than five questions
 - Claiming pass/fail of the quiz in chat or writing a score file
-- Calling `record-decision` or writing under `docs/decisions/`
+- Calling `record-decision` or writing under `.skills/decisions/`
 - Soft-prompting from finish-branch / code-review / release / execute-plan
 - Putting the deliverable under the target repo worktree
 - ASCII-as-primary Intuition diagrams
@@ -147,7 +147,7 @@ names a concrete path. Tracked dirty still omits untracked without override.
 
 ## DEC enrichment (read-only)
 
-If no `docs/decisions/` / no records → no-op; packet from resolved range alone.
+If no `.skills/decisions/` / no records → no-op; packet from resolved range alone.
 
 WHEN auto-selecting or citing DECs, load `references/dec-whitelist.md` and follow
 it exactly: forward-cite mechanical `DEC-…` tokens in the resolved range corpus;

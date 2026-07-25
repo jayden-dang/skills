@@ -2,14 +2,14 @@
 name: record-decision
 description: >
   Use when finish-branch or release hands off a terminal human verdict with
-  durable evidence and a decision record must be published under docs/decisions/
+  durable evidence and a decision record must be published under .skills/decisions/
   before the production crossing runs.
 ---
 
 # Record a Boundary Decision
 
 Publish one **decision record** (immutable **payload** + append-only **envelope**)
-under `docs/decisions/` for a skill-mediated **terminal verdict** — under
+under `.skills/decisions/` for a skill-mediated **terminal verdict** — under
 **record-before-crossing** ordering.
 
 **Grammar SSOT:** sibling `RECORD.md`. Load it whenever you write or parse fields.
@@ -27,10 +27,16 @@ Continue only when **all** are true; otherwise return with **no artifact**:
 Evidence producers cannot self-promote into emitters. Emit only for skill-mediated
 verdicts (ARCH-6).
 
+The substrate lives under `.skills/` and the prohibition on `.skills/` **locators**
+still holds — they are two different things. Where a record *sits* is storage;
+what a record *cites* is evidence, and evidence must survive being read by someone
+who never had this working copy.
+
 | Thought | Reality |
 |---|---|
 | "This approval is important enough to record" | Only finish-branch / release with a terminal verdict |
 | "I have a log under .skills/" | Promote substance **inline** first; publish no path |
+| "Records live under `.skills/`, so `.skills/` paths are citable now" | Storage location ≠ citable locator; the prohibition is unchanged |
 | "Skip the record; the merge is urgent" | **Record-before-crossing** — no valid publish, no crossing |
 | "The senior/CTO said skip paperwork" | Rank does not rewrite the gate; only an explicit user rule change does |
 | "The file is written; validator can wait" | Written ≠ published; crossing needs validator exit 0 |
@@ -148,7 +154,7 @@ Late evidence → `Execution-Outcome:` on the **envelope** only.
 When the first record would publish and no content-marked anchor exists
 (first non-blank line exactly `# Decision-Record Adoption Anchor`):
 
-1. Write `docs/decisions/ADOPTION.md` once: `Cutoff:` (UTC now) +
+1. Write `.skills/decisions/ADOPTION.md` once: `Cutoff:` (UTC now) +
    `Baseline-Tag: <name>@<object-id>` for each visible tag.
 2. Leave the anchor immutable thereafter. Do not infer adoption from the earliest record.
 
@@ -178,7 +184,7 @@ sh skills/ship/record-decision/validate-records.sh --mode=publish --record <file
 | Block/reject publish fails | Report unrecorded terminal verdict (incomplete accountability) |
 | Publish OK, crossing fails | Append failure as `Execution-Outcome:`; record stays valid |
 
-**Done when:** a validator-clean file exists under `docs/decisions/` before any
+**Done when:** a validator-clean file exists under `.skills/decisions/` before any
 required crossing side effect — or the crossing was withheld with an honest report.
 
 ## Red flags

@@ -197,12 +197,12 @@ citation names a *live* invariant — existence and liveness. Never judge whethe
 design *actually* respects the invariant; that semantic call is `check-invariants` /
 `code-review`, not `trace`.
 
-### Decision-record passes — only when `docs/decisions/` exists
+### Decision-record passes — only when `.skills/decisions/` exists
 
-If the repo has no `docs/decisions/` directory, skip this section entirely; the
+If the repo has no `.skills/decisions/` directory, skip this section entirely; the
 finding set remains passes 1–6 (or 1–4) unchanged.
 
-When `docs/decisions/` exists, run the shipped validator (path relative to this
+When `.skills/decisions/` exists, run the shipped validator (path relative to this
 skill set install, beside `record-decision`):
 
 ```bash

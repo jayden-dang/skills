@@ -110,7 +110,7 @@ A unit is admitted if **any** signal fires. There is **no cap** on hits.
 | **B2** | Dependency surface | a file in the unit matches a manifest glob |
 | **B3** | Untested production change | the unit adds ≥1 line to a **non-test file** **and** `RANGE` adds 0 lines to any **test file** |
 | **B4** | Deletion-heavy | the unit's deleted lines ≥ 3× added **and** deleted ≥ 50 |
-| **B5** | Spec or invariant surface | a file in the unit is under `docs/specs/`, `docs/architecture/`, or `docs/decisions/` |
+| **B5** | Spec or invariant surface | a file in the unit is under `docs/specs/` or `docs/architecture/` |
 
 Line counts come from `git diff --numstat RANGE` aggregated per unit key; path
 matching from `git diff --name-only RANGE` filtered by glob.
@@ -272,9 +272,13 @@ is a function of the range and repo state, not of a stored file.
 This skill **blocks no merge**, PR, release, or decision record, and adds no
 requirement to any of them.
 
-- **Publishes no decision record.** Nothing is written under `docs/decisions/`
+- **Publishes no decision record.** Nothing is written under `.skills/decisions/`
   and `record-decision` gains no emitter. When you carry an allocation summary
   into a terminal decision, it travels as text you already hold.
+- **Reads no decision record.** `.skills/` is git-ignored, so records never appear
+  in `git diff` and cannot reach a unit — B5 covers tracked spec and invariant
+  surfaces only. Adding `.skills/decisions/` to a signal would add a rule that
+  can never fire.
 - **Names, never invokes.** For deeper comprehension of a sampled unit, run
   `/comprehend-change` — user-invoked, so it is named here, never invoked.
 - **Participant boundary.** Work this skill set **did not mediate** is outside

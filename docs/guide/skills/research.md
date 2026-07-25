@@ -35,7 +35,7 @@ The deliverable is fixed: exactly **one markdown file**, no more and no less, so
 
 - Every claim carries a citation to its primary source — a URL, or a file path plus symbol when the source is code being read.
 - What the sources say is kept separate from what you conclude; anything unverified is marked as such.
-- It is placed where the repo already keeps such notes, matching the existing convention. If none exists, pick a sensible spot (e.g. `docs/research/<date>-<topic>.md`) and state where you put it and why.
+- It is written to `.skills/research/<date>-<topic>.md`, and the skill says where it put it. `.skills/` is git-ignored, so the note is local to one working copy — it outlives the session, not the clone. Findings that have to reach a reviewer, a spec, or CI get carried into that tracked artifact rather than cited by path.
 - It **ends with an "Open decisions" section**: the judgment calls the findings surface but do not settle. This is the seam between research and deciding — the note carries the facts right up to the decision and then stops, leaving the call to whoever owns it.
 
 The point of placing it by convention rather than by rule is that a future reader — including a future you — finds it where they would look, not where this one run happened to drop it.
@@ -61,7 +61,7 @@ If the research was serving an interview, the decision goes through [`grilling`]
 
 During a `brainstorm` interview, a question surfaces that no one can answer from preference: "Does the Web Share API's `files` field work on desktop Safari, or only mobile?" That is a fact about an external system, so `brainstorm` detours to `research`.
 
-Because a wrong answer would only cost a feature flag, not an architecture, the standard (not high-stakes) path applies — no fan-out, just a careful trace to the owning source. A background subagent reads the primary sources: the WHATWG spec text, the MDN compatibility data table, and the WebKit source. It writes one file, `docs/research/2026-07-10-web-share-files.md`:
+Because a wrong answer would only cost a feature flag, not an architecture, the standard (not high-stakes) path applies — no fan-out, just a careful trace to the owning source. A background subagent reads the primary sources: the WHATWG spec text, the MDN compatibility data table, and the WebKit source. It writes one file, `.skills/research/2026-07-10-web-share-files.md`:
 
 > **Finding.** `navigator.canShare({ files })` returns `false` on desktop Safari 17 through the current build. *Source: [WebKit `Navigator.cpp`, `canShare()`](https://github.com/WebKit/WebKit/...), MDN compat table (retrieved 2026-07-10).*
 >

@@ -1,11 +1,11 @@
 # DEC field whitelist (read-only)
 
-WHEN `comprehend-change` is enriching a packet from `docs/decisions/` or citing
+WHEN `comprehend-change` is enriching a packet from `.skills/decisions/` or citing
 a DEC, read this file and follow it exactly.
 
 ## Selection
 
-- **No-op** if no `docs/decisions/` or no records (and no adoption substrate).
+- **No-op** if no `.skills/decisions/` or no records (and no adoption substrate).
 - **Auto:** forward-cite only — mechanical `DEC-YYYYMMDD-XXXXXX` in commit messages, PR body (if local), branch notes, or files in the **resolved range**. Cap auto set at **≤5**, newest-by-id first.
 - **Explicit** user DEC ids always included when files exist (explicit wins over cap if needed).
 - **Never:** same-feature fill, recent-N fill, reverse-link (record → commits), LLM “relatedness”.

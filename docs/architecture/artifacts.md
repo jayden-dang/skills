@@ -16,7 +16,6 @@ docs/specs/<YYYY-MM-DD>-<feature>/
   tasks.md             # PLAN — checkbox tasks, each ending `_Requirements: CODE-N.M, ..._`
   discovery.md         # optional, non-normative discovery handoff
 docs/specs/INDEX.md    # the feature registry — feature codes, names, statuses (LLM-maintained)
-docs/decisions/        # boundary decision records (DEC-*.md) + adoption anchor
 CONTEXT.md             # domain glossary (terms + tight definitions + Avoid-lists)
 docs/adr/NNNN-slug.md  # minimal ADRs (1–3 sentences; three-part gate)
 docs/agents/           # per-repo config written by setup-repo:
@@ -24,9 +23,17 @@ docs/agents/           # per-repo config written by setup-repo:
   issue-tracker.md     #   tracker choice + wayfinding operations
   triage-labels.md     #   canonical role → label mapping
 .out-of-scope/         # rejection knowledge base (one file per concept)
-.skills/               # git-ignored ephemera: task briefs, reports, review diffs,
-                       #   progress ledger (crash/compaction recovery)
+.skills/               # git-ignored working namespace: task briefs, reports,
+                       #   review diffs, progress ledger (crash/compaction recovery)
+  decisions/           #   boundary decision records (DEC-*.md) + adoption anchor
+  research/            #   cited research notes (<date>-<topic>.md)
 ```
+
+Everything under `.skills/` is **local to one working copy**: git-ignored, so it
+does not survive a clone and is invisible to CI and to every other contributor.
+Decision records and research notes are durable *relative to the conversation
+that produced them* — they outlive the session, not the checkout. Nothing that
+must reach a reviewer, an auditor, or a build may live there alone.
 
 `requirements.md` remains the **sole normative specification** for a feature; a
 `discovery.md` record is never required. `docs/specs/INDEX.md` is the sole feature

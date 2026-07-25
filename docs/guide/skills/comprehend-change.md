@@ -6,7 +6,7 @@
 |---|---|
 | **Bucket** | review |
 | **Invocation** | user-invoked (`/comprehend-change`) |
-| **Reads** | Local git (resolved range), optional `docs/decisions/` (read-only), optional `## Comprehend-change` / env for output dir |
+| **Reads** | Local git (resolved range), optional `.skills/decisions/` (read-only), optional `## Comprehend-change` / env for output dir |
 | **Writes** | One HTML file **outside** the target repo worktree |
 | **Calls** | Optional [`design-page`](design-page.md) (craft only — not required) |
 | **Called by** | none in v1 (no soft-prompts from finish-branch / code-review) |
@@ -39,7 +39,7 @@ Outside the repo: env `COMPREHEND_CHANGE_OUTPUT_DIR` → project.md `## Comprehe
 
 ## Decision records
 
-Optional read-only enrichment when `docs/decisions/` exists: forward-cite `DEC-*` tokens in the resolved range, plus any ids you name. Never emits or edits records.
+Optional read-only enrichment when `.skills/decisions/` exists: forward-cite `DEC-*` tokens in the resolved range, plus any ids you name. Never emits or edits records.
 
 ## Related
 

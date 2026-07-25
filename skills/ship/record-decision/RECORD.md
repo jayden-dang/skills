@@ -17,12 +17,25 @@ sibling `SKILL.md` — this file defines structure only.
 
 ## Substrate
 
-- One record = one file: `docs/decisions/DEC-YYYYMMDD-XXXXXX.md`
+- One record = one file: `.skills/decisions/DEC-YYYYMMDD-XXXXXX.md`
 - Single global substrate and single logical trace target for decision records
 - Feature and requirement IDs in `Scope:` are **outward citations only** — never
   storage ownership or file-location keys
 - Optional human-browsing index (if any) is a **regenerable derived projection**,
   never authoritative
+
+### Reach
+
+`.skills/` is git-ignored, so the substrate is **working-copy local**: records do
+not survive a clone, and CI, reviewers, and every other contributor cannot see
+them. Immutability, the digest, and the append-only envelope are guarantees
+against *editing* a record — not against losing the checkout that holds it.
+
+This bounds what publication can claim. A published record is accountability
+evidence **for whoever holds this working copy**; it is not a repository-wide or
+audit-facing artifact. When a verdict needs reach beyond that, the durable
+carrier is the crossing's own tracked evidence — the commit, tag, PR, or release
+the record cites — and the record indexes it rather than replacing it.
 
 ## File shape
 
@@ -137,7 +150,7 @@ Content-marked (first non-blank line exactly):
 # Decision-Record Adoption Anchor
 ```
 
-Conventionally `docs/decisions/ADOPTION.md`. Fields:
+Conventionally `.skills/decisions/ADOPTION.md`. Fields:
 
 | Field | Rules |
 |---|---|
@@ -157,3 +170,10 @@ manufacture judgment text (doctrine in `SKILL.md`).
 
 Records must not cite: `.skills/` paths, temporary logs, local absolute paths,
 or session history as evidence locators.
+
+The substrate's own `.skills/decisions/` path is not an exception carved out of
+this list — it is a different axis. **Storage** is where a record sits;
+**evidence** is what a record cites, and the classes above are barred because a
+reader without this working copy cannot resolve them. A record may reference
+another record by **effective identity** (`Supersedes:`, `Superseded-by:`), never
+by path.

@@ -107,11 +107,11 @@ if [ "$MODE" = "publish" ] && [ -z "$RECORD" ]; then
   exit 2
 fi
 
-DEC_DIR="$ROOT/docs/decisions"
+DEC_DIR="$ROOT/.skills/decisions"
 
-# ARCH-2: no docs/decisions → no-op success
+# ARCH-2: no .skills/decisions → no-op success
 if [ ! -d "$DEC_DIR" ]; then
-  printf 'decision-records: no docs/decisions — passes no-op\n'
+  printf 'decision-records: no .skills/decisions — passes no-op\n'
   printf 'decision-records: %s errors · %s warnings\n' "$ERR_COUNT" "$WARN_COUNT"
   exit 0
 fi
@@ -210,7 +210,13 @@ compute_digest() {
 }
 
 prohibited_locator() {
-  # return 0 if prohibited
+  # return 0 if prohibited.
+  # Classes (mirrors RECORD.md "Prohibited evidence locator classes"):
+  #   .skills/ paths · /tmp/ · local absolute paths · "session history"
+  # Applied to Evidence: and Storage-Reference-* VALUES only — never to the
+  # record's own location. The substrate now lives under .skills/decisions/, and
+  # that is deliberately NOT an exemption: storage is where a record sits,
+  # evidence is what it cites, and a citation must resolve without this checkout.
   v=$1
   case "$v" in
     *.skills/*|.skills/*|*/*/.skills/*) return 0 ;;

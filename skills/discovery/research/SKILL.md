@@ -9,7 +9,7 @@ description: Use when a design, planning, or implementation question turns on ex
 
 # Research
 
-Background investigation that turns "we'd have to check" into a cited note the team can trust.
+Background investigation that turns "we'd have to check" into a cited note you can trust.
 
 Prefer dispatching a background subagent so the main conversation keeps moving; run inline if the harness has no subagents.
 
@@ -25,7 +25,7 @@ Exactly **one markdown file**:
 
 - Every claim carries a citation to its primary source (URL, or file path + symbol for code reading).
 - Separate what the sources say from what you conclude; mark anything unverified.
-- Place it where the repo already keeps such notes — match the existing convention. If no convention exists, pick a sensible spot (e.g. `docs/research/<date>-<topic>.md`), and state where you put it and why.
+- Write it to `.skills/research/<date>-<topic>.md`, and say where you put it. `.skills/` is git-ignored, so the note is local to this working copy — it outlives the session, not the clone. When a finding has to reach a reviewer, a spec, or CI, carry the finding itself into that tracked artifact; never cite the note's path as if the reader could open it.
 - End the file with an "Open decisions" section: the judgment calls the findings surface but do not settle.
 
 ## High-stakes questions

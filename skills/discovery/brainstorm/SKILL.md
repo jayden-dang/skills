@@ -117,8 +117,6 @@ If the work spans multiple independent subsystems, decompose it here: name the s
 
 **Two or more sub-features means the decomposition gets written down before you go any further.** REQUIRED SUB-SKILL: use `write-roadmap` to persist every sub-feature as a `ROAD-N` item — appending to `docs/roadmap/INDEX.md` when it already exists, authoring it when it does not. A sub-feature you are not building first is **deferred to a later milestone**, not declined: an Out-of-Scope line or an ADR records a *rejection*, and a decomposition is not a rejection. Then continue with the first item only.
 
-Without this, the sub-features you are not starting on exist in this conversation and nowhere else — and the pressure to tidy them away turns them into rejections of work nobody actually decided against.
-
 **Done when:** you have said "This is tier N because ..." and, if decomposed, every sub-feature exists as a `ROAD-N` in `docs/roadmap/INDEX.md` and you have named which one goes first.
 
 ### 6. Terminal state

@@ -126,7 +126,7 @@ where the plan stands whenever they want it.
 **Done when:** the S1–S7 walk is clean, the user has approved the written file, and
 `Status:` reads `Approved`.
 
-## What this skill never writes
+## Who owns what
 
 `docs/specs/INDEX.md` belongs to `write-requirements`, which is the sole registrar of
 feature codes. A roadmap item is a `ROAD-N` and a slug until a feature spec binds to it —

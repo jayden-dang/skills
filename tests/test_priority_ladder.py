@@ -64,7 +64,7 @@ class PriorityLadder(unittest.TestCase):
     def test_standup_mode_writes_nothing_either(self):
         """RMAP-3.11 — the second rendering does not acquire write behaviour."""
         standup = self.flat[self.flat.index("Standup mode"):]
-        self.assertRegex(standup, r"(?i)no file written|writes nothing")
+        self.assertRegex(standup, r"(?i)read-only")
 
     def test_release_is_named_not_invoked(self):
         """RMAP-3.10 — row 7 targets a user-invoked skill, so it may only be named (ARCH-5)."""

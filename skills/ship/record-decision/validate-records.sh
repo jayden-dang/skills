@@ -210,13 +210,10 @@ compute_digest() {
 }
 
 prohibited_locator() {
-  # return 0 if prohibited.
-  # Classes (mirrors RECORD.md "Prohibited evidence locator classes"):
-  #   .skills/ paths · /tmp/ · local absolute paths · "session history"
-  # Applied to Evidence: and Storage-Reference-* VALUES only — never to the
-  # record's own location. The substrate now lives under .skills/decisions/, and
-  # that is deliberately NOT an exemption: storage is where a record sits,
-  # evidence is what it cites, and a citation must resolve without this checkout.
+  # return 0 if prohibited. Classes mirror RECORD.md "Prohibited evidence
+  # locator classes": .skills/ · /tmp/ · local absolute paths · "session history".
+  # Applied to Evidence:/Storage-Reference-* VALUES only, never to a record's own
+  # location — the substrate under .skills/decisions/ is storage, not a citation.
   v=$1
   case "$v" in
     *.skills/*|.skills/*|*/*/.skills/*) return 0 ;;

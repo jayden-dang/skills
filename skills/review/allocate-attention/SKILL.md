@@ -275,10 +275,8 @@ requirement to any of them.
 - **Publishes no decision record.** Nothing is written under `.skills/decisions/`
   and `record-decision` gains no emitter. When you carry an allocation summary
   into a terminal decision, it travels as text you already hold.
-- **Reads no decision record.** `.skills/` is git-ignored, so records never appear
-  in `git diff` and cannot reach a unit — B5 covers tracked spec and invariant
-  surfaces only. Adding `.skills/decisions/` to a signal would add a rule that
-  can never fire.
+- **Reads no decision record.** `.skills/` is git-ignored, so records never reach
+  a diff unit; B5 covers tracked surfaces only.
 - **Names, never invokes.** For deeper comprehension of a sampled unit, run
   `/comprehend-change` — user-invoked, so it is named here, never invoked.
 - **Participant boundary.** Work this skill set **did not mediate** is outside

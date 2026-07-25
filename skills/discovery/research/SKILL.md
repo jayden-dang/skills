@@ -25,8 +25,10 @@ Exactly **one markdown file**:
 
 - Every claim carries a citation to its primary source (URL, or file path + symbol for code reading).
 - Separate what the sources say from what you conclude; mark anything unverified.
-- Write it to `.skills/research/<date>-<topic>.md`, and say where you put it. `.skills/` is git-ignored, so the note is local to this working copy — it outlives the session, not the clone. When a finding has to reach a reviewer, a spec, or CI, carry the finding itself into that tracked artifact; never cite the note's path as if the reader could open it.
+- Write it to `.skills/research/<date>-<topic>.md`, and say where you put it.
 - End the file with an "Open decisions" section: the judgment calls the findings surface but do not settle.
+
+`.skills/` is git-ignored, so the note is local to this working copy — it outlives the session, not the clone. A finding that has to reach a reviewer, a spec, or CI travels as the finding itself, copied into that tracked artifact.
 
 ## High-stakes questions
 

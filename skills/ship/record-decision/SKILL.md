@@ -1,9 +1,8 @@
 ---
 name: record-decision
 description: >
-  Use when finish-branch or release hands off a terminal human verdict with
-  durable evidence and a decision record must be published under .skills/decisions/
-  before the production crossing runs.
+  Use when finish-branch or release hands off a terminal human verdict and a
+  decision record must be published before the production crossing runs.
 ---
 
 # Record a Boundary Decision
@@ -26,11 +25,6 @@ Continue only when **all** are true; otherwise return with **no artifact**:
 
 Evidence producers cannot self-promote into emitters. Emit only for skill-mediated
 verdicts (ARCH-6).
-
-The substrate lives under `.skills/` and the prohibition on `.skills/` **locators**
-still holds — they are two different things. Where a record *sits* is storage;
-what a record *cites* is evidence, and evidence must survive being read by someone
-who never had this working copy.
 
 | Thought | Reality |
 |---|---|

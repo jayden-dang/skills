@@ -104,7 +104,10 @@ The traceability check is not a command here — the `trace` skill runs it as
 outside the default globs (`tests test e2e src src-tauri crates app lib packages`),
 record the real locations below so `trace` searches the right paths.
 
-Test globs: *(defaults — `tests` covers this repo)*
+Test globs: *(defaults — `tests` covers this repo)*, plus `tests/**/scenarios*.md` — scenario
+markdown is a declared annotation layer below, so `trace`'s coverage pass must include `.md`
+under `tests/` alongside its default `*_test.py` includes, or scenario-borne IDs read as
+uncovered.
 Trace ignore (files whose IDs are fixtures, not coverage): `tests/team-structure/red-baselines.md`, `tests/decision-records/red-baselines.md`, `tests/decision-records/fixtures/`, `tests/comprehend-change/red-baselines.md`, `tests/attention-allocation/red-baselines.md`, `tests/roadmap/red-baselines.md`, `tests/roadmap/fixtures/`
 
 ## Test annotation conventions

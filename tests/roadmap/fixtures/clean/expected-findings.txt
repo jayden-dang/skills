@@ -1,0 +1,2 @@
+# clean — every rule holds
+# no findings expected — this fixture is structurally clean

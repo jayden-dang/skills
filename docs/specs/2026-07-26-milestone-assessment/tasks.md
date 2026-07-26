@@ -4,7 +4,7 @@
 > this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 Feature code: ASSESS
-Status: Approved
+Status: Implemented
 Date: 2026-07-26
 Requirements: ./requirements.md
 Design: ./design.md
@@ -102,6 +102,8 @@ no new capture step is needed. The guard is that those stay green and unedited.
 | `tests/milestone-assessment/scenarios-gate.md` | Coverage tokens: artifact writing, dispositions, eligibility |
 | `tests/milestone-assessment/scenarios-handoff.md` | Coverage tokens: `write-roadmap` verification and boundaries |
 | `tests/milestone-assessment/fixtures/` | Fixture repos per case (Trace-ignored) |
+| `tests/test_assessment_scale.py` | Pass budget independent of member count (added at review) |
+| `tests/test_assessment_baseline.py` | Pickaxe driven against real git history (promoted from acceptance) |
 
 **Modify**
 
@@ -114,7 +116,8 @@ no new capture step is needed. The guard is that those stay green and unedited.
 | `docs/specs/2026-07-25-roadmap/design.md` | Ladder table gains the same row (RMAP-3.10's single statement) |
 | `docs/specs/2026-07-25-roadmap/requirements.md` | Out-of-Scope reconciling note |
 | `docs/agents/project.md` | Trace-ignore the new `red-baselines.md` and `fixtures/` |
-| `AGENTS.md` | User-invoked list (`:67`), repo-layout `track/` line (`:240`), `track` category row (`:329`) |
+| `AGENTS.md` | User-invoked list (`:76`), repo-layout `track/` line (`:249`), `track` category row (`:338`) |
+| `skills/meta/ask/SKILL.md` | Cannot-invoke list (`:15`) and the roadmap on-ramp (`:64`) |
 | `docs/guide/skills/README.md` | Skill count and the new entry |
 
 A file not in this map should not be touched by any task.
@@ -136,7 +139,7 @@ A file not in this map should not be touched by any task.
 
 **Depends-on:** none
 
-- [ ] **Step 1: Write the failing test**
+- [x] **Step 1: Write the failing test**
 
 ```python
 """Shared roadmap findings reference: R1-R11 stated in exactly one place."""
@@ -181,7 +184,7 @@ class SharedFindingsReference(unittest.TestCase):
 Run: `python3 -m unittest tests.test_roadmap_findings_reference` — expect:
 `FileNotFoundError: templates/roadmap-findings.md`.
 
-- [ ] **Step 2: Create the reference**
+- [x] **Step 2: Create the reference**
 
 Create `templates/roadmap-findings.md`. Open with the self-describing header shape
 `skills/review/allocate-attention/references/signals.md` uses, then move the `R1`–`R11`
@@ -211,7 +214,7 @@ action with its reason.
 <the rule statements, moved verbatim from check-roadmap/SKILL.md:117-130>
 ```
 
-- [ ] **Step 3: Point `check-roadmap` at it**
+- [x] **Step 3: Point `check-roadmap` at it**
 
 In `skills/track/check-roadmap/SKILL.md`, replace the `## What it produces` table and the
 `## The rules` statements with a pointer, matching the existing `S1`–`S7` phrasing at `:55-56`:
@@ -232,14 +235,14 @@ untouched.
 
 Run: `python3 -m unittest tests.test_roadmap_findings_reference` — expect: pass.
 
-- [ ] **Step 4: Prove the finding set is unchanged**
+- [x] **Step 4: Prove the finding set is unchanged**
 
 Run: `python3 -m unittest tests.test_check_roadmap_rules tests.test_check_roadmap_scale` —
 expect: pass, with no edit to any `tests/roadmap/fixtures/*/expected-findings.txt`.
 
 Run: `git diff --stat -- tests/roadmap/fixtures` — expect: empty output.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 `git commit -m "refactor(assess): extract R1-R11 to a shared findings reference" # trailer: Implements: ASSESS-5.3, ASSESS-5.4`
 
@@ -262,7 +265,7 @@ _Requirements: ASSESS-5.3, ASSESS-5.4_
 
 **Depends-on:** Task 1
 
-- [ ] **Step 1: Write the failing test**
+- [x] **Step 1: Write the failing test**
 
 In `tests/test_priority_ladder.py`, insert one entry into `ROWS`, between
 `("`Implemented`", "/release")` and `("a `Planned` one exists", "write-roadmap")`:
@@ -284,7 +287,7 @@ Then append this test to the `PriorityLadder` class:
 Run: `python3 -m unittest tests.test_priority_ladder` — expect:
 `StopIteration` / `ladder row missing: all bound and `Shipped``.
 
-- [ ] **Step 2: Add the rung**
+- [x] **Step 2: Add the rung**
 
 In `skills/track/check-roadmap/SKILL.md`, insert between the current rows 7 and 8 and
 renumber the two rows below it:
@@ -300,7 +303,7 @@ Apply the identical row and renumbering to the ladder table in
 
 Run: `python3 -m unittest tests.test_priority_ladder` — expect: pass.
 
-- [ ] **Step 3: Record the behavior scenarios**
+- [x] **Step 3: Record the behavior scenarios**
 
 Append to `tests/roadmap/scenarios-check-roadmap.md`:
 
@@ -319,7 +322,7 @@ Covers ASSESS-5.5, ASSESS-5.6.
 
 Run: `python3 -m unittest discover -s tests` — expect: pass.
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 `git commit -m "feat(assess): check-roadmap names /assess-milestone when a milestone is ready to close" # trailer: Implements: ASSESS-5.2`
 
@@ -341,7 +344,7 @@ _Requirements: ASSESS-5.2, ASSESS-5.5, ASSESS-5.6_
 
 **Depends-on:** none
 
-- [ ] **Step 1: Write the failing test**
+- [x] **Step 1: Write the failing test**
 
 ```python
 """Milestone assessment artifact: slot contract and disposition value set."""
@@ -423,7 +426,7 @@ class AssessmentTemplate(unittest.TestCase):
 Run: `python3 -m unittest tests.test_assessment_artifact` — expect:
 `FileNotFoundError: templates/milestone-assessment.md`.
 
-- [ ] **Step 2: Create the template**
+- [x] **Step 2: Create the template**
 
 Create `templates/milestone-assessment.md` carrying: a header naming the file
 `docs/roadmap/assessments/<MILE-N>.md`; a comment block stating the structural rules
@@ -447,7 +450,7 @@ is the current disposition.
 
 Run: `python3 -m unittest tests.test_assessment_artifact` — expect: pass.
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 `git commit -m "feat(assess): add the milestone assessment artifact template" # trailer: Implements: ASSESS-2.1, ASSESS-2.2`
 
@@ -473,14 +476,14 @@ _Requirements: ASSESS-2.1, ASSESS-2.2, ASSESS-2.3, ASSESS-2.4, ASSESS-2.14, ASSE
 
 **Depends-on:** Task 1, Task 3
 
-- [ ] **Step 1: Record the RED baseline**
+- [x] **Step 1: Record the RED baseline**
 
 Create `tests/milestone-assessment/red-baselines.md`. Point a fresh agent at
 `fixtures/ambiguous-binding/` and ask it to close `MILE-1` with no skill present. Record
 verbatim what it does. Expect it to close the milestone without resolving the ambiguous
 binding — that failure is what this task fixes.
 
-- [ ] **Step 2: Write the failing frontmatter test**
+- [x] **Step 2: Write the failing frontmatter test**
 
 Append to `tests/test_assessment_artifact.py`:
 
@@ -500,7 +503,7 @@ class AssessMilestoneSkill(unittest.TestCase):
 Run: `python3 -m unittest tests.test_assessment_artifact` — expect:
 `FileNotFoundError: skills/track/assess-milestone/SKILL.md`.
 
-- [ ] **Step 3: Write the skill's scope section**
+- [x] **Step 3: Write the skill's scope section**
 
 Create `skills/track/assess-milestone/SKILL.md` with `disable-model-invocation: true` and a
 `description` stating triggering conditions only. Write `## Resolve the scope` as the six
@@ -513,7 +516,7 @@ fixed passes from `design.md`'s "Scope resolution pass" section, verbatim, plus:
 - the validation `^MILE-[0-9]+$` and `^[0-9a-f]{40}$` before any value reaches a command,
   every interpolated value passed as a single argument after `--`.
 
-- [ ] **Step 4: Record the behavior scenarios**
+- [x] **Step 4: Record the behavior scenarios**
 
 Create `tests/milestone-assessment/scenarios-scope.md`, one block per case, each naming its
 fixture and expected report:
@@ -533,7 +536,7 @@ fixture and expected report:
 
 Run: `python3 -m unittest discover -s tests` and the three linters — expect: pass.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 `git commit -m "feat(assess): add assess-milestone with its scope resolution pass" # trailer: Implements: ASSESS-1.1, ASSESS-5.1`
 
@@ -556,7 +559,7 @@ _Requirements: ASSESS-1.1, ASSESS-1.2, ASSESS-1.3, ASSESS-1.4, ASSESS-1.5, ASSES
 
 **Depends-on:** Task 4
 
-- [ ] **Step 1: Write the section**
+- [x] **Step 1: Write the section**
 
 Add `## Judge the milestone` to the skill, fenced off from the mechanical passes with a
 sentence saying so. Carry the judgment table from `design.md` verbatim, plus:
@@ -570,7 +573,7 @@ sentence saying so. Carry the judgment table from `design.md` verbatim, plus:
   `domain-modeling`, `/file-issues`;
 - passive-data handling for every string read, including prior verbatim rationales.
 
-- [ ] **Step 2: Record the behavior scenarios**
+- [x] **Step 2: Record the behavior scenarios**
 
 Create `tests/milestone-assessment/scenarios-judgment.md`:
 
@@ -590,7 +593,7 @@ Create `tests/milestone-assessment/scenarios-judgment.md`:
 
 Run: `python3 -m unittest discover -s tests` and `python3 scripts/lint-handoffs.py` — expect: pass.
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 `git commit -m "feat(assess): judge outcome, goals, deferrals, and route findings" # trailer: Implements: ASSESS-3.1, ASSESS-3.9`
 
@@ -613,14 +616,14 @@ _Requirements: ASSESS-3.1, ASSESS-3.2, ASSESS-3.3, ASSESS-3.6, ASSESS-3.7, ASSES
 
 **Depends-on:** Task 5
 
-- [ ] **Step 1: Write the section**
+- [x] **Step 1: Write the section**
 
 Add `## Record the assessment` carrying the state table from `design.md` verbatim, plus the
 rules: write the block **before** evaluating eligibility; `Human disposition` starts
 `Pending`; validity is SHA equality, not recency; terminal values freeze, non-terminal ones
 do not; each transition appends a dated history entry.
 
-- [ ] **Step 2: Record the behavior scenarios**
+- [x] **Step 2: Record the behavior scenarios**
 
 Create `tests/milestone-assessment/scenarios-gate.md`:
 
@@ -645,7 +648,7 @@ Create `tests/milestone-assessment/scenarios-gate.md`:
 
 Run: `python3 -m unittest discover -s tests` — expect: pass.
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 `git commit -m "feat(assess): record assessments and the disposition state machine" # trailer: Implements: ASSESS-2.7, ASSESS-4.15`
 
@@ -667,14 +670,14 @@ _Requirements: ASSESS-2.5, ASSESS-2.6, ASSESS-2.7, ASSESS-2.8, ASSESS-2.9, ASSES
 
 **Depends-on:** Task 6
 
-- [ ] **Step 1: Write the section**
+- [x] **Step 1: Write the section**
 
 Add `## Gate the close` in a `<HARD-GATE>` block: mechanical eligibility evaluated **first**
 and non-overridable, then a permitting disposition; the handoff tuple emitted only when both
 hold; a negative effective verdict with `Close` proceeding; single-invocation completion when
 the human answers, and a recorded non-terminal block when they do not.
 
-- [ ] **Step 2: Record the behavior scenarios**
+- [x] **Step 2: Record the behavior scenarios**
 
 Append to `tests/milestone-assessment/scenarios-gate.md`:
 
@@ -691,7 +694,7 @@ Append to `tests/milestone-assessment/scenarios-gate.md`:
 
 Run: `python3 -m unittest discover -s tests` — expect: pass.
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 `git commit -m "feat(assess): gate the close on mechanical eligibility and disposition" # trailer: Implements: ASSESS-4.1, ASSESS-4.5`
 
@@ -714,7 +717,7 @@ _Requirements: ASSESS-4.1, ASSESS-4.2, ASSESS-4.3, ASSESS-4.4, ASSESS-4.5, ASSES
 
 **Depends-on:** Task 7
 
-- [ ] **Step 1: Rewrite the closure step**
+- [x] **Step 1: Rewrite the closure step**
 
 Replace "Record a closure" with the five-step gated version from `design.md`'s
 "`write-roadmap` changes" section: require a handoff; re-derive every value by reading
@@ -723,7 +726,7 @@ the file** into `Closed:`; then run the existing approval gate. State explicitly
 `write-roadmap` never writes the assessment file, and that a request with no handoff is
 refused with `/assess-milestone` named for the user to run.
 
-- [ ] **Step 2: Record the behavior scenarios**
+- [x] **Step 2: Record the behavior scenarios**
 
 Create `tests/milestone-assessment/scenarios-handoff.md`:
 
@@ -741,7 +744,7 @@ Create `tests/milestone-assessment/scenarios-handoff.md`:
 
 Run: `python3 -m unittest discover -s tests` and the three linters — expect: pass.
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 `git commit -m "feat(assess): write-roadmap verifies the assessment handoff before closing" # trailer: Implements: ASSESS-4.12, ASSESS-4.13`
 
@@ -765,7 +768,7 @@ _Requirements: ASSESS-4.6, ASSESS-4.7, ASSESS-4.8, ASSESS-4.9, ASSESS-4.12, ASSE
 
 **Depends-on:** Task 4, Task 8
 
-- [ ] **Step 1: Register the skill**
+- [x] **Step 1: Register the skill**
 
 Add `assess-milestone` to `AGENTS.md`'s user-invoked list (`:76`), the `track/` line of the
 repo-layout comment (`:249`), and the `track` category row (`:338`) as `(U)`. In
@@ -775,7 +778,7 @@ add `assess-milestone` to the cannot-invoke list at `:15` and name it in the roa
 at `:64`. Write `docs/guide/skills/assess-milestone.md` in the house metadata-table shape
 used by `docs/guide/skills/check-roadmap.md`.
 
-- [ ] **Step 2: Write the RMAP reconciling note**
+- [x] **Step 2: Write the RMAP reconciling note**
 
 In `docs/specs/2026-07-25-roadmap/requirements.md`'s Out-of-Scope section, replace the
 retrospective bullets with a note recording that the work shipped as `ASSESS` under the name
@@ -784,7 +787,7 @@ and resolving the `Closed` range are now in scope there; that the team-ceremony 
 and the action-item bucket remain out of scope; and that the attention-residue sentence rested
 on the same false premise corrected by ASSESS-3.11.
 
-- [ ] **Step 3: Record the boundary scenarios**
+- [x] **Step 3: Record the boundary scenarios**
 
 Append to `tests/milestone-assessment/scenarios-handoff.md`:
 
@@ -795,14 +798,14 @@ Append to `tests/milestone-assessment/scenarios-handoff.md`:
 | any run | `trace` still checks `CODE-N.M` and `ARCH-N` only | ASSESS-5.11 |
 | any finding | `record-decision` is not among the destinations; its caller set is unchanged | ASSESS-5.12 |
 
-- [ ] **Step 4: Verify the whole feature**
+- [x] **Step 4: Verify the whole feature**
 
 Run: `python3 scripts/lint-skill-frontmatter.py && python3 scripts/lint-handoffs.py && python3 scripts/lint-context7.py && python3 -m unittest discover -s tests` — expect: pass.
 
 Run the `trace` check over `ASSESS` — expect: every live ID cited by a task and covered by a
 tagged test.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 `git commit -m "feat(assess): register assess-milestone and reconcile the RMAP triad" # trailer: Implements: ASSESS-5.9, ASSESS-5.10, ASSESS-5.11, ASSESS-5.12`
 

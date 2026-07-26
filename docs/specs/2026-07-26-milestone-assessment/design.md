@@ -1,7 +1,7 @@
 # Design: Milestone assessment
 
 Feature code: ASSESS
-Status: Approved
+Status: Implemented
 Date: 2026-07-26
 Requirements: ./requirements.md
 

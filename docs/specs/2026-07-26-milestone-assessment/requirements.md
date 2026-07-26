@@ -1,7 +1,7 @@
 # Requirements: Milestone assessment
 
 Feature code: ASSESS
-Status: Approved
+Status: Implemented
 Date: 2026-07-26
 
 Adds the semantic half of the milestone close. `check-roadmap` reports whether a
@@ -23,8 +23,8 @@ written only by `assess-milestone`. Neither writes into the other's artifact. Re
 `retrospective` and excluded four things this feature now includes: judging whether a
 milestone outcome was achieved, consuming attention residue, routing findings by concern,
 and the `Closed` marker's use as a resolved git range. It also excluded a *team-ceremony*
-retrospective and an action-item bucket — both of which stay excluded here. That section
-needs a reconciling note; `sync-spec` owns that edit, not this file.
+retrospective and an action-item bucket — both of which stay excluded here. That reconciling
+note was written into RMAP's Out-of-Scope section on 2026-07-26, dated and in place.
 
 ## 1. Resolve the assessment scope from artifacts
 

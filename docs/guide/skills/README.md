@@ -1,6 +1,6 @@
 # Skill reference
 
-Forty-five skills in eleven buckets. Each has its own page.
+Forty-six skills in eleven buckets. Each has its own page.
 
 **Invocation** is the thing to check first. A **model-invocable** skill is invoked by the agent on its own when its description matches the situation. A **user-invoked** skill carries `disable-model-invocation: true` in its frontmatter — the agent *cannot* invoke it, so you run it as a slash command.
 
@@ -104,6 +104,7 @@ The visual layer. Fires before any HTML a human will look at.
 | [`correct-course`](correct-course.md) | model | The mid-flight rewind decision. Classifies a plan-invalidating discovery to the lowest broken artifact and routes the re-entry |
 | [`sync-spec`](sync-spec.md) | model | The anti-rot skill. Realigns the triad with what the code actually does |
 | [`check-roadmap`](check-roadmap.md) | `/check-roadmap` | The horizontal check. Derives where the plan stands from the roadmap, the specs and git, then names one next action. Writes nothing |
+| [`assess-milestone`](assess-milestone.md) | `/assess-milestone` | The close gate. Judges whether a milestone's outcome was achieved, records it append-only, and holds the close until you dispose of the verdict |
 | [`file-issues`](file-issues.md) | `/file-issues` | Context → tracker issues. Tracer-bullet slices with blocking edges, published agent-ready |
 | [`triage`](triage.md) | `/triage` | A two-axis issue state machine. Verify the claim before recommending |
 | [`improve-architecture`](improve-architecture.md) | `/improve-architecture` | Codebase-wide friction scan → an HTML report of deepening candidates |

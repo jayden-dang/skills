@@ -73,7 +73,8 @@ skill's workflow only when the user has explicitly told you to.
 **User-invoked skills** (carry `disable-model-invocation: true` in frontmatter):
 `ask`, `writing-skills`, `teach`, `setup-repo`, `scaffold-project`,
 `establish-project`, `triage`, `improve-architecture`, `handoff`, `file-issues`,
-`release`, `interpret`, `comprehend-change`, `allocate-attention`, `check-roadmap`.
+`release`, `interpret`, `comprehend-change`, `allocate-attention`, `check-roadmap`,
+`assess-milestone`.
 Agents MUST NOT auto-invoke these. Name them for the user to run, e.g. `/triage` or
 `/allocate-attention`.
 
@@ -247,7 +248,7 @@ skills/                  # skill definitions (45 skills, 11 categories)
   craft/                 # design-page
   ship/                  # finish-branch, release
   track/                 # amend, correct-course, triage, sync-spec, check-roadmap,
-                         #   improve-architecture, handoff, file-issues
+                         #   assess-milestone, improve-architecture, handoff, file-issues
   project/               # establish-project, write-roadmap (optional project-documentation
                          #   and milestone-intent layers)
 templates/               # requirements.md, design.md, tasks.md, CONTEXT.md seeds
@@ -335,7 +336,7 @@ Can't tick a box? The work is not done.
 | **acceptance** | `acceptance-check` (m), `acceptance-api` (m), `acceptance-ui` (m), `dogfood` (m) |
 | **craft** | `design-page` (m) |
 | **ship** | `finish-branch` (m), `record-decision` (m), `release` (U) |
-| **track** | `amend` (m), `correct-course` (m), `triage` (U), `sync-spec` (m), `check-roadmap` (U), `improve-architecture` (U), `handoff` (U), `file-issues` (U) |
+| **track** | `amend` (m), `correct-course` (m), `triage` (U), `sync-spec` (m), `check-roadmap` (U), `assess-milestone` (U), `improve-architecture` (U), `handoff` (U), `file-issues` (U) |
 | **project** | `establish-project` (U), `write-roadmap` (m) |
 
 **Main flow:** `brainstorm` → `write-requirements` → `write-design` →

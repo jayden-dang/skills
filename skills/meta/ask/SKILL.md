@@ -12,7 +12,7 @@ chain that follows. Do not start executing the chosen flow inside this skill.
 If the entry point is model-invocable (`brainstorm`, `amend`, `debug`,
 `acceptance-check`, `dogfood`), invoke it and let it take over. If it is a user-invoked skill
 (`triage`, `file-issues`, `improve-architecture`, `setup-repo`,
-`scaffold-project`, `establish-project`, `check-roadmap`, `handoff`, `release`), you cannot invoke it — name it and
+`scaffold-project`, `establish-project`, `check-roadmap`, `assess-milestone`, `handoff`, `release`), you cannot invoke it — name it and
 tell the user to run its command, e.g. `/triage`.
 
 ## The main flow: idea → ship
@@ -63,6 +63,8 @@ context-isolated per task by design.
 - Several milestones in flight and unsure where the plan stands or what to do next →
   **`check-roadmap`** (read-only; derives progress from the roadmap, the specs, and git, then
   names one next action). Planning or changing the milestones themselves → **`write-roadmap`**.
+- A milestone looks finished and you want to close it → **`assess-milestone`** (judges whether
+  its outcome was achieved, records the judgment, and gates the close on your disposition).
 - Session is ending mid-work → **`handoff`**.
 - Cutting a version → **`release`**.
 

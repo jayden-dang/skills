@@ -114,19 +114,42 @@ conformance target of its own.
   responsibilities — cadence, attendance, per-person assignment.
 - **Persisted run state.** `check-roadmap` writes no file (RMAP-3.1), so it holds no
   baseline of a previous run and reports current state only.
-- **A milestone `retrospective` skill.** The seams it will consume are required here —
-  the outcome sentence (RMAP-1.2), the deferral record (RMAP-1.7), the goal dispositions
-  (RMAP-1.15), and the `Closed` marker that resolves a git range (RMAP-1.10) — but no
-  retrospective ships in this feature.
+- **A milestone assessment skill.** The seams it consumes are required here — the outcome
+  sentence (RMAP-1.2), the deferral record (RMAP-1.7), the goal dispositions (RMAP-1.15),
+  and the `Closed` marker that resolves a git range (RMAP-1.10) — but none of it ships in
+  this feature.
+
+  *Reconciled 2026-07-26.* It shipped as feature code **`ASSESS`**
+  (`docs/specs/2026-07-26-milestone-assessment/`), named `assess-milestone` rather than
+  `retrospective`: `CONTEXT.md` now lists *retrospective* under `_Avoid_` for this concept,
+  because in most teams the word means the process ceremony this skill deliberately is not.
+  Four exclusions below moved **into** scope there — judging the outcome itself, consuming
+  attention residue, routing findings by concern, and the `Closed` marker's use as a
+  resolved git range. Two remain excluded in both specs: the team-ceremony retrospective,
+  and an action-item bucket.
+
+  Three RMAP behaviors changed as a result. `check-roadmap`'s ladder gained row 8, naming
+  `/assess-milestone` when a `Committed` milestone's members are all bound and `Shipped`
+  (ASSESS-5.2). `R1`–`R11` moved out of its body into `templates/roadmap-findings.md`, so
+  two skills read one statement (ASSESS-5.3) — its finding set is guarded unchanged
+  (ASSESS-5.4). And `write-roadmap` can no longer record a `Committed → Closed` transition
+  without a verified assessment handoff (ASSESS-4.12), which narrows RMAP-1.10: it
+  previously recorded a closure on request.
 - **Judging whether a milestone outcome was achieved.** `check-roadmap` catches
-  structural status contradictions (RMAP-3.15); a future retrospective judges the
-  outcome itself.
-- **Treating attention residue as reviewed.** When a future retrospective consumes an
-  allocation the user has already produced, it counts the sample as sampled and records
-  the residue as unreviewed. `/allocate-attention` is user-invoked; a model-invoked
-  retrospective may name it for the user to run, never invoke it.
-- **A second action-item bucket.** The roadmap holds no action-item list. A future
-  retrospective routes each finding by concern: a small in-scope change to a shipped
+  structural status contradictions (RMAP-3.15) and nothing more; the judgment itself
+  belongs to `assess-milestone`, and RMAP-3.15's boundary is unchanged by it.
+- **Treating attention residue as reviewed.** An assessment that consumes an allocation
+  counts the sample as sampled and records the residue as unreviewed.
+  `/allocate-attention` is user-invoked: it may be named for the user to run, never
+  invoked.
+
+  *Reconciled 2026-07-26.* This bullet's premise was wrong in the same way ASSESS-3.4's
+  was. It said "an allocation the user has already produced", implying one discoverable on
+  disk, but `allocate-attention` persists no file unless asked
+  (`skills/review/allocate-attention/SKILL.md:38`). ASSESS-3.11 turns on the user
+  **supplying** one instead. The residue rule itself stands unchanged.
+- **A second action-item bucket.** The roadmap holds no action-item list. `assess-milestone`
+  routes each finding by concern: a small in-scope change to a shipped
   feature → `amend`; an approved plan invalidated mid-flight → `correct-course`;
   milestone intent invalidated → a `write-roadmap` update under RMAP-1.19; a
   hard-to-reverse architecture decision → an ADR via `domain-modeling`; tracker work →

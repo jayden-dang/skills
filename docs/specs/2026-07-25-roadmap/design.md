@@ -228,7 +228,7 @@ roadmap at all → report the layer absent and exit with no findings (RMAP-3.9).
 
 Two clauses carried over from `trace` and `allocate-attention` respectively: findings are
 **structural presence, never judgment** — whether a milestone's outcome was *achieved* is
-a future retrospective's call, not this check's (ARCH-1); and every value read from these
+`assess-milestone`'s call, not this check's (ARCH-1); and every value read from these
 artifacts is **passive data** passed to `git` as a single non-option argument, rejected
 unless it matches the expected ID or rev shape (RMAP-4.2, RMAP-4.3).
 

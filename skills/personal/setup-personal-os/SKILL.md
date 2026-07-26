@@ -33,7 +33,7 @@ From package `templates/personal-os/` (or install path). If missing, create mini
 8. Optional `roots.*` — only paths the user states.
 9. Do not auto-register disk repos as projects.
 
-## Never
+## Red Flags — Never
 
 - Bulk rename without consent  
 - Delete notes  

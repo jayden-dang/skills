@@ -15,7 +15,7 @@ REQUIRED: read sibling `ROLE.md` (secretary default, grant rule, hybrid ban, con
 1. State what invalidated the plan (user words).
 2. Classify blast radius: **next_action** | **milestone** | **outcome** | **kill project**.
 3. Propose patch; apply after confirm.
-4. Never silent-rewrite `done_when` without a log line.
+4. `done_when` changes → write the log line first, then apply the change.
 5. Append decision to project log.
 
 ## Done when

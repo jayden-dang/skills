@@ -17,7 +17,7 @@ For each note with `processed: false`:
 | If | Route |
 |---|---|
 | Trash | Delete or archive |
-| ≤2 min action | User does it (unless grant); else schedule on daily |
+| ≤2 min action | Scoped grant this turn → agent does it; no grant → user does it now, or it goes on the daily |
 | Reference only | `layout.resources_dir` |
 | Next action on existing project | Propose `next_action` update |
 | New outcome | `open-project` (WIP rules apply) |

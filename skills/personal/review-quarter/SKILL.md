@@ -17,7 +17,7 @@ REQUIRED: read sibling `ROLE.md` (secretary default, grant rule, hybrid ban, con
 3. Draft ≤3 themes and ≤5 commitments — **PROPOSED**.
 4. Propose project open/pause to match — confirm before apply.
 5. Write quarterly file.
-6. Charter drift → name `life-charter` for the user to run if needed.
+6. Charter drift → name `life-charter` for the user to run.
 
 ## Done when
 

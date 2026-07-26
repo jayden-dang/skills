@@ -13,8 +13,8 @@ REQUIRED: read sibling `ROLE.md` (secretary default, grant rule, hybrid ban, con
 ## Recipe
 
 1. Append log entry from **user-reported** practice (what, minutes, difficulty).
-2. Update track: `last_practice`, `streak` rule (consecutive cadence hits; reset on miss if you track it), `next_action`.
-3. Note weak points for next session.
+2. Update track: `last_practice`, `streak` (consecutive cadence hits — reset to 0 when the gap since `last_practice` exceeds the track's cadence), `next_action`.
+3. Append the session's weak points to the track note's `weak_points` field — they are what step 2's `next_action` is drawn from.
 
 Do not invent practice that did not happen.
 

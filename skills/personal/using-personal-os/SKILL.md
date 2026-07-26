@@ -27,7 +27,7 @@ NO HYBRID PRODUCT WORK IN THE VAULT.
 2. Read Personal OS **config** (`layout`, `roots`, `limits`).
 3. Open home/dashboard if present.
 4. Match intent → one personal skill. Announce `Using <skill>`.
-5. If user requests product work (design, code, PR): prefer **handoff**; only proceed if a scoped **grant** this turn.
+5. If user requests product work (design, code, PR): produce a **handoff** and stop. Proceed into the work itself only when the user has given a scoped **grant** this turn — no grant, no product work.
 6. Before any new `status: active` project: count actives vs `limits.max_active_projects`.
 
 ## Rationalizations

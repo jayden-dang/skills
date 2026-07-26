@@ -1,0 +1,4 @@
+the Deferred entry carries a date and a reason but names no destination
+milestone — report it as a drop wearing a deferral's clothes, routed to
+write-roadmap
+covers ASSESS-3.3 ASSESS-3.8

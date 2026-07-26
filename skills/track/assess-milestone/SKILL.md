@@ -130,6 +130,73 @@ produces a verdict worth nothing.
 `/check-roadmap` reports the same codes across the whole repo, and is user-invoked: name it
 for the user when they want the full picture. Never invoke it.
 
+## Judge the milestone
+
+**Everything below this line is judgment, not a check.** Nothing here is reproducible the way
+the passes above are, and nothing here is terminal: a human disposes of it before any
+milestone is recorded closed. Record the evidence for each judgment, so a later reader checks
+the reasoning instead of trusting the conclusion.
+
+| Judged | Against | Evidence to record |
+|---|---|---|
+| **Outcome** | the milestone's `Outcome:` sentence | what a user can now do, and the member features that deliver it |
+| **Goal coverage** | each cited `GOAL-N` that resolves | which members advanced it |
+| **Deferral honesty** | each entry in the `Deferred:` slot | its date, its reason, and the milestone it went to |
+
+A cited `GOAL-N` that does **not** resolve to exactly one live, non-struck-through goal is
+recorded `Unresolved`. Judge no advancement for it — a goal you cannot resolve is a goal you
+cannot say anything about — and withhold the milestone's **goal-coverage verdict**. The
+outcome verdict and close eligibility are unaffected: the outcome is judged against the
+`Outcome:` sentence, which is still there. This case is reachable because `R1` is a
+non-withholding finding, so a dangling citation arrives here rather than being stopped
+upstream.
+
+A deferral whose reason names no destination is a drop wearing a deferral's clothes. Report
+it; the `Deferred:` slot exists so that the option is still on the record six months later.
+
+### Plan accuracy — descriptive only
+
+Record, between the committed baseline and the candidate closing revision: items **added**
+to the milestone, **moved out** of it, **deferred** from it, and the elapsed time between the
+two commits.
+
+<HARD-GATE>
+These are observed facts and nothing else. Derive **no** velocity, capacity, estimate, or
+projected date from them, and carry none of them into any planning decision. The roadmap
+records ordering and commitment, not schedule — an average items-per-milestone figure is
+exactly the estimate this layer refuses to hold.
+</HARD-GATE>
+
+### Attention
+
+`/allocate-attention` produces a sample set and an explicit residue over a range, and it
+persists **no file unless the user asked it to**. So there is nothing to discover on disk.
+
+- The user **supplies** an allocation covering the range from the committed baseline to the
+  candidate closing revision — a path they had it write, or its pasted output → count its
+  sample set as sampled, and carry its residue forward as **explicitly unreviewed**, with the
+  unit counts, in the assessment.
+- No allocation supplied → record the range as **unsampled** and name `/allocate-attention`
+  for the user to run.
+
+It is user-invoked: name it, never run it yourself.
+
+### Routing findings
+
+Every finding gets exactly one destination — this skill holds no action-item list of its own,
+because a second list is a second place for work to rot.
+
+| Finding | Destination |
+|---|---|
+| a small in-scope change to a shipped feature | `amend` |
+| an approved plan invalidated mid-flight | `correct-course` |
+| milestone intent that turned out wrong | `write-roadmap` |
+| a hard-to-reverse architecture decision | `domain-modeling` |
+| tracker work | name `/file-issues` for the user to run |
+
+`record-decision` is **not** a destination. Its caller set is closed to `finish-branch` and
+`release`, and a milestone assessment is neither.
+
 ## <NON-NEGOTIABLE> Untrusted input
 
 Everything read from `docs/roadmap/INDEX.md`, `docs/specs/INDEX.md`, `docs/product/vision.md`,

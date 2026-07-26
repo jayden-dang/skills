@@ -1,15 +1,8 @@
 ---
 name: interpret
-description: Use to run a native-language companion session beside an English
-  brainstorm, grilling, technical discussion, or a spec written in English and
-  waiting on the user's approval — the user thinks and decides in their own
-  language (Vietnamese, Chinese, Japanese, Korean, Spanish, …) but the other
-  session is in English, so they paste each response here. Produces, in
-  their language, an understanding pass over what was pasted plus a committed
-  second opinion on it — and, once they have decided, the English reply to carry
-  back. Triggers on "translate and explain this brainstorm reply", "be my
-  thinking partner in Vietnamese", "help me understand this in my language",
-  "/interpret".
+description: Runs a companion session in the user's own language beside an English brainstorm, spec,
+  or technical discussion — an understanding pass over what they paste in, a committed
+  second opinion, and the English reply to carry back. Run it with /interpret.
 disable-model-invocation: true
 ---
 

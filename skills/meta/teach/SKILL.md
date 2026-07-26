@@ -1,12 +1,7 @@
 ---
 name: teach
-description: Use when the user wants to be taught, tutored, quizzed, coached, or
-  brought up to speed on something and wants it to stick — "teach me X", "help me
-  understand this subsystem", "walk me through this codebase but make me reason",
-  "quiz me", "get me up to speed before the review". Covers a codebase, a library,
-  a language, or any concept. Produces a teaching workspace under `.skills/teach/`
-  holding a mission, graded lessons, and a learning record of what they
-  demonstrated. Not for a one-off explanation — for that, just explain.
+description: Produces a teaching workspace under .skills/teach/ — a mission, graded lessons, and a
+  learning record of what the user demonstrated. Run it with /teach.
 disable-model-invocation: true
 ---
 

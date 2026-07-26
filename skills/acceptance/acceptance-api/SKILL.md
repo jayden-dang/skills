@@ -55,7 +55,6 @@ server and read again. Record actual-vs-expected in the ledger for every item.
 
 ## 4. Fix what breaks
 
-Any mismatch is a real defect, found before the user found it.
 REQUIRED SUB-SKILL: use `debug` — the failing request is already your
 red-capable loop. Fix the root cause, add the regression test, re-run the item.
 

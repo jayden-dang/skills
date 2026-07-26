@@ -37,10 +37,17 @@ source the human-facing engineering rules (naming, i18n, house rules) from
 `docs/product/guidelines.md` when it exists, otherwise from `docs/agents/project.md` as
 above — the guidelines doc, when present, is where those rules live.
 
+**Done when:** Goal, Architecture, Tech Stack, and Global Constraints are
+written, and every command, naming/i18n rule, and `ARCH-N` invariant in that
+section is copied verbatim from its source file rather than paraphrased.
+
 ## Step 2: File structure first
 
 Map every file the plan creates or modifies, with one-line responsibilities,
 BEFORE writing tasks. A file not in the map should not be touched by any task.
+
+**Done when:** every file the plan will create or modify appears in the map
+with a one-line responsibility.
 
 ## Step 3: Tasks as vertical slices
 
@@ -101,6 +108,10 @@ is how the plan surfaces decisions the human can still kill before code.
 Task 3", or a type referenced but defined in no task — each of these is a plan
 bug. Fix it before the plan ships.
 
+**Done when:** every file in Step 2's map is covered by at least one task, and
+each task is written as a vertical slice carrying its own test cycle. Whether
+the slots and placeholders are clean is Step 4's check, not this one.
+
 ## Step 4: Coverage and consistency check
 
 - Run the trace check (REQUIRED SUB-SKILL: use `trace`): every Approved
@@ -159,6 +170,10 @@ This is the heavyweight, traceable publish path — each issue carries its
 requirement IDs. For capturing work that never went through the spec triad (a
 raw conversation or idea), the user runs `file-issues` instead; do not duplicate
 these tasks there.
+
+**Done when:** every task in `tasks.md` has an issue, each issue carries its
+`Requirements covered:` list, and the blocking links match the plan's
+dependency order. No tracker configured → this step is skipped, not pending.
 
 ## Exit
 

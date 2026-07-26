@@ -1,6 +1,8 @@
 ---
 name: scaffold-project
-description: Use when starting a brand-new project in an empty or nearly-empty directory and the user wants a working repository skeleton — stack chosen, test harness wired, tooling and CI in place — before any feature work begins. Also the entry point when the user says "scaffold" but is standing in an existing project; this skill detects that and redirects.
+description: Produces a working repository skeleton in an empty directory — stack chosen, test
+  harness wired, tooling and CI in place. Redirects when the directory is not greenfield.
+  Run it with /scaffold-project.
 disable-model-invocation: true
 ---
 

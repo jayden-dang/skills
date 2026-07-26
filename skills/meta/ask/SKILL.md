@@ -1,9 +1,7 @@
 ---
 name: ask
-description: Use when the user is unsure which skill or flow in this set fits their task,
-  asks "how do I start", "what's the workflow", "which skill should I use", or
-  "what comes next" — routes among the already-installed development skills
-  (not for discovering or installing new ones).
+description: Routes among the already-installed development skills to the one that fits the task at
+  hand. Run it with /ask.
 disable-model-invocation: true
 ---
 

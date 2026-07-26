@@ -1,9 +1,7 @@
 ---
 name: release
-description: Use when the user wants to cut a release — publish a version, bump semver,
-  tag the repo, and draft the changelog and release notes — for work already
-  merged to the release branch. Distinct from finish-branch, which only
-  integrates a branch.
+description: Cuts a release for work already merged to the release branch — version bump, tag,
+  changelog, and release notes. Run it with /release.
 disable-model-invocation: true
 ---
 

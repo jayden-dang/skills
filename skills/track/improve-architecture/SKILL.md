@@ -1,9 +1,7 @@
 ---
 name: improve-architecture
-description: Use when the user asks for an architecture review, a codebase-health or
-  technical-debt scan, wants to know where to refactor next, or asks for a
-  periodic look at accumulated design friction across the whole codebase — a
-  codebase-wide scan, not a single diff or PR.
+description: Produces a codebase-wide architecture and technical-debt scan, ranked by where
+  refactoring pays off next. Run it with /improve-architecture.
 disable-model-invocation: true
 ---
 
@@ -45,7 +43,7 @@ End with a top-recommendation section: which candidate first, one sentence why.
 
 **Do not propose concrete interfaces yet** — the report names directions, not designs. Interface shape belongs to the grilling step, with the user in the loop.
 
-**ADR conflicts:** if a candidate contradicts an existing ADR, include it only when the friction is severe enough to justify reopening the decision, and mark the card with the ADR reference and why it deserves revisiting. Do not list every refactor an ADR forbids.
+**ADR conflicts:** a candidate that contradicts an existing ADR is included only when its evidence carries a `Strong` confidence badge; below that it is dropped, not listed. An included one is marked with the ADR reference and why the decision deserves revisiting. Do not list every refactor an ADR forbids.
 
 **Done when:** the report is open in the user's browser and you have asked which candidate to pursue.
 

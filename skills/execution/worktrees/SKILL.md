@@ -75,7 +75,7 @@ Baseline: <N> tests passing, 0 failures
 Ready to start <task>.
 ```
 
-## Never
+## Red Flags — Never
 
 - Create a worktree when Step 0 found you already in one
 - Use `git worktree add` when a native tool exists

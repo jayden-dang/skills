@@ -47,8 +47,6 @@ tracks how far the work has got.
 
 ## Modes
 
-Pick by what exists. Ask only if genuinely unclear.
-
 - **create** — no `docs/roadmap/INDEX.md`. Author it.
 - **update** — it exists. Revise it against a change signal.
 

@@ -1,9 +1,7 @@
 ---
 name: handoff
-description: Use when the current conversation must continue elsewhere — context is
-  filling up or nearing compaction, the user is ending a session with work
-  unfinished, or another agent must pick the work up — to produce a
-  self-contained handoff document a fresh agent can resume from.
+description: Produces a self-contained handoff document a fresh agent can resume the work from. Run
+  it with /handoff.
 disable-model-invocation: true
 ---
 
@@ -18,11 +16,11 @@ If the user passed an argument to this skill, treat it as what the next session 
 - **Goal** — what the work is ultimately for, in the user's terms.
 - **Current state** — what is done, what is in flight, exact branch/worktree, whether the working tree is dirty.
 - **Tried and rejected** — every approach that was attempted or considered and dropped, each with *why*. This section saves the successor from re-walking dead ends; it is usually the most valuable one.
-- **Knowns / unknowns (when present)** — copy or path the latest knowns inventory (locks, known unknowns, assumptions) and any open blindspots still unresolved; point at `.skills/*-knowns.md` or `.skills/*-scan.md` Blindspot when those files exist.
+- **Knowns / unknowns (when present)** — path to the latest knowns inventory and a one-line summary of what it locks, what it leaves open, and which blindspots are still unresolved; point at `.skills/*-knowns.md` or `.skills/*-scan.md` Blindspot when those files exist.
 - **Deviations (when present)** — path to `.skills/implementation-notes.md` and a one-line summary of each logged deviation; the successor must not rediscover them from chat memory.
 - **Next actions** — concrete, ordered, starting with the very next command or edit.
 - **Suggested skills** — which skills of this set the successor should invoke, and at which step (e.g. "resume `execute-plan` at task 4", "run `verify` before claiming task 3 done"). Name `/comprehend-change` for the user when a multi-task branch is ready for human understanding before merge (user-invoked — do not auto-invoke).
-- **Team context (when present)** — if `docs/agents/project.md` has `## Team` with a non-empty **roster** or band override, one line: band + how packaging applies; Small/Multi: who owns next actions when the roster/ownership notes make that clear. Missing Team → omit (do not invent a team).
+- **Team context (when present)** — if `docs/agents/project.md` has `## Team` with a non-empty **roster** or band override, one line: band + how packaging applies; Small/Multi: if the roster or ownership notes name an owner for this work, state who owns the next actions; if they do not, omit the owner line. Missing Team → omit the whole section (do not invent a team).
 
 ## Rules
 

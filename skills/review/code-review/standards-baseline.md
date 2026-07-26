@@ -7,6 +7,14 @@ anything the repo's tooling already enforces.
 
 Each entry: **what it is → how to fix.**
 
+**Contents** — Standards, always checked: 1 Duplicated knowledge · 2 Shallow
+module · 3 Leaky abstraction · 4 Feature envy · 5 Long parameter list · 6 Dead
+code · 7 Speculative generality · 8 Shotgun surgery · 9 Primitive obsession ·
+10 Mysterious name · 11 Comment compensating for bad code · 12 Inconsistent
+vocabulary. Security, only when the diff touches a trust boundary:
+13 Injection · 14 Broken authz · 15 Secret exposure · 16 Unvalidated input
+reaching a sink · 17 Sensitive data in the clear · 18 Weak or misused crypto.
+
 1. **Duplicated knowledge** — one fact or rule (a formula, a validation, a
    mapping) encoded in two or more places in the diff, so a future change must
    find every copy. → Extract the single source of truth and make every site

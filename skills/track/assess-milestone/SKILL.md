@@ -1,12 +1,7 @@
 ---
 name: assess-milestone
-description: Use when a milestone is ready to close, when the user asks whether a
-  milestone actually delivered what it promised, or when a closed milestone must be
-  reassessed against new evidence. Triggers on "close MILE-N", "did this milestone
-  land", "assess the milestone", "wrap up the milestone", and on `/check-roadmap`
-  naming this skill as the next action. Not for structural roadmap health
-  (check-roadmap), not for editing the roadmap (write-roadmap). Run it with
-  /assess-milestone.
+description: Produces a verdict on whether a milestone delivered what it promised, read fresh from
+  the specs, the tests, and git. Run it with /assess-milestone.
 disable-model-invocation: true
 ---
 
@@ -160,9 +155,11 @@ it; the `Deferred:` slot exists so that the option is still on the record six mo
 
 ### Plan accuracy — descriptive only
 
-Record, between the committed baseline and the candidate closing revision: items **added**
-to the milestone, **moved out** of it, **deferred** from it, and the elapsed time between the
-two commits.
+Run `git diff <baseline>..<candidate> -- docs/roadmap/INDEX.md` and read it under fixed
+rules: a roadmap item on an added line under this milestone is **added**; on a removed line
+under this milestone and an added line under another is **moved out**; on a removed line with
+no added line anywhere is **deferred**. Take the elapsed time from the two commit dates. Report
+the four figures as read — this pass is descriptive, so nothing here is weighed or scored.
 
 <HARD-GATE>
 These are observed facts and nothing else. Derive **no** velocity, capacity, estimate, or

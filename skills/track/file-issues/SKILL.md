@@ -1,12 +1,8 @@
 ---
 name: file-issues
-description: Use when the user wants to turn the current conversation, an approved
-  spec, or a rough idea into tracker issues — break the work into tracer-bullet
-  slices with blocking edges and publish them as agent-ready issues on the
-  configured tracker (GitHub, GitLab, Linear, or local `.scratch/` files). The
-  outgoing capture path — context in, tracker issues out — the counterpart to
-  `triage`. Not the full `write-plan` spec pipeline; the fast lane for capturing
-  work as grabbable issues.
+description: Turns a conversation, an approved spec, or a rough idea into agent-ready tracker issues
+  — tracer-bullet slices with blocking edges, published to the configured tracker. Run it
+  with /file-issues.
 disable-model-invocation: true
 ---
 

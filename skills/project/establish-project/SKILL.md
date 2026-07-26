@@ -1,11 +1,8 @@
 ---
 name: establish-project
-description: Use at the start of a large or long-lived project, before feature work, to
-  establish or maintain the optional repo-level documentation layer — a product vision, an
-  IDed architecture-invariant spine, and engineering guidelines. Also use to update that
-  layer against a major change of direction, or to validate it. Produces
-  docs/product/vision.md, docs/architecture/, and docs/product/guidelines.md. Run it with
-  /establish-project.
+description: Establishes or updates the repo-level documentation layer — docs/product/vision.md,
+  docs/architecture/ invariants, and docs/product/guidelines.md. Run it with /establish-
+  project.
 disable-model-invocation: true
 ---
 

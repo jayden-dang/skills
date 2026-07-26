@@ -1,13 +1,7 @@
 ---
 name: comprehend-change
-description: >
-  Use when the user wants to comprehend or self-check a code change — their
-  branch, diff, commit, working tree, or named range — and wants a single HTML
-  comprehension packet (Background, Intuition, Code, Quiz). Triggers on
-  /comprehend-change, "comprehend this change", "self-check this branch",
-  "help me understand my diff before I ship", "explain my uncommitted changes
-  so I get it". Not for Standards+Spec code-review verdicts, verify evidence,
-  teach lessons, decision records, or finish-branch/release ship menus.
+description: Produces a single HTML comprehension packet for a code change — Background, Intuition,
+  Code, Quiz. Run it with /comprehend-change.
 disable-model-invocation: true
 ---
 

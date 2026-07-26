@@ -24,9 +24,9 @@ Picking the wrong branch wastes the whole prototype. If it's genuinely ambiguous
 1. **Throwaway from day one, and marked as such.** Put it near the code it's exploring so context is obvious, but name it so nobody mistakes it for production (`prototype` in the path or filename). Follow the project's existing conventions — never invent new top-level structure for it.
 2. **One command to run.** Register it with the project's existing task runner (read commands from `docs/agents/project.md` when present). The user starts it without thinking.
 3. **No persistence.** State lives in memory. Persistence is what the prototype is *testing an idea against*, not something it depends on. If the question is explicitly about storage, use a scratch store with an unmistakable "prototype — safe to wipe" name.
-4. **Skip the polish.** No tests, no abstractions, no error handling beyond staying runnable. Speed of learning is the whole point.
+4. **Skip the polish.** Write the logic inline, hardcoded, in the fewest lines that answer the question and keep it runnable. Speed of learning is the whole point.
 5. **Surface internal state.** After every action or variant switch, show the full relevant state. Hidden state hides the answer.
-6. **Delete or absorb when done.** Once the question is answered, remove the prototype or fold the validated piece into real code — REQUIRED SUB-SKILL: use `tdd` when reimplementing it as production code; the prototype's logic is a reference, not tested code. Never leave it to rot.
+6. **Delete or absorb when done.** Once the question is answered, remove the prototype or fold the validated piece into real code — REQUIRED SUB-SKILL: use `tdd` when reimplementing it as production code; the prototype's logic is a reference, not tested code.
 
 ## The answer is the only deliverable
 

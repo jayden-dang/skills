@@ -1,6 +1,8 @@
 ---
 name: setup-repo
-description: Use when a repository has not been configured for this skill set yet (no docs/agents/ directory, verify commands unknown, triage labels unmapped, team roster unknown), or when the user wants to change the repo's tracker, labels, verify commands, release steps, team, CODEOWNERS-derived ownership, or contributors roster. This is the entry point for adopting the skill set into an existing or mature repo — where `scaffold-project` redirects when the directory is not greenfield.
+description: Configures an existing repo for this skill set — a docs/agents/ layer covering verify
+  commands, tracker and labels, release steps, team and ownership. Run it with /setup-
+  repo.
 disable-model-invocation: true
 ---
 

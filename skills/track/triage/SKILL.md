@@ -1,9 +1,7 @@
 ---
 name: triage
-description: Use when the user wants to triage incoming tracker issues, bug reports, or
-  external PRs — show what needs attention in the backlog, classify and
-  investigate a specific issue, write an agent-ready implementation brief, or
-  close and record an out-of-scope rejection.
+description: Triages incoming tracker issues, bug reports, and external PRs — a classification, an
+  investigation, or an agent-ready implementation brief. Run it with /triage.
 disable-model-invocation: true
 ---
 
@@ -40,7 +38,7 @@ When asked "what needs attention", query the tracker and present three buckets, 
 
 ## Triaging one issue
 
-1. **Gather context.** Read the full issue — body, comments, labels, author, dates; for a PR, the diff. Read any prior triage notes so you never re-ask an answered question. Explore the relevant code using the glossary in `CONTEXT.md` and respect ADRs in the area. Then run two checks:
+1. **Gather context.** Read the full issue — body, comments, labels, author, dates; for a PR, the diff. Read any prior triage notes so you never re-ask an answered question. Explore the relevant code using the glossary in `CONTEXT.md`. When `docs/architecture/` exists and the issue touches a spine it covers, REQUIRED SUB-SKILL: use `check-invariants` for the conformance read rather than judging it here. Then run two checks:
    - **Redundancy:** search the codebase for an existing implementation of the requested behavior — search by domain concept, not the reporter's wording. If it already exists, the outcome is an already-implemented close (step 5); collect the evidence (where it lives, how to invoke it).
    - **Prior rejection:** read `.out-of-scope/*.md` and surface any concept that resembles this request — match by idea, not keyword. If one matches, tell the user what was rejected before and why, and ask whether the decision stands.
 

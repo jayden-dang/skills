@@ -1,14 +1,7 @@
 ---
 name: allocate-attention
-description: >
-  Use when a finished branch or PR holds more change than you can read and you
-  must decide what gets human eyes — produces an attention allocation over a
-  range: a bounded sample set plus the explicit unsampled residue. Triggers on
-  /allocate-attention, "what should I review first", "I can't review all of
-  this", "spot check this PR", "too much to review", "sample this branch",
-  "which parts actually need me". Not for a Standards+Spec review verdict
-  (code-review), a comprehension packet (comprehend-change), verify evidence,
-  polish cleanups, or a ship menu.
+description: Produces an attention allocation over a range too large to read — a bounded sample set
+  for human eyes plus the explicit unsampled residue. Run it with /allocate-attention.
 disable-model-invocation: true
 ---
 

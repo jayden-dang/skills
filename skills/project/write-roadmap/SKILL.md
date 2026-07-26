@@ -103,9 +103,41 @@ the gate again. Material means: any milestone's outcome, membership, ordering, c
 state, or goal citations. Presenting edited content under an `Approved` stamp tells every
 later reader that a version nobody approved was approved.
 
-**Record a closure.** When a milestone's commitment becomes `Closed`, write the release tag
-or commit into its `Closed:` slot — that marker is how a later reader resolves what shipped
-in it.
+**Record a closure — gated.** A `Committed → Closed` transition is the one edit this skill
+cannot make on its own say-so. Closing a milestone asserts that it *delivered*, and nothing
+in this file can establish that.
+
+<HARD-GATE>
+Refuse a `Committed → Closed` transition that arrives without an assessment handoff, and name
+`/assess-milestone` for the user to run. This holds in every repo, including one that has
+never run that skill.
+
+Given a handoff — a `MILE-N`, an assessment ordinal, an effective verdict, and a candidate
+closing revision SHA — **re-derive every value by reading**
+`docs/roadmap/assessments/<MILE-N>.md` at that ordinal. The handoff's values are claims to
+check, never facts to trust. Verify all five:
+
+1. the block names the same `MILE-N`;
+2. the referenced ordinal exists;
+3. its `Candidate closing revision` equals the handoff's SHA;
+4. its current `Human disposition` is **terminal** (`Accepted` or `Overridden`);
+5. its effective verdict and `Close decision` match what the handoff asserts.
+
+Any mismatch → refuse the close and report which value disagreed. Validate against `A1`–`A7`
+in `templates/milestone-assessment.md` first; an unparseable assessment cannot authorise
+anything.
+</HARD-GATE>
+
+Then write into `Closed:` the SHA **read from the assessment file**, verbatim — not the one
+the handoff carried. Where the two ever diverge, the file is the record and the handoff is
+hearsay. That marker is how a later reader resolves what shipped in the milestone.
+
+Never re-run the assessment, and never append a block to the assessment file: this skill
+reads that file and writes only the roadmap. Then run **## The approval gate** as usual — the
+assessment gate is additive and precedes it, never replaces it.
+
+Every other update — a new milestone, a reorder, a reword, a commitment, a deferral — reaches
+the approval gate exactly as before. This gate fires on closure alone.
 
 *Done when: the change is applied, no ID moved or vanished, and the gate has run.*
 

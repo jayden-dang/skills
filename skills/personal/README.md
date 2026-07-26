@@ -154,5 +154,3 @@ life-charter → review-quarter → portfolio intent
 ## License
 
 Same as the repository root (MIT unless otherwise noted).
-'''
-

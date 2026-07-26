@@ -65,12 +65,6 @@ order), `members` (item → milestone), `bindings` (code → `ROAD-N`), and `sta
 - **R11** — the roadmap failing to parse, or violating `S1`, `S3`, `S4`, `S5`, `S7`, or a
   `Depends-on` not resolving to exactly one live `MILE-N`.
 
-## Scoping a finding to one milestone
-
-`assess-milestone` needs the subset of the withholding set that bears on the single milestone
-it is assessing. A finding is **relevant to `MILE-N`** when it names that milestone, one of
-its members, or a goal it cites.
-
-`R2` is relevant never: it fires on a live goal that *no* milestone cites, so by its own
-condition it cannot name a goal the assessed milestone cites. It is still evaluated — stated
-here so a reader does not mistake its absence for an omitted check.
+Scoping these findings to a single milestone is `assess-milestone`'s concern, not a property
+of the findings themselves — that rule lives in its skill body. `check-roadmap` reports the
+whole repo and needs no scoping.

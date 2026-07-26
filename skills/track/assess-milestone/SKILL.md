@@ -122,10 +122,14 @@ from `templates/roadmap-findings.md` — resolve `templates/` as
 `${CLAUDE_PLUGIN_ROOT}/templates` when installed as a plugin, otherwise `../../../templates`
 relative to this SKILL.md. Read the rules there; do not restate them.
 
-Filter to findings **relevant to this milestone** — one naming it, one of its members, or a
-goal it cites — as that reference defines. Any relevant withholding finding → report it and
-withhold the verdict. Judging an outcome on evidence already known to be inconsistent
-produces a verdict worth nothing.
+Then filter to the findings **relevant to this milestone**: one naming that `MILE-N`, one of
+its members, or a goal it cites. Any relevant withholding finding → report it and withhold
+the verdict. Judging an outcome on evidence already known to be inconsistent produces a
+verdict worth nothing.
+
+`R2` is relevant never: it fires on a live goal that *no* milestone cites, so by its own
+condition it cannot name a goal the assessed milestone cites. Evaluate it anyway — stated
+here so a reader does not mistake its absence for an omitted check.
 
 `/check-roadmap` reports the same codes across the whole repo, and is user-invoked: name it
 for the user when they want the full picture. Never invoke it.

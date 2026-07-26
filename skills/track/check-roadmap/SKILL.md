@@ -134,11 +134,16 @@ First match wins, top to bottom. Ties break on **milestone table order**, then l
 | 5 | …`Approved`, `design.md` exists, no `tasks.md` | `write-plan` |
 | 6 | …`Approved`, `tasks.md` exists | `execute-plan` |
 | 7 | …`Implemented` | name `/release` for the user to run |
-| 8 | no `Committed` milestone, a `Planned` one exists | `write-roadmap` — commit the next milestone |
-| 9 | every milestone `Closed` | report the roadmap complete |
+| 8 | a `Committed` milestone whose members are all bound and `Shipped` | name `/assess-milestone` for that `MILE-N` |
+| 9 | no `Committed` milestone, a `Planned` one exists | `write-roadmap` — commit the next milestone |
+| 10 | every milestone `Closed` | report the roadmap complete |
 
-Rows 4–6 test for two filenames in one spec folder. Row 7 **names** a user-invoked skill
-rather than invoking it.
+Rows 4–6 test for two filenames in one spec folder. Rows 7 and 8 **name** a user-invoked
+skill rather than invoking it.
+
+Row 8 is where the milestone leaves this skill's hands. Everything above it is structural;
+whether the milestone's `Outcome:` was actually *achieved* is a judgment `assess-milestone`
+makes and a human disposes of — see the `<NON-NEGOTIABLE>` block above.
 
 ## Output
 

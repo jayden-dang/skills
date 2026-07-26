@@ -18,6 +18,7 @@ ROWS = [
     ("`design.md` exists, no `tasks.md`", "write-plan"),
     ("`tasks.md` exists", "execute-plan"),
     ("`Implemented`", "/release"),
+    ("all bound and `Shipped`", "/assess-milestone"),
     ("a `Planned` one exists", "write-roadmap"),
     ("every milestone `Closed`", "complete"),
 ]
@@ -70,6 +71,12 @@ class PriorityLadder(unittest.TestCase):
         """RMAP-3.10 — row 7 targets a user-invoked skill, so it may only be named (ARCH-5)."""
         row = next(ln for ln in self.text.splitlines() if "/release" in ln)
         self.assertRegex(row, r"(?i)name")
+
+    def test_assessment_rung_names_the_skill_rather_than_invoking_it(self):
+        """ASSESS-5.2 — the ladder names /assess-milestone for the user to run."""
+        row = next(ln for ln in self.text.splitlines() if "all bound and `Shipped`" in ln)
+        self.assertIn("name `/assess-milestone`", row)
+        self.assertNotIn("use `assess-milestone`", self.flat)
 
 
 if __name__ == "__main__":

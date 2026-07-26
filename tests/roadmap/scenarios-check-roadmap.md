@@ -104,3 +104,20 @@ is bound to a `Shipped` feature.
 - `write-roadmap` **names** `/check-roadmap` for the user and never invokes it — enforced by
   `scripts/lint-handoffs.py`. Covers RMAP-3.13.
 - Ladder row 7 likewise names `/release` rather than invoking it. Covers RMAP-3.13.
+
+## S-CR-10 — The assessment rung
+
+**Setup.** A fixture whose `MILE-1` is `Committed`, every member bound, every bound feature's
+`requirements.md` `Status:` reading `Shipped`, and no withholding finding present.
+
+**Expect.**
+- The next action names `/assess-milestone` for `MILE-1`. The skill is **named**, never
+  invoked — it carries `disable-model-invocation: true`, and `scripts/lint-handoffs.py`
+  fails the build on any invoking phrasing. Covers ASSESS-5.2.
+- The run writes no file: no assessment is created, no `Status:` is updated, no roadmap is
+  edited. Naming the gate is not passing through it. Covers ASSESS-5.5.
+- The report says nothing about whether `MILE-1`'s `Outcome:` was achieved. Row 8 hands that
+  judgment on; it does not make it. Covers ASSESS-5.6.
+- Ordering: a milestone that satisfies both row 7 and row 8 takes row 7, because first match
+  wins — a member still `Implemented` is not yet `Shipped`, so the two cannot both hold in
+  practice. Covers ASSESS-5.2.

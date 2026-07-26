@@ -256,11 +256,14 @@ First match wins, top to bottom. Ties break on **table order** for milestones, t
 | 5 | …`Approved`, `design.md` exists, no `tasks.md` | `write-plan` |
 | 6 | …`Approved`, `tasks.md` exists | `execute-plan` |
 | 7 | …`Implemented` | name `/release` for the user |
-| 8 | no `Committed` milestone, a `Planned` one exists | `write-roadmap` — commit the next milestone |
-| 9 | every milestone `Closed` | report the roadmap complete |
+| 8 | a `Committed` milestone whose members are all bound and `Shipped` | name `/assess-milestone` for that `MILE-N` |
+| 9 | no `Committed` milestone, a `Planned` one exists | `write-roadmap` — commit the next milestone |
+| 10 | every milestone `Closed` | report the roadmap complete |
 
 Rows 4–6 read for the presence of two filenames in one spec folder — bounded, and within
-RMAP-4.1's budget. Row 7 names a user-invoked skill rather than invoking it (ARCH-5).
+RMAP-4.1's budget. Rows 7 and 8 name a user-invoked skill rather than invoking it (ARCH-5).
+Row 8 was added by ASSESS (see `docs/specs/2026-07-26-milestone-assessment/`, ASSESS-5.2);
+this table remains the ladder's single statement, mirrored into `check-roadmap`'s body.
 
 **Standup mode** renders the same derivation as a card: the milestone in flight, the
 current status of its `ROAD-N` members, and the one next action (RMAP-3.11). One skill,

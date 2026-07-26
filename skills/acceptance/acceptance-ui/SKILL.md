@@ -70,8 +70,7 @@ an observable test. Re-run the failing spec:
   defect in the **spec**, not the product. Make it deterministic (role/label
   locators, awaited assertions, real fixtures) and re-run.
 
-A flaky spec is fixed at the harness level, never dismissed and never blamed on
-the product; only a deterministic failure on a real assertion goes to `debug`.
+Only a deterministic failure on a real assertion goes to `debug`.
 *Done when: every UI flow passes in a fresh Chromium run.*
 
 ## 5. Commit the specs

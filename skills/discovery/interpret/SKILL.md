@@ -97,7 +97,7 @@ And if the honest answer really is that two paths are equivalent: say which one 
 
 - **Read the code when the paste touches it.** If the pasted response names a file, symbol, or behavior that exists in this repo, read it *before* writing the stance, and cite `file:line` in the analysis. Never opine on code that lives here from the paste alone.
 - REQUIRED SUB-SKILL: use `research` when an assumption or an alternative turns on external fact — how a library, API, standard, or platform actually behaves (it reaches for the Context7 MCP for current, version-accurate library facts rather than training-cutoff memory). Fold the evidence into the analysis with its source.
-- Keep a running ledger of what's decided, what's open, and the shape of the project, so each turn builds on the last instead of restarting cold.
+- Carry the project's shape across turns so each builds on the last instead of restarting cold; decided/open state is tracked by the Decision-event ledger below.
 - Combining project context, implementation detail, and outside knowledge is what makes this a thinking partner rather than a translator.
 
 ## When the user decides

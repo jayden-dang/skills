@@ -23,7 +23,7 @@ holding which work, and which of them we have actually committed to.*
 
 **Where this sits:** `establish-project` (vision) → **`write-roadmap`** (milestones) →
 `brainstorm` → `write-requirements` → … A roadmap item becomes a feature when
-`write-requirements` registers a code for it; this skill never registers one.
+`write-requirements` registers a code for it — see Who owns what.
 
 ## The Iron Law
 

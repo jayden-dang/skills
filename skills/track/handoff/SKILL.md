@@ -30,7 +30,7 @@ If the user passed an argument to this skill, treat it as what the next session 
 
 ## Optional: launch the successor
 
-Only if the user asks: start a background agent seeded with the handoff document as its prompt, with a descriptive display name, running in the current working directory. Confirm the mechanism your harness provides before promising it; otherwise just hand the user the file path.
+Only if the user asks: start a background agent seeded with the handoff document as its prompt, with a descriptive display name, running in the current working directory. Confirm the mechanism your harness provides before promising it; without one, the path you already gave the user is the whole hand-off.
 
 ## Completion criterion
 

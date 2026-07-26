@@ -48,4 +48,4 @@ Offer an ADR only when **all three** hold:
 
 Any one missing → no ADR. For contrast — a decision that is surprising and a real trade-off but **cheap to reverse** earns none: a 200 ms debounce on the search box trades responsiveness against request volume, yet flipping it later is a one-line change, so it fails "hard to reverse." Record it in the code, not an ADR. Format: `docs/adr/NNNN-slug.md` (create the directory lazily), numbered sequentially — scan for the highest existing number and add one. Body is a short title plus **1–3 sentences**: context, decision, why. That's the whole document; recording *that* and *why* is the value, not filling sections.
 
-If a new decision contradicts an existing ADR, flag the conflict to the user and resolve it explicitly (supersede the old ADR by number). Never silently override a recorded decision.
+If a new decision contradicts an existing ADR, flag the conflict to the user and resolve it explicitly (supersede the old ADR by number).

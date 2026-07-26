@@ -117,8 +117,7 @@ line (or is listed as deliberately unmapped, with a reason). Then scan for
 placeholders and internal contradictions (a name used two ways, a data flow
 that skips a component).
 
-- **Reuse coverage:** every architecture section carries a `Reuse:` line, and every rung-7 or
-  new-dependency line carries its one-line justification.
+- **Reuse coverage:** verify the Step 2 `Reuse:` rule was followed for every architecture section.
 
 **Independent design review — dispatch, don't self-review.** Fresh context has
 no stake in your framing (the bias that reinterprets a stale requirement rather

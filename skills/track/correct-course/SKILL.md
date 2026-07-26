@@ -12,7 +12,7 @@ description: Use when a mid-execution discovery invalidates an already-approved 
 
 # Correct Course
 
-The mid-flight rewind decision for when a discovery falsifies an approved plan. It is a **thin router**: it decides *which artifact is now false and how far back to rewind*, then delegates — it never rewrites a requirement, a design, a plan, or trace metadata itself. `execute-plan` hands off here when it hits "the plan itself is wrong" or a circuit breaker whose root cause sits above the current task; a user may also invoke it directly the moment something feels off.
+The mid-flight rewind decision for when a discovery falsifies an approved plan. It is a **thin router**: it decides *which artifact is now false and how far back to rewind*, then delegates, per Thin-router exit below. `execute-plan` hands off here when it hits "the plan itself is wrong" or a circuit breaker whose root cause sits above the current task; a user may also invoke it directly the moment something feels off.
 
 Three phases, in order: diagnose, classify, route. Two hard stops, never an auto-rewrite.
 

@@ -64,7 +64,7 @@ Each task:
   verbatim from the design section's `Reuse:` line, same `<rung> — <concrete target>` grammar,
   so the implementer is told to build on it, not reimplement it (e.g. `Reuse: existing —
   src/util/dates:parseISO (rung 2)`, copied verbatim from the design section's `Reuse:` line).
-  Keep it consistent with the `Reuse:` line of the design section this task implements.
+  Step 4 checks it against the design's `Reuse:` line, so copy rather than reinterpret.
 - **Interfaces:** Consumes / Produces — the names and types neighboring tasks
   share. This block is how an isolated implementer learns what to call things.
 - **Depends-on:** the earlier tasks this one truly needs — those whose

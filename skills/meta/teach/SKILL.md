@@ -70,8 +70,7 @@ production. Its parts, in order:
    not a gap in their words, it is the gap. Those stalls are the next lesson's
    probes.
 
-7. **Record** — write down only what they *demonstrated*, never what you covered.
-   See [The workspace](#the-workspace).
+7. **Record** — write the learning-record entry per [The workspace](#the-workspace).
 
 **Probe → Grade (4 → 5) is the loop.** Run it until they can carry the mission's
 next step themselves, then run Feynman once and record.

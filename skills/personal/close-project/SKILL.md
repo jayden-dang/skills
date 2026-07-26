@@ -18,8 +18,6 @@ REQUIRED: read sibling `ROLE.md` (secretary default, grant rule, hybrid ban, con
 4. Registry → Done table.
 5. Optional: feed lessons to area or quarterly note.
 
-Never mark done from agent inference alone.
-
 ## Done when
 
 No active ghost remains for this id; registry matches.

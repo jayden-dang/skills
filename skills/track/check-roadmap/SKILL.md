@@ -142,9 +142,7 @@ First match wins, top to bottom. Ties break on **milestone table order**, then l
 Rows 4–6 test for two filenames in one spec folder. Rows 7 and 8 **name** a user-invoked
 skill rather than invoking it.
 
-Row 8 is where the milestone leaves this skill's hands. Everything above it is structural;
-whether the milestone's `Outcome:` was actually *achieved* is a judgment `assess-milestone`
-makes and a human disposes of — see the `<NON-NEGOTIABLE>` block above.
+Row 8 is where the milestone leaves this skill's hands, per the `<NON-NEGOTIABLE>` block above.
 
 ## Output
 

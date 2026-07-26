@@ -64,22 +64,18 @@ slot — fill it or write `None`.
 3. **Write the vision.** Fill `templates/product-vision.md` → `docs/product/vision.md`.
    Every goal in `## Goals` gets a bold `**GOAL-N**` ID, flat and repo-wide, assigned as
    you write — a roadmap milestone cites those IDs, and an unIDed goal cannot be cited or
-   dispositioned. A scan-derived candidate becomes content in `vision.md` only after the
-   user ratifies it in the `grilling` channel; unratified candidates are discarded with the
-   ephemeral digest. *Done when: the file exists, every slot filled or `None`, and every
+   dispositioned. Scan-derived candidates are subject to the ratification rule in step 2.
+   *Done when: the file exists, every slot filled or `None`, and every
    goal carries a unique `**GOAL-N**`.*
 4. **Write the spine.** Fill `templates/architecture-INDEX.md` → `docs/architecture/INDEX.md`.
    Each invariant is a bold `**ARCH-N**` ID plus one imperative rule; keep the set small.
    Split into per-domain `docs/architecture/<domain>.md` files only for a large project.
-   A scan-derived candidate becomes content in `docs/architecture/` only after the user
-   ratifies it in the `grilling` channel; unratified candidates are discarded with the
-   ephemeral digest. *Done when: the spine exists with at least one invariant.*
+   Scan-derived candidates are subject to the ratification rule in step 2.
+   *Done when: the spine exists with at least one invariant.*
 5. **Write the guidelines.** Fill `templates/product-guidelines.md` →
    `docs/product/guidelines.md`. If engineering rules already live in
-   `docs/agents/project.md`, move them here and leave a pointer. A scan-derived candidate
-   becomes content in `guidelines.md` only after the user ratifies it in the `grilling`
-   channel; unratified candidates are discarded with the ephemeral digest. *Done when:
-   the file exists.*
+   `docs/agents/project.md`, move them here and leave a pointer. Scan-derived candidates
+   are subject to the ratification rule in step 2. *Done when: the file exists.*
 6. **Register.** Add the project-docs line to the `## Agent skills` block so the feature
    skills discover the layer (or suggest `/setup-repo` if no such block exists yet).
    *Done when: the layer is discoverable.*

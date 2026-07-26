@@ -75,7 +75,7 @@ The permitted deletion, and its three conditions: a test may be **deleted** when
 
 ## 7. Report
 
-State what was fixed, what was dropped and why, and — separately — any correctness bug an agent noticed in passing, named for `code-review` or `debug` rather than fixed here. If nothing survived triage, say the code was already clean. **That is a successful run, not a failed one**; four agents finding nothing is a real result, and manufacturing a finding to justify the pass is the one outcome worse than no findings at all. *Done when: fixed / dropped / referred-out are all stated.*
+State what was fixed, what was dropped and why, and — separately — any correctness bug an agent noticed in passing, referred out per rule 2. If nothing survived triage, say the code was already clean. **That is a successful run, not a failed one**; four agents finding nothing is a real result, and manufacturing a finding to justify the pass is the one outcome worse than no findings at all. *Done when: fixed / dropped / referred-out are all stated.*
 
 ## Inline fallback (no subagent capability)
 

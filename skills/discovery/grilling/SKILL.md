@@ -8,7 +8,7 @@ description: Use to interview the user to stress-test a plan, design, or feature
 
 # Grilling
 
-**What this is:** a reusable **interview protocol**, not a pipeline stage. Nested under a parent (e.g. `brainstorm` step 2, `establish-project`, `triage`) you stay in that parent's conversation and checklist — apply these rules; do not announce a mode switch, do not open a competing todo list, do not treat the parent as finished. Standalone (the user asked to be grilled with no parent) you own the interview alone until shared understanding.
+**What this is:** a reusable **interview protocol**, not a pipeline stage. Nested under a parent (e.g. `brainstorm` step 2, `establish-project`, `triage`) you stay in that parent's conversation and checklist — apply these rules, do not announce a mode switch, and run the parent's checklist per Todos below. Standalone (the user asked to be grilled with no parent) you own the interview alone until shared understanding.
 
 Interview the user about every aspect of the plan until you both hold the same picture of it.
 

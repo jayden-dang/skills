@@ -68,7 +68,7 @@ context-isolated per task by design.
 
 ## Rules of thumb
 
-- Never spec what you don't understand yet: unknowns go to `research` or
-  `prototype` first. Specs are for execution, not discovery.
+- Never spec what you don't understand yet — specs are for execution, not
+  discovery; the unknowns detour is part of `brainstorm` above.
 - When two skills both seem to apply, the process skill wins; it will invoke
   the implementation skill itself.

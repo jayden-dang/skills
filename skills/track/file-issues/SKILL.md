@@ -95,7 +95,7 @@ Work the **frontier**: publish any slice whose blockers are already published, a
 
 **Blocked by:** the numbers/titles that gate this slice, or "None — can start immediately".
 
-**Status:** `ready-for-agent` if this slice has no open blocker; otherwise `blocked` until its blockers close.
+**Status:** fill per the labeling rule above.
 
 - [ ] Acceptance criterion 1
 - [ ] Acceptance criterion 2

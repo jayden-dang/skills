@@ -237,8 +237,8 @@ never polished or summarised.
 **Residue.** Name every residue unit and its count against the range total.
 **Never describe the residue as** *reviewed*, *cleared*, *approved*, or *safe*.
 
-**Fail closed.** If any step cannot complete, report the failure and present
-**no partial allocation** as a result.
+**Fail closed** — the Iron Law's rule for a run you cannot finish applies to
+every step here, not only the last.
 
 ## Output
 
@@ -262,8 +262,8 @@ is a function of the range and repo state, not of a stored file.
 
 ## Boundaries
 
-This skill **blocks no merge**, PR, release, or decision record, and adds no
-requirement to any of them.
+Per Posture above, this skill gates nothing — and it adds no requirement to any
+merge, PR, release, or decision record either.
 
 - **Publishes no decision record.** Nothing is written under `.skills/decisions/`
   and `record-decision` gains no emitter. When you carry an allocation summary

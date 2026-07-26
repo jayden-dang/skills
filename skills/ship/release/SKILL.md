@@ -49,7 +49,7 @@ Write the approved version into the project's version files (manifest, lockfile 
 
 ## e. Build
 
-Execute the ordered release steps from `docs/agents/project.md` exactly. Do not improvise flags or substitute commands; if a step is unclear or fails, stop and report.
+Execute the ordered release steps from `docs/agents/project.md` exactly. Do not improvise flags or substitute commands; an unclear step is a failing step under the stop rule.
 
 **Done when:** every release step has run successfully and the artifact(s) exist.
 
@@ -67,7 +67,6 @@ Only after explicit user approval (this approval **is** the successful terminal 
 2. On publication failure: do **not** create or push the tag; report the verdict was not enacted.
 3. On success: create the tag (`git tag <version>`), push the release commit and tag, then append to the record envelope:
    `Execution-Outcome: tag <ref-name>@<object-id> pushed <UTC>`.
-4. Never push a tag on your own initiative.
 
 **Done when:** the tag exists on the remote and the release decision record cites it (or the release was explicitly rejected/stopped without a tag).
 

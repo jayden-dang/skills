@@ -106,8 +106,7 @@ For every existing behavior this feature touches, add a guard:
 `**CODE-N.M** (guard) WHEN <condition> THE SYSTEM SHALL CONTINUE TO <existing
 behavior>`. Guards are what stop an agent from breaking load-bearing behavior
 nobody mentioned. For a tier-1 bugfix this step plus one fix requirement IS the
-spec (append to the owning feature's requirements.md, or `docs/specs/fixes.md`
-if no feature owns it).
+spec, appended to the destination named under Two modes.
 **Done when:** you have actively searched the touched surface for behaviors to
 guard — not merely found none by default.
 

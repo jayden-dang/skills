@@ -32,8 +32,7 @@ A finding set, each item an ERROR or a WARNING:
 | **E5** | error | A `Respects:` line cites a retired (struck-through) `ARCH-N` |
 | **W3** | warn | A live `**ARCH-N**` invariant is cited by no `design.md` |
 
-E4/E5/W3 exist only when the repo has a `docs/architecture/` spine; without one they
-never fire and the finding set is exactly E1–E3 / W1–W2.
+E4/E5/W3 come from the invariant passes, which only run when a spine exists.
 
 Errors mean the trace is broken. Warnings mean the trace is incomplete but not
 wrong. `verify`/`release` treat any error as a failing gate; warnings are reported,
@@ -56,8 +55,8 @@ not fatal, unless the caller says otherwise.
 
 ## The passes
 
-Run these against the repo root. Read the full output of each — coverage depends on
-gathering *every* matching file, not a sample.
+Run these against the repo root and read the full output of each — under the
+whole-tree rule in the NON-NEGOTIABLE section below.
 
 **1. Definitions** — bold IDs in requirements/fixes files, minus retired ones.
 
@@ -80,7 +79,6 @@ grep -rnE '^(Status:|Feature code:)' docs/specs --include='*requirements.md'
 ```
 
 `Status:` is one of `Draft | Approved | Implemented | Shipped` (first match wins).
-`fixes.md` is exempt from W2 — it needs neither line.
 
 **3. Task citations** — IDs on `_Requirements:` lines.
 
@@ -108,10 +106,8 @@ grep -roE '[A-Z][A-Z0-9]{1,11}-[0-9]+(\.[0-9]+)+' \
 ```
 
 Each output line is `path:ID` — the covering test file and the ID it covers. Adjust
-the roots/includes to the repo's actual layout. The ID grammar is
-`[A-Z][A-Z0-9]{1,11}-<major>.<minor>`; the trailing `grep` keeps only whole
-two-level tokens, so a three-level ID like `CODE-1.2.3` can never be read as a
-citation of `CODE-1.2`.
+the roots/includes to the repo's actual layout. Same two-level-only ID grammar as
+pass 3.
 
 ### Invariant passes — only when `docs/architecture/` exists
 
@@ -218,8 +214,7 @@ does not emit an automated finding for “a production crossing lacks a record,�
 because it cannot tell skill-mediated verdicts from direct human action or
 external contribution. If an agent or human notes such an absence, treat it as a
 **warning-level concern only — never an error and never a release/verify gate
-fail**. Existing E1–E5 / W1–W3 semantics are unchanged. Coverage remains textual
-presence without judgment.
+fail**. Existing E1–E5 / W1–W3 semantics are unchanged.
 
 ## Output
 

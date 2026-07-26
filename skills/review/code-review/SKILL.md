@@ -57,7 +57,7 @@ Send ONE message containing both dispatches so they run concurrently and neither
 
 ## 5. Aggregate
 
-Present the reports under `## Standards` and `## Spec` headings — lightly cleaned at most. Do NOT merge, dedupe across axes, or rerank one axis's findings against the other's; that reranking is exactly what the separation prevents. When step 3b produced invariant verdicts, present them under a separate `## Invariants (advisory)` heading — a third lane, never merged into or reranked against Standards/Spec, and never a merge blocker (it is advisory by construction).
+Present the reports under `## Standards` and `## Spec` headings — lightly cleaned at most. Do NOT merge, dedupe across axes, or rerank one axis's findings against the other's; that reranking is exactly what the separation prevents. When step 3b produced invariant verdicts, present them under a separate `## Invariants (advisory)` heading — a third lane, never merged into or reranked against Standards/Spec.
 
 Every finding carries: severity (Critical / Important / Minor), file:line, why it matters, and a suggested fix unless obvious.
 

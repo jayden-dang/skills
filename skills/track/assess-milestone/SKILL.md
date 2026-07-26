@@ -271,8 +271,7 @@ Either missing → withhold, and say which.
 
 When both hold, hand `write-roadmap` four values: the `MILE-N`, the **assessment ordinal**,
 the effective verdict, and the candidate closing revision SHA. `write-roadmap` is
-model-invocable and owns every write to `docs/roadmap/INDEX.md`; this skill never edits that
-file itself, and never records the closure directly.
+model-invocable and owns every write to `docs/roadmap/INDEX.md`, including the closure record.
 
 A negative effective verdict with a `Close` decision **proceeds**. A milestone whose members
 all shipped and whose outcome still was not achieved cannot be fixed by shipping more code,

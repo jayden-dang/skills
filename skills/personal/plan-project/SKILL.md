@@ -16,11 +16,10 @@ REQUIRED: read sibling `ROLE.md` (secretary default, grant rule, hybrid ban, con
 2. Write milestones MS-1…MS-n (3–7). Detail checklist items **only** under current MS.
 3. Risks / waiting.
 4. Set `milestone_current` and a real `next_action`.
-5. AI drafts need user confirm before trusting as plan.
 
 ## Anti-pattern
 
-Full multi-month task trees. Plan the current milestone only.
+Full multi-month task trees.
 
 ## Done when
 

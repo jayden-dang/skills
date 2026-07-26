@@ -32,8 +32,7 @@ workflow, not only the new feature — the user exercises the whole surface.
 For each case, read the code to get what the user will ACTUALLY see: the exact
 vocabulary (keywords, command names, labels), keyboard shortcuts, and the real
 rendering — badge colors, chip styles, icons — pulled from the source (theme
-tokens, CSS), never guessed. The artifact's "Expect" mirrors that rendering so
-the user checks against a true picture. Where the code reveals an honest caveat
+tokens, CSS), never guessed. Where the code reveals an honest caveat
 (a delimiter dimmed not removed, a status with no UI yet), the case says so.
 
 ## 3. Boot the real app and find the honest observation point

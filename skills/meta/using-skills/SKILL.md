@@ -24,7 +24,8 @@ Announce "Using [skill] to [purpose]", then follow the skill exactly. If it has
 a checklist, create one todo per item.
 
 **Priority:** process skills first, then implementation skills. "Build X" →
-`brainstorm` before anything. "This is broken" → `debug` before any fix. Small
+`brainstorm` before anything, plan mode included — plans come after approved
+requirements, never before. "This is broken" → `debug` before any fix. Small
 in-scope change to an already-shipped, spec'd feature (a tweak, recolor, or
 follow-on) → `amend`, not `brainstorm`. For an incoming issue or external PR,
 suggest the user run `/triage`; to capture the current conversation, spec, or
@@ -32,9 +33,6 @@ idea into tracker issues, suggest `/file-issues` (both are user-invoked — you
 cannot auto-invoke them).
 Unsure which flow fits → suggest `/ask`. Only auto-invoke model-invocable skills;
 name a user-invoked one for the user to run.
-
-**Before plan mode:** if the work is creative (new behavior, new feature), run
-`brainstorm` first — plans come after approved requirements.
 
 **Participant boundary:** never infer skill-set membership from roster,
 CODEOWNERS, or PR authorship; only skill-mediated actions are enforced or

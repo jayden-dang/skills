@@ -57,5 +57,4 @@ check-invariants (3 citations, spine: docs/architecture/INDEX.md)
 
 Report all verdicts; do not drop `unclear` ones — they are the point. This skill
 returns findings, never a pass/fail. The caller (`code-review`, `execute-plan`,
-`establish-project`) decides what to do with a `violates`; it is a review finding, not
-a blocked gate.
+`establish-project`) decides what to do with a `violates`.

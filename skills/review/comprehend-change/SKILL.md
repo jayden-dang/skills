@@ -8,8 +8,7 @@ disable-model-invocation: true
 # Comprehend change
 
 Produce **one** self-contained HTML **packet** so the user understands a
-**resolved range** before shipping. Aid only — never a ship gate. v1 packaging
-is outbound self-check; the pipeline accepts any resolved range.
+**resolved range** before shipping. Aid only — never a ship gate.
 
 ## The Iron Law
 
@@ -101,10 +100,7 @@ HTML presented as success.
 
 ## Range resolver (D! + A+)
 
-**Decision tree (omit range):** `pure_untracked` → **stop, no HTML** → else
-`tracked_dirty` → WT vs HEAD (+ **scope notice** if branch ahead) → else
-`truly_clean` → `default_base..HEAD` → else empty → **stop**. Commits ahead of
-base do **not** count until you leave the pure-untracked stop.
+Commits ahead of base do **not** count until you leave the pure-untracked stop.
 
 **Leading words:** `tracked_dirty`, `untracked_ni`, `pure_untracked`,
 `truly_clean`, `default_base`, **scope notice**.

@@ -25,7 +25,7 @@ Never write: "You're absolutely right", "Great point", "Good catch, thanks", "Th
 ## Source Calibration
 
 - **The user:** trusted — verify scope, then act. Still no performative agreement.
-- **Reviewer subagents:** their findings are claims like any other; verify before fixing.
+- **Reviewer subagents:** no calibration of their own — claims like any other, handled by the same verification step.
 - **External reviewers:** extra skepticism — they lack full context. Check whether the suggestion is correct for this stack, this compatibility floor, this architecture. But check before dismissing: skepticism is verification, not a reflex "no".
 
 ## When You Pushed Back and Were Wrong

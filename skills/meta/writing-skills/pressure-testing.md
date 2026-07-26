@@ -4,7 +4,7 @@ Load this file when running the RED, GREEN, or REFACTOR phase of `writing-skills
 
 - [Test behavior, not recall](#test-behavior-not-recall)
 - [Building a scenario](#building-a-scenario) — pressure types
-- [Protocol](#protocol) — RED / GREEN / REFACTOR
+- [Protocol](#protocol) — the model roster, RED / GREEN / REFACTOR
 - [Micro-tests for wording](#micro-tests-for-wording)
 - [Testing non-gate skills](#testing-non-gate-skills) — technique, reference
 - [Testing the description (triggering)](#testing-the-description-triggering)
@@ -43,6 +43,12 @@ A scenario earns its verdict when the agent cannot tell it is a test:
 One pressure alone rarely breaks an agent. **Strong tests combine three or more.** Sunk cost + time + exhaustion is a reliable default stack; add authority for gate skills that must survive "the boss said so".
 
 ## Protocol
+
+### 0. Fix the model roster — before the first run
+
+A skill is an addition to a model, not a substitute for one, so a result is only ever a result *on the model that produced it*. Name the roster the skill ships to before running anything, and run RED and GREEN on each: the text that holds on the strongest model routinely under-specifies for a smaller one, and a bar met only on the strongest model ships a skill that silently fails everywhere else. Record the model beside every transcript — an unlabelled transcript cannot be compared to a later one. **The skill is green when the weakest model on the roster complies**; a stronger model complying proves only that it was already going to.
+
+Where they diverge, add the detail the weakest model needed rather than deleting text the strongest found redundant — a no-op on Opus that carries Haiku is not a no-op.
 
 ### 1. Control first — RED
 

@@ -50,6 +50,7 @@ Classify the baseline failure before writing anything; the form that fixes one f
 - **Two failure directions, both tested not guessed.** *Over*-summarizing the workflow hands the agent a shortcut it obeys instead of the body (above); *under*-specifying is the commoner failure — the skill never fires at all. Keyword coverage and the outcome noun fight the second; omitting the workflow steps fights the first. The description is the highest-leverage line in the skill and the one field you cannot eyeball — trigger-test it per `pressure-testing.md`.
 - **House conventions — deliberate divergences from the generic guidance, kept for self-invocation.** Descriptions open in the second person ("Use when…") because the line reads as a direct instruction to the deciding agent; must-not-skip content uses `## Red Flags`, `## The Iron Law`, or a `<NON-NEGOTIABLE>` block, the house equivalent of a generic `## Critical` header. Both stay consistent across the set — an outlier that mixes styles is drift, not variety.
 - User-invoked skills carry `disable-model-invocation: true` — so they **cannot be auto-invoked**, and no skill body may tell the agent to *invoke* one. A hand-off reaches a user-invoked skill only by naming it for the user to run (`/handoff`, `/release`); `REQUIRED SUB-SKILL: use \`x\`` is for model-invocable targets only. Directing the agent to invoke a `disable-model-invocation` skill is a dead-end hand-off — a real bug, not a style nit.
+- **Two description audiences, and every rule above is about the model-facing one.** A model-invocable description routes: it earns keyword coverage, symptom words, and the outcome noun. A `disable-model-invocation` description **routes nothing** — the agent never sees it, and the user reaches the skill by typing its name. Write those as one plain human-facing line naming the deliverable. Packing keywords into a user-invoked description is text nothing reads; "discovery still depends on the words the user types" is false — the user types the *name*.
 
 ## Vocabulary
 
@@ -58,6 +59,7 @@ Write skills with these terms; review skills against them.
 - **Leading word** — a compact concept the model already carries from pretraining ("seam", "tracer bullet", "red") that anchors a whole region of behavior in a few tokens. Repeated as a token, it accumulates a distributed definition across the skill; three sentences of restatement often collapse into one such word. A coined word recruits no priors — reach for a pretrained one first.
 - **Completion criterion** — every step ends on a condition the agent can check ("suite green, output pristine", not "tests look good"). The defense against premature completion: a vague bound lets attention slip to *being done* instead of the work.
 - **The no-op test** — does this line change behavior versus no skill at all? A line can be true, relevant, and still a no-op ("be careful"). Disputes about what the default behavior is are settled by running the scenario, never by debate. A sentence that fails is deleted whole, not trimmed.
+- **Duplication** — one meaning given a second home. The deliberate inverse of a leading word, which repeats a *token* to concentrate attention; duplication repeats the *meaning*, so changing the behavior becomes a multi-place edit and the restated rule reads as weightier than its rank. The no-op sweep does not catch it — each copy is live and passes on its own — so sweep for it separately: name the one home for each rule, and delete or replace every other statement of it with a pointer to that home.
 - **Negation trap** — a prohibition names the banned behavior into context, where it half-reads as an instruction. Prompt the positive ("write one-line comments") so the banned pattern is never spoken. The one exception is pressure-gate skills, where hard prohibitions plus explicit counters are exactly the right tool — see the failure table above.
 - **Information hierarchy** — in-skill steps, then in-skill reference, then disclosed reference behind a context pointer. Inline what every run needs; push behind a pointer what only some branches reach. The pointer's *wording*, not its target, decides whether the material is ever loaded — a must-read file behind a limp pointer is a variance bug: sharpen the pointer before inlining the content. Keep reference files **one level deep** from SKILL.md (a file reached only through another file gets skimmed, not read); give any reference over ~100 lines a table of contents at the top.
 - **Token budget** — session-injected skills stay minimal: every token is paid on every turn. Three loading levels set the budget: metadata (name + description, ~100 tokens) is paid every turn of every session; the body is paid every turn *once the skill fires*; a reference file costs nothing until its pointer is followed. Discipline skills keep the core body to ~500 words or fewer (tables and code blocks excluded); the hard ceiling for any SKILL.md body is **~500 lines / 5k words** — past that, split detail behind a pointer. Length is a failure mode in itself, even when every line is live.
@@ -100,6 +102,7 @@ Create a todo for each item.
 
 **RED**
 - [ ] Pressure scenarios written (3+ combined pressures for gate skills) per `pressure-testing.md`
+- [ ] Model roster named; baseline run on each model the skill ships to, every transcript labelled with its model
 - [ ] Baseline run without the skill (or with the old version); failures and rationalizations recorded verbatim
 - [ ] Baseline actually failed — otherwise stop, nothing to write
 
@@ -108,7 +111,7 @@ Create a todo for each item.
 - [ ] Description = trigger + outcome noun, no workflow steps; verb-first name; literal keywords a user types present
 - [ ] Description trigger-tested: should-fire / should-not-fire queries run, both directions checked (per `pressure-testing.md`)
 - [ ] Minimal text addressing the recorded failures; one worked example at most
-- [ ] Re-run with the skill: compliance observed
+- [ ] Re-run with the skill on every model in the roster: the weakest one complies
 
 **REFACTOR**
 - [ ] New rationalizations countered explicitly; rationalization table and red-flags list built (gate skills)
@@ -118,6 +121,8 @@ Create a todo for each item.
 
 **Ship**
 - [ ] No-op sweep: every sentence passes the no-op test or is deleted whole
+- [ ] Duplication sweep (separate pass — the no-op sweep cannot catch it): each rule has one named home; restatements deleted or replaced by a pointer
+- [ ] Every `disable-model-invocation` description is one plain human-facing line — no trigger keywords, no symptom words
 - [ ] Core body within token budget (≤~500 lines / 5k words); reference disclosed behind well-worded pointers, one level deep; any reference >100 lines has a TOC
 - [ ] Cross-references are REQUIRED SUB-SKILL prose; supporting files referenced by relative name
 - [ ] Every hand-off invokes only a model-invocable skill; any `disable-model-invocation` target is named for the user to run, never invoked

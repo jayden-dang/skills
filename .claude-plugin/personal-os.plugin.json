@@ -1,7 +1,7 @@
 {
-  "name": "personal-os",
-  "version": "0.2.0",
-  "description": "Personal OS: independent life and multi-project management skills. Secretary/coach role. Install separately from any engineering skill package.",
+  "name": "personal-pack",
+  "version": "0.2.1",
+  "description": "Personal Pack: independent life and multi-project management skills. Secretary/coach role. Install separately from Engineer Pack.",
   "author": {
     "name": "Jayden Dang"
   },

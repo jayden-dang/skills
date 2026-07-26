@@ -102,7 +102,8 @@ NFR criterion or explicitly recorded as `None`.
 
 ## Step 3: Guard existing behavior
 
-For every existing behavior this feature touches, add a guard:
+List every file the change touches, then work that list: for every existing
+behavior in it, add a guard —
 `**CODE-N.M** (guard) WHEN <condition> THE SYSTEM SHALL CONTINUE TO <existing
 behavior>`. Guards are what stop an agent from breaking load-bearing behavior
 nobody mentioned. For a tier-1 bugfix this step plus one fix requirement IS the

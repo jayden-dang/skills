@@ -174,7 +174,7 @@ sh skills/ship/record-decision/validate-records.sh --mode=publish --record <file
 
 | Failure | Action |
 |---|---|
-| Scan stop, missing judgment, validator 1/2, write failure | Withhold the crossing; report verdict not enacted |
+| Scan stop, missing judgment, validator 1/2, write failure | Withhold the crossing; report verdict not enacted, naming which required element is missing |
 | Retry | Reuse captured human words **verbatim** |
 | Block/reject publish fails | Report unrecorded terminal verdict (incomplete accountability) |
 | Publish OK, crossing fails | Append failure as `Execution-Outcome:`; record stays valid |

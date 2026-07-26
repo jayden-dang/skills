@@ -39,7 +39,7 @@ One card per candidate:
 - **Confidence badge** — exactly one of `Strong` / `Worth exploring` / `Speculative`
 - **Before/after structure sketch** — side-by-side drawings (hand-built divs/SVG): shallow-vs-deep mass diagrams, fan-out collapses, seam lines. The sketch carries the argument; if it needs a paragraph to explain, redraw it.
 
-End with a top-recommendation section: which candidate first, one sentence why.
+End with a top-recommendation section: which candidate first, one sentence why. Open the report for the user and ask which candidate they want to pursue.
 
 **Do not propose concrete interfaces yet** — the report names directions, not designs. Interface shape belongs to the grilling step, with the user in the loop.
 
@@ -53,6 +53,7 @@ Once the user picks:
 
 - REQUIRED SUB-SKILL: use `grilling` — walk the shape of the deepened module one question at a time: constraints, what sits behind the new seam, which adapters are real, which tests survive.
 - REQUIRED SUB-SKILL: use `domain-modeling` for side effects as decisions land — new module named after a concept missing from `CONTEXT.md`? Add the term. Fuzzy term sharpened mid-conversation? Update it now, not later. User rejects a candidate for a load-bearing reason? Offer a 1–3 sentence ADR so future scans do not re-suggest it (skip ephemeral or self-evident reasons).
+- State the ceremony tier aloud — 0 for a change small enough to go straight to `tdd`, 1+ for one needing requirements first.
 
 **Done when:** `grilling` has no unexplored branch left, and the ceremony tier is stated aloud as 0 or 1+.
 

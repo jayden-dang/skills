@@ -2,20 +2,23 @@
 
 This repository can host **more than one skill package**. Each package is installable on its own. Adopters take only what they need.
 
-| Package | Location | Typical surface | Default with engineering plugin? |
-|---|---|---|---|
-| **Engineering** | `skills/{meta,discovery,spec,execution,review,acceptance,craft,ship,track,project,setup}/` | Software repositories | **Yes** |
-| **Personal OS** | `skills/personal/` | Personal / life markdown vaults | **No** (opt-in) |
+| Package | `npx skills` pack name | Location | Typical surface | Default install? |
+|---|---|---|---|---|
+| **Engineer Pack** | `engineer-pack` | `skills/{meta,discovery,spec,execution,review,acceptance,craft,ship,track,project,setup}/` | Software repositories | **Yes** (default plugin) |
+| **Personal Pack** | `personal-pack` | `skills/personal/` | Personal / life markdown vaults | **No** (opt-in) |
 
 They share a monorepo for maintenance convenience. They do **not** depend on each other at runtime.
 
+`npx skills add jayden-dang/skills` lists both packs (from `.claude-plugin/marketplace.json`). Skills not listed in either pack would fall into an ungrouped **Other** bucket — keep the manifests complete.
+
 ---
 
-## Engineering
+## Engineer Pack
 
-Spec-driven agentic development: ideation → requirements → design → plan → implementation → review → release, with requirements traceability.
+Spec-driven agentic development: ideation → requirements → design → plan → implementation → review → release, with requirements traceability and optional multi-milestone roadmap layer.
 
-- Install: default `npx skills` / Claude plugin entry (`.claude-plugin/plugin.json`)
+- Install: default `npx skills` / Claude plugin entry (`.claude-plugin/plugin.json`, name `engineer-pack`)
+- Marketplace registry: `.claude-plugin/marketplace.json` (both packs)
 - Config per code repo: `setup-repo`
 - Constitution for engineering sessions: root `AGENTS.md` (Iron Laws for code work)
 
@@ -23,16 +26,16 @@ Details: root [README.md](../README.md), [docs/guide/START-HERE.md](guide/START-
 
 ---
 
-## Personal OS
+## Personal Pack
 
 Independent management skill set: capture, multi-scale planning, portfolio and life areas, learning cadence, weekly/quarterly review. Agent role = secretary / coach.
 
 - Install: opt-in only — see [skills/personal/README.md](../skills/personal/README.md)
 - Config per vault: `setup-personal-os` (maps *that user’s* folders; never force-renames)
 - Templates: `templates/personal-os/`
-- Optional plugin manifest: `.claude-plugin/personal-os.plugin.json`
+- Plugin manifest: `.claude-plugin/personal-os.plugin.json` (name `personal-pack`)
 
-Personal OS does **not** require the engineering package. Engineering installs should **not** inject Personal OS skills unless the user chooses them.
+Personal Pack does **not** require Engineer Pack. Engineer Pack installs should **not** inject Personal Pack skills unless the user chooses them.
 
 ---
 

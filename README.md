@@ -2,10 +2,10 @@
 
 This repository hosts **independent skill packages**. Install only what you need.
 
-| Package | Path | Default install? | Role |
-|---|---|---|---|
-| **Engineering** | `skills/{meta,discovery,spec,…}/` | **Yes** (Claude plugin) | Spec-driven coding: ideation → ship |
-| **Personal OS** | `skills/personal/` | **Opt-in** | Life + multi-project *management* (secretary/coach) |
+| Package | `npx skills` name | Path | Default install? | Role |
+|---|---|---|---|---|
+| **Engineer Pack** | `engineer-pack` | `skills/{meta,discovery,spec,…}/` | **Yes** (default plugin) | Spec-driven coding: ideation → ship |
+| **Personal Pack** | `personal-pack` | `skills/personal/` | **Opt-in** | Life + multi-project *management* (secretary/coach) |
 
 - Package map: **[docs/packages.md](docs/packages.md)**  
 - Personal OS (standalone): **[skills/personal/README.md](skills/personal/README.md)** · **[docs/personal-os/START-HERE.md](docs/personal-os/START-HERE.md)**
@@ -64,8 +64,8 @@ the same string in all five places above it.
 npx skills@latest add jayden-dang/skills
 ```
 
-Or as a Claude Code plugin (this repo is a valid plugin: **engineering** skills + a
-session-start hook). Personal OS is **not** in the default plugin list.
+Or as a Claude Code plugin (this repo is a valid plugin: **Engineer Pack** + a
+session-start hook). Personal Pack is **not** in the default plugin list.
 
 **Nothing to install into your repo.** Pure `SKILL.md` — no vendored runtime.
 
@@ -182,8 +182,8 @@ and countered by name. See [The gates](docs/guide/concepts/gates.md).
 | acceptance | `acceptance-check`, `acceptance-api`, `acceptance-ui`, `dogfood` |
 | craft | `design-page` |
 | ship | `finish-branch`, `release` |
-| track | `amend`, `triage`, `sync-spec`, `improve-architecture`, `handoff`, `file-issues` |
-| project | `establish-project` (optional project-documentation layer) |
+| track | `amend`, `correct-course`, `triage`, `sync-spec`, `check-roadmap`, `assess-milestone`, `improve-architecture`, `handoff`, `file-issues` |
+| project | `establish-project`, `write-roadmap` (optional project / multi-milestone layer) |
 
 One page per skill in the [skill reference](docs/guide/skills/README.md).
 

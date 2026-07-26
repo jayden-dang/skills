@@ -38,9 +38,9 @@ done
 
 Set `AGENT_SKILLS_DIR` to wherever your harness loads skills (for example `~/.claude/skills` or `~/.agents/skills`).
 
-If this monorepo also ships other packages (e.g. software-engineering skills), **Personal OS is optional**. Default engineering plugins/installers should not force these skills on coding-only users.
+If this monorepo also ships other packages (e.g. Engineer Pack), **Personal Pack is optional**. Default engineering plugins/installers should not force these skills on coding-only users.
 
-Optional Claude plugin manifest (Personal OS only): `.claude-plugin/personal-os.plugin.json`.
+In `npx skills add jayden-dang/skills`, this package appears as **Personal Pack** (`personal-pack`). Plugin manifest: `.claude-plugin/personal-os.plugin.json`. Dual-pack registry: `.claude-plugin/marketplace.json`.
 
 ---
 

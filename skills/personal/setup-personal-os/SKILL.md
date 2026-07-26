@@ -32,6 +32,8 @@ From package `templates/personal-os/` (or install path). If missing, create mini
 7. Seed empty registry + optional templates.
 8. Optional `roots.*` — only paths the user states.
 9. Do not auto-register disk repos as projects.
+10. Re-read the written config: confirm it parses and every `layout:` role points to a dir that exists.
+11. Name the next skill for the user to run — `life-charter` if no charter exists, else `open-project`.
 
 ## Red Flags — Never
 
@@ -41,5 +43,5 @@ From package `templates/personal-os/` (or install path). If missing, create mini
 
 ## Done when
 
-Config parses and every role under `layout:` maps to a path that exists; home note
-written; `life-charter` or `open-project` named to the user as the next step.
+Config parses and every role under `layout:` maps to a path that exists; registry
+seeded; `life-charter` or `open-project` named to the user as the next step.

@@ -242,7 +242,7 @@ skills/                  # two packages — see docs/packages.md
   meta/ discovery/ spec/ execution/ review/ acceptance/
   craft/ ship/ track/ project/ setup/
   engineering/           # package index README only
-  # Personal OS (opt-in; not in default plugin.json)
+  # Personal OS / Personal Pack (opt-in; not in default engineer-pack plugin.json)
   personal/              # using-personal-os, plan-day, review-week, …
 templates/               # engineering seeds + templates/personal-os/
 hooks/                   # session-start (engineering gate)

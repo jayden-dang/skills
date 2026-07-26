@@ -31,9 +31,9 @@ NO PASTE-READY PRODUCT ARTIFACTS IN THE VAULT.
 ## End
 
 1. Take the user's report (or explicit empty).
-2. Fill duration, energy_after, result checkbox from **their** words.
+2. Fill duration, energy_after, and the result checkbox — `done` | `partial` | `blocked` — from **their** words.
 3. Propose updated `next_action`; apply only after confirm if material.
-4. Three consecutive sessions on the same `next_action` whose result checkbox came back blocked or incomplete → suggest skill `replan` (name it; do not auto-replan alone).
+4. Three consecutive sessions on the same `next_action` whose result came back `blocked` or `partial` → suggest skill `replan` (name it; do not auto-replan alone).
 
 ## Rationalizations
 

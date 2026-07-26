@@ -12,7 +12,7 @@ REQUIRED: read sibling `ROLE.md` (secretary default, grant rule, hybrid ban, con
 
 ## Recipe
 
-1. Open area note; walk standards checkboxes with user.
+1. Open area note; walk standards checkboxes with user, marking each pass or fail.
 2. Set `health`: green | yellow | red (confirm red).
 3. If gap needs an end-state → propose `open-project` (WIP rules). Else set area `next_action` only.
 4. Set `next_review`.

@@ -95,6 +95,6 @@ Any of these: delete the untested code, return to RED.
 - [ ] Every test tagged with its requirement ID per `docs/agents/project.md`
 - [ ] All tests sit at seams agreed in `design.md` (or agreed with the user)
 - [ ] Mocks only at system boundaries, complete data structures, no assertions on mocks
-- [ ] Every error path and boundary named in the requirement's acceptance criteria has its own tagged test
+- [ ] Error paths and boundary values are among the behaviors tested — each one has its own test you watched fail
 
 Can't tick a box? The work isn't done. REQUIRED SUB-SKILL: use `verify` before any completion claim.

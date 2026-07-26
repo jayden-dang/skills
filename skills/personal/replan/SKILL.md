@@ -14,11 +14,11 @@ REQUIRED: read sibling `ROLE.md` (secretary default, grant rule, hybrid ban, con
 
 1. State what invalidated the plan (user words).
 2. Classify blast radius: **next_action** | **milestone** | **outcome** | **kill project**.
-3. Propose patch; apply after confirm.
+3. Propose patch; apply after confirm. The patch sets `next_action` to one inside the new blast radius — unless the radius is **kill project**, which clears it.
 4. `done_when` changes → write the log line first, then apply the change.
 5. Append decision to project log.
 
 ## Done when
 
-Decision logged; `next_action` non-empty and inside the new blast radius;
-done_when change (if any) confirmed.
+Decision logged; `next_action` inside the new blast radius, or cleared if the
+project was killed; done_when change (if any) confirmed.

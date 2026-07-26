@@ -15,8 +15,8 @@ Create a todo per step (1–4) before starting, and complete them in order — t
 
 ## Step 1: Context and decisions
 
-Explain in 2–4 paragraphs what exists today and which constraint shapes the
-approach. To learn "what exists today" without flooding this context, dispatch
+Explain in 2–4 paragraphs what exists today, which constraint shapes the
+approach, and the alternative that constraint rules out. To learn "what exists today" without flooding this context, dispatch
 a **scan subagent** to map the touched surface — the seams the design will name:
 current signatures, data shapes, save/load paths — returning a digest file
 (`.skills/<slug>-scan.md`), not raw source. Design against the digest; pull a

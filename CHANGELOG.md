@@ -1,5 +1,28 @@
 # Changelog
 
+## 0.2.1 — 2026-07-26
+
+### Packaging: Engineer Pack + Personal Pack
+
+`npx skills add jayden-dang/skills` now presents two clear packs instead of
+"Jayden Skills" plus an ungrouped bucket:
+
+| Pack | Plugin name | Contents |
+|---|---|---|
+| **Engineer Pack** | `engineer-pack` | All engineering skills (default plugin) |
+| **Personal Pack** | `personal-pack` | All Personal OS skills (opt-in) |
+
+- Renamed default plugin `jayden-skills` → `engineer-pack`
+- Renamed personal plugin `personal-os` → `personal-pack`
+- Added `.claude-plugin/marketplace.json` so the skills CLI groups both packs
+- Moved three program-layer skills into Engineer Pack inventory (they were on
+  disk under engineering categories but missing from `plugin.json`, so the CLI
+  put them in **Other** / **General**):
+  - `write-roadmap` (`skills/project/write-roadmap`)
+  - `check-roadmap` (`skills/track/check-roadmap`)
+  - `assess-milestone` (`skills/track/assess-milestone`)
+- Docs: `docs/packages.md`, root README inventory, package READMEs
+
 ## 0.2.0 — 2026-07-26
 
 ### New: Personal OS package (independent, opt-in)

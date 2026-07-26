@@ -78,6 +78,20 @@ class PriorityLadder(unittest.TestCase):
         self.assertIn("name `/assess-milestone`", row)
         self.assertNotIn("use `assess-milestone`", self.flat)
 
+    def test_check_roadmap_still_writes_nothing(self):
+        """ASSESS-5.5 — gaining a rung does not give the check a write step."""
+        self.assertRegex(self.flat, r"(?i)read-only")
+        for verb in ("No file is created", "no status is updated", "no roadmap is edited"):
+            with self.subTest(verb=verb):
+                self.assertIn(verb, self.text)
+
+    def test_check_roadmap_still_refuses_outcome_judgment(self):
+        """ASSESS-5.6 — naming the gate is not passing through it."""
+        self.assertIn("Structural presence, never judgment", self.text)
+        self.assertRegex(self.flat, r"Do \*\*not\*\* read a milestone's outcome and decide")
+        # The rung hands the judgment on; it must not smuggle the judgment in.
+        self.assertIn("assess-milestone`'s", self.text)
+
 
 if __name__ == "__main__":
     unittest.main()

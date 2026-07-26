@@ -90,11 +90,10 @@ Any of these: delete the untested code, return to RED.
 
 ## Before claiming done
 
-- [ ] Every new behavior has a test you watched fail first, for the expected reason
+- [ ] Every new behavior has a test you watched fail first, for the expected reason — error paths and boundary values count as behaviors
 - [ ] Full suite green, output pristine (zero warnings/errors)
 - [ ] Every test tagged with its requirement ID per `docs/agents/project.md`
 - [ ] All tests sit at seams agreed in `design.md` (or agreed with the user)
 - [ ] Mocks only at system boundaries, complete data structures, no assertions on mocks
-- [ ] Error paths and boundary values are among the behaviors tested — each one has its own test you watched fail
 
 Can't tick a box? The work isn't done. REQUIRED SUB-SKILL: use `verify` before any completion claim.

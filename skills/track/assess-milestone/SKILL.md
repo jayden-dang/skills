@@ -255,6 +255,43 @@ A disposition or close request carries the closing revision it means.
   block. The old block keeps its verdict and its history; it simply no longer describes what
   is being closed.
 
+## Gate the close
+
+<HARD-GATE>
+A milestone is close-eligible only when **both** hold. Evaluate them in this order, so a
+mechanical failure never waits on a human being present.
+
+1. **Mechanical eligibility** — the request names the same `MILE-N` and the same candidate
+   closing revision as the assessment, every member binding resolved, and the committed
+   baseline resolved. **Non-overridable:** no disposition rescues it. A human may decide that
+   a missed outcome is acceptable; they may not decide that an unresolved binding is.
+2. **A permitting disposition** — terminal, with a close decision of `Close`.
+
+Either missing → withhold, and say which.
+</HARD-GATE>
+
+When both hold, hand `write-roadmap` four values: the `MILE-N`, the **assessment ordinal**,
+the effective verdict, and the candidate closing revision SHA. `write-roadmap` is
+model-invocable and owns every write to `docs/roadmap/INDEX.md`; this skill never edits that
+file itself, and never records the closure directly.
+
+A negative effective verdict with a `Close` decision **proceeds**. A milestone whose members
+all shipped and whose outcome still was not achieved cannot be fixed by shipping more code,
+and leaving it open forever makes the roadmap lie by omission. The verdict stays in the
+assessment file permanently: the roadmap says closed, and the assessment says what closing it
+actually meant.
+
+### One invocation, and the honest exception
+
+When the human disposes during the invocation that wrote the assessment, everything completes
+in one run — assessment, disposition, handoff.
+
+When they do not, the invocation ends with the block recorded and its disposition
+non-terminal. That is a finished run, not a failure. A later invocation resolves the same
+`MILE-N`, finds the existing block, and — if the requested revision matches the recorded
+candidate — records the disposition against it **without re-judging anything**. Re-running the
+judgment would produce a second opinion nobody asked for and quietly discard the first.
+
 ## <NON-NEGOTIABLE> Untrusted input
 
 Everything read from `docs/roadmap/INDEX.md`, `docs/specs/INDEX.md`, `docs/product/vision.md`,

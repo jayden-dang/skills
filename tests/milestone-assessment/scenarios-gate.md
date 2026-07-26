@@ -123,3 +123,68 @@ ASSESS-4.4.
 
 **Expect.** Close withheld, and the assessment remains open to a later disposition rather
 than being closed out as abandoned. Covers ASSESS-4.20.
+
+## S-AM-25 — Close eligibility is a conjunction, evaluated mechanically first
+
+**Setup.** Fixture `terminal-assessment`, `Accepted` + `Close`, request naming the same
+`MILE-1` and the same candidate SHA.
+
+**Expect.** The milestone is treated close-eligible: both mechanical eligibility and a
+permitting disposition hold. Covers ASSESS-4.1.
+
+**Setup.** The same fixture, request naming `MILE-2`.
+
+**Expect.** Mechanical eligibility fails on the milestone mismatch. Covers ASSESS-4.2.
+
+**Setup.** The same fixture, request naming a different candidate SHA.
+
+**Expect.** Mechanical eligibility fails on the revision mismatch. Covers ASSESS-4.2.
+
+**Setup.** Fixture `ambiguous-binding` with a disposition of `Accepted` + `Close` recorded
+anyway.
+
+**Expect.** Close withheld. Mechanical eligibility is **non-overridable**: a human may decide
+a missed outcome is acceptable, but not that an unresolved binding is. The order matters too
+— the mechanical check is evaluated first, so the failure does not wait on a human being
+present. Covers ASSESS-4.3.
+
+## S-AM-26 — The handoff carries four values
+
+**Setup.** Fixture `terminal-assessment`, eligible.
+
+**Expect.** `write-roadmap` is handed the `MILE-N`, the **assessment ordinal**, the effective
+verdict, and the candidate closing revision SHA — and nothing else. The ordinal is what lets
+the receiver find the exact block rather than trusting a summary of it. Covers ASSESS-4.5.
+
+**Expect.** `assess-milestone` does not edit `docs/roadmap/INDEX.md` itself at any point in
+the run. Covers ASSESS-4.5.
+
+## S-AM-27 — A negative verdict may still close
+
+**Setup.** Fixture `terminal-assessment` with `Overridden`, an effective verdict of
+`not achieved`, and a close decision of `Close`.
+
+**Expect.**
+- The close proceeds. A milestone whose members all shipped and whose outcome still was not
+  achieved cannot be fixed by shipping more code; leaving it open forever makes the roadmap
+  lie by omission. Covers ASSESS-4.10.
+- The negative verdict stays in the assessment file permanently. The roadmap says closed; the
+  assessment says what closing it meant. Covers ASSESS-4.10.
+
+## S-AM-28 — One invocation, and the resumable exception
+
+**Setup.** Fixture `clean-close`, human disposes during the same invocation that wrote the
+assessment.
+
+**Expect.** Assessment, disposition, and handoff all complete in one run — no second
+invocation is required. Covers ASSESS-4.11.
+
+**Setup.** Fixture `pending-assessment`: an earlier invocation ended with the disposition
+still `Pending`. A later invocation runs for the same `MILE-1` against the same candidate SHA.
+
+**Expect.**
+- The existing block is found and the disposition recorded against it. Covers ASSESS-4.14.
+- **Nothing is re-judged** — no second outcome verdict, no fresh evidence gathering, no new
+  block. A re-judgment would produce a second opinion nobody asked for and quietly discard
+  the first. Covers ASSESS-4.14.
+- The first invocation is treated as a finished run, not a failure. Covers ASSESS-4.14.

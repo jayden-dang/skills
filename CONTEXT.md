@@ -52,6 +52,31 @@ The fixed `git`/`grep` pass that decides sample membership with no model
 judgment, so the same range and repo state always admit the same units.
 _Avoid_: describing sample membership as a ranking or a score
 
+**Milestone assessment**:
+One append-only judgment event on a milestone, held in
+`docs/roadmap/assessments/<MILE-N>.md`: an agent-authored verdict on the
+outcome, plus the human disposition of it. A further assessment is appended only
+when the requested closing revision or material evidence changes.
+_Avoid_: retrospective (the team ceremony), milestone review
+
+**Human disposition**:
+The explicit human act on an agent assessment — `Accepted`, `Overridden`,
+`Deferred`, or `Pending` until one arrives — recorded separately from the
+agent's verdict and never inferred from silence. Only the first two are terminal;
+acceptance proves adoption, not authorship.
+_Avoid_: approval, sign-off, treating agent reasoning as human-authored
+
+**Close eligibility**:
+The two-part condition for closing a milestone: non-overridable mechanical
+eligibility (same `MILE-N`, same candidate closing revision, resolved bindings),
+**and** a **human disposition** whose effective verdict permits the close.
+_Avoid_: "ready to close" as a single agent-computed boolean
+
+**Candidate closing revision**:
+The immutable commit a **milestone assessment** is resolved against, handed to
+`write-roadmap` and recorded verbatim in that milestone's `Closed:` slot.
+_Avoid_: HEAD, "latest", a branch name
+
 ## Relationships
 
 - A **spec triad** defines one feature and owns many **requirement IDs**
@@ -60,6 +85,9 @@ _Avoid_: describing sample membership as a ranking or a score
 - The **architecture spine** is the invariant subset of the **architecture SSOT**
 - A **sample set** and its **residue** partition a range's **sampling units**
 - The **binding pass** admits **sampling units** into the **sample set**
+- A **milestone assessment** pairs one agent verdict with one **human disposition**
+- **Close eligibility** needs mechanical eligibility *and* a permitting **human disposition**
+- A **milestone assessment** resolves against exactly one **candidate closing revision**
 
 ## Flagged ambiguities
 

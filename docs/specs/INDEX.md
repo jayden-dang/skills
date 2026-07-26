@@ -11,3 +11,4 @@ not planned as a roadmap item.
 | Code | Feature | Spec | Status | Roadmap item |
 |---|---|---|---|---|
 | RMAP | Roadmap layer — milestone intent and derived roadmap health | ./2026-07-25-roadmap/ | Implemented | — |
+| ASSESS | Milestone assessment — the pre-close outcome gate and its append-only record | ./2026-07-26-milestone-assessment/ | Approved | — |

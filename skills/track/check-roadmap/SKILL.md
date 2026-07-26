@@ -22,26 +22,14 @@ roadmap.
 
 ## What it produces
 
-| Code | Tier | Condition | Withholds |
-|---|---|---|---|
-| **R1** | error | a milestone's `Goals:` citation does not resolve to exactly one live `GOAL-N` | no |
-| **R2** | error | a live `GOAL-N` is neither cited by a milestone nor listed under `## Goal dispositions` | **yes** |
-| **R3** | error | `vision.md` defines the same `GOAL-N` more than once | no |
-| **R4** | error | a `ROAD-N` sits under no milestone, or under more than one | **yes** |
-| **R5** | error | a `Roadmap item` binding does not resolve to exactly one live `ROAD-N` | no |
-| **R6** | error | two feature codes bind the same `ROAD-N` | no |
-| **R7** | info | a `ROAD-N` has no feature code bound to it — *unspecced* | no |
-| **R8** | info | a feature row's `Roadmap item` is empty while a roadmap exists — *unplanned* | no |
-| **R9** | error | a `Closed` milestone holds a non-deferred `ROAD-N` that is unbound, or bound to a feature whose `Status:` is not `Shipped` | **yes** |
-| **R10** | error | a feature's `requirements.md` `Status:` differs from its `docs/specs/INDEX.md` row | **yes** |
-| **R11** | error | the roadmap is unparseable, violates `S1`, `S3`, `S4`, `S5` or `S7`, or holds a `Depends-on` not resolving to exactly one live `MILE-N` | **yes** |
+The finding codes `R1`–`R11`, their conditions, and the **withholding set**
+`{R2, R4, R9, R10, R11}` are defined in `templates/roadmap-findings.md`. That file is
+authoritative — read the codes there, do not restate them. Resolve `templates/` as
+`${CLAUDE_PLUGIN_ROOT}/templates` when installed as a plugin, otherwise `../../../templates`
+relative to this SKILL.md. `assess-milestone` reads the same file, which is why it lives
+outside this skill.
 
-`R7` and `R8` are **normal states, not defects** — they are what the ladder consumes. An
-unspecced item is the next thing to spec; an unplanned feature is work that predates the
-roadmap or bypassed it.
-
-A **withholding** finding replaces the next action with the reason. Errors mean the plan and
-the specs disagree; a repo can carry `R7`/`R8` indefinitely and still be healthy.
+A **withholding** finding replaces the next action with the reason.
 
 ## Inputs
 
@@ -110,24 +98,10 @@ test -f .skills/progress.md && grep -nE '^Task ' .skills/progress.md
 
 ## The rules
 
-With `liveGoals`, `retiredGoals`, `goalCitations`, `dispositions`, `milestones` (in table
-order), `members` (item → milestone), `bindings` (code → `ROAD-N`), and `statuses`
-(code → INDEX status, spec status):
-
-- **R1** — each citation in `goalCitations` not resolving to exactly one entry of `liveGoals`
-  (undefined, retired, or duplicated).
-- **R2** — each `liveGoals` entry in neither `goalCitations` nor `dispositions`.
-- **R3** — each `GOAL-N` appearing more than once in `liveGoals`.
-- **R4** — each `ROAD-N` whose `members` count is not exactly 1.
-- **R5** — each non-empty binding not resolving to exactly one live `ROAD-N`.
-- **R6** — each `ROAD-N` named by two or more bindings.
-- **R7** — each live `ROAD-N` named by no binding.
-- **R8** — each feature row with an empty binding.
-- **R9** — for each milestone whose `Commitment` is `Closed`: each member not listed in its
-  `Deferred:` slot that is unbound, or whose feature's spec `Status:` is not `Shipped`.
-- **R10** — each code whose INDEX status differs from its spec `Status:`.
-- **R11** — the roadmap failing to parse, or violating `S1`, `S3`, `S4`, `S5`, `S7`, or a
-  `Depends-on` not resolving to exactly one live `MILE-N`.
+The six passes above produce `liveGoals`, `retiredGoals`, `goalCitations`, `dispositions`,
+`milestones` (in table order), `members` (item → milestone), `bindings` (code → `ROAD-N`),
+and `statuses` (code → INDEX status, spec status). Apply `R1`–`R11` to them exactly as
+`templates/roadmap-findings.md` states — that file names the set difference each code is.
 
 ## <NON-NEGOTIABLE> Structural presence, never judgment
 

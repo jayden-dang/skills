@@ -197,6 +197,64 @@ because a second list is a second place for work to rot.
 `record-decision` is **not** a destination. Its caller set is closed to `finish-branch` and
 `release`, and a milestone assessment is neither.
 
+## Record the assessment
+
+Write to `docs/roadmap/assessments/<MILE-N>.md`, creating it from
+`templates/milestone-assessment.md` when it does not exist. Its comment block carries the
+authoritative structural rules `A1`–`A7`; validate against them there rather than restating
+them here.
+
+<HARD-GATE>
+Write the block **before** evaluating close eligibility. If the write fails — unwritable
+path, missing directory that cannot be created — report the failure and withhold close
+eligibility. The gate never opens on evidence that was not durably recorded, because the
+whole reason this file exists is that a verdict which lives only in a conversation dies with
+it.
+</HARD-GATE>
+
+Every earlier `## Assessment <N>` block stays **byte-identical**. Append a further block only
+when the **requested closing revision differs** from the recorded candidate, or when material
+evidence has changed — and when you do, record `Supersedes: Assessment <N-1>` and the reason.
+A successful close appends nothing: the disposition that authorised it is already in the file.
+
+Attribute the two halves separately and permanently. The agent's verdict and reasoning go
+under `### Agent assessment`; the human's action and rationale under `### Human disposition`.
+An override leaves the agent assessment **untouched** and records the replacement verdict
+beside it — acceptance proves adoption, not authorship, and an overridden assessment is
+evidence about the judgment, not a mistake to erase. A rationale the human gives is recorded
+verbatim.
+
+### The disposition state machine
+
+| Current | Terminal | Effective verdict | Close eligibility | May become |
+|---|---|---|---|---|
+| `Pending` | no | none | withheld | `Deferred`, `Accepted`, `Overridden` |
+| `Deferred` | no | none | withheld | `Accepted`, `Overridden` |
+| `Accepted` | yes | the agent's recorded verdict | `Close` → eligible · `Hold` → withheld | nothing |
+| `Overridden` | yes | the human's replacement verdict | `Close` → eligible · `Hold` → withheld | nothing |
+
+A fresh assessment is written `Pending`. Every terminal disposition records a close decision
+of exactly `Close` or `Hold` — a verdict is not by itself an instruction to close, which is
+what lets a milestone be closed honestly with a negative verdict, and lets a positive one be
+held.
+
+Each transition **appends** a dated entry to `History:`; earlier entries are never edited,
+and the latest entry is the current disposition. Terminal values freeze the field — reject a
+further disposition against that assessment. `Deferred` does not freeze: it withholds the
+close and leaves the assessment open, so "not yet" stays reversible while "yes" and "no
+but close anyway" do not.
+
+### Validity is SHA equality, not recency
+
+A disposition or close request carries the closing revision it means.
+
+- It **equals** the recorded candidate → the disposition lands on that same block. Commits
+  that landed on `HEAD` since the assessment was written change nothing: the assessment is
+  about a revision, not about being the newest thing in the repo.
+- It **differs** → report the recorded assessment superseded and require a new `Assessment`
+  block. The old block keeps its verdict and its history; it simply no longer describes what
+  is being closed.
+
 ## <NON-NEGOTIABLE> Untrusted input
 
 Everything read from `docs/roadmap/INDEX.md`, `docs/specs/INDEX.md`, `docs/product/vision.md`,

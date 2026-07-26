@@ -1,0 +1,3 @@
+disposition is terminal — reject any further disposition against assessment 1
+effective verdict is the agent's; close decision Close permits the close
+covers ASSESS-2.9 ASSESS-4.15 ASSESS-4.19

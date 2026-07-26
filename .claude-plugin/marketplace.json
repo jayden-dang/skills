@@ -9,7 +9,7 @@
       "name": "engineer-pack",
       "source": "./",
       "description": "Engineer Pack: A-to-Z agentic development (ideation to release, requirements traceability, roadmap/milestones). Personal Pack is separate — not included here.",
-      "version": "0.2.1",
+      "version": "0.2.2",
       "author": {
         "name": "Jayden Dang"
       },
@@ -33,6 +33,7 @@
         "./skills/acceptance/acceptance-check",
         "./skills/acceptance/acceptance-ui",
         "./skills/acceptance/dogfood",
+        "./skills/acceptance/drive-dogfood",
         "./skills/craft/design-page",
         "./skills/review/allocate-attention",
         "./skills/review/check-invariants",

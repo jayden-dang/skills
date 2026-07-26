@@ -73,7 +73,7 @@ Three ways in: by role, by problem, or by phase.
 | **1. Discovery** | `brainstorm`, `grilling`, `research`, `prototype`, `domain-modeling`, `interpret` | [Discovery](process/discovery.md) |
 | **2. Specification** | `write-requirements`, `write-design`, `write-plan` | [Specification](process/specification.md) |
 | **3. Execution** | `worktrees`, `execute-plan`, `tdd`, `debug`, `verify`, `trace` | [Execution](process/execution.md) |
-| **4. Review & acceptance** | `code-review`, `receive-review`, `acceptance-*`, `dogfood` | [Review and acceptance](process/review-and-acceptance.md) |
+| **4. Review & acceptance** | `code-review`, `receive-review`, `acceptance-*`, `dogfood`, `drive-dogfood` | [Review and acceptance](process/review-and-acceptance.md) |
 | **5. Ship & maintain** | `finish-branch`, `/release`, `sync-spec`, `amend`, `/file-issues`, `/triage`, `/improve-architecture`, `/handoff` | [Ship and maintain](process/ship-and-maintain.md) |
 
 ---

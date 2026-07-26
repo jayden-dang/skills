@@ -94,7 +94,10 @@ quick reference: `AGENTS.md`.
     checklist dispatched by surface.
 25. **acceptance-api** (m) — drive the running backend as a real client.
 26. **acceptance-ui** (m) — drive the frontend in a real browser.
-27. **dogfood** (m) — the manual sibling; checkable HTML artifact.
+27. **dogfood** (m) — the manual sibling; checkable HTML artifact (machine-drivable
+    `data-*` slots for `drive-dogfood`).
+27a. **drive-dogfood** (m) — execute an existing dogfood guide in a real browser;
+    run ledger with screen + backend evidence; product fails route to `debug`.
 
 ## craft/
 

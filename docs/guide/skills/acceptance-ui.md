@@ -107,4 +107,5 @@ Chromium specifically, and headless, are chosen to keep the run cheap and repeat
 - [`acceptance-check`](acceptance-check.md) — the orchestrator that hands it a ledger slice
 - [`acceptance-api`](acceptance-api.md) — the same contract for a backend surface
 - [`dogfood`](dogfood.md) — the manual sibling, for judgment a Playwright spec cannot make
+- [`drive-dogfood`](drive-dogfood.md) — agent-run an existing dogfood guide (run ledger, not committed specs)
 - [`debug`](debug.md) — the red loop every failing spec drops into

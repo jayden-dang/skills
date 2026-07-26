@@ -1,6 +1,6 @@
 # AGENTS.md — Agent Behavior Constitution
 
-> **A-to-Z Agentic Development Skill Set** | 45 skills across 11 categories |
+> **A-to-Z Agentic Development Skill Set** | 47 skills across 11 categories |
 > `jayden-dang/skills` | v1.0
 
 This file is the single source of truth for agent behavior when working with this
@@ -313,7 +313,7 @@ Can't tick a box? The work is not done.
 
 ---
 
-## 11. Quick Reference: The 45 Skills
+## 11. Quick Reference: The 47 Skills
 
 **Legend:** (m) model-invoked · (U) user-invoked · (si) session-injected
 
@@ -325,7 +325,7 @@ Can't tick a box? The work is not done.
 | **spec** | `write-requirements` (m), `write-design` (m), `write-plan` (m) |
 | **execution** | `execute-plan` (m), `tdd` (m), `debug` (m), `verify` (m), `trace` (m), `worktrees` (m) |
 | **review** | `code-review` (m), `allocate-attention` (U), `comprehend-change` (U), `polish` (m), `receive-review` (m), `check-invariants` (m) |
-| **acceptance** | `acceptance-check` (m), `acceptance-api` (m), `acceptance-ui` (m), `dogfood` (m) |
+| **acceptance** | `acceptance-check` (m), `acceptance-api` (m), `acceptance-ui` (m), `dogfood` (m), `drive-dogfood` (m) |
 | **craft** | `design-page` (m) |
 | **ship** | `finish-branch` (m), `record-decision` (m), `release` (U) |
 | **track** | `amend` (m), `correct-course` (m), `triage` (U), `sync-spec` (m), `check-roadmap` (U), `assess-milestone` (U), `improve-architecture` (U), `handoff` (U), `file-issues` (U) |

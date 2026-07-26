@@ -1,5 +1,27 @@
 # Changelog
 
+## 0.2.2 — 2026-07-26
+
+### New: `drive-dogfood` + machine-drivable dogfood guides
+
+Agent-driven execution of an existing dogfood HTML guide in a real browser, with
+paired front-end and backend evidence, a resumable run ledger, and a fix loop
+through `debug`.
+
+- **New skill** `skills/acceptance/drive-dogfood/` — model-invocable; outcome is
+  an evidence-backed run ledger (pass / fail / blocked per case), not committed
+  e2e specs (`acceptance-ui`) and not guide authoring (`dogfood`)
+- **`dogfood` upgrade** — every case row carries `data-case`, `data-req`,
+  `data-backend`, `data-setup`; guide always written to a known file path;
+  descriptions disambiguate author vs drive
+- **RED/GREEN** recorded under `tests/drive-dogfood/` (baselines on `grok-4.5`)
+- **Inventory:** plugin + marketplace, guide page, AGENTS/README skill counts,
+  See also links from acceptance neighbors
+
+### Packaging
+
+- Engineer Pack version **0.2.2**
+
 ## 0.2.1 — 2026-07-26
 
 ### Packaging: Engineer Pack + Personal Pack

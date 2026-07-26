@@ -179,7 +179,7 @@ and countered by name. See [The gates](docs/guide/concepts/gates.md).
 | spec | `write-requirements`, `write-design`, `write-plan` |
 | execution | `execute-plan`, `tdd`, `debug`, `verify`, `trace`, `worktrees` |
 | review | `code-review`, `receive-review`, `check-invariants` |
-| acceptance | `acceptance-check`, `acceptance-api`, `acceptance-ui`, `dogfood` |
+| acceptance | `acceptance-check`, `acceptance-api`, `acceptance-ui`, `dogfood`, `drive-dogfood` |
 | craft | `design-page` |
 | ship | `finish-branch`, `release` |
 | track | `amend`, `correct-course`, `triage`, `sync-spec`, `check-roadmap`, `assess-milestone`, `improve-architecture`, `handoff`, `file-issues` |

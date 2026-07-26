@@ -7,15 +7,15 @@
 | **Bucket** | acceptance |
 | **Invocation** | model-invocable (the agent calls it on its own) |
 | **Reads** | the spec triad — `requirements.md`, `design.md`, `tasks.md`; the source (theme tokens, CSS, keyword and label definitions); `docs/agents/project.md` (the `## Run locally (dev)` command) |
-| **Writes** | a self-contained, theme-aware HTML artifact published with the Artifact tool (or an `.html` file when artifact tooling is absent) |
+| **Writes** | a self-contained, theme-aware HTML artifact at a **known path** (and published with the Artifact tool when available) |
 | **Calls** | [`design-page`](design-page.md) (required, loaded before building the page) |
-| **Called by** | [`acceptance-check`](acceptance-check.md), [`verify`](verify.md) |
+| **Called by** | [`acceptance-check`](acceptance-check.md), [`verify`](verify.md); hand-off path to [`drive-dogfood`](drive-dogfood.md) when the agent should run the guide |
 
 ## When it fires
 
 When you are manually exercising a finished feature in the real running app from the user's seat — a hands-on pass, case by case, over every user-facing ability, including the visuals, feel, and edge cases a human must eyeball rather than an automated test or a quick launch. Reach for it to try a feature for real, to walk the whole user-facing surface, or to produce a checkable, resumable test guide kept open beside the app and ticked off as you go — not a one-off run.
 
-It complements [`acceptance-ui`](acceptance-ui.md), which automates flows into tests. `dogfood` is the manual, eyeball-it sibling for the judgment a test cannot make: does the badge color read right, does the interaction feel wrong, does the empty state look finished.
+It complements [`acceptance-ui`](acceptance-ui.md), which automates flows into tests. `dogfood` is the manual, eyeball-it sibling for the judgment a test cannot make: does the badge color read right, does the interaction feel wrong, does the empty state look finished. To **execute** an already-written guide in the browser (with backend probes and a fix loop), use [`drive-dogfood`](drive-dogfood.md) — not this skill.
 
 The deliverable is a **persistent, checkable HTML artifact**. A chat message is explicitly not the deliverable, for three concrete reasons the skill names:
 
@@ -53,18 +53,24 @@ A behavior with no UI surface still gets a case — with a **real** way to obser
 
 ## 4. Build the checkable artifact
 
-The **required sub-skill** is [`design-page`](design-page.md), loaded before building the page. Then build a self-contained HTML page and publish it with the Artifact tool. The contract:
+The **required sub-skill** is [`design-page`](design-page.md), loaded before building the page. Then build a self-contained HTML page and **always write it to a known path** (so [`drive-dogfood`](drive-dogfood.md) can read it); publish with the Artifact tool as well when that tooling exists. The contract:
 
 - Sectioned by ability area; **one row per case**, each carrying its requirement ID so a failing box routes straight back to the spec.
 - Each row is **Try** — what to type or click, copy-pasteable — then **Expect** — shown in the app's real rendering, not described in prose.
 - **Interactive checkboxes that persist** via localStorage, plus a progress counter, so the user closes and resumes.
 - Theme-aware and fully self-contained: inline CSS and JS, no external assets.
+- **Machine-drivable slots** on every case row (invisible to the human reader; required for `drive-dogfood`):
 
-No artifact tooling in your environment? Write the same page to an `.html` file and hand over its path.
+  | Attribute | Value |
+  |---|---|
+  | `data-case` | Stable case id, unique in the guide |
+  | `data-req` | Requirement id (e.g. `NOTE-1.1`) |
+  | `data-backend` | Server-side assertion after Try, or the literal `presentational` |
+  | `data-setup` | Precondition/reset so the case can run independently |
 
 ## 5. Hand over
 
-Give the fastest way in — a roughly 30-second first pass that lights the feature up — then the degraded-feature notes and how to enable them, and note that ticks save. The 30-second pass matters because a guide the user never starts checks nothing; the first win is what earns the rest of the walkthrough. The step, and the skill, is done when the artifact is published, grounded, resumable, and every ability and non-behavior is a checkable, ID-tagged case.
+Give the **file path**, the fastest way in — a roughly 30-second first pass that lights the feature up — then the degraded-feature notes and how to enable them, and note that ticks save. If the agent should run the guide next, name [`drive-dogfood`](drive-dogfood.md). The 30-second pass matters because a guide the user never starts checks nothing; the first win is what earns the rest of the walkthrough. The step, and the skill, is done when the artifact is on disk at a known path, grounded, resumable, every ability and non-behavior is a checkable ID-tagged case, and every row carries the four `data-*` slots.
 
 ## Worked example
 
@@ -103,6 +109,7 @@ The three-row rationalization table above is the same shape the set uses whereve
 
 ## See also
 
+- [`drive-dogfood`](drive-dogfood.md) — execute this guide in a real browser with backend probes
 - [`acceptance-ui`](acceptance-ui.md) — the automated sibling that turns flows into committed specs
 - [`acceptance-check`](acceptance-check.md) — the orchestrator that hands off eyeball qualities to it
 - [Artifacts](../concepts/artifacts.md) — why the deliverable is a persistent, checkable page

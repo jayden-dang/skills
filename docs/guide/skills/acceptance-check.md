@@ -108,4 +108,5 @@ It is also why the skill is an orchestrator rather than a monolith. API validati
 - [The gates](../concepts/gates.md) — where acceptance sits relative to the verify and trace gates
 - [`acceptance-api`](acceptance-api.md) and [`acceptance-ui`](acceptance-ui.md) — the two automated children
 - [`dogfood`](dogfood.md) — the manual child, for judgment a test cannot make
+- [`drive-dogfood`](drive-dogfood.md) — run an existing dogfood guide end to end in the browser
 - [`finish-branch`](finish-branch.md) — the skill that runs it before offering Merge or PR

@@ -1,6 +1,6 @@
 # Phase 4 — Review and acceptance
 
-**Skills:** [`code-review`](../skills/code-review.md) · [`receive-review`](../skills/receive-review.md) · [`acceptance-check`](../skills/acceptance-check.md) → [`acceptance-api`](../skills/acceptance-api.md) / [`acceptance-ui`](../skills/acceptance-ui.md) · [`dogfood`](../skills/dogfood.md)
+**Skills:** [`code-review`](../skills/code-review.md) · [`receive-review`](../skills/receive-review.md) · [`acceptance-check`](../skills/acceptance-check.md) → [`acceptance-api`](../skills/acceptance-api.md) / [`acceptance-ui`](../skills/acceptance-ui.md) · [`dogfood`](../skills/dogfood.md) · [`drive-dogfood`](../skills/drive-dogfood.md)
 
 **Produces:** a two-axis merge verdict, and committed ID-tagged tests that prove the feature works against the running system.
 
@@ -102,11 +102,15 @@ Report the checklist with each item's observed result. **Any item you could not 
 
 For the judgment an automated test cannot make: visuals, feel, and the edge cases a human must eyeball.
 
-The deliverable is not a chat message. It is a **persistent, checkable HTML artifact** — one row per user-facing ability, each tagged with its requirement ID, each row a copy-pasteable **Try** and an **Expect** shown in the app's *real rendering* (badge colors, chip styles, icons pulled from theme tokens and CSS, never guessed). Interactive checkboxes persist to localStorage with a progress counter, so the user closes the page and resumes.
+The deliverable is not a chat message. It is a **persistent, checkable HTML artifact** — one row per user-facing ability, each tagged with its requirement ID, each row a copy-pasteable **Try** and an **Expect** shown in the app's *real rendering* (badge colors, chip styles, icons pulled from theme tokens and CSS, never guessed). Interactive checkboxes persist to localStorage with a progress counter, so the user closes the page and resumes. Every row also carries machine-drivable `data-case` / `data-req` / `data-backend` / `data-setup` attributes and a known file path so [`drive-dogfood`](../skills/drive-dogfood.md) can execute the same guide.
 
 It scopes the happy path, the edge cases, **and the deliberate non-behaviors** — what should *not* happen, taken from the spec's Out-of-Scope decisions. And a behavior with no UI surface still gets a case, with a real way to observe it (a devtools `invoke(...)`, a read-only DB peek), never a pretend screen.
 
 > "A markdown checklist in chat is enough" → It saves no tick, cannot show the real badge being checked against, and scrolls away.
+
+## `drive-dogfood` — run the guide
+
+When the guide already exists and the agent should drive every case: build a run ledger first, confirm local origin (or explicit non-local consent), execute Try in a real browser, require a server probe for state cases, route product defects through `debug`, re-drive with a regression sweep, and finish with every case accounted for. This is a **run**, not a durable Playwright suite — that remains `acceptance-ui`.
 
 ## Next
 

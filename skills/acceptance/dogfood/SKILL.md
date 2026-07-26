@@ -6,7 +6,8 @@ description: Use when manually exercising a finished feature in the real running
   must eyeball rather than an automated test or a quick launch. Reach for it
   to try a feature for real, walk the whole user-facing surface, or produce a
   checkable, resumable HTML test guide kept open beside the app and ticked off
-  as you go — not a one-off run.
+  as you go — not a one-off run. Not for executing an already-written guide in
+  the browser (`drive-dogfood`).
 ---
 
 # Dogfood
@@ -47,7 +48,10 @@ is running and every not-yet-visible behavior has an observation method.*
 ## 4. Build the checkable artifact
 
 REQUIRED SUB-SKILL: load `design-page` before building the page, then build a
-self-contained HTML page and publish it with the Artifact tool. Contract:
+self-contained HTML page. **Always write it to a known path** (e.g.
+`.skills/<slug>-dogfood.html` or `docs/dogfood/<slug>.html`) so a later
+`drive-dogfood` run can read it; publish with the Artifact tool as well when
+that tooling exists. Contract:
 
 - Sectioned by ability area; **one row per case**, each carrying its requirement
   ID so a failing box routes straight back to the spec.
@@ -56,16 +60,37 @@ self-contained HTML page and publish it with the Artifact tool. Contract:
 - **Interactive checkboxes that persist** (localStorage) plus a progress
   counter, so the user closes and resumes.
 - Theme-aware, fully self-contained: inline CSS/JS, no external assets.
+- **Machine-drivable slots** on every case row (invisible to the human reader;
+  required so `drive-dogfood` can ledger and re-drive without parsing prose):
 
-No artifact tooling in your environment? Write the same page to an `.html` file
-and hand over its path.
+  | Attribute | Value |
+  |---|---|
+  | `data-case` | Stable case id, e.g. `CASE-1` — unique in the guide |
+  | `data-req` | Requirement id, e.g. `NOTE-1.1` |
+  | `data-backend` | Server-side assertion for this case (what must be true in API/store after Try), or the literal `presentational` when there is no server state |
+  | `data-setup` | Precondition or reset so the case can run independently (seed, empty DB, logged-in role) |
+
+  Example skeleton (human Try/Expect unchanged inside):
+
+  ```html
+  <div class="case"
+       data-case="CASE-1"
+       data-req="NOTE-1.1"
+       data-backend="GET /api/notes includes title Alpha"
+       data-setup="empty notes list">
+    …
+  </div>
+  ```
 
 ## 5. Hand over
 
-Give the fastest way in — a ~30-second first pass that lights the feature up —
-then the degraded-feature notes and how to enable them, and that ticks save.
-*Done when: the artifact is published, grounded, resumable, and every ability
-and non-behavior is a checkable, ID-tagged case.*
+Give the file path, the fastest way in — a ~30-second first pass that lights the
+feature up — then the degraded-feature notes and how to enable them, and that
+ticks save. If the user wants the agent to run the guide, name `drive-dogfood`
+(they already have the path).
+*Done when: the artifact is on disk at a known path, grounded, resumable, every
+ability and non-behavior is a checkable ID-tagged case, and every row carries
+the four `data-*` slots.*
 
 ## Rationalizations
 

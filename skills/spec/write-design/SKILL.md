@@ -32,8 +32,9 @@ this design: read them and note which ones this feature relies on (you will cite
 in Step 2). If a design decision must *contradict* an invariant, that is an
 ADR-or-supersede event — record the ADR, or supersede the invariant by strikethrough
 in the spine — never a silent violation. No spine? Skip this; the layer is optional.
-**Done when:** a newcomer could state why this approach over the obvious
-alternative.
+**Done when:** the Context and decisions section names the binding constraint,
+the alternative rejected because of it, and — where a spine exists — the
+`**ARCH-N**` invariants this feature relies on.
 
 ## Step 2: Architecture with Satisfies lines
 

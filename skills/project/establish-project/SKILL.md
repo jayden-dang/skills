@@ -60,7 +60,9 @@ slot — fill it or write `None`.
    `domain-modeling` active as a passive side effect (record glossary terms the instant
    they settle) — a scan-derived candidate becomes a `CONTEXT.md` glossary entry only
    after the user ratifies it in the `grilling` channel; unratified candidates are
-   discarded with the ephemeral digest. *Done when: no open decision remains.*
+   discarded with the ephemeral digest. *Done when: every scan candidate has been
+ratified or discarded, and every REQUIRED slot of the vision, spine and
+guidelines has an answer or an explicit `None`.*
 3. **Write the vision.** Fill `templates/product-vision.md` → `docs/product/vision.md`.
    Every goal in `## Goals` gets a bold `**GOAL-N**` ID, flat and repo-wide, assigned as
    you write — a roadmap milestone cites those IDs, and an unIDed goal cannot be cited or

@@ -19,4 +19,4 @@ REQUIRED: read sibling `ROLE.md` (secretary default, grant rule, hybrid ban, con
 
 ## Done when
 
-Health and next_review written; standards walk recorded.
+Health and next_review written; every standard in the area note marked pass or fail.

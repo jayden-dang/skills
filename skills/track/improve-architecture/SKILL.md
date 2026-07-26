@@ -54,7 +54,7 @@ Once the user picks:
 - REQUIRED SUB-SKILL: use `grilling` — walk the shape of the deepened module one question at a time: constraints, what sits behind the new seam, which adapters are real, which tests survive.
 - REQUIRED SUB-SKILL: use `domain-modeling` for side effects as decisions land — new module named after a concept missing from `CONTEXT.md`? Add the term. Fuzzy term sharpened mid-conversation? Update it now, not later. User rejects a candidate for a load-bearing reason? Offer a 1–3 sentence ADR so future scans do not re-suggest it (skip ephemeral or self-evident reasons).
 
-**Done when:** the improvement has a confirmed shape and its ceremony tier is decided.
+**Done when:** `grilling` has no unexplored branch left, and the ceremony tier is stated aloud as 0 or 1+.
 
 ## 4. Feed the spec cycle
 

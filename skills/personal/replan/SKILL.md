@@ -20,4 +20,5 @@ REQUIRED: read sibling `ROLE.md` (secretary default, grant rule, hybrid ban, con
 
 ## Done when
 
-Decision logged; `next_action` valid; done_when change (if any) confirmed.
+Decision logged; `next_action` non-empty and inside the new blast radius;
+done_when change (if any) confirmed.

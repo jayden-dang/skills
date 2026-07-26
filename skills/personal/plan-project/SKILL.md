@@ -23,4 +23,5 @@ Full multi-month task trees.
 
 ## Done when
 
-Roadmap section usable; `next_action` non-empty; user OK if agent drafted.
+3–7 milestones written with checklist items only under `milestone_current`;
+`next_action` non-empty; user OK if agent drafted.

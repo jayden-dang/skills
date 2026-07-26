@@ -97,7 +97,8 @@ Pointers: harness interaction id when available, else `unavailable`.
 | "The user obviously meant this risk" | Untyped words are not human judgment |
 | "I'll polish their wording" | Polish is fabrication under the **verbatim** law |
 
-**Done when:** required elements are user-authored bytes or honestly withheld.
+**Done when:** every required element is either verbatim user-authored bytes or
+carries a `withheld(reference)` / `withheld(unavailable)` disposition token.
 
 ## Storage resolution
 
@@ -179,7 +180,8 @@ sh skills/ship/record-decision/validate-records.sh --mode=publish --record <file
 | Publish OK, crossing fails | Append failure as `Execution-Outcome:`; record stays valid |
 
 **Done when:** a validator-clean file exists under `.skills/decisions/` before any
-required crossing side effect — or the crossing was withheld with an honest report.
+required crossing side effect — or the crossing did not run and a report naming
+the missing required element was emitted.
 
 ## Red flags
 

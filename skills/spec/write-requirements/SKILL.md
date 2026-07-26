@@ -107,8 +107,9 @@ For every existing behavior this feature touches, add a guard:
 behavior>`. Guards are what stop an agent from breaking load-bearing behavior
 nobody mentioned. For a tier-1 bugfix this step plus one fix requirement IS the
 spec, appended to the destination named under Two modes.
-**Done when:** you have actively searched the touched surface for behaviors to
-guard — not merely found none by default.
+**Done when:** every file the change touches is listed, and each carries either a
+guard requirement or an explicit "no behavior to guard" line. An empty guard set
+with no list behind it does not count.
 
 ## Step 4: Out of Scope
 

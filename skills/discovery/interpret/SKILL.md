@@ -166,4 +166,4 @@ Human-carried transport of the digest proves **adoption**, never authorship — 
 
 While an interpret session runs, remain **read-only** toward the project repo: never commit, never publish, never emit decision records. You are a companion beside brainstorm/grilling — you do not drive spec or code.
 
-**Done when:** the user has carried a decision back that they can defend in their own words — or the session ends with the open questions named and a digest handed over.
+**Done when:** the English reply to carry back has been handed over — or the session ends with the open questions named and a digest handed over.

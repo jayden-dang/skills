@@ -75,7 +75,7 @@ Stop and re-read the Iron Law if you notice yourself:
 2. **Resolve range** → hard-stop (message only) or continue.
    **Done when:** a resolved range exists or you stopped with no HTML.
 3. Gather diff + paths + commit subjects; explore surrounding code for Background.
-   **Done when:** you can state old behavior vs change without inventing files.
+   **Done when:** the old-behavior and change statements each cite a real path from the gathered diff or the surrounding code read.
 4. Optional **DEC enrichment**; WHEN enriching, load `references/dec-whitelist.md`
    and follow it exactly.
    **Done when:** zero or more cited DECs, all read-only.

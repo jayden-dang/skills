@@ -47,4 +47,4 @@ NO HYBRID PRODUCT WORK IN THE VAULT.
 
 ## Done when
 
-Correct skill announced; secretary stance active; no ungranted product work started.
+Correct skill announced; config read before the first vault write; no ungranted product work started.

@@ -19,4 +19,4 @@ REQUIRED: read sibling `ROLE.md` (secretary default, grant rule, hybrid ban, con
 
 ## Done when
 
-Charter file exists with roles and anti-goals; enough to plan a quarter.
+Charter file exists; every role carries at least one anti-goal and one energy constraint.

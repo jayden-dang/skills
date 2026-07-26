@@ -42,7 +42,7 @@ When asked "what needs attention", query the tracker and present three buckets, 
    - **Redundancy:** search the codebase for an existing implementation of the requested behavior — search by domain concept, not the reporter's wording. If it already exists, the outcome is an already-implemented close (step 5); collect the evidence (where it lives, how to invoke it).
    - **Prior rejection:** read `.out-of-scope/*.md` and surface any concept that resembles this request — match by idea, not keyword. If one matches, tell the user what was rejected before and why, and ask whether the decision stands.
 
-   **Done when:** you can summarize the issue, the relevant code, and both check results in a few sentences.
+   **Done when:** both checks have a written result — the redundancy search naming either the existing implementation or the concepts searched, and the prior-rejection read naming either the matching record or that none matched.
 
 2. **Verify the claim.** Before recommending anything, test whether the claim holds. For a bug: reproduce it from the reporter's steps. For a PR: check out the diff and run the relevant tests or commands to confirm it does what it says. Report one of: confirmed (with the code path), could not reproduce, or insufficient detail — the last is a strong `needs-info` signal. **Done when:** you have first-hand evidence, not just the reporter's word.
 

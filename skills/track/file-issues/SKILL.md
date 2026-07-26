@@ -36,11 +36,11 @@ If the user already ran the full spec triad, `write-plan` publishes those tasks 
 
 ### 1. Gather context
 
-Work from what is already in the conversation. If the user passes a reference — a spec path, an issue number or URL — read its full body and comments first. **Done when:** you can state the whole body of work to be filed in a few sentences.
+Work from what is already in the conversation. If the user passes a reference — a spec path, an issue number or URL — read its full body and comments first. **Done when:** every reference the user passed has been read in full, and the scope to be filed is written down as an explicit in/out list.
 
 ### 2. Explore the codebase
 
-If you have not already, explore the code so titles and descriptions use the project's **domain glossary** (`CONTEXT.md`) and respect the ADRs in the area you touch. Look for **prefactoring** that makes the later work easier — "make the change easy, then make the easy change"; a prefactor becomes its own first issue. **Done when:** each slice's vocabulary matches the glossary and any prefactor is identified.
+If you have not already, explore the code so titles and descriptions use the project's **domain glossary** (`CONTEXT.md`) and respect the ADRs in the area you touch. Look for **prefactoring** that makes the later work easier — "make the change easy, then make the easy change"; a prefactor becomes its own first issue. **Done when:** every domain noun in the slice titles appears in `CONTEXT.md`, and a prefactor is either filed as the first slice or explicitly ruled out.
 
 ### 3. Draft vertical slices
 

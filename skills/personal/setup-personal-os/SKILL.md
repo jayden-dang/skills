@@ -41,4 +41,5 @@ From package `templates/personal-os/` (or install path). If missing, create mini
 
 ## Done when
 
-Config validates; home note usable; user knows next skill to run (`life-charter` or `open-project`).
+Config parses and every role under `layout:` maps to a path that exists; home note
+written; `life-charter` or `open-project` named to the user as the next step.

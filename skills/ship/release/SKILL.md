@@ -74,7 +74,7 @@ Only after explicit user approval (this approval **is** the successful terminal 
 
 Turn the changelog entry into release notes in the tracker's format (for example `gh release create --draft`, or a notes file for manual publishing). Keep the requirement-grouped structure. Leave the release as a draft for the user unless they ask you to publish.
 
-**Done when:** the draft notes exist and the user knows where.
+**Done when:** the draft notes exist and their URL or path has been stated to the user.
 
 ## i. Flip spec status
 

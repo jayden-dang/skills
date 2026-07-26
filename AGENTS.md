@@ -36,6 +36,15 @@ Identify the proving command → run it full and fresh → read the output → c
 it supports the claim. "It passed earlier" is not evidence. "The agent said
 success" is not evidence. Read the diff yourself.
 
+**Unknowns loop (quality bottleneck):** The map (prompts, specs, plans) is not
+the territory (codebase, runtime, users, history). Strong models still fail when
+unknowns stay implicit. Discover unknowns before build (`brainstorm` knowns
+inventory + blindspot, `grilling`, `research`/`prototype`), surface high-blast
+decisions in `write-plan` (**Human review order**), log mid-build **deviations**
+in `.skills/implementation-notes.md` during `execute-plan`, and let the human
+re-check understanding with `/comprehend-change` before merge. Do not freeze
+unverified solution shape into requirement SHALLs.
+
 ---
 
 ## 2. The 1% Rule & Skill Invocation Contract

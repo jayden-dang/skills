@@ -81,11 +81,14 @@ Then the understanding pass:
 
 Then the detail behind the stance. Label blocks with these claim prefixes where they apply — **Source claim**, **Verified fact**, **Inference**, **Open question** — and cover:
 
+- **Map vs territory** — where the paste is a model of the work (prompt/spec/plan) and where the codebase or reality may disagree; cite `file:line` when you checked.
+- **Knowns sketch** — when a real choice is open: what is locked, what is still unknown, what is an assumption dressed as a decision, and whether the user has **evaluation criteria** to judge the options (if not, say so and teach or research criteria before piling on alternatives).
 - **Alternatives** — at least one genuinely different approach the other session did not lead with.
 - **Trade-offs** — for each live option, side by side.
 - **Hidden assumptions** — what the pasted response takes for granted that may not hold here.
 - **Risks** — where each option bites later.
 - **When each wins** — the conditions that make each the right call, tied to the posture.
+- **References** — when prose cannot carry the intent, name code, components, or external implementations to point at instead of more description.
 
 ## When the paste puts no choice on the table
 

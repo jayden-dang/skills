@@ -43,6 +43,11 @@ task. A file not listed here should not be touched.>
 Omit the line for strict serial order. Tasks sharing no files or interfaces
 declare no edge — `execute-plan` runs those together in one parallel wave.>
 
+**Risk:** <high | med | low — high for data model, public types/APIs, auth,
+user-facing behavior; low for rename/move/wire-up>
+
+**Decision surface:** <yes | no — yes if a human may reverse the approach>
+
 - [ ] **Step 1: Write the failing test**
 
 <complete test code block>
@@ -67,3 +72,14 @@ _Requirements: <CODE>-1.1, <CODE>-1.2_
 ### Task 2: ...
 
 _Requirements: <CODE>-2.1_
+
+---
+
+## Human review order
+
+<Task numbers for the approving human: highest Risk / Decision surface: yes
+first; mechanical last. Depends-on still governs execute-plan waves.>
+
+1. Task <N> — <one-line why this decision is review-first>
+2. Task <N> — ...
+

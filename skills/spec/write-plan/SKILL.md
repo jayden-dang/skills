@@ -10,7 +10,8 @@ Produce `docs/specs/<YYYY-MM-DD>-<feature>/tasks.md` from the approved requireme
 and design. Start from the skill set's `templates/tasks.md` — resolve `templates/`
 as `${CLAUDE_PLUGIN_ROOT}/templates` when installed as a plugin, otherwise
 `../../../templates` relative to this SKILL.md. Every slot in a task block
-(**Files**, **Interfaces**, **Depends-on**, **Steps**, `_Requirements:_`) is REQUIRED.
+(**Files**, **Interfaces**, **Depends-on**, **Risk**, **Decision surface**,
+**Steps**, `_Requirements:_`) is REQUIRED.
 
 Create a todo per step (1–4, plus 5 if the repo uses an issue tracker) before starting, and complete them in order — this skill owns its own list, distinct from `write-design`'s upstream and `execute-plan`'s downstream. Check each off only when its **Done when:** is met.
 
@@ -67,12 +68,34 @@ Each task:
   task falls back to depending on every prior task — safe but fully serial.
   Over-declaring needlessly serializes; under-declaring is caught by the
   executor's file-disjoint check before it can collide.
+- **Risk:** `high` | `med` | `low` — blast radius if the task's approach is wrong.
+  **high** when the task sets or changes data model / migrations, public
+  interfaces, shared types, API contracts, auth or security boundaries, or
+  user-facing behavior. **low** when it is mechanical (rename, move, wire-up,
+  copy). **med** otherwise.
+- **Decision surface:** `yes` | `no` — `yes` when a human is likely to reverse
+  or reshape the task's approach on review; `no` for mechanical work the agent
+  can own once the high-risk neighbors are right.
 - **Steps:** bite-sized checkboxes (2–5 min each) following the TDD cycle:
   failing test (complete code) → run, expect the stated failure → implement
   (complete code) → run, expect pass → commit with an
   `Implements: CODE-N.M` trailer.
 - **Footer:** `_Requirements: CODE-N.M, CODE-N.M_` — the IDs this task
   implements or guards. Every task has one.
+
+**Human review order (REQUIRED section, after all tasks).** A short list of
+task numbers ordered for the **approving human**, not for `execute-plan`:
+highest **Risk** / `Decision surface: yes` first; mechanical `low` / `no` last.
+`Depends-on` still governs build waves — do **not** reorder tasks solely to
+satisfy review attention if that would lie about dependencies. The review list
+is how the plan surfaces decisions the human can still kill before code.
+
+| Thought | Reality |
+|---|---|
+| "Prefactor first is always right — make the change easy" | Execution order can still prefactor first via Depends-on; the **review** list still leads with the type/API/behavior decision the prefactor serves |
+| "Risk is obvious from the title" | Unannotated plans bury high-blast work under renames; the slots are the contract |
+| "I'll only annotate high-risk tasks" | Every task has **Risk** and **Decision surface** — low/no is an explicit claim |
+| "Demo in 15 minutes — skip fancy annotations" | Dropping **Risk**, **Decision surface**, or **Human review order** for any reason (time, demo, authority, "obvious" mechanical work) means the plan is incomplete — do not present `tasks.md` until every task and the review list are filled |
 
 **No placeholders.** "TBD", "add appropriate error handling", "similar to
 Task 3", or a type referenced but defined in no task — each of these is a plan
@@ -121,8 +144,9 @@ plan defect — citing `file:line` and defaulting to flag. Findings to
 comparison yourself against the code.)
 
 **Done when:** every requirement ID has both a task footer and a tagged test,
-the trace check is clean, the design's seam-table IDs are all covered, and the
-placeholder scan is clean.
+the trace check is clean, the design's seam-table IDs are all covered, the
+placeholder scan is clean, every task has **Risk** and **Decision surface**,
+and **Human review order** lists decision-heavy tasks before mechanical ones.
 
 ## Step 5 (optional): Publish to the issue tracker
 

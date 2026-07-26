@@ -55,7 +55,7 @@ A single-task wave runs the Per-Task Loop inline on the branch — the common ca
 | Status | Your move |
 |---|---|
 | **DONE** | Package the diff (step 6) and send it to review. |
-| **DONE_WITH_CONCERNS** | Read the concerns before anything else. Correctness or scope doubts: resolve them before review. Observations ("this file is getting big"): note in the ledger, proceed to review. |
+| **DONE_WITH_CONCERNS** | Read the concerns **and** `.skills/implementation-notes.md` when it exists before anything else. Correctness or scope doubts: resolve them before review. A deviation that falsifies the plan/design/requirements → REQUIRED SUB-SKILL: use `correct-course`. Local conservative deviations already logged: note them in the ledger, proceed to review. Observations ("this file is getting big"): note in the ledger, proceed to review. Missing notes file while concerns claim a plan deviation: treat as incomplete — re-dispatch to log the deviation before review. |
 | **NEEDS_CONTEXT** | Supply the missing file, interface, or decision it named, then re-dispatch on the same model. |
 | **BLOCKED** | Diagnose: missing context → supply it and re-dispatch; reasoning ceiling → re-dispatch on a stronger model; task too large → split it into smaller dispatches; the plan itself is wrong → pause and REQUIRED SUB-SKILL: use `correct-course`. |
 

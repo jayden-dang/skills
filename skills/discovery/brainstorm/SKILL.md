@@ -55,6 +55,8 @@ Provisional means provisional: if step 2 surfaces any of those, it was never tie
 
 Read `CONTEXT.md` (use its vocabulary from here on) and `docs/specs/INDEX.md` (the feature codes and specs that already exist) directly — they are small and you need them in context. Read the **Project posture** in `docs/agents/project.md` when present — its delivery intent and lifecycle stage right-size the whole interview: a Prototype / Research / Learning posture means do not burn questions on data migration, backward compatibility, or deprecation cost; a Released / Scaling / Maintenance posture means weigh exactly those heavily. When the posture section is absent, do not assume one — proceed without right-sizing. Read **`## Team`** in the same file when present: if the **roster** is non-empty or a **Workflow band** override is set, derive the **band** and apply **packaging** using the rules and matrix written *in that section* (do not re-copy them here). State the band once. Solo: leaner peer-coordination language in approaches. Small/Multi: surface ownership and review capacity in approach trade-offs. Empty roster + blank override, or missing Team: do not invent a team and do not hard-fail. **Band never changes tier rules or Iron Laws.** When `docs/product/vision.md` exists, read it too and — once you grasp the idea — state whether it falls inside the stated product scope (an out-of-scope idea is worth surfacing before any spec work); if it does not exist, skip this, the layer is optional. For anything heavier — code, docs, and recent commits near this idea — dispatch a **scan subagent** that explores and writes a findings digest to `.skills/<slug>-scan.md` (what exists near the idea, the files and seams it touches, applicable constraints — findings, not file dumps), returning only that path; work from the digest instead of pulling raw files into this conversation. (No subagents in this harness? Read the few relevant files directly.) If `docs/agents/project.md` or these files are missing, say so, suggest running `setup-repo`, and continue with what you have.
 
+The scan digest (or your direct read) MUST include a **Blindspot** section: territory-specific traps, historical constraints, and questions a newcomer would not know to ask — grounded in this repo, not generic advice. When the user signals low familiarity with the module or domain, surface that Blindspot list to them before the first preference question in step 2.
+
 Then check whether the idea already exists. Search `docs/specs/` for overlap: grep the
 idea's candidate feature codes and key terms across `requirements.md` files, and cross-check
 the scan's candidate file paths against what existing specs already own (grep those paths in
@@ -64,7 +66,15 @@ covers. `docs/specs/INDEX.md` is the registry to consult first. This never block
 if nothing overlaps, say so and move on; if `docs/specs/` does not exist yet, note it and
 continue with manual exploration.
 
-**Done when:** you can state in one paragraph what the project is, what already exists near this idea, and which glossary terms apply — and you have stated which existing features share this idea's surface and how the new idea differs (citing feature codes), or that no existing feature shares its surface.
+**Knowns inventory (REQUIRED before step 2).** Write four short bullets the rest of
+the chain can reuse (chat is fine; optional `.skills/<slug>-knowns.md`):
+
+- **Known knowns / locks** — hard constraints and outcomes that are settled (must-keep behaviors, posture constraints, explicit non-negotiables).
+- **Known unknowns** — open questions that need research, prototype, or a user decision.
+- **Unknown knowns** — taste or standards the user can recognize but not yet specify (route via `prototype` or references, not more prose questions alone).
+- **Assumptions (not locks)** — solution shape the user proposed that is still a hypothesis until checked against territory (codebase, APIs, history). Never promote an assumption into a requirement SHALL until it is chosen as a lock.
+
+**Done when:** you can state in one paragraph what the project is, what already exists near this idea, and which glossary terms apply — and you have stated which existing features share this idea's surface and how the new idea differs (citing feature codes), or that no existing feature shares its surface — **and** the Knowns inventory and Blindspot list exist.
 
 ### 2. Interview
 

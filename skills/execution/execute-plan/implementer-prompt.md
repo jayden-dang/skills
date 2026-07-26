@@ -56,6 +56,29 @@ Subagent (general-purpose):
     - Follow the codebase's established patterns; improve what you touch, but
       never restructure beyond your task.
 
+    ## Deviations (REQUIRED when plan and territory disagree)
+
+    WHEN an edge case, missing API behavior, type-system force, dependency
+    limit, or product note forces you off the brief's approach:
+
+    1. Prefer the **conservative** choice that preserves existing behavior and
+       keeps blast radius inside this task's files.
+    2. Append one entry to `.skills/implementation-notes.md` (create if absent)
+       BEFORE you finish the task. Each entry has exactly these fields:
+       - **Task:** N
+       - **Deviation:** what you did differently from the brief/plan
+       - **Cause:** what in the territory forced it
+       - **Choice:** the conservative option taken
+       - **Revisit:** what a human or later task should re-check
+    3. If the only fixes require changing a public interface, shared type, or
+       another task's contract → do **not** stretch them silently. Report
+       BLOCKED or NEEDS_CONTEXT (or DONE_WITH_CONCERNS only after logging the
+       deviation and staying inside the brief's surface).
+    4. Point the report's Concerns line at the notes file path.
+
+    A concern that lives only in the report and not in
+    `.skills/implementation-notes.md` is incomplete.
+
     ## In Over Your Head
 
     Stopping honestly beats bad work — you will never be penalized for
@@ -98,7 +121,11 @@ Subagent (general-purpose):
       - GREEN: the command run and the passing output after implementation
     - Files changed
     - Self-review findings, if any
-    - Concerns, if any
+    - Concerns, if any — if any plan/territory mismatch occurred, this line
+      MUST cite `.skills/implementation-notes.md` (report-only concerns are
+      incomplete)
+    - Deviations: path to `.skills/implementation-notes.md`, or the exact word
+      `none` if no deviation occurred
 
     Your final message is 15 lines or fewer — the detail lives in the report
     file:

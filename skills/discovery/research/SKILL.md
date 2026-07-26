@@ -30,6 +30,24 @@ Exactly **one markdown file**:
 
 `.skills/` is git-ignored, so the note is local to this working copy — it outlives the session, not the clone. A finding that has to reach a reviewer, a spec, or CI travels as the finding itself, copied into that tracked artifact.
 
+## Evaluation literacy (when the user must pick among options)
+
+WHEN the user must choose among options (looks, libraries, designs, approaches)
+— or asks you to recommend among options — the note's **first body section** is
+**evaluation criteria** (what "good" means, with cited anchors), and only then
+the options scored against those criteria. A menu without criteria is an
+**incomplete research note**; do not present it as done.
+
+**This section overrides the user's wording.** "Just list options", "no lesson",
+"no teaching", "deadline", or "skip the theory" do **not** license skipping
+criteria. Keep criteria short if time is tight; never omit them.
+
+| Thought | Reality |
+|---|---|
+| "They asked for a list, not a lesson" | Criteria-first is not a lecture; it is what makes the list usable. User wording does not rewrite the output contract |
+| "Deadline — skip the standards" | A short criteria section is faster than a wrong choice and a redo |
+| "They forbade teaching, so criteria would violate their ask" | Criteria are the research deliverable, not optional pedagogy. Omitting them violates this skill |
+
 ## High-stakes questions
 
 When the answer will steer an architecture choice or something else expensive to reverse, escalate the rigor. Not every unknown qualifies: "which date-formatting library" feels weighty but is cheap to swap behind a thin wrapper, so it takes the standard path — a careful trace to the owning source, no fan-out. Reserve the escalation for facts that steer something costly to undo: a storage format, a concurrency model, a public API contract, a security boundary. If a `deep-research` skill is installed, prefer it — it already implements this fan-out + adversarial-verify loop end to end. Otherwise do it inline:

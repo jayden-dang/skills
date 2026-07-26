@@ -41,9 +41,9 @@ Drive a dedicated tab. Avoid native `alert`/`confirm` when possible (browser bri
 
 ### 2. Build the ledger before any drive
 
-Parse every case from the guide (`data-case`, `data-req`, `data-backend`, `data-setup` when present; visible Try/Expect otherwise). Write one ledger row **and** one todo per case **before** driving any case. Resume from the first non-`pass` row if a ledger already exists.
+Parse every case from the guide (`data-case`, `data-req`, `data-kind`, `data-backend`, `data-setup` when present; visible Try/Expect otherwise). Write one ledger row **and** one todo per case **before** driving any case (include `kind` when present). Resume from the first non-`pass` row if a ledger already exists.
 
-**No row, not run.** Spot-checking "the same CRUD pattern" leaves unfinished rows `pending`/`blocked` — never silent `pass`.
+**No row, not run.** Spot-checking "the same CRUD pattern" or driving only `happy` rows for a demo leaves unfinished rows `pending`/`blocked` — never silent `pass`.
 
 ### 3. Drive each pending case
 

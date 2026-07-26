@@ -180,7 +180,7 @@ compact a long session.
 | [`acceptance-check`](skills/acceptance-check.md) | m | Pre-merge; units green but not user-driven | Derive an ID-keyed checklist of user-facing behaviors from the spec, dispatch by surface, close the loop | Validated behaviors + tagged tests |
 | [`acceptance-api`](skills/acceptance-api.md) | m | Validate a backend as a real client | Get the server up (persist the run command), turn each checklist item into a real request (status/body/persistence), fix via `debug`, promote to a tagged integration test | Committed API tests |
 | [`acceptance-ui`](skills/acceptance-ui.md) | m | Validate a frontend in a real browser | Ensure a Playwright/Chromium harness, write a user-driven spec per flow (role/label locators, reload persistence), run headless, commit tagged specs | Committed e2e tests |
-| [`dogfood`](skills/dogfood.md) | m | A manual, human-eyeball pass | Scope every user-facing ability keyed to IDs, ground each in the real code, boot the app, build a checkable HTML artifact you tick off | An HTML test guide + findings |
+| [`dogfood`](skills/dogfood.md) | m | A manual, human-eyeball pass | Scope abilities with a coverage gate (happy + edge/error/nonbehavior/persist kinds), ground each in real code, boot the app, build a checkable HTML artifact with `data-kind` slots | An HTML test guide + findings |
 | [`drive-dogfood`](skills/drive-dogfood.md) | m | An existing dogfood guide must be executed, not only authored | Parse the guide into a run ledger, drive every case in a real browser, require backend probes for state cases, fix via `debug`, resume from the ledger | Evidence-backed run ledger + report |
 
 ### ship

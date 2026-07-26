@@ -58,9 +58,9 @@ loads.*
 ## 2. Build the ledger before any drive
 
 Read the guide file (HTML path from `dogfood`, or the path the user gave). Parse
-every case. Prefer `data-case`, `data-req`, `data-backend`, `data-setup` when
-present; fall back to visible Try / Expect / requirement text when attributes
-are missing (older guides).
+every case. Prefer `data-case`, `data-req`, `data-kind`, `data-backend`,
+`data-setup` when present; fall back to visible Try / Expect / requirement text
+when attributes are missing (older guides).
 
 Write `.skills/<slug>-dogfood-run.md` with **one row per case before driving any
 case**. Create one todo per case. Resume: if the ledger exists, trust it — first
@@ -70,15 +70,17 @@ non-`pass` row is next; do not re-derive progress from memory.
 |---|---|
 | `case` | stable id (`data-case` or stable title) |
 | `req` | requirement ID |
+| `kind` | `data-kind` when present (`happy` / `edge` / `error` / …), else unknown |
 | `verdict` | `pending` \| `pass` \| `fail` \| `blocked` |
 | `saw` | what was on screen — **quoted**, not paraphrased |
 | `server` | probe + result, or `none — presentational` |
 | `notes` | setup used, fix / `debug` hand-off, re-drive |
 
 **No row, not run.** Skipping a case because it is "the same CRUD pattern",
-because a lead said spot-check is fine, or to "save time for the demo" leaves
-that row `pending` or `blocked` — never silent `pass`. A partial run reports
-exactly which rows are unfinished.
+"only happy paths for the demo", because a lead said spot-check is fine, or to
+"save time" leaves that row `pending` or `blocked` — never silent `pass`. A
+partial run reports exactly which rows are unfinished. Prefer driving in guide
+order; do not drop `edge` / `error` / `nonbehavior` / `persist` rows first.
 
 *Done when: every case in the guide has a ledger row and a todo, all `pending`
 (or restored from a prior ledger).*

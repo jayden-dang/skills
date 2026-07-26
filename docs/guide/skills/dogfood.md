@@ -25,17 +25,31 @@ The deliverable is a **persistent, checkable HTML artifact**. A chat message is 
 
 The artifact answers all three: it persists ticks, renders the real thing, and lives in its own tab.
 
-## 1. Scope every ability from the spec
+## 1. Scope every ability — coverage gate
 
-Read the feature's `requirements.md`, `design.md`, and `tasks.md`, and list every user-observable ability keyed to its requirement ID. That means three kinds of case, not one:
+Read the feature's `requirements.md`, `design.md`, and `tasks.md`, and list every user-observable ability. Cases use a fixed **taxonomy** (stored as `data-kind` on each row):
 
-- the happy path — the feature doing what it is for,
-- the edge cases — the empty input, the duplicate, the boundary,
-- the deliberate non-behaviors — what should NOT happen, the Out-of-Scope decisions.
+| Kind | Meaning |
+|---|---|
+| `happy` | Feature does what it is for |
+| `edge` | Boundary / empty / duplicate / max length / whitespace |
+| `error` | User-visible failure path (validation, 4xx copy, retained input) |
+| `nonbehavior` | What must **not** happen (Out-of-Scope; negative SHALLs) |
+| `persist` | Survives reload / re-open / client restart |
+| `visual` | Layout, color, empty-state copy — human eyeball |
+| `journey` | Optional multi-step stitch (≤2 per guide; does not replace atomic rows) |
 
-The third kind is what makes the pass an acceptance instrument rather than a demo: an Out-of-Scope decision is a claim about the build, and a claim deserves a checkbox.
+**Coverage rules** — all must hold (this is what stops happy-only guides):
 
-Include the adjacent capabilities in the same user workflow, not only the new feature, because the user exercises the whole surface in one sitting. The step is done when every user-facing requirement ID has at least one case.
+1. Every user-facing requirement ID has ≥1 case.
+2. Every ability area has ≥1 `happy` **and** ≥1 non-happy among `edge` | `error` | `nonbehavior` | `persist`.
+3. Every user-attemptable Out-of-Scope item has a `nonbehavior` case (or an explicit skip note).
+4. Every "persists" criterion has a `persist` case (or equivalent Expect + backend proof).
+5. If the triad truly has no edge/error/nonbehavior/persist material for an area, write a greppable *Coverage exception* line — do not invent product behavior.
+
+One happy case per ID is **not** enough when the ID or its siblings name edges. Chaos/load/fuzz suites do **not** belong here.
+
+Include adjacent capabilities in the same user workflow. The step is done when the coverage rules hold (or every exception is written on the guide).
 
 ## 2. Ground each case in the real code
 
@@ -59,18 +73,22 @@ The **required sub-skill** is [`design-page`](design-page.md), loaded before bui
 - Each row is **Try** — what to type or click, copy-pasteable — then **Expect** — shown in the app's real rendering, not described in prose.
 - **Interactive checkboxes that persist** via localStorage, plus a progress counter, so the user closes and resumes.
 - Theme-aware and fully self-contained: inline CSS and JS, no external assets.
-- **Machine-drivable slots** on every case row (invisible to the human reader; required for `drive-dogfood`):
+- Prefer a visible kind label for the human reader (`happy` / `edge` / …).
+- **Machine-drivable slots** on every case row (required for `drive-dogfood`):
 
   | Attribute | Value |
   |---|---|
   | `data-case` | Stable case id, unique in the guide |
   | `data-req` | Requirement id (e.g. `NOTE-1.1`) |
+  | `data-kind` | `happy` \| `edge` \| `error` \| `nonbehavior` \| `persist` \| `visual` \| `journey` |
   | `data-backend` | Server-side assertion after Try, or the literal `presentational` |
   | `data-setup` | Precondition/reset so the case can run independently |
 
+Before hand-off, count rows by `data-kind` per section; a happy-only section without a *Coverage exception* is incomplete.
+
 ## 5. Hand over
 
-Give the **file path**, the fastest way in — a roughly 30-second first pass that lights the feature up — then the degraded-feature notes and how to enable them, and note that ticks save. If the agent should run the guide next, name [`drive-dogfood`](drive-dogfood.md). The 30-second pass matters because a guide the user never starts checks nothing; the first win is what earns the rest of the walkthrough. The step, and the skill, is done when the artifact is on disk at a known path, grounded, resumable, every ability and non-behavior is a checkable ID-tagged case, and every row carries the four `data-*` slots.
+Give the **file path**, the fastest way in — a roughly 30-second first pass that lights the feature up (usually the first `happy` row) — then degraded-feature notes, coverage exceptions if any, and that ticks save. If the agent should run the guide next, name [`drive-dogfood`](drive-dogfood.md). The step is done when the artifact is on disk, grounded, resumable, the §1 coverage gate holds, and every row carries all five machine slots including `data-kind`.
 
 ## Worked example
 
@@ -78,16 +96,15 @@ The note-taking app's `NOTE` feature is finished; dogfood produces the guide the
 
 Step 3 boots the app and confirms every case has an honest observation point; the two `NOTE` behaviors are both visible on screen, so no devtools peek is needed here.
 
-One grounded row, in the create-a-note section of the artifact:
+Grounded rows in the create-a-note section (kinds satisfy the coverage gate: happy + error + persist):
 
-| ✓ | ID | Try | Expect |
-|---|---|---|---|
-| ☐ | `NOTE-1.1` | Type `buy milk` in the New note field and click **Add** | The note appears at the top of the list as a card reading "buy milk"; the input clears. Reload the page — the card is still there. |
-| ☐ | `NOTE-1.2` | Clear the field, type a single space, click **Add** | A red chip reads **Note cannot be empty** (danger red `#d4351c`); the space you typed stays in the field, not cleared. |
+| ✓ | Kind | ID | Try | Expect |
+|---|---|---|---|---|
+| ☐ | `happy` | `NOTE-1.1` | Type `buy milk` in the New note field and click **Add** | The note appears at the top of the list as a card reading "buy milk"; the input clears. |
+| ☐ | `persist` | `NOTE-1.1` | With "buy milk" visible, hard-reload | The card is still there. |
+| ☐ | `error` | `NOTE-1.2` | Clear the field, type a single space, click **Add** | A red chip reads **Note cannot be empty** (danger red `#d4351c`); the space stays in the field. |
 
-The `NOTE-1.2` "Expect" mirrors the real chip rather than paraphrasing it: the user sees the exact red they check against, so a mismatch is unambiguous.
-
-The checkboxes persist in localStorage and a counter shows `0 / 2`, so the user can close the tab mid-pass and resume. The hand-off gives the 30-second first pass — create one note, then submit an empty one — that lights the feature up.
+The `error` "Expect" mirrors the real chip rather than paraphrasing it. Each row carries `data-kind` plus the other machine slots. The hand-off's 30-second first pass is the `happy` row, then the empty submit.
 
 ## Rationalizations
 
@@ -98,12 +115,13 @@ The skill carries a three-row table naming the shortcuts an agent takes to avoid
 | "A markdown checklist in chat is enough" | It saves no tick, cannot show the real badge being checked against, and scrolls away. The deliverable is the persistent artifact. |
 | "They're in a native desktop app, not a browser, so an artifact doesn't fit" | The artifact is a companion reference kept open beside the app; the app being native is no reason to inline the guide into chat. |
 | "I'll describe the badge in words" | The user checks against what they SEE. Mirror the real rendering, or the Expect is unverifiable. |
+| "One happy case per requirement is enough" | The coverage gate requires non-happy kinds (or a written exception). Happy-only is a demo, not dogfood. |
 
 ## Why it is written the way it is
 
 `dogfood` is the manual sibling of [`acceptance-ui`](acceptance-ui.md), and the split is principled: `acceptance-ui` automates the flows a machine can assert, and `dogfood` takes the judgment a machine cannot — whether the badge color reads right, whether the interaction feels wrong, whether the empty state looks finished. Neither replaces the other, which is why [`acceptance-check`](acceptance-check.md) can dispatch to both for the same feature.
 
-Every rule in `dogfood` defends the same thing: a guide the user can actually check against. Grounding the "Expect" in real theme tokens rather than prose, mirroring the true rendering, and building a persistent artifact instead of a chat message all answer the failure of a dogfooding pass that describes what *should* appear and cannot be verified against what *does*. The persistence — checkboxes in localStorage, a progress counter — exists because a real pass over a whole surface is not done in one sitting; a guide that forgets your ticks is abandoned. And scoping the deliberate non-behaviors alongside the happy path is what makes it an acceptance instrument rather than a demo: the Out-of-Scope decisions are as much a claim about the build as the features are.
+Every rule in `dogfood` defends the same thing: a guide the user can actually check against. Grounding the "Expect" in real theme tokens rather than prose, mirroring the true rendering, and building a persistent artifact instead of a chat message all answer the failure of a dogfooding pass that describes what *should* appear and cannot be verified against what *does*. The persistence — checkboxes in localStorage, a progress counter — exists because a real pass over a whole surface is not done in one sitting; a guide that forgets your ticks is abandoned. And the **coverage gate** (happy + non-happy kinds, not "≥1 case per ID") is what keeps the pass an acceptance instrument rather than a demo: agents under time pressure otherwise ship happy-only guides that never exercise edges the user will hit.
 
 The three-row rationalization table above is the same shape the set uses wherever an agent is tempted to take a cheaper path than the skill demands: each row names the tempting thought and answers it with the reason it fails, so the shortcut is refused by name rather than rediscovered each run.
 

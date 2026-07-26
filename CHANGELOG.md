@@ -1,5 +1,23 @@
 # Changelog
 
+## 0.2.3 — 2026-07-26
+
+### `dogfood` coverage gate + case taxonomy
+
+Stops happy-only dogfood guides: each ability area needs non-happy cases (edge /
+error / nonbehavior / persist) or a greppable coverage exception.
+
+- **Taxonomy** on every row: `data-kind` = `happy` \| `edge` \| `error` \|
+  `nonbehavior` \| `persist` \| `visual` \| `journey`
+- **Coverage rules** replace "≥1 case per requirement ID" as the sole bar
+- **Self-check** before hand-off: count kinds per section
+- **`drive-dogfood`**: ledger carries `kind`; no demo-only happy-path subset
+- Guide + review-and-acceptance docs updated
+
+### Packaging
+
+- Engineer Pack version **0.2.3** (skill/docs only; plugin path list unchanged)
+
 ## 0.2.2 — 2026-07-26
 
 ### New: `drive-dogfood` + machine-drivable dogfood guides

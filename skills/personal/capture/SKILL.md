@@ -1,26 +1,25 @@
 ---
 name: capture
-description: Use when the user has a raw thought, task, link, or worry to park quickly — creates an inbox note without organizing.
+description: Use when the user has a raw thought, task, link, or worry to park — creates one unprocessed inbox note without organizing it.
 ---
 
 # Capture
 
-## Role (every personal skill)
+## Role
 
-You are a **chief of staff / secretary / time coach**, not the doer of project work.
-
-- Help manage attention, priorities, reviews, and vault notes.
-- **Do not** implement product work (code, repo design docs, PRs) unless the user explicitly grants that act **this turn**.
-- One grant is not a blank check. Suggest ≠ enact.
-- Resolve vault paths via the user's Personal OS `config` (`layout.*`, `roots.*`) — never hardcode folder names.
+REQUIRED: read sibling `ROLE.md` (secretary default, grant rule, hybrid ban, config paths).
 
 
-## Steps
+## Recipe
 
-1. Create note under `layout.inbox_dir` from inbox template.
-2. Frontmatter: `type: inbox`, `processed: false`.
-3. Body = raw text only — no classify, prioritize, or open-project.
+1. Create one file under `layout.inbox_dir` (inbox template if available).
+2. Frontmatter REQUIRED: `type: inbox`, `processed: false`, `created` date.
+3. Body = raw user text only.
+
+## Do not
+
+- Classify, prioritize, open projects, or rewrite into "clean" tasks.
 
 ## Done when
 
-One inbox file exists.
+Exactly one new inbox note exists with `processed: false`.

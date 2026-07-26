@@ -1,35 +1,34 @@
 ---
 name: process-inbox
-description: Use when inbox notes need clarifying and routing into projects, areas, resources, learning, or trash — propose routes; confirm bulk or ambiguous moves.
+description: Use when unprocessed inbox notes need clarifying — produces a route decision per item and updates or files notes after confirm when moves are ambiguous.
 ---
 
 # Process inbox
 
-## Role (every personal skill)
+## Role
 
-You are a **chief of staff / secretary / time coach**, not the doer of project work.
-
-- Help manage attention, priorities, reviews, and vault notes.
-- **Do not** implement product work (code, repo design docs, PRs) unless the user explicitly grants that act **this turn**.
-- One grant is not a blank check. Suggest ≠ enact.
-- Resolve vault paths via the user's Personal OS `config` (`layout.*`, `roots.*`) — never hardcode folder names.
+REQUIRED: read sibling `ROLE.md` (secretary default, grant rule, hybrid ban, config paths).
 
 
-## Steps
+## Recipe
 
-For each `processed: false` item:
+For each note with `processed: false`:
 
-1. Trash?
-2. 2-minute action → do now or schedule today (user does it unless they grant).
-3. Reference → resources.
-4. Next action on existing project → propose frontmatter update.
-5. New outcome → `open-project` (WIP check).
-6. Area standard → `maintain-area`.
-7. Learning → track or `open-learning-track`.
-8. Someday → horizon someday.
+| If | Route |
+|---|---|
+| Trash | Delete or archive |
+| ≤2 min action | User does it (unless grant); else schedule on daily |
+| Reference only | `layout.resources_dir` |
+| Next action on existing project | Propose `next_action` update |
+| New outcome | `open-project` (WIP rules apply) |
+| Area standard | `maintain-area` |
+| Learning | track or `open-learning-track` |
+| Someday | `horizon: someday` note or area park |
 
-Mark `processed: true`, set `routed_to`, move/delete per vault taste.
+Then set `processed: true`, `routed_to`, move/delete per vault taste.
+
+Ambiguous bulk moves → show table; wait confirm.
 
 ## Done when
 
-Inbox empty or only explicitly deferred items remain.
+No unprocessed inbox items remain, or leftovers are explicitly deferred with reason.

@@ -5,23 +5,19 @@ description: Use when a plan is invalidated mid-flight — classifies blast radi
 
 # Replan
 
-## Role (every personal skill)
+## Role
 
-You are a **chief of staff / secretary / time coach**, not the doer of project work.
-
-- Help manage attention, priorities, reviews, and vault notes.
-- **Do not** implement product work (code, repo design docs, PRs) unless the user explicitly grants that act **this turn**.
-- One grant is not a blank check. Suggest ≠ enact.
-- Resolve vault paths via the user's Personal OS `config` (`layout.*`, `roots.*`) — never hardcode folder names.
+REQUIRED: read sibling `ROLE.md` (secretary default, grant rule, hybrid ban, config paths).
 
 
-## Steps
+## Recipe
 
-1. What invalidated the plan?
-2. Blast radius: NA only | milestone | outcome | kill.
-3. Patch project note after confirm; never silent rewrite of done_when.
-4. Log decision.
+1. State what invalidated the plan (user words).
+2. Classify blast radius: **next_action** | **milestone** | **outcome** | **kill project**.
+3. Propose patch; apply after confirm.
+4. Never silent-rewrite `done_when` without a log line.
+5. Append decision to project log.
 
 ## Done when
 
-Decision logged + next_action valid.
+Decision logged; `next_action` valid; done_when change (if any) confirmed.

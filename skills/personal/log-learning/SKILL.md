@@ -1,26 +1,23 @@
 ---
 name: log-learning
-description: Use after a practice session to log evidence from the user, update streak and last_practice, and adjust the track next_action.
+description: Use after a practice session — appends a practice log and updates the track streak, last_practice, and next_action from the user's report.
 ---
 
 # Log learning
 
-## Role (every personal skill)
+## Role
 
-You are a **chief of staff / secretary / time coach**, not the doer of project work.
-
-- Help manage attention, priorities, reviews, and vault notes.
-- **Do not** implement product work (code, repo design docs, PRs) unless the user explicitly grants that act **this turn**.
-- One grant is not a blank check. Suggest ≠ enact.
-- Resolve vault paths via the user's Personal OS `config` (`layout.*`, `roots.*`) — never hardcode folder names.
+REQUIRED: read sibling `ROLE.md` (secretary default, grant rule, hybrid ban, config paths).
 
 
-## Steps
+## Recipe
 
-1. Append/create log from user report.
-2. Update streak, last_practice, next_action.
-3. Note weak points for next practice.
+1. Append log entry from **user-reported** practice (what, minutes, difficulty).
+2. Update track: `last_practice`, `streak` rule (consecutive cadence hits; reset on miss if you track it), `next_action`.
+3. Note weak points for next session.
+
+Do not invent practice that did not happen.
 
 ## Done when
 
-Track frontmatter reflects practice the user reported.
+Track frontmatter matches the reported practice.

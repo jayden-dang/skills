@@ -1,29 +1,24 @@
 ---
 name: review-quarter
-description: Use at quarter boundaries to facilitate themes and ≤5 commitments, kill list, and area/charter realignment.
+description: Use at quarter boundaries — produces a quarterly review note with ≤3 themes and ≤5 commitments marked PROPOSED until confirmed.
 ---
 
 # Review quarter
 
-## Role (every personal skill)
+## Role
 
-You are a **chief of staff / secretary / time coach**, not the doer of project work.
-
-- Help manage attention, priorities, reviews, and vault notes.
-- **Do not** implement product work (code, repo design docs, PRs) unless the user explicitly grants that act **this turn**.
-- One grant is not a blank check. Suggest ≠ enact.
-- Resolve vault paths via the user's Personal OS `config` (`layout.*`, `roots.*`) — never hardcode folder names.
+REQUIRED: read sibling `ROLE.md` (secretary default, grant rule, hybrid ban, config paths).
 
 
-## Steps
+## Recipe
 
-1. Read weeklies + charter with user.
-2. Shipped / killed.
-3. ≤3 themes; ≤5 commitments — confirm.
-4. Propose project open/pause to match — confirm.
+1. Skim weeklies + charter with user.
+2. Shipped / killed lists.
+3. Draft ≤3 themes and ≤5 commitments — **PROPOSED**.
+4. Propose project open/pause to match — confirm before apply.
 5. Write quarterly file.
-6. Charter drift → `life-charter`.
+6. Charter drift → name `life-charter` for the user to run if needed.
 
 ## Done when
 
-Quarterly file + commitments reflected after user OK.
+Quarterly file exists; commitments PROPOSED or confirmed; portfolio suggestions not silently applied.

@@ -1,30 +1,43 @@
 ---
 name: open-project
-description: Use when a new outcome commitment needs a project note, registry row, and optional workspace pointer under the WIP limit.
+description: Use when the user commits to a new outcome — creates a project note and registry row under the WIP limit with non-empty done_when and next_action.
 ---
 
 # Open project
 
-## Role (every personal skill)
+## Role
 
-You are a **chief of staff / secretary / time coach**, not the doer of project work.
+REQUIRED: read sibling `ROLE.md` (secretary default, grant rule, hybrid ban, config paths).
 
-- Help manage attention, priorities, reviews, and vault notes.
-- **Do not** implement product work (code, repo design docs, PRs) unless the user explicitly grants that act **this turn**.
-- One grant is not a blank check. Suggest ≠ enact.
-- Resolve vault paths via the user's Personal OS `config` (`layout.*`, `roots.*`) — never hardcode folder names.
 
+## Iron Law
+
+```
+NO ACTIVE PROJECT WITHOUT done_when AND next_action.
+NO ACTIVE ABOVE WIP LIMIT.
+```
 
 ## Steps
 
-1. WIP check — at cap? pause/close another first (confirm).
-2. outcome + done_when non-empty.
-3. Create under `projects_active` + `_project.md` from template.
-4. Optional `workspace.path`; probe path_status if allowed.
-5. Registry row.
-6. One next_action; phase intake.
-7. Offer `plan-project` for milestones.
+1. Count projects with `status: active`. If at `limits.max_active_projects`, **stop**: propose pause/close one (user picks). Do not create a sixth active.
+2. Require non-empty **outcome** and **done_when** (user words). Reject `TBD` / empty / "figure out later" while active.
+3. Create note under `layout.projects_active` from project template.
+4. Optional `workspace.path` — record `path_status` if probed; never invent remotes.
+5. Add registry row.
+6. Set one concrete `next_action`; `phase: intake` or `roadmap`.
+7. Offer `plan-project` for milestones (do not invent a 3-month task tree).
+
+If they only have a name: REQUIRED SUB-SKILL path is user runs `capture` — park in inbox, not active.
+
+## Rationalizations
+
+| Thought | Reality |
+|---|---|
+| "I'm the boss, skip WIP" | Authority reorders; does not repeal WIP |
+| "Just register quickly" | Active slots are scarce — use capture if unready |
+| "done_when TBD is fine" | Ghost project — illegal while active |
+| "Exception note in the file" | Soft compliance still breaks the cap |
 
 ## Done when
 
-Note + registry + legal frontmatter. No project work performed.
+Legal frontmatter; registry row; WIP still ≤ limit; no product work performed.

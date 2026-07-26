@@ -78,6 +78,9 @@ All skills resolve paths through the vault **config** (`layout.*`, `roots.*`, `l
 
 ## Skills
 
+Shared stance (read once per session): **`ROLE.md`**.  
+Eval scenarios for pressure-tests: **`EVAL.md`**.
+
 | Skill | When |
 |---|---|
 | `using-personal-os` | Start of a Personal OS session (gate + role) |
@@ -87,11 +90,11 @@ All skills resolve paths through the vault **config** (`layout.*`, `roots.*`, `l
 | `process-inbox` | Clarify and route inbox items |
 | `orient` | Status snapshot + one suggested focus |
 | `plan-day` | Daily focuses (≤3), energy, not-today |
-| `execute-session` | Start/end a focus block — **log only**; user works |
+| `execute-session` | Start/end a focus block — **log + handoff only**; user works |
 | `open-project` / `plan-project` / `close-project` | Portfolio outcomes |
 | `maintain-area` | Ongoing area standards |
 | `open-learning-track` / `log-learning` | Learning cadence |
-| `review-week` | Weekly closed-loop hinge |
+| `review-week` | Weekly closed-loop hinge (P0s **PROPOSED** until confirm) |
 | `review-quarter` | Themes and commitments |
 | `replan` | Plan invalidated mid-flight |
 | `life-charter` | Roles, anti-goals, energy constraints |

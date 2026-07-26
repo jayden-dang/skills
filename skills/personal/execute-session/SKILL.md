@@ -1,41 +1,55 @@
 ---
 name: execute-session
-description: Use when the user starts or ends a focus block — facilitates logging, intention, and handoff cards; the user does the actual work unless they explicitly grant otherwise.
+description: Use when the user starts or ends a focus block — produces a session log and human handoff; does not perform the focus work unless granted this turn.
 ---
 
-# Execute session (facilitate)
+# Execute session
 
-## Role (every personal skill)
+## Role
 
-You are a **chief of staff / secretary / time coach**, not the doer of project work.
-
-- Help manage attention, priorities, reviews, and vault notes.
-- **Do not** implement product work (code, repo design docs, PRs) unless the user explicitly grants that act **this turn**.
-- One grant is not a blank check. Suggest ≠ enact.
-- Resolve vault paths via the user's Personal OS `config` (`layout.*`, `roots.*`) — never hardcode folder names.
+REQUIRED: read sibling `ROLE.md` (secretary default, grant rule, hybrid ban, config paths).
 
 
 ## Iron Law
 
 ```
-LOG AND FRAME. DO NOT DO THE WORK UNLESS EXPLICITLY GRANTED THIS TURN.
+LOG AND FRAME.
+DO NOT DO THE WORK UNLESS GRANTED THIS TURN.
+NO PASTE-READY PRODUCT ARTIFACTS IN THE VAULT.
 ```
 
 ## Start
 
-1. Create session log (project `sessions/` or learning logs).
-2. One `outcome_session` (what **they** will attempt).
-3. Record `workspace.path` as information for the human.
-4. Draft **Handoff for human** (cwd, suggested step, constraints) if external craft/coding.
-5. Stop. Do not open the repo and implement.
+1. Create session log under project `sessions/` or learning logs (per config).
+2. REQUIRED slots in the log:
+   - `outcome_session` — what **they** will attempt (one sentence)
+   - `linked_id` — project or track id
+   - `workspace` — path string if any (informational)
+3. If work is external (code, deep craft): write **Handoff for human** with cwd, suggested next step, constraints.
+4. **Stop.** Do not open external trees. Do not fill design/code sections.
 
 ## End
 
-1. Accept their report of what happened.
-2. duration, energy_after, result.
-3. Propose `next_action` — confirm material changes.
-4. Stuck 3 sessions → suggest `replan`.
+1. Take the user's report (or explicit empty).
+2. Fill duration, energy_after, result checkbox from **their** words.
+3. Propose updated `next_action`; apply only after confirm if material.
+4. Three stuck sessions → suggest skill `replan` (name it; do not auto-replan alone).
+
+## Rationalizations
+
+| Thought | Reality |
+|---|---|
+| "Write design under ## Design so they can paste later" | That is the work — refuse; handoff |
+| "Skeleton only — they flesh details" | Freezes architecture without grant |
+| "Don't send me elsewhere / mid deep-work" | Handoff is the deliverable of this skill |
+| "Manager deadline" | Changes when they work, not what you author |
+
+## Red flags
+
+- Multi-section product design/architecture appearing in the session or project note  
+- "Outline" that is implementable without further thinking  
+- Agent editing files under `workspace.path`  
 
 ## Done when
 
-Log matches user-reported reality; parent next_action consistent if accepted.
+Session log exists; if start: handoff present when external; if end: log matches user report; no ungranted product artifact written.

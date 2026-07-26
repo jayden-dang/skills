@@ -1,30 +1,27 @@
 ---
 name: plan-project
-description: Use when a project needs a light roadmap — 3–7 milestones with atomic next actions only on the current milestone.
+description: Use when a project needs a light roadmap — updates the project note with 3–7 milestones and atomic actions only on the current milestone.
 ---
 
 # Plan project
 
-## Role (every personal skill)
+## Role
 
-You are a **chief of staff / secretary / time coach**, not the doer of project work.
-
-- Help manage attention, priorities, reviews, and vault notes.
-- **Do not** implement product work (code, repo design docs, PRs) unless the user explicitly grants that act **this turn**.
-- One grant is not a blank check. Suggest ≠ enact.
-- Resolve vault paths via the user's Personal OS `config` (`layout.*`, `roots.*`) — never hardcode folder names.
+REQUIRED: read sibling `ROLE.md` (secretary default, grant rule, hybrid ban, config paths).
 
 
-## Steps
+## Recipe
 
 1. Tighten outcome / done_when with user.
-2. MS-1…; detail actions only under current MS.
+2. Write milestones MS-1…MS-n (3–7). Detail checklist items **only** under current MS.
 3. Risks / waiting.
-4. phase → execute when MS-1 has a real NA.
-5. AI-drafted plans need user confirm.
+4. Set `milestone_current` and a real `next_action`.
+5. AI drafts need user confirm before trusting as plan.
 
-Anti-pattern: full task tree for three months.
+## Anti-pattern
+
+Full multi-month task trees. Plan the current milestone only.
 
 ## Done when
 
-Roadmap section usable; next_action valid.
+Roadmap section usable; `next_action` non-empty; user OK if agent drafted.

@@ -1,27 +1,22 @@
 ---
 name: maintain-area
-description: Use on area cadence or yellow/red health — walks standards with the user, updates health, spawns a project only when a gap needs an outcome.
+description: Use on an area's review cadence or yellow/red health — updates the area note health and next_action, proposing a project only when a gap needs an outcome.
 ---
 
 # Maintain area
 
-## Role (every personal skill)
+## Role
 
-You are a **chief of staff / secretary / time coach**, not the doer of project work.
-
-- Help manage attention, priorities, reviews, and vault notes.
-- **Do not** implement product work (code, repo design docs, PRs) unless the user explicitly grants that act **this turn**.
-- One grant is not a blank check. Suggest ≠ enact.
-- Resolve vault paths via the user's Personal OS `config` (`layout.*`, `roots.*`) — never hardcode folder names.
+REQUIRED: read sibling `ROLE.md` (secretary default, grant rule, hybrid ban, config paths).
 
 
-## Steps
+## Recipe
 
-1. Open area note; walk standards.
-2. Set health green/yellow/red (confirm if red).
-3. Gap needs end-state? → propose `open-project`. Else area next_action.
-4. next_review.
+1. Open area note; walk standards checkboxes with user.
+2. Set `health`: green | yellow | red (confirm red).
+3. If gap needs an end-state → propose `open-project` (WIP rules). Else set area `next_action` only.
+4. Set `next_review`.
 
 ## Done when
 
-Health + next_review updated.
+Health and next_review written; standards walk recorded.

@@ -1,0 +1,3 @@
+MILE-1 resolves; membership {ROAD-1}; ROAD-1 -> CAP; baseline and
+candidate both 40-hex; no withholding finding; verdict produced
+covers ASSESS-1.2 ASSESS-1.4 ASSESS-1.5 ASSESS-1.8 ASSESS-1.9

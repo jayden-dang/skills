@@ -74,5 +74,17 @@ class AssessmentTemplate(unittest.TestCase):
                 self.assertIn(f"`{value}`", self.text)
 
 
+SKILL = REPO / "skills" / "track" / "assess-milestone" / "SKILL.md"
+
+
+class AssessMilestoneSkill(unittest.TestCase):
+    def setUp(self):
+        self.text = SKILL.read_text()
+
+    def test_skill_is_user_invoked(self):
+        """ASSESS-5.1 — the gate is never auto-invoked by a model."""
+        self.assertIn("disable-model-invocation: true", self.text)
+
+
 if __name__ == "__main__":
     unittest.main()

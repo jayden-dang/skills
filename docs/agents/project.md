@@ -108,7 +108,7 @@ Test globs: *(defaults — `tests` covers this repo)*, plus `tests/**/scenarios*
 markdown is a declared annotation layer below, so `trace`'s coverage pass must include `.md`
 under `tests/` alongside its default `*_test.py` includes, or scenario-borne IDs read as
 uncovered.
-Trace ignore (files whose IDs are fixtures, not coverage): `tests/team-structure/red-baselines.md`, `tests/decision-records/red-baselines.md`, `tests/decision-records/fixtures/`, `tests/comprehend-change/red-baselines.md`, `tests/attention-allocation/red-baselines.md`, `tests/roadmap/red-baselines.md`, `tests/roadmap/fixtures/`
+Trace ignore (files whose IDs are fixtures, not coverage): `tests/team-structure/red-baselines.md`, `tests/decision-records/red-baselines.md`, `tests/decision-records/fixtures/`, `tests/comprehend-change/red-baselines.md`, `tests/attention-allocation/red-baselines.md`, `tests/roadmap/red-baselines.md`, `tests/roadmap/fixtures/`, `tests/milestone-assessment/red-baselines.md`, `tests/milestone-assessment/fixtures/`
 
 ## Test annotation conventions
 

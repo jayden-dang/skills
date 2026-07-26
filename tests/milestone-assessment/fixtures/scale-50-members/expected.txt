@@ -1,0 +1,3 @@
+50 members, 50 bindings — still one read per source artifact and the
+same fixed git calls; no per-member command
+covers ASSESS-6.1

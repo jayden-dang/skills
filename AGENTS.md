@@ -74,7 +74,7 @@ skill's workflow only when the user has explicitly told you to.
 `ask`, `writing-skills`, `teach`, `setup-repo`, `scaffold-project`,
 `establish-project`, `triage`, `improve-architecture`, `handoff`, `file-issues`,
 `release`, `interpret`, `comprehend-change`, `allocate-attention`, `check-roadmap`,
-`assess-milestone`.
+`assess-milestone`, and Personal OS `setup-personal-os`.
 Agents MUST NOT auto-invoke these. Name them for the user to run, e.g. `/triage` or
 `/allocate-attention`.
 
@@ -237,32 +237,24 @@ content moves to a sibling file in the same directory.
 ## 8. File Organization
 
 ```
-skills/                  # skill definitions (45 skills, 11 categories)
-  meta/                  # using-skills, ask, writing-skills
-  setup/                 # setup-repo, scaffold-project
-  discovery/             # brainstorm, grilling, research, prototype, domain-modeling
-  spec/                  # write-requirements, write-design, write-plan
-  execution/             # execute-plan, tdd, debug, verify, trace, worktrees
-  review/                # code-review, allocate-attention, comprehend-change, polish, receive-review, check-invariants
-  acceptance/            # acceptance-check, acceptance-api, acceptance-ui, dogfood
-  craft/                 # design-page
-  ship/                  # finish-branch, release
-  track/                 # amend, correct-course, triage, sync-spec, check-roadmap,
-                         #   assess-milestone, improve-architecture, handoff, file-issues
-  project/               # establish-project, write-roadmap (optional project-documentation
-                         #   and milestone-intent layers)
-templates/               # requirements.md, design.md, tasks.md, CONTEXT.md seeds
-hooks/                   # session-start.sh + hooks.json (injection on startup/clear/compact)
+skills/                  # two packages — see docs/packages.md
+  # Engineering (default plugin)
+  meta/ discovery/ spec/ execution/ review/ acceptance/
+  craft/ ship/ track/ project/ setup/
+  engineering/           # package index README only
+  # Personal OS (opt-in; not in default plugin.json)
+  personal/              # using-personal-os, plan-day, review-week, …
+templates/               # engineering seeds + templates/personal-os/
+hooks/                   # session-start (engineering gate)
 docs/
-  agents/                # per-repo config (project.md, issue-tracker.md, triage-labels.md)
-  adr/                   # architecture decision records (1–3 sentences, three-part gate)
-  architecture/          # SSOT: INDEX.md ARCH-N spine + system design domains
-  product/               # vision.md + guidelines.md (optional project-docs layer)
-  specs/                 # spec triads per feature + INDEX.md (feature-code registry)
-  guide/                 # human documentation (concepts, methodology, process, skills)
-.skills/                 # git-ignored ephemera: task briefs, reports, review diffs, ledger
-.out-of-scope/           # rejection knowledge base (one file per concept)
+  packages.md            # engineering vs personal install map
+  agents/ adr/ architecture/ product/ specs/ guide/
+.skills/                 # git-ignored ephemera
+.out-of-scope/
 ```
+
+**Packages:** Engineering vs Personal OS — `docs/packages.md`.  
+Personal skills use **secretary default** (management only). Root Iron Laws (NO-CODE / TDD / …) govern **engineering** sessions, not life-vault management.
 
 **Per-repo config** (`docs/agents/`, written by `setup-repo`): `project.md`
 (verify commands, release steps, **Project posture**, and **Team** roster/band),
@@ -354,6 +346,10 @@ dropping an item, reordering milestones, committing or closing one — goes thro
 
 **Maintenance:** `amend` (small changes), `triage` (incoming issues), `sync-spec`
 (spec drift), `improve-architecture` (periodic deepening).
+
+**Personal OS (independent opt-in package):** life/vault management skills under
+`skills/personal/` — see `skills/personal/README.md` and `docs/personal-os/START-HERE.md`.
+Not part of the default engineering plugin; does not depend on engineering skills.
 
 ---
 

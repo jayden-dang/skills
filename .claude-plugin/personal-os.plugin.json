@@ -1,0 +1,28 @@
+{
+  "name": "personal-os",
+  "version": "0.2.0",
+  "description": "Personal OS: independent life and multi-project management skills. Secretary/coach role. Install separately from any engineering skill package.",
+  "author": {
+    "name": "Jayden Dang"
+  },
+  "skills": [
+    "./skills/personal/using-personal-os",
+    "./skills/personal/setup-personal-os",
+    "./skills/personal/sync-workspaces",
+    "./skills/personal/capture",
+    "./skills/personal/process-inbox",
+    "./skills/personal/orient",
+    "./skills/personal/plan-day",
+    "./skills/personal/execute-session",
+    "./skills/personal/open-project",
+    "./skills/personal/plan-project",
+    "./skills/personal/close-project",
+    "./skills/personal/maintain-area",
+    "./skills/personal/open-learning-track",
+    "./skills/personal/log-learning",
+    "./skills/personal/review-week",
+    "./skills/personal/review-quarter",
+    "./skills/personal/replan",
+    "./skills/personal/life-charter"
+  ]
+}

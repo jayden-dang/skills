@@ -1,5 +1,21 @@
 # Skills
 
+This repository hosts **independent skill packages**. Install only what you need.
+
+| Package | Path | Default install? | Role |
+|---|---|---|---|
+| **Engineering** | `skills/{meta,discovery,spec,…}/` | **Yes** (Claude plugin) | Spec-driven coding: ideation → ship |
+| **Personal OS** | `skills/personal/` | **Opt-in** | Life + multi-project *management* (secretary/coach) |
+
+- Package map: **[docs/packages.md](docs/packages.md)**  
+- Personal OS (standalone): **[skills/personal/README.md](skills/personal/README.md)** · **[docs/personal-os/START-HERE.md](docs/personal-os/START-HERE.md)**
+
+Personal OS does **not** depend on the engineering package. Engineering installs do **not** require Personal OS.
+
+---
+
+## Engineering package
+
 An A-to-Z agentic development skill set: one system that carries a project from
 ideation to release, with **requirements traceability as the spine**.
 
@@ -42,27 +58,46 @@ the same string in all five places above it.
 
 ## Install
 
+### Engineering (default)
+
 ```bash
 npx skills@latest add jayden-dang/skills
 ```
 
-Or as a Claude Code plugin (this repo is a valid plugin: skills + a
-session-start hook that keeps the skill-check gate active across compaction).
+Or as a Claude Code plugin (this repo is a valid plugin: **engineering** skills + a
+session-start hook). Personal OS is **not** in the default plugin list.
 
-**Nothing to install into your repo.** The skill set is pure `SKILL.md` — no
-Python, no linters to vendor, no build step, no runtime. To run from a local
-clone (so `git pull` updates skills in place), symlink the skill folders into
-`~/.claude/skills`:
+**Nothing to install into your repo.** Pure `SKILL.md` — no vendored runtime.
+
+Dev symlink — **engineering only** (so `git pull` updates in place):
 
 ```bash
 git clone https://github.com/jayden-dang/skills ~/dev/skills
-for d in ~/dev/skills/skills/*/*/; do ln -sfn "$d" ~/.claude/skills/"$(basename "$d")"; done
+cd ~/dev/skills
+for cat in meta discovery spec execution review acceptance craft ship track project setup; do
+  for d in skills/$cat/*/; do
+    [ -f "$d/SKILL.md" ] || continue
+    ln -sfn "$PWD/$d" ~/.claude/skills/"$(basename "$d")"
+  done
+done
 ```
 
-Then, once per repo, run `/setup-repo` to configure the issue tracker, verify
-commands, and docs layout. It writes markdown config only — it vendors no
-scripts and wires no CI. For a brand-new project, start with `/scaffold-project`.
-See [Adopting the skill set](docs/guide/resources/adopting.md).
+Then, once per **code** repo, run `/setup-repo`. See [Adopting](docs/guide/resources/adopting.md).
+
+### Personal OS (opt-in, independent)
+
+Full guide: [skills/personal/README.md](skills/personal/README.md).
+
+```bash
+# from this repository root; set AGENT_SKILLS_DIR for your harness
+for d in skills/personal/*/; do
+  [ -f "$d/SKILL.md" ] || continue
+  ln -sfn "$PWD/$d" "${AGENT_SKILLS_DIR}/$(basename "$d")"
+done
+```
+
+In your notes vault, run `setup-personal-os` once.  
+Do not use a blind `skills/*/*` symlink loop if you want engineering only — that also installs Personal OS.
 
 **Other platforms.** Nothing here is Claude-specific — the skills are plain
 `SKILL.md` and the traceability check is `grep`/`git` the agent drives.
@@ -134,6 +169,8 @@ and countered by name. See [The gates](docs/guide/concepts/gates.md).
 
 ## Skill inventory
 
+### Engineering
+
 | Bucket | Skills |
 |---|---|
 | meta | `using-skills` (session gate), `ask` (router), `writing-skills`, `teach` |
@@ -149,6 +186,23 @@ and countered by name. See [The gates](docs/guide/concepts/gates.md).
 | project | `establish-project` (optional project-documentation layer) |
 
 One page per skill in the [skill reference](docs/guide/skills/README.md).
+
+### Personal OS (opt-in, independent package)
+
+Standalone product docs: [skills/personal/README.md](skills/personal/README.md) · [docs/personal-os/START-HERE.md](docs/personal-os/START-HERE.md).
+
+| | |
+|---|---|
+| gate | `using-personal-os` |
+| setup | `setup-personal-os` |
+| capture | `capture`, `process-inbox` |
+| plan | `orient`, `plan-day`, `execute-session` |
+| portfolio | `open-project`, `plan-project`, `close-project`, `maintain-area` |
+| learning | `open-learning-track`, `log-learning` |
+| review | `review-week`, `review-quarter`, `replan`, `life-charter` |
+| disk | `sync-workspaces` |
+
+Templates: `templates/personal-os/`.
 
 ## Traceability, without a linter
 
@@ -185,7 +239,9 @@ opt into a documented CI job; it is outside the default path. See
 | [Examples](docs/guide/examples/tier-2-feature.md) | tier 0, 1, and 2 walkthroughs |
 | [Troubleshooting](docs/guide/resources/troubleshooting.md) | symptoms and causes |
 | [docs/architecture/](./docs/architecture/INDEX.md) | architecture SSOT (invariants + system design) |
-| [docs/product/vision.md](./docs/product/vision.md) | product north star |
+| [docs/product/vision.md](./docs/product/vision.md) | product north star (engineering) |
+| [docs/packages.md](./docs/packages.md) | engineering vs Personal OS packages |
+| [Personal OS](./skills/personal/README.md) | independent life/management skill set |
 
 ## Developing this repo
 

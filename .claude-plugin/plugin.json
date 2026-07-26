@@ -1,7 +1,7 @@
 {
   "name": "jayden-skills",
-  "version": "0.1.1",
-  "description": "A-to-Z agentic development skill set: ideation to release with requirements traceability as the spine.",
+  "version": "0.2.0",
+  "description": "Engineering package: A-to-Z agentic development (ideation to release, requirements traceability). Personal OS is a separate optional package under skills/personal/ — not included in this plugin.",
   "author": {
     "name": "Jayden Dang"
   },

@@ -1,5 +1,37 @@
 # Changelog
 
+## 0.2.0 — 2026-07-26
+
+### New: Personal OS package (independent, opt-in)
+
+A standalone life and multi-project **management** skill set. Agent role is
+secretary / coach — not product implementer. Does not depend on the engineering
+package; not included in the default Claude engineering plugin.
+
+- **18 skills** under `skills/personal/`: `using-personal-os`, `setup-personal-os`,
+  `capture`, `process-inbox`, `orient`, `plan-day`, `execute-session`,
+  `open-project`, `plan-project`, `close-project`, `maintain-area`,
+  `open-learning-track`, `log-learning`, `review-week`, `review-quarter`,
+  `replan`, `life-charter`, `sync-workspaces`
+- **Templates** under `templates/personal-os/` (project, area, daily, weekly,
+  quarterly, learning track, session, inbox, config example)
+- **Docs:** package README, `docs/personal-os/START-HERE.md`, `docs/packages.md`
+  (multi-package install isolation)
+- **Optional plugin** manifest: `.claude-plugin/personal-os.plugin.json`
+- **Secretary default / permission rules:** management only unless the user grants
+  a scoped act; registry-first workspaces; config-mapped layouts (no forced rename)
+- Default `.claude-plugin/plugin.json` remains **engineering-only**
+
+### Docs / packaging
+
+- Root README and AGENTS.md describe dual independent packages
+- Engineering install docs avoid a blind `skills/*/*` loop that would pull Personal OS
+- `skills/engineering/README.md` package index (paths unchanged)
+
+### Misc
+
+- Version bump to **0.2.0** (minor: new optional package surface)
+
 ## 0.1.1 — 2026-07-24
 
 ### New requirements shipped

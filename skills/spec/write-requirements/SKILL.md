@@ -102,15 +102,17 @@ NFR criterion or explicitly recorded as `None`.
 
 ## Step 3: Guard existing behavior
 
-List every file the change touches, then work that list: for every existing
-behavior in it, add a guard —
+List every file the change touches, then work that list. A file with no existing
+behavior at risk gets an explicit `no behavior to guard` line and nothing more;
+for every existing behavior in the rest, add a guard —
 `**CODE-N.M** (guard) WHEN <condition> THE SYSTEM SHALL CONTINUE TO <existing
 behavior>`. Guards are what stop an agent from breaking load-bearing behavior
 nobody mentioned. For a tier-1 bugfix this step plus one fix requirement IS the
 spec, appended to the destination named under Two modes.
-**Done when:** every file the change touches is listed, and each carries either a
-guard requirement or an explicit "no behavior to guard" line. An empty guard set
-with no list behind it does not count.
+**Done when:** every file the change touches is listed; every existing behavior
+found in those files has its own guard requirement; and every file with none
+carries the explicit `no behavior to guard` line. An empty guard set with no list
+behind it does not count.
 
 ## Step 4: Out of Scope
 

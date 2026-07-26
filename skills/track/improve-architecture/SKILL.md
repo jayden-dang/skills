@@ -39,7 +39,7 @@ One card per candidate:
 - **Confidence badge** — exactly one of `Strong` / `Worth exploring` / `Speculative`
 - **Before/after structure sketch** — side-by-side drawings (hand-built divs/SVG): shallow-vs-deep mass diagrams, fan-out collapses, seam lines. The sketch carries the argument; if it needs a paragraph to explain, redraw it.
 
-End with a top-recommendation section: which candidate first, one sentence why. Open the report for the user and ask which candidate they want to pursue.
+End with a top-recommendation section: which candidate first, one sentence why. Then ask the user which candidate they want to pursue.
 
 **Do not propose concrete interfaces yet** — the report names directions, not designs. Interface shape belongs to the grilling step, with the user in the loop.
 

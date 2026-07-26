@@ -172,16 +172,21 @@ sh skills/ship/record-decision/validate-records.sh --mode=publish --record <file
 8. Crossing executes only after the validator exits 0 on the published file  
 9. Append outcomes: `Execution-Outcome:` on the **envelope**
 
+A verdict either has a crossing to withhold or it does not: `merge`, `pr`,
+`discard` and `release-approve` have one; `block` and `release-reject` do not —
+the verdict stands either way, and only the record can go missing.
+
 | Failure | Action |
 |---|---|
-| Scan stop, missing judgment, validator 1/2, write failure | Withhold the crossing; report verdict not enacted, naming which required element is missing |
+| Scan stop, missing judgment, validator 1/2, write failure — verdict with a crossing | Withhold the crossing; report the verdict not enacted and name what blocked it |
 | Retry | Reuse captured human words **verbatim** |
-| Block/reject publish fails | Report unrecorded terminal verdict (incomplete accountability) |
+| Same failures on `block` / `release-reject` | Report the terminal verdict as unrecorded (incomplete accountability) and name what blocked it |
 | Publish OK, crossing fails | Append failure as `Execution-Outcome:`; record stays valid |
 
 **Done when:** a validator-clean file exists under `.skills/decisions/` before any
-required crossing side effect — or the crossing did not run and a report naming
-the missing required element was emitted.
+required crossing side effect — or publication failed and the matching report was
+emitted: the verdict not enacted for a verdict with a crossing, the terminal
+verdict unrecorded for `block` / `release-reject`, naming what blocked it either way.
 
 ## Red flags
 

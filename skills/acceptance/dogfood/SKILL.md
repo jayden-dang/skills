@@ -5,23 +5,23 @@ description: Use when manually exercising a finished feature in the real running
   user-facing ability, including the visuals, feel, and edge cases a human
   must eyeball rather than an automated test or a quick launch. Reach for it
   to try a feature for real, walk the whole user-facing surface, or produce a
-  checkable, resumable HTML test guide kept open beside the app and ticked off
-  as you go — not a one-off run. Not for executing an already-written guide in
-  the browser (`drive-dogfood`).
+  checkable, resumable dogfood guide (cases YAML + rendered HTML) kept open
+  beside the app — not a one-off run. Not for executing an already-written
+  guide (`drive-dogfood`).
 ---
 
 # Dogfood
 
 A dogfooding pass is a human driving the real app through every user-facing
-ability and judging what they see. The deliverable is a **persistent, checkable
-HTML artifact** — grounded in the app's own rendering, one row per ability case,
-each tagged with the requirement ID and a **case kind** — that the user keeps
-open beside the app and ticks off as they go. Build the artifact; a chat message
-is not the deliverable. A guide of only happy paths is not done.
+ability and judging what they see. The deliverable is a **cases catalog** plus a
+**rendered human guide** — grounded in the app's own rendering, one row per
+ability case, each tagged with the requirement ID and a **case kind**. Build the
+artifacts; a chat message is not the deliverable. A guide of only happy paths is
+not done.
 
 ## Case taxonomy (every guide uses these kinds)
 
-| `data-kind` | Meaning | Typical source |
+| `kind` | Meaning | Typical source |
 |---|---|---|
 | `happy` | Feature does what it is for | Primary story in requirements |
 | `edge` | Boundary / empty / duplicate / max length / whitespace | Edge criteria in the same ID or sibling criteria |
@@ -33,7 +33,7 @@ is not the deliverable. A guide of only happy paths is not done.
 
 Do **not** invent chaos, load, race, or security-fuzz suites here — those are not
 a one-seat user pass. Permission/role cases belong when the UI exposes them
-(`edge` or `error` + `data-setup` for the role).
+(`edge` or `error` + `setup` for the role).
 
 ## 1. Scope every ability — coverage gate
 
@@ -50,7 +50,7 @@ workflow, not only the new feature.
    `nonbehavior` case (or an explicit note in the hand-off: *no user-facing way
    to attempt this — skipped*).
 4. **Every criterion that claims persistence** has a `persist` case (or a
-   `happy`/`edge` whose Expect + `data-backend` prove reload/store — prefer a
+   `happy`/`edge` whose Expect + `backend` prove reload/store — prefer a
    dedicated `persist` row so it cannot be skipped).
 5. If the area has **no** edge, error, nonbehavior, or persist material in the
    spec, write one line under that section: *Coverage exception: no edge/error/
@@ -79,69 +79,66 @@ with no UI surface still gets a case — with a real way to observe it (a devtoo
 `invoke(...)`, a read-only DB peek), never a pretend screen. *Done when: the app
 is running and every not-yet-visible behavior has an observation method.*
 
-## 4. Build the checkable artifact
+## 4. Write cases + render the shell (do not invent CSS)
 
-REQUIRED SUB-SKILL: load `design-page` before building the page, then build a
-self-contained HTML page. **Always write it to a known path** (e.g.
-`.skills/<slug>-dogfood.html` or `docs/dogfood/<slug>.html`) so a later
-`drive-dogfood` run can read it; publish with the Artifact tool as well when
-that tooling exists. Contract:
+**Authoring SSOT is the cases file**, not hand-rolled HTML.
 
-- Sectioned by ability area; **one row per case**, each carrying its requirement
-  ID so a failing box routes straight back to the spec.
-- Each row: **Try** (what to type or click, copy-pasteable) → **Expect** (shown
-  in the app's real rendering, not described in prose). Prefer a visible kind
-  chip or label (`happy` / `edge` / …) for the human reader.
-- **Interactive checkboxes that persist** (localStorage) plus a progress
-  counter, so the user closes and resumes.
-- Theme-aware, fully self-contained: inline CSS/JS, no external assets.
-- Optional: at most two `journey` rows that chain atomic steps; they do not
-  replace atomic coverage.
-- **Machine-drivable slots** on every case row (required so `drive-dogfood` can
-  ledger and re-drive without parsing prose):
+1. Write `.skills/<slug>-dogfood.cases.yaml` (schema: load sibling
+   `references/cases-schema.md` when unsure). Every case carries all required
+   slots: `id`, `req`, `kind`, `title`, `setup`, `try`, `expect`, `backend`
+   (`backend` is the server-side assertion, or the literal `presentational`).
+2. Render the human guide from the checked-in shell — **do not** load
+   `design-page` or invent a palette/layout unless the user explicitly asks for
+   custom craft:
 
-  | Attribute | Value |
-  |---|---|
-  | `data-case` | Stable case id, e.g. `CASE-1` — unique in the guide |
-  | `data-req` | Requirement id, e.g. `NOTE-1.1` |
-  | `data-kind` | One of: `happy` \| `edge` \| `error` \| `nonbehavior` \| `persist` \| `visual` \| `journey` |
-  | `data-backend` | Server-side assertion after Try, or the literal `presentational` |
-  | `data-setup` | Precondition or reset so the case can run independently |
+   ```bash
+   python3 <skill-root>/scripts/dogfood render .skills/<slug>-dogfood.cases.yaml \
+     -o .skills/<slug>-dogfood.html
+   ```
 
-  Example skeleton:
+   Resolve `<skill-root>` to this skill's install path (in this monorepo:
+   `skills/acceptance/dogfood`). The shell is `shell/guide.html` — theme-aware
+   CSS/JS, kind chips, human localStorage ticks, and `data-*` attributes for
+   legacy readers.
+3. **Coverage self-check:** count cases by `kind` per section. If any ability
+   area lacks a non-happy kind and has no *Coverage exception* line, add the
+   missing cases before hand-off.
 
-  ```html
-  <div class="case"
-       data-case="CASE-2"
-       data-req="NOTE-1.2"
-       data-kind="error"
-       data-backend="POST /api/notes returns 4xx; no new note id"
-       data-setup="empty notes list">
-    <!-- Try / Expect -->
-  </div>
-  ```
+Optional: at most two `journey` rows; they do not replace atomic coverage.
 
-**Coverage self-check before hand-off:** count rows by `data-kind` per section.
-If any ability area lacks a non-happy kind and has no *Coverage exception* line,
-add the missing cases — do not publish a happy-only guide.
+**Never** ship a chat-only checklist. **Never** regenerate a full custom HTML
+page as the default path — cases + `render` is the path.
+
+*Done when: cases YAML and rendered HTML are on disk at known paths, coverage
+holds, every case has all required slots.*
 
 ## 5. Hand over
 
-Give the file path, the fastest way in — a ~30-second first pass that lights the
-feature up (usually the first `happy` row) — then the degraded-feature notes,
-coverage exceptions (if any), and that ticks save. If the user wants the agent
-to run the guide, name `drive-dogfood` (they already have the path).
-*Done when: the artifact is on disk at a known path, grounded, resumable, the
-§1 coverage gate holds, every case is ID-tagged with `data-kind`, and every row
-carries all five machine slots.*
+Give both paths (cases YAML + HTML), the fastest way in — a ~30-second first pass
+that lights the feature up (usually the first `happy` row) — then degraded-feature
+notes and coverage exceptions. Tell the human that checkbox ticks in the HTML are
+optional localStorage niceties. If the **agent** should run the guide, name
+`drive-dogfood` and the cases (or HTML) path — progress will use the CLI ledger,
+not Chrome ticks on the guide.
+
+*Done when: artifacts are on disk, grounded, the §1 coverage gate holds, and
+every case is fully slotted.*
 
 ## Rationalizations
 
 | Thought | Reality |
 |---|---|
-| "A markdown checklist in chat is enough" | It saves no tick, cannot show the real badge being checked against, and scrolls away. The deliverable is the persistent artifact. |
+| "A markdown checklist in chat is enough" | It saves no tick, cannot show the real badge being checked against, and scrolls away. The deliverable is cases + rendered guide. |
+| "I'll design-page a unique layout for this feature" | Default is the checked-in shell. Custom craft only when the user asks. |
 | "They're in a native desktop app, not a browser, so an artifact doesn't fit" | The artifact is a companion reference kept open beside the app; the app being native is no reason to inline the guide into chat. |
 | "I'll describe the badge in words" | The user checks against what they SEE. Mirror the real rendering, or the Expect is unverifiable. |
 | "One happy case per requirement is enough" | The coverage gate requires non-happy kinds (or a written exception). Happy-only is a demo, not dogfood. |
 | "Edges belong in unit tests, not the guide" | Dogfood is the user-facing surface. If the user can hit the edge, it gets a row. |
 | "Worse cases mean load/chaos/fuzz" | Those are other harnesses. Dogfood worse cases are edge, error, nonbehavior, persist. |
+
+## Red Flags
+
+- Hand-writing a full HTML/CSS page instead of cases YAML + `dogfood render`
+- Missing `backend` / `setup` / `kind` on any case
+- Happy-only section without a greppable coverage exception
+- Telling the agent to mark progress only via HTML localStorage ticks

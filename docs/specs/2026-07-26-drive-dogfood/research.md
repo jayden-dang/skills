@@ -312,4 +312,5 @@ only (multi-model roster not available on this harness).
 - [x] GREEN skill text for RED rows (+ D1–D3 recipe contracts)
 - [x] GREEN re-run P-F7 + T-F1 + T-F2 + dogfood slots (grok-4.5 hold)
 - [x] Ship checklist (§8): plugin, marketplace, guide docs, AGENTS/README counts, CHANGELOG, trigger query set
+- [x] Follow-on 0.2.4: cases YAML + shell + CLI ledger (see `docs/specs/2026-07-27-dogfood-cli/contract.md`); P-F8/P-F9 RED→GREEN
 - [ ] Optional: live multi-model description routing; multi-model GREEN; full triad if product-specced

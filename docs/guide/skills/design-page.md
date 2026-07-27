@@ -8,7 +8,7 @@
 | **Invocation** | model-invocable (the agent calls it on its own) |
 | **Reads** | the design system already in the repo — `CLAUDE.md`, `docs/agents/*.md`, a tokens or theme file, existing component styles |
 | **Writes** | a three-slot design plan (color / type / layout) before any markup, then the page derived from it |
-| **Called by** | [`dogfood`](dogfood.md) (required, before building the test-guide artifact), [`improve-architecture`](improve-architecture.md) (required, before the architecture report's markup) |
+| **Called by** | [`dogfood`](dogfood.md) (**optional** craft only — default is the checked-in dogfood shell), [`improve-architecture`](improve-architecture.md) (required, before the architecture report's markup) |
 
 ## Where it comes from
 
@@ -75,6 +75,6 @@ The principles: the hero is a thesis; typography carries the personality; motion
 
 ## Related
 
-- [`dogfood`](dogfood.md) — a caller. Its deliverable is a persistent, checkable HTML artifact, which is why the design gate is required rather than suggested.
+- [`dogfood`](dogfood.md) — optional caller for custom craft; default dogfood path is cases YAML + shell `render`, not a fresh design-page pass
 - [`improve-architecture`](improve-architecture.md) — the other caller. Its ephemeral HTML report is the UI-not-a-document case: cards scanned for a badge and a structure sketch, not read in order.
 - [`writing-skills`](writing-skills.md) — the standard this skill is written against.

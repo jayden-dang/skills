@@ -102,7 +102,7 @@ Report the checklist with each item's observed result. **Any item you could not 
 
 For the judgment an automated test cannot make: visuals, feel, and the edge cases a human must eyeball.
 
-The deliverable is not a chat message. It is a **persistent, checkable HTML artifact** — one row per case, each tagged with its requirement ID and a **kind** (`happy`, `edge`, `error`, `nonbehavior`, `persist`, `visual`, optional `journey`), each row a copy-pasteable **Try** and an **Expect** shown in the app's *real rendering*. Interactive checkboxes persist to localStorage. A **coverage gate** forbids happy-only sections: each ability area needs a non-happy kind (or a written exception). Every row also carries machine-drivable `data-case` / `data-req` / `data-kind` / `data-backend` / `data-setup` and a known file path so [`drive-dogfood`](../skills/drive-dogfood.md) can execute the same guide.
+The deliverable is not a chat message. It is a **cases YAML catalog** (authoring SSOT) plus a **shell-rendered HTML guide** for humans — one case per ability, each with `kind`, grounded Try/Expect, and a `backend` slot. A **coverage gate** forbids happy-only sections. Render with the dogfood CLI (`scripts/dogfood render`); do not invent a full custom CSS page by default. Human checkbox ticks may use localStorage; they are never the agent progress path.
 
 It scopes the happy path, the edge cases, **and the deliberate non-behaviors** — what should *not* happen, taken from the spec's Out-of-Scope decisions. And a behavior with no UI surface still gets a case, with a real way to observe it (a devtools `invoke(...)`, a read-only DB peek), never a pretend screen.
 
@@ -110,7 +110,7 @@ It scopes the happy path, the edge cases, **and the deliberate non-behaviors** �
 
 ## `drive-dogfood` — run the guide
 
-When the guide already exists and the agent should drive every case: build a run ledger first, confirm local origin (or explicit non-local consent), execute Try in a real browser, require a server probe for state cases, route product defects through `debug`, re-drive with a regression sweep, and finish with every case accounted for. This is a **run**, not a durable Playwright suite — that remains `acceptance-ui`.
+When the catalog already exists and the agent should drive every case: `dogfood init` a run ledger first, confirm local origin (or explicit non-local consent), execute Try against the **product app** only, `dogfood mark` with `saw` + `server` evidence, never open the guide HTML to tick localStorage boxes, route product defects through `debug`, re-drive with a regression sweep, and `dogfood report` when finished. This is a **run**, not a durable Playwright suite — that remains `acceptance-ui`.
 
 ## Next
 

@@ -1,5 +1,30 @@
 # Changelog
 
+## 0.2.4 — 2026-07-27
+
+### `dogfood` / `drive-dogfood` — cases YAML + CLI ledger (no guide ticks for agents)
+
+Stops agent progress living in HTML `localStorage` (Chrome ticks burned tokens)
+and stops re-authoring full CSS per dogfood pass.
+
+- **Cases SSOT:** `.skills/<slug>-dogfood.cases.yaml` with required slots
+  (`id`, `req`, `kind`, `title`, `setup`, `try`, `expect`, `backend`)
+- **Shell:** `skills/acceptance/dogfood/shell/guide.html` — theme-aware, kind
+  chips, human-only localStorage ticks
+- **CLI:** `skills/acceptance/dogfood/scripts/dogfood` —
+  `list` / `show` / `init` / `status` / `next` / `mark` / `render` / `report`
+- **`dogfood` skill:** write cases → `render`; `design-page` opt-in only
+- **`drive-dogfood` skill:** Iron Law adds *progress lives in the ledger*; browser
+  only for the product under test; `mark` enforces `saw` + `server`
+- **Contract:** `docs/specs/2026-07-27-dogfood-cli/contract.md`
+- **Tests:** `tests/test_dogfood_cli.py`; scenarios in
+  `tests/drive-dogfood/scenarios-cli.md`
+
+### Packaging
+
+- Engineer Pack version **0.2.4** (skill/docs + scripts; plugin path list
+  unchanged — scripts ship inside the dogfood skill folder)
+
 ## 0.2.3 — 2026-07-26
 
 ### `dogfood` coverage gate + case taxonomy

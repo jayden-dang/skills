@@ -94,17 +94,18 @@ quick reference: `AGENTS.md`.
     checklist dispatched by surface.
 25. **acceptance-api** (m) — drive the running backend as a real client.
 26. **acceptance-ui** (m) — drive the frontend in a real browser.
-27. **dogfood** (m) — the manual sibling; checkable HTML artifact with coverage
-    gate + `data-kind` taxonomy; machine-drivable `data-*` slots for `drive-dogfood`.
-27a. **drive-dogfood** (m) — execute an existing dogfood guide in a real browser;
-    run ledger with screen + backend evidence; product fails route to `debug`.
+27. **dogfood** (m) — the manual sibling; cases YAML SSOT + shell-rendered HTML;
+    coverage gate + kind taxonomy; CLI `render` for the human view.
+27a. **drive-dogfood** (m) — execute an existing dogfood catalog against the product
+    app; CLI run ledger (`init`/`mark`/`next`/`report`) with screen + backend
+    evidence; never guide localStorage ticks; product fails route to `debug`.
 
 ## craft/
 
 28. **design-page** (m) — the visual-craft gate before any human-facing HTML: names
     the treatment (utilitarian vs editorial), writes the color/type/layout plan, and
     holds the fundamentals (both themes at token level, self-contained assets, copy).
-    Required by `dogfood`.
+    Optional craft for `dogfood` (default is the checked-in dogfood shell).
 
 ## ship/
 

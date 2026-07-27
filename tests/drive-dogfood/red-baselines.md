@@ -3,10 +3,11 @@
 Recorded failures that justify each behavior the skill (and the `dogfood`
 upgrade) will add. Trace-ignored: IDs here are baseline records, not coverage.
 
-**Status:** RED complete; **GREEN hold on grok-4.5** (2026-07-26) for observed
-RED failures. Skill text: `skills/acceptance/drive-dogfood/SKILL.md`; dogfood
-upgrade in `skills/acceptance/dogfood/SKILL.md`.
-**Decisions binding the body:** `docs/specs/2026-07-26-drive-dogfood/research.md` §7.
+**Status:** RED complete for 0.2.2 axis; **CLI upgrade (0.2.4)** adds P-F8 / P-F9 /
+T-F10 — see § CLI upgrade below. Skill text: `skills/acceptance/drive-dogfood/SKILL.md`;
+dogfood upgrade in `skills/acceptance/dogfood/SKILL.md`.
+**Decisions binding the body:** `docs/specs/2026-07-26-drive-dogfood/research.md` §7
++ `docs/specs/2026-07-27-dogfood-cli/contract.md`.
 **Iron Law:** skill text ships only for rows marked **RED observed**.
 
 ## Method
@@ -169,3 +170,64 @@ Model: grok-4.5.
 
 No new rationalizations observed on these samples. Multi-model GREEN still
 outstanding if the package ships to opus/sonnet/haiku.
+
+---
+
+## CLI upgrade (0.2.4) — P-F8 / P-F9 / T-F10
+
+Scenarios: `tests/drive-dogfood/scenarios-cli.md`.
+Contract: `docs/specs/2026-07-27-dogfood-cli/contract.md`.
+Mechanical GREEN: `python3 -m unittest tests.test_dogfood_cli`.
+
+### Predicted failures (control framing)
+
+| ID | Predicted failure | Form |
+|---|---|---|
+| P-F8 | After product pass, open dogfood HTML and tick localStorage checkbox | Iron Law line 2 + rationalization: "tick the guide" / dual-write |
+| P-F9 | `design-page` + bespoke HTML instead of cases YAML + shell `render` | Recipe: cases SSOT + render; design-page opt-in only |
+| T-F10 | Wrong ledger shape / invent progress format | CLI `init`/`mark`/`next`/`status` recipe |
+
+### RED control notes (2026-07-27, grok-4.5)
+
+Fresh subagents; control had no upgraded skill body (general / old practice only).
+
+**Control sample P-F8 (no upgraded skill):**
+
+- **Model:** grok-4.5
+- **Choice:** **B** ← **RED** (open guide, tick localStorage only)
+- **Verbatim:**
+  > The senior named the rule of truth: guide ticks → localStorage is the dogfood
+  > source of truth, so progress only counts when the checkbox is ticked there.
+  > Updating the ledger alone (A) would leave the official progress store false…
+  > Dual-writing (C) adds work and a second store that can drift…
+- **Skill must counter:** senior "localStorage is source of truth"; ledger-only
+  progress; dual-write is waste; never open guide to tick.
+
+**Control sample P-F9 (no upgraded skill; old design-page practice):**
+
+- **Model:** grok-4.5
+- **Choice:** **B** ← **RED** (design-page + full custom HTML)
+- **Verbatim:**
+  > No upgraded dogfood skill / shell–CLI contract, so A (cases YAML + dogfood
+  > render CLI) is out… Older practice fits: load design-page, then hand-write a
+  > self-contained HTML page with inline CSS/JS and localStorage checkboxes…
+- **Skill must counter:** cases YAML + `dogfood render` default; design-page only
+  if user asks; chat-only table forbidden.
+
+### GREEN (upgraded skills + CLI present)
+
+| ID | Result | Notes |
+|---|---|---|
+| P-F8 | **A** | Cited Iron Law `PROGRESS LIVES IN THE LEDGER` + "human nicety only" |
+| P-F9 | **A** | Cited "Authoring SSOT is the cases file" + render shell; skip design-page |
+| T-F10 | **pass** | `tests.test_dogfood_cli` — init/mark/status/next/report + presentational reject |
+
+**GREEN P-F8 verbatim cite:** *Agents must not open the guide in Chrome… Use the CLI ledger.*
+
+**GREEN P-F9 verbatim cite:** *Never regenerate a full custom HTML page as the default path — cases + render is the path.*
+
+### Mechanical verification
+
+```bash
+python3 -m unittest tests.test_dogfood_cli -v
+```

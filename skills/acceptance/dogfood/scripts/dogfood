@@ -1,0 +1,741 @@
+#!/usr/bin/env python3
+"""Dogfood CLI — list/show cases, render shell HTML, manage run ledgers.
+
+Agent progress lives in the run ledger. Guide HTML localStorage ticks are
+for humans only — never open the guide in a browser to mark cases done.
+"""
+
+from __future__ import annotations
+
+import argparse
+import html
+import json
+import re
+import sys
+from pathlib import Path
+from typing import Any, Dict, List, Optional, Tuple
+
+try:
+    import yaml
+except ImportError:  # pragma: no cover
+    yaml = None  # type: ignore
+
+KINDS = frozenset(
+    {"happy", "edge", "error", "nonbehavior", "persist", "visual", "journey"}
+)
+VERDICTS = frozenset({"pending", "pass", "fail", "blocked"})
+REQUIRED_CASE_KEYS = ("id", "req", "kind", "title", "setup", "try", "expect", "backend")
+
+SCRIPT_DIR = Path(__file__).resolve().parent
+DEFAULT_SHELL = SCRIPT_DIR.parent / "shell" / "guide.html"
+
+
+# ---------------------------------------------------------------------------
+# Catalog loaders
+# ---------------------------------------------------------------------------
+
+def load_catalog(path: Path) -> Dict[str, Any]:
+    path = path.resolve()
+    if not path.is_file():
+        raise SystemExit(f"error: catalog not found: {path}")
+    text = path.read_text(encoding="utf-8")
+    if path.suffix.lower() in {".yaml", ".yml"}:
+        return load_cases_yaml(text, source=str(path))
+    if path.suffix.lower() in {".html", ".htm"}:
+        return load_cases_html(text, source=str(path))
+    # sniff
+    stripped = text.lstrip()
+    if stripped.startswith("<!") or stripped.lower().startswith("<html"):
+        return load_cases_html(text, source=str(path))
+    return load_cases_yaml(text, source=str(path))
+
+
+def load_cases_yaml(text: str, source: str = "") -> Dict[str, Any]:
+    if yaml is None:
+        raise SystemExit("error: PyYAML is required to read cases YAML (pip install pyyaml)")
+    data = yaml.safe_load(text)
+    if not isinstance(data, dict):
+        raise SystemExit("error: cases file must be a mapping at the top level")
+    version = data.get("version", 1)
+    if version != 1:
+        raise SystemExit(f"error: unsupported cases version {version!r} (want 1)")
+    sections = data.get("sections") or []
+    if not isinstance(sections, list) or not sections:
+        raise SystemExit("error: cases file needs a non-empty sections list")
+    out_sections: List[Dict[str, Any]] = []
+    seen_ids: set = set()
+    for si, section in enumerate(sections):
+        if not isinstance(section, dict):
+            raise SystemExit(f"error: section {si} must be a mapping")
+        name = section.get("name") or f"Section {si + 1}"
+        cases_in = section.get("cases") or []
+        if not isinstance(cases_in, list) or not cases_in:
+            raise SystemExit(f"error: section {name!r} needs a non-empty cases list")
+        cases: List[Dict[str, str]] = []
+        for ci, raw in enumerate(cases_in):
+            if not isinstance(raw, dict):
+                raise SystemExit(f"error: case {ci} in {name!r} must be a mapping")
+            case = normalize_case(raw, where=f"{name}[{ci}]")
+            if case["id"] in seen_ids:
+                raise SystemExit(f"error: duplicate case id {case['id']!r}")
+            seen_ids.add(case["id"])
+            cases.append(case)
+        out_sections.append({"name": str(name), "cases": cases})
+    slug = str(data.get("slug") or data.get("feature") or Path(source).stem or "dogfood")
+    return {
+        "version": 1,
+        "feature": str(data.get("feature") or slug),
+        "slug": slug,
+        "title": str(data.get("title") or f"{slug} — Dogfood"),
+        "origin": str(data.get("origin") or ""),
+        "intro": str(data.get("intro") or "").rstrip() + ("\n" if data.get("intro") else ""),
+        "sections": out_sections,
+        "source": source,
+    }
+
+
+def normalize_case(raw: Dict[str, Any], where: str) -> Dict[str, str]:
+    # accept try_/expect_ aliases avoided; allow common typos later if needed
+    missing = [k for k in REQUIRED_CASE_KEYS if k not in raw or raw[k] is None or str(raw[k]).strip() == ""]
+    if missing:
+        raise SystemExit(f"error: case {where} missing required fields: {', '.join(missing)}")
+    kind = str(raw["kind"]).strip().lower()
+    if kind not in KINDS:
+        raise SystemExit(f"error: case {where} kind {kind!r} not in {sorted(KINDS)}")
+    return {
+        "id": str(raw["id"]).strip(),
+        "req": str(raw["req"]).strip(),
+        "kind": kind,
+        "title": str(raw["title"]).strip(),
+        "setup": str(raw["setup"]).rstrip(),
+        "try": str(raw["try"]).rstrip(),
+        "expect": str(raw["expect"]).rstrip(),
+        "backend": str(raw["backend"]).rstrip(),
+    }
+
+
+def catalog_from_dict(data: Dict[str, Any], source: str = "") -> Dict[str, Any]:
+    """Normalize an in-memory cases mapping (same rules as YAML)."""
+    version = data.get("version", 1)
+    if version != 1:
+        raise SystemExit(f"error: unsupported cases version {version!r} (want 1)")
+    sections_in = data.get("sections") or []
+    if not isinstance(sections_in, list) or not sections_in:
+        raise SystemExit("error: cases need a non-empty sections list")
+    out_sections: List[Dict[str, Any]] = []
+    seen_ids: set = set()
+    for si, section in enumerate(sections_in):
+        if not isinstance(section, dict):
+            raise SystemExit(f"error: section {si} must be a mapping")
+        name = section.get("name") or f"Section {si + 1}"
+        cases_in = section.get("cases") or []
+        if not isinstance(cases_in, list) or not cases_in:
+            raise SystemExit(f"error: section {name!r} needs a non-empty cases list")
+        cases: List[Dict[str, str]] = []
+        for ci, raw in enumerate(cases_in):
+            if not isinstance(raw, dict):
+                raise SystemExit(f"error: case {ci} in {name!r} must be a mapping")
+            case = normalize_case(raw, where=f"{name}[{ci}]")
+            if case["id"] in seen_ids:
+                raise SystemExit(f"error: duplicate case id {case['id']!r}")
+            seen_ids.add(case["id"])
+            cases.append(case)
+        out_sections.append({"name": str(name), "cases": cases})
+    slug = str(data.get("slug") or data.get("feature") or "dogfood")
+    intro = str(data.get("intro") or "")
+    return {
+        "version": 1,
+        "feature": str(data.get("feature") or slug),
+        "slug": slug,
+        "title": str(data.get("title") or f"{slug} — Dogfood"),
+        "origin": str(data.get("origin") or ""),
+        "intro": intro.rstrip() + ("\n" if intro else ""),
+        "sections": out_sections,
+        "source": source,
+    }
+
+
+def extract_dogfood_json(text: str) -> Optional[Dict[str, Any]]:
+    marker = "window.__DOGFOOD__"
+    idx = text.find(marker)
+    if idx < 0:
+        return None
+    eq = text.find("=", idx)
+    if eq < 0:
+        return None
+    i = eq + 1
+    while i < len(text) and text[i].isspace():
+        i += 1
+    if i >= len(text) or text[i] != "{":
+        return None
+    depth = 0
+    in_str = False
+    escape = False
+    start = i
+    for j in range(i, len(text)):
+        ch = text[j]
+        if in_str:
+            if escape:
+                escape = False
+            elif ch == "\\":
+                escape = True
+            elif ch == '"':
+                in_str = False
+            continue
+        if ch == '"':
+            in_str = True
+        elif ch == "{":
+            depth += 1
+        elif ch == "}":
+            depth -= 1
+            if depth == 0:
+                blob = text[start : j + 1].replace("<\\/", "</")
+                return json.loads(blob)
+    return None
+
+
+def load_cases_html(text: str, source: str = "") -> Dict[str, Any]:
+    """Parse machine-drivable rows from HTML (data-* attributes)."""
+    embedded = extract_dogfood_json(text)
+    if embedded is not None:
+        return catalog_from_dict(embedded, source=source)
+
+    # Broader: find opening tags with data-case and pull sibling attributes
+    tag_re = re.compile(
+        r"<(?P<tag>div|article|section|li|tr)(?P<attrs>[^>]*\bdata-case\s*=\s*[\"'](?P<id>[^\"']+)[\"'][^>]*)>",
+        re.IGNORECASE,
+    )
+    cases: List[Dict[str, str]] = []
+    seen: set = set()
+    for match in tag_re.finditer(text):
+        attrs = match.group("attrs")
+        cid = match.group("id").strip()
+        if cid in seen:
+            continue
+        seen.add(cid)
+
+        def attr(name: str, default: str = "") -> str:
+            am = re.search(
+                rf"data-{name}\s*=\s*[\"']([^\"']*)[\"']",
+                attrs,
+                re.IGNORECASE,
+            )
+            return html.unescape(am.group(1)) if am else default
+
+        # Pull Try/Expect from following block until next case or section
+        start = match.end()
+        next_m = tag_re.search(text, start)
+        block = text[start : next_m.start() if next_m else start + 4000]
+        try_text = extract_label_block(block, "Try") or ""
+        expect_text = extract_label_block(block, "Expect") or ""
+        title = extract_title(block) or cid
+        req = attr("req") or extract_req(block) or ""
+        kind = (attr("kind") or "happy").lower()
+        if kind not in KINDS:
+            kind = "happy"
+        backend = attr("backend") or "presentational"
+        setup = attr("setup") or ""
+        cases.append(
+            {
+                "id": cid,
+                "req": req or "UNKNOWN",
+                "kind": kind,
+                "title": title,
+                "setup": setup,
+                "try": try_text,
+                "expect": expect_text,
+                "backend": backend,
+            }
+        )
+
+    if not cases:
+        # Last resort: checkbox labels with nearby .req
+        raise SystemExit(
+            f"error: no data-case rows found in HTML: {source or '(stdin)'}. "
+            "Add data-case/data-req/data-kind/data-backend/data-setup or use cases YAML."
+        )
+
+    slug = Path(source).stem.replace("-dogfood", "") if source else "dogfood"
+    title_m = re.search(r"<title>([^<]+)</title>", text, re.IGNORECASE)
+    h1_m = re.search(r"<h1[^>]*>([^<]+)</h1>", text, re.IGNORECASE)
+    title = (h1_m.group(1) if h1_m else None) or (title_m.group(1) if title_m else f"{slug} — Dogfood")
+    title = re.sub(r"\s+", " ", html.unescape(title)).strip()
+    return {
+        "version": 1,
+        "feature": slug,
+        "slug": slug,
+        "title": title,
+        "origin": "",
+        "intro": "",
+        "sections": [{"name": "Cases", "cases": cases}],
+        "source": source,
+    }
+
+
+def extract_label_block(block: str, label: str) -> str:
+    m = re.search(
+        rf"<strong>\s*{label}\s*:?\s*</strong>\s*(?:</p>)?(.*?)(?=<strong>|<div\s|</div>|<p\s|$)",
+        block,
+        re.IGNORECASE | re.DOTALL,
+    )
+    if not m:
+        m = re.search(
+            rf"{label}\s*:\s*</strong>\s*(.*?)(?=<strong>|</p>|<div\s|$)",
+            block,
+            re.IGNORECASE | re.DOTALL,
+        )
+    if not m:
+        m = re.search(rf"<p><strong>{label}:</strong>\s*(.*?)</p>", block, re.IGNORECASE | re.DOTALL)
+    if not m:
+        return ""
+    return collapse_ws(strip_tags(m.group(1)))
+
+
+def extract_title(block: str) -> str:
+    m = re.search(r"<strong>([^<]+)</strong>", block)
+    if m:
+        t = m.group(1).strip()
+        if t.lower() not in {"try", "expect", "setup", "backend"}:
+            return t
+    return ""
+
+
+def extract_req(block: str) -> str:
+    m = re.search(r"class=[\"']req[\"'][^>]*>\s*([^<]+)", block, re.IGNORECASE)
+    if m:
+        return m.group(1).strip()
+    m = re.search(r"\b([A-Z]{2,12}-\d+\.\d+)\b", block)
+    return m.group(1) if m else ""
+
+
+def strip_tags(s: str) -> str:
+    s = re.sub(r"<br\s*/?>", "\n", s, flags=re.IGNORECASE)
+    s = re.sub(r"</p\s*>", "\n", s, flags=re.IGNORECASE)
+    s = re.sub(r"<[^>]+>", "", s)
+    return html.unescape(s)
+
+
+def collapse_ws(s: str) -> str:
+    lines = [ln.strip() for ln in s.splitlines()]
+    return "\n".join(ln for ln in lines if ln).strip()
+
+
+def all_cases(catalog: Dict[str, Any]) -> List[Dict[str, str]]:
+    out: List[Dict[str, str]] = []
+    for section in catalog["sections"]:
+        out.extend(section["cases"])
+    return out
+
+
+def find_case(catalog: Dict[str, Any], case_id: str) -> Optional[Dict[str, str]]:
+    for c in all_cases(catalog):
+        if c["id"] == case_id:
+            return c
+    return None
+
+
+# ---------------------------------------------------------------------------
+# Ledger
+# ---------------------------------------------------------------------------
+
+HEADER_RE = re.compile(r"^##\s+(\S+)\s*$", re.MULTILINE)
+FIELD_RE = re.compile(r"^- (req|kind|verdict|saw|server|notes):\s*(.*)$", re.MULTILINE)
+
+
+def default_run_path(catalog: Dict[str, Any], cwd: Path) -> Path:
+    slug = catalog.get("slug") or "dogfood"
+    skills = cwd / ".skills"
+    return skills / f"{slug}-dogfood-run.md"
+
+
+def init_ledger(catalog: Dict[str, Any], out: Path) -> str:
+    lines = [
+        "# Dogfood run ledger",
+        f"- source: `{catalog.get('source') or ''}`",
+        f"- slug: {catalog.get('slug') or ''}",
+        f"- origin: {catalog.get('origin') or ''}",
+        "",
+    ]
+    for c in all_cases(catalog):
+        lines.extend(
+            [
+                f"## {c['id']}",
+                f"- req: {c['req']}",
+                f"- kind: {c['kind']}",
+                "- verdict: pending",
+                "- saw:",
+                "- server:",
+                "- notes:",
+                "",
+            ]
+        )
+    text = "\n".join(lines).rstrip() + "\n"
+    out.parent.mkdir(parents=True, exist_ok=True)
+    out.write_text(text, encoding="utf-8")
+    return text
+
+
+def parse_ledger(path: Path) -> Tuple[Dict[str, str], List[Dict[str, str]]]:
+    if not path.is_file():
+        raise SystemExit(f"error: ledger not found: {path}")
+    text = path.read_text(encoding="utf-8")
+    meta: Dict[str, str] = {}
+    for line in text.splitlines():
+        if line.startswith("## "):
+            break
+        m = re.match(r"^- (source|slug|origin):\s*(.*)$", line)
+        if m:
+            meta[m.group(1)] = m.group(2).strip().strip("`")
+
+    rows: List[Dict[str, str]] = []
+    parts = re.split(r"(?m)^## ", text)
+    for part in parts[1:]:
+        lines = part.splitlines()
+        if not lines:
+            continue
+        case_id = lines[0].strip()
+        row = {
+            "case": case_id,
+            "req": "",
+            "kind": "",
+            "verdict": "pending",
+            "saw": "",
+            "server": "",
+            "notes": "",
+        }
+        for line in lines[1:]:
+            fm = re.match(r"^- (req|kind|verdict|saw|server|notes):\s*(.*)$", line)
+            if fm:
+                row[fm.group(1)] = fm.group(2)
+        rows.append(row)
+    if not rows:
+        raise SystemExit(f"error: no case rows in ledger: {path}")
+    return meta, rows
+
+
+def write_ledger(path: Path, meta: Dict[str, str], rows: List[Dict[str, str]]) -> None:
+    lines = [
+        "# Dogfood run ledger",
+        f"- source: `{meta.get('source', '')}`",
+        f"- slug: {meta.get('slug', '')}",
+        f"- origin: {meta.get('origin', '')}",
+        "",
+    ]
+    for row in rows:
+        lines.extend(
+            [
+                f"## {row['case']}",
+                f"- req: {row.get('req', '')}",
+                f"- kind: {row.get('kind', '')}",
+                f"- verdict: {row.get('verdict', 'pending')}",
+                f"- saw: {row.get('saw', '')}",
+                f"- server: {row.get('server', '')}",
+                f"- notes: {row.get('notes', '')}",
+                "",
+            ]
+        )
+    path.write_text("\n".join(lines).rstrip() + "\n", encoding="utf-8")
+
+
+def is_presentational_server(server: str) -> bool:
+    s = server.strip().lower()
+    return s == "none — presentational" or (
+        s.startswith("none") and "presentational" in s
+    )
+
+
+def validate_mark(
+    verdict: str,
+    saw: str,
+    server: str,
+    backend: Optional[str],
+) -> None:
+    if verdict not in VERDICTS:
+        raise SystemExit(f"error: verdict must be one of {sorted(VERDICTS)}")
+    if verdict == "pass":
+        if not saw.strip():
+            raise SystemExit("error: pass requires non-empty --saw (quoted UI evidence)")
+        if not server.strip():
+            raise SystemExit(
+                "error: pass requires non-empty --server "
+                "(probe result, or 'none — presentational')"
+            )
+        if backend is not None:
+            b = backend.strip().lower()
+            if b == "presentational" and not is_presentational_server(server):
+                raise SystemExit(
+                    "error: presentational case requires "
+                    "--server 'none — presentational' (got %r)" % server
+                )
+            if b != "presentational" and is_presentational_server(server):
+                raise SystemExit(
+                    "error: non-presentational case cannot use presentational server "
+                    f"(backend={backend!r})"
+                )
+    if verdict == "fail" and not saw.strip():
+        # allow empty for fail if notes explain? contract said evidence when collected
+        pass
+
+
+# ---------------------------------------------------------------------------
+# Render
+# ---------------------------------------------------------------------------
+
+def render_html(catalog: Dict[str, Any], shell_path: Path) -> str:
+    if not shell_path.is_file():
+        raise SystemExit(f"error: shell not found: {shell_path}")
+    shell = shell_path.read_text(encoding="utf-8")
+    payload = {
+        "version": 1,
+        "feature": catalog["feature"],
+        "slug": catalog["slug"],
+        "title": catalog["title"],
+        "origin": catalog.get("origin") or "",
+        "intro": (catalog.get("intro") or "").rstrip("\n"),
+        "sections": catalog["sections"],
+    }
+    # Compact but stable JSON for embedding
+    blob = json.dumps(payload, ensure_ascii=False, indent=2)
+    # Escape </script> in JSON strings
+    blob = blob.replace("</", "<\\/")
+    assignment = f"window.__DOGFOOD__ = {blob};"
+    pattern = re.compile(
+        r"/\*\s*__CASES_JSON__\s*\*/.*?/\*\s*__END_CASES_JSON__\s*\*/",
+        re.DOTALL,
+    )
+    if not pattern.search(shell):
+        raise SystemExit("error: shell missing /* __CASES_JSON__ */ … /* __END_CASES_JSON__ */ markers")
+    # Use a callable replacement — a string replacement would interpret \n in
+    # the JSON as real newlines (re.sub backslash processing).
+    def _inject(_m: re.Match) -> str:
+        return f"/* __CASES_JSON__ */\n{assignment}\n/* __END_CASES_JSON__ */"
+
+    return pattern.sub(_inject, shell, count=1)
+
+
+# ---------------------------------------------------------------------------
+# Commands
+# ---------------------------------------------------------------------------
+
+def cmd_list(args: argparse.Namespace) -> int:
+    catalog = load_catalog(Path(args.catalog))
+    for c in all_cases(catalog):
+        print(f"{c['id']}\t{c['req']}\t{c['kind']}\t{c['title']}")
+    return 0
+
+
+def cmd_show(args: argparse.Namespace) -> int:
+    catalog = load_catalog(Path(args.catalog))
+    case = find_case(catalog, args.case_id)
+    if not case:
+        raise SystemExit(f"error: case not found: {args.case_id}")
+    print(f"id: {case['id']}")
+    print(f"req: {case['req']}")
+    print(f"kind: {case['kind']}")
+    print(f"title: {case['title']}")
+    print(f"setup:\n{case['setup']}")
+    print(f"try:\n{case['try']}")
+    print(f"expect:\n{case['expect']}")
+    print(f"backend:\n{case['backend']}")
+    return 0
+
+
+def cmd_init(args: argparse.Namespace) -> int:
+    catalog = load_catalog(Path(args.catalog))
+    out = Path(args.output) if args.output else default_run_path(catalog, Path.cwd())
+    if out.exists() and not args.force:
+        raise SystemExit(f"error: ledger exists (use --force to overwrite): {out}")
+    init_ledger(catalog, out)
+    print(out)
+    print(f"cases: {len(all_cases(catalog))} pending", file=sys.stderr)
+    return 0
+
+
+def cmd_status(args: argparse.Namespace) -> int:
+    meta, rows = parse_ledger(Path(args.ledger))
+    counts = {v: 0 for v in VERDICTS}
+    for row in rows:
+        v = row.get("verdict", "pending")
+        counts[v] = counts.get(v, 0) + 1
+    total = len(rows)
+    print(f"total: {total}")
+    for v in ("pass", "fail", "blocked", "pending"):
+        print(f"{v}: {counts.get(v, 0)}")
+    nxt = next((r["case"] for r in rows if r.get("verdict") != "pass"), None)
+    print(f"next: {nxt or ''}")
+    if meta.get("source"):
+        print(f"source: {meta['source']}")
+    return 0
+
+
+def cmd_next(args: argparse.Namespace) -> int:
+    _, rows = parse_ledger(Path(args.ledger))
+    for row in rows:
+        if row.get("verdict") != "pass":
+            print(row["case"])
+            return 0
+    return 1
+
+
+def cmd_mark(args: argparse.Namespace) -> int:
+    path = Path(args.ledger)
+    meta, rows = parse_ledger(path)
+    target = None
+    for row in rows:
+        if row["case"] == args.case_id:
+            target = row
+            break
+    if target is None:
+        raise SystemExit(f"error: case not in ledger: {args.case_id}")
+
+    backend = None
+    if args.catalog:
+        catalog = load_catalog(Path(args.catalog))
+        case = find_case(catalog, args.case_id)
+        if case:
+            backend = case.get("backend")
+    elif meta.get("source"):
+        src = Path(meta["source"])
+        if src.is_file():
+            try:
+                catalog = load_catalog(src)
+                case = find_case(catalog, args.case_id)
+                if case:
+                    backend = case.get("backend")
+            except SystemExit:
+                pass
+
+    saw = args.saw if args.saw is not None else target.get("saw", "")
+    server = args.server if args.server is not None else target.get("server", "")
+    notes = args.notes if args.notes is not None else target.get("notes", "")
+    validate_mark(args.verdict, saw, server, backend)
+    target["verdict"] = args.verdict
+    target["saw"] = saw
+    target["server"] = server
+    target["notes"] = notes
+    write_ledger(path, meta, rows)
+    print(f"{args.case_id}: {args.verdict}")
+    return 0
+
+
+def cmd_render(args: argparse.Namespace) -> int:
+    catalog = load_catalog(Path(args.catalog))
+    if Path(args.catalog).suffix.lower() not in {".yaml", ".yml"} and not args.allow_html:
+        # still allow if YAML-shaped; load_catalog handles it
+        pass
+    shell = Path(args.shell) if args.shell else DEFAULT_SHELL
+    html_out = render_html(catalog, shell)
+    out = Path(args.output) if args.output else Path.cwd() / ".skills" / f"{catalog['slug']}-dogfood.html"
+    out.parent.mkdir(parents=True, exist_ok=True)
+    out.write_text(html_out, encoding="utf-8")
+    print(out)
+    return 0
+
+
+def cmd_report(args: argparse.Namespace) -> int:
+    meta, rows = parse_ledger(Path(args.ledger))
+    lines = [
+        "# Dogfood run report",
+        f"- source: `{meta.get('source', '')}`",
+        f"- slug: {meta.get('slug', '')}",
+        "",
+        "| case | req | kind | verdict | saw | server | notes |",
+        "|---|---|---|---|---|---|---|",
+    ]
+    for r in rows:
+        def cell(s: str) -> str:
+            return (s or "").replace("|", "\\|").replace("\n", " ")
+
+        lines.append(
+            f"| {cell(r['case'])} | {cell(r.get('req',''))} | {cell(r.get('kind',''))} | "
+            f"{cell(r.get('verdict',''))} | {cell(r.get('saw',''))} | {cell(r.get('server',''))} | "
+            f"{cell(r.get('notes',''))} |"
+        )
+    unfinished = [r["case"] for r in rows if r.get("verdict") != "pass"]
+    lines.append("")
+    if unfinished:
+        lines.append(f"Unfinished: {', '.join(unfinished)}")
+    else:
+        lines.append("Unfinished: (none)")
+    text = "\n".join(lines) + "\n"
+    if args.output:
+        out = Path(args.output)
+        out.parent.mkdir(parents=True, exist_ok=True)
+        out.write_text(text, encoding="utf-8")
+        print(out)
+    else:
+        sys.stdout.write(text)
+    return 0
+
+
+def build_parser() -> argparse.ArgumentParser:
+    p = argparse.ArgumentParser(
+        prog="dogfood",
+        description="Dogfood cases + run ledger CLI (agent progress without browser ticks).",
+    )
+    sub = p.add_subparsers(dest="command", required=True)
+
+    list_p = sub.add_parser("list", help="List case ids from cases YAML or HTML guide")
+    list_p.add_argument("catalog", help="Path to .cases.yaml or dogfood .html")
+    list_p.set_defaults(func=cmd_list)
+
+    show_p = sub.add_parser("show", help="Show one case in full")
+    show_p.add_argument("catalog")
+    show_p.add_argument("case_id")
+    show_p.set_defaults(func=cmd_show)
+
+    init_p = sub.add_parser("init", help="Create a run ledger (all pending)")
+    init_p.add_argument("catalog")
+    init_p.add_argument("-o", "--output", help="Ledger path (default .skills/<slug>-dogfood-run.md)")
+    init_p.add_argument("--force", action="store_true", help="Overwrite existing ledger")
+    init_p.set_defaults(func=cmd_init)
+
+    status_p = sub.add_parser("status", help="Summarize ledger verdicts")
+    status_p.add_argument("ledger")
+    status_p.set_defaults(func=cmd_status)
+
+    next_p = sub.add_parser("next", help="Print first non-pass case id")
+    next_p.add_argument("ledger")
+    next_p.set_defaults(func=cmd_next)
+
+    mark_p = sub.add_parser("mark", help="Set verdict + evidence on a ledger row")
+    mark_p.add_argument("ledger")
+    mark_p.add_argument("case_id")
+    mark_p.add_argument("verdict", choices=sorted(VERDICTS))
+    mark_p.add_argument("--saw", default=None, help="Quoted UI evidence")
+    mark_p.add_argument("--server", default=None, help="Probe result or 'none — presentational'")
+    mark_p.add_argument("--notes", default=None)
+    mark_p.add_argument(
+        "--catalog",
+        default=None,
+        help="Cases/HTML path for backend validation (else ledger source)",
+    )
+    mark_p.set_defaults(func=cmd_mark)
+
+    render_p = sub.add_parser("render", help="Render human HTML guide from cases YAML")
+    render_p.add_argument("catalog", help="Path to .cases.yaml")
+    render_p.add_argument("-o", "--output", help="HTML output path")
+    render_p.add_argument("--shell", help="Shell HTML path")
+    render_p.add_argument(
+        "--allow-html",
+        action="store_true",
+        help="Allow re-render from HTML catalog (unusual)",
+    )
+    render_p.set_defaults(func=cmd_render)
+
+    report_p = sub.add_parser("report", help="Write end-of-run report from ledger")
+    report_p.add_argument("ledger")
+    report_p.add_argument("-o", "--output", help="Report path (default stdout)")
+    report_p.set_defaults(func=cmd_report)
+
+    return p
+
+
+def main(argv: Optional[List[str]] = None) -> int:
+    parser = build_parser()
+    args = parser.parse_args(argv)
+    return int(args.func(args))
+
+
+if __name__ == "__main__":
+    sys.exit(main())

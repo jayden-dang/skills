@@ -80,7 +80,7 @@ the chain can reuse (chat is fine; optional `.skills/<slug>-knowns.md`):
 
 This remains brainstorm step 2 — **not** a stage handoff and not a new skill session. Apply the `grilling` **protocol** for the single question channel; keep this skill's todo list live; do not open a competing list or re-announce that you are "switching to grilling."
 
-**Protocol (always):** apply `grilling`'s full interview rules — **inline chat only** (never truncated MCQ pickers), one **rich question card** per message (radius · Thread · Territory · why it matters · Closes · options with consequences · recommendation), **open-set stop** (no fixed round count; recompute after each answer), blast-radius first, then the **close package** (decisions table + constraints + high-tweak surface + explicit confirm). Look up facts yourself; only judgment calls go to the user.
+**Protocol (always):** apply `grilling` end-to-end for this step — channel, open-set stop, rich card slots, close package. Do **not** invent a thinner interview from this paragraph; the card recipe and stop rule live only in `grilling`.
 
 REQUIRED SUB-SKILL: use `grilling` for the full rules (channel Iron Law, open-set Iron Law, rich question-card recipe, pre-implementation interview map, close package, posture pruning, team-band packaging, no-enact gate, nested-todo contract). Load it once when this step starts if it is not already in context; then stay on this checklist.
 

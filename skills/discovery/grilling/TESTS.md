@@ -39,6 +39,20 @@ Failure classes:
 
 Meta-test (shape/rounds agents): cited open-set Iron Law + required card slots; text was clear.
 
+## writing-skills ship pass (2026-07-27 wording)
+
+| Check | Result |
+|---|---|
+| Description = trigger + outcome, no workflow steps | Pass — decisions table + constraints; no Thread/Territory list |
+| Form match (gate / recipe / REQUIRED slot) | Pass — dual Iron Laws + 9-slot card + close package recipe |
+| Leading words | `open set`, `territory`, `card`, `close package` |
+| Duplication | Open-set recompute has one home; other sites pointer; "sensible" one bold home |
+| Soft sentence/line caps removed | Why/Territory use "enough to decide/make sense", not 2–4 sentence budgets |
+| brainstorm pointer body-skip risk | Protocol summary shortened; forces load of `grilling` |
+| Token budget | ~170 lines / ~2.3k words — under 500-line / 5k hard ceiling |
+| Influence (collaborative) | Authority reserved for channel + open-set gates; card is recipe/commitment |
+| Cross-refs | REQUIRED SUB-SKILL only; no disable-model-invocation hand-offs |
+
 ## Rules this evidence owns
 
 | Rule | Evidence |

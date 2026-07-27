@@ -106,7 +106,7 @@ publication-failure report), including any required `record-decision` publish.
 
 On merge or PR, remind the user (or do it, if the spec's tasks are all complete): REQUIRED SUB-SKILL: use `sync-spec` to update the feature's `Status:` line and trace state.
 
-When the branch carries more than one task, or any task whose **Risk** slot is not low, **name** `/comprehend-change` for the user as an optional self-check before they merge (user-invoked — never auto-run it, never soft-prompt as a gate). If `.skills/implementation-notes.md` has deviations, mention that path once so the human can fold them into review.
+When the branch carries more than one task, or any task whose **Risk** slot is not low, **name** `/comprehend-change` for the user as an optional self-check before they merge (user-invoked — never auto-run it, never soft-prompt as a gate). When the change is multi-task, non-low risk, or architecture-affecting, also **name** `/explain-change` as an optional team-shared pitch+map under `docs/explainers/` (user-invoked — never auto-run, never withhold merge/PR because the file is missing). If `.skills/implementation-notes.md` has deviations, mention that path once so the human can fold them into review.
 
 ## Red flags
 

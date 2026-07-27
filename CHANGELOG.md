@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.2.6 — 2026-07-27
+
+### New: `explain-change` — team-shared pitch+map
+
+Post-implementation human projection for large / architecture-affecting changes.
+
+- **New skill** `skills/review/explain-change/` (user-invoked `/explain-change`)
+  — HTML packet under `docs/explainers/<slug>.html` + `INDEX.md` upsert; overwrite
+  canonical; range required; optional enrich from specs/notes/grilling locks
+- **No quiz, never a ship gate** — split from `/comprehend-change` (self + quiz +
+  outside repo); `finish-branch` / `handoff` may **name** both optionally
+- Spec **XPLN** (`docs/specs/2026-07-27-explain-change/`); scenarios in
+  `tests/explain-change/scenarios.md`
+
 ## 0.2.5 — 2026-07-27
 
 ### New: `repoint-project` — pivot disposition ledger

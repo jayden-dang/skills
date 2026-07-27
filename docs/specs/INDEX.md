@@ -12,3 +12,4 @@ not planned as a roadmap item.
 |---|---|---|---|---|
 | RMAP | Roadmap layer — milestone intent and derived roadmap health | ./2026-07-25-roadmap/ | Implemented | — |
 | ASSESS | Milestone assessment — the pre-close outcome gate and its append-only record | ./2026-07-26-milestone-assessment/ | Implemented | — |
+| XPLN | Explain-change — team-shared HTML pitch+map packet under docs/explainers/ | ./2026-07-27-explain-change/ | Implemented | — |

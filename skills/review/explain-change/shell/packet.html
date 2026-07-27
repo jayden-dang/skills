@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Explain change</title>
+<style>
+  :root, :root[data-theme="dark"] {
+    --bg: #07090D;
+    --fg: #EDF0F6;
+    --muted: #8B94A8;
+    --card: #10151D;
+    --panel: #151B25;
+    --accent: #5B8CFF;
+    --ok: #3DCF8E;
+    --warn: #D4A520;
+    --border: #1E2836;
+    --focus: #7AA2FF;
+  }
+  :root[data-theme="light"] {
+    --bg: #EEF1F6;
+    --fg: #10141C;
+    --muted: #556070;
+    --card: #FFFFFF;
+    --panel: #F6F8FB;
+    --accent: #3B6FE0;
+    --ok: #1FA86A;
+    --warn: #B8860B;
+    --border: #D0D7E4;
+    --focus: #5B8CFF;
+  }
+  @media (prefers-color-scheme: light) {
+    :root:not([data-theme="dark"]):not([data-theme="light"]) {
+      --bg: #EEF1F6;
+      --fg: #10141C;
+      --muted: #556070;
+      --card: #FFFFFF;
+      --panel: #F6F8FB;
+      --accent: #3B6FE0;
+      --ok: #1FA86A;
+      --warn: #B8860B;
+      --border: #D0D7E4;
+      --focus: #5B8CFF;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0 auto;
+    max-width: 52rem;
+    padding: 1.5rem 1.15rem 3rem;
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    line-height: 1.55;
+    color: var(--fg);
+    background: var(--bg);
+  }
+  h1 {
+    font-size: 1.65rem;
+    letter-spacing: -0.02em;
+    margin: 0 0 0.35rem;
+  }
+  h2 {
+    font-size: 1.15rem;
+    margin: 1.75rem 0 0.65rem;
+    padding-bottom: 0.35rem;
+    border-bottom: 1px solid var(--border);
+    letter-spacing: -0.01em;
+  }
+  .muted { color: var(--muted); font-size: 0.92rem; }
+  .badge {
+    display: inline-block;
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: #07090D;
+    background: var(--accent);
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    margin-bottom: 0.65rem;
+  }
+  :root[data-theme="light"] .badge { color: #fff; }
+  .derived {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 0.85rem 1rem;
+    margin: 0.85rem 0 1.25rem;
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    font-size: 0.8rem;
+    line-height: 1.6;
+    color: var(--muted);
+  }
+  .derived strong { color: var(--fg); font-weight: 650; }
+  .derived code {
+    color: var(--accent);
+    font-size: inherit;
+  }
+  nav.toc {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 0.85rem 1rem;
+    margin: 0 0 1.5rem;
+  }
+  nav.toc strong {
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  nav.toc ol { margin: 0.45rem 0 0; padding-left: 1.2rem; }
+  nav.toc a { color: var(--accent); text-decoration: none; }
+  nav.toc a:hover { text-decoration: underline; }
+  section .body { margin: 0.35rem 0; }
+  .diagram {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1rem;
+    margin: 0.75rem 0;
+    overflow-x: auto;
+  }
+  .callout {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--warn);
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    margin: 0.65rem 0;
+  }
+  ul.seams {
+    list-style: none;
+    padding: 0;
+    margin: 0.5rem 0;
+  }
+  ul.seams li {
+    padding: 0.45rem 0.65rem;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    margin: 0.4rem 0;
+    background: var(--card);
+    font-size: 0.92rem;
+  }
+  ul.seams li code {
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    font-size: 0.85rem;
+    color: var(--accent);
+  }
+  pre {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 0.85rem 1rem;
+    overflow-x: auto;
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    font-size: 0.85rem;
+    white-space: pre-wrap;
+  }
+  footer {
+    margin-top: 2.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    font-size: 0.72rem;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+  }
+  @media (max-width: 600px) {
+    body { padding: 1rem 0.8rem 2.5rem; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; }
+  }
+</style>
+</head>
+<body>
+<header>
+  <div class="badge">explain-change · team</div>
+  <h1 id="title">Explain change</h1>
+  <p class="muted" id="summary"></p>
+  <div class="derived" id="derived" aria-label="Derived-from header"></div>
+</header>
+
+<nav class="toc" aria-label="Table of contents">
+  <strong>Contents</strong>
+  <ol>
+    <li><a href="#users">What changed for users</a></li>
+    <li><a href="#decisions">Decisions and locks</a></li>
+    <li><a href="#breaks">What can break</a></li>
+    <li><a href="#verify">Verify in ~5 minutes</a></li>
+    <li><a href="#intuition">System intuition</a></li>
+    <li><a href="#seams">Seams and files</a></li>
+  </ol>
+</nav>
+
+<section id="users">
+  <h2>What changed for users</h2>
+  <div class="body" id="users-body"></div>
+</section>
+
+<section id="decisions">
+  <h2>Decisions and locks</h2>
+  <div class="body" id="decisions-body"></div>
+</section>
+
+<section id="breaks">
+  <h2>What can break</h2>
+  <div class="body" id="breaks-body"></div>
+</section>
+
+<section id="verify">
+  <h2>Verify in ~5 minutes</h2>
+  <div class="body" id="verify-body"></div>
+</section>
+
+<section id="intuition">
+  <h2>System intuition</h2>
+  <div class="body" id="intuition-body"></div>
+  <div class="diagram" id="figure" hidden></div>
+</section>
+
+<section id="seams">
+  <h2>Seams and files</h2>
+  <div class="body" id="seams-body"></div>
+</section>
+
+<footer>
+  skills · explain-change · pitch+map · no quiz · derived projection — not a ship gate
+</footer>
+
+<script>
+/* __PACKET_DATA__ */
+const PACKET = window.__PACKET__ || {
+  title: "Sample explainer",
+  summary: "Replace __PACKET_DATA__ with real content from /explain-change.",
+  range: "main..HEAD",
+  generated: "1970-01-01T00:00:00Z",
+  req_ids: [],
+  users: "<p>User-visible change placeholder.</p>",
+  decisions: "<p>Decisions placeholder.</p>",
+  breaks: "<p>Break-risk placeholder.</p>",
+  verify: "<p>Verification steps placeholder.</p>",
+  intuition: "<p>Intuition placeholder.</p>",
+  figure_html: "",
+  seams: "<p>Seams placeholder.</p>"
+};
+
+function setHtml(id, html) {
+  const el = document.getElementById(id);
+  if (el) el.innerHTML = html || "";
+}
+
+document.getElementById("title").textContent = PACKET.title || "Explain change";
+document.getElementById("summary").textContent = PACKET.summary || "";
+
+const reqs = Array.isArray(PACKET.req_ids) ? PACKET.req_ids.filter(Boolean) : [];
+const reqLine = reqs.length
+  ? "<div><strong>req</strong> " + reqs.map(function (r) {
+      return "<code>" + String(r).replace(/</g, "&lt;") + "</code>";
+    }).join(" ") + "</div>"
+  : "";
+document.getElementById("derived").innerHTML =
+  "<div><strong>range</strong> <code>" + String(PACKET.range || "").replace(/</g, "&lt;") + "</code></div>" +
+  "<div><strong>generated</strong> " + String(PACKET.generated || "").replace(/</g, "&lt;") + "</div>" +
+  reqLine;
+
+setHtml("users-body", PACKET.users);
+setHtml("decisions-body", PACKET.decisions);
+setHtml("breaks-body", PACKET.breaks);
+setHtml("verify-body", PACKET.verify);
+setHtml("intuition-body", PACKET.intuition);
+setHtml("seams-body", PACKET.seams);
+
+const fig = document.getElementById("figure");
+if (PACKET.figure_html && String(PACKET.figure_html).trim()) {
+  fig.hidden = false;
+  fig.innerHTML = PACKET.figure_html;
+}
+</script>
+</body>
+</html>

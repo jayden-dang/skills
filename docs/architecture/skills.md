@@ -83,6 +83,9 @@ quick reference: `AGENTS.md`.
 21a. **comprehend-change** (U) — outbound self-check: one HTML packet
     (Background → Intuition → Code → Quiz) for a resolved git range; optional
     read-only DREC enrichment; never a ship gate or decision-record emitter.
+21b. **explain-change** (U) — team-shared pitch+map HTML under `docs/explainers/`
+    for a resolved git range; overwrite + INDEX; no quiz; never a ship gate;
+    named (not invoked) from finish-branch on large/architecture changes.
 22. **receive-review** (m) — anti-sycophancy; verify each item before implementing.
 23. **check-invariants** (m) — advisory, LLM-judged invariant conformance: per
     `Respects: ARCH-N` citation, a respects/violates/unclear verdict. The semantic

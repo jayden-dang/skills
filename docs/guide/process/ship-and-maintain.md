@@ -25,6 +25,7 @@ Three details make this safe rather than merely tidy:
 
 - **Merge re-verifies on the merged result, before removing any worktree.** A failed merge with the worktree already gone loses the work.
 - **PR keeps the worktree.** The user needs it to iterate on review feedback.
+- **Large or architecture-affecting branches** may name `/explain-change` so the team gets a pitch+map under `docs/explainers/` — optional, never a merge gate. Author self-check remains `/comprehend-change`.
 - **Discard requires the user to literally type `discard`.** Anything else — including "yes", "confirm", "do it" — is not confirmation.
 
 Worktree cleanup happens only for merge and discard, and only for a worktree whose path sits under `.worktrees/` or `worktrees/`. That provenance means this skill set created it. Anything else, including harness-owned workspaces, is not yours to remove.

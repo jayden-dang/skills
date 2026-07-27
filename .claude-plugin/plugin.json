@@ -1,6 +1,6 @@
 {
   "name": "engineer-pack",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "description": "Engineer Pack: A-to-Z agentic development (ideation to release, requirements traceability, roadmap/milestones). Personal Pack is separate — not included here.",
   "author": {
     "name": "Jayden Dang"
@@ -49,6 +49,7 @@
     "./skills/setup/scaffold-project",
     "./skills/setup/setup-repo",
     "./skills/project/establish-project",
+    "./skills/project/repoint-project",
     "./skills/project/write-roadmap",
     "./skills/meta/ask",
     "./skills/meta/teach",

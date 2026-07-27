@@ -42,7 +42,7 @@ Only after the diagnosis go-ahead. Identify the **lowest** level in the chain ge
 | **Plan** | task breakdown / sequencing / coverage; design holds | `write-plan` |
 | **Design** | an architecture/design decision; requirements hold | `write-design` → `write-plan` |
 | **Requirements** | what was promised — a criterion is wrong or missing | `write-requirements` → design → plan |
-| **Vision** | the feature's premise conflicts with product scope | vision layer, else escalate to a human |
+| **Vision** | the feature's premise conflicts with product scope | name `/repoint-project` when shipped code/specs collide with the new premise; else the vision layer (`/establish-project`), else escalate to a human |
 
 **The classification law:** pick the *lowest* level with evidence. Rewinding to a higher level "to be safe," without evidence for that higher level, is **prohibited**. A discovery that only breaks the current task's approach does not earn a trip to `write-requirements` just because the rewind feels safer big.
 
@@ -70,7 +70,12 @@ On proposal approval, route to the matching re-entry. Invoke each as a REQUIRED 
 - **Plan** → REQUIRED SUB-SKILL: use `write-plan`.
 - **Design** → REQUIRED SUB-SKILL: use `write-design`, which flows forward into `write-plan`.
 - **Requirements** → REQUIRED SUB-SKILL: use `write-requirements`, which flows forward into design and plan.
-- **Vision** → WHERE `docs/product/vision.md` exists, route the premise conflict to the vision layer. WHERE it does not exist, **escalate to the user** for a human decision, and re-enter REQUIRED SUB-SKILL: use `brainstorm` **only if** the user agrees the premise is genuinely in question.
+- **Vision** → WHERE shipped code or specs collide with the new premise, **name**
+  `/repoint-project` for the user (user-invoked; do not invoke it). WHERE the
+  collision is doc-only and `docs/product/vision.md` exists, name
+  `/establish-project` (update). WHERE neither layer exists, **escalate to the
+  user**, and re-enter REQUIRED SUB-SKILL: use `brainstorm` **only if** the user
+  agrees the premise is genuinely in question.
 
 **Done when:** the matching sub-skill has been invoked directly and its own gate is running — `correct-course` does not fabricate a second approval step on top of it.
 

@@ -139,6 +139,10 @@ quick reference: `AGENTS.md`.
     `docs/product/guidelines.md` (create/update/validate modes). Consulted by
     `brainstorm`, `write-design`, `write-plan`, `execute-plan`, and `code-review`;
     entirely optional — absent, the feature workflow is unchanged.
+39a. **repoint-project** (U) — disposition ledger when a product pivot puts shipped
+    code at odds with a new vision or architecture. Writes
+    `docs/product/pivot-ledger.md` only; names `/establish-project` (update) after
+    confirmation. Does not rewrite the vision layer itself.
 
 **Deliberately not in v1:** full CI/CD authoring. (The project-documentation layer —
 repo-level vision + IDed architecture invariants — is the `project/` bucket; see

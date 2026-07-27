@@ -1,5 +1,34 @@
 # Changelog
 
+## 0.2.5 — 2026-07-27
+
+### New: `repoint-project` — pivot disposition ledger
+
+Closes the gap where `establish-project` (brownfield), `sync-spec`, and
+`improve-architecture` all treat **code as truth**. When the user pivots intent
+and shipped reality collides with the new vision, nothing previously owned that
+flow.
+
+- **New skill** `skills/project/repoint-project/` (user-invoked `/repoint-project`)
+  — Iron Law: no vision/architecture rewrite until every contradicted shipped
+  feature and live `ARCH-N` has a user-confirmed disposition in
+  `docs/product/pivot-ledger.md`
+- **Single-writer preserved:** skill never writes `vision.md` /
+  `architecture/`; names `/establish-project` (update) after confirmation
+- **RED/GREEN** under `tests/repoint-project/` (Ledgerly fixture; Sonnet + Haiku)
+  - S1 deadline pivot: baseline **failed** (both models rewrote vision) → skill
+    **green** after REFACTOR (ledger-on-disk + named-repo counters for Haiku)
+  - S2 challenge-pivot and S3 bare-delete: baseline **passed** → cut from skill
+    text (no-op rule)
+- **Neighbors:** `establish-project` update routes pivots-with-collisions here;
+  `correct-course` Vision re-entry names `/repoint-project` when shipped code
+  collides
+
+### Packaging
+
+- Engineer Pack version **0.2.5**; plugin path list adds
+  `./skills/project/repoint-project`
+
 ## 0.2.4 — 2026-07-27
 
 ### `dogfood` / `drive-dogfood` — cases YAML + CLI ledger (no guide ticks for agents)

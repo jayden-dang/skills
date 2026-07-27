@@ -143,7 +143,8 @@ brainstorm ──► write-requirements ──► write-design ──► write-p
   tagged regression test.
 - **Tier 2** (feature): the full triad.
 
-**Optional project layer** (large projects, off by default): `establish-project`
+**Optional project layer** (large projects, off by default): `establish-project`,
+`repoint-project` (pivot disposition ledger when shipped code collides with new intent)
 maintains a repo-level product vision plus an IDed architecture-invariant spine
 (`docs/architecture/`, each rule an `**ARCH-N**`) that `brainstorm`, `write-design`,
 `write-plan`, `execute-plan`, and `code-review` consult when present. Feature
@@ -183,7 +184,7 @@ and countered by name. See [The gates](docs/guide/concepts/gates.md).
 | craft | `design-page` |
 | ship | `finish-branch`, `release` |
 | track | `amend`, `correct-course`, `triage`, `sync-spec`, `check-roadmap`, `assess-milestone`, `improve-architecture`, `handoff`, `file-issues` |
-| project | `establish-project`, `write-roadmap` (optional project / multi-milestone layer) |
+| project | `establish-project`, `repoint-project`, `write-roadmap` (optional project / multi-milestone layer) |
 
 One page per skill in the [skill reference](docs/guide/skills/README.md).
 

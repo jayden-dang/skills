@@ -1,6 +1,6 @@
 # AGENTS.md — Agent Behavior Constitution
 
-> **A-to-Z Agentic Development Skill Set** | 47 skills across 11 categories |
+> **A-to-Z Agentic Development Skill Set** | 48 skills across 11 categories |
 > `jayden-dang/skills` | v1.0
 
 This file is the single source of truth for agent behavior when working with this
@@ -72,9 +72,9 @@ skill's workflow only when the user has explicitly told you to.
 
 **User-invoked skills** (carry `disable-model-invocation: true` in frontmatter):
 `ask`, `writing-skills`, `teach`, `setup-repo`, `scaffold-project`,
-`establish-project`, `triage`, `improve-architecture`, `handoff`, `file-issues`,
-`release`, `interpret`, `comprehend-change`, `allocate-attention`, `check-roadmap`,
-`assess-milestone`, and Personal OS `setup-personal-os`.
+`establish-project`, `repoint-project`, `triage`, `improve-architecture`, `handoff`,
+`file-issues`, `release`, `interpret`, `comprehend-change`, `allocate-attention`,
+`check-roadmap`, `assess-milestone`, and Personal OS `setup-personal-os`.
 Agents MUST NOT auto-invoke these. Name them for the user to run, e.g. `/triage` or
 `/allocate-attention`.
 
@@ -313,7 +313,7 @@ Can't tick a box? The work is not done.
 
 ---
 
-## 11. Quick Reference: The 47 Skills
+## 11. Quick Reference: The 48 Skills
 
 **Legend:** (m) model-invoked · (U) user-invoked · (si) session-injected
 
@@ -329,7 +329,7 @@ Can't tick a box? The work is not done.
 | **craft** | `design-page` (m) |
 | **ship** | `finish-branch` (m), `record-decision` (m), `release` (U) |
 | **track** | `amend` (m), `correct-course` (m), `triage` (U), `sync-spec` (m), `check-roadmap` (U), `assess-milestone` (U), `improve-architecture` (U), `handoff` (U), `file-issues` (U) |
-| **project** | `establish-project` (U), `write-roadmap` (m) |
+| **project** | `establish-project` (U), `repoint-project` (U), `write-roadmap` (m) |
 
 **Main flow:** `brainstorm` → `write-requirements` → `write-design` →
 `write-plan` → `worktrees` → `execute-plan` → `code-review` → `acceptance-check`
@@ -339,7 +339,9 @@ Can't tick a box? The work is not done.
 `write-roadmap` (`MILE-N` milestones and `ROAD-N` items in `docs/roadmap/INDEX.md`) →
 the feature flow above, one roadmap item at a time. Every edit to an existing roadmap —
 dropping an item, reordering milestones, committing or closing one — goes through
-`write-roadmap`, never a direct file edit.
+`write-roadmap`, never a direct file edit. A pivot that collides with shipped code
+goes through `/repoint-project` (disposition ledger) **before**
+`/establish-project` update rewrites the vision layer.
 
 **Bugfix flow:** `debug` → mini-spec → `tdd` → `verify` → `code-review` →
 `finish-branch`.
@@ -369,6 +371,8 @@ This repo is configured for a spec-driven skill set.
 - Project docs (layer enabled): `/establish-project` maintains
   `docs/product/vision.md`, the `docs/architecture/` invariant spine, and
   `docs/product/guidelines.md`; the feature skills consult them
+- Pivot against shipped code: `/repoint-project` produces the disposition
+  ledger before vision/architecture rewrites
 
 Repo config the skills read:
 

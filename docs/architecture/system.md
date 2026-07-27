@@ -49,7 +49,7 @@ skills/
   craft/       design-page
   ship/        finish-branch, release
   track/       amend, correct-course, triage, sync-spec, improve-architecture, handoff, file-issues
-  project/     establish-project              (optional project-documentation layer)
+  project/     establish-project, repoint-project, write-roadmap
 templates/     requirements.md, design.md, tasks.md, docs/agents seeds, CONTEXT.md seed,
                product-vision.md, architecture-INDEX.md, product-guidelines.md seeds
 hooks/         session-start (injects meta/using-skills)
@@ -79,8 +79,10 @@ consuming repo installs nothing executable beyond the session-start hook.
 ## The project layer (optional)
 
 Above the per-feature workflow sits an **optional** repo-level documentation layer, for
-large or long-lived projects. It is authored by one user-invoked skill,
-`establish-project` (create/update/validate), and consists of:
+large or long-lived projects. It is authored by `establish-project`
+(create/update/validate). When a product pivot collides with shipped code, 
+`repoint-project` produces a disposition ledger **before** `establish-project`
+update rewrites the vision layer. The layer consists of:
 
 ```
 docs/product/vision.md      # the product north star — problem, users, goals, non-goals, scope

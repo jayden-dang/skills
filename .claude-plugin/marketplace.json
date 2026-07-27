@@ -8,8 +8,8 @@
     {
       "name": "engineer-pack",
       "source": "./",
-      "description": "Engineer Pack: A-to-Z agentic development (ideation to release, requirements traceability, roadmap/milestones). Personal Pack is separate — not included here.",
-      "version": "0.2.4",
+      "description": "Engineer Pack: A-to-Z agentic development (ideation to release, requirements traceability, roadmap/milestones). Personal Pack is separate \u2014 not included here.",
+      "version": "0.2.5",
       "author": {
         "name": "Jayden Dang"
       },
@@ -56,6 +56,7 @@
         "./skills/setup/scaffold-project",
         "./skills/setup/setup-repo",
         "./skills/project/establish-project",
+        "./skills/project/repoint-project",
         "./skills/project/write-roadmap",
         "./skills/meta/ask",
         "./skills/meta/teach",

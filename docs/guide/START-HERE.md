@@ -143,7 +143,7 @@ compact a long session.
 ### discovery
 | Skill | Kind | Fires when | Core behavior | Produces |
 |---|---|---|---|---|
-| [`grilling`](skills/grilling.md) | m | A decision must be drawn out of you | One question at a time, a recommended answer each, walks every branch; facts from the codebase, decisions from you; confirmation gate | Resolved decisions |
+| [`grilling`](skills/grilling.md) | m | A decision must be drawn out of you | Full-context question cards (inline only), blast-radius first, walks every branch; ends with a decisions table + constraints you confirm | Confirmed decisions package |
 | [`brainstorm`](skills/brainstorm.md) | U | New feature/idea, before any code | HARD GATE (no code): explore context, `docs/specs/` overlap search, grill, pick tier, choose approach; exits only into `write-requirements` | Tier decision + chosen approach |
 | [`research`](skills/research.md) | m | A question turns on external facts | Investigate primary sources, every claim cited; fan-out + adversarial verify for high-stakes questions | A cited notes file |
 | [`prototype`](skills/prototype.md) | m | A design question needs a runnable answer | Throwaway spike — a logic TUI or 3 structurally different UI variants; capture the answer, then delete/absorb | The answer (as ADR/req/commit) |

@@ -46,7 +46,7 @@ State which case you detected and which redirect applies. **Done when:** the tar
 
 ## 1. Grill the stack
 
-REQUIRED SUB-SKILL: use `grilling` to settle the stack and layout decisions for the resolved target — one question at a time, each with a recommended default and a one-line reason:
+REQUIRED SUB-SKILL: use `grilling` to settle the stack and layout decisions for the resolved target — full question cards (inline only), each with options, consequences, and a recommended default:
 
 - Project name (used in the manifest and README)
 - Language and runtime

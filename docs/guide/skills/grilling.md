@@ -1,14 +1,14 @@
 # `grilling`
 
-> The interview primitive. One question per message, each shipping a recommended answer, until you and the user hold the same picture of the plan.
+> The interview primitive. One full-context question card per message — radius, why it matters, options with consequences, and a recommendation — until you and the user hold the same picture, sealed by a decisions table and explicit confirmation.
 
 |  |  |
 |---|---|
 | **Bucket** | discovery |
 | **Invocation** | model-invocable (the agent calls it on its own) |
-| **Reads** | the codebase and docs — to look up every fact before asking about it |
-| **Writes** | nothing; it enacts no code, files, or plan execution |
-| **Calls** | — (a pure interview primitive) |
+| **Reads** | the codebase and docs — to look up every fact before asking about it; parent Knowns / Blindspot digests when present |
+| **Writes** | nothing production; it enacts no code, files, or plan execution (glossary side effects via `domain-modeling` only) |
+| **Calls** | — (a pure interview primitive; may hand unknown-knowns to the parent's `prototype` / `research` detour) |
 | **Called by** | [`brainstorm`](brainstorm.md) (its required interview step); any skill whose work calls for an interview |
 
 ## When it fires
@@ -17,76 +17,74 @@ Whenever intent is underspecified and the decisions must be drawn out of the use
 
 [`brainstorm`](brainstorm.md) invokes it as a required sub-skill for its whole interview step, and other design skills reach for it the same way. It is a primitive — it does one thing, holds no state of its own, and hands the picture it draws to whatever skill called it.
 
-## The six rules
+## Channel: inline chat only
 
-The skill is short and every line is load-bearing.
+Every question is ordinary chat with **full context**. The skill forbids `AskUserQuestion` and any harness MCQ UI that truncates labels, option text, or the "why this matters" line. A tap-friendly picker that strips consequences is a different, worse interview — not a speed optimization.
 
-- **One question per message.** Ask, then wait for the answer before the next question. A wall of questions is bewildering; a single question gets a real answer.
-- **Every question ships with your recommended answer** and a one-line reason. The user can accept in two words or push back.
-- **Walk every branch of the decision tree.** Decisions depend on each other — an early answer opens some branches and closes others. Resolve them in dependency order and keep going until no unexplored branch remains.
-- **Right-size to the project's posture.** When the parent supplies it or `docs/agents/project.md` carries a **Project posture** section, prune branches that do not apply: skip data migration, backward compatibility, and deprecation on a Prototype / Research / Learning project; press on them for a Released / Scaling / Maintenance one. Absent a posture, walk every branch.
-- **Facts are yours; decisions are the user's.** If the answer already exists in the codebase or the docs, look it up — never ask the user to recall what you can read. Anything that is a judgment call goes to the user, one at a time, and you wait.
-- **Do not enact anything** — no code, no files, no plan execution — until the user explicitly confirms you have reached a shared understanding.
+## The question card
 
-## One question per message
+Exactly one decision per message, in this shape:
 
-The first rule is the one most easily broken under time pressure, and the one that most changes how the interview feels.
+1. **Radius** — `architecture` · `data` · `auth/security` · `UX flow` · `polish`
+2. **Question** — the decision in plain language
+3. **Why it matters** — what changes in the system if the answer flips (queue vs sync, schema, permission boundary, scope), grounded in this repo when possible
+4. **Options (2–4)** — each title **plus** a consequence line (gain, cost, what breaks)
+5. **Recommendation** — marked pick + one-line reason (accept in two words or push back)
+6. **Stop** and wait
 
-A batch of ten questions reads as an interrogation. The user skims, answers the easy three, and the hard ones — the ones the plan actually turns on — get a shrug or silence.
+Blast-radius first — even when the user asks to start with polish. Facts are looked up; only judgment calls go to the user. Project posture and team band right-size which branches are walked (same rules as before).
 
-A single question with a recommendation attached is a different act: it is a proposal the user confirms or corrects. Most answers become two words, and the few corrections are exactly the signal you were after.
+## Unknowns the interview closes
 
-## The fact/decision split
+The map (prompts, plans) is not the territory (codebase, runtime, users, history). Grilling shrinks that gap before wrong guesses get expensive:
 
-The rule that does the most work is the fourth: **facts are yours, decisions are the user's.**
+- Load the parent's Knowns inventory and Blindspot list when they exist; turn high-blast landmines into cards or confirmed locks
+- Prefer territory-grounded forks (share-link egress, dual-write traps, flag skew, historical reverts) over generic taste questions
+- When the user can only "know it when they see it," offer a **reference path** (point at a module and restate its semantics) or hand off to `prototype` / `research`, then resume with one card
+- "Just make something sensible" is not a decision while an in-repo reference exists
 
-A fact is anything with a knowable answer — which auth library the repo already uses, whether a table has an index, what the current timeout is. Those you look up; asking the user to recall them wastes their attention and invites a wrong answer that then poisons the plan.
+## Close package
 
-A decision is a judgment call — whether to paginate, which trade-off to accept, what "done" means for this feature. Those go to the user, one at a time, and you wait for each before moving on.
+When no branch remains, and **before** handing back to a parent or claiming alignment, the agent emits:
 
-The split is not about politeness; it is about routing each question to whoever can answer it correctly. A fact asked of the user invites a guess; a decision made for the user takes away a call that was theirs.
+1. A **decisions table** (radius · topic · decision)
+2. A **constraints block** ready to paste into the next stage
+3. An ask for **explicit confirmation** on that package
 
-## Walking the tree in order
-
-Decisions are not a flat list. An early answer opens some branches and closes others, so the order matters: resolve dependencies first, then the branches they unlock.
-
-When an answer opens a new sub-branch, walk that before returning to the trunk. The interview is done only when no unexplored branch remains — not when the obvious questions run out, and not when the user seems to have had enough.
+"Any other questions?", "we're aligned — skip the table", and "just go write requirements" are not confirmation. Nothing is enacted until the yes lands on the package.
 
 ## Worked example
 
-The user wants to add rate limiting to an API. Rather than dumping a questionnaire, `grilling` walks the tree in dependency order, one message at a time. Facts are resolved silently by reading the code; only decisions are surfaced.
+The user wants annotation export. Rather than a truncated picker or a questionnaire dump, `grilling` walks architecture first:
 
-> **You:** Rate limiting needs a shared store across instances. I checked — you're already running Redis for sessions (`src/cache/redis.ts`), so I'd reuse it rather than add a dependency. Reuse the existing Redis? *(Recommended: yes — no new infra, and the connection pool is already tuned.)*
+> **architecture** · Question 1
 >
-> **User:** yes
+> Where should export generation run?
 >
-> **You:** Next branch: what's the limit scoped to — per API key, per IP, or per user? *(Recommended: per API key — your public endpoints authenticate by key, so it's the unit a client actually controls.)*
+> ↳ This decides whether we need a job queue, a ready-notification path, and an artifacts bucket — or none of those. Large reviews will blow a 30s gateway timeout on the request thread.
 >
-> **User:** per key, but unauthenticated routes should fall back to IP
+> - **Sync in the API request** — simplest; a 400-comment export times out.
+> - **Background job on the existing queue** (Recommended) — reuses transcode worker patterns; needs a "ready" notification.
+> - **Client-side only** — zero backend; caps formats and helps support less.
 >
-> **You:** Good — that opens a sub-branch. For the `/health` and `/status` routes that are intentionally unauthenticated, exempt them entirely or IP-limit them too? *(Recommended: exempt — they're polled by your own uptime monitor and limiting them would page you at 3am.)*
->
-> **User:** exempt them
->
-> **You:** Last branch on this path: when a client is over the limit, `429` with a `Retry-After` header, or silently drop? *(Recommended: `429` with `Retry-After` — it's the standard clients already handle, and silent drops look like outages.)*
+> Recommended: background job — export size is unpredictable with drawings.
 
-Note the shape of every message. It looks up the fact (Redis is present, endpoints authenticate by key), states exactly one decision, ships a recommendation with a one-line reason, and stops. The IP-fallback answer opened a new sub-branch that got walked before anything else. Nothing is built, and no file is touched, until the user confirms the picture is complete.
+Later, after every branch is closed, a decisions table and constraints block are confirmed before `brainstorm` continues.
 
 ## Why it is written the way it is
 
-The skill exists against two baseline failures.
+Three baseline failures drove the current text:
 
-The first is the **question dump** — an agent that fires ten questions at once, which reads as an interrogation and gets shallow or skipped answers. One-per-message with a recommendation turns each into a two-word confirmation or a real correction, and the reason line means the user can push back on the merits rather than guess at intent.
+1. **Truncated channel** — under time or "house style" pressure, agents reach for structured MCQ tools that drop consequences; users cannot push back on merits.
+2. **Thin questions** — "Recommended: X — safer" without option consequences trains rubber-stamp answers and leaves architecture debt unexamined.
+3. **Ceremony skip at the close** — "we're aligned" without a decisions package lets silent assumptions leak into requirements.
 
-The second is the **agent that guesses** — either guessing a fact it could have read, or guessing a decision that was the user's to make. The fact/decision split assigns each question to whoever can answer it correctly, so neither kind of guess is needed.
-
-The no-enactment rule keeps `grilling` a pure interview: it draws the picture, and another skill builds from it. That boundary is what lets it be reused everywhere an interview is needed without ever surprising the user with a side effect they did not confirm.
-
-The confirmation step at the end is not a formality either. "Do you have any other questions" is not the same as "have we reached a shared understanding" — the skill waits for the explicit yes before anything downstream begins, because a picture that only one of you holds is not shared.
+The no-enactment rule keeps `grilling` a pure interview: it draws the picture, and another skill builds from it.
 
 ## See also
 
 - [`brainstorm`](brainstorm.md) — the primary caller; grilling is its interview step
 - [`research`](research.md) — where a factual question too big to just look up gets sent
+- [`prototype`](prototype.md) — where unknown knowns need a visible throwaway answer
 - [`domain-modeling`](domain-modeling.md) — runs alongside grilling to settle terms mid-interview
 - [The skill model](../concepts/skill-model.md) — how primitives like this compose

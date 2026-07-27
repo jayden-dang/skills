@@ -37,7 +37,7 @@ Scaffolding writes a project root — git repo, root manifest, root README, root
 
 ## Step 1 — grill the stack
 
-A **required sub-skill**: [`grilling`](grilling.md) settles the stack and layout decisions for the resolved target, one question at a time, each with a recommended default and a one-line reason — project name, language and runtime, framework (or "none"), test runner, formatter and linter, package manager, repo layout (single package vs workspace, source/test shape), license, and whether to commit or stage the result for review first. The skill looks up facts itself (what tools the user has installed, what the parent repo already uses in subpackage mode) and brings only judgment calls to the user. Done when every decision is explicitly confirmed and restated in one summary block — including the resolved target path — that the user approves.
+A **required sub-skill**: [`grilling`](grilling.md) settles the stack and layout decisions for the resolved target with full-context question cards — project name, language and runtime, framework (or "none"), test runner, formatter and linter, package manager, repo layout (single package vs workspace, source/test shape), license, and whether to commit or stage the result for review first. The skill looks up facts itself (what tools the user has installed, what the parent repo already uses in subpackage mode) and brings only judgment calls to the user. Done when every decision is confirmed via grilling's close package — including the resolved target path.
 
 ## Step 2 — scaffold
 

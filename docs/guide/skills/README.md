@@ -1,6 +1,6 @@
 # Skill reference
 
-Forty-seven skills in eleven buckets. Each has its own page.
+Forty-eight skills in eleven buckets. Each has its own page.
 
 **Invocation** is the thing to check first. A **model-invocable** skill is invoked by the agent on its own when its description matches the situation. A **user-invoked** skill carries `disable-model-invocation: true` in its frontmatter — the agent *cannot* invoke it, so you run it as a slash command.
 
@@ -34,7 +34,7 @@ Turn an idea into an agreed shape. Produces no code.
 | Skill | Invocation | What it does |
 |---|---|---|
 | [`brainstorm`](brainstorm.md) | model | **The hard gate.** No code until the ceremony tier is stated out loud |
-| [`grilling`](grilling.md) | model | The interview primitive. One question per message, each with a recommendation |
+| [`grilling`](grilling.md) | model | The interview primitive. Full-context question cards, decisions table at close |
 | [`research`](research.md) | model | Primary sources only. One cited markdown file, ending in Open decisions |
 | [`prototype`](prototype.md) | model | Throwaway code answering one design question. The answer is the only deliverable |
 | [`domain-modeling`](domain-modeling.md) | model | Maintains `CONTEXT.md` and `docs/adr/`. ADRs pass a three-part gate |
@@ -118,6 +118,7 @@ The optional documentation layer above the feature workflow. Absent by default.
 | Skill | Invocation | What it does |
 |---|---|---|
 | [`establish-project`](establish-project.md) | `/establish-project` | Authors and maintains the optional project layer — product vision, IDed architecture-invariant spine, and engineering guidelines |
+| [`repoint-project`](repoint-project.md) | `/repoint-project` | Disposition ledger when a product pivot puts shipped code at odds with a new vision or architecture — before vision rewrites |
 | [`write-roadmap`](write-roadmap.md) | model-invocable | Authors and maintains `docs/roadmap/INDEX.md` — `MILE-N` milestones and `ROAD-N` items, intent only, progress never stored |
 
 ---

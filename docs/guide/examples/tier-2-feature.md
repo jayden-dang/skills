@@ -28,7 +28,7 @@ That is exactly the information the check exists to surface. The new feature wil
 
 ### 2. Interview
 
-[`grilling`](../skills/grilling.md) takes over: one question per message, each shipping a recommended answer and a one-line reason.
+[`grilling`](../skills/grilling.md) takes over: one full-context question card per message (radius, why it matters, options with consequences, recommendation), then a decisions table to confirm.
 
 > **Q:** When the app starts for the very first time, with nothing persisted, which module should be active?
 > **Recommendation:** Notes — it is the module with the lowest activation cost, and it is what users open most.

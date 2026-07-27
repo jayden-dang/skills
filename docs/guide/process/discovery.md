@@ -42,13 +42,14 @@ Any feature whose spec matches is read as its **Summary card, not its full spec*
 
 ### 2. Interview
 
-`grilling` takes over. Its five rules are the whole method:
+`grilling` takes over. The load-bearing rules:
 
-- **One question per message.** A wall of questions is bewildering; a single question gets a real answer.
-- **Every question ships your recommended answer** and a one-line reason. The user can accept in two words or push back.
-- **Walk every branch of the decision tree**, in dependency order. An early answer opens some branches and closes others.
-- **Facts are yours; decisions are the user's.** If the answer already exists in the codebase or the docs, look it up. Never ask the user to recall what you can read.
-- **Enact nothing** until the user explicitly confirms a shared understanding.
+- **Inline chat only** — never a truncated MCQ picker; every question needs full context.
+- **One question card per message** — radius, why it matters, options with consequences, recommendation. Wait for the answer.
+- **Blast-radius first** — architecture, data, and auth before polish, even when the user asks for color first.
+- **Walk every branch** of the decision tree, in dependency order.
+- **Facts are yours; decisions are the user's.** Look up the codebase and the parent's Blindspot / Knowns digests; only judgment calls go to the user.
+- **Close package** — decisions table + ready-to-paste constraints + explicit confirmation before anything is enacted.
 
 `domain-modeling` runs as a side effect throughout: challenge terms against the glossary the moment usage conflicts with it, sharpen fuzzy language into one canonical term, stress-test relationships with concrete edge cases, and cross-reference the code when the user asserts how something works. Update `CONTEXT.md` **inline, the instant a term settles** — batched glossary edits get forgotten.
 

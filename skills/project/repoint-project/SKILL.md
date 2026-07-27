@@ -57,7 +57,8 @@ same shape either way). It never writes `docs/product/vision.md`,
 
 `establish-project` remains the sole writer of the vision layer. `write-roadmap` remains
 the sole writer of `docs/roadmap/INDEX.md`. After the ledger is confirmed, **name**
-`/establish-project` (update) for the user — do not invoke it (user-invoked).
+`/establish-project` (update) for the user to run — agents never auto-run it
+(`disable-model-invocation: true`).
 
 ## Steps
 
@@ -173,7 +174,7 @@ These were the exact failures under deadline pressure. None of them satisfy the 
 - You are about to treat "pivot is decided" as confirmation of every feature's fate
 - You are about to skip the ledger because the deck/update/board is today
 - You are about to mark rows confirmed without the user
-- You are about to invoke `/establish-project` yourself instead of naming it
+- You are about to open `/establish-project` yourself instead of naming it for the user
 - You are about to delete shipped feature code as part of writing the ledger
 - You are about to use this skill for a vision-neutral refactor → that is
   `improve-architecture`

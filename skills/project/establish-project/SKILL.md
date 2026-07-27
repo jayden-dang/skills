@@ -89,10 +89,11 @@ found.
 
 - **Pivot with shipped collisions.** WHERE the new direction contradicts a
   `Shipped`/`Implemented` feature, a live `**GOAL-N**`, a live `**ARCH-N**`, or a
-  non-goal/hard constraint, **stop** and name `/repoint-project` for the user —
-  that skill owns the disposition ledger; this skill continues only after the
-  ledger is confirmed (or the user explicitly declines it). Do not invoke
-  `/repoint-project` (user-invoked). WHERE there is no such collision, continue.
+  non-goal/hard constraint, **stop** and name `/repoint-project` for the user to
+  run — that skill owns the disposition ledger; this skill continues only after
+  the ledger is confirmed (or the user explicitly declines it). Agents never
+  auto-run it (`disable-model-invocation: true`). WHERE there is no such
+  collision, continue.
 - Revise the affected doc(s) only.
 - A hard-to-reverse, surprising architecture decision gets an ADR (REQUIRED SUB-SKILL:
   use `domain-modeling` — it owns the ADR gate).

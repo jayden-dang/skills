@@ -11,7 +11,7 @@
 | **Reads** | git range (required); optional specs, implementation-notes, grilling locks |
 | **Writes** | `docs/explainers/<slug>.html` (overwrite) + `docs/explainers/INDEX.md` upsert |
 | **Calls** | — |
-| **Called by** | named (never invoked) from `finish-branch` when multi-task / non-low risk / architecture-affecting |
+| **Called by** | named (never invoked) from `finish-branch` when multi-task / risk-glob hit / architecture-affecting |
 
 ## When to run it
 

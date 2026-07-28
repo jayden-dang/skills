@@ -1,8 +1,8 @@
 ---
 name: execute-plan
-description: Use when an approved tasks.md exists and it is time to implement, execute,
-  or build out the plan, or when resuming a partially executed plan after a
-  crash, compaction, or a fresh session.
+description: Use when an approved tasks.md needs executing — continuous or story-unit
+  Execution-mode, task waves, dual-verdict review, resume after crash/compaction —
+  through whole-branch review and finish-branch.
 ---
 
 # Execute Plan
@@ -11,18 +11,27 @@ Drive an approved plan to completion: independent tasks run concurrently in depe
 
 **Why fresh subagents:** each worker receives exactly the context its task needs and nothing else, so it stays focused; your own context stays reserved for coordination. Subagents never inherit session history — you construct their world. Bulk artifacts (briefs, reports, diffs) travel between agents as file paths under `.skills/`, never as pasted text.
 
-**Continuous execution:** the user asked you to execute the plan, so execute it. Do not pause between tasks to ask "should I continue?" or post progress summaries — check-ins waste the user's time. The only legitimate stops: a BLOCKED status you cannot resolve, ambiguity that genuinely prevents progress, or all tasks complete.
+**Execution-mode** (`continuous` | `story-unit`) is a required header on
+`tasks.md`. Read it in Setup. Missing/`unset`/invalid → ask, **write** the answer
+into `tasks.md`, proceed. Never invent continuous because the field is empty. No
+project-level default.
 
-**Narration:** at most one short line between tool calls. The ledger and tool results carry the record.
+| Mode | Stops | Review units |
+|---|---|---|
+| **continuous** | BLOCKED, ambiguity, all-done only — no pause between tasks | Preflight **unit table** still prints (size signal); no unit barriers |
+| **story-unit** | those **plus** unit barrier after each **review unit** | Derive + barrier recipe in `story-unit-mode.md` (load when mode is story-unit **or** when running preflight) |
+
+**Narration:** at most one short line between tool calls. Ledger + tool results carry the record.
 
 ## Setup
 
 1. **Workspace check — ask first.** If no isolated workspace exists yet, ask the user before doing anything else: isolate this run in a worktree, or implement directly on the current branch? Do not default to creating one unasked. If they choose isolation, REQUIRED SUB-SKILL: use `worktrees`. If they choose the current branch and it is main/master, that is a separate, harder bar — get their explicit consent to implement there specifically before proceeding; a preference for "no worktree" is not by itself consent to touch main/master. *Done when: you have the user's workspace choice — a dedicated branch with a clean baseline if isolated, or explicit go-ahead on the current branch (with separate consent if that branch is main/master).*
 2. **Ledger check.** First make the working dir local-only (idempotent line-presence check, since a trailing-slash pattern won't match `.skills` until the dir exists): `grep -qxF '.skills/' .gitignore 2>/dev/null || { printf '.skills/\n' >> .gitignore && git commit -m 'chore: ignore local skills artifacts' -- .gitignore; }` (the `-- .gitignore` pathspec auto-stages just that file, so nothing else already in the index is folded into this commit). Then read `.skills/progress.md` if it exists. Every task it marks complete IS complete — resume at the first task it does not list. *Done when: `.skills/` is git-ignored and you know which task is next.*
-3. **Read the plan.** Read tasks.md in full, once. Copy the **Global Constraints** section verbatim — you will paste it into every reviewer dispatch unmodified. If `docs/agents/project.md` is missing, say so, suggest running `setup-repo`, and take verify commands from the plan's Global Constraints instead. When `project.md` has `## Team` with a non-empty **roster** or band override, load the **band** and **packaging** rules from that section into controller context (do not re-author them). Solo: brief tone as pair-with-user. Small/Multi: mention owners when roster/ownership notes apply. **Never** skip dual-verdict / Standards+Spec review or subagent review for Solo — **packaging** only. Missing Team → pre-feature default; do not invent a team. *Done when: constraints are captured word-for-word and band (if any) is loaded.*
-4. **Todos — GATE.** Create one todo per task via TodoWrite before dispatching anything. This is not optional bookkeeping: on a long plan the todo list is your only cheap, glanceable read of what's left without re-deriving it from the ledger or `git log`. Do not proceed to step 5 or any dispatch until it exists. *Done when: the todo list mirrors the plan, one todo per task.*
-5. **Pre-flight plan review.** Scan the plan once for internal defects: tasks that contradict each other or the Global Constraints, and anything the plan explicitly mandates that a reviewer would flag as a defect (an assertion-free test, a copy-pasted logic block). Batch ALL findings into ONE question to the user — each finding shown beside the plan text that mandates it, asking which governs — before any dispatch. One interrupt, not one per discovery mid-run. A clean scan needs no comment. *Done when: the user has ruled on every conflict, or the scan found none.*
-6. **Wave planning.** Read each task's `Depends-on:` line. A line names the tasks that must land first (`Depends-on: Task 2, Task 4`); `Depends-on: none` marks a task with no prerequisite; an **absent** line falls back to depending on every earlier task. Topo-sort into waves — wave 0 is every task whose dependencies are already met, wave 1 the tasks freed once wave 0 lands, and so on. A plan that declares no dependencies collapses to one task per wave: the strict serial order. *Done when: every task sits in a wave.*
+3. **Read the plan.** Read tasks.md in full, once. Copy the **Global Constraints** section verbatim — you will paste it into every reviewer dispatch unmodified. Parse `Execution-mode:` — must be `continuous` or `story-unit`. If missing/`unset`/invalid: ask the user, write `Execution-mode: continuous` or `Execution-mode: story-unit` into the file (commit if the plan is tracked), then continue. Never default silently. If `docs/agents/project.md` is missing, say so, suggest running `setup-repo`, and take verify commands from the plan's Global Constraints instead. When `project.md` has `## Team` with a non-empty **roster** or band override, load the **band** and **packaging** rules from that section into controller context (do not re-author them). Solo: brief tone as pair-with-user. Small/Multi: mention owners when roster/ownership notes apply. **Never** skip dual-verdict / Standards+Spec review or subagent review for Solo — **packaging** only. Missing Team → pre-feature default; do not invent a team. *Done when: constraints are captured word-for-word, Execution-mode is valid, and band (if any) is loaded.*
+4. **Review-unit preflight (both modes).** Load `story-unit-mode.md` beside this file and run **Derive partition** + **File count** + print the **Unit table**. Hard-fail / omit rules are in that recipe. *Done when: table printed; hard-fail cases fixed or reported and blocked.*
+5. **Todos — GATE.** Create one todo per task via TodoWrite before dispatching anything. This is not optional bookkeeping: on a long plan the todo list is your only cheap, glanceable read of what's left without re-deriving it from the ledger or `git log`. Do not proceed to step 6 or any dispatch until it exists. *Done when: the todo list mirrors the plan, one todo per task.*
+6. **Pre-flight plan review.** Scan the plan once for internal defects: tasks that contradict each other or the Global Constraints, and anything the plan explicitly mandates that a reviewer would flag as a defect (an assertion-free test, a copy-pasted logic block). Batch ALL findings into ONE question to the user — each finding shown beside the plan text that mandates it, asking which governs — before any dispatch. One interrupt, not one per discovery mid-run. A clean scan needs no comment. *Done when: the user has ruled on every conflict, or the scan found none.*
+7. **Wave planning.** Read each task's `Depends-on:` line. A line names the tasks that must land first (`Depends-on: Task 2, Task 4`); `Depends-on: none` marks a task with no prerequisite; an **absent** line falls back to depending on every earlier task. Topo-sort into waves — wave 0 is every task whose dependencies are already met, wave 1 the tasks freed once wave 0 lands, and so on. A plan that declares no dependencies collapses to one task per wave: the strict serial order. In story-unit mode, also topo-sort **units** (edge if any task in U depends on any task in V); tie-break lowest story number. *Done when: every task sits in a wave, and (story-unit) every unit sits in unit order.*
 
 ## Per-Task Loop
 
@@ -39,6 +48,26 @@ For Task N:
 9. **Resolve ⚠️ items.** Requirements the reviewer could not verify from the diff (they live in unchanged code or span tasks) come back to you flagged — you hold the plan context the reviewer lacks. Confirm each yourself; a real gap counts as a failed spec verdict: back to step 8. *Done when: every flagged item is confirmed covered or fixed.*
 10. **Ledger.** Append one line to `.skills/progress.md`: `Task N: complete (commits <base7>..<head7>, review clean)`. Mark the todo done. *Done when: the line is written.*
 11. **Next.** Advance by wave order (see **Parallel waves**), not raw task number — within a serial wave that is simply Task N+1. For a parallel wave, steps 10–11 move to the wave barrier. *Done when: the loop restarts on the next task or no tasks remain.*
+
+## Story-unit mode
+
+WHEN `Execution-mode: story-unit` (or when running Setup preflight), load
+`story-unit-mode.md` beside this file and follow its recipes.
+
+**Iron laws (body keeps only these):**
+
+1. **Review units are derived**, never authored in tasks.md.
+2. After each unit's tasks are clean: **unit agent review → STOP for human → unlock**.
+3. **"continue"** after looking = next unit. **"stop stopping" / "just run it all"** =
+   write `Execution-mode: continuous` into tasks.md first. Chat-only is not a mode change.
+4. Ledger `Unit <k>: complete (tasks …, range <base>..<head>)` — resume reads it.
+5. **Whole-branch agent review still runs** after the last unit (not a substitute for human unit review).
+
+| Thought | Reality |
+|---|---|
+| "User said keep going — no need to edit tasks.md" | "Stop stopping" is a **mode change**; write `Execution-mode: continuous` or the plan lies |
+| "Unit agent review was clean — skip human barrier" | Agent unit review is not the human stop; barrier still fires in story-unit |
+| "EOD / whole PR later — drop unit stops" | Time and later review do not rewrite Execution-mode |
 
 ## Parallel waves
 
@@ -113,7 +142,10 @@ Same loop, no dispatches: implement each task yourself, in order, from its brief
 - Tell a reviewer what not to flag, or pre-rate a finding's severity in the dispatch.
 - Dispatch a reviewer without a diff package — build it first and name the path.
 - Re-dispatch a task the ledger already marks complete.
-- Pause between tasks to ask permission to continue.
+- Pause between tasks to ask permission to continue (**continuous** mode). Story-unit mode **must** stop at unit barriers.
+- Invent `Execution-mode: continuous` because the header is missing — ask and write the field.
+- Treat "stop stopping" / "just run it all" as a chat-only unlock without writing `Execution-mode: continuous` into tasks.md.
+- Skip unit barriers because EOD, "agent review was clean," or "human will read the whole PR later."
 - Dispatch the first task before the todo list (one per task) exists.
 - Fix reviewer findings in your own context instead of dispatching a fixer.
 - Start implementation on main/master without the user's explicit consent.

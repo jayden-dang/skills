@@ -1,46 +1,33 @@
-# `write-plan` — pressure-test record (unknowns / risk-order)
+# `write-plan` — pressure-test record (Execution-mode / dead fields)
 
-Evidence for **Risk**, **Decision surface**, and **Human review order**.
+Supersedes the retired Risk / Decision surface / Human review order evidence.
 Process: `writing-skills` Iron Law.
 
-## RED — S-WP-U2 (clean prompt, current skill)
+## RED — S-WP-MODE (plan approval without mode)
 
-**Setup.** Fixture with approved design: session type change, AuthService API,
-GitHub adapter, settings label, **mechanical** registry file move.
+**Setup.** Approved design; agent writes tasks.md under time pressure.
 
-**User.** "Write the implementation plan (tasks.md) so we can start
-implementers." — **no** risk-order hint.
+**User.** "Approve the plan and start building."
 
-**Observed (1/1).** Task order: (1) Prefactor rename → (2) Session → (3)
-Adapter → (4) AuthService → (5) Label. No `Risk:` lines. No human review list.
+**Observed (baseline without Execution-mode gate).** Agent sets `Status: Approved`
+without writing `Execution-mode:`, or defaults to continuous silently.
 
-**Failure.** Plan optimizes build/prefactor order; human blast-radius review
-is not a contract.
+**Failure.** Mode is optional theater; empty field becomes silent continuous.
 
-## GREEN — same scenario, upgraded skill
+## GREEN — with current skill
 
-**Observed (1/1).** Every task has **Risk** + **Decision surface**. Human
-review order: **2 → 4 → 3 → 5 → 1** (session / AuthService / adapter before
-label + mechanical rename). Execution Depends-on still allows prefactor as
-Task 1.
-
-**SCORE path (run):** `/tmp/wp-u2-green-47954/docs/specs/2026-07-26-github-oauth/SCORE.md`
+**Observed.** Agent refuses `Status: Approved` until user chooses
+`continuous` or `story-unit` and the header is written. Routes (worktree vs
+inline) offered only after mode is set.
 
 ## Rules this evidence owns
 
-| Rule in SKILL.md / template | Evidence |
+| Rule | Evidence |
 |---|---|
-| REQUIRED **Risk** and **Decision surface** per task | RED omitted; GREEN present |
-| **Human review order** section (attention ≠ Depends-on) | RED missing; GREEN 2→4→3→5→1 |
-| Rationalization: "prefactor first is always right" | GREEN kept Task 1 prefactor for build, review list still led with session |
-
-## Multi-rep under pressure (3/3)
-
-Same plan fixture; demo 15m + "don't waste time on fancy annotations".
-**3/3:** Risk+Decision on every task; Human review order led with session/API/auth
-before mechanical rename.
+| `Execution-mode:` required before Approved | RED approved without field; GREEN blocked |
+| No silent default to continuous | GREEN asks and writes |
+| No Risk / Decision surface / Human review order | Template + skill omit fields |
 
 ## Meta-test
 
-Class: **clear**. Hardened with rationalization row: "Demo in 15 minutes — skip
-fancy annotations" → plan incomplete until slots filled.
+Class: **clear**. "Offer routes" must not be conflated with "write mode field."

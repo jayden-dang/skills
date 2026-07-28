@@ -73,11 +73,13 @@ pasting them by hand.
 reminded that a team explainer may help reviewers — without blocking merge or PR
 when I skip it.
 
-- **XPLN-5.1** WHEN `finish-branch` (or an equivalent pre-integration menu) runs for a change that is multi-task, non-low risk, or architecture-affecting THE SYSTEM SHALL name `/explain-change` for the user as an optional step.
+- ~~**XPLN-5.1**~~ retired 2026-07-28: condition cited agent-authored per-task `Risk:` / "non-low risk", which never fires in production plans (0/9 filled) and is removed in favor of allocate-attention risk globs against the actual diff. Superseded by **XPLN-5.6**.
 - **XPLN-5.2** THE SYSTEM SHALL NOT withhold merge, PR, discard, or block options solely because no explainer exists or is stale.
 - **XPLN-5.3** THE SYSTEM SHALL NOT auto-invoke `explain-change` from `finish-branch`, `code-review`, `execute-plan`, `release`, or other model-invoked skills.
 - **XPLN-5.4** (guard) WHEN `finish-branch` names optional human checks THE SYSTEM SHALL CONTINUE TO name `/comprehend-change` under the conditions that skill's callers already use, without replacing that name with `/explain-change`.
 - **XPLN-5.5** WHERE workflow band is Solo THE SYSTEM SHALL still allow `/explain-change` when the user runs it; packaging MAY omit multi-person reviewer theater and MUST NOT invent peer approvers.
+- **XPLN-5.6** WHEN `finish-branch` (or an equivalent pre-integration menu) runs for a change that is multi-task, or whose diff touches any risk glob (default B1 set extended by `docs/agents/project.md` Risk globs when present), or is architecture-affecting THE SYSTEM SHALL name `/explain-change` for the user as an optional step.
+- **XPLN-5.7** (guard) WHEN the branch carries more than one task THE SYSTEM SHALL CONTINUE TO name `/explain-change` as an optional step.
 
 ## 6. Separation from comprehend-change and agent maps
 

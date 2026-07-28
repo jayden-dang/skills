@@ -53,7 +53,20 @@ holds a `ROAD-N` or `—`.
 ## Step 2: Write stories and EARS criteria
 
 One `## N. <title>` section per user story, each with acceptance criteria as
-EARS statements carrying hierarchical IDs `**CODE-N.M**`:
+EARS statements carrying hierarchical IDs `**CODE-N.M**` — **N is the story
+number** (same N as the `## N` heading). That identity is load-bearing: later
+skills derive review units from it.
+
+Each behavioral story carries:
+
+```
+**Story:** As a <actor>, I want <capability>, so that <benefit>.
+```
+
+The `**Story:**` line must name **one demoable act** a person can do or verify
+once the story lands — not a technical layer ("the storage layer is rewritten").
+
+EARS forms:
 
 - `WHEN <event> THE SYSTEM SHALL <behavior>` — event-driven
 - `WHILE <state> THE SYSTEM SHALL <behavior>` — state-driven
@@ -62,16 +75,33 @@ EARS statements carrying hierarchical IDs `**CODE-N.M**`:
 - `THE SYSTEM SHALL <behavior>` — always-true invariants
 
 One observable behavior per criterion. If a sentence needs "and", it is
-usually two criteria.
-**Done when:** every story has ≥1 criterion and every criterion has exactly
-one WHEN/WHILE/IF/WHERE/ubiquitous form.
+usually two criteria. There is **no criteria-count cap** — size is visible later
+from task file paths at plan/execute preflight, not from counting EARS lines.
+**Done when:** every story has ≥1 criterion, every criterion has exactly one
+WHEN/WHILE/IF/WHERE/ubiquitous form, and each `**Story:**` names one demoable act.
 
 ## Step 2b: Non-functional requirements (quality attributes)
 
 Behavioral criteria (Step 2) say *what* the system does; non-functional
 requirements (NFRs) say *how well* it must do it — and unstated quality
-attributes are where features quietly fail. After the behavioral criteria, walk
-the four quality attributes and capture each one that applies:
+attributes are where features quietly fail. After the behavioral criteria, fill
+the template's NFR section (pre-printed in `templates/requirements.md`):
+
+```
+## <N>. Quality attributes
+**Section-kind:** nfr
+```
+
+```
+SECTION-KIND IRON LAW
+- NFR section MUST carry **Section-kind:** nfr (pre-printed in the template —
+  do not delete it).
+- absent = story  (unmarked section is a behavioral review unit)
+- Fail visible: unmarked NFR → extra unit in preflight.
+- Fail silent (forbidden): marking a real story nfr → boundary disappears.
+```
+
+Walk the four quality attributes:
 
 - **Performance** — latency, throughput, resource ceilings.
 - **Security** — authn/authz, data protection, the trust boundaries crossed.
@@ -97,8 +127,8 @@ and both authoring modes are unchanged — NFRs surface quality concerns, they d
 not block on them. In tier-1 mini-spec mode, capture an NFR only when the fix
 itself is a quality-attribute change; the category adds no NFR obligation to a
 behavioral mini-spec.
-**Done when:** each of the four quality attributes is either captured as an IDed
-NFR criterion or explicitly recorded as `None`.
+**Done when:** the NFR section carries `**Section-kind:** nfr`, and each of the
+four quality attributes is either an IDed NFR criterion or explicitly `None`.
 
 ## Step 3: Guard existing behavior
 
@@ -136,10 +166,20 @@ Self-review before showing the user:
   Correct the criterion before the gate; do not read the code yourself. (No
   subagents? Do the check yourself against the code.)
 
+**Story-quality gate (consumer of demoable act).** Recipe:
+
+1. List every non-NFR `## N` with its `**Story:**` line.
+2. Ask the user to confirm each names **one** demoable act.
+3. **IF** any fails → split/rewrite and re-present. **IF** all confirmed → you may
+   set `Status: Approved` after they approve the file.
+4. Never silent-approve. "Looks fine" without the per-story yes is not confirmation.
+
 Then present the FILE to the user for review and STOP. Do not proceed to
 design on the strength of conversational agreement — the written requirements
-are what get approved. On approval, set `Status: Approved`.
-**Done when:** the user has approved the written file.
+are what get approved. On approval (including story-quality confirmation), set
+`Status: Approved`.
+**Done when:** the user has approved the written file and confirmed each
+behavioral story is one demoable act.
 
 ## ID immutability
 

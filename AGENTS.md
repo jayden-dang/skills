@@ -40,7 +40,8 @@ success" is not evidence. Read the diff yourself.
 the territory (codebase, runtime, users, history). Strong models still fail when
 unknowns stay implicit. Discover unknowns before build (`brainstorm` knowns
 inventory + blindspot, `grilling`, `research`/`prototype`), surface high-blast
-decisions in `write-plan` (**Human review order**), log mid-build **deviations**
+decisions in `write-plan` (**Execution-mode** and story-derived review units at
+`execute-plan`), log mid-build **deviations**
 in `.skills/implementation-notes.md` during `execute-plan`, and let the human
 re-check understanding with `/comprehend-change` before merge. Do not freeze
 unverified solution shape into requirement SHALLs.

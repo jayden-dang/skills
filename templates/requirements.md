@@ -35,6 +35,21 @@ Rules:
 - **<CODE>-2.1** ...
 - **<CODE>-2.2** (guard) WHEN <condition> THE SYSTEM SHALL CONTINUE TO <existing behavior>.
 
+## <N>. Quality attributes
+
+**Section-kind:** nfr
+
+**Story:** As a stakeholder, I want measurable quality targets for this feature, so that how-well is not left implicit.
+
+- **Performance:** **<CODE>-N.1** <target + verification method, or None — reason>
+- **Security:** **<CODE>-N.2** <target + verification method, or None — reason>
+- **Reliability:** **<CODE>-N.3** <target + verification method, or None — reason>
+- **Accessibility:** **<CODE>-N.4** <target + verification method, or None — reason>
+
+(Omit IDed lines only when the whole attribute is `None` with reason under the
+bullet. Sections without `**Section-kind:** nfr` are user stories — **absent =
+story**. Do not mark a behavioral story as nfr.)
+
 ## Out of Scope
 
 - <explicitly excluded behavior — protects against scope creep during implementation>

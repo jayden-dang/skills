@@ -43,7 +43,8 @@ Python unittest runner.
 
 ## Neighbors
 
-- XPLN-5.1 finish-branch names /explain-change when large/arch
+- XPLN-5.6 finish-branch names /explain-change when multi-task, risk-glob hit, or architecture-affecting
+- XPLN-5.7 multi-task branches CONTINUE TO get /explain-change named
 - XPLN-5.2 never withhold merge/PR for missing explainer
 - XPLN-5.3 never auto-invoke from model-invoked skills
 - XPLN-5.4 finish-branch still names /comprehend-change

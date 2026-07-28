@@ -104,9 +104,36 @@ publication-failure report), including any required `record-decision` publish.
 
 ## 6. Close the loop
 
-On merge or PR, remind the user (or do it, if the spec's tasks are all complete): REQUIRED SUB-SKILL: use `sync-spec` to update the feature's `Status:` line and trace state.
+### 6a. Spec status
 
-When the branch carries more than one task, or any task whose **Risk** slot is not low, **name** `/comprehend-change` for the user as an optional self-check before they merge (user-invoked — never auto-run it, never soft-prompt as a gate). When the change is multi-task, non-low risk, or architecture-affecting, also **name** `/explain-change` as an optional team-shared pitch+map under `docs/explainers/` (user-invoked — never auto-run, never withhold merge/PR because the file is missing). If `.skills/implementation-notes.md` has deviations, mention that path once so the human can fold them into review.
+On merge or PR, remind the user (or run it when tasks are complete): REQUIRED
+SUB-SKILL: use `sync-spec` to update the feature's `Status:` and trace state.
+
+### 6b. Name optional human skills (risk = diff path)
+
+**Leading word: risk glob** — match **actual diff paths** (not plan labels, not
+task count) against the default B1 set in
+`skills/review/allocate-attention/references/signals.md`, **extended** (never
+replaced) by `Risk globs` in `docs/agents/project.md` when present.
+
+**Recipe — run every close-loop (Merge, PR, Keep):**
+
+1. Count tasks in the plan (or commits if no plan): `multi_task = (count > 1)`.
+2. List paths in the branch diff vs base. `risk_hit = any path matches a risk glob`.
+3. Note `architecture_affecting` when the change rewrites public contracts /
+   persistence / auth boundaries (or the user/plan already said so).
+4. **IF** `multi_task OR risk_hit` → **name** `/comprehend-change` (user-invoked —
+   never auto-run, never soft-gate the menu).
+5. **IF** `multi_task OR risk_hit OR architecture_affecting` → **name**
+   `/explain-change` (user-invoked — never auto-run, never withhold merge/PR).
+6. **IF** `.skills/implementation-notes.md` has deviations → mention that path once.
+
+**Worked case:** one task, diff only `skills/auth/session.ts` → `risk_hit` true →
+name **both**. **Keep** still runs steps 4–5 (names only; no merge/PR).
+
+**Optional means the human may skip running the skill — you still name it.**
+
+**Done when:** steps 1–6 executed; names appear in the close-out when predicates hold.
 
 ## Red flags
 
@@ -119,6 +146,7 @@ Never:
 - Force-push on your own initiative — it happens only on an explicit request from the user, never as your idea of a fix
 - Execute merge/PR/discard before `record-decision` publishes successfully
 - Emit a decision record for keep, pause/defer, or mechanical failure alone
+- Omit `/comprehend-change` or `/explain-change` names because the branch is single-task, one-file, Keep-only, or a lead said "skip theater," while the diff still hits a risk glob
 
 | Thought | Reality |
 |---|---|
@@ -128,3 +156,7 @@ Never:
 | "Skip the record; merge is the real work" | Record-before-crossing: no merge/PR/discard without a published record. |
 | "Senior said skip paperwork — just merge" | Authority is not a gate exemption; publish the record or withhold the crossing. |
 | "Merge now, record tomorrow" | Deferred record is still an unrecorded crossing — same red flag. |
+| "Single-task / one-file — skip optional skill names" | Risk is the **diff path**, not task count. Auth (or any risk glob) still names both |
+| "Lead said skip the theater" | Authority is not a gate exemption. Name them; the human can ignore |
+| "Risk prompts are only for multi-task plans" | False. Multi-task **or** risk glob **or** architecture-affecting |
+| "Keep means no review prompts" | Keep still names optional self-check / explainer; it only skips merge/PR |

@@ -77,6 +77,18 @@ The immutable commit a **milestone assessment** is resolved against, handed to
 `write-roadmap` and recorded verbatim in that milestone's `Closed:` slot.
 _Avoid_: HEAD, "latest", a branch name
 
+**PR package**:
+The two-file handoff `prepare-change` writes and `finish-branch` submits:
+`manifest.md` (title, base/head refs and SHAs, ticket linkage, commits, findings,
+content digest) plus `body.md` (reviewer-facing prose only).
+_Avoid_: PR draft, PR template, description file
+
+**Advisory commit map**:
+The written regrouping `prepare-change` proposes for commits that already exist —
+groups, order, subjects, bodies, rationale, trailers to preserve — carrying no
+runnable rewrite command, because existing commits are never rewritten.
+_Avoid_: rebase plan, squash plan, cleanup script
+
 ## Relationships
 
 - A **spec triad** defines one feature and owns many **requirement IDs**
@@ -88,6 +100,8 @@ _Avoid_: HEAD, "latest", a branch name
 - A **milestone assessment** pairs one agent verdict with one **human disposition**
 - **Close eligibility** needs mechanical eligibility *and* a permitting **human disposition**
 - A **milestone assessment** resolves against exactly one **candidate closing revision**
+- A **PR package** is authored against exactly one base/head pair and is invalidated when either moves
+- An **advisory commit map** describes commits a **PR package** still reports as they actually are
 
 ## Flagged ambiguities
 

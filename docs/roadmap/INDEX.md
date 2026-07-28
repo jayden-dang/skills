@@ -44,20 +44,35 @@ ID rules:
 
 | ID | Milestone | Outcome | Depends-on | Commitment |
 |---|---|---|---|---|
-| MILE-1 | Reviewable delivery | A multi-person team can review skill-set changes as risk-aware, story-sized PRs instead of one mega-branch | none | Planned |
+| MILE-1 | Reviewable delivery | A multi-person team can review skill-set changes as risk-aware, story-sized PRs whose commits and PR description explain the change on their own | none | Planned |
+| MILE-2 | Faithful history | A reviewer reads a history and an explainer that match how the work will actually integrate, whatever branch it targets and however messily it was committed | MILE-1 | Planned |
 
 ## MILE-1 — Reviewable delivery
 
-**Outcome:** A multi-person team can review skill-set changes as risk-aware, story-sized PRs instead of one mega-branch — single-task work that touches risky paths gets a review prompt, and multi-story features can be reviewed one user story at a time into the feature branch while the full triad stays intact.
-**Goals:** GOAL-1, GOAL-2, GOAL-3, GOAL-5
+**Outcome:** A multi-person team can review skill-set changes as risk-aware, story-sized PRs instead of one mega-branch — single-task work that touches risky paths gets a review prompt, multi-story features can be reviewed one user story at a time into the feature branch while the full triad stays intact, and every PR arrives with commits and a description that explain the change itself rather than naming an identifier the reviewer cannot resolve.
+**Goals:** GOAL-1, GOAL-2, GOAL-3, GOAL-4, GOAL-5
 **Members:**
 - **ROAD-1** risk-glob-review-prompts — Surfaces: `skills/ship/finish-branch/SKILL.md`, `skills/spec/write-plan/SKILL.md`, `templates/tasks.md`, `skills/spec/write-plan/TESTS.md`, `AGENTS.md`, `tests/unknowns/`, `docs/guide/skills/explain-change.md` (shared with ROAD-2: `skills/spec/write-plan/SKILL.md`, `templates/tasks.md`)
 - **ROAD-2** story-derived-review-units — Surfaces: `skills/spec/write-requirements/SKILL.md`, `skills/spec/write-plan/SKILL.md`, `skills/execution/execute-plan/SKILL.md`, `templates/requirements.md`, `templates/tasks.md` (shared with ROAD-1: `skills/spec/write-plan/SKILL.md`, `templates/tasks.md`)
+- **ROAD-3** reviewer-facing-change-authoring — Surfaces: `skills/ship/prepare-change/`, `skills/ship/finish-branch/SKILL.md`, `skills/execution/execute-plan/SKILL.md`, `skills/setup/setup-repo/SKILL.md`, `templates/agents/project.md`, `docs/agents/project.md` (shared with ROAD-1: `skills/ship/finish-branch/SKILL.md`; shared with ROAD-2: `skills/execution/execute-plan/SKILL.md`)
 **Depends-on:** none
 **Commitment:** Planned
 **Closed:** None
 **Deferred:** None
 **Blockers:** None
+
+## MILE-2 — Faithful history
+
+**Outcome:** A reviewer reads a history and an explainer that match how the work will actually integrate — a branch whose commits were made messily can be reshaped into the approved commit map on request, and an explainer packet describes the change against the branch the work merges into rather than the repository's default branch.
+**Goals:** GOAL-1, GOAL-3
+**Members:**
+- **ROAD-4** gated-history-rewriting — Surfaces: `skills/ship/prepare-change/` (shared with ROAD-3)
+- **ROAD-5** shared-base-resolution-for-explainers — Surfaces: `skills/review/explain-change/SKILL.md`, `docs/specs/2026-07-27-explain-change/`
+**Depends-on:** MILE-1
+**Commitment:** Planned
+**Closed:** None
+**Deferred:** None
+**Blockers:** ROAD-4 is conditional on demonstrated demand for automated history rewriting; ROAD-5 requires a `sync-spec` pass because it edits a shipped, spec'd feature.
 
 ## Goal dispositions
 
@@ -66,4 +81,4 @@ that a goal is never silently dropped (S6).
 
 | Goal | Disposition | Date | Reason |
 |---|---|---|---|
-| GOAL-4 | Deferred | 2026-07-28 | setup-repo already shipped; this milestone deliberately adds no consumer-repo config (project-level mode default was rejected) |
+| *(none — every live GOAL-N is cited by a milestone)* | | | |

@@ -182,7 +182,7 @@ and countered by name. See [The gates](docs/guide/concepts/gates.md).
 | review | `code-review`, `receive-review`, `check-invariants` |
 | acceptance | `acceptance-check`, `acceptance-api`, `acceptance-ui`, `dogfood`, `drive-dogfood` |
 | craft | `design-page` |
-| ship | `finish-branch`, `release` |
+| ship | `prepare-change`, `finish-branch`, `release` |
 | track | `amend`, `correct-course`, `triage`, `sync-spec`, `check-roadmap`, `assess-milestone`, `improve-architecture`, `handoff`, `file-issues` |
 | project | `establish-project`, `repoint-project`, `write-roadmap` (optional project / multi-milestone layer) |
 

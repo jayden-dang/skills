@@ -1,6 +1,6 @@
 # AGENTS.md — Agent Behavior Constitution
 
-> **A-to-Z Agentic Development Skill Set** | 49 skills across 11 categories |
+> **A-to-Z Agentic Development Skill Set** | 50 skills across 11 categories |
 > `jayden-dang/skills` | v1.0
 
 This file is the single source of truth for agent behavior when working with this
@@ -85,7 +85,7 @@ these when conditions match. This includes `using-skills`, `brainstorm`,
 `grilling`, `research`, `prototype`, `domain-modeling`, the full spec triad,
 `execute-plan`, `tdd`, `debug`, `verify`, `worktrees`, `code-review`,
 `receive-review`, `check-invariants`, the acceptance suite, `finish-branch`,
-`record-decision`, `amend`, `write-roadmap`, and
+`prepare-change`, `record-decision`, `amend`, `write-roadmap`, and
 `sync-spec`.
 
 **Session-injected skill:** `using-skills` is injected by the `SessionStart` hook
@@ -315,7 +315,7 @@ Can't tick a box? The work is not done.
 
 ---
 
-## 11. Quick Reference: The 49 Skills
+## 11. Quick Reference: The 50 Skills
 
 **Legend:** (m) model-invoked · (U) user-invoked · (si) session-injected
 
@@ -329,7 +329,7 @@ Can't tick a box? The work is not done.
 | **review** | `code-review` (m), `allocate-attention` (U), `comprehend-change` (U), `explain-change` (U), `polish` (m), `receive-review` (m), `check-invariants` (m) |
 | **acceptance** | `acceptance-check` (m), `acceptance-api` (m), `acceptance-ui` (m), `dogfood` (m), `drive-dogfood` (m) |
 | **craft** | `design-page` (m) |
-| **ship** | `finish-branch` (m), `record-decision` (m), `release` (U) |
+| **ship** | `prepare-change` (m), `finish-branch` (m), `record-decision` (m), `release` (U) |
 | **track** | `amend` (m), `correct-course` (m), `triage` (U), `sync-spec` (m), `check-roadmap` (U), `assess-milestone` (U), `improve-architecture` (U), `handoff` (U), `file-issues` (U) |
 | **project** | `establish-project` (U), `repoint-project` (U), `write-roadmap` (m) |
 

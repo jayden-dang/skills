@@ -43,6 +43,7 @@
         "./skills/review/polish",
         "./skills/review/receive-review",
         "./skills/ship/finish-branch",
+        "./skills/ship/prepare-change",
         "./skills/ship/record-decision",
         "./skills/ship/release",
         "./skills/track/amend",

@@ -109,7 +109,12 @@ AUTHOR LOCALLY, NEVER CROSS — push, PR, merge, discard, and block belong to fi
 4. **Resolve tickets** — resolve the branch's tracker items and classify each against
    the diff.
 
-   REQUIRED: load tickets.md and follow it exactly.
+   WHEN `docs/agents/issue-tracker.md` is present and declares a configured
+   tracker, REQUIRED: load tickets.md and follow it exactly. WHEN it is
+   absent or declares no tracker, record an empty ticket set and continue —
+   an unconfigured tracker is a normal state, not a failure, so this phase
+   need not load tickets.md just to reach the same empty-set outcome its own
+   gate already describes.
 
 5. **Author commits** — group, validate, and commit the working tree one coherent
    change at a time, without rewriting any pre-existing commit.

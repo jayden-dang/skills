@@ -80,10 +80,6 @@ skill's own written default, not a claim derived from repository history.
 | `declared` | Written documentation (`.gitmessage`, `CONTRIBUTING.md`, PR template) **or** the skill's own reviewer-centred fallback shape (commit-ladder rung 3, or the PR-structure fallback when no template or guidance exists) | `reported` |
 | `inferred` | Rung 2 — sampled from commit history | Labelled **inferred** and any finding raised against it is treated as **advisory** only — never a hard gate |
 
-Where a convention was derived from commit history, label it `inferred` in
-the convention record and in any finding raised against it, and treat that
-finding as advisory: surface it, never block on it.
-
 The "Treatment" column names the **finding** grade(s) a convention of that
 source can produce — it is not a fourth convention grade. `SKILL.md` defines
 a four-value finding vocabulary — `advisory`, `reported`, `not run`,

@@ -45,8 +45,9 @@ gates that skill already enforces.
 6. **Write package** — the reviewer-facing PR package `finish-branch` approves and
    submits.
 
-This page describes the skill's registration and phase order as scaffolded; the
-per-phase contracts land with the tasks that fill each phase in.
+This page describes the skill's registration and phase order; each phase's full
+contract lives in `SKILL.md` and, for phases 2, 4, and 6, in the loaded
+reference file (`conventions.md`, `tickets.md`, `package-contract.md`).
 
 ## What it is not
 

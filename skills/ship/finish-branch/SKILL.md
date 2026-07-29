@@ -70,8 +70,7 @@ Before `record-decision` runs, on options **1 (merge)** and **2 (PR)**: display
 the resolved ticket set (the `[{ id, title, classification, linkage_syntax }]`
 list `prepare-change`'s ticket resolution produced) and ask whether any
 missing ticket should be created or supplemented. Ask this question even with
-no tracker configured — an absent tracker does not skip it, the checkpoint
-still asks the same missing-ticket question either way. If the user asks for
+no tracker configured — the checkpoint still asks it. If the user asks for
 a ticket to be created, pause the crossing here and ask the user to run
 `/file-issues` themselves: name it, never invoke it — `/file-issues` is
 user-invoked and `finish-branch` is model-invoked (ARCH-5).
@@ -122,11 +121,15 @@ git checkout <base-branch> && git pull && git merge <feature-branch>
 
 Re-run the verify suite **on the merged result, before removing any worktree**. Only after it passes: clean up the worktree (step 5), then `git branch -d <feature-branch>`.
 
-**Option 2 — push + PR.** After a successful record: `git push -u origin
-<feature-branch>`, then, **immediately before submission**, re-resolve the
-base and head SHAs and recompute `Content-digest:` using
-`package-contract.md`'s exact recipe, unparaphrased — the readability guard
-runs first and aborts before the pipe:
+**Option 2 — push + PR.** After a successful record:
+
+1. `git push -u origin <feature-branch>`.
+2. **Immediately before submission**, re-resolve the base and head SHAs and
+   recompute `Content-digest:` using `package-contract.md`'s exact recipe,
+   unparaphrased — the readability guard runs first and aborts before the
+   pipe. (This block must stay byte-identical to `package-contract.md`'s own
+   `Content-digest:` recipe — the drift check depends on both computing the
+   same bytes.)
 
 ```bash
 test -r ".skills/pr-packages/<stable-id>/title.txt" || {
@@ -140,24 +143,26 @@ test -r ".skills/pr-packages/<stable-id>/body.md" || {
 { cat ".skills/pr-packages/<stable-id>/title.txt"; cat ".skills/pr-packages/<stable-id>/body.md"; } | git hash-object --stdin
 ```
 
-If either resolved SHA or the recomputed digest differs from the approved
-values, that mismatch invalidates the approval: do not submit — return to
-the 4a checkpoint to re-author, revalidate, redisplay, and reapprove before
-trying again. Because `record-decision` already published against the
-now-invalidated digest, this reapproval requires a fresh `record-decision`
-publish — carrying the reapproved values — before submission is retried, so
-the published record always describes what actually crosses. Once both
-SHAs and the digest still match, submit the approved title, base, head,
-and body **without re-authoring** them, reading the title from `title.txt`
-rather than interpolating it into the command:
+3. **Mismatch branch.** If either resolved SHA or the recomputed digest
+differs from the approved values, that mismatch invalidates the approval: do
+not submit — return to the 4a checkpoint to re-author, revalidate,
+redisplay, and reapprove before trying again. Because `record-decision`
+already published against the now-invalidated digest, this reapproval
+requires a fresh `record-decision` publish — carrying the reapproved values
+— before submission is retried, so the published record always describes
+what actually crosses.
+4. **Match branch.** Once both SHAs and the digest still match, submit the
+approved title, base, head, and body **without re-authoring** them, reading
+the title from `title.txt` rather than interpolating it into the command:
 
 ```bash
 gh pr create --base <base> --title "$(cat ".skills/pr-packages/<stable-id>/title.txt")" --body-file ".skills/pr-packages/<stable-id>/body.md"
 ```
 
-— using the package's own `Base:` rather than recomputing one. **Keep the
-worktree** — the user needs it to iterate on review feedback. **Team
-packaging:** when `docs/agents/project.md` has `## Team` with a non-empty
+— using the package's own `Base:` rather than recomputing one.
+5. **Keep the worktree** — the user needs it to iterate on review feedback.
+
+**Team packaging:** when `docs/agents/project.md` has `## Team` with a non-empty
 **roster** or band override, read **band**/**packaging** from that section —
 Solo: no invented reviewer list in PR body language; Small/Multi: suggest
 reviewers from roster/ownership notes in PR prose. No new menu item. Missing

@@ -158,7 +158,7 @@ If **Yes**: note it for Step 4 (seed the three docs + the Agent-skills line). If
 
 ### J. Default PR base
 
-Explainer: `prepare-change` reads `Default PR base:` from `docs/agents/project.md` as the third rung of its base-resolution ladder — after an explicit invocation base and a base already recorded on an existing PR — so it stops asking once a trunk is on record; `finish-branch` never recomputes a base, it simply uses whatever base the package already carries.
+Explainer: `prepare-change` reads `Default PR base:` from `docs/agents/project.md` as the third rung of its base-resolution ladder — after an explicit invocation base and a base already recorded on an existing PR — so it stops asking once a trunk is on record. `finish-branch` still runs its own topology detection (Step 2) and, on Option 1, prefers a PR package's recorded `Base:` over that detection when one exists for the session — this field feeds `prepare-change`'s resolution, not a value `finish-branch` consumes directly.
 
 Offer `dev`, `staging`, `main`, and the repo's own local branch list as suggestions only; no value is pre-selected — the user always names the branch themselves.
 

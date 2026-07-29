@@ -77,9 +77,9 @@ a ticket to be created, pause the crossing here and ask the user to run
 user-invoked and `finish-branch` is model-invoked (ARCH-5).
 
 On option **2 (PR)** only, also display the exact package content read from
-`.skills/pr-packages/<stable-id>/manifest.md` and `body.md` — title, base,
-head, body, ticket linkage, commits, advisory commit map, convention
-findings, validation results — and offer exactly three responses:
+`.skills/pr-packages/<stable-id>/manifest.md`, `title.txt`, and `body.md` —
+title, base, head, body, ticket linkage, commits, advisory commit map,
+convention findings, validation results — and offer exactly three responses:
 **approve**, **request edits**, or **cancel**. On request edits: re-author
 the affected content, revalidate it, redisplay the full package, and require
 a fresh approval — an edit never carries forward a prior approval; the loop

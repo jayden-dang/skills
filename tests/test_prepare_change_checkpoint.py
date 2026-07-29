@@ -125,6 +125,31 @@ class FinishBranchCheckpoint(unittest.TestCase):
         """PCHG-11.6 — force-push remains user-request-only."""
         self.assertRegex(self.text, r"Force-push on your own initiative")
 
+    def test_PCHG_6_1_package_described_as_three_files(self):
+        """PCHG-6.1 — finish-branch describes the PR package as the three
+        files package-contract.md defines (manifest.md, title.txt, body.md),
+        never the stale two-file shape. Scoped to the 4a checkpoint's
+        package-display step, where an older draft named only manifest.md
+        and body.md after prepare-change grew a third file."""
+        start = self.text.find("### 4a. Ticket and content checkpoint")
+        end = self.text.find(
+            "For options **1 (merge), 2 (PR), 4 (discard), and 5 (block)**"
+        )
+        self.assertNotEqual(start, -1, "4a checkpoint heading not found")
+        self.assertNotEqual(end, -1, "record-decision options line not found")
+        section = self.text[start:end]
+        for filename in ("manifest.md", "title.txt", "body.md"):
+            self.assertIn(filename, section, f"{filename} missing from 4a package description")
+        # The stale wording named only manifest.md and body.md side by side,
+        # with no title.txt in between — guard against that exact shape.
+        self.assertNotRegex(
+            section,
+            r"manifest\.md`\s+and\s+`body\.md`",
+            "package description lists only two files (manifest.md and body.md)",
+        )
+        self.assertNotIn("two-file", self.text.lower())
+        self.assertNotIn("two files", self.text.lower())
+
 
 if __name__ == "__main__":
     unittest.main()

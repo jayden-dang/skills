@@ -15,6 +15,7 @@ Edit these two lines directly whenever the project moves phase — no wizard nee
 
 - **Delivery intent:** `Production` — how robust and complete the output must be.
 - **Lifecycle stage:** `Active development` — where the project is in its life.
+- **Default PR base:** `main` — the branch `prepare-change` reads as the third rung of its base-resolution ladder and `finish-branch` uses without recomputing.
 
 These are distinct from the product **Goals** in `docs/product/vision.md` (what success
 looks like): posture is *how carefully to build right now*, not *what to build*.

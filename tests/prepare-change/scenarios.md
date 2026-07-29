@@ -188,6 +188,17 @@ story's IDs under its heading as they implement it.
 
 ## 10. Configure the default PR base once
 
+- PCHG-10.1 `setup-repo`'s decision walk asks the user to choose a default PR
+  base
+- PCHG-10.2 git topology and common branch names are offered as suggestions
+  only; no value is selected on the user's behalf
+- PCHG-10.3 a confirmed value is written as `Default PR base:` into
+  `docs/agents/project.md`
+- PCHG-10.4 `templates/agents/project.md` carries a `Default PR base:` slot in
+  its seed
+- PCHG-10.5 declining to choose writes no value and leaves the base to be
+  asked per invocation
+
 ## 11. Preserved behavior of the skills this feature edits
 
 - PCHG-11.1 (guard) merge and PR stay withheld while any verify, trace, or
@@ -209,6 +220,12 @@ story's IDs under its heading as they implement it.
   between tasks to ask permission to continue
 - PCHG-11.9 (guard) `execute-plan` still appends each completed task's line
   to `.skills/progress.md`
+- PCHG-11.10 (guard) `setup-repo` still walks its decisions one at a time,
+  waiting for the user's answer before moving on
+- PCHG-11.11 (guard) `setup-repo` still merges additively into a file that
+  already exists, preserving content the user wrote
+- PCHG-11.12 (guard) `setup-repo` still runs its Step 6 verification gate
+  over every configured command before finishing
 - PCHG-11.13 skill exists, is model-invoked, and is registered in both plugin
   manifests, `AGENTS.md`, and `README.md`
 

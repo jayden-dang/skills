@@ -41,7 +41,7 @@ You may still read the repo's own manifests (lockfiles, `package.json` scripts, 
 
 ## 2. Decide, one section at a time
 
-Walk the nine decisions below (A–I; I is optional project-docs) strictly one at a time: give a two-or-three-sentence explainer (what this is, which skills consume it, what changes with each choice), state your recommendation with a one-line reason, then wait for the user's answer before moving on. Never dump all sections at once. Assume the user has not seen these concepts before.
+Walk the ten decisions below (A–J; I is optional project-docs) strictly one at a time: give a two-or-three-sentence explainer (what this is, which skills consume it, what changes with each choice), state your recommendation with a one-line reason, then wait for the user's answer before moving on. Never dump all sections at once. Assume the user has not seen these concepts before.
 
 ### A. Issue tracker
 
@@ -156,6 +156,18 @@ If **Yes**: note it for Step 4 (seed the three docs + the Agent-skills line). If
 
 **Done when:** the layer is opted in or declined.
 
+### J. Default PR base
+
+Explainer: `prepare-change` reads `Default PR base:` from `docs/agents/project.md` as the third rung of its base-resolution ladder — after an explicit invocation base and a base already recorded on an existing PR — so it stops asking once a trunk is on record; `finish-branch` never recomputes a base, it simply uses whatever base the package already carries.
+
+Offer `dev`, `staging`, `main`, and the repo's own local branch list as suggestions only; no value is pre-selected — the user always names the branch themselves.
+
+Recommendation: the repo's actual trunk branch (commonly `main`) — one-line reason: it is the branch `prepare-change` and `finish-branch` already assume unless told otherwise.
+
+Declining: if the user declines to choose, write no value at all and skip the Step 4 item for this field — `prepare-change` then asks for the base on every invocation, which is what keeps the field genuinely optional under ARCH-2.
+
+**Done when:** the user has confirmed a value, or has explicitly declined and no value will be written.
+
 ## 3. Draft and confirm
 
 Show the user, before writing anything:
@@ -219,6 +231,7 @@ Repo config the skills read:
 ```
 
 8. Ensure the local working dirs are git-ignored: the skills' scratch artifacts — `execute-plan`'s ledger and briefs, and the scan/review digests the spec skills write — live under `.skills/`, and isolated workspaces under `.worktrees/`; neither belongs in version control. Idempotently, for each pattern: `grep -qxF '.skills/' .gitignore 2>/dev/null || printf '.skills/\n' >> .gitignore` (same for `.worktrees/`), then stage `.gitignore`. (A line-presence check, not `git check-ignore` — a trailing-slash pattern only matches an *existing* directory, so `check-ignore` would re-append before the dir exists.)
+9. If decision J (Default PR base) was confirmed, add `- **Default PR base:** \`<branch>\`` to the **Project posture** section of `docs/agents/project.md`, under the additive rule above — merge in, never clobber a value the user already set. If the user declined decision J, write nothing: leave the field absent so `prepare-change` asks per invocation.
 
 **Done when:** all files are written, `.skills/` and `.worktrees/` are git-ignored, and `git status` shows only the expected additions/edits.
 

@@ -15,6 +15,7 @@ Edit these two lines directly whenever the project moves phase — no wizard nee
 
 - **Delivery intent:** `<Production | MVP | Prototype | Research | Learning>` — how robust and complete the output must be.
 - **Lifecycle stage:** `<Idea | Early development | Active development | Released | Scaling | Maintenance>` — where the project is in its life.
+- **Default PR base:** `<branch, e.g. main>` — optional; `prepare-change` reads it as the third rung of its base-resolution ladder and `finish-branch` uses the base the package already carries, without recomputing. Leave the placeholder unset and `prepare-change` asks for the base per invocation instead.
 
 These are distinct from the product **Goals** in `docs/product/vision.md` (what success
 looks like): posture is *how carefully to build right now*, not *what to build*.

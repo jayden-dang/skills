@@ -194,10 +194,11 @@ class PrepareChangePackage(unittest.TestCase):
         self.assertTrue(PKG.exists(), "package-contract.md missing")
         self.text = PKG.read_text()
 
-    def test_PCHG_6_1_6_4_two_file_layout(self):
-        """PCHG-6.1 PCHG-6.4 — manifest.md and body.md, with body.md reviewer-facing only."""
+    def test_PCHG_6_1_6_4_three_file_layout(self):
+        """PCHG-6.1 PCHG-6.4 — manifest.md, title.txt, and body.md, with body.md reviewer-facing only."""
         self.assertIn(".skills/pr-packages/", self.text)
         self.assertIn("manifest.md", self.text)
+        self.assertIn("title.txt", self.text)
         self.assertIn("body.md", self.text)
         self.assertRegex(self.text, r"(?s)body\.md.{0,200}reviewer-facing")
 

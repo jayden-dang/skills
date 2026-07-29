@@ -18,7 +18,7 @@ reviewer-readable commits and one approved PR package, and wire it into
 base resolution, convention resolution, context gathering, ticket resolution, commit
 authoring, package writing — with three sibling reference files carrying the detailed
 contracts so the body stays under the line budget. The package
-(`.skills/pr-packages/<stable-id>/{manifest.md,body.md}`) is the seam:
+(`.skills/pr-packages/<stable-id>/{manifest.md,title.txt,body.md}`) is the seam:
 `finish-branch` gains a checkpoint that displays it, approves it, revalidates its
 digest, and submits it, while `execute-plan` gains one step that routes into the new
 skill and `setup-repo` gains one decision that persists `Default PR base:`.
@@ -723,7 +723,7 @@ _Requirements: PCHG-1.1, PCHG-1.2, PCHG-1.3, PCHG-1.4, PCHG-1.5, PCHG-1.6, PCHG-
 
 **Interfaces:**
 - Consumes: base (Task 2), convention record (Task 3), context record (Task 4), ticket set (Task 5), created-commit list (Task 6)
-- Produces: `.skills/pr-packages/<stable-id>/manifest.md` and `body.md`, and the digest field name `Content-digest:` (consumed by Task 9)
+- Produces: `.skills/pr-packages/<stable-id>/manifest.md`, `title.txt`, and `body.md`, and the digest field name `Content-digest:` (consumed by Task 9)
 
 **Depends-on:** Task 6
 
@@ -740,10 +740,11 @@ class PrepareChangePackage(unittest.TestCase):
         self.assertTrue(PKG.exists(), "package-contract.md missing")
         self.text = PKG.read_text()
 
-    def test_PCHG_6_1_6_4_two_file_layout(self):
-        """PCHG-6.1 PCHG-6.4 — manifest.md and body.md, with body.md reviewer-facing only."""
+    def test_PCHG_6_1_6_4_three_file_layout(self):
+        """PCHG-6.1 PCHG-6.4 — manifest.md, title.txt, and body.md, with body.md reviewer-facing only."""
         self.assertIn(".skills/pr-packages/", self.text)
         self.assertIn("manifest.md", self.text)
+        self.assertIn("title.txt", self.text)
         self.assertIn("body.md", self.text)
         self.assertRegex(self.text, r"(?s)body\.md.{0,200}reviewer-facing")
 
@@ -783,24 +784,27 @@ Run: `python3 -m unittest tests.test_prepare_change_contract` — expect: `Asser
 - [ ] **Step 2: Implement**
 
 Create `package-contract.md`: the layout block
-`.skills/pr-packages/<stable-id>/{manifest.md,body.md}`; `<stable-id>` sanitized and
-head-derived with the explicit "a raw branch name never reaches the path" rule; the
-`manifest.md` field list (package version, exact PR title, base and head refs with
-resolved SHAs, ticket and sub-issue linkage, commits actually on the branch, advisory
-commit map, convention findings, validation results, `Content-digest:`); `body.md`
-holds reviewer-facing content only; the digest is `git hash-object` over the title
-bytes and over `body.md`, chosen because git is already required and its hashing is
-platform-uniform; nothing is written before `.skills/` is proven git-ignored by a
-line-presence check on `.gitignore`; package files never enter a commit plan; package
-paths are never shown as reviewer-facing locators. In `SKILL.md`, the `Write package`
-phase states its summary and `REQUIRED: load package-contract.md and follow it
-exactly`. Append `PCHG-6.1` … `PCHG-6.7` to `scenarios.md`.
+`.skills/pr-packages/<stable-id>/{manifest.md,title.txt,body.md}`; `<stable-id>`
+sanitized and head-derived with the explicit "a raw branch name never reaches the
+path" rule; the `manifest.md` field list (package version, exact PR title, base and
+head refs with resolved SHAs, ticket and sub-issue linkage, commits actually on the
+branch, advisory commit map, convention findings, validation results,
+`Content-digest:`); `title.txt` holds the approved title alone, byte-exact, so it is
+read from disk rather than interpolated into a shell command; `body.md` holds
+reviewer-facing content only; the digest is `git hash-object` over the title bytes
+(read from `title.txt`) and over `body.md`, chosen because git is already required
+and its hashing is platform-uniform; nothing is written before `.skills/` is proven
+git-ignored by a line-presence check on `.gitignore`; package files never enter a
+commit plan; package paths are never shown as reviewer-facing locators. In
+`SKILL.md`, the `Write package` phase states its summary and `REQUIRED: load
+package-contract.md and follow it exactly`. Append `PCHG-6.1` … `PCHG-6.7` to
+`scenarios.md`.
 
 Run: `python3 -m unittest tests.test_prepare_change_contract` — expect: pass.
 
 - [ ] **Step 3: Commit**
 
-`git commit -m "feat(prepare-change): two-file PR package with a git-hashed digest" # trailer: Implements: PCHG-6.1`
+`git commit -m "feat(prepare-change): three-file PR package with a git-hashed digest" # trailer: Implements: PCHG-6.1`
 
 _Requirements: PCHG-6.1, PCHG-6.2, PCHG-6.3, PCHG-6.4, PCHG-6.5, PCHG-6.6, PCHG-6.7_
 
@@ -937,7 +941,7 @@ _Requirements: PCHG-7.1, PCHG-7.2, PCHG-7.3, PCHG-7.4, PCHG-7.5, PCHG-7.6, PCHG-
 **Reuse:** existing — extends `finish-branch`'s Step 4 execution path; adds no menu item and no new gate (rung 2)
 
 **Interfaces:**
-- Consumes: `.skills/pr-packages/<stable-id>/{manifest.md,body.md}` and `Content-digest:` (Task 7), the ticket set (Task 5)
+- Consumes: `.skills/pr-packages/<stable-id>/{manifest.md,title.txt,body.md}` and `Content-digest:` (Task 7), the ticket set (Task 5)
 - Produces: the approved-package state consumed by `gh pr create --base <base> --body-file <path>`
 
 **Depends-on:** Task 7

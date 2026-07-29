@@ -78,9 +78,9 @@ The immutable commit a **milestone assessment** is resolved against, handed to
 _Avoid_: HEAD, "latest", a branch name
 
 **PR package**:
-The two-file handoff `prepare-change` writes and `finish-branch` submits:
+The three-file handoff `prepare-change` writes and `finish-branch` submits:
 `manifest.md` (title, base/head refs and SHAs, ticket linkage, commits, findings,
-content digest) plus `body.md` (reviewer-facing prose only).
+digest), `title.txt` (the title alone), and `body.md` (reviewer-facing prose only).
 _Avoid_: PR draft, PR template, description file
 
 **Advisory commit map**:

@@ -109,8 +109,9 @@ story's IDs under its heading as they implement it.
 
 ## 6. Hand over one exact, self-describing package
 
-- PCHG-6.1 the package is written as `.skills/pr-packages/<stable-id>/manifest.md`
-  and `.skills/pr-packages/<stable-id>/body.md`
+- PCHG-6.1 the package is written as `.skills/pr-packages/<stable-id>/manifest.md`,
+  `.skills/pr-packages/<stable-id>/title.txt`, and
+  `.skills/pr-packages/<stable-id>/body.md`
 - PCHG-6.2 `<stable-id>` is a sanitized, head-derived value; a raw branch name
   never reaches the package path
 - PCHG-6.3 `manifest.md` records the package version, the exact PR title, the

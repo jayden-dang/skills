@@ -9,7 +9,7 @@
 | **Bucket** | ship |
 | **Invocation** | model-invocable (the agent calls it on its own) |
 | **Reads** | the working tree and branch history, `docs/agents/project.md` (base and convention config), `docs/agents/issue-tracker.md`, approved specs, ADRs, decision records, `.skills/implementation-notes.md` |
-| **Writes** | commits it creates itself; `.skills/pr-packages/<stable-id>/{manifest.md,body.md}` |
+| **Writes** | commits it creates itself; `.skills/pr-packages/<stable-id>/{manifest.md,title.txt,body.md}` |
 | **Calls** | — |
 | **Called by** | [`execute-plan`](execute-plan.md) (its closing sequence, before `finish-branch`) |
 

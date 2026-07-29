@@ -64,12 +64,14 @@ boundary).
 3. **The PR base is declared, never inferred.** `setup-repo` persists `Default PR
    base:`; `prepare-change` reads it, and asks when it is absent or ambiguous. Git
    topology is a setup-time suggestion, never a selector. → ADR 0005.
-4. **The package is two files plus a digest computed with `git hash-object`.**
-   `manifest.md` holds every machine-checkable field, `body.md` holds only
-   reviewer-facing prose, and the digest covers the exact title bytes and `body.md`
-   bytes. `git hash-object` is chosen over `shasum`/`sha256sum` because git is already
-   a hard dependency and its object hashing is uniform across platforms, which
-   `shasum` is not — and because ARCH-3 forbids shipping a hashing script.
+4. **The package is three files plus a digest computed with `git hash-object`.**
+   `manifest.md` holds every machine-checkable field, `title.txt` holds the approved
+   title alone so it is read from disk rather than interpolated into a shell command,
+   `body.md` holds only reviewer-facing prose, and the digest covers the exact title
+   bytes and `body.md` bytes. `git hash-object` is chosen over `shasum`/`sha256sum`
+   because git is already a hard dependency and its object hashing is uniform across
+   platforms, which `shasum` is not — and because ARCH-3 forbids shipping a hashing
+   script. → §F.
 5. **The passive-data contract is reused by path, not copied.** `prepare-change`
    loads `skills/review/explain-change/references/passive-data-safety.md`. Precedent:
    `finish-branch/SKILL.md:116` already cites

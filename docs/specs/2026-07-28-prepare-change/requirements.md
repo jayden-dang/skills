@@ -107,7 +107,7 @@ merely references what it did not.
 authored PR content to exist as files that describe exactly which branch state
 they belong to, so that nothing has to be reconstructed from conversation.
 
-- **PCHG-6.1** WHEN authoring completes THE SYSTEM SHALL write the package as `.skills/pr-packages/<stable-id>/manifest.md` and `.skills/pr-packages/<stable-id>/body.md`.
+- **PCHG-6.1** WHEN authoring completes THE SYSTEM SHALL write the package as `.skills/pr-packages/<stable-id>/manifest.md`, `.skills/pr-packages/<stable-id>/title.txt`, and `.skills/pr-packages/<stable-id>/body.md`.
 - **PCHG-6.2** THE SYSTEM SHALL derive `<stable-id>` as a sanitized or head-derived value and SHALL NOT place a raw branch name in the package path.
 - **PCHG-6.3** THE SYSTEM SHALL record in `manifest.md` the package version, the exact PR title, the base and head refs with their resolved commit SHAs, the ticket and sub-issue linkage, the list of commits actually present on the branch, the advisory commit map, the convention findings, the validation results, and the digest of the title together with `body.md`.
 - **PCHG-6.4** THE SYSTEM SHALL place only reviewer-facing pull-request content in `body.md`.

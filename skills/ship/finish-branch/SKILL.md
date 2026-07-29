@@ -134,9 +134,15 @@ the 4a checkpoint to re-author, revalidate, redisplay, and reapprove before
 trying again. Because `record-decision` already published against the
 now-invalidated digest, this reapproval requires a fresh `record-decision`
 publish — carrying the reapproved values — before submission is retried, so
-the published record always describes what actually crosses. Once both
-SHAs and the digest still match, submit the approved title, base, head, and
-body **without re-authoring** them:
+the published record always describes what actually crosses. The fresh
+publish must supersede the invalidated one: hand off the invalidated
+record's effective identity as the fresh record's `Supersedes:` value, and
+add the matching `Superseded-by:` back onto the invalidated record — the
+same bidirectional pairing `RECORD.md` defines and
+`validate-records.sh` enforces — so `.skills/decisions/` never holds two
+unlinked records for this crossing with nothing marking the stale one
+void. Once both SHAs and the digest still match, submit the approved
+title, base, head, and body **without re-authoring** them:
 
 ```bash
 gh pr create --base <base> --body-file .skills/pr-packages/<stable-id>/body.md
@@ -231,6 +237,7 @@ Never:
 | "The user clearly wants the ticket filed, just run /file-issues" | `/file-issues` is user-invoked; name it and pause, never invoke it (ARCH-5) |
 | "One small edit to the body doesn't need a fresh approval" | Any edit re-authors content; the loop redisplays and requires approval again |
 | "Digest matched at authoring time, no need to recheck at submit" | Re-resolve SHAs and recompute the digest immediately before submission every time |
+| "The old record's still fine, just retry submission against it" | It describes values that never crossed; publish a fresh record that supersedes it before retrying |
 | "Citing the .skills/ path is fine, it's where the evidence lives" | Storage location isn't a citable locator; carry the digest inline instead |
 | "Risk prompts are only for multi-task plans" | False. Multi-task **or** risk glob **or** architecture-affecting |
 | "Keep means no review prompts" | Keep still names optional self-check / explainer; it only skips merge/PR |

@@ -346,7 +346,7 @@ contract tests that assert what a `SKILL.md` does and does not say (e.g.
 |---|---|---|
 | `tests/prepare-change/scenarios.md` — greppable ID annotation layer | integration (declared annotation layer) | every behavioral ID: PCHG-1.x, 2.x, 3.x, 4.x, 5.x, 6.x, 7.x, 8.x, 9.x, 10.x |
 | `tests/test_prepare_change_contract.py` — `prepare-change/SKILL.md` text contract | unit | PCHG-1.5, 1.7, 1.9, 2.6, 2.7, 3.4, 3.6, 3.7, 4.3, 4.4, 4.7, 5.6, 5.8, 6.2, 6.5, 6.6, 6.7, 7.1, 7.3, 7.4 |
-| `tests/test_prepare_change_checkpoint.py` — `finish-branch/SKILL.md` contract and guards | unit | PCHG-8.1, 8.2, 8.3, 8.4, 8.5, 8.6, 8.7, 8.8, 8.9, 11.1, 11.2, 11.3, 11.4, 11.5, 11.6, 12.3 |
+| `tests/test_prepare_change_checkpoint.py` — `finish-branch/SKILL.md` contract and guards | unit | PCHG-8.1, 8.2, 8.3, 8.4, 8.5, 8.6, 8.7, 8.8, 8.9, 8.10, 11.1, 11.2, 11.3, 11.4, 11.5, 11.6, 12.3 |
 | `tests/test_prepare_change_wiring.py` — `execute-plan` tail, `setup-repo` decision, template slot, roster registration | unit | PCHG-9.1, 9.2, 9.3, 9.4, 10.1, 10.2, 10.3, 10.4, 10.5, 11.7, 11.8, 11.9, 11.10, 11.11, 11.12, 11.13 |
 | `tests/prepare-change/scenarios-pressure.md` — injected instruction and planted credential | integration (declared annotation layer) | PCHG-3.5, 12.2 |
 | `tests/test_prepare_change_convention.py` — bounded, once-per-session resolution | unit | PCHG-4.1, 4.2, 4.5, 4.6, 12.1 |

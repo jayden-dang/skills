@@ -168,6 +168,11 @@ story's IDs under its heading as they implement it.
   without re-authoring them
 - PCHG-8.9 the approved digest is carried as inline decision evidence; the
   local package path is never cited as its locator
+- PCHG-8.10 an approval invalidated at the pre-submission check after a
+  decision record has already been published for this crossing publishes a
+  fresh decision record, carrying the reapproved values, before submission
+  is retried, so the published record always describes what actually
+  crossed
 
 ## 9. Continue automatically from an executed plan
 

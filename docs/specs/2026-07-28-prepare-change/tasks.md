@@ -1002,6 +1002,10 @@ class FinishBranchCheckpoint(unittest.TestCase):
             r"before submission is retried",
         )
         self.assertRegex(section, r"(?i)carrying the reapproved values")
+        self.assertRegex(
+            section,
+            r"(?s)`Supersedes:`.{0,300}`Superseded-by:`",
+        )
 
     def test_PCHG_11_1_red_gate_still_withholds(self):
         """PCHG-11.1 — merge and PR stay withheld while any check fails."""

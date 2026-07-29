@@ -45,6 +45,23 @@ class PrepareChangeConventions(unittest.TestCase):
         self.assertIn("inferred", self.text)
         self.assertIn("advisory", self.text)
 
+    def test_PCHG_4_6_fallback_grade_is_one_of_the_three_enum_values(self):
+        """PCHG-4.6 — the grade enum is closed to three values, and every
+        ladder rung (including both fallbacks) states one of them explicitly
+        instead of hedging with a fourth value like `declared-equivalent`."""
+        self.assertNotIn("declared-equivalent", self.text)
+        self.assertIn(
+            "one of `declared` | `machine-enforced` | `inferred`", self.text
+        )
+        # Rung 3 (commit fallback) must name its grade as an instruction.
+        self.assertRegex(
+            self.text, r"Grade this rung `declared`"
+        )
+        # The PR-structure fallback must also state its grade explicitly.
+        self.assertRegex(
+            self.text, r"fallback shape[^.]*\)\s+and grade it `declared`"
+        )
+
     def test_PCHG_4_7_no_persistent_cache(self):
         """PCHG-4.7 — nothing is persisted between sessions."""
         self.assertRegex(self.text, r"(?i)no (persistent )?cache|never persist")

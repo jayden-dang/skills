@@ -44,9 +44,10 @@ Walk this ladder in order and stop at the first rung that resolves:
    graded `inferred`.
 3. **neutral reviewer-centred fallback** — when neither preceding rung
    resolves, use a plain, imperative, reviewer-legible subject shape that
-   invents no project-specific format. Grade this rung `declared`-equivalent
-   in the sense that it is the skill's own stated default, not a claim about
-   the repository's history.
+   invents no project-specific format. Grade this rung `declared`: it is the
+   skill's own written default, stated here rather than sampled from the
+   repository's commit history, so it takes the same non-advisory treatment
+   as documentation-derived conventions.
 
 ### A mixed sample never widens
 
@@ -68,14 +69,15 @@ This resolution is not derived from commit history — commit subjects say
 nothing about how a PR body should be organized, and reading history for this
 purpose would be reading data that cannot answer the question. When no
 template or declared guidance exists, use the reviewer-centred fallback shape
-(a short summary, what changed, why).
+(a short summary, what changed, why) and grade it `declared`: it is the
+skill's own written default, not a claim derived from repository history.
 
 ## Grading and advisory treatment
 
 | Grade | Source | Treatment of findings raised against it |
 |---|---|---|
 | `machine-enforced` | An executable check exists (e.g. commitlint) | Reported; route a failed run through the existing `verify` failure path |
-| `declared` | Written documentation (`.gitmessage`, `CONTRIBUTING.md`, PR template) | Reported |
+| `declared` | Written documentation (`.gitmessage`, `CONTRIBUTING.md`, PR template) **or** the skill's own reviewer-centred fallback shape (commit-ladder rung 3, or the PR-structure fallback when no template or guidance exists) | Reported |
 | `inferred` | Rung 2 — sampled from commit history | Labelled **inferred** and any finding raised against it is treated as **advisory** only — never a hard gate |
 
 Where a convention was derived from commit history, label it `inferred` in

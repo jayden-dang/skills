@@ -228,3 +228,4 @@ Files this change touches, and what each carries at risk:
 - Choosing whether a branch merges, PRs, or is discarded: the five-option decision stays with the user at `finish-branch`.
 - Authoring release notes or changelog entries: `release` continues to derive those from commit trailers.
 - Editing `docs/agents/project.md` or any other project configuration from `prepare-change`.
+- Mechanically linking the stale and fresh decision records after an invalidated approval. `record-decision` exposes no `Supersedes:` write path and its validator scans the whole decisions directory, so a one-sided link would fail the fresh publish. The records stay unlinked; the fresh one is authoritative. Deferred to `ROAD-6`.

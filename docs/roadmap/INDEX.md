@@ -1,7 +1,7 @@
 # Roadmap: Skills
 
-Status: Approved
-Date: 2026-07-28
+Status: Draft
+Date: 2026-07-29
 
 <!--
 The program layer: milestone INTENT, above any single feature and below the product
@@ -68,11 +68,12 @@ ID rules:
 **Members:**
 - **ROAD-4** gated-history-rewriting — Surfaces: `skills/ship/prepare-change/` (shared with ROAD-3)
 - **ROAD-5** shared-base-resolution-for-explainers — Surfaces: `skills/review/explain-change/SKILL.md`, `docs/specs/2026-07-27-explain-change/`
+- **ROAD-6** supersede-linkage-for-decision-records — Surfaces: `skills/ship/record-decision/SKILL.md`, `skills/ship/record-decision/RECORD.md`, `skills/ship/record-decision/validate-records.sh`, `skills/ship/finish-branch/SKILL.md`
 **Depends-on:** MILE-1
 **Commitment:** Planned
 **Closed:** None
 **Deferred:** None
-**Blockers:** ROAD-4 is conditional on demonstrated demand for automated history rewriting; ROAD-5 requires a `sync-spec` pass because it edits a shipped, spec'd feature.
+**Blockers:** ROAD-4 is conditional on demonstrated demand for automated history rewriting; ROAD-5 requires a `sync-spec` pass because it edits a shipped, spec'd feature; ROAD-6 must teach `record-decision` to write both directions of `Supersedes:`/`Superseded-by:` in one publish, because its validator scans the whole decisions directory and a one-sided write fails the publish it belongs to.
 
 ## Goal dispositions
 

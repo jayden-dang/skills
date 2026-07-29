@@ -146,6 +146,29 @@ story's IDs under its heading as they implement it.
 
 ## 8. Approve the exact content at the crossing
 
+- PCHG-8.1 on a merge or PR crossing, `finish-branch` displays the resolved
+  ticket set and asks whether missing tickets should be created or
+  supplemented, before the crossing executes
+- PCHG-8.2 the missing-ticket question is still asked when no tracker is
+  configured
+- PCHG-8.3 a request to create a missing ticket pauses the crossing and asks
+  the user to run `/file-issues`; `finish-branch` never invokes it itself
+- PCHG-8.4 on the PR path, the exact package content — title, base, head,
+  body, ticket linkage, commits, advisory map, findings, validation results —
+  is displayed and approve / request edits / cancel is offered
+- PCHG-8.5 a request for edits re-authors the affected content, revalidates
+  it, redisplays it, and requires a fresh approval before it counts
+- PCHG-8.6 once approved, the base and head SHAs are re-resolved and
+  `Content-digest:` recomputed immediately before submission
+- PCHG-8.7 a re-resolved SHA or recomputed digest that differs from the
+  approved values invalidates the approval; submission is withheld until the
+  package is re-authored, revalidated, redisplayed, and reapproved
+- PCHG-8.8 submission supplies the approved title, base, head, and body to
+  the hosting adapter (`gh pr create --base <base> --body-file <path>`)
+  without re-authoring them
+- PCHG-8.9 the approved digest is carried as inline decision evidence; the
+  local package path is never cited as its locator
+
 ## 9. Continue automatically from an executed plan
 
 - PCHG-9.2 every commit created by the plan's task implementers is left
@@ -160,6 +183,18 @@ story's IDs under its heading as they implement it.
 
 ## 11. Preserved behavior of the skills this feature edits
 
+- PCHG-11.1 (guard) merge and PR stay withheld while any verify, trace, or
+  required acceptance check fails
+- PCHG-11.2 (guard) the five-option menu still presents verbatim on a green
+  gate; the new checkpoint runs after selection, never as a sixth option
+- PCHG-11.3 (guard) `record-decision` still publishes a validator-clean
+  record before merge, PR, discard, or block executes
+- PCHG-11.4 (guard) discard still requires the user to literally type
+  `discard`
+- PCHG-11.5 (guard) `/comprehend-change` and `/explain-change` are still
+  named under their existing risk-glob predicates
+- PCHG-11.6 (guard) force-push still happens only on the user's explicit
+  request, never on `finish-branch`'s own initiative
 - PCHG-11.13 skill exists, is model-invoked, and is registered in both plugin
   manifests, `AGENTS.md`, and `README.md`
 
@@ -167,3 +202,6 @@ story's IDs under its heading as they implement it.
 
 - PCHG-12.1 convention resolution runs at most once per session and reads no
   historical commit body or historical diff during it
+- PCHG-12.3 any approved value that differs at the pre-submission check —
+  base SHA, head SHA, title bytes, or `body.md` bytes — invalidates the
+  approval and requires reapproval before submission

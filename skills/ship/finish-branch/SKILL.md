@@ -64,6 +64,35 @@ On a detached HEAD with a green gate, drop option 1 (merge is not possible) and 
 
 ## 4. Execute
 
+### 4a. Ticket and content checkpoint (options 1 and 2 only)
+
+Before `record-decision` runs, on options **1 (merge)** and **2 (PR)**: display
+the resolved ticket set (the `[{ id, title, classification, linkage_syntax }]`
+list `prepare-change`'s ticket resolution produced) and ask whether any
+missing ticket should be created or supplemented. Ask this question even with
+no tracker configured — an absent tracker does not skip it, the checkpoint
+still asks the same missing-ticket question either way. If the user asks for
+a ticket to be created, pause the crossing here and ask the user to run
+`/file-issues` themselves: name it, never invoke it — `/file-issues` is
+user-invoked and `finish-branch` is model-invoked (ARCH-5).
+
+On option **2 (PR)** only, also display the exact package content read from
+`.skills/pr-packages/<stable-id>/manifest.md` and `body.md` — title, base,
+head, body, ticket linkage, commits, advisory commit map, convention
+findings, validation results — and offer exactly three responses:
+**approve**, **request edits**, or **cancel**. On request edits: re-author
+the affected content, revalidate it, redisplay the full package, and require
+a fresh approval — an edit never carries forward a prior approval; the loop
+repeats until an explicit approve or a cancel. Carry the approved
+`Content-digest:` forward as **inline** decision evidence for
+`record-decision` below; never cite the `.skills/pr-packages/<stable-id>/`
+path as its locator.
+
+This checkpoint runs, and (on option 2) reaches approval, **before**
+`record-decision` publishes and **before** the crossing itself — the order
+is menu selection → this checkpoint → `record-decision` → the git/gh side
+effect, never transposed.
+
 For options **1 (merge), 2 (PR), 4 (discard), and 5 (block)** — **before** any git/gh side effect — REQUIRED SUB-SKILL: use `record-decision` with:
 
 | Option | Verdict | Boundary-Type |
@@ -85,7 +114,37 @@ git checkout <base-branch> && git pull && git merge <feature-branch>
 
 Re-run the verify suite **on the merged result, before removing any worktree**. Only after it passes: clean up the worktree (step 5), then `git branch -d <feature-branch>`.
 
-**Option 2 — push + PR.** After a successful record: `git push -u origin <feature-branch>`, then create the PR. **Keep the worktree** — the user needs it to iterate on review feedback. **Team packaging:** when `docs/agents/project.md` has `## Team` with a non-empty **roster** or band override, read **band**/**packaging** from that section — Solo: no invented reviewer list in PR body language; Small/Multi: suggest reviewers from roster/ownership notes in PR prose. No new menu item. Missing Team → pre-feature default.
+**Option 2 — push + PR.** After a successful record: `git push -u origin
+<feature-branch>`, then, **immediately before submission**, re-resolve the
+base and head SHAs and recompute `Content-digest:` using
+`package-contract.md`'s exact recipe, unparaphrased — the readability guard
+runs first and aborts before the pipe:
+
+```bash
+test -r ".skills/pr-packages/<stable-id>/body.md" || {
+  echo "Error: body.md missing or unreadable at .skills/pr-packages/<stable-id>/body.md" >&2
+  exit 1
+}
+{ printf '%s\n' "<title>"; cat ".skills/pr-packages/<stable-id>/body.md"; } | git hash-object --stdin
+```
+
+If either resolved SHA or the recomputed digest differs from the approved
+values, that mismatch invalidates the approval: do not submit — return to
+the 4a checkpoint to re-author, revalidate, redisplay, and reapprove before
+trying again. Once both SHAs and the digest still match, submit the approved
+title, base, head, and body **without re-authoring** them:
+
+```bash
+gh pr create --base <base> --body-file .skills/pr-packages/<stable-id>/body.md
+```
+
+— using the package's own `Base:` rather than recomputing one. **Keep the
+worktree** — the user needs it to iterate on review feedback. **Team
+packaging:** when `docs/agents/project.md` has `## Team` with a non-empty
+**roster** or band override, read **band**/**packaging** from that section —
+Solo: no invented reviewer list in PR body language; Small/Multi: suggest
+reviewers from roster/ownership notes in PR prose. No new menu item. Missing
+Team → pre-feature default.
 
 **Option 3 — keep.** Report the branch name and worktree path. Touch nothing. **Do not** invoke `record-decision`.
 
@@ -147,6 +206,11 @@ Never:
 - Execute merge/PR/discard before `record-decision` publishes successfully
 - Emit a decision record for keep, pause/defer, or mechanical failure alone
 - Omit `/comprehend-change` or `/explain-change` names because the branch is single-task, one-file, Keep-only, or a lead said "skip theater," while the diff still hits a risk glob
+- Skip the missing-ticket question on option 1 or 2 because no tracker is configured
+- Run `/file-issues` yourself instead of naming it and pausing for the user
+- Submit a PR whose title or body was re-authored after approval instead of looping back through the 4a checkpoint
+- Skip the immediately-before-submission SHA/digest recheck, or submit after it reveals a mismatch
+- Cite the `.skills/pr-packages/<stable-id>/` path as decision evidence instead of the inline digest
 
 | Thought | Reality |
 |---|---|
@@ -158,5 +222,10 @@ Never:
 | "Merge now, record tomorrow" | Deferred record is still an unrecorded crossing — same red flag. |
 | "Single-task / one-file — skip optional skill names" | Risk is the **diff path**, not task count. Auth (or any risk glob) still names both |
 | "Lead said skip the theater" | Authority is not a gate exemption. Name them; the human can ignore |
+| "No tracker configured, so skip the ticket question" | The question is asked either way; an absent tracker is a normal state, not a skip |
+| "The user clearly wants the ticket filed, just run /file-issues" | `/file-issues` is user-invoked; name it and pause, never invoke it (ARCH-5) |
+| "One small edit to the body doesn't need a fresh approval" | Any edit re-authors content; the loop redisplays and requires approval again |
+| "Digest matched at authoring time, no need to recheck at submit" | Re-resolve SHAs and recompute the digest immediately before submission every time |
+| "Citing the .skills/ path is fine, it's where the evidence lives" | Storage location isn't a citable locator; carry the digest inline instead |
 | "Risk prompts are only for multi-task plans" | False. Multi-task **or** risk glob **or** architecture-affecting |
 | "Keep means no review prompts" | Keep still names optional self-check / explainer; it only skips merge/PR |

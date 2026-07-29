@@ -258,7 +258,7 @@ package.
 
 ### H. The `finish-branch` checkpoint
 
-Satisfies: PCHG-8.1, PCHG-8.2, PCHG-8.3, PCHG-8.4, PCHG-8.5, PCHG-8.6, PCHG-8.7, PCHG-8.8, PCHG-8.9, PCHG-11.1, PCHG-11.2, PCHG-11.3, PCHG-11.4, PCHG-11.5, PCHG-11.6, PCHG-12.3
+Satisfies: PCHG-8.1, PCHG-8.2, PCHG-8.3, PCHG-8.4, PCHG-8.5, PCHG-8.6, PCHG-8.7, PCHG-8.8, PCHG-8.9, PCHG-8.10, PCHG-11.1, PCHG-11.2, PCHG-11.3, PCHG-11.4, PCHG-11.5, PCHG-11.6, PCHG-12.3
 Respects: ARCH-5
 Reuse: existing — extends `finish-branch`'s Step 4 execution path; adds no menu item and no new gate (rung 2)
 
@@ -368,12 +368,12 @@ Every requirement ID appears in exactly one `Satisfies:` line:
 | E. Ticket set resolution | PCHG-5.1 … 5.8 |
 | F. Package writer | PCHG-6.1 … 6.7 |
 | G. Advisory commit map and findings grading | PCHG-7.1 … 7.7 |
-| H. The `finish-branch` checkpoint | PCHG-8.1 … 8.9, 11.1 … 11.6, 12.3 |
+| H. The `finish-branch` checkpoint | PCHG-8.1 … 8.10, 11.1 … 11.6, 12.3 |
 | I. The `execute-plan` tail | PCHG-9.1, 11.7, 11.8, 11.9 |
 | J. `setup-repo` decision and template slot | PCHG-10.1 … 10.5, 11.10, 11.11, 11.12 |
 | K. Registration and roster | PCHG-11.13 |
 
-All 89 defined criteria are mapped; there are no deliberately unmapped IDs. The
+All 90 defined criteria are mapped; there are no deliberately unmapped IDs. The
 Accessibility quality attribute is recorded as `None` with a reason and — per the
 requirements template's rule that an all-`None` attribute omits its IDed line — carries
 no requirement ID, so it is a recorded non-applicability rather than an uncovered

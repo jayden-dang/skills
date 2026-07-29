@@ -131,8 +131,12 @@ test -r ".skills/pr-packages/<stable-id>/body.md" || {
 If either resolved SHA or the recomputed digest differs from the approved
 values, that mismatch invalidates the approval: do not submit — return to
 the 4a checkpoint to re-author, revalidate, redisplay, and reapprove before
-trying again. Once both SHAs and the digest still match, submit the approved
-title, base, head, and body **without re-authoring** them:
+trying again. Because `record-decision` already published against the
+now-invalidated digest, this reapproval requires a fresh `record-decision`
+publish — carrying the reapproved values — before submission is retried, so
+the published record always describes what actually crosses. Once both
+SHAs and the digest still match, submit the approved title, base, head, and
+body **without re-authoring** them:
 
 ```bash
 gh pr create --base <base> --body-file .skills/pr-packages/<stable-id>/body.md
@@ -210,6 +214,7 @@ Never:
 - Run `/file-issues` yourself instead of naming it and pausing for the user
 - Submit a PR whose title or body was re-authored after approval instead of looping back through the 4a checkpoint
 - Skip the immediately-before-submission SHA/digest recheck, or submit after it reveals a mismatch
+- Retry submission on a stale record after a mismatch instead of publishing a fresh `record-decision` first
 - Cite the `.skills/pr-packages/<stable-id>/` path as decision evidence instead of the inline digest
 
 | Thought | Reality |

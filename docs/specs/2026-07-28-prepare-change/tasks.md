@@ -988,6 +988,21 @@ class FinishBranchCheckpoint(unittest.TestCase):
         """PCHG-8.9 — the digest is inline evidence; the .skills/ path is never cited."""
         self.assertRegex(self.text, r"(?s)digest.{0,200}inline")
 
+    def test_PCHG_8_10_fresh_record_after_invalidated_approval(self):
+        """PCHG-8.10 — an invalidating mismatch after publication forces a fresh
+        record-decision publish, carrying the reapproved values, before retry."""
+        start = self.text.find("**Option 2 — push + PR.**")
+        end = self.text.find("**Option 3 — keep.**")
+        self.assertNotEqual(start, -1, "Option 2 section heading not found")
+        self.assertNotEqual(end, -1, "Option 3 section heading not found")
+        section = self.text[start:end]
+        self.assertRegex(
+            section,
+            r"(?s)invalidat.{0,300}fresh\s+`record-decision`\s+publish.{0,200}"
+            r"before submission is retried",
+        )
+        self.assertRegex(section, r"(?i)carrying the reapproved values")
+
     def test_PCHG_11_1_red_gate_still_withholds(self):
         """PCHG-11.1 — merge and PR stay withheld while any check fails."""
         self.assertRegex(self.text, r"withhold \*\*merge\*\* and \*\*PR\*\*")
@@ -1051,7 +1066,7 @@ Run: `python3 -m unittest tests.test_prepare_change_checkpoint && python3 -m uni
 
 `git commit -m "feat(finish-branch): ticket and content approval before the crossing" # trailer: Implements: PCHG-8.4`
 
-_Requirements: PCHG-8.1, PCHG-8.2, PCHG-8.3, PCHG-8.4, PCHG-8.5, PCHG-8.6, PCHG-8.7, PCHG-8.8, PCHG-8.9, PCHG-11.1, PCHG-11.2, PCHG-11.3, PCHG-11.4, PCHG-11.5, PCHG-11.6, PCHG-12.3_
+_Requirements: PCHG-8.1, PCHG-8.2, PCHG-8.3, PCHG-8.4, PCHG-8.5, PCHG-8.6, PCHG-8.7, PCHG-8.8, PCHG-8.9, PCHG-8.10, PCHG-11.1, PCHG-11.2, PCHG-11.3, PCHG-11.4, PCHG-11.5, PCHG-11.6, PCHG-12.3_
 
 ---
 

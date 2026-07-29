@@ -57,6 +57,28 @@ class FinishBranchCheckpoint(unittest.TestCase):
         )
         self.assertRegex(section, r"(?i)carrying the reapproved values")
 
+    def test_PCHG_8_8_base_quoted_in_shell_commands(self):
+        """PCHG-8.8 — the approved base reaches the adapter exactly like the
+        approved title: quoted wherever it is interpolated into a shell
+        command, never bare. `git check-ref-format --branch` accepts `;`,
+        `$(...)`, backticks, and parentheses in a branch name (confirmed by
+        running it), so an unquoted <base-branch>/<base> is a legal git ref
+        the shell would still reparse — same mechanism as the title, just
+        human-supplied instead of diff-derived. Scoped to the Option
+        1/Option 2 execution section so this can't match unrelated prose."""
+        start = self.text.find("**Option 1 — merge locally.**")
+        end = self.text.find("## 5. Worktree cleanup")
+        self.assertNotEqual(start, -1, "Option 1 section heading not found")
+        self.assertNotEqual(end, -1, "Worktree cleanup heading not found")
+        section = self.text[start:end]
+
+        self.assertIn('git checkout "<base-branch>"', section)
+        self.assertIn('--base "<base>"', section)
+
+        # The exact unquoted forms this fix removed must not reappear.
+        self.assertNotIn("git checkout <base-branch>", section)
+        self.assertNotRegex(section, r"--base <base>[^\"\w]")
+
     def test_important_1_pr_create_passes_approved_title(self):
         """Real break: `gh pr create` errors outright in a non-interactive
         agent session when neither --title nor --fill is given, so the PR

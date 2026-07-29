@@ -116,8 +116,15 @@ worktree:
 ```bash
 MAIN_ROOT=$(git -C "$(git rev-parse --git-common-dir)/.." rev-parse --show-toplevel)
 cd "$MAIN_ROOT"
-git checkout <base-branch> && git pull && git merge <feature-branch>
+git checkout "<base-branch>" && git pull && git merge <feature-branch>
 ```
+
+`<base-branch>` is quoted because it is human-supplied (topology detection or
+a `Default PR base:` config value), not diff-derived, and `git
+check-ref-format --branch` still accepts `;`, `$(…)`, backticks, and
+parentheses in a branch name — an unquoted interpolation would hand the shell
+a legal ref to reparse. Same reasoning as the submission command below; do
+not simplify the quoting away.
 
 Re-run the verify suite **on the merged result, before removing any worktree**. Only after it passes: clean up the worktree (step 5), then `git branch -d <feature-branch>`.
 
@@ -156,8 +163,17 @@ approved title, base, head, and body **without re-authoring** them, reading
 the title from `title.txt` rather than interpolating it into the command:
 
 ```bash
-gh pr create --base <base> --title "$(cat ".skills/pr-packages/<stable-id>/title.txt")" --body-file ".skills/pr-packages/<stable-id>/body.md"
+gh pr create --base "<base>" --title "$(cat ".skills/pr-packages/<stable-id>/title.txt")" --body-file ".skills/pr-packages/<stable-id>/body.md"
 ```
+
+Both `<base>` and the title are quoted here. The title is diff/commit-derived
+passive data — a `"`, backtick, or `$(…)` in it would break quoting or
+execute, which is why it is read from `title.txt` via `$(cat "…")` rather
+than interpolated directly. `<base>` is human-supplied rather than
+diff-derived, so the likelihood is lower, but the mechanism is identical:
+`git check-ref-format --branch` still accepts `;`, `$(…)`, backticks, and
+parentheses in a branch name, so an unquoted `<base>` would hand the shell a
+legal ref to reparse. Do not simplify either quoting away.
 
 — using the package's own `Base:` rather than recomputing one.
 5. **Keep the worktree** — the user needs it to iterate on review feedback.

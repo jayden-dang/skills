@@ -10,6 +10,24 @@ story's IDs under its heading as they implement it.
 
 ## 2. Resolve the PR base without guessing
 
+## Base resolution
+
+- PCHG-2.1 explicit base supplied for the invocation wins
+- PCHG-2.2 no explicit base — base recorded on an existing PR for the head branch wins
+- PCHG-2.3 neither of the above — `Default PR base:` from `docs/agents/project.md`
+  wins when it resolves to an existing branch and differs from head
+- PCHG-2.4 no source resolves — ask the user; no diff read, no package authored
+  before the answer
+- PCHG-2.5 head branch is the configured default — always ask; answer scoped to
+  this invocation only, never rewrites the project default
+- PCHG-2.6 never `origin/HEAD`, `main`, `master`, or git/fork-point topology
+- PCHG-2.7 never writes `Default PR base:` or any value into `docs/agents/project.md`
+- PCHG-2.8 config or `docs/agents/project.md` absent — proceed on the invocation's
+  base and name `/setup-repo`
+- PCHG-2.9 resolved base memoized for the session and recorded in the PR package
+- PCHG-2.10 configured default no longer resolves to a live branch — ask again for
+  this invocation
+
 ## 3. Explain the change from real evidence, or say less
 
 ## 4. Conform to the repository's own conventions

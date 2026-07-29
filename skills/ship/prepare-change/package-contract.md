@@ -4,6 +4,17 @@ Load this file when phase 6 (`Write package`) runs. SKILL.md owns the phase
 list and the Iron Law; this file owns the package layout, the `manifest.md`
 field list, the stable-ID derivation, and the digest recipe.
 
+## Contents
+
+- [Layout](#layout)
+- [Stable ID](#stable-id-sanitized-and-head-derived-never-the-raw-branch-name)
+- [Precondition: `.skills/` git-ignored](#precondition-skills-must-already-be-proven-git-ignored)
+- [manifest.md field list](#manifestmd-field-list)
+- [title.txt](#titletxt-holds-the-exact-approved-title)
+- [body.md](#bodymd-holds-reviewer-facing-content-only)
+- [Content-digest](#content-digest--computed-with-git-hash-object-never-a-shipped-script)
+- [Package files never enter a commit plan](#package-files-never-enter-a-commit-plan-or-a-reviewer-facing-locator)
+
 ## Layout
 
 Write exactly three files, and only after the git-ignored precondition below
@@ -26,8 +37,9 @@ not see verbatim inside the PR description.
 
 ## Stable ID: sanitized and head-derived, never the raw branch name
 
-Derive `<stable-id>` from the head branch with this exact rule, so Task 9
-can rederive the identical token from the identical branch name:
+Derive `<stable-id>` from the head branch with this exact rule, so
+`finish-branch` (and any later re-read) can rederive the identical token from
+the identical branch name:
 
 1. Lowercase the branch name.
 2. Replace every character that is not `a`-`z`, `0`-`9`, or `-` with `-`
@@ -82,17 +94,10 @@ Record every one of these fields in `manifest.md`; omit none:
   **rationale**, and the **trailers** to preserve. Never a runnable
   `reset`/`rebase`/`force-push` command. When no regrouping would improve the
   branch, record that nothing was proposed.
-- `Convention findings:` — every finding raised against the resolved
-  convention record, each carrying its finding grade — `advisory`,
-  `reported`, `not run`, or `verify-routed` — per SKILL.md's findings-grading
-  rules. This finding grade is distinct from the convention record's own
-  grades — `commit_subject_grade` and `pr_structure_grade`, resolved
-  independently and each one of `declared` | `machine-enforced` | `inferred`
-  (conventions.md); a finding raised against `commit_subject_form` takes its
-  finding grade from `commit_subject_grade`, and a finding raised against
-  `pr_structure` takes its finding grade from `pr_structure_grade` — the two
-  vocabularies are never conflated, and neither convention's grade is ever
-  substituted for the other's.
+- `Convention findings:` — every finding raised this session, each with its
+  **finding** grade from SKILL.md's findings-grading rules (`advisory` |
+  `reported` | `not run` | `verify-routed`). Convention-source grades live in
+  `conventions.md` only — do not restate or substitute them here.
 - `Validation results:` — the outcome of the six-axis validation run
   against every commit this session created.
 - `Content-digest:` — the digest computed below.
@@ -119,6 +124,11 @@ let `body.md` prose substitute for a `manifest.md` field.
 
 ## `Content-digest:` — computed with `git hash-object`, never a shipped script
 
+**This section is the single home of the digest recipe.** `finish-branch`
+re-runs the fenced block below unparaphrased immediately before submission
+(its skill text must stay byte-identical to that block — a contract test
+enforces the match). Do not invent a second recipe elsewhere.
+
 Compute `Content-digest:` with `git hash-object --stdin`, the plumbing
 command already required elsewhere in this skill set, chosen because its
 output is platform-uniform — unlike `shasum` or `sha256sum`, whose output
@@ -126,11 +136,9 @@ format varies across platforms — and because it introduces no new tooling
 this repository, or an adopting repository, would have to install. Feed it
 the exact bytes of `title.txt` (the title followed by exactly one trailing
 newline) and then the full contents of `body.md`, in that order and with
-no other bytes — the same recipe `finish-branch` re-runs immediately before
-submission to detect any edit made since approval, so the two runs must
-resolve `title.txt` and `body.md` identically. Read both files from disk
-rather than interpolating the title text into the command — the same
-shell-quoting hazard `title.txt` exists to avoid (see above).
+no other bytes. Read both files from disk rather than interpolating the
+title text into the command — the same shell-quoting hazard `title.txt`
+exists to avoid (see above).
 
 Always use the fully qualified paths
 `.skills/pr-packages/<stable-id>/title.txt` and

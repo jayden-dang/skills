@@ -1,7 +1,10 @@
 # Resolve conventions — commit and PR
 
 Load this file when phase 2 (`Resolve conventions`) runs. SKILL.md owns the
-phase list and the Iron Law; this file owns the resolution recipe.
+phase list and the Iron Law; this file owns the resolution recipe and is the
+**single home** of convention-source grades
+(`commit_subject_grade` / `pr_structure_grade`). Finding grades live in
+`SKILL.md` only.
 
 Produce one convention record and hold it in memory for the rest of the
 session:

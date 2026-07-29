@@ -18,8 +18,8 @@ is a closed enum: never emit a fourth value.
 configured backend's own syntax, present only when `classification` is
 `fully-completed`; empty for `partial` and `related` items.
 
-Tasks 7 (the advisory commit map) and 9 (the executed-plan continuation)
-read this exact shape — do not rename a field or widen the enum.
+The advisory commit map and the `execute-plan` continuation consume this
+exact shape — do not rename a field or widen the enum.
 
 ## Read the tracker from config, not from memory
 

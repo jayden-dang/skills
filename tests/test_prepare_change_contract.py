@@ -78,10 +78,15 @@ class PrepareChangeContext(unittest.TestCase):
         self.assertIn("omit", self.text.lower())
 
     def test_PCHG_3_4_loads_passive_data_contract_by_path(self):
-        """PCHG-3.4 — the shared passive-data contract is loaded, not restated."""
-        self.assertIn(
-            "skills/review/explain-change/references/passive-data-safety.md", self.text
+        """PCHG-3.4 — passive-data contract is loaded from a sibling file, not
+        restated, and not path-coupled into another skill's folder."""
+        self.assertIn("passive-data-safety.md", self.text)
+        self.assertNotIn(
+            "skills/review/explain-change/references/passive-data-safety.md",
+            self.text,
         )
+        passive = REPO / "skills" / "ship" / "prepare-change" / "passive-data-safety.md"
+        self.assertTrue(passive.exists(), "passive-data-safety.md missing beside SKILL.md")
 
     def test_PCHG_3_4_passive_data_rule_is_a_hard_gate(self):
         """PCHG-3.4 — the passive-data rule is wrapped in its own <HARD-GATE>
@@ -359,7 +364,7 @@ class PrepareChangePackage(unittest.TestCase):
         numeric length bound, not a qualitative description. `git
         check-ref-format --branch` legally permits shell metacharacters in
         branch names, so a vague rule like 'separators replaced' leaves the
-        stable-id field Task 9 binds to ambiguous."""
+        stable-id field finish-branch rederives to ambiguous."""
         self.assertRegex(
             self.text,
             r"\[?a-z0-9-\]?",
@@ -394,9 +399,9 @@ class PrepareChangeAdvisory(unittest.TestCase):
         an unscoped assertIn would still pass if one of those six verbs were
         dropped from this section alone."""
         start = self.text.find("## Advisory commit map and findings grading")
-        end = self.text.find("## Rationalizations")
+        end = self.text.find("## Red flags")
         self.assertNotEqual(start, -1, "advisory commit map section heading not found")
-        self.assertNotEqual(end, -1, "Rationalizations heading not found")
+        self.assertNotEqual(end, -1, "Red flags heading not found")
         section = self.text[start:end]
         for verb in ("rewrite", "amend", "squash", "reorder", "rebase", "force-push"):
             self.assertIn(verb, section, f"'{verb}' verb missing from advisory commit map section")
@@ -414,9 +419,9 @@ class PrepareChangeAdvisory(unittest.TestCase):
         deleting any one bullet fails regardless of what the surrounding
         prose happens to say."""
         start = self.text.find("## Advisory commit map and findings grading")
-        end = self.text.find("## Rationalizations")
+        end = self.text.find("## Red flags")
         self.assertNotEqual(start, -1, "advisory commit map section heading not found")
-        self.assertNotEqual(end, -1, "Rationalizations heading not found")
+        self.assertNotEqual(end, -1, "Red flags heading not found")
         section = self.text[start:end]
         list_start = section.find("parts:")
         list_end = section.find("`manifest.md`'s")
@@ -464,9 +469,9 @@ class PrepareChangeAdvisory(unittest.TestCase):
         'grade' recurs throughout SKILL.md for unrelated reasons (phase 5's
         subject-axis validation, the rationalization table)."""
         start = self.text.find("## Advisory commit map and findings grading")
-        end = self.text.find("## Rationalizations")
+        end = self.text.find("## Red flags")
         self.assertNotEqual(start, -1, "advisory commit map section heading not found")
-        self.assertNotEqual(end, -1, "Rationalizations heading not found")
+        self.assertNotEqual(end, -1, "Red flags heading not found")
         section = self.text[start:end]
         self.assertIn(
             "commit_subject_grade", section,
@@ -475,6 +480,85 @@ class PrepareChangeAdvisory(unittest.TestCase):
         self.assertIn(
             "pr_structure_grade", section,
             "findings-grading section does not name pr_structure_grade",
+        )
+
+
+class PrepareChangeWritingSkillsForm(unittest.TestCase):
+    """writing-skills ship checklist: red flags, Done when, no plan-task leaks,
+    digest recipe single-home match with finish-branch."""
+
+    def setUp(self):
+        self.skill = SKILL.read_text()
+        self.pkg = PKG.read_text()
+
+    def test_red_flags_section_lists_gate_symptoms(self):
+        """Gate skills carry ## Red flags as the symptom list beside the table."""
+        start = self.skill.find("## Red flags")
+        self.assertNotEqual(start, -1, "## Red flags heading missing")
+        section = self.skill[start:self.skill.find("## Rationalizations")]
+        for needle in ("origin/HEAD", "pre-existing", "git-ignored", "five ask"):
+            self.assertIn(needle, section, f"red-flag symptom missing: {needle}")
+
+    def test_each_phase_has_done_when(self):
+        """Every phase ends on a checkable Done when bound."""
+        # Six phase titles, each followed by a Done when before the next phase
+        # or the advisory section.
+        phases = [
+            "1. **Resolve base**",
+            "2. **Resolve conventions**",
+            "3. **Gather context**",
+            "4. **Resolve tickets**",
+            "5. **Author commits**",
+            "6. **Write package**",
+        ]
+        for i, phase in enumerate(phases):
+            p = self.skill.find(phase)
+            self.assertNotEqual(p, -1, f"phase missing: {phase}")
+            end = (
+                self.skill.find(phases[i + 1])
+                if i + 1 < len(phases)
+                else self.skill.find("## Advisory commit map")
+            )
+            chunk = self.skill[p:end]
+            self.assertIn(
+                "**Done when:**", chunk,
+                f"{phase} lacks **Done when:**",
+            )
+
+    def test_no_plan_task_number_leaks_in_prepare_change_files(self):
+        """Skill bodies name consumers by role, not ephemeral plan Task N."""
+        root = REPO / "skills" / "ship" / "prepare-change"
+        for path in root.glob("*.md"):
+            text = path.read_text()
+            self.assertIsNone(
+                re.search(r"\bTasks?\s+\d+\b", text),
+                f"plan task-number leak in {path.name}",
+            )
+
+    def test_package_contract_has_toc(self):
+        """References over ~100 lines carry a table of contents."""
+        self.assertRegex(self.pkg, r"(?m)^## Contents\s*$")
+        self.assertIn("[Layout]", self.pkg)
+
+    def test_digest_recipe_block_matches_finish_branch(self):
+        """Single-home digest: finish-branch's fenced recipe equals package-contract's."""
+        finish = (REPO / "skills" / "ship" / "finish-branch" / "SKILL.md").read_text()
+
+        def extract_digest_code(text: str) -> str:
+            # Prefer the Content-digest section when present; else first block
+            # that pipes into git hash-object (finish-branch embeds it inline).
+            start = text.find("## `Content-digest:`")
+            region = text[start:] if start != -1 else text
+            for m in re.finditer(r"```(?:bash)?\n(.*?)```", region, re.S):
+                block = m.group(1).strip()
+                if "git hash-object" in block and "title.txt" in block:
+                    return block
+            self.fail("no digest recipe code block found")
+
+        self.assertEqual(
+            extract_digest_code(self.pkg),
+            extract_digest_code(finish),
+            "finish-branch digest block drifted from package-contract.md home",
         )
 
 

@@ -152,8 +152,13 @@ class PrepareChangeCommits(unittest.TestCase):
 
     def test_PCHG_1_3_six_validation_axes(self):
         """PCHG-1.3 — validation covers all six axes before each commit."""
+        start = self.text.find("5. **Author commits**")
+        end = self.text.find("6. **Write package**")
+        self.assertNotEqual(start, -1, "phase 5 (Author commits) heading not found")
+        self.assertNotEqual(end, -1, "phase 6 (Write package) heading not found")
+        phase5 = self.text[start:end]
         for axis in ("file scope", "subject", "body", "trailers", "secret", "staging boundary"):
-            self.assertIn(axis, self.text)
+            self.assertIn(axis, phase5, f"'{axis}' axis missing from phase 5 (Author commits)")
 
     def test_PCHG_1_4_1_5_autonomous_with_five_exceptions(self):
         """PCHG-1.4 PCHG-1.5 — commits without plan approval; five stop conditions."""

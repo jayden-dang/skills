@@ -41,11 +41,16 @@ class PrepareChangeRegistration(unittest.TestCase):
         self.assertIn("prepare-change", README.read_text())
 
     def test_PCHG_11_13_iron_laws_unchanged(self):
-        """PCHG-11.13 — the four Iron Laws survive the AGENTS.md edit."""
+        """PCHG-11.13 — the four Iron Laws and the forbidden-pattern list survive the AGENTS.md edit."""
         agents = AGENTS.read_text()
         for law in ("Gate 1 — NO-CODE", "Gate 2 — TEST-FIRST",
                     "Gate 3 — ROOT-CAUSE", "Gate 4 — EVIDENCE"):
             self.assertIn(law, agents)
+        self.assertIn("## 9. Forbidden Patterns", agents)
+        self.assertIn(
+            "Start implementation on main/master without explicit user consent",
+            agents,
+        )
 
 
 if __name__ == "__main__":

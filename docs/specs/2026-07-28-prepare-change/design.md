@@ -283,7 +283,21 @@ body from describing a branch state that moved underneath it. Submission then su
 the approved local title, base, head, and body to the hosting adapter without
 re-authoring them (`--body-file` for GitHub); the design claims nothing about what the
 remote subsequently stores or renders. The approved digest travels as inline decision
-evidence, never as a citation of the git-ignored package path.
+evidence, never as a citation of the git-ignored package path. Because
+`record-decision` already published against the now-invalidated digest, the
+reapproval requires a fresh `record-decision` publish carrying the reapproved
+values before submission is retried.
+
+**Limitation.** After an invalidated approval, `.skills/decisions/` holds
+both the stale record and the fresh one with no mechanical link between
+them — `record-decision` exposes no `Supersedes:`/`Superseded-by:` input,
+and its validator would fail the fresh publish if the stale record's
+bidirectional pairing were hand-authored ahead of it, so linking the two
+is not attempted here. Giving them a mechanical link would require
+`record-decision` to grow a supersede-write capability, which is
+deliberately out of this feature's scope. The fresh record is the
+authoritative one and carries the reapproved values; the stale record
+simply remains in place, with nothing marking it superseded.
 
 Everything already in `finish-branch` survives unchanged: merge and PR stay withheld
 on a red gate, the five options print verbatim, `record-decision` still publishes

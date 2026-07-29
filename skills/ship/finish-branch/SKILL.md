@@ -134,15 +134,9 @@ the 4a checkpoint to re-author, revalidate, redisplay, and reapprove before
 trying again. Because `record-decision` already published against the
 now-invalidated digest, this reapproval requires a fresh `record-decision`
 publish — carrying the reapproved values — before submission is retried, so
-the published record always describes what actually crosses. The fresh
-publish must supersede the invalidated one: hand off the invalidated
-record's effective identity as the fresh record's `Supersedes:` value, and
-add the matching `Superseded-by:` back onto the invalidated record — the
-same bidirectional pairing `RECORD.md` defines and
-`validate-records.sh` enforces — so `.skills/decisions/` never holds two
-unlinked records for this crossing with nothing marking the stale one
-void. Once both SHAs and the digest still match, submit the approved
-title, base, head, and body **without re-authoring** them:
+the published record always describes what actually crosses. Once both
+SHAs and the digest still match, submit the approved title, base, head,
+and body **without re-authoring** them:
 
 ```bash
 gh pr create --base <base> --body-file .skills/pr-packages/<stable-id>/body.md

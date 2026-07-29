@@ -107,7 +107,10 @@ AUTHOR LOCALLY, NEVER CROSS — push, PR, merge, discard, and block belong to fi
      and never cite the source's path.
 
 4. **Resolve tickets** — resolve the branch's tracker items and classify each against
-   the diff (see tickets.md).
+   the diff.
+
+   REQUIRED: load tickets.md and follow it exactly.
+
 5. **Author commits** — group, validate, and commit the working tree one coherent
    change at a time, without rewriting any pre-existing commit.
 6. **Write package** — write the reviewer-facing PR package for `finish-branch` to

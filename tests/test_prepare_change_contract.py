@@ -4,6 +4,7 @@ from pathlib import Path
 
 REPO = Path(__file__).resolve().parent.parent
 SKILL = REPO / "skills" / "ship" / "prepare-change" / "SKILL.md"
+TICKETS = REPO / "skills" / "ship" / "prepare-change" / "tickets.md"
 
 
 class PrepareChangeBase(unittest.TestCase):
@@ -100,6 +101,36 @@ class PrepareChangeContext(unittest.TestCase):
         self.assertIn("tracked and reachable", self.text)
         self.assertRegex(self.text, r"(?s)promote.{0,60}inline")
         self.assertIn(".skills/", self.text)
+
+
+class PrepareChangeTickets(unittest.TestCase):
+    def setUp(self):
+        self.assertTrue(TICKETS.exists(), "tickets.md missing")
+        self.text = TICKETS.read_text()
+
+    def test_PCHG_5_1_5_2_reads_configured_tracker_and_hierarchy(self):
+        """PCHG-5.1 PCHG-5.2 — tracker comes from config; branch IDs resolve hierarchy."""
+        self.assertIn("docs/agents/issue-tracker.md", self.text)
+        self.assertIn("sub-issue", self.text)
+        self.assertIn("parent", self.text)
+
+    def test_PCHG_5_3_5_4_5_5_completion_classification(self):
+        """PCHG-5.3 PCHG-5.4 PCHG-5.5 — classify, then close only what is complete."""
+        for token in ("fully completed", "partial", "related"):
+            self.assertIn(token, self.text)
+        self.assertRegex(self.text, r"(?s)partial.{0,200}without closing linkage")
+
+    def test_PCHG_5_6_linkage_syntax_is_backend_specific(self):
+        """PCHG-5.6 — no linkage syntax is assumed across backends."""
+        self.assertRegex(self.text, r"(?i)never assume.{0,60}syntax|syntax of the configured backend")
+
+    def test_PCHG_5_7_no_tracker_is_a_normal_state(self):
+        """PCHG-5.7 — an unconfigured tracker yields an empty set, not a failure."""
+        self.assertIn("empty ticket set", self.text)
+
+    def test_PCHG_5_8_tracker_never_structures_the_body(self):
+        """PCHG-5.8 — tracker content is bounded to four uses."""
+        self.assertRegex(self.text, r"(?i)never structure.{0,60}body|not structured around")
 
 
 if __name__ == "__main__":

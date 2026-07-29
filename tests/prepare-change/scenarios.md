@@ -67,6 +67,26 @@ story's IDs under its heading as they implement it.
 
 ## 5. Resolve the ticket set and claim only what is finished
 
+- PCHG-5.1 the tracker declared in `docs/agents/issue-tracker.md` is the
+  only source consulted; resolve the set of tracker items associated with
+  this branch from it
+- PCHG-5.2 a tracker identifier carried in the branch name resolves that
+  item and, when the backend exposes one, its parent and sub-issue
+  hierarchy
+- PCHG-5.3 each resolved item is compared against the diff and classified
+  fully completed, partial, or related
+- PCHG-5.4 an item classified fully completed gets closing linkage in the
+  configured backend's own syntax
+- PCHG-5.5 an item classified partial or related is referenced without
+  closing linkage; the branch is never said to complete it
+- PCHG-5.6 closing linkage is never emitted in a syntax not resolved for
+  the configured backend
+- PCHG-5.7 no tracker configured — record an empty ticket set and continue
+  authoring
+- PCHG-5.8 tracker item content is used only for why-now context,
+  acceptance context, linkage, and commit-grouping hints; the PR body is
+  never structured around tracker items
+
 ## 6. Hand over one exact, self-describing package
 
 ## 7. Report what it could not repair

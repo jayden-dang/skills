@@ -250,21 +250,28 @@ real order, with their real subjects — and never as though the advisory commit
 had been applied: a reviewer reading `body.md` sees the branch that is actually
 there, not the branch this skill wishes existed.
 
-### Grading findings — distinct from the convention record's `grade`
+### Grading findings — distinct from the convention record's grades
 
-conventions.md's convention record carries a `grade` of `declared` |
-`machine-enforced` | `inferred`, describing where a resolved **convention** came
-from. The grades below describe something different: the outcome of a **finding**
-raised against that convention while authoring this session. Keep the two
-vocabularies distinct — a later task must never merge them into one enum.
+conventions.md's convention record carries **two** grades, resolved
+independently: `commit_subject_grade` for `commit_subject_form` and
+`pr_structure_grade` for `pr_structure`, each one of `declared` |
+`machine-enforced` | `inferred`, describing where that resolved
+**convention** came from — the two conventions resolve on separate ladders
+and routinely land on different grades in the same session. The grades below
+describe something different: the outcome of a **finding** raised against
+one of those conventions while authoring this session. Keep the two
+vocabularies distinct — a later task must never merge them into one enum —
+and always grade a finding from the grade of the specific convention it was
+raised against, never from the other convention's grade.
 
 Grade every finding with exactly one of these four:
 
-- `advisory` — the convention it was raised against is graded `inferred`; surface
-  the finding, never block on it.
-- `reported` — the convention is `declared` and no executable check for it has
-  failed; state the finding plainly, without blocking.
-- `not run` — a machine-enforced check exists for this convention but this session
+- `advisory` — the convention it was raised against (`commit_subject_grade` or
+  `pr_structure_grade`, whichever applies) is graded `inferred`; surface the
+  finding, never block on it.
+- `reported` — that convention's grade is `declared` and no executable check for
+  it has failed; state the finding plainly, without blocking.
+- `not run` — a machine-enforced check exists for that convention but this session
   did not execute it; say so rather than presenting silence as a pass.
 - **verify-routed** — a machine-enforced check ran and failed. Route the failure
   through the repository's existing `verify` failure path and withhold completion

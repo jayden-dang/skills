@@ -54,6 +54,15 @@ WHERE the configured tracker exposes no hierarchy concept, resolve the
 named item alone and record no parent or sub-issue for it — never infer a
 hierarchy the backend does not expose.
 
+<HARD-GATE>
+WHERE the tracker is configured but the branch name carries no tracker
+identifier, or the identifier it carries resolves to no item in the
+configured tracker, record an **empty ticket set** and continue authoring —
+exactly the same outcome as the absent-or-unconfigured-tracker gate above. A
+configured tracker that yields no resolvable item is a normal state, not a
+failure: no question, no stall, no invented item.
+</HARD-GATE>
+
 ## Classify each resolved item against the diff
 
 Compare every resolved item — the branch item, its parent, and every

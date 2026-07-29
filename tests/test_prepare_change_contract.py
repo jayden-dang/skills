@@ -6,6 +6,7 @@ from pathlib import Path
 REPO = Path(__file__).resolve().parent.parent
 SKILL = REPO / "skills" / "ship" / "prepare-change" / "SKILL.md"
 TICKETS = REPO / "skills" / "ship" / "prepare-change" / "tickets.md"
+CONV = REPO / "skills" / "ship" / "prepare-change" / "conventions.md"
 
 
 class PrepareChangeBase(unittest.TestCase):
@@ -129,6 +130,27 @@ class PrepareChangeTickets(unittest.TestCase):
         """PCHG-5.7 — an unconfigured tracker yields an empty set, not a failure."""
         self.assertIn("empty ticket set", self.text)
 
+    def test_PCHG_5_7_configured_tracker_with_no_resolvable_item(self):
+        """PCHG-5.7 — a configured tracker that resolves to nothing (the
+        branch name carries no tracker identifier, or the identifier it
+        carries resolves to no item) is documented as a normal state that
+        also yields an empty ticket set, distinct from the absent/
+        unconfigured-tracker HARD-GATE pinned above. Scoped to the
+        branch-resolution section rather than asserted whole-file, because
+        'empty ticket set' already occurs once in the earlier
+        absent-tracker gate — an unscoped assertIn would pass without this
+        case ever being documented."""
+        start = self.text.find("## Resolve the branch's items and their hierarchy")
+        end = self.text.find("## Classify each resolved item against the diff")
+        self.assertNotEqual(start, -1, "branch-resolution heading not found")
+        self.assertNotEqual(end, -1, "classify heading not found")
+        section = self.text[start:end]
+        self.assertIn(
+            "empty ticket set", section,
+            "configured-tracker-but-unresolved case not documented in the "
+            "branch-resolution section",
+        )
+
     def test_PCHG_5_8_tracker_never_structures_the_body(self):
         """PCHG-5.8 — tracker content is bounded to four uses."""
         self.assertRegex(self.text, r"(?i)never structure.{0,60}body|not structured around")
@@ -140,6 +162,44 @@ class PrepareChangeTickets(unittest.TestCase):
         of the PR body, which would contradict the HARD-GATE above that
         forbids structuring the PR body around tracker items."""
         self.assertNotIn("ticket section", self.text)
+
+
+class PrepareChangeConventionGrading(unittest.TestCase):
+    def setUp(self):
+        self.assertTrue(CONV.exists(), "conventions.md missing")
+        self.text = CONV.read_text()
+
+    def test_PCHG_4_6_two_conventions_carry_two_independent_grades(self):
+        """PCHG-4.6 — commit_subject_form and pr_structure resolve on two
+        separate ladders (the commit-history ladder vs. the PR-template/
+        guidance rule) and can land on different grades in the same
+        session — e.g. commit convention `inferred` from a bounded sample
+        while PR structure falls to the neutral `declared` fallback. One
+        shared `grade` field cannot hold both outcomes, so the record must
+        carry commit_subject_grade and pr_structure_grade independently.
+        Scoped to the record-shape block at the top of the file (before the
+        commit-ladder heading) so this doesn't pass merely because the word
+        'grade' recurs throughout the rest of the file."""
+        start = self.text.find("# Resolve conventions")
+        end = self.text.find("## Commit convention: the three-rung ladder")
+        self.assertNotEqual(start, -1, "conventions.md title heading not found")
+        self.assertNotEqual(end, -1, "commit-ladder heading not found")
+        section = self.text[start:end]
+        for field in (
+            "commit_subject_form",
+            "commit_subject_grade",
+            "pr_structure",
+            "pr_structure_grade",
+        ):
+            self.assertIn(
+                field, section,
+                f"'{field}' missing from the record-shape block",
+            )
+        self.assertNotRegex(
+            section,
+            r"\{\s*commit_subject_form,\s*pr_structure,\s*grade\s*\}",
+            msg="record literal still declares a single shared `grade` field",
+        )
 
 
 class PrepareChangeCommits(unittest.TestCase):
@@ -392,6 +452,30 @@ class PrepareChangeAdvisory(unittest.TestCase):
     def test_PCHG_7_7_findings_travel_in_the_package(self):
         """PCHG-7.7 — findings and grades reach the package."""
         self.assertRegex(self.text, r"(?s)findings.{0,120}package")
+
+    def test_PCHG_4_6_findings_grading_names_both_convention_grades(self):
+        """PCHG-4.6 — commit_subject_form and pr_structure resolve on
+        separate ladders in conventions.md and can land on different
+        grades in the same session, so the cross-cutting findings-grading
+        section here must key a finding's grade off whichever specific
+        convention it was raised against (commit_subject_grade or
+        pr_structure_grade), never off one shared `grade`. Scoped to the
+        'Advisory commit map and findings grading' section, since the word
+        'grade' recurs throughout SKILL.md for unrelated reasons (phase 5's
+        subject-axis validation, the rationalization table)."""
+        start = self.text.find("## Advisory commit map and findings grading")
+        end = self.text.find("## Rationalizations")
+        self.assertNotEqual(start, -1, "advisory commit map section heading not found")
+        self.assertNotEqual(end, -1, "Rationalizations heading not found")
+        section = self.text[start:end]
+        self.assertIn(
+            "commit_subject_grade", section,
+            "findings-grading section does not name commit_subject_grade",
+        )
+        self.assertIn(
+            "pr_structure_grade", section,
+            "findings-grading section does not name pr_structure_grade",
+        )
 
 
 class PrepareChangeRationalizations(unittest.TestCase):

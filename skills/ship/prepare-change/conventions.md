@@ -7,23 +7,36 @@ Produce one convention record and hold it in memory for the rest of the
 session:
 
 ```
-{ commit_subject_form, pr_structure, grade }
+{ commit_subject_form, commit_subject_grade, pr_structure, pr_structure_grade }
 ```
 
 `commit_subject_form` — the resolved shape for every commit subject this
 session writes (e.g. a declared format, an inferred pattern, or the
 reviewer-centred fallback shape).
+`commit_subject_grade` — one of `declared` | `machine-enforced` | `inferred`,
+resolved by the commit-convention ladder below and carried onto every
+finding raised against `commit_subject_form`.
 `pr_structure` — the resolved shape for the PR body (sections, required
 fields) resolved separately from commit conventions.
-`grade` — one of `declared` | `machine-enforced` | `inferred`, carried onto
-every finding raised against the resolved convention.
+`pr_structure_grade` — one of `declared` | `machine-enforced` | `inferred`,
+resolved by the PR-convention resolution below and carried onto every
+finding raised against `pr_structure`.
+
+`commit_subject_form` and `pr_structure` resolve on two separate ladders and
+routinely land on different grades in the same session — e.g. the commit
+convention sampled from history (`inferred`) while the PR structure falls to
+its own reviewer-centred fallback (`declared`). `commit_subject_grade` and
+`pr_structure_grade` are independent fields for exactly this reason: never
+collapse them into one shared `grade`, and never let one convention's grade
+stand in for the other's.
 
 <HARD-GATE>
 Resolve conventions **at most once per session** and reuse the same
-`{ commit_subject_form, pr_structure, grade }` record for every remaining
-commit and for the PR body in this session. Never re-resolve mid-session, and
-never persist the record beyond the session — no cache file, no write to
-`docs/agents/` or anywhere else. The next session resolves fresh.
+`{ commit_subject_form, commit_subject_grade, pr_structure, pr_structure_grade }`
+record for every remaining commit and for the PR body in this session. Never
+re-resolve mid-session, and never persist the record beyond the session — no
+cache file, no write to `docs/agents/` or anywhere else. The next session
+resolves fresh.
 </HARD-GATE>
 
 ## Commit convention: the three-rung ladder
@@ -84,11 +97,16 @@ The "Treatment" column names the **finding** grade(s) a convention of that
 source can produce — it is not a fourth convention grade. `SKILL.md` defines
 a four-value finding vocabulary — `advisory`, `reported`, `not run`,
 `verify-routed` — kept explicitly distinct from this file's three-value
-convention-record `grade` (`declared` | `machine-enforced` | `inferred`): a
+convention-record grades, `commit_subject_grade` and `pr_structure_grade`
+(each independently one of `declared` | `machine-enforced` | `inferred`): a
 `declared` convention's findings are always `reported`, an `inferred`
 convention's findings are always `advisory`, and only a `machine-enforced`
-convention can produce `not run` or `verify-routed`, depending on whether
-its check executed this session.
+convention can produce `not run` or `verify-routed`, depending on whether its
+check executed this session. Apply this table to `commit_subject_grade` and
+`pr_structure_grade` independently — a finding raised against
+`commit_subject_form` takes its treatment from `commit_subject_grade`, and a
+finding raised against `pr_structure` takes its treatment from
+`pr_structure_grade`, even when the two grades differ in the same session.
 
 ## No persistent cache
 

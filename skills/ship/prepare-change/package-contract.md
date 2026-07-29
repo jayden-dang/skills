@@ -86,8 +86,13 @@ Record every one of these fields in `manifest.md`; omit none:
   convention record, each carrying its finding grade — `advisory`,
   `reported`, `not run`, or `verify-routed` — per SKILL.md's findings-grading
   rules. This finding grade is distinct from the convention record's own
-  `grade` (`declared` | `machine-enforced` | `inferred`, conventions.md);
-  the two vocabularies are never conflated.
+  grades — `commit_subject_grade` and `pr_structure_grade`, resolved
+  independently and each one of `declared` | `machine-enforced` | `inferred`
+  (conventions.md); a finding raised against `commit_subject_form` takes its
+  finding grade from `commit_subject_grade`, and a finding raised against
+  `pr_structure` takes its finding grade from `pr_structure_grade` — the two
+  vocabularies are never conflated, and neither convention's grade is ever
+  substituted for the other's.
 - `Validation results:` — the outcome of the six-axis validation run
   against every commit this session created.
 - `Content-digest:` — the digest computed below.

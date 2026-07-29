@@ -1187,17 +1187,36 @@ class SetupRepoDefaultBase(unittest.TestCase):
         self.assertRegex(section, r"(?i)never (pre-)?select|no value is pre-selected")
 
     def test_PCHG_10_3_written_in_step_4(self):
-        """PCHG-10.3 — Step 4 writes the confirmed value into project.md."""
-        self.assertRegex(self.text, r"(?s)Default PR base.{0,300}docs/agents/project\.md")
+        """PCHG-10.3 — Step 4 writes the confirmed value into project.md. Scoped
+        tightly to '## 4. Write' before asserting: 'Default PR base' and
+        'docs/agents/project.md' both recur elsewhere in this long file (decision
+        J's own explainer paragraph names both), so an unscoped find/regex would
+        pass even if Step 4 never mentioned the field."""
+        start = self.text.find("## 4. Write")
+        end = self.text.find("## 5. Offer the session-start hook")
+        self.assertNotEqual(start, -1, "'## 4. Write' heading not found")
+        self.assertNotEqual(end, -1, "'## 5. Offer the session-start hook' heading not found")
+        step4 = self.text[start:end]
+        self.assertIn("Default PR base", step4, "Step 4 has no Default PR base write item")
+        self.assertIn("docs/agents/project.md", step4, "Step 4 item doesn't name its target file")
 
     def test_PCHG_10_4_template_carries_the_slot(self):
         """PCHG-10.4 — the seed template carries the field."""
         self.assertIn("Default PR base:", TEMPLATE.read_text())
 
     def test_PCHG_10_5_declining_writes_nothing(self):
-        """PCHG-10.5 — declining leaves the field absent and defers to per-invocation ask."""
-        section = self.text.split("### J. Default PR base")[1].split("###")[0]
-        self.assertRegex(section, r"(?i)declin\w+")
+        """PCHG-10.5 — declining leaves the field absent and defers to per-invocation
+        ask. Section J is the last '###' heading in the file, so splitting on '###'
+        alone bleeds all the way to EOF and would match Step 4 item 6's unrelated
+        'declined' text for decision I; scope to the '## 3.' heading that actually
+        closes section J."""
+        start = self.text.find("### J. Default PR base")
+        end = self.text.find("## 3. Draft and confirm")
+        self.assertNotEqual(start, -1, "'### J. Default PR base' heading not found")
+        self.assertNotEqual(end, -1, "'## 3. Draft and confirm' heading not found")
+        section_j_only = self.text[start:end]
+        self.assertRegex(section_j_only, r"(?i)declin\w+",
+                          "decision J's own text never mentions declining")
 
     def test_PCHG_11_10_one_decision_at_a_time(self):
         """PCHG-11.10 — the one-at-a-time walk rule survives."""

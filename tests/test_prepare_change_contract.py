@@ -251,6 +251,48 @@ class PrepareChangePackage(unittest.TestCase):
             msg="digest recipe code still contains a bare `cat body.md`",
         )
 
+    def test_PCHG_6_3_digest_recipe_guards_unreadable_body_before_pipe(self):
+        """PCHG-6.3 — the qualified path alone does not fix the
+        silent-corruption bug: a qualified-but-missing body.md still lets
+        `cat` fail on stderr while `printf`'s bytes flow on through the
+        pipe, so `git hash-object` hashes the title alone and prints a
+        plausible-looking wrong SHA. The actual fix is a readability guard
+        that aborts — with a nonzero exit — before the pipe runs. Pins the
+        guard mechanism itself (a `test -r` check on the qualified path,
+        wired to a nonzero exit, positioned before the `git hash-object`
+        pipe), not just prose describing it, so a variant that keeps the
+        qualified `cat` but drops the guard still fails this test."""
+        start = self.text.find("## `Content-digest:`")
+        end = self.text.find("## Package files never enter a commit plan")
+        self.assertNotEqual(start, -1, "Content-digest section heading not found")
+        self.assertNotEqual(end, -1, "next section heading not found")
+        section = self.text[start:end]
+        code_match = re.search(r"```\n(.*?)```", section, re.S)
+        self.assertIsNotNone(code_match, "no fenced code block in digest section")
+        code = code_match.group(1)
+
+        guard_match = re.search(
+            r'test\s+-r\s+"\.skills/pr-packages/<stable-id>/body\.md"'
+            r"(?:[^\n]*\n)*?[^\n]*\bexit\s+[1-9]\d*\b",
+            code,
+        )
+        self.assertIsNotNone(
+            guard_match,
+            "digest recipe code has no `test -r "
+            '".skills/pr-packages/<stable-id>/body.md" || { ...; exit <nonzero>; }` '
+            "readability guard on the qualified body.md path",
+        )
+
+        pipe_match = re.search(r"\|\s*git hash-object", code)
+        self.assertIsNotNone(
+            pipe_match, "digest recipe code has no pipe into git hash-object"
+        )
+        self.assertLess(
+            guard_match.start(),
+            pipe_match.start(),
+            "readability guard must abort before the pipe into git hash-object, not after",
+        )
+
     def test_PCHG_6_2_stable_id_sanitization_is_an_explicit_rule(self):
         """PCHG-6.2 — sanitization is an explicit character allow-list plus a
         numeric length bound, not a qualitative description. `git

@@ -107,6 +107,7 @@ No such file or directory` on stderr while `printf`'s bytes still reach
 prints a valid-looking 40-character SHA. Nothing about that output looks
 wrong, so the digest is silently corrupt.
 
+<HARD-GATE>
 Guard against exactly that: check `body.md` is readable *before* piping
 into `git hash-object`, and abort with a visible error instead of hashing
 partial input if it is not. Neither step needs anything beyond a POSIX
@@ -114,11 +115,12 @@ shell test and `git`:
 
 ```
 test -r ".skills/pr-packages/<stable-id>/body.md" || {
-  echo "Content-digest: body.md missing or unreadable at .skills/pr-packages/<stable-id>/body.md" >&2
+  echo "Error: body.md missing or unreadable at .skills/pr-packages/<stable-id>/body.md" >&2
   exit 1
 }
 { printf '%s\n' "<title>"; cat ".skills/pr-packages/<stable-id>/body.md"; } | git hash-object --stdin
 ```
+</HARD-GATE>
 
 ## Package files never enter a commit plan or a reviewer-facing locator
 

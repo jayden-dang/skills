@@ -113,6 +113,81 @@ AUTHOR LOCALLY, NEVER CROSS — push, PR, merge, discard, and block belong to fi
 
 5. **Author commits** — group, validate, and commit the working tree one coherent
    change at a time, without rewriting any pre-existing commit.
+
+   Produce one created-commit list and hold it for the phases that follow:
+
+   ```
+   [{ sha, subject, trailers }]
+   ```
+
+   `sha` — the commit's resolved SHA after creation. `subject` — the exact
+   subject line written. `trailers` — the `Implements:` / `Guards:` trailer
+   lines the commit carries, if any. Tasks 7 and 8 read this exact shape.
+
+   <HARD-GATE>
+   Always group every uncommitted tracked change into one or more proposed
+   commits — each covering one coherent change — before creating any commit.
+   WHEN the grouped changes form a single coherent change, propose exactly
+   one commit rather than splitting it: do not manufacture extra commits out
+   of one coherent change for their own sake.
+   </HARD-GATE>
+
+   <HARD-GATE>
+   Validate every proposed commit against all six axes before creating that
+   commit: **file scope** (only the files this coherent change touches),
+   **subject** (matches the resolved `commit_subject_form`), **body** (states
+   what changed and why), **trailers** (carries only the IDs this commit
+   actually implements or guards), **secret** content (no credential-shaped
+   string reaches the commit unredacted), and **staging boundary** (the
+   staged hunks are exactly this change, no more and no less — reconcile a
+   partially staged file to the change instead of assuming the boundary).
+   WHEN a proposed commit passes validation and its scope is unambiguous,
+   create it without requesting approval of the commit plan — this phase
+   commits autonomously; it does not stop for sign-off on a commit-by-commit
+   basis.
+   </HARD-GATE>
+
+   <HARD-GATE>
+   Stop and ask the user before creating any further commit on exactly these
+   five triggers — a closed set; never add a sixth and never soften one into
+   a general "ask if unsure":
+
+   - **unrelated** — the working tree holds changes unrelated to the
+     resolved scope;
+   - **ownership** — a change whose ownership is unclear;
+   - **partial-staging** — an ambiguous partial-staging boundary;
+   - **secret-risk** — a secret-risk finding;
+   - **mismatch** — a mismatch between the planned scope and the working
+     tree.
+
+   Every commit already created before the trigger fires stands; only the
+   remaining, unresolved changes wait on the user's answer.
+   </HARD-GATE>
+
+   Write each commit subject in the resolved `commit_subject_form` (phase 2's
+   convention record), and each commit body stating what changed and why it
+   changed — phase 3's `what_changed` and `why`. Place requirement and
+   feature IDs only in `Implements:` and `Guards:` trailers, using the
+   trailer grammar `AGENTS.md` §4 fixes.
+   Never use an identifier as a commit's primary explanation: the subject
+   and body carry the explanation; the trailer carries the ID for `release`
+   and `code-review` to read back out.
+
+   IF the working tree holds no uncommitted tracked changes THEN create no commit and continue to package authoring
+   from the branch's existing commits — an empty working tree is a valid,
+   ordinary state, not a failure. Exclude untracked files from every commit
+   this phase creates unless the user names them for inclusion in this
+   invocation.
+
+   WHEN running as the `execute-plan` continuation (phase 9 of that skill's
+   own flow lands here), leave every commit the plan's task implementers
+   already created unmodified — never amend, squash, or reorder one. Group
+   and commit only the residue left uncommitted after the plan's tasks,
+   using the approved plan, the cited requirements, the recorded
+   implementation context, and the conventions this phase already resolved.
+   Ask nothing beyond the five exception triggers above; the continuation
+   gets no separate approval step.
+
 6. **Write package** — write the reviewer-facing PR package for `finish-branch` to
    approve and submit (see package-contract.md).
 

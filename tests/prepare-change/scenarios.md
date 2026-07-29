@@ -8,6 +8,26 @@ story's IDs under its heading as they implement it.
 
 ## 1. Commit the working tree as a reviewer-readable set
 
+- PCHG-1.1 uncommitted tracked changes are grouped into one or more proposed
+  commits, each covering one coherent change, before any commit is created
+- PCHG-1.2 a single coherent change stays exactly one commit rather than
+  being split
+- PCHG-1.3 file scope, subject, body, trailers, secret content, and staging
+  boundary are validated before each commit is created
+- PCHG-1.4 a proposed commit that passes validation with unambiguous scope
+  is created without requesting approval of the commit plan
+- PCHG-1.5 unrelated dirty changes, unclear ownership, an ambiguous
+  partial-staging boundary, a secret-risk finding, or a plan/tree mismatch
+  stops authoring and asks the user before any further commit
+- PCHG-1.6 each commit subject follows the resolved commit convention; each
+  body states what changed and why
+- PCHG-1.7 requirement and feature IDs live only in `Implements:` /
+  `Guards:` trailers, never as a commit's primary explanation
+- PCHG-1.8 no uncommitted tracked changes — create no commit and continue to
+  package authoring from the branch's existing commits
+- PCHG-1.9 untracked files are excluded from every commit unless the user
+  names them for this invocation
+
 ## 2. Resolve the PR base without guessing
 
 ## Base resolution
@@ -94,6 +114,14 @@ story's IDs under its heading as they implement it.
 ## 8. Approve the exact content at the crossing
 
 ## 9. Continue automatically from an executed plan
+
+- PCHG-9.2 every commit created by the plan's task implementers is left
+  unmodified — no amend, squash, or reorder
+- PCHG-9.3 uncommitted residue left after the plan's tasks is grouped and
+  committed using the approved plan, the cited requirements, the recorded
+  implementation context, and the resolved conventions
+- PCHG-9.4 the execute-plan continuation creates commits without a further
+  approval step, asking only the PCHG-1.5 exception questions
 
 ## 10. Configure the default PR base once
 

@@ -141,5 +141,44 @@ class PrepareChangeTickets(unittest.TestCase):
         self.assertNotIn("ticket section", self.text)
 
 
+class PrepareChangeCommits(unittest.TestCase):
+    def setUp(self):
+        self.text = SKILL.read_text()
+
+    def test_PCHG_1_1_1_2_group_then_size_down(self):
+        """PCHG-1.1 PCHG-1.2 — group before committing; one coherent change stays one commit."""
+        self.assertRegex(self.text, r"(?s)group.{0,200}before creating any commit")
+        self.assertRegex(self.text, r"(?s)single coherent change.{0,120}one commit")
+
+    def test_PCHG_1_3_six_validation_axes(self):
+        """PCHG-1.3 — validation covers all six axes before each commit."""
+        for axis in ("file scope", "subject", "body", "trailers", "secret", "staging boundary"):
+            self.assertIn(axis, self.text)
+
+    def test_PCHG_1_4_1_5_autonomous_with_five_exceptions(self):
+        """PCHG-1.4 PCHG-1.5 — commits without plan approval; five stop conditions."""
+        self.assertRegex(self.text, r"(?i)without requesting approval")
+        for trigger in ("unrelated", "ownership", "partial-staging", "secret-risk", "mismatch"):
+            self.assertIn(trigger, self.text)
+
+    def test_PCHG_1_6_1_7_prose_leads_ids_are_trailers(self):
+        """PCHG-1.6 PCHG-1.7 — subject in the resolved convention; IDs only in trailers."""
+        self.assertIn("Implements:", self.text)
+        self.assertRegex(self.text, r"(?i)never .{0,60}primary explanation")
+
+    def test_PCHG_1_8_empty_tree_creates_nothing(self):
+        """PCHG-1.8 — an empty working tree is valid and creates no commit."""
+        self.assertRegex(self.text, r"(?s)no uncommitted tracked changes.{0,200}create no commit")
+
+    def test_PCHG_1_9_untracked_excluded_by_default(self):
+        """PCHG-1.9 — untracked files are excluded unless named this invocation."""
+        self.assertIn("untracked", self.text)
+
+    def test_PCHG_9_2_9_3_9_4_execute_plan_continuation(self):
+        """PCHG-9.2 PCHG-9.3 PCHG-9.4 — task commits untouched; residue grouped; no extra approval."""
+        self.assertIn("residue", self.text)
+        self.assertRegex(self.text, r"(?s)implementer.{0,120}unmodified|task commits.{0,80}unmodified")
+
+
 if __name__ == "__main__":
     unittest.main()

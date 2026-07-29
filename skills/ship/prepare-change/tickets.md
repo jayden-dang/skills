@@ -78,8 +78,8 @@ emitted when the linkage syntax for the configured backend has not been
 resolved. `linkage_syntax` stays empty for every other item.
 
 An item classified **partial** or **related** is referenced without closing linkage:
-name it and its `id` in the PR body's ticket section, and never state that
-the branch completes it.
+name it and its `id` inline as a reference, with placement governed by
+`package-contract.md`, and never state that the branch completes it.
 </HARD-GATE>
 
 ## Bound tracker content to four uses

@@ -132,6 +132,14 @@ class PrepareChangeTickets(unittest.TestCase):
         """PCHG-5.8 — tracker content is bounded to four uses."""
         self.assertRegex(self.text, r"(?i)never structure.{0,60}body|not structured around")
 
+    def test_PCHG_5_8_no_ticket_section_phrase(self):
+        """PCHG-5.8 — tickets.md never dictates PR-body structure; PR-body
+        placement is package-contract.md's domain, not this file's. The
+        partial/related reference must not be pinned to a 'ticket section'
+        of the PR body, which would contradict the HARD-GATE above that
+        forbids structuring the PR body around tracker items."""
+        self.assertNotIn("ticket section", self.text)
+
 
 if __name__ == "__main__":
     unittest.main()

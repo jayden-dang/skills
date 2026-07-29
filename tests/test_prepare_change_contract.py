@@ -185,5 +185,51 @@ class PrepareChangeCommits(unittest.TestCase):
         self.assertRegex(self.text, r"(?s)implementer.{0,120}unmodified|task commits.{0,80}unmodified")
 
 
+PKG = REPO / "skills" / "ship" / "prepare-change" / "package-contract.md"
+
+
+class PrepareChangePackage(unittest.TestCase):
+    def setUp(self):
+        self.assertTrue(PKG.exists(), "package-contract.md missing")
+        self.text = PKG.read_text()
+
+    def test_PCHG_6_1_6_4_two_file_layout(self):
+        """PCHG-6.1 PCHG-6.4 — manifest.md and body.md, with body.md reviewer-facing only."""
+        self.assertIn(".skills/pr-packages/", self.text)
+        self.assertIn("manifest.md", self.text)
+        self.assertIn("body.md", self.text)
+        self.assertRegex(self.text, r"(?s)body\.md.{0,200}reviewer-facing")
+
+    def test_PCHG_6_2_stable_id_is_sanitized(self):
+        """PCHG-6.2 — a raw branch name never reaches the path."""
+        self.assertIn("stable-id", self.text)
+        self.assertRegex(self.text, r"(?i)never .{0,60}raw branch name")
+
+    def test_PCHG_6_3_manifest_field_list_complete(self):
+        """PCHG-6.3 — every manifest field is named in the manifest field-list section."""
+        start = self.text.find("## manifest.md field list")
+        end = self.text.find("## body.md holds reviewer-facing content only")
+        self.assertNotEqual(start, -1, "manifest field-list section heading not found")
+        self.assertNotEqual(end, -1, "body.md section heading not found")
+        fields = self.text[start:end].lower()
+        for field in ("package version", "title", "base", "head", "ticket",
+                      "commits", "advisory commit map", "findings",
+                      "validation results", "digest"):
+            self.assertIn(field, fields, f"'{field}' field missing from manifest field list")
+
+    def test_PCHG_6_3_digest_uses_git_hash_object(self):
+        """PCHG-6.3 — the digest is computed with git plumbing, not a shipped script."""
+        self.assertIn("git hash-object", self.text)
+
+    def test_PCHG_6_5_proves_skills_is_ignored_first(self):
+        """PCHG-6.5 — nothing is written until .skills/ is proven git-ignored."""
+        self.assertRegex(self.text, r"(?s)git-ignored.{0,200}before")
+
+    def test_PCHG_6_6_6_7_never_committed_never_linked(self):
+        """PCHG-6.6 PCHG-6.7 — package files never enter a commit plan or a reviewer link."""
+        self.assertRegex(self.text, r"(?i)never .{0,60}commit plan")
+        self.assertRegex(self.text, r"(?i)never .{0,80}reviewer-facing locator")
+
+
 if __name__ == "__main__":
     unittest.main()

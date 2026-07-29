@@ -109,6 +109,21 @@ story's IDs under its heading as they implement it.
 
 ## 6. Hand over one exact, self-describing package
 
+- PCHG-6.1 the package is written as `.skills/pr-packages/<stable-id>/manifest.md`
+  and `.skills/pr-packages/<stable-id>/body.md`
+- PCHG-6.2 `<stable-id>` is a sanitized, head-derived value; a raw branch name
+  never reaches the package path
+- PCHG-6.3 `manifest.md` records the package version, the exact PR title, the
+  base and head refs with resolved SHAs, ticket and sub-issue linkage, the
+  commits actually on the branch, the advisory commit map, the convention
+  findings, the validation results, and `Content-digest:`
+- PCHG-6.4 `body.md` holds only reviewer-facing pull-request content
+- PCHG-6.5 no package file is written until `.skills/` is proven git-ignored;
+  an unproven `.skills/` yields no package file and a report that none was
+  written
+- PCHG-6.6 no package file ever enters a commit plan
+- PCHG-6.7 a package path is never shown as a reviewer-facing locator
+
 ## 7. Report what it could not repair
 
 ## 8. Approve the exact content at the crossing

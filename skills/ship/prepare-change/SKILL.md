@@ -189,7 +189,9 @@ AUTHOR LOCALLY, NEVER CROSS — push, PR, merge, discard, and block belong to fi
    gets no separate approval step.
 
 6. **Write package** — write the reviewer-facing PR package for `finish-branch` to
-   approve and submit (see package-contract.md).
+   approve and submit.
+
+   REQUIRED: load package-contract.md and follow it exactly.
 
 ## Rationalizations
 

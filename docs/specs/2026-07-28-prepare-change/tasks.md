@@ -753,11 +753,16 @@ class PrepareChangePackage(unittest.TestCase):
         self.assertRegex(self.text, r"(?i)never .{0,60}raw branch name")
 
     def test_PCHG_6_3_manifest_field_list_complete(self):
-        """PCHG-6.3 — every manifest field is named."""
+        """PCHG-6.3 — every manifest field is named in the manifest field-list section."""
+        start = self.text.find("## manifest.md field list")
+        end = self.text.find("## body.md holds reviewer-facing content only")
+        self.assertNotEqual(start, -1, "manifest field-list section heading not found")
+        self.assertNotEqual(end, -1, "body.md section heading not found")
+        fields = self.text[start:end].lower()
         for field in ("package version", "title", "base", "head", "ticket",
                       "commits", "advisory commit map", "findings",
                       "validation results", "digest"):
-            self.assertIn(field, self.text.lower())
+            self.assertIn(field, fields, f"'{field}' field missing from manifest field list")
 
     def test_PCHG_6_3_digest_uses_git_hash_object(self):
         """PCHG-6.3 — the digest is computed with git plumbing, not a shipped script."""

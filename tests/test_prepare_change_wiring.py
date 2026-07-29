@@ -53,5 +53,38 @@ class PrepareChangeRegistration(unittest.TestCase):
         )
 
 
+EXEC = REPO / "skills" / "execution" / "execute-plan" / "SKILL.md"
+
+
+class ExecutePlanTail(unittest.TestCase):
+    def setUp(self):
+        self.text = EXEC.read_text()
+
+    def test_PCHG_9_1_prepare_change_runs_before_finish_branch(self):
+        """PCHG-9.1 — prepare-change sits between acceptance and finish-branch."""
+        tail = self.text.split("## After the Last Task")[1]
+        acceptance = tail.find("acceptance-check")
+        prepare = tail.find("prepare-change")
+        finish = tail.find("finish-branch")
+        self.assertNotEqual(prepare, -1, "prepare-change is not in the closing sequence")
+        self.assertLess(acceptance, prepare, "prepare-change runs before acceptance")
+        self.assertLess(prepare, finish, "prepare-change runs after finish-branch")
+
+    def test_PCHG_11_7_closing_order_preserved(self):
+        """PCHG-11.7 — review, fixer, polish, acceptance keep their order."""
+        tail = self.text.split("## After the Last Task")[1]
+        for earlier, later in (("code-review", "polish"), ("polish", "acceptance-check")):
+            self.assertLess(tail.find(earlier), tail.find(later))
+
+    def test_PCHG_11_8_continuous_mode_still_never_pauses(self):
+        """PCHG-11.8 — the no-pause red flag survives."""
+        self.assertIn("Pause between tasks to ask permission to continue", self.text)
+
+    def test_PCHG_11_9_ledger_append_survives(self):
+        """PCHG-11.9 — the per-task ledger append is unchanged."""
+        self.assertIn(".skills/progress.md", self.text)
+        self.assertRegex(self.text, r"Task N: complete \(commits")
+
+
 if __name__ == "__main__":
     unittest.main()

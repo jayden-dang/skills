@@ -176,6 +176,8 @@ story's IDs under its heading as they implement it.
 
 ## 9. Continue automatically from an executed plan
 
+- PCHG-9.1 `execute-plan`'s closing sequence runs `prepare-change` after
+  whole-branch review, polish, and acceptance, and before `finish-branch`
 - PCHG-9.2 every commit created by the plan's task implementers is left
   unmodified — no amend, squash, or reorder
 - PCHG-9.3 uncommitted residue left after the plan's tasks is grouped and
@@ -200,6 +202,13 @@ story's IDs under its heading as they implement it.
   named under their existing risk-glob predicates
 - PCHG-11.6 (guard) force-push still happens only on the user's explicit
   request, never on `finish-branch`'s own initiative
+- PCHG-11.7 (guard) `execute-plan` still runs whole-branch review, one fixer
+  pass if needed, polish, then acceptance, in that order, before any ship
+  step
+- PCHG-11.8 (guard) `execute-plan` in continuous mode still never pauses
+  between tasks to ask permission to continue
+- PCHG-11.9 (guard) `execute-plan` still appends each completed task's line
+  to `.skills/progress.md`
 - PCHG-11.13 skill exists, is model-invoked, and is registered in both plugin
   manifests, `AGENTS.md`, and `README.md`
 

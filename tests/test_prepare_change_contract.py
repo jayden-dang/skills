@@ -80,6 +80,17 @@ class PrepareChangeContext(unittest.TestCase):
             "skills/review/explain-change/references/passive-data-safety.md", self.text
         )
 
+    def test_PCHG_3_4_passive_data_rule_is_a_hard_gate(self):
+        """PCHG-3.4 — the passive-data rule is wrapped in its own <HARD-GATE>
+        block (or shares one with the REQUIRED-load directive), matching its
+        neighbours (PCHG-3.3 omit-never-invent, PCHG-3.5 redaction), not left
+        as bare prose next to the directive."""
+        self.assertRegex(
+            self.text,
+            r"(?s)<HARD-GATE>((?!</HARD-GATE>).)*passive data((?!</HARD-GATE>).)*</HARD-GATE>",
+            msg="passive-data rule is not wrapped in a <HARD-GATE> block",
+        )
+
     def test_PCHG_3_5_secrets_redacted_by_class(self):
         """PCHG-3.5 — secrets become class-named placeholders."""
         self.assertIn("[redacted:", self.text)

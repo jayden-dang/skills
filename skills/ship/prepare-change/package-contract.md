@@ -77,7 +77,7 @@ Record every one of these fields in `manifest.md`; omit none:
   branch, record that nothing was proposed.
 - `Convention findings:` — every finding raised against the resolved
   convention record, each carrying its finding grade — `advisory`,
-  `reported`, `not run`, or verify-routed — per SKILL.md's findings-grading
+  `reported`, `not run`, or `verify-routed` — per SKILL.md's findings-grading
   rules. This finding grade is distinct from the convention record's own
   `grade` (`declared` | `machine-enforced` | `inferred`, conventions.md);
   the two vocabularies are never conflated.

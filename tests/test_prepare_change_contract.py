@@ -343,18 +343,35 @@ class PrepareChangeAdvisory(unittest.TestCase):
 
     def test_PCHG_7_2_map_carries_five_parts(self):
         """PCHG-7.2 — the advisory map names groups, order, subjects, bodies,
-        rationale, trailers. Scoped to the advisory-commit-map section
-        itself: `order`, `trailers`, `rationale`, and `bodies` each already
-        appear elsewhere in the file for unrelated reasons, so an unscoped
-        assertIn would still pass if one of those six map parts were dropped
-        from this section alone."""
+        rationale, trailers as the six-part bullet list itself, not merely as
+        bare words anywhere in the section. `groups`, `order`, and `subjects`
+        each recur in this section's own prose for unrelated reasons ("the
+        order those groups would appear in"; "real order"; "real subjects"),
+        so a plain assertIn on the word would still pass if the bullet naming
+        that part were deleted. Match each part by its own `- **name**`
+        bullet marker instead, and require exactly six such bullets, so
+        deleting any one bullet fails regardless of what the surrounding
+        prose happens to say."""
         start = self.text.find("## Advisory commit map and findings grading")
         end = self.text.find("## Rationalizations")
         self.assertNotEqual(start, -1, "advisory commit map section heading not found")
         self.assertNotEqual(end, -1, "Rationalizations heading not found")
         section = self.text[start:end]
-        for part in ("groups", "order", "subjects", "bodies", "rationale", "trailers"):
-            self.assertIn(part, section, f"'{part}' part missing from advisory commit map section")
+        list_start = section.find("parts:")
+        list_end = section.find("`manifest.md`'s")
+        self.assertNotEqual(list_start, -1, "'parts:' lead-in to the six-part bullet list not found")
+        self.assertNotEqual(list_end, -1, "'`manifest.md`'s' lead-out after the bullet list not found")
+        bullet_block = section[list_start:list_end]
+        bullet_parts = re.findall(r"^- \*\*([a-z]+)\*\*", bullet_block, re.MULTILINE)
+        self.assertEqual(
+            len(bullet_parts), 6,
+            f"expected exactly six map-part bullets, found {bullet_parts}",
+        )
+        self.assertEqual(
+            set(bullet_parts),
+            {"groups", "order", "subjects", "bodies", "rationale", "trailers"},
+            f"map bullets do not match the six expected parts: {bullet_parts}",
+        )
 
     def test_PCHG_7_3_no_runnable_rewrite_commands(self):
         """PCHG-7.3 — no runnable reset/rebase/force-push command is emitted by default."""

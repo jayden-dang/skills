@@ -393,5 +393,32 @@ class PrepareChangeAdvisory(unittest.TestCase):
         self.assertRegex(self.text, r"(?s)findings.{0,120}package")
 
 
+class PrepareChangeRationalizations(unittest.TestCase):
+    def setUp(self):
+        self.text = SKILL.read_text()
+
+    def test_important_3_rationalizations_table_has_content_rows(self):
+        """docs/product/guidelines.md:16 requires a populated rationalization
+        table (`| Thought | Reality |` form) in skill bodies. SKILL.md shipped
+        with the header and zero rows; count real content rows (lines under
+        the `|---|---|` separator that still open with `| "`) so the table
+        can't silently regress back to that empty state."""
+        start = self.text.find("## Rationalizations")
+        self.assertNotEqual(start, -1, "Rationalizations heading not found")
+        section = self.text[start:]
+        sep = "|---|---|"
+        header_end = section.find(sep)
+        self.assertNotEqual(header_end, -1, "rationalization table header separator not found")
+        rows_text = section[header_end + len(sep):]
+        rows = [
+            line for line in rows_text.splitlines()
+            if line.strip().startswith('| "')
+        ]
+        self.assertGreaterEqual(
+            len(rows), 4,
+            f"expected at least 4 rationalization content rows, found {len(rows)}",
+        )
+
+
 if __name__ == "__main__":
     unittest.main()

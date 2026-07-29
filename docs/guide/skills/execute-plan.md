@@ -8,7 +8,7 @@
 | **Invocation** | model-invocable (the agent calls it on its own) |
 | **Reads** | `tasks.md` (the plan, and its Global Constraints verbatim), `.skills/progress.md` (the ledger), `docs/agents/project.md` (verify commands, test annotation conventions) |
 | **Writes** | implementation commits; `.skills/` scratch — one brief, one report, and one diff package per task, plus the `progress.md` ledger |
-| **Calls** | [`worktrees`](worktrees.md), [`tdd`](tdd.md) (inline fallback), [`code-review`](code-review.md), [`acceptance-check`](acceptance-check.md), [`debug`](debug.md) (on an acceptance break), [`finish-branch`](finish-branch.md) |
+| **Calls** | [`worktrees`](worktrees.md), [`tdd`](tdd.md) (inline fallback), [`code-review`](code-review.md), `polish`, [`acceptance-check`](acceptance-check.md), [`debug`](debug.md) (on an acceptance break), [`prepare-change`](prepare-change.md), [`finish-branch`](finish-branch.md) |
 | **Called by** | [`write-plan`](write-plan.md) (once the plan is approved), [`handoff`](handoff.md) (resuming a partially executed plan) |
 
 ## When it fires
@@ -115,8 +115,10 @@ Conversation memory does not survive compaction. Controllers that lost their pla
 
 1. **Whole-branch review.** [`code-review`](code-review.md) is a required sub-skill, with base = the branch point (`git merge-base main HEAD`) — never a mid-branch sha. Point it at the ledger's Minor-findings list, and run it on the top model tier.
 2. **One fixer.** If it returns findings, dispatch **ONE** fix subagent carrying the complete findings list — never one fixer per finding; each extra fixer rebuilds context and re-runs suites, and a per-finding fix wave can cost more than the whole plan did. Re-review after.
-3. **Acceptance.** [`acceptance-check`](acceptance-check.md) is a required sub-skill — drive the feature through the running system as a real user, because green units prove assertions pass, not that it works. Fix any break via [`debug`](debug.md), then promote the check to a committed, ID-tagged test.
-4. **Finish.** [`finish-branch`](finish-branch.md) is a required sub-skill — the user chooses merge / PR / keep / discard.
+3. **Polish.** `polish` is a required sub-skill, run on the whole-branch diff — a plan built task by task accretes duplication and bandaid depth no single task review could see, since each one only saw its own slice. It is behavior-preserving, so it runs before acceptance, never after.
+4. **Acceptance.** [`acceptance-check`](acceptance-check.md) is a required sub-skill — drive the feature through the running system as a real user, because green units prove assertions pass, not that it works. Fix any break via [`debug`](debug.md), then promote the check to a committed, ID-tagged test.
+5. **Prepare the change.** [`prepare-change`](prepare-change.md) is a required sub-skill — it runs after acceptance rather than before, because acceptance can still change the code and authoring must describe what will actually ship. Commits and a PR package exist when it is done.
+6. **Finish.** [`finish-branch`](finish-branch.md) is a required sub-skill — the user chooses merge / PR / keep / discard / block.
 
 ## Inline fallback
 
@@ -156,7 +158,7 @@ A four-task plan for feature `NOTES` is approved.
 
 **Task 2 — a status branch.** The implementer returns `NEEDS_CONTEXT`: it needs the interface Task 1 established, which the brief could not know. The controller supplies that one interface and re-dispatches on the **same** model — never forcing a retry with nothing changed — and the task then completes normally.
 
-**After the last task.** Once Task 4 is in the ledger, a **top-tier** `code-review` runs with base `git merge-base main HEAD` — never a mid-branch sha — pointed at the ledger's Minor-findings list. It returns two Minor findings plus the deferred ones. **One** fixer carrying the complete list clears them all, `acceptance-check` drives the feature through the running system, and `finish-branch` hands the merge decision to the user.
+**After the last task.** Once Task 4 is in the ledger, a **top-tier** `code-review` runs with base `git merge-base main HEAD` — never a mid-branch sha — pointed at the ledger's Minor-findings list. It returns two Minor findings plus the deferred ones. **One** fixer carrying the complete list clears them all, `polish` tidies duplication the per-task reviews couldn't see, `acceptance-check` drives the feature through the running system, `prepare-change` authors the commits and a PR package, and `finish-branch` hands the merge decision to the user.
 
 ## Red flags — never
 

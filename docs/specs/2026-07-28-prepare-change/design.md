@@ -213,6 +213,7 @@ Reuse: existing — the `.skills/` scratch convention and `git hash-object` (run
 ```
 .skills/pr-packages/<stable-id>/
 ├── manifest.md   ← every machine-checkable field
+├── title.txt     ← the approved title alone, byte-exact
 └── body.md       ← reviewer-facing PR content, nothing else
 ```
 
@@ -221,9 +222,13 @@ so `feature/foo..bar` cannot traverse or inject. `manifest.md` carries: package
 version, exact PR title, base and head refs with resolved SHAs, ticket and sub-issue
 linkage, the commits actually present on the branch, the advisory commit map, the
 convention findings, the validation results, and the digest of the title together with
-`body.md`.
+`body.md`. `title.txt` holds the same title text, alone, for the digest recipe and the
+`gh pr create` invocation to read from disk — the same treatment `body.md` already gets
+— rather than interpolating title text (authored from diff and commit text, which this
+skill classifies as passive data) directly into a shell command, where a `"`, backtick,
+or `$(…)` could break quoting or run as a command.
 
-The digest is `git hash-object` over the title bytes and over `body.md` — git is
+The digest is `git hash-object` over `title.txt`'s bytes and over `body.md` — git is
 already required, its hashing is uniform across platforms in a way `shasum` is not,
 and ARCH-3 forbids shipping a script to do it. Three prohibitions complete the
 section: nothing is written until `.skills/` is proven git-ignored (a line-presence

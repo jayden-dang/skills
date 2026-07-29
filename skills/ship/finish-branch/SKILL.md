@@ -104,7 +104,15 @@ For options **1 (merge), 2 (PR), 4 (discard), and 5 (block)** — **before** any
 
 Hand off tier/predicate facts and durable evidence **inline as text**. Crossing executes only after `record-decision` publishes a validator-clean record. On publication failure: do **not** execute the crossing; report that the verdict was not enacted. For block, there is no crossing side effect, but a failed record is still an incomplete accountability workflow — never claim a recorded block.
 
-**Option 1 — merge locally.** After a successful record: work from the main repo root, never from inside a worktree:
+**Option 1 — merge locally.** Resolve `<base-branch>` first: when a PR
+package exists for this session at
+`.skills/pr-packages/<stable-id>/manifest.md`, use the `Base:` value
+recorded there — the branch `prepare-change` actually resolved and against
+which it authored the commits and the narrative — rather than Step 2's
+topology detection. Step 2's detection remains the fallback only when no
+package exists (`prepare-change` was not run this session). After a
+successful record: work from the main repo root, never from inside a
+worktree:
 
 ```bash
 MAIN_ROOT=$(git -C "$(git rev-parse --git-common-dir)/.." rev-parse --show-toplevel)
@@ -121,11 +129,15 @@ base and head SHAs and recompute `Content-digest:` using
 runs first and aborts before the pipe:
 
 ```bash
+test -r ".skills/pr-packages/<stable-id>/title.txt" || {
+  echo "Error: title.txt missing or unreadable at .skills/pr-packages/<stable-id>/title.txt" >&2
+  exit 1
+}
 test -r ".skills/pr-packages/<stable-id>/body.md" || {
   echo "Error: body.md missing or unreadable at .skills/pr-packages/<stable-id>/body.md" >&2
   exit 1
 }
-{ printf '%s\n' "<title>"; cat ".skills/pr-packages/<stable-id>/body.md"; } | git hash-object --stdin
+{ cat ".skills/pr-packages/<stable-id>/title.txt"; cat ".skills/pr-packages/<stable-id>/body.md"; } | git hash-object --stdin
 ```
 
 If either resolved SHA or the recomputed digest differs from the approved
@@ -136,10 +148,11 @@ now-invalidated digest, this reapproval requires a fresh `record-decision`
 publish — carrying the reapproved values — before submission is retried, so
 the published record always describes what actually crosses. Once both
 SHAs and the digest still match, submit the approved title, base, head,
-and body **without re-authoring** them:
+and body **without re-authoring** them, reading the title from `title.txt`
+rather than interpolating it into the command:
 
 ```bash
-gh pr create --base <base> --body-file .skills/pr-packages/<stable-id>/body.md
+gh pr create --base <base> --title "$(cat ".skills/pr-packages/<stable-id>/title.txt")" --body-file ".skills/pr-packages/<stable-id>/body.md"
 ```
 
 — using the package's own `Base:` rather than recomputing one. **Keep the
@@ -231,7 +244,7 @@ Never:
 | "The user clearly wants the ticket filed, just run /file-issues" | `/file-issues` is user-invoked; name it and pause, never invoke it (ARCH-5) |
 | "One small edit to the body doesn't need a fresh approval" | Any edit re-authors content; the loop redisplays and requires approval again |
 | "Digest matched at authoring time, no need to recheck at submit" | Re-resolve SHAs and recompute the digest immediately before submission every time |
-| "The old record's still fine, just retry submission against it" | It describes values that never crossed; publish a fresh record that supersedes it before retrying |
+| "The old record's still fine, just retry submission against it" | It describes values that never crossed; publish a fresh record carrying the reapproved values before retrying — the stale record simply stays in place, with nothing marking it superseded |
 | "Citing the .skills/ path is fine, it's where the evidence lives" | Storage location isn't a citable locator; carry the digest inline instead |
 | "Risk prompts are only for multi-task plans" | False. Multi-task **or** risk glob **or** architecture-affecting |
 | "Keep means no review prompts" | Keep still names optional self-check / explainer; it only skips merge/PR |

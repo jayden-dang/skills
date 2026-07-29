@@ -169,9 +169,12 @@ AUTHOR LOCALLY, NEVER CROSS — push, PR, merge, discard, and block belong to fi
    changed — phase 3's `what_changed` and `why`. Place requirement and
    feature IDs only in `Implements:` and `Guards:` trailers, using the
    trailer grammar `AGENTS.md` §4 fixes.
+
+   <HARD-GATE>
    Never use an identifier as a commit's primary explanation: the subject
    and body carry the explanation; the trailer carries the ID for `release`
    and `code-review` to read back out.
+   </HARD-GATE>
 
    IF the working tree holds no uncommitted tracked changes THEN create no commit and continue to package authoring
    from the branch's existing commits — an empty working tree is a valid,
@@ -274,3 +277,9 @@ into the PR package: carry it into `manifest.md`'s `Convention findings:` field
 
 | Thought | Reality |
 |---|---|
+| "`origin/HEAD` is right there, just use it" | There is no fifth rung. Topology is never a selector; a failure to resolve is a question, not a guess. |
+| "No decision record covers this, I'll write a plausible reason" | Every why-source is optional. A missing why-source shortens the narrative — it is never padded with invented rationale. |
+| "This change looks safe, I'll proceed instead of asking" | The five exception triggers are a closed set — unrelated, ownership, partial-staging, secret-risk, mismatch. Never add a sixth, and never soften one into a general "ask if unsure". |
+| "Put the requirement ID in the subject so it's traceable at a glance" | Requirement and feature IDs live only in `Implements:`/`Guards:` trailers. An identifier is never a commit's primary explanation. |
+| "This pre-existing commit is a mess, I'll just clean it up before handing off" | NEVER rewrite, amend, squash, reorder, rebase, or force-push a commit that existed before this invocation — no history is "bad enough" to justify an exception. Describe a better history in the advisory commit map instead. |
+| "The repo's `.gitignore` probably already covers `.skills/`, skip the check" | Prove `.skills/` is git-ignored with a line-presence check before writing any package file. An inference, or a check run after a file is already written, is not proof. |

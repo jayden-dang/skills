@@ -76,13 +76,23 @@ skill's own written default, not a claim derived from repository history.
 
 | Grade | Source | Treatment of findings raised against it |
 |---|---|---|
-| `machine-enforced` | An executable check exists (e.g. commitlint) | Reported; route a failed run through the existing `verify` failure path |
-| `declared` | Written documentation (`.gitmessage`, `CONTRIBUTING.md`, PR template) **or** the skill's own reviewer-centred fallback shape (commit-ladder rung 3, or the PR-structure fallback when no template or guidance exists) | Reported |
+| `machine-enforced` | An executable check exists (e.g. commitlint) | **not run** when this session did not execute the check; **verify-routed** through the existing `verify` failure path when the check ran and failed |
+| `declared` | Written documentation (`.gitmessage`, `CONTRIBUTING.md`, PR template) **or** the skill's own reviewer-centred fallback shape (commit-ladder rung 3, or the PR-structure fallback when no template or guidance exists) | `reported` |
 | `inferred` | Rung 2 — sampled from commit history | Labelled **inferred** and any finding raised against it is treated as **advisory** only — never a hard gate |
 
 Where a convention was derived from commit history, label it `inferred` in
 the convention record and in any finding raised against it, and treat that
 finding as advisory: surface it, never block on it.
+
+The "Treatment" column names the **finding** grade(s) a convention of that
+source can produce — it is not a fourth convention grade. `SKILL.md` defines
+a four-value finding vocabulary — `advisory`, `reported`, `not run`,
+`verify-routed` — kept explicitly distinct from this file's three-value
+convention-record `grade` (`declared` | `machine-enforced` | `inferred`): a
+`declared` convention's findings are always `reported`, an `inferred`
+convention's findings are always `advisory`, and only a `machine-enforced`
+convention can produce `not run` or `verify-routed`, depending on whether
+its check executed this session.
 
 ## No persistent cache
 

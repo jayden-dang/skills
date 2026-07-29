@@ -1,4 +1,5 @@
 """finish-branch checkpoint: ticket question, content approval, and every prior gate."""
+import re
 import unittest
 from pathlib import Path
 
@@ -55,6 +56,44 @@ class FinishBranchCheckpoint(unittest.TestCase):
             r"before submission is retried",
         )
         self.assertRegex(section, r"(?i)carrying the reapproved values")
+
+    def test_important_1_pr_create_passes_approved_title(self):
+        """Real break: `gh pr create` errors outright in a non-interactive
+        agent session when neither --title nor --fill is given, so the PR
+        path breaks on first real use unless the approved title is passed.
+        Pinned to the exact `gh pr create` invocation line (not just anywhere
+        in the Option 2 section) and reading from title.txt (Minor 5's fix
+        for the same shell-quoting hazard), so a stray --title elsewhere in
+        the file, or a --title whose value is still interpolated inline,
+        can't make this vacuously pass."""
+        start = self.text.find("**Option 2 — push + PR.**")
+        end = self.text.find("**Option 3 — keep.**")
+        self.assertNotEqual(start, -1, "Option 2 section heading not found")
+        self.assertNotEqual(end, -1, "Option 3 section heading not found")
+        section = self.text[start:end]
+        create_match = re.search(r"^gh pr create.*$", section, re.MULTILINE)
+        self.assertIsNotNone(create_match, "gh pr create invocation not found in Option 2")
+        line = create_match.group(0)
+        self.assertIn("--title", line)
+        self.assertIn("title.txt", line)
+
+    def test_important_2_option_1_prefers_package_base_over_topology(self):
+        """finish-branch's Option 1 (local merge) must use the PR package's
+        resolved `Base:` — the branch prepare-change actually authored the
+        commits and narrative against — over Step 2's origin/HEAD-derived
+        topology detection, when a package exists for this session. Without
+        this, `Default PR base: dev` with `origin/HEAD` at `main` merges
+        silently against the wrong branch. Step 2's own detection logic is
+        untouched; it stays the fallback for the no-package case. Scoped to
+        the Option 1 section so this can't match Step 2's own prose instead."""
+        start = self.text.find("**Option 1 — merge locally.**")
+        end = self.text.find("**Option 2 — push + PR.**")
+        self.assertNotEqual(start, -1, "Option 1 section heading not found")
+        self.assertNotEqual(end, -1, "Option 2 section heading not found")
+        section = self.text[start:end]
+        self.assertRegex(section, r"(?i)package exists")
+        self.assertRegex(section, r"`Base:`")
+        self.assertRegex(section, r"(?i)fallback")
 
     def test_PCHG_11_1_red_gate_still_withholds(self):
         """PCHG-11.1 — merge and PR stay withheld while any check fails."""

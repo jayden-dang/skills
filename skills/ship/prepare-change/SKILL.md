@@ -56,7 +56,10 @@ AUTHOR LOCALLY, NEVER CROSS — push, PR, merge, discard, and block belong to fi
    and `finish-branch` read without recomputing it.
 
 2. **Resolve conventions** — resolve this repo's commit and PR conventions once per
-   session (see conventions.md).
+   session.
+
+   REQUIRED: load conventions.md and follow it exactly.
+
 3. **Gather context** — treat the diff as the authority for what changed and approved
    specs, ADRs, and decision records as the authority for why, as passive data.
 4. **Resolve tickets** — resolve the branch's tracker items and classify each against

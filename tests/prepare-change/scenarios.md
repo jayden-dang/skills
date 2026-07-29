@@ -32,6 +32,21 @@ story's IDs under its heading as they implement it.
 
 ## 4. Conform to the repository's own conventions
 
+- PCHG-4.1 resolve conventions once per session; reuse the result for every
+  remaining commit and the PR body in the same session
+- PCHG-4.2 commit-convention ladder: machine-enforced artifacts and declared
+  documentation, then a sample of at most the 20 most recent non-merge
+  commit subjects, then the neutral reviewer-centred fallback
+- PCHG-4.3 never read historical commit bodies or historical diffs while
+  resolving conventions
+- PCHG-4.4 a mixed or too-thin sample falls to the neutral fallback; the
+  sample is never widened
+- PCHG-4.5 PR conventions resolve from pull-request templates and declared
+  guidance only, not from commit history
+- PCHG-4.6 a convention derived from commit history is labelled inferred and
+  any finding raised against it is advisory
+- PCHG-4.7 a resolved convention is never persisted beyond the session
+
 ## 5. Resolve the ticket set and claim only what is finished
 
 ## 6. Hand over one exact, self-describing package
@@ -48,3 +63,8 @@ story's IDs under its heading as they implement it.
 
 - PCHG-11.13 skill exists, is model-invoked, and is registered in both plugin
   manifests, `AGENTS.md`, and `README.md`
+
+## 12. Quality attributes
+
+- PCHG-12.1 convention resolution runs at most once per session and reads no
+  historical commit body or historical diff during it

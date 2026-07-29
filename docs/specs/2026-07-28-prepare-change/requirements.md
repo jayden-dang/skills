@@ -145,6 +145,7 @@ service that I have not read.
 - **PCHG-8.7** IF a re-resolved SHA or a recomputed digest differs from the approved values THEN THE SYSTEM SHALL invalidate the approval and SHALL NOT submit until the package is re-authored, revalidated, redisplayed, and reapproved.
 - **PCHG-8.8** WHEN submitting THE SYSTEM SHALL supply the approved local title, base, head, and body values to the hosting adapter without re-authoring them.
 - **PCHG-8.9** THE SYSTEM SHALL carry the approved digest as inline decision evidence and SHALL NOT cite the local package path as its locator.
+- **PCHG-8.10** IF an approval is invalidated at the pre-submission check after a decision record has already been published for this crossing THEN THE SYSTEM SHALL publish a fresh decision record carrying the reapproved values before retrying submission, so that the published record always describes what actually crossed.
 
 ## 9. Continue automatically from an executed plan
 

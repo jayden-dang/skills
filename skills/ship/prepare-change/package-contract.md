@@ -21,15 +21,24 @@ the PR description.
 
 ## Stable ID: sanitized and head-derived, never the raw branch name
 
-Derive `<stable-id>` from the head branch: sanitize it into a filesystem-
-and-path-safe token — lowercase, `/` and other separators replaced, no
-leading `-`, bounded length. Never place a raw branch name in the package
-path — the sanitized token is the only value that reaches
-`.skills/pr-packages/<stable-id>/`; a branch such as
-`feature/PROJ-34: fix a case` becomes a plain, reproducible token, not a
-literal copy of the branch string. Derive `<stable-id>` once per session and
-reuse it for every write this invocation makes — never re-derive mid-session
-and split one package across two directories.
+Derive `<stable-id>` from the head branch with this exact rule, so Task 9
+can rederive the identical token from the identical branch name:
+
+1. Lowercase the branch name.
+2. Replace every character that is not `a`-`z`, `0`-`9`, or `-` with `-`
+   (this covers `/`, `:`, spaces, and every other separator or shell
+   metacharacter — nothing outside `[a-z0-9-]` survives).
+3. Collapse runs of two or more consecutive `-` into a single `-`.
+4. Strip any leading or trailing `-`.
+5. Truncate to 100 characters, the bound on `<stable-id>`.
+
+Never place a raw branch name in the package path — the sanitized token is
+the only value that reaches `.skills/pr-packages/<stable-id>/`; a branch
+such as `feature/PROJ-34: fix a case` becomes `feature-proj-34-fix-a-case`,
+a plain, reproducible token, not a literal copy of the branch string. Derive
+`<stable-id>` once per session and reuse it for every write this invocation
+makes — never re-derive mid-session and split one package across two
+directories.
 
 ## Precondition: `.skills/` must already be proven git-ignored
 
@@ -48,7 +57,8 @@ Record every one of these fields in `manifest.md`; omit none:
 
 - `Package version:` — the package-contract schema version this manifest
   was written against, so a later contract change can tell old packages
-  apart from new ones.
+  apart from new ones. The current schema version, and the value to write
+  here, is `1`.
 - `Title:` — the exact PR title this session resolved, byte-for-byte the
   title that reaches the reviewer and the title fed into the digest below.
 - `Base:` — the resolved base ref and its resolved commit SHA, carried
@@ -85,10 +95,29 @@ this repository, or an adopting repository, would have to install. Feed it
 the exact bytes of the title, a single newline, and then the full contents
 of `body.md`, in that order and with no other bytes — the same recipe
 `finish-branch` re-runs immediately before submission to detect any edit
-made since approval:
+made since approval, so the two runs must resolve `body.md` identically.
+
+Always use the fully qualified path
+`.skills/pr-packages/<stable-id>/body.md`, never a bare relative filename.
+A bare `cat body.md` only resolves when the shell's working directory
+happens to already be the package directory; run from the repository root —
+the normal working directory for this skill — it fails with `cat: body.md:
+No such file or directory` on stderr while `printf`'s bytes still reach
+`git hash-object` through the pipe, which then hashes the title alone and
+prints a valid-looking 40-character SHA. Nothing about that output looks
+wrong, so the digest is silently corrupt.
+
+Guard against exactly that: check `body.md` is readable *before* piping
+into `git hash-object`, and abort with a visible error instead of hashing
+partial input if it is not. Neither step needs anything beyond a POSIX
+shell test and `git`:
 
 ```
-{ printf '%s\n' "<title>"; cat body.md; } | git hash-object --stdin
+test -r ".skills/pr-packages/<stable-id>/body.md" || {
+  echo "Content-digest: body.md missing or unreadable at .skills/pr-packages/<stable-id>/body.md" >&2
+  exit 1
+}
+{ printf '%s\n' "<title>"; cat ".skills/pr-packages/<stable-id>/body.md"; } | git hash-object --stdin
 ```
 
 ## Package files never enter a commit plan or a reviewer-facing locator

@@ -1,4 +1,5 @@
 """prepare-change base resolution: declared, asked, never inferred from topology."""
+import re
 import unittest
 from pathlib import Path
 
@@ -220,6 +221,52 @@ class PrepareChangePackage(unittest.TestCase):
     def test_PCHG_6_3_digest_uses_git_hash_object(self):
         """PCHG-6.3 — the digest is computed with git plumbing, not a shipped script."""
         self.assertIn("git hash-object", self.text)
+
+    def test_PCHG_6_3_digest_recipe_uses_qualified_body_path(self):
+        """PCHG-6.3 — the digest recipe's code block reads body.md by its
+        fully qualified package path, never a bare relative filename. A
+        bare `cat body.md` only resolves from inside the package directory;
+        run from the repo root (the normal working directory) it fails on
+        stderr while printf's bytes still reach git hash-object, silently
+        hashing the title alone and printing a plausible-looking wrong
+        digest. Scoped to the fenced code block itself (not surrounding
+        prose) so a prose mention of the old anti-pattern, used to explain
+        the bug, can't make this assertion vacuous."""
+        start = self.text.find("## `Content-digest:`")
+        end = self.text.find("## Package files never enter a commit plan")
+        self.assertNotEqual(start, -1, "Content-digest section heading not found")
+        self.assertNotEqual(end, -1, "next section heading not found")
+        section = self.text[start:end]
+        code_match = re.search(r"```\n(.*?)```", section, re.S)
+        self.assertIsNotNone(code_match, "no fenced code block in digest section")
+        code = code_match.group(1)
+        self.assertRegex(
+            code,
+            r'cat\s+"\.skills/pr-packages/<stable-id>/body\.md"',
+            msg="digest recipe code does not cat the fully qualified body.md path",
+        )
+        self.assertNotRegex(
+            code,
+            r"cat\s+body\.md\b",
+            msg="digest recipe code still contains a bare `cat body.md`",
+        )
+
+    def test_PCHG_6_2_stable_id_sanitization_is_an_explicit_rule(self):
+        """PCHG-6.2 — sanitization is an explicit character allow-list plus a
+        numeric length bound, not a qualitative description. `git
+        check-ref-format --branch` legally permits shell metacharacters in
+        branch names, so a vague rule like 'separators replaced' leaves the
+        stable-id field Task 9 binds to ambiguous."""
+        self.assertRegex(
+            self.text,
+            r"\[?a-z0-9-\]?",
+            msg="no explicit [a-z0-9-] allow-list found",
+        )
+        self.assertRegex(
+            self.text,
+            r"\b\d+ characters\b",
+            msg="no numeric length bound found",
+        )
 
     def test_PCHG_6_5_proves_skills_is_ignored_first(self):
         """PCHG-6.5 — nothing is written until .skills/ is proven git-ignored."""

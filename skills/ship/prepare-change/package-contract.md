@@ -70,9 +70,17 @@ Record every one of these fields in `manifest.md`; omit none:
 - `Commits:` — the created-commit list `[{ sha, subject, trailers }]`
   actually present on the branch, exactly as phase 5 produced it.
 - `Advisory commit map:` — the advisory regrouping map, when one was
-  proposed, in the shape the advisory-map rules define.
+  proposed, in the shape SKILL.md's advisory-map rules define: for every
+  proposed group, its **groups**, **order**, **subjects**, **bodies**,
+  **rationale**, and the **trailers** to preserve. Never a runnable
+  `reset`/`rebase`/`force-push` command. When no regrouping would improve the
+  branch, record that nothing was proposed.
 - `Convention findings:` — every finding raised against the resolved
-  convention record, each carrying the `grade` phase 2 assigned it.
+  convention record, each carrying its finding grade — `advisory`,
+  `reported`, `not run`, or verify-routed — per SKILL.md's findings-grading
+  rules. This finding grade is distinct from the convention record's own
+  `grade` (`declared` | `machine-enforced` | `inferred`, conventions.md);
+  the two vocabularies are never conflated.
 - `Validation results:` — the outcome of the six-axis validation run
   against every commit this session created.
 - `Content-digest:` — the digest computed below.

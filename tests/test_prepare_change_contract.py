@@ -320,5 +320,40 @@ class PrepareChangePackage(unittest.TestCase):
         self.assertRegex(self.text, r"(?i)never .{0,80}reviewer-facing locator")
 
 
+class PrepareChangeAdvisory(unittest.TestCase):
+    def setUp(self):
+        self.text = SKILL.read_text()
+
+    def test_PCHG_7_1_no_rewriting_verbs(self):
+        """PCHG-7.1 — every rewrite verb is named as forbidden."""
+        for verb in ("rewrite", "amend", "squash", "reorder", "rebase", "force-push"):
+            self.assertIn(verb, self.text)
+        self.assertRegex(self.text, r"(?s)(NEVER|never|SHALL NOT).{0,200}rebase")
+
+    def test_PCHG_7_2_map_carries_five_parts(self):
+        """PCHG-7.2 — the advisory map names groups, order, subjects, bodies, rationale, trailers."""
+        for part in ("groups", "order", "subjects", "bodies", "rationale", "trailers"):
+            self.assertIn(part, self.text)
+
+    def test_PCHG_7_3_no_runnable_rewrite_commands(self):
+        """PCHG-7.3 — no runnable reset/rebase/force-push command is emitted by default."""
+        self.assertRegex(self.text, r"(?i)no runnable .{0,60}command")
+
+    def test_PCHG_7_4_body_describes_the_real_branch(self):
+        """PCHG-7.4 — the PR body never describes the map as applied."""
+        self.assertRegex(self.text, r"(?s)as it actually exists|never .{0,60}as though")
+
+    def test_PCHG_7_5_7_6_four_grades(self):
+        """PCHG-7.5 PCHG-7.6 — four grades; machine-enforced failures ride the verify path."""
+        for grade in ("advisory", "reported", "not run"):
+            self.assertIn(grade, self.text)
+        self.assertRegex(self.text, r"(?s)verify.{0,120}(failure path|withhold)")
+        self.assertRegex(self.text, r"(?i)no (additional|new) gate")
+
+    def test_PCHG_7_7_findings_travel_in_the_package(self):
+        """PCHG-7.7 — findings and grades reach the package."""
+        self.assertRegex(self.text, r"(?s)findings.{0,120}package")
+
+
 if __name__ == "__main__":
     unittest.main()

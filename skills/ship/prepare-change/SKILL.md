@@ -193,6 +193,83 @@ AUTHOR LOCALLY, NEVER CROSS — push, PR, merge, discard, and block belong to fi
 
    REQUIRED: load package-contract.md and follow it exactly.
 
+## Advisory commit map and findings grading
+
+These rules are not a seventh phase — they are cross-cutting: how this skill treats
+commits that already existed before this invocation, and how it grades every
+convention finding it raises. Both apply throughout phase 5 and phase 6, not at one
+point in the sequence.
+
+### Never touch pre-existing history
+
+<HARD-GATE>
+NEVER rewrite, amend, squash, reorder, rebase, or force-push any commit that
+existed on the branch before this invocation. This prohibition is absolute — it
+covers all six verbs, has no case where the history is "bad enough" to justify an
+exception, and holds even when the user's dirty-tree instruction would be easier to
+satisfy by touching one. Where the branch's own commits fall short, describe a
+better history in the advisory map below; never produce one by force.
+</HARD-GATE>
+
+### The advisory commit map
+
+WHERE the branch's pre-existing commits could be grouped or described better than
+they are, produce an advisory commit map — words that describe a better history,
+never a command that makes one. Carry, for every proposed regrouping, its six
+parts:
+
+- **groups** — the proposed commit groupings
+- **order** — the order those groups would appear in
+- **subjects** — the subject line each group would carry
+- **bodies** — the body each group would carry, stating what changed and why
+- **rationale** — why this regrouping would read better than the branch's actual
+  history
+- **trailers** — the `Implements:` / `Guards:` trailers each affected pre-existing
+  commit carries today, which any regrouping must preserve
+
+`manifest.md`'s `Advisory commit map:` field (package-contract.md) carries this map
+in exactly this six-part shape when one is proposed; when no regrouping would
+improve the branch, the field records that nothing was proposed.
+
+<HARD-GATE>
+Emit no runnable `reset`, `rebase`, or `force-push` command in the advisory commit
+map unless the user explicitly asks for one in this session. The map is read-only
+narrative by default — describing the regrouping, never running it.
+</HARD-GATE>
+
+The PR body describes the branch as it actually exists — its real commits, in their
+real order, with their real subjects — and never as though the advisory commit map
+had been applied: a reviewer reading `body.md` sees the branch that is actually
+there, not the branch this skill wishes existed.
+
+### Grading findings — distinct from the convention record's `grade`
+
+conventions.md's convention record carries a `grade` of `declared` |
+`machine-enforced` | `inferred`, describing where a resolved **convention** came
+from. The grades below describe something different: the outcome of a **finding**
+raised against that convention while authoring this session. Keep the two
+vocabularies distinct — a later task must never merge them into one enum.
+
+Grade every finding with exactly one of these four:
+
+- `advisory` — the convention it was raised against is graded `inferred`; surface
+  the finding, never block on it.
+- `reported` — the convention is `declared` and no executable check for it has
+  failed; state the finding plainly, without blocking.
+- `not run` — a machine-enforced check exists for this convention but this session
+  did not execute it; say so rather than presenting silence as a pass.
+- **verify-routed** — a machine-enforced check ran and failed. Route the failure
+  through the repository's existing `verify` failure path and withhold completion
+  on it exactly as that path already does — adding no additional gate, no new
+  check, and no `prepare-change`-specific block beyond the one the repository
+  already runs.
+
+<HARD-GATE>
+Every convention finding raised this session, together with its grade, travels
+into the PR package: carry it into `manifest.md`'s `Convention findings:` field
+(package-contract.md) — never drop a finding and never summarize its grade away.
+</HARD-GATE>
+
 ## Rationalizations
 
 | Thought | Reality |

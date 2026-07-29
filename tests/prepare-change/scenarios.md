@@ -126,6 +126,24 @@ story's IDs under its heading as they implement it.
 
 ## 7. Report what it could not repair
 
+- PCHG-7.1 no commit that existed before this invocation is ever rewritten,
+  amended, squashed, reordered, rebased, or force-pushed
+- PCHG-7.2 where the branch's pre-existing commits could read better, an
+  advisory commit map names the proposed groups, their order, subjects,
+  bodies, the rationale for regrouping, and the trailers to preserve
+- PCHG-7.3 the advisory commit map emits no runnable reset, rebase, or
+  force-push command unless the user asks for one
+- PCHG-7.4 the PR body describes the branch as it actually exists, never as
+  though the advisory commit map had been applied
+- PCHG-7.5 each convention finding is graded `advisory` (convention was
+  inferred), `reported` (declared, no failing executable check), or `not
+  run` (a machine-enforced check exists but was not executed)
+- PCHG-7.6 a machine-enforced convention check that ran and failed routes
+  through the existing `verify` failure path; no additional gate is
+  introduced for it
+- PCHG-7.7 every convention finding and its grade is carried into the PR
+  package
+
 ## 8. Approve the exact content at the crossing
 
 ## 9. Continue automatically from an executed plan

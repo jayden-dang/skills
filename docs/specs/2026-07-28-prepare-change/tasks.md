@@ -271,7 +271,10 @@ _Requirements: PCHG-11.13_
 
 **Interfaces:**
 - Consumes: the `Resolve base` phase heading from Task 1
-- Produces: the field name `Default PR base:` and the resolved value `base` recorded in the package manifest (consumed by Tasks 7, 9, 11)
+- Produces: two distinct names — the config field `Default PR base:` consumed
+  from `docs/agents/project.md` (and written by Task 11), and the manifest
+  field `Base:` recording the resolved value `base` for this invocation, which
+  may differ from the configured default (consumed by Tasks 7, 9, 11)
 
 **Depends-on:** Task 1
 

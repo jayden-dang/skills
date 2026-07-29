@@ -45,6 +45,18 @@ class PrepareChangeBase(unittest.TestCase):
         self.assertIn("memoize", self.text.lower())
         self.assertIn("no longer resolves", self.text)
 
+    def test_PCHG_2_9_manifest_field_distinct_from_config_field(self):
+        """PCHG-2.9 — the manifest records the resolved value under `Base:`,
+        never under the config field name `Default PR base:`, since the
+        resolved value is a per-invocation value that may differ from the
+        configured default."""
+        self.assertRegex(self.text, r"manifest\s+as\s+`Base:`")
+        self.assertNotRegex(self.text, r"manifest\s+as\s+`Default PR base:`")
+        self.assertRegex(
+            self.text,
+            r"(?s)`Base:`.{0,120}resolved base for this invocation.{0,120}may differ from any configured `Default PR base:`",
+        )
+
 
 if __name__ == "__main__":
     unittest.main()

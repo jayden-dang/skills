@@ -51,8 +51,9 @@ AUTHOR LOCALLY, NEVER CROSS — push, PR, merge, discard, and block belong to fi
    invocation and name `/setup-repo` once as the way to persist it.
 
    Memoize the resolved base for the session, and record it in the PR package
-   manifest as `Default PR base:` `<base>` — the value later phases and
-   `finish-branch` read without recomputing it.
+   manifest as `Base:` `<base>` — the resolved base for this invocation, which
+   may differ from any configured `Default PR base:` — the value later phases
+   and `finish-branch` read without recomputing it.
 
 2. **Resolve conventions** — resolve this repo's commit and PR conventions once per
    session (see conventions.md).

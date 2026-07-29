@@ -832,15 +832,36 @@ class PrepareChangeAdvisory(unittest.TestCase):
         self.text = SKILL.read_text()
 
     def test_PCHG_7_1_no_rewriting_verbs(self):
-        """PCHG-7.1 — every rewrite verb is named as forbidden."""
+        """PCHG-7.1 — every rewrite verb is named as forbidden. Scoped to the
+        advisory-commit-map section itself: `rewrite`, `amend`, `squash`, and
+        `reorder` each already appear elsewhere in the file for unrelated
+        reasons (phase 1's "never rewrites the project default", phase 5's
+        "never amend, squash, or reorder" about session-created commits), so
+        an unscoped assertIn would still pass if one of those six verbs were
+        dropped from this section alone."""
+        start = self.text.find("## Advisory commit map and findings grading")
+        end = self.text.find("## Rationalizations")
+        self.assertNotEqual(start, -1, "advisory commit map section heading not found")
+        self.assertNotEqual(end, -1, "Rationalizations heading not found")
+        section = self.text[start:end]
         for verb in ("rewrite", "amend", "squash", "reorder", "rebase", "force-push"):
-            self.assertIn(verb, self.text)
-        self.assertRegex(self.text, r"(?s)(NEVER|never|SHALL NOT).{0,200}rebase")
+            self.assertIn(verb, section, f"'{verb}' verb missing from advisory commit map section")
+        self.assertRegex(section, r"(?s)(NEVER|never|SHALL NOT).{0,200}rebase")
 
     def test_PCHG_7_2_map_carries_five_parts(self):
-        """PCHG-7.2 — the advisory map names groups, order, subjects, bodies, rationale, trailers."""
+        """PCHG-7.2 — the advisory map names groups, order, subjects, bodies,
+        rationale, trailers. Scoped to the advisory-commit-map section
+        itself: `order`, `trailers`, `rationale`, and `bodies` each already
+        appear elsewhere in the file for unrelated reasons, so an unscoped
+        assertIn would still pass if one of those six map parts were dropped
+        from this section alone."""
+        start = self.text.find("## Advisory commit map and findings grading")
+        end = self.text.find("## Rationalizations")
+        self.assertNotEqual(start, -1, "advisory commit map section heading not found")
+        self.assertNotEqual(end, -1, "Rationalizations heading not found")
+        section = self.text[start:end]
         for part in ("groups", "order", "subjects", "bodies", "rationale", "trailers"):
-            self.assertIn(part, self.text)
+            self.assertIn(part, section, f"'{part}' part missing from advisory commit map section")
 
     def test_PCHG_7_3_no_runnable_rewrite_commands(self):
         """PCHG-7.3 — no runnable reset/rebase/force-push command is emitted by default."""

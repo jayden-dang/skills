@@ -129,7 +129,9 @@ class SetupRepoDefaultBase(unittest.TestCase):
         ask. Section J is the last '###' heading in the file, so splitting on '###'
         alone bleeds all the way to EOF and would match Step 4 item 6's unrelated
         'declined' text for decision I; scope to the '## 3.' heading that actually
-        closes section J."""
+        closes section J. A bare 'declin*' word-stem match only proves declining is
+        mentioned, not what declining does — pin both halves of the requirement:
+        the no-write consequence, and the per-invocation fallback."""
         start = self.text.find("### J. Default PR base")
         end = self.text.find("## 3. Draft and confirm")
         self.assertNotEqual(start, -1, "'### J. Default PR base' heading not found")
@@ -137,6 +139,12 @@ class SetupRepoDefaultBase(unittest.TestCase):
         section_j_only = self.text[start:end]
         self.assertRegex(section_j_only, r"(?i)declin\w+",
                           "decision J's own text never mentions declining")
+        self.assertRegex(
+            section_j_only, r"(?i)writ(?:e|es|ten)\s+no value|leave.{0,20}absent",
+            "decision J never states declining writes no value / leaves the field absent")
+        self.assertRegex(
+            section_j_only, r"(?i)(?:per|every)\s+invocation",
+            "decision J never states the per-invocation fallback that keeps declining meaningful")
 
     def test_PCHG_11_10_one_decision_at_a_time(self):
         """PCHG-11.10 — the one-at-a-time walk rule survives."""

@@ -1,153 +1,222 @@
 ---
 name: execute-plan
-description: Use when an approved tasks.md needs executing — continuous or story-unit
-  Execution-mode, task waves, dual-verdict review, resume after crash/compaction —
-  through whole-branch review and finish-branch.
+description: Use when an approved tasks.md has Execution-mode continuous and needs
+  subagent task-wave execution — dual-verdict review, parallel waves, resume after
+  crash/compaction — through whole-branch review and finish-branch.
 ---
 
 # Execute Plan
 
-Drive an approved plan to completion: independent tasks run concurrently in dependency-ordered waves, one fresh implementer subagent per task, a two-verdict review of each task's diff, a whole-branch review at the end.
+Drive an approved **continuous** plan to completion: independent tasks run in
+dependency-ordered waves, one fresh implementer subagent per task, a two-verdict
+review of each task's diff, a whole-branch review at the end — **no human pause
+between tasks**.
 
-**Why fresh subagents:** each worker receives exactly the context its task needs and nothing else, so it stays focused; your own context stays reserved for coordination. Subagents never inherit session history — you construct their world. Bulk artifacts (briefs, reports, diffs) travel between agents as file paths under `.skills/`, never as pasted text.
+**Not this skill:**
 
-**Execution-mode** (`continuous` | `story-unit`) is a required header on
-`tasks.md`. Read it in Setup. Missing/`unset`/invalid → ask, **write** the answer
-into `tasks.md`, proceed. Never invent continuous because the field is empty. No
-project-level default.
+| Intent | Use instead |
+|---|---|
+| `Execution-mode: story-unit` (human-gated review units) | REQUIRED SUB-SKILL: use `execute-story` |
+| No subagents / controller implements / user chose inline | REQUIRED SUB-SKILL: use `execute-inline` |
 
-| Mode | Stops | Review units |
-|---|---|---|
-| **continuous** | BLOCKED, ambiguity, all-done only — no pause between tasks | Preflight **unit table** still prints (size signal); no unit barriers |
-| **story-unit** | those **plus** unit barrier after each **review unit** | Derive + barrier recipe in `story-unit-mode.md` (load when mode is story-unit **or** when running preflight) |
+**Why fresh subagents:** each worker receives exactly the context its task needs
+and nothing else. Subagents never inherit session history — you construct their
+world. Bulk artifacts travel as file paths under `.skills/`, never as pasted text.
 
-**Narration:** at most one short line between tool calls. Ledger + tool results carry the record.
+**Narration:** at most one short line between tool calls. Ledger + tool results
+carry the record.
+
+## Mode gate
+
+`Execution-mode` is a required header on `tasks.md`. This skill runs **only**
+when the value is `continuous`.
+
+| Header | Action |
+|---|---|
+| `continuous` | Proceed with Setup below |
+| `story-unit` | Do **not** run this skill's loop. REQUIRED SUB-SKILL: use `execute-story` |
+| missing / `unset` / invalid | Ask the user; write `continuous` or `story-unit` into `tasks.md` (commit if tracked). If they pick `story-unit` → `execute-story`. If `continuous` → proceed. Never invent continuous silently. No project-level default |
+
+Never run unit barriers, unit derivation, or human unit stops in this skill.
+Those live only in `execute-story`.
+
+| Thought | Reality |
+|---|---|
+| "execute-plan used to handle both modes — I'll keep going in story-unit" | Story-unit is `execute-story`. Staying here is the dual-mode failure |
+| "I'll derive units as a size signal then continuous" | No unit table in this skill. Waves come from Depends-on only |
+| "Lead wants human stops — stay in continuous and pause anyway" | Pause policy is the header. Write `story-unit` and use `execute-story`, or keep continuous with no pauses |
+| "PM / standup — default continuous without asking" | Empty mode means not ready; ask and write the field |
 
 ## Setup
 
-1. **Workspace check — ask first.** If no isolated workspace exists yet, ask the user before doing anything else: isolate this run in a worktree, or implement directly on the current branch? Do not default to creating one unasked. If they choose isolation, REQUIRED SUB-SKILL: use `worktrees`. If they choose the current branch and it is main/master, that is a separate, harder bar — get their explicit consent to implement there specifically before proceeding; a preference for "no worktree" is not by itself consent to touch main/master. *Done when: you have the user's workspace choice — a dedicated branch with a clean baseline if isolated, or explicit go-ahead on the current branch (with separate consent if that branch is main/master).*
-2. **Ledger check.** First make the working dir local-only (idempotent line-presence check, since a trailing-slash pattern won't match `.skills` until the dir exists): `grep -qxF '.skills/' .gitignore 2>/dev/null || { printf '.skills/\n' >> .gitignore && git commit -m 'chore: ignore local skills artifacts' -- .gitignore; }` (the `-- .gitignore` pathspec auto-stages just that file, so nothing else already in the index is folded into this commit). Then read `.skills/progress.md` if it exists. Every task it marks complete IS complete — resume at the first task it does not list. *Done when: `.skills/` is git-ignored and you know which task is next.*
-3. **Read the plan.** Read tasks.md in full, once. Copy the **Global Constraints** section verbatim — you will paste it into every reviewer dispatch unmodified. Parse `Execution-mode:` — must be `continuous` or `story-unit`. If missing/`unset`/invalid: ask the user, write `Execution-mode: continuous` or `Execution-mode: story-unit` into the file (commit if the plan is tracked), then continue. Never default silently. If `docs/agents/project.md` is missing, say so, suggest running `setup-repo`, and take verify commands from the plan's Global Constraints instead. When `project.md` has `## Team` with a non-empty **roster** or band override, load the **band** and **packaging** rules from that section into controller context (do not re-author them). Solo: brief tone as pair-with-user. Small/Multi: mention owners when roster/ownership notes apply. **Never** skip dual-verdict / Standards+Spec review or subagent review for Solo — **packaging** only. Missing Team → pre-feature default; do not invent a team. *Done when: constraints are captured word-for-word, Execution-mode is valid, and band (if any) is loaded.*
-4. **Review-unit preflight (both modes).** Load `story-unit-mode.md` beside this file and run **Derive partition** + **File count** + print the **Unit table**. Hard-fail / omit rules are in that recipe. *Done when: table printed; hard-fail cases fixed or reported and blocked.*
-5. **Todos — GATE.** Create one todo per task via TodoWrite before dispatching anything. This is not optional bookkeeping: on a long plan the todo list is your only cheap, glanceable read of what's left without re-deriving it from the ledger or `git log`. Do not proceed to step 6 or any dispatch until it exists. *Done when: the todo list mirrors the plan, one todo per task.*
-6. **Pre-flight plan review.** Scan the plan once for internal defects: tasks that contradict each other or the Global Constraints, and anything the plan explicitly mandates that a reviewer would flag as a defect (an assertion-free test, a copy-pasted logic block). Batch ALL findings into ONE question to the user — each finding shown beside the plan text that mandates it, asking which governs — before any dispatch. One interrupt, not one per discovery mid-run. A clean scan needs no comment. *Done when: the user has ruled on every conflict, or the scan found none.*
-7. **Wave planning.** Read each task's `Depends-on:` line. A line names the tasks that must land first (`Depends-on: Task 2, Task 4`); `Depends-on: none` marks a task with no prerequisite; an **absent** line falls back to depending on every earlier task. Topo-sort into waves — wave 0 is every task whose dependencies are already met, wave 1 the tasks freed once wave 0 lands, and so on. A plan that declares no dependencies collapses to one task per wave: the strict serial order. In story-unit mode, also topo-sort **units** (edge if any task in U depends on any task in V); tie-break lowest story number. *Done when: every task sits in a wave, and (story-unit) every unit sits in unit order.*
+1. **Mode gate first.** Parse `Execution-mode:` per the table above. *Done when:
+   you are on continuous, or you have handed off to `execute-story`.*
+2. **Workspace check — ask first.** If no isolated workspace exists yet, ask:
+   isolate in a worktree, or implement on the current branch? Do not create a
+   worktree unasked. Isolation → REQUIRED SUB-SKILL: use `worktrees`. Current
+   branch is main/master → separate explicit consent before implementing; "no
+   worktree" is not consent to touch main/master. *Done when: workspace choice
+   is clear.*
+3. **Ledger check.** Make `.skills/` local-only:
+   `grep -qxF '.skills/' .gitignore 2>/dev/null || { printf '.skills/\n' >> .gitignore && git commit -m 'chore: ignore local skills artifacts' -- .gitignore; }`
+   Read `.skills/progress.md` if it exists. Every task it marks complete IS
+   complete — resume at the first task it does not list. *Done when: next task
+   is known.*
+4. **Read the plan.** Read `tasks.md` in full once. Copy **Global Constraints**
+   verbatim for every reviewer dispatch. If `docs/agents/project.md` is missing,
+   say so, suggest `setup-repo`, take verify commands from Global Constraints.
+   When `## Team` has roster/band, load band **packaging** only — never skip
+   dual-verdict review for Solo. *Done when: constraints captured word-for-word.*
+5. **Todos — GATE.** One todo per task via TodoWrite before any dispatch.
+   *Done when: the todo list mirrors the plan.*
+6. **Pre-flight plan review.** Scan once for internal defects (contradictions,
+   assertion-free tests, copy-pasted logic the plan mandates). Batch ALL findings
+   into ONE question to the user before dispatch. Clean scan → no comment.
+   *Done when: conflicts ruled or none.*
+7. **Wave planning.** Read each task's `Depends-on:` line. Named tasks must land
+   first; `Depends-on: none` = no prerequisite; **absent** line → depends on every
+   earlier task. Topo-sort into waves. No Depends-on edges → one task per wave
+   (strict serial). *Done when: every task sits in a wave.*
 
 ## Per-Task Loop
 
 For Task N:
 
-1. **Record the base.** `BASE=$(git rev-parse HEAD)` — before dispatch, always. *Done when: the sha is noted.*
-2. **Build the brief.** Copy Task N's block plus the verbatim Global Constraints into `.skills/task-N-brief.md`. That file is the implementer's entire world — it must carry every exact value (numbers, magic strings, signatures) the task needs. When a `docs/architecture/` spine exists, also list in the brief the `**ARCH-N**` invariants relevant to this task's touched files, so the implementer builds within them; no spine, add nothing. When Team **band** was loaded in Setup: apply its **packaging** rule to the brief's tone — never omit review obligations. *Done when: the brief file exists.*
-3. **Dispatch a FRESH implementer** using `implementer-prompt.md` (beside this file). The dispatch contains exactly: one line placing the task in the project; the brief path, introduced as "this brief is your requirements — read it before anything else"; interfaces and decisions from earlier tasks the brief cannot know; your resolution of any ambiguity you spotted in the brief; the report path `.skills/task-N-report.md`; the model, stated explicitly. Never session history. Never the plan file. Exact values (numbers, magic strings, signatures) live only in the brief. *Done when: the dispatch matches this inventory and nothing more.*
-4. **Answer questions.** If the implementer asks anything, answer completely before letting it proceed. *Done when: no open questions.*
-5. **Handle the status** per the table below. *Done when: status is DONE and the work is committed.*
-6. **Package the diff.** Assemble the review bundle into `.skills/review-<base7>..<head7>.diff`: `git log $BASE..HEAD --oneline`, then `git diff --stat $BASE HEAD`, then `git diff -U10 $BASE HEAD`. BASE is the sha from step 1 — **never `HEAD~1`**, which silently drops every commit of a multi-commit task except the last. *Done when: the bundle file exists.*
-7. **Dispatch a task reviewer** using `task-reviewer-prompt.md` (beside this file) with: the brief path, the report path, the diff package path, the Global Constraints verbatim, and an explicit model. When a `docs/architecture/` spine exists, also run `check-invariants` (REQUIRED SUB-SKILL) on the task diff; a `violates` verdict is a finding routed through the fix loop (step 8) like any other. No spine, skip it. *Done when: both verdicts are back.*
-8. **Fix loop.** Critical or Important findings → dispatch a fix subagent (implementer contract: it re-runs the covering tests — name them in the dispatch — under `tdd`'s verification discipline, and appends its results to the same report file) → **re-review**. Repeat until the reviewer approves. **Circuit breaker:** if the same finding survives 3 fix→re-review cycles, stop looping — the fix approach is wrong or the task is mis-scoped. Run a root-cause analysis to find the lowest invalidated artifact: if it sits above the current task (the plan, design, or requirements — not just this task's approach), REQUIRED SUB-SKILL: use `correct-course`; otherwise escalate to the user with the finding and the three attempts, exactly as for BLOCKED. Never spend a fourth cycle on it. Never fix findings yourself in the controller context — that pollutes it. Minor findings → record in the ledger for the final review to triage; an unrecorded roll-up is a silent discard. *Done when: the re-review is clean or the breaker has tripped and the user has ruled.*
-9. **Resolve ⚠️ items.** Requirements the reviewer could not verify from the diff (they live in unchanged code or span tasks) come back to you flagged — you hold the plan context the reviewer lacks. Confirm each yourself; a real gap counts as a failed spec verdict: back to step 8. *Done when: every flagged item is confirmed covered or fixed.*
-10. **Ledger.** Append one line to `.skills/progress.md`: `Task N: complete (commits <base7>..<head7>, review clean)`. Mark the todo done. *Done when: the line is written.*
-11. **Next.** Advance by wave order (see **Parallel waves**), not raw task number — within a serial wave that is simply Task N+1. For a parallel wave, steps 10–11 move to the wave barrier. *Done when: the loop restarts on the next task or no tasks remain.*
-
-## Story-unit mode
-
-WHEN `Execution-mode: story-unit` (or when running Setup preflight), load
-`story-unit-mode.md` beside this file and follow its recipes.
-
-**Iron laws (body keeps only these):**
-
-1. **Review units are derived**, never authored in tasks.md.
-2. After each unit's tasks are clean: **unit agent review → STOP for human → unlock**.
-3. **"continue"** after looking = next unit. **"stop stopping" / "just run it all"** =
-   write `Execution-mode: continuous` into tasks.md first. Chat-only is not a mode change.
-4. Ledger `Unit <k>: complete (tasks …, range <base>..<head>)` — resume reads it.
-5. **Whole-branch agent review still runs** after the last unit (not a substitute for human unit review).
-
-| Thought | Reality |
-|---|---|
-| "User said keep going — no need to edit tasks.md" | "Stop stopping" is a **mode change**; write `Execution-mode: continuous` or the plan lies |
-| "Unit agent review was clean — skip human barrier" | Agent unit review is not the human stop; barrier still fires in story-unit |
-| "EOD / whole PR later — drop unit stops" | Time and later review do not rewrite Execution-mode |
+1. **Record the base.** `BASE=$(git rev-parse HEAD)` — before dispatch, always.
+2. **Build the brief.** Task N block + verbatim Global Constraints →
+   `.skills/task-N-brief.md`. Include relevant `**ARCH-N**` when a
+   `docs/architecture/` spine exists. Apply Team band packaging to tone — never
+   omit review obligations.
+3. **Dispatch a FRESH implementer** using `implementer-prompt.md` (beside this
+   file). Dispatch inventory only: one-line placement; brief path as requirements;
+   interfaces/decisions prior tasks cannot know; ambiguity resolutions; report
+   path `.skills/task-N-report.md`; explicit model. Never session history. Never
+   the plan file.
+4. **Answer questions** fully before the implementer proceeds.
+5. **Handle the status** per the table below. Work committed on DONE.
+6. **Package the diff** → `.skills/review-<base7>..<head7>.diff`:
+   `git log $BASE..HEAD --oneline`, `git diff --stat $BASE HEAD`,
+   `git diff -U10 $BASE HEAD`. Never `HEAD~1` as base.
+7. **Dispatch a task reviewer** using `task-reviewer-prompt.md` with brief,
+   report, diff package, verbatim Global Constraints, explicit model. Spine
+   present → also REQUIRED SUB-SKILL: use `check-invariants`; `violates` enters
+   the fix loop.
+8. **Fix loop.** Critical/Important → fix subagent (re-run covering tests under
+   `tdd`, append to same report) → **re-review**. Same finding survives 3 cycles
+   → stop; plan/design/requirements invalidated → REQUIRED SUB-SKILL: use
+   `correct-course`; else escalate. Never fix in controller context. Minors →
+   ledger for whole-branch triage.
+9. **Resolve ⚠️ items** the reviewer could not verify from the diff.
+10. **Ledger.** `Task N: complete (commits <base7>..<head7>, review clean)`.
+    Mark todo done.
+11. **Next.** Advance by wave order (see **Parallel waves**), not raw task
+    number. No permission pause between tasks.
 
 ## Parallel waves
 
-A single-task wave runs the Per-Task Loop inline on the branch — the common case. A wave holding two or more independent tasks runs them concurrently, each isolated in its own worktree, **only when `git worktree` is usable**; if it is not, run that wave's tasks serially instead.
+A single-task wave runs the Per-Task Loop on the branch — the common case. A wave
+with two or more independent tasks runs them concurrently, each in its own
+worktree, **only when `git worktree` is usable**; otherwise serial.
 
-1. **Record the wave base.** `WBASE=$(git rev-parse HEAD)`. Every task in the wave branches from this one sha. *Done when: WBASE is noted.*
-2. **Prove the surfaces are disjoint.** Read the wave's task briefs; confirm no two of them Create or Modify the same file. An overlap means a `Depends-on` edge was missed — demote those tasks to serial and note it, never run them in parallel. *Done when: the parallel set is provably file-disjoint.*
-3. **Fan out — one worktree per task.** You stay in the primary worktree throughout (the feature branch, sitting at WBASE); the tasks get their own. For each task, `git worktree add .worktrees/<branch>-taskN -b <branch>-taskN WBASE`, then run **Per-Task Loop steps 1–9** inside that worktree — hold steps 10–11 (ledger, advance) for the barrier. On a fresh task branch, step 1's `BASE=$(git rev-parse HEAD)` already equals WBASE, so the brief, dispatch, diff package, review, and fix loop all work unchanged, just scoped to the worktree. The implementers run at the same time; you coordinate them, holding each task's Minor findings until the barrier. *Done when: every task in the wave is DONE with a clean task review.*
-4. **Barrier, then merge in task order.** Only once every task in the wave has passed review, and back in the primary worktree, merge each task branch into the **feature branch** — never main/master — in ascending task number (`git merge --no-ff <branch>-taskN`). A conflict here means two tasks shared a surface the disjoint check missed — STOP and escalate; never resolve a wave merge blind. *Done when: all wave branches are merged into the feature branch.*
-5. **Ledger once, worktrees down.** For each wave task append one line to `.skills/progress.md` naming its merge commit as the head — `Task N: complete (merged <branch>-taskN at <merge7>, review clean)` — and roll up its held Minor findings. You are the sole writer and write only here, so there is no race. Mark each wave task's todo done alongside its ledger line — a wave is not exempt from step 10's todo-marking, only from doing it per-task instead of at the barrier. Then `git worktree remove` each. *Done when: the ledger records the whole wave, every one of its todos is marked done, and its worktrees are gone.*
+1. **Record the wave base.** `WBASE=$(git rev-parse HEAD)`.
+2. **Prove surfaces are disjoint.** No two briefs Create/Modify the same file.
+   Overlap → demote to serial; never parallel overlapping surfaces.
+3. **Fan out — one worktree per task.** Stay in the primary worktree at WBASE.
+   For each task: `git worktree add .worktrees/<branch>-taskN -b <branch>-taskN WBASE`,
+   run **Per-Task Loop steps 1–9** inside that worktree; hold ledger/advance for
+   the barrier. Implementers run concurrently.
+4. **Barrier, then merge in task order.** Only after every wave task passed
+   review, merge each into the **feature branch** (never main/master) ascending
+   task number (`git merge --no-ff <branch>-taskN`). Conflict → STOP and escalate;
+   never resolve a wave merge blind.
+5. **Ledger once, worktrees down.**
+   `Task N: complete (merged <branch>-taskN at <merge7>, review clean)` per task;
+   mark todos; `git worktree remove` each.
 
 ## Implementer Status Handling
 
 | Status | Your move |
 |---|---|
-| **DONE** | Package the diff (step 6) and send it to review. |
-| **DONE_WITH_CONCERNS** | Read the concerns **and** `.skills/implementation-notes.md` when it exists before anything else. Correctness or scope doubts: resolve them before review. A deviation that falsifies the plan/design/requirements → REQUIRED SUB-SKILL: use `correct-course`. Local conservative deviations already logged: note them in the ledger, proceed to review. Observations ("this file is getting big"): note in the ledger, proceed to review. Missing notes file while concerns claim a plan deviation: treat as incomplete — re-dispatch to log the deviation before review. |
-| **NEEDS_CONTEXT** | Supply the missing file, interface, or decision it named, then re-dispatch on the same model. |
-| **BLOCKED** | Diagnose: missing context → supply it and re-dispatch; reasoning ceiling → re-dispatch on a stronger model; task too large → split it into smaller dispatches; the plan itself is wrong → pause and REQUIRED SUB-SKILL: use `correct-course`. |
+| **DONE** | Package the diff → task review. |
+| **DONE_WITH_CONCERNS** | Read concerns **and** `.skills/implementation-notes.md`. Plan-falsifying deviation → REQUIRED SUB-SKILL: use `correct-course`. Missing notes while claiming deviation → re-dispatch to log first. |
+| **NEEDS_CONTEXT** | Supply what was named; re-dispatch same model. |
+| **BLOCKED** | Context → supply; ceiling → stronger model; too large → split; plan wrong → REQUIRED SUB-SKILL: use `correct-course`. |
 
-Never ignore an escalation, and never force the same model to retry with nothing changed. Cap redispatches at 2 for the same task; if it is still not DONE after the second, escalate to the user rather than burning a third.
+Cap redispatches at 2 per task; still not DONE → escalate to the user. Never
+force the same model to retry with nothing changed.
 
 ## Model Tiering
 
-State the model **explicitly on every dispatch** — an omitted model inherits your session's, usually the most capable and most expensive, silently defeating this section.
+State the model **explicitly on every dispatch** — omitted model inherits the
+session's (usually most expensive).
 
-- **Cheap tier:** transcription tasks (the plan text contains the complete code — the work is typing plus testing) and single-file mechanical fixes.
-- **Mid tier, as a floor:** every reviewer, and every implementer working from prose. Turn count beats token price — cheap models routinely take two to three times the turns on multi-step work and cost more overall.
-- **Top tier:** tasks needing design judgment or broad codebase understanding, and the final whole-branch review.
+- **Cheap:** transcription / single-file mechanical fixes.
+- **Mid floor:** every reviewer; every implementer working from prose.
+- **Top:** design judgment, broad codebase understanding, whole-branch review.
 
-Scale reviewer models to the diff's size and risk: a small mechanical diff does not need the top tier; a subtle concurrency change does.
+Scale reviewer tier to diff size and risk.
 
 ## Reviewer-Prompt Hygiene
 
-- **Never pre-judge findings.** If your dispatch contains "do not flag X", "treat it as Minor at most", or "the plan chose this" — stop: you are pre-judging, usually to spare yourself a review loop. Let the reviewer raise it and adjudicate afterwards.
-- **A plan-mandated defect is still a finding.** The plan does not grade its own work. Present the finding and the mandating plan text to the user and ask which governs — never dismiss the finding, never dispatch a fix that contradicts the plan without asking.
-- No open-ended directives ("check every call site", "run stress tests if useful") without a concrete, task-specific reason.
-- Do not ask a reviewer to re-run tests the implementer already ran on the same code — the report file is the test evidence.
+- Never pre-judge findings ("do not flag X", "Minor at most", "the plan chose this").
+- A plan-mandated defect is still a finding — ask which governs.
+- No open-ended "check everything" without a concrete task-specific reason.
+- Do not re-run tests the implementer already evidenced in the report.
 
 ## Durable Progress
 
-Conversation memory does not survive compaction. Controllers that lost their place have re-dispatched entire completed task sequences — the single most expensive failure this loop has. Todos and the ledger do different jobs — todos are your live, glanceable view of what's left this session; the ledger is what survives when that view is gone. Never let the existence of one excuse skipping the other. When memory is gone or suspect, the ledger is the source of truth:
+Conversation memory does not survive compaction. Todos = live session view;
+ledger = survives compaction. Never let one excuse skipping the other.
 
-- On skill start, read `.skills/progress.md` if present; resume after the last complete task.
-- After compaction or resume, trust the ledger and `git log` over your own recollection — the commits the ledger names exist in git even when your context no longer remembers writing them.
+- On start, read `.skills/progress.md`; resume after the last complete task.
+- After compaction, trust the ledger and `git log` over memory.
 - Never re-dispatch a task the ledger marks complete.
-- A crash mid-wave leaves uncommitted, unmerged worktrees: discard them and re-run the whole wave off WBASE. Nothing is ledgered or merged until the barrier, so the re-run is idempotent.
-- `.skills/` is git-ignored scratch; if it is wiped, reconstruct progress from `git log`.
+- Crash mid-wave → discard unmerged worktrees; re-run the whole wave off WBASE.
+- `.skills/` is git-ignored; if wiped, reconstruct from `git log`.
 
 ## After the Last Task
 
-1. **Whole-branch review.** REQUIRED SUB-SKILL: use `code-review` with base = the branch point (`git merge-base main HEAD`) — never a mid-branch sha. Point it at the ledger's Minor-findings list for triage. Run it on the top model tier. *Done when: the verdict is in.*
-2. **One fixer.** If it returns findings, dispatch ONE fix subagent carrying the complete findings list — never one fixer per finding; each extra fixer rebuilds context and re-runs suites, and a per-finding fix wave can cost more than the whole plan did. Re-review after. *Done when: the review is clean.*
-3. **Polish.** REQUIRED SUB-SKILL: use `polish` on the whole-branch diff — a plan built task by task accretes duplication and bandaid depth that no single task review could see, because each one was only ever shown its own slice. It is behavior-preserving, so it runs *before* acceptance, never after: acceptance then drives the code that will actually ship. *Done when: the cleanups are applied and the suite is green, or the branch was already clean.*
-4. **Acceptance.** REQUIRED SUB-SKILL: use `acceptance-check` — drive the feature through the running system as a real user; green units prove assertions pass, not that it works. Fix any break via `debug`, then promote the check to a committed, ID-tagged test. *Done when: the spec's user-facing behaviors are confirmed live.*
-   Optional: `/allocate-attention` ranks a human sample over this branch. Not a gate — skip it freely.
-5. **Prepare the change.** REQUIRED SUB-SKILL: use `prepare-change` — acceptance can still change the code, and authoring must describe the code that will actually ship, so this runs after acceptance rather than before. *Done when: the branch's commits are authored and a PR package exists.*
-6. **Finish.** REQUIRED SUB-SKILL: use `finish-branch`. *Done when: the user has chosen merge / PR / keep / discard / block.*
+1. **Whole-branch review.** REQUIRED SUB-SKILL: use `code-review` with base =
+   `git merge-base main HEAD` — never a mid-branch sha. Feed ledger Minors.
+   Top model tier.
+2. **One fixer** for the complete findings list → re-review. Never one fixer per
+   finding.
+3. **Polish.** REQUIRED SUB-SKILL: use `polish` on the whole-branch diff
+   (before acceptance).
+4. **Acceptance.** REQUIRED SUB-SKILL: use `acceptance-check`. Breaks → `debug`,
+   then promote to committed ID-tagged tests. Optional: `/allocate-attention`
+   (not a gate).
+5. **Prepare.** REQUIRED SUB-SKILL: use `prepare-change`.
+6. **Finish.** REQUIRED SUB-SKILL: use `finish-branch`.
 
-## Inline Fallback (no subagent capability)
+## Inline route
 
-Same loop, no dispatches: implement each task yourself, in order, from its brief. REQUIRED SUB-SKILL: use `tdd` for every step. Keep the same ledger appends per task and the same end-of-plan review via `code-review`. On a blocker, a failing verification, or a plan gap: stop and ask the user — never guess through it. The main/master consent rule still applies.
+Controller-side sequential execution (no implementer subagents) is owned by
+**execute-inline**. If the user chose inline, or the environment cannot fan out
+implementers: REQUIRED SUB-SKILL: use `execute-inline`. Do not half-run this
+skill's subagent loop without dispatches.
 
 ## Red Flags — Never
 
-- Run two implementers in the **same worktree**, or run a wave in parallel without isolated worktrees and a disjoint-surface check — that is the collision the wave machinery exists to prevent.
-- Merge a parallel wave, or ledger it, before every task in it has passed review.
-- Hand a subagent the whole plan file — the brief in `.skills/task-N-brief.md` is its world.
-- Use `HEAD~1` as a review base.
-- Skip the re-review after a fix, or accept a review missing either verdict.
-- Move to the next task with open Critical/Important findings.
-- Let the implementer's self-review substitute for the task review — both are required.
-- Tell a reviewer what not to flag, or pre-rate a finding's severity in the dispatch.
-- Dispatch a reviewer without a diff package — build it first and name the path.
-- Re-dispatch a task the ledger already marks complete.
-- Pause between tasks to ask permission to continue (**continuous** mode). Story-unit mode **must** stop at unit barriers.
-- Invent `Execution-mode: continuous` because the header is missing — ask and write the field.
-- Treat "stop stopping" / "just run it all" as a chat-only unlock without writing `Execution-mode: continuous` into tasks.md.
-- Skip unit barriers because EOD, "agent review was clean," or "human will read the whole PR later."
-- Dispatch the first task before the todo list (one per task) exists.
-- Fix reviewer findings in your own context instead of dispatching a fixer.
-- Start implementation on main/master without the user's explicit consent.
-- Create a worktree without first asking whether the user wants one, or treat a "work on the current branch" answer as consent to do that on main/master.
+- Run this skill's loop when `Execution-mode` is `story-unit` (hand off to
+  `execute-story`)
+- Stay on this skill when the user chose inline / no subagents (hand off to
+  `execute-inline`)
+- Run unit barriers, unit derivation, or human unit stops under continuous
+- Pause between tasks to ask permission to continue
+- Invent `Execution-mode: continuous` because the header is missing
+- Run two implementers in the **same worktree**, or parallel without isolated
+  worktrees and a disjoint-surface check
+- Merge or ledger a parallel wave before every task in it passed review
+- Hand a subagent the whole plan file — the brief is its world
+- Use `HEAD~1` as a review base
+- Skip re-review after a fix, or accept a review missing either verdict
+- Move to the next task with open Critical/Important findings
+- Let implementer self-review substitute for task review
+- Tell a reviewer what not to flag, or pre-rate severity in the dispatch
+- Dispatch a reviewer without a diff package
+- Re-dispatch a task the ledger marks complete
+- Dispatch the first task before the todo list exists
+- Fix reviewer findings in the controller context
+- Start implementation on main/master without explicit consent
+- Create a worktree without asking, or treat "current branch" as consent for main/master

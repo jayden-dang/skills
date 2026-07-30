@@ -1,7 +1,9 @@
 # Tasks: <Feature Name>
 
-> **For agentic workers:** REQUIRED SUB-SKILL: use `execute-plan` to implement
-> this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
+> **For agentic workers:** pick the execute skill from `Execution-mode` and the
+> run route — `execute-plan` (continuous + subagents), `execute-story`
+> (story-unit + human review units), or `execute-inline` (controller implements,
+> no implementer subagents). Steps use checkbox (`- [ ]`) syntax for tracking.
 
 Feature code: <CODE>
 Status: Draft
@@ -42,7 +44,7 @@ task. A file not listed here should not be touched.>
 
 **Depends-on:** <earlier tasks that must land first, e.g. `Task 1`; or `none`.
 Omit the line for strict serial order. Tasks sharing no files or interfaces
-declare no edge — `execute-plan` runs those together in one parallel wave.>
+declare no edge — `execute-plan` may run those together in one parallel wave.>
 
 - [ ] **Step 1: Write the failing test**
 

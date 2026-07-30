@@ -203,7 +203,8 @@ AUTHOR LOCALLY, NEVER CROSS — push, PR, merge, discard, and block belong to fi
    this phase creates unless the user names them for inclusion in this
    invocation.
 
-   WHEN running as the `execute-plan` continuation (that skill's closing
+   WHEN running as an execute-family continuation (`execute-plan` /
+   `execute-story` / `execute-inline` closing
    sequence lands here after acceptance), leave every commit the plan's task
    implementers already created unmodified — never amend, squash, or reorder
    one. Group and commit only the residue left uncommitted after the plan's

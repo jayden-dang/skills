@@ -1,19 +1,19 @@
 # `execute-plan`
 
-> Drive an approved plan to completion: independent tasks run concurrently in dependency-ordered waves, one fresh implementer subagent per task, a two-verdict review of each task's diff, a whole-branch review at the end.
+> Drive an approved **continuous** plan to completion: independent tasks run in dependency-ordered waves, one fresh implementer subagent per task, a two-verdict review of each task's diff, a whole-branch review at the end — **no human pause between tasks**.
 
 |  |  |
 |---|---|
 | **Bucket** | execution |
 | **Invocation** | model-invocable (the agent calls it on its own) |
-| **Reads** | `tasks.md` (the plan, and its Global Constraints verbatim), `.skills/progress.md` (the ledger), `docs/agents/project.md` (verify commands, test annotation conventions) |
-| **Writes** | implementation commits; `.skills/` scratch — one brief, one report, and one diff package per task, plus the `progress.md` ledger |
-| **Calls** | [`worktrees`](worktrees.md), [`tdd`](tdd.md) (inline fallback), [`code-review`](code-review.md), `polish`, [`acceptance-check`](acceptance-check.md), [`debug`](debug.md) (on an acceptance break), [`prepare-change`](prepare-change.md), [`finish-branch`](finish-branch.md) |
-| **Called by** | [`write-plan`](write-plan.md) (once the plan is approved), [`handoff`](handoff.md) (resuming a partially executed plan) |
+| **Reads** | `tasks.md` (`Execution-mode: continuous`, Global Constraints), `.skills/progress.md`, `docs/agents/project.md` |
+| **Writes** | implementation commits; `.skills/` scratch — brief, report, diff package per task, plus the ledger |
+| **Calls** | [`worktrees`](worktrees.md), [`code-review`](code-review.md), `polish`, [`acceptance-check`](acceptance-check.md), [`debug`](debug.md), [`prepare-change`](prepare-change.md), [`finish-branch`](finish-branch.md); hands off to [`execute-story`](execute-story.md) / [`execute-inline`](execute-inline.md) when mis-routed |
+| **Called by** | [`write-plan`](write-plan.md) (continuous route), [`handoff`](handoff.md) (resume) |
 
 ## When it fires
 
-An approved `tasks.md` exists and it is time to implement, execute, or build out the plan. It also fires on resume — a crash, a compaction, or a fresh session landing on a plan that is partly done. In that case the ledger, not memory, says where to pick up.
+An approved `tasks.md` has **`Execution-mode: continuous`** and subagent waves are wanted. Story-unit plans use [`execute-story`](execute-story.md). No-subagent / controller-implements uses [`execute-inline`](execute-inline.md). Resume uses the ledger, not memory.
 
 ## How it is shaped
 
@@ -120,9 +120,10 @@ Conversation memory does not survive compaction. Controllers that lost their pla
 5. **Prepare the change.** [`prepare-change`](prepare-change.md) is a required sub-skill — it runs after acceptance rather than before, because acceptance can still change the code and authoring must describe what will actually ship. Commits and a PR package exist when it is done.
 6. **Finish.** [`finish-branch`](finish-branch.md) is a required sub-skill — the user chooses merge / PR / keep / discard / block.
 
-## Inline fallback
+## Sibling routes
 
-On a harness with no subagent capability, the same loop runs with no dispatches: implement each task in order from its brief, with [`tdd`](tdd.md) as a required sub-skill for every step, the same per-task ledger appends, and the same end-of-plan `code-review`. On a blocker, a failing verification, or a plan gap: stop and ask the user — never guess through it. The main/master consent rule still applies.
+- **`story-unit` header** → do not stay here; REQUIRED hand off to [`execute-story`](execute-story.md).
+- **User chose inline / no subagents** → REQUIRED hand off to [`execute-inline`](execute-inline.md).
 
 ## The two dispatch templates
 
@@ -184,5 +185,6 @@ The whole design defends one scarce resource: the controller's context window. E
 
 - [Artifacts](../concepts/artifacts.md) — the `.skills/` scratch files briefs and reports travel as
 - [The skill model](../concepts/skill-model.md) — why controller and worker contexts are kept separate
+- [`execute-story`](execute-story.md) · [`execute-inline`](execute-inline.md) — sibling execute routes
 - [`write-plan`](write-plan.md) — the skill that produces the `tasks.md` this one executes
 - [`code-review`](code-review.md) — the whole-branch gate after the last task

@@ -28,7 +28,8 @@ write-plan                   vertical-slice tasks with _Requirements:_ footers;
 worktrees                    isolated workspace, clean baseline
       │
       ▼
-execute-plan                 per task: brief → implementer (tdd) → review diff →
+execute family               execute-plan | execute-story | execute-inline
+                             per task: brief → implement (tdd) → review/ledger →
                              two-verdict review → fixes → ledger
                              [debug on failures; verify before any claim]
       │
@@ -98,7 +99,7 @@ sync-spec                    whenever a spec'd feature changed outside its plan
 | Project layer *(optional, above the feature loop)* | `establish-project`, `check-invariants` | [`establish-project`](../skills/establish-project.md) |
 | Discovery | `brainstorm`, `grilling`, `research`, `prototype`, `domain-modeling` | [Discovery](discovery.md) |
 | Specification | `write-requirements`, `write-design`, `write-plan` | [Specification](specification.md) |
-| Execution | `worktrees`, `execute-plan`, `tdd`, `debug`, `verify`, `trace` | [Execution](execution.md) |
+| Execution | `worktrees`, `execute-plan`, `execute-story`, `execute-inline`, `tdd`, `debug`, `verify`, `trace` | [Execution](execution.md) |
 | Review & acceptance | `code-review`, `receive-review`, `check-invariants`, `acceptance-*`, `dogfood`, `drive-dogfood` | [Review and acceptance](review-and-acceptance.md) |
 | Ship & maintain | `finish-branch`, `release`, `sync-spec`, `amend`, `file-issues`, `triage`, `improve-architecture`, `handoff` | [Ship and maintain](ship-and-maintain.md) |
 
@@ -110,7 +111,7 @@ Two facts about context shape how you run this chain, and violating either is ex
 
 **Discovery through planning belongs in one unbroken context window.** `brainstorm` → `write-requirements` → `write-design` → `write-plan` is a single continuous act of thinking; each step's output depends on decisions and code knowledge accumulated in the previous ones. If the window is filling before the plan is done, do not push through — run `/handoff`, which writes a resumable document to the OS temp directory, and start a fresh session from it.
 
-**Execution is the opposite.** `execute-plan` sessions are context-isolated *per task by design*. Each task gets a fresh implementer subagent whose entire world is a generated brief file. The controller's context stays reserved for coordination, and progress is appended to `.skills/progress.md` after each task, because conversation memory does not survive compaction and the ledger does.
+**Execution is the opposite.** Subagent routes (`execute-plan`, `execute-story`) isolate *per task by design*: each task gets a fresh implementer whose world is a generated brief file. The controller stays for coordination; progress goes to `.skills/progress.md`. `execute-inline` keeps the controller as implementer but still uses the ledger so compaction cannot re-run finished work.
 
 ## Where a chain can restart
 

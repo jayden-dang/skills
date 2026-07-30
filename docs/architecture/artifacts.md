@@ -145,7 +145,7 @@ artifact to keep fresh, so nothing can go stale.
 |---|---|---|
 | **0 — trivial** | typo-level, no behavior change | none — tdd/verify only |
 | **1 — bugfix / small change** | behavior change ≤ ~half a day | mini-spec: add a fix REQ + a SHALL-CONTINUE-TO guard to the owning feature's requirements.md (or `docs/specs/fixes.md`), tagged regression test; no design.md, task list optional |
-| **2 — feature** | multi-task work | full triad + execute-plan |
+| **2 — feature** | multi-task work | full triad + execute family |
 
 `brainstorm` and `ask` decide the tier explicitly and say so. Never spec what you
 don't understand yet — spike via `prototype`/`research` first.

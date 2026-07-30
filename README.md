@@ -130,7 +130,7 @@ brainstorm ──► write-requirements ──► write-design ──► write-p
    (gate: no code)     (EARS + IDs)      (Satisfies:)     (_Requirements:_)
         │                                                       │
         │ tier 0/1 shortcuts                                    ▼
-        │                                     worktrees ──► execute-plan
+        │                          worktrees ──► execute-plan | execute-story | execute-inline
         ▼                                                       │
   debug / tdd / verify  ◄── discipline skills govern ──────────┘
                                                                 │
@@ -147,7 +147,7 @@ brainstorm ──► write-requirements ──► write-design ──► write-p
 `repoint-project` (pivot disposition ledger when shipped code collides with new intent)
 maintains a repo-level product vision plus an IDed architecture-invariant spine
 (`docs/architecture/`, each rule an `**ARCH-N**`) that `brainstorm`, `write-design`,
-`write-plan`, `execute-plan`, and `code-review` consult when present. Feature
+`write-plan`, the execute family, and `code-review` consult when present. Feature
 `design.md` files cite the invariants they rely on as `Respects: ARCH-N`, and `trace`
 checks those citations the same way it checks requirement IDs. A repo that opts into
 nothing behaves exactly as above.
@@ -178,7 +178,7 @@ and countered by name. See [The gates](docs/guide/concepts/gates.md).
 | setup | `setup-repo`, `scaffold-project` |
 | discovery | `brainstorm`, `grilling`, `research`, `prototype`, `domain-modeling`, `interpret` |
 | spec | `write-requirements`, `write-design`, `write-plan` |
-| execution | `execute-plan`, `tdd`, `debug`, `verify`, `trace`, `worktrees` |
+| execution | `execute-plan`, `execute-story`, `execute-inline`, `tdd`, `debug`, `verify`, `trace`, `worktrees` |
 | review | `code-review`, `receive-review`, `check-invariants` |
 | acceptance | `acceptance-check`, `acceptance-api`, `acceptance-ui`, `dogfood`, `drive-dogfood` |
 | craft | `design-page` |

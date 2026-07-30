@@ -16,8 +16,10 @@ using-skills (session gate)
 → write-design          Satisfies: per section; seams agreed; approval gate
 → write-plan            tasks with _Requirements:_ footers; trace coverage check
 → worktrees             isolated workspace, clean baseline
-→ execute-plan          per task: brief → implementer (tdd) → review bundle →
-                        two-verdict review → fixes → ledger
+→ execute family        pick one from Execution-mode + route:
+                        execute-plan   (continuous + subagent waves)
+                        execute-story  (story-unit + human unit barriers)
+                        execute-inline (controller TDD, no implementer subagents)
                         [debug on failures; verify before any claim]
 → code-review           whole-branch, two-axis (Standards + Spec-by-ID) + overlap search
 → acceptance-check      drive the running system through the spec's user-facing

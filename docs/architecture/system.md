@@ -43,7 +43,7 @@ skills/
   setup/       setup-repo, scaffold-project
   discovery/   brainstorm, grilling, research, prototype, domain-modeling
   spec/        write-requirements, write-design, write-plan
-  execution/   execute-plan, tdd, debug, verify, trace, worktrees
+  execution/   execute-plan, execute-story, execute-inline, tdd, debug, verify, trace, worktrees
   review/      code-review, receive-review, check-invariants
   acceptance/  acceptance-check, acceptance-api, acceptance-ui, dogfood, drive-dogfood
   craft/       design-page
@@ -102,7 +102,7 @@ design truly respects an invariant is a separate, advisory, LLM-judged check
 The layer is **optional by construction**. Feature skills consult it through
 observable-predicate, no-op-if-absent hooks (`brainstorm` checks product scope;
 `write-design` cites invariants; `write-plan` folds them into Global Constraints;
-`execute-plan` surfaces them per task; `code-review` runs the advisory lane). A repo that
+the execute family surfaces them per task; `code-review` runs the advisory lane). A repo that
 opts into nothing behaves exactly as before — `setup-repo` gates the whole layer behind a
 default-**No** decision.
 

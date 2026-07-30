@@ -134,8 +134,8 @@ Working artifacts that pass between agents as **file paths**, never as pasted te
 
 | File | Written by | Purpose |
 |---|---|---|
-| `progress.md` | `execute-plan` | The ledger. One line per completed task. **The source of truth after compaction** — trusted over the agent's own memory |
-| `task-N-brief.md` | `execute-plan` | Task N copied out with the Global Constraints verbatim, assembled by the agent. The implementer's entire world |
+| `progress.md` | execute family | The ledger. One line per completed task (and unit lines under `execute-story`). **Source of truth after compaction** |
+| `task-N-brief.md` | execute family | Task N + Global Constraints. The implementer's (or controller's) contract |
 | `task-N-report.md` | the implementer subagent | Status, TDD evidence (RED and GREEN commands and outputs), files changed, concerns |
 | `review-<base7>..<head7>.diff` | `execute-plan` | Commit list, diffstat, and full diff — assembled by the agent from `git log`/`git diff` as the reviewer's view |
 | `<slug>-scan.md` | scan subagents | A findings digest of a touched surface, so raw source never floods the controller's context |

@@ -48,3 +48,45 @@ Quote relied on: deviation that falsifies plan/design/requirements →
 ## Meta-test
 
 Class: **clear**. Report Contract tightened so concerns MUST cite notes path.
+
+---
+
+# Narrow pass — continuous-only (2026-07-30)
+
+**Protocol:** `writing-skills` · `tests/pressure/execute-family/`  
+**Design:** drop dual-mode; story-unit → `execute-story`; no unit preflight on continuous
+
+## RED (old dual-mode body)
+
+| Scenario | Observed | Failure for narrow target |
+|---|---|---|
+| story-unit while on execute-plan | Dual-mode body still *owns* story-unit recipes (B by text); contaminated A when DESIGN.md also loaded | No REQUIRED redirect in skill body |
+| continuous Setup preflight | **B** — still load `story-unit-mode.md` + unit table | Continuous couples to story derivation |
+| continuous Task 2 done + social pressure | **A** — no pause (already correct) | Keep; no new iron law |
+
+## GREEN targets
+
+1. Mode gate: `story-unit` → REQUIRED SUB-SKILL `execute-story` (not run barriers here)
+2. Continuous Setup: no unit table / no `story-unit-mode` load
+3. Continuous: no human pause between tasks under social pressure
+4. Description routes continuous-only; story-unit intents → `execute-story`
+
+## GREEN retest log (2026-07-30, grok-4.5)
+
+| Scenario | CHOICE / result | Cite skill? |
+|---|---|---|
+| story-unit while on execute-plan → redirect | **A** hand off `execute-story` | yes — Mode gate + Red Flags |
+| continuous Setup — no unit table | **A** Depends-on waves only | yes — no unit derivation |
+| continuous Task 2 done + social pressure | **A** no human pause | yes — rationalization + Red Flags |
+| mode unset + standup pressure | **A** ask and write field | yes — never invent continuous |
+| routing continuous vs story-unit | continuous→execute-plan; story-unit→execute-story; opened execute-plan + story-unit header → execute-story | yes |
+
+**Ship gate (narrow):**
+
+- [x] story-unit redirect is REQUIRED in body
+- [x] continuous has no unit preflight
+- [x] continuous no-pause holds under social pressure
+- [x] description continuous-only
+- [x] `story-unit-mode.md` is a pointer to `execute-story`
+- [x] `execute-inline` shipped; Inline Fallback replaced by handoff
+- [x] write-plan / AGENTS / docs wire complete

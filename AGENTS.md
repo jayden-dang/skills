@@ -1,6 +1,6 @@
 # AGENTS.md — Agent Behavior Constitution
 
-> **A-to-Z Agentic Development Skill Set** | 50 skills across 11 categories |
+> **A-to-Z Agentic Development Skill Set** | 52 skills across 11 categories |
 > `jayden-dang/skills` | v1.0
 
 This file is the single source of truth for agent behavior when working with this
@@ -40,11 +40,11 @@ success" is not evidence. Read the diff yourself.
 the territory (codebase, runtime, users, history). Strong models still fail when
 unknowns stay implicit. Discover unknowns before build (`brainstorm` knowns
 inventory + blindspot, `grilling`, `research`/`prototype`), surface high-blast
-decisions in `write-plan` (**Execution-mode** and story-derived review units at
-`execute-plan`), log mid-build **deviations**
-in `.skills/implementation-notes.md` during `execute-plan`, and let the human
-re-check understanding with `/comprehend-change` before merge. Do not freeze
-unverified solution shape into requirement SHALLs.
+decisions in `write-plan` (**Execution-mode** and the execute-family route),
+story-derived review units at `execute-story`, log mid-build **deviations** in
+`.skills/implementation-notes.md` during execute, and let the human re-check
+understanding with `/comprehend-change` before merge. Do not freeze unverified
+solution shape into requirement SHALLs.
 
 ---
 
@@ -83,10 +83,10 @@ Agents MUST NOT auto-invoke these. Name them for the user to run, e.g. `/triage`
 **Model-invoked skills** (no `disable-model-invocation`): agents auto-invoke
 these when conditions match. This includes `using-skills`, `brainstorm`,
 `grilling`, `research`, `prototype`, `domain-modeling`, the full spec triad,
-`execute-plan`, `tdd`, `debug`, `verify`, `worktrees`, `code-review`,
-`receive-review`, `check-invariants`, the acceptance suite, `finish-branch`,
-`prepare-change`, `record-decision`, `amend`, `write-roadmap`, and
-`sync-spec`.
+`execute-plan`, `execute-story`, `execute-inline`, `tdd`, `debug`, `verify`,
+`worktrees`, `code-review`, `receive-review`, `check-invariants`, the acceptance
+suite, `finish-branch`, `prepare-change`, `record-decision`, `amend`,
+`write-roadmap`, and `sync-spec`.
 
 **Session-injected skill:** `using-skills` is injected by the `SessionStart` hook
 on every `startup|clear|compact` event. It is the gate that keeps the 1% rule
@@ -156,7 +156,7 @@ silently.
 |---|---|---|---|
 | **0 — Trivial** | Typo-level, zero behavior change | None — `tdd` + `verify` only | `tdd` |
 | **1 — Bugfix/Small** | Behavior change ≤ ~half day | Mini-spec: fix REQ + SHALL-CONTINUE-TO guard in owning `requirements.md`, tagged regression test | `write-requirements` → `tdd` |
-| **2 — Feature** | Multi-task work | Full triad: `requirements.md` → `design.md` → `tasks.md` + `execute-plan` | Full chain |
+| **2 — Feature** | Multi-task work | Full triad: `requirements.md` → `design.md` → `tasks.md` + execute family (`execute-plan` / `execute-story` / `execute-inline`) | Full chain |
 
 Tier is decided by `brainstorm` (new work) or `amend` (existing-feature changes).
 Never spec what you do not understand — detour through `research` or `prototype`
@@ -279,7 +279,9 @@ and suggest `setup-repo`.
 - Skip re-review after a fix, or accept a review missing either verdict
 - Move to the next task with open Critical/Important findings
 - Fix reviewer findings in the controller context — dispatch a fixer
-- Pause between tasks to ask permission to continue
+- Pause between tasks to ask permission to continue under continuous
+  `execute-plan` / `execute-inline` (story-unit human stops belong only to
+  `execute-story`)
 - Re-dispatch a task the ledger marks complete
 - Start implementation on main/master without explicit user consent
 - Tell a reviewer what not to flag, or pre-rate a finding's severity
@@ -315,7 +317,7 @@ Can't tick a box? The work is not done.
 
 ---
 
-## 11. Quick Reference: The 50 Skills
+## 11. Quick Reference: The 52 Skills
 
 **Legend:** (m) model-invoked · (U) user-invoked · (si) session-injected
 
@@ -325,7 +327,7 @@ Can't tick a box? The work is not done.
 | **setup** | `setup-repo` (U), `scaffold-project` (U) |
 | **discovery** | `brainstorm` (m), `grilling` (m), `interpret` (U), `research` (m), `prototype` (m), `domain-modeling` (m) |
 | **spec** | `write-requirements` (m), `write-design` (m), `write-plan` (m) |
-| **execution** | `execute-plan` (m), `tdd` (m), `debug` (m), `verify` (m), `trace` (m), `worktrees` (m) |
+| **execution** | `execute-plan` (m), `execute-story` (m), `execute-inline` (m), `tdd` (m), `debug` (m), `verify` (m), `trace` (m), `worktrees` (m) |
 | **review** | `code-review` (m), `allocate-attention` (U), `comprehend-change` (U), `explain-change` (U), `polish` (m), `receive-review` (m), `check-invariants` (m) |
 | **acceptance** | `acceptance-check` (m), `acceptance-api` (m), `acceptance-ui` (m), `dogfood` (m), `drive-dogfood` (m) |
 | **craft** | `design-page` (m) |
@@ -333,9 +335,17 @@ Can't tick a box? The work is not done.
 | **track** | `amend` (m), `correct-course` (m), `triage` (U), `sync-spec` (m), `check-roadmap` (U), `assess-milestone` (U), `improve-architecture` (U), `handoff` (U), `file-issues` (U) |
 | **project** | `establish-project` (U), `repoint-project` (U), `write-roadmap` (m) |
 
+**Execute family (pick one after approved `tasks.md`):**
+
+| Skill | When |
+|---|---|
+| `execute-plan` | `Execution-mode: continuous` + subagent waves |
+| `execute-story` | `Execution-mode: story-unit` + human-gated review units |
+| `execute-inline` | No implementer subagents / user watches controller implement |
+
 **Main flow:** `brainstorm` → `write-requirements` → `write-design` →
-`write-plan` → `worktrees` → `execute-plan` → `code-review` → `acceptance-check`
-→ `finish-branch` → `release` → `sync-spec`.
+`write-plan` → `worktrees` → execute family → `code-review` →
+`acceptance-check` → `finish-branch` → `release` → `sync-spec`.
 
 **Program layer (optional):** `establish-project` (vision + `ARCH-N` spine) →
 `write-roadmap` (`MILE-N` milestones and `ROAD-N` items in `docs/roadmap/INDEX.md`) →
@@ -364,7 +374,7 @@ Not part of the default engineering plugin; does not depend on engineering skill
 This repo is configured for a spec-driven skill set.
 
 - Feature flow: `brainstorm` → `write-requirements` → `write-design` →
-  `write-plan` → `execute-plan`
+  `write-plan` → `execute-plan` / `execute-story` / `execute-inline`
 - Bug on-ramp: `debug` (root cause first, then a guarded fix)
 - Capture a conversation/spec/idea into tracker issues: `/file-issues` (user-run)
 - Incoming issues and PRs: `/triage` (user-run)

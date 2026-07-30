@@ -25,8 +25,8 @@ over `docs/specs/`.
    [GATE: no code]   (EARS + IDs)     (Satisfies:)   (_Requirements:_ + trace check)
         │                                                 │
         │ tier 0/1 shortcuts                              ▼
-        │                                  worktrees ─► execute-plan
-        ▼                                                 │  (per task: tdd → review → ledger)
+        │                     worktrees ─► execute-plan | execute-story | execute-inline
+        ▼                                                 │  (route from Execution-mode + subagents?)
   debug / tdd / verify / trace  ◄── discipline skills govern every build ──┘
         (the gates)                                       │
                                                           ▼
@@ -42,7 +42,8 @@ over `docs/specs/`.
 - **Tier 0 (trivial):** `tdd` + `verify` only — no specs.
 - **Tier 1 (bugfix):** `debug` → a mini-spec (fix requirement + a `SHALL CONTINUE TO`
   guard) → tagged regression test → `verify` → `code-review` → `finish-branch`.
-- **Tier 2 (feature):** the full triad + `execute-plan`.
+- **Tier 2 (feature):** the full triad + execute family (`execute-plan` /
+  `execute-story` / `execute-inline`).
 
 **Optional project layer** (large projects, off by default): before feature work,
 `/establish-project` writes a repo-level product vision and an IDed
@@ -97,8 +98,10 @@ questions; the rest chains automatically:
 6. **`write-plan`** (auto) → `tasks.md`; runs the [`trace`](skills/trace.md)
    coverage check (every requirement cited by ≥1 task).
 7. **`worktrees`** (auto) → isolated workspace with a clean-baseline test run.
-8. **`execute-plan`** (auto) → one fresh subagent per task, each doing `tdd`, then a
-   two-verdict review, logged to a progress ledger.
+8. **Execute family** (auto, one of three) — from `Execution-mode` and route:
+   - **`execute-plan`** — continuous + subagent waves, two-verdict task review, ledger
+   - **`execute-story`** — story-unit + human review units, then ledger
+   - **`execute-inline`** — controller implements with `tdd`, no implementer subagents
 9. **`code-review`** (auto) → Standards + Spec axes, plus an inline `docs/specs/`
    overlap check.
 10. **`acceptance-check`** (auto) → drives the running system
@@ -160,7 +163,9 @@ compact a long session.
 ### execution
 | Skill | Kind | Fires when | Core behavior | Produces |
 |---|---|---|---|---|
-| [`execute-plan`](skills/execute-plan.md) | m | Approved `tasks.md` → build | Fresh subagent per task via `.skills/` file handoffs; implementer contract (4 statuses); two-verdict task review; progress ledger; continuous | Implemented, reviewed tasks |
+| [`execute-plan`](skills/execute-plan.md) | m | Approved `tasks.md`, `Execution-mode: continuous`, subagent waves | Fresh subagent per task; two-verdict review; parallel waves; no human pause between tasks; ledger | Implemented, reviewed tasks |
+| [`execute-story`](skills/execute-story.md) | m | Approved `tasks.md`, `Execution-mode: story-unit` | Derived review units; unit agent review → human unlock; mode-change write-back; unit ledger | Story-gated implemented units |
+| [`execute-inline`](skills/execute-inline.md) | m | Approved plan, no implementer subagents / user chose inline | Controller implements with `tdd`; stop-on-blocker; sequential; no unit barriers | Implemented tasks (self-reviewed) |
 | [`tdd`](skills/tdd.md) | m | Writing any production code | **Iron law:** no production code without a failing test first; test only at agreed seams; every test carries its requirement ID | Tested code |
 | [`debug`](skills/debug.md) | m | Anything misbehaves | **Iron law:** no fix without root cause; red-capable command gate first; one falsifiable hypothesis; ≥3 failed fixes = question the architecture | Root-caused fix + guard |
 | [`verify`](skills/verify.md) | m | About to claim done/fixed/passing | **Iron law:** no completion claim without fresh evidence; identify→run→read→confirm; "requirements met" needs `trace` clean + per-ID check | A verified claim with evidence |

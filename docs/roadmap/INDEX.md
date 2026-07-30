@@ -53,8 +53,8 @@ ID rules:
 **Goals:** GOAL-1, GOAL-2, GOAL-3, GOAL-4, GOAL-5
 **Members:**
 - **ROAD-1** risk-glob-review-prompts — Surfaces: `skills/ship/finish-branch/SKILL.md`, `skills/spec/write-plan/SKILL.md`, `templates/tasks.md`, `skills/spec/write-plan/TESTS.md`, `AGENTS.md`, `tests/unknowns/`, `docs/guide/skills/explain-change.md` (shared with ROAD-2: `skills/spec/write-plan/SKILL.md`, `templates/tasks.md`)
-- **ROAD-2** story-derived-review-units — Surfaces: `skills/spec/write-requirements/SKILL.md`, `skills/spec/write-plan/SKILL.md`, `skills/execution/execute-plan/SKILL.md`, `templates/requirements.md`, `templates/tasks.md` (shared with ROAD-1: `skills/spec/write-plan/SKILL.md`, `templates/tasks.md`)
-- **ROAD-3** reviewer-facing-change-authoring — Surfaces: `skills/ship/prepare-change/`, `skills/ship/finish-branch/SKILL.md`, `skills/execution/execute-plan/SKILL.md`, `skills/setup/setup-repo/SKILL.md`, `templates/agents/project.md`, `docs/agents/project.md` (shared with ROAD-1: `skills/ship/finish-branch/SKILL.md`; shared with ROAD-2: `skills/execution/execute-plan/SKILL.md`)
+- **ROAD-2** story-derived-review-units — Surfaces: `skills/spec/write-requirements/SKILL.md`, `skills/spec/write-plan/SKILL.md`, `skills/execution/execute-story/SKILL.md`, `skills/execution/execute-plan/SKILL.md` (mode gate / handoff), `templates/requirements.md`, `templates/tasks.md` (shared with ROAD-1: `skills/spec/write-plan/SKILL.md`, `templates/tasks.md`)
+- **ROAD-3** reviewer-facing-change-authoring — Surfaces: `skills/ship/prepare-change/`, `skills/ship/finish-branch/SKILL.md`, `skills/execution/execute-plan/SKILL.md`, `skills/execution/execute-story/SKILL.md`, `skills/execution/execute-inline/SKILL.md`, `skills/setup/setup-repo/SKILL.md`, `templates/agents/project.md`, `docs/agents/project.md` (shared with ROAD-1: `skills/ship/finish-branch/SKILL.md`; shared with ROAD-2: execute family)
 **Depends-on:** none
 **Commitment:** Planned
 **Closed:** None

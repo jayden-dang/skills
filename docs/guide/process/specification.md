@@ -120,7 +120,10 @@ Finally, an **independent plan review subagent** verifies against real code ever
 
 ## Exit
 
-`write-plan` offers exactly two execution routes: `execute-plan` in an isolated workspace via `worktrees` (recommended), or inline execution for environments without subagents.
+`write-plan` offers three execution routes after `Execution-mode` is written:
+`execute-plan` (continuous + subagents), `execute-story` (story-unit + human
+review units), or `execute-inline` (controller implements, no implementer
+subagents). Prefer an isolated workspace via `worktrees` for the subagent routes.
 
 ## Next
 

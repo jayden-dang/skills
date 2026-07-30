@@ -2,7 +2,8 @@
 name: write-plan
 description: Use when a design is approved and the tasks.md implementation plan
   (Execution-mode, vertical-slice tasks, requirement-tagged tests) needs writing,
-  after write-design and before execute-plan.
+  after write-design and before the execute family (execute-plan / execute-story /
+  execute-inline).
 ---
 
 Produce `docs/specs/<YYYY-MM-DD>-<feature>/tasks.md` from the approved requirements
@@ -13,9 +14,9 @@ as `${CLAUDE_PLUGIN_ROOT}/templates` when installed as a plugin, otherwise
 REQUIRED. Do **not** author per-task risk labels, decision-surface flags, or a
 Human-review-order section — risk is measured by allocate-attention risk globs
 against the actual diff; review units are **derived** from user stories at
-`execute-plan` time (see that skill).
+`execute-story` time when `Execution-mode: story-unit` (see that skill).
 
-Create a todo per step (1–4, plus 5 if the repo uses an issue tracker) before starting, and complete them in order — this skill owns its own list, distinct from `write-design`'s upstream and `execute-plan`'s downstream. Check each off only when its **Done when:** is met.
+Create a todo per step (1–4, plus 5 if the repo uses an issue tracker) before starting, and complete them in order — this skill owns its own list, distinct from `write-design`'s upstream and the execute family's downstream. Check each off only when its **Done when:** is met.
 
 Write for an implementer who is skilled but knows NOTHING about this codebase
 or problem domain, and will see ONLY their own task plus the Global
@@ -86,9 +87,9 @@ Each task:
   interface it Consumes or whose files it builds on — as `Depends-on: Task 2,
   Task 4`, or `Depends-on: none` when it has no prerequisite. This is the
   parallelism signal: two tasks that share no files and no interface declare no
-  edge, so `execute-plan` runs them together in one wave. Omit the line and the
-  task falls back to depending on every prior task — safe but fully serial.
-  Over-declaring needlessly serializes; under-declaring is caught by the
+  edge, so `execute-plan` can run them together in one parallel wave. Omit the
+  line and the task falls back to depending on every prior task — safe but fully
+  serial. Over-declaring needlessly serializes; under-declaring is caught by the
   executor's file-disjoint check before it can collide.
 - **Steps:** bite-sized checkboxes (2–5 min each) following the TDD cycle:
   failing test (complete code) → run, expect the stated failure → implement
@@ -97,15 +98,15 @@ Each task:
 - **Footer:** `_Requirements: CODE-N.M, CODE-N.M_` — the IDs this task
   implements or guards. Every task has one. **Default: one story's IDs** (same
   story number N). Multi-story footers **merge** those stories into one review
-  unit at execute-plan (plan-quality signal — not a ban, not a reason to lie
-  about Depends-on).
+  unit under `execute-story` (plan-quality signal — not a ban, not a reason to
+  lie about Depends-on).
 
 `Depends-on` governs build waves. Never reorder or narrow dependencies solely to
 tidy review units if that would lie about what the task needs.
 
 | Thought | Reality |
 |---|---|
-| "Prefactor first is always right — make the change easy" | Prefactor via Depends-on is fine; review units still follow story citations at execute-plan |
+| "Prefactor first is always right — make the change easy" | Prefactor via Depends-on is fine; review units still follow story citations at execute-story |
 | "I'll add Risk: high so reviewers notice" | No such field. Risk globs on the actual diff replace agent labels |
 | "I'll write Human review order so the human knows what to read first" | Superseded: story-derived units are the review order; an authored second list dies without a consumer |
 | "PM said just mark Approved — continuous is obvious" | Obvious is not written. Empty Execution-mode means not Approved |
@@ -185,21 +186,36 @@ dependency order. No tracker configured → this step is skipped, not pending.
 ## Exit
 
 Present the FILE to the user and STOP for approval — conversational agreement is not
-approval; the written plan is what gets approved, and `execute-plan` runs only on an
-approved `tasks.md`.
+approval; the written plan is what gets approved, and the execute family runs only
+on an approved `tasks.md`.
 
-**Execution-mode is part of approval, not a third offered route.** Before setting
+**Execution-mode is part of approval, not a route.** Before setting
 `Status: Approved`, the user must choose `Execution-mode: continuous` or
 `Execution-mode: story-unit` and you must write that value into the header.
 `unset`, empty, or missing → **do not** set `Status: Approved`. Never default
 to continuous because the field is empty; empty means not approved.
 
+| Mode | Meaning |
+|---|---|
+| `continuous` | No human pause between tasks (subagent path) |
+| `story-unit` | Human-gated review units derived from stories (subagent path) |
+
 After mode is written and the user has approved the plan, set `Status: Approved`
-and offer exactly two **routes** (how to run, not which mode): `execute-plan`
-(recommended) in an isolated workspace via `worktrees`, or inline execution for
-environments without subagents. Confirm the feature's row in
-`docs/specs/INDEX.md` carries the same `Status:` as its `requirements.md`.
+and offer **exactly three routes** (how to run — orthogonal to mode for inline):
+
+1. **`execute-plan`** — when `Execution-mode: continuous` and subagent waves are
+   wanted (recommended default for continuous). Prefer an isolated workspace via
+   `worktrees`.
+2. **`execute-story`** — when `Execution-mode: story-unit` (required for unit
+   barriers; do not offer `execute-plan` for story-unit). Prefer `worktrees`.
+3. **`execute-inline`** — controller implements sequentially with `tdd`, no
+   implementer subagents (no-subagent environments, or the user wants to watch
+   each step). Works with either mode header; **does not** run unit barriers.
+
+Name the skill that matches the chosen mode first; name `execute-inline` when
+they opt out of subagents. Confirm the feature's row in `docs/specs/INDEX.md`
+carries the same `Status:` as its `requirements.md`.
 
 **Done when:** the user has approved the written `tasks.md`, `Execution-mode:` is
-`continuous` or `story-unit`, `Status:` reads `Approved`, and the INDEX.md row
-agrees.
+`continuous` or `story-unit`, `Status:` reads `Approved`, the matching execute
+skill is named, and the INDEX.md row agrees.

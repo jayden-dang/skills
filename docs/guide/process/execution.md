@@ -1,6 +1,11 @@
 # Phase 3 — Execution
 
-**Skills:** [`worktrees`](../skills/worktrees.md) → [`execute-plan`](../skills/execute-plan.md), governed throughout by [`tdd`](../skills/tdd.md), [`debug`](../skills/debug.md), and [`verify`](../skills/verify.md)
+**Skills:** [`worktrees`](../skills/worktrees.md) → one of
+[`execute-plan`](../skills/execute-plan.md) |
+[`execute-story`](../skills/execute-story.md) |
+[`execute-inline`](../skills/execute-inline.md), governed throughout by
+[`tdd`](../skills/tdd.md), [`debug`](../skills/debug.md), and
+[`verify`](../skills/verify.md)
 
 **Produces:** commits, tests, a progress ledger, and a branch ready for review.
 
@@ -19,13 +24,31 @@ Then install dependencies (auto-detected from lockfiles) and run the **clean bas
 - **Baseline green** → proceed.
 - **Baseline red** → **stop and ask the user.** Starting on a failing baseline makes it impossible to tell your bugs from pre-existing ones.
 
-## The execution engine
+## The execution family
 
-`execute-plan` drives the approved plan to completion: one fresh implementer subagent per task, a two-verdict review of each task's diff, and a whole-branch review at the end.
+Pick **one** skill from the approved plan's `Execution-mode` and the run route:
+
+| Skill | When |
+|---|---|
+| [`execute-plan`](../skills/execute-plan.md) | `Execution-mode: continuous` + subagent waves |
+| [`execute-story`](../skills/execute-story.md) | `Execution-mode: story-unit` (human-gated review units) |
+| [`execute-inline`](../skills/execute-inline.md) | No implementer subagents / user watches the controller implement |
+
+### `execute-plan` (continuous + subagents)
+
+Drives the plan with one fresh implementer subagent per task, a two-verdict review of each task's diff, optional parallel waves, and a whole-branch review at the end.
 
 **Why fresh subagents.** Each worker receives exactly the context its task needs and nothing else, so it stays focused; the controller's context stays reserved for coordination. Subagents never inherit session history — you *construct their world*. Bulk artifacts (briefs, reports, diffs) travel between agents as **file paths under `.skills/`**, never as pasted text.
 
-**Continuous execution.** The user asked you to execute the plan, so execute it. Do not pause between tasks to ask "should I continue?" or post progress summaries — check-ins waste the user's time. The only legitimate stops are a `BLOCKED` status you cannot resolve, ambiguity that genuinely prevents progress, or all tasks complete.
+**Continuous execution.** Do not pause between tasks to ask "should I continue?" — check-ins waste the user's time. The only legitimate stops are a `BLOCKED` status you cannot resolve, ambiguity that genuinely prevents progress, or all tasks complete.
+
+### `execute-story` (story-unit + human gates)
+
+Same per-task subagent loop, but tasks are partitioned into **review units** derived from requirement stories. After each unit: unit agent review → **STOP for human** → unlock. "continue" advances one unit; "stop stopping" / "just run it all" must write `Execution-mode: continuous` then hand off to `execute-plan`.
+
+### `execute-inline` (controller implements)
+
+No implementer or task-reviewer subagents. You implement each task yourself under `tdd`, append the same style of ledger lines, stop and ask on blockers (never guess), and finish with whole-branch `code-review`. **No unit barriers** even if the header is `story-unit` — barriers belong to `execute-story`.
 
 ### Setup
 
@@ -105,10 +128,6 @@ State the model **explicitly on every dispatch** — an omitted model inherits y
 3. **Acceptance** via [`acceptance-check`](../skills/acceptance-check.md).
 4. **Finish** via [`finish-branch`](../skills/finish-branch.md).
 
-## Inline fallback
-
-No subagent capability? Same loop, no dispatches: implement each task yourself, in order, from its brief, using `tdd` for every step. Keep the same ledger appends and the same end-of-plan `code-review`. On a blocker, a failing verification, or a plan gap — stop and ask the user. Never guess through it.
-
 ## Next
 
 → [Phase 4 — Review and acceptance](review-and-acceptance.md)
@@ -116,5 +135,5 @@ No subagent capability? Same loop, no dispatches: implement each task yourself, 
 ## See also
 
 - [The gates](../concepts/gates.md) — `tdd`, `debug`, and `verify` in detail
-- [`execute-plan`](../skills/execute-plan.md) — the full loop and its twelve red flags
+- [`execute-plan`](../skills/execute-plan.md) · [`execute-story`](../skills/execute-story.md) · [`execute-inline`](../skills/execute-inline.md)
 - [The artifact model](../concepts/artifacts.md) — what lives in `.skills/`

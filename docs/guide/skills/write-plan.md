@@ -8,7 +8,7 @@
 | **Invocation** | model-invocable (the agent calls it on its own) |
 | **Reads** | `requirements.md`, `design.md`, `templates/tasks.md`, `docs/agents/project.md`, `docs/agents/issue-tracker.md` |
 | **Writes** | `docs/specs/<date>-<feature>/tasks.md`, the spec's `INDEX.md` row, an independent review under `.skills/`, optionally issues in the tracker |
-| **Calls** | [`trace`](trace.md), an independent plan review subagent, then [`execute-plan`](execute-plan.md) or [`worktrees`](worktrees.md) |
+| **Calls** | [`trace`](trace.md), an independent plan review subagent, then the execute family via [`worktrees`](worktrees.md) |
 | **Called by** | [`write-design`](write-design.md) |
 
 ## When it fires
@@ -23,7 +23,7 @@ Starting from `templates/tasks.md`, the skill walks five steps.
 2. **File structure first** — the map that bounds what any task may touch.
 3. **Tasks as vertical slices** — each with Files, Interfaces, Depends-on, TDD steps, and a footer.
 4. **Coverage and consistency check** — the subtle one, plus an independent plan review.
-5. **Optional publish to the issue tracker**, then the exit offering two execution routes.
+5. **Optional publish to the issue tracker**, then the exit offering three execution routes.
 
 ## Global Constraints travel with every task
 
@@ -74,14 +74,17 @@ Then the **independent plan review**, dispatched not self-run. The doc-only chec
 
 The step is done when every requirement ID has both a task footer and a tagged test, [`trace`](trace.md) is clean, the design's seam-table IDs are all covered, and the placeholder scan is clean.
 
-## Publishing and the two exits
+## Publishing and the three exits
 
 Step 5 is optional: if the repo uses an issue tracker (`docs/agents/issue-tracker.md`), publish each task as an issue in dependency order — native sub-issues and blocking links where supported. The issue body describes behavior and interfaces and **never file paths**, and includes acceptance criteria and a `Requirements covered:` list.
 
-The exit offers exactly two routes:
+After `Execution-mode: continuous` or `story-unit` is written and the plan is Approved, the exit offers **exactly three routes**:
 
-- [`execute-plan`](execute-plan.md) — recommended — running in an isolated workspace set up by [`worktrees`](worktrees.md), so the user's checkout is never touched.
-- Inline execution, for environments without subagents.
+| Route | When |
+|---|---|
+| [`execute-plan`](execute-plan.md) | `continuous` + subagent waves (prefer [`worktrees`](worktrees.md)) |
+| [`execute-story`](execute-story.md) | `story-unit` + human-gated review units (prefer worktrees) |
+| [`execute-inline`](execute-inline.md) | No implementer subagents / user watches the controller |
 
 The spec's `INDEX.md` row is updated to note the plan exists.
 
@@ -132,4 +135,4 @@ The plan is where an approved intent becomes something a stranger can build with
 - [Traceability](../concepts/traceability.md) — footer citation versus tagged-test coverage
 - [`trace`](trace.md) — the check this step runs, and its E1/E2/E3/W1/W2 findings
 - [`write-design`](write-design.md) — the seam table this plan must reconcile against
-- [`execute-plan`](execute-plan.md) — the recommended route out of the plan
+- [`execute-plan`](execute-plan.md) · [`execute-story`](execute-story.md) · [`execute-inline`](execute-inline.md) — execute-family routes

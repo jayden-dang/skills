@@ -1,6 +1,6 @@
 # Skill reference
 
-Forty-eight skills in eleven buckets. Each has its own page.
+Fifty skills in eleven buckets (engineering package). Each has its own page.
 
 **Invocation** is the thing to check first. A **model-invocable** skill is invoked by the agent on its own when its description matches the situation. A **user-invoked** skill carries `disable-model-invocation: true` in its frontmatter — the agent *cannot* invoke it, so you run it as a slash command.
 
@@ -53,7 +53,9 @@ The triad. Each file approved before the next is written.
 
 | Skill | Invocation | What it does |
 |---|---|---|
-| [`execute-plan`](execute-plan.md) | model | One fresh subagent per task, two-verdict reviews, a durable ledger |
+| [`execute-plan`](execute-plan.md) | model | Continuous + subagents: fresh implementer per task, two-verdict reviews, parallel waves, ledger |
+| [`execute-story`](execute-story.md) | model | Story-unit: derived review units, human unlock after each unit, mode-change write-back |
+| [`execute-inline`](execute-inline.md) | model | Controller implements with `tdd`; no implementer subagents; stop-on-blocker; sequential |
 | [`tdd`](tdd.md) | model | **Iron Law:** no production code without a failing test first |
 | [`debug`](debug.md) | model | **Iron Law:** no fixes without root cause. Phase 1 is the red-capable command gate |
 | [`verify`](verify.md) | model | **Iron Law:** no completion claims without fresh evidence |

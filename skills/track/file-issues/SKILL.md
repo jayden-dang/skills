@@ -129,4 +129,4 @@ In either form, describe **behavior and interfaces, never file paths or line num
 
 ## Exit
 
-Tell the user the frontier — which slices can start now. Point them at the next step: work each slice with `execute-plan` (or inline `tdd`), clearing context between slices.
+Tell the user the frontier — which slices can start now. Point them at the next step: work each slice with the execute family (`execute-plan` / `execute-story` / `execute-inline`) or standalone `tdd`, clearing context between slices.

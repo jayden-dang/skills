@@ -57,10 +57,15 @@ quick reference: `AGENTS.md`.
 
 ## execution/
 
-15. **execute-plan** (m) — fresh subagent per task via file handoffs in `.skills/`.
-    The task brief and review package are assembled by the agent directly (copy the
-    task block + Global Constraints; `git log`/`git diff` into a bundle) — no helper
-    scripts. Implementer contract, two-verdict task review, progress ledger.
+15. **execute-plan** (m) — `Execution-mode: continuous` + subagent waves. Fresh
+    implementer per task via file handoffs in `.skills/`; two-verdict task review;
+    parallel waves; progress ledger; no human pause between tasks.
+15a. **execute-story** (m) — `Execution-mode: story-unit`. Derived review units,
+    unit agent review → human unlock, mode-change write-back, unit ledger lines;
+    whole-branch review still runs after the last unit.
+15b. **execute-inline** (m) — controller implements sequentially with `tdd`; no
+    implementer/reviewer subagents; stop-on-blocker; same ledger shape; no unit
+    barriers (even if the header is story-unit).
 16. **tdd** (m) — Iron Law: NO PRODUCTION CODE WITHOUT A FAILING TEST FIRST. Test
     only at pre-agreed seams; every test carries its requirement ID.
 17. **debug** (m) — Iron Law: NO FIXES WITHOUT ROOT CAUSE.

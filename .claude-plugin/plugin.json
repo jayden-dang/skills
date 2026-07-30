@@ -1,6 +1,6 @@
 {
   "name": "engineer-pack",
-  "version": "0.2.6",
+  "version": "0.2.7",
   "description": "Engineer Pack: A-to-Z agentic development (ideation to release, requirements traceability, roadmap/milestones). Personal Pack is separate \u2014 not included here.",
   "author": {
     "name": "Jayden Dang"
@@ -17,7 +17,9 @@
     "./skills/spec/write-plan",
     "./skills/spec/write-requirements",
     "./skills/execution/debug",
+    "./skills/execution/execute-inline",
     "./skills/execution/execute-plan",
+    "./skills/execution/execute-story",
     "./skills/execution/tdd",
     "./skills/execution/trace",
     "./skills/execution/verify",

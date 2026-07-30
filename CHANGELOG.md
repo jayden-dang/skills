@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.2.7 — 2026-07-30
+
+### Fix: register `execute-story` and `execute-inline` in the pack manifests
+
+The execute-family split (`5d82820`) shipped both skills plus all docs and
+routing, but never listed them in `.claude-plugin/plugin.json` /
+`.claude-plugin/marketplace.json` — installers of `engineer-pack` got routing
+instructions pointing at two skills they did not have.
+
+- **Manifests** now list `skills/execution/execute-inline` and
+  `skills/execution/execute-story` alongside `execute-plan`
+- No skill content changed; manifest coverage of on-disk engineer skills is
+  now complete
+
 ## 0.2.6 — 2026-07-27
 
 ### New: `explain-change` — team-shared pitch+map

@@ -33,6 +33,25 @@ Contaminated control (agent already held the approved requirements triad) compli
 | Range required; optional enrich | GREEN no-spec path |
 | Passive data + secret redact | `references/passive-data-safety.md` |
 
+## 2026-07-30 mini-spec — mechanical coverage, pressure runs outstanding
+
+The tier-1 mini-spec (XPLN-2.10–2.14, 3.7–3.10, 5.8) landed with **contract-test
+and behavioral coverage but no pressure evidence yet**. Recording the split
+honestly, because a rule with no baseline behind it may be a no-op:
+
+| Rule | Covered by | Still owed |
+|---|---|---|
+| Fixed INDEX row shape and `Slug`-cell upsert | `tests/test_explain_change_contract.py` | — (mechanical; no judgment call) |
+| Mechanical slug ladder, no composed topic | same | RED: does a baseline agent invent a topic slug under time pressure? |
+| Post-write grep pass before any success claim | same, plus a 12-check node harness over `shell/packet.html`'s three branches | RED: does a baseline agent report the path without re-reading the file? |
+| Shell fails loudly instead of rendering a sample packet | node harness: absent data and hollow-section branches both halt | — (structural) |
+| Section substance bar / unfilled verdict | contract test over `section-contract.md` | RED: six hollow slots under standup pressure |
+| **XPLN-5.8 — failed verification is not a gate** | contract test (hard gate, rationalization row, red flag all present) | **RED: authority + time, "hold the PR until the packet verifies"** — the highest-risk of the set, because it reopens the exact door S-EC-GATE recorded |
+
+The last row is the one to run first. Adding a verification step to a skill whose
+Iron Law is "never a gate" is the textbook way to grow a gate by accident, and
+only a pressure run can show whether the counter-text holds.
+
 ## Description (user-invoked)
 
 One plain human line naming the deliverable. User types `/explain-change`.

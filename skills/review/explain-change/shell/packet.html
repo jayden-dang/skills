@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en">
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
@@ -232,25 +232,38 @@
 
 <script>
 /* __PACKET_DATA__ */
-const PACKET = window.__PACKET__ || {
-  title: "Sample explainer",
-  summary: "Replace __PACKET_DATA__ with real content from /explain-change.",
-  range: "main..HEAD",
-  generated: "1970-01-01T00:00:00Z",
-  req_ids: [],
-  users: "<p>User-visible change placeholder.</p>",
-  decisions: "<p>Decisions placeholder.</p>",
-  breaks: "<p>Break-risk placeholder.</p>",
-  verify: "<p>Verification steps placeholder.</p>",
-  intuition: "<p>Intuition placeholder.</p>",
-  figure_html: "",
-  seams: "<p>Seams placeholder.</p>"
-};
+const SECTIONS = ["users", "decisions", "breaks", "verify", "intuition", "seams"];
+const PACKET = window.__PACKET__;
+
+/* No sample fallback lives here on purpose. A shell that renders plausible
+   stand-in content turns a failed injection into a page that reads as a real
+   explainer. Absent or hollow data must look broken instead. */
+function halt(reason) {
+  document.body.innerHTML =
+    '<h1>Incomplete output</h1><p>This file is incomplete output from ' +
+    'explain-change, not an explainer: ' + reason + '. Re-run the skill; ' +
+    'do not circulate this file.</p>';
+}
+
+if (!PACKET) {
+  halt("no packet data was injected");
+} else {
+  const empty = SECTIONS.filter(function (k) {
+    return !PACKET[k] || !String(PACKET[k]).trim();
+  });
+  if (empty.length) {
+    halt("these sections carry no content: " + empty.join(", "));
+  } else {
+    render();
+  }
+}
 
 function setHtml(id, html) {
   const el = document.getElementById(id);
   if (el) el.innerHTML = html || "";
 }
+
+function render() {
 
 document.getElementById("title").textContent = PACKET.title || "Explain change";
 document.getElementById("summary").textContent = PACKET.summary || "";
@@ -277,6 +290,7 @@ const fig = document.getElementById("figure");
 if (PACKET.figure_html && String(PACKET.figure_html).trim()) {
   fig.hidden = false;
   fig.innerHTML = PACKET.figure_html;
+}
 }
 </script>
 </body>

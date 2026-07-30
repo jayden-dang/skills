@@ -36,10 +36,25 @@ Plus a derived-from header (range, generated time, REQ IDs when known).
 
 Re-runs **overwrite** the canonical slug; git keeps history. `INDEX.md` lists current explainers.
 
+## Determinism
+
+The slug comes off a mechanical ladder — user-supplied name, then a single
+registered feature code, then a single owning spec directory, then the branch
+name, then `<base7>-<head7>` — never a topic the agent composes. That is what
+makes "re-runs overwrite" true rather than "re-runs add a sibling".
+
+`INDEX.md` has one pinned shape (`| Slug | Title | Path | Range | Generated |`),
+and upsert replaces the row matching the `Slug` cell.
+
+After writing, the skill greps the file it just wrote: injection marker consumed,
+packet assignment present, no placeholder text, all six section bodies non-empty.
+A hit means hard-stop with no path reported — a hollow packet costs a reader more
+than a missing one, because they trust it.
+
 ## What it is not
 
 - Not a quiz or pass/fail gate  
-- Not a reason to withhold merge/PR  
+- Not a reason to withhold merge/PR — including when its own verification fails  
 - Not a full dump of the requirements triad  
 - Not a replacement for `CONTEXT.md` or specs (those remain agent maps)
 

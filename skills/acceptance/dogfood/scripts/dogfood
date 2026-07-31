@@ -390,6 +390,147 @@ def render_html(catalog: Dict[str, Any], shell_path: Path) -> str:
 
 
 # ---------------------------------------------------------------------------
+# Serve — the optional live layer
+# ---------------------------------------------------------------------------
+
+DEFAULT_PORT = 8787
+PORT_SCAN_LIMIT = 64
+
+# The only keys a browser may write. `verdict`, `saw`, `server` and `notes` are
+# absent by design and their absence is enforced, not merely documented: a tick
+# is recorded, never promoted (ADR 0006).
+HUMAN_WRITABLE = frozenset({"checked", "comment", "base_rev"})
+
+
+def state_payload(doc: Dict[str, Any]) -> Dict[str, Any]:
+    """Just what can change — the page already holds every authored slot."""
+    return {
+        "rev": doc["rev"],
+        "cases": {
+            case["id"]: {
+                "verdict": case["run"]["verdict"],
+                "human": dict(case["human"]),
+            }
+            for case in all_cases(doc)
+        },
+    }
+
+
+def make_handler(run_path: Path, token: str, shell_path: Path):
+    import http.server
+
+    class Handler(http.server.BaseHTTPRequestHandler):
+        # Quiet by default: the server runs in the background beside a dogfood
+        # session, and a request log per poll would bury anything worth reading.
+        def log_message(self, fmt, *args):  # noqa: A003
+            pass
+
+        def _send(self, status: int, body: bytes, content_type: str) -> None:
+            self.send_response(status)
+            self.send_header("Content-Type", content_type)
+            self.send_header("Content-Length", str(len(body)))
+            self.end_headers()
+            self.wfile.write(body)
+
+        def _json(self, status: int, payload: Dict[str, Any]) -> None:
+            self._send(
+                status,
+                json.dumps(payload, ensure_ascii=False).encode("utf-8"),
+                "application/json; charset=utf-8",
+            )
+
+        def do_GET(self) -> None:  # noqa: N802
+            if self.path in ("/", "/index.html"):
+                doc = load_run_file(run_path)
+                self._send(
+                    200,
+                    render_html(doc, shell_path).encode("utf-8"),
+                    "text/html; charset=utf-8",
+                )
+            elif self.path == "/state":
+                self._json(200, state_payload(load_run_file(run_path)))
+            elif self.path == "/whoami":
+                doc = load_run_file(run_path)
+                self._json(
+                    200, {"token": token, "slug": doc["slug"], "pid": os.getpid()}
+                )
+            else:
+                self._json(404, {"error": "no such path"})
+
+        def do_POST(self) -> None:  # noqa: N802
+            if not self.path.startswith("/human/"):
+                self._json(404, {"error": "no such path"})
+                return
+            case_id = self.path[len("/human/") :]
+
+            length = int(self.headers.get("Content-Length") or 0)
+            try:
+                payload = json.loads(self.rfile.read(length) or b"{}")
+            except json.JSONDecodeError:
+                self._json(400, {"error": "body must be JSON"})
+                return
+            if not isinstance(payload, dict):
+                self._json(400, {"error": "body must be a JSON object"})
+                return
+
+            forbidden = set(payload) - HUMAN_WRITABLE
+            if forbidden:
+                self._json(
+                    400,
+                    {
+                        "error": "only a human tick may be written here",
+                        "rejected": sorted(forbidden),
+                    },
+                )
+                return
+
+            if find_case(load_run_file(run_path), case_id) is None:
+                self._json(404, {"error": f"no such case: {case_id}"})
+                return
+
+            checked = bool(payload.get("checked", False))
+            comment = str(payload.get("comment") or "")
+            stamp = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+
+            def record(document: Dict[str, Any]) -> None:
+                target = find_case(document, case_id)
+                if target is None:
+                    raise SystemExit(f"error: case vanished: {case_id}")
+                target["human"] = {
+                    "checked": checked,
+                    "at": stamp if checked else "",
+                    "comment": comment,
+                }
+
+            doc = commit(run_path, record, scope="human")
+            self._json(200, state_payload(doc))
+
+    return Handler
+
+
+def bind_server(run_path: Path, token: str, shell_path: Optional[Path] = None):
+    """Bind the loopback interface, walking up from DEFAULT_PORT when it is busy.
+
+    The host is a literal. There is deliberately no way to configure it: this
+    endpoint writes to disk without authentication, and its safety rests on being
+    unreachable from anywhere but this machine.
+    """
+    import http.server
+
+    handler = make_handler(Path(run_path), token, shell_path or DEFAULT_SHELL)
+    last_error = None
+    for port in range(DEFAULT_PORT, DEFAULT_PORT + PORT_SCAN_LIMIT):
+        try:
+            return http.server.HTTPServer(("127.0.0.1", port), handler)
+        except OSError as exc:
+            last_error = exc
+    raise SystemExit(
+        f"error: no free port in {DEFAULT_PORT}..{DEFAULT_PORT + PORT_SCAN_LIMIT - 1} "
+        f"({last_error})"
+    )
+
+
+# ---------------------------------------------------------------------------
 # Commands
 # ---------------------------------------------------------------------------
 
@@ -550,6 +691,25 @@ def cmd_report(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_serve(args: argparse.Namespace) -> int:
+    import secrets
+
+    path = Path(args.run_file)
+    load_run_file(path)  # fail fast on a bad document rather than at first request
+    token = secrets.token_hex(16)
+    server = bind_server(path, token, Path(args.shell) if args.shell else None)
+    url = f"http://127.0.0.1:{server.server_address[1]}/"
+    print(url)
+    print(f"serving {path} — Ctrl-C to stop", file=sys.stderr)
+    try:
+        server.serve_forever()
+    except KeyboardInterrupt:
+        pass
+    finally:
+        server.server_close()
+    return 0
+
+
 def build_parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(
         prog="dogfood",
@@ -605,6 +765,15 @@ def build_parser() -> argparse.ArgumentParser:
     report_p = with_run_file(sub.add_parser("report", help="Write the end-of-run report"))
     report_p.add_argument("-o", "--output", help="Report path (default stdout)")
     report_p.set_defaults(func=cmd_report)
+
+    serve_p = with_run_file(
+        sub.add_parser(
+            "serve",
+            help="Serve the guide live on 127.0.0.1 (optional; the guide works without it)",
+        )
+    )
+    serve_p.add_argument("--shell", help="Shell HTML path")
+    serve_p.set_defaults(func=cmd_serve)
 
     return p
 

@@ -1,6 +1,6 @@
 # `design-solution`
 
-> HOW the approved requirements get built. Every architecture section names the IDs it satisfies, and a seam table pre-agrees where the tests will live.
+> HOW the approved requirements get built. Every architecture section names the IDs it satisfies, records interface depth and locality, and a seam table pre-agrees where the tests will live.
 
 |  |  |
 |---|---|
@@ -20,23 +20,31 @@ After requirements are Approved and before the plan is written. It fires on tier
 Starting from `templates/design.md`, the skill walks four steps. Two of them lean on dispatched subagents — a scan up front and a review at the end — so the design context stays clear of raw source and free of self-serving framing.
 
 1. **Context and decisions** — what exists today and which constraint shapes the approach, learned through a scan subagent.
-2. **Architecture with Satisfies lines** — one section per area, each naming the IDs it exists to meet, designing the hard parts twice.
+2. **Architecture** — one section per module: `Satisfies:`, `Reuse:`, `Interface:`, `Depth:` (deletion test for new modules), `Locality:`; hard parts designed twice.
 3. **Seams for testing** — the table that is the contract with [`test-first`](test-first.md).
-4. **Coverage self-check, independent review, upstream sync-back, then the approval gate.**
+4. **Coverage + structure self-check, independent review, upstream sync-back, then the approval gate.**
 
 ## Context via a scan subagent
 
 To learn "what exists today" without flooding the design context with raw source, the skill dispatches a **scan subagent** to map the touched surface — current signatures, data shapes, save/load paths — and return a digest to `.skills/<slug>-scan.md`. You design against the digest and pull a specific file into context only when a decision hinges on its exact contents. Decisions locked during discovery are recorded as a numbered list. Any decision that is hard to reverse *and* surprising without context *and* a real trade-off also earns an ADR — and [`define-domain`](define-domain.md) owns that ADR gate. The step is done when a newcomer could state why this approach was chosen over the obvious alternative.
 
-## Satisfies lines and designing it twice
+## Satisfies, depth, locality, and designing it twice
 
-Every `###` architecture section carries a `Satisfies: CODE-N.M, CODE-N.M` line naming the requirement IDs it exists to meet. This is a hard rule with a sharp consequence: a section with no Satisfies line is either infrastructure — and you say so explicitly — or it does not belong in this feature at all. The line is what lets the coverage check and [`audit-trace`](audit-trace.md) prove the design accounts for every requirement.
+Every `###` architecture section is a **module** (or named area) with a fixed slot list from `templates/design.md`:
 
-For the genuinely hard parts, the skill designs it twice. It dispatches two or three parallel subagents with **divergent constraints** — minimize the interface, maximize flexibility, optimize the common caller — compares their results on interface depth and seam placement, and commits to one with a stated reason. The user wants a strong recommendation, not a menu.
+| Slot | Job |
+|---|---|
+| `Satisfies:` | Trace — which requirement IDs this module exists to meet |
+| `Reuse:` | Ladder rung + concrete target (or new code at rung 7) |
+| `Interface:` | What callers know — kept smaller than the implementation |
+| `Depth:` | Written **deletion test** for new modules; `n/a — extends …` when reusing |
+| `Locality:` | Where the change lands; neighbor impact (`leave` / `extend` / `extract`) |
 
-The comparison is concrete, not aesthetic. The two axes are **interface depth** — how much complexity the module hides behind how small a surface — and **seam placement** — whether the boundary falls somewhere tests can reach without prying into internals. The winning design is chosen and the reason recorded; the losing designs are discarded, not kept as alternatives.
+Vocabulary matches [`scan-architecture`](scan-architecture.md): **module, interface, implementation, seam**. Trace coverage and structure quality are separate Done-when axes — every ID can have a Satisfies line and still need a redesign if Depth restates the whole implementation.
 
-The governing quality bar is **deep-module discipline**: a module's interface should be much simpler than what it hides. The skill applies the **deletion test** — if this module vanished, how much would callers need to know to rebuild it? If the answer is "everything it did", the interface is shallow and gets redesigned. A shallow module is one whose interface is nearly as complex as its implementation; it adds ceremony without hiding anything, and the deletion test is how you catch one before it ships into the plan.
+For the genuinely hard parts, the skill designs it twice. It dispatches two or three parallel subagents with **divergent constraints** — minimize the interface, maximize flexibility, optimize the common caller — compares on interface depth and seam placement, and commits to one with a stated reason. A strong recommendation, not a menu.
+
+`scan-architecture` still owns **brownfield debt** across an existing codebase (user-invoked, after friction accumulates). `design-solution` owns **feature-local structure** before code — so a greenfield or feature design does not wait for a later debt scan to ask whether modules are deep.
 
 ## The seam table — the contract with `test-first`
 
@@ -53,9 +61,9 @@ The step is done when every requirement ID maps to at least one seam row. See [a
 
 Step 4 has three parts before the gate.
 
-The **coverage self-check** walks `requirements.md` top to bottom: every ID appears in exactly one Satisfies line, or is listed as deliberately unmapped with a reason. Then it scans for placeholders and internal contradictions — a name used two ways, a data flow that skips a component.
+The **coverage self-check** walks `requirements.md` top to bottom: every ID appears in exactly one Satisfies line, or is listed as deliberately unmapped with a reason. Then it scans for placeholders and internal contradictions — a name used two ways, a data flow that skips a component. **Structure coverage** runs in the same pass: every section has Interface / Depth / Locality filled; rung-7 Depth answers are non-vacuous.
 
-The **independent design review** is dispatched, not self-run. A fresh context has no stake in your framing — it will not fall into the bias that reinterprets a stale requirement rather than catching it. The review subagent gets the design, `requirements.md`, and the repo, and verifies every code-facing claim: each named seam, signature, and data path exists as described, and each Satisfies mapping is actually achievable at that seam. It cites `file:line`, defaults to flagging, and writes to `.skills/<slug>-design-review.md`; you fix the findings without loading the code into the design context.
+The **independent design review** is dispatched, not self-run. A fresh context has no stake in your framing — it will not fall into the bias that reinterprets a stale requirement rather than catching it. The review subagent gets the design, `requirements.md`, the scan digest when present, and the repo. It verifies **code-facing** claims (seams, signatures, paths, Satisfies achievable at that seam) and **structure** claims (Interface smaller than implementation, Depth non-vacuous, Locality consistent with the digest). It cites `file:line`, defaults to flagging, and writes to `.skills/<slug>-design-review.md`; you fix the findings without loading the code into the design context.
 
 The **upstream sync-back** is the step the skill insists you never skip.
 
@@ -75,7 +83,7 @@ The skill offloads three kinds of work to subagents, each for a specific reason.
 |---|---|---|
 | Scan | 1 | Maps the touched surface to a digest so raw source never floods the design context |
 | Design-it-twice | 2 | Explores divergent constraints in parallel so the chosen interface is compared, not defaulted into |
-| Review | 4 | A fresh context has no stake in the framing, so it catches the stale-requirement reinterpretation self-review misses |
+| Review | 4 | A fresh context has no stake in the framing — catches stale-requirement reinterpretation and vacuous Depth / Locality claims |
 
 ## Worked example
 
@@ -92,6 +100,10 @@ Continuing `SHELL` — the left icon rail — from the [`specify-behavior`](spec
 ### Rail and active-module state
 
 Satisfies: SHELL-1.1, SHELL-1.2, SHELL-1.3
+Reuse: existing — extends moduleStore (rung 2)
+Interface: setActive(id), restoreModule() after hydrate; rail only knows active id
+Depth: n/a — extends moduleStore
+Locality: change lands in rail + moduleStore restore path; neighbors leave
 
 The rail renders one icon per registered module. Clicking an icon calls
 `moduleStore.setActive(id)`, which updates state and renders the panel.
@@ -109,15 +121,15 @@ resolves; an unknown id falls back to `defaultModuleId`.
 Reading the excerpt against the four steps:
 
 - **Step 1** learned from the scan digest that `moduleStore.hydrate()` already exists, and recorded the decision to reuse it rather than build new persistence.
-- **Step 2** put a Satisfies line on the section naming all three IDs; there is no orphan section and no unlabelled one.
+- **Step 2** filled Satisfies, Reuse, Interface, Depth, and Locality; reuse path uses Depth `n/a` and Locality leave on neighbors.
 - **Step 3** filled the seam table using the *existing* `moduleStore` seam plus one e2e row, so the new-seam count is zero.
-- **Step 4** walked the requirements top to bottom, confirmed every ID appears in exactly one Satisfies line and at least one seam row, and dispatched the review subagent to confirm `moduleStore.setActive` and `restoreModule` actually exist as named.
+- **Step 4** walked coverage and structure slots, then dispatched the review subagent on code-facing and structure claims.
 
 `moduleStore` is an existing seam, so no new seam is introduced. When a later bugfix reveals `restoreModule()` reads the key *before* hydration resolves, that becomes the tier-1 fix `SHELL-1.4` that [`test-first`](test-first.md) tests at this same `moduleStore` seam — the contract set here is what makes that test legal.
 
 ## Why it is written the way it is
 
-The design document is the hinge between intent and implementation, and its two load-bearing inventions — the Satisfies line and the seam table — both exist to keep the trace spine honest across that hinge. Satisfies lines make coverage checkable at a glance; the seam table constrains where the testing budget can be spent so `test-first` cannot scatter tests into internals.
+The design document is the hinge between intent and implementation. **Satisfies** keeps the trace spine honest; **Interface / Depth / Locality** keep structure quality honest at design time; the **seam table** constrains where the testing budget gets spent so `test-first` cannot scatter tests into internals.
 
 The two dispatch patterns — scan first, review last — keep the design context clean of raw source and free of self-serving framing. Design-it-twice sits between them because the hardest interfaces are exactly the ones a single pass tends to shape around the first idea rather than the best one.
 
@@ -129,3 +141,4 @@ And the upstream sync-back exists because the most expensive bug is a wrong requ
 - [`specify-behavior`](specify-behavior.md) — the input contract this reads
 - [`plan-tasks`](plan-tasks.md) — the next step, which the design hands off to
 - [`define-domain`](define-domain.md) — owns the ADR gate this skill defers to
+- [`scan-architecture`](scan-architecture.md) — brownfield structure debt across an existing codebase

@@ -17,15 +17,28 @@ Anything hard-to-reverse AND surprising AND a real trade-off also gets an ADR.>
 
 ## Architecture
 
-### <Component / area 1>
+Vocabulary for every section below: **module**, **interface**, **implementation**,
+**seam** (public surface where behavior is observable and substitutable). Prefer
+deep modules — an interface much simpler than what it hides.
+
+### <Module / area 1>
 
 Satisfies: <CODE>-1.1, <CODE>-1.2
+Reuse: <rung> — <concrete target, or none — new code (rung 7) with reason>
+Respects: <ARCH-N if the design relies on a spine invariant; else omit this line>
+Interface: <what callers know — names, inputs, outputs; keep this smaller than the implementation>
+Depth: <deletion test for new modules (Reuse rung 7): if this module vanished, what must callers still know to rebuild the behavior? Answer in one sentence. If that answer is "nearly everything it did", redesign before continuing.>
+Locality: <where a change for these Satisfies IDs lands; neighbor impact on existing modules: leave | extend | extract — one line>
 
 <What it is, where it lives, how data flows through it. Diagrams welcome.>
 
-### <Component / area 2>
+### <Module / area 2>
 
 Satisfies: <CODE>-2.1
+Reuse: …
+Interface: …
+Depth: <required when Reuse is rung 7; for reuse of an existing module, write `n/a — extends <target>`>
+Locality: …
 
 ...
 

@@ -36,71 +36,74 @@ in the spine — never a silent violation. No spine? Skip this; the layer is opt
 the alternative rejected because of it, and — where a spine exists — the
 `**ARCH-N**` invariants this feature relies on.
 
-## Step 2: Architecture with Satisfies lines
+## Step 2: Architecture — Satisfies, depth, and locality
 
-One `###` section per component or area. Every section carries a
-`Satisfies: CODE-N.M, CODE-N.M` line naming the requirement IDs it exists to
-meet. A section with no Satisfies line is either infrastructure (say so) or
-does not belong in this feature. When the design relies on an architecture
-invariant (Step 1), the section also carries a `Respects: ARCH-N` line — the
-`audit-trace` check verifies that citation points at a live invariant.
-Every section also carries a `Reuse: <rung> — <concrete target>` line beside its `Satisfies:`
-line, naming the highest ladder rung that held and the concrete existing artifact it builds on
-(e.g. `Reuse: existing — extends src/util/dates:parseISO (rung 2)`, `Reuse: dependency — zod
-(rung 5)`), or `Reuse: none — new code (rung 7)` carrying a one-line reason no lower rung held.
-Adopting a brand-new third-party dependency — one the project does not already use — is the
-**user's decision, not yours to make silently**. When the ladder lands on a library the project
-hasn't adopted, stop and put it to the user as an explicit choice: *"I want to add `<library>`
-to handle `<problem>`"* — in plain language, say what the library is, why it fits this problem
-better than hand-rolling it, and what it costs (a new dependency to maintain, its footprint and
-supply-chain surface). Ground that pitch in current facts, not memory: look up the library's
-latest stable version and present API through the **Context7 MCP** (or `research`, which uses
-it) before you name it — a pitch built on a training-cutoff recollection can cite a version,
-package name, or API that no longer exists. Wait for their agreement before writing it into the
-design as the chosen approach; if they decline, fall back down the ladder — an already-installed
-dependency, or the minimum new code that works. An *already-installed* dependency (rung 5) needs no such route-task —
-reuse it freely. The `Reuse:` line itself stays advisory; it is the new-dependency *adoption*
-that is the user's call.
+One `###` section per **module** or area. Use the template slots in order; every
+heading under Architecture is a REQUIRED shape, not free prose.
+
+**Per-section contract** (fill every line the template names):
+
+| Slot | Content |
+|---|---|
+| `Satisfies:` | Requirement IDs this module exists to meet. No Satisfies line → infrastructure (label it) or the section does not belong |
+| `Reuse:` | Highest ladder rung that held + concrete target, or `none — new code (rung 7)` + reason |
+| `Respects:` | `ARCH-N` when the design relies on a spine invariant (omit when no spine / no reliance) |
+| `Interface:` | What callers know — smaller than the implementation |
+| `Depth:` | **Rung 7 (new module):** one-sentence **deletion test** — if this module vanished, what must callers still know to rebuild the behavior? Redesign until that answer is a *small* interface, not the full implementation. **Reuse of existing (rungs 2–5):** `n/a — extends <target>` |
+| `Locality:` | Where a change for these Satisfies IDs lands, and neighbor impact on modules the Step-1 scan already saw: `leave` \| `extend` \| `extract` plus one short clause |
+
+Structure quality is part of the design, not a later debt scan. Trace coverage
+(`Satisfies:`) and structure quality (`Interface:` / `Depth:` / `Locality:`) are
+both done when the section is complete.
+
+Adopting a brand-new third-party dependency — one the project does not already use —
+is the **user's decision**. When the ladder lands on a library the project hasn't
+adopted, stop and put it to the user: what it is, why it fits, cost (maintain,
+footprint, supply chain). Ground the pitch in current facts via the **Context7 MCP**
+(or `research`) before naming version or API. Wait for agreement before writing it
+into the design; if they decline, fall back down the ladder. An *already-installed*
+dependency (rung 5) needs no such route-task. The new-dependency *adoption* is the
+user's call; the `Reuse:` line still records the rung that held.
 
 For the genuinely hard parts, design it twice: dispatch 2–3 parallel subagents
 with divergent constraints (minimize the interface / maximize flexibility /
-optimize the common caller), compare on interface depth and seam placement,
-and commit to one with a stated reason. Be opinionated — the user wants a
-strong recommendation, not a menu. "Genuinely hard" means the interface itself
-is in question — a new persistence boundary, a concurrency model, a plugin
-seam. A part with one obvious shape does not qualify: adding a field to an
-existing store, wiring a new route through an established pattern, or a plain
-CRUD form is a single-design job, and spawning three subagents to converge on
-the same answer is wasted motion.
+optimize the common caller), compare on **interface depth** and **seam
+placement**, and commit to one with a stated reason. Be opinionated — a strong
+recommendation, not a menu. "Genuinely hard" means the interface itself is in
+question — a new persistence boundary, a concurrency model, a plugin seam. A
+part with one obvious shape does not qualify: adding a field to an existing
+store, wiring a new route through an established pattern, or a plain CRUD form
+is a single-design job.
 
-Before committing to build any component, climb the **reuse ladder** and stop at the highest
-rung that holds — the cheapest thing that already works beats new code:
+Before committing to build any module, climb the **reuse ladder** and stop at the
+highest rung that holds — the cheapest thing that already works beats new code:
 
 1. **Does it need to exist at all?** No requirement forces it → cut it (YAGNI).
 2. **Already in this codebase?** A helper, util, type, or pattern the Step-1 scan found →
-   reuse or extend it; re-implementing what is a few files over is the most common slop.
+   reuse or extend it.
 3. **Standard library or language builtin does it?** Use it.
 4. **A platform / framework / runtime feature covers it?** Prefer it over hand-rolled code.
-5. **An already-installed dependency solves it?** Use it — never add a new dependency for what
-   a few lines do.
+5. **An already-installed dependency solves it?** Use it.
 6. **Can it be one line?** One line.
-7. **Only then** — the minimum new code that works.
+7. **Only then** — the minimum new code that works (then fill `Depth:`).
 
-The ladder is a reflex, not a research project: it climbs the Step-1 scan digest ("what
-exists today") and runs only *after* you understand the problem — audit-trace the real flow the
-change touches first, then climb. It never licenses cutting a corner that matters: do not
-prune away input validation at trust boundaries, error handling that prevents data loss,
-security, accessibility, or anything the requirements explicitly asked for.
+The ladder climbs the Step-1 scan digest after you understand the problem. It
+never licenses cutting a corner that matters: keep input validation at trust
+boundaries, error handling that prevents data loss, security, accessibility, and
+everything the requirements asked for.
 
-The three levers chain, each with a distinct job: the **scan** (Step 1) gathers what exists;
-the **ladder** decides *whether* to build; the **deletion test** (below) refines *how deep*
-to build — and applies only to a rung-7 new component.
+The levers chain: the **scan** gathers what exists; the **ladder** decides whether
+to build; **Depth** / **Locality** record how deep and where the change sits.
 
-Design for depth: for a rung-7 new component, a module's interface should be much simpler
-than what it hides. Apply the deletion test — if this module vanished, how much would
-callers need to know to rebuild it? If the answer is "everything it did", the
-interface is shallow; redesign it.
-**Done when:** every architecture section has a Satisfies line.
+| Thought | Reality |
+|---|---|
+| "Every ID has a Satisfies line — structure is fine" | Satisfies is coverage. Depth and Locality are structure. Fill both |
+| "Deletion test is obvious — skip writing it" | Unwritten depth is not a Done when. One sentence in `Depth:` |
+| "Neighbor modules are out of scope" | `Locality:` names leave / extend / extract against the scan digest |
+
+**Done when:** every architecture section has `Satisfies:`, `Reuse:`,
+`Interface:`, `Depth:`, and `Locality:` filled per the table (and `Respects:`
+where a spine invariant applies).
 
 ## Step 3: Agree the seams for testing
 
@@ -118,17 +121,29 @@ line (or is listed as deliberately unmapped, with a reason). Then scan for
 placeholders and internal contradictions (a name used two ways, a data flow
 that skips a component).
 
-- **Reuse coverage:** prove-claim the Step 2 `Reuse:` rule was followed for every architecture section.
+- **Reuse coverage:** prove-claim every architecture section has a `Reuse:` line
+  that matches the ladder rung it claims.
+- **Structure coverage:** prove-claim every section has `Interface:`, `Depth:`,
+  and `Locality:` per Step 2. For each rung-7 `Depth:` line, the sentence must
+  name what callers keep knowing — redesign any section whose Depth answer is
+  equivalent to restating the whole implementation.
 
 **Independent design review — dispatch, don't self-review.** Fresh context has
 no stake in your framing (the bias that reinterprets a stale requirement rather
 than catching it). Dispatch a review subagent with this design, requirements.md,
-and the repo; have it prove-claim every code-facing claim — each named seam,
-signature, and data path exists as described, and each `Satisfies:` mapping is
-achievable at that seam — grepping/reading real files, citing `file:line`,
-defaulting to flag. Findings go to `.skills/<slug>-design-review.md`; you fix them
-without loading the code here. (No subagents? Do this pass yourself in a fresh
-read of the code.)
+the Step-1 scan digest when present, and the repo; have it prove-claim:
+
+1. **Code-facing claims** — each named seam, signature, and data path exists as
+   described; each `Satisfies:` mapping is achievable at that seam — grep/read
+   real files, cite `file:line`, default to flag.
+2. **Structure claims** — each `Interface:` is smaller than the described
+   implementation; each rung-7 `Depth:` deletion answer is non-vacuous; each
+   `Locality:` line is consistent with the scan digest (neighbors named leave /
+   extend / extract for a reason).
+
+Findings go to `.skills/<slug>-design-review.md`; you fix them without loading
+the code here. (No subagents? Do this pass yourself in a fresh read of the code
+and the digest.)
 
 **Upstream sync-back — do not skip.** Designing routinely surfaces a fact that
 contradicts an *approved* requirement: a premise that turned out false, a

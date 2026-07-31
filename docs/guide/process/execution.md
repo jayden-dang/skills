@@ -1,21 +1,21 @@
 # Phase 3 — Execution
 
-**Skills:** [`worktrees`](../skills/worktrees.md) → one of
-[`execute-plan`](../skills/execute-plan.md) |
-[`execute-story`](../skills/execute-story.md) |
-[`execute-inline`](../skills/execute-inline.md), governed throughout by
-[`tdd`](../skills/tdd.md), [`debug`](../skills/debug.md), and
-[`verify`](../skills/verify.md)
+**Skills:** [`isolate-workspace`](../skills/isolate-workspace.md) → one of
+[`build-continuous`](../skills/build-continuous.md) |
+[`build-story-units`](../skills/build-story-units.md) |
+[`build-inline`](../skills/build-inline.md), governed throughout by
+[`test-first`](../skills/test-first.md), [`root-cause`](../skills/root-cause.md), and
+[`prove-claim`](../skills/prove-claim.md)
 
 **Produces:** commits, tests, a progress ledger, and a branch ready for review.
 
 ## Isolate first
 
-`worktrees` runs before the first file is edited. Its order of preference is strict, and the reason is stated plainly: **never fight the harness.**
+`isolate-workspace` runs before the first file is edited. Its order of preference is strict, and the reason is stated plainly: **never fight the harness.**
 
 1. **Detect isolation that already exists.** Compare `git rev-parse --git-dir` against `--git-common-dir`. If they differ you are probably in a linked worktree — but guard against submodules first, since `git rev-parse --show-superproject-working-tree` printing a path means you are in a submodule, not a worktree.
 2. **Use the harness's native workspace tool** if one exists. A native tool manages placement, branching, and cleanup itself; creating a manual worktree alongside it leaves phantom state the harness cannot see.
-3. **Fall back to `git worktree`**, into `.worktrees/`.
+3. **Fall back to `git worktree`**, into `.isolate-workspace/`.
 
 Before creating anything inside a project-local directory, the directory must be confirmed git-ignored — and the `.gitignore` entry is deliberately **left as an uncommitted working-tree change**. Git honors it immediately, and committing it here would write a commit to the user's *current* branch, the exact thing this skill promises not to touch.
 
@@ -30,11 +30,11 @@ Pick **one** skill from the approved plan's `Execution-mode` and the run route:
 
 | Skill | When |
 |---|---|
-| [`execute-plan`](../skills/execute-plan.md) | `Execution-mode: continuous` + subagent waves |
-| [`execute-story`](../skills/execute-story.md) | `Execution-mode: story-unit` (human-gated review units) |
-| [`execute-inline`](../skills/execute-inline.md) | No implementer subagents / user watches the controller implement |
+| [`build-continuous`](../skills/build-continuous.md) | `Execution-mode: continuous` + subagent waves |
+| [`build-story-units`](../skills/build-story-units.md) | `Execution-mode: story-unit` (human-gated review units) |
+| [`build-inline`](../skills/build-inline.md) | No implementer subagents / user watches the controller implement |
 
-### `execute-plan` (continuous + subagents)
+### `build-continuous` (continuous + subagents)
 
 Drives the plan with one fresh implementer subagent per task, a two-verdict review of each task's diff, optional parallel waves, and a whole-branch review at the end.
 
@@ -42,13 +42,13 @@ Drives the plan with one fresh implementer subagent per task, a two-verdict revi
 
 **Continuous execution.** Do not pause between tasks to ask "should I continue?" — check-ins waste the user's time. The only legitimate stops are a `BLOCKED` status you cannot resolve, ambiguity that genuinely prevents progress, or all tasks complete.
 
-### `execute-story` (story-unit + human gates)
+### `build-story-units` (story-unit + human gates)
 
-Same per-task subagent loop, but tasks are partitioned into **review units** derived from requirement stories. After each unit: unit agent review → **STOP for human** → unlock. "continue" advances one unit; "stop stopping" / "just run it all" must write `Execution-mode: continuous` then hand off to `execute-plan`.
+Same per-task subagent loop, but tasks are partitioned into **review units** derived from requirement stories. After each unit: unit agent review → **STOP for human** → unlock. "continue" advances one unit; "stop stopping" / "just run it all" must write `Execution-mode: continuous` then hand off to `build-continuous`.
 
-### `execute-inline` (controller implements)
+### `build-inline` (controller implements)
 
-No implementer or task-reviewer subagents. You implement each task yourself under `tdd`, append the same style of ledger lines, stop and ask on blockers (never guess), and finish with whole-branch `code-review`. **No unit barriers** even if the header is `story-unit` — barriers belong to `execute-story`.
+No implementer or task-reviewer subagents. You implement each task yourself under `test-first`, append the same style of ledger lines, stop and ask on blockers (never guess), and finish with whole-branch `inspect-change`. **No unit barriers** even if the header is `story-unit` — barriers belong to `build-story-units`.
 
 ### Setup
 
@@ -115,18 +115,18 @@ State the model **explicitly on every dispatch** — an omitted model inherits y
 
 ## The three disciplines that govern everything
 
-**`tdd`** runs inside every implementer. No production code without a failing test first; tests only at seams the design pre-agreed; every test carries its requirement ID.
+**`test-first`** runs inside every implementer. No production code without a failing test first; tests only at seams the design pre-agreed; every test carries its requirement ID.
 
-**`debug`** runs whenever anything behaves unexpectedly. Its Phase 1 is a gate: before any theory-building, construct and *run* a red-capable command — one that is red now because of this exact bug and goes green when it is fixed. *Build the right feedback loop and the bug is 90% fixed.* Three failed fix attempts means stop: the architecture is in question, not your latest hypothesis.
+**`root-cause`** runs whenever anything behaves unexpectedly. Its Phase 1 is a gate: before any theory-building, construct and *run* a red-capable command — one that is red now because of this exact bug and goes green when it is fixed. *Build the right feedback loop and the bug is 90% fixed.* Three failed fix attempts means stop: the architecture is in question, not your latest hypothesis.
 
-**`verify`** runs before anything that implies success. Identify the proving command, run it fresh and complete, read the full output, confirm it supports the claim. Skip any step and you are lying, not verifying.
+**`prove-claim`** runs before anything that implies success. Identify the proving command, run it fresh and complete, read the full output, confirm it supports the claim. Skip any step and you are lying, not verifying.
 
 ## After the last task
 
-1. **Whole-branch review** via [`code-review`](../skills/code-review.md), with base = `git merge-base main HEAD` — never a mid-branch sha. Run on the top model tier, pointed at the ledger's Minor-findings list for triage.
+1. **Whole-branch review** via [`inspect-change`](../skills/inspect-change.md), with base = `git merge-base main HEAD` — never a mid-branch sha. Run on the top model tier, pointed at the ledger's Minor-findings list for triage.
 2. **One fixer.** If the review returns findings, dispatch **one** fix subagent carrying the complete list. Never one fixer per finding — each extra fixer rebuilds context and re-runs suites, and a per-finding fix wave can cost more than the whole plan did. Re-review after.
-3. **Acceptance** via [`acceptance-check`](../skills/acceptance-check.md).
-4. **Finish** via [`finish-branch`](../skills/finish-branch.md).
+3. **Acceptance** via [`validate-feature`](../skills/validate-feature.md).
+4. **Finish** via [`land-branch`](../skills/land-branch.md).
 
 ## Next
 
@@ -134,6 +134,6 @@ State the model **explicitly on every dispatch** — an omitted model inherits y
 
 ## See also
 
-- [The gates](../concepts/gates.md) — `tdd`, `debug`, and `verify` in detail
-- [`execute-plan`](../skills/execute-plan.md) · [`execute-story`](../skills/execute-story.md) · [`execute-inline`](../skills/execute-inline.md)
+- [The gates](../concepts/gates.md) — `test-first`, `root-cause`, and `prove-claim` in detail
+- [`build-continuous`](../skills/build-continuous.md) · [`build-story-units`](../skills/build-story-units.md) · [`build-inline`](../skills/build-inline.md)
 - [The artifact model](../concepts/artifacts.md) — what lives in `.skills/`

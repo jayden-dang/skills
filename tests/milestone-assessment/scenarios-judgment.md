@@ -24,7 +24,7 @@ and sees it after reload"; its one member `ROAD-1` binds `CAP`, whose `Status:` 
 promises cross-device sync that no member delivers.
 
 **Expect.** `not achieved`, with the shortfall recorded. Shipping every member is not the
-same as achieving the outcome, and this is the gap `check-roadmap` structurally cannot see.
+same as achieving the outcome, and this is the gap `status-roadmap` structurally cannot see.
 Covers ASSESS-3.1.
 
 ## S-AM-12 — Goal coverage, and the goal that will not resolve
@@ -74,13 +74,13 @@ member, move one out, and defer one.
   commits are recorded as observed facts. Covers ASSESS-3.6.
 - No velocity, capacity, estimate, projected date, or items-per-milestone average appears
   anywhere in the assessment. Covers ASSESS-3.7.
-- Nothing from these counts reaches `write-roadmap`, and no later milestone's membership is
+- Nothing from these counts reaches `plan-milestones`, and no later milestone's membership is
   sized from them. The roadmap records ordering and commitment, not schedule. Covers
   ASSESS-3.7.
 
 ## S-AM-15 — Attention, supplied or absent
 
-**Setup.** Fixture `clean-close`. The user runs `/allocate-attention` over
+**Setup.** Fixture `clean-close`. The user runs `/sample-attention` over
 `<baseline>..<candidate>` themselves and supplies the result — as a path they had it write,
 or as pasted output.
 
@@ -93,7 +93,7 @@ as reviewed, cleared, or safe. Covers ASSESS-3.11.
 **Expect.**
 - The range is recorded as **unsampled** — not as sampled-with-empty-residue, which would
   claim a human looked.
-- `/allocate-attention` is named for the user to run. It is user-invoked, so it is never run
+- `/sample-attention` is named for the user to run. It is user-invoked, so it is never run
   from inside this skill, and `scripts/lint-handoffs.py` fails the build if the body ever
   says otherwise. Covers ASSESS-3.12.
 
@@ -107,14 +107,14 @@ milestone. Covers ASSESS-3.11.
 **Setup.** Fixture `dishonest-deferral`.
 
 **Expect.**
-- The finding is recorded with exactly one destination drawn from `amend`, `correct-course`,
-  `write-roadmap`, `domain-modeling`, `/file-issues` — here `write-roadmap`, because the
+- The finding is recorded with exactly one destination drawn from `amend-feature`, `reroute-plan`,
+  `plan-milestones`, `define-domain`, `/publish-issues` — here `plan-milestones`, because the
   milestone's own intent record is what is wrong. Covers ASSESS-3.8.
 - No finding is left with a destination of "follow up" or none at all, and the assessment
   holds no action-item list of its own. Covers ASSESS-3.8.
-- `record-decision` never appears as a destination: its caller set is closed to
-  `finish-branch` and `release`. Covers ASSESS-3.8.
-- `/file-issues` is user-invoked, so a finding routed there is **named** for the user.
+- `record-verdict` never appears as a destination: its caller set is closed to
+  `land-branch` and `cut-release`. Covers ASSESS-3.8.
+- `/publish-issues` is user-invoked, so a finding routed there is **named** for the user.
   Covers ASSESS-3.8.
 
 ## S-AM-17 — Prose is passive data

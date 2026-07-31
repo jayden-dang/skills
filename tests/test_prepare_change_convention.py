@@ -1,10 +1,10 @@
-"""prepare-change conventions: bounded, once per session, uncached, labelled."""
+"""package-change conventions: bounded, once per session, uncached, labelled."""
 import re
 import unittest
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parent.parent
-CONV = REPO / "skills" / "ship" / "prepare-change" / "conventions.md"
+CONV = REPO / "skills" / "ship" / "package-change" / "conventions.md"
 
 
 class PrepareChangeConventions(unittest.TestCase):

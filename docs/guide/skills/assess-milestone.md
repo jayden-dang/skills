@@ -8,12 +8,12 @@
 | **Invocation** | `/assess-milestone` (user-invoked; `disable-model-invocation: true`) |
 | **Reads** | `docs/roadmap/INDEX.md`, `docs/specs/INDEX.md`, `docs/product/vision.md`, each member's `requirements.md`, `git`, `templates/roadmap-findings.md`, and any existing assessment |
 | **Writes** | `docs/roadmap/assessments/<MILE-N>.md` — and nothing else, ever |
-| **Calls** | [`write-roadmap`](write-roadmap.md) with a verified handoff. Names [`allocate-attention`](allocate-attention.md), [`check-roadmap`](check-roadmap.md) and [`file-issues`](file-issues.md) for the user |
-| **Called by** | nobody — it is user-invoked. [`check-roadmap`](check-roadmap.md) names it in ladder row 8 |
+| **Calls** | [`plan-milestones`](plan-milestones.md) with a verified handoff. Names [`sample-attention`](sample-attention.md), [`status-roadmap`](status-roadmap.md) and [`publish-issues`](publish-issues.md) for the user |
+| **Called by** | nobody — it is user-invoked. [`status-roadmap`](status-roadmap.md) names it in ladder row 8 |
 
 ## The other half of the close
 
-[`check-roadmap`](check-roadmap.md) answers whether a milestone's **structure** is sound: is every item bound, does every status agree, is anything dangling. It deliberately refuses to answer whether the milestone *worked* — that judgment depends on the reader, and a check whose result depends on the reader is not a check.
+[`status-roadmap`](status-roadmap.md) answers whether a milestone's **structure** is sound: is every item bound, does every status agree, is anything dangling. It deliberately refuses to answer whether the milestone *worked* — that judgment depends on the reader, and a check whose result depends on the reader is not a check.
 
 This skill answers the second question. A milestone can pass every structural test and still have missed: every member shipped, every status green, and the `Outcome:` sentence still not true. Nothing else in the set can see that gap.
 
@@ -59,12 +59,12 @@ Commits landing on `HEAD` afterwards do not stale an assessment. Validity is SHA
 
 ## What it will not do
 
-- **Write the roadmap.** `docs/roadmap/INDEX.md` belongs to [`write-roadmap`](write-roadmap.md). This skill hands it a verified handoff; that skill re-derives every value from the assessment file and refuses on any mismatch.
-- **Run `/allocate-attention` or `/check-roadmap`.** Both are user-invoked. It names them.
+- **Write the roadmap.** `docs/roadmap/INDEX.md` belongs to [`plan-milestones`](plan-milestones.md). This skill hands it a verified handoff; that skill re-derives every value from the assessment file and refuses on any mismatch.
+- **Run `/sample-attention` or `/status-roadmap`.** Both are user-invoked. It names them.
 - **Forecast.** Plan-accuracy counts are recorded as observed facts, with no velocity, capacity, estimate, or projected date derived from them.
-- **Hold an action-item list.** Every finding carries exactly one destination: `amend`, `correct-course`, `write-roadmap`, `domain-modeling`, or `/file-issues`.
+- **Hold an action-item list.** Every finding carries exactly one destination: `amend-feature`, `reroute-plan`, `plan-milestones`, `define-domain`, or `/publish-issues`.
 - **Run a team retrospective.** What went well, what went badly, who did what — not this skill. It assesses an outcome against a written intent.
 
 ## One consequence worth knowing
 
-After this feature, [`write-roadmap`](write-roadmap.md) **cannot close a milestone without an assessment handoff** — in any repository, including one that has never run this skill. That is deliberate. A gate you can skip is not the reason a closed milestone means anything.
+After this feature, [`plan-milestones`](plan-milestones.md) **cannot close a milestone without an assessment handoff** — in any repository, including one that has never run this skill. That is deliberate. A gate you can skip is not the reason a closed milestone means anything.

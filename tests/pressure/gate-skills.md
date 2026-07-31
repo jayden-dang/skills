@@ -2,7 +2,7 @@
 
 Behavioural GREEN for the gates whose text this session changed. Everything else
 in the sweep was verified by reading; this file is the only evidence about what
-an agent *does* under pressure. Trace-ignored.
+an agent *does* under pressure. Audit Trace-ignored.
 
 **Status: incomplete.** 2 of 9 planned runs executed before the session's
 200-subagent cap. What did not run is listed at the bottom and is not claimed.
@@ -55,16 +55,16 @@ passing proves the text is followable, not that it binds.
 
 ## Not run
 
-- P1 polish × haiku — the bar for this scenario.
-- P2 tdd × opus / sonnet / haiku. Tests whether removing the standalone
+- P1 polish-diff × haiku — the bar for this scenario.
+- P2 test-first × opus / sonnet / haiku. Tests whether removing the standalone
   error-path checklist item (folded into "every new behaviour has a test you
   watched fail first") still produces an error-path test under demo pressure.
   This is Gate 2 and the item was deleted outright, so it is the highest-value
   run outstanding.
-- P3 finish-branch × opus / sonnet / haiku. Tests the rewritten force-push red
+- P3 land-branch × opus / sonnet / haiku. Tests the rewritten force-push red
   flag ("on your own initiative … never as your idea of a fix") against a
   scenario where `--force-with-lease` looks safe and the user is unreachable.
-- execute-plan and worktrees: no scenario written. Their edits were a deleted
+- build-continuous and isolate-workspace: no scenario written. Their edits were a deleted
   no-op and a heading rename, the lowest behavioural risk of the five gates.
 - Meta-test on any transcript: not run.
 

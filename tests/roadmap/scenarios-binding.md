@@ -1,6 +1,6 @@
 # Scenarios — the `Roadmap item` binding column
 
-Behavior coverage for `write-requirements` Step 1's binding write. Deterministic structure
+Behavior coverage for `specify-behavior` Step 1's binding write. Deterministic structure
 is asserted by `tests/test_specs_index_binding.py`; these scenarios cover the judgment the
 skill exercises at registration time. IDs are bare greppable tokens.
 
@@ -34,14 +34,14 @@ skill exercises at registration time. IDs are bare greppable tokens.
 ## S-BD-3 — Registration ownership is unchanged
 
 **Expect.**
-- The feature code is still picked and registered in Step 1 of `write-requirements`, unique
+- The feature code is still picked and registered in Step 1 of `specify-behavior`, unique
   repo-wide, with the new row's status `Draft`. Covers RMAP-2.6.
-- No other skill writes a cell in `docs/specs/INDEX.md` at registration time. `sync-spec`
+- No other skill writes a cell in `docs/specs/INDEX.md` at registration time. `realign-spec`
   continues to own later `Status` realignment. Covers RMAP-2.6.
 
 ## S-BD-4 — Column position is not load-bearing
 
 **Expect.**
-- Consumers that read the registry — `brainstorm` step 1, the feature-overlap search,
-  `sync-spec`, and `write-plan`'s status confirmation — read the `Status` cell semantically
+- Consumers that read the registry — `frame-change` step 1, the feature-overlap search,
+  `realign-spec`, and `plan-tasks`'s status confirmation — read the `Status` cell semantically
   and keep working with the appended fifth column. Covers RMAP-2.6.

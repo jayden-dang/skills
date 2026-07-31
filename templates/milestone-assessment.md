@@ -6,11 +6,11 @@ docs/roadmap/assessments/<MILE-N>.md. One file per milestone. Optional — a pro
 without a roadmap layer never has one.
 
 This file records whether the milestone DELIVERED. docs/roadmap/INDEX.md keeps recording
-what was INTENDED, and is written only by `write-roadmap`. Neither writes into the other.
+what was INTENDED, and is written only by `plan-milestones`. Neither writes into the other.
 See docs/adr/0002-outcome-truth-outside-the-roadmap.md.
 
 Structural rules — AUTHORITATIVE. `assess-milestone` validates against this list before it
-writes, and `write-roadmap` validates against it before it records a close:
+writes, and `plan-milestones` validates against it before it records a close:
 
   A1  every `## Assessment <N>` ordinal is unique and blocks appear in ascending order
   A2  `Committed baseline` and `Candidate closing revision` are full 40-hex SHAs
@@ -44,7 +44,7 @@ Every heading below is a REQUIRED slot — fill it or write `None`.
 **Deferrals:** &lt;ROAD-N slug → MILE-N (YYYY-MM-DD, reason) — honest | no destination&gt;
 **Attention:** &lt;sample N units / residue N units — unreviewed&gt; | &lt;range unsampled&gt;
 **Plan accuracy:** &lt;+N added · N moved out · N deferred · N days&gt;
-**Findings:** &lt;finding&gt; → &lt;amend | correct-course | write-roadmap | domain-modeling | /file-issues&gt;
+**Findings:** &lt;finding&gt; → &lt;amend | reroute-plan | plan-milestones | define-domain | /publish-issues&gt;
 **Rationale:** &lt;the reasoning behind the verdict, so a later reader can check it&gt;
 
 ### Human disposition
@@ -92,7 +92,7 @@ stays passive data on every later read.
 **Deferrals:** ROAD-7 cross-workspace-index → MILE-4 (2026-07-20, blocked on vendor API) — honest
 **Attention:** sample 4 units / residue 6 units — unreviewed
 **Plan accuracy:** +1 added · 1 moved out · 1 deferred · 21 days
-**Findings:** outcome sentence promised more than the members could deliver → write-roadmap
+**Findings:** outcome sentence promised more than the members could deliver → plan-milestones
 **Rationale:** every member shipped; the shortfall is scope, not delivery
 
 ### Human disposition

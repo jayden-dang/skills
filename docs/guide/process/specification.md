@@ -1,10 +1,10 @@
 # Phase 2 — Specification
 
-**Skills:** [`write-requirements`](../skills/write-requirements.md) → [`write-design`](../skills/write-design.md) → [`write-plan`](../skills/write-plan.md)
+**Skills:** [`specify-behavior`](../skills/specify-behavior.md) → [`design-solution`](../skills/design-solution.md) → [`plan-tasks`](../skills/plan-tasks.md)
 
 **Produces:** the spec triad in `docs/specs/<YYYY-MM-DD>-<feature>/`, and a registered feature code in `docs/specs/INDEX.md`.
 
-**Runs only for tier ≥ 1.** Tier 0 goes straight to `tdd`. Tier 1 stops after a mini-spec.
+**Runs only for tier ≥ 1.** Tier 0 goes straight to `test-first`. Tier 1 stops after a mini-spec.
 
 ## The shape of the phase
 
@@ -39,7 +39,7 @@ One observable behavior per criterion. **If a sentence needs "and", it is usuall
 
 Guards are what stop an agent from breaking load-bearing behavior nobody mentioned. And the completion criterion for this step forbids the lazy answer: *you have actively searched the touched surface for behaviors to guard — not merely found none by default.*
 
-**Write Out of Scope.** What this feature deliberately does not do. This section is read again later, by `code-review` (as the scope-creep reference), by `dogfood` (as deliberate non-behaviors to check), and by the feature-overlap search (as a Summary-card field a neighboring feature's `brainstorm` reads straight out of `docs/specs/`).
+**Write Out of Scope.** What this feature deliberately does not do. This section is read again later, by `inspect-change` (as the scope-creep reference), by `walk-product` (as deliberate non-behaviors to check), and by the feature-overlap search (as a Summary-card field a neighboring feature's `frame-change` reads straight out of `docs/specs/`).
 
 **Self-review, then gate.** Four passes before the user sees it:
 
@@ -50,7 +50,7 @@ Guards are what stop an agent from breaking load-bearing behavior nobody mention
 
 Then present the file and **stop**. On approval, `Status: Approved`.
 
-**IDs are immutable from that moment.** Retire by strikethrough (`~~**SHELL-1.2**~~ superseded by SHELL-1.4`), never by renumbering. The trace check treats struck-through IDs as undefined, so every test or task still citing one surfaces immediately as an E1 error.
+**IDs are immutable from that moment.** Retire by strikethrough (`~~**SHELL-1.2**~~ superseded by SHELL-1.4`), never by renumbering. The audit-trace check treats struck-through IDs as undefined, so every test or task still citing one surfaces immediately as an E1 error.
 
 ## Step 2 — `design.md`: HOW
 
@@ -77,7 +77,7 @@ Design for depth: a module's interface should be much simpler than what it hides
 | `moduleStore` public API | unit | SHELL-1.1, SHELL-1.2 |
 | module rail (e2e) | e2e | SHELL-1.3 |
 
-`tdd` **refuses** to write a test at a seam this table does not confirm. Prefer existing seams; the ideal number of *new* seams is zero or one. Every requirement ID maps to at least one row.
+`test-first` **refuses** to write a test at a seam this table does not confirm. Prefer existing seams; the ideal number of *new* seams is zero or one. Every requirement ID maps to at least one row.
 
 **Coverage self-check, independent review, and the gate.** Walk `requirements.md` top to bottom: every ID appears in exactly one `Satisfies:` line, or is listed as deliberately unmapped with a reason.
 
@@ -104,13 +104,13 @@ Per task: **Files** (create / modify with line ranges / test), **Interfaces** (C
 
 **No placeholders.** "TBD", "add appropriate error handling", "similar to Task 3", or a type referenced but defined in no task — each is a plan bug, fixed before the plan ships.
 
-### The coverage check that goes further than the trace check
+### The coverage check that goes further than the audit-trace check
 
 This is the subtlest thing in the phase.
 
-The trace check verifies every `Approved` requirement is cited by at least one task footer. But **a footer is not a test.** A footer citation with no tagged test passes the trace check today (Approved → W1 warning) and fails **E2** the moment the feature is marked `Implemented`.
+The audit-trace check verifies every `Approved` requirement is cited by at least one task footer. But **a footer is not a test.** A footer citation with no tagged test passes the audit-trace check today (Approved → W1 warning) and fails **E2** the moment the feature is marked `Implemented`.
 
-So `write-plan` requires more: every requirement ID must also appear in a **test annotation inside some task's steps** — `[SHELL-1.2]` in a Vitest title, `/// REQ: SHELL-1.2` on a Rust test, `@SHELL-1.2` in a Playwright tag. And it reconciles against the design's seam table: an ID the design *promised* to cover but the plan left untagged is **dropped coverage**. Add the test; never renumber.
+So `plan-tasks` requires more: every requirement ID must also appear in a **test annotation inside some task's steps** — `[SHELL-1.2]` in a Vitest title, `/// REQ: SHELL-1.2` on a Rust test, `@SHELL-1.2` in a Playwright tag. And it reconciles against the design's seam table: an ID the design *promised* to cover but the plan left untagged is **dropped coverage**. Add the test; never renumber.
 
 A guard or negative requirement counts only if a real test asserts it. When a behavior cannot be unit-tested in isolation, tag the e2e task or an existing test that already exercises it — one test may carry several IDs.
 
@@ -120,10 +120,10 @@ Finally, an **independent plan review subagent** verifies against real code ever
 
 ## Exit
 
-`write-plan` offers three execution routes after `Execution-mode` is written:
-`execute-plan` (continuous + subagents), `execute-story` (story-unit + human
-review units), or `execute-inline` (controller implements, no implementer
-subagents). Prefer an isolated workspace via `worktrees` for the subagent routes.
+`plan-tasks` offers three execution routes after `Execution-mode` is written:
+`build-continuous` (continuous + subagents), `build-story-units` (story-unit + human
+review units), or `build-inline` (controller implements, no implementer
+subagents). Prefer an isolated workspace via `isolate-workspace` for the subagent routes.
 
 ## Next
 
@@ -134,4 +134,4 @@ subagents). Prefer an isolated workspace via `worktrees` for the subagent routes
 - [Requirement IDs](../concepts/requirement-ids.md) — the grammar and the status lifecycle
 - [EARS reference](../resources/ears.md) — the five criterion forms
 - [Templates](../resources/templates.md) — the three seed files
-- [The trace check](../resources/scripts.md#the-trace-check) — W1 versus E2, and why the distinction bites
+- [The audit-trace check](../resources/scripts.md#the-trace-check) — W1 versus E2, and why the distinction bites

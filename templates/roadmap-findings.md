@@ -1,6 +1,6 @@
 # Roadmap findings — R1–R11 and the withholding set
 
-Authoritative. Read by `check-roadmap`, which reports these findings, and by
+Authoritative. Read by `status-roadmap`, which reports these findings, and by
 `assess-milestone`, which evaluates the withholding subset as a precondition before it
 judges a milestone's outcome. Do not restate these rules in either skill body — one
 statement, two readers.
@@ -11,7 +11,7 @@ the reading SKILL.md.
 
 <!--
 Not a seed. Unlike the other files in this directory, nothing copies this one into a
-consumer repo — `setup-repo` and `establish-project` name the template files they write
+consumer repo — `configure-repo` and `anchor-project` name the template files they write
 individually and never glob. It sits here because `templates/` is this set's only
 cross-skill content mechanism: `roadmap-INDEX.md`'s comment block already carries the
 authoritative S1–S7 structural rules for the same two skills.
@@ -66,5 +66,5 @@ order), `members` (item → milestone), `bindings` (code → `ROAD-N`), and `sta
   `Depends-on` not resolving to exactly one live `MILE-N`.
 
 Scoping these findings to a single milestone is `assess-milestone`'s concern, not a property
-of the findings themselves — that rule lives in its skill body. `check-roadmap` reports the
+of the findings themselves — that rule lives in its skill body. `status-roadmap` reports the
 whole repo and needs no scoping.

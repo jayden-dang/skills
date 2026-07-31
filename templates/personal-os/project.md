@@ -58,7 +58,7 @@ workspace:
 
 -
 
-## Handoff (for the human)
+## Write Handoff (for the human)
 
 ```
 cwd: <workspace.path if any>

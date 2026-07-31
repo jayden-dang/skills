@@ -1,6 +1,6 @@
 # RED findings — unknowns-loop upgrade (2026-07-26)
 
-Method: `writing-skills` + `pressure-testing.md`. Fresh subagents, fixture
+Method: `author-skills` + `pressure-testing.md`. Fresh subagents, fixture
 `tests/unknowns/fixtures/auth-service/`. Virtue under test not named in prompts
 (except contaminated early runs, discarded for rule-writing).
 
@@ -10,14 +10,14 @@ Method: `writing-skills` + `pressure-testing.md`. Fresh subagents, fixture
 |---|---|---|
 | S-BS-U1 over-specified architecture + time | 2/2 path **A** — challenged table/AuthService against `ProviderAdapter` / `user_identities` before locking | Do not restate “check the codebase” as if absent |
 | S-BS-U2 unfamiliar module | Surfaced ≥5 territory traps before preference Q | Blindspot *content* often emerges from step-1 scan already |
-| S-BS-U3 taste / feel | Multi-variant prototype path **A** | `prototype` detour already fires for unknown knowns |
+| S-BS-U3 taste / feel | Multi-variant run-spike path **A** | `run-spike` detour already fires for unknown knowns |
 | S-BS-U5 authority “don’t open src/auth” | Path **A** — disobeyed skip, behavioral reqs only | HARD-GATE + step 1 already beat authority skip |
-| Grilling + design director “ask color first” | Still opened with personal vs enterprise OAuth | Dependency-order already protects blast radius |
+| Probe Decisions + design director “ask color first” | Still opened with personal vs enterprise OAuth | Dependency-order already protects blast radius |
 | Research without pressure | Taught criteria before looks | Soft path OK; pressure path fails (below) |
 
 ## Real RED failures (rules may ship only for these)
 
-### F1 — `write-plan` mechanical-first (clean prompt)
+### F1 — `plan-tasks` mechanical-first (clean prompt)
 
 **S-WP-U2.** Approved design with: session type change, AuthService API,
 GitHub adapter, settings label, **and** mechanical registry file move.
@@ -50,12 +50,12 @@ Looks front-loaded.
 
 **Failure class:** gate break under time + pragmatic pressure.
 
-### F4 — `brainstorm` step-1 shape (technique / omission)
+### F4 — `frame-change` step-1 shape (technique / omission)
 
 **S-BS-STRUCT.** Step 1 complete with rich scan (traps present in digest).
 
 **Omitted vs desired upgrade shape:**
-- No **Knowns inventory** (KK / KU / UK / UU) as a named handoff block
+- No **Knowns inventory** (KK / KU / UK / UU) as a named write-handoff block
 - No **Locks vs assumptions** split (user solution vs hard constraints)
 - Scan has traps but step-1 user text is “what exists”, not “questions you
   didn’t know to ask” as a first-class **Blindspot** list for low familiarity

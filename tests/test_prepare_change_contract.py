@@ -1,12 +1,12 @@
-"""prepare-change base resolution: declared, asked, never inferred from topology."""
+"""package-change base resolution: declared, asked, never inferred from topology."""
 import re
 import unittest
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parent.parent
-SKILL = REPO / "skills" / "ship" / "prepare-change" / "SKILL.md"
-TICKETS = REPO / "skills" / "ship" / "prepare-change" / "tickets.md"
-CONV = REPO / "skills" / "ship" / "prepare-change" / "conventions.md"
+SKILL = REPO / "skills" / "ship" / "package-change" / "SKILL.md"
+TICKETS = REPO / "skills" / "ship" / "package-change" / "tickets.md"
+CONV = REPO / "skills" / "ship" / "package-change" / "conventions.md"
 
 
 class PrepareChangeBase(unittest.TestCase):
@@ -25,7 +25,7 @@ class PrepareChangeBase(unittest.TestCase):
         self.assertRegex(
             self.text,
             r"(?s)NEVER[^\n]*origin/HEAD|SHALL NOT[^\n]*origin/HEAD|never[^\n]*origin/HEAD",
-            msg="prepare-change does not forbid topology-based base selection",
+            msg="package-change does not forbid topology-based base selection",
         )
         for token in ("fork-point", "`main`", "`master`"):
             self.assertIn(token, self.text)
@@ -40,8 +40,8 @@ class PrepareChangeBase(unittest.TestCase):
         self.assertIn("this invocation only", self.text)
 
     def test_PCHG_2_8_names_setup_repo_when_absent(self):
-        """PCHG-2.8 — absent config continues session-only and names /setup-repo."""
-        self.assertIn("/setup-repo", self.text)
+        """PCHG-2.8 — absent config continues session-only and names /configure-repo."""
+        self.assertIn("/configure-repo", self.text)
 
     def test_PCHG_2_9_2_10_memoized_and_revalidated(self):
         """PCHG-2.9 PCHG-2.10 — memoized for the session; re-asked when it stops resolving."""
@@ -82,10 +82,10 @@ class PrepareChangeContext(unittest.TestCase):
         restated, and not path-coupled into another skill's folder."""
         self.assertIn("passive-data-safety.md", self.text)
         self.assertNotIn(
-            "skills/review/explain-change/references/passive-data-safety.md",
+            "skills/review/brief-team/references/passive-data-safety.md",
             self.text,
         )
-        passive = REPO / "skills" / "ship" / "prepare-change" / "passive-data-safety.md"
+        passive = REPO / "skills" / "ship" / "package-change" / "passive-data-safety.md"
         self.assertTrue(passive.exists(), "passive-data-safety.md missing beside SKILL.md")
 
     def test_PCHG_3_4_passive_data_rule_is_a_hard_gate(self):
@@ -251,7 +251,7 @@ class PrepareChangeCommits(unittest.TestCase):
         self.assertRegex(self.text, r"(?s)implementer.{0,120}unmodified|task commits.{0,80}unmodified")
 
 
-PKG = REPO / "skills" / "ship" / "prepare-change" / "package-contract.md"
+PKG = REPO / "skills" / "ship" / "package-change" / "package-contract.md"
 
 
 class PrepareChangePackage(unittest.TestCase):
@@ -364,7 +364,7 @@ class PrepareChangePackage(unittest.TestCase):
         numeric length bound, not a qualitative description. `git
         check-ref-format --branch` legally permits shell metacharacters in
         branch names, so a vague rule like 'separators replaced' leaves the
-        stable-id field finish-branch rederives to ambiguous."""
+        stable-id field land-branch rederives to ambiguous."""
         self.assertRegex(
             self.text,
             r"\[?a-z0-9-\]?",
@@ -448,7 +448,7 @@ class PrepareChangeAdvisory(unittest.TestCase):
         self.assertRegex(self.text, r"(?s)as it actually exists|never .{0,60}as though")
 
     def test_PCHG_7_5_7_6_four_grades(self):
-        """PCHG-7.5 PCHG-7.6 — four grades; machine-enforced failures ride the verify path."""
+        """PCHG-7.5 PCHG-7.6 — four grades; machine-enforced failures ride the prove-claim path."""
         for grade in ("advisory", "reported", "not run"):
             self.assertIn(grade, self.text)
         self.assertRegex(self.text, r"(?s)verify.{0,120}(failure path|withhold)")
@@ -484,8 +484,8 @@ class PrepareChangeAdvisory(unittest.TestCase):
 
 
 class PrepareChangeWritingSkillsForm(unittest.TestCase):
-    """writing-skills ship checklist: red flags, Done when, no plan-task leaks,
-    digest recipe single-home match with finish-branch."""
+    """author-skills ship checklist: red flags, Done when, no plan-task leaks,
+    digest recipe single-home match with land-branch."""
 
     def setUp(self):
         self.skill = SKILL.read_text()
@@ -527,7 +527,7 @@ class PrepareChangeWritingSkillsForm(unittest.TestCase):
 
     def test_no_plan_task_number_leaks_in_prepare_change_files(self):
         """Skill bodies name consumers by role, not ephemeral plan Task N."""
-        root = REPO / "skills" / "ship" / "prepare-change"
+        root = REPO / "skills" / "ship" / "package-change"
         for path in root.glob("*.md"):
             text = path.read_text()
             self.assertIsNone(
@@ -541,12 +541,12 @@ class PrepareChangeWritingSkillsForm(unittest.TestCase):
         self.assertIn("[Layout]", self.pkg)
 
     def test_digest_recipe_block_matches_finish_branch(self):
-        """Single-home digest: finish-branch's fenced recipe equals package-contract's."""
-        finish = (REPO / "skills" / "ship" / "finish-branch" / "SKILL.md").read_text()
+        """Single-home digest: land-branch's fenced recipe equals package-contract's."""
+        finish = (REPO / "skills" / "ship" / "land-branch" / "SKILL.md").read_text()
 
         def extract_digest_code(text: str) -> str:
             # Prefer the Content-digest section when present; else first block
-            # that pipes into git hash-object (finish-branch embeds it inline).
+            # that pipes into git hash-object (land-branch embeds it inline).
             start = text.find("## `Content-digest:`")
             region = text[start:] if start != -1 else text
             for m in re.finditer(r"```(?:bash)?\n(.*?)```", region, re.S):
@@ -558,7 +558,7 @@ class PrepareChangeWritingSkillsForm(unittest.TestCase):
         self.assertEqual(
             extract_digest_code(self.pkg),
             extract_digest_code(finish),
-            "finish-branch digest block drifted from package-contract.md home",
+            "land-branch digest block drifted from package-contract.md home",
         )
 
 

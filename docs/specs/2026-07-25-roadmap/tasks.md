@@ -1,6 +1,6 @@
 # Tasks: Roadmap layer
 
-> **For agentic workers:** REQUIRED SUB-SKILL: use `execute-plan` to implement
+> **For agentic workers:** REQUIRED SUB-SKILL: use `build-continuous` to implement
 > this plan task-by-task. Steps use checkbox (`- [x]`) syntax for tracking.
 
 Feature code: RMAP
@@ -9,17 +9,17 @@ Date: 2026-07-25
 Requirements: ./requirements.md
 Design: ./design.md
 
-**Goal:** Add the program band — `write-roadmap` authors milestone intent in
-`docs/roadmap/INDEX.md`; `check-roadmap` derives roadmap health read-only and
+**Goal:** Add the program band — `plan-milestones` authors milestone intent in
+`docs/roadmap/INDEX.md`; `status-roadmap` derives roadmap health read-only and
 recommends one next action.
 
 **Architecture:** One new durable artifact (`docs/roadmap/INDEX.md`, from a new
 template whose comment block holds the authoritative structural rules S1–S7), one
 model-invocable authoring skill in `skills/project/`, one user-invoked derivation
-skill in `skills/track/` shaped as `trace` for the horizontal layer (fixed passes →
+skill in `skills/track/` shaped as `audit-trace` for the horizontal layer (fixed passes →
 finding codes R1–R11 → set-difference rules → a ten-row priority ladder). Three
-existing skills gain one edit each: `brainstorm` persists its decomposition,
-`write-requirements` writes the `ROAD-N` binding column, `establish-project` gives
+existing skills gain one edit each: `frame-change` persists its decomposition,
+`specify-behavior` writes the `ROAD-N` binding column, `anchor-project` gives
 vision goals `GOAL-N` IDs.
 
 **Tech Stack:** Markdown skills and templates. Python 3 `unittest` under `tests/`
@@ -30,7 +30,7 @@ behavior coverage. No runtime dependencies — the skills are markdown only.
 
 Every task's requirements implicitly include this section.
 
-**Verify commands — run in this order; all must pass before any completion claim**
+**verify commands — run in this order; all must pass before any completion claim**
 (from `docs/agents/project.md`):
 
 | Check | Command |
@@ -47,11 +47,11 @@ Single test file: `python3 -m unittest tests.<module>`
 | Unit (`unittest` under `tests/`) | Requirement ID in the test method name or first-line docstring as greppable `RMAP-N.M` |
 | Scenario / acceptance markdown | Greppable bare `RMAP-N.M` tokens in the scenario file |
 
-Use the **docstring** form for Python: `trace`'s coverage pass matches
+Use the **docstring** form for Python: `audit-trace`'s coverage pass matches
 `[A-Z][A-Z0-9]{1,11}-[0-9]+(\.[0-9]+)+`, which a method name like
 `test_RMAP_1_2` cannot satisfy.
 
-**Existing test-tree convention** (declared by `docs/agents/project.md`'s Trace-ignore
+**Existing test-tree convention** (declared by `docs/agents/project.md`'s Audit Trace-ignore
 list): per-area directory holding `scenarios.md` (coverage tokens),
 `red-baselines.md` (recorded RED failures — ignore-listed, its IDs are baseline
 records not coverage), and `fixtures/` (ignore-listed, its IDs are data). Follow it:
@@ -64,7 +64,7 @@ this feature's area is `tests/roadmap/`.
 - Python linters for this repo only: frontmatter parse safety, dead handoffs to user-invoked skills, Context7 references on library-reasoning skills.
 - No production app code in this repository — content is skills, templates, hooks, and docs.
 - Deterministic checks driven by an LLM (fixed `grep`/`git` under a precise skill) are a first-class form — do not replace them with freeform judgment when a set-difference will do.
-- Skills: verb-first kebab-case (`write-requirements`, `execute-plan`).
+- Skills: verb-first kebab-case (`specify-behavior`, `build-continuous`).
 - Cross-skill references use `REQUIRED SUB-SKILL:` prose, never `@`-links.
 - Skill `description` frontmatter states triggering conditions only — never summarize the workflow.
 - Additive edits to consumer-facing config: never clobber existing user content when writing templates.
@@ -73,7 +73,7 @@ this feature's area is `tests/roadmap/`.
 **Architecture invariants this feature inherits** (from `docs/architecture/INDEX.md`;
 every task is bound by them):
 
-- **ARCH-1** Trace and other vertical checks MUST be exact `grep`/`git`/file-read passes with fixed extraction rules and set differences — never an LLM judgment of whether a test "really" covers an ID.
+- **ARCH-1** Audit Trace and other vertical checks MUST be exact `grep`/`git`/file-read passes with fixed extraction rules and set differences — never an LLM judgment of whether a test "really" covers an ID.
 - **ARCH-2** Optional project layers and config sections MUST no-op when absent: skills CONTINUES TO run without inventing vision, architecture invariants, team roster, or other standing facts that were never written.
 - **ARCH-3** Consumer-repo adoption MUST require only the skills (plugin or npx) and markdown config — never mandate Python, vendored linters, CI jobs, or git-hook wiring for the full methodology; any hard headless gate is an optional documented add-on only.
 - **ARCH-4** Requirement IDs (`CODE-N.M`) and architecture IDs (`ARCH-N`) are immutable once defined: never renumber or reuse; retire only by strikethrough; every task, test, commit trailer, and `Respects:` line MUST use the same greppable string as the definition.
@@ -89,7 +89,7 @@ authoritative S1–S7 rule list, the R1–R11 finding table, the six pass recipe
 the ten-row priority ladder. Those tables are the single source of truth — transcribe
 them, do not re-derive them.
 
-**Skill TDD is mandatory and is the Iron Law of `writing-skills`:** no new skill and
+**Skill TDD is mandatory and is the Iron Law of `author-skills`:** no new skill and
 no edit to a skill ships without a failing test first. RED means running the scenario
 *without* the skill (for an edit, with the current version) and recording the failures
 and rationalizations **verbatim** into `tests/roadmap/red-baselines.md`. A baseline
@@ -108,31 +108,31 @@ peer-coordination language; do not invent reviewers or assignees. Gates unchange
 | Path | Responsibility |
 |---|---|
 | `templates/roadmap-INDEX.md` | Roadmap artifact template; its comment block is the authoritative S1–S7 structural rule list |
-| `skills/project/write-roadmap/SKILL.md` | Model-invocable authoring skill: create/update modes, decomposition discipline, structural gate |
-| `skills/track/check-roadmap/SKILL.md` | User-invoked derivation skill: six passes, R1–R11, priority ladder, standup mode |
-| `docs/guide/skills/write-roadmap.md` | Human documentation page |
-| `docs/guide/skills/check-roadmap.md` | Human documentation page |
-| `tests/roadmap/red-baselines.md` | Recorded RED failures per skill task (Trace-ignored) |
-| `tests/roadmap/scenarios-write-roadmap.md` | Behavior coverage tokens for the authoring skill |
-| `tests/roadmap/scenarios-brainstorm.md` | Behavior coverage tokens for the decomposition handoff |
+| `skills/project/plan-milestones/SKILL.md` | Model-invocable authoring skill: create/update modes, decomposition discipline, structural gate |
+| `skills/track/status-roadmap/SKILL.md` | User-invoked derivation skill: six passes, R1–R11, priority ladder, standup mode |
+| `docs/guide/skills/plan-milestones.md` | Human documentation page |
+| `docs/guide/skills/status-roadmap.md` | Human documentation page |
+| `tests/roadmap/red-baselines.md` | Recorded RED failures per skill task (Audit Trace-ignored) |
+| `tests/roadmap/scenarios-plan-milestones.md` | Behavior coverage tokens for the authoring skill |
+| `tests/roadmap/scenarios-frame-change.md` | Behavior coverage tokens for the decomposition write-handoff |
 | `tests/roadmap/scenarios-binding.md` | Behavior coverage tokens for the binding column |
 | `tests/roadmap/scenarios-vision.md` | Behavior coverage tokens for `GOAL-N` authoring and migration |
-| `tests/roadmap/scenarios-check-roadmap.md` | Behavior coverage tokens for derivation, safety, standup |
-| `tests/roadmap/fixtures/` | Fixture roadmaps: clean, one per S-defect, premature closure, status mismatch, duplicate goal (Trace-ignored) |
-| `tests/roadmap/fixtures/scale/` | 200-feature / 50-milestone scale fixture (Trace-ignored) |
+| `tests/roadmap/scenarios-status-roadmap.md` | Behavior coverage tokens for derivation, safety, standup |
+| `tests/roadmap/fixtures/` | Fixture roadmaps: clean, one per S-defect, premature closure, status mismatch, duplicate goal (Audit Trace-ignored) |
+| `tests/roadmap/fixtures/scale/` | 200-feature / 50-milestone scale fixture (Audit Trace-ignored) |
 | `tests/test_roadmap_template.py` | Template required-slot contract |
 | `tests/test_check_roadmap_rules.py` | R1–R11 rule application over fixtures |
 | `tests/test_priority_ladder.py` | State → recommendation table |
 | `tests/test_check_roadmap_scale.py` | Bounded-pass budget at scale |
-| `tests/test_trace_scope.py` | Guard: `trace` still covers `CODE-N.M` and `ARCH-N` only |
+| `tests/test_trace_scope.py` | Guard: `audit-trace` still covers `CODE-N.M` and `ARCH-N` only |
 
 **Modify**
 
 | Path | Change |
 |---|---|
-| `skills/discovery/brainstorm/SKILL.md` | Step 5/6: persist a multi-subsystem decomposition through `write-roadmap` before the first item continues |
-| `skills/spec/write-requirements/SKILL.md` | Step 1: record the item's `ROAD-N` in the new INDEX column |
-| `skills/project/establish-project/SKILL.md` | Step 3 + Update: `GOAL-N` IDs, and the un-IDed migration |
+| `skills/discovery/frame-change/SKILL.md` | Step 5/6: persist a multi-subsystem decomposition through `plan-milestones` before the first item continues |
+| `skills/spec/specify-behavior/SKILL.md` | Step 1: record the item's `ROAD-N` in the new INDEX column |
+| `skills/project/anchor-project/SKILL.md` | Step 3 + Update: `GOAL-N` IDs, and the un-IDed migration |
 | `templates/specs-INDEX.md` | Add the `Roadmap item` column |
 | `templates/product-vision.md` | `## Goals` becomes bold-IDed `**GOAL-N**` |
 | `docs/product/vision.md` | Migrate this repo's own goals to `GOAL-N` |
@@ -140,9 +140,9 @@ peer-coordination language; do not invent reviewers or assignees. Gates unchange
 | `docs/guide/concepts/artifacts.md` | Stale four-column INDEX table |
 | `docs/guide/concepts/feature-graph.md` | Stale four-column INDEX table (lines 42-46) |
 | `AGENTS.md` | §3 invocation lists, §8 file organization, §11 table and main flow; fix the 42/43 count drift to 45 |
-| `skills/meta/ask/SKILL.md` | Name `/check-roadmap` in the user-invoked list and add a roadmap on-ramp |
+| `skills/meta/route-work/SKILL.md` | Name `/status-roadmap` in the user-invoked list and add a roadmap on-ramp |
 | `docs/guide/skills/README.md` | Count and the two new entries |
-| `docs/agents/project.md` | Test globs: declare the scenario-markdown include; add this feature's fixtures and `red-baselines.md` to Trace ignore |
+| `docs/agents/project.md` | Test globs: declare the scenario-markdown include; add this feature's fixtures and `red-baselines.md` to Audit Trace ignore |
 
 A file not in this map should not be touched by any task.
 
@@ -221,7 +221,7 @@ a `ROAD-N` keeps its ID across a milestone move).
 
 Run: `python3 -m unittest tests.test_roadmap_template` — expect: pass.
 
-- [x] **Step 3: Full verify and commit**
+- [x] **Step 3: Full prove-claim and commit**
 
 Run: `python3 scripts/lint-skill-frontmatter.py && python3 scripts/lint-handoffs.py && python3 scripts/lint-context7.py && python3 -m unittest discover -s tests` — expect: pass, output pristine.
 
@@ -231,27 +231,27 @@ _Requirements: RMAP-1.1, RMAP-1.2, RMAP-1.3, RMAP-1.15, RMAP-1.16, RMAP-1.20_
 
 ---
 
-### Task 2: `write-roadmap` skill
+### Task 2: `plan-milestones` skill
 
 **Files:**
-- Create: `skills/project/write-roadmap/SKILL.md`
-- Create: `docs/guide/skills/write-roadmap.md`
-- Create: `tests/roadmap/scenarios-write-roadmap.md`
+- Create: `skills/project/plan-milestones/SKILL.md`
+- Create: `docs/guide/skills/plan-milestones.md`
+- Create: `tests/roadmap/scenarios-plan-milestones.md`
 - Create: `tests/roadmap/red-baselines.md`
 - Modify: `AGENTS.md` (§3 model-invoked list, §8 tree, §11 table and main flow, count → 45)
 - Modify: `docs/guide/skills/README.md` (count and entry)
 
-**Reuse:** existing — `skills/project/establish-project/SKILL.md`'s create/update mode split and `skills/spec/write-requirements/SKILL.md`'s present-the-file-and-STOP gate (rung 2).
+**Reuse:** existing — `skills/project/anchor-project/SKILL.md`'s create/update mode split and `skills/spec/specify-behavior/SKILL.md`'s present-the-file-and-STOP gate (rung 2).
 
 **Interfaces:**
 - Consumes: Task 1's slot names and `S1`–`S7` tokens.
-- Produces: the skill name `write-roadmap` (model-invocable, no `disable-model-invocation`), reached by Task 3's handoff; and `docs/roadmap/INDEX.md` as a written artifact for Task 6 to read.
+- Produces: the skill name `plan-milestones` (model-invocable, no `disable-model-invocation`), reached by Task 3's handoff; and `docs/roadmap/INDEX.md` as a written artifact for Task 6 to read.
 
 **Depends-on:** Task 1
 
 - [x] **Step 1: Write the failing test — RED baseline**
 
-Author `tests/roadmap/scenarios-write-roadmap.md` with one scenario per behavior,
+Author `tests/roadmap/scenarios-plan-milestones.md` with one scenario per behavior,
 each carrying its bare ID token: deferral records date and reason
 (`RMAP-1.7`), goal citation present / `None` without a vision (`RMAP-1.8`,
 `RMAP-1.9`), `Closed:` records the tag (`RMAP-1.10`), retirement by strikethrough
@@ -261,7 +261,7 @@ gate (`RMAP-1.17`), each S-defect withholds the gate (`RMAP-1.18`), material cha
 demotes to `Draft` and re-enters the gate (`RMAP-1.19`), items identified by `ROAD-N`
 and slug only (`RMAP-1.4`).
 
-Run each scenario against a fresh agent with **no** `write-roadmap` skill present.
+Run each scenario against a fresh agent with **no** `plan-milestones` skill present.
 Record every failure and rationalization verbatim in `tests/roadmap/red-baselines.md`.
 
 Expect: the baseline agent invents its own roadmap shape, skips the approval gate, and
@@ -270,12 +270,12 @@ nothing to fix there.
 
 - [x] **Step 2: Implement**
 
-Write `skills/project/write-roadmap/SKILL.md`: frontmatter with a trigger-and-outcome
+Write `skills/project/plan-milestones/SKILL.md`: frontmatter with a trigger-and-outcome
 `description` naming the `docs/roadmap/INDEX.md` deliverable and **no**
 `disable-model-invocation`; Create and Update modes; the decomposition discipline as
 positive rules (user-value grouping, standalone-and-enabling, `Surfaces:` overlap
 consolidation, fewer-and-larger when settled); the structural gate over `S1`–`S7`; and
-an exit that **names** `/check-roadmap` for the user rather than invoking it. Body under
+an exit that **names** `/status-roadmap` for the user rather than invoking it. Body under
 300 lines; move the decomposition discipline to a sibling reference file if it pushes past
 that.
 
@@ -288,53 +288,53 @@ Run: `python3 scripts/lint-skill-frontmatter.py && python3 scripts/lint-handoffs
 
 - [x] **Step 3: Commit**
 
-`git commit -m "feat(roadmap): add write-roadmap authoring skill with approval gate" # trailer: Implements: RMAP-1.4`
+`git commit -m "feat(roadmap): add plan-milestones authoring skill with approval gate" # trailer: Implements: RMAP-1.4`
 
 _Requirements: RMAP-1.4, RMAP-1.7, RMAP-1.8, RMAP-1.9, RMAP-1.10, RMAP-1.11, RMAP-1.12, RMAP-1.13, RMAP-1.14, RMAP-1.17, RMAP-1.18, RMAP-1.19_
 
 ---
 
-### Task 3: `brainstorm` persists the decomposition
+### Task 3: `frame-change` persists the decomposition
 
 **Files:**
-- Modify: `skills/discovery/brainstorm/SKILL.md` (step 5 at line 115, step 6 at lines 119-124)
-- Create: `tests/roadmap/scenarios-brainstorm.md`
+- Modify: `skills/discovery/frame-change/SKILL.md` (step 5 at line 115, step 6 at lines 119-124)
+- Create: `tests/roadmap/scenarios-frame-change.md`
 
-**Reuse:** existing — the `REQUIRED SUB-SKILL:` prose mechanism already used at `brainstorm/SKILL.md:74,78,90,91,121,122` (rung 2).
+**Reuse:** existing — the `REQUIRED SUB-SKILL:` prose mechanism already used at `frame-change/SKILL.md:74,78,90,91,121,122` (rung 2).
 
 **Interfaces:**
-- Consumes: the model-invocable skill name `write-roadmap` from Task 2.
+- Consumes: the model-invocable skill name `plan-milestones` from Task 2.
 - Produces: nothing downstream tasks consume.
 
 **Depends-on:** Task 2
 
 - [x] **Step 1: Write the failing test — RED baseline**
 
-Author `tests/roadmap/scenarios-brainstorm.md`: a multi-subsystem request that must
+Author `tests/roadmap/scenarios-frame-change.md`: a multi-subsystem request that must
 persist its decomposition (`RMAP-2.1`), a second one against an existing roadmap that
 must append `ROAD-N` items rather than start fresh (`RMAP-2.2`), and a
-single-subsystem request that must reach `write-requirements` or `tdd` with no roadmap
+single-subsystem request that must reach `specify-behavior` or `test-first` with no roadmap
 authored (`RMAP-2.3`).
 
-Run against the **current** `brainstorm`. Append failures verbatim to
+Run against the **current** `frame-change`. Append failures verbatim to
 `tests/roadmap/red-baselines.md`. Expect: the decomposition is named in conversation and
 never written down.
 
 - [x] **Step 2: Implement**
 
 Add one conditional to step 5: when the decomposition names two or more independent
-sub-features, `REQUIRED SUB-SKILL: use \`write-roadmap\`` to persist them as `ROAD-N`
+sub-features, `REQUIRED SUB-SKILL: use \`plan-milestones\`` to persist them as `ROAD-N`
 items — appending to an existing roadmap when one exists — before step 6 continues the
 first item. Leave step 6's existing exits unchanged.
 
 Run the scenarios — expect compliance, including the single-subsystem case taking the
 unchanged path. REFACTOR against new rationalizations.
 
-Run: full verify — expect pass.
+Run: full prove-claim — expect pass.
 
 - [x] **Step 3: Commit**
 
-`git commit -m "feat(roadmap): persist brainstorm decomposition through write-roadmap" # trailer: Implements: RMAP-2.1`
+`git commit -m "feat(roadmap): persist frame-change decomposition through plan-milestones" # trailer: Implements: RMAP-2.1`
 
 _Requirements: RMAP-2.1, RMAP-2.2, RMAP-2.3_
 
@@ -344,13 +344,13 @@ _Requirements: RMAP-2.1, RMAP-2.2, RMAP-2.3_
 
 **Files:**
 - Modify: `templates/specs-INDEX.md`
-- Modify: `skills/spec/write-requirements/SKILL.md` (Step 1, lines 39-44)
+- Modify: `skills/spec/specify-behavior/SKILL.md` (Step 1, lines 39-44)
 - Modify: `docs/specs/INDEX.md`
 - Modify: `docs/guide/concepts/artifacts.md`
 - Modify: `docs/guide/concepts/feature-graph.md` (lines 42-46)
 - Create: `tests/roadmap/scenarios-binding.md`
 
-**Reuse:** existing — extends `write-requirements` Step 1's INDEX row write, already the sole registration point (rung 2).
+**Reuse:** existing — extends `specify-behavior` Step 1's INDEX row write, already the sole registration point (rung 2).
 
 **Interfaces:**
 - Consumes: nothing.
@@ -365,21 +365,21 @@ roadmap item records its `ROAD-N` (`RMAP-2.4`); registering with no roadmap pres
 leaves the column empty and changes nothing else (`RMAP-2.5`); registration ownership,
 code uniqueness, and the `Draft` initial status are unchanged (`RMAP-2.6`).
 
-Run against the **current** `write-requirements`. Append failures verbatim to
+Run against the **current** `specify-behavior`. Append failures verbatim to
 `red-baselines.md`. Expect: no column exists, so no binding is recorded.
 
 - [x] **Step 2: Implement**
 
 Add the fifth column to `templates/specs-INDEX.md` and to `docs/specs/INDEX.md`. Add one
-sentence to `write-requirements` Step 1: record the implemented item's `ROAD-N` in that
+sentence to `specify-behavior` Step 1: record the implemented item's `ROAD-N` in that
 column; with no roadmap, leave it empty and register unchanged (ARCH-2). Update the two
 guide docs that copy the four-column table.
 
-Verify the negative: no skill parses the table by column position — `brainstorm` step 1,
-`sync-spec`, `write-plan`'s status confirmation, and the feature-overlap search all read
+Verify the negative: no skill parses the table by column position — `frame-change` step 1,
+`realign-spec`, `plan-tasks`'s status confirmation, and the feature-overlap search all read
 the `Status` cell semantically.
 
-Run: full verify — expect pass.
+Run: full prove-claim — expect pass.
 
 - [x] **Step 3: Commit**
 
@@ -393,7 +393,7 @@ _Requirements: RMAP-2.4, RMAP-2.5, RMAP-2.6_
 
 **Files:**
 - Modify: `templates/product-vision.md` (`## Goals`)
-- Modify: `skills/project/establish-project/SKILL.md` (Create step 3 at lines 67-70; Update at lines 88-103)
+- Modify: `skills/project/anchor-project/SKILL.md` (Create step 3 at lines 67-70; Update at lines 88-103)
 - Modify: `docs/product/vision.md`
 - Create: `tests/roadmap/scenarios-vision.md`
 
@@ -412,18 +412,18 @@ Author `tests/roadmap/scenarios-vision.md`: create mode assigns `GOAL-N` as it w
 migration (`RMAP-2.8`); a goal already recorded in an approved vision is retired by
 strikethrough rather than renumbered (`RMAP-2.9`).
 
-Run against the **current** `establish-project`. Append failures verbatim to
+Run against the **current** `anchor-project`. Append failures verbatim to
 `red-baselines.md`. Expect: goals are written as bare bullets with no IDs.
 
 - [x] **Step 2: Implement**
 
 Make `## Goals` bold-IDed in `templates/product-vision.md`. Add ID assignment to
-`establish-project`'s create step, the un-IDed migration to update mode, and the
+`anchor-project`'s create step, the un-IDed migration to update mode, and the
 immutability rule. Migrate this repo's own `docs/product/vision.md` — it is
 `Status: Approved`, so it is the first migration subject and its assigned IDs become
 immutable on landing.
 
-Run: full verify — expect pass.
+Run: full prove-claim — expect pass.
 
 - [x] **Step 3: Commit**
 
@@ -433,20 +433,20 @@ _Requirements: RMAP-2.7, RMAP-2.8, RMAP-2.9_
 
 ---
 
-### Task 6: `check-roadmap` passes and findings R1–R11
+### Task 6: `status-roadmap` passes and findings R1–R11
 
 **Files:**
-- Create: `skills/track/check-roadmap/SKILL.md`
-- Create: `docs/guide/skills/check-roadmap.md`
+- Create: `skills/track/status-roadmap/SKILL.md`
+- Create: `docs/guide/skills/status-roadmap.md`
 - Create: `tests/roadmap/fixtures/` (clean, one per S-defect, premature closure, status mismatch, duplicate goal)
 - Create: `tests/test_check_roadmap_rules.py`
-- Create: `tests/roadmap/scenarios-check-roadmap.md`
+- Create: `tests/roadmap/scenarios-status-roadmap.md`
 - Modify: `AGENTS.md` (§3 user-invoked list, §8 tree, §11 table, count → 45)
-- Modify: `skills/meta/ask/SKILL.md` (user-invoked list at lines 13-16; on-ramps)
+- Modify: `skills/meta/route-work/SKILL.md` (user-invoked list at lines 13-16; on-ramps)
 - Modify: `docs/guide/skills/README.md`
-- Modify: `docs/agents/project.md` (Test globs: scenario-markdown include; Trace ignore: this feature's `fixtures/` and `red-baselines.md`)
+- Modify: `docs/agents/project.md` (Test globs: scenario-markdown include; Audit Trace ignore: this feature's `fixtures/` and `red-baselines.md`)
 
-**Reuse:** existing — `skills/execution/trace/SKILL.md:57-198` wholesale (rung 2): finding-code table → Inputs → numbered fixed passes → set-difference rules → a non-negotiable no-judgment clause → counts-then-findings output.
+**Reuse:** existing — `skills/execution/audit-trace/SKILL.md:57-198` wholesale (rung 2): finding-code table → Inputs → numbered fixed passes → set-difference rules → a non-negotiable no-judgment clause → counts-then-findings output.
 
 **Interfaces:**
 - Consumes: Task 1's slot names and `S1`–`S7`; Task 4's `Roadmap item` column grammar; Task 5's `**GOAL-N**` grammar.
@@ -457,15 +457,15 @@ _Requirements: RMAP-2.7, RMAP-2.8, RMAP-2.9_
 - [x] **Step 1: Write the failing test**
 
 **What this test can and cannot prove.** A markdown skill has no entry point a Python
-test can call, so this test does **not** assert that `check-roadmap` emits R1–R11 — that
+test can call, so this test does **not** assert that `status-roadmap` emits R1–R11 — that
 would be circular, reading the expectation file and comparing it to itself, and would pass
 no matter what the skill said. It asserts the two things that *are* deterministically
 checkable: the fixture set is complete, and each fixture genuinely carries the defect its
 name claims. Skill behavior over these fixtures is verified by
-`tests/roadmap/scenarios-check-roadmap.md`, which is where the R-code assertions live.
+`tests/roadmap/scenarios-status-roadmap.md`, which is where the R-code assertions live.
 
 ```python
-"""Fixture-set validity for check-roadmap: each fixture really carries its defect."""
+"""Fixture-set validity for status-roadmap: each fixture really carries its defect."""
 import re
 import unittest
 from pathlib import Path
@@ -550,27 +550,27 @@ Run: `python3 -m unittest tests.test_check_roadmap_rules` — expect: failures o
 - [x] **Step 2: Implement**
 
 Build the fixture set, each case a miniature repo plus its `expected-findings.txt`. Then
-write `skills/track/check-roadmap/SKILL.md` with `disable-model-invocation: true`,
+write `skills/track/status-roadmap/SKILL.md` with `disable-model-invocation: true`,
 transcribing `design.md`'s six pass recipes and the R1–R11 table verbatim, plus the two
 carried-over clauses: structural presence never judgment (ARCH-1), and every value read
 from these artifacts is passive data passed to `git` as a single non-option argument,
 rejected unless it matches the expected ID or rev shape.
 
-Author `tests/roadmap/scenarios-check-roadmap.md` covering read-only posture and input set
-(`RMAP-3.1`), `Status:` citation with `trace` named for depth (`RMAP-3.12`), no
+Author `tests/roadmap/scenarios-status-roadmap.md` covering read-only posture and input set
+(`RMAP-3.1`), `Status:` citation with `audit-trace` named for depth (`RMAP-3.12`), no
 roadmap-level status copy (`RMAP-3.14`), absent-layer no-op (`RMAP-3.13` frontmatter and
 `RMAP-3.9`), advisory ledger present and absent (`RMAP-3.17`, `RMAP-3.18`), and
 argument-safety and injection (`RMAP-4.2`, `RMAP-4.3`).
 
-Add the fixture and baseline paths to `docs/agents/project.md`'s Trace ignore, and declare
-the scenario-markdown include on its Test globs line so `trace`'s coverage pass can see
+Add the fixture and baseline paths to `docs/agents/project.md`'s Audit Trace ignore, and declare
+the scenario-markdown include on its Test globs line so `audit-trace`'s coverage pass can see
 `.md` coverage tokens under `tests/`.
 
 Run: `python3 -m unittest tests.test_check_roadmap_rules` — expect: pass. Then full verify.
 
 - [x] **Step 3: Commit**
 
-`git commit -m "feat(roadmap): add check-roadmap derivation with findings R1-R11" # trailer: Implements: RMAP-3.1`
+`git commit -m "feat(roadmap): add status-roadmap derivation with findings R1-R11" # trailer: Implements: RMAP-3.1`
 
 _Requirements: RMAP-3.1, RMAP-3.2, RMAP-3.3, RMAP-3.4, RMAP-3.5, RMAP-3.6, RMAP-3.7, RMAP-3.8, RMAP-3.9, RMAP-3.12, RMAP-3.13, RMAP-3.14, RMAP-3.15, RMAP-3.17, RMAP-3.18, RMAP-3.19, RMAP-3.20, RMAP-4.2, RMAP-4.3, RMAP-4.4_
 
@@ -579,10 +579,10 @@ _Requirements: RMAP-3.1, RMAP-3.2, RMAP-3.3, RMAP-3.4, RMAP-3.5, RMAP-3.6, RMAP-
 ### Task 7: Priority ladder and standup mode
 
 **Files:**
-- Modify: `skills/track/check-roadmap/SKILL.md`
+- Modify: `skills/track/status-roadmap/SKILL.md`
 - Create: `tests/test_priority_ladder.py`
 
-**Reuse:** none — new rule table (rung 7). Nothing in the set computes a next action from artifact state: `ask` routes from the conversation, and the researched `sprint-status` prior art is not installed here.
+**Reuse:** none — new rule table (rung 7). Nothing in the set computes a next action from artifact state: `route-work` routes from the conversation, and the researched `sprint-status` prior art is not installed here.
 
 **Interfaces:**
 - Consumes: Task 6's `R1`–`R11` codes and the withholding set `{R2, R4, R9, R10, R11}`.
@@ -597,21 +597,21 @@ _Requirements: RMAP-3.1, RMAP-3.2, RMAP-3.3, RMAP-3.4, RMAP-3.5, RMAP-3.6, RMAP-
 import unittest
 from pathlib import Path
 
-LADDER = Path(__file__).resolve().parent.parent / "skills" / "track" / "check-roadmap" / "SKILL.md"
+LADDER = Path(__file__).resolve().parent.parent / "skills" / "track" / "status-roadmap" / "SKILL.md"
 
 # (state substring, expected recommendation substring) — one row per ladder rung, in
 # order. Every left-hand string is a verbatim substring of the ladder table in
 # design.md §"The priority ladder"; transcribe that table and these all match.
 ROWS = [
     ("withholding finding", "none"),
-    ("is `Draft`", "write-roadmap"),
-    ("member with no binding", "brainstorm"),
-    ("feature `Status:` is `Draft`", "write-requirements"),
-    ("no `design.md`", "write-design"),
-    ("`design.md` exists, no `tasks.md`", "write-plan"),
-    ("`tasks.md` exists", "execute-plan"),
-    ("`Implemented`", "/release"),
-    ("a `Planned` one exists", "write-roadmap"),
+    ("is `Draft`", "plan-milestones"),
+    ("member with no binding", "frame-change"),
+    ("feature `Status:` is `Draft`", "specify-behavior"),
+    ("no `design.md`", "design-solution"),
+    ("`design.md` exists, no `tasks.md`", "plan-tasks"),
+    ("`tasks.md` exists", "build-continuous"),
+    ("`Implemented`", "/cut-release"),
+    ("a `Planned` one exists", "plan-milestones"),
     ("every milestone `Closed`", "complete"),
 ]
 
@@ -655,9 +655,9 @@ Run: `python3 -m unittest tests.test_priority_ladder` — expect: failures on th
 
 - [x] **Step 2: Implement**
 
-Add the ten-row ladder to `check-roadmap` exactly as tabled in `design.md` §"The priority
+Add the ten-row ladder to `status-roadmap` exactly as tabled in `design.md` §"The priority
 ladder", with the stated tie-breaks (milestone table order, then lowest `ROAD-N`), row 0's
-withholding behavior, row 7 **naming** `/release` rather than invoking it (ARCH-5), and
+withholding behavior, row 7 **naming** `/cut-release` rather than invoking it (ARCH-5), and
 standup mode as a rendering of the same derivation.
 
 Run: `python3 -m unittest tests.test_priority_ladder` — expect: pass. Then full verify.
@@ -687,7 +687,7 @@ _Requirements: RMAP-3.10, RMAP-3.11, RMAP-3.16_
 - [x] **Step 1: Write the failing test**
 
 Assert that the documented pass set is a fixed count independent of scale: parse
-`check-roadmap`'s SKILL.md for its numbered passes, confirm there are exactly six plus at
+`status-roadmap`'s SKILL.md for its numbered passes, confirm there are exactly six plus at
 most one `git` invocation, and confirm no pass is described as per-feature or per-milestone.
 Then generate the scale fixture (200 feature rows, 50 milestones, 200 `ROAD-N` items) and
 confirm the same six passes cover it. Docstring: `RMAP-4.1`.
@@ -703,18 +703,18 @@ Run: `python3 -m unittest tests.test_check_roadmap_scale` — expect: pass. Then
 
 - [x] **Step 3: Commit**
 
-`git commit -m "test(roadmap): prove check-roadmap passes are bounded at scale" # trailer: Implements: RMAP-4.1`
+`git commit -m "test(roadmap): prove status-roadmap passes are bounded at scale" # trailer: Implements: RMAP-4.1`
 
 _Requirements: RMAP-4.1_
 
 ---
 
-### Task 9: `trace` scope guard
+### Task 9: `audit-trace` scope guard
 
 **Files:**
 - Create: `tests/test_trace_scope.py`
 
-**Reuse:** existing — asserts against `skills/execution/trace/SKILL.md` as it stands; rung 1, no requirement forces a change to it.
+**Reuse:** existing — asserts against `skills/execution/audit-trace/SKILL.md` as it stands; rung 1, no requirement forces a change to it.
 
 **Interfaces:**
 - Consumes: nothing.
@@ -725,24 +725,24 @@ _Requirements: RMAP-4.1_
 - [x] **Step 1: Write the failing test**
 
 ```python
-"""Guard: trace's ID scope stays CODE-N.M and ARCH-N only."""
+"""Guard: audit-trace's ID scope stays CODE-N.M and ARCH-N only."""
 import unittest
 from pathlib import Path
 
-TRACE = Path(__file__).resolve().parent.parent / "skills" / "execution" / "trace" / "SKILL.md"
+AUDIT TRACE = Path(__file__).resolve().parent.parent / "skills" / "execution" / "audit-trace" / "SKILL.md"
 PLANNING_NAMESPACES = ("GOAL-", "MILE-", "ROAD-")
 
 
-class TraceScope(unittest.TestCase):
+class Audit TraceScope(unittest.TestCase):
     def test_trace_never_reads_planning_namespaces(self):
-        """RMAP-2.10 — planning-ID integrity belongs to check-roadmap, not trace."""
-        text = TRACE.read_text()
+        """RMAP-2.10 — planning-ID integrity belongs to status-roadmap, not trace."""
+        text = AUDIT TRACE.read_text()
         leaked = [ns for ns in PLANNING_NAMESPACES if ns in text]
-        self.assertEqual([], leaked, f"trace has grown planning-ID scope: {leaked}")
+        self.assertEqual([], leaked, f"audit-trace has grown planning-ID scope: {leaked}")
 
     def test_trace_finding_set_is_unchanged(self):
         """RMAP-2.10 — the E1-E5 / W1-W3 finding set is intact."""
-        text = TRACE.read_text()
+        text = AUDIT TRACE.read_text()
         for code in ("E1", "E2", "E3", "E4", "E5", "W1", "W2", "W3"):
             with self.subTest(code=code):
                 self.assertIn(f"**{code}**", text)
@@ -758,10 +758,10 @@ Run: `python3 -m unittest tests.test_trace_scope` — expect: `ModuleNotFoundErr
 
 No production change. The test *is* the deliverable.
 
-Run: full verify — expect pass.
+Run: full prove-claim — expect pass.
 
 - [x] **Step 3: Commit**
 
-`git commit -m "test(roadmap): guard trace's ID scope against planning namespaces" # trailer: Guards: RMAP-2.10`
+`git commit -m "test(roadmap): guard audit-trace's ID scope against planning namespaces" # trailer: Guards: RMAP-2.10`
 
 _Requirements: RMAP-2.10_

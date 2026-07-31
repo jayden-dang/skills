@@ -22,7 +22,7 @@ comparing against that case's `expected.txt`.
 - The run reports that the project has no milestone scope and stops.
 - No file is written — in particular no `docs/roadmap/assessments/` directory appears.
 - No outcome verdict is produced, and no complaint is raised. A project running short
-  features through `verify`, `code-review`, `acceptance-check`, and `sync-spec` is never
+  features through `prove-claim`, `inspect-change`, `validate-feature`, and `realign-spec` is never
   obliged to create a `MILE-N`. Covers ASSESS-1.1.
 
 ## S-AM-2 — Milestone identity resolves to exactly one live block
@@ -110,7 +110,7 @@ verdict rather than falling back to a date or to `HEAD`. Covers ASSESS-1.10.
   and evaluated **before** any outcome judgment. Covers ASSESS-1.11.
 - `R10` fires, is relevant to `MILE-1` (it names a member's feature), and the outcome verdict
   is withheld with that finding reported in its place. Covers ASSESS-1.12.
-- The run names `/check-roadmap` for the user if they want the repo-wide picture, and does
+- The run names `/status-roadmap` for the user if they want the repo-wide picture, and does
   not run it — `scripts/lint-handoffs.py` enforces this. Covers ASSESS-1.11.
 
 **Setup.** Fixture `clean-close` with a live `GOAL-2` that no milestone cites and no
@@ -148,6 +148,6 @@ to `git` as a single non-option argument after `--`. Covers ASSESS-6.2.
 - `skills/track/assess-milestone/SKILL.md` frontmatter carries
   `disable-model-invocation: true`, so no agent can fire the gate on its own. Covers
   ASSESS-5.1.
-- `/check-roadmap` names this skill in ladder row 8 rather than running it, and this skill
-  names `/check-roadmap` back rather than running it. Neither direction is an invocation.
+- `/status-roadmap` names this skill in ladder row 8 rather than running it, and this skill
+  names `/status-roadmap` back rather than running it. Neither direction is an invocation.
   Covers ASSESS-5.1.

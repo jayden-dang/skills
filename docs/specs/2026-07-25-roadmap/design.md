@@ -8,16 +8,16 @@ Requirements: ./requirements.md
 ## Context
 
 The skill set today is a vertical feature pipeline with an optional layer above it.
-`establish-project` writes the north star (`docs/product/vision.md`), an `ARCH-N`
-invariant spine, and engineering guidelines. `write-requirements` opens a feature,
+`anchor-project` writes the north star (`docs/product/vision.md`), an `ARCH-N`
+invariant spine, and engineering guidelines. `specify-behavior` opens a feature,
 registers its code in `docs/specs/INDEX.md`, and starts the `CODE-N.M` traceability
-spine that `trace` verifies. Between those two there is nothing: no artifact decides
+spine that `audit-trace` verifies. Between those two there is nothing: no artifact decides
 which features exist, in what order, grouped into what shippable milestone.
 
 That gap is not hypothetical — it is a step the set already performs and immediately
-discards. `brainstorm` step 5 (`skills/discovery/brainstorm/SKILL.md:115`) decomposes
+discards. `frame-change` step 5 (`skills/discovery/frame-change/SKILL.md:115`) decomposes
 multi-subsystem work into named sub-features with relationships and build order, then
-says "brainstorm continues with the first one only". The other sub-features exist in
+says "frame-change continues with the first one only". The other sub-features exist in
 the conversation and nowhere else. This feature gives that decomposition a durable
 home and a way to check it against reality later.
 
@@ -31,31 +31,31 @@ splits the two things BMAD conflates: **intent** (a human decided to commit to a
 milestone — underivable, therefore written down) and **progress** (derivable from
 `Status:` plus git — therefore never written down).
 
-`check-roadmap` is consequently shaped as *`trace` for the horizontal layer*: the same
+`status-roadmap` is consequently shaped as *`audit-trace` for the horizontal layer*: the same
 structure of finding codes, fixed passes, and set-difference rules that makes two agents
-running `trace` on one repo reach the same finding set. It is read-only by contract, and
-it reports rather than repairs — repair belongs to `sync-spec`, which already owns
-`Status:` realignment and the INDEX update (`skills/track/sync-spec/SKILL.md:43,45`).
+running `audit-trace` on one repo reach the same finding set. It is read-only by contract, and
+it reports rather than repairs — repair belongs to `realign-spec`, which already owns
+`Status:` realignment and the INDEX update (`skills/track/realign-spec/SKILL.md:43,45`).
 
 ## Decisions
 
 1. **Progress is derived, never stored.** No file of the `sprint-status.yaml` shape.
-   `check-roadmap` recomputes from `docs/roadmap/INDEX.md`, `docs/specs/INDEX.md`, each
+   `status-roadmap` recomputes from `docs/roadmap/INDEX.md`, `docs/specs/INDEX.md`, each
    feature's `requirements.md` `Status:`, `git`, and optionally `.skills/progress.md`.
    This is hard to reverse, surprising against the prior art, and a real trade-off —
    **it needs an ADR** (see *Open action* below).
-2. **Three namespaces, three owners.** `GOAL-N` in `vision.md` (`establish-project`),
-   `MILE-N` and `ROAD-N` in `docs/roadmap/INDEX.md` (`write-roadmap`), feature codes and
-   `CODE-N.M` in `docs/specs/` (`write-requirements`). No skill writes another's
+2. **Three namespaces, three owners.** `GOAL-N` in `vision.md` (`anchor-project`),
+   `MILE-N` and `ROAD-N` in `docs/roadmap/INDEX.md` (`plan-milestones`), feature codes and
+   `CODE-N.M` in `docs/specs/` (`specify-behavior`). No skill writes another's
    namespace.
 3. **The binding is a column in `docs/specs/INDEX.md`, written by the registrar.**
-   `write-requirements` already writes that row; adding `Roadmap item` there means
-   `check-roadmap` joins plan to spec with one `grep` and no name-matching heuristic.
-   `write-roadmap` never touches the file.
-4. **`write-roadmap` is model-invocable; `check-roadmap` is user-invoked.** `brainstorm`
+   `specify-behavior` already writes that row; adding `Roadmap item` there means
+   `status-roadmap` joins plan to spec with one `grep` and no name-matching heuristic.
+   `plan-milestones` never touches the file.
+4. **`plan-milestones` is model-invocable; `status-roadmap` is user-invoked.** `frame-change`
    must be able to reach the first (RMAP-1.13); nothing needs to reach the second, so it
-   pays no context load (RMAP-3.13). Consequence, from **ARCH-5**: `write-roadmap` may
-   not invoke `check-roadmap` — it may only name it.
+   pays no context load (RMAP-3.13). Consequence, from **ARCH-5**: `plan-milestones` may
+   not invoke `status-roadmap` — it may only name it.
 5. **The artifact's structural rule list lives in the template comment.** Because of
    decision 4 the two skills cannot share validation by invocation, and cross-folder file
    links are forbidden. `templates/roadmap-INDEX.md` carries the authoritative rule block
@@ -66,8 +66,8 @@ it reports rather than repairs — repair belongs to `sync-spec`, which already 
    this design does not extend it. `MILE-N`/`ROAD-N`/`GOAL-N` stability is a skill-local
    rule (RMAP-1.11, RMAP-2.9). Nothing here contradicts a live invariant, so no
    supersede event.
-7. **`trace` is untouched.** Planning-ID referential integrity lives in `check-roadmap`
-   (RMAP-2.10). `trace` keeps exactly its E1–E5 / W1–W3 finding set.
+7. **`audit-trace` is untouched.** Planning-ID referential integrity lives in `status-roadmap`
+   (RMAP-2.10). `audit-trace` keeps exactly its E1–E5 / W1–W3 finding set.
 8. **The priority ladder is a pure function of artifact state**, evaluated top-down with
    first-match-wins and fixed tie-breaks, so identical state yields an identical
    recommendation (RMAP-3.10).
@@ -89,7 +89,7 @@ is a REQUIRED slot; unfilled slots read `None`.
 Status: Draft
 Date: <YYYY-MM-DD>
 
-<!-- Structural rules — authoritative. Both write-roadmap and check-roadmap read this
+<!-- Structural rules — authoritative. Both plan-milestones and status-roadmap read this
      block. A roadmap is structurally defective when any of these does not hold:
      S1 every MILE-N and ROAD-N is defined exactly once
      S2 every ROAD-N sits under exactly one milestone
@@ -130,14 +130,14 @@ Milestone **order is table row order**; identity is the `MILE-N` ID. The two are
 independent, so reordering never renumbers (RMAP-1.11, RMAP-1.12). Absent the file, the
 whole layer no-ops (ARCH-2).
 
-### `write-roadmap` — authoring and the approval gate
+### `plan-milestones` — authoring and the approval gate
 
 Satisfies: RMAP-1.4, RMAP-1.7, RMAP-1.8, RMAP-1.9, RMAP-1.10, RMAP-1.11, RMAP-1.12, RMAP-1.13, RMAP-1.14, RMAP-1.17, RMAP-1.18, RMAP-1.19
 Respects: ARCH-2, ARCH-5
-Reuse: existing — `establish-project`'s create/update mode split plus `write-requirements`' present-the-file-and-STOP gate (rung 2)
+Reuse: existing — `anchor-project`'s create/update mode split plus `specify-behavior`' present-the-file-and-STOP gate (rung 2)
 
-`skills/project/write-roadmap/SKILL.md`, model-invocable, in `project/` beside
-`establish-project` because it belongs to the repo-level layer rather than a single
+`skills/project/plan-milestones/SKILL.md`, model-invocable, in `project/` beside
+`anchor-project` because it belongs to the repo-level layer rather than a single
 feature's spec triad.
 
 **Create** — fill the template, then run the decomposition discipline, ported from the
@@ -150,7 +150,7 @@ milestone when a vision exists, else record `Goals: None`.
 surface-overlap consolidation (struck RMAP-1.6) are **not** written into this skill: fresh
 agents performed both unprompted, so the text would be a no-op. Forward dependencies are
 still caught structurally — S4 in the template rule block, enforced by this skill's gate
-(RMAP-1.18) and by `check-roadmap`'s R11. The `Surfaces:` slot stays (RMAP-1.20) because it
+(RMAP-1.18) and by `status-roadmap`'s R11. The `Surfaces:` slot stays (RMAP-1.20) because it
 is the input that makes overlap visible in the first place; what is retired is the
 instruction to reason about it, not the data.
 
@@ -165,24 +165,24 @@ present the whole file and STOP; only explicit user approval writes `Status: App
 (RMAP-1.17).
 
 `docs/specs/INDEX.md` is outside this skill's write set (RMAP-1.14). Its exit **names**
-`/check-roadmap` for the user rather than invoking it, per ARCH-5 and enforced by the
+`/status-roadmap` for the user rather than invoking it, per ARCH-5 and enforced by the
 existing `scripts/lint-handoffs.py`.
 
-### `check-roadmap` — the passes
+### `status-roadmap` — the passes
 
 Satisfies: RMAP-3.1, RMAP-3.2, RMAP-3.3, RMAP-3.4, RMAP-3.5, RMAP-3.6, RMAP-3.7, RMAP-3.8, RMAP-3.9, RMAP-3.12, RMAP-3.13, RMAP-3.14, RMAP-3.15, RMAP-3.17, RMAP-3.18, RMAP-3.19, RMAP-3.20, RMAP-4.1, RMAP-4.2, RMAP-4.3, RMAP-4.4
 Respects: ARCH-1, ARCH-2, ARCH-3, ARCH-5
-Reuse: existing — `trace`'s structure wholesale: finding-code table → Inputs → numbered fixed passes → set-difference rules → a non-negotiable no-judgment clause → counts-then-findings output (rung 2)
+Reuse: existing — `audit-trace`'s structure wholesale: finding-code table → Inputs → numbered fixed passes → set-difference rules → a non-negotiable no-judgment clause → counts-then-findings output (rung 2)
 
-`skills/track/check-roadmap/SKILL.md`, user-invoked (`disable-model-invocation: true`),
-in `track/` beside `sync-spec` and `correct-course`.
+`skills/track/status-roadmap/SKILL.md`, user-invoked (`disable-model-invocation: true`),
+in `track/` beside `realign-spec` and `reroute-plan`.
 
-Six passes, each one full read of a source, mirroring `trace`'s grammar. `git` is called
+Six passes, each one full read of a source, mirroring `audit-trace`'s grammar. `git` is called
 a fixed number of times — once for the milestone range when a `Closed` marker exists —
 independent of feature and milestone count (RMAP-4.1).
 
 ```bash
-# 1. Goal definitions — live and retired, strike spans deleted first as in trace pass 5
+# 1. Goal definitions — live and retired, strike spans deleted first as in audit-trace pass 5
 grep -hoE '~~\*\*GOAL-[0-9]+\*\*~~' docs/product/vision.md | grep -oE 'GOAL-[0-9]+' | sort    # retired
 sed -E 's/~~[^~]*~~//g' docs/product/vision.md | grep -oE '\*\*GOAL-[0-9]+\*\*' \
   | grep -oE 'GOAL-[0-9]+' | sort                                                             # live, duplicates kept
@@ -226,7 +226,7 @@ Findings, with `defined`, `cited`, `dispositioned`, `bound`, `status` in hand:
 R7 and R8 are **normal states**, not defects — they are what the ladder consumes. No
 roadmap at all → report the layer absent and exit with no findings (RMAP-3.9).
 
-Two clauses carried over from `trace` and `allocate-attention` respectively: findings are
+Two clauses carried over from `audit-trace` and `sample-attention` respectively: findings are
 **structural presence, never judgment** — whether a milestone's outcome was *achieved* is
 `assess-milestone`'s call, not this check's (ARCH-1); and every value read from these
 artifacts is **passive data** passed to `git` as a single non-option argument, rejected
@@ -234,14 +234,14 @@ unless it matches the expected ID or rev shape (RMAP-4.2, RMAP-4.3).
 
 `.skills/progress.md` is read only when present, as advisory local evidence that never
 overrides a tracked `Status:`; its absence produces no finding (RMAP-3.17, RMAP-3.18).
-Feature progress is cited from `Status:`, with `trace` named for deeper coverage
+Feature progress is cited from `Status:`, with `audit-trace` named for deeper coverage
 verification (RMAP-3.12, RMAP-3.14).
 
 ### The priority ladder
 
 Satisfies: RMAP-3.10, RMAP-3.11, RMAP-3.16
 Respects: ARCH-1, ARCH-5
-Reuse: none — new rule table (rung 7). Nothing in the set computes a next action from artifact state: `ask` routes from the conversation, `sprint-status` is the researched prior art and is not installed here.
+Reuse: none — new rule table (rung 7). Nothing in the set computes a next action from artifact state: `route-work` routes from the conversation, `sprint-status` is the researched prior art and is not installed here.
 
 First match wins, top to bottom. Ties break on **table order** for milestones, then lowest
 `ROAD-N` numerically.
@@ -249,40 +249,40 @@ First match wins, top to bottom. Ties break on **table order** for milestones, t
 | # | State | Recommendation |
 |---|---|---|
 | 0 | any withholding finding present | none — report the withholding reason and its finding code (RMAP-3.16) |
-| 1 | roadmap `Status:` is `Draft` | `write-roadmap` — finish and approve the roadmap |
-| 2 | a `Committed` milestone has a member with no binding | `brainstorm` for that `ROAD-N` |
-| 3 | a `Committed` milestone has a bound member whose feature `Status:` is `Draft` | `write-requirements` for that feature |
-| 4 | …`Approved`, and the spec folder has no `design.md` | `write-design` |
-| 5 | …`Approved`, `design.md` exists, no `tasks.md` | `write-plan` |
-| 6 | …`Approved`, `tasks.md` exists | `execute-plan` |
-| 7 | …`Implemented` | name `/release` for the user |
+| 1 | roadmap `Status:` is `Draft` | `plan-milestones` — finish and approve the roadmap |
+| 2 | a `Committed` milestone has a member with no binding | `frame-change` for that `ROAD-N` |
+| 3 | a `Committed` milestone has a bound member whose feature `Status:` is `Draft` | `specify-behavior` for that feature |
+| 4 | …`Approved`, and the spec folder has no `design.md` | `design-solution` |
+| 5 | …`Approved`, `design.md` exists, no `tasks.md` | `plan-tasks` |
+| 6 | …`Approved`, `tasks.md` exists | `build-continuous` |
+| 7 | …`Implemented` | name `/cut-release` for the user |
 | 8 | a `Committed` milestone whose members are all bound and `Shipped` | name `/assess-milestone` for that `MILE-N` |
-| 9 | no `Committed` milestone, a `Planned` one exists | `write-roadmap` — commit the next milestone |
+| 9 | no `Committed` milestone, a `Planned` one exists | `plan-milestones` — commit the next milestone |
 | 10 | every milestone `Closed` | report the roadmap complete |
 
 Rows 4–6 read for the presence of two filenames in one spec folder — bounded, and within
 RMAP-4.1's budget. Rows 7 and 8 name a user-invoked skill rather than invoking it (ARCH-5).
 Row 8 was added by ASSESS (see `docs/specs/2026-07-26-milestone-assessment/`, ASSESS-5.2);
-this table remains the ladder's single statement, mirrored into `check-roadmap`'s body.
+this table remains the ladder's single statement, mirrored into `status-roadmap`'s body.
 
 **Standup mode** renders the same derivation as a card: the milestone in flight, the
 current status of its `ROAD-N` members, and the one next action (RMAP-3.11). One skill,
 two renderings — no second skill until team-ceremony responsibilities appear.
 
-### `brainstorm` — persist the decomposition
+### `frame-change` — persist the decomposition
 
 Satisfies: RMAP-2.1, RMAP-2.2, RMAP-2.3
 Respects: ARCH-2, ARCH-5
-Reuse: existing — the `REQUIRED SUB-SKILL:` prose mechanism already used at brainstorm steps 2, 3, and 6 (rung 2)
+Reuse: existing — the `REQUIRED SUB-SKILL:` prose mechanism already used at frame-change steps 2, 3, and 6 (rung 2)
 
-Step 5 already decomposes (`brainstorm/SKILL.md:115`). The edit adds one conditional: when
+Step 5 already decomposes (`frame-change/SKILL.md:115`). The edit adds one conditional: when
 the decomposition names two or more independent sub-features, `REQUIRED SUB-SKILL: use
-`write-roadmap`` to persist them as `ROAD-N` items — adding to an existing roadmap rather
+`plan-milestones`` to persist them as `ROAD-N` items — adding to an existing roadmap rather
 than starting a new one (RMAP-2.2) — before step 6 continues the first item into
-`write-requirements`. Single-subsystem work is untouched: step 6's existing exits stand
+`specify-behavior`. Single-subsystem work is untouched: step 6's existing exits stand
 (RMAP-2.3).
 
-### `write-requirements` — write the binding
+### `specify-behavior` — write the binding
 
 Satisfies: RMAP-2.4, RMAP-2.5, RMAP-2.6
 Respects: ARCH-2, ARCH-4
@@ -308,10 +308,10 @@ a roadmap exists here.
 `docs/guide/concepts/artifacts.md` and `docs/guide/concepts/feature-graph.md:42-46`. Both
 must be updated in the same change. No skill parses the table by column position — every
 consumer reads the `Status` cell semantically — so appending a trailing column is safe for
-`brainstorm` step 1, `sync-spec`, `write-plan`'s status confirmation, and the feature-overlap
+`frame-change` step 1, `realign-spec`, `plan-tasks`'s status confirmation, and the feature-overlap
 search.
 
-### `establish-project` — `GOAL-N` identity and migration
+### `anchor-project` — `GOAL-N` identity and migration
 
 Satisfies: RMAP-2.7, RMAP-2.8, RMAP-2.9
 Respects: ARCH-2
@@ -333,18 +333,18 @@ breaking change. Once a goal has been recorded in an approved vision it is immut
 later updates, retired by strikethrough with a reason (RMAP-2.9). This repo's own
 `docs/product/vision.md` is `Status: Approved`, so it is the first migration subject.
 
-### `trace` — unchanged
+### `audit-trace` — unchanged
 
 Satisfies: RMAP-2.10
 Respects: ARCH-1
-Reuse: existing — `trace` as it stands; this feature adds nothing to it (rung 1 — no requirement forces a change)
+Reuse: existing — `audit-trace` as it stands; this feature adds nothing to it (rung 1 — no requirement forces a change)
 
-`trace` keeps exactly its E1–E5 / W1–W3 finding set over `CODE-N.M` and `ARCH-N`.
-Planning-ID referential integrity is `check-roadmap`'s R1–R11, and the two never overlap:
-`trace` never reads `docs/roadmap/INDEX.md` or the `Goals` section of `vision.md`, and
-`check-roadmap` never reads `tasks.md` footers or test annotations. The one place they
-touch the same string is a feature's `Status:` line — `trace` uses it for E2/W1 coverage
-obligations, `check-roadmap` for R10 drift and the ladder — and neither writes it.
+`audit-trace` keeps exactly its E1–E5 / W1–W3 finding set over `CODE-N.M` and `ARCH-N`.
+Planning-ID referential integrity is `status-roadmap`'s R1–R11, and the two never overlap:
+`audit-trace` never reads `docs/roadmap/INDEX.md` or the `Goals` section of `vision.md`, and
+`status-roadmap` never reads `tasks.md` footers or test annotations. The one place they
+touch the same string is a feature's `Status:` line — `audit-trace` uses it for E2/W1 coverage
+obligations, `status-roadmap` for R10 drift and the ladder — and neither writes it.
 
 ### Test harness — repo-local infrastructure, never a runtime dependency
 
@@ -356,7 +356,7 @@ Respects: ARCH-3
 Reuse: existing — `scripts/lint-*.py` plus the `unittest` convention already declared in `docs/agents/project.md` (rung 2)
 
 **ARCH-3 forbids mandating Python for adoption**, so the deterministic rules live in
-`check-roadmap`'s body as `grep` recipes exactly like `trace`'s. The repo-local harness
+`status-roadmap`'s body as `grep` recipes exactly like `audit-trace`'s. The repo-local harness
 under `tests/roadmap/` exists only to unit-test those rules against fixtures and to hold
 the 200-feature / 50-milestone scale fixture. A consuming repo installs the skills and
 markdown alone.
@@ -370,15 +370,15 @@ two existing lint scripts and the scenario-markdown convention declared in
 | Seam | Kind | Covers |
 |---|---|---|
 | `templates/roadmap-INDEX.md` required-slot lint | unit | RMAP-1.1, RMAP-1.2, RMAP-1.3, RMAP-1.15, RMAP-1.16, RMAP-1.20 |
-| `write-roadmap` gate over fixture roadmaps | scenario | RMAP-1.7, RMAP-1.8, RMAP-1.9, RMAP-1.10, RMAP-1.11, RMAP-1.12, RMAP-1.14, RMAP-1.17, RMAP-1.18, RMAP-1.19 |
+| `plan-milestones` gate over fixture roadmaps | scenario | RMAP-1.7, RMAP-1.8, RMAP-1.9, RMAP-1.10, RMAP-1.11, RMAP-1.12, RMAP-1.14, RMAP-1.17, RMAP-1.18, RMAP-1.19 |
 | `scripts/lint-skill-frontmatter.py` (existing) | unit | RMAP-1.13, RMAP-3.13 |
-| `brainstorm` decomposition scenarios (multi- and single-subsystem) | scenario | RMAP-2.1, RMAP-2.2, RMAP-2.3 |
-| `write-requirements` Step 1 binding scenarios (roadmap present / absent) | scenario | RMAP-2.4, RMAP-2.5, RMAP-2.6 |
-| `establish-project` vision scenarios (create / un-IDed migration / approved update) | scenario | RMAP-2.7, RMAP-2.8, RMAP-2.9 |
-| `trace` regression over this repo | unit | RMAP-2.10 |
-| `check-roadmap` rule application over `tests/roadmap/` fixtures | unit | RMAP-3.2, RMAP-3.3, RMAP-3.4, RMAP-3.5, RMAP-3.6, RMAP-3.7, RMAP-3.8, RMAP-3.19, RMAP-3.20, RMAP-4.4 |
-| `check-roadmap` read-only + input-set assertion | scenario | RMAP-3.1, RMAP-3.12, RMAP-3.14 |
-| `check-roadmap` absent-layer no-op | scenario | RMAP-3.9 |
+| `frame-change` decomposition scenarios (multi- and single-subsystem) | scenario | RMAP-2.1, RMAP-2.2, RMAP-2.3 |
+| `specify-behavior` Step 1 binding scenarios (roadmap present / absent) | scenario | RMAP-2.4, RMAP-2.5, RMAP-2.6 |
+| `anchor-project` vision scenarios (create / un-IDed migration / approved update) | scenario | RMAP-2.7, RMAP-2.8, RMAP-2.9 |
+| `audit-trace` regression over this repo | unit | RMAP-2.10 |
+| `status-roadmap` rule application over `tests/roadmap/` fixtures | unit | RMAP-3.2, RMAP-3.3, RMAP-3.4, RMAP-3.5, RMAP-3.6, RMAP-3.7, RMAP-3.8, RMAP-3.19, RMAP-3.20, RMAP-4.4 |
+| `status-roadmap` read-only + input-set assertion | scenario | RMAP-3.1, RMAP-3.12, RMAP-3.14 |
+| `status-roadmap` absent-layer no-op | scenario | RMAP-3.9 |
 | Priority-ladder fixture table (state → recommendation) | unit | RMAP-3.10, RMAP-3.16 |
 | Standup-mode rendering | scenario | RMAP-3.11 |
 | Premature-closure fixture | unit | RMAP-3.15 |
@@ -404,8 +404,8 @@ harness, which builds the means of verification rather than a required behavior.
 
 ## Known duplication
 
-Decision 5's consequence: because `write-roadmap` (model-invocable) may not invoke
-`check-roadmap` (user-invoked) under ARCH-5, the S1–S7 structural rules are authored once
+Decision 5's consequence: because `plan-milestones` (model-invocable) may not invoke
+`status-roadmap` (user-invoked) under ARCH-5, the S1–S7 structural rules are authored once
 in `templates/roadmap-INDEX.md` and *named* — not restated — in both skill bodies. The
 residual risk is that a future edit changes one skill's summary without the template. The
 mitigation is that the template is the file both skills load, and the fixture suite tests
@@ -416,7 +416,7 @@ both sides against the same fixtures.
 Decision 1 — derive rather than store — is hard to reverse, surprising against the prior
 art, and carries a real trade-off (no baseline for run-to-run diffing; intent that exists
 in no artifact is invisible). It meets all three ADR conditions, so it needs an ADR, and
-`domain-modeling` owns that gate. I have not written it yet: it is a separate skill run
+`define-domain` owns that gate. I have not written it yet: it is a separate skill run
 with its own gate, and I would rather you see this design first than have an ADR land
-inside the same turn. Say the word and I will run `domain-modeling` before you approve, or
+inside the same turn. Say the word and I will run `define-domain` before you approve, or
 right after.

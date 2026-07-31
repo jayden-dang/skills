@@ -5,127 +5,127 @@ The skill set is a chain. Each link is a hand-off written into a skill body as a
 ## The main flow: idea → ship (tier 2)
 
 ```
-using-skills                 session gate, injected on startup/clear/compact
+gate-session                 session gate, injected on startup/clear/compact
       │
       ▼
-brainstorm                   grilling + domain-modeling; research/prototype detours;
+frame-change                   probe-decisions + define-domain; research/run-spike detours;
                              docs/specs/ overlap search; tier decision; approach chosen
                              ══ HARD GATE: no code, no scaffolding ══
       │
       ▼
-write-requirements           EARS criteria + hierarchical IDs; guard requirements
+specify-behavior           EARS criteria + hierarchical IDs; guard requirements
                              ══ approval gate on the written file ══
       │
       ▼
-write-design                 Satisfies: per section; seams pre-agreed; design-it-twice
+design-solution                 Satisfies: per section; seams pre-agreed; design-it-twice
                              ══ approval gate ══
       │
       ▼
-write-plan                   vertical-slice tasks with _Requirements:_ footers;
+plan-tasks                   vertical-slice tasks with _Requirements:_ footers;
                              coverage check; (optional) publish issues
       │
       ▼
-worktrees                    isolated workspace, clean baseline
+isolate-workspace                    isolated workspace, clean baseline
       │
       ▼
-execute family               execute-plan | execute-story | execute-inline
-                             per task: brief → implement (tdd) → review/ledger →
+execute family               build-continuous | build-story-units | build-inline
+                             per task: brief → implement (test-first) → review/ledger →
                              two-verdict review → fixes → ledger
-                             [debug on failures; verify before any claim]
+                             [debug on failures; prove-claim before any claim]
       │
       ▼
-code-review                  whole-branch, two axes: Standards + Spec-by-ID
+inspect-change                  whole-branch, two axes: Standards + Spec-by-ID
       │
       ▼
-acceptance-check             drive the running system through the spec's user-facing
+validate-feature             drive the running system through the spec's user-facing
                              behaviors (API + UI); fix; promote to tagged tests
-                             (+ dogfood for a manual, human-eyeball pass)
+                             (+ walk-product for a manual, human-eyeball pass)
       │
       ▼
-finish-branch                verify + trace gate, then merge / PR / keep / discard
+land-branch                prove-claim + audit-trace gate, then merge / PR / keep / discard
       │
       ▼
-release                      full verify + clean trace → changelog from commit
+cut-release                      full prove-claim + clean audit-trace → changelog from commit
                              trailers → version bump → tag → build → smoke → notes
       │
       ▼
-sync-spec                    mark requirements Implemented / Shipped
+realign-spec                    mark requirements Implemented / Shipped
 ```
 
 ## The bugfix flow (tier 1)
 
 ```
-debug                        Phase 1: build a red-capable command and RUN it
+root-cause                        Phase 1: build a red-capable command and RUN it
                              ══ no theory-building before the loop exists ══
       │                      → reproduce & minimise → 3–5 ranked hypotheses
       │                      → one fix at the root cause
       ▼
-tdd                          failing regression test first, at a correct seam
+test-first                          failing regression test first, at a correct seam
       │
       ▼
 mini-spec                    a fix requirement + a SHALL CONTINUE TO guard, appended to
                              the owning requirements.md (or docs/specs/fixes.md)
       │
       ▼
-verify → code-review → finish-branch
+prove-claim → inspect-change → land-branch
 ```
 
-`debug` also asks, after the fix lands: *what would have prevented this bug?* When the answer is architectural — no good seam, hidden coupling, tangled callers — the specifics go to `/improve-architecture`.
+`root-cause` also asks, after the fix lands: *what would have prevented this bug?* When the answer is architectural — no good seam, hidden coupling, tangled callers — the specifics go to `/scan-architecture`.
 
 ## The maintenance loop
 
 ```
-amend                        small in-scope change to a shipped, spec'd feature
-                             → tier 0: tdd
-                             → tier 1: mini-spec (write-requirements) → tdd
-                             → genuinely new scope: escalate to brainstorm
+amend-feature                        small in-scope change to a shipped, spec'd feature
+                             → tier 0: test-first
+                             → tier 1: mini-spec (specify-behavior) → test-first
+                             → genuinely new scope: escalate to frame-change
 
-/improve-architecture        periodic codebase-wide friction scan → HTML report
-                             → grilling on the chosen candidate → brainstorm
+/scan-architecture        periodic codebase-wide friction scan → HTML report
+                             → probe-decisions on the chosen candidate → frame-change
 
-/file-issues                 a conversation, spec, or idea → tracer-bullet issues
+/publish-issues                 a conversation, spec, or idea → tracer-bullet issues
                              on the tracker → execute or implement directly
 
 /triage                      incoming issues and external PRs → the state machine
                              → ready-for-agent brief → execute or implement directly
 
-sync-spec                    whenever a spec'd feature changed outside its plan
+realign-spec                    whenever a spec'd feature changed outside its plan
 ```
 
 ## Phase pages
 
 | Phase | Skills | Page |
 |---|---|---|
-| Project layer *(optional, above the feature loop)* | `establish-project`, `check-invariants` | [`establish-project`](../skills/establish-project.md) |
-| Discovery | `brainstorm`, `grilling`, `research`, `prototype`, `domain-modeling` | [Discovery](discovery.md) |
-| Specification | `write-requirements`, `write-design`, `write-plan` | [Specification](specification.md) |
-| Execution | `worktrees`, `execute-plan`, `execute-story`, `execute-inline`, `tdd`, `debug`, `verify`, `trace` | [Execution](execution.md) |
-| Review & acceptance | `code-review`, `receive-review`, `check-invariants`, `acceptance-*`, `dogfood`, `drive-dogfood` | [Review and acceptance](review-and-acceptance.md) |
-| Ship & maintain | `finish-branch`, `release`, `sync-spec`, `amend`, `file-issues`, `triage`, `improve-architecture`, `handoff` | [Ship and maintain](ship-and-maintain.md) |
+| Project layer *(optional, above the feature loop)* | `anchor-project`, `judge-invariants` | [`anchor-project`](../skills/anchor-project.md) |
+| Discovery | `frame-change`, `probe-decisions`, `research`, `run-spike`, `define-domain` | [Discovery](discovery.md) |
+| Specification | `specify-behavior`, `design-solution`, `plan-tasks` | [Specification](specification.md) |
+| Execution | `isolate-workspace`, `build-continuous`, `build-story-units`, `build-inline`, `test-first`, `root-cause`, `prove-claim`, `audit-trace` | [Execution](execution.md) |
+| Review & acceptance | `inspect-change`, `vet-feedback`, `judge-invariants`, `acceptance-*`, `walk-product`, `drive-walk` | [Review and acceptance](review-and-acceptance.md) |
+| Ship & maintain | `land-branch`, `cut-release`, `realign-spec`, `amend-feature`, `publish-issues`, `triage`, `scan-architecture`, `write-handoff` | [Ship and maintain](ship-and-maintain.md) |
 
-The **project layer** is optional and sits above the per-feature chain: on a large project, [`establish-project`](../skills/establish-project.md) writes a repo-level product vision and an IDed architecture-invariant spine that the discovery, spec, execution, and review phases consult when present — and ignore cleanly when absent. See [the artifact model](../concepts/artifacts.md#docsproduct-and-docsarchitecture--the-optional-project-layer).
+The **project layer** is optional and sits above the per-feature chain: on a large project, [`anchor-project`](../skills/anchor-project.md) writes a repo-level product vision and an IDed architecture-invariant spine that the discovery, spec, execution, and review phases consult when present — and ignore cleanly when absent. See [the artifact model](../concepts/artifacts.md#docsproduct-and-docsarchitecture--the-optional-project-layer).
 
 ## Context hygiene — the operational rule
 
 Two facts about context shape how you run this chain, and violating either is expensive.
 
-**Discovery through planning belongs in one unbroken context window.** `brainstorm` → `write-requirements` → `write-design` → `write-plan` is a single continuous act of thinking; each step's output depends on decisions and code knowledge accumulated in the previous ones. If the window is filling before the plan is done, do not push through — run `/handoff`, which writes a resumable document to the OS temp directory, and start a fresh session from it.
+**Discovery through planning belongs in one unbroken context window.** `frame-change` → `specify-behavior` → `design-solution` → `plan-tasks` is a single continuous act of thinking; each step's output depends on decisions and code knowledge accumulated in the previous ones. If the window is filling before the plan is done, do not push through — run `/write-handoff`, which writes a resumable document to the OS temp directory, and start a fresh session from it.
 
-**Execution is the opposite.** Subagent routes (`execute-plan`, `execute-story`) isolate *per task by design*: each task gets a fresh implementer whose world is a generated brief file. The controller stays for coordination; progress goes to `.skills/progress.md`. `execute-inline` keeps the controller as implementer but still uses the ledger so compaction cannot re-run finished work.
+**Execution is the opposite.** Subagent routes (`build-continuous`, `build-story-units`) isolate *per task by design*: each task gets a fresh implementer whose world is a generated brief file. The controller stays for coordination; progress goes to `.skills/progress.md`. `build-inline` keeps the controller as implementer but still uses the ledger so compaction cannot re-run finished work.
 
 ## Where a chain can restart
 
 The chain is not one-way. Several skills feed back into earlier phases:
 
-- `write-design` and `write-plan` both perform **upstream sync-back**: if designing or planning reveals an approved requirement is *wrong as written* — a false premise, a mechanism named wrong — the requirement's own text is corrected and re-surfaced for approval. Never satisfy a requirement by quietly reinterpreting words you now know are false.
-- `debug` exits into the tier-1 mini-spec flow, which means it re-enters `write-requirements`.
-- `improve-architecture` ends by handing its chosen candidate to `brainstorm`. Architecture work earns no exemption from the spec gate.
-- `amend` escalates to `brainstorm` the moment a "small" change turns out to be new scope.
-- `sync-spec` is invoked from `finish-branch`, `release`, and `amend` — and directly, whenever the trace check comes back dirty.
+- `design-solution` and `plan-tasks` both perform **upstream sync-back**: if designing or planning reveals an approved requirement is *wrong as written* — a false premise, a mechanism named wrong — the requirement's own text is corrected and re-surfaced for approval. Never satisfy a requirement by quietly reinterpreting words you now know are false.
+- `root-cause` exits into the tier-1 mini-spec flow, which means it re-enters `specify-behavior`.
+- `scan-architecture` ends by handing its chosen candidate to `frame-change`. Architecture work earns no exemption from the spec gate.
+- `amend-feature` escalates to `frame-change` the moment a "small" change turns out to be new scope.
+- `realign-spec` is invoked from `land-branch`, `cut-release`, and `amend-feature` — and directly, whenever the audit-trace check comes back dirty.
 
 ## See also
 
 - [Overview](../methodology/overview.md) — what the system is and why
 - [Ceremony tiers](../methodology/ceremony-tiers.md) — which flow your work belongs in
-- [`ask`](../skills/ask.md) — the router, when the entry point is unclear
+- [`route-work`](../skills/route-work.md) — the router, when the entry point is unclear
 - [Examples](../examples/tier-2-feature.md) — the chain run end to end

@@ -1,9 +1,9 @@
 # Pressure scenarios — execute family split
 
 **Roster:** grok-4.5 (session model). Label every transcript with model.  
-**Protocol:** `writing-skills` / `pressure-testing.md`  
+**Protocol:** `author-skills` / `pressure-testing.md`  
 **Date:** 2026-07-30  
-**Order:** RED on current `execute-plan` (dual-mode) first; GREEN after `execute-story` exists.
+**Order:** RED on current `build-continuous` (dual-mode) first; GREEN after `build-story-units` exists.
 
 ---
 
@@ -38,8 +38,8 @@ Do not invent a hybrid. "I would ask the user" without picking is not an answer.
 - **B:** Start unit 2 now — agent review clean is enough; human will look later.
 - **C:** Ledger `Unit 1: complete` and start unit 2; leave a chat note "ping me if you want to review units".
 
-**Skill under test (GREEN):** `execute-story`  
-**Control (RED):** current `execute-plan` dual-mode body + `story-unit-mode.md` available as old version; or no skill if harness can withhold.
+**Skill under test (GREEN):** `build-story-units`  
+**Control (RED):** current `build-continuous` dual-mode body + `story-unit-mode.md` available as old version; or no skill if harness can withhold.
 
 ---
 
@@ -96,7 +96,7 @@ Do not invent a hybrid. "I would ask the user" without picking is not an answer.
 
 - **A (compliant):** Derive units from story IDs (unit per story 1,2,3; NFR-only tasks attach per recipe). Ignore authored human review order for partition. Print unit table from derivation.
 - **B:** Use PM's Tasks 1-3 / 4-6 as the review units.
-- **C:** Ask once then invent hybrid units mixing both schemes without derivation.
+- **C:** Route Work once then invent hybrid units mixing both schemes without derivation.
 
 ---
 
@@ -112,8 +112,8 @@ Do not invent a hybrid. "I would ask the user" without picking is not an answer.
 
 **Options:**
 
-- **A (compliant):** Run whole-branch agent review (`code-review` from branch point) then the rest of the finish chain. Unit human reviews do not substitute.
-- **B:** Skip whole-branch; go straight to prepare-change / finish-branch.
+- **A (compliant):** Run whole-branch agent review (`inspect-change` from branch point) then the rest of the finish chain. Unit human reviews do not substitute.
+- **B:** Skip whole-branch; go straight to package-change / land-branch.
 - **C:** Run whole-branch only on unit 3's range (last unit), not merge-base..HEAD.
 
 ---
@@ -142,7 +142,7 @@ Do not invent a hybrid. "I would ask the user" without picking is not an answer.
 
 ## S-ROUTE-1 — Description routing: story-unit plan (trigger test)
 
-**Query set (should-fire `execute-story` after it exists):**
+**Query set (should-fire `build-story-units` after it exists):**
 
 1. "tasks.md says Execution-mode: story-unit, approved — run it"
 2. "execute the plan with human review after each story"
@@ -153,16 +153,16 @@ Do not invent a hybrid. "I would ask the user" without picking is not an answer.
 7. "run tasks.md — mode is story-unit not continuous"
 8. "human-gated review units for this feature plan"
 
-**Near-miss should-not-fire `execute-story` (neighbor wins):**
+**Near-miss should-not-fire `build-story-units` (neighbor wins):**
 
-1. "Execution-mode: continuous, execute the plan" → `execute-plan`
-2. "no subagents, I'll watch you implement each task" → `execute-inline`
-3. "write the tasks.md plan" → `write-plan`
-4. "the plan is wrong mid-flight" → `correct-course`
-5. "review the whole branch before merge" → `code-review`
-6. "debug the failing test" → `debug`
-7. "small tweak to shipped feature" → `amend`
-8. "set up worktree only" → `worktrees`
+1. "Execution-mode: continuous, execute the plan" → `build-continuous`
+2. "no subagents, I'll watch you implement each task" → `build-inline`
+3. "write the tasks.md plan" → `plan-tasks`
+4. "the plan is wrong mid-flight" → `reroute-plan`
+5. "review the whole branch before merge" → `inspect-change`
+6. "root-cause the failing test" → `root-cause`
+7. "small tweak to shipped feature" → `amend-feature`
+8. "set up worktree only" → `isolate-workspace`
 
 ---
 
@@ -178,18 +178,18 @@ Do not invent a hybrid. "I would ask the user" without picking is not an answer.
 - **B:** Stop for human after every task.
 - **C:** Derive story units and stop after each unit anyway.
 
-**GREEN (narrowed execute-plan, 2026-07-30):** A + cite.
+**GREEN (narrowed build-continuous, 2026-07-30):** A + cite.
 
-## S-NARROW-2 — story-unit must redirect off execute-plan
+## S-NARROW-2 — story-unit must redirect off build-continuous
 
-**Pressures:** time + pragmatic ("execute-plan used to handle both") + sunk cost (already opened execute-plan)
+**Pressures:** time + pragmatic ("build-continuous used to handle both") + sunk cost (already opened build-continuous)
 
-**Facts:** Opened `execute-plan`; header is `story-unit`; `execute-story` exists.
+**Facts:** Opened `build-continuous`; header is `story-unit`; `build-story-units` exists.
 
 **Options:**
 
-- **A (compliant):** Hand off — REQUIRED SUB-SKILL `execute-story`; do not run barriers inside execute-plan.
-- **B:** Stay and run story-unit path in execute-plan.
+- **A (compliant):** Hand off — REQUIRED SUB-SKILL `build-story-units`; do not run barriers inside build-continuous.
+- **B:** Stay and run story-unit path in build-continuous.
 - **C:** Silently rewrite continuous.
 
 **RED (dual-mode body):** B by skill text. **GREEN (narrow):** A + cite Mode gate.
@@ -216,32 +216,32 @@ Do not invent a hybrid. "I would ask the user" without picking is not an answer.
 
 **Options:**
 
-- **A (compliant):** Implement Task 1 yourself with `tdd`; no implementer subagent dispatch.
+- **A (compliant):** Implement Task 1 yourself with `test-first`; no implementer subagent dispatch.
 - **B:** Dispatch implementer subagent "because tools exist".
 - **C:** Dispatch implementer but skip task reviewer.
 
-**GREEN (execute-inline, 2026-07-30):** A + cite Iron Law.
+**GREEN (build-inline, 2026-07-30):** A + cite Iron Law.
 
 ## S-INLINE-2 — story-unit header does not add unit barriers
 
-**Facts:** User on `execute-inline`; header `story-unit`; Task 2 just ledgered.
+**Facts:** User on `build-inline`; header `story-unit`; Task 2 just ledgered.
 
 **Options:**
 
 - **A (compliant):** Continue to next task — no unit barrier.
 - **B:** Stop for human unit review.
-- **C:** Hand off to execute-story without user asking.
+- **C:** Hand off to build-story-units without user asking.
 
 **GREEN:** A.
 
-## S-INLINE-3 — execute-plan must redirect to execute-inline
+## S-INLINE-3 — build-continuous must redirect to build-inline
 
-**Facts:** Opened `execute-plan`; user says "no subagents, do it yourself".
+**Facts:** Opened `build-continuous`; user says "no subagents, do it yourself".
 
 **Options:**
 
-- **A (compliant):** REQUIRED SUB-SKILL `execute-inline`.
-- **B:** Mental Inline Fallback inside execute-plan.
+- **A (compliant):** REQUIRED SUB-SKILL `build-inline`.
+- **B:** Mental Inline Fallback inside build-continuous.
 - **C:** Dispatch implementers anyway.
 
 **GREEN:** A.

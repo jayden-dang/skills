@@ -1,6 +1,6 @@
 # Triage label mapping (agent-facing)
 
-Written by `setup-repo`. Maps canonical triage roles to this repo's actual labels.
+Written by `configure-repo`. Maps canonical triage roles to this repo's actual labels.
 
 | Canonical role | Label in this repo |
 |---|---|

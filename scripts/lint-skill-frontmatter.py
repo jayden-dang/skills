@@ -3,7 +3,7 @@
 
 The `skills` CLI (vercel-labs/skills, via gray-matter/js-yaml) discovers a skill by
 parsing its SKILL.md frontmatter and *silently skips* any file whose YAML does not
-parse. A single unquoted colon once dropped the `trace` skill from
+parse. A single unquoted colon once dropped the `audit-trace` skill from
 `npx skills add jayden-dang/skills` with no error at all. This check fails loudly
 instead, before the break ever reaches origin.
 

@@ -8,11 +8,11 @@ This is the smallest possible unit of work the system handles. It is here becaus
 
 ## The feature already has a spec
 
-`SHELL` shipped months ago. Its `requirements.md` is `Status: Shipped`. So this is not `brainstorm` — it is [`amend`](../skills/amend.md), the lane for a small in-scope change to an already-shipped, spec'd feature.
+`SHELL` shipped months ago. Its `requirements.md` is `Status: Shipped`. So this is not `frame-change` — it is [`amend-feature`](../skills/amend-feature.md), the lane for a small in-scope change to an already-shipped, spec'd feature.
 
 ## Step 1 — Ground the change in the existing spec
 
-`amend` finds the spec via `docs/specs/INDEX.md`, reads the requirements the change touches, and the design section that owns them.
+`amend-feature` finds the spec via `docs/specs/INDEX.md`, reads the requirements the change touches, and the design section that owns them.
 
 ```markdown
 - **SHELL-1.7** WHILE a module is active THE SYSTEM SHALL render its rail icon
@@ -29,13 +29,13 @@ That sentence *is* the design step. Note what it required: reading the requireme
 
 The distinction is not pedantry. It is the difference between a change that keeps the spec true and one that quietly makes it lie.
 
-## Step 3 — `tdd`, because every path exits through it
+## Step 3 — `test-first`, because every path exits through it
 
-Tier 0 is not an exemption from the test-first gate. From `amend`:
+Tier 0 is not an exemption from the test-first gate. From `amend-feature`:
 
-> This is a fast lane, not a gate bypass. Every path still exits through `tdd`.
+> This is a fast lane, not a gate bypass. Every path still exits through `test-first`.
 
-There is no `design.md` seam table entry for "the color of the rail icon", so `tdd` proposes the seam and gets agreement first:
+There is no `design.md` seam table entry for "the color of the rail icon", so `test-first` proposes the seam and gets agreement first:
 
 > No seam in `design.md` covers icon color. I propose asserting on the computed accent token in `theme.test.ts` — the existing unit seam for theme resolution — rather than snapshotting the rendered rail, which would break on unrelated layout changes. Agreed?
 
@@ -70,38 +70,38 @@ Implements: SHELL-1.7
 
 The trailer cites `SHELL-1.7` because that is the requirement this change serves — the criterion did not change, but the code implementing it did.
 
-## Step 4 — `verify`
+## Step 4 — `prove-claim`
 
-Before the word "done" is spoken. The trace check is clean; `SHELL-1.7` still has a covering test; the full suite ran fresh in this session and its output was read.
+Before the word "done" is spoken. The audit-trace check is clean; `SHELL-1.7` still has a covering test; the full suite ran fresh in this session and its output was read.
 
 ---
 
 ## What did *not* happen
 
-No `brainstorm`. No `requirements.md` edit. No `design.md`. No `tasks.md`. No `worktrees`. No `execute-plan`. No `code-review` subagents. Total artifacts produced: one changed token, one changed test, one commit.
+No `frame-change`. No `requirements.md` edit. No `design.md`. No `tasks.md`. No `isolate-workspace`. No `build-continuous`. No `inspect-change` subagents. Total artifacts produced: one changed token, one changed test, one commit.
 
 **But the tier was named out loud, and the change was verified against the actual requirement text before it was named.** That is the entire ceremony, and it took one paragraph.
 
 ## Where this would have escalated
 
-Three variations that are *not* tier 0, and how `amend` catches each:
+Three variations that are *not* tier 0, and how `amend-feature` catches each:
 
 | Variation | Tier | Why |
 |---|---|---|
-| `SHELL-1.7` had said "render its rail icon in blue" | **1** | The requirement's own text becomes false. Amend the criterion, add a `SHALL CONTINUE TO` guard for whatever else consumes the accent token, then `tdd` |
+| `SHELL-1.7` had said "render its rail icon in blue" | **1** | The requirement's own text becomes false. Amend Feature the criterion, add a `SHALL CONTINUE TO` guard for whatever else consumes the accent token, then `test-first` |
 | "…and add a subtle glow animation" | **1** | New observable behavior extending a spec'd one. Mini-spec |
-| "…and let users pick their own accent color" | **new scope** | A real UX decision with live alternatives (per-user? per-workspace? persisted where?). `amend` stops and escalates to `brainstorm` |
+| "…and let users pick their own accent color" | **new scope** | A real UX decision with live alternatives (per-user? per-workspace? persisted where?). `amend-feature` stops and escalates to `frame-change` |
 
-The honest test for that last row, from `amend`:
+The honest test for that last row, from `amend-feature`:
 
 > Does the existing spec's intent already cover this behavior? **If you are inventing what it should do, it is new scope.**
 
-Nothing in `SHELL`'s spec says anything about who chooses the accent color. Inventing that answer inside a "recolor the icon" request is exactly the failure `amend`'s red flags name: *the "small" change grew a design decision with real alternatives.*
+Nothing in `SHELL`'s spec says anything about who chooses the accent color. Inventing that answer inside a "recolor the icon" request is exactly the failure `amend-feature`'s red flags name: *the "small" change grew a design decision with real alternatives.*
 
-And if the request had bundled both — "make it indigo, and let users pick their own" — `amend` splits it: the tweak stays in the fast lane, the new behavior goes to `brainstorm`. Route each half separately.
+And if the request had bundled both — "make it indigo, and let users pick their own" — `amend-feature` splits it: the tweak stays in the fast lane, the new behavior goes to `frame-change`. Route each half separately.
 
 ## See also
 
 - [Ceremony tiers](../methodology/ceremony-tiers.md) — the full three-tier system
-- [`amend`](../skills/amend.md) — the skill this example runs
+- [`amend-feature`](../skills/amend-feature.md) — the skill this example runs
 - [Tier 1: a bugfix](tier-1-bugfix.md) — the next step up

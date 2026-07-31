@@ -1,10 +1,10 @@
-"""finish-branch checkpoint: ticket question, content approval, and every prior gate."""
+"""land-branch checkpoint: ticket question, content approval, and every prior gate."""
 import re
 import unittest
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parent.parent
-FINISH = REPO / "skills" / "ship" / "finish-branch" / "SKILL.md"
+FINISH = REPO / "skills" / "ship" / "land-branch" / "SKILL.md"
 
 
 class FinishBranchCheckpoint(unittest.TestCase):
@@ -17,8 +17,8 @@ class FinishBranchCheckpoint(unittest.TestCase):
         self.assertRegex(self.text, r"(?s)no tracker.{0,200}still ask")
 
     def test_PCHG_8_3_file_issues_named_never_invoked(self):
-        """PCHG-8.3 — /file-issues is named and the crossing pauses (ARCH-5)."""
-        self.assertIn("/file-issues", self.text)
+        """PCHG-8.3 — /publish-issues is named and the crossing pauses (ARCH-5)."""
+        self.assertIn("/publish-issues", self.text)
         self.assertRegex(self.text, r"(?i)never invoke|named, never")
 
     def test_PCHG_8_4_8_5_content_approval_and_edit_loop(self):
@@ -44,7 +44,7 @@ class FinishBranchCheckpoint(unittest.TestCase):
 
     def test_PCHG_8_10_fresh_record_after_invalidated_approval(self):
         """PCHG-8.10 — an invalidating mismatch after publication forces a fresh
-        record-decision publish, carrying the reapproved values, before retry."""
+        record-verdict publish, carrying the reapproved values, before retry."""
         start = self.text.find("**Option 2 — push + PR.**")
         end = self.text.find("**Option 3 — keep.**")
         self.assertNotEqual(start, -1, "Option 2 section heading not found")
@@ -52,7 +52,7 @@ class FinishBranchCheckpoint(unittest.TestCase):
         section = self.text[start:end]
         self.assertRegex(
             section,
-            r"(?s)invalidat.{0,300}fresh\s+`record-decision`\s+publish.{0,200}"
+            r"(?s)invalidat.{0,300}fresh\s+`record-verdict`\s+publish.{0,200}"
             r"before submission is retried",
         )
         self.assertRegex(section, r"(?i)carrying the reapproved values")
@@ -100,8 +100,8 @@ class FinishBranchCheckpoint(unittest.TestCase):
         self.assertIn("title.txt", line)
 
     def test_important_2_option_1_prefers_package_base_over_topology(self):
-        """finish-branch's Option 1 (local merge) must use the PR package's
-        resolved `Base:` — the branch prepare-change actually authored the
+        """land-branch's Option 1 (local merge) must use the PR package's
+        resolved `Base:` — the branch package-change actually authored the
         commits and narrative against — over Step 2's origin/HEAD-derived
         topology detection, when a package exists for this session. Without
         this, `Default PR base: dev` with `origin/HEAD` at `main` merges
@@ -130,8 +130,8 @@ class FinishBranchCheckpoint(unittest.TestCase):
             self.assertIn(option, self.text)
 
     def test_PCHG_11_3_record_before_crossing(self):
-        """PCHG-11.3 — record-decision still publishes before any crossing."""
-        self.assertIn("record-decision", self.text)
+        """PCHG-11.3 — record-verdict still publishes before any crossing."""
+        self.assertIn("record-verdict", self.text)
         self.assertRegex(self.text, r"(?s)before.{0,80}(git/gh side effect|the crossing)")
 
     def test_PCHG_11_4_typed_discard(self):
@@ -140,25 +140,25 @@ class FinishBranchCheckpoint(unittest.TestCase):
 
     def test_PCHG_11_5_optional_skills_still_named(self):
         """PCHG-11.5 — both optional human skills are still named."""
-        self.assertIn("/comprehend-change", self.text)
-        self.assertIn("/explain-change", self.text)
+        self.assertIn("/study-change", self.text)
+        self.assertIn("/brief-team", self.text)
 
     def test_PCHG_11_6_no_self_initiated_force_push(self):
         """PCHG-11.6 — force-push remains user-request-only."""
         self.assertRegex(self.text, r"Force-push on your own initiative")
 
     def test_PCHG_6_1_package_described_as_three_files(self):
-        """PCHG-6.1 — finish-branch describes the PR package as the three
+        """PCHG-6.1 — land-branch describes the PR package as the three
         files package-contract.md defines (manifest.md, title.txt, body.md),
         never the stale two-file shape. Scoped to the 4a checkpoint's
         package-display step, where an older draft named only manifest.md
-        and body.md after prepare-change grew a third file."""
+        and body.md after package-change grew a third file."""
         start = self.text.find("### 4a. Ticket and content checkpoint")
         end = self.text.find(
             "For options **1 (merge), 2 (PR), 4 (discard), and 5 (block)**"
         )
         self.assertNotEqual(start, -1, "4a checkpoint heading not found")
-        self.assertNotEqual(end, -1, "record-decision options line not found")
+        self.assertNotEqual(end, -1, "record-verdict options line not found")
         section = self.text[start:end]
         for filename in ("manifest.md", "title.txt", "body.md"):
             self.assertIn(filename, section, f"{filename} missing from 4a package description")

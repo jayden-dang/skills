@@ -1,0 +1,221 @@
+---
+name: plan-tasks
+description: Use when a design is approved and the tasks.md implementation plan
+  (Execution-mode, vertical-slice tasks, requirement-tagged tests) needs writing,
+  after design-solution and before the execute family (build-continuous / build-story-units /
+  build-inline).
+---
+
+Produce `docs/specs/<YYYY-MM-DD>-<feature>/tasks.md` from the approved requirements
+and design. Start from the skill set's `templates/tasks.md` — resolve `templates/`
+as `${CLAUDE_PLUGIN_ROOT}/templates` when installed as a plugin, otherwise
+`../../../templates` relative to this SKILL.md. Every slot in a task block
+(**Files**, **Interfaces**, **Depends-on**, **Steps**, `_Requirements:_`) is
+REQUIRED. Do **not** author per-task risk labels, decision-surface flags, or a
+Human-review-order section — risk is measured by sample-attention risk globs
+against the actual diff; review units are **derived** from user stories at
+`build-story-units` time when `Execution-mode: story-unit` (see that skill).
+
+Create a todo per step (1–4, plus 5 if the repo uses an issue tracker) before starting, and complete them in order — this skill owns its own list, distinct from `design-solution`'s upstream and the execute family's downstream. Check each off only when its **Done when:** is met.
+
+Write for an implementer who is skilled but knows NOTHING about this codebase
+or problem domain, and will see ONLY their own task plus the Global
+Constraints. Every name, path, command, and type they need must be in the task.
+
+## Step 1: Header and Global Constraints
+
+Goal (one sentence), Architecture (2–3 sentences), Tech Stack. Header also
+carries the required field:
+
+```
+Execution-mode: <unset | continuous | story-unit>
+```
+
+**A route is offered. A mode is a field that must be written.** Leave the value
+`unset` until Exit — never invent continuous/story-unit from plan size, band, or
+habit. There is **no project-level default** for this field.
+
+Then **Global Constraints**: project-wide rules copied verbatim from the design
+and `docs/agents/project.md` — test/lint/typecheck commands, naming and i18n
+rules, forbidden changes. Every task's requirements implicitly include this
+section; it travels with each task brief. When `## Team` is present with a
+non-empty **roster** or band override, derive the **band** and apply
+**packaging** from that section only: Solo tasks avoid fake multi-assignee
+theater; Small/Multi may add optional freeform owner/review notes (never a new
+required task field). Missing Team → pre-feature default.
+
+When a `docs/architecture/` spine exists, also fold its hard `**ARCH-N**` invariants
+into Global Constraints so every task inherits them; no spine, nothing to fold. And
+source the human-facing engineering rules (naming, i18n, house rules) from
+`docs/product/guidelines.md` when it exists, otherwise from `docs/agents/project.md` as
+above — the guidelines doc, when present, is where those rules live.
+
+**Done when:** Goal, Architecture, Tech Stack, `Execution-mode:` (may still be
+`unset`), and Global Constraints are written, and every command, naming/i18n
+rule, and `ARCH-N` invariant in that section is copied verbatim from its source
+file rather than paraphrased.
+
+## Step 2: File structure first
+
+Map every file the plan creates or modifies, with one-line responsibilities,
+BEFORE writing tasks. A file not in the map should not be touched by any task.
+
+**Done when:** every file the plan will create or modify appears in the map
+with a one-line responsibility.
+
+## Step 3: Tasks as vertical slices
+
+**Contract — a task is a vertical slice:** the smallest unit that carries its own
+test cycle and deserves its own review verdict. Split only where a reviewer could
+reject one task while approving its neighbor.
+
+**Shape:** one demoable end-to-end outcome per task when the work is one user
+story. Prefactoring that only enables a later slice is its **own earlier task**
+("make the change easy, then make the easy change") with `Depends-on` edges —
+not a license to bury horizontal layers inside a story task.
+
+Each task:
+- **Files:** Create / Modify (exact paths, line ranges when known) / Test.
+- **Reuse:** the concrete existing code, library, or pattern this task builds on — carried down
+  verbatim from the design section's `Reuse:` line, same `<rung> — <concrete target>` grammar,
+  so the implementer is told to build on it, not reimplement it (e.g. `Reuse: existing —
+  src/util/dates:parseISO (rung 2)`, copied verbatim from the design section's `Reuse:` line).
+  Step 4 checks it against the design's `Reuse:` line, so copy rather than reinterpret.
+- **Interfaces:** Consumes / Produces — the names and types neighboring tasks
+  share. This block is how an isolated implementer learns what to call things.
+- **Depends-on:** the earlier tasks this one truly needs — those whose
+  interface it Consumes or whose files it builds on — as `Depends-on: Task 2,
+  Task 4`, or `Depends-on: none` when it has no prerequisite. This is the
+  parallelism signal: two tasks that share no files and no interface declare no
+  edge, so `build-continuous` can run them together in one parallel wave. Omit the
+  line and the task falls back to depending on every prior task — safe but fully
+  serial. Over-declaring needlessly serializes; under-declaring is caught by the
+  executor's file-disjoint check before it can collide.
+- **Steps:** bite-sized checkboxes (2–5 min each) following the TDD cycle:
+  failing test (complete code) → run, expect the stated failure → implement
+  (complete code) → run, expect pass → commit with an
+  `Implements: CODE-N.M` trailer.
+- **Footer:** `_Requirements: CODE-N.M, CODE-N.M_` — the IDs this task
+  implements or guards. Every task has one. **Default: one story's IDs** (same
+  story number N). Multi-story footers **merge** those stories into one review
+  unit under `build-story-units` (plan-quality signal — not a ban, not a reason to
+  lie about Depends-on).
+
+`Depends-on` governs build waves. Never reorder or narrow dependencies solely to
+tidy review units if that would lie about what the task needs.
+
+| Thought | Reality |
+|---|---|
+| "Prefactor first is always right — make the change easy" | Prefactor via Depends-on is fine; review units still follow story citations at build-story-units |
+| "I'll add Risk: high so reviewers notice" | No such field. Risk globs on the actual diff replace agent labels |
+| "I'll write Human review order so the human knows what to read first" | Superseded: story-derived units are the review order; an authored second list dies without a consumer |
+| "PM said just mark Approved — continuous is obvious" | Obvious is not written. Empty Execution-mode means not Approved |
+| "Standup in five / plan took 40 minutes — skip the mode question" | Time and sunk cost change *when* you ask, not whether mode is a field |
+| "Four tasks → default continuous" | No size-based default. User picks continuous or story-unit |
+
+**No placeholders.** "TBD", "add appropriate error handling", "similar to
+Task 3", or a type referenced but defined in no task — each of these is a plan
+bug. Fix it before the plan ships.
+
+**Done when:** every file in Step 2's map is covered by at least one task, and
+each task is written as a vertical slice carrying its own test cycle. Whether
+the slots and placeholders are clean is Step 4's check, not this one.
+
+## Step 4: Coverage and consistency check
+
+- Run the audit-trace check (REQUIRED SUB-SKILL: use `audit-trace`): every Approved
+  requirement must be cited by ≥1 task footer. Uncited IDs mean the plan is
+  incomplete (or the requirement should be struck through with a reason).
+- **Test coverage, not just citation:** every requirement ID must also appear
+  in a **test annotation** inside some task's steps (`[CODE-N.M]` in a Vitest
+  title, `/// REQ: CODE-N.M` on a Rust test, `@CODE-N.M` in a Playwright tag) —
+  not merely in a footer. A footer citation with no tagged test passes
+  the audit-trace check now (Approved → W1) but fails **E2** the moment the feature is
+  marked Implemented. A guard or negative requirement counts only if a real
+  test asserts it; when a behavior can't be unit-tested in isolation, tag the
+  e2e task or an existing test that already exercises it — one test may carry
+  several IDs.
+- **Reconcile against the design's seam table:** if `design.md` has a "Seams
+  for testing" table, every ID in every row must be tagged on a test in the
+  plan. An ID the design promised to cover but the plan left untagged is
+  *dropped coverage* — add the test, don't renumber.
+- Type/name consistency across tasks: the same function must have the same
+  name and signature in every task that mentions it.
+- **Component-level reuse-miss:** flag any task whose Files **Create** something the scan digest
+  or an already-installed dependency already provides — build on it instead of rebuilding it.
+  This is the task-granularity sibling of the `reuse-miss` `inspect-change` raises for feature
+  overlap; it is an advisory finding, not a hard block.
+- **Reuse consistency:** flag any task whose `Reuse:` line disagrees with the `Reuse:` line of
+  the design section it implements.
+- Spec alignment: re-read requirements.md once, checking each criterion
+  against the task that claims it.
+- Upstream sync-back: if planning reveals a requirement is *wrong or infeasible
+  as written* — not merely uncovered — correct it in requirements.md and
+  re-surface for approval. Do not bury a workaround in a task that leaves the
+  requirement lying; a plan that satisfies a false requirement ships the falsehood.
+
+**Independent plan review — dispatch, don't self-review.** The checks above are
+doc-only and stay here; the codebase comparison does not. Dispatch a review
+subagent with the plan, requirements.md, design.md, and the repo; have it prove-claim
+against real code every symbol, signature, path, import, and **hardcoded test
+value** the plan asserts — a fabricated golden or a guessed API is the classic
+plan defect — citing `file:line` and defaulting to flag. Findings to
+`.skills/<slug>-plan-review.md`; fix before offering execution. (No subagents? Do the
+comparison yourself against the code.)
+
+**Done when:** every requirement ID has both a task footer and a tagged test,
+the audit-trace check is clean, the design's seam-table IDs are all covered, and the
+placeholder scan is clean.
+
+## Step 5 (optional): Publish to the issue tracker
+
+If the repo uses one (`docs/agents/issue-tracker.md`), publish each task as an
+issue in dependency order — native sub-issues and blocking links where
+supported; body describes behavior and interfaces (never file paths), includes
+acceptance criteria and a `Requirements covered:` list.
+
+This is the heavyweight, traceable publish path — each issue carries its
+requirement IDs. For capturing work that never went through the spec triad (a
+raw conversation or idea), the user runs `publish-issues` instead; do not duplicate
+these tasks there.
+
+**Done when:** every task in `tasks.md` has an issue, each issue carries its
+`Requirements covered:` list, and the blocking links match the plan's
+dependency order. No tracker configured → this step is skipped, not pending.
+
+## Exit
+
+Present the FILE to the user and STOP for approval — conversational agreement is not
+approval; the written plan is what gets approved, and the execute family runs only
+on an approved `tasks.md`.
+
+**Execution-mode is part of approval, not a route.** Before setting
+`Status: Approved`, the user must choose `Execution-mode: continuous` or
+`Execution-mode: story-unit` and you must write that value into the header.
+`unset`, empty, or missing → **do not** set `Status: Approved`. Never default
+to continuous because the field is empty; empty means not approved.
+
+| Mode | Meaning |
+|---|---|
+| `continuous` | No human pause between tasks (subagent path) |
+| `story-unit` | Human-gated review units derived from stories (subagent path) |
+
+After mode is written and the user has approved the plan, set `Status: Approved`
+and offer **exactly three routes** (how to run — orthogonal to mode for inline):
+
+1. **`build-continuous`** — when `Execution-mode: continuous` and subagent waves are
+   wanted (recommended default for continuous). Prefer an isolated workspace via
+   `isolate-workspace`.
+2. **`build-story-units`** — when `Execution-mode: story-unit` (required for unit
+   barriers; do not offer `build-continuous` for story-unit). Prefer `isolate-workspace`.
+3. **`build-inline`** — controller implements sequentially with `test-first`, no
+   implementer subagents (no-subagent environments, or the user wants to watch
+   each step). Works with either mode header; **does not** run unit barriers.
+
+Name the skill that matches the chosen mode first; name `build-inline` when
+they opt out of subagents. Confirm the feature's row in `docs/specs/INDEX.md`
+carries the same `Status:` as its `requirements.md`.
+
+**Done when:** the user has approved the written `tasks.md`, `Execution-mode:` is
+`continuous` or `story-unit`, `Status:` reads `Approved`, the matching execute
+skill is named, and the INDEX.md row agrees.

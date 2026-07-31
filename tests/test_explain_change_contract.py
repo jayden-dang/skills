@@ -1,4 +1,4 @@
-"""explain-change: packet substance, slug determinism, post-write verification.
+"""brief-team: packet substance, slug determinism, post-write verification.
 
 Covers the 2026-07-30 tier-1 mini-spec (XPLN-2.10–2.14, 3.7–3.10, 5.8) plus the
 deterministic delivery of XPLN-3.4's INDEX row, which the requirement already
@@ -9,12 +9,12 @@ import unittest
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parent.parent
-ROOT = REPO / "skills" / "review" / "explain-change"
+ROOT = REPO / "skills" / "review" / "brief-team"
 SKILL = ROOT / "SKILL.md"
 CONTRACT = ROOT / "references" / "section-contract.md"
 SHELL = ROOT / "shell" / "packet.html"
 
-SIX_SECTIONS = ("users", "decisions", "breaks", "verify", "intuition", "seams")
+SIX_SECTIONS = ("users", "decisions", "breaks", "prove-claim", "intuition", "seams")
 
 
 class ExplainChangeIndexRow(unittest.TestCase):
@@ -87,7 +87,7 @@ class ExplainChangeSlugDeterminism(unittest.TestCase):
 
     def test_XPLN_3_7_sanitization_is_explicit(self):
         """A character allow-list plus a numeric length bound, matching the
-        prepare-change stable-id convention — branch names legally carry shell
+        package-change stable-id convention — branch names legally carry shell
         metacharacters, so 'kebab-case' alone leaves the value ambiguous."""
         self.assertRegex(self.section, r"\[?a-z0-9-\]?", msg="no [a-z0-9-] allow-list")
         self.assertRegex(self.section, r"\b\d+ characters\b", msg="no numeric length bound")
@@ -111,22 +111,22 @@ class ExplainChangePostWriteVerification(unittest.TestCase):
         self.text = SKILL.read_text()
 
     def test_XPLN_3_8_verification_step_exists_before_handoff(self):
-        """The check sits between Write and Handoff, not after the claim."""
+        """The check sits between Write and Write Handoff, not after the claim."""
         write = self.text.find("**Write**")
-        verify = self.text.find("**Verify the written file**")
-        handoff = self.text.find("**Handoff**")
+        prove-claim = self.text.find("**Verify the written file**")
+        write-handoff = self.text.find("**Write Handoff**")
         self.assertNotEqual(write, -1, "Write phase not found")
         self.assertNotEqual(verify, -1, "no 'Verify the written file' phase")
-        self.assertNotEqual(handoff, -1, "Handoff phase not found")
+        self.assertNotEqual(handoff, -1, "Write Handoff phase not found")
         self.assertLess(write, verify, "verification precedes the write")
-        self.assertLess(verify, handoff, "verification runs after the handoff claim")
+        self.assertLess(verify, handoff, "verification runs after the write-handoff claim")
 
     def test_XPLN_3_8_verification_is_a_grep_recipe_not_prose(self):
-        """writing-skills:41 — a check that must never be misjudged is a fixed
+        """author-skills:41 — a check that must never be misjudged is a fixed
         pass over a named input plus a fixed rule on its output. 'Confirm the
         packet looks complete' invites interpretation; a grep does not."""
         start = self.text.find("**Verify the written file**")
-        end = self.text.find("**Handoff**")
+        end = self.text.find("**Write Handoff**")
         section = self.text[start:end]
         self.assertIn("grep", section, "verification names no grep pass")
         self.assertIn("__PACKET_DATA__", section, "injection marker not checked")
@@ -142,7 +142,7 @@ class ExplainChangePostWriteVerification(unittest.TestCase):
         """A packet can carry the real title and still leave a section empty;
         XPLN-2.11 makes that unfilled, so the pass must reach every section."""
         start = self.text.find("**Verify the written file**")
-        end = self.text.find("**Handoff**")
+        end = self.text.find("**Write Handoff**")
         section = self.text[start:end]
         for name in SIX_SECTIONS:
             self.assertIn(
@@ -355,7 +355,7 @@ class ExplainChangeShell(unittest.TestCase):
 
 
 class ExplainChangeSeparationDuplication(unittest.TestCase):
-    """writing-skills:62 duplication sweep — one home per rule. The no-quiz and
+    """author-skills:62 duplication sweep — one home per rule. The no-quiz and
     non-gate rules each had four homes (Iron Law, hard gates, a rationalization
     row, plus a Separation table and a Neighbors paragraph). Rationalization rows
     and red flags are the exempt gate form; the two prose restatements are not."""
@@ -387,12 +387,12 @@ class ExplainChangeSeparationDuplication(unittest.TestCase):
         )
 
     def test_neighbor_predicate_is_not_restated(self):
-        """finish-branch owns the naming predicate (multi_task / risk_hit /
+        """land-branch owns the naming predicate (multi_task / risk_hit /
         architecture_affecting). Mirroring it here creates two homes that drift."""
         self.assertNotRegex(
             self.text,
             r"(?s)multi-task[^\n]{0,80}risk glob[^\n]{0,120}architecture-affecting",
-            msg="the finish-branch naming predicate is restated in this skill",
+            msg="the land-branch naming predicate is restated in this skill",
         )
 
 
@@ -410,7 +410,7 @@ class ExplainChangeWritingSkillsForm(unittest.TestCase):
         )
 
     def test_every_pipeline_phase_has_a_done_when(self):
-        """writing-skills:60 — a step without a checkable bound lets attention
+        """author-skills:60 — a step without a checkable bound lets attention
         slip to being done. The shipped pipeline bounded only 4 of 11 steps."""
         start = self.text.find("## Pipeline")
         end = self.text.find("## Range resolver")

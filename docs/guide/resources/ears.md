@@ -42,7 +42,7 @@ Status: Approved
   THEN THE SYSTEM SHALL activate the Notes module and log a warning.
 - **SHELL-1.5** WHILE a module is loading THE SYSTEM SHALL disable the rail.
 - **SHELL-1.6** WHERE the developer-tools flag is enabled THE SYSTEM SHALL
-  show a Debug module in the rail.
+  show a Root Cause module in the rail.
 - **SHELL-1.7** THE SYSTEM SHALL render exactly one active module at a time.
 ```
 
@@ -54,11 +54,11 @@ Status: Approved
 
 `SHELL-1.2` above is borderline — "persist the selection **and** restore it on next launch" — and it survives only because persist-then-restore is one round-trip behavior a single test can observe. Split it the moment a test would need two assertions in two different runs.
 
-The reason is mechanical, not aesthetic. A criterion is the unit a test tag points at. If `SHELL-1.2` names two behaviors, a test tagged `@SHELL-1.2` proves one of them and the trace check reports the requirement as covered.
+The reason is mechanical, not aesthetic. A criterion is the unit a test tag points at. If `SHELL-1.2` names two behaviors, a test tagged `@SHELL-1.2` proves one of them and the audit-trace check reports the requirement as covered.
 
 ### Every criterion must be independently verifiable
 
-`write-requirements` runs a **testability scan** before the approval gate: *can each criterion be verified by an automated test or a concrete manual check?* Rewrite any that cannot.
+`specify-behavior` runs a **testability scan** before the approval gate: *can each criterion be verified by an automated test or a concrete manual check?* Rewrite any that cannot.
 
 This is what rules out the criteria people reach for by habit:
 
@@ -76,7 +76,7 @@ The **ambiguity scan**: *could any criterion be read two different ways? Pick on
 
 ### Code claims get verified against the code
 
-If any criterion asserts how the system *currently* works — a data format, an existing behavior, a constraint — `write-requirements` dispatches a **review subagent** to check each such claim against real code, citing `file:line`.
+If any criterion asserts how the system *currently* works — a data format, an existing behavior, a constraint — `specify-behavior` dispatches a **review subagent** to check each such claim against real code, citing `file:line`.
 
 The skill names the failure it is preventing: a criterion saying "the body is ProseMirror-JSON" when it is actually Markdown poisons the design, the plan, and the code that follows.
 
@@ -92,10 +92,10 @@ A guard requirement is the only thing standing between an agent and load-bearing
 Three things follow from that ID existing:
 
 1. Some task must cite it in a `_Requirements:_` footer.
-2. Some test must be tagged with it, or the trace check reports **E2** once the feature is `Implemented`.
-3. The commit that touches the behavior carries `Guards: SHELL-1.3`, and `release` files it under **Protected behavior** in the changelog.
+2. Some test must be tagged with it, or the audit-trace check reports **E2** once the feature is `Implemented`.
+3. The commit that touches the behavior carries `Guards: SHELL-1.3`, and `cut-release` files it under **Protected behavior** in the changelog.
 
-`write-requirements` will not accept an empty guard section by default. Its completion criterion for that step:
+`specify-behavior` will not accept an empty guard section by default. Its completion criterion for that step:
 
 > You have **actively searched** the touched surface for behaviors to guard — not merely found none by default.
 
@@ -109,7 +109,7 @@ Once `Status: Approved`, a criterion's ID never changes meaning and is never ren
 - ~~**SHELL-1.2**~~ superseded by SHELL-1.8
 ```
 
-The trace check treats a struck-through ID as **undefined**, so every test and task still citing it surfaces immediately as an E1 error. Retirement cannot happen quietly.
+The audit-trace check treats a struck-through ID as **undefined**, so every test and task still citing it surfaces immediately as an E1 error. Retirement cannot happen quietly.
 
 ## Out of Scope is part of the spec
 
@@ -122,11 +122,11 @@ Not an EARS form, but it lives in the same file and it is read by three later sk
 - Reordering modules in the rail.
 ```
 
-[`code-review`](../skills/code-review.md)'s Spec axis reads it to identify scope creep. [`dogfood`](../skills/dogfood.md) turns each entry into a *deliberate non-behavior* the tester checks does **not** happen. And a future [`brainstorm`](../skills/brainstorm.md) on an adjacent idea reads it — the inline `docs/specs/` search surfaces what this feature already declined before proposing to build it again.
+[`inspect-change`](../skills/inspect-change.md)'s Spec axis reads it to identify scope creep. [`walk-product`](../skills/walk-product.md) turns each entry into a *deliberate non-behavior* the tester checks does **not** happen. And a future [`frame-change`](../skills/frame-change.md) on an adjacent idea reads it — the inline `docs/specs/` search surfaces what this feature already declined before proposing to build it again.
 
 ## See also
 
 - [Requirement IDs](../concepts/requirement-ids.md) — the grammar the IDs use
-- [`write-requirements`](../skills/write-requirements.md) — the skill that writes these
+- [`specify-behavior`](../skills/specify-behavior.md) — the skill that writes these
 - [Templates](templates.md) — the `requirements.md` seed
 - [Specification phase](../process/specification.md) — where this fits in the chain

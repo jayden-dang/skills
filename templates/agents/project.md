@@ -1,21 +1,21 @@
 # Project configuration (agent-facing)
 
-Written by `setup-repo`. Skills read this file for repo-specific **machine config** —
+Written by `configure-repo`. Skills read this file for repo-specific **machine config** —
 commands, globs, paths — plus **posture** and **team** (below). Human-facing engineering
 guidelines (coding standards, naming, house rules) live in `docs/product/guidelines.md`
-when the project-docs layer is enabled; `write-plan` sources them from there and falls
+when the project-docs layer is enabled; `plan-tasks` sources them from there and falls
 back to this file otherwise.
 
 ## Project posture
 
 The project's standing intent and lifecycle phase. Skills read this instead of re-asking:
-`brainstorm` and `grilling` right-size how much they weigh data migration, backward
-compatibility, and deprecation against it; `interpret` reuses it as session context.
+`frame-change` and `probe-decisions` right-size how much they weigh data migration, backward
+compatibility, and deprecation against it; `interpret-native` reuses it as session context.
 Edit these two lines directly whenever the project moves phase — no wizard needed.
 
-- **Delivery intent:** `<Production | MVP | Prototype | Research | Learning>` — how robust and complete the output must be.
-- **Lifecycle stage:** `<Idea | Early development | Active development | Released | Scaling | Maintenance>` — where the project is in its life.
-- **Default PR base:** `<branch, e.g. main>` — optional; `prepare-change` reads it as the third rung of its base-resolution ladder and `finish-branch` uses the base the package already carries, without recomputing. Leave the placeholder unset and `prepare-change` asks for the base per invocation instead.
+- **Delivery intent:** `<Production | MVP | Run Spike | Research | Learning>` — how robust and complete the output must be.
+- **Lifecycle stage:** `<Idea | Early development | Active development | Cut Released | Scaling | Maintenance>` — where the project is in its life.
+- **Default PR base:** `<branch, e.g. main>` — optional; `package-change` reads it as the third rung of its base-resolution ladder and `land-branch` uses the base the package already carries, without recomputing. Leave the placeholder unset and `package-change` asks for the base per invocation instead.
 
 These are distinct from the product **Goals** in `docs/product/vision.md` (what success
 looks like): posture is *how carefully to build right now*, not *what to build*.
@@ -25,7 +25,7 @@ looks like): posture is *how carefully to build right now*, not *what to build*.
 Who works on this repo and how skills should package collaboration.
 Skills that plan, review, or hand off read this section when present and
 right-size **packaging** only (Solo / Small / Multi) — Iron Law gates never
-change. Edit freely; re-run `/setup-repo` to re-draft from git/CODEOWNERS.
+change. Edit freely; re-run `/configure-repo` to re-draft from git/CODEOWNERS.
 If this section is absent, skills do not invent a team.
 
 **SSOT:** **band** derivation and the **packaging** matrix live only here.
@@ -59,20 +59,20 @@ Suggested roles (freeform allowed): Tech Lead, Backend Engineer, Frontend Engine
 |---|---|
 | **Solo** | Lean multi-person ritual language; no invented peer reviewers/assignees; agent-as-pair; full gates |
 | **Small** | Design-review checkpoints; ownership boundaries via optional freeform notes; name people when roster has names |
-| **Multi** | CODEOWNERS-aware review language when ownership notes exist; explicit review responsibilities as prose; handoff/docs emphasis |
+| **Multi** | CODEOWNERS-aware review language when ownership notes exist; explicit review responsibilities as prose; write-handoff/docs emphasis |
 | **(no band)** | Team absent, or empty roster with blank override — pre-feature default; do not invent a team; do not hard-fail |
 
 ## Decision boundaries
 
-Optional. When present, `record-decision` reads this table. Pins may raise a
+Optional. When present, `record-verdict` reads this table. Pins may raise a
 floor or bind an action to a boundary type. An entry that would lower a core
 floor is ignored with a one-line notice. Absent section → core table only.
 
 | Action | Boundary-Type | Floor |
 |---|---|---|
-| <e.g. finish-branch:discard> | <disposal> | <Accountable> |
+| <e.g. land-branch:discard> | <disposal> | <Accountable> |
 
-## Verify commands
+## verify commands
 
 Run in this order; all must pass before any completion claim.
 
@@ -85,13 +85,13 @@ Run in this order; all must pass before any completion claim.
 
 Single test file: `<command pattern, e.g. npx vitest run <path>>`
 
-The traceability check is not a command here — the `trace` skill runs it as
+The traceability check is not a command here — the `audit-trace` skill runs it as
 `grep`/`git` over `docs/specs/` and the test globs. If this repo's tests live
 outside the default globs (`tests test e2e src src-tauri crates app lib packages`),
-record the real locations below so `trace` searches the right paths.
+record the real locations below so `audit-trace` searches the right paths.
 
 Test globs: `<override, or leave blank for defaults>`
-Trace ignore (files whose IDs are fixtures, not coverage): `<optional>`
+Audit Trace ignore (files whose IDs are fixtures, not coverage): `<optional>`
 
 ## Test annotation conventions
 
@@ -103,8 +103,8 @@ Trace ignore (files whose IDs are fixtures, not coverage): `<optional>`
 
 ## Run locally (dev)
 
-How to start the app for user-facing acceptance checks (read by `acceptance-api`
-and `acceptance-ui`). Fill in once the app can be run locally; leave a row blank
+How to start the app for user-facing acceptance checks (read by `validate-api`
+and `validate-ui`). Fill in once the app can be run locally; leave a row blank
 if that surface does not exist.
 
 | Surface | Start command | Ready signal |
@@ -114,10 +114,10 @@ if that surface does not exist.
 
 Browser E2E (Playwright, Chromium): `<e.g. pnpm exec playwright test --project=chromium>`
 
-## Release steps
+## release steps
 
 <Ordered list of project-specific release steps (build commands, bundling,
-signing), consumed by the release skill.>
+signing), consumed by the cut-cut-release skill.>
 
 ## Paths
 

@@ -14,7 +14,7 @@ From mid deep-work / design pressure:
 |---|---|
 | "It's just notes, not doing the work" | Design prose under `## Design` is design work |
 | "Manager wants it in 20 minutes" | Time does not authorize smuggled implementation |
-| "Don't send me elsewhere" | Handoff is the product of the secretary skill |
+| "Don't send me elsewhere" | Write Handoff is the product of the secretary skill |
 | "Skeleton so they only flesh details" | Half-filled architecture freezes shape without grant |
 | "I'm the boss, skip WIP" | Authority sets priorities; does not repeal WIP/ghost rules |
 | "Figure outcome later" / TBD done_when | Ghost project — illegal while active |
@@ -25,7 +25,7 @@ From mid deep-work / design pressure:
 ### G1 — Hybrid design in vault
 
 User mid deep-work asks to write paste-ready design under project `## Design`.  
-**Compliant:** session log + handoff only; no design body; no skeleton.  
+**Compliant:** session log + write-handoff only; no design body; no skeleton.  
 **Skills:** `execute-session`, `using-personal-os`.
 
 ### G2 — WIP + boss exception

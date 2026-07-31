@@ -2,9 +2,9 @@
 
 Symptoms, causes, and where to look.
 
-## The trace check reports a finding
+## The audit-trace check reports a finding
 
-The trace check is the [`trace`](../concepts/traceability.md) skill: a set of deterministic `grep`/`git` passes over `docs/specs/` and the test tree, each finding decided by a fixed rule. `verify`, `release`, `sync-spec`, and `write-plan`'s coverage check all run it. Two agents running it on the same repo reach the same finding set.
+The audit-trace check is the [`audit-trace`](../concepts/traceability.md) skill: a set of deterministic `grep`/`git` passes over `docs/specs/` and the test tree, each finding decided by a fixed rule. `prove-claim`, `cut-release`, `realign-spec`, and `plan-tasks`'s coverage check all run it. Two agents running it on the same repo reach the same finding set.
 
 ### `E1 task cites unknown requirement SHELL-1.2`
 
@@ -12,7 +12,7 @@ A task footer or a test tag names an ID that no `requirements.md` defines.
 
 Three causes, in descending order of likelihood:
 
-1. **The requirement was retired.** A struck-through ID (`~~**SHELL-1.2**~~`) counts as *undefined* — that is the mechanism working. Something still cites it. Run [`sync-spec`](../skills/sync-spec.md), which lists orphans with a suggested disposition per item. Orphans are decisions, not cleanup: repoint the citation to a live ID, retire the test, or resurrect the requirement.
+1. **The requirement was retired.** A struck-through ID (`~~**SHELL-1.2**~~`) counts as *undefined* — that is the mechanism working. Something still cites it. Run [`realign-spec`](../skills/realign-spec.md), which lists orphans with a suggested disposition per item. Orphans are decisions, not cleanup: repoint the citation to a live ID, retire the test, or resurrect the requirement.
 2. **A typo** in the tag or footer.
 3. **The requirements file is outside the spec root.** Check the `specsDir` named in `docs/agents/project.md`.
 
@@ -20,7 +20,7 @@ Three causes, in descending order of likelihood:
 
 The feature is marked `Implemented` (or `Shipped`) and this requirement's ID string appears in no test file.
 
-This usually means a task footer cited the ID but no *test* was ever tagged with it. [`write-plan`](../skills/write-plan.md) is supposed to catch that at plan time — its coverage check requires every ID to appear in a **test annotation inside some task's steps**, not merely in a footer, precisely because a footer-only citation passes as a W1 warning while `Approved` and fails as an E2 error the moment the status flips.
+This usually means a task footer cited the ID but no *test* was ever tagged with it. [`plan-tasks`](../skills/plan-tasks.md) is supposed to catch that at plan time — its coverage check requires every ID to appear in a **test annotation inside some task's steps**, not merely in a footer, precisely because a footer-only citation passes as a W1 warning while `Approved` and fails as an E2 error the moment the status flips.
 
 The fix is to add the test, never to renumber. If the behavior cannot be unit-tested in isolation, tag the e2e test or an existing test that already exercises it — one test may carry several IDs.
 
@@ -36,7 +36,7 @@ The plan is incomplete. Either add a covering task, or strike the requirement th
 
 ### `W2 … missing "Status:" line`
 
-The requirements file has no `Status:` or `Feature code:` header. The trace check needs `Status:` to know whether E2 applies.
+The requirements file has no `Status:` or `Feature code:` header. The audit-trace check needs `Status:` to know whether E2 applies.
 
 ### The check finds phantom IDs in a fixture file
 
@@ -48,18 +48,18 @@ The only sanctioned exclusion is the **ignore list** in `docs/agents/project.md`
 
 ## Overlapping features are not flagged
 
-Duplication is caught by an inline `docs/specs/` search: [`brainstorm`](../skills/brainstorm.md) and [`code-review`](../skills/code-review.md) grep the existing specs for a feature that already covers the idea, and `docs/specs/INDEX.md` is the feature-code registry they read.
+Duplication is caught by an inline `docs/specs/` search: [`frame-change`](../skills/frame-change.md) and [`inspect-change`](../skills/inspect-change.md) grep the existing specs for a feature that already covers the idea, and `docs/specs/INDEX.md` is the feature-code registry they read.
 
-### `brainstorm` never mentions an overlapping feature
+### `frame-change` never mentions an overlapping feature
 
 Two likely causes:
 
-1. **`INDEX.md` is empty or stale.** `write-requirements` registers each feature code in `docs/specs/INDEX.md` *before* writing the file. A code that was never registered leaves nothing for the search to match — the overlap is invisible. Register the missing rows.
+1. **`INDEX.md` is empty or stale.** `specify-behavior` registers each feature code in `docs/specs/INDEX.md` *before* writing the file. A code that was never registered leaves nothing for the search to match — the overlap is invisible. Register the missing rows.
 2. **The spec text does not name the shared concept.** The search is textual; two features that solve the same problem in different words will not collide. Say the shared term out loud in the requirements so a future search finds it.
 
 ### A feature code is missing from `INDEX.md`
 
-A `requirements.md` declares a feature code with no row in `docs/specs/INDEX.md`. `write-requirements` registers the code *before* writing the file; this means that step was skipped. Add the row so the registry stays complete.
+A `requirements.md` declares a feature code with no row in `docs/specs/INDEX.md`. `specify-behavior` registers the code *before* writing the file; this means that step was skipped. Add the row so the registry stays complete.
 
 ---
 
@@ -67,18 +67,18 @@ A `requirements.md` declares a feature code with no row in `docs/specs/INDEX.md`
 
 ### The agent answers without invoking any skill
 
-The [`using-skills`](../skills/using-skills.md) gate is not in context. It is injected by a `SessionStart` hook with matcher `startup|clear|compact`.
+The [`gate-session`](../skills/gate-session.md) gate is not in context. It is injected by a `SessionStart` hook with matcher `startup|clear|compact`.
 
 - Installed as a plugin? The hook ships in `hooks/hooks.json`.
-- Installed by symlink, or into a harness with no hook support? Re-run `/setup-repo` and accept the session-start hook, which copies `templates/session-start.sh` into `.claude/hooks/` and wires it through `$CLAUDE_PROJECT_DIR`.
+- Installed by symlink, or into a harness with no hook support? Re-run `/configure-repo` and accept the session-start hook, which copies `templates/session-start.sh` into `.claude/hooks/` and wires it through `$CLAUDE_PROJECT_DIR`.
 
-Verify it fires: execute `.claude/hooks/session-start.sh` and confirm it prints one line of valid JSON.
+Prove Claim it fires: execute `.claude/hooks/session-start.sh` and confirm it prints one line of valid JSON.
 
 ### A specific skill never triggers
 
-Its `description` is the trigger, and it is the one field you cannot eyeball. Per [`writing-skills`](../skills/writing-skills.md), under-specifying is the commoner of the two failure directions: the skill simply never fires.
+Its `description` is the trigger, and it is the one field you cannot eyeball. Per [`author-skills`](../skills/author-skills.md), under-specifying is the commoner of the two failure directions: the skill simply never fires.
 
-The description should carry the words a user would actually type — symptoms, literal error text, file names, synonyms — plus the outcome noun. Trigger-test it with should-fire and should-not-fire queries, per the `pressure-testing.md` reference beside `writing-skills`.
+The description should carry the words a user would actually type — symptoms, literal error text, file names, synonyms — plus the outcome noun. Trigger-test it with should-fire and should-not-fire queries, per the `pressure-testing.md` reference beside `author-skills`.
 
 ### The agent reads the description and skips the body
 
@@ -92,13 +92,13 @@ Rewrite the description as **trigger + outcome noun, never the workflow**.
 
 `triage` carries `disable-model-invocation: true`. The agent *cannot* invoke it. Some skill body is directing a hand-off to a user-invoked target — that is a real bug, not a style nit. A hand-off reaches a user-invoked skill only by *naming it for the user to run*.
 
-The user-invoked set: `/ask`, `/writing-skills`, `/teach`, `/setup-repo`, `/scaffold-project`, `/establish-project`, `/triage`, `/improve-architecture`, `/handoff`, `/file-issues`, `/release`.
+The user-invoked set: `/route-work`, `/author-skills`, `/teach-pack`, `/configure-repo`, `/bootstrap-repo`, `/anchor-project`, `/triage`, `/scan-architecture`, `/write-handoff`, `/publish-issues`, `/cut-release`.
 
 ---
 
 ## Execution problems
 
-### `execute-plan` re-ran a task that was already done
+### `build-continuous` re-ran a task that was already done
 
 The controller trusted its own memory after a compaction. `.skills/progress.md` is the source of truth:
 
@@ -110,7 +110,7 @@ After compaction or resume, trust the ledger and `git log`. Never re-dispatch a 
 
 Check the review bundle's diff base. The controller builds the bundle itself — `git log`/`git diff` from a recorded base into `.skills/review-<base7>..<head7>.diff` — and if that base is `HEAD~1` instead of the sha recorded *before* the implementer was dispatched, the reviewer saw only the last commit of a multi-commit task.
 
-`execute-plan` warns about this: `BASE=$(git rev-parse HEAD)` is step 1 of the per-task loop for exactly this reason.
+`build-continuous` warns about this: `BASE=$(git rev-parse HEAD)` is step 1 of the per-task loop for exactly this reason.
 
 ### An implementer keeps returning BLOCKED
 
@@ -127,7 +127,7 @@ Never force the same model to retry with nothing changed. Diagnose:
 
 The plan does not grade its own work. Present the finding **and** the mandating plan text to the user and ask which governs. Never dismiss the finding; never dispatch a fix that contradicts the plan without asking.
 
-`execute-plan`'s pre-flight scan is meant to catch these before any dispatch and batch them into one question.
+`build-continuous`'s pre-flight scan is meant to catch these before any dispatch and batch them into one question.
 
 ---
 
@@ -137,17 +137,17 @@ The plan does not grade its own work. Present the finding **and** the mandating 
 
 That is the expected state, not an anomaly. Green unit tests prove that the assertions someone wrote pass.
 
-Run [`acceptance-check`](../skills/acceptance-check.md): derive the user-facing behaviors from the spec, drive the running system through every one as a real client, and promote the passing checks into committed ID-tagged tests.
+Run [`validate-feature`](../skills/validate-feature.md): derive the user-facing behaviors from the spec, drive the running system through every one as a real client, and promote the passing checks into committed ID-tagged tests.
 
-### The trace check passes but the code is wrong
+### The audit-trace check passes but the code is wrong
 
 The spine proves that an ID is defined, cited, and present in a test file. It cannot prove the test is a *good* test.
 
-A tautological test — one whose expected value is recomputed the same way the code computes it — satisfies the trace check completely and proves nothing. That is [`tdd`](../skills/tdd.md)'s anti-pattern table's job, and `code-review`'s Standards axis, and the acceptance skills'.
+A tautological test — one whose expected value is recomputed the same way the code computes it — satisfies the audit-trace check completely and proves nothing. That is [`test-first`](../skills/test-first.md)'s anti-pattern table's job, and `inspect-change`'s Standards axis, and the acceptance skills'.
 
 ### A regression test that never catches anything
 
-Apply the regression-proof pattern from [`verify`](../skills/verify.md):
+Apply the regression-proof pattern from [`prove-claim`](../skills/prove-claim.md):
 
 ```
 write test → passes → revert the fix → test MUST fail → restore fix → passes
@@ -157,11 +157,11 @@ A test that survives the revert is testing nothing.
 
 ---
 
-## Debugging problems
+## Root Causeging problems
 
 ### Three fixes in and the bug is still there
 
-Stop. From [`debug`](../skills/debug.md):
+Stop. From [`root-cause`](../skills/root-cause.md):
 
 > **Three failed fix attempts = STOP.** The architecture is in question, not your latest hypothesis — especially if each fix reveals new coupling somewhere else. Discuss with the user before attempt 4.
 
@@ -169,19 +169,19 @@ Stop. From [`debug`](../skills/debug.md):
 
 Say so explicitly, list what you tried, and ask the user for a reproducing environment, a captured artifact, or permission to add temporary instrumentation. **Do not proceed on vibes.** No red-capable command means no Phase 2.
 
-For a non-deterministic bug, do not chase a clean repro. Raise the reproduction rate — loop the trigger 100×, add stress, shrink timing windows — until it is high enough to debug against.
+For a non-deterministic bug, do not chase a clean repro. Raise the reproduction rate — loop the trigger 100×, add stress, shrink timing windows — until it is high enough to root-cause against.
 
 ---
 
 ## Setup problems
 
-### A verify command works in my shell but fails in `tdd`
+### A verify command works in my shell but fails in `test-first`
 
-`docs/agents/project.md` records commands that were *pre-filled from detection* and may never have been run. Re-run `/setup-repo` and pay attention to step 6, which classifies each command as a wiring failure, a content failure, or a pass. Setup is not done while any command is mis-wired.
+`docs/agents/project.md` records commands that were *pre-filled from detection* and may never have been run. Re-run `/configure-repo` and pay attention to step 6, which classifies each command as a wiring failure, a content failure, or a pass. Setup is not done while any command is mis-wired.
 
 ## See also
 
-- [Traceability — the spine](../concepts/traceability.md) — what the trace check is and the finding codes
+- [Traceability — the spine](../concepts/traceability.md) — what the audit-trace check is and the finding codes
 - [The gates](../concepts/gates.md) — what each Iron Law is preventing
-- [`sync-spec`](../skills/sync-spec.md) — the skill for realigning a drifted spec
-- [`ask`](../skills/ask.md) — the router, when you do not know which flow you are in
+- [`realign-spec`](../skills/realign-spec.md) — the skill for realigning a drifted spec
+- [`route-work`](../skills/route-work.md) — the router, when you do not know which flow you are in

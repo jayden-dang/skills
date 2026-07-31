@@ -5,7 +5,7 @@ Date: <YYYY-MM-DD>
 
 <!--
 The repo-level north star: WHAT this project is and for whom, above any single
-feature. Optional — only large/long-lived projects need it. `brainstorm` reads it
+feature. Optional — only large/long-lived projects need it. `frame-change` reads it
 to check a new idea's scope; it never gates. Keep each section tight; every heading
 is a REQUIRED slot — fill it or write `None`.
 -->

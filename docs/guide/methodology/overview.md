@@ -6,7 +6,7 @@ It is built for a specific situation — a human directing an AI coding agent (o
 
 ## The problem it solves
 
-An LLM is a stochastic system. Ask it the same question twice and you get two different answers, both plausible. That is a feature when you want ideas and a catastrophe when you want a codebase.
+An LLM is a stochastic system. Route Work it the same question twice and you get two different answers, both plausible. That is a feature when you want ideas and a catastrophe when you want a codebase.
 
 The specific failures compound:
 
@@ -28,18 +28,18 @@ Every feature gets a **spec triad** in `docs/specs/<date>-<feature>/`:
 
 That ID then flows outward into everything downstream: the test that verifies the behavior carries it as a tag, the commit that implements it carries it as a trailer, the issue that tracks it carries it in a `Requirements covered:` section, and the changelog entry that announces it is assembled from those trailers.
 
-And then — this is the part that makes it real rather than aspirational — a **deterministic check**, not human diligence, keeps the chain honest. The [`trace`](../resources/scripts.md#the-trace-check) skill runs a fixed sequence of `grep` and `git` passes — invoked by `verify`, `release`, and `sync-spec` — and reports it when a task cites a requirement that does not exist, when a shipped requirement has no covering test, or when an ID is defined twice. Unchecked trace matrices rot; this one is machine-checked from primitives every repo already has.
+And then — this is the part that makes it real rather than aspirational — a **deterministic check**, not human diligence, keeps the chain honest. The [`audit-trace`](../resources/scripts.md#the-trace-check) skill runs a fixed sequence of `grep` and `git` passes — invoked by `prove-claim`, `cut-release`, and `realign-spec` — and reports it when a task cites a requirement that does not exist, when a shipped requirement has no covering test, or when an ID is defined twice. Unchecked audit-trace matrices rot; this one is machine-checked from primitives every repo already has.
 
-Around that spine sit **40 skills** in eleven buckets, each one a piece of process the agent is required to follow, and four **hard gates** that cannot be talked past. One of those buckets, `project/`, is an **optional layer above the feature loop**: on a large project, [`establish-project`](../skills/establish-project.md) maintains a repo-level product vision and an IDed architecture-invariant spine that the feature skills consult when present and ignore when absent.
+Around that spine sit **40 skills** in eleven buckets, each one a piece of process the agent is required to follow, and four **hard gates** that cannot be talked past. One of those buckets, `project/`, is an **optional layer above the feature loop**: on a large project, [`anchor-project`](../skills/anchor-project.md) maintains a repo-level product vision and an IDed architecture-invariant spine that the feature skills consult when present and ignore when absent.
 
 ## The four gates
 
 | Gate | Skill | Law |
 |---|---|---|
-| No code before an approved spec | [`brainstorm`](../skills/brainstorm.md) | Write no code, scaffold nothing, until the ceremony tier is stated out loud |
-| No production code before a failing test | [`tdd`](../skills/tdd.md) | `NO PRODUCTION CODE WITHOUT A FAILING TEST FIRST` |
-| No fix before a root cause | [`debug`](../skills/debug.md) | `NO FIXES WITHOUT ROOT CAUSE INVESTIGATION FIRST` |
-| No completion claim without fresh evidence | [`verify`](../skills/verify.md) | `NO COMPLETION CLAIMS WITHOUT FRESH VERIFICATION EVIDENCE` |
+| No code before an approved spec | [`frame-change`](../skills/frame-change.md) | Write no code, scaffold nothing, until the ceremony tier is stated out loud |
+| No production code before a failing test | [`test-first`](../skills/test-first.md) | `NO PRODUCTION CODE WITHOUT A FAILING TEST FIRST` |
+| No fix before a root cause | [`root-cause`](../skills/root-cause.md) | `NO FIXES WITHOUT ROOT CAUSE INVESTIGATION FIRST` |
+| No completion claim without fresh evidence | [`prove-claim`](../skills/prove-claim.md) | `NO COMPLETION CLAIMS WITHOUT FRESH VERIFICATION EVIDENCE` |
 
 These are written as hard prohibitions with explicit rationalization tables, because that is the form that survives an agent under pressure. See [The gates](../concepts/gates.md).
 
@@ -49,26 +49,26 @@ The obvious objection to spec-driven development is that it drowns a two-line ch
 
 | Tier | When | Artifacts |
 |---|---|---|
-| **0 — trivial** | typo-level, no behavior change | none; `tdd` and `verify` only |
+| **0 — trivial** | typo-level, no behavior change | none; `test-first` and `prove-claim` only |
 | **1 — bugfix / small change** | behavior change, ≤ ~half a day | a mini-spec: one fix requirement plus a `SHALL CONTINUE TO` guard, and a tagged regression test |
-| **2 — feature** | multi-task work | the full triad, then `execute-plan` |
+| **2 — feature** | multi-task work | the full triad, then `build-continuous` |
 
-`brainstorm` and `amend` decide the tier explicitly and say so out loud. Deciding a change is tier 0 *is* the design step. Skipping the decision is the overhead, not performing it.
+`frame-change` and `amend-feature` decide the tier explicitly and say so out loud. Deciding a change is tier 0 *is* the design step. Skipping the decision is the overhead, not performing it.
 
 See [Ceremony tiers](ceremony-tiers.md).
 
 ## The main chain
 
 ```
-brainstorm ──► write-requirements ──► write-design ──► write-plan
+frame-change ──► specify-behavior ──► design-solution ──► plan-tasks
   (gate: no code)   (EARS + IDs)        (Satisfies:)    (_Requirements:_)
        │                                                        │
        │ tier 0/1 shortcuts                                     ▼
-       │                                       worktrees ──► execute-plan
+       │                                       isolate-workspace ──► build-continuous
        ▼                                                        │
- debug / tdd / verify ◄── discipline skills govern ─────────────┘
+ root-cause / test-first / prove-claim ◄── discipline skills govern ─────────────┘
                                                                 │
-       code-review ──► acceptance-check ──► finish-branch ──► release ──► sync-spec
+       inspect-change ──► validate-feature ──► land-branch ──► cut-release ──► realign-spec
                    (drive the running system as a real user)
 ```
 
@@ -78,11 +78,11 @@ Each arrow is a hand-off written into the skill body as a `REQUIRED SUB-SKILL:` 
 
 Plenty of methodologies say "write requirements first." Three things here are unusual:
 
-1. **The requirement ID is a first-class runtime object.** It is not a heading in a document. It is a string that appears in a test tag, a commit trailer, an issue body, and a changelog line, and the trace check surfaces it the moment those uses disagree with the definition.
+1. **The requirement ID is a first-class runtime object.** It is not a heading in a document. It is a string that appears in a test tag, a commit trailer, an issue body, and a changelog line, and the audit-trace check surfaces it the moment those uses disagree with the definition.
 
-2. **The process is written for an agent, not a human.** Skill bodies are shaped by their observed failure mode: a skill that guards a rule the agent breaks under pressure gets a prohibition and a rationalization table; a skill whose output has the wrong shape gets a positive recipe instead, because in head-to-head tests prohibitions produced *more* of the unwanted content than no guidance at all. This doctrine is itself a skill — [`writing-skills`](../skills/writing-skills.md) — and every skill in the set was pressure-tested against it.
+2. **The process is written for an agent, not a human.** Skill bodies are shaped by their observed failure mode: a skill that guards a rule the agent breaks under pressure gets a prohibition and a rationalization table; a skill whose output has the wrong shape gets a positive recipe instead, because in head-to-head tests prohibitions produced *more* of the unwanted content than no guidance at all. This doctrine is itself a skill — [`author-skills`](../skills/author-skills.md) — and every skill in the set was pressure-tested against it.
 
-3. **Context is treated as a scarce, hostile resource.** [`execute-plan`](../skills/execute-plan.md) hands each task to a fresh subagent whose entire world is a generated brief file; bulk artifacts travel as file paths, never pasted text. Progress is appended to a ledger on disk because conversation memory does not survive compaction — and controllers that trusted memory have re-dispatched entire completed task sequences.
+3. **Context is treated as a scarce, hostile resource.** [`build-continuous`](../skills/build-continuous.md) hands each task to a fresh subagent whose entire world is a generated brief file; bulk artifacts travel as file paths, never pasted text. Progress is appended to a ledger on disk because conversation memory does not survive compaction — and controllers that trusted memory have re-dispatched entire completed task sequences.
 
 ## Where to go next
 

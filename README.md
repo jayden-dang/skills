@@ -22,7 +22,7 @@ ideation to release, with **requirements traceability as the spine**.
 Every feature gets a spec triad — `requirements.md` (EARS acceptance criteria
 with hierarchical IDs), `design.md` (each section says which requirements it
 satisfies), `tasks.md` (each task cites the IDs it implements). The same IDs
-flow into test tags, commit trailers, and issue bodies, and the `trace` skill
+flow into test tags, commit trailers, and issue bodies, and the `audit-trace` skill
 keeps the whole chain honest — a `grep`-and-`git` check the agent runs, no
 linter to install.
 
@@ -82,7 +82,7 @@ for cat in meta discovery spec execution review acceptance craft ship track proj
 done
 ```
 
-Then, once per **code** repo, run `/setup-repo`. See [Adopting](docs/guide/resources/adopting.md).
+Then, once per **code** repo, run `/configure-repo`. See [Adopting](docs/guide/resources/adopting.md).
 
 ### Personal OS (opt-in, independent)
 
@@ -102,12 +102,12 @@ Do not use a blind `skills/*/*` symlink loop if you want engineering only — th
 **Other platforms.** Nothing here is Claude-specific — the skills are plain
 `SKILL.md` and the traceability check is `grep`/`git` the agent drives.
 `AGENTS.md` at the repo root is the portable behavior contract; Codex CLI reads
-it natively and Cursor picks up `.cursor/rules/using-skills.mdc`. See
+it natively and Cursor picks up `.cursor/rules/gate-session.mdc`. See
 [Running on other platforms](docs/guide/resources/platforms.md).
 
 ### Recommended prerequisite: the Context7 MCP
 
-The library-reasoning skills — `research`, `brainstorm`, and `write-design` —
+The library-reasoning skills — `research`, `frame-change`, and `design-solution` —
 prefer the **[Context7 MCP](https://github.com/upstash/context7)** for current,
 version-accurate library and API facts instead of a model's training-cutoff
 memory (which drifts stale: a version bumped, an API renamed, a package moved).
@@ -116,7 +116,7 @@ they fall back to fetching official docs directly, so it is a recommendation,
 not a hard dependency — but installing it is strongly advised for any project
 that pulls in third-party libraries.
 
-`/setup-repo` offers to install it and records the choice in
+`/configure-repo` offers to install it and records the choice in
 `docs/agents/project.md`. To add it yourself, follow the setup instructions at
 **[github.com/upstash/context7](https://github.com/upstash/context7)** — for
 Claude Code, register the server in the project's `.mcp.json` (or your user MCP
@@ -126,41 +126,41 @@ configuration.
 ## The flow
 
 ```
-brainstorm ──► write-requirements ──► write-design ──► write-plan
+frame-change ──► specify-behavior ──► design-solution ──► plan-tasks
    (gate: no code)     (EARS + IDs)      (Satisfies:)     (_Requirements:_)
         │                                                       │
         │ tier 0/1 shortcuts                                    ▼
-        │                          worktrees ──► execute-plan | execute-story | execute-inline
+        │                          isolate-workspace ──► build-continuous | build-story-units | build-inline
         ▼                                                       │
-  debug / tdd / verify  ◄── discipline skills govern ──────────┘
+  root-cause / test-first / prove-claim  ◄── discipline skills govern ──────────┘
                                                                 │
-              code-review ──► acceptance-check ──► finish-branch ──► release ──► sync-spec
+              inspect-change ──► validate-feature ──► land-branch ──► cut-release ──► realign-spec
                           (drive the running system as a real user)
 ```
 
-- **Tier 0** (trivial): skip specs — `tdd` + `verify`.
+- **Tier 0** (trivial): skip specs — `test-first` + `prove-claim`.
 - **Tier 1** (bugfix): a fix requirement + a `SHALL CONTINUE TO` guard + a
   tagged regression test.
 - **Tier 2** (feature): the full triad.
 
-**Optional project layer** (large projects, off by default): `establish-project`,
-`repoint-project` (pivot disposition ledger when shipped code collides with new intent)
+**Optional project layer** (large projects, off by default): `anchor-project`,
+`dispose-pivot` (pivot disposition ledger when shipped code collides with new intent)
 maintains a repo-level product vision plus an IDed architecture-invariant spine
-(`docs/architecture/`, each rule an `**ARCH-N**`) that `brainstorm`, `write-design`,
-`write-plan`, the execute family, and `code-review` consult when present. Feature
-`design.md` files cite the invariants they rely on as `Respects: ARCH-N`, and `trace`
+(`docs/architecture/`, each rule an `**ARCH-N**`) that `frame-change`, `design-solution`,
+`plan-tasks`, the execute family, and `inspect-change` consult when present. Feature
+`design.md` files cite the invariants they rely on as `Respects: ARCH-N`, and `audit-trace`
 checks those citations the same way it checks requirement IDs. A repo that opts into
 nothing behaves exactly as above.
 
-Lost? Invoke `/ask` — it routes any situation to the right entry point.
+Lost? Invoke `/route-work` — it routes any situation to the right entry point.
 
 ## The four gates
 
 ```
-brainstorm   Write NO code, scaffold NOTHING, until the ceremony tier is stated out loud.
-tdd          NO PRODUCTION CODE WITHOUT A FAILING TEST FIRST
-debug        NO FIXES WITHOUT ROOT CAUSE INVESTIGATION FIRST
-verify       NO COMPLETION CLAIMS WITHOUT FRESH VERIFICATION EVIDENCE
+frame-change   Write NO code, scaffold NOTHING, until the ceremony tier is stated out loud.
+test-first          NO PRODUCTION CODE WITHOUT A FAILING TEST FIRST
+root-cause        NO FIXES WITHOUT ROOT CAUSE INVESTIGATION FIRST
+prove-claim       NO COMPLETION CLAIMS WITHOUT FRESH VERIFICATION EVIDENCE
 ```
 
 They are written as hard prohibitions with explicit rationalization tables,
@@ -174,17 +174,17 @@ and countered by name. See [The gates](docs/guide/concepts/gates.md).
 
 | Bucket | Skills |
 |---|---|
-| meta | `using-skills` (session gate), `ask` (router), `writing-skills`, `teach` |
-| setup | `setup-repo`, `scaffold-project` |
-| discovery | `brainstorm`, `grilling`, `research`, `prototype`, `domain-modeling`, `interpret` |
-| spec | `write-requirements`, `write-design`, `write-plan` |
-| execution | `execute-plan`, `execute-story`, `execute-inline`, `tdd`, `debug`, `verify`, `trace`, `worktrees` |
-| review | `code-review`, `receive-review`, `check-invariants` |
-| acceptance | `acceptance-check`, `acceptance-api`, `acceptance-ui`, `dogfood`, `drive-dogfood` |
-| craft | `design-page` |
-| ship | `prepare-change`, `finish-branch`, `release` |
-| track | `amend`, `correct-course`, `triage`, `sync-spec`, `check-roadmap`, `assess-milestone`, `improve-architecture`, `handoff`, `file-issues` |
-| project | `establish-project`, `repoint-project`, `write-roadmap` (optional project / multi-milestone layer) |
+| meta | `gate-session` (session gate), `route-work` (router), `author-skills`, `teach-pack` |
+| setup | `configure-repo`, `bootstrap-repo` |
+| discovery | `frame-change`, `probe-decisions`, `research`, `run-spike`, `define-domain`, `interpret-native` |
+| spec | `specify-behavior`, `design-solution`, `plan-tasks` |
+| execution | `build-continuous`, `build-story-units`, `build-inline`, `test-first`, `root-cause`, `prove-claim`, `audit-trace`, `isolate-workspace` |
+| review | `inspect-change`, `vet-feedback`, `judge-invariants` |
+| acceptance | `validate-feature`, `validate-api`, `validate-ui`, `walk-product`, `drive-walk` |
+| craft | `craft-page` |
+| ship | `package-change`, `land-branch`, `cut-release` |
+| track | `amend-feature`, `reroute-plan`, `triage`, `realign-spec`, `status-roadmap`, `assess-milestone`, `scan-architecture`, `write-handoff`, `publish-issues` |
+| project | `anchor-project`, `dispose-pivot`, `plan-milestones` (optional project / multi-milestone layer) |
 
 One page per skill in the [skill reference](docs/guide/skills/README.md).
 
@@ -208,17 +208,17 @@ Templates: `templates/personal-os/`.
 ## Traceability, without a linter
 
 The vertical layer — does every requirement trace to a task and a test? — is the
-`trace` skill. It runs a fixed sequence of `grep` passes (bold `**CODE-N.M**`
+`audit-trace` skill. It runs a fixed sequence of `grep` passes (bold `**CODE-N.M**`
 definitions, `_Requirements:` task citations, ID strings across the test globs)
 and diffs the sets: it reports tasks or tests citing unknown IDs, implemented or
 shipped requirements with no covering test, and duplicate definitions; it warns on
 approved requirements no task cites. Because the passes are `grep` and the rules
 are set operations, the result is the same whoever runs it — the determinism is in
-the primitives, not in a bundled script. `verify`, `release`, `sync-spec`, and
-`write-plan` invoke it.
+the primitives, not in a bundled script. `prove-claim`, `cut-release`, `realign-spec`, and
+`plan-tasks` invoke it.
 
-The horizontal layer — "does this idea already exist?" for `brainstorm`, "does
-this diff reimplement a neighbor?" for `code-review` — is an inline search over
+The horizontal layer — "does this idea already exist?" for `frame-change`, "does
+this diff reimplement a neighbor?" for `inspect-change` — is an inline search over
 `docs/specs/`, with `docs/specs/INDEX.md` as the feature registry. No generated
 graph to keep fresh.
 

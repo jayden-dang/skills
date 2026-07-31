@@ -1,14 +1,14 @@
 # Trigger-test — description routing across the model roster
 
-Recorded per `writing-skills`: the `description` is the highest-leverage line in a skill
+Recorded per `author-skills`: the `description` is the highest-leverage line in a skill
 and the one field that cannot be eyeballed, so it is tested empirically. This file is the
-evidence for the 47 model-invocable descriptions. It is Trace-ignored.
+evidence for the 47 model-invocable descriptions. It is Audit Trace-ignored.
 
 ## Validity precondition
 
 Routing is decided by the *installed* descriptions, not the repo's working copies. Before
 running, all 47 model-invocable descriptions were diffed repo-vs-installed:
-**46 identical, 0 drifted, 1 not installed (`write-roadmap`)**. The tier-1 sweep rewrote
+**46 identical, 0 drifted, 1 not installed (`plan-milestones`)**. The tier-1 sweep rewrote
 only user-invoked descriptions, which route nothing. So this is a live routing test, not a
 simulation — the router under test sees exactly the text recorded here.
 
@@ -18,9 +18,9 @@ be routed to at all.
 ## Method
 
 38 realistic first-person queries — messy phrasing, no skill names, drawn from the
-colliding pairs whose scope abuts (acceptance trio vs dogfood vs verify; debug vs tdd;
-brainstorm vs grilling vs amend vs correct-course; the spec triad; code-review vs polish vs
-receive-review; sync-spec vs trace; research vs prototype; and the personal pack's
+colliding pairs whose scope abuts (acceptance trio vs walk-product vs verify; root-cause vs tdd;
+frame-change vs probe-decisions vs amend-feature vs reroute-plan; the spec triad; inspect-change vs polish-diff vs
+vet-feedback; realign-spec vs trace; research vs run-spike; and the personal pack's
 open/plan/orient/capture cluster). Expected answers were written first and held back from
 every tested agent.
 
@@ -33,16 +33,16 @@ Roster: opus, sonnet, haiku. Per the protocol the bar is the weakest model.
 
 114 routing decisions. **34 of 38 queries unanimous across all three models (89%).**
 
-Four divergences: A7 `brainstorm`/`amend`, A9 `tdd`/`polish`, C2 `polish`/`simplify`,
+Four divergences: A7 `frame-change`/`amend-feature`, A9 `test-first`/`polish-diff`, C2 `polish-diff`/`simplify`,
 D3 `plan-day`/`orient`.
 
 ## Phase 2 result — three of the four divergences were batching artifacts
 
 | Divergence | Phase 1 | Phase 2 (fresh context) | Verdict |
 |---|---|---|---|
-| A9 refactor → `tdd` vs `polish` | sonnet chose `polish` | sonnet `tdd`, haiku `tdd` | artifact — did not reproduce |
-| C2 cleanup → `polish` vs `simplify` | sonnet chose `simplify` | 7/8 chose `polish` across all three models | artifact — did not reproduce |
-| A7 "add a discount field" | haiku chose `amend` | haiku `amend`; rephrased, haiku `brainstorm` | boundary variance, see below |
+| A9 refactor → `test-first` vs `polish-diff` | sonnet chose `polish-diff` | sonnet `test-first`, haiku `test-first` | artifact — did not reproduce |
+| C2 cleanup → `polish-diff` vs `simplify` | sonnet chose `simplify` | 7/8 chose `polish-diff` across all three models | artifact — did not reproduce |
+| A7 "add a discount field" | haiku chose `amend-feature` | haiku `amend-feature`; rephrased, haiku `frame-change` | boundary variance, see below |
 | D3 "what am I doing today" | sonnet chose `orient` | sonnet `orient`, haiku `orient` | reproduces |
 
 The single reproducible `simplify` hit was haiku on *"there's a lot of needless complexity
@@ -57,10 +57,10 @@ No description was edited. Two observations remain open but neither clears the n
   but which should win is genuinely debatable: `orient` advertises "today's focus" and
   returns one recommended next focus, which answers the question. Editing on a contested
   premise would be writing text against a guess.
-- **`amend` vs `brainstorm` on "add a field to X"** flips with phrasing on haiku. The query
+- **`amend-feature` vs `frame-change` on "add a field to X"** flips with phrasing on haiku. The query
   is ambiguous by construction — whether the surface is already spec'd decides it, and the
-  query does not say. `amend`'s description already carries the exclusion clause
-  ("Not for a brand-new feature (brainstorm)").
+  query does not say. `amend-feature`'s description already carries the exclusion clause
+  ("Not for a brand-new feature (frame-change)").
 
 Per the Iron Law, a baseline that does not fail means there is nothing to write.
 

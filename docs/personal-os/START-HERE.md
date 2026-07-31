@@ -31,7 +31,7 @@ Invoke **`setup-personal-os`**.
 | Session start | `using-personal-os` (gate) |
 | “Where am I?” | `orient` |
 | Morning | `plan-day` |
-| Start / end focus | `execute-session` (log + handoff for *you*) |
+| Start / end focus | `execute-session` (log + write-handoff for *you*) |
 | Raw thoughts | `capture` → later `process-inbox` |
 | End of week | `review-week` |
 | End of quarter | `review-quarter` |

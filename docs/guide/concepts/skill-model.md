@@ -6,7 +6,7 @@ A skill is a markdown file with YAML frontmatter that the agent reads and follow
 
 ```markdown
 ---
-name: tdd
+name: test-first
 description: Use when writing or changing any production code — a new feature, a
   bugfix, a behavior change, or a refactor — and before the first line of
   implementation exists; the test-first (TDD) gate.
@@ -26,37 +26,37 @@ Three loading levels, and each costs differently:
 | **Body** — the SKILL.md text | paid every turn *once the skill fires* |
 | **Reference file** — a sibling `.md` behind a pointer | costs nothing until the pointer is followed |
 
-That budget is why discipline skills keep their core body to roughly 500 words, why the hard ceiling for any SKILL.md body is ~500 lines, and why the session-injected `using-skills` is the shortest gate in the set. Length is a failure mode in itself, even when every line is live.
+That budget is why discipline skills keep their core body to roughly 500 words, why the hard ceiling for any SKILL.md body is ~500 lines, and why the session-injected `gate-session` is the shortest gate in the set. Length is a failure mode in itself, even when every line is live.
 
 ## The two invocation kinds
 
-**Model-invocable** skills have no special frontmatter. The agent invokes them on its own when the description matches the situation. These hold reusable discipline: `tdd`, `verify`, `debug`, `grilling`, `write-design`.
+**Model-invocable** skills have no special frontmatter. The agent invokes them on its own when the description matches the situation. These hold reusable discipline: `test-first`, `prove-claim`, `root-cause`, `probe-decisions`, `design-solution`.
 
-**User-invoked** skills carry `disable-model-invocation: true`. The agent *cannot* auto-invoke them; the user runs them as a slash command. These orchestrate: `/ask`, `/setup-repo`, `/scaffold-project`, `/establish-project`, `/triage`, `/improve-architecture`, `/handoff`, `/file-issues`, `/release`, `/writing-skills`, `/teach`.
+**User-invoked** skills carry `disable-model-invocation: true`. The agent *cannot* auto-invoke them; the user runs them as a slash command. These orchestrate: `/route-work`, `/configure-repo`, `/bootstrap-repo`, `/anchor-project`, `/triage`, `/scan-architecture`, `/write-handoff`, `/publish-issues`, `/cut-release`, `/author-skills`, `/teach-pack`.
 
 The composition rule falls out of that:
 
 > A user-invoked skill may invoke model-invoked skills, never another user-invoked one.
 
-And the corollary, which `writing-skills` calls a real bug rather than a style nit: **no skill body may tell the agent to *invoke* a user-invoked skill.** Directing the agent to invoke a `disable-model-invocation` target is a dead-end hand-off — the invocation silently cannot happen. A hand-off reaches a user-invoked skill only by *naming it for the user to run*: "run `/triage`", "suggest the user run `/handoff`".
+And the corollary, which `author-skills` calls a real bug rather than a style nit: **no skill body may tell the agent to *invoke* a user-invoked skill.** Directing the agent to invoke a `disable-model-invocation` target is a dead-end hand-off — the invocation silently cannot happen. A hand-off reaches a user-invoked skill only by *naming it for the user to run*: "run `/triage`", "suggest the user run `/write-handoff`".
 
-You can see the rule being obeyed in the wild. `debug` hands architectural findings to `improve-architecture` — but `improve-architecture` is user-invoked, so `using-skills` says: *"name a user-invoked one for the user to run."* Meanwhile `execute-plan` writes `REQUIRED SUB-SKILL: use \`code-review\`` freely, because `code-review` is model-invocable.
+You can see the rule being obeyed in the wild. `root-cause` hands architectural findings to `scan-architecture` — but `scan-architecture` is user-invoked, so `gate-session` says: *"name a user-invoked one for the user to run."* Meanwhile `build-continuous` writes `REQUIRED SUB-SKILL: use \`inspect-change\`` freely, because `inspect-change` is model-invocable.
 
 | Bucket | Skills | Kind |
 |---|---|---|
-| meta | `using-skills` | model (session-injected) |
-| | `ask`, `writing-skills`, `teach` | user |
-| setup | `setup-repo`, `scaffold-project` | user |
-| discovery | `brainstorm`, `grilling`, `research`, `prototype`, `domain-modeling` | model |
-| spec | `write-requirements`, `write-design`, `write-plan` | model |
-| execution | `execute-plan`, `tdd`, `debug`, `verify`, `trace`, `worktrees` | model |
-| review | `code-review`, `receive-review` | model |
-| acceptance | `acceptance-check`, `acceptance-api`, `acceptance-ui`, `dogfood` | model |
-| craft | `design-page` | model |
-| ship | `finish-branch` | model |
-| | `release` | user |
-| track | `amend`, `sync-spec` | model |
-| | `triage`, `improve-architecture`, `handoff` | user |
+| meta | `gate-session` | model (session-injected) |
+| | `route-work`, `author-skills`, `teach-pack` | user |
+| setup | `configure-repo`, `bootstrap-repo` | user |
+| discovery | `frame-change`, `probe-decisions`, `research`, `run-spike`, `define-domain` | model |
+| spec | `specify-behavior`, `design-solution`, `plan-tasks` | model |
+| execution | `build-continuous`, `test-first`, `root-cause`, `prove-claim`, `audit-trace`, `isolate-workspace` | model |
+| review | `inspect-change`, `vet-feedback` | model |
+| acceptance | `validate-feature`, `validate-api`, `validate-ui`, `walk-product` | model |
+| craft | `craft-page` | model |
+| ship | `land-branch` | model |
+| | `cut-release` | user |
+| track | `amend-feature`, `realign-spec` | model |
+| | `triage`, `scan-architecture`, `write-handoff` | user |
 
 ## The description is the highest-leverage line
 
@@ -71,7 +71,7 @@ The reason is a specific observed failure. A process summary hands the agent a s
 
 There are two failure directions, and both are tested rather than guessed. Over-summarizing the workflow hands the agent a shortcut. Under-specifying is the commoner failure: the skill never fires at all. Keyword coverage and the outcome noun fight the second; omitting the workflow steps fights the first.
 
-Hence: verb-first names (`writing-skills`, `receive-review`, `debug` — the action, not the topic), and descriptions packed with the words a user would actually type — symptoms, literal error text (`error`, `exception`, `e2e`, `tech debt`), file names (`tasks.md`), and synonyms (`spike`, `mock up`). Discovery is keyword match; a skill nobody finds is a skill that does not exist.
+Hence: verb-first names (`author-skills`, `vet-feedback`, `root-cause` — the action, not the topic), and descriptions packed with the words a user would actually type — symptoms, literal error text (`error`, `exception`, `e2e`, `tech debt`), file names (`tasks.md`), and synonyms (`spike`, `mock up`). Discovery is keyword match; a skill nobody finds is a skill that does not exist.
 
 ## The authoring vocabulary
 
@@ -92,16 +92,16 @@ These five terms recur throughout the set, and reading any skill is easier once 
 Skills reference each other **as prose**, never as file links:
 
 ```markdown
-REQUIRED SUB-SKILL: use `verify` before any completion claim.
+REQUIRED SUB-SKILL: use `prove-claim` before any completion claim.
 ```
 
-Never `@`-links or markdown links into another skill's folder. A link force-loads content and couples the folders. Files that live *beside* a SKILL.md are referenced by relative filename, with pointer wording that says when to load them — `standards-baseline.md` beside `code-review`, `implementer-prompt.md` beside `execute-plan`.
+Never `@`-links or markdown links into another skill's folder. A link force-loads content and couples the folders. Files that live *beside* a SKILL.md are referenced by relative filename, with pointer wording that says when to load them — `standards-baseline.md` beside `inspect-change`, `implementer-prompt.md` beside `build-continuous`.
 
 ## When *not* to write a skill
 
 > If the rule is mechanically enforceable — a regex, a linter, a schema check, a git hook — automate it and skip the skill.
 
-Documentation is for the judgment calls a check cannot make. A skill that only restates what a deterministic check already guarantees is context the agent pays for on every run, to enforce what fixed rules could have enforced for free. This is precisely why the `trace` skill runs a fixed sequence of `grep` and `git` passes instead of a "remember to keep the trace matrix updated" skill.
+Documentation is for the judgment calls a check cannot make. A skill that only restates what a deterministic check already guarantees is context the agent pays for on every run, to enforce what fixed rules could have enforced for free. This is precisely why the `audit-trace` skill runs a fixed sequence of `grep` and `git` passes instead of a "remember to keep the trace matrix updated" skill.
 
 ## When to split one
 
@@ -114,7 +114,7 @@ Anything else is granularity for its own sake, paid for in context load or the u
 
 ## Skills are test-driven
 
-`writing-skills` carries its own Iron Law:
+`author-skills` carries its own Iron Law:
 
 ```
 NO NEW SKILL AND NO EDIT TO A SKILL SHIPS WITHOUT A FAILING TEST FIRST
@@ -124,17 +124,17 @@ RED: run the scenario *without* the skill and record the failures and rationaliz
 
 > Wrote the text before running the baseline? You documented what you *guess* agents do wrong, not what they do wrong.
 
-This is why the rationalization tables in `tdd`, `debug`, `verify`, and `brainstorm` read so specifically. Every row is a real rationalization, recorded from a real baseline run, and countered by name.
+This is why the rationalization tables in `test-first`, `root-cause`, `prove-claim`, and `frame-change` read so specifically. Every row is a real rationalization, recorded from a real baseline run, and countered by name.
 
 ## Activation
 
-The set ships as a Claude Code plugin. `hooks/hooks.json` registers a `SessionStart` hook with matcher `startup|clear|compact` that injects the full text of `using-skills` into context — so the skill-check gate survives `/clear` and compaction, the two moments it would otherwise silently disappear.
+The set ships as a Claude Code plugin. `hooks/hooks.json` registers a `SessionStart` hook with matcher `startup|clear|compact` that injects the full text of `gate-session` into context — so the skill-check gate survives `/clear` and compaction, the two moments it would otherwise silently disappear.
 
-When installed without plugin hook support, `setup-repo` offers to copy `templates/session-start.sh` into the project's own `.claude/hooks/` and reference it via `$CLAUDE_PROJECT_DIR` — never an absolute path, which would be committed into `.claude/settings.json` and break on every other machine.
+When installed without plugin hook support, `configure-repo` offers to copy `templates/session-start.sh` into the project's own `.claude/hooks/` and reference it via `$CLAUDE_PROJECT_DIR` — never an absolute path, which would be committed into `.claude/settings.json` and break on every other machine.
 
 ## See also
 
 - [The gates](gates.md) — the four skills that guard rules the agent breaks under pressure
-- [`writing-skills`](../skills/writing-skills.md) — the full authoring doctrine and its deployment checklist
-- [`using-skills`](../skills/using-skills.md) — the session gate
+- [`author-skills`](../skills/author-skills.md) — the full authoring doctrine and its deployment checklist
+- [`gate-session`](../skills/gate-session.md) — the session gate
 - [Skill reference](../skills/README.md) — all 40 skills

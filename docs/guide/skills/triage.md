@@ -8,14 +8,14 @@
 | **Invocation** | **user-invoked only** — run `/triage`. `disable-model-invocation: true`: no skill may auto-invoke it; other skills only name it for the user to run |
 | **Reads** | `docs/agents/issue-tracker.md` (tracker operations), `docs/agents/triage-labels.md` (label strings), `CONTEXT.md` (glossary), `docs/adr/`, `.out-of-scope/*.md`, the issue/PR itself |
 | **Writes** | tracker labels, state, and comments; `.out-of-scope/*.md` rejection files |
-| **Calls** | [`grilling`](grilling.md) (when a request is underspecified), and names [`setup-repo`](setup-repo.md) if the tracker config is missing |
+| **Calls** | [`probe-decisions`](probe-decisions.md) (when a request is underspecified), and names [`configure-repo`](configure-repo.md) if the tracker config is missing |
 | **Called by** | nobody — the user runs it directly |
 
 ## When it fires
 
 When the user wants to move incoming work through the backlog: show what needs attention, classify and investigate a specific issue, write an agent-ready implementation brief, or close and record an out-of-scope rejection. Because it is `disable-model-invocation: true`, no other skill triggers it automatically; a skill may *mention* `/triage`, but the user starts it — deciding what enters the backlog is the user's call, not an ambient agent behavior.
 
-It reads the tracker operations from `docs/agents/issue-tracker.md` and the label strings from `docs/agents/triage-labels.md`. If either is missing, the skill says so and suggests [`setup-repo`](setup-repo.md) before continuing — though it can still triage read-only in the meantime. If the tracker config says external pull requests are a request surface, they go through the same machine; an explicitly named PR is always in scope, but collaborators' in-flight PRs are not triage work.
+It reads the tracker operations from `docs/agents/issue-tracker.md` and the label strings from `docs/agents/triage-labels.md`. If either is missing, the skill says so and suggests [`configure-repo`](configure-repo.md) before continuing — though it can still triage read-only in the meantime. If the tracker config says external pull requests are a request surface, they go through the same machine; an explicitly named PR is always in scope, but collaborators' in-flight PRs are not triage work.
 
 Every comment posted to the tracker starts with this exact line:
 
@@ -56,7 +56,7 @@ Four steps, and the two checks in step 1 are what stop duplicate and already-rej
    - **Redundancy** — search the codebase for an existing implementation, by **domain concept, not the reporter's wording**. If it already exists, the outcome is an already-implemented close; collect the evidence (where it lives, how to invoke it).
    - **Prior rejection** — read `.out-of-scope/*.md` and surface any concept resembling this request, matching by **idea, not keyword**. If one matches, tell the user what was rejected and why, and ask whether the decision stands.
 2. **Verify the claim.** Get first-hand evidence, not the reporter's word. For a bug, reproduce it from the reporter's steps; for a PR, check out the diff and run its tests. Report one of: confirmed (with the code path), could not reproduce, or insufficient detail — the last is a strong `needs-info` signal.
-3. **Recommend.** State a category + state recommendation with the reasoning and the step 1–2 evidence. When the request is ambiguous in ways only the user can resolve, use [`grilling`](grilling.md) to shape it one question at a time before locking the recommendation. Wait for the user's direction.
+3. **Recommend.** State a category + state recommendation with the reasoning and the step 1–2 evidence. When the request is ambiguous in ways only the user can resolve, use [`probe-decisions`](probe-decisions.md) to shape it one question at a time before locking the recommendation. Wait for the user's direction.
 4. **Apply the outcome:**
    - `ready-for-agent` — post an agent brief (below). The brief is the contract; the body and thread are only context.
    - `ready-for-human` — same brief, plus one line on why it cannot be delegated.
@@ -83,7 +83,7 @@ The critical subtlety: an **already-implemented close does NOT write to `.out-of
 
 ## Direct state changes
 
-When the user names an issue and its target state ("move #42 to ready-for-agent"), that is a decision, not a triage request — it skips the investigate/verify/recommend pipeline (steps 1–3) but not the guardrails. State back exactly what will change (the label edits, any comment, whether it closes) and get a go-ahead first. For a jump straight to `ready-for-agent`, offer to write the brief — an unbriefed agent-ready issue is a trap for the next agent.
+When the user names an issue and its target state ("move #42 to ready-for-agent"), that is a decision, not a triage request — it skips the investigate/prove-claim/recommend pipeline (steps 1–3) but not the guardrails. State back exactly what will change (the label edits, any comment, whether it closes) and get a go-ahead first. For a jump straight to `ready-for-agent`, offer to write the brief — an unbriefed agent-ready issue is a trap for the next agent.
 
 ## Worked example
 
@@ -91,7 +91,7 @@ The user runs `/triage` and picks an `enhancement` from the `needs-triage` bucke
 
 **Gather + checks.** The **redundancy** search — by the domain concept *report export*, not the literal button wording — finds an existing `exportReport()` path that already emits CSV from the reports controller. The **prior-rejection** scan of `.out-of-scope/*.md` finds nothing matching the *export* idea.
 
-**Verify.** The skill exercises the existing path: the report page already has a working CSV download, just under a menu rather than a visible button. So the requested capability is present; only its placement differs.
+**Prove Claim.** The skill exercises the existing path: the report page already has a working CSV download, just under a menu rather than a visible button. So the requested capability is present; only its placement differs.
 
 **Recommend.** The skill reports the evidence and recommends closing as **already implemented** — the behavior exists — and asks whether the user instead wants a separate small `enhancement` for surfacing the control as a button.
 
@@ -99,12 +99,12 @@ The user runs `/triage` and picks an `enhancement` from the `needs-triage` bucke
 
 ## Why it is written the way it is
 
-Triage is `disable-model-invocation: true` because deciding what gets built is the user's call, not an ambient agent behavior — an agent that auto-triaged would be silently shaping the backlog. The two checks in step 1 and the `.out-of-scope/` KB are one mechanism seen from both ends: the KB only earns its keep if it records genuine, durable rejections and nothing else, which is why an already-implemented close is kept out of it and why "no time right now" is banned as a reason. Verifying the claim first-hand before recommending exists because the reporter's word is a hypothesis, not evidence, and a triage that trusts it just relocates the uncertainty into a brief. And the brief's durability rules — behavioral, grep-able, no line numbers — exist because the codebase will move under the issue while it waits.
+Triage is `disable-model-invocation: true` because deciding what gets built is the user's call, not an ambient agent behavior — an agent that auto-triaged would be silently shaping the backlog. The two checks in step 1 and the `.out-of-scope/` KB are one mechanism seen from both ends: the KB only earns its keep if it records genuine, durable rejections and nothing else, which is why an already-implemented close is kept out of it and why "no time right now" is banned as a reason. Prove Claiming the claim first-hand before recommending exists because the reporter's word is a hypothesis, not evidence, and a triage that trusts it just relocates the uncertainty into a brief. And the brief's durability rules — behavioral, grep-able, no line numbers — exist because the codebase will move under the issue while it waits.
 
 ## See also
 
 - [`agent-brief-template.md`](../../../skills/track/triage/agent-brief-template.md) — the brief format and its calibration example
-- [`grilling`](grilling.md) — shapes an underspecified request before the recommendation is locked
-- [`setup-repo`](setup-repo.md) — installs the tracker and label config triage reads
+- [`probe-decisions`](probe-decisions.md) — shapes an underspecified request before the recommendation is locked
+- [`configure-repo`](configure-repo.md) — installs the tracker and label config triage reads
 - [Traceability](../concepts/traceability.md) — why briefs cite `CODE-N.M` and add guard criteria
-- [`brainstorm`](brainstorm.md) — where a plan-born, already-agent-ready issue came from
+- [`frame-change`](frame-change.md) — where a plan-born, already-agent-ready issue came from

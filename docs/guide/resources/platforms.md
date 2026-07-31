@@ -2,7 +2,7 @@
 
 The skill set was built for Claude Code, but nothing in it is Claude-specific.
 Everything is plain text a reasoning agent acts on: the skills are `SKILL.md`
-files, the portable behavior contract is `AGENTS.md`, and the trace check is a
+files, the portable behavior contract is `AGENTS.md`, and the audit-trace check is a
 set of `grep`/`git` passes the agent drives itself — there is no interpreter or
 binary to port. The only platform-specific part is *how the gate gets injected* —
 the mechanism that reminds the agent to check for a skill before it acts. This
@@ -16,7 +16,7 @@ repo file can run this system by reading that one.
 ## Claude Code (native)
 
 Full support. The `SessionStart` hook in `hooks/hooks.json` injects
-`meta/using-skills` on every `startup | clear | compact`, so the gate survives
+`meta/gate-session` on every `startup | clear | compact`, so the gate survives
 compaction automatically. Install as a plugin, or clone the repo and symlink the
 skill folders into `~/.claude/skills`:
 
@@ -35,7 +35,7 @@ after compaction; after a long session, re-point it at `AGENTS.md` if it drifts.
 ## Cursor
 
 Cursor loads `.cursor/rules/*.mdc`. This repo ships
-[`.cursor/rules/using-skills.mdc`](../../../.cursor/rules/using-skills.mdc) as an
+[`.cursor/rules/gate-session.mdc`](../../../.cursor/rules/gate-session.mdc) as an
 `alwaysApply` rule that carries the gate and points at `AGENTS.md`. Copy the
 `.cursor/` directory (and `AGENTS.md`, `skills/`) into the target repo, or open
 this repo directly. That rule is Cursor's substitute for the session-start hook.
@@ -44,7 +44,7 @@ this repo directly. That rule is Cursor's substitute for the session-start hook.
 
 If the harness can load a repo-root convention file (`AGENTS.md`, `CLAUDE.md`,
 or similar), point it there. If it supports an always-on rule or system-prompt
-append, give it the gate paragraph from `.cursor/rules/using-skills.mdc`. The
+append, give it the gate paragraph from `.cursor/rules/gate-session.mdc`. The
 skills and templates work unchanged — only the injection path differs.
 
 ## What is not portable
@@ -53,6 +53,6 @@ skills and templates work unchanged — only the injection path differs.
   Elsewhere the gate lives in an always-on rule or the root contract file, which
   is durable but not self-healing across a context reset — re-anchor manually if
   the agent drifts.
-- **Subagent dispatch** in `execute-plan` assumes a harness that can spawn
-  fresh, isolated subagents. Where that is unavailable, `execute-plan`'s inline
+- **Subagent dispatch** in `build-continuous` assumes a harness that can spawn
+  fresh, isolated subagents. Where that is unavailable, `build-continuous`'s inline
   fallback runs the same loop in a single context.

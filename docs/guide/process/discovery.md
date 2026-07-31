@@ -1,18 +1,18 @@
 # Phase 1 — Discovery
 
-**Skills:** [`brainstorm`](../skills/brainstorm.md) · [`grilling`](../skills/grilling.md) · [`research`](../skills/research.md) · [`prototype`](../skills/prototype.md) · [`domain-modeling`](../skills/domain-modeling.md)
+**Skills:** [`frame-change`](../skills/frame-change.md) · [`probe-decisions`](../skills/probe-decisions.md) · [`research`](../skills/research.md) · [`run-spike`](../skills/run-spike.md) · [`define-domain`](../skills/define-domain.md)
 
-**Produces:** an agreed shape, a stated ceremony tier, an updated glossary, possibly an ADR, and — for tier ≥ 1 — an invocation of `write-requirements`.
+**Produces:** an agreed shape, a stated ceremony tier, an updated glossary, possibly an ADR, and — for tier ≥ 1 — an invocation of `specify-behavior`.
 
 **Produces no code.** This is the gate.
 
 ## The hard gate
 
-`brainstorm` opens with it:
+`frame-change` opens with it:
 
 > Write NO code, scaffold NOTHING, and invoke NO implementation skill until this checklist has run and you have stated the ceremony tier out loud.
 
-The only artifacts it may touch are notes, the glossary (`CONTEXT.md`), ADRs, and — through its sub-skills — research notes and explicitly-marked throwaway prototypes.
+The only artifacts it may touch are notes, the glossary (`CONTEXT.md`), ADRs, and — through its sub-skills — research notes and explicitly-marked throwaway run-spikes.
 
 "Scaffolding isn't really implementation" is named and rejected: a repo skeleton is a stack decision enacted without approval.
 
@@ -42,7 +42,7 @@ Any feature whose spec matches is read as its **Summary card, not its full spec*
 
 ### 2. Interview
 
-`grilling` takes over. The load-bearing rules:
+`probe-decisions` takes over. The load-bearing rules:
 
 - **Inline chat only** — never a truncated MCQ picker; every question needs full context.
 - **One question card per message** — radius, why it matters, options with consequences, recommendation. Wait for the answer.
@@ -51,7 +51,7 @@ Any feature whose spec matches is read as its **Summary card, not its full spec*
 - **Facts are yours; decisions are the user's.** Look up the codebase and the parent's Blindspot / Knowns digests; only judgment calls go to the user.
 - **Close package** — decisions table + ready-to-paste constraints + explicit confirmation before anything is enacted.
 
-`domain-modeling` runs as a side effect throughout: challenge terms against the glossary the moment usage conflicts with it, sharpen fuzzy language into one canonical term, stress-test relationships with concrete edge cases, and cross-reference the code when the user asserts how something works. Update `CONTEXT.md` **inline, the instant a term settles** — batched glossary edits get forgotten.
+`define-domain` runs as a side effect throughout: challenge terms against the glossary the moment usage conflicts with it, sharpen fuzzy language into one canonical term, stress-test relationships with concrete edge cases, and cross-reference the code when the user asserts how something works. Update `CONTEXT.md` **inline, the instant a term settles** — batched glossary edits get forgotten.
 
 Before drilling into details, check scope. If the request spans multiple independent subsystems, stop refining and decompose (step 5).
 
@@ -61,9 +61,9 @@ Some questions cannot be answered by preference. When the honest answer is "we'd
 
 - **Facts about external systems, APIs, libraries, or standards** → `research`. Primary sources only — the source that *owns* the fact. Tutorials and blog posts are leads, not evidence; chase every claim back to the owning source and cite that. The output is exactly one markdown file, every claim carrying a citation, conclusions separated from what the sources say, ending in an "Open decisions" section.
 
-- **"Does this model or flow actually feel right?"** → `prototype`. Throwaway code whose only job is to answer one design question. Two branches: a terminal app over a pure logic module, or several structurally different variants of one screen. Six rules bind both — throwaway from day one and marked as such, one command to run, no persistence, no polish, surface internal state, delete or absorb when done.
+- **"Does this model or flow actually feel right?"** → `run-spike`. Throwaway code whose only job is to answer one design question. Two branches: a terminal app over a pure logic module, or several structurally different variants of one screen. Six rules bind both — throwaway from day one and marked as such, one command to run, no persistence, no polish, surface internal state, delete or absorb when done.
 
-The prototype's code does not matter afterward. **Only the answer does.** Capture it in an ADR, a requirement, or the commit message that deletes the prototype.
+The run-spike's code does not matter afterward. **Only the answer does.** Capture it in an ADR, a requirement, or the commit message that deletes the run-spike.
 
 Then return to the interview with the evidence and put the decision back to the user. Research informs; it never decides.
 
@@ -77,34 +77,34 @@ Present two or three genuinely different approaches with trade-offs. Lead with y
 
 | Tier | When | What follows |
 |---|---|---|
-| **0** | typo-level, no behavior change | no spec — straight to `tdd` |
+| **0** | typo-level, no behavior change | no spec — straight to `test-first` |
 | **1** | behavior change ≤ ~half a day | mini-spec: a fix requirement + a `SHALL CONTINUE TO` guard |
 | **2** | multi-task feature | the full requirements → design → plan triad |
 
-If the work spans multiple independent subsystems, decompose here: name the sub-features, their relationships, and the build order. Each gets its own full spec cycle; `brainstorm` continues with the first one only.
+If the work spans multiple independent subsystems, decompose here: name the sub-features, their relationships, and the build order. Each gets its own full spec cycle; `frame-change` continues with the first one only.
 
 **Done when** you have literally said "This is tier N because …".
 
 ### 6. Terminal state
 
-- **Tier ≥ 1:** invoke `write-requirements`. This is the *only* exit. No code, no scaffolding, no design skill invoked directly — requirements come first and carry their own approval gate.
-- **Tier 0:** hand off to `tdd` and say so.
+- **Tier ≥ 1:** invoke `specify-behavior`. This is the *only* exit. No code, no scaffolding, no design skill invoked directly — requirements come first and carry their own approval gate.
+- **Tier 0:** hand off to `test-first` and say so.
 
 ## ADRs — sparingly
 
-`domain-modeling` owns the ADR gate, and it is a **three-part AND**:
+`define-domain` owns the ADR gate, and it is a **three-part AND**:
 
 1. **Hard to reverse** — changing course later carries real cost.
-2. **Surprising without context** — a future reader would ask "why on earth this way?"
+2. **Surprising without context** — a future reader would route-work "why on earth this way?"
 3. **A real trade-off** — genuine alternatives existed and one was chosen for specific reasons.
 
 Any one missing means no ADR. The body is one to three sentences. Recording *that* and *why* is the value, not filling sections.
 
-## When it is `amend` instead
+## When it is `amend-feature` instead
 
-`brainstorm` is for shaping something *new*. A small in-scope change to an already-shipped, spec'd feature is [`amend`](../skills/amend.md) — it reads the existing triad, classifies the change against it, and routes to the lightest lane, escalating back here only when the change is genuinely new scope.
+`frame-change` is for shaping something *new*. A small in-scope change to an already-shipped, spec'd feature is [`amend-feature`](../skills/amend-feature.md) — it reads the existing triad, classifies the change against it, and routes to the lightest lane, escalating back here only when the change is genuinely new scope.
 
-If you were handed such a change, hand it to `amend`.
+If you were handed such a change, hand it to `amend-feature`.
 
 ## Next
 

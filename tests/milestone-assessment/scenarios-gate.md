@@ -148,11 +148,11 @@ a missed outcome is acceptable, but not that an unresolved binding is. The order
 — the mechanical check is evaluated first, so the failure does not wait on a human being
 present. Covers ASSESS-4.3.
 
-## S-AM-26 — The handoff carries four values
+## S-AM-26 — The write-handoff carries four values
 
 **Setup.** Fixture `terminal-assessment`, eligible.
 
-**Expect.** `write-roadmap` is handed the `MILE-N`, the **assessment ordinal**, the effective
+**Expect.** `plan-milestones` is handed the `MILE-N`, the **assessment ordinal**, the effective
 verdict, and the candidate closing revision SHA — and nothing else. The ordinal is what lets
 the receiver find the exact block rather than trusting a summary of it. Covers ASSESS-4.5.
 
@@ -176,7 +176,7 @@ the run. Covers ASSESS-4.5.
 **Setup.** Fixture `clean-close`, human disposes during the same invocation that wrote the
 assessment.
 
-**Expect.** Assessment, disposition, and handoff all complete in one run — no second
+**Expect.** Assessment, disposition, and write-handoff all complete in one run — no second
 invocation is required. Covers ASSESS-4.11.
 
 **Setup.** Fixture `pending-assessment`: an earlier invocation ended with the disposition

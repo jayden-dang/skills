@@ -1,8 +1,8 @@
 # REFACTOR — does the Duplication entry make duplication findable?
 
-Closes the debt left open when `Duplication` was added to `writing-skills`
+Closes the debt left open when `Duplication` was added to `author-skills`
 Vocabulary: GREEN scored 2/3, which is not bulletproof, and one REFACTOR
-iteration was owed. Trace-ignored.
+iteration was owed. Audit Trace-ignored.
 
 ## Fixture
 

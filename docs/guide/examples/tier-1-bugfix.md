@@ -4,9 +4,9 @@
 
 ---
 
-## Entry point: `debug`, not `tdd`
+## Entry point: `root-cause`, not `test-first`
 
-Something behaves unexpectedly. That is [`debug`](../skills/debug.md), and its Iron Law binds before anything else:
+Something behaves unexpectedly. That is [`root-cause`](../skills/root-cause.md), and its Iron Law binds before anything else:
 
 ```
 NO FIXES WITHOUT ROOT CAUSE INVESTIGATION FIRST
@@ -20,7 +20,7 @@ Before reading a single line of code to form a theory, there must be **one comma
 
 > Build the right feedback loop and the bug is 90% fixed; every later phase merely consumes it.
 
-Tactic 1 from `debug`'s ordered list — a failing test at whatever seam reaches the bug:
+Tactic 1 from `root-cause`'s ordered list — a failing test at whatever seam reaches the bug:
 
 ```ts
 // src/shell/module-store.test.ts
@@ -34,9 +34,9 @@ test('restores the persisted module on startup', async () => {
 
 It passes. Every time.
 
-**That is not a red-capable command**, so Phase 2 is not available. The bug is non-deterministic, and `debug` is explicit about what to do:
+**That is not a red-capable command**, so Phase 2 is not available. The bug is non-deterministic, and `root-cause` is explicit about what to do:
 
-> Non-deterministic bug? Don't chase a clean repro — raise the reproduction rate (loop the trigger 100×, add stress, shrink timing windows) until it's high enough to debug against.
+> Non-deterministic bug? Don't chase a clean repro — raise the reproduction rate (loop the trigger 100×, add stress, shrink timing windows) until it's high enough to root-cause against.
 
 Shrink the timing window. `store.init()` awaits hydration; the real app renders before that resolves. Test what the app actually does:
 
@@ -77,7 +77,7 @@ Test the smallest first, one variable at a time. Hypothesis 1's prediction holds
 
 ## Phase 4 — Fix
 
-**Failing regression test first**, via [`tdd`](../skills/tdd.md), at a *correct* seam — one that exercises the real bug pattern as it occurred. The Phase 1 loop already *is* that test.
+**Failing regression test first**, via [`test-first`](../skills/test-first.md), at a *correct* seam — one that exercises the real bug pattern as it occurred. The Phase 1 loop already *is* that test.
 
 **One fix**, addressing the root cause. No "while I'm here" improvements:
 
@@ -93,7 +93,7 @@ Watch the regression test pass. Re-run the full suite. Re-run the Phase 1 loop a
 
 ## Exit — the tier-1 mini-spec
 
-This is where `debug` hands to [`write-requirements`](../skills/write-requirements.md), and the tier-1 ceremony is exactly **two criteria** appended to `SHELL`'s existing `requirements.md`:
+This is where `root-cause` hands to [`specify-behavior`](../skills/specify-behavior.md), and the tier-1 ceremony is exactly **two criteria** appended to `SHELL`'s existing `requirements.md`:
 
 ```markdown
 - **SHELL-1.8** WHEN the app starts with a persisted module THE SYSTEM SHALL
@@ -102,7 +102,7 @@ This is where `debug` hands to [`write-requirements`](../skills/write-requiremen
   preserve unsaved editor state.
 ```
 
-The first is the fix. The second is the **guard** — and finding it required actively searching what else `init()` touches, because `write-requirements`' completion criterion for that step forbids the lazy answer:
+The first is the fix. The second is the **guard** — and finding it required actively searching what else `init()` touches, because `specify-behavior`' completion criterion for that step forbids the lazy answer:
 
 > You have **actively searched** the touched surface for behaviors to guard — not merely found none by default.
 
@@ -117,11 +117,11 @@ test('preserves unsaved editor state across hydration [SHELL-1.9]', …)
 
 ## Cleanup and post-mortem
 
-`debug`'s exit checklist:
+`root-cause`'s exit checklist:
 
 - **Remove ALL instrumentation.** `grep` for the `[DBG-x7q2]` prefix used during Phase 3. Delete throwaway harnesses.
 - **State the confirmed root cause in the commit message.**
-- **Ask: what would have prevented this bug?**
+- **Route Work: what would have prevented this bug?**
 
 ```
 fix(shell): activate the persisted module after store hydration
@@ -134,14 +134,14 @@ Implements: SHELL-1.8
 Guards: SHELL-1.9
 ```
 
-The post-mortem answer here is architectural: `init()` had no seam at which "hydrated" was observable, which is why the original test could only be written the wrong way. That specific finding goes to `/improve-architecture` — **after the fix lands, when you know the most.**
+The post-mortem answer here is architectural: `init()` had no seam at which "hydrated" was observable, which is why the original test could only be written the wrong way. That specific finding goes to `/scan-architecture` — **after the fix lands, when you know the most.**
 
-## `verify`, then finish
+## `prove-claim`, then finish
 
 ```
-IDENTIFY → the full suite plus the trace check
+IDENTIFY → the full suite plus the audit-trace check
 RUN      → fresh, complete
-READ     → exit 0, 50 passing, zero warnings; trace check clean
+READ     → exit 0, 50 passing, zero warnings; audit-trace check clean
 CONFIRM  → SHELL-1.8 and SHELL-1.9 each have a covering test
 ```
 
@@ -151,7 +151,7 @@ And the regression-proof pattern, because a regression test only counts once it 
 write test → passes → revert the fix → test MUST fail → restore fix → passes
 ```
 
-Then `code-review` (Spec axis, against the two new IDs) and `finish-branch`.
+Then `inspect-change` (Spec axis, against the two new IDs) and `land-branch`.
 
 ---
 
@@ -159,13 +159,13 @@ Then `code-review` (Spec axis, against the two new IDs) and `finish-branch`.
 
 Two requirement criteria. Two tagged tests. One three-line fix. One commit with two trailers.
 
-No `design.md`. No `tasks.md`. No `execute-plan`.
+No `design.md`. No `tasks.md`. No `build-continuous`.
 
 What tier 1 bought that a bare fix would not have: the guard requirement, which is now a permanent, machine-checked assertion that hydration does not eat unsaved editor state — a behavior nobody would have thought to protect, found only because the process required actively looking for it.
 
 ## See also
 
 - [Ceremony tiers](../methodology/ceremony-tiers.md) — the mini-spec in context
-- [`debug`](../skills/debug.md) — the four phases and the red-capable command gate
+- [`root-cause`](../skills/root-cause.md) — the four phases and the red-capable command gate
 - [EARS reference](../resources/ears.md) — why guards get their own section
 - [Tier 2: a full feature](tier-2-feature.md)

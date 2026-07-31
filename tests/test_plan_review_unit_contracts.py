@@ -4,13 +4,13 @@ import unittest
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parent.parent
-WRITE_PLAN = REPO / "skills" / "spec" / "write-plan" / "SKILL.md"
+WRITE_PLAN = REPO / "skills" / "spec" / "plan-tasks" / "SKILL.md"
 TASKS_TPL = REPO / "templates" / "tasks.md"
-WRITE_REQ = REPO / "skills" / "spec" / "write-requirements" / "SKILL.md"
+WRITE_REQ = REPO / "skills" / "spec" / "specify-behavior" / "SKILL.md"
 REQ_TPL = REPO / "templates" / "requirements.md"
-EXECUTE = REPO / "skills" / "execution" / "execute-plan" / "SKILL.md"
-STORY_UNIT = REPO / "skills" / "execution" / "execute-plan" / "story-unit-mode.md"
-FINISH = REPO / "skills" / "ship" / "finish-branch" / "SKILL.md"
+EXECUTE = REPO / "skills" / "execution" / "build-continuous" / "SKILL.md"
+STORY_UNIT = REPO / "skills" / "execution" / "build-continuous" / "story-unit-mode.md"
+FINISH = REPO / "skills" / "ship" / "land-branch" / "SKILL.md"
 AGENTS = REPO / "AGENTS.md"
 
 
@@ -75,7 +75,7 @@ class ExecutePlanContracts(unittest.TestCase):
         self.assertIn("story-unit", self.ep)
         self.assertIn("Execution-mode", self.ep)
         self.assertIn("story-unit-mode.md", self.ep)
-        self.assertTrue(STORY_UNIT.is_file(), "recipe must live beside execute-plan")
+        self.assertTrue(STORY_UNIT.is_file(), "recipe must live beside build-continuous")
         self.assertIn("Derive partition", self.su)
         self.assertIn("Unit table", self.su)
 

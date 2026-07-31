@@ -8,5 +8,5 @@
 - Roster: (empty)
 - Workflow band: Solo
 
-## Verify
+## Prove Claim
 - Unit: `npm test`

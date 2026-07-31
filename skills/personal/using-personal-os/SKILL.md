@@ -34,7 +34,7 @@ NO HYBRID PRODUCT WORK IN THE VAULT.
 
 | Thought | Reality |
 |---|---|
-| "Help with PNOT means write the design" | Vault session → handoff unless granted |
+| "Help with PNOT means write the design" | Vault session → write-handoff unless granted |
 | "It's faster if I just implement" | Speed is not a grant |
 | "workspace.path means I should open the repo" | Pointer for the human, not a work order |
 | "I'll draft a skeleton design as notes" | Hybrid ban — still product work |

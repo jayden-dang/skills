@@ -1,21 +1,21 @@
 # Project configuration (agent-facing)
 
-Written by `setup-repo`. Skills read this file for repo-specific **machine config** —
+Written by `configure-repo`. Skills read this file for repo-specific **machine config** —
 commands, globs, paths — plus **posture** and **team** (below). Human-facing engineering
 guidelines (coding standards, naming, house rules) live in `docs/product/guidelines.md`
-when the project-docs layer is enabled; `write-plan` sources them from there and falls
+when the project-docs layer is enabled; `plan-tasks` sources them from there and falls
 back to this file otherwise.
 
 ## Project posture
 
 The project's standing intent and lifecycle phase. Skills read this instead of re-asking:
-`brainstorm` and `grilling` right-size how much they weigh data migration, backward
-compatibility, and deprecation against it; `interpret` reuses it as session context.
+`frame-change` and `probe-decisions` right-size how much they weigh data migration, backward
+compatibility, and deprecation against it; `interpret-native` reuses it as session context.
 Edit these two lines directly whenever the project moves phase — no wizard needed.
 
 - **Delivery intent:** `Production` — how robust and complete the output must be.
 - **Lifecycle stage:** `Active development` — where the project is in its life.
-- **Default PR base:** `main` — the branch `prepare-change` reads as the third rung of its base-resolution ladder and `finish-branch` uses without recomputing.
+- **Default PR base:** `main` — the branch `package-change` reads as the third rung of its base-resolution ladder and `land-branch` uses without recomputing.
 
 These are distinct from the product **Goals** in `docs/product/vision.md` (what success
 looks like): posture is *how carefully to build right now*, not *what to build*.
@@ -25,7 +25,7 @@ looks like): posture is *how carefully to build right now*, not *what to build*.
 Who works on this repo and how skills should package collaboration.
 Skills that plan, review, or hand off read this section when present and
 right-size **packaging** only (Solo / Small / Multi) — Iron Law gates never
-change. Edit freely; re-run `/setup-repo` to re-draft from git/CODEOWNERS.
+change. Edit freely; re-run `/configure-repo` to re-draft from git/CODEOWNERS.
 If this section is absent, skills do not invent a team.
 
 **SSOT:** **band** derivation and the **packaging** matrix live only here.
@@ -60,12 +60,12 @@ Suggested roles (freeform allowed): Tech Lead, Backend Engineer, Frontend Engine
 |---|---|
 | **Solo** | Lean multi-person ritual language; no invented peer reviewers/assignees; agent-as-pair; full gates |
 | **Small** | Design-review checkpoints; ownership boundaries via optional freeform notes; name people when roster has names |
-| **Multi** | CODEOWNERS-aware review language when ownership notes exist; explicit review responsibilities as prose; handoff/docs emphasis |
+| **Multi** | CODEOWNERS-aware review language when ownership notes exist; explicit review responsibilities as prose; write-handoff/docs emphasis |
 | **(no band)** | Team absent, or empty roster with blank override — pre-feature default; do not invent a team; do not hard-fail |
 
 ## Decision boundaries
 
-Optional. When present, `record-decision` reads this table. Pins may raise a
+Optional. When present, `record-verdict` reads this table. Pins may raise a
 floor or bind an action to a boundary type. An entry that would lower a core
 floor is ignored with a one-line notice. Absent section → core table only.
 
@@ -75,8 +75,8 @@ floor is ignored with a one-line notice. Absent section → core table only.
 
 ## Attention signals
 
-Read by `allocate-attention`'s binding pass. Optional — absent, the built-in
-defaults in `skills/review/allocate-attention/references/signals.md` apply.
+Read by `sample-attention`'s binding pass. Optional — absent, the built-in
+defaults in `skills/review/sample-attention/references/signals.md` apply.
 
 Declared here because this repo's risk does not look like an application's. The
 default globs watch auth, migrations, and payments; **this repo ships skill
@@ -86,7 +86,7 @@ without these lines the feature under-samples its own product surface.
 - **Partition depth:** 2
 - **Risk globs:** `skills/**`, `hooks/**`, `scripts/**`, `templates/**`, `AGENTS.md`
 
-## Verify commands
+## verify commands
 
 Run in this order; all must pass before any completion claim.
 
@@ -100,16 +100,16 @@ Run in this order; all must pass before any completion claim.
 Single test file: `python3 -m unittest tests.<module>`  
 (e.g. `python3 -m unittest tests.test_lint_handoffs`)
 
-The traceability check is not a command here — the `trace` skill runs it as
+The traceability check is not a command here — the `audit-trace` skill runs it as
 `grep`/`git` over `docs/specs/` and the test globs. If this repo's tests live
 outside the default globs (`tests test e2e src src-tauri crates app lib packages`),
-record the real locations below so `trace` searches the right paths.
+record the real locations below so `audit-trace` searches the right paths.
 
 Test globs: *(defaults — `tests` covers this repo)*, plus `tests/**/scenarios*.md` — scenario
-markdown is a declared annotation layer below, so `trace`'s coverage pass must include `.md`
+markdown is a declared annotation layer below, so `audit-trace`'s coverage pass must include `.md`
 under `tests/` alongside its default `*_test.py` includes, or scenario-borne IDs read as
 uncovered.
-Trace ignore (files whose IDs are fixtures, not coverage): `tests/team-structure/red-baselines.md`, `tests/decision-records/red-baselines.md`, `tests/decision-records/fixtures/`, `tests/comprehend-change/red-baselines.md`, `tests/attention-allocation/red-baselines.md`, `tests/roadmap/red-baselines.md`, `tests/roadmap/fixtures/`, `tests/milestone-assessment/red-baselines.md`, `tests/milestone-assessment/fixtures/`, `tests/drive-dogfood/fixtures/`, `tests/drive-dogfood/red-baselines.md`, `tests/drive-dogfood/scenarios-pressure.md`, `tests/drive-dogfood/scenarios-technique.md`, `tests/drive-dogfood/scenarios-cli.md`, `tests/trigger/drive-dogfood-routing.md`, `tests/repoint-project/`
+Audit Trace ignore (files whose IDs are fixtures, not coverage): `tests/team-structure/red-baselines.md`, `tests/decision-records/red-baselines.md`, `tests/decision-records/fixtures/`, `tests/study-change/red-baselines.md`, `tests/attention-allocation/red-baselines.md`, `tests/roadmap/red-baselines.md`, `tests/roadmap/fixtures/`, `tests/milestone-assessment/red-baselines.md`, `tests/milestone-assessment/fixtures/`, `tests/drive-walk/fixtures/`, `tests/drive-walk/red-baselines.md`, `tests/drive-walk/scenarios-pressure.md`, `tests/drive-walk/scenarios-technique.md`, `tests/drive-walk/scenarios-cli.md`, `tests/trigger/drive-walk-routing.md`, `tests/dispose-pivot/`
 
 ## Test annotation conventions
 
@@ -120,8 +120,8 @@ Trace ignore (files whose IDs are fixtures, not coverage): `tests/team-structure
 
 ## Run locally (dev)
 
-How to start the app for user-facing acceptance checks (read by `acceptance-api`
-and `acceptance-ui`). Fill in once the app can be run locally; leave a row blank
+How to start the app for user-facing acceptance checks (read by `validate-api`
+and `validate-ui`). Fill in once the app can be run locally; leave a row blank
 if that surface does not exist.
 
 | Surface | Start command | Ready signal |
@@ -129,12 +129,12 @@ if that surface does not exist.
 | Backend / API | *(none — not an app)* | |
 | Frontend | *(none — not an app)* | |
 
-Browser E2E (Playwright, Chromium): *(none)* — the dogfood guide shell is covered by
-source-contract tests in `tests/test_dogfood_guide_contract.py`; its runtime browser
+Browser E2E (Playwright, Chromium): *(none)* — the walk-product guide shell is covered by
+source-contract tests in `tests/test_walk_product_guide_contract.py`; its runtime browser
 behavior (a click firing a POST, a poll repainting) is deliberately deferred to
-`acceptance-ui`, which owns harness setup. See DFSYNC tasks.md, "Browser coverage".
+`validate-ui`, which owns harness setup. See DFSYNC tasks.md, "Browser coverage".
 
-## Release steps
+## release steps
 
 *(empty — pure SKILL.md + plugin manifest; no build artifact)*
 

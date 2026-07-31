@@ -7,8 +7,8 @@ Date: 2026-07-22
 The architecture SSOT for this skill set.
 
 1. This file is the INVARIANT SPINE — greppable **ARCH-N** rules that feature
-   design.md files cite as `Respects: ARCH-N`. The `trace` check verifies those
-   citations (E4/E5/W3). Semantic conformance is advisory via `check-invariants`.
+   design.md files cite as `Respects: ARCH-N`. The `audit-trace` check verifies those
+   citations (E4/E5/W3). Semantic conformance is advisory via `judge-invariants`.
 2. Domain files under this directory hold the rest of the system design (SSOT;
    no parallel design doc at repo root). Product north star remains
    docs/product/vision.md; engineering house rules remain docs/product/guidelines.md.
@@ -23,13 +23,13 @@ Rules for invariants:
   and is defined only under "## Invariants" below (do not re-bold ARCH definitions
   in domain files).
 
-Dogfood set: ARCH-1..6 = determinism-of-trace, optionality, zero-tooling,
+Walk Product set: ARCH-1..6 = determinism-of-trace, optionality, zero-tooling,
 ID immutability, sub-skill composition, participant boundary.
 -->
 
 ## Invariants
 
-- **ARCH-1** Trace and other vertical checks MUST be exact `grep`/`git`/file-read passes with fixed extraction rules and set differences — never an LLM judgment of whether a test "really" covers an ID.
+- **ARCH-1** Audit Trace and other vertical checks MUST be exact `grep`/`git`/file-read passes with fixed extraction rules and set differences — never an LLM judgment of whether a test "really" covers an ID.
 - **ARCH-2** Optional project layers and config sections MUST no-op when absent: skills CONTINUES TO run without inventing vision, architecture invariants, team roster, or other standing facts that were never written.
 - **ARCH-3** Consumer-repo adoption MUST require only the skills (plugin or npx) and markdown config — never mandate Python, vendored linters, CI jobs, or git-hook wiring for the full methodology; any hard headless gate is an optional documented add-on only.
 - **ARCH-4** Requirement IDs (`CODE-N.M`) and architecture IDs (`ARCH-N`) are immutable once defined: never renumber or reuse; retire only by strikethrough; every task, test, commit trailer, and `Respects:` line MUST use the same greppable string as the definition.

@@ -7,7 +7,7 @@ from pathlib import Path
 REPO = Path(__file__).resolve().parent.parent
 TEMPLATE = REPO / "templates" / "product-vision.md"
 LIVE_VISION = REPO / "docs" / "product" / "vision.md"
-ESTABLISH = REPO / "skills" / "project" / "establish-project" / "SKILL.md"
+ESTABLISH = REPO / "skills" / "project" / "anchor-project" / "SKILL.md"
 
 BOLD_GOAL = re.compile(r"\*\*(GOAL-\d+)\*\*")
 GOALS_SECTION = re.compile(r"(?ms)^## Goals\n(.*?)(?=^## )")
@@ -20,7 +20,7 @@ def goals_block(path):
 
 
 def live_ids(path):
-    """IDs surviving strikethrough removal — the same rule trace applies to ARCH-N."""
+    """IDs surviving strikethrough removal — the same rule audit-trace applies to ARCH-N."""
     text = re.sub(r"~~[^~]*~~", "", goals_block(path))
     return BOLD_GOAL.findall(text)
 

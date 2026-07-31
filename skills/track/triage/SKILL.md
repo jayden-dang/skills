@@ -7,7 +7,7 @@ disable-model-invocation: true
 
 # Triage
 
-Move issues through a small state machine on the repo's configured tracker. Read the tracker operations from `docs/agents/issue-tracker.md` and the label strings from `docs/agents/triage-labels.md`; if either is missing, say so and suggest `setup-repo` before continuing (you can still triage read-only in the meantime).
+Move issues through a small state machine on the repo's configured tracker. Read the tracker operations from `docs/agents/issue-tracker.md` and the label strings from `docs/agents/triage-labels.md`; if either is missing, say so and suggest `configure-repo` before continuing (you can still triage read-only in the meantime).
 
 If the tracker config says external pull requests are a request surface, they go through the same machine — **a PR is an issue with attached code**. Collaborators' in-flight PRs are not triage work; an explicitly named PR is always in scope.
 
@@ -30,7 +30,7 @@ Two axes; every triaged issue carries **exactly one label from each**:
 
 ## Scope rule
 
-Only triage issues the user did **not** produce through this skill set's own planning. Issues born agent-ready are recognizable by a marker in the body — a `Requirements covered:` section (published by `write-plan`) or a marker line beginning `> *This issue was drafted by AI with` (published by `file-issues`). Running either through triage adds a second, weaker spec on top of a real one. Skip them and say why.
+Only triage issues the user did **not** produce through this skill set's own planning. Issues born agent-ready are recognizable by a marker in the body — a `Requirements covered:` section (published by `plan-tasks`) or a marker line beginning `> *This issue was drafted by AI with` (published by `publish-issues`). Running either through triage adds a second, weaker spec on top of a real one. Skip them and say why.
 
 ## Showing the queue
 
@@ -38,7 +38,7 @@ When asked "what needs attention", query the tracker and present three buckets, 
 
 ## Triaging one issue
 
-1. **Gather context.** Read the full issue — body, comments, labels, author, dates; for a PR, the diff. Read any prior triage notes so you never re-ask an answered question. Explore the relevant code using the glossary in `CONTEXT.md`. When `docs/architecture/` exists and the issue touches a spine it covers, REQUIRED SUB-SKILL: use `check-invariants` for the conformance read rather than judging it here. Then run two checks:
+1. **Gather context.** Read the full issue — body, comments, labels, author, dates; for a PR, the diff. Read any prior triage notes so you never re-ask an answered question. Explore the relevant code using the glossary in `CONTEXT.md`. When `docs/architecture/` exists and the issue touches a spine it covers, REQUIRED SUB-SKILL: use `judge-invariants` for the conformance read rather than judging it here. Then run two checks:
    - **Redundancy:** search the codebase for an existing implementation of the requested behavior — search by domain concept, not the reporter's wording. If it already exists, the outcome is an already-implemented close (step 5); collect the evidence (where it lives, how to invoke it). If nothing matches, write down the concepts you searched.
    - **Prior rejection:** read `.out-of-scope/*.md` and surface any concept that resembles this request — match by idea, not keyword. If one matches, tell the user what was rejected before and why, and ask whether the decision stands. If none matches, write that down too.
 
@@ -46,7 +46,7 @@ When asked "what needs attention", query the tracker and present three buckets, 
 
 2. **Verify the claim.** Before recommending anything, test whether the claim holds. For a bug: reproduce it from the reporter's steps. For a PR: check out the diff and run the relevant tests or commands to confirm it does what it says. Report one of: confirmed (with the code path), could not reproduce, or insufficient detail — the last is a strong `needs-info` signal. **Done when:** you have first-hand evidence, not just the reporter's word.
 
-3. **Recommend.** Tell the user your category + state recommendation with the reasoning and the evidence from steps 1–2. If the request is ambiguous or underspecified in ways only the user can resolve — REQUIRED SUB-SKILL: use `grilling` to shape it one question at a time before locking the recommendation. Wait for the user's direction.
+3. **Recommend.** Tell the user your category + state recommendation with the reasoning and the evidence from steps 1–2. If the request is ambiguous or underspecified in ways only the user can resolve — REQUIRED SUB-SKILL: use `probe-decisions` to shape it one question at a time before locking the recommendation. Wait for the user's direction.
 
 4. **Apply the outcome:**
    - `ready-for-agent` — post an agent brief built from [agent-brief-template.md](agent-brief-template.md). The brief is the contract; the original body and thread are only context.
@@ -66,7 +66,7 @@ One file per **concept**, kebab-case (`plugin-system.md`), never one per issue �
 
 ## Direct state changes
 
-When the user names an issue and its target state ("move #42 to ready-for-agent"), that is a decision, not a triage request — it skips the investigate/verify/recommend pipeline (steps 1–3), but not the guardrails:
+When the user names an issue and its target state ("move #42 to ready-for-agent"), that is a decision, not a triage request — it skips the investigate/prove-claim/recommend pipeline (steps 1–3), but not the guardrails:
 
 1. State back exactly what the change is — the label edits, any comment, whether it closes — and get the user's go-ahead before touching the tracker.
 2. For a jump straight to `ready-for-agent`, offer to write the brief from [agent-brief-template.md](agent-brief-template.md); an unbriefed agent-ready issue is a trap for the next agent.

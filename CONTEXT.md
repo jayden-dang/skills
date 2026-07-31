@@ -16,7 +16,7 @@ The three files that define a feature before implementation: `requirements.md`,
 
 **Ceremony tier**:
 How much process a change needs — 0 (trivial), 1 (bugfix/small), or 2 (feature).
-Decided by `brainstorm` or `amend`, never silently by the agent.
+Decided by `frame-change` or `amend-feature`, never silently by the agent.
 
 **Workflow band**:
 Solo / Small / Multi packaging derived from the Team roster in
@@ -38,7 +38,7 @@ The atom of attention allocation: a depth-2 repo-relative path prefix
 _Avoid_: "chunk", "area", or per-file/per-commit grouping
 
 **Sample set**:
-The sampling units admitted for human attention by `allocate-attention` — binding
+The sampling units admitted for human attention by `sample-attention` — binding
 signal hits, agent adds, user adds, and the floor pick. Complement of the
 **residue**.
 
@@ -74,34 +74,34 @@ _Avoid_: "ready to close" as a single agent-computed boolean
 
 **Candidate closing revision**:
 The immutable commit a **milestone assessment** is resolved against, handed to
-`write-roadmap` and recorded verbatim in that milestone's `Closed:` slot.
+`plan-milestones` and recorded verbatim in that milestone's `Closed:` slot.
 _Avoid_: HEAD, "latest", a branch name
 
 **PR package**:
-The three-file handoff `prepare-change` writes and `finish-branch` submits:
+The three-file write-handoff `package-change` writes and `land-branch` submits:
 `manifest.md` (title, base/head refs and SHAs, ticket linkage, commits, findings,
 digest), `title.txt` (the title alone), and `body.md` (reviewer-facing prose only).
 _Avoid_: PR draft, PR template, description file
 
 **Advisory commit map**:
-The written regrouping `prepare-change` proposes for commits that already exist —
+The written regrouping `package-change` proposes for commits that already exist —
 groups, order, subjects, bodies, rationale, trailers to preserve — carrying no
 runnable rewrite command, because existing commits are never rewritten.
 _Avoid_: rebase plan, squash plan, cleanup script
 
 **Run file**:
-The single JSON artifact holding one dogfood run — every case's authored slots
-plus its **case verdict** and **human tick** — at `.skills/<slug>-dogfood.json`.
+The single JSON artifact holding one walk-product run — every case's authored slots
+plus its **case verdict** and **human tick** — at `.skills/<slug>-walk-product.json`.
 _Avoid_: cases file, run ledger, catalog (all named separate artifacts before v2)
 
 **Case verdict**:
-A dogfood case's `pending` / `pass` / `fail` / `blocked` state, where `pass`
+A walk-product case's `pending` / `pass` / `fail` / `blocked` state, where `pass`
 requires quoted screen evidence **and** a server probe. Written only by the agent.
 _Avoid_: bare "verdict" in prose — that name also carries the two-axis
-`code-review` verdict and the agent verdict inside a **milestone assessment**
+`inspect-change` verdict and the agent verdict inside a **milestone assessment**
 
 **Human tick**:
-A person's mark on a dogfood case, stored beside the **case verdict** and readable
+A person's mark on a walk-product case, stored beside the **case verdict** and readable
 by the agent, but never proof and never promotable to `pass`.
 _Avoid_: manual pass, human verdict, checkbox state
 

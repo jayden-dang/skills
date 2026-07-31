@@ -1,14 +1,14 @@
-# RED baseline log — execute-story gates
+# RED baseline log — build-story-units gates
 
 **Roster:** grok-4.5  
 **Date:** 2026-07-30  
-**Protocol:** `writing-skills` / `pressure-testing.md`
+**Protocol:** `author-skills` / `pressure-testing.md`
 
 ---
 
 ## A. Quiz-form gates (S-STORY-1..6)
 
-### Control with dual-mode `execute-plan` loaded
+### Control with dual-mode `build-continuous` loaded
 
 | Scenario | Reps | CHOICE | Fail? |
 |---|---|---|---|
@@ -19,7 +19,7 @@
 | S-STORY-5 whole-branch | 1 | A | no |
 | S-STORY-6 resume ledger | 1 | A | no |
 
-**Verdict:** Gate *rules already in dual-mode text hold under quiz pressure when the skill is loaded.* Do not invent new iron laws for failures that did not appear. Re-use proven wording when extracting into `execute-story`.
+**Verdict:** Gate *rules already in dual-mode text hold under quiz pressure when the skill is loaded.* Do not invent new iron laws for failures that did not appear. Re-use proven wording when extracting into `build-story-units`.
 
 ### Control with skills/ withheld (no-skill)
 
@@ -37,11 +37,11 @@
 
 ### B1 — Routing collapse (distinct trigger missing)
 
-**Setup:** five user intents (continuous / story-unit / inline / debug mid-run / continuous again).
+**Setup:** five user intents (continuous / story-unit / inline / root-cause mid-run / continuous again).
 
-**Observed:** intents 1, 2, 3, 5 all route to **`execute-plan` only**. Story-unit and inline cannot fire a specialized skill because none exists.
+**Observed:** intents 1, 2, 3, 5 all route to **`build-continuous` only**. Story-unit and inline cannot fire a specialized skill because none exists.
 
-**writing-skills class:** **When to split — case 1 (genuinely distinct trigger).**  
+**author-skills class:** **When to split — case 1 (genuinely distinct trigger).**  
 Not fixed by more rationalization rows inside one description.
 
 ### B2 — Unit summary shape variance (recipe hole)
@@ -54,12 +54,12 @@ Not fixed by more rationalization rows inside one description.
 | 2 | Y | title only | Y | Y | Y | Y | Y | Y (mentions tasks.md write) |
 | 3 | Y | Y + merge reason | Y | Y | Y | Y | Y | Y |
 
-**writing-skills class:** *Complies, but output has wrong/unstable shape* → **positive recipe / REQUIRED slots**, not more prohibitions.  
+**author-skills class:** *Complies, but output has wrong/unstable shape* → **positive recipe / REQUIRED slots**, not more prohibitions.  
 `story-unit-mode.md` step 5 has no contract for the human-facing summary.
 
 ### B3 — User production report (external)
 
-User: story-unit via dual-mode `execute-plan` “không thực sự cho lại kết quả quá tốt”. Compatible with B1+B2: attention stays on continuous subagent factory; barrier is a mode branch; summary recipe unbound.
+User: story-unit via dual-mode `build-continuous` “không thực sự cho lại kết quả quá tốt”. Compatible with B1+B2: attention stays on continuous subagent factory; barrier is a mode branch; summary recipe unbound.
 
 ### B4 — Structural (design diagnosis, not quiz)
 
@@ -75,7 +75,7 @@ User: story-unit via dual-mode `execute-plan` “không thực sự cho lại k�
 
 **May write (backed by B1–B2):**
 
-1. New skill `execute-story` with its own description (routing fix for story-unit intent)
+1. New skill `build-story-units` with its own description (routing fix for story-unit intent)
 2. Move unit derivation + barrier recipe into that skill’s home
 3. REQUIRED unit-summary template (slots from B2 table)
 4. Extract *existing* iron laws / rationalization rows verbatim (already GREEN under quiz) — do not “harden” with invented counters
@@ -83,16 +83,16 @@ User: story-unit via dual-mode `execute-plan` “không thực sự cho lại k�
 **Must not write:**
 
 - New gate rules for S-STORY-1..6 “because we split”
-- Batch `execute-inline` + `execute-plan` narrow in the same authoring pass
+- Batch `build-inline` + `build-continuous` narrow in the same authoring pass
 
 ---
 
-## D. Overall RED verdict for authoring `execute-story`
+## D. Overall RED verdict for authoring `build-story-units`
 
 | Claim | Status |
 |---|---|
 | Quiz gates fail without/with dual-mode skill | **No** — A across runs |
 | Distinct-trigger failure (routing) | **Yes** — B1 |
 | Unit summary recipe failure (variance) | **Yes** — B2 |
-| Proceed to GREEN for `execute-story` | **Yes** — minimal text for B1+B2 + extract proven gates |
+| Proceed to GREEN for `build-story-units` | **Yes** — minimal text for B1+B2 + extract proven gates |
 | Proceed to invent new barrier iron laws | **No** |

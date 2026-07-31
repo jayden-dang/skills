@@ -5,7 +5,7 @@ Date: 2026-07-22
 
 <!--
 The repo-level north star: WHAT this project is and for whom, above any single
-feature. Optional — only large/long-lived projects need it. `brainstorm` reads it
+feature. Optional — only large/long-lived projects need it. `frame-change` reads it
 to check a new idea's scope; it never gates. Keep each section tight; every heading
 is a REQUIRED slot — fill it or write `None`.
 -->
@@ -30,7 +30,7 @@ vendored toolchains.
 - **GOAL-1** Ship a complete ideation-to-release skill set with requirements traceability as the spine
 - **GOAL-2** Keep gates (NO-CODE, TEST-FIRST, ROOT-CAUSE, EVIDENCE) enforceable under agent pressure
 - **GOAL-3** Stay harness-portable (plain SKILL.md + AGENTS.md) and LLM-native: enforcement is skill-specified `grep`/`git` passes, not bundled linters
-- **GOAL-4** Make `/setup-repo` configure each consumer repo once so skills stop guessing (tracker-agnostic)
+- **GOAL-4** Make `/configure-repo` configure each consumer repo once so skills stop guessing (tracker-agnostic)
 - **GOAL-5** Keep ceremony proportional (tiers 0–2) so trivial changes do not require pages of spec
 
 ## Non-goals
@@ -44,5 +44,5 @@ vendored toolchains.
 ## Scope boundaries
 
 - **In scope:** skills, templates, hooks for this set, agent-facing config (`docs/agents/`), optional project-docs layer (`docs/product/`, `docs/architecture/`), human guide, this repo's own quality linters/tests for skill authoring
-- **Deferred:** multi-harness packaging polish beyond Claude plugin + skills.sh; optional hard CI gate recipes as first-class product surface; deep multi-team collaboration rituals beyond Team packaging bands
+- **Deferred:** multi-harness packaging polish-diff beyond Claude plugin + skills.sh; optional hard CI gate recipes as first-class product surface; deep multi-team collaboration rituals beyond Team packaging bands
 - **Hard constraints:** pure documentation/skill artifacts for adopters (zero mandatory executable vendored into consumer repos); Python linters only for *this* repo's skill-set quality; Iron Law gates are never weakened by workflow band, ceremony tier, or convenience

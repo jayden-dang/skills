@@ -1,12 +1,12 @@
-"""finish-branch risk signal: globs against the diff, not per-task Risk: slots."""
+"""land-branch risk signal: globs against the diff, not per-task Risk: slots."""
 import re
 import unittest
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parent.parent
-FINISH = REPO / "skills" / "ship" / "finish-branch" / "SKILL.md"
-XPLN_REQ = REPO / "docs" / "specs" / "2026-07-27-explain-change" / "requirements.md"
-SCENARIOS = REPO / "tests" / "explain-change" / "scenarios.md"
+FINISH = REPO / "skills" / "ship" / "land-branch" / "SKILL.md"
+XPLN_REQ = REPO / "docs" / "specs" / "2026-07-27-brief-team" / "requirements.md"
+SCENARIOS = REPO / "tests" / "brief-team" / "scenarios.md"
 
 
 class FinishBranchRiskSignal(unittest.TestCase):
@@ -14,9 +14,9 @@ class FinishBranchRiskSignal(unittest.TestCase):
         self.text = FINISH.read_text()
 
     def test_names_both_optional_skills(self):
-        """XPLN-5.6 XPLN-5.7 — finish-branch still names both optional skills."""
-        self.assertIn("/comprehend-change", self.text)
-        self.assertIn("/explain-change", self.text)
+        """XPLN-5.6 XPLN-5.7 — land-branch still names both optional skills."""
+        self.assertIn("/study-change", self.text)
+        self.assertIn("/brief-team", self.text)
 
     def test_trigger_uses_risk_glob_not_risk_slot(self):
         """XPLN-5.6 — trigger is multi-task OR risk glob OR architecture-affecting."""
@@ -24,12 +24,12 @@ class FinishBranchRiskSignal(unittest.TestCase):
         self.assertNotRegex(
             self.text,
             r"Risk\s*slot|Risk:\s*|non-low risk|whose \*\*Risk\*\*",
-            msg="finish-branch still keys off per-task Risk: labels",
+            msg="land-branch still keys off per-task Risk: labels",
         )
         self.assertRegex(
             self.text,
             r"risk glob|risk-glob|Risk globs",
-            msg="finish-branch must key off risk globs against the diff",
+            msg="land-branch must key off risk globs against the diff",
         )
         self.assertIn("multi-task", self.text)
         self.assertIn("architecture-affecting", self.text)

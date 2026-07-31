@@ -5,7 +5,7 @@ Date: 2026-07-22
 
 <!--
 The human-facing engineering rules features must follow — coding standards,
-conventions, house rules. Optional. When present, `write-plan` sources the
+conventions, house rules. Optional. When present, `plan-tasks` sources the
 engineering rules for its Global Constraints from HERE rather than from
 `docs/agents/project.md` (which then holds only machine-config + a pointer to this
 file). Every heading is a REQUIRED slot — fill it or write `None`.
@@ -21,7 +21,7 @@ file). Every heading is a REQUIRED slot — fill it or write `None`.
 
 ## Naming and i18n
 
-- Skills: verb-first kebab-case (`write-requirements`, `execute-plan`).
+- Skills: verb-first kebab-case (`specify-behavior`, `build-continuous`).
 - Feature codes: short uppercase prefix registered in `docs/specs/INDEX.md`.
 - Requirement IDs: `CODE-N.M` — never renumber; retire with strikethrough.
 - Architecture invariants: `ARCH-N` — same immutability rules; cite as `Respects: ARCH-N` from feature `design.md`.
@@ -32,6 +32,6 @@ file). Every heading is a REQUIRED slot — fill it or write `None`.
 - Cross-skill references use `REQUIRED SUB-SKILL:` prose, never `@`-links.
 - Skill `description` frontmatter states triggering conditions only — never summarize the workflow.
 - Additive edits to consumer-facing config: never clobber existing user content when writing templates.
-- Skills never invent project configuration — they read `docs/agents/` (or stop and suggest `/setup-repo`).
+- Skills never invent project configuration — they read `docs/agents/` (or stop and suggest `/configure-repo`).
 - Iron Law gates (NO-CODE, TEST-FIRST, ROOT-CAUSE, EVIDENCE) are not weakened by workflow band, ceremony tier, or convenience.
 - Pre-push gate (lefthook): frontmatter lint, handoffs lint, context7 lint, full unit suite.

@@ -21,7 +21,7 @@ ROOT = Path(__file__).resolve().parent.parent
 # Skills whose behavior depends on preferring Context7 over recollection.
 # `research` owns the mechanics; the others reference it for their own step.
 # Keep this in sync with the prose — that synchronization is the whole point.
-REQUIRE = {"research", "brainstorm", "write-design", "setup-repo"}
+REQUIRE = {"research", "frame-change", "design-solution", "configure-repo"}
 
 # The MCP's proper name. Matched case-insensitively so `context7` in a code
 # fence or a lowercased sentence still counts as a live reference.

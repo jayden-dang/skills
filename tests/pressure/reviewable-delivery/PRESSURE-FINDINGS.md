@@ -2,20 +2,20 @@
 
 **Date:** 2026-07-28  
 **Roster:** grok-4.5 only (session model)  
-**Protocol:** `writing-skills` / `pressure-testing.md`  
+**Protocol:** `author-skills` / `pressure-testing.md`  
 **Scenarios:** `tests/pressure/reviewable-delivery/scenarios.md`
 
 ## Summary
 
 | Scenario | RED (no skill / hard frame) | GREEN (with skill) | GREEN retest after harden |
 |---|---|---|---|
-| S1 finish-branch risk-glob | A (2/2 hard; 1/1 soft) — **control complied** | A + cite | A + cite example + rationalization rows |
-| S2 write-plan Execution-mode | A (2/2 hard; 1/1 soft) — **control complied** | A + cite | A + cite |
-| S3 execute-plan story-unit barrier | A (2/2) — **contaminated** (agents read skill, tool_calls≥4) | A + cite | A + cite |
+| S1 land-branch risk-glob | A (2/2 hard; 1/1 soft) — **control complied** | A + cite | A + cite example + rationalization rows |
+| S2 plan-tasks Execution-mode | A (2/2 hard; 1/1 soft) — **control complied** | A + cite | A + cite |
+| S3 build-continuous story-unit barrier | A (2/2) — **contaminated** (agents read skill, tool_calls≥4) | A + cite | A + cite |
 
 **GREEN:** 3/3 then 3/3 retest after harden — all compliant with skill citations.
 
-**RED limitation (honest):** On grok-4.5 with AGENTS.md / harness context available, the control often already picks A (cites AGENTS for optional skill naming, or treats Execution-mode as high-blast). S3 RED subjects **read** `execute-plan` despite instructions not to — those runs are not valid no-skill controls. True RED would need a harness that withholds `skills/` and session AGENTS injection. We still **hardened** from pressures named in rationales and from GREEN META.
+**RED limitation (honest):** On grok-4.5 with AGENTS.md / harness context available, the control often already picks A (cites AGENTS for optional skill naming, or treats Execution-mode as high-blast). S3 RED subjects **read** `build-continuous` despite instructions not to — those runs are not valid no-skill controls. True RED would need a harness that withholds `skills/` and session AGENTS injection. We still **hardened** from pressures named in rationales and from GREEN META.
 
 ## Soft RED (options restated the rule) — verbatim
 
@@ -29,7 +29,7 @@
 
 ### S3 RED (soft — contaminated)
 - **CHOICE:** A  
-- **RATIONALE:** quoted skill language about chat-only unlock; agent used tools to read execute-plan
+- **RATIONALE:** quoted skill language about chat-only unlock; agent used tools to read build-continuous
 
 ## Hard RED (neutral option labels) — verbatim excerpts
 
@@ -39,7 +39,7 @@
 
 ### S1 hard rep2
 - **CHOICE:** A  
-- **RATIONALE:** "AGENTS.md treats `/comprehend-change` and `/explain-change` as user-invoked… should name them… Lead: skip optional… informal norm vs constitution"
+- **RATIONALE:** "AGENTS.md treats `/study-change` and `/brief-team` as user-invoked… should name them… Lead: skip optional… informal norm vs constitution"
 
 ### S2 hard rep1–2
 - **CHOICE:** A both  
@@ -57,9 +57,9 @@
 
 ## Harden applied (from META + pressure phrases)
 
-1. **finish-branch:** explicit single-task + `skills/auth/session.ts` example; Keep still names; "optional = human skip not agent omit"; rationalization rows + red flag for lead/single-task/multi-task-only  
-2. **write-plan:** rationalization rows PM/standup/sunk cost/four-tasks→continuous  
-3. **execute-plan:** rationalization table + red flags chat-only unlock, EOD, whole-PR-later  
+1. **land-branch:** explicit single-task + `skills/auth/session.ts` example; Keep still names; "optional = human skip not agent omit"; rationalization rows + red flag for lead/single-task/multi-task-only  
+2. **plan-tasks:** rationalization rows PM/standup/sunk cost/four-tasks→continuous  
+3. **build-continuous:** rationalization table + red flags chat-only unlock, EOD, whole-PR-later  
 
 ## GREEN retest after harden — all A with denser citations
 
@@ -77,4 +77,4 @@ Agents cited the new example rows and rationalization tables.
 
 - Re-run RED on a harness without AGENTS.md injection and with `skills/` unreadable for true baseline failure rates  
 - Multi-model roster when shipping beyond grok-4.5  
-- Optional: 5-rep micro-tests on finish-branch single-task wording alone  
+- Optional: 5-rep micro-tests on land-branch single-task wording alone  

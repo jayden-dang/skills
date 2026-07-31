@@ -1,6 +1,6 @@
 # Feature overlap
 
-The [trace check](traceability.md) is the **vertical** layer: it proves that one feature's requirements, tasks, and tests agree with each other.
+The [audit-trace check](traceability.md) is the **vertical** layer: it proves that one feature's requirements, tasks, and tests agree with each other.
 
 Feature overlap is the **horizontal** question — *which features touch the same code, and does this new idea already exist somewhere?* It is answered by searching the specs that already exist, so there is nothing to generate and nothing that can go stale.
 
@@ -36,7 +36,7 @@ That single Out-of-Scope line is often the whole answer: the new idea was alread
 
 ## `docs/specs/INDEX.md` — the registry
 
-`INDEX.md` is the sole feature registry. Every feature code is unique repo-wide, forever, and is registered here — by [`write-requirements`](../skills/write-requirements.md) — before the requirements file that uses it is written. It is the one place that enumerates every feature, so an overlap search always knows the full set of neighbors to consider.
+`INDEX.md` is the sole feature registry. Every feature code is unique repo-wide, forever, and is registered here — by [`specify-behavior`](../skills/specify-behavior.md) — before the requirements file that uses it is written. It is the one place that enumerates every feature, so an overlap search always knows the full set of neighbors to consider.
 
 ```markdown
 | Code | Feature | Spec | Status | Roadmap item |
@@ -45,21 +45,21 @@ That single Out-of-Scope line is often the whole answer: the new idea was alread
 | CHIPUI | Module chip rail | ./2026-04-02-chip-rail/ | Shipped | — |
 ```
 
-The **Roadmap item** column binds each feature to the [`ROAD-N`](../skills/write-roadmap.md) it implements, or `—` when the project has no roadmap layer or the work was never planned as an item. Overlap search ignores it; it exists for [`check-roadmap`](../skills/check-roadmap.md)'s plan-to-spec join.
+The **Roadmap item** column binds each feature to the [`ROAD-N`](../skills/plan-milestones.md) it implements, or `—` when the project has no roadmap layer or the work was never planned as an item. Overlap search ignores it; it exists for [`status-roadmap`](../skills/status-roadmap.md)'s plan-to-spec join.
 
 ## Where overlap is consumed
 
 Exactly two gates look for neighbors, and both do so *advisorily*.
 
-**[`brainstorm`](../skills/brainstorm.md), at the front of the chain.** Before the interview begins, it searches `docs/specs/` with the scan's candidate files and the idea's key terms. Any matching features are presented as their **Summary cards** — each card's owned paths and Out-of-Scope list show what the neighbor already covers.
+**[`frame-change`](../skills/frame-change.md), at the front of the chain.** Before the interview begins, it searches `docs/specs/` with the scan's candidate files and the idea's key terms. Any matching features are presented as their **Summary cards** — each card's owned paths and Out-of-Scope list show what the neighbor already covers.
 
 Its completion criterion is a sentence the agent must be able to say: *which existing features share this idea's surface and how the new idea differs, citing feature codes — or that no existing feature shares its surface.*
 
-**[`code-review`](../skills/code-review.md), at the back of the chain.** It searches with the diff's changed source files. When a neighbor comes back, the **Spec** subagent receives its card, with a brief directing it to flag — as a *reuse-miss* finding citing the neighbor's feature code — any place the diff reimplements behavior a neighbor already owns.
+**[`inspect-change`](../skills/inspect-change.md), at the back of the chain.** It searches with the diff's changed source files. When a neighbor comes back, the **Spec** subagent receives its card, with a brief directing it to flag — as a *reuse-miss* finding citing the neighbor's feature code — any place the diff reimplements behavior a neighbor already owns.
 
 ## An advisory signal, never a gate
 
-The overlap search never fails a review and never stops a brainstorm. It sharpens a decision; it does not make one. If the search returns nothing, the agent proceeds and says so. If `docs/specs/` is empty or a young repo has few specs, that is simply a thin neighborhood, not an error state.
+The overlap search never fails a review and never stops a frame-change. It sharpens a decision; it does not make one. If the search returns nothing, the agent proceeds and says so. If `docs/specs/` is empty or a young repo has few specs, that is simply a thin neighborhood, not an error state.
 
 This keeps the horizontal layer honest: it costs a `grep`, it reads only what is already written, and it can never be stale, because there is no derived copy of anything to fall behind.
 
@@ -68,5 +68,5 @@ This keeps the horizontal layer honest: it costs a `grep`, it reads only what is
 - [Traceability](traceability.md) — the vertical layer this sits beside
 - [Enforcement and tooling](../resources/scripts.md#feature-overlap-search) — the search mechanics
 - [Artifacts](artifacts.md) — where `INDEX.md` and the specs live
-- [`brainstorm`](../skills/brainstorm.md) — the overlap check at the front of the chain
-- [`code-review`](../skills/code-review.md) — the reuse-miss check at the back
+- [`frame-change`](../skills/frame-change.md) — the overlap check at the front of the chain
+- [`inspect-change`](../skills/inspect-change.md) — the reuse-miss check at the back

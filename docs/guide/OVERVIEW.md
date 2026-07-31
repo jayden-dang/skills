@@ -11,7 +11,7 @@ Three ways in: by role, by problem, or by phase.
 1. [When to use it](methodology/when-to-use.md) — and when not to
 2. [Overview](methodology/overview.md) — what the system is, in one page
 3. [Ceremony tiers](methodology/ceremony-tiers.md) — how it scales down for small work
-4. [Adopting the skill set](resources/adopting.md) — install, `/setup-repo`, and the incremental path
+4. [Adopting the skill set](resources/adopting.md) — install, `/configure-repo`, and the incremental path
 5. [Tier 2: a feature, end to end](examples/tier-2-feature.md) — see it run
 
 ### I'm a teammate being handed this
@@ -20,14 +20,14 @@ Three ways in: by role, by problem, or by phase.
 2. [Ceremony tiers](methodology/ceremony-tiers.md) — this answers "do I really have to write a spec for *this*?"
 3. [The process](process/README.md) — the chain, and which flow your work belongs in
 4. [Examples](examples/tier-0-tweak.md) — start with tier 0; it is the shortest
-5. When lost: run `/ask`, or read [`ask`](skills/ask.md)
+5. When lost: run `/route-work`, or read [`route-work`](skills/route-work.md)
 
 ### I maintain this skill set
 
 1. [Philosophy](methodology/philosophy.md) — the six principles and what enforces each
 2. [The skill model](concepts/skill-model.md) — invocation kinds, the description rule, the authoring vocabulary
-3. [`writing-skills`](skills/writing-skills.md) — the Iron Law, and the deployment checklist
-4. [Enforcement and tooling](resources/scripts.md) — the `trace` skill and the session hook
+3. [`author-skills`](skills/author-skills.md) — the Iron Law, and the deployment checklist
+4. [Enforcement and tooling](resources/scripts.md) — the `audit-trace` skill and the session hook
 5. [`docs/architecture/`](../architecture/INDEX.md) — architecture SSOT (invariants + system design)
 
 ### I'm evaluating this from the outside
@@ -43,25 +43,25 @@ Three ways in: by role, by problem, or by phase.
 
 | I want to… | Go here |
 |---|---|
-| …add a new feature | [`brainstorm`](skills/brainstorm.md) → [Discovery](process/discovery.md) |
-| …tweak something that already shipped | [`amend`](skills/amend.md) → [Tier 0 example](examples/tier-0-tweak.md) |
-| …fix a bug | [`debug`](skills/debug.md) → [Tier 1 example](examples/tier-1-bugfix.md) |
-| …start a brand-new project | [`/scaffold-project`](skills/scaffold-project.md) |
-| …adopt this on an existing repo | [`/setup-repo`](skills/setup-repo.md) → [Adopting](resources/adopting.md) |
-| …set up a product vision + architecture spine for a large project | [`/establish-project`](skills/establish-project.md) |
-| …understand why my tests aren't enough | [`acceptance-check`](skills/acceptance-check.md) → [Review and acceptance](process/review-and-acceptance.md) |
-| …know why the trace check is failing | [Troubleshooting](resources/troubleshooting.md#the-trace-check-fails) |
-| …review a branch before merging | [`code-review`](skills/code-review.md) |
-| …respond to review feedback | [`receive-review`](skills/receive-review.md) |
-| …cut a release | [`/release`](skills/release.md) |
-| …capture a conversation or idea into tracker issues | [`/file-issues`](skills/file-issues.md) |
+| …add a new feature | [`frame-change`](skills/frame-change.md) → [Discovery](process/discovery.md) |
+| …tweak something that already shipped | [`amend-feature`](skills/amend-feature.md) → [Tier 0 example](examples/tier-0-tweak.md) |
+| …fix a bug | [`root-cause`](skills/root-cause.md) → [Tier 1 example](examples/tier-1-bugfix.md) |
+| …start a brand-new project | [`/bootstrap-repo`](skills/bootstrap-repo.md) |
+| …adopt this on an existing repo | [`/configure-repo`](skills/configure-repo.md) → [Adopting](resources/adopting.md) |
+| …set up a product vision + architecture spine for a large project | [`/anchor-project`](skills/anchor-project.md) |
+| …understand why my tests aren't enough | [`validate-feature`](skills/validate-feature.md) → [Review and acceptance](process/review-and-acceptance.md) |
+| …know why the audit-trace check is failing | [Troubleshooting](resources/troubleshooting.md#the-trace-check-fails) |
+| …review a branch before merging | [`inspect-change`](skills/inspect-change.md) |
+| …respond to review feedback | [`vet-feedback`](skills/vet-feedback.md) |
+| …cut a release | [`/cut-release`](skills/cut-release.md) |
+| …capture a conversation or idea into tracker issues | [`/publish-issues`](skills/publish-issues.md) |
 | …handle an incoming issue | [`/triage`](skills/triage.md) |
-| …find where to refactor next | [`/improve-architecture`](skills/improve-architecture.md) |
-| …hand off before my context fills | [`/handoff`](skills/handoff.md) |
-| …fix a spec that drifted from the code | [`sync-spec`](skills/sync-spec.md) |
-| …write a new skill | [`writing-skills`](skills/writing-skills.md) → [The skill model](concepts/skill-model.md) |
+| …find where to refactor next | [`/scan-architecture`](skills/scan-architecture.md) |
+| …hand off before my context fills | [`/write-handoff`](skills/write-handoff.md) |
+| …fix a spec that drifted from the code | [`realign-spec`](skills/realign-spec.md) |
+| …write a new skill | [`author-skills`](skills/author-skills.md) → [The skill model](concepts/skill-model.md) |
 | …understand the requirement-ID syntax | [Requirement IDs](concepts/requirement-ids.md) + [EARS](resources/ears.md) |
-| …know which flow I'm even in | Run `/ask` |
+| …know which flow I'm even in | Run `/route-work` |
 
 ---
 
@@ -69,12 +69,12 @@ Three ways in: by role, by problem, or by phase.
 
 | Phase | Skills | Guide page |
 |---|---|---|
-| **0. Setup** | `/setup-repo`, `/scaffold-project` | [Adopting](resources/adopting.md) |
-| **1. Discovery** | `brainstorm`, `grilling`, `research`, `prototype`, `domain-modeling`, `interpret` | [Discovery](process/discovery.md) |
-| **2. Specification** | `write-requirements`, `write-design`, `write-plan` | [Specification](process/specification.md) |
-| **3. Execution** | `worktrees`, `execute-plan`, `tdd`, `debug`, `verify`, `trace` | [Execution](process/execution.md) |
-| **4. Review & acceptance** | `code-review`, `receive-review`, `acceptance-*`, `dogfood`, `drive-dogfood` | [Review and acceptance](process/review-and-acceptance.md) |
-| **5. Ship & maintain** | `finish-branch`, `/release`, `sync-spec`, `amend`, `/file-issues`, `/triage`, `/improve-architecture`, `/handoff` | [Ship and maintain](process/ship-and-maintain.md) |
+| **0. Setup** | `/configure-repo`, `/bootstrap-repo` | [Adopting](resources/adopting.md) |
+| **1. Discovery** | `frame-change`, `probe-decisions`, `research`, `run-spike`, `define-domain`, `interpret-native` | [Discovery](process/discovery.md) |
+| **2. Specification** | `specify-behavior`, `design-solution`, `plan-tasks` | [Specification](process/specification.md) |
+| **3. Execution** | `isolate-workspace`, `build-continuous`, `test-first`, `root-cause`, `prove-claim`, `audit-trace` | [Execution](process/execution.md) |
+| **4. Review & acceptance** | `inspect-change`, `vet-feedback`, `acceptance-*`, `walk-product`, `drive-walk` | [Review and acceptance](process/review-and-acceptance.md) |
+| **5. Ship & maintain** | `land-branch`, `/cut-release`, `realign-spec`, `amend-feature`, `/publish-issues`, `/triage`, `/scan-architecture`, `/write-handoff` | [Ship and maintain](process/ship-and-maintain.md) |
 
 ---
 
@@ -112,7 +112,7 @@ Three ways in: by role, by problem, or by phase.
 
 ### Resources
 - [Adopting the skill set](resources/adopting.md)
-- [Enforcement and tooling](resources/scripts.md) — the `trace` skill and the session hook
+- [Enforcement and tooling](resources/scripts.md) — the `audit-trace` skill and the session hook
 - [Templates](resources/templates.md)
 - [EARS reference](resources/ears.md)
 - [Troubleshooting](resources/troubleshooting.md)

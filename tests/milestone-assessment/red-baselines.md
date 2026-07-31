@@ -1,6 +1,6 @@
 # RED baselines — ASSESS
 
-Recorded failures that justify each behavior the skill adds. Trace-ignored: the requirement
+Recorded failures that justify each behavior the skill adds. Audit Trace-ignored: the requirement
 IDs here are baseline records, not coverage.
 
 **Disclosure — the fresh-agent baselines below were not run.** This feature was executed
@@ -16,7 +16,7 @@ as weaker evidence than RMAP's observed ones.
 `FileNotFoundError: templates/roadmap-findings.md`, 4 errors.
 
 The pre-existing state also failed `test_check_roadmap_defers_instead_of_restating`
-independently: `check-roadmap/SKILL.md` carried the `R1`–`R11` table inline, so the
+independently: `status-roadmap/SKILL.md` carried the `R1`–`R11` table inline, so the
 `^\| \*\*R\d+\*\* \|` search matched. That is the duplication ASSESS-5.3 removes.
 
 ## Task 2 — ladder rung
@@ -48,12 +48,12 @@ of the skill body:
 ```
 DEAD HAND-OFF — a skill directs the agent to invoke a user-invoked skill:
   skills/track/assess-milestone/SKILL.md:164
-    assess-milestone -> check-roadmap (user-invoked)
-    invoke `/check-roadmap`
+    assess-milestone -> status-roadmap (user-invoked)
+    invoke `/status-roadmap`
 ```
 
 The offending line was a **red flag telling the agent not to do it** — "You are about to
-invoke `/check-roadmap` … rather than name them". The linter matches the phrasing, not the
+invoke `/status-roadmap` … rather than name them". The linter matches the phrasing, not the
 intent, and it is right to: a body that contains the invoking phrase teaches it regardless of
 the surrounding negation. Reworded to "run … yourself rather than naming them for the user".
 Worth keeping as evidence that ARCH-5's mechanical guard catches its own authors.

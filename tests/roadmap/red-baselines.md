@@ -1,9 +1,9 @@
 # RED baselines — RMAP roadmap layer
 
-Recorded per the `writing-skills` Iron Law: no new skill and no edit to a skill ships
+Recorded per the `author-skills` Iron Law: no new skill and no edit to a skill ships
 without a failing test first, and the failures must be **observed**, not guessed.
 
-**IDs in this file are baseline records, not coverage.** It is Trace-ignored.
+**IDs in this file are baseline records, not coverage.** It is Audit Trace-ignored.
 
 ## Method
 
@@ -75,7 +75,7 @@ rewriting an outcome sentence. Verbatim rationalization:
 
 > "you are the approving stakeholder and you are the one directing this exact edit right
 > now, in real time — this isn't drift or a third party's unilateral change to an
-> approved artifact, it's you exercising your own approval authority to amend it."
+> approved artifact, it's you exercising your own approval authority to amend-feature it."
 
 This is the sharpest rationalization in the set and needs an explicit counter.
 
@@ -120,17 +120,17 @@ B caught the repeated surface unprompted and consolidated it:
 A independently did the same thing while authoring, elevating the shared storage rework
 into its own milestone rather than duplicating it under two dependents.
 
-Both behaviors appeared without any skill. Per `writing-skills`, text with no failure
+Both behaviors appeared without any skill. Per `author-skills`, text with no failure
 behind it is a no-op.
 
 **Ruled 2026-07-25: both retired by strikethrough** in `requirements.md`, with this file
-as the stated evidence. Neither rule is written into `write-roadmap`. What survives:
+as the stated evidence. Neither rule is written into `plan-milestones`. What survives:
 forward dependencies are still caught structurally by S4 in the template rule block, the
-authoring gate (RMAP-1.18), and `check-roadmap`'s R11; the `Surfaces:` slot is retained by
+authoring gate (RMAP-1.18), and `status-roadmap`'s R11; the `Surfaces:` slot is retained by
 RMAP-1.20 because it is the input that makes overlap visible — the retired part is the
 instruction to reason about it, not the data.
 
-## GREEN — `write-roadmap`
+## GREEN — `plan-milestones`
 
 Same prompts, same sanitized repo, with the skill and template added and still no spec to
 read. Three runs were needed; the two failures were both **discoverability**, not
@@ -141,7 +141,7 @@ body loopholes.
 | GREEN A (author) | full compliance, first attempt. Cited the skill by name |
 | GREEN C attempt 1 (update) | **failed** RMAP-1.7 and RMAP-1.19. Never mentioned the skill |
 | GREEN C attempt 2 (update) | **failed** the same two. Reported "no AGENTS.md gate applies" |
-| GREEN C attempt 3 (update) | full compliance. Cited `skills/project/write-roadmap/SKILL.md` by path |
+| GREEN C attempt 3 (update) | full compliance. Cited `skills/project/plan-milestones/SKILL.md` by path |
 
 **GREEN A** wrote to `docs/roadmap/INDEX.md`, filled every slot, kept `Status: Draft`,
 preserved every pre-existing ID and continued past the highest in use (`ROAD-6`, `ROAD-7`),
@@ -153,11 +153,11 @@ baseline failure, fixed.
 **Why C failed twice.** Attempt 1's report never named the skill. Attempt 2 said it
 outright:
 
-> "the roadmap-edit skills in this repo's AGENTS.md (brainstorm/write-requirements/etc.)
+> "the roadmap-edit skills in this repo's AGENTS.md (frame-change/specify-behavior/etc.)
 > gate *feature/code* work, not roadmap-document edits — there's no gate here requiring a
 > check-in"
 
-`write-roadmap` was not yet registered in `AGENTS.md`. Skills in this repo are source, not
+`plan-milestones` was not yet registered in `AGENTS.md`. Skills in this repo are source, not
 harness-installed, so **`AGENTS.md` §11 is the discovery surface** — an agent that trusts
 the index and finds nothing listed correctly concludes nothing applies. Two fixes, both
 kept:
@@ -168,13 +168,13 @@ kept:
 2. Registered the skill in `AGENTS.md` §3, §8, §11, the main-flow block, and the guide
    index.
 
-**Lesson worth keeping:** for an in-repo dogfooding agent, registration in `AGENTS.md` is a
+**Lesson worth keeping:** for an in-repo product walking agent, registration in `AGENTS.md` is a
 harder trigger than description keywords. A skill that exists on disk but not in the index
 is invisible to an agent that reads the index first.
 
 **Incidental catch.** The first description rewrite failed
 `scripts/lint-skill-frontmatter.py` on an unquoted colon — the precise failure its
-docstring says once silently dropped `trace` from the catalog. Rephrased without colons.
+docstring says once silently dropped `audit-trace` from the catalog. Rephrased without colons.
 
 **GREEN C attempt 3, verbatim on the two previously-failing behaviors:**
 
@@ -189,9 +189,9 @@ docstring says once silently dropped `trace` from the catalog. Rephrased without
 No new rationalizations appeared in attempt 3, so REFACTOR closed with the description and
 registration fixes above.
 
-## RED — `brainstorm` step-5 handoff
+## RED — `frame-change` step-5 write-handoff
 
-One agent, current `brainstorm` (no handoff), `write-roadmap` present and registered, spec
+One agent, current `frame-change` (no write-handoff), `plan-milestones` present and registered, spec
 removed. Request: a four-subsystem feature (roster, approval permissions, invitation flow,
 spec-approval audit log).
 
@@ -213,7 +213,7 @@ report:
 The agent then spent 176k tokens writing a full triad for the one surviving piece — correct
 under the current skill, and the reason the other three had to be disposed of somehow.
 
-## GREEN — `brainstorm` step-5 handoff
+## GREEN — `frame-change` step-5 write-handoff
 
 **Attempt 1 failed on a harness error of mine.** The prompt said "Do not write any spec
 triad", which the agent generalized: *"This was read-only discovery. No file in the repo was
@@ -226,7 +226,7 @@ named by the flow's own steps instead of by "don't write files".
 > S1–S7 structural validation was run against it and is clean"
 
 > "**ROAD-2** and **ROAD-3** remain `Planned` (not yet committed) under the same `MILE-1`
-> milestone in `docs/roadmap/INDEX.md`, each to get its own brainstorm→spec cycle once
+> milestone in `docs/roadmap/INDEX.md`, each to get its own frame-change→spec cycle once
 > ROAD-1 ships."
 
 Three sub-features, three tracked items, zero rejections — against RED's four pieces with
@@ -238,7 +238,7 @@ two declined.
 > field in the roadmap template at ROAD-N granularity** (`Depends-on` exists only at the
 > `MILE-N` level) — that ordering is only in this conversation."
 
-`brainstorm` step 5 mandates recording build order, but the template could only express
+`frame-change` step 5 mandates recording build order, but the template could only express
 dependencies between milestones, so within-milestone ordering was unrepresentable. Fixed by
 extending the existing positional convention to members — item order is list position and
 carries build order; identity stays the ID. No new slot.
@@ -246,18 +246,18 @@ carries build order; identity stays the ID. No new slot.
 ### Two findings routed elsewhere, not defects here
 
 - The vision has no `**GOAL-N**` IDs, so `Goals:` citation is vacuous today. That is Task 5.
-- `write-roadmap` is not a harness-registered tool in this repo, so the agent followed it by
+- `plan-milestones` is not a harness-registered tool in this repo, so the agent followed it by
   reading the file. Correct behavior; noted because it confirms `AGENTS.md` registration plus
   the on-disk body — not tool registration — is what makes an in-repo skill effective.
 
 ## Task 9 — no RED phase, by design
 
 `tests/test_trace_scope.py` guards RMAP-2.10, a `SHALL CONTINUE TO` criterion. It protects a
-boundary that already holds, so it passes on its first run. `tdd` lists "a new test passed on
+boundary that already holds, so it passes on its first run. `test-first` lists "a new test passed on
 its first run" as a red flag, and that flag is correct for a test meant to *drive* new
-behaviour — this one engages no production change at all, and `write-requirements` Step 3
+behaviour — this one engages no production change at all, and `specify-behavior` Step 3
 mandates exactly this shape for guard criteria. The failure mode it exists for is a future
-edit that grows `trace` into planning-ID territory.
+edit that grows `audit-trace` into planning-ID territory.
 
 Recorded here so the absent RED phase is a stated decision rather than a gap someone finds
 later and has to reconstruct.
@@ -266,7 +266,7 @@ later and has to reconstruct.
 
 `tests/test_priority_ladder.py` had **6 of 7 tests pass on first run**. The cause is a
 sequencing slip of mine, not a property of the work: the plan allocated the ten-row ladder to
-Task 7, and I wrote it into `check-roadmap`'s body during Task 6. By the time the ladder test
+Task 7, and I wrote it into `status-roadmap`'s body during Task 6. By the time the ladder test
 existed, its subject already did.
 
 Deleting a verified ladder to manufacture a red bar would have been theatre, so the content

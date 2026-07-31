@@ -2,16 +2,16 @@
 
 The skill set installs nothing into a consuming repo — no scripts, no linters, no CI job, no git hooks. Enforcement rests on two mechanisms, and both are built from primitives that already exist in any repo:
 
-- **The `trace` skill** — a fixed sequence of `grep` and `git` passes with fixed rules on their output, enforcing that one feature's requirements, tasks, and tests agree.
+- **The `audit-trace` skill** — a fixed sequence of `grep` and `git` passes with fixed rules on their output, enforcing that one feature's requirements, tasks, and tests agree.
 - **Feature-overlap search** — an inline `grep` over `docs/specs/` that answers *does this idea or diff already exist?*
 
 Determinism comes from the primitives — `grep` and `git` produce the same output every run — and from the fixed rules applied to that output. There is no interpreter to install and no program to keep in sync.
 
 ---
 
-## The trace check
+## The audit-trace check
 
-The requirements traceability check. The vertical layer: one feature's requirements, tasks, and tests must agree. It is not a linter and not a program — it is a fixed routine the `trace` skill runs, a set sequence of greps and git reads with a fixed verdict rule on each.
+The requirements traceability check. The vertical layer: one feature's requirements, tasks, and tests must agree. It is not a linter and not a program — it is a fixed routine the `audit-trace` skill runs, a set sequence of greps and git reads with a fixed verdict rule on each.
 
 ### Sources of truth
 
@@ -31,7 +31,7 @@ The check runs a fixed sequence and never varies it:
 3. **Read status.** `grep` each `requirements.md` for its `Status:` and `Feature-code:` lines.
 4. **Apply the rules** below to the three sets.
 
-Because step 2 is a textual `grep`, **coverage is textual**: an ID string present in a test file counts as covering that requirement. The check does not — and cannot — judge whether the test actually asserts the behavior. That judgement belongs to [`tdd`](../skills/tdd.md), [`code-review`](../skills/code-review.md), and the acceptance family.
+Because step 2 is a textual `grep`, **coverage is textual**: an ID string present in a test file counts as covering that requirement. The check does not — and cannot — judge whether the test actually asserts the behavior. That judgement belongs to [`test-first`](../skills/test-first.md), [`inspect-change`](../skills/inspect-change.md), and the acceptance family.
 
 ### The rules
 
@@ -59,15 +59,15 @@ A struck-through ID counts as **undefined**, so retiring a requirement immediate
 
 ### Fixture IDs
 
-A [citation](../concepts/traceability.md) is an ID the trace check counts; a **fixture ID** is an ID-shaped string that appears in source (example data, documentation) that no test asserts. Because the collect-citations pass is textual, a repo whose own fixtures contain ID-shaped strings can name those files in the **trace ignore** list in `docs/agents/project.md` so the pass skips them. That list filters the test-file scan only — it never stops a `requirements.md` from *defining* IDs.
+A [citation](../concepts/traceability.md) is an ID the audit-trace check counts; a **fixture ID** is an ID-shaped string that appears in source (example data, documentation) that no test asserts. Because the collect-citations pass is textual, a repo whose own fixtures contain ID-shaped strings can name those files in the **trace ignore** list in `docs/agents/project.md` so the pass skips them. That list filters the test-file scan only — it never stops a `requirements.md` from *defining* IDs.
 
-The trace check reads two optional settings from `docs/agents/project.md` — the **test globs** it searches and the **trace ignore** list — and falls back to defaults when they are absent. The default globs are `tests test e2e src src-tauri crates app lib packages`; the default ignore list is empty.
+The audit-trace check reads two optional settings from `docs/agents/project.md` — the **test globs** it searches and the **trace ignore** list — and falls back to defaults when they are absent. The default globs are `tests test e2e src src-tauri crates app lib packages`; the default ignore list is empty.
 
 ### Who runs it
 
-The `trace` skill is invoked by [`verify`](../skills/verify.md) (before any "requirements met" claim), [`write-plan`](../skills/write-plan.md) (its coverage check), [`release`](../skills/release.md) (its gate), and [`sync-spec`](../skills/sync-spec.md) (the before-and-after pictures). Each of these runs with an agent present to read and act on the findings.
+The `audit-trace` skill is invoked by [`prove-claim`](../skills/prove-claim.md) (before any "requirements met" claim), [`plan-tasks`](../skills/plan-tasks.md) (its coverage check), [`cut-release`](../skills/cut-release.md) (its gate), and [`realign-spec`](../skills/realign-spec.md) (the before-and-after pictures). Each of these runs with an agent present to read and act on the findings.
 
-There is no mandatory headless gate. A team that wants a hard CI or pre-push check can add one as its own choice, but it sits outside the default path — the trace check does its work at the moments a skill is already about to make a claim.
+There is no mandatory headless gate. A team that wants a hard CI or pre-push check can add one as its own choice, but it sits outside the default path — the audit-trace check does its work at the moments a skill is already about to make a claim.
 
 ---
 
@@ -77,14 +77,14 @@ The horizontal question — *which existing features touch this same surface, an
 
 Two skills run this search:
 
-- **[`brainstorm`](../skills/brainstorm.md)** greps `docs/specs/` with the new idea's key terms and candidate file paths before the interview begins. Any feature whose spec matches is read as its **Summary card** — the top-of-spec digest (code, name, owned paths, out-of-scope) — so the agent can state which existing features share the idea's surface and how the new idea differs, citing feature codes, or that none do.
-- **[`code-review`](../skills/code-review.md)** greps `docs/specs/` with the diff's changed file paths, so its Spec subagent can flag any place the diff reimplements behavior a neighboring feature already owns.
+- **[`frame-change`](../skills/frame-change.md)** greps `docs/specs/` with the new idea's key terms and candidate file paths before the interview begins. Any feature whose spec matches is read as its **Summary card** — the top-of-spec digest (code, name, owned paths, out-of-scope) — so the agent can state which existing features share the idea's surface and how the new idea differs, citing feature codes, or that none do.
+- **[`inspect-change`](../skills/inspect-change.md)** greps `docs/specs/` with the diff's changed file paths, so its Spec subagent can flag any place the diff reimplements behavior a neighboring feature already owns.
 
 See [feature overlap](../concepts/feature-graph.md) for the concept in full.
 
 ## See also
 
-- [Traceability](../concepts/traceability.md) — what the trace check is enforcing and why
+- [Traceability](../concepts/traceability.md) — what the audit-trace check is enforcing and why
 - [Feature overlap](../concepts/feature-graph.md) — how neighbors are found by searching `docs/specs/`
-- [Requirement IDs](../concepts/requirement-ids.md) — the string the trace check follows
+- [Requirement IDs](../concepts/requirement-ids.md) — the string the audit-trace check follows
 - [Troubleshooting](troubleshooting.md) — when a check reports a finding

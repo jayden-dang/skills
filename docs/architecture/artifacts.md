@@ -5,7 +5,7 @@ Date: 2026-07-22
 Part of: [`INDEX.md`](./INDEX.md) (architecture SSOT)
 
 How work is recorded in a **consuming** repo: the feature triad, requirement IDs,
-the trace check, horizontal overlap search, and ceremony tiers.
+the audit-trace check, horizontal overlap search, and ceremony tiers.
 
 ## The artifact model (in consuming repos)
 
@@ -14,11 +14,11 @@ docs/specs/<YYYY-MM-DD>-<feature>/
   requirements.md      # WHAT — EARS acceptance criteria with hierarchical IDs
   design.md            # HOW — architecture, each section cites the REQ IDs it satisfies
   tasks.md             # PLAN — checkbox tasks, each ending `_Requirements: CODE-N.M, ..._`
-  discovery.md         # optional, non-normative discovery handoff
+  discovery.md         # optional, non-normative discovery write-handoff
 docs/specs/INDEX.md    # the feature registry — feature codes, names, statuses (LLM-maintained)
 CONTEXT.md             # domain glossary (terms + tight definitions + Avoid-lists)
 docs/adr/NNNN-slug.md  # minimal ADRs (1–3 sentences; three-part gate)
-docs/agents/           # per-repo config written by setup-repo:
+docs/agents/           # per-repo config written by configure-repo:
   project.md           #   verify commands (typecheck/lint/test/e2e), release steps
   issue-tracker.md     #   tracker choice + wayfinding operations
   triage-labels.md     #   canonical role → label mapping
@@ -94,12 +94,12 @@ The ID then flows through everything:
 | Issue (if tracker used) | `Requirements covered` section in issue body |
 
 Every use is a **grep-selectable string**. That is what makes the ID a first-class
-runtime object and what makes the trace check reproducible without a bundled
+runtime object and what makes the audit-trace check reproducible without a bundled
 linter.
 
-## The trace check
+## The audit-trace check
 
-The `trace` skill (model-invoked, in `execution/`) is the vertical enforcement
+The `audit-trace` skill (model-invoked, in `execution/`) is the vertical enforcement
 layer. It does not eyeball specs — it drives a fixed sequence of deterministic
 passes and applies fixed rules:
 
@@ -119,7 +119,7 @@ passes and applies fixed rules:
     missing its `Status:` or `Feature code:` line (W2).
   - When `docs/architecture/` exists: E4/E5/W3 for ARCH-N `Respects:` integrity.
 
-`verify`, `release`, `sync-spec`, and `write-plan`'s coverage check invoke `trace`.
+`prove-claim`, `cut-release`, `realign-spec`, and `plan-tasks`'s coverage check invoke `audit-trace`.
 Because the passes are `grep`/read and the rules are set operations, two agents on
 the same repo reach the same finding set. Exact message wording and ordering are
 not contractual — the *finding set* is.
@@ -130,10 +130,10 @@ The previous design maintained a generated feature graph to answer "does this id
 already exist?" and "does this diff reimplement a neighbor?". This design answers
 both by search, inline in the skills that ask:
 
-- `brainstorm`: search `docs/specs/` for the idea's candidate feature codes and key
+- `frame-change`: search `docs/specs/` for the idea's candidate feature codes and key
   terms, read any matching `requirements.md`, and report overlap as summary cards
   (owned paths + Out-of-Scope) — never blocking the gate on it.
-- `code-review`: grep `docs/specs/` for features whose specs name the diff's
+- `inspect-change`: grep `docs/specs/` for features whose specs name the diff's
   changed paths, and surface those neighbors to the reviewer.
 
 `docs/specs/INDEX.md` is the registry both consult first. There is no generated
@@ -143,9 +143,9 @@ artifact to keep fresh, so nothing can go stale.
 
 | Tier | When | Artifacts |
 |---|---|---|
-| **0 — trivial** | typo-level, no behavior change | none — tdd/verify only |
+| **0 — trivial** | typo-level, no behavior change | none — test-first/prove-claim only |
 | **1 — bugfix / small change** | behavior change ≤ ~half a day | mini-spec: add a fix REQ + a SHALL-CONTINUE-TO guard to the owning feature's requirements.md (or `docs/specs/fixes.md`), tagged regression test; no design.md, task list optional |
 | **2 — feature** | multi-task work | full triad + execute family |
 
-`brainstorm` and `ask` decide the tier explicitly and say so. Never spec what you
-don't understand yet — spike via `prototype`/`research` first.
+`frame-change` and `route-work` decide the tier explicitly and say so. Never spec what you
+don't understand yet — spike via `run-spike`/`research` first.

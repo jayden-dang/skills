@@ -28,7 +28,7 @@ tags: [session]
 cwd:
 ```
 
-## Handoff (if coding)
+## Write Handoff (if coding)
 
 ```
 next_action:

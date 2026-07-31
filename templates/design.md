@@ -31,7 +31,7 @@ Satisfies: <CODE>-2.1
 
 ## Seams for testing
 
-<The public boundaries tests will be written at, agreed here — the tdd skill
+<The public boundaries tests will be written at, agreed here — the test-first skill
 refuses tests at unconfirmed seams. Prefer existing seams; the ideal number of
 new seams is zero or one.>
 

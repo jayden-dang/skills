@@ -6,7 +6,7 @@ This is the full chain. Every gate, every artifact, every hand-off.
 
 ---
 
-## `brainstorm` — the hard gate
+## `frame-change` — the hard gate
 
 No code. No scaffolding. No implementation skill. Not yet.
 
@@ -28,7 +28,7 @@ That is exactly the information the check exists to surface. The new feature wil
 
 ### 2. Interview
 
-[`grilling`](../skills/grilling.md) takes over: one full-context question card per message (radius, why it matters, options with consequences, recommendation), then a decisions table to confirm.
+[`probe-decisions`](../skills/probe-decisions.md) takes over: one full-context question card per message (radius, why it matters, options with consequences, recommendation), then a decisions table to confirm.
 
 > **Q:** When the app starts for the very first time, with nothing persisted, which module should be active?
 > **Recommendation:** Notes — it is the module with the lowest activation cost, and it is what users open most.
@@ -36,7 +36,7 @@ That is exactly the information the check exists to surface. The new feature wil
 > **Q:** If the persisted module id names a module that is no longer installed, what should happen?
 > **Recommendation:** Fall back to Notes and log a warning. Silently falling back hides an upgrade bug; hard-failing on startup punishes the user for ours.
 
-Meanwhile [`domain-modeling`](../skills/domain-modeling.md) runs as a side effect. The user says "pane" and then "panel" for the same thing. `CONTEXT.md` gets a term, **inline, the instant it settles**:
+Meanwhile [`define-domain`](../skills/define-domain.md) runs as a side effect. The user says "pane" and then "panel" for the same thing. `CONTEXT.md` gets a term, **inline, the instant it settles**:
 
 ```markdown
 **Module**:
@@ -50,7 +50,7 @@ _Avoid_: pane, panel, section, tab
 
 Nobody knows what the Tauri v2 store plugin guarantees on a hard kill. That is not a preference — it is a fact about an external system, so it detours to [`research`](../skills/research.md), which reads the plugin's actual source and returns one cited markdown file ending in an **Open decisions** section.
 
-Research informs. It does not decide. The decision goes back through `grilling`.
+Research informs. It does not decide. The decision goes back through `probe-decisions`.
 
 ### 4. Propose approaches
 
@@ -62,11 +62,11 @@ Three, with trade-offs, recommendation first. The user picks a hybrid.
 
 ### 6. Terminal state
 
-`write-requirements` is invoked. **That is the only exit.**
+`specify-behavior` is invoked. **That is the only exit.**
 
 ---
 
-## `write-requirements` — WHAT
+## `specify-behavior` — WHAT
 
 Register `SHELL` in `docs/specs/INDEX.md` **first**, with `Status: Draft`.
 
@@ -102,7 +102,7 @@ Then the **file** is presented, and the skill stops. On approval: `Status: Appro
 
 ---
 
-## `write-design` — HOW
+## `design-solution` — HOW
 
 A scan subagent maps the touched surface into `.skills/shell-scan.md`. Design against the digest.
 
@@ -122,7 +122,7 @@ Consumes `CHIPUI`'s presentational `<Rail>`; adds no rendering of its own…
 
 Every section carries `Satisfies:`. A section without one is either infrastructure — and says so — or does not belong here.
 
-**The seam table** — the contract [`tdd`](../skills/tdd.md) will hold you to:
+**The seam table** — the contract [`test-first`](../skills/test-first.md) will hold you to:
 
 | Seam | Kind | Covers |
 |---|---|---|
@@ -145,7 +145,7 @@ This triggers **upstream sync-back**, and the rule is unambiguous:
 
 ---
 
-## `write-plan` — the PLAN
+## `plan-tasks` — the PLAN
 
 Written for an implementer who is skilled but knows **nothing** about this codebase and will see **only their own task** plus the Global Constraints.
 
@@ -186,13 +186,13 @@ Written for an implementer who is skilled but knows **nothing** about this codeb
 _Requirements: SHELL-1.2, SHELL-1.5_
 ```
 
-**The coverage check goes further than the trace check can.** The trace check confirms every Approved ID is cited by a task footer. But a footer is not a test — a footer-only citation passes as a `W1` warning now and fails as an **`E2` error** the moment the spec flips to `Implemented`. So `write-plan` also requires every ID to appear in a **test annotation inside a task's steps**, and reconciles that against the design's seam table. An ID the design promised and the plan left untagged is *dropped coverage*.
+**The coverage check goes further than the audit-trace check can.** The audit-trace check confirms every Approved ID is cited by a task footer. But a footer is not a test — a footer-only citation passes as a `W1` warning now and fails as an **`E2` error** the moment the spec flips to `Implemented`. So `plan-tasks` also requires every ID to appear in a **test annotation inside a task's steps**, and reconciles that against the design's seam table. An ID the design promised and the plan left untagged is *dropped coverage*.
 
 An **independent plan review subagent** then verifies every symbol, signature, path, import, and **hardcoded test value** against real code. A fabricated golden value is the classic plan defect.
 
 ---
 
-## `worktrees` → `execute-plan`
+## `isolate-workspace` → `build-continuous`
 
 An isolated workspace, dependencies installed, and a **clean baseline**. Baseline red would stop everything — you cannot tell your bugs from pre-existing ones.
 
@@ -222,7 +222,7 @@ That ledger line is the most important artifact in the loop. If the session comp
 
 ---
 
-## `code-review` — two axes
+## `inspect-change` — two axes
 
 Base = `git merge-base main HEAD`, never a mid-branch sha. Two subagents dispatched **in one message**, read-only, neither seeing the other's findings.
 
@@ -244,11 +244,11 @@ The reports are **not merged**. They are presented under separate headings, un-r
 
 ---
 
-## `acceptance-check`
+## `validate-feature`
 
 Green unit tests prove the assertions someone wrote pass. They do not prove the feature works.
 
-The checklist is derived from the spec, keyed to requirement ID, and written to `.skills/shell-acceptance.md`. The UI slice goes to [`acceptance-ui`](../skills/acceptance-ui.md):
+The checklist is derived from the spec, keyed to requirement ID, and written to `.skills/shell-acceptance.md`. The UI slice goes to [`validate-ui`](../skills/validate-ui.md):
 
 ```ts
 test('switching modules preserves unsaved editor text', { tag: '@SHELL-1.3' }, async ({ page }) => {
@@ -259,17 +259,17 @@ test('switching modules preserves unsaved editor text', { tag: '@SHELL-1.3' }, a
 })
 ```
 
-It fails. The rail unmounts the editor. This is a real defect, found before a user found it, and the failing spec **is** `debug`'s red-capable loop. Fix the root cause, keep the spec as the regression, commit it tagged — so it joins the verify suite forever.
+It fails. The rail unmounts the editor. This is a real defect, found before a user found it, and the failing spec **is** `root-cause`'s red-capable loop. Fix the root cause, keep the spec as the regression, commit it tagged — so it joins the verify suite forever.
 
-That is the `code-review` Spec finding above, confirmed live. The guard requirement earned its existence.
+That is the `inspect-change` Spec finding above, confirmed live. The guard requirement earned its existence.
 
 ---
 
-## `finish-branch` → `release` → `sync-spec`
+## `land-branch` → `cut-release` → `realign-spec`
 
-`verify` runs every command fresh, and the trace check must be clean. Then exactly four options, verbatim, with no added commentary: merge locally, push and PR, keep, or discard — and discard requires typing the word `discard`.
+`prove-claim` runs every command fresh, and the audit-trace check must be clean. Then exactly four options, verbatim, with no added commentary: merge locally, push and PR, keep, or discard — and discard requires typing the word `discard`.
 
-When the version ships, `/release` assembles the changelog by grouping commits under their trailers and looking up each requirement's own text:
+When the version ships, `/cut-release` assembles the changelog by grouping commits under their trailers and looking up each requirement's own text:
 
 ```markdown
 ### Shipped behavior
@@ -282,7 +282,7 @@ When the version ships, `/release` assembles the changelog by grouping commits u
 
 Nobody wrote those lines. They were derived, and they are derivable only because `SHELL-1.3` is the same string in the requirement, the Playwright tag, and the commit trailer.
 
-Finally `sync-spec` flips `Status: Shipped`, updates `INDEX.md`, and re-runs the trace check — so the *next* feature's `brainstorm`, searching `docs/specs/`, finds `SHELL`'s spec: its Summary card, its owned paths, and its Out-of-Scope note that keyboard shortcuts were deliberately deferred.
+Finally `realign-spec` flips `Status: Shipped`, updates `INDEX.md`, and re-runs the audit-trace check — so the *next* feature's `frame-change`, searching `docs/specs/`, finds `SHELL`'s spec: its Summary card, its owned paths, and its Out-of-Scope note that keyboard shortcuts were deliberately deferred.
 
 The loop closes.
 

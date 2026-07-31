@@ -25,7 +25,7 @@ NO PASTE-READY PRODUCT ARTIFACTS IN THE VAULT.
    - `outcome_session` — what **they** will attempt (one sentence)
    - `linked_id` — project or track id
    - `workspace` — path string if any (informational)
-3. If work is external (code, deep craft): write **Handoff for human** with cwd, suggested next step, constraints.
+3. If work is external (code, deep craft): write **Write Handoff for human** with cwd, suggested next step, constraints.
 4. **Stop.** Do not open external trees. Do not fill design/code sections.
 
 ## End
@@ -39,9 +39,9 @@ NO PASTE-READY PRODUCT ARTIFACTS IN THE VAULT.
 
 | Thought | Reality |
 |---|---|
-| "Write design under ## Design so they can paste later" | That is the work — refuse; handoff |
+| "Write design under ## Design so they can paste later" | That is the work — refuse; write-handoff |
 | "Skeleton only — they flesh details" | Freezes architecture without grant |
-| "Don't send me elsewhere / mid deep-work" | Handoff is the deliverable of this skill |
+| "Don't send me elsewhere / mid deep-work" | Write Handoff is the deliverable of this skill |
 | "Manager deadline" | Changes when they work, not what you author |
 
 ## Red flags
@@ -52,4 +52,4 @@ NO PASTE-READY PRODUCT ARTIFACTS IN THE VAULT.
 
 ## Done when
 
-Session log exists; if start: handoff present when external; if end: log matches user report; no ungranted product artifact written.
+Session log exists; if start: write-handoff present when external; if end: log matches user report; no ungranted product artifact written.

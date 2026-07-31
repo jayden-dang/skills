@@ -20,7 +20,7 @@ This package is **self-contained**: skills + templates + setup. It does not requ
 | Daily / weekly / quarterly reviews | Spec triads, TDD, PR workflows |
 | Projects, life areas, learning tracks (as **notes**) | Owning a git monorepo of product source |
 | Inbox capture and routing | Auto-registering every folder on disk as a project |
-| Handoff cards *for the user* to take elsewhere | Silently performing that handoff work |
+| Write Handoff cards *for the user* to take elsewhere | Silently performing that write-handoff work |
 
 ---
 
@@ -90,7 +90,7 @@ Eval scenarios for pressure-tests: **`EVAL.md`**.
 | `process-inbox` | Clarify and route inbox items |
 | `orient` | Status snapshot + one suggested focus |
 | `plan-day` | Daily focuses (≤3), energy, not-today |
-| `execute-session` | Start/end a focus block — **log + handoff only**; user works |
+| `execute-session` | Start/end a focus block — **log + write-handoff only**; user works |
 | `open-project` / `plan-project` / `close-project` | Portfolio outcomes |
 | `maintain-area` | Ongoing area standards |
 | `open-learning-track` / `log-learning` | Learning cadence |

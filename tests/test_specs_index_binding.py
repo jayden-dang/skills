@@ -7,7 +7,7 @@ from pathlib import Path
 REPO = Path(__file__).resolve().parent.parent
 TEMPLATE = REPO / "templates" / "specs-INDEX.md"
 LIVE_INDEX = REPO / "docs" / "specs" / "INDEX.md"
-WRITE_REQS = REPO / "skills" / "spec" / "write-requirements" / "SKILL.md"
+WRITE_REQS = REPO / "skills" / "spec" / "specify-behavior" / "SKILL.md"
 GUIDE_COPIES = [
     REPO / "docs" / "guide" / "concepts" / "artifacts.md",
     REPO / "docs" / "guide" / "concepts" / "feature-graph.md",

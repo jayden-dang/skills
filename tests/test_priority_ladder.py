@@ -5,21 +5,21 @@ import unittest
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parent.parent
-LADDER = REPO / "skills" / "track" / "check-roadmap" / "SKILL.md"
+LADDER = REPO / "skills" / "track" / "status-roadmap" / "SKILL.md"
 
 # (state substring, expected recommendation substring) — one row per rung, in order.
 # Every left-hand string is a verbatim substring of the ladder table in design.md.
 ROWS = [
     ("withholding finding", "none"),
-    ("is `Draft`", "write-roadmap"),
-    ("member with no binding", "brainstorm"),
-    ("feature `Status:` is `Draft`", "write-requirements"),
-    ("no `design.md`", "write-design"),
-    ("`design.md` exists, no `tasks.md`", "write-plan"),
-    ("`tasks.md` exists", "execute-plan"),
-    ("`Implemented`", "/release"),
+    ("is `Draft`", "plan-milestones"),
+    ("member with no binding", "frame-change"),
+    ("feature `Status:` is `Draft`", "specify-behavior"),
+    ("no `design.md`", "design-solution"),
+    ("`design.md` exists, no `tasks.md`", "plan-tasks"),
+    ("`tasks.md` exists", "build-continuous"),
+    ("`Implemented`", "/cut-release"),
     ("all bound and `Shipped`", "/assess-milestone"),
-    ("a `Planned` one exists", "write-roadmap"),
+    ("a `Planned` one exists", "plan-milestones"),
     ("every milestone `Closed`", "complete"),
 ]
 
@@ -69,7 +69,7 @@ class PriorityLadder(unittest.TestCase):
 
     def test_release_is_named_not_invoked(self):
         """RMAP-3.10 — row 7 targets a user-invoked skill, so it may only be named (ARCH-5)."""
-        row = next(ln for ln in self.text.splitlines() if "/release" in ln)
+        row = next(ln for ln in self.text.splitlines() if "/cut-release" in ln)
         self.assertRegex(row, r"(?i)name")
 
     def test_assessment_rung_names_the_skill_rather_than_invoking_it(self):

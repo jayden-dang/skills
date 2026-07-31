@@ -9,7 +9,7 @@
 | **Reads** | primary sources only — official docs, library source, published specs and RFCs, first-party APIs and changelogs |
 | **Writes** | exactly one markdown file, every claim cited, ending in an "Open decisions" section |
 | **Calls** | `deep-research` (preferred for high-stakes questions, when installed); fan-out search subagents |
-| **Called by** | [`brainstorm`](brainstorm.md) (evidence detour); any design, planning, or implementation skill facing an external-fact question |
+| **Called by** | [`frame-change`](frame-change.md) (evidence detour); any design, planning, or implementation skill facing an external-fact question |
 
 ## When it fires
 
@@ -47,21 +47,21 @@ Not every question deserves the same rigor. When the answer will steer an archit
 If a `deep-research` skill is installed, prefer it — it already implements this fan-out and adversarial-verify loop end to end, so there is no reason to hand-roll it. Otherwise do it inline:
 
 1. **Fan out 2–4 parallel search angles** — e.g. official docs, source code, issue tracker, spec text — as separate subagents, so no single source silently sets the answer.
-2. **Adversarially verify before reporting.** For each key claim, actively look for a source that contradicts it, or a version or context in which it stops being true. Note conflicts explicitly rather than silently picking a side — a disagreement between two primary sources is itself a finding the decision needs to see.
+2. **Adversarially prove-claim before reporting.** For each key claim, actively look for a source that contradicts it, or a version or context in which it stops being true. Note conflicts explicitly rather than silently picking a side — a disagreement between two primary sources is itself a finding the decision needs to see.
 
 ## Research feeds thinking — it does not replace deciding
 
 The note informs; it never decides. This is the line that keeps research from quietly becoming design.
 
-Bring the findings back to the user (or the orchestrating skill, e.g. [`brainstorm`](brainstorm.md)) and put the resulting decision to them.
+Bring the findings back to the user (or the orchestrating skill, e.g. [`frame-change`](frame-change.md)) and put the resulting decision to them.
 
-If the research was serving an interview, the decision goes through [`grilling`](grilling.md) like any other — the note supplies the fact, and the fact/decision split still applies.
+If the research was serving an interview, the decision goes through [`probe-decisions`](probe-decisions.md) like any other — the note supplies the fact, and the fact/decision split still applies.
 
 ## Worked example
 
-During a `brainstorm` interview, a question surfaces that no one can answer from preference: "Does the Web Share API's `files` field work on desktop Safari, or only mobile?" That is a fact about an external system, so `brainstorm` detours to `research`.
+During a `frame-change` interview, a question surfaces that no one can answer from preference: "Does the Web Share API's `files` field work on desktop Safari, or only mobile?" That is a fact about an external system, so `frame-change` detours to `research`.
 
-Because a wrong answer would only cost a feature flag, not an architecture, the standard (not high-stakes) path applies — no fan-out, just a careful trace to the owning source. A background subagent reads the primary sources: the WHATWG spec text, the MDN compatibility data table, and the WebKit source. It writes one file, `.skills/research/2026-07-10-web-share-files.md`:
+Because a wrong answer would only cost a feature flag, not an architecture, the standard (not high-stakes) path applies — no fan-out, just a careful audit-trace to the owning source. A background subagent reads the primary sources: the WHATWG spec text, the MDN compatibility data table, and the WebKit source. It writes one file, `.skills/research/2026-07-10-web-share-files.md`:
 
 > **Finding.** `navigator.canShare({ files })` returns `false` on desktop Safari 17 through the current build. *Source: [WebKit `Navigator.cpp`, `canShare()`](https://github.com/WebKit/WebKit/...), MDN compat table (retrieved 2026-07-10).*
 >
@@ -71,7 +71,7 @@ Because a wrong answer would only cost a feature flag, not an architecture, the 
 
 The note is short by design — one finding, one conclusion, one open decision — because the value is in the citation trail and the honest labels, not in length.
 
-Three details make this a trustworthy note rather than a guess. The finding is cited to the owning source — WebKit — while the MDN table, a lead, was used to point there and then confirmed against it. The conclusion is labelled as the author's, not the spec's, so no reader mistakes an inference for a fact. And the file ends on the one thing research must not settle — the product decision — which goes back through `grilling`.
+Three details make this a trustworthy note rather than a guess. The finding is cited to the owning source — WebKit — while the MDN table, a lead, was used to point there and then confirmed against it. The conclusion is labelled as the author's, not the spec's, so no reader mistakes an inference for a fact. And the file ends on the one thing research must not settle — the product decision — which goes back through `probe-decisions`.
 
 ## Why it is written the way it is
 
@@ -85,7 +85,7 @@ The one-file output contract ties both together: the investigation leaves a dura
 
 ## See also
 
-- [`brainstorm`](brainstorm.md) — the caller that detours here for evidence
-- [`grilling`](grilling.md) — where the decision goes after the note lands
-- [`prototype`](prototype.md) — the other evidence detour, for "does it feel right" questions
+- [`frame-change`](frame-change.md) — the caller that detours here for evidence
+- [`probe-decisions`](probe-decisions.md) — where the decision goes after the note lands
+- [`run-spike`](run-spike.md) — the other evidence detour, for "does it feel right" questions
 - [Artifacts](../concepts/artifacts.md) — how the cited note fits the durable-record model

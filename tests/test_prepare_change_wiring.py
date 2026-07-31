@@ -1,10 +1,10 @@
-"""prepare-change registration: the skill exists, is model-invoked, and is installable."""
+"""package-change registration: the skill exists, is model-invoked, and is installable."""
 import json
 import unittest
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parent.parent
-SKILL = REPO / "skills" / "ship" / "prepare-change" / "SKILL.md"
+SKILL = REPO / "skills" / "ship" / "package-change" / "SKILL.md"
 AGENTS = REPO / "AGENTS.md"
 README = REPO / "README.md"
 PLUGIN = REPO / ".claude-plugin" / "plugin.json"
@@ -14,9 +14,9 @@ MARKET = REPO / ".claude-plugin" / "marketplace.json"
 class PrepareChangeRegistration(unittest.TestCase):
     def test_PCHG_11_13_skill_file_exists_and_is_model_invoked(self):
         """PCHG-11.13 — the skill exists and no disable-model-invocation key is set."""
-        self.assertTrue(SKILL.exists(), "skills/ship/prepare-change/SKILL.md missing")
+        self.assertTrue(SKILL.exists(), "skills/ship/package-change/SKILL.md missing")
         text = SKILL.read_text()
-        self.assertIn("name: prepare-change", text)
+        self.assertIn("name: package-change", text)
         self.assertNotIn("disable-model-invocation", text)
 
     def test_PCHG_11_13_phases_named_in_order(self):
@@ -31,14 +31,14 @@ class PrepareChangeRegistration(unittest.TestCase):
     def test_PCHG_11_13_registered_in_both_manifests(self):
         """PCHG-11.13 — plugin and marketplace manifests list the skill path."""
         for manifest in (PLUGIN, MARKET):
-            self.assertIn("./skills/ship/prepare-change", manifest.read_text(),
-                          f"{manifest.name} does not list prepare-change")
+            self.assertIn("./skills/ship/package-change", manifest.read_text(),
+                          f"{manifest.name} does not list package-change")
             json.loads(manifest.read_text())
 
     def test_PCHG_11_13_named_in_agents_and_readme(self):
         """PCHG-11.13 — the roster documents name the skill."""
-        self.assertIn("prepare-change", AGENTS.read_text())
-        self.assertIn("prepare-change", README.read_text())
+        self.assertIn("package-change", AGENTS.read_text())
+        self.assertIn("package-change", README.read_text())
 
     def test_PCHG_11_13_iron_laws_unchanged(self):
         """PCHG-11.13 — the four Iron Laws and the forbidden-pattern list survive the AGENTS.md edit."""
@@ -53,7 +53,7 @@ class PrepareChangeRegistration(unittest.TestCase):
         )
 
 
-EXEC = REPO / "skills" / "execution" / "execute-plan" / "SKILL.md"
+EXEC = REPO / "skills" / "execution" / "build-continuous" / "SKILL.md"
 
 
 class ExecutePlanTail(unittest.TestCase):
@@ -61,19 +61,19 @@ class ExecutePlanTail(unittest.TestCase):
         self.text = EXEC.read_text()
 
     def test_PCHG_9_1_prepare_change_runs_before_finish_branch(self):
-        """PCHG-9.1 — prepare-change sits between acceptance and finish-branch."""
+        """PCHG-9.1 — package-change sits between acceptance and land-branch."""
         tail = self.text.split("## After the Last Task")[1]
-        acceptance = tail.find("acceptance-check")
-        prepare = tail.find("prepare-change")
-        finish = tail.find("finish-branch")
-        self.assertNotEqual(prepare, -1, "prepare-change is not in the closing sequence")
-        self.assertLess(acceptance, prepare, "prepare-change runs before acceptance")
-        self.assertLess(prepare, finish, "prepare-change runs after finish-branch")
+        acceptance = tail.find("validate-feature")
+        prepare = tail.find("package-change")
+        finish = tail.find("land-branch")
+        self.assertNotEqual(prepare, -1, "package-change is not in the closing sequence")
+        self.assertLess(acceptance, prepare, "package-change runs before acceptance")
+        self.assertLess(prepare, finish, "package-change runs after land-branch")
 
     def test_PCHG_11_7_closing_order_preserved(self):
         """PCHG-11.7 — review, fixer, polish, acceptance keep their order."""
         tail = self.text.split("## After the Last Task")[1]
-        for earlier, later in (("code-review", "polish"), ("polish", "acceptance-check")):
+        for earlier, later in (("inspect-change", "polish-diff"), ("polish-diff", "validate-feature")):
             self.assertLess(tail.find(earlier), tail.find(later))
 
     def test_PCHG_11_8_continuous_mode_still_never_pauses(self):
@@ -86,7 +86,7 @@ class ExecutePlanTail(unittest.TestCase):
         self.assertRegex(self.text, r"Task N: complete \(commits")
 
 
-SETUP = REPO / "skills" / "setup" / "setup-repo" / "SKILL.md"
+SETUP = REPO / "skills" / "setup" / "configure-repo" / "SKILL.md"
 TEMPLATE = REPO / "templates" / "agents" / "project.md"
 PROJECT = REPO / "docs" / "agents" / "project.md"
 

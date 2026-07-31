@@ -1,0 +1,232 @@
+---
+name: audit-trace
+description: Use when checking that every requirement ID traces to a task and a
+  covering test — the traceability / check-trace pass invoked by prove-claim, cut-release,
+  realign-spec, and plan-tasks's coverage check, or whenever requirements, tasks, and
+  tests may have drifted out of agreement. Produces a traceability finding set —
+  IDs cited but never defined, Implemented/Shipped requirements with no covering
+  test, duplicate definitions, and approved-but-uncited warnings.
+---
+
+# Audit Trace
+
+The vertical traceability check. It answers one question with evidence: **does
+every requirement ID agree across where it is defined, cited, and tested?**
+
+It is not a judgment call. Every input is gathered with `grep` and reads —
+deterministic passes — and every finding follows a fixed rule. Two agents running
+this on the same repo reach the same finding set.
+
+## What it produces
+
+A finding set, each item an ERROR or a WARNING:
+
+| Code | Tier | Condition |
+|---|---|---|
+| **E1** | error | A task or test cites an ID that no requirements file defines |
+| **E2** | error | An `Implemented` or `Shipped` requirement has no covering test |
+| **E3** | error | The same ID is defined (bold) in more than one file |
+| **W1** | warn | An `Approved` requirement is cited by no task |
+| **W2** | warn | A `requirements.md` is missing its `Status:` or `Feature code:` line |
+| **E4** | error | A `Respects:` line cites an `ARCH-N` no `docs/architecture/` file defines |
+| **E5** | error | A `Respects:` line cites a retired (struck-through) `ARCH-N` |
+| **W3** | warn | A live `**ARCH-N**` invariant is cited by no `design.md` |
+
+E4/E5/W3 come from the invariant passes, which only run when a spine exists.
+
+Errors mean the audit-trace is broken. Warnings mean the audit-trace is incomplete but not
+wrong. `prove-claim`/`cut-release` treat any error as a failing gate; warnings are reported,
+not fatal, unless the caller says otherwise.
+
+## Inputs
+
+- **Specs** live under `docs/specs/` (or the `specsDir` named in
+  `docs/agents/project.md`). Definitions come from files ending `requirements.md`
+  or `fixes.md`; task citations from files ending `tasks.md`.
+- **Tests** live under the repo's test locations. Default roots to search:
+  `tests test e2e src src-tauri crates app lib packages` (skip any that don't
+  exist). Within them, a **test file** is one whose path matches:
+  `\.(test|spec)\.[cm]?[jt]sx?$` · a `/tests?/` or `/e2e/` path segment ·
+  `_test\.(rs|go|py)$` · or any `.rs` file (Rust cites IDs in doc comments).
+- If `docs/agents/project.md` names different test globs or an ignore list, use
+  those instead. If it is absent, say so and use the defaults.
+- Skip `node_modules .git dist build target coverage .next .skills vendor` and any
+  dotfile/dot-dir.
+
+## The passes
+
+Run these against the repo root and read the full output of each — under the
+whole-tree rule in the NON-NEGOTIABLE section below.
+
+**1. Definitions** — bold IDs in requirements/fixes files, minus retired ones.
+
+```bash
+# every bold **CODE-N.M** in a requirements/fixes file, retired (~~struck~~) ones deleted first
+grep -rnE '\*\*[A-Z][A-Z0-9]{1,11}-[0-9]+\.[0-9]+\*\*' docs/specs \
+  --include='*requirements.md' --include='fixes.md' \
+  | sed -E 's/~~[^~]*~~//g' \
+  | grep -E '\*\*[A-Z][A-Z0-9]{1,11}-[0-9]+\.[0-9]+\*\*'
+```
+
+Each surviving line is `path:line:text`; every bold ID left on it is a definition,
+owned by `path`. The `sed` deletes `~~ … ~~` spans, so a **retired** ID cannot reach
+the result. A plain (non-bold) ID in a requirements file is prose, not a definition.
+
+**2. Statuses and feature codes** — per requirements file.
+
+```bash
+grep -rnE '^(Status:|Feature code:)' docs/specs --include='*requirements.md'
+```
+
+`Status:` is one of `Draft | Approved | Implemented | Shipped` (first match wins).
+
+**3. Task citations** — IDs on `_Requirements:` lines.
+
+```bash
+grep -roE '_Requirements:.*' docs/specs --include='*tasks.md' \
+  | grep -oE '^[^:]+:|[A-Z][A-Z0-9]{1,11}-[0-9]+(\.[0-9]+)+' \
+  | grep -E '^[^:]+:$|^[A-Z][A-Z0-9]{1,11}-[0-9]+\.[0-9]+$'
+```
+
+Only IDs on a line containing the literal `_Requirements:` are task citations. The
+output alternates a `path:` line and the IDs cited in it — each ID belongs to the
+`path:` above it. The trailing `grep` keeps only whole two-level tokens, so a
+three-level `CODE-1.2.3` can never be read as a citation of `CODE-1.2`.
+
+**4. Test coverage** — every ID string appearing anywhere in a test file. Search
+each existing test root; here is the JS/TS + Rust default:
+
+```bash
+grep -roE '[A-Z][A-Z0-9]{1,11}-[0-9]+(\.[0-9]+)+' \
+  $(printf '%s ' tests test e2e src src-tauri crates app lib packages) 2>/dev/null \
+  --include='*.test.*' --include='*.spec.*' --include='*_test.rs' \
+  --include='*_test.go' --include='*_test.py' --include='*.rs' \
+  | grep -E ':[A-Z][A-Z0-9]{1,11}-[0-9]+\.[0-9]+$' \
+  | sort -u
+```
+
+Each output line is `path:ID` — the covering test file and the ID it covers. Adjust
+the roots/includes to the repo's actual layout. Same two-level-only ID grammar as
+pass 3.
+
+### Invariant passes — only when `docs/architecture/` exists
+
+If the repo has no `docs/architecture/` directory, skip passes 5–6 entirely; the
+finding set is passes 1–4, unchanged. When the spine exists, add:
+
+**5. Invariant definitions** — bold `**ARCH-N**` in the spine, split into a *retired*
+set (struck) and a *live* set (survivors), exactly as pass 1 handles requirements.
+
+```bash
+# retired invariants — the E5 set (struck-through, captured BEFORE deletion)
+grep -rhoE '~~\*\*ARCH-[0-9]+\*\*~~' docs/architecture | grep -oE 'ARCH-[0-9]+' | sort -u
+# live invariants — strike spans deleted first, then match (as in pass 1)
+grep -rh '' docs/architecture --include='*.md' \
+  | sed -E 's/~~[^~]*~~//g' \
+  | grep -oE '\*\*ARCH-[0-9]+\*\*' | grep -oE 'ARCH-[0-9]+' | sort -u
+```
+
+The first grep is the **retired** set; the second (struck spans removed) is the
+**live** set. An `ARCH-N` in neither is undefined.
+
+**6. Respects citations** — each `ARCH-N` on a `Respects:` line in any `design.md`.
+
+```bash
+grep -rnE 'Respects:.*ARCH-[0-9]+' docs/specs --include='*design.md' \
+  | grep -oE '^[^:]+:|ARCH-[0-9]+'
+```
+
+Each cited `ARCH-N` belongs to the `design.md` it sits in.
+
+## The rules
+
+With the four sets in hand — `defined` (ID → {file, status}), `taskCited`,
+`testCovered` — apply:
+
+- **E1** — for each ID in `taskCited ∪ testCovered` not in `defined`: report it and
+  the citing file(s).
+- **E2** — for each `defined` ID whose status is `Implemented` or `Shipped` and is
+  **not** in `testCovered`: report it. (A task citation does not satisfy E2 — only a
+  test does.)
+- **E3** — for each ID bold-defined in two or more distinct files: report the files.
+  (Two bold occurrences in the *same* file are not a duplicate.)
+- **W1** — for each `defined` ID whose status is exactly `Approved` and not in
+  `taskCited`: report it.
+- **W2** — for each `requirements.md` (never `fixes.md`) missing a `Status:` or a
+  `Feature code:` line: report which line is missing.
+
+When `docs/architecture/` exists, also — with `liveArch`, `retiredArch`, and
+`respectsCited` (ARCH-N → citing design) in hand:
+
+- **E4** — for each `ARCH-N` in `respectsCited` that is in neither `liveArch` nor
+  `retiredArch`: report it and the citing `design.md`.
+- **E5** — for each `ARCH-N` in `respectsCited` that is in `retiredArch`: report it
+  and the citing `design.md`.
+- **W3** — for each `ARCH-N` in `liveArch` not in `respectsCited`: report it.
+
+Status obligations at a glance:
+
+| Status | Needs a test (E2) | Needs a task (W1) |
+|---|---|---|
+| Draft | no | no |
+| Approved | no | **yes** |
+| Implemented / Shipped | **yes** | no |
+
+## <NON-NEGOTIABLE> Coverage is textual presence — do not judge it
+
+An ID is **covered** when its string appears in a test file. Full stop. Do not read
+the test to decide whether it "really" exercises the requirement, whether the
+assertion is meaningful, or whether a commented-out line should count. That judgment
+is not part of this check, and adding it makes the result depend on the reader —
+which is the one thing this check exists to prevent.
+
+The only sanctioned exclusion is an **ignore list** in `docs/agents/project.md`:
+files (e.g. a fixture or test-support file that carries IDs as data) named there are
+dropped from the test search wholesale — never ID-by-ID by hand.
+
+Likewise: gather **every** matching file. Missing one test file invents a false E2;
+missing one requirements file invents a false E1. Grep the whole tree; do not
+sample or reason about which files "probably" matter.
+
+The same rule binds the invariant passes: E4/E5/W3 check only that a `Respects: ARCH-N`
+citation names a *live* invariant — existence and liveness. Never judge whether the
+design *actually* respects the invariant; that semantic call is `judge-invariants` /
+`inspect-change`, not `audit-trace`.
+
+### Decision-record passes — only when `.skills/decisions/` exists
+
+If the repo has no `.skills/decisions/` directory, skip this section entirely; the
+finding set remains passes 1–6 (or 1–4) unchanged.
+
+When `.skills/decisions/` exists, run the shipped validator (path relative to this
+skill set install, beside `record-verdict`):
+
+```bash
+sh skills/ship/record-verdict/validate-records.sh --mode=audit-trace
+```
+
+Merge its diagnostic lines into the report **verbatim**. Exit code 1 → treat as
+audit-trace errors (gate fail). Exit code 2 → decision-record passes **not-run**
+(never "passed"). Exit 0 → no decision-record errors (warnings may still appear).
+
+Do not reinterpret validator findings. **Crossing-without-record:** the validator
+does not emit an automated finding for “a production crossing lacks a record,”
+because it cannot tell skill-mediated verdicts from direct human action or
+external contribution. If an agent or human notes such an absence, treat it as a
+**warning-level concern only — never an error and never a cut-release/prove-claim gate
+fail**. Existing E1–E5 / W1–W3 semantics are unchanged.
+
+## Output
+
+Report the counts, then the findings:
+
+```
+trace: 24 requirements · 24 task-cited · 22 tested · 18 test files
+  ERROR E1 test cites unknown requirement SHELL-9.9 (src/shell.test.ts)
+  ERROR E2 SHELL-1.4 (docs/specs/2026-07-01-shell/requirements.md, Implemented) has no covering test
+  warn  W1 NOTES-2.1 (…/requirements.md, Approved) is not cited by any task
+```
+
+Exact wording and ordering are not contractual — the **finding set** is. If
+`docs/specs/` does not exist, say there is nothing to check and stop. When a caller
+(verify, cut-release) needs a pass/fail, the gate is: zero errors.

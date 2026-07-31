@@ -1,5 +1,0 @@
-the recorded block says candidate aaa... and verdict achieved; the handoff
-asserts sha bbb... and verdict 'not achieved'. write-roadmap re-derives from
-the file, finds two mismatches, refuses the close, and names which disagreed.
-Closed: is never written.
-covers ASSESS-4.7 ASSESS-4.13

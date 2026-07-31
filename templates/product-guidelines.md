@@ -5,7 +5,7 @@ Date: <YYYY-MM-DD>
 
 <!--
 The human-facing engineering rules features must follow — coding standards,
-conventions, house rules. Optional. When present, `write-plan` sources the
+conventions, house rules. Optional. When present, `plan-tasks` sources the
 engineering rules for its Global Constraints from HERE rather than from
 `docs/agents/project.md` (which then holds only machine-config + a pointer to this
 file). Every heading is a REQUIRED slot — fill it or write `None`.

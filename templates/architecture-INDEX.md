@@ -7,7 +7,7 @@ Date: <YYYY-MM-DD>
 The architecture spine: the small set of INVARIANTS that keep independently-built
 features consistent — not a diagram doc. Optional. Each invariant is a bold
 **ARCH-N** ID plus ONE imperative sentence (the rule). Feature design.md files cite
-the ones they rely on as `Respects: ARCH-N`, and the `trace` check verifies those
+the ones they rely on as `Respects: ARCH-N`, and the `audit-trace` check verifies those
 citations point at a live invariant.
 
 Rules:
@@ -16,7 +16,7 @@ Rules:
 - IDs are immutable once relied upon. Retire by strikethrough, never renumber.
   Example form (do NOT use a real struck **ARCH-N** token in comments — it pollutes
   the retired-set grep): write "struck ARCH-N superseded by ARCH-M" in prose only.
-  The `trace` check treats a struck invariant as retired — a design still citing it
+  The `audit-trace` check treats a struck invariant as retired — a design still citing it
   surfaces as an error.
 - Large project? Split invariants into per-domain files (`docs/architecture/<domain>.md`)
   and list them under "Domains" below; the ARCH-N namespace stays flat across files.

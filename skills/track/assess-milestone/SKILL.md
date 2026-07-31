@@ -7,12 +7,12 @@ disable-model-invocation: true
 
 # Assess Milestone
 
-`check-roadmap` reports whether a milestone's **structure** is sound. This asks the other
+`status-roadmap` reports whether a milestone's **structure** is sound. This asks the other
 half: did the milestone **deliver what its `Outcome:` sentence promised** — and it records
 that judgment where a reader six months later can still check it.
 
-**Where this sits:** `write-roadmap` (intent) → the feature flow → **`assess-milestone`**
-(did it land?) → `write-roadmap` (records the close). This skill writes exactly one file,
+**Where this sits:** `plan-milestones` (intent) → the feature flow → **`assess-milestone`**
+(did it land?) → `plan-milestones` (records the close). This skill writes exactly one file,
 `docs/roadmap/assessments/<MILE-N>.md`, and never touches `docs/roadmap/INDEX.md`.
 
 ## The two halves
@@ -44,8 +44,8 @@ test -f docs/roadmap/INDEX.md || echo "no roadmap layer"
 
 Absent → report that this project has no milestone scope, and stop. No file is written, no
 verdict is produced, and this is **not** a complaint: the roadmap layer is optional, and a
-project running short features through `verify`, `code-review`, `acceptance-check`, and
-`sync-spec` is never obliged to create a `MILE-N`.
+project running short features through `prove-claim`, `inspect-change`, `validate-feature`, and
+`realign-spec` is never obliged to create a `MILE-N`.
 
 **1. Milestone identity.** Strike spans deleted first, so a retired milestone cannot resolve.
 
@@ -126,7 +126,7 @@ verdict worth nothing.
 condition it cannot name a goal the assessed milestone cites. Evaluate it anyway — stated
 here so a reader does not mistake its absence for an omitted check.
 
-`/check-roadmap` reports the same codes across the whole repo, and is user-invoked: name it
+`/status-roadmap` reports the same codes across the whole repo, and is user-invoked: name it
 for the user when they want the full picture. Never invoke it.
 
 ## Judge the milestone
@@ -170,14 +170,14 @@ exactly the estimate this layer refuses to hold.
 
 ### Attention
 
-`/allocate-attention` produces a sample set and an explicit residue over a range, and it
+`/sample-attention` produces a sample set and an explicit residue over a range, and it
 persists **no file unless the user asked it to**. So there is nothing to discover on disk.
 
 - The user **supplies** an allocation covering the range from the committed baseline to the
   candidate closing revision — a path they had it write, or its pasted output → count its
   sample set as sampled, and carry its residue forward as **explicitly unreviewed**, with the
   unit counts, in the assessment.
-- No allocation supplied → record the range as **unsampled** and name `/allocate-attention`
+- No allocation supplied → record the range as **unsampled** and name `/sample-attention`
   for the user to run.
 
 It is user-invoked: name it, never run it yourself.
@@ -189,14 +189,14 @@ because a second list is a second place for work to rot.
 
 | Finding | Destination |
 |---|---|
-| a small in-scope change to a shipped feature | `amend` |
-| an approved plan invalidated mid-flight | `correct-course` |
-| milestone intent that turned out wrong | `write-roadmap` |
-| a hard-to-reverse architecture decision | `domain-modeling` |
-| tracker work | name `/file-issues` for the user to run |
+| a small in-scope change to a shipped feature | `amend-feature` |
+| an approved plan invalidated mid-flight | `reroute-plan` |
+| milestone intent that turned out wrong | `plan-milestones` |
+| a hard-to-reverse architecture decision | `define-domain` |
+| tracker work | name `/publish-issues` for the user to run |
 
-`record-decision` is **not** a destination. Its caller set is closed to `finish-branch` and
-`release`, and a milestone assessment is neither.
+`record-verdict` is **not** a destination. Its caller set is closed to `land-branch` and
+`cut-release`, and a milestone assessment is neither.
 
 ## Record the assessment
 
@@ -269,8 +269,8 @@ mechanical failure never waits on a human being present.
 Either missing → withhold, and say which.
 </HARD-GATE>
 
-When both hold, hand `write-roadmap` four values: the `MILE-N`, the **assessment ordinal**,
-the effective verdict, and the candidate closing revision SHA. `write-roadmap` is
+When both hold, hand `plan-milestones` four values: the `MILE-N`, the **assessment ordinal**,
+the effective verdict, and the candidate closing revision SHA. `plan-milestones` is
 model-invocable and owns every write to `docs/roadmap/INDEX.md`, including the closure record.
 
 A negative effective verdict with a `Close` decision **proceeds**. A milestone whose members
@@ -316,17 +316,17 @@ costs the same as one with two.
 
 | Thought | Reality |
 |---|---|
-| "The roadmap is missing, so I should offer to create one" | Report no milestone scope and stop. The layer is optional; `write-roadmap` exists for when they want one |
+| "The roadmap is missing, so I should offer to create one" | Report no milestone scope and stop. The layer is optional; `plan-milestones` exists for when they want one |
 | "The binding is obvious even though two codes claim it" | Two claims is not a binding. Withhold — a verdict resting on a guess is worse than no verdict |
 | "The commitment date is right there, I can find the commit from it" | Two milestones committed the same day share a date and not a SHA. Use the pickaxe |
 | "HEAD moved while I was working, so I should reassess" | The candidate revision is fixed at pass 4. A moving HEAD is not new evidence |
-| "check-roadmap already lists R1-R11, I'll just read those" | It reads them from the same reference you do. Read the reference |
+| "status-roadmap already lists R1-R11, I'll just read those" | It reads them from the same reference you do. Read the reference |
 | "The roadmap has uncommitted edits, so I must stop" | Record `working tree: modified` and carry on. The withholding set is fixed; do not add to it |
 
 ## Red flags — stop
 
-- You are about to write to `docs/roadmap/INDEX.md` — that file is `write-roadmap`'s alone
-- You are about to run `/check-roadmap` or `/allocate-attention` yourself rather than naming
+- You are about to write to `docs/roadmap/INDEX.md` — that file is `plan-milestones`'s alone
+- You are about to run `/status-roadmap` or `/sample-attention` yourself rather than naming
   them for the user — both are user-invoked
 - You are about to resolve a baseline from a date instead of a SHA
 - You are about to produce a verdict while a relevant withholding finding stands

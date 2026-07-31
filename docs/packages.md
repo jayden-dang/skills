@@ -19,7 +19,7 @@ Spec-driven agentic development: ideation → requirements → design → plan �
 
 - Install: default `npx skills` / Claude plugin entry (`.claude-plugin/plugin.json`, name `engineer-pack`)
 - Marketplace registry: `.claude-plugin/marketplace.json` (both packs)
-- Config per code repo: `setup-repo`
+- Config per code repo: `configure-repo`
 - Constitution for engineering sessions: root `AGENTS.md` (Iron Laws for code work)
 
 Details: root [README.md](../README.md), [docs/guide/START-HERE.md](guide/START-HERE.md).

@@ -18,6 +18,7 @@ import os
 import re
 import sys
 import time
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
@@ -357,7 +358,11 @@ def render_html(catalog: Dict[str, Any], shell_path: Path) -> str:
         raise SystemExit(f"error: shell not found: {shell_path}")
     shell = shell_path.read_text(encoding="utf-8")
     payload = {
-        "version": 1,
+        "version": SCHEMA_VERSION,
+        "rev": catalog.get("rev", 0),
+        # Stamped so a page opened from file:// can say how old its verdicts are
+        # instead of implying they are live.
+        "rendered_at": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
         "feature": catalog["feature"],
         "slug": catalog["slug"],
         "title": catalog["title"],

@@ -21,6 +21,10 @@
     --persist: #5b9fd4;
     --visual: #b07cc6;
     --journey: #e07a3d;
+    --v-pass: #3d9a6a;
+    --v-fail: #c45c5c;
+    --v-blocked: #c9a227;
+    --v-pending: #9aa7b2;
   }
   @media (prefers-color-scheme: light) {
     :root {
@@ -111,6 +115,28 @@
   .chip.persist { color: var(--persist); }
   .chip.visual { color: var(--visual); }
   .chip.journey { color: var(--journey); }
+  /* The verdict always prints its own word, so colour is reinforcement and
+     never the only carrier of the state. */
+  .verdict { font-weight: 600; }
+  .verdict.pass { color: var(--v-pass); }
+  .verdict.fail { color: var(--v-fail); }
+  .verdict.blocked { color: var(--v-blocked); }
+  .verdict.pending { color: var(--v-pending); }
+  .ticked { color: var(--muted); font-style: italic; }
+  .banner {
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--edge);
+    border-radius: 6px;
+    padding: 0.55rem 0.8rem;
+    margin: 0.9rem 0 0;
+    font-size: 0.9rem;
+    color: var(--muted);
+  }
+  .case-head input:focus-visible,
+  #reset:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
   .try, .expect, .setup, .backend {
     margin: 0.35rem 0;
     font-size: 0.95rem;
@@ -141,6 +167,7 @@
     <h1 id="title">Dogfood guide</h1>
     <p class="muted" id="origin-line"></p>
     <p class="intro muted" id="intro"></p>
+    <p class="banner" id="snapshot-banner" hidden></p>
   </header>
 
   <div class="progress" aria-live="polite">
@@ -172,6 +199,21 @@ window.__DOGFOOD__ = window.__DOGFOOD__ || {
 (function () {
   var data = window.__DOGFOOD__;
   var storageKey = "dogfood-ticks:" + (data.slug || data.feature || "guide");
+
+  // Mode is decided by the URL this page was loaded from. Under file:// the
+  // page is entirely self-contained: the verdicts baked in at render time are
+  // all it has, and it says so rather than implying it is live.
+  var LIVE = location.protocol === "http:" || location.protocol === "https:";
+
+  if (!LIVE) {
+    var banner = document.getElementById("snapshot-banner");
+    banner.textContent =
+      "Verdicts below are the snapshot taken when this page was rendered" +
+      (data.rendered_at ? " (" + data.rendered_at + ")" : "") +
+      " — not live. Re-run `dogfood render` to refresh, or `dogfood serve` " +
+      "to follow the run as it happens.";
+    banner.hidden = false;
+  }
 
   document.getElementById("title").textContent = data.title || "Dogfood guide";
   document.title = data.title || "Dogfood guide";
@@ -237,6 +279,10 @@ window.__DOGFOOD__ = window.__DOGFOOD__ || {
     div.setAttribute("data-setup", c.setup || "");
 
     var kind = (c.kind || "happy").toLowerCase();
+    var run = c.run || {};
+    var human = c.human || {};
+    var verdict = (run.verdict || "pending").toLowerCase();
+    div.setAttribute("data-verdict", verdict);
     div.innerHTML =
       '<div class="case-head">' +
         '<label>' +
@@ -246,6 +292,8 @@ window.__DOGFOOD__ = window.__DOGFOOD__ || {
       '</div>' +
       '<div class="meta">' +
         '<span class="chip ' + escapeAttr(kind) + '">' + escapeHtml(kind) + '</span>' +
+        '<span class="chip verdict ' + escapeAttr(verdict) + '">' + escapeHtml(verdict) + '</span>' +
+        (human.checked ? '<span class="ticked">checked by hand</span>' : '') +
         '<span>' + escapeHtml(c.req || "") + '</span>' +
         '<span>' + escapeHtml(c.id || "") + '</span>' +
       '</div>' +

@@ -302,6 +302,88 @@ class CatalogReadTests(unittest.TestCase):
             self.assertIn(sub, cp.stdout)
 
 
+class RenderTests(unittest.TestCase):
+    """`render` output. Note that data-* attributes are set by the shell's JS at
+    runtime, so they are asserted against the shell source in
+    tests/test_dogfood_guide_contract.py, not against rendered HTML."""
+
+    def setUp(self):
+        self._tmp = tempfile.TemporaryDirectory()
+        self.addCleanup(self._tmp.cleanup)
+        self.dir = Path(self._tmp.name)
+
+    def render(self, doc=None, shell: Path = None) -> str:
+        path = write_doc(self.dir, doc if doc is not None else load_fixture())
+        out = self.dir / "guide.html"
+        run_cli("render", str(path), "-o", str(out), "--shell", str(shell or SHELL))
+        return out.read_text(encoding="utf-8")
+
+    @staticmethod
+    def assignment(html: str) -> str:
+        """The embedded JSON literal, taken from between the render markers."""
+        block = html.split("/* __CASES_JSON__ */", 1)[1].split(
+            "/* __END_CASES_JSON__ */", 1
+        )[0]
+        return block.split("window.__DOGFOOD__ = ", 1)[1].rstrip().rstrip(";")
+
+    def embedded(self, html: str) -> dict:
+        return json.loads(self.assignment(html).replace("<\\/", "</"))
+
+    def test_render_embeds_each_cases_current_verdict(self):
+        """DFSYNC-4.1 — the generated page carries case bodies and verdicts together."""
+        doc = load_fixture()
+        cases = list(iter_cases(doc))
+        cases[0]["run"] = {
+            "verdict": "pass", "saw": "seen it", "server": "probed", "notes": "",
+        }
+        cases[1]["human"]["checked"] = True
+        payload = self.embedded(self.render(doc))
+        rendered = {c["id"]: c for c in iter_cases(payload)}
+        self.assertEqual("pass", rendered[cases[0]["id"]]["run"]["verdict"])
+        self.assertEqual("seen it", rendered[cases[0]["id"]]["run"]["saw"])
+        self.assertTrue(rendered[cases[1]["id"]]["human"]["checked"])
+
+    def test_render_records_when_the_snapshot_was_taken(self):
+        """DFSYNC-4.3 — the page carries the render timestamp it will show offline."""
+        payload = self.embedded(self.render())
+        self.assertIn("rendered_at", payload)
+        self.assertRegex(payload["rendered_at"], r"^\d{4}-\d{2}-\d{2}T[\d:]{8}")
+
+    def test_render_fails_loudly_without_the_markers(self):
+        """DFSYNC-4.7 — a shell missing the marker pair exits non-zero."""
+        bad_shell = self.dir / "no-markers.html"
+        bad_shell.write_text("<html><body>nothing here</body></html>", encoding="utf-8")
+        path = write_doc(self.dir, load_fixture(), "run2.json")
+        cp = run_cli(
+            "render", str(path), "-o", str(self.dir / "x.html"),
+            "--shell", str(bad_shell), check=False,
+        )
+        self.assertNotEqual(0, cp.returncode)
+        self.assertIn("__CASES_JSON__", cp.stderr)
+
+    def test_render_preserves_two_character_newline_escapes(self):
+        """DFSYNC-4.8 — a \\n inside a JSON string is not expanded into a real newline."""
+        doc = load_fixture()
+        first = next(iter_cases(doc))
+        first["try"] = "line one\nline two"
+        html = self.render(doc)
+        assignment = self.assignment(html)
+        self.assertIn("line one\\nline two", assignment)
+        self.assertNotIn("line one\nline two", assignment)
+        self.assertEqual(
+            "line one\nline two",
+            {c["id"]: c for c in iter_cases(self.embedded(html))}[first["id"]]["try"],
+        )
+
+    def test_render_escapes_closing_script_sequences(self):
+        """DFSYNC-4.1 — embedded content cannot terminate the script element early."""
+        doc = load_fixture()
+        next(iter_cases(doc))["expect"] = "a </script> in the copy"
+        html = self.render(doc)
+        assignment = self.assignment(html)
+        self.assertNotIn("</script>", assignment)
+
+
 class VerdictCommandTests(unittest.TestCase):
     """init / next / status / mark / report, now reading and writing one run file."""
 

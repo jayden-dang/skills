@@ -782,12 +782,12 @@ _Requirements: DFSYNC-5.4_
 def test_drive_walk_asks_before_stopping_the_server(self):
     """DFSYNC-6.4 — §5 requires asking the person whether to stop a server the agent started."""
     text = (REPO / "skills" / "acceptance" / "run-product-walkthrough" / "SKILL.md").read_text()
-    self.assertRegex(text, r"route-task .*whether to stop|serve --stop")
+    self.assertRegex(text, r"ask .*whether to stop|serve --stop")
     self.assertNotIn("PROGRESS LIVES IN THE LEDGER", text)   # the ledger is gone
     self.assertIn("NO CASE IS TICKED ON THE SCREEN ALONE", text)  # the substance survives
 ```
 
-Run: `python3 -m unittest tests.test_walk_product_cli` — expect: the route-task assertion fails and
+Run: `python3 -m unittest tests.test_walk_product_cli` — expect: the ask assertion fails and
 the stale Iron Law line is still present.
 
 - [ ] **Step 2: Implement**

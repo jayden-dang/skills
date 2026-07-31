@@ -26,7 +26,7 @@ This skill set is opinionated and it costs something. Knowing when it earns its 
 
 ## Choosing your entry point
 
-If you are unsure, run `/route-task` — it is a router whose entire job is mapping a situation to the right entry point. Otherwise:
+If you are unsure, run `/ask-me-bro` — it is a router whose entire job is mapping a situation to the right entry point. Otherwise:
 
 | Your situation | Start here |
 |---|---|
@@ -45,7 +45,7 @@ If you are unsure, run `/route-task` — it is a router whose entire job is mapp
 | Cutting a version | [`/cut-release`](../skills/cut-release.md) |
 | Spec has drifted from the code, or the audit-trace check comes back dirty | [`realign-spec`](../skills/realign-spec.md) |
 
-Two rules of thumb resolve most remaining ambiguity, and both come from `route-task`:
+Two rules of thumb resolve most remaining ambiguity, and both come from `ask-me-bro`:
 
 > Never spec what you do not understand yet. Unknowns go to `research` or `run-spike` first.
 
@@ -73,5 +73,5 @@ Execution is different. `build-in-waves` sessions are context-isolated **per tas
 
 - [Ceremony tiers](ceremony-tiers.md) — how the system scales down for small work
 - [Philosophy](philosophy.md) — the principles behind these boundaries
-- [`route-task`](../skills/route-task.md) — the router, when you are unsure
+- [`ask-me-bro`](../skills/ask-me-bro.md) — the router, when you are unsure
 - [Adopting the skill set](../resources/adopting.md) — the practical install path

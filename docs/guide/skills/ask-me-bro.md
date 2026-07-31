@@ -1,11 +1,11 @@
-# `route-task`
+# `ask-me-bro`
 
 > The router. It names the entry point for a task and explains the chain that follows — without executing any of it.
 
 |  |  |
 |---|---|
 | **Bucket** | meta |
-| **Invocation** | user-invoked — run as `/route-task` (the frontmatter sets `disable-model-invocation: true`, so the agent can name it but cannot auto-invoke it) |
+| **Invocation** | user-invoked — run as `/ask-me-bro` (the frontmatter sets `disable-model-invocation: true`, so the agent can name it but cannot auto-invoke it) |
 | **Reads** | the user's situation and what specs already exist |
 | **Writes** | nothing — it produces a routing decision, not an artifact |
 | **Calls** | invokes the model-invocable entry point it lands on ([`frame-change`](frame-change.md), [`root-cause`](root-cause.md), [`validate-feature`](validate-feature.md), [`review-product-flow`](review-product-flow.md)); names user-invoked ones ([`triage`](triage.md), [`scan-architecture`](scan-architecture.md), [`configure-repo`](configure-repo.md), [`bootstrap-repo`](bootstrap-repo.md), [`write-handoff`](write-handoff.md), [`cut-release`](cut-release.md)) for the user to run |
@@ -13,7 +13,7 @@
 
 ## When it fires
 
-The user runs `/route-task` when they are unsure which skill or flow fits — asking "how do I start", "what's the workflow", "which skill should I use", or "what comes next". It routes among the already-installed development skills; it is not for discovering or installing new ones. `gate-session` names it whenever the agent cannot tell which flow applies.
+The user runs `/ask-me-bro` when they are unsure which skill or flow fits — asking "how do I start", "what's the workflow", "which skill should I use", or "what comes next". It routes among the already-installed development skills; it is not for discovering or installing new ones. `gate-session` names it whenever the agent cannot tell which flow applies.
 
 The skill's own rule for itself: read the situation, name the entry point, explain the chain, and then stop. It does not start executing the chosen flow inside itself. If the entry point it lands on is model-invocable, it invokes it and lets that skill take over; if the entry point is user-invoked, it can only name it and tell the user to run the command.
 
@@ -50,21 +50,21 @@ Two governing heuristics close the skill. Never spec what you do not understand 
 
 ## Worked example
 
-> **User:** `/route-task` I've got a bug report that the export button downloads an empty CSV. Where do I start?
+> **User:** `/ask-me-bro` I've got a bug report that the export button downloads an empty CSV. Where do I start?
 
-`route-task` reads the situation — a reported defect, not new behavior — and routes rather than executes. It names the entry point and the chain:
+`ask-me-bro` reads the situation — a reported defect, not new behavior — and routes rather than executes. It names the entry point and the chain:
 
 > Start with `root-cause`. It establishes the root cause before any fix is proposed, then exits into the tier-1 mini-spec flow: a fix requirement plus a SHALL-CONTINUE-TO guard in the owning `requirements.md`, and a regression test tagged with the requirement ID. From there it is `test-first` for the fix, `prove-claim` before you claim it works, then `inspect-change` and `land-branch`.
 
-Because `root-cause` is model-invocable, `route-task` hands off by invoking it and letting it take over. Had the situation instead been "review the PR my teammate opened", `route-task` would have named `/triage` and told the user to run it, since a user-invoked skill cannot be auto-invoked.
+Because `root-cause` is model-invocable, `ask-me-bro` hands off by invoking it and letting it take over. Had the situation instead been "review the PR my teammate opened", `ask-me-bro` would have named `/triage` and told the user to run it, since a user-invoked skill cannot be auto-invoked.
 
 ## Why it is written the way it is
 
-`route-task` is a pure router, so per [`author-skills`](author-skills.md) it is a recipe skill, not a gate: its baseline failure is producing routing advice of the wrong shape, not breaking a rule under pressure. That is why it carries no iron law, no rationalization table, and no red flags — those forms measurably backfire on a skill whose job is to lay out a chain. Instead it is a positive contract: what a route IS, its steps in order. The `disable-model-invocation: true` frontmatter is itself doctrine — a router the agent could auto-invoke would fire on every ambiguous turn and pre-empt the actual entry skills; keeping it user-invoked means the human decides when routing help is wanted.
+`ask-me-bro` is a pure router, so per [`author-skills`](author-skills.md) it is a recipe skill, not a gate: its baseline failure is producing routing advice of the wrong shape, not breaking a rule under pressure. That is why it carries no iron law, no rationalization table, and no red flags — those forms measurably backfire on a skill whose job is to lay out a chain. Instead it is a positive contract: what a route IS, its steps in order. The `disable-model-invocation: true` frontmatter is itself doctrine — a router the agent could auto-invoke would fire on every ambiguous turn and pre-empt the actual entry skills; keeping it user-invoked means the human decides when routing help is wanted.
 
 ## See also
 
 - [Methodology overview](../methodology/overview.md) — the same idea-to-ship chain in full
-- [Ceremony tiers](../methodology/ceremony-tiers.md) — the tier-0/1/2 split `route-task` routes on
-- [`gate-session`](gate-session.md) — the gate that names `route-task` when the flow is unclear
-- [`frame-change`](frame-change.md) — the default entry point `route-task` points most tasks to
+- [Ceremony tiers](../methodology/ceremony-tiers.md) — the tier-0/1/2 split `ask-me-bro` routes on
+- [`gate-session`](gate-session.md) — the gate that names `ask-me-bro` when the flow is unclear
+- [`frame-change`](frame-change.md) — the default entry point `ask-me-bro` points most tasks to

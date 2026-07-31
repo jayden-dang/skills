@@ -87,7 +87,7 @@ Monorepos may instead use a root `CONTEXT-MAP.md` pointing at per-context `CONTE
 Offered only when **all three** hold:
 
 1. **Hard to reverse** — changing course later carries real cost.
-2. **Surprising without context** — a future reader would route-task "why on earth this way?"
+2. **Surprising without context** — a future reader would ask "why on earth this way?"
 3. **A real trade-off** — genuine alternatives existed and one was chosen for specific reasons.
 
 Any one missing means no ADR. The body is a short title plus **one to three sentences**: context, decision, why. Recording *that* and *why* is the value, not filling sections.

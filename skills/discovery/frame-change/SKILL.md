@@ -37,7 +37,7 @@ Small requests are exactly where unexamined assumptions burn the most work, beca
 
 ## Checklist
 
-**Todos first — GATE.** The very first action of every frame-change — before you read `CONTEXT.md`, dispatch a scan, or route-task a single question — is to create the todo list: one todo per checklist item below (steps 1–6) via your harness's todo tool (`TodoWrite` in Claude Code; the equivalent in Kimi, Codex, or wherever this runs). This fires for EVERY request, no matter how simple it looks — the HARD-GATE above is what you must NOT do; this is what you MUST do first. The list holds this skill's six steps only; do not add downstream stages (`specify-behavior`, `design-solution`, `plan-tasks`) — each creates its own list on handoff. Do not proceed until the list exists, then complete the items in order, checking each off only when its **Done when** is met.
+**Todos first — GATE.** The very first action of every frame-change — before you read `CONTEXT.md`, dispatch a scan, or ask a single question — is to create the todo list: one todo per checklist item below (steps 1–6) via your harness's todo tool (`TodoWrite` in Claude Code; the equivalent in Kimi, Codex, or wherever this runs). This fires for EVERY request, no matter how simple it looks — the HARD-GATE above is what you must NOT do; this is what you MUST do first. The list holds this skill's six steps only; do not add downstream stages (`specify-behavior`, `design-solution`, `plan-tasks`) — each creates its own list on handoff. Do not proceed until the list exists, then complete the items in order, checking each off only when its **Done when** is met.
 
 **Right-size with an early tier read.** Once step 1 gives you the context, make a
 *provisional* tier call:

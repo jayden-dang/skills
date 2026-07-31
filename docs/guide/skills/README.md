@@ -15,7 +15,7 @@ The skills that govern the other skills.
 | Skill | Invocation | What it does |
 |---|---|---|
 | [`gate-session`](gate-session.md) | model (session-injected) | The gate. If there is even a 1% chance a skill applies, invoke it first |
-| [`route-task`](route-task.md) | `/route-task` | The router. Maps any situation to the right entry point |
+| [`ask-me-bro`](ask-me-bro.md) | `/ask-me-bro` | The router. Maps any situation to the right entry point |
 | [`author-skills`](author-skills.md) | `/author-skills` | TDD for process documentation. The standard every skill here is written against |
 
 ## setup

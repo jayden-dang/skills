@@ -99,7 +99,7 @@ The reviewer is only useful if it is left free to judge, so the controller's dis
 - **A plan-mandated defect is still a finding.** The plan does not grade its own work, so the finding and the mandating plan text go to the user, who decides which governs. Never dismiss the finding, and never dispatch a fix that contradicts the plan without asking.
 - **Global Constraints are the attention lens.** They go in verbatim — binding requirements, exact values and formats and stated relationships — never process rules (the template carries those) and never the controller's pre-judgments.
 - **No open-ended directives** ("check every call site", "stress-test if useful") without a concrete, task-specific reason.
-- **Do not route-task a reviewer to re-run tests** the implementer already ran on the same code — the report file is the test evidence.
+- **Do not ask a reviewer to re-run tests** the implementer already ran on the same code — the report file is the test evidence.
 
 ## Durable progress
 

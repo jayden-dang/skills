@@ -98,7 +98,7 @@ baselines exist and Task 2 contract tests are RED-then-GREEN per author-skills.
 | `docs/agents/issue-tracker.md` | Same section for this repo if present |
 | `skills/setup/configure-repo/SKILL.md` | Mention Pathfind ops in tracker write path if needed |
 | `skills/discovery/frame-change/SKILL.md` | Seed knowns from pathfind knowns package |
-| `skills/meta/route-task/SKILL.md` | On-ramp multi-session fog → `/pathfind` |
+| `skills/meta/ask-me-bro/SKILL.md` | On-ramp multi-session fog → `/pathfind` |
 | `AGENTS.md` | Skill count + discovery row + user-invoked list |
 | `README.md` | discovery roster |
 | `.claude-plugin/plugin.json` | Register pathfind |
@@ -317,11 +317,11 @@ _Requirements: PFIND-6.1, PFIND-6.3_
 
 ---
 
-### Task 6: Neighbors — frame-change knowns, route-task, architecture docs
+### Task 6: Neighbors — frame-change knowns, ask-me-bro, architecture docs
 
 **Files:**
 - Modify: `skills/discovery/frame-change/SKILL.md`
-- Modify: `skills/meta/route-task/SKILL.md`
+- Modify: `skills/meta/ask-me-bro/SKILL.md`
 - Create: `docs/adr/0008-pathfind-layer.md`
 - Modify: `docs/architecture/workflows.md`
 - Modify: `docs/architecture/skills.md`
@@ -329,7 +329,7 @@ _Requirements: PFIND-6.1, PFIND-6.3_
 - Modify: `tests/pathfind/scenarios.md`
 - Modify: `docs/agents/project.md` audit-trace ignore for red-baselines if required
 
-**Reuse:** existing — frame-change knowns inventory step; route-task on-ramps list (rung 2)
+**Reuse:** existing — frame-change knowns inventory step; ask-me-bro on-ramps list (rung 2)
 
 **Depends-on:** Task 4
 
@@ -338,7 +338,7 @@ _Requirements: PFIND-6.1, PFIND-6.3_
 Assert frame-change seeds knowns from `.skills/pathfind/**/knowns.md` when
 user points at it; does not reopen closed decisions; brownfield blindspot still
 required — **PFIND-7.6**, **PFIND-7.7**.  
-route-task names `/pathfind` for multi-session fog — **PFIND-9.1**, **PFIND-1.4**.  
+ask-me-bro names `/pathfind` for multi-session fog — **PFIND-9.1**, **PFIND-1.4**.  
 ADR + workflows + skills inventory — **PFIND-9.2**.  
 No mandatory pathfind for tier 0 — **PFIND-9.3**, **PFIND-1.5**.
 

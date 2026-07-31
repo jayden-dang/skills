@@ -92,7 +92,7 @@ Rewrite the description as **trigger + outcome noun, never the workflow**.
 
 `triage` carries `disable-model-invocation: true`. The agent *cannot* invoke it. Some skill body is directing a hand-off to a user-invoked target — that is a real bug, not a style nit. A hand-off reaches a user-invoked skill only by *naming it for the user to run*.
 
-The user-invoked set: `/route-task`, `/author-skills`, `/teach-pack`, `/configure-repo`, `/bootstrap-repo`, `/define-project`, `/triage`, `/scan-architecture`, `/write-handoff`, `/publish-issues`, `/cut-release`.
+The user-invoked set: `/ask-me-bro`, `/author-skills`, `/teach-pack`, `/configure-repo`, `/bootstrap-repo`, `/define-project`, `/triage`, `/scan-architecture`, `/write-handoff`, `/publish-issues`, `/cut-release`.
 
 ---
 
@@ -184,4 +184,4 @@ For a non-deterministic bug, do not chase a clean repro. Raise the reproduction 
 - [Traceability — the spine](../concepts/traceability.md) — what the audit-trace check is and the finding codes
 - [The gates](../concepts/gates.md) — what each Iron Law is preventing
 - [`realign-spec`](../skills/realign-spec.md) — the skill for realigning a drifted spec
-- [`route-task`](../skills/route-task.md) — the router, when you do not know which flow you are in
+- [`ask-me-bro`](../skills/ask-me-bro.md) — the router, when you do not know which flow you are in

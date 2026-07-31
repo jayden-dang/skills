@@ -241,7 +241,7 @@ verification (RMAP-3.12, RMAP-3.14).
 
 Satisfies: RMAP-3.10, RMAP-3.11, RMAP-3.16
 Respects: ARCH-1, ARCH-5
-Reuse: none — new rule table (rung 7). Nothing in the set computes a next action from artifact state: `route-task` routes from the conversation, `sprint-status` is the researched prior art and is not installed here.
+Reuse: none — new rule table (rung 7). Nothing in the set computes a next action from artifact state: `ask-me-bro` routes from the conversation, `sprint-status` is the researched prior art and is not installed here.
 
 First match wins, top to bottom. Ties break on **table order** for milestones, then lowest
 `ROAD-N` numerically.

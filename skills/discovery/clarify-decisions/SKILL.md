@@ -153,7 +153,7 @@ Standalone: a **living** open-set list of decision areas is fine — still one c
 | "I'll AskUserQuestion and also paste context" | Dual channel. One inline card; no picker. |
 | "Recommended + one-line reason is enough" | Without Thread, Territory, and consequences per option, the user cannot analyze — only accept a default. |
 | "Keep Why to one line so it stays snappy" | Rich enough to decide without a follow-up is the floor. A sentence budget is not a thinness license. |
-| "Context can be a follow-up if they route-task" | The card *is* the detail. Follow-up-only context is a thin-card failure. |
+| "Context can be a follow-up if they ask" | The card *is* the detail. Follow-up-only context is a thin-card failure. |
 | "We finished the 4 areas on the todo — close" | The todo is a living map. Open-set empty is the stop; precommitted N is not. |
 | "Question 3 of 5, then package" | No fixed N. Countdown framing is a red flag. |
 | "User asked for button color first" | Blast-radius first still holds. Polish Diff after architecture, data, and auth forks. |

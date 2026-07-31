@@ -25,5 +25,5 @@ Ship user-invoked skill **`pathfind`** as optional Layer 0:
 
 - Greenfield and brownfield share one skill; brownfield requires territory scan before destination
 - `frame-change` seeds knowns when pointed at a pathfind package
-- `route-task` on-ramps multi-session fog → `/pathfind`
+- `ask-me-bro` on-ramps multi-session fog → `/pathfind`
 - Ordinary tier-0/1 work unchanged when no map exists (ARCH-2)

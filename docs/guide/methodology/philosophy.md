@@ -6,7 +6,7 @@ Six principles govern every skill in the set. They are not decoration — each o
 
 A skill exists to wrangle determinism out of a stochastic system.
 
-The precise claim: the agent takes the same **process** on every run — not that it emits identical output. A frame-changeing skill should reliably diverge. Its tokens vary; its behavior does not. When you route-task "should this rule be in the skill?", the question is always *does this line change behavior versus no skill at all?* That is the **no-op test**, and a sentence that fails it gets deleted whole, not trimmed.
+The precise claim: the agent takes the same **process** on every run — not that it emits identical output. A frame-changeing skill should reliably diverge. Its tokens vary; its behavior does not. When you ask "should this rule be in the skill?", the question is always *does this line change behavior versus no skill at all?* That is the **no-op test**, and a sentence that fails it gets deleted whole, not trimmed.
 
 This is why disputes about what the agent does by default are settled by running the scenario, never by debate. And it is why [`author-skills`](../skills/author-skills.md) carries an Iron Law of its own: no skill and no edit to a skill ships without a failing test first. Writing skills is test-driven development applied to process documentation.
 

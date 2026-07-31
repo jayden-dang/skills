@@ -351,7 +351,7 @@ Run: `python3 -m unittest tests.test_prepare_change_contract` — expect: pass.
 
 - [ ] **Step 3: Commit**
 
-`git commit -m "feat(package-change): declared PR base with an route-task fallback" # trailer: Implements: PCHG-2.1`
+`git commit -m "feat(package-change): declared PR base with an ask-the-user fallback" # trailer: Implements: PCHG-2.1`
 
 _Requirements: PCHG-2.1, PCHG-2.2, PCHG-2.3, PCHG-2.4, PCHG-2.5, PCHG-2.6, PCHG-2.7, PCHG-2.8, PCHG-2.9, PCHG-2.10_
 

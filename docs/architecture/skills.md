@@ -13,7 +13,7 @@ quick reference: `AGENTS.md`.
 1. **gate-session** (m, session-injected) — the gate. 1%-rule, skill-check before
    ANY response, red-flags table, process-skills-before-implementation priority,
    user instructions override skills.
-2. **route-task** (U) — router. Maps situations to flows; the main idea→ship chain, the
+2. **ask-me-bro** (U) — router. Maps situations to flows; the main idea→ship chain, the
    bugfix on-ramp, the maintenance loop, context hygiene.
 3. **author-skills** (U) — TDD for skills + the authoring vocabulary. The standard
    every skill here is written against. A deterministic check driven by an LLM

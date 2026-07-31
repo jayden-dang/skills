@@ -62,7 +62,7 @@ adopted, stop and put it to the user: what it is, why it fits, cost (maintain,
 footprint, supply chain). Ground the pitch in current facts via the **Context7 MCP**
 (or `research`) before naming version or API. Wait for agreement before writing it
 into the design; if they decline, fall back down the ladder. An *already-installed*
-dependency (rung 5) needs no such route-task. The new-dependency *adoption* is the
+dependency (rung 5) needs no such ask. The new-dependency *adoption* is the
 user's call; the `Reuse:` line still records the rung that held.
 
 For the genuinely hard parts, design it twice: dispatch 2–3 parallel subagents

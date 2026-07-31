@@ -127,5 +127,5 @@ The chain is not one-way. Several skills feed back into earlier phases:
 
 - [Overview](../methodology/overview.md) — what the system is and why
 - [Ceremony tiers](../methodology/ceremony-tiers.md) — which flow your work belongs in
-- [`route-task`](../skills/route-task.md) — the router, when the entry point is unclear
+- [`ask-me-bro`](../skills/ask-me-bro.md) — the router, when the entry point is unclear
 - [Examples](../examples/tier-2-feature.md) — the chain run end to end

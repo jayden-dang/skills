@@ -39,7 +39,7 @@ live only in [`INDEX.md`](./INDEX.md) (ARCH-N).
 
 ```
 skills/
-  meta/        gate-session, route-task, author-skills, teach-pack
+  meta/        gate-session, ask-me-bro, author-skills, teach-pack
   setup/       configure-repo, bootstrap-repo
   discovery/   frame-change, clarify-decisions, research, run-spike, define-domain
   spec/        specify-behavior, design-solution, plan-tasks

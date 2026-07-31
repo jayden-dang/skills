@@ -1,7 +1,7 @@
 ---
-name: route-task
+name: ask-me-bro
 description: Routes among the already-installed development skills to the one that fits the task at
-  hand. Run it with /route-task.
+  hand. Run it with /ask-me-bro.
 disable-model-invocation: true
 ---
 

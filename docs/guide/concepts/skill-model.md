@@ -32,7 +32,7 @@ That budget is why discipline skills keep their core body to roughly 500 words, 
 
 **Model-invocable** skills have no special frontmatter. The agent invokes them on its own when the description matches the situation. These hold reusable discipline: `test-first`, `prove-claim`, `root-cause`, `clarify-decisions`, `design-solution`.
 
-**User-invoked** skills carry `disable-model-invocation: true`. The agent *cannot* auto-invoke them; the user runs them as a slash command. These orchestrate: `/route-task`, `/configure-repo`, `/bootstrap-repo`, `/define-project`, `/triage`, `/scan-architecture`, `/write-handoff`, `/publish-issues`, `/cut-release`, `/author-skills`, `/teach-pack`.
+**User-invoked** skills carry `disable-model-invocation: true`. The agent *cannot* auto-invoke them; the user runs them as a slash command. These orchestrate: `/ask-me-bro`, `/configure-repo`, `/bootstrap-repo`, `/define-project`, `/triage`, `/scan-architecture`, `/write-handoff`, `/publish-issues`, `/cut-release`, `/author-skills`, `/teach-pack`.
 
 The composition rule falls out of that:
 
@@ -45,7 +45,7 @@ You can see the rule being obeyed in the wild. `root-cause` hands architectural 
 | Bucket | Skills | Kind |
 |---|---|---|
 | meta | `gate-session` | model (session-injected) |
-| | `route-task`, `author-skills`, `teach-pack` | user |
+| | `ask-me-bro`, `author-skills`, `teach-pack` | user |
 | setup | `configure-repo`, `bootstrap-repo` | user |
 | discovery | `frame-change`, `clarify-decisions`, `research`, `run-spike`, `define-domain` | model |
 | spec | `specify-behavior`, `design-solution`, `plan-tasks` | model |

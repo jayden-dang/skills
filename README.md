@@ -152,7 +152,7 @@ maintains a repo-level product vision plus an IDed architecture-invariant spine
 checks those citations the same way it checks requirement IDs. A repo that opts into
 nothing behaves exactly as above.
 
-Lost? Invoke `/route-task` — it routes any situation to the right entry point.
+Lost? Invoke `/ask-me-bro` — it routes any situation to the right entry point.
 
 ## The four gates
 
@@ -174,7 +174,7 @@ and countered by name. See [The gates](docs/guide/concepts/gates.md).
 
 | Bucket | Skills |
 |---|---|
-| meta | `gate-session` (session gate), `route-task` (router), `author-skills`, `teach-pack` |
+| meta | `gate-session` (session gate), `ask-me-bro` (router), `author-skills`, `teach-pack` |
 | setup | `configure-repo`, `bootstrap-repo` |
 | discovery | `frame-change`, `clarify-decisions`, `research`, `run-spike`, `define-domain`, `interpret-session`, `pathfind` |
 | spec | `specify-behavior`, `design-solution`, `plan-tasks` |

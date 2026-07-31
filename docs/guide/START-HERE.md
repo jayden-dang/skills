@@ -17,7 +17,7 @@ over `docs/specs/`.
                              │            routes your intent to the right skill
         ┌────────────────────┴─────────────────────────────────────────────┐
         ▼                                                                    │
-  route-task  ── "I'm lost, where do I start?" ── routes to any entry point below  │
+  ask-me-bro  ── "I'm lost, where do I start?" ── routes to any entry point below  │
         │                                                                    │
  IDEATION → SPEC                          BUILD                    SHIP & MAINTAIN
  ─────────────────                        ─────                    ───────────────
@@ -129,7 +129,7 @@ compact a long session.
 | Skill | Kind | Fires when | Core behavior | Produces |
 |---|---|---|---|---|
 | [`gate-session`](skills/gate-session.md) | m (session-injected) | Before any response, every session | The gate: 1%-rule skill check before acting; process skills before implementation skills; your instructions override skills | A routing decision |
-| [`route-task`](skills/route-task.md) | U | You're unsure which skill or flow applies | Router: maps your situation to the right entry point and chain | A recommended next skill |
+| [`ask-me-bro`](skills/ask-me-bro.md) | U | You're unsure which skill or flow applies | Router: maps your situation to the right entry point and chain | A recommended next skill |
 | [`author-skills`](skills/author-skills.md) | U | Authoring/editing/reviewing a skill | TDD for skills: no skill ships without a failing pressure-test first; the authoring vocabulary and checklist | A tested skill |
 
 ### setup

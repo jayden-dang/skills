@@ -108,7 +108,7 @@ to resolve is a question, not a guess.
 Two guards sit on the config rung. When head *is* the configured default (working
 directly on `dev`), the skill always asks, and the answer is scoped to the invocation
 — it never rewrites the project default. When the configured value no longer names a
-live branch, it degrades to the route-task rung rather than erroring. The skill writes no
+live branch, it degrades to the ask-the-user rung rather than erroring. The skill writes no
 project configuration at all; the absent-config path continues on a session-only value
 and names `/configure-repo` once as the way to persist it.
 
@@ -129,7 +129,7 @@ appearance. Pre-existing commits are read as context and never re-staged.
 Validation runs **before** each `git commit`, over six axes: file scope, subject,
 body, trailers, secret content, and staging boundary. Passing validation with an
 unambiguous scope is sufficient authority to commit — there is no routine plan
-approval. Five conditions stop the loop and route-task instead: unrelated dirty changes,
+approval. Five conditions stop the loop and ask instead: unrelated dirty changes,
 unclear ownership of a change, an ambiguous partial-staging boundary, a secret-risk
 finding, and a mismatch between the planned scope and the working tree. These are
 exception questions; the skill does not otherwise pause.
@@ -273,7 +273,7 @@ The checkpoint is inserted **after** the user's menu selection and **before** th
 crossing executes — so the five options still print verbatim and the decision order is
 unchanged. It runs two questions in sequence:
 
-1. **Ticket question (merge and PR paths).** Display the resolved ticket set; route-task
+1. **Ticket question (merge and PR paths).** Display the resolved ticket set; ask
    whether missing tickets should be created or supplemented. Route Tasked even with no
    tracker configured, because the answer may be "yes, and there is nowhere to put it".
    A yes pauses the crossing and asks the user to run `/publish-issues` — named, never

@@ -19,7 +19,7 @@ let them decide.
 
 ## Modes
 
-Pick the mode from what the user asked; route-task if it is unclear.
+Pick the mode from what the user asked; ask if it is unclear.
 
 - **create** — nothing exists yet. Author the layer from scratch.
 - **update** — the layer exists. Revise it against a change signal.

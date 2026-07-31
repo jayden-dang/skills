@@ -20,7 +20,7 @@ Three ways in: by role, by problem, or by phase.
 2. [Ceremony tiers](methodology/ceremony-tiers.md) — this answers "do I really have to write a spec for *this*?"
 3. [The process](process/README.md) — the chain, and which flow your work belongs in
 4. [Examples](examples/tier-0-tweak.md) — start with tier 0; it is the shortest
-5. When lost: run `/route-task`, or read [`route-task`](skills/route-task.md)
+5. When lost: run `/ask-me-bro`, or read [`ask-me-bro`](skills/ask-me-bro.md)
 
 ### I maintain this skill set
 
@@ -61,7 +61,7 @@ Three ways in: by role, by problem, or by phase.
 | …fix a spec that drifted from the code | [`realign-spec`](skills/realign-spec.md) |
 | …write a new skill | [`author-skills`](skills/author-skills.md) → [The skill model](concepts/skill-model.md) |
 | …understand the requirement-ID syntax | [Requirement IDs](concepts/requirement-ids.md) + [EARS](resources/ears.md) |
-| …know which flow I'm even in | Run `/route-task` |
+| …know which flow I'm even in | Run `/ask-me-bro` |
 
 ---
 

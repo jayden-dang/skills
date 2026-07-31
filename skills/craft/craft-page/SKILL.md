@@ -121,7 +121,7 @@ self-republishing, load `artifact-capabilities` before declaring capabilities.
 ## 4. Spend the freedom somewhere other than the house style
 
 AI-generated design currently clusters on a handful of looks. Where the user
-pins a direction, follow it exactly — their words win, including when they route-task
+pins a direction, follow it exactly — their words win, including when they ask
 for one of these. Where nothing is specified, pick something else:
 
 | The cluster | |

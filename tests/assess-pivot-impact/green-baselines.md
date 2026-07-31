@@ -24,7 +24,7 @@ Same fixture and S1 scenario as `red-baselines.md`. Skill present at
 - Write ledger in the **application repo the user named**, not the skill-pack checkout
 - "Choosing C in chat without creating the file is not done"
 - Rationalization rows for path-stall and chat-only C
-- Red flags: end turn with C and no file; route-task path after path was given
+- Red flags: end turn with C and no file; ask path after path was given
 - Non-interactive: leave rows `Proposed`, still require the file
 
 ## Not re-run

@@ -35,7 +35,7 @@ class PathfindTrackerSeeds(unittest.TestCase):
 
 
 FRAME = REPO / "skills" / "discovery" / "frame-change" / "SKILL.md"
-ROUTE = REPO / "skills" / "meta" / "route-task" / "SKILL.md"
+ROUTE = REPO / "skills" / "meta" / "ask-me-bro" / "SKILL.md"
 WORKFLOWS = REPO / "docs" / "architecture" / "workflows.md"
 SKILLS_DOC = REPO / "docs" / "architecture" / "skills.md"
 ADR = REPO / "docs" / "adr" / "0008-pathfind-layer.md"
@@ -51,7 +51,7 @@ class PathfindNeighbors(unittest.TestCase):
         self.assertRegex(text, r"(?i)Blindspot")
 
     def test_PFIND_9_1_1_4_route_task_names_pathfind(self):
-        """PFIND-9.1 PFIND-1.4 — route-task names /pathfind for multi-session fog."""
+        """PFIND-9.1 PFIND-1.4 — ask-me-bro names /pathfind for multi-session fog."""
         text = ROUTE.read_text()
         self.assertIn("/pathfind", text)
         self.assertRegex(text, r"(?i)fog|multi-session")

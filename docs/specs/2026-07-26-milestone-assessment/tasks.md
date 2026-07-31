@@ -117,7 +117,7 @@ no new capture step is needed. The guard is that those stay green and unedited.
 | `docs/specs/2026-07-25-roadmap/requirements.md` | Out-of-Scope reconciling note |
 | `docs/agents/project.md` | Audit Trace-ignore the new `red-baselines.md` and `fixtures/` |
 | `AGENTS.md` | User-invoked list (`:76`), repo-layout `track/` line (`:249`), `track` category row (`:338`) |
-| `skills/meta/route-task/SKILL.md` | Cannot-invoke list (`:15`) and the roadmap on-ramp (`:64`) |
+| `skills/meta/ask-me-bro/SKILL.md` | Cannot-invoke list (`:15`) and the roadmap on-ramp (`:64`) |
 | `docs/guide/skills/README.md` | Skill count and the new entry |
 
 A file not in this map should not be touched by any task.
@@ -479,7 +479,7 @@ _Requirements: ASSESS-2.1, ASSESS-2.2, ASSESS-2.3, ASSESS-2.4, ASSESS-2.14, ASSE
 - [x] **Step 1: Record the RED baseline**
 
 Create `tests/milestone-assessment/red-baselines.md`. Point a fresh agent at
-`fixtures/ambiguous-binding/` and route-task it to close `MILE-1` with no skill present. Record
+`fixtures/ambiguous-binding/` and ask it to close `MILE-1` with no skill present. Record
 verbatim what it does. Expect it to close the milestone without resolving the ambiguous
 binding — that failure is what this task fixes.
 
@@ -756,7 +756,7 @@ _Requirements: ASSESS-4.6, ASSESS-4.7, ASSESS-4.8, ASSESS-4.9, ASSESS-4.12, ASSE
 
 **Files:**
 - Create: `docs/guide/skills/assess-milestone.md`
-- Modify: `AGENTS.md` (`:76`, `:249`, `:338`), `docs/guide/skills/README.md:3`, `skills/meta/route-task/SKILL.md:15` (user-invoked list) and `:64` (roadmap on-ramp)
+- Modify: `AGENTS.md` (`:76`, `:249`, `:338`), `docs/guide/skills/README.md:3`, `skills/meta/ask-me-bro/SKILL.md:15` (user-invoked list) and `:64` (roadmap on-ramp)
 - Modify: `docs/specs/2026-07-25-roadmap/requirements.md` (Out-of-Scope reconciling note)
 - Modify: `tests/milestone-assessment/scenarios-handoff.md` (boundary cases)
 
@@ -773,7 +773,7 @@ _Requirements: ASSESS-4.6, ASSESS-4.7, ASSESS-4.8, ASSESS-4.9, ASSESS-4.12, ASSE
 Add `assess-milestone` to `AGENTS.md`'s user-invoked list (`:76`), the `track/` line of the
 repo-layout comment (`:249`), and the `track` category row (`:338`) as `(U)`. In
 `docs/guide/skills/README.md:3` change `Forty-five skills` to `Forty-six skills` — the count
-is spelled in words — and add the entry beside `refresh-roadmap-status`. In `skills/meta/route-task/SKILL.md`
+is spelled in words — and add the entry beside `refresh-roadmap-status`. In `skills/meta/ask-me-bro/SKILL.md`
 add `assess-milestone` to the cannot-invoke list at `:15` and name it in the roadmap on-ramp
 at `:64`. Write `docs/guide/skills/assess-milestone.md` in the house metadata-table shape
 used by `docs/guide/skills/refresh-roadmap-status.md`.

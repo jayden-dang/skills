@@ -62,7 +62,7 @@ file. Announce "Using [skill] to [purpose]", then follow the skill exactly.
 `frame-change` first. "This is broken" → `root-cause` first. Small in-scope change to a
 shipped, spec'd feature → `amend-feature`, not `frame-change`. Incoming issue or external
 PR → suggest `/triage` (user-invoked; agents cannot auto-invoke it). Unsure which
-flow fits → suggest `/route-task`.
+flow fits → suggest `/ask-me-bro`.
 
 **User instructions override skills; skills override agent defaults.** Skip a
 skill's workflow only when the user has explicitly told you to.
@@ -72,7 +72,7 @@ skill's workflow only when the user has explicitly told you to.
 ## 3. Skill Types & Invocation Rules
 
 **User-invoked skills** (carry `disable-model-invocation: true` in frontmatter):
-`route-task`, `author-skills`, `teach-pack`, `configure-repo`, `bootstrap-repo`,
+`ask-me-bro`, `author-skills`, `teach-pack`, `configure-repo`, `bootstrap-repo`,
 `define-project`, `assess-pivot-impact`, `triage`, `scan-architecture`, `write-handoff`,
 `publish-issues`, `cut-release`, `interpret-session`, `study-change`, `brief-team`,
 `select-review-sample`,
@@ -323,7 +323,7 @@ Can't tick a box? The work is not done.
 
 | Category | Skills |
 |---|---|
-| **meta** | `gate-session` (m, si), `route-task` (U), `author-skills` (U), `teach-pack` (U) |
+| **meta** | `gate-session` (m, si), `ask-me-bro` (U), `author-skills` (U), `teach-pack` (U) |
 | **setup** | `configure-repo` (U), `bootstrap-repo` (U) |
 | **discovery** | `frame-change` (m), `clarify-decisions` (m), `interpret-session` (U), `research` (m), `run-spike` (m), `define-domain` (m), `pathfind` (U) |
 | **spec** | `specify-behavior` (m), `design-solution` (m), `plan-tasks` (m) |

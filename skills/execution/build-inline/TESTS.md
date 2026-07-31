@@ -23,7 +23,7 @@
 | S-INLINE-1 tools exist + user inline | **A** self + test-first | yes — Iron Law |
 | Routing 7 queries | plan/story/inline/root-cause correct split | yes |
 | story-unit header + inline route | **A** no unit barrier | yes — sequential only |
-| Plan gap + demo | **A** stop route-task | yes |
+| Plan gap + demo | **A** stop and ask | yes |
 | One-line TDD pressure | **A** test-first first | yes |
 | build-in-waves opened + user inline | **A** hand off build-inline | yes — build-in-waves Inline route |
 

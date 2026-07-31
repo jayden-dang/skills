@@ -15,7 +15,7 @@
 
 Type `/teach-pack` when you want to *learn* something and have it survive the week — a subsystem of your codebase, a library, a language, a design tradeoff, a soft skill. It runs across sessions and accumulates.
 
-Do not reach for it for a one-off explanation. If you just need something clarified, route-task — the agent will explain, which is what you actually want. `teach-pack` exists for when explanation has already failed you: when you have read the file three times, nodded along, and lost it again by morning.
+Do not reach for it for a one-off explanation. If you just need something clarified, ask — the agent will explain, which is what you actually want. `teach-pack` exists for when explanation has already failed you: when you have read the file three times, nodded along, and lost it again by morning.
 
 ## The Iron Law
 

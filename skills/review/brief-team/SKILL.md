@@ -142,7 +142,7 @@ exactly — every REQUIRED slot, in order.
 
 1. Non-empty `git diff HEAD` or `git diff --cached HEAD` → working tree vs HEAD (tracked).
 2. Else non-empty `default_base..HEAD` → that range  
-   (`default_base` = short name from `origin/HEAD`, else `main`, else `master`, else route-task).
+   (`default_base` = short name from `origin/HEAD`, else `main`, else `master`, else ask).
 3. Else hard-stop: nothing to explain.
 
 Do not require network or `gh`.  

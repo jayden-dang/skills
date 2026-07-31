@@ -57,7 +57,7 @@ early stop). Handoff names only. `frame-change` seeds knowns when pointed at pac
 
 **Satisfies:** PFIND-8.1–PFIND-8.2, PFIND-9.1–PFIND-9.3, PFIND-10.1–PFIND-10.3
 
-Explore/Forge/Recon guidance-only. `route-task` on-ramp. Post-ship ADR +
+Explore/Forge/Recon guidance-only. `ask-me-bro` on-ramp. Post-ship ADR +
 workflows.md + skills.md. author-skills pressure before ship.
 
 ## Seams for testing
@@ -68,7 +68,7 @@ workflows.md + skills.md. author-skills pressure before ship.
 | Skill body gates | Plan-don’t-do, types, no grilling, claim-first, one HITL | PFIND-3.2, 3.8, 4.*, 5.* |
 | Chart/Work recipes | Required sections, fog test, research exception, exit | PFIND-2.*, 3.*, 7.* |
 | Tracker seeds | Pathfind operations in templates | PFIND-6.3 |
-| Neighbors | route-task names `/pathfind`; frame-change knowns seed | PFIND-7.6, 7.7, 9.1 |
+| Neighbors | ask-me-bro names `/pathfind`; frame-change knowns seed | PFIND-7.6, 7.7, 9.1 |
 | Registration | AGENTS/plugin/README inventory | PFIND-1.1, 9.2 |
 | Scenarios markdown | Greppable ID layer for all criteria | all PFIND-* |
 | author-skills RED | red-baselines + pressure scenarios before GREEN skill text | PFIND-10.3 |

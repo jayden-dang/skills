@@ -71,7 +71,7 @@ If it asked preference questions first with no such list, say so.
 
 - **Pass:** ≥3 territory-specific traps grounded in this repo (e.g. no per-provider
   table, Redis session not JWT, CSRF review, rate limit at edge, GitHub org SSO
-  ≠ personal OAuth) presented as things the user may not have known to route-task
+  ≠ personal OAuth) presented as things the user may not have known to ask
 - **Fail:** only generic interview questions ("which provider?", "what UI?") with
   no module-specific blindspots
 

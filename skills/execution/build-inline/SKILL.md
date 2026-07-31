@@ -122,7 +122,7 @@ For each Task N in order:
    conservative choice; append to `.skills/implementation-notes.md` (Task /
    Deviation / Cause / Choice / Revisit) **before** finishing the task; if the
    only fix changes a shared contract or falsifies the plan → stop and REQUIRED
-   SUB-SKILL: use `reroute-plan` (or route-task), do not stretch silently.
+   SUB-SKILL: use `reroute-plan` (or ask), do not stretch silently.
 6. **Commit.** Use the trailer the task names (e.g. `Implements: CODE-N.M`).
 7. **Self-check (controller, not a subagent).** Re-read the brief against the
    diff: every requirement ID covered? TDD evidence (RED then GREEN) real?
@@ -136,7 +136,7 @@ For each Task N in order:
    `Task N: complete (commits <base7>..<head7>, inline, review self)`.
    Mark the todo done.
 10. **Next.** Immediately continue to the next task — no permission pause, no
-    unit barrier. On blocker mid-task: stop the loop and route-task (see **Stop
+    unit barrier. On blocker mid-task: stop the loop and ask (see **Stop
     conditions**).
 
 ## Stop conditions

@@ -102,7 +102,7 @@ And if the honest answer really is that two paths are equivalent: say which one 
 
 ## When the user decides
 
-**Rationale rule:** when ≥2 live options exist, the user's choice closes a meaningful branch or fixes a constraint, and they have not already stated a reason — route-task **one** short rationale question. If they already supplied a reason, quote it **verbatim** without re-asking. If they decline, record `Human rationale: not supplied`. **Never** infer rationale from an accepted recommendation.
+**Rationale rule:** when ≥2 live options exist, the user's choice closes a meaningful branch or fixes a constraint, and they have not already stated a reason — ask **one** short rationale question. If they already supplied a reason, quote it **verbatim** without re-asking. If they decline, record `Human rationale: not supplied`. **Never** infer rationale from an accepted recommendation.
 
 **Dissent, then comply.** When they choose against your stance, say so once — at most two sentences: what you expect to go wrong, and the earliest signal that it is going wrong. Then write what they asked for without re-arguing it. Do not raise it again on later turns unless that signal actually appears. Silent compliance is a failure of the job; so is lobbying after the decision is made.
 

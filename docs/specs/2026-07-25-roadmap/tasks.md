@@ -140,7 +140,7 @@ peer-coordination language; do not invent reviewers or assignees. Gates unchange
 | `docs/guide/concepts/artifacts.md` | Stale four-column INDEX table |
 | `docs/guide/concepts/feature-graph.md` | Stale four-column INDEX table (lines 42-46) |
 | `AGENTS.md` | §3 invocation lists, §8 file organization, §11 table and main flow; fix the 42/43 count drift to 45 |
-| `skills/meta/route-task/SKILL.md` | Name `/refresh-roadmap-status` in the user-invoked list and add a roadmap on-ramp |
+| `skills/meta/ask-me-bro/SKILL.md` | Name `/refresh-roadmap-status` in the user-invoked list and add a roadmap on-ramp |
 | `docs/guide/skills/README.md` | Count and the two new entries |
 | `docs/agents/project.md` | Test globs: declare the scenario-markdown include; add this feature's fixtures and `red-baselines.md` to Audit Trace ignore |
 
@@ -442,7 +442,7 @@ _Requirements: RMAP-2.7, RMAP-2.8, RMAP-2.9_
 - Create: `tests/test_check_roadmap_rules.py`
 - Create: `tests/roadmap/scenarios-refresh-roadmap-status.md`
 - Modify: `AGENTS.md` (§3 user-invoked list, §8 tree, §11 table, count → 45)
-- Modify: `skills/meta/route-task/SKILL.md` (user-invoked list at lines 13-16; on-ramps)
+- Modify: `skills/meta/ask-me-bro/SKILL.md` (user-invoked list at lines 13-16; on-ramps)
 - Modify: `docs/guide/skills/README.md`
 - Modify: `docs/agents/project.md` (Test globs: scenario-markdown include; Audit Trace ignore: this feature's `fixtures/` and `red-baselines.md`)
 
@@ -582,7 +582,7 @@ _Requirements: RMAP-3.1, RMAP-3.2, RMAP-3.3, RMAP-3.4, RMAP-3.5, RMAP-3.6, RMAP-
 - Modify: `skills/track/refresh-roadmap-status/SKILL.md`
 - Create: `tests/test_priority_ladder.py`
 
-**Reuse:** none — new rule table (rung 7). Nothing in the set computes a next action from artifact state: `route-task` routes from the conversation, and the researched `sprint-status` prior art is not installed here.
+**Reuse:** none — new rule table (rung 7). Nothing in the set computes a next action from artifact state: `ask-me-bro` routes from the conversation, and the researched `sprint-status` prior art is not installed here.
 
 **Interfaces:**
 - Consumes: Task 6's `R1`–`R11` codes and the withholding set `{R2, R4, R9, R10, R11}`.

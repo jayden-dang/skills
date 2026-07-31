@@ -108,7 +108,7 @@ carries a `withheld(reference)` / `withheld(unavailable)` disposition token.
 4. Show the **exact payload** before acceptance locks it.
 5. Withhold + locator → envelope `Storage-*: withheld(reference)` + matching
    `Storage-Reference-*: <locator>`.
-6. Withhold without locator → route-task **once**; if declined/unavailable →
+6. Withhold without locator → ask **once**; if declined/unavailable →
    `withheld(unavailable)` + `Storage-Reference-*: unavailable`; continue
    (W-opaque is not unfinished work).
 7. Withheld payload body is the fixed sentinel in `RECORD.md` — never edited prose

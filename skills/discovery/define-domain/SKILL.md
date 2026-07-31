@@ -43,7 +43,7 @@ Be opinionated: one canonical term, competitors banished to the `_Avoid_` list. 
 Offer an ADR only when **all three** hold:
 
 1. **Hard to reverse** — changing course later carries real cost.
-2. **Surprising without context** — a future reader would route-task "why on earth this way?"
+2. **Surprising without context** — a future reader would ask "why on earth this way?"
 3. **A real trade-off** — genuine alternatives existed and one was chosen for specific reasons.
 
 Any one missing → no ADR. For contrast — a decision that is surprising and a real trade-off but **cheap to reverse** earns none: a 200 ms debounce on the search box trades responsiveness against request volume, yet flipping it later is a one-line change, so it fails "hard to reverse." Record it in the code, not an ADR. Format: `docs/adr/NNNN-slug.md` (create the directory lazily), numbered sequentially — scan for the highest existing number and add one. Body is a short title plus **1–3 sentences**: context, decision, why. That's the whole document; recording *that* and *why* is the value, not filling sections.

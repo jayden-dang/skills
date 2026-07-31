@@ -76,7 +76,7 @@ now a rule in `SKILL.md`:
 | "The whole skill assumes an oracle that *settles* things… I had to invent decomposing the un-gradeable question into a gradeable proxy" | **Manufacture the oracle** |
 | "His reason isn't wrong, his reason is **insufficient** — the four branches are built for topics with a fact at the bottom; this bottoms out in a tradeoff" | The ***Right as far as it goes*** grade branch |
 | "**I'm steering the mission toward the half I can actually grade.** That is me putting my thumb on his mission to protect my ability to grade" | **Never reshape the mission to fit the oracle** |
-| "The oracle is 150 PRs of Jayden being bad at this… no guidance on the affective load" | **When the oracle is the learner's own work** — route-task first, reveal one at a time |
+| "The oracle is 150 PRs of Jayden being bad at this… no guidance on the affective load" | **When the oracle is the learner's own work** — ask first, reveal one at a time |
 | "The corpus the entire lesson is graded against has nowhere to live" | **`evidence/`** in the workspace |
 | "An agent reading the Iron Law literally might cram a probe into the mission message" | **The law binds the lesson, not the message** |
 

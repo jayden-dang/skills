@@ -267,7 +267,7 @@ record; the ledger survives compaction and is greppable.
 - Failing product cases fixed via `root-cause`: the regression test `root-cause` already
   requires under TDD **is** the durable asset. The skill must not invent a
   second promotion path.
-- Optional later (out of v1 scope): user may explicitly route-task to promote a green
+- Optional later (out of v1 scope): user may explicitly ask to promote a green
   case into a committed e2e — that is a hand-off *to* `validate-ui`, not a
   silent side effect of `run-product-walkthrough`.
 

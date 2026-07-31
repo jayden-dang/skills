@@ -28,7 +28,7 @@ Subagent (general-purpose):
     ## Route Task First
 
     If anything is unclear — a requirement, an acceptance criterion, the
-    approach, a dependency, an assumption — route-task NOW, before writing anything.
+    approach, a dependency, an assumption — ask NOW, before writing anything.
     And keep asking as you work: pausing to clarify is always acceptable;
     guessing is not.
 

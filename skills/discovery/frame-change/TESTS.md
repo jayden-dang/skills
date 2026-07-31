@@ -45,7 +45,7 @@ locks vs assumptions.
 
 ## Neighbor skills
 
-- `clarify-decisions` — blast-radius first already held under "route-task color first" authority;
+- `clarify-decisions` — blast-radius first already held under "ask color first" authority;
   explicit sentence added for connectivity, not a new RED failure.
 - `run-spike` / `research` — remain detours for unknown knowns / known unknowns.
 - `interpret-session` — map/territory technique pass (with skill): challenged OAuthProvider

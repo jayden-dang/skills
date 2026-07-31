@@ -4,10 +4,10 @@
 never auto-loads it from description keywords. Discovery is:
 
 1. User types `/pathfind` or the skill name  
-2. `route-task` / teach-pack **names** `/pathfind` for multi-session fog  
+2. `ask-me-bro` / teach-pack **names** `/pathfind` for multi-session fog  
 3. AGENTS.md inventory
 
-## should-suggest `/pathfind` (route-task / agent advice)
+## should-suggest `/pathfind` (ask-me-bro / agent advice)
 
 - “This effort is too big for one session and we still don’t know the route”
 - “Chart a decision map before we spec”

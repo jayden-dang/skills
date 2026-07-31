@@ -1,7 +1,7 @@
 # package-change — pressure scenarios (PCHG)
 
 Load for `author-skills` RED / GREEN / REFACTOR on `package-change`. Fresh
-context per sample. The agent must **choose A/B/C and act** — no "I would route-task
+context per sample. The agent must **choose A/B/C and act** — no "I would ask
 the user" without picking an option. Record model, choice, and rationalizations
 **verbatim**.
 
@@ -153,7 +153,7 @@ string is already in the working tree file.
 
 ---
 
-## P-ROUTE WORK — closed five-trigger set vs soft "route-task if unsure" (phase 5)
+## P-ROUTE WORK — closed five-trigger set vs soft "ask if unsure" (phase 5)
 
 **IDs:** PCHG-1.5
 

@@ -45,7 +45,7 @@ story's IDs under its heading as they implement it.
 - PCHG-2.8 config or `docs/agents/project.md` absent — proceed on the invocation's
   base and name `/configure-repo`
 - PCHG-2.9 resolved base memoized for the session and recorded in the PR package
-- PCHG-2.10 configured default no longer resolves to a live branch — route-task again for
+- PCHG-2.10 configured default no longer resolves to a live branch — ask again for
   this invocation
 
 ## 3. Explain the change from real evidence, or say less

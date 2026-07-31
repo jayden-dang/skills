@@ -301,7 +301,7 @@ v1 ships lenses as **guidance inside `pathfind` only** (locked OD-5) — not thr
 
 ### 6.4 Router updates (after skill exists)
 
-`route-task` / `gate-session` / teach-pack gains an on-ramp:
+`ask-me-bro` / `gate-session` / teach-pack gains an on-ramp:
 
 - Multi-session fog, destination unclear, effort > one window → name `/pathfind` for the user  
 - Clear single feature → `frame-change`  
@@ -518,7 +518,7 @@ Do **not** start until this design is accepted and `author-skills` RED baselines
 | **P1** | Tracker Pathfind operations seeds + local map schema | configure-repo docs mention Pathfind |
 | **P2** | `pathfind` SKILL.md Chart + Work modes | Pressure-tested per author-skills |
 | **P3** | Knowns package template + frame-change consumption paragraph | Integration scenario green |
-| **P4** | route-task / teach-pack / workflows.md / skills.md inventory | Docs consistent |
+| **P4** | ask-me-bro / teach-pack / workflows.md / skills.md inventory | Docs consistent |
 | **P5** | Lenses polish only if pressure tests demand; **no** `docs/pathfind/` tree | Only if P2–P4 hold |
 | **P6** | Pack architecture docs (OD-9) | ADR + workflows + skills inventory; domain file only if narrative overflow |
 
@@ -562,7 +562,7 @@ One namespace greppable with the skill (`pathfind:map`, `pathfind:clarify`, …)
 ### OD-5 — Lenses: why guidance-only is the best v1 method
 
 - author-skills: split only on **distinct trigger** or real context boundary — Explore/Forge/Recon share one trigger (“multi-session fog”).
-- Separate skills would multiply route-task surface and tempt auto-invocation theater.
+- Separate skills would multiply ask-me-bro surface and tempt auto-invocation theater.
 - Guidance in Chart Notes is enough to bias ticket mix (more research vs more clarify) without new frontmatter.
 - **Promote to skills later** only if pressure tests show agents cannot hold lens behavior without a separate fire.
 
@@ -610,7 +610,7 @@ Matt’s wayfinder ticket type **grilling** maps *functionally* to our interview
 | REQUIRED SUB-SKILL | `use \`clarify-decisions\`` |
 | Colloquial user speech | “grill me” may still appear in `clarify-decisions` description as a *should-fire synonym* only |
 
-**Why rename for Pathfind:** agents copy ticket type strings into labels and handoffs. Shipping `pathfind:grilling` would reintroduce a retired skill name and fight `route-task` / inventory (`clarify-decisions` only). **Forge lens** remains a *style* of clarify-decisions cards, not a ticket type.
+**Why rename for Pathfind:** agents copy ticket type strings into labels and handoffs. Shipping `pathfind:grilling` would reintroduce a retired skill name and fight `ask-me-bro` / inventory (`clarify-decisions` only). **Forge lens** remains a *style* of clarify-decisions cards, not a ticket type.
 
 ---
 

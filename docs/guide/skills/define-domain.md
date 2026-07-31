@@ -49,7 +49,7 @@ Definitions stay to one to three tight lines — what the thing *is*, not how it
 An ADR is offered only when **all three** hold:
 
 1. **Hard to reverse** — changing course later carries real cost.
-2. **Surprising without context** — a future reader would route-task "why on earth this way?"
+2. **Surprising without context** — a future reader would ask "why on earth this way?"
 3. **A real trade-off** — genuine alternatives existed and one was chosen for specific reasons.
 
 Any one missing means no ADR — a reversible choice, an obvious one, or a decision with no real alternative all fail the gate and belong in a commit message instead.

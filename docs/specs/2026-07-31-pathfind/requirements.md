@@ -126,9 +126,9 @@ Forge / Recon guidance without three extra skills.
 **Story:** As a pack maintainer, I want routers and inventories to know Pathfind
 exists after the skill ships, without making it mandatory.
 
-- **PFIND-9.1** WHEN `route-task` (and teach-pack materials updated in this feature) describe on-ramps THE SYSTEM SHALL include multi-session fog → name `/pathfind`.
+- **PFIND-9.1** WHEN `ask-me-bro` (and teach-pack materials updated in this feature) describe on-ramps THE SYSTEM SHALL include multi-session fog → name `/pathfind`.
 - **PFIND-9.2** WHEN this feature's post-ship docs land THE SYSTEM SHALL update `docs/architecture/workflows.md` and `docs/architecture/skills.md` (and a short ADR per design OD-9) to describe Pathfind without adding ARCH-N unless a later pressure failure requires it.
-- **PFIND-9.3** (guard) WHEN `gate-session` / `route-task` run THE SYSTEM SHALL CONTINUE TO prioritize process skills and MUST NOT require a pathfind map before ordinary tier-0/1 work.
+- **PFIND-9.3** (guard) WHEN `gate-session` / `ask-me-bro` run THE SYSTEM SHALL CONTINUE TO prioritize process skills and MUST NOT require a pathfind map before ordinary tier-0/1 work.
 
 ## 10. Quality attributes
 

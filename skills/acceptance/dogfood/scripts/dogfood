@@ -508,6 +508,49 @@ def make_handler(run_path: Path, token: str, shell_path: Path):
     return Handler
 
 
+def pidfile_path(run_path: Path) -> Path:
+    """`.skills/<slug>-dogfood-serve.pid`, beside the run file it serves."""
+    stem = Path(run_path).name
+    for suffix in ("-dogfood.json", ".json"):
+        if stem.endswith(suffix):
+            stem = stem[: -len(suffix)]
+            break
+    return Path(run_path).parent / f"{stem}-dogfood-serve.pid"
+
+
+def read_pidfile(path: Path) -> Optional[Dict[str, Any]]:
+    if not path.is_file():
+        return None
+    try:
+        data = json.loads(path.read_text(encoding="utf-8"))
+    except (json.JSONDecodeError, OSError):
+        return None
+    return data if isinstance(data, dict) else None
+
+
+def verify_live(info: Dict[str, Any], timeout: float = 1.0) -> bool:
+    """True only when a server on the recorded port answers with the recorded token.
+
+    `kill -0` is not a substitute. It answers "does this PID exist", which stays
+    true after the OS recycles that PID onto something else — so trusting it means
+    occasionally sending SIGTERM to a process that was never ours.
+    """
+    import urllib.error
+    import urllib.request
+
+    port, token = info.get("port"), info.get("token")
+    if not port or not token:
+        return False
+    try:
+        with urllib.request.urlopen(
+            f"http://127.0.0.1:{port}/whoami", timeout=timeout
+        ) as resp:
+            answered = json.loads(resp.read().decode("utf-8"))
+    except (urllib.error.URLError, OSError, json.JSONDecodeError):
+        return False
+    return answered.get("token") == token
+
+
 def bind_server(run_path: Path, token: str, shell_path: Optional[Path] = None):
     """Bind the loopback interface, walking up from DEFAULT_PORT when it is busy.
 
@@ -691,22 +734,79 @@ def cmd_report(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_serve_stop(args: argparse.Namespace) -> int:
+    """Stop a server only after it proves it is the one this pidfile describes."""
+    import signal
+
+    path = Path(args.run_file)
+    pidfile = pidfile_path(path)
+    info = read_pidfile(pidfile)
+    if info is None:
+        print("no server recorded for this run file")
+        return 0
+    if not verify_live(info):
+        pidfile.unlink(missing_ok=True)
+        print(
+            f"server is already gone (stale pidfile removed); "
+            f"nothing was signalled — pid {info.get('pid')} was not verified as ours"
+        )
+        return 0
+    os.kill(int(info["pid"]), signal.SIGTERM)
+    pidfile.unlink(missing_ok=True)
+    print(f"stopped server pid {info['pid']} on port {info['port']}")
+    return 0
+
+
 def cmd_serve(args: argparse.Namespace) -> int:
     import secrets
 
+    if args.stop:
+        return cmd_serve_stop(args)
+
     path = Path(args.run_file)
     load_run_file(path)  # fail fast on a bad document rather than at first request
+
+    pidfile = pidfile_path(path)
+    existing = read_pidfile(pidfile)
+    if existing is not None:
+        if verify_live(existing):
+            print(f"http://127.0.0.1:{existing['port']}/")
+            print(
+                f"a server for this run file is already running (pid {existing['pid']})",
+                file=sys.stderr,
+            )
+            return 0
+        # Same verification as --stop: unverified means stale, and stale means
+        # delete the file, never signal whatever now owns that pid.
+        pidfile.unlink(missing_ok=True)
+
     token = secrets.token_hex(16)
     server = bind_server(path, token, Path(args.shell) if args.shell else None)
-    url = f"http://127.0.0.1:{server.server_address[1]}/"
-    print(url)
-    print(f"serving {path} — Ctrl-C to stop", file=sys.stderr)
+    port = server.server_address[1]
+    pidfile.parent.mkdir(parents=True, exist_ok=True)
+    pidfile.write_text(
+        json.dumps(
+            {
+                "pid": os.getpid(),
+                "port": port,
+                "token": token,
+                "slug": load_run_file(path)["slug"],
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    print(f"http://127.0.0.1:{port}/")
+    print(f"serving {path} — dogfood serve {path} --stop", file=sys.stderr)
     try:
         server.serve_forever()
     except KeyboardInterrupt:
         pass
     finally:
         server.server_close()
+        current = read_pidfile(pidfile)
+        if current and current.get("token") == token:
+            pidfile.unlink(missing_ok=True)
     return 0
 
 
@@ -773,6 +873,11 @@ def build_parser() -> argparse.ArgumentParser:
         )
     )
     serve_p.add_argument("--shell", help="Shell HTML path")
+    serve_p.add_argument(
+        "--stop",
+        action="store_true",
+        help="Stop the recorded server, after it proves its identity",
+    )
     serve_p.set_defaults(func=cmd_serve)
 
     return p

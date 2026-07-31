@@ -211,5 +211,147 @@ class ServeTests(ServeTestBase):
         self.assertIn("pid", payload)
 
 
+class ShutdownTests(ServeTestBase):
+    """The stop contract.
+
+    A pidfile records a PID the operating system may since have handed to an
+    unrelated process, and `kill -0` cannot tell the difference because it answers
+    "does this PID exist" — which stays true after a recycle. So the load-bearing
+    test here is the recycled-PID one: it fails loudly against any implementation
+    that trusts the pidfile. See docs/adr/0007.
+    """
+
+    def pidfile(self) -> Path:
+        return self.mod.pidfile_path(self.path)
+
+    def write_pidfile(self, pid: int, port: int, token: str) -> Path:
+        target = self.pidfile()
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.write_text(
+            json.dumps({"pid": pid, "port": port, "token": token, "slug": "notes"}),
+            encoding="utf-8",
+        )
+        return target
+
+    def serve_in_background(self):
+        proc = subprocess.Popen(
+            [sys.executable, str(CLI), "serve", str(self.path)],
+            stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, cwd=str(REPO),
+        )
+        self.addCleanup(lambda: (proc.kill(), proc.wait()))
+        # Ready means *this* process has written the pidfile — not merely that a
+        # pidfile exists, which a stale one already satisfies.
+        deadline = time.monotonic() + 10
+        while time.monotonic() < deadline:
+            if self.pidfile().is_file():
+                try:
+                    info = json.loads(self.pidfile().read_text(encoding="utf-8"))
+                except json.JSONDecodeError:
+                    info = None
+                if info and info.get("pid") == proc.pid:
+                    return proc, info
+            if proc.poll() is not None:
+                self.fail(f"serve exited early: {proc.communicate()}")
+            time.sleep(0.05)
+        self.fail("serve never wrote its own pidfile")
+
+    def stop(self, check: bool = False):
+        return subprocess.run(
+            [sys.executable, str(CLI), "serve", str(self.path), "--stop"],
+            capture_output=True, text=True, cwd=str(REPO), check=check,
+        )
+
+    def test_pidfile_records_pid_port_and_instance_token(self):
+        """DFSYNC-5.6 — the pidfile carries everything a safe stop needs."""
+        proc, info = self.serve_in_background()
+        self.assertEqual(proc.pid, info["pid"])
+        self.assertIsInstance(info["port"], int)
+        self.assertTrue(info["token"])
+        self.assertEqual(
+            self.pidfile().name, "notes-dogfood-serve.pid", "pidfile is named per slug"
+        )
+        status, body = get(f"http://127.0.0.1:{info['port']}/whoami")
+        self.assertEqual(info["token"], json.loads(body)["token"])
+
+    def test_background_launch_returns_control_to_the_caller(self):
+        """DFSYNC-5.7 — the server keeps running while the caller carries on."""
+        proc, info = self.serve_in_background()
+        self.assertIsNone(proc.poll(), "serve must still be running")
+        self.assertEqual(200, get(f"http://127.0.0.1:{info['port']}/state")[0])
+
+    def test_stop_terminates_only_on_a_token_match(self):
+        """DFSYNC-6.1 — --stop verifies /whoami before it signals anything."""
+        proc, info = self.serve_in_background()
+        cp = self.stop()
+        self.assertEqual(0, cp.returncode, cp.stderr)
+        deadline = time.monotonic() + 10
+        while time.monotonic() < deadline and proc.poll() is None:
+            time.sleep(0.05)
+        self.assertIsNotNone(proc.poll(), "server should have stopped")
+        self.assertFalse(self.pidfile().exists())
+
+    def test_stop_never_kills_a_recycled_pid(self):
+        """DFSYNC-6.2 — a pidfile pointing at an unrelated live process kills nothing."""
+        victim = subprocess.Popen([sys.executable, "-c", "import time; time.sleep(30)"])
+        self.addCleanup(lambda: (victim.kill(), victim.wait()))
+        self.write_pidfile(pid=victim.pid, port=free_port(), token="stale-token")
+
+        cp = self.stop()
+        self.assertEqual(0, cp.returncode, cp.stderr)
+        self.assertIsNone(victim.poll(), "an unrelated process was killed")
+        self.assertFalse(self.pidfile().exists(), "the stale pidfile should be cleaned")
+        self.assertIn("gone", (cp.stdout + cp.stderr).lower())
+
+    def test_stop_refuses_when_the_token_disagrees(self):
+        """DFSYNC-6.2 — a live server answering with a different token is not ours to kill."""
+        proc, info = self.serve_in_background()
+        self.write_pidfile(pid=info["pid"], port=info["port"], token="not-the-token")
+        cp = self.stop()
+        self.assertEqual(0, cp.returncode, cp.stderr)
+        self.assertIsNone(proc.poll(), "a server we cannot identify must be left alone")
+
+    def test_serve_cleans_a_stale_pidfile_without_signalling(self):
+        """DFSYNC-6.3 — startup applies the same verification to an existing pidfile."""
+        victim = subprocess.Popen([sys.executable, "-c", "import time; time.sleep(30)"])
+        self.addCleanup(lambda: (victim.kill(), victim.wait()))
+        self.write_pidfile(pid=victim.pid, port=free_port(), token="stale-token")
+
+        proc, info = self.serve_in_background()
+        self.assertIsNone(victim.poll(), "startup must not signal the recorded pid")
+        self.assertNotEqual("stale-token", info["token"])
+        self.assertEqual(proc.pid, info["pid"])
+
+    def test_termination_has_no_path_other_than_explicit_stop(self):
+        """DFSYNC-6.5 — the CLI signals a process only from the --stop branch."""
+        source = CLI.read_text(encoding="utf-8")
+        kills = [ln.strip() for ln in source.splitlines() if "os.kill" in ln]
+        self.assertEqual(1, len(kills), f"expected exactly one kill site, got {kills}")
+        stop_fn = source.split("def cmd_serve_stop", 1)
+        self.assertEqual(2, len(stop_fn), "the kill must live in the stop branch")
+        self.assertIn("os.kill", stop_fn[1].split("\ndef ", 1)[0])
+
+    def test_mark_result_is_identical_with_and_without_a_server(self):
+        """DFSYNC-3.6 — mark behaves the same whether or not serve is running."""
+        def mark():
+            return subprocess.run(
+                [sys.executable, str(CLI), "mark", str(self.path), "CASE-1", "pass",
+                 "--saw", "list shows Alpha", "--server", "GET /api/notes includes Alpha"],
+                capture_output=True, text=True, cwd=str(REPO),
+            )
+
+        pristine = self.path.read_text(encoding="utf-8")
+        offline = mark()
+        without_server = self.read()
+
+        self.path.write_text(pristine, encoding="utf-8")
+        self.serve_in_background()
+        online = mark()
+        with_server = self.read()
+
+        self.assertEqual(offline.returncode, online.returncode)
+        self.assertEqual(offline.stdout, online.stdout)
+        self.assertEqual(without_server, with_server)
+
+
 if __name__ == "__main__":
     unittest.main()

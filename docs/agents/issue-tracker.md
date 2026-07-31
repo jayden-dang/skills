@@ -16,6 +16,20 @@ Written by `configure-repo`. Skills that read or write issues consult this file.
 - Sub-issues / blocking: `gh api` dependency endpoints (fill in per repo)
 - Comment: `gh issue comment <n> --body-file <f>`
 
+## Pathfind operations
+
+Used by `/pathfind`. Decision tickets only — never wire `Blocked by` into implement/`publish-issues` graphs.
+
+### github
+
+- **Map:** `gh issue create --title "…" --body-file … --label pathfind:map`
+- **Child ticket:** sub-issue under the map when enabled; else task-list + `Part of #<map>`. Labels: `pathfind:clarify` | `pathfind:research` | `pathfind:prototype` | `pathfind:task`
+- **Blocking:** native dependencies when available; else `Blocked by: #<n>` on the child
+- **Frontier:** open map children, no open blocker, no assignee — first in map order
+- **Claim:** `gh issue edit <n> --add-assignee @me` before resolve work
+- **Resolve:** answer comment → close → append gist + link on map Decisions so far
+- **Local fallback** (no remote / offline): `.skills/pathfind/<effort>/map.md` + `issues/NN-slug.md` with `Type:` / `Status:`
+
 ## Conventions
 
 - Issue bodies describe behavior and interfaces, never file paths (they go stale).

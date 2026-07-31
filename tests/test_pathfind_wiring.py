@@ -17,6 +17,23 @@ PLUGIN = REPO / ".claude-plugin" / "plugin.json"
 MARKET = REPO / ".claude-plugin" / "marketplace.json"
 
 
+TEMPLATE_TRACKER = REPO / "templates" / "agents" / "issue-tracker.md"
+DOCS_TRACKER = REPO / "docs" / "agents" / "issue-tracker.md"
+
+
+class PathfindTrackerSeeds(unittest.TestCase):
+    def test_PFIND_6_1_6_3_pathfind_ops_in_templates(self):
+        """PFIND-6.1 PFIND-6.3 — Pathfind operations seeded; skill reads issue-tracker.md."""
+        for path in (TEMPLATE_TRACKER, DOCS_TRACKER):
+            text = path.read_text()
+            self.assertIn("Pathfind operations", text, f"{path} missing Pathfind operations")
+            self.assertIn("pathfind:map", text)
+            self.assertIn("pathfind:clarify", text)
+            self.assertRegex(text, r"(?i)frontier|claim|block", msg=str(path))
+        skill = SKILL.read_text()
+        self.assertIn("docs/agents/issue-tracker.md", skill)
+
+
 class PathfindRegistration(unittest.TestCase):
     def test_PFIND_1_1_skill_file_exists_and_user_invoked(self):
         """PFIND-1.1 — skill exists under discovery/pathfind with disable-model-invocation."""

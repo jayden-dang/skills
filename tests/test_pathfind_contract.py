@@ -84,5 +84,54 @@ class PathfindSkeletonContract(unittest.TestCase):
         self.assertRegex(self.body, r"(?i)frame-change|delivery spine|test-first")
 
 
+class PathfindChartContract(unittest.TestCase):
+    def setUp(self):
+        self.text = SKILL.read_text()
+        self.body = self.text.split("---", 2)[2]
+
+    def test_PFIND_2_chart_recipe(self):
+        """PFIND-2.1–2.10 PFIND-6.2 PFIND-6.4 — full Chart recipe present."""
+        b = self.body
+        self.assertIn("greenfield", b.lower())
+        self.assertIn("brownfield", b.lower())
+        self.assertRegex(b, r"(?i)territory.?scan|brownfield-scan")
+        self.assertIn("Destination", b)
+        self.assertIn("Not yet specified", b)
+        self.assertIn("Out of scope", b)
+        self.assertIn("Decisions so far", b)
+        self.assertRegex(b, r"(?i)sharp|precisely now")
+        self.assertRegex(b, r"(?i)no multi-session fog|no map if|do \*\*not\*\* create a map")
+        self.assertRegex(b, r"(?i)second pass|wire blocking|blocking edges")
+        self.assertRegex(b, r"(?i)parallel")
+        self.assertIn(".skills/pathfind/", b)
+        self.assertRegex(b, r"(?i)MUST NOT resolve HITL|do not resolve HITL|not resolve HITL")
+        self.assertRegex(b, r"(?i)title|by name")
+
+
+class PathfindWorkContract(unittest.TestCase):
+    def setUp(self):
+        self.body = SKILL.read_text().split("---", 2)[2]
+
+    def test_PFIND_3_7_work_and_exit(self):
+        """PFIND-3.* PFIND-7.* PFIND-4.3–4.6 PFIND-8 — Work, exit, handoff, lenses."""
+        b = self.body
+        self.assertRegex(b, r"(?i)claim")
+        self.assertRegex(b, r"(?i)frontier")
+        self.assertRegex(b, r"(?i)low.?res|low resolution|index")
+        self.assertRegex(b, r"(?i)re-read|reread")
+        self.assertRegex(b, r"(?i)graduate")
+        self.assertRegex(b, r"(?i)one HITL|at most one HITL")
+        self.assertIn("knowns.md", b)
+        self.assertIn("/define-project", b)
+        self.assertIn("frame-change", b)
+        self.assertIn("/assess-pivot-impact", b)
+        self.assertIn("/publish-issues", b)
+        self.assertRegex(b, r"(?i)explicitly accept|explicit accept")
+        self.assertIn("Explore", b)
+        self.assertIn("Forge", b)
+        self.assertIn("Recon", b)
+        self.assertRegex(b, r"(?i)write.?claim fail|claim fails|MUST NOT claim.*resolved|loud")
+
+
 if __name__ == "__main__":
     unittest.main()

@@ -311,12 +311,14 @@ def commit(path: Path, patch, scope: str) -> Dict[str, Any]:
         # merge argument, ADR 0006's promise that a tick never becomes a verdict —
         # rests on a patch staying in its own field space, and a docstring asking
         # nicely is not what that should rest on.
-        untouchable = {
-            case["id"]: dict(case[other]) for case in all_cases(doc)
-        }
+        # Keyed by case id, and re-walked after the patch on purpose: position
+        # would make this guard depend on the patch never replacing a case object,
+        # which is exactly the assumption a guard should not be making.
+        untouchable = {case["id"]: dict(case[other]) for case in all_cases(doc)}
         patch(doc)
         for case in all_cases(doc):
-            case[other] = untouchable[case["id"]]
+            if case["id"] in untouchable:
+                case[other] = untouchable[case["id"]]
         doc["rev"] = int(doc.get("rev", 0)) + 1
         payload = {k: v for k, v in doc.items() if k != "source"}
         tmp.write_text(
@@ -422,10 +424,14 @@ def render_html(catalog: Dict[str, Any], shell_path: Path) -> str:
 DEFAULT_PORT = 8787
 PORT_SCAN_LIMIT = 64
 
-# The only keys a browser may write. `verdict`, `saw`, `server` and `notes` are
-# absent by design and their absence is enforced, not merely documented: a tick
-# is recorded, never promoted (ADR 0006).
-HUMAN_WRITABLE = frozenset({"checked", "comment", "base_rev"})
+# `at` is stamped by the server, so a client may write every human field except
+# that one. Derived rather than hand-listed: a new human field should not need a
+# second edit here to become writable, and should not silently become writable
+# either — it appears in exactly one place.
+SERVER_STAMPED_HUMAN_FIELDS = frozenset({"at"})
+HUMAN_WRITABLE = (
+    frozenset(HUMAN_DEFAULTS) - SERVER_STAMPED_HUMAN_FIELDS
+) | {"base_rev"}
 
 # A tick is three small fields; anything larger is a mistake or a probe.
 MAX_BODY_BYTES = 64 * 1024
@@ -800,7 +806,9 @@ def cmd_serve(args: argparse.Namespace) -> int:
         return cmd_serve_stop(args)
 
     path = Path(args.run_file)
-    load_run_file(path)  # fail fast on a bad document rather than at first request
+    # Fail fast on a bad document rather than at the first request, and keep the
+    # result — the slug below came from a second read of the same file.
+    doc = load_run_file(path)
 
     pidfile = pidfile_path(path)
     existing = read_pidfile(pidfile)
@@ -826,7 +834,7 @@ def cmd_serve(args: argparse.Namespace) -> int:
                 "pid": os.getpid(),
                 "port": port,
                 "token": token,
-                "slug": load_run_file(path)["slug"],
+                "slug": doc["slug"],
             }
         ),
         encoding="utf-8",

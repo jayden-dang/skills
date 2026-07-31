@@ -148,6 +148,54 @@ class GuideContractTests(unittest.TestCase):
         # the badge prints the verdict word itself, so colour is reinforcement
         self.assertRegex(body, r"escapeHtml\(\s*verdict|escapeHtml\(\s*run\.verdict")
 
+    def test_every_chip_colour_clears_wcag_aa_in_both_schemes(self):
+        """DFSYNC-7.5 — kind and verdict chips hold 4.5:1 on their own background.
+
+        Chips render at 0.75rem, which is normal text, so the bar is 4.5 and not
+        the 3.0 large-text allowance. This is pinned because it is invisible to
+        review: the original palette looked fine and failed on white for every
+        single token, and failed on the dark card for `fail`.
+        """
+        def channels(hex_colour):
+            h = hex_colour.lstrip("#")
+            return [int(h[i : i + 2], 16) for i in (0, 2, 4)]
+
+        def luminance(hex_colour):
+            out = []
+            for raw in channels(hex_colour):
+                v = raw / 255
+                out.append(v / 12.92 if v <= 0.03928 else ((v + 0.055) / 1.055) ** 2.4)
+            return 0.2126 * out[0] + 0.7152 * out[1] + 0.0722 * out[2]
+
+        def ratio(fg, bg):
+            a, b = luminance(fg), luminance(bg)
+            hi, lo = max(a, b), min(a, b)
+            return (hi + 0.05) / (lo + 0.05)
+
+        def scheme_tokens(block: str) -> dict:
+            return dict(re.findall(r"--([\w-]+):\s*(#[0-9a-fA-F]{6})", block))
+
+        dark_block = self.js.split(":root {", 1)[1].split("}", 1)[0]
+        light_block = self.js.split("prefers-color-scheme: light", 1)[1].split("}", 1)[0]
+        dark = scheme_tokens(dark_block)
+        light = dict(dark, **scheme_tokens(light_block))
+
+        chips = [
+            "happy", "edge", "error", "nonbehavior", "persist", "visual", "journey",
+            "v-pass", "v-fail", "v-blocked", "v-pending",
+        ]
+        for scheme, tokens in (("dark", dark), ("light", light)):
+            card = tokens["card"]
+            for chip in chips:
+                with self.subTest(scheme=scheme, chip=chip):
+                    self.assertIn(chip, tokens, f"--{chip} undefined in {scheme}")
+                    got = ratio(tokens[chip], card)
+                    self.assertGreaterEqual(
+                        round(got, 2),
+                        4.5,
+                        f"--{chip} on {card} in {scheme} is {got:.2f}:1, below AA 4.5",
+                    )
+
     def test_ticks_are_keyboard_reachable_with_a_visible_focus_ring(self):
         """DFSYNC-7.5 — every tick is a labelled checkbox and focus is visible."""
         self.assertRegex(self.js, r"<label>")

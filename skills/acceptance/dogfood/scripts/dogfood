@@ -814,7 +814,9 @@ def cmd_serve(args: argparse.Namespace) -> int:
     existing = read_pidfile(pidfile)
     if existing is not None:
         if verify_live(existing):
-            print(f"http://127.0.0.1:{existing['port']}/")
+            # flush: serve_forever() never returns, so a buffered URL is a URL
+            # nobody sees when this is launched in the background.
+            print(f"http://127.0.0.1:{existing['port']}/", flush=True)
             print(
                 f"a server for this run file is already running (pid {existing['pid']})",
                 file=sys.stderr,
@@ -840,8 +842,11 @@ def cmd_serve(args: argparse.Namespace) -> int:
         encoding="utf-8",
     )
 
-    print(f"http://127.0.0.1:{port}/")
-    print(f"serving {path} — dogfood serve {path} --stop", file=sys.stderr)
+    # flush both: stdout is block-buffered when redirected, and serve_forever()
+    # below never returns to flush it. The documented usage is exactly that —
+    # backgrounded with output to a file — so an unflushed URL is invisible.
+    print(f"http://127.0.0.1:{port}/", flush=True)
+    print(f"serving {path} — dogfood serve {path} --stop", file=sys.stderr, flush=True)
     try:
         server.serve_forever()
     except KeyboardInterrupt:

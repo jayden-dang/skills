@@ -283,6 +283,36 @@ class ShutdownTests(ServeTestBase):
             capture_output=True, text=True, cwd=str(REPO), check=check,
         )
 
+    def test_the_url_is_visible_while_the_server_is_still_running(self):
+        """DFSYNC-5.2 — the bound URL reaches a redirected stdout before the process ends.
+
+        The documented usage is an agent launching this in the background with
+        output redirected, and Python buffers stdout when it is not a tty. Since
+        serve_forever() never returns, an unflushed URL is a URL nobody ever sees
+        — the requirement is to print it, and printing it into a buffer that
+        outlives the reader's need for it does not count.
+        """
+        out = self.dir / "serve.out"
+        with out.open("w") as sink:
+            proc = subprocess.Popen(
+                [sys.executable, str(CLI), "serve", str(self.path)],
+                stdout=sink, stderr=subprocess.DEVNULL, text=True, cwd=str(REPO),
+            )
+        self.addCleanup(lambda: (proc.kill(), proc.wait()))
+
+        deadline = time.monotonic() + 10
+        seen = ""
+        while time.monotonic() < deadline:
+            seen = out.read_text(encoding="utf-8")
+            if "127.0.0.1" in seen:
+                break
+            if proc.poll() is not None:
+                self.fail(f"serve exited early: {seen}")
+            time.sleep(0.1)
+
+        self.assertIn("127.0.0.1", seen, "the URL never reached stdout while running")
+        self.assertIsNone(proc.poll(), "it must still be serving when the URL appears")
+
     def test_pidfile_records_pid_port_and_instance_token(self):
         """DFSYNC-5.6 — the pidfile carries everything a safe stop needs."""
         proc, info = self.serve_in_background()

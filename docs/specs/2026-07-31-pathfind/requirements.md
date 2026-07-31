@@ -1,9 +1,10 @@
 # Requirements: Pathfind layer
 
 Feature code: PFIND  
-Status: Approved  
+Status: Implemented  
 Date: 2026-07-31  
 Approved: 2026-07-31 (user)  
+Implemented: 2026-07-31 (build-inline)  
 Design: [`docs/design/pathfind-layer.md`](../../design/pathfind-layer.md) (Approved)
 
 Adds an **optional Layer 0** to the Engineer Pack: a user-invoked skill that charts

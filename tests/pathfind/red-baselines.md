@@ -119,19 +119,23 @@ with open frontier.
 
 > "Frontier still open but we know enough — mark done."
 
-## GREEN checklist (filled in Task 7)
+## GREEN checklist (Task 7 — contract + skill text 2026-07-31)
 
 | Failure | Skill counter present | Live GREEN transcript |
 |---|---|---|
-| Plan-don’t-do | ⬚ | ⬚ |
-| No grilling/wayfinder types | ⬚ | ⬚ |
-| Strict publish-issues separation | ⬚ | ⬚ |
-| Multi-session map when foggy | ⬚ | ⬚ |
-| Brownfield scan gate | ⬚ | ⬚ |
-| Claim + one HITL | ⬚ | ⬚ |
-| Name-only user-invoked | ⬚ | ⬚ |
-| Passive data | ⬚ | ⬚ |
-| Exit/deferred fog | ⬚ | ⬚ |
+| Plan-don’t-do | ✅ Iron Law + rationalization | ⬚ pending multi-model |
+| No grilling/wayfinder types | ✅ types table + rationalization | ⬚ |
+| Strict publish-issues separation | ✅ section + rationalization | ⬚ |
+| Multi-session map when foggy | ✅ Chart/Work recipes | ⬚ |
+| Brownfield scan gate | ✅ Chart step 2 | ⬚ |
+| Claim + one HITL | ✅ Work steps + rationalization | ⬚ |
+| Name-only user-invoked | ✅ opening + red flags | ⬚ |
+| Passive data | ✅ Work step 4 + red flag | ⬚ |
+| Exit/deferred fog | ✅ Exit and knowns | ⬚ |
+
+Contract suite (`tests.test_pathfind_*`) is GREEN. Live agent pressure GREEN remains
+recommended before marking PFIND **Shipped**; sufficient for **Implemented** under
+inline contract coverage + author-skills design-derived RED.
 
 ## Notes for implementers
 

@@ -34,6 +34,41 @@ class PathfindTrackerSeeds(unittest.TestCase):
         self.assertIn("docs/agents/issue-tracker.md", skill)
 
 
+FRAME = REPO / "skills" / "discovery" / "frame-change" / "SKILL.md"
+ROUTE = REPO / "skills" / "meta" / "route-task" / "SKILL.md"
+WORKFLOWS = REPO / "docs" / "architecture" / "workflows.md"
+SKILLS_DOC = REPO / "docs" / "architecture" / "skills.md"
+ADR = REPO / "docs" / "adr" / "0008-pathfind-layer.md"
+
+
+class PathfindNeighbors(unittest.TestCase):
+    def test_PFIND_7_6_7_7_frame_change_pathfind_knowns(self):
+        """PFIND-7.6 PFIND-7.7 — frame-change seeds pathfind knowns; blindspot continues."""
+        text = FRAME.read_text()
+        self.assertIn(".skills/pathfind/", text)
+        self.assertIn("knowns.md", text)
+        self.assertRegex(text, r"(?i)not re-open|do \*\*not\*\* re-open|MUST NOT re-open|Do \*\*not\*\* re-open")
+        self.assertRegex(text, r"(?i)Blindspot")
+
+    def test_PFIND_9_1_1_4_route_task_names_pathfind(self):
+        """PFIND-9.1 PFIND-1.4 — route-task names /pathfind for multi-session fog."""
+        text = ROUTE.read_text()
+        self.assertIn("/pathfind", text)
+        self.assertRegex(text, r"(?i)fog|multi-session")
+        self.assertIn("pathfind", text)
+
+    def test_PFIND_9_2_architecture_docs(self):
+        """PFIND-9.2 — ADR + workflows + skills inventory."""
+        self.assertTrue(ADR.exists())
+        self.assertIn("pathfind", WORKFLOWS.read_text().lower())
+        self.assertIn("pathfind", SKILLS_DOC.read_text())
+
+    def test_PFIND_9_3_1_5_not_mandatory_for_small_work(self):
+        """PFIND-9.3 PFIND-1.5 — pathfind not required for ordinary tier-0/1."""
+        self.assertRegex(WORKFLOWS.read_text(), r"(?i)never require|not required|optional")
+        self.assertRegex(SKILL.read_text(), r"(?i)optional|no-op|ordinary")
+
+
 class PathfindRegistration(unittest.TestCase):
     def test_PFIND_1_1_skill_file_exists_and_user_invoked(self):
         """PFIND-1.1 — skill exists under discovery/pathfind with disable-model-invocation."""

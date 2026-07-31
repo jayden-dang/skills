@@ -10,8 +10,8 @@ chain that follows. Do not start executing the chosen flow inside this skill.
 If the entry point is model-invocable (`frame-change`, `amend-feature`, `root-cause`,
 `validate-feature`, `review-product-flow`), invoke it and let it take over. If it is a user-invoked skill
 (`triage`, `publish-issues`, `scan-architecture`, `configure-repo`,
-`bootstrap-repo`, `define-project`, `refresh-roadmap-status`, `assess-milestone`, `write-handoff`, `cut-release`), you cannot invoke it — name it and
-tell the user to run its command, e.g. `/triage`.
+`bootstrap-repo`, `define-project`, `refresh-roadmap-status`, `assess-milestone`, `write-handoff`, `cut-release`, `pathfind`), you cannot invoke it — name it and
+tell the user to run its command, e.g. `/triage` or `/pathfind`.
 
 ## The main flow: idea → ship
 
@@ -37,6 +37,9 @@ context-isolated per task by design.
 
 ## On-ramps
 
+- Effort too large for one agent session and the route is still foggy (multi-session
+  decision pathfinding) → **name `/pathfind`** for the user (user-invoked; never
+  auto-start a map). Not required for ordinary tier-0/1 work.
 - Small in-scope change to an already-shipped, spec'd feature (a tweak, recolor,
   or follow-on) → **`amend-feature`** (reads the existing spec, routes to the light lane;
   escalates to `frame-change` only for genuinely new scope).

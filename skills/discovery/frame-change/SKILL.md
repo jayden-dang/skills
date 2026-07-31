@@ -74,6 +74,12 @@ the chain can reuse (chat is fine; optional `.skills/<slug>-knowns.md`):
 - **Unknown knowns** — taste or standards the user can recognize but not yet specify (route via `run-spike` or references, not more prose questions alone).
 - **Assumptions (not locks)** — solution shape the user proposed that is still a hypothesis until checked against territory (codebase, APIs, history). Never promote an assumption into a requirement SHALL until it is chosen as a lock.
 
+**Pathfind knowns (when present).** WHERE the user points at a pathfind knowns package
+(`.skills/pathfind/**/knowns.md`) or an open pathfind map, **seed** this inventory from
+that package's locks and known unknowns. Do **not** re-open closed pathfind decisions
+unless the user reopens the ticket. Pathfind knowns do **not** replace Blindspot or a
+brownfield territory scan — still require Blindspot awareness on brownfield work.
+
 **Done when:** you can state in one paragraph what the project is, what already exists near this idea, and which glossary terms apply — and you have stated which existing features share this idea's surface and how the new idea differs (citing feature codes), or that no existing feature shares its surface — **and** the Knowns inventory and Blindspot list exist.
 
 ### 2. Interview

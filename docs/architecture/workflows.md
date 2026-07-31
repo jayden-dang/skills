@@ -6,10 +6,20 @@ Part of: [`INDEX.md`](./INDEX.md) (architecture SSOT)
 
 End-to-end process chains and known limits of the model.
 
+## Optional Layer 0: multi-session pathfind
+
+When an effort is larger than one agent session and the route is still foggy, the user
+runs **`/pathfind`** (user-invoked) to chart and clear a **decision map** before program
+docs or the feature spine. Plan-don't-do: decisions only. Optional — ordinary tier-0/1
+and clear single-session work never require a map. See skill `pathfind` and
+`docs/design/pathfind-layer.md`. Handoff names `frame-change`, `/define-project`,
+`plan-milestones`, etc.; never auto-invokes them.
+
 ## Main flow: idea → ship (tier 2)
 
 ```
 gate-session (session gate)
+→ [/pathfind optional]    multi-session fog: decision map until route is clear
 → frame-change            clarify-decisions + define-domain; docs/specs/ overlap search;
                         research/run-spike detours; tier decision  [HARD GATE: no code]
 → specify-behavior    EARS + IDs; approval gate on the file

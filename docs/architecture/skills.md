@@ -43,6 +43,9 @@ quick reference: `AGENTS.md`.
 9. **research** (m) — background investigation against primary sources.
 10. **run-spike** (m) — throwaway code that answers a question.
 11. **define-domain** (m) — glossary + ADR upkeep.
+11a. **pathfind** (U) — optional Layer 0: multi-session decision map (Chart/Work);
+    plan-don't-do; composes clarify-decisions / research / run-spike; hands off by
+    naming only.
 
 ## spec/
 

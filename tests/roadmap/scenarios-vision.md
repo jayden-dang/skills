@@ -1,6 +1,6 @@
 # Scenarios — `GOAL-N` identity in the vision
 
-Behavior coverage for `anchor-project`'s goal-ID handling. Structure is asserted by
+Behavior coverage for `define-project`'s goal-ID handling. Structure is asserted by
 `tests/test_vision_goal_ids.py`; these cover the judgment. IDs are bare greppable tokens.
 
 ---
@@ -9,7 +9,7 @@ Behavior coverage for `anchor-project`'s goal-ID handling. Structure is asserted
 
 **Setup.** A repo with no `docs/product/vision.md`.
 
-**Request.** Run `/anchor-project` create mode through to writing the vision.
+**Request.** Run `/define-project` create mode through to writing the vision.
 
 **Expect.**
 - Every bullet under `## Goals` carries a unique bold `**GOAL-N**`, assigned while writing
@@ -22,7 +22,7 @@ Behavior coverage for `anchor-project`'s goal-ID handling. Structure is asserted
 **Setup.** A repo whose `docs/product/vision.md` has goals written as bare bullets with no
 IDs — the state every repo adopting this change starts from.
 
-**Request.** Run `/anchor-project` update mode against any change signal.
+**Request.** Run `/define-project` update mode against any change signal.
 
 **Expect.**
 - IDs are assigned in **document order**: the first bullet becomes `GOAL-1`. Covers

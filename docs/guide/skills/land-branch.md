@@ -9,11 +9,11 @@
 | **Reads** | `docs/agents/project.md` (verify commands), git worktree state (`--git-dir` vs `--git-common-dir`), `docs/specs/` (spec status) |
 | **Writes** | local merges, pushed branches and PRs, deleted branches, removed isolate-workspace |
 | **Calls** | [`prove-claim`](prove-claim.md) (the gate), [`validate-feature`](validate-feature.md) (when user-facing behavior is undriven), [`realign-spec`](realign-spec.md) (to close the loop) |
-| **Called by** | [`build-continuous`](build-continuous.md) (its final Finish step) |
+| **Called by** | [`build-in-waves`](build-in-waves.md) (its final Finish step) |
 
 ## When it fires
 
-When implementation on a branch is complete and committed and an integration decision is needed — you are done with a feature branch and choosing whether to merge it, open a PR, keep it as-is, or discard the work. It is the last step [`build-continuous`](build-continuous.md) runs, and it is distinct from [`cut-release`](cut-release.md): this skill integrates a single branch, it does not cut a version.
+When implementation on a branch is complete and committed and an integration decision is needed — you are done with a feature branch and choosing whether to merge it, open a PR, keep it as-is, or discard the work. It is the last step [`build-in-waves`](build-in-waves.md) runs, and it is distinct from [`cut-release`](cut-release.md): this skill integrates a single branch, it does not cut a version.
 
 ## The gate comes first
 

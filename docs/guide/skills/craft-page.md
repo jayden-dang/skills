@@ -8,7 +8,7 @@
 | **Invocation** | model-invocable (the agent calls it on its own) |
 | **Reads** | the design system already in the repo — `CLAUDE.md`, `docs/agents/*.md`, a tokens or theme file, existing component styles |
 | **Writes** | a three-slot design plan (color / type / layout) before any markup, then the page derived from it |
-| **Called by** | [`walk-product`](walk-product.md) (**optional** craft only — default is the checked-in walk-product shell), [`scan-architecture`](scan-architecture.md) (required, before the architecture report's markup) |
+| **Called by** | [`review-product-flow`](review-product-flow.md) (**optional** craft only — default is the checked-in review-product-flow shell), [`scan-architecture`](scan-architecture.md) (required, before the architecture report's markup) |
 
 ## Where it comes from
 
@@ -19,7 +19,7 @@ This skill is a rewrite of Claude Code's built-in `artifact-design`, renamed so 
 
 ## When it fires
 
-Before the first line of markup for any HTML a human will look at: a walk-product test guide, a report, a dashboard, a landing page, a published artifact, a standalone `.html` handoff. Also when a page's colors, typography, dark mode, spacing, or visual treatment need deciding — or when a page has come out looking generic and needs a reason why.
+Before the first line of markup for any HTML a human will look at: a review-product-flow test guide, a report, a dashboard, a landing page, a published artifact, a standalone `.html` handoff. Also when a page's colors, typography, dark mode, spacing, or visual treatment need deciding — or when a page has come out looking generic and needs a reason why.
 
 ## 1. Name the treatment
 
@@ -75,6 +75,6 @@ The principles: the hero is a thesis; typography carries the personality; motion
 
 ## Related
 
-- [`walk-product`](walk-product.md) — optional caller for custom craft; default walk-product path is cases YAML + shell `render`, not a fresh craft-page pass
+- [`review-product-flow`](review-product-flow.md) — optional caller for custom craft; default review-product-flow path is cases YAML + shell `render`, not a fresh craft-page pass
 - [`scan-architecture`](scan-architecture.md) — the other caller. Its ephemeral HTML report is the UI-not-a-document case: cards scanned for a badge and a structure sketch, not read in order.
 - [`author-skills`](author-skills.md) — the standard this skill is written against.

@@ -18,8 +18,8 @@ be routed to at all.
 ## Method
 
 38 realistic first-person queries — messy phrasing, no skill names, drawn from the
-colliding pairs whose scope abuts (acceptance trio vs walk-product vs verify; root-cause vs tdd;
-frame-change vs probe-decisions vs amend-feature vs reroute-plan; the spec triad; inspect-change vs polish-diff vs
+colliding pairs whose scope abuts (acceptance trio vs review-product-flow vs verify; root-cause vs tdd;
+frame-change vs clarify-decisions vs amend-feature vs reroute-plan; the spec triad; inspect-change vs polish-diff vs
 vet-feedback; realign-spec vs trace; research vs run-spike; and the personal pack's
 open/plan/orient/capture cluster). Expected answers were written first and held back from
 every tested agent.

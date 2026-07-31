@@ -8,7 +8,7 @@
 | **Invocation** | user-invoked — run as `/bootstrap-repo`; no skill may auto-invoke it, others only name it for the user to run |
 | **Reads** | the target directory (`ls -A`, `git rev-parse`, `git ls-files`, manifest presence), the parent repo's shared config in subpackage mode |
 | **Writes** | git repo, root manifest, source skeleton, test harness with one passing example test, formatter/linter config, pre-commit hook, CI stub, README, and docs seeds |
-| **Calls** | [`probe-decisions`](probe-decisions.md) (Step 1, required), [`prove-claim`](prove-claim.md) (Step 3, required) |
+| **Calls** | [`clarify-decisions`](clarify-decisions.md) (Step 1, required), [`prove-claim`](prove-claim.md) (Step 3, required) |
 | **Called by** | nothing — it is user-invoked; it hands off to [`configure-repo`](configure-repo.md) at the end |
 
 ## When it fires
@@ -37,7 +37,7 @@ Scaffolding writes a project root — git repo, root manifest, root README, root
 
 ## Step 1 — grill the stack
 
-A **required sub-skill**: [`probe-decisions`](probe-decisions.md) settles the stack and layout decisions for the resolved target with full-context question cards — project name, language and runtime, framework (or "none"), test runner, formatter and linter, package manager, repo layout (single package vs workspace, source/test shape), license, and whether to commit or stage the result for review first. The skill looks up facts itself (what tools the user has installed, what the parent repo already uses in subpackage mode) and brings only judgment calls to the user. Done when every decision is confirmed via probe-decisions's close package — including the resolved target path.
+A **required sub-skill**: [`clarify-decisions`](clarify-decisions.md) settles the stack and layout decisions for the resolved target with full-context question cards — project name, language and runtime, framework (or "none"), test runner, formatter and linter, package manager, repo layout (single package vs workspace, source/test shape), license, and whether to commit or stage the result for review first. The skill looks up facts itself (what tools the user has installed, what the parent repo already uses in subpackage mode) and brings only judgment calls to the user. Done when every decision is confirmed via clarify-decisions's close package — including the resolved target path.
 
 ## Step 2 — scaffold
 
@@ -68,7 +68,7 @@ A greenfield TypeScript CLI in an empty directory.
 
 **Step 0.** `ls -A .` is empty, `git rev-parse` reports not-a-repo, no manifest — the **Greenfield** row. The resolved target is the cwd, confirmed with the user.
 
-**Step 1.** `probe-decisions` settles: name `taskcat`, Node + TypeScript, no framework, Vitest, Prettier + ESLint, pnpm, single package, MIT, commit the result. Restated in one block and approved.
+**Step 1.** `clarify-decisions` settles: name `taskcat`, Node + TypeScript, no framework, Vitest, Prettier + ESLint, pnpm, single package, MIT, commit the result. Restated in one block and approved.
 
 **Step 2.** `git init` and a Node `.gitignore`; `package.json`, `tsconfig.json`, `src/index.ts`; Vitest wired with one `src/smoke.test.ts` asserting `1 + 1 === 2` to prove the runner resolves; `format`/`lint`/`typecheck` scripts; a pre-commit hook that formats staged files then lints, typechecks, and tests; a CI workflow running the same commands on push and PR; a README with install and verify commands; and `CONTEXT.md`, `docs/specs/INDEX.md`, and an empty `docs/adr/`. All committed.
 
@@ -83,6 +83,6 @@ The skill guards two failure modes. The first is scaffolding on top of a real pr
 ## See also
 
 - [`configure-repo`](configure-repo.md) — the hand-off target that writes the agent-facing config
-- [`probe-decisions`](probe-decisions.md) — the required interview sub-skill for the stack decisions
+- [`clarify-decisions`](clarify-decisions.md) — the required interview sub-skill for the stack decisions
 - [`prove-claim`](prove-claim.md) — the required baseline-proving sub-skill
 - [Templates](../resources/templates.md) — the `CONTEXT.md` and `specs-INDEX.md` seeds this skill copies

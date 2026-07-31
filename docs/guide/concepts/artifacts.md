@@ -36,7 +36,7 @@ docs/agents/                   # per-repo config, written once by configure-repo
 
 The three files are written in order, each gated on the user's approval of the *previous file*, not on conversational agreement.
 
-**`requirements.md`** — the durable source of intent. A feature code, a `Status:` line, numbered stories, and [EARS](../resources/ears.md) acceptance criteria carrying [hierarchical IDs](requirement-ids.md). Guard criteria (`SHALL CONTINUE TO`) protect existing behavior the feature touches. An explicit **Out of Scope** section defends against scope creep during implementation and review — and it is read again later by `inspect-change` and `walk-product`.
+**`requirements.md`** — the durable source of intent. A feature code, a `Status:` line, numbered stories, and [EARS](../resources/ears.md) acceptance criteria carrying [hierarchical IDs](requirement-ids.md). Guard criteria (`SHALL CONTINUE TO`) protect existing behavior the feature touches. An explicit **Out of Scope** section defends against scope creep during implementation and review — and it is read again later by `inspect-change` and `review-product-flow`.
 
 **`design.md`** — how the approved requirements get satisfied. Every `###` architecture section carries a `Satisfies: CODE-N.M, CODE-N.M` line. A section with no `Satisfies:` line is either infrastructure (and says so) or does not belong in this feature.
 
@@ -62,7 +62,7 @@ The sole feature registry. A feature code is unique repo-wide, forever. `specify
 | SHELL | Left icon rail for module switching | ./2026-07-09-shell/ | Implemented | ROAD-3 |
 ```
 
-The last column binds the feature to the [roadmap](../skills/plan-milestones.md) item it implements, or `—` when the project has no roadmap layer. It is the join [`status-roadmap`](../skills/status-roadmap.md) reads to tell a planned item from a specced one.
+The last column binds the feature to the [roadmap](../skills/plan-milestones.md) item it implements, or `—` when the project has no roadmap layer. It is the join [`refresh-roadmap-status`](../skills/refresh-roadmap-status.md) reads to tell a planned item from a specced one.
 
 Because it enumerates every feature, it is what the [feature-overlap](feature-graph.md) search reads to know the full set of neighbors when [`frame-change`](../skills/frame-change.md) or [`inspect-change`](../skills/inspect-change.md) checks whether an idea or a diff already exists.
 
@@ -87,7 +87,7 @@ Monorepos may instead use a root `CONTEXT-MAP.md` pointing at per-context `CONTE
 Offered only when **all three** hold:
 
 1. **Hard to reverse** — changing course later carries real cost.
-2. **Surprising without context** — a future reader would route-work "why on earth this way?"
+2. **Surprising without context** — a future reader would route-task "why on earth this way?"
 3. **A real trade-off** — genuine alternatives existed and one was chosen for specific reasons.
 
 Any one missing means no ADR. The body is a short title plus **one to three sentences**: context, decision, why. Recording *that* and *why* is the value, not filling sections.
@@ -96,15 +96,15 @@ A new decision that contradicts an existing ADR supersedes it explicitly by numb
 
 ## `docs/product/` and `docs/architecture/` — the optional project layer
 
-For large or long-lived projects only, and **absent by default**. Authored and maintained by [`anchor-project`](../skills/anchor-project.md):
+For large or long-lived projects only, and **absent by default**. Authored and maintained by [`define-project`](../skills/define-project.md):
 
 | File | Contents | Read by |
 |---|---|---|
 | `docs/product/vision.md` | the repo-level product north star — problem, users, goals, non-goals, scope | `frame-change` (checks a new idea's product scope) |
-| `docs/architecture/INDEX.md` (+ per-domain files) | the architecture spine: cross-cutting invariants, each a bold `**ARCH-N**` ID plus one imperative rule | `design-solution` (cites `Respects: ARCH-N`), `plan-tasks`, `build-continuous`, `inspect-change`, `audit-trace` |
+| `docs/architecture/INDEX.md` (+ per-domain files) | the architecture spine: cross-cutting invariants, each a bold `**ARCH-N**` ID plus one imperative rule | `design-solution` (cites `Respects: ARCH-N`), `plan-tasks`, `build-in-waves`, `inspect-change`, `audit-trace` |
 | `docs/product/guidelines.md` | human-facing engineering guidelines — coding standards, naming/i18n, house rules | `plan-tasks` (sources Global Constraints from here, else `project.md`) |
 
-ADRs are the *decisions*; the architecture spine is the *current invariant set* those decisions produced. Every consult is no-op-if-absent, so a repo that never creates these files behaves exactly as it did before the layer existed. See [`anchor-project`](../skills/anchor-project.md) and the [traceability spine](traceability.md).
+ADRs are the *decisions*; the architecture spine is the *current invariant set* those decisions produced. Every consult is no-op-if-absent, so a repo that never creates these files behaves exactly as it did before the layer existed. See [`define-project`](../skills/define-project.md) and the [traceability spine](traceability.md).
 
 ## `docs/agents/` — the per-repo config
 
@@ -112,7 +112,7 @@ Written once by [`configure-repo`](../skills/configure-repo.md) and then read by
 
 | File | Contents | Read by |
 |---|---|---|
-| `project.md` | verify commands (typecheck/lint/unit/e2e), the single-test-file pattern, test annotation conventions per layer, release steps, `## Run locally (dev)`, the audit-trace check's test globs + ignore list | `test-first`, `prove-claim`, `build-continuous`, `isolate-workspace`, `cut-release`, `acceptance-*`, `walk-product`, `realign-spec`, the [audit-trace check](../resources/scripts.md#the-trace-check) |
+| `project.md` | verify commands (typecheck/lint/unit/e2e), the single-test-file pattern, test annotation conventions per layer, release steps, `## Run locally (dev)`, the audit-trace check's test globs + ignore list | `test-first`, `prove-claim`, `build-in-waves`, `isolate-workspace`, `cut-release`, `acceptance-*`, `review-product-flow`, `realign-spec`, the [audit-trace check](../resources/scripts.md#the-trace-check) |
 | `issue-tracker.md` | tracker choice (github / gitlab / linear / local / other), its operations, whether external PRs are a request surface | `triage`, `plan-tasks`, `cut-release` |
 | `triage-labels.md` | canonical role → this repo's label strings | `triage` |
 
@@ -130,14 +130,14 @@ One subtlety [`triage`](../skills/triage.md) is emphatic about: an **already-imp
 
 ## `.skills/` — git-ignored ephemera
 
-Working artifacts that pass between agents as **file paths**, never as pasted text. `configure-repo` and `build-continuous` both ensure the directory is git-ignored, idempotently.
+Working artifacts that pass between agents as **file paths**, never as pasted text. `configure-repo` and `build-in-waves` both ensure the directory is git-ignored, idempotently.
 
 | File | Written by | Purpose |
 |---|---|---|
-| `progress.md` | execute family | The ledger. One line per completed task (and unit lines under `build-story-units`). **Source of truth after compaction** |
+| `progress.md` | execute family | The ledger. One line per completed task (and unit lines under `build-by-story`). **Source of truth after compaction** |
 | `task-N-brief.md` | execute family | Task N + Global Constraints. The implementer's (or controller's) contract |
 | `task-N-report.md` | the implementer subagent | Status, TDD evidence (RED and GREEN commands and outputs), files changed, concerns |
-| `review-<base7>..<head7>.diff` | `build-continuous` | Commit list, diffstat, and full diff — assembled by the agent from `git log`/`git diff` as the reviewer's view |
+| `review-<base7>..<head7>.diff` | `build-in-waves` | Commit list, diffstat, and full diff — assembled by the agent from `git log`/`git diff` as the reviewer's view |
 | `<slug>-scan.md` | scan subagents | A findings digest of a touched surface, so raw source never floods the controller's context |
 | `<slug>-req-review.md`, `<slug>-design-review.md`, `<slug>-plan-review.md` | review subagents | Independent verification of a spec/design/plan's code-facing claims. One file **per phase** so the requirements, design, and plan reviews never clobber each other |
 | `<slug>-acceptance.md` | `validate-feature` | The acceptance ledger, sliced between `validate-api` and `validate-ui` |

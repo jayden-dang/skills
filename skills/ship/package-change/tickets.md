@@ -18,7 +18,7 @@ is a closed enum: never emit a fourth value.
 configured backend's own syntax, present only when `classification` is
 `fully-completed`; empty for `partial` and `related` items.
 
-The advisory commit map and the `build-continuous` continuation consume this
+The advisory commit map and the `build-in-waves` continuation consume this
 exact shape — do not rename a field or widen the enum.
 
 ## Read the tracker from config, not from memory

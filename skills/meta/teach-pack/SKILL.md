@@ -40,7 +40,7 @@ production. Its parts, in order:
    `MISSION.md`. Everything you teach-pack traces back to it; without it you cannot
    judge what to teach-pack next.
 
-2. **Calibrate** — before you explain anything, route-work them to state what they
+2. **Calibrate** — before you explain anything, route-task them to state what they
    already believe about the target, in their own words. Do not correct it and do
    not grade it — you have no oracle yet. Mine it: it tells you where to aim, and
    the first thing they have wrong is your first probe. This is your only read on
@@ -108,7 +108,7 @@ oracle** — steering them toward the part you can measure protects your grade a
 abandons their goal.
 
 **When the oracle is the learner's own work** — their commits, their past
-comments, their old code — route-work before you go and fetch it, and reveal one item at
+comments, their old code — route-task before you go and fetch it, and reveal one item at
 a time, after they have committed to a prediction. An oracle that is a record of
 them being bad at the thing is powerful and it stings; do not dump it on them.
 
@@ -118,7 +118,7 @@ use `research`.
 
 Never grade from your own memory when an oracle is one command away.
 
-## When they route-work you for the answer
+## When they route-task you for the answer
 
 They will — tired, rushed, or stuck. They are often *right* that a question would
 be worse than an answer in that moment.

@@ -55,7 +55,7 @@ The note informs; it never decides. This is the line that keeps research from qu
 
 Bring the findings back to the user (or the orchestrating skill, e.g. [`frame-change`](frame-change.md)) and put the resulting decision to them.
 
-If the research was serving an interview, the decision goes through [`probe-decisions`](probe-decisions.md) like any other — the note supplies the fact, and the fact/decision split still applies.
+If the research was serving an interview, the decision goes through [`clarify-decisions`](clarify-decisions.md) like any other — the note supplies the fact, and the fact/decision split still applies.
 
 ## Worked example
 
@@ -71,7 +71,7 @@ Because a wrong answer would only cost a feature flag, not an architecture, the 
 
 The note is short by design — one finding, one conclusion, one open decision — because the value is in the citation trail and the honest labels, not in length.
 
-Three details make this a trustworthy note rather than a guess. The finding is cited to the owning source — WebKit — while the MDN table, a lead, was used to point there and then confirmed against it. The conclusion is labelled as the author's, not the spec's, so no reader mistakes an inference for a fact. And the file ends on the one thing research must not settle — the product decision — which goes back through `probe-decisions`.
+Three details make this a trustworthy note rather than a guess. The finding is cited to the owning source — WebKit — while the MDN table, a lead, was used to point there and then confirmed against it. The conclusion is labelled as the author's, not the spec's, so no reader mistakes an inference for a fact. And the file ends on the one thing research must not settle — the product decision — which goes back through `clarify-decisions`.
 
 ## Why it is written the way it is
 
@@ -86,6 +86,6 @@ The one-file output contract ties both together: the investigation leaves a dura
 ## See also
 
 - [`frame-change`](frame-change.md) — the caller that detours here for evidence
-- [`probe-decisions`](probe-decisions.md) — where the decision goes after the note lands
+- [`clarify-decisions`](clarify-decisions.md) — where the decision goes after the note lands
 - [`run-spike`](run-spike.md) — the other evidence detour, for "does it feel right" questions
 - [Artifacts](../concepts/artifacts.md) — how the cited note fits the durable-record model

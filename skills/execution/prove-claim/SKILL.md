@@ -32,7 +32,7 @@ Skip any step and you are lying, not verifying.
 |---|---|---|
 | "Tests pass" | Full fresh run, zero failures, output read | An earlier run; a subset; "should pass" |
 | "Build/lint/typecheck clean" | That command, exit 0, zero warnings | A different tool passing |
-| "The feature works" | The affected flow driven through the running system and observed (REQUIRED SUB-SKILL: use `validate-feature`, or `walk-product` for a manual pass) | Green unit tests alone |
+| "The feature works" | The affected flow driven through the running system and observed (REQUIRED SUB-SKILL: use `validate-feature`, or `review-product-flow` for a manual pass) | Green unit tests alone |
 | "The bug is fixed" | Original symptom re-tested and gone | The code changed |
 | "The agent/subagent completed X" | You inspected the diff yourself | The agent's own success report |
 | "Requirements met" | the audit-trace check is clean (REQUIRED SUB-SKILL: use `audit-trace`) AND each acceptance criterion checked off individually against observed behavior | Green tests alone |

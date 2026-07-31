@@ -8,7 +8,7 @@ Requirements: ./requirements.md
 ## Context
 
 Nothing in this skill set authors a commit message or a pull-request body. Commits
-happen inside `build-continuous`'s implementer subagents, whose entire instruction is
+happen inside `build-in-waves`'s implementer subagents, whose entire instruction is
 *"Commit, with the requirement-ID trailer the brief's commit step names"*
 (`implementer-prompt.md:44`) — subject and body are unspecified. `land-branch`
 owns the crossing end to end: it gates on `prove-claim` + `audit-trace` + `validate-feature`,
@@ -75,7 +75,7 @@ boundary).
 5. **The passive-data contract is reused by path, not copied.** `package-change`
    loads `skills/review/brief-team/references/passive-data-safety.md`. Precedent:
    `land-branch/SKILL.md:116` already cites
-   `skills/review/sample-attention/references/signals.md` across skill boundaries.
+   `skills/review/select-review-sample/references/signals.md` across skill boundaries.
    A third copy of that contract would be worse than the coupling.
 6. **Convention resolution is memoized in session memory only.** No cache file, no
    config key; a new session re-resolves.
@@ -108,7 +108,7 @@ to resolve is a question, not a guess.
 Two guards sit on the config rung. When head *is* the configured default (working
 directly on `dev`), the skill always asks, and the answer is scoped to the invocation
 — it never rewrites the project default. When the configured value no longer names a
-live branch, it degrades to the route-work rung rather than erroring. The skill writes no
+live branch, it degrades to the route-task rung rather than erroring. The skill writes no
 project configuration at all; the absent-config path continues on a session-only value
 and names `/configure-repo` once as the way to persist it.
 
@@ -129,7 +129,7 @@ appearance. Pre-existing commits are read as context and never re-staged.
 Validation runs **before** each `git commit`, over six axes: file scope, subject,
 body, trailers, secret content, and staging boundary. Passing validation with an
 unambiguous scope is sufficient authority to commit — there is no routine plan
-approval. Five conditions stop the loop and route-work instead: unrelated dirty changes,
+approval. Five conditions stop the loop and route-task instead: unrelated dirty changes,
 unclear ownership of a change, an ambiguous partial-staging boundary, a secret-risk
 finding, and a mismatch between the planned scope and the working tree. These are
 exception questions; the skill does not otherwise pause.
@@ -234,7 +234,7 @@ The digest is `git hash-object` over `title.txt`'s bytes and over `body.md` — 
 already required, its hashing is uniform across platforms in a way `shasum` is not,
 and ARCH-3 forbids shipping a script to do it. Three prohibitions complete the
 section: nothing is written until `.skills/` is proven git-ignored (a line-presence
-check, matching `build-continuous`'s existing idempotent pattern); no package file ever
+check, matching `build-in-waves`'s existing idempotent pattern); no package file ever
 enters a commit plan; and no package path is ever shown as a reviewer-facing locator,
 because `.skills/` is git-ignored and a reviewer could not open it.
 
@@ -273,8 +273,8 @@ The checkpoint is inserted **after** the user's menu selection and **before** th
 crossing executes — so the five options still print verbatim and the decision order is
 unchanged. It runs two questions in sequence:
 
-1. **Ticket question (merge and PR paths).** Display the resolved ticket set; route-work
-   whether missing tickets should be created or supplemented. Route Worked even with no
+1. **Ticket question (merge and PR paths).** Display the resolved ticket set; route-task
+   whether missing tickets should be created or supplemented. Route Tasked even with no
    tracker configured, because the answer may be "yes, and there is nowhere to put it".
    A yes pauses the crossing and asks the user to run `/publish-issues` — named, never
    invoked, because ARCH-5 forbids a model-invoked skill from calling a user-invoked one.
@@ -313,12 +313,12 @@ before every crossing, discard still requires the typed word, the risk-glob nami
 user-request-only. Content approval is additive to the integration decision, not a
 replacement for it.
 
-### I. The `build-continuous` tail
+### I. The `build-in-waves` tail
 
 Satisfies: PCHG-9.1, PCHG-11.7, PCHG-11.8, PCHG-11.9
 Reuse: existing — inserts one step into the existing "After the Last Task" sequence (rung 2)
 
-`build-continuous`'s closing sequence becomes: whole-branch review → one fixer if needed →
+`build-in-waves`'s closing sequence becomes: whole-branch review → one fixer if needed →
 polish-diff → acceptance → **`package-change`** → `land-branch`. The insertion point is
 after acceptance because acceptance can still change the code, and authoring must
 describe the code that will actually ship. Every existing step keeps its order and its
@@ -368,7 +368,7 @@ contract tests that assert what a `SKILL.md` does and does not say (e.g.
 | `tests/package-change/scenarios.md` — greppable ID annotation layer | integration (declared annotation layer) | every behavioral ID: PCHG-1.x, 2.x, 3.x, 4.x, 5.x, 6.x, 7.x, 8.x, 9.x, 10.x |
 | `tests/test_prepare_change_contract.py` — `package-change/SKILL.md` text contract | unit | PCHG-1.5, 1.7, 1.9, 2.6, 2.7, 3.4, 3.6, 3.7, 4.3, 4.4, 4.7, 5.6, 5.8, 6.2, 6.5, 6.6, 6.7, 7.1, 7.3, 7.4 |
 | `tests/test_prepare_change_checkpoint.py` — `land-branch/SKILL.md` contract and guards | unit | PCHG-8.1, 8.2, 8.3, 8.4, 8.5, 8.6, 8.7, 8.8, 8.9, 8.10, 11.1, 11.2, 11.3, 11.4, 11.5, 11.6, 12.3 |
-| `tests/test_prepare_change_wiring.py` — `build-continuous` tail, `configure-repo` decision, template slot, roster registration | unit | PCHG-9.1, 9.2, 9.3, 9.4, 10.1, 10.2, 10.3, 10.4, 10.5, 11.7, 11.8, 11.9, 11.10, 11.11, 11.12, 11.13 |
+| `tests/test_prepare_change_wiring.py` — `build-in-waves` tail, `configure-repo` decision, template slot, roster registration | unit | PCHG-9.1, 9.2, 9.3, 9.4, 10.1, 10.2, 10.3, 10.4, 10.5, 11.7, 11.8, 11.9, 11.10, 11.11, 11.12, 11.13 |
 | `tests/package-change/scenarios-pressure.md` — injected instruction and planted credential | integration (declared annotation layer) | PCHG-3.5, 12.2 |
 | `tests/test_prepare_change_convention.py` — bounded, once-per-session resolution | unit | PCHG-4.1, 4.2, 4.5, 4.6, 12.1 |
 | `tests/trigger/package-change-routing.md` — description routing baseline | integration (declared annotation layer) | PCHG-1.1 |
@@ -390,7 +390,7 @@ Every requirement ID appears in exactly one `Satisfies:` line:
 | F. Package writer | PCHG-6.1 … 6.7 |
 | G. Advisory commit map and findings grading | PCHG-7.1 … 7.7 |
 | H. The `land-branch` checkpoint | PCHG-8.1 … 8.10, 11.1 … 11.6, 12.3 |
-| I. The `build-continuous` tail | PCHG-9.1, 11.7, 11.8, 11.9 |
+| I. The `build-in-waves` tail | PCHG-9.1, 11.7, 11.8, 11.9 |
 | J. `configure-repo` decision and template slot | PCHG-10.1 … 10.5, 11.10, 11.11, 11.12 |
 | K. Registration and roster | PCHG-11.13 |
 

@@ -8,7 +8,7 @@ The standard objection to spec-driven development is that it buries a two-line c
 |---|---|---|
 | **0 — trivial** | typo-level; no behavior change | none — [`test-first`](../skills/test-first.md) and [`prove-claim`](../skills/prove-claim.md) only |
 | **1 — bugfix / small change** | a behavior change taking ≤ ~half a day | a mini-spec: one fix requirement plus a `SHALL CONTINUE TO` guard appended to the owning feature's `requirements.md` (or `docs/specs/fixes.md`), and a tagged regression test. No `design.md`; task list optional |
-| **2 — feature** | multi-task work | the full triad — `requirements.md`, `design.md`, `tasks.md` — then the execute family ([`build-continuous`](../skills/build-continuous.md) / [`build-story-units`](../skills/build-story-units.md) / [`build-inline`](../skills/build-inline.md)) |
+| **2 — feature** | multi-task work | the full triad — `requirements.md`, `design.md`, `tasks.md` — then the execute family ([`build-in-waves`](../skills/build-in-waves.md) / [`build-by-story`](../skills/build-by-story.md) / [`build-inline`](../skills/build-inline.md)) |
 
 ## The tier decision *is* the design step
 

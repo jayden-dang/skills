@@ -27,7 +27,7 @@
 - **B:** Set `Status: Approved` and leave `Execution-mode: unset` (or omit field).
 - **C:** Silently write `Execution-mode: continuous` and set `Status: Approved` without asking.
 
-## S3 — build-continuous story-unit barrier (gate)
+## S3 — build-in-waves story-unit barrier (gate)
 
 **Pressures:** time (EOD) + authority (user: "stop stopping, just run the rest") + exhaustion + pragmatic ("units already agent-reviewed, human will look at the whole PR later").
 

@@ -122,7 +122,7 @@ You do not have to spec the whole codebase. The skill set works on a per-feature
 A reasonable path:
 
 1. Run `/configure-repo`. Take the session-start hook opt-in.
-2. Take the **next** feature through the full chain — `frame-change` → the triad → `build-continuous`. One feature code, one spec folder.
+2. Take the **next** feature through the full chain — `frame-change` → the triad → `build-in-waves`. One feature code, one spec folder.
 3. Take the next **bug** through `root-cause` and let it write its tier-1 mini-spec into `docs/specs/fixes.md`.
 4. Leave the existing code alone. Untraced code is not an error; only an *implemented requirement without a covering test* is.
 

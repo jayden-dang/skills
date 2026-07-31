@@ -20,7 +20,7 @@ Three ways in: by role, by problem, or by phase.
 2. [Ceremony tiers](methodology/ceremony-tiers.md) — this answers "do I really have to write a spec for *this*?"
 3. [The process](process/README.md) — the chain, and which flow your work belongs in
 4. [Examples](examples/tier-0-tweak.md) — start with tier 0; it is the shortest
-5. When lost: run `/route-work`, or read [`route-work`](skills/route-work.md)
+5. When lost: run `/route-task`, or read [`route-task`](skills/route-task.md)
 
 ### I maintain this skill set
 
@@ -48,7 +48,7 @@ Three ways in: by role, by problem, or by phase.
 | …fix a bug | [`root-cause`](skills/root-cause.md) → [Tier 1 example](examples/tier-1-bugfix.md) |
 | …start a brand-new project | [`/bootstrap-repo`](skills/bootstrap-repo.md) |
 | …adopt this on an existing repo | [`/configure-repo`](skills/configure-repo.md) → [Adopting](resources/adopting.md) |
-| …set up a product vision + architecture spine for a large project | [`/anchor-project`](skills/anchor-project.md) |
+| …set up a product vision + architecture spine for a large project | [`/define-project`](skills/define-project.md) |
 | …understand why my tests aren't enough | [`validate-feature`](skills/validate-feature.md) → [Review and acceptance](process/review-and-acceptance.md) |
 | …know why the audit-trace check is failing | [Troubleshooting](resources/troubleshooting.md#the-trace-check-fails) |
 | …review a branch before merging | [`inspect-change`](skills/inspect-change.md) |
@@ -61,7 +61,7 @@ Three ways in: by role, by problem, or by phase.
 | …fix a spec that drifted from the code | [`realign-spec`](skills/realign-spec.md) |
 | …write a new skill | [`author-skills`](skills/author-skills.md) → [The skill model](concepts/skill-model.md) |
 | …understand the requirement-ID syntax | [Requirement IDs](concepts/requirement-ids.md) + [EARS](resources/ears.md) |
-| …know which flow I'm even in | Run `/route-work` |
+| …know which flow I'm even in | Run `/route-task` |
 
 ---
 
@@ -70,10 +70,10 @@ Three ways in: by role, by problem, or by phase.
 | Phase | Skills | Guide page |
 |---|---|---|
 | **0. Setup** | `/configure-repo`, `/bootstrap-repo` | [Adopting](resources/adopting.md) |
-| **1. Discovery** | `frame-change`, `probe-decisions`, `research`, `run-spike`, `define-domain`, `interpret-native` | [Discovery](process/discovery.md) |
+| **1. Discovery** | `frame-change`, `clarify-decisions`, `research`, `run-spike`, `define-domain`, `interpret-session` | [Discovery](process/discovery.md) |
 | **2. Specification** | `specify-behavior`, `design-solution`, `plan-tasks` | [Specification](process/specification.md) |
-| **3. Execution** | `isolate-workspace`, `build-continuous`, `test-first`, `root-cause`, `prove-claim`, `audit-trace` | [Execution](process/execution.md) |
-| **4. Review & acceptance** | `inspect-change`, `vet-feedback`, `acceptance-*`, `walk-product`, `drive-walk` | [Review and acceptance](process/review-and-acceptance.md) |
+| **3. Execution** | `isolate-workspace`, `build-in-waves`, `test-first`, `root-cause`, `prove-claim`, `audit-trace` | [Execution](process/execution.md) |
+| **4. Review & acceptance** | `inspect-change`, `vet-feedback`, `acceptance-*`, `review-product-flow`, `run-product-walkthrough` | [Review and acceptance](process/review-and-acceptance.md) |
 | **5. Ship & maintain** | `land-branch`, `/cut-release`, `realign-spec`, `amend-feature`, `/publish-issues`, `/triage`, `/scan-architecture`, `/write-handoff` | [Ship and maintain](process/ship-and-maintain.md) |
 
 ---

@@ -69,7 +69,7 @@ Present the breakdown as a numbered list. Per slice show **Title**, **Blocked by
 - Are the blocking edges correct — does each slice depend only on slices that genuinely gate it?
 - Should any be merged or split?
 
-When a slice is underspecified in a way only the user can resolve, REQUIRED SUB-SKILL: use `probe-decisions` to shape it one question at a time before publishing. Iterate until the user approves the breakdown. **Done when:** the user has approved the slices and their edges.
+When a slice is underspecified in a way only the user can resolve, REQUIRED SUB-SKILL: use `clarify-decisions` to shape it one question at a time before publishing. Iterate until the user approves the breakdown. **Done when:** the user has approved the slices and their edges.
 
 ### 5. Publish
 
@@ -129,4 +129,4 @@ In either form, describe **behavior and interfaces, never file paths or line num
 
 ## Exit
 
-Tell the user the frontier — which slices can start now. Point them at the next step: work each slice with the execute family (`build-continuous` / `build-story-units` / `build-inline`) or standalone `test-first`, clearing context between slices.
+Tell the user the frontier — which slices can start now. Point them at the next step: work each slice with the execute family (`build-in-waves` / `build-by-story` / `build-inline`) or standalone `test-first`, clearing context between slices.

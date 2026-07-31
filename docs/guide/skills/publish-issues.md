@@ -8,7 +8,7 @@
 | **Invocation** | **user-invoked only** — run `/publish-issues`. `disable-model-invocation: true`: the agent never auto-files issues; deciding what enters the backlog stays a human call |
 | **Reads** | `docs/agents/issue-tracker.md` (tracker operations), `docs/agents/triage-labels.md` (label strings), `CONTEXT.md` (glossary), `docs/adr/`, the source spec/issue if one is referenced |
 | **Writes** | new issues on the configured tracker (or `.scratch/<feature>/issues/*.md` locally), with blocking edges and the `ready-for-agent` label |
-| **Calls** | [`probe-decisions`](probe-decisions.md) (when a slice is underspecified); names [`configure-repo`](configure-repo.md) if the tracker config is missing |
+| **Calls** | [`clarify-decisions`](clarify-decisions.md) (when a slice is underspecified); names [`configure-repo`](configure-repo.md) if the tracker config is missing |
 | **Called by** | nobody — the user runs it directly |
 
 ## When it fires
@@ -42,7 +42,7 @@ That line does double duty. It discloses AI authorship, and it is the **marker `
 1. **Gather context.** Work from the conversation; if the user passes a spec path, issue number, or URL, read its full body and comments first.
 2. **Explore the codebase.** So titles and descriptions use the project's domain glossary (`CONTEXT.md`) and respect the area's ADRs. Look for a **prefactor** that makes the later work easier — "make the change easy, then make the easy change" — and sequence it as the first slice.
 3. **Draft vertical slices.** Each slice cuts a narrow but **complete** path through every layer (schema, API, UI, tests), is demoable on its own, and fits one fresh context window. Give each its **blocking edges** — the slices that must finish before it can start. **Wide refactors** are the exception: a mechanical change whose blast radius breaks thousands of call sites can't land as one vertical slice, so it is sequenced **expand → migrate (in batches) → contract**, each batch its own issue, CI green batch to batch.
-4. **Quiz the user.** Present the breakdown as a numbered list — Title, Blocked by, What it delivers — and ask whether the granularity and the edges are right, and whether any should be merged or split. When a slice is underspecified in a way only the user can resolve, [`probe-decisions`](probe-decisions.md) shapes it one question at a time. Iterate until approved.
+4. **Quiz the user.** Present the breakdown as a numbered list — Title, Blocked by, What it delivers — and ask whether the granularity and the edges are right, and whether any should be merged or split. When a slice is underspecified in a way only the user can resolve, [`clarify-decisions`](clarify-decisions.md) shapes it one question at a time. Iterate until approved.
 5. **Publish.** In **dependency order, blockers first**, so each edge can reference a real identifier. On a remote tracker: one issue per slice, native sub-issue/blocking links where the platform has them; on a local tracker: one file per slice under `.scratch/<feature>/issues/NN-slug.md`, numbered in dependency order. The `ready-for-agent` label is applied **only to what is actually grabbable**: where the tracker *enforces* the blocking edge (native dependency links, Linear `blocks` relations) every slice gets it; where "Blocked by" is only text (GitHub Issues, local files) only the **frontier** — slices with no open blocker — gets it, and the user promotes each slice as its blockers close. Otherwise an autonomous agent grabs a labeled-but-blocked issue it cannot finish. Work the frontier, publishing any slice whose blockers are already published. **Never close or modify a parent issue.**
 
 ## What a published issue contains
@@ -51,7 +51,7 @@ Behavior and interfaces, **never file paths or line numbers** — they go stale 
 
 ## Exit
 
-The skill names the **frontier** — the slices that can start immediately — and points the user at the next step: work each slice with [`build-continuous`](build-continuous.md) (or inline [`test-first`](test-first.md)), clearing context between slices. Because the issues carry the AI marker, `triage` leaves them alone.
+The skill names the **frontier** — the slices that can start immediately — and points the user at the next step: work each slice with [`build-in-waves`](build-in-waves.md) (or inline [`test-first`](test-first.md)), clearing context between slices. Because the issues carry the AI marker, `triage` leaves them alone.
 
 ## Why it is written the way it is
 
@@ -61,6 +61,6 @@ The skill names the **frontier** — the slices that can start immediately — a
 
 - [`triage`](triage.md) — the incoming counterpart; reads the same tracker config, skips `publish-issues`' output
 - [`plan-tasks`](plan-tasks.md) — the heavyweight, traceable publish path
-- [`probe-decisions`](probe-decisions.md) — shapes an underspecified slice before it is published
+- [`clarify-decisions`](clarify-decisions.md) — shapes an underspecified slice before it is published
 - [`configure-repo`](configure-repo.md) — writes the tracker and label config `publish-issues` reads
-- [`build-continuous`](build-continuous.md) — where a published slice gets built
+- [`build-in-waves`](build-in-waves.md) — where a published slice gets built

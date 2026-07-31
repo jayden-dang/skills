@@ -2,11 +2,11 @@
 
 **Date:** 2026-07-28  
 **Standard:** `skills/meta/author-skills/SKILL.md` + `influence-principles.md`  
-**Skills:** land-branch, plan-tasks, specify-behavior, build-continuous (+ story-unit-mode.md)
+**Skills:** land-branch, plan-tasks, specify-behavior, build-in-waves (+ story-unit-mode.md)
 
 ## Checklist (post-improve)
 
-| Criterion | land-branch | plan-tasks | specify-behavior | build-continuous |
+| Criterion | land-branch | plan-tasks | specify-behavior | build-in-waves |
 |---|---|---|---|---|
 | Trigger + outcome description (no workflow dump) | ok | improved (Execution-mode, vertical-slice) | ok | improved (continuous/story-unit) |
 | Gate form: authority + rationalization + red flags | ok (risk naming) | ok (Execution-mode) | ok (story quality + section-kind) | ok (barriers) |
@@ -31,5 +31,5 @@ python3 -m unittest discover -s tests
 ## Eval completed 2026-07-28 (both)
 
 1. **Micro-test 5-rep** land-branch single-task+auth: **5/5 A** — see `MICRO-AND-TRIGGERS.md`.
-2. **Description triggers** plan-tasks + build-continuous: **16/16 should-fire, 16/16 should-not-fire** — same file.
+2. **Description triggers** plan-tasks + build-in-waves: **16/16 should-fire, 16/16 should-not-fire** — same file.
 3. Still open: true RED without AGENTS injection; multi-model roster.

@@ -31,7 +31,7 @@ packet costs a teammate more than a missing one, because they trust it.
 ## Body sections (fixed order)
 
 1. **`users`** — What changed for users / operators in plain language (not a file list).
-2. **`decisions`** — Locks and choices (from probe-decisions package, notes, or *evident in the diff* with a path cite — never invent a user decision).
+2. **`decisions`** — Locks and choices (from clarify-decisions package, notes, or *evident in the diff* with a path cite — never invent a user decision).
 3. **`breaks`** — What can break; top failure modes a reviewer should watch.
 4. **`prove-claim`** — How to prove-claim in about five minutes. Every command, click, or acceptance path must already exist in the repo — check before writing it down.
 5. **`intuition`** — System intuition; optional `figure_html` (HTML/CSS or inline SVG). ASCII MUST NOT be the primary figure form.

@@ -78,7 +78,7 @@ Before the word "done" is spoken. The audit-trace check is clean; `SHELL-1.7` st
 
 ## What did *not* happen
 
-No `frame-change`. No `requirements.md` edit. No `design.md`. No `tasks.md`. No `isolate-workspace`. No `build-continuous`. No `inspect-change` subagents. Total artifacts produced: one changed token, one changed test, one commit.
+No `frame-change`. No `requirements.md` edit. No `design.md`. No `tasks.md`. No `isolate-workspace`. No `build-in-waves`. No `inspect-change` subagents. Total artifacts produced: one changed token, one changed test, one commit.
 
 **But the tier was named out loud, and the change was verified against the actual requirement text before it was named.** That is the entire ceremony, and it took one paragraph.
 

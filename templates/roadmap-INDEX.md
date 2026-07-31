@@ -6,7 +6,7 @@ Date: <YYYY-MM-DD>
 <!--
 The program layer: milestone INTENT, above any single feature and below the product
 vision. Optional — only multi-milestone projects need it. `plan-milestones` authors it;
-`status-roadmap` derives progress from it without writing anything.
+`refresh-roadmap-status` derives progress from it without writing anything.
 
 This file owns intent only: outcomes, ordering, membership, dependencies, commitments,
 blockers, deferrals, goal dispositions. It never records how far a feature has got —
@@ -15,7 +15,7 @@ docs/specs/INDEX.md row. Every heading below is a REQUIRED slot — fill it or w
 `None`.
 
 Structural rules — AUTHORITATIVE. Both `plan-milestones` (before its approval gate) and
-`status-roadmap` (as finding R11) validate against this list. A roadmap is structurally
+`refresh-roadmap-status` (as finding R11) validate against this list. A roadmap is structurally
 defective when any of these does not hold:
 
   S1  every MILE-N and ROAD-N is defined exactly once

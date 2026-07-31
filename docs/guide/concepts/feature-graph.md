@@ -45,7 +45,7 @@ That single Out-of-Scope line is often the whole answer: the new idea was alread
 | CHIPUI | Module chip rail | ./2026-04-02-chip-rail/ | Shipped | — |
 ```
 
-The **Roadmap item** column binds each feature to the [`ROAD-N`](../skills/plan-milestones.md) it implements, or `—` when the project has no roadmap layer or the work was never planned as an item. Overlap search ignores it; it exists for [`status-roadmap`](../skills/status-roadmap.md)'s plan-to-spec join.
+The **Roadmap item** column binds each feature to the [`ROAD-N`](../skills/plan-milestones.md) it implements, or `—` when the project has no roadmap layer or the work was never planned as an item. Overlap search ignores it; it exists for [`refresh-roadmap-status`](../skills/refresh-roadmap-status.md)'s plan-to-spec join.
 
 ## Where overlap is consumed
 

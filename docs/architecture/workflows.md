@@ -10,20 +10,20 @@ End-to-end process chains and known limits of the model.
 
 ```
 gate-session (session gate)
-→ frame-change            probe-decisions + define-domain; docs/specs/ overlap search;
+→ frame-change            clarify-decisions + define-domain; docs/specs/ overlap search;
                         research/run-spike detours; tier decision  [HARD GATE: no code]
 → specify-behavior    EARS + IDs; approval gate on the file
 → design-solution          Satisfies: per section; seams agreed; approval gate
 → plan-tasks            tasks with _Requirements:_ footers; audit-trace coverage check
 → isolate-workspace             isolated workspace, clean baseline
 → execute family        pick one from Execution-mode + route:
-                        build-continuous   (continuous + subagent waves)
-                        build-story-units  (story-unit + human unit barriers)
+                        build-in-waves   (continuous + subagent waves)
+                        build-by-story  (story-unit + human unit barriers)
                         build-inline (controller TDD, no implementer subagents)
                         [debug on failures; prove-claim before any claim]
 → inspect-change           whole-branch, two-axis (Standards + Spec-by-ID) + overlap search
 → validate-feature      drive the running system through the spec's user-facing
-                        behaviors (API + UI); promote to tagged tests (+ walk-product)
+                        behaviors (API + UI); promote to tagged tests (+ review-product-flow)
 → land-branch         merge / PR / keep / discard / block
 → cut-release               when shipping: prove-claim + audit-trace gate, changelog, tag, build
 → realign-spec             mark requirements Implemented/Shipped

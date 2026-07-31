@@ -35,7 +35,7 @@ If the user passes an argument, it is treated as what the next session will focu
 | **Next actions** | concrete, ordered, starting with the very next command or edit |
 | **Suggested skills** | which skills of this set the successor should invoke, and at which step |
 
-**Tried and rejected** is the section the skill singles out: it saves the successor from re-walking dead ends, and it is usually the most valuable one in the document. **Suggested skills** is specific, not vague — "resume [`build-continuous`](build-continuous.md) at task 4", "run [`prove-claim`](prove-claim.md) before claiming task 3 done" — naming both the skill and the step.
+**Tried and rejected** is the section the skill singles out: it saves the successor from re-walking dead ends, and it is usually the most valuable one in the document. **Suggested skills** is specific, not vague — "resume [`build-in-waves`](build-in-waves.md) at task 4", "run [`prove-claim`](prove-claim.md) before claiming task 3 done" — naming both the skill and the step.
 
 Laid out, the document has the shape:
 
@@ -103,7 +103,7 @@ A write-handoff fails in exactly one way: the successor has to come back and ask
 
 ## See also
 
-- [`build-continuous`](build-continuous.md) — the most common work a write-handoff resumes, cited by task number
+- [`build-in-waves`](build-in-waves.md) — the most common work a write-handoff resumes, cited by task number
 - [`prove-claim`](prove-claim.md) — the kind of gate a Suggested-skills line points the successor at
 - [Artifacts](../concepts/artifacts.md) — the durable specs/plans a write-handoff references rather than copies
 - [`isolate-workspace`](isolate-workspace.md) — the branch/worktree state Current state records exactly

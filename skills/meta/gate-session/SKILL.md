@@ -31,7 +31,7 @@ follow-on) → `amend-feature`, not `frame-change`. For an incoming issue or ext
 suggest the user run `/triage`; to capture the current conversation, spec, or
 idea into tracker issues, suggest `/publish-issues` (both are user-invoked — you
 cannot auto-invoke them).
-Unsure which flow fits → suggest `/route-work`. Only auto-invoke model-invocable skills;
+Unsure which flow fits → suggest `/route-task`. Only auto-invoke model-invocable skills;
 name a user-invoked one for the user to run.
 
 **Participant boundary:** never infer skill-set membership from roster,

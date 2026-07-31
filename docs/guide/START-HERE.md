@@ -17,7 +17,7 @@ over `docs/specs/`.
                              │            routes your intent to the right skill
         ┌────────────────────┴─────────────────────────────────────────────┐
         ▼                                                                    │
-  route-work  ── "I'm lost, where do I start?" ── routes to any entry point below  │
+  route-task  ── "I'm lost, where do I start?" ── routes to any entry point below  │
         │                                                                    │
  IDEATION → SPEC                          BUILD                    SHIP & MAINTAIN
  ─────────────────                        ─────                    ───────────────
@@ -25,13 +25,13 @@ over `docs/specs/`.
    [GATE: no code]   (EARS + IDs)     (Satisfies:)   (_Requirements:_ + audit-trace check)
         │                                                 │
         │ tier 0/1 shortcuts                              ▼
-        │                     isolate-workspace ─► build-continuous | build-story-units | build-inline
+        │                     isolate-workspace ─► build-in-waves | build-by-story | build-inline
         ▼                                                 │  (route from Execution-mode + subagents?)
   root-cause / test-first / prove-claim / audit-trace  ◄── discipline skills govern every build ──┘
         (the gates)                                       │
                                                           ▼
               inspect-change ─► validate-feature ─► land-branch ─► cut-release ─► realign-spec
-             (Standards+Spec)  (api/ui + walk-product)  (merge/PR)    (tag)   (mark Implemented/Shipped)
+             (Standards+Spec)  (api/ui + review-product-flow)  (merge/PR)    (tag)   (mark Implemented/Shipped)
 
  MAINTENANCE LOOP:  amend-feature (small change) · publish-issues (context → issues) · triage (incoming issues) · scan-architecture (periodic)
 ```
@@ -42,11 +42,11 @@ over `docs/specs/`.
 - **Tier 0 (trivial):** `test-first` + `prove-claim` only — no specs.
 - **Tier 1 (bugfix):** `root-cause` → a mini-spec (fix requirement + a `SHALL CONTINUE TO`
   guard) → tagged regression test → `prove-claim` → `inspect-change` → `land-branch`.
-- **Tier 2 (feature):** the full triad + execute family (`build-continuous` /
-  `build-story-units` / `build-inline`).
+- **Tier 2 (feature):** the full triad + execute family (`build-in-waves` /
+  `build-by-story` / `build-inline`).
 
 **Optional project layer** (large projects, off by default): before feature work,
-`/anchor-project` writes a repo-level product vision and an IDed
+`/define-project` writes a repo-level product vision and an IDed
 architecture-invariant spine (`docs/architecture/`, each rule an `**ARCH-N**`). The
 discovery, spec, execution, and review skills consult it when present — a `design.md`
 cites `Respects: ARCH-N`, and `audit-trace` checks those citations — and ignore it cleanly when
@@ -99,13 +99,13 @@ questions; the rest chains automatically:
    coverage check (every requirement cited by ≥1 task).
 7. **`isolate-workspace`** (auto) → isolated workspace with a clean-baseline test run.
 8. **Execute family** (auto, one of three) — from `Execution-mode` and route:
-   - **`build-continuous`** — continuous + subagent waves, two-verdict task review, ledger
-   - **`build-story-units`** — story-unit + human review units, then ledger
+   - **`build-in-waves`** — continuous + subagent waves, two-verdict task review, ledger
+   - **`build-by-story`** — story-unit + human review units, then ledger
    - **`build-inline`** — controller implements with `test-first`, no implementer subagents
 9. **`inspect-change`** (auto) → Standards + Spec axes, plus an inline `docs/specs/`
    overlap check.
 10. **`validate-feature`** (auto) → drives the running system
-    (`validate-api`/`validate-ui`), optionally `walk-product` for a manual pass.
+    (`validate-api`/`validate-ui`), optionally `review-product-flow` for a manual pass.
 11. **`land-branch`** (auto) → merge / PR / keep / discard.
 12. **`/cut-release`** (when shipping) → full prove-claim + `audit-trace` clean → changelog → tag →
     build → notes.
@@ -129,7 +129,7 @@ compact a long session.
 | Skill | Kind | Fires when | Core behavior | Produces |
 |---|---|---|---|---|
 | [`gate-session`](skills/gate-session.md) | m (session-injected) | Before any response, every session | The gate: 1%-rule skill check before acting; process skills before implementation skills; your instructions override skills | A routing decision |
-| [`route-work`](skills/route-work.md) | U | You're unsure which skill or flow applies | Router: maps your situation to the right entry point and chain | A recommended next skill |
+| [`route-task`](skills/route-task.md) | U | You're unsure which skill or flow applies | Router: maps your situation to the right entry point and chain | A recommended next skill |
 | [`author-skills`](skills/author-skills.md) | U | Authoring/editing/reviewing a skill | TDD for skills: no skill ships without a failing pressure-test first; the authoring vocabulary and checklist | A tested skill |
 
 ### setup
@@ -141,17 +141,17 @@ compact a long session.
 ### project *(optional layer, off by default)*
 | Skill | Kind | Fires when | Core behavior | Produces |
 |---|---|---|---|---|
-| [`anchor-project`](skills/anchor-project.md) | U | Large/long-lived project, before feature work | Tri-modal (create/update/validate): grills out a product vision and an IDed `**ARCH-N**` architecture-invariant spine + engineering guidelines; feature skills consult them when present | `docs/product/vision.md`, `docs/architecture/`, `docs/product/guidelines.md` |
+| [`define-project`](skills/define-project.md) | U | Large/long-lived project, before feature work | Tri-modal (create/update/validate): grills out a product vision and an IDed `**ARCH-N**` architecture-invariant spine + engineering guidelines; feature skills consult them when present | `docs/product/vision.md`, `docs/architecture/`, `docs/product/guidelines.md` |
 
 ### discovery
 | Skill | Kind | Fires when | Core behavior | Produces |
 |---|---|---|---|---|
-| [`probe-decisions`](skills/probe-decisions.md) | m | A decision must be drawn out of you | Full-context question cards (inline only), blast-radius first, walks every branch; ends with a decisions table + constraints you confirm | Confirmed decisions package |
+| [`clarify-decisions`](skills/clarify-decisions.md) | m | A decision must be drawn out of you | Full-context question cards (inline only), blast-radius first, walks every branch; ends with a decisions table + constraints you confirm | Confirmed decisions package |
 | [`frame-change`](skills/frame-change.md) | U | New feature/idea, before any code | HARD GATE (no code): explore context, `docs/specs/` overlap search, grill, pick tier, choose approach; exits only into `specify-behavior` | Tier decision + chosen approach |
 | [`research`](skills/research.md) | m | A question turns on external facts | Investigate primary sources, every claim cited; fan-out + adversarial verify for high-stakes questions | A cited notes file |
 | [`run-spike`](skills/run-spike.md) | m | A design question needs a runnable answer | Throwaway spike — a logic TUI or 3 structurally different UI variants; capture the answer, then delete/absorb | The answer (as ADR/req/commit) |
 | [`define-domain`](skills/define-domain.md) | m | A term is fuzzy, or a hard-to-reverse decision | Challenge terms against `CONTEXT.md`, update the glossary inline; ADRs only when hard-to-reverse + surprising | Glossary / ADR updates |
-| [`interpret-native`](skills/interpret-native.md) | U | Frame Changeing in English but thinking/deciding in another language | Companion session: per pasted response, a committed stance plus translate → explain → the detail behind it; the English reply once the direction is settled | Native-language analysis + a reply to paste back |
+| [`interpret-session`](skills/interpret-session.md) | U | Frame Changeing in English but thinking/deciding in another language | Companion session: per pasted response, a committed stance plus translate → explain → the detail behind it; the English reply once the direction is settled | Native-language analysis + a reply to paste back |
 
 ### spec
 | Skill | Kind | Fires when | Core behavior | Produces |
@@ -163,8 +163,8 @@ compact a long session.
 ### execution
 | Skill | Kind | Fires when | Core behavior | Produces |
 |---|---|---|---|---|
-| [`build-continuous`](skills/build-continuous.md) | m | Approved `tasks.md`, `Execution-mode: continuous`, subagent waves | Fresh subagent per task; two-verdict review; parallel waves; no human pause between tasks; ledger | Implemented, reviewed tasks |
-| [`build-story-units`](skills/build-story-units.md) | m | Approved `tasks.md`, `Execution-mode: story-unit` | Derived review units; unit agent review → human unlock; mode-change write-back; unit ledger | Story-gated implemented units |
+| [`build-in-waves`](skills/build-in-waves.md) | m | Approved `tasks.md`, `Execution-mode: continuous`, subagent waves | Fresh subagent per task; two-verdict review; parallel waves; no human pause between tasks; ledger | Implemented, reviewed tasks |
+| [`build-by-story`](skills/build-by-story.md) | m | Approved `tasks.md`, `Execution-mode: story-unit` | Derived review units; unit agent review → human unlock; mode-change write-back; unit ledger | Story-gated implemented units |
 | [`build-inline`](skills/build-inline.md) | m | Approved plan, no implementer subagents / user chose inline | Controller implements with `test-first`; stop-on-blocker; sequential; no unit barriers | Implemented tasks (self-reviewed) |
 | [`test-first`](skills/test-first.md) | m | Writing any production code | **Iron law:** no production code without a failing test first; test only at agreed seams; every test carries its requirement ID | Tested code |
 | [`root-cause`](skills/root-cause.md) | m | Anything misbehaves | **Iron law:** no fix without root cause; red-capable command gate first; one falsifiable hypothesis; ≥3 failed fixes = question the architecture | Root-caused fix + guard |
@@ -177,7 +177,7 @@ compact a long session.
 |---|---|---|---|---|
 | [`inspect-change`](skills/inspect-change.md) | m | A branch/diff needs review | Two parallel read-only subagents — Standards (repo standards + code-smell baseline) and Spec (diff vs requirement IDs); inline `docs/specs/` overlap search; calibrated verdict | A two-axis merge verdict |
 | [`vet-feedback`](skills/vet-feedback.md) | m | Review feedback / PR comments arrive | Anti-sycophancy: prove-claim each item against the code, push back when the reviewer is wrong, clarify all items before implementing any | A vetted action list |
-| [`judge-invariants`](skills/judge-invariants.md) | m | A design/diff cites `Respects: ARCH-N` (repo has `docs/architecture/`) | Advisory, LLM-judged conformance: per citation, a respects/violates/unclear verdict + rationale; the semantic counterpart to `audit-trace`, never a hard gate | Invariant verdicts |
+| [`review-invariants`](skills/review-invariants.md) | m | A design/diff cites `Respects: ARCH-N` (repo has `docs/architecture/`) | Advisory, LLM-judged conformance: per citation, a respects/violates/unclear verdict + rationale; the semantic counterpart to `audit-trace`, never a hard gate | Invariant verdicts |
 
 ### acceptance
 | Skill | Kind | Fires when | Core behavior | Produces |
@@ -185,8 +185,8 @@ compact a long session.
 | [`validate-feature`](skills/validate-feature.md) | m | Pre-merge; units green but not user-driven | Derive an ID-keyed checklist of user-facing behaviors from the spec, dispatch by surface, close the loop | Validated behaviors + tagged tests |
 | [`validate-api`](skills/validate-api.md) | m | Validate a backend as a real client | Get the server up (persist the run command), turn each checklist item into a real request (status/body/persistence), fix via `root-cause`, promote to a tagged integration test | Committed API tests |
 | [`validate-ui`](skills/validate-ui.md) | m | Validate a frontend in a real browser | Ensure a Playwright/Chromium harness, write a user-driven spec per flow (role/label locators, reload persistence), run headless, commit tagged specs | Committed e2e tests |
-| [`walk-product`](skills/walk-product.md) | m | A manual, human-eyeball pass | Scope abilities with a coverage gate (happy + edge/error/nonbehavior/persist kinds), ground each in real code, boot the app, build a checkable HTML artifact with `data-kind` slots | An HTML test guide + findings |
-| [`drive-walk`](skills/drive-walk.md) | m | An existing walk-product guide must be executed, not only authored | Parse the guide into a run ledger, drive every case in a real browser, require backend probes for state cases, fix via `root-cause`, resume from the ledger | Evidence-backed run ledger + report |
+| [`review-product-flow`](skills/review-product-flow.md) | m | A manual, human-eyeball pass | Scope abilities with a coverage gate (happy + edge/error/nonbehavior/persist kinds), ground each in real code, boot the app, build a checkable HTML artifact with `data-kind` slots | An HTML test guide + findings |
+| [`run-product-walkthrough`](skills/run-product-walkthrough.md) | m | An existing review-product-flow guide must be executed, not only authored | Parse the guide into a run ledger, drive every case in a real browser, require backend probes for state cases, fix via `root-cause`, resume from the ledger | Evidence-backed run ledger + report |
 
 ### ship
 | Skill | Kind | Fires when | Core behavior | Produces |

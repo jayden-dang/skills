@@ -24,7 +24,7 @@ and sees it after reload"; its one member `ROAD-1` binds `CAP`, whose `Status:` 
 promises cross-device sync that no member delivers.
 
 **Expect.** `not achieved`, with the shortfall recorded. Shipping every member is not the
-same as achieving the outcome, and this is the gap `status-roadmap` structurally cannot see.
+same as achieving the outcome, and this is the gap `refresh-roadmap-status` structurally cannot see.
 Covers ASSESS-3.1.
 
 ## S-AM-12 — Goal coverage, and the goal that will not resolve
@@ -80,7 +80,7 @@ member, move one out, and defer one.
 
 ## S-AM-15 — Attention, supplied or absent
 
-**Setup.** Fixture `clean-close`. The user runs `/sample-attention` over
+**Setup.** Fixture `clean-close`. The user runs `/select-review-sample` over
 `<baseline>..<candidate>` themselves and supplies the result — as a path they had it write,
 or as pasted output.
 
@@ -93,7 +93,7 @@ as reviewed, cleared, or safe. Covers ASSESS-3.11.
 **Expect.**
 - The range is recorded as **unsampled** — not as sampled-with-empty-residue, which would
   claim a human looked.
-- `/sample-attention` is named for the user to run. It is user-invoked, so it is never run
+- `/select-review-sample` is named for the user to run. It is user-invoked, so it is never run
   from inside this skill, and `scripts/lint-handoffs.py` fails the build if the body ever
   says otherwise. Covers ASSESS-3.12.
 

@@ -8,7 +8,7 @@ The architecture SSOT for this skill set.
 
 1. This file is the INVARIANT SPINE — greppable **ARCH-N** rules that feature
    design.md files cite as `Respects: ARCH-N`. The `audit-trace` check verifies those
-   citations (E4/E5/W3). Semantic conformance is advisory via `judge-invariants`.
+   citations (E4/E5/W3). Semantic conformance is advisory via `review-invariants`.
 2. Domain files under this directory hold the rest of the system design (SSOT;
    no parallel design doc at repo root). Product north star remains
    docs/product/vision.md; engineering house rules remain docs/product/guidelines.md.
@@ -23,7 +23,7 @@ Rules for invariants:
   and is defined only under "## Invariants" below (do not re-bold ARCH definitions
   in domain files).
 
-Walk Product set: ARCH-1..6 = determinism-of-trace, optionality, zero-tooling,
+Review Product Flow set: ARCH-1..6 = determinism-of-trace, optionality, zero-tooling,
 ID immutability, sub-skill composition, participant boundary.
 -->
 

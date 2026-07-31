@@ -38,7 +38,7 @@ The atom of attention allocation: a depth-2 repo-relative path prefix
 _Avoid_: "chunk", "area", or per-file/per-commit grouping
 
 **Sample set**:
-The sampling units admitted for human attention by `sample-attention` — binding
+The sampling units admitted for human attention by `select-review-sample` — binding
 signal hits, agent adds, user adds, and the floor pick. Complement of the
 **residue**.
 
@@ -90,18 +90,18 @@ runnable rewrite command, because existing commits are never rewritten.
 _Avoid_: rebase plan, squash plan, cleanup script
 
 **Run file**:
-The single JSON artifact holding one walk-product run — every case's authored slots
-plus its **case verdict** and **human tick** — at `.skills/<slug>-walk-product.json`.
+The single JSON artifact holding one review-product-flow run — every case's authored slots
+plus its **case verdict** and **human tick** — at `.skills/<slug>-review-product-flow.json`.
 _Avoid_: cases file, run ledger, catalog (all named separate artifacts before v2)
 
 **Case verdict**:
-A walk-product case's `pending` / `pass` / `fail` / `blocked` state, where `pass`
+A review-product-flow case's `pending` / `pass` / `fail` / `blocked` state, where `pass`
 requires quoted screen evidence **and** a server probe. Written only by the agent.
 _Avoid_: bare "verdict" in prose — that name also carries the two-axis
 `inspect-change` verdict and the agent verdict inside a **milestone assessment**
 
 **Human tick**:
-A person's mark on a walk-product case, stored beside the **case verdict** and readable
+A person's mark on a review-product-flow case, stored beside the **case verdict** and readable
 by the agent, but never proof and never promotable to `pass`.
 _Avoid_: manual pass, human verdict, checkbox state
 

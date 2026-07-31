@@ -1,6 +1,6 @@
 # Phase 1 — Discovery
 
-**Skills:** [`frame-change`](../skills/frame-change.md) · [`probe-decisions`](../skills/probe-decisions.md) · [`research`](../skills/research.md) · [`run-spike`](../skills/run-spike.md) · [`define-domain`](../skills/define-domain.md)
+**Skills:** [`frame-change`](../skills/frame-change.md) · [`clarify-decisions`](../skills/clarify-decisions.md) · [`research`](../skills/research.md) · [`run-spike`](../skills/run-spike.md) · [`define-domain`](../skills/define-domain.md)
 
 **Produces:** an agreed shape, a stated ceremony tier, an updated glossary, possibly an ADR, and — for tier ≥ 1 — an invocation of `specify-behavior`.
 
@@ -42,7 +42,7 @@ Any feature whose spec matches is read as its **Summary card, not its full spec*
 
 ### 2. Interview
 
-`probe-decisions` takes over. The load-bearing rules:
+`clarify-decisions` takes over. The load-bearing rules:
 
 - **Inline chat only** — never a truncated MCQ picker; every question needs full context.
 - **One question card per message** — radius, why it matters, options with consequences, recommendation. Wait for the answer.
@@ -95,7 +95,7 @@ If the work spans multiple independent subsystems, decompose here: name the sub-
 `define-domain` owns the ADR gate, and it is a **three-part AND**:
 
 1. **Hard to reverse** — changing course later carries real cost.
-2. **Surprising without context** — a future reader would route-work "why on earth this way?"
+2. **Surprising without context** — a future reader would route-task "why on earth this way?"
 3. **A real trade-off** — genuine alternatives existed and one was chosen for specific reasons.
 
 Any one missing means no ADR. The body is one to three sentences. Recording *that* and *why* is the value, not filling sections.

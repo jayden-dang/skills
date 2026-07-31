@@ -46,7 +46,7 @@ Python unittest runner.
 
 - XPLN-4.1 enrich from specs when present
 - XPLN-4.2 surface implementation-notes deviations
-- XPLN-4.3 fold probe-decisions locks when present
+- XPLN-4.3 fold clarify-decisions locks when present
 - XPLN-4.4 missing enrich sources do not hard-fail
 - XPLN-4.5 never invent REQs or locks
 

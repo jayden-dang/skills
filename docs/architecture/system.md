@@ -39,17 +39,17 @@ live only in [`INDEX.md`](./INDEX.md) (ARCH-N).
 
 ```
 skills/
-  meta/        gate-session, route-work, author-skills, teach-pack
+  meta/        gate-session, route-task, author-skills, teach-pack
   setup/       configure-repo, bootstrap-repo
-  discovery/   frame-change, probe-decisions, research, run-spike, define-domain
+  discovery/   frame-change, clarify-decisions, research, run-spike, define-domain
   spec/        specify-behavior, design-solution, plan-tasks
-  execution/   build-continuous, build-story-units, build-inline, test-first, root-cause, prove-claim, audit-trace, isolate-workspace
-  review/      inspect-change, vet-feedback, judge-invariants
-  acceptance/  validate-feature, validate-api, validate-ui, walk-product, drive-walk
+  execution/   build-in-waves, build-by-story, build-inline, test-first, root-cause, prove-claim, audit-trace, isolate-workspace
+  review/      inspect-change, vet-feedback, review-invariants
+  acceptance/  validate-feature, validate-api, validate-ui, review-product-flow, run-product-walkthrough
   craft/       craft-page
   ship/        package-change, land-branch, record-verdict, cut-release
   track/       amend-feature, reroute-plan, triage, realign-spec, scan-architecture, write-handoff, publish-issues
-  project/     anchor-project, dispose-pivot, plan-milestones
+  project/     define-project, assess-pivot-impact, plan-milestones
 templates/     requirements.md, design.md, tasks.md, docs/agents seeds, CONTEXT.md seed,
                product-vision.md, architecture-INDEX.md, product-guidelines.md seeds
 hooks/         session-start (injects meta/gate-session)
@@ -79,9 +79,9 @@ consuming repo installs nothing executable beyond the session-start hook.
 ## The project layer (optional)
 
 Above the per-feature workflow sits an **optional** repo-level documentation layer, for
-large or long-lived projects. It is authored by `anchor-project`
+large or long-lived projects. It is authored by `define-project`
 (create/update/validate). When a product pivot collides with shipped code, 
-`dispose-pivot` produces a disposition ledger **before** `anchor-project`
+`assess-pivot-impact` produces a disposition ledger **before** `define-project`
 update rewrites the vision layer. The layer consists of:
 
 ```
@@ -97,7 +97,7 @@ diverging — each a greppable ARCH-N ID, exactly like a requirement ID. A featu
 extends **one level up**: it verifies each citation points at a *live* invariant
 (referential integrity — codes E4/E5/W3), while the *semantic* judgment of whether a
 design truly respects an invariant is a separate, advisory, LLM-judged check
-(`judge-invariants`), never folded into deterministic `audit-trace`.
+(`review-invariants`), never folded into deterministic `audit-trace`.
 
 The layer is **optional by construction**. Feature skills consult it through
 observable-predicate, no-op-if-absent hooks (`frame-change` checks product scope;

@@ -136,7 +136,7 @@ Four kinds of friction: shallow modules, poor locality, missing or weak seams (i
 
 The output is a self-contained HTML report written to the **OS temp directory**, not the repo. One card per candidate, each with a before/after structure sketch that carries the argument — *if it needs a paragraph to explain, redraw it* — and a confidence badge of exactly `Strong`, `Worth exploring`, or `Speculative`.
 
-The report names **directions, not designs**. Interface shape belongs to the `probe-decisions` step, with the user in the loop.
+The report names **directions, not designs**. Interface shape belongs to the `clarify-decisions` step, with the user in the loop.
 
 And then: tier 0 proceeds under `test-first`/`prove-claim`; anything tier 1 or above goes to `frame-change`. **Architecture work earns no exemption from the spec gate.**
 

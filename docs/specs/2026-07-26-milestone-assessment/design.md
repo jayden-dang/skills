@@ -9,7 +9,7 @@ Requirements: ./requirements.md
 
 The roadmap layer (RMAP) shipped two skills and stopped deliberately short of one boundary.
 `plan-milestones` authors milestone intent and owns every write to `docs/roadmap/INDEX.md`;
-`status-roadmap` derives structural health read-only and carries a `<NON-NEGOTIABLE>` block
+`refresh-roadmap-status` derives structural health read-only and carries a `<NON-NEGOTIABLE>` block
 handing outcome judgment to a future skill by name. Nothing in the set writes a milestone's
 `Closed:` slot except `plan-milestones`, and nothing anywhere judges whether a milestone
 actually delivered what its `Outcome:` sentence promised. This feature fills exactly that
@@ -23,13 +23,13 @@ write-handoff verification, close eligibility) is a mechanical pass that two age
 identically, and the one genuinely judged thing — the outcome verdict — is never terminal on
 its own, because a human disposition gates it. ARCH-1 is respected because nothing judged is
 ever treated as a check. Meanwhile ARCH-5 forbids this user-invoked skill from invoking
-`status-roadmap` or `sample-attention`, both of which carry
+`refresh-roadmap-status` or `select-review-sample`, both of which carry
 `disable-model-invocation: true` — and `scripts/lint-handoffs.py` enforces that mechanically
 at commit time, so the design cannot cheat it.
 
 That last constraint is what makes rule *reuse* structural rather than optional. `R1`–`R11`
-live inline in `status-roadmap/SKILL.md` today, and this feature needs the withholding subset
-of them. It cannot call `status-roadmap` to get them, so the rules must move somewhere both
+live inline in `refresh-roadmap-status/SKILL.md` today, and this feature needs the withholding subset
+of them. It cannot call `refresh-roadmap-status` to get them, so the rules must move somewhere both
 skills read. The repo has exactly one established mechanism for shared content across
 skills — `templates/`, resolved as `${CLAUDE_PLUGIN_ROOT}/templates` by seven skills already,
 and already the authoritative home for the roadmap's `S1`–`S7` structural rules. No skill in
@@ -37,7 +37,7 @@ the set reads another skill's `references/` directory; introducing that pattern 
 would be a new cross-skill coupling with no precedent and no resolution rule.
 
 A note on posture: this repo is `Production` / `Active development`, so backward
-compatibility carries real weight. Two shipped skills change behavior here. `status-roadmap`
+compatibility carries real weight. Two shipped skills change behavior here. `refresh-roadmap-status`
 changes only where its rules are *stated* (its finding set is guarded byte-for-byte by
 ASSESS-5.4) plus one added ladder row. `plan-milestones` genuinely loses a capability — it can
 no longer close a milestone unilaterally, in any repo, including one that never runs this
@@ -47,9 +47,9 @@ consequential decision in this design.
 ## Decisions
 
 1. **Shared rules live at `templates/roadmap-findings.md`.** `R1`–`R11` move out of
-   `status-roadmap/SKILL.md` into a new file both skills read by the existing
+   `refresh-roadmap-status/SKILL.md` into a new file both skills read by the existing
    `${CLAUDE_PLUGIN_ROOT}/templates` resolution. It is a rules statement, not a seed:
-   `configure-repo` and `anchor-project` name the template files they copy individually and
+   `configure-repo` and `define-project` name the template files they copy individually and
    never glob, so nothing copies it into a consumer repo.
 2. **Outcome judgment is never a check.** The mechanical passes and the judged verdict are
    separated in the skill body and in the artifact. This is what keeps ARCH-1 intact.
@@ -65,7 +65,7 @@ consequential decision in this design.
    assessment open. Only `Accepted` and `Overridden` are terminal, and only they freeze.
 6. **Disposition values accumulate as a dated history** inside the assessment block, so a
    `Deferred → Accepted` path stays legible without appending a whole new assessment.
-7. **The skill lives at `skills/track/assess-milestone/`,** beside `status-roadmap`,
+7. **The skill lives at `skills/track/assess-milestone/`,** beside `refresh-roadmap-status`,
    `realign-spec`, and `amend-feature` — the lifecycle-tracking category.
 8. **No new ADR.** [ADR 0002](../../adr/0002-outcome-truth-outside-the-roadmap.md) already
    records the artifact-location decision. The human-disposition gate fails the ADR gate's
@@ -80,23 +80,23 @@ consequential decision in this design.
 Satisfies: ASSESS-5.3, ASSESS-5.4
 Respects: ARCH-1, ARCH-3
 Reuse: existing — extends the `templates/` shared-rules mechanism that already carries
-`S1`–`S7` for `plan-milestones` and `status-roadmap` (rung 2)
+`S1`–`S7` for `plan-milestones` and `refresh-roadmap-status` (rung 2)
 
 New file `templates/roadmap-findings.md`, opening with a line naming itself authoritative and
-naming its two readers — the shape `skills/review/sample-attention/references/signals.md`
+naming its two readers — the shape `skills/review/select-review-sample/references/signals.md`
 already uses. It carries the `R1`–`R11` table verbatim as it exists in
-`status-roadmap/SKILL.md:25-37` today (code, tier, condition, withholds), the rule statements
+`refresh-roadmap-status/SKILL.md:25-37` today (code, tier, condition, withholds), the rule statements
 from `:117-130`, and the withholding set `{R2, R4, R9, R10, R11}` stated once as a named set
 so both readers cite it rather than re-deriving it.
 
 Pure markdown, no executable content, so ARCH-3 holds for consumer repos. The move is
 byte-preserving on rule semantics; ASSESS-5.4 is the guard that proves it.
 
-### `status-roadmap` changes
+### `refresh-roadmap-status` changes
 
 Satisfies: ASSESS-5.2, ASSESS-5.5, ASSESS-5.6
 Respects: ARCH-1, ARCH-5
-Reuse: existing — edits `skills/track/status-roadmap/SKILL.md` in place (rung 2)
+Reuse: existing — edits `skills/track/refresh-roadmap-status/SKILL.md` in place (rung 2)
 
 Two edits, both narrow:
 
@@ -119,7 +119,7 @@ too — the ladder has one statement, and leaving RMAP's copy stale would make t
 
 Satisfies: ASSESS-1.1, ASSESS-1.2, ASSESS-1.3, ASSESS-1.4, ASSESS-1.5, ASSESS-1.6, ASSESS-1.7, ASSESS-1.8, ASSESS-1.9, ASSESS-1.10, ASSESS-1.11, ASSESS-1.12
 Respects: ARCH-1, ARCH-2, ARCH-5
-Reuse: existing — reuses `status-roadmap`'s membership and binding extraction verbatim from
+Reuse: existing — reuses `refresh-roadmap-status`'s membership and binding extraction verbatim from
 the shared reference (rung 2)
 
 The opening section of `skills/track/assess-milestone/SKILL.md`. Fixed passes, in order,
@@ -176,7 +176,7 @@ single argument after `--`.
 
 Satisfies: ASSESS-3.1, ASSESS-3.2, ASSESS-3.3, ASSESS-3.6, ASSESS-3.7, ASSESS-3.8, ASSESS-3.9, ASSESS-3.10, ASSESS-3.11, ASSESS-3.12
 Respects: ARCH-1, ARCH-5, ARCH-6
-Reuse: existing — goal and disposition extraction reuse `status-roadmap`'s passes 1 and 3
+Reuse: existing — goal and disposition extraction reuse `refresh-roadmap-status`'s passes 1 and 3
 via the shared reference (rung 2)
 
 The judged section, explicitly fenced off from the mechanical passes above it. Each judgment
@@ -192,8 +192,8 @@ the conclusion.
 **Unresolvable goal citations (ASSESS-3.9, ASSESS-3.10).** A cited `GOAL-N` that does not
 resolve to exactly one live goal is recorded `Unresolved`; the goal-coverage verdict is
 withheld while the outcome verdict and close eligibility continue unaffected. This case is
-reachable precisely because `status-roadmap`'s `R1` is a non-withholding error
-(`status-roadmap/SKILL.md:27`), so a dangling citation does arrive here rather than being
+reachable precisely because `refresh-roadmap-status`'s `R1` is a non-withholding error
+(`refresh-roadmap-status/SKILL.md:27`), so a dangling citation does arrive here rather than being
 stopped upstream.
 
 **Plan-accuracy counts (ASSESS-3.6, ASSESS-3.7).** Items added, moved out, and deferred
@@ -201,12 +201,12 @@ between baseline and candidate revision, from `git log` over the roadmap file's 
 block, plus elapsed time between the two commits. Recorded as observed facts under a heading
 that states no forecast may be derived from them.
 
-**Attention allocation (ASSESS-3.11, ASSESS-3.12).** `sample-attention` writes no file
-unless the user asks for one (`sample-attention/SKILL.md:38`), so there is nothing to
+**Attention allocation (ASSESS-3.11, ASSESS-3.12).** `select-review-sample` writes no file
+unless the user asks for one (`select-review-sample/SKILL.md:38`), so there is nothing to
 discover on disk. The skill consumes an allocation **the user supplies** — a path they had it
 write, or its pasted output — recording the sample set as sampled and the residue as
 unreviewed with its unit counts. Absent one, the range is recorded unsampled and
-`/sample-attention` is named for the user to run. It is never invoked (ARCH-5).
+`/select-review-sample` is named for the user to run. It is never invoked (ARCH-5).
 
 **Finding routing (ASSESS-3.8).** Each finding is recorded with exactly one destination from
 the closed set `amend-feature`, `reroute-plan`, `plan-milestones`, `define-domain`, `/publish-issues`.
@@ -358,17 +358,17 @@ Respects: ARCH-3, ARCH-5
 Reuse: existing — follows the registration path every skill in the set already uses (rung 2)
 
 `skills/track/assess-milestone/SKILL.md` carries `disable-model-invocation: true`
-(ASSESS-5.1). Registration touches `AGENTS.md` in the same three places `status-roadmap`
+(ASSESS-5.1). Registration touches `AGENTS.md` in the same three places `refresh-roadmap-status`
 occupies — the user-invoked list (`:76`), the `track/` line of the repo-layout comment
 (`:249`), and the `track` category row (`:338`) — plus a guide page at
-`docs/guide/skills/assess-milestone.md`, matching what `status-roadmap` and `plan-milestones`
+`docs/guide/skills/assess-milestone.md`, matching what `refresh-roadmap-status` and `plan-milestones`
 did.
 
 Boundaries held by construction and checked mechanically:
 
 - `docs/roadmap/INDEX.md` is modified only through `plan-milestones` (ASSESS-5.9) — this skill
   has no write step targeting it.
-- `sample-attention` is named, never invoked (ASSESS-5.10); `scripts/lint-handoffs.py`
+- `select-review-sample` is named, never invoked (ASSESS-5.10); `scripts/lint-handoffs.py`
   fails the build on any invoking phrasing.
 - `audit-trace` is untouched, so its `CODE-N.M`/`ARCH-N` scope is unchanged (ASSESS-5.11), already
   locked by `tests/test_trace_scope.py`.
@@ -391,7 +391,7 @@ files are new instances of existing kinds, which the repo requires one of each p
 | Seam | Kind | Covers |
 |---|---|---|
 | `tests/test_check_roadmap_rules.py` (existing, extended) | unit | ASSESS-5.3, ASSESS-5.4 |
-| `tests/roadmap/scenarios-status-roadmap.md` (existing, extended) | scenario | ASSESS-5.2, ASSESS-5.5, ASSESS-5.6 |
+| `tests/roadmap/scenarios-refresh-roadmap-status.md` (existing, extended) | scenario | ASSESS-5.2, ASSESS-5.5, ASSESS-5.6 |
 | `tests/test_assessment_artifact.py` (new) | unit | ASSESS-2.1, ASSESS-2.2, ASSESS-2.3, ASSESS-2.4, ASSESS-2.14, ASSESS-2.15, ASSESS-2.16, ASSESS-4.18, ASSESS-5.1 |
 | `tests/milestone-assessment/scenarios-scope.md` (new) | scenario | ASSESS-1.1, ASSESS-1.2, ASSESS-1.3, ASSESS-1.4, ASSESS-1.5, ASSESS-1.6, ASSESS-1.7, ASSESS-1.8, ASSESS-1.9, ASSESS-1.10, ASSESS-1.11, ASSESS-1.12, ASSESS-6.1, ASSESS-6.2 |
 | `tests/milestone-assessment/scenarios-judgment.md` (new) | scenario | ASSESS-3.1, ASSESS-3.2, ASSESS-3.3, ASSESS-3.6, ASSESS-3.7, ASSESS-3.8, ASSESS-3.9, ASSESS-3.10, ASSESS-3.11, ASSESS-3.12, ASSESS-6.3 |
@@ -405,15 +405,15 @@ assembled into a throwaway repo per case.
 ## Coverage check
 
 All 76 live requirement IDs appear in exactly one `Satisfies:` line. Section totals: shared
-reference 2, `status-roadmap` 3, scope resolution 12, judgment 10, artifact 11, state machine
+reference 2, `refresh-roadmap-status` 3, scope resolution 12, judgment 10, artifact 11, state machine
 13, close gate 8, `plan-milestones` 9, registration 8 — 76.
 
 Deliberately unmapped: none.
 
 **Retired upstream.** `ASSESS-3.4` and `ASSESS-3.5` are retired by strikethrough and replaced
 by `ASSESS-3.11` and `ASSESS-3.12`. Their premise was false: they read "WHERE an
-`sample-attention` allocation … exists", implying a discoverable artifact, but
-`sample-attention/SKILL.md:38` ends with *"no file exists unless they asked for one"* — an
+`select-review-sample` allocation … exists", implying a discoverable artifact, but
+`select-review-sample/SKILL.md:38` ends with *"no file exists unless they asked for one"* — an
 allocation is conversational by default, with no defined path or format. The replacements turn
 on the user **supplying** one. This correction is reported here rather than absorbed silently,
 because a `Satisfies:` line pointing at a false premise would carry the error into the plan

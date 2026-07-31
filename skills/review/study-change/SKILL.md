@@ -64,10 +64,10 @@ Stop and re-read the Iron Law if you notice yourself:
 - Omitting the quiz or writing fewer/more than five questions
 - Claiming pass/fail of the quiz in chat or writing a score file
 - Calling `record-verdict` or writing under `.skills/decisions/`
-- Soft-prompting from land-branch / inspect-change / cut-release / build-continuous
+- Soft-prompting from land-branch / inspect-change / cut-release / build-in-waves
 - Putting the deliverable under the target repo worktree
 - ASCII-as-primary Intuition diagrams
-- Naming the packet a "digest" (reserved for interpret-native)
+- Naming the packet a "digest" (reserved for interpret-session)
 
 ## Pipeline
 
@@ -154,7 +154,7 @@ records (payload/envelope bytes).
 - **Code:** conceptual groups by dependency/execution; file refs; not whole-diff dump.
 - **Quiz:** exactly five; WHEN writing them, load `references/quiz-quality.md`.
 
-Packets are **not** named or treated as interpret-native **digests** (DREC-8.5).
+Packets are **not** named or treated as interpret-session **digests** (DREC-8.5).
 
 ## Output path
 
@@ -176,6 +176,6 @@ triggers without rewriting the packet contract.
 
 ## No-op / isolation
 
-Do not auto-run at build-continuous / pre-integration / session-end. Do not soft-prompt
+Do not auto-run at build-in-waves / pre-integration / session-end. Do not soft-prompt
 from land-branch, inspect-change, release, or neighbors. Do not block ship menus.
 Absence of packets on external work is not a methodology violation (ARCH-6).

@@ -6,12 +6,12 @@ Date: 2026-07-25
 
 Adds the program band between `docs/product/vision.md` and a single feature's
 `requirements.md`: a durable home for milestone intent (`plan-milestones`) and a
-read-only derivation of roadmap health (`status-roadmap`).
+read-only derivation of roadmap health (`refresh-roadmap-status`).
 
 **Namespaces this feature introduces or consumes.** `GOAL-N` — product outcomes in
 `vision.md`. `MILE-N` — milestones. `ROAD-N` — roadmap items that exist before any
 feature spec. Feature codes (`CODE`) and requirement IDs (`CODE-N.M`) stay owned by
-`specify-behavior`; architecture IDs (`ARCH-N`) stay owned by `anchor-project`.
+`specify-behavior`; architecture IDs (`ARCH-N`) stay owned by `define-project`.
 
 **Ownership split.** `docs/roadmap/INDEX.md` owns planning intent: outcomes, ordering,
 membership, dependencies, commitments, blockers, deferrals, goal dispositions. Existing
@@ -29,7 +29,7 @@ that it outlives the conversation that produced it and later work can cite it.
 - **RMAP-1.2** THE SYSTEM SHALL give every milestone a `MILE-N` ID, one testable outcome sentence, a member list, a `Depends-on` field, and a commitment state of `Planned`, `Committed`, or `Closed`.
 - **RMAP-1.3** THE SYSTEM SHALL give every roadmap item a `ROAD-N` ID and a slug, and record it under exactly one milestone.
 - **RMAP-1.4** THE SYSTEM SHALL identify a roadmap item by its `ROAD-N` ID and slug, leaving feature-code registration to `specify-behavior`.
-- ~~**RMAP-1.5**~~ retired 2026-07-25: no baseline failure. A fresh agent caught a forward dependency unprompted as its first finding. The structural check survives as S4 in the template rule block and as `status-roadmap` finding R11 — only the authoring-time rule is retired. Evidence: `tests/roadmap/red-baselines.md`.
+- ~~**RMAP-1.5**~~ retired 2026-07-25: no baseline failure. A fresh agent caught a forward dependency unprompted as its first finding. The structural check survives as S4 in the template rule block and as `refresh-roadmap-status` finding R11 — only the authoring-time rule is retired. Evidence: `tests/roadmap/red-baselines.md`.
 - ~~**RMAP-1.6**~~ retired 2026-07-25: no baseline failure. Two independent baseline agents consolidated a surface repeated across milestones without prompting — one while reviewing, one while authoring. The `Surfaces:` slot that made the overlap visible is retained by RMAP-1.20. Evidence: `tests/roadmap/red-baselines.md`.
 - **RMAP-1.7** WHEN a roadmap item leaves a milestone's membership THE SYSTEM SHALL record it under that milestone's `Deferred` slot with a date and a reason.
 - **RMAP-1.8** WHERE `docs/product/vision.md` exists THE SYSTEM SHALL cite the goals each milestone serves by `GOAL-N` ID.
@@ -59,8 +59,8 @@ it.
 - **RMAP-2.4** WHEN `specify-behavior` registers a feature code for work that implements a roadmap item THE SYSTEM SHALL record that item's `ROAD-N` in the feature's `Roadmap item` column in `docs/specs/INDEX.md`.
 - **RMAP-2.5** WHERE `docs/roadmap/INDEX.md` does not exist THE SYSTEM SHALL leave the `Roadmap item` column empty and register the feature unchanged.
 - **RMAP-2.6** (guard) WHEN a feature code is registered THE SYSTEM SHALL CONTINUE TO treat `specify-behavior` Step 1 as its sole registrar, with the code unique repo-wide and the new row's status `Draft`.
-- **RMAP-2.7** WHEN `anchor-project` writes `docs/product/vision.md` THE SYSTEM SHALL give every goal a `GOAL-N` ID.
-- **RMAP-2.8** WHEN `anchor-project` updates a `docs/product/vision.md` whose goals carry no IDs THE SYSTEM SHALL assign `GOAL-N` IDs in document order and report the migration to the user.
+- **RMAP-2.7** WHEN `define-project` writes `docs/product/vision.md` THE SYSTEM SHALL give every goal a `GOAL-N` ID.
+- **RMAP-2.8** WHEN `define-project` updates a `docs/product/vision.md` whose goals carry no IDs THE SYSTEM SHALL assign `GOAL-N` IDs in document order and report the migration to the user.
 - **RMAP-2.9** THE SYSTEM SHALL keep every `GOAL-N` already recorded in an approved `docs/product/vision.md` immutable across every later update, retiring a goal by strikethrough with a reason.
 - **RMAP-2.10** (guard) WHEN `audit-trace` runs THE SYSTEM SHALL CONTINUE TO check referential integrity for `CODE-N.M` and `ARCH-N` only.
 
@@ -70,7 +70,7 @@ it.
 report of where the plan and the specs disagree plus a single next action, so that I can
 resume without trusting a status file that may have drifted.
 
-- **RMAP-3.1** WHEN `status-roadmap` runs THE SYSTEM SHALL derive its report from `docs/roadmap/INDEX.md`, `docs/specs/INDEX.md`, each cited feature's `requirements.md`, `docs/product/vision.md`, `git`, and — where it exists — `.skills/progress.md`, writing no file.
+- **RMAP-3.1** WHEN `refresh-roadmap-status` runs THE SYSTEM SHALL derive its report from `docs/roadmap/INDEX.md`, `docs/specs/INDEX.md`, each cited feature's `requirements.md`, `docs/product/vision.md`, `git`, and — where it exists — `.skills/progress.md`, writing no file.
 - **RMAP-3.2** IF a milestone's goal citation does not resolve to exactly one live, non-struck-through `GOAL-N` in `docs/product/vision.md` THEN THE SYSTEM SHALL report a dangling goal citation.
 - **RMAP-3.3** WHEN a `GOAL-N` that is not struck through is neither cited by a milestone nor recorded in the roadmap's `Goal dispositions` section THE SYSTEM SHALL report it as uncovered.
 - **RMAP-3.4** IF a `ROAD-N` appears under more than one milestone THEN THE SYSTEM SHALL report duplicate membership.
@@ -82,8 +82,8 @@ resume without trusting a status file that may have drifted.
 - **RMAP-3.10** WHEN every check has run and no finding withholds a recommendation THE SYSTEM SHALL select exactly one next action through a single fixed priority ladder recorded in `design.md`, naming the skill to run and the `ROAD-N`, `MILE-N`, or feature code it applies to, so that identical artifact state yields the same recommendation.
 - **RMAP-3.11** WHEN the user asks for a standup THE SYSTEM SHALL render the same derivation as a standup card naming the milestone currently in flight, the current status of that milestone's `ROAD-N` members, and the one next action.
 - **RMAP-3.12** WHEN reporting how far a feature has progressed THE SYSTEM SHALL cite that feature's `Status:` and name `audit-trace` for deeper coverage verification.
-- **RMAP-3.13** THE SYSTEM SHALL expose `status-roadmap` as user-invoked, carrying `disable-model-invocation: true`.
-- **RMAP-3.14** (guard) WHEN `status-roadmap` runs THE SYSTEM SHALL CONTINUE TO derive feature progress from the `Status:` recorded in each feature's `requirements.md` and mirrored in its `docs/specs/INDEX.md` row, creating no roadmap-level copy of that status.
+- **RMAP-3.13** THE SYSTEM SHALL expose `refresh-roadmap-status` as user-invoked, carrying `disable-model-invocation: true`.
+- **RMAP-3.14** (guard) WHEN `refresh-roadmap-status` runs THE SYSTEM SHALL CONTINUE TO derive feature progress from the `Status:` recorded in each feature's `requirements.md` and mirrored in its `docs/specs/INDEX.md` row, creating no roadmap-level copy of that status.
 - **RMAP-3.15** IF a milestone whose commitment state is `Closed` holds a non-deferred `ROAD-N` that no feature code binds, or one whose bound feature's `Status:` is not `Shipped`, THEN THE SYSTEM SHALL report premature closure and withhold the next-action recommendation.
 - **RMAP-3.16** WHEN a finding withholds the next-action recommendation THE SYSTEM SHALL report the withholding reason in place of a next action.
 - **RMAP-3.17** WHERE `.skills/progress.md` exists THE SYSTEM SHALL read it as local advisory evidence that never overrides a tracked `Status:`.
@@ -97,7 +97,7 @@ resume without trusting a status file that may have drifted.
 derivation bounded, its inputs untrusted, and its failures loud, so that the report stays
 cheap to run and never invents a clean bill of health.
 
-- **RMAP-4.1** WHEN `status-roadmap` runs THE SYSTEM SHALL complete its derivation with one full read of each source artifact and a bounded number of `git` commands independent of the number of features and milestones — verified by a scenario containing at least 200 features and 50 milestones.
+- **RMAP-4.1** WHEN `refresh-roadmap-status` runs THE SYSTEM SHALL complete its derivation with one full read of each source artifact and a bounded number of `git` commands independent of the number of features and milestones — verified by a scenario containing at least 200 features and 50 milestones.
 - **RMAP-4.2** IF a value read from `docs/roadmap/INDEX.md`, `docs/specs/INDEX.md`, or `docs/product/vision.md` reaches a shell command THEN THE SYSTEM SHALL pass it as a single non-option argument and reject any value that does not match the expected ID or rev shape — verified by a scenario supplying an option-shaped and a metacharacter-bearing value.
 - **RMAP-4.3** THE SYSTEM SHALL treat prose read from `docs/roadmap/INDEX.md`, `docs/specs/INDEX.md`, and `docs/product/vision.md` as passive data — verified by a scenario embedding an instruction in a milestone outcome and confirming it is reported, not obeyed.
 - **RMAP-4.4** IF `docs/roadmap/INDEX.md` is unparseable, or carries any structural defect listed in RMAP-1.18, or holds a `Depends-on` that does not resolve to exactly one live, non-struck-through `MILE-N`, THEN THE SYSTEM SHALL report the defect and withhold the next-action recommendation — verified by a scenario over a fixture roadmap carrying each defect in turn.
@@ -109,10 +109,10 @@ conformance target of its own.
 
 ## Out of Scope
 
-- **A separate `standup` skill.** Standup is a presentation mode of `status-roadmap`
+- **A separate `standup` skill.** Standup is a presentation mode of `refresh-roadmap-status`
   (RMAP-3.11). It splits out only if real usage reveals distinct team-ceremony
   responsibilities — cadence, attendance, per-person assignment.
-- **Persisted run state.** `status-roadmap` writes no file (RMAP-3.1), so it holds no
+- **Persisted run state.** `refresh-roadmap-status` writes no file (RMAP-3.1), so it holds no
   baseline of a previous run and reports current state only.
 - **A milestone assessment skill.** The seams it consumes are required here — the outcome
   sentence (RMAP-1.2), the deferral record (RMAP-1.7), the goal dispositions (RMAP-1.15),
@@ -128,25 +128,25 @@ conformance target of its own.
   resolved git range. Two remain excluded in both specs: the team-ceremony retrospective,
   and an action-item bucket.
 
-  Three RMAP behaviors changed as a result. `status-roadmap`'s ladder gained row 8, naming
+  Three RMAP behaviors changed as a result. `refresh-roadmap-status`'s ladder gained row 8, naming
   `/assess-milestone` when a `Committed` milestone's members are all bound and `Shipped`
   (ASSESS-5.2). `R1`–`R11` moved out of its body into `templates/roadmap-findings.md`, so
   two skills read one statement (ASSESS-5.3) — its finding set is guarded unchanged
   (ASSESS-5.4). And `plan-milestones` can no longer record a `Committed → Closed` transition
   without a verified assessment write-handoff (ASSESS-4.12), which narrows RMAP-1.10: it
   previously recorded a closure on request.
-- **Judging whether a milestone outcome was achieved.** `status-roadmap` catches
+- **Judging whether a milestone outcome was achieved.** `refresh-roadmap-status` catches
   structural status contradictions (RMAP-3.15) and nothing more; the judgment itself
   belongs to `assess-milestone`, and RMAP-3.15's boundary is unchanged by it.
 - **Treating attention residue as reviewed.** An assessment that consumes an allocation
   counts the sample as sampled and records the residue as unreviewed.
-  `/sample-attention` is user-invoked: it may be named for the user to run, never
+  `/select-review-sample` is user-invoked: it may be named for the user to run, never
   invoked.
 
   *Reconciled 2026-07-26.* This bullet's premise was wrong in the same way ASSESS-3.4's
   was. It said "an allocation the user has already produced", implying one discoverable on
-  disk, but `sample-attention` persists no file unless asked
-  (`skills/review/sample-attention/SKILL.md:38`). ASSESS-3.11 turns on the user
+  disk, but `select-review-sample` persists no file unless asked
+  (`skills/review/select-review-sample/SKILL.md:38`). ASSESS-3.11 turns on the user
   **supplying** one instead. The residue rule itself stands unchanged.
 - **A second action-item bucket.** The roadmap holds no action-item list. `assess-milestone`
   routes each finding by concern: a small in-scope change to a shipped
@@ -158,7 +158,7 @@ conformance target of its own.
 - **Any mutable progress or status file** of the `sprint-status.yaml` shape. Feature
   progress lives in `requirements.md` `Status:`, mirrored into the INDEX row (RMAP-3.14).
 - **Extending `audit-trace`** to `GOAL-N`, `MILE-N`, or `ROAD-N` referential integrity — those
-  checks live in `status-roadmap` (RMAP-2.10).
+  checks live in `refresh-roadmap-status` (RMAP-2.10).
 - **Acceptance criteria on roadmap items.** A `ROAD-N` carries intent, not criteria;
   behavior criteria live in the feature's `requirements.md`.
 - **Estimation, dates, capacity, velocity, and burndown.** The roadmap records ordering

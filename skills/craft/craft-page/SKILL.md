@@ -1,7 +1,7 @@
 ---
 name: craft-page
 description: Use before the first line of markup for any HTML a human will look
-  at — a walk-product test guide, a report, a dashboard, a landing page, a published
+  at — a review-product-flow test guide, a report, a dashboard, a landing page, a published
   artifact, a standalone .html handoff. Produces a written design plan (palette,
   type pairing, layout concept) and a page derived from it — theme-aware,
   self-contained, specific to its subject instead of templated. Also when a
@@ -121,7 +121,7 @@ self-republishing, load `artifact-capabilities` before declaring capabilities.
 ## 4. Spend the freedom somewhere other than the house style
 
 AI-generated design currently clusters on a handful of looks. Where the user
-pins a direction, follow it exactly — their words win, including when they route-work
+pins a direction, follow it exactly — their words win, including when they route-task
 for one of these. Where nothing is specified, pick something else:
 
 | The cluster | |

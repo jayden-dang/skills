@@ -130,7 +130,7 @@ frame-change ──► specify-behavior ──► design-solution ──► plan
    (gate: no code)     (EARS + IDs)      (Satisfies:)     (_Requirements:_)
         │                                                       │
         │ tier 0/1 shortcuts                                    ▼
-        │                          isolate-workspace ──► build-continuous | build-story-units | build-inline
+        │                          isolate-workspace ──► build-in-waves | build-by-story | build-inline
         ▼                                                       │
   root-cause / test-first / prove-claim  ◄── discipline skills govern ──────────┘
                                                                 │
@@ -143,8 +143,8 @@ frame-change ──► specify-behavior ──► design-solution ──► plan
   tagged regression test.
 - **Tier 2** (feature): the full triad.
 
-**Optional project layer** (large projects, off by default): `anchor-project`,
-`dispose-pivot` (pivot disposition ledger when shipped code collides with new intent)
+**Optional project layer** (large projects, off by default): `define-project`,
+`assess-pivot-impact` (pivot disposition ledger when shipped code collides with new intent)
 maintains a repo-level product vision plus an IDed architecture-invariant spine
 (`docs/architecture/`, each rule an `**ARCH-N**`) that `frame-change`, `design-solution`,
 `plan-tasks`, the execute family, and `inspect-change` consult when present. Feature
@@ -152,7 +152,7 @@ maintains a repo-level product vision plus an IDed architecture-invariant spine
 checks those citations the same way it checks requirement IDs. A repo that opts into
 nothing behaves exactly as above.
 
-Lost? Invoke `/route-work` — it routes any situation to the right entry point.
+Lost? Invoke `/route-task` — it routes any situation to the right entry point.
 
 ## The four gates
 
@@ -174,17 +174,17 @@ and countered by name. See [The gates](docs/guide/concepts/gates.md).
 
 | Bucket | Skills |
 |---|---|
-| meta | `gate-session` (session gate), `route-work` (router), `author-skills`, `teach-pack` |
+| meta | `gate-session` (session gate), `route-task` (router), `author-skills`, `teach-pack` |
 | setup | `configure-repo`, `bootstrap-repo` |
-| discovery | `frame-change`, `probe-decisions`, `research`, `run-spike`, `define-domain`, `interpret-native` |
+| discovery | `frame-change`, `clarify-decisions`, `research`, `run-spike`, `define-domain`, `interpret-session` |
 | spec | `specify-behavior`, `design-solution`, `plan-tasks` |
-| execution | `build-continuous`, `build-story-units`, `build-inline`, `test-first`, `root-cause`, `prove-claim`, `audit-trace`, `isolate-workspace` |
-| review | `inspect-change`, `vet-feedback`, `judge-invariants` |
-| acceptance | `validate-feature`, `validate-api`, `validate-ui`, `walk-product`, `drive-walk` |
+| execution | `build-in-waves`, `build-by-story`, `build-inline`, `test-first`, `root-cause`, `prove-claim`, `audit-trace`, `isolate-workspace` |
+| review | `inspect-change`, `vet-feedback`, `review-invariants` |
+| acceptance | `validate-feature`, `validate-api`, `validate-ui`, `review-product-flow`, `run-product-walkthrough` |
 | craft | `craft-page` |
 | ship | `package-change`, `land-branch`, `cut-release` |
-| track | `amend-feature`, `reroute-plan`, `triage`, `realign-spec`, `status-roadmap`, `assess-milestone`, `scan-architecture`, `write-handoff`, `publish-issues` |
-| project | `anchor-project`, `dispose-pivot`, `plan-milestones` (optional project / multi-milestone layer) |
+| track | `amend-feature`, `reroute-plan`, `triage`, `realign-spec`, `refresh-roadmap-status`, `assess-milestone`, `scan-architecture`, `write-handoff`, `publish-issues` |
+| project | `define-project`, `assess-pivot-impact`, `plan-milestones` (optional project / multi-milestone layer) |
 
 One page per skill in the [skill reference](docs/guide/skills/README.md).
 

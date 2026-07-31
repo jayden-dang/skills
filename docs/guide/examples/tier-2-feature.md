@@ -28,7 +28,7 @@ That is exactly the information the check exists to surface. The new feature wil
 
 ### 2. Interview
 
-[`probe-decisions`](../skills/probe-decisions.md) takes over: one full-context question card per message (radius, why it matters, options with consequences, recommendation), then a decisions table to confirm.
+[`clarify-decisions`](../skills/clarify-decisions.md) takes over: one full-context question card per message (radius, why it matters, options with consequences, recommendation), then a decisions table to confirm.
 
 > **Q:** When the app starts for the very first time, with nothing persisted, which module should be active?
 > **Recommendation:** Notes — it is the module with the lowest activation cost, and it is what users open most.
@@ -50,7 +50,7 @@ _Avoid_: pane, panel, section, tab
 
 Nobody knows what the Tauri v2 store plugin guarantees on a hard kill. That is not a preference — it is a fact about an external system, so it detours to [`research`](../skills/research.md), which reads the plugin's actual source and returns one cited markdown file ending in an **Open decisions** section.
 
-Research informs. It does not decide. The decision goes back through `probe-decisions`.
+Research informs. It does not decide. The decision goes back through `clarify-decisions`.
 
 ### 4. Propose approaches
 
@@ -192,7 +192,7 @@ An **independent plan review subagent** then verifies every symbol, signature, p
 
 ---
 
-## `isolate-workspace` → `build-continuous`
+## `isolate-workspace` → `build-in-waves`
 
 An isolated workspace, dependencies installed, and a **clean baseline**. Baseline red would stop everything — you cannot tell your bugs from pre-existing ones.
 

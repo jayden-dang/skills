@@ -9,7 +9,7 @@
 | **Reads** | `design.md` (Seams for testing), `docs/agents/project.md` (verify commands, test annotation conventions) |
 | **Writes** | tests, production code, commits carrying `Implements:` / `Guards:` trailers |
 | **Calls** | [`root-cause`](root-cause.md) (when the change is a bugfix), [`prove-claim`](prove-claim.md) (before any completion claim) |
-| **Called by** | [`frame-change`](frame-change.md) (tier 0), [`amend-feature`](amend-feature.md), [`specify-behavior`](specify-behavior.md) (tier 1), [`build-continuous`](build-continuous.md), [`run-spike`](run-spike.md), [`vet-feedback`](vet-feedback.md), [`scan-architecture`](scan-architecture.md) |
+| **Called by** | [`frame-change`](frame-change.md) (tier 0), [`amend-feature`](amend-feature.md), [`specify-behavior`](specify-behavior.md) (tier 1), [`build-in-waves`](build-in-waves.md), [`run-spike`](run-spike.md), [`vet-feedback`](vet-feedback.md), [`scan-architecture`](scan-architecture.md) |
 
 ## When it fires
 

@@ -16,7 +16,7 @@ as weaker evidence than RMAP's observed ones.
 `FileNotFoundError: templates/roadmap-findings.md`, 4 errors.
 
 The pre-existing state also failed `test_check_roadmap_defers_instead_of_restating`
-independently: `status-roadmap/SKILL.md` carried the `R1`–`R11` table inline, so the
+independently: `refresh-roadmap-status/SKILL.md` carried the `R1`–`R11` table inline, so the
 `^\| \*\*R\d+\*\* \|` search matched. That is the duplication ASSESS-5.3 removes.
 
 ## Task 2 — ladder rung
@@ -48,12 +48,12 @@ of the skill body:
 ```
 DEAD HAND-OFF — a skill directs the agent to invoke a user-invoked skill:
   skills/track/assess-milestone/SKILL.md:164
-    assess-milestone -> status-roadmap (user-invoked)
-    invoke `/status-roadmap`
+    assess-milestone -> refresh-roadmap-status (user-invoked)
+    invoke `/refresh-roadmap-status`
 ```
 
 The offending line was a **red flag telling the agent not to do it** — "You are about to
-invoke `/status-roadmap` … rather than name them". The linter matches the phrasing, not the
+invoke `/refresh-roadmap-status` … rather than name them". The linter matches the phrasing, not the
 intent, and it is right to: a body that contains the invoking phrase teaches it regardless of
 the surrounding negation. Reworded to "run … yourself rather than naming them for the user".
 Worth keeping as evidence that ARCH-5's mechanical guard catches its own authors.

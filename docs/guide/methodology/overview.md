@@ -6,7 +6,7 @@ It is built for a specific situation — a human directing an AI coding agent (o
 
 ## The problem it solves
 
-An LLM is a stochastic system. Route Work it the same question twice and you get two different answers, both plausible. That is a feature when you want ideas and a catastrophe when you want a codebase.
+An LLM is a stochastic system. Route Task it the same question twice and you get two different answers, both plausible. That is a feature when you want ideas and a catastrophe when you want a codebase.
 
 The specific failures compound:
 
@@ -30,7 +30,7 @@ That ID then flows outward into everything downstream: the test that verifies th
 
 And then — this is the part that makes it real rather than aspirational — a **deterministic check**, not human diligence, keeps the chain honest. The [`audit-trace`](../resources/scripts.md#the-trace-check) skill runs a fixed sequence of `grep` and `git` passes — invoked by `prove-claim`, `cut-release`, and `realign-spec` — and reports it when a task cites a requirement that does not exist, when a shipped requirement has no covering test, or when an ID is defined twice. Unchecked audit-trace matrices rot; this one is machine-checked from primitives every repo already has.
 
-Around that spine sit **40 skills** in eleven buckets, each one a piece of process the agent is required to follow, and four **hard gates** that cannot be talked past. One of those buckets, `project/`, is an **optional layer above the feature loop**: on a large project, [`anchor-project`](../skills/anchor-project.md) maintains a repo-level product vision and an IDed architecture-invariant spine that the feature skills consult when present and ignore when absent.
+Around that spine sit **40 skills** in eleven buckets, each one a piece of process the agent is required to follow, and four **hard gates** that cannot be talked past. One of those buckets, `project/`, is an **optional layer above the feature loop**: on a large project, [`define-project`](../skills/define-project.md) maintains a repo-level product vision and an IDed architecture-invariant spine that the feature skills consult when present and ignore when absent.
 
 ## The four gates
 
@@ -51,7 +51,7 @@ The obvious objection to spec-driven development is that it drowns a two-line ch
 |---|---|---|
 | **0 — trivial** | typo-level, no behavior change | none; `test-first` and `prove-claim` only |
 | **1 — bugfix / small change** | behavior change, ≤ ~half a day | a mini-spec: one fix requirement plus a `SHALL CONTINUE TO` guard, and a tagged regression test |
-| **2 — feature** | multi-task work | the full triad, then `build-continuous` |
+| **2 — feature** | multi-task work | the full triad, then `build-in-waves` |
 
 `frame-change` and `amend-feature` decide the tier explicitly and say so out loud. Deciding a change is tier 0 *is* the design step. Skipping the decision is the overhead, not performing it.
 
@@ -64,7 +64,7 @@ frame-change ──► specify-behavior ──► design-solution ──► plan
   (gate: no code)   (EARS + IDs)        (Satisfies:)    (_Requirements:_)
        │                                                        │
        │ tier 0/1 shortcuts                                     ▼
-       │                                       isolate-workspace ──► build-continuous
+       │                                       isolate-workspace ──► build-in-waves
        ▼                                                        │
  root-cause / test-first / prove-claim ◄── discipline skills govern ─────────────┘
                                                                 │
@@ -82,7 +82,7 @@ Plenty of methodologies say "write requirements first." Three things here are un
 
 2. **The process is written for an agent, not a human.** Skill bodies are shaped by their observed failure mode: a skill that guards a rule the agent breaks under pressure gets a prohibition and a rationalization table; a skill whose output has the wrong shape gets a positive recipe instead, because in head-to-head tests prohibitions produced *more* of the unwanted content than no guidance at all. This doctrine is itself a skill — [`author-skills`](../skills/author-skills.md) — and every skill in the set was pressure-tested against it.
 
-3. **Context is treated as a scarce, hostile resource.** [`build-continuous`](../skills/build-continuous.md) hands each task to a fresh subagent whose entire world is a generated brief file; bulk artifacts travel as file paths, never pasted text. Progress is appended to a ledger on disk because conversation memory does not survive compaction — and controllers that trusted memory have re-dispatched entire completed task sequences.
+3. **Context is treated as a scarce, hostile resource.** [`build-in-waves`](../skills/build-in-waves.md) hands each task to a fresh subagent whose entire world is a generated brief file; bulk artifacts travel as file paths, never pasted text. Progress is appended to a ledger on disk because conversation memory does not survive compaction — and controllers that trusted memory have re-dispatched entire completed task sequences.
 
 ## Where to go next
 

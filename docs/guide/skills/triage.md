@@ -8,7 +8,7 @@
 | **Invocation** | **user-invoked only** — run `/triage`. `disable-model-invocation: true`: no skill may auto-invoke it; other skills only name it for the user to run |
 | **Reads** | `docs/agents/issue-tracker.md` (tracker operations), `docs/agents/triage-labels.md` (label strings), `CONTEXT.md` (glossary), `docs/adr/`, `.out-of-scope/*.md`, the issue/PR itself |
 | **Writes** | tracker labels, state, and comments; `.out-of-scope/*.md` rejection files |
-| **Calls** | [`probe-decisions`](probe-decisions.md) (when a request is underspecified), and names [`configure-repo`](configure-repo.md) if the tracker config is missing |
+| **Calls** | [`clarify-decisions`](clarify-decisions.md) (when a request is underspecified), and names [`configure-repo`](configure-repo.md) if the tracker config is missing |
 | **Called by** | nobody — the user runs it directly |
 
 ## When it fires
@@ -56,7 +56,7 @@ Four steps, and the two checks in step 1 are what stop duplicate and already-rej
    - **Redundancy** — search the codebase for an existing implementation, by **domain concept, not the reporter's wording**. If it already exists, the outcome is an already-implemented close; collect the evidence (where it lives, how to invoke it).
    - **Prior rejection** — read `.out-of-scope/*.md` and surface any concept resembling this request, matching by **idea, not keyword**. If one matches, tell the user what was rejected and why, and ask whether the decision stands.
 2. **Verify the claim.** Get first-hand evidence, not the reporter's word. For a bug, reproduce it from the reporter's steps; for a PR, check out the diff and run its tests. Report one of: confirmed (with the code path), could not reproduce, or insufficient detail — the last is a strong `needs-info` signal.
-3. **Recommend.** State a category + state recommendation with the reasoning and the step 1–2 evidence. When the request is ambiguous in ways only the user can resolve, use [`probe-decisions`](probe-decisions.md) to shape it one question at a time before locking the recommendation. Wait for the user's direction.
+3. **Recommend.** State a category + state recommendation with the reasoning and the step 1–2 evidence. When the request is ambiguous in ways only the user can resolve, use [`clarify-decisions`](clarify-decisions.md) to shape it one question at a time before locking the recommendation. Wait for the user's direction.
 4. **Apply the outcome:**
    - `ready-for-agent` — post an agent brief (below). The brief is the contract; the body and thread are only context.
    - `ready-for-human` — same brief, plus one line on why it cannot be delegated.
@@ -104,7 +104,7 @@ Triage is `disable-model-invocation: true` because deciding what gets built is t
 ## See also
 
 - [`agent-brief-template.md`](../../../skills/track/triage/agent-brief-template.md) — the brief format and its calibration example
-- [`probe-decisions`](probe-decisions.md) — shapes an underspecified request before the recommendation is locked
+- [`clarify-decisions`](clarify-decisions.md) — shapes an underspecified request before the recommendation is locked
 - [`configure-repo`](configure-repo.md) — installs the tracker and label config triage reads
 - [Traceability](../concepts/traceability.md) — why briefs cite `CODE-N.M` and add guard criteria
 - [`frame-change`](frame-change.md) — where a plan-born, already-agent-ready issue came from

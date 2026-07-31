@@ -1,4 +1,4 @@
-# Scenarios — `status-roadmap`
+# Scenarios — `refresh-roadmap-status`
 
 Behavior coverage for the derivation skill. `tests/test_check_roadmap_rules.py` asserts that
 the fixture set is complete and that each fixture genuinely carries its defect; it cannot
@@ -8,7 +8,7 @@ That is what these scenarios are for. IDs are bare greppable tokens.
 Run a scenario by pointing a fresh agent at a repo assembled from
 `tests/roadmap/fixtures/<case>/` — `roadmap-INDEX.md` → `docs/roadmap/INDEX.md`,
 `specs-INDEX.md` → `docs/specs/INDEX.md`, `vision.md` → `docs/product/vision.md`, plus any
-`requirements.md` under the spec folder its INDEX row names — then running `/status-roadmap`
+`requirements.md` under the spec folder its INDEX row names — then running `/refresh-roadmap-status`
 and comparing the reported codes against that case's `expected-findings.txt`.
 
 ---
@@ -99,9 +99,9 @@ is bound to a `Shipped` feature.
 ## S-CR-9 — Invocation boundary
 
 **Expect.**
-- `skills/track/status-roadmap/SKILL.md` frontmatter carries `disable-model-invocation: true`,
+- `skills/track/refresh-roadmap-status/SKILL.md` frontmatter carries `disable-model-invocation: true`,
   so no agent can fire it. Covers RMAP-3.13.
-- `plan-milestones` **names** `/status-roadmap` for the user and never invokes it — enforced by
+- `plan-milestones` **names** `/refresh-roadmap-status` for the user and never invokes it — enforced by
   `scripts/lint-handoffs.py`. Covers RMAP-3.13.
 - Ladder row 7 likewise names `/cut-release` rather than invoking it. Covers RMAP-3.13.
 

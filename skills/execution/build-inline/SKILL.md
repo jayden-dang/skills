@@ -13,12 +13,12 @@ implementer (or reviewer) subagent dispatches. Every step is `test-first`. Progr
 survives in the ledger. Finish with whole-branch review.
 
 **This is not subagent orchestration.** Continuous multi-task subagent waves are
-`build-continuous`. Human-gated review units with subagents are `build-story-units`.
+`build-in-waves`. Human-gated review units with subagents are `build-by-story`.
 
 | Intent | Use instead |
 |---|---|
-| Subagent waves, continuous | REQUIRED SUB-SKILL: use `build-continuous` |
-| Story-unit barriers + subagents | REQUIRED SUB-SKILL: use `build-story-units` |
+| Subagent waves, continuous | REQUIRED SUB-SKILL: use `build-in-waves` |
+| Story-unit barriers + subagents | REQUIRED SUB-SKILL: use `build-by-story` |
 
 **When this skill fires:** the user chose the inline route, the environment
 cannot (or must not) fan out implementers, or plan-tasks offered inline
@@ -49,9 +49,9 @@ subagent runs**, not for pauses inside this skill:
 | Header | This skill does |
 |---|---|
 | `continuous` or `story-unit` | Sequential tasks; **no** unit barriers; **no** human stop between tasks for review units |
-| missing / `unset` / invalid | Route Work; write `continuous` or `story-unit` into the plan. Either value is fine for inline — barriers still do not run here |
+| missing / `unset` / invalid | Route Task; write `continuous` or `story-unit` into the plan. Either value is fine for inline — barriers still do not run here |
 
-If the user wants human-gated review units, they need `build-story-units` (subagent
+If the user wants human-gated review units, they need `build-by-story` (subagent
 path), not a hybrid of inline + unit stops. Inline already keeps the human in
 the conversation turn-by-turn.
 
@@ -60,20 +60,20 @@ the conversation turn-by-turn.
 | "Subagents exist — use the full loop" | Route is inline. Tools do not rewrite the route |
 | "One-line change — skip the failing test" | REQUIRED SUB-SKILL: use `test-first` for every task step |
 | "Plan is fuzzy — I'll pick a reasonable shape" | Plan gap → stop and ask; never guess |
-| "story-unit header — stop after each story" | Barriers are `build-story-units`. Inline is sequential only |
+| "story-unit header — stop after each story" | Barriers are `build-by-story`. Inline is sequential only |
 | "I'll dispatch only the reviewer, not the implementer" | No task-reviewer subagents either; whole-branch `inspect-change` at the end |
 | "Parallel waves will finish faster" | Inline is serial. No worktree fan-out |
 
 ## Setup
 
 1. **Route gate.** Confirm inline is the intended path (user said so, or no
-   subagent capability). If they want subagent continuous → `build-continuous`.
-   If they want story-unit barriers → `build-story-units`. *Done when: route is
+   subagent capability). If they want subagent continuous → `build-in-waves`.
+   If they want story-unit barriers → `build-by-story`. *Done when: route is
    inline.*
 2. **Mode field.** Parse `Execution-mode:`. If missing/`unset`/invalid: ask,
    write the answer into `tasks.md`, continue. Do not invent continuous. *Done
    when: header is continuous or story-unit.*
-3. **Workspace check — route-work first.** Worktree isolation or current branch? Do
+3. **Workspace check — route-task first.** Worktree isolation or current branch? Do
    not create a worktree unasked. Isolation → REQUIRED SUB-SKILL: use
    `isolate-workspace`. main/master → separate explicit consent before implementing.
    *Done when: workspace choice is clear.*
@@ -112,7 +112,7 @@ For each Task N in order:
    conservative choice; append to `.skills/implementation-notes.md` (Task /
    Deviation / Cause / Choice / Revisit) **before** finishing the task; if the
    only fix changes a shared contract or falsifies the plan → stop and REQUIRED
-   SUB-SKILL: use `reroute-plan` (or route-work), do not stretch silently.
+   SUB-SKILL: use `reroute-plan` (or route-task), do not stretch silently.
 6. **Commit.** Use the trailer the task names (e.g. `Implements: CODE-N.M`).
 7. **Self-check (controller, not a subagent).** Re-read the brief against the
    diff: every requirement ID covered? TDD evidence (RED then GREEN) real?
@@ -126,7 +126,7 @@ For each Task N in order:
    `Task N: complete (commits <base7>..<head7>, inline, review self)`.
    Mark the todo done.
 10. **Next.** Immediately continue to the next task — no permission pause, no
-    unit barrier. On blocker mid-task: stop the loop and route-work (see **Stop
+    unit barrier. On blocker mid-task: stop the loop and route-task (see **Stop
     conditions**).
 
 ## Stop conditions
@@ -171,11 +171,11 @@ discipline.
 - Dispatch an implementer or task-reviewer subagent while on this skill
 - Skip `test-first` / write production code before a failing test
 - Guess through ambiguity, a red suite, or a plan gap
-- Run unit barriers or human unit stops (that is `build-story-units`)
+- Run unit barriers or human unit stops (that is `build-by-story`)
 - Parallel-wave / multi-worktree fan-out
 - Re-do ledger-complete tasks after compaction
 - Start on main/master without explicit consent
 - Create a worktree without asking
 - Claim a task complete without a ledger line
-- Hand off mid-plan to `build-continuous` subagent loop without an explicit user
+- Hand off mid-plan to `build-in-waves` subagent loop without an explicit user
   route change

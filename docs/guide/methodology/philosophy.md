@@ -6,7 +6,7 @@ Six principles govern every skill in the set. They are not decoration — each o
 
 A skill exists to wrangle determinism out of a stochastic system.
 
-The precise claim: the agent takes the same **process** on every run — not that it emits identical output. A frame-changeing skill should reliably diverge. Its tokens vary; its behavior does not. When you route-work "should this rule be in the skill?", the question is always *does this line change behavior versus no skill at all?* That is the **no-op test**, and a sentence that fails it gets deleted whole, not trimmed.
+The precise claim: the agent takes the same **process** on every run — not that it emits identical output. A frame-changeing skill should reliably diverge. Its tokens vary; its behavior does not. When you route-task "should this rule be in the skill?", the question is always *does this line change behavior versus no skill at all?* That is the **no-op test**, and a sentence that fails it gets deleted whole, not trimmed.
 
 This is why disputes about what the agent does by default are settled by running the scenario, never by debate. And it is why [`author-skills`](../skills/author-skills.md) carries an Iron Law of its own: no skill and no edit to a skill ships without a failing test first. Writing skills is test-driven development applied to process documentation.
 
@@ -77,7 +77,7 @@ It is not in the numbered list, but it shapes more of the architecture than any 
 Context windows fill. Compaction deletes. Subagents do not inherit session history. Every one of these is treated as a fact to design around rather than a limitation to complain about:
 
 - Discovery through planning happens in **one unbroken context window**; if the window fills before the plan is done, [`write-handoff`](../skills/write-handoff.md) moves the work to a fresh session.
-- `build-continuous` gives each task a **fresh subagent** whose world is a generated brief file. The controller's context stays reserved for coordination.
+- `build-in-waves` gives each task a **fresh subagent** whose world is a generated brief file. The controller's context stays reserved for coordination.
 - Bulk artifacts — briefs, diffs, reports — travel between agents **as file paths under `.skills/`**, never as pasted text.
 - Progress is appended to a **ledger on disk**, and after compaction the ledger and `git log` outrank the agent's own recollection. The single most expensive failure this system has recorded is a controller that lost its place and re-dispatched an entire completed task sequence.
 - Heavy reading is delegated to a **scan subagent** that returns a findings digest, not a file dump.

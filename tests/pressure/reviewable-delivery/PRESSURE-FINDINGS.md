@@ -11,11 +11,11 @@
 |---|---|---|---|
 | S1 land-branch risk-glob | A (2/2 hard; 1/1 soft) — **control complied** | A + cite | A + cite example + rationalization rows |
 | S2 plan-tasks Execution-mode | A (2/2 hard; 1/1 soft) — **control complied** | A + cite | A + cite |
-| S3 build-continuous story-unit barrier | A (2/2) — **contaminated** (agents read skill, tool_calls≥4) | A + cite | A + cite |
+| S3 build-in-waves story-unit barrier | A (2/2) — **contaminated** (agents read skill, tool_calls≥4) | A + cite | A + cite |
 
 **GREEN:** 3/3 then 3/3 retest after harden — all compliant with skill citations.
 
-**RED limitation (honest):** On grok-4.5 with AGENTS.md / harness context available, the control often already picks A (cites AGENTS for optional skill naming, or treats Execution-mode as high-blast). S3 RED subjects **read** `build-continuous` despite instructions not to — those runs are not valid no-skill controls. True RED would need a harness that withholds `skills/` and session AGENTS injection. We still **hardened** from pressures named in rationales and from GREEN META.
+**RED limitation (honest):** On grok-4.5 with AGENTS.md / harness context available, the control often already picks A (cites AGENTS for optional skill naming, or treats Execution-mode as high-blast). S3 RED subjects **read** `build-in-waves` despite instructions not to — those runs are not valid no-skill controls. True RED would need a harness that withholds `skills/` and session AGENTS injection. We still **hardened** from pressures named in rationales and from GREEN META.
 
 ## Soft RED (options restated the rule) — verbatim
 
@@ -29,7 +29,7 @@
 
 ### S3 RED (soft — contaminated)
 - **CHOICE:** A  
-- **RATIONALE:** quoted skill language about chat-only unlock; agent used tools to read build-continuous
+- **RATIONALE:** quoted skill language about chat-only unlock; agent used tools to read build-in-waves
 
 ## Hard RED (neutral option labels) — verbatim excerpts
 
@@ -59,7 +59,7 @@
 
 1. **land-branch:** explicit single-task + `skills/auth/session.ts` example; Keep still names; "optional = human skip not agent omit"; rationalization rows + red flag for lead/single-task/multi-task-only  
 2. **plan-tasks:** rationalization rows PM/standup/sunk cost/four-tasks→continuous  
-3. **build-continuous:** rationalization table + red flags chat-only unlock, EOD, whole-PR-later  
+3. **build-in-waves:** rationalization table + red flags chat-only unlock, EOD, whole-PR-later  
 
 ## GREEN retest after harden — all A with denser citations
 

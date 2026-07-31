@@ -11,7 +11,7 @@ description: Use at the very start of the idea-to-ship chain — when the user w
 
 Turn a raw idea into an agreed shape ready for spec work, through dialogue — not code.
 
-**Where this sits:** `frame-change → (specify-behavior → design-solution → plan-tasks) → build-continuous`. You are at **frame-change** — the first stage. Which later stages run is decided by the tier in step 5 (tier 0 skips straight to `test-first`; tier 1 stops at a mini-spec in `specify-behavior`; only tier 2 walks the full triad). Each of those stages owns its own todo list and creates it when invoked — do **not** pre-load their steps into this skill's list.
+**Where this sits:** `frame-change → (specify-behavior → design-solution → plan-tasks) → build-in-waves`. You are at **frame-change** — the first stage. Which later stages run is decided by the tier in step 5 (tier 0 skips straight to `test-first`; tier 1 stops at a mini-spec in `specify-behavior`; only tier 2 walks the full triad). Each of those stages owns its own todo list and creates it when invoked — do **not** pre-load their steps into this skill's list.
 
 Shaping a *new* feature or project (nothing spec'd yet) is this skill. A small in-scope change to an **already-shipped, spec'd** feature is `amend-feature` instead — it reads the existing spec and routes the change to the light lane, escalating back here only when the change is genuinely new scope. If you were handed such a change, hand it to `amend-feature`.
 
@@ -37,7 +37,7 @@ Small requests are exactly where unexamined assumptions burn the most work, beca
 
 ## Checklist
 
-**Todos first — GATE.** The very first action of every frame-change — before you read `CONTEXT.md`, dispatch a scan, or route-work a single question — is to create the todo list: one todo per checklist item below (steps 1–6) via your harness's todo tool (`TodoWrite` in Claude Code; the equivalent in Kimi, Codex, or wherever this runs). This fires for EVERY request, no matter how simple it looks — the HARD-GATE above is what you must NOT do; this is what you MUST do first. The list holds this skill's six steps only; do not add downstream stages (`specify-behavior`, `design-solution`, `plan-tasks`) — each creates its own list on handoff. Do not proceed until the list exists, then complete the items in order, checking each off only when its **Done when** is met.
+**Todos first — GATE.** The very first action of every frame-change — before you read `CONTEXT.md`, dispatch a scan, or route-task a single question — is to create the todo list: one todo per checklist item below (steps 1–6) via your harness's todo tool (`TodoWrite` in Claude Code; the equivalent in Kimi, Codex, or wherever this runs). This fires for EVERY request, no matter how simple it looks — the HARD-GATE above is what you must NOT do; this is what you MUST do first. The list holds this skill's six steps only; do not add downstream stages (`specify-behavior`, `design-solution`, `plan-tasks`) — each creates its own list on handoff. Do not proceed until the list exists, then complete the items in order, checking each off only when its **Done when** is met.
 
 **Right-size with an early tier read.** Once step 1 gives you the context, make a
 *provisional* tier call:
@@ -78,11 +78,11 @@ the chain can reuse (chat is fine; optional `.skills/<slug>-knowns.md`):
 
 ### 2. Interview
 
-This remains frame-change step 2 — **not** a stage write-handoff and not a new skill session. Apply the `probe-decisions` **protocol** for the single question channel; keep this skill's todo list live; do not open a competing list or re-announce that you are "switching to probe-decisions."
+This remains frame-change step 2 — **not** a stage write-handoff and not a new skill session. Apply the `clarify-decisions` **protocol** for the single question channel; keep this skill's todo list live; do not open a competing list or re-announce that you are "switching to clarify-decisions."
 
-**Protocol (always):** apply `probe-decisions` end-to-end for this step — channel, open-set stop, rich card slots, close package. Do **not** invent a thinner interview from this paragraph; the card recipe and stop rule live only in `probe-decisions`.
+**Protocol (always):** apply `clarify-decisions` end-to-end for this step — channel, open-set stop, rich card slots, close package. Do **not** invent a thinner interview from this paragraph; the card recipe and stop rule live only in `clarify-decisions`.
 
-REQUIRED SUB-SKILL: use `probe-decisions` for the full rules (channel Iron Law, open-set Iron Law, rich question-card recipe, pre-implementation interview map, close package, posture pruning, team-band packaging, no-enact gate, nested-todo contract). Load it once when this step starts if it is not already in context; then stay on this checklist.
+REQUIRED SUB-SKILL: use `clarify-decisions` for the full rules (channel Iron Law, open-set Iron Law, rich question-card recipe, pre-implementation interview map, close package, posture pruning, team-band packaging, no-enact gate, nested-todo contract). Load it once when this step starts if it is not already in context; then stay on this checklist.
 
 (Provisional tier 0 from the early read? Right-size this: confirm the problem, the one constraint, and what must keep working in a question or two — not a full decision-tree walk — and if nothing new surfaces, proceed to step 5.)
 
@@ -90,7 +90,7 @@ Keep `define-domain` active as a **passive** side effect for the whole interview
 
 Before drilling into details, check scope: if the request spans multiple independent subsystems, stop refining and decompose first (step 5).
 
-**Done when:** the open set is empty of high-blast judgment calls and the probe-decisions close package is confirmed.
+**Done when:** the open set is empty of high-blast judgment calls and the clarify-decisions close package is confirmed.
 
 ### 3. Detour when a question needs evidence, not opinion
 

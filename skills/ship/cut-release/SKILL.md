@@ -1,6 +1,6 @@
 ---
 name: cut-release
-description: Cuts a cut-release for work already merged to the release branch — version bump, tag,
+description: Cuts a release for work already merged to the release branch — version bump, tag,
   changelog, and release notes. Run it with /cut-release.
 disable-model-invocation: true
 ---
@@ -11,7 +11,7 @@ Prepare and cut a release as a strict sequence of gates. Create one todo per ste
 
 **The stop rule:** any step that fails means STOP — report exactly what failed and what remains, and leave the repo un-released. There are no partial releases: no tag without a passing build, no notes for artifacts that do not exist, no "we'll fix it after tagging."
 
-**Terminal reject vs stop rule:** after a stop-rule failure, route-work once whether the
+**Terminal reject vs stop rule:** after a stop-rule failure, route-task once whether the
 user issues an **explicit terminal reject**. Yes → REQUIRED SUB-SKILL: use
 `record-verdict` with verdict `release-reject`, `Boundary-Type: release`, durable
 evidence inline; leave the repo un-released. No / silence / "fix later" → **no**
@@ -72,7 +72,7 @@ Only after explicit user approval (this approval **is** the successful terminal 
 
 ## h. Draft release notes
 
-Turn the changelog entry into release notes in the tracker's format (for example `gh cut-release create --draft`, or a notes file for manual publishing). Keep the requirement-grouped structure. Leave the cut-release as a draft for the user unless they route-work you to publish.
+Turn the changelog entry into release notes in the tracker's format (for example `gh cut-release create --draft`, or a notes file for manual publishing). Keep the requirement-grouped structure. Leave the cut-release as a draft for the user unless they route-task you to publish.
 
 **Done when:** the draft notes exist and their URL or path has been stated to the user.
 

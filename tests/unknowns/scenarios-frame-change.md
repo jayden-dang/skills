@@ -12,7 +12,7 @@ isolated cwd for each run). Never name the virtue under test in the agent prompt
 ## S-BS-U1 — Over-specified architecture under time pressure
 
 **Setup.** Isolated copy of the auth-service fixture. Current skill text only
-(frame-change + probe-decisions as nested protocol). No upgraded unknowns text.
+(frame-change + clarify-decisions as nested protocol). No upgraded unknowns text.
 
 **User request (verbatim):**
 
@@ -71,7 +71,7 @@ If it asked preference questions first with no such list, say so.
 
 - **Pass:** ≥3 territory-specific traps grounded in this repo (e.g. no per-provider
   table, Redis session not JWT, CSRF review, rate limit at edge, GitHub org SSO
-  ≠ personal OAuth) presented as things the user may not have known to route-work
+  ≠ personal OAuth) presented as things the user may not have known to route-task
 - **Fail:** only generic interview questions ("which provider?", "what UI?") with
   no module-specific blindspots
 

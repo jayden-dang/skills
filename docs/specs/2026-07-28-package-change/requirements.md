@@ -22,7 +22,7 @@ Rules:
 
 Roadmap item: ROAD-3 (reviewer-facing-change-authoring) under MILE-1.
 "The system" below means the `package-change` skill unless a criterion names
-another skill explicitly (`land-branch`, `build-continuous`, `configure-repo`).
+another skill explicitly (`land-branch`, `build-in-waves`, `configure-repo`).
 -->
 
 ## 1. Commit the working tree as a reviewer-readable set
@@ -153,10 +153,10 @@ service that I have not read.
 commits and PR content prepared without a separate instruction, so that
 finishing a plan flows straight into a reviewable pull request.
 
-- **PCHG-9.1** WHEN `build-continuous` has completed its whole-branch review, polish, and acceptance steps THE SYSTEM SHALL run before `land-branch`.
+- **PCHG-9.1** WHEN `build-in-waves` has completed its whole-branch review, polish, and acceptance steps THE SYSTEM SHALL run before `land-branch`.
 - **PCHG-9.2** THE SYSTEM SHALL leave every commit created by the plan's task implementers unmodified.
 - **PCHG-9.3** WHERE uncommitted changes remain after the plan's tasks THE SYSTEM SHALL group and commit them using the approved plan, the cited requirements, the recorded implementation context, and the resolved conventions.
-- **PCHG-9.4** WHEN running as the continuation of `build-continuous` THE SYSTEM SHALL create commits without a further approval step, asking only the exception questions in PCHG-1.5.
+- **PCHG-9.4** WHEN running as the continuation of `build-in-waves` THE SYSTEM SHALL create commits without a further approval step, asking only the exception questions in PCHG-1.5.
 
 ## 10. Configure the default PR base once
 
@@ -181,7 +181,7 @@ Files this change touches, and what each carries at risk:
 |---|---|
 | `skills/ship/package-change/SKILL.md` | new file — no behavior to guard |
 | `skills/ship/land-branch/SKILL.md` | prove-claim/audit-trace/acceptance gate, five-option menu, record-before-crossing, discard confirmation, worktree provenance, risk-glob naming, no-force-push |
-| `skills/execution/build-continuous/SKILL.md` | After-the-Last-Task ordering, ledger writes, continuous-mode no-pause rule |
+| `skills/execution/build-in-waves/SKILL.md` | After-the-Last-Task ordering, ledger writes, continuous-mode no-pause rule |
 | `skills/setup/configure-repo/SKILL.md` | one-decision-at-a-time walk, additive write rule, Step 6 verification gate |
 | `templates/agents/project.md` | existing template slots |
 | `docs/agents/project.md` | this repository's own configured values |
@@ -198,9 +198,9 @@ Files this change touches, and what each carries at risk:
 - **PCHG-11.4** (guard) WHEN `land-branch` executes a discard THE SYSTEM SHALL CONTINUE TO require the user to type the word `discard`.
 - **PCHG-11.5** (guard) WHEN `land-branch` closes the loop THE SYSTEM SHALL CONTINUE TO name `/study-change` and `/brief-team` under its existing risk-glob predicates.
 - **PCHG-11.6** (guard) THE SYSTEM SHALL CONTINUE TO force-push only on the user's explicit request and never on its own initiative.
-- **PCHG-11.7** (guard) WHEN `build-continuous` finishes its last task THE SYSTEM SHALL CONTINUE TO run whole-branch review, then one fixer pass if needed, then polish, then acceptance, in that order, before any ship step.
-- **PCHG-11.8** (guard) WHEN `build-continuous` runs in continuous mode THE SYSTEM SHALL CONTINUE TO avoid pausing between tasks to ask permission to continue.
-- **PCHG-11.9** (guard) WHEN `build-continuous` completes a task THE SYSTEM SHALL CONTINUE TO append that task's line to `.skills/progress.md`.
+- **PCHG-11.7** (guard) WHEN `build-in-waves` finishes its last task THE SYSTEM SHALL CONTINUE TO run whole-branch review, then one fixer pass if needed, then polish, then acceptance, in that order, before any ship step.
+- **PCHG-11.8** (guard) WHEN `build-in-waves` runs in continuous mode THE SYSTEM SHALL CONTINUE TO avoid pausing between tasks to ask permission to continue.
+- **PCHG-11.9** (guard) WHEN `build-in-waves` completes a task THE SYSTEM SHALL CONTINUE TO append that task's line to `.skills/progress.md`.
 - **PCHG-11.10** (guard) WHEN `configure-repo` gathers configuration THE SYSTEM SHALL CONTINUE TO walk its decisions one at a time, waiting for the user's answer before moving on.
 - **PCHG-11.11** (guard) WHEN `configure-repo` writes a file that already exists THE SYSTEM SHALL CONTINUE TO merge additively and preserve content the user wrote.
 - **PCHG-11.12** (guard) WHEN `configure-repo` finishes writing THE SYSTEM SHALL CONTINUE TO run its Step 6 verification gate over every configured command.

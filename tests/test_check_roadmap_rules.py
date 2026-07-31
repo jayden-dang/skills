@@ -1,11 +1,11 @@
-"""Fixture-set validity for status-roadmap.
+"""Fixture-set validity for refresh-roadmap-status.
 
 What this test can and cannot prove: a markdown skill has no entry point Python can call,
-so this does NOT assert that status-roadmap emits R1-R11. Reading each fixture's declared
+so this does NOT assert that refresh-roadmap-status emits R1-R11. Reading each fixture's declared
 expectation and comparing it to itself would pass no matter what the skill said. What is
 deterministically checkable is asserted here — the fixture set is complete, and each
 fixture genuinely carries the defect its name claims. Skill behaviour over these fixtures
-is verified by tests/roadmap/scenarios-status-roadmap.md.
+is verified by tests/roadmap/scenarios-refresh-roadmap-status.md.
 """
 
 import re

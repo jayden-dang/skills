@@ -68,15 +68,15 @@ brief instead of leaving stale copies as truth.
 
 ## 4. Optional enrichment without hard dependency
 
-**Story:** As a developer on a hotfix branch without a full probe-decisions package, I
+**Story:** As a developer on a hotfix branch without a full clarify-decisions package, I
 want the skill to still produce a useful brief from the range, and to fold in
 specs and notes when they exist so the team sees locks and REQs without me
 pasting them by hand.
 
 - **XPLN-4.1** WHERE `docs/specs/` contains an approved or implemented feature triad that owns paths or IDs in the range THE SYSTEM SHALL enrich the user-visible and decisions sections from those requirements without copying the full triad.
 - **XPLN-4.2** WHERE `.skills/implementation-notes.md` (or the project-equivalent path the skill documents) records deviations for the work THE SYSTEM SHALL surface those deviations in the decisions or break-risk sections.
-- **XPLN-4.3** WHERE a probe-decisions close package or knowns inventory for the work is available in session or under `.skills/` THE SYSTEM SHALL fold confirmed locks into the decisions section.
-- **XPLN-4.4** IF enrichment sources are absent THEN THE SYSTEM SHALL still produce a complete packet from the range alone and MUST NOT hard-fail solely for missing specs, notes, or probe-decisions artifacts.
+- **XPLN-4.3** WHERE a clarify-decisions close package or knowns inventory for the work is available in session or under `.skills/` THE SYSTEM SHALL fold confirmed locks into the decisions section.
+- **XPLN-4.4** IF enrichment sources are absent THEN THE SYSTEM SHALL still produce a complete packet from the range alone and MUST NOT hard-fail solely for missing specs, notes, or clarify-decisions artifacts.
 - **XPLN-4.5** THE SYSTEM SHALL NOT invent requirement IDs, locks, or user decisions that are not present in the range or enrichment sources.
 
 ## 5. Neighbor packaging — suggest, never gate
@@ -85,9 +85,9 @@ pasting them by hand.
 reminded that a team explainer may help reviewers — without blocking merge or PR
 when I skip it.
 
-- ~~**XPLN-5.1**~~ retired 2026-07-28: condition cited agent-authored per-task `Risk:` / "non-low risk", which never fires in production plans (0/9 filled) and is removed in favor of sample-attention risk globs against the actual diff. Superseded by **XPLN-5.6**.
+- ~~**XPLN-5.1**~~ retired 2026-07-28: condition cited agent-authored per-task `Risk:` / "non-low risk", which never fires in production plans (0/9 filled) and is removed in favor of select-review-sample risk globs against the actual diff. Superseded by **XPLN-5.6**.
 - **XPLN-5.2** THE SYSTEM SHALL NOT withhold merge, PR, discard, or block options solely because no explainer exists or is stale.
-- **XPLN-5.3** THE SYSTEM SHALL NOT auto-invoke `brief-team` from `land-branch`, `inspect-change`, `build-continuous`, `cut-release`, or other model-invoked skills.
+- **XPLN-5.3** THE SYSTEM SHALL NOT auto-invoke `brief-team` from `land-branch`, `inspect-change`, `build-in-waves`, `cut-release`, or other model-invoked skills.
 - **XPLN-5.4** (guard) WHEN `land-branch` names optional human checks THE SYSTEM SHALL CONTINUE TO name `/study-change` under the conditions that skill's callers already use, without replacing that name with `/brief-team`.
 - **XPLN-5.5** WHERE workflow band is Solo THE SYSTEM SHALL still allow `/brief-team` when the user runs it; packaging MAY omit multi-person reviewer theater and MUST NOT invent peer approvers.
 - **XPLN-5.6** WHEN `land-branch` (or an equivalent pre-integration menu) runs for a change that is multi-task, or whose diff touches any risk glob (default B1 set extended by `docs/agents/project.md` Risk globs when present), or is architecture-affecting THE SYSTEM SHALL name `/brief-team` for the user as an optional step.
@@ -121,7 +121,7 @@ packets, empty ranges refused, and write failures loud.
 - Extending `/study-change` with an outbound/team mode or relaxing its quiz / outside-repo Iron Laws.
 - PR-body markdown as a first-class deliverable (v1 is HTML only; users may copy text manually).
 - Date-prefixed version trees under `docs/explainers/` as the default (git history is the version log).
-- Requiring a probe-decisions close package, implementation notes, or approved specs to run.
+- Requiring a clarify-decisions close package, implementation notes, or approved specs to run.
 - Making explainers a merge/PR/cut-cut-release gate or auto-running the skill from model-invoked neighbors.
 - Long-form onboarding curricula, full module tutorials, or replacing `CONTEXT.md` as glossary SSOT.
 - Scoring readers, pass/fail quizzes, or recording quiz results in the repo.

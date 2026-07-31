@@ -41,7 +41,7 @@ One card per candidate:
 
 End with a top-recommendation section: which candidate first, one sentence why. Then ask the user which candidate they want to pursue.
 
-**Do not propose concrete interfaces yet** — the report names directions, not designs. Interface shape belongs to the probe-decisions step, with the user in the loop.
+**Do not propose concrete interfaces yet** — the report names directions, not designs. Interface shape belongs to the clarify-decisions step, with the user in the loop.
 
 **ADR conflicts:** a candidate that contradicts an existing ADR is included only when its evidence carries a `Strong` confidence badge; below that it is dropped, not listed. An included one is marked with the ADR reference and why the decision deserves revisiting. Do not list every refactor an ADR forbids.
 
@@ -51,11 +51,11 @@ End with a top-recommendation section: which candidate first, one sentence why. 
 
 Once the user picks:
 
-- REQUIRED SUB-SKILL: use `probe-decisions` — walk the shape of the deepened module one question at a time: constraints, what sits behind the new seam, which adapters are real, which tests survive.
+- REQUIRED SUB-SKILL: use `clarify-decisions` — walk the shape of the deepened module one question at a time: constraints, what sits behind the new seam, which adapters are real, which tests survive.
 - REQUIRED SUB-SKILL: use `define-domain` for side effects as decisions land — new module named after a concept missing from `CONTEXT.md`? Add the term. Fuzzy term sharpened mid-conversation? Update it now, not later. User rejects a candidate for a load-bearing reason? Offer a 1–3 sentence ADR so future scans do not re-suggest it (skip ephemeral or self-evident reasons).
 - State the ceremony tier aloud — 0 for a change small enough to go straight to `test-first`, 1+ for one needing requirements first.
 
-**Done when:** `probe-decisions` has no unexplored branch left, and the ceremony tier is stated aloud as 0 or 1+.
+**Done when:** `clarify-decisions` has no unexplored branch left, and the ceremony tier is stated aloud as 0 or 1+.
 
 ## 4. Feed the spec cycle
 

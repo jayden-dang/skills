@@ -9,8 +9,8 @@ back to this file otherwise.
 ## Project posture
 
 The project's standing intent and lifecycle phase. Skills read this instead of re-asking:
-`frame-change` and `probe-decisions` right-size how much they weigh data migration, backward
-compatibility, and deprecation against it; `interpret-native` reuses it as session context.
+`frame-change` and `clarify-decisions` right-size how much they weigh data migration, backward
+compatibility, and deprecation against it; `interpret-session` reuses it as session context.
 Edit these two lines directly whenever the project moves phase — no wizard needed.
 
 - **Delivery intent:** `<Production | MVP | Run Spike | Research | Learning>` — how robust and complete the output must be.

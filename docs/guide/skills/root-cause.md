@@ -9,7 +9,7 @@
 | **Reads** | the failing signal (test, error, trace, log), git history and recent changes, the owning feature's `requirements.md` |
 | **Writes** | a red-capable feedback loop and a failing regression test, one root-cause fix commit stating the cause, a tier-1 mini-spec (fix requirement + `SHALL CONTINUE TO` guard) in `requirements.md` (or `docs/specs/fixes.md`) |
 | **Calls** | [`test-first`](test-first.md) (the regression test and the fix), [`prove-claim`](prove-claim.md) (before claiming fixed), [`scan-architecture`](scan-architecture.md) (architectural findings) |
-| **Called by** | [`test-first`](test-first.md) (when the change is a bugfix), [`amend-feature`](amend-feature.md), [`build-continuous`](build-continuous.md), [`validate-feature`](validate-feature.md), [`validate-api`](validate-api.md), [`validate-ui`](validate-ui.md) |
+| **Called by** | [`test-first`](test-first.md) (when the change is a bugfix), [`amend-feature`](amend-feature.md), [`build-in-waves`](build-in-waves.md), [`validate-feature`](validate-feature.md), [`validate-api`](validate-api.md), [`validate-ui`](validate-ui.md) |
 
 ## When it fires
 
@@ -86,7 +86,7 @@ A falsified hypothesis gets struck; move to the next, and don't pile a new fix o
 - Add a **tier-1 mini-spec**: a fix requirement plus a `SHALL CONTINUE TO` guard requirement in the owning feature's `requirements.md` (or `docs/specs/fixes.md` if no feature owns it), and tag the regression test with the new ID.
 - **Remove ALL instrumentation** — grep for the `[DBG-...]` prefixes, delete throwaway harnesses.
 - State the confirmed root cause in the commit message.
-- Route Work "what would have prevented this bug?" If the answer is architectural (no good seam, hidden coupling, tangled callers), hand the specifics to [`scan-architecture`](scan-architecture.md) — after the fix lands, when you know the most.
+- Route Task "what would have prevented this bug?" If the answer is architectural (no good seam, hidden coupling, tangled callers), hand the specifics to [`scan-architecture`](scan-architecture.md) — after the fix lands, when you know the most.
 - [`prove-claim`](prove-claim.md) is a required sub-skill before claiming the bug fixed.
 
 ## Rationalizations it names

@@ -12,7 +12,7 @@ description: Use when a project's milestones need planning, sequencing, replanni
   the next milestone", "this milestone shipped", or any request that edits
   docs/roadmap/INDEX.md. Not for one feature's requirements
   (specify-behavior), and not for reporting where the plan currently stands
-  (status-roadmap).
+  (refresh-roadmap-status).
 ---
 
 # Plan Milestones
@@ -21,7 +21,7 @@ Author and maintain `docs/roadmap/INDEX.md` — the program layer between the pr
 vision and any single feature's spec. It answers *which milestones exist, in what order,
 holding which work, and which of them we have actually committed to.*
 
-**Where this sits:** `anchor-project` (vision) → **`plan-milestones`** (milestones) →
+**Where this sits:** `define-project` (vision) → **`plan-milestones`** (milestones) →
 `frame-change` → `specify-behavior` → … A roadmap item becomes a feature when
 `specify-behavior` registers a code for it — see Who owns what.
 
@@ -38,7 +38,7 @@ to it. Progress is already written down once — as `Status:` in each feature's 
 
 So this file gets **no** progress column, **no** per-milestone status field, **no** change
 log of status transitions, and **no** percentage complete. A second copy of status drifts
-from the first, and the moment it drifts nobody can tell which one is lying. `/status-roadmap`
+from the first, and the moment it drifts nobody can tell which one is lying. `/refresh-roadmap-status`
 derives the current picture on demand from the specs and git.
 
 `Commitment` is not progress. `Planned | Committed | Closed` records a *human decision*
@@ -150,7 +150,7 @@ yourself was never approved.
 </HARD-GATE>
 
 Walk S1–S7 as a checklist, naming each defect and where it sits. Then present the file and
-stop. On approval, set `Status: Approved` and tell the user that `/status-roadmap` reports
+stop. On approval, set `Status: Approved` and tell the user that `/refresh-roadmap-status` reports
 where the plan stands whenever they want it.
 
 **Done when:** the S1–S7 walk is clean, the user has approved the written file, and
@@ -168,7 +168,7 @@ Every row below is a verbatim rationalization from a baseline run, or its direct
 
 | Thought | Reality |
 |---|---|
-| "A status column would make this trackable" | It makes it *stale*. Feature progress lives in `requirements.md` `Status:`, mirrored into the INDEX row. `/status-roadmap` derives the rest |
+| "A status column would make this trackable" | It makes it *stale*. Feature progress lives in `requirements.md` `Status:`, mirrored into the INDEX row. `/refresh-roadmap-status` derives the rest |
 | "I'll add a change log so status history survives" | That is the same second copy wearing a different hat. Git already holds the history of this file |
 | "Reuse the feature lifecycle at milestone granularity" | `Draft → Approved → Implemented → Shipped` describes a *spec*. A milestone carries a commitment, not a lifecycle |
 | "Sharing matters more now, so it should be MILE-2" | Order is table position; identity is the ID. Move the row, keep the number |

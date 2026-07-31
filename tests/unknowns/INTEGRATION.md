@@ -6,7 +6,7 @@ How the upgraded pieces connect (artifact paths, not chat memory).
 frame-change step 1
   → .skills/<slug>-scan.md  (Blindspot section)
   → .skills/<slug>-knowns.md  (locks / KU / UK / assumptions)
-  → probe-decisions (blast-radius first; uses inventory as context)
+  → clarify-decisions (blast-radius first; uses inventory as context)
   → research (criteria-first when user must pick)
   → run-spike (unknown knowns / multi-variant)
   → specify-behavior (locks only as SHALLs; assumptions stay design-open)
@@ -14,8 +14,8 @@ frame-change step 1
   → plan-tasks
         task **Risk** + **Decision surface**
         ## Human review order  (human attention)
-        Depends-on               (build-continuous waves)
-  → build-continuous
+        Depends-on               (build-in-waves waves)
+  → build-in-waves
         implementer → .skills/implementation-notes.md on deviations
         DONE_WITH_CONCERNS → controller reads notes → reroute-plan if plan false
   → land-branch
@@ -33,7 +33,7 @@ frame-change step 1
 | plan-tasks Risk + Human review order | GREEN S-WP-U2 |
 | implementer → implementation-notes.md | GREEN S-IMP-U2 |
 | research criteria-first under pressure | GREEN S-RES-U2 |
-| build-continuous controller row cites notes + reroute-plan | text shipped; full loop not re-run |
+| build-in-waves controller row cites notes + reroute-plan | text shipped; full loop not re-run |
 | write-handoff / AGENTS / land-branch naming | text shipped; no pressure RED |
 
 ## Shared vocabulary

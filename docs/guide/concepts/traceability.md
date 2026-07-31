@@ -64,7 +64,7 @@ One consequence is load-bearing: because the citation pass is a textual `grep`, 
 
 ## Extending the spine upward — architecture invariants (optional)
 
-A repo that opts into the [project layer](../skills/anchor-project.md) gets a second, parallel spine. Architecture invariants live in `docs/architecture/` as bold `**ARCH-N**` IDs — exactly the shape of a requirement ID — and a feature `design.md` cites the ones it relies on as `Respects: ARCH-N`. The same `audit-trace` check extends one level up, gated on `docs/architecture/` existing so a repo without it sees no change:
+A repo that opts into the [project layer](../skills/define-project.md) gets a second, parallel spine. Architecture invariants live in `docs/architecture/` as bold `**ARCH-N**` IDs — exactly the shape of a requirement ID — and a feature `design.md` cites the ones it relies on as `Respects: ARCH-N`. The same `audit-trace` check extends one level up, gated on `docs/architecture/` existing so a repo without it sees no change:
 
 | Code | Meaning |
 |---|---|
@@ -72,7 +72,7 @@ A repo that opts into the [project layer](../skills/anchor-project.md) gets a se
 | **E5** | a `Respects: ARCH-N` cites a retired (struck-through) invariant |
 | **W3** | a live invariant is cited by no `design.md` |
 
-This is deliberately *referential integrity only* — does the cited invariant exist, and is it live — never whether the design genuinely respects it. That judgement is a separate, advisory, LLM-judged check ([`judge-invariants`](../skills/judge-invariants.md)), kept out of `audit-trace` so the determinism principle holds.
+This is deliberately *referential integrity only* — does the cited invariant exist, and is it live — never whether the design genuinely respects it. That judgement is a separate, advisory, LLM-judged check ([`review-invariants`](../skills/review-invariants.md)), kept out of `audit-trace` so the determinism principle holds.
 
 ## What "covered" actually means
 
@@ -94,7 +94,7 @@ And it is why [`validate-feature`](../skills/validate-feature.md) exists at all.
 
 **Guard requirements.** A `SHALL CONTINUE TO` criterion is the mechanism that stops an agent from breaking load-bearing behavior nobody thought to mention. `specify-behavior` will not accept "found nothing to guard" as a default; its completion criterion is that you *actively searched the touched surface*.
 
-**Honest resumption.** After compaction, the requirements file is the only surviving record of what was agreed. [`build-continuous`](../skills/build-continuous.md)'s ledger and `git log` outrank the agent's own recollection, and the plan's task footers say which requirement each completed commit served.
+**Honest resumption.** After compaction, the requirements file is the only surviving record of what was agreed. [`build-in-waves`](../skills/build-in-waves.md)'s ledger and `git log` outrank the agent's own recollection, and the plan's task footers say which requirement each completed commit served.
 
 **Anti-rot.** [`realign-spec`](../skills/realign-spec.md) exists because a spec that is not resynced after change becomes fiction, and fiction is worse than no spec. It diffs requirements against design, tasks, and tests; surfaces orphans as *decisions*, not cleanup; and applies status transitions only where evidence exists.
 

@@ -6,7 +6,7 @@ from pathlib import Path
 
 REPO = Path(__file__).resolve().parent.parent
 REFERENCE = REPO / "templates" / "roadmap-findings.md"
-CHECK_ROADMAP = REPO / "skills" / "track" / "status-roadmap" / "SKILL.md"
+CHECK_ROADMAP = REPO / "skills" / "track" / "refresh-roadmap-status" / "SKILL.md"
 
 CODES = [f"R{n}" for n in range(1, 12)]
 WITHHOLDING = {"R2", "R4", "R9", "R10", "R11"}
@@ -30,7 +30,7 @@ class SharedFindingsReference(unittest.TestCase):
         self.assertEqual(marked, WITHHOLDING)
 
     def test_check_roadmap_defers_instead_of_restating(self):
-        """ASSESS-5.4 — the rules moved; status-roadmap keeps no second copy."""
+        """ASSESS-5.4 — the rules moved; refresh-roadmap-status keeps no second copy."""
         self.assertIsNone(re.search(ROW, self.check_roadmap))
         self.assertIn("templates/roadmap-findings.md", self.check_roadmap)
 

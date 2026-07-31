@@ -1,6 +1,6 @@
 """The derivation budget is fixed and independent of feature and milestone count.
 
-RMAP-4.1 says status-roadmap completes with one full read of each source artifact and a
+RMAP-4.1 says refresh-roadmap-status completes with one full read of each source artifact and a
 bounded number of git commands, independent of scale. Two things make that checkable
 without an entry point: the skill's documented pass set is a fixed count with no per-item
 pass, and a scale fixture exists that those same passes cover.
@@ -12,7 +12,7 @@ import unittest
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parent.parent
-SKILL = REPO / "skills" / "track" / "status-roadmap" / "SKILL.md"
+SKILL = REPO / "skills" / "track" / "refresh-roadmap-status" / "SKILL.md"
 SCALE = Path(__file__).resolve().parent / "roadmap" / "fixtures" / "scale"
 
 FEATURES = 200

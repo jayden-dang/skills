@@ -8,7 +8,7 @@
 | **Invocation** | model-invocable, but injected into every session by the `session-start.sh` SessionStart hook — so in practice it is always present, surviving `/clear` and context compaction |
 | **Reads** | the incoming task, and CLAUDE.md (which outranks it in the precedence order) |
 | **Writes** | nothing — it produces the *act* of invoking the right skill, not an artifact |
-| **Calls** | [`frame-change`](frame-change.md), [`root-cause`](root-cause.md), [`amend-feature`](amend-feature.md) (auto-invoked when they fit); names [`route-work`](route-work.md), [`triage`](triage.md) for the user to run |
+| **Calls** | [`frame-change`](frame-change.md), [`root-cause`](root-cause.md), [`amend-feature`](amend-feature.md) (auto-invoked when they fit); names [`route-task`](route-task.md), [`triage`](triage.md) for the user to run |
 | **Called by** | nothing — it is session-injected, not reached through a hand-off |
 
 ## When it fires
@@ -33,7 +33,7 @@ The skill orders the search: process skills first, then implementation skills. I
 - "This is broken" routes to [`root-cause`](root-cause.md) before any fix.
 - A small in-scope change to an already-shipped, spec'd feature — a tweak, recolor, or follow-on — routes to [`amend-feature`](amend-feature.md), not `frame-change`.
 - An incoming issue or external PR routes to [`triage`](triage.md), which the agent names for the user because it is user-invoked and cannot be auto-invoked.
-- When the fit is unclear, the agent suggests [`route-work`](route-work.md).
+- When the fit is unclear, the agent suggests [`route-task`](route-task.md).
 
 The dividing line runs through model-invocability: the agent auto-invokes only model-invocable skills, and names a user-invoked one for the user to run. There is also a plan-mode clause — if the work is creative (new behavior, a new feature), run `frame-change` first, because plans come only after approved requirements.
 
@@ -71,6 +71,6 @@ The tempting move is to open the file and make the edit. The skill blocks it: th
 ## See also
 
 - [The skill model](../concepts/skill-model.md) — how skills are discovered, loaded, and invoked
-- [`route-work`](route-work.md) — the router the agent names when the right flow is unclear
+- [`route-task`](route-task.md) — the router the agent names when the right flow is unclear
 - [`author-skills`](author-skills.md) — the authoring doctrine behind this gate's shape
 - [Methodology overview](../methodology/overview.md) — the idea-to-ship chain this gate opens

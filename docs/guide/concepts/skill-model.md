@@ -30,9 +30,9 @@ That budget is why discipline skills keep their core body to roughly 500 words, 
 
 ## The two invocation kinds
 
-**Model-invocable** skills have no special frontmatter. The agent invokes them on its own when the description matches the situation. These hold reusable discipline: `test-first`, `prove-claim`, `root-cause`, `probe-decisions`, `design-solution`.
+**Model-invocable** skills have no special frontmatter. The agent invokes them on its own when the description matches the situation. These hold reusable discipline: `test-first`, `prove-claim`, `root-cause`, `clarify-decisions`, `design-solution`.
 
-**User-invoked** skills carry `disable-model-invocation: true`. The agent *cannot* auto-invoke them; the user runs them as a slash command. These orchestrate: `/route-work`, `/configure-repo`, `/bootstrap-repo`, `/anchor-project`, `/triage`, `/scan-architecture`, `/write-handoff`, `/publish-issues`, `/cut-release`, `/author-skills`, `/teach-pack`.
+**User-invoked** skills carry `disable-model-invocation: true`. The agent *cannot* auto-invoke them; the user runs them as a slash command. These orchestrate: `/route-task`, `/configure-repo`, `/bootstrap-repo`, `/define-project`, `/triage`, `/scan-architecture`, `/write-handoff`, `/publish-issues`, `/cut-release`, `/author-skills`, `/teach-pack`.
 
 The composition rule falls out of that:
 
@@ -40,18 +40,18 @@ The composition rule falls out of that:
 
 And the corollary, which `author-skills` calls a real bug rather than a style nit: **no skill body may tell the agent to *invoke* a user-invoked skill.** Directing the agent to invoke a `disable-model-invocation` target is a dead-end hand-off — the invocation silently cannot happen. A hand-off reaches a user-invoked skill only by *naming it for the user to run*: "run `/triage`", "suggest the user run `/write-handoff`".
 
-You can see the rule being obeyed in the wild. `root-cause` hands architectural findings to `scan-architecture` — but `scan-architecture` is user-invoked, so `gate-session` says: *"name a user-invoked one for the user to run."* Meanwhile `build-continuous` writes `REQUIRED SUB-SKILL: use \`inspect-change\`` freely, because `inspect-change` is model-invocable.
+You can see the rule being obeyed in the wild. `root-cause` hands architectural findings to `scan-architecture` — but `scan-architecture` is user-invoked, so `gate-session` says: *"name a user-invoked one for the user to run."* Meanwhile `build-in-waves` writes `REQUIRED SUB-SKILL: use \`inspect-change\`` freely, because `inspect-change` is model-invocable.
 
 | Bucket | Skills | Kind |
 |---|---|---|
 | meta | `gate-session` | model (session-injected) |
-| | `route-work`, `author-skills`, `teach-pack` | user |
+| | `route-task`, `author-skills`, `teach-pack` | user |
 | setup | `configure-repo`, `bootstrap-repo` | user |
-| discovery | `frame-change`, `probe-decisions`, `research`, `run-spike`, `define-domain` | model |
+| discovery | `frame-change`, `clarify-decisions`, `research`, `run-spike`, `define-domain` | model |
 | spec | `specify-behavior`, `design-solution`, `plan-tasks` | model |
-| execution | `build-continuous`, `test-first`, `root-cause`, `prove-claim`, `audit-trace`, `isolate-workspace` | model |
+| execution | `build-in-waves`, `test-first`, `root-cause`, `prove-claim`, `audit-trace`, `isolate-workspace` | model |
 | review | `inspect-change`, `vet-feedback` | model |
-| acceptance | `validate-feature`, `validate-api`, `validate-ui`, `walk-product` | model |
+| acceptance | `validate-feature`, `validate-api`, `validate-ui`, `review-product-flow` | model |
 | craft | `craft-page` | model |
 | ship | `land-branch` | model |
 | | `cut-release` | user |
@@ -95,7 +95,7 @@ Skills reference each other **as prose**, never as file links:
 REQUIRED SUB-SKILL: use `prove-claim` before any completion claim.
 ```
 
-Never `@`-links or markdown links into another skill's folder. A link force-loads content and couples the folders. Files that live *beside* a SKILL.md are referenced by relative filename, with pointer wording that says when to load them — `standards-baseline.md` beside `inspect-change`, `implementer-prompt.md` beside `build-continuous`.
+Never `@`-links or markdown links into another skill's folder. A link force-loads content and couples the folders. Files that live *beside* a SKILL.md are referenced by relative filename, with pointer wording that says when to load them — `standards-baseline.md` beside `inspect-change`, `implementer-prompt.md` beside `build-in-waves`.
 
 ## When *not* to write a skill
 

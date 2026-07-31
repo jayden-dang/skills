@@ -41,7 +41,7 @@ Each task carries five blocks:
 
 - **Files** — Create / Modify (exact paths, line ranges when known) / Test.
 - **Interfaces** — Consumes and Produces: the names and types neighboring tasks share. This is how an isolated implementer learns what to call things.
-- **Depends-on** — the earlier tasks this one truly needs (interface it Consumes, files it builds on), as `Depends-on: Task 2, Task 4` or `Depends-on: none`. This is the parallelism signal: tasks that share no files or interfaces declare no edge, so [`build-continuous`](build-continuous.md) runs them together in one wave. Omit the line to fall back to strict serial order. Over-declaring serializes needlessly; under-declaring is caught by the executor's disjoint-surface check before it can collide.
+- **Depends-on** — the earlier tasks this one truly needs (interface it Consumes, files it builds on), as `Depends-on: Task 2, Task 4` or `Depends-on: none`. This is the parallelism signal: tasks that share no files or interfaces declare no edge, so [`build-in-waves`](build-in-waves.md) runs them together in one wave. Omit the line to fall back to strict serial order. Over-declaring serializes needlessly; under-declaring is caught by the executor's disjoint-surface check before it can collide.
 - **Steps** — bite-sized checkboxes, 2 to 5 minutes each, following the TDD cycle: write the failing test (complete code) → run and expect the stated failure → implement (complete code) → run and expect pass → commit with an `Implements: CODE-N.M` trailer. Exact commands and expected output, every time.
 - **Footer** — `_Requirements: CODE-N.M, CODE-N.M_`, the IDs this task implements or guards. Every task has one.
 
@@ -82,8 +82,8 @@ After `Execution-mode: continuous` or `story-unit` is written and the plan is Ap
 
 | Route | When |
 |---|---|
-| [`build-continuous`](build-continuous.md) | `continuous` + subagent waves (prefer [`isolate-workspace`](isolate-workspace.md)) |
-| [`build-story-units`](build-story-units.md) | `story-unit` + human-gated review units (prefer isolate-workspace) |
+| [`build-in-waves`](build-in-waves.md) | `continuous` + subagent waves (prefer [`isolate-workspace`](isolate-workspace.md)) |
+| [`build-by-story`](build-by-story.md) | `story-unit` + human-gated review units (prefer isolate-workspace) |
 | [`build-inline`](build-inline.md) | No implementer subagents / user watches the controller |
 
 The spec's `INDEX.md` row is updated to note the plan exists.
@@ -135,4 +135,4 @@ The plan is where an approved intent becomes something a stranger can build with
 - [Traceability](../concepts/traceability.md) — footer citation versus tagged-test coverage
 - [`audit-trace`](audit-trace.md) — the check this step runs, and its E1/E2/E3/W1/W2 findings
 - [`design-solution`](design-solution.md) — the seam table this plan must reconcile against
-- [`build-continuous`](build-continuous.md) · [`build-story-units`](build-story-units.md) · [`build-inline`](build-inline.md) — execute-family routes
+- [`build-in-waves`](build-in-waves.md) · [`build-by-story`](build-by-story.md) · [`build-inline`](build-inline.md) — execute-family routes

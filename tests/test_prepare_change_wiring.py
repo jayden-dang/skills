@@ -53,7 +53,7 @@ class PrepareChangeRegistration(unittest.TestCase):
         )
 
 
-EXEC = REPO / "skills" / "execution" / "build-continuous" / "SKILL.md"
+EXEC = REPO / "skills" / "execution" / "build-in-waves" / "SKILL.md"
 
 
 class ExecutePlanTail(unittest.TestCase):

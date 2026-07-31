@@ -8,7 +8,7 @@
 |---|---|
 | **Bucket** | review |
 | **Invocation** | user-invoked (`/brief-team`) |
-| **Reads** | git range (required); optional specs, implementation-notes, probe-decisions locks |
+| **Reads** | git range (required); optional specs, implementation-notes, clarify-decisions locks |
 | **Writes** | `docs/explainers/<slug>.html` (overwrite) + `docs/explainers/INDEX.md` upsert |
 | **Calls** | — |
 | **Called by** | named (never invoked) from `land-branch` when multi-task / risk-glob hit / architecture-affecting |
@@ -62,4 +62,4 @@ than a missing one, because they trust it.
 
 - [`study-change`](study-change.md) — author self-check + quiz  
 - [`land-branch`](land-branch.md) — may name this skill optionally  
-- [`probe-decisions`](probe-decisions.md) — pre-impl close package feeds decisions when present  
+- [`clarify-decisions`](clarify-decisions.md) — pre-impl close package feeds decisions when present  

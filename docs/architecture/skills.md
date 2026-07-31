@@ -13,7 +13,7 @@ quick reference: `AGENTS.md`.
 1. **gate-session** (m, session-injected) — the gate. 1%-rule, skill-check before
    ANY response, red-flags table, process-skills-before-implementation priority,
    user instructions override skills.
-2. **route-work** (U) — router. Maps situations to flows; the main idea→ship chain, the
+2. **route-task** (U) — router. Maps situations to flows; the main idea→ship chain, the
    bugfix on-ramp, the maintenance loop, context hygiene.
 3. **author-skills** (U) — TDD for skills + the authoring vocabulary. The standard
    every skill here is written against. A deterministic check driven by an LLM
@@ -36,9 +36,9 @@ quick reference: `AGENTS.md`.
 
 ## discovery/
 
-7. **probe-decisions** (m) — the interview primitive.
+7. **clarify-decisions** (m) — the interview primitive.
 8. **frame-change** (m) — HARD GATE: no code until requirements are approved. Explore
-   context → search `docs/specs/` for overlapping features → probe-decisions → detours to
+   context → search `docs/specs/` for overlapping features → clarify-decisions → detours to
    research/run-spike → approaches with a recommendation → tier decision.
 9. **research** (m) — background investigation against primary sources.
 10. **run-spike** (m) — throwaway code that answers a question.
@@ -57,10 +57,10 @@ quick reference: `AGENTS.md`.
 
 ## execution/
 
-15. **build-continuous** (m) — `Execution-mode: continuous` + subagent waves. Fresh
+15. **build-in-waves** (m) — `Execution-mode: continuous` + subagent waves. Fresh
     implementer per task via file handoffs in `.skills/`; two-verdict task review;
     parallel waves; progress ledger; no human pause between tasks.
-15a. **build-story-units** (m) — `Execution-mode: story-unit`. Derived review units,
+15a. **build-by-story** (m) — `Execution-mode: story-unit`. Derived review units,
     unit agent review → human unlock, mode-change write-back, unit ledger lines;
     whole-branch review still runs after the last unit.
 15b. **build-inline** (m) — controller implements sequentially with `test-first`; no
@@ -84,7 +84,7 @@ quick reference: `AGENTS.md`.
     code-smell baseline) and **Spec** (diff vs requirements, every finding quotes
     the ID). Includes an inline feature-overlap search (grep `docs/specs/` for the
     diff's paths) so a diff reimplementing a neighbor is caught. Runs the advisory
-    `judge-invariants` lane when an architecture spine exists.
+    `review-invariants` lane when an architecture spine exists.
 21a. **study-change** (U) — outbound self-check: one HTML packet
     (Background → Intuition → Code → Quiz) for a resolved git range; optional
     read-only DREC enrichment; never a ship gate or decision-record emitter.
@@ -92,7 +92,7 @@ quick reference: `AGENTS.md`.
     for a resolved git range; overwrite + INDEX; no quiz; never a ship gate;
     named (not invoked) from land-branch on large/architecture changes.
 22. **vet-feedback** (m) — anti-sycophancy; prove-claim each item before implementing.
-23. **judge-invariants** (m) — advisory, LLM-judged invariant conformance: per
+23. **review-invariants** (m) — advisory, LLM-judged invariant conformance: per
     `Respects: ARCH-N` citation, a respects/violates/unclear verdict. The semantic
     counterpart to `audit-trace`; never a hard gate.
 
@@ -102,9 +102,9 @@ quick reference: `AGENTS.md`.
     checklist dispatched by surface.
 25. **validate-api** (m) — drive the running backend as a real client.
 26. **validate-ui** (m) — drive the frontend in a real browser.
-27. **walk-product** (m) — the manual sibling; cases YAML SSOT + shell-rendered HTML;
+27. **review-product-flow** (m) — the manual sibling; cases YAML SSOT + shell-rendered HTML;
     coverage gate + kind taxonomy; CLI `render` for the human view.
-27a. **drive-walk** (m) — execute an existing walk-product catalog against the product
+27a. **run-product-walkthrough** (m) — execute an existing review-product-flow catalog against the product
     app; CLI run ledger (`init`/`mark`/`next`/`report`) with screen + backend
     evidence; never guide localStorage ticks; product fails route to `root-cause`.
 
@@ -113,7 +113,7 @@ quick reference: `AGENTS.md`.
 28. **craft-page** (m) — the visual-craft gate before any human-facing HTML: names
     the treatment (utilitarian vs editorial), writes the color/type/layout plan, and
     holds the fundamentals (both themes at token level, self-contained assets, copy).
-    Optional craft for `walk-product` (default is the checked-in walk-product shell).
+    Optional craft for `review-product-flow` (default is the checked-in review-product-flow shell).
 
 ## ship/
 
@@ -142,14 +142,14 @@ quick reference: `AGENTS.md`.
 
 ## project/
 
-39. **anchor-project** (U) — the optional project-documentation layer: authors and
+39. **define-project** (U) — the optional project-documentation layer: authors and
     maintains `docs/product/vision.md`, this `docs/architecture/` tree, and
     `docs/product/guidelines.md` (create/update/validate modes). Consulted by
-    `frame-change`, `design-solution`, `plan-tasks`, `build-continuous`, and `inspect-change`;
+    `frame-change`, `design-solution`, `plan-tasks`, `build-in-waves`, and `inspect-change`;
     entirely optional — absent, the feature workflow is unchanged.
-39a. **dispose-pivot** (U) — disposition ledger when a product pivot puts shipped
+39a. **assess-pivot-impact** (U) — disposition ledger when a product pivot puts shipped
     code at odds with a new vision or architecture. Writes
-    `docs/product/pivot-ledger.md` only; names `/anchor-project` (update) after
+    `docs/product/pivot-ledger.md` only; names `/define-project` (update) after
     confirmation. Does not rewrite the vision layer itself.
 
 **Deliberately not in v1:** full CI/CD authoring. (The project-documentation layer —

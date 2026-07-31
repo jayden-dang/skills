@@ -210,7 +210,7 @@ SUB-SKILL: use `realign-spec` to update the feature's `Status:` and audit-trace 
 
 **Leading word: risk glob** — match **actual diff paths** (not plan labels, not
 task count) against the default B1 set in
-`skills/review/sample-attention/references/signals.md`, **extended** (never
+`skills/review/select-review-sample/references/signals.md`, **extended** (never
 replaced) by `Risk globs` in `docs/agents/project.md` when present.
 
 **Recipe — run every close-loop (Merge, PR, Keep):**

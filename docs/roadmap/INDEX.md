@@ -6,7 +6,7 @@ Date: 2026-07-29
 <!--
 The program layer: milestone INTENT, above any single feature and below the product
 vision. Optional — only multi-milestone projects need it. `plan-milestones` authors it;
-`status-roadmap` derives progress from it without writing anything.
+`refresh-roadmap-status` derives progress from it without writing anything.
 
 This file owns intent only: outcomes, ordering, membership, dependencies, commitments,
 blockers, deferrals, goal dispositions. It never records how far a feature has got —
@@ -15,7 +15,7 @@ docs/specs/INDEX.md row. Every heading below is a REQUIRED slot — fill it or w
 `None`.
 
 Structural rules — AUTHORITATIVE. Both `plan-milestones` (before its approval gate) and
-`status-roadmap` (as finding R11) validate against this list. A roadmap is structurally
+`refresh-roadmap-status` (as finding R11) validate against this list. A roadmap is structurally
 defective when any of these does not hold:
 
   S1  every MILE-N and ROAD-N is defined exactly once
@@ -53,8 +53,8 @@ ID rules:
 **Goals:** GOAL-1, GOAL-2, GOAL-3, GOAL-4, GOAL-5
 **Members:**
 - **ROAD-1** risk-glob-review-prompts — Surfaces: `skills/ship/land-branch/SKILL.md`, `skills/spec/plan-tasks/SKILL.md`, `templates/tasks.md`, `skills/spec/plan-tasks/TESTS.md`, `AGENTS.md`, `tests/unknowns/`, `docs/guide/skills/brief-team.md` (shared with ROAD-2: `skills/spec/plan-tasks/SKILL.md`, `templates/tasks.md`)
-- **ROAD-2** story-derived-review-units — Surfaces: `skills/spec/specify-behavior/SKILL.md`, `skills/spec/plan-tasks/SKILL.md`, `skills/execution/build-story-units/SKILL.md`, `skills/execution/build-continuous/SKILL.md` (mode gate / write-handoff), `templates/requirements.md`, `templates/tasks.md` (shared with ROAD-1: `skills/spec/plan-tasks/SKILL.md`, `templates/tasks.md`)
-- **ROAD-3** reviewer-facing-change-authoring — Surfaces: `skills/ship/package-change/`, `skills/ship/land-branch/SKILL.md`, `skills/execution/build-continuous/SKILL.md`, `skills/execution/build-story-units/SKILL.md`, `skills/execution/build-inline/SKILL.md`, `skills/setup/configure-repo/SKILL.md`, `templates/agents/project.md`, `docs/agents/project.md` (shared with ROAD-1: `skills/ship/land-branch/SKILL.md`; shared with ROAD-2: execute family)
+- **ROAD-2** story-derived-review-units — Surfaces: `skills/spec/specify-behavior/SKILL.md`, `skills/spec/plan-tasks/SKILL.md`, `skills/execution/build-by-story/SKILL.md`, `skills/execution/build-in-waves/SKILL.md` (mode gate / write-handoff), `templates/requirements.md`, `templates/tasks.md` (shared with ROAD-1: `skills/spec/plan-tasks/SKILL.md`, `templates/tasks.md`)
+- **ROAD-3** reviewer-facing-change-authoring — Surfaces: `skills/ship/package-change/`, `skills/ship/land-branch/SKILL.md`, `skills/execution/build-in-waves/SKILL.md`, `skills/execution/build-by-story/SKILL.md`, `skills/execution/build-inline/SKILL.md`, `skills/setup/configure-repo/SKILL.md`, `templates/agents/project.md`, `docs/agents/project.md` (shared with ROAD-1: `skills/ship/land-branch/SKILL.md`; shared with ROAD-2: execute family)
 **Depends-on:** none
 **Commitment:** Planned
 **Closed:** None

@@ -126,7 +126,7 @@ behind it is a no-op.
 **Ruled 2026-07-25: both retired by strikethrough** in `requirements.md`, with this file
 as the stated evidence. Neither rule is written into `plan-milestones`. What survives:
 forward dependencies are still caught structurally by S4 in the template rule block, the
-authoring gate (RMAP-1.18), and `status-roadmap`'s R11; the `Surfaces:` slot is retained by
+authoring gate (RMAP-1.18), and `refresh-roadmap-status`'s R11; the `Surfaces:` slot is retained by
 RMAP-1.20 because it is the input that makes overlap visible — the retired part is the
 instruction to reason about it, not the data.
 
@@ -266,7 +266,7 @@ later and has to reconstruct.
 
 `tests/test_priority_ladder.py` had **6 of 7 tests pass on first run**. The cause is a
 sequencing slip of mine, not a property of the work: the plan allocated the ten-row ladder to
-Task 7, and I wrote it into `status-roadmap`'s body during Task 6. By the time the ladder test
+Task 7, and I wrote it into `refresh-roadmap-status`'s body during Task 6. By the time the ladder test
 existed, its subject already did.
 
 Deleting a verified ladder to manufacture a red bar would have been theatre, so the content

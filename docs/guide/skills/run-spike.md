@@ -13,7 +13,7 @@
 
 ## When it fires
 
-When a design question needs a **runnable** answer — the user wants to run-spike, spike, or mock up a state model, a piece of logic, or a screen to feel out whether it holds up before committing to a real implementation.
+When a design question needs a **runnable** answer — the user wants to spike, prototype, or mock up a state model, a piece of logic, or a screen to feel out whether it holds up before committing to a real implementation.
 
 [`frame-change`](frame-change.md) detours here when a question can only be settled by driving something by hand, not by opinion. It is the sibling of [`research`](research.md): where research answers an external-fact question with a cited note, run-spike answers a "does this feel right?" question with something you can actually use.
 

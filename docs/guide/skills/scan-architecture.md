@@ -8,7 +8,7 @@
 | **Invocation** | **user-invoked only** — run `/scan-architecture`. `disable-model-invocation: true`: no skill may auto-invoke it; other skills only name it for the user to run |
 | **Reads** | `CONTEXT.md` (the domain names good seams), `docs/adr/` (decisions not to re-litigate), the codebase (via an explore subagent) |
 | **Writes** | a self-contained HTML report in the OS temp directory (never the repo); no code changes of its own |
-| **Calls** | an explore subagent, [`craft-page`](craft-page.md) (required, before the report's markup), [`probe-decisions`](probe-decisions.md), [`define-domain`](define-domain.md), then [`test-first`](test-first.md)/[`prove-claim`](prove-claim.md) (tier 0) or [`frame-change`](frame-change.md) (tier 1+) |
+| **Calls** | an explore subagent, [`craft-page`](craft-page.md) (required, before the report's markup), [`clarify-decisions`](clarify-decisions.md), [`define-domain`](define-domain.md), then [`test-first`](test-first.md)/[`prove-claim`](prove-claim.md) (tier 0) or [`frame-change`](frame-change.md) (tier 1+) |
 | **Called by** | nobody — the user runs it directly |
 
 ## When it fires
@@ -60,9 +60,9 @@ One card per candidate:
 | **Confidence badge** | exactly one of `Strong` / `Worth exploring` / `Speculative` |
 | **Before/after structure sketch** | side-by-side hand-built divs/SVG — shallow-vs-deep mass, fan-out collapses, seam lines |
 
-The sketch carries the argument; if it needs a paragraph to explain, redraw it. The confidence badge is doing real work — it tells the user how much to trust the direction before investing probe-decisions time in it. End with a top-recommendation section: which candidate first, one sentence why.
+The sketch carries the argument; if it needs a paragraph to explain, redraw it. The confidence badge is doing real work — it tells the user how much to trust the direction before investing clarify-decisions time in it. End with a top-recommendation section: which candidate first, one sentence why.
 
-**Do not propose concrete interfaces yet** — the report names *directions*, not designs. Interface shape belongs to the probe-decisions step, with the user in the loop. **ADR conflicts** are included only when the friction is severe enough to justify reopening the decision, marked with the ADR reference and why it deserves revisiting — not every refactor an ADR forbids.
+**Do not propose concrete interfaces yet** — the report names *directions*, not designs. Interface shape belongs to the clarify-decisions step, with the user in the loop. **ADR conflicts** are included only when the friction is severe enough to justify reopening the decision, marked with the ADR reference and why it deserves revisiting — not every refactor an ADR forbids.
 
 **Done when** the report is open in the user's browser and you have asked which candidate to pursue.
 
@@ -70,7 +70,7 @@ The sketch carries the argument; if it needs a paragraph to explain, redraw it. 
 
 Once the user picks:
 
-- Use [`probe-decisions`](probe-decisions.md) — walk the shape of the deepened module one question at a time: constraints, what sits behind the new seam, which adapters are real, which tests survive.
+- Use [`clarify-decisions`](clarify-decisions.md) — walk the shape of the deepened module one question at a time: constraints, what sits behind the new seam, which adapters are real, which tests survive.
 - Use [`define-domain`](define-domain.md) for side effects as decisions land:
   - A new module named after a concept missing from `CONTEXT.md` gets the term added.
   - A term sharpened mid-conversation gets updated now, not later.
@@ -97,17 +97,17 @@ The user runs `/scan-architecture` on a mid-size app.
 
 **Report.** A `architecture-review-1720579200.html` is written to `$TMPDIR` and opened. The dispatcher's card: Problem — "shallow module: interface as complex as the send logic it fronts"; Proposed direction — "deepen `NotificationDispatcher` so channels become adapters behind one seam"; Win — "interface shrinks", "tests hit one seam", "new channel = one adapter"; Confidence — `Strong`; and a before/after sketch showing five callers each wiring channel details collapse into one deep module with three adapters behind a seam line. No concrete interface is proposed. The top-recommendation section names the dispatcher first.
 
-**Shape.** The user picks it. [`probe-decisions`](probe-decisions.md) draws out which channels are real adapters (email, SMS, in-app) versus hypothetical, and which existing tests survive the reshape. Because "channel adapter" is a concept not yet in `CONTEXT.md`, [`define-domain`](define-domain.md) adds the term.
+**Shape.** The user picks it. [`clarify-decisions`](clarify-decisions.md) draws out which channels are real adapters (email, SMS, in-app) versus hypothetical, and which existing tests survive the reshape. Because "channel adapter" is a concept not yet in `CONTEXT.md`, [`define-domain`](define-domain.md) adds the term.
 
 **Feed.** The reshape changes behavior at the seam, so it is tier 1 — it goes to [`frame-change`](frame-change.md) for the full cycle rather than proceeding under bare `test-first`.
 
 ## Why it is written the way it is
 
-The strict vocabulary is the load-bearing constraint: a review's findings are only worth anything if this run's "shallow module" means the same thing as last quarter's, and the moment the language softens into "components" and "layers" the findings stop being comparable and the periodic scan loses its point. The deletion test exists because shallowness is counterintuitive — a module can look like it is doing work while actually just relaying it — and the test makes that visible by asking what callers would have to relearn. The report is HTML in temp, not markdown in the repo, because a scan is a proposal, not a decision, and nothing should be committed until the user has chosen and the spec cycle has run. That is also why interfaces are deliberately withheld until probe-decisions and why tier 1+ work is pushed to `frame-change`: naming a direction is cheap and reversible, but designing the interface is a real decision that belongs with the user behind the spec gate.
+The strict vocabulary is the load-bearing constraint: a review's findings are only worth anything if this run's "shallow module" means the same thing as last quarter's, and the moment the language softens into "components" and "layers" the findings stop being comparable and the periodic scan loses its point. The deletion test exists because shallowness is counterintuitive — a module can look like it is doing work while actually just relaying it — and the test makes that visible by asking what callers would have to relearn. The report is HTML in temp, not markdown in the repo, because a scan is a proposal, not a decision, and nothing should be committed until the user has chosen and the spec cycle has run. That is also why interfaces are deliberately withheld until clarify-decisions and why tier 1+ work is pushed to `frame-change`: naming a direction is cheap and reversible, but designing the interface is a real decision that belongs with the user behind the spec gate.
 
 ## See also
 
-- [`probe-decisions`](probe-decisions.md) — shapes the chosen candidate's interface one question at a time
+- [`clarify-decisions`](clarify-decisions.md) — shapes the chosen candidate's interface one question at a time
 - [`define-domain`](define-domain.md) — records new terms and rejection ADRs as the shape lands
 - [`frame-change`](frame-change.md) — where any tier 1+ improvement enters the spec cycle
 - [`test-first`](test-first.md) — the seam-based test surface this skill is trying to make possible

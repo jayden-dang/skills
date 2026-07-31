@@ -15,7 +15,7 @@
 
 Type `/teach-pack` when you want to *learn* something and have it survive the week — a subsystem of your codebase, a library, a language, a design tradeoff, a soft skill. It runs across sessions and accumulates.
 
-Do not reach for it for a one-off explanation. If you just need something clarified, route-work — the agent will explain, which is what you actually want. `teach-pack` exists for when explanation has already failed you: when you have read the file three times, nodded along, and lost it again by morning.
+Do not reach for it for a one-off explanation. If you just need something clarified, route-task — the agent will explain, which is what you actually want. `teach-pack` exists for when explanation has already failed you: when you have read the file three times, nodded along, and lost it again by morning.
 
 ## The Iron Law
 
@@ -33,7 +33,7 @@ The skill exists against one baseline failure, and it is remarkably robust: **ex
 
 Given "teach-pack me this file," an agent with no skill writes an outstanding explainer — a mental model, a phase-by-phase walkthrough, every trap pre-solved, a memorable closing line. It asks nothing. It waits for nothing. Across ten baseline runs on a real file in this repo, not one agent asked the learner a single question, and not one produced any evidence the learner had understood anything.
 
-The second failure follows from the first. Route Worked point-blank to certify that you have learned something, an agent will honestly refuse — *"that's a record of me explaining, not a record of you understanding"* — and then hand you a notes file and leave. It knows it has no evidence. It says so, eloquently. It still does not go and get any.
+The second failure follows from the first. Route Tasked point-blank to certify that you have learned something, an agent will honestly refuse — *"that's a record of me explaining, not a record of you understanding"* — and then hand you a notes file and leave. It knows it has no evidence. It says so, eloquently. It still does not go and get any.
 
 So the gate is not "don't claim they learned it." Agents already won't. The gate is **run a loop that produces evidence**, because the default is to substitute a beautiful explanation for your production and then apologise for the resulting ignorance.
 
@@ -70,6 +70,6 @@ This is a deliberate departure from the strict-Socratic teaching skills, which f
 ## See also
 
 - [`research`](research.md) — where a topic goes when it needs a trusted source before it can be taught
-- [`probe-decisions`](probe-decisions.md) — the interview primitive; shares the one-question-then-stop discipline, but elicits *your* intent rather than building *your* knowledge
+- [`clarify-decisions`](clarify-decisions.md) — the interview primitive; shares the one-question-then-stop discipline, but elicits *your* intent rather than building *your* knowledge
 - [`author-skills`](author-skills.md) — the doctrine this skill was built under: no text ships without an observed baseline failure
 - [The skill model](../concepts/skill-model.md) — why `teach-pack` is user-invoked

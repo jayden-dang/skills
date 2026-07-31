@@ -49,7 +49,7 @@ Definitions stay to one to three tight lines — what the thing *is*, not how it
 An ADR is offered only when **all three** hold:
 
 1. **Hard to reverse** — changing course later carries real cost.
-2. **Surprising without context** — a future reader would route-work "why on earth this way?"
+2. **Surprising without context** — a future reader would route-task "why on earth this way?"
 3. **A real trade-off** — genuine alternatives existed and one was chosen for specific reasons.
 
 Any one missing means no ADR — a reversible choice, an obvious one, or a decision with no real alternative all fail the gate and belong in a commit message instead.
@@ -85,7 +85,7 @@ The second is **ADR inflation** — every decision written up until the folder i
 ## See also
 
 - [`frame-change`](frame-change.md) — keeps this skill active through its interview
-- [`probe-decisions`](probe-decisions.md) — the interview it runs alongside, sharpening terms as decisions surface
+- [`clarify-decisions`](clarify-decisions.md) — the interview it runs alongside, sharpening terms as decisions surface
 - [Artifacts](../concepts/artifacts.md) — where `CONTEXT.md` and ADRs sit among the durable records
 - [Gates](../concepts/gates.md) — where the three-part ADR gate sits among the set's other gates
 - [Requirement IDs](../concepts/requirement-ids.md) — the vocabulary the glossary feeds into specs

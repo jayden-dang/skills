@@ -39,9 +39,9 @@ success" is not evidence. Read the diff yourself.
 **Unknowns loop (quality bottleneck):** The map (prompts, specs, plans) is not
 the territory (codebase, runtime, users, history). Strong models still fail when
 unknowns stay implicit. Discover unknowns before build (`frame-change` knowns
-inventory + blindspot, `probe-decisions`, `research`/`run-spike`), surface high-blast
+inventory + blindspot, `clarify-decisions`, `research`/`run-spike`), surface high-blast
 decisions in `plan-tasks` (**Execution-mode** and the execute-family route),
-story-derived review units at `build-story-units`, log mid-build **deviations** in
+story-derived review units at `build-by-story`, log mid-build **deviations** in
 `.skills/implementation-notes.md` during execute, and let the human re-check
 understanding with `/study-change` before merge. Do not freeze unverified
 solution shape into requirement SHALLs.
@@ -62,7 +62,7 @@ file. Announce "Using [skill] to [purpose]", then follow the skill exactly.
 `frame-change` first. "This is broken" → `root-cause` first. Small in-scope change to a
 shipped, spec'd feature → `amend-feature`, not `frame-change`. Incoming issue or external
 PR → suggest `/triage` (user-invoked; agents cannot auto-invoke it). Unsure which
-flow fits → suggest `/route-work`.
+flow fits → suggest `/route-task`.
 
 **User instructions override skills; skills override agent defaults.** Skip a
 skill's workflow only when the user has explicitly told you to.
@@ -72,19 +72,19 @@ skill's workflow only when the user has explicitly told you to.
 ## 3. Skill Types & Invocation Rules
 
 **User-invoked skills** (carry `disable-model-invocation: true` in frontmatter):
-`route-work`, `author-skills`, `teach-pack`, `configure-repo`, `bootstrap-repo`,
-`anchor-project`, `dispose-pivot`, `triage`, `scan-architecture`, `write-handoff`,
-`publish-issues`, `cut-release`, `interpret-native`, `study-change`, `brief-team`,
-`sample-attention`,
-`status-roadmap`, `assess-milestone`, and Personal OS `setup-personal-os`.
+`route-task`, `author-skills`, `teach-pack`, `configure-repo`, `bootstrap-repo`,
+`define-project`, `assess-pivot-impact`, `triage`, `scan-architecture`, `write-handoff`,
+`publish-issues`, `cut-release`, `interpret-session`, `study-change`, `brief-team`,
+`select-review-sample`,
+`refresh-roadmap-status`, `assess-milestone`, and Personal OS `setup-personal-os`.
 Agents MUST NOT auto-invoke these. Name them for the user to run, e.g. `/triage` or
-`/sample-attention`.
+`/select-review-sample`.
 
 **Model-invoked skills** (no `disable-model-invocation`): agents auto-invoke
 these when conditions match. This includes `gate-session`, `frame-change`,
-`probe-decisions`, `research`, `run-spike`, `define-domain`, the full spec triad,
-`build-continuous`, `build-story-units`, `build-inline`, `test-first`, `root-cause`, `prove-claim`,
-`isolate-workspace`, `inspect-change`, `vet-feedback`, `judge-invariants`, the acceptance
+`clarify-decisions`, `research`, `run-spike`, `define-domain`, the full spec triad,
+`build-in-waves`, `build-by-story`, `build-inline`, `test-first`, `root-cause`, `prove-claim`,
+`isolate-workspace`, `inspect-change`, `vet-feedback`, `review-invariants`, the acceptance
 suite, `land-branch`, `package-change`, `record-verdict`, `amend-feature`,
 `plan-milestones`, and `realign-spec`.
 
@@ -156,7 +156,7 @@ silently.
 |---|---|---|---|
 | **0 — Trivial** | Typo-level, zero behavior change | None — `test-first` + `prove-claim` only | `test-first` |
 | **1 — Bugfix/Small** | Behavior change ≤ ~half day | Mini-spec: fix REQ + SHALL-CONTINUE-TO guard in owning `requirements.md`, tagged regression test | `specify-behavior` → `test-first` |
-| **2 — Feature** | Multi-task work | Full triad: `requirements.md` → `design.md` → `tasks.md` + execute family (`build-continuous` / `build-story-units` / `build-inline`) | Full chain |
+| **2 — Feature** | Multi-task work | Full triad: `requirements.md` → `design.md` → `tasks.md` + execute family (`build-in-waves` / `build-by-story` / `build-inline`) | Full chain |
 
 Tier is decided by `frame-change` (new work) or `amend-feature` (existing-feature changes).
 Never spec what you do not understand — detour through `research` or `run-spike`
@@ -227,7 +227,7 @@ description: Use when <triggering conditions only, never the workflow>
 - A no-op path: what happens when the skill's conditions don't apply
 - Completion criteria: what "done" means
 
-**Naming:** verb-first, kebab-case: `specify-behavior`, `build-continuous`,
+**Naming:** verb-first, kebab-case: `specify-behavior`, `build-in-waves`,
 `inspect-change`.
 
 **Line budget:** SKILL.md under 500 lines, under 300 preferred. If a skill
@@ -280,8 +280,8 @@ and suggest `configure-repo`.
 - Move to the next task with open Critical/Important findings
 - Fix reviewer findings in the controller context — dispatch a fixer
 - Pause between tasks to ask permission to continue under continuous
-  `build-continuous` / `build-inline` (story-unit human stops belong only to
-  `build-story-units`)
+  `build-in-waves` / `build-inline` (story-unit human stops belong only to
+  `build-by-story`)
 - Re-dispatch a task the ledger marks complete
 - Start implementation on main/master without explicit user consent
 - Tell a reviewer what not to flag, or pre-rate a finding's severity
@@ -323,37 +323,37 @@ Can't tick a box? The work is not done.
 
 | Category | Skills |
 |---|---|
-| **meta** | `gate-session` (m, si), `route-work` (U), `author-skills` (U), `teach-pack` (U) |
+| **meta** | `gate-session` (m, si), `route-task` (U), `author-skills` (U), `teach-pack` (U) |
 | **setup** | `configure-repo` (U), `bootstrap-repo` (U) |
-| **discovery** | `frame-change` (m), `probe-decisions` (m), `interpret-native` (U), `research` (m), `run-spike` (m), `define-domain` (m) |
+| **discovery** | `frame-change` (m), `clarify-decisions` (m), `interpret-session` (U), `research` (m), `run-spike` (m), `define-domain` (m) |
 | **spec** | `specify-behavior` (m), `design-solution` (m), `plan-tasks` (m) |
-| **execution** | `build-continuous` (m), `build-story-units` (m), `build-inline` (m), `test-first` (m), `root-cause` (m), `prove-claim` (m), `audit-trace` (m), `isolate-workspace` (m) |
-| **review** | `inspect-change` (m), `sample-attention` (U), `study-change` (U), `brief-team` (U), `polish-diff` (m), `vet-feedback` (m), `judge-invariants` (m) |
-| **acceptance** | `validate-feature` (m), `validate-api` (m), `validate-ui` (m), `walk-product` (m), `drive-walk` (m) |
+| **execution** | `build-in-waves` (m), `build-by-story` (m), `build-inline` (m), `test-first` (m), `root-cause` (m), `prove-claim` (m), `audit-trace` (m), `isolate-workspace` (m) |
+| **review** | `inspect-change` (m), `select-review-sample` (U), `study-change` (U), `brief-team` (U), `polish-diff` (m), `vet-feedback` (m), `review-invariants` (m) |
+| **acceptance** | `validate-feature` (m), `validate-api` (m), `validate-ui` (m), `review-product-flow` (m), `run-product-walkthrough` (m) |
 | **craft** | `craft-page` (m) |
 | **ship** | `package-change` (m), `land-branch` (m), `record-verdict` (m), `cut-release` (U) |
-| **track** | `amend-feature` (m), `reroute-plan` (m), `triage` (U), `realign-spec` (m), `status-roadmap` (U), `assess-milestone` (U), `scan-architecture` (U), `write-handoff` (U), `publish-issues` (U) |
-| **project** | `anchor-project` (U), `dispose-pivot` (U), `plan-milestones` (m) |
+| **track** | `amend-feature` (m), `reroute-plan` (m), `triage` (U), `realign-spec` (m), `refresh-roadmap-status` (U), `assess-milestone` (U), `scan-architecture` (U), `write-handoff` (U), `publish-issues` (U) |
+| **project** | `define-project` (U), `assess-pivot-impact` (U), `plan-milestones` (m) |
 
 **Execute family (pick one after approved `tasks.md`):**
 
 | Skill | When |
 |---|---|
-| `build-continuous` | `Execution-mode: continuous` + subagent waves |
-| `build-story-units` | `Execution-mode: story-unit` + human-gated review units |
+| `build-in-waves` | `Execution-mode: continuous` + subagent waves |
+| `build-by-story` | `Execution-mode: story-unit` + human-gated review units |
 | `build-inline` | No implementer subagents / user watches controller implement |
 
 **Main flow:** `frame-change` → `specify-behavior` → `design-solution` →
 `plan-tasks` → `isolate-workspace` → execute family → `inspect-change` →
 `validate-feature` → `land-branch` → `cut-release` → `realign-spec`.
 
-**Program layer (optional):** `anchor-project` (vision + `ARCH-N` spine) →
+**Program layer (optional):** `define-project` (vision + `ARCH-N` spine) →
 `plan-milestones` (`MILE-N` milestones and `ROAD-N` items in `docs/roadmap/INDEX.md`) →
 the feature flow above, one roadmap item at a time. Every edit to an existing roadmap —
 dropping an item, reordering milestones, committing or closing one — goes through
 `plan-milestones`, never a direct file edit. A pivot that collides with shipped code
-goes through `/dispose-pivot` (disposition ledger) **before**
-`/anchor-project` update rewrites the vision layer.
+goes through `/assess-pivot-impact` (disposition ledger) **before**
+`/define-project` update rewrites the vision layer.
 
 **Bugfix flow:** `root-cause` → mini-spec → `test-first` → `prove-claim` → `inspect-change` →
 `land-branch`.
@@ -374,16 +374,16 @@ Not part of the default engineering plugin; does not depend on engineering skill
 This repo is configured for a spec-driven skill set.
 
 - Feature flow: `frame-change` → `specify-behavior` → `design-solution` →
-  `plan-tasks` → `build-continuous` / `build-story-units` / `build-inline`
+  `plan-tasks` → `build-in-waves` / `build-by-story` / `build-inline`
 - Bug on-ramp: `root-cause` (root cause first, then a guarded fix)
 - Capture a conversation/spec/idea into tracker issues: `/publish-issues` (user-run)
 - Incoming issues and PRs: `/triage` (user-run)
 - Traceability check: the `audit-trace` skill — run by `prove-claim` and `cut-release`;
   keep it clean
-- Project docs (layer enabled): `/anchor-project` maintains
+- Project docs (layer enabled): `/define-project` maintains
   `docs/product/vision.md`, the `docs/architecture/` invariant spine, and
   `docs/product/guidelines.md`; the feature skills consult them
-- Pivot against shipped code: `/dispose-pivot` produces the disposition
+- Pivot against shipped code: `/assess-pivot-impact` produces the disposition
   ledger before vision/architecture rewrites
 
 Repo config the skills read:

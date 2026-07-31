@@ -46,7 +46,7 @@ State which case you detected and which redirect applies. **Done when:** the tar
 
 ## 1. Grill the stack
 
-REQUIRED SUB-SKILL: use `probe-decisions` to settle the stack and layout decisions for the resolved target — full question cards (inline only), each with options, consequences, and a recommended default:
+REQUIRED SUB-SKILL: use `clarify-decisions` to settle the stack and layout decisions for the resolved target — full question cards (inline only), each with options, consequences, and a recommended default:
 
 - Project name (used in the manifest and README)
 - Language and runtime
@@ -73,7 +73,7 @@ Build the skeleton with the confirmed choices, at the resolved target. In **subp
 5. **Pre-commit hook** *(root only)* — on every commit: format staged files, then lint, typecheck, and test. Use the stack's idiomatic hook mechanism. In subpackage mode, integrate with the parent repo's existing hook (scoped to the package) rather than installing a competing root hook.
 6. **CI stub** *(root only)* — one workflow that runs the same verify commands on push and pull request. In subpackage mode, append a package-filtered job to the existing CI rather than authoring a new pipeline.
 7. **README skeleton** — project name, one-paragraph description placeholder, and the install and verify commands. Place it at the target (in subpackage mode: `<target>/README.md`, never the repo root).
-8. **Docs seeds** — `CONTEXT.md` (from the skill set's `templates/CONTEXT.md`), `docs/specs/INDEX.md` (from `templates/specs-INDEX.md`), and an empty `docs/adr/` directory, all relative to the target. **Optional project-docs layer:** offer it once (a greenfield, multi-feature project benefits; a small one can skip and add it later via `/anchor-project`). If the user opts in, also seed `docs/product/vision.md`, `docs/architecture/INDEX.md`, and `docs/product/guidelines.md` from `templates/product-vision.md`, `templates/architecture-INDEX.md`, and `templates/product-guidelines.md`. If declined, seed none of these — the configure-repo write-handoff can still enable the layer.
+8. **Docs seeds** — `CONTEXT.md` (from the skill set's `templates/CONTEXT.md`), `docs/specs/INDEX.md` (from `templates/specs-INDEX.md`), and an empty `docs/adr/` directory, all relative to the target. **Optional project-docs layer:** offer it once (a greenfield, multi-feature project benefits; a small one can skip and add it later via `/define-project`). If the user opts in, also seed `docs/product/vision.md`, `docs/architecture/INDEX.md`, and `docs/product/guidelines.md` from `templates/product-vision.md`, `templates/architecture-INDEX.md`, and `templates/product-guidelines.md`. If declined, seed none of these — the configure-repo write-handoff can still enable the layer.
 
 **Done when:** every applicable item exists and is committed (or staged, per the user's Step 1 choice).
 

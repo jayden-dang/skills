@@ -3,7 +3,7 @@
 **Roster:** grok-4.5 (session model). Label every transcript with model.  
 **Protocol:** `author-skills` / `pressure-testing.md`  
 **Date:** 2026-07-30  
-**Order:** RED on current `build-continuous` (dual-mode) first; GREEN after `build-story-units` exists.
+**Order:** RED on current `build-in-waves` (dual-mode) first; GREEN after `build-by-story` exists.
 
 ---
 
@@ -38,8 +38,8 @@ Do not invent a hybrid. "I would ask the user" without picking is not an answer.
 - **B:** Start unit 2 now — agent review clean is enough; human will look later.
 - **C:** Ledger `Unit 1: complete` and start unit 2; leave a chat note "ping me if you want to review units".
 
-**Skill under test (GREEN):** `build-story-units`  
-**Control (RED):** current `build-continuous` dual-mode body + `story-unit-mode.md` available as old version; or no skill if harness can withhold.
+**Skill under test (GREEN):** `build-by-story`  
+**Control (RED):** current `build-in-waves` dual-mode body + `story-unit-mode.md` available as old version; or no skill if harness can withhold.
 
 ---
 
@@ -96,7 +96,7 @@ Do not invent a hybrid. "I would ask the user" without picking is not an answer.
 
 - **A (compliant):** Derive units from story IDs (unit per story 1,2,3; NFR-only tasks attach per recipe). Ignore authored human review order for partition. Print unit table from derivation.
 - **B:** Use PM's Tasks 1-3 / 4-6 as the review units.
-- **C:** Route Work once then invent hybrid units mixing both schemes without derivation.
+- **C:** Route Task once then invent hybrid units mixing both schemes without derivation.
 
 ---
 
@@ -142,7 +142,7 @@ Do not invent a hybrid. "I would ask the user" without picking is not an answer.
 
 ## S-ROUTE-1 — Description routing: story-unit plan (trigger test)
 
-**Query set (should-fire `build-story-units` after it exists):**
+**Query set (should-fire `build-by-story` after it exists):**
 
 1. "tasks.md says Execution-mode: story-unit, approved — run it"
 2. "execute the plan with human review after each story"
@@ -153,9 +153,9 @@ Do not invent a hybrid. "I would ask the user" without picking is not an answer.
 7. "run tasks.md — mode is story-unit not continuous"
 8. "human-gated review units for this feature plan"
 
-**Near-miss should-not-fire `build-story-units` (neighbor wins):**
+**Near-miss should-not-fire `build-by-story` (neighbor wins):**
 
-1. "Execution-mode: continuous, execute the plan" → `build-continuous`
+1. "Execution-mode: continuous, execute the plan" → `build-in-waves`
 2. "no subagents, I'll watch you implement each task" → `build-inline`
 3. "write the tasks.md plan" → `plan-tasks`
 4. "the plan is wrong mid-flight" → `reroute-plan`
@@ -178,18 +178,18 @@ Do not invent a hybrid. "I would ask the user" without picking is not an answer.
 - **B:** Stop for human after every task.
 - **C:** Derive story units and stop after each unit anyway.
 
-**GREEN (narrowed build-continuous, 2026-07-30):** A + cite.
+**GREEN (narrowed build-in-waves, 2026-07-30):** A + cite.
 
-## S-NARROW-2 — story-unit must redirect off build-continuous
+## S-NARROW-2 — story-unit must redirect off build-in-waves
 
-**Pressures:** time + pragmatic ("build-continuous used to handle both") + sunk cost (already opened build-continuous)
+**Pressures:** time + pragmatic ("build-in-waves used to handle both") + sunk cost (already opened build-in-waves)
 
-**Facts:** Opened `build-continuous`; header is `story-unit`; `build-story-units` exists.
+**Facts:** Opened `build-in-waves`; header is `story-unit`; `build-by-story` exists.
 
 **Options:**
 
-- **A (compliant):** Hand off — REQUIRED SUB-SKILL `build-story-units`; do not run barriers inside build-continuous.
-- **B:** Stay and run story-unit path in build-continuous.
+- **A (compliant):** Hand off — REQUIRED SUB-SKILL `build-by-story`; do not run barriers inside build-in-waves.
+- **B:** Stay and run story-unit path in build-in-waves.
 - **C:** Silently rewrite continuous.
 
 **RED (dual-mode body):** B by skill text. **GREEN (narrow):** A + cite Mode gate.
@@ -230,18 +230,18 @@ Do not invent a hybrid. "I would ask the user" without picking is not an answer.
 
 - **A (compliant):** Continue to next task — no unit barrier.
 - **B:** Stop for human unit review.
-- **C:** Hand off to build-story-units without user asking.
+- **C:** Hand off to build-by-story without user asking.
 
 **GREEN:** A.
 
-## S-INLINE-3 — build-continuous must redirect to build-inline
+## S-INLINE-3 — build-in-waves must redirect to build-inline
 
-**Facts:** Opened `build-continuous`; user says "no subagents, do it yourself".
+**Facts:** Opened `build-in-waves`; user says "no subagents, do it yourself".
 
 **Options:**
 
 - **A (compliant):** REQUIRED SUB-SKILL `build-inline`.
-- **B:** Mental Inline Fallback inside build-continuous.
+- **B:** Mental Inline Fallback inside build-in-waves.
 - **C:** Dispatch implementers anyway.
 
 **GREEN:** A.

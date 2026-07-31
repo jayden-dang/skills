@@ -25,7 +25,7 @@ THE ROADMAP RECORDS INTENT. PROGRESS IS DERIVED, NEVER STORED HERE.
 
 Intent is what nothing can work out for itself — the outcome a milestone promises, the order, its membership, what was deferred and why, and whether a human committed to it. Progress is already written once, as `Status:` in each feature's `requirements.md`, mirrored into its `docs/specs/INDEX.md` row.
 
-So the roadmap carries no progress column, no per-milestone status field, no change log of transitions, and no percent-complete. A second copy of status drifts from the first, and once it drifts nobody can tell which is lying. [`status-roadmap`](status-roadmap.md) derives the live picture on demand instead.
+So the roadmap carries no progress column, no per-milestone status field, no change log of transitions, and no percent-complete. A second copy of status drifts from the first, and once it drifts nobody can tell which is lying. [`refresh-roadmap-status`](refresh-roadmap-status.md) derives the live picture on demand instead.
 
 `Commitment` — `Planned | Committed | Closed` — is kept, because *whether you have committed* is a human decision nobody can derive. That is a different thing from how far the work has got.
 
@@ -35,7 +35,7 @@ This was not an argument from taste. A baseline agent with no skill invented **t
 
 | ID | Lives in | Owned by |
 |---|---|---|
-| `GOAL-N` | `docs/product/vision.md` | [`anchor-project`](anchor-project.md) |
+| `GOAL-N` | `docs/product/vision.md` | [`define-project`](define-project.md) |
 | `MILE-N`, `ROAD-N` | `docs/roadmap/INDEX.md` | this skill |
 | feature codes, `CODE-N.M` | `docs/specs/` | [`specify-behavior`](specify-behavior.md) |
 
@@ -52,20 +52,20 @@ Note that `ARCH-4` covers `CODE-N.M` and `ARCH-N` only. These namespaces are gov
 
 ## The approval gate
 
-The skill validates the seven structural rules `S1`–`S7` carried in the template's comment block — the same set [`status-roadmap`](status-roadmap.md) re-checks as finding `R11`. Any defect is reported and the roadmap does not reach the user for approval. When clean, the whole file is presented and the skill stops; `Status: Approved` is written only after an explicit approval.
+The skill validates the seven structural rules `S1`–`S7` carried in the template's comment block — the same set [`refresh-roadmap-status`](refresh-roadmap-status.md) re-checks as finding `R11`. Any defect is reported and the roadmap does not reach the user for approval. When clean, the whole file is presented and the skill stops; `Status: Approved` is written only after an explicit approval.
 
 A material change to an already-approved roadmap — outcome, membership, ordering, commitment state, or goal citations — sets `Status: Draft` and re-enters that gate. An amended plan is a different plan.
 
 ## Two rules deliberately absent
 
-Forward-dependency detection and surface-overlap consolidation were specified, tested, and **retired** — fresh baseline agents did both unprompted, so writing them in would have been no-op text. Forward dependencies are still caught structurally, by `S4` in the rule block and by `status-roadmap`'s `R11`. The `Surfaces:` slot stays, because it is the data that makes overlap visible; what went away is the instruction to reason about it.
+Forward-dependency detection and surface-overlap consolidation were specified, tested, and **retired** — fresh baseline agents did both unprompted, so writing them in would have been no-op text. Forward dependencies are still caught structurally, by `S4` in the rule block and by `refresh-roadmap-status`'s `R11`. The `Surfaces:` slot stays, because it is the data that makes overlap visible; what went away is the instruction to reason about it.
 
 ## Optionality
 
-The layer is optional and gates nothing. Route Worked to consult a roadmap that does not exist, the skill says so and offers to author one. The feature flow runs fully without it.
+The layer is optional and gates nothing. Route Tasked to consult a roadmap that does not exist, the skill says so and offers to author one. The feature flow runs fully without it.
 
 ## See also
 
-- [`status-roadmap`](status-roadmap.md) — derives where the plan stands; never writes
-- [`anchor-project`](anchor-project.md) — the vision and `ARCH-N` spine above this layer
+- [`refresh-roadmap-status`](refresh-roadmap-status.md) — derives where the plan stands; never writes
+- [`define-project`](define-project.md) — the vision and `ARCH-N` spine above this layer
 - [`frame-change`](frame-change.md) — hands its multi-subsystem decomposition here

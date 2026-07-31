@@ -46,7 +46,7 @@ criteria. Keep criteria short if time is tight; never omit them.
 |---|---|
 | "They asked for a list, not a lesson" | Criteria-first is not a lecture; it is what makes the list usable. User wording does not rewrite the output contract |
 | "Deadline — skip the standards" | A short criteria section is faster than a wrong choice and a redo |
-| "They forbade teaching, so criteria would violate their route-work" | Criteria are the research deliverable, not optional pedagogy. Omitting them violates this skill |
+| "They forbade teaching, so criteria would violate their route-task" | Criteria are the research deliverable, not optional pedagogy. Omitting them violates this skill |
 
 ## High-stakes questions
 
@@ -57,4 +57,4 @@ When the answer will steer an architecture choice or something else expensive to
 
 ## Research feeds thinking — it does not replace deciding
 
-The note informs; it never decides. Bring the findings back to the user (or the orchestrating skill, e.g. `frame-change`) and put the resulting decision to them. If the research was serving an interview, the decision goes through `probe-decisions` like any other.
+The note informs; it never decides. Bring the findings back to the user (or the orchestrating skill, e.g. `frame-change`) and put the resulting decision to them. If the research was serving an interview, the decision goes through `clarify-decisions` like any other.

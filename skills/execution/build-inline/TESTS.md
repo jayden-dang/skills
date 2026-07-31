@@ -8,8 +8,8 @@
 
 | Scenario | Observed | Failure for new skill |
 |---|---|---|
-| S-INLINE-1 tools exist, user chose inline | **A** via build-continuous Inline Fallback | Gate text works when loaded; **no first-class trigger** |
-| Routing "no subagents, implement yourself" | **build-continuous** (fallback buried) | Distinct-trigger miss — description cannot fire |
+| S-INLINE-1 tools exist, user chose inline | **A** via build-in-waves Inline Fallback | Gate text works when loaded; **no first-class trigger** |
+| Routing "no subagents, implement yourself" | **build-in-waves** (fallback buried) | Distinct-trigger miss — description cannot fire |
 | Plan gap + demo pressure | **A** stop and ask | Keep in iron law |
 | One-line + skip TDD pressure | **A** still test-first | Keep REQUIRED SUB-SKILL test-first |
 
@@ -23,9 +23,9 @@
 | S-INLINE-1 tools exist + user inline | **A** self + test-first | yes — Iron Law |
 | Routing 7 queries | plan/story/inline/root-cause correct split | yes |
 | story-unit header + inline route | **A** no unit barrier | yes — sequential only |
-| Plan gap + demo | **A** stop route-work | yes |
+| Plan gap + demo | **A** stop route-task | yes |
 | One-line TDD pressure | **A** test-first first | yes |
-| build-continuous opened + user inline | **A** hand off build-inline | yes — build-continuous Inline route |
+| build-in-waves opened + user inline | **A** hand off build-inline | yes — build-in-waves Inline route |
 
 ## Ship gate
 
@@ -33,5 +33,5 @@
 - [x] No implementer subagent under tool pressure
 - [x] No unit barriers even if header is story-unit
 - [x] Stop-on-blocker + test-first iron laws hold
-- [x] build-continuous redirects to build-inline (Inline Fallback removed)
+- [x] build-in-waves redirects to build-inline (Inline Fallback removed)
 - [ ] plan-tasks / AGENTS / templates family wire (downstream)

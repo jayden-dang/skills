@@ -26,7 +26,7 @@ Process: `author-skills` REFACTOR (meta + multi-rep + integration + wording).
 |---|---|
 | DONE_WITH_CONCERNS + notes falsifying Task 4 OAuthProvider table | **A** → `reroute-plan` Phase 1 diagnosis; stopped for user |
 
-## Interpret Native (technique with skill present)
+## Interpret Session (technique with skill present)
 
 | Scenario | Result |
 |---|---|
@@ -34,7 +34,7 @@ Process: `author-skills` REFACTOR (meta + multi-rep + integration + wording).
 
 ## Integration chain (`INTEGRATION_SCORE.md` on /tmp)
 
-All stage greps PASS. Gap noted: split fixtures; real `build-continuous` keeps notes in the same `.skills/` tree as the controller (no code change needed).
+All stage greps PASS. Gap noted: split fixtures; real `build-in-waves` keeps notes in the same `.skills/` tree as the controller (no code change needed).
 
 ## Wording upgrades this session (from meta only)
 

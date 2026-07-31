@@ -2,7 +2,7 @@
 
 ASSESS-6.1 says assess-milestone completes with one full read of each source artifact and
 a number of git commands independent of the milestone's member count. The same two things
-make that checkable without an entry point as for status-roadmap (RMAP-4.1): the skill's
+make that checkable without an entry point as for refresh-roadmap-status (RMAP-4.1): the skill's
 documented pass set is a fixed count with no per-member pass, and a scale fixture exists
 that those same passes cover.
 """

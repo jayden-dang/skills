@@ -35,7 +35,7 @@ The seam table is a REQUIRED slot rather than a suggestion, because [`test-first
 Opens with a pointer that makes the file self-executing:
 
 ```markdown
-> **For agentic workers:** REQUIRED SUB-SKILL: use `build-continuous` to implement
+> **For agentic workers:** REQUIRED SUB-SKILL: use `build-in-waves` to implement
 > this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 ```
 
@@ -51,7 +51,7 @@ Written once by [`configure-repo`](../skills/configure-repo.md) into `docs/agent
 
 | Template | Becomes | Read by |
 |---|---|---|
-| [`agents/project.md`](../../../templates/agents/project.md) | `docs/agents/project.md` | `test-first`, `prove-claim`, `build-continuous`, `isolate-workspace`, `cut-release`, the acceptance skills, `walk-product`, `run-spike` |
+| [`agents/project.md`](../../../templates/agents/project.md) | `docs/agents/project.md` | `test-first`, `prove-claim`, `build-in-waves`, `isolate-workspace`, `cut-release`, the acceptance skills, `review-product-flow`, `run-spike` |
 | [`agents/issue-tracker.md`](../../../templates/agents/issue-tracker.md) | `docs/agents/issue-tracker.md` | `triage`, `plan-tasks`, `cut-release` |
 | [`agents/triage-labels.md`](../../../templates/agents/triage-labels.md) | `docs/agents/triage-labels.md` | `triage` |
 

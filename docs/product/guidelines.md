@@ -21,7 +21,7 @@ file). Every heading is a REQUIRED slot — fill it or write `None`.
 
 ## Naming and i18n
 
-- Skills: verb-first kebab-case (`specify-behavior`, `build-continuous`).
+- Skills: verb-first kebab-case (`specify-behavior`, `build-in-waves`).
 - Feature codes: short uppercase prefix registered in `docs/specs/INDEX.md`.
 - Requirement IDs: `CODE-N.M` — never renumber; retire with strikethrough.
 - Architecture invariants: `ARCH-N` — same immutability rules; cite as `Respects: ARCH-N` from feature `design.md`.

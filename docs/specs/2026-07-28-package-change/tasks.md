@@ -1,6 +1,6 @@
 # Tasks: Prepare change
 
-> **For agentic workers:** REQUIRED SUB-SKILL: use `build-continuous` to implement
+> **For agentic workers:** REQUIRED SUB-SKILL: use `build-in-waves` to implement
 > this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 Feature code: PCHG
@@ -12,7 +12,7 @@ Design: ./design.md
 
 **Goal:** Ship `package-change`, a model-invoked skill that turns a branch into
 reviewer-readable commits and one approved PR package, and wire it into
-`land-branch`, `build-continuous`, and `configure-repo`.
+`land-branch`, `build-in-waves`, and `configure-repo`.
 
 **Architecture:** `skills/ship/package-change/SKILL.md` orchestrates six phases —
 base resolution, convention resolution, context gathering, ticket resolution, commit
@@ -20,7 +20,7 @@ authoring, package writing — with three sibling reference files carrying the d
 contracts so the body stays under the line budget. The package
 (`.skills/pr-packages/<stable-id>/{manifest.md,title.txt,body.md}`) is the seam:
 `land-branch` gains a checkpoint that displays it, approves it, revalidates its
-digest, and submits it, while `build-continuous` gains one step that routes into the new
+digest, and submits it, while `build-in-waves` gains one step that routes into the new
 skill and `configure-repo` gains one decision that persists `Default PR base:`.
 
 **Tech Stack:** Markdown skill bodies (no runtime code). Tests are Python
@@ -60,7 +60,7 @@ Single test file: `python3 -m unittest tests.<module>`
 
 **Naming and i18n** (`docs/product/guidelines.md`):
 
-- Skills: verb-first kebab-case (`specify-behavior`, `build-continuous`).
+- Skills: verb-first kebab-case (`specify-behavior`, `build-in-waves`).
 - Feature codes: short uppercase prefix registered in `docs/specs/INDEX.md`.
 - Requirement IDs: `CODE-N.M` — never renumber; retire with strikethrough.
 - Architecture invariants: `ARCH-N` — same immutability rules; cite as `Respects: ARCH-N` from feature `design.md`.
@@ -86,7 +86,7 @@ Single test file: `python3 -m unittest tests.<module>`
 
 **Team packaging:** band is **Solo** (`docs/agents/project.md` `## Team`, derived — headcount 1). Lean multi-person ritual language; no invented peer reviewers or assignees; full gates unchanged.
 
-**Forbidden in every task:** authoring a per-task risk label, a decision-surface flag, or a human-review-order list; weakening any gate in `land-branch`, `build-continuous`, or `configure-repo`; emitting a runnable history-rewrite command; adding a new third-party dependency.
+**Forbidden in every task:** authoring a per-task risk label, a decision-surface flag, or a human-review-order list; weakening any gate in `land-branch`, `build-in-waves`, or `configure-repo`; emitting a runnable history-rewrite command; adding a new third-party dependency.
 
 ## File Structure
 
@@ -105,14 +105,14 @@ Single test file: `python3 -m unittest tests.<module>`
 | `tests/test_prepare_change_contract.py` | Asserts `package-change/SKILL.md` states its hard rules and omits forbidden ones |
 | `tests/test_prepare_change_convention.py` | Asserts the convention ladder is bounded, once-per-session, and uncached |
 | `tests/test_prepare_change_checkpoint.py` | Asserts `land-branch` gains the checkpoint and keeps every existing gate |
-| `tests/test_prepare_change_wiring.py` | Asserts `build-continuous` tail, `configure-repo` decision, template slot, and roster registration |
+| `tests/test_prepare_change_wiring.py` | Asserts `build-in-waves` tail, `configure-repo` decision, template slot, and roster registration |
 
 **Modify:**
 
 | File | Change |
 |---|---|
 | `skills/ship/land-branch/SKILL.md` | Insert the ticket + content-approval checkpoint between menu selection and crossing; honor the package's base; submit via `--body-file` |
-| `skills/execution/build-continuous/SKILL.md` | Insert `package-change` between acceptance and `land-branch` in "After the Last Task" |
+| `skills/execution/build-in-waves/SKILL.md` | Insert `package-change` between acceptance and `land-branch` in "After the Last Task" |
 | `skills/setup/configure-repo/SKILL.md` | Add decision **J. Default PR base** to the A–I walk; write the field in Step 4 |
 | `templates/agents/project.md` | Add the `Default PR base:` slot |
 | `docs/agents/project.md` | Set this repo's own `Default PR base:` value |
@@ -351,7 +351,7 @@ Run: `python3 -m unittest tests.test_prepare_change_contract` — expect: pass.
 
 - [ ] **Step 3: Commit**
 
-`git commit -m "feat(package-change): declared PR base with an route-work fallback" # trailer: Implements: PCHG-2.1`
+`git commit -m "feat(package-change): declared PR base with an route-task fallback" # trailer: Implements: PCHG-2.1`
 
 _Requirements: PCHG-2.1, PCHG-2.2, PCHG-2.3, PCHG-2.4, PCHG-2.5, PCHG-2.6, PCHG-2.7, PCHG-2.8, PCHG-2.9, PCHG-2.10_
 
@@ -696,7 +696,7 @@ plan/tree mismatch); write the subject in the resolved convention and the body a
 changed and why, with requirement and feature IDs confined to `Implements:` /
 `Guards:` trailers and never used as the primary explanation; create nothing when the
 tree holds no uncommitted tracked changes; exclude untracked files unless the user
-names them this invocation; and, when running as the `build-continuous` continuation, leave
+names them this invocation; and, when running as the `build-in-waves` continuation, leave
 implementer task commits unmodified, group only the residue, and ask nothing beyond the
 five exceptions. Append `PCHG-1.1` … `PCHG-1.9` and `PCHG-9.2` … `PCHG-9.4` to
 `scenarios.md`.
@@ -1074,10 +1074,10 @@ _Requirements: PCHG-8.1, PCHG-8.2, PCHG-8.3, PCHG-8.4, PCHG-8.5, PCHG-8.6, PCHG-
 
 ---
 
-### Task 10: The `build-continuous` tail
+### Task 10: The `build-in-waves` tail
 
 **Files:**
-- Modify: `skills/execution/build-continuous/SKILL.md` ("After the Last Task", step 5)
+- Modify: `skills/execution/build-in-waves/SKILL.md` ("After the Last Task", step 5)
 - Modify: `tests/package-change/scenarios.md`
 - Test: `tests/test_prepare_change_wiring.py`
 
@@ -1094,7 +1094,7 @@ _Requirements: PCHG-8.1, PCHG-8.2, PCHG-8.3, PCHG-8.4, PCHG-8.5, PCHG-8.6, PCHG-
 Append to `tests/test_prepare_change_wiring.py`:
 
 ```python
-EXEC = REPO / "skills" / "execution" / "build-continuous" / "SKILL.md"
+EXEC = REPO / "skills" / "execution" / "build-in-waves" / "SKILL.md"
 
 
 class ExecutePlanTail(unittest.TestCase):
@@ -1131,7 +1131,7 @@ Run: `python3 -m unittest tests.test_prepare_change_wiring` — expect: `Asserti
 
 - [ ] **Step 2: Implement**
 
-In `build-continuous/SKILL.md`, renumber "After the Last Task" so that step 5 becomes
+In `build-in-waves/SKILL.md`, renumber "After the Last Task" so that step 5 becomes
 **Prepare the change** — `REQUIRED SUB-SKILL: use package-change` — with *Done when: the
 branch's commits are authored and a PR package exists* — and the former step 5 becomes
 step 6 **Finish**. Leave steps 1–4 (whole-branch review, one fixer, polish, acceptance),
@@ -1142,7 +1142,7 @@ Run: `python3 -m unittest tests.test_prepare_change_wiring` — expect: pass.
 
 - [ ] **Step 3: Commit**
 
-`git commit -m "feat(build-continuous): route the finished branch through package-change" # trailer: Implements: PCHG-9.1`
+`git commit -m "feat(build-in-waves): route the finished branch through package-change" # trailer: Implements: PCHG-9.1`
 
 _Requirements: PCHG-9.1, PCHG-11.7, PCHG-11.8, PCHG-11.9_
 

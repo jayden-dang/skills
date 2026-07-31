@@ -14,7 +14,7 @@ Actively build and sharpen the project's glossary while designing. Merely *readi
 
 ## During the conversation
 
-**When another skill owns the interview** (e.g. `probe-decisions` inside `frame-change`), you run as a passive side effect, not a second interviewer. Do the silent work directly — record a settled term to `CONTEXT.md`, cross-reference the code — but anything that needs the user (a challenge, a disambiguation, an edge-case probe) does **not** get its own turn: hand it to the interview's single question channel as the next question, asked one at a time in dependency order. Only when you are invoked standalone do you drive the questions yourself.
+**When another skill owns the interview** (e.g. `clarify-decisions` inside `frame-change`), you run as a passive side effect, not a second interviewer. Do the silent work directly — record a settled term to `CONTEXT.md`, cross-reference the code — but anything that needs the user (a challenge, a disambiguation, an edge-case probe) does **not** get its own turn: hand it to the interview's single question channel as the next question, asked one at a time in dependency order. Only when you are invoked standalone do you drive the questions yourself.
 
 **Challenge terms against the glossary.** When the user's usage conflicts with `CONTEXT.md`, call it out on the spot: "Your glossary defines *cancellation* as voiding the whole order, but you seem to mean removing one line item — which is it?"
 
@@ -43,7 +43,7 @@ Be opinionated: one canonical term, competitors banished to the `_Avoid_` list. 
 Offer an ADR only when **all three** hold:
 
 1. **Hard to reverse** — changing course later carries real cost.
-2. **Surprising without context** — a future reader would route-work "why on earth this way?"
+2. **Surprising without context** — a future reader would route-task "why on earth this way?"
 3. **A real trade-off** — genuine alternatives existed and one was chosen for specific reasons.
 
 Any one missing → no ADR. For contrast — a decision that is surprising and a real trade-off but **cheap to reverse** earns none: a 200 ms debounce on the search box trades responsiveness against request volume, yet flipping it later is a one-line change, so it fails "hard to reverse." Record it in the code, not an ADR. Format: `docs/adr/NNNN-slug.md` (create the directory lazily), numbered sequentially — scan for the highest existing number and add one. Body is a short title plus **1–3 sentences**: context, decision, why. That's the whole document; recording *that* and *why* is the value, not filling sections.

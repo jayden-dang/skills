@@ -53,6 +53,6 @@ skills and templates work unchanged — only the injection path differs.
   Elsewhere the gate lives in an always-on rule or the root contract file, which
   is durable but not self-healing across a context reset — re-anchor manually if
   the agent drifts.
-- **Subagent dispatch** in `build-continuous` assumes a harness that can spawn
-  fresh, isolated subagents. Where that is unavailable, `build-continuous`'s inline
+- **Subagent dispatch** in `build-in-waves` assumes a harness that can spawn
+  fresh, isolated subagents. Where that is unavailable, `build-in-waves`'s inline
   fallback runs the same loop in a single context.

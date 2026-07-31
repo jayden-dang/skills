@@ -22,7 +22,7 @@
 ## 2. plan-tasks description triggers
 
 **Description under test:**  
-`Use when a design is approved and the tasks.md implementation plan (Execution-mode, vertical-slice tasks, requirement-tagged tests) needs writing, after design-solution and before build-continuous.`
+`Use when a design is approved and the tasks.md implementation plan (Execution-mode, vertical-slice tasks, requirement-tagged tests) needs writing, after design-solution and before build-in-waves.`
 
 ### Should-fire (expect plan-tasks) — 8/8
 
@@ -32,7 +32,7 @@
 | Execution-mode continuous vs story-unit on plan | plan-tasks |
 | vertical-slice tasks with requirement tags | plan-tasks |
 | tasks.md draft after design-solution | plan-tasks |
-| plan work items before build-continuous | plan-tasks |
+| plan work items before build-in-waves | plan-tasks |
 | fill tasks.md template | plan-tasks |
 | implementation plan for subagents | plan-tasks |
 | write the plan file before coding next session | plan-tasks |
@@ -42,26 +42,26 @@
 | Q | Expected | Result |
 |---|----------|--------|
 | write design.md | design-solution | design-solution |
-| tasks Approved, implement | build-continuous | build-continuous |
-| resume after crash | build-continuous | build-continuous |
+| tasks Approved, implement | build-in-waves | build-in-waves |
+| resume after crash | build-in-waves | build-in-waves |
 | failing test first | test-first | test-first |
 | frame-change new feature | frame-change | frame-change |
 | merge/PR menu | land-branch | land-branch |
-| story-unit barrier mid-execute | build-continuous | build-continuous |
+| story-unit barrier mid-execute | build-in-waves | build-in-waves |
 | write requirements EARS | specify-behavior | specify-behavior |
 
 **No over/under-trigger.** Description OK as-is.
 
-## 3. build-continuous description triggers
+## 3. build-in-waves description triggers
 
 **Description under test:**  
 `Use when an approved tasks.md needs executing — continuous or story-unit Execution-mode, task waves, dual-verdict review, resume after crash/compaction — through whole-branch review and land-branch.`
 
-### Should-fire — 8/8 (all build-continuous)
+### Should-fire — 8/8 (all build-in-waves)
 
 Including: Approved tasks.md run; resume/ledger; story-unit barriers; continuous mode; crash mid-wave; dispatch implementers; plan ready to build; implement on worktree.
 
-### Should-not-fire — 8/8 (none build-continuous)
+### Should-not-fire — 8/8 (none build-in-waves)
 
 | Q | Result |
 |---|--------|
@@ -82,6 +82,6 @@ Including: Approved tasks.md run; resume/ledger; story-unit barriers; continuous
 |------|--------|--------|
 | Micro 5-rep land-branch | **5/5 A** | None — wording holds |
 | plan-tasks triggers | **16/16** | None |
-| build-continuous triggers | **16/16** | None |
+| build-in-waves triggers | **16/16** | None |
 
 Harden pass not required from this eval.

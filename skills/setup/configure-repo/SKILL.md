@@ -83,7 +83,7 @@ List the tracker's existing labels next to the roles and propose a mapping (defa
 
 ### C. verify commands
 
-Explainer: `test-first`, `prove-claim`, `build-continuous`, and `cut-release` all run this repo's proof commands; they must be exact, not guessed.
+Explainer: `test-first`, `prove-claim`, `build-in-waves`, and `cut-release` all run this repo's proof commands; they must be exact, not guessed.
 
 Confirm each, pre-filled from what you detected: typecheck, lint, unit tests, e2e/smoke, and the **single-test-file pattern** (the command shape for running one test file — the tight loop `test-first` lives in).
 
@@ -118,7 +118,7 @@ Confirm:
 
 ### G. Project posture
 
-Explainer: two standing facts about the project — its **delivery intent** (how robust the output must be) and its **lifecycle stage** (where it is in its life). `frame-change` and `probe-decisions` read them to right-size ceremony (a run-spike need not weigh data migration or deprecation; a released, scaling system weighs them heavily), and `interpret-native` reuses them so it never re-asks. They live in `docs/agents/project.md` and the user edits those two lines directly as the project moves phase.
+Explainer: two standing facts about the project — its **delivery intent** (how robust the output must be) and its **lifecycle stage** (where it is in its life). `frame-change` and `clarify-decisions` read them to right-size ceremony (a run-spike need not weigh data migration or deprecation; a released, scaling system weighs them heavily), and `interpret-session` reuses them so it never re-asks. They live in `docs/agents/project.md` and the user edits those two lines directly as the project moves phase.
 
 Confirm both, pre-filled from repo signals — never invented:
 
@@ -129,7 +129,7 @@ Confirm both, pre-filled from repo signals — never invented:
 
 ### H. Team
 
-Explainer: **team** composition — the **roster** of people/roles and optional CODEOWNERS ownership notes — is standing context for `frame-change`, `probe-decisions`, `plan-tasks`, `build-continuous`, `inspect-change`, `land-branch`, and `write-handoff`. Those skills **package** collaboration by **band** (Solo / Small / Multi) using the rules written in `docs/agents/project.md` `## Team`. Wrong band → wrong packaging (invented reviewers on a solo repo, or silent ownership on a multi-person one). Same class of fact as Project posture; orthogonal to delivery intent / lifecycle stage.
+Explainer: **team** composition — the **roster** of people/roles and optional CODEOWNERS ownership notes — is standing context for `frame-change`, `clarify-decisions`, `plan-tasks`, `build-in-waves`, `inspect-change`, `land-branch`, and `write-handoff`. Those skills **package** collaboration by **band** (Solo / Small / Multi) using the rules written in `docs/agents/project.md` `## Team`. Wrong band → wrong packaging (invented reviewers on a solo repo, or silent ownership on a multi-person one). Same class of fact as Project posture; orthogonal to delivery intent / lifecycle stage.
 
 **WHEN Decision H runs, read `team-inference.md` beside this file and follow it exactly** — local git / CODEOWNERS / AUTHORS / CONTRIBUTORS / package manifests only; **infer-then-confirm**.
 
@@ -148,7 +148,7 @@ Recommend: accept the draft after re-roling placeholders to real titles when you
 
 ### I. Project-docs layer (optional — default No)
 
-Explainer: large or long-lived projects can add an optional repo-level layer above the feature workflow — a product vision (`docs/product/vision.md`), an IDed architecture-invariant spine (`docs/architecture/`), and engineering guidelines (`docs/product/guidelines.md`), all authored by `anchor-project`. When these exist, `frame-change`, `design-solution`, `plan-tasks`, `build-continuous`, and `inspect-change` consult them; when they do not, nothing changes. Small repos should decline — it can be added later with `/anchor-project`.
+Explainer: large or long-lived projects can add an optional repo-level layer above the feature workflow — a product vision (`docs/product/vision.md`), an IDed architecture-invariant spine (`docs/architecture/`), and engineering guidelines (`docs/product/guidelines.md`), all authored by `define-project`. When these exist, `frame-change`, `design-solution`, `plan-tasks`, `build-in-waves`, and `inspect-change` consult them; when they do not, nothing changes. Small repos should decline — it can be added later with `/define-project`.
 
 Recommendation: **No** unless this is a large, multi-feature project.
 
@@ -212,13 +212,13 @@ The block (include the project-docs bullet only if decision I was Yes):
 This repo is configured for a spec-driven skill set.
 
 - Feature flow: `frame-change` → `specify-behavior` → `design-solution` →
-  `plan-tasks` → `build-continuous`
+  `plan-tasks` → `build-in-waves`
 - Bug on-ramp: `root-cause` (root cause first, then a guarded fix)
 - Capture a conversation/spec/idea into tracker issues: `/publish-issues` (user-run)
 - Incoming issues and PRs: `/triage` (user-run)
 - Traceability check: the `audit-trace` skill — run by `prove-claim` and `cut-release`;
   keep it clean
-- Project docs (layer enabled): `/anchor-project` maintains
+- Project docs (layer enabled): `/define-project` maintains
   `docs/product/vision.md`, the `docs/architecture/` invariant spine, and
   `docs/product/guidelines.md`; the feature skills consult them
 
@@ -230,7 +230,7 @@ Repo config the skills read:
 - Triage label mapping: `docs/agents/triage-labels.md`
 ```
 
-8. Ensure the local working dirs are git-ignored: the skills' scratch artifacts — `build-continuous`'s ledger and briefs, and the scan/review digests the spec skills write — live under `.skills/`, and isolated workspaces under `.isolate-workspace/`; neither belongs in version control. Idempotently, for each pattern: `grep -qxF '.skills/' .gitignore 2>/dev/null || printf '.skills/\n' >> .gitignore` (same for `.isolate-workspace/`), then stage `.gitignore`. (A line-presence check, not `git check-ignore` — a trailing-slash pattern only matches an *existing* directory, so `check-ignore` would re-append before the dir exists.)
+8. Ensure the local working dirs are git-ignored: the skills' scratch artifacts — `build-in-waves`'s ledger and briefs, and the scan/review digests the spec skills write — live under `.skills/`, and isolated workspaces under `.isolate-workspace/`; neither belongs in version control. Idempotently, for each pattern: `grep -qxF '.skills/' .gitignore 2>/dev/null || printf '.skills/\n' >> .gitignore` (same for `.isolate-workspace/`), then stage `.gitignore`. (A line-presence check, not `git check-ignore` — a trailing-slash pattern only matches an *existing* directory, so `check-ignore` would re-append before the dir exists.)
 9. If decision J (Default PR base) was confirmed, add `- **Default PR base:** \`<branch>\`` to the **Project posture** section of `docs/agents/project.md`, under the additive rule above — merge in, never clobber a value the user already set. If the user declined decision J, write nothing: leave the field absent so `package-change` asks per invocation.
 
 **Done when:** all files are written, `.skills/` and `.isolate-workspace/` are git-ignored, and `git status` shows only the expected additions/edits.

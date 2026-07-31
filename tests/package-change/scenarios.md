@@ -45,7 +45,7 @@ story's IDs under its heading as they implement it.
 - PCHG-2.8 config or `docs/agents/project.md` absent — proceed on the invocation's
   base and name `/configure-repo`
 - PCHG-2.9 resolved base memoized for the session and recorded in the PR package
-- PCHG-2.10 configured default no longer resolves to a live branch — route-work again for
+- PCHG-2.10 configured default no longer resolves to a live branch — route-task again for
   this invocation
 
 ## 3. Explain the change from real evidence, or say less
@@ -177,14 +177,14 @@ story's IDs under its heading as they implement it.
 
 ## 9. Continue automatically from an executed plan
 
-- PCHG-9.1 `build-continuous`'s closing sequence runs `package-change` after
+- PCHG-9.1 `build-in-waves`'s closing sequence runs `package-change` after
   whole-branch review, polish, and acceptance, and before `land-branch`
 - PCHG-9.2 every commit created by the plan's task implementers is left
   unmodified — no amend, squash, or reorder
 - PCHG-9.3 uncommitted residue left after the plan's tasks is grouped and
   committed using the approved plan, the cited requirements, the recorded
   implementation context, and the resolved conventions
-- PCHG-9.4 the build-continuous continuation creates commits without a further
+- PCHG-9.4 the build-in-waves continuation creates commits without a further
   approval step, asking only the PCHG-1.5 exception questions
 
 ## 10. Configure the default PR base once
@@ -214,12 +214,12 @@ story's IDs under its heading as they implement it.
   named under their existing risk-glob predicates
 - PCHG-11.6 (guard) force-push still happens only on the user's explicit
   request, never on `land-branch`'s own initiative
-- PCHG-11.7 (guard) `build-continuous` still runs whole-branch review, one fixer
+- PCHG-11.7 (guard) `build-in-waves` still runs whole-branch review, one fixer
   pass if needed, polish, then acceptance, in that order, before any ship
   step
-- PCHG-11.8 (guard) `build-continuous` in continuous mode still never pauses
+- PCHG-11.8 (guard) `build-in-waves` in continuous mode still never pauses
   between tasks to ask permission to continue
-- PCHG-11.9 (guard) `build-continuous` still appends each completed task's line
+- PCHG-11.9 (guard) `build-in-waves` still appends each completed task's line
   to `.skills/progress.md`
 - PCHG-11.10 (guard) `configure-repo` still walks its decisions one at a time,
   waiting for the user's answer before moving on

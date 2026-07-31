@@ -121,7 +121,7 @@ test('preserves unsaved editor state across hydration [SHELL-1.9]', …)
 
 - **Remove ALL instrumentation.** `grep` for the `[DBG-x7q2]` prefix used during Phase 3. Delete throwaway harnesses.
 - **State the confirmed root cause in the commit message.**
-- **Route Work: what would have prevented this bug?**
+- **Route Task: what would have prevented this bug?**
 
 ```
 fix(shell): activate the persisted module after store hydration
@@ -159,7 +159,7 @@ Then `inspect-change` (Spec axis, against the two new IDs) and `land-branch`.
 
 Two requirement criteria. Two tagged tests. One three-line fix. One commit with two trailers.
 
-No `design.md`. No `tasks.md`. No `build-continuous`.
+No `design.md`. No `tasks.md`. No `build-in-waves`.
 
 What tier 1 bought that a bare fix would not have: the guard requirement, which is now a permanent, machine-checked assertion that hydration does not eat unsaved editor state — a behavior nobody would have thought to protect, found only because the process required actively looking for it.
 

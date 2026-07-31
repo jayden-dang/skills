@@ -4,7 +4,7 @@ Description-routing evidence for `author-skills`. Descriptions under test:
 
 - `skills/ship/package-change/SKILL.md`
 - `skills/ship/land-branch/SKILL.md`
-- Neighbors for should-not-fire traps: `build-continuous`, `cut-release`, `record-verdict`,
+- Neighbors for should-not-fire traps: `build-in-waves`, `cut-release`, `record-verdict`,
   `inspect-change`, `prove-claim`, `realign-spec`
 
 **Status:** query set locked before scoring. Live pass recorded below
@@ -16,7 +16,7 @@ Description-routing evidence for `author-skills`. Descriptions under test:
 |---|---|
 | `package-change` | Work is finished but commits and/or PR description still need **authoring** — nothing has crossed |
 | `land-branch` | Branch is reviewer-ready and an **integration decision** (merge / PR / keep / discard / block) is needed |
-| `build-continuous` | An approved `tasks.md` still needs **executing** (implement + review loop), not ship authoring alone |
+| `build-in-waves` | An approved `tasks.md` still needs **executing** (implement + review loop), not ship authoring alone |
 | `cut-release` | Work is already **merged** to the release branch; version/tag/publish |
 
 ## Method
@@ -51,7 +51,7 @@ Roster for this pass: record the harness model on each row.
 | SN1 | Merge this into main — commits and PR content already authored and approved | `land-branch` | "merge" alone |
 | SN2 | Implementation complete, what should I do with the branch? | `land-branch` | menu language |
 | SN3 | Push and create the pull request — package already at `.skills/pr-packages/…` | `land-branch` | "create PR" after package |
-| SN4 | Approved tasks.md is ready — execute the plan | `build-continuous` | end-of-plan ship |
+| SN4 | Approved tasks.md is ready — execute the plan | `build-in-waves` | end-of-plan ship |
 | SN5 | Cut a release, bump version, tag and publish | `cut-release` | ship vocabulary |
 | SN6 | Publish the decision record before we cross | `record-verdict` | crossing adjacent |
 | SN7 | Review this branch's diff for standards and spec | `inspect-change` | before ship |
@@ -80,7 +80,7 @@ weaker roster model is available).
 | SN1 | land-branch | grok-4.5 | land-branch | yes | |
 | SN2 | land-branch | grok-4.5 | land-branch | yes | |
 | SN3 | land-branch | grok-4.5 | land-branch | yes | package already present |
-| SN4 | build-continuous | grok-4.5 | build-continuous | yes | |
+| SN4 | build-in-waves | grok-4.5 | build-in-waves | yes | |
 | SN5 | cut-release | grok-4.5 | cut-release | yes | |
 | SN6 | record-verdict | grok-4.5 | record-verdict | yes | |
 | SN7 | inspect-change | grok-4.5 | inspect-change | yes | |

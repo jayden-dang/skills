@@ -12,7 +12,7 @@ Method: `author-skills` + `pressure-testing.md`. Fresh subagents, fixture
 | S-BS-U2 unfamiliar module | Surfaced ≥5 territory traps before preference Q | Blindspot *content* often emerges from step-1 scan already |
 | S-BS-U3 taste / feel | Multi-variant run-spike path **A** | `run-spike` detour already fires for unknown knowns |
 | S-BS-U5 authority “don’t open src/auth” | Path **A** — disobeyed skip, behavioral reqs only | HARD-GATE + step 1 already beat authority skip |
-| Probe Decisions + design director “ask color first” | Still opened with personal vs enterprise OAuth | Dependency-order already protects blast radius |
+| Clarify Decisions + design director “ask color first” | Still opened with personal vs enterprise OAuth | Dependency-order already protects blast radius |
 | Research without pressure | Taught criteria before looks | Soft path OK; pressure path fails (below) |
 
 ## Real RED failures (rules may ship only for these)

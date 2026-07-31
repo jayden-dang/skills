@@ -8,8 +8,8 @@ WRITE_PLAN = REPO / "skills" / "spec" / "plan-tasks" / "SKILL.md"
 TASKS_TPL = REPO / "templates" / "tasks.md"
 WRITE_REQ = REPO / "skills" / "spec" / "specify-behavior" / "SKILL.md"
 REQ_TPL = REPO / "templates" / "requirements.md"
-EXECUTE = REPO / "skills" / "execution" / "build-continuous" / "SKILL.md"
-STORY_UNIT = REPO / "skills" / "execution" / "build-continuous" / "story-unit-mode.md"
+EXECUTE = REPO / "skills" / "execution" / "build-in-waves" / "SKILL.md"
+STORY_UNIT = REPO / "skills" / "execution" / "build-in-waves" / "story-unit-mode.md"
 FINISH = REPO / "skills" / "ship" / "land-branch" / "SKILL.md"
 AGENTS = REPO / "AGENTS.md"
 
@@ -75,7 +75,7 @@ class ExecutePlanContracts(unittest.TestCase):
         self.assertIn("story-unit", self.ep)
         self.assertIn("Execution-mode", self.ep)
         self.assertIn("story-unit-mode.md", self.ep)
-        self.assertTrue(STORY_UNIT.is_file(), "recipe must live beside build-continuous")
+        self.assertTrue(STORY_UNIT.is_file(), "recipe must live beside build-in-waves")
         self.assertIn("Derive partition", self.su)
         self.assertIn("Unit table", self.su)
 

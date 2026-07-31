@@ -6,7 +6,7 @@ retired code).
 
 **Roadmap item** binds the feature to the `ROAD-N` it implements, when the project has a
 `docs/roadmap/INDEX.md`. Write `—` when there is no roadmap layer, or when this work was
-not planned as a roadmap item. The column is what lets `status-roadmap` join plan to spec;
+not planned as a roadmap item. The column is what lets `refresh-roadmap-status` join plan to spec;
 `specify-behavior` is the only writer of any cell in this table.
 
 | Code | Feature | Spec | Status | Roadmap item |

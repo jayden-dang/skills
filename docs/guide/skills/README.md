@@ -15,7 +15,7 @@ The skills that govern the other skills.
 | Skill | Invocation | What it does |
 |---|---|---|
 | [`gate-session`](gate-session.md) | model (session-injected) | The gate. If there is even a 1% chance a skill applies, invoke it first |
-| [`route-work`](route-work.md) | `/route-work` | The router. Maps any situation to the right entry point |
+| [`route-task`](route-task.md) | `/route-task` | The router. Maps any situation to the right entry point |
 | [`author-skills`](author-skills.md) | `/author-skills` | TDD for process documentation. The standard every skill here is written against |
 
 ## setup
@@ -34,7 +34,7 @@ Turn an idea into an agreed shape. Produces no code.
 | Skill | Invocation | What it does |
 |---|---|---|
 | [`frame-change`](frame-change.md) | model | **The hard gate.** No code until the ceremony tier is stated out loud |
-| [`probe-decisions`](probe-decisions.md) | model | The interview primitive. Full-context question cards, decisions table at close |
+| [`clarify-decisions`](clarify-decisions.md) | model | The interview primitive. Full-context question cards, decisions table at close |
 | [`research`](research.md) | model | Primary sources only. One cited markdown file, ending in Open decisions |
 | [`run-spike`](run-spike.md) | model | Throwaway code answering one design question. The answer is the only deliverable |
 | [`define-domain`](define-domain.md) | model | Maintains `CONTEXT.md` and `docs/adr/`. ADRs pass a three-part gate |
@@ -53,8 +53,8 @@ The triad. Each file approved before the next is written.
 
 | Skill | Invocation | What it does |
 |---|---|---|
-| [`build-continuous`](build-continuous.md) | model | Continuous + subagents: fresh implementer per task, two-verdict reviews, parallel waves, ledger |
-| [`build-story-units`](build-story-units.md) | model | Story-unit: derived review units, human unlock after each unit, mode-change write-back |
+| [`build-in-waves`](build-in-waves.md) | model | Continuous + subagents: fresh implementer per task, two-verdict reviews, parallel waves, ledger |
+| [`build-by-story`](build-by-story.md) | model | Story-unit: derived review units, human unlock after each unit, mode-change write-back |
 | [`build-inline`](build-inline.md) | model | Controller implements with `test-first`; no implementer subagents; stop-on-blocker; sequential |
 | [`test-first`](test-first.md) | model | **Iron Law:** no production code without a failing test first |
 | [`root-cause`](root-cause.md) | model | **Iron Law:** no fixes without root cause. Phase 1 is the red-capable command gate |
@@ -69,9 +69,9 @@ The triad. Each file approved before the next is written.
 | [`inspect-change`](inspect-change.md) | model | Two axes — Standards and Spec — run by separate subagents and never merged |
 | [`study-change`](study-change.md) | `/study-change` | Outbound self-check: Background → Intuition → Code → Quiz HTML packet |
 | [`brief-team`](brief-team.md) | `/brief-team` | Team-shared pitch+map HTML under `docs/explainers/` (no quiz, never a ship gate) |
-| [`sample-attention`](sample-attention.md) | `/sample-attention` | Bounded human sample over a range, plus the explicit residue |
+| [`select-review-sample`](select-review-sample.md) | `/select-review-sample` | Bounded human sample over a range, plus the explicit residue |
 | [`vet-feedback`](vet-feedback.md) | model | Anti-sycophancy. Prove Claim every claim before implementing or replying |
-| [`judge-invariants`](judge-invariants.md) | model | Advisory, LLM-judged invariant conformance — the semantic counterpart to `audit-trace` |
+| [`review-invariants`](review-invariants.md) | model | Advisory, LLM-judged invariant conformance — the semantic counterpart to `audit-trace` |
 
 ## acceptance
 
@@ -82,8 +82,8 @@ Green units prove assertions pass. These prove the feature works.
 | [`validate-feature`](validate-feature.md) | model | The orchestrator. Derives an ID-keyed checklist and dispatches by surface |
 | [`validate-api`](validate-api.md) | model | Drives the running backend as a real client. Promotes checks to tagged tests |
 | [`validate-ui`](validate-ui.md) | model | Drives the frontend in real Chromium via Playwright. Commits the specs |
-| [`walk-product`](walk-product.md) | model | The manual sibling. Builds a persistent, checkable HTML artifact |
-| [`drive-walk`](drive-walk.md) | model | Executes an existing walk-product guide in a real browser; run ledger with FE+BE evidence |
+| [`review-product-flow`](review-product-flow.md) | model | The manual sibling. Builds a persistent, checkable HTML artifact |
+| [`run-product-walkthrough`](run-product-walkthrough.md) | model | Executes an existing review-product-flow guide in a real browser; run ledger with FE+BE evidence |
 
 ## craft
 
@@ -107,7 +107,7 @@ The visual layer. Fires before any HTML a human will look at.
 | [`amend-feature`](amend-feature.md) | model | The maintenance fast lane for a shipped, spec'd feature. Not a gate bypass |
 | [`reroute-plan`](reroute-plan.md) | model | The mid-flight rewind decision. Classifies a plan-invalidating discovery to the lowest broken artifact and routes the re-entry |
 | [`realign-spec`](realign-spec.md) | model | The anti-rot skill. Realigns the triad with what the code actually does |
-| [`status-roadmap`](status-roadmap.md) | `/status-roadmap` | The horizontal check. Derives where the plan stands from the roadmap, the specs and git, then names one next action. Writes nothing |
+| [`refresh-roadmap-status`](refresh-roadmap-status.md) | `/refresh-roadmap-status` | The horizontal check. Derives where the plan stands from the roadmap, the specs and git, then names one next action. Writes nothing |
 | [`assess-milestone`](assess-milestone.md) | `/assess-milestone` | The close gate. Judges whether a milestone's outcome was achieved, records it append-only, and holds the close until you dispose of the verdict |
 | [`publish-issues`](publish-issues.md) | `/publish-issues` | Context → tracker issues. Audit Tracer-bullet slices with blocking edges, published agent-ready |
 | [`triage`](triage.md) | `/triage` | A two-axis issue state machine. Verify the claim before recommending |
@@ -120,8 +120,8 @@ The optional documentation layer above the feature workflow. Absent by default.
 
 | Skill | Invocation | What it does |
 |---|---|---|
-| [`anchor-project`](anchor-project.md) | `/anchor-project` | Authors and maintains the optional project layer — product vision, IDed architecture-invariant spine, and engineering guidelines |
-| [`dispose-pivot`](dispose-pivot.md) | `/dispose-pivot` | Disposition ledger when a product pivot puts shipped code at odds with a new vision or architecture — before vision rewrites |
+| [`define-project`](define-project.md) | `/define-project` | Authors and maintains the optional project layer — product vision, IDed architecture-invariant spine, and engineering guidelines |
+| [`assess-pivot-impact`](assess-pivot-impact.md) | `/assess-pivot-impact` | Disposition ledger when a product pivot puts shipped code at odds with a new vision or architecture — before vision rewrites |
 | [`plan-milestones`](plan-milestones.md) | model-invocable | Authors and maintains `docs/roadmap/INDEX.md` — `MILE-N` milestones and `ROAD-N` items, intent only, progress never stored |
 
 ---

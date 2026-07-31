@@ -26,7 +26,7 @@ This skill set is opinionated and it costs something. Knowing when it earns its 
 
 ## Choosing your entry point
 
-If you are unsure, run `/route-work` — it is a router whose entire job is mapping a situation to the right entry point. Otherwise:
+If you are unsure, run `/route-task` — it is a router whose entire job is mapping a situation to the right entry point. Otherwise:
 
 | Your situation | Start here |
 |---|---|
@@ -36,8 +36,8 @@ If you are unsure, run `/route-work` — it is a router whose entire job is mapp
 | Small change to an already-shipped, spec'd feature | [`amend-feature`](../skills/amend-feature.md) |
 | Something is broken | [`root-cause`](../skills/root-cause.md) |
 | Unit tests green, unsure it truly works | [`validate-feature`](../skills/validate-feature.md) |
-| Want to try a finished feature by hand | [`walk-product`](../skills/walk-product.md) |
-| Have a walk-product guide and want the agent to run every case | [`drive-walk`](../skills/drive-walk.md) |
+| Want to try a finished feature by hand | [`review-product-flow`](../skills/review-product-flow.md) |
+| Have a review-product-flow guide and want the agent to run every case | [`run-product-walkthrough`](../skills/run-product-walkthrough.md) |
 | A conversation, spec, or idea to capture as tracker issues | [`/publish-issues`](../skills/publish-issues.md) |
 | Incoming issue or external PR you did not author | [`/triage`](../skills/triage.md) |
 | Codebase feels muddy, want a refactor target | [`/scan-architecture`](../skills/scan-architecture.md) |
@@ -45,7 +45,7 @@ If you are unsure, run `/route-work` — it is a router whose entire job is mapp
 | Cutting a version | [`/cut-release`](../skills/cut-release.md) |
 | Spec has drifted from the code, or the audit-trace check comes back dirty | [`realign-spec`](../skills/realign-spec.md) |
 
-Two rules of thumb resolve most remaining ambiguity, and both come from `route-work`:
+Two rules of thumb resolve most remaining ambiguity, and both come from `route-task`:
 
 > Never spec what you do not understand yet. Unknowns go to `research` or `run-spike` first.
 
@@ -67,11 +67,11 @@ One operational rule that is easy to miss and expensive to violate:
 
 **Keep discovery through planning in one unbroken context window.** `frame-change` → `specify-behavior` → `design-solution` → `plan-tasks` is a single continuous act of thinking. If the window is filling before the plan is done, do not push through — run `/write-handoff` and move to a fresh session with a document a successor can resume from.
 
-Execution is different. `build-continuous` sessions are context-isolated **per task by design**: each task gets a fresh subagent whose world is a generated brief file. That is not a limitation being worked around; it is the mechanism.
+Execution is different. `build-in-waves` sessions are context-isolated **per task by design**: each task gets a fresh subagent whose world is a generated brief file. That is not a limitation being worked around; it is the mechanism.
 
 ## See also
 
 - [Ceremony tiers](ceremony-tiers.md) — how the system scales down for small work
 - [Philosophy](philosophy.md) — the principles behind these boundaries
-- [`route-work`](../skills/route-work.md) — the router, when you are unsure
+- [`route-task`](../skills/route-task.md) — the router, when you are unsure
 - [Adopting the skill set](../resources/adopting.md) — the practical install path

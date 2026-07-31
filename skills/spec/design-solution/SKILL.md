@@ -58,7 +58,7 @@ latest stable version and present API through the **Context7 MCP** (or `research
 it) before you name it — a pitch built on a training-cutoff recollection can cite a version,
 package name, or API that no longer exists. Wait for their agreement before writing it into the
 design as the chosen approach; if they decline, fall back down the ladder — an already-installed
-dependency, or the minimum new code that works. An *already-installed* dependency (rung 5) needs no such route-work —
+dependency, or the minimum new code that works. An *already-installed* dependency (rung 5) needs no such route-task —
 reuse it freely. The `Reuse:` line itself stays advisory; it is the new-dependency *adoption*
 that is the user's call.
 

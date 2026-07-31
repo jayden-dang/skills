@@ -101,7 +101,7 @@ approving the resulting roadmap. Covers ASSESS-5.13.
 - `assess-milestone` modifies `docs/roadmap/INDEX.md` only through `plan-milestones` — it has no
   write step targeting that file, and the closure it wants is expressed as a handoff. Covers
   ASSESS-5.9.
-- `/sample-attention` is named for the user, never run from inside the skill;
+- `/select-review-sample` is named for the user, never run from inside the skill;
   `scripts/lint-handoffs.py` fails the build on any invoking phrasing, and did so once during
   this feature's own implementation. Covers ASSESS-5.10.
 - `audit-trace` still checks referential integrity for `CODE-N.M` and `ARCH-N` only. This feature

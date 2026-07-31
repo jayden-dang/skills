@@ -1,8 +1,8 @@
 # Phase 3 — Execution
 
 **Skills:** [`isolate-workspace`](../skills/isolate-workspace.md) → one of
-[`build-continuous`](../skills/build-continuous.md) |
-[`build-story-units`](../skills/build-story-units.md) |
+[`build-in-waves`](../skills/build-in-waves.md) |
+[`build-by-story`](../skills/build-by-story.md) |
 [`build-inline`](../skills/build-inline.md), governed throughout by
 [`test-first`](../skills/test-first.md), [`root-cause`](../skills/root-cause.md), and
 [`prove-claim`](../skills/prove-claim.md)
@@ -30,11 +30,11 @@ Pick **one** skill from the approved plan's `Execution-mode` and the run route:
 
 | Skill | When |
 |---|---|
-| [`build-continuous`](../skills/build-continuous.md) | `Execution-mode: continuous` + subagent waves |
-| [`build-story-units`](../skills/build-story-units.md) | `Execution-mode: story-unit` (human-gated review units) |
+| [`build-in-waves`](../skills/build-in-waves.md) | `Execution-mode: continuous` + subagent waves |
+| [`build-by-story`](../skills/build-by-story.md) | `Execution-mode: story-unit` (human-gated review units) |
 | [`build-inline`](../skills/build-inline.md) | No implementer subagents / user watches the controller implement |
 
-### `build-continuous` (continuous + subagents)
+### `build-in-waves` (continuous + subagents)
 
 Drives the plan with one fresh implementer subagent per task, a two-verdict review of each task's diff, optional parallel waves, and a whole-branch review at the end.
 
@@ -42,13 +42,13 @@ Drives the plan with one fresh implementer subagent per task, a two-verdict revi
 
 **Continuous execution.** Do not pause between tasks to ask "should I continue?" — check-ins waste the user's time. The only legitimate stops are a `BLOCKED` status you cannot resolve, ambiguity that genuinely prevents progress, or all tasks complete.
 
-### `build-story-units` (story-unit + human gates)
+### `build-by-story` (story-unit + human gates)
 
-Same per-task subagent loop, but tasks are partitioned into **review units** derived from requirement stories. After each unit: unit agent review → **STOP for human** → unlock. "continue" advances one unit; "stop stopping" / "just run it all" must write `Execution-mode: continuous` then hand off to `build-continuous`.
+Same per-task subagent loop, but tasks are partitioned into **review units** derived from requirement stories. After each unit: unit agent review → **STOP for human** → unlock. "continue" advances one unit; "stop stopping" / "just run it all" must write `Execution-mode: continuous` then hand off to `build-in-waves`.
 
 ### `build-inline` (controller implements)
 
-No implementer or task-reviewer subagents. You implement each task yourself under `test-first`, append the same style of ledger lines, stop and ask on blockers (never guess), and finish with whole-branch `inspect-change`. **No unit barriers** even if the header is `story-unit` — barriers belong to `build-story-units`.
+No implementer or task-reviewer subagents. You implement each task yourself under `test-first`, append the same style of ledger lines, stop and ask on blockers (never guess), and finish with whole-branch `inspect-change`. **No unit barriers** even if the header is `story-unit` — barriers belong to `build-by-story`.
 
 ### Setup
 
@@ -135,5 +135,5 @@ State the model **explicitly on every dispatch** — an omitted model inherits y
 ## See also
 
 - [The gates](../concepts/gates.md) — `test-first`, `root-cause`, and `prove-claim` in detail
-- [`build-continuous`](../skills/build-continuous.md) · [`build-story-units`](../skills/build-story-units.md) · [`build-inline`](../skills/build-inline.md)
+- [`build-in-waves`](../skills/build-in-waves.md) · [`build-by-story`](../skills/build-by-story.md) · [`build-inline`](../skills/build-inline.md)
 - [The artifact model](../concepts/artifacts.md) — what lives in `.skills/`

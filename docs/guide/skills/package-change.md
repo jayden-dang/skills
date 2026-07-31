@@ -11,7 +11,7 @@
 | **Reads** | the working tree and branch history, `docs/agents/project.md` (base and convention config), `docs/agents/issue-tracker.md`, approved specs, ADRs, decision records, `.skills/implementation-notes.md` |
 | **Writes** | commits it creates itself; `.skills/pr-packages/<stable-id>/{manifest.md,title.txt,body.md}` |
 | **Calls** | — |
-| **Called by** | [`build-continuous`](build-continuous.md) (its closing sequence, before `land-branch`) |
+| **Called by** | [`build-in-waves`](build-in-waves.md) (its closing sequence, before `land-branch`) |
 
 ## When it fires
 
@@ -61,5 +61,5 @@ reference file (`conventions.md`, `tickets.md`, `package-contract.md`).
 
 - [`land-branch`](land-branch.md) — approves and submits the package this skill
   writes
-- [`build-continuous`](build-continuous.md) — runs this skill at the end of its closing
+- [`build-in-waves`](build-in-waves.md) — runs this skill at the end of its closing
   sequence

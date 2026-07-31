@@ -92,13 +92,13 @@ Rewrite the description as **trigger + outcome noun, never the workflow**.
 
 `triage` carries `disable-model-invocation: true`. The agent *cannot* invoke it. Some skill body is directing a hand-off to a user-invoked target — that is a real bug, not a style nit. A hand-off reaches a user-invoked skill only by *naming it for the user to run*.
 
-The user-invoked set: `/route-work`, `/author-skills`, `/teach-pack`, `/configure-repo`, `/bootstrap-repo`, `/anchor-project`, `/triage`, `/scan-architecture`, `/write-handoff`, `/publish-issues`, `/cut-release`.
+The user-invoked set: `/route-task`, `/author-skills`, `/teach-pack`, `/configure-repo`, `/bootstrap-repo`, `/define-project`, `/triage`, `/scan-architecture`, `/write-handoff`, `/publish-issues`, `/cut-release`.
 
 ---
 
 ## Execution problems
 
-### `build-continuous` re-ran a task that was already done
+### `build-in-waves` re-ran a task that was already done
 
 The controller trusted its own memory after a compaction. `.skills/progress.md` is the source of truth:
 
@@ -110,7 +110,7 @@ After compaction or resume, trust the ledger and `git log`. Never re-dispatch a 
 
 Check the review bundle's diff base. The controller builds the bundle itself — `git log`/`git diff` from a recorded base into `.skills/review-<base7>..<head7>.diff` — and if that base is `HEAD~1` instead of the sha recorded *before* the implementer was dispatched, the reviewer saw only the last commit of a multi-commit task.
 
-`build-continuous` warns about this: `BASE=$(git rev-parse HEAD)` is step 1 of the per-task loop for exactly this reason.
+`build-in-waves` warns about this: `BASE=$(git rev-parse HEAD)` is step 1 of the per-task loop for exactly this reason.
 
 ### An implementer keeps returning BLOCKED
 
@@ -127,7 +127,7 @@ Never force the same model to retry with nothing changed. Diagnose:
 
 The plan does not grade its own work. Present the finding **and** the mandating plan text to the user and ask which governs. Never dismiss the finding; never dispatch a fix that contradicts the plan without asking.
 
-`build-continuous`'s pre-flight scan is meant to catch these before any dispatch and batch them into one question.
+`build-in-waves`'s pre-flight scan is meant to catch these before any dispatch and batch them into one question.
 
 ---
 
@@ -184,4 +184,4 @@ For a non-deterministic bug, do not chase a clean repro. Raise the reproduction 
 - [Traceability — the spine](../concepts/traceability.md) — what the audit-trace check is and the finding codes
 - [The gates](../concepts/gates.md) — what each Iron Law is preventing
 - [`realign-spec`](../skills/realign-spec.md) — the skill for realigning a drifted spec
-- [`route-work`](../skills/route-work.md) — the router, when you do not know which flow you are in
+- [`route-task`](../skills/route-task.md) — the router, when you do not know which flow you are in

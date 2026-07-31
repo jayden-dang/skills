@@ -8,7 +8,7 @@ The skill set is a chain. Each link is a hand-off written into a skill body as a
 gate-session                 session gate, injected on startup/clear/compact
       │
       ▼
-frame-change                   probe-decisions + define-domain; research/run-spike detours;
+frame-change                   clarify-decisions + define-domain; research/run-spike detours;
                              docs/specs/ overlap search; tier decision; approach chosen
                              ══ HARD GATE: no code, no scaffolding ══
       │
@@ -28,7 +28,7 @@ plan-tasks                   vertical-slice tasks with _Requirements:_ footers;
 isolate-workspace                    isolated workspace, clean baseline
       │
       ▼
-execute family               build-continuous | build-story-units | build-inline
+execute family               build-in-waves | build-by-story | build-inline
                              per task: brief → implement (test-first) → review/ledger →
                              two-verdict review → fixes → ledger
                              [debug on failures; prove-claim before any claim]
@@ -39,7 +39,7 @@ inspect-change                  whole-branch, two axes: Standards + Spec-by-ID
       ▼
 validate-feature             drive the running system through the spec's user-facing
                              behaviors (API + UI); fix; promote to tagged tests
-                             (+ walk-product for a manual, human-eyeball pass)
+                             (+ review-product-flow for a manual, human-eyeball pass)
       │
       ▼
 land-branch                prove-claim + audit-trace gate, then merge / PR / keep / discard
@@ -81,7 +81,7 @@ amend-feature                        small in-scope change to a shipped, spec'd 
                              → genuinely new scope: escalate to frame-change
 
 /scan-architecture        periodic codebase-wide friction scan → HTML report
-                             → probe-decisions on the chosen candidate → frame-change
+                             → clarify-decisions on the chosen candidate → frame-change
 
 /publish-issues                 a conversation, spec, or idea → tracer-bullet issues
                              on the tracker → execute or implement directly
@@ -96,14 +96,14 @@ realign-spec                    whenever a spec'd feature changed outside its pl
 
 | Phase | Skills | Page |
 |---|---|---|
-| Project layer *(optional, above the feature loop)* | `anchor-project`, `judge-invariants` | [`anchor-project`](../skills/anchor-project.md) |
-| Discovery | `frame-change`, `probe-decisions`, `research`, `run-spike`, `define-domain` | [Discovery](discovery.md) |
+| Project layer *(optional, above the feature loop)* | `define-project`, `review-invariants` | [`define-project`](../skills/define-project.md) |
+| Discovery | `frame-change`, `clarify-decisions`, `research`, `run-spike`, `define-domain` | [Discovery](discovery.md) |
 | Specification | `specify-behavior`, `design-solution`, `plan-tasks` | [Specification](specification.md) |
-| Execution | `isolate-workspace`, `build-continuous`, `build-story-units`, `build-inline`, `test-first`, `root-cause`, `prove-claim`, `audit-trace` | [Execution](execution.md) |
-| Review & acceptance | `inspect-change`, `vet-feedback`, `judge-invariants`, `acceptance-*`, `walk-product`, `drive-walk` | [Review and acceptance](review-and-acceptance.md) |
+| Execution | `isolate-workspace`, `build-in-waves`, `build-by-story`, `build-inline`, `test-first`, `root-cause`, `prove-claim`, `audit-trace` | [Execution](execution.md) |
+| Review & acceptance | `inspect-change`, `vet-feedback`, `review-invariants`, `acceptance-*`, `review-product-flow`, `run-product-walkthrough` | [Review and acceptance](review-and-acceptance.md) |
 | Ship & maintain | `land-branch`, `cut-release`, `realign-spec`, `amend-feature`, `publish-issues`, `triage`, `scan-architecture`, `write-handoff` | [Ship and maintain](ship-and-maintain.md) |
 
-The **project layer** is optional and sits above the per-feature chain: on a large project, [`anchor-project`](../skills/anchor-project.md) writes a repo-level product vision and an IDed architecture-invariant spine that the discovery, spec, execution, and review phases consult when present — and ignore cleanly when absent. See [the artifact model](../concepts/artifacts.md#docsproduct-and-docsarchitecture--the-optional-project-layer).
+The **project layer** is optional and sits above the per-feature chain: on a large project, [`define-project`](../skills/define-project.md) writes a repo-level product vision and an IDed architecture-invariant spine that the discovery, spec, execution, and review phases consult when present — and ignore cleanly when absent. See [the artifact model](../concepts/artifacts.md#docsproduct-and-docsarchitecture--the-optional-project-layer).
 
 ## Context hygiene — the operational rule
 
@@ -111,7 +111,7 @@ Two facts about context shape how you run this chain, and violating either is ex
 
 **Discovery through planning belongs in one unbroken context window.** `frame-change` → `specify-behavior` → `design-solution` → `plan-tasks` is a single continuous act of thinking; each step's output depends on decisions and code knowledge accumulated in the previous ones. If the window is filling before the plan is done, do not push through — run `/write-handoff`, which writes a resumable document to the OS temp directory, and start a fresh session from it.
 
-**Execution is the opposite.** Subagent routes (`build-continuous`, `build-story-units`) isolate *per task by design*: each task gets a fresh implementer whose world is a generated brief file. The controller stays for coordination; progress goes to `.skills/progress.md`. `build-inline` keeps the controller as implementer but still uses the ledger so compaction cannot re-run finished work.
+**Execution is the opposite.** Subagent routes (`build-in-waves`, `build-by-story`) isolate *per task by design*: each task gets a fresh implementer whose world is a generated brief file. The controller stays for coordination; progress goes to `.skills/progress.md`. `build-inline` keeps the controller as implementer but still uses the ledger so compaction cannot re-run finished work.
 
 ## Where a chain can restart
 
@@ -127,5 +127,5 @@ The chain is not one-way. Several skills feed back into earlier phases:
 
 - [Overview](../methodology/overview.md) — what the system is and why
 - [Ceremony tiers](../methodology/ceremony-tiers.md) — which flow your work belongs in
-- [`route-work`](../skills/route-work.md) — the router, when the entry point is unclear
+- [`route-task`](../skills/route-task.md) — the router, when the entry point is unclear
 - [Examples](../examples/tier-2-feature.md) — the chain run end to end

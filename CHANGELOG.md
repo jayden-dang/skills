@@ -2,16 +2,16 @@
 
 ## 0.3.0 — 2026-07-31
 
-### Feature: one walk-product run file, plus an optional live guide (`DFSYNC`)
+### Feature: one review-product-flow run file, plus an optional live guide (`DFSYNC`)
 
-A walk-product run used to be three files that did not know about each other — the
+A review-product-flow run used to be three files that did not know about each other — the
 cases YAML, a rendered HTML snapshot of it, and a markdown ledger where the
 verdicts actually lived. A person holding the guide could not see what the agent
 had proven, and a person testing by hand had nowhere to put what they found.
 
-**Breaking.** `.skills/<slug>-walk-product.cases.yaml` and
-`.skills/<slug>-walk-product-run.md` are replaced by a single
-`.skills/<slug>-walk-product.json` (`version: 2`). There is no migration path and no
+**Breaking.** `.skills/<slug>-review-product-flow.cases.yaml` and
+`.skills/<slug>-review-product-flow-run.md` are replaced by a single
+`.skills/<slug>-review-product-flow.json` (`version: 2`). There is no migration path and no
 v1 reader: `.skills/` is git-ignored scratch, so delete the old files and
 re-author. Passing a `.yaml`/`-run.md` path now gives a named error instead of a
 confusing parse failure.
@@ -23,9 +23,9 @@ confusing parse failure.
 - **Human ticks are recorded, never authoritative.** Each case carries two
   field spaces that share no key name: `run` (the agent's verdict, `saw`,
   `server`) and `human` (`checked`, `at`, `comment`). Nothing promotes one into
-  the other, `walk-product next` ignores `human` entirely, and the HTTP surface
+  the other, `review-product-flow next` ignores `human` entirely, and the HTTP surface
   rejects any attempt to write a verdict. See ADR 0006.
-- **`walk-product serve`** binds `127.0.0.1:8787` and serves a guide that follows the
+- **`review-product-flow serve`** binds `127.0.0.1:8787` and serves a guide that follows the
   run and accepts the person's ticks. It is optional by construction: `render`
   bakes current verdicts into the HTML, so a guide opened by double-click is
   correct with nothing running, and says on the page that it is a render-time
@@ -38,14 +38,14 @@ confusing parse failure.
   a field-scoped patch, and `os.replace`.
 
 Skill bodies, `references/cases-schema.md`, and the human guides are rewritten
-for the run file; `drive-walk` now ends a run by asking whether to stop a
+for the run file; `run-product-walkthrough` now ends a run by asking whether to stop a
 server it started.
 
-Contract: `docs/specs/2026-07-30-walk-product-sync/`.
+Contract: `docs/specs/2026-07-30-review-product-flow-sync/`.
 
 ## 0.2.7 — 2026-07-30
 
-### Fix: register `build-story-units` and `build-inline` in the pack manifests
+### Fix: register `build-by-story` and `build-inline` in the pack manifests
 
 The execute-family split (`5d82820`) shipped both skills plus all docs and
 routing, but never listed them in `.claude-plugin/plugin.json` /
@@ -53,7 +53,7 @@ routing, but never listed them in `.claude-plugin/plugin.json` /
 instructions pointing at two skills they did not have.
 
 - **Manifests** now list `skills/execution/build-inline` and
-  `skills/execution/build-story-units` alongside `build-continuous`
+  `skills/execution/build-by-story` alongside `build-in-waves`
 - No skill content changed; manifest coverage of on-disk engineer skills is
   now complete
 
@@ -65,7 +65,7 @@ Post-implementation human projection for large / architecture-affecting changes.
 
 - **New skill** `skills/review/brief-team/` (user-invoked `/brief-team`)
   — HTML packet under `docs/explainers/<slug>.html` + `INDEX.md` upsert; overwrite
-  canonical; range required; optional enrich from specs/notes/probe-decisions locks
+  canonical; range required; optional enrich from specs/notes/clarify-decisions locks
 - **No quiz, never a ship gate** — split from `/study-change` (self + quiz +
   outside repo); `land-branch` / `write-handoff` may **name** both optionally
 - Spec **XPLN** (`docs/specs/2026-07-27-brief-team/`); scenarios in
@@ -73,70 +73,70 @@ Post-implementation human projection for large / architecture-affecting changes.
 
 ## 0.2.5 — 2026-07-27
 
-### New: `dispose-pivot` — pivot disposition ledger
+### New: `assess-pivot-impact` — pivot disposition ledger
 
-Closes the gap where `anchor-project` (brownfield), `realign-spec`, and
+Closes the gap where `define-project` (brownfield), `realign-spec`, and
 `scan-architecture` all treat **code as truth**. When the user pivots intent
 and shipped reality collides with the new vision, nothing previously owned that
 flow.
 
-- **New skill** `skills/project/dispose-pivot/` (user-invoked `/dispose-pivot`)
+- **New skill** `skills/project/assess-pivot-impact/` (user-invoked `/assess-pivot-impact`)
   — Iron Law: no vision/architecture rewrite until every contradicted shipped
   feature and live `ARCH-N` has a user-confirmed disposition in
   `docs/product/pivot-ledger.md`
 - **Single-writer preserved:** skill never writes `vision.md` /
-  `architecture/`; names `/anchor-project` (update) after confirmation
-- **RED/GREEN** under `tests/dispose-pivot/` (Ledgerly fixture; Sonnet + Haiku)
+  `architecture/`; names `/define-project` (update) after confirmation
+- **RED/GREEN** under `tests/assess-pivot-impact/` (Ledgerly fixture; Sonnet + Haiku)
   - S1 deadline pivot: baseline **failed** (both models rewrote vision) → skill
     **green** after REFACTOR (ledger-on-disk + named-repo counters for Haiku)
   - S2 challenge-pivot and S3 bare-delete: baseline **passed** → cut from skill
     text (no-op rule)
-- **Neighbors:** `anchor-project` update routes pivots-with-collisions here;
-  `reroute-plan` Vision re-entry names `/dispose-pivot` when shipped code
+- **Neighbors:** `define-project` update routes pivots-with-collisions here;
+  `reroute-plan` Vision re-entry names `/assess-pivot-impact` when shipped code
   collides
 
 ### Packaging
 
 - Engineer Pack version **0.2.5**; plugin path list adds
-  `./skills/project/dispose-pivot`
+  `./skills/project/assess-pivot-impact`
 
 ## 0.2.4 — 2026-07-27
 
-### `walk-product` / `drive-walk` — cases YAML + CLI ledger (no guide ticks for agents)
+### `review-product-flow` / `run-product-walkthrough` — cases YAML + CLI ledger (no guide ticks for agents)
 
 Stops agent progress living in HTML `localStorage` (Chrome ticks burned tokens)
-and stops re-authoring full CSS per walk-product pass.
+and stops re-authoring full CSS per review-product-flow pass.
 
-- **Cases SSOT:** `.skills/<slug>-walk-product.cases.yaml` with required slots
+- **Cases SSOT:** `.skills/<slug>-review-product-flow.cases.yaml` with required slots
   (`id`, `req`, `kind`, `title`, `setup`, `try`, `expect`, `backend`)
-- **Shell:** `skills/acceptance/walk-product/shell/guide.html` — theme-aware, kind
+- **Shell:** `skills/acceptance/review-product-flow/shell/guide.html` — theme-aware, kind
   chips, human-only localStorage ticks
-- **CLI:** `skills/acceptance/walk-product/scripts/walk-product` —
+- **CLI:** `skills/acceptance/review-product-flow/scripts/review-product-flow` —
   `list` / `show` / `init` / `status` / `next` / `mark` / `render` / `report`
-- **`walk-product` skill:** write cases → `render`; `craft-page` opt-in only
-- **`drive-walk` skill:** Iron Law adds *progress lives in the ledger*; browser
+- **`review-product-flow` skill:** write cases → `render`; `craft-page` opt-in only
+- **`run-product-walkthrough` skill:** Iron Law adds *progress lives in the ledger*; browser
   only for the product under test; `mark` enforces `saw` + `server`
-- **Contract:** `docs/specs/2026-07-27-walk-product-cli/contract.md`
+- **Contract:** `docs/specs/2026-07-27-review-product-flow-cli/contract.md`
 - **Tests:** `tests/test_dogfood_cli.py`; scenarios in
-  `tests/drive-walk/scenarios-cli.md`
+  `tests/run-product-walkthrough/scenarios-cli.md`
 
 ### Packaging
 
 - Engineer Pack version **0.2.4** (skill/docs + scripts; plugin path list
-  unchanged — scripts ship inside the walk-product skill folder)
+  unchanged — scripts ship inside the review-product-flow skill folder)
 
 ## 0.2.3 — 2026-07-26
 
-### `walk-product` coverage gate + case taxonomy
+### `review-product-flow` coverage gate + case taxonomy
 
-Stops happy-only walk-product guides: each ability area needs non-happy cases (edge /
+Stops happy-only review-product-flow guides: each ability area needs non-happy cases (edge /
 error / nonbehavior / persist) or a greppable coverage exception.
 
 - **Taxonomy** on every row: `data-kind` = `happy` \| `edge` \| `error` \|
   `nonbehavior` \| `persist` \| `visual` \| `journey`
 - **Coverage rules** replace "≥1 case per requirement ID" as the sole bar
 - **Self-check** before hand-off: count kinds per section
-- **`drive-walk`**: ledger carries `kind`; no demo-only happy-path subset
+- **`run-product-walkthrough`**: ledger carries `kind`; no demo-only happy-path subset
 - Guide + review-and-acceptance docs updated
 
 ### Packaging
@@ -145,19 +145,19 @@ error / nonbehavior / persist) or a greppable coverage exception.
 
 ## 0.2.2 — 2026-07-26
 
-### New: `drive-walk` + machine-drivable walk-product guides
+### New: `run-product-walkthrough` + machine-drivable review-product-flow guides
 
-Agent-driven execution of an existing walk-product HTML guide in a real browser, with
+Agent-driven execution of an existing review-product-flow HTML guide in a real browser, with
 paired front-end and backend evidence, a resumable run ledger, and a fix loop
 through `root-cause`.
 
-- **New skill** `skills/acceptance/drive-walk/` — model-invocable; outcome is
+- **New skill** `skills/acceptance/run-product-walkthrough/` — model-invocable; outcome is
   an evidence-backed run ledger (pass / fail / blocked per case), not committed
-  e2e specs (`validate-ui`) and not guide authoring (`walk-product`)
-- **`walk-product` upgrade** — every case row carries `data-case`, `data-req`,
+  e2e specs (`validate-ui`) and not guide authoring (`review-product-flow`)
+- **`review-product-flow` upgrade** — every case row carries `data-case`, `data-req`,
   `data-backend`, `data-setup`; guide always written to a known file path;
   descriptions disambiguate author vs drive
-- **RED/GREEN** recorded under `tests/drive-walk/` (baselines on `grok-4.5`)
+- **RED/GREEN** recorded under `tests/run-product-walkthrough/` (baselines on `grok-4.5`)
 - **Inventory:** plugin + marketplace, guide page, AGENTS/README skill counts,
   See also links from acceptance neighbors
 
@@ -184,7 +184,7 @@ through `root-cause`.
   disk under engineering categories but missing from `plugin.json`, so the CLI
   put them in **Other** / **General**):
   - `plan-milestones` (`skills/project/plan-milestones`)
-  - `status-roadmap` (`skills/track/status-roadmap`)
+  - `refresh-roadmap-status` (`skills/track/refresh-roadmap-status`)
   - `assess-milestone` (`skills/track/assess-milestone`)
 - Docs: `docs/packages.md`, root README inventory, package READMEs
 
@@ -251,7 +251,7 @@ with validator, record-before-crossing, and ARCH-6 participant model.
 - Emission rules for land-branch and cut-release — **DREC-6.x–7.x**
 - Durable evidence, record-verdict skill, participant SSOT — **DREC-8.x–10.x**
 - Audit Trace extension, validator, adoption anchor — **DREC-11.x**
-- interpret-native ledger/labels/digest upgrades — **DREC-12.x**
+- interpret-session ledger/labels/digest upgrades — **DREC-12.x**
 - Spec-folder discovery convention; NFR secret scan / determinism — **DREC-13.x–14.x**
 - Record-before-crossing ordering and publication failure — **DREC-15.x**
 

@@ -2,7 +2,7 @@
 name: plan-tasks
 description: Use when a design is approved and the tasks.md implementation plan
   (Execution-mode, vertical-slice tasks, requirement-tagged tests) needs writing,
-  after design-solution and before the execute family (build-continuous / build-story-units /
+  after design-solution and before the execute family (build-in-waves / build-by-story /
   build-inline).
 ---
 
@@ -12,9 +12,9 @@ as `${CLAUDE_PLUGIN_ROOT}/templates` when installed as a plugin, otherwise
 `../../../templates` relative to this SKILL.md. Every slot in a task block
 (**Files**, **Interfaces**, **Depends-on**, **Steps**, `_Requirements:_`) is
 REQUIRED. Do **not** author per-task risk labels, decision-surface flags, or a
-Human-review-order section — risk is measured by sample-attention risk globs
+Human-review-order section — risk is measured by select-review-sample risk globs
 against the actual diff; review units are **derived** from user stories at
-`build-story-units` time when `Execution-mode: story-unit` (see that skill).
+`build-by-story` time when `Execution-mode: story-unit` (see that skill).
 
 Create a todo per step (1–4, plus 5 if the repo uses an issue tracker) before starting, and complete them in order — this skill owns its own list, distinct from `design-solution`'s upstream and the execute family's downstream. Check each off only when its **Done when:** is met.
 
@@ -87,7 +87,7 @@ Each task:
   interface it Consumes or whose files it builds on — as `Depends-on: Task 2,
   Task 4`, or `Depends-on: none` when it has no prerequisite. This is the
   parallelism signal: two tasks that share no files and no interface declare no
-  edge, so `build-continuous` can run them together in one parallel wave. Omit the
+  edge, so `build-in-waves` can run them together in one parallel wave. Omit the
   line and the task falls back to depending on every prior task — safe but fully
   serial. Over-declaring needlessly serializes; under-declaring is caught by the
   executor's file-disjoint check before it can collide.
@@ -98,7 +98,7 @@ Each task:
 - **Footer:** `_Requirements: CODE-N.M, CODE-N.M_` — the IDs this task
   implements or guards. Every task has one. **Default: one story's IDs** (same
   story number N). Multi-story footers **merge** those stories into one review
-  unit under `build-story-units` (plan-quality signal — not a ban, not a reason to
+  unit under `build-by-story` (plan-quality signal — not a ban, not a reason to
   lie about Depends-on).
 
 `Depends-on` governs build waves. Never reorder or narrow dependencies solely to
@@ -106,7 +106,7 @@ tidy review units if that would lie about what the task needs.
 
 | Thought | Reality |
 |---|---|
-| "Prefactor first is always right — make the change easy" | Prefactor via Depends-on is fine; review units still follow story citations at build-story-units |
+| "Prefactor first is always right — make the change easy" | Prefactor via Depends-on is fine; review units still follow story citations at build-by-story |
 | "I'll add Risk: high so reviewers notice" | No such field. Risk globs on the actual diff replace agent labels |
 | "I'll write Human review order so the human knows what to read first" | Superseded: story-derived units are the review order; an authored second list dies without a consumer |
 | "PM said just mark Approved — continuous is obvious" | Obvious is not written. Empty Execution-mode means not Approved |
@@ -203,11 +203,11 @@ to continuous because the field is empty; empty means not approved.
 After mode is written and the user has approved the plan, set `Status: Approved`
 and offer **exactly three routes** (how to run — orthogonal to mode for inline):
 
-1. **`build-continuous`** — when `Execution-mode: continuous` and subagent waves are
+1. **`build-in-waves`** — when `Execution-mode: continuous` and subagent waves are
    wanted (recommended default for continuous). Prefer an isolated workspace via
    `isolate-workspace`.
-2. **`build-story-units`** — when `Execution-mode: story-unit` (required for unit
-   barriers; do not offer `build-continuous` for story-unit). Prefer `isolate-workspace`.
+2. **`build-by-story`** — when `Execution-mode: story-unit` (required for unit
+   barriers; do not offer `build-in-waves` for story-unit). Prefer `isolate-workspace`.
 3. **`build-inline`** — controller implements sequentially with `test-first`, no
    implementer subagents (no-subagent environments, or the user wants to watch
    each step). Works with either mode header; **does not** run unit barriers.

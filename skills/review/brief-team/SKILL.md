@@ -55,7 +55,7 @@ exactly — every REQUIRED slot, in order.
 |---|---|
 | "Senior wants a quiz so reviewers prove they read it" | Team packet is pitch+map only. Rank does not rewrite that. Point them at the author-side self-check skill if they want a quiz. |
 | "Block the PR until the explainer exists" | Never refuse, delay, or condition merge/PR/review actions on this file. A human may wait on their own; you still offer the full menu. |
-| "No specs — refuse" | Range alone is enough. Enrich when specs, notes, or probe-decisions locks exist; never hard-fail solely because they are absent. |
+| "No specs — refuse" | Range alone is enough. Enrich when specs, notes, or clarify-decisions locks exist; never hard-fail solely because they are absent. |
 | "Invent requirement IDs so the header looks complete" | Omit IDs when none resolve. Fake IDs are a lie. |
 | "Date-prefix every run for history" | Overwrite the canonical slug. Git is the version log. |
 | "Paste the brief in chat — standup is in five minutes" | Hand off the **path**. Chat is not the packet; chat must not carry a quiz either. |
@@ -76,10 +76,10 @@ exactly — every REQUIRED slot, in order.
 - A slug composed from a topic you wrote rather than read off the ladder
 - An INDEX row in a shape that does not match the header below, or a second row for a slug that already has one
 - Writing or presenting the success path outside `docs/explainers/`
-- Hard-fail only because specs, probe-decisions package, or implementation-notes are missing
+- Hard-fail only because specs, clarify-decisions package, or implementation-notes are missing
 - Invented requirement IDs or invented locks
 - Partial HTML presented as success after a write failure, or an orphan file left unnamed after an INDEX failure
-- Auto-invoking this skill from `land-branch`, `inspect-change`, `build-continuous`, or `cut-release`
+- Auto-invoking this skill from `land-branch`, `inspect-change`, `build-in-waves`, or `cut-release`
 - Full triad dump or full unified-diff dump instead of the six scannable sections
 - ASCII as the primary figure when a figure is warranted
 
@@ -96,7 +96,7 @@ exactly — every REQUIRED slot, in order.
 5. **Enrich (optional)** —
    - IF `docs/specs/` owns paths or IDs in the range → fold user-visible impact and decisions from requirements (**not** the full triad).
    - IF `.skills/implementation-notes.md` has deviations → fold into decisions or break-risk.
-   - IF a probe-decisions close package or knowns inventory is available → fold **confirmed** locks only.
+   - IF a clarify-decisions close package or knowns inventory is available → fold **confirmed** locks only.
    - Missing sources → continue; do not invent.
    **Done when:** each folded claim carries its source path, or the enrich set is empty.
 6. **Slug** — walk the slug resolver below, top rung first.
@@ -142,7 +142,7 @@ exactly — every REQUIRED slot, in order.
 
 1. Non-empty `git diff HEAD` or `git diff --cached HEAD` → working tree vs HEAD (tracked).
 2. Else non-empty `default_base..HEAD` → that range  
-   (`default_base` = short name from `origin/HEAD`, else `main`, else `master`, else route-work).
+   (`default_base` = short name from `origin/HEAD`, else `main`, else `master`, else route-task).
 3. Else hard-stop: nothing to explain.
 
 Do not require network or `gh`.  
@@ -191,6 +191,6 @@ never invent approvers.
 
 ## Isolation
 
-Do not auto-run at build-continuous, pre-integration, or session-end.  
+Do not auto-run at build-in-waves, pre-integration, or session-end.  
 Do not auto-edit `docs/specs/*` or `CONTEXT.md` while producing a packet.  
 Missing explainers on work this skill set never mediated is not a process violation.

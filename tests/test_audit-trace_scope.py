@@ -16,7 +16,7 @@ AUDIT TRACE_FINDINGS = ("E1", "E2", "E3", "E4", "E5", "W1", "W2", "W3")
 
 class Audit TraceScope(unittest.TestCase):
     def test_trace_never_reads_planning_namespaces(self):
-        """RMAP-2.10 — planning-ID integrity belongs to status-roadmap, not trace."""
+        """RMAP-2.10 — planning-ID integrity belongs to refresh-roadmap-status, not trace."""
         text = AUDIT TRACE.read_text()
         leaked = [ns for ns in PLANNING_NAMESPACES if ns in text]
         self.assertEqual([], leaked, f"audit-trace has grown planning-ID scope: {leaked}")

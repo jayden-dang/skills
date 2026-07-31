@@ -5,7 +5,7 @@ import unittest
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parent.parent
-LADDER = REPO / "skills" / "track" / "status-roadmap" / "SKILL.md"
+LADDER = REPO / "skills" / "track" / "refresh-roadmap-status" / "SKILL.md"
 
 # (state substring, expected recommendation substring) — one row per rung, in order.
 # Every left-hand string is a verbatim substring of the ladder table in design.md.
@@ -16,7 +16,7 @@ ROWS = [
     ("feature `Status:` is `Draft`", "specify-behavior"),
     ("no `design.md`", "design-solution"),
     ("`design.md` exists, no `tasks.md`", "plan-tasks"),
-    ("`tasks.md` exists", "build-continuous"),
+    ("`tasks.md` exists", "build-in-waves"),
     ("`Implemented`", "/cut-release"),
     ("all bound and `Shipped`", "/assess-milestone"),
     ("a `Planned` one exists", "plan-milestones"),

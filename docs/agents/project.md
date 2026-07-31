@@ -9,8 +9,8 @@ back to this file otherwise.
 ## Project posture
 
 The project's standing intent and lifecycle phase. Skills read this instead of re-asking:
-`frame-change` and `probe-decisions` right-size how much they weigh data migration, backward
-compatibility, and deprecation against it; `interpret-native` reuses it as session context.
+`frame-change` and `clarify-decisions` right-size how much they weigh data migration, backward
+compatibility, and deprecation against it; `interpret-session` reuses it as session context.
 Edit these two lines directly whenever the project moves phase — no wizard needed.
 
 - **Delivery intent:** `Production` — how robust and complete the output must be.
@@ -75,8 +75,8 @@ floor is ignored with a one-line notice. Absent section → core table only.
 
 ## Attention signals
 
-Read by `sample-attention`'s binding pass. Optional — absent, the built-in
-defaults in `skills/review/sample-attention/references/signals.md` apply.
+Read by `select-review-sample`'s binding pass. Optional — absent, the built-in
+defaults in `skills/review/select-review-sample/references/signals.md` apply.
 
 Declared here because this repo's risk does not look like an application's. The
 default globs watch auth, migrations, and payments; **this repo ships skill
@@ -109,7 +109,7 @@ Test globs: *(defaults — `tests` covers this repo)*, plus `tests/**/scenarios*
 markdown is a declared annotation layer below, so `audit-trace`'s coverage pass must include `.md`
 under `tests/` alongside its default `*_test.py` includes, or scenario-borne IDs read as
 uncovered.
-Audit Trace ignore (files whose IDs are fixtures, not coverage): `tests/team-structure/red-baselines.md`, `tests/decision-records/red-baselines.md`, `tests/decision-records/fixtures/`, `tests/study-change/red-baselines.md`, `tests/attention-allocation/red-baselines.md`, `tests/roadmap/red-baselines.md`, `tests/roadmap/fixtures/`, `tests/milestone-assessment/red-baselines.md`, `tests/milestone-assessment/fixtures/`, `tests/drive-walk/fixtures/`, `tests/drive-walk/red-baselines.md`, `tests/drive-walk/scenarios-pressure.md`, `tests/drive-walk/scenarios-technique.md`, `tests/drive-walk/scenarios-cli.md`, `tests/trigger/drive-walk-routing.md`, `tests/dispose-pivot/`
+Audit Trace ignore (files whose IDs are fixtures, not coverage): `tests/team-structure/red-baselines.md`, `tests/decision-records/red-baselines.md`, `tests/decision-records/fixtures/`, `tests/study-change/red-baselines.md`, `tests/attention-allocation/red-baselines.md`, `tests/roadmap/red-baselines.md`, `tests/roadmap/fixtures/`, `tests/milestone-assessment/red-baselines.md`, `tests/milestone-assessment/fixtures/`, `tests/run-product-walkthrough/fixtures/`, `tests/run-product-walkthrough/red-baselines.md`, `tests/run-product-walkthrough/scenarios-pressure.md`, `tests/run-product-walkthrough/scenarios-technique.md`, `tests/run-product-walkthrough/scenarios-cli.md`, `tests/trigger/run-product-walkthrough-routing.md`, `tests/assess-pivot-impact/`
 
 ## Test annotation conventions
 
@@ -129,7 +129,7 @@ if that surface does not exist.
 | Backend / API | *(none — not an app)* | |
 | Frontend | *(none — not an app)* | |
 
-Browser E2E (Playwright, Chromium): *(none)* — the walk-product guide shell is covered by
+Browser E2E (Playwright, Chromium): *(none)* — the review-product-flow guide shell is covered by
 source-contract tests in `tests/test_walk_product_guide_contract.py`; its runtime browser
 behavior (a click firing a POST, a poll repainting) is deliberately deferred to
 `validate-ui`, which owns harness setup. See DFSYNC tasks.md, "Browser coverage".

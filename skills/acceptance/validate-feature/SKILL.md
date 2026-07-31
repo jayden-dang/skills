@@ -45,7 +45,7 @@ features need both:
 - The behavior is neither an API nor a UI (a CLI, a library, a batch/cron job) →
   drive it directly against the running system yourself, record each observed
   result in the ledger, and promote the passing checks into committed, ID-tagged
-  tests. For human-eyeball qualities (visuals, feel) hand off to `walk-product`.
+  tests. For human-eyeball qualities (visuals, feel) hand off to `review-product-flow`.
 
 Hand each child its slice of the ledger by path; it writes results back to the
 same file.

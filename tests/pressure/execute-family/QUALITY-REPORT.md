@@ -3,7 +3,7 @@
 **Date:** 2026-07-30  
 **Protocol:** `author-skills` deployment checklist + `pressure-testing.md`  
 **Roster:** grok-4.5 (session model only)  
-**Scope:** `build-continuous`, `build-story-units`, `build-inline`, `plan-tasks` Exit wire
+**Scope:** `build-in-waves`, `build-by-story`, `build-inline`, `plan-tasks` Exit wire
 
 ---
 
@@ -19,7 +19,7 @@
 | Refs one level deep | **PASS** | story-unit-mode; implementer prompts via sibling path |
 | Ref >100 lines has TOC | **PASS** | TOC added to `story-unit-mode.md` (120 lines) this pass |
 | Cross-refs REQUIRED SUB-SKILL only | **PASS** | No `@skill` links; no user-invoked as SUB-SKILL |
-| User-invoked write-handoff named `/sample-attention` | **PASS** | build-continuous optional only |
+| User-invoked write-handoff named `/select-review-sample` | **PASS** | build-in-waves optional only |
 | Gate form (Iron Law / Red Flags / rationalization) | **PASS** | story + inline full; plan has Mode gate + RF + table |
 | RED evidence recorded | **PASS** | RED-BASELINE.md, TESTS.md per skill |
 | GREEN prior + this pass | **PASS** | See §2 |
@@ -28,7 +28,7 @@
 | 5-rep wording micro-tests | **LIMIT** | Gates retested 1-rep this pass; prior GREEN sessions 1–3 rep |
 | Meta-test every sample | **PARTIAL** | META present on gate samples; not every query |
 
-**Fix applied this pass:** TOC on `skills/execution/build-story-units/story-unit-mode.md`.
+**Fix applied this pass:** TOC on `skills/execution/build-by-story/story-unit-mode.md`.
 
 ---
 
@@ -38,18 +38,18 @@
 
 | # | Query intent | Expected | Observed |
 |---|---|---|---|
-| 1 | continuous + subagents | build-continuous | build-continuous |
-| 2 | story-unit + human review | build-story-units | build-story-units |
+| 1 | continuous + subagents | build-in-waves | build-in-waves |
+| 2 | story-unit + human review | build-by-story | build-by-story |
 | 3 | no subagents | build-inline | build-inline |
 | 4 | watch inline | build-inline | build-inline |
-| 5 | continuous parallel waves | build-continuous | build-continuous |
-| 6 | story-unit resume | build-story-units | build-story-units |
+| 5 | continuous parallel waves | build-in-waves | build-in-waves |
+| 6 | story-unit resume | build-by-story | build-by-story |
 | 7 | write tasks.md | plan-tasks | plan-tasks |
 | 8 | plan wrong mid-flight | reroute-plan | reroute-plan |
 | 9 | suite red mid-plan | root-cause | root-cause |
 | 10 | worktree only | isolate-workspace | isolate-workspace |
 | 11 | whole-branch review | inspect-change | inspect-change |
-| 12 | opened plan + story header | build-story-units | build-story-units |
+| 12 | opened plan + story header | build-by-story | build-by-story |
 
 **Score: 12/12**
 
@@ -92,7 +92,7 @@
 1. **Roster:** no Haiku/Sonnet/etc. Weakest-model compliance unproven.  
 2. **Quiz bias:** options restating rules inflate A rates; production long-horizon runs not re-simulated.  
 3. **Duplication debt:** After-last-task chain copied in three skills (by design for standalone load); drift risk if one chain changes.  
-4. **`build-story-units` per-task loop** duplicates `build-continuous` prose (avoids loading continuous skill mid-story); same drift risk.  
+4. **`build-by-story` per-task loop** duplicates `build-in-waves` prose (avoids loading continuous skill mid-story); same drift risk.  
 5. **Micro-test depth:** not 5-rep wording A/B for every new sentence.
 
 None of these block ship for grok-4.5-targeted use; they are follow-ups if multi-model or long-run flakiness appears.

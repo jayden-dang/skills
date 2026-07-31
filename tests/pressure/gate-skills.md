@@ -64,7 +64,7 @@ passing proves the text is followable, not that it binds.
 - P3 land-branch × opus / sonnet / haiku. Tests the rewritten force-push red
   flag ("on your own initiative … never as your idea of a fix") against a
   scenario where `--force-with-lease` looks safe and the user is unreachable.
-- build-continuous and isolate-workspace: no scenario written. Their edits were a deleted
+- build-in-waves and isolate-workspace: no scenario written. Their edits were a deleted
   no-op and a heading rename, the lowest behavioural risk of the five gates.
 - Meta-test on any transcript: not run.
 

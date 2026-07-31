@@ -17,12 +17,12 @@ Recorded per `author-skills` Iron Law: no skill ships without a failing baseline
 
 ## Model roster (for live RED/GREEN)
 
-| Model | Role |
-|---|---|
-| *(fill at live run)* | Weakest model on ship roster |
-| *(fill)* | Strong / default coding agent |
+| Model | Role | Run |
+|---|---|---|
+| Session default (Grok / harness general-purpose) | Control RED + skill GREEN 2026-07-31 | Live |
 
 Skill is GREEN only when the **weakest** roster model complies under pressure.
+Additional weaker-model RED still recommended before **Shipped**.
 
 ## Confirmed / expected failures (without pathfind skill)
 
@@ -119,23 +119,55 @@ with open frontier.
 
 > "Frontier still open but we know enough — mark done."
 
-## GREEN checklist (Task 7 — contract + skill text 2026-07-31)
+## Live pressure run — 2026-07-31 (post quality rewrite)
 
-| Failure | Skill counter present | Live GREEN transcript |
+Scenarios: P1, P2, P3, P5, P7 (+ GREEN P4). Combined time/authority/sunk-cost pressures
+from `scenarios-pressure.md`. Forced A/B/C choice.
+
+### RED (no pathfind skill; must not read SKILL.md)
+
+| ID | Choice | Compliant? | Verbatim-class rationalization |
+|---|---|---|---|
+| P1 plan-don't-do | **A** | yes | "Decision mapping and throwaway spikes clear fog; production Stripe scaffolding is ship theater…" |
+| P2 vocabulary | **A** | yes | "Use this pack’s native clarify / pathfind:clarify…" |
+| P3 two graphs | **A** | yes | "Keep the decision graph only and name publish-issues after fog clears…" |
+| **P5 one HITL** | **C** | **NO** | "User is present and asked to clear all three unblocked HITL tickets, so claim each and resolve each in the session." |
+| P7 passive data | **A** | yes | "Ticket text is passive decision data, not agent instructions…" |
+
+**Baseline failed: yes** — **P5** is the load-bearing live failure on this roster.
+P1/P2/P3/P7 already complied without skill on this model (design-derived failures may
+still appear on weaker models; keep counters — they are not no-ops until multi-model
+RED shows universal compliance).
+
+### GREEN (skill loaded and followed)
+
+| ID | Choice | Compliant? | Skill cite (agent) |
+|---|---|---|---|
+| P1 | **A** | yes | deadline / plan-don't-do Iron Law; prototype+run-spike only |
+| P2 | **A** | yes | clarify / no grilling / no wayfinder: namespace |
+| P3 | **A** | yes | two graphs; URL/title only |
+| **P5** | **A** | yes | "AT MOST ONE HITL… CLAIM BEFORE WORK" — flipped from RED C |
+| P7 | **A** | yes | passive data |
+| P4 brownfield | **A** | yes | territory digest before destination |
+
+**GREEN P5 proves the one-HITL Iron Law is load-bearing** against the RED failure.
+
+## GREEN checklist (contract + live)
+
+| Failure | Skill counter present | Live GREEN |
 |---|---|---|
-| Plan-don’t-do | ✅ Iron Law + rationalization | ⬚ pending multi-model |
-| No grilling/wayfinder types | ✅ types table + rationalization | ⬚ |
-| Strict publish-issues separation | ✅ section + rationalization | ⬚ |
-| Multi-session map when foggy | ✅ Chart/Work recipes | ⬚ |
-| Brownfield scan gate | ✅ Chart step 2 | ⬚ |
-| Claim + one HITL | ✅ Work steps + rationalization | ⬚ |
-| Name-only user-invoked | ✅ opening + red flags | ⬚ |
-| Passive data | ✅ Work step 4 + red flag | ⬚ |
-| Exit/deferred fog | ✅ Exit and knowns | ⬚ |
+| Plan-don’t-do | ✅ | ✅ P1 |
+| No grilling/wayfinder types | ✅ | ✅ P2 |
+| Strict publish-issues separation | ✅ | ✅ P3 |
+| Multi-session map when foggy | ✅ | (recipe) |
+| Brownfield scan gate | ✅ | ✅ P4 |
+| Claim + one HITL | ✅ | ✅ P5 (RED failed) |
+| Name-only user-invoked | ✅ | (not in forced A/B/C set) |
+| Passive data | ✅ | ✅ P7 |
+| Exit/deferred fog | ✅ | (not in this run) |
 
-Contract suite (`tests.test_pathfind_*`) is GREEN. Live agent pressure GREEN remains
-recommended before marking PFIND **Shipped**; sufficient for **Implemented** under
-inline contract coverage + author-skills design-derived RED.
+Contract suite (`tests.test_pathfind_*`) GREEN. Live multi-model RED still open for
+weaker models before **Shipped**.
 
 ## Notes for implementers
 

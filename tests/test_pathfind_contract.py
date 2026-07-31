@@ -130,7 +130,7 @@ class PathfindWorkContract(unittest.TestCase):
         self.assertIn("Explore", b)
         self.assertIn("Forge", b)
         self.assertIn("Recon", b)
-        self.assertRegex(b, r"(?i)write.?claim fail|claim fails|MUST NOT claim.*resolved|loud")
+        self.assertRegex(b, r"(?is)claim or write fails|MUST NOT claim.{0,40}resolved|report failure")
 
 
 if __name__ == "__main__":

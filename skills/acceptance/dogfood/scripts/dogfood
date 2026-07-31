@@ -1,24 +1,25 @@
 #!/usr/bin/env python3
-"""Dogfood CLI — list/show cases, render shell HTML, manage run ledgers.
+"""Dogfood CLI — one JSON run file per dogfood run.
 
-Agent progress lives in the run ledger. Guide HTML localStorage ticks are
-for humans only — never open the guide in a browser to mark cases done.
+`.skills/<slug>-dogfood.json` (version 2) holds the authored case slots and two
+disjoint per-case field spaces: `run` for the agent's evidence-backed verdict,
+`human` for a person's tick. A tick is recorded, never authoritative — see
+docs/adr/0006-human-ticks-are-recorded-never-authoritative.md.
+
+Standard library only, by design: requiring PyYAML in a consumer repo would cut
+against ARCH-3.
 """
 
 from __future__ import annotations
 
 import argparse
-import html
 import json
 import re
 import sys
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 
-try:
-    import yaml
-except ImportError:  # pragma: no cover
-    yaml = None  # type: ignore
+SCHEMA_VERSION = 2
 
 KINDS = frozenset(
     {"happy", "edge", "error", "nonbehavior", "persist", "visual", "journey"}
@@ -26,82 +27,73 @@ KINDS = frozenset(
 VERDICTS = frozenset({"pending", "pass", "fail", "blocked"})
 REQUIRED_CASE_KEYS = ("id", "req", "kind", "title", "setup", "try", "expect", "backend")
 
+# The two field spaces. Their key names must never overlap: that disjointness is
+# what lets a human tick and an agent verdict be merged without conflict.
+RUN_KEYS = ("verdict", "saw", "server", "notes")
+HUMAN_KEYS = ("checked", "at", "comment")
+
 SCRIPT_DIR = Path(__file__).resolve().parent
 DEFAULT_SHELL = SCRIPT_DIR.parent / "shell" / "guide.html"
 
 
 # ---------------------------------------------------------------------------
-# Catalog loaders
+# Run file (v2)
 # ---------------------------------------------------------------------------
 
-def load_catalog(path: Path) -> Dict[str, Any]:
-    path = path.resolve()
+def load_run_file(path: Path) -> Dict[str, Any]:
+    """Read and normalize one v2 run file.
+
+    A v1 path is a named error rather than a parse attempt: guessing at an
+    artifact this CLI no longer understands produces a confusing failure
+    somewhere deeper instead of an actionable one here.
+    """
+    path = Path(path).resolve()
+    if path.suffix.lower() in {".yaml", ".yml"} or path.name.endswith("-run.md"):
+        raise SystemExit(
+            f"error: {path.name} is a v1 artifact; this CLI reads only the v2 JSON "
+            "run file (.skills/<slug>-dogfood.json). Delete the v1 files and re-author."
+        )
     if not path.is_file():
-        raise SystemExit(f"error: catalog not found: {path}")
-    text = path.read_text(encoding="utf-8")
-    if path.suffix.lower() in {".yaml", ".yml"}:
-        return load_cases_yaml(text, source=str(path))
-    if path.suffix.lower() in {".html", ".htm"}:
-        return load_cases_html(text, source=str(path))
-    # sniff
-    stripped = text.lstrip()
-    if stripped.startswith("<!") or stripped.lower().startswith("<html"):
-        return load_cases_html(text, source=str(path))
-    return load_cases_yaml(text, source=str(path))
-
-
-def load_cases_yaml(text: str, source: str = "") -> Dict[str, Any]:
-    if yaml is None:
-        raise SystemExit("error: PyYAML is required to read cases YAML (pip install pyyaml)")
-    data = yaml.safe_load(text)
+        raise SystemExit(f"error: run file not found: {path}")
+    try:
+        data = json.loads(path.read_text(encoding="utf-8"))
+    except json.JSONDecodeError as exc:
+        raise SystemExit(f"error: {path.name} is not valid JSON: {exc}")
     if not isinstance(data, dict):
-        raise SystemExit("error: cases file must be a mapping at the top level")
-    version = data.get("version", 1)
-    if version != 1:
-        raise SystemExit(f"error: unsupported cases version {version!r} (want 1)")
-    sections = data.get("sections") or []
-    if not isinstance(sections, list) or not sections:
-        raise SystemExit("error: cases file needs a non-empty sections list")
-    out_sections: List[Dict[str, Any]] = []
-    seen_ids: set = set()
-    for si, section in enumerate(sections):
-        if not isinstance(section, dict):
-            raise SystemExit(f"error: section {si} must be a mapping")
-        name = section.get("name") or f"Section {si + 1}"
-        cases_in = section.get("cases") or []
-        if not isinstance(cases_in, list) or not cases_in:
-            raise SystemExit(f"error: section {name!r} needs a non-empty cases list")
-        cases: List[Dict[str, str]] = []
-        for ci, raw in enumerate(cases_in):
-            if not isinstance(raw, dict):
-                raise SystemExit(f"error: case {ci} in {name!r} must be a mapping")
-            case = normalize_case(raw, where=f"{name}[{ci}]")
-            if case["id"] in seen_ids:
-                raise SystemExit(f"error: duplicate case id {case['id']!r}")
-            seen_ids.add(case["id"])
-            cases.append(case)
-        out_sections.append({"name": str(name), "cases": cases})
-    slug = str(data.get("slug") or data.get("feature") or Path(source).stem or "dogfood")
-    return {
-        "version": 1,
-        "feature": str(data.get("feature") or slug),
-        "slug": slug,
-        "title": str(data.get("title") or f"{slug} — Dogfood"),
-        "origin": str(data.get("origin") or ""),
-        "intro": str(data.get("intro") or "").rstrip() + ("\n" if data.get("intro") else ""),
-        "sections": out_sections,
-        "source": source,
-    }
+        raise SystemExit(
+            f"error: {path.name} must hold a JSON object at the top level"
+        )
+    return normalize_run_doc(data, source=str(path))
 
 
-def normalize_case(raw: Dict[str, Any], where: str) -> Dict[str, str]:
-    # accept try_/expect_ aliases avoided; allow common typos later if needed
-    missing = [k for k in REQUIRED_CASE_KEYS if k not in raw or raw[k] is None or str(raw[k]).strip() == ""]
+def normalize_case(raw: Dict[str, Any], where: str) -> Dict[str, Any]:
+    """Validate the eight authored slots and attach both run-state field spaces."""
+    missing = [
+        k
+        for k in REQUIRED_CASE_KEYS
+        if k not in raw or raw[k] is None or str(raw[k]).strip() == ""
+    ]
     if missing:
-        raise SystemExit(f"error: case {where} missing required fields: {', '.join(missing)}")
+        raise SystemExit(
+            f"error: case {where} missing required fields: {', '.join(missing)}"
+        )
     kind = str(raw["kind"]).strip().lower()
     if kind not in KINDS:
         raise SystemExit(f"error: case {where} kind {kind!r} not in {sorted(KINDS)}")
+
+    run_in = raw.get("run") or {}
+    human_in = raw.get("human") or {}
+    if not isinstance(run_in, dict):
+        raise SystemExit(f"error: case {where} run must be an object")
+    if not isinstance(human_in, dict):
+        raise SystemExit(f"error: case {where} human must be an object")
+
+    verdict = str(run_in.get("verdict") or "pending").strip().lower()
+    if verdict not in VERDICTS:
+        raise SystemExit(
+            f"error: case {where} verdict {verdict!r} not in {sorted(VERDICTS)}"
+        )
+
     return {
         "id": str(raw["id"]).strip(),
         "req": str(raw["req"]).strip(),
@@ -111,27 +103,42 @@ def normalize_case(raw: Dict[str, Any], where: str) -> Dict[str, str]:
         "try": str(raw["try"]).rstrip(),
         "expect": str(raw["expect"]).rstrip(),
         "backend": str(raw["backend"]).rstrip(),
+        "run": {
+            "verdict": verdict,
+            "saw": str(run_in.get("saw") or ""),
+            "server": str(run_in.get("server") or ""),
+            "notes": str(run_in.get("notes") or ""),
+        },
+        "human": {
+            "checked": bool(human_in.get("checked", False)),
+            "at": str(human_in.get("at") or ""),
+            "comment": str(human_in.get("comment") or ""),
+        },
     }
 
 
-def catalog_from_dict(data: Dict[str, Any], source: str = "") -> Dict[str, Any]:
-    """Normalize an in-memory cases mapping (same rules as YAML)."""
-    version = data.get("version", 1)
-    if version != 1:
-        raise SystemExit(f"error: unsupported cases version {version!r} (want 1)")
-    sections_in = data.get("sections") or []
-    if not isinstance(sections_in, list) or not sections_in:
-        raise SystemExit("error: cases need a non-empty sections list")
+def normalize_run_doc(data: Dict[str, Any], source: str = "") -> Dict[str, Any]:
+    """Normalize an in-memory v2 document (the same rules the loader applies)."""
+    version = data.get("version", SCHEMA_VERSION)
+    if version != SCHEMA_VERSION:
+        raise SystemExit(
+            f"error: unsupported run file version {version!r} (want {SCHEMA_VERSION}); "
+            "v1 cases files are not readable by this CLI"
+        )
+    sections = data.get("sections") or []
+    if not isinstance(sections, list) or not sections:
+        raise SystemExit("error: run file needs a non-empty sections list")
+
     out_sections: List[Dict[str, Any]] = []
     seen_ids: set = set()
-    for si, section in enumerate(sections_in):
+    for si, section in enumerate(sections):
         if not isinstance(section, dict):
             raise SystemExit(f"error: section {si} must be a mapping")
         name = section.get("name") or f"Section {si + 1}"
         cases_in = section.get("cases") or []
         if not isinstance(cases_in, list) or not cases_in:
             raise SystemExit(f"error: section {name!r} needs a non-empty cases list")
-        cases: List[Dict[str, str]] = []
+        cases: List[Dict[str, Any]] = []
         for ci, raw in enumerate(cases_in):
             if not isinstance(raw, dict):
                 raise SystemExit(f"error: case {ci} in {name!r} must be a mapping")
@@ -141,10 +148,16 @@ def catalog_from_dict(data: Dict[str, Any], source: str = "") -> Dict[str, Any]:
             seen_ids.add(case["id"])
             cases.append(case)
         out_sections.append({"name": str(name), "cases": cases})
-    slug = str(data.get("slug") or data.get("feature") or "dogfood")
+
+    slug = str(data.get("slug") or data.get("feature") or Path(source).stem or "dogfood")
     intro = str(data.get("intro") or "")
+    try:
+        rev = int(data.get("rev", 0))
+    except (TypeError, ValueError):
+        raise SystemExit(f"error: rev must be an integer, got {data.get('rev')!r}")
     return {
-        "version": 1,
+        "version": SCHEMA_VERSION,
+        "rev": rev,
         "feature": str(data.get("feature") or slug),
         "slug": slug,
         "title": str(data.get("title") or f"{slug} — Dogfood"),
@@ -156,6 +169,11 @@ def catalog_from_dict(data: Dict[str, Any], source: str = "") -> Dict[str, Any]:
 
 
 def extract_dogfood_json(text: str) -> Optional[Dict[str, Any]]:
+    """Pull the embedded document out of a rendered guide.
+
+    Still useful under v2: the blob a guide embeds is the whole run document,
+    so a guide can be read back when only the HTML survives.
+    """
     marker = "window.__DOGFOOD__"
     idx = text.find(marker)
     if idx < 0:
@@ -192,132 +210,6 @@ def extract_dogfood_json(text: str) -> Optional[Dict[str, Any]]:
                 blob = text[start : j + 1].replace("<\\/", "</")
                 return json.loads(blob)
     return None
-
-
-def load_cases_html(text: str, source: str = "") -> Dict[str, Any]:
-    """Parse machine-drivable rows from HTML (data-* attributes)."""
-    embedded = extract_dogfood_json(text)
-    if embedded is not None:
-        return catalog_from_dict(embedded, source=source)
-
-    # Broader: find opening tags with data-case and pull sibling attributes
-    tag_re = re.compile(
-        r"<(?P<tag>div|article|section|li|tr)(?P<attrs>[^>]*\bdata-case\s*=\s*[\"'](?P<id>[^\"']+)[\"'][^>]*)>",
-        re.IGNORECASE,
-    )
-    cases: List[Dict[str, str]] = []
-    seen: set = set()
-    for match in tag_re.finditer(text):
-        attrs = match.group("attrs")
-        cid = match.group("id").strip()
-        if cid in seen:
-            continue
-        seen.add(cid)
-
-        def attr(name: str, default: str = "") -> str:
-            am = re.search(
-                rf"data-{name}\s*=\s*[\"']([^\"']*)[\"']",
-                attrs,
-                re.IGNORECASE,
-            )
-            return html.unescape(am.group(1)) if am else default
-
-        # Pull Try/Expect from following block until next case or section
-        start = match.end()
-        next_m = tag_re.search(text, start)
-        block = text[start : next_m.start() if next_m else start + 4000]
-        try_text = extract_label_block(block, "Try") or ""
-        expect_text = extract_label_block(block, "Expect") or ""
-        title = extract_title(block) or cid
-        req = attr("req") or extract_req(block) or ""
-        kind = (attr("kind") or "happy").lower()
-        if kind not in KINDS:
-            kind = "happy"
-        backend = attr("backend") or "presentational"
-        setup = attr("setup") or ""
-        cases.append(
-            {
-                "id": cid,
-                "req": req or "UNKNOWN",
-                "kind": kind,
-                "title": title,
-                "setup": setup,
-                "try": try_text,
-                "expect": expect_text,
-                "backend": backend,
-            }
-        )
-
-    if not cases:
-        # Last resort: checkbox labels with nearby .req
-        raise SystemExit(
-            f"error: no data-case rows found in HTML: {source or '(stdin)'}. "
-            "Add data-case/data-req/data-kind/data-backend/data-setup or use cases YAML."
-        )
-
-    slug = Path(source).stem.replace("-dogfood", "") if source else "dogfood"
-    title_m = re.search(r"<title>([^<]+)</title>", text, re.IGNORECASE)
-    h1_m = re.search(r"<h1[^>]*>([^<]+)</h1>", text, re.IGNORECASE)
-    title = (h1_m.group(1) if h1_m else None) or (title_m.group(1) if title_m else f"{slug} — Dogfood")
-    title = re.sub(r"\s+", " ", html.unescape(title)).strip()
-    return {
-        "version": 1,
-        "feature": slug,
-        "slug": slug,
-        "title": title,
-        "origin": "",
-        "intro": "",
-        "sections": [{"name": "Cases", "cases": cases}],
-        "source": source,
-    }
-
-
-def extract_label_block(block: str, label: str) -> str:
-    m = re.search(
-        rf"<strong>\s*{label}\s*:?\s*</strong>\s*(?:</p>)?(.*?)(?=<strong>|<div\s|</div>|<p\s|$)",
-        block,
-        re.IGNORECASE | re.DOTALL,
-    )
-    if not m:
-        m = re.search(
-            rf"{label}\s*:\s*</strong>\s*(.*?)(?=<strong>|</p>|<div\s|$)",
-            block,
-            re.IGNORECASE | re.DOTALL,
-        )
-    if not m:
-        m = re.search(rf"<p><strong>{label}:</strong>\s*(.*?)</p>", block, re.IGNORECASE | re.DOTALL)
-    if not m:
-        return ""
-    return collapse_ws(strip_tags(m.group(1)))
-
-
-def extract_title(block: str) -> str:
-    m = re.search(r"<strong>([^<]+)</strong>", block)
-    if m:
-        t = m.group(1).strip()
-        if t.lower() not in {"try", "expect", "setup", "backend"}:
-            return t
-    return ""
-
-
-def extract_req(block: str) -> str:
-    m = re.search(r"class=[\"']req[\"'][^>]*>\s*([^<]+)", block, re.IGNORECASE)
-    if m:
-        return m.group(1).strip()
-    m = re.search(r"\b([A-Z]{2,12}-\d+\.\d+)\b", block)
-    return m.group(1) if m else ""
-
-
-def strip_tags(s: str) -> str:
-    s = re.sub(r"<br\s*/?>", "\n", s, flags=re.IGNORECASE)
-    s = re.sub(r"</p\s*>", "\n", s, flags=re.IGNORECASE)
-    s = re.sub(r"<[^>]+>", "", s)
-    return html.unescape(s)
-
-
-def collapse_ws(s: str) -> str:
-    lines = [ln.strip() for ln in s.splitlines()]
-    return "\n".join(ln for ln in lines if ln).strip()
 
 
 def all_cases(catalog: Dict[str, Any]) -> List[Dict[str, str]]:
@@ -518,14 +410,14 @@ def render_html(catalog: Dict[str, Any], shell_path: Path) -> str:
 # ---------------------------------------------------------------------------
 
 def cmd_list(args: argparse.Namespace) -> int:
-    catalog = load_catalog(Path(args.catalog))
+    catalog = load_run_file(Path(args.catalog))
     for c in all_cases(catalog):
         print(f"{c['id']}\t{c['req']}\t{c['kind']}\t{c['title']}")
     return 0
 
 
 def cmd_show(args: argparse.Namespace) -> int:
-    catalog = load_catalog(Path(args.catalog))
+    catalog = load_run_file(Path(args.catalog))
     case = find_case(catalog, args.case_id)
     if not case:
         raise SystemExit(f"error: case not found: {args.case_id}")
@@ -541,7 +433,7 @@ def cmd_show(args: argparse.Namespace) -> int:
 
 
 def cmd_init(args: argparse.Namespace) -> int:
-    catalog = load_catalog(Path(args.catalog))
+    catalog = load_run_file(Path(args.catalog))
     out = Path(args.output) if args.output else default_run_path(catalog, Path.cwd())
     if out.exists() and not args.force:
         raise SystemExit(f"error: ledger exists (use --force to overwrite): {out}")
@@ -590,7 +482,7 @@ def cmd_mark(args: argparse.Namespace) -> int:
 
     backend = None
     if args.catalog:
-        catalog = load_catalog(Path(args.catalog))
+        catalog = load_run_file(Path(args.catalog))
         case = find_case(catalog, args.case_id)
         if case:
             backend = case.get("backend")
@@ -598,7 +490,7 @@ def cmd_mark(args: argparse.Namespace) -> int:
         src = Path(meta["source"])
         if src.is_file():
             try:
-                catalog = load_catalog(src)
+                catalog = load_run_file(src)
                 case = find_case(catalog, args.case_id)
                 if case:
                     backend = case.get("backend")
@@ -619,9 +511,8 @@ def cmd_mark(args: argparse.Namespace) -> int:
 
 
 def cmd_render(args: argparse.Namespace) -> int:
-    catalog = load_catalog(Path(args.catalog))
+    catalog = load_run_file(Path(args.catalog))
     if Path(args.catalog).suffix.lower() not in {".yaml", ".yml"} and not args.allow_html:
-        # still allow if YAML-shaped; load_catalog handles it
         pass
     shell = Path(args.shell) if args.shell else DEFAULT_SHELL
     html_out = render_html(catalog, shell)

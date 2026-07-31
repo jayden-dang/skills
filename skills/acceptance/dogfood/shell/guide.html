@@ -239,8 +239,10 @@ window.__DOGFOOD__ = window.__DOGFOOD__ || {
 
   document.getElementById("total-count").textContent = String(allCases.length);
 
-  var ticks = loadTicks();
+  var lastRev = data.rev;
+  var ticks = LIVE ? {} : loadTicks();
   allCases.forEach(function (c) {
+    if (LIVE && c.human && c.human.checked) ticks[c.id] = true;
     var input = document.querySelector('input[data-case="' + cssEscape(c.id) + '"]');
     if (input && ticks[c.id]) {
       input.checked = true;
@@ -249,13 +251,21 @@ window.__DOGFOOD__ = window.__DOGFOOD__ || {
   });
   updateProgress();
 
+  if (LIVE) startLive();
+
   root.addEventListener("change", function (ev) {
     var t = ev.target;
     if (!t || t.tagName !== "INPUT" || t.type !== "checkbox") return;
     var id = t.getAttribute("data-case");
     ticks[id] = !!t.checked;
     t.closest(".case").classList.toggle("done", !!t.checked);
-    saveTicks(ticks);
+    if (LIVE) {
+      // Served: the tick belongs in the run file where the agent can see it.
+      postTick(id, !!t.checked);
+    } else {
+      // file://: nothing to post to, so it stays a local nicety.
+      saveTicks(ticks);
+    }
     updateProgress();
   });
 
@@ -307,6 +317,66 @@ window.__DOGFOOD__ = window.__DOGFOOD__ || {
   function updateProgress() {
     var n = Object.keys(ticks).filter(function (k) { return ticks[k]; }).length;
     document.getElementById("done-count").textContent = String(n);
+  }
+
+  function applyVerdict(id, verdict, checked) {
+    var el = root.querySelector('.case[data-case="' + cssEscape(id) + '"]');
+    if (!el) return;
+    el.setAttribute("data-verdict", verdict);
+    var badge = el.querySelector(".verdict");
+    if (badge) {
+      badge.className = "chip verdict " + verdict;
+      badge.textContent = verdict;
+    }
+    var ticked = el.querySelector(".ticked");
+    if (checked && !ticked) {
+      ticked = document.createElement("span");
+      ticked.className = "ticked";
+      ticked.textContent = "checked by hand";
+      el.querySelector(".meta").appendChild(ticked);
+    } else if (!checked && ticked) {
+      ticked.remove();
+    }
+  }
+
+  function postTick(id, checked) {
+    fetch("/human/" + encodeURIComponent(id), {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ checked: checked, base_rev: lastRev })
+    })
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (state) { if (state) render(state); })
+      .catch(function () { /* the run file is the record; a lost tick is not fatal */ });
+  }
+
+  function render(state) {
+    lastRev = state.rev;
+    Object.keys(state.cases).forEach(function (id) {
+      var entry = state.cases[id];
+      applyVerdict(id, entry.verdict, entry.human && entry.human.checked);
+      ticks[id] = !!(entry.human && entry.human.checked);
+      var input = root.querySelector('input[data-case="' + cssEscape(id) + '"]');
+      if (input) {
+        input.checked = ticks[id];
+        input.closest(".case").classList.toggle("done", ticks[id]);
+      }
+    });
+    updateProgress();
+  }
+
+  function startLive() {
+    function poll() {
+      fetch("/state")
+        .then(function (r) { return r.ok ? r.json() : null; })
+        .then(function (state) {
+          // Repaint only when the document actually moved.
+          if (state && state.rev !== lastRev) render(state);
+        })
+        .catch(function () { /* server stopped; the page stays readable */ });
+    }
+    poll();
+    setInterval(poll, 1000);
   }
 
   function loadTicks() {

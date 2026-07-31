@@ -23,6 +23,12 @@ SHELL = REPO / "skills" / "acceptance" / "dogfood" / "shell" / "guide.html"
 
 NETWORK_PRIMITIVES = ("fetch(", "XMLHttpRequest", "WebSocket", "EventSource", "sendBeacon")
 
+# Functions allowed to touch the network. Each must be unreachable unless LIVE,
+# which `test_live_only_functions_are_guarded` checks separately — the two
+# assertions together are what DFSYNC-4.2 actually needs: not "no fetch in the
+# file", but "no fetch reachable from a file:// page".
+LIVE_ONLY_FUNCTIONS = ("startLive", "postTick")
+
 
 def shell_text() -> str:
     return SHELL.read_text(encoding="utf-8")
@@ -49,20 +55,47 @@ class GuideContractTests(unittest.TestCase):
     def setUp(self):
         self.js = shell_text()
 
-    def test_offline_branch_makes_no_network_call(self):
-        """DFSYNC-4.2 — nothing outside the live branch can touch the network.
-
-        A guide opened from file:// must be correct with nothing running, so every
-        network primitive has to sit inside the one function the live mode calls.
-        """
-        live = function_body(self.js, "startLive")
-        outside = self.js.replace(live, "") if live else self.js
+    def test_network_primitives_stay_in_live_only_functions(self):
+        """DFSYNC-4.2 — no network primitive sits outside the live-only functions."""
+        outside = self.js
+        for name in LIVE_ONLY_FUNCTIONS:
+            body = function_body(self.js, name)
+            if body:
+                outside = outside.replace(body, "")
         offenders = [p for p in NETWORK_PRIMITIVES if p in outside]
         self.assertEqual(
             [],
             offenders,
-            f"network primitives reachable outside startLive(): {offenders}",
+            f"network primitives outside {list(LIVE_ONLY_FUNCTIONS)}: {offenders}",
         )
+
+    def test_live_only_functions_are_guarded(self):
+        """DFSYNC-4.2 — every call site of a network-touching function is behind LIVE.
+
+        This is the half that makes the previous test mean something: a function
+        can hold all the fetches in the world as long as a file:// page can never
+        reach it.
+        """
+        for name in LIVE_ONLY_FUNCTIONS:
+            body = function_body(self.js, name)
+            if not body:
+                continue
+            source_without_definition = self.js.replace(body, "")
+            call_sites = [
+                m.start()
+                for m in re.finditer(re.escape(name) + r"\s*\(", source_without_definition)
+                if not source_without_definition[: m.start()].rstrip().endswith("function")
+            ]
+            self.assertTrue(call_sites, f"{name}() is never called")
+            for pos in call_sites:
+                # the guard is either the enclosing `if (LIVE)` or an explicit
+                # LIVE branch within ~200 chars before the call
+                window = source_without_definition[max(0, pos - 200) : pos]
+                self.assertIn(
+                    "LIVE",
+                    window,
+                    f"{name}() called without a LIVE guard near offset {pos}",
+                )
 
     def test_live_mode_is_chosen_by_protocol(self):
         """DFSYNC-4.2 — the mode is decided by the URL the page was loaded from."""
@@ -125,6 +158,45 @@ class GuideContractTests(unittest.TestCase):
         """DFSYNC-4.3 — the page can say its verdicts are a render-time snapshot."""
         self.assertIn("snapshot", self.js.lower())
         self.assertIn("rendered_at", self.js)
+
+
+class LiveModeContractTests(unittest.TestCase):
+    """The http:// branch. Source-level assertions only — see the module docstring."""
+
+    def setUp(self):
+        self.js = shell_text()
+        self.live = function_body(self.js, "startLive")
+
+    def test_live_branch_exists_and_is_entered_only_under_live(self):
+        """DFSYNC-5.4 — the polling client is reachable only when served over HTTP."""
+        self.assertTrue(self.live, "startLive() not found in the shell")
+        self.assertRegex(self.js, r"if\s*\(\s*LIVE\s*\)\s*\{?\s*startLive\(\)")
+
+    def test_live_branch_polls_state_on_an_interval(self):
+        """DFSYNC-5.4 — the page follows the run without the person reloading."""
+        self.assertIn("/state", self.live)
+        self.assertRegex(self.live, r"setInterval\(")
+        self.assertRegex(self.live, r"\brev\b")
+
+    def test_poll_interval_meets_the_three_second_budget(self):
+        """DFSYNC-7.1 — the interval leaves room inside the visibility target."""
+        match = re.search(r"setInterval\([^,]+,\s*(\d+)\s*\)", self.live)
+        self.assertIsNotNone(match, "no literal poll interval found")
+        self.assertLessEqual(int(match.group(1)), 3000)
+
+    def test_live_ticks_post_and_do_not_write_localstorage(self):
+        """DFSYNC-5.5 — under HTTP a tick goes to the server, not to browser storage."""
+        self.assertIn("/human/", self.js)
+        self.assertRegex(self.js, r'method:\s*"POST"')
+        save = function_body(self.js, "saveTicks")
+        self.assertNotIn("/human/", save, "the offline saver must not post")
+        # the change handler has to branch, or one of the two paths is dead
+        handler = self.js.split("root.addEventListener", 1)[1][:1200]
+        self.assertIn("LIVE", handler)
+
+    def test_live_failure_does_not_take_the_page_down(self):
+        """DFSYNC-5.4 — a dropped server leaves the guide readable rather than broken."""
+        self.assertRegex(self.live, r"\.catch\(|try\s*\{")
 
 
 if __name__ == "__main__":

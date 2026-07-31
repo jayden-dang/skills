@@ -31,9 +31,11 @@ VERDICTS = frozenset({"pending", "pass", "fail", "blocked"})
 REQUIRED_CASE_KEYS = ("id", "req", "kind", "title", "setup", "try", "expect", "backend")
 
 # The two field spaces. Their key names must never overlap: that disjointness is
-# what lets a human tick and an agent verdict be merged without conflict.
-RUN_KEYS = ("verdict", "saw", "server", "notes")
-HUMAN_KEYS = ("checked", "at", "comment")
+# what lets a human tick and an agent verdict be written concurrently without
+# either clobbering the other, and it is enforced in `commit`.
+RUN_DEFAULTS = {"verdict": "pending", "saw": "", "server": "", "notes": ""}
+HUMAN_DEFAULTS = {"checked": False, "at": "", "comment": ""}
+assert not (set(RUN_DEFAULTS) & set(HUMAN_DEFAULTS)), "field spaces must stay disjoint"
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 DEFAULT_SHELL = SCRIPT_DIR.parent / "shell" / "guide.html"
@@ -58,8 +60,21 @@ def load_run_file(path: Path) -> Dict[str, Any]:
         )
     if not path.is_file():
         raise SystemExit(f"error: run file not found: {path}")
+    text = path.read_text(encoding="utf-8")
+
+    if path.suffix.lower() in {".html", ".htm"}:
+        # A rendered guide embeds the whole document, so a run survives even when
+        # only the HTML is left. Read-only by nature: writes go to the JSON.
+        embedded = extract_dogfood_json(text)
+        if embedded is None:
+            raise SystemExit(
+                f"error: {path.name} carries no embedded run document "
+                "(was it rendered by `dogfood render`?)"
+            )
+        return normalize_run_doc(embedded, source=str(path))
+
     try:
-        data = json.loads(path.read_text(encoding="utf-8"))
+        data = json.loads(text)
     except json.JSONDecodeError as exc:
         raise SystemExit(f"error: {path.name} is not valid JSON: {exc}")
     if not isinstance(data, dict):
@@ -97,6 +112,16 @@ def normalize_case(raw: Dict[str, Any], where: str) -> Dict[str, Any]:
             f"error: case {where} verdict {verdict!r} not in {sorted(VERDICTS)}"
         )
 
+    run = dict(RUN_DEFAULTS)
+    run["verdict"] = verdict
+    for key in ("saw", "server", "notes"):
+        run[key] = str(run_in.get(key) or "")
+
+    human = dict(HUMAN_DEFAULTS)
+    human["checked"] = bool(human_in.get("checked", False))
+    for key in ("at", "comment"):
+        human[key] = str(human_in.get(key) or "")
+
     return {
         "id": str(raw["id"]).strip(),
         "req": str(raw["req"]).strip(),
@@ -106,17 +131,8 @@ def normalize_case(raw: Dict[str, Any], where: str) -> Dict[str, Any]:
         "try": str(raw["try"]).rstrip(),
         "expect": str(raw["expect"]).rstrip(),
         "backend": str(raw["backend"]).rstrip(),
-        "run": {
-            "verdict": verdict,
-            "saw": str(run_in.get("saw") or ""),
-            "server": str(run_in.get("server") or ""),
-            "notes": str(run_in.get("notes") or ""),
-        },
-        "human": {
-            "checked": bool(human_in.get("checked", False)),
-            "at": str(human_in.get("at") or ""),
-            "comment": str(human_in.get("comment") or ""),
-        },
+        "run": run,
+        "human": human,
     }
 
 
@@ -284,13 +300,23 @@ def commit(path: Path, patch, scope: str) -> Dict[str, Any]:
         raise SystemExit(
             f"error: unknown write scope {scope!r} (want one of {sorted(WRITABLE_SCOPES)})"
         )
+    other = "human" if scope == "run" else "run"
     path = Path(path)
     lock = _lock_path(path)
     tmp = path.with_name(f"{path.name}.tmp.{os.getpid()}")
     fd = _acquire(lock)
     try:
         doc = load_run_file(path)
+        # The scope is enforced, not merely declared. Everything downstream — the
+        # merge argument, ADR 0006's promise that a tick never becomes a verdict —
+        # rests on a patch staying in its own field space, and a docstring asking
+        # nicely is not what that should rest on.
+        untouchable = {
+            case["id"]: dict(case[other]) for case in all_cases(doc)
+        }
         patch(doc)
+        for case in all_cases(doc):
+            case[other] = untouchable[case["id"]]
         doc["rev"] = int(doc.get("rev", 0)) + 1
         payload = {k: v for k, v in doc.items() if k != "source"}
         tmp.write_text(
@@ -401,6 +427,9 @@ PORT_SCAN_LIMIT = 64
 # is recorded, never promoted (ADR 0006).
 HUMAN_WRITABLE = frozenset({"checked", "comment", "base_rev"})
 
+# A tick is three small fields; anything larger is a mistake or a probe.
+MAX_BODY_BYTES = 64 * 1024
+
 
 def state_payload(doc: Dict[str, Any]) -> Dict[str, Any]:
     """Just what can change — the page already holds every authored slot."""
@@ -463,7 +492,14 @@ def make_handler(run_path: Path, token: str, shell_path: Path):
                 return
             case_id = self.path[len("/human/") :]
 
-            length = int(self.headers.get("Content-Length") or 0)
+            try:
+                length = int(self.headers.get("Content-Length") or 0)
+            except ValueError:
+                self._json(400, {"error": "bad Content-Length"})
+                return
+            if length < 0 or length > MAX_BODY_BYTES:
+                self._json(413, {"error": f"body over {MAX_BODY_BYTES} bytes"})
+                return
             try:
                 payload = json.loads(self.rfile.read(length) or b"{}")
             except json.JSONDecodeError:
@@ -615,7 +651,7 @@ def cmd_init(args: argparse.Namespace) -> int:
     def seed(document: Dict[str, Any]) -> None:
         for case in all_cases(document):
             if args.force:
-                case["run"] = {"verdict": "pending", "saw": "", "server": "", "notes": ""}
+                case["run"] = dict(RUN_DEFAULTS)
 
     commit(path, seed, scope="run")
     print(path)

@@ -174,6 +174,28 @@ class ServeTests(ServeTestBase):
                 self.assertEqual(400, status)
         self.assertEqual(before, self.path.read_text(encoding="utf-8"))
 
+    def test_a_malformed_content_length_is_refused_not_crashed_on(self):
+        """DFSYNC-2.6 — a bad or oversized body length is a 4xx, never an unbounded read."""
+        _, base = self.start_server()
+        before = self.path.read_text(encoding="utf-8")
+        host, port = base.rsplit(":", 1)[0].split("//")[1], int(base.rsplit(":", 1)[1])
+
+        for header, expected in (("not-a-number", 400), (str(10 * 1024 * 1024), 413)):
+            with self.subTest(content_length=header):
+                conn = socket.create_connection((host, port), timeout=5)
+                conn.sendall(
+                    (
+                        "POST /human/CASE-1 HTTP/1.1\r\n"
+                        f"Host: {host}\r\n"
+                        "Content-Type: application/json\r\n"
+                        f"Content-Length: {header}\r\n\r\n"
+                    ).encode("ascii")
+                )
+                status = int(conn.recv(64).decode("latin-1").split()[1])
+                conn.close()
+                self.assertEqual(expected, status)
+        self.assertEqual(before, self.path.read_text(encoding="utf-8"))
+
     def test_unknown_case_is_refused(self):
         """DFSYNC-2.6 — a tick for a case that does not exist changes nothing."""
         _, base = self.start_server()

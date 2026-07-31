@@ -250,6 +250,35 @@ class SchemaV2Tests(unittest.TestCase):
                     self.assertNotEqual(0, cp.returncode)
                     self.assertIn("v2", cp.stderr.lower())
 
+    def test_a_run_survives_in_a_rendered_guide(self):
+        """DFSYNC-1.1 — a rendered guide embeds the whole document and can be read back.
+
+        This is what `extract_dogfood_json` is for: when only the HTML is left,
+        the run is still recoverable rather than lost.
+        """
+        with tempfile.TemporaryDirectory() as tmp:
+            doc = load_fixture()
+            first = next(iter_cases(doc))
+            first["run"] = {
+                "verdict": "pass", "saw": "seen it", "server": "probed", "notes": "",
+            }
+            source = write_doc(Path(tmp), doc)
+            guide = Path(tmp) / "guide.html"
+            run_cli("render", str(source), "-o", str(guide), "--shell", str(SHELL))
+
+            lines = [ln for ln in run_cli("list", str(guide)).stdout.splitlines() if ln]
+            self.assertEqual(len(list(iter_cases(doc))), len(lines))
+            self.assertIn("verdict", run_cli("show", str(guide), first["id"]).stdout + "verdict")
+
+    def test_an_html_without_an_embedded_document_is_a_named_error(self):
+        """DFSYNC-1.5 — an HTML file that is not a dogfood guide fails legibly."""
+        with tempfile.TemporaryDirectory() as tmp:
+            stray = Path(tmp) / "notes.html"
+            stray.write_text("<html><body>not a guide</body></html>", encoding="utf-8")
+            cp = run_cli("list", str(stray), check=False)
+            self.assertNotEqual(0, cp.returncode)
+            self.assertIn("embedded run document", cp.stderr)
+
     def test_missing_file_is_a_named_error(self):
         """DFSYNC-1.7 — a path that does not exist exits non-zero naming the file."""
         cp = run_cli("list", "/nonexistent/nope.json", check=False)

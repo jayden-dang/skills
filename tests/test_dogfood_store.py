@@ -161,6 +161,38 @@ class StoreTests(unittest.TestCase):
         with self.assertRaises(SystemExit):
             self.mod.commit(path, lambda d: None, scope="verdict")
 
+    def test_scope_is_enforced_not_merely_declared(self):
+        """DFSYNC-2.2 — a patch cannot reach outside the field space it declared.
+
+        The whole disjointness argument — and ADR 0006's promise that a tick never
+        becomes a verdict — rests on this. A docstring asking politely is not an
+        enforcement mechanism, so the store restores the other space after every
+        patch.
+        """
+        path = self.fresh_run_file()
+
+        def run_scoped_patch_reaching_into_human(doc):
+            case_of(doc, "CASE-1")["run"]["verdict"] = "pass"
+            case_of(doc, "CASE-1")["human"]["checked"] = True   # out of bounds
+
+        self.mod.commit(path, run_scoped_patch_reaching_into_human, scope="run")
+        case = case_of(self.read(path), "CASE-1")
+        self.assertEqual("pass", case["run"]["verdict"], "the in-scope write must land")
+        self.assertFalse(case["human"]["checked"], "the out-of-scope write must not")
+
+    def test_a_human_patch_cannot_forge_a_verdict(self):
+        """DFSYNC-2.2 — the same guard in the direction that actually matters."""
+        path = self.fresh_run_file()
+
+        def human_scoped_patch_forging_a_pass(doc):
+            case_of(doc, "CASE-1")["human"]["checked"] = True
+            case_of(doc, "CASE-1")["run"]["verdict"] = "pass"   # out of bounds
+
+        self.mod.commit(path, human_scoped_patch_forging_a_pass, scope="human")
+        case = case_of(self.read(path), "CASE-1")
+        self.assertTrue(case["human"]["checked"])
+        self.assertEqual("pending", case["run"]["verdict"], "a tick must not forge a pass")
+
     def test_interrupted_write_leaves_the_previous_file_intact(self):
         """DFSYNC-7.4 — a failure mid-write never leaves a partial file at the target path."""
         path = self.fresh_run_file()

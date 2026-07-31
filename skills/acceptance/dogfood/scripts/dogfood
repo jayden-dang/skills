@@ -19,7 +19,7 @@ import re
 import sys
 import time
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional
 
 SCHEMA_VERSION = 2
 
@@ -304,106 +304,8 @@ def commit(path: Path, patch, scope: str) -> Dict[str, Any]:
 
 
 # ---------------------------------------------------------------------------
-# Ledger
+# Verdict rules
 # ---------------------------------------------------------------------------
-
-HEADER_RE = re.compile(r"^##\s+(\S+)\s*$", re.MULTILINE)
-FIELD_RE = re.compile(r"^- (req|kind|verdict|saw|server|notes):\s*(.*)$", re.MULTILINE)
-
-
-def default_run_path(catalog: Dict[str, Any], cwd: Path) -> Path:
-    slug = catalog.get("slug") or "dogfood"
-    skills = cwd / ".skills"
-    return skills / f"{slug}-dogfood-run.md"
-
-
-def init_ledger(catalog: Dict[str, Any], out: Path) -> str:
-    lines = [
-        "# Dogfood run ledger",
-        f"- source: `{catalog.get('source') or ''}`",
-        f"- slug: {catalog.get('slug') or ''}",
-        f"- origin: {catalog.get('origin') or ''}",
-        "",
-    ]
-    for c in all_cases(catalog):
-        lines.extend(
-            [
-                f"## {c['id']}",
-                f"- req: {c['req']}",
-                f"- kind: {c['kind']}",
-                "- verdict: pending",
-                "- saw:",
-                "- server:",
-                "- notes:",
-                "",
-            ]
-        )
-    text = "\n".join(lines).rstrip() + "\n"
-    out.parent.mkdir(parents=True, exist_ok=True)
-    out.write_text(text, encoding="utf-8")
-    return text
-
-
-def parse_ledger(path: Path) -> Tuple[Dict[str, str], List[Dict[str, str]]]:
-    if not path.is_file():
-        raise SystemExit(f"error: ledger not found: {path}")
-    text = path.read_text(encoding="utf-8")
-    meta: Dict[str, str] = {}
-    for line in text.splitlines():
-        if line.startswith("## "):
-            break
-        m = re.match(r"^- (source|slug|origin):\s*(.*)$", line)
-        if m:
-            meta[m.group(1)] = m.group(2).strip().strip("`")
-
-    rows: List[Dict[str, str]] = []
-    parts = re.split(r"(?m)^## ", text)
-    for part in parts[1:]:
-        lines = part.splitlines()
-        if not lines:
-            continue
-        case_id = lines[0].strip()
-        row = {
-            "case": case_id,
-            "req": "",
-            "kind": "",
-            "verdict": "pending",
-            "saw": "",
-            "server": "",
-            "notes": "",
-        }
-        for line in lines[1:]:
-            fm = re.match(r"^- (req|kind|verdict|saw|server|notes):\s*(.*)$", line)
-            if fm:
-                row[fm.group(1)] = fm.group(2)
-        rows.append(row)
-    if not rows:
-        raise SystemExit(f"error: no case rows in ledger: {path}")
-    return meta, rows
-
-
-def write_ledger(path: Path, meta: Dict[str, str], rows: List[Dict[str, str]]) -> None:
-    lines = [
-        "# Dogfood run ledger",
-        f"- source: `{meta.get('source', '')}`",
-        f"- slug: {meta.get('slug', '')}",
-        f"- origin: {meta.get('origin', '')}",
-        "",
-    ]
-    for row in rows:
-        lines.extend(
-            [
-                f"## {row['case']}",
-                f"- req: {row.get('req', '')}",
-                f"- kind: {row.get('kind', '')}",
-                f"- verdict: {row.get('verdict', 'pending')}",
-                f"- saw: {row.get('saw', '')}",
-                f"- server: {row.get('server', '')}",
-                f"- notes: {row.get('notes', '')}",
-                "",
-            ]
-        )
-    path.write_text("\n".join(lines).rstrip() + "\n", encoding="utf-8")
 
 
 def is_presentational_server(server: str) -> bool:
@@ -487,14 +389,14 @@ def render_html(catalog: Dict[str, Any], shell_path: Path) -> str:
 # ---------------------------------------------------------------------------
 
 def cmd_list(args: argparse.Namespace) -> int:
-    catalog = load_run_file(Path(args.catalog))
+    catalog = load_run_file(Path(args.run_file))
     for c in all_cases(catalog):
         print(f"{c['id']}\t{c['req']}\t{c['kind']}\t{c['title']}")
     return 0
 
 
 def cmd_show(args: argparse.Namespace) -> int:
-    catalog = load_run_file(Path(args.catalog))
+    catalog = load_run_file(Path(args.run_file))
     case = find_case(catalog, args.case_id)
     if not case:
         raise SystemExit(f"error: case not found: {args.case_id}")
@@ -510,90 +412,94 @@ def cmd_show(args: argparse.Namespace) -> int:
 
 
 def cmd_init(args: argparse.Namespace) -> int:
-    catalog = load_run_file(Path(args.catalog))
-    out = Path(args.output) if args.output else default_run_path(catalog, Path.cwd())
-    if out.exists() and not args.force:
-        raise SystemExit(f"error: ledger exists (use --force to overwrite): {out}")
-    init_ledger(catalog, out)
-    print(out)
-    print(f"cases: {len(all_cases(catalog))} pending", file=sys.stderr)
+    path = Path(args.run_file)
+    doc = load_run_file(path)
+    recorded = [
+        c["id"] for c in all_cases(doc) if c["run"]["verdict"] != "pending"
+    ]
+    if recorded and not args.force:
+        raise SystemExit(
+            "error: run file already holds verdicts for "
+            f"{', '.join(recorded)} — pass --force to reset them to pending"
+        )
+
+    def seed(document: Dict[str, Any]) -> None:
+        for case in all_cases(document):
+            if args.force:
+                case["run"] = {"verdict": "pending", "saw": "", "server": "", "notes": ""}
+
+    commit(path, seed, scope="run")
+    print(path)
+    print(f"cases: {len(all_cases(doc))}", file=sys.stderr)
     return 0
 
 
 def cmd_status(args: argparse.Namespace) -> int:
-    meta, rows = parse_ledger(Path(args.ledger))
+    doc = load_run_file(Path(args.run_file))
+    cases = all_cases(doc)
     counts = {v: 0 for v in VERDICTS}
-    for row in rows:
-        v = row.get("verdict", "pending")
-        counts[v] = counts.get(v, 0) + 1
-    total = len(rows)
-    print(f"total: {total}")
+    for case in cases:
+        counts[case["run"]["verdict"]] = counts.get(case["run"]["verdict"], 0) + 1
+    print(f"total: {len(cases)}")
     for v in ("pass", "fail", "blocked", "pending"):
         print(f"{v}: {counts.get(v, 0)}")
-    nxt = next((r["case"] for r in rows if r.get("verdict") != "pass"), None)
+    # A human tick is reported on its own line and never folded into a verdict
+    # tally: it is a signal that someone looked, not evidence that it works.
+    print(f"human: {sum(1 for c in cases if c['human']['checked'])}")
+    print(f"rev: {doc['rev']}")
+    nxt = next((c["id"] for c in cases if c["run"]["verdict"] != "pass"), None)
     print(f"next: {nxt or ''}")
-    if meta.get("source"):
-        print(f"source: {meta['source']}")
     return 0
 
 
 def cmd_next(args: argparse.Namespace) -> int:
-    _, rows = parse_ledger(Path(args.ledger))
-    for row in rows:
-        if row.get("verdict") != "pass":
-            print(row["case"])
+    """First case still to prove. `human` is deliberately not consulted."""
+    for case in all_cases(load_run_file(Path(args.run_file))):
+        if case["run"]["verdict"] != "pass":
+            print(case["id"])
             return 0
     return 1
 
 
 def cmd_mark(args: argparse.Namespace) -> int:
-    path = Path(args.ledger)
-    meta, rows = parse_ledger(path)
-    target = None
-    for row in rows:
-        if row["case"] == args.case_id:
-            target = row
-            break
-    if target is None:
-        raise SystemExit(f"error: case not in ledger: {args.case_id}")
+    path = Path(args.run_file)
+    doc = load_run_file(path)
+    case = find_case(doc, args.case_id)
+    if case is None:
+        raise SystemExit(f"error: case not in run file: {args.case_id}")
 
-    backend = None
-    if args.catalog:
-        catalog = load_run_file(Path(args.catalog))
-        case = find_case(catalog, args.case_id)
-        if case:
-            backend = case.get("backend")
-    elif meta.get("source"):
-        src = Path(meta["source"])
-        if src.is_file():
-            try:
-                catalog = load_run_file(src)
-                case = find_case(catalog, args.case_id)
-                if case:
-                    backend = case.get("backend")
-            except SystemExit:
-                pass
+    saw = args.saw if args.saw is not None else case["run"]["saw"]
+    server = args.server if args.server is not None else case["run"]["server"]
+    notes = args.notes if args.notes is not None else case["run"]["notes"]
+    # backend now travels in the same document, so the evidence rules can never
+    # be skipped for want of a reachable catalog.
+    validate_mark(args.verdict, saw, server, case["backend"])
 
-    saw = args.saw if args.saw is not None else target.get("saw", "")
-    server = args.server if args.server is not None else target.get("server", "")
-    notes = args.notes if args.notes is not None else target.get("notes", "")
-    validate_mark(args.verdict, saw, server, backend)
-    target["verdict"] = args.verdict
-    target["saw"] = saw
-    target["server"] = server
-    target["notes"] = notes
-    write_ledger(path, meta, rows)
+    def record(document: Dict[str, Any]) -> None:
+        target = find_case(document, args.case_id)
+        if target is None:
+            raise SystemExit(f"error: case vanished from run file: {args.case_id}")
+        target["run"] = {
+            "verdict": args.verdict,
+            "saw": saw,
+            "server": server,
+            "notes": notes,
+        }
+
+    commit(path, record, scope="run")
     print(f"{args.case_id}: {args.verdict}")
     return 0
 
 
 def cmd_render(args: argparse.Namespace) -> int:
-    catalog = load_run_file(Path(args.catalog))
-    if Path(args.catalog).suffix.lower() not in {".yaml", ".yml"} and not args.allow_html:
-        pass
+    doc = load_run_file(Path(args.run_file))
     shell = Path(args.shell) if args.shell else DEFAULT_SHELL
-    html_out = render_html(catalog, shell)
-    out = Path(args.output) if args.output else Path.cwd() / ".skills" / f"{catalog['slug']}-dogfood.html"
+    html_out = render_html(doc, shell)
+    out = (
+        Path(args.output)
+        if args.output
+        else Path.cwd() / ".skills" / f"{doc['slug']}-dogfood.html"
+    )
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(html_out, encoding="utf-8")
     print(out)
@@ -601,30 +507,33 @@ def cmd_render(args: argparse.Namespace) -> int:
 
 
 def cmd_report(args: argparse.Namespace) -> int:
-    meta, rows = parse_ledger(Path(args.ledger))
+    doc = load_run_file(Path(args.run_file))
+
+    def cell(s: Any) -> str:
+        return str(s or "").replace("|", "\\|").replace("\n", " ")
+
     lines = [
         "# Dogfood run report",
-        f"- source: `{meta.get('source', '')}`",
-        f"- slug: {meta.get('slug', '')}",
+        f"- source: `{doc.get('source', '')}`",
+        f"- slug: {doc.get('slug', '')}",
+        f"- rev: {doc['rev']}",
         "",
-        "| case | req | kind | verdict | saw | server | notes |",
-        "|---|---|---|---|---|---|---|",
+        "| case | req | kind | verdict | human | saw | server | notes |",
+        "|---|---|---|---|---|---|---|---|",
     ]
-    for r in rows:
-        def cell(s: str) -> str:
-            return (s or "").replace("|", "\\|").replace("\n", " ")
-
+    for case in all_cases(doc):
+        run = case["run"]
+        human = "checked" if case["human"]["checked"] else ""
         lines.append(
-            f"| {cell(r['case'])} | {cell(r.get('req',''))} | {cell(r.get('kind',''))} | "
-            f"{cell(r.get('verdict',''))} | {cell(r.get('saw',''))} | {cell(r.get('server',''))} | "
-            f"{cell(r.get('notes',''))} |"
+            f"| {cell(case['id'])} | {cell(case['req'])} | {cell(case['kind'])} | "
+            f"{cell(run['verdict'])} | {cell(human)} | {cell(run['saw'])} | "
+            f"{cell(run['server'])} | {cell(run['notes'])} |"
         )
-    unfinished = [r["case"] for r in rows if r.get("verdict") != "pass"]
+    unfinished = [c["id"] for c in all_cases(doc) if c["run"]["verdict"] != "pass"]
     lines.append("")
-    if unfinished:
-        lines.append(f"Unfinished: {', '.join(unfinished)}")
-    else:
-        lines.append("Unfinished: (none)")
+    lines.append(
+        f"Unfinished: {', '.join(unfinished)}" if unfinished else "Unfinished: (none)"
+    )
     text = "\n".join(lines) + "\n"
     if args.output:
         out = Path(args.output)
@@ -639,60 +548,56 @@ def cmd_report(args: argparse.Namespace) -> int:
 def build_parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(
         prog="dogfood",
-        description="Dogfood cases + run ledger CLI (agent progress without browser ticks).",
+        description=(
+            "Dogfood run-file CLI. One JSON file per run holds the cases and the "
+            "verdicts; a human tick is recorded beside a verdict, never as one."
+        ),
     )
     sub = p.add_subparsers(dest="command", required=True)
 
-    list_p = sub.add_parser("list", help="List case ids from cases YAML or HTML guide")
-    list_p.add_argument("catalog", help="Path to .cases.yaml or dogfood .html")
+    def with_run_file(parser_obj):
+        parser_obj.add_argument(
+            "run_file", help="Path to .skills/<slug>-dogfood.json"
+        )
+        return parser_obj
+
+    list_p = with_run_file(sub.add_parser("list", help="List case ids"))
     list_p.set_defaults(func=cmd_list)
 
-    show_p = sub.add_parser("show", help="Show one case in full")
-    show_p.add_argument("catalog")
+    show_p = with_run_file(sub.add_parser("show", help="Show one case in full"))
     show_p.add_argument("case_id")
     show_p.set_defaults(func=cmd_show)
 
-    init_p = sub.add_parser("init", help="Create a run ledger (all pending)")
-    init_p.add_argument("catalog")
-    init_p.add_argument("-o", "--output", help="Ledger path (default .skills/<slug>-dogfood-run.md)")
-    init_p.add_argument("--force", action="store_true", help="Overwrite existing ledger")
+    init_p = with_run_file(
+        sub.add_parser("init", help="Seed run state (pending) in place")
+    )
+    init_p.add_argument(
+        "--force", action="store_true", help="Reset recorded verdicts to pending"
+    )
     init_p.set_defaults(func=cmd_init)
 
-    status_p = sub.add_parser("status", help="Summarize ledger verdicts")
-    status_p.add_argument("ledger")
+    status_p = with_run_file(sub.add_parser("status", help="Summarize verdicts"))
     status_p.set_defaults(func=cmd_status)
 
-    next_p = sub.add_parser("next", help="Print first non-pass case id")
-    next_p.add_argument("ledger")
+    next_p = with_run_file(sub.add_parser("next", help="Print first non-pass case id"))
     next_p.set_defaults(func=cmd_next)
 
-    mark_p = sub.add_parser("mark", help="Set verdict + evidence on a ledger row")
-    mark_p.add_argument("ledger")
+    mark_p = with_run_file(sub.add_parser("mark", help="Record a verdict + evidence"))
     mark_p.add_argument("case_id")
     mark_p.add_argument("verdict", choices=sorted(VERDICTS))
     mark_p.add_argument("--saw", default=None, help="Quoted UI evidence")
-    mark_p.add_argument("--server", default=None, help="Probe result or 'none — presentational'")
-    mark_p.add_argument("--notes", default=None)
     mark_p.add_argument(
-        "--catalog",
-        default=None,
-        help="Cases/HTML path for backend validation (else ledger source)",
+        "--server", default=None, help="Probe result or 'none — presentational'"
     )
+    mark_p.add_argument("--notes", default=None)
     mark_p.set_defaults(func=cmd_mark)
 
-    render_p = sub.add_parser("render", help="Render human HTML guide from cases YAML")
-    render_p.add_argument("catalog", help="Path to .cases.yaml")
+    render_p = with_run_file(sub.add_parser("render", help="Render the human guide"))
     render_p.add_argument("-o", "--output", help="HTML output path")
     render_p.add_argument("--shell", help="Shell HTML path")
-    render_p.add_argument(
-        "--allow-html",
-        action="store_true",
-        help="Allow re-render from HTML catalog (unusual)",
-    )
     render_p.set_defaults(func=cmd_render)
 
-    report_p = sub.add_parser("report", help="Write end-of-run report from ledger")
-    report_p.add_argument("ledger")
+    report_p = with_run_file(sub.add_parser("report", help="Write the end-of-run report"))
     report_p.add_argument("-o", "--output", help="Report path (default stdout)")
     report_p.set_defaults(func=cmd_report)
 

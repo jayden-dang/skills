@@ -13,6 +13,7 @@ from __future__ import annotations
 import ast
 import importlib.util
 import json
+import os
 import subprocess
 import sys
 import tempfile
@@ -299,6 +300,240 @@ class CatalogReadTests(unittest.TestCase):
         self.assertEqual(0, cp.returncode)
         for sub in ("list", "show", "render"):
             self.assertIn(sub, cp.stdout)
+
+
+class VerdictCommandTests(unittest.TestCase):
+    """init / next / status / mark / report, now reading and writing one run file."""
+
+    def setUp(self):
+        self._tmp = tempfile.TemporaryDirectory()
+        self.addCleanup(self._tmp.cleanup)
+        self.dir = Path(self._tmp.name)
+
+    def run_file(self, doc=None) -> Path:
+        return write_doc(self.dir, doc if doc is not None else load_fixture())
+
+    def read(self, path: Path) -> dict:
+        return json.loads(path.read_text(encoding="utf-8"))
+
+    def pass_case(self, path: Path, case_id: str, server: str) -> subprocess.CompletedProcess:
+        return run_cli(
+            "mark", str(path), case_id, "pass", "--saw", "it showed up",
+            "--server", server, check=False,
+        )
+
+    def test_init_seeds_pending_where_absent_and_preserves_pending_state(self):
+        """DFSYNC-1.3 — init adds pending run state and leaves existing pending state alone.
+
+        DFSYNC-1.4's trigger is a file that holds a *non-pending* verdict, so the
+        state 1.3 protects here is a case already carrying pending run state with
+        working notes on it — seeding must not blank that.
+        """
+        doc = bare_document()
+        doc["sections"][0]["cases"].append(
+            dict(doc["sections"][0]["cases"][0], id="CASE-2", req="BARE-1.2")
+        )
+        doc["sections"][0]["cases"][1]["run"] = {
+            "verdict": "pending", "saw": "", "server": "", "notes": "seed data loaded",
+        }
+        path = self.run_file(doc)
+        cp = run_cli("init", str(path))
+        self.assertEqual(0, cp.returncode)
+        written = self.read(path)
+        self.assertEqual("pending", case_of(written, "CASE-1")["run"]["verdict"])
+        self.assertFalse(case_of(written, "CASE-1")["human"]["checked"])
+        self.assertEqual("pending", case_of(written, "CASE-2")["run"]["verdict"])
+        self.assertEqual("seed data loaded", case_of(written, "CASE-2")["run"]["notes"])
+
+    def test_init_refuses_when_any_verdict_is_recorded(self):
+        """DFSYNC-1.4 — one recorded verdict anywhere in the file blocks a re-seed."""
+        doc = bare_document()
+        doc["sections"][0]["cases"].append(
+            dict(doc["sections"][0]["cases"][0], id="CASE-2", req="BARE-1.2")
+        )
+        doc["sections"][0]["cases"][1]["run"] = {
+            "verdict": "fail", "saw": "nope", "server": "500", "notes": "",
+        }
+        path = self.run_file(doc)
+        before = path.read_text(encoding="utf-8")
+        cp = run_cli("init", str(path), check=False)
+        self.assertNotEqual(0, cp.returncode)
+        self.assertIn("CASE-2", cp.stderr)
+        self.assertEqual(before, path.read_text(encoding="utf-8"))
+
+    def test_init_refuses_a_recorded_file_without_force(self):
+        """DFSYNC-1.4 — a file already holding a non-pending verdict is not re-seeded."""
+        doc = bare_document()
+        doc["sections"][0]["cases"][0]["run"] = {
+            "verdict": "pass", "saw": "seen", "server": "none — presentational", "notes": "",
+        }
+        path = self.run_file(doc)
+        before = path.read_text(encoding="utf-8")
+        cp = run_cli("init", str(path), check=False)
+        self.assertNotEqual(0, cp.returncode)
+        self.assertIn("--force", cp.stderr)
+        self.assertEqual(before, path.read_text(encoding="utf-8"))
+
+        forced = run_cli("init", str(path), "--force")
+        self.assertEqual(0, forced.returncode)
+        self.assertEqual("pending", case_of(self.read(path), "CASE-1")["run"]["verdict"])
+
+    def test_next_ignores_human_ticks(self):
+        """DFSYNC-2.3 — a human tick never advances next past an unproven case."""
+        doc = load_fixture()
+        for case in iter_cases(doc):
+            case["human"] = {"checked": True, "at": "2026-07-31T00:00:00Z", "comment": "eyeballed"}
+        path = self.run_file(doc)
+        first = next(iter_cases(doc))["id"]
+        self.assertEqual(first, run_cli("next", str(path)).stdout.strip())
+
+    def test_next_is_silent_and_exits_1_when_every_case_passes(self):
+        """DFSYNC-1.10 — no remaining case means no output and exit 1."""
+        doc = load_fixture()
+        for case in iter_cases(doc):
+            case["run"] = {
+                "verdict": "pass", "saw": "seen", "server": "probed", "notes": "",
+            }
+        cp = run_cli("next", str(self.run_file(doc)), check=False)
+        self.assertEqual(1, cp.returncode)
+        self.assertEqual("", cp.stdout.strip())
+
+    def test_pass_requires_both_saw_and_server(self):
+        """DFSYNC-1.11 — pass with an empty --saw or an empty --server is refused."""
+        path = self.run_file()
+        target = next(c for c in iter_cases(load_fixture()) if c["backend"] != "presentational")
+        missing_server = run_cli(
+            "mark", str(path), target["id"], "pass", "--saw", "it showed up", check=False
+        )
+        self.assertNotEqual(0, missing_server.returncode)
+        self.assertIn("--server", missing_server.stderr)
+
+        missing_saw = run_cli(
+            "mark", str(path), target["id"], "pass", "--server", "GET /x 200", check=False
+        )
+        self.assertNotEqual(0, missing_saw.returncode)
+        self.assertIn("--saw", missing_saw.stderr)
+        self.assertEqual("pending", case_of(self.read(path), target["id"])["run"]["verdict"])
+
+    def test_presentational_sentinel_is_enforced_in_both_directions(self):
+        """DFSYNC-1.12 — the sentinel is required for presentational cases and refused elsewhere."""
+        fixture = load_fixture()
+        presentational = next(c for c in iter_cases(fixture) if c["backend"] == "presentational")
+        probed = next(c for c in iter_cases(fixture) if c["backend"] != "presentational")
+        path = self.run_file()
+
+        wrong = self.pass_case(path, presentational["id"], "GET /api/notes 200")
+        self.assertNotEqual(0, wrong.returncode)
+        self.assertIn("presentational", wrong.stderr.lower())
+
+        right = self.pass_case(path, presentational["id"], "none — presentational")
+        self.assertEqual(0, right.returncode)
+
+        laundered = self.pass_case(path, probed["id"], "none — presentational")
+        self.assertNotEqual(0, laundered.returncode)
+        self.assertIn("presentational", laundered.stderr.lower())
+
+    def test_mark_writes_the_verdict_into_the_run_file(self):
+        """DFSYNC-1.3 — a recorded verdict and its evidence land in the same file."""
+        path = self.run_file()
+        target = next(c for c in iter_cases(load_fixture()) if c["backend"] != "presentational")
+        before = self.read(path)["rev"]
+        cp = self.pass_case(path, target["id"], "GET /api/notes includes it")
+        self.assertEqual(0, cp.returncode)
+        after = self.read(path)
+        case = case_of(after, target["id"])
+        self.assertEqual("pass", case["run"]["verdict"])
+        self.assertEqual("it showed up", case["run"]["saw"])
+        self.assertEqual(before + 1, after["rev"])
+
+    def test_status_reports_the_human_tally_separately(self):
+        """DFSYNC-2.4 — the human count is its own line, not folded into the verdict counts."""
+        doc = load_fixture()
+        cases = list(iter_cases(doc))
+        cases[0]["run"]["verdict"] = "pass"
+        cases[1]["human"]["checked"] = True
+        cases[2]["human"]["checked"] = True
+        out = run_cli("status", str(self.run_file(doc))).stdout
+        self.assertRegex(out, r"(?m)^total: 6$")
+        self.assertRegex(out, r"(?m)^pass: 1$")
+        self.assertRegex(out, r"(?m)^pending: 5$")
+        self.assertRegex(out, r"(?m)^human: 2$")
+
+    def test_report_gives_the_human_tick_its_own_column(self):
+        """DFSYNC-2.5 — the report distinguishes a tick from a verdict."""
+        doc = load_fixture()
+        cases = list(iter_cases(doc))
+        cases[0]["run"]["verdict"] = "pass"
+        cases[1]["human"]["checked"] = True
+        out = run_cli("report", str(self.run_file(doc))).stdout
+        header = next(ln for ln in out.splitlines() if ln.startswith("| case"))
+        self.assertIn("human", header)
+        self.assertLess(header.index("verdict"), header.index("saw"))
+        self.assertNotEqual(header.index("human"), header.index("verdict"))
+
+    def test_report_has_one_row_per_case_and_escapes_pipes(self):
+        """DFSYNC-1.13 — a markdown table, one row per case, with | escaped in cell text."""
+        doc = load_fixture()
+        first = next(iter_cases(doc))
+        first["run"] = {
+            "verdict": "fail", "saw": "saw a | pipe", "server": "probe | ran", "notes": "",
+        }
+        out = run_cli("report", str(self.run_file(doc))).stdout
+        rows = [ln for ln in out.splitlines() if ln.startswith("| CASE-")]
+        self.assertEqual(6, len(rows))
+        self.assertIn(r"saw a \| pipe", out)
+
+    def test_mark_opens_no_network_connection(self):
+        """DFSYNC-3.5 — mark completes without creating a socket."""
+        guard_dir = self.dir / "guard"
+        guard_dir.mkdir()
+        (guard_dir / "sitecustomize.py").write_text(
+            "import socket\n"
+            "def _forbidden(*a, **k):\n"
+            "    raise AssertionError('dogfood mark opened a socket')\n"
+            "socket.socket = _forbidden\n"
+            "socket.create_connection = _forbidden\n",
+            encoding="utf-8",
+        )
+        path = self.run_file()
+        target = next(c for c in iter_cases(load_fixture()) if c["backend"] != "presentational")
+        env = dict(os.environ, PYTHONPATH=str(guard_dir))
+        cp = subprocess.run(
+            [sys.executable, str(CLI), "mark", str(path), target["id"], "pass",
+             "--saw", "it showed up", "--server", "GET /api/notes includes it"],
+            capture_output=True, text=True, cwd=str(REPO), env=env,
+        )
+        self.assertEqual(0, cp.returncode, cp.stderr)
+        self.assertNotIn("opened a socket", cp.stderr)
+        self.assertEqual("pass", case_of(self.read(path), target["id"])["run"]["verdict"])
+
+    def test_every_subcommand_runs_without_a_server(self):
+        """DFSYNC-5.8 — the CLI is fully usable when no serve process exists (ARCH-2)."""
+        path = self.run_file()
+        first = next(iter_cases(load_fixture()))["id"]
+        html = self.dir / "guide.html"
+        report = self.dir / "report.md"
+        for args in (
+            ("list", str(path)),
+            ("show", str(path), first),
+            ("init", str(path), "--force"),
+            ("next", str(path)),
+            ("status", str(path)),
+            ("report", str(path), "-o", str(report)),
+            ("render", str(path), "-o", str(html), "--shell", str(SHELL)),
+        ):
+            with self.subTest(command=args[0]):
+                self.assertEqual(0, run_cli(*args).returncode)
+
+    def test_mark_takes_no_catalog_argument(self):
+        """DFSYNC-1.2 — backend comes from the run file, so there is no second path to pass."""
+        path = self.run_file()
+        first = next(iter_cases(load_fixture()))["id"]
+        cp = run_cli(
+            "mark", str(path), first, "blocked", "--catalog", str(path), check=False
+        )
+        self.assertNotEqual(0, cp.returncode)
+        self.assertIn("--catalog", cp.stderr)
 
 
 if __name__ == "__main__":

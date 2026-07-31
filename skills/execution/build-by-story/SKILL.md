@@ -13,10 +13,10 @@ requirement stories, implement unit-by-unit with fresh subagents, stop for a
 human after each unit, resume from the unit ledger, finish with whole-branch
 review.
 
-**This is not continuous execution.** Continuous multi-task orchestration
-without unit barriers is `build-in-waves`. Controller-implements-without-subagents
-is `build-inline`. If `Execution-mode:` is `continuous`, stop and use
-`build-in-waves` instead. If the user wants no subagents, name `build-inline`.
+Continuous multi-task orchestration without unit barriers is `build-in-waves`.
+Controller-implements-without-subagents is `build-inline`. Invoking this skill
+selects **story-unit** execution. If the header already says `continuous`, hand
+off to `build-in-waves`. If the user wants no subagents, name `build-inline`.
 
 **Why fresh subagents:** each worker gets only its task brief; bulk artifacts
 travel as paths under `.skills/`, never pasted session history.
@@ -56,17 +56,35 @@ not drop the barrier. "Stop stopping" is a **mode change**: write
 | "continue means run everything left" | "continue" unlocks **one** next unit; run-it-all needs mode-change language |
 | "PM review waves are clearer than stories" | Partition is derived from requirement story IDs, not authored lists |
 
+## Mode ownership
+
+Align `tasks.md` to the story-unit route and continue:
+
+| `Execution-mode:` on `tasks.md` | Action |
+|---|---|
+| `story-unit` | Proceed |
+| `continuous` | REQUIRED SUB-SKILL: use `build-in-waves` |
+| missing / `unset` / invalid | Write `Execution-mode: story-unit` into `tasks.md` (commit if tracked). Proceed |
+
 ## Setup
 
-1. **Mode gate.** Read `Execution-mode:` from `tasks.md`. Must be `story-unit`.
-   If `continuous` → use `build-in-waves`. If missing/`unset`/invalid → ask, write
-   the chosen value, proceed only if the result is `story-unit`. Never invent
-   continuous. *Done when: header is `story-unit`.*
-2. **Workspace check — route-task first.** Isolate in a worktree, or implement on the
-   current branch? Do not create a worktree unasked. Isolation → REQUIRED
-   SUB-SKILL: use `isolate-workspace`. Current branch is main/master → separate
-   explicit consent before any implementation. *Done when: workspace choice is
-   clear.*
+1. **Mode ownership.** Apply the table above. *Done when: header is `story-unit`
+   and you stay on this skill, or you have handed off to `build-in-waves`.*
+2. **Session preflight — two questions:**
+   1. **Issue tracker sync.** Read `docs/agents/issue-tracker.md` when present.
+      IF a tracker is configured (github / gitlab / linear / local / other named
+      backend) → ask whether this build should sync with that tracker (bind
+      issues to the branch, pull ticket IDs into briefs/ledger, use the
+      tracker's wayfinding ops for status). IF yes → resolve ticket IDs from
+      branch name, plan, or a short user list; record them under `.skills/` for
+      implementer briefs and later `package-change`. IF no, or the file is
+      absent / declares no tracker → empty ticket set; continue (unconfigured
+      tracker is normal, not a failure).
+   2. **Workspace / branch.** Isolate in a worktree, or implement on the current
+      branch? Do not create a worktree unasked. Isolation → REQUIRED SUB-SKILL:
+      use `isolate-workspace`. Current branch is main/master → separate explicit
+      consent before any implementation.
+   *Done when: tracker choice (or empty set) and workspace choice are clear.*
 3. **Ledger check.** Ensure `.skills/` is git-ignored:
    `grep -qxF '.skills/' .gitignore 2>/dev/null || { printf '.skills/\n' >> .gitignore && git commit -m 'chore: ignore local skills artifacts' -- .gitignore; }`
    Read `.skills/progress.md` if present. Every complete task **and** complete
@@ -100,7 +118,9 @@ For each Task N in U (Depends-on order):
 1. **Record base.** `BASE=$(git rev-parse HEAD)`.
 2. **Build brief.** Task N block + verbatim Global Constraints →
    `.skills/task-N-brief.md`. Include relevant `**ARCH-N**` when a
-   `docs/architecture/` spine exists.
+   `docs/architecture/` spine exists. WHEN preflight recorded ticket IDs,
+   list them in the brief so implementers and later `package-change` share one
+   set.
 3. **Dispatch a FRESH implementer** using the template at
    `../build-in-waves/implementer-prompt.md` (one home for the implementer
    contract — do not fork it). Dispatch inventory only: one-line placement,
@@ -193,6 +213,8 @@ State the model **explicitly on every dispatch**.
 
 ## Red Flags — Never
 
+- Skip the tracker-sync or workspace preflight
+- Invent a tracker or ticket set when config is absent or the user declined sync
 - Start the next unit (or ledger unit complete as if unlocked) without human
   unlock or a written mode change
 - Treat "stop stopping" as chat-only without writing `Execution-mode: continuous`

@@ -53,7 +53,8 @@
 - [x] Technique bare summary binds mode-change write-back (B2 fix)
 - [x] Quiz gates remain A with skill citation
 - [x] Description routes story-unit vs continuous (B1 fix)
+- [x] Mode ownership: invoke story skill → write `story-unit` if header missing
+- [x] Setup preflight is tracker sync + workspace
 - [x] No-op + duplication: per-task loop inlined intentionally until build-in-waves narrow extracts shared home; templates pointer to `../build-in-waves/*-prompt.md`
-- [ ] build-in-waves still dual-mode until its own RED/GREEN narrow pass
-- [ ] build-inline not shipped
-- [ ] plan-tasks / AGENTS / templates cross-refs after family complete
+- [x] build-in-waves continuous-only; build-inline shipped
+- [x] plan-tasks / AGENTS / templates family wire

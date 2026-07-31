@@ -34,4 +34,6 @@
 - [x] No unit barriers even if header is story-unit
 - [x] Stop-on-blocker + test-first iron laws hold
 - [x] build-in-waves redirects to build-inline (Inline Fallback removed)
-- [ ] plan-tasks / AGENTS / templates family wire (downstream)
+- [x] Mode unset → write header for bookkeeping and proceed
+- [x] Setup preflight is tracker sync + workspace
+- [x] plan-tasks / AGENTS / templates family wire (downstream)

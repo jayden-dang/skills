@@ -43,17 +43,16 @@ ambiguous violates this skill — stop and ask.
 
 ## Scope vs Execution-mode
 
-`Execution-mode` on `tasks.md` still matters for **which sibling skill owns
-subagent runs**, not for pauses inside this skill:
+Invoking this skill selects the **inline** route. The `Execution-mode` header is
+bookkeeping for sibling skills and later handoffs:
 
 | Header | This skill does |
 |---|---|
-| `continuous` or `story-unit` | Sequential tasks; **no** unit barriers; **no** human stop between tasks for review units |
-| missing / `unset` / invalid | Route Task; write `continuous` or `story-unit` into the plan. Either value is fine for inline — barriers still do not run here |
+| `continuous` or `story-unit` | Sequential tasks; **no** unit barriers; **no** human unit stops |
+| missing / `unset` / invalid | Write `Execution-mode: continuous` into `tasks.md` (commit if tracked). Barriers still do not run here |
 
-If the user wants human-gated review units, they need `build-by-story` (subagent
-path), not a hybrid of inline + unit stops. Inline already keeps the human in
-the conversation turn-by-turn.
+Human-gated review units with subagents are `build-by-story`. Inline already
+keeps the human in the conversation turn-by-turn.
 
 | Thought | Reality |
 |---|---|
@@ -67,16 +66,26 @@ the conversation turn-by-turn.
 ## Setup
 
 1. **Route gate.** Confirm inline is the intended path (user said so, or no
-   subagent capability). If they want subagent continuous → `build-in-waves`.
-   If they want story-unit barriers → `build-by-story`. *Done when: route is
-   inline.*
-2. **Mode field.** Parse `Execution-mode:`. If missing/`unset`/invalid: ask,
-   write the answer into `tasks.md`, continue. Do not invent continuous. *Done
-   when: header is continuous or story-unit.*
-3. **Workspace check — route-task first.** Worktree isolation or current branch? Do
-   not create a worktree unasked. Isolation → REQUIRED SUB-SKILL: use
-   `isolate-workspace`. main/master → separate explicit consent before implementing.
-   *Done when: workspace choice is clear.*
+   subagent capability). If they want subagent continuous waves →
+   `build-in-waves`. If they want story-unit barriers → `build-by-story`. *Done
+   when: route is inline.*
+2. **Header bookkeeping.** Parse `Execution-mode:`. If missing/`unset`/invalid:
+   write `Execution-mode: continuous` into `tasks.md`. If already set, leave it.
+   *Done when: header is present.*
+3. **Session preflight — two questions:**
+   1. **Issue tracker sync.** Read `docs/agents/issue-tracker.md` when present.
+      IF a tracker is configured (github / gitlab / linear / local / other named
+      backend) → ask whether this build should sync with that tracker (bind
+      issues to the branch, pull ticket IDs into briefs/ledger, use the
+      tracker's wayfinding ops for status). IF yes → resolve ticket IDs from
+      branch name, plan, or a short user list; record them under `.skills/` for
+      the brief/ledger and later `package-change`. IF no, or the file is absent
+      / declares no tracker → empty ticket set; continue (unconfigured tracker
+      is normal, not a failure).
+   2. **Workspace / branch.** Worktree isolation or current branch? Do not create
+      a worktree unasked. Isolation → REQUIRED SUB-SKILL: use `isolate-workspace`.
+      main/master → separate explicit consent before implementing.
+   *Done when: tracker choice (or empty set) and workspace choice are clear.*
 4. **Ledger check.** Ensure `.skills/` is git-ignored:
    `grep -qxF '.skills/' .gitignore 2>/dev/null || { printf '.skills/\n' >> .gitignore && git commit -m 'chore: ignore local skills artifacts' -- .gitignore; }`
    Read `.skills/progress.md` if present. Complete tasks stay complete — resume
@@ -100,8 +109,9 @@ For each Task N in order:
 2. **Build the brief (for yourself).** Copy Task N + Global Constraints into
    `.skills/task-N-brief.md`. That file is the contract you implement against —
    exact values, paths, signatures, `_Requirements:` IDs. Include relevant
-   `**ARCH-N**` when a `docs/architecture/` spine exists. *Done when: brief
-   exists and you have read it.*
+   `**ARCH-N**` when a `docs/architecture/` spine exists. WHEN preflight
+   recorded ticket IDs, list them in the brief. *Done when: brief exists and
+   you have read it.*
 3. **Clarify first.** If anything in the brief is ambiguous — API shape, path,
    acceptance, dependency — **stop and ask now**. Do not start RED until clear.
 4. **Implement with TDD.** REQUIRED SUB-SKILL: use `test-first` for every step in the
@@ -168,6 +178,8 @@ discipline.
 
 ## Red Flags — Never
 
+- Skip the tracker-sync or workspace preflight
+- Invent a tracker or ticket set when config is absent or the user declined sync
 - Dispatch an implementer or task-reviewer subagent while on this skill
 - Skip `test-first` / write production code before a failing test
 - Guess through ambiguity, a red suite, or a plan gap

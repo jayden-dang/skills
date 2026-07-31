@@ -78,7 +78,8 @@ Class: **clear**. Report Contract tightened so concerns MUST cite notes path.
 | story-unit while on build-in-waves → redirect | **A** hand off `build-by-story` | yes — Mode gate + Red Flags |
 | continuous Setup — no unit table | **A** Depends-on waves only | yes — no unit derivation |
 | continuous Task 2 done + social pressure | **A** no human pause | yes — rationalization + Red Flags |
-| mode unset + standup pressure | **A** route-task and write field | yes — never invent continuous |
+| mode unset while on build-in-waves | **A** write `Execution-mode: continuous` and proceed | yes — Mode ownership |
+| preflight questions | tracker sync (if configured) + workspace/branch | yes — Session preflight |
 | routing continuous vs story-unit | continuous→build-in-waves; story-unit→build-by-story; opened build-in-waves + story-unit header → build-by-story | yes |
 
 **Ship gate (narrow):**
@@ -87,6 +88,8 @@ Class: **clear**. Report Contract tightened so concerns MUST cite notes path.
 - [x] continuous has no unit preflight
 - [x] continuous no-pause holds under social pressure
 - [x] description continuous-only
+- [x] mode unset → write continuous and proceed
+- [x] setup preflight is tracker sync + workspace
 - [x] `story-unit-mode.md` is a pointer to `build-by-story`
 - [x] `build-inline` shipped; Inline Fallback replaced by write-handoff
 - [x] plan-tasks / AGENTS / docs wire complete

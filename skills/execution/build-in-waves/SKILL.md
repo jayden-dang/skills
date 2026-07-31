@@ -26,37 +26,46 @@ world. Bulk artifacts travel as file paths under `.skills/`, never as pasted tex
 **Narration:** at most one short line between tool calls. Ledger + tool results
 carry the record.
 
-## Mode gate
+## Mode ownership
 
-`Execution-mode` is a required header on `tasks.md`. This skill runs **only**
-when the value is `continuous`.
+Invoking this skill selects **continuous** execution. Align `tasks.md` to that
+route and continue:
 
-| Header | Action |
+| `Execution-mode:` on `tasks.md` | Action |
 |---|---|
-| `continuous` | Proceed with Setup below |
-| `story-unit` | Do **not** run this skill's loop. REQUIRED SUB-SKILL: use `build-by-story` |
-| missing / `unset` / invalid | Ask the user; write `continuous` or `story-unit` into `tasks.md` (commit if tracked). If they pick `story-unit` → `build-by-story`. If `continuous` → proceed. Never invent continuous silently. No project-level default |
+| `continuous` | Proceed |
+| `story-unit` | REQUIRED SUB-SKILL: use `build-by-story` |
+| missing / `unset` / invalid | Write `Execution-mode: continuous` into `tasks.md` (commit if tracked). Proceed |
 
-Never run unit barriers, unit derivation, or human unit stops in this skill.
-Those live only in `build-by-story`.
+Unit barriers, unit derivation, and human unit stops live only in
+`build-by-story`.
 
 | Thought | Reality |
 |---|---|
-| "build-in-waves used to handle both modes — I'll keep going in story-unit" | Story-unit is `build-by-story`. Staying here is the dual-mode failure |
-| "I'll derive units as a size signal then continuous" | No unit table in this skill. Waves come from Depends-on only |
-| "Lead wants human stops — stay in continuous and pause anyway" | Pause policy is the header. Write `story-unit` and use `build-by-story`, or keep continuous with no pauses |
-| "PM / standup — default continuous without asking" | Empty mode means not ready; route-task and write the field |
+| "Header says story-unit — stay and run waves anyway" | Hand off to `build-by-story` |
+| "I'll derive units as a size signal then continuous" | Waves come from Depends-on only |
+| "Lead wants human stops — pause inside continuous" | Human-gated stops are `build-by-story` |
 
 ## Setup
 
-1. **Mode gate first.** Parse `Execution-mode:` per the table above. *Done when:
-   you are on continuous, or you have handed off to `build-by-story`.*
-2. **Workspace check — route-task first.** If no isolated workspace exists yet, ask:
-   isolate in a worktree, or implement on the current branch? Do not create a
-   worktree unasked. Isolation → REQUIRED SUB-SKILL: use `isolate-workspace`. Current
-   branch is main/master → separate explicit consent before implementing; "no
-   worktree" is not consent to touch main/master. *Done when: workspace choice
-   is clear.*
+1. **Mode ownership.** Apply the table above. *Done when: header is `continuous`
+   and you stay on this skill, or you have handed off to `build-by-story`.*
+2. **Session preflight — two questions:**
+   1. **Issue tracker sync.** Read `docs/agents/issue-tracker.md` when present.
+      IF a tracker is configured (github / gitlab / linear / local / other named
+      backend) → ask whether this build should sync with that tracker (bind
+      issues to the branch, pull ticket IDs into briefs/ledger, use the
+      tracker's wayfinding ops for status). IF yes → resolve ticket IDs from
+      branch name, plan, or a short user list; record them under `.skills/` for
+      implementer briefs and later `package-change`. IF no, or the file is
+      absent / declares no tracker → empty ticket set; continue (unconfigured
+      tracker is normal, not a failure).
+   2. **Workspace / branch.** If no isolated workspace exists yet: isolate in a
+      worktree, or implement on the current branch? Do not create a worktree
+      unasked. Isolation → REQUIRED SUB-SKILL: use `isolate-workspace`. Current
+      branch is main/master → separate explicit consent before implementing;
+      "no worktree" is not consent to touch main/master.
+   *Done when: tracker choice (or empty set) and workspace choice are clear.*
 3. **Ledger check.** Make `.skills/` local-only:
    `grep -qxF '.skills/' .gitignore 2>/dev/null || { printf '.skills/\n' >> .gitignore && git commit -m 'chore: ignore local skills artifacts' -- .gitignore; }`
    Read `.skills/progress.md` if it exists. Every task it marks complete IS
@@ -85,8 +94,9 @@ For Task N:
 1. **Record the base.** `BASE=$(git rev-parse HEAD)` — before dispatch, always.
 2. **Build the brief.** Task N block + verbatim Global Constraints →
    `.skills/task-N-brief.md`. Include relevant `**ARCH-N**` when a
-   `docs/architecture/` spine exists. Apply Team band packaging to tone — never
-   omit review obligations.
+   `docs/architecture/` spine exists. WHEN preflight recorded ticket IDs,
+   list them in the brief so implementers and later `package-change` share one
+   set. Apply Team band packaging to tone — never omit review obligations.
 3. **Dispatch a FRESH implementer** using `implementer-prompt.md` (beside this
    file). Dispatch inventory only: one-line placement; brief path as requirements;
    interfaces/decisions prior tasks cannot know; ambiguity resolutions; report
@@ -198,13 +208,13 @@ skill's subagent loop without dispatches.
 
 ## Red Flags — Never
 
-- Run this skill's loop when `Execution-mode` is `story-unit` (hand off to
-  `build-by-story`)
+- Run this loop when `Execution-mode` is `story-unit` (hand off to `build-by-story`)
 - Stay on this skill when the user chose inline / no subagents (hand off to
   `build-inline`)
 - Run unit barriers, unit derivation, or human unit stops under continuous
 - Pause between tasks to ask permission to continue
-- Invent `Execution-mode: continuous` because the header is missing
+- Skip the tracker-sync or workspace preflight
+- Invent a tracker or ticket set when config is absent or the user declined sync
 - Run two implementers in the **same worktree**, or parallel without isolated
   isolate-workspace and a disjoint-surface check
 - Merge or ledger a parallel wave before every task in it passed review

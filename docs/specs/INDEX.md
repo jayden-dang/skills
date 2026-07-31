@@ -14,3 +14,4 @@ not planned as a roadmap item.
 | ASSESS | Milestone assessment — the pre-close outcome gate and its append-only record | ./2026-07-26-milestone-assessment/ | Implemented | — |
 | XPLN | Explain-change — team-shared HTML pitch+map packet under docs/explainers/ | ./2026-07-27-explain-change/ | Implemented | — |
 | PCHG | Prepare-change — reviewer-facing commit and PR authoring handed to finish-branch | ./2026-07-28-prepare-change/ | Approved | ROAD-3 |
+| DFSYNC | Dogfood sync — single JSON run artifact plus optional local serve layer | ./2026-07-30-dogfood-sync/ | Approved | — |

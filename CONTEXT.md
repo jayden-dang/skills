@@ -89,6 +89,22 @@ groups, order, subjects, bodies, rationale, trailers to preserve — carrying no
 runnable rewrite command, because existing commits are never rewritten.
 _Avoid_: rebase plan, squash plan, cleanup script
 
+**Run file**:
+The single JSON artifact holding one dogfood run — every case's authored slots
+plus its **case verdict** and **human tick** — at `.skills/<slug>-dogfood.json`.
+_Avoid_: cases file, run ledger, catalog (all named separate artifacts before v2)
+
+**Case verdict**:
+A dogfood case's `pending` / `pass` / `fail` / `blocked` state, where `pass`
+requires quoted screen evidence **and** a server probe. Written only by the agent.
+_Avoid_: bare "verdict" in prose — that name also carries the two-axis
+`code-review` verdict and the agent verdict inside a **milestone assessment**
+
+**Human tick**:
+A person's mark on a dogfood case, stored beside the **case verdict** and readable
+by the agent, but never proof and never promotable to `pass`.
+_Avoid_: manual pass, human verdict, checkbox state
+
 ## Relationships
 
 - A **spec triad** defines one feature and owns many **requirement IDs**
@@ -102,6 +118,8 @@ _Avoid_: rebase plan, squash plan, cleanup script
 - A **milestone assessment** resolves against exactly one **candidate closing revision**
 - A **PR package** is authored against exactly one base/head pair and is invalidated when either moves
 - An **advisory commit map** describes commits a **PR package** still reports as they actually are
+- A **run file** holds many cases, each carrying exactly one **case verdict** and at most one **human tick**
+- A **human tick** never becomes a **case verdict**, in either direction, by any code path
 
 ## Flagged ambiguities
 

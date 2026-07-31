@@ -176,7 +176,7 @@ and countered by name. See [The gates](docs/guide/concepts/gates.md).
 |---|---|
 | meta | `gate-session` (session gate), `route-task` (router), `author-skills`, `teach-pack` |
 | setup | `configure-repo`, `bootstrap-repo` |
-| discovery | `frame-change`, `clarify-decisions`, `research`, `run-spike`, `define-domain`, `interpret-session` |
+| discovery | `frame-change`, `clarify-decisions`, `research`, `run-spike`, `define-domain`, `interpret-session`, `pathfind` |
 | spec | `specify-behavior`, `design-solution`, `plan-tasks` |
 | execution | `build-in-waves`, `build-by-story`, `build-inline`, `test-first`, `root-cause`, `prove-claim`, `audit-trace`, `isolate-workspace` |
 | review | `inspect-change`, `vet-feedback`, `review-invariants` |

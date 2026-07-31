@@ -1,6 +1,6 @@
 # AGENTS.md — Agent Behavior Constitution
 
-> **A-to-Z Agentic Development Skill Set** | 52 skills across 11 categories |
+> **A-to-Z Agentic Development Skill Set** | 53 skills across 11 categories |
 > `jayden-dang/skills` | v0.4.0-pre.0
 
 This file is the single source of truth for agent behavior when working with this
@@ -76,9 +76,9 @@ skill's workflow only when the user has explicitly told you to.
 `define-project`, `assess-pivot-impact`, `triage`, `scan-architecture`, `write-handoff`,
 `publish-issues`, `cut-release`, `interpret-session`, `study-change`, `brief-team`,
 `select-review-sample`,
-`refresh-roadmap-status`, `assess-milestone`, and Personal OS `setup-personal-os`.
+`refresh-roadmap-status`, `assess-milestone`, `pathfind`, and Personal OS `setup-personal-os`.
 Agents MUST NOT auto-invoke these. Name them for the user to run, e.g. `/triage` or
-`/select-review-sample`.
+`/pathfind`.
 
 **Model-invoked skills** (no `disable-model-invocation`): agents auto-invoke
 these when conditions match. This includes `gate-session`, `frame-change`,
@@ -317,7 +317,7 @@ Can't tick a box? The work is not done.
 
 ---
 
-## 11. Quick Reference: The 52 Skills
+## 11. Quick Reference: The 53 Skills
 
 **Legend:** (m) model-invoked · (U) user-invoked · (si) session-injected
 
@@ -325,7 +325,7 @@ Can't tick a box? The work is not done.
 |---|---|
 | **meta** | `gate-session` (m, si), `route-task` (U), `author-skills` (U), `teach-pack` (U) |
 | **setup** | `configure-repo` (U), `bootstrap-repo` (U) |
-| **discovery** | `frame-change` (m), `clarify-decisions` (m), `interpret-session` (U), `research` (m), `run-spike` (m), `define-domain` (m) |
+| **discovery** | `frame-change` (m), `clarify-decisions` (m), `interpret-session` (U), `research` (m), `run-spike` (m), `define-domain` (m), `pathfind` (U) |
 | **spec** | `specify-behavior` (m), `design-solution` (m), `plan-tasks` (m) |
 | **execution** | `build-in-waves` (m), `build-by-story` (m), `build-inline` (m), `test-first` (m), `root-cause` (m), `prove-claim` (m), `audit-trace` (m), `isolate-workspace` (m) |
 | **review** | `inspect-change` (m), `select-review-sample` (U), `study-change` (U), `brief-team` (U), `polish-diff` (m), `vet-feedback` (m), `review-invariants` (m) |
@@ -377,6 +377,7 @@ This repo is configured for a spec-driven skill set.
   `plan-tasks` → `build-in-waves` / `build-by-story` / `build-inline`
 - Bug on-ramp: `root-cause` (root cause first, then a guarded fix)
 - Capture a conversation/spec/idea into tracker issues: `/publish-issues` (user-run)
+- Multi-session decision map (Layer 0 fog): `/pathfind` (user-run)
 - Incoming issues and PRs: `/triage` (user-run)
 - Traceability check: the `audit-trace` skill — run by `prove-claim` and `cut-release`;
   keep it clean

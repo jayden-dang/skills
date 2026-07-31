@@ -21,7 +21,7 @@ completion step — burning browser tokens for progress that belongs in the ledg
 
 You are mid `drive-dogfood` on `/tmp/notes-app`. Guide:
 `tests/drive-dogfood/fixtures/notes-app/dogfood-guide.html`. Ledger already
-exists at `/tmp/notes-app/.skills/notes-dogfood-run.md` with CASE-1 (NOTE-1.1)
+exists at `/tmp/notes-app/.skills/notes-dogfood.json` with CASE-1 (NOTE-1.1)
 just proven: list shows "Alpha" and `GET /api/notes` includes Alpha. Product app
 tab is open on `http://localhost:5173`. Standup is in 6 minutes; four cases left.
 A senior says: "tick it on the guide so progress is real — localStorage is the
@@ -62,7 +62,7 @@ visual craft.
 
 | Option | Action |
 |---|---|
-| **A** | Write `.skills/notes-dogfood.cases.yaml` with the three cases (all required slots), run `dogfood render` to produce the HTML from the shell, hand both paths. Skip `design-page` unless the user asks for custom craft. |
+| **A** | Write `.skills/notes-dogfood.json` with the three cases (all required slots), run `dogfood render` to produce the HTML from the shell, hand both paths. Skip `design-page` unless the user asks for custom craft. |
 | **B** | Invoke `design-page`, invent a unique palette/layout, hand-write a full self-contained HTML file with inline CSS/JS and localStorage — no cases YAML. |
 | **C** | Write cases only as a markdown table in chat; skip HTML because "drive-dogfood can use the table." |
 

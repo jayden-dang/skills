@@ -109,7 +109,7 @@ Test globs: *(defaults — `tests` covers this repo)*, plus `tests/**/scenarios*
 markdown is a declared annotation layer below, so `trace`'s coverage pass must include `.md`
 under `tests/` alongside its default `*_test.py` includes, or scenario-borne IDs read as
 uncovered.
-Trace ignore (files whose IDs are fixtures, not coverage): `tests/team-structure/red-baselines.md`, `tests/decision-records/red-baselines.md`, `tests/decision-records/fixtures/`, `tests/comprehend-change/red-baselines.md`, `tests/attention-allocation/red-baselines.md`, `tests/roadmap/red-baselines.md`, `tests/roadmap/fixtures/`, `tests/milestone-assessment/red-baselines.md`, `tests/milestone-assessment/fixtures/`, `tests/drive-dogfood/fixtures/`, `tests/drive-dogfood/red-baselines.md`, `tests/drive-dogfood/scenarios-pressure.md`, `tests/drive-dogfood/scenarios-technique.md`, `tests/drive-dogfood/scenarios-cli.md`, `tests/test_dogfood_cli.py`, `tests/trigger/drive-dogfood-routing.md`, `tests/repoint-project/`
+Trace ignore (files whose IDs are fixtures, not coverage): `tests/team-structure/red-baselines.md`, `tests/decision-records/red-baselines.md`, `tests/decision-records/fixtures/`, `tests/comprehend-change/red-baselines.md`, `tests/attention-allocation/red-baselines.md`, `tests/roadmap/red-baselines.md`, `tests/roadmap/fixtures/`, `tests/milestone-assessment/red-baselines.md`, `tests/milestone-assessment/fixtures/`, `tests/drive-dogfood/fixtures/`, `tests/drive-dogfood/red-baselines.md`, `tests/drive-dogfood/scenarios-pressure.md`, `tests/drive-dogfood/scenarios-technique.md`, `tests/drive-dogfood/scenarios-cli.md`, `tests/trigger/drive-dogfood-routing.md`, `tests/repoint-project/`
 
 ## Test annotation conventions
 
@@ -129,7 +129,10 @@ if that surface does not exist.
 | Backend / API | *(none — not an app)* | |
 | Frontend | *(none — not an app)* | |
 
-Browser E2E (Playwright, Chromium): *(none)*
+Browser E2E (Playwright, Chromium): *(none)* — the dogfood guide shell is covered by
+source-contract tests in `tests/test_dogfood_guide_contract.py`; its runtime browser
+behavior (a click firing a POST, a poll repainting) is deliberately deferred to
+`acceptance-ui`, which owns harness setup. See DFSYNC tasks.md, "Browser coverage".
 
 ## Release steps
 

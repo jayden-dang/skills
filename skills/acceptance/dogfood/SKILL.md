@@ -5,17 +5,19 @@ description: Use when manually exercising a finished feature in the real running
   user-facing ability, including the visuals, feel, and edge cases a human
   must eyeball rather than an automated test or a quick launch. Reach for it
   to try a feature for real, walk the whole user-facing surface, or produce a
-  checkable, resumable dogfood guide (cases YAML + rendered HTML) kept open
-  beside the app — not a one-off run. Not for executing an already-written
+  checkable, resumable dogfood guide (one JSON run file + rendered HTML) kept
+  open beside the app — not a one-off run. Not for executing an already-written
   guide (`drive-dogfood`).
 ---
 
 # Dogfood
 
 A dogfooding pass is a human driving the real app through every user-facing
-ability and judging what they see. The deliverable is a **cases catalog** plus a
+ability and judging what they see. The deliverable is a **run file** plus a
 **rendered human guide** — grounded in the app's own rendering, one row per
-ability case, each tagged with the requirement ID and a **case kind**. Build the
+ability case, each tagged with the requirement ID and a **case kind**. Cases and
+verdicts live in the same file, so what the agent proves is what the person
+reads. Build the
 artifacts; a chat message is not the deliverable. A guide of only happy paths is
 not done.
 
@@ -81,25 +83,27 @@ is running and every not-yet-visible behavior has an observation method.*
 
 ## 4. Write cases + render the shell (do not invent CSS)
 
-**Authoring SSOT is the cases file**, not hand-rolled HTML.
+**Authoring SSOT is the run file**, not hand-rolled HTML.
 
-1. Write `.skills/<slug>-dogfood.cases.yaml` (schema: load sibling
+1. Write `.skills/<slug>-dogfood.json` (schema: load sibling
    `references/cases-schema.md` when unsure). Every case carries all required
    slots: `id`, `req`, `kind`, `title`, `setup`, `try`, `expect`, `backend`
    (`backend` is the server-side assertion, or the literal `presentational`).
+   Run state (`run`, `human`) is filled in for you — author the eight slots.
 2. Render the human guide from the checked-in shell — **do not** load
    `design-page` or invent a palette/layout unless the user explicitly asks for
    custom craft:
 
    ```bash
-   python3 <skill-root>/scripts/dogfood render .skills/<slug>-dogfood.cases.yaml \
+   python3 <skill-root>/scripts/dogfood render .skills/<slug>-dogfood.json \
      -o .skills/<slug>-dogfood.html
    ```
 
    Resolve `<skill-root>` to this skill's install path (in this monorepo:
    `skills/acceptance/dogfood`). The shell is `shell/guide.html` — theme-aware
-   CSS/JS, kind chips, human localStorage ticks, and `data-*` attributes for
-   legacy readers.
+   CSS/JS, kind chips, verdict badges, and `data-*` attributes. The rendered page
+   carries the verdicts as of render time and says so, so it is correct on a
+   double-click with nothing running.
 3. **Coverage self-check:** count cases by `kind` per section. If any ability
    area lacks a non-happy kind and has no *Coverage exception* line, add the
    missing cases before hand-off.
@@ -109,17 +113,29 @@ Optional: at most two `journey` rows; they do not replace atomic coverage.
 **Never** ship a chat-only checklist. **Never** regenerate a full custom HTML
 page as the default path — cases + `render` is the path.
 
-*Done when: cases YAML and rendered HTML are on disk at known paths, coverage
+*Done when: the run file and rendered HTML are on disk at known paths, coverage
 holds, every case has all required slots.*
 
 ## 5. Hand over
 
-Give both paths (cases YAML + HTML), the fastest way in — a ~30-second first pass
+Give both paths (run file + HTML), the fastest way in — a ~30-second first pass
 that lights the feature up (usually the first `happy` row) — then degraded-feature
-notes and coverage exceptions. Tell the human that checkbox ticks in the HTML are
-optional localStorage niceties. If the **agent** should run the guide, name
-`drive-dogfood` and the cases (or HTML) path — progress will use the CLI ledger,
-not Chrome ticks on the guide.
+notes and coverage exceptions.
+
+Offer the live guide when they will be testing by hand alongside the agent:
+
+```bash
+python3 <skill-root>/scripts/dogfood serve .skills/<slug>-dogfood.json
+```
+
+It binds `127.0.0.1:8787`, follows verdicts as the agent records them, and writes
+their ticks back where the agent can see them. Tell them plainly what a tick
+means: it records that they looked, and never becomes a `pass`. Stopping it is
+`serve --stop`. Opened as a plain file instead, the guide still shows the
+verdicts it was rendered with — the server only buys freshness.
+
+If the **agent** should run the guide, name `drive-dogfood` and the run-file
+path.
 
 *Done when: artifacts are on disk, grounded, the §1 coverage gate holds, and
 every case is fully slotted.*
@@ -128,7 +144,7 @@ every case is fully slotted.*
 
 | Thought | Reality |
 |---|---|
-| "A markdown checklist in chat is enough" | It saves no tick, cannot show the real badge being checked against, and scrolls away. The deliverable is cases + rendered guide. |
+| "A markdown checklist in chat is enough" | It saves no tick, cannot show the real badge being checked against, and scrolls away. The deliverable is the run file + rendered guide. |
 | "I'll design-page a unique layout for this feature" | Default is the checked-in shell. Custom craft only when the user asks. |
 | "They're in a native desktop app, not a browser, so an artifact doesn't fit" | The artifact is a companion reference kept open beside the app; the app being native is no reason to inline the guide into chat. |
 | "I'll describe the badge in words" | The user checks against what they SEE. Mirror the real rendering, or the Expect is unverifiable. |
@@ -138,7 +154,7 @@ every case is fully slotted.*
 
 ## Red Flags
 
-- Hand-writing a full HTML/CSS page instead of cases YAML + `dogfood render`
+- Hand-writing a full HTML/CSS page instead of the run file + `dogfood render`
 - Missing `backend` / `setup` / `kind` on any case
 - Happy-only section without a greppable coverage exception
-- Telling the agent to mark progress only via HTML localStorage ticks
+- Telling the agent to mark progress via guide ticks instead of `dogfood mark`

@@ -14,6 +14,7 @@ import ast
 import importlib.util
 import json
 import os
+import re
 import subprocess
 import sys
 import tempfile
@@ -300,6 +301,80 @@ class CatalogReadTests(unittest.TestCase):
         self.assertEqual(0, cp.returncode)
         for sub in ("list", "show", "render"):
             self.assertIn(sub, cp.stdout)
+
+
+class SkillBodyContractTests(unittest.TestCase):
+    """The skill bodies must describe the artifact that now exists."""
+
+    def setUp(self):
+        self.drive = (
+            REPO / "skills" / "acceptance" / "drive-dogfood" / "SKILL.md"
+        ).read_text(encoding="utf-8")
+        self.dogfood = (
+            REPO / "skills" / "acceptance" / "dogfood" / "SKILL.md"
+        ).read_text(encoding="utf-8")
+        self.schema = (
+            REPO / "skills" / "acceptance" / "dogfood" / "references" / "cases-schema.md"
+        ).read_text(encoding="utf-8")
+
+    def test_iron_law_keeps_its_substance(self):
+        """DFSYNC-6.4 — the evidence rule survives the rewrite; only the ledger wording goes."""
+        self.assertIn("NO CASE IS TICKED ON THE SCREEN ALONE", self.drive)
+        self.assertNotIn("PROGRESS LIVES IN THE LEDGER", self.drive)
+
+    def test_no_skill_body_still_promises_a_markdown_ledger(self):
+        """DFSYNC-6.4 — nothing tells an agent to write an artifact that no longer exists."""
+        for name, text in (("drive-dogfood", self.drive), ("dogfood", self.dogfood),
+                           ("cases-schema", self.schema)):
+            with self.subTest(doc=name):
+                self.assertNotIn("-dogfood-run.md", text)
+                self.assertNotIn(".cases.yaml", text)
+
+    def test_drive_dogfood_asks_before_stopping_the_server(self):
+        """DFSYNC-6.4 — the run ends by asking, never by silently stopping or walking away."""
+        # collapse wrapping so the assertions read the prose, not the line breaks
+        flat = re.sub(r"\s+", " ", self.drive)
+        self.assertRegex(flat, r"serve\b[^\n]*--stop")
+        self.assertRegex(flat, r"(?i)ask .{0,60}(stop|shut)")
+        # both wrong endings are named, so neither reads as an oversight
+        self.assertRegex(flat, r"(?i)do not stop it silently")
+        self.assertRegex(flat, r"(?i)holding a port|walk away")
+
+    def test_rationalization_rows_match_the_new_model(self):
+        """DFSYNC-6.4 — the counters address ticks-as-truth, not a ledger that is gone."""
+        self.assertNotIn("Ledger + `dogfood mark` is the only agent progress path", self.drive)
+        self.assertNotIn("Dual-write is waste. Ledger only.", self.drive)
+        self.assertRegex(self.drive, r"(?i)tick")
+
+    def test_documented_commands_all_exist(self):
+        """DFSYNC-6.4 — every dogfood subcommand named in a skill body is real."""
+        real = set(
+            re.findall(r'sub\.add_parser\(\s*"([a-z]+)"', CLI.read_text(encoding="utf-8"))
+        )
+        self.assertTrue(real, "no subcommands parsed from the CLI")
+        cited = set()
+        for text in (self.drive, self.dogfood, self.schema):
+            cited.update(re.findall(r"\$?DF(?:\s|\`)*\s+([a-z]+)\s", text))
+            cited.update(re.findall(r"dogfood\s+([a-z]+)\b", text))
+        invented = {c for c in cited if c in {"init", "list", "show", "next",
+                                              "mark", "status", "report", "render",
+                                              "serve"}} - real
+        self.assertEqual(set(), invented, f"skill bodies cite unknown commands: {invented}")
+
+    def test_trace_ignore_does_not_hide_dfsync_coverage(self):
+        """DFSYNC-6.4 — no module carrying a DFSYNC tag sits on the trace-ignore list."""
+        project = (REPO / "docs" / "agents" / "project.md").read_text(encoding="utf-8")
+        ignore_line = next(
+            ln for ln in project.splitlines() if ln.startswith("Trace ignore")
+        )
+        for module in (
+            "test_dogfood_cli.py",
+            "test_dogfood_store.py",
+            "test_dogfood_serve.py",
+            "test_dogfood_guide_contract.py",
+        ):
+            with self.subTest(module=module):
+                self.assertNotIn(f"tests/{module}", ignore_line)
 
 
 class RenderTests(unittest.TestCase):

@@ -1,5 +1,48 @@
 # Changelog
 
+## 0.3.0 — 2026-07-31
+
+### Feature: one dogfood run file, plus an optional live guide (`DFSYNC`)
+
+A dogfood run used to be three files that did not know about each other — the
+cases YAML, a rendered HTML snapshot of it, and a markdown ledger where the
+verdicts actually lived. A person holding the guide could not see what the agent
+had proven, and a person testing by hand had nowhere to put what they found.
+
+**Breaking.** `.skills/<slug>-dogfood.cases.yaml` and
+`.skills/<slug>-dogfood-run.md` are replaced by a single
+`.skills/<slug>-dogfood.json` (`version: 2`). There is no migration path and no
+v1 reader: `.skills/` is git-ignored scratch, so delete the old files and
+re-author. Passing a `.yaml`/`-run.md` path now gives a named error instead of a
+confusing parse failure.
+
+- **One artifact.** Cases and verdicts share a file. Every subcommand takes one
+  path, so `mark --catalog` is gone — which also closes a hole where the
+  presentational evidence rules were silently skipped whenever no catalog was
+  reachable.
+- **Human ticks are recorded, never authoritative.** Each case carries two
+  field spaces that share no key name: `run` (the agent's verdict, `saw`,
+  `server`) and `human` (`checked`, `at`, `comment`). Nothing promotes one into
+  the other, `dogfood next` ignores `human` entirely, and the HTTP surface
+  rejects any attempt to write a verdict. See ADR 0006.
+- **`dogfood serve`** binds `127.0.0.1:8787` and serves a guide that follows the
+  run and accepts the person's ticks. It is optional by construction: `render`
+  bakes current verdicts into the HTML, so a guide opened by double-click is
+  correct with nothing running, and says on the page that it is a render-time
+  snapshot. ARCH-3 is why that ordering matters.
+- **Shutdown proves identity.** `serve --stop` terminates a process only when
+  `/whoami` returns the token in its pidfile, because `kill -0` cannot tell a
+  live server from a recycled PID. See ADR 0007.
+- **PyYAML dropped.** The CLI is standard-library only.
+- **Concurrent writes.** All writes go through one store: an `O_EXCL` lockfile,
+  a field-scoped patch, and `os.replace`.
+
+Skill bodies, `references/cases-schema.md`, and the human guides are rewritten
+for the run file; `drive-dogfood` now ends a run by asking whether to stop a
+server it started.
+
+Contract: `docs/specs/2026-07-30-dogfood-sync/`.
+
 ## 0.2.7 — 2026-07-30
 
 ### Fix: register `execute-story` and `execute-inline` in the pack manifests

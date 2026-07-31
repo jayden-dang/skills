@@ -7,7 +7,7 @@
 | **Bucket** | acceptance |
 | **Invocation** | model-invocable (the agent calls it on its own) |
 | **Reads** | the spec triad — `requirements.md`, `design.md`, `tasks.md`; the source (theme tokens, CSS, keyword and label definitions); `docs/agents/project.md` (the `## Run locally (dev)` command) |
-| **Writes** | `.skills/<slug>-dogfood.cases.yaml` (authoring SSOT) and `.skills/<slug>-dogfood.html` (rendered human view) |
+| **Writes** | `.skills/<slug>-dogfood.json` (one run file: cases + verdicts) and `.skills/<slug>-dogfood.html` (rendered human view) |
 | **Calls** | `dogfood` CLI (`scripts/dogfood render`); [`design-page`](design-page.md) **only** when the user asks for custom craft |
 | **Called by** | [`acceptance-check`](acceptance-check.md), [`verify`](verify.md); hand-off path to [`drive-dogfood`](drive-dogfood.md) when the agent should run the guide |
 
@@ -29,14 +29,15 @@ Ground Expect in real source (labels, theme tokens). Boot via `## Run locally (d
 
 ## 4. Cases YAML + shell render
 
-**Authoring SSOT** is `.skills/<slug>-dogfood.cases.yaml` — not hand-rolled HTML.
+**Authoring SSOT** is `.skills/<slug>-dogfood.json` — not hand-rolled HTML. Run
+state (`run`, `human`) is filled in for you; author the eight case slots.
 
 Required per case: `id`, `req`, `kind`, `title`, `setup`, `try`, `expect`, `backend` (server assertion or `presentational`).
 
 Render the human companion:
 
 ```bash
-python3 <dogfood-skill-root>/scripts/dogfood render .skills/<slug>-dogfood.cases.yaml \
+python3 <dogfood-skill-root>/scripts/dogfood render .skills/<slug>-dogfood.json \
   -o .skills/<slug>-dogfood.html
 ```
 
@@ -50,7 +51,7 @@ Give **both** paths (YAML + HTML), the 30-second first pass, degraded-feature no
 
 ## Worked sketch
 
-Notes feature → three cases in YAML (happy create, error empty title, persist reload) → `dogfood render` → hand `.skills/notes-dogfood.cases.yaml` and `.skills/notes-dogfood.html`.
+Notes feature → three cases in the run file (happy create, error empty title, persist reload) → `dogfood render` → hand `.skills/notes-dogfood.json` and `.skills/notes-dogfood.html`. Offer `dogfood serve` when they will also be testing by hand.
 
 ## Why it is written this way
 

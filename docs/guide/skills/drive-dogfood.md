@@ -7,7 +7,7 @@
 | **Bucket** | acceptance |
 | **Invocation** | model-invocable |
 | **Reads** | cases YAML or dogfood HTML; `docs/agents/project.md` (`## Run locally (dev)`); prior ledger under `.skills/` |
-| **Writes** | `.skills/<slug>-dogfood-run.md` (ledger via CLI); end report via `dogfood report` |
+| **Writes** | `.skills/<slug>-dogfood.json` (verdicts via `dogfood mark`); end report via `dogfood report` |
 | **Calls** | dogfood CLI (`list` / `show` / `init` / `mark` / `next` / `status` / `report`); [`debug`](debug.md) on deterministic product failures |
 | **Called by** | user / agent when a guide already exists; hand-off after [`dogfood`](dogfood.md) |
 
@@ -30,7 +30,7 @@ Agents **must not** open the dogfood HTML in a browser to tick checkboxes. Use:
 
 ```bash
 DF=python3 <dogfood-skill-root>/scripts/dogfood
-$DF init <catalog> -o .skills/<slug>-dogfood-run.md
+$DF init .skills/<slug>-dogfood.json
 $DF show <catalog> CASE-1
 $DF mark <run> CASE-1 pass --saw '…' --server '…' --catalog <catalog>
 $DF next <run>

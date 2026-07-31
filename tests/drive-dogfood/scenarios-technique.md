@@ -66,7 +66,7 @@ req ID is touched by the changed file (at least 1.1, 1.2, 2.1).
 **Task:** Session compacted. On disk you find:
 
 ```markdown
-# notes-dogfood-run.md
+# notes-dogfood.json
 | case | req | verdict | saw | server | notes |
 | Create a note | NOTE-1.1 | pass | list shows Alpha | GET /api/notes includes Alpha | |
 | Note survives reload | NOTE-1.2 | pass | Alpha after reload | GET still has Alpha | |

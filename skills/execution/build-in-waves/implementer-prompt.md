@@ -60,25 +60,40 @@ Subagent (general-purpose):
     ## Deviations (REQUIRED when plan and territory disagree)
 
     WHEN an edge case, missing API behavior, type-system force, dependency
-    limit, or product note forces you off the brief's approach:
+    limit, or product note forces you off the brief's approach (map ≠ territory):
 
     1. Prefer the **conservative** choice that preserves existing behavior and
        keeps blast radius inside this task's files.
     2. Append one entry to `.skills/<CODE>/implementation-notes.md` (create if absent)
-       BEFORE you finish the task. Each entry has exactly these fields:
+       BEFORE you finish the task. **Append only** — do not overwrite prior entries.
+       Each entry MUST include all of these fields (non-empty):
        - **Task:** N
+       - **Unknown class:** exactly one of
+         `known-unknown` · `unknown-known` · `unknown-unknown` ·
+         `assumption-break` · `blindspot`
+       - **Map said:** one line of what the brief/plan/req claimed
+       - **Territory showed:** the fact found in code/runtime
        - **Deviation:** what you did differently from the brief/plan
        - **Cause:** what in the territory forced it
        - **Choice:** the conservative option taken
+       - **Map impact:** exactly one of
+         `none` · `revisit-only` · `reroute-plan` · `realign-spec`
        - **Revisit:** what a human or later task should re-check
-    3. If the only fixes require changing a public interface, shared type, or
-       another task's contract → do **not** stretch them silently. Report
-       BLOCKED or NEEDS_CONTEXT (or DONE_WITH_CONCERNS only after logging the
-       deviation and staying inside the brief's surface).
-    4. Point the report's Concerns line at the notes file path.
+    3. IF **Map impact** is `reroute-plan` or `realign-spec`, OR the only fixes
+       require changing a public interface, shared type, or another task's
+       contract → do **not** stretch them silently. Log the entry, then report
+       BLOCKED or NEEDS_CONTEXT (or DONE_WITH_CONCERNS only after logging and
+       staying inside the brief's surface). The controller MUST run
+       `reroute-plan` (or name realign-spec) — logging is not permission to
+       pretend the map is intact.
+    4. IF **Map impact** is `none` or `revisit-only` → continue after logging;
+       do not rewrite approved requirements/design/tasks.
+    5. Point the report's Concerns line at the notes file path.
 
     A concern that lives only in the report and not in
-    `.skills/<CODE>/implementation-notes.md` is incomplete.
+    `.skills/<CODE>/implementation-notes.md` is incomplete. A five-field-only
+    entry (missing Unknown class / Map said / Territory showed / Map impact)
+    is incomplete.
 
     ## In Over Your Head
 

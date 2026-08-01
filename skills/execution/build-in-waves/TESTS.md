@@ -93,3 +93,12 @@ Class: **clear**. Report Contract tightened so concerns MUST cite notes path.
 - [x] `story-unit-mode.md` is a pointer to `build-by-story`
 - [x] `build-inline` shipped; Inline Fallback replaced by write-handoff
 - [x] plan-tasks / AGENTS / docs wire complete
+
+
+## IMPN — classified deviations
+
+| Pressure | Wrong | Right |
+|---|---|---|
+| Five-field only | Task/Deviation/Cause/Choice/Revisit only | Full nine fields incl. Unknown class + Map impact |
+| Silent stretch | Map impact `none` while plan falsified | `reroute-plan` + controller `reroute-plan` |
+| Incomplete DONE_WITH_CONCERNS | Concerns in report only | Must cite notes path with complete fields |

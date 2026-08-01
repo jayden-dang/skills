@@ -172,7 +172,7 @@ Resume the per-unit loop. After the last unit's unlock and ledger line →
 | Status | Your move |
 |---|---|
 | **DONE** | Package diff → task review. |
-| **DONE_WITH_CONCERNS** | Read concerns **and** `.skills/<CODE>/implementation-notes.md`. Plan-falsifying deviation → REQUIRED SUB-SKILL: use `reroute-plan`. Missing notes while claiming deviation → re-dispatch to log first. |
+| **DONE_WITH_CONCERNS** | Read concerns **and** `.skills/<CODE>/implementation-notes.md` (nine-field entries: Task, Unknown class, Map said, Territory showed, Deviation, Cause, Choice, Map impact, Revisit). Missing notes path, or incomplete fields, while claiming deviation → incomplete — re-dispatch to log first. **Map impact** `reroute-plan` / `realign-spec` or plan-falsifying → REQUIRED SUB-SKILL: use `reroute-plan` (do not accept as clean DONE). |
 | **NEEDS_CONTEXT** | Supply what was named; re-dispatch same model. |
 | **BLOCKED** | Context → supply; ceiling → stronger model; too large → split; plan wrong → REQUIRED SUB-SKILL: use `reroute-plan`. |
 

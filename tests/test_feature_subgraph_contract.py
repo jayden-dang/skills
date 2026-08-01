@@ -39,37 +39,55 @@ class TestLoadSubgraphSkill(unittest.TestCase):
         self.assertIn("passes.md", text)
         self.assertNotRegex(text, r"(?i)import\s+reference_derive")
         self.assertTrue(
-            re.search(r"two independent runs|determin", text, re.I),
+            re.search(r"two independent runs|same edge set|Determinism", text, re.I),
             "skill must state dual-run / determinism",
         )
 
     def test_FSUB_1_3_forbids_graph_materialization(self):
         text = SKILL.read_text() + PASSES.read_text()
-        self.assertRegex(text, r"GRAPH\.md|materializ", re.I)
-        self.assertRegex(text, r"MUST NOT write|SHALL NOT write|never write|Forbidden", re.I)
+        self.assertRegex(text, r"GRAPH\.md|graph file|projection", re.I)
+        self.assertRegex(text, r"do not produce a file|never write|NO GRAPH FILE|no projection", re.I)
 
     def test_FSUB_1_12_advisory_not_a_gate(self):
         text = SKILL.read_text()
-        self.assertRegex(text, r"advisory|not a (hard )?gate|never fail a gate", re.I)
+        self.assertRegex(text, r"advisory|not a hard gate|NO GATE FROM THIN", re.I)
 
     def test_FSUB_7_4_pathfind_separate(self):
         text = SKILL.read_text()
-        self.assertRegex(text, r"pathfind", re.I)
+        self.assertRegex(text, re.compile(r"pathfind", re.I))
 
     def test_FSUB_1_10_queries_named(self):
         text = PASSES.read_text() + SKILL.read_text()
         for q in ("neighbors", "ancestors", "descendants", "blast_radius", "subgraph"):
             self.assertIn(q, text)
 
-    def test_FSUB_passes_documents_P0_through_P5_and_bounds(self):
+    def test_FSUB_passes_are_primitive_recipes_not_prose_only(self):
         text = PASSES.read_text()
-        for token in ("P0", "P1", "P2", "P3", "P4", "P5", "NEIGHBORS_MAX", "P0_SEED_MAX", "12"):
+        for token in (
+            "Pass R",
+            "Pass P1",
+            "Pass P0",
+            "Pass P2",
+            "NEIGHBORS_MAX",
+            "P0_SEED_MAX",
+            "12",
+            "Truncate once",
+            "Union",
+        ):
             self.assertIn(token, text)
+        # Must not point shipped skill at test-side oracle as SSOT
+        self.assertNotIn("tests/feature-subgraph/reference_derive.py", text)
 
     def test_FSUB_envelope_documents_owns_coverage(self):
         text = ENV.read_text()
         self.assertIn("owns_coverage", text)
         self.assertIn("advisory", text)
+
+    def test_FSUB_skill_has_iron_law_and_red_flags(self):
+        text = SKILL.read_text()
+        self.assertIn("The Iron Law", text)
+        self.assertIn("Red Flags", text)
+        self.assertIn("owns_coverage", text)
 
 
 class TestMapFeaturesSkill(unittest.TestCase):
@@ -83,12 +101,18 @@ class TestMapFeaturesSkill(unittest.TestCase):
         text = MAP.read_text()
         self.assertRegex(text, r"Feature code", re.I)
         self.assertRegex(text, r"ROAD|Roadmap", re.I)
-        self.assertRegex(text, r"OWNS|ownership|Files", re.I)
+        self.assertRegex(text, r"Files edit|tasks\.md", re.I)
         self.assertRegex(text, r"DEPENDS_ON|Depends-on|Consumes", re.I)
         self.assertRegex(text, r"confirm", re.I)
-        self.assertRegex(text, r"MUST NOT auto|never auto|not auto-write", re.I)
+        self.assertRegex(text, r"MUST NOT auto|Auto-writing|without explicit confirm", re.I)
         self.assertRegex(text, r"slug|directory", re.I)
-        self.assertRegex(text, r"/map-features|name.*map-features", re.I)
+        self.assertRegex(text, r"/map-features")
+        self.assertIn("Rationalization", text)
+        self.assertIn("Red Flags", text)
+        self.assertNotRegex(
+            text,
+            re.compile(r"^description:.*Use when", re.M | re.I),
+        )
 
 
 class TestCallersAndGrammar(unittest.TestCase):

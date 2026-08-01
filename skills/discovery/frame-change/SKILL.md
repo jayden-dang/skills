@@ -64,6 +64,8 @@ Present each neighbor as a summary **card** (feature code, owned paths, Out-of-S
 and surface the envelope's **OWNS coverage** so a thin neighborhood is visible as thin.
 This never blocks the gate: if nothing overlaps, say so and move on; if `docs/specs/`
 does not exist yet, note it and continue with manual exploration.
+*Done when: neighbor cards plus OWNS coverage are stated, or an explicit "no overlap"
+(or no specs) is stated.*
 
 **Knowns inventory (REQUIRED before step 2).** Write four short bullets the rest of
 the chain can reuse (chat is fine; optional `.skills/<slug>-knowns.md`):

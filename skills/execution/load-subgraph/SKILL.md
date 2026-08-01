@@ -1,60 +1,78 @@
 ---
 name: load-subgraph
-description: Use when a skill needs a bounded multi-hop view of feature IDs —
-  neighbors, ancestors, blast radius, or a term/path-seeded subgraph — derived
-  at ask time from live specs without a generated graph file.
+description: Use when frame-change, inspect-change, or any skill needs feature
+  neighbors, overlap, reuse-miss context, blast radius, or a multi-hop feature
+  subgraph — produces an advisory envelope (neighbors, OWNS coverage, seeds)
+  from live docs/specs with no graph file.
 ---
 
 # Load Feature Subgraph
 
-Model-invoked derivation of feature neighbors and related queries from live
-SSOT. Sibling shape to `audit-trace`: fixed passes, no LLM judgment of ownership
-quality beyond the rules in `references/passes.md`.
+Ask-time horizontal neighbor derivation. Sibling of `audit-trace`: fixed passes
+in `references/passes.md`, set operations, same inputs → same edge/seed set.
 
-## Inputs
+## What you produce
 
-- Repo root (default cwd)
-- Query kind: `neighbors` | `ancestors` | `descendants` | `blast_radius` | `subgraph`
-- Optional: focus CODE, key terms, paths, MILE-N
+Print **exactly one envelope** shaped by `references/envelope.md`:
+
+1. `advisory: true` and the thin-neighborhood banner  
+2. `owns_coverage` (`with_owns` / `registered`) — always  
+3. Query payload (`neighbors` | `ancestors` | `descendants` | `blast_radius` | `subgraph`)  
+4. `p0` truncation stats when terms were used  
+
+You do **not** produce a file under `docs/`. You do **not** invent DEPENDS_ON edges.
 
 ## Procedure
 
-1. Resolve repo root. Do not invent `docs/specs/`.
-2. Execute **only** the recipes in `references/passes.md` (grep/reads/set ops).
-   **MUST NOT** import `tests/feature-subgraph/reference_derive.py` or any Python
-   helper under this skill package.
-3. Render the result using `references/envelope.md`. Always include
-   `owns_coverage` and the advisory banner.
-4. **MUST NOT** write `docs/specs/GRAPH.md`, JSON edge stores under `docs/`, or
-   any committed graph projection.
-5. **MUST NOT** fail a gate, block `frame-change`, or fail a review solely
-   because of overlap/neighbor findings (advisory).
-6. **MUST NOT** derive feature-level DEPENDS_ON edges.
-7. Keep pathfind's decision graph separate — do not merge pathfind tickets.
+1. Resolve repo root. If `docs/specs/` is missing, say so and stop (empty registry).
+2. Load **`references/passes.md`** and run the named passes for the query
+   (R → P1 → D → P2 → P0 if terms → P3/P4/P5 as applicable → query merge).
+   Use grep/file reads/set ops only. Do not improvise ranking or stop-lists.
+3. Render the envelope. Always include OWNS coverage even when neighbor list is empty.
+4. Return to the caller. Summary cards (feature name, Out-of-Scope) may be loaded
+   from each neighbor’s requirements after the envelope — cards are presentation,
+   not a substitute for the envelope.
 
-## Determinism (FSUB-1.2)
+## Determinism
 
-Two independent runs of this skill against the same frozen fixture tree with
-the same query inputs MUST yield the same edge set and seed set. Prefer
-re-running the passes.md procedure fully each time; do not cache across
-sessions in a way that diverges from live SSOT.
+Two independent runs on the same frozen tree and same query MUST yield the same
+edge set and seed set. Re-run the full pass list; do not cache across SSOT edits.
 
 ## Callers
 
 `frame-change` and `inspect-change` obtain horizontal neighbors via this skill
-(REQUIRED SUB-SKILL), passing key terms and candidate paths so P0 and P1 both
-contribute.
+(REQUIRED SUB-SKILL), passing **key terms and candidate paths** so P0 and P1 both
+contribute. Pathfind stays a separate decision graph — do not merge tickets.
+
+## The Iron Law
+
+```
+NO GRAPH FILE. NO DEPENDS_ON EDGES. NO GATE FROM THIN NEIGHBORS.
+PASSES.MD IS THE ONLY RANKING AND STOP-LIST AUTHORITY.
+```
 
 ## Rationalization
 
 | Thought | Reality |
 |---|---|
-| "Skip P0 — paths are enough" | Pre-code frame-change often has no paths; P0 is required |
-| "Boolean neighbors is fine" | Rank and bound per passes.md |
-| "Empty OWNS means no features exist" | Report owns_coverage; thin is not empty registry |
-| "Materialize GRAPH.md for speed" | Forbidden — live read only |
-| "Import the test-side reference in the skill" | Test-side only; prose path is passes.md |
+| "Skip P0 — we have paths" | Pre-code frame-change often has no paths; P0 is required when terms are supplied |
+| "Boolean membership is enough" | Rank by shared meaningful paths; truncate to NEIGHBORS_MAX once after union |
+| "Empty OWNS means no features" | Report owns_coverage; thin Files coverage ≠ empty registry |
+| "Write GRAPH.md so the next call is faster" | Live read only; no projection under docs/ |
+| "Import the test helper / invent my own weights" | Only passes.md constants and recipes |
+| "Thin list is a review failure" | Advisory; never fail a gate on neighbors alone |
+
+## Red Flags
+
+- Writing or proposing `docs/specs/GRAPH.md` or any committed edge store
+- Returning unordered neighbor sets or lists longer than NEIGHBORS_MAX
+- Dropping P0 when the caller passed terms
+- Keying features by directory slug when a CODE exists
+- Emitting DEPENDS_ON / depends_on in the envelope
+- Failing frame-change or review solely because neighbors are thin or empty
+- Skipping owns_coverage on the envelope
 
 ## Done when
 
-Envelope printed with coverage; no graph file written; advisory stated.
+Envelope printed with OWNS coverage and advisory banner; no graph file written;
+query payload matches passes.md.

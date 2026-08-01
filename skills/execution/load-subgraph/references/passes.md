@@ -1,63 +1,160 @@
 # load-subgraph passes (shipped SSOT)
 
-Agents execute these recipes with grep/file reads and set operations.
-Constants MUST match the test-side reference (`tests/feature-subgraph/reference_derive.py`).
+Deterministic recipes. Run against the consumer **repo root**. Two agents on the
+same tree with the same query MUST produce the same edge set and seed set
+(finding-set identity, not wording).
 
-## Constants
+**Constants (immutable for v1):**
 
-- `NEIGHBORS_MAX = 12`
-- `P0_SEED_MAX = 12`
-- Line-suffix strip: trailing `:[0-9]+([,-][0-9]+)*` on the last path segment
-- P0 score = `(distinct_seed_terms_matched × 1000) + raw_casefold_hits`; ties by CODE ascending
-- Manifest/lock basenames: package.json, Cargo.toml, go.mod, pyproject.toml, Gemfile, composer.json, Package.swift, package-lock.json, yarn.lock, pnpm-lock.yaml, Cargo.lock, poetry.lock, Gemfile.lock, composer.lock
-- Workspace single-segment stop: src, lib, app, apps, packages, services, crates, cmd, internal, vendor, node_modules, dist, build, target, out, skills, templates, hooks, scripts, docs
+| Name | Value |
+|---|---|
+| `NEIGHBORS_MAX` | `12` |
+| `P0_SEED_MAX` | `12` |
+| Line-suffix strip | trailing `:[0-9]+([,-][0-9]+)*` on the path token only |
 
-## P0 TERMS
+**Stop-list — basenames (exact):**  
+`package.json` `Cargo.toml` `go.mod` `pyproject.toml` `Gemfile` `composer.json`  
+`Package.swift` `package-lock.json` `yarn.lock` `pnpm-lock.yaml` `Cargo.lock`  
+`poetry.lock` `Gemfile.lock` `composer.lock`
 
-Match caller key terms (length ≥ 3) case-insensitively as substrings in each feature's requirements.md, design.md, tasks.md. Rank by score; keep top P0_SEED_MAX; set truncated if more matched.
+**Stop-list — single path segment only (exact, whole token):**  
+`src` `lib` `app` `apps` `packages` `services` `crates` `cmd` `internal`  
+`vendor` `node_modules` `dist` `build` `target` `out` `skills` `templates`  
+`hooks` `scripts` `docs`
 
-## P1 OWNS
+---
 
-From each feature's tasks.md `**Files:**` blocks: Create/Modify/Move/Test bullets and prose path tokens; strip line suffixes; associate with CODE from INDEX / Feature code: line. Never key by directory slug when CODE exists. Empty if no tasks/Files.
+## Pass R — Registry
 
-## Denoise
+1. Read `docs/specs/INDEX.md` if present; else empty registry, stop after reporting
+   no specs.
+2. Each table row matching:
+   `\| CODE \| … \| ./path/ \| Status \| ROAD-or-— \|`
+   where `CODE` is `[A-Z][A-Z0-9]{1,11}` length 2–12.
+3. Spec dir = path relative to `docs/specs/` (strip `./` and trailing `/`).
+4. For each CODE, if `requirements.md` has `Feature code: X`, prefer INDEX CODE
+   for membership; note mismatch in envelope `notes` — never key by directory slug.
 
-Drop manifest/lock basenames and single-segment workspace roots. No ancestor expansion. Exact token equality only (or explicit directory ownership token alone).
+---
 
-## P2 OVERLAPS
+## Pass P1 — OWNS
 
-Undirected edge when denoised OWNS intersection non-empty; weight = intersection cardinality.
+For each registered CODE with `tasks.md`:
 
-## P3 IMPLEMENTS
+1. Split on `**Files:**` or a line that is only `Files:`; take the block until
+   the next `### ` heading (or EOF).
+2. Extract paths:
+   - Lines matching  
+     `^\s*[-*]\s*(Create|Modify|Move|Test)\s*:\s*`?([^`\n#]+)`?`  
+     → path = group 2, trim, drop `#` comments.
+   - Other path-like tokens in the block matching  
+     `` `?[A-Za-z0-9_./@+-]+(\.[A-Za-z0-9]+)?`? ``  
+     that contain `/` or a file extension.
+3. For each token, strip backticks, then apply line-suffix strip (constant above).
+4. OWNS(CODE) = set of remaining path strings. Missing tasks.md / missing Files
+   block → empty set (do not invent paths).
 
-INDEX Roadmap item cell → live ROAD-N; empty/— skip.
+---
 
-## P4 CONTAINS
+## Pass D — Denoise
 
-Roadmap MILE members ROAD-N; Goals: GOAL-N → MILE. Absent roadmap → no-op.
+For a path set S, keep only tokens where:
 
-## P5 RESPECTS
+1. basename (last segment) ∉ stop-list basenames, and  
+2. token is **not** a single segment in the single-segment stop-list.
 
-design.md `Respects: ARCH-N` when docs/architecture/ exists; else no-op. Display only; does not change audit-trace.
+**No ancestor expansion.** Equality is exact string match after denoise.  
+Directory ownership: a token counts as a directory only if it ends with `/` or
+has no `.` in the last segment **and** was listed as a full Files entry — never
+imply children from a parent path.
 
-## neighbors merge
+`meaningful(S) = denoise(S)`.
 
-1. Path candidates: positive OVERLAPS weight
-2. Term candidates: P0 seeds when terms supplied
-3. Union **before** truncate
-4. Sort (path_weight desc, via both>path>term, CODE asc)
-5. Truncate once to NEIGHBORS_MAX
+---
 
-## Queries
+## Pass P2 — OVERLAPS
 
-- `neighbors(CODE)` — merge rule above
-- `ancestors(CODE)` — CODE → ROAD → MILE → GOAL; bare CODE if no roadmap
-- `descendants(MILE-N)` — member ROADs and implementing CODEs
-- `blast_radius(path)` — exact OWNS or directory ownership prefix only
-- `subgraph(seed)` — resolve terms/paths/codes; 1-hop OVERLAPS; bound nodes to NEIGHBORS_MAX×3
+For each unordered pair of distinct CODEs:
 
-## Forbidden
+- weight = `|meaningful(OWNS_a) ∩ meaningful(OWNS_b)|`
+- if weight > 0, emit undirected edge with that weight
+- stop-list-only intersection ⇒ weight 0 ⇒ no edge
 
-- Write GRAPH.md or any committed graph projection
-- Derive runtime DEPENDS_ON feature edges
-- Import test-side reference_derive into the skill
+---
+
+## Pass P0 — TERMS (only when caller supplies terms)
+
+1. Filter terms: trim; drop length < 3.
+2. For each CODE, read available `requirements.md`, `design.md`, `tasks.md` under
+   its spec dir (skip missing). Concatenate text; casefold to lower.
+3. For each term, casefold; count substring occurrences in that text.
+4. `distinct` = number of terms with count > 0; `hits` = sum of counts.  
+   If distinct = 0, CODE is not a seed.
+5. score = `distinct * 1000 + hits`.
+6. Sort seeds by score desc, then CODE asc.  
+   `matched` = full count; keep first `P0_SEED_MAX`;  
+   `truncated = matched > P0_SEED_MAX`.
+
+---
+
+## Pass P3 — IMPLEMENTS
+
+From INDEX Roadmap-item cell: if it matches `ROAD-\d+` once, edge CODE → ROAD-N.  
+Empty, `—`, or missing → no edge (not an error).
+
+---
+
+## Pass P4 — CONTAINS (only if `docs/roadmap/INDEX.md` exists)
+
+1. For each `## MILE-N` section, collect `ROAD-\d+` under Members.  
+2. Goals: lines with `Goals:` → collect `GOAL-\d+` as GOAL → MILE.  
+3. Absent file → no-op (empty).
+
+---
+
+## Pass P5 — RESPECTS (only if `docs/architecture/` exists)
+
+In each `docs/specs/**/design.md`, lines containing `Respects:`: extract
+`ARCH-\d+`. Absent architecture dir → no-op. Display-only; does not change
+`audit-trace`.
+
+---
+
+## Query: neighbors(CODE[, terms])
+
+1. Path candidates = other CODEs with P2 weight > 0; `path_weight` = weight.  
+2. If terms given, term candidates = P0 seed CODEs minus focus.  
+3. **Union** path ∪ term candidates **before** any cut.  
+4. For each candidate:  
+   - `via` = both | path | term  
+   - sort key = `(path_weight desc, via_rank desc, CODE asc)`  
+     where both=2, path=1, term=0  
+5. **Truncate once** to `NEIGHBORS_MAX`. Never append after truncate.
+
+---
+
+## Query: ancestors / descendants / blast_radius / subgraph
+
+- **ancestors(CODE):** CODE, then IMPLEMENTS ROAD if any, then MILE containing that
+  ROAD, then GOALs of that MILE; if no roadmap layer → `[CODE]` only.
+- **descendants(MILE-N):** member ROADs + CODEs with IMPLEMENTS into those ROADs.
+- **blast_radius(path):** strip line-suffix; CODEs whose OWNS contain exact path,
+  or directory-token ownership (dir token only) where path is under that dir;
+  never expand arbitrary ancestors.
+- **subgraph(seeds):** resolve terms→P0, paths→OWNS owners, codes as-is; expand
+  one hop via OVERLAPS; bound node list to `NEIGHBORS_MAX * 3` (seeds first, then
+  CODE asc).
+
+---
+
+## Envelope (every query)
+
+Always set:
+
+- `advisory: true`
+- `owns_coverage: { with_owns, registered, ratio }` where  
+  `with_owns` = count of CODEs with non-empty OWNS,  
+  `registered` = registry size
+- `p0: { matched, returned, truncated }` when P0 ran; else zeros
+- never a `depends_on` / `DEPENDS_ON` field
+- never write any file under `docs/` for the graph

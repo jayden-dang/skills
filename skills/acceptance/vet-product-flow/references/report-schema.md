@@ -1,7 +1,7 @@
 # Vet product flow — report schema
 
 Canonical field list and fingerprint recipe for
-`.skills/<slug>-vet-product-flow.md`. Agents and unit tests use the same shapes.
+`.skills/<CODE>/vet-product-flow.md`. Agents and unit tests use the same shapes.
 
 ## Fresh stamp fields
 
@@ -39,7 +39,7 @@ not fresh. Verdict marks and human ticks do **not**.
 # Vet product flow — <slug>
 
 - **slug:** `<slug>`
-- **run_file:** `.skills/<slug>-review-product-flow.json`
+- **run_file:** `.skills/<CODE>/review-product-flow.json`
 - **cases_fingerprint:** `<hex>`
 - **stamped_at:** `<ISO-8601 UTC>`
 - **pass_kind:** `initial` | `re-check`

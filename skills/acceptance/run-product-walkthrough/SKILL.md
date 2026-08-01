@@ -54,7 +54,7 @@ subcommand takes the **one** run file — cases and verdicts live in it together
 
 ```bash
 DF="python3 <skill-root>/scripts/review-product-flow"
-RUN=.skills/<slug>-review-product-flow.json
+RUN=.skills/<CODE>/review-product-flow.json
 
 $DF list   $RUN
 $DF show   $RUN CASE-1
@@ -62,7 +62,7 @@ $DF init   $RUN                       # seed pending in place
 $DF next   $RUN                       # first case still to prove
 $DF mark   $RUN CASE-1 pass --saw '…quoted UI…' --server '…probe…'
 $DF status $RUN
-$DF report $RUN -o .skills/<slug>-review-product-flow-report.md
+$DF report $RUN -o .skills/<CODE>/review-product-flow-report.md
 ```
 
 `mark pass` refuses empty `--saw` / `--server`. Presentational cases require
@@ -95,7 +95,7 @@ loads.*
 
 ## 2. Seed the run file before any drive
 
-The run file is the one `review-product-flow` wrote: `.skills/<slug>-review-product-flow.json`.
+The run file is the one `review-product-flow` wrote: `.skills/<CODE>/review-product-flow.json`.
 
 ```bash
 $DF init $RUN
@@ -140,14 +140,14 @@ remains mandatory before product clicks.
 Run this algorithm **before §3** (before the first product click / drive loop):
 
 ```
-REPORT = .skills/<slug>-vet-product-flow.md
+REPORT = .skills/<CODE>/vet-product-flow.md
 IF missing REPORT → STOP (run vet-product-flow)
 Parse REPORT: run_file, cases_fingerprint, open findings
 IF run_file path ≠ this RUN (normalized) → STOP
 IF sha256(authored cases of RUN) ≠ cases_fingerprint → STOP (stale; re-vet)
 IF open findings non-empty:
   IF chat has explicit user yes naming EACH open VPF-N id → proceed
-     (append override line to .skills/progress.md or the walkthrough close notes:
+     (append override line to .skills/<CODE>/progress.md or the walkthrough close notes:
       "VPF override: VPF-1, VPF-4 named by user <timestamp>")
   ELSE → STOP (list open findings; point to guide-gap loop)
 ELSE → proceed (origin/app preconditions remain mandatory before product clicks)
@@ -176,7 +176,7 @@ re-render → re-invoke fresh isolated `vet-product-flow`; gate uses only the ne
 report). Do not invent cases mid-drive to paper over the gate.
 
 **Override trail:** when the user names each open `VPF-N`, append a greppable
-line to `.skills/progress.md` (or walkthrough close notes), e.g.
+line to `.skills/<CODE>/progress.md` (or walkthrough close notes), e.g.
 `VPF override: VPF-1, VPF-4 named by user <timestamp>`.
 
 *Done when: report present, `run_file` + `cases_fingerprint` match, and either
@@ -236,7 +236,7 @@ When every case is `pass`, or the run stops on a cap / precondition / escalate:
 
 1. The run file is authoritative. A person's ticks are never required, and never
    substitute for a verdict you did not earn.
-2. `$DF report $RUN -o .skills/<slug>-review-product-flow-report.md`
+2. `$DF report $RUN -o .skills/<CODE>/review-product-flow-report.md`
 3. **If you started `$DF serve`, ask the user whether to stop it.** Do not stop
    it silently — they may still be reading the guide — and do not walk away
    leaving a process holding a port. On yes: `$DF serve $RUN --stop`. On no:

@@ -85,7 +85,7 @@ is running and every not-yet-visible behavior has an observation method.*
 
 **Authoring SSOT is the run file**, not hand-rolled HTML.
 
-1. Write `.skills/<slug>-review-product-flow.json` (schema: load sibling
+1. Write `.skills/<CODE>/review-product-flow.json` (schema: load sibling
    `references/cases-schema.md` when unsure). Every case carries all required
    slots: `id`, `req`, `kind`, `title`, `setup`, `try`, `expect`, `backend`
    (`backend` is the server-side assertion, or the literal `presentational`).
@@ -95,8 +95,8 @@ is running and every not-yet-visible behavior has an observation method.*
    custom craft:
 
    ```bash
-   python3 <skill-root>/scripts/review-product-flow render .skills/<slug>-review-product-flow.json \
-     -o .skills/<slug>-review-product-flow.html
+   python3 <skill-root>/scripts/review-product-flow render .skills/<CODE>/review-product-flow.json \
+     -o .skills/<CODE>/review-product-flow.html
    ```
 
    Resolve `<skill-root>` to this skill's install path (in this monorepo:
@@ -134,7 +134,7 @@ Ordered hand-off (artifacts → vet → optional serve → dogfood only after ve
    alongside the agent:
 
    ```bash
-   python3 <skill-root>/scripts/review-product-flow serve .skills/<slug>-review-product-flow.json
+   python3 <skill-root>/scripts/review-product-flow serve .skills/<CODE>/review-product-flow.json
    ```
 
    It binds `127.0.0.1:8787`, follows verdicts as the agent records them, and

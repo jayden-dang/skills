@@ -8,8 +8,8 @@ paths. Do not pre-judge findings. Do not attach full session history.
 
 | Field | Value |
 |---|---|
-| **Run file path** | `.skills/<slug>-review-product-flow.json` (repo-relative) |
-| **Report path** | `.skills/<slug>-vet-product-flow.md` |
+| **Run file path** | `.skills/<CODE>/review-product-flow.json` (repo-relative) |
+| **Report path** | `.skills/<CODE>/vet-product-flow.md` |
 | **Prior report** (re-check) | path or `—` |
 | **pass_kind** | `initial` \| `re-check` |
 

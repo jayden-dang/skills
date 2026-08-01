@@ -6,7 +6,7 @@ person reads.
 
 ## Path
 
-`.skills/<slug>-review-product-flow.json`
+`.skills/<CODE>/review-product-flow.json`
 
 ## Shape
 
@@ -89,7 +89,7 @@ Every subcommand takes the one run file.
 
 ```bash
 DF="python3 skills/acceptance/review-product-flow/scripts/review-product-flow"
-RUN=.skills/<slug>-review-product-flow.json
+RUN=.skills/<CODE>/review-product-flow.json
 
 $DF list   $RUN
 $DF show   $RUN CASE-1
@@ -97,8 +97,8 @@ $DF init   $RUN                      # seed pending in place; --force to reset
 $DF next   $RUN                      # first case whose verdict is not pass
 $DF mark   $RUN CASE-1 pass --saw 'list shows "Alpha"' --server 'GET /api/notes includes Alpha'
 $DF status $RUN
-$DF report $RUN -o .skills/<slug>-review-product-flow-report.md
-$DF render $RUN -o .skills/<slug>-review-product-flow.html
+$DF report $RUN -o .skills/<CODE>/review-product-flow-report.md
+$DF render $RUN -o .skills/<CODE>/review-product-flow.html
 $DF serve  $RUN                      # optional live guide on 127.0.0.1:8787
 $DF serve  $RUN --stop
 ```

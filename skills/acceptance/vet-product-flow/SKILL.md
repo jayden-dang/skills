@@ -1,10 +1,10 @@
 ---
 name: vet-product-flow
 description: >-
-  Use when a review-product-flow run file (`.skills/*-review-product-flow.json`)
+  Use when a review-product-flow run file (`.skills/<CODE>/review-product-flow.json`)
   already exists and needs an isolated implementation-surface judgment / missing-situation
   map before agent dogfood or run-product-walkthrough — producing
-  `.skills/*-vet-product-flow.md` with code-grounded findings. Triggers on “vet
+  `.skills/<CODE>/vet-product-flow.md` with code-grounded findings. Triggers on “vet
   the guide”, “missing situations”, “guide complete for the implementation?”,
   “re-vet after guide gaps”, or hand-off after authoring when isolation is
   required. Not for authoring cases (`review-product-flow`) or driving cases
@@ -29,7 +29,7 @@ PATCHED CASES ARE NOT CLEAN UNTIL A NEW REPORT SAYS SO
 
 ## 1. Inputs
 
-Require a **run-file path** (`.skills/<slug>-review-product-flow.json`). Load
+Require a **run-file path** (`.skills/<CODE>/review-product-flow.json`). Load
 JSON. If missing or invalid, refuse and point the caller back to
 `review-product-flow` — do not invent cases.
 
@@ -126,7 +126,7 @@ findings (plus optional non-blocking hygiene notes).*
 
 ## 5. Write the report
 
-Write `.skills/<slug>-vet-product-flow.md` per
+Write `.skills/<CODE>/vet-product-flow.md` per
 `references/report-schema.md`. Required stamp fields:
 
 | Field | Role |
@@ -172,7 +172,7 @@ file — patches happen **outside** the vet pass, then a fresh re-check.
 
 ### Fixer subagent (when escalated)
 
-Write brief to `.skills/<slug>-vpf-fix-brief.md`:
+Write brief to `.skills/<CODE>/vpf-fix-brief.md`:
 
 - open finding set (`VPF-N`, severity, situation, evidence pointers)
 - run-file path

@@ -1,21 +1,26 @@
-# Trigger routing — `review-product-flow` / `run-product-walkthrough` / `validate-ui`
+# Trigger routing — `review-product-flow` / `vet-product-flow` / `run-product-walkthrough` / `validate-ui`
 
-Audit Trace-ignored. Description routing for the colliding acceptance triple.
-`author-skills` requires should-fire / should-not-fire pairs tested together.
+Audit Trace-ignored. Description routing for the colliding acceptance set
+(author / vet / drive / committed e2e). `author-skills` requires should-fire /
+should-not-fire pairs tested together.
 
 **Status:** query set written; live multi-model routing not re-run on this ship
 (only `grok-4.5` available). Use as the held-out set when a full trigger pass
 is scheduled. Descriptions under test live in:
 
 - `skills/acceptance/review-product-flow/SKILL.md`
+- `skills/acceptance/vet-product-flow/SKILL.md`
 - `skills/acceptance/run-product-walkthrough/SKILL.md`
 - `skills/acceptance/validate-ui/SKILL.md`
+
+Peer detail for judgment vs neighbors: `tests/trigger/vet-product-flow-routing.md`.
 
 ## Disambiguators (expected)
 
 | Skill | Observable predicate |
 |---|---|
 | `review-product-flow` | Need to **author** a checkable HTML guide for a human (or human + later driver) |
+| `vet-product-flow` | Run file exists; need **isolated** missing-situation judgment **before dogfood** |
 | `run-product-walkthrough` | A guide **already exists**; cases must be **executed** now with FE+BE evidence |
 | `validate-ui` | Need **committed** Playwright/e2e specs that join the verify suite |
 
@@ -42,6 +47,11 @@ is scheduled. Descriptions under test live in:
 1. "Write Playwright e2e specs for the create-note flow and commit them"
 2. "Set up Chromium e2e harness and cover NOTE-1.1 for CI"
 3. "Promote the acceptance checklist into durable UI tests"
+
+## Should-fire → `vet-product-flow` (must not pick author or drive)
+
+1. "Vet the finished guide for missing situations before dogfood"
+2. "Isolated judgment: is the run file complete for the implementation?"
 
 ## Should-not-fire either drive or review-product-flow alone
 

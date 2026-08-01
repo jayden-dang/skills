@@ -107,9 +107,13 @@ quick reference: `AGENTS.md`.
 26. **validate-ui** (m) — drive the frontend in a real browser.
 27. **review-product-flow** (m) — the manual sibling; cases YAML SSOT + shell-rendered HTML;
     coverage gate + kind taxonomy; CLI `render` for the human view.
-27a. **run-product-walkthrough** (m) — execute an existing review-product-flow catalog against the product
+27a. **vet-product-flow** (m) — isolated judgment of a finished run file against the
+    shipped user-observable surface; writes `.skills/<slug>-vet-product-flow.md`
+    with code-grounded missing-situation findings; required before agent dogfood.
+27b. **run-product-walkthrough** (m) — execute an existing review-product-flow catalog against the product
     app; CLI run ledger (`init`/`mark`/`next`/`report`) with screen + backend
-    evidence; never guide localStorage ticks; product fails route to `root-cause`.
+    evidence; never guide localStorage ticks; requires fresh clean vet report (or
+    named override); product fails route to `root-cause`.
 
 ## craft/
 

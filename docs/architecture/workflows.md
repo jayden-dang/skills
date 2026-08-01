@@ -39,6 +39,21 @@ gate-session (session gate)
 → realign-spec             mark requirements Implemented/Shipped
 ```
 
+## Product-flow acceptance chain (when dogfooding)
+
+When a feature needs a human-checkable guide and/or agent-driven dogfood:
+
+```
+review-product-flow     author cases + render shell (run file SSOT)
+→ vet-product-flow      isolated judgment: implementation-surface map + report
+                        (required next before agent dogfood)
+→ run-product-walkthrough  drive cases with FE+BE evidence only after fresh
+                        clean vet report (or named override of each open VPF-N)
+```
+
+`validate-ui` remains the committed Playwright sibling — not a substitute for
+vet judgment or the walkthrough ledger.
+
 ## Bugfix flow (tier 1)
 
 ```

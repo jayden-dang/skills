@@ -1,6 +1,6 @@
 # AGENTS.md — Agent Behavior Constitution
 
-> **A-to-Z Agentic Development Skill Set** | 53 skills across 11 categories |
+> **A-to-Z Agentic Development Skill Set** | 54 skills across 11 categories |
 > `jayden-dang/skills` | v0.4.0-pre.0
 
 This file is the single source of truth for agent behavior when working with this
@@ -317,7 +317,7 @@ Can't tick a box? The work is not done.
 
 ---
 
-## 11. Quick Reference: The 53 Skills
+## 11. Quick Reference: The 54 Skills
 
 **Legend:** (m) model-invoked · (U) user-invoked · (si) session-injected
 
@@ -329,7 +329,7 @@ Can't tick a box? The work is not done.
 | **spec** | `specify-behavior` (m), `design-solution` (m), `plan-tasks` (m) |
 | **execution** | `build-in-waves` (m), `build-by-story` (m), `build-inline` (m), `test-first` (m), `root-cause` (m), `prove-claim` (m), `audit-trace` (m), `isolate-workspace` (m) |
 | **review** | `inspect-change` (m), `select-review-sample` (U), `study-change` (U), `brief-team` (U), `polish-diff` (m), `vet-feedback` (m), `review-invariants` (m) |
-| **acceptance** | `validate-feature` (m), `validate-api` (m), `validate-ui` (m), `review-product-flow` (m), `run-product-walkthrough` (m) |
+| **acceptance** | `validate-feature` (m), `validate-api` (m), `validate-ui` (m), `review-product-flow` (m), `vet-product-flow` (m), `run-product-walkthrough` (m) |
 | **craft** | `craft-page` (m) |
 | **ship** | `package-change` (m), `land-branch` (m), `record-verdict` (m), `cut-release` (U) |
 | **track** | `amend-feature` (m), `reroute-plan` (m), `triage` (U), `realign-spec` (m), `refresh-roadmap-status` (U), `assess-milestone` (U), `scan-architecture` (U), `write-handoff` (U), `publish-issues` (U) |

@@ -9,6 +9,7 @@ VPF-7.5 VPF-8.1
 """
 from __future__ import annotations
 
+import json
 import re
 import unittest
 from pathlib import Path
@@ -912,6 +913,142 @@ class VetProductFlowStory7Scenarios(unittest.TestCase):
             s,
             r"(?is)VPF-7\.5.{0,200}(separate|guide-gap|product.?defect)",
         )
+
+
+# --- Task 7: inventory + human guide + trigger routing (VPF-1.1 packaging) ---
+
+AGENTS = REPO / "AGENTS.md"
+README = REPO / "README.md"
+PLUGIN = REPO / ".claude-plugin" / "plugin.json"
+MARKET = REPO / ".claude-plugin" / "marketplace.json"
+SKILLS_DOC = REPO / "docs" / "architecture" / "skills.md"
+SYSTEM_DOC = REPO / "docs" / "architecture" / "system.md"
+WORKFLOWS_DOC = REPO / "docs" / "architecture" / "workflows.md"
+GUIDE = REPO / "docs" / "guide" / "skills" / "vet-product-flow.md"
+TRIGGER = REPO / "tests" / "trigger" / "vet-product-flow-routing.md"
+TRIPLE_TRIGGER = REPO / "tests" / "trigger" / "run-product-walkthrough-routing.md"
+PROJECT_MD = REPO / "docs" / "agents" / "project.md"
+
+
+class VetProductFlowWiring(unittest.TestCase):
+    """VPF-1.1 — discoverability: inventory, guide, triggers, plugin."""
+
+    def test_VPF_1_1_agents_acceptance_lists_model_invoked(self):
+        """VPF-1.1 — AGENTS.md acceptance row lists vet-product-flow (m)."""
+        agents = AGENTS.read_text()
+        self.assertRegex(
+            agents,
+            r"(?is)acceptance.*vet-product-flow|vet-product-flow.*\(m\)",
+        )
+        # Explicit model-invoked mark near the name in the acceptance inventory
+        self.assertRegex(
+            agents,
+            r"`vet-product-flow`\s*\(m\)",
+        )
+        # Skill count header stays accurate (engineering dirs include this skill)
+        m = re.search(r"(\d+)\s+skills across", agents)
+        self.assertIsNotNone(m, "AGENTS.md skill count banner missing")
+        eng = [
+            p
+            for p in (REPO / "skills").glob("*/*/SKILL.md")
+            if "personal" not in p.parts
+        ]
+        self.assertEqual(
+            int(m.group(1)),
+            len(eng),
+            f"AGENTS.md says {m.group(1)} skills but engineering dirs={len(eng)}",
+        )
+
+    def test_VPF_1_1_architecture_skills_and_system(self):
+        """VPF-1.1 — docs/architecture skills.md + system.md inventory."""
+        self.assertIn("vet-product-flow", SKILLS_DOC.read_text())
+        self.assertIn("vet-product-flow", SYSTEM_DOC.read_text())
+        self.assertRegex(
+            SYSTEM_DOC.read_text(),
+            r"acceptance/.*vet-product-flow",
+        )
+
+    def test_VPF_1_1_workflows_author_vet_walkthrough(self):
+        """VPF-1.1 — workflows.md chains author → vet → walkthrough when dogfooding."""
+        w = WORKFLOWS_DOC.read_text()
+        self.assertIn("vet-product-flow", w)
+        self.assertRegex(
+            w,
+            r"(?is)review-product-flow.{0,120}vet-product-flow|"
+            r"author.{0,40}vet.{0,40}walkthrough|"
+            r"vet-product-flow.{0,120}run-product-walkthrough",
+        )
+
+    def test_VPF_1_1_readme_acceptance_roster(self):
+        """VPF-1.1 — README.md acceptance roster names vet-product-flow."""
+        self.assertIn("vet-product-flow", README.read_text())
+
+    def test_VPF_1_1_plugin_manifests_register_skill(self):
+        """VPF-1.1 — plugin.json and marketplace.json list the skill path."""
+        for manifest in (PLUGIN, MARKET):
+            body = manifest.read_text()
+            self.assertIn(
+                "./skills/acceptance/vet-product-flow",
+                body,
+                f"{manifest.name} missing vet-product-flow",
+            )
+            json.loads(body)  # valid JSON
+
+    def test_VPF_1_1_human_guide_exists(self):
+        """VPF-1.1 — docs/guide/skills/vet-product-flow.md present."""
+        self.assertTrue(GUIDE.exists(), f"missing {GUIDE}")
+        g = GUIDE.read_text()
+        self.assertIn("vet-product-flow", g)
+        self.assertRegex(g, r"(?i)model-invoc")
+
+    def test_VPF_1_1_trigger_routing_should_fire_and_not(self):
+        """VPF-1.1 — trigger file: should-fire vet; not author/drive/Playwright."""
+        self.assertTrue(TRIGGER.exists(), f"missing {TRIGGER}")
+        t = TRIGGER.read_text()
+        self.assertRegex(t, r"(?i)should-?fire")
+        self.assertIn("vet-product-flow", t)
+        # Peer disambiguators
+        self.assertIn("review-product-flow", t)
+        self.assertIn("run-product-walkthrough", t)
+        self.assertIn("validate-ui", t)
+        # Should-fire cues for vet (finished guide / missing situations / before dogfood)
+        self.assertRegex(
+            t,
+            r"(?is)(missing.?situation|before dogfood|vet the guide|"
+            r"complete for the implementation|isolat)",
+        )
+        # Should-not / prefer author, drive, Playwright
+        self.assertRegex(
+            t,
+            r"(?is)(should-?not|must not|prefer|→\s*`?review-product-flow)",
+        )
+        self.assertRegex(
+            t,
+            r"(?is)(author|produce|write).{0,80}(guide|cases)|"
+            r"review-product-flow",
+        )
+        self.assertRegex(
+            t,
+            r"(?is)(drive|execute|walkthrough)|run-product-walkthrough",
+        )
+        self.assertRegex(
+            t,
+            r"(?is)(Playwright|e2e)|validate-ui",
+        )
+
+    def test_VPF_1_1_triple_routing_names_vet_disambiguator(self):
+        """VPF-1.1 — run-product-walkthrough-routing.md mentions vet-product-flow."""
+        self.assertTrue(TRIPLE_TRIGGER.exists())
+        text = TRIPLE_TRIGGER.read_text()
+        self.assertIn("vet-product-flow", text)
+
+    def test_VPF_1_1_audit_trace_ignore_fixtures(self):
+        """VPF-1.1 — project.md audit-trace ignore covers fixtures/triggers."""
+        p = PROJECT_MD.read_text()
+        self.assertIn("tests/vet-product-flow/fixtures/", p)
+        self.assertIn("tests/trigger/vet-product-flow-routing.md", p)
+        # Pressure scenarios are fixtures for audit-trace; main scenarios.md stays coverage
+        self.assertIn("tests/vet-product-flow/scenarios-pressure.md", p)
 
 
 if __name__ == "__main__":

@@ -124,6 +124,62 @@ into `verdict`, and never let it stand in for evidence you did not gather.
 
 *Done when: every case has run state and a todo, all `pending` (or restored).*
 
+## 2a. Hard gate — fresh vet-product-flow report (before any product drive)
+
+<HARD-GATE>
+```
+NO PRODUCT CASE IS DRIVEN WITHOUT A FRESH CLEAN VET REPORT
+(OR AN IN-THREAD YES THAT NAMES EACH REMAINING OPEN VPF-N)
+```
+
+`init` may seed pending verdicts before or after this gate. **No product click
+and no `mark` of a driven case** until the gate passes. Origin consent (§1)
+remains mandatory before product clicks.
+</HARD-GATE>
+
+Run this algorithm **before §3** (before the first product click / drive loop):
+
+```
+REPORT = .skills/<slug>-vet-product-flow.md
+IF missing REPORT → STOP (run vet-product-flow)
+Parse REPORT: run_file, cases_fingerprint, open findings
+IF run_file path ≠ this RUN (normalized) → STOP
+IF sha256(authored cases of RUN) ≠ cases_fingerprint → STOP (stale; re-vet)
+IF open findings non-empty:
+  IF chat has explicit user yes naming EACH open VPF-N id → proceed
+     (append override line to .skills/progress.md or the walkthrough close notes:
+      "VPF override: VPF-1, VPF-4 named by user <timestamp>")
+  ELSE → STOP (list open findings; point to guide-gap loop)
+ELSE → proceed (origin/app preconditions remain mandatory before product clicks)
+```
+
+**Freshness (not whole-file `rev`):** the report is fresh only when its
+`run_file` matches this run file path **and** its `cases_fingerprint` matches
+the SHA-256 of the run file's **authored** cases (eight slots per case; omit
+`run`/`human`/`rev`). Verdict marks and human ticks do **not** stale the report;
+authoring edits that change cases **do**. Recompute the fingerprint from the run
+file — do not trust a chat claim of freshness.
+
+**Open findings block drive.** Every open code-grounded missing-situation finding
+is **blocking** until fixed (guide-gap loop in `vet-product-flow`) or named in
+an explicit in-thread yes. Severity labels (Critical / Important / Minor) order
+fixes only — severity **does not** soften the gate, drop a finding from the open
+set, or reintroduce a hard-only-on-Critical rule. Bare “just go”, “demo in N
+minutes”, silent skip, or a yes that does not name each remaining open `VPF-N`
+is **not** an override.
+
+**On STOP:** list open findings (ids + severity + situation). Point the user to
+the **guide-gap** fix loop in `vet-product-flow` (patch run file by severity →
+re-render → re-invoke fresh isolated `vet-product-flow`; gate uses only the new
+report). Do not invent cases mid-drive to paper over the gate.
+
+**Override trail:** when the user names each open `VPF-N`, append a greppable
+line to `.skills/progress.md` (or walkthrough close notes), e.g.
+`VPF override: VPF-1, VPF-4 named by user <timestamp>`.
+
+*Done when: report present, `run_file` + `cases_fingerprint` match, and either
+`open_count` is 0 or every open `VPF-N` is named in-thread with an override trail.*
+
 ## 3. Drive each pending case
 
 In file order (`$DF next` until empty):
@@ -193,6 +249,9 @@ the user's word — no bare "all good."*
 | "Happy paths on staging; skip edges to make the demo" | Partial run: unfinished rows stay pending/blocked, never pass. |
 | "I'll tick pass and fill server evidence later" | Evidence slots are full before `pass`, or the verdict stays fail/pending. |
 | "The other cases already passed before the fix" | Re-drive every already-pass case whose req the fix touched. |
+| "Just go / demo in 5 minutes — skip the open findings" | Not an override. Name each open `VPF-N` or run the guide-gap loop. Severity does not soften the gate. |
+| "Report is fine — rev only moved for marks" | Freshness is `run_file` + `cases_fingerprint`, not whole-file `rev`. Recompute fingerprint. |
+| "Only Critical findings block drive" | Every open finding blocks. Severity orders fix only. |
 
 ## Red Flags
 
@@ -204,3 +263,5 @@ the user's word — no bare "all good."*
 - Driving a non-local origin without an explicit yes naming that origin
 - Patching product on a review-product-flow fail without `root-cause` when the fail is deterministic
 - Claiming completion from memory after compaction instead of reading the run file
+- Driving product cases with a missing, stale, or open-findings vet report and no named override
+- Treating bare “just go” or severity=Minor as a gate pass

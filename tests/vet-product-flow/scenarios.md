@@ -64,17 +64,29 @@ bullets from Task 2; later stories expand in later tasks.
 
 ## Story 5 — Hard gate before walkthrough drive
 
-- VPF-5.1 require fresh report for run file before any product drive
-- VPF-5.2 open findings block drive without named override
-- VPF-5.3 override must name each open `VPF-N` with greppable trail
-- VPF-5.4 every open finding blocks; severity does not re-soft gate
-- VPF-5.5 CONTINUE TO origin consent before product click
-- VPF-5.6 CONTINUE TO Iron Law mark evidence (`saw` + `server`)
+- **VPF-5.1** before any product case drive, require a **fresh**
+  `.skills/<slug>-vet-product-flow.md` for this run file. Freshness =
+  `run_file` path match **and** `cases_fingerprint` match (SHA of authored
+  cases only) — **not** whole-file `rev`. `init` may seed pending; no product
+  click and no `mark` of a driven case until the gate passes.
+- **VPF-5.2** if the fresh report has any open missing-situation finding and the
+  user has not given an explicit in-thread yes naming each remaining open
+  finding, **do not** drive product cases. On STOP, list findings and point to
+  the **guide-gap** loop.
+- **VPF-5.3** override requires an explicit in-thread yes that **names** each
+  remaining open `VPF-N`; write a greppable trail in `.skills/progress.md` (or
+  walkthrough close notes). No silent skip; bare “just go” is not enough.
+- **VPF-5.4** every open code-grounded finding is **blocking**; severity labels
+  do **not** re-soften the gate or reintroduce hard-only-on-Critical.
+- **VPF-5.5** CONTINUE TO require local default or explicit non-local origin
+  consent naming that origin **before the first product click**.
+- **VPF-5.6** CONTINUE TO require non-empty `--saw` and `--server` (Iron Law /
+  presentational sentinel) before `mark pass`.
 
 ## Story 6 — Guide-gap fix and re-check loop
 
-- **VPF-6.1** walkthrough stays blocked while open findings remain (gate side;
-  Task 5).
+- **VPF-6.1** walkthrough stays **blocked** while open findings remain (gate
+  side); severity does not drop any open finding from the blocking set.
 - **VPF-6.2** guide-gap fixes **order by severity** (Critical → Important →
   Minor); patch the **run file only** (add/reshape cases/sections/slots) and
   **re-render** HTML — never product code patches, never mid-drive invent-cases.

@@ -1,9 +1,10 @@
 """VPF skill body contracts — isolation, map, non-claims, report, guide-gap,
-author hand-off.
+author hand-off, walkthrough hard gate.
 
 VPF-1.1 VPF-1.2 VPF-1.3 VPF-1.4 VPF-1.5 VPF-2.1 VPF-2.2 VPF-2.3 VPF-2.4
 VPF-2.5 VPF-2.6 VPF-3.1 VPF-3.2 VPF-3.3 VPF-3.4 VPF-3.5 VPF-4.1 VPF-4.2
-VPF-4.3 VPF-6.2 VPF-6.3 VPF-6.4 VPF-6.5 VPF-6.6 VPF-6.7 VPF-8.1
+VPF-4.3 VPF-5.1 VPF-5.2 VPF-5.3 VPF-5.4 VPF-5.5 VPF-5.6 VPF-6.1 VPF-6.2
+VPF-6.3 VPF-6.4 VPF-6.5 VPF-6.6 VPF-6.7 VPF-8.1
 """
 from __future__ import annotations
 
@@ -14,6 +15,9 @@ from pathlib import Path
 REPO = Path(__file__).resolve().parent.parent
 SKILL = REPO / "skills" / "acceptance" / "vet-product-flow" / "SKILL.md"
 RPF_SKILL = REPO / "skills" / "acceptance" / "review-product-flow" / "SKILL.md"
+RPW_SKILL = (
+    REPO / "skills" / "acceptance" / "run-product-walkthrough" / "SKILL.md"
+)
 BRIEF = (
     REPO
     / "skills"
@@ -588,6 +592,158 @@ class VetProductFlowScenarios(unittest.TestCase):
         self.assertRegex(
             s,
             r"(?is)VPF-4\.3.{0,200}(SSOT|run file|render|shell)",
+        )
+
+    def test_VPF_5_scenarios_walkthrough_gate_behavioral(self):
+        """VPF-5.1–5.6 VPF-6.1 — Story 5 scenarios carry behavioral bullets."""
+        s = SCENARIOS.read_text()
+        for token in (
+            "VPF-5.1",
+            "VPF-5.2",
+            "VPF-5.3",
+            "VPF-5.4",
+            "VPF-5.5",
+            "VPF-5.6",
+            "VPF-6.1",
+        ):
+            self.assertIn(token, s)
+        self.assertRegex(
+            s,
+            r"(?is)VPF-5\.1.{0,250}(fresh|cases_fingerprint|run_file|rev)",
+        )
+        self.assertRegex(
+            s,
+            r"(?is)VPF-5\.3.{0,250}(names?|override|progress\.md|greppable)",
+        )
+        self.assertRegex(
+            s,
+            r"(?is)VPF-6\.1.{0,200}(block|open finding|severity)",
+        )
+        p = PRESSURE.read_text()
+        self.assertRegex(
+            p,
+            r"(?is)((just go|demo in).{0,200}(stop|name|VPF-|override)|"
+            r"P-GATE|walkthrough gate)",
+        )
+
+
+class RunProductWalkthroughHardGate(unittest.TestCase):
+    """VPF-5.1–5.6 VPF-6.1 — hard gate before any product case drive."""
+
+    def setUp(self):
+        self.assertTrue(RPW_SKILL.exists(), f"missing {RPW_SKILL}")
+        self.text = RPW_SKILL.read_text()
+        self.body = _body(self.text)
+
+    def test_VPF_5_1_require_fresh_vet_report_before_drive(self):
+        """VPF-5.1 — fresh .skills/<slug>-vet-product-flow.md before drive."""
+        self.assertIn(".skills/<slug>-vet-product-flow.md", self.body)
+        self.assertRegex(
+            self.body,
+            r"(?is)vet-product-flow",
+        )
+        self.assertRegex(
+            self.body,
+            r"(?is)(before|prior to).{0,80}(drive|product (case|click))|"
+            r"(no product|not drive).{0,80}(until|before).{0,40}(gate|vet|report)",
+        )
+        # Freshness = run_file + cases_fingerprint, not whole-file rev
+        self.assertIn("cases_fingerprint", self.body)
+        self.assertIn("run_file", self.body)
+        self.assertRegex(
+            self.body,
+            r"(?is)(not|≠|!=).{0,40}\brev\b|"
+            r"\brev\b.{0,60}(not|does not|never).{0,40}(fresh|freshness)|"
+            r"fingerprint.{0,40}(not|≠).{0,40}\brev\b|"
+            r"not whole-file.?`?rev`?",
+        )
+
+    def test_VPF_5_2_5_3_open_findings_named_override_trail(self):
+        """VPF-5.2 VPF-5.3 — open findings block unless yes names each VPF-N; trail."""
+        self.assertRegex(
+            self.body,
+            r"(?is)open finding",
+        )
+        self.assertRegex(
+            self.body,
+            r"(?is)(names?|naming).{0,40}(each|every|all).{0,40}(open )?(VPF-N|finding)|"
+            r"(each|every).{0,40}open.{0,40}(VPF-N|finding).{0,40}(name|yes)",
+        )
+        self.assertRegex(
+            self.body,
+            r"(?is)\.skills/progress\.md|progress\.md",
+        )
+        self.assertRegex(
+            self.body,
+            r"(?is)(override|VPF override)",
+        )
+        # Bare "just go" is not enough
+        self.assertRegex(
+            self.body,
+            r"(?is)just go|bare.{0,20}(yes|go)|silent skip",
+        )
+
+    def test_VPF_5_4_6_1_every_open_blocks_severity_does_not_soften(self):
+        """VPF-5.4 VPF-6.1 — every open finding blocks; severity never softens gate."""
+        self.assertRegex(
+            self.body,
+            r"(?is)(every|all).{0,40}open.{0,40}(finding|block)|"
+            r"(severity|does not|never).{0,40}(soften|drop|reintroduce|critical.?only)",
+        )
+        self.assertRegex(
+            self.body,
+            r"(?is)severity.{0,80}(not|never|does not).{0,60}(gate|block|soften|drop)|"
+            r"(gate|block).{0,80}severity.{0,40}(not|never|orders? fix)",
+        )
+
+    def test_VPF_5_5_origin_consent_guard(self):
+        """VPF-5.5 — origin consent still required before product click."""
+        self.assertRegex(
+            self.body,
+            r"(?is)(origin|non-local).{0,80}(consent|explicit yes|naming)",
+        )
+        self.assertRegex(
+            self.body,
+            r"(?is)(before|prior).{0,40}(first product click|product click)|"
+            r"product click",
+        )
+
+    def test_VPF_5_6_iron_law_mark_evidence_guard(self):
+        """VPF-5.6 — Iron Law mark requires non-empty --saw and --server."""
+        self.assertRegex(self.body, r"(?i)Iron Law")
+        self.assertRegex(
+            self.body,
+            r"(?is)--saw|--server|`saw`|`server`",
+        )
+        self.assertRegex(
+            self.body,
+            r"(?is)presentational",
+        )
+        self.assertRegex(
+            self.body,
+            r"(?is)(refuses? empty|non-empty|both).{0,40}(saw|server)|"
+            r"empty `--saw`|empty `--server`",
+        )
+
+    def test_VPF_5_init_may_seed_no_product_click_until_gate(self):
+        """VPF-5.1 — init may seed pending; no product click / driven mark until gate."""
+        self.assertRegex(
+            self.body,
+            r"(?is)init.{0,120}(seed|pending)|"
+            r"(seed|pending).{0,80}init",
+        )
+        self.assertRegex(
+            self.body,
+            r"(?is)(no product click|not.{0,20}product click|"
+            r"no `mark` of a driven).{0,80}(until|before).{0,40}gate|"
+            r"gate.{0,80}(before|until).{0,40}(product click|drive)",
+        )
+
+    def test_VPF_5_stop_points_to_guide_gap_loop(self):
+        """VPF-5.2 — on stop, cross-link guide-gap loop."""
+        self.assertRegex(
+            self.body,
+            r"(?is)guide-gap|guide gap",
         )
 
 

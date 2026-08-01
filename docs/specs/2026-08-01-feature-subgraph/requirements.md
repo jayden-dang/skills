@@ -1,9 +1,10 @@
 # Requirements: Feature subgraph derivation
 
 Feature code: FSUB
-Status: Approved
+Status: Implemented
 Date: 2026-08-01
 Approved: 2026-08-01 (user)
+Implemented: 2026-08-01 (build-inline on main)
 
 Adds an **ask-time derivation layer** over existing feature IDs so discovery and
 review skills can query multi-hop neighbors, ancestors, blast radius, and a

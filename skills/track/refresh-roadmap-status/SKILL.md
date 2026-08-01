@@ -38,7 +38,7 @@ A **withholding** finding replaces the next action with the reason.
 - `docs/product/vision.md` — `**GOAL-N**` definitions. Absent → `R1`/`R2`/`R3` never fire.
 - `docs/specs/INDEX.md` — feature rows, their `Status`, and their `Roadmap item` bindings.
 - each bound feature's `requirements.md` — its `Status:` line, for `R10` and the ladder.
-- `.skills/progress.md` — **only if it exists.** Advisory local evidence that never overrides
+- `.skills/<CODE>/progress.md (see `templates/skills-ephemera-paths.md`; optional: scan `.skills/*/progress.md` when CODE unknown)` — **only if it exists.** Advisory local evidence that never overrides
   a tracked `Status:`; its absence is not a finding.
 - `S1`–`S7` are defined in `templates/roadmap-INDEX.md`'s comment block, which the roadmap
   carries a copy of. That block is authoritative — read the rules there, do not restate them.
@@ -93,7 +93,8 @@ grep -rnE '^Status:' docs/specs --include='*requirements.md'
 **6. Advisory ledger — only when it exists.**
 
 ```bash
-test -f .skills/progress.md && grep -nE '^Task ' .skills/progress.md
+test -f .skills/<CODE>/progress.md && grep -nE '^Task ' .skills/<CODE>/progress.md
+# or, when scanning all features: for f in .skills/*/progress.md; do ...; done
 ```
 
 ## The rules

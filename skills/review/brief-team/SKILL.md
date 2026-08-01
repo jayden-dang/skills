@@ -95,7 +95,7 @@ exactly — every REQUIRED slot, in order.
    **Done when:** the old-behavior and change statements each cite a path from the gather set.
 5. **Enrich (optional)** —
    - IF `docs/specs/` owns paths or IDs in the range → fold user-visible impact and decisions from requirements (**not** the full triad).
-   - IF `.skills/implementation-notes.md` has deviations → fold into decisions or break-risk.
+   - IF `.skills/<CODE>/implementation-notes.md` has deviations → fold into decisions or break-risk.
    - IF a clarify-decisions close package or knowns inventory is available → fold **confirmed** locks only.
    - Missing sources → continue; do not invent.
    **Done when:** each folded claim carries its source path, or the enrich set is empty.

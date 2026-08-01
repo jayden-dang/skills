@@ -223,7 +223,7 @@ replaced) by `Risk globs` in `docs/agents/project.md` when present.
    never auto-run, never soft-gate the menu).
 5. **IF** `multi_task OR risk_hit OR architecture_affecting` → **name**
    `/brief-team` (user-invoked — never auto-run, never withhold merge/PR).
-6. **IF** `.skills/implementation-notes.md` has deviations → mention that path once.
+6. **IF** `.skills/<CODE>/implementation-notes.md` has deviations → mention that path once.
 
 **Worked case:** one task, diff only `skills/auth/session.ts` → `risk_hit` true →
 name **both**. **Keep** still runs steps 4–5 (names only; no merge/PR).

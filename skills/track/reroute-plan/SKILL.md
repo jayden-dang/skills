@@ -54,7 +54,7 @@ The proposal is **ephemeral**: it lives in the conversation for the go/no-go and
 
 ## Idempotency — the evidence ledger
 
-Every rewind must be driven by **newly discovered evidence** — not a second look at the same fact. Before classifying, read `.skills/corrections.md` (ephemeral, git-ignored scratch, parallel to `.skills/progress.md`, scoped to the in-flight plan). It carries one line per acted-on correction: an **evidence fingerprint**, the **chosen level**, and the **outcome**.
+Every rewind must be driven by **newly discovered evidence** — not a second look at the same fact. Before classifying, read `.skills/<CODE>/corrections.md` (ephemeral, git-ignored scratch, parallel to `.skills/<CODE>/progress.md`, scoped to the in-flight plan). It carries one line per acted-on correction: an **evidence fingerprint**, the **chosen level**, and the **outcome**.
 
 IF the current divergence would re-classify the **same already-acted-on evidence to the same lowest invalidated artifact**, with no new evidence, do **NOT** re-enter that level again. Escalate to the user instead — this breaks the `build-in-waves → reroute-plan → write-* → realign-spec → build-in-waves` loop before it spins. A genuinely new discovery is not blocked by this: record its fingerprint, its level, and its outcome as a new ledger line, and classify normally.
 
@@ -87,7 +87,7 @@ After the re-entry skill's approval gate passes:
 
 1. **Reconcile.** WHEN the re-entry changed already-approved artifacts or their trace links, REQUIRED SUB-SKILL: use `realign-spec` to realign `Status` and the audit-trace — it owns the strikethrough-with-reason retirement and the INDEX update; `reroute-plan` does not reimplement any of it.
 2. **Record.** WHEN the final approved change carries an **architectural consequence**, record it as an ADR via REQUIRED SUB-SKILL: use `define-domain`. Design-level rewinds usually qualify; Requirements or Vision rewinds only when architecturally weighty. **Task-local and Plan-level never** get an ADR. **Never** persist an ADR for a proposal the user did not approve.
-3. **Resume.** Return control to `build-in-waves`, which resumes **automatically** against the corrected plan off its own ledger — no manual restart. For a **Task-local** rewind, `.skills/progress.md` is untouched. For a **Plan / Design / Requirements** rewind that rewrote `tasks.md`, **re-baseline the ledger** first: keep the entries whose committed work survives the rewrite, drop the entries the rewrite superseded, so `build-in-waves` resumes after the last *still-valid* completed task rather than a stale task number. The ledger is git-ignored scratch, so this touches no spec artifact.
+3. **Resume.** Return control to `build-in-waves`, which resumes **automatically** against the corrected plan off its own ledger — no manual restart. For a **Task-local** rewind, `.skills/<CODE>/progress.md` is untouched. For a **Plan / Design / Requirements** rewind that rewrote `tasks.md`, **re-baseline the ledger** first: keep the entries whose committed work survives the rewrite, drop the entries the rewrite superseded, so `build-in-waves` resumes after the last *still-valid* completed task rather than a stale task number. The ledger is git-ignored scratch, so this touches no spec artifact.
 
 **Done when:** reconciliation has run if artifacts changed, an ADR exists only if warranted and approved, and `build-in-waves` is resuming against a ledger that matches the (possibly rewritten) `tasks.md`.
 
@@ -103,4 +103,4 @@ After the re-entry skill's approval gate passes:
 | "This discovery smells big, I'll just rewind to requirements to be safe" | Classify the LOWEST invalidated artifact with evidence. Over-rewinding without evidence for the higher level is prohibited — it burns approvals the discovery never earned. |
 | "The user already agreed something's wrong, I can skip straight to routing" | The diagnosis go/no-go and the change-proposal approval are two separate stops. Agreeing something is wrong is not the same as approving a specific re-entry. |
 | "I'll just fix the plan file directly, it's faster" | reroute-plan holds no editing logic. Route to `plan-tasks`/`design-solution`/`specify-behavior` — they own the content and their own gate. |
-| "Same bug came up again, let me rewind again" | Read `.skills/corrections.md` first. Same evidence, same level, no new discovery → escalate to the user instead of looping. |
+| "Same bug came up again, let me rewind again" | Read `.skills/<CODE>/corrections.md` first. Same evidence, same level, no new discovery → escalate to the user instead of looping. |

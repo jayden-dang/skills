@@ -147,9 +147,51 @@ Report write is allowed. Product codebase and the run file remain **unmodified**
 during judgment (read-only).
 
 Exit by handing report path + `open_count` to the caller (author fix loop or
-walkthrough gate — those loops are outside this task’s product claim).
+walkthrough gate).
 
 *Done when: report exists on disk with stamp fields and open findings list.*
+
+## 6. Guide-gap fix loop
+
+When the report has open missing-situation findings, the **controller** (or
+author re-entry) runs this loop. Judgment itself stays read-only on the run
+file — patches happen **outside** the vet pass, then a fresh re-check.
+
+| Step | Owner | Rule |
+|---|---|---|
+| 1. Order | controller | Order open findings by severity: Critical → Important → Minor. Severity orders work only; it does not drop findings from the gate. |
+| 2. Patch | controller or fixer | Patch the **run file only** (add/reshape cases, sections, authored slots). Re-render HTML via the review-product-flow `render` path. **No product code patches** and no mid-drive invent-cases. |
+| 3. Re-vet | always isolated | Re-invoke `vet-product-flow` in a **fresh isolated** pass (new subagent or new `AUTHORING CLOSED` pass). Set `pass_kind: re-check` and `prior_report` to the previous report path. The dogfood gate re-evaluates **only against the new report** — never the prior open list. |
+| 4. Clear | gate / report | Clear a finding only when it is **absent from the new open list**, or when the user names it in an explicit **named override**. Never self-declare clean without a new report. |
+| 5. Escalate | controller | IF open finding count is **≥ 5** OR the required rewrite spans **≥ 2 ability areas** (multi-section rewrite) THEN dispatch an **isolated fixer subagent**. |
+| 6. Cap | controller | Cap at **2 re-judgment cycles**. IF 2 full re-judgment cycles complete with open findings still present THEN **stop for the human** (fix more, named override listing remaining `VPF-N`, or shrink surface) rather than thrashing. |
+
+### Fixer subagent (when escalated)
+
+Write brief to `.skills/<slug>-vpf-fix-brief.md`:
+
+- open finding set (`VPF-N`, severity, situation, evidence pointers)
+- run-file path
+- not full session history
+
+Fixer patches the run file (+ re-render) only. Fixer must **not** self-declare
+clean. After fixer DONE, controller always re-invokes fresh `vet-product-flow`.
+
+### What does not keep the loop alive
+
+Non-code-grounded items, taste (novelty / feel / polish), and anything outside
+the skill claim **do not keep the fix loop alive** as if they were
+missing-situation findings. Drop or refuse them; only code-grounded open
+findings drive patch → re-vet.
+
+### Separation from judgment
+
+During judgment the product codebase and run file remain unmodified (read-only);
+report write only. Guide-gap patches are a **separate** controller loop after a
+report exists — never inside the map/write steps above.
+
+*Done when: open findings are fixed and re-checked clean, named-overridden, or
+stopped for the human after 2 re-judgment cycles.*
 
 ## Rationalizations
 
@@ -162,6 +204,10 @@ walkthrough gate — those loops are outside this task’s product claim).
 | “Stamp ‘ready to ship’ / ‘good UX’ so stakeholders can move on” | Global stamps are forbidden. Report findings, not product verdicts. |
 | “I’ll patch the run file from inside the vet pass to clear findings” | Judgment is read-only on the run file. Report only; guide-gap patches are a separate loop. |
 | “Minor findings can soft-pass the dogfood gate” | Severity orders the fix loop only; every open finding blocks until fixed or named-overridden. |
+| “I fixed the cases — declare clean without re-vet” | Never self-declare. Re-invoke fresh isolated vet-product-flow; gate uses the new report only. |
+| “Five small misses — keep patching in this long context” | ≥ 5 open findings or ≥ 2 ability areas → isolated fixer subagent with findings + run path brief. |
+| “Third re-vet will clear it” | Cap is 2 re-judgment cycles; then stop for the human. |
+| “Taste / polish feedback should keep the fix loop open” | Non-code-grounded and taste items do not keep the loop alive. |
 
 ## Red Flags — stop and restart isolation
 
@@ -171,3 +217,6 @@ walkthrough gate — those loops are outside this task’s product claim).
 - Writing product code or mutating the run file during judgment
 - Titling anything “complete for real users” based on schema/kind counts
 - Owning browser drive or FE+BE evidence inside this skill
+- Self-clearing findings without a new re-check report
+- Patching product code to “close” a guide gap
+- Third+ re-judgment cycle without stopping for the human

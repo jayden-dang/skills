@@ -1,7 +1,8 @@
-"""VPF skill body contracts — isolation, map, non-claims, report (Task 2).
+"""VPF skill body contracts — isolation, map, non-claims, report, guide-gap.
 
 VPF-1.1 VPF-1.2 VPF-1.3 VPF-1.4 VPF-1.5 VPF-2.1 VPF-2.2 VPF-2.3 VPF-2.4
-VPF-2.5 VPF-2.6 VPF-3.1 VPF-3.2 VPF-3.3 VPF-3.4 VPF-3.5 VPF-8.1
+VPF-2.5 VPF-2.6 VPF-3.1 VPF-3.2 VPF-3.3 VPF-3.4 VPF-3.5 VPF-6.2 VPF-6.3
+VPF-6.4 VPF-6.5 VPF-6.6 VPF-6.7 VPF-8.1
 """
 from __future__ import annotations
 
@@ -307,8 +308,129 @@ class VetProductFlowRationalization(unittest.TestCase):
         )
 
 
+class VetProductFlowGuideGapLoop(unittest.TestCase):
+    """VPF-6.2–6.7 — guide-gap fix / re-check loop protocol (Task 3)."""
+
+    def setUp(self):
+        self.assertTrue(SKILL.exists(), f"missing {SKILL}")
+        self.body = _body(SKILL.read_text())
+
+    def test_VPF_6_2_severity_order_run_file_only_no_product(self):
+        """VPF-6.2 — order by severity; patch run file only + re-render; no product."""
+        self.assertRegex(
+            self.body,
+            r"(?i)Guide-gap fix loop|guide-gap fix",
+        )
+        self.assertRegex(
+            self.body,
+            r"(?is)order.{0,40}severity|severity.{0,40}order",
+        )
+        self.assertRegex(
+            self.body,
+            r"(?is)(run.?file|cases).{0,80}(only|patch)|"
+            r"patch.{0,60}(run.?file|only)",
+        )
+        self.assertRegex(
+            self.body,
+            r"(?i)re-?render|render",
+        )
+        self.assertRegex(
+            self.body,
+            r"(?is)(not|never|no).{0,40}(product|app).{0,40}(patch|code|mutat)|"
+            r"(product|app).{0,40}(code|patches?).{0,40}(not|never|out)",
+        )
+
+    def test_VPF_6_3_reinvoke_fresh_gate_new_report(self):
+        """VPF-6.3 — re-invoke fresh isolated vet; gate uses new report only."""
+        self.assertRegex(
+            self.body,
+            r"(?is)re-?invoke.{0,40}vet-product-flow|"
+            r"vet-product-flow.{0,40}(fresh|re-?check|re-?invoke)",
+        )
+        self.assertRegex(
+            self.body,
+            r"(?is)fresh.{0,40}isolat|isolat.{0,40}(fresh|re-?check|re-?invoke)",
+        )
+        self.assertRegex(
+            self.body,
+            r"(?is)(gate|dogfood).{0,80}(new report|new open)|"
+            r"(new report|only against the new).{0,60}(gate|dogfood|re-?evaluat)",
+        )
+
+    def test_VPF_6_4_clear_only_absent_or_named_override(self):
+        """VPF-6.4 — clear only when gone from open list or named override."""
+        self.assertRegex(
+            self.body,
+            r"(?is)(clear|cleared).{0,100}(open list|absent|no longer)|"
+            r"(absent|no longer).{0,80}(open|finding)",
+        )
+        self.assertRegex(
+            self.body,
+            r"(?i)named override|explicit override",
+        )
+        self.assertRegex(
+            self.body,
+            r"(?is)(never|not|forbid).{0,60}(self-?declar|self-?clear)|"
+            r"(self-?declar|self-?clear).{0,60}(never|not|forbid)",
+        )
+
+    def test_VPF_6_5_escalate_fixer_threshold_and_brief(self):
+        """VPF-6.5 — fixer when ≥5 findings or ≥2 ability areas; brief findings+path."""
+        self.assertRegex(
+            self.body,
+            r"(?is)fixer subagent|isolated fixer",
+        )
+        self.assertRegex(
+            self.body,
+            r"(?is)(≥\s*5|>=\s*5|at least 5|≥5).{0,80}(finding|open)|"
+            r"(finding|open).{0,40}(≥\s*5|>=\s*5|≥5)",
+        )
+        self.assertRegex(
+            self.body,
+            r"(?is)(≥\s*2|>=\s*2|≥2).{0,40}(ability|area)|"
+            r"(ability area|multi-?section).{0,40}(≥\s*2|>=\s*2|2)",
+        )
+        self.assertRegex(
+            self.body,
+            r"(?is)(brief|vpf-fix-brief).{0,80}(finding|run.?path|run.?file)|"
+            r"(finding).{0,40}(run.?path|run.?file).{0,40}(brief)?",
+        )
+
+    def test_VPF_6_6_cap_two_rejudgment_cycles(self):
+        """VPF-6.6 — cap 2 re-judgment cycles then stop for human."""
+        self.assertRegex(
+            self.body,
+            r"(?is)(2|two).{0,40}(re-?judgment|re-?vet|re-?check|cycle)",
+        )
+        self.assertRegex(
+            self.body,
+            r"(?is)(stop|halt).{0,40}(human|user)|"
+            r"(human|user).{0,40}(stop|halt|rather than thrash)",
+        )
+
+    def test_VPF_6_7_non_code_grounded_taste_not_loop(self):
+        """VPF-6.7 — non-code-grounded / taste items do not keep the loop alive."""
+        self.assertRegex(
+            self.body,
+            r"(?is)(non-?code-?grounded|not code-?grounded|taste).{0,100}"
+            r"(loop|fix loop|keep)|"
+            r"(loop|fix loop).{0,80}(non-?code|taste|outside the skill claim)",
+        )
+
+    def test_VPF_1_5_reassert_no_run_file_write_during_judgment(self):
+        """VPF-1.5 reassert — judgment does not write the run file (guide-gap is separate)."""
+        self.assertRegex(
+            self.body,
+            r"(?is)(judgment|vet pass|during judgment).{0,100}"
+            r"(read-?only|unmodified|do not (write|modify|patch|mutate)).{0,40}"
+            r"(run.?file)|"
+            r"(run.?file).{0,60}(unmodified|read-?only).{0,80}"
+            r"(judgment|vet)",
+        )
+
+
 class VetProductFlowScenarios(unittest.TestCase):
-    """Scenario markdown expanded for stories 1–3 + pressure (Task 2)."""
+    """Scenario markdown expanded for stories 1–3 + guide-gap (Tasks 2–3)."""
 
     def test_scenarios_and_pressure_exist(self):
         """Stories 1–3 behavioral coverage files present."""
@@ -330,6 +452,31 @@ class VetProductFlowScenarios(unittest.TestCase):
         self.assertRegex(p, r"(?i)same.?agent|rubber.?stamp")
         self.assertRegex(p, r"(?i)mechanical|complete for real|false confidence")
         self.assertRegex(p, r"(?i)chaos|load|race|fuzz")
+
+    def test_VPF_6_scenarios_guide_gap_behavioral(self):
+        """VPF-6.2–6.7 — Story 6 scenarios carry behavioral bullets."""
+        s = SCENARIOS.read_text()
+        for token in (
+            "VPF-6.2",
+            "VPF-6.3",
+            "VPF-6.4",
+            "VPF-6.5",
+            "VPF-6.6",
+            "VPF-6.7",
+        ):
+            self.assertIn(token, s)
+        self.assertRegex(
+            s,
+            r"(?is)VPF-6\.2.{0,200}(severity|run file|re-?render)",
+        )
+        self.assertRegex(
+            s,
+            r"(?is)VPF-6\.5.{0,200}(≥\s*5|>=\s*5|fixer|ability)",
+        )
+        self.assertRegex(
+            s,
+            r"(?is)VPF-6\.6.{0,200}(2|two).{0,40}(cycle|re-?judgment|re-?vet)",
+        )
 
 
 if __name__ == "__main__":

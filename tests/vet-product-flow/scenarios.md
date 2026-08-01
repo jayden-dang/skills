@@ -65,13 +65,26 @@ bullets from Task 2; later stories expand in later tasks.
 
 ## Story 6 — Guide-gap fix and re-check loop
 
-- VPF-6.1 keep walkthrough blocked while open findings remain
-- VPF-6.2 patch run file only (+ re-render); order by severity
-- VPF-6.3 re-invoke fresh isolated vet; gate uses new report only
-- VPF-6.4 clear only via new open list absence or named override
-- VPF-6.5 escalate fixer subagent at ≥5 findings or ≥2 ability areas
-- VPF-6.6 stop for human after 2 re-judgment cycles
-- VPF-6.7 non-code-grounded / taste items do not keep the loop alive
+- **VPF-6.1** walkthrough stays blocked while open findings remain (gate side;
+  Task 5).
+- **VPF-6.2** guide-gap fixes **order by severity** (Critical → Important →
+  Minor); patch the **run file only** (add/reshape cases/sections/slots) and
+  **re-render** HTML — never product code patches, never mid-drive invent-cases.
+- **VPF-6.3** after run-file patches, **re-invoke** `vet-product-flow` in a
+  **fresh isolated** pass; the dogfood gate re-evaluates **only against the new
+  report**.
+- **VPF-6.4** clear a finding only when it is **absent from the new open list**
+  or the user names it in an explicit **named override** — never self-declare
+  clean without a new report.
+- **VPF-6.5** when open count is **≥ 5** OR rewrite spans **≥ 2 ability areas**
+  (multi-section), dispatch an **isolated fixer subagent** whose brief is the
+  finding set + run-file path (+ evidence), not full session history; then
+  re-run fresh `vet-product-flow`. Fixer must not self-declare clean.
+- **VPF-6.6** after **2 re-judgment cycles** still open → **stop for the human**
+  (fix more, named override listing remaining findings, or shrink surface)
+  rather than thrashing.
+- **VPF-6.7** non-code-grounded, taste, or out-of-claim items **do not keep the
+  fix loop alive** as if they were missing-situation findings.
 
 ## Story 7 — Product-defect isolation during dogfood
 

@@ -16,3 +16,4 @@ not planned as a roadmap item.
 | PCHG | Prepare-change — reviewer-facing commit and PR authoring handed to land-branch | ./2026-07-28-package-change/ | Approved | ROAD-3 |
 | DFSYNC | Review Product Flow sync — single JSON run artifact plus optional local serve layer | ./2026-07-30-review-product-flow-sync/ | Implemented | — |
 | PFIND | Pathfind layer — multi-session decision map (Layer 0) before program/delivery | ./2026-07-31-pathfind/ | Implemented | — |
+| VPF | Vet product flow — isolated implementation-surface judgment before dogfood | ./2026-08-01-vet-product-flow/ | Approved | — |

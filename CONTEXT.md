@@ -105,6 +105,25 @@ A person's mark on a review-product-flow case, stored beside the **case verdict*
 by the agent, but never proof and never promotable to `pass`.
 _Avoid_: manual pass, human verdict, checkbox state
 
+**Vet report**:
+The markdown artifact at `.skills/<slug>-vet-product-flow.md` produced by
+`vet-product-flow`: open missing-situation findings, severity, code evidence,
+authored-cases fingerprint, and re-check stamp. Freshness for dogfood is
+fingerprint match, not whole-file `rev`.
+_Avoid_: audit report, completeness certificate, “ready to ship” stamp
+
+**Missing-situation finding**:
+A code-grounded claim that the shipped product already exposes a user-observable
+path or state the run file never exercises, identified as `VPF-N` (integer; not
+a requirement id `VPF-N.M`).
+_Avoid_: test failure, product defect, speculative “users will want”
+
+**Cases fingerprint**:
+SHA-256 of the run file’s authored case slots only (sections + eight slots per
+case), excluding `run`, `human`, and top-level `rev`. Used to decide whether a
+**vet report** is still fresh after ticks or verdict marks.
+_Avoid_: file mtime, whole-file hash, `rev` alone
+
 ## Relationships
 
 - A **spec triad** defines one feature and owns many **requirement IDs**
@@ -120,6 +139,8 @@ _Avoid_: manual pass, human verdict, checkbox state
 - An **advisory commit map** describes commits a **PR package** still reports as they actually are
 - A **run file** holds many cases, each carrying exactly one **case verdict** and at most one **human tick**
 - A **human tick** never becomes a **case verdict**, in either direction, by any code path
+- A **vet report** is fresh for a **run file** only when its **cases fingerprint** matches the authored slots on disk
+- A **missing-situation finding** lives in a **vet report** and blocks dogfood until cleared or named-overridden
 
 ## Flagged ambiguities
 

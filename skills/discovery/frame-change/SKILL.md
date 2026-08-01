@@ -57,14 +57,13 @@ Read `CONTEXT.md` (use its vocabulary from here on) and `docs/specs/INDEX.md` (t
 
 The scan digest (or your direct read) MUST include a **Blindspot** section: territory-specific traps, historical constraints, and questions a newcomer would not know to ask — grounded in this repo, not generic advice. When the user signals low familiarity with the module or domain, surface that Blindspot list to them before the first preference question in step 2.
 
-Then check whether the idea already exists. Search `docs/specs/` for overlap: grep the
-idea's candidate feature codes and key terms across `requirements.md` files, and cross-check
-the scan's candidate file paths against what existing specs already own (grep those paths in
-`design.md`/`tasks.md`). Read any match and present the neighbor as a summary **card** (not
-the full spec) — its feature code, owned paths, and Out-of-Scope list show what it already
-covers. `docs/specs/INDEX.md` is the registry to consult first. This never blocks the gate:
-if nothing overlaps, say so and move on; if `docs/specs/` does not exist yet, note it and
-continue with manual exploration.
+Then check whether the idea already exists. REQUIRED SUB-SKILL: use `load-subgraph`
+with the idea's **key terms** and any scan **candidate paths** (query `subgraph` or
+`neighbors` as fits) so P0 term seeds and P1 path-derived structure both contribute.
+Present each neighbor as a summary **card** (feature code, owned paths, Out-of-Scope)
+and surface the envelope's **OWNS coverage** so a thin neighborhood is visible as thin.
+This never blocks the gate: if nothing overlaps, say so and move on; if `docs/specs/`
+does not exist yet, note it and continue with manual exploration.
 
 **Knowns inventory (REQUIRED before step 2).** Write four short bullets the rest of
 the chain can reuse (chat is fine; optional `.skills/<slug>-knowns.md`):

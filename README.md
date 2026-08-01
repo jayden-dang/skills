@@ -178,12 +178,12 @@ and countered by name. See [The gates](docs/guide/concepts/gates.md).
 | setup | `configure-repo`, `bootstrap-repo` |
 | discovery | `frame-change`, `clarify-decisions`, `research`, `run-spike`, `define-domain`, `interpret-session`, `pathfind` |
 | spec | `specify-behavior`, `design-solution`, `plan-tasks` |
-| execution | `build-in-waves`, `build-by-story`, `build-inline`, `test-first`, `root-cause`, `prove-claim`, `audit-trace`, `isolate-workspace` |
+| execution | `build-in-waves`, `build-by-story`, `build-inline`, `test-first`, `root-cause`, `prove-claim`, `audit-trace`, `load-subgraph`, `isolate-workspace` |
 | review | `inspect-change`, `vet-feedback`, `review-invariants` |
 | acceptance | `validate-feature`, `validate-api`, `validate-ui`, `review-product-flow`, `vet-product-flow`, `run-product-walkthrough` |
 | craft | `craft-page` |
 | ship | `package-change`, `land-branch`, `cut-release` |
-| track | `amend-feature`, `reroute-plan`, `triage`, `realign-spec`, `refresh-roadmap-status`, `assess-milestone`, `scan-architecture`, `write-handoff`, `publish-issues` |
+| track | `amend-feature`, `reroute-plan`, `triage`, `realign-spec`, `refresh-roadmap-status`, `assess-milestone`, `scan-architecture`, `map-features`, `write-handoff`, `publish-issues` |
 | project | `define-project`, `assess-pivot-impact`, `plan-milestones` (optional project / multi-milestone layer) |
 
 One page per skill in the [skill reference](docs/guide/skills/README.md).

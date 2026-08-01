@@ -12,12 +12,19 @@ The information exists. It is spread across a dozen `requirements.md`, `design.m
 
 ## How overlap is found
 
-There is no index to build and no derived file to maintain. When a skill needs to know a feature's neighbors, it runs an inline `grep` over `docs/specs/`:
+There is no index to build and no derived file to maintain. When a skill needs
+to know a feature's neighbors, it uses **`load-subgraph`** (REQUIRED SUB-SKILL
+from `frame-change` and `inspect-change`), which derives a bounded subgraph at
+ask time from live specs:
 
-- the idea's or diff's **candidate file paths** — the source files it will create or touch — find features whose specs already name those paths;
-- the idea's **key terms** find features that describe the same behavior in prose.
+- **P0 terms** — the idea's or diff's key terms seed matching feature CODEs;
+- **P1 paths** — `**Files:**` blocks yield OWNS; denoised intersection yields
+  OVERLAPS; ranked and bounded (`NEIGHBORS_MAX`).
 
-Any feature whose spec matches on either is a neighbor. The source of truth is the specs as they stand; a path already written in a task's `Files: Create:` block or a `design.md` section is what the search reads.
+Any feature matched on either signal is a neighbor. Results always include
+**OWNS coverage** so a thin neighborhood is visible as thin. The source of truth
+remains the specs as they stand — derivation is a live read, not a generated
+graph file.
 
 ## The Summary card
 

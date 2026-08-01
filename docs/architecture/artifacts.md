@@ -37,9 +37,9 @@ must reach a reviewer, an auditor, or a build may live there alone.
 
 `requirements.md` remains the **sole normative specification** for a feature; a
 `discovery.md` record is never required. `docs/specs/INDEX.md` is the sole feature
-registry. Feature overlap is discovered on demand by searching `docs/specs/` — a
-live read of the specs themselves, not a generated artifact that has to be kept
-fresh.
+registry. Feature overlap is discovered on demand via `load-subgraph` (P0 terms +
+P1 Files-derived OWNS/OVERLAPS) — a live read of the specs themselves, not a
+generated artifact that has to be kept fresh.
 
 ## Participant roles (skill-mediated boundary)
 
@@ -128,13 +128,12 @@ not contractual — the *finding set* is.
 
 The previous design maintained a generated feature graph to answer "does this idea
 already exist?" and "does this diff reimplement a neighbor?". This design answers
-both by search, inline in the skills that ask:
+both by **ask-time derivation** (`load-subgraph`), not a materialised graph:
 
-- `frame-change`: search `docs/specs/` for the idea's candidate feature codes and key
-  terms, read any matching `requirements.md`, and report overlap as summary cards
-  (owned paths + Out-of-Scope) — never blocking the gate on it.
-- `inspect-change`: grep `docs/specs/` for features whose specs name the diff's
-  changed paths, and surface those neighbors to the reviewer.
+- `frame-change`: invoke `load-subgraph` with key terms and candidate paths; report
+  neighbors as summary cards plus OWNS coverage — never blocking the gate.
+- `inspect-change`: invoke `load-subgraph` with the diff's paths (and optional terms);
+  surface neighbors to the Spec subagent for reuse-miss findings.
 
 `docs/specs/INDEX.md` is the registry both consult first. There is no generated
 artifact to keep fresh, so nothing can go stale.

@@ -39,7 +39,14 @@ On top of the repo's own documents, the Standards axis always carries `standards
 
 ## 3a. Check for duplication against existing features
 
-For the diff's changed source files (from the range pinned in step 1), search `docs/specs/` for specs that already name those paths — `grep -rl <changed-file> docs/specs` over `design.md`/`tasks.md`, plus a term search across `requirements.md` for the diff's key concepts. Read any match and hold it as a summary card (feature code, owned paths, Out-of-Scope). `docs/specs/INDEX.md` is the registry to start from. This never blocks the review: if no changed file appears in any spec, state that no existing feature shares the diff's surface and inject nothing into step 4; if `docs/specs/` does not exist, note it and continue. *Done when: you hold the overlapping features' cards, or an explicit "no overlap".*
+For the diff's changed source files (from the range pinned in step 1), REQUIRED
+SUB-SKILL: use `load-subgraph` with those paths and optional key terms from the
+diff/PR summary so P0 and P1 both contribute. Hold each neighbor as a summary
+card (feature code, owned paths, Out-of-Scope) and surface **OWNS coverage**.
+This never blocks the review: if no neighbor returns, state that no existing
+feature shares the diff's surface and inject nothing into step 4; if
+`docs/specs/` does not exist, note it and continue. *Done when: you hold the
+overlapping features' cards, or an explicit "no overlap".*
 
 ## 3b. Invariant conformance (advisory)
 

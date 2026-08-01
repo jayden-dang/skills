@@ -124,6 +124,18 @@ case), excluding `run`, `human`, and top-level `rev`. Used to decide whether a
 **vet report** is still fresh after ticks or verdict marks.
 _Avoid_: file mtime, whole-file hash, `rev` alone
 
+**Feature subgraph (derivation)**:
+A bounded multi-hop view of existing feature IDs (CODE, ROAD, MILE, ARCH, paths)
+computed at ask time by deterministic passes over SSOT (`**Files:**`, INDEX,
+roadmap, `Respects:`) — not a written graph file.
+_Avoid_: feature graph artifact, GRAPH.md, materialized edge store
+
+**OWNS / OVERLAPS edge**:
+Derived relations — feature CODE owns path tokens from task `**Files:**`; two
+features OVERLAP when their normalized OWNS sets intersect after denoising.
+Advisory for neighbor search; never a hard gate.
+_Avoid_: hand-maintained ownership matrix as SSOT; boolean “shares src/” without denoising
+
 ## Relationships
 
 - A **spec triad** defines one feature and owns many **requirement IDs**
@@ -141,6 +153,8 @@ _Avoid_: file mtime, whole-file hash, `rev` alone
 - A **human tick** never becomes a **case verdict**, in either direction, by any code path
 - A **vet report** is fresh for a **run file** only when its **cases fingerprint** matches the authored slots on disk
 - A **missing-situation finding** lives in a **vet report** and blocks dogfood until cleared or named-overridden
+- A **feature subgraph (derivation)** is computed from SSOT; it never defines requirement IDs
+- **OWNS / OVERLAPS** edges feed advisory neighbor queries; they do not replace the vertical audit-trace spine
 
 ## Flagged ambiguities
 

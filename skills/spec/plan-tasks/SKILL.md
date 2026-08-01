@@ -75,7 +75,12 @@ story. Prefactoring that only enables a later slice is its **own earlier task**
 not a license to bury horizontal layers inside a story task.
 
 Each task:
-- **Files:** Create / Modify (exact paths, line ranges when known) / Test.
+- **Files:** Create / Modify / Test with **hardened** path tokens: each path in
+  backticks (e.g. `` `src/foo/bar.ts` ``). Line numbers or ranges, when stated,
+  MUST NOT be glued into the path token (`path:86-103` is forbidden); put ranges
+  in surrounding prose or a separate annotation. P1 ownership extraction still
+  accepts legacy glued forms in already-written tasks.md — this grammar is for
+  **new** plans only.
 - **Reuse:** the concrete existing code, library, or pattern this task builds on — carried down
   verbatim from the design section's `Reuse:` line, same `<rung> — <concrete target>` grammar,
   so the implementer is told to build on it, not reimplement it (e.g. `Reuse: existing —

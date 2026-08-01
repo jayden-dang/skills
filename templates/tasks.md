@@ -35,9 +35,9 @@ task. A file not listed here should not be touched.>
 ### Task 1: <Component>
 
 **Files:**
-- Create: <exact path>
-- Modify: <exact path:line-range>
-- Test: <exact path>
+- Create: `<exact/path.ts>`
+- Modify: `<exact/path.ts>`  # lines 86–103 — ranges in prose, not path:86-103
+- Test: `<exact/path.test.ts>`
 
 **Interfaces:**
 - Consumes: <names + types this task uses from neighboring tasks>

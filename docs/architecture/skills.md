@@ -38,7 +38,7 @@ quick reference: `AGENTS.md`.
 
 7. **clarify-decisions** (m) — the interview primitive.
 8. **frame-change** (m) — HARD GATE: no code until requirements are approved. Explore
-   context → search `docs/specs/` for overlapping features → clarify-decisions → detours to
+   context → `load-subgraph` for overlapping features (terms + paths) → clarify-decisions → detours to
    research/run-spike → approaches with a recommendation → tier decision.
 9. **research** (m) — background investigation against primary sources.
 10. **run-spike** (m) — throwaway code that answers a question.
@@ -81,14 +81,17 @@ quick reference: `AGENTS.md`.
     Driven by `grep`/`git`/reads under fixed rules; reports E1–E3 / W1–W2 (and
     E4/E5/W3 when an architecture spine exists). Invoked by prove-claim, cut-release,
     realign-spec, and plan-tasks.
+19a. **load-subgraph** (m) — ask-time feature-subgraph derivation (P0–P5); neighbors /
+    ancestors / blast_radius / subgraph with OWNS coverage; no graph file. Used by
+    frame-change and inspect-change for horizontal neighbors.
 20. **isolate-workspace** (m) — isolation with a clean-baseline test run before work starts.
 
 ## review/
 
 21. **inspect-change** (m) — two parallel subagents: **Standards** (repo standards +
     code-smell baseline) and **Spec** (diff vs requirements, every finding quotes
-    the ID). Includes an inline feature-overlap search (grep `docs/specs/` for the
-    diff's paths) so a diff reimplementing a neighbor is caught. Runs the advisory
+    the ID). Obtains horizontal neighbors via `load-subgraph` (paths + optional
+    terms) so a diff reimplementing a neighbor is caught. Runs the advisory
     `review-invariants` lane when an architecture spine exists.
 21a. **study-change** (U) — outbound self-check: one HTML packet
     (Background → Intuition → Code → Quiz) for a resolved git range; optional
@@ -143,6 +146,8 @@ quick reference: `AGENTS.md`.
     tasks ↔ tests via the `audit-trace` skill; update Status fields; update INDEX.md.
 35. **scan-architecture** (U) — periodic deepening scan; the natural home for
     promoting a recurring cross-cutting pattern into an architecture invariant.
+35a. **map-features** (U) — brownfield backfill: propose Feature code / ROAD bind /
+    OWNS gaps / DEPENDS_ON candidates → confirm → additive SSOT only.
 36. **write-handoff** (U) — compact the conversation into a handoff doc.
 37. **publish-issues** (U) — capture a conversation, spec, or idea into tracker issues.
 38. **reroute-plan** (m) — the mid-flight rewind decision: classifies a discovery that

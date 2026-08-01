@@ -1,11 +1,14 @@
 ---
 name: vet-product-flow
 description: >-
-  Use when a review-product-flow run file exists and the guide needs an isolated
-  judgment pass against the shipped product surface — before agent dogfood /
-  run-product-walkthrough — to surface code-grounded missing-situation findings
-  in a vet report. Triggers on “vet the guide”, “is the guide complete for the
-  implementation?”, or hand-off after authoring when isolation is required.
+  Use when a review-product-flow run file (`.skills/*-review-product-flow.json`)
+  already exists and needs an isolated implementation-surface judgment / missing-situation
+  map before agent dogfood or run-product-walkthrough — producing
+  `.skills/*-vet-product-flow.md` with code-grounded findings. Triggers on “vet
+  the guide”, “missing situations”, “guide complete for the implementation?”,
+  “re-vet after guide gaps”, or hand-off after authoring when isolation is
+  required. Not for authoring cases (`review-product-flow`) or driving cases
+  (`run-product-walkthrough`).
 ---
 
 # Vet Product Flow
@@ -21,6 +24,7 @@ and not a substitute for dogfood.
 JUDGMENT IS ISOLATED — NOT A LONGER SAME-SESSION §4 SELF-CHECK
 FINDINGS ARE CODE-GROUNDED — NO UNINSPECTED SURFACES
 REPORT WRITE ONLY — NEVER MUTATE PRODUCT CODE OR THE RUN FILE
+PATCHED CASES ARE NOT CLEAN UNTIL A NEW REPORT SAYS SO
 ```
 
 ## 1. Inputs
@@ -161,8 +165,8 @@ file — patches happen **outside** the vet pass, then a fresh re-check.
 |---|---|---|
 | 1. Order | controller | Order open findings by severity: Critical → Important → Minor. Severity orders work only; it does not drop findings from the gate. |
 | 2. Patch | controller or fixer | Patch the **run file only** (add/reshape cases, sections, authored slots). Re-render HTML via the review-product-flow `render` path. **No product code patches** and no mid-drive invent-cases. |
-| 3. Re-vet | always isolated | Re-invoke `vet-product-flow` in a **fresh isolated** pass (new subagent or new `AUTHORING CLOSED` pass). Set `pass_kind: re-check` and `prior_report` to the previous report path. The dogfood gate re-evaluates **only against the new report** — never the prior open list. |
-| 4. Clear | gate / report | Clear a finding only when it is **absent from the new open list**, or when the user names it in an explicit **named override**. Never self-declare clean without a new report. |
+| 3. Re-vet | always isolated | **IMMEDIATELY** after run-file patches (before dogfood, before “clean” claims): re-invoke `vet-product-flow` in a **fresh isolated** pass (new subagent or new `AUTHORING CLOSED` pass). Set `pass_kind: re-check` and `prior_report` to the previous report path. The dogfood gate re-evaluates **only against the new report** — never the prior open list, never hand-edited “fixed” marks on the old report. |
+| 4. Clear | gate / report | Clear a finding only when it is **absent from the new open list**, or when the user names it in an explicit **named override**. Never self-declare clean without a new report. Never rewrite the old report’s open list by hand and call that a re-check. |
 | 5. Escalate | controller | IF open finding count is **≥ 5** OR the required rewrite spans **≥ 2 ability areas** (multi-section rewrite) THEN dispatch an **isolated fixer subagent**. |
 | 6. Cap | controller | Cap at **2 re-judgment cycles**. IF 2 full re-judgment cycles complete with open findings still present THEN **stop for the human** (fix more, named override listing remaining `VPF-N`, or shrink surface) rather than thrashing. |
 
@@ -205,14 +209,19 @@ stopped for the human after 2 re-judgment cycles.*
 | “I’ll patch the run file from inside the vet pass to clear findings” | Judgment is read-only on the run file. Report only; guide-gap patches are a separate loop. |
 | “Minor findings can soft-pass the dogfood gate” | Severity orders the fix loop only; every open finding blocks until fixed or named-overridden. |
 | “I fixed the cases — declare clean without re-vet” | Never self-declare. Re-invoke fresh isolated vet-product-flow; gate uses the new report only. |
+| “I hand-edited the old report to mark findings fixed” | That is not a re-check. Only a new report (or named override) clears open findings. |
+| “Author and vet in parallel in one stream — faster” | Hybrid same-session author+vet is not isolation. Close authoring first. |
 | “Five small misses — keep patching in this long context” | ≥ 5 open findings or ≥ 2 ability areas → isolated fixer subagent with findings + run path brief. |
 | “Third re-vet will clear it” | Cap is 2 re-judgment cycles; then stop for the human. |
 | “Taste / polish feedback should keep the fix loop open” | Non-code-grounded and taste items do not keep the loop alive. |
+| “Dogfood will find gaps mid-run — skip the isolated pass” | Mid-run plan writing is the failure this skill exists to prevent. Vet first. |
 
 ## Red Flags — stop and restart isolation
 
 - Extending authoring todos into “also vet” without `AUTHORING CLOSED` or a subagent
 - Declaring clean without a report file on disk
+- Hand-editing an old report’s open list instead of writing a new re-check report
+- Hybrid same-session authoring + “vet complete” chat with no report path
 - Asserting a surface never opened in this pass
 - Writing product code or mutating the run file during judgment
 - Titling anything “complete for real users” based on schema/kind counts
@@ -220,3 +229,4 @@ stopped for the human after 2 re-judgment cycles.*
 - Self-clearing findings without a new re-check report
 - Patching product code to “close” a guide gap
 - Third+ re-judgment cycle without stopping for the human
+- Skipping vet because dogfood “will find gaps mid-run”

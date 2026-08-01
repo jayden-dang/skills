@@ -155,10 +155,12 @@ ELSE → proceed (origin/app preconditions remain mandatory before product click
 
 **Freshness (not whole-file `rev`):** the report is fresh only when its
 `run_file` matches this run file path **and** its `cases_fingerprint` matches
-the SHA-256 of the run file's **authored** cases (eight slots per case; omit
-`run`/`human`/`rev`). Verdict marks and human ticks do **not** stale the report;
-authoring edits that change cases **do**. Recompute the fingerprint from the run
-file — do not trust a chat claim of freshness.
+the SHA-256 of the run file's **authored** cases. Recipe SSOT (key order,
+compact JSON, omit `run`/`human`/`rev`): load
+`skills/acceptance/vet-product-flow/references/report-schema.md` (or the skill
+package path when installed). Verdict marks and human ticks do **not** stale the
+report; authoring edits that change cases **do**. Recompute the fingerprint from
+the run file — do not trust a chat claim of freshness.
 
 **Open findings block drive.** Every open code-grounded missing-situation finding
 is **blocking** until fixed (guide-gap loop in `vet-product-flow`) or named in

@@ -1,7 +1,7 @@
 # Vet product flow — scenarios (ID index)
 
-Greppable requirement-ID layer for feature VPF. Stories 1–3 carry behavioral
-bullets from Task 2; later stories expand in later tasks.
+Greppable requirement-ID layer for feature VPF. Stories 1–8 have behavioral
+bullets. Pressure scenarios: `scenarios-pressure.md`.
 
 ## Story 1 — Isolated skill and report artifact
 

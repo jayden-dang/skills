@@ -171,3 +171,5 @@ before agent dogfood.*
 - Missing `backend` / `setup` / `kind` on any case
 - Happy-only section without a greppable coverage exception
 - Telling the agent to mark progress via guide ticks instead of `review-product-flow mark`
+- Treating §4 coverage self-check as a substitute for `vet-product-flow` before agent dogfood
+- Naming `run-product-walkthrough` at hand-over without naming `vet-product-flow` first

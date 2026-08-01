@@ -84,7 +84,7 @@ Run it whenever a spec'd feature changes outside its plan: requirements changed 
 
 If evidence is partial, say exactly what is missing instead of transitioning.
 
-Finally, re-run the audit-trace check and print the before and after reports side by side, and update the feature's `docs/specs/INDEX.md` entry. Feature overlap is answered by searching `docs/specs/` directly, so the refreshed spec and its `INDEX.md` registration are all the next feature's `frame-change` reads — there is nothing to harvest or regenerate.
+Finally, re-run the audit-trace check and print the before and after reports side by side, and update the feature's `docs/specs/INDEX.md` entry. Feature overlap is answered by **`load-subgraph`** over live specs, so the refreshed triad and its `INDEX.md` registration are all the next feature's `frame-change` needs — there is nothing to harvest or regenerate.
 
 ## `amend-feature` — the maintenance fast lane
 

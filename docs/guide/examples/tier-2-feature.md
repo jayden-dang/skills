@@ -14,17 +14,13 @@ No code. No scaffolding. No implementation skill. Not yet.
 
 `CONTEXT.md` and `docs/specs/INDEX.md` are read directly — small, and needed in context. Everything heavier goes to a **scan subagent**, which writes a digest to `.skills/module-rail-scan.md` and returns only that path.
 
-Then the [feature-overlap](../concepts/feature-graph.md) search — an inline `grep` over `docs/specs/` for the idea's key terms and candidate paths:
+Then the [feature-overlap](../concepts/feature-graph.md) check via **`load-subgraph`** — key terms (`module`, `rail`) plus candidate paths from the scan (`src/app/Layout.tsx`, …). The envelope returns ranked neighbors and **OWNS coverage**.
 
-```bash
-grep -rli -e 'module' -e 'rail' -e 'src/app/Layout.tsx' docs/specs/
-```
-
-One spec matches. Read as its Summary card, it is `CHIPUI`, which owns `src/ui/Chip.tsx` and `src/ui/Rail.tsx`, and whose Out-of-Scope section says *"Navigation behavior — Rail is presentational only."*
+One neighbor matches. Read as its Summary card, it is `CHIPUI`, which owns `src/ui/Chip.tsx` and `src/ui/Rail.tsx`, and whose Out-of-Scope section says *"Navigation behavior — Rail is presentational only."*
 
 That is exactly the information the check exists to surface. The new feature will *consume* `CHIPUI`'s rail component rather than build one, and `CHIPUI` explicitly declined to own the navigation behavior.
 
-> **Done when:** you can state what already exists near this idea and how the new idea differs, citing feature codes. → *"`CHIPUI` owns the rail's presentation and explicitly excludes navigation. `SHELL` will own module switching and persistence, consuming `CHIPUI`'s `<Rail>`."*
+> **Done when:** you can state what already exists near this idea and how the new idea differs, citing feature codes (and OWNS coverage if the neighborhood is thin). → *"`CHIPUI` owns the rail's presentation and explicitly excludes navigation. `SHELL` will own module switching and persistence, consuming `CHIPUI`'s `<Rail>`."*
 
 ### 2. Interview
 
@@ -282,7 +278,7 @@ When the version ships, `/cut-release` assembles the changelog by grouping commi
 
 Nobody wrote those lines. They were derived, and they are derivable only because `SHELL-1.3` is the same string in the requirement, the Playwright tag, and the commit trailer.
 
-Finally `realign-spec` flips `Status: Shipped`, updates `INDEX.md`, and re-runs the audit-trace check — so the *next* feature's `frame-change`, searching `docs/specs/`, finds `SHELL`'s spec: its Summary card, its owned paths, and its Out-of-Scope note that keyboard shortcuts were deliberately deferred.
+Finally `realign-spec` flips `Status: Shipped`, updates `INDEX.md`, and re-runs the audit-trace check — so the *next* feature's `frame-change` + `load-subgraph` finds `SHELL`'s spec: its Summary card, its owned paths, and its Out-of-Scope note that keyboard shortcuts were deliberately deferred.
 
 The loop closes.
 

@@ -48,14 +48,15 @@ The only sanctioned exclusion is the **ignore list** in `docs/agents/project.md`
 
 ## Overlapping features are not flagged
 
-Duplication is caught by an inline `docs/specs/` search: [`frame-change`](../skills/frame-change.md) and [`inspect-change`](../skills/inspect-change.md) grep the existing specs for a feature that already covers the idea, and `docs/specs/INDEX.md` is the feature-code registry they read.
+Duplication is caught by **[`load-subgraph`](../skills/load-subgraph.md)**: [`frame-change`](../skills/frame-change.md) and [`inspect-change`](../skills/inspect-change.md) invoke it with key terms and/or paths; it derives neighbors from live specs (`docs/specs/INDEX.md` is the registry; `**Files:**` blocks yield OWNS). Results are advisory and include **OWNS coverage**.
 
 ### `frame-change` never mentions an overlapping feature
 
-Two likely causes:
+Three likely causes:
 
-1. **`INDEX.md` is empty or stale.** `specify-behavior` registers each feature code in `docs/specs/INDEX.md` *before* writing the file. A code that was never registered leaves nothing for the search to match — the overlap is invisible. Register the missing rows.
-2. **The spec text does not name the shared concept.** The search is textual; two features that solve the same problem in different words will not collide. Say the shared term out loud in the requirements so a future search finds it.
+1. **`INDEX.md` is empty or stale.** `specify-behavior` registers each feature code in `docs/specs/INDEX.md` *before* writing the file. A code that was never registered leaves nothing for derivation to match — the overlap is invisible. Register the missing rows.
+2. **Thin OWNS coverage.** Few specs have usable `**Files:**` blocks, so path-based OVERLAPS are empty even when features share code. Read the coverage fraction in the envelope; backfill with [`/map-features`](../skills/map-features.md).
+3. **The spec text does not name the shared concept.** P0 term seeding is textual; two features that solve the same problem in different words will not collide on terms. Say the shared term out loud in the requirements (and keep Files accurate) so a future run finds it.
 
 ### A feature code is missing from `INDEX.md`
 
@@ -92,7 +93,7 @@ Rewrite the description as **trigger + outcome noun, never the workflow**.
 
 `triage` carries `disable-model-invocation: true`. The agent *cannot* invoke it. Some skill body is directing a hand-off to a user-invoked target — that is a real bug, not a style nit. A hand-off reaches a user-invoked skill only by *naming it for the user to run*.
 
-The user-invoked set: `/ask-me-bro`, `/author-skills`, `/teach-pack`, `/configure-repo`, `/bootstrap-repo`, `/define-project`, `/triage`, `/scan-architecture`, `/write-handoff`, `/publish-issues`, `/cut-release`.
+The user-invoked set includes (non-exhaustive): `/ask-me-bro`, `/author-skills`, `/teach-pack`, `/configure-repo`, `/bootstrap-repo`, `/define-project`, `/assess-pivot-impact`, `/triage`, `/scan-architecture`, `/map-features`, `/pathfind`, `/interpret-session`, `/study-change`, `/brief-team`, `/select-review-sample`, `/write-handoff`, `/publish-issues`, `/cut-release`, `/refresh-roadmap-status`, `/assess-milestone`. Full list: [`AGENTS.md` §3](../../../AGENTS.md#3-skill-types--invocation-rules).
 
 ---
 

@@ -77,8 +77,9 @@ triage (incoming issues) → ready-for-agent brief → execute or implement dire
 Known limits of the model, stated plainly so adopters can judge them:
 
 - **Feature overlap is best-effort derivation via `load-subgraph`, not a registry.** `frame-change` and
-  `inspect-change` find neighbors by searching `docs/specs/`; two runs may surface them
-  in a different order or miss a subtly shared path. Overlap detection is advisory
+  `inspect-change` obtain neighbors via fixed P0–P5 passes over live specs; thin
+  OWNS coverage or sparse `**Files:**` blocks can yield empty neighborhoods that
+  look authoritative unless coverage is reported. Overlap detection is advisory
   and never blocks a gate, so this is an acceptable bound.
 - **There is no mandatory headless gate.** CI and git hooks run without an agent and
   cannot invoke a skill, so the audit-trace discipline depends on the agent running

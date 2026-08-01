@@ -32,7 +32,7 @@ That budget is why discipline skills keep their core body to roughly 500 words, 
 
 **Model-invocable** skills have no special frontmatter. The agent invokes them on its own when the description matches the situation. These hold reusable discipline: `test-first`, `prove-claim`, `root-cause`, `clarify-decisions`, `design-solution`.
 
-**User-invoked** skills carry `disable-model-invocation: true`. The agent *cannot* auto-invoke them; the user runs them as a slash command. These orchestrate: `/ask-me-bro`, `/configure-repo`, `/bootstrap-repo`, `/define-project`, `/triage`, `/scan-architecture`, `/write-handoff`, `/publish-issues`, `/cut-release`, `/author-skills`, `/teach-pack`.
+**User-invoked** skills carry `disable-model-invocation: true`. The agent *cannot* auto-invoke them; the user runs them as a slash command. These orchestrate: `/ask-me-bro`, `/configure-repo`, `/bootstrap-repo`, `/define-project`, `/pathfind`, `/map-features`, `/triage`, `/scan-architecture`, `/write-handoff`, `/publish-issues`, `/cut-release`, `/author-skills`, `/teach-pack`, and others listed in [`AGENTS.md` §3](../../../AGENTS.md#3-skill-types--invocation-rules).
 
 The composition rule falls out of that:
 
@@ -48,15 +48,21 @@ You can see the rule being obeyed in the wild. `root-cause` hands architectural 
 | | `ask-me-bro`, `author-skills`, `teach-pack` | user |
 | setup | `configure-repo`, `bootstrap-repo` | user |
 | discovery | `frame-change`, `clarify-decisions`, `research`, `run-spike`, `define-domain` | model |
+| | `pathfind`, `interpret-session` | user |
 | spec | `specify-behavior`, `design-solution`, `plan-tasks` | model |
-| execution | `build-in-waves`, `test-first`, `root-cause`, `prove-claim`, `audit-trace`, `isolate-workspace` | model |
-| review | `inspect-change`, `vet-feedback` | model |
-| acceptance | `validate-feature`, `validate-api`, `validate-ui`, `review-product-flow` | model |
+| execution | `build-in-waves`, `build-by-story`, `build-inline`, `test-first`, `root-cause`, `prove-claim`, `audit-trace`, `load-subgraph`, `isolate-workspace` | model |
+| review | `inspect-change`, `polish-diff`, `vet-feedback`, `review-invariants` | model |
+| | `study-change`, `brief-team`, `select-review-sample` | user |
+| acceptance | `validate-feature`, `validate-api`, `validate-ui`, `review-product-flow`, `vet-product-flow`, `run-product-walkthrough` | model |
 | craft | `craft-page` | model |
-| ship | `land-branch` | model |
+| ship | `package-change`, `land-branch`, `record-verdict` | model |
 | | `cut-release` | user |
-| track | `amend-feature`, `realign-spec` | model |
-| | `triage`, `scan-architecture`, `write-handoff` | user |
+| track | `amend-feature`, `reroute-plan`, `realign-spec` | model |
+| | `triage`, `refresh-roadmap-status`, `assess-milestone`, `scan-architecture`, `map-features`, `write-handoff`, `publish-issues` | user |
+| project | `plan-milestones` | model |
+| | `define-project`, `assess-pivot-impact` | user |
+
+Full tables: [Skill reference](../skills/README.md) and [`AGENTS.md` §11](../../../AGENTS.md#11-quick-reference-the-56-skills).
 
 ## The description is the highest-leverage line
 
@@ -137,4 +143,4 @@ When installed without plugin hook support, `configure-repo` offers to copy `tem
 - [The gates](gates.md) — the four skills that guard rules the agent breaks under pressure
 - [`author-skills`](../skills/author-skills.md) — the full authoring doctrine and its deployment checklist
 - [`gate-session`](../skills/gate-session.md) — the session gate
-- [Skill reference](../skills/README.md) — all 40 skills
+- [Skill reference](../skills/README.md) — ~56 engineering skills

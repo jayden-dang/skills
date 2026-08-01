@@ -8,6 +8,11 @@ skill set on any harness. Read it first, before any skill, before any action.
 Where a harness has no session-start hook to inject `gate-session`, this file is
 the fallback that keeps the gates alive.
 
+**Human tutorial (setup + feature loop + entry points):**
+[`docs/guide/START-HERE.md`](docs/guide/START-HERE.md) · skill pages:
+[`docs/guide/skills/README.md`](docs/guide/skills/README.md). Keep those in sync
+when skills or workflows change.
+
 ---
 
 ## 1. The Four Iron Laws (gates are sacred)
@@ -74,10 +79,10 @@ skill's workflow only when the user has explicitly told you to.
 
 **User-invoked skills** (carry `disable-model-invocation: true` in frontmatter):
 `ask-me-bro`, `author-skills`, `teach-pack`, `configure-repo`, `bootstrap-repo`,
-`define-project`, `assess-pivot-impact`, `triage`, `scan-architecture`, `write-handoff`,
-`publish-issues`, `cut-release`, `interpret-session`, `study-change`, `brief-team`,
-`select-review-sample`,
-`refresh-roadmap-status`, `assess-milestone`, `pathfind`, and Personal OS `setup-personal-os`.
+`define-project`, `assess-pivot-impact`, `triage`, `scan-architecture`, `map-features`,
+`write-handoff`, `publish-issues`, `cut-release`, `interpret-session`, `study-change`,
+`brief-team`, `select-review-sample`, `refresh-roadmap-status`, `assess-milestone`,
+`pathfind`, and Personal OS `setup-personal-os`.
 Agents MUST NOT auto-invoke these. Name them for the user to run, e.g. `/triage` or
 `/pathfind`.
 
@@ -85,9 +90,10 @@ Agents MUST NOT auto-invoke these. Name them for the user to run, e.g. `/triage`
 these when conditions match. This includes `gate-session`, `frame-change`,
 `clarify-decisions`, `research`, `run-spike`, `define-domain`, the full spec triad,
 `build-in-waves`, `build-by-story`, `build-inline`, `test-first`, `root-cause`, `prove-claim`,
-`isolate-workspace`, `inspect-change`, `vet-feedback`, `review-invariants`, the acceptance
-suite, `land-branch`, `package-change`, `record-verdict`, `amend-feature`,
-`plan-milestones`, and `realign-spec`.
+`audit-trace`, `load-subgraph`, `isolate-workspace`, `inspect-change`, `polish-diff`,
+`vet-feedback`, `review-invariants`, the acceptance suite, `land-branch`,
+`package-change`, `record-verdict`, `amend-feature`, `plan-milestones`, and
+`realign-spec`.
 
 **Session-injected skill:** `gate-session` is injected by the `SessionStart` hook
 on every `startup|clear|compact` event. It is the gate that keeps the 1% rule
@@ -344,9 +350,10 @@ Can't tick a box? The work is not done.
 | `build-by-story` | Human-gated review units (writes `Execution-mode: story-unit`) |
 | `build-inline` | No implementer subagents / user watches controller implement |
 
-**Main flow:** `frame-change` → `specify-behavior` → `design-solution` →
-`plan-tasks` → `isolate-workspace` → execute family → `inspect-change` →
-`validate-feature` → `land-branch` → `cut-release` → `realign-spec`.
+**Main flow:** `frame-change` (+ `load-subgraph`) → `specify-behavior` →
+`design-solution` → `plan-tasks` → `isolate-workspace` → execute family →
+`inspect-change` (+ `load-subgraph`) → `polish-diff` → `validate-feature` →
+`package-change` → `land-branch` → `cut-release` → `realign-spec`.
 
 **Program layer (optional):** `define-project` (vision + `ARCH-N` spine) →
 `plan-milestones` (`MILE-N` milestones and `ROAD-N` items in `docs/roadmap/INDEX.md`) →
@@ -360,11 +367,14 @@ goes through `/assess-pivot-impact` (disposition ledger) **before**
 `land-branch`.
 
 **Maintenance:** `amend-feature` (small changes), `triage` (incoming issues), `realign-spec`
-(spec drift), `scan-architecture` (periodic deepening).
+(spec drift), `scan-architecture` (periodic deepening), `/map-features` (brownfield ID/Files
+backfill).
 
 **Personal OS (independent opt-in package):** life/vault management skills under
 `skills/personal/` — see `skills/personal/README.md` and `docs/personal-os/START-HERE.md`.
 Not part of the default engineering plugin; does not depend on engineering skills.
+
+**Human how-to:** [`docs/guide/START-HERE.md`](docs/guide/START-HERE.md).
 
 ---
 
@@ -374,19 +384,23 @@ Not part of the default engineering plugin; does not depend on engineering skill
 
 This repo is configured for a spec-driven skill set.
 
-- Feature flow: `frame-change` → `specify-behavior` → `design-solution` →
-  `plan-tasks` → `build-in-waves` / `build-by-story` / `build-inline`
+- Feature flow: `frame-change` (+ `load-subgraph`) → `specify-behavior` →
+  `design-solution` → `plan-tasks` → execute family → `inspect-change` →
+  `validate-feature` → `land-branch`
 - Bug on-ramp: `root-cause` (root cause first, then a guarded fix)
 - Capture a conversation/spec/idea into tracker issues: `/publish-issues` (user-run)
 - Multi-session decision map (Layer 0 fog): `/pathfind` (user-run)
 - Incoming issues and PRs: `/triage` (user-run)
+- Brownfield feature-ID / Files backfill: `/map-features` (user-run)
 - Traceability check: the `audit-trace` skill — run by `prove-claim` and `cut-release`;
   keep it clean
+- Horizontal neighbors: `load-subgraph` (model) — advisory, live specs only
 - Project docs (layer enabled): `/define-project` maintains
   `docs/product/vision.md`, the `docs/architecture/` invariant spine, and
   `docs/product/guidelines.md`; the feature skills consult them
 - Pivot against shipped code: `/assess-pivot-impact` produces the disposition
   ledger before vision/architecture rewrites
+- Tutorial: [`docs/guide/START-HERE.md`](docs/guide/START-HERE.md)
 
 Repo config the skills read:
 

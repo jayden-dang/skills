@@ -46,6 +46,8 @@ quick reference: `AGENTS.md`.
 11a. **pathfind** (U) — optional Layer 0: multi-session decision map (Chart/Work);
     plan-don't-do; composes clarify-decisions / research / run-spike; hands off by
     naming only.
+11b. **interpret-session** (U) — companion session for non-English decision work;
+    names hand-offs only.
 
 ## spec/
 
@@ -99,6 +101,10 @@ quick reference: `AGENTS.md`.
 21b. **brief-team** (U) — team-shared pitch+map HTML under `docs/explainers/`
     for a resolved git range; overwrite + INDEX; no quiz; never a ship gate;
     named (not invoked) from land-branch on large/architecture changes.
+21c. **select-review-sample** (U) — bounded human sample over a range plus the
+    explicit residue; never a ship gate.
+21d. **polish-diff** (m) — behavior-preserving quality cleanup over a diff/branch
+    before merge; last tidy step of build-in-waves.
 22. **vet-feedback** (m) — anti-sycophancy; prove-claim each item before implementing.
 23. **review-invariants** (m) — advisory, LLM-judged invariant conformance: per
     `Respects: ARCH-N` citation, a respects/violates/unclear verdict. The semantic
@@ -129,6 +135,8 @@ quick reference: `AGENTS.md`.
 
 ## ship/
 
+28a. **package-change** (m) — reviewer-facing commits and PR package before
+    land-branch; packages uncommitted work as a readable set rather than one lump.
 29. **land-branch** (m) — prove-claim → merge/PR/keep/discard/block → worktree cleanup;
     terminal verdicts hand off to `record-verdict` before crossings.
 30. **record-verdict** (m) — publish an immutable boundary decision record after a
@@ -144,6 +152,10 @@ quick reference: `AGENTS.md`.
 33. **triage** (U) — issue state machine; agent briefs as the contract.
 34. **realign-spec** (m) — realign the triad after drift: diff requirements ↔ design ↔
     tasks ↔ tests via the `audit-trace` skill; update Status fields; update INDEX.md.
+34a. **refresh-roadmap-status** (U) — horizontal plan-to-reality check over
+    `docs/roadmap/INDEX.md` + specs + git; names one next action; writes nothing.
+34b. **assess-milestone** (U) — close gate for a `MILE-N`; append-only disposition;
+    holds close until the user disposes of the verdict.
 35. **scan-architecture** (U) — periodic deepening scan; the natural home for
     promoting a recurring cross-cutting pattern into an architecture invariant.
 35a. **map-features** (U) — brownfield backfill: propose Feature code / ROAD bind /
@@ -165,6 +177,8 @@ quick reference: `AGENTS.md`.
     code at odds with a new vision or architecture. Writes
     `docs/product/pivot-ledger.md` only; names `/define-project` (update) after
     confirmation. Does not rewrite the vision layer itself.
+39b. **plan-milestones** (m) — authors and revises `docs/roadmap/INDEX.md`
+    (`MILE-N` / `ROAD-N`); any roadmap edit goes through this skill.
 
 **Deliberately not in v1:** full CI/CD authoring. (The project-documentation layer —
 repo-level vision + IDed architecture invariants — is the `project/` bucket; see

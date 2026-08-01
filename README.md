@@ -126,15 +126,15 @@ configuration.
 ## The flow
 
 ```
-frame-change ──► specify-behavior ──► design-solution ──► plan-tasks
-   (gate: no code)     (EARS + IDs)      (Satisfies:)     (_Requirements:_)
-        │                                                       │
-        │ tier 0/1 shortcuts                                    ▼
+frame-change (+ load-subgraph) ──► specify-behavior ──► design-solution ──► plan-tasks
+   (gate: no code)                    (EARS + IDs)         (Satisfies:)     (_Requirements:_)
+        │                                                                     │
+        │ tier 0/1 shortcuts                                                  ▼
         │                          isolate-workspace ──► build-in-waves | build-by-story | build-inline
-        ▼                                                       │
-  root-cause / test-first / prove-claim  ◄── discipline skills govern ──────────┘
-                                                                │
-              inspect-change ──► validate-feature ──► land-branch ──► cut-release ──► realign-spec
+        ▼                                                                     │
+  root-cause / test-first / prove-claim  ◄── discipline skills govern ────────┘
+                                                                              │
+   inspect-change (+ load-subgraph) ──► validate-feature ──► land-branch ──► cut-release ──► realign-spec
                           (drive the running system as a real user)
 ```
 
@@ -179,10 +179,10 @@ and countered by name. See [The gates](docs/guide/concepts/gates.md).
 | discovery | `frame-change`, `clarify-decisions`, `research`, `run-spike`, `define-domain`, `interpret-session`, `pathfind` |
 | spec | `specify-behavior`, `design-solution`, `plan-tasks` |
 | execution | `build-in-waves`, `build-by-story`, `build-inline`, `test-first`, `root-cause`, `prove-claim`, `audit-trace`, `load-subgraph`, `isolate-workspace` |
-| review | `inspect-change`, `vet-feedback`, `review-invariants` |
+| review | `inspect-change`, `study-change`, `brief-team`, `select-review-sample`, `polish-diff`, `vet-feedback`, `review-invariants` |
 | acceptance | `validate-feature`, `validate-api`, `validate-ui`, `review-product-flow`, `vet-product-flow`, `run-product-walkthrough` |
 | craft | `craft-page` |
-| ship | `package-change`, `land-branch`, `cut-release` |
+| ship | `package-change`, `land-branch`, `record-verdict`, `cut-release` |
 | track | `amend-feature`, `reroute-plan`, `triage`, `realign-spec`, `refresh-roadmap-status`, `assess-milestone`, `scan-architecture`, `map-features`, `write-handoff`, `publish-issues` |
 | project | `define-project`, `assess-pivot-impact`, `plan-milestones` (optional project / multi-milestone layer) |
 
@@ -218,9 +218,10 @@ the primitives, not in a bundled script. `prove-claim`, `cut-release`, `realign-
 `plan-tasks` invoke it.
 
 The horizontal layer — "does this idea already exist?" for `frame-change`, "does
-this diff reimplement a neighbor?" for `inspect-change` — is an inline search over
-`docs/specs/`, with `docs/specs/INDEX.md` as the feature registry. No generated
-graph to keep fresh.
+this diff reimplement a neighbor?" for `inspect-change` — is **`load-subgraph`**:
+ask-time derivation over live specs (P0 terms + P1 Files/OWNS), with
+`docs/specs/INDEX.md` as the feature registry. No generated graph to keep fresh.
+Brownfield gaps backfill via `/map-features`.
 
 Teams that want a build-failing gate in CI (which runs with no agent present) can
 opt into a documented CI job; it is outside the default path. See

@@ -57,6 +57,8 @@ Three ways in: by role, by problem, or by phase.
 | …capture a conversation or idea into tracker issues | [`/publish-issues`](skills/publish-issues.md) |
 | …handle an incoming issue | [`/triage`](skills/triage.md) |
 | …find where to refactor next | [`/scan-architecture`](skills/scan-architecture.md) |
+| …backfill feature codes / ROAD / OWNS on brownfield | [`/map-features`](skills/map-features.md) |
+| …chart multi-session decision fog | [`/pathfind`](skills/pathfind.md) |
 | …hand off before my context fills | [`/write-handoff`](skills/write-handoff.md) |
 | …fix a spec that drifted from the code | [`realign-spec`](skills/realign-spec.md) |
 | …write a new skill | [`author-skills`](skills/author-skills.md) → [The skill model](concepts/skill-model.md) |
@@ -70,11 +72,11 @@ Three ways in: by role, by problem, or by phase.
 | Phase | Skills | Guide page |
 |---|---|---|
 | **0. Setup** | `/configure-repo`, `/bootstrap-repo` | [Adopting](resources/adopting.md) |
-| **1. Discovery** | `frame-change`, `clarify-decisions`, `research`, `run-spike`, `define-domain`, `interpret-session` | [Discovery](process/discovery.md) |
+| **1. Discovery** | `frame-change` (+ `load-subgraph`), `clarify-decisions`, `research`, `run-spike`, `define-domain`, `/pathfind`, `/interpret-session` | [Discovery](process/discovery.md) |
 | **2. Specification** | `specify-behavior`, `design-solution`, `plan-tasks` | [Specification](process/specification.md) |
-| **3. Execution** | `isolate-workspace`, `build-in-waves`, `test-first`, `root-cause`, `prove-claim`, `audit-trace` | [Execution](process/execution.md) |
-| **4. Review & acceptance** | `inspect-change`, `vet-feedback`, `acceptance-*`, `review-product-flow`, `run-product-walkthrough` | [Review and acceptance](process/review-and-acceptance.md) |
-| **5. Ship & maintain** | `land-branch`, `/cut-release`, `realign-spec`, `amend-feature`, `/publish-issues`, `/triage`, `/scan-architecture`, `/write-handoff` | [Ship and maintain](process/ship-and-maintain.md) |
+| **3. Execution** | `isolate-workspace`, `build-in-waves` / `build-by-story` / `build-inline`, `test-first`, `root-cause`, `prove-claim`, `audit-trace`, `load-subgraph` | [Execution](process/execution.md) |
+| **4. Review & acceptance** | `inspect-change` (+ `load-subgraph`), `polish-diff`, `vet-feedback`, `validate-*`, product-flow suite | [Review and acceptance](process/review-and-acceptance.md) |
+| **5. Ship & maintain** | `package-change`, `land-branch`, `/cut-release`, `realign-spec`, `amend-feature`, `/map-features`, `/publish-issues`, `/triage`, `/scan-architecture`, `/write-handoff` | [Ship and maintain](process/ship-and-maintain.md) |
 
 ---
 
@@ -92,7 +94,7 @@ Three ways in: by role, by problem, or by phase.
 - [The artifact model](concepts/artifacts.md) — every file the system produces
 - [The gates](concepts/gates.md) — the four Iron Laws
 - [The skill model](concepts/skill-model.md) — how skills are built and how they compose
-- [Feature overlap](concepts/feature-graph.md) — the horizontal layer: searching `docs/specs/` for neighbors
+- [Feature overlap](concepts/feature-graph.md) — the horizontal layer: `load-subgraph` over live specs
 
 ### Process — the chain
 - [The process](process/README.md) — all three flows, with diagrams
@@ -103,7 +105,9 @@ Three ways in: by role, by problem, or by phase.
 - [Phase 5 — Ship and maintain](process/ship-and-maintain.md)
 
 ### Skills — one page each
-- [Skill reference](skills/README.md) — all 36, indexed
+- [Skill reference](skills/README.md) — engineering package index (~56)
+- [Start here](START-HERE.md) — setup + feature workflow tutorial
+- [`AGENTS.md`](../../AGENTS.md) — agent constitution
 
 ### Examples
 - [Tier 0: a tweak](examples/tier-0-tweak.md)

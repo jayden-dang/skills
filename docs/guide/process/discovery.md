@@ -1,6 +1,6 @@
 # Phase 1 — Discovery
 
-**Skills:** [`frame-change`](../skills/frame-change.md) · [`clarify-decisions`](../skills/clarify-decisions.md) · [`research`](../skills/research.md) · [`run-spike`](../skills/run-spike.md) · [`define-domain`](../skills/define-domain.md)
+**Skills:** [`frame-change`](../skills/frame-change.md) (+ [`load-subgraph`](../skills/load-subgraph.md)) · [`clarify-decisions`](../skills/clarify-decisions.md) · [`research`](../skills/research.md) · [`run-spike`](../skills/run-spike.md) · [`define-domain`](../skills/define-domain.md) · [`/pathfind`](../skills/pathfind.md)
 
 **Produces:** an agreed shape, a stated ceremony tier, an updated glossary, possibly an ADR, and — for tier ≥ 1 — an invocation of `specify-behavior`.
 
@@ -30,11 +30,10 @@ Read `CONTEXT.md` (and use its vocabulary from here on) and `docs/specs/INDEX.md
 
 For anything heavier, dispatch a **scan subagent** that explores the code, docs, and recent commits near the idea, writes a findings digest to `.skills/<slug>-scan.md`, and returns only that path. Work from the digest. The point is to keep raw source out of the conversation that is about to hold every design decision.
 
-Then run the [feature-overlap](../concepts/feature-graph.md) search — an inline `grep` over `docs/specs/` for the new idea's key terms and candidate file paths:
-
-```bash
-grep -rli -e '<term>' -e '<candidate-path>' docs/specs/
-```
+Then run the [feature-overlap](../concepts/feature-graph.md) check via
+**`load-subgraph`** (REQUIRED SUB-SKILL): pass the idea's **key terms** and any
+scan **candidate paths**. The envelope returns ranked neighbors plus **OWNS
+coverage** — a live read of specs, not a generated graph file.
 
 Any feature whose spec matches is read as its **Summary card, not its full spec** — the digest at the top of the spec (code, name, owned paths, Out of Scope). Those owned paths and the Out-of-Scope list show what the neighbor already covers.
 
@@ -114,4 +113,4 @@ If you were handed such a change, hand it to `amend-feature`.
 
 - [The gates](../concepts/gates.md) — why the hard gate is written as a prohibition
 - [Ceremony tiers](../methodology/ceremony-tiers.md) — the decision this phase exists to make
-- [Feature overlap](../concepts/feature-graph.md) — the `docs/specs/` search in step 1
+- [Feature overlap](../concepts/feature-graph.md) — `load-subgraph` in step 1

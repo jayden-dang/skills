@@ -3,9 +3,9 @@
 The skill set installs nothing into a consuming repo — no scripts, no linters, no CI job, no git hooks. Enforcement rests on two mechanisms, and both are built from primitives that already exist in any repo:
 
 - **The `audit-trace` skill** — a fixed sequence of `grep` and `git` passes with fixed rules on their output, enforcing that one feature's requirements, tasks, and tests agree.
-- **Feature-overlap search** — an inline `grep` over `docs/specs/` that answers *does this idea or diff already exist?*
+- **Feature-overlap derivation** — the [`load-subgraph`](../skills/load-subgraph.md) skill runs fixed passes over live `docs/specs/` (terms + `**Files:**` OWNS) and answers *does this idea or diff already exist?* without a generated graph file.
 
-Determinism comes from the primitives — `grep` and `git` produce the same output every run — and from the fixed rules applied to that output. There is no interpreter to install and no program to keep in sync.
+Determinism comes from the primitives — `grep`, file reads, and set operations produce the same finding set every run — and from the fixed rules in each skill. There is no consumer graph DB to install.
 
 ---
 
@@ -71,20 +71,24 @@ There is no mandatory headless gate. A team that wants a hard CI or pre-push che
 
 ---
 
-## Feature-overlap search
+## Feature-overlap derivation (`load-subgraph`)
 
-The horizontal question — *which existing features touch this same surface, and does this idea already exist?* — is answered by an inline `grep` over `docs/specs/`, not by any generated artifact. Nothing is derived and nothing goes stale; the specs that already exist are the source of truth, and [`docs/specs/INDEX.md`](../concepts/artifacts.md) is the feature registry.
+The horizontal question — *which existing features touch this same surface?* — is answered by **`load-subgraph`**: fixed passes over live specs (P0 terms, P1 Files/OWNS, denoised OVERLAPS, ranked/bounded neighbors, OWNS coverage). No `GRAPH.md`; nothing to regenerate. [`docs/specs/INDEX.md`](../concepts/artifacts.md) is the feature registry.
 
-Two skills run this search:
+Two skills invoke it:
 
-- **[`frame-change`](../skills/frame-change.md)** greps `docs/specs/` with the new idea's key terms and candidate file paths before the interview begins. Any feature whose spec matches is read as its **Summary card** — the top-of-spec digest (code, name, owned paths, out-of-scope) — so the agent can state which existing features share the idea's surface and how the new idea differs, citing feature codes, or that none do.
-- **[`inspect-change`](../skills/inspect-change.md)** greps `docs/specs/` with the diff's changed file paths, so its Spec subagent can flag any place the diff reimplements behavior a neighboring feature already owns.
+- **[`frame-change`](../skills/frame-change.md)** — key terms + candidate paths before the interview; summary cards + coverage.
+- **[`inspect-change`](../skills/inspect-change.md)** — diff paths (+ optional terms); Spec axis reuse-miss findings.
+
+Brownfield fill-in of missing codes/binds/Files is **[`/map-features`](../skills/map-features.md)** (user-invoked, confirm-only).
 
 See [feature overlap](../concepts/feature-graph.md) for the concept in full.
 
 ## See also
 
 - [Traceability](../concepts/traceability.md) — what the audit-trace check is enforcing and why
-- [Feature overlap](../concepts/feature-graph.md) — how neighbors are found by searching `docs/specs/`
+- [Feature overlap](../concepts/feature-graph.md) — how neighbors are found
+- [`load-subgraph`](../skills/load-subgraph.md) · [`map-features`](../skills/map-features.md)
 - [Requirement IDs](../concepts/requirement-ids.md) — the string the audit-trace check follows
 - [Troubleshooting](troubleshooting.md) — when a check reports a finding
+- [Start here](../START-HERE.md) — end-to-end human tutorial

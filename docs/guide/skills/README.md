@@ -1,6 +1,8 @@
 # Skill reference
 
-Fifty skills in eleven buckets (engineering package). Each has its own page.
+~56 skills in eleven buckets (engineering package). Each should have its own page
+where present; see also [`AGENTS.md` §11](../../../AGENTS.md#11-quick-reference-the-56-skills)
+and [Start here](../START-HERE.md).
 
 **Invocation** is the thing to check first. A **model-invocable** skill is invoked by the agent on its own when its description matches the situation. A **user-invoked** skill carries `disable-model-invocation: true` in its frontmatter — the agent *cannot* invoke it, so you run it as a slash command.
 
@@ -17,6 +19,7 @@ The skills that govern the other skills.
 | [`gate-session`](gate-session.md) | model (session-injected) | The gate. If there is even a 1% chance a skill applies, invoke it first |
 | [`ask-me-bro`](ask-me-bro.md) | `/ask-me-bro` | The router. Maps any situation to the right entry point |
 | [`author-skills`](author-skills.md) | `/author-skills` | TDD for process documentation. The standard every skill here is written against |
+| [`teach-pack`](teach-pack.md) | `/teach-pack` | Guided teaching of the methodology |
 
 ## setup
 
@@ -38,6 +41,8 @@ Turn an idea into an agreed shape. Produces no code.
 | [`research`](research.md) | model | Primary sources only. One cited markdown file, ending in Open decisions |
 | [`run-spike`](run-spike.md) | model | Throwaway code answering one design question. The answer is the only deliverable |
 | [`define-domain`](define-domain.md) | model | Maintains `CONTEXT.md` and `docs/adr/`. ADRs pass a three-part gate |
+| [`pathfind`](pathfind.md) | `/pathfind` | Layer 0 multi-session decision map (Chart / Work) before delivery |
+| [`interpret-session`](interpret-session.md) | `/interpret-session` | Companion session for non-English decision work |
 
 ## spec
 
@@ -60,16 +65,18 @@ The triad. Each file approved before the next is written.
 | [`root-cause`](root-cause.md) | model | **Iron Law:** no fixes without root cause. Phase 1 is the red-capable command gate |
 | [`prove-claim`](prove-claim.md) | model | **Iron Law:** no completion claims without fresh evidence |
 | [`audit-trace`](audit-trace.md) | model | Deterministic traceability check — grep/git passes, fixed rules, zero errors to pass |
+| [`load-subgraph`](load-subgraph.md) | model | Ask-time feature neighbors / subgraph from live specs (P0 terms + P1 Files); OWNS coverage; no graph file |
 | [`isolate-workspace`](isolate-workspace.md) | model | Isolated workspace, clean baseline. Never fight the harness |
 
 ## review
 
 | Skill | Invocation | What it does |
 |---|---|---|
-| [`inspect-change`](inspect-change.md) | model | Two axes — Standards and Spec — run by separate subagents and never merged |
+| [`inspect-change`](inspect-change.md) | model | Two axes — Standards and Spec — run by separate subagents and never merged; neighbors via `load-subgraph` |
 | [`study-change`](study-change.md) | `/study-change` | Outbound self-check: Background → Intuition → Code → Quiz HTML packet |
 | [`brief-team`](brief-team.md) | `/brief-team` | Team-shared pitch+map HTML under `docs/explainers/` (no quiz, never a ship gate) |
 | [`select-review-sample`](select-review-sample.md) | `/select-review-sample` | Bounded human sample over a range, plus the explicit residue |
+| [`polish-diff`](polish-diff.md) | model | Behavior-preserving quality pass over a diff before merge |
 | [`vet-feedback`](vet-feedback.md) | model | Anti-sycophancy. Prove Claim every claim before implementing or replying |
 | [`review-invariants`](review-invariants.md) | model | Advisory, LLM-judged invariant conformance — the semantic counterpart to `audit-trace` |
 
@@ -83,6 +90,7 @@ Green units prove assertions pass. These prove the feature works.
 | [`validate-api`](validate-api.md) | model | Drives the running backend as a real client. Promotes checks to tagged tests |
 | [`validate-ui`](validate-ui.md) | model | Drives the frontend in real Chromium via Playwright. Commits the specs |
 | [`review-product-flow`](review-product-flow.md) | model | The manual sibling. Builds a persistent, checkable HTML artifact |
+| [`vet-product-flow`](vet-product-flow.md) | model | Isolated implementation-surface judgment before dogfood; missing-situation findings |
 | [`run-product-walkthrough`](run-product-walkthrough.md) | model | Executes an existing review-product-flow guide in a real browser; run ledger with FE+BE evidence |
 
 ## craft
@@ -97,8 +105,10 @@ The visual layer. Fires before any HTML a human will look at.
 
 | Skill | Invocation | What it does |
 |---|---|---|
+| [`package-change`](package-change.md) | model | Reviewer-facing commits + PR package before land-branch |
 | [`land-branch`](land-branch.md) | model | Prove Claim + audit-trace gate, then exactly four options. "Discard" must be typed |
-| [`cut-release`](cut-release.md) | `/cut-release` | Nine gates. Changelog derived from requirement-ID commit trailers |
+| [`record-verdict`](record-verdict.md) | model | Immutable decision record before a production crossing |
+| [`cut-release`](cut-release.md) | `/cut-release` | Full prove-claim + audit-trace. Changelog from requirement-ID commit trailers |
 
 ## track
 
@@ -109,9 +119,10 @@ The visual layer. Fires before any HTML a human will look at.
 | [`realign-spec`](realign-spec.md) | model | The anti-rot skill. Realigns the triad with what the code actually does |
 | [`refresh-roadmap-status`](refresh-roadmap-status.md) | `/refresh-roadmap-status` | The horizontal check. Derives where the plan stands from the roadmap, the specs and git, then names one next action. Writes nothing |
 | [`assess-milestone`](assess-milestone.md) | `/assess-milestone` | The close gate. Judges whether a milestone's outcome was achieved, records it append-only, and holds the close until you dispose of the verdict |
-| [`publish-issues`](publish-issues.md) | `/publish-issues` | Context → tracker issues. Audit Tracer-bullet slices with blocking edges, published agent-ready |
+| [`publish-issues`](publish-issues.md) | `/publish-issues` | Context → tracker issues. Tracer-bullet slices with blocking edges, published agent-ready |
 | [`triage`](triage.md) | `/triage` | A two-axis issue state machine. Verify the claim before recommending |
 | [`scan-architecture`](scan-architecture.md) | `/scan-architecture` | Codebase-wide friction scan → an HTML report of deepening candidates |
+| [`map-features`](map-features.md) | `/map-features` | Brownfield backfill: Feature code, ROAD binds, OWNS gaps, DEPENDS_ON candidates (confirm only) |
 | [`write-handoff`](write-handoff.md) | `/write-handoff` | A resumable document in the OS temp dir. Reference, never duplicate |
 
 ## project

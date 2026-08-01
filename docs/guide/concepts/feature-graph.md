@@ -2,7 +2,7 @@
 
 The [audit-trace check](traceability.md) is the **vertical** layer: it proves that one feature's requirements, tasks, and tests agree with each other.
 
-Feature overlap is the **horizontal** question — *which features touch the same code, and does this new idea already exist somewhere?* It is answered by searching the specs that already exist, so there is nothing to generate and nothing that can go stale.
+Feature overlap is the **horizontal** question — *which features touch the same code, and does this new idea already exist somewhere?* It is answered by **`load-subgraph`**: ask-time derivation over the specs that already exist, so there is nothing to generate and nothing that can go stale.
 
 ## The problem
 
@@ -58,22 +58,26 @@ The **Roadmap item** column binds each feature to the [`ROAD-N`](../skills/plan-
 
 Exactly two gates look for neighbors, and both do so *advisorily*.
 
-**[`frame-change`](../skills/frame-change.md), at the front of the chain.** Before the interview begins, it searches `docs/specs/` with the scan's candidate files and the idea's key terms. Any matching features are presented as their **Summary cards** — each card's owned paths and Out-of-Scope list show what the neighbor already covers.
+**[`frame-change`](../skills/frame-change.md), at the front of the chain.** Before the interview begins, it runs **`load-subgraph`** with the scan's candidate paths and the idea's key terms. Neighbors are presented as **Summary cards** plus **OWNS coverage** so a thin neighborhood is visible as thin.
 
 Its completion criterion is a sentence the agent must be able to say: *which existing features share this idea's surface and how the new idea differs, citing feature codes — or that no existing feature shares its surface.*
 
-**[`inspect-change`](../skills/inspect-change.md), at the back of the chain.** It searches with the diff's changed source files. When a neighbor comes back, the **Spec** subagent receives its card, with a brief directing it to flag — as a *reuse-miss* finding citing the neighbor's feature code — any place the diff reimplements behavior a neighbor already owns.
+**[`inspect-change`](../skills/inspect-change.md), at the back of the chain.** It runs **`load-subgraph`** with the diff's changed paths (and optional terms). When a neighbor comes back, the **Spec** subagent receives its card, with a brief directing it to flag — as a *reuse-miss* finding citing the neighbor's feature code — any place the diff reimplements behavior a neighbor already owns.
+
+**[`/map-features`](../skills/map-features.md)** (user-invoked) backfills brownfield gaps — missing Feature codes, ROAD binds, OWNS via Files edits, DEPENDS_ON *candidates* — with human confirm only. It does not materialize a graph.
 
 ## An advisory signal, never a gate
 
-The overlap search never fails a review and never stops a frame-change. It sharpens a decision; it does not make one. If the search returns nothing, the agent proceeds and says so. If `docs/specs/` is empty or a young repo has few specs, that is simply a thin neighborhood, not an error state.
+The overlap result never fails a review and never stops a frame-change. It sharpens a decision; it does not make one. If the search returns nothing, the agent proceeds and says so. If `docs/specs/` is empty or few features have `**Files:**` blocks, that is a **thin** neighborhood (report OWNS coverage), not an error state.
 
-This keeps the horizontal layer honest: it costs a `grep`, it reads only what is already written, and it can never be stale, because there is no derived copy of anything to fall behind.
+This keeps the horizontal layer honest: derivation re-reads what is already written; there is no derived graph file to fall behind.
 
 ## See also
 
 - [Traceability](traceability.md) — the vertical layer this sits beside
-- [Enforcement and tooling](../resources/scripts.md#feature-overlap-search) — the search mechanics
+- [`load-subgraph`](../skills/load-subgraph.md) — the derivation skill
+- [`map-features`](../skills/map-features.md) — brownfield backfill
+- [Enforcement and tooling](../resources/scripts.md#feature-overlap-search) — mechanics notes
 - [Artifacts](artifacts.md) — where `INDEX.md` and the specs live
 - [`frame-change`](../skills/frame-change.md) — the overlap check at the front of the chain
 - [`inspect-change`](../skills/inspect-change.md) — the reuse-miss check at the back

@@ -41,14 +41,19 @@ live only in [`INDEX.md`](./INDEX.md) (ARCH-N).
 skills/
   meta/        gate-session, ask-me-bro, author-skills, teach-pack
   setup/       configure-repo, bootstrap-repo
-  discovery/   frame-change, clarify-decisions, research, run-spike, define-domain
+  discovery/   frame-change, clarify-decisions, research, run-spike, define-domain,
+               interpret-session, pathfind
   spec/        specify-behavior, design-solution, plan-tasks
-  execution/   build-in-waves, build-by-story, build-inline, test-first, root-cause, prove-claim, audit-trace, load-subgraph, isolate-workspace
-  review/      inspect-change, vet-feedback, review-invariants
-  acceptance/  validate-feature, validate-api, validate-ui, review-product-flow, vet-product-flow, run-product-walkthrough
+  execution/   build-in-waves, build-by-story, build-inline, test-first, root-cause,
+               prove-claim, audit-trace, load-subgraph, isolate-workspace
+  review/      inspect-change, study-change, brief-team, select-review-sample,
+               polish-diff, vet-feedback, review-invariants
+  acceptance/  validate-feature, validate-api, validate-ui, review-product-flow,
+               vet-product-flow, run-product-walkthrough
   craft/       craft-page
   ship/        package-change, land-branch, record-verdict, cut-release
-  track/       amend-feature, reroute-plan, triage, realign-spec, scan-architecture, map-features, write-handoff, publish-issues
+  track/       amend-feature, reroute-plan, triage, realign-spec, refresh-roadmap-status,
+               assess-milestone, scan-architecture, map-features, write-handoff, publish-issues
   project/     define-project, assess-pivot-impact, plan-milestones
 templates/     requirements.md, design.md, tasks.md, docs/agents seeds, CONTEXT.md seed,
                product-vision.md, architecture-INDEX.md, product-guidelines.md seeds
@@ -57,10 +62,11 @@ docs/          per-skill human docs + product/architecture layer (this tree)
 .claude-plugin/plugin.json   (Claude Code plugin manifest)
 ```
 
-The traceability discipline lives in the `audit-trace` skill; feature-overlap detection
-lives as inline grep-and-read steps inside `frame-change` and `inspect-change`. Both run
-on `grep`/`git` and file reads, so the whole set is `SKILL.md` and templates — a
-consuming repo installs nothing executable beyond the session-start hook.
+The vertical discipline lives in the `audit-trace` skill; horizontal feature overlap
+is **`load-subgraph`** (ask-time derivation over live specs — P0 terms + P1 Files/OWNS —
+called from `frame-change` and `inspect-change`). Both use `grep`/`git` and file reads
+with fixed recipes, so the whole set is `SKILL.md` and templates — a consuming repo
+installs nothing executable beyond the session-start hook.
 
 - **Installation:** `npx skills@latest add jayden-dang/skills` (skills.sh) or as a
   Claude Code plugin. Dev mode: clone the repo and either add it as a plugin, or

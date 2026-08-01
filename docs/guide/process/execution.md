@@ -4,8 +4,10 @@
 [`build-in-waves`](../skills/build-in-waves.md) |
 [`build-by-story`](../skills/build-by-story.md) |
 [`build-inline`](../skills/build-inline.md), governed throughout by
-[`test-first`](../skills/test-first.md), [`root-cause`](../skills/root-cause.md), and
-[`prove-claim`](../skills/prove-claim.md)
+[`test-first`](../skills/test-first.md), [`root-cause`](../skills/root-cause.md),
+[`prove-claim`](../skills/prove-claim.md), and [`audit-trace`](../skills/audit-trace.md).
+Horizontal neighbors for review are [`load-subgraph`](../skills/load-subgraph.md)
+(via `inspect-change`).
 
 **Produces:** commits, tests, a progress ledger, and a branch ready for review.
 

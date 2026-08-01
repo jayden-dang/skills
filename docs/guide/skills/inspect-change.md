@@ -8,7 +8,7 @@
 | **Invocation** | model-invocable (the agent calls it on its own) |
 | **Reads** | the diff `git diff <base>...HEAD`, commit list, `docs/specs/INDEX.md`, a feature's `requirements.md`, CLAUDE.md, lint/formatter configs, CONTRIBUTING docs, `CONTEXT.md`, `docs/agents/project.md`, `standards-baseline.md` (beside the skill) |
 | **Writes** | nothing — the review is read-only; it produces a report, not commits |
-| **Calls** | two READ-ONLY subagents (Standards, Spec) dispatched in parallel; an inline `docs/specs/` search for the duplication check |
+| **Calls** | two READ-ONLY subagents (Standards, Spec) dispatched in parallel; [`load-subgraph`](load-subgraph.md) for the duplication / neighbor check |
 | **Called by** | [`build-in-waves`](build-in-waves.md) (final whole-branch review), or the user asking to review work since some ref |
 
 ## When it fires
@@ -52,13 +52,14 @@ On top of the repo's own documents, the Standards axis always carries `standards
 
 ### 3a. Check for duplication against existing features
 
-Check the diff's changed source files against the features that already exist. `docs/specs/INDEX.md` is the registry — it maps every feature code to its spec folder and the surface it owns — so read it, then `grep docs/specs/` for the changed files' paths and the diff's key terms. Each hit points at a feature whose surface the diff touches; read that feature's `requirements.md` header for its owned paths and Out-of-Scope list. The step never blocks the review:
+REQUIRED SUB-SKILL: use **`load-subgraph`** with the diff's changed paths and optional key terms. Present neighbors as summary cards plus **OWNS coverage**. The step never blocks the review:
 
-- If `docs/specs/INDEX.md` is **absent**, the registry is not set up — note that, name [`configure-repo`](configure-repo.md) as the remedy, and say it **at most once per session** rather than on every review. Fall back to grepping `docs/specs/` directly.
-- If there is no `docs/specs/` at all, note there is nothing to check against and inject nothing into step 4.
-- If no changed file overlaps any feature, state that no existing feature shares the diff's surface and inject nothing into step 4.
+- If `docs/specs/INDEX.md` is **absent**, note that, name [`configure-repo`](configure-repo.md) once per session.
+- If there is no `docs/specs/`, note nothing to check and inject nothing into step 4.
+- If no neighbor returns, state no existing feature shares the surface and inject nothing into step 4.
+- Thin OWNS coverage is reported, not treated as failure.
 
-*Done when you hold the overlapping features' owned-paths and Out-of-Scope summaries, or an explicit "no overlap" / "no registry".*
+*Done when you hold the overlapping features' owned-paths and Out-of-Scope summaries (and coverage), or an explicit "no overlap" / "no registry".*
 
 ### 4. Dispatch both subagents in parallel
 
@@ -105,7 +106,7 @@ The Standards subagent walks `standards-baseline.md` and checks the diff against
 
 ## Worked example
 
-Reviewing a branch since `main`. Step 1 resolves the base and the diff is non-empty. Step 2 finds `Implements: BILLING-2.3` trailers, which `docs/specs/INDEX.md` maps to `docs/specs/2026-06-01-billing/requirements.md`. Step 3 gathers CLAUDE.md and the lint config, adds `standards-baseline.md`, and drops the formatter's own rules since tooling enforces them. Step 3a reads `docs/specs/INDEX.md` and greps `docs/specs/` for the changed files' paths, which surfaces an overlap with feature `PRICING`. Both subagents run in one message; the aggregate comes back under separate headings, unmerged:
+Reviewing a branch since `main`. Step 1 resolves the base and the diff is non-empty. Step 2 finds `Implements: BILLING-2.3` trailers, which `docs/specs/INDEX.md` maps to `docs/specs/2026-06-01-billing/requirements.md`. Step 3 gathers CLAUDE.md and the lint config, adds `standards-baseline.md`, and drops the formatter's own rules since tooling enforces them. Step 3a runs `load-subgraph` on the changed paths and surfaces neighbor `PRICING` with OWNS coverage. Both subagents run in one message; the aggregate comes back under separate headings, unmerged:
 
 ```
 ## Standards
@@ -130,7 +131,7 @@ duplicated rounding rule before merging.
 
 Note the two axes stay in their own sections. The Standards finding (a duplicated rounding rule) and the Spec finding (an under-billing bug against `BILLING-2.3`) live on the same diff but are never reranked against each other — a clean-code reviewer and a spec reviewer would each have missed the other's finding, which is the whole reason they run apart.
 
-The **reuse-miss** finding only exists because step 3a's `docs/specs/` search surfaced the `PRICING` neighbor and step 4 handed its summary to the Spec subagent. Had the registry been absent, that overlap could go unspotted, the report would carry a one-time note pointing at [`configure-repo`](configure-repo.md), and the review would continue unblocked — the duplication check is advisory, never a gate.
+The **reuse-miss** finding only exists because step 3a's `load-subgraph` run surfaced the `PRICING` neighbor and step 4 handed its summary to the Spec subagent. Had the registry been absent, that overlap could go unspotted, the report would carry a one-time note pointing at [`configure-repo`](configure-repo.md), and the review would continue unblocked — the duplication check is advisory, never a gate.
 
 ## Why it is written the way it is
 

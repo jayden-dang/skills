@@ -64,7 +64,7 @@ The sole feature registry. A feature code is unique repo-wide, forever. `specify
 
 The last column binds the feature to the [roadmap](../skills/plan-milestones.md) item it implements, or `—` when the project has no roadmap layer. It is the join [`refresh-roadmap-status`](../skills/refresh-roadmap-status.md) reads to tell a planned item from a specced one.
 
-Because it enumerates every feature, it is what the [feature-overlap](feature-graph.md) search reads to know the full set of neighbors when [`frame-change`](../skills/frame-change.md) or [`inspect-change`](../skills/inspect-change.md) checks whether an idea or a diff already exists.
+Because it enumerates every feature, it is what [`load-subgraph`](../skills/load-subgraph.md) reads first when [`frame-change`](../skills/frame-change.md) or [`inspect-change`](../skills/inspect-change.md) asks which neighbors share an idea or a diff — see [feature overlap](feature-graph.md).
 
 ## `CONTEXT.md` — the glossary
 

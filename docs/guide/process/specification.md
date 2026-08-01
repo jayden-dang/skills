@@ -39,7 +39,7 @@ One observable behavior per criterion. **If a sentence needs "and", it is usuall
 
 Guards are what stop an agent from breaking load-bearing behavior nobody mentioned. And the completion criterion for this step forbids the lazy answer: *you have actively searched the touched surface for behaviors to guard — not merely found none by default.*
 
-**Write Out of Scope.** What this feature deliberately does not do. This section is read again later, by `inspect-change` (as the scope-creep reference), by `review-product-flow` (as deliberate non-behaviors to check), and by the feature-overlap search (as a Summary-card field a neighboring feature's `frame-change` reads straight out of `docs/specs/`).
+**Write Out of Scope.** What this feature deliberately does not do. This section is read again later, by `inspect-change` (as the scope-creep reference), by `review-product-flow` (as deliberate non-behaviors to check), and by **`load-subgraph`** when a neighboring feature's `frame-change` surfaces this spec as a Summary card.
 
 **Self-review, then gate.** Four passes before the user sees it:
 

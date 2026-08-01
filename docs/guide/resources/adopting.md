@@ -126,7 +126,7 @@ A reasonable path:
 3. Take the next **bug** through `root-cause` and let it write its tier-1 mini-spec into `docs/specs/fixes.md`.
 4. Leave the existing code alone. Untraced code is not an error; only an *implemented requirement without a covering test* is.
 
-The spine grows from the edges inward. Each new feature registers its code in `docs/specs/INDEX.md` as its spec lands, so `frame-change`'s inline `docs/specs/` search finds more prior art with every one.
+The spine grows from the edges inward. Each new feature registers its code in `docs/specs/INDEX.md` (and ideally a `**Files:**` block) as its spec lands, so `frame-change` + **`load-subgraph`** find more prior art with every one. On a brownfield repo with thin OWNS coverage, run [`/map-features`](../skills/map-features.md) to backfill.
 
 ## Afterwards
 

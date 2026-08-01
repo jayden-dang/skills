@@ -8,7 +8,7 @@
 | **Invocation** | model-invocable (the agent calls it on its own) |
 | **Reads** | `CONTEXT.md` (glossary vocabulary), `docs/specs/INDEX.md` (existing feature codes and specs), `docs/agents/project.md`; code, docs, and recent commits near the idea via a scan subagent digest at `.skills/<slug>-scan.md` |
 | **Writes** | notes, the glossary (`CONTEXT.md`), ADRs, and — via sub-skills — research notes and explicitly-marked throwaway run-spikes; nothing else |
-| **Calls** | [`clarify-decisions`](clarify-decisions.md), [`define-domain`](define-domain.md), [`research`](research.md), [`run-spike`](run-spike.md), [`specify-behavior`](specify-behavior.md) (tier ≥ 1), [`test-first`](test-first.md) (tier 0) |
+| **Calls** | [`load-subgraph`](load-subgraph.md), [`clarify-decisions`](clarify-decisions.md), [`define-domain`](define-domain.md), [`research`](research.md), [`run-spike`](run-spike.md), [`specify-behavior`](specify-behavior.md) (tier ≥ 1), [`test-first`](test-first.md) (tier 0) |
 | **Called by** | the user (entry point of the chain); [`amend-feature`](amend-feature.md) when a change turns out to be genuinely new scope |
 
 ## When it fires
@@ -61,16 +61,15 @@ Each item is a todo, completed in order. The order matters: context before quest
 
 ## The overlap check
 
-Step 1 searches the specs directly for a feature that already covers this surface. `docs/specs/INDEX.md` is the registry — it maps every feature code to its spec folder and the surface it owns — so start there, then `grep docs/specs/` for the idea's key terms and for the scan's candidate paths. Each hit points at a neighboring feature; read that feature's `requirements.md` header and present it as a short summary (not the full spec) — its owned paths and Out-of-Scope list show what the neighbor already covers, so the new idea can be positioned against or distinguished from them.
+Step 1 runs **`load-subgraph`** (REQUIRED SUB-SKILL) with the idea's **key terms** and the scan's **candidate paths**. `docs/specs/INDEX.md` is the registry; derivation uses live `**Files:**` (OWNS) and term match (P0), returns ranked neighbors plus **OWNS coverage**. Present each neighbor as a short summary card (owned paths + Out-of-Scope), not the full spec.
 
-The check is a convenience, not a gate, so it never blocks progress:
+The check is advisory, never a gate:
 
-- **No `INDEX.md`** — the registry has not been set up in this repo. Say so once, name [`configure-repo`](configure-repo.md) as the remedy, and say it **at most once per session**: a repo without the registry must not be nagged on every idea. Fall back to grepping `docs/specs/` directly.
-- **No `docs/specs/` at all** — note there is nothing to check against yet and continue.
+- **No `INDEX.md`** — say so once, name [`configure-repo`](configure-repo.md), at most once per session.
+- **No `docs/specs/`** — note nothing to check against and continue.
+- **Thin OWNS coverage** — report the ratio; thin is not an error.
 
-This also covers harnesses without subagents: when the scan step cannot dispatch one, read the few relevant files directly and grep the specs on the idea's terms by hand. The overlap check is there to catch a duplicate feature early; missing it costs a manual read, not the gate.
-
-Either way, continue with manual exploration. Step 1 is done when you can state in one paragraph what the project is, what already exists near the idea, and which glossary terms apply — and you have named which existing features share the idea's surface and how the new idea differs (citing feature codes), or that none does.
+Step 1 is done when you can state in one paragraph what the project is, what already exists near the idea, and which glossary terms apply — and you have named which existing features share the idea's surface (citing codes) or that none does, with OWNS coverage stated.
 
 ## The ceremony tiers
 
@@ -88,7 +87,7 @@ If the work spans multiple independent subsystems, this is also where it is deco
 
 A user opens with "we should let people export their notes as PDF." Nothing is spec'd, so `frame-change` fires and the hard gate is in force from the first word.
 
-**Step 1.** Read `CONTEXT.md` and `docs/specs/INDEX.md` directly; dispatch a scan subagent that writes its digest to `.skills/pdf-export-scan.md` and reports the notes module already owns a Markdown export at `src/export/`. `INDEX.md` lists a feature owning that path, so grep `docs/specs/` for `export` and `pdf` and read its `requirements.md` header: `EXPORT-2`, owning `src/export/` with "PDF rendering" on its Out-of-Scope list.
+**Step 1.** Read `CONTEXT.md` and `docs/specs/INDEX.md` directly; dispatch a scan subagent that writes its digest to `.skills/pdf-export-scan.md` and reports the notes module already owns a Markdown export at `src/export/`. Run `load-subgraph` with terms `export`/`pdf` and path `src/export/`; the envelope surfaces neighbor `EXPORT-2` with "PDF rendering" on its Out-of-Scope list and non-empty OWNS coverage.
 
 State the one-paragraph context: "The project is a notes app; `EXPORT-2` already owns Markdown export and explicitly excludes PDF, so this idea is adjacent-but-new, and the glossary term *export* already applies."
 

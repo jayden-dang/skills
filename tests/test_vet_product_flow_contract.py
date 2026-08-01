@@ -1051,5 +1051,36 @@ class VetProductFlowWiring(unittest.TestCase):
         self.assertIn("tests/vet-product-flow/scenarios-pressure.md", p)
 
 
+# --- Task 8: full-suite close — every approved VPF-N.M in scenarios.md ---
+
+REQUIREMENTS = (
+    REPO / "docs" / "specs" / "2026-08-01-vet-product-flow" / "requirements.md"
+)
+
+
+class VetProductFlowScenarioCompleteness(unittest.TestCase):
+    """Suite close — every bold VPF-N.M from requirements appears in scenarios."""
+
+    def test_VPF_all_requirement_ids_appear_in_scenarios(self):
+        """All VPF-N.M — every bold ID in requirements.md appears in scenarios.md."""
+        self.assertTrue(REQUIREMENTS.exists(), f"missing {REQUIREMENTS}")
+        self.assertTrue(SCENARIOS.exists(), f"missing {SCENARIOS}")
+        req = REQUIREMENTS.read_text()
+        scenarios = SCENARIOS.read_text()
+        # Bold EARS markers only: **VPF-N.M** (not bare mentions in prose)
+        ids = sorted(set(re.findall(r"\*\*(VPF-\d+\.\d+)\*\*", req)))
+        self.assertGreaterEqual(
+            len(ids),
+            30,
+            f"expected full VPF set from requirements.md, found {len(ids)}: {ids}",
+        )
+        missing = [rid for rid in ids if rid not in scenarios]
+        self.assertEqual(
+            missing,
+            [],
+            f"scenarios.md missing requirement IDs: {missing}",
+        )
+
+
 if __name__ == "__main__":
     unittest.main()

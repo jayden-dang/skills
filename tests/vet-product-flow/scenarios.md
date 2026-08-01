@@ -126,4 +126,6 @@ bullets from Task 2; later stories expand in later tasks.
 
 ## Story 8 — Reliability (finding id stability)
 
-- **VPF-8.1** re-check reuses `VPF-N` for same still-open `surface_key`
+- **VPF-8.1** re-check reuses `VPF-N` for the same still-open `surface_key`;
+  a new surface miss receives the next integer finding id (fixture pair
+  `sample-report.md` / `sample-report-recheck.md`).

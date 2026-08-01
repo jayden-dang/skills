@@ -6,18 +6,18 @@
 return GitHub login username; `ProviderAdapter` only has `externalId` + `email`.
 
 **Observed (1/1).** Extended return type with optional `username`;
-`DONE_WITH_CONCERNS` in report only. **No** `.skills/implementation-notes.md`.
+`DONE_WITH_CONCERNS` in report only. **No** `.skills/<CODE>/implementation-notes.md`.
 
 **Failure.** Concern voiced but not durable; controller cannot feed
 `reroute-plan` from a stable log.
 
 ## GREEN — same scenario, upgraded implementer-prompt
 
-**Observed (1/1).** `.skills/implementation-notes.md` with Task / Deviation /
+**Observed (1/1).** `.skills/<CODE>/implementation-notes.md` with Task / Deviation /
 Cause / Choice / Revisit. Report cites the notes path. Status
 `DONE_WITH_CONCERNS`.
 
-**Notes path (run):** `/tmp/imp-u2-green-56143/.skills/implementation-notes.md`
+**Notes path (run):** `/tmp/imp-u2-green-56143/.skills/<CODE>/implementation-notes.md`
 
 ## Controller hook
 
@@ -36,7 +36,7 @@ deviation as incomplete.
 ## Multi-rep (3/3)
 
 Product-note username mismatch + "just ship" demo pressure.
-**3/3:** `.skills/implementation-notes.md` with Task/Deviation/Cause/Choice/Revisit.
+**3/3:** `.skills/<CODE>/implementation-notes.md` with Task/Deviation/Cause/Choice/Revisit.
 
 ## Controller loop
 

@@ -6,6 +6,9 @@ description: Use when an approved tasks.md needs controller-side sequential
   or when the user chose the inline route.
 ---
 
+Ephemera paths: resolve `FEATURE_CODE` / `<CODE>` then follow `templates/skills-ephemera-paths.md` (feature root `.skills/<CODE>/`).
+
+
 # Build Inline
 
 Drive an approved plan to completion **yourself**, task by task, with no
@@ -88,7 +91,7 @@ keeps the human in the conversation turn-by-turn.
    *Done when: tracker choice (or empty set) and workspace choice are clear.*
 4. **Ledger check.** Ensure `.skills/` is git-ignored:
    `grep -qxF '.skills/' .gitignore 2>/dev/null || { printf '.skills/\n' >> .gitignore && git commit -m 'chore: ignore local skills artifacts' -- .gitignore; }`
-   Read `.skills/progress.md` if present. Complete tasks stay complete — resume
+   Read `.skills/<CODE>/progress.md` if present. Complete tasks stay complete — resume
    at the first task not listed. *Done when: next task is known.*
 5. **Read the plan.** Read `tasks.md` once. Capture **Global Constraints**
    (verify commands live here if `docs/agents/project.md` is missing — say so
@@ -107,7 +110,7 @@ For each Task N in order:
 
 1. **Record base.** `BASE=$(git rev-parse HEAD)`.
 2. **Build the brief (for yourself).** Copy Task N + Global Constraints into
-   `.skills/task-N-brief.md`. That file is the contract you implement against —
+   `.skills/<CODE>/task-N-brief.md`. That file is the contract you implement against —
    exact values, paths, signatures, `_Requirements:` IDs. Include relevant
    `**ARCH-N**` when a `docs/architecture/` spine exists. WHEN preflight
    recorded ticket IDs, list them in the brief. *Done when: brief exists and
@@ -119,7 +122,7 @@ For each Task N in order:
    Global Constraints if that file is absent). Work only the files the plan
    names.
 5. **Deviations.** WHEN territory forces you off the brief: prefer the
-   conservative choice; append to `.skills/implementation-notes.md` (Task /
+   conservative choice; append to `.skills/<CODE>/implementation-notes.md` (Task /
    Deviation / Cause / Choice / Revisit) **before** finishing the task; if the
    only fix changes a shared contract or falsifies the plan → stop and REQUIRED
    SUB-SKILL: use `reroute-plan` (or ask), do not stretch silently.
@@ -129,7 +132,7 @@ For each Task N in order:
    Output pristine? Plan File Structure respected? Fix gaps now — you have no
    separate task-reviewer pass.
 8. **Optional evidence bundle.** For non-trivial tasks, write
-   `.skills/task-N-report.md` with what changed, IDs covered, RED/GREEN
+   `.skills/<CODE>/task-N-report.md` with what changed, IDs covered, RED/GREEN
    commands+output, concerns, deviations path or `none`. Cheap tasks may skip
    the file if the commit message and ledger carry enough; when in doubt, write it.
 9. **Ledger.** Append
@@ -155,7 +158,7 @@ discipline.
 
 ## Durable progress
 
-- Start: read `.skills/progress.md`; trust it and `git log` over memory.
+- Start: read `.skills/<CODE>/progress.md`; trust it and `git log` over memory.
 - Never re-do a task the ledger marks complete.
 - After compaction, resume at the first task without a complete line.
 - `.skills/` is git-ignored; if wiped, reconstruct from `git log`.

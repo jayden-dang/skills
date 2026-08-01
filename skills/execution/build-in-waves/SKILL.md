@@ -5,6 +5,9 @@ description: Use when an approved tasks.md has Execution-mode continuous and nee
   crash/compaction — through whole-branch review and land-branch.
 ---
 
+Ephemera paths: resolve `FEATURE_CODE` / `<CODE>` then follow `templates/skills-ephemera-paths.md` (feature root `.skills/<CODE>/`).
+
+
 # Build In Waves
 
 Drive an approved **continuous** plan to completion: independent tasks run in
@@ -68,7 +71,7 @@ Unit barriers, unit derivation, and human unit stops live only in
    *Done when: tracker choice (or empty set) and workspace choice are clear.*
 3. **Ledger check.** Make `.skills/` local-only:
    `grep -qxF '.skills/' .gitignore 2>/dev/null || { printf '.skills/\n' >> .gitignore && git commit -m 'chore: ignore local skills artifacts' -- .gitignore; }`
-   Read `.skills/progress.md` if it exists. Every task it marks complete IS
+   Read `.skills/<CODE>/progress.md` if it exists. Every task it marks complete IS
    complete — resume at the first task it does not list. *Done when: next task
    is known.*
 4. **Read the plan.** Read `tasks.md` in full once. Copy **Global Constraints**
@@ -93,18 +96,18 @@ For Task N:
 
 1. **Record the base.** `BASE=$(git rev-parse HEAD)` — before dispatch, always.
 2. **Build the brief.** Task N block + verbatim Global Constraints →
-   `.skills/task-N-brief.md`. Include relevant `**ARCH-N**` when a
+   `.skills/<CODE>/task-N-brief.md`. Include relevant `**ARCH-N**` when a
    `docs/architecture/` spine exists. WHEN preflight recorded ticket IDs,
    list them in the brief so implementers and later `package-change` share one
    set. Apply Team band packaging to tone — never omit review obligations.
 3. **Dispatch a FRESH implementer** using `implementer-prompt.md` (beside this
    file). Dispatch inventory only: one-line placement; brief path as requirements;
    interfaces/decisions prior tasks cannot know; ambiguity resolutions; report
-   path `.skills/task-N-report.md`; explicit model. Never session history. Never
+   path `.skills/<CODE>/task-N-report.md`; explicit model. Never session history. Never
    the plan file.
 4. **Answer questions** fully before the implementer proceeds.
 5. **Handle the status** per the table below. Work committed on DONE.
-6. **Package the diff** → `.skills/review-<base7>..<head7>.diff`:
+6. **Package the diff** → `.skills/<CODE>/review-<base7>..<head7>.diff`:
    `git log $BASE..HEAD --oneline`, `git diff --stat $BASE HEAD`,
    `git diff -U10 $BASE HEAD`. Never `HEAD~1` as base.
 7. **Dispatch a task reviewer** using `task-reviewer-prompt.md` with brief,
@@ -148,7 +151,7 @@ worktree, **only when `git worktree` is usable**; otherwise serial.
 | Status | Your move |
 |---|---|
 | **DONE** | Package the diff → task review. |
-| **DONE_WITH_CONCERNS** | Read concerns **and** `.skills/implementation-notes.md`. Plan-falsifying deviation → REQUIRED SUB-SKILL: use `reroute-plan`. Missing notes while claiming deviation → re-dispatch to log first. |
+| **DONE_WITH_CONCERNS** | Read concerns **and** `.skills/<CODE>/implementation-notes.md`. Plan-falsifying deviation → REQUIRED SUB-SKILL: use `reroute-plan`. Missing notes while claiming deviation → re-dispatch to log first. |
 | **NEEDS_CONTEXT** | Supply what was named; re-dispatch same model. |
 | **BLOCKED** | Context → supply; ceiling → stronger model; too large → split; plan wrong → REQUIRED SUB-SKILL: use `reroute-plan`. |
 
@@ -178,7 +181,7 @@ Scale reviewer tier to diff size and risk.
 Conversation memory does not survive compaction. Todos = live session view;
 ledger = survives compaction. Never let one excuse skipping the other.
 
-- On start, read `.skills/progress.md`; resume after the last complete task.
+- On start, read `.skills/<CODE>/progress.md`; resume after the last complete task.
 - After compaction, trust the ledger and `git log` over memory.
 - Never re-dispatch a task the ledger marks complete.
 - Crash mid-wave → discard unmerged isolate-workspace; re-run the whole wave off WBASE.

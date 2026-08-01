@@ -6,6 +6,9 @@ description: Use when an approved tasks.md has Execution-mode story-unit and
   review.
 ---
 
+Ephemera paths: resolve `FEATURE_CODE` / `<CODE>` then follow `templates/skills-ephemera-paths.md` (feature root `.skills/<CODE>/`).
+
+
 # Build By Story
 
 Drive an approved **story-unit** plan to completion: derive review units from
@@ -87,7 +90,7 @@ Align `tasks.md` to the story-unit route and continue:
    *Done when: tracker choice (or empty set) and workspace choice are clear.*
 3. **Ledger check.** Ensure `.skills/` is git-ignored:
    `grep -qxF '.skills/' .gitignore 2>/dev/null || { printf '.skills/\n' >> .gitignore && git commit -m 'chore: ignore local skills artifacts' -- .gitignore; }`
-   Read `.skills/progress.md` if present. Every complete task **and** complete
+   Read `.skills/<CODE>/progress.md` if present. Every complete task **and** complete
    unit line is authoritative — resume at the first task not listed; skip units
    already ledgered complete. *Done when: next task/unit is known.*
 4. **Read the plan.** Read `tasks.md` once. Copy **Global Constraints**
@@ -117,7 +120,7 @@ For each Task N in U (Depends-on order):
 
 1. **Record base.** `BASE=$(git rev-parse HEAD)`.
 2. **Build brief.** Task N block + verbatim Global Constraints →
-   `.skills/task-N-brief.md`. Include relevant `**ARCH-N**` when a
+   `.skills/<CODE>/task-N-brief.md`. Include relevant `**ARCH-N**` when a
    `docs/architecture/` spine exists. WHEN preflight recorded ticket IDs,
    list them in the brief so implementers and later `package-change` share one
    set.
@@ -125,11 +128,11 @@ For each Task N in U (Depends-on order):
    `../build-in-waves/implementer-prompt.md` (one home for the implementer
    contract — do not fork it). Dispatch inventory only: one-line placement,
    brief path as requirements, interfaces prior tasks cannot know, ambiguity
-   resolutions, report path `.skills/task-N-report.md`, explicit model. Never
+   resolutions, report path `.skills/<CODE>/task-N-report.md`, explicit model. Never
    session history. Never the whole plan file.
 4. **Answer questions** fully before the implementer proceeds.
 5. **Handle status** (table below). Work must be committed on DONE.
-6. **Package diff** → `.skills/review-<base7>..<head7>.diff`:
+6. **Package diff** → `.skills/<CODE>/review-<base7>..<head7>.diff`:
    `git log $BASE..HEAD --oneline`, `git diff --stat $BASE HEAD`,
    `git diff -U10 $BASE HEAD`. Never `HEAD~1` as base.
 7. **Task reviewer** via `../build-in-waves/task-reviewer-prompt.md` with brief,
@@ -169,7 +172,7 @@ Resume the per-unit loop. After the last unit's unlock and ledger line →
 | Status | Your move |
 |---|---|
 | **DONE** | Package diff → task review. |
-| **DONE_WITH_CONCERNS** | Read concerns **and** `.skills/implementation-notes.md`. Plan-falsifying deviation → REQUIRED SUB-SKILL: use `reroute-plan`. Missing notes while claiming deviation → re-dispatch to log first. |
+| **DONE_WITH_CONCERNS** | Read concerns **and** `.skills/<CODE>/implementation-notes.md`. Plan-falsifying deviation → REQUIRED SUB-SKILL: use `reroute-plan`. Missing notes while claiming deviation → re-dispatch to log first. |
 | **NEEDS_CONTEXT** | Supply what was named; re-dispatch same model. |
 | **BLOCKED** | Context → supply; ceiling → stronger model; too large → split; plan wrong → REQUIRED SUB-SKILL: use `reroute-plan`. |
 
@@ -192,7 +195,7 @@ State the model **explicitly on every dispatch**.
 
 ## Durable progress
 
-- Start: read `.skills/progress.md`; trust it and `git log` over memory.
+- Start: read `.skills/<CODE>/progress.md`; trust it and `git log` over memory.
 - Never re-dispatch a task or re-open a unit the ledger marks complete.
 - After compaction, resume at the first task without a complete line; unit
   complete lines mean the human barrier already closed for that unit.

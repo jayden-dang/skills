@@ -1,7 +1,8 @@
 # Implementer Dispatch Template
 
 Fill this template when dispatching an implementer subagent. Placeholders in
-`[BRACKETS]`.
+`[BRACKETS]`. Feature ephemera root is `.skills/<CODE>/` (ledger `progress.md`,
+briefs, reports, notes — see `templates/skills-ephemera-paths.md`).
 
 ```
 Subagent (general-purpose):
@@ -63,7 +64,7 @@ Subagent (general-purpose):
 
     1. Prefer the **conservative** choice that preserves existing behavior and
        keeps blast radius inside this task's files.
-    2. Append one entry to `.skills/implementation-notes.md` (create if absent)
+    2. Append one entry to `.skills/<CODE>/implementation-notes.md` (create if absent)
        BEFORE you finish the task. Each entry has exactly these fields:
        - **Task:** N
        - **Deviation:** what you did differently from the brief/plan
@@ -77,7 +78,7 @@ Subagent (general-purpose):
     4. Point the report's Concerns line at the notes file path.
 
     A concern that lives only in the report and not in
-    `.skills/implementation-notes.md` is incomplete.
+    `.skills/<CODE>/implementation-notes.md` is incomplete.
 
     ## In Over Your Head
 
@@ -122,9 +123,9 @@ Subagent (general-purpose):
     - Files changed
     - Self-review findings, if any
     - Concerns, if any — if any plan/territory mismatch occurred, this line
-      MUST cite `.skills/implementation-notes.md` (report-only concerns are
+      MUST cite `.skills/<CODE>/implementation-notes.md` (report-only concerns are
       incomplete)
-    - Deviations: path to `.skills/implementation-notes.md`, or the exact word
+    - Deviations: path to `.skills/<CODE>/implementation-notes.md`, or the exact word
       `none` if no deviation occurred
 
     Your final message is 15 lines or fewer — the detail lives in the report

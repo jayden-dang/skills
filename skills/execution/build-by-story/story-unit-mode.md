@@ -71,7 +71,7 @@ reports: <empty stories | NFR-only placement | straddlers | none>
 After every task in the unit is DONE and ledgered:
 
 1. `UNIT_BASE` = base of first task in unit; `UNIT_HEAD=$(git rev-parse HEAD)`.
-2. Package `.skills/review-unit-<k>-<base7>..<head7>.diff` (same shape as a task
+2. Package `.skills/<CODE>/review-unit-<k>-<base7>..<head7>.diff` (same shape as a task
    package: log, stat, `git diff -U10`).
 3. Dispatch **task reviewer** once at **unit scope** (two-verdict) over that
    range, using `../build-in-waves/task-reviewer-prompt.md`. Human is never first
@@ -96,7 +96,7 @@ every slot. Order is fixed:
 **Stories:** {…} — "<title or titles>"
 **Tasks:** <list N – work one-liner – requirement IDs>
 **Range:** <base7>..<head7>
-**Diff package:** .skills/review-unit-<k>-<base7>..<head7>.diff
+**Diff package:** .skills/<CODE>/review-unit-<k>-<base7>..<head7>.diff
 
 **Unit agent review**
 - Spec: <COMPLIANT | ISSUES FOUND → fixed → clean>

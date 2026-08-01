@@ -17,3 +17,4 @@ not planned as a roadmap item.
 | DFSYNC | Review Product Flow sync — single JSON run artifact plus optional local serve layer | ./2026-07-30-review-product-flow-sync/ | Implemented | — |
 | PFIND | Pathfind layer — multi-session decision map (Layer 0) before program/delivery | ./2026-07-31-pathfind/ | Implemented | — |
 | VPF | Vet product flow — isolated implementation-surface judgment before dogfood | ./2026-08-01-vet-product-flow/ | Approved | — |
+| FSUB | Feature subgraph — ask-time derivation of OWNS/OVERLAPS/IMPLEMENTS/CONTAINS/RESPECTS + map-features backfill | ./2026-08-01-feature-subgraph/ | Draft | — |

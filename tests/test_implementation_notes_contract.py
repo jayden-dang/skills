@@ -92,10 +92,13 @@ class TestImplementerPromptSchema(unittest.TestCase):
 
 
 class TestExecuteRoutes(unittest.TestCase):
-    def test_IMPN_2_2_inline_full_fields(self):
+    def test_IMPN_2_2_inline_points_at_deviations_recipe(self):
         text = INLINE.read_text()
-        for f in ("Unknown class", "Map said", "Territory showed", "Map impact", "Revisit"):
-            self.assertIn(f, text)
+        self.assertIn("implementer-prompt.md", text)
+        self.assertIn("Deviations", text)
+        # Leading words kept at call site; full enum list lives in implementer-prompt
+        self.assertIn("Map impact", text)
+        self.assertIn("Unknown class", text)
 
     def test_IMPN_1_6_1_7_waves_and_story(self):
         for path in (WAVES, STORY):

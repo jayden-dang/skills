@@ -223,7 +223,10 @@ replaced) by `Risk globs` in `docs/agents/project.md` when present.
    never auto-run, never soft-gate the menu).
 5. **IF** `multi_task OR risk_hit OR architecture_affecting` → **name**
    `/brief-team` (user-invoked — never auto-run, never withhold merge/PR).
-6. **IF** `.skills/<CODE>/implementation-notes.md` has deviations → mention that path once. IF any entry still has **Map impact** `reroute-plan` or `realign-spec` unresolved → surface that to the human (judgment — not auto-block if they already accepted).
+6. **IF** `.skills/<CODE>/implementation-notes.md` has deviations → mention that
+   path once. IF any entry has **Map impact** `reroute-plan` or `realign-spec`
+   → surface those entries to the human (judgment — not auto-block if they
+   already accepted the disposition).
 
 **Worked case:** one task, diff only `skills/auth/session.ts` → `risk_hit` true →
 name **both**. **Keep** still runs steps 4–5 (names only; no merge/PR).

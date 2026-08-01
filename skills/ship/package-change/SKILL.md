@@ -79,9 +79,13 @@ AUTHOR LOCALLY, NEVER CROSS — push, PR, merge, discard, and block belong to la
    is the sole authority for **what changed** — read it fresh this session; never
    substitute an author's summary, a ticket's paraphrase, or a commit message for
    it. Approved specs, `docs/adr/`, other decision records, and
-   `.skills/<CODE>/implementation-notes.md` are the authority for **why** (mid-build classified deviations). IF any entry has **Map impact** other than `none`, mention that notes path once in reviewer-facing package text — the stated
-   intent and constraints behind the change, drawn from whichever of these sources
-   cover it.
+   `.skills/<CODE>/implementation-notes.md` are the authority for **why** the
+   diff diverged from the plan mid-build (classified deviations). Draw intent
+   from those sources as usual — never invent rationale when a source is absent.
+   IF notes exist and any entry has **Map impact** other than `none`, mention
+   the notes path once in reviewer-facing package text; do not paste the full
+   notes file (`.skills/` is git-ignored — promote substance inline when the
+   reviewer cannot open the path).
 
    <HARD-GATE>
    Every why-source is optional: `why` may end up empty. WHEN a why-source is

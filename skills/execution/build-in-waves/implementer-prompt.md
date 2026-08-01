@@ -83,8 +83,8 @@ Subagent (general-purpose):
        require changing a public interface, shared type, or another task's
        contract → do **not** stretch them silently. Log the entry, then report
        BLOCKED or NEEDS_CONTEXT (or DONE_WITH_CONCERNS only after logging and
-       staying inside the brief's surface). The controller MUST run
-       `reroute-plan` (or name realign-spec) — logging is not permission to
+       staying inside the brief's surface) so the **controller** can run
+       `reroute-plan` (or name `realign-spec`) — logging is not permission to
        pretend the map is intact.
     4. IF **Map impact** is `none` or `revisit-only` → continue after logging;
        do not rewrite approved requirements/design/tasks.

@@ -121,17 +121,14 @@ For each Task N in order:
    task. Every test carries its requirement ID per `docs/agents/project.md` (or
    Global Constraints if that file is absent). Work only the files the plan
    names.
-5. **Deviations.** WHEN territory forces you off the brief: prefer the
-   **conservative** choice; append to `.skills/<CODE>/implementation-notes.md`
-   **before** finishing the task with all nine fields: **Task**, **Unknown class**
-   (`known-unknown` · `unknown-known` · `unknown-unknown` · `assumption-break` ·
-   `blindspot`), **Map said**, **Territory showed**, **Deviation**, **Cause**,
-   **Choice**, **Map impact** (`none` · `revisit-only` · `reroute-plan` ·
-   `realign-spec`), **Revisit**. Append only — do not overwrite prior entries.
-   IF Map impact is `reroute-plan` / `realign-spec` or the fix falsifies the plan
-   / shared contract → stop and REQUIRED SUB-SKILL: use `reroute-plan` (or ask);
-   do not stretch silently. Map impact `none` / `revisit-only` does not rewrite
-   the triad.
+5. **Deviations.** WHEN territory forces you off the brief: you **are** the
+   implementer — follow the **Deviations** recipe in
+   `../build-in-waves/implementer-prompt.md` (nine-field entry under
+   `.skills/<CODE>/implementation-notes.md`: **Unknown class**, **Map said**,
+   **Territory showed**, **Map impact**, etc.). Log **before** finishing the
+   task; append only. IF **Map impact** is `reroute-plan` / `realign-spec` or
+   the fix falsifies the plan / shared contract → stop and REQUIRED SUB-SKILL:
+   use `reroute-plan` (or ask); do not stretch silently.
 6. **Commit.** Use the trailer the task names (e.g. `Implements: CODE-N.M`).
 7. **Self-check (controller, not a subagent).** Re-read the brief against the
    diff: every requirement ID covered? TDD evidence (RED then GREEN) real?

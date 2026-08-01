@@ -1,8 +1,8 @@
 ---
 name: plan-tasks
 description: Use when a design is approved and the tasks.md implementation plan
-  (Execution-mode, vertical-slice tasks, requirement-tagged tests) needs writing,
-  after design-solution and before the execute family (build-in-waves / build-by-story /
+  (vertical-slice tasks, requirement-tagged tests) needs writing, after
+  design-solution and before the execute family (build-in-waves / build-by-story /
   build-inline).
 ---
 
@@ -14,7 +14,7 @@ as `${CLAUDE_PLUGIN_ROOT}/templates` when installed as a plugin, otherwise
 REQUIRED. Do **not** author per-task risk labels, decision-surface flags, or a
 Human-review-order section — risk is measured by select-review-sample risk globs
 against the actual diff; review units are **derived** from user stories at
-`build-by-story` time when `Execution-mode: story-unit` (see that skill).
+`build-by-story` time (see that skill).
 
 Create a todo per step (1–4, plus 5 if the repo uses an issue tracker) before starting, and complete them in order — this skill owns its own list, distinct from `design-solution`'s upstream and the execute family's downstream. Check each off only when its **Done when:** is met.
 
@@ -25,15 +25,15 @@ Constraints. Every name, path, command, and type they need must be in the task.
 ## Step 1: Header and Global Constraints
 
 Goal (one sentence), Architecture (2–3 sentences), Tech Stack. Header also
-carries the required field:
+carries the bookkeeping field:
 
 ```
 Execution-mode: <unset | continuous | story-unit>
 ```
 
-**A route is offered. A mode is a field that must be written.** Leave the value
-`unset` until Exit — never invent continuous/story-unit from plan size, band, or
-habit. There is **no project-level default** for this field.
+Leave `Execution-mode: unset` while planning — never invent continuous/story-unit
+from plan size, band, or habit. Route choice and mode write-back live only at
+**Exit** (and in the chosen execute skill).
 
 Then **Global Constraints**: project-wide rules copied verbatim from the design
 and `docs/agents/project.md` — test/lint/typecheck commands, naming and i18n
@@ -50,7 +50,7 @@ source the human-facing engineering rules (naming, i18n, house rules) from
 `docs/product/guidelines.md` when it exists, otherwise from `docs/agents/project.md` as
 above — the guidelines doc, when present, is where those rules live.
 
-**Done when:** Goal, Architecture, Tech Stack, `Execution-mode:` (may still be
+**Done when:** Goal, Architecture, Tech Stack, `Execution-mode:` (typically
 `unset`), and Global Constraints are written, and every command, naming/i18n
 rule, and `ARCH-N` invariant in that section is copied verbatim from its source
 file rather than paraphrased.
@@ -109,9 +109,6 @@ tidy review units if that would lie about what the task needs.
 | "Prefactor first is always right — make the change easy" | Prefactor via Depends-on is fine; review units still follow story citations at build-by-story |
 | "I'll add Risk: high so reviewers notice" | No such field. Risk globs on the actual diff replace agent labels |
 | "I'll write Human review order so the human knows what to read first" | Superseded: story-derived units are the review order; an authored second list dies without a consumer |
-| "PM said just mark Approved — continuous is obvious" | Obvious is not written. Empty Execution-mode means not Approved |
-| "Standup in five / plan took 40 minutes — skip the mode question" | Time and sunk cost change *when* you ask, not whether mode is a field |
-| "Four tasks → default continuous" | No size-based default. User picks continuous or story-unit |
 
 **No placeholders.** "TBD", "add appropriate error handling", "similar to
 Task 3", or a type referenced but defined in no task — each of these is a plan
@@ -185,37 +182,45 @@ dependency order. No tracker configured → this step is skipped, not pending.
 
 ## Exit
 
-Present the FILE to the user and STOP for approval — conversational agreement is not
-approval; the written plan is what gets approved, and the execute family runs only
-on an approved `tasks.md`.
+1. **Present the FILE and STOP.** Conversational agreement is not approval; the
+   written plan is what gets approved. The execute family runs only on an
+   approved `tasks.md`.
+2. **On approval:** set `Status: Approved`. Leave `Execution-mode:` as `unset`
+   (or untouched). Do **not** write `continuous` or `story-unit` yourself.
+3. **Offer exactly three execute routes** — one question, three skills. Do **not**
+   first ask continuous vs story-unit; that interview is dead. Mode write-back is
+   owned by the skill the user picks.
 
-**Execution-mode is part of approval, not a route.** Before setting
-`Status: Approved`, the user must choose `Execution-mode: continuous` or
-`Execution-mode: story-unit` and you must write that value into the header.
-`unset`, empty, or missing → **do not** set `Status: Approved`. Never default
-to continuous because the field is empty; empty means not approved.
-
-| Mode | Meaning |
+| Route | Meaning |
 |---|---|
-| `continuous` | No human pause between tasks (subagent path) |
-| `story-unit` | Human-gated review units derived from stories (subagent path) |
+| **`build-in-waves`** | Subagent waves, no human pause between tasks (writes `Execution-mode: continuous`). Prefer `isolate-workspace` first. |
+| **`build-by-story`** | Subagent path with human-gated review units derived from stories (writes `Execution-mode: story-unit`). Prefer `isolate-workspace` first. |
+| **`build-inline`** | Controller implements sequentially with `test-first`, no implementer subagents (writes `Execution-mode: continuous` as bookkeeping; **does not** run unit barriers). |
 
-After mode is written and the user has approved the plan, set `Status: Approved`
-and offer **exactly three routes** (how to run — orthogonal to mode for inline):
+4. **On pick:** name the skill and hand off — REQUIRED SUB-SKILL: use
+   `build-in-waves`, `build-by-story`, or `build-inline` as chosen. For the two
+   subagent routes, prefer REQUIRED SUB-SKILL: use `isolate-workspace` first when
+   no isolated workspace exists yet.
+5. **INDEX:** confirm the feature's row in `docs/specs/INDEX.md` carries the same
+   `Status:` as its `requirements.md`.
 
-1. **`build-in-waves`** — when `Execution-mode: continuous` and subagent waves are
-   wanted (recommended default for continuous). Prefer an isolated workspace via
-   `isolate-workspace`.
-2. **`build-by-story`** — when `Execution-mode: story-unit` (required for unit
-   barriers; do not offer `build-in-waves` for story-unit). Prefer `isolate-workspace`.
-3. **`build-inline`** — controller implements sequentially with `test-first`, no
-   implementer subagents (no-subagent environments, or the user wants to watch
-   each step). Works with either mode header; **does not** run unit barriers.
+| Thought | Reality |
+|---|---|
+| "PM said just mark Approved — continuous is obvious" | Approval is the written plan. Offer the three skills; do not invent mode |
+| "Standup in five — skip asking which execute skill" | Time changes *when* you ask, not whether a route is named |
+| "Four tasks → default build-in-waves" | No size-based default. User picks one of the three |
+| "I'll ask continuous vs story-unit, then offer routes" | Redundant. One question: which of the three skills |
+| "User said approve and start building — write continuous and go" | Approve + offer three routes. "Start building" is not a route pick |
+| "I'll write Execution-mode now so the plan looks complete" | Completeness is Status + route name. Mode is written by the execute skill |
 
-Name the skill that matches the chosen mode first; name `build-inline` when
-they opt out of subagents. Confirm the feature's row in `docs/specs/INDEX.md`
-carries the same `Status:` as its `requirements.md`.
+### Red Flags — Exit
 
-**Done when:** the user has approved the written `tasks.md`, `Execution-mode:` is
-`continuous` or `story-unit`, `Status:` reads `Approved`, the matching execute
-skill is named, and the INDEX.md row agrees.
+- Asking continuous vs story-unit before (or instead of) the three-skill offer
+- Setting `Status: Approved` while inventing `Execution-mode: continuous`
+- Offering only one route, or skipping the offer after approval
+- Writing `Execution-mode:` in plan-tasks instead of letting the execute skill do it
+- Treating "LGTM, build it" as a silent default to `build-in-waves`
+
+**Done when:** the written `tasks.md` is approved, `Status:` reads `Approved`,
+one of the three execute skills is named (and handed off when the user picks),
+`Execution-mode:` was not invented here, and the INDEX.md row agrees.

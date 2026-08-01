@@ -1,9 +1,10 @@
 # Tasks: <Feature Name>
 
-> **For agentic workers:** pick the execute skill from `Execution-mode` and the
-> run route — `build-in-waves` (continuous + subagents), `build-by-story`
-> (story-unit + human review units), or `build-inline` (controller implements,
-> no implementer subagents). Steps use checkbox (`- [ ]`) syntax for tracking.
+> **For agentic workers:** after plan approval, pick one execute skill —
+> `build-in-waves` (subagent waves), `build-by-story` (human-gated story review
+> units), or `build-inline` (controller implements, no implementer subagents).
+> The chosen skill writes `Execution-mode:`. Steps use checkbox (`- [ ]`) syntax
+> for tracking.
 
 Feature code: <CODE>
 Status: Draft

@@ -57,6 +57,8 @@ quick reference: `AGENTS.md`.
 14. **plan-tasks** (m) — `tasks.md`: Global Constraints verbatim, per-task
     Files/Interfaces, TDD steps, `_Requirements:` footers. Coverage self-check via
     the `audit-trace` skill: every requirement cited by ≥1 task before execution starts.
+    Exit: approve plan, then offer one of three execute skills (mode write-back is
+    owned by the chosen skill — not a continuous/story-unit interview at Exit).
 
 ## execution/
 

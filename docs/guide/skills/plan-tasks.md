@@ -78,13 +78,13 @@ The step is done when every requirement ID has both a task footer and a tagged t
 
 Step 5 is optional: if the repo uses an issue tracker (`docs/agents/issue-tracker.md`), publish each task as an issue in dependency order — native sub-issues and blocking links where supported. The issue body describes behavior and interfaces and **never file paths**, and includes acceptance criteria and a `Requirements covered:` list.
 
-After `Execution-mode: continuous` or `story-unit` is written and the plan is Approved, the exit offers **exactly three routes**:
+After the written plan is Approved, the exit offers **exactly three execute routes** — no separate continuous/story-unit interview. `Execution-mode:` may stay `unset` at approval; the chosen skill writes the matching value on start:
 
-| Route | When |
+| Route | Meaning |
 |---|---|
-| [`build-in-waves`](build-in-waves.md) | `continuous` + subagent waves (prefer [`isolate-workspace`](isolate-workspace.md)) |
-| [`build-by-story`](build-by-story.md) | `story-unit` + human-gated review units (prefer isolate-workspace) |
-| [`build-inline`](build-inline.md) | No implementer subagents / user watches the controller |
+| [`build-in-waves`](build-in-waves.md) | Subagent waves (writes `continuous`; prefer [`isolate-workspace`](isolate-workspace.md)) |
+| [`build-by-story`](build-by-story.md) | Human-gated story review units (writes `story-unit`; prefer isolate-workspace) |
+| [`build-inline`](build-inline.md) | Controller implements; no implementer subagents (bookkeeping `continuous`; no unit barriers) |
 
 The spec's `INDEX.md` row is updated to note the plan exists.
 

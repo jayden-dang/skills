@@ -24,11 +24,13 @@ gate-session (session gate)
                         research/run-spike detours; tier decision  [HARD GATE: no code]
 → specify-behavior    EARS + IDs; approval gate on the file
 → design-solution          Satisfies: per section; seams agreed; approval gate
-→ plan-tasks            tasks with _Requirements:_ footers; audit-trace coverage check
+→ plan-tasks            tasks with _Requirements:_ footers; audit-trace coverage check;
+                        approval then offer one of three execute skills (mode write-back
+                        owned by the chosen skill)
 → isolate-workspace             isolated workspace, clean baseline
-→ execute family        pick one from Execution-mode + route:
-                        build-in-waves   (continuous + subagent waves)
-                        build-by-story  (story-unit + human unit barriers)
+→ execute family        pick one route (skill writes Execution-mode:):
+                        build-in-waves   (subagent waves → continuous)
+                        build-by-story  (human unit barriers → story-unit)
                         build-inline (controller TDD, no implementer subagents)
                         [debug on failures; prove-claim before any claim]
 → inspect-change           whole-branch, two-axis (Standards + Spec-by-ID) + overlap search

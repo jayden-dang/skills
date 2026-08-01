@@ -40,7 +40,8 @@ success" is not evidence. Read the diff yourself.
 the territory (codebase, runtime, users, history). Strong models still fail when
 unknowns stay implicit. Discover unknowns before build (`frame-change` knowns
 inventory + blindspot, `clarify-decisions`, `research`/`run-spike`), surface high-blast
-decisions in `plan-tasks` (**Execution-mode** and the execute-family route),
+decisions in `plan-tasks` (the execute-family route; mode write-back is owned by
+the chosen execute skill),
 story-derived review units at `build-by-story`, log mid-build **deviations** in
 `.skills/implementation-notes.md` during execute, and let the human re-check
 understanding with `/study-change` before merge. Do not freeze unverified
@@ -339,8 +340,8 @@ Can't tick a box? The work is not done.
 
 | Skill | When |
 |---|---|
-| `build-in-waves` | `Execution-mode: continuous` + subagent waves |
-| `build-by-story` | `Execution-mode: story-unit` + human-gated review units |
+| `build-in-waves` | Subagent waves (writes `Execution-mode: continuous`) |
+| `build-by-story` | Human-gated review units (writes `Execution-mode: story-unit`) |
 | `build-inline` | No implementer subagents / user watches controller implement |
 
 **Main flow:** `frame-change` → `specify-behavior` → `design-solution` →

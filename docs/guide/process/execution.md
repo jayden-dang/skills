@@ -26,12 +26,13 @@ Then install dependencies (auto-detected from lockfiles) and run the **clean bas
 
 ## The execution family
 
-Pick **one** skill from the approved plan's `Execution-mode` and the run route:
+Pick **one** skill (offered at `plan-tasks` Exit). Each skill owns writing
+`Execution-mode:` on start when the header is still `unset`:
 
 | Skill | When |
 |---|---|
-| [`build-in-waves`](../skills/build-in-waves.md) | `Execution-mode: continuous` + subagent waves |
-| [`build-by-story`](../skills/build-by-story.md) | `Execution-mode: story-unit` (human-gated review units) |
+| [`build-in-waves`](../skills/build-in-waves.md) | Subagent waves (writes `Execution-mode: continuous`) |
+| [`build-by-story`](../skills/build-by-story.md) | Human-gated review units (writes `Execution-mode: story-unit`) |
 | [`build-inline`](../skills/build-inline.md) | No implementer subagents / user watches the controller implement |
 
 ### `build-in-waves` (continuous + subagents)

@@ -118,27 +118,39 @@ holds, every case has all required slots.*
 
 ## 5. Hand over
 
-Give both paths (run file + HTML), the fastest way in — a ~30-second first pass
-that lights the feature up (usually the first `happy` row) — then degraded-feature
-notes and coverage exceptions.
+Ordered hand-off (artifacts → vet → optional serve → dogfood only after vet):
 
-Offer the live guide when they will be testing by hand alongside the agent:
+1. **Artifacts** — give both paths (run file + HTML), the fastest way in — a
+   ~30-second first pass that lights the feature up (usually the first `happy`
+   row) — then degraded-feature notes and coverage exceptions.
 
-```bash
-python3 <skill-root>/scripts/review-product-flow serve .skills/<slug>-review-product-flow.json
-```
+2. **Required next:** `vet-product-flow` on the run file. Invoke it when
+   model-invoked conditions match; otherwise instruct the controller to run it.
+   Do **not** treat the guide as ready for agent dogfood until `vet-product-flow`
+   has produced a report. §1 / §4 coverage self-check is authoring hygiene — it
+   is **not a substitute for vet**.
 
-It binds `127.0.0.1:8787`, follows verdicts as the agent records them, and writes
-their ticks back where the agent can see them. Tell them plainly what a tick
-means: it records that they looked, and never becomes a `pass`. Stopping it is
-`serve --stop`. Opened as a plain file instead, the guide still shows the
-verdicts it was rendered with — the server only buys freshness.
+3. **Optional serve** — offer the live guide when they will be testing by hand
+   alongside the agent:
 
-If the **agent** should run the guide, name `run-product-walkthrough` and the run-file
-path.
+   ```bash
+   python3 <skill-root>/scripts/review-product-flow serve .skills/<slug>-review-product-flow.json
+   ```
 
-*Done when: artifacts are on disk, grounded, the §1 coverage gate holds, and
-every case is fully slotted.*
+   It binds `127.0.0.1:8787`, follows verdicts as the agent records them, and
+   writes their ticks back where the agent can see them. Tell them plainly what
+   a tick means: it records that they looked, and never becomes a `pass`.
+   Stopping it is `serve --stop`. Opened as a plain file instead, the guide still
+   shows the verdicts it was rendered with — the server only buys freshness.
+
+4. **Agent dogfood** — name `run-product-walkthrough` and the run-file path
+   **only after** a clean `vet-product-flow` report (or a named override on open
+   findings). Walkthrough still enforces its own gate; hand-off order does not
+   replace that check.
+
+*Done when: artifacts are on disk, grounded, the §1 coverage gate holds, every
+case is fully slotted, and `vet-product-flow` is named as the required next step
+before agent dogfood.*
 
 ## Rationalizations
 
@@ -151,6 +163,7 @@ every case is fully slotted.*
 | "One happy case per requirement is enough" | The coverage gate requires non-happy kinds (or a written exception). Happy-only is a demo, not review-product-flow. |
 | "Edges belong in unit tests, not the guide" | Review Product Flow is the user-facing surface. If the user can hit the edge, it gets a row. |
 | "Worse cases mean load/chaos/fuzz" | Those are other harnesses. Review Product Flow worse cases are edge, error, nonbehavior, persist. |
+| "§4 coverage self-check already ran — skip vet" | Self-check is same-session authoring hygiene, not an isolated implementation-surface judgment. It is **not a substitute for vet**. |
 
 ## Red Flags
 

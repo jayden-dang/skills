@@ -50,9 +50,17 @@ bullets from Task 2; later stories expand in later tasks.
 
 ## Story 4 — Author hand-off
 
-- VPF-4.1 review-product-flow names vet before agent dogfood
-- VPF-4.2 CONTINUE TO §1 coverage gate and seven-kind taxonomy
-- VPF-4.3 CONTINUE TO run file SSOT + shell render path
+- **VPF-4.1** at `review-product-flow` §5 Hand over, **required next** is
+  `vet-product-flow` on the run file before treating the guide as ready for
+  agent dogfood; name `run-product-walkthrough` **only after** a clean vet
+  report (or named override). Ordered: artifacts → vet → optional serve →
+  walkthrough.
+- **VPF-4.2** CONTINUE TO apply §1 coverage gate and the seven-kind taxonomy
+  (`happy`/`edge`/`error`/`nonbehavior`/`persist`/`visual`/`journey`); coverage
+  self-check remains and is not a substitute for vet.
+- **VPF-4.3** CONTINUE TO treat the run file as authoring **SSOT** and use
+  `review-product-flow render` with the checked-in shell (`shell/guide.html`) —
+  no craft-page default.
 
 ## Story 5 — Hard gate before walkthrough drive
 

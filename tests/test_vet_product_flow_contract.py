@@ -1,8 +1,9 @@
-"""VPF skill body contracts — isolation, map, non-claims, report, guide-gap.
+"""VPF skill body contracts — isolation, map, non-claims, report, guide-gap,
+author hand-off.
 
 VPF-1.1 VPF-1.2 VPF-1.3 VPF-1.4 VPF-1.5 VPF-2.1 VPF-2.2 VPF-2.3 VPF-2.4
-VPF-2.5 VPF-2.6 VPF-3.1 VPF-3.2 VPF-3.3 VPF-3.4 VPF-3.5 VPF-6.2 VPF-6.3
-VPF-6.4 VPF-6.5 VPF-6.6 VPF-6.7 VPF-8.1
+VPF-2.5 VPF-2.6 VPF-3.1 VPF-3.2 VPF-3.3 VPF-3.4 VPF-3.5 VPF-4.1 VPF-4.2
+VPF-4.3 VPF-6.2 VPF-6.3 VPF-6.4 VPF-6.5 VPF-6.6 VPF-6.7 VPF-8.1
 """
 from __future__ import annotations
 
@@ -12,6 +13,7 @@ from pathlib import Path
 
 REPO = Path(__file__).resolve().parent.parent
 SKILL = REPO / "skills" / "acceptance" / "vet-product-flow" / "SKILL.md"
+RPF_SKILL = REPO / "skills" / "acceptance" / "review-product-flow" / "SKILL.md"
 BRIEF = (
     REPO
     / "skills"
@@ -429,8 +431,100 @@ class VetProductFlowGuideGapLoop(unittest.TestCase):
         )
 
 
+class ReviewProductFlowAuthorHandoff(unittest.TestCase):
+    """VPF-4.1–4.3 — review-product-flow §5 names vet; guards §1 + render SSOT."""
+
+    def setUp(self):
+        self.assertTrue(RPF_SKILL.exists(), f"missing {RPF_SKILL}")
+        self.text = RPF_SKILL.read_text()
+        self.body = _body(self.text)
+
+    def _section5(self) -> str:
+        """Extract Hand over / §5 through next ## or end."""
+        m = re.search(
+            r"(?is)##\s*5\.\s*Hand over\b(.*?)(?=\n##\s|\Z)",
+            self.body,
+        )
+        self.assertIsNotNone(m, "§5 Hand over section missing")
+        return m.group(0)
+
+    def test_VPF_4_1_required_next_vet_before_dogfood(self):
+        """VPF-4.1 — §5 names vet-product-flow as required next before agent dogfood."""
+        sec5 = self._section5()
+        self.assertIn("vet-product-flow", sec5)
+        self.assertRegex(
+            sec5,
+            r"(?is)required next|next required",
+        )
+        self.assertRegex(
+            sec5,
+            r"(?is)(before|until).{0,80}(dogfood|run-product-walkthrough)|"
+            r"(dogfood|run-product-walkthrough).{0,80}(after|only after|vet)",
+        )
+        # Ordered: walkthrough only after vet (not as immediate alternative)
+        self.assertRegex(
+            sec5,
+            r"(?is)(only after|after).{0,60}(vet|clean|report)|"
+            r"vet-product-flow.{0,200}run-product-walkthrough",
+        )
+
+    def test_VPF_4_2_coverage_gate_and_taxonomy_guard(self):
+        """VPF-4.2 — §1 coverage gate and seven-kind taxonomy still present."""
+        self.assertRegex(self.body, r"(?i)##\s*1\.\s*Scope|coverage gate")
+        self.assertRegex(
+            self.body,
+            r"(?is)Coverage rules|Every user-facing requirement",
+        )
+        # Seven kinds in taxonomy
+        for kind in (
+            "happy",
+            "edge",
+            "error",
+            "nonbehavior",
+            "persist",
+            "visual",
+            "journey",
+        ):
+            self.assertIn(kind, self.body)
+        # Coverage self-check remains (not removed by hand-off rewrite)
+        self.assertRegex(
+            self.body,
+            r"(?i)Coverage self-check|count cases by `kind`",
+        )
+
+    def test_VPF_4_3_run_file_ssot_and_render_shell(self):
+        """VPF-4.3 — run file SSOT and render shell path still present."""
+        self.assertRegex(
+            self.body,
+            r"(?is)Authoring SSOT is the run file|run file.*SSOT|SSOT.*run file",
+        )
+        self.assertRegex(
+            self.body,
+            r"review-product-flow\s+render",
+        )
+        self.assertRegex(
+            self.body,
+            r"(?i)shell/guide\.html|checked-in shell",
+        )
+        self.assertRegex(
+            self.body,
+            r"(?is)(not|do not|never).{0,40}(craft-page|invent)",
+        )
+
+    def test_VPF_4_self_check_not_vet_rationalization(self):
+        """VPF-4.1/4.2 — rationalization: coverage self-check ≠ vet."""
+        self.assertRegex(self.body, r"(?i)\|\s*Thought\s*\|\s*Reality\s*\|")
+        self.assertRegex(
+            self.body,
+            r"(?is)(self-?check|coverage self).{0,80}(not|≠|is not).{0,40}vet|"
+            r"vet.{0,60}(not|≠|is not).{0,40}(self-?check|§\s*4|coverage)|"
+            r"(self-?check).{0,40}(substitute|replacement).{0,40}vet|"
+            r"not a substitute for vet",
+        )
+
+
 class VetProductFlowScenarios(unittest.TestCase):
-    """Scenario markdown expanded for stories 1–3 + guide-gap (Tasks 2–3)."""
+    """Scenario markdown expanded for stories 1–3 + guide-gap + hand-off."""
 
     def test_scenarios_and_pressure_exist(self):
         """Stories 1–3 behavioral coverage files present."""
@@ -476,6 +570,24 @@ class VetProductFlowScenarios(unittest.TestCase):
         self.assertRegex(
             s,
             r"(?is)VPF-6\.6.{0,200}(2|two).{0,40}(cycle|re-?judgment|re-?vet)",
+        )
+
+    def test_VPF_4_scenarios_author_handoff_behavioral(self):
+        """VPF-4.1–4.3 — Story 4 scenarios carry behavioral bullets."""
+        s = SCENARIOS.read_text()
+        for token in ("VPF-4.1", "VPF-4.2", "VPF-4.3"):
+            self.assertIn(token, s)
+        self.assertRegex(
+            s,
+            r"(?is)VPF-4\.1.{0,200}(required next|vet-product-flow|dogfood)",
+        )
+        self.assertRegex(
+            s,
+            r"(?is)VPF-4\.2.{0,200}(coverage|taxonomy|seven-?kind|§\s*1)",
+        )
+        self.assertRegex(
+            s,
+            r"(?is)VPF-4\.3.{0,200}(SSOT|run file|render|shell)",
         )
 
 

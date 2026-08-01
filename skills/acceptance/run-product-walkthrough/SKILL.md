@@ -198,18 +198,27 @@ In file order (`$DF next` until empty):
 
 ## 4. Failure routing
 
-Re-drive the failed case once from a clean setup, then classify by observation:
+Re-drive the failed case once from a clean setup, then classify by observation.
+**Master** (this controller) owns case selection, evidence slots, `mark`
+pass/fail/blocked, and **re-test** after a fix — never hand those to a fix
+subagent.
 
 | Observation | Action |
 |---|---|
-| Deterministic fail on a real Expect / backend assertion | Product defect. **REQUIRED SUB-SKILL: use `root-cause`.** Hand a red-capable loop (repro steps, request/response, console), not only a click path. |
+| Deterministic fail on a real Expect / backend assertion | **Product defect.** Master marks `fail` with full evidence (`saw`/`server`). Dispatch an isolated **subagent** with a red-capable brief only: case id, `req`, try/expect, saw/server, repro — **not** the full session history or long dogfood context. Master does **not** patch product code in the walkthrough session. Subagent **REQUIRED SUB-SKILL: use `root-cause`** (and **test-first**); isolation is **not** a free patch without root-cause. |
 | Flaky, or guide wrong (stale label, missing seed, bad Expect) | Fix the case's authored slots in the **run file** (re-`render` the HTML if the human has it open); re-drive. Do not send guide bugs to `root-cause`. |
 | Shared precondition broken (login, server down, seed missing) | Stop the run. Leave remaining cases `pending`/`blocked`. Downstream is untested, not passing. |
 
-After `root-cause` reports fixed: restart the app if needed, re-drive the failed case
-from a clean setup, **and** re-drive every already-`pass` case whose `req`
-appears in the fix's changed files (grep the diff for requirement IDs or the
-modules those cases exercise).
+**On DONE** (subagent reports fixed): control returns to the **master**. Restart
+the app if needed, re-drive the failed case from a clean setup, **and** re-drive
+every already-`pass` case whose `req` the product fix touched (grep the diff for
+requirement IDs or the modules those cases exercise).
+
+**Loops stay separate.** The guide-gap fix loop (`vet-product-flow`: patch run
+file → re-vet) is **not** this product-defect dogfood loop. Guide-gap findings
+are **not** routed here — the §2a gate should have blocked drive; if a missing
+situation is discovered mid-run, treat it as guide wrong / re-enter vet, not as
+a product defect. Product defects do not absorb missing-situation findings.
 
 **Caps (D2):** 3 distinct fix attempts on the same case → stop and escalate.
 5 product-defect fix cycles in the whole run → stop with a partial run file.
@@ -252,6 +261,9 @@ the user's word — no bare "all good."*
 | "Just go / demo in 5 minutes — skip the open findings" | Not an override. Name each open `VPF-N` or run the guide-gap loop. Severity does not soften the gate. |
 | "Report is fine — rev only moved for marks" | Freshness is `run_file` + `cases_fingerprint`, not whole-file `rev`. Recompute fingerprint. |
 | "Only Critical findings block drive" | Every open finding blocks. Severity orders fix only. |
+| "I'll patch the product in this long dogfood thread" | Master marks fail; dispatch a subagent with a red-capable brief. Master re-tests. |
+| "Isolation means skip root-cause / test-first" | Subagent still runs `root-cause` (+ test-first). Isolation ≠ free patch. |
+| "Guide-gap miss mid-run — treat as product defect" | Separate loops. Guide wrong / re-enter vet; do not absorb missing-situation findings into root-cause. |
 
 ## Red Flags
 
@@ -265,3 +277,5 @@ the user's word — no bare "all good."*
 - Claiming completion from memory after compaction instead of reading the run file
 - Driving product cases with a missing, stale, or open-findings vet report and no named override
 - Treating bare “just go” or severity=Minor as a gate pass
+- Patching product in the master dogfood context instead of a red-capable subagent brief
+- Clearing a product defect without `root-cause` / test-first because “it was isolated”

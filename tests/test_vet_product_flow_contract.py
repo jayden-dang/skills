@@ -1,10 +1,11 @@
 """VPF skill body contracts — isolation, map, non-claims, report, guide-gap,
-author hand-off, walkthrough hard gate.
+author hand-off, walkthrough hard gate, product-defect isolation.
 
 VPF-1.1 VPF-1.2 VPF-1.3 VPF-1.4 VPF-1.5 VPF-2.1 VPF-2.2 VPF-2.3 VPF-2.4
 VPF-2.5 VPF-2.6 VPF-3.1 VPF-3.2 VPF-3.3 VPF-3.4 VPF-3.5 VPF-4.1 VPF-4.2
 VPF-4.3 VPF-5.1 VPF-5.2 VPF-5.3 VPF-5.4 VPF-5.5 VPF-5.6 VPF-6.1 VPF-6.2
-VPF-6.3 VPF-6.4 VPF-6.5 VPF-6.6 VPF-6.7 VPF-8.1
+VPF-6.3 VPF-6.4 VPF-6.5 VPF-6.6 VPF-6.7 VPF-7.1 VPF-7.2 VPF-7.3 VPF-7.4
+VPF-7.5 VPF-8.1
 """
 from __future__ import annotations
 
@@ -744,6 +745,172 @@ class RunProductWalkthroughHardGate(unittest.TestCase):
         self.assertRegex(
             self.body,
             r"(?is)guide-gap|guide gap",
+        )
+
+
+class RunProductWalkthroughProductDefectIsolation(unittest.TestCase):
+    """VPF-7.1–7.5 — product-defect isolation during dogfood (§4 Failure routing)."""
+
+    def setUp(self):
+        self.assertTrue(RPW_SKILL.exists(), f"missing {RPW_SKILL}")
+        self.body = _body(RPW_SKILL.read_text())
+        # Scope asserts to §4 Failure routing when possible
+        m = re.search(
+            r"(?is)##\s*4\.\s*Failure routing(.+?)(?=\n##\s+\d|\Z)",
+            self.body,
+        )
+        self.section4 = m.group(1) if m else self.body
+
+    def test_VPF_7_1_master_owns_selection_evidence_mark_retest(self):
+        """VPF-7.1 — master owns case selection, evidence, mark, re-test."""
+        s = self.section4
+        self.assertRegex(
+            s,
+            r"(?is)\bmaster\b.{0,80}(own|mark|re-?test|select|evidence)|"
+            r"(own|keep).{0,40}\bmaster\b",
+        )
+        # Master marks fail with evidence (not subagent)
+        self.assertRegex(
+            s,
+            r"(?is)master.{0,80}(mark|evidence)|"
+            r"mark.{0,40}fail.{0,40}evidence",
+        )
+        self.assertRegex(
+            s,
+            r"(?is)re-?test|re-?drive",
+        )
+
+    def test_VPF_7_2_subagent_brief_red_capable_not_full_history(self):
+        """VPF-7.2 — subagent brief: repro, saw/server, case id, req — not full history."""
+        s = self.section4
+        self.assertRegex(s, r"(?is)subagent")
+        self.assertRegex(
+            s,
+            r"(?is)brief",
+        )
+        # Red-capable brief contents
+        for token in (r"repro", r"case id|case.?id|`?id`?", r"\breq\b"):
+            self.assertRegex(s, rf"(?is){token}")
+        self.assertRegex(
+            s,
+            r"(?is)saw|server",
+        )
+        # Not full session history
+        self.assertRegex(
+            s,
+            r"(?is)(not|without|never).{0,60}(full|whole|entire).{0,40}"
+            r"(session|history|context)|"
+            r"(not|without).{0,40}(session history|full history|"
+            r"whole session|long dogfood)",
+        )
+
+    def test_VPF_7_3_master_redrives_failed_and_related_pass_on_done(self):
+        """VPF-7.3 — on DONE master re-drives failed + already-pass whose req fix touched."""
+        s = self.section4
+        self.assertRegex(
+            s,
+            r"(?is)(DONE|done|fixed|reports? fixed).{0,120}(re-?drive|master)|"
+            r"(re-?drive|master).{0,120}(DONE|done|fixed)",
+        )
+        self.assertRegex(
+            s,
+            r"(?is)(failed case|re-?drive the failed)",
+        )
+        self.assertRegex(
+            s,
+            r"(?is)already-?`?pass`?.{0,80}(req|fix)|"
+            r"(req|fix).{0,80}already-?`?pass`?",
+        )
+
+    def test_VPF_7_4_subagent_still_root_cause_and_test_first(self):
+        """VPF-7.4 — subagent still uses root-cause (+ test-first); isolation ≠ free patch."""
+        s = self.section4
+        self.assertRegex(
+            s,
+            r"(?is)root-cause|`root-cause`",
+        )
+        self.assertRegex(
+            s,
+            r"(?is)test-first|TDD",
+        )
+        self.assertRegex(
+            s,
+            r"(?is)(subagent|isolation).{0,100}(root-cause|test-first)|"
+            r"root-cause.{0,80}(subagent|isolat)|"
+            r"(not|≠|!=|never).{0,40}(free|skip).{0,40}(patch|root-cause)|"
+            r"isolation.{0,60}(not|≠).{0,40}(free|patch)",
+        )
+
+    def test_VPF_7_5_guide_gap_loop_separate_from_product_defect(self):
+        """VPF-7.5 — guide-gap loop separate from product-defect dogfood loop."""
+        s = self.section4
+        self.assertRegex(
+            s,
+            r"(?is)guide-gap|guide gap",
+        )
+        self.assertRegex(
+            s,
+            r"(?is)(separate|not routed|do not absorb|not.{0,40}product defect)|"
+            r"(product defect).{0,80}(not|never).{0,60}(guide-gap|guide gap)|"
+            r"(guide-gap|guide gap).{0,80}(separate|not).{0,60}"
+            r"(product.?defect|this loop|routed here)",
+        )
+
+    def test_VPF_7_preserve_flaky_guide_wrong_and_precondition_rows(self):
+        """Guards — flaky/guide-wrong and precondition-stop rows remain."""
+        s = self.section4
+        self.assertRegex(
+            s,
+            r"(?is)flaky|guide wrong|guide-wrong",
+        )
+        self.assertRegex(
+            s,
+            r"(?is)(run file|authored).{0,60}(fix|edit)|"
+            r"fix.{0,40}(run file|authored)",
+        )
+        self.assertRegex(
+            s,
+            r"(?is)precondition|server down|login",
+        )
+        self.assertRegex(
+            s,
+            r"(?is)stop the run|leave remaining|pending|blocked",
+        )
+
+
+class VetProductFlowStory7Scenarios(unittest.TestCase):
+    """VPF-7.1–7.5 — Story 7 scenarios carry behavioral bullets."""
+
+    def test_VPF_7_scenarios_product_defect_isolation_behavioral(self):
+        """VPF-7.1–7.5 — Story 7 scenarios expand isolation bullets."""
+        s = SCENARIOS.read_text()
+        for token in (
+            "VPF-7.1",
+            "VPF-7.2",
+            "VPF-7.3",
+            "VPF-7.4",
+            "VPF-7.5",
+        ):
+            self.assertIn(token, s)
+        self.assertRegex(
+            s,
+            r"(?is)VPF-7\.1.{0,200}(master|selection|evidence|mark|re-?test)",
+        )
+        self.assertRegex(
+            s,
+            r"(?is)VPF-7\.2.{0,200}(subagent|brief|repro|not.{0,40}(full|session))",
+        )
+        self.assertRegex(
+            s,
+            r"(?is)VPF-7\.3.{0,200}(re-?drive|DONE|already-?pass|req)",
+        )
+        self.assertRegex(
+            s,
+            r"(?is)VPF-7\.4.{0,200}(root-cause|test-first)",
+        )
+        self.assertRegex(
+            s,
+            r"(?is)VPF-7\.5.{0,200}(separate|guide-gap|product.?defect)",
         )
 
 

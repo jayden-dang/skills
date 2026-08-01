@@ -108,11 +108,21 @@ bullets from Task 2; later stories expand in later tasks.
 
 ## Story 7 — Product-defect isolation during dogfood
 
-- VPF-7.1 master owns selection, evidence, mark, re-test
-- VPF-7.2 subagent brief is red-capable only (not full session)
-- VPF-7.3 master re-drives failed + related already-pass after DONE
-- VPF-7.4 subagent still uses root-cause (+ test-first)
-- VPF-7.5 guide-gap loop separate from product-defect loop
+- **VPF-7.1** during `run-product-walkthrough` §4, **master** owns case
+  selection, evidence slots, `mark` pass/fail/blocked, and **re-test** after a
+  fix — not the fix subagent.
+- **VPF-7.2** product-defect work dispatches a **subagent** with a red-capable
+  brief only (repro, saw/server, case id, `req`, try/expect) — **not** the full
+  session history or long dogfood context.
+- **VPF-7.3** when that subagent reports **DONE**, master re-drives the failed
+  case and every already-`pass` case whose `req` the product fix touched
+  (existing re-drive rules).
+- **VPF-7.4** the subagent still uses **`root-cause`** (+ **test-first**);
+  context isolation is not a free pass to patch without root-cause.
+- **VPF-7.5** the **guide-gap** fix loop (story 6: patch run file → re-vet) stays
+  **separate** from this product-defect dogfood loop; product defects do not
+  absorb missing-situation findings; mid-run guide misses re-enter vet, not
+  root-cause.
 
 ## Story 8 — Reliability (finding id stability)
 

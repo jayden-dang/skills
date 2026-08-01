@@ -1,32 +1,52 @@
 # Vet product flow — scenarios (ID index)
 
-Greppable requirement-ID layer for feature VPF. Behavioral bullets expand in
-later tasks; this skeleton places every `VPF-N.M` once under its story heading.
+Greppable requirement-ID layer for feature VPF. Stories 1–3 carry behavioral
+bullets from Task 2; later stories expand in later tasks.
 
 ## Story 1 — Isolated skill and report artifact
 
-- VPF-1.1 model-invoked skill at `skills/acceptance/vet-product-flow/SKILL.md`
-- VPF-1.2 judgment in fresh isolated context (subagent or axis-close inline)
-- VPF-1.3 report path + stamp fields including `cases_fingerprint`
-- VPF-1.4 findings identified as integer `VPF-N` (not criterion `VPF-N.M`)
-- VPF-1.5 read-only: no product code or run-file writes during judgment
+- **VPF-1.1** model-invoked skill at `skills/acceptance/vet-product-flow/SKILL.md`
+  with frontmatter `name: vet-product-flow` and no `disable-model-invocation`.
+  Description triggers judgment / isolation / before dogfood — not a step-by-step
+  workflow summary.
+- **VPF-1.2** judgment runs in a fresh isolated context: preferred read-only
+  subagent with `judgment-brief.md`, or inline fallback that states
+  `AUTHORING CLOSED — starting isolated vet-product-flow pass`. Same-session §4
+  self-check / self-clear after authoring is forbidden as a substitute.
+- **VPF-1.3** completed pass writes `.skills/<slug>-vet-product-flow.md` with
+  stamp fields including `run_file`, `cases_fingerprint`, `stamped_at`,
+  `pass_kind`, `prior_report`, `open_count`, `gate_hint`, plus open findings.
+- **VPF-1.4** findings identified as integer `VPF-N` (not criterion `VPF-N.M`).
+- **VPF-1.5** during judgment: product codebase and run file unmodified
+  (read-only). Report write is allowed. No self-stamped “clean” without a report.
 
 ## Story 2 — Implementation-surface map
 
-- VPF-2.1 map user-observable shipped paths/states against cases
-- VPF-2.2 emit missing-situation when surface exists without a case
-- VPF-2.3 require opened code evidence for implementation claims
-- VPF-2.4 do not assert surfaces that were not inspected
-- VPF-2.5 severity orders fix only; does not soften dogfood gate
-- VPF-2.6 hygiene is not the product claim / not “complete for real users”
+- **VPF-2.1** map user-observable shipped paths/states (routes, primary actions,
+  empty/error/role UI actually rendered) against run-file cases — not every
+  internal branch or helper.
+- **VPF-2.2** emit a missing-situation finding when a shipped surface has no
+  corresponding case (including non-happy paths real use can hit).
+- **VPF-2.3** require opened-code evidence (file / symbol / route / state) for
+  any implementation claim that the product already does X.
+- **VPF-2.4** if code for a candidate surface was not inspected, do not assert
+  that surface as a missing-situation finding.
+- **VPF-2.5** severity labels Critical / Important / Minor order the fix loop
+  only; severity does not soften or clear the dogfood gate.
+- **VPF-2.6** authoring §1 hygiene (schema/kind/status, requirement-ID coverage)
+  is not the product claim; never sell mechanical completeness as “complete for
+  real users.”
 
 ## Story 3 — Explicit non-claims
 
-- VPF-3.1 no novelty/feel/polish taste as pass/fail
-- VPF-3.2 no chaos/load/race/fuzz requirement
-- VPF-3.3 no speculative “users will want” findings
-- VPF-3.4 no global “good UX / ready to ship” stamps
-- VPF-3.5 does not replace dogfood (no drive / FE+BE ownership)
+- **VPF-3.1** no novelty / feel / visual-polish taste as pass/fail outcomes.
+- **VPF-3.2** no chaos / load / race / security-fuzz suites required or invented.
+- **VPF-3.3** no speculative “users will want X” / “product should do X” when X
+  is not already on the shipped user-observable surface.
+- **VPF-3.4** no global stamps: “good UX”, “complete for real users”, “ready to
+  ship.”
+- **VPF-3.5** does not replace dogfood: no drive-app pass/fail ownership, no
+  FE+BE (`saw`/`server`) evidence ownership inside `vet-product-flow`.
 
 ## Story 4 — Author hand-off
 
@@ -63,4 +83,4 @@ later tasks; this skeleton places every `VPF-N.M` once under its story heading.
 
 ## Story 8 — Reliability (finding id stability)
 
-- VPF-8.1 re-check reuses `VPF-N` for same still-open `surface_key`
+- **VPF-8.1** re-check reuses `VPF-N` for same still-open `surface_key`

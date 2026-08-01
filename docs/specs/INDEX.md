@@ -18,5 +18,5 @@ not planned as a roadmap item.
 | PFIND | Pathfind layer — multi-session decision map (Layer 0) before program/delivery | ./2026-07-31-pathfind/ | Implemented | — |
 | VPF | Vet product flow — isolated implementation-surface judgment before dogfood | ./2026-08-01-vet-product-flow/ | Approved | — |
 | FSUB | Feature subgraph — ask-time derivation of OWNS/OVERLAPS/IMPLEMENTS/CONTAINS/RESPECTS + map-features backfill | ./2026-08-01-feature-subgraph/ | Implemented | — |
-| SKNS | Skills ephemera namespace — per-feature `.skills/<CODE>/` layout (progress, execute, review) | ./2026-08-01-skills-namespace/ | Approved | — |
+| SKNS | Skills ephemera namespace — per-feature `.skills/<CODE>/` layout (progress, execute, review) | ./2026-08-01-skills-namespace/ | Implemented | — |
 

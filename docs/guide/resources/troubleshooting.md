@@ -101,7 +101,7 @@ The user-invoked set includes (non-exhaustive): `/ask-me-bro`, `/author-skills`,
 
 ### `build-in-waves` re-ran a task that was already done
 
-The controller trusted its own memory after a compaction. `.skills/progress.md` is the source of truth:
+The controller trusted its own memory after a compaction. `.skills/<CODE>/progress.md` is the source of truth:
 
 > Controllers that lost their place have re-dispatched entire completed task sequences — the single most expensive failure this loop has.
 
@@ -109,7 +109,7 @@ After compaction or resume, trust the ledger and `git log`. Never re-dispatch a 
 
 ### The reviewer approved a task that was obviously broken
 
-Check the review bundle's diff base. The controller builds the bundle itself — `git log`/`git diff` from a recorded base into `.skills/review-<base7>..<head7>.diff` — and if that base is `HEAD~1` instead of the sha recorded *before* the implementer was dispatched, the reviewer saw only the last commit of a multi-commit task.
+Check the review bundle's diff base. The controller builds the bundle itself — `git log`/`git diff` from a recorded base into `.skills/<CODE>/review-<base7>..<head7>.diff` — and if that base is `HEAD~1` instead of the sha recorded *before* the implementer was dispatched, the reviewer saw only the last commit of a multi-commit task.
 
 `build-in-waves` warns about this: `BASE=$(git rev-parse HEAD)` is step 1 of the per-task loop for exactly this reason.
 

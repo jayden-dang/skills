@@ -23,8 +23,8 @@ docs/agents/           # per-repo config written by configure-repo:
   issue-tracker.md     #   tracker choice + wayfinding operations
   triage-labels.md     #   canonical role → label mapping
 .out-of-scope/         # rejection knowledge base (one file per concept)
-.skills/               # git-ignored working namespace: task briefs, reports,
-                       #   review diffs, progress ledger (crash/compaction recovery)
+.skills/               # git-ignored: feature ephemera under .skills/<CODE>/;
+                       #   shared pathfind/, research/, decisions/, pr-packages/
   decisions/           #   boundary decision records (DEC-*.md) + adoption anchor
   research/            #   cited research notes (<date>-<topic>.md)
 ```
@@ -148,3 +148,8 @@ artifact to keep fresh, so nothing can go stale.
 
 `frame-change` and `ask-me-bro` decide the tier explicitly and say so. Never spec what you
 don't understand yet — spike via `run-spike`/`research` first.
+
+
+## Feature ephemera roots
+
+Feature-scoped files live under `.skills/<CODE>/`. See the skill-set template `templates/skills-ephemera-paths.md` (shipped with the pack).

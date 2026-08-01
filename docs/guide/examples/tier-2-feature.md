@@ -201,20 +201,20 @@ dispatch a FRESH implementer            (model stated explicitly; mid tier — p
   → it reads only the brief, works test-first via tdd,
     commits with the trailer, writes .skills/task-2-report.md
     with RED and GREEN evidence, and returns DONE in ≤15 lines
-git diff $BASE..HEAD                     → .skills/review-a1b2c3d..e4f5g6h.diff
+git diff $BASE..HEAD                     → .skills/<CODE>/review-a1b2c3d..e4f5g6h.diff
 dispatch a task reviewer                (two verdicts: Spec Compliance, Code Quality)
 ```
 
 The reviewer returns **Important: `SHELL-1.5`'s hard-kill path has no test — the report claims coverage but the diff shows none.** So: a **fix subagent** (never the controller's own context — that pollutes it), then a **re-review**. Clean.
 
 ```
-append to .skills/progress.md:
+append to .skills/<CODE>/progress.md:
   Task 2: complete (commits a1b2c3d..e4f5g6h, review clean)
 ```
 
 Then straight to Task 3. No "should I continue?" — the user asked for the plan to be executed.
 
-That ledger line is the most important artifact in the loop. If the session compacts, the controller trusts `.skills/progress.md` and `git log` over its own memory. Controllers that trusted memory have re-dispatched entire completed task sequences.
+That ledger line is the most important artifact in the loop. If the session compacts, the controller trusts `.skills/<CODE>/progress.md` and `git log` over its own memory. Controllers that trusted memory have re-dispatched entire completed task sequences.
 
 ---
 

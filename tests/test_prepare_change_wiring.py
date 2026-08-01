@@ -82,7 +82,7 @@ class ExecutePlanTail(unittest.TestCase):
 
     def test_PCHG_11_9_ledger_append_survives(self):
         """PCHG-11.9 — the per-task ledger append is unchanged."""
-        self.assertIn(".skills/progress.md", self.text)
+        self.assertIn(".skills/<CODE>/progress.md", self.text)
         self.assertRegex(self.text, r"Task N: complete \(commits")
 
 

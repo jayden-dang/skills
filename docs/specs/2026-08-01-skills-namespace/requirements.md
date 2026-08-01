@@ -1,7 +1,7 @@
 # Requirements: Skills ephemera namespace
 
 Feature code: SKNS
-Status: Approved
+Status: Implemented
 Date: 2026-08-01
 
 ## 1. Per-feature ephemera root

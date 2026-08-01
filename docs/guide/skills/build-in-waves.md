@@ -6,7 +6,7 @@
 |---|---|
 | **Bucket** | execution |
 | **Invocation** | model-invocable (the agent calls it on its own) |
-| **Reads** | `tasks.md` (`Execution-mode: continuous`, Global Constraints), `.skills/progress.md`, `docs/agents/project.md` |
+| **Reads** | `tasks.md` (`Execution-mode: continuous`, Global Constraints), `.skills/<CODE>/progress.md`, `docs/agents/project.md` |
 | **Writes** | implementation commits; `.skills/` scratch — brief, report, diff package per task, plus the ledger |
 | **Calls** | [`isolate-workspace`](isolate-workspace.md), [`inspect-change`](inspect-change.md), `polish-diff`, [`validate-feature`](validate-feature.md), [`root-cause`](root-cause.md), [`package-change`](package-change.md), [`land-branch`](land-branch.md); hands off to [`build-by-story`](build-by-story.md) / [`build-inline`](build-inline.md) when mis-routed |
 | **Called by** | [`plan-tasks`](plan-tasks.md) (continuous route), [`write-handoff`](write-handoff.md) (resume) |
@@ -36,7 +36,7 @@ Anything else is momentum the skill is built to protect.
 Six steps run once before any task:
 
 1. **Workspace check.** Never begin implementation on main/master without the user's explicit consent. If no isolated workspace exists, [`isolate-workspace`](isolate-workspace.md) is a required sub-skill. Done when you are on a dedicated branch with a clean baseline.
-2. **Ledger check.** Make `.skills/` git-ignored (an idempotent line-presence check, since a trailing-slash pattern won't match until the directory exists), then read `.skills/progress.md` if present. Every task it marks complete *is* complete — resume at the first task it does not list.
+2. **Ledger check.** Make `.skills/` git-ignored (an idempotent line-presence check, since a trailing-slash pattern won't match until the directory exists), then read `.skills/<CODE>/progress.md` if present. Every task it marks complete *is* complete — resume at the first task it does not list.
 3. **Read the plan.** Read `tasks.md` in full, once, and copy the **Global Constraints** section verbatim — it gets pasted into every reviewer dispatch unmodified. If `docs/agents/project.md` is missing, say so, suggest `configure-repo`, and take verify commands from the plan's Global Constraints instead.
 4. **Todos.** One todo per task, mirroring the plan.
 5. **Pre-flight plan review.** Scan the plan once for internal defects — tasks that contradict each other or the Global Constraints, and anything the plan explicitly mandates that a reviewer would flag as a defect (an assertion-free test, a copy-pasted logic block). **Batch ALL findings into ONE question to the user**, each shown beside the plan text that mandates it, asking which governs — before any dispatch. One interrupt, not one per discovery mid-run. A clean scan needs no comment.
@@ -47,15 +47,15 @@ Six steps run once before any task:
 Eleven steps run for each Task N. The precise ones are load-bearing:
 
 1. **Record the base.** `BASE=$(git rev-parse HEAD)` — before dispatch, always.
-2. **Build the brief.** Copy Task N plus the Global Constraints section out of `tasks.md` into `.skills/task-N-brief.md` verbatim — nothing else from the plan — so the worker's brief holds exactly its own task and the project-wide rules.
+2. **Build the brief.** Copy Task N plus the Global Constraints section out of `tasks.md` into `.skills/<CODE>/task-N-brief.md` verbatim — nothing else from the plan — so the worker's brief holds exactly its own task and the project-wide rules.
 3. **Dispatch a fresh implementer** using `implementer-prompt.md`. The dispatch contains exactly: one line placing the task in the project; the brief path, introduced as "this brief is your requirements — read it before anything else"; interfaces and decisions from earlier tasks the brief cannot know; the controller's resolution of any ambiguity it spotted in the brief; the report path; and **the model, stated explicitly**. Never session history, never the plan file. Exact values (numbers, magic strings, signatures) live only in the brief.
 4. **Answer questions.** If the implementer asks anything, answer completely before letting it proceed. Never rush it into implementation.
 5. **Handle the status** per the table below. Done when the status is `DONE` and the work is committed.
-6. **Package the diff.** Assemble `.skills/review-<base7>..<head7>.diff` from the commit list (`git log $BASE..HEAD`), a diffstat, and the full `git diff -U10 $BASE HEAD`. BASE is the sha from step 1 — **never `HEAD~1`**, which silently drops every commit of a multi-commit task except the last.
+6. **Package the diff.** Assemble `.skills/<CODE>/review-<base7>..<head7>.diff` from the commit list (`git log $BASE..HEAD`), a diffstat, and the full `git diff -U10 $BASE HEAD`. BASE is the sha from step 1 — **never `HEAD~1`**, which silently drops every commit of a multi-commit task except the last.
 7. **Dispatch a task reviewer** using `task-reviewer-prompt.md` with the brief path, the report path, the diff package path, the Global Constraints verbatim, and an explicit model.
 8. **Fix loop.** Critical or Important findings are dispatched to a **fix subagent** (which re-runs the covering tests — named in the dispatch — and appends results to the same report), then **re-review**. Repeat until the reviewer approves. **Never fix findings in the controller's own context — that pollutes it.** Minor findings get recorded in the ledger for the final review to triage; an unrecorded roll-up is a silent discard.
 9. **Resolve ⚠️ items.** Requirements the reviewer could not prove-claim from the diff (they live in unchanged code or span tasks) come back flagged. The controller holds the plan context the reviewer lacks, so it confirms each itself; a real gap counts as a failed spec verdict and returns to step 8.
-10. **Ledger.** Append one line to `.skills/progress.md`: `Task N: complete (commits <base7>..<head7>, review clean)`, and mark the todo done.
+10. **Ledger.** Append one line to `.skills/<CODE>/progress.md`: `Task N: complete (commits <base7>..<head7>, review clean)`, and mark the todo done.
 11. **Next.** Advance by wave order, not raw task number; within a serial wave that is simply Task N+1. For a parallel wave, steps 10–11 move to the barrier below.
 
 ## Parallel waves
@@ -105,7 +105,7 @@ The reviewer is only useful if it is left free to judge, so the controller's dis
 
 Conversation memory does not survive compaction. Controllers that lost their place have re-dispatched **entire completed task sequences** — the single most expensive failure this loop has. The ledger, not the todos, is the source of truth:
 
-- Read `.skills/progress.md` on start, and resume after the last complete task.
+- Read `.skills/<CODE>/progress.md` on start, and resume after the last complete task.
 - After a compaction or resume, trust the ledger and `git log` over recollection — the commits the ledger names exist in git even when context no longer remembers writing them.
 - Never re-dispatch a task the ledger marks complete.
 - A crash mid-wave leaves uncommitted, unmerged isolate-workspace: discard them and re-run the whole wave off WBASE. Nothing is ledgered or merged until the barrier, so the re-run is idempotent.
@@ -146,8 +146,8 @@ Throughout, it treats every line of the implementer's report as an **unverified 
 
 The controller assembles both bundles by hand, and that keeps all of this cheap:
 
-- The **brief** is just Task N and the Global Constraints copied out of `tasks.md` into `.skills/task-N-brief.md`, so the worker never sees the rest of the plan.
-- The **diff package** bundles the commit list, a diffstat, and the full `git diff -U10` between BASE and HEAD into a single `.skills/review-<base7>..<head7>.diff` file — the wide context is why the reviewer rarely needs to open a file separately.
+- The **brief** is just Task N and the Global Constraints copied out of `tasks.md` into `.skills/<CODE>/task-N-brief.md`, so the worker never sees the rest of the plan.
+- The **diff package** bundles the commit list, a diffstat, and the full `git diff -U10` between BASE and HEAD into a single `.skills/<CODE>/review-<base7>..<head7>.diff` file — the wide context is why the reviewer rarely needs to open a file separately.
 
 ## Worked example
 

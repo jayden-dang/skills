@@ -177,11 +177,11 @@ class TestDocsAndGuards(unittest.TestCase):
 
     def test_SKNS_6_3_gitignore_language(self):
         pchg = (ROOT / "skills" / "ship" / "package-change" / "SKILL.md").read_text()
-        self.assertRegex(pchg, r"git-ignor", re.I)
+        self.assertRegex(pchg, re.compile(r"git-ignor", re.I))
 
     def test_SKNS_6_4_no_layout_e_codes_in_scenarios(self):
         scen = SCEN.read_text() if SCEN.is_file() else ""
-        self.assertNotRegex(scen, r"new E-code|E6 layout")
+        self.assertNotRegex(scen, re.compile(r"new E-code|E6 layout"))
 
     def test_SKNS_no_python_under_skills_for_this_feature(self):
         # Guard: no new .py under skills/ from this feature's package (none expected)

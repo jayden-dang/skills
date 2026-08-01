@@ -9,7 +9,8 @@ TASKS_TPL = REPO / "templates" / "tasks.md"
 WRITE_REQ = REPO / "skills" / "spec" / "specify-behavior" / "SKILL.md"
 REQ_TPL = REPO / "templates" / "requirements.md"
 EXECUTE = REPO / "skills" / "execution" / "build-in-waves" / "SKILL.md"
-STORY_UNIT = REPO / "skills" / "execution" / "build-in-waves" / "story-unit-mode.md"
+STORY_UNIT = REPO / "skills" / "execution" / "build-by-story" / "story-unit-mode.md"
+BUILD_BY_STORY = REPO / "skills" / "execution" / "build-by-story" / "SKILL.md"
 FINISH = REPO / "skills" / "ship" / "land-branch" / "SKILL.md"
 AGENTS = REPO / "AGENTS.md"
 
@@ -72,17 +73,20 @@ class ExecutePlanContracts(unittest.TestCase):
         self.su = STORY_UNIT.read_text() if STORY_UNIT.is_file() else ""
 
     def test_story_unit_mode_and_preflight(self):
+        # continuous skill hands off story-unit; recipes live under build-by-story
         self.assertIn("story-unit", self.ep)
         self.assertIn("Execution-mode", self.ep)
-        self.assertIn("story-unit-mode.md", self.ep)
-        self.assertTrue(STORY_UNIT.is_file(), "recipe must live beside build-in-waves")
+        self.assertIn("build-by-story", self.ep)
+        bbs = BUILD_BY_STORY.read_text()
+        self.assertIn("story-unit-mode.md", bbs)
+        self.assertTrue(STORY_UNIT.is_file(), "recipe must live beside build-by-story")
         self.assertIn("Derive partition", self.su)
         self.assertIn("Unit table", self.su)
 
     def test_unit_barrier_and_unit_review(self):
         self.assertRegex(self.su, r"Unit <k>: complete|Unit .*complete")
         self.assertRegex(self.su, r"task-reviewer|unit scope")
-        self.assertIn("Chat-only is not a mode change", self.su)
+        self.assertRegex(self.su, re.compile(r"chat-only is\s+not a mode change", re.I))
 
     def test_finish_branch_risk_recipe(self):
         text = FINISH.read_text()

@@ -134,8 +134,8 @@ class VetProductFlowReportContract(unittest.TestCase):
         self.body = _body(SKILL.read_text())
 
     def test_VPF_1_3_report_path_and_schema_fields(self):
-        """VPF-1.3 — report path `.skills/<slug>-vet-product-flow.md` + stamp fields."""
-        self.assertIn(".skills/<slug>-vet-product-flow.md", self.body)
+        """VPF-1.3 — report path `.skills/<CODE>/vet-product-flow.md` + stamp fields."""
+        self.assertIn(".skills/<CODE>/vet-product-flow.md", self.body)
         for field in (
             "cases_fingerprint",
             "run_file",
@@ -638,8 +638,8 @@ class RunProductWalkthroughHardGate(unittest.TestCase):
         self.body = _body(self.text)
 
     def test_VPF_5_1_require_fresh_vet_report_before_drive(self):
-        """VPF-5.1 — fresh .skills/<slug>-vet-product-flow.md before drive."""
-        self.assertIn(".skills/<slug>-vet-product-flow.md", self.body)
+        """VPF-5.1 — fresh .skills/<CODE>/vet-product-flow.md before drive."""
+        self.assertIn(".skills/<CODE>/vet-product-flow.md", self.body)
         self.assertRegex(
             self.body,
             r"(?is)vet-product-flow",

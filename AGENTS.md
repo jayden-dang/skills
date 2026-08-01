@@ -48,7 +48,7 @@ inventory + blindspot, `clarify-decisions`, `research`/`run-spike`), surface hig
 decisions in `plan-tasks` (the execute-family route; mode write-back is owned by
 the chosen execute skill),
 story-derived review units at `build-by-story`, log mid-build **deviations** in
-`.skills/implementation-notes.md` during execute, and let the human re-check
+`.skills/<CODE>/implementation-notes.md` during execute, and let the human re-check
 understanding with `/study-change` before merge. Do not freeze unverified
 solution shape into requirement SHALLs.
 
@@ -181,10 +181,10 @@ text.
 **Task handoff protocol:**
 1. Record `BASE=$(git rev-parse HEAD)` before dispatch
 2. Build brief: copy Task N's block + verbatim Global Constraints into
-   `.skills/task-N-brief.md`
+   `.skills/<CODE>/task-N-brief.md`
 3. Dispatch fresh implementer with brief path, interfaces from prior tasks,
-   report path (`.skills/task-N-report.md`), explicit model tier
-4. On DONE: package the diff into `.skills/review-<base7>..<head7>.diff`
+   report path (`.skills/<CODE>/task-N-report.md`), explicit model tier
+4. On DONE: package the diff into `.skills/<CODE>/review-<base7>..<head7>.diff`
    (`git log`/`git diff --stat`/`git diff` over `$BASE..HEAD`) — never `HEAD~1`
 5. Two-verdict review: **Standards** (repo standards + code-smell baseline) +
    **Spec** (diff vs requirement IDs)
@@ -192,14 +192,14 @@ text.
    a finding surviving 3 fix cycles, or a task not DONE after 2 redispatches,
    escalates to the user
 7. Ledger: append `Task N: complete (commits <base7>..<head7>, review clean)` to
-   `.skills/progress.md`
+   `.skills/<CODE>/progress.md`
 
 **Model tiering:** state the model explicitly on every dispatch. Cheap tier =
 transcription/mechanical fixes. Mid tier = reviewers and implementers working
 from prose. Top tier = design judgment, broad codebase understanding, final
 whole-branch review.
 
-**Progress ledger:** `.skills/progress.md` is the source of truth across
+**Progress ledger:** `.skills/<CODE>/progress.md` is the source of truth per feature across
 compaction and crash. Trust the ledger and `git log`, never memory. Never
 re-dispatch a task the ledger marks complete.
 
@@ -258,7 +258,9 @@ hooks/                   # session-start (engineering gate)
 docs/
   packages.md            # engineering vs personal install map
   agents/ adr/ architecture/ product/ specs/ guide/
-.skills/                 # git-ignored ephemera
+.skills/                 # git-ignored ephemera — feature work under .skills/<CODE>/;
+                         # shared: pathfind/, research/, decisions/, pr-packages/
+                         # (see templates/skills-ephemera-paths.md)
 .out-of-scope/
 ```
 
@@ -281,7 +283,7 @@ and suggest `configure-repo`.
 - Skip the tier-decision gate and start coding (Gate 1)
 - Auto-invoke a user-invoked skill (`disable-model-invocation: true`)
 - Run two implementers on the same plan in parallel (collision guaranteed)
-- Hand a subagent the whole plan file — the brief in `.skills/task-N-brief.md` is its world
+- Hand a subagent the whole plan file — the brief in `.skills/<CODE>/task-N-brief.md` is its world
 - Use `HEAD~1` as a review base — use `git rev-parse HEAD` recorded before dispatch
 - Skip re-review after a fix, or accept a review missing either verdict
 - Move to the next task with open Critical/Important findings

@@ -58,7 +58,7 @@ No implementer or task-reviewer subagents. You implement each task yourself unde
 Five steps, of which two are easy to skip and expensive to have skipped:
 
 - **Workspace check.** Never begin implementation on `main`/`master` without the user's explicit consent.
-- **Ledger check.** `.skills/` is git-ignored, then `.skills/progress.md` is read. **Every task it marks complete IS complete** — resume at the first task it does not list.
+- **Ledger check.** `.skills/` is git-ignored, then `.skills/<CODE>/progress.md` is read. **Every task it marks complete IS complete** — resume at the first task it does not list.
 - **Read the plan once**, copying the Global Constraints **verbatim**. They get pasted into every reviewer dispatch unmodified.
 - **Todos**, one per task.
 - **Pre-flight plan review.** Scan the plan once for internal defects — tasks that contradict each other or the Global Constraints, and anything the plan explicitly *mandates* that a reviewer would flag as a defect (an assertion-free test, a copy-pasted logic block). Batch **all** findings into **one** question to the user, each shown beside the plan text that mandates it. One interrupt, not one per discovery mid-run.
@@ -67,15 +67,15 @@ Five steps, of which two are easy to skip and expensive to have skipped:
 
 ```
  1. BASE=$(git rev-parse HEAD)              ← before dispatch, always
- 2. assemble .skills/task-N-brief.md        (copy the task block + Global Constraints verbatim)
+ 2. assemble .skills/<CODE>/task-N-brief.md        (copy the task block + Global Constraints verbatim)
  3. dispatch a FRESH implementer            (implementer-prompt.md; model stated explicitly)
  4. answer its questions completely         never rush it into implementation
  5. handle the status                       DONE / DONE_WITH_CONCERNS / NEEDS_CONTEXT / BLOCKED
- 6. write .skills/review-<b>..<h>.diff      (git diff $BASE..HEAD)
+ 6. write .skills/<CODE>/review-<b>..<h>.diff      (git diff $BASE..HEAD)
  7. dispatch a task reviewer                (task-reviewer-prompt.md; two verdicts)
  8. fix loop                                → fix subagent → RE-REVIEW → repeat until clean
  9. resolve ⚠️ cannot-verify-from-diff items
-10. append one line to .skills/progress.md
+10. append one line to .skills/<CODE>/progress.md
 11. go straight to Task N+1
 ```
 
@@ -89,7 +89,7 @@ Three details in there carry most of the weight.
 
 > Controllers that lost their place have re-dispatched entire completed task sequences — the single most expensive failure this loop has.
 
-After compaction or resume, trust `.skills/progress.md` and `git log` over your own recollection. The commits the ledger names exist in git even when your context no longer remembers writing them.
+After compaction or resume, trust `.skills/<CODE>/progress.md` and `git log` over your own recollection. The commits the ledger names exist in git even when your context no longer remembers writing them.
 
 ### Implementer statuses
 

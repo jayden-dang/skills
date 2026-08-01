@@ -130,11 +130,29 @@ One subtlety [`triage`](../skills/triage.md) is emphatic about: an **already-imp
 
 ## `.skills/` — git-ignored ephemera
 
+Feature-scoped working files live under **`.skills/<CODE>/`** (Feature code only),
+not as a flat dump at the root. Shared trees stay at `.skills/pathfind/`,
+`research/`, `decisions/`, and `pr-packages/`. Full grammar:
+[`templates/skills-ephemera-paths.md`](../../../templates/skills-ephemera-paths.md).
+
+| Path under `.skills/<CODE>/` | Written by | Purpose |
+|---|---|---|
+| `progress.md` (under `<CODE>/`) | execute family | Per-feature ledger — source of truth after compaction |
+| `task-N-brief.md` / `task-N-report.md` | execute family | Task contract and report |
+| `review-<base7>..<head7>.diff` | execute family | Review package |
+| `implementation-notes.md` | implementer | Mid-build deviations |
+| `knowns.md` / `scan.md` | discovery / design | Digests |
+| `acceptance.md` / product-flow artifacts | acceptance | Ledgers and run files |
+
+Pre-CODE: `.skills/_pending-<slug>/`. Ad-hoc: `.skills/_adhoc/<short-slug>/`.
+
+
+
 Working artifacts that pass between agents as **file paths**, never as pasted text. `configure-repo` and `build-in-waves` both ensure the directory is git-ignored, idempotently.
 
 | File | Written by | Purpose |
 |---|---|---|
-| `progress.md` | execute family | The ledger. One line per completed task (and unit lines under `build-by-story`). **Source of truth after compaction** |
+| `progress.md` (under `<CODE>/`) | execute family | The ledger. One line per completed task (and unit lines under `build-by-story`). **Source of truth after compaction** |
 | `task-N-brief.md` | execute family | Task N + Global Constraints. The implementer's (or controller's) contract |
 | `task-N-report.md` | the implementer subagent | Status, TDD evidence (RED and GREEN commands and outputs), files changed, concerns |
 | `review-<base7>..<head7>.diff` | `build-in-waves` | Commit list, diffstat, and full diff — assembled by the agent from `git log`/`git diff` as the reviewer's view |

@@ -48,8 +48,7 @@ skills/
                prove-claim, audit-trace, load-subgraph, isolate-workspace
   review/      inspect-change, study-change, brief-team, select-review-sample,
                polish-diff, vet-feedback, review-invariants
-  acceptance/  validate-feature, validate-api, validate-ui, review-product-flow,
-               vet-product-flow, run-product-walkthrough
+  acceptance/  validate-feature, validate-api, validate-ui, review-product-flow, vet-product-flow, run-product-walkthrough
   craft/       craft-page
   ship/        package-change, land-branch, record-verdict, cut-release
   track/       amend-feature, reroute-plan, triage, realign-spec, refresh-roadmap-status,

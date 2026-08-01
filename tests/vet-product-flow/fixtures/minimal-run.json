@@ -1,0 +1,37 @@
+{
+  "version": 2,
+  "rev": 0,
+  "feature": "demo",
+  "slug": "demo",
+  "title": "Demo — minimal run",
+  "origin": "http://localhost:5173",
+  "intro": "Minimal fixture for authored-cases fingerprint goldens.",
+  "sections": [
+    {
+      "name": "Happy path",
+      "cases": [
+        {
+          "id": "CASE-1",
+          "req": "DEMO-1.1",
+          "kind": "happy",
+          "title": "Create item",
+          "setup": "empty list",
+          "try": "Open app → New → Save.",
+          "expect": "Item appears in the list.",
+          "backend": "GET /api/items includes the new id",
+          "run": {
+            "verdict": "pending",
+            "saw": "",
+            "server": "",
+            "notes": ""
+          },
+          "human": {
+            "checked": false,
+            "at": "",
+            "comment": ""
+          }
+        }
+      ]
+    }
+  ]
+}

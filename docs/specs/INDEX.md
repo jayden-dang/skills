@@ -19,5 +19,5 @@ not planned as a roadmap item.
 | VPF | Vet product flow — isolated implementation-surface judgment before dogfood | ./2026-08-01-vet-product-flow/ | Approved | — |
 | FSUB | Feature subgraph — ask-time derivation of OWNS/OVERLAPS/IMPLEMENTS/CONTAINS/RESPECTS + map-features backfill | ./2026-08-01-feature-subgraph/ | Implemented | — |
 | SKNS | Skills ephemera namespace — per-feature `.skills/<CODE>/` layout (progress, execute, review) | ./2026-08-01-skills-namespace/ | Implemented | — |
-| IMPN | Mid-build implementation notes — classified deviations when plan meets territory | ./2026-08-01-implementation-notes/ | Approved | — |
+| IMPN | Mid-build implementation notes — classified deviations when plan meets territory | ./2026-08-01-implementation-notes/ | Implemented | — |
 

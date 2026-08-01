@@ -5,7 +5,7 @@
 > `Execution-mode:`.
 
 Feature code: IMPN
-Status: Approved
+Status: Implemented
 Date: 2026-08-01
 Execution-mode: continuous
 Requirements: ./requirements.md

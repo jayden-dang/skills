@@ -41,7 +41,7 @@ A pre-listed todo of decision areas is a **living map**, not a quota: append whe
 
 ## Starting map (before the first card)
 
-Load parent Knowns inventory, Blindspot list, and scan digest when present (e.g. `.skills/*-knowns.md`, `.skills/*-scan.md`). Then emit **one short thought-partner map** in ordinary chat — not a question card, not a multi-question dump:
+Load parent Knowns inventory, Blindspot list, and scan digest when present (e.g. `.skills/<CODE>/knowns.md / `_pending-<slug>/knowns.md``, `.skills/<CODE>/scan.md / `_pending-<slug>/scan.md``). Then emit **one short thought-partner map** in ordinary chat — not a question card, not a multi-question dump:
 
 1. **Locked** — what you treat as fixed (posture, explicit non-negotiables, digest facts).
 2. **Open high-blast** — the decision forks you expect to walk first (names only; no options yet).

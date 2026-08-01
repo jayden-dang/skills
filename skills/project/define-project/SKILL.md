@@ -37,7 +37,7 @@ slot — fill it or write `None`.
    excluded.
    - **Greenfield →** skip the scan, proceed straight to Step 2.
    - **Brownfield →** dispatch a **scan subagent** per `brownfield-scan.md`
-     (beside this file), writing `.skills/<slug>-scan.md` before Step 2's
+     (beside this file), writing `.skills/<CODE>/scan.md (or `.skills/_pending-<slug>/scan.md` before CODE)` before Step 2's
      interview begins — the architecture spine then RATIFIES what already
      exists (name the invariants the current code already honors) rather
      than designing greenfield. (No subagents? Run the same scan inline
@@ -47,7 +47,7 @@ slot — fill it or write `None`.
      repo as greenfield, and write nothing durable.
 
    *Done when: greenfield has proceeded to Step 2, or a complete brownfield
-   digest exists at `.skills/<slug>-scan.md` before Step 2 begins, or a
+   digest exists at `.skills/<CODE>/scan.md (or `.skills/_pending-<slug>/scan.md` before CODE)` before Step 2 begins, or a
    blocker has been reported and the workflow has stopped.*
 2. **Interview.** REQUIRED SUB-SKILL: use `clarify-decisions` — one question at a time — to draw
    out the product vision (problem, users, goals, non-goals, scope) and the load-bearing

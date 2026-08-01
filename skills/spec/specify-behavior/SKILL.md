@@ -47,6 +47,8 @@ of its items, record that item's `ROAD-N` in the row's **Roadmap item** column. 
 is no roadmap, or the work was never planned as an item, write `—` and register the feature
 otherwise unchanged. This column is the only link between plan and spec, and this step is
 its only writer — a `ROAD-N` is never invented here, only cited.
+
+**Promote ephemera.** IF a `.skills/_pending-<slug>/` directory was used for this work, move it to `.skills/<CODE>/` (`mv` when CODE dir absent) so subsequent writes use the Feature root — see `templates/skills-ephemera-paths.md`.
 **Done when:** the code has a row in INDEX.md with status Draft, and its Roadmap item cell
 holds a `ROAD-N` or `—`.
 
@@ -161,7 +163,7 @@ Self-review before showing the user:
   currently works — a data format, an existing behavior, a constraint —
   dispatch a review subagent to prove-claim each such claim against the real code
   (grep/read the files, cite `file:line`, flag any that don't hold), writing
-  findings to `.skills/<slug>-req-review.md`. A false premise here — "the body is
+  findings to `.skills/<CODE>/req-review.md`. A false premise here — "the body is
   ProseMirror-JSON" when it is Markdown — poisons design, plan, and code.
   Correct the criterion before the gate; do not read the code yourself. (No
   subagents? Do the check yourself against the code.)

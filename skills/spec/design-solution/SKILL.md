@@ -19,7 +19,7 @@ Explain in 2–4 paragraphs what exists today, which constraint shapes the
 approach, and the alternative that constraint rules out. To learn "what exists today" without flooding this context, dispatch
 a **scan subagent** to map the touched surface — the seams the design will name:
 current signatures, data shapes, save/load paths — returning a digest file
-(`.skills/<slug>-scan.md`), not raw source. Design against the digest; pull a
+(`.skills/<CODE>/scan.md (or `.skills/_pending-<slug>/scan.md` before CODE)`), not raw source. Design against the digest; pull a
 specific file into context only when a decision hinges on its exact contents.
 (No subagents? Read the surface directly, but only the parts a decision needs.)
 Record the decisions locked during discovery as a numbered list.
@@ -141,7 +141,7 @@ the Step-1 scan digest when present, and the repo; have it prove-claim:
    `Locality:` line is consistent with the scan digest (neighbors named leave /
    extend / extract for a reason).
 
-Findings go to `.skills/<slug>-design-review.md`; you fix them without loading
+Findings go to `.skills/<CODE>/design-review.md`; you fix them without loading
 the code here. (No subagents? Do this pass yourself in a fresh read of the code
 and the digest.)
 

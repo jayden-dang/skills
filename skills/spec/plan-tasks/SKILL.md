@@ -162,7 +162,7 @@ subagent with the plan, requirements.md, design.md, and the repo; have it prove-
 against real code every symbol, signature, path, import, and **hardcoded test
 value** the plan asserts — a fabricated golden or a guessed API is the classic
 plan defect — citing `file:line` and defaulting to flag. Findings to
-`.skills/<slug>-plan-review.md`; fix before offering execution. (No subagents? Do the
+`.skills/<CODE>/plan-review.md`; fix before offering execution. (No subagents? Do the
 comparison yourself against the code.)
 
 **Done when:** every requirement ID has both a task footer and a tagged test,

@@ -416,6 +416,43 @@ class TestFSUBRSnapshot(unittest.TestCase):
         self.assertEqual(snap["schema_version"], "1.1")
         self.assertEqual(snap["recipe_id"], "fsubr-1.1")
 
+    def test_FSUBR_10_1_cluster_stage_a_no_triad_preload(self):
+        """Cluster: Stage A skips all-feature triad; Stage B loads member requirements only."""
+        root = FIX / "p0-flood"
+        q = {"kind": "cluster", "focus": "FOCUS"}
+        snap = rd.build_snapshot(root, q)
+        ledger_paths = [e["path"] for e in snap["read_ledger"]]
+        members = rd._cluster_returned_members(snap["owns"], "FOCUS")
+        # FOCUS has no shared paths with others → sole returned member
+        self.assertEqual(members, ["FOCUS"])
+
+        code_to_row = {r["code"]: r for r in snap["registry"]}
+        focus_req = rd._feature_rel(code_to_row["FOCUS"], "requirements.md")
+        # Member requirements appear once (Stage B) when not already buffered
+        self.assertEqual(ledger_paths.count(focus_req), 1)
+        self.assertIn(focus_req, snap["source_texts"])
+
+        # Non-member requirements.md must not appear in the ledger
+        for code, row in code_to_row.items():
+            if code in members:
+                continue
+            non_req = rd._feature_rel(row, "requirements.md")
+            self.assertNotIn(
+                non_req,
+                ledger_paths,
+                f"non-member {code} requirements must not be in read_ledger",
+            )
+            non_design = rd._feature_rel(row, "design.md")
+            self.assertNotIn(
+                non_design,
+                ledger_paths,
+                f"non-member {code} design must not be in read_ledger",
+            )
+
+        # Cluster does not preload design.md for any feature in Stage A
+        design_entries = [p for p in ledger_paths if p.endswith("/design.md")]
+        self.assertEqual(design_entries, [])
+
 
 if __name__ == "__main__":
     unittest.main()

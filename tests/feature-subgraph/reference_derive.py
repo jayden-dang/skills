@@ -374,7 +374,9 @@ def build_snapshot(
     if terms_raw is None and kind == "subgraph":
         terms_raw = (query.get("seeds") or {}).get("terms")
     terms = [t.strip() for t in (terms_raw or []) if t and len(str(t).strip()) >= 3]
-    need_triad = bool(terms) or kind in {"subgraph", "cluster"}
+    # Stage A triad (requirements/design) only for P0 terms or subgraph —
+    # cluster loads member requirements in Stage B only (design §0).
+    need_triad = bool(terms) or kind == "subgraph"
 
     notes: list[dict[str, Any]] = []
     seen_notes: set[tuple[str, str, str]] = set()
@@ -410,7 +412,7 @@ def build_snapshot(
                 nn.setdefault("code", code)
                 _add_note(notes, seen_notes, nn)
 
-    # Term / subgraph / cluster triad texts (each path still ≤1 via session)
+    # Term / subgraph triad texts only (each path still ≤1 via session)
     if need_triad:
         for row in registry:
             for name in ("requirements.md", "design.md"):

@@ -46,8 +46,10 @@ Read each path **at most once**; record every path in `read_ledger` as
    - **Missing** `tasks.md` → empty OWNS, **no** `p1_file_unreadable`.
    - **Unreadable** (exists, read/UTF-8 fails) → empty OWNS + `p1_file_unreadable`;
      continue other features.
-3. When the query supplies terms (P0) or kind is `subgraph` / `cluster`: also
-   buffer each feature’s `requirements.md` and `design.md` if present.
+3. When the query supplies terms (P0) **or** kind is `subgraph` (not `cluster`):
+   also buffer each feature’s `requirements.md` and `design.md` if present.
+   Cluster Stage A is INDEX + `tasks.md` + optional layers only; member
+   `requirements.md` loads in Stage B after membership from Stage A OWNS.
 4. **Optional-layer presence sentinels** (always):
    - `docs/roadmap/INDEX.md`
    - `docs/architecture/INDEX.md`  
@@ -59,8 +61,8 @@ Read each path **at most once**; record every path in `read_ledger` as
 After eligible members are computed **in memory from Stage A OWNS only**
 (focus first; weight ≥ `CLUSTER_K`; cap `CLUSTER_MEMBERS_MAX`):
 
-1. For each **returned** member, load `requirements.md` if not already in
-   `source_texts`.
+1. For each **returned** member only, load `requirements.md` if not already in
+   `source_texts`. Non-member triad files are never read for cluster queries.
 2. Never re-read a path already buffered. Member eligibility/caps use Stage A
    only; OOS union may use Stage A+B texts.
 

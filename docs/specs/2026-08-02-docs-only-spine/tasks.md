@@ -3,11 +3,11 @@
 > **For agentic workers:** after plan approval, pick one execute skill —
 > `build-in-waves` (subagent waves), `build-by-story` (human-gated story review
 > units), or `build-inline` (controller implements, no implementer subagents).
-> The chosen skill writes `Execution-mode:`. Steps use checkbox (`- [ ]`) syntax
+> The chosen skill writes `Execution-mode:`. Steps use checkbox (`- [x]`) syntax
 > for tracking.
 
 Feature code: DOSP
-Status: Approved
+Status: Implemented
 Date: 2026-08-02
 Approved: 2026-08-02 (user)
 Execution-mode: continuous
@@ -114,7 +114,7 @@ Single test examples:
 
 **Depends-on:** none
 
-- [ ] **Step 1: Write the failing tests**
+- [x] **Step 1: Write the failing tests**
 
 In `tests/test_dosp_docs_only_spine.py` and/or `tests/test_audit-trace_scope.py`:
 
@@ -128,11 +128,11 @@ In `tests/test_dosp_docs_only_spine.py` and/or `tests/test_audit-trace_scope.py`
 
 Run: `python3 -m unittest tests.test_dosp_docs_only_spine tests.test_audit-trace_scope` — expect fail until skill body matches.
 
-- [ ] **Step 2: Implement** audit-trace reshape per design §1 (delete pass 4 + E2; rewrite E1, status table, NON-NEGOTIABLE, output example; update description; keep ARCH + decision passes). Update `test_audit-trace_scope.py` `AUDIT TRACE_FINDINGS` to drop E2.
+- [x] **Step 2: Implement** audit-trace reshape per design §1 (delete pass 4 + E2; rewrite E1, status table, NON-NEGOTIABLE, output example; update description; keep ARCH + decision passes). Update `test_audit-trace_scope.py` `AUDIT TRACE_FINDINGS` to drop E2.
 
 Run: same unittest — expect pass.
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 git add skills/execution/audit-trace/SKILL.md tests/test_audit-trace_scope.py tests/test_dosp_docs_only_spine.py tests/docs-only-spine/
@@ -170,7 +170,7 @@ _Requirements: DOSP-1.1, DOSP-1.2, DOSP-1.3, DOSP-1.4, DOSP-1.5, DOSP-1.6, DOSP-
 
 **Depends-on:** Task 1
 
-- [ ] **Step 1: Write the failing tests**
+- [x] **Step 1: Write the failing tests**
 
 Assert source contracts:
 
@@ -184,11 +184,11 @@ Assert source contracts:
 
 Run: unittest fail until edits.
 
-- [ ] **Step 2: Implement** all prompt/skill/template edits.
+- [x] **Step 2: Implement** all prompt/skill/template edits.
 
 Run: `python3 -m unittest tests.test_dosp_docs_only_spine` — pass.
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 git commit -m "$(cat <<'EOF'
@@ -223,7 +223,7 @@ _Requirements: DOSP-2.1, DOSP-2.2, DOSP-3.1, DOSP-3.3, DOSP-4.1, DOSP-4.2, DOSP-
 
 **Depends-on:** Task 1
 
-- [ ] **Step 1: Write the failing tests**
+- [x] **Step 1: Write the failing tests**
 
 - `package-change` no longer requires/preserves `Implements:` / `Guards:` as the home for IDs; rationalization table updated.
 - `cut-release` derives changelog from `docs/specs/**` (Status + requirement prose / tasks), not trailer parse.
@@ -233,7 +233,7 @@ _Requirements: DOSP-2.1, DOSP-2.2, DOSP-3.1, DOSP-3.3, DOSP-4.1, DOSP-4.2, DOSP-
 
 Run: fail until edits.
 
-- [ ] **Step 2: Implement** package-change + cut-release + test/scenario updates.
+- [x] **Step 2: Implement** package-change + cut-release + test/scenario updates.
 
 Run:
 
@@ -243,7 +243,7 @@ python3 -m unittest tests.test_prepare_change_contract tests.test_dosp_docs_only
 
 expect pass.
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 git commit -m "$(cat <<'EOF'
@@ -275,7 +275,7 @@ _Requirements: DOSP-2.3, DOSP-2.4_
 
 **Depends-on:** Task 2
 
-- [ ] **Step 1: Write the failing tests**
+- [x] **Step 1: Write the failing tests**
 
 - `polish-diff/SKILL.md` has an explicit step to strip/flag narrating and process comments (forbidden list), preserve hazard/invariant comments.
 - `docs/product/guidelines.md` Coding standards (or House rules) state default-zero comments + allowed/forbidden classes.
@@ -283,11 +283,11 @@ _Requirements: DOSP-2.3, DOSP-2.4_
 
 Run: fail until edits.
 
-- [ ] **Step 2: Implement** polish-diff + guidelines.
+- [x] **Step 2: Implement** polish-diff + guidelines.
 
 Run: `python3 -m unittest tests.test_dosp_docs_only_spine` — pass.
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 git commit -m "$(cat <<'EOF'
@@ -340,7 +340,7 @@ _Requirements: DOSP-4.3, DOSP-4.4_
 
 **Depends-on:** Task 1
 
-- [ ] **Step 1: Write the failing tests**
+- [x] **Step 1: Write the failing tests**
 
 - `AGENTS.md` spine table: no required Playwright/Vitest/Rust REQ annotation rows; no required Implements trailer row; keep requirements/design/tasks citations; note pack-fixture exception if needed.
 - `docs/architecture/INDEX.md` ARCH-4: docs-side citations only (strike obsolete test/trailer clause).
@@ -351,7 +351,7 @@ _Requirements: DOSP-4.3, DOSP-4.4_
 
 Run: fail until edits.
 
-- [ ] **Step 2: Implement** all doctrine files. Grep `docs/guide` for `Implements:` and `/// REQ` — only allow explicit legacy/history callouts.
+- [x] **Step 2: Implement** all doctrine files. Grep `docs/guide` for `Implements:` and `/// REQ` — only allow explicit legacy/history callouts.
 
 Run:
 
@@ -362,7 +362,7 @@ python3 scripts/lint-skill-frontmatter.py && python3 scripts/lint-handoffs.py &&
 
 expect pass.
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 git commit -m "$(cat <<'EOF'
@@ -396,7 +396,7 @@ _Requirements: DOSP-2.5, DOSP-5.1, DOSP-5.2, DOSP-5.3, DOSP-5.4, DOSP-5.5, DOSP-
 
 **Depends-on:** Task 1
 
-- [ ] **Step 1: Write the failing tests**
+- [x] **Step 1: Write the failing tests**
 
 - `prove-claim`: “requirements met” still requires audit-trace clean + criteria vs observed behavior; does **not** require test-file ID presence / E2.
 - `realign-spec`: Approved→Implemented uses tasks checked + docs-only audit-trace zero errors + verify green — **not** “every live requirement covered by a test string”.
@@ -405,11 +405,11 @@ _Requirements: DOSP-2.5, DOSP-5.1, DOSP-5.2, DOSP-5.3, DOSP-5.4, DOSP-5.5, DOSP-
 
 Run: fail until edits.
 
-- [ ] **Step 2: Implement** skill body updates.
+- [x] **Step 2: Implement** skill body updates.
 
 Run: `python3 -m unittest tests.test_dosp_docs_only_spine` — pass.
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 git commit -m "$(cat <<'EOF'
@@ -440,7 +440,7 @@ _Requirements: DOSP-3.2, DOSP-3.4_
 
 **Depends-on:** Task 1, Task 2, Task 3, Task 4, Task 5, Task 6
 
-- [ ] **Step 1: Write the failing tests**
+- [x] **Step 1: Write the failing tests**
 
 - Assert `skills/execution/load-subgraph/SKILL.md` still model-invoked and does not require code-side IDs (smoke: skill exists; optional: no new “must annotate tests” language introduced).
 - Assert all live DOSP requirement IDs from `requirements.md` appear in `tests/docs-only-spine/scenarios.md` (footer coverage for pack fixtures).
@@ -448,7 +448,7 @@ _Requirements: DOSP-3.2, DOSP-3.4_
 
 Run: fail if scenarios incomplete.
 
-- [ ] **Step 2: Implement** scenario completeness; fix any residual teaching strings found by grepping skills for mandatory Implements trailer / “covering test” E2.
+- [x] **Step 2: Implement** scenario completeness; fix any residual teaching strings found by grepping skills for mandatory Implements trailer / “covering test” E2.
 
 Run full gate:
 
@@ -459,7 +459,7 @@ python3 -m unittest discover -s tests
 
 expect pass (pristine).
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 git commit -m "$(cat <<'EOF'

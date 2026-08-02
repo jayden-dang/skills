@@ -20,5 +20,5 @@ not planned as a roadmap item.
 | FSUB | Feature subgraph — ask-time derivation of OWNS/OVERLAPS/IMPLEMENTS/CONTAINS/RESPECTS + map-features backfill | ./2026-08-01-feature-subgraph/ | Implemented | — |
 | SKNS | Skills ephemera namespace — per-feature `.skills/<CODE>/` layout (progress, execute, review) | ./2026-08-01-skills-namespace/ | Implemented | — |
 | IMPN | Mid-build implementation notes — classified deviations when plan meets territory | ./2026-08-01-implementation-notes/ | Implemented | — |
-| DOSP | Docs-only spine — no requirement IDs in code; audit-trace vertical stays in docs/specs; comment discipline | ./2026-08-02-docs-only-spine/ | Approved | — |
+| DOSP | Docs-only spine — no requirement IDs in code; audit-trace vertical stays in docs/specs; comment discipline | ./2026-08-02-docs-only-spine/ | Implemented | — |
 

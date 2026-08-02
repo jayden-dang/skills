@@ -1,9 +1,10 @@
 # Requirements: Docs-only spine
 
 Feature code: DOSP
-Status: Approved
+Status: Implemented
 Date: 2026-08-02
 Approved: 2026-08-02 (user)
+Implemented: 2026-08-02 (build-inline on main)
 
 Removes the requirement that feature / requirement IDs appear in application
 source, tests, or commit trailers. Vertical integrity stays in `docs/specs/**`

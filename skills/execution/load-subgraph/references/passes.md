@@ -108,22 +108,21 @@ For each registered CODE with `tasks.md`:
 
 ### Multi-block + fence-aware stop
 
-1. Find **every** `**Files:**` header or a line that is only `Files:` (not only
-   the first).
-2. **Malformed header:** if a Files header is not followed by a newline (truncated
-   header), skip that block and emit note
-   `{kind: p1_block_skipped, code: CODE, detail: …}`.
-3. For each well-formed header, take the body until the next **stop boundary
-   outside fenced code** (fence tracker toggles on lines whose stripped content
-   starts with `` ``` ``):
-   - next Files header
+1. Find **every whole-line** Files header (`**Files:**` or `Files:` alone on the
+   line), **outside fenced code** (fence tracker toggles on lines starting with
+   `` ``` ``). Do **not** treat mid-line prose such as table cells
+   ``**Files:**` grammar`` as headers.
+2. For each such header, body starts on the following line. Take the body until
+   the next **stop boundary outside fenced code**:
+   - next whole-line Files header
    - `#{2,6}` markdown heading
    - Reuse / Interfaces / Depends-on section headers
    - Steps / checklist step headers (`**Steps`, `Steps:`, `- [ ] Step…`)
-4. If fence depth ≠ 0 at the stop boundary (unclosed fence), skip **that block
-   only**, emit `p1_block_skipped`, and keep valid sibling Files blocks.
-5. Extract candidates **only inside** each accepted Files body (never after a
-   stop boundary).
+3. If fence depth ≠ 0 at the stop boundary (unclosed fence), skip **that block
+   only**, emit `p1_block_skipped` with `detail: unclosed_fence`, and keep valid
+   sibling Files blocks (malformed block should be last when authoring fixtures).
+4. Extract candidates **only inside** each accepted Files body (never after a
+   stop boundary; never from headers found inside fences).
 
 ### Candidate provenance
 

@@ -1213,40 +1213,52 @@ def _extract_candidates_from_body(body: str) -> list[tuple[str, str]]:
     return candidates
 
 
-def _iter_files_blocks(text: str) -> list[tuple[int, int, str | None]]:
-    """Find Files headers; return list of (header_start, body_start, skip_reason).
+_FILES_HEADER_LINE_RE = re.compile(
+    r"(?i)^[ \t]*(?:\*\*Files:\*\*|Files:)[ \t]*$"
+)
 
-    skip_reason is set when header is malformed (not followed by newline content start).
+
+def _iter_files_blocks(text: str) -> list[tuple[int, int, str | None]]:
+    """Find Files headers **outside fences**; return (header_start, body_start, skip_reason).
+
+    Only whole-line Files headers count (not prose like ``**Files:**` grammar`` in tables).
+    skip_reason ``truncated_header`` when a valid header line is immediately followed by
+    non-newline junk without a body newline (corrupt slice).
     """
     blocks: list[tuple[int, int, str | None]] = []
-    for m in re.finditer(r"(?i)\*\*Files:\*\*|^(?:[ \t]*)Files:[ \t]*$", text, re.M):
-        header = m.group(0)
-        end = m.end()
-        # Header must be followed by newline (block content on subsequent lines)
-        # Allow optional spaces then newline; if EOF or non-newline junk without newline → malformed
-        rest = text[end:]
-        if rest.startswith("\n") or rest.startswith("\r\n"):
-            body_start = end + (2 if rest.startswith("\r\n") else 1)
-            blocks.append((m.start(), body_start, None))
-        elif rest == "" or rest.lstrip(" \t") == "":
-            # empty after header at EOF — empty body, not malformed
-            blocks.append((m.start(), end, None))
-        elif rest.lstrip(" \t")[:1] in {"\n", "\r"}:
-            # spaces then newline
-            nl = rest.find("\n")
-            body_start = end + nl + 1
-            blocks.append((m.start(), body_start, None))
+    fence_depth = 0
+    pos = 0
+    n = len(text)
+    while pos < n:
+        nl = text.find("\n", pos)
+        if nl == -1:
+            line = text[pos:]
+            line_end = n
+            next_pos = n
         else:
-            # truncated header: **Files:**foo without newline
-            if "**Files:**" in header or header.strip().lower().startswith("files:"):
-                # mid-line content immediately after **Files:** without newline is structural fail
-                if not header.strip().endswith(":") and "\n" not in header:
-                    blocks.append((m.start(), end, "truncated_header"))
-                else:
-                    # **Files:** immediately followed by non-space non-newline
-                    blocks.append((m.start(), end, "truncated_header"))
+            line = text[pos:nl]
+            line_end = nl
+            next_pos = nl + 1
+
+        if _is_fence_line(line):
+            fence_depth = 0 if fence_depth else 1
+            pos = next_pos
+            continue
+
+        if fence_depth == 0 and _FILES_HEADER_LINE_RE.match(line):
+            # body starts after this line's newline
+            if nl == -1:
+                # header at EOF with no following newline — empty body ok
+                blocks.append((pos, n, None))
             else:
-                blocks.append((m.start(), end, "truncated_header"))
+                body_start = next_pos
+                blocks.append((pos, body_start, None))
+            pos = next_pos
+            continue
+
+        # mid-line **Files:** without being a sole header (prose) — ignore
+        pos = next_pos
+
     return blocks
 
 

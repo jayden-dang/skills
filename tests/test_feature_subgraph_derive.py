@@ -339,15 +339,19 @@ class TestFSUBRP1Owns(unittest.TestCase):
 
     def test_FSUBR_10_3_notes_not_silently_capped(self):
         """FSUBR-10.3 reliability notes retained (no silent count drop)."""
+        # Design freeze: malformed unclosed fence is the *last* Files block.
         text = (
-            "### Task A\n\n**Files:**\n- Create: `src/a.ts`\n```python\nx\n\n"
-            "### Task B\n\n**Files:**\n- Create: `src/b.ts`\n```python\ny\n"
+            "### Task A\n\n**Files:**\n- Create: `src/a.ts`\n\n**Reuse:** none\n\n"
+            "### Task B\n\n**Files:**\n- Create: `src/b.ts`\n\n```python\nunclosed\n"
         )
-        # two unclosed fences if each block fails independently — at least one note
         result = rd.extract_owns_from_tasks_text(text)
         notes = self._notes(result)
         skipped = [n for n in notes if n.get("kind") == "p1_block_skipped"]
-        self.assertGreaterEqual(len(skipped), 1)
+        self.assertEqual(len(skipped), 1)
+        self.assertEqual(skipped[0].get("detail"), "unclosed_fence")
+        paths = self._paths(result)
+        self.assertIn("src/a.ts", paths)
+        self.assertNotIn("src/b.ts", paths)
 
 
 class TestFSUBRSnapshot(unittest.TestCase):

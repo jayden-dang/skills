@@ -42,65 +42,21 @@ in Step 2). If a design decision must *contradict* an invariant, that is an
 ADR-or-supersede event — record the ADR, or supersede the invariant by strikethrough
 in the spine — never a silent violation. No spine? Skip this; the layer is optional.
 
-### Security and reliability standing docs (optional)
+### Optional system docs (consult recipe)
 
-**Applicability:** design crosses trust boundaries, compliance obligations, or reliability
-targets.
+**Load:** `skills/project/define-system-doc/consult-recipe.md` (authority, hard-constraint
+precedence, no-op, once-per-entry suggest, never auto-invoke).
 
-**When** Approved security/reliability docs exist: cite greppable IDs only via optional
-`Security:` / `Reliability:` fields (never on `Respects:`). Definitions must already be
-bold in the canonical files; do not invent TB/THR/CMP/SLO numbers without human-approved
-docs. High-risk facts still require human confirmation (define-system-doc evidence rules).
+| When the design… | Consult if Approved | Cite as |
+|---|---|---|
+| Crosses trust / compliance | `docs/security/threat-model.md`, `compliance.md`, `posture.md` | optional `Security:` TB/THR/CMP only — never on `Respects:` |
+| Sets reliability targets | `docs/ops/reliability.md` | optional `Reliability:` SLO only |
+| Touches API/UI/a11y/security-coding/instrumentation | matching `docs/standards/<name>.md` | design constraints prose |
+| Needs system/data/integrations/runtime shape | `docs/architecture/{system,data,integrations,runtime}.md` | narrative; spine ARCH-N stays `Respects:` only |
+| Names cross-module structure | `docs/codebase/{modules,ownership,dependencies}.md` | Locality / Reuse guidance |
 
-**When absent:** CONTINUE; suggest once per entry `/define-system-doc security/*` or
-`ops/reliability` as fits; **NEVER** auto-invoke (ARCH-5).
-
-### Surface standards (optional)
-
-**Applicability:** design touches API, UI, a11y, security coding, or instrumentation.
-
-**When** the matching `docs/standards/{api,ui,accessibility,security-coding,observability}.md`
-is Approved: fold conventions into design constraints.
-**When absent:** CONTINUE; suggest once per entry via `/define-system-doc standards/<name>`;
-**NEVER** auto-invoke.
-
-### Architecture shape docs (optional)
-
-**Applicability:** the design relies on system decomposition, data model, integrations,
-or runtime topology beyond ARCH-N one-liners.
-
-**Authority:** for each of `docs/architecture/system.md`, `data.md`, `integrations.md`,
-`runtime.md` — **Approved** only when `Status: Approved` and the structural validator
-under `skills/project/define-system-doc/validators/architecture/` passes. The invariant
-spine remains `docs/architecture/INDEX.md` (define-project); shape docs never redefine
-ARCH-N.
-
-**When Approved and applicable:** consult within hard constraints (requirements, ARCH-N,
-standing project constraints).
-
-**When absent or non-authoritative:** CONTINUE without failing solely for absence. If
-shape is material, suggest **at most once per entry key per design-solution run**
-`/define-system-doc architecture/system|data|integrations|runtime` as fits; **NEVER**
-auto-invoke (ARCH-5).
-
-### Codebase navigation docs (optional)
-
-**Applicability:** the design names cross-module structure, Locality across packages,
-or dependency direction between modules/layers.
-
-**Authority:** for each of `docs/codebase/modules.md`, `ownership.md`, `dependencies.md`
-— **Approved** only when `Status: Approved` and the matching structural validator under
-`skills/project/define-system-doc/validators/codebase/` passes; otherwise Absent or
-Non-authoritative.
-
-**When Approved and applicable:** consult the doc within hard constraints (approved
-requirements, ARCH-N, standing project constraints). Navigation docs do not outrank
-hard constraints.
-
-**When absent or non-authoritative:** CONTINUE without failing solely for absence.
-If module/dependency structure is material, suggest **at most once per entry key per
-design-solution run** `/define-system-doc codebase/modules|ownership|dependencies` as
-fits; **NEVER** auto-invoke `define-system-doc` (ARCH-5).
+Do not invent TB/THR/CMP/SLO numbers without bold definitions in Approved docs. Shape docs
+never redefine ARCH-N. Suggest `/define-system-doc <entry-key>` only when the gap is material.
 
 **Done when:** the Context and decisions section names the binding constraint,
 the alternative rejected because of it, fresh retrieval has run, and — where a

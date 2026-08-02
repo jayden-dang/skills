@@ -52,18 +52,18 @@ class TestPlanTasksNavReader(unittest.TestCase):
         self.text = PLAN.read_text()
 
     def test_applicability_and_entries(self):
-        self.assertIn("Codebase navigation docs", self.text)
+        self.assertIn("System docs consult during File Structure", self.text)
+        self.assertIn("consult-recipe.md", self.text)
         for key in NAV_KEYS:
             self.assertIn(key, self.text)
 
     def test_consult_noop_suggest(self):
-        self.assertIn("When absent or non-authoritative", self.text)
-        self.assertIn("/define-system-doc codebase/modules", self.text)
-        self.assertIn("never", self.text.lower())
+        self.assertIn("absent", self.text.lower())
+        self.assertIn("codebase/modules", self.text)
         self.assertIn("auto-invoke", self.text.lower())
 
     def test_hard_constraints_outrank(self):
-        self.assertIn("Hard constraints still outrank", self.text)
+        self.assertIn("hard constraint", self.text.lower())
 
 
 class TestDesignSolutionNavReader(unittest.TestCase):
@@ -71,15 +71,14 @@ class TestDesignSolutionNavReader(unittest.TestCase):
         self.text = DESIGN.read_text()
 
     def test_applicability(self):
-        self.assertIn("Codebase navigation docs", self.text)
+        self.assertIn("Optional system docs (consult recipe)", self.text)
         self.assertIn("cross-module", self.text)
 
     def test_consult_noop_suggest_no_auto(self):
-        self.assertIn("Approved", self.text)
-        self.assertIn("absent or non-authoritative", self.text.lower())
+        self.assertIn("consult-recipe.md", self.text)
+        self.assertIn("modules,ownership,dependencies", self.text.replace(" ", "") or "modules" in self.text)
         self.assertIn("/define-system-doc", self.text)
-        self.assertIn("NEVER", self.text)
-        self.assertIn("auto-invoke", self.text.lower())
+        self.assertIn("never auto-invoke", self.text.lower())
 
 
 class TestInspectChangeNavReader(unittest.TestCase):
@@ -89,12 +88,12 @@ class TestInspectChangeNavReader(unittest.TestCase):
     def test_section_present(self):
         self.assertIn("Codebase navigation docs", self.text)
         self.assertIn("3c.", self.text)
+        self.assertIn("consult-recipe.md", self.text)
 
     def test_advisory_and_no_auto(self):
         self.assertIn("advisory", self.text.lower())
-        self.assertIn("NEVER", self.text)
         self.assertIn("auto-invoke", self.text.lower())
-        self.assertIn("not access-control", self.text.lower())
+        self.assertIn("access-control", self.text.lower())
 
 
 class TestGuideNav(unittest.TestCase):

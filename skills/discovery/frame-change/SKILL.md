@@ -59,19 +59,24 @@ Read `CONTEXT.md` (use its vocabulary from here on) and `docs/specs/INDEX.md` (t
 
 **Applicability:** the idea touches users, success criteria, or product principles.
 
-**Authority:** for each of `docs/product/personas.md`, `metrics.md`, `principles.md` —
-**Approved** only when `Status: Approved` and the structural validator under
-`skills/project/define-system-doc/validators/product/` passes; otherwise Absent or
-Non-authoritative. Vision remains `docs/product/vision.md` (define-project).
+**Paths:** `docs/product/personas.md`, `metrics.md`, `principles.md` (validators under
+`skills/project/define-system-doc/validators/product/`). Vision remains
+`docs/product/vision.md` (define-project).
 
-**When Approved and applicable:** consult the doc(s) when checking scope, users, or
-goals; they do not outrank vision non-goals/hard constraints.
+**Consult:** follow `skills/project/define-system-doc/consult-recipe.md` (authority,
+no-op, once-per-entry suggest, never auto-invoke). When Approved, use personas/metrics/
+principles to right-size scope and users; they do not outrank vision non-goals/hard
+constraints. Suggest `/define-system-doc product/personas|metrics|principles` only when
+that gap is material.
 
-**When absent or non-authoritative:** CONTINUE without failing solely for absence.
-If personas/metrics/principles would materially right-size the interview, suggest
-**at most once per entry key per frame-change run**
-`/define-system-doc product/personas|metrics|principles` as fits; **NEVER**
-auto-invoke `define-system-doc` (ARCH-5). For anything heavier — code, docs, and recent commits near this idea — dispatch a **scan subagent** that explores and writes a findings digest to `.skills/<CODE>/scan.md (or `.skills/_pending-<slug>/scan.md` before CODE)` (what exists near the idea, the files and seams it touches, applicable constraints — findings, not file dumps), returning only that path; work from the digest instead of pulling raw files into this conversation. (No subagents in this harness? Read the few relevant files directly.) If `docs/agents/project.md` or these files are missing, say so, suggest running `configure-repo`, and continue with what you have.
+For anything heavier — code, docs, and recent commits near this idea — dispatch a
+**scan subagent** that explores and writes a findings digest to
+`.skills/<CODE>/scan.md` (or `.skills/_pending-<slug>/scan.md` before CODE) (what
+exists near the idea, the files and seams it touches, applicable constraints —
+findings, not file dumps), returning only that path; work from the digest instead of
+pulling raw files into this conversation. (No subagents in this harness? Read the few
+relevant files directly.) If `docs/agents/project.md` or these files are missing, say
+so, suggest running `configure-repo`, and continue with what you have.
 
 The scan digest (or your direct read) MUST include a **Blindspot** section: territory-specific traps, historical constraints, and questions a newcomer would not know to ask — grounded in this repo, not generic advice. When the user signals low familiarity with the module or domain, surface that Blindspot list to them before the first preference question in step 2.
 

@@ -58,21 +58,20 @@ class TestHooks(unittest.TestCase):
     def test_plan_tasks_prefers_standards(self):
         text = PLAN.read_text()
         self.assertIn("docs/standards/", text)
-        self.assertIn("legacy fallback", text.lower())
-        self.assertIn("Engineering standards docs", text)
-        self.assertIn("/define-system-doc standards/", text)
-        self.assertIn("NEVER", text)
+        self.assertIn("legacy", text.lower())
+        self.assertIn("consult-recipe.md", text)
+        self.assertIn("standards/INDEX", text)
 
     def test_test_first_testing_doc(self):
         text = TEST_FIRST.read_text()
         self.assertIn("Testing standards doc", text)
         self.assertIn("standards/testing", text)
-        self.assertIn("NEVER", text)
+        self.assertIn("never auto-invoke", text.lower())
 
     def test_inspect_change_standards_sources(self):
         text = INSPECT.read_text()
         self.assertIn("docs/standards/", text)
-        self.assertIn("/define-system-doc standards/", text)
+        self.assertIn("consult-recipe.md", text)
 
     def test_define_project_migration(self):
         text = DEFINE_PROJECT.read_text()

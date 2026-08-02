@@ -214,28 +214,24 @@ class TestPlanTasksReader(unittest.TestCase):
         self.text = PLAN_TASKS.read_text()
 
     def test_applicability_predicate(self):
-        self.assertIn("Applicability:", self.text)
+        self.assertIn("System docs consult during File Structure", self.text)
         self.assertIn("File Structure", self.text)
+        self.assertIn("consult-recipe.md", self.text)
 
     def test_consult_when_authoritative(self):
-        self.assertIn("When Approved:", self.text)
-        self.assertIn("consult", self.text.lower())
+        self.assertIn("When Approved", self.text)
+        self.assertIn("codebase/map", self.text)
 
     def test_noop_when_absent(self):
-        self.assertIn("absent or non-authoritative", self.text.lower())
+        self.assertIn("absent", self.text.lower())
         self.assertIn("CONTINUE", self.text)
 
     def test_suggestion_protocol(self):
-        self.assertIn("/define-system-doc codebase/map", self.text)
-        self.assertIn("at most once", self.text.lower())
-        self.assertIn("NEVER", self.text)
+        self.assertIn("define-system-doc", self.text)
         self.assertIn("auto-invoke", self.text.lower())
 
     def test_conflict_precedence(self):
-        self.assertIn("Hard constraints", self.text)
-        self.assertIn("Placement conflict", self.text)
-        self.assertIn("preserve the hard", self.text.lower())
-        self.assertIn("constraint", self.text.lower())
+        self.assertIn("hard constraint", self.text.lower())
 
 
 class TestRegistration(unittest.TestCase):

@@ -61,11 +61,11 @@ Write the approved version into the project's version files (manifest, lockfile 
 
 Execute the ordered release steps from `docs/agents/project.md` exactly. Do not improvise flags or substitute commands; an unclear step is a failing step under the stop rule.
 
-**Optional deployment narrative:** IF `docs/ops/deployment.md` is Approved
-(`Status: Approved` + structural validator pass), consult it for rollout/rollback
-**narrative** only. It MUST NOT replace or override executable release commands in
-`docs/agents/project.md`. IF absent, CONTINUE. Optional suggest once
-`/define-system-doc ops/deployment`; **NEVER** auto-invoke (ARCH-5).
+**Optional deployment narrative:** follow
+`skills/project/define-system-doc/consult-recipe.md` for
+`docs/ops/deployment.md` — **narrative only**. It MUST NOT replace or override
+executable release commands in `docs/agents/project.md`. Suggest once if material;
+never auto-invoke.
 
 **Done when:** every release step has run successfully and the artifact(s) exist.
 

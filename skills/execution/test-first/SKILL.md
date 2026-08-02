@@ -62,19 +62,11 @@ still write domain-named tests at agreed seams.
 
 ### Testing standards doc (optional)
 
-**Applicability:** choosing seams, mock boundaries, or suite commands for this change.
-
-**Authority:** `docs/standards/testing.md` is **Approved** when `Status: Approved` and
-its structural validator under `skills/project/define-system-doc/validators/standards/testing.md`
-would pass (or the file is pack SSOT already present under `docs/standards/`).
-
-**When present:** apply its strategy, test-first, and mock-boundary rules in addition
-to this skill's Iron Law (Iron Law never weakens).
-
-**When absent:** CONTINUE with this skill's defaults and `docs/agents/project.md`
-commands. IF a testing standards doc would materially clarify seams or mock policy,
-suggest **at most once per test-first run** `/define-system-doc standards/testing`;
-**NEVER** auto-invoke (ARCH-5).
+**Applicability:** seams, mock boundaries, or suite commands. **Load:**
+`skills/project/define-system-doc/consult-recipe.md`. **Path:** `docs/standards/testing.md`
+(pack SSOT counts as present standing rules). Apply when present **in addition to**
+this skill's Iron Law (Iron Law never weakens). No-op when absent; suggest once
+`/define-system-doc standards/testing` only if material; never auto-invoke.
 
 ## Anti-patterns and their counters
 

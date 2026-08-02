@@ -35,10 +35,10 @@ or an empty screen is testing the harness, not the feature.
 
 ### UI / accessibility standards (optional)
 
-**When** `docs/standards/ui.md` and/or `docs/standards/accessibility.md` are Approved:
-consult conventions for locators, visible outcomes, and a11y expectations.
-**When absent:** CONTINUE. Suggest at most once per entry
-`/define-system-doc standards/ui|accessibility`; **NEVER** auto-invoke (ARCH-5).
+**Load:** `skills/project/define-system-doc/consult-recipe.md`.  
+**Paths:** `docs/standards/ui.md`, `docs/standards/accessibility.md`.  
+Consult when Approved; no-op when absent; suggest once
+`/define-system-doc standards/ui|accessibility` if material; never auto-invoke.
 
 ## 2. Ensure an e2e harness
 

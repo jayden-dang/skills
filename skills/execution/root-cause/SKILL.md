@@ -64,20 +64,14 @@ look suggestive.
 
 ### Ops docs after Phase 2 (optional — never replaces the red loop)
 
-**Only after Phase 2.** Phases 1–2 MUST still run a red-capable command first
-(ARCH / Iron Law). Ops docs are advisory context for Phase 3+, never a substitute
-for the red loop.
+**Only after Phase 2.** Phases 1–2 still require a red-capable command first. **Load:**
+`skills/project/define-system-doc/consult-recipe.md`.
 
-**When applicable and Approved** (`Status: Approved` + structural validator pass):
-
-- `docs/ops/runbooks.md` / `docs/ops/runbooks/` — select a runbook slug if the
-  symptom matches; treat procedures as human-confirmed standing prose
-- `docs/ops/observability.md` — dashboards/alerts locations for investigation
-- `docs/ops/disaster-recovery.md` — recovery context when the incident is DR-shaped
-
-**When absent or non-authoritative:** CONTINUE without failing. Optional: suggest
-once per entry `/define-system-doc ops/runbooks|observability|disaster-recovery`;
-**NEVER** auto-invoke (ARCH-5).
+**Paths when applicable:** `docs/ops/runbooks.md` (and runbook slugs),
+`docs/ops/observability.md`, `docs/ops/disaster-recovery.md` — advisory Phase 3+
+context only; never a substitute for the red loop. No-op when absent; suggest once
+`/define-system-doc ops/runbooks|observability|disaster-recovery` if material;
+never auto-invoke.
 
 ## Phase 3 — Hypothesise
 

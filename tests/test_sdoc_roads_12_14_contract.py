@@ -55,10 +55,16 @@ class TestSurfaceStandards(unittest.TestCase):
             self.assertRegex(CATALOG.read_text(), rf"`{re.escape(key)}`\s*\|\s*First-class")
 
     def test_validate_api_ui_hooks(self):
-        self.assertIn("standards/api", VAPI.read_text())
-        self.assertIn("NEVER", VAPI.read_text())
-        self.assertIn("standards/ui", VUI.read_text())
-        self.assertIn("accessibility", VUI.read_text())
+        api = VAPI.read_text()
+        ui = VUI.read_text()
+        self.assertIn("standards/api", api)
+        self.assertIn("/define-system-doc standards/api", api)
+        self.assertIn("consult-recipe.md", api)
+        self.assertIn("never auto-invoke", api.lower())
+        self.assertIn("standards/ui", ui)
+        self.assertIn("accessibility", ui)
+        self.assertIn("/define-system-doc standards/", ui)
+        self.assertIn("never auto-invoke", ui.lower())
 
 
 class TestSecurityAndIds(unittest.TestCase):
@@ -99,14 +105,15 @@ class TestOps(unittest.TestCase):
         text = ROOT_CAUSE.read_text()
         self.assertIn("Only after Phase 2", text)
         self.assertIn("ops/runbooks", text)
-        self.assertIn("NEVER", text)
-        self.assertIn("red-capable", text.lower())
+        self.assertIn("consult-recipe.md", text)
+        self.assertIn("red loop", text.lower())
 
     def test_cut_release_deployment_narrative(self):
         text = CUT.read_text()
         self.assertIn("ops/deployment", text)
         self.assertIn("MUST NOT replace", text)
         self.assertIn("project.md", text)
+        self.assertIn("consult-recipe.md", text)
 
 
 class TestGuideComplete(unittest.TestCase):

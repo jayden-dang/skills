@@ -39,10 +39,10 @@ marking the item unverifiable.
 
 ### API standards doc (optional)
 
-**When** `docs/standards/api.md` is Approved (Status + structural validator) **and**
-checklist items are HTTP/RPC APIs: consult conventions for status/body expectations.
-**When absent:** CONTINUE. Suggest at most once `/define-system-doc standards/api`;
-**NEVER** auto-invoke (ARCH-5).
+**Applicability:** checklist items are HTTP/RPC APIs. **Load:**
+`skills/project/define-system-doc/consult-recipe.md`. **Path:** `docs/standards/api.md`.
+Consult when Approved; no-op when absent; suggest once `/define-system-doc standards/api`
+if the gap is material; never auto-invoke.
 
 ## 2. Turn each checklist item into a real request
 

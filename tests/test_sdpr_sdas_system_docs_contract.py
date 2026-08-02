@@ -40,14 +40,15 @@ class TestProductFirstClass(unittest.TestCase):
         text = FRAME.read_text()
         self.assertIn("Product context docs", text)
         self.assertIn("/define-system-doc product/", text)
-        self.assertIn("NEVER", text)
-        self.assertIn("auto-invoke", text.lower())
+        self.assertIn("consult-recipe.md", text)
+        self.assertIn("never auto-invoke", text.lower())
 
     def test_validate_feature_hooks(self):
         text = VALIDATE.read_text()
         self.assertIn("Product context docs", text)
         self.assertIn("/define-system-doc product/", text)
-        self.assertIn("NEVER", text)
+        self.assertIn("consult-recipe.md", text)
+        self.assertIn("never auto-invoke", text.lower())
 
 
 class TestArchitectureShapeFirstClass(unittest.TestCase):
@@ -61,10 +62,10 @@ class TestArchitectureShapeFirstClass(unittest.TestCase):
 
     def test_design_solution_shape_hooks(self):
         text = DESIGN.read_text()
-        self.assertIn("Architecture shape docs", text)
-        self.assertIn("/define-system-doc architecture/", text)
-        self.assertIn("never redefine", text.lower())
-        self.assertIn("NEVER", text)
+        self.assertIn("Optional system docs (consult recipe)", text)
+        self.assertIn("consult-recipe.md", text)
+        self.assertIn("architecture/{system,data,integrations,runtime}", text)
+        self.assertIn("never redefine ARCH-N", text)
 
     def test_define_project_handoff(self):
         text = DEFINE_PROJECT.read_text()

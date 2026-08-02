@@ -35,9 +35,9 @@ Find the governing requirements, in order:
 
 ## 3. Gather the standards sources
 
-Collect whatever documents how code here should be written: CLAUDE.md, lint and formatter configs, CONTRIBUTING-style docs, plus CONTEXT.md for the repo's canonical vocabulary. Prefer **`docs/standards/`** (INDEX + applicable domain files such as `testing.md`, `errors-logging.md`) when present as the engineering SSOT; IF only unmigrated `docs/product/guidelines.md` remains, use it as legacy fallback; IF guidelines is pointer-only, follow its links to `docs/standards/`. If `docs/agents/project.md` is missing, note it and suggest running `configure-repo`, then proceed with what exists. When `## Team` is present with a non-empty **roster** or band override, read **band** and **packaging** from that section: dual-axis review always; Solo report addresses the solo author; Small/Multi emphasize path ownership using ownership notes when present. Missing Team → pre-feature default.
+Collect whatever documents how code here should be written: CLAUDE.md, lint and formatter configs, CONTRIBUTING-style docs, plus CONTEXT.md for the repo's canonical vocabulary. Prefer **`docs/standards/`** (INDEX + applicable domain files) when present; IF only unmigrated `docs/product/guidelines.md` remains, use it as legacy fallback; IF guidelines is pointer-only, follow its links to `docs/standards/`. If `docs/agents/project.md` is missing, note it and suggest running `configure-repo`, then proceed with what exists. When `## Team` is present with a non-empty **roster** or band override, read **band** and **packaging** from that section: dual-axis review always; Solo report addresses the solo author; Small/Multi emphasize path ownership using ownership notes when present. Missing Team → pre-feature default.
 
-**Optional suggest:** IF standards docs are absent and the Standards axis lacks house rules, suggest at most once per inspect-change run `/define-system-doc standards/INDEX` (or testing/errors-logging as fits); **NEVER** auto-invoke `define-system-doc` (ARCH-5).
+**System-docs suggest:** IF standards are missing and the Standards axis lacks house rules, follow `skills/project/define-system-doc/consult-recipe.md` — suggest once `/define-system-doc standards/INDEX` (or testing/errors-logging); never auto-invoke.
 
 On top of the repo's own documents, the Standards axis always carries `standards-baseline.md` (beside this file) — twelve code-quality smells that apply even when the repo documents nothing, plus a Security section that applies whenever the diff crosses a trust boundary. Two rules bind it: a documented repo standard always overrides the baseline, and every baseline hit is a labeled judgment call, never a hard violation. Skip anything tooling already enforces — a reviewer repeating the linter is noise. *Done when: the source list and the baseline path are in hand.*
 
@@ -59,24 +59,18 @@ When `docs/architecture/` exists, REQUIRED SUB-SKILL: use `review-invariants` on
 
 ## 3c. Codebase navigation docs (optional context)
 
-**Applicability:** diff paths intersect modules, ownership paths, or dependency layers
-described in standing codebase navigation docs.
+**Applicability:** diff paths intersect modules, ownership, or dependency surfaces in
+standing nav docs. **Load:** `skills/project/define-system-doc/consult-recipe.md`.
 
-**Authority:** `docs/codebase/modules.md`, `ownership.md`, `dependencies.md` — each is
-**Approved** only when `Status: Approved` and its structural validator under
-`skills/project/define-system-doc/validators/codebase/` passes.
+**Paths:** `docs/codebase/modules.md`, `ownership.md`, `dependencies.md`.
 
-**When Approved and applicable:** load the doc(s) as **advisory** Spec/Standards
-context. IF the diff appears to violate documented module boundaries, ownership
-expectations, or forbidden dependency directions, flag an advisory finding (not a
-hard merge gate by itself). Hard constraints and requirements still govern.
+**When Approved:** advisory Spec/Standards context only — flag conflicts with documented
+boundaries/ownership/deps as advisory findings (not a hard merge gate by themselves).
+Ownership docs are **not** access-control enforcement.
 
-**When absent or non-authoritative:** CONTINUE without failing solely for absence.
-Optional: suggest at most once per entry key per inspect-change run
-`/define-system-doc <entry-key>` when a missing nav doc would clarify the review;
-**NEVER** auto-invoke `define-system-doc` (ARCH-5).
-
-Ownership docs are **advisory documentation**, not access-control enforcement.
+**When absent / non-authoritative:** CONTINUE (no-op). Suggest once
+`/define-system-doc codebase/modules|ownership|dependencies` only when a missing
+nav doc would clarify the review; never auto-invoke.
 
 *Done when: nav context is held or an explicit no-op for absence.*
 

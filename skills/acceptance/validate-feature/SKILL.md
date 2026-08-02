@@ -35,21 +35,14 @@ concrete, observable check with an expected result.*
 
 ### Product context docs (optional)
 
-**Applicability:** acceptance criteria touch user personas or measurable success
-outcomes.
+**Applicability:** acceptance criteria touch personas or measurable success outcomes.  
+**Load:** `skills/project/define-system-doc/consult-recipe.md`.  
+**Paths:** `docs/product/personas.md`, `metrics.md`, `principles.md`.
 
-**Authority:** `docs/product/personas.md`, `metrics.md`, `principles.md` — each is
-**Approved** only when `Status: Approved` and its structural validator under
-`skills/project/define-system-doc/validators/product/` passes.
-
-**When Approved and applicable:** fold relevant persona/metric/principle constraints
-into checklist expectations (advisory product context; requirements remain normative).
-
-**When absent or non-authoritative:** CONTINUE without failing solely for absence.
-If metrics/personas would make acceptance checks material and clearer, suggest
-**at most once per entry key per validate-feature run**
-`/define-system-doc product/personas|metrics|principles`; **NEVER** auto-invoke
-(ARCH-5).
+**When Approved:** fold relevant constraints into checklist expectations (advisory;
+requirements remain normative). **When absent:** CONTINUE; suggest once
+`/define-system-doc product/personas|metrics|principles` only if the gap makes
+acceptance materially clearer; never auto-invoke.
 
 ## 2. Dispatch by surface
 

@@ -65,80 +65,28 @@ file rather than paraphrased.
 Map every file the plan creates or modifies, with one-line responsibilities,
 BEFORE writing tasks. A file not in the map should not be touched by any task.
 
-### Codebase Map consult (optional system-doc)
+### System docs consult during File Structure (optional)
 
-**Applicability:** this step is writing or revising File Structure / path placement
-for production paths.
+**Load:** `skills/project/define-system-doc/consult-recipe.md` (one home for authority,
+hard-constraint precedence, no-op, once-per-entry suggest, never auto-invoke).
 
-**Hard constraints (outrank any Codebase Map):**
+**Applicability:** this step writes or revises File Structure / path placement.
 
-1. Approved feature `requirements.md` / `design.md` for the plan under construction
-2. Live `ARCH-N` invariants in Global Constraints
-3. Standing project constraints already sourced (`docs/standards/` when present,
-   else legacy `docs/product/guidelines.md` fallback, else `docs/agents/project.md`,
-   and other standing config this skill reads)
-
-**Authority (`docs/codebase/map.md`):**
-
-- **Absent** — no file
-- **Non-authoritative** — file present but `Status` is not `Approved`, or the
-  structural validator in `skills/project/define-system-doc/validators/codebase/map.md`
-  fails (including external Draft)
-- **Approved** — `Status: Approved` and structural validator pass
-
-**When Approved:** extract layout + placement rules; align the File Structure map
-**within** hard constraints; note that the Codebase Map was consulted.
-
-**When absent or non-authoritative:** CONTINUE without failing the skill solely for
-map absence (no-op consult). IF placement of new or changed production paths is
-materially uncertain THEN suggest **at most once per plan-tasks run** the exact
-action `/define-system-doc codebase/map` and explain why the map would help now.
-Suppress further suggestions for that entry for the rest of the run after decline.
-Persist defer only if the user supplies an explicit condition. **NEVER** auto-invoke
-`define-system-doc` (user-invoked; ARCH-5).
-
-**Placement conflict:** IF an Approved map rule conflicts with a hard constraint
-THEN surface the conflict (name hard constraint + map rule), **preserve the hard
-constraint** in File Structure, suggest `/define-system-doc codebase/map` to update
-the map (counts toward the once-per-run budget when emitted), and never silently
-follow the map over the hard constraint or silently ignore a detected conflict.
-
-### Engineering standards docs (optional)
-
-**Applicability:** Global Constraints need testing or errors/logging house rules
-beyond ARCH-N and machine config.
-
-**Authority:** `docs/standards/INDEX.md`, `testing.md`, `errors-logging.md` — each
-**Approved** only when `Status: Approved` and the structural validator under
-`skills/project/define-system-doc/validators/standards/` passes (for consumer files
-authored via define-system-doc). Pack-maintained standards already in-repo are
-treated as present standing rules when the file exists and is the SSOT path.
-
-**When present:** fold applicable rules into Global Constraints (verbatim where
-practical). Prefer `docs/standards/` over guidelines.
-
-**When absent:** use legacy guidelines fallback or project.md as above; CONTINUE
-without failing solely for missing standards files. IF standards would materially
-improve Global Constraints, suggest **at most once per entry key per plan-tasks run**
-`/define-system-doc standards/INDEX|testing|errors-logging`; **NEVER** auto-invoke.
-
-### Codebase navigation docs (modules / ownership / dependencies)
-
-Same authority pattern as Codebase Map (`Status: Approved` + structural validator
-pass under `skills/project/define-system-doc/validators/codebase/<entry>.md`).
-Hard constraints still outrank these docs; conflict procedure matches Codebase Map
-(surface, preserve hard constraint, suggest `/define-system-doc <entry-key>`, never
-auto-invoke). Suggestion budget is **at most once per entry key per plan-tasks run**.
-
-| Entry | Canonical path | When to consult if Approved |
+| Entry | Path | Use when Approved |
 |---|---|---|
-| `codebase/modules` | `docs/codebase/modules.md` | Module boundary placement in File Structure |
-| `codebase/ownership` | `docs/codebase/ownership.md` | Ownership notes (advisory; not access control) |
-| `codebase/dependencies` | `docs/codebase/dependencies.md` | Avoid planning paths that imply forbidden dependency directions |
+| `codebase/map` | `docs/codebase/map.md` | Layout and placement rules |
+| `codebase/modules` | `docs/codebase/modules.md` | Module boundary placement |
+| `codebase/ownership` | `docs/codebase/ownership.md` | Ownership notes (advisory, not authz) |
+| `codebase/dependencies` | `docs/codebase/dependencies.md` | Forbidden dependency directions |
+| `standards/INDEX` / `testing` / `errors-logging` | `docs/standards/…` | Global Constraints house rules (prefer standards over guidelines) |
 
-**When absent or non-authoritative:** CONTINUE (no-op) for that entry; may suggest
-`/define-system-doc codebase/modules|ownership|dependencies` when that gap makes
-placement or dependency direction materially uncertain.
+**When Approved:** align the plan **within** hard constraints from consult-recipe;
+note which docs were consulted. **Conflict** with a hard constraint → surface, keep
+hard constraint, suggest `/define-system-doc <entry-key>`.
+
+**When absent / non-authoritative:** CONTINUE (no-op). Suggest only when the gap is
+material. Standards fallback chain stays: `docs/standards/` → legacy guidelines →
+`docs/agents/project.md`.
 
 **Done when:** every file the plan will create or modify appears in the map
 with a one-line responsibility.

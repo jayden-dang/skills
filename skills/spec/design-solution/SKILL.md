@@ -42,6 +42,28 @@ in Step 2). If a design decision must *contradict* an invariant, that is an
 ADR-or-supersede event — record the ADR, or supersede the invariant by strikethrough
 in the spine — never a silent violation. No spine? Skip this; the layer is optional.
 
+### Security and reliability standing docs (optional)
+
+**Applicability:** design crosses trust boundaries, compliance obligations, or reliability
+targets.
+
+**When** Approved security/reliability docs exist: cite greppable IDs only via optional
+`Security:` / `Reliability:` fields (never on `Respects:`). Definitions must already be
+bold in the canonical files; do not invent TB/THR/CMP/SLO numbers without human-approved
+docs. High-risk facts still require human confirmation (define-system-doc evidence rules).
+
+**When absent:** CONTINUE; suggest once per entry `/define-system-doc security/*` or
+`ops/reliability` as fits; **NEVER** auto-invoke (ARCH-5).
+
+### Surface standards (optional)
+
+**Applicability:** design touches API, UI, a11y, security coding, or instrumentation.
+
+**When** the matching `docs/standards/{api,ui,accessibility,security-coding,observability}.md`
+is Approved: fold conventions into design constraints.
+**When absent:** CONTINUE; suggest once per entry via `/define-system-doc standards/<name>`;
+**NEVER** auto-invoke.
+
 ### Architecture shape docs (optional)
 
 **Applicability:** the design relies on system decomposition, data model, integrations,
@@ -96,6 +118,8 @@ heading under Architecture is a REQUIRED shape, not free prose.
 | `Satisfies:` | Requirement IDs this module exists to meet. No Satisfies line → infrastructure (label it) or the section does not belong |
 | `Reuse:` | Highest ladder rung that held + concrete target, or `none — new code (rung 7)` + reason |
 | `Respects:` | `ARCH-N` when the design relies on a spine invariant (omit when no spine / no reliance) |
+| `Security:` | Optional. When the design relies on standing security docs, list greppable `TB-N`, `THR-N`, and/or `CMP-N` IDs defined only in Approved `docs/security/threat-model.md` (TB/THR) or `docs/security/compliance.md` (CMP). Omit the field when not applicable. **Do not** put these IDs on `Respects:` (`Respects:` stays ARCH-only). |
+| `Reliability:` | Optional. When the design relies on standing reliability objectives, list greppable `SLO-N` IDs defined only in Approved `docs/ops/reliability.md`. Omit when not applicable. |
 | `Interface:` | What callers know — smaller than the implementation |
 | `Depth:` | **Rung 7 (new module):** one-sentence **deletion test** — if this module vanished, what must callers still know to rebuild the behavior? Redesign until that answer is a *small* interface, not the full implementation. **Reuse of existing (rungs 2–5):** `n/a — extends <target>` |
 | `Locality:` | Where a change for these Satisfies IDs lands, and neighbor impact on modules the Step-1 scan already saw: `leave` \| `extend` \| `extract` plus one short clause |

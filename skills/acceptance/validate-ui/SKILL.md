@@ -33,6 +33,13 @@ project.md — capture a reusable signed-in state (e.g. a saved `storageState`)
 rather than logging in by hand in every spec. A run that stalls on a login wall
 or an empty screen is testing the harness, not the feature.
 
+### UI / accessibility standards (optional)
+
+**When** `docs/standards/ui.md` and/or `docs/standards/accessibility.md` are Approved:
+consult conventions for locators, visible outcomes, and a11y expectations.
+**When absent:** CONTINUE. Suggest at most once per entry
+`/define-system-doc standards/ui|accessibility`; **NEVER** auto-invoke (ARCH-5).
+
 ## 2. Ensure an e2e harness
 
 If the repo already standardizes on a different e2e framework (Cypress,

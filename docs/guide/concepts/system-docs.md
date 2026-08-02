@@ -55,6 +55,30 @@ validator-passing proposal. The mediated workflow never creates canonical Draft 
 | `standards/INDEX` | `docs/standards/INDEX.md` | `plan-tasks`, `inspect-change`, `define-project` |
 | `standards/testing` | `docs/standards/testing.md` | `plan-tasks`, `test-first`, `inspect-change` |
 | `standards/errors-logging` | `docs/standards/errors-logging.md` | `plan-tasks`, `inspect-change` |
+| `standards/api` … `observability` | `docs/standards/<name>.md` | design-solution, plan-tasks, validate-api/ui, inspect-change |
+| `security/threat-model` | `docs/security/threat-model.md` | design-solution (`Security:` TB/THR), audit-trace |
+| `security/posture` | `docs/security/posture.md` | design-solution |
+| `security/compliance` | `docs/security/compliance.md` | design-solution (`Security:` CMP), audit-trace |
+| `ops/deployment` | `docs/ops/deployment.md` | cut-release (narrative only; commands in project.md) |
+| `ops/reliability` | `docs/ops/reliability.md` | design-solution (`Reliability:` SLO), audit-trace |
+| `ops/observability` | `docs/ops/observability.md` | root-cause (after red loop) |
+| `ops/disaster-recovery` | `docs/ops/disaster-recovery.md` | root-cause (after red loop) |
+| `ops/runbooks` | `docs/ops/runbooks.md` | root-cause (after red loop) |
+
+**All 36 Hybrid 1A catalog rows are First-class** in the pack (remaining rows use existing
+owner skills: vision, ARCH INDEX, roadmap, specs INDEX, ADR, agents, glossary, OOS, guidelines pointer).
+
+### System IDs (docs-only)
+
+| Family | Defined in | Cited from design.md |
+|---|---|---|
+| `TB-N`, `THR-N` | `docs/security/threat-model.md` | `Security:` line only |
+| `CMP-N` | `docs/security/compliance.md` | `Security:` line only |
+| `SLO-N` | `docs/ops/reliability.md` | `Reliability:` line only |
+| `ARCH-N` | `docs/architecture/INDEX.md` | `Respects:` only |
+
+`audit-trace` enforces referential integrity (E6–E10) when defining docs exist. No semantic
+judgment; no uncited-live-ID warning; no app/test grep.
 
 Author any of these with `/define-system-doc <entry-key>`. Vision and ARCH-N spine stay with `/define-project`.
 

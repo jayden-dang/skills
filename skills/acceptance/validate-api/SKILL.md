@@ -37,6 +37,13 @@ acceptance run that stalls on a `401` or an empty database is testing the
 harness, not the feature — resolve the precondition and note it, rather than
 marking the item unverifiable.
 
+### API standards doc (optional)
+
+**When** `docs/standards/api.md` is Approved (Status + structural validator) **and**
+checklist items are HTTP/RPC APIs: consult conventions for status/body expectations.
+**When absent:** CONTINUE. Suggest at most once `/define-system-doc standards/api`;
+**NEVER** auto-invoke (ARCH-5).
+
 ## 2. Turn each checklist item into a real request
 
 For each API item in the ledger, write the concrete request a client sends —

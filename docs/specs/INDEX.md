@@ -29,3 +29,6 @@ not planned as a roadmap item.
 | SDPR | System-docs product context — personas, metrics, principles First-class + frame-change/validate hooks | ./2026-08-02-system-docs-product-context/ | Implemented | ROAD-9 |
 | SDAS | System-docs architecture shape — system/data/integrations/runtime First-class + design hooks | ./2026-08-02-system-docs-arch-shape/ | Implemented | ROAD-10 |
 | SDST | System-docs standards core — INDEX, testing, errors-logging First-class + guidelines migration | ./2026-08-02-system-docs-standards-core/ | Implemented | ROAD-11 |
+| SDSF | System-docs surface standards — api/ui/a11y/security-coding/observability | ./2026-08-02-system-docs-surface-std/ | Implemented | ROAD-12 |
+| SDSEC | System-docs security — threat/posture/compliance + TB/THR/CMP audit | ./2026-08-02-system-docs-security/ | Implemented | ROAD-13 |
+| SDOPS | System-docs ops — deployment/reliability/observability/DR/runbooks + SLO audit | ./2026-08-02-system-docs-ops/ | Implemented | ROAD-14 |

@@ -37,8 +37,17 @@ A finding set, each item an ERROR or a WARNING:
 | **E4** | error | A `Respects:` line cites an `ARCH-N` no `docs/architecture/` file defines |
 | **E5** | error | A `Respects:` line cites a retired (struck-through) `ARCH-N` |
 | **W3** | warn | A live `**ARCH-N**` invariant is cited by no `design.md` |
+| **E6** | error | A `Security:` line cites a `TB-N`/`THR-N`/`CMP-N` with no live bold definition in the canonical Approved security docs |
+| **E7** | error | A `Security:` line cites a retired (struck-through) `TB-N`/`THR-N`/`CMP-N` |
+| **E8** | error | The same `TB-N`/`THR-N`/`CMP-N`/`SLO-N` is bold-defined in more than one canonical file |
+| **E9** | error | A `Reliability:` line cites an `SLO-N` with no live bold definition in Approved `docs/ops/reliability.md` |
+| **E10** | error | A `Reliability:` line cites a retired (struck-through) `SLO-N` |
 
 E4/E5/W3 come from the invariant passes, which only run when a spine exists.
+E6–E10 come from system-ID passes; skip when the defining docs are absent or
+non-authoritative. **Do not** warn merely because a live system ID has no feature
+citation. **Do not** judge semantic conformance. **Do not** grep application or
+test source for these IDs.
 
 **Retired:** **E2** (code-side ID presence for Implemented/Shipped) is not
 emitted. Do not reintroduce a finding that greps the codebase for IDs.
@@ -130,6 +139,44 @@ grep -rnE 'Respects:.*ARCH-[0-9]+' docs/specs --include='*design.md' \
 ```
 
 Each cited `ARCH-N` belongs to the `design.md` it sits in.
+
+### System-ID passes — security and reliability (optional docs)
+
+Skip entirely when the relevant canonical file is missing. Only extract
+**definitions** from:
+
+| Family | Definition file (canonical) |
+|---|---|
+| `TB-N`, `THR-N` | `docs/security/threat-model.md` |
+| `CMP-N` | `docs/security/compliance.md` |
+| `SLO-N` | `docs/ops/reliability.md` |
+
+Definitions are bold `**TB-N**` / `**THR-N**` / `**CMP-N**` / `**SLO-N**` after
+striking `~~…~~` spans (same retirement rule as requirements). Numbering is
+repo-wide per family; never renumber or reuse.
+
+**Citations** only from feature `design.md` lines:
+
+```bash
+# Security citations — only on Security: lines
+grep -rnE '^Security:.*(TB|THR|CMP)-[0-9]+' docs/specs --include='*design.md' \
+  | grep -oE '^[^:]+:|(TB|THR|CMP)-[0-9]+'
+
+# Reliability citations — only on Reliability: lines
+grep -rnE '^Reliability:.*SLO-[0-9]+' docs/specs --include='*design.md' \
+  | grep -oE '^[^:]+:|SLO-[0-9]+'
+```
+
+Do **not** treat these IDs as task-footer citations. Do **not** emit a warning
+solely because a live system ID is uncited by any design.
+
+Rules when defining files exist:
+
+- **E6** — Security: cites TB/THR/CMP not in live definition set
+- **E7** — Security: cites retired TB/THR/CMP
+- **E8** — same system ID bold-defined in two or more distinct definition files
+- **E9** — Reliability: cites SLO not in live definition set in reliability.md
+- **E10** — Reliability: cites retired SLO
 
 ## The rules
 

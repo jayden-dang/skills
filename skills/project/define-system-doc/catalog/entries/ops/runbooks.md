@@ -1,34 +1,38 @@
 # Entry: `ops/runbooks`
 
 ## Purpose and boundary
-Hybrid 1A system-doc entry for `ops/runbooks`. Standing project documentation surface; not feature requirements.
+Hybrid 1A document for `ops/runbooks`.
 
 ## Canonical consumer path
-`docs/ops/runbooks/`
+`docs/ops/runbooks.md`
 
 ## Applicability
-Adopt when the project needs this standing document or directory for agents and humans.
+Adopt when the project needs this standing document.
 
 ## Mediated writer
-Default mediated owner skill: `define-system-doc` (see skill set). Full `/define-system-doc` package may land in a later ROAD item.
+`/define-system-doc` (`skills/project/define-system-doc/SKILL.md`)
 
 ## Template
-None — Recognized (no pack template required until First-class).
+`templates/ops/runbooks.md`
 
 ## Validator
-None — Recognized.
+`validators/ops/runbooks.md` (structural pass/fail)
 
 ## Evidence sources
-None — deferred pack probes until First-class.
+Repository/runtime facts with grades; human confirmation for high-risk classes.
 
 ## Authority predicate
-Entry-specific; directory entries may not use a single Status header. Default: **Absent** if path missing; **Non-authoritative** if present without entry-defined Approved criteria; **Approved** only when this entry's later First-class package defines a predicate. Until then, consumers treat presence as optional context, not hard gate.
+- **Absent:** no file at `docs/ops/runbooks.md`
+- **Non-authoritative:** missing Approved status or structural validator fail
+- **Approved:** `Status: Approved` and structural validator pass
 
 ## Real readers and decision points
-None claimed (Recognized — no pack consult hook).
+| Reader | Decision point | Suggestion protocol |
+|---|---|---|
+| `skills/execution/root-cause/SKILL.md` | runbook selection after RED | Yes — never skip red-loop |
 
 ## No-op when absent or non-authoritative
-Skills that do not list this entry as a reader MUST NOT invent its content.
+Named readers continue without failing solely for absence.
 
 ## Maturity
 Authoritative only in `CATALOG.md`.

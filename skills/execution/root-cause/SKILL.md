@@ -62,6 +62,23 @@ neighbor context (seed paths/terms; `neighbors` or `blast_radius` as fits).
 root-cause hypotheses from the envelope; never skip the red loop because neighbors
 look suggestive.
 
+### Ops docs after Phase 2 (optional — never replaces the red loop)
+
+**Only after Phase 2.** Phases 1–2 MUST still run a red-capable command first
+(ARCH / Iron Law). Ops docs are advisory context for Phase 3+, never a substitute
+for the red loop.
+
+**When applicable and Approved** (`Status: Approved` + structural validator pass):
+
+- `docs/ops/runbooks.md` / `docs/ops/runbooks/` — select a runbook slug if the
+  symptom matches; treat procedures as human-confirmed standing prose
+- `docs/ops/observability.md` — dashboards/alerts locations for investigation
+- `docs/ops/disaster-recovery.md` — recovery context when the incident is DR-shaped
+
+**When absent or non-authoritative:** CONTINUE without failing. Optional: suggest
+once per entry `/define-system-doc ops/runbooks|observability|disaster-recovery`;
+**NEVER** auto-invoke (ARCH-5).
+
 ## Phase 3 — Hypothesise
 
 Write 3–5 ranked hypotheses before testing any (a single hypothesis anchors you to the first plausible idea). Each must be falsifiable with a stated prediction: "if X is the cause, then changing Y makes the bug disappear". If you cannot state the prediction, it is a vibe — sharpen it or discard it. Show the ranked list to the user (they often re-rank it instantly); don't block if they're away.

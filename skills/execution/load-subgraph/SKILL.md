@@ -25,18 +25,27 @@ You do **not** produce a file under `docs/`. You do **not** invent DEPENDS_ON ed
 ## Procedure
 
 1. Resolve repo root. If `docs/specs/` is missing, say so and stop (empty registry).
-2. Load **`references/passes.md`** and run the named passes for the query
-   (R → P1 → D → P2 → P0 if terms → P3/P4/P5 as applicable → query merge).
-   Use grep/file reads/set ops only. Do not improvise ranking or stop-lists.
-3. Render the envelope. Always include OWNS coverage even when neighbor list is empty.
-4. Return to the caller. Summary cards (feature name, Out-of-Scope) may be loaded
-   from each neighbor’s requirements after the envelope — cards are presentation,
-   not a substitute for the envelope.
+2. Load **`references/passes.md`**. Build a **two-stage derivation snapshot**
+   (Stage A core: INDEX + tasks.md OWNS + optional-layer presence; Stage B only
+   for `cluster` after members known — member `requirements.md` if not buffered).
+   Each path is read or statted **at most once** (`read_ledger`).
+3. Run the named query as a **pure function of the snapshot** (neighbors /
+   cluster / ancestors / descendants / blast_radius / subgraph). No further
+   file IO. Pass order inside the snapshot: R → P1 → D → P2 → P0 if terms →
+   P3/P4/P5 as applicable → query merge. Grep/set ops only; do not improvise
+   ranking or stop-lists.
+4. Render the envelope (`schema_version` / `recipe_id` per passes.md). Always
+   include OWNS coverage even when neighbor list is empty. Carry reliability
+   notes from the snapshot (no silent note count cap).
+5. Return to the caller. Summary cards (feature name, Out-of-Scope) may use
+   texts already in the snapshot; do not re-open files already ledgered.
 
 ## Determinism
 
 Two independent runs on the same frozen tree and same query MUST yield the same
-edge set and seed set. Re-run the full pass list; do not cache across SSOT edits.
+edge set and seed set. Rebuild the snapshot per invocation; do not cache across
+SSOT edits. Fingerprints include optional-layer **presence/absence** so a layer
+appearing later invalidates a retrieval package.
 
 ## Callers
 
@@ -61,6 +70,8 @@ PASSES.MD IS THE ONLY RANKING AND STOP-LIST AUTHORITY.
 | "Write GRAPH.md so the next call is faster" | Live read only; no projection under docs/ |
 | "Import the test helper / invent my own weights" | Only passes.md constants and recipes |
 | "Thin list is a review failure" | Advisory; never fail a gate on neighbors alone |
+| "Re-read tasks.md while ranking neighbors" | Snapshot first; queries are pure on buffered texts |
+| "Skip Stage B — we already have OWNS" | Cluster OOS needs member requirements after members are known |
 
 ## Red Flags
 

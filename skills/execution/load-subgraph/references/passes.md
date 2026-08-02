@@ -4,13 +4,20 @@ Deterministic recipes. Run against the consumer **repo root**. Two agents on the
 same tree with the same query MUST produce the same edge set and seed set
 (finding-set identity, not wording).
 
-**Constants (immutable for v1):**
+**Constants (immutable for v1 / FSUBR 1.1):**
 
 | Name | Value |
 |---|---|
 | `NEIGHBORS_MAX` | `12` |
 | `P0_SEED_MAX` | `12` |
+| `CLUSTER_K` | `1` |
+| `CLUSTER_MEMBERS_MAX` | `8` |
+| `PATH_EVIDENCE_MAX` / `TERM_EVIDENCE_MAX` | `5` / `5` |
+| `OOS_ITEM_MAX` / `OOS_TEXT_CEILING` | `6` / `1200` display code points |
+| `schema_version` / `recipe_id` | `"1.1"` / `"fsubr-1.1"` |
 | Line-suffix strip | trailing `:[0-9]+([,-][0-9]+)*` on the path token only |
+| Note kinds | `p1_block_skipped`, `p1_file_unreadable`, `cluster_focus_invalid` |
+| Note cap | **none** (dedupe `kind+code+detail` only) |
 
 **Stop-list — basenames (exact):**  
 `package.json` `Cargo.toml` `go.mod` `pyproject.toml` `Gemfile` `composer.json`  
@@ -21,6 +28,62 @@ same tree with the same query MUST produce the same edge set and seed set
 `src` `lib` `app` `apps` `packages` `services` `crates` `cmd` `internal`  
 `vendor` `node_modules` `dist` `build` `target` `out` `skills` `templates`  
 `hooks` `scripts` `docs`
+
+---
+
+## Derivation snapshot (two-stage, per query)
+
+Build an in-memory **DerivationSnapshot** once per invocation, then run the query
+as a **pure function of the snapshot** (zero further file IO).
+
+### Stage A — Core (every query)
+
+Read each path **at most once**; record every path in `read_ledger` as
+`{path, op: "read"|"stat_absent"}`:
+
+1. `docs/specs/INDEX.md` (registry).
+2. For each registered CODE: `tasks.md` under its spec dir — parse OWNS (Pass P1).
+   - **Missing** `tasks.md` → empty OWNS, **no** `p1_file_unreadable`.
+   - **Unreadable** (exists, read/UTF-8 fails) → empty OWNS + `p1_file_unreadable`;
+     continue other features.
+3. When the query supplies terms (P0) or kind is `subgraph` / `cluster`: also
+   buffer each feature’s `requirements.md` and `design.md` if present.
+4. **Optional-layer presence sentinels** (always):
+   - `docs/roadmap/INDEX.md`
+   - `docs/architecture/INDEX.md`  
+   Absent → `fingerprints[path] = {sha256: null, present: false}` and
+   `stat_absent` in the ledger. Present → content hash + `present: true`.
+
+### Stage B — Cluster OOS (only `kind == cluster`)
+
+After eligible members are computed **in memory from Stage A OWNS only**
+(focus first; weight ≥ `CLUSTER_K`; cap `CLUSTER_MEMBERS_MAX`):
+
+1. For each **returned** member, load `requirements.md` if not already in
+   `source_texts`.
+2. Never re-read a path already buffered. Member eligibility/caps use Stage A
+   only; OOS union may use Stage A+B texts.
+
+### Snapshot fields
+
+| Field | Content |
+|---|---|
+| `registry` | INDEX rows |
+| `source_texts` / `source_bytes` | successful reads only |
+| `owns` | CODE → path set |
+| `owns_coverage` | with_owns, registered, ratio |
+| `notes` | all reliability notes (no count cap; dedupe kind+code+detail) |
+| `fingerprints` | path → `{sha256, present}` for every path considered |
+| `read_ledger` | ordered; **each path at most once** |
+| `schema_version` / `recipe_id` | `"1.1"` / `"fsubr-1.1"` |
+
+### Queries after snapshot
+
+`neighbors`, `cluster`, `ancestors`, `descendants`, `blast_radius`, `subgraph`
+take only `(snapshot, query_args)`. They MUST NOT open files. Fingerprints for
+package validity hash **buffered bytes** (or a single validation read that
+becomes the Stage A buffer) — never read-then-read-again for the same path in
+one invocation.
 
 ---
 

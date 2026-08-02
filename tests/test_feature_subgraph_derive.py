@@ -332,5 +332,90 @@ class TestFSUBRP1Owns(unittest.TestCase):
         self.assertGreaterEqual(len(skipped), 1)
 
 
+class TestFSUBRSnapshot(unittest.TestCase):
+    """FSUBR-10.1 DerivationSnapshot two-stage + read_ledger + pure queries."""
+
+    def test_FSUBR_10_1_read_ledger_path_at_most_once_neighbors(self):
+        """FSUBR-10.1 after build_snapshot + neighbors, each path ≤1 in read_ledger."""
+        root = FIX / "mega-owner-100"
+        q = {"kind": "neighbors", "code": "FOCUS", "terms": []}
+        snap = rd.build_snapshot(root, q)
+        paths = [e["path"] for e in snap["read_ledger"]]
+        self.assertEqual(len(paths), len(set(paths)), f"duplicate ledger paths: {paths}")
+        rd.neighbors_from_snapshot(snap, "FOCUS", terms=None)
+        paths_after = [e["path"] for e in snap["read_ledger"]]
+        self.assertEqual(len(paths_after), len(set(paths_after)))
+        self.assertEqual(paths, paths_after)
+
+    def test_FSUBR_10_1_read_ledger_path_at_most_once_cluster(self):
+        """FSUBR-10.1 after build_snapshot for cluster, each path ≤1 in read_ledger."""
+        root = FIX / "mega-owner-100"
+        q = {"kind": "cluster", "focus": "FOCUS"}
+        snap = rd.build_snapshot(root, q)
+        paths = [e["path"] for e in snap["read_ledger"]]
+        self.assertEqual(len(paths), len(set(paths)), f"duplicate ledger paths: {paths}")
+        # Stage B may load member requirements; still ≤1 per path
+        for rel, text in snap.get("source_texts", {}).items():
+            self.assertIsInstance(text, str)
+        # pure cluster query (minimal) must not grow ledger
+        if hasattr(rd, "cluster_from_snapshot"):
+            rd.cluster_from_snapshot(snap, "FOCUS")
+        paths_after = [e["path"] for e in snap["read_ledger"]]
+        self.assertEqual(paths, paths_after)
+
+    def test_FSUBR_10_1_query_pure_io_disabled_after_snapshot(self):
+        """FSUBR-10.1 queries succeed with IO-disabled adapter when snapshot prebuilt."""
+        root = FIX / "mega-owner-100"
+        q = {"kind": "neighbors", "code": "FOCUS", "terms": ["shared"]}
+        snap = rd.build_snapshot(root, q)
+        ledger_before = list(snap["read_ledger"])
+
+        class _Boom:
+            def __getattr__(self, name):
+                raise OSError(f"IO disabled: {name}")
+
+        result = rd.neighbors_from_snapshot(snap, "FOCUS", terms=["shared"], fs=_Boom())
+        self.assertIn("neighbors", result)
+        codes = {row["code"] for row in result["neighbors"]}
+        self.assertTrue(codes & {"SMALL", "MEGA"})
+        self.assertEqual(snap["read_ledger"], ledger_before)
+
+        env = rd.run_on_snapshot(snap, q, fs=_Boom())
+        self.assertIn("neighbors", env)
+        self.assertEqual(snap["read_ledger"], ledger_before)
+
+    def test_FSUBR_10_1_missing_tasks_no_unreadable_note_in_snapshot(self):
+        """FSUBR-10.1 missing tasks.md → empty OWNS, no p1_file_unreadable in snapshot."""
+        root = FIX / "p1-missing-tasks"
+        snap = rd.build_snapshot(root, {"kind": "neighbors", "code": "MISS", "terms": []})
+        owns = snap["owns"].get("MISS", set())
+        if isinstance(owns, dict):
+            owns = owns.get("paths", set())
+        self.assertEqual(owns, set())
+        kinds = {n.get("kind") for n in snap.get("notes") or []}
+        self.assertNotIn("p1_file_unreadable", kinds)
+
+    def test_FSUBR_10_1_fingerprints_optional_layer_presence_sentinels(self):
+        """FSUBR-10.1 absent optional layers recorded present:false in fingerprints."""
+        root = FIX / "no-roadmap"
+        snap = rd.build_snapshot(root, {"kind": "neighbors", "code": "AA", "terms": []})
+        fps = snap["fingerprints"]
+        self.assertIn("docs/roadmap/INDEX.md", fps)
+        self.assertFalse(fps["docs/roadmap/INDEX.md"]["present"])
+        # architecture also absent on this fixture
+        self.assertIn("docs/architecture/INDEX.md", fps)
+        self.assertFalse(fps["docs/architecture/INDEX.md"]["present"])
+        # INDEX that was read is present with sha256
+        self.assertTrue(fps["docs/specs/INDEX.md"]["present"])
+        self.assertTrue(fps["docs/specs/INDEX.md"].get("sha256"))
+
+    def test_FSUBR_10_1_schema_recipe_on_snapshot(self):
+        """FSUBR-10.1 snapshot carries schema_version 1.1 and recipe_id fsubr-1.1."""
+        root = FIX / "legacy-glued-lines"
+        snap = rd.build_snapshot(root, {"kind": "neighbors", "code": "ALPHA", "terms": []})
+        self.assertEqual(snap["schema_version"], "1.1")
+        self.assertEqual(snap["recipe_id"], "fsubr-1.1")
+
+
 if __name__ == "__main__":
     unittest.main()

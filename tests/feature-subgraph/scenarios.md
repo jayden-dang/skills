@@ -22,6 +22,10 @@ P1 multi-block + classifier: FSUBR-2.1 FSUBR-2.2 FSUBR-2.3 FSUBR-2.4 FSUBR-2.5 F
 
 Reliability notes: FSUBR-10.3 FSUBR-10.4
 
+## FSUBR Wave A — Derivation snapshot (Task 2)
+
+Two-stage snapshot + read-once ledger + pure queries: FSUBR-10.1
+
 ## FSUB-1.2 skill-path dual-run
 
 Two independent load-subgraph runs against the same frozen fixture (following passes.md only) MUST yield the same edge set and seed set. reference_derive is the oracle for expected math; the skill MUST NOT import it.

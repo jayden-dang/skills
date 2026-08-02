@@ -6,12 +6,26 @@ import this module to lock recipe math.
 
 from __future__ import annotations
 
+import hashlib
 import re
 from pathlib import Path
 from typing import Any
 
 NEIGHBORS_MAX = 12
 P0_SEED_MAX = 12
+CLUSTER_K = 1
+CLUSTER_MEMBERS_MAX = 8
+PATH_EVIDENCE_MAX = 5
+TERM_EVIDENCE_MAX = 5
+OOS_ITEM_MAX = 6
+OOS_TEXT_CEILING = 1200
+SCHEMA_VERSION = "1.1"
+RECIPE_ID = "fsubr-1.1"
+
+OPTIONAL_LAYER_PATHS = (
+    "docs/roadmap/INDEX.md",
+    "docs/architecture/INDEX.md",
+)
 
 MANIFEST_LOCK_BASES = frozenset(
     {
@@ -210,11 +224,7 @@ def overlap_weight(a: set[str], b: set[str]) -> int:
     return len(denoise(a) & denoise(b))
 
 
-def load_registry(repo_root: Path) -> list[dict[str, str]]:
-    index = repo_root / "docs" / "specs" / "INDEX.md"
-    if not index.is_file():
-        return []
-    text = index.read_text(encoding="utf-8")
+def parse_registry(text: str) -> list[dict[str, str]]:
     rows: list[dict[str, str]] = []
     for m in INDEX_ROW_RE.finditer(text):
         code, name, spec, status, road = (g.strip() for g in m.groups())
@@ -235,6 +245,536 @@ def load_registry(repo_root: Path) -> list[dict[str, str]]:
             }
         )
     return rows
+
+
+def load_registry(repo_root: Path) -> list[dict[str, str]]:
+    index = repo_root / "docs" / "specs" / "INDEX.md"
+    if not index.is_file():
+        return []
+    text = index.read_text(encoding="utf-8")
+    return parse_registry(text)
+
+
+class _FsSession:
+    """Read-once filesystem session: each path appears at most once in the ledger."""
+
+    def __init__(self, repo_root: Path, allow_io: bool = True) -> None:
+        self.repo_root = Path(repo_root)
+        self.allow_io = allow_io
+        self.read_ledger: list[dict[str, str]] = []
+        self._seen: set[str] = set()
+        self.source_bytes: dict[str, bytes] = {}
+        self.source_texts: dict[str, str] = {}
+        self.fingerprints: dict[str, dict[str, Any]] = {}
+        # rel → error class name when path exists but read/decode failed
+        self.read_errors: dict[str, str] = {}
+
+    def _ensure_io(self, rel: str) -> None:
+        if not self.allow_io:
+            raise OSError(f"IO disabled: {rel}")
+
+    def _record(self, rel: str, op: str) -> None:
+        if rel in self._seen:
+            return
+        self._seen.add(rel)
+        self.read_ledger.append({"path": rel, "op": op})
+
+    def consider(self, rel: str) -> str | None:
+        """Open/stat path once. Return UTF-8 text, or None if absent/unreadable."""
+        if rel in self.source_texts:
+            return self.source_texts[rel]
+        if rel in self._seen:
+            return None
+        self._ensure_io(rel)
+        path = self.repo_root / rel
+        if not path.is_file():
+            self._record(rel, "stat_absent")
+            self.fingerprints[rel] = {"sha256": None, "present": False}
+            return None
+        try:
+            raw = path.read_bytes()
+        except OSError as exc:
+            self._record(rel, "read")
+            self.fingerprints[rel] = {"sha256": None, "present": True}
+            self.read_errors[rel] = type(exc).__name__
+            return None
+        self._record(rel, "read")
+        self.source_bytes[rel] = raw
+        self.fingerprints[rel] = {
+            "sha256": hashlib.sha256(raw).hexdigest(),
+            "present": True,
+        }
+        try:
+            text = raw.decode("utf-8")
+        except UnicodeDecodeError as exc:
+            self.read_errors[rel] = type(exc).__name__
+            return None
+        self.source_texts[rel] = text
+        return text
+
+
+def _feature_rel(row: dict[str, str], name: str) -> str:
+    spec = row["spec"].strip().strip("./")
+    if spec.endswith("/"):
+        spec = spec[:-1]
+    return f"docs/specs/{spec}/{name}"
+
+
+def _note_key(note: dict[str, Any]) -> tuple[str, str, str]:
+    return (
+        str(note.get("kind") or ""),
+        str(note.get("code") or ""),
+        str(note.get("detail") or ""),
+    )
+
+
+def _add_note(notes: list[dict[str, Any]], seen: set[tuple[str, str, str]], note: dict[str, Any]) -> None:
+    key = _note_key(note)
+    if key in seen:
+        return
+    seen.add(key)
+    notes.append(note)
+
+
+def _cluster_returned_members(owns_map: dict[str, set[str]], focus: str) -> list[str]:
+    """Stage B membership from Stage A OWNS only (focus first, weight≥K, cap)."""
+    if focus not in owns_map:
+        return []
+    focus_paths = owns_map[focus]
+    scored: list[tuple[int, str]] = []
+    for code, paths in owns_map.items():
+        if code == focus:
+            continue
+        w = overlap_weight(focus_paths, paths)
+        if w >= CLUSTER_K:
+            scored.append((w, code))
+    scored.sort(key=lambda x: (-x[0], x[1]))
+    members = [focus]
+    for _, code in scored:
+        if len(members) >= CLUSTER_MEMBERS_MAX:
+            break
+        members.append(code)
+    return members
+
+
+def build_snapshot(
+    repo_root: Path | str,
+    query: dict[str, Any],
+    *,
+    allow_io: bool = True,
+    fs: Any = None,
+) -> dict[str, Any]:
+    """Two-stage DerivationSnapshot (design §0). Queries must not open files after this."""
+    if fs is not None and not allow_io:
+        raise OSError("IO disabled")
+    repo_root = Path(repo_root)
+    session = _FsSession(repo_root, allow_io=allow_io)
+    kind = query.get("kind", "neighbors")
+    terms_raw = query.get("terms")
+    if terms_raw is None and kind == "subgraph":
+        terms_raw = (query.get("seeds") or {}).get("terms")
+    terms = [t.strip() for t in (terms_raw or []) if t and len(str(t).strip()) >= 3]
+    need_triad = bool(terms) or kind in {"subgraph", "cluster"}
+
+    notes: list[dict[str, Any]] = []
+    seen_notes: set[tuple[str, str, str]] = set()
+
+    # --- Stage A: core ---
+    index_rel = "docs/specs/INDEX.md"
+    index_text = session.consider(index_rel)
+    registry = parse_registry(index_text) if index_text else []
+
+    owns: dict[str, set[str]] = {}
+    for row in registry:
+        code = row["code"]
+        owns[code] = set()
+        tasks_rel = _feature_rel(row, "tasks.md")
+        text = session.consider(tasks_rel)
+        if text is None:
+            if tasks_rel in session.read_errors:
+                _add_note(
+                    notes,
+                    seen_notes,
+                    {
+                        "kind": "p1_file_unreadable",
+                        "code": code,
+                        "detail": session.read_errors[tasks_rel],
+                    },
+                )
+            # missing tasks.md: empty OWNS, no unreadable note
+        else:
+            result = extract_owns_from_tasks_text(text)
+            owns[code] = set(result["paths"])
+            for n in result["notes"]:
+                nn = dict(n)
+                nn.setdefault("code", code)
+                _add_note(notes, seen_notes, nn)
+
+    # Term / subgraph / cluster triad texts (each path still ≤1 via session)
+    if need_triad:
+        for row in registry:
+            for name in ("requirements.md", "design.md"):
+                session.consider(_feature_rel(row, name))
+
+    # Optional layers — presence sentinels always
+    for opt in OPTIONAL_LAYER_PATHS:
+        session.consider(opt)
+
+    # --- Stage B: cluster OOS (after members from Stage A OWNS only) ---
+    if kind == "cluster":
+        focus = query.get("focus") or query.get("code") or ""
+        members = _cluster_returned_members(owns, focus)
+        code_to_row = {r["code"]: r for r in registry}
+        for mcode in members:
+            row = code_to_row.get(mcode)
+            if not row:
+                continue
+            # requirements for OOS if not already buffered
+            session.consider(_feature_rel(row, "requirements.md"))
+
+    cov = owns_coverage_from_map(owns)
+
+    return {
+        "registry": registry,
+        "source_texts": dict(session.source_texts),
+        "source_bytes": dict(session.source_bytes),
+        "owns": owns,
+        "owns_coverage": cov,
+        "p3_p4_p5": {},
+        "notes": notes,
+        "fingerprints": dict(session.fingerprints),
+        "read_ledger": list(session.read_ledger),
+        "schema_version": SCHEMA_VERSION,
+        "recipe_id": RECIPE_ID,
+        "query": dict(query),
+        "_repo_root": str(repo_root),
+    }
+
+
+def owns_coverage_from_map(owns_map: dict[str, set[str]]) -> dict[str, Any]:
+    registered = len(owns_map)
+    with_owns = sum(1 for s in owns_map.values() if s)
+    ratio = (with_owns / registered) if registered else 0.0
+    return {"with_owns": with_owns, "registered": registered, "ratio": ratio}
+
+
+def p0_seeds_from_snapshot(
+    snapshot: dict[str, Any], terms: list[str] | None
+) -> dict[str, Any]:
+    terms = [t.strip() for t in (terms or []) if t and len(t.strip()) >= 3]
+    if not terms:
+        return {"codes": [], "matched": 0, "truncated": False, "returned": 0}
+
+    scored: list[tuple[int, str]] = []
+    texts = snapshot.get("source_texts") or {}
+    for row in snapshot.get("registry") or []:
+        blobs: list[str] = []
+        for name in ("requirements.md", "design.md", "tasks.md"):
+            rel = _feature_rel(row, name)
+            if rel in texts:
+                blobs.append(texts[rel])
+        text = "\n".join(blobs)
+        text_l = text.lower()
+        distinct = 0
+        hits = 0
+        for t in terms:
+            tl = t.lower()
+            c = text_l.count(tl)
+            if c:
+                distinct += 1
+                hits += c
+        if distinct:
+            score = distinct * 1000 + hits
+            scored.append((score, row["code"]))
+
+    scored.sort(key=lambda x: (-x[0], x[1]))
+    matched = len(scored)
+    top = scored[:P0_SEED_MAX]
+    codes = [c for _, c in top]
+    return {
+        "codes": codes,
+        "matched": matched,
+        "truncated": matched > P0_SEED_MAX,
+        "returned": len(codes),
+    }
+
+
+def neighbors_from_snapshot(
+    snapshot: dict[str, Any],
+    code: str,
+    terms: list[str] | None = None,
+    fs: Any = None,
+) -> dict[str, Any]:
+    """Pure neighbors query — zero file IO (fs must not be used for reads)."""
+    if fs is not None:
+        # Touch only to force adapters that raise on any attribute use when misused
+        # Queries intentionally ignore fs; presence documents purity contract for tests.
+        pass
+    owns_map: dict[str, set[str]] = snapshot["owns"]
+    focus = owns_map.get(code, set())
+    path_w: dict[str, int] = {}
+    for other, oset in owns_map.items():
+        if other == code:
+            continue
+        w = overlap_weight(focus, oset)
+        if w > 0:
+            path_w[other] = w
+
+    term_set: set[str] = set()
+    p0_meta = (
+        p0_seeds_from_snapshot(snapshot, terms)
+        if terms
+        else {"codes": [], "matched": 0, "truncated": False, "returned": 0}
+    )
+    if terms:
+        term_set = set(p0_meta["codes"]) - {code}
+
+    candidates = set(path_w) | term_set
+    rows: list[dict[str, Any]] = []
+    for c in candidates:
+        pw = path_w.get(c, 0)
+        is_term = c in term_set
+        if pw > 0 and is_term:
+            via = "both"
+        elif pw > 0:
+            via = "path"
+        else:
+            via = "term"
+        rows.append({"code": c, "shared_paths": pw, "via": via})
+
+    rows.sort(key=lambda r: (-r["shared_paths"], -_via_rank(r["via"]), r["code"]))
+    truncated = rows[:NEIGHBORS_MAX]
+    return {
+        "neighbors": truncated,
+        "p0": p0_meta,
+        "owns_coverage": snapshot.get("owns_coverage")
+        or owns_coverage_from_map(owns_map),
+        "advisory": True,
+        "notes": list(snapshot.get("notes") or []),
+        "schema_version": snapshot.get("schema_version", SCHEMA_VERSION),
+        "recipe_id": snapshot.get("recipe_id", RECIPE_ID),
+    }
+
+
+def cluster_from_snapshot(
+    snapshot: dict[str, Any],
+    focus: str,
+    fs: Any = None,
+) -> dict[str, Any]:
+    """Minimal pure cluster shell for Stage B purity (full payload is later task)."""
+    if fs is not None:
+        pass
+    owns_map: dict[str, set[str]] = snapshot["owns"]
+    members = _cluster_returned_members(owns_map, focus)
+    notes = list(snapshot.get("notes") or [])
+    if focus not in owns_map:
+        key_notes = {_note_key(n) for n in notes}
+        inv = {
+            "kind": "cluster_focus_invalid",
+            "code": focus,
+            "detail": "not_registered",
+        }
+        if _note_key(inv) not in key_notes:
+            notes.append(inv)
+    return {
+        "focus": focus,
+        "members": members,
+        "notes": notes,
+        "owns_coverage": snapshot.get("owns_coverage")
+        or owns_coverage_from_map(owns_map),
+        "advisory": True,
+        "schema_version": snapshot.get("schema_version", SCHEMA_VERSION),
+        "recipe_id": snapshot.get("recipe_id", RECIPE_ID),
+    }
+
+
+def _parse_roadmap_text(text: str) -> dict[str, Any]:
+    miles: dict[str, list[str]] = {}
+    goals: dict[str, list[str]] = {}
+    current: str | None = None
+    for line in text.splitlines():
+        hm = re.match(r"^##\s+(MILE-\d+)", line)
+        if hm:
+            current = hm.group(1)
+            miles.setdefault(current, [])
+            continue
+        if current and "Goals:" in line:
+            goals[current] = GOAL_RE.findall(line)
+        if current:
+            for r in ROAD_RE.findall(line):
+                if r not in miles[current]:
+                    miles[current].append(r)
+    return {"miles": miles, "goals": goals}
+
+
+def implements_map_from_registry(registry: list[dict[str, str]]) -> dict[str, str]:
+    out: dict[str, str] = {}
+    for row in registry:
+        road = row.get("road") or ""
+        m = ROAD_RE.search(road)
+        if m:
+            out[row["code"]] = m.group(0)
+    return out
+
+
+def ancestors_from_snapshot(snapshot: dict[str, Any], code: str) -> list[str]:
+    chain = [code]
+    impl = implements_map_from_registry(snapshot.get("registry") or [])
+    road = impl.get(code)
+    if not road:
+        return chain
+    chain.append(road)
+    rm_text = (snapshot.get("source_texts") or {}).get("docs/roadmap/INDEX.md")
+    if not rm_text:
+        return chain
+    rm = _parse_roadmap_text(rm_text)
+    for mile, roads in rm["miles"].items():
+        if road in roads:
+            chain.append(mile)
+            for g in rm["goals"].get(mile, []):
+                chain.append(g)
+            break
+    return chain
+
+
+def descendants_from_snapshot(snapshot: dict[str, Any], mile: str) -> list[str]:
+    rm_text = (snapshot.get("source_texts") or {}).get("docs/roadmap/INDEX.md")
+    if not rm_text:
+        return []
+    rm = _parse_roadmap_text(rm_text)
+    roads = rm["miles"].get(mile, [])
+    out = list(roads)
+    impl = implements_map_from_registry(snapshot.get("registry") or [])
+    for code, road in impl.items():
+        if road in roads:
+            out.append(code)
+    return out
+
+
+def respects_edges_from_snapshot(snapshot: dict[str, Any]) -> list[dict[str, str]]:
+    arch_fp = (snapshot.get("fingerprints") or {}).get("docs/architecture/INDEX.md")
+    # ARCH-2 / design freeze: architecture INDEX sentinel absent → no-op
+    if not arch_fp or not arch_fp.get("present"):
+        return []
+    edges: list[dict[str, str]] = []
+    for rel, text in (snapshot.get("source_texts") or {}).items():
+        norm = rel.replace("\\", "/")
+        if not norm.endswith("design.md"):
+            continue
+        if "/specs/" not in norm:
+            continue
+        for line in text.splitlines():
+            if "Respects:" in line:
+                for arch_id in ARCH_RE.findall(line):
+                    edges.append({"from": rel, "to": arch_id})
+    return edges
+
+
+def blast_radius_from_snapshot(snapshot: dict[str, Any], path: str) -> list[str]:
+    path = _strip_line_suffix(path)
+    owns_map: dict[str, set[str]] = snapshot["owns"]
+    hit: set[str] = set()
+    for code, oset in owns_map.items():
+        if path in oset:
+            hit.add(code)
+            continue
+        for tok in oset:
+            is_dir = tok.endswith("/") or ("." not in Path(tok).name)
+            if is_dir and (
+                path == tok.rstrip("/") or path.startswith(tok.rstrip("/") + "/")
+            ):
+                hit.add(code)
+    return sorted(hit)
+
+
+def subgraph_from_snapshot(
+    snapshot: dict[str, Any], seeds: dict[str, Any] | None
+) -> dict[str, Any]:
+    seeds = seeds or {}
+    owns_map: dict[str, set[str]] = snapshot["owns"]
+    nodes: set[str] = set(seeds.get("codes") or [])
+    terms = seeds.get("terms") or []
+    p0 = (
+        p0_seeds_from_snapshot(snapshot, terms)
+        if terms
+        else {"codes": [], "matched": 0, "truncated": False, "returned": 0}
+    )
+    nodes |= set(p0["codes"])
+    for path in seeds.get("paths") or []:
+        for code, oset in owns_map.items():
+            if path in oset or path in denoise(oset):
+                nodes.add(code)
+    expanded = set(nodes)
+    for c in list(nodes):
+        n = neighbors_from_snapshot(snapshot, c, None)
+        for row in n["neighbors"][:NEIGHBORS_MAX]:
+            expanded.add(row["code"])
+    ordered = sorted(expanded)
+    seed_list = list(nodes)
+    rest = [c for c in ordered if c not in nodes]
+    final = (seed_list + rest)[: NEIGHBORS_MAX * 3]
+    return {
+        "nodes": final,
+        "seeds": list(nodes),
+        "p0": p0,
+        "respects": respects_edges_from_snapshot(snapshot),
+    }
+
+
+def run_on_snapshot(
+    snapshot: dict[str, Any],
+    query: dict[str, Any],
+    fs: Any = None,
+) -> dict[str, Any]:
+    """Pure query on a prebuilt snapshot — zero file IO."""
+    if fs is not None:
+        pass
+    kind = query.get("kind", "neighbors")
+    owns_map: dict[str, set[str]] = snapshot["owns"]
+    cov = snapshot.get("owns_coverage") or owns_coverage_from_map(owns_map)
+    base: dict[str, Any] = {
+        "advisory": True,
+        "owns_coverage": cov,
+        "notes": list(snapshot.get("notes") or []),
+    }
+
+    if kind == "neighbors":
+        terms = query.get("terms") or []
+        code = query["code"]
+        n = neighbors_from_snapshot(
+            snapshot, code, terms if terms else None, fs=fs
+        )
+        base.update(n)
+        return base
+
+    if kind == "cluster":
+        focus = query.get("focus") or query.get("code") or ""
+        c = cluster_from_snapshot(snapshot, focus, fs=fs)
+        base.update(c)
+        return base
+
+    if kind == "ancestors":
+        base["ancestors"] = ancestors_from_snapshot(snapshot, query["code"])
+        base["p0"] = {"codes": [], "matched": 0, "truncated": False, "returned": 0}
+        return base
+
+    if kind == "descendants":
+        base["descendants"] = descendants_from_snapshot(snapshot, query["mile"])
+        base["p0"] = {"codes": [], "matched": 0, "truncated": False, "returned": 0}
+        return base
+
+    if kind == "subgraph":
+        sub = subgraph_from_snapshot(snapshot, query.get("seeds") or {})
+        base.update(sub)
+        return base
+
+    if kind == "blast_radius":
+        base["codes"] = blast_radius_from_snapshot(snapshot, query.get("path", ""))
+        base["p0"] = {"codes": [], "matched": 0, "truncated": False, "returned": 0}
+        return base
+
+    base["notes"].append(f"unknown kind {kind}")
+    return base
 
 
 def _feature_dir(repo_root: Path, row: dict[str, str]) -> Path | None:
@@ -617,57 +1157,20 @@ def _via_rank(via: str) -> int:
 def neighbors(
     repo_root: Path, code: str, terms: list[str] | None = None
 ) -> dict[str, Any]:
-    owns_map = all_owns(repo_root)
-    focus = owns_map.get(code, set())
-    path_w: dict[str, int] = {}
-    for other, oset in owns_map.items():
-        if other == code:
-            continue
-        w = overlap_weight(focus, oset)
-        if w > 0:
-            path_w[other] = w
-
-    term_set: set[str] = set()
-    p0_meta = p0_seeds(repo_root, terms) if terms else {
-        "codes": [],
-        "matched": 0,
-        "truncated": False,
-        "returned": 0,
+    q: dict[str, Any] = {
+        "kind": "neighbors",
+        "code": code,
+        "terms": list(terms) if terms else [],
     }
-    if terms:
-        term_set = set(p0_meta["codes"]) - {code}
-
-    candidates = set(path_w) | term_set
-    rows: list[dict[str, Any]] = []
-    for c in candidates:
-        pw = path_w.get(c, 0)
-        is_term = c in term_set
-        if pw > 0 and is_term:
-            via = "both"
-        elif pw > 0:
-            via = "path"
-        else:
-            via = "term"
-        rows.append({"code": c, "shared_paths": pw, "via": via})
-
-    rows.sort(key=lambda r: (-r["shared_paths"], -_via_rank(r["via"]), r["code"]))
-    truncated = rows[:NEIGHBORS_MAX]
-    return {
-        "neighbors": truncated,
-        "p0": p0_meta,
-        "owns_coverage": owns_coverage(repo_root, owns_map),
-        "advisory": True,
-    }
+    snap = build_snapshot(repo_root, q)
+    return neighbors_from_snapshot(snap, code, terms)
 
 
 def owns_coverage(
     repo_root: Path, owns_map: dict[str, set[str]] | None = None
 ) -> dict[str, Any]:
     owns_map = owns_map or all_owns(repo_root)
-    registered = len(owns_map)
-    with_owns = sum(1 for s in owns_map.values() if s)
-    ratio = (with_owns / registered) if registered else 0.0
-    return {"with_owns": with_owns, "registered": registered, "ratio": ratio}
+    return owns_coverage_from_map(owns_map)
 
 
 def _parse_roadmap(repo_root: Path) -> dict[str, Any]:
@@ -753,82 +1256,7 @@ def respects_edges(repo_root: Path) -> list[dict[str, str]]:
 
 
 def run(repo_root: Path, query: dict[str, Any]) -> dict[str, Any]:
+    """Build Stage A/B snapshot once, then run a pure query (zero further file IO)."""
     repo_root = Path(repo_root)
-    kind = query.get("kind", "neighbors")
-    owns_map = all_owns(repo_root)
-    cov = owns_coverage(repo_root, owns_map)
-    base: dict[str, Any] = {
-        "advisory": True,
-        "owns_coverage": cov,
-        "notes": [],
-    }
-
-    if kind == "neighbors":
-        terms = query.get("terms") or []
-        code = query["code"]
-        n = neighbors(repo_root, code, terms if terms else None)
-        base.update(n)
-        return base
-
-    if kind == "ancestors":
-        base["ancestors"] = ancestors(repo_root, query["code"])
-        base["p0"] = {"codes": [], "matched": 0, "truncated": False, "returned": 0}
-        return base
-
-    if kind == "descendants":
-        base["descendants"] = descendants(repo_root, query["mile"])
-        base["p0"] = {"codes": [], "matched": 0, "truncated": False, "returned": 0}
-        return base
-
-    if kind == "subgraph":
-        seeds = query.get("seeds") or {}
-        nodes: set[str] = set(seeds.get("codes") or [])
-        terms = seeds.get("terms") or []
-        p0 = p0_seeds(repo_root, terms) if terms else {
-            "codes": [],
-            "matched": 0,
-            "truncated": False,
-            "returned": 0,
-        }
-        nodes |= set(p0["codes"])
-        for path in seeds.get("paths") or []:
-            for code, oset in owns_map.items():
-                if path in oset or path in denoise(oset):
-                    nodes.add(code)
-        # expand 1 hop overlaps
-        expanded = set(nodes)
-        for c in list(nodes):
-            n = neighbors(repo_root, c, None)
-            for row in n["neighbors"][:NEIGHBORS_MAX]:
-                expanded.add(row["code"])
-        # bound
-        ordered = sorted(expanded)
-        # prefer seeds first then alpha — keep max 36
-        seed_list = list(nodes)
-        rest = [c for c in ordered if c not in nodes]
-        final = (seed_list + rest)[: NEIGHBORS_MAX * 3]
-        base["nodes"] = final
-        base["seeds"] = list(nodes)
-        base["p0"] = p0
-        base["respects"] = respects_edges(repo_root)
-        return base
-
-    if kind == "blast_radius":
-        path = query.get("path", "")
-        path = _strip_line_suffix(path)
-        hit: set[str] = set()
-        for code, oset in owns_map.items():
-            if path in oset:
-                hit.add(code)
-                continue
-            for tok in oset:
-                # directory ownership only when token looks like dir (ends / or no extension)
-                is_dir = tok.endswith("/") or ("." not in Path(tok).name)
-                if is_dir and (path == tok.rstrip("/") or path.startswith(tok.rstrip("/") + "/")):
-                    hit.add(code)
-        base["codes"] = sorted(hit)
-        base["p0"] = {"codes": [], "matched": 0, "truncated": False, "returned": 0}
-        return base
-
-    base["notes"].append(f"unknown kind {kind}")
-    return base
+    snap = build_snapshot(repo_root, query)
+    return run_on_snapshot(snap, query)

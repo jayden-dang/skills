@@ -6,6 +6,10 @@ FSUBR callers / grounded claims / package validity:
 FSUBR-4.1 FSUBR-4.2 FSUBR-4.3 FSUBR-4.4 FSUBR-5.1 FSUBR-5.2 FSUBR-5.3
 FSUBR-6.1 FSUBR-7.1 FSUBR-7.2 FSUBR-8.1 FSUBR-8.2 FSUBR-9.8 FSUBR-9.11
 FSUBR-9.12 FSUBR-9.13 FSUBR-9.14 FSUBR-9.15
+
+FSUBR guide / inventory / carry-forward guards:
+FSUBR-9.1 FSUBR-9.2 FSUBR-9.4 FSUBR-9.5 FSUBR-9.6 FSUBR-9.7 FSUBR-9.9
+FSUBR-9.10 FSUBR-10.2
 """
 
 from __future__ import annotations
@@ -27,6 +31,13 @@ PLAN = ROOT / "skills" / "spec" / "plan-tasks" / "SKILL.md"
 ROOT_CAUSE = ROOT / "skills" / "execution" / "root-cause" / "SKILL.md"
 TEMPLATE = ROOT / "templates" / "tasks.md"
 FEATURE_GRAPH = ROOT / "docs" / "guide" / "concepts" / "feature-graph.md"
+START_HERE = ROOT / "docs" / "guide" / "START-HERE.md"
+SKILLS_README = ROOT / "docs" / "guide" / "skills" / "README.md"
+LOAD_SUBGRAPH_GUIDE = ROOT / "docs" / "guide" / "skills" / "load-subgraph.md"
+AGENTS = ROOT / "AGENTS.md"
+ARCH_SKILLS = ROOT / "docs" / "architecture" / "skills.md"
+ARCH_WORKFLOWS = ROOT / "docs" / "architecture" / "workflows.md"
+AUDIT_TRACE = ROOT / "skills" / "execution" / "audit-trace" / "SKILL.md"
 SCENARIOS = ROOT / "tests" / "feature-subgraph" / "scenarios.md"
 PRESSURE = ROOT / "tests" / "feature-subgraph" / "scenarios-pressure.md"
 BUILD_WAVES = ROOT / "skills" / "execution" / "build-in-waves" / "SKILL.md"
@@ -445,6 +456,195 @@ class TestFSUBRCallerSkills(unittest.TestCase):
             "FSUBR-9.13",
             "FSUBR-9.14",
             "FSUBR-9.15",
+        ]
+        missing = [i for i in ids if i not in scenarios]
+        self.assertEqual(missing, [], f"missing from scenarios: {missing}")
+
+
+class TestFSUBRGuideInventoryGuards(unittest.TestCase):
+    """FSUBR-9.1–9.2, 9.4–9.7, 9.9–9.10, 10.2 — guides, inventory, carry-forward."""
+
+    def test_FSUBR_9_9_feature_graph_cluster_and_callers(self):
+        """FSUBR-9.9 feature-graph.md documents cluster + expanded callers + 1.1."""
+        text = FEATURE_GRAPH.read_text()
+        self.assertIn("load-subgraph", text)
+        self.assertRegex(text, re.compile(r"\bcluster\b", re.I))
+        self.assertRegex(
+            text,
+            re.compile(r"schema[_\s-]*version|schema 1\.1|path_evidence|term_evidence", re.I),
+        )
+        for caller in (
+            "frame-change",
+            "inspect-change",
+            "clarify-decisions",
+            "design-solution",
+            "plan-tasks",
+            "root-cause",
+        ):
+            self.assertIn(caller, text, f"feature-graph must name caller {caller}")
+
+    def test_FSUBR_9_9_start_here_and_skills_readme_consistent(self):
+        """FSUBR-9.9 START-HERE and skills README consistent with cluster + callers."""
+        start = START_HERE.read_text()
+        readme = SKILLS_README.read_text()
+        guide = LOAD_SUBGRAPH_GUIDE.read_text()
+        self.assertTrue(LOAD_SUBGRAPH_GUIDE.is_file())
+        # cluster query surfaces in human guide pages
+        self.assertRegex(
+            start + readme + guide,
+            re.compile(r"\bcluster\b", re.I),
+            "START-HERE / skills README / load-subgraph guide must mention cluster",
+        )
+        # expanded callers appear across entry map / skill list / skill page
+        combined = start + readme + guide
+        for caller in (
+            "clarify-decisions",
+            "design-solution",
+            "plan-tasks",
+            "root-cause",
+        ):
+            self.assertIn(caller, combined, f"guides must surface caller {caller}")
+        # load-subgraph skill page names cluster and core callers
+        self.assertRegex(guide, re.compile(r"\bcluster\b", re.I))
+        self.assertIn("frame-change", guide)
+        self.assertIn("plan-tasks", guide)
+
+    def test_FSUBR_9_10_inventory_lists_horizontal_steps(self):
+        """FSUBR-9.10 AGENTS / architecture inventories list cluster or expanded callers."""
+        agents = AGENTS.read_text()
+        arch_skills = ARCH_SKILLS.read_text() if ARCH_SKILLS.is_file() else ""
+        arch_wf = ARCH_WORKFLOWS.read_text() if ARCH_WORKFLOWS.is_file() else ""
+        self.assertIn("load-subgraph", agents)
+        # Horizontal neighbors inventory should mention cluster and/or extra callers
+        horiz = "\n".join(
+            line
+            for line in agents.splitlines()
+            if "horizontal" in line.lower() or "load-subgraph" in line
+        )
+        inv = horiz + "\n" + arch_skills + "\n" + arch_wf
+        self.assertRegex(
+            inv,
+            re.compile(r"\bcluster\b", re.I),
+            "AGENTS or architecture inventory that names load-subgraph must mention cluster",
+        )
+        # architecture skills inventory should name more than frame/inspect when listing callers
+        if arch_skills:
+            self.assertRegex(
+                arch_skills,
+                re.compile(
+                    r"load-subgraph.{0,400}(plan-tasks|design-solution|clarify-decisions|root-cause|cluster)|"
+                    r"(plan-tasks|design-solution|clarify-decisions|root-cause|cluster).{0,400}load-subgraph",
+                    re.I | re.S,
+                ),
+                "docs/architecture/skills.md must list expanded retrieval callers or cluster",
+            )
+
+    def test_FSUBR_9_1_no_graph_md_write(self):
+        """FSUBR-9.1 load-subgraph must not write GRAPH.md or docs/ graph projection."""
+        text = SKILL.read_text() + PASSES.read_text()
+        self.assertRegex(text, r"GRAPH\.md|graph file|projection", re.I)
+        self.assertRegex(
+            text,
+            r"do not produce a file|never write|NO GRAPH FILE|no projection|not write",
+            re.I,
+        )
+        # skill package must not create GRAPH.md under docs
+        self.assertFalse(
+            (ROOT / "docs" / "specs" / "GRAPH.md").is_file(),
+            "docs/specs/GRAPH.md must not exist",
+        )
+
+    def test_FSUBR_9_2_no_depends_on_in_envelope(self):
+        """FSUBR-9.2 envelope omits feature-level depends_on / DEPENDS_ON edges."""
+        env_text = ENV.read_text()
+        skill_text = SKILL.read_text() + PASSES.read_text()
+        self.assertRegex(
+            env_text + skill_text,
+            re.compile(r"depends_on|DEPENDS_ON", re.I),
+        )
+        self.assertRegex(
+            env_text + skill_text,
+            re.compile(
+                r"(never emit|omit|no |not |without |SHALL NOT).{0,40}depends_on|"
+                r"depends_on.{0,40}(never|omit|not |forbidden|SHALL NOT)",
+                re.I | re.S,
+            ),
+        )
+
+    def test_FSUBR_9_4_no_python_under_skill_oracle_pack_only(self):
+        """FSUBR-9.4 no *.py under load-subgraph skill; oracle stays pack-test-only."""
+        pkg = ROOT / "skills" / "execution" / "load-subgraph"
+        py = list(pkg.rglob("*.py"))
+        self.assertEqual(py, [], f"unexpected python under skill: {py}")
+        skill_text = SKILL.read_text() + PASSES.read_text()
+        self.assertNotIn("tests/feature-subgraph/reference_derive.py", skill_text)
+        self.assertNotRegex(skill_text, r"(?i)import\s+reference_derive")
+        oracle = ROOT / "tests" / "feature-subgraph" / "reference_derive.py"
+        self.assertTrue(oracle.is_file(), "pack oracle must remain under tests/")
+
+    def test_FSUBR_9_5_audit_trace_e_codes_unchanged(self):
+        """FSUBR-9.5 audit-trace finding codes E1–E5 and W1–W3 unchanged."""
+        text = AUDIT_TRACE.read_text()
+        for code in ("E1", "E3", "E4", "E5", "W1", "W2", "W3"):
+            self.assertRegex(
+                text,
+                re.compile(rf"\b{code}\b"),
+                f"audit-trace must still define {code}",
+            )
+        # E2 remains retired — do not reintroduce as active finding
+        self.assertRegex(text, re.compile(r"Retired:.*\*\*E2\*\*|E2.*retired|not\s+emitted", re.I | re.S))
+
+    def test_FSUBR_9_6_pathfind_separate_from_feature_subgraph(self):
+        """FSUBR-9.6 pathfind decision-map stays separate from feature-subgraph edges."""
+        text = SKILL.read_text()
+        self.assertRegex(text, re.compile(r"pathfind", re.I))
+        self.assertRegex(
+            text,
+            re.compile(
+                r"pathfind.{0,80}(separate|not merge|distinct|never)|"
+                r"(separate|not merge|distinct|never).{0,80}pathfind",
+                re.I | re.S,
+            ),
+        )
+
+    def test_FSUBR_9_7_optional_layers_noop_mentioned(self):
+        """FSUBR-9.7 P3–P5 no-op when optional roadmap/architecture layers absent."""
+        text = SKILL.read_text() + PASSES.read_text()
+        self.assertRegex(
+            text,
+            re.compile(
+                r"(P3|P4|P5|optional).{0,80}(no-?op|absent|missing)|"
+                r"(no-?op|absent).{0,80}(roadmap|architecture|P3|P4|P5)",
+                re.I | re.S,
+            ),
+        )
+
+    def test_FSUBR_10_2_passive_data_prose(self):
+        """FSUBR-10.2 skill treats path tokens / prose as passive data (not instructions)."""
+        text = SKILL.read_text() + PASSES.read_text()
+        self.assertRegex(
+            text,
+            re.compile(
+                r"passive|not (obey|execute|run).{0,40}(instruction|path|prose)|"
+                r"(path|prose|token).{0,60}(passive|not executed|data only)",
+                re.I | re.S,
+            ),
+            "load-subgraph must state path/prose are passive data",
+        )
+
+    def test_FSUBR_guide_guard_ids_in_scenarios(self):
+        """FSUBR-9.1–9.2, 9.4–9.7, 9.9–9.10, 10.2 tokens appear in scenarios index."""
+        scenarios = SCENARIOS.read_text()
+        ids = [
+            "FSUBR-9.1",
+            "FSUBR-9.2",
+            "FSUBR-9.4",
+            "FSUBR-9.5",
+            "FSUBR-9.6",
+            "FSUBR-9.7",
+            "FSUBR-9.9",
+            "FSUBR-9.10",
+            "FSUBR-10.2",
         ]
         missing = [i for i in ids if i not in scenarios]
         self.assertEqual(missing, [], f"missing from scenarios: {missing}")

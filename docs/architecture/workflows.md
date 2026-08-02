@@ -20,13 +20,14 @@ and clear single-session work never require a map. See skill `pathfind` and
 ```
 gate-session (session gate)
 → [/pathfind optional]    multi-session fog: decision map until route is clear
-→ frame-change            clarify-decisions + define-domain; load-subgraph neighbor search;
+→ frame-change            clarify-decisions + define-domain; load-subgraph neighbors schema 1.1;
                         research/run-spike detours; tier decision  [HARD GATE: no code]
 → specify-behavior    EARS + IDs; approval gate on the file
-→ design-solution          Satisfies: per section; seams agreed; approval gate
-→ plan-tasks            tasks with _Requirements:_ footers; audit-trace coverage check;
-                        approval then offer one of three execute skills (mode write-back
-                        owned by the chosen skill)
+→ design-solution          Step 1 fresh load-subgraph; Satisfies: per section; seams; approval
+→ plan-tasks            after file map: blast_radius + cluster(feature CODE); tasks with
+                        _Requirements:_ footers; audit-trace coverage check; approval then
+                        offer one of three execute skills (mode write-back owned by the
+                        chosen skill)
 → isolate-workspace             isolated workspace, clean baseline
 → execute family        pick one route (skill writes Execution-mode:):
                         build-in-waves   (subagent waves → continuous)
@@ -76,11 +77,13 @@ triage (incoming issues) → ready-for-agent brief → execute or implement dire
 
 Known limits of the model, stated plainly so adopters can judge them:
 
-- **Feature overlap is best-effort derivation via `load-subgraph`, not a registry.** `frame-change` and
-  `inspect-change` obtain neighbors via fixed P0–P5 passes over live specs; thin
-  OWNS coverage or sparse `**Files:**` blocks can yield empty neighborhoods that
-  look authoritative unless coverage is reported. Overlap detection is advisory
-  and never blocks a gate, so this is an acceptable bound.
+- **Feature overlap is best-effort derivation via `load-subgraph`, not a registry.** Callers
+  (`frame-change`, `inspect-change`, `clarify-decisions`, `design-solution`,
+  `plan-tasks`, `root-cause` after Phase 2) obtain neighbors / `cluster(focus)` via
+  fixed P0–P5 passes over live specs; thin OWNS coverage or sparse `**Files:**`
+  blocks can yield empty neighborhoods that look authoritative unless coverage is
+  reported. Overlap detection is advisory and never blocks a gate, so this is an
+  acceptable bound.
 - **There is no mandatory headless gate.** CI and git hooks run without an agent and
   cannot invoke a skill, so the audit-trace discipline depends on the agent running
   `prove-claim`/`cut-release`, not on a build that fails on its own. Teams that want a hard

@@ -48,6 +48,16 @@ root-cause after Phase 2 only (never RED loop): FSUBR-8.1 FSUBR-8.2
 
 frame/inspect schema 1.1 + package/no-cache guards: FSUBR-9.8 FSUBR-9.11 FSUBR-9.12 FSUBR-9.13 FSUBR-9.14 FSUBR-9.15
 
+## FSUBR Wave A — guide, inventory, carry-forward guards (Task 6)
+
+No GRAPH.md / no depends_on / oracle pack-only: FSUBR-9.1 FSUBR-9.2 FSUBR-9.4
+
+audit-trace E-codes unchanged; pathfind separate; P3–P5 no-op: FSUBR-9.5 FSUBR-9.6 FSUBR-9.7
+
+Guide + inventory (cluster + callers): FSUBR-9.9 FSUBR-9.10
+
+Passive path/prose data (not instructions): FSUBR-10.2
+
 ## FSUB-1.2 skill-path dual-run
 
 Two independent load-subgraph runs against the same frozen fixture (following passes.md only) MUST yield the same edge set and seed set. reference_derive is the oracle for expected math; the skill MUST NOT import it.

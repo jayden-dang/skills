@@ -140,7 +140,8 @@ are immutable once approved — retire by striking through
 | Application source / tests / commits | **Do not require IDs** | Domain language only |
 | Changelog | Derived from specs + commit subjects | Behavior prose, not trailer parse |
 
-**Horizontal ownership:** `load-subgraph` / `**Files:**` — path-based, no IDs in code.
+**Horizontal ownership:** `load-subgraph` / `**Files:**` — path-based, no IDs in
+code. Neighbors schema 1.1 + query-local `cluster(focus)`; advisory only.
 
 **Trace checking:** the `audit-trace` skill is the **docs-only** vertical check —
 fixed `grep`/`git` passes over `docs/specs/` (and optional architecture). It fails
@@ -397,7 +398,9 @@ This repo is configured for a spec-driven skill set.
 - Brownfield feature-ID / Files backfill: `/map-features` (user-run)
 - Traceability check: the `audit-trace` skill — run by `prove-claim` and `cut-release`;
   keep it clean
-- Horizontal neighbors: `load-subgraph` (model) — advisory, live specs only
+- Horizontal neighbors: `load-subgraph` (model) — advisory, live specs only;
+  neighbors schema 1.1 + `cluster(focus)`; callers: frame-change, inspect-change,
+  clarify-decisions, design-solution, plan-tasks, root-cause (after Phase 2)
 - Project docs (layer enabled): `/define-project` maintains
   `docs/product/vision.md`, the `docs/architecture/` invariant spine, and
   `docs/product/guidelines.md`; the feature skills consult them

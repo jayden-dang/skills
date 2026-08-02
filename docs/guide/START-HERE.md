@@ -9,8 +9,8 @@ The whole set is script-free for consumers. A consuming repo installs nothing
 executable beyond the optional session-start hook — traceability is the
 [`audit-trace`](skills/audit-trace.md) skill (deterministic `grep`/`git` passes),
 and feature overlap is **ask-time derivation** via
-[`load-subgraph`](skills/load-subgraph.md) over live `docs/specs/` (no generated
-graph file).
+[`load-subgraph`](skills/load-subgraph.md) over live `docs/specs/` (neighbors
+schema 1.1, **`cluster(focus)`**, no generated graph file).
 
 **Human tutorial (setup + feature loop + variants):** this page.  
 **Agent constitution (laws, 1% rule, DoD):** [`AGENTS.md`](../../AGENTS.md).
@@ -32,12 +32,12 @@ graph file).
  ─────────────────                        ─────                    ────
  frame-change ─► specify-behavior ─► design-solution ─► plan-tasks
    [GATE: no code]   (EARS + IDs)     (Satisfies:)   (_Requirements:_ + audit-trace)
-   + load-subgraph (neighbors)                            │
-        │                                                 ▼
+   + load-subgraph (neighbors 1.1)   + fresh load-subgraph   + blast_radius + cluster(CODE)
+        │                                                 │
         │ tier 0/1 shortcuts     isolate-workspace ─► build-in-waves | build-by-story | build-inline
         ▼                                                 │
   root-cause / test-first / prove-claim / audit-trace     │
-                                                          ▼
+  (+ load-subgraph after Phase 2 only)                    ▼
          inspect-change ─► polish-diff ─► validate-feature ─► package-change
          (+ load-subgraph)                (api/ui · product-flow)
                     ─► land-branch ─► /cut-release ─► realign-spec
@@ -103,12 +103,15 @@ Full skill index: [Skill reference](skills/README.md) · laws: [`AGENTS.md`](../
 You mostly describe the idea and **approve files**; the rest chains:
 
 1. Describe the idea → **`frame-change`** (HARD GATE: no code). Explores context,
-   runs **`load-subgraph`** (terms + paths → neighbors + OWNS coverage), interviews
-   you (`clarify-decisions`), states the **tier**, hands off only when ready.
+   runs **`load-subgraph`** (terms + paths → neighbors schema 1.1 + OWNS coverage),
+   interviews you (`clarify-decisions` reuses the package when valid, else rederives),
+   states the **tier**, hands off only when ready.
 2. **`specify-behavior`** → `requirements.md` (EARS + `CODE-N.M`) → **you approve**.
-3. **`design-solution`** → `design.md` (`Satisfies:`) → **you approve**.
-4. **`plan-tasks`** → `tasks.md`; **`audit-trace`** coverage check; **you approve**
-   and pick execute route.
+3. **`design-solution`** → fresh **`load-subgraph`** at Step 1, then `design.md`
+   (`Satisfies:`) → **you approve**.
+4. **`plan-tasks`** → after the file map, **`load-subgraph`** once for
+   `blast_radius` **and** `cluster(feature CODE)`; then task bodies;
+   **`audit-trace`** coverage check; **you approve** and pick execute route.
 5. **`isolate-workspace`** (recommended) unless you explicitly consent to main.
 6. **Execute family** (exactly one):
    - **`build-in-waves`** — continuous subagent waves
@@ -127,7 +130,7 @@ You mostly describe the idea and **approve files**; the rest chains:
 
 | Situation | Start with |
 |---|---|
-| Bug / wrong behavior | describe it → **`root-cause`** → mini-spec → `test-first` → … |
+| Bug / wrong behavior | describe it → **`root-cause`** (retrieval only after Phase 2) → mini-spec → `test-first` → … |
 | Small tweak to shipped, spec'd feature | **`amend-feature`** |
 | Multi-session fog | **`/pathfind`** then `frame-change` |
 | Incoming issue / PR | **`/triage`** |
@@ -163,7 +166,7 @@ Personal OS is a **separate** package — [personal-os START-HERE](../personal-o
 
 - [`AGENTS.md`](../../AGENTS.md) — agent constitution (Iron Laws, 1% rule, DoD)
 - [Methodology overview](methodology/overview.md)
-- [Feature overlap / load-subgraph](concepts/feature-graph.md)
+- [Feature overlap / load-subgraph](concepts/feature-graph.md) — neighbors 1.1, cluster, callers
 - [Traceability](concepts/traceability.md)
 - [Process by phase](process/README.md)
 - [Examples](examples/tier-2-feature.md)

@@ -38,8 +38,9 @@ quick reference: `AGENTS.md`.
 
 7. **clarify-decisions** (m) — the interview primitive.
 8. **frame-change** (m) — HARD GATE: no code until requirements are approved. Explore
-   context → `load-subgraph` for overlapping features (terms + paths) → clarify-decisions → detours to
-   research/run-spike → approaches with a recommendation → tier decision.
+   context → `load-subgraph` neighbors schema 1.1 (terms + paths) → clarify-decisions
+   (reuses package when valid) → detours to research/run-spike → approaches with a
+   recommendation → tier decision.
 9. **research** (m) — background investigation against primary sources.
 10. **run-spike** (m) — throwaway code that answers a question.
 11. **define-domain** (m) — glossary + ADR upkeep.
@@ -55,12 +56,15 @@ quick reference: `AGENTS.md`.
     IDs, SHALL-CONTINUE-TO guards, Out-of-Scope. Approval gate. IDs immutable once
     approved.
 13. **design-solution** (m) — `design.md`: architecture, `Satisfies:` per section,
-    seams agreed. Approval gate.
+    seams agreed. Step 1 runs a **fresh** `load-subgraph` after the scan digest and
+    before the reuse ladder. Approval gate.
 14. **plan-tasks** (m) — `tasks.md`: Global Constraints verbatim, per-task
-    Files/Interfaces, TDD steps, `_Requirements:` footers. Coverage self-check via
-    the `audit-trace` skill: every requirement cited by ≥1 task before execution starts.
-    Exit: approve plan, then offer one of three execute skills (mode write-back is
-    owned by the chosen skill — not a continuous/story-unit interview at Exit).
+    Files/Interfaces, TDD steps, `_Requirements:` footers. After Step 2 file map:
+    `load-subgraph` once for `blast_radius` **and** `cluster(feature CODE)`. Coverage
+    self-check via the `audit-trace` skill: every requirement cited by ≥1 task before
+    execution starts. Exit: approve plan, then offer one of three execute skills
+    (mode write-back is owned by the chosen skill — not a continuous/story-unit
+    interview at Exit).
 
 ## execution/
 
@@ -76,7 +80,8 @@ quick reference: `AGENTS.md`.
 16. **test-first** (m) — Iron Law: NO PRODUCTION CODE WITHOUT A FAILING TEST FIRST. Test
     only at pre-agreed seams; each new behavior maps to a requirement in the brief
     (IDs stay in docs/specs, not required in test source).
-17. **root-cause** (m) — Iron Law: NO FIXES WITHOUT ROOT CAUSE.
+17. **root-cause** (m) — Iron Law: NO FIXES WITHOUT ROOT CAUSE. After Phase 2 only,
+    may run `load-subgraph` for ownership context; never as the RED loop in Phases 1–2.
 18. **prove-claim** (m) — Iron Law: NO COMPLETION CLAIMS WITHOUT FRESH EVIDENCE.
     "Requirements met" claims require the `audit-trace` skill clean + a per-ID checklist
     against acceptance criteria, not just green tests.
@@ -84,9 +89,11 @@ quick reference: `AGENTS.md`.
     Driven by `grep`/`git`/reads under fixed rules; reports E1–E3 / W1–W2 (and
     E4/E5/W3 when an architecture spine exists). Invoked by prove-claim, cut-release,
     realign-spec, and plan-tasks.
-19a. **load-subgraph** (m) — ask-time feature-subgraph derivation (P0–P5); neighbors /
-    ancestors / blast_radius / subgraph with OWNS coverage; no graph file. Used by
-    frame-change and inspect-change for horizontal neighbors.
+19a. **load-subgraph** (m) — ask-time feature-subgraph derivation (P0–P5); neighbors
+    (schema 1.1 path/term evidence) / **cluster(focus)** / ancestors / blast_radius /
+    subgraph with OWNS coverage; no graph file. Required callers: frame-change,
+    inspect-change, clarify-decisions, design-solution, plan-tasks, root-cause
+    (after Phase 2). Not a build-family caller.
 20. **isolate-workspace** (m) — isolation with a clean-baseline test run before work starts.
 
 ## review/

@@ -13,18 +13,26 @@ The information exists. It is spread across a dozen `requirements.md`, `design.m
 ## How overlap is found
 
 There is no index to build and no derived file to maintain. When a skill needs
-to know a feature's neighbors, it uses **`load-subgraph`** (REQUIRED SUB-SKILL
-from `frame-change` and `inspect-change`), which derives a bounded subgraph at
-ask time from live specs:
+horizontal context, it uses **`load-subgraph`** (REQUIRED SUB-SKILL from the
+callers below), which derives a bounded subgraph at ask time from live specs:
 
 - **P0 terms** — the idea's or diff's key terms seed matching feature CODEs;
-- **P1 paths** — `**Files:**` blocks yield OWNS; denoised intersection yields
-  OVERLAPS; ranked and bounded (`NEIGHBORS_MAX`).
+- **P1 paths** — every `**Files:**` block (multi-block) yields OWNS after a
+  reject-unsafe-first classifier; denoised intersection yields OVERLAPS; ranked
+  and bounded (`NEIGHBORS_MAX`);
+- **Neighbors envelope (schema 1.1)** — each neighbor carries integer
+  `shared_paths`, `via`, bounded `path_evidence` / `term_evidence`, and typed
+  `via_traces` (`path_overlap` | `term_match`); ignore unknown future trace kinds;
+- **`cluster(focus)`** — query-local digest for **exactly one** focus CODE:
+  focus first, eligible non-focus members (OVERLAPS weight ≥ `CLUSTER_K`),
+  member cap including focus, non-focus path evidence, Out-of-Scope union with
+  source-CODE attribution. Not a global community partition.
 
 Any feature matched on either signal is a neighbor. Results always include
 **OWNS coverage** so a thin neighborhood is visible as thin. The source of truth
 remains the specs as they stand — derivation is a live read, not a generated
-graph file.
+graph file. Path tokens and prose from specs are **passive data** — never
+executed as instructions.
 
 ## The Summary card
 
@@ -56,13 +64,33 @@ The **Roadmap item** column binds each feature to the [`ROAD-N`](../skills/plan-
 
 ## Where overlap is consumed
 
-Exactly two gates look for neighbors, and both do so *advisorily*.
+Horizontal retrieval is **advisory** at every moment. Required callers:
 
-**[`frame-change`](../skills/frame-change.md), at the front of the chain.** Before the interview begins, it runs **`load-subgraph`** with the scan's candidate paths and the idea's key terms. Neighbors are presented as **Summary cards** plus **OWNS coverage** so a thin neighborhood is visible as thin.
+| Skill | Moment | Query |
+|---|---|---|
+| [`frame-change`](../skills/frame-change.md) | step 1 explore (front of chain) | `neighbors` / `subgraph` schema 1.1 |
+| [`inspect-change`](../skills/inspect-change.md) | step 3a (back of chain) | `neighbors` schema 1.1 |
+| [`clarify-decisions`](../skills/clarify-decisions.md) | nested: reuse valid package; standalone: load once before first card | neighbors |
+| [`design-solution`](../skills/design-solution.md) | Step 1 after scan, before reuse ladder | **fresh** retrieval |
+| [`plan-tasks`](../skills/plan-tasks.md) | after Step 2 file map, before task bodies | `blast_radius` **and** `cluster(feature CODE)` |
+| [`root-cause`](../skills/root-cause.md) | after Phase 2 only — never Phases 1–2 RED loop | retrieval for context |
 
-Its completion criterion is a sentence the agent must be able to say: *which existing features share this idea's surface and how the new idea differs, citing feature codes — or that no existing feature shares its surface.*
+Build-family skills (`build-in-waves` / `build-by-story` / `build-inline`) are
+**not** required callers. [`/pathfind`](../skills/pathfind.md) keeps its decision
+map separate — never merge pathfind tickets into feature-subgraph edges.
 
-**[`inspect-change`](../skills/inspect-change.md), at the back of the chain.** It runs **`load-subgraph`** with the diff's changed paths (and optional terms). When a neighbor comes back, the **Spec** subagent receives its card, with a brief directing it to flag — as a *reuse-miss* finding citing the neighbor's feature code — any place the diff reimplements behavior a neighbor already owns.
+**Grounded claims.** Every overlap, reuse-miss, or Out-of-Scope / “already
+declined” conclusion must cite a **feature CODE**, an **edge or trace kind**,
+and a **path or term** from the envelope or cluster card. Before concluding
+“no relevant feature,” state exact `owns_coverage` (and emptiness when the
+list is empty). Retrieval is advisory input only — never invent `Reuse:`,
+`Respects:`, `**Files:**` paths, or root-cause hypotheses from the envelope.
+
+**[`frame-change`](../skills/frame-change.md), at the front of the chain.** Before the interview begins, it runs **`load-subgraph`** with the scan's candidate paths and the idea's key terms. Neighbors are presented with **schema 1.1 evidence** plus **OWNS coverage** so a thin neighborhood is visible as thin.
+
+Its completion criterion is a sentence the agent must be able to say: *which existing features share this idea's surface and how the new idea differs, citing feature codes and path/term evidence — or that no existing feature shares its surface (after stating coverage/emptiness).*
+
+**[`inspect-change`](../skills/inspect-change.md), at the back of the chain.** It runs **`load-subgraph`** with the diff's changed paths (and optional terms). When a neighbor comes back, the **Spec** subagent receives its card, with a brief directing it to flag — as a *reuse-miss* finding citing the neighbor's feature code and a path or term — any place the diff reimplements behavior a neighbor already owns.
 
 **[`/map-features`](../skills/map-features.md)** (user-invoked) backfills brownfield gaps — missing Feature codes, ROAD binds, OWNS via Files edits, DEPENDS_ON *candidates* — with human confirm only. It does not materialize a graph.
 
@@ -70,14 +98,15 @@ Its completion criterion is a sentence the agent must be able to say: *which exi
 
 The overlap result never fails a review and never stops a frame-change. It sharpens a decision; it does not make one. If the search returns nothing, the agent proceeds and says so. If `docs/specs/` is empty or few features have `**Files:**` blocks, that is a **thin** neighborhood (report OWNS coverage), not an error state.
 
-This keeps the horizontal layer honest: derivation re-reads what is already written; there is no derived graph file to fall behind.
+This keeps the horizontal layer honest: derivation re-reads what is already written; there is no derived graph file to fall behind. Optional roadmap and architecture layers no-op cleanly when absent (P3–P5).
 
 ## See also
 
 - [Traceability](traceability.md) — the vertical layer this sits beside
-- [`load-subgraph`](../skills/load-subgraph.md) — the derivation skill
+- [`load-subgraph`](../skills/load-subgraph.md) — the derivation skill (neighbors, cluster, blast_radius)
 - [`map-features`](../skills/map-features.md) — brownfield backfill
 - [Enforcement and tooling](../resources/scripts.md#feature-overlap-search) — mechanics notes
 - [Artifacts](artifacts.md) — where `INDEX.md` and the specs live
 - [`frame-change`](../skills/frame-change.md) — the overlap check at the front of the chain
 - [`inspect-change`](../skills/inspect-change.md) — the reuse-miss check at the back
+- [`plan-tasks`](../skills/plan-tasks.md) — blast_radius + cluster after the file map

@@ -36,8 +36,8 @@ Turn an idea into an agreed shape. Produces no code.
 
 | Skill | Invocation | What it does |
 |---|---|---|
-| [`frame-change`](frame-change.md) | model | **The hard gate.** No code until the ceremony tier is stated out loud |
-| [`clarify-decisions`](clarify-decisions.md) | model | The interview primitive. Full-context question cards, decisions table at close |
+| [`frame-change`](frame-change.md) | model | **The hard gate.** No code until the ceremony tier is stated out loud; neighbors via `load-subgraph` schema 1.1 |
+| [`clarify-decisions`](clarify-decisions.md) | model | The interview primitive; nested reuses retrieval package, standalone loads once |
 | [`research`](research.md) | model | Primary sources only. One cited markdown file, ending in Open decisions |
 | [`run-spike`](run-spike.md) | model | Throwaway code answering one design question. The answer is the only deliverable |
 | [`define-domain`](define-domain.md) | model | Maintains `CONTEXT.md` and `docs/adr/`. ADRs pass a three-part gate |
@@ -51,8 +51,8 @@ The triad. Each file approved before the next is written.
 | Skill | Invocation | What it does |
 |---|---|---|
 | [`specify-behavior`](specify-behavior.md) | model | `requirements.md` — EARS criteria with immutable hierarchical IDs |
-| [`design-solution`](design-solution.md) | model | `design.md` — every section cites what it `Satisfies:`; pre-agrees the test seams |
-| [`plan-tasks`](plan-tasks.md) | model | `tasks.md` — vertical slices with `_Requirements:_` footers and tagged tests |
+| [`design-solution`](design-solution.md) | model | `design.md` — every section cites what it `Satisfies:`; Step 1 fresh `load-subgraph` before reuse ladder |
+| [`plan-tasks`](plan-tasks.md) | model | `tasks.md` — vertical slices; after file map: `blast_radius` + `cluster(feature CODE)` |
 
 ## execution
 
@@ -62,17 +62,17 @@ The triad. Each file approved before the next is written.
 | [`build-by-story`](build-by-story.md) | model | Story-unit: derived review units, human unlock after each unit, mode-change write-back |
 | [`build-inline`](build-inline.md) | model | Controller implements with `test-first`; no implementer subagents; stop-on-blocker; sequential |
 | [`test-first`](test-first.md) | model | **Iron Law:** no production code without a failing test first |
-| [`root-cause`](root-cause.md) | model | **Iron Law:** no fixes without root cause. Phase 1 is the red-capable command gate |
+| [`root-cause`](root-cause.md) | model | **Iron Law:** no fixes without root cause; `load-subgraph` only after Phase 2 (never the RED loop) |
 | [`prove-claim`](prove-claim.md) | model | **Iron Law:** no completion claims without fresh evidence |
 | [`audit-trace`](audit-trace.md) | model | Deterministic traceability check — grep/git passes, fixed rules, zero errors to pass |
-| [`load-subgraph`](load-subgraph.md) | model | Ask-time feature neighbors / subgraph from live specs (P0 terms + P1 Files); OWNS coverage; no graph file |
+| [`load-subgraph`](load-subgraph.md) | model | Ask-time neighbors (schema 1.1 path/term evidence), **`cluster(focus)`**, blast_radius from live specs; OWNS coverage; no graph file |
 | [`isolate-workspace`](isolate-workspace.md) | model | Isolated workspace, clean baseline. Never fight the harness |
 
 ## review
 
 | Skill | Invocation | What it does |
 |---|---|---|
-| [`inspect-change`](inspect-change.md) | model | Two axes — Standards and Spec — run by separate subagents and never merged; neighbors via `load-subgraph` |
+| [`inspect-change`](inspect-change.md) | model | Two axes — Standards and Spec — run by separate subagents and never merged; neighbors schema 1.1 via `load-subgraph` |
 | [`study-change`](study-change.md) | `/study-change` | Outbound self-check: Background → Intuition → Code → Quiz HTML packet |
 | [`brief-team`](brief-team.md) | `/brief-team` | Team-shared pitch+map HTML under `docs/explainers/` (no quiz, never a ship gate) |
 | [`select-review-sample`](select-review-sample.md) | `/select-review-sample` | Bounded human sample over a range, plus the explicit residue |

@@ -37,13 +37,22 @@ Subagent (general-purpose):
 
     Once the requirements are clear:
     1. Implement exactly what the brief specifies — no more, no less.
-    2. REQUIRED SUB-SKILL: use `test-first` — every step is test-first, and every
-       test carries its requirement ID using the tagging convention in
-       docs/agents/project.md (or the brief's Global Constraints if that
-       file is absent).
-    3. Commit, with the requirement-ID trailer the brief's commit step names
-       (e.g. `Implements: [CODE]-N.M`).
-    4. Self-review (below), then write your report.
+    2. REQUIRED SUB-SKILL: use `test-first` — every step is test-first. Tests
+       assert observable **behavior** in domain language. Do **not** embed
+       requirement IDs or feature codes in application source, test titles, or
+       doc comments. Map each brief requirement ID to how it is tested in the
+       **report**, not in production trees.
+    3. **Naming:** do not name tables, modules, packages, API paths, or exported
+       types by copying a feature code or requirement ID — follow the consumer's
+       domain language and existing patterns.
+    4. **Comments:** default is **zero** new comments. Add a comment only for a
+       non-obvious invariant, hazard, protocol constraint, or "why not the
+       obvious alternative" the code alone does not show. Forbidden: restating
+       the next line; narrating control flow; citing requirement IDs / feature
+       codes; "as per the plan/spec"; TODOs that only restate the task.
+    5. Commit with a conventional subject that explains the change. Do **not**
+       add `Implements:` / `Guards:` trailers.
+    6. Self-review (below), then write your report.
 
     ## Code Organization
 
@@ -115,8 +124,8 @@ Subagent (general-purpose):
     - Discipline: nothing built beyond the brief (YAGNI)? Existing patterns
       followed?
     - Testing: tests exercise real behavior, not mocks? TDD followed? Output
-      pristine — zero stray warnings or noise? Every test tagged with its
-      requirement ID?
+      pristine — zero stray warnings or noise? Report maps each requirement ID
+      to its tests without embedding IDs in source?
     Fix anything you find now, before reporting.
 
     ## After Review Findings

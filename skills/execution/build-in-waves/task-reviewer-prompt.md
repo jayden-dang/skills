@@ -85,7 +85,8 @@ Subagent (general-purpose):
     - Correctness: error handling, edge cases, separation of concerns, DRY
       without premature abstraction
     - Tests: do they prove-claim real behavior rather than mock behavior? Are
-      this task's edge cases covered? Does each carry its requirement ID?
+      this task's edge cases covered? (IDs need not appear in test source —
+      Spec findings still cite IDs from the brief.)
     - Structure: does the change follow the plan's File Structure? One
       responsibility per file? Flag files this change created large or grew
       substantially — not pre-existing size.

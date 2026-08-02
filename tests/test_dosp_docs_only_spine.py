@@ -19,6 +19,58 @@ PRESSURE = REPO / "tests" / "docs-only-spine" / "scenarios-pressure.md"
 DOCS_ONLY_FINDINGS = ("E1", "E3", "E4", "E5", "W1", "W2", "W3")
 
 
+PLAN_TASKS = REPO / "skills" / "spec" / "plan-tasks" / "SKILL.md"
+TEMPLATES_TASKS = REPO / "templates" / "tasks.md"
+TEST_FIRST = REPO / "skills" / "execution" / "test-first" / "SKILL.md"
+IMPLEMENTER = (
+    REPO / "skills" / "execution" / "build-in-waves" / "implementer-prompt.md"
+)
+REVIEWER = (
+    REPO / "skills" / "execution" / "build-in-waves" / "task-reviewer-prompt.md"
+)
+BUILD_INLINE = REPO / "skills" / "execution" / "build-inline" / "SKILL.md"
+
+
+class DospPlanExecuteNoIdInCode(unittest.TestCase):
+    """DOSP-2.1 DOSP-2.2 DOSP-3.1 DOSP-3.3 DOSP-4.1 DOSP-4.2 DOSP-6.2"""
+
+    def test_plan_tasks_no_implements_or_test_annotation_mandate(self) -> None:
+        text = PLAN_TASKS.read_text()
+        self.assertNotIn("`Implements: CODE-N.M` trailer", text)
+        self.assertNotIn("fails **E2**", text)
+        self.assertNotIn("**test annotation** inside some task's steps", text)
+        self.assertIn("task footer", text.lower())
+
+    def test_templates_tasks_no_implements_trailer(self) -> None:
+        text = TEMPLATES_TASKS.read_text()
+        self.assertNotIn("Implements:", text)
+
+    def test_test_first_no_mandatory_annotation_table(self) -> None:
+        text = TEST_FIRST.read_text()
+        self.assertNotIn("/// REQ: CODE-N.M", text)
+        self.assertIn("docs-only", text.lower())
+
+    def test_implementer_comment_and_no_id_in_code(self) -> None:
+        text = IMPLEMENTER.read_text()
+        self.assertNotIn("every test carries its requirement ID", text)
+        self.assertNotIn("Implements: [CODE]-N.M", text)
+        self.assertIn("zero", text.lower())
+        self.assertIn("feature code", text.lower())
+
+    def test_reviewer_spec_walk_without_test_id_mandate(self) -> None:
+        text = REVIEWER.read_text()
+        self.assertIn("requirement IDs", text)
+        self.assertNotIn("Does each carry its requirement ID?", text)
+
+    def test_build_inline_no_trailer_or_id_tag_mandate(self) -> None:
+        text = BUILD_INLINE.read_text()
+        self.assertNotIn("Implements: CODE-N.M", text)
+        self.assertNotIn(
+            "Every test carries its requirement ID per `docs/agents/project.md`",
+            text,
+        )
+
+
 class DospAuditTraceDocsOnly(unittest.TestCase):
     def setUp(self) -> None:
         self.text = AUDIT_TRACE.read_text()

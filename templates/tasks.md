@@ -62,7 +62,7 @@ Run: `<exact command>` — expect: pass.
 
 - [ ] **Step 3: Commit**
 
-`git commit -m "<message>" # trailer: Implements: <CODE>-N.M`
+`git commit -m "<conventional subject explaining the change>"`
 
 _Requirements: <CODE>-1.1, <CODE>-1.2_
 

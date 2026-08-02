@@ -118,9 +118,8 @@ For each Task N in order:
 3. **Clarify first.** If anything in the brief is ambiguous — API shape, path,
    acceptance, dependency — **stop and ask now**. Do not start RED until clear.
 4. **Implement with TDD.** REQUIRED SUB-SKILL: use `test-first` for every step in the
-   task. Every test carries its requirement ID per `docs/agents/project.md` (or
-   Global Constraints if that file is absent). Work only the files the plan
-   names.
+   task. Tests describe domain behavior; map requirement IDs in the report/self-check,
+   not by embedding IDs in source. Work only the files the plan names.
 5. **Deviations.** WHEN territory forces you off the brief: you **are** the
    implementer — follow the **Deviations** recipe in
    `../build-in-waves/implementer-prompt.md` (nine-field entry under
@@ -129,9 +128,10 @@ For each Task N in order:
    task; append only. IF **Map impact** is `reroute-plan` / `realign-spec` or
    the fix falsifies the plan / shared contract → stop and REQUIRED SUB-SKILL:
    use `reroute-plan` (or ask); do not stretch silently.
-6. **Commit.** Use the trailer the task names (e.g. `Implements: CODE-N.M`).
+6. **Commit.** Conventional subject explaining the change — no `Implements:` /
+   `Guards:` trailer required.
 7. **Self-check (controller, not a subagent).** Re-read the brief against the
-   diff: every requirement ID covered? TDD evidence (RED then GREEN) real?
+   diff: every requirement ID's behavior covered? TDD evidence (RED then GREEN) real?
    Output pristine? Plan File Structure respected? Fix gaps now — you have no
    separate task-reviewer pass.
 8. **Optional evidence bundle.** For non-trivial tasks, write

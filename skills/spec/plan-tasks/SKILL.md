@@ -97,14 +97,16 @@ Each task:
   serial. Over-declaring needlessly serializes; under-declaring is caught by the
   executor's file-disjoint check before it can collide.
 - **Steps:** bite-sized checkboxes (2–5 min each) following the TDD cycle:
-  failing test (complete code) → run, expect the stated failure → implement
-  (complete code) → run, expect pass → commit with an
-  `Implements: CODE-N.M` trailer.
+  failing test (complete code describing **behavior**, not embedding requirement
+  IDs in application/test source) → run, expect the stated failure → implement
+  (complete code) → run, expect pass → commit with a conventional subject that
+  explains the change (no `Implements:` / `Guards:` trailer required or taught).
 - **Footer:** `_Requirements: CODE-N.M, CODE-N.M_` — the IDs this task
   implements or guards. Every task has one. **Default: one story's IDs** (same
   story number N). Multi-story footers **merge** those stories into one review
   unit under `build-by-story` (plan-quality signal — not a ban, not a reason to
-  lie about Depends-on).
+  lie about Depends-on). IDs live in this footer (and in requirements/design),
+  not in production source or test titles.
 
 `Depends-on` governs build waves. Never reorder or narrow dependencies solely to
 tidy review units if that would lie about what the task needs.
@@ -128,19 +130,16 @@ the slots and placeholders are clean is Step 4's check, not this one.
 - Run the audit-trace check (REQUIRED SUB-SKILL: use `audit-trace`): every Approved
   requirement must be cited by ≥1 task footer. Uncited IDs mean the plan is
   incomplete (or the requirement should be struck through with a reason).
-- **Test coverage, not just citation:** every requirement ID must also appear
-  in a **test annotation** inside some task's steps (`[CODE-N.M]` in a Vitest
-  title, `/// REQ: CODE-N.M` on a Rust test, `@CODE-N.M` in a Playwright tag) —
-  not merely in a footer. A footer citation with no tagged test passes
-  the audit-trace check now (Approved → W1) but fails **E2** the moment the feature is
-  marked Implemented. A guard or negative requirement counts only if a real
-  test asserts it; when a behavior can't be unit-tested in isolation, tag the
-  e2e task or an existing test that already exercises it — one test may carry
-  several IDs.
+  audit-trace is **docs-only** — it does not require IDs in test source.
+- **Behavior coverage via steps, not ID strings in code:** every requirement ID
+  in a footer must have a corresponding TDD step (or explicit manual/acceptance
+  step) that asserts the **behavior** in domain language. Do **not** require
+  `[CODE-N.M]`, `/// REQ:`, or `@CODE-N.M` inside planned test source. Map IDs
+  to tests in the task report / Spec review, not in production trees.
 - **Reconcile against the design's seam table:** if `design.md` has a "Seams
-  for testing" table, every ID in every row must be tagged on a test in the
-  plan. An ID the design promised to cover but the plan left untagged is
-  *dropped coverage* — add the test, don't renumber.
+  for testing" table, every ID in every row must have a planned test or
+  acceptance step at that seam. An ID the design promised to cover but the plan
+  left without a behavior test is *dropped coverage* — add the step, don't renumber.
 - Type/name consistency across tasks: the same function must have the same
   name and signature in every task that mentions it.
 - **Component-level reuse-miss:** flag any task whose Files **Create** something the scan digest
@@ -165,9 +164,9 @@ plan defect — citing `file:line` and defaulting to flag. Findings to
 `.skills/<CODE>/plan-review.md`; fix before offering execution. (No subagents? Do the
 comparison yourself against the code.)
 
-**Done when:** every requirement ID has both a task footer and a tagged test,
-the audit-trace check is clean, the design's seam-table IDs are all covered, and the
-placeholder scan is clean.
+**Done when:** every requirement ID has a task footer and a planned behavior
+test/acceptance step at an agreed seam, the docs-only audit-trace check is clean,
+the design's seam-table IDs are all covered, and the placeholder scan is clean.
 
 ## Step 5 (optional): Publish to the issue tracker
 

@@ -33,7 +33,7 @@ GRAPH.md, no P6.
 
 | Check | Command |
 |---|---|
-| Lint | `python3 scripts/lint-skill-frontmatter.py && python3 scripts/lint-handoffs.py && python3 scripts/lint-context7.py` |
+| Lint | `python3 scripts/lint-skill-frontmatter.py && python3 scripts/lint-write-handoffs.py && python3 scripts/lint-context7.py` |
 | Unit tests | `python3 -m unittest discover -s tests` |
 
 Single test file: `python3 -m unittest tests.<module>`  
@@ -124,20 +124,20 @@ IDs in application tests.
 
 **Depends-on:** none
 
-- [ ] **Step 1: Failing tests — classifier decision table + multi-block + malformed last-block + unreadable**
+- [x] **Step 1: Failing tests — classifier decision table + multi-block + malformed last-block + unreadable**
 
 Add tests in `tests/test_feature_subgraph_derive.py` with greppable docstrings containing the IDs below. Cover every design decision-table row (pos/neg), later-task path retention, fence-internal `###` not stopping Files, malformed **last** unclosed fence keeping prior sibling paths, missing `tasks.md` empty without unreadable note, and unreadable via invalid UTF-8 fixture or injected FS error (not missing path).
 
 Run: `python3 -m unittest tests.test_feature_subgraph_derive -v`  
 Expect: failures on new assertions (old first-block behavior / wrong accepts).
 
-- [ ] **Step 2: Implement extract + passes.md Pass P1**
+- [x] **Step 2: Implement extract + passes.md Pass P1**
 
 Implement design Architecture §1 exactly: multi-block, fence-aware stop, reject-unsafe-first, provenance, broad-ext / known-root / labeled rules, `p1_block_skipped` / missing vs unreadable. Sync `passes.md` recipes to match (agent SSOT).
 
 Run: `python3 -m unittest tests.test_feature_subgraph_derive -v` — expect pass.
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 `git commit` with domain subject describing P1 OWNS tightening (no requirement IDs in commit message per DOSP).
 
@@ -162,19 +162,19 @@ _Requirements: FSUBR-2.1, FSUBR-2.2, FSUBR-2.3, FSUBR-2.4, FSUBR-2.5, FSUBR-2.6,
 
 **Depends-on:** Task 1
 
-- [ ] **Step 1: Failing tests — read_ledger uniqueness + pure query IO**
+- [x] **Step 1: Failing tests — read_ledger uniqueness + pure query IO**
 
 Tests: after `build_snapshot` + `neighbors`/`cluster`, each path appears at most once in `read_ledger`; running a query with an IO-disabled adapter (raise on any read) succeeds when snapshot is prebuilt; missing tasks.md does not emit `p1_file_unreadable`.
 
 Run: `python3 -m unittest tests.test_feature_subgraph_derive -v` — expect fail until snapshot exists.
 
-- [ ] **Step 2: Implement snapshot stages + wire `run()`**
+- [x] **Step 2: Implement snapshot stages + wire `run()`**
 
 Implement design §0. Document Stage A/B in `passes.md` and SKILL.md procedure. Fingerprints SHA-256 of bytes; absent optional layers recorded as `present: false`.
 
 Run: same unittest — expect pass.
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 Domain-subject commit for derivation snapshot / read-once.
 
@@ -199,17 +199,17 @@ _Requirements: FSUBR-10.1_
 
 **Depends-on:** Task 2
 
-- [ ] **Step 1: Failing tests — schema 1.1 fields**
+- [x] **Step 1: Failing tests — schema 1.1 fields**
 
 Assert integer `shared_paths` still ranks; path_evidence max 5 + truncated; term_evidence rules; via_traces kinds only path_overlap/term_match; notes include P1 notes when present.
 
 Run: `python3 -m unittest tests.test_feature_subgraph_derive -v` — expect fail.
 
-- [ ] **Step 2: Implement neighbors 1.1 in oracle + envelope.md + passes.md**
+- [x] **Step 2: Implement neighbors 1.1 in oracle + envelope.md + passes.md**
 
 Run: unittest — expect pass.
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 Domain-subject commit for path/term-grounded neighbor envelope.
 
@@ -234,19 +234,19 @@ _Requirements: FSUBR-1.1, FSUBR-1.2, FSUBR-1.3, FSUBR-1.4, FSUBR-1.5, FSUBR-1.6,
 
 **Depends-on:** Task 2, Task 3
 
-- [ ] **Step 1: Failing tests — focus reject, one-path eligibility, high-degree truncation, OOS**
+- [x] **Step 1: Failing tests — focus reject, one-path eligibility, high-degree truncation, OOS**
 
 Include post-P1 goldens: single shared path eligible; high-degree truncated; OOS ceiling on display text.
 
 Run: unittest — expect fail.
 
-- [ ] **Step 2: Implement cluster + Stage B OOS load in snapshot path**
+- [x] **Step 2: Implement cluster + Stage B OOS load in snapshot path**
 
 Queries remain zero-IO after snapshot complete. Document in passes.md.
 
 Run: unittest — expect pass.
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 Domain-subject commit for query-local cluster digest.
 
@@ -276,19 +276,19 @@ _Requirements: FSUBR-3.1, FSUBR-3.2, FSUBR-3.3, FSUBR-3.4, FSUBR-3.5, FSUBR-3.6,
 
 **Depends-on:** Task 3, Task 4
 
-- [ ] **Step 1: Failing contract/scenario tests**
+- [x] **Step 1: Failing contract/scenario tests**
 
 Assert skill bodies name: nested+standalone clarify; design Step 1; plan-tasks blast_radius **and** cluster(feature CODE); root-cause after Phase 2 only; grounded claims (CODE+edge+path/term); FSUBR-4.2 coverage statement; package rederive when fingerprints differ; ignore unknown via_traces kinds.
 
 Run: `python3 -m unittest tests.test_feature_subgraph_contract -v` (and any scenario harness the pack uses) — expect fail until prose lands.
 
-- [ ] **Step 2: Implement skill prose**
+- [x] **Step 2: Implement skill prose**
 
-Edit each skill per design caller table. Keep rationalization tables. Do not exceed line budgets without splitting.
+Edit each skill per design caller table. Keep rationalization tables. Do not exceed line budgets without splitting. Post-ship polish: grounded-claims recipe consolidated to `load-subgraph/references/grounded-claims.md` (one home); callers point; contract tests assert pointer layout.
 
-Run: contract tests — expect pass. Lint: `python3 scripts/lint-skill-frontmatter.py && python3 scripts/lint-handoffs.py`.
+Run: contract tests — expect pass. Lint: `python3 scripts/lint-skill-frontmatter.py && python3 scripts/lint-write-handoffs.py`.
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 Domain-subject commit for retrieval callers and grounded claims.
 
@@ -316,17 +316,17 @@ _Requirements: FSUBR-4.1, FSUBR-4.2, FSUBR-4.3, FSUBR-4.4, FSUBR-5.1, FSUBR-5.2,
 
 **Depends-on:** Task 5
 
-- [ ] **Step 1: Failing source contracts**
+- [x] **Step 1: Failing source contracts**
 
 Assert guides mention `cluster` and expanded callers; assert forbidden GRAPH/depends_on/skill-py patterns still enforced; ARCH-2 no-op fixtures still pass.
 
 Run: contract unittest — expect fail until docs updated.
 
-- [ ] **Step 2: Update docs + contracts**
+- [x] **Step 2: Update docs + contracts**
 
 Run: full `python3 -m unittest discover -s tests` and lints — expect pass.
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 Domain-subject commit for guide/inventory and guard contracts.
 

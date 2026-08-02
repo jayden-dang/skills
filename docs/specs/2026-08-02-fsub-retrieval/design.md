@@ -321,6 +321,12 @@ buffered bytes when available so the same path is not double-read.
 **Caller table:** nested + standalone clarify; all rows use grounded claims;
 plan-tasks blast_radius + cluster(feature CODE); root-cause after Phase 2.
 
+**Grounded-claims packaging (as shipped):** recipe lives in one home —
+`skills/execution/load-subgraph/references/grounded-claims.md` (cite triple,
+`with_owns < registered` before absence claims, emptiness-first, no invent,
+ignore unknown `via_traces`). Callers point at that file; they do not restate
+the recipe. Contract tests enforce the pointer layout.
+
 ### 5. Guide and inventory
 
 Satisfies: FSUBR-9.9, FSUBR-9.10

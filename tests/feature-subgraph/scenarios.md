@@ -30,6 +30,10 @@ Two-stage snapshot + read-once ledger + pure queries: FSUBR-10.1
 
 Path/term-grounded neighbors: FSUBR-1.1 FSUBR-1.2 FSUBR-1.3 FSUBR-1.4 FSUBR-1.5 FSUBR-1.6 FSUBR-1.7 FSUBR-1.8 FSUBR-1.9 FSUBR-1.10 FSUBR-1.11 FSUBR-1.12 FSUBR-9.3
 
+## FSUBR Wave A — cluster query (Task 4)
+
+Query-local cluster digest: FSUBR-3.1 FSUBR-3.2 FSUBR-3.3 FSUBR-3.4 FSUBR-3.5 FSUBR-3.6 FSUBR-3.7 FSUBR-3.8 FSUBR-3.9 FSUBR-3.10 FSUBR-3.11 FSUBR-3.12 FSUBR-3.13 FSUBR-3.14 FSUBR-3.15
+
 ## FSUB-1.2 skill-path dual-run
 
 Two independent load-subgraph runs against the same frozen fixture (following passes.md only) MUST yield the same edge set and seed set. reference_derive is the oracle for expected math; the skill MUST NOT import it.

@@ -336,8 +336,10 @@ def _add_note(notes: list[dict[str, Any]], seen: set[tuple[str, str, str]], note
     notes.append(note)
 
 
-def _cluster_returned_members(owns_map: dict[str, set[str]], focus: str) -> list[str]:
-    """Stage B membership from Stage A OWNS only (focus first, weight≥K, cap)."""
+def _cluster_eligible_scored(
+    owns_map: dict[str, set[str]], focus: str
+) -> list[tuple[int, str]]:
+    """Eligible non-focus: weight ≥ CLUSTER_K, sorted weight desc CODE asc."""
     if focus not in owns_map:
         return []
     focus_paths = owns_map[focus]
@@ -349,12 +351,124 @@ def _cluster_returned_members(owns_map: dict[str, set[str]], focus: str) -> list
         if w >= CLUSTER_K:
             scored.append((w, code))
     scored.sort(key=lambda x: (-x[0], x[1]))
+    return scored
+
+
+def _cluster_returned_members(owns_map: dict[str, set[str]], focus: str) -> list[str]:
+    """Stage B membership from Stage A OWNS only (focus first, weight≥K, cap)."""
+    if focus not in owns_map:
+        return []
+    scored = _cluster_eligible_scored(owns_map, focus)
     members = [focus]
     for _, code in scored:
         if len(members) >= CLUSTER_MEMBERS_MAX:
             break
         members.append(code)
     return members
+
+
+def _resolve_cluster_focus(focus: Any) -> tuple[str | None, str | None]:
+    """Return (single_focus_code, invalid_detail). invalid_detail set on reject."""
+    if focus is None:
+        return None, "zero_focus"
+    if isinstance(focus, (list, tuple, set)):
+        items = [str(x).strip() for x in focus if str(x).strip()]
+        if len(items) == 0:
+            return None, "zero_focus"
+        if len(items) > 1:
+            return None, "many_focus"
+        return items[0], None
+    if isinstance(focus, str):
+        s = focus.strip()
+        if not s:
+            return None, "zero_focus"
+        return s, None
+    return None, "zero_focus"
+
+
+def _oos_normalize_key(text: str) -> str:
+    """Dedupe key: collapse whitespace + casefold (deterministic; no LLM)."""
+    return " ".join(text.split()).casefold()
+
+
+def _extract_oos_bullets(text: str) -> list[str]:
+    """Collect bullet display texts under a ``## Out of Scope`` section."""
+    if not text:
+        return []
+    lines = text.splitlines()
+    in_oos = False
+    items: list[str] = []
+    for line in lines:
+        if re.match(r"(?i)^#{2}\s+Out of Scope\s*$", line.strip()):
+            in_oos = True
+            continue
+        if in_oos and re.match(r"^#{1,6}\s+\S", line):
+            break
+        if not in_oos:
+            continue
+        m = re.match(r"^\s*[-*]\s+(.+?)\s*$", line)
+        if m:
+            raw = m.group(1).strip()
+            if raw:
+                items.append(raw)
+    return items
+
+
+def _cluster_oos_union(
+    snapshot: dict[str, Any], member_codes: list[str]
+) -> tuple[list[dict[str, Any]], bool]:
+    """Union OOS from member requirements; normalize key, first display, sources, caps.
+
+    Returns (items, oos_truncated).
+    """
+    code_to_row = {r["code"]: r for r in (snapshot.get("registry") or [])}
+    texts = snapshot.get("source_texts") or {}
+    # key → {text, sources: set}
+    ordered_keys: list[str] = []
+    by_key: dict[str, dict[str, Any]] = {}
+
+    for code in member_codes:
+        row = code_to_row.get(code)
+        if not row:
+            continue
+        rel = _feature_rel(row, "requirements.md")
+        body = texts.get(rel) or ""
+        for display in _extract_oos_bullets(body):
+            key = _oos_normalize_key(display)
+            if not key:
+                continue
+            if key not in by_key:
+                by_key[key] = {"text": display, "sources": {code}}
+                ordered_keys.append(key)
+            else:
+                by_key[key]["sources"].add(code)
+
+    emitted: list[dict[str, Any]] = []
+    total_cp = 0
+    truncated = False
+    for key in ordered_keys:
+        entry = by_key[key]
+        text = entry["text"]
+        # item-count cap
+        if len(emitted) >= OOS_ITEM_MAX:
+            truncated = True
+            break
+        # text-size ceiling (display code points)
+        if total_cp + len(text) > OOS_TEXT_CEILING:
+            truncated = True
+            break
+        emitted.append(
+            {
+                "text": text,
+                "sources": sorted(entry["sources"]),
+            }
+        )
+        total_cp += len(text)
+
+    if len(ordered_keys) > len(emitted):
+        truncated = True
+
+    return emitted, truncated
 
 
 def build_snapshot(
@@ -424,8 +538,16 @@ def build_snapshot(
 
     # --- Stage B: cluster OOS (after members from Stage A OWNS only) ---
     if kind == "cluster":
-        focus = query.get("focus") or query.get("code") or ""
-        members = _cluster_returned_members(owns, focus)
+        if "focus" in query:
+            focus_raw: Any = query["focus"]
+        elif "code" in query:
+            focus_raw = query["code"]
+        else:
+            focus_raw = ""
+        focus_resolved, focus_invalid = _resolve_cluster_focus(focus_raw)
+        members: list[str] = []
+        if focus_invalid is None and focus_resolved is not None:
+            members = _cluster_returned_members(owns, focus_resolved)
         code_to_row = {r["code"]: r for r in registry}
         for mcode in members:
             row = code_to_row.get(mcode)
@@ -646,34 +768,90 @@ def neighbors_from_snapshot(
 
 def cluster_from_snapshot(
     snapshot: dict[str, Any],
-    focus: str,
+    focus: Any,
     fs: Any = None,
 ) -> dict[str, Any]:
-    """Minimal pure cluster shell for Stage B purity (full payload is later task)."""
+    """Pure cluster(focus) — zero file IO. Focus first; eligible weight≥K; OOS union."""
     if fs is not None:
         pass
     owns_map: dict[str, set[str]] = snapshot["owns"]
-    members = _cluster_returned_members(owns_map, focus)
     notes = list(snapshot.get("notes") or [])
-    if focus not in owns_map:
-        key_notes = {_note_key(n) for n in notes}
-        inv = {
-            "kind": "cluster_focus_invalid",
-            "code": focus,
-            "detail": "not_registered",
-        }
-        if _note_key(inv) not in key_notes:
-            notes.append(inv)
-    return {
-        "focus": focus,
-        "members": members,
-        "notes": notes,
-        "owns_coverage": snapshot.get("owns_coverage")
-        or owns_coverage_from_map(owns_map),
+    cov = snapshot.get("owns_coverage") or owns_coverage_from_map(owns_map)
+    base: dict[str, Any] = {
         "advisory": True,
+        "owns_coverage": cov,
+        "notes": notes,
         "schema_version": snapshot.get("schema_version", SCHEMA_VERSION),
         "recipe_id": snapshot.get("recipe_id", RECIPE_ID),
+        "members": [],
+        "members_truncated": False,
+        "out_of_scope": [],
+        "oos_truncated": False,
     }
+
+    resolved, invalid = _resolve_cluster_focus(focus)
+    if invalid is not None:
+        detail = invalid
+        code_for_note = ""
+        if isinstance(focus, (list, tuple, set)):
+            code_for_note = ",".join(str(x) for x in focus)
+        elif isinstance(focus, str):
+            code_for_note = focus
+        inv = {
+            "kind": "cluster_focus_invalid",
+            "code": code_for_note,
+            "detail": detail,
+        }
+        key_notes = {_note_key(n) for n in notes}
+        if _note_key(inv) not in key_notes:
+            notes.append(inv)
+        base["focus"] = resolved or code_for_note or ""
+        base["notes"] = notes
+        return base
+
+    assert resolved is not None
+    base["focus"] = resolved
+
+    if resolved not in owns_map:
+        inv = {
+            "kind": "cluster_focus_invalid",
+            "code": resolved,
+            "detail": "not_registered",
+        }
+        key_notes = {_note_key(n) for n in notes}
+        if _note_key(inv) not in key_notes:
+            notes.append(inv)
+        base["notes"] = notes
+        return base
+
+    scored = _cluster_eligible_scored(owns_map, resolved)
+    eligible_non_focus_count = len(scored)
+    members_truncated = (1 + eligible_non_focus_count) > CLUSTER_MEMBERS_MAX
+
+    focus_paths = owns_map[resolved]
+    member_rows: list[dict[str, Any]] = [{"code": resolved}]
+    for w, code in scored:
+        if len(member_rows) >= CLUSTER_MEMBERS_MAX:
+            break
+        shared_sorted = _shared_meaningful_paths(focus_paths, owns_map[code])
+        pe = _path_evidence(shared_sorted)
+        member_rows.append(
+            {
+                "code": code,
+                "weight": w,
+                "path_evidence": pe,
+            }
+        )
+
+    member_codes = [m["code"] for m in member_rows]
+    oos_items, oos_truncated = _cluster_oos_union(snapshot, member_codes)
+
+    base["members"] = member_rows
+    base["members_truncated"] = members_truncated
+    base["out_of_scope"] = oos_items
+    base["oos_truncated"] = oos_truncated
+    base["notes"] = notes
+    return base
 
 
 def _parse_roadmap_text(text: str) -> dict[str, Any]:
@@ -836,8 +1014,13 @@ def run_on_snapshot(
         return base
 
     if kind == "cluster":
-        focus = query.get("focus") or query.get("code") or ""
-        c = cluster_from_snapshot(snapshot, focus, fs=fs)
+        if "focus" in query:
+            focus_arg: Any = query["focus"]
+        elif "code" in query:
+            focus_arg = query["code"]
+        else:
+            focus_arg = ""
+        c = cluster_from_snapshot(snapshot, focus_arg, fs=fs)
         base.update(c)
         return base
 
@@ -1252,6 +1435,12 @@ def neighbors(
     }
     snap = build_snapshot(repo_root, q)
     return neighbors_from_snapshot(snap, code, terms)
+
+
+def cluster(repo_root: Path, focus: Any) -> dict[str, Any]:
+    q: dict[str, Any] = {"kind": "cluster", "focus": focus}
+    snap = build_snapshot(repo_root, q)
+    return cluster_from_snapshot(snap, focus)
 
 
 def owns_coverage(

@@ -284,6 +284,41 @@ Pure function of the snapshot (zero file IO).
 
 ---
 
+## Query: cluster(focus)
+
+Pure function of the snapshot after Stage B (zero file IO). **Not** a global
+`communities()` partition of the registry.
+
+1. **Focus:** require exactly one focus CODE. Reject zero or many (list/empty/
+   missing) with note `{kind: cluster_focus_invalid, code, detail}` and empty
+   members. Unregistered focus → same note (`detail: not_registered`).
+2. **Eligible non-focus:** CODEs with meaningful OVERLAPS weight
+   `|meaningful(OWNS_focus) ∩ meaningful(OWNS_other)|` ≥ `CLUSTER_K` (1).
+3. **Rank:** non-focus sort key `(weight desc, CODE asc)`.
+4. **Members:** focus **first**, then ranked eligible until
+   `CLUSTER_MEMBERS_MAX` (8) total (cap **includes** focus; never exceeds
+   `NEIGHBORS_MAX`).
+5. **`members_truncated`:** `(1 + eligible_non_focus_count) > CLUSTER_MEMBERS_MAX`
+   — true when eligibility exceeds the cap even if only 8 rows are returned.
+6. **Non-focus path_evidence:** shared meaningful paths with focus, lex
+   ascending, length ≤ `PATH_EVIDENCE_MAX` (5); `truncated` honesty same as
+   neighbors. Focus row has `code` only (no `path_evidence`).
+7. **Out-of-Scope union** (from returned members only; texts in
+   `snapshot.source_texts` via Stage B `requirements.md`):
+   - Parse `## Out of Scope` section bullets (`-` / `*`) until the next
+     `#{1,6}` heading.
+   - Walk members in returned order; within each file, bullet order.
+   - **Dedupe key** = collapse whitespace + casefold of bullet text (no LLM).
+   - **Display text** = first original form seen for that key.
+   - **sources** = sorted unique member CODEs that contributed the key.
+   - Apply **`OOS_ITEM_MAX` (6)** then **`OOS_TEXT_CEILING` (1200)** display
+     code points (sum of emitted `text` lengths). Dropping content →
+     `oos_truncated: true`; else false.
+8. Envelope: `schema_version: "1.1"`, `recipe_id: "fsubr-1.1"`, `advisory: true`,
+   `owns_coverage`, snapshot `notes`. No `depends_on` / `communities()`.
+
+---
+
 ## Query: ancestors / descendants / blast_radius / subgraph
 
 - **ancestors(CODE):** CODE, then IMPLEMENTS ROAD if any, then MILE containing that

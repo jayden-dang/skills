@@ -656,5 +656,255 @@ class TestFSUBRNeighbors11(unittest.TestCase):
         self.assertIn("p1_block_skipped", kinds)
 
 
+class TestFSUBRCluster(unittest.TestCase):
+    """FSUBR-3.1–3.15 query-local cluster digest."""
+
+    def _base_snap(self, owns, source_texts=None, registry=None, notes=None):
+        codes = sorted(owns.keys())
+        if registry is None:
+            registry = [
+                {
+                    "code": c,
+                    "name": c,
+                    "spec": c.lower(),
+                    "status": "Draft",
+                    "road": "",
+                }
+                for c in codes
+            ]
+        with_owns = sum(1 for s in owns.values() if s)
+        reg_n = len(owns)
+        return {
+            "registry": registry,
+            "source_texts": source_texts or {},
+            "source_bytes": {},
+            "owns": owns,
+            "owns_coverage": {
+                "with_owns": with_owns,
+                "registered": reg_n,
+                "ratio": (with_owns / reg_n) if reg_n else 0.0,
+            },
+            "p3_p4_p5": {},
+            "notes": list(notes or []),
+            "fingerprints": {},
+            "read_ledger": [],
+            "schema_version": "1.1",
+            "recipe_id": "fsubr-1.1",
+            "query": {"kind": "cluster"},
+        }
+
+    def test_FSUBR_3_1_reject_zero_focus(self):
+        """FSUBR-3.1 cluster rejects zero focus CODEs."""
+        snap = self._base_snap({"FOC": {"src/a.ts"}})
+        c = rd.cluster_from_snapshot(snap, "")
+        kinds = {n.get("kind") for n in c.get("notes") or []}
+        self.assertIn("cluster_focus_invalid", kinds)
+        self.assertEqual(c.get("members") or [], [])
+        env = rd.run_on_snapshot(snap, {"kind": "cluster"})
+        kinds2 = {n.get("kind") for n in env.get("notes") or []}
+        self.assertIn("cluster_focus_invalid", kinds2)
+
+    def test_FSUBR_3_1_reject_many_focus(self):
+        """FSUBR-3.1 cluster rejects multiple focus CODEs."""
+        snap = self._base_snap({"FOC": {"src/a.ts"}, "OTH": {"src/a.ts"}})
+        c = rd.cluster_from_snapshot(snap, ["FOC", "OTH"])
+        kinds = {n.get("kind") for n in c.get("notes") or []}
+        self.assertIn("cluster_focus_invalid", kinds)
+        self.assertEqual(c.get("members") or [], [])
+
+    def test_FSUBR_3_1_reject_unregistered_focus(self):
+        """FSUBR-3.1 unregistered focus yields cluster_focus_invalid."""
+        snap = self._base_snap({"FOC": {"src/a.ts"}})
+        c = rd.cluster_from_snapshot(snap, "ZZZ")
+        kinds = {n.get("kind") for n in c.get("notes") or []}
+        self.assertIn("cluster_focus_invalid", kinds)
+        self.assertEqual(c.get("members") or [], [])
+
+    def test_FSUBR_3_3_3_4_one_path_eligibility(self):
+        """FSUBR-3.3 FSUBR-3.4 single shared meaningful path → eligible (k=1)."""
+        owns = {
+            "FOC": {"src/shared/one.ts", "src/focus/only.ts"},
+            "ONE": {"src/shared/one.ts", "src/one/only.ts"},
+            "NONE": {"src/none/only.ts"},
+        }
+        snap = self._base_snap(owns)
+        c = rd.cluster_from_snapshot(snap, "FOC")
+        codes = [m["code"] for m in c["members"]]
+        self.assertEqual(codes[0], "FOC")
+        self.assertIn("ONE", codes)
+        self.assertNotIn("NONE", codes)
+        one = next(m for m in c["members"] if m["code"] == "ONE")
+        self.assertEqual(one["weight"], 1)
+        self.assertFalse(c["members_truncated"])
+
+    def test_FSUBR_3_5_3_6_3_7_focus_first_weight_desc_code_asc_cap(self):
+        """FSUBR-3.5–3.7 focus first; non-focus weight desc CODE asc; cap ≤8."""
+        owns = {
+            "FOC": {f"src/p{i}.ts" for i in range(10)},
+            "HI": {f"src/p{i}.ts" for i in range(5)},
+            "MID": {f"src/p{i}.ts" for i in range(3)},
+            "AA": {"src/p0.ts"},
+            "BB": {"src/p0.ts"},
+        }
+        snap = self._base_snap(owns)
+        c = rd.cluster_from_snapshot(snap, "FOC")
+        codes = [m["code"] for m in c["members"]]
+        self.assertEqual(codes[0], "FOC")
+        self.assertEqual(codes[1:], ["HI", "MID", "AA", "BB"])
+        self.assertLessEqual(len(c["members"]), rd.CLUSTER_MEMBERS_MAX)
+        self.assertLessEqual(rd.CLUSTER_MEMBERS_MAX, rd.NEIGHBORS_MAX)
+
+    def test_FSUBR_3_8_high_degree_members_truncated(self):
+        """FSUBR-3.8 high-degree: (1+eligible_non_focus)>8 → members_truncated true."""
+        owns = {"FOC": {f"src/hub/{i}.ts" for i in range(20)}}
+        for i in range(10):
+            code = f"N{i:02d}"
+            owns[code] = {f"src/hub/{i}.ts", f"src/n/{i}.ts"}
+        snap = self._base_snap(owns)
+        c = rd.cluster_from_snapshot(snap, "FOC")
+        self.assertTrue(c["members_truncated"])
+        self.assertEqual(len(c["members"]), rd.CLUSTER_MEMBERS_MAX)
+        self.assertEqual(c["members"][0]["code"], "FOC")
+        non = [m["code"] for m in c["members"][1:]]
+        self.assertEqual(non, ["N00", "N01", "N02", "N03", "N04", "N05", "N06"])
+
+    def test_FSUBR_3_9_non_focus_path_evidence_like_neighbors(self):
+        """FSUBR-3.9 non-focus path_evidence: lex asc, max 5, truncated honesty."""
+        shared = [f"src/shared/p{i:02d}.ts" for i in range(1, 7)]
+        owns = {
+            "FOC": set(shared) | {"src/focus/only.ts"},
+            "NBR": set(shared) | {"src/nbr/only.ts"},
+        }
+        snap = self._base_snap(owns)
+        c = rd.cluster_from_snapshot(snap, "FOC")
+        focus_m = c["members"][0]
+        self.assertEqual(focus_m["code"], "FOC")
+        self.assertNotIn("path_evidence", focus_m)
+        nbr = next(m for m in c["members"] if m["code"] == "NBR")
+        pe = nbr["path_evidence"]
+        self.assertEqual(pe["items"], shared[:5])
+        self.assertTrue(pe["truncated"])
+        self.assertEqual(len(pe["items"]), 5)
+
+    def test_FSUBR_3_10_owns_coverage_on_cluster(self):
+        """FSUBR-3.10 cluster reports owns_coverage like FSUB-1.16."""
+        root = FIX / "mega-owner-100"
+        c = rd.run(root, {"kind": "cluster", "focus": "FOCUS"})
+        cov = c["owns_coverage"]
+        self.assertEqual(cov["registered"], 3)
+        self.assertEqual(cov["with_owns"], 3)
+        self.assertIs(c.get("advisory"), True)
+        self.assertEqual(c.get("schema_version"), "1.1")
+        self.assertEqual(c.get("recipe_id"), "fsubr-1.1")
+
+    def test_FSUBR_3_11_3_12_3_15_oos_dedupe_normalize_sources(self):
+        """FSUBR-3.11 FSUBR-3.12 FSUBR-3.15 OOS dedupe by normalize key; sources; no LLM."""
+        owns = {
+            "FOC": {"src/shared/x.ts"},
+            "AA": {"src/shared/x.ts"},
+            "BB": {"src/shared/x.ts"},
+        }
+        source_texts = {
+            "docs/specs/foc/requirements.md": (
+                "# Requirements\n\n## Out of Scope\n\n"
+                "- Keyboard shortcuts for switching\n"
+                "- Drag-to-reorder\n"
+            ),
+            "docs/specs/aa/requirements.md": (
+                "# Requirements\n\n## Out of Scope\n\n"
+                "-   keyboard   shortcuts   for   switching  \n"
+                "- Unique AA item\n"
+            ),
+            "docs/specs/bb/requirements.md": (
+                "# Requirements\n\n## Out of Scope\n\n"
+                "- KEYBOARD SHORTCUTS FOR SWITCHING\n"
+            ),
+        }
+        snap = self._base_snap(owns, source_texts=source_texts)
+        c = rd.cluster_from_snapshot(snap, "FOC")
+        oos = c["out_of_scope"]
+        texts = [item["text"] for item in oos]
+        self.assertIn("Keyboard shortcuts for switching", texts)
+        self.assertNotIn("KEYBOARD SHORTCUTS FOR SWITCHING", texts)
+        kb = next(i for i in oos if "shortcuts" in i["text"].casefold())
+        self.assertEqual(sorted(kb["sources"]), ["AA", "BB", "FOC"])
+        self.assertIn("Unique AA item", texts)
+        self.assertFalse(
+            hasattr(rd, "communities") and callable(getattr(rd, "communities", None))
+        )
+
+    def test_FSUBR_3_13_3_14_oos_item_cap_and_text_ceiling(self):
+        """FSUBR-3.13 FSUBR-3.14 OOS item cap + text ceiling set oos_truncated."""
+        owns = {"FOC": {"src/a.ts"}, "NBR": {"src/a.ts"}}
+        bullets = "\n".join(f"- OOS item number {i:02d} short" for i in range(8))
+        source_texts = {
+            "docs/specs/foc/requirements.md": f"## Out of Scope\n\n{bullets}\n",
+            "docs/specs/nbr/requirements.md": "## Out of Scope\n\n- nbr only\n",
+        }
+        snap = self._base_snap(owns, source_texts=source_texts)
+        c = rd.cluster_from_snapshot(snap, "FOC")
+        self.assertTrue(c["oos_truncated"])
+        self.assertLessEqual(len(c["out_of_scope"]), rd.OOS_ITEM_MAX)
+        self.assertEqual(len(c["out_of_scope"]), rd.OOS_ITEM_MAX)
+
+        huge = "X" * (rd.OOS_TEXT_CEILING - 10)
+        rest = "Y" * 50
+        source_texts2 = {
+            "docs/specs/foc/requirements.md": (
+                f"## Out of Scope\n\n- {huge}\n- {rest}\n"
+            ),
+            "docs/specs/nbr/requirements.md": "## Out of Scope\n\n",
+        }
+        snap2 = self._base_snap(owns, source_texts=source_texts2)
+        c2 = rd.cluster_from_snapshot(snap2, "FOC")
+        self.assertTrue(c2["oos_truncated"])
+        total_cp = sum(len(i["text"]) for i in c2["out_of_scope"])
+        self.assertLessEqual(total_cp, rd.OOS_TEXT_CEILING)
+        self.assertEqual(len(c2["out_of_scope"]), 1)
+        self.assertEqual(c2["out_of_scope"][0]["text"], huge)
+
+    def test_FSUBR_3_2_no_communities_api(self):
+        """FSUBR-3.2 no global communities() registry partition shipped."""
+        self.assertFalse(hasattr(rd, "communities"))
+
+    def test_FSUBR_3_cluster_pure_zero_io(self):
+        """Cluster query is pure on snapshot (zero file IO)."""
+        owns = {
+            "FOC": {"src/shared/x.ts"},
+            "NBR": {"src/shared/x.ts"},
+        }
+        source_texts = {
+            "docs/specs/foc/requirements.md": "## Out of Scope\n\n- Foo bar\n",
+            "docs/specs/nbr/requirements.md": "## Out of Scope\n\n- Baz\n",
+        }
+        snap = self._base_snap(owns, source_texts=source_texts)
+        ledger_before = list(snap["read_ledger"])
+
+        class _Boom:
+            def __getattr__(self, name):
+                raise OSError(f"IO disabled: {name}")
+
+        c = rd.cluster_from_snapshot(snap, "FOC", fs=_Boom())
+        self.assertEqual(c["members"][0]["code"], "FOC")
+        self.assertEqual(snap["read_ledger"], ledger_before)
+        env = rd.run_on_snapshot(snap, {"kind": "cluster", "focus": "FOC"}, fs=_Boom())
+        self.assertIn("members", env)
+        self.assertEqual(snap["read_ledger"], ledger_before)
+
+    def test_FSUBR_3_mega_fixture_one_path_and_order(self):
+        """Post-P1 golden: mega-owner cluster FOCUS includes SMALL/MEGA with path evidence."""
+        root = FIX / "mega-owner-100"
+        c = rd.run(root, {"kind": "cluster", "focus": "FOCUS"})
+        codes = [m["code"] for m in c["members"]]
+        self.assertEqual(codes[0], "FOCUS")
+        self.assertIn("SMALL", codes)
+        self.assertIn("MEGA", codes)
+        self.assertLess(codes.index("SMALL"), codes.index("MEGA"))
+        small = next(m for m in c["members"] if m["code"] == "SMALL")
+        self.assertEqual(small["weight"], 3)
+        self.assertFalse(small["path_evidence"]["truncated"])
+        self.assertFalse(c["members_truncated"])
+
+
 if __name__ == "__main__":
     unittest.main()

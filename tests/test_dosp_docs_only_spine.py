@@ -103,7 +103,7 @@ class DospShipAndDoctrine(unittest.TestCase):
         self.assertIn("Comment discipline", POLISH.read_text())
         # Comment house rule lives in standards SSOT after ROAD-11 migration;
         # guidelines.md is a pointer only.
-        standards = (ROOT / "docs" / "standards" / "INDEX.md").read_text()
+        standards = (REPO / "docs" / "standards" / "INDEX.md").read_text()
         self.assertIn("Comments (default zero)", standards)
         self.assertIn("docs/standards/", GUIDELINES.read_text())
 

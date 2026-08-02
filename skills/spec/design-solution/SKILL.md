@@ -22,6 +22,19 @@ current signatures, data shapes, save/load paths — returning a digest file
 (`.skills/<CODE>/scan.md (or `.skills/_pending-<slug>/scan.md` before CODE)`), not raw source. Design against the digest; pull a
 specific file into context only when a decision hinges on its exact contents.
 (No subagents? Read the surface directly, but only the parts a decision needs.)
+
+**After the scan digest and before the reuse ladder:** run a **fresh** retrieval.
+REQUIRED SUB-SKILL: use `load-subgraph` seeded with the feature **CODE**,
+requirement **terms**, and scan **candidate paths** (`neighbors` or `subgraph` as
+fits; schema 1.1). Do not reuse a stale parent package for this step — fresh means
+current SSOT. Ignore unknown `via_traces` kinds.
+
+**Grounded claims.** Overlap or reuse conclusions from retrieval MUST cite feature
+**CODE** + **edge or trace kind** + a **path or term** from the envelope. Retrieval
+is **advisory input only** — never invent `Reuse:`, `Respects:`, or `**Files:**`
+paths solely from the envelope. Empty/thin results do not invent modules; state
+`owns_coverage` and emptiness before absence claims.
+
 Record the decisions locked during discovery as a numbered list.
 Any decision that is hard to reverse AND surprising without context AND a real
 trade-off also gets an ADR (REQUIRED SUB-SKILL: `define-domain` owns the ADR
@@ -33,8 +46,8 @@ in Step 2). If a design decision must *contradict* an invariant, that is an
 ADR-or-supersede event — record the ADR, or supersede the invariant by strikethrough
 in the spine — never a silent violation. No spine? Skip this; the layer is optional.
 **Done when:** the Context and decisions section names the binding constraint,
-the alternative rejected because of it, and — where a spine exists — the
-`**ARCH-N**` invariants this feature relies on.
+the alternative rejected because of it, fresh retrieval has run, and — where a
+spine exists — the `**ARCH-N**` invariants this feature relies on.
 
 ## Step 2: Architecture — Satisfies, depth, and locality
 

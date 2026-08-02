@@ -1,6 +1,11 @@
 """FSUB-1.1 FSUB-1.2 FSUB-1.3 FSUB-1.4 FSUB-1.12 FSUB-1.15 FSUB-4.1 FSUB-4.2
 FSUB-6.1 FSUB-6.2 FSUB-6.3 FSUB-6.4 FSUB-6.5 FSUB-6.6 FSUB-7.1 FSUB-7.2
 FSUB-7.3 FSUB-7.4 FSUB-7.5 FSUB-7.6 FSUB-7.7 — skill and wiring contracts.
+
+FSUBR callers / grounded claims / package validity:
+FSUBR-4.1 FSUBR-4.2 FSUBR-4.3 FSUBR-4.4 FSUBR-5.1 FSUBR-5.2 FSUBR-5.3
+FSUBR-6.1 FSUBR-7.1 FSUBR-7.2 FSUBR-8.1 FSUBR-8.2 FSUBR-9.8 FSUBR-9.11
+FSUBR-9.12 FSUBR-9.13 FSUBR-9.14 FSUBR-9.15
 """
 
 from __future__ import annotations
@@ -16,10 +21,17 @@ ENV = ROOT / "skills" / "execution" / "load-subgraph" / "references" / "envelope
 MAP = ROOT / "skills" / "track" / "map-features" / "SKILL.md"
 FRAME = ROOT / "skills" / "discovery" / "frame-change" / "SKILL.md"
 INSPECT = ROOT / "skills" / "review" / "inspect-change" / "SKILL.md"
+CLARIFY = ROOT / "skills" / "discovery" / "clarify-decisions" / "SKILL.md"
+DESIGN = ROOT / "skills" / "spec" / "design-solution" / "SKILL.md"
 PLAN = ROOT / "skills" / "spec" / "plan-tasks" / "SKILL.md"
+ROOT_CAUSE = ROOT / "skills" / "execution" / "root-cause" / "SKILL.md"
 TEMPLATE = ROOT / "templates" / "tasks.md"
 FEATURE_GRAPH = ROOT / "docs" / "guide" / "concepts" / "feature-graph.md"
 SCENARIOS = ROOT / "tests" / "feature-subgraph" / "scenarios.md"
+PRESSURE = ROOT / "tests" / "feature-subgraph" / "scenarios-pressure.md"
+BUILD_WAVES = ROOT / "skills" / "execution" / "build-in-waves" / "SKILL.md"
+BUILD_STORY = ROOT / "skills" / "execution" / "build-by-story" / "SKILL.md"
+BUILD_INLINE = ROOT / "skills" / "execution" / "build-inline" / "SKILL.md"
 
 
 class TestLoadSubgraphSkill(unittest.TestCase):
@@ -148,6 +160,294 @@ class TestCallersAndGrammar(unittest.TestCase):
         agents = (ROOT / "AGENTS.md").read_text()
         self.assertIn("load-subgraph", agents)
         self.assertIn("map-features", agents)
+
+
+class TestFSUBRCallerSkills(unittest.TestCase):
+    """FSUBR-4.* FSUBR-5.* FSUBR-6.1 FSUBR-7.* FSUBR-8.* FSUBR-9.8/11–15 prose anchors."""
+
+    def test_FSUBR_9_8_frame_and_inspect_neighbors_schema_1_1(self):
+        """FSUBR-9.8 frame-change and inspect-change use load-subgraph schema 1.1."""
+        for path in (FRAME, INSPECT):
+            text = path.read_text()
+            self.assertIn("load-subgraph", text)
+            self.assertRegex(text, r"schema[_\s-]*version|schema 1\.1|1\.1", re.I)
+            self.assertRegex(text, r"path_evidence|term_evidence|via_traces", re.I)
+
+    def test_FSUBR_4_1_grounded_claims_code_edge_path_or_term(self):
+        """FSUBR-4.1 grounded claims cite CODE + edge/trace kind + path or term."""
+        for path in (FRAME, INSPECT, CLARIFY, DESIGN, PLAN, ROOT_CAUSE):
+            text = path.read_text()
+            self.assertRegex(
+                text,
+                re.compile(
+                    r"grounded claim|CODE.{0,80}(edge|trace).{0,80}(path|term)|"
+                    r"(path|term).{0,80}(edge|trace).{0,80}CODE|"
+                    r"feature CODE.{0,60}(edge|trace).{0,60}(path|term)",
+                    re.I | re.S,
+                ),
+                f"{path.name} must require grounded claims (CODE+edge+path/term)",
+            )
+
+    def test_FSUBR_4_2_owns_coverage_before_absence(self):
+        """FSUBR-4.2 state exact owns_coverage before absence conclusion."""
+        for path in (FRAME, INSPECT):
+            text = path.read_text()
+            self.assertIn("owns_coverage", text)
+            self.assertRegex(
+                text,
+                re.compile(
+                    r"owns_coverage.{0,120}(with_owns|registered)|"
+                    r"(with_owns|registered).{0,80}owns_coverage|"
+                    r"exact.{0,40}owns_coverage|"
+                    r"state.{0,40}owns_coverage",
+                    re.I | re.S,
+                ),
+                f"{path.name} must require stating owns_coverage before absence",
+            )
+
+    def test_FSUBR_4_3_empty_before_absence(self):
+        """FSUBR-4.3 state emptiness before absence conclusion."""
+        for path in (FRAME, INSPECT):
+            text = path.read_text()
+            self.assertRegex(
+                text,
+                re.compile(
+                    r"empt(y|iness).{0,80}(before|absence|no relevant|no overlap)|"
+                    r"state that empt|empty.{0,40}(neighbor|cluster|result)",
+                    re.I | re.S,
+                ),
+                f"{path.name} must require stating emptiness before absence",
+            )
+
+    def test_FSUBR_4_4_advisory_no_invent(self):
+        """FSUBR-4.4 advisory only — do not invent Reuse/Respects/Files/hypotheses."""
+        for path in (FRAME, INSPECT, DESIGN, PLAN, ROOT_CAUSE):
+            text = path.read_text()
+            self.assertRegex(
+                text,
+                re.compile(
+                    r"advis(ory|ory input)|not invent|SHALL NOT invent|"
+                    r"never invent",
+                    re.I,
+                ),
+                f"{path.name} must treat retrieval as advisory / no invent",
+            )
+
+    def test_FSUBR_5_1_5_2_5_3_clarify_nested_standalone_rederive(self):
+        """FSUBR-5.1–5.3 nested reuse if valid; standalone load once; rederive on change."""
+        text = CLARIFY.read_text()
+        self.assertIn("load-subgraph", text)
+        self.assertRegex(text, re.compile(r"\bnested\b", re.I))
+        self.assertRegex(text, re.compile(r"\bstandalone\b", re.I))
+        self.assertRegex(
+            text,
+            re.compile(
+                r"reuse.{0,80}(package|valid|fingerprint)|"
+                r"(package|valid|fingerprint).{0,80}reuse",
+                re.I | re.S,
+            ),
+        )
+        self.assertRegex(
+            text,
+            re.compile(
+                r"standalone.{0,120}(once|load)|load.{0,40}once.{0,80}"
+                r"(first|card|interview)",
+                re.I | re.S,
+            ),
+        )
+        self.assertRegex(
+            text,
+            re.compile(
+                r"rederive|re-derive",
+                re.I,
+            ),
+        )
+        self.assertRegex(
+            text,
+            re.compile(
+                r"(source|scope|term|path|fingerprint).{0,60}(change|differ)|"
+                r"(change|differ).{0,60}(source|scope|term|path|fingerprint)",
+                re.I | re.S,
+            ),
+        )
+
+    def test_FSUBR_6_1_design_step1_fresh_retrieval(self):
+        """FSUBR-6.1 design-solution Step 1 fresh retrieval before reuse ladder."""
+        text = DESIGN.read_text()
+        self.assertIn("load-subgraph", text)
+        # Step 1 section should mention retrieval / load-subgraph
+        step1 = re.search(
+            r"## Step 1:.*?(?=## Step 2:|\Z)",
+            text,
+            re.S | re.I,
+        )
+        self.assertIsNotNone(step1, "design-solution must have Step 1 section")
+        s1 = step1.group(0)
+        self.assertRegex(s1, re.compile(r"load-subgraph|retrieval", re.I))
+        self.assertRegex(
+            text,
+            re.compile(
+                r"fresh.{0,40}(retrieval|load-subgraph)|"
+                r"(retrieval|load-subgraph).{0,40}fresh",
+                re.I | re.S,
+            ),
+        )
+        self.assertRegex(
+            text,
+            re.compile(r"reuse ladder|before the reuse", re.I),
+        )
+
+    def test_FSUBR_7_1_7_2_plan_tasks_blast_radius_and_cluster(self):
+        """FSUBR-7.1–7.2 plan-tasks after file map: blast_radius and cluster(feature CODE)."""
+        text = PLAN.read_text()
+        self.assertIn("load-subgraph", text)
+        self.assertIn("blast_radius", text)
+        self.assertRegex(text, re.compile(r"\bcluster\b", re.I))
+        self.assertRegex(
+            text,
+            re.compile(
+                r"cluster.{0,80}(feature CODE|focus|CODE)|"
+                r"(feature CODE|focus CODE).{0,80}cluster",
+                re.I | re.S,
+            ),
+        )
+        self.assertRegex(
+            text,
+            re.compile(
+                r"(file map|Step 2).{0,200}(blast_radius|cluster|load-subgraph)|"
+                r"(blast_radius|cluster).{0,200}(file map|before writing task|task bodies)",
+                re.I | re.S,
+            ),
+        )
+
+    def test_FSUBR_8_1_8_2_root_cause_after_phase2_not_red(self):
+        """FSUBR-8.1–8.2 root-cause retrieval after Phase 2 only; never RED loop."""
+        text = ROOT_CAUSE.read_text()
+        self.assertIn("load-subgraph", text)
+        self.assertRegex(
+            text,
+            re.compile(
+                r"Phase 2.{0,120}(load-subgraph|retrieval)|"
+                r"(load-subgraph|retrieval).{0,120}Phase 2|"
+                r"after Phase 2|completed Phase 2",
+                re.I | re.S,
+            ),
+        )
+        self.assertRegex(
+            text,
+            re.compile(
+                r"(Phase 1|Phases 1|RED|red-capable).{0,100}"
+                r"(not|never|SHALL NOT|do not).{0,60}(retrieval|load-subgraph)|"
+                r"(not|never|SHALL NOT|do not).{0,60}(retrieval|load-subgraph)"
+                r".{0,100}(Phase 1|Phases 1|RED|red-capable)",
+                re.I | re.S,
+            ),
+        )
+
+    def test_FSUBR_9_12_9_13_noop_thin_advisory(self):
+        """FSUBR-9.12–9.13 no-op when no seeds/specs; thin remains advisory."""
+        text = SKILL.read_text()
+        self.assertRegex(
+            text,
+            re.compile(
+                r"no-?op|missing.{0,40}docs/specs|no usable seeds|"
+                r"SHALL NOT invent",
+                re.I,
+            ),
+        )
+        self.assertRegex(text, re.compile(r"advis(ory)|not a hard gate|NO GATE", re.I))
+
+    def test_FSUBR_9_14_package_rederive_when_fingerprints_differ(self):
+        """FSUBR-9.14 package validity: rederive when fingerprints/seeds/schema differ."""
+        texts = [SKILL.read_text(), CLARIFY.read_text()]
+        combined = "\n".join(texts)
+        self.assertRegex(combined, re.compile(r"fingerprint", re.I))
+        self.assertRegex(
+            combined,
+            re.compile(
+                r"(rederive|re-derive).{0,80}(fingerprint|seed|schema|valid)|"
+                r"(fingerprint|seed|schema).{0,80}(rederive|re-derive|invalid|differ|change)",
+                re.I | re.S,
+            ),
+        )
+
+    def test_FSUBR_9_15_no_disk_cache(self):
+        """FSUBR-9.15 no on-disk session retrieval cache."""
+        text = SKILL.read_text()
+        self.assertRegex(
+            text,
+            re.compile(
+                r"no (on-?disk|session-local|disk).{0,40}cache|"
+                r"not.{0,20}(cache|write).{0,40}(disk|session)|"
+                r"no.{0,20}disk cache",
+                re.I,
+            ),
+        )
+
+    def test_FSUBR_1_10_ignore_unknown_via_traces_kinds(self):
+        """FSUBR-1.10 / callers: ignore unknown via_traces kinds."""
+        texts = [SKILL.read_text(), ENV.read_text(), FRAME.read_text(), INSPECT.read_text()]
+        hit = any(
+            re.search(r"ignore unknown.{0,40}via_traces|unknown.{0,40}via_traces.{0,40}kind", t, re.I)
+            for t in texts
+        )
+        self.assertTrue(
+            hit,
+            "load-subgraph skill or callers must say ignore unknown via_traces kinds",
+        )
+        # SKILL itself must state it for consumers
+        self.assertRegex(
+            SKILL.read_text(),
+            re.compile(r"ignore unknown|unknown.{0,30}via_traces", re.I),
+        )
+
+    def test_FSUBR_load_subgraph_names_cluster_and_schema_1_1(self):
+        """load-subgraph skill names cluster query and schema 1.1."""
+        text = SKILL.read_text()
+        self.assertIn("cluster", text)
+        self.assertRegex(text, re.compile(r"schema_version|schema 1\.1|\"1\.1\"", re.I))
+
+    def test_FSUBR_9_11_build_family_not_required_callers(self):
+        """FSUBR-9.11 build-family skills are not required retrieval callers."""
+        for path in (BUILD_WAVES, BUILD_STORY, BUILD_INLINE):
+            if not path.is_file():
+                continue
+            text = path.read_text()
+            # Must not require load-subgraph as a mandatory caller step
+            self.assertNotRegex(
+                text,
+                re.compile(
+                    r"REQUIRED SUB-SKILL:\s*use `load-subgraph`",
+                    re.I,
+                ),
+                f"{path.name} must not be a required load-subgraph caller",
+            )
+
+    def test_FSUBR_caller_ids_in_scenarios(self):
+        """FSUBR-4..8 and 9.8/11–15 tokens appear in scenarios index."""
+        scenarios = SCENARIOS.read_text()
+        ids = [
+            "FSUBR-4.1",
+            "FSUBR-4.2",
+            "FSUBR-4.3",
+            "FSUBR-4.4",
+            "FSUBR-5.1",
+            "FSUBR-5.2",
+            "FSUBR-5.3",
+            "FSUBR-6.1",
+            "FSUBR-7.1",
+            "FSUBR-7.2",
+            "FSUBR-8.1",
+            "FSUBR-8.2",
+            "FSUBR-9.8",
+            "FSUBR-9.11",
+            "FSUBR-9.12",
+            "FSUBR-9.13",
+            "FSUBR-9.14",
+            "FSUBR-9.15",
+        ]
+        missing = [i for i in ids if i not in scenarios]
+        self.assertEqual(missing, [], f"missing from scenarios: {missing}")
 
 
 if __name__ == "__main__":

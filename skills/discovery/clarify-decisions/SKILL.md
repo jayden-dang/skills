@@ -49,6 +49,23 @@ Load parent Knowns inventory, Blindspot list, and scan digest when present (e.g.
 
 Invite a correction only if the map is wrong ("stop me if a lock is false"). Then the first card. Nested under a parent that already stated this map: skip the restate and go to the first card.
 
+## Retrieval package (feature work)
+
+When this interview is about **feature** work (neighbors, overlap, reuse), hold a
+`load-subgraph` **retrieval package** (envelope + seeds + fingerprints +
+schema/recipe) for Territory and grounded claims:
+
+| Mode | Rule |
+|---|---|
+| **Nested** under a parent that already produced a package | **Reuse** that package if it remains valid (same seeds, source fingerprints sha256+present, schema/recipe). If invalid or missing → **rederive** via REQUIRED SUB-SKILL: use `load-subgraph`. |
+| **Standalone** (no parent package) | Load retrieval **once** before the first interview card (REQUIRED SUB-SKILL: use `load-subgraph` with terms/paths/CODE seeds). |
+| **In progress** | If any derivation source input changes, or material **scope / terms / paths** change, or fingerprints **differ** → **rederive**. Do not re-run every card when the package is still valid. |
+
+No on-disk session cache. Empty/thin results are advisory; do not invent neighbors.
+**Grounded claims:** every overlap, reuse-miss, or Out-of-Scope conclusion from
+retrieval MUST cite feature **CODE** + **edge or trace kind** + a **path or term**
+from the envelope. Ignore unknown `via_traces` kinds.
+
 ## Question card (every turn)
 
 Exactly **one** decision per message. Emit this shape in ordinary chat — not a tool call. Every slot is **required**; thinning under time pressure is a channel violation.
@@ -164,6 +181,8 @@ Standalone: a **living** open-set list of decision areas is fine — still one c
 | "Senior said switch cleanly into clarify-decisions and park the parent" | Nesting *is* the clean switch. Parking the parent and opening a clarify-decisions checklist is dual-channel thrash. |
 | "A short decision checklist under clarify-decisions isn't a competing list" | It is a second list. Decision areas live as the parent's in-progress interview item. |
 | "Announce Using clarify-decisions so the user sees the write-handoff" | Nested: no mode-switch announcement. Standalone (no parent): you may name clarify-decisions once. |
+| "Parent already loaded neighbors — re-run every card for freshness" | Reuse the valid package; rederive only when fingerprints/seeds/scope change |
+| "Standalone interview — skip load-subgraph, Territory is enough" | Feature work: load once before the first card |
 
 ## Red flags — stop and rewrite the turn
 
@@ -177,3 +196,5 @@ Standalone: a **living** open-set list of decision areas is fine — still one c
 - Handing back to the parent or starting requirements without an explicit yes on the package
 - Route Tasking the user for a fact present in the repo or the parent's scan digest
 - Abstract taste cards for an unknown-known when a reference or run-spike path exists
+- Nested re-derive every card while the parent package fingerprints still match
+- Standalone feature interview with no retrieval before the first card

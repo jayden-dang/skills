@@ -63,6 +63,25 @@ BEFORE writing tasks. A file not in the map should not be touched by any task.
 **Done when:** every file the plan will create or modify appears in the map
 with a one-line responsibility.
 
+## Step 2b: Retrieval after the file map
+
+After Step 2's map is complete and **before writing task bodies** (Step 3), run
+retrieval **once** over the complete candidate path set:
+
+1. REQUIRED SUB-SKILL: use `load-subgraph` query **`blast_radius`** on the mapped
+   paths (blast-radius context for neighboring ownership).
+2. REQUIRED SUB-SKILL: use `load-subgraph` query **`cluster`** with the feature
+   **CODE** as the single focus (`cluster(feature CODE)`).
+
+Hold the retrieval package for grounded claims while authoring Files/Reuse.
+**Grounded claims:** ownership or reuse conclusions MUST cite feature **CODE** +
+**edge or trace kind** + a **path or term**. Results are **advisory** — never invent
+`Reuse:`, `Respects:`, or `**Files:**` paths solely from the envelope. Ignore
+unknown `via_traces` kinds. Empty/thin is not a plan gate.
+
+**Done when:** blast_radius and cluster(feature CODE) have run once (or explicit
+no-op if `docs/specs/` / seeds missing).
+
 ## Step 3: Tasks as vertical slices
 
 **Contract — a task is a vertical slice:** the smallest unit that carries its own

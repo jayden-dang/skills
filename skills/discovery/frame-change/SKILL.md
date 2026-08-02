@@ -60,12 +60,25 @@ The scan digest (or your direct read) MUST include a **Blindspot** section: terr
 Then check whether the idea already exists. REQUIRED SUB-SKILL: use `load-subgraph`
 with the idea's **key terms** and any scan **candidate paths** (query `subgraph` or
 `neighbors` as fits) so P0 term seeds and P1 path-derived structure both contribute.
-Present each neighbor as a summary **card** (feature code, owned paths, Out-of-Scope)
-and surface the envelope's **OWNS coverage** so a thin neighborhood is visible as thin.
-This never blocks the gate: if nothing overlaps, say so and move on; if `docs/specs/`
-does not exist yet, note it and continue with manual exploration.
+Present each neighbor as a summary **card** using **schema 1.1** fields: feature CODE,
+`shared_paths`, `via`, `path_evidence`, `term_evidence`, `via_traces`, owned paths,
+Out-of-Scope. Surface **`owns_coverage`** (`with_owns`, `registered`, ratio) so a
+thin neighborhood is visible as thin. Ignore unknown future `via_traces` kinds;
+keep consuming core fields.
+
+**Grounded claims.** Every overlap, reuse-miss, or Out-of-Scope / "already declined"
+conclusion drawn from retrieval MUST cite feature **CODE** + **edge or trace kind**
++ a **path or term** from the envelope. Before concluding that no relevant feature
+exists: if `with_owns < registered`, state the **exact** `owns_coverage` values
+first; if the neighbor result is empty, **state that emptiness** first. Retrieval is
+**advisory input only** — never invent `Reuse:`, `Respects:`, `**Files:**` paths, or
+root-cause hypotheses from the envelope alone. Empty or thin neighbors never block
+the gate. If `docs/specs/` is missing or seeds are unusable, treat as explicit no-op
+and continue with manual exploration (do not invent neighbors). Hold the result as a
+**retrieval package** (envelope + seeds + fingerprints + schema/recipe) for nested
+`clarify-decisions` reuse when still valid.
 *Done when: neighbor cards plus OWNS coverage are stated, or an explicit "no overlap"
-(or no specs) is stated.*
+(or no specs) with emptiness/coverage stated as required.*
 
 **Knowns inventory (REQUIRED before step 2).** Write four short bullets the rest of
 the chain can reuse (chat is fine; optional `.skills/<CODE>/knowns.md (or `.skills/_pending-<slug>/knowns.md` before CODE)`):

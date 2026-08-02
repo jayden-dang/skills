@@ -44,11 +44,21 @@ On top of the repo's own documents, the Standards axis always carries `standards
 For the diff's changed source files (from the range pinned in step 1), REQUIRED
 SUB-SKILL: use `load-subgraph` with those paths and optional key terms from the
 diff/PR summary so P0 and P1 both contribute. Hold each neighbor as a summary
-card (feature code, owned paths, Out-of-Scope) and surface **OWNS coverage**.
-This never blocks the review: if no neighbor returns, state that no existing
-feature shares the diff's surface and inject nothing into step 4; if
-`docs/specs/` does not exist, note it and continue. *Done when: you hold the
-overlapping features' cards, or an explicit "no overlap".*
+card using **schema 1.1** fields: feature CODE, `shared_paths`, `via`,
+`path_evidence`, `term_evidence`, `via_traces`, owned paths, Out-of-Scope.
+Surface **`owns_coverage`** (`with_owns`, `registered`, ratio). Ignore unknown
+future `via_traces` kinds.
+
+**Grounded claims.** Overlap or reuse-miss findings from retrieval MUST cite
+feature **CODE** + **edge or trace kind** + a **path or term** from the envelope.
+Before concluding that no relevant feature exists: if `with_owns < registered`,
+state the **exact** `owns_coverage` values first; if the neighbor result is empty,
+**state that emptiness** first. Results are **advisory** — never invent
+`Reuse:`, `Respects:`, or `**Files:**` paths from the envelope alone; never fail
+the review solely because neighbors are empty or thin. If `docs/specs/` is missing
+or seeds are unusable, explicit no-op and continue (do not invent neighbors).
+*Done when: you hold the overlapping features' cards, or an explicit "no overlap"
+with emptiness/coverage stated as required.*
 
 ## 3b. Invariant conformance (advisory)
 

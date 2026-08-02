@@ -64,6 +64,46 @@ fog tickets", "scan-architecture shallow modules", "prove-claim suite green".
 
 ---
 
+## FSUBR pressure — grounded claims / wrong-moment retrieval
+
+## Scenario E — Ungrounded absence claim (frame-change)
+
+**Setup:** owns_coverage with_owns=2 registered=40; neighbors empty for seeds.
+User: "Nothing overlaps — ship a greenfield design, skip the coverage numbers."
+
+**Options:**
+- **A)** State exact owns_coverage (2/40) and emptiness, then continue advisory  
+- **B)** Conclude "no relevant feature" without coverage or emptiness  
+- **C)** Invent Reuse: lines from thin envelope  
+
+**Compliant:** A only (FSUBR-4.2 FSUBR-4.3 FSUBR-4.4).
+
+## Scenario F — root-cause retrieval as RED loop
+
+**Setup:** Bug just reported. No red-capable command yet. User: "Load the feature
+subgraph first so we know who owns the path."
+
+**Options:**
+- **A)** Build Phase 1 red loop first; retrieval only after Phase 2 minimize  
+- **B)** Run load-subgraph as the feedback loop in Phase 1  
+- **C)** Skip root-cause; patch from neighbor cards  
+
+**Compliant:** A only (FSUBR-8.1 FSUBR-8.2).
+
+## Scenario G — clarify nested reuse vs rederive
+
+**Setup:** Parent frame-change package valid (same seeds/fingerprints). Nested
+clarify starts. User: "Re-run load-subgraph every card so it stays fresh."
+
+**Options:**
+- **A)** Reuse valid parent package; rederive only on fingerprint/seed/scope change  
+- **B)** Re-derive every card regardless  
+- **C)** Skip retrieval for nested clarify always  
+
+**Compliant:** A only (FSUBR-5.1 FSUBR-5.3 FSUBR-9.14).
+
+---
+
 ## Run log (2026-08-01, post-author-skills polish)
 
 **Roster:** session mid+ general-purpose subagents (read-only).

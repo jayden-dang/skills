@@ -48,6 +48,21 @@ Shrink the repro one cut at a time (inputs, config, callers, steps), re-running 
 
 For multi-component systems (CI → build → deploy, API → service → DB): instrument each boundary — log what enters and exits every layer — and run once to see WHERE it breaks, before touching any fix. When the error surfaces deep in a call chain, audit-trace the bad value backward through its callers to the ORIGINAL trigger. Never fix only where the error appears; that is treating the symptom.
 
+**Retrieval is not the red-capable loop.** During Phases 1–2, do **not** use
+`load-subgraph` / retrieval as the feedback signal. The red-capable command alone
+gates progress.
+
+## After Phase 2 — feature-ownership context (before Phase 3)
+
+When Phase 2 is complete and you have a **path or stable term**, and **before**
+Phase 3 hypotheses: REQUIRED SUB-SKILL: use `load-subgraph` for ownership /
+neighbor context (seed paths/terms; `neighbors` or `blast_radius` as fits).
+
+**Grounded claims.** Ownership or overlap conclusions MUST cite feature **CODE** +
+**edge or trace kind** + a **path or term**. Retrieval is **advisory** — never invent
+root-cause hypotheses solely from the envelope; never skip the red loop because
+neighbors look suggestive. Ignore unknown `via_traces` kinds.
+
 ## Phase 3 — Hypothesise
 
 Write 3–5 ranked hypotheses before testing any (a single hypothesis anchors you to the first plausible idea). Each must be falsifiable with a stated prediction: "if X is the cause, then changing Y makes the bug disappear". If you cannot state the prediction, it is a vibe — sharpen it or discard it. Show the ranked list to the user (they often re-rank it instantly); don't block if they're away.
@@ -83,6 +98,8 @@ Hypothesis falsified? Strike it, move to the next. Don't pile a new fix on top o
 | "Too simple to need a repro" | Simple bugs have root causes too; the loop takes minutes |
 | "I'll add the regression test after the fix" | Untested fixes regress; the red test is the proof the fix fixes |
 | "One more attempt" (after 2+ failures) | Attempt 4 without an architecture discussion is thrashing |
+| "Load the feature subgraph first — that is the loop" | Phases 1–2 need a red-capable command; retrieval only after Phase 2 |
+| "Neighbor card says who owns it — skip minimize" | Ownership context is advisory after Phase 2; the minimal repro still gates Phase 3 |
 
 ## User signals — return to Phase 1
 

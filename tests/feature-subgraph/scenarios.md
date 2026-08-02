@@ -34,6 +34,20 @@ Path/term-grounded neighbors: FSUBR-1.1 FSUBR-1.2 FSUBR-1.3 FSUBR-1.4 FSUBR-1.5 
 
 Query-local cluster digest: FSUBR-3.1 FSUBR-3.2 FSUBR-3.3 FSUBR-3.4 FSUBR-3.5 FSUBR-3.6 FSUBR-3.7 FSUBR-3.8 FSUBR-3.9 FSUBR-3.10 FSUBR-3.11 FSUBR-3.12 FSUBR-3.13 FSUBR-3.14 FSUBR-3.15
 
+## FSUBR Wave A — callers + grounded claims (Task 5)
+
+Grounded claims protocol: FSUBR-4.1 FSUBR-4.2 FSUBR-4.3 FSUBR-4.4
+
+clarify-decisions nested/standalone package: FSUBR-5.1 FSUBR-5.2 FSUBR-5.3
+
+design-solution Step 1 fresh retrieval: FSUBR-6.1
+
+plan-tasks blast_radius + cluster(feature CODE): FSUBR-7.1 FSUBR-7.2
+
+root-cause after Phase 2 only (never RED loop): FSUBR-8.1 FSUBR-8.2
+
+frame/inspect schema 1.1 + package/no-cache guards: FSUBR-9.8 FSUBR-9.11 FSUBR-9.12 FSUBR-9.13 FSUBR-9.14 FSUBR-9.15
+
 ## FSUB-1.2 skill-path dual-run
 
 Two independent load-subgraph runs against the same frozen fixture (following passes.md only) MUST yield the same edge set and seed set. reference_derive is the oracle for expected math; the skill MUST NOT import it.

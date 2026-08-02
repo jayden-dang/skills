@@ -1,6 +1,6 @@
 # AGENTS.md — Agent Behavior Constitution
 
-> **A-to-Z Agentic Development Skill Set** | 56 skills across 11 categories |
+> **A-to-Z Agentic Development Skill Set** | 57 skills across 11 categories |
 > `jayden-dang/skills` | v0.4.0-pre.0
 
 This file is the single source of truth for agent behavior when working with this
@@ -79,7 +79,7 @@ skill's workflow only when the user has explicitly told you to.
 
 **User-invoked skills** (carry `disable-model-invocation: true` in frontmatter):
 `ask-me-bro`, `author-skills`, `teach-pack`, `configure-repo`, `bootstrap-repo`,
-`define-project`, `assess-pivot-impact`, `triage`, `scan-architecture`, `map-features`,
+`define-project`, `define-system-doc`, `assess-pivot-impact`, `triage`, `scan-architecture`, `map-features`,
 `write-handoff`, `publish-issues`, `cut-release`, `interpret-session`, `study-change`,
 `brief-team`, `select-review-sample`, `refresh-roadmap-status`, `assess-milestone`,
 `pathfind`, and Personal OS `setup-personal-os`.
@@ -344,7 +344,7 @@ Can't tick a box? The work is not done.
 | **craft** | `craft-page` (m) |
 | **ship** | `package-change` (m), `land-branch` (m), `record-verdict` (m), `cut-release` (U) |
 | **track** | `amend-feature` (m), `reroute-plan` (m), `triage` (U), `realign-spec` (m), `refresh-roadmap-status` (U), `assess-milestone` (U), `scan-architecture` (U), `map-features` (U), `write-handoff` (U), `publish-issues` (U) |
-| **project** | `define-project` (U), `assess-pivot-impact` (U), `plan-milestones` (m) |
+| **project** | `define-project` (U), `define-system-doc` (U), `assess-pivot-impact` (U), `plan-milestones` (m) |
 
 **Execute family (pick one after approved `tasks.md`):**
 

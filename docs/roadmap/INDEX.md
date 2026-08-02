@@ -1,7 +1,7 @@
 # Roadmap: Skills
 
-Status: Draft
-Date: 2026-07-29
+Status: Approved
+Date: 2026-08-02
 
 <!--
 The program layer: milestone INTENT, above any single feature and below the product
@@ -44,8 +44,28 @@ ID rules:
 
 | ID | Milestone | Outcome | Depends-on | Commitment |
 |---|---|---|---|---|
+| MILE-3 | System documentation model | An adopter can discover, author, and have skills consult optional Hybrid 1A system docs (product, architecture, codebase, security, standards, ops) without empty-forest setup, invented standing facts, or fake skill readers | none | Planned |
 | MILE-1 | Reviewable delivery | A multi-person team can review skill-set changes as risk-aware, story-sized PRs whose commits and PR description explain the change on their own | none | Planned |
 | MILE-2 | Faithful history | A reviewer reads a history and an explainer that match how the work will actually integrate, whatever branch it targets and however messily it was committed | MILE-1 | Planned |
+
+## MILE-3 — System documentation model
+
+**Outcome:** An adopter can discover, author, and have skills consult optional Hybrid 1A system docs (product, architecture, codebase, security, standards, ops) without empty-forest setup, invented standing facts, or fake skill readers — and every Hybrid 1A catalog row is First-class before this milestone is complete.
+**Goals:** GOAL-1, GOAL-2, GOAL-3, GOAL-4, GOAL-5
+**Members:**
+- **ROAD-7** system-docs-core-codebase-map — Surfaces: `skills/project/define-system-doc/SKILL.md`, `skills/project/define-system-doc/catalog/CATALOG.md`, `skills/project/define-system-doc/catalog/entries/codebase/map.md`, `skills/project/define-system-doc/templates/codebase/map.md`, `skills/project/define-system-doc/validators/codebase/map.md`, `templates/skills-ephemera-paths.md`, `docs/guide/concepts/system-docs.md`, `docs/architecture/artifacts.md`, `skills/spec/plan-tasks/SKILL.md`, `AGENTS.md`, pack tests under `tests/` for catalog/guide sync and codebase/map workflow contracts; packaging baseline for skill-local resources vs documented root-templates fallback
+- **ROAD-8** system-docs-codebase-navigation — Surfaces: `skills/project/define-system-doc/catalog/entries/codebase/modules.md`, `skills/project/define-system-doc/catalog/entries/codebase/ownership.md`, `skills/project/define-system-doc/catalog/entries/codebase/dependencies.md`, `skills/project/define-system-doc/templates/codebase/`, `skills/project/define-system-doc/validators/codebase/`, `skills/spec/design-solution/SKILL.md`, `skills/spec/plan-tasks/SKILL.md`, `skills/review/inspect-change/SKILL.md`, pack tests under `tests/`
+- **ROAD-9** system-docs-product-context — Surfaces: `skills/project/define-project/SKILL.md`, `skills/project/define-system-doc/catalog/entries/product/personas.md`, `skills/project/define-system-doc/catalog/entries/product/metrics.md`, `skills/project/define-system-doc/catalog/entries/product/principles.md`, `skills/project/define-system-doc/templates/product/`, `skills/project/define-system-doc/validators/product/`, `skills/discovery/frame-change/SKILL.md`, `skills/acceptance/validate-feature/SKILL.md`, `docs/guide/concepts/system-docs.md`, pack tests under `tests/`
+- **ROAD-10** system-docs-architecture-shape — Surfaces: `skills/project/define-project/SKILL.md`, `skills/project/define-system-doc/catalog/entries/architecture/system.md`, `skills/project/define-system-doc/catalog/entries/architecture/data.md`, `skills/project/define-system-doc/catalog/entries/architecture/integrations.md`, `skills/project/define-system-doc/catalog/entries/architecture/runtime.md`, `skills/project/define-system-doc/templates/architecture/`, `skills/project/define-system-doc/validators/architecture/`, `skills/spec/design-solution/SKILL.md`, `docs/architecture/INDEX.md` (spine ownership remains define-project), pack tests under `tests/`
+- **ROAD-11** system-docs-standards-core — Surfaces: `skills/project/define-system-doc/catalog/entries/standards/INDEX.md`, `skills/project/define-system-doc/catalog/entries/standards/testing.md`, `skills/project/define-system-doc/catalog/entries/standards/errors-logging.md`, `skills/project/define-system-doc/templates/standards/`, `skills/project/define-system-doc/validators/standards/`, `skills/project/define-project/SKILL.md` (guidelines migration: legacy fallback only until migrated; pointer only afterward; never a parallel SSOT with `docs/standards/`), `skills/spec/plan-tasks/SKILL.md`, `skills/execution/test-first/SKILL.md`, `skills/review/inspect-change/SKILL.md`, pack tests under `tests/`
+- **ROAD-12** system-docs-surface-standards — Surfaces: `skills/project/define-system-doc/catalog/entries/standards/api.md`, `skills/project/define-system-doc/catalog/entries/standards/ui.md`, `skills/project/define-system-doc/catalog/entries/standards/accessibility.md`, `skills/project/define-system-doc/catalog/entries/standards/security-coding.md`, `skills/project/define-system-doc/catalog/entries/standards/observability.md`, `skills/project/define-system-doc/templates/standards/`, `skills/project/define-system-doc/validators/standards/`, `skills/spec/design-solution/SKILL.md`, `skills/spec/plan-tasks/SKILL.md`, `skills/acceptance/validate-api/SKILL.md`, `skills/acceptance/validate-ui/SKILL.md`, `skills/review/inspect-change/SKILL.md`, pack tests under `tests/`
+- **ROAD-13** system-docs-security-trace — Surfaces: `skills/project/define-system-doc/catalog/entries/security/threat-model.md`, `skills/project/define-system-doc/catalog/entries/security/posture.md`, `skills/project/define-system-doc/catalog/entries/security/compliance.md`, `skills/project/define-system-doc/templates/security/`, `skills/project/define-system-doc/validators/security/`, `skills/spec/design-solution/SKILL.md`, `skills/execution/audit-trace/SKILL.md`, pack tests under `tests/` for `TB-N`/`THR-N`/`CMP-N` definition extraction and `Security:` citation integrity
+- **ROAD-14** system-docs-operations-reliability — Surfaces: `skills/project/define-system-doc/catalog/entries/ops/deployment.md`, `skills/project/define-system-doc/catalog/entries/ops/reliability.md`, `skills/project/define-system-doc/catalog/entries/ops/observability.md`, `skills/project/define-system-doc/catalog/entries/ops/disaster-recovery.md`, `skills/project/define-system-doc/catalog/entries/ops/runbooks.md`, `skills/project/define-system-doc/templates/ops/`, `skills/project/define-system-doc/validators/ops/`, `skills/execution/root-cause/SKILL.md`, `skills/ship/cut-release/SKILL.md`, `skills/execution/audit-trace/SKILL.md`, pack tests under `tests/` for `SLO-N` definition extraction and `Reliability:` citation integrity
+**Depends-on:** none
+**Commitment:** Planned
+**Closed:** None
+**Deferred:** None
+**Blockers:** ROAD-7 must investigate the observed flat-install root-templates fallback gap (skill-local siblings present; documented root templates path not reachable); repair in ROAD-7 if small and in-scope, otherwise replan. Existing-artifact First-class baseline defects discovered during ROAD-7 are replanned explicitly, not pre-invented as repair items. Milestone completion criteria (full Hybrid 1A First-class coverage, real-reader verification, catalog/guide sync, clean system-ID audits) are verified through `/assess-milestone`, not a separate audit-only ROAD.
 
 ## MILE-1 — Reviewable delivery
 

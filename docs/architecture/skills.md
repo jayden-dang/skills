@@ -180,6 +180,10 @@ quick reference: `AGENTS.md`.
     maintains `docs/product/vision.md`, this `docs/architecture/` tree, and
     `docs/product/guidelines.md` (create/update/validate modes). Consulted by
     `frame-change`, `design-solution`, `plan-tasks`, `build-in-waves`, and `inspect-change`;
+39a. **define-system-doc** (U) — one Hybrid 1A system-doc artifact per invocation
+    (`/define-system-doc <entry-key>`); pack-local catalog under the skill directory;
+    Codebase Map (`codebase/map`) is the first First-class entry; ephemera under
+    `.skills/system-docs/`. Never auto-invoked (ARCH-5).
     entirely optional — absent, the feature workflow is unchanged.
 39a. **assess-pivot-impact** (U) — disposition ledger when a product pivot puts shipped
     code at odds with a new vision or architecture. Writes

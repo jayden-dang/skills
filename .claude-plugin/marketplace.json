@@ -64,6 +64,7 @@
         "./skills/setup/bootstrap-repo",
         "./skills/setup/configure-repo",
         "./skills/project/define-project",
+        "./skills/project/define-system-doc",
         "./skills/project/assess-pivot-impact",
         "./skills/project/plan-milestones",
         "./skills/meta/ask-me-bro",
@@ -98,7 +99,8 @@
         "./skills/personal/review-week",
         "./skills/personal/review-quarter",
         "./skills/personal/replan",
-        "./skills/personal/life-charter"
+        "./skills/personal/life-charter",
+        "./skills/project/define-system-doc"
       ]
     }
   ]

@@ -24,10 +24,18 @@ docs/agents/           # per-repo config written by configure-repo:
   triage-labels.md     #   canonical role → label mapping
 .out-of-scope/         # rejection knowledge base (one file per concept)
 .skills/               # git-ignored: feature ephemera under .skills/<CODE>/;
-                       #   shared pathfind/, research/, decisions/, pr-packages/
+                       #   shared pathfind/, research/, decisions/, pr-packages/,
+                       #   system-docs/ (define-system-doc digests)
   decisions/           #   boundary decision records (DEC-*.md) + adoption anchor
   research/            #   cited research notes (<date>-<topic>.md)
+docs/codebase/map.md   # optional Codebase Map (Approved + structural validator)
 ```
+
+Optional Hybrid 1A system docs (vision, architecture shape, codebase map, security,
+standards, ops, …) are catalogued in the pack under
+`skills/project/define-system-doc/catalog/` — see the human guide
+[`docs/guide/concepts/system-docs.md`](../guide/concepts/system-docs.md). Do **not**
+restate catalog rows here; the pack catalog is the SSOT for entry keys and maturity.
 
 Everything under `.skills/` is **local to one working copy**: git-ignored, so it
 does not survive a clone and is invisible to CI and to every other contributor.

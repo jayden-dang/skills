@@ -60,6 +60,43 @@ file rather than paraphrased.
 Map every file the plan creates or modifies, with one-line responsibilities,
 BEFORE writing tasks. A file not in the map should not be touched by any task.
 
+### Codebase Map consult (optional system-doc)
+
+**Applicability:** this step is writing or revising File Structure / path placement
+for production paths.
+
+**Hard constraints (outrank any Codebase Map):**
+
+1. Approved feature `requirements.md` / `design.md` for the plan under construction
+2. Live `ARCH-N` invariants in Global Constraints
+3. Standing project constraints already sourced (`docs/product/guidelines.md` or
+   `docs/agents/project.md` fallback, and other standing config this skill reads)
+
+**Authority (`docs/codebase/map.md`):**
+
+- **Absent** — no file
+- **Non-authoritative** — file present but `Status` is not `Approved`, or the
+  structural validator in `skills/project/define-system-doc/validators/codebase/map.md`
+  fails (including external Draft)
+- **Approved** — `Status: Approved` and structural validator pass
+
+**When Approved:** extract layout + placement rules; align the File Structure map
+**within** hard constraints; note that the Codebase Map was consulted.
+
+**When absent or non-authoritative:** CONTINUE without failing the skill solely for
+map absence (no-op consult). IF placement of new or changed production paths is
+materially uncertain THEN suggest **at most once per plan-tasks run** the exact
+action `/define-system-doc codebase/map` and explain why the map would help now.
+Suppress further suggestions for that entry for the rest of the run after decline.
+Persist defer only if the user supplies an explicit condition. **NEVER** auto-invoke
+`define-system-doc` (user-invoked; ARCH-5).
+
+**Placement conflict:** IF an Approved map rule conflicts with a hard constraint
+THEN surface the conflict (name hard constraint + map rule), **preserve the hard
+constraint** in File Structure, suggest `/define-system-doc codebase/map` to update
+the map (counts toward the once-per-run budget when emitted), and never silently
+follow the map over the hard constraint or silently ignore a detected conflict.
+
 **Done when:** every file the plan will create or modify appears in the map
 with a one-line responsibility.
 

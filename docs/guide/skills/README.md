@@ -1,6 +1,6 @@
 # Skill reference
 
-~56 skills in eleven buckets (engineering package). Each should have its own page
+~57 skills in eleven buckets (engineering package). Each should have its own page
 where present; see also [`AGENTS.md` §11](../../../AGENTS.md#11-quick-reference-the-56-skills)
 and [Start here](../START-HERE.md).
 
@@ -132,6 +132,7 @@ The optional documentation layer above the feature workflow. Absent by default.
 | Skill | Invocation | What it does |
 |---|---|---|
 | [`define-project`](define-project.md) | `/define-project` | Authors and maintains the optional project layer — product vision, IDed architecture-invariant spine, and engineering guidelines |
+| [`define-system-doc`](../concepts/system-docs.md) | `/define-system-doc` | One Hybrid 1A system-doc artifact per run (e.g. Codebase Map); pack catalog under the skill |
 | [`assess-pivot-impact`](assess-pivot-impact.md) | `/assess-pivot-impact` | Disposition ledger when a product pivot puts shipped code at odds with a new vision or architecture — before vision rewrites |
 | [`plan-milestones`](plan-milestones.md) | model-invocable | Authors and maintains `docs/roadmap/INDEX.md` — `MILE-N` milestones and `ROAD-N` items, intent only, progress never stored |
 

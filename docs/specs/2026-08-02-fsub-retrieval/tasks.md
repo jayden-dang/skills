@@ -7,7 +7,7 @@
 > for tracking.
 
 Feature code: FSUBR
-Status: Approved
+Status: Implemented
 Date: 2026-08-02
 Execution-mode: continuous
 Requirements: ./requirements.md

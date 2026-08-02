@@ -1,7 +1,7 @@
 # Design: Feature-subgraph retrieval upgrade (Wave A)
 
 Feature code: FSUBR
-Status: Approved
+Status: Implemented
 Date: 2026-08-02
 Approved: 2026-08-02 (user)
 Requirements: ./requirements.md
@@ -191,8 +191,9 @@ For each raw candidate with its provenance:
      - single-segment **well-known root basename** (**no `.` characters** in the
        token): exact set  
        `{Makefile, Dockerfile, LICENSE, COPYING, NOTICE, AUTHORS, CONTRIBUTING,
-       CHANGELOG, HISTORY, Gemfile, Rakefile, Procfile, Vagrantfile}`  
-       (case-sensitive as written in token after normalize).
+       CHANGELOG, HISTORY, Rakefile, Procfile, Vagrantfile}`  
+       (case-sensitive as written in token after normalize). **Not** `Gemfile` —
+       denoise basenames own that token (would always be stripped after accept).
 5. **Denoise** (existing FSUB stop-lists).
 6. Else **drop**.
 
@@ -235,10 +236,9 @@ use real paths).
 
 #### Malformed block (FSUBR-10.3)
 
-Skip block with `p1_block_skipped` when:
-
-1. Fence depth ≠ 0 at stop boundary, or  
-2. Files header not followed by newline (truncated header).
+Skip block with `p1_block_skipped` when fence depth ≠ 0 at the stop boundary
+(`detail: unclosed_fence`). Whole-line Files headers with no body (EOF after the
+header line) yield an empty body — **not** a separate `truncated_header` note.
 
 **Fixture recovery (recommended freeze):** malformed block is the **last** Files
 block in the file. Valid siblings **before** it remain outside the unclosed fence.

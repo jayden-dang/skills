@@ -93,7 +93,7 @@ Run in this order; all must pass before any completion claim.
 | Check | Command |
 |---|---|
 | Typecheck | *(none)* |
-| Lint | `python3 scripts/lint-skill-frontmatter.py && python3 scripts/lint-handoffs.py && python3 scripts/lint-context7.py` |
+| Lint | `python3 scripts/lint-skill-frontmatter.py && python3 scripts/lint-write-handoffs.py && python3 scripts/lint-context7.py` |
 | Unit tests | `python3 -m unittest discover -s tests` |
 | E2E / smoke | *(none)* |
 

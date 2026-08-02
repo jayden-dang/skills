@@ -77,10 +77,6 @@ ROAD_RE = re.compile(r"\bROAD-\d+\b")
 MILE_RE = re.compile(r"\bMILE-\d+\b")
 GOAL_RE = re.compile(r"\bGOAL-\d+\b")
 ARCH_RE = re.compile(r"\bARCH-\d+\b")
-# path-like tokens: has a slash or a file extension
-PATH_TOKEN_RE = re.compile(
-    r"`?([A-Za-z0-9_./@+-]+(?:\.[A-Za-z0-9]+)?)`?"
-)
 BULLET_FILE_RE = re.compile(
     r"^\s*[-*]\s*(?:Create|Modify|Move|Test)\s*:\s*(.+?)\s*$",
     re.I | re.M,
@@ -90,11 +86,6 @@ BACKTICK_TOKEN_RE = re.compile(r"`([^`\n]+)`")
 UNQUOTED_TOKEN_RE = re.compile(
     r"(?<![`\w])(\.?[A-Za-z0-9_@+-]+(?:[./][A-Za-z0-9_@.+-]+)*)(?![`\w])"
 )
-FILES_HEADER_RE = re.compile(
-    r"(?im)(?:^\*\*Files:\*\*[ \t]*$|^\s*Files:[ \t]*$)"
-)
-# Truncated / mid-line Files without newline after header body
-FILES_HEADER_ANY_RE = re.compile(r"(?i)\*\*Files:\*\*|^\s*Files:\s*$", re.M)
 INDEX_ROW_RE = re.compile(
     r"^\|\s*([A-Z][A-Z0-9]{1,11})\s*\|\s*([^|]*?)\s*\|\s*([^|]*?)\s*\|\s*([^|]*?)\s*\|\s*([^|]*?)\s*\|",
     re.M,
@@ -167,7 +158,7 @@ WELL_KNOWN_ROOTS = frozenset(
         "CONTRIBUTING",
         "CHANGELOG",
         "HISTORY",
-        "Gemfile",
+        # Gemfile lives on denoise basename stop-list only (never final OWNS)
         "Rakefile",
         "Procfile",
         "Vagrantfile",
@@ -1222,8 +1213,8 @@ def _iter_files_blocks(text: str) -> list[tuple[int, int, str | None]]:
     """Find Files headers **outside fences**; return (header_start, body_start, skip_reason).
 
     Only whole-line Files headers count (not prose like ``**Files:**` grammar`` in tables).
-    skip_reason ``truncated_header`` when a valid header line is immediately followed by
-    non-newline junk without a body newline (corrupt slice).
+    ``skip_reason`` is reserved (always ``None`` today). Block-level skips use
+    ``unclosed_fence`` from ``_body_until_stop``, not a header-level truncated note.
     """
     blocks: list[tuple[int, int, str | None]] = []
     fence_depth = 0

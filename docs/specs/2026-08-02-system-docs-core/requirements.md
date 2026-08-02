@@ -1,7 +1,7 @@
 # Requirements: System-docs core + Codebase Map
 
 Feature code: SDOC
-Status: Approved
+Status: Implemented
 Date: 2026-08-02
 Roadmap item: ROAD-7
 

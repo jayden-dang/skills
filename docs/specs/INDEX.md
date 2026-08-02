@@ -22,6 +22,6 @@ not planned as a roadmap item.
 | IMPN | Mid-build implementation notes — classified deviations when plan meets territory | ./2026-08-01-implementation-notes/ | Implemented | — |
 | DOSP | Docs-only spine — no requirement IDs in code; audit-trace vertical stays in docs/specs; comment discipline | ./2026-08-02-docs-only-spine/ | Implemented | — |
 | FSUBR | Feature-subgraph retrieval upgrade — path/term evidence, P1 OWNS tightening, cluster(focus), callers, grounded claims | ./2026-08-02-fsub-retrieval/ | Implemented | — |
-| SDOC | System-docs core + Codebase Map — pack catalog, define-system-doc workflow, First-class codebase/map with plan-tasks consult | ./2026-08-02-system-docs-core/ | Approved | ROAD-7 |
+| SDOC | System-docs core + Codebase Map — pack catalog, define-system-doc workflow, First-class codebase/map with plan-tasks consult | ./2026-08-02-system-docs-core/ | Implemented | ROAD-7 |
 
 

@@ -41,6 +41,26 @@ this design: read them and note which ones this feature relies on (you will cite
 in Step 2). If a design decision must *contradict* an invariant, that is an
 ADR-or-supersede event — record the ADR, or supersede the invariant by strikethrough
 in the spine — never a silent violation. No spine? Skip this; the layer is optional.
+
+### Codebase navigation docs (optional)
+
+**Applicability:** the design names cross-module structure, Locality across packages,
+or dependency direction between modules/layers.
+
+**Authority:** for each of `docs/codebase/modules.md`, `ownership.md`, `dependencies.md`
+— **Approved** only when `Status: Approved` and the matching structural validator under
+`skills/project/define-system-doc/validators/codebase/` passes; otherwise Absent or
+Non-authoritative.
+
+**When Approved and applicable:** consult the doc within hard constraints (approved
+requirements, ARCH-N, standing project constraints). Navigation docs do not outrank
+hard constraints.
+
+**When absent or non-authoritative:** CONTINUE without failing solely for absence.
+If module/dependency structure is material, suggest **at most once per entry key per
+design-solution run** `/define-system-doc codebase/modules|ownership|dependencies` as
+fits; **NEVER** auto-invoke `define-system-doc` (ARCH-5).
+
 **Done when:** the Context and decisions section names the binding constraint,
 the alternative rejected because of it, fresh retrieval has run, and — where a
 spine exists — the `**ARCH-N**` invariants this feature relies on.

@@ -25,3 +25,4 @@ not planned as a roadmap item.
 | SDOC | System-docs core + Codebase Map — pack catalog, define-system-doc workflow, First-class codebase/map with plan-tasks consult | ./2026-08-02-system-docs-core/ | Implemented | ROAD-7 |
 
 
+| SDCN | System-docs codebase navigation — modules, ownership, dependencies First-class + design/plan/inspect hooks | ./2026-08-02-system-docs-codebase-nav/ | Implemented | ROAD-8 |

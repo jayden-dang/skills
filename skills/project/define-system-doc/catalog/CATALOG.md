@@ -15,9 +15,9 @@ Pack-local SSOT. Maturity is authoritative only here.
 | `architecture/integrations` | Recognized | `catalog/entries/architecture/integrations.md` |
 | `architecture/runtime` | Recognized | `catalog/entries/architecture/runtime.md` |
 | `codebase/map` | First-class | `catalog/entries/codebase/map.md` |
-| `codebase/modules` | Recognized | `catalog/entries/codebase/modules.md` |
-| `codebase/ownership` | Recognized | `catalog/entries/codebase/ownership.md` |
-| `codebase/dependencies` | Recognized | `catalog/entries/codebase/dependencies.md` |
+| `codebase/modules` | First-class | `catalog/entries/codebase/modules.md` |
+| `codebase/ownership` | First-class | `catalog/entries/codebase/ownership.md` |
+| `codebase/dependencies` | First-class | `catalog/entries/codebase/dependencies.md` |
 | `security/threat-model` | Recognized | `catalog/entries/security/threat-model.md` |
 | `security/posture` | Recognized | `catalog/entries/security/posture.md` |
 | `security/compliance` | Recognized | `catalog/entries/security/compliance.md` |

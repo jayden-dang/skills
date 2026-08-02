@@ -1,34 +1,40 @@
 # Entry: `codebase/modules`
 
 ## Purpose and boundary
-Hybrid 1A system-doc entry for `codebase/modules`. Standing project documentation surface; not feature requirements.
+Modules inventory and boundaries. Complements Codebase Map; not the feature registry or architecture spine.
 
 ## Canonical consumer path
 `docs/codebase/modules.md`
 
 ## Applicability
-Adopt when the project needs this standing document or directory for agents and humans.
+Use when the repository has multi-module structure, ownership notes, or dependency direction rules agents should respect.
 
 ## Mediated writer
-Default mediated owner skill: `define-system-doc` (see skill set). Full `/define-system-doc` package may land in a later ROAD item.
+`/define-system-doc` → `skills/project/define-system-doc/SKILL.md`
 
 ## Template
-None — Recognized (no pack template required until First-class).
+`templates/codebase/modules.md`
 
 ## Validator
-None — Recognized.
+`validators/codebase/modules.md` (structural pass/fail)
 
 ## Evidence sources
-None — deferred pack probes until First-class.
+Repository tree; package manifests; CODEOWNERS if present; human confirmation for ownership claims.
 
 ## Authority predicate
-Entry-specific; directory entries may not use a single Status header. Default: **Absent** if path missing; **Non-authoritative** if present without entry-defined Approved criteria; **Approved** only when this entry's later First-class package defines a predicate. Until then, consumers treat presence as optional context, not hard gate.
+- **Absent:** no file at `docs/codebase/modules.md`
+- **Non-authoritative:** file exists but `Status` is not `Approved`, or structural validator fails
+- **Approved:** `Status: Approved` and structural validator returns pass
 
 ## Real readers and decision points
-None claimed (Recognized — no pack consult hook).
+| Reader | Decision point | Suggestion protocol |
+|---|---|---|
+| `skills/spec/plan-tasks/SKILL.md` | File Structure / placement | Yes — `/define-system-doc codebase/modules` when relevant and not authoritative |
+| `skills/spec/design-solution/SKILL.md` | Architecture / Locality when cross-module | Yes — once per entry per design run |
+| `skills/review/inspect-change/SKILL.md` | Spec/Standards context when diff hits surfaces | Optional suggest once; never auto-invoke |
 
 ## No-op when absent or non-authoritative
-Skills that do not list this entry as a reader MUST NOT invent its content.
+Named readers continue without failing solely for absence.
 
 ## Maturity
 Authoritative only in `CATALOG.md`.

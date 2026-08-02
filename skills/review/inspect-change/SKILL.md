@@ -55,6 +55,29 @@ with emptiness/coverage stated per grounded-claims.md.*
 
 When `docs/architecture/` exists, REQUIRED SUB-SKILL: use `review-invariants` on the diff — it returns a per-`Respects: ARCH-N` verdict (respects / violates / unclear). Hold the violates/unclear verdicts for step 5. This lane is advisory by construction and stays OUT of the two hard axes — it never becomes a merge blocker. If `docs/architecture/` does not exist, skip this step and inject nothing. *Done when: you hold the invariant verdicts, or an explicit "no spine".*
 
+## 3c. Codebase navigation docs (optional context)
+
+**Applicability:** diff paths intersect modules, ownership paths, or dependency layers
+described in standing codebase navigation docs.
+
+**Authority:** `docs/codebase/modules.md`, `ownership.md`, `dependencies.md` — each is
+**Approved** only when `Status: Approved` and its structural validator under
+`skills/project/define-system-doc/validators/codebase/` passes.
+
+**When Approved and applicable:** load the doc(s) as **advisory** Spec/Standards
+context. IF the diff appears to violate documented module boundaries, ownership
+expectations, or forbidden dependency directions, flag an advisory finding (not a
+hard merge gate by itself). Hard constraints and requirements still govern.
+
+**When absent or non-authoritative:** CONTINUE without failing solely for absence.
+Optional: suggest at most once per entry key per inspect-change run
+`/define-system-doc <entry-key>` when a missing nav doc would clarify the review;
+**NEVER** auto-invoke `define-system-doc` (ARCH-5).
+
+Ownership docs are **advisory documentation**, not access-control enforcement.
+
+*Done when: nav context is held or an explicit no-op for absence.*
+
 ## 4. Dispatch both subagents in parallel
 
 Send ONE message containing both dispatches so they run concurrently and neither pollutes the other's context. Both are **read-only**: no mutation of the working tree, index, HEAD, or branch state; to inspect another revision, use a temporary worktree (`git worktree add <tmpdir> <sha>`), never move HEAD. Keep each brief under 400 words. Never pre-judge findings in a dispatch — no "do not flag", no pre-rated severities.

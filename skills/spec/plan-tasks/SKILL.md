@@ -97,6 +97,24 @@ constraint** in File Structure, suggest `/define-system-doc codebase/map` to upd
 the map (counts toward the once-per-run budget when emitted), and never silently
 follow the map over the hard constraint or silently ignore a detected conflict.
 
+### Codebase navigation docs (modules / ownership / dependencies)
+
+Same authority pattern as Codebase Map (`Status: Approved` + structural validator
+pass under `skills/project/define-system-doc/validators/codebase/<entry>.md`).
+Hard constraints still outrank these docs; conflict procedure matches Codebase Map
+(surface, preserve hard constraint, suggest `/define-system-doc <entry-key>`, never
+auto-invoke). Suggestion budget is **at most once per entry key per plan-tasks run**.
+
+| Entry | Canonical path | When to consult if Approved |
+|---|---|---|
+| `codebase/modules` | `docs/codebase/modules.md` | Module boundary placement in File Structure |
+| `codebase/ownership` | `docs/codebase/ownership.md` | Ownership notes (advisory; not access control) |
+| `codebase/dependencies` | `docs/codebase/dependencies.md` | Avoid planning paths that imply forbidden dependency directions |
+
+**When absent or non-authoritative:** CONTINUE (no-op) for that entry; may suggest
+`/define-system-doc codebase/modules|ownership|dependencies` when that gap makes
+placement or dependency direction materially uncertain.
+
 **Done when:** every file the plan will create or modify appears in the map
 with a one-line responsibility.
 

@@ -37,17 +37,27 @@ User-invoked skill `define-system-doc` authors **one** entry per run. Unfinished
 Canonical consumer files are written only after explicit approval of a **structural**
 validator-passing proposal. The mediated workflow never creates canonical Draft files.
 
-First First-class entry: **`codebase/map`** → consumer path `docs/codebase/map.md`.
+### First-class codebase entries
 
-## Codebase Map + plan-tasks
+| Entry key | Consumer path | Primary readers |
+|---|---|---|
+| `codebase/map` | `docs/codebase/map.md` | `plan-tasks` |
+| `codebase/modules` | `docs/codebase/modules.md` | `plan-tasks`, `design-solution`, `inspect-change` |
+| `codebase/ownership` | `docs/codebase/ownership.md` | `plan-tasks`, `design-solution`, `inspect-change` (advisory only — not authz) |
+| `codebase/dependencies` | `docs/codebase/dependencies.md` | `plan-tasks`, `design-solution`, `inspect-change` |
 
-When `docs/codebase/map.md` is **Approved** (Status + structural validator pass),
-`plan-tasks` consults it while writing File Structure.
+Author any of these with `/define-system-doc <entry-key>`.
 
-**Hard constraints outrank the map:** approved requirements/design, ARCH-N, standing
-project constraints. On conflict: surface it, keep the hard constraint, suggest
-`/define-system-doc codebase/map` — never auto-invoke (ARCH-5). Absent map: no-op;
-optional one suggestion per run when placement is uncertain.
+## Codebase Map + navigation + plan-tasks
+
+When a codebase doc is **Approved** (Status + structural validator pass), named
+readers consult it under **hard constraints** (approved requirements/design, ARCH-N,
+standing project constraints). On conflict: surface it, keep the hard constraint,
+suggest `/define-system-doc <entry-key>` — never auto-invoke (ARCH-5). Absent doc:
+no-op; optional one suggestion per entry key per skill run when the gap is material.
+
+`design-solution` consults modules/dependencies when designing cross-module structure.
+`inspect-change` may surface advisory findings when a diff conflicts with Approved nav docs.
 
 ## Guides vs catalog
 

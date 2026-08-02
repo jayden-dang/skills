@@ -27,13 +27,9 @@ specific file into context only when a decision hinges on its exact contents.
 REQUIRED SUB-SKILL: use `load-subgraph` seeded with the feature **CODE**,
 requirement **terms**, and scan **candidate paths** (`neighbors` or `subgraph` as
 fits; schema 1.1). Do not reuse a stale parent package for this step — fresh means
-current SSOT. Ignore unknown `via_traces` kinds.
-
-**Grounded claims.** Overlap or reuse conclusions from retrieval MUST cite feature
-**CODE** + **edge or trace kind** + a **path or term** from the envelope. Retrieval
-is **advisory input only** — never invent `Reuse:`, `Respects:`, or `**Files:**`
-paths solely from the envelope. Empty/thin results do not invent modules; state
-`owns_coverage` and emptiness before absence claims.
+current SSOT. **Grounded claims** (one home): follow
+`skills/execution/load-subgraph/references/grounded-claims.md` — never invent
+`Reuse:` from the envelope alone; climb the ladder for real reuse.
 
 Record the decisions locked during discovery as a numbered list.
 Any decision that is hard to reverse AND surprising without context AND a real

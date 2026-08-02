@@ -73,11 +73,9 @@ retrieval **once** over the complete candidate path set:
 2. REQUIRED SUB-SKILL: use `load-subgraph` query **`cluster`** with the feature
    **CODE** as the single focus (`cluster(feature CODE)`).
 
-Hold the retrieval package for grounded claims while authoring Files/Reuse.
-**Grounded claims:** ownership or reuse conclusions MUST cite feature **CODE** +
-**edge or trace kind** + a **path or term**. Results are **advisory** — never invent
-`Reuse:`, `Respects:`, or `**Files:**` paths solely from the envelope. Ignore
-unknown `via_traces` kinds. Empty/thin is not a plan gate.
+Hold the retrieval package while authoring Files/Reuse. **Grounded claims** (one
+home): follow `skills/execution/load-subgraph/references/grounded-claims.md` —
+empty/thin is not a plan gate; still state coverage/emptiness before absence claims.
 
 **Done when:** blast_radius and cluster(feature CODE) have run once (or explicit
 no-op if `docs/specs/` / seeds missing).

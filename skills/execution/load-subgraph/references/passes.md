@@ -4,6 +4,23 @@ Deterministic recipes. Run against the consumer **repo root**. Two agents on the
 same tree with the same query MUST produce the same edge set and seed set
 (finding-set identity, not wording).
 
+## Contents
+
+- [Constants](#constants-immutable-for-v1--fsubr-11)
+- [Derivation snapshot (two-stage)](#derivation-snapshot-two-stage-per-query)
+- [Pass R — Registry](#pass-r--registry)
+- [Pass P1 — OWNS](#pass-p1--owns)
+- [Pass D — Denoise](#pass-d--denoise)
+- [Pass P2 — OVERLAPS](#pass-p2--overlaps)
+- [Pass P0 — TERMS](#pass-p0--terms-only-when-caller-supplies-terms)
+- [Pass P3 / P4 / P5](#pass-p3--implements)
+- [Query: neighbors](#query-neighborscodec-terms)
+- [Query: cluster](#query-clusterfocus)
+- [Query: ancestors / descendants / blast_radius / subgraph](#query-ancestors--descendants--blast_radius--subgraph)
+- [Envelope (every query)](#envelope-every-query)
+
+Consumer claim rules live in **`grounded-claims.md`** (sibling file), not here.
+
 **Constants (immutable for v1 / FSUBR 1.1):**
 
 | Name | Value |
@@ -163,8 +180,9 @@ For each candidate with its provenance:
        .exs .erl .hs .lua .pl .pm .rake .gradle .cmake .mk`, or
      - single-segment **well-known root** (no `.` in token), exact set  
        `{Makefile, Dockerfile, LICENSE, COPYING, NOTICE, AUTHORS,
-       CONTRIBUTING, CHANGELOG, HISTORY, Gemfile, Rakefile, Procfile,
-       Vagrantfile}` (case-sensitive as written).
+       CONTRIBUTING, CHANGELOG, HISTORY, Rakefile, Procfile,
+       Vagrantfile}` (case-sensitive as written). **Not** `Gemfile` —
+       denoise basenames own that token (would always be stripped).
 5. **Denoise** with Pass D stop-lists; drop stop-listed tokens.
 6. Else **drop**.
 

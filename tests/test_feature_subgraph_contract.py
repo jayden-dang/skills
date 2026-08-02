@@ -22,6 +22,9 @@ ROOT = Path(__file__).resolve().parents[1]
 SKILL = ROOT / "skills" / "execution" / "load-subgraph" / "SKILL.md"
 PASSES = ROOT / "skills" / "execution" / "load-subgraph" / "references" / "passes.md"
 ENV = ROOT / "skills" / "execution" / "load-subgraph" / "references" / "envelope.md"
+GROUNDED = (
+    ROOT / "skills" / "execution" / "load-subgraph" / "references" / "grounded-claims.md"
+)
 MAP = ROOT / "skills" / "track" / "map-features" / "SKILL.md"
 FRAME = ROOT / "skills" / "discovery" / "frame-change" / "SKILL.md"
 INSPECT = ROOT / "skills" / "review" / "inspect-change" / "SKILL.md"
@@ -29,6 +32,7 @@ CLARIFY = ROOT / "skills" / "discovery" / "clarify-decisions" / "SKILL.md"
 DESIGN = ROOT / "skills" / "spec" / "design-solution" / "SKILL.md"
 PLAN = ROOT / "skills" / "spec" / "plan-tasks" / "SKILL.md"
 ROOT_CAUSE = ROOT / "skills" / "execution" / "root-cause" / "SKILL.md"
+CALLERS = (FRAME, INSPECT, CLARIFY, DESIGN, PLAN, ROOT_CAUSE)
 TEMPLATE = ROOT / "templates" / "tasks.md"
 FEATURE_GRAPH = ROOT / "docs" / "guide" / "concepts" / "feature-graph.md"
 START_HERE = ROOT / "docs" / "guide" / "START-HERE.md"
@@ -185,63 +189,84 @@ class TestFSUBRCallerSkills(unittest.TestCase):
             self.assertRegex(text, r"path_evidence|term_evidence|via_traces", re.I)
 
     def test_FSUBR_4_1_grounded_claims_code_edge_path_or_term(self):
-        """FSUBR-4.1 grounded claims cite CODE + edge/trace kind + path or term."""
-        for path in (FRAME, INSPECT, CLARIFY, DESIGN, PLAN, ROOT_CAUSE):
+        """FSUBR-4.1 grounded claims cite CODE + edge/trace kind + path or term.
+
+        One home: references/grounded-claims.md holds the recipe; callers point at it.
+        """
+        self.assertTrue(GROUNDED.is_file(), "grounded-claims.md is the one home")
+        home = GROUNDED.read_text()
+        self.assertRegex(
+            home,
+            re.compile(
+                r"CODE.{0,80}(edge|trace).{0,80}(path|term)|"
+                r"feature \*\*CODE\*\*.{0,80}(edge|trace).{0,80}(path|term)",
+                re.I | re.S,
+            ),
+            "grounded-claims.md must require CODE+edge+path/term",
+        )
+        for path in CALLERS:
             text = path.read_text()
             self.assertRegex(
                 text,
-                re.compile(
-                    r"grounded claim|CODE.{0,80}(edge|trace).{0,80}(path|term)|"
-                    r"(path|term).{0,80}(edge|trace).{0,80}CODE|"
-                    r"feature CODE.{0,60}(edge|trace).{0,60}(path|term)",
-                    re.I | re.S,
-                ),
-                f"{path.name} must require grounded claims (CODE+edge+path/term)",
+                re.compile(r"grounded-claims\.md", re.I),
+                f"{path.name} must point at grounded-claims.md (one home)",
             )
 
     def test_FSUBR_4_2_owns_coverage_before_absence(self):
-        """FSUBR-4.2 state exact owns_coverage before absence conclusion."""
+        """FSUBR-4.2 state exact owns_coverage before absence conclusion (one home)."""
+        home = GROUNDED.read_text()
+        self.assertIn("owns_coverage", home)
+        self.assertRegex(
+            home,
+            re.compile(
+                r"with_owns\s*<\s*registered|"
+                r"owns_coverage.{0,120}(with_owns|registered)|"
+                r"exact.{0,40}owns_coverage",
+                re.I | re.S,
+            ),
+            "grounded-claims.md must require exact owns_coverage before absence",
+        )
         for path in (FRAME, INSPECT):
             text = path.read_text()
             self.assertIn("owns_coverage", text)
-            self.assertRegex(
-                text,
-                re.compile(
-                    r"owns_coverage.{0,120}(with_owns|registered)|"
-                    r"(with_owns|registered).{0,80}owns_coverage|"
-                    r"exact.{0,40}owns_coverage|"
-                    r"state.{0,40}owns_coverage",
-                    re.I | re.S,
-                ),
-                f"{path.name} must require stating owns_coverage before absence",
-            )
+            self.assertIn("grounded-claims.md", text)
 
     def test_FSUBR_4_3_empty_before_absence(self):
-        """FSUBR-4.3 state emptiness before absence conclusion."""
+        """FSUBR-4.3 state emptiness before absence conclusion (one home)."""
+        home = GROUNDED.read_text()
+        self.assertRegex(
+            home,
+            re.compile(
+                r"empt(y|iness).{0,80}(before|absence|first)|"
+                r"state that empt|empty.{0,40}(neighbor|cluster|result)",
+                re.I | re.S,
+            ),
+            "grounded-claims.md must require stating emptiness before absence",
+        )
         for path in (FRAME, INSPECT):
-            text = path.read_text()
-            self.assertRegex(
-                text,
-                re.compile(
-                    r"empt(y|iness).{0,80}(before|absence|no relevant|no overlap)|"
-                    r"state that empt|empty.{0,40}(neighbor|cluster|result)",
-                    re.I | re.S,
-                ),
-                f"{path.name} must require stating emptiness before absence",
-            )
+            self.assertIn("grounded-claims.md", path.read_text())
 
     def test_FSUBR_4_4_advisory_no_invent(self):
         """FSUBR-4.4 advisory only — do not invent Reuse/Respects/Files/hypotheses."""
+        home = GROUNDED.read_text()
+        self.assertRegex(
+            home,
+            re.compile(
+                r"advis(ory|ory input)|never invent|not invent",
+                re.I,
+            ),
+            "grounded-claims.md must treat retrieval as advisory / no invent",
+        )
         for path in (FRAME, INSPECT, DESIGN, PLAN, ROOT_CAUSE):
             text = path.read_text()
             self.assertRegex(
                 text,
                 re.compile(
-                    r"advis(ory|ory input)|not invent|SHALL NOT invent|"
-                    r"never invent",
+                    r"grounded-claims\.md|advis(ory|ory input)|not invent|"
+                    r"SHALL NOT invent|never invent",
                     re.I,
                 ),
-                f"{path.name} must treat retrieval as advisory / no invent",
+                f"{path.name} must point at home or restate advisory/no invent",
             )
 
     def test_FSUBR_5_1_5_2_5_3_clarify_nested_standalone_rederive(self):

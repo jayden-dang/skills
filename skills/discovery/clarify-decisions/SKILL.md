@@ -61,10 +61,9 @@ schema/recipe) for Territory and grounded claims:
 | **Standalone** (no parent package) | Load retrieval **once** before the first interview card (REQUIRED SUB-SKILL: use `load-subgraph` with terms/paths/CODE seeds). |
 | **In progress** | If any derivation source input changes, or material **scope / terms / paths** change, or fingerprints **differ** → **rederive**. Do not re-run every card when the package is still valid. |
 
-No on-disk session cache. Empty/thin results are advisory; do not invent neighbors.
-**Grounded claims:** every overlap, reuse-miss, or Out-of-Scope conclusion from
-retrieval MUST cite feature **CODE** + **edge or trace kind** + a **path or term**
-from the envelope. Ignore unknown `via_traces` kinds.
+No on-disk session cache. **Grounded claims** (one home): follow
+`skills/execution/load-subgraph/references/grounded-claims.md` for every conclusion
+from the package.
 
 ## Question card (every turn)
 

@@ -57,11 +57,10 @@ gates progress.
 When Phase 2 is complete and you have a **path or stable term**, and **before**
 Phase 3 hypotheses: REQUIRED SUB-SKILL: use `load-subgraph` for ownership /
 neighbor context (seed paths/terms; `neighbors` or `blast_radius` as fits).
-
-**Grounded claims.** Ownership or overlap conclusions MUST cite feature **CODE** +
-**edge or trace kind** + a **path or term**. Retrieval is **advisory** — never invent
-root-cause hypotheses solely from the envelope; never skip the red loop because
-neighbors look suggestive. Ignore unknown `via_traces` kinds.
+**Grounded claims** (one home): follow
+`skills/execution/load-subgraph/references/grounded-claims.md` — never invent
+root-cause hypotheses from the envelope; never skip the red loop because neighbors
+look suggestive.
 
 ## Phase 3 — Hypothesise
 
@@ -81,7 +80,7 @@ Hypothesis falsified? Strike it, move to the next. Don't pile a new fix on top o
 
 ## Exit — mini-spec, cleanup, post-mortem
 
-- Tier-1 mini-spec: add a fix requirement plus a `SHALL CONTINUE TO` guard requirement to the owning feature's `requirements.md` (or `docs/specs/fixes.md` if no feature owns it). Tag the regression test with the new ID.
+- Tier-1 mini-spec: add a fix requirement plus a `SHALL CONTINUE TO` guard requirement to the owning feature's `requirements.md` (or `docs/specs/fixes.md` if no feature owns it). Map the regression test to that ID in the task report / Spec review — **docs-only spine**; do not require greppable IDs in test source for consumer apps.
 - Remove ALL instrumentation: grep for your `[DBG-...]` prefixes; delete throwaway harnesses.
 - State the confirmed root cause in the commit message.
 - Route Task: "what would have prevented this bug?" If the answer is architectural (no good seam, hidden coupling, tangled callers), write the specifics down and tell the user to run `/scan-architecture` — after the fix lands, when you know the most.

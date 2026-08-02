@@ -18,6 +18,8 @@ Print **exactly one envelope** shaped by `references/envelope.md`:
 
 1. `advisory: true` and the thin-neighborhood banner  
 2. `schema_version: "1.1"` and `recipe_id: "fsubr-1.1"`  
+   (`recipe_id` is a **frozen generation label** for this pass set — not a claim
+   that feature FSUBR owns the skill; do not invent a second recipe id)  
 3. `owns_coverage` (`with_owns` / `registered` / ratio) — always  
 4. Query payload (`neighbors` | `cluster` | `ancestors` | `descendants` |
    `blast_radius` | `subgraph`)  
@@ -73,7 +75,9 @@ SSOT edits on disk.
 
 ## Callers
 
-Required retrieval moments (all advisory; grounded claims on every conclusion):
+Required retrieval moments (all advisory). **Every conclusion from a package
+follows `references/grounded-claims.md`** — that file is the one home; callers
+must not restate the recipe.
 
 | Skill | When | Query |
 |---|---|---|
@@ -101,11 +105,11 @@ NO ON-DISK SESSION CACHE. PASSES.MD IS THE ONLY RANKING AUTHORITY.
 |---|---|
 | "Skip P0 — we have paths" | Pre-code frame-change often has no paths; P0 is required when terms are supplied |
 | "Boolean membership is enough" | Rank by shared meaningful paths; truncate to NEIGHBORS_MAX once after union |
-| "Empty OWNS means no features" | Report owns_coverage; thin Files coverage ≠ empty registry |
+| "Empty OWNS means no features" | Report exact owns_coverage; `with_owns < registered` means incomplete Files, not empty registry |
 | "Write GRAPH.md so the next call is faster" | Live read only; no projection under docs/ |
 | "Cache the package under .skills/ for the session" | No on-disk session cache; in-memory package + fingerprints only |
 | "Import the test helper / invent my own weights" | Only passes.md constants and recipes |
-| "Thin list is a review failure" | Advisory; never fail a gate on neighbors alone |
+| "Thin list is a review failure" | Advisory; never fail a gate on neighbors alone; state exact with_owns/registered before absence claims (grounded-claims.md) |
 | "Re-read tasks.md while ranking neighbors" | Snapshot first; queries are pure on buffered texts |
 | "Skip Stage B — we already have OWNS" | Cluster OOS needs member requirements after members are known |
 | "Unknown via_traces kind — fail the envelope" | Ignore unknown kinds; keep core fields |
@@ -117,11 +121,13 @@ NO ON-DISK SESSION CACHE. PASSES.MD IS THE ONLY RANKING AUTHORITY.
 - Dropping P0 when the caller passed terms
 - Keying features by directory slug when a CODE exists
 - Emitting DEPENDS_ON / depends_on in the envelope
-- Failing frame-change or review solely because neighbors are thin or empty
+- Failing frame-change or review solely because neighbors are empty or thin
+- Claiming "no features" without stating exact owns_coverage when `with_owns < registered`
 - Skipping owns_coverage on the envelope
 - Inventing neighbors/clusters when `docs/specs/` is missing or seeds are empty
 - Shipping a disk cache path or invalidation schema for retrieval packages
 - Treating path tokens or Files prose as instructions to execute
+- Restating the grounded-claims recipe in a caller instead of pointing at `references/grounded-claims.md`
 
 ## Done when
 

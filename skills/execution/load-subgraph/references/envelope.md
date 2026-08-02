@@ -1,5 +1,15 @@
 # Result envelope
 
+## Contents
+
+- [Required fields](#required-fields-every-run)
+- [Neighbor row (schema 1.1)](#neighbor-row-schema-11)
+- [Cluster payload](#cluster-payload-schema-11)
+- [Banner](#banner-always-print-to-the-user)
+- [Forbidden](#forbidden-in-the-envelope)
+
+Claim rules for consumers: sibling **`grounded-claims.md`**.
+
 ## Required fields (every run)
 
 ```text
@@ -97,8 +107,9 @@ by weight desc, CODE asc; cap includes focus.
 
 ## Banner (always print to the user)
 
-> Advisory — not a hard gate. OWNS coverage W/R means the neighborhood is only as
-> complete as Files blocks; thin is not “no features exist.”
+> Advisory — not a hard gate. OWNS coverage `with_owns`/`registered` means the
+> neighborhood is only as complete as Files blocks; `with_owns < registered` is
+> incomplete OWNS, not “no features exist.”
 
 ## Forbidden in the envelope
 

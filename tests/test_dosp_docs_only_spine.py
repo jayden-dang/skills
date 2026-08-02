@@ -71,6 +71,69 @@ class DospPlanExecuteNoIdInCode(unittest.TestCase):
         )
 
 
+PACKAGE_CHANGE = REPO / "skills" / "ship" / "package-change" / "SKILL.md"
+CUT_RELEASE = REPO / "skills" / "ship" / "cut-release" / "SKILL.md"
+POLISH = REPO / "skills" / "review" / "polish-diff" / "SKILL.md"
+GUIDELINES = REPO / "docs" / "product" / "guidelines.md"
+AGENTS = REPO / "AGENTS.md"
+ARCH_INDEX = REPO / "docs" / "architecture" / "INDEX.md"
+REALIGN = REPO / "skills" / "track" / "realign-spec" / "SKILL.md"
+PROVE = REPO / "skills" / "execution" / "prove-claim" / "SKILL.md"
+LOAD_SUB = REPO / "skills" / "execution" / "load-subgraph" / "SKILL.md"
+CONFIGURE = REPO / "skills" / "setup" / "configure-repo" / "SKILL.md"
+
+
+class DospShipAndDoctrine(unittest.TestCase):
+    """DOSP-2.3 DOSP-2.4 DOSP-2.5 DOSP-3.2 DOSP-3.4 DOSP-4.3 DOSP-4.4 DOSP-5.* DOSP-6.1"""
+
+    def test_package_change_no_required_implements_trailers(self) -> None:
+        text = PACKAGE_CHANGE.read_text()
+        self.assertNotIn(
+            "Place requirement and\n   feature IDs only in `Implements:`",
+            text,
+        )
+        self.assertIn("docs/specs", text)
+
+    def test_cut_release_no_trailer_parse(self) -> None:
+        text = CUT_RELEASE.read_text()
+        self.assertNotIn("Group commits by their requirement-ID trailers", text)
+        self.assertIn("docs/specs", text)
+
+    def test_polish_and_guidelines_comments(self) -> None:
+        self.assertIn("Comment discipline", POLISH.read_text())
+        g = GUIDELINES.read_text()
+        self.assertIn("Comments (default zero)", g)
+
+    def test_agents_docs_only_spine(self) -> None:
+        text = AGENTS.read_text()
+        self.assertIn("docs-only", text.lower())
+        self.assertNotIn("| Playwright test |", text)
+        self.assertNotIn("| Commit message | `Implements:", text)
+
+    def test_arch4_docs_side(self) -> None:
+        text = ARCH_INDEX.read_text()
+        self.assertIn("docs-side", text)
+        self.assertIn("MUST NOT be required to embed", text)
+
+    def test_realign_implemented_without_test_grep(self) -> None:
+        text = REALIGN.read_text()
+        self.assertNotIn("covered by a test", text)
+        self.assertIn("docs-only audit-trace", text)
+
+    def test_prove_claim_docs_only(self) -> None:
+        text = PROVE.read_text()
+        self.assertIn("docs-only audit-trace", text)
+
+    def test_load_subgraph_still_present(self) -> None:
+        self.assertTrue(LOAD_SUB.is_file())
+        self.assertIn("load-subgraph", LOAD_SUB.read_text())
+
+    def test_configure_repo_no_annotation_mandate(self) -> None:
+        text = CONFIGURE.read_text()
+        self.assertNotIn("every test carries the requirement ID it covers", text)
+        self.assertIn("docs-only", text.lower())
+
+
 class DospAuditTraceDocsOnly(unittest.TestCase):
     def setUp(self) -> None:
         self.text = AUDIT_TRACE.read_text()

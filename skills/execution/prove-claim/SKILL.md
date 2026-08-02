@@ -35,7 +35,7 @@ Skip any step and you are lying, not verifying.
 | "The feature works" | The affected flow driven through the running system and observed (REQUIRED SUB-SKILL: use `validate-feature`, or `review-product-flow` for a manual pass) | Green unit tests alone |
 | "The bug is fixed" | Original symptom re-tested and gone | The code changed |
 | "The agent/subagent completed X" | You inspected the diff yourself | The agent's own success report |
-| "Requirements met" | the audit-trace check is clean (REQUIRED SUB-SKILL: use `audit-trace`) AND each acceptance criterion checked off individually against observed behavior | Green tests alone |
+| "Requirements met" | the docs-only audit-trace check is clean (REQUIRED SUB-SKILL: use `audit-trace` — task/definition integrity, not ID-in-test greps) AND each acceptance criterion checked off individually against observed behavior | Green tests alone; presence of `CODE-N.M` strings in test files |
 
 ## Regression-proof pattern
 

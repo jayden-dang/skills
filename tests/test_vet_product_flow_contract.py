@@ -1042,13 +1042,19 @@ class VetProductFlowWiring(unittest.TestCase):
         text = TRIPLE_TRIGGER.read_text()
         self.assertIn("vet-product-flow", text)
 
-    def test_VPF_1_1_audit_trace_ignore_fixtures(self):
-        """VPF-1.1 — project.md audit-trace ignore covers fixtures/triggers."""
+    def test_VPF_1_1_audit_trace_docs_only_or_legacy_ignore(self):
+        """VPF-1.1 — docs-only audit-trace (DOSP) or legacy ignore list for fixtures."""
         p = PROJECT_MD.read_text()
-        self.assertIn("tests/vet-product-flow/fixtures/", p)
-        self.assertIn("tests/trigger/vet-product-flow-routing.md", p)
-        # Pressure scenarios are fixtures for audit-trace; main scenarios.md stays coverage
-        self.assertIn("tests/vet-product-flow/scenarios-pressure.md", p)
+        docs_only = "docs-only" in p.lower() and "does not grep" in p.lower()
+        legacy = (
+            "tests/vet-product-flow/fixtures/" in p
+            and "tests/trigger/vet-product-flow-routing.md" in p
+            and "tests/vet-product-flow/scenarios-pressure.md" in p
+        )
+        self.assertTrue(
+            docs_only or legacy,
+            "project.md must document docs-only audit-trace or list VPF fixture ignores",
+        )
 
 
 # --- Task 8: full-suite close — every approved VPF-N.M in scenarios.md ---

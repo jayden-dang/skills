@@ -113,8 +113,8 @@ class ExplainChangePostWriteVerification(unittest.TestCase):
     def test_XPLN_3_8_verification_step_exists_before_handoff(self):
         """The check sits between Write and Write Handoff, not after the claim."""
         write = self.text.find("**Write**")
-        prove-claim = self.text.find("**Verify the written file**")
-        write-handoff = self.text.find("**Write Handoff**")
+        verify = self.text.find("**Verify the written file**")
+        handoff = self.text.find("**Write Handoff**")
         self.assertNotEqual(write, -1, "Write phase not found")
         self.assertNotEqual(verify, -1, "no 'Verify the written file' phase")
         self.assertNotEqual(handoff, -1, "Write Handoff phase not found")

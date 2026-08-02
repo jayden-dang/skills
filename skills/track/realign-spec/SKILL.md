@@ -30,14 +30,18 @@ Work one feature at a time. Identify the spec directory first (from the user, th
 
 **c. Requirements ↔ design.** Compare requirement IDs against the `Satisfies:` lines in `design.md`. Any live requirement appearing in no `Satisfies:` line gets flagged to the user — either the design needs a section (extend it) or the requirement is aspirational (consider retiring it). Do not invent design content silently.
 
-**d. Orphans.** List every task footer and test annotation citing an ID that is struck through or does not exist. Present the list to the user with a suggested disposition per item (repoint to a live ID, retire the test, or resurrect the requirement) — orphans are decisions, not cleanup.
+**d. Orphans.** List every task footer citing an ID that is struck through or does
+not exist. Present the list to the user with a suggested disposition per item
+(repoint to a live ID, retire the task cite, or resurrect the requirement) —
+orphans are decisions, not cleanup. Legacy ID strings in application tests are
+out of scope for this step (docs-only spine).
 
 **e. Status transitions — with evidence only.**
 
 | Transition | Required evidence |
 |---|---|
 | Draft → Approved | the user explicitly approved the spec — never inferred |
-| Approved → Implemented | every task box checked AND the audit-trace check shows every live requirement covered by a test |
+| Approved → Implemented | every task box checked AND docs-only audit-trace has zero errors AND prove-claim verify commands green |
 | Implemented → Shipped | the feature went out in a cut-release (this step is normally invoked by `cut-release`) |
 
 Apply any transition whose evidence exists: update the `Status:` line in `requirements.md` and the feature's row in `docs/specs/INDEX.md`. If evidence is partial, say exactly what is missing instead of transitioning.

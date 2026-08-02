@@ -1,3 +1,7 @@
+> **Docs-only spine (DOSP):** Requirement IDs live in `docs/specs/**` only.
+> Application source, tests, and commits must not be required to embed `CODE-N.M`.
+> `audit-trace` no longer greps test trees (E2 retired). Pack product fixtures may still embed IDs when testing this skill set.
+
 # Requirement IDs
 
 The requirement ID is the single most important object in this system. Everything else is scaffolding around it.

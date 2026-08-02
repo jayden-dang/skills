@@ -1,5 +1,8 @@
 # Example: a tier-2 feature, end to end
 
+> **Note (DOSP):** `Implements:` trailers and ID-in-test tags are **retired**. IDs stay in the triad; commits use domain subjects; tests describe behavior.
+
+
 **The request:** "We should let people switch between modules — Notes, Tasks, Calendar — from a left icon rail."
 
 This is the full chain. Every gate, every artifact, every hand-off.

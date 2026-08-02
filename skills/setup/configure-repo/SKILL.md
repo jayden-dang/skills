@@ -89,11 +89,14 @@ Confirm each, pre-filled from what you detected: typecheck, lint, unit tests, e2
 
 **Done when:** each command has been confirmed by the user (or explicitly marked "none").
 
-### D. Test annotation conventions
+### D. Traceability (docs-only)
 
-Explainer: every test carries the requirement ID it covers, and the `audit-trace` check greps tests for those IDs — so the convention must be greppable and match the repo's frameworks.
+Explainer: requirement IDs live in `docs/specs/**`. The `audit-trace` check is
+**docs-only** — it greps requirements and task footers, not application tests.
+Do **not** require `/// REQ:`, `@CODE-N.M`, or IDs in test titles for consumer
+apps. Optional note in project.md: legacy annotations are ignored; do not add new ones.
 
-Per test layer, recommend a convention based on the detected frameworks (for example: an e2e tag like `{ tag: ['@CODE-N.M'] }`, a unit-test annotation or the ID in the test name, a `/// REQ: CODE-N.M` doc comment for compiled languages). Confirm one convention per layer.
+Confirm the specs directory path if non-default; skip inventing test-annotation tables.
 
 **Done when:** every test layer in the repo has a confirmed ID convention.
 
@@ -216,7 +219,7 @@ This repo is configured for a spec-driven skill set.
 - Bug on-ramp: `root-cause` (root cause first, then a guarded fix)
 - Capture a conversation/spec/idea into tracker issues: `/publish-issues` (user-run)
 - Incoming issues and PRs: `/triage` (user-run)
-- Traceability check: the `audit-trace` skill — run by `prove-claim` and `cut-release`;
+- Traceability check: the docs-only `audit-trace` skill — run by `prove-claim` and `cut-release`;
   keep it clean
 - Project docs (layer enabled): `/define-project` maintains
   `docs/product/vision.md`, the `docs/architecture/` invariant spine, and
@@ -267,7 +270,7 @@ Be cost-aware — do not run the whole suite to prove wiring:
 
 - Typecheck and lint: run in full (bounded).
 - Unit/e2e runners: prove the runner resolves its config cheaply — run the **single-test-file pattern** from `project.md` against one existing test file, or the runner's collect-only/list mode. Never trigger a full e2e run during setup; state that the full run is the user's to do later.
-- Audit Trace check: run it (REQUIRED SUB-SKILL: use `audit-trace`) and confirm it reports a clean finding set — zero requirements is a valid clean state. The check is `grep`/`git` over `docs/specs/` and the test globs, so there is nothing to install; if the test globs it searches don't match this repo's layout, record the right ones in `docs/agents/project.md` now.
+- Audit Trace check: run it (REQUIRED SUB-SKILL: use `audit-trace`) and confirm it reports a clean finding set — zero requirements is a valid clean state. The check is `grep`/`git` over `docs/specs/` (and optional architecture), not application test trees.
 - If you installed the session-start hook, execute `.claude/hooks/session-start.sh` and confirm it prints one line of valid JSON.
 - If the tracker is a remote service (`github` / `gitlab` / `linear`), prove it is reachable and authenticated with **one read-only call** — `gh issue list` / `glab issue list`, or for Linear a single MCP list call (or a minimal `issues` GraphQL query). This verifies the tracker the *user already chose*; it is not the setup-time detection Step 1 forbids — the choice is made, and this call only proves it works. A missing CLI, an unauthenticated session, or a disconnected or unauthenticated MCP server is a wiring failure; it would otherwise stay hidden until `triage` fails weeks later. `local` and `other` need no reachability check.
 

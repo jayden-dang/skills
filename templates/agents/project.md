@@ -86,20 +86,12 @@ Run in this order; all must pass before any completion claim.
 Single test file: `<command pattern, e.g. npx vitest run <path>>`
 
 The traceability check is not a command here — the `audit-trace` skill runs it as
-`grep`/`git` over `docs/specs/` and the test globs. If this repo's tests live
-outside the default globs (`tests test e2e src src-tauri crates app lib packages`),
-record the real locations below so `audit-trace` searches the right paths.
+`grep`/`git` over `docs/specs/` (and optional architecture). It is **docs-only**
+and does not grep application tests for requirement IDs.
 
-Test globs: `<override, or leave blank for defaults>`
-Audit Trace ignore (files whose IDs are fixtures, not coverage): `<optional>`
+Legacy annotations in consumer code (if any) are ignored; do not require new ones.
 
-## Test annotation conventions
-
-| Layer | Requirement-ID convention |
-|---|---|
-| <e2e framework> | <e.g. Playwright tag: { tag: ['@CODE-N.M'] }> |
-| <unit framework> | <e.g. Vitest: annotate('CODE-N.M', 'requirement') or ID in test name> |
-| <other> | <e.g. Rust: /// REQ: CODE-N.M doc comment> |
+Specs directory override: `<leave blank for docs/specs/>`
 
 ## Run locally (dev)
 

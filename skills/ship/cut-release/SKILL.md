@@ -23,13 +23,23 @@ Read the repo's commands from `docs/agents/project.md` (verify commands, release
 
 ## a. Prove-claim gate
 
-Run every verify command in order — typecheck, lint, unit, e2e — plus the audit-trace check (REQUIRED SUB-SKILL: use `audit-trace`). All must pass fresh, now; prior green runs do not count. The audit-trace check must be **clean**: an implemented requirement with no covering test is an untraced requirement, and untraced requirements block a release.
+Run every verify command in order — typecheck, lint, unit, e2e — plus the docs-only
+audit-trace check (REQUIRED SUB-SKILL: use `audit-trace`). All must pass fresh,
+now; prior green runs do not count. The audit-trace check must be **clean** on
+docs integrity (unknown task cites, duplicate definitions, etc.) — it does **not**
+grep tests for requirement IDs.
 
 **Done when:** every command has a fresh passing run you have read the output of.
 
 ## b. Assemble the changelog
 
-Find the last cut-release tag (`git describe --tags --abbrev=0`) and collect `git log <last-tag>..HEAD`. Group commits by their requirement-ID trailers (`Implements: CODE-N.M`, `Guards: CODE-N.M`): for each cited ID, look up its requirement text in `docs/specs/` so the entry reads as shipped behavior ("Module selection persists across launches — SHELL-1.2"), not as commit prose. Guards become a "Protected behavior" grouping. Commits with no trailer go under a **Misc** section as-is.
+Find the last cut-release tag (`git describe --tags --abbrev=0`) and collect
+`git log <last-tag>..HEAD` (subjects + changed paths). Derive changelog bullets
+from `docs/specs/**` — for each feature whose files or Status moved in range,
+quote live requirement prose (domain behavior) from `requirements.md`, optionally
+parenthetical CODE for skill-native readers. Prefer path → INDEX / `**Files:**`
+ownership when binding commits to features. Group remaining commit subjects under
+**Misc**. Do **not** require or parse `Implements:` / `Guards:` trailers.
 
 If there is no prior tag, the range is the whole history; say so.
 

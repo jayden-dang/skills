@@ -217,13 +217,13 @@ class PrepareChangeCommits(unittest.TestCase):
         self.assertRegex(self.text, r"(?s)single coherent change.{0,120}one commit")
 
     def test_PCHG_1_3_six_validation_axes(self):
-        """PCHG-1.3 — validation covers all six axes before each commit."""
+        """PCHG-1.3 — validation covers axes before each commit (DOSP: no ID trailers)."""
         start = self.text.find("5. **Author commits**")
         end = self.text.find("6. **Write package**")
         self.assertNotEqual(start, -1, "phase 5 (Author commits) heading not found")
         self.assertNotEqual(end, -1, "phase 6 (Write package) heading not found")
         phase5 = self.text[start:end]
-        for axis in ("file scope", "subject", "body", "trailers", "secret", "staging boundary"):
+        for axis in ("file scope", "subject", "body", "secret", "staging boundary"):
             self.assertIn(axis, phase5, f"'{axis}' axis missing from phase 5 (Author commits)")
 
     def test_PCHG_1_4_1_5_autonomous_with_five_exceptions(self):
@@ -232,10 +232,10 @@ class PrepareChangeCommits(unittest.TestCase):
         for trigger in ("unrelated", "ownership", "partial-staging", "secret-risk", "mismatch"):
             self.assertIn(trigger, self.text)
 
-    def test_PCHG_1_6_1_7_prose_leads_ids_are_trailers(self):
-        """PCHG-1.6 PCHG-1.7 — subject in the resolved convention; IDs only in trailers."""
-        self.assertIn("Implements:", self.text)
-        self.assertRegex(self.text, r"(?i)never .{0,60}primary explanation")
+    def test_PCHG_1_6_1_7_prose_leads_no_id_primary(self):
+        """PCHG-1.6 PCHG-1.7 — subject explains change; IDs never primary (DOSP: no trailers)."""
+        self.assertNotIn("`Implements:` / `Guards:` trailer\n   lines the commit carries, if any", self.text)
+        self.assertRegex(self.text, r"(?i)never .{0,80}primary explanation")
 
     def test_PCHG_1_8_empty_tree_creates_nothing(self):
         """PCHG-1.8 — an empty working tree is valid and creates no commit."""

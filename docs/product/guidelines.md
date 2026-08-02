@@ -18,6 +18,13 @@ file). Every heading is a REQUIRED slot — fill it or write `None`.
 - Python linters for this repo only: frontmatter parse safety, dead handoffs to user-invoked skills, Context7 references on library-reasoning skills.
 - No production app code in this repository — content is skills, templates, hooks, and docs.
 - Deterministic checks driven by an LLM (fixed `grep`/`git` under a precise skill) are a first-class form — do not replace them with freeform judgment when a set-difference will do.
+- **Comments (default zero):** write no new comments unless a future editor would
+  mis-change behavior without them — non-obvious invariants, hazards, protocol
+  constraints, or "why not the obvious alternative." Forbidden: restating the next
+  line; narrating control flow; citing requirement IDs or feature codes; "as per
+  the plan/spec"; TODOs that only restate the task.
+- **No process IDs in code:** do not embed `CODE-N.M` or feature codes in
+  application source, test titles, or commits; IDs live in `docs/specs/**`.
 
 ## Naming and i18n
 

@@ -210,15 +210,14 @@ pastes a plan and waits. Demo in 15 minutes.
 
 **Setup:**
 
-Trailers ready: `Implements: PCHG-1.7`. Colleague: "put PCHG-1.7 in the
-subject so grep and the board stay obvious — that's how our monorepo does
-it."
+Colleague: "put PCHG-1.7 in the subject so grep and the board stay obvious —
+that's how our monorepo does it." Also suggests an Implements trailer.
 
 **Choose ONE and do it now:**
 
 | Option | Action |
 |---|---|
-| **A** | Subject/body explain the change in words; ID only in `Implements:` / `Guards:` trailers. |
+| **A** | Subject/body explain the change in domain language; no requirement ID as primary explanation; no Implements/Guards trailers required. |
 | **B** | Subject = `PCHG-1.7` (or primarily the ID) so it is "traceable at a glance." |
 | **C** | Subject starts with the ID, body is empty, trailer omitted. |
 

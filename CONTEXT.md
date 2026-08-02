@@ -6,9 +6,12 @@ ideation to release, with requirements traceability as the spine.
 ## Language
 
 **Requirement ID**:
-A first-class runtime object of the form `CODE-N.M` that flows from requirements
-through design, tasks, tests, commits, and changelog. Immutable once approved.
-_Avoid_: informal labels that only appear in one artifact
+A first-class object of the form `CODE-N.M` that lives in the spec triad
+(requirements, design `Satisfies:`, task `_Requirements:` footers) and optional
+issue bodies. Immutable once approved. Not required in application source, tests,
+or commit messages (docs-only spine).
+_Avoid_: informal labels that only appear in one artifact; embedding IDs in
+production code for "traceability"
 
 **Spec triad**:
 The three files that define a feature before implementation: `requirements.md`,

@@ -101,22 +101,16 @@ Single test file: `python3 -m unittest tests.<module>`
 (e.g. `python3 -m unittest tests.test_lint_handoffs`)
 
 The traceability check is not a command here — the `audit-trace` skill runs it as
-`grep`/`git` over `docs/specs/` and the test globs. If this repo's tests live
-outside the default globs (`tests test e2e src src-tauri crates app lib packages`),
-record the real locations below so `audit-trace` searches the right paths.
+`grep`/`git` over `docs/specs/` (and optional `docs/architecture/`). It is
+**docs-only**: it does not grep application or pack test trees for requirement IDs.
 
-Test globs: *(defaults — `tests` covers this repo)*, plus `tests/**/scenarios*.md` — scenario
-markdown is a declared annotation layer below, so `audit-trace`'s coverage pass must include `.md`
-under `tests/` alongside its default `*_test.py` includes, or scenario-borne IDs read as
-uncovered.
-Audit Trace ignore (files whose IDs are fixtures, not coverage): `tests/team-structure/red-baselines.md`, `tests/decision-records/red-baselines.md`, `tests/decision-records/fixtures/`, `tests/study-change/red-baselines.md`, `tests/attention-allocation/red-baselines.md`, `tests/roadmap/red-baselines.md`, `tests/roadmap/fixtures/`, `tests/milestone-assessment/red-baselines.md`, `tests/milestone-assessment/fixtures/`, `tests/run-product-walkthrough/fixtures/`, `tests/run-product-walkthrough/red-baselines.md`, `tests/run-product-walkthrough/scenarios-pressure.md`, `tests/run-product-walkthrough/scenarios-technique.md`, `tests/run-product-walkthrough/scenarios-cli.md`, `tests/trigger/run-product-walkthrough-routing.md`, `tests/assess-pivot-impact/`, `tests/pathfind/red-baselines.md`, `tests/pathfind/scenarios-pressure.md`, `tests/trigger/pathfind-routing.md`, `tests/vet-product-flow/fixtures/`, `tests/vet-product-flow/scenarios-pressure.md`, `tests/trigger/vet-product-flow-routing.md`, `tests/feature-subgraph/fixtures/`, `tests/feature-subgraph/scenarios-pressure.md`, `tests/trigger/load-subgraph-routing.md, `tests/implementation-notes/scenarios.md`, `tests/implementation-notes/scenarios-pressure.md`, `tests/skills-namespace/scenarios.md`, `tests/skills-namespace/scenarios-pressure.md`, `tests/trigger/skills-namespace-routing.md``
+Pack product fixtures under `tests/**` may still embed greppable `CODE-N.M` tokens
+when testing this skill set itself (DOSP-2.5). That is not a consumer convention.
 
-## Test annotation conventions
+## Pack fixture note (this repo only)
 
-| Layer | Requirement-ID convention |
-|---|---|
-| Unit (`unittest` under `tests/`) | Requirement ID in the test method name (e.g. `test_TEAM_1_2_…`) or first-line docstring as greppable `CODE-N.M` |
-| Scenario / acceptance markdown | Greppable bare `CODE-N.M` tokens in the scenario file (e.g. `tests/team-structure/scenarios.md`) |
+Unit/scenario tests for skills may use greppable `CODE-N.M` in method names or
+scenario markdown as product fixtures. Consumer apps must not be taught to do the same.
 
 ## Run locally (dev)
 

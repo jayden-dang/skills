@@ -12,7 +12,7 @@ story's IDs under its heading as they implement it.
   commits, each covering one coherent change, before any commit is created
 - PCHG-1.2 a single coherent change stays exactly one commit rather than
   being split
-- PCHG-1.3 file scope, subject, body, trailers, secret content, and staging
+- PCHG-1.3 file scope, subject, body, secret content, and staging
   boundary are validated before each commit is created
 - PCHG-1.4 a proposed commit that passes validation with unambiguous scope
   is created without requesting approval of the commit plan
@@ -21,8 +21,8 @@ story's IDs under its heading as they implement it.
   stops authoring and asks the user before any further commit
 - PCHG-1.6 each commit subject follows the resolved commit convention; each
   body states what changed and why
-- PCHG-1.7 requirement and feature IDs live only in `Implements:` /
-  `Guards:` trailers, never as a commit's primary explanation
+- PCHG-1.7 requirement and feature IDs live in `docs/specs/**`, never as a
+  commit's primary explanation (no Implements/Guards trailers required)
 - PCHG-1.8 no uncommitted tracked changes — create no commit and continue to
   package authoring from the branch's existing commits
 - PCHG-1.9 untracked files are excluded from every commit unless the user

@@ -1,5 +1,8 @@
 # Traceability — the spine
 
+> **Note (DOSP):** `Implements:` trailers and ID-in-test tags are **retired**. IDs stay in the triad; commits use domain subjects; tests describe behavior.
+
+
 Traceability is the answer to a single question, asked at every point in a project's life:
 
 > **Why does this line of code exist, and how do we know it still does what it was supposed to?**

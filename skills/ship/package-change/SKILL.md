@@ -141,13 +141,12 @@ AUTHOR LOCALLY, NEVER CROSS — push, PR, merge, discard, and block belong to la
    Produce one created-commit list and hold it for the phases that follow:
 
    ```
-   [{ sha, subject, trailers }]
+   [{ sha, subject }]
    ```
 
    `sha` — the commit's resolved SHA after creation. `subject` — the exact
-   subject line written. `trailers` — the `Implements:` / `Guards:` trailer
-   lines the commit carries, if any. The advisory commit map and the package
-   writer consume this exact shape.
+   subject line written. Do **not** require `Implements:` / `Guards:` trailers;
+   requirement IDs live in `docs/specs/**`, not in commits.
 
    <HARD-GATE>
    Always group every uncommitted tracked change into one or more proposed
@@ -158,14 +157,13 @@ AUTHOR LOCALLY, NEVER CROSS — push, PR, merge, discard, and block belong to la
    </HARD-GATE>
 
    <HARD-GATE>
-   Validate every proposed commit against all six axes before creating that
+   Validate every proposed commit against all five axes before creating that
    commit: **file scope** (only the files this coherent change touches),
    **subject** (matches the resolved `commit_subject_form`), **body** (states
-   what changed and why), **trailers** (carries only the IDs this commit
-   actually implements or guards), **secret** content (no credential-shaped
-   string reaches the commit unredacted), and **staging boundary** (the
-   staged hunks are exactly this change, no more and no less — reconcile a
-   partially staged file to the change instead of assuming the boundary).
+   what changed and why), **secret** content (no credential-shaped string
+   reaches the commit unredacted), and **staging boundary** (the staged hunks
+   are exactly this change, no more and no less — reconcile a partially staged
+   file to the change instead of assuming the boundary).
    WHEN a proposed commit passes validation and its scope is unambiguous,
    create it without requesting approval of the commit plan — this phase
    commits autonomously; it does not stop for sign-off on a commit-by-commit
@@ -191,14 +189,12 @@ AUTHOR LOCALLY, NEVER CROSS — push, PR, merge, discard, and block belong to la
 
    Write each commit subject in the resolved `commit_subject_form` (phase 2's
    convention record), and each commit body stating what changed and why it
-   changed — phase 3's `what_changed` and `why`. Place requirement and
-   feature IDs only in `Implements:` and `Guards:` trailers, using the
-   trailer grammar `AGENTS.md` §4 fixes.
+   changed — phase 3's `what_changed` and `why`. Do **not** put requirement or
+   feature IDs in subjects, bodies, or trailers as process metadata.
 
    <HARD-GATE>
-   Never use an identifier as a commit's primary explanation: the subject
-   and body carry the explanation; the trailer carries the ID for `cut-release`
-   and `inspect-change` to read back out.
+   Never use a requirement or feature ID as a commit's primary explanation:
+   the subject and body carry domain-language explanation only.
    </HARD-GATE>
 
    IF the working tree holds no uncommitted tracked changes THEN create no commit and continue to package authoring
@@ -262,8 +258,8 @@ parts:
 - **bodies** — the body each group would carry, stating what changed and why
 - **rationale** — why this regrouping would read better than the branch's actual
   history
-- **trailers** — the `Implements:` / `Guards:` trailers each affected pre-existing
-  commit carries today, which any regrouping must preserve
+- **trailers** — optional legacy trailers on pre-existing commits (may be empty;
+  do not invent `Implements:` / `Guards:` for new commits)
 
 `manifest.md`'s `Advisory commit map:` field (package-contract.md) carries this map
 in exactly this six-part shape when one is proposed; when no regrouping would
@@ -335,7 +331,7 @@ Never:
 | "`origin/HEAD` is right there, just use it" | There is no fifth rung. Topology is never a selector; a failure to resolve is a question, not a guess. |
 | "No decision record covers this, I'll write a plausible reason" | Every why-source is optional. A missing why-source shortens the narrative — it is never padded with invented rationale. |
 | "This change looks safe, I'll proceed instead of asking" | The five exception triggers are a closed set — unrelated, ownership, partial-staging, secret-risk, mismatch. Never add a sixth, and never soften one into a general "ask if unsure". |
-| "Put the requirement ID in the subject so it's traceable at a glance" | Requirement and feature IDs live only in `Implements:`/`Guards:` trailers. An identifier is never a commit's primary explanation. |
+| "Put the requirement ID in the subject so it's traceable at a glance" | Requirement IDs live in `docs/specs/**`. Commits explain the change in domain language; an identifier is never a commit's primary explanation. |
 | "This pre-existing commit is a mess, I'll just clean it up before handing off" | NEVER rewrite, amend, squash, reorder, rebase, or force-push a commit that existed before this invocation — no history is "bad enough" to justify an exception. Describe a better history in the advisory commit map instead. |
 | "The repo's `.gitignore` probably already covers `.skills/`, skip the check" | Prove `.skills/` is git-ignored with a line-presence check before writing any package file. An inference, or a check run after a file is already written, is not proof. |
 | "Manager wants the commit plan first — stop for sign-off" | When six-axis validation passes and scope is unambiguous, commit autonomously. Plan sign-off is not a sixth trigger. |

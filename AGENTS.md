@@ -114,12 +114,14 @@ records or requirement IDs on unmediated work is not a methodology violation.
 
 ## 4. Requirements Traceability Spine (non-negotiable)
 
-A requirement ID is a first-class runtime object. It flows through every artifact
-in a deterministic chain:
+A requirement ID is a first-class object of the **spec triad**. It flows through
+docs-side artifacts; it is **not** required in application source, tests, or
+commit messages (docs-only spine / DOSP).
 
 ```
-requirements.md  →  design.md  →  tasks.md  →  tests  →  commits  →  changelog
-**SHELL-1.2**      Satisfies:   _Requirements:_   tag/@ID    Implements:   derived
+requirements.md  →  design.md  →  tasks.md  →  (behavior tests + Spec review)
+**SHELL-1.2**      Satisfies:   _Requirements:_     domain-language tests
+       optional: issue body · changelog derived from specs
 ```
 
 **ID format:** `CODE-N.M` where `CODE` is a short feature prefix (registered in
@@ -134,23 +136,23 @@ are immutable once approved — retire by striking through
 | `requirements.md` | `**CODE-N.M**` bold EARS statement | `**SHELL-1.2** WHEN ... THE SYSTEM SHALL ...` |
 | `design.md` | `Satisfies: CODE-N.M, ...` per section | `Satisfies: SHELL-1.1, SHELL-1.2` |
 | `tasks.md` | `_Requirements: CODE-N.M, ..._` footer per task | `_Requirements: SHELL-1.2_` |
-| Playwright test | `{ tag: ['@CODE-N.M'] }` | grep-selectable, JSON reporter |
-| Vitest test | `annotate('CODE-N.M', 'requirement')` or ID in test name | |
-| Rust test | `/// REQ: CODE-N.M` doc comment | greppable |
-| Commit message | `Implements: CODE-N.M` or `Guards: CODE-N.M` trailer | |
-| Issue body | `Requirements covered` section | |
+| Issue body (optional) | `Requirements covered` section | |
+| Application source / tests / commits | **Do not require IDs** | Domain language only |
+| Changelog | Derived from specs + commit subjects | Behavior prose, not trailer parse |
 
-**Trace checking:** the `audit-trace` skill is the traceability check — a fixed set of
-`grep`/`git` passes with fixed rules, not a manual audit and not a bundled linter.
-It fails on: tasks/tests citing unknown IDs; implemented/shipped requirements with
-zero covering tests; duplicate ID definitions. It warns on approved requirements
-not yet cited by any task. Run by `prove-claim` and `cut-release`, where an agent is present
-to run it.
+**Horizontal ownership:** `load-subgraph` / `**Files:**` — path-based, no IDs in code.
 
-**Coverage definition:** a requirement is covered when ≥1 test citing its ID ran
-and passed, as attested by a test runner's report. A skipped, failing, or
-commented-out test is NOT coverage. A string in a file is NOT a test. Fixture IDs
-(doc comments, example data) are NOT citations.
+**Trace checking:** the `audit-trace` skill is the **docs-only** vertical check —
+fixed `grep`/`git` passes over `docs/specs/` (and optional architecture). It fails
+on: tasks citing unknown IDs; duplicate ID definitions. It warns on approved
+requirements not yet cited by any task. It does **not** grep tests or source for
+IDs. Run by `prove-claim` and `cut-release`.
+
+**Coverage definition:** a requirement's *behavior* is covered when tests and/or
+acceptance checks prove that behavior and Spec review walks the ID against the
+diff. Greppable ID strings in test files are **not** required and are not
+audit-trace coverage. Pack-internal fixture tests may still embed IDs when testing
+this skill set itself.
 
 ---
 
@@ -311,12 +313,11 @@ A change is done ONLY when ALL of the following are true:
 - Every new behavior has a test that was watched failing first, for the expected
   reason
 - Full test suite green, output pristine (zero warnings, zero errors)
-- Every test tagged with its requirement ID per `docs/agents/project.md`
+- Every new behavior maps to a requirement in the brief/report (IDs stay in docs)
 - Mocks only at system boundaries, complete data structures, no assertions on
   mocks
 - Edge cases and error paths covered
-- `audit-trace` check clean (no orphaned IDs, no uncovered requirements, no duplicate
-  definitions)
+- `audit-trace` check clean (docs-only: no orphaned task cites, no duplicate definitions)
 - Progress ledger appended for every completed task
 - `inspect-change` two-verdict clean (Standards + Spec axes)
 - `validate-feature` confirms user-facing behaviors on the running system
@@ -406,7 +407,7 @@ This repo is configured for a spec-driven skill set.
 
 Repo config the skills read:
 
-- verify commands, test annotations, release steps: `docs/agents/project.md`
+- verify commands, release steps: `docs/agents/project.md`
 - Team composition (roster, ownership notes, workflow band): `docs/agents/project.md` (`## Team`)
 - Issue tracker operations: `docs/agents/issue-tracker.md`
 - Triage label mapping: `docs/agents/triage-labels.md`

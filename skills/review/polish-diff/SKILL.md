@@ -49,7 +49,20 @@ Flag wasted work the diff introduces: redundant computation or repeated I/O, ind
 
 Flag changes implemented at the wrong depth. Special cases layered onto shared infrastructure are the tell that a fix did not go deep enough — prefer generalizing the underlying mechanism over adding another special case. Name the mechanism that should have absorbed the change.
 
-*Done when: all four agents have reported.*
+### Comment discipline (controller applies; may fold into Simplification)
+
+Also scan the diff for comments that violate the default-zero rule:
+
+- **Delete or rewrite:** comments that restate the next line of code; narrate
+  control flow; cite requirement IDs or feature codes; say "as per the plan/spec";
+  or TODOs that only restate the task.
+- **Keep:** non-obvious invariants, hazards, protocol/wire constraints, and
+  "why not the obvious alternative" notes the code alone does not show.
+
+Name the concrete comment to delete or the one-line hazard form to keep.
+
+*Done when: all four agents have reported (comment discipline may be a fifth
+pass by the controller when subagents are the four angles only).*
 
 ## 4. Triage
 

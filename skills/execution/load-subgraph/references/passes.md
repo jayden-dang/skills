@@ -252,14 +252,35 @@ In each `docs/specs/**/design.md`, lines containing `Respects:`: extract
 
 ## Query: neighbors(CODE[, terms])
 
-1. Path candidates = other CODEs with P2 weight > 0; `path_weight` = weight.  
+Pure function of the snapshot (zero file IO).
+
+1. Path candidates = other CODEs with P2 weight > 0; `path_weight` =
+   `|meaningful(OWNS_focus) ∩ meaningful(OWNS_other)|` (integer).  
 2. If terms given, term candidates = P0 seed CODEs minus focus.  
 3. **Union** path ∪ term candidates **before** any cut.  
-4. For each candidate:  
-   - `via` = both | path | term  
-   - sort key = `(path_weight desc, via_rank desc, CODE asc)`  
-     where both=2, path=1, term=0  
-5. **Truncate once** to `NEIGHBORS_MAX`. Never append after truncate.
+4. For each candidate build a **schema 1.1** row:  
+   - `shared_paths` = `path_weight` (0 when term-only).  
+   - `via` = both | path | term.  
+   - `path_evidence.items` = shared meaningful paths **lex ascending**,
+     length ≤ `PATH_EVIDENCE_MAX` (5); `path_evidence.truncated` = true iff
+     more shared meaningful paths exist than listed.  
+   - `term_evidence`: among caller seed terms (trim; drop length < 3) that
+     appear as casefold/lower substrings in that feature’s buffered triad
+     text, **casefold-dedupe** keeping the **first original** form in seed
+     order; `items` length ≤ `TERM_EVIDENCE_MAX` (5); `truncated` when more
+     unique matched seeds exist than listed. Empty items when no terms or
+     none match.  
+   - `via_traces`: **always** exactly two objects, in order:  
+     `{kind: path_overlap, items, truncated}` then  
+     `{kind: term_match, items, truncated}` — items/truncated mirror the
+     corresponding evidence objects. No other Wave A kinds.  
+   - sort key = `(shared_paths desc, via_rank desc, CODE asc)`  
+     where both=2, path=1, term=0.  
+5. **Truncate once** to `NEIGHBORS_MAX`. Never append after truncate.  
+6. Envelope carries `schema_version: "1.1"`, `recipe_id: "fsubr-1.1"`,
+   `advisory: true`, `owns_coverage`, snapshot `notes` (P1 reliability notes
+   included). Never emit `depends_on` / `DEPENDS_ON`, untyped `provenance`,
+   or `edge_extensions`.
 
 ---
 

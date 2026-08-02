@@ -454,5 +454,207 @@ class TestFSUBRSnapshot(unittest.TestCase):
         self.assertEqual(design_entries, [])
 
 
+class TestFSUBRNeighbors11(unittest.TestCase):
+    """FSUBR-1.1–1.12 FSUBR-9.3 neighbors envelope schema 1.1."""
+
+    def _synthetic_snapshot(self) -> dict:
+        """Six shared paths FOC↔NBR; term-rich source for NBR; P1 note present."""
+        shared = [f"src/shared/p{i:02d}.ts" for i in range(1, 7)]
+        focus_only = {"src/focus/only.ts"}
+        nbr_only = {"src/nbr/only.ts"}
+        registry = [
+            {"code": "FOC", "name": "Focus", "spec": "foc", "status": "Draft", "road": ""},
+            {"code": "NBR", "name": "Neighbor", "spec": "nbr", "status": "Draft", "road": ""},
+            {"code": "TERM", "name": "TermOnly", "spec": "term", "status": "Draft", "road": ""},
+        ]
+        owns = {
+            "FOC": set(shared) | focus_only,
+            "NBR": set(shared) | nbr_only,
+            "TERM": {"src/term/alone.ts"},
+        }
+        source_texts = {
+            "docs/specs/foc/requirements.md": "focus document alpha-seed",
+            "docs/specs/foc/tasks.md": "tasks",
+            "docs/specs/nbr/requirements.md": (
+                "alpha-seed and Beta-Token and gamma-hit and "
+                "delta-term and epsilon-x and zeta-y and eta-z"
+            ),
+            "docs/specs/nbr/tasks.md": "tasks",
+            "docs/specs/term/requirements.md": "alpha-seed only term neighbor",
+            "docs/specs/term/tasks.md": "tasks",
+        }
+        notes = [
+            {
+                "kind": "p1_block_skipped",
+                "code": "NBR",
+                "detail": "unclosed_fence",
+            }
+        ]
+        return {
+            "registry": registry,
+            "source_texts": source_texts,
+            "source_bytes": {},
+            "owns": owns,
+            "owns_coverage": {
+                "with_owns": 3,
+                "registered": 3,
+                "ratio": 1.0,
+            },
+            "p3_p4_p5": {},
+            "notes": notes,
+            "fingerprints": {},
+            "read_ledger": [],
+            "schema_version": "1.1",
+            "recipe_id": "fsubr-1.1",
+            "query": {},
+        }
+
+    def test_FSUBR_1_1_schema_version_on_neighbors_payload(self):
+        """FSUBR-1.1 schema_version is 1.1 on neighbors payload."""
+        root = FIX / "mega-owner-100"
+        n = rd.neighbors(root, "FOCUS", terms=None)
+        self.assertEqual(n.get("schema_version"), "1.1")
+        self.assertEqual(n.get("recipe_id"), "fsubr-1.1")
+
+    def test_FSUBR_1_2_shared_paths_int_ranks(self):
+        """FSUBR-1.2 shared_paths is int cardinality and ranks higher sharers first."""
+        root = FIX / "mega-owner-100"
+        n = rd.neighbors(root, "FOCUS", terms=None)
+        rows = n["neighbors"]
+        self.assertGreaterEqual(len(rows), 2)
+        for row in rows:
+            self.assertIsInstance(row["shared_paths"], int)
+        # SMALL shares 3, MEGA shares 1
+        codes = [r["code"] for r in rows]
+        self.assertLess(codes.index("SMALL"), codes.index("MEGA"))
+        by = {r["code"]: r for r in rows}
+        self.assertEqual(by["SMALL"]["shared_paths"], 3)
+        self.assertEqual(by["MEGA"]["shared_paths"], 1)
+
+    def test_FSUBR_1_3_via_exactly_one_of_path_term_both(self):
+        """FSUBR-1.3 via is exactly path, term, or both."""
+        snap = self._synthetic_snapshot()
+        n = rd.neighbors_from_snapshot(
+            snap,
+            "FOC",
+            terms=["alpha-seed", "no-match-zzz"],
+        )
+        allowed = {"path", "term", "both"}
+        for row in n["neighbors"]:
+            self.assertIn(row["via"], allowed)
+        by = {r["code"]: r for r in n["neighbors"]}
+        self.assertEqual(by["NBR"]["via"], "both")
+        self.assertEqual(by["TERM"]["via"], "term")
+
+    def test_FSUBR_1_4_1_5_path_evidence_lex_max5_truncated(self):
+        """FSUBR-1.4 FSUBR-1.5 path_evidence items lex asc, max 5, truncated honesty."""
+        snap = self._synthetic_snapshot()
+        n = rd.neighbors_from_snapshot(snap, "FOC", terms=None)
+        by = {r["code"]: r for r in n["neighbors"]}
+        pe = by["NBR"]["path_evidence"]
+        expected_all = [f"src/shared/p{i:02d}.ts" for i in range(1, 7)]
+        self.assertEqual(pe["items"], expected_all[:5])
+        self.assertTrue(pe["truncated"])
+        self.assertEqual(len(pe["items"]), 5)
+        # lex order
+        self.assertEqual(pe["items"], sorted(pe["items"]))
+        # mega-owner SMALL has 3 shared → truncated false
+        root = FIX / "mega-owner-100"
+        n2 = rd.neighbors(root, "FOCUS", terms=None)
+        small = next(r for r in n2["neighbors"] if r["code"] == "SMALL")
+        pe2 = small["path_evidence"]
+        self.assertEqual(
+            pe2["items"],
+            [
+                "src/shared/one.ts",
+                "src/shared/three.ts",
+                "src/shared/two.ts",
+            ],
+        )
+        self.assertFalse(pe2["truncated"])
+
+    def test_FSUBR_1_6_1_7_term_evidence_casefold_first_original_max5(self):
+        """FSUBR-1.6 FSUBR-1.7 term_evidence casefold dedupe first original, max 5, truncated."""
+        snap = self._synthetic_snapshot()
+        seeds = [
+            "Alpha-Seed",  # matches NBR (casefold of alpha-seed)
+            "ALPHA-SEED",  # same casefold — keep first original only
+            "Beta-Token",
+            "gamma-hit",
+            "delta-term",
+            "epsilon-x",
+            "zeta-y",  # 6th unique after dedupe → truncation
+            "nope-missing",
+        ]
+        n = rd.neighbors_from_snapshot(snap, "FOC", terms=seeds)
+        by = {r["code"]: r for r in n["neighbors"]}
+        te = by["NBR"]["term_evidence"]
+        # first original for alpha-seed casefold is Alpha-Seed
+        self.assertEqual(te["items"][0], "Alpha-Seed")
+        self.assertNotIn("ALPHA-SEED", te["items"])
+        self.assertEqual(len(te["items"]), 5)
+        self.assertTrue(te["truncated"])
+        # seed order preserved for first-seen casefold keys that match
+        self.assertEqual(
+            te["items"],
+            [
+                "Alpha-Seed",
+                "Beta-Token",
+                "gamma-hit",
+                "delta-term",
+                "epsilon-x",
+            ],
+        )
+        # TERM only matches alpha-seed once
+        te_term = by["TERM"]["term_evidence"]
+        self.assertEqual(te_term["items"], ["Alpha-Seed"])
+        self.assertFalse(te_term["truncated"])
+
+    def test_FSUBR_1_8_1_9_via_traces_always_path_overlap_and_term_match(self):
+        """FSUBR-1.8 FSUBR-1.9 via_traces always path_overlap + term_match only."""
+        snap = self._synthetic_snapshot()
+        n = rd.neighbors_from_snapshot(snap, "FOC", terms=["alpha-seed"])
+        for row in n["neighbors"]:
+            traces = row["via_traces"]
+            kinds = [t["kind"] for t in traces]
+            self.assertEqual(kinds, ["path_overlap", "term_match"])
+            for t in traces:
+                self.assertIn(t["kind"], {"path_overlap", "term_match"})
+            # no other keys that invent depends_on / provenance
+            for t in traces:
+                self.assertNotIn("depends_on", t)
+                self.assertNotIn("provenance", t)
+            po = traces[0]
+            tm = traces[1]
+            self.assertEqual(po["items"], row["path_evidence"]["items"])
+            self.assertEqual(po["truncated"], row["path_evidence"]["truncated"])
+            self.assertEqual(tm["items"], row["term_evidence"]["items"])
+            self.assertEqual(tm["truncated"], row["term_evidence"]["truncated"])
+
+    def test_FSUBR_1_11_1_12_no_provenance_bag_no_depends_on(self):
+        """FSUBR-1.11 FSUBR-1.12 no provenance/edge_extensions bag; no depends_on."""
+        root = FIX / "mega-owner-100"
+        n = rd.neighbors(root, "FOCUS", terms=["shared"])
+        self.assertNotIn("provenance", n)
+        self.assertNotIn("edge_extensions", n)
+        self.assertNotIn("depends_on", n)
+        self.assertNotIn("DEPENDS_ON", n)
+        for row in n["neighbors"]:
+            self.assertNotIn("provenance", row)
+            self.assertNotIn("edge_extensions", row)
+            self.assertNotIn("depends_on", row)
+
+    def test_FSUBR_9_3_advisory_and_owns_coverage_and_notes(self):
+        """FSUBR-9.3 advisory true; owns_coverage present; P1 notes carried."""
+        snap = self._synthetic_snapshot()
+        n = rd.neighbors_from_snapshot(snap, "FOC", terms=None)
+        self.assertIs(n.get("advisory"), True)
+        cov = n["owns_coverage"]
+        self.assertIn("with_owns", cov)
+        self.assertIn("registered", cov)
+        kinds = {note.get("kind") for note in n.get("notes") or []}
+        self.assertIn("p1_block_skipped", kinds)
+
+
 if __name__ == "__main__":
     unittest.main()

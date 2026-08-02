@@ -501,6 +501,65 @@ def p0_seeds_from_snapshot(
     }
 
 
+def _shared_meaningful_paths(a: set[str], b: set[str]) -> list[str]:
+    """Sorted (lex asc) meaningful path intersection."""
+    return sorted(denoise(a) & denoise(b))
+
+
+def _path_evidence(shared_sorted: list[str]) -> dict[str, Any]:
+    items = shared_sorted[:PATH_EVIDENCE_MAX]
+    return {
+        "items": items,
+        "truncated": len(shared_sorted) > PATH_EVIDENCE_MAX,
+    }
+
+
+def _feature_concat_text(snapshot: dict[str, Any], feature_code: str) -> str:
+    texts = snapshot.get("source_texts") or {}
+    for row in snapshot.get("registry") or []:
+        if row.get("code") != feature_code:
+            continue
+        blobs: list[str] = []
+        for name in ("requirements.md", "design.md", "tasks.md"):
+            rel = _feature_rel(row, name)
+            if rel in texts:
+                blobs.append(texts[rel])
+        return "\n".join(blobs)
+    return ""
+
+
+def _matched_seed_terms(
+    snapshot: dict[str, Any], feature_code: str, terms: list[str] | None
+) -> list[str]:
+    """Matched seed terms for a feature: casefold dedupe, first original, seed order."""
+    raw = [t.strip() for t in (terms or []) if t and len(t.strip()) >= 3]
+    if not raw:
+        return []
+    # P0 uses .lower() for substring counts; evidence matches the same surface.
+    text_l = _feature_concat_text(snapshot, feature_code).lower()
+    if not text_l:
+        return []
+    seen_cf: set[str] = set()
+    out: list[str] = []
+    for t in raw:
+        cf = t.casefold()
+        if cf in seen_cf:
+            continue
+        if t.lower() not in text_l:
+            continue
+        seen_cf.add(cf)
+        out.append(t)
+    return out
+
+
+def _term_evidence(matched: list[str]) -> dict[str, Any]:
+    items = matched[:TERM_EVIDENCE_MAX]
+    return {
+        "items": items,
+        "truncated": len(matched) > TERM_EVIDENCE_MAX,
+    }
+
+
 def neighbors_from_snapshot(
     snapshot: dict[str, Any],
     code: str,
@@ -515,12 +574,14 @@ def neighbors_from_snapshot(
     owns_map: dict[str, set[str]] = snapshot["owns"]
     focus = owns_map.get(code, set())
     path_w: dict[str, int] = {}
+    path_shared: dict[str, list[str]] = {}
     for other, oset in owns_map.items():
         if other == code:
             continue
-        w = overlap_weight(focus, oset)
-        if w > 0:
-            path_w[other] = w
+        shared = _shared_meaningful_paths(focus, oset)
+        if shared:
+            path_w[other] = len(shared)
+            path_shared[other] = shared
 
     term_set: set[str] = set()
     p0_meta = (
@@ -535,6 +596,10 @@ def neighbors_from_snapshot(
     rows: list[dict[str, Any]] = []
     for c in candidates:
         pw = path_w.get(c, 0)
+        shared_sorted = path_shared.get(c, [])
+        pe = _path_evidence(shared_sorted)
+        matched_terms = _matched_seed_terms(snapshot, c, terms)
+        te = _term_evidence(matched_terms)
         is_term = c in term_set
         if pw > 0 and is_term:
             via = "both"
@@ -542,7 +607,28 @@ def neighbors_from_snapshot(
             via = "path"
         else:
             via = "term"
-        rows.append({"code": c, "shared_paths": pw, "via": via})
+        via_traces = [
+            {
+                "kind": "path_overlap",
+                "items": list(pe["items"]),
+                "truncated": pe["truncated"],
+            },
+            {
+                "kind": "term_match",
+                "items": list(te["items"]),
+                "truncated": te["truncated"],
+            },
+        ]
+        rows.append(
+            {
+                "code": c,
+                "shared_paths": pw,
+                "via": via,
+                "path_evidence": pe,
+                "term_evidence": te,
+                "via_traces": via_traces,
+            }
+        )
 
     rows.sort(key=lambda r: (-r["shared_paths"], -_via_rank(r["via"]), r["code"]))
     truncated = rows[:NEIGHBORS_MAX]

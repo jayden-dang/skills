@@ -26,6 +26,10 @@ Reliability notes: FSUBR-10.3 FSUBR-10.4
 
 Two-stage snapshot + read-once ledger + pure queries: FSUBR-10.1
 
+## FSUBR Wave A — Neighbors envelope 1.1 (Task 3)
+
+Path/term-grounded neighbors: FSUBR-1.1 FSUBR-1.2 FSUBR-1.3 FSUBR-1.4 FSUBR-1.5 FSUBR-1.6 FSUBR-1.7 FSUBR-1.8 FSUBR-1.9 FSUBR-1.10 FSUBR-1.11 FSUBR-1.12 FSUBR-9.3
+
 ## FSUB-1.2 skill-path dual-run
 
 Two independent load-subgraph runs against the same frozen fixture (following passes.md only) MUST yield the same edge set and seed set. reference_derive is the oracle for expected math; the skill MUST NOT import it.

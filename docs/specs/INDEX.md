@@ -21,4 +21,5 @@ not planned as a roadmap item.
 | SKNS | Skills ephemera namespace — per-feature `.skills/<CODE>/` layout (progress, execute, review) | ./2026-08-01-skills-namespace/ | Implemented | — |
 | IMPN | Mid-build implementation notes — classified deviations when plan meets territory | ./2026-08-01-implementation-notes/ | Implemented | — |
 | DOSP | Docs-only spine — no requirement IDs in code; audit-trace vertical stays in docs/specs; comment discipline | ./2026-08-02-docs-only-spine/ | Implemented | — |
+| FSUBR | Feature-subgraph retrieval upgrade — path/term evidence, P1 OWNS tightening, cluster(focus), callers, grounded claims | ./2026-08-02-fsub-retrieval/ | Implemented | — |
 

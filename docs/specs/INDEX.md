@@ -26,3 +26,5 @@ not planned as a roadmap item.
 
 
 | SDCN | System-docs codebase navigation — modules, ownership, dependencies First-class + design/plan/inspect hooks | ./2026-08-02-system-docs-codebase-nav/ | Implemented | ROAD-8 |
+| SDPR | System-docs product context — personas, metrics, principles First-class + frame-change/validate hooks | ./2026-08-02-system-docs-product-context/ | Implemented | ROAD-9 |
+| SDAS | System-docs architecture shape — system/data/integrations/runtime First-class + design hooks | ./2026-08-02-system-docs-arch-shape/ | Implemented | ROAD-10 |

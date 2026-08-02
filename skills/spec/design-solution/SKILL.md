@@ -42,6 +42,25 @@ in Step 2). If a design decision must *contradict* an invariant, that is an
 ADR-or-supersede event — record the ADR, or supersede the invariant by strikethrough
 in the spine — never a silent violation. No spine? Skip this; the layer is optional.
 
+### Architecture shape docs (optional)
+
+**Applicability:** the design relies on system decomposition, data model, integrations,
+or runtime topology beyond ARCH-N one-liners.
+
+**Authority:** for each of `docs/architecture/system.md`, `data.md`, `integrations.md`,
+`runtime.md` — **Approved** only when `Status: Approved` and the structural validator
+under `skills/project/define-system-doc/validators/architecture/` passes. The invariant
+spine remains `docs/architecture/INDEX.md` (define-project); shape docs never redefine
+ARCH-N.
+
+**When Approved and applicable:** consult within hard constraints (requirements, ARCH-N,
+standing project constraints).
+
+**When absent or non-authoritative:** CONTINUE without failing solely for absence. If
+shape is material, suggest **at most once per entry key per design-solution run**
+`/define-system-doc architecture/system|data|integrations|runtime` as fits; **NEVER**
+auto-invoke (ARCH-5).
+
 ### Codebase navigation docs (optional)
 
 **Applicability:** the design names cross-module structure, Locality across packages,

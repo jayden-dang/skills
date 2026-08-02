@@ -33,6 +33,24 @@ subagent to map the touched surface and digest it to the ledger; keep this
 context lean. *Done when: every user-facing requirement ID has at least one
 concrete, observable check with an expected result.*
 
+### Product context docs (optional)
+
+**Applicability:** acceptance criteria touch user personas or measurable success
+outcomes.
+
+**Authority:** `docs/product/personas.md`, `metrics.md`, `principles.md` — each is
+**Approved** only when `Status: Approved` and its structural validator under
+`skills/project/define-system-doc/validators/product/` passes.
+
+**When Approved and applicable:** fold relevant persona/metric/principle constraints
+into checklist expectations (advisory product context; requirements remain normative).
+
+**When absent or non-authoritative:** CONTINUE without failing solely for absence.
+If metrics/personas would make acceptance checks material and clearer, suggest
+**at most once per entry key per validate-feature run**
+`/define-system-doc product/personas|metrics|principles`; **NEVER** auto-invoke
+(ARCH-5).
+
 ## 2. Dispatch by surface
 
 The checklist splits by where each behavior lives. Run whichever apply — most

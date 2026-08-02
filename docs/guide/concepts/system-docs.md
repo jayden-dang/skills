@@ -45,8 +45,15 @@ validator-passing proposal. The mediated workflow never creates canonical Draft 
 | `codebase/modules` | `docs/codebase/modules.md` | `plan-tasks`, `design-solution`, `inspect-change` |
 | `codebase/ownership` | `docs/codebase/ownership.md` | `plan-tasks`, `design-solution`, `inspect-change` (advisory only — not authz) |
 | `codebase/dependencies` | `docs/codebase/dependencies.md` | `plan-tasks`, `design-solution`, `inspect-change` |
+| `product/personas` | `docs/product/personas.md` | `frame-change`, `validate-feature`, `define-project` |
+| `product/metrics` | `docs/product/metrics.md` | `frame-change`, `validate-feature`, `define-project` |
+| `product/principles` | `docs/product/principles.md` | `frame-change`, `validate-feature`, `define-project` |
+| `architecture/system` | `docs/architecture/system.md` | `design-solution`, `define-project` |
+| `architecture/data` | `docs/architecture/data.md` | `design-solution`, `define-project` |
+| `architecture/integrations` | `docs/architecture/integrations.md` | `design-solution`, `define-project` |
+| `architecture/runtime` | `docs/architecture/runtime.md` | `design-solution`, `define-project` |
 
-Author any of these with `/define-system-doc <entry-key>`.
+Author any of these with `/define-system-doc <entry-key>`. Vision and ARCH-N spine stay with `/define-project`.
 
 ## Codebase Map + navigation + plan-tasks
 

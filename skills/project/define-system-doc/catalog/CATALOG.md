@@ -5,15 +5,15 @@ Pack-local SSOT. Maturity is authoritative only here.
 | Entry key | Maturity | Entry-package pointer |
 |---|---|---|
 | `product/vision` | Recognized | `catalog/entries/product/vision.md` |
-| `product/personas` | Recognized | `catalog/entries/product/personas.md` |
-| `product/metrics` | Recognized | `catalog/entries/product/metrics.md` |
-| `product/principles` | Recognized | `catalog/entries/product/principles.md` |
+| `product/personas` | First-class | `catalog/entries/product/personas.md` |
+| `product/metrics` | First-class | `catalog/entries/product/metrics.md` |
+| `product/principles` | First-class | `catalog/entries/product/principles.md` |
 | `product/guidelines` | Recognized | `catalog/entries/product/guidelines.md` |
 | `architecture/INDEX` | Recognized | `catalog/entries/architecture/INDEX.md` |
-| `architecture/system` | Recognized | `catalog/entries/architecture/system.md` |
-| `architecture/data` | Recognized | `catalog/entries/architecture/data.md` |
-| `architecture/integrations` | Recognized | `catalog/entries/architecture/integrations.md` |
-| `architecture/runtime` | Recognized | `catalog/entries/architecture/runtime.md` |
+| `architecture/system` | First-class | `catalog/entries/architecture/system.md` |
+| `architecture/data` | First-class | `catalog/entries/architecture/data.md` |
+| `architecture/integrations` | First-class | `catalog/entries/architecture/integrations.md` |
+| `architecture/runtime` | First-class | `catalog/entries/architecture/runtime.md` |
 | `codebase/map` | First-class | `catalog/entries/codebase/map.md` |
 | `codebase/modules` | First-class | `catalog/entries/codebase/modules.md` |
 | `codebase/ownership` | First-class | `catalog/entries/codebase/ownership.md` |

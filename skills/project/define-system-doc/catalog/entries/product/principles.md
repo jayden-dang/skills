@@ -1,34 +1,41 @@
 # Entry: `product/principles`
 
 ## Purpose and boundary
-Hybrid 1A system-doc entry for `product/principles`. Standing project documentation surface; not feature requirements.
+Standing Hybrid 1A document for `product/principles`.
 
 ## Canonical consumer path
 `docs/product/principles.md`
 
 ## Applicability
-Adopt when the project needs this standing document or directory for agents and humans.
+Adopt when the project needs this standing product or architecture-shape document.
 
 ## Mediated writer
-Default mediated owner skill: `define-system-doc` (see skill set). Full `/define-system-doc` package may land in a later ROAD item.
+Primary progressive author: `/define-system-doc` (`skills/project/define-system-doc/SKILL.md`).
+`define-project` may also maintain product/architecture layer docs when updating the project layer; it must not invent parallel SSOTs.
 
 ## Template
-None — Recognized (no pack template required until First-class).
+`templates/product/principles.md`
 
 ## Validator
-None — Recognized.
+`validators/product/principles.md` (structural pass/fail)
 
 ## Evidence sources
-None — deferred pack probes until First-class.
+Product interviews, vision goals, codebase topology; human confirmation for standing claims.
 
 ## Authority predicate
-Entry-specific; directory entries may not use a single Status header. Default: **Absent** if path missing; **Non-authoritative** if present without entry-defined Approved criteria; **Approved** only when this entry's later First-class package defines a predicate. Until then, consumers treat presence as optional context, not hard gate.
+- **Absent:** no file at `docs/product/principles.md`
+- **Non-authoritative:** file exists but `Status` is not `Approved`, or structural validator fails
+- **Approved:** `Status: Approved` and structural validator returns pass
 
 ## Real readers and decision points
-None claimed (Recognized — no pack consult hook).
+| Reader | Decision point | Suggestion protocol |
+|---|---|---|
+| `skills/discovery/frame-change/SKILL.md` | Product scope / users / goals check | Yes — once per entry per frame-change when material |
+| `skills/acceptance/validate-feature/SKILL.md` | Acceptance checklist / success criteria | Yes — once per entry per validate-feature when metrics/personas material |
+| `skills/project/define-project/SKILL.md` | Project layer create/update | No auto; may name define-system-doc |
 
 ## No-op when absent or non-authoritative
-Skills that do not list this entry as a reader MUST NOT invent its content.
+Named readers continue without failing solely for absence.
 
 ## Maturity
 Authoritative only in `CATALOG.md`.

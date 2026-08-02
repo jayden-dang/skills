@@ -74,6 +74,15 @@ guidelines has an answer or an explicit `None`.*
    Split into per-domain `docs/architecture/<domain>.md` files only for a large project.
    Scan-derived candidates are subject to the ratification rule in step 2.
    *Done when: the spine exists with at least one invariant.*
+4b. **Optional product context and architecture shape.** WHERE the user wants personas,
+   metrics, principles, or architecture domain narratives (system/data/integrations/runtime),
+   **name** `/define-system-doc product/personas|metrics|principles` or
+   `/define-system-doc architecture/system|data|integrations|runtime` for one-artifact
+   progressive authoring (First-class templates live under that skill). Do **not**
+   auto-invoke it. You may also draft those files here if the user insists on one
+   interview — then use the structural templates/validators under
+   `skills/project/define-system-doc/` and set `Status: Approved` only when validators pass.
+   Domain files never redefine ARCH-N; vision remains the product north star.
 5. **Write the guidelines.** Fill `templates/product-guidelines.md` →
    `docs/product/guidelines.md`. If engineering rules already live in
    `docs/agents/project.md`, move them here and leave a pointer. Scan-derived candidates

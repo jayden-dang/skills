@@ -44,7 +44,7 @@ ID rules:
 
 | ID | Milestone | Outcome | Depends-on | Commitment |
 |---|---|---|---|---|
-| MILE-3 | System documentation model | An adopter can discover, author, and have skills consult optional Hybrid 1A system docs (product, architecture, codebase, security, standards, ops) without empty-forest setup, invented standing facts, or fake skill readers | none | Committed |
+| MILE-3 | System documentation model | An adopter can discover, author, and have skills consult optional Hybrid 1A system docs (product, architecture, codebase, security, standards, ops) without empty-forest setup, invented standing facts, or fake skill readers | none | Closed |
 | MILE-1 | Reviewable delivery | A multi-person team can review skill-set changes as risk-aware, story-sized PRs whose commits and PR description explain the change on their own | none | Planned |
 | MILE-2 | Faithful history | A reviewer reads a history and an explainer that match how the work will actually integrate, whatever branch it targets and however messily it was committed | MILE-1 | Planned |
 
@@ -62,8 +62,8 @@ ID rules:
 - **ROAD-13** system-docs-security-trace — Surfaces: `skills/project/define-system-doc/catalog/entries/security/threat-model.md`, `skills/project/define-system-doc/catalog/entries/security/posture.md`, `skills/project/define-system-doc/catalog/entries/security/compliance.md`, `skills/project/define-system-doc/templates/security/`, `skills/project/define-system-doc/validators/security/`, `skills/spec/design-solution/SKILL.md`, `skills/execution/audit-trace/SKILL.md`, pack tests under `tests/` for `TB-N`/`THR-N`/`CMP-N` definition extraction and `Security:` citation integrity
 - **ROAD-14** system-docs-operations-reliability — Surfaces: `skills/project/define-system-doc/catalog/entries/ops/deployment.md`, `skills/project/define-system-doc/catalog/entries/ops/reliability.md`, `skills/project/define-system-doc/catalog/entries/ops/observability.md`, `skills/project/define-system-doc/catalog/entries/ops/disaster-recovery.md`, `skills/project/define-system-doc/catalog/entries/ops/runbooks.md`, `skills/project/define-system-doc/templates/ops/`, `skills/project/define-system-doc/validators/ops/`, `skills/execution/root-cause/SKILL.md`, `skills/ship/cut-release/SKILL.md`, `skills/execution/audit-trace/SKILL.md`, pack tests under `tests/` for `SLO-N` definition extraction and `Reliability:` citation integrity
 **Depends-on:** none
-**Commitment:** Committed 2026-08-02
-**Closed:** None
+**Commitment:** Closed
+**Closed:** 38240cd91d039ff12dc11c42bb6e37bca7006eda
 **Deferred:** None
 **Blockers:** ROAD-7 must investigate the observed flat-install root-templates fallback gap (skill-local siblings present; documented root templates path not reachable); repair in ROAD-7 if small and in-scope, otherwise replan. Existing-artifact First-class baseline defects discovered during ROAD-7 are replanned explicitly, not pre-invented as repair items. Milestone completion criteria (full Hybrid 1A First-class coverage, real-reader verification, catalog/guide sync, clean system-ID audits) are verified through `/assess-milestone`, not a separate audit-only ROAD.
 

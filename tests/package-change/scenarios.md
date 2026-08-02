@@ -12,7 +12,7 @@ story's IDs under its heading as they implement it.
   commits, each covering one coherent change, before any commit is created
 - PCHG-1.2 a single coherent change stays exactly one commit rather than
   being split
-- PCHG-1.3 file scope, subject, body, secret content, and staging
+- PCHG-1.10 file scope, subject, body, secret content, and staging
   boundary are validated before each commit is created
 - PCHG-1.4 a proposed commit that passes validation with unambiguous scope
   is created without requesting approval of the commit plan
@@ -21,7 +21,7 @@ story's IDs under its heading as they implement it.
   stops authoring and asks the user before any further commit
 - PCHG-1.6 each commit subject follows the resolved commit convention; each
   body states what changed and why
-- PCHG-1.7 requirement and feature IDs live in `docs/specs/**`, never as a
+- PCHG-1.11 requirement and feature IDs live in `docs/specs/**`, never as a
   commit's primary explanation (no Implements/Guards trailers required)
 - PCHG-1.8 no uncommitted tracked changes — create no commit and continue to
   package authoring from the branch's existing commits
@@ -129,9 +129,9 @@ story's IDs under its heading as they implement it.
 
 - PCHG-7.1 no commit that existed before this invocation is ever rewritten,
   amended, squashed, reordered, rebased, or force-pushed
-- PCHG-7.2 where the branch's pre-existing commits could read better, an
+- PCHG-7.8 where the branch's pre-existing commits could read better, an
   advisory commit map names the proposed groups, their order, subjects,
-  bodies, the rationale for regrouping, and the trailers to preserve
+  bodies, the rationale for regrouping, and optional pre-existing trailers
 - PCHG-7.3 the advisory commit map emits no runnable reset, rebase, or
   force-push command unless the user asks for one
 - PCHG-7.4 the PR body describes the branch as it actually exists, never as
@@ -237,3 +237,9 @@ story's IDs under its heading as they implement it.
 - PCHG-12.3 any approved value that differs at the pre-submission check —
   base SHA, head SHA, title bytes, or `body.md` bytes — invalidates the
   approval and requires reapproval before submission
+
+- PCHG-1.10 (realign DOSP docs-only)
+
+- PCHG-1.11 (realign DOSP docs-only)
+
+- PCHG-7.8 (realign DOSP docs-only)

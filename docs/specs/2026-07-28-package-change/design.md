@@ -1,24 +1,18 @@
 # Design: Prepare change
 
 Feature code: PCHG
-Status: Approved
+Status: Implemented
 Date: 2026-07-28
+Realign: 2026-08-02 (DOSP docs-only — trailers retired; see PCHG-1.10/1.11/7.8)
 Requirements: ./requirements.md
 
 ## Context
 
-Nothing in this skill set authors a commit message or a pull-request body. Commits
-happen inside `build-in-waves`'s implementer subagents, whose entire instruction is
-*"Commit, with the requirement-ID trailer the brief's commit step names"*
-(`implementer-prompt.md:44`) — subject and body are unspecified. `land-branch`
-owns the crossing end to end: it gates on `prove-claim` + `audit-trace` + `validate-feature`,
-prints a five-option menu verbatim, publishes a `record-verdict` before any side
-effect, then runs `git push -u origin` and *"create the PR"* with no template, no
-body rules, and no reviewer-facing prose anywhere in the file. Downstream, `cut-release`
-groups commits by their `Implements:` / `Guards:` trailers to build the changelog and
-drops untrailered commits into a `Misc` section, and `inspect-change` uses the same
-trailers to map a commit back to its spec folder. So identifiers are load-bearing
-machine input while the human-readable half of every commit and PR is unowned.
+`package-change` authors local commits and a PR package; `land-branch` owns the
+crossing. Implementers write conventional subjects in domain language (docs-only
+spine / DOSP: no required `Implements:` / `Guards:` trailers). `cut-release`
+derives changelog bullets from `docs/specs/**` and commit subjects.
+`inspect-change` locates specs via INDEX / feature paths, not trailers.
 
 Three constraints chain together and decide the shape. **ARCH-5** forbids a
 model-invoked skill from invoking a user-invoked one, and `/publish-issues` is
@@ -37,17 +31,15 @@ context source — the spec triad, ADRs, decision records, implementation notes,
 tracker, and `Default PR base:` itself — is optional, and each absence degrades to a
 narrower but complete diff-derived narrative rather than to a failure or an invention.
 **ARCH-6** shapes the findings model: a branch's pre-existing commits may come from
-work this skill set never mediated, so a missing trailer or an off-convention subject
-is reported as a finding, never enforced as a violation.
+work this skill set never mediated, so an off-convention subject is reported as a
+finding, never enforced as a violation.
 
 The remaining tension is between "structure the commits well" and "never rewrite
-history". Rewriting is where the value would be on a messy branch, but a rewrite
-discards the per-task trailers `cut-release` groups on, orphans the `commits
-<base7>..<head7>` correspondence the `.skills/progress.md` ledger records, and on a
-pushed branch requires the force-push `land-branch` forbids an agent from
-initiating. The design therefore splits the capability: full authority over commits
-that do not exist yet, zero authority over commits that do, and a written **advisory
-commit map** for the gap.
+history". Rewriting would orphan the `commits <base7>..<head7>` correspondence the
+`.skills/<CODE>/progress.md` ledger records, and on a pushed branch requires the
+force-push `land-branch` forbids an agent from initiating. The design therefore
+splits the capability: full authority over commits that do not exist yet, zero
+authority over commits that do, and a written **advisory commit map** for the gap.
 
 Architecture invariants this feature relies on: **ARCH-2** (optionality), **ARCH-3**
 (zero mandatory tooling), **ARCH-5** (invocation direction), **ARCH-6** (participant
@@ -117,28 +109,27 @@ what makes `land-branch` able to use it without recomputation.
 
 ### B. Working-tree commit authoring
 
-Satisfies: PCHG-1.1, PCHG-1.2, PCHG-1.3, PCHG-1.4, PCHG-1.5, PCHG-1.6, PCHG-1.7, PCHG-1.8, PCHG-1.9, PCHG-9.2, PCHG-9.3, PCHG-9.4
+Satisfies: PCHG-1.1, PCHG-1.2, PCHG-1.10, PCHG-1.4, PCHG-1.5, PCHG-1.6, PCHG-1.11, PCHG-1.8, PCHG-1.9, PCHG-9.2, PCHG-9.3, PCHG-9.4
 Respects: ARCH-4, ARCH-6
-Reuse: existing — git plumbing plus the trailer grammar already defined in `AGENTS.md` §4 and consumed by `cut-release` (rung 2)
+Reuse: existing — git plumbing; conventional subjects (rung 2). Docs-only spine:
+no Implements/Guards trailer grammar.
 
 Group → validate → commit, one commit at a time. Grouping runs over the uncommitted
 tracked changes only; untracked files are excluded unless the user names them this
 invocation, and a coherent change stays one commit rather than being split for
 appearance. Pre-existing commits are read as context and never re-staged.
 
-Validation runs **before** each `git commit`, over six axes: file scope, subject,
-body, trailers, secret content, and staging boundary. Passing validation with an
-unambiguous scope is sufficient authority to commit — there is no routine plan
-approval. Five conditions stop the loop and ask instead: unrelated dirty changes,
-unclear ownership of a change, an ambiguous partial-staging boundary, a secret-risk
-finding, and a mismatch between the planned scope and the working tree. These are
-exception questions; the skill does not otherwise pause.
+Validation runs **before** each `git commit`, over five axes: file scope, subject,
+body, secret content, and staging boundary. Passing validation with an unambiguous
+scope is sufficient authority to commit — there is no routine plan approval. Five
+conditions stop the loop and ask instead: unrelated dirty changes, unclear ownership
+of a change, an ambiguous partial-staging boundary, a secret-risk finding, and a
+mismatch between the planned scope and the working tree.
 
-Message shape: subject in the resolved convention, body stating what changed and why,
-requirement and feature IDs confined to trailers. The trailer is machine input for
-`cut-release` and `inspect-change`; the prose is what a reviewer reads. An empty working tree
-is a valid state — the skill creates nothing and proceeds to package authoring over
-the branch's existing commits.
+Message shape: subject in the resolved convention, body stating what changed and why
+in domain language. Requirement IDs are not required on commits (PCHG-1.11). An empty
+working tree is a valid state — the skill creates nothing and proceeds to package
+authoring over the branch's existing commits.
 
 ### C. Context gathering and passive-data safety
 
@@ -240,17 +231,16 @@ because `.skills/` is git-ignored and a reviewer could not open it.
 
 ### G. Advisory commit map and findings grading
 
-Satisfies: PCHG-7.1, PCHG-7.2, PCHG-7.3, PCHG-7.4, PCHG-7.5, PCHG-7.6, PCHG-7.7
+Satisfies: PCHG-7.1, PCHG-7.8, PCHG-7.3, PCHG-7.4, PCHG-7.5, PCHG-7.6, PCHG-7.7
 Respects: ARCH-6
 Reuse: none — new content (rung 7); no existing artifact describes a commit regrouping, and the grading vocabulary is specific to this feature's severity lock
 
 The prohibition is absolute: no rewrite, amend, squash, reorder, rebase, or force-push
 of any commit that existed before the invocation. What replaces it is a written map —
 proposed groups, their order, subjects, bodies, the rationale for the regrouping, and
-the trailers that must survive it — carried in `manifest.md`. It emits no runnable
-`reset`/`rebase`/`push --force` command unless the user asks for one, because an
-emitted command is an invitation to run it, and the trailers `cut-release` depends on are
-exactly what a careless rewrite drops.
+optional notes of any pre-existing trailers (empty allowed) — carried in `manifest.md`.
+It emits no runnable `reset`/`rebase`/`push --force` command unless the user asks for
+one, because an emitted command is an invitation to run it.
 
 The PR body always describes the branch as it is. A body written as though the map had
 been applied would describe commits that do not exist.
@@ -366,7 +356,7 @@ contract tests that assert what a `SKILL.md` does and does not say (e.g.
 | Seam | Kind | Covers |
 |---|---|---|
 | `tests/package-change/scenarios.md` — greppable ID annotation layer | integration (declared annotation layer) | every behavioral ID: PCHG-1.x, 2.x, 3.x, 4.x, 5.x, 6.x, 7.x, 8.x, 9.x, 10.x |
-| `tests/test_prepare_change_contract.py` — `package-change/SKILL.md` text contract | unit | PCHG-1.5, 1.7, 1.9, 2.6, 2.7, 3.4, 3.6, 3.7, 4.3, 4.4, 4.7, 5.6, 5.8, 6.2, 6.5, 6.6, 6.7, 7.1, 7.3, 7.4 |
+| `tests/test_prepare_change_contract.py` — `package-change/SKILL.md` text contract | unit | PCHG-1.5, 1.11, 1.9, 2.6, 2.7, 3.4, 3.6, 3.7, 4.3, 4.4, 4.7, 5.6, 5.8, 6.2, 6.5, 6.6, 6.7, 7.1, 7.3, 7.4 |
 | `tests/test_prepare_change_checkpoint.py` — `land-branch/SKILL.md` contract and guards | unit | PCHG-8.1, 8.2, 8.3, 8.4, 8.5, 8.6, 8.7, 8.8, 8.9, 8.10, 11.1, 11.2, 11.3, 11.4, 11.5, 11.6, 12.3 |
 | `tests/test_prepare_change_wiring.py` — `build-in-waves` tail, `configure-repo` decision, template slot, roster registration | unit | PCHG-9.1, 9.2, 9.3, 9.4, 10.1, 10.2, 10.3, 10.4, 10.5, 11.7, 11.8, 11.9, 11.10, 11.11, 11.12, 11.13 |
 | `tests/package-change/scenarios-pressure.md` — injected instruction and planted credential | integration (declared annotation layer) | PCHG-3.5, 12.2 |
@@ -383,19 +373,17 @@ Every requirement ID appears in exactly one `Satisfies:` line:
 | Section | IDs |
 |---|---|
 | A. Base resolution | PCHG-2.1 … 2.10 |
-| B. Working-tree commit authoring | PCHG-1.1 … 1.9, 9.2, 9.3, 9.4 |
+| B. Working-tree commit authoring | PCHG-1.1, 1.2, 1.10, 1.4–1.6, 1.11, 1.8, 1.9, 9.2–9.4 |
 | C. Context gathering and passive-data safety | PCHG-3.1 … 3.7, 12.2 |
 | D. Convention resolution | PCHG-4.1 … 4.7, 12.1 |
 | E. Ticket set resolution | PCHG-5.1 … 5.8 |
 | F. Package writer | PCHG-6.1 … 6.7 |
-| G. Advisory commit map and findings grading | PCHG-7.1 … 7.7 |
+| G. Advisory commit map and findings grading | PCHG-7.1, 7.8, 7.3–7.7 |
 | H. The `land-branch` checkpoint | PCHG-8.1 … 8.10, 11.1 … 11.6, 12.3 |
 | I. The `build-in-waves` tail | PCHG-9.1, 11.7, 11.8, 11.9 |
 | J. `configure-repo` decision and template slot | PCHG-10.1 … 10.5, 11.10, 11.11, 11.12 |
 | K. Registration and roster | PCHG-11.13 |
 
-All 90 defined criteria are mapped; there are no deliberately unmapped IDs. The
-Accessibility quality attribute is recorded as `None` with a reason and — per the
-requirements template's rule that an all-`None` attribute omits its IDed line — carries
-no requirement ID, so it is a recorded non-applicability rather than an uncovered
-criterion.
+Live criteria map as above; ~~PCHG-1.3~~, ~~PCHG-1.7~~, ~~PCHG-7.2~~ are retired
+(struck) and superseded by PCHG-1.10, PCHG-1.11, PCHG-7.8. The Accessibility quality
+attribute is recorded as `None` with a reason and carries no requirement ID.

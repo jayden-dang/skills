@@ -13,7 +13,7 @@ not planned as a roadmap item.
 | RMAP | Roadmap layer — milestone intent and derived roadmap health | ./2026-07-25-roadmap/ | Implemented | — |
 | ASSESS | Milestone assessment — the pre-close outcome gate and its append-only record | ./2026-07-26-milestone-assessment/ | Implemented | — |
 | XPLN | Explain-change — team-shared HTML pitch+map packet under docs/explainers/ | ./2026-07-27-brief-team/ | Implemented | — |
-| PCHG | Prepare-change — reviewer-facing commit and PR authoring handed to land-branch | ./2026-07-28-package-change/ | Approved | ROAD-3 |
+| PCHG | Prepare-change — reviewer-facing commit and PR authoring handed to land-branch | ./2026-07-28-package-change/ | Implemented | ROAD-3 |
 | DFSYNC | Review Product Flow sync — single JSON run artifact plus optional local serve layer | ./2026-07-30-review-product-flow-sync/ | Implemented | — |
 | PFIND | Pathfind layer — multi-session decision map (Layer 0) before program/delivery | ./2026-07-31-pathfind/ | Implemented | — |
 | VPF | Vet product flow — isolated implementation-surface judgment before dogfood | ./2026-08-01-vet-product-flow/ | Approved | — |

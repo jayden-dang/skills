@@ -1,9 +1,10 @@
 # Design: Docs-only spine
 
 Feature code: DOSP
-Status: Approved
+Status: Implemented
 Date: 2026-08-02
 Approved: 2026-08-02 (user)
+Implemented: 2026-08-02 (build-inline on main)
 Requirements: ./requirements.md
 
 ## Context

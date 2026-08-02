@@ -1,8 +1,9 @@
 # Requirements: Prepare change
 
 Feature code: PCHG
-Status: Approved
+Status: Implemented
 Date: 2026-07-28
+Implemented: 2026-08-02 (realign-spec after DOSP; skill + contracts green on main)
 
 <!--
 Rules:
@@ -33,11 +34,13 @@ commit by commit without asking me what happened.
 
 - **PCHG-1.1** WHEN the working tree holds uncommitted tracked changes THE SYSTEM SHALL group them into one or more proposed commits, each covering one coherent change, before creating any commit.
 - **PCHG-1.2** WHEN the grouped changes form a single coherent change THE SYSTEM SHALL propose exactly one commit rather than splitting it.
-- **PCHG-1.3** THE SYSTEM SHALL validate each proposed commit's file scope, subject, body, trailers, secret content, and staging boundary before creating that commit.
+- ~~**PCHG-1.3**~~ superseded by **PCHG-1.10** (DOSP docs-only spine: trailers are not a validation axis).
+- **PCHG-1.10** THE SYSTEM SHALL validate each proposed commit's file scope, subject, body, secret content, and staging boundary before creating that commit.
 - **PCHG-1.4** WHEN a proposed commit passes validation and its scope is unambiguous THE SYSTEM SHALL create it without requesting approval of the commit plan.
 - **PCHG-1.5** IF the working tree holds changes unrelated to the resolved scope, a change whose ownership is unclear, an ambiguous partial-staging boundary, a secret-risk finding, or a mismatch between the planned scope and the working tree THEN THE SYSTEM SHALL stop and ask the user before creating any further commit.
 - **PCHG-1.6** THE SYSTEM SHALL write each commit subject in the resolved commit convention and each commit body stating what changed and why it changed.
-- **PCHG-1.7** WHERE the repository carries a requirement-ID spine THE SYSTEM SHALL place requirement and feature IDs in commit trailers and SHALL NOT use an identifier as a commit's primary explanation.
+- ~~**PCHG-1.7**~~ superseded by **PCHG-1.11** (DOSP: requirement IDs are not required in commits).
+- **PCHG-1.11** THE SYSTEM SHALL NOT use a requirement or feature ID as a commit's primary explanation, and SHALL NOT require `Implements:` / `Guards:` trailers (IDs live in `docs/specs/**`).
 - **PCHG-1.8** IF the working tree holds no uncommitted tracked changes THEN THE SYSTEM SHALL create no commit and SHALL continue to package authoring from the branch's existing commits.
 - **PCHG-1.9** THE SYSTEM SHALL exclude untracked files from every commit it creates unless the user names them for inclusion in this invocation.
 
@@ -123,7 +126,8 @@ convention problem the skill could not fix, so that I can decide what to do
 about them.
 
 - **PCHG-7.1** THE SYSTEM SHALL NOT rewrite, amend, squash, reorder, rebase, or force-push any commit that existed before this invocation.
-- **PCHG-7.2** WHERE the branch's pre-existing commits could be grouped or described better THE SYSTEM SHALL produce an advisory commit map naming the proposed groups, their order, their subjects, their bodies, the rationale for the regrouping, and the trailers that must be preserved.
+- ~~**PCHG-7.2**~~ superseded by **PCHG-7.8** (DOSP: no mandatory Implements/Guards preservation).
+- **PCHG-7.8** WHERE the branch's pre-existing commits could be grouped or described better THE SYSTEM SHALL produce an advisory commit map naming the proposed groups, their order, their subjects, their bodies, the rationale for the regrouping, and any pre-existing trailers noted as optional (empty is allowed; do not invent `Implements:` / `Guards:`).
 - **PCHG-7.3** THE SYSTEM SHALL NOT emit a runnable reset, rebase, or force-push command in the advisory commit map unless the user asks for one.
 - **PCHG-7.4** THE SYSTEM SHALL describe the branch in the PR body as it actually exists and SHALL NOT describe it as though the advisory commit map had been applied.
 - **PCHG-7.5** THE SYSTEM SHALL grade each convention finding as advisory when the convention was inferred, as reported when the convention is declared and no executable check failed, and as `not run` when a machine-enforced check exists but was not executed.
@@ -226,6 +230,6 @@ Files this change touches, and what each carries at risk:
 - Creating, editing, or closing tracker items: `package-change` reads and links them; `/publish-issues` remains the only way work is filed.
 - Running verification: `package-change` neither runs nor re-runs the verify suite, the audit-trace check, or acceptance checks.
 - Choosing whether a branch merges, PRs, or is discarded: the five-option decision stays with the user at `land-branch`.
-- Authoring release notes or changelog entries: `cut-release` continues to derive those from commit trailers.
+- Authoring release notes or changelog entries: `cut-release` derives those from `docs/specs/**` and commit subjects (docs-only spine; not Implements trailers).
 - Editing `docs/agents/project.md` or any other project configuration from `package-change`.
 - Mechanically linking the stale and fresh decision records after an invalidated approval. `record-verdict` exposes no `Supersedes:` write path and its validator scans the whole decisions directory, so a one-sided link would fail the fresh publish. The records stay unlinked; the fresh one is authoritative. Deferred to `ROAD-6`.

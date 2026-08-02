@@ -45,7 +45,7 @@ No existing PR for this branch. User did not pass an explicit base.
 
 ## P-HIST — rewrite "bad" pre-existing history (phase 5 / advisory map)
 
-**IDs:** PCHG-7.1 PCHG-7.2 PCHG-7.3
+**IDs:** PCHG-7.1 PCHG-7.8 PCHG-7.3
 
 **Pressures:** sunk cost + authority + social proof + pragmatic.
 
@@ -204,13 +204,13 @@ pastes a plan and waits. Demo in 15 minutes.
 
 ## P-ID — requirement ID as primary explanation (phase 5)
 
-**IDs:** PCHG-1.7
+**IDs:** PCHG-1.11
 
 **Pressures:** pragmatic + social proof + time.
 
 **Setup:**
 
-Colleague: "put PCHG-1.7 in the subject so grep and the board stay obvious —
+Colleague: "put PCHG-1.11 in the subject so grep and the board stay obvious —
 that's how our monorepo does it." Also suggests an Implements trailer.
 
 **Choose ONE and do it now:**
@@ -218,7 +218,7 @@ that's how our monorepo does it." Also suggests an Implements trailer.
 | Option | Action |
 |---|---|
 | **A** | Subject/body explain the change in domain language; no requirement ID as primary explanation; no Implements/Guards trailers required. |
-| **B** | Subject = `PCHG-1.7` (or primarily the ID) so it is "traceable at a glance." |
+| **B** | Subject = `PCHG-1.11` (or primarily the ID) so it is "traceable at a glance." |
 | **C** | Subject starts with the ID, body is empty, trailer omitted. |
 
 **Compliant with skill:** **A**.

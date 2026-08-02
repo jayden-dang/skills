@@ -74,7 +74,8 @@ quick reference: `AGENTS.md`.
     implementer/reviewer subagents; stop-on-blocker; same ledger shape; no unit
     barriers (even if the header is story-unit).
 16. **test-first** (m) — Iron Law: NO PRODUCTION CODE WITHOUT A FAILING TEST FIRST. Test
-    only at pre-agreed seams; every test carries its requirement ID.
+    only at pre-agreed seams; each new behavior maps to a requirement in the brief
+    (IDs stay in docs/specs, not required in test source).
 17. **root-cause** (m) — Iron Law: NO FIXES WITHOUT ROOT CAUSE.
 18. **prove-claim** (m) — Iron Law: NO COMPLETION CLAIMS WITHOUT FRESH EVIDENCE.
     "Requirements met" claims require the `audit-trace` skill clean + a per-ID checklist

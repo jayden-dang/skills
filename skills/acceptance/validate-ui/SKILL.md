@@ -53,8 +53,9 @@ For each UI item in the ledger, write a Playwright spec that acts as a user:
 locate elements by role or label (`getByRole`, `getByLabel`), type and click,
 and assert on visible outcomes — text on screen, the input cleared, list order,
 an error message shown. Where the criterion says "persists", `page.reload()` and
-assert the state survives. Tag each spec with its requirement ID per the
-project.md conventions (e.g. `test('…', { tag: '@CODE-N.M' }, …)`).
+assert the state survives. Name tests for the user-visible behavior they prove;
+map to requirement IDs in the report or task footer — do not require ID tags in
+the Playwright source.
 
 ## 4. Run on Chromium and triage what breaks
 

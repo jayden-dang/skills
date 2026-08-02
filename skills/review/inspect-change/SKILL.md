@@ -24,10 +24,12 @@ Take the base ref the caller supplied (a sha, branch, tag, or merge-base). Confi
 
 Find the governing requirements, in order:
 
-1. Requirement-ID trailers in the commits (`Implements:`, `Guards:`) — the feature code maps to a spec folder via `docs/specs/INDEX.md`.
-2. A `docs/specs/<date>-<feature>/requirements.md` matching the branch or feature name.
-3. A path the caller handed you.
-4. Otherwise ask the user. If they confirm no spec exists, skip the Spec axis and say so in the final report.
+1. A `docs/specs/<date>-<feature>/requirements.md` matching the branch, feature
+   name, or INDEX feature code for paths in the diff.
+2. A path the caller handed you.
+3. Otherwise ask the user. If they confirm no spec exists, skip the Spec axis and say so in the final report.
+
+(Commit trailers are not required carriers of requirement IDs — docs-only spine.)
 
 *Done when: you hold a requirements.md path, or an explicit "no spec".*
 
@@ -58,7 +60,7 @@ Send ONE message containing both dispatches so they run concurrently and neither
 
 **Standards subagent** gets: the diff command and commit list; the standards-source paths; the path to `standards-baseline.md`, which it MUST read first and check the diff against each of its twelve smells in turn, plus the Security section for any hunk that crosses a trust boundary (untrusted input, secret handling, a privileged action); the brief — report (a) every place the diff breaks a documented standard, citing the document and rule, (b) for each of the twelve baseline smells, every hit spotted, naming the smell and quoting the hunk, and (c) every security concern from the Security section the diff triggers, naming the item and the trust boundary it crosses; documented breaches may be hard findings, baseline smells and security items are always judgment calls; the repo's documents override the baseline; skip anything tooling enforces; include CONTEXT.md vocabulary drift (a diff that renames or re-terms a glossary concept is a finding).
 
-**Spec subagent** gets: the diff command and commit list; the requirements.md path; the brief — walk the requirements and report (a) IDs that are missing or only partially implemented, (b) behavior in the diff no requirement asked for (scope creep), (c) IDs that look implemented but wrong; quote the requirement ID on every finding; also prove-claim each covered ID has a test tagged with it per the conventions in `docs/agents/project.md`, and flag untagged coverage. When step 3a found overlapping features, the Spec subagent ALSO receives those neighbor cards (owned paths + Out-of-Scope) as context, and its brief directs it to flag — as a **reuse-miss** finding citing the neighbor's feature code — any place the diff reimplements behavior a shares-surface neighbor already owns.
+**Spec subagent** gets: the diff command and commit list; the requirements.md path; the brief — walk the requirements and report (a) IDs that are missing or only partially implemented, (b) behavior in the diff no requirement asked for (scope creep), (c) IDs that look implemented but wrong; quote the requirement ID on every finding; also check that each covered ID has **behavior** covered by tests or acceptance evidence (domain-language tests — do **not** require ID tags in test source). When step 3a found overlapping features, the Spec subagent ALSO receives those neighbor cards (owned paths + Out-of-Scope) as context, and its brief directs it to flag — as a **reuse-miss** finding citing the neighbor's feature code — any place the diff reimplements behavior a shares-surface neighbor already owns.
 
 *Done when: both reports are back.*
 

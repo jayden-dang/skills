@@ -81,39 +81,33 @@ Status: Draft | Approved | Implemented | Shipped
   TO preserve unsaved editor state.
 ```
 
-The ID then flows through everything:
+The ID then flows through the **docs triad** (docs-only spine):
 
 | Artifact | Carries the ID as |
 |---|---|
 | `design.md` section | `Satisfies: SHELL-1.1, SHELL-1.2` line |
 | `tasks.md` task | `_Requirements: SHELL-1.1, SHELL-1.2_` footer |
-| Playwright test | `{ tag: ['@SHELL-1.2'] }` (grep-selectable, in JSON reporter) |
-| Vitest test | `annotate('SHELL-1.2', 'requirement')` or ID in test name |
-| Rust test | `/// REQ: SHELL-1.2` doc comment (greppable) |
-| Commit message | `Implements: SHELL-1.2` / `Guards: SHELL-1.3` trailer |
 | Issue (if tracker used) | `Requirements covered` section in issue body |
+| Application source / tests / commits | **Not required** — domain language; Spec review maps IDs |
 
-Every use is a **grep-selectable string**. That is what makes the ID a first-class
-runtime object and what makes the audit-trace check reproducible without a bundled
-linter.
+Docs-side uses are **grep-selectable strings**. That is what makes the docs-only
+`audit-trace` check reproducible without a bundled linter. Behavior coverage is
+tests + Spec review + prove-claim, not ID strings in code.
 
 ## The audit-trace check
 
-The `audit-trace` skill (model-invoked, in `execution/`) is the vertical enforcement
-layer. It does not eyeball specs — it drives a fixed sequence of deterministic
-passes and applies fixed rules:
+The `audit-trace` skill (model-invoked, in `execution/`) is the **docs-only**
+vertical enforcement layer. It does not eyeball specs — it drives a fixed
+sequence of deterministic passes and applies fixed rules:
 
 - **Define:** extract bold requirement IDs (`**CODE-N.M**`) from every
   `requirements.md`/`fixes.md` under `docs/specs/`, dropping any inside strikethrough
   (retired). Read each file's `Status:` and `Feature code:` lines.
 - **Cite (tasks):** extract IDs from `_Requirements:` lines in every `tasks.md`.
-- **Cover (tests):** grep IDs across the repo's configured test globs. Coverage is
-  **purely textual** — an ID string present in a test file counts. The skill does
-  *not* judge whether the test "really" asserts the ID; that judgment would diverge
-  from a deterministic check and is explicitly forbidden.
+- **No test-tree pass** — application and test source are not grepped for IDs
+  (E2 retired).
 - **Diff the sets** and report:
-  - **ERROR** — a task/test cites an ID with no bold definition (E1); an
-    `Implemented`/`Shipped` requirement with no covering test (E2); the same ID
+  - **ERROR** — a task cites an ID with no bold definition (E1); the same ID
     bold-defined in two files (E3).
   - **WARN** — an `Approved` requirement cited by no task (W1); a `requirements.md`
     missing its `Status:` or `Feature code:` line (W2).
@@ -143,7 +137,7 @@ artifact to keep fresh, so nothing can go stale.
 | Tier | When | Artifacts |
 |---|---|---|
 | **0 — trivial** | typo-level, no behavior change | none — test-first/prove-claim only |
-| **1 — bugfix / small change** | behavior change ≤ ~half a day | mini-spec: add a fix REQ + a SHALL-CONTINUE-TO guard to the owning feature's requirements.md (or `docs/specs/fixes.md`), tagged regression test; no design.md, task list optional |
+| **1 — bugfix / small change** | behavior change ≤ ~half a day | mini-spec: add a fix REQ + a SHALL-CONTINUE-TO guard to the owning feature's requirements.md (or `docs/specs/fixes.md`), plus a regression test of the behavior; no design.md, task list optional |
 | **2 — feature** | multi-task work | full triad + execute family |
 
 `frame-change` and `ask-me-bro` decide the tier explicitly and say so. Never spec what you

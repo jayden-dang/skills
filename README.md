@@ -21,10 +21,11 @@ ideation to release, with **requirements traceability as the spine**.
 
 Every feature gets a spec triad — `requirements.md` (EARS acceptance criteria
 with hierarchical IDs), `design.md` (each section says which requirements it
-satisfies), `tasks.md` (each task cites the IDs it implements). The same IDs
-flow into test tags, commit trailers, and issue bodies, and the `audit-trace` skill
-keeps the whole chain honest — a `grep`-and-`git` check the agent runs, no
-linter to install.
+satisfies), `tasks.md` (each task cites the IDs it implements). IDs stay in that
+docs triad (and optional issue bodies). Application source, tests, and commits
+use domain language — not mandatory ID tags or trailers. The docs-only
+`audit-trace` skill keeps definitions and task citations honest — a `grep`-and-`git`
+check the agent runs, no linter to install.
 
 📖 **[Read the guide →](docs/guide/START-HERE.md)**
 
@@ -37,24 +38,20 @@ go green while the feature is broken.
 
 Each of those failures has a defense here, and the defenses are the point.
 
-The load-bearing idea: **a requirement ID is a first-class runtime object.**
-Not a heading in a document — a `grep`-selectable string that appears in a test
-tag, a commit trailer, an issue body, and a changelog line. Because every use is
-the same literal string, checking that those uses agree with the ID's definition
-is `grep` plus set-difference — deterministic work the agent runs directly,
-with no bundled linter to carry.
+The load-bearing idea: **a requirement ID is a first-class object of the spec
+triad.** Not a heading that evaporates — a `grep`-selectable string in
+`requirements.md`, `Satisfies:`, and `_Requirements:` footers. Checking that
+definitions and task citations agree is `grep` plus set-difference (docs-only
+`audit-trace`). Tests prove behavior; Spec review maps IDs to the diff; changelog
+can derive behavior prose from the specs.
 
 ```
 requirements.md   **SHELL-1.2** WHEN the user selects a module THE SYSTEM SHALL …
 design.md         Satisfies: SHELL-1.2
 tasks.md          _Requirements: SHELL-1.2_
-test              test('restores the persisted module [SHELL-1.2]', …)
-commit            Implements: SHELL-1.2
-changelog         Module selection persists across launches — SHELL-1.2
+test              test('restores the persisted module after reload', …)  # domain language
+changelog         Module selection persists across launches — SHELL-1.2  # from specs
 ```
-
-That last line is derived, not written. It is derivable only because the ID is
-the same string in all five places above it.
 
 ## Install
 
@@ -140,7 +137,7 @@ frame-change (+ load-subgraph) ──► specify-behavior ──► design-solut
 
 - **Tier 0** (trivial): skip specs — `test-first` + `prove-claim`.
 - **Tier 1** (bugfix): a fix requirement + a `SHALL CONTINUE TO` guard + a
-  tagged regression test.
+  regression test of the fixed behavior.
 - **Tier 2** (feature): the full triad.
 
 **Optional project layer** (large projects, off by default): `define-project`,
@@ -207,15 +204,14 @@ Templates: `templates/personal-os/`.
 
 ## Traceability, without a linter
 
-The vertical layer — does every requirement trace to a task and a test? — is the
-`audit-trace` skill. It runs a fixed sequence of `grep` passes (bold `**CODE-N.M**`
-definitions, `_Requirements:` task citations, ID strings across the test globs)
-and diffs the sets: it reports tasks or tests citing unknown IDs, implemented or
-shipped requirements with no covering test, and duplicate definitions; it warns on
-approved requirements no task cites. Because the passes are `grep` and the rules
-are set operations, the result is the same whoever runs it — the determinism is in
-the primitives, not in a bundled script. `prove-claim`, `cut-release`, `realign-spec`, and
-`plan-tasks` invoke it.
+The vertical layer — does every requirement agree across definition and task
+citation in `docs/specs/`? — is the docs-only `audit-trace` skill. It runs a fixed
+sequence of `grep` passes (bold `**CODE-N.M**` definitions, `_Requirements:` task
+citations) and diffs the sets: it reports tasks citing unknown IDs and duplicate
+definitions; it warns on approved requirements no task cites. It does **not**
+grep application tests for IDs. Because the passes are `grep` and the rules are
+set operations, the result is the same whoever runs it. `prove-claim`,
+`cut-release`, `realign-spec`, and `plan-tasks` invoke it.
 
 The horizontal layer — "does this idea already exist?" for `frame-change`, "does
 this diff reimplement a neighbor?" for `inspect-change` — is **`load-subgraph`**:

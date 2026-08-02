@@ -1,9 +1,9 @@
 ---
 name: plan-tasks
 description: Use when a design is approved and the tasks.md implementation plan
-  (vertical-slice tasks, requirement-tagged tests) needs writing, after
-  design-solution and before the execute family (build-in-waves / build-by-story /
-  build-inline).
+  (vertical-slice tasks with requirement footers and behavior tests) needs writing,
+  after design-solution and before the execute family (build-in-waves /
+  build-by-story / build-inline).
 ---
 
 Produce `docs/specs/<YYYY-MM-DD>-<feature>/tasks.md` from the approved requirements

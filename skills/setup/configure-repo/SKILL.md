@@ -98,7 +98,8 @@ apps. Optional note in project.md: legacy annotations are ignored; do not add ne
 
 Confirm the specs directory path if non-default; skip inventing test-annotation tables.
 
-**Done when:** every test layer in the repo has a confirmed ID convention.
+**Done when:** docs-only trace posture is confirmed (specs path; no mandatory
+consumer ID-in-test convention).
 
 ### E. release steps
 
@@ -227,7 +228,7 @@ This repo is configured for a spec-driven skill set.
 
 Repo config the skills read:
 
-- verify commands, test annotations, release steps: `docs/agents/project.md`
+- verify commands, release steps: `docs/agents/project.md`
 - Team composition (roster, ownership notes, workflow band): `docs/agents/project.md` (`## Team`)
 - Issue tracker operations: `docs/agents/issue-tracker.md`
 - Triage label mapping: `docs/agents/triage-labels.md`

@@ -60,6 +60,22 @@ task `_Requirements:` footers). Tests prove **behavior** in domain language.
 If `docs/agents/project.md` is missing, say so and suggest `configure-repo`;
 still write domain-named tests at agreed seams.
 
+### Testing standards doc (optional)
+
+**Applicability:** choosing seams, mock boundaries, or suite commands for this change.
+
+**Authority:** `docs/standards/testing.md` is **Approved** when `Status: Approved` and
+its structural validator under `skills/project/define-system-doc/validators/standards/testing.md`
+would pass (or the file is pack SSOT already present under `docs/standards/`).
+
+**When present:** apply its strategy, test-first, and mock-boundary rules in addition
+to this skill's Iron Law (Iron Law never weakens).
+
+**When absent:** CONTINUE with this skill's defaults and `docs/agents/project.md`
+commands. IF a testing standards doc would materially clarify seams or mock policy,
+suggest **at most once per test-first run** `/define-system-doc standards/testing`;
+**NEVER** auto-invoke (ARCH-5).
+
 ## Anti-patterns and their counters
 
 | Anti-pattern | Tell | Counter |

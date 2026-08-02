@@ -1,34 +1,42 @@
 # Entry: `standards/INDEX`
 
 ## Purpose and boundary
-Hybrid 1A system-doc entry for `standards/INDEX`. Standing project documentation surface; not feature requirements.
+Engineering standards document for `standards/INDEX`.
 
 ## Canonical consumer path
 `docs/standards/INDEX.md`
 
 ## Applicability
-Adopt when the project needs this standing document or directory for agents and humans.
+Adopt when the project maintains standing engineering standards under `docs/standards/`.
 
 ## Mediated writer
-Default mediated owner skill: `define-system-doc` (see skill set). Full `/define-system-doc` package may land in a later ROAD item.
+`/define-system-doc` → `skills/project/define-system-doc/SKILL.md`.  
+`define-project` owns migration of `docs/product/guidelines.md` to a pointer when standards exist.
 
 ## Template
-None — Recognized (no pack template required until First-class).
+`templates/standards/INDEX.md`
 
 ## Validator
-None — Recognized.
+`validators/standards/INDEX.md` (structural pass/fail)
 
 ## Evidence sources
-None — deferred pack probes until First-class.
+Existing guidelines; house rules; test commands in `docs/agents/project.md`; human confirmation.
 
 ## Authority predicate
-Entry-specific; directory entries may not use a single Status header. Default: **Absent** if path missing; **Non-authoritative** if present without entry-defined Approved criteria; **Approved** only when this entry's later First-class package defines a predicate. Until then, consumers treat presence as optional context, not hard gate.
+- **Absent:** no file at `docs/standards/INDEX.md`
+- **Non-authoritative:** file exists but `Status` is not `Approved`, or structural validator fails
+- **Approved:** `Status: Approved` and structural validator returns pass
 
 ## Real readers and decision points
-None claimed (Recognized — no pack consult hook).
+| Reader | Decision point | Suggestion protocol |
+|---|---|---|
+| `skills/spec/plan-tasks/SKILL.md` | Global Constraints engineering rules | Yes — once per entry when standards material |
+| `skills/execution/test-first/SKILL.md` | TDD procedure (testing.md) | Yes — once for standards/testing when material |
+| `skills/review/inspect-change/SKILL.md` | Standards axis sources | Optional suggest once; never auto-invoke |
+| `skills/project/define-project/SKILL.md` | Guidelines migration / project layer | Name define-system-doc; never parallel SSOT |
 
 ## No-op when absent or non-authoritative
-Skills that do not list this entry as a reader MUST NOT invent its content.
+Named readers fall back per skill rules (guidelines pointer or project.md).
 
 ## Maturity
 Authoritative only in `CATALOG.md`.

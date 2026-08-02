@@ -46,9 +46,14 @@ required task field). Missing Team → pre-feature default.
 
 When a `docs/architecture/` spine exists, also fold its hard `**ARCH-N**` invariants
 into Global Constraints so every task inherits them; no spine, nothing to fold. And
-source the human-facing engineering rules (naming, i18n, house rules) from
-`docs/product/guidelines.md` when it exists, otherwise from `docs/agents/project.md` as
-above — the guidelines doc, when present, is where those rules live.
+source the human-facing engineering rules (naming, i18n, house rules, testing,
+errors/logging) from **`docs/standards/`** when that tree exists (prefer
+`docs/standards/INDEX.md` plus applicable domain files such as `testing.md` and
+`errors-logging.md`). IF `docs/standards/` is absent and unmigrated content still
+lives in `docs/product/guidelines.md`, use that as a **legacy fallback only**.
+IF `docs/product/guidelines.md` is a pointer-only file (no parallel rule body), do
+not treat it as SSOT. Otherwise fall back to `docs/agents/project.md` as above.
+Never maintain or invent parallel SSOTs.
 
 **Done when:** Goal, Architecture, Tech Stack, `Execution-mode:` (typically
 `unset`), and Global Constraints are written, and every command, naming/i18n
@@ -69,8 +74,9 @@ for production paths.
 
 1. Approved feature `requirements.md` / `design.md` for the plan under construction
 2. Live `ARCH-N` invariants in Global Constraints
-3. Standing project constraints already sourced (`docs/product/guidelines.md` or
-   `docs/agents/project.md` fallback, and other standing config this skill reads)
+3. Standing project constraints already sourced (`docs/standards/` when present,
+   else legacy `docs/product/guidelines.md` fallback, else `docs/agents/project.md`,
+   and other standing config this skill reads)
 
 **Authority (`docs/codebase/map.md`):**
 
@@ -96,6 +102,25 @@ THEN surface the conflict (name hard constraint + map rule), **preserve the hard
 constraint** in File Structure, suggest `/define-system-doc codebase/map` to update
 the map (counts toward the once-per-run budget when emitted), and never silently
 follow the map over the hard constraint or silently ignore a detected conflict.
+
+### Engineering standards docs (optional)
+
+**Applicability:** Global Constraints need testing or errors/logging house rules
+beyond ARCH-N and machine config.
+
+**Authority:** `docs/standards/INDEX.md`, `testing.md`, `errors-logging.md` — each
+**Approved** only when `Status: Approved` and the structural validator under
+`skills/project/define-system-doc/validators/standards/` passes (for consumer files
+authored via define-system-doc). Pack-maintained standards already in-repo are
+treated as present standing rules when the file exists and is the SSOT path.
+
+**When present:** fold applicable rules into Global Constraints (verbatim where
+practical). Prefer `docs/standards/` over guidelines.
+
+**When absent:** use legacy guidelines fallback or project.md as above; CONTINUE
+without failing solely for missing standards files. IF standards would materially
+improve Global Constraints, suggest **at most once per entry key per plan-tasks run**
+`/define-system-doc standards/INDEX|testing|errors-logging`; **NEVER** auto-invoke.
 
 ### Codebase navigation docs (modules / ownership / dependencies)
 

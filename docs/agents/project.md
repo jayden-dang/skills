@@ -142,5 +142,6 @@ Version file: `.claude-plugin/plugin.json` (`version` field)
 - ADRs: `docs/adr/`
 - Glossary: `CONTEXT.md`
 - Out-of-scope KB: `.out-of-scope/`
-- Engineering guidelines (project-docs layer, optional): `docs/product/guidelines.md`
+- Engineering standards SSOT (optional): `docs/standards/` (INDEX, testing, errors-logging, …)
+- Engineering guidelines pointer / legacy fallback: `docs/product/guidelines.md` (pointer only after migration)
 - Product vision / architecture spine (project-docs layer, optional): `docs/product/vision.md`, `docs/architecture/`

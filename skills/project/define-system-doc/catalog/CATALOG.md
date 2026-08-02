@@ -21,13 +21,13 @@ Pack-local SSOT. Maturity is authoritative only here.
 | `security/threat-model` | Recognized | `catalog/entries/security/threat-model.md` |
 | `security/posture` | Recognized | `catalog/entries/security/posture.md` |
 | `security/compliance` | Recognized | `catalog/entries/security/compliance.md` |
-| `standards/INDEX` | Recognized | `catalog/entries/standards/INDEX.md` |
-| `standards/testing` | Recognized | `catalog/entries/standards/testing.md` |
+| `standards/INDEX` | First-class | `catalog/entries/standards/INDEX.md` |
+| `standards/testing` | First-class | `catalog/entries/standards/testing.md` |
 | `standards/api` | Recognized | `catalog/entries/standards/api.md` |
 | `standards/ui` | Recognized | `catalog/entries/standards/ui.md` |
 | `standards/accessibility` | Recognized | `catalog/entries/standards/accessibility.md` |
 | `standards/security-coding` | Recognized | `catalog/entries/standards/security-coding.md` |
-| `standards/errors-logging` | Recognized | `catalog/entries/standards/errors-logging.md` |
+| `standards/errors-logging` | First-class | `catalog/entries/standards/errors-logging.md` |
 | `standards/observability` | Recognized | `catalog/entries/standards/observability.md` |
 | `ops/deployment` | Recognized | `catalog/entries/ops/deployment.md` |
 | `ops/reliability` | Recognized | `catalog/entries/ops/reliability.md` |

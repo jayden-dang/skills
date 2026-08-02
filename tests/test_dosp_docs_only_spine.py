@@ -101,8 +101,11 @@ class DospShipAndDoctrine(unittest.TestCase):
 
     def test_polish_and_guidelines_comments(self) -> None:
         self.assertIn("Comment discipline", POLISH.read_text())
-        g = GUIDELINES.read_text()
-        self.assertIn("Comments (default zero)", g)
+        # Comment house rule lives in standards SSOT after ROAD-11 migration;
+        # guidelines.md is a pointer only.
+        standards = (ROOT / "docs" / "standards" / "INDEX.md").read_text()
+        self.assertIn("Comments (default zero)", standards)
+        self.assertIn("docs/standards/", GUIDELINES.read_text())
 
     def test_agents_docs_only_spine(self) -> None:
         text = AGENTS.read_text()

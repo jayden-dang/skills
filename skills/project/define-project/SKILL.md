@@ -83,10 +83,14 @@ guidelines has an answer or an explicit `None`.*
    interview — then use the structural templates/validators under
    `skills/project/define-system-doc/` and set `Status: Approved` only when validators pass.
    Domain files never redefine ARCH-N; vision remains the product north star.
-5. **Write the guidelines.** Fill `templates/product-guidelines.md` →
-   `docs/product/guidelines.md`. If engineering rules already live in
-   `docs/agents/project.md`, move them here and leave a pointer. Scan-derived candidates
-   are subject to the ratification rule in step 2. *Done when: the file exists.*
+5. **Write engineering standards (not a parallel SSOT).** Prefer First-class
+   `docs/standards/` via naming `/define-system-doc standards/INDEX|testing|errors-logging`
+   (or draft those files using pack templates under `define-system-doc`). IF creating
+   legacy `docs/product/guidelines.md`, it MUST be a **pointer** to `docs/standards/`
+   when standards exist — never a second body of rules. While unmigrated rule bodies
+   still live only in guidelines, treat them as temporary fallback and migrate on
+   next touch. Scan-derived candidates are subject to the ratification rule in step 2.
+   *Done when: standards SSOT exists under `docs/standards/` and/or guidelines is an honest pointer/fallback.*
 6. **Register.** Add the project-docs line to the `## Agent skills` block so the feature
    skills discover the layer (or suggest `/configure-repo` if no such block exists yet).
    *Done when: the layer is discoverable.*

@@ -52,8 +52,17 @@ validator-passing proposal. The mediated workflow never creates canonical Draft 
 | `architecture/data` | `docs/architecture/data.md` | `design-solution`, `define-project` |
 | `architecture/integrations` | `docs/architecture/integrations.md` | `design-solution`, `define-project` |
 | `architecture/runtime` | `docs/architecture/runtime.md` | `design-solution`, `define-project` |
+| `standards/INDEX` | `docs/standards/INDEX.md` | `plan-tasks`, `inspect-change`, `define-project` |
+| `standards/testing` | `docs/standards/testing.md` | `plan-tasks`, `test-first`, `inspect-change` |
+| `standards/errors-logging` | `docs/standards/errors-logging.md` | `plan-tasks`, `inspect-change` |
 
 Author any of these with `/define-system-doc <entry-key>`. Vision and ARCH-N spine stay with `/define-project`.
+
+### Guidelines migration
+
+Canonical engineering rules live under **`docs/standards/`**. `docs/product/guidelines.md`
+is a **pointer only** after migration (legacy fallback only while unmigrated content
+remains). Never keep parallel SSOTs.
 
 ## Codebase Map + navigation + plan-tasks
 

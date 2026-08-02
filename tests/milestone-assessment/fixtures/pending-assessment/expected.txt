@@ -1,4 +1,0 @@
-assessment 1 recorded, disposition Pending, candidate SHA aaa...
-close eligibility withheld; a disposition requested against the SAME sha
-lands on this block; HEAD may have moved since
-covers ASSESS-2.7 ASSESS-2.8 ASSESS-2.17 ASSESS-4.4 ASSESS-4.17

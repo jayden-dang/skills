@@ -1,3 +1,0 @@
-# uncovered-goal — GOAL-3 is neither cited by a milestone nor dispositioned
-R2
-# R2 withholds the next-action recommendation

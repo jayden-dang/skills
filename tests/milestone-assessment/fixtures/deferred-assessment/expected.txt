@@ -1,3 +1,0 @@
-Deferred is non-terminal: close withheld, assessment still open, and a later
-Accepted/Overridden may still be appended to History
-covers ASSESS-4.20 ASSESS-2.16

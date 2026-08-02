@@ -1,3 +1,0 @@
-assemble WITHOUT committing the roadmap: the Commitment line is present
-but untracked, so the pickaxe returns empty — report, withhold verdict
-covers ASSESS-1.10

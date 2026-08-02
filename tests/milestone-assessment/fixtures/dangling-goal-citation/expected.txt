@@ -1,4 +1,0 @@
-GOAL-7 is cited but never defined -> R1 (error, non-withholding) reaches the
-judgment step; record GOAL-7 Unresolved, judge no advancement, withhold the
-goal-coverage verdict; outcome verdict and close eligibility unaffected
-covers ASSESS-3.9 ASSESS-3.10

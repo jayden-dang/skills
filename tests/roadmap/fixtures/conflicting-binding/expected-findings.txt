@@ -1,2 +1,0 @@
-# conflicting-binding — CAP and SRCH2 both bind ROAD-1
-R6

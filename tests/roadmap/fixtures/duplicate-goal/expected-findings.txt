@@ -1,2 +1,0 @@
-# duplicate-goal — GOAL-1 is defined twice in the vision
-R3

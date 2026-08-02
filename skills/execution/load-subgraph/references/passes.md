@@ -41,18 +41,83 @@ same tree with the same query MUST produce the same edge set and seed set
 
 For each registered CODE with `tasks.md`:
 
-1. Split on `**Files:**` or a line that is only `Files:`; take the block until
-   the next `### ` heading (or EOF).
-2. Extract paths:
-   - Lines matching  
-     `^\s*[-*]\s*(Create|Modify|Move|Test)\s*:\s*`?([^`\n#]+)`?`  
-     → path = group 2, trim, drop `#` comments.
-   - Other path-like tokens in the block matching  
-     `` `?[A-Za-z0-9_./@+-]+(\.[A-Za-z0-9]+)?`? ``  
-     that contain `/` or a file extension.
-3. For each token, strip backticks, then apply line-suffix strip (constant above).
-4. OWNS(CODE) = set of remaining path strings. Missing tasks.md / missing Files
-   block → empty set (do not invent paths).
+### Multi-block + fence-aware stop
+
+1. Find **every** `**Files:**` header or a line that is only `Files:` (not only
+   the first).
+2. **Malformed header:** if a Files header is not followed by a newline (truncated
+   header), skip that block and emit note
+   `{kind: p1_block_skipped, code: CODE, detail: …}`.
+3. For each well-formed header, take the body until the next **stop boundary
+   outside fenced code** (fence tracker toggles on lines whose stripped content
+   starts with `` ``` ``):
+   - next Files header
+   - `#{2,6}` markdown heading
+   - Reuse / Interfaces / Depends-on section headers
+   - Steps / checklist step headers (`**Steps`, `Steps:`, `- [ ] Step…`)
+4. If fence depth ≠ 0 at the stop boundary (unclosed fence), skip **that block
+   only**, emit `p1_block_skipped`, and keep valid sibling Files blocks.
+5. Extract candidates **only inside** each accepted Files body (never after a
+   stop boundary).
+
+### Candidate provenance
+
+Tag each raw candidate at extraction:
+
+| provenance | Source |
+|---|---|
+| `labeled` | Create/Modify/Move/Test bullet path |
+| `backticked` | `` `path` `` token inside Files body |
+| `slash_path` | unquoted token containing `/` |
+| `unquoted_prose` | other unquoted path-like token in Files body |
+
+### Classifier (fixed order, reject-unsafe-first)
+
+For each candidate with its provenance:
+
+1. **Normalize:** strip surrounding backticks for the working string; strip
+   trailing `#` comments; apply line-suffix strip
+   (`:[0-9]+([,-][0-9]+)*`).
+2. **Empty → drop.**
+3. **Reject unsafe / sentinel forms (before any accept):**
+   - token ∈ {`.`, `..`}
+   - URL schemes: `://` or leading `http:` / `https:` / `file:`
+   - absolute path: starts with `/` or Windows `^[A-Za-z]:[\\/]`
+   - traversal: any segment `..` after split on `/`
+   - trailing prose punctuation: ends with `.` `,` `;` `:` `)` `]` `}`
+4. **Provenance-gated accept:**
+   - `labeled` / `backticked`: accept **plausible path form** — contains `/`,
+     **or** single segment `^[A-Za-z0-9._-]+$` with no consecutive `..`, **or**
+     starts with `.` and length > 1 (dotfile). Unknown extensions allowed.
+   - `slash_path`: accept if segments non-empty and no remaining reject rules.
+   - `unquoted_prose`: accept **only if**:
+     - root **dotfile** `^\.[A-Za-z0-9][A-Za-z0-9._-]*$`, or
+     - basename matches **broad extension set**:  
+       `.md .py .ts .tsx .js .jsx .mjs .cjs .sh .bash .zsh .json .yml .yaml
+       .toml .lock .txt .html .css .svg .rs .go .java .kt .swift .rb .php .cs
+       .cpp .h .hpp .sql .proto .graphql .vue .svelte .r .jl .scala .clj .ex
+       .exs .erl .hs .lua .pl .pm .rake .gradle .cmake .mk`, or
+     - single-segment **well-known root** (no `.` in token), exact set  
+       `{Makefile, Dockerfile, LICENSE, COPYING, NOTICE, AUTHORS,
+       CONTRIBUTING, CHANGELOG, HISTORY, Gemfile, Rakefile, Procfile,
+       Vagrantfile}` (case-sensitive as written).
+5. **Denoise** with Pass D stop-lists; drop stop-listed tokens.
+6. Else **drop**.
+
+Explicit non-accepts for dotted identifiers as unquoted prose:
+`self.assertEqual`, `unittest.TestCase`, `json.loads`, `re.search`.
+
+### Result shape + reliability
+
+- `extract` result for a feature: `{ paths: set[str], notes: [Note] }`.
+- **Missing `tasks.md`:** empty paths, **no** `p1_file_unreadable` note.
+- **Unreadable** (exists but read/UTF-8 decode fails): empty paths + note
+  `{kind: p1_file_unreadable, code: CODE, detail: …}`; continue other features.
+- Notes: **no silent count cap** — retain all reliability notes for the query;
+  dedupe only by `kind+code+detail`.
+
+OWNS(CODE) = union of accepted paths across all non-skipped Files blocks.
+Missing Files blocks → empty set (do not invent paths).
 
 ---
 

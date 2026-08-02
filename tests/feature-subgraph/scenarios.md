@@ -16,6 +16,12 @@ Story 7 guards: FSUB-7.1 FSUB-7.2 FSUB-7.3 FSUB-7.4 FSUB-7.5 FSUB-7.6 FSUB-7.7
 
 Story 8 NFR: FSUB-8.1 FSUB-8.2 FSUB-8.3
 
+## FSUBR Wave A — P1 OWNS (Task 1)
+
+P1 multi-block + classifier: FSUBR-2.1 FSUBR-2.2 FSUBR-2.3 FSUBR-2.4 FSUBR-2.5 FSUBR-2.6 FSUBR-2.7 FSUBR-2.8 FSUBR-2.9
+
+Reliability notes: FSUBR-10.3 FSUBR-10.4
+
 ## FSUB-1.2 skill-path dual-run
 
 Two independent load-subgraph runs against the same frozen fixture (following passes.md only) MUST yield the same edge set and seed set. reference_derive is the oracle for expected math; the skill MUST NOT import it.

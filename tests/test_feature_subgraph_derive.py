@@ -152,5 +152,185 @@ class TestP0AndCoverage(unittest.TestCase):
         self.assertEqual(owns, set())
 
 
+class TestFSUBRP1Owns(unittest.TestCase):
+    """FSUBR P1 multi-block extract, classifier, reliability notes."""
+
+    def _paths(self, result):
+        if isinstance(result, dict):
+            return result["paths"]
+        return result
+
+    def _notes(self, result):
+        if isinstance(result, dict):
+            return result.get("notes") or []
+        return []
+
+    def _files_body(self, *lines: str) -> str:
+        return "### Task\n\n**Files:**\n" + "\n".join(lines) + "\n\n**Reuse:** none\n"
+
+    def test_FSUBR_2_1_2_9_multi_block_retains_later_task_paths(self):
+        """FSUBR-2.1 FSUBR-2.9 later-task Files paths retained."""
+        root = FIX / "p1-later-files"
+        result = rd.owns_result_for_code(root, "LATER")
+        paths = self._paths(result)
+        self.assertIn("src/first.ts", paths)
+        self.assertIn("src/later.ts", paths)
+
+    def test_FSUBR_2_2_2_3_stops_at_reuse_not_step_prose(self):
+        """FSUBR-2.2 FSUBR-2.3 Files ends at Reuse; prose outside not extracted."""
+        text = (
+            "### Task 1\n\n"
+            "**Files:**\n"
+            "- Create: `src/keep.ts`\n"
+            "**Reuse:** none\n\n"
+            "After reuse mention `src/outside.ts` and self.assertEqual\n"
+        )
+        result = rd.extract_owns_from_tasks_text(text)
+        paths = self._paths(result)
+        self.assertIn("src/keep.ts", paths)
+        self.assertNotIn("src/outside.ts", paths)
+        self.assertNotIn("self.assertEqual", paths)
+
+    def test_FSUBR_2_2_fence_internal_heading_not_boundary(self):
+        """FSUBR-2.2 ### inside fence does not end Files section."""
+        root = FIX / "p1-fence-heading"
+        result = rd.owns_result_for_code(root, "FENCE")
+        paths = self._paths(result)
+        self.assertIn("src/before.ts", paths)
+        self.assertIn("src/after.ts", paths)
+
+    def test_FSUBR_2_4_2_5_2_6_classifier_decision_table(self):
+        """FSUBR-2.4 FSUBR-2.5 FSUBR-2.6 decision-table pos/neg rows."""
+        # labeled / backticked accepts
+        labeled = self._files_body(
+            "- Create: `AGENTS.md`",
+            "- Create: `Makefile`",
+            "- Create: `weird.xyz`",
+            "- Create: `self.assertEqual`",
+            "- Modify: `.gitignore`",
+            "- Create: `src/app/App.tsx`",
+            "- Create: `.claude-plugin/plugin.json`",
+            "- Test: `foo.py`",
+        )
+        lp = self._paths(rd.extract_owns_from_tasks_text(labeled))
+        for token in (
+            "AGENTS.md",
+            "Makefile",
+            "weird.xyz",
+            "self.assertEqual",
+            ".gitignore",
+            "src/app/App.tsx",
+            ".claude-plugin/plugin.json",
+            "foo.py",
+        ):
+            self.assertIn(token, lp, f"labeled/backticked should accept {token!r}")
+
+        # unquoted prose accepts
+        prose_ok = self._files_body(
+            "README.md assertions.md Makefile .gitignore",
+            "src/app/App.tsx AGENTS.md foo.py",
+        )
+        op = self._paths(rd.extract_owns_from_tasks_text(prose_ok))
+        for token in (
+            "README.md",
+            "assertions.md",
+            "Makefile",
+            ".gitignore",
+            "src/app/App.tsx",
+            "AGENTS.md",
+            "foo.py",
+        ):
+            self.assertIn(token, op, f"unquoted_prose should accept {token!r}")
+
+        # unquoted prose rejects
+        prose_bad = self._files_body(
+            "pass. contract. self.assertEqual unittest.TestCase",
+            "json.loads re.search nothing weird.xyz",
+            ". ..",
+        )
+        bp = self._paths(rd.extract_owns_from_tasks_text(prose_bad))
+        for token in (
+            "pass.",
+            "contract.",
+            "self.assertEqual",
+            "unittest.TestCase",
+            "json.loads",
+            "re.search",
+            "nothing",
+            "weird.xyz",
+            ".",
+            "..",
+        ):
+            self.assertNotIn(token, bp, f"unquoted_prose should reject {token!r}")
+
+        # slash_path accepts
+        slash = self._files_body("src/app/App.tsx .claude-plugin/plugin.json")
+        sp = self._paths(rd.extract_owns_from_tasks_text(slash))
+        self.assertIn("src/app/App.tsx", sp)
+        self.assertIn(".claude-plugin/plugin.json", sp)
+
+        # fixture tree also covers mixed labeled + prose surface
+        root = FIX / "p1-classifier"
+        fixture_paths = self._paths(rd.owns_result_for_code(root, "CLS"))
+        self.assertIn("AGENTS.md", fixture_paths)
+        self.assertIn("src/app/App.tsx", fixture_paths)
+        self.assertNotIn("pass.", fixture_paths)
+        self.assertNotIn("json.loads", fixture_paths)
+        self.assertNotIn("nothing", fixture_paths)
+
+    def test_FSUBR_2_7_2_8_legacy_forms_and_line_suffix(self):
+        """FSUBR-2.7 FSUBR-2.8 legacy bullets/prose + glued line-suffix strip."""
+        root = FIX / "legacy-glued-lines"
+        result = rd.owns_result_for_code(root, "ALPHA")
+        paths = self._paths(result)
+        self.assertIn("src/app/App.tsx", paths)
+        self.assertIn("skills/foo/SKILL.md", paths)
+        self.assertIn("tests/test_alpha.py", paths)
+        self.assertIn("lib/util/dates.ts", paths)
+        self.assertNotIn("src/app/App.tsx:86,1030", paths)
+
+    def test_FSUBR_10_3_malformed_last_block_skips_keeps_siblings(self):
+        """FSUBR-10.3 unclosed fence last block → p1_block_skipped; prior paths kept."""
+        root = FIX / "p1-malformed-block"
+        result = rd.owns_result_for_code(root, "MAL")
+        paths = self._paths(result)
+        notes = self._notes(result)
+        self.assertIn("src/ok.ts", paths)
+        self.assertIn("src/also.ts", paths)
+        self.assertNotIn("src/lost.ts", paths)
+        kinds = {n.get("kind") for n in notes}
+        self.assertIn("p1_block_skipped", kinds)
+
+    def test_FSUBR_10_4_unreadable_tasks_emits_note_empty_paths(self):
+        """FSUBR-10.4 unreadable tasks.md → p1_file_unreadable; sibling features continue."""
+        root = FIX / "p1-unreadable"
+        bad = rd.owns_result_for_code(root, "BAD")
+        good = rd.owns_result_for_code(root, "GOOD")
+        self.assertEqual(self._paths(bad), set())
+        kinds = {n.get("kind") for n in self._notes(bad)}
+        self.assertIn("p1_file_unreadable", kinds)
+        self.assertIn("src/good.ts", self._paths(good))
+
+    def test_FSUBR_10_4_missing_tasks_empty_no_unreadable_note(self):
+        """FSUBR-10.4 missing tasks.md → empty OWNS, no p1_file_unreadable."""
+        root = FIX / "p1-missing-tasks"
+        result = rd.owns_result_for_code(root, "MISS")
+        self.assertEqual(self._paths(result), set())
+        kinds = {n.get("kind") for n in self._notes(result)}
+        self.assertNotIn("p1_file_unreadable", kinds)
+
+    def test_FSUBR_10_3_notes_not_silently_capped(self):
+        """FSUBR-10.3 reliability notes retained (no silent count drop)."""
+        text = (
+            "### Task A\n\n**Files:**\n- Create: `src/a.ts`\n```python\nx\n\n"
+            "### Task B\n\n**Files:**\n- Create: `src/b.ts`\n```python\ny\n"
+        )
+        # two unclosed fences if each block fails independently — at least one note
+        result = rd.extract_owns_from_tasks_text(text)
+        notes = self._notes(result)
+        skipped = [n for n in notes if n.get("kind") == "p1_block_skipped"]
+        self.assertGreaterEqual(len(skipped), 1)
+
+
 if __name__ == "__main__":
     unittest.main()

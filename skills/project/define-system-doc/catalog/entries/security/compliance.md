@@ -29,6 +29,7 @@ Repository/runtime facts with grades; human confirmation for high-risk classes.
 ## Real readers and decision points
 | Reader | Decision point | Suggestion protocol |
 |---|---|---|
+| `skills/spec/specify-behavior/SKILL.md` | NFR Security grounding when regulatory (Step 2b) | Yes — once per entry when compliance material |
 | `skills/spec/design-solution/SKILL.md` | Security: CMP citations | Yes |
 | `skills/execution/audit-trace/SKILL.md` | CMP referential integrity | No suggest |
 

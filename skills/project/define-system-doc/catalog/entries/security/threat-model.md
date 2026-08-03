@@ -29,6 +29,7 @@ Repository/runtime facts with grades; human confirmation for high-risk classes.
 ## Real readers and decision points
 | Reader | Decision point | Suggestion protocol |
 |---|---|---|
+| `skills/spec/specify-behavior/SKILL.md` | NFR Security grounding (Step 2b) | Yes — once per entry when Security NFR material |
 | `skills/spec/design-solution/SKILL.md` | Security: citations / trust design | Yes |
 | `skills/execution/audit-trace/SKILL.md` | TB/THR referential integrity | No suggest |
 

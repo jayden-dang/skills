@@ -29,6 +29,7 @@ Repository/runtime facts with grades; human confirmation for high-risk classes.
 ## Real readers and decision points
 | Reader | Decision point | Suggestion protocol |
 |---|---|---|
+| `skills/spec/specify-behavior/SKILL.md` | NFR Accessibility grounding (Step 2b) | Yes — once per entry when UI a11y NFR material |
 | `skills/spec/design-solution/SKILL.md` | a11y design | Yes |
 | `skills/acceptance/validate-ui/SKILL.md` | a11y checks | Yes |
 | `skills/review/inspect-change/SKILL.md` | Standards axis | Optional |

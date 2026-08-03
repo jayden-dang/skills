@@ -31,6 +31,7 @@ Product interviews, vision goals, codebase topology; human confirmation for stan
 | Reader | Decision point | Suggestion protocol |
 |---|---|---|
 | `skills/discovery/frame-change/SKILL.md` | Product scope / users / goals check | Yes — once per entry per frame-change when material |
+| `skills/spec/specify-behavior/SKILL.md` | NFR Performance grounding (Step 2b) | Yes — once per entry when Performance NFR material |
 | `skills/acceptance/validate-feature/SKILL.md` | Acceptance checklist / success criteria | Yes — once per entry per validate-feature when metrics/personas material |
 | `skills/project/define-project/SKILL.md` | Project layer create/update | No auto; may name define-system-doc |
 

@@ -111,26 +111,82 @@ Walk the four quality attributes:
 - **Accessibility** — conformance target (e.g. WCAG 2.1 AA), keyboard and
   screen-reader support.
 
-Write each applicable one as an EARS criterion (Step 2's forms) that names a
+### System docs for NFR grounding (thin consult)
+
+**Load:** `skills/project/define-system-doc/consult-recipe.md` (authority,
+hard-constraint precedence, no-op when absent/non-authoritative, once-per-entry
+suggest, never auto-invoke).
+
+**When:** before writing each quality-attribute line that is **material** for
+this feature (the attribute is not already headed for `None`). Do **not** load
+architecture narrative, codebase map/modules/ownership/deps, or ops runbooks
+here — those are design-solution / plan-tasks layer.
+
+| Attribute material when… | Consult if Approved | Ground the NFR with… |
+|---|---|---|
+| Feature owns a measured latency/throughput surface | `docs/product/metrics.md` first; if Absent/non-authoritative, then `docs/ops/reliability.md` for latency/throughput **SLO** lines only | standing product metric, else greppable `SLO-N` that names this surface — never a freehand number when either doc defines one |
+| Crosses authn/authz, tenant scope, public vs admin data, or compliance | `docs/security/threat-model.md`; also `compliance.md` when regulatory | greppable `TB-N` / `THR-N` / `CMP-N` **only** when bold-defined in those docs |
+| Owns availability, error budget, recovery, or durability targets | `docs/ops/reliability.md` | greppable `SLO-N` (or stated error-budget rule) **only** when bold-defined. A pure latency SLO used under Performance does **not** force Reliability material |
+| Ships UI a person perceives (not headless/API-only) | `docs/standards/accessibility.md` | house conformance target and keyboard/SR rules |
+
+**Story actors (not an NFR slot):** WHEN a `**Story:**` line names a product role
+and `docs/product/personas.md` is Approved, align the actor with standing persona
+vocabulary — do not invent a parallel cast.
+
+**Hard constraints for this step** (outrank any system doc — consult-recipe):
+confirmed frame-change decisions and vision non-goals. Live `ARCH-N` the feature
+already relies on stays binding; do not invent a contradicting NFR.
+
+**Write rules after consult:**
+
+- **Approved + material:** write the NFR EARS criterion so its measurable target
+  (and any TB/THR/CMP/SLO ID you cite) comes from the Approved doc — not from
+  industry habit or a number you invent. Name verification method as today.
+- **Absent or non-authoritative (after the table's full path):** CONTINUE
+  (no-op). Then, in order: (1) frame-change lock that already states a target →
+  use it; (2) else domain-judgment EARS **without** a fabricated greppable ID;
+  (3) else `None — no standing <entry> target`. Suggest
+  `/define-system-doc <entry-key>` **at most once per entry** when the gap is
+  material for *this* feature; never auto-invoke.
+- **Do not invent** TB/THR/CMP/SLO (or product metric IDs) without a bold
+  definition in an Approved doc. Prefer omitting the ID (prose target from a
+  lock) or `None — no standing <entry> target` over a fabricated ID.
+- Design-solution still owns HOW (`Security:` / `Reliability:` design slots,
+  seams, modules). This step only mints **WHAT** quality criteria as `CODE-N.M`.
+
+Write each applicable attribute as an EARS criterion (Step 2's forms) that names a
 **measurable-or-checkable target AND its verification method**, carrying a
 hierarchical `**CODE-N.M**` ID so it traces through tasks and tests exactly like
-a behavioral criterion. Example:
+a behavioral criterion. Example (targets illustrated only — prefer standing docs
+when Approved):
 
 - `**CODE-3.1** WHEN the notes list renders 1,000 items THE SYSTEM SHALL paint
   the first screen within 200 ms at p95 — verified by a CI performance trace.`
 
 An attribute that does not apply is **not silently dropped**: record it as
 `None` with a short reason (e.g. "Accessibility: None — headless CLI") so the
-skip is a visible decision, not an oversight.
+skip is a visible decision, not an oversight. `None` is for non-material
+attributes, **not** a shortcut past consult when the attribute *is* material.
 
 The category is **additive, never a new gate**: a feature with no quality-attribute
 concerns records `None` across the four and its behavioral criteria, structure,
 and both authoring modes are unchanged — NFRs surface quality concerns, they do
 not block on them. In tier-1 mini-spec mode, capture an NFR only when the fix
-itself is a quality-attribute change; the category adds no NFR obligation to a
-behavioral mini-spec.
-**Done when:** the NFR section carries `**Section-kind:** nfr`, and each of the
-four quality attributes is either an IDed NFR criterion or explicitly `None`.
+itself is a quality-attribute change (run this thin consult only for that
+attribute); the category adds no NFR obligation to a behavioral mini-spec.
+
+| Thought | Reality |
+|---|---|
+| "Design will set security/SLO targets later" | Design `Satisfies` NFR IDs; freestyled design prose is not a `CODE-N.M` contract |
+| "Industry default (200 ms / WCAG AA) is fine" | Approved house docs outrank habit; inventing a target when the matching doc is Approved is a miss |
+| "No system docs — invent TB-1 so design can cite it" | No bold definition → no ID; use prose or `None — no standing threat-model` |
+| "Consult means load architecture and codebase map" | Wrong layer; thin table only — design-solution owns shape docs |
+| "Standup in five — mark all four None" | Material attributes need a criterion or an honest reason; time changes *when* you report, not whether consult ran |
+
+**Done when:** the NFR section carries `**Section-kind:** nfr`; each of the four
+quality attributes is either an IDed NFR criterion or explicitly `None` with
+reason; and for every **material** attribute the consult outcome is recorded
+(Approved doc used, or Absent/non-authoritative no-op) before the line is written.
 
 ## Step 3: Guard existing behavior
 

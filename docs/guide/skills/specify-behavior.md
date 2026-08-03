@@ -6,7 +6,7 @@
 |---|---|
 | **Bucket** | spec |
 | **Invocation** | model-invocable (the agent calls it on its own) |
-| **Reads** | `templates/requirements.md`, `docs/specs/INDEX.md`, the approved frame-change outcome |
+| **Reads** | `templates/requirements.md`, `docs/specs/INDEX.md`, the approved frame-change outcome; optional Hybrid 1A system docs for NFR grounding via `define-system-doc/consult-recipe` (metrics, threat-model, reliability, accessibility, personas) when Approved and material |
 | **Writes** | `docs/specs/<date>-<feature>/requirements.md`, a row in `docs/specs/INDEX.md`, an independent review to `.skills/<slug>-req-review.md` (via subagent) |
 | **Calls** | a review subagent (independent code-claim check), then [`design-solution`](design-solution.md) (tier 2) or [`test-first`](test-first.md) (tier 1) |
 | **Called by** | [`frame-change`](frame-change.md) |
@@ -24,6 +24,8 @@ The skill walks five steps, one todo each, starting from `templates/requirements
 1. **Register the feature code.** Pick a short unique prefix — 2 to 12 characters, `A–Z0–9`, starting with a letter (`SHELL`, `SYNC2`). Add a row to `docs/specs/INDEX.md` with status Draft *before* writing any requirements. A retired code is never reused, so the ID namespace stays globally unambiguous.
 
 2. **Write stories and EARS criteria.** One `## N. <title>` section per user story. Each acceptance criterion is an EARS statement with a hierarchical ID `**CODE-N.M**`. One observable behavior per criterion — if a sentence needs "and", it is usually two criteria.
+
+2b. **Non-functional requirements (quality attributes).** After behavioral stories, fill Performance / Security / Reliability / Accessibility as IDed EARS criteria or explicit `None`. **Thin system-docs consult** (not design's full table): when an attribute is material, load `consult-recipe` and ground targets from Approved `docs/product/metrics.md` (Performance; if absent, latency/throughput SLOs in `docs/ops/reliability.md`), `docs/security/threat-model.md` (+ compliance when regulatory), `docs/ops/reliability.md` (Reliability), or `docs/standards/accessibility.md`. Do not invent TB/THR/CMP/SLO IDs without bold definitions; do not pull architecture/codebase shape docs here. Align Story actors with Approved `docs/product/personas.md` when present. Absent docs → no-op + optional once-per-entry `/define-system-doc` suggest.
 
 3. **Guard existing behavior.** For every existing behavior the feature touches, add a guard that pins it in place so an agent cannot break load-bearing behavior nobody mentioned.
 

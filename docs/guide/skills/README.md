@@ -1,8 +1,7 @@
 # Skill reference
 
-~57 skills in eleven buckets (engineering package). Each should have its own page
-where present; see also [`AGENTS.md` §11](../../../AGENTS.md#11-quick-reference-the-56-skills)
-and [Start here](../START-HERE.md).
+~58 skills in eleven buckets (engineering package). Each should have its own page
+where present; see also [Start here](../START-HERE.md).
 
 **Invocation** is the thing to check first. A **model-invocable** skill is invoked by the agent on its own when its description matches the situation. A **user-invoked** skill carries `disable-model-invocation: true` in its frontmatter — the agent *cannot* invoke it, so you run it as a slash command.
 
@@ -42,7 +41,8 @@ Turn an idea into an agreed shape. Produces no code.
 | [`run-spike`](run-spike.md) | model | Throwaway code answering one design question. The answer is the only deliverable |
 | [`define-domain`](define-domain.md) | model | Maintains `CONTEXT.md` and `docs/adr/`. ADRs pass a three-part gate |
 | [`pathfind`](pathfind.md) | `/pathfind` | Layer 0 multi-session decision map (Chart / Work) before delivery |
-| [`interpret-session`](interpret-session.md) | `/interpret-session` | Companion session for non-English decision work |
+| [`interpret-session`](interpret-session.md) | `/interpret-session` | Companion session for non-English decision work — stance + English reply |
+| [`thinking-practice`](thinking-practice.md) | `/thinking-practice` | Sibling companion: equip territory/unknowns/questions/calibration without recommending; hands off to interpret-session only on explicit train→ship |
 
 ## spec
 

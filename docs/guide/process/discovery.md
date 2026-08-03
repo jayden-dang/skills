@@ -1,6 +1,6 @@
 # Phase 1 — Discovery
 
-**Skills:** [`frame-change`](../skills/frame-change.md) (+ [`load-subgraph`](../skills/load-subgraph.md)) · [`clarify-decisions`](../skills/clarify-decisions.md) · [`research`](../skills/research.md) · [`run-spike`](../skills/run-spike.md) · [`define-domain`](../skills/define-domain.md) · [`/pathfind`](../skills/pathfind.md)
+**Skills:** [`frame-change`](../skills/frame-change.md) (+ [`load-subgraph`](../skills/load-subgraph.md)) · [`clarify-decisions`](../skills/clarify-decisions.md) · [`research`](../skills/research.md) · [`run-spike`](../skills/run-spike.md) · [`define-domain`](../skills/define-domain.md) · [`/pathfind`](../skills/pathfind.md) · [`/interpret-session`](../skills/interpret-session.md) · [`/thinking-practice`](../skills/thinking-practice.md)
 
 **Produces:** an agreed shape, a stated ceremony tier, an updated glossary, possibly an ADR, and — for tier ≥ 1 — an invocation of `specify-behavior`.
 
@@ -67,6 +67,15 @@ The run-spike's code does not matter afterward. **Only the answer does.** Captur
 Then return to the interview with the evidence and put the decision back to the user. Research informs; it never decides.
 
 **Done when** no pending question is being answered by guesswork.
+
+### Companion sessions (optional, user-invoked)
+
+When the main discovery or technical thread runs in English (or another session) and you want a parallel window in your own language:
+
+- **[`/thinking-practice`](../skills/thinking-practice.md)** — equip thinking without a recommendation: territory, named unknowns, question scaffolds, evidence calibration. Hands off to interpret-session only when you explicitly switch from training to shipping (`thinking-handoff/v1`).
+- **[`/interpret-session`](../skills/interpret-session.md)** — committed second opinion (stance) and the English reply to carry back after you decide.
+
+They are siblings, not modes of each other. Use thinking-practice when the risk is cognitive offloading; use interpret-session when you need a defendable pick and a paste-back reply.
 
 ### 4. Propose approaches
 

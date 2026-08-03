@@ -1,5 +1,26 @@
 # Changelog
 
+## 0.4.0-pre.1 — 2026-08-03
+
+### New: `thinking-practice` — thinking gym without recommendation
+
+Sibling of `interpret-session` for native-language **reasoning ownership**. Equips
+territory, named unknowns, question scaffolds, and evidence calibration; never
+encodes a preferred choice. Explicit train→ship only via neutral
+`thinking-handoff/v1` to `interpret-session` (Path A checkpoint or Path B escape).
+
+- **New skill** `skills/discovery/thinking-practice/` (user-invoked `/thinking-practice`)
+  — Iron Laws: no recommendation anywhere; no invent-to-fill; no auto-ship from
+  urgency; no learning-complete / ship-ready claims from single-session proxies
+- **Packet** `thinking-handoff/v1` with field-level provenance
+  (`references/thinking-handoff-v1.md`)
+- **Pressure evidence** in `TESTS.md` (grok-4.5 RED/GREEN: demand-pick, after-loop,
+  Path B ambiguous reject, Path A/B packet smoke)
+- **Packaging:** Engineer Pack **0.4.0-pre.1** — `plugin.json` + `marketplace.json`
+  list `./skills/discovery/thinking-practice`
+- **Docs:** skill guide page, discovery inventory (README / START-HERE / process),
+  configure-repo posture note, interpret-session See also
+
 ## 0.3.0 — 2026-07-31
 
 ### Feature: one review-product-flow run file, plus an optional live guide (`DFSYNC`)

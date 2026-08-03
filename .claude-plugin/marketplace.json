@@ -9,7 +9,7 @@
       "name": "engineer-pack",
       "source": "./",
       "description": "Engineer Pack: A-to-Z agentic development (ideation to release, requirements traceability, roadmap/milestones). Personal Pack is separate \u2014 not included here.",
-      "version": "0.4.0-pre.0",
+      "version": "0.4.0-pre.1",
       "author": {
         "name": "Jayden Dang"
       },
@@ -18,6 +18,7 @@
         "./skills/discovery/define-domain",
         "./skills/discovery/clarify-decisions",
         "./skills/discovery/interpret-session",
+        "./skills/discovery/thinking-practice",
         "./skills/discovery/run-spike",
         "./skills/discovery/research",
         "./skills/discovery/pathfind",

@@ -193,8 +193,12 @@ def extract_walk_product_json(text: str) -> Optional[Dict[str, Any]]:
     Still useful under v2: the blob a guide embeds is the whole run document,
     so a guide can be read back when only the HTML survives.
     """
-    marker = "window.__WALK PRODUCT__"
+    # Prefer valid JS identifier; still accept legacy spaced name in old HTML.
+    marker = "window.__WALK_PRODUCT__"
     idx = text.find(marker)
+    if idx < 0:
+        marker = "window.__WALK PRODUCT__"
+        idx = text.find(marker)
     if idx < 0:
         return None
     eq = text.find("=", idx)
@@ -402,7 +406,7 @@ def render_html(catalog: Dict[str, Any], shell_path: Path) -> str:
     blob = json.dumps(payload, ensure_ascii=False, indent=2)
     # Escape </script> in JSON strings
     blob = blob.replace("</", "<\\/")
-    assignment = f"window.__WALK PRODUCT__ = {blob};"
+    assignment = f"window.__WALK_PRODUCT__ = {blob};"
     pattern = re.compile(
         r"/\*\s*__CASES_JSON__\s*\*/.*?/\*\s*__END_CASES_JSON__\s*\*/",
         re.DOTALL,

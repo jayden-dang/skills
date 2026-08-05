@@ -1,8 +1,31 @@
 # Changelog
 
+## 0.4.0-pre.2 — 2026-08-05
+
+### Replace: `thinking-practice` → `deepen-codebase` (learning companion)
+
+Retires the train→ship / anti-recommendation gym. New skill is a **subject-agnostic
+learning companion**: dual-axis curriculum (Bloom kinds × foundation layers), slow
+and deep, any codebase or technical topic — not a mode of interpret, not brainstorm
+practice.
+
+- **New skill** `skills/discovery/deepen-codebase/` (user-invoked `/deepen-codebase`)
+  — Iron Laws: foundation before delta; no product pick; no "standard" without
+  authority tier + source; no mastery claims; read-only
+- **Curriculum** `references/curriculum.md` — subject adapter probes + authority
+  ladder; worked sketches are examples only (memory session, payments, auth)
+- **Optional packet** `foundation-note/v1` (knowledge only) replaces
+  `thinking-handoff/v1`
+- **Removed** `skills/discovery/thinking-practice/`
+- **Packaging:** `plugin.json` + `marketplace.json` path swap
+- **Docs:** guide page, discovery companions, inventory rows, interpret See also,
+  configure-repo posture note
+
 ## 0.4.0-pre.1 — 2026-08-03
 
 ### New: `thinking-practice` — thinking gym without recommendation
+
+*(Superseded by `deepen-codebase` in 0.4.0-pre.2.)*
 
 Sibling of `interpret-session` for native-language **reasoning ownership**. Equips
 territory, named unknowns, question scaffolds, and evidence calibration; never

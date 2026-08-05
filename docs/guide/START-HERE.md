@@ -152,7 +152,7 @@ Personal OS is a **separate** package — [personal-os START-HERE](../personal-o
 |---|---|
 | **meta** | `gate-session` (m, si), `/ask-me-bro`, `/author-skills`, `/teach-pack` |
 | **setup** | `/configure-repo`, `/bootstrap-repo` |
-| **discovery** | `frame-change`, `clarify-decisions`, `research`, `run-spike`, `define-domain`, `/pathfind`, `/interpret-session`, `/thinking-practice` |
+| **discovery** | `frame-change`, `clarify-decisions`, `research`, `run-spike`, `define-domain`, `/pathfind`, `/interpret-session`, `/deepen-codebase` |
 | **spec** | `specify-behavior`, `design-solution`, `plan-tasks` |
 | **execution** | `build-in-waves`, `build-by-story`, `build-inline`, `test-first`, `root-cause`, `prove-claim`, `audit-trace`, **`load-subgraph`**, `isolate-workspace` |
 | **review** | `inspect-change`, `polish-diff`, `vet-feedback`, `review-invariants`, `/study-change`, `/brief-team`, `/select-review-sample` |

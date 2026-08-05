@@ -122,7 +122,7 @@ Confirm:
 
 ### G. Project posture
 
-Explainer: two standing facts about the project — its **delivery intent** (how robust the output must be) and its **lifecycle stage** (where it is in its life). `frame-change` and `clarify-decisions` read them to right-size ceremony (a run-spike need not weigh data migration or deprecation; a released, scaling system weighs them heavily), and `interpret-session` / `thinking-practice` reuse them so they never re-ask. They live in `docs/agents/project.md` and the user edits those two lines directly as the project moves phase.
+Explainer: two standing facts about the project — its **delivery intent** (how robust the output must be) and its **lifecycle stage** (where it is in its life). `frame-change` and `clarify-decisions` read them to right-size ceremony (a run-spike need not weigh data migration or deprecation; a released, scaling system weighs them heavily), and `interpret-session` / `deepen-codebase` reuse them so they never re-ask. They live in `docs/agents/project.md` and the user edits those two lines directly as the project moves phase.
 
 Confirm both, pre-filled from repo signals — never invented:
 

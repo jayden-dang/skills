@@ -42,7 +42,7 @@ Turn an idea into an agreed shape. Produces no code.
 | [`define-domain`](define-domain.md) | model | Maintains `CONTEXT.md` and `docs/adr/`. ADRs pass a three-part gate |
 | [`pathfind`](pathfind.md) | `/pathfind` | Layer 0 multi-session decision map (Chart / Work) before delivery |
 | [`interpret-session`](interpret-session.md) | `/interpret-session` | Companion session for non-English decision work — stance + English reply |
-| [`thinking-practice`](thinking-practice.md) | `/thinking-practice` | Sibling companion: equip territory/unknowns/questions/calibration without recommending; hands off to interpret-session only on explicit train→ship |
+| [`deepen-codebase`](deepen-codebase.md) | `/deepen-codebase` | Learning companion: dual-axis deep foundation for any subject; no product decision; optional third session |
 
 ## spec
 

@@ -69,6 +69,7 @@ This is a deliberate departure from the strict-Socratic teaching skills, which f
 
 ## See also
 
+- [`deepen-codebase`](deepen-codebase.md) — session learning companion (explain/map first); promote here when you need graded stickiness
 - [`research`](research.md) — where a topic goes when it needs a trusted source before it can be taught
 - [`clarify-decisions`](clarify-decisions.md) — the interview primitive; shares the one-question-then-stop discipline, but elicits *your* intent rather than building *your* knowledge
 - [`author-skills`](author-skills.md) — the doctrine this skill was built under: no text ships without an observed baseline failure

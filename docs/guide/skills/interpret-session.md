@@ -83,7 +83,7 @@ Note the shape: the pick comes first, with a confidence level and the one measur
 
 ## See also
 
-- [`thinking-practice`](thinking-practice.md) — sibling companion that equips thinking without recommending; may hand off here via `thinking-handoff/v1`
+- [`deepen-codebase`](deepen-codebase.md) — sibling learning companion (any subject foundation); may share an optional knowledge-only `foundation-note/v1`
 - [`frame-change`](frame-change.md) — the English session `interpret-session` usually runs beside
 - [`clarify-decisions`](clarify-decisions.md) — the interview primitive whose questions often land in a `interpret-session` session
 - [`research`](research.md) — where the analysis sends a claim that turns on external fact

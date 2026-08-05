@@ -1,5 +1,65 @@
 # Changelog
 
+## 1.0.0-pre-released — 2026-08-05
+
+First **1.0 pre-release** of Engineer Pack. Range: `v0.2.5` → `HEAD` (no prior
+1.x tag; last cut-release tag was `v0.2.5`). Packaging version string:
+`1.0.0-pre-released` (git tag `v1.0.0-pre-released`).
+
+**Semver note:** pre-1.0 surface is large enough for a 1.0 line; this is still a
+**pre-release** (installers and consumers should treat the contract as stabilizing,
+not frozen).
+
+### Highlights since `v0.2.5`
+
+#### Discovery / learning
+
+- **`deepen-codebase`** — subject-agnostic learning companion (dual-axis curriculum,
+  foundation before delta, no product pick); replaces `thinking-practice`
+- **`pathfind`** — multi-session Chart/Work decision map (Layer 0)
+- **`interpret-session`** remains the stance + English-reply companion
+
+#### Spec / execution spine
+
+- **Docs-only spine (DOSP)** — `audit-trace` is docs-only; drop ID-in-test / trailer mandates
+- **`load-subgraph` / FSUB** — neighbors schema 1.1, cluster, blast radius; `map-features`
+- **Execute family** — `build-in-waves`, `build-by-story`, `build-inline` registered and
+  documented; mid-build notes (IMPN); `.skills/<CODE>/` layout (SKNS)
+- **`specify-behavior`** — thin system-docs consult for NFR grounding
+
+#### Acceptance / review
+
+- **review-product-flow** run file v2 + serve/guide sync (DFSYNC) and coverage taxonomy
+- **`run-product-walkthrough`** — agent-driven guide execution with FE+BE evidence
+- **`vet-product-flow`** — isolation judgment / missing-situation map before dogfood
+- **`brief-team`**, **`study-change`**, decision-record (DREC) path at ship boundaries
+
+#### Project / system docs
+
+- **Hybrid 1A First-class system docs** — `define-system-doc` catalog (codebase,
+  product, architecture, standards, security, ops)
+- **`assess-pivot-impact`**, roadmap milestones assessments
+- Skill renames to engineer-facing vocabulary (0.4.0-pre.0 lineage)
+
+#### Packaging
+
+- Engineer Pack marketplace entry version **`1.0.0-pre-released`**
+- 58 engineer skills registered; all manifest paths validated present
+- Personal Pack remains **0.2.1** (independent, opt-in)
+
+### Misc
+
+- Author-skills pressure evidence for `deepen-codebase` (RED/GREEN on grok-4.5)
+- Guide inventory, START-HERE, discovery process, cross-links updated
+
+### Verify (this cut)
+
+- `docs/agents/project.md` **absent** — no configured typecheck/lint/unit/e2e release
+  pipeline; gate substituted with: skill frontmatter lint (exit 0), marketplace/plugin
+  JSON parse, all skill paths exist (58 + personal 19)
+- `docs/specs/` **absent** — audit-trace: nothing to check (clean)
+- Smoke: same structural checks on post-bump manifests
+
 ## 0.4.0-pre.2 — 2026-08-05
 
 ### Replace: `thinking-practice` → `deepen-codebase` (learning companion)

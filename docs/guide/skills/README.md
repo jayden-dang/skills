@@ -1,6 +1,6 @@
 # Skill reference
 
-~58 skills in eleven buckets (engineering package). Each should have its own page
+~59 skills in eleven buckets (engineering package). Each should have its own page
 where present; see also [Start here](../START-HERE.md).
 
 **Invocation** is the thing to check first. A **model-invocable** skill is invoked by the agent on its own when its description matches the situation. A **user-invoked** skill carries `disable-model-invocation: true` in its frontmatter — the agent *cannot* invoke it, so you run it as a slash command.
@@ -35,6 +35,7 @@ Turn an idea into an agreed shape. Produces no code.
 
 | Skill | Invocation | What it does |
 |---|---|---|
+| [`solve-problem`](solve-problem.md) | model | Ambiguous problem intake: Problem Brief + one route; not a delivery pipeline |
 | [`frame-change`](frame-change.md) | model | **The hard gate.** No code until the ceremony tier is stated out loud; neighbors via `load-subgraph` schema 1.1 |
 | [`clarify-decisions`](clarify-decisions.md) | model | The interview primitive; nested reuses retrieval package, standalone loads once |
 | [`research`](research.md) | model | Primary sources only. One cited markdown file, ending in Open decisions |

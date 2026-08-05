@@ -8,7 +8,7 @@
 | **Invocation** | model-invocable, but injected into every session by the `session-start.sh` SessionStart hook — so in practice it is always present, surviving `/clear` and context compaction |
 | **Reads** | the incoming task, and CLAUDE.md (which outranks it in the precedence order) |
 | **Writes** | nothing — it produces the *act* of invoking the right skill, not an artifact |
-| **Calls** | [`frame-change`](frame-change.md), [`root-cause`](root-cause.md), [`amend-feature`](amend-feature.md) (auto-invoked when they fit); names [`ask-me-bro`](ask-me-bro.md), [`triage`](triage.md) for the user to run |
+| **Calls** | [`solve-problem`](solve-problem.md), [`frame-change`](frame-change.md), [`root-cause`](root-cause.md), [`amend-feature`](amend-feature.md) (auto-invoked when they fit); names [`ask-me-bro`](ask-me-bro.md), [`triage`](triage.md) for the user to run |
 | **Called by** | nothing — it is session-injected, not reached through a hand-off |
 
 ## When it fires
@@ -30,7 +30,8 @@ The invocation ritual is fixed: announce "Using [skill] to [purpose]", then foll
 The skill orders the search: process skills first, then implementation skills. It carries a short routing table for the common openings:
 
 - "Build X" routes to [`frame-change`](frame-change.md) before anything else.
-- "This is broken" routes to [`root-cause`](root-cause.md) before any fix.
+- "This is broken" with clear unexpected behavior routes to [`root-cause`](root-cause.md) before any fix.
+- Ambiguous problem / requested fix without a clear gap or workflow routes to [`solve-problem`](solve-problem.md) before guessing diagnosis vs delivery.
 - A small in-scope change to an already-shipped, spec'd feature — a tweak, recolor, or follow-on — routes to [`amend-feature`](amend-feature.md), not `frame-change`.
 - An incoming issue or external PR routes to [`triage`](triage.md), which the agent names for the user because it is user-invoked and cannot be auto-invoked.
 - When the fit is unclear, the agent suggests [`ask-me-bro`](ask-me-bro.md).

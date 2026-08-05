@@ -32,9 +32,10 @@ If you are unsure, run `/ask-me-bro` — it is a router whose entire job is mapp
 |---|---|
 | Brand-new project, empty directory | [`/bootstrap-repo`](../skills/bootstrap-repo.md) |
 | Existing repo, adopting this skill set | [`/configure-repo`](../skills/configure-repo.md) |
+| Ambiguous problem / requested fix without a clear gap or workflow | [`solve-problem`](../skills/solve-problem.md) |
 | New feature, nothing spec'd yet | [`frame-change`](../skills/frame-change.md) |
 | Small change to an already-shipped, spec'd feature | [`amend-feature`](../skills/amend-feature.md) |
-| Something is broken | [`root-cause`](../skills/root-cause.md) |
+| Something is broken (clear unexpected behavior) | [`root-cause`](../skills/root-cause.md) |
 | Unit tests green, unsure it truly works | [`validate-feature`](../skills/validate-feature.md) |
 | Want to try a finished feature by hand | [`review-product-flow`](../skills/review-product-flow.md) |
 | Have a review-product-flow guide and want the agent to run every case | [`run-product-walkthrough`](../skills/run-product-walkthrough.md) |
@@ -45,9 +46,11 @@ If you are unsure, run `/ask-me-bro` — it is a router whose entire job is mapp
 | Cutting a version | [`/cut-release`](../skills/cut-release.md) |
 | Spec has drifted from the code, or the audit-trace check comes back dirty | [`realign-spec`](../skills/realign-spec.md) |
 
-Two rules of thumb resolve most remaining ambiguity, and both come from `ask-me-bro`:
+Three rules of thumb resolve most remaining ambiguity (from `ask-me-bro`):
 
 > Never spec what you do not understand yet. Unknowns go to `research` or `run-spike` first.
+
+> When even the *workflow* is unclear (bug vs product, investigate vs build), intake with `solve-problem` before opening a delivery chain.
 
 > When two skills both seem to apply, the process skill wins. It will invoke the implementation skill itself.
 

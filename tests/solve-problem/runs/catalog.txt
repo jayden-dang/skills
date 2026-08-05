@@ -1,0 +1,13 @@
+solve-problem: Use when a symptom, opportunity, requested solution, or "problem" has no trustworthy gap or clear workflow yet — produces an evidence-grounded Problem Brief and routes it to the right discovery, diagnosis, decision, or improvement skill.
+root-cause: Use when anything behaves unexpectedly — a failing test, an error or exception, a crash, a reported bug, wrong output, a performance regression, a flaky CI job — and before proposing or applying any fix.
+frame-change: Use at the very start of the idea-to-ship chain — when the user wants to add, build, or change a feature, behavior, or component, or to start a whole new project, and no requirements, design, or code exist yet.
+amend-feature: Use when an already-shipped, spec'd feature needs a small in-scope change — a recolor, a copy edit, a tweak, a follow-up add-on to existing behavior.
+reroute-plan: Use when a mid-execution discovery invalidates an already-approved plan — the plan is wrong, re-plan needed, scope changed mid-flight.
+clarify-decisions: Use to interview the user to stress-test a plan, design, or feature idea before anything is built, when intent is underspecified.
+research: Use when a design, planning, or implementation question turns on external facts — library, API, standard, RFC, platform limits.
+run-spike: Use when a design question needs a runnable answer — spike or mock up a state model or piece of logic to feel out whether it holds up.
+inspect-change: Use when a branch, PR, diff, or set of changes needs review before merging.
+specify-behavior: Use when discovery is complete and a tier-1 or tier-2 change needs its requirements written.
+prove-claim: Use when about to say anything that implies success — done, fixed, passing, works — and before committing or closing a task.
+package-change: Use when a branch's work is finished and its commits and pull-request description still have to be written.
+pathfind: Chart or advance a multi-session decision map until the route to a destination is clear.

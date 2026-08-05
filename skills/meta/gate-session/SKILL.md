@@ -25,9 +25,12 @@ a checklist, create one todo per item.
 
 **Priority:** process skills first, then implementation skills. "Build X" →
 `frame-change` before anything, plan mode included — plans come after approved
-requirements, never before. "This is broken" → `root-cause` before any fix. Small
-in-scope change to an already-shipped, spec'd feature (a tweak, recolor, or
-follow-on) → `amend-feature`, not `frame-change`. For an incoming issue or external PR,
+requirements, never before. "This is broken" with clear unexpected behavior →
+`root-cause` before any fix. Ambiguous problem / requested solution without a
+trustworthy gap or clear workflow (bug vs product, investigate vs build) →
+`solve-problem` before guessing `root-cause` or `frame-change`. Small in-scope
+change to an already-shipped, spec'd feature (a tweak, recolor, or follow-on) →
+`amend-feature`, not `frame-change`. For an incoming issue or external PR,
 suggest the user run `/triage`; to capture the current conversation, spec, or
 idea into tracker issues, suggest `/publish-issues` (both are user-invoked — you
 cannot auto-invoke them).

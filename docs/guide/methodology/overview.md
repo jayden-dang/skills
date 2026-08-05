@@ -30,7 +30,7 @@ That ID then flows outward into everything downstream: the test that verifies th
 
 And then — this is the part that makes it real rather than aspirational — a **deterministic check**, not human diligence, keeps the chain honest. The [`audit-trace`](../resources/scripts.md#the-trace-check) skill runs a fixed sequence of `grep` and `git` passes — invoked by `prove-claim`, `cut-release`, and `realign-spec` — and reports it when a task cites a requirement that does not exist, when a shipped requirement has no covering test, or when an ID is defined twice. Unchecked audit-trace matrices rot; this one is machine-checked from primitives every repo already has.
 
-Around that spine sit **~56 skills** in eleven engineering buckets, each one a piece of process the agent is required to follow, and four **hard gates** that cannot be talked past. One of those buckets, `project/`, is an **optional layer above the feature loop**: on a large project, [`define-project`](../skills/define-project.md) maintains a repo-level product vision and an IDed architecture-invariant spine that the feature skills consult when present and ignore when absent. Horizontal neighbors (does this idea already exist?) are answered at ask time by [`load-subgraph`](../skills/load-subgraph.md) over live specs — no generated graph file.
+Around that spine sit **~59 skills** in eleven engineering buckets, each one a piece of process the agent is required to follow, and four **hard gates** that cannot be talked past. One of those buckets, `project/`, is an **optional layer above the feature loop**: on a large project, [`define-project`](../skills/define-project.md) maintains a repo-level product vision and an IDed architecture-invariant spine that the feature skills consult when present and ignore when absent. Horizontal neighbors (does this idea already exist?) are answered at ask time by [`load-subgraph`](../skills/load-subgraph.md) over live specs — no generated graph file.
 
 ## The four gates
 
@@ -60,14 +60,14 @@ See [Ceremony tiers](ceremony-tiers.md).
 ## The main chain
 
 ```
-frame-change (+ load-subgraph) ──► specify-behavior ──► design-solution ──► plan-tasks
-  (gate: no code)                     (EARS + IDs)         (Satisfies:)    (_Requirements:_)
-       │                                                                      │
-       │ tier 0/1 shortcuts                                                   ▼
+solve-problem (when gap/workflow unclear) ──► frame-change (+ load-subgraph) ──► specify-behavior ──► …
+                                                      (gate: no code)                (EARS + IDs)
+       │                                                                                      │
+       │ tier 0/1 shortcuts                                                                   ▼
        │                          isolate-workspace ──► build-in-waves | build-by-story | build-inline
-       ▼                                                                      │
- root-cause / test-first / prove-claim ◄── discipline skills govern ──────────┘
-                                                                              │
+       ▼                                                                                      │
+ root-cause / test-first / prove-claim ◄── discipline skills govern ──────────────────────────┘
+                                                                                              │
  inspect-change (+ load-subgraph) ──► validate-feature ──► land-branch ──► cut-release ──► realign-spec
                    (drive the running system as a real user)
 ```

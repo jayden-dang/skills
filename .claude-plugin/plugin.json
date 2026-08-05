@@ -7,6 +7,7 @@
   },
   "hooks": "./hooks/hooks.json",
   "skills": [
+    "./skills/discovery/solve-problem",
     "./skills/discovery/frame-change",
     "./skills/discovery/define-domain",
     "./skills/discovery/clarify-decisions",

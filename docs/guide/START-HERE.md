@@ -30,9 +30,9 @@ schema 1.1, **`cluster(focus)`**, no generated graph file).
         │                                                                    │
  IDEATION → SPEC                          BUILD                    SHIP
  ─────────────────                        ─────                    ────
- frame-change ─► specify-behavior ─► design-solution ─► plan-tasks
-   [GATE: no code]   (EARS + IDs)     (Satisfies:)   (_Requirements:_ + audit-trace)
-   + load-subgraph (neighbors 1.1)   + fresh load-subgraph   + blast_radius + cluster(CODE)
+ solve-problem? ─► frame-change ─► specify-behavior ─► design-solution ─► plan-tasks
+ (gap/workflow unclear)  [GATE: no code]  (EARS + IDs)  (Satisfies:)  (_Requirements:_ + audit-trace)
+                         + load-subgraph (neighbors 1.1)  + fresh load-subgraph  + blast_radius + cluster
         │                                                 │
         │ tier 0/1 shortcuts     isolate-workspace ─► build-in-waves | build-by-story | build-inline
         ▼                                                 │
@@ -130,6 +130,7 @@ You mostly describe the idea and **approve files**; the rest chains:
 
 | Situation | Start with |
 |---|---|
+| Ambiguous problem / requested fix without a clear gap or workflow | **`solve-problem`** → Problem Brief + one route (`root-cause` / `frame-change` / `clarify-decisions` / `STOP`) |
 | Bug / wrong behavior | describe it → **`root-cause`** (retrieval only after Phase 2) → mini-spec → `test-first` → … |
 | Small tweak to shipped, spec'd feature | **`amend-feature`** |
 | Multi-session fog | **`/pathfind`** then `frame-change` |
@@ -152,7 +153,7 @@ Personal OS is a **separate** package — [personal-os START-HERE](../personal-o
 |---|---|
 | **meta** | `gate-session` (m, si), `/ask-me-bro`, `/author-skills`, `/teach-pack` |
 | **setup** | `/configure-repo`, `/bootstrap-repo` |
-| **discovery** | `frame-change`, `clarify-decisions`, `research`, `run-spike`, `define-domain`, `/pathfind`, `/interpret-session`, `/deepen-codebase` |
+| **discovery** | `solve-problem`, `frame-change`, `clarify-decisions`, `research`, `run-spike`, `define-domain`, `/pathfind`, `/interpret-session`, `/deepen-codebase` |
 | **spec** | `specify-behavior`, `design-solution`, `plan-tasks` |
 | **execution** | `build-in-waves`, `build-by-story`, `build-inline`, `test-first`, `root-cause`, `prove-claim`, `audit-trace`, **`load-subgraph`**, `isolate-workspace` |
 | **review** | `inspect-change`, `polish-diff`, `vet-feedback`, `review-invariants`, `/study-change`, `/brief-team`, `/select-review-sample` |

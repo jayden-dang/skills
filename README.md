@@ -123,14 +123,14 @@ configuration.
 ## The flow
 
 ```
-frame-change (+ load-subgraph) ──► specify-behavior ──► design-solution ──► plan-tasks
-   (gate: no code)                    (EARS + IDs)         (Satisfies:)     (_Requirements:_)
-        │                                                                     │
-        │ tier 0/1 shortcuts                                                  ▼
+solve-problem? ──► frame-change (+ load-subgraph) ──► specify-behavior ──► design-solution ──► plan-tasks
+(gap/workflow unclear)  (gate: no code)                 (EARS + IDs)         (Satisfies:)     (_Requirements:_)
+        │                                                                               │
+        │ tier 0/1 shortcuts                                                            ▼
         │                          isolate-workspace ──► build-in-waves | build-by-story | build-inline
-        ▼                                                                     │
-  root-cause / test-first / prove-claim  ◄── discipline skills govern ────────┘
-                                                                              │
+        ▼                                                                               │
+  root-cause / test-first / prove-claim  ◄── discipline skills govern ──────────────────┘
+                                                                                        │
    inspect-change (+ load-subgraph) ──► validate-feature ──► land-branch ──► cut-release ──► realign-spec
                           (drive the running system as a real user)
 ```
@@ -173,7 +173,7 @@ and countered by name. See [The gates](docs/guide/concepts/gates.md).
 |---|---|
 | meta | `gate-session` (session gate), `ask-me-bro` (router), `author-skills`, `teach-pack` |
 | setup | `configure-repo`, `bootstrap-repo` |
-| discovery | `frame-change`, `clarify-decisions`, `research`, `run-spike`, `define-domain`, `interpret-session`, `deepen-codebase`, `pathfind` |
+| discovery | `solve-problem`, `frame-change`, `clarify-decisions`, `research`, `run-spike`, `define-domain`, `interpret-session`, `deepen-codebase`, `pathfind` |
 | spec | `specify-behavior`, `design-solution`, `plan-tasks` |
 | execution | `build-in-waves`, `build-by-story`, `build-inline`, `test-first`, `root-cause`, `prove-claim`, `audit-trace`, `load-subgraph`, `isolate-workspace` |
 | review | `inspect-change`, `study-change`, `brief-team`, `select-review-sample`, `polish-diff`, `vet-feedback`, `review-invariants` |

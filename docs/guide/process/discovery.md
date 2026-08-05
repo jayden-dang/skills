@@ -1,10 +1,16 @@
 # Phase 1 — Discovery
 
-**Skills:** [`frame-change`](../skills/frame-change.md) (+ [`load-subgraph`](../skills/load-subgraph.md)) · [`clarify-decisions`](../skills/clarify-decisions.md) · [`research`](../skills/research.md) · [`run-spike`](../skills/run-spike.md) · [`define-domain`](../skills/define-domain.md) · [`/pathfind`](../skills/pathfind.md) · [`/interpret-session`](../skills/interpret-session.md) · [`/deepen-codebase`](../skills/deepen-codebase.md)
+**Skills:** [`solve-problem`](../skills/solve-problem.md) · [`frame-change`](../skills/frame-change.md) (+ [`load-subgraph`](../skills/load-subgraph.md)) · [`clarify-decisions`](../skills/clarify-decisions.md) · [`research`](../skills/research.md) · [`run-spike`](../skills/run-spike.md) · [`define-domain`](../skills/define-domain.md) · [`/pathfind`](../skills/pathfind.md) · [`/interpret-session`](../skills/interpret-session.md) · [`/deepen-codebase`](../skills/deepen-codebase.md)
 
-**Produces:** an agreed shape, a stated ceremony tier, an updated glossary, possibly an ADR, and — for tier ≥ 1 — an invocation of `specify-behavior`.
+**Produces:** an agreed shape, a stated ceremony tier, an updated glossary, possibly an ADR, and — for tier ≥ 1 — an invocation of `specify-behavior`. From `solve-problem`: a Problem Brief and one route before that chain starts.
 
 **Produces no code.** This is the gate.
+
+## Before the hard gate — ambiguous intake
+
+When the request is problem-shaped but the **gap** or **workflow** is still unclear (symptom with green tests, requested solution without demonstrated need, bug vs product unknown), start with [`solve-problem`](../skills/solve-problem.md). It writes one evidence-grounded Problem Brief and routes once to `root-cause`, `frame-change`, `clarify-decisions`, or `STOP`. It is an intake router — not a second delivery pipeline.
+
+Clear unexpected behavior → `root-cause` directly. Clear new feature request → `frame-change` directly. Multi-session destination fog → user runs `/pathfind`.
 
 ## The hard gate
 

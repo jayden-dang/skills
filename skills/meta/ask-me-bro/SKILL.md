@@ -7,17 +7,19 @@ disable-model-invocation: true
 
 You are the router. Read the situation, name the entry point, and explain the
 chain that follows. Do not start executing the chosen flow inside this skill.
-If the entry point is model-invocable (`frame-change`, `amend-feature`, `root-cause`,
-`validate-feature`, `review-product-flow`), invoke it and let it take over. If it is a user-invoked skill
+If the entry point is model-invocable (`solve-problem`, `frame-change`,
+`amend-feature`, `root-cause`, `validate-feature`, `review-product-flow`),
+invoke it and let it take over. If it is a user-invoked skill
 (`triage`, `publish-issues`, `scan-architecture`, `configure-repo`,
 `bootstrap-repo`, `define-project`, `refresh-roadmap-status`, `assess-milestone`, `write-handoff`, `cut-release`, `pathfind`), you cannot invoke it — name it and
 tell the user to run its command, e.g. `/triage` or `/pathfind`.
 
 ## The main flow: idea → ship
 
-1. **`frame-change`** — always the entry point for new behavior. It interviews
-   the user, explores the codebase, detours to `research` / `run-spike` when a
-   question needs evidence, and ends by declaring a ceremony tier:
+1. **`frame-change`** — entry point for **clear** new behavior (outcome wanted and
+   the work is feature-shaped). It interviews the user, explores the codebase,
+   detours to `research` / `run-spike` when a question needs evidence, and ends
+   by declaring a ceremony tier:
    - **Tier 0** (typo-level, no behavior change): skip specs — `test-first` + `prove-claim`.
    - **Tier 1** (bugfix / ≤ half-day change): mini-spec — a fix requirement +
      a SHALL-CONTINUE-TO guard in the owning `requirements.md`, tagged
@@ -37,9 +39,15 @@ context-isolated per task by design.
 
 ## On-ramps
 
+- **Ambiguous problem-shaped request** — symptom, opportunity, or requested solution
+  with **no trustworthy gap** or **clear workflow** yet (bug vs product unclear;
+  “add Redis / ship X” without demonstrated need; conversion drop with green tests
+  and no analysis) → **`solve-problem`** (Problem Brief + exactly one route; stops
+  after routing). Prefer this over guessing `root-cause` vs `frame-change`.
 - Effort too large for one agent session and the route is still foggy (multi-session
   decision pathfinding) → **name `/pathfind`** for the user (user-invoked; never
-  auto-start a map). Not required for ordinary tier-0/1 work.
+  auto-start a map). Not for single-session gap intake — that is `solve-problem`.
+  Not required for ordinary tier-0/1 work.
 - Small in-scope change to an already-shipped, spec'd feature (a tweak, recolor,
   or follow-on) → **`amend-feature`** (reads the existing spec, routes to the light lane;
   escalates to `frame-change` only for genuinely new scope).
@@ -50,7 +58,9 @@ context-isolated per task by design.
   (drives the running system through the spec's behaviors as a real user).
 - Want to try a finished feature by hand in the real app → **`review-product-flow`**
   (builds a checkable, app-grounded guide you tick off while testing).
-- Something is broken → **`root-cause`** (it exits into the tier-1 mini-spec flow).
+- Something is broken **with clear unexpected behavior** (failing test, error, crash,
+  wrong output, regression) → **`root-cause`** (it exits into the tier-1 mini-spec flow).
+  Green tests + unclear gap → **`solve-problem`**, not `root-cause`.
 - A conversation/spec/idea to capture as tracker issues (the fast lane, skipping
   the full spec triad) → **`publish-issues`** (tracer-bullet slices with blocking
   edges, published agent-ready).
@@ -72,6 +82,7 @@ context-isolated per task by design.
 ## Rules of thumb
 
 - Never spec what you don't understand yet — specs are for execution, not
-  discovery; the unknowns detour is part of `frame-change` above.
+  discovery; the unknowns detour is part of `frame-change` above. When even the
+  *workflow* is unclear, intake with `solve-problem` before opening a delivery chain.
 - When two skills both seem to apply, the process skill wins; it will invoke
   the implementation skill itself.

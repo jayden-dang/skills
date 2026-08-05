@@ -217,7 +217,8 @@ This repo is configured for a spec-driven skill set.
 
 - Feature flow: `frame-change` → `specify-behavior` → `design-solution` →
   `plan-tasks` → `build-in-waves`
-- Bug on-ramp: `root-cause` (root cause first, then a guarded fix)
+- Ambiguous problem / unclear gap or workflow: `solve-problem` (Problem Brief + one route)
+- Bug on-ramp: `root-cause` (clear unexpected behavior first, then a guarded fix)
 - Capture a conversation/spec/idea into tracker issues: `/publish-issues` (user-run)
 - Incoming issues and PRs: `/triage` (user-run)
 - Traceability check: the docs-only `audit-trace` skill — run by `prove-claim` and `cut-release`;

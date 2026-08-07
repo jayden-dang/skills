@@ -37,3 +37,9 @@
 - [x] Mode unset → write header for bookkeeping and proceed
 - [x] Setup preflight is tracker sync + workspace
 - [x] plan-tasks / AGENTS / templates family wire (downstream)
+
+## Edit — polish-diff always + setup todo (2026-08-07)
+
+Same failure class and form as `build-in-waves` / `build-by-story` (shared
+After-the-last-task family): Setup Todos GATE includes **Polish Diff**;
+mandatory step + red flags + rationalization rows.

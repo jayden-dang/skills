@@ -48,6 +48,15 @@
 | continuous just run it | build-in-waves | build-in-waves |
 | story-unit unit barriers | build-by-story | build-by-story |
 
+## Edit — polish-diff always + setup todo (2026-08-07)
+
+**RED (structural + production).** Same failure as execute-family siblings:
+`polish-diff` already REQUIRED in After the last unit, but Setup Todos listed
+only plan tasks — post-plan polish dropped when task todos went green.
+
+**GREEN form.** Todos GATE: one todo per task **and** terminal **Polish Diff**.
+After-last step 3 mandatory + mark todo; red flags; rationalization rows.
+
 ## Ship gate
 
 - [x] Technique bare summary binds mode-change write-back (B2 fix)

@@ -96,8 +96,10 @@ keeps the human in the conversation turn-by-turn.
 5. **Read the plan.** Read `tasks.md` once. Capture **Global Constraints**
    (verify commands live here if `docs/agents/project.md` is missing — say so
    and suggest `configure-repo`). *Done when: constraints are in hand.*
-6. **Todos — GATE.** One todo per task via TodoWrite before Task 1. *Done when:
-   the list mirrors the plan.*
+6. **Todos — GATE.** Via TodoWrite before Task 1: **one todo per task** **and**
+   one terminal todo **Polish Diff** (whole-branch `polish-diff` before
+   acceptance — created now, not later).
+   *Done when: the list mirrors the plan **and** includes the polish-diff todo.*
 7. **Pre-flight plan review.** One batch question for plan-internal defects
    before coding. Clean scan → no comment. *Done when: conflicts ruled or none.*
 8. **Order.** Depends-on topo order; absent Depends-on → every earlier task;
@@ -175,12 +177,18 @@ discipline.
 2. **Fix findings** yourself under `test-first` (still no implementer subagent unless
    the user explicitly lifts the inline route). Re-run `inspect-change` if the
    fix surface is large.
-3. **Polish Diff.** REQUIRED SUB-SKILL: use `polish-diff` on the whole-branch diff
-   (before acceptance).
+3. **Polish Diff.** REQUIRED SUB-SKILL: use `polish-diff` on the whole-branch
+   diff **before** acceptance. Mark the setup **Polish Diff** todo done only
+   after it has run.
 4. **Acceptance.** REQUIRED SUB-SKILL: use `validate-feature`. Breaks →
    `root-cause`, then promote to committed ID-tagged tests.
 5. **Prepare.** REQUIRED SUB-SKILL: use `package-change`.
 6. **Finish.** REQUIRED SUB-SKILL: use `land-branch`.
+
+| Thought | Reality |
+|---|---|
+| "Task todos are all green — polish can wait / skip" | The setup **Polish Diff** todo is still open; acceptance is blocked until it runs |
+| "Inspect was clean / branch is small — polish is optional" | Step 3 is required on every branch; size and a clean inspect do not drop it |
 
 ## Red Flags — Never
 
@@ -195,5 +203,7 @@ discipline.
 - Start on main/master without explicit consent
 - Create a worktree without asking
 - Claim a task complete without a ledger line
+- Skip `polish-diff`, leave its todo open, or move to acceptance/package/land without it
+- Start Task 1 before the todo list exists (tasks **and** polish-diff)
 - Hand off mid-plan to `build-in-waves` subagent loop without an explicit user
   route change

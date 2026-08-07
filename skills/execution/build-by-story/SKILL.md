@@ -101,8 +101,10 @@ Align `tasks.md` to the story-unit route and continue:
 5. **Derive units — GATE.** Load `story-unit-mode.md` beside this file. Run
    **Derive partition** + **File count** + print the **Unit table**. Hard-fail
    blocks dispatch. *Done when: table printed; hard-fails resolved or reported.*
-6. **Todos — GATE.** One todo per task via TodoWrite before any dispatch.
-   *Done when: todo list mirrors the plan.*
+6. **Todos — GATE.** Via TodoWrite before any dispatch: **one todo per task**
+   **and** one terminal todo **Polish Diff** (whole-branch `polish-diff` before
+   acceptance — created now, not later).
+   *Done when: the list mirrors the plan **and** includes the polish-diff todo.*
 7. **Pre-flight plan review.** One batch question for plan-internal defects
    before dispatch. Clean scan → no comment. *Done when: conflicts ruled or none.*
 8. **Unit order.** Topo-sort units (edge if any task in U depends on any task
@@ -207,12 +209,18 @@ State the model **explicitly on every dispatch**.
    `git merge-base main HEAD` — never a mid-branch or last-unit-only range.
    Feed ledger Minors for triage. Top model tier.
 2. **One fixer** for the full findings list → re-review.
-3. **Polish Diff.** REQUIRED SUB-SKILL: use `polish-diff` on the whole-branch diff
-   (before acceptance).
+3. **Polish Diff.** REQUIRED SUB-SKILL: use `polish-diff` on the whole-branch
+   diff **before** acceptance. Mark the setup **Polish Diff** todo done only
+   after it has run.
 4. **Acceptance.** REQUIRED SUB-SKILL: use `validate-feature`. Breaks →
    `root-cause`, then promote to committed ID-tagged tests.
 5. **Prepare.** REQUIRED SUB-SKILL: use `package-change`.
 6. **Finish.** REQUIRED SUB-SKILL: use `land-branch`.
+
+| Thought | Reality |
+|---|---|
+| "Task todos are all green — polish can wait / skip" | The setup **Polish Diff** todo is still open; acceptance is blocked until it runs |
+| "Inspect was clean / branch is small — polish is optional" | Step 3 is required on every branch; size and a clean inspect do not drop it |
 
 ## Red Flags — Never
 
@@ -230,7 +238,8 @@ State the model **explicitly on every dispatch**.
 - Move on with open Critical/Important findings
 - Fix reviewer findings in the controller context
 - Re-dispatch work the ledger marks complete
-- Dispatch before the todo list exists
+- Dispatch before the todo list exists (tasks **and** polish-diff)
+- Skip `polish-diff`, leave its todo open, or move to acceptance/package/land without it
 - Implement on main/master without explicit consent
 - Create a worktree without asking
 - Silently switch to continuous rules while the header still says story-unit

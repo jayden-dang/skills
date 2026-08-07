@@ -79,8 +79,10 @@ Unit barriers, unit derivation, and human unit stops live only in
    say so, suggest `configure-repo`, take verify commands from Global Constraints.
    When `## Team` has roster/band, load band **packaging** only — never skip
    dual-verdict review for Solo. *Done when: constraints captured word-for-word.*
-5. **Todos — GATE.** One todo per task via TodoWrite before any dispatch.
-   *Done when: the todo list mirrors the plan.*
+5. **Todos — GATE.** Via TodoWrite before any dispatch: **one todo per task**
+   **and** one terminal todo **Polish Diff** (whole-branch `polish-diff` before
+   acceptance — created now, not later).
+   *Done when: the list mirrors the plan **and** includes the polish-diff todo.*
 6. **Pre-flight plan review.** Scan once for internal defects (contradictions,
    assertion-free tests, copy-pasted logic the plan mandates). Batch ALL findings
    into ONE question to the user before dispatch. Clean scan → no comment.
@@ -194,13 +196,19 @@ ledger = survives compaction. Never let one excuse skipping the other.
    Top model tier.
 2. **One fixer** for the complete findings list → re-review. Never one fixer per
    finding.
-3. **Polish Diff.** REQUIRED SUB-SKILL: use `polish-diff` on the whole-branch diff
-   (before acceptance).
+3. **Polish Diff.** REQUIRED SUB-SKILL: use `polish-diff` on the whole-branch
+   diff **before** acceptance. Mark the setup **Polish Diff** todo done only
+   after it has run.
 4. **Acceptance.** REQUIRED SUB-SKILL: use `validate-feature`. Breaks → `root-cause`,
    then promote to committed ID-tagged tests. Optional: `/select-review-sample`
    (not a gate).
 5. **Prepare.** REQUIRED SUB-SKILL: use `package-change`.
 6. **Finish.** REQUIRED SUB-SKILL: use `land-branch`.
+
+| Thought | Reality |
+|---|---|
+| "Task todos are all green — polish can wait / skip" | The setup **Polish Diff** todo is still open; acceptance is blocked until it runs |
+| "Inspect was clean / branch is small — polish is optional" | Step 3 is required on every branch; size and a clean inspect do not drop it |
 
 ## Inline route
 
@@ -229,7 +237,8 @@ skill's subagent loop without dispatches.
 - Tell a reviewer what not to flag, or pre-rate severity in the dispatch
 - Dispatch a reviewer without a diff package
 - Re-dispatch a task the ledger marks complete
-- Dispatch the first task before the todo list exists
+- Dispatch the first task before the todo list exists (tasks **and** polish-diff)
+- Skip `polish-diff`, leave its todo open, or move to acceptance/package/land without it
 - Fix reviewer findings in the controller context
 - Start implementation on main/master without explicit consent
 - Create a worktree without asking, or treat "current branch" as consent for main/master

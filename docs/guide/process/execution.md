@@ -60,7 +60,8 @@ Five steps, of which two are easy to skip and expensive to have skipped:
 - **Workspace check.** Never begin implementation on `main`/`master` without the user's explicit consent.
 - **Ledger check.** `.skills/` is git-ignored, then `.skills/<CODE>/progress.md` is read. **Every task it marks complete IS complete** — resume at the first task it does not list.
 - **Read the plan once**, copying the Global Constraints **verbatim**. They get pasted into every reviewer dispatch unmodified.
-- **Todos**, one per task.
+- **Todos**, one per task **and** one terminal **Polish Diff** todo
+  (whole-branch `polish-diff` before acceptance — created now, not later).
 - **Pre-flight plan review.** Scan the plan once for internal defects — tasks that contradict each other or the Global Constraints, and anything the plan explicitly *mandates* that a reviewer would flag as a defect (an assertion-free test, a copy-pasted logic block). Batch **all** findings into **one** question to the user, each shown beside the plan text that mandates it. One interrupt, not one per discovery mid-run.
 
 ### The per-task loop
@@ -128,8 +129,10 @@ State the model **explicitly on every dispatch** — an omitted model inherits y
 
 1. **Whole-branch review** via [`inspect-change`](../skills/inspect-change.md), with base = `git merge-base main HEAD` — never a mid-branch sha. Run on the top model tier, pointed at the ledger's Minor-findings list for triage.
 2. **One fixer.** If the review returns findings, dispatch **one** fix subagent carrying the complete list. Never one fixer per finding — each extra fixer rebuilds context and re-runs suites, and a per-finding fix wave can cost more than the whole plan did. Re-review after.
-3. **Acceptance** via [`validate-feature`](../skills/validate-feature.md).
-4. **Finish** via [`land-branch`](../skills/land-branch.md).
+3. **Polish Diff** via `polish-diff` on the whole-branch diff before acceptance. Mark the setup todo done only after it runs.
+4. **Acceptance** via [`validate-feature`](../skills/validate-feature.md).
+5. **Prepare** via [`package-change`](../skills/package-change.md).
+6. **Finish** via [`land-branch`](../skills/land-branch.md).
 
 ## Next
 

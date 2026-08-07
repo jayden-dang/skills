@@ -1,5 +1,31 @@
 # `build-in-waves` / implementer-prompt — deviation log
 
+## Edit — polish-diff always + setup todo (2026-08-07)
+
+**Protocol:** `author-skills` (form match: omit-from-produced → REQUIRED slot;
+knows-rule-under-pressure → red flags + rationalization).
+
+**RED (structural + production).** Old Setup Todos GATE: “one todo per task”
+only. After the last task already said REQUIRED `polish-diff`, but agents
+checked off all task todos and skipped polish under demo/EOD pressure
+(“inspect was clean”, “small branch”, “optional cleanup”). Process guide
+`docs/guide/process/execution.md` also omitted polish from After-last (drift).
+
+**GREEN form.** Todos GATE creates terminal **Polish Diff** todo with the task
+list; After-last step 3 runs `polish-diff` + marks that todo; rationalization
+table lives under After-last (not mode-ownership); red flags on skip / open todo.
+
+**Quality pass (2026-08-07, author-skills):** no-op + duplication sweep — dropped
+restated “never optional / if needed / never skip for clean inspect” from the
+recipe (lives only in rationalization + red flags); removed polish rows from the
+mode-ownership table; “— mandatory” dropped (REQUIRED SUB-SKILL is the authority
+marker). Cross-family wording aligned (waves / story / inline).
+
+**Open:** full multi-model pressure retest of S-polish under combined pressures
+still recommended.
+
+---
+
 ## RED — S-IMP-U2 (clean prompt, old implementer-prompt)
 
 **Setup.** Brief: add `providers.github`. Product note in file: callback must

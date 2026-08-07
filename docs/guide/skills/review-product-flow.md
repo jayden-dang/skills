@@ -8,8 +8,8 @@
 | **Invocation** | model-invocable (the agent calls it on its own) |
 | **Reads** | the spec triad — `requirements.md`, `design.md`, `tasks.md`; the source (theme tokens, CSS, keyword and label definitions); `docs/agents/project.md` (the `## Run locally (dev)` command) |
 | **Writes** | `.skills/<slug>-review-product-flow.json` (one run file: cases + verdicts) and `.skills/<slug>-review-product-flow.html` (rendered human view) |
-| **Calls** | `review-product-flow` CLI (`scripts/review-product-flow render`); [`craft-page`](craft-page.md) **only** when the user asks for custom craft |
-| **Called by** | [`validate-feature`](validate-feature.md), [`prove-claim`](prove-claim.md); hand-off path to [`run-product-walkthrough`](run-product-walkthrough.md) when the agent should run the guide |
+| **Calls** | `review-product-flow` CLI (`scripts/review-product-flow render`); **immediately** [`vet-product-flow`](vet-product-flow.md) after the run file exists; [`craft-page`](craft-page.md) **only** when the user asks for custom craft |
+| **Called by** | [`validate-feature`](validate-feature.md), [`prove-claim`](prove-claim.md); hand-off path to [`run-product-walkthrough`](run-product-walkthrough.md) only after a clean vet report |
 
 ## When it fires
 
@@ -45,13 +45,22 @@ The shell (`shell/guide.html`) already carries theme-aware CSS, kind chips, prog
 
 Schema pointer: skill sibling `references/cases-schema.md`. Contract: `docs/specs/2026-07-27-review-product-flow-cli/contract.md`.
 
-## 5. Hand over
+## Todos + 5. Hand over
 
-Give **both** paths (YAML + HTML), the 30-second first pass, degraded-feature notes. Human ticks in HTML are optional. Agent runs go through [`run-product-walkthrough`](run-product-walkthrough.md) + CLI ledger — not Chrome ticks on the guide.
+Create one todo per section (1–4) **and** a terminal **Vet product flow** todo
+(created now; check off only when the vet report exists).
+
+After the run file + HTML are on disk: **IMMEDIATELY** run
+[`vet-product-flow`](vet-product-flow.md). Give both artifact paths, the
+30-second first pass, degraded-feature notes. Human ticks in HTML are optional.
+Name [`run-product-walkthrough`](run-product-walkthrough.md) only after a clean
+vet report (or named override).
 
 ## Worked sketch
 
-Notes feature → three cases in the run file (happy create, error empty title, persist reload) → `review-product-flow render` → hand `.skills/notes-review-product-flow.json` and `.skills/notes-review-product-flow.html`. Offer `review-product-flow serve` when they will also be testing by hand.
+Notes feature → three cases in the run file → `review-product-flow render` →
+**immediately** `vet-product-flow` → report on disk → hand run file + HTML.
+Offer `review-product-flow serve` when they will also be testing by hand.
 
 ## Why it is written this way
 

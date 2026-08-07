@@ -9,11 +9,11 @@
 | **Reads** | `.skills/<slug>-review-product-flow.json` (run file); optional triad for OOS/persist claims; opened product code for surface map |
 | **Writes** | `.skills/<slug>-vet-product-flow.md` (report only — never product code or the run file during judgment) |
 | **Calls** | optional guide-gap fixer loop after the report (run-file patches + re-render + re-vet); does **not** call `run-product-walkthrough` itself |
-| **Called by** | hand-off after [`review-product-flow`](review-product-flow.md); hard gate before [`run-product-walkthrough`](run-product-walkthrough.md) |
+| **Called by** | **immediately** by [`review-product-flow`](review-product-flow.md) after the run file exists (not a manual follow-up); hard gate before [`run-product-walkthrough`](run-product-walkthrough.md) |
 
 ## When it fires
 
-When a review-product-flow **run file already exists** and the guide needs an **isolated** judgment pass before agent dogfood — “vet the guide,” “are we missing situations the implementation already exposes?,” or the required next step after authoring.
+When a review-product-flow **run file already exists** and the guide needs an **isolated** judgment pass before agent dogfood — “vet the guide,” “are we missing situations the implementation already exposes?,” or (the default) **immediately after** `review-product-flow` finishes the run file, as part of that skill’s hand-over.
 
 **Not for:** authoring cases ([`review-product-flow`](review-product-flow.md)); driving cases in the browser ([`run-product-walkthrough`](run-product-walkthrough.md)); committed Playwright ([`validate-ui`](validate-ui.md)).
 

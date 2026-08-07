@@ -5,21 +5,21 @@ description: Use when manually exercising a finished feature in the real running
   user-facing ability, including the visuals, feel, and edge cases a human
   must eyeball rather than an automated test or a quick launch. Reach for it
   to try a feature for real, walk the whole user-facing surface, or produce a
-  checkable, resumable review-product-flow guide (one JSON run file + rendered HTML) kept
-  open beside the app — not a one-off run. Not for executing an already-written
-  guide (`run-product-walkthrough`).
+  checkable, resumable review-product-flow guide (run file + rendered HTML) and
+  its `vet-product-flow` report, kept open beside the app — not a one-off run.
+  Not for executing an already-written guide (`run-product-walkthrough`).
 ---
 
 # Review Product Flow
 
 A product walk is a human driving the real app through every user-facing
-ability and judging what they see. The deliverable is a **run file** plus a
-**rendered human guide** — grounded in the app's own rendering, one row per
-ability case, each tagged with the requirement ID and a **case kind**. Cases and
-verdicts live in the same file, so what the agent proves is what the person
-reads. Build the
-artifacts; a chat message is not the deliverable. A guide of only happy paths is
-not done.
+ability and judging what they see. The deliverable is a **run file**, a
+**rendered human guide**, and a **`vet-product-flow` report** — grounded in the
+app's own rendering, one row per ability case, each tagged with the requirement
+ID and a **case kind**. Cases and verdicts live in the same file, so what the
+agent proves is what the person reads. Build the artifacts; a chat message is
+not the deliverable. A guide of only happy paths is not done. Authoring is not
+complete until the vet report exists.
 
 ## Case taxonomy (every guide uses these kinds)
 
@@ -36,6 +36,14 @@ not done.
 Do **not** invent chaos, load, race, or security-fuzz suites here — those are not
 a one-seat user pass. Permission/role cases belong when the UI exposes them
 (`edge` or `error` + `setup` for the role).
+
+## Todos — GATE
+
+Before §1, create one todo per section (1–4) via TodoWrite, **and** one terminal
+todo **Vet product flow** (`vet-product-flow` on the run file — created now, not
+later). Check the vet todo off **only** when
+`.skills/<CODE>/vet-product-flow.md` exists for this run file.
+*Done when: the list exists before scoping and includes the vet todo.*
 
 ## 1. Scope every ability — coverage gate
 
@@ -118,17 +126,18 @@ holds, every case has all required slots.*
 
 ## 5. Hand over
 
-Ordered hand-off (artifacts → vet → optional serve → dogfood only after vet):
+Order: artifacts → **run** vet → optional serve → dogfood only after clean vet.
 
 1. **Artifacts** — give both paths (run file + HTML), the fastest way in — a
    ~30-second first pass that lights the feature up (usually the first `happy`
    row) — then degraded-feature notes and coverage exceptions.
 
-2. **Required next:** `vet-product-flow` on the run file. Invoke it when
-   model-invoked conditions match; otherwise instruct the controller to run it.
-   Do **not** treat the guide as ready for agent dogfood until `vet-product-flow`
-   has produced a report. §1 / §4 coverage self-check is authoring hygiene — it
-   is **not a substitute for vet**.
+2. **Vet IMMEDIATELY.** After the run file and rendered HTML are on disk and §4
+   coverage holds, **IMMEDIATELY** REQUIRED SUB-SKILL: use `vet-product-flow` on
+   the run file — before serve, dogfood, or any “authoring done” claim. Mark the
+   **Vet product flow** todo done only when `.skills/<CODE>/vet-product-flow.md`
+   exists. §1 / §4 coverage self-check is authoring hygiene, not a substitute
+   for this report.
 
 3. **Optional serve** — offer the live guide when they will be testing by hand
    alongside the agent:
@@ -149,8 +158,8 @@ Ordered hand-off (artifacts → vet → optional serve → dogfood only after ve
    replace that check.
 
 *Done when: artifacts are on disk, grounded, the §1 coverage gate holds, every
-case is fully slotted, and `vet-product-flow` is named as the required next step
-before agent dogfood.*
+case is fully slotted, and `.skills/<CODE>/vet-product-flow.md` exists for this
+run file.*
 
 ## Rationalizations
 
@@ -164,6 +173,8 @@ before agent dogfood.*
 | "Edges belong in unit tests, not the guide" | Review Product Flow is the user-facing surface. If the user can hit the edge, it gets a row. |
 | "Worse cases mean load/chaos/fuzz" | Those are other harnesses. Review Product Flow worse cases are edge, error, nonbehavior, persist. |
 | "§4 coverage self-check already ran — skip vet" | Self-check is same-session authoring hygiene, not an isolated implementation-surface judgment. It is **not a substitute for vet**. |
+| "I'll name vet as next and stop — the controller will run it" | Step 2 **runs** `vet-product-flow`; naming is not completion |
+| "Artifacts are on disk — authoring is done" | Done when the vet report exists, not when the JSON/HTML land |
 
 ## Red Flags
 
@@ -171,5 +182,7 @@ before agent dogfood.*
 - Missing `backend` / `setup` / `kind` on any case
 - Happy-only section without a greppable coverage exception
 - Telling the agent to mark progress via guide ticks instead of `review-product-flow mark`
-- Treating §4 coverage self-check as a substitute for `vet-product-flow` before agent dogfood
-- Naming `run-product-walkthrough` at hand-over without naming `vet-product-flow` first
+- Treating §4 coverage self-check as a substitute for `vet-product-flow`
+- Declaring this skill done without `.skills/<CODE>/vet-product-flow.md` for this run file
+- Naming `run-product-walkthrough` (or offering dogfood) before a vet report exists
+- Checking off the **Vet product flow** todo when the report path does not exist

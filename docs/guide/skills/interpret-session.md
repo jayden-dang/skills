@@ -1,6 +1,6 @@
 # `interpret-session`
 
-> The native-language companion. Run beside an English `frame-change` or `clarify-decisions`; paste each response in and get it translated, explained plainly, and answered with a committed second opinion — then, once you have decided, an English reply to carry back. What it owes you is not a set of sections but a decision you own and can defend, so the language of the discussion never caps the quality of the thinking.
+> The companion session beside `frame-change` / `clarify-decisions` (or any parallel technical window). Choose **English** as a second-opinion debate partner, or a **native language** to think and decide in L1 — same committed stance either way, then a carry-back reply once you settle. What it owes you is a decision you own and can defend, not a set of sections.
 
 |  |  |
 |---|---|
@@ -9,11 +9,11 @@
 | **Reads** | the pasted responses; the codebase when a response touches code that lives here |
 | **Writes** | nothing durable; it enacts no code, files, or plan execution |
 | **Calls** | [`research`](research.md) when an alternative or assumption turns on external fact |
-| **Called by** | — (run directly by the user, in parallel with the English session) |
+| **Called by** | — (run directly by the user, in parallel with the other session) |
 
 ## When it fires
 
-The user is frame-changeing or being grilled in English — in another window — but thinks and decides in their own language. Rather than let a second language quietly narrow what they can weigh, they open a `interpret-session` session, paste each English response here, reason it through in their native language, and carry a reply back.
+The user is frame-changeing or being grilled in another window and wants a **companion** mind: either (1) they think in L1 while that window is English, or (2) they want an **English second opinion / debate partner** while the main session is also English (or mixed). They open `/interpret-session`, paste each response here, reason with a committed stance, and carry a reply back.
 
 It is deliberately **user-invoked**: a companion mode you switch on, not something that hijacks every "translate this" request. It does not replace `frame-change` or `clarify-decisions`, and it drives no spec or code of its own.
 
@@ -21,7 +21,7 @@ It is deliberately **user-invoked**: a companion mode you switch on, not somethi
 
 Three intake asks fix the session's standing context:
 
-- **Target language** — Vietnamese, Chinese, Japanese, Korean, Spanish, or any other; no language is privileged as a default, and when the user has already written in theirs the skill proposes that one for a one-tap confirm. Every section header, label, and word of explanation is written in this language from then on; only the reply-to-send-back and verbatim code stay in English.
+- **Companion language** — first-class **English** (full critique/debate in English) **or** a native language (Vietnamese, Chinese, Japanese, Korean, Spanish, … / other). No default; when the user already wrote in L1, propose that language but still show English as an equal option. Every section header, label, and word of analysis uses the companion language from then on. Carry-back is usually English for the main window; if companion language ≠ reply language, a short commitment restatement stays in the companion language.
 - **Project posture** — the delivery intent (Production / MVP / Run Spike / Research / Learning) and lifecycle stage (Idea → Maintenance). `interpret-session` *reuses* these from the **Project posture** section of `docs/agents/project.md` when it is present — reading, not re-asking — and only falls back to asking when the repo has no posture recorded. They tune how hard the analysis leans on migration, backward-compat, and deprecation.
 - **Feedback wanted** — critical review, alternatives, architecture, product, trade-offs, or understanding. This one is per-session, so it is always asked. Answers become standing session context and are not re-asked.
 
@@ -33,11 +33,11 @@ An interpret-session session is one conversation, not a queue of independent pas
 - **A message addressed to `interpret-session`** — a follow-up, a challenge, a new fact, "research this", thinking aloud. Gets a direct answer in the thread: no translation section, no re-explaining, no reply-to-send-back. If the new information moves the stance, the skill leads with that.
 - **A settled direction** — an explicit decision, or "write the reply". Only this produces the English reply.
 
-For a paste that puts a **live choice** on the table, the stance comes *first* — pick, the one dominant reason, confidence, what would flip it, and where it lands relative to the other session — because the user may be reading with two minutes before a standup. Then the understanding pass: a faithful **translation**, and one **explain** pass in plain language built from a single concrete example. Then the detail behind the stance: alternatives the other session did not lead with, trade-offs, hidden assumptions, risks, and when each option wins.
+For a paste that puts a **live choice** on the table, the stance comes *first* — pick, the one dominant reason, confidence, what would flip it, and where it lands relative to the other session — because the user may be reading with two minutes before a standup. Then the understanding pass: **Translate** into the companion language when that language is not English (or the paste is not English); **Restate** in plain English when companion language and paste are both English (no bilingual theater). Then one **explain** pass built from a single concrete example. Then the detail behind the stance: alternatives the other session did not lead with, trade-offs, hidden assumptions, risks, and when each option wins.
 
 For a paste that puts **no choice** on the table — a procedural question, a confirmation, a status line — there is no alternatives table, no trade-off matrix, no risk list. Just what it means, what it is really asking, and either the answer to give or the one thing worth settling first.
 
-The English reply is a **terminal action, not the close of a turn**. The skill never ends an analysis turn with a menu of directions; while something material is unresolved it names what is still open and stops. When the reply is written, it is round-tripped — one or two lines in the user's own language stating what that English commits them to.
+The carry-back reply is a **terminal action, not the close of a turn**. The skill never ends an analysis turn with a menu of directions; while something material is unresolved it names what is still open and stops. When the reply is written, it is round-tripped — one or two lines in the companion language stating what that message commits them to (still done when both sides are English; never invent an L1 the user did not choose).
 
 ## It carries through the approval gates
 

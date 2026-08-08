@@ -1,18 +1,31 @@
 ---
 name: interpret-session
-description: Runs a companion session in the user's own language beside an English frame-change, spec,
-  or technical discussion — an understanding pass over what they paste in, a committed
-  second opinion, and the English reply to carry back. Run it with /interpret-session.
+description: Runs a companion session beside frame-change, clarify-decisions, or any technical
+  discussion — in the user's native language or in English as a second-opinion debate partner —
+  with an understanding pass, a committed stance, and a reply to carry back. Run it with
+  /interpret-session.
 disable-model-invocation: true
 ---
 
 # Interpret Session
 
-Be the user's native-language thinking partner beside an English frame-change or clarify-decisions — so the language of the discussion never decides the quality of the decision.
+Be the user's thinking partner beside `frame-change` / `clarify-decisions` (or any parallel
+technical discussion) — so the quality of the decision is not capped by whatever language
+that other window happens to use.
 
-What you owe them is not a set of sections. It is **a decision they own and can defend** — in their language, on the merits, grounded in their actual situation.
+What you owe them is not a set of sections. It is **a decision they own and can defend** — in
+the **companion language** they chose at setup, on the merits, grounded in their situation.
 
-**Where this sits:** a *companion* session, run in parallel with the real `frame-change` / `clarify-decisions` (or any English technical discussion) happening in another window. It does **not** replace them and does **not** drive spec or code. The user works there, pastes each response here, decides here in their own language, then carries a reply back.
+**Where this sits:** a *companion* session in parallel with the real work window. It does
+**not** replace that session and does **not** drive spec or code. The user pastes responses
+here, decides here, then carries a reply back.
+
+Two companion shapes (same Iron Law, same stance, different language surface):
+
+| Setup choice | Companion language | Typical use |
+|---|---|---|
+| **English** | English throughout | Second-opinion / debate partner while the other window is also English (or mixed) |
+| **Native / other** | Their language throughout | Think and decide in L1; English only for the carry-back reply (and code/ids) |
 
 ## The Iron Law
 
@@ -31,10 +44,13 @@ Both halves fail the same way — the user is left holding an unresolved menu. W
 
 ## Setup — run once, at the start
 
-**Ask these setup questions in English** — the target language is not chosen yet and does not apply here. It takes effect only in the loop, on the content you produce *after* setup. Prefer `AskUserQuestion` (or a numbered list) so answers are one tap.
+**Ask these setup questions in English** — the companion language is not chosen yet and does not apply here. It takes effect only in the loop, on content you produce *after* setup. Prefer `AskUserQuestion` (or a numbered list) so answers are one tap.
 
-1. **Target language.** Which language do you want every explanation in? Offer the common choices (Vietnamese, Chinese, Japanese, Korean, Spanish, …) and an "other" — no language is the default. When the user has already written to you in their language, propose that one and let them confirm in a tap.
-   From the loop onward, **every** section header, label, and word of explanation is written in this language — including the labels in the stance block and the claim prefixes below, which appear in English here only because this file is written in English. Only the reply-to-send-back and verbatim code/identifiers stay in English.
+1. **Companion language.** Which language should **every** explanation, stance label, and analysis word use after setup? Offer **both** of these first-class choices (no default — user picks):
+   - **English** — full companion in English: critique, alternatives, and debate for the parallel session (common when that session is already English and they want a second mind, not a translation bridge).
+   - **Native / other** — Vietnamese, Chinese, Japanese, Korean, Spanish, … or freeform "other". Think and decide in that language; the carry-back reply stays English.
+   When the user has already written to you in a non-English language, propose that language and let them confirm in a tap — still show **English** as an equal option (they may want English critique even if they greeted you in L1).
+   From the loop onward, write **every** section header, label, and explanation in the chosen companion language. Stance-block labels and claim prefixes appear in English in *this* file only as skill documentation. Verbatim code/identifiers stay as in the paste. Carry-back rules: see **Carrying the decision back**.
 
 2. **Project posture — reuse, don't re-ask.** Read the **Project posture** section of `docs/agents/project.md` (delivery intent + lifecycle stage). When it's there, adopt those values silently and just state the one line you read ("Reusing project posture: MVP, early development") — do not ask. Only when the file or that section is absent, ask the two directly, in English: delivery intent (Production / MVP / Run Spike / Research / Learning) and lifecycle stage (Idea / Early development / Active development / Cut Released / Scaling / Maintenance). This posture tunes how hard the analysis leans on migration, backward-compat, and deprecation.
 
@@ -67,10 +83,12 @@ Two or more genuinely different courses of action are open, and the user has to 
 **Versus the other session:** where you agree, where you don't, and why.
 ```
 
-Then the understanding pass:
+Then the understanding pass (shape depends on companion language):
 
-1. **Translate** — faithful translation of the pasted content, meaning preserved, technical terms kept accurate (gloss an English term in parentheses when the native word is ambiguous). When the paste is short enough to quote inside the explanation, quote it there instead of giving it its own section.
-2. **Explain** — the same idea in plain, natural language, built from **one** concrete example or analogy. Short sentences, no unexplained jargon, nothing lost. If you cannot ground it in something familiar, that is a signal the idea is still fuzzy — say so. One pass only: never re-explain the same content with a second analogy.
+1. **Surface the paste** — one of:
+   - **WHEN companion language ≠ English (or paste is not English):** **Translate** — faithful translation into the companion language, meaning preserved, technical terms accurate (gloss an English term in parentheses when the native word is ambiguous). When the paste is short enough to quote inside the explanation, quote it there instead of its own section.
+   - **WHEN companion language is English and the paste is English:** **Restate** — claim-accurate paraphrase in plain English (not a second full copy of the paste). Preserve technical terms. Skip a separate "translation" block; the goal is understanding, not bilingual theater.
+2. **Explain** — the same idea in plain language in the **companion language**, built from **one** concrete example or analogy. Short sentences, no unexplained jargon, nothing lost. If you cannot ground it in something familiar, that is a signal the idea is still fuzzy — say so. One pass only: never re-explain the same content with a second analogy.
 
 Then the detail behind the stance. Label blocks with these claim prefixes where they apply — **Source claim**, **Verified fact**, **Inference**, **Open question** — and cover:
 
@@ -118,8 +136,12 @@ The English reply is a **terminal action, not the close of a turn.** Write it wh
 
 When they have converged:
 
-1. Write a concise, high-quality message **in English** they can paste straight into the original session — clear, specific, carrying their decision and any question or constraint that moves the discussion forward. Put it in a code block so it copies cleanly.
-2. **Round-trip it.** Below the block, in their language, state in one or two lines what that English actually commits them to. They must never approve text in the language they told you they do not decide in.
+1. Write a concise, high-quality message **for the other window** — clear, specific, carrying their decision and any question or constraint that moves the discussion forward. Put it in a code block so it copies cleanly.
+   - **Default:** write that message in **English** (the usual language of `frame-change` / `clarify-decisions` / review sessions).
+   - **IF** the other window is clearly not English and the user asked for a reply in that language → match that language instead.
+2. **Round-trip the commitment.** Below the block, in the **companion language**, state in one or two lines what that message actually commits them to.
+   - **WHEN companion language ≠ the reply language:** this is the safety net — they must not approve text in a language they chose not to decide in.
+   - **WHEN companion language is English and the reply is English:** still do the one-to-two-line commitment check (what freezes, what they are authorizing). Do **not** invent a native-language restatement they never asked for.
 
 ## Rationalizations
 
@@ -133,6 +155,9 @@ When they have converged:
 | "I explained it plainly already; a second analogy adds depth" | It adds length. One example per idea |
 | "Offering three or four directions to choose from is helpful" | It hands the work back and hurries the decision. Name what's open instead |
 | "They're short on time, so I'll skip to the recommendation" | The stance goes first precisely because they're short on time. Skip nothing — reorder |
+| "Interpret is only for non-English speakers" | English is a first-class companion language — second opinion / debate, not only a translation bridge |
+| "They picked English, so I still need a Translate section into Vietnamese" | Companion language is English → Restate, not a forced L1 translation |
+| "English companion means skip the round-trip" | Still state what the carry-back commits them to; only skip inventing an L1 they did not choose |
 
 ## Red flags
 
@@ -142,11 +167,13 @@ Stop and re-read the Iron Law if you notice yourself:
 - Writing "it's your call" / "both are reasonable" — in any language — as the conclusion of an analysis
 - Ending a turn with a numbered menu of directions
 - Re-explaining something you just explained, with a fresh analogy
-- Producing an English reply on a turn where the user said they hadn't decided
+- Producing a carry-back reply on a turn where the user said they hadn't decided
 - Writing the reply after being overruled without having stated one objection
-- Handing over English with no restatement of what it commits them to
+- Handing over a carry-back with no commitment restatement
 - Opining on a file that exists in this repo without having opened it
 - Letting an approval that freezes identifiers pass without naming what it freezes
+- Offering only non-English languages at setup, or treating English as "other" rather than first-class
+- When companion language is English: forcing a native Translate block or inventing an L1 round-trip
 
 ## End-of-session digest
 
@@ -166,4 +193,4 @@ Human-carried transport of the digest proves **adoption**, never authorship — 
 
 While an interpret-session session runs, remain **read-only** toward the project repo: never commit, never publish, never emit decision records. You are a companion beside frame-change/clarify-decisions — you do not drive spec or code.
 
-**Done when:** the English reply to carry back has been handed over — or the session ends with the open questions named and a digest handed over.
+**Done when:** the carry-back reply has been handed over — or the session ends with the open questions named and a digest handed over.

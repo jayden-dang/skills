@@ -159,8 +159,29 @@ where the plan stands whenever they want it.
 ## Who owns what
 
 `docs/specs/INDEX.md` belongs to `specify-behavior`, which is the sole registrar of
-feature codes. A roadmap item is a `ROAD-N` and a slug until a feature spec binds to it —
-so the roadmap carries no feature codes, and this skill leaves that file untouched.
+feature codes. This skill leaves that file untouched.
+
+## ROAD-N is a slot, not a feature
+
+**One home for this rule** (other skills point here; do not restate the table elsewhere).
+
+| | ROAD-N (program **slot**) | Feature CODE (delivery **unit**) |
+|---|---|---|
+| Lives in | `docs/roadmap/INDEX.md` | `docs/specs/` + INDEX row |
+| Exists before triad? | Yes — unspecced is normal (`R7`) | Only after `specify-behavior` registers it |
+| Progress | Never stored here | `Status:` on requirements / INDEX |
+| Join | — | INDEX **Roadmap item** → at most one CODE per ROAD (`R6`) |
+
+Creating a ROAD does not create a feature. Binding is later, when `specify-behavior`
+writes the INDEX cell. Matching slug text does not merge the IDs.
+
+A milestone **outcome** often needs **several** ROAD slots (member list order). Each
+slot gets its own feature when work starts — do not fold a whole milestone into one
+CODE, and do not mint two CODEs for one ROAD (`R6`).
+
+This skill never creates remote tracker program objects (GitHub milestones, Linear
+initiatives, Projects). Program remote mirror is opt-in via `configure-repo` →
+`docs/agents/issue-tracker.md` (**Program sync**); default is local-only.
 
 ## Rationalizations
 
@@ -178,6 +199,9 @@ Every row below is a verbatim rationalization from a baseline run, or its direct
 | "The user is the approver and they asked for this edit, so it stays Approved" | They asked for the *edit*, not for the result to be pre-approved. Demote to `Draft` and show them what they now own |
 | "I signed off two weeks ago, this is just an amendment" | An amended plan is a different plan. It gets its own approval |
 | "No template exists here, so I'll invent a shape" | `templates/roadmap-INDEX.md` is the shape. Two invented shapes cannot be checked by one rule set |
+| "ROAD slug equals the feature, so they are the same ID" | Slot vs delivery unit. INDEX binding joins them; the roadmap still carries no CODE |
+| "I'll open a Linear Project / GH milestone per ROAD so the board matches the roadmap" | Not this skill's job; program remote is opt-in and usually body/label on the feature issue only |
+| "One milestone outcome → one ROAD → one feature" | One outcome often needs several ordered ROAD slots; each binds its own feature when started |
 
 ## Red flags — stop
 
@@ -187,6 +211,8 @@ Every row below is a verbatim rationalization from a baseline run, or its direct
 - You are about to write `Status: Approved` without the user having said so in this session
 - You are about to write a feature code into the roadmap
 - A milestone's outcome describes work performed rather than something a person can do
+- You are treating a ROAD slug as a feature code or inventing a CODE inside this skill
+- You are creating remote tracker program objects (milestones / initiatives / projects) from this skill
 
 ## No-op
 

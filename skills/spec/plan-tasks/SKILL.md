@@ -215,19 +215,61 @@ the design's seam-table IDs are all covered, and the placeholder scan is clean.
 
 ## Step 5 (optional): Publish to the issue tracker
 
-If the repo uses one (`docs/agents/issue-tracker.md`), publish each task as an
-issue in dependency order — native sub-issues and blocking links where
-supported; body describes behavior and interfaces (never file paths), includes
-acceptance criteria and a `Requirements covered:` list.
+If the repo has no tracker (`docs/agents/issue-tracker.md` absent, or
+**Tracker:** empty / none) → **skip** this step; not pending.
 
-This is the heavyweight, traceable publish path — each issue carries its
-requirement IDs. For capturing work that never went through the spec triad (a
-raw conversation or idea), the user runs `publish-issues` instead; do not duplicate
-these tasks there.
+Otherwise run the publish recipe. Plan tasks stay in `tasks.md` and the execute
+ledger. The default shipping unit on the tracker is the **feature**, closed by
+the feature PR (close syntax from issue-tracker.md).
 
-**Done when:** every task in `tasks.md` has an issue, each issue carries its
-`Requirements covered:` list, and the blocking links match the plan's
-dependency order. No tracker configured → this step is skipped, not pending.
+### Publish recipe
+
+1. Read `docs/agents/issue-tracker.md`. Resolve **Publish unit** with this
+   order (first match wins):
+   - **`tasks`** only if the file sets `**Publish unit:** tasks`, **or** the
+     user in this session explicitly orders per-task issues;
+   - else **`feature`** (default when the field is absent or set to `feature`).
+   Do not derive `tasks` from plan size, wave count, or “agents need tickets”.
+2. IF create/publish is blocked (no auth, permission denied, role cannot open
+   issues) → report the failure, leave the plan intact, **skip** remote create;
+   do not open N task issues as a fallback.
+3. **WHEN unit is `feature`:** create **exactly one** issue:
+   - **Title:** `[CODE] <feature outcome>` (same sense as the plan Goal).
+   - **Body** (behavior and interfaces, never file paths):
+     - first line: `> *This issue was drafted by AI with \`plan-tasks\`.*`
+     - What ships (end-to-end), high-level acceptance
+     - `Requirements covered:` — **union** of every task footer ID
+     - `Plan:` path to this `tasks.md`
+     - `Roadmap:` `ROAD-N` / `MILE-N` when INDEX binds them; else omit
+     - Optional: task checklist as plain markdown (not tracker issues)
+   - Label only this issue with the frontier role (`ready-for-agent` mapped
+     string) when it is grabbable.
+   - Record the issue id under `.skills/<CODE>/` for execute / `package-change`.
+4. **WHEN unit is `tasks` (legacy only):** one issue per plan task in dependency
+   order, each with its own `Requirements covered:` from that task’s footer;
+   record all ids under `.skills/<CODE>/`. Still no silent invent of this unit.
+
+Work that never went through the triad uses `/publish-issues` (multi-slice) —
+do not re-file this plan there, and do not re-split a triad plan into
+publish-issues slices under unit `feature`.
+
+| Thought | Reality |
+|---|---|
+| "Four tasks → four issues so agents can grab in parallel" | Waves read `tasks.md` + Depends-on. Tracker noise is not parallelism |
+| "Sub-issues keep hierarchy without noise" | Under unit `feature`, tasks are not tracker tickets |
+| "publish-issues always means one issue per slice" | Non-triad path only. This step follows Publish unit |
+| "I'll publish tasks; the user can close extras" | Extras are the defect under unit `feature` |
+| "Many tasks — config must mean tasks" | Size never sets Publish unit; only the file line or explicit user order |
+
+### Red Flags — Step 5
+
+- Under unit `feature`: more than one triad issue, or any issue titled like a plan task (`Task N:`)
+- Setting or assuming `Publish unit: tasks` from plan size alone
+- Falling back to task issues after a permission error
+
+**Done when:** skipped (no tracker / cannot publish), **or** unit `feature` with
+exactly one feature issue (union IDs, plan path, id under `.skills/<CODE>/`),
+**or** unit `tasks` with one issue per plan task and ids recorded.
 
 ## Exit
 

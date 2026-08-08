@@ -41,6 +41,10 @@ This was not an argument from taste. A baseline agent with no skill invented **t
 
 A roadmap item is a `ROAD-N` plus a slug until a feature spec binds to it. This skill never writes a feature code and never touches `docs/specs/INDEX.md` — that file has exactly one registrar.
 
+### ROAD-N is a slot, not a feature
+
+Authoritative wording lives in the skill body under the same heading: ROAD = program slot, CODE = delivery unit, bind via INDEX, `R6`/`R7`, no remote program spam by default. Guides do not restate the table.
+
 ## Stability without immutability-by-decree
 
 `MILE-N` and `ROAD-N` are stable from first definition, retired only by strikethrough with a reason. Two consequences worth stating plainly:

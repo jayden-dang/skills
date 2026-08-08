@@ -7,7 +7,7 @@
 | **Bucket** | spec |
 | **Invocation** | model-invocable (the agent calls it on its own) |
 | **Reads** | `requirements.md`, `design.md`, `templates/tasks.md`, `docs/agents/project.md`, `docs/agents/issue-tracker.md` |
-| **Writes** | `docs/specs/<date>-<feature>/tasks.md`, the spec's `INDEX.md` row, an independent review under `.skills/`, optionally issues in the tracker |
+| **Writes** | `docs/specs/<date>-<feature>/tasks.md`, the spec's `INDEX.md` row, an independent review under `.skills/`, optionally **one feature issue** on the tracker |
 | **Calls** | [`audit-trace`](audit-trace.md), an independent plan review subagent, then the execute family via [`isolate-workspace`](isolate-workspace.md) |
 | **Called by** | [`design-solution`](design-solution.md) |
 
@@ -76,7 +76,7 @@ The step is done when every requirement ID has both a task footer and a tagged t
 
 ## Publishing and the three exits
 
-Step 5 is optional: if the repo uses an issue tracker (`docs/agents/issue-tracker.md`), publish each task as an issue in dependency order — native sub-issues and blocking links where supported. The issue body describes behavior and interfaces and **never file paths**, and includes acceptance criteria and a `Requirements covered:` list.
+Step 5 is optional: if the repo uses an issue tracker (`docs/agents/issue-tracker.md`), publish **one feature issue** for the plan (default **Publish unit: feature**). Plan tasks stay in `tasks.md` — they are not tracker issues and not default sub-issues. The issue body describes behavior and interfaces and **never file paths**, carries the **union** of requirement IDs under `Requirements covered:`, cites the plan path and any bound `ROAD-N` / `MILE-N`, and is what the feature PR closes. Legacy one-issue-per-task is only when config or the user explicitly opts in.
 
 After the written plan is Approved, the exit offers **exactly three execute routes** — no separate continuous/story-unit interview. `Execution-mode:` may stay `unset` at approval; the chosen skill writes the matching value on start:
 

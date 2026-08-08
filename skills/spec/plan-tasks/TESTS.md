@@ -75,6 +75,50 @@ loophole.
 
 **Not yet bulletproof:** only one live rep; multi-model matrix open.
 
+## RED — S-WP-PUBLISH (task issues / noise)
+
+**Pressures:** pragmatic ("agents need grabable tickets") + authority ("tracker is source of truth") + sunk cost (plan already has four vertical slices).
+
+**Production baseline (2026-08, klynt PTEN):** with prior Step 5 ("publish each task as an issue"), a four-task plan produced GitHub `#107`–`#110` titled `PTEN Task N: …`, each `ready-for-agent`. User closed them as noise.
+
+**Observed rationalizations (target counters):**
+
+- "Four tasks → four issues so agents can grab in parallel"
+- "Sub-issues keep hierarchy without noise"
+- "publish-issues always means one issue per slice" (wrong path for triad)
+
+**Failure class.** Wrong output shape under compliance with the *old* recipe. Form: positive **feature-unit** recipe + rationalization table + Red Flags.
+
+## GREEN — Step 5 feature unit
+
+**Required behavior:**
+
+1. No tracker / cannot publish → skip; never invent task issues.
+2. Tracker present → **exactly one** feature issue; title `[CODE] …` not `Task N:`.
+3. Body: AI marker, union `Requirements covered:`, plan path, optional ROAD/MILE.
+4. No per-task issues or default task sub-issues unless in-session explicit opt-in.
+5. Issue id recorded under `.skills/<CODE>/`.
+
+**Skill sites:** Step 5 recipe, rationalization table, Red Flags; `templates/agents/issue-tracker.md` Publish unit default `feature`.
+
+### Live sample
+
+| Field | Value |
+|---|---|
+| Evidence | Production RED (PTEN #107–#110) + skill text rewrite 2026-08-08 |
+| STATUS | paper + structural GREEN; multi-model matrix open |
+| Verdict | **structural pass** — re-run live subagent before calling bulletproof |
+
+### Author-skills wording pass (2026-08-08)
+
+| Check | Result |
+|---|---|
+| Form matches failure | Recipe + rationalization + Red Flags (wrong shape under old Step 5) |
+| No-op / duplication | Slot vs CODE one home = `plan-milestones`; Step 5 no longer contradicts config `tasks` |
+| Nuance | Publish unit order is observable (file line → user order → default feature) |
+| Token | Step 5 stays a single section; no second skill |
+| Technique subagent (pressure: parallel tickets + standup) | **CHOICE B** — one feature issue; invent from plan size? **no** |
+
 ## Rules this evidence owns
 
 | Rule | Evidence |
@@ -84,6 +128,7 @@ loophole.
 | No silent invent of continuous at plan time | Exit step 2 + Red Flags; RED failure (2) |
 | Mode write-back owned by execute skill | Exit step 2–4; build-* mode ownership tables |
 | No Risk / Decision surface / Human review order | Template + Step 3 (fields omitted) |
+| Triad publish is one feature issue, not one per task | Step 5; S-WP-PUBLISH RED |
 
 ## Description trigger check (paper)
 

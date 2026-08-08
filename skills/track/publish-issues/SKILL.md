@@ -27,10 +27,10 @@ Pick the right skill before drafting; do not duplicate a heavier one.
 | You have | Use | Not |
 |---|---|---|
 | A conversation / idea / spec to capture as grabbable work | **`publish-issues`** (this) | — |
-| A tier-2 feature needing traceable `requirements.md` → `design.md` → `tasks.md` | `plan-tasks` (it publishes its own tasks) | `publish-issues` |
+| A tier-2 feature needing traceable `requirements.md` → `design.md` → `tasks.md` | `plan-tasks` (publishes **one feature issue** by default) | `publish-issues` |
 | A raw incoming issue or external PR to evaluate | `/triage` — user-invoked; name it for the user to run | `publish-issues` |
 
-If the user already ran the full spec triad, `plan-tasks` publishes those tasks with `Requirements covered:` footers — do not re-file them here. `publish-issues` is for work that never went through the triad.
+If the user already ran the full spec triad, `plan-tasks` publishes **one feature issue** with union `Requirements covered:` — do not re-file plan tasks here. `publish-issues` is for work that never went through the triad.
 
 ## Process
 

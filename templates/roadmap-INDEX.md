@@ -40,6 +40,10 @@ ID rules:
 - GOAL-N is defined in docs/product/vision.md and only cited here. Feature codes are
   defined in docs/specs/INDEX.md and never written here — a roadmap item is identified
   by its ROAD-N and slug until a feature spec binds to it.
+- ROAD-N is a program SLOT (intent + order + Surfaces). A feature CODE is a separate
+  delivery unit. Creating a ROAD does not create a feature. Binding is the INDEX
+  "Roadmap item" cell (specify-behavior only). At most one live CODE binds a ROAD (R6).
+  Same slug language does not make the IDs the same object.
 -->
 
 | ID | Milestone | Outcome | Depends-on | Commitment |

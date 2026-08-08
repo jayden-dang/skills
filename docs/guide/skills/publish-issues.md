@@ -22,10 +22,10 @@ Because it is `disable-model-invocation: true`, no skill auto-invokes it; a skil
 | You have | Use | Why not the others |
 |---|---|---|
 | A conversation / idea / spec to capture as grabbable work | **`publish-issues`** | — |
-| A tier-2 feature needing a traceable `requirements.md` → `design.md` → `tasks.md` | [`plan-tasks`](plan-tasks.md) (publishes its own tasks) | `publish-issues` skips the triad, so it produces no requirement-ID audit-trace |
+| A tier-2 feature needing a traceable `requirements.md` → `design.md` → `tasks.md` | [`plan-tasks`](plan-tasks.md) (publishes **one feature issue** by default) | `publish-issues` skips the triad, so it produces no requirement-ID audit-trace |
 | A raw incoming issue or external PR to evaluate | [`triage`](triage.md) | `publish-issues` is outgoing; `triage` is incoming |
 
-`plan-tasks` is the **heavyweight, traceable** publish path — every issue carries its `Requirements covered:` IDs. `publish-issues` is the **lightweight capture** path for work that never went through the triad. The two never publish the same work.
+`plan-tasks` is the **heavyweight, traceable** publish path — **one feature issue** carries the union of `Requirements covered:` IDs (tasks stay in `tasks.md`). `publish-issues` is the **lightweight capture** path for work that never went through the triad (one issue per tracer-bullet slice). The two never publish the same work.
 
 ## The AI marker
 

@@ -42,15 +42,21 @@ Pick a short unique prefix (2–12 chars, A–Z0–9, starts with a letter — e
 `SHELL`, `SYNC2`). Check `docs/specs/INDEX.md`; add a row there BEFORE writing
 requirements. Never reuse a retired code.
 
-**Bind the roadmap item.** WHERE `docs/roadmap/INDEX.md` exists and this work implements one
-of its items, record that item's `ROAD-N` in the row's **Roadmap item** column. WHERE there
-is no roadmap, or the work was never planned as an item, write `—` and register the feature
-otherwise unchanged. This column is the only link between plan and spec, and this step is
-its only writer — a `ROAD-N` is never invented here, only cited.
+**Bind the roadmap item.** Slot vs CODE definitions live in `plan-milestones`
+(**ROAD-N is a slot, not a feature**). This step only writes the join.
+
+WHERE `docs/roadmap/INDEX.md` exists and this work implements one of its items, put that
+item's `ROAD-N` in the row's **Roadmap item** column. WHERE there is no roadmap, or the work
+was never a roadmap item, write `—`.
+
+This column is the only plan↔spec join, and this step is its only writer — never invent a
+`ROAD-N` here. IF the chosen ROAD is already bound to another CODE (`R6` in
+`templates/roadmap-findings.md`) → stop and surface the collision; do not rebind or mint
+another ROAD.
 
 **Promote ephemera.** IF a `.skills/_pending-<slug>/` directory was used for this work, move it to `.skills/<CODE>/` (`mv` when CODE dir absent) so subsequent writes use the Feature root — see `templates/skills-ephemera-paths.md`.
 **Done when:** the code has a row in INDEX.md with status Draft, and its Roadmap item cell
-holds a `ROAD-N` or `—`.
+holds a `ROAD-N` or `—`, and that ROAD is not already bound to another CODE.
 
 ## Step 2: Write stories and EARS criteria
 

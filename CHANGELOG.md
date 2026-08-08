@@ -1,5 +1,22 @@
 # Changelog
 
+## Unreleased
+
+### Packaging
+
+- Register **`work-the-problem`** in Engineer Pack manifests
+  (`.claude-plugin/plugin.json`, `.claude-plugin/marketplace.json`) — was on disk
+  and in guides but missing from the pack install list (same class of miss as
+  `build-by-story` / `build-inline` in 0.2.7)
+- Engineer Pack skill path count: **60** (all paths validated present)
+
+### Discovery
+
+- **`work-the-problem`** — multi-round problem-solving companion (foundation→feature,
+  disk artifacts, carry-back); siblings: `/interpret-session` (time-boxed stance),
+  `/deepen-codebase` (pure learning). Author-skills RED/GREEN on grok-4.5 under
+  `tests/work-the-problem/`
+
 ## 1.0.0-pre-released — 2026-08-05
 
 First **1.0 pre-release** of Engineer Pack. Range: `v0.2.5` → `HEAD` (no prior

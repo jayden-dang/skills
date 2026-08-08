@@ -20,6 +20,7 @@
         "./skills/discovery/clarify-decisions",
         "./skills/discovery/interpret-session",
         "./skills/discovery/deepen-codebase",
+        "./skills/discovery/work-the-problem",
         "./skills/discovery/run-spike",
         "./skills/discovery/research",
         "./skills/discovery/pathfind",

@@ -1,6 +1,6 @@
 {
   "name": "engineer-pack",
-  "version": "1.0.0-pre-released",
+  "version": "1.0.0",
   "description": "Engineer Pack: A-to-Z agentic development (ideation to release, requirements traceability, roadmap/milestones). Personal Pack is separate \u2014 not included here.",
   "author": {
     "name": "Jayden Dang"

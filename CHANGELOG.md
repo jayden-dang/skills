@@ -1,21 +1,55 @@
 # Changelog
 
-## Unreleased
+## 1.0.0 — 2026-08-08
+
+First **stable 1.0.0** of Engineer Pack. Range: `v1.0.0-pre-released` → this cut
+(6 commits). Packaging version string: `1.0.0` (git tag `v1.0.0` when published).
+
+**Semver:** graduation from pre-release to non-pre `1.0.0` (public pack contract
+intended as stable; Personal Pack still **0.2.1**). No `docs/specs/**` feature
+triads in this monorepo — bullets below are product/process surface shipped in
+the pack, not EARS IDs.
+
+### Discovery / companions
+
+- **`work-the-problem`** — multi-round problem-solving companion (identify → define
+  → foundation→feature → breakdown↔solve, disk artifacts under
+  `.skills/work-the-problem/<slug>/`, carry-back brief); user-invoked
+  `/work-the-problem`. Siblings: `/interpret-session` (time-boxed stance),
+  `/deepen-codebase` (pure learning). Author-skills RED/GREEN on grok-4.5
+  (`tests/work-the-problem/`)
+- **`solve-problem`** — evidence-grounded Problem Brief intake router before
+  `root-cause` / `frame-change` when gap or workflow is unclear
+- **`interpret-session`** — first-class **English** companion language (second-opinion
+  / debate), not only L1 translation bridge
+
+### Track / execution
+
+- **`publish-issues`** — publish one feature issue; clarify ROAD vs CODE ownership
+- Execute-family setup: require **polish-diff** and auto-vet via setup todos
+  (`build-in-waves` / `build-by-story` / `build-inline` + review-product-flow path)
 
 ### Packaging
 
-- Register **`work-the-problem`** in Engineer Pack manifests
-  (`.claude-plugin/plugin.json`, `.claude-plugin/marketplace.json`) — was on disk
-  and in guides but missing from the pack install list (same class of miss as
-  `build-by-story` / `build-inline` in 0.2.7)
+- Register **`work-the-problem`** in Engineer Pack manifests (`plugin.json`,
+  `marketplace.json`) — was on disk/guides before path list
 - Engineer Pack skill path count: **60** (all paths validated present)
+- Version bump **`1.0.0-pre-released` → `1.0.0`**
 
-### Discovery
+### Misc
 
-- **`work-the-problem`** — multi-round problem-solving companion (foundation→feature,
-  disk artifacts, carry-back); siblings: `/interpret-session` (time-boxed stance),
-  `/deepen-codebase` (pure learning). Author-skills RED/GREEN on grok-4.5 under
-  `tests/work-the-problem/`
+- Guide inventory, discovery process companion table, troubleshooting user-invoked
+  list, sibling pointers on interpret / deepen
+
+### Verify (this cut)
+
+- `docs/agents/project.md` **absent** — no configured typecheck/lint/unit/e2e
+  pipeline; gate substituted with: skill frontmatter lint (exit 0), marketplace /
+  plugin JSON parse, all skill paths exist (60 engineer + 19 personal)
+- `docs/specs/` **absent** — audit-trace: nothing to check (clean)
+- Decision records: `validate-records.sh --mode=trace` → 0 errors (3 warnings:
+  W-opaque ×2, W-uncited-tag on pre-release baseline)
+- Smoke: same structural checks on post-bump manifests
 
 ## 1.0.0-pre-released — 2026-08-05
 

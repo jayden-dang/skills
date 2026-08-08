@@ -75,6 +75,7 @@ interpret). Product stance and English replies stay on interpret-session only.
 ## See also
 
 - [`interpret-session`](interpret-session.md) — decide + paste-back reply  
+- [`work-the-problem`](work-the-problem.md) — deep solve + teach while closing a product problem  
 - [`teach-pack`](teach-pack.md) — graded multi-lesson workspace  
 - [`research`](research.md) · [`study-change`](study-change.md)  
 - [Discovery phase](../process/discovery.md) — companion sessions in the chain  

@@ -173,7 +173,7 @@ and countered by name. See [The gates](docs/guide/concepts/gates.md).
 |---|---|
 | meta | `gate-session` (session gate), `ask-me-bro` (router), `author-skills`, `teach-pack` |
 | setup | `configure-repo`, `bootstrap-repo` |
-| discovery | `solve-problem`, `frame-change`, `clarify-decisions`, `research`, `run-spike`, `define-domain`, `interpret-session`, `deepen-codebase`, `pathfind` |
+| discovery | `solve-problem`, `frame-change`, `clarify-decisions`, `research`, `run-spike`, `define-domain`, `interpret-session`, `deepen-codebase`, `work-the-problem`, `pathfind` |
 | spec | `specify-behavior`, `design-solution`, `plan-tasks` |
 | execution | `build-in-waves`, `build-by-story`, `build-inline`, `test-first`, `root-cause`, `prove-claim`, `audit-trace`, `load-subgraph`, `isolate-workspace` |
 | review | `inspect-change`, `study-change`, `brief-team`, `select-review-sample`, `polish-diff`, `vet-feedback`, `review-invariants` |

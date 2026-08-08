@@ -72,7 +72,7 @@ Three ways in: by role, by problem, or by phase.
 | Phase | Skills | Guide page |
 |---|---|---|
 | **0. Setup** | `/configure-repo`, `/bootstrap-repo` | [Adopting](resources/adopting.md) |
-| **1. Discovery** | `frame-change` (+ `load-subgraph`), `clarify-decisions`, `research`, `run-spike`, `define-domain`, `/pathfind`, `/interpret-session` | [Discovery](process/discovery.md) |
+| **1. Discovery** | `frame-change` (+ `load-subgraph`), `clarify-decisions`, `research`, `run-spike`, `define-domain`, `/pathfind`, `/interpret-session`, `/deepen-codebase`, `/work-the-problem` | [Discovery](process/discovery.md) |
 | **2. Specification** | `specify-behavior`, `design-solution`, `plan-tasks` | [Specification](process/specification.md) |
 | **3. Execution** | `isolate-workspace`, `build-in-waves` / `build-by-story` / `build-inline`, `test-first`, `root-cause`, `prove-claim`, `audit-trace`, `load-subgraph` | [Execution](process/execution.md) |
 | **4. Review & acceptance** | `inspect-change` (+ `load-subgraph`), `polish-diff`, `vet-feedback`, `validate-*`, product-flow suite | [Review and acceptance](process/review-and-acceptance.md) |

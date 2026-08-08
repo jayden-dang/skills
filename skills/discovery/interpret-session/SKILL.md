@@ -20,6 +20,10 @@ the **companion language** they chose at setup, on the merits, grounded in their
 **not** replace that session and does **not** drive spec or code. The user pastes responses
 here, decides here, then carries a reply back.
 
+**Siblings:** `/work-the-problem` for multi-round deep solve + foundation teaching with disk
+artifacts; `/deepen-codebase` for pure learning with no product pick. Prefer **this** skill
+when the need is a time-boxed stance and paste-back (gấp / standup pace).
+
 Two companion shapes (same Iron Law, same stance, different language surface):
 
 | Setup choice | Companion language | Typical use |

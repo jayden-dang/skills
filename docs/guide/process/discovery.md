@@ -1,6 +1,6 @@
 # Phase 1 — Discovery
 
-**Skills:** [`solve-problem`](../skills/solve-problem.md) · [`frame-change`](../skills/frame-change.md) (+ [`load-subgraph`](../skills/load-subgraph.md)) · [`clarify-decisions`](../skills/clarify-decisions.md) · [`research`](../skills/research.md) · [`run-spike`](../skills/run-spike.md) · [`define-domain`](../skills/define-domain.md) · [`/pathfind`](../skills/pathfind.md) · [`/interpret-session`](../skills/interpret-session.md) · [`/deepen-codebase`](../skills/deepen-codebase.md)
+**Skills:** [`solve-problem`](../skills/solve-problem.md) · [`frame-change`](../skills/frame-change.md) (+ [`load-subgraph`](../skills/load-subgraph.md)) · [`clarify-decisions`](../skills/clarify-decisions.md) · [`research`](../skills/research.md) · [`run-spike`](../skills/run-spike.md) · [`define-domain`](../skills/define-domain.md) · [`/pathfind`](../skills/pathfind.md) · [`/interpret-session`](../skills/interpret-session.md) · [`/deepen-codebase`](../skills/deepen-codebase.md) · [`/work-the-problem`](../skills/work-the-problem.md)
 
 **Produces:** an agreed shape, a stated ceremony tier, an updated glossary, possibly an ADR, and — for tier ≥ 1 — an invocation of `specify-behavior`. From `solve-problem`: a Problem Brief and one route before that chain starts.
 
@@ -78,10 +78,17 @@ Then return to the interview with the evidence and put the decision back to the 
 
 Parallel windows beside the main work thread (any phase — not discovery-only):
 
-- **[`/deepen-codebase`](../skills/deepen-codebase.md)** — learning companion: dual-axis foundation for **any** subject (fundamentals, ontology, mechanisms, this-repo as-is, cited references, gaps, failure modes). Slow and deep; no product pick. Optional third session beside real work.
-- **[`/interpret-session`](../skills/interpret-session.md)** — committed second opinion (stance) and the English reply to carry back after you decide.
+- **[`/interpret-session`](../skills/interpret-session.md)** — time-boxed committed stance and the paste-back reply (gấp / standup pace).
+- **[`/deepen-codebase`](../skills/deepen-codebase.md)** — pure learning companion: dual-axis foundation for **any** subject; no product pick.
+- **[`/work-the-problem`](../skills/work-the-problem.md)** — multi-round problem tree (identify → define → foundation→feature → breakdown↔solve) with **disk artifacts**, in-service teaching so the user grows with AI, then a carry-back brief once leaves close or are explicitly deferred.
 
-They are siblings, not modes of each other. Use deepen-codebase when the risk is a hollow mental model; use interpret-session when you need a defendable pick and a paste-back reply.
+They are siblings, not modes of each other:
+
+| Need | Companion |
+|---|---|
+| Fast defendable pick + reply | `/interpret-session` |
+| Hollow mental model, no product close | `/deepen-codebase` |
+| Deep solve + learn while closing a frame-change question | `/work-the-problem` |
 
 ### 4. Propose approaches
 

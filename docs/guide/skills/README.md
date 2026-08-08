@@ -42,8 +42,9 @@ Turn an idea into an agreed shape. Produces no code.
 | [`run-spike`](run-spike.md) | model | Throwaway code answering one design question. The answer is the only deliverable |
 | [`define-domain`](define-domain.md) | model | Maintains `CONTEXT.md` and `docs/adr/`. ADRs pass a three-part gate |
 | [`pathfind`](pathfind.md) | `/pathfind` | Layer 0 multi-session decision map (Chart / Work) before delivery |
-| [`interpret-session`](interpret-session.md) | `/interpret-session` | Companion session for non-English decision work — stance + English reply |
-| [`deepen-codebase`](deepen-codebase.md) | `/deepen-codebase` | Learning companion: dual-axis deep foundation for any subject; no product decision; optional third session |
+| [`interpret-session`](interpret-session.md) | `/interpret-session` | Time-boxed companion: stance + paste-back reply (gấp / second-opinion) |
+| [`deepen-codebase`](deepen-codebase.md) | `/deepen-codebase` | Learning companion: dual-axis deep foundation for any subject; no product decision |
+| [`work-the-problem`](work-the-problem.md) | `/work-the-problem` | Multi-round deep solve + foundation→feature teaching + disk artifacts + carry-back |
 
 ## spec
 

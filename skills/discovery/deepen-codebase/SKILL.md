@@ -17,10 +17,12 @@ ontology, mechanisms, what *this* codebase does, named reference designs, debt,
 option deltas (unranked), failure modes, and open gaps — in their language,
 **without recommending a product choice**.
 
-**Where this sits:** optional **third session** beside real work (main thread ·
-`interpret-session` · this skill). Not a mode of interpret, not brainstorm, not
-discovery-only. Runs on **any subject** (module, bug, seam, library, greenfield
-literacy, onboarding, paste). Feature work is a common anchor, never required.
+**Where this sits:** optional companion beside real work (main thread ·
+`interpret-session` · `work-the-problem` · this skill). Not a mode of interpret or
+work-the-problem, not brainstorm, not discovery-only. Runs on **any subject**
+(module, bug, seam, library, greenfield literacy, onboarding, paste). Feature work
+is a common anchor, never required. When the user must **close a product problem**
+and learn in the same loop, they run `/work-the-problem` instead.
 
 ## The Iron Laws
 
@@ -39,6 +41,7 @@ NEVER WRITE TRACKED PROJECT STATE. NEVER AUTO-INVOKE A USER-INVOKED SKILL.
 | Neighbor | Boundary |
 |---|---|
 | `interpret-session` | Stance, dissent, English paste-back — **theirs**. You explain; you do not pick. |
+| `work-the-problem` | Multi-round problem tree + in-service teaching + carry-back — **theirs** when a frame-change question must close. You stay pure learning. |
 | `teach-pack` | Graded productions + durable workspace — **theirs**. Soft probe here; **name** `/teach-pack` when sticky proof is needed. |
 | `study-change` | One git-range HTML packet — **theirs**. Scope here is a *topic*. |
 | `research` | External owning-source note — **sub-skill** for material F2/F3/F4 claims. |

@@ -6,11 +6,13 @@ This repository hosts **independent skill packages**. Install only what you need
 |---|---|---|---|---|
 | **Engineer Pack** | `engineer-pack` | `skills/{meta,discovery,spec,…}/` | **Yes** (default plugin) | Spec-driven coding: ideation → ship |
 | **Personal Pack** | `personal-pack` | `skills/personal/` | **Opt-in** | Life + multi-project *management* (secretary/coach) |
+| **Fluency Pack** | `fluency-pack` | `skills/fluency/` | **Opt-in** | Language learning to operational fluency (coach) |
 
 - Package map: **[docs/packages.md](docs/packages.md)**  
 - Personal OS (standalone): **[skills/personal/README.md](skills/personal/README.md)** · **[docs/personal-os/START-HERE.md](docs/personal-os/START-HERE.md)**
+- Fluency OS (standalone): **[skills/fluency/README.md](skills/fluency/README.md)**
 
-Personal OS does **not** depend on the engineering package. Engineering installs do **not** require Personal OS.
+Each package stands alone. Personal OS and Fluency OS do **not** depend on the engineering package, and engineering installs do **not** require either of them.
 
 ---
 
@@ -62,7 +64,7 @@ npx skills@latest add jayden-dang/skills
 ```
 
 Or as a Claude Code plugin (this repo is a valid plugin: **Engineer Pack** + a
-session-start hook). Personal Pack is **not** in the default plugin list.
+session-start hook). Personal Pack and Fluency Pack are **not** in the default plugin list.
 
 **Nothing to install into your repo.** Pure `SKILL.md` — no vendored runtime.
 
@@ -95,6 +97,21 @@ done
 
 In your notes vault, run `setup-personal-os` once.  
 Do not use a blind `skills/*/*` symlink loop if you want engineering only — that also installs Personal OS.
+
+### Fluency OS (opt-in, independent)
+
+Full guide: [skills/fluency/README.md](skills/fluency/README.md).
+
+```bash
+# from this repository root; set AGENT_SKILLS_DIR for your harness
+for d in skills/fluency/*/; do
+  [ -f "$d/SKILL.md" ] || continue
+  ln -sfn "$PWD/$d" "${AGENT_SKILLS_DIR}/$(basename "$d")"
+done
+```
+
+In your practice vault, run `setup-fluency-os` once. The target and support languages are
+config values — nothing in the package assumes which language you are learning.
 
 **Other platforms.** Nothing here is Claude-specific — the skills are plain
 `SKILL.md` and the traceability check is `grep`/`git` the agent drives.
@@ -201,6 +218,23 @@ Standalone product docs: [skills/personal/README.md](skills/personal/README.md) 
 | disk | `sync-workspaces` |
 
 Templates: `templates/personal-os/`.
+
+### Fluency OS (opt-in, independent package)
+
+Standalone product docs: [skills/fluency/README.md](skills/fluency/README.md).
+
+| | |
+|---|---|
+| gate | `using-fluency-os` |
+| setup | `setup-fluency-os` |
+| plan | `plan-cycle` |
+| practice | `run-session`, `run-voice-session` |
+| feedback | `diagnose-output` |
+| input | `mine-source`, `build-lexicon`, `drill-pronunciation` |
+| real use | `rehearse-transfer`, `write-artifact` |
+| review | `review-practice-week`, `assess-level` |
+
+Templates: `templates/fluency-os/`.
 
 ## Traceability, without a linter
 

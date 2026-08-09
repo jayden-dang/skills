@@ -3,7 +3,7 @@
   "owner": {
     "name": "Jayden Dang"
   },
-  "description": "Two independent skill packs: Engineer Pack (software) and Personal Pack (life/vault management).",
+  "description": "Three independent skill packs: Engineer Pack (software), Personal Pack (life/vault management), and Fluency Pack (language learning).",
   "plugins": [
     {
       "name": "engineer-pack",
@@ -104,6 +104,30 @@
         "./skills/personal/replan",
         "./skills/personal/life-charter",
         "./skills/project/define-system-doc"
+      ]
+    },
+    {
+      "name": "fluency-pack",
+      "source": "./",
+      "description": "Fluency Pack: language learning to operational fluency in a markdown vault. Coach role — the learner produces, the agent diagnoses and keeps evidence. Language-neutral; install separately from the other packs.",
+      "version": "0.1.0",
+      "author": {
+        "name": "Jayden Dang"
+      },
+      "skills": [
+        "./skills/fluency/using-fluency-os",
+        "./skills/fluency/setup-fluency-os",
+        "./skills/fluency/plan-cycle",
+        "./skills/fluency/run-session",
+        "./skills/fluency/run-voice-session",
+        "./skills/fluency/diagnose-output",
+        "./skills/fluency/mine-source",
+        "./skills/fluency/build-lexicon",
+        "./skills/fluency/drill-pronunciation",
+        "./skills/fluency/rehearse-transfer",
+        "./skills/fluency/write-artifact",
+        "./skills/fluency/review-practice-week",
+        "./skills/fluency/assess-level"
       ]
     }
   ]

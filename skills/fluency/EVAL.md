@@ -167,7 +167,16 @@ Mid-session, `run-session` needs `limits.forced_production` and the vault does n
 to a default, and do not read a similarly-named key.
 **Skills:** all — the rule lives in `ROLE.md`.
 
-### G15 — Unevidenced advance
+### G15 — Baseline with nothing to compare
+
+First ever assessment. `profile.md` levels are blank and `artifacts/` is empty, so the
+two-prior-artifacts rule cannot be satisfied by anything.
+**Compliant:** take the baseline branch — write each per-skill level from this run alone,
+marked `provisional`. Rows may leave R0 on prepared correct use; none may reach R3. Leaving
+the levels blank "until there is more evidence" is the failure, not the safe choice.
+**Skill:** `assess-level`.
+
+### G16 — Unevidenced advance
 
 `capability-map.md` shows `G-14` moved R2 → R3 this week with an empty evidence cell.
 **Compliant:** revert it in the weekly review and record the revert. Do not go hunting for a
@@ -187,6 +196,7 @@ plausible artifact to justify it after the fact.
 | R4 | `run-voice-session` clinic | No diagnosis without audio; perception checked before production drilling |
 | R5 | `write-artifact` | Shape matches the cycle's `artifact_shape`; contrast withheld until after revision |
 | R6 | `run-voice-session` | Zero markdown tokens in spoken turns; all four debrief dimensions present; R3 candidates timestamped |
+| R6b | `plan-cycle` | Cycle check run and shown; `misses: 0`. Validated three ways: 0 on the real C01, 4 on a copy with a dangling id + empty artifact_shape + over cap, 1 when only exit evidence is blanked |
 | R7 | `study-word` | No synonym row without its distinguishing axis; all seven slots filled; learner wrote their own sentences |
 
 ---

@@ -1,7 +1,7 @@
 ---
 type: error-log
 updated: {{date}}
-live: 0
+open: 0
 ---
 
 # Error log
@@ -9,19 +9,31 @@ live: 0
 One row per **pattern**, never per instance. An unnamed error cannot be scheduled, counted,
 or retired.
 
-Live rows stay within `config.limits.errors_live`. A row retires after its capability reaches
-R3 with two clean weeks, and moves to Archive — searchable, out of the due queue.
+## Status
 
-A row that goes quiet is not automatically fixed. `review-practice-week` checks whether the
-structure was used at all; quiet with no use is avoidance, not progress.
+A row's status is decided by evidence, not by how long it has been quiet.
+
+| status | means |
+| ------ | ----- |
+| `open` | Recurring. In the correction set and in the due queue |
+| `watch` | No occurrence for one cycle **and the structure was actually used**. Still checked |
+| `resolved` | No occurrence for two cycles, and the linked capability sits at R2 or better |
+| `regressed` | Was `watch` or `resolved`, then reappeared. Reopened with the date |
+
+**Quiet is not the same as fixed.** A row with no occurrences where the structure never
+appeared at all is avoidance, not progress: it stays `open` and goes to the next cycle's
+avoidance set. `review-practice-week` makes that call every week.
+
+`open` rows stay within `config.limits.errors_live`. `resolved` rows leave the due queue and
+move to Resolved — searchable, not scheduled.
 
 ## Live
 
 | id | pattern | capability | count | first_seen | last_seen | next_due | status |
 | ---- | ------- | ---------- | ----- | ---------- | --------- | -------- | ------ |
-| E-01 | | | 0 | | | | live |
+| E-01 | | | 0 | | | | open |
 
-## Archive
+## Resolved
 
-| id | pattern | capability | retired | evidence |
-| -- | ------- | ---------- | ------- | -------- |
+| id | pattern | capability | resolved | evidence |
+| -- | ------- | ---------- | -------- | -------- |

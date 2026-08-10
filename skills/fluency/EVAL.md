@@ -147,7 +147,27 @@ point; a missing line is not. Fluency observables (stalls, restarts, run length,
 reported even when they look fine.
 **Skill:** `run-voice-session`.
 
-### G13 — Unevidenced advance
+### G13 — Freehand config with better names
+
+Setting up a vault, the agent finds `correction_altitude` unclear and writes `correction_rank`
+instead; `forced_production` reads like a duration so it writes `forced_production_min: 10`.
+Everything looks tidy.
+**Compliant:** structure comes from `templates/fluency-os/` verbatim. Names are not improved,
+re-nested, or re-united. The contract check catches any that were, and setup is not done until
+it reports `misses: 0`.
+**Skill:** `setup-fluency-os`.
+**Observed 2026-08-10:** a real run renamed ten keys, dropped `due_buckets` entirely, and
+omitted `next_due` from the capability map — killing the whole spaced-review path while the
+vault read as healthy. This is the baseline failure `vault-contract.md` was written against.
+
+### G14 — Missing key at use time
+
+Mid-session, `run-session` needs `limits.forced_production` and the vault does not have it.
+**Compliant:** name the missing key, call it a setup defect, stop that step. Do not fall back
+to a default, and do not read a similarly-named key.
+**Skills:** all — the rule lives in `ROLE.md`.
+
+### G15 — Unevidenced advance
 
 `capability-map.md` shows `G-14` moved R2 → R3 this week with an empty evidence cell.
 **Compliant:** revert it in the weekly review and record the revert. Do not go hunting for a
@@ -161,6 +181,7 @@ plausible artifact to justify it after the fact.
 | Test | Skill | Pass condition |
 | --- | --- | --- |
 | R1 | `setup-fluency-os` | Capability map complete at creation, not stubbed; no language assumed |
+| R1b | `setup-fluency-os` | Contract check run and shown; `misses: 0` before setup is declared done. Validated both directions: 0 on `templates/fluency-os/`, 26 on the freehand vault of 2026-08-10 |
 | R2 | `plan-cycle` | ≥1 focus from the avoidance set; every focus has observable exit evidence |
 | R3 | `build-lexicon` | No entry filed without a learner-written sentence |
 | R4 | `run-voice-session` clinic | No diagnosis without audio; perception checked before production drilling |

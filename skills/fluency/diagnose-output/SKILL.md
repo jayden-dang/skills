@@ -26,7 +26,7 @@ NO LINKED ARTIFACT, NO STATE CHANGE.
    | learner form | target form | pattern (capability id) | one repair drill |
 
 4. The full sweep is offered only if the learner asks, and then as a list of **pattern names with counts** — never a line-by-line rewrite of their text.
-5. Update `errors.md`: increment `count`, refresh `last_seen`, reset `next_due` to the first bucket. A pattern not yet listed gets a new `E-*` row linked to its capability id — `G-*` for grammar, `F-*` for a function or sentence-formation move, `P-*` for a sound, rhythm, or stress finding.
+5. Update `errors.md`: increment `count`, refresh `last_seen`, reset `next_due` to the first bucket, and set status — a row at `watch` or `resolved` that just recurred becomes `regressed` with today's date. A pattern not yet listed gets a new `E-*` row linked to its capability id — `G-*` for grammar, `F-*` for a function or sentence-formation move, `P-*` for a sound, rhythm, or stress finding.
 6. Update `capability-map.md` by the movement rules recorded at the top of that file — they are the single home for how R1 (recognises), R2 (produces with preparation), and R3 (automatic under pressure) are earned and lost. Apply them against **this artifact only**, and write the artifact link into the `evidence` cell. No link, no change.
 7. Record the calibration gap: what the learner flagged versus what was actually there — hits, misses, false alarms. Append the row to `profile.md`.
 

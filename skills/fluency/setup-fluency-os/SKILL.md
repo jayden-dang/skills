@@ -12,19 +12,23 @@ REQUIRED: read sibling `ROLE.md` (coach default, produce-first, evidence gate, c
 
 ## Contract
 
-Setup leaves six files and six directories, in this order: `config.md` from the learner's
-answers, a complete `capability-map.md`, three empty-but-valid ledgers, a dashboard, and the
-event directories. Every path in it was confirmed by the learner before it was written.
+Setup leaves six files and seven directories, every one of them structured so the **other
+twelve skills can read it**. They address the vault by exact key path and exact column name,
+so the structure comes from `templates/fluency-os/` verbatim — values are the learner's, names
+are not negotiable. Setup is finished when the contract check passes with zero misses, not
+when the files look right.
 
 ## Recipe
 
 1. Confirm the vault root with the learner. Existing folder of notes → map their folders to roles; greenfield → propose the shape below and get consent before creating anything.
-2. Interview for `config.md`. REQUIRED before any other file: `languages.target`, `languages.support`, `schedule.*`, `pronunciation.accent_anchor`, `themes` (totalling 100), `materials_blend`, `language_policy`, `ai_policy`, `cycle.weeks`, `limits.*`. Every value comes from the learner or from the template default — the target language, the accent, and the level framework are read from answers, never inferred from who the learner appears to be.
-3. Seed `capability-map.md` **complete for `languages.target`**: grammar `G-*`, communicative functions `F-*`, and phonology `P-*` covering everything the learner needs up to the ceiling in `cycle.benchmarks` (or, with no benchmark named, up to advanced everyday plus their professional domain). Every row opens at R0 (understands the rule) with an empty evidence cell. Completeness here is what makes the avoidance set visible later; a map grown from errors alone can only ever contain what already went wrong.
-4. Seed the remaining ledgers empty but valid: `profile.md`, `errors.md`, `lexicon.md`.
-5. Write `README.md` as the dashboard: current state, live focus, links to every ledger and the newest event notes.
-6. Create the event directories: `cycles/`, `sessions/`, `reviews/`, `assessments/`, `sources/`, `artifacts/`, `lexicon/` (word study notes).
-7. REQUIRED SUB-SKILL: use `plan-cycle` to open cycle 1.
+2. **REQUIRED before writing anything: read `vault-contract.md` beside this file, and open each template in `templates/fluency-os/`.** Every file below is that template with values filled in. Renaming a key, re-nesting it, or changing its unit produces a vault the readers cannot see — and they fail silently, doing nothing rather than erroring.
+3. Interview for `config.md`. Every value comes from the learner or is the template default, marked `(default)`. Nothing about the target language, the accent, or the level framework is inferred from who the learner appears to be. Extra keys of your own are safe; changed ones are not.
+4. Seed `capability-map.md` **complete for `languages.target`**: grammar `G-*`, communicative functions `F-*`, phonology `P-*`, covering everything the learner needs up to the ceiling in `cycle.benchmarks` — or, with no benchmark named, up to advanced everyday plus their professional domain. Every row opens at R0 (understands the rule), empty `evidence`, empty `next_due`. Completeness here is what makes the avoidance set visible later; a map grown from errors alone can only ever contain what already went wrong.
+5. Seed `profile.md`, `errors.md`, `lexicon.md` — empty of data, complete in structure. Their empty tables are where the first session writes; a ledger missing a column silently discards what belongs in it.
+6. Write `README.md` as the dashboard: current state, live focus, links to every ledger and the newest event notes.
+7. Create the directories: `cycles/`, `sessions/`, `reviews/`, `assessments/`, `sources/`, `artifacts/`, `lexicon/`.
+8. **Run the contract check** from `vault-contract.md` at the vault root. Report the miss count. `misses: 0` → continue. Anything else → fix the named items and re-run. A miss is never resolved by editing the contract.
+9. REQUIRED SUB-SKILL: use `plan-cycle` to open cycle 1.
 
 ## Vault shape (proposal, not a mandate)
 
@@ -35,15 +39,25 @@ event directories. Every path in it was confirmed by the learner before it was w
   cycles/  sessions/  reviews/  assessments/  sources/  artifacts/  lexicon/
 ```
 
-Templates for every note live in `templates/fluency-os/` at the repository root.
+## Rationalizations
+
+| Thought | Reality |
+|---|---|
+| "That key name is clearer — rename it" | Twelve skills grep for the old one. Clearer to you, invisible to them |
+| "Minutes make more sense than a count here" | `limits.forced_production` is read as a count of capabilities. Changing the unit changes the behaviour, silently |
+| "The templates are examples, I'll write it fresh" | They are the schema. Freehand config is how a vault ends up unreadable |
+| "Reverse-engineer the names from the skill bodies" | That was tried; it caught one key out of eleven. Read the contract instead |
+| "The files look right, skip the check" | Looking right is what a mis-keyed vault does. Run it |
+| "One miss is close enough to start" | One missing key is one skill that quietly does nothing all cycle |
 
 ## Red flags
 
+- A key renamed, re-nested, or given a different unit from the template
 - A capability map seeded with a handful of example rows instead of full coverage
 - A target language, accent, or framework filled in without the learner saying it
-- A folder created or renamed before the learner agreed to the mapping
-- Ledgers written before `config.md` exists
+- A ledger written without frontmatter, or missing a column the contract names
+- Setup declared done without the check output shown
 
 ## Done when
 
-`config.md` valid; four ledgers exist; `capability-map.md` complete for the target language; dashboard links resolve; no folder created without consent; cycle 1 opened.
+Contract check reports `misses: 0`; `capability-map.md` complete for the target language and entirely at R0; no folder created without consent; cycle 1 opened.

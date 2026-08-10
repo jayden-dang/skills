@@ -35,6 +35,8 @@ Read `config.md` before the first write of a session. It carries the languages, 
 
 Never hardcode a language, an accent, a level framework, a folder name, or a machine path. The target and support languages are config values, always.
 
+A key or column this pack names but the vault does not have is a **setup defect**. Say which one is missing and stop that step — do not substitute a guess, a default, or a similarly-named key. Silent substitution is how a mis-keyed vault runs for a whole cycle looking healthy.
+
 ## Language policy
 
 Activities run in the **target** language from the first session. Explain in simple target language first. The **support** language is a tool for unblocking a concept, not the medium of the session, and its share falls as `config.language_policy.support_drops_at` is approached.

@@ -20,19 +20,19 @@ trends from `profile.md`. Next week's focuses are ids, capped at `limits.max_wee
 1. Open this week's `sessions/`, the weekly artifact, `errors.md`, `capability-map.md`, and `profile.md` before writing anything.
 2. Session tally from those files: sessions run, minutes, minimum-session days, recovery days, missed days. Report the real number.
 3. Weekly artifact present? If not, that is a finding — name why, and whether the shape held.
-4. **Error trends**: which `E-*` rows grew, which went quiet, which are new. For every quiet row, check the sessions for whether the structure was *used at all*. Quiet with use = improving. Quiet with no use = **avoidance**, and it goes to the next cycle's avoidance set.
+4. **Error trends**: which `E-*` rows grew, which went quiet, which are new. For every quiet row, check the sessions for whether the structure was *used at all*, then set the status by that answer — quiet **with** use → `watch`; quiet with **no** use → stays `open` and goes to the next cycle's avoidance set. Quiet is not fixed, and the usage check is what tells the two apart.
 5. **Capability movement**: every row whose state changed this week, with its evidence link. A row that changed with an empty evidence cell is reverted here, and the revert is recorded.
 6. Metrics: calibration-gap and translation-ratio trends from `profile.md`. Trend across weeks, not this week's number alone.
 7. Cycle-focus check: any focus capability with zero attempts this week is being routed around — schedule forced production for it next week rather than restating it as a goal.
 8. Next week: ≤ `limits.max_weekly_focus` focuses, each naming a specific capability id or error id. Not a skill name, not a theme.
-9. Write `reviews/<year>-W<NN>.md`. Update `profile.md`. Retire `errors.md` rows whose capability sits at R3 (automatic under pressure) with two clean weeks.
+9. Write `reviews/<year>-W<NN>.md`. Update `profile.md`. Move an `errors.md` row to `resolved` once it has been quiet-with-use for two cycles and its capability sits at R2 or better; a `watch` or `resolved` row that reappears goes to `regressed` with the date.
 
 ## Rationalizations
 
 | Thought | Reality |
 |---|---|
 | "It felt like a good week" | Count the sessions and read the error log |
-| "That error hasn't appeared — it's fixed" | Check whether the structure appeared at all. Silence is usually avoidance |
+| "That error hasn't appeared — mark it resolved" | Quiet with no use is `open` plus avoidance. Only quiet *with* use earns `watch` |
 | "Roll the untouched focus over to next week" | Untouched twice means it is blocked or wrong. Say which, then change something |
 | "Don't record the missed days" | Missed days are the input to the recovery rule; hidden, the rule never fires |
 | "The state change is obviously right, leave it" | Evidence or revert |

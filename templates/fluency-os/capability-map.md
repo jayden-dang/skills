@@ -30,22 +30,26 @@ The same ladder governs `lexicon.md` entries.
 
 `next_due` follows `config.due_buckets`.
 
+`band` records where a row sits on the framework in `config.cycle.benchmarks`, so the map can
+be filtered by level without a second file. It describes the row, never the learner — the
+learner's level lives in `profile.md` and only `assess-level` writes it.
+
 ## Grammar
 
-| id | capability | state | evidence | next_due |
-| ---- | ---------- | ----- | -------- | -------- |
-| G-01 | | R0 | | |
+| id | capability | band | state | evidence | next_due |
+| ---- | ---------- | ---- | ----- | -------- | -------- |
+| G-01 | | | R0 | | |
 
 ## Functions
 
 What the learner can *do* with the language, not what they know about it.
 
-| id | function | state | evidence | next_due |
-| ---- | -------- | ----- | -------- | -------- |
-| F-01 | | R0 | | |
+| id | function | band | state | evidence | next_due |
+| ---- | -------- | ---- | ----- | -------- | -------- |
+| F-01 | | | R0 | | |
 
 ## Phonology
 
-| id | feature | intelligibility cost | state | evidence | next_due |
-| ---- | ------- | -------------------- | ----- | -------- | -------- |
-| P-01 | | | R0 | | |
+| id | feature | intelligibility cost | band | state | evidence | next_due |
+| ---- | ------- | -------------------- | ---- | ----- | -------- | -------- |
+| P-01 | | | | R0 | | |

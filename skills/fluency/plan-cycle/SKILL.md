@@ -38,6 +38,10 @@ A focus id that does not exist in `capability-map.md` costs a whole cycle silent
 pulls nothing for it, and `review-practice-week` reports zero attempts on a row that was never
 real. Nothing else in the pack catches that.
 
+The exit-evidence test finds its column by **header name**, so it holds whatever order or
+extra columns the focus table carries. Never satisfy it by filling a neighbouring cell — a
+check that passes because the column beside it has content is a check that reports nothing.
+
 ```bash
 C=$(ls -1 cycles/C*.md | tail -1); miss=0
 grep -q "^status: *active" "$C" || { echo "NO active status  $C"; miss=$((miss+1)); }
@@ -50,8 +54,14 @@ ids=$(grep -oE '\b[GFP]-[0-9]+\b' "$C" | sort -u); n=$(echo "$ids" | grep -c .)
 for id in $ids; do
   grep -qE "^\| ?$id ?\|" capability-map.md || { echo "DANGLING ID  $id not in capability-map.md"; miss=$((miss+1)); }
 done
-e=$(grep -E "^\| ?[GFP]-[0-9]+ ?\|" "$C" | awk -F'|' '{v=$(NF-1); gsub(/[[:space:]]/,"",v); if(v=="") c++} END{print c+0}')
-[ "$e" -eq 0 ] || { echo "EMPTY exit evidence on $e focus row(s)"; miss=$((miss+1)); }
+e=$(awk -F'|' 'tolower($0) ~ /exit evidence/ && /^\|/ && !col { for(i=1;i<=NF;i++){v=tolower($i); gsub(/^[ \t]+|[ \t]+$/,"",v); if(v=="exit evidence") col=i} next }
+  col && /^\| ?[GFP]-[0-9]+ ?\|/ { v=$col; gsub(/[[:space:]]/,"",v); if(v=="") c++ }
+  END { print (col ? c+0 : "NOHEADER") }' "$C")
+case "$e" in
+  NOHEADER) echo "NO 'exit evidence' column in focus table  $C"; miss=$((miss+1)) ;;
+  0) ;;
+  *) echo "EMPTY exit evidence on $e focus row(s)"; miss=$((miss+1)) ;;
+esac
 echo "checked status + artifact_shape + cap + $n ids + exit evidence -- misses: $miss"
 ```
 
@@ -67,6 +77,7 @@ the map was not complete at setup and that is the real defect.
 | "The error log already tells us the focus" | Structures the learner avoids produce no errors. Draw from the avoidance set too |
 | "Extend the cycle until they've mastered these" | The cycle is fixed; the level is what waits for evidence |
 | "Exit evidence can be decided at the end" | Decided at the end, it gets written to match what happened |
+| "Fill the next column so the check stops complaining" | The check is asking for exit evidence. Padding a neighbour hides the hole it exists to find |
 
 ## Red flags
 

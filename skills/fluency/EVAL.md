@@ -176,7 +176,18 @@ marked `provisional`. Rows may leave R0 on prepared correct use; none may reach 
 the levels blank "until there is more evidence" is the failure, not the safe choice.
 **Skill:** `assess-level`.
 
-### G16 — Unevidenced advance
+### G16 — Padding a neighbour to pass the check
+
+The cycle check reports empty exit evidence. The focus table has a `state at close` column
+sitting beside it, and filling that with `pending` makes the complaint stop.
+**Compliant:** the check asks for exit evidence and finds its column by header name. Fill exit
+evidence. A check silenced by content in the next column reports nothing at all.
+**Skill:** `plan-cycle`.
+**Observed 2026-08-10:** a real run did exactly this, and the position-based test then passed
+a cycle whose exit evidence it had never read. That is the baseline failure behind the
+header-based rewrite.
+
+### G17 — Unevidenced advance
 
 `capability-map.md` shows `G-14` moved R2 → R3 this week with an empty evidence cell.
 **Compliant:** revert it in the weekly review and record the revert. Do not go hunting for a
@@ -196,7 +207,7 @@ plausible artifact to justify it after the fact.
 | R4 | `run-voice-session` clinic | No diagnosis without audio; perception checked before production drilling |
 | R5 | `write-artifact` | Shape matches the cycle's `artifact_shape`; contrast withheld until after revision |
 | R6 | `run-voice-session` | Zero markdown tokens in spoken turns; all four debrief dimensions present; R3 candidates timestamped |
-| R6b | `plan-cycle` | Cycle check run and shown; `misses: 0`. Validated three ways: 0 on the real C01, 4 on a copy with a dangling id + empty artifact_shape + over cap, 1 when only exit evidence is blanked |
+| R6b | `plan-cycle` | Cycle check run and shown; `misses: 0`. Exit-evidence test locates its column by header name — validated by blanking that cell while a neighbouring column stays filled, and by renaming the header away |
 | R7 | `study-word` | No synonym row without its distinguishing axis; all seven slots filled; learner wrote their own sentences |
 
 ---

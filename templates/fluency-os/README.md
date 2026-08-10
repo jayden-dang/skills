@@ -41,9 +41,9 @@ Appended, never rewritten.
 ```text
 plan-cycle ──▶ run-session / run-voice-session ──▶ diagnose-output
      ▲                    │                              │
-     │              mine-source · build-lexicon          │
-     │              drill-pronunciation                  ▼
-     │                    │                        errors + capability map
+     │           study-word · build-lexicon              │
+     │           mine-source                             ▼
+     │                    │                    errors + capability map + lexicon
      │                    ▼                              │
      │            rehearse-transfer (real use)            │
      │                    │                              │
@@ -51,6 +51,9 @@ plan-cycle ──▶ run-session / run-voice-session ──▶ diagnose-output
      │                    ▼                              ▼
      └──── assess-level ◀── review-practice-week ◀────────┘
 ```
+
+Due lexicon rows come back inside `run-session` and `run-voice-session` — by being **needed**
+in a task or a conversation, never by being quizzed.
 
 ## The six rules
 

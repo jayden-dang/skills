@@ -65,6 +65,7 @@ Note templates live in `templates/fluency-os/` at the repository root.
   capability-map.md    # ledger: G-* grammar, F-* functions, P-* phonology, R0–R3
   lexicon.md           # ledger: chunks, each with a sentence you wrote
   errors.md            # ledger: patterns, counts, due dates
+  lexicon/             # one word study note per studied word
   cycles/  sessions/  reviews/  assessments/  sources/  artifacts/
 ```
 
@@ -84,11 +85,11 @@ Pressure scenarios: **`EVAL.md`**.
 | `setup-fluency-os` | Install or remap a vault (user-invoked) |
 | `plan-cycle` | Open or renew a practice cycle |
 | `run-session` | A typed study session |
-| `run-voice-session` | A spoken session, under the voice contract |
+| `run-voice-session` | A spoken session — voice contract, four-dimension debrief, pronunciation clinic |
 | `diagnose-output` | You submit writing, a recording, or a transcript |
 | `mine-source` | Turn an article, video, or meeting into practice |
-| `build-lexicon` | File and promote chunks |
-| `drill-pronunciation` | A sound, stress, or rhythm problem |
+| `study-word` | Learn a word properly — meaning, family, synonym contrasts, usage |
+| `build-lexicon` | File and schedule chunks in the ledger |
 | `rehearse-transfer` | Before or after real-world use |
 | `write-artifact` | The week's comparable output |
 | `review-practice-week` | Weekly hinge |

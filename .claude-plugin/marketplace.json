@@ -8,7 +8,7 @@
     {
       "name": "engineer-pack",
       "source": "./",
-      "description": "Engineer Pack: A-to-Z agentic development (ideation to release, requirements traceability, roadmap/milestones). Personal Pack is separate \u2014 not included here.",
+      "description": "Engineer Pack: A-to-Z agentic development (ideation to release, requirements traceability, roadmap/milestones). Personal Pack is separate — not included here.",
       "version": "1.0.0",
       "author": {
         "name": "Jayden Dang"
@@ -122,8 +122,8 @@
         "./skills/fluency/run-voice-session",
         "./skills/fluency/diagnose-output",
         "./skills/fluency/mine-source",
+        "./skills/fluency/study-word",
         "./skills/fluency/build-lexicon",
-        "./skills/fluency/drill-pronunciation",
         "./skills/fluency/rehearse-transfer",
         "./skills/fluency/write-artifact",
         "./skills/fluency/review-practice-week",

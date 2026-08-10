@@ -16,14 +16,17 @@ word genuinely is the whole unit.
 States match the capability ladder: R1 recognised · R2 used with preparation · R3 used
 unprompted. `next_due` follows `config.due_buckets`.
 
+Rows due today are pulled by `run-session` and `run-voice-session`. They are reviewed by
+being *needed* in a task or a conversation — never by being quizzed.
+
 Live entries stay within `config.limits.lexicon_live`. Over cap, the **oldest R3** rows retire —
 never the newest.
 
 ## Live
 
-| id | chunk | function | state | source | my sentence | next_due |
-| ---- | ----- | -------- | ----- | ------ | ----------- | -------- |
-| L-01 | | | R1 | | | |
+| id | chunk | function | state | source | study note | my sentence | next_due |
+| ---- | ----- | -------- | ----- | ------ | ---------- | ----------- | -------- |
+| L-01 | | | R1 | | | | |
 
 ## Retired
 

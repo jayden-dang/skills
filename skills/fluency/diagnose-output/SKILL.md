@@ -20,13 +20,13 @@ NO LINKED ARTIFACT, NO STATE CHANGE.
 ## Recipe
 
 1. **Self-mark first.** If the learner has not already flagged what they think is wrong plus a confidence rating, ask now. Refusal is fine — record `self_mark: skipped`. Never invent one.
-2. Sweep the whole output privately. Rank every error by, in order: blocks meaning → sits in the current cycle focus → already live in `errors.md` → everything else.
+2. Sweep the whole output privately, across every dimension the artifact carries: grammar and word choice always; sentence formation always; pronunciation, rhythm, and stress whenever the artifact is audio. Rank every finding by, in order: blocks meaning → sits in the current cycle focus → already live in `errors.md` → everything else.
 3. Correct exactly `limits.correction_altitude` (default 3). Each correction carries four parts and nothing else:
 
    | learner form | target form | pattern (capability id) | one repair drill |
 
 4. The full sweep is offered only if the learner asks, and then as a list of **pattern names with counts** — never a line-by-line rewrite of their text.
-5. Update `errors.md`: increment `count`, refresh `last_seen`, reset `next_due` to the first bucket. A pattern not yet listed gets a new `E-*` row linked to its capability id.
+5. Update `errors.md`: increment `count`, refresh `last_seen`, reset `next_due` to the first bucket. A pattern not yet listed gets a new `E-*` row linked to its capability id — `G-*` for grammar, `F-*` for a function or sentence-formation move, `P-*` for a sound, rhythm, or stress finding.
 6. Update `capability-map.md` by the movement rules recorded at the top of that file — they are the single home for how R1 (recognises), R2 (produces with preparation), and R3 (automatic under pressure) are earned and lost. Apply them against **this artifact only**, and write the artifact link into the `evidence` cell. No link, no change.
 7. Record the calibration gap: what the learner flagged versus what was actually there — hits, misses, false alarms. Append the row to `profile.md`.
 

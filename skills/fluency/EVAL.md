@@ -124,7 +124,30 @@ decision without switching languages.
 saying, link it to capability rows, write the transfer note.
 **Skill:** `rehearse-transfer`.
 
-### G10 — Unevidenced advance
+### G10 — Vocabulary quizzed instead of used
+
+Three `lexicon.md` rows are due. Learner opens a voice session.
+**Compliant:** steer the conversation so those chunks are the natural thing to say, then
+wait. No "what does X mean" turns. Unprompted use is what re-buckets the row.
+**Skills:** `run-voice-session`, `run-session`.
+
+### G11 — Synonym list with no axis
+
+Learner asks for the difference between *mitigate*, *alleviate*, and *reduce*, and wants it
+quickly.
+**Compliant:** every row carries its distinguishing axis — register, strength, connotation, or
+collocation. Speed does not license a bare list; a bare list licenses free substitution.
+**Skill:** `study-word`.
+
+### G12 — Fluency dimension silently dropped
+
+A voice session had clean grammar and clean pronunciation. The debrief covers those two.
+**Compliant:** all four dimensions get a line. "Clean this session" for a dimension is a data
+point; a missing line is not. Fluency observables (stalls, restarts, run length, fillers) are
+reported even when they look fine.
+**Skill:** `run-voice-session`.
+
+### G13 — Unevidenced advance
 
 `capability-map.md` shows `G-14` moved R2 → R3 this week with an empty evidence cell.
 **Compliant:** revert it in the weekly review and record the revert. Do not go hunting for a
@@ -140,9 +163,10 @@ plausible artifact to justify it after the fact.
 | R1 | `setup-fluency-os` | Capability map complete at creation, not stubbed; no language assumed |
 | R2 | `plan-cycle` | ≥1 focus from the avoidance set; every focus has observable exit evidence |
 | R3 | `build-lexicon` | No entry filed without a learner-written sentence |
-| R4 | `drill-pronunciation` | No diagnosis without audio; perception checked before production drilling |
+| R4 | `run-voice-session` clinic | No diagnosis without audio; perception checked before production drilling |
 | R5 | `write-artifact` | Shape matches the cycle's `artifact_shape`; contrast withheld until after revision |
-| R6 | `run-voice-session` | Zero markdown tokens in spoken turns; R3 candidates timestamped |
+| R6 | `run-voice-session` | Zero markdown tokens in spoken turns; all four debrief dimensions present; R3 candidates timestamped |
+| R7 | `study-word` | No synonym row without its distinguishing axis; all seven slots filled; learner wrote their own sentences |
 
 ---
 
@@ -154,7 +178,8 @@ Should fire, and route to exactly one skill:
 - "let's talk for 20 minutes" → `run-voice-session`
 - "I have a demo on Friday" → `rehearse-transfer`
 - "here's a podcast episode I want to study" → `mine-source`
-- "my /θ/ sounds wrong" → `drill-pronunciation`
+- "my /θ/ sounds wrong" → `run-voice-session` (clinic branch)
+- "what does *leverage* mean" / "teach me this word" / "hedge vs mitigate" → `study-word`
 
 Should **not** fire:
 

@@ -36,8 +36,9 @@ NO EVIDENCE, NO ADVANCE.
 | speaking, conversation, "talk to me", roleplay | `run-voice-session` |
 | "check this", "what did I get wrong", pastes writing or a transcript | `diagnose-output` |
 | shares an article, video, doc, recording to learn from | `mine-source` |
-| new words or phrases to keep | `build-lexicon` |
-| a sound, accent, stress, or intonation problem | `drill-pronunciation` |
+| "what does X mean", "how do I use X", "X vs Y" | `study-word` |
+| a batch of phrases to file with no study needed | `build-lexicon` |
+| a sound, accent, stress, or intonation problem | `run-voice-session` (clinic branch) |
 | a meeting, talk, or class before/after it happens | `rehearse-transfer` |
 | the week's comparable piece | `write-artifact` |
 | end of week | `review-practice-week` |

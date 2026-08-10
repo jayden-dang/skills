@@ -230,7 +230,8 @@ Standalone product docs: [skills/fluency/README.md](skills/fluency/README.md).
 | plan | `plan-cycle` |
 | practice | `run-session`, `run-voice-session` |
 | feedback | `diagnose-output` |
-| input | `mine-source`, `build-lexicon`, `drill-pronunciation` |
+| vocabulary | `study-word`, `build-lexicon` |
+| input | `mine-source` |
 | real use | `rehearse-transfer`, `write-artifact` |
 | review | `review-practice-week`, `assess-level` |
 

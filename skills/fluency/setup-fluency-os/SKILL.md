@@ -23,7 +23,7 @@ event directories. Every path in it was confirmed by the learner before it was w
 3. Seed `capability-map.md` **complete for `languages.target`**: grammar `G-*`, communicative functions `F-*`, and phonology `P-*` covering everything the learner needs up to the ceiling in `cycle.benchmarks` (or, with no benchmark named, up to advanced everyday plus their professional domain). Every row opens at R0 (understands the rule) with an empty evidence cell. Completeness here is what makes the avoidance set visible later; a map grown from errors alone can only ever contain what already went wrong.
 4. Seed the remaining ledgers empty but valid: `profile.md`, `errors.md`, `lexicon.md`.
 5. Write `README.md` as the dashboard: current state, live focus, links to every ledger and the newest event notes.
-6. Create the event directories: `cycles/`, `sessions/`, `reviews/`, `assessments/`, `sources/`, `artifacts/`.
+6. Create the event directories: `cycles/`, `sessions/`, `reviews/`, `assessments/`, `sources/`, `artifacts/`, `lexicon/` (word study notes).
 7. REQUIRED SUB-SKILL: use `plan-cycle` to open cycle 1.
 
 ## Vault shape (proposal, not a mandate)
@@ -32,7 +32,7 @@ event directories. Every path in it was confirmed by the learner before it was w
 <vault>/
   README.md            config.md    profile.md
   capability-map.md    lexicon.md   errors.md
-  cycles/  sessions/  reviews/  assessments/  sources/  artifacts/
+  cycles/  sessions/  reviews/  assessments/  sources/  artifacts/  lexicon/
 ```
 
 Templates for every note live in `templates/fluency-os/` at the repository root.

@@ -20,7 +20,7 @@ NO DEBT.
 
 ## Steps
 
-1. Read `profile.md`, the active cycle's focus, `capability-map.md` rows where `next_due <= today`, and live rows in `errors.md`.
+1. Read `profile.md`, the active cycle's focus, live rows in `errors.md`, and every row where `next_due <= today` in **both** `capability-map.md` and `lexicon.md`. The lexicon queue is part of the session, not an extra.
 2. Pick the mode. This is the home of the recovery and no-debt rules:
    - **full** — `config.schedule.session_shape`;
    - **minimum** — learner says the day is short: `config.schedule.minimum_session_minutes` covering the due queue plus one production task;
@@ -28,11 +28,12 @@ NO DEBT.
    Overdue items never stack. Re-bucket the oldest and move on — `config.schedule.study_debt` is false.
 3. **Name the forced-production quota out loud before the task**: `limits.forced_production` capabilities at R0 (understands) or R1 (recognises) from the cycle focus that this session's output must contain. Naming them after the task turns the quota into a report instead of a constraint.
 4. Set the task. The learner produces. Do not model the answer, supply the vocabulary, or write a first line. If they stall twice on the same idea, give a **frame** — a sentence stem, a function label, a question that decomposes it — never a finished sentence.
+   **Due lexicon rows are reviewed by being required, not recited**: build the task so those chunks are the natural way to say it. Asking what a word means tests memory and moves no state; using it unprompted is what promotes the row.
 5. **Self-mark**: before saying anything about accuracy, ask the learner to flag what they believe is wrong and rate confidence 1–5. Their marks go in the note verbatim, whether right or wrong.
 6. REQUIRED SUB-SKILL: use `diagnose-output` on what they produced.
 7. Close with a 60-second unscripted monologue on any theme from the cycle. The learner reports `translation_ratio` — roughly what share they composed in the support language first. Record the number; do not argue with it.
 8. Write `sessions/<date>-s<N>.md` (`kind: study`). The coach fills the note; the learner types nothing they did not already say.
-9. Update `profile.md`: `last_session`, `streak`, calibration gap, translation ratio.
+9. Update `profile.md`: `last_session`, `streak`, calibration gap, translation ratio. Re-bucket `next_due` on every lexicon and capability row that came up.
 
 ## Rationalizations
 
@@ -43,6 +44,7 @@ NO DEBT.
 | "Self-marking is a formality" | The calibration gap is the only progress signal available without a diagnostic test |
 | "Three days missed — run the whole backlog" | Recovery mode, capped queue, oldest re-bucketed |
 | "They asked me to just write it" | Offer the repair path. If they decline it in words, produce it and write `exception:` in the note |
+| "Quiz the due words first, then practise" | A definition recalled is not a word used. Build the task so the chunk is needed |
 | "The note can wait until later" | An unwritten session leaves no evidence, so nothing in the map can move |
 
 ## Red flags

@@ -16,8 +16,9 @@ plus one authentic example with a link, plus one sentence the learner wrote abou
 work or life. The `lexicon.md` row has a column for each; a row with a blank column is not an
 entry yet.
 
-This is the home of the chunk rule: `mine-source` and `rehearse-transfer` file through here
-rather than restating it.
+This is the ledger and the home of the chunk rule: `study-word`, `mine-source`, and
+`rehearse-transfer` all file through here rather than restating it. Depth lives in the study
+note; this file is what schedules the row and brings it back.
 
 ## Recipe
 
@@ -26,7 +27,8 @@ rather than restating it.
 3. State moves on the ladder in `capability-map.md` — R1 recognised → R2 used with preparation → R3 used unprompted — and that file holds the rules for earning each. `next_due` follows `config.due_buckets`: correct use promotes a bucket, failure resets to the first.
 4. Cap live entries at `limits.lexicon_live`. Over cap → retire the **oldest R3** rows to the Retired section, keeping the newest in play.
 5. Retire on R3 plus two unprompted sightings. Retired rows stay searchable and leave the due queue.
-6. Link every entry to the capability or source it came from, so `review-practice-week` can see which themes are producing usable language and which are only producing notes.
+6. Link every entry to the capability or source it came from, and to its `lexicon/<slug>.md` study note when one exists, so `review-practice-week` can see which themes are producing usable language and which are only producing notes.
+7. A chunk the learner will have to *choose between* near-synonyms to use needs the depth, not just a row — REQUIRED SUB-SKILL: use `study-word` before filing it.
 
 ## Rationalizations
 

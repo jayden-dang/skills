@@ -14,14 +14,14 @@ REQUIRED: read sibling `ROLE.md` (coach default, produce-first, evidence gate, c
 
 Setup leaves six files and seven directories, every one of them structured so the **other
 twelve skills can read it**. They address the vault by exact key path and exact column name,
-so the structure comes from `templates/fluency-os/` verbatim — values are the learner's, names
-are not negotiable. Setup is finished when the contract check passes with zero misses, not
+so the structure comes from the `templates/` folder beside this file, verbatim — values are
+the learner's, names are not negotiable. Setup is finished when the contract check passes with zero misses, not
 when the files look right.
 
 ## Recipe
 
 1. Confirm the vault root with the learner. Existing folder of notes → map their folders to roles; greenfield → propose the shape below and get consent before creating anything.
-2. **REQUIRED before writing anything: read `vault-contract.md` beside this file, and open each template in `templates/fluency-os/`.** Every file below is that template with values filled in. Renaming a key, re-nesting it, or changing its unit produces a vault the readers cannot see — and they fail silently, doing nothing rather than erroring.
+2. **REQUIRED before writing anything: read `vault-contract.md` and every file in `templates/`, both beside this file.** Every file below is that template with values filled in. Renaming a key, re-nesting it, or changing its unit produces a vault the readers cannot see — and they fail silently, doing nothing rather than erroring.
 3. Interview for `config.md`. Every value comes from the learner or is the template default, marked `(default)`. Nothing about the target language, the accent, or the level framework is inferred from who the learner appears to be. Extra keys of your own are safe; changed ones are not.
 4. Seed `capability-map.md` **complete for `languages.target`**: grammar `G-*`, communicative functions `F-*`, phonology `P-*`, covering everything the learner needs up to the ceiling in `cycle.benchmarks` — or, with no benchmark named, up to advanced everyday plus their professional domain. Every row opens at R0 (understands the rule), empty `evidence`, empty `next_due`. Completeness here is what makes the avoidance set visible later; a map grown from errors alone can only ever contain what already went wrong.
 5. Seed `profile.md`, `errors.md`, `lexicon.md` — empty of data, complete in structure. Their empty tables are where the first session writes; a ledger missing a column silently discards what belongs in it.

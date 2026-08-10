@@ -235,7 +235,7 @@ Standalone product docs: [skills/fluency/README.md](skills/fluency/README.md).
 | real use | `rehearse-transfer`, `write-artifact` |
 | review | `review-practice-week`, `assess-level` |
 
-Templates: `templates/fluency-os/`.
+Templates: `skills/fluency/setup-fluency-os/templates/` (symlinked at `templates/fluency-os/`).
 
 ## Traceability, without a linter
 

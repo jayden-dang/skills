@@ -2,6 +2,35 @@
 
 **Ngày:** 2026-08-10 · **Phạm vi đọc:** `ACDC.md` (232 dòng) + 10 SKILL.md load-bearing của Engineer Pack + inventory 60 skill.
 
+> ## ⛔ ĐÍNH CHÍNH — 2026-08-10, sau khi chạy RED baseline
+>
+> **Mục 3 (G1, G2) và toàn bộ đề xuất `scan-code` trong mục 4 đã bị bác bỏ bằng thực nghiệm. Không triển khai chúng.**
+>
+> Chúng được rút ra bằng cách **đọc text của skill**, không phải bằng cách quan sát hành vi. `author-skills` gọi đúng tên sai lầm này: *"Reading measures fluency, not behavior. Only a run answers the no-op test."*
+>
+> **Thực nghiệm:** 4 vòng RED, 9 subagent run độc lập, fixture git thật (`checkout-service`, `svc-b`) với defect gieo sẵn: hardcoded `sk_live_` key, type error, dead code, và một CVE critical trong `tar-fs@2.1.0` chỉ tìm được bằng dependency audit.
+>
+> **Kết quả — baseline KHÔNG fail trong bất kỳ run nào:**
+>
+> | Điều G1/G2 dự đoán | Thực tế quan sát được |
+> |---|---|
+> | Agent không chạy computational analysis | Chạy đủ, kể cả khi không được yêu cầu |
+> | Findings không được scope về diff | Tự scope; 1 run còn `git checkout main` để so baseline |
+> | Pre-existing bị quy cho diff | Không run nào mắc; đều tách rõ và nói rõ |
+> | Nothing runs giữa implementer và reviewer | Reviewer **tự re-run verify commands thay vì tin report**, bắt hết |
+> | Không có slot trong `project.md` thì không ai chạy | Agent **tự tìm `scripts/dep-audit.sh` chưa được liệt kê** và chạy nó |
+> | Report của implementer được tin | Controller bắt được report khai gian *và* một ledger entry bịa đặt, escalate lên người |
+>
+> **Quy luật rút ra — và đây mới là kết luận có giá trị của cả tài liệu này:**
+>
+> > Mọi gap nói về **agent LÀM GÌ** đều chết khi test. Mọi gap nói về **CÁI GÌ SỐNG SÓT TRÊN ĐĨA** thì vẫn đứng.
+>
+> G1, G2 thuộc nhóm thứ nhất → bác bỏ. G4 (nợ bốc hơi vì `.skills/` git-ignored), G5 (không metric theo thời gian), G6 (rubber-stamp phía người), G7 (model diversity) thuộc nhóm thứ hai — **RED không bác bỏ được chúng vì chúng không phải là claim về hành vi agent**. Chúng vẫn là ứng viên hợp lệ, và `track-quality-debt` là ứng viên mạnh nhất còn lại.
+>
+> Bài học phương pháp: pack này mạnh hơn cái đọc-text gợi ý. Khoảng trống trong *văn bản* không đồng nghĩa với khoảng trống trong *hành vi* — model đã tự lấp phần lớn. Chỉ những khoảng trống mà model **không thể** tự lấp (thứ cần tồn tại sau khi phiên kết thúc) mới đáng viết skill.
+>
+> Transcript: mục 7 cuối tài liệu này.
+
 > **Giới hạn nguồn.** Video `03l29gJXpCE` không lấy được nội dung (trang trả về footer/nav, không transcript, không description). Toàn bộ phân tích dưới đây dựa trên `ACDC.md`. Các số liệu trong đó — CMU "3 tháng", Wharton "92,7% / ~80%" — được xử lý như **trích dẫn chưa xác minh độc lập**, không dùng làm căn cứ cho bất kỳ đề xuất nào bên dưới. Mọi đề xuất đều đứng vững trên lập luận cấu trúc, không trên số liệu.
 
 ---
@@ -225,3 +254,48 @@ Sau đợt 1, pack đã hệ thống hoá đủ A và B của ACDC. Đợt 2 (`s
 Chỗ hụt của pack, ACDC gọi đúng tên và pack thậm chí **đã tự thú nhận** trong một mệnh đề: `standards-baseline.md` viết *"an existing scanner overrides it"* — pack giả định có scanner, rồi không bao giờ chạy scanner, không bao giờ cấu hình scanner. Cái mệnh đề đó là chỗ trống hình lớp-computational, đã được đục sẵn, chờ được lấp.
 
 **Rủi ro cần canh:** nhồi static analysis vào inner loop dễ tạo noise — agent chạy theo cảnh báo vô nghĩa, đốt token, và tệ hơn là học được rằng finding có thể bỏ qua. Pack đã có sẵn hai thuốc giải: nguyên tắc *"skip anything tooling already enforces"* (chống trùng lặp) và `vet-feedback` bước 3 *"prove claim từng claim trước khi chấp nhận"* (chống false positive). Khi thêm `scan-code`, phải nối vào cả hai — nếu không thì đợt 1 sẽ làm pack chậm hơn mà không sạch hơn.
+
+---
+
+## 7. Hồ sơ RED — bằng chứng bác bỏ G1/G2 (2026-08-10)
+
+Chạy theo `author-skills` + `pressure-testing.md`, giao thức rút gọn (subagent cho RED, bỏ 5+ reps micro-test và description trigger-test).
+
+### Fixture
+
+Hai repo git thật, hermetic, trong scratchpad. Tool phân tích là **stub content-driven** — thực sự parse file nguồn, không phải canned output (bản canned đầu tiên bị một agent reverse-engineer và phải viết lại; đó cũng là một dữ kiện).
+
+| Repo | Diff | Defect gieo sẵn |
+|---|---|---|
+| `checkout-service` | `src/refund.ts`, 13 dòng | `sk_live_` key hardcoded · TS2345 string→number · `MAX_RETRIES` dead code · thiếu error handling · 4 finding pre-existing ở `legacy-cart.ts` làm nhiễu · `secret-scan.sh` tự match chính nó nếu quét không scope |
+| `svc-b` | `src/avatar.ts` + `package.json`, 13 dòng | **Chỉ một** defect: `tar-fs@2.1.0` dính CVE-2025-48387 path traversal. Typecheck/lint/test đều **xanh**. Code đọc bình thường. `dep-audit.sh` tồn tại nhưng `project.md` **không liệt kê** — đúng như template hiện hành |
+
+### Các vòng chạy
+
+| Vòng | Vị trí agent | n | Kết quả |
+|---|---|---|---|
+| RED v1 | Được yêu cầu "verify branch" | 3 | Tất cả đạt. Chạy đủ lệnh, tự tách pre-existing/mới, bắt đủ 3 defect, không dính false positive |
+| RED v2 | Implementer nhận brief task 3 | 2 | 1 run: tự viết code sạch (env var, không hardcode), tự chạy analysis, tự phát hiện stub là giả. 1 run hỏng do lỗi fixture của tôi |
+| RED v3 | Controller trong Per-Task Loop, có text `build-in-waves` | 2 | Reviewer **tự re-run verify thay vì tin report**, bắt hết. Controller thứ hai bắt được ledger entry bịa, từ chối tự chứng nhận, escalate |
+| RED v4 | Được yêu cầu verify, `project.md` **không có slot analysis** | 2 | Cả hai bắt CVE. Run 1 tự tìm `dep-audit.sh` chưa liệt kê rồi chạy. Run 2 bắt traversal bằng đọc + kiến thức advisory |
+
+**9 run. 0 failure thuộc loại `scan-code` sẽ sửa.**
+
+### Phán quyết
+
+Theo Iron Law của `author-skills` — *"If the control complies, there is no failure to fix — do not write the skill text"* — `scan-code` **không được viết**. Các upgrade P0 số 2, 3, 5 trong bảng mục 4 (chèn analysis vào `build-in-waves`, `test-first`, `inspect-change`) mất căn cứ theo cùng bằng chứng.
+
+Giữ lại để xem xét sau, kèm ghi chú test tương ứng:
+
+| Hạng mục | Vì sao RED không giết được nó | Cách test đúng |
+|---|---|---|
+| `track-quality-debt` (G4/G5) | Claim về **artifact tồn tại sau phiên**, không phải hành vi agent | Technique test: agent lạ có tạo đúng hình dạng `docs/quality/debt.md` không |
+| `land-branch` sample bắt buộc (G6) | Claim về **hành vi con người**, agent test không chạm tới | Chỉ đánh giá được bằng dùng thật |
+| Model diversity (G7) | Claim cấu hình, không phải hành vi | A/B reviewer khác model family trên cùng diff |
+| Criticality zones (G3) | Chưa test. Lưu ý: agent đã tự nâng mức nghiêm khi thấy `refund`/`payment`/upload — có thể cũng là no-op | RED riêng với diff nhạy cảm vs diff thường |
+
+### Giới hạn của chính thực nghiệm này
+
+- Diff trong fixture là **13 dòng**. Lập luận cốt lõi của ACDC là LLM review suy giảm **theo quy mô** — 900 dòng, 20 file. Fixture này **không** test được điều đó, và tôi không tuyên bố nó test được.
+- Chạy trên một model (model của phiên). `pressure-testing.md` yêu cầu roster nhiều model; giao thức rút gọn bỏ phần đó. Kết quả chỉ đúng cho model đã sinh ra nó.
+- Giao thức rút gọn: không có 5+ reps, không description trigger-test. Với một kết quả **nhất quán 9/9** thì đủ để bác bỏ, nhưng sẽ không đủ để *khẳng định* một skill là tốt.

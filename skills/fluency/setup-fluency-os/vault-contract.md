@@ -12,7 +12,7 @@ does nothing rather than failing loudly. This file is the list those readers dep
 
 ## Rule
 
-Copy the structure from `templates/fluency-os/`. Fill in values; do not rename, re-nest,
+Copy the structure from the `templates/` folder beside `SKILL.md`. Fill in values; do not rename, re-nest,
 re-unit, or drop keys. Adding keys is safe. Changing one is not.
 
 Two failures seen in the field, both from writing the config freehand and reverse-engineering

@@ -152,7 +152,7 @@ reported even when they look fine.
 Setting up a vault, the agent finds `correction_altitude` unclear and writes `correction_rank`
 instead; `forced_production` reads like a duration so it writes `forced_production_min: 10`.
 Everything looks tidy.
-**Compliant:** structure comes from `templates/fluency-os/` verbatim. Names are not improved,
+**Compliant:** structure comes from `templates/` beside the skill, verbatim. Names are not improved,
 re-nested, or re-united. The contract check catches any that were, and setup is not done until
 it reports `misses: 0`.
 **Skill:** `setup-fluency-os`.
@@ -212,6 +212,7 @@ plausible artifact to justify it after the fact.
 | Test | Skill | Pass condition |
 | --- | --- | --- |
 | R1 | `setup-fluency-os` | Capability map complete at creation, not stubbed; no language assumed |
+| R1c | `setup-fluency-os` | Every path the skill names resolves from the installed skill folder, not only from the repo — `templates/` and `vault-contract.md` both sit beside `SKILL.md` |
 | R1b | `setup-fluency-os` | Contract check run and shown; `misses: 0` before setup is declared done. Validated: 0 on a correct vault; 26 on the freehand vault of 2026-08-10; 6/6 on a config with correct key names and sabotaged values; 4 on a 12-row stubbed map |
 | R2 | `plan-cycle` | ≥1 focus from the avoidance set; every focus has observable exit evidence |
 | R3 | `build-lexicon` | No entry filed without a learner-written sentence |

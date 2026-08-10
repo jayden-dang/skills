@@ -51,7 +51,7 @@ Set `AGENT_SKILLS_DIR` to wherever your harness loads skills (for example `~/.cl
 4. The skill seeds a **complete** capability map for your target language — every row at R0.
 5. Run `plan-cycle` to open cycle 1, then start with `run-session` or `run-voice-session`.
 
-Note templates live in `templates/fluency-os/` at the repository root.
+Note templates ship inside the skill, at `setup-fluency-os/templates/`, so they travel with an install. `templates/fluency-os/` at the repo root is a symlink to them.
 
 ---
 

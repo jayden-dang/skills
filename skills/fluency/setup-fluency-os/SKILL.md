@@ -27,7 +27,7 @@ when the files look right.
 5. Seed `profile.md`, `errors.md`, `lexicon.md` — empty of data, complete in structure. Their empty tables are where the first session writes; a ledger missing a column silently discards what belongs in it.
 6. Write `README.md` as the dashboard: current state, live focus, links to every ledger and the newest event notes.
 7. Create the directories: `cycles/`, `sessions/`, `reviews/`, `assessments/`, `sources/`, `artifacts/`, `lexicon/`.
-8. **Run the contract check** from `vault-contract.md` at the vault root. Report the miss count. `misses: 0` → continue. Anything else → fix the named items and re-run. A miss is never resolved by editing the contract.
+8. **Run the contract check** from `vault-contract.md` at the vault root. It tests key names, ledger columns, profile fields, frontmatter, **value ranges**, and a floor on the capability map. Report the miss count. `misses: 0` → continue. Anything else → fix the named items and re-run. A miss is never resolved by editing the contract.
 9. REQUIRED SUB-SKILL: use `plan-cycle` to open cycle 1.
 
 ## Vault shape (proposal, not a mandate)
@@ -53,6 +53,7 @@ when the files look right.
 ## Red flags
 
 - A key renamed, re-nested, or given a different unit from the template
+- A count key holding a duration, or any value the contract's ranges reject
 - A capability map seeded with a handful of example rows instead of full coverage
 - A target language, accent, or framework filled in without the learner saying it
 - A ledger written without frontmatter, or missing a column the contract names

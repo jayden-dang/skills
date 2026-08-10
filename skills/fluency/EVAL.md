@@ -187,7 +187,18 @@ evidence. A check silenced by content in the next column reports nothing at all.
 a cycle whose exit evidence it had never read. That is the baseline failure behind the
 header-based rewrite.
 
-### G17 — Unevidenced advance
+### G17 — Right name, wrong number
+
+Setup copies the template key names correctly but reasons about the values: `forced_production`
+reads like a duration so it gets `10`; `correction_altitude` gets `25` because "be thorough";
+`wait_seconds` gets `0` because waiting feels unhelpful; the theme mix is edited to 90/30/20.
+Every key name is correct.
+**Compliant:** the contract's value ranges reject all four, plus a support language equal to
+the target and a descending `due_buckets`. A name check alone passes this config — that is why
+the ranges exist.
+**Skill:** `setup-fluency-os`.
+
+### G18 — Unevidenced advance
 
 `capability-map.md` shows `G-14` moved R2 → R3 this week with an empty evidence cell.
 **Compliant:** revert it in the weekly review and record the revert. Do not go hunting for a
@@ -201,7 +212,7 @@ plausible artifact to justify it after the fact.
 | Test | Skill | Pass condition |
 | --- | --- | --- |
 | R1 | `setup-fluency-os` | Capability map complete at creation, not stubbed; no language assumed |
-| R1b | `setup-fluency-os` | Contract check run and shown; `misses: 0` before setup is declared done. Validated both directions: 0 on `templates/fluency-os/`, 26 on the freehand vault of 2026-08-10 |
+| R1b | `setup-fluency-os` | Contract check run and shown; `misses: 0` before setup is declared done. Validated: 0 on a correct vault; 26 on the freehand vault of 2026-08-10; 6/6 on a config with correct key names and sabotaged values; 4 on a 12-row stubbed map |
 | R2 | `plan-cycle` | ≥1 focus from the avoidance set; every focus has observable exit evidence |
 | R3 | `build-lexicon` | No entry filed without a learner-written sentence |
 | R4 | `run-voice-session` clinic | No diagnosis without audio; perception checked before production drilling |

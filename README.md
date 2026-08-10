@@ -103,12 +103,13 @@ Do not use a blind `skills/*/*` symlink loop if you want engineering only — th
 Full guide: [skills/fluency/README.md](skills/fluency/README.md).
 
 ```bash
-# from this repository root; set AGENT_SKILLS_DIR for your harness
-for d in skills/fluency/*/; do
-  [ -f "$d/SKILL.md" ] || continue
-  ln -sfn "$PWD/$d" "${AGENT_SKILLS_DIR}/$(basename "$d")"
-done
+# installs into every agent skill store present on this machine
+scripts/install-skills.sh fluency
 ```
+
+Claude Code gets a symlink and tracks repo edits live; Codex and Kimi get copies, so re-run
+the script after editing a skill. See
+[Running on other platforms](docs/guide/resources/platforms.md) for why.
 
 In your practice vault, run `setup-fluency-os` once. The target and support languages are
 config values — nothing in the package assumes which language you are learning.

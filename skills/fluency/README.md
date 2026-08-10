@@ -31,14 +31,13 @@ Engineer Pack or Personal Pack.
 ## Install
 
 ```bash
-# from the root of this repository
-for d in skills/fluency/*/; do
-  [ -f "$d/SKILL.md" ] || continue
-  ln -sfn "$PWD/$d" "${AGENT_SKILLS_DIR:?}/$(basename "$d")"
-done
+# from the root of this repository — installs into every agent store present
+scripts/install-skills.sh fluency
 ```
 
-Set `AGENT_SKILLS_DIR` to wherever your harness loads skills (for example `~/.claude/skills`).
+Claude Code (`~/.claude/skills`) gets a symlink and tracks repo edits live. Codex
+(`~/.agents/skills`) and Kimi (`~/.kimi-code/skills`) get copies, because Codex does not
+follow symlinked skill directories — re-run the script after editing a skill.
 
 ---
 

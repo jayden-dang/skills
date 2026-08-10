@@ -25,6 +25,27 @@ git clone https://github.com/jayden-dang/skills ~/dev/skills
 cd ~/dev/skills && for d in skills/*/*/; do ln -sfn "$PWD/$d" ~/.claude/skills/$(basename "$d"); done
 ```
 
+## Installing skills for every agent
+
+`scripts/install-skills.sh <pack>` writes each pack into every skill store present on the
+machine, using the mechanism that store actually reads:
+
+| Agent | Store | Form |
+|---|---|---|
+| Claude Code | `~/.claude/skills/` | symlink — repo edits apply at once |
+| Codex CLI | `~/.agents/skills/` | copy — re-run after editing a skill |
+| Kimi | `~/.kimi-code/skills/` | copy — re-run after editing a skill |
+| opencode | — | no skills mechanism; reads `AGENTS.md` |
+
+Codex resolves skills from `<project>/.agents/skills`, then `$CODEX_HOME/skills`
+(deprecated), then `$HOME/.agents/skills`, then its own system cache. It does **not** follow
+symlinked skill directories — verified on codex-cli 0.147.0, where a symlinked skill was
+absent from the list and the same skill copied in was found. That is why the shared store
+holds real directories.
+
+A store is only written when its parent directory already exists, so the script never
+invents a config directory for an agent that is not installed.
+
 ## Codex CLI
 
 Codex reads `AGENTS.md` from the repo root natively — no extra file needed. It

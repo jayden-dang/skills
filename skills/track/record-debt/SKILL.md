@@ -1,13 +1,8 @@
 ---
 name: record-debt
-description: Use when a review, cleanup, or verification pass produces a finding that is
-  real but deliberately not being fixed now — a finding polish-diff dropped as
-  out of scope, a Minor from inspect-change nobody will action, a pre-existing
-  lint/type/test failure found during setup, review feedback judged correct but
-  deferred — and when someone asks what technical debt or known issues this repo
-  is already carrying. Produces the durable debt ledger `docs/quality/debt.md`,
-  each item a `**DEBT-N**` carrying the finding, the reason it was deferred, and
-  where it was found.
+description: Banks findings that were judged real and deliberately left unfixed into the
+  durable debt ledger at docs/quality/debt.md. Run it with /record-debt.
+disable-model-invocation: true
 ---
 
 # Record Debt
@@ -18,6 +13,18 @@ survive the session that made them; observations do not need to.
 Everything this skill writes goes to `docs/quality/debt.md` — a tracked file, in git, in
 `docs/`. Not `.skills/` (git-ignored, reconstructed from `git log`, and a finding is not in
 `git log`). Not a session report. Not a commit message body.
+
+## Intake
+
+The user runs this, so the findings arrive however they arrive. Take them in this order:
+
+1. **Findings named in the invocation** — a pasted list, or "bank what polish-diff just found".
+2. **A deferral carrier**, when a build left one: `.skills/<CODE>/deferrals.md`. Read it,
+   propose one entry per line, and say which you are proposing before writing.
+3. **Nothing given** — ask what to bank. Do **not** go read the code and invent findings;
+   a fresh reading produces observations, and observations fail the admission test below.
+
+*Done when: you hold a concrete list of candidate findings, or you have asked for one.*
 
 ## What earns an entry
 

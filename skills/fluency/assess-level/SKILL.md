@@ -31,8 +31,8 @@ THE CYCLE ENDS ON SCHEDULE; THE LEVEL DOES NOT.
 4. Run it cold. No pre-teaching, no vocabulary supplied, no warm-up on the assessment content. A prepared assessment measures preparation.
 5. Diagnose each part — REQUIRED SUB-SKILL: use `diagnose-output` — and record observations **per skill separately**. Skills advance independently; a weak writing score does not hold listening back.
 6. **The gate**, and it reads differently on the first run than on every later one.
-   - **Baseline** — `profile.md` has no level written and `artifacts/` is empty. This assessment *is* the anchor everything later is compared against, so write each per-skill level from it alone and mark it `provisional`. Waiting for two prior artifacts here would leave the levels blank forever, since artifacts only accumulate against a level that already exists.
-   - **Advance** — any later run. A per-skill level moves only when this assessment **plus at least two prior artifacts** show it. One good performance is a data point, not a level.
+   - **Baseline** — `profile.md` has no level written. That alone decides it, whatever `artifacts/` holds: a learner who declined an entry assessment and started studying arrives at their first assessment with weeks of artifacts and still no level, and that run is a baseline. This assessment *is* the anchor everything later is compared against, so write each per-skill level from it alone and mark it `provisional`.
+   - **Advance** — any run where a level already exists. It moves only when this assessment **plus at least two prior artifacts** show it. One good performance is a data point, not a level.
    - A capability moves in either mode only where `capability-map.md`'s movement rules are satisfied and the evidence link is present. A baseline can take rows off R0 — prepared correct use is R2 evidence like any other — but it cannot reach R3, which needs two unprompted sightings a week apart.
    - Any framework named in `config.cycle.benchmarks` is a **label applied to evidence**, never a target that pulls the record toward it.
 7. **Demote what regressed**, plainly, with the evidence. Write it in the note; do not soften it into "needs consolidation".
@@ -63,6 +63,7 @@ THE CYCLE ENDS ON SCHEDULE; THE LEVEL DOES NOT.
 - An accent or a sitting pattern chosen for this cycle rather than read from the shape block
 - A level advanced on this assessment alone, outside the baseline branch
 - Levels still blank after a baseline ran
+- A first assessment forced down the advance branch because artifacts had accumulated first
 - A baseline level written without `provisional`
 - A regression recorded as anything other than a demotion
 - Cycle closed with no closeout written in the cycle note

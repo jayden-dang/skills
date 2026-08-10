@@ -26,16 +26,18 @@ THE CYCLE ENDS ON SCHEDULE; THE LEVEL DOES NOT.
    3. a real document read under time;
    4. a timed written piece;
    5. a 60-second unscripted monologue.
-2. Run it cold. No pre-teaching, no vocabulary supplied, no warm-up on the assessment content. A prepared assessment measures preparation.
-3. Diagnose each part — REQUIRED SUB-SKILL: use `diagnose-output` — and record observations **per skill separately**. Skills advance independently; a weak writing score does not hold listening back.
-4. **The gate**, and it reads differently on the first run than on every later one.
+2. **The spoken part comes before anything is written about the same content.** Part 2 is the only measurement of retrieval under time pressure in the whole note; a written recall taken first turns it into reading one's own notes aloud. Order is listen → speak → then write the recall → then open the transcript. Any part that pairs a spoken and a written response follows the same rule.
+3. **Fixed covers the administration, not only the five parts.** Record in the note's shape block, and repeat next time: the accent range for part 1, every time limit, and whether the whole thing runs in one sitting or is split across sessions. A harder accent or an overnight break between parts makes the next assessment incomparable — which is the single thing this note exists to prevent. Decide these once, in the shape block, never per cycle.
+4. Run it cold. No pre-teaching, no vocabulary supplied, no warm-up on the assessment content. A prepared assessment measures preparation.
+5. Diagnose each part — REQUIRED SUB-SKILL: use `diagnose-output` — and record observations **per skill separately**. Skills advance independently; a weak writing score does not hold listening back.
+6. **The gate**, and it reads differently on the first run than on every later one.
    - **Baseline** — `profile.md` has no level written and `artifacts/` is empty. This assessment *is* the anchor everything later is compared against, so write each per-skill level from it alone and mark it `provisional`. Waiting for two prior artifacts here would leave the levels blank forever, since artifacts only accumulate against a level that already exists.
    - **Advance** — any later run. A per-skill level moves only when this assessment **plus at least two prior artifacts** show it. One good performance is a data point, not a level.
    - A capability moves in either mode only where `capability-map.md`'s movement rules are satisfied and the evidence link is present. A baseline can take rows off R0 — prepared correct use is R2 evidence like any other — but it cannot reach R3, which needs two unprompted sightings a week apart.
    - Any framework named in `config.cycle.benchmarks` is a **label applied to evidence**, never a target that pulls the record toward it.
-5. **Demote what regressed**, plainly, with the evidence. Write it in the note; do not soften it into "needs consolidation".
-6. Cycle end → write the closeout in the cycle note: each focus capability's state at open versus close, which exit evidence was met, what did not move and why, and what the next cycle inherits. Then REQUIRED SUB-SKILL: use `plan-cycle`.
-7. Never restate a level the learner proposed. If they ask "am I B2 now", answer from the artifacts.
+7. **Demote what regressed**, plainly, with the evidence. Write it in the note; do not soften it into "needs consolidation".
+8. Cycle end → write the closeout in the cycle note: each focus capability's state at open versus close, which exit evidence was met, what did not move and why, and what the next cycle inherits. Then REQUIRED SUB-SKILL: use `plan-cycle`.
+9. Never restate a level the learner proposed. If they ask "am I B2 now", answer from the artifacts.
 
 ## Rationalizations
 
@@ -46,6 +48,9 @@ THE CYCLE ENDS ON SCHEDULE; THE LEVEL DOES NOT.
 | "The baseline went well — call it R3" | R3 needs two unprompted sightings a week apart. A baseline cannot produce them |
 | "Pre-teach the vocabulary so it goes well" | Then the result measures the pre-teaching |
 | "Change the format, it's stale" | A changed format erases the comparison the assessment exists for |
+| "Have them write the recall first, then talk it through" | Then part 2 measures reading aloud. Speak first, always |
+| "A tougher accent this cycle shows more" | It shows a different thing. Comparability is the point; put the accent range in the shape block |
+| "They're tired — finish parts 4 and 5 tomorrow" | Allowed, but it becomes the shape. Record it and split every future assessment the same way |
 | "Don't demote, it's demoralising" | An inflated record makes every later cycle plan wrong |
 | "They only slipped on writing — hold the whole level" | Skills advance independently. Record them separately |
 | "They asked if they're B2, and they probably are" | Answer from evidence or say the evidence is not there yet |
@@ -53,7 +58,9 @@ THE CYCLE ENDS ON SCHEDULE; THE LEVEL DOES NOT.
 ## Red flags
 
 - Assessment content warmed up beforehand
-- Shape differing from the previous assessment
+- Shape differing from the previous assessment in parts, accent range, time limits, or number of sittings
+- Any writing about a part's content collected before that part's spoken response
+- An accent or a sitting pattern chosen for this cycle rather than read from the shape block
 - A level advanced on this assessment alone, outside the baseline branch
 - Levels still blank after a baseline ran
 - A baseline level written without `provisional`

@@ -198,7 +198,20 @@ the target and a descending `due_buckets`. A name check alone passes this config
 the ranges exist.
 **Skill:** `setup-fluency-os`.
 
-### G18 — Unevidenced advance
+### G18 — Written recall before the spoken part
+
+Running a baseline, the agent has the learner write a four-item recall from memory
+immediately after the listening pass, then asks for the unprepared spoken response. Both
+artifacts exist; the note's own shape table says part 2 allows no notes written first.
+**Compliant:** speak first, write second. The written recall still precedes the transcript, so
+nothing is lost — but part 2 measures retrieval only if nothing about that content has been
+composed yet.
+**Skill:** `assess-level`.
+**Observed 2026-08-10:** a real baseline released exactly this ordering, and its own shape
+table contradicted itself between rows 1 and 2. The skill listed the five parts in order but
+never protected what the order was for.
+
+### G19 — Unevidenced advance
 
 `capability-map.md` shows `G-14` moved R2 → R3 this week with an empty evidence cell.
 **Compliant:** revert it in the weekly review and record the revert. Do not go hunting for a

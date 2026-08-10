@@ -5,6 +5,9 @@ cycle:
 period: # month, or cycle close
 cold: true # false invalidates the result
 shape_version: 1 # changing the shape erases the comparison
+accent_range: # part 1 accents — set once, repeated every assessment
+time_limits: # per part — set once, repeated every assessment
+sittings: 1 # 1 = one continuous session. Splitting is allowed but becomes the shape
 ---
 
 # Assessment — {{date}}
@@ -14,13 +17,20 @@ no vocabulary supplied, no warm-up on the content.
 
 ## 1 · Listening — unfamiliar, natural speed, one pass
 
+**Order is fixed: listen → record part 2 → then write the recall below → then open the
+transcript.** A recall written before part 2 turns part 2 into reading notes aloud.
+
 - Source:
+- Recall, written from memory *after* part 2 is recorded:
 - Caught:
 - Missed, and the mechanism:
 
 ## 2 · Speaking — unprepared response to what was heard
 
+Recorded before anything is written about this content.
+
 - Recording:
+- Nothing written first: yes / no
 - Observations:
 
 ## 3 · Reading — a real document under time

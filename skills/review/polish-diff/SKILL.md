@@ -66,13 +66,17 @@ pass by the controller when subagents are the four angles only).*
 
 ## 4. Triage
 
-Dedup findings that point at the same line or the same underlying mechanism — four angles routinely see one flaw from four sides. Then drop, without arguing:
+Dedup findings that point at the same line or the same underlying mechanism — four angles routinely see one flaw from four sides. Then give every surviving finding exactly one of these three exits, without arguing:
 
-- anything whose fix would change observable behavior (that is a design change; route it to `amend-feature` or `reroute-plan`)
-- anything requiring edits well outside the pinned diff
-- anything you judge a false positive
+| Exit | For | Where it goes |
+|---|---|---|
+| **Apply** | fixable inside the pinned diff, behavior unchanged | step 5 |
+| **False positive** | you judged the finding wrong | a one-line reason in step 7's report — that reason is the whole record |
+| **Defer** | real, and you are not fixing it now — outside the pinned diff, changes observable behavior, needs edits elsewhere, belongs to `amend-feature` / `reroute-plan`, or you simply noticed it in passing | REQUIRED SUB-SKILL: use `record-debt` — one entry each, before step 5 |
 
-Record each drop with its one-line reason. A silently discarded finding is indistinguishable from a finding you never received. *Done when: every finding is queued to apply or recorded as dropped, with a reason.*
+The split that matters is **wrong** versus **real-but-not-now**. Only a finding you judged *wrong* stays in the report. Everything real that you are not fixing is a deferral, whatever you call it while writing it down, and a deferral that lives only in this report is gone when the session ends.
+
+*Done when: every finding is queued to apply, or named a false positive with its reason, or carries a `DEBT-N` from the ledger.*
 
 ## 5. Apply
 
@@ -96,6 +100,7 @@ Run the four angles yourself, sequentially, in one context — Reuse, then Simpl
 
 ## Red Flags — Never
 
+- Dropping a finding as out of scope, or referring one out, without a debt ledger entry
 - Editing a test so the cleaned-up code passes it
 - Fixing a correctness bug you noticed "while you were in there"
 - Touching a file the pinned diff never touched

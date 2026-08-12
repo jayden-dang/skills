@@ -47,10 +47,10 @@ In `npx skills add jayden-dang/skills`, this package appears as **Personal Pack*
 ## First-time setup
 
 1. Choose or create a **markdown vault** (any folder of notes; Obsidian is a common host, not required).
-2. In an agent session with that vault as context, run **`setup-personal-os`** (user-invoked).
+2. In an agent session with that vault as context, run **`life-setup`** (user-invoked).
 3. Map *your* existing folders → logical roles (`inbox`, `daily`, `projects`, …). The skill **suggests** a layout; it never force-renames without consent.
 4. Set named **roots** for external workspaces only if you use them (code trees, learning folders) — values come from *you*, never assumed.
-5. Optionally fill `life-charter`, then start with `orient` or `plan-day`.
+5. Optionally fill `life-charter`, then start with `life-orient` or `life-plan-day`.
 
 Templates for notes live under `templates/personal-os/` at the repository root.
 
@@ -72,7 +72,7 @@ Users keep any folder names they already use. When greenfield, this shape sorts 
 50-Archive/
 ```
 
-All skills resolve paths through the vault **config** (`layout.*`, `roots.*`, `limits.*`) written by `setup-personal-os` — never through hardcoded directory names.
+All skills resolve paths through the vault **config** (`layout.*`, `roots.*`, `limits.*`) written by `life-setup` — never through hardcoded directory names.
 
 ---
 
@@ -83,20 +83,20 @@ Eval scenarios for pressure-tests: **`EVAL.md`**.
 
 | Skill | When |
 |---|---|
-| `using-personal-os` | Start of a Personal OS session (gate + role) |
-| `setup-personal-os` | Install or remap a vault (user-invoked) |
-| `sync-workspaces` | Advisory compare: disk roots vs project registry |
-| `capture` | Park a raw thought quickly |
-| `process-inbox` | Clarify and route inbox items |
-| `orient` | Status snapshot + one suggested focus |
-| `plan-day` | Daily focuses (≤3), energy, not-today |
-| `execute-session` | Start/end a focus block — **log + write-handoff only**; user works |
-| `open-project` / `plan-project` / `close-project` | Portfolio outcomes |
-| `maintain-area` | Ongoing area standards |
-| `open-learning-track` / `log-learning` | Learning cadence |
-| `review-week` | Weekly closed-loop hinge (P0s **PROPOSED** until confirm) |
-| `review-quarter` | Themes and commitments |
-| `replan` | Plan invalidated mid-flight |
+| `life-start` | Start of a Personal OS session (gate + role) |
+| `life-setup` | Install or remap a vault (user-invoked) |
+| `life-sync-workspaces` | Advisory compare: disk roots vs project registry |
+| `life-capture` | Park a raw thought quickly |
+| `life-process-inbox` | Clarify and route inbox items |
+| `life-orient` | Status snapshot + one suggested focus |
+| `life-plan-day` | Daily focuses (≤3), energy, not-today |
+| `life-execute-session` | Start/end a focus block — **log + write-handoff only**; user works |
+| `life-open-project` / `life-plan-project` / `life-close-project` | Portfolio outcomes |
+| `life-maintain-area` | Ongoing area standards |
+| `life-open-learning-track` / `life-log-learning` | Learning cadence |
+| `life-review-week` | Weekly closed-loop hinge (P0s **PROPOSED** until confirm) |
+| `life-review-quarter` | Themes and commitments |
+| `life-replan` | Plan invalidated mid-flight |
 | `life-charter` | Roles, anti-goals, energy constraints |
 
 ---
@@ -115,17 +115,17 @@ Eval scenarios for pressure-tests: **`EVAL.md`**.
 ## Closed loop
 
 ```text
-life-charter → review-quarter → portfolio intent
+life-charter → life-review-quarter → portfolio intent
        ↓
-  review-week (P0 ≤ 3)
+  life-review-week (P0 ≤ 3)
        ↓
-    plan-day (focus ≤ 3)
+    life-plan-day (focus ≤ 3)
        ↓
   user executes (outside this skill set, or with explicit grant)
        ↓
-  execute-session log ← user reports evidence
+  life-execute-session log ← user reports evidence
        ↓
-  next_action update → review-week
+  next_action update → life-review-week
 ```
 
 ---

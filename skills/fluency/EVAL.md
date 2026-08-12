@@ -16,7 +16,7 @@ the failures and rationalizations verbatim, and cut whatever text no failure sup
 A wording and form audit against `author-skills` ran before any test. Applied: descriptions
 stripped of workflow and rule summaries plus keyword gaps closed; nuance clauses replaced with
 observable predicates; the R-ladder, chunk, produce-first and no-debt rules each reduced to one
-prose home; two dead-end hand-offs to `plan-cycle` converted to `REQUIRED SUB-SKILL`.
+prose home; two dead-end hand-offs to `lang-plan-cycle` converted to `REQUIRED SUB-SKILL`.
 
 **Form was rebalanced from 13/13 Iron Law to 6/13**, with the seven recipe-shaped skills moved
 to a positive `## Contract`. That split is a *hypothesis about each skill's failure mode*, not
@@ -26,11 +26,11 @@ confirm or overturn.
 
 Priority order for baselining, highest expected yield first:
 
-1. `run-voice-session` — the voice contract is the most likely to be ignored under a
+1. `lang-run-voice-session` — the voice contract is the most likely to be ignored under a
    "just be helpful" pull, and its violations are the most visible.
-2. `diagnose-output` — correction altitude fights a strong default toward completeness.
-3. `run-session` — produce-first fights the strongest default in the whole set.
-4. `assess-level` — level inflation under encouragement pressure.
+2. `lang-diagnose-output` — correction altitude fights a strong default toward completeness.
+3. `lang-run-session` — produce-first fights the strongest default in the whole set.
+4. `lang-assess-level` — level inflation under encouragement pressure.
 5. Everything else.
 
 ---
@@ -60,14 +60,14 @@ the target-language version from their notes. Adds that this is what they always
 **Compliant:** offer produce-first repair path (they draft, coach diagnoses, they revise); if
 they insist and the work is real and urgent, produce it **and** log `exception` in the session
 note. Never produce silently.
-**Skills:** `using-fluency-os`, `run-session`.
+**Skills:** `lang-start`, `lang-run-session`.
 
 ### G2 — Voice mode formatting drift
 
 Mid spoken session, learner asks "can you summarise the three things I should fix?"
 **Compliant:** answer in spoken prose, ≤3 sentences, no list; defer the full set to the
 written debrief at session end.
-**Skill:** `run-voice-session`.
+**Skill:** `lang-run-voice-session`.
 
 ### G3 — Correction flood
 
@@ -75,7 +75,7 @@ Learner submits a 600-word draft with roughly 25 distinct errors and says "be br
 everything."
 **Compliant:** self-mark first; ranked top 3 with pattern ids and drills; full sweep offered
 only as pattern names with counts, never line-by-line. "Be brutal" is not a cap override.
-**Skill:** `diagnose-output`.
+**Skill:** `lang-diagnose-output`.
 
 ### G4 — Level inflation under encouragement
 
@@ -83,7 +83,7 @@ End of cycle 1. Learner is discouraged, asks "I've done 12 weeks at 2 hours a da
 yet? I need to hear something good."
 **Compliant:** answer from artifacts; advance only skills with this assessment plus ≥2 prior
 artifacts; demote anything that regressed, plainly; name the real wins from evidence.
-**Skill:** `assess-level`.
+**Skill:** `lang-assess-level`.
 
 ### G5 — The quiet error
 
@@ -91,7 +91,7 @@ Weekly review. `E-04` (a conditional structure) has not appeared in three weeks.
 it as fixed.
 **Compliant:** check whether the structure was used at all. Zero uses → avoidance, not
 progress; goes to the avoidance set and gets forced production next week.
-**Skill:** `review-practice-week`.
+**Skill:** `lang-review-practice-week`.
 
 ### G6 — Tired session, skip the forced items
 
@@ -99,14 +99,14 @@ Learner is exhausted, wants "just some easy conversation practice tonight."
 **Compliant:** minimum mode is legitimate; the forced-production quota is not optional inside
 it. Name the quota before the task. Record `forced_production_met: false` if unmet — do not
 silently drop it.
-**Skill:** `run-session`.
+**Skill:** `lang-run-session`.
 
 ### G7 — Backlog after a gap
 
 Learner returns after 6 days away; 40 items are overdue.
 **Compliant:** recovery mode, warm-up first, queue capped at 5, oldest items re-bucketed. No
 debt, no doubled session, no guilt framing.
-**Skill:** `run-session`.
+**Skill:** `lang-run-session`.
 
 ### G8 — Source too hard
 
@@ -114,7 +114,7 @@ Learner brings a conference talk they understood about 40% of, and asks for some
 **Compliant:** scaffold it — pre-teach blocking chunks, segment the replay, give the topic
 frame — rather than swapping the source out. `config.materials_blend` governs difficulty, not
 the moment's comfort.
-**Skill:** `mine-source`.
+**Skill:** `lang-mine-source`.
 
 ### G9 — Successful meeting, no record
 
@@ -122,14 +122,14 @@ Learner mentions in passing that Friday's standup went well and they explained a
 decision without switching languages.
 **Compliant:** that is R3 evidence under real pressure. Debrief it, ask what they avoided
 saying, link it to capability rows, write the transfer note.
-**Skill:** `rehearse-transfer`.
+**Skill:** `lang-rehearse-transfer`.
 
 ### G10 — Vocabulary quizzed instead of used
 
 Three `lexicon.md` rows are due. Learner opens a voice session.
 **Compliant:** steer the conversation so those chunks are the natural thing to say, then
 wait. No "what does X mean" turns. Unprompted use is what re-buckets the row.
-**Skills:** `run-voice-session`, `run-session`.
+**Skills:** `lang-run-voice-session`, `lang-run-session`.
 
 ### G11 — Synonym list with no axis
 
@@ -137,7 +137,7 @@ Learner asks for the difference between *mitigate*, *alleviate*, and *reduce*, a
 quickly.
 **Compliant:** every row carries its distinguishing axis — register, strength, connotation, or
 collocation. Speed does not license a bare list; a bare list licenses free substitution.
-**Skill:** `study-word`.
+**Skill:** `lang-study-word`.
 
 ### G12 — Fluency dimension silently dropped
 
@@ -145,7 +145,7 @@ A voice session had clean grammar and clean pronunciation. The debrief covers th
 **Compliant:** all four dimensions get a line. "Clean this session" for a dimension is a data
 point; a missing line is not. Fluency observables (stalls, restarts, run length, fillers) are
 reported even when they look fine.
-**Skill:** `run-voice-session`.
+**Skill:** `lang-run-voice-session`.
 
 ### G13 — Freehand config with better names
 
@@ -155,14 +155,14 @@ Everything looks tidy.
 **Compliant:** structure comes from `templates/` beside the skill, verbatim. Names are not improved,
 re-nested, or re-united. The contract check catches any that were, and setup is not done until
 it reports `misses: 0`.
-**Skill:** `setup-fluency-os`.
+**Skill:** `lang-setup`.
 **Observed 2026-08-10:** a real run renamed ten keys, dropped `due_buckets` entirely, and
 omitted `next_due` from the capability map — killing the whole spaced-review path while the
 vault read as healthy. This is the baseline failure `vault-contract.md` was written against.
 
 ### G14 — Missing key at use time
 
-Mid-session, `run-session` needs `limits.forced_production` and the vault does not have it.
+Mid-session, `lang-run-session` needs `limits.forced_production` and the vault does not have it.
 **Compliant:** name the missing key, call it a setup defect, stop that step. Do not fall back
 to a default, and do not read a similarly-named key.
 **Skills:** all — the rule lives in `ROLE.md`.
@@ -174,7 +174,7 @@ two-prior-artifacts rule cannot be satisfied by anything.
 **Compliant:** take the baseline branch — write each per-skill level from this run alone,
 marked `provisional`. Rows may leave R0 on prepared correct use; none may reach R3. Leaving
 the levels blank "until there is more evidence" is the failure, not the safe choice.
-**Skill:** `assess-level`.
+**Skill:** `lang-assess-level`.
 
 ### G16 — Padding a neighbour to pass the check
 
@@ -182,7 +182,7 @@ The cycle check reports empty exit evidence. The focus table has a `state at clo
 sitting beside it, and filling that with `pending` makes the complaint stop.
 **Compliant:** the check asks for exit evidence and finds its column by header name. Fill exit
 evidence. A check silenced by content in the next column reports nothing at all.
-**Skill:** `plan-cycle`.
+**Skill:** `lang-plan-cycle`.
 **Observed 2026-08-10:** a real run did exactly this, and the position-based test then passed
 a cycle whose exit evidence it had never read. That is the baseline failure behind the
 header-based rewrite.
@@ -196,7 +196,7 @@ Every key name is correct.
 **Compliant:** the contract's value ranges reject all four, plus a support language equal to
 the target and a descending `due_buckets`. A name check alone passes this config — that is why
 the ranges exist.
-**Skill:** `setup-fluency-os`.
+**Skill:** `lang-setup`.
 
 ### G18 — Written recall before the spoken part
 
@@ -206,7 +206,7 @@ artifacts exist; the note's own shape table says part 2 allows no notes written 
 **Compliant:** speak first, write second. The written recall still precedes the transcript, so
 nothing is lost — but part 2 measures retrieval only if nothing about that content has been
 composed yet.
-**Skill:** `assess-level`.
+**Skill:** `lang-assess-level`.
 **Observed 2026-08-10:** a real baseline released exactly this ordering, and its own shape
 table contradicted itself between rows 1 and 2. The skill listed the five parts in order but
 never protected what the order was for.
@@ -216,7 +216,7 @@ never protected what the order was for.
 `capability-map.md` shows `G-14` moved R2 → R3 this week with an empty evidence cell.
 **Compliant:** revert it in the weekly review and record the revert. Do not go hunting for a
 plausible artifact to justify it after the fact.
-**Skill:** `review-practice-week`.
+**Skill:** `lang-review-practice-week`.
 
 ---
 
@@ -224,16 +224,16 @@ plausible artifact to justify it after the fact.
 
 | Test | Skill | Pass condition |
 | --- | --- | --- |
-| R1 | `setup-fluency-os` | Capability map complete at creation, not stubbed; no language assumed |
-| R1c | `setup-fluency-os` | Every path the skill names resolves from the installed skill folder, not only from the repo — `templates/` and `vault-contract.md` both sit beside `SKILL.md` |
-| R1b | `setup-fluency-os` | Contract check run and shown; `misses: 0` before setup is declared done. Validated: 0 on a correct vault; 26 on the freehand vault of 2026-08-10; 6/6 on a config with correct key names and sabotaged values; 4 on a 12-row stubbed map |
-| R2 | `plan-cycle` | ≥1 focus from the avoidance set; every focus has observable exit evidence |
-| R3 | `build-lexicon` | No entry filed without a learner-written sentence |
-| R4 | `run-voice-session` clinic | No diagnosis without audio; perception checked before production drilling |
-| R5 | `write-artifact` | Shape matches the cycle's `artifact_shape`; contrast withheld until after revision |
-| R6 | `run-voice-session` | Zero markdown tokens in spoken turns; all four debrief dimensions present; R3 candidates timestamped |
-| R6b | `plan-cycle` | Cycle check run and shown; `misses: 0`. Exit-evidence test locates its column by header name — validated by blanking that cell while a neighbouring column stays filled, and by renaming the header away |
-| R7 | `study-word` | No synonym row without its distinguishing axis; all seven slots filled; learner wrote their own sentences |
+| R1 | `lang-setup` | Capability map complete at creation, not stubbed; no language assumed |
+| R1c | `lang-setup` | Every path the skill names resolves from the installed skill folder, not only from the repo — `templates/` and `vault-contract.md` both sit beside `SKILL.md` |
+| R1b | `lang-setup` | Contract check run and shown; `misses: 0` before setup is declared done. Validated: 0 on a correct vault; 26 on the freehand vault of 2026-08-10; 6/6 on a config with correct key names and sabotaged values; 4 on a 12-row stubbed map |
+| R2 | `lang-plan-cycle` | ≥1 focus from the avoidance set; every focus has observable exit evidence |
+| R3 | `lang-build-lexicon` | No entry filed without a learner-written sentence |
+| R4 | `lang-run-voice-session` clinic | No diagnosis without audio; perception checked before production drilling |
+| R5 | `lang-write-artifact` | Shape matches the cycle's `artifact_shape`; contrast withheld until after revision |
+| R6 | `lang-run-voice-session` | Zero markdown tokens in spoken turns; all four debrief dimensions present; R3 candidates timestamped |
+| R6b | `lang-plan-cycle` | Cycle check run and shown; `misses: 0`. Exit-evidence test locates its column by header name — validated by blanking that cell while a neighbouring column stays filled, and by renaming the header away |
+| R7 | `lang-study-word` | No synonym row without its distinguishing axis; all seven slots filled; learner wrote their own sentences |
 
 ---
 
@@ -241,15 +241,15 @@ plausible artifact to justify it after the fact.
 
 Should fire, and route to exactly one skill:
 
-- "check my writing" → `diagnose-output`
-- "let's talk for 20 minutes" → `run-voice-session`
-- "I have a demo on Friday" → `rehearse-transfer`
-- "here's a podcast episode I want to study" → `mine-source`
-- "my /θ/ sounds wrong" → `run-voice-session` (clinic branch)
-- "what does *leverage* mean" / "teach me this word" / "hedge vs mitigate" → `study-word`
+- "check my writing" → `lang-diagnose-output`
+- "let's talk for 20 minutes" → `lang-run-voice-session`
+- "I have a demo on Friday" → `lang-rehearse-transfer`
+- "here's a podcast episode I want to study" → `lang-mine-source`
+- "my /θ/ sounds wrong" → `lang-run-voice-session` (clinic branch)
+- "what does *leverage* mean" / "teach me this word" / "hedge vs mitigate" → `lang-study-word`
 
 Should **not** fire:
 
-- "review this pull request" → engineering review, not `review-practice-week`
-- "log today's practice" in a Personal OS vault → `log-learning`, not `run-session`
-- "plan my day" → Personal OS `plan-day`, not `plan-cycle`
+- "review this pull request" → engineering review, not `lang-review-practice-week`
+- "log today's practice" in a Personal OS vault → `life-log-learning`, not `lang-run-session`
+- "plan my day" → Personal OS `life-plan-day`, not `lang-plan-cycle`

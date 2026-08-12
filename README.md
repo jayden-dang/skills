@@ -95,7 +95,7 @@ for d in skills/personal/*/; do
 done
 ```
 
-In your notes vault, run `setup-personal-os` once.  
+In your notes vault, run `life-setup` once.  
 Do not use a blind `skills/*/*` symlink loop if you want engineering only — that also installs Personal OS.
 
 ### Fluency OS (opt-in, independent)
@@ -111,7 +111,7 @@ Claude Code gets a symlink and tracks repo edits live; Codex and Kimi get copies
 the script after editing a skill. See
 [Running on other platforms](docs/guide/resources/platforms.md) for why.
 
-In your practice vault, run `setup-fluency-os` once. The target and support languages are
+In your practice vault, run `lang-setup` once. The target and support languages are
 config values — nothing in the package assumes which language you are learning.
 
 **Other platforms.** Nothing here is Claude-specific — the skills are plain
@@ -209,14 +209,14 @@ Standalone product docs: [skills/personal/README.md](skills/personal/README.md) 
 
 | | |
 |---|---|
-| gate | `using-personal-os` |
-| setup | `setup-personal-os` |
-| capture | `capture`, `process-inbox` |
-| plan | `orient`, `plan-day`, `execute-session` |
-| portfolio | `open-project`, `plan-project`, `close-project`, `maintain-area` |
-| learning | `open-learning-track`, `log-learning` |
-| review | `review-week`, `review-quarter`, `replan`, `life-charter` |
-| disk | `sync-workspaces` |
+| gate | `life-start` |
+| setup | `life-setup` |
+| capture | `life-capture`, `life-process-inbox` |
+| plan | `life-orient`, `life-plan-day`, `life-execute-session` |
+| portfolio | `life-open-project`, `life-plan-project`, `life-close-project`, `life-maintain-area` |
+| learning | `life-open-learning-track`, `life-log-learning` |
+| review | `life-review-week`, `life-review-quarter`, `life-replan`, `life-charter` |
+| disk | `life-sync-workspaces` |
 
 Templates: `templates/personal-os/`.
 
@@ -226,17 +226,17 @@ Standalone product docs: [skills/fluency/README.md](skills/fluency/README.md).
 
 | | |
 |---|---|
-| gate | `using-fluency-os` |
-| setup | `setup-fluency-os` |
-| plan | `plan-cycle` |
-| practice | `run-session`, `run-voice-session` |
-| feedback | `diagnose-output` |
-| vocabulary | `study-word`, `build-lexicon` |
-| input | `mine-source` |
-| real use | `rehearse-transfer`, `write-artifact` |
-| review | `review-practice-week`, `assess-level` |
+| gate | `lang-start` |
+| setup | `lang-setup` |
+| plan | `lang-plan-cycle` |
+| practice | `lang-run-session`, `lang-run-voice-session` |
+| feedback | `lang-diagnose-output` |
+| vocabulary | `lang-study-word`, `lang-build-lexicon` |
+| input | `lang-mine-source` |
+| real use | `lang-rehearse-transfer`, `lang-write-artifact` |
+| review | `lang-review-practice-week`, `lang-assess-level` |
 
-Templates: `skills/fluency/setup-fluency-os/templates/` (symlinked at `templates/fluency-os/`).
+Templates: `skills/fluency/lang-setup/templates/` (symlinked at `templates/fluency-os/`).
 
 ## Traceability, without a linter
 

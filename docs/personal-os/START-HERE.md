@@ -8,7 +8,7 @@ You do not need any other skill package from this repository to use it.
 
 See [skills/personal/README.md](../../skills/personal/README.md#install).
 
-Confirm your agent can list skills such as `using-personal-os`, `plan-day`, and `review-week`.
+Confirm your agent can list skills such as `life-start`, `life-plan-day`, and `life-review-week`.
 
 ## 2. Point the agent at your vault
 
@@ -17,7 +17,7 @@ Obsidian, plain folders, or another PKM host all work.
 
 ## 3. Run setup once
 
-Invoke **`setup-personal-os`**.
+Invoke **`life-setup`**.
 
 - Detect your folders  
 - Write a config that maps logical roles → *your* paths  
@@ -28,13 +28,13 @@ Invoke **`setup-personal-os`**.
 
 | When | Skill |
 |---|---|
-| Session start | `using-personal-os` (gate) |
-| “Where am I?” | `orient` |
-| Morning | `plan-day` |
-| Start / end focus | `execute-session` (log + write-handoff for *you*) |
-| Raw thoughts | `capture` → later `process-inbox` |
-| End of week | `review-week` |
-| End of quarter | `review-quarter` |
+| Session start | `life-start` (gate) |
+| “Where am I?” | `life-orient` |
+| Morning | `life-plan-day` |
+| Start / end focus | `life-execute-session` (log + write-handoff for *you*) |
+| Raw thoughts | `life-capture` → later `life-process-inbox` |
+| End of week | `life-review-week` |
+| End of quarter | `life-review-quarter` |
 
 ## 5. Role reminder
 

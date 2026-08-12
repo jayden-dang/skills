@@ -1,6 +1,6 @@
 # Personal OS templates
 
-Seed notes for a Personal OS vault. Used by `setup-personal-os` and by humans who prefer manual setup.
+Seed notes for a Personal OS vault. Used by `life-setup` and by humans who prefer manual setup.
 
 | File | Entity |
 |---|---|

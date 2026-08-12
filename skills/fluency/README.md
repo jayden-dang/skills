@@ -44,13 +44,13 @@ follow symlinked skill directories — re-run the script after editing a skill.
 ## First-time setup
 
 1. Choose or create a markdown vault folder.
-2. In an agent session with that vault in context, run **`setup-fluency-os`** (user-invoked).
+2. In an agent session with that vault in context, run **`lang-setup`** (user-invoked).
 3. Answer the config interview: target and support language, weekly budget, session shape,
    accent anchor, theme mix, cycle length. Every value comes from you.
 4. The skill seeds a **complete** capability map for your target language — every row at R0.
-5. Run `plan-cycle` to open cycle 1, then start with `run-session` or `run-voice-session`.
+5. Run `lang-plan-cycle` to open cycle 1, then start with `lang-run-session` or `lang-run-voice-session`.
 
-Note templates ship inside the skill, at `setup-fluency-os/templates/`, so they travel with an install. `templates/fluency-os/` at the repo root is a symlink to them.
+Note templates ship inside the skill, at `lang-setup/templates/`, so they travel with an install. `templates/fluency-os/` at the repo root is a symlink to them.
 
 ---
 
@@ -80,19 +80,19 @@ Pressure scenarios: **`EVAL.md`**.
 
 | Skill | When |
 | --- | --- |
-| `using-fluency-os` | Start of any practice session (gate + role + routing) |
-| `setup-fluency-os` | Install or remap a vault (user-invoked) |
-| `plan-cycle` | Open or renew a practice cycle |
-| `run-session` | A typed study session |
-| `run-voice-session` | A spoken session — voice contract, four-dimension debrief, pronunciation clinic |
-| `diagnose-output` | You submit writing, a recording, or a transcript |
-| `mine-source` | Turn an article, video, or meeting into practice |
-| `study-word` | Learn a word properly — meaning, family, synonym contrasts, usage |
-| `build-lexicon` | File and schedule chunks in the ledger |
-| `rehearse-transfer` | Before or after real-world use |
-| `write-artifact` | The week's comparable output |
-| `review-practice-week` | Weekly hinge |
-| `assess-level` | Monthly / cycle close — the evidence gate |
+| `lang-start` | Start of any practice session (gate + role + routing) |
+| `lang-setup` | Install or remap a vault (user-invoked) |
+| `lang-plan-cycle` | Open or renew a practice cycle |
+| `lang-run-session` | A typed study session |
+| `lang-run-voice-session` | A spoken session — voice contract, four-dimension debrief, pronunciation clinic |
+| `lang-diagnose-output` | You submit writing, a recording, or a transcript |
+| `lang-mine-source` | Turn an article, video, or meeting into practice |
+| `lang-study-word` | Learn a word properly — meaning, family, synonym contrasts, usage |
+| `lang-build-lexicon` | File and schedule chunks in the ledger |
+| `lang-rehearse-transfer` | Before or after real-world use |
+| `lang-write-artifact` | The week's comparable output |
+| `lang-review-practice-week` | Weekly hinge |
+| `lang-assess-level` | Monthly / cycle close — the evidence gate |
 
 ---
 

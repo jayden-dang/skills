@@ -6,13 +6,11 @@ This repository hosts **independent skill packages**. Install only what you need
 |---|---|---|---|---|
 | **Engineer Pack** | `engineer-pack` | `skills/{meta,discovery,spec,…}/` | **Yes** (default plugin) | Spec-driven coding: ideation → ship |
 | **Personal Pack** | `personal-pack` | `skills/personal/` | **Opt-in** | Life + multi-project *management* (secretary/coach) |
-| **Fluency Pack** | `fluency-pack` | `skills/fluency/` | **Opt-in** | Language learning to operational fluency (coach) |
 
 - Package map: **[docs/packages.md](docs/packages.md)**  
 - Personal OS (standalone): **[skills/personal/README.md](skills/personal/README.md)** · **[docs/personal-os/START-HERE.md](docs/personal-os/START-HERE.md)**
-- Fluency OS (standalone): **[skills/fluency/README.md](skills/fluency/README.md)**
 
-Each package stands alone. Personal OS and Fluency OS do **not** depend on the engineering package, and engineering installs do **not** require either of them.
+Each package stands alone. Personal OS does **not** depend on the engineering package, and engineering installs do **not** require it.
 
 ---
 
@@ -64,7 +62,7 @@ npx skills@latest add jayden-dang/skills
 ```
 
 Or as a Claude Code plugin (this repo is a valid plugin: **Engineer Pack** + a
-session-start hook). Personal Pack and Fluency Pack are **not** in the default plugin list.
+session-start hook). Personal Pack is **not** in the default plugin list.
 
 **Nothing to install into your repo.** Pure `SKILL.md` — no vendored runtime.
 
@@ -98,21 +96,10 @@ done
 In your notes vault, run `life-setup` once.  
 Do not use a blind `skills/*/*` symlink loop if you want engineering only — that also installs Personal OS.
 
-### Fluency OS (opt-in, independent)
-
-Full guide: [skills/fluency/README.md](skills/fluency/README.md).
-
-```bash
-# installs into every agent skill store present on this machine
-scripts/install-skills.sh fluency
-```
-
-Claude Code gets a symlink and tracks repo edits live; Codex and Kimi get copies, so re-run
-the script after editing a skill. See
-[Running on other platforms](docs/guide/resources/platforms.md) for why.
-
-In your practice vault, run `lang-setup` once. The target and support languages are
-config values — nothing in the package assumes which language you are learning.
+To install a pack into *every* agent skill store present on this machine, use
+`scripts/install-skills.sh personal` (or `engineer`, or `all`). Claude Code gets a symlink and
+tracks repo edits live; Codex and Kimi get copies, so re-run the script after editing a skill.
+See [Running on other platforms](docs/guide/resources/platforms.md) for why.
 
 **Other platforms.** Nothing here is Claude-specific — the skills are plain
 `SKILL.md` and the traceability check is `grep`/`git` the agent drives.
@@ -219,24 +206,6 @@ Standalone product docs: [skills/personal/README.md](skills/personal/README.md) 
 | disk | `life-sync-workspaces` |
 
 Templates: `templates/personal-os/`.
-
-### Fluency OS (opt-in, independent package)
-
-Standalone product docs: [skills/fluency/README.md](skills/fluency/README.md).
-
-| | |
-|---|---|
-| gate | `lang-start` |
-| setup | `lang-setup` |
-| plan | `lang-plan-cycle` |
-| practice | `lang-run-session`, `lang-run-voice-session` |
-| feedback | `lang-diagnose-output` |
-| vocabulary | `lang-study-word`, `lang-build-lexicon` |
-| input | `lang-mine-source` |
-| real use | `lang-rehearse-transfer`, `lang-write-artifact` |
-| review | `lang-review-practice-week`, `lang-assess-level` |
-
-Templates: `skills/fluency/lang-setup/templates/` (symlinked at `templates/fluency-os/`).
 
 ## Traceability, without a linter
 

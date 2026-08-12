@@ -16,7 +16,6 @@
 # instead, so nothing is installed for it here.
 #
 # Usage:
-#   scripts/install-skills.sh fluency
 #   scripts/install-skills.sh personal engineer
 #   scripts/install-skills.sh all
 #
@@ -35,15 +34,14 @@ STORES=(
 
 pack_dirs() {
   case "$1" in
-    fluency)  printf '%s\n' "$REPO"/skills/fluency/*/ ;;
     personal) printf '%s\n' "$REPO"/skills/personal/*/ ;;
     engineer) for c in $ENGINEER_CATS; do printf '%s\n' "$REPO"/skills/"$c"/*/; done ;;
-    *) echo "unknown pack: $1 (want fluency, personal, engineer, or all)" >&2; return 1 ;;
+    *) echo "unknown pack: $1 (want personal, engineer, or all)" >&2; return 1 ;;
   esac
 }
 
-[ $# -gt 0 ] || { sed -n '3,24p' "$0" | sed 's/^# \{0,1\}//'; exit 1; }
-packs=("$@"); [ "${packs[0]}" = "all" ] && packs=(fluency personal engineer)
+[ $# -gt 0 ] || { sed -n '3,23p' "$0" | sed 's/^# \{0,1\}//'; exit 1; }
+packs=("$@"); [ "${packs[0]}" = "all" ] && packs=(personal engineer)
 
 for entry in "${STORES[@]}"; do
   dest="${entry%:*}"; mode="${entry##*:}"

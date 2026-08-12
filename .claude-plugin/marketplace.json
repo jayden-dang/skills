@@ -63,6 +63,7 @@
         "./skills/track/scan-architecture",
         "./skills/track/map-features",
         "./skills/track/realign-spec",
+        "./skills/track/record-debt",
         "./skills/track/triage",
         "./skills/setup/bootstrap-repo",
         "./skills/setup/configure-repo",

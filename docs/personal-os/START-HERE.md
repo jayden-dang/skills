@@ -41,7 +41,5 @@ Invoke **`life-setup`**.
 The companion **manages and coaches**. You **do** the work (or explicitly ask for a scoped act).
 
 Full product description, skill index, and iron laws: [skills/personal/README.md](../../skills/personal/README.md).
-
-Package relationship to engineering skills (optional monorepo mates only): [docs/packages.md](../packages.md).
 '''
 

@@ -7,7 +7,6 @@ This repository hosts **independent skill packages**. Install only what you need
 | **Engineer Pack** | `engineer-pack` | `skills/{meta,discovery,spec,…}/` | **Yes** (default plugin) | Spec-driven coding: ideation → ship |
 | **Personal Pack** | `personal-pack` | `skills/personal/` | **Opt-in** | Life + multi-project *management* (secretary/coach) |
 
-- Package map: **[docs/packages.md](docs/packages.md)**  
 - Personal OS (standalone): **[skills/personal/README.md](skills/personal/README.md)** · **[docs/personal-os/START-HERE.md](docs/personal-os/START-HERE.md)**
 
 Each package stands alone. Personal OS does **not** depend on the engineering package, and engineering installs do **not** require it.
@@ -243,7 +242,6 @@ opt into a documented CI job; it is outside the default path. See
 | [Troubleshooting](docs/guide/resources/troubleshooting.md) | symptoms and causes |
 | [docs/architecture/](./docs/architecture/INDEX.md) | architecture SSOT (invariants + system design) |
 | [docs/product/vision.md](./docs/product/vision.md) | product north star (engineering) |
-| [docs/packages.md](./docs/packages.md) | engineering vs Personal OS packages |
 | [Personal OS](./skills/personal/README.md) | independent life/management skill set |
 
 ## Developing this repo

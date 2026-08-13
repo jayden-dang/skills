@@ -17,34 +17,38 @@ repo file can run this system by reading that one.
 
 Full support. The `SessionStart` hook in `hooks/hooks.json` injects
 `meta/gate-session` on every `startup | clear | compact`, so the gate survives
-compaction automatically. Install as a plugin, or clone the repo and symlink the
-skill folders into `~/.claude/skills`:
+compaction automatically. Install with the CLI, or as a Claude Code plugin:
 
 ```bash
-git clone https://github.com/jayden-dang/skills ~/dev/skills
-cd ~/dev/skills && for d in skills/*/*/; do ln -sfn "$PWD/$d" ~/.claude/skills/$(basename "$d"); done
+npx skills@latest add jayden-dang/skills
 ```
 
 ## Installing skills for every agent
 
-`scripts/install-skills.sh <pack>` writes each pack into every skill store present on the
-machine, using the mechanism that store actually reads:
+The `skills` CLI fans out to every agent store it detects:
+
+```bash
+npx skills@latest add jayden-dang/skills -a '*' --copy
+```
+
+`-a '*'` targets every detected agent, `--copy` writes real directories instead of
+symlinks, and `npx skills@latest update` refreshes them later. The CLI records a
+`skills-lock.json`, so a second machine reaches the same set via
+`experimental_install` rather than by re-deriving it.
 
 | Agent | Store | Form |
 |---|---|---|
-| Claude Code | `~/.claude/skills/` | symlink — repo edits apply at once |
-| Codex CLI | `~/.agents/skills/` | copy — re-run after editing a skill |
-| Kimi | `~/.kimi-code/skills/` | copy — re-run after editing a skill |
+| Claude Code | `~/.claude/skills/` | symlink is fine — it follows them |
+| Codex CLI | `~/.agents/skills/` | needs `--copy` (see below) |
+| Kimi | `~/.kimi-code/skills/` | needs `--copy`, same reason, untested |
 | opencode | — | no skills mechanism; reads `AGENTS.md` |
 
-Codex resolves skills from `<project>/.agents/skills`, then `$CODEX_HOME/skills`
-(deprecated), then `$HOME/.agents/skills`, then its own system cache. It does **not** follow
-symlinked skill directories — verified on codex-cli 0.147.0, where a symlinked skill was
-absent from the list and the same skill copied in was found. That is why the shared store
-holds real directories.
-
-A store is only written when its parent directory already exists, so the script never
-invents a config directory for an agent that is not installed.
+**Why `--copy` matters.** Codex resolves skills from `<project>/.agents/skills`, then
+`$CODEX_HOME/skills` (deprecated), then `$HOME/.agents/skills`, then its own system
+cache. It does **not** follow symlinked skill directories — verified on codex-cli
+0.147.0, where a symlinked skill was absent from the list and the same skill copied
+in was found. A copy is a snapshot, so re-run `update` after this repo changes; that
+is what the lockfile is for.
 
 ## Codex CLI
 

@@ -29,18 +29,18 @@ This package is **self-contained**: skills + templates + setup. It does not requ
 Copy or symlink each skill folder into your agent’s skills directory (paths depend on the harness: Claude Code, Codex, Cursor, Grok, etc.):
 
 ```bash
-# from the root of this repository
-for d in skills/personal/*/; do
-  [ -f "$d/SKILL.md" ] || continue
-  ln -sfn "$PWD/$d" "${AGENT_SKILLS_DIR:?}/$(basename "$d")"
-done
+npx skills@latest add jayden-dang/skills
 ```
 
-Set `AGENT_SKILLS_DIR` to wherever your harness loads skills (for example `~/.claude/skills` or `~/.agents/skills`).
+This package appears in the picker as **Personal Pack** (`personal-pack`). Add
+`-a '*' --copy` to fan out to every agent store on the machine; see
+[Running on other platforms](../../docs/guide/resources/platforms.md) for which
+agents need `--copy`.
 
-If this monorepo also ships other packages (e.g. Engineer Pack), **Personal Pack is optional**. Default engineering plugins/installers should not force these skills on coding-only users.
+**Personal Pack is optional.** The two packs are listed separately, so a
+coding-only install never pulls these in.
 
-In `npx skills add jayden-dang/skills`, this package appears as **Personal Pack** (`personal-pack`). Plugin manifest: `.claude-plugin/personal-os.plugin.json`. Dual-pack registry: `.claude-plugin/marketplace.json`.
+Plugin manifest: `.claude-plugin/personal-os.plugin.json`. Dual-pack registry: `.claude-plugin/marketplace.json`.
 
 ---
 

@@ -60,12 +60,28 @@ changelog         Module selection persists across launches — SHELL-1.2  # fro
 npx skills@latest add jayden-dang/skills
 ```
 
+It clones this repo, reads `.claude-plugin/marketplace.json`, and offers the packs
+by name. Useful flags:
+
+| Flag | Effect |
+|---|---|
+| `-a '*'` | install into **every** agent store the CLI detects, not just the current one |
+| `-g` | install globally (user-level) rather than into the current project |
+| `--copy` | copy instead of symlinking — needed for agents that don't follow symlinked skill dirs (Codex CLI is one; verified absent from its list when symlinked, found when copied) |
+| `-s '*'` | take every skill without the interactive picker |
+
+Upgrading is `npx skills@latest update` (`-g` / `-p` to pick scope). The CLI writes
+a `skills-lock.json`, and `experimental_install` restores from it — so a machine or
+a teammate can be brought to the exact same set without this repo being vendored
+anywhere.
+
 Or as a Claude Code plugin (this repo is a valid plugin: **Engineer Pack** + a
 session-start hook). Personal Pack is **not** in the default plugin list.
 
 **Nothing to install into your repo.** Pure `SKILL.md` — no vendored runtime.
 
-Dev symlink — **engineering only** (so `git pull` updates in place):
+Dev symlink — for **working on this repo**, engineering only (so `git pull` updates
+in place). Not the install path; use the CLI above for that:
 
 ```bash
 git clone https://github.com/jayden-dang/skills ~/dev/skills
@@ -85,20 +101,22 @@ Then, once per **code** repo, run `/configure-repo`. See [Adopting](docs/guide/r
 Full guide: [skills/personal/README.md](skills/personal/README.md).
 
 ```bash
-# from this repository root; set AGENT_SKILLS_DIR for your harness
-for d in skills/personal/*/; do
-  [ -f "$d/SKILL.md" ] || continue
-  ln -sfn "$PWD/$d" "${AGENT_SKILLS_DIR}/$(basename "$d")"
-done
+npx skills@latest add jayden-dang/skills
 ```
 
-In your notes vault, run `life-setup` once.  
-Do not use a blind `skills/*/*` symlink loop if you want engineering only — that also installs Personal OS.
+Pick **Personal Pack** at the prompt — the two packs are listed separately, so an
+engineering-only install never pulls these in.
 
-To install a pack into *every* agent skill store present on this machine, use
-`scripts/install-skills.sh personal` (or `engineer`, or `all`). Claude Code gets a symlink and
-tracks repo edits live; Codex and Kimi get copies, so re-run the script after editing a skill.
-See [Running on other platforms](docs/guide/resources/platforms.md) for why.
+In your notes vault, run `life-setup` once.
+
+To install into *every* agent store on the machine, use the CLI's own fan-out:
+
+```bash
+npx skills@latest add jayden-dang/skills -a '*' --copy
+```
+
+See [Running on other platforms](docs/guide/resources/platforms.md) for which
+agents need `--copy` and why.
 
 **Other platforms.** Nothing here is Claude-specific — the skills are plain
 `SKILL.md` and the traceability check is `grep`/`git` the agent drives.

@@ -8,11 +8,15 @@ npx skills@latest add jayden-dang/skills
 
 Or install it as a Claude Code plugin — this repo is a valid plugin, shipping the skills plus a `SessionStart` hook that keeps the skill-check gate alive across `/clear` and compaction.
 
-**Dev mode**, so `git pull` updates the skills in place: clone the repo and symlink each skill folder into `~/.claude/skills`:
+**Dev mode** — for working on this repo, so `git pull` updates the skills in place. Clone it and symlink the engineering skill folders into `~/.claude/skills`:
 
 ```bash
-for d in skills/*/*/; do ln -sfn "$PWD/$d" ~/.claude/skills/$(basename "$d"); done
+for cat in meta discovery spec execution review acceptance craft ship track project setup; do
+  for d in skills/$cat/*/; do ln -sfn "$PWD/$d" ~/.claude/skills/$(basename "$d"); done
+done
 ```
+
+A blind `skills/*/*/` loop would also install Personal OS.
 
 ## Then configure the repo, once
 

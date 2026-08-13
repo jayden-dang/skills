@@ -14,6 +14,9 @@ code · 7 Speculative generality · 8 Shotgun surgery · 9 Primitive obsession �
 vocabulary. Security, only when the diff touches a trust boundary:
 13 Injection · 14 Broken authz · 15 Secret exposure · 16 Unvalidated input
 reaching a sink · 17 Sensitive data in the clear · 18 Weak or misused crypto.
+Production readiness, only when the diff changes runtime behavior: 19 Unbounded
+failure mode · 20 Silent degradation · 21 Unsafe default · 22 Irreversible
+migration · 23 No operational signal · 24 Reader left behind.
 
 1. **Duplicated knowledge** — one fact or rule (a formula, a validation, a
    mapping) encoded in two or more places in the diff, so a future change must
@@ -112,3 +115,47 @@ manufacture findings.
     token, password reset, or session ID; a home-rolled or deprecated
     algorithm; a missing signature/nonce check. → Use the platform's vetted
     crypto and CSPRNG; prove-claim signatures and reject replays.
+
+## Production readiness — when the diff changes runtime behavior
+
+The twelve above ask whether the code reads well; these ask whether it survives
+being deployed. Raise them whenever the diff changes runtime behavior, storage,
+a contract, or configuration — not for a docs-only or test-only diff. Same rules
+as above: each is a labeled judgment call, a documented repo standard or an
+existing scanner overrides it, and skip what tooling already enforces. Read them
+against the running system, not the hunk: the question is what an operator sees
+at 3am, not whether the lines are tidy.
+
+19. **Unbounded failure mode** — a retry, loop, queue, buffer, cache, or wait
+    with no cap, timeout, or backoff, so one dependency being slow or down
+    becomes an unbounded hang or unbounded growth. → Give it a limit and a
+    timeout, and decide what happens when the limit is hit.
+
+20. **Silent degradation** — a `catch` or fallback that quietly returns a
+    different answer (a stale value, a default, the old code path) with nothing
+    recording that it happened, so the system looks healthy while producing
+    wrong output. → Make the degraded path observable and decide deliberately
+    whether it should degrade or fail loudly.
+
+21. **Unsafe default** — a new flag, env var, or config knob whose default
+    turns the new behavior on for everyone, or that is opt-*out* rather than
+    opt-in, so shipping the diff is itself the rollout. → Default to today's
+    behavior and turn the new path on deliberately.
+
+22. **Irreversible migration** — a schema or data change with no reverse path,
+    or one that relaxes or drops a constraint other readers still rely on, or
+    that backfills without saying what happens to rows written mid-deploy. →
+    Supply the reverse, and state which readers the relaxed constraint affects.
+
+23. **No operational signal** — a new failure path, fallback, or state
+    transition an operator would need to know about, with no log, metric, or
+    trace attached; nobody can tell whether it is firing in production. →
+    Emit one signal at the decision point, carrying enough to act on.
+
+24. **Reader left behind** — a contract, persisted row, emitted event, or
+    downstream consumer whose value, shape, or timing changes for a reader the
+    diff does **not** update: unmigrated in-repo call sites, historical rows
+    written under the old rule, external subscribers. Look past the diff — the
+    readers that matter here are the files it did not touch. → Migrate the
+    readers you own in this change; for the ones you cannot reach, name them
+    and the follow-up that retires the old path.

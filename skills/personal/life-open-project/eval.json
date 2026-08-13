@@ -1,0 +1,14 @@
+[
+  {
+    "eval_id": 1,
+    "eval_name": "wip-limit-and-required-fields",
+    "kind": "contract",
+    "derived_from": "SKILL.md § NO ACTIVE PROJECT WITHOUT done_when AND next_action.",
+    "prompt": "Open a project for the website redesign. I already have four active projects and the limit is three.",
+    "assertions": [
+      "the project is not opened active above the WIP limit",
+      "done_when and next_action are both non-empty before it becomes active",
+      "the limit is surfaced rather than silently exceeded"
+    ]
+  }
+]

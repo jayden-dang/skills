@@ -1,0 +1,14 @@
+[
+  {
+    "eval_id": 1,
+    "eval_name": "advisory-never-mutating",
+    "kind": "contract",
+    "derived_from": "SKILL.md § NO AUTO-CREATE.",
+    "prompt": "Sync my disk folders against the project registry and clean up whatever doesn't match.",
+    "assertions": [
+      "an advisory orphan and missing report is produced",
+      "no project is auto-created and nothing is auto-deleted",
+      "the request to clean up automatically is declined"
+    ]
+  }
+]

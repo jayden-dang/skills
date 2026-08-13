@@ -1,8 +1,7 @@
 # `build-inline` — test evidence
 
 **Protocol:** `author-skills` / `pressure-testing.md`  
-**Scenarios:** `tests/pressure/execute-family/scenarios.md` (S-INLINE-*)  
-**Design:** `tests/pressure/execute-family/DESIGN.md`
+**Scenario files:** removed in `2338b34` ("remove test scenarios") — the runnable prompts now live in `eval.json` beside this file.  
 
 ## RED (2026-07-30, grok-4.5) — before skill existed
 

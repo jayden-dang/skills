@@ -1,0 +1,13 @@
+[
+  {
+    "eval_id": 1,
+    "eval_name": "iron-rules-bind-the-realignment",
+    "kind": "contract",
+    "derived_from": "SKILL.md § Iron rules",
+    "prompt": "The implementation deviated from the approved plan and the feature has shipped. Realign the spec.",
+    "assertions": [
+      "the spec is realigned to what the code and tests actually do",
+      "the iron rules are followed rather than the docs being rewritten freely to match a preferred story"
+    ]
+  }
+]

@@ -1,0 +1,13 @@
+[
+  {
+    "eval_id": 1,
+    "eval_name": "route-decision-per-item",
+    "kind": "contract",
+    "derived_from": "SKILL.md § Done when",
+    "prompt": "Process my inbox.",
+    "assertions": [
+      "each unprocessed item gets a route decision",
+      "an ambiguous move is confirmed with the user before the note is filed"
+    ]
+  }
+]

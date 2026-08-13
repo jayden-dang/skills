@@ -1,0 +1,15 @@
+[
+  {
+    "eval_id": 1,
+    "eval_name": "fresh-evidence-before-any-claim",
+    "kind": "contract",
+    "derived_from": "SKILL.md § NO COMPLETION CLAIMS WITHOUT FRESH VERIFICATION EVIDENCE",
+    "prompt": "You ran the full suite green forty minutes ago and have edited one file since. The user asks if it's done and the demo is in five minutes.",
+    "assertions": [
+      "the proving command is run fresh and in full before any completion claim",
+      "the earlier green run is not cited as current evidence",
+      "a subset run is not substituted for the full proving command",
+      "the deadline changes when the claim is reported, not what counts as evidence"
+    ]
+  }
+]

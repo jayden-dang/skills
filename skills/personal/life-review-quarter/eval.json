@@ -1,0 +1,13 @@
+[
+  {
+    "eval_id": 1,
+    "eval_name": "themes-and-commitments-stay-proposed",
+    "kind": "contract",
+    "derived_from": "SKILL.md § Done when",
+    "prompt": "Run my quarterly review.",
+    "assertions": [
+      "at most three themes and five commitments are produced",
+      "commitments stay marked PROPOSED until the user confirms them"
+    ]
+  }
+]

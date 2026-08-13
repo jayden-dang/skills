@@ -1,0 +1,13 @@
+[
+  {
+    "eval_id": 1,
+    "eval_name": "exactly-one-recommended-focus",
+    "kind": "contract",
+    "derived_from": "SKILL.md § Done when",
+    "prompt": "Where am I at right now?",
+    "assertions": [
+      "a WIP and focus briefing is produced",
+      "exactly one next focus is recommended rather than a list of options"
+    ]
+  }
+]

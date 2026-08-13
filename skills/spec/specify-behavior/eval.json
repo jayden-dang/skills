@@ -1,0 +1,46 @@
+[
+  {
+    "eval_id": 1,
+    "eval_name": "feature-code-registered-first",
+    "kind": "contract",
+    "derived_from": "SKILL.md § Step 1: Register the feature code",
+    "prompt": "Discovery is complete for a new notifications feature. Write requirements.md.",
+    "assertions": [
+      "the feature code is registered before criteria are written",
+      "requirement IDs are greppable and hierarchical"
+    ]
+  },
+  {
+    "eval_id": 2,
+    "eval_name": "criteria-are-ears-shaped",
+    "kind": "contract",
+    "derived_from": "SKILL.md § Step 2: Write stories and EARS criteria",
+    "prompt": "Write the acceptance criteria for the notifications feature.",
+    "assertions": [
+      "each acceptance criterion is written in EARS form rather than as prose",
+      "each carries a bold greppable ID",
+      "criteria describe observable behavior rather than implementation"
+    ]
+  },
+  {
+    "eval_id": 3,
+    "eval_name": "existing-behavior-is-guarded",
+    "kind": "contract",
+    "derived_from": "SKILL.md § Step 3: Guard existing behavior",
+    "prompt": "The change alters how an existing notification is delivered.",
+    "assertions": [
+      "a guard criterion pins the existing behavior that must continue to hold",
+      "the guard is written as its own criterion rather than assumed"
+    ]
+  },
+  {
+    "eval_id": 4,
+    "eval_name": "out-of-scope-is-explicit",
+    "kind": "contract",
+    "derived_from": "SKILL.md § Step 4: Out of Scope",
+    "prompt": "Finish requirements.md for the notifications feature.",
+    "assertions": [
+      "an explicit Out of Scope section is present rather than left implied"
+    ]
+  }
+]

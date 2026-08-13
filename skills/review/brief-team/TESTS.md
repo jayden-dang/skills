@@ -41,7 +41,7 @@ honestly, because a rule with no baseline behind it may be a no-op:
 
 | Rule | Covered by | Still owed |
 |---|---|---|
-| Fixed INDEX row shape and `Slug`-cell upsert | `tests/test_explain_change_contract.py` | — (mechanical; no judgment call) |
+| Fixed INDEX row shape and `Slug`-cell upsert | a contract test removed in `2338b34` | — (mechanical; no judgment call) |
 | Mechanical slug ladder, no composed topic | same | RED: does a baseline agent invent a topic slug under time pressure? |
 | Post-write grep pass before any success claim | same, plus a 12-check node harness over `shell/packet.html`'s three branches | RED: does a baseline agent report the path without re-reading the file? |
 | Shell fails loudly instead of rendering a sample packet | node harness: absent data and hollow-section branches both halt | — (structural) |

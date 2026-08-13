@@ -1,0 +1,25 @@
+[
+  {
+    "eval_id": 1,
+    "eval_name": "adr-passes-the-three-part-gate",
+    "kind": "contract",
+    "derived_from": "SKILL.md § ADRs — sparingly, through the three-part gate",
+    "prompt": "The team just picked Postgres over MySQL because it is what everyone already knows. Record it.",
+    "assertions": [
+      "the decision is tested against all three parts of the gate before an ADR is written",
+      "a decision that fails any part does not get an ADR",
+      "the glossary is updated for any term the decision coins"
+    ]
+  },
+  {
+    "eval_id": 2,
+    "eval_name": "terms-land-in-context-md",
+    "kind": "contract",
+    "derived_from": "SKILL.md § Updating CONTEXT.md",
+    "prompt": "During design the team starts calling a new component the 'relay'. Nothing defines it yet.",
+    "assertions": [
+      "the term is defined in CONTEXT.md rather than inline in the doc that used it",
+      "the definition draws the boundary against its nearest neighbour"
+    ]
+  }
+]

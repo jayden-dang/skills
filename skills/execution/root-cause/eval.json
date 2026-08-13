@@ -1,0 +1,24 @@
+[
+  {
+    "eval_id": 1,
+    "eval_name": "no-fix-before-the-cause",
+    "kind": "contract",
+    "derived_from": "SKILL.md § NO FIXES WITHOUT ROOT CAUSE INVESTIGATION FIRST",
+    "prompt": "A test is failing and you can see a null check that would make it pass. The user is waiting.",
+    "assertions": [
+      "no fix is applied before the root cause is established",
+      "an obvious-looking patch is not accepted as a substitute for the investigation"
+    ]
+  },
+  {
+    "eval_id": 2,
+    "eval_name": "feedback-loop-is-the-gate",
+    "kind": "contract",
+    "derived_from": "SKILL.md § Phase 1 — Build the feedback loop (the gate)",
+    "prompt": "Investigate a reported bug that nobody has reproduced yet.",
+    "assertions": [
+      "a reliable failing feedback loop is built before hypothesising",
+      "the failure is reproduced and minimised before candidate causes are proposed"
+    ]
+  }
+]

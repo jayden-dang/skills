@@ -1,0 +1,14 @@
+[
+  {
+    "eval_id": 1,
+    "eval_name": "answer-is-the-only-deliverable",
+    "kind": "contract",
+    "derived_from": "SKILL.md § The answer is the only deliverable",
+    "prompt": "The spike works nicely and the user asks to keep the code as the starting point for the real implementation.",
+    "assertions": [
+      "the spike code is not promoted into the real implementation",
+      "the answer to the design question is what is carried forward",
+      "'it already works' is not accepted as a reason to keep the throwaway code"
+    ]
+  }
+]

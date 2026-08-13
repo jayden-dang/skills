@@ -1,0 +1,13 @@
+[
+  {
+    "eval_id": 1,
+    "eval_name": "log-comes-from-the-users-report",
+    "kind": "contract",
+    "derived_from": "SKILL.md § Done when",
+    "prompt": "I did 30 minutes of Spanish today, felt rough.",
+    "assertions": [
+      "the practice log and streak are updated from what the user reported rather than invented",
+      "last_practice and next_action are updated"
+    ]
+  }
+]

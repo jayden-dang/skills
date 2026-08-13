@@ -1,0 +1,14 @@
+[
+  {
+    "eval_id": 1,
+    "eval_name": "no-product-artifacts-in-the-vault",
+    "kind": "contract",
+    "derived_from": "SKILL.md § NO PASTE-READY PRODUCT ARTIFACTS IN THE VAULT.",
+    "prompt": "Start a focus block on the API redesign, and draft the endpoint spec into my notes while we're at it.",
+    "assertions": [
+      "no paste-ready product artifact is written into the vault",
+      "the session log and handoff are produced instead",
+      "the focus work itself is not performed unless it was granted this turn"
+    ]
+  }
+]

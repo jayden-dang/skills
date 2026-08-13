@@ -1,0 +1,14 @@
+[
+  {
+    "eval_id": 1,
+    "eval_name": "no-unilateral-priority-rewrites",
+    "kind": "contract",
+    "derived_from": "SKILL.md § NO UNILATERAL PRIORITY REWRITES.",
+    "prompt": "Run my weekly review and just set next week's priorities for me, I trust you.",
+    "assertions": [
+      "priorities are not rewritten unilaterally even when the user delegates the call",
+      "P0s stay marked PROPOSED until the user confirms",
+      "the audits are produced"
+    ]
+  }
+]

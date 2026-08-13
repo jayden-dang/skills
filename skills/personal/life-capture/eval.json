@@ -1,0 +1,13 @@
+[
+  {
+    "eval_id": 1,
+    "eval_name": "one-unprocessed-note",
+    "kind": "contract",
+    "derived_from": "SKILL.md § Done when",
+    "prompt": "Park this thought: 'maybe we should switch the newsletter to Substack'.",
+    "assertions": [
+      "exactly one unprocessed inbox note is created",
+      "the item is not organized, routed, or filed during capture"
+    ]
+  }
+]

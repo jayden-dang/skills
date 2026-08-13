@@ -1,0 +1,13 @@
+[
+  {
+    "eval_id": 1,
+    "eval_name": "maps-without-forcing-renames",
+    "kind": "contract",
+    "derived_from": "SKILL.md § Red Flags — Never",
+    "prompt": "Install Personal OS into my vault. My folders are named differently from your layout.",
+    "assertions": [
+      "a vault config maps layout roles onto the user's existing paths",
+      "the user's folders are not renamed to match the expected layout"
+    ]
+  }
+]

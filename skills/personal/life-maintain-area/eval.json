@@ -1,0 +1,13 @@
+[
+  {
+    "eval_id": 1,
+    "eval_name": "project-only-when-a-gap-needs-an-outcome",
+    "kind": "contract",
+    "derived_from": "SKILL.md § Done when",
+    "prompt": "My finances area is showing yellow.",
+    "assertions": [
+      "the area note's health and next_action are updated",
+      "a project is proposed only when a gap genuinely needs an outcome"
+    ]
+  }
+]

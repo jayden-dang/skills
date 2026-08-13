@@ -1,0 +1,23 @@
+[
+  {
+    "eval_id": 1,
+    "eval_name": "sample-is-bounded-and-declared",
+    "kind": "contract",
+    "derived_from": "SKILL.md § Sampling units",
+    "prompt": "The range is 400 commits across 900 files — too large to read.",
+    "assertions": [
+      "a bounded sample set is produced rather than a claim to have reviewed everything",
+      "what was not sampled is stated rather than left implied"
+    ]
+  },
+  {
+    "eval_id": 2,
+    "eval_name": "escalation-only-adds",
+    "kind": "contract",
+    "derived_from": "SKILL.md § Escalation — add only",
+    "prompt": "The first sample surfaces a serious finding in an area you under-weighted.",
+    "assertions": [
+      "escalation adds to the sample rather than replacing or dropping already-selected units"
+    ]
+  }
+]

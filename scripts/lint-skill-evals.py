@@ -32,8 +32,22 @@ import re
 import sys
 
 KEBAB = re.compile(r"[a-z0-9]+(-[a-z0-9]+)*")
-KINDS = ("behavior", "trigger")
+# behavior / trigger assert against an OBSERVED failure and must cite TESTS.md.
+# contract asserts only that the skill does what its own text already promises,
+# and must cite a heading that really exists in SKILL.md. The split exists so a
+# conformance checklist can never be mistaken for a regression test backed by a
+# recorded baseline.
+EVIDENCE_KINDS = ("behavior", "trigger")
+KINDS = EVIDENCE_KINDS + ("contract",)
 REQUIRED = ("eval_id", "eval_name", "kind", "derived_from", "prompt", "assertions")
+
+
+def _skill_text(d):
+    try:
+        with open(os.path.join(d, "SKILL.md"), encoding="utf-8") as f:
+            return f.read()
+    except OSError:
+        return ""
 
 
 def check(path):
@@ -41,9 +55,6 @@ def check(path):
     d = os.path.dirname(path)
     if not os.path.exists(os.path.join(d, "SKILL.md")):
         errs.append("no SKILL.md beside this eval.json")
-    if not os.path.exists(os.path.join(d, "TESTS.md")):
-        errs.append("no TESTS.md beside this eval.json — an eval must derive from "
-                    "recorded evidence, so record the RED/GREEN run first")
     try:
         with open(path, encoding="utf-8") as f:
             data = json.load(f)
@@ -86,6 +97,25 @@ def check(path):
             if not (isinstance(val, str) and val.strip()):
                 errs.append(f"{where}: '{key}' must be a non-empty string")
 
+        src = ev.get("derived_from")
+        if isinstance(src, str) and src.strip():
+            if kind in EVIDENCE_KINDS:
+                if not src.startswith("TESTS.md"):
+                    errs.append(f"{where}: a {kind} eval asserts against an observed failure, "
+                                "so 'derived_from' must cite TESTS.md")
+                elif not os.path.exists(os.path.join(d, "TESTS.md")):
+                    errs.append(f"{where}: cites TESTS.md but none exists beside this "
+                                "eval.json — record the RED/GREEN run first")
+            elif kind == "contract":
+                if not src.startswith("SKILL.md § "):
+                    errs.append(f"{where}: a contract eval must cite its source as "
+                                "'SKILL.md § <heading or rule text>'")
+                else:
+                    quoted = src[len("SKILL.md § "):].split(" — ")[0].strip()
+                    if quoted and quoted not in _skill_text(d):
+                        errs.append(f"{where}: SKILL.md contains no {quoted!r} — a contract "
+                                    "eval may only assert what the skill's own text states")
+
         asserts = ev.get("assertions")
         if not isinstance(asserts, list) or not asserts:
             errs.append(f"{where}: 'assertions' must be a non-empty array")
@@ -110,14 +140,31 @@ def main(argv):
     if scan_all:
         skills = sorted(glob.glob("skills/**/SKILL.md", recursive=True))
         tested = {os.path.dirname(p) for p in glob.glob("skills/**/TESTS.md", recursive=True)}
-        evaled = {os.path.dirname(p) for p in files}
+        evaled, backed = set(), set()
+        for p in files:
+            d = os.path.dirname(p)
+            evaled.add(d)
+            try:
+                with open(p, encoding="utf-8") as f:
+                    if any(e.get("kind") in EVIDENCE_KINDS for e in json.load(f)):
+                        backed.add(d)
+            except (OSError, json.JSONDecodeError, AttributeError, TypeError):
+                pass
         n = len(skills)
-        print(f"\ncoverage: {len(evaled)}/{n} skills have eval.json; "
-              f"{len(tested)}/{n} have TESTS.md")
+        print(f"\ncoverage: {len(evaled)}/{n} skills have eval.json")
+        print(f"  evidence-backed (behavior/trigger, from a recorded baseline): {len(backed)}/{n}")
+        print(f"  contract-only   (asserts what SKILL.md already promises):     "
+              f"{len(evaled - backed)}/{n}")
         gap = sorted(d for d in tested if d not in evaled)
         if gap:
             print(f"evidence recorded but no eval.json yet ({len(gap)}):")
             for d in gap:
+                print(f"  - {d.replace('skills/', '')}")
+        unproven = sorted(d for d in evaled - backed if d in tested)
+        if unproven:
+            print(f"has TESTS.md but only contract evals ({len(unproven)}) — "
+                  "recorded evidence not yet converted:")
+            for d in unproven:
                 print(f"  - {d.replace('skills/', '')}")
 
     if failed:

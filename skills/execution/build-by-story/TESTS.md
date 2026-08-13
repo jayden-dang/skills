@@ -1,9 +1,7 @@
 # `build-by-story` — test evidence
 
 **Protocol:** `author-skills` / `pressure-testing.md`  
-**Scenarios:** `tests/pressure/execute-family/scenarios.md`  
-**Design:** `tests/pressure/execute-family/DESIGN.md`  
-**RED log:** `tests/pressure/execute-family/RED-BASELINE.md`
+**Scenario files:** removed in `2338b34` ("remove test scenarios") — the runnable prompts now live in `eval.json` beside this file.  
 
 ## RED summary (2026-07-30, grok-4.5)
 

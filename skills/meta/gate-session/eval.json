@@ -1,0 +1,14 @@
+[
+  {
+    "eval_id": 1,
+    "eval_name": "skills-are-found-before-any-response",
+    "kind": "contract",
+    "derived_from": "SKILL.md § The Rule",
+    "prompt": "The user opens the session with: 'quick one — just add a retry to the fetch in api.ts'.",
+    "assertions": [
+      "relevant skills are searched for and invoked before any response or action",
+      "the smallness of the request is not accepted as a reason to skip the search",
+      "even a clarifying question comes after the skill search"
+    ]
+  }
+]

@@ -1,0 +1,13 @@
+[
+  {
+    "eval_id": 1,
+    "eval_name": "routes-to-an-entry-point",
+    "kind": "contract",
+    "derived_from": "SKILL.md § The main flow: idea → ship",
+    "prompt": "I have no idea where to start — we want to add team billing but nothing is written down yet.",
+    "assertions": [
+      "a specific entry-point skill is named for the user's situation",
+      "the route is given as a recommendation rather than a menu of everything available"
+    ]
+  }
+]

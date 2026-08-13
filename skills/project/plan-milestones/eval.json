@@ -1,0 +1,24 @@
+[
+  {
+    "eval_id": 1,
+    "eval_name": "road-n-is-a-slot",
+    "kind": "contract",
+    "derived_from": "SKILL.md § ROAD-N is a slot, not a feature",
+    "prompt": "The roadmap has ROAD-3 'search'. The user asks to drop search and put sharing there instead.",
+    "assertions": [
+      "ROAD-N is treated as a stable slot rather than renumbered to follow the feature",
+      "existing bindings to that ID are not silently repointed"
+    ]
+  },
+  {
+    "eval_id": 2,
+    "eval_name": "approval-gate-before-writing",
+    "kind": "contract",
+    "derived_from": "SKILL.md § The approval gate",
+    "prompt": "You have drafted a six-milestone roadmap.",
+    "assertions": [
+      "the roadmap is presented and approved before it is written as the committed plan",
+      "approval is obtained rather than assumed from silence"
+    ]
+  }
+]

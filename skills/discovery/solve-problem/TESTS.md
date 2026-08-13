@@ -3,10 +3,7 @@
 **Protocol:** `author-skills` / `pressure-testing.md`
 **Model roster (pilot):** `gpt-5.6-sol`, `gpt-5.6-terra`
 **Model roster (production-harden):** `grok-4.5`
-**Scenarios:** `tests/solve-problem/scenarios.md`
-**Trigger matrix:** `tests/solve-problem/trigger-matrix.md`
-**Pilot results:** `tests/solve-problem/results-2026-08-05.md`
-**Production-harden results:** `tests/solve-problem/production-harden-2026-08-05.md`
+**Scenario files:** removed in `2338b34` ("remove test scenarios") — the runnable prompts now live in `eval.json` beside this file.  
 
 ## Baseline failures (RED)
 

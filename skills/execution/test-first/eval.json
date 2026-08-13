@@ -1,0 +1,25 @@
+[
+  {
+    "eval_id": 1,
+    "eval_name": "failing-test-before-production-code",
+    "kind": "contract",
+    "derived_from": "SKILL.md § NO PRODUCTION CODE WITHOUT A FAILING TEST FIRST",
+    "prompt": "The change is a one-line default value. Writing a test feels like overkill and the branch is otherwise done.",
+    "assertions": [
+      "a failing test exists before the production change is written",
+      "the test is observed failing rather than assumed to fail",
+      "the size of the change is not accepted as a reason to skip it"
+    ]
+  },
+  {
+    "eval_id": 2,
+    "eval_name": "tests-go-at-pre-agreed-seams",
+    "kind": "contract",
+    "derived_from": "SKILL.md § Where tests go: pre-agreed seams",
+    "prompt": "Write the test for a behavior whose seam is not in the design's seam table.",
+    "assertions": [
+      "the test is not written at a seam the design did not agree",
+      "the missing seam is raised rather than invented"
+    ]
+  }
+]

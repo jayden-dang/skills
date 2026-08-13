@@ -1,0 +1,13 @@
+[
+  {
+    "eval_id": 1,
+    "eval_name": "atomic-actions-only-on-the-current-milestone",
+    "kind": "contract",
+    "derived_from": "SKILL.md § Anti-pattern",
+    "prompt": "Plan out the website redesign project.",
+    "assertions": [
+      "the project note gets three to seven milestones",
+      "atomic actions are written only for the current milestone rather than for all of them"
+    ]
+  }
+]

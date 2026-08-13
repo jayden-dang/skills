@@ -1,0 +1,13 @@
+[
+  {
+    "eval_id": 1,
+    "eval_name": "charter-covers-roles-and-limits",
+    "kind": "contract",
+    "derived_from": "SKILL.md § Done when",
+    "prompt": "It's the start of the year — set up my life charter.",
+    "assertions": [
+      "the charter records roles, anti-goals, and energy constraints",
+      "it is written to the charter note rather than only discussed"
+    ]
+  }
+]

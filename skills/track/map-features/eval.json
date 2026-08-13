@@ -1,0 +1,13 @@
+[
+  {
+    "eval_id": 1,
+    "eval_name": "backfill-is-evidence-led",
+    "kind": "contract",
+    "derived_from": "SKILL.md § Done when",
+    "prompt": "Backfill feature codes and OWNS coverage for this brownfield repo.",
+    "assertions": [
+      "entries are grounded in what the repo actually contains rather than assumed",
+      "the run ends on its stated done-when condition rather than an arbitrary stopping point"
+    ]
+  }
+]

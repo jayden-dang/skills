@@ -275,12 +275,24 @@ become two sources of truth:
 - **`TESTS.md`** — the recorded evidence. RED transcripts verbatim, the
   rationalizations the text had to counter, what changed between iterations.
   The *why*.
-- **`eval.json`** — the runnable assertions derived from that evidence, each
-  citing its source via `derived_from`. The *what must hold*.
+- **`eval.json`** — the runnable assertions, each citing its source via
+  `derived_from`. The *what must hold*.
 
-`lint-skill-evals.py` enforces the grounding rule (an `eval.json` requires a
-`TESTS.md` beside it) and reports coverage, so the untested gap stays visible
-rather than being filled with plausible-sounding assertions nobody observed.
+Evals come in two kinds, and the difference is the whole point:
+
+| `kind` | Asserts | Cites | Means |
+|---|---|---|---|
+| `behavior` / `trigger` | that an **observed** failure does not come back | `TESTS.md` | a regression test with a real baseline behind it |
+| `contract` | that the skill does what **its own text** already promises | `SKILL.md § <heading>` | a conformance checklist — *not* proof anything was tested |
+
+`lint-skill-evals.py` enforces both provenance rules mechanically: a
+`behavior`/`trigger` eval must cite a `TESTS.md` that exists, and a `contract`
+eval must cite a heading that really appears in that `SKILL.md` — so neither an
+ungrounded regression claim nor an invented contract can pass. Coverage is
+reported per kind, so a contract checklist is never mistaken for evidence.
+
+Every skill has contract evals; **16 of 79 have evidence-backed ones**. Closing
+that gap means running real baselines, not writing more assertions.
 
 ## License
 

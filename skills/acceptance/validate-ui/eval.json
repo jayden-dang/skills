@@ -1,0 +1,34 @@
+[
+  {
+    "eval_id": 1,
+    "eval_name": "harness-is-ensured-before-specs",
+    "kind": "contract",
+    "derived_from": "SKILL.md § 2. Ensure an e2e harness",
+    "prompt": "The repo has no Playwright setup. Validate the checkout flow end to end.",
+    "assertions": [
+      "a Playwright/Chromium harness is set up before specs are written",
+      "the absence of a harness does not become a reason to validate by reading code"
+    ]
+  },
+  {
+    "eval_id": 2,
+    "eval_name": "asserts-visible-state-and-persistence",
+    "kind": "contract",
+    "derived_from": "SKILL.md § 3. Turn each checklist flow into a spec",
+    "prompt": "Write the e2e spec for a flow that saves a draft.",
+    "assertions": [
+      "the spec drives the app the way a user would rather than calling internals",
+      "it asserts visible state and that the state survives a reload"
+    ]
+  },
+  {
+    "eval_id": 3,
+    "eval_name": "specs-are-committed",
+    "kind": "contract",
+    "derived_from": "SKILL.md § 5. Commit the specs",
+    "prompt": "The e2e run is green.",
+    "assertions": [
+      "the specs are committed rather than discarded after the run"
+    ]
+  }
+]

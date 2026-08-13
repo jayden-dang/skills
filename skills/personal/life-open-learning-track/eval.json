@@ -1,0 +1,13 @@
+[
+  {
+    "eval_id": 1,
+    "eval_name": "track-has-cadence-and-first-milestone",
+    "kind": "contract",
+    "derived_from": "SKILL.md § Done when",
+    "prompt": "I want to start learning guitar seriously.",
+    "assertions": [
+      "a learning-track note and registry row are created",
+      "cadence and a first milestone are both set"
+    ]
+  }
+]

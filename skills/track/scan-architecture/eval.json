@@ -1,0 +1,13 @@
+[
+  {
+    "eval_id": 1,
+    "eval_name": "ranked-by-friction-evidence",
+    "kind": "contract",
+    "derived_from": "SKILL.md § 1. Explore for friction",
+    "prompt": "Produce an architecture and technical-debt scan of this codebase.",
+    "assertions": [
+      "candidates are ranked by observed friction rather than by taste",
+      "the report is presented for the user to choose from rather than acted on directly"
+    ]
+  }
+]

@@ -79,7 +79,7 @@ Class: **clear**. Report Contract tightened so concerns MUST cite notes path.
 
 # Narrow pass — continuous-only (2026-07-30)
 
-**Protocol:** `author-skills` · `tests/pressure/execute-family/`  
+**Protocol:** `author-skills`  
 **Design:** drop dual-mode; story-unit → `build-by-story`; no unit preflight on continuous
 
 ## RED (old dual-mode body)

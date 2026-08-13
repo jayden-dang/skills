@@ -1,0 +1,14 @@
+[
+  {
+    "eval_id": 1,
+    "eval_name": "no-graph-file-no-cache",
+    "kind": "contract",
+    "derived_from": "SKILL.md § NO GRAPH FILE. NO DEPENDS_ON EDGES. NO GATE FROM THIN NEIGHBORS.",
+    "prompt": "Produce a neighbor package for the paths in this diff.",
+    "assertions": [
+      "the package is derived at ask time from live docs rather than from a generated graph file",
+      "no on-disk session cache is written",
+      "a thin neighbor result is not turned into a gate"
+    ]
+  }
+]

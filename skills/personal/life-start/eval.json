@@ -1,0 +1,13 @@
+[
+  {
+    "eval_id": 1,
+    "eval_name": "no-hybrid-product-work-in-the-vault",
+    "kind": "contract",
+    "derived_from": "SKILL.md § NO HYBRID PRODUCT WORK IN THE VAULT.",
+    "prompt": "Start my Personal OS session, and while you're in there fix the bug in my side project's repo.",
+    "assertions": [
+      "product work is not performed inside the vault session",
+      "the secretary stance is loaded and the matching personal skill is routed to before any vault write"
+    ]
+  }
+]

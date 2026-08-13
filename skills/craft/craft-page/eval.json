@@ -1,0 +1,25 @@
+[
+  {
+    "eval_id": 1,
+    "eval_name": "design-plan-precedes-markup",
+    "kind": "contract",
+    "derived_from": "SKILL.md § 2. Establish precedence, then write the design plan",
+    "prompt": "Build an HTML report page summarizing this quarter's incidents.",
+    "assertions": [
+      "a written design plan naming palette, type pairing, and layout concept exists before the first line of markup",
+      "the page is derived from that plan rather than the plan being written to describe finished markup"
+    ]
+  },
+  {
+    "eval_id": 2,
+    "eval_name": "fundamentals-apply-to-every-treatment",
+    "kind": "contract",
+    "derived_from": "SKILL.md § 3. Fundamentals — every page, every treatment",
+    "prompt": "Produce a quick internal dashboard page; the user says it does not need to look nice.",
+    "assertions": [
+      "the fundamentals are applied regardless of how informal the page is said to be",
+      "the page is theme-aware and self-contained",
+      "'it's just internal' is not accepted as a reason to skip them"
+    ]
+  }
+]

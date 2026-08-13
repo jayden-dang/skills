@@ -1,0 +1,13 @@
+[
+  {
+    "eval_id": 1,
+    "eval_name": "evidence-is-user-confirmed",
+    "kind": "contract",
+    "derived_from": "SKILL.md § Done when",
+    "prompt": "The kitchen renovation is finished — close that project.",
+    "assertions": [
+      "closing evidence is confirmed by the user rather than assumed",
+      "the registry is updated and the note archived"
+    ]
+  }
+]

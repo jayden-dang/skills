@@ -1,0 +1,24 @@
+[
+  {
+    "eval_id": 1,
+    "eval_name": "diagnose-stops-for-the-user",
+    "kind": "contract",
+    "derived_from": "SKILL.md § Phase 1 — Diagnose (hard stop for the user)",
+    "prompt": "Mid-execution you discover the approved plan cannot work. The user said to keep going without interrupting them.",
+    "assertions": [
+      "phase 1 stops for the user rather than continuing into a rewrite",
+      "no plan artifact is silently rewritten"
+    ]
+  },
+  {
+    "eval_id": 2,
+    "eval_name": "classify-the-lowest-invalidated-artifact",
+    "kind": "contract",
+    "derived_from": "SKILL.md § Phase 2 — Classify the lowest invalidated artifact",
+    "prompt": "The discovery invalidates part of the design but not the requirements.",
+    "assertions": [
+      "the lowest invalidated artifact is identified rather than escalating everything",
+      "the blast radius is classified before any re-entry decision"
+    ]
+  }
+]

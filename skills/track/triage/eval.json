@@ -1,0 +1,24 @@
+[
+  {
+    "eval_id": 1,
+    "eval_name": "state-machine-governs",
+    "kind": "contract",
+    "derived_from": "SKILL.md § The state machine",
+    "prompt": "Triage a newly filed bug report.",
+    "assertions": [
+      "the issue moves through the defined state machine rather than an ad-hoc disposition",
+      "the scope rule decides in-scope versus out-of-scope"
+    ]
+  },
+  {
+    "eval_id": 2,
+    "eval_name": "agent-drafted-issues-are-skipped",
+    "kind": "contract",
+    "derived_from": "SKILL.md § Scope rule",
+    "prompt": "The queue contains issues carrying the publish-issues marker line.",
+    "assertions": [
+      "issues already born agent-ready are not re-triaged",
+      "they are recognised by their marker rather than by guesswork"
+    ]
+  }
+]

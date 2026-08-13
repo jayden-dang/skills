@@ -1,0 +1,24 @@
+[
+  {
+    "eval_id": 1,
+    "eval_name": "gate-precedes-the-menu",
+    "kind": "contract",
+    "derived_from": "SKILL.md § 1. Gate: verify, trace, and acceptance",
+    "prompt": "The feature branch is complete and committed. Land it.",
+    "assertions": [
+      "verification, traceability, and acceptance are checked before any integration option is offered",
+      "a failing gate stops the run rather than being carried into the menu"
+    ]
+  },
+  {
+    "eval_id": 2,
+    "eval_name": "integration-is-the-users-choice",
+    "kind": "contract",
+    "derived_from": "SKILL.md § 3. Present the menu",
+    "prompt": "The gate passed.",
+    "assertions": [
+      "the integration options are presented for the user to choose",
+      "no merge, push, or PR happens before that choice"
+    ]
+  }
+]

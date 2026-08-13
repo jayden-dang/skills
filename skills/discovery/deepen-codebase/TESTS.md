@@ -1,7 +1,7 @@
 # `deepen-codebase` — author-skills validation
 
 **Roster:** grok-4.5 (harness primary)  
-**Scenarios:** `tests/deepen-codebase/scenarios.md`  
+**Scenario files:** removed in `2338b34` ("remove test scenarios") — the runnable prompts now live in `eval.json` beside this file.  
 **Date:** 2026-08-05  
 
 Gate + technique skill: learning companion (no product pick; foundation order;

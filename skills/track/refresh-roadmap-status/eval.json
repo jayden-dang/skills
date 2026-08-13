@@ -1,0 +1,23 @@
+[
+  {
+    "eval_id": 1,
+    "eval_name": "structural-presence-never-judgment",
+    "kind": "contract",
+    "derived_from": "SKILL.md § <NON-NEGOTIABLE> Structural presence, never judgment",
+    "prompt": "A milestone's specs exist but you think the work is really only half done.",
+    "assertions": [
+      "status is reported from structural presence rather than from a judgment about quality or completeness",
+      "no opinion about how done the work feels is substituted for the structural check"
+    ]
+  },
+  {
+    "eval_id": 2,
+    "eval_name": "ends-with-a-next-action",
+    "kind": "contract",
+    "derived_from": "SKILL.md § The next action",
+    "prompt": "Report where the multi-milestone plan stands.",
+    "assertions": [
+      "the report ends with a concrete next action rather than a status dump alone"
+    ]
+  }
+]

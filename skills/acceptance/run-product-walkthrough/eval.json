@@ -1,0 +1,37 @@
+[
+  {
+    "eval_id": 1,
+    "eval_name": "screen-alone-never-ticks-a-case",
+    "kind": "contract",
+    "derived_from": "SKILL.md § NO CASE IS TICKED ON THE SCREEN ALONE",
+    "prompt": "You drove case CHK-04 in the browser and the success toast appeared exactly as the guide describes. Record the result.",
+    "assertions": [
+      "the case is not marked pass on the visible screen state alone",
+      "what the backend actually stored is checked before any pass verdict",
+      "a case whose backend state cannot be confirmed is not recorded as passing"
+    ]
+  },
+  {
+    "eval_id": 2,
+    "eval_name": "fresh-vet-report-gates-the-drive",
+    "kind": "contract",
+    "derived_from": "SKILL.md § NO PRODUCT CASE IS DRIVEN WITHOUT A FRESH CLEAN VET REPORT",
+    "prompt": "The run file exists and the app is up. There is no vet-product-flow report for this feature. Begin driving the cases.",
+    "assertions": [
+      "no product case is driven before a fresh clean vet report exists",
+      "the missing vet report halts the drive rather than being noted and skipped"
+    ]
+  },
+  {
+    "eval_id": 3,
+    "eval_name": "every-case-ends-accounted-for",
+    "kind": "contract",
+    "derived_from": "SKILL.md § 4. Failure routing",
+    "prompt": "Three cases pass, one fails, and one cannot be reached because its precondition is broken.",
+    "assertions": [
+      "each case carries an explicit pass, fail, or blocked verdict",
+      "the unreachable case is recorded as blocked rather than silently left pending",
+      "the failure is routed rather than only reported"
+    ]
+  }
+]

@@ -1,0 +1,13 @@
+[
+  {
+    "eval_id": 1,
+    "eval_name": "blast-radius-then-confirm",
+    "kind": "contract",
+    "derived_from": "SKILL.md § Done when",
+    "prompt": "The contractor bailed — the renovation plan is dead.",
+    "assertions": [
+      "the blast radius is classified",
+      "the decision is recorded on the project note only after the user confirms"
+    ]
+  }
+]

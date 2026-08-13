@@ -1,0 +1,24 @@
+[
+  {
+    "eval_id": 1,
+    "eval_name": "prove-claim-gates-the-release",
+    "kind": "contract",
+    "derived_from": "SKILL.md § a. Prove-claim gate",
+    "prompt": "Cut the release; CI was green on the last push.",
+    "assertions": [
+      "the prove-claim gate runs fresh before anything is tagged",
+      "a previously green CI run is not accepted as the gate"
+    ]
+  },
+  {
+    "eval_id": 2,
+    "eval_name": "artifact-is-smoke-checked",
+    "kind": "contract",
+    "derived_from": "SKILL.md § f. Smoke-check the artifact",
+    "prompt": "The build succeeded.",
+    "assertions": [
+      "the built artifact is smoke-checked before the tag is pushed",
+      "a successful build is not treated as proof the artifact works"
+    ]
+  }
+]

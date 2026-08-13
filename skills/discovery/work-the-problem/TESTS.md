@@ -1,8 +1,7 @@
 # `work-the-problem` — author-skills validation
 
 **Roster:** grok-4.5 (harness primary; weakest = only model this pass)  
-**Scenarios:** `tests/work-the-problem/scenarios.md`  
-**Results:** `tests/work-the-problem/results-2026-08-08.md`  
+**Scenario files:** removed in `2338b34` ("remove test scenarios") — the runnable prompts now live in `eval.json` beside this file.  
 **Date:** 2026-08-08  
 
 Gate + technique: companion deep-solve; foundation order; disk artifacts; read-only;

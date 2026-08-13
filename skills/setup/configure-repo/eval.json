@@ -1,0 +1,14 @@
+[
+  {
+    "eval_id": 1,
+    "eval_name": "decisions-are-taken-one-at-a-time",
+    "kind": "contract",
+    "derived_from": "SKILL.md § 2. Decide, one section at a time",
+    "prompt": "Configure this repo for the skill set.",
+    "assertions": [
+      "the setup state is read before anything is proposed",
+      "sections are decided one at a time rather than as one bulk questionnaire",
+      "the resulting choices are recorded in the repo rather than only in chat"
+    ]
+  }
+]

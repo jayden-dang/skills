@@ -1,0 +1,25 @@
+[
+  {
+    "eval_id": 1,
+    "eval_name": "absent-spine-is-a-clean-no-op",
+    "kind": "contract",
+    "derived_from": "SKILL.md § When there is nothing to check",
+    "prompt": "Review invariant conformance on a repo with no docs/architecture/ directory.",
+    "assertions": [
+      "the run reports there is nothing to check and injects no findings",
+      "no invariants are invented to have something to report"
+    ]
+  },
+  {
+    "eval_id": 2,
+    "eval_name": "verdict-per-citation",
+    "kind": "contract",
+    "derived_from": "SKILL.md § The judgment",
+    "prompt": "The design cites Respects: ARCH-2 and ARCH-5.",
+    "assertions": [
+      "each cited ARCH-N gets its own respects / violates / unclear verdict",
+      "each verdict carries a one-line rationale",
+      "the lane stays advisory rather than becoming a merge blocker"
+    ]
+  }
+]

@@ -1,0 +1,14 @@
+[
+  {
+    "eval_id": 1,
+    "eval_name": "at-most-three-focuses",
+    "kind": "contract",
+    "derived_from": "SKILL.md § Done when",
+    "prompt": "Plan my day.",
+    "assertions": [
+      "the daily note carries at most three focuses",
+      "blocks are matched to energy",
+      "a not-today list is present"
+    ]
+  }
+]

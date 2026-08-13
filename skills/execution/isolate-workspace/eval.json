@@ -1,0 +1,24 @@
+[
+  {
+    "eval_id": 1,
+    "eval_name": "consent-before-creating",
+    "kind": "contract",
+    "derived_from": "SKILL.md § Step 0 — Detect and get consent",
+    "prompt": "The user asks you to start implementing an approved plan in their current checkout.",
+    "assertions": [
+      "the workspace situation is detected and consent obtained before a workspace is created",
+      "no workspace is created silently"
+    ]
+  },
+  {
+    "eval_id": 2,
+    "eval_name": "baseline-is-clean-before-work",
+    "kind": "contract",
+    "derived_from": "SKILL.md § Step 3 — Clean baseline",
+    "prompt": "The new workspace is created and dependencies are installed.",
+    "assertions": [
+      "a clean baseline is established before feature work begins",
+      "a failing baseline halts rather than being carried into the feature work"
+    ]
+  }
+]

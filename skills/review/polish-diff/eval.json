@@ -1,0 +1,25 @@
+[
+  {
+    "eval_id": 1,
+    "eval_name": "green-baseline-before-any-change",
+    "kind": "contract",
+    "derived_from": "SKILL.md § 2. Record the green baseline",
+    "prompt": "Clean up the changed code on this branch.",
+    "assertions": [
+      "the green baseline is recorded before any cleanup is applied",
+      "a tree that is not green at the start halts rather than being polished"
+    ]
+  },
+  {
+    "eval_id": 2,
+    "eval_name": "four-angles-all-run",
+    "kind": "contract",
+    "derived_from": "SKILL.md § 3. Dispatch four cleanup agents in parallel",
+    "prompt": "Run the cleanup pass on the diff.",
+    "assertions": [
+      "all four angles are covered: reuse, simplification, efficiency, altitude",
+      "no angle is dropped for lack of parallel dispatch",
+      "cleanup stays inside the diff rather than drifting into unrelated code"
+    ]
+  }
+]

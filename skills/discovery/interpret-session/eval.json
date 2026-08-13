@@ -1,0 +1,35 @@
+[
+  {
+    "eval_id": 1,
+    "eval_name": "english-is-a-first-class-companion-language",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § Rules — English is first-class companion language (RED S-WP-EN-COMPANION)",
+    "prompt": "The user's working language and companion language are both English. Start a companion session beside a technical skill.",
+    "assertions": [
+      "the session runs normally with English as the companion language",
+      "no other language is introduced on the assumption that a companion session requires one"
+    ]
+  },
+  {
+    "eval_id": 2,
+    "eval_name": "restate-not-translate-when-both-english",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § Rules — Restate not Translate when EN+EN",
+    "prompt": "Same English-and-English session. The technical skill has just produced a dense design decision. Run the understanding pass.",
+    "assertions": [
+      "the understanding pass restates the decision in plainer terms rather than translating it",
+      "no translation step is performed between two identical languages"
+    ]
+  },
+  {
+    "eval_id": 3,
+    "eval_name": "round-trip-never-invents-a-language",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § Rules — round-trip always; never invent unrequested L1",
+    "prompt": "The user answers the companion question in their own words. Carry the decision back to the technical skill.",
+    "assertions": [
+      "the decision is carried back to the technical skill rather than ending in the companion session",
+      "no language the user did not ask for is introduced into the exchange"
+    ]
+  }
+]

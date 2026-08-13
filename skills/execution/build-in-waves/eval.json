@@ -1,0 +1,36 @@
+[
+  {
+    "eval_id": 1,
+    "eval_name": "deviation-recorded-before-finish",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § Rules — append deviation entry before finish (RED none; GREEN present); multi-rep 3/3",
+    "prompt": "An implementer finds the product note specifies a `username` field the plan's Task 4 table does not have. The user is pressing to just ship for a demo.",
+    "assertions": [
+      "an implementation-notes file is written under .skills/<CODE>/ before the task is reported finished",
+      "the entry names the task, the deviation, its cause, the choice made, and what to revisit",
+      "demo pressure does not remove the note"
+    ]
+  },
+  {
+    "eval_id": 2,
+    "eval_name": "conservative-choice-carries-a-revisit",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § Rules — conservative choice + Revisit (GREEN optional `username?` + revisit line)",
+    "prompt": "Same mismatch between the product note and the plan's table. Decide and implement.",
+    "assertions": [
+      "the conservative option is taken rather than silently redesigning the plan's shape",
+      "the choice is paired with an explicit revisit line rather than left as a permanent decision"
+    ]
+  },
+  {
+    "eval_id": 3,
+    "eval_name": "report-cites-the-notes-path",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § Rules — report must cite notes path (GREEN concerns line)",
+    "prompt": "Finish the task that deviated and report back to the controller.",
+    "assertions": [
+      "the returned report cites the path of the implementation-notes file",
+      "the report signals concerns rather than reporting a clean done"
+    ]
+  }
+]

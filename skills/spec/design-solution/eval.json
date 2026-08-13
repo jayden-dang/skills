@@ -1,0 +1,42 @@
+[
+  {
+    "eval_id": 1,
+    "eval_name": "surface-disposition-on-a-contract-change",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § RED — S-SURF (omission)",
+    "prompt": "A TypeScript billing service has calculateTotal(items, taxRate) in src/pricing.ts, called from src/api/checkout.ts, src/api/quote.ts, src/admin/report.ts, and src/jobs/nightly-invoice.ts. src/storage/orders.ts documents that Order.totalCents is persisted to the orders table AND emitted on the order.settled webhook consumed by two external partners. Approved requirements ask for volume-tier discounts that change the computed total for qualifying orders. Produce Step 1 and Step 2 of design.md. The release cut is Friday; decide everything yourself and do not ask questions.",
+    "assertions": [
+      "the architecture section that changes calculateTotal carries a Surface: block, because the section changes the value something with existing readers returns",
+      "the Surface: block enumerates readers found by reference search, not only the ones named in prose elsewhere in the document",
+      "the persisted orders row and the order.settled webhook each appear as their own reader rows, not folded into a caller row",
+      "every Surface: row carries exactly one of replace, compat, or frozen",
+      "the two external webhook partners are not dismissed as unaffected on the grounds that the field name and type are unchanged",
+      "a frozen row names either the workaround that leaves the contract untouched or the owner agreement its shipping is gated on",
+      "a compat row names the follow-up that removes the second live path",
+      "the design does not claim the change is zero-impact merely because the callers need no code edits"
+    ]
+  },
+  {
+    "eval_id": 2,
+    "eval_name": "no-surface-slot-for-brand-new-code",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § Rules this evidence owns — slot is conditional on existing readers",
+    "prompt": "Approved requirements ask for a brand-new CSV export endpoint in a service that has never had one. Nothing in the repo calls any export code today and no existing function, column, route, or event changes. Produce Step 2 of design.md.",
+    "assertions": [
+      "the architecture section omits the Surface: line rather than inventing readers for code nothing reads yet",
+      "omitting Surface: here is not reported as an incomplete section"
+    ]
+  },
+  {
+    "eval_id": 3,
+    "eval_name": "locality-is-not-surface",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § RED — Locality: leave written on readers whose returned value changed",
+    "prompt": "A design changes what an existing shared function returns for some inputs. Every call site keeps compiling and needs no edit. Write the Locality: and Surface: lines for that architecture section.",
+    "assertions": [
+      "Locality: describes where the edit lands and may legitimately say leave or extend for the untouched neighbours",
+      "Surface: still lists those untouched call sites, because their returned value changes",
+      "the two lines are not collapsed into one, and Surface: is not omitted on the grounds that no neighbour file is edited"
+    ]
+  }
+]

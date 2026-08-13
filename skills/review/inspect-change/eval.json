@@ -1,0 +1,57 @@
+[
+  {
+    "eval_id": 1,
+    "eval_name": "production-readiness-on-a-runtime-diff",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § RED — S-PROD (frame gap)",
+    "prompt": "Review the Standards axis of a diff that adds tier-aware pricing behind an env flag. The diff contains: a loadTiers() helper retrying `while (true)` with no cap or timeout; a catch in the pricing path that silently falls back to the old flat-rate result; a TIERED_PRICING flag read as `!== 'off'`, so the new path is on unless disabled; a migration adding a column and running `ALTER TABLE orders ALTER COLUMN total_cents DROP NOT NULL`, where total_cents is emitted on a webhook two external partners consume; and a switch of one caller to the new function while three other callers in files the diff does not touch keep calling the old one.",
+    "assertions": [
+      "the report includes a production-readiness part covering items 19-24, in addition to the twelve smells and the security items",
+      "the uncapped retry is raised as an unbounded failure mode in terms of what it does to a live request, not only as a comment or naming smell",
+      "the silent fallback is raised as silent degradation, naming that nothing records that the degraded path fired",
+      "the TIERED_PRICING flag is raised as an unsafe default because it is opt-out, so merging the diff is itself the rollout",
+      "the migration is raised as irreversible, naming both the absent reverse path and the external readers the relaxed constraint affects",
+      "the absence of a log, metric, or trace on the new failure path is raised as no operational signal",
+      "the three callers still on the old path are found and reported, which requires searching the repo beyond the diff since none of those files appear in it"
+    ]
+  },
+  {
+    "eval_id": 2,
+    "eval_name": "twelve-smells-survive-the-added-parts",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § GREEN v1 — regression: part (b) collapsed to 4 of 12",
+    "prompt": "Review the Standards axis of the same tier-pricing diff, which triggers both the security predicate and the production-readiness predicate.",
+    "assertions": [
+      "part (b) carries one verdict line for each of the twelve smells, numbered 1 through 12",
+      "smells that did not hit still get an explicit no-hit verdict rather than being omitted",
+      "the twelve-smell walk is complete even though parts (c) and (d) both fired",
+      "the four parts appear in order, each completed before the next begins"
+    ]
+  },
+  {
+    "eval_id": 3,
+    "eval_name": "predicates-scope-the-optional-parts",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § Rules this evidence owns — each optional part scoped by its own predicate",
+    "prompt": "Review the Standards axis of a diff that only rewords prose in three README files. No code, config, storage, or contract changes.",
+    "assertions": [
+      "the production-readiness part is reported as not applying rather than being silently dropped",
+      "the security part is reported as not applying rather than being silently dropped",
+      "no production-readiness or security findings are manufactured to fill the sections",
+      "part (b) is still walked"
+    ]
+  },
+  {
+    "eval_id": 4,
+    "eval_name": "two-axis-verdict-preserved",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § Rules this evidence owns — production readiness sits inside Standards",
+    "prompt": "Run a full inspect-change review on a feature branch that has a requirements.md and a diff touching runtime behavior. Report the result.",
+    "assertions": [
+      "the report presents Standards and Spec as separate sections and does not merge or rerank one against the other",
+      "production-readiness findings appear inside the Standards section rather than as a third hard axis",
+      "production-readiness findings are labeled judgment calls, not hard violations",
+      "the verdict line states Ready to merge? Yes, No, or With fixes"
+    ]
+  }
+]

@@ -1,0 +1,82 @@
+[
+  {
+    "eval_id": 1,
+    "eval_name": "interview-stays-in-inline-chat",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § Rules — Iron Law: inline chat only; never AskUserQuestion (RED channel; GREEN A2/F2)",
+    "prompt": "The user says: 'we're underspecified on the notifications feature — grill me on it before we build.' Run the interview.",
+    "assertions": [
+      "questions are asked as inline chat text, not through a structured multiple-choice picker",
+      "questions come one at a time rather than as a batch the user answers in bulk",
+      "the run does not present a fixed menu the user selects from in place of an open answer"
+    ]
+  },
+  {
+    "eval_id": 2,
+    "eval_name": "open-set-no-question-quota",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § Rules — open set; no fixed N / no todo quota (RED rounds rationalizations)",
+    "prompt": "Interview the user on a half-specified billing change. After four questions the high-blast-radius branches are still open.",
+    "assertions": [
+      "the interview continues past any round number rather than stopping at a preset count",
+      "no fixed question quota or todo list of N questions is announced up front",
+      "stopping is justified by every high-blast branch being closed, not by a number being reached"
+    ]
+  },
+  {
+    "eval_id": 3,
+    "eval_name": "rich-question-card-shape",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § Rules — rich question card (RED thin shape; GREEN B2)",
+    "prompt": "Ask the first interview question about an underspecified data-retention decision.",
+    "assertions": [
+      "the question names the thread it belongs to and the territory it probes",
+      "it states why the answer matters and what it closes",
+      "it offers options with their consequences rather than a bare open question",
+      "it carries a recommendation rather than staying neutral"
+    ]
+  },
+  {
+    "eval_id": 4,
+    "eval_name": "close-package-requires-real-confirmation",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § Rules — close package; 'we're aligned' ≠ confirmation (RED C1; GREEN C2)",
+    "prompt": "Mid-interview the user replies 'yeah I think we're aligned, let's go'. Two decisions still have high-tweak surface.",
+    "assertions": [
+      "'we're aligned' is not treated as confirmation of the open decisions",
+      "a close package restating the decided items is produced for explicit confirmation",
+      "the remaining high-tweak surface is surfaced rather than assumed settled"
+    ]
+  },
+  {
+    "eval_id": 5,
+    "eval_name": "blast-radius-before-polish",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § Rules — blast-radius first even when user asks polish first (GREEN E3)",
+    "prompt": "The user opens with 'just help me pick the button colour for the export dialog' on a feature whose storage model is still undecided.",
+    "assertions": [
+      "the undecided high-blast decision is raised before the low-blast styling question",
+      "the ordering is not surrendered to the user's stated starting point"
+    ]
+  },
+  {
+    "eval_id": 6,
+    "eval_name": "trigger-fires-on-interview-intent",
+    "kind": "trigger",
+    "derived_from": "TESTS.md § Description trigger notes — should-fire list",
+    "prompt": "stress-test this plan before we build",
+    "assertions": [
+      "clarify-decisions is selected"
+    ]
+  },
+  {
+    "eval_id": 7,
+    "eval_name": "trigger-yields-to-greenfield-shaping",
+    "kind": "trigger",
+    "derived_from": "TESTS.md § Description trigger notes — should-not-fire neighbours",
+    "prompt": "I have a brand-new idea for a referrals system, nothing exists yet — help me shape it",
+    "assertions": [
+      "frame-change is selected rather than clarify-decisions"
+    ]
+  }
+]

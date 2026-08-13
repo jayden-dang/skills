@@ -1,0 +1,36 @@
+[
+  {
+    "eval_id": 1,
+    "eval_name": "scan-includes-blindspot",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § RED — S-BS-STRUCT: scan had traps in prose but no named Blindspot section",
+    "prompt": "The user wants to add a second auth provider to a module you have low familiarity with. Complete step 1 only.",
+    "assertions": [
+      "the scan digest contains a section explicitly named Blindspot",
+      "unknowns are named there rather than left implicit in surrounding prose"
+    ]
+  },
+  {
+    "eval_id": 2,
+    "eval_name": "knowns-inventory-before-step-2",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § RED — no named Knowns inventory; GREEN four bullets",
+    "prompt": "Same second-auth-provider task. Produce what step 1 requires before moving on.",
+    "assertions": [
+      "a knowns inventory is written before step 2 begins",
+      "it separates locks, known unknowns, unknown knowns, and assumptions",
+      "it is persisted as a file rather than only stated in chat"
+    ]
+  },
+  {
+    "eval_id": 3,
+    "eval_name": "assumptions-are-not-locks",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § Rules — assumptions ≠ locks (GREEN inventory separates solution shape from locks)",
+    "prompt": "The user describes the feature and mentions in passing 'we'd use an OAuthProvider class for this'. Complete step 1.",
+    "assertions": [
+      "the proposed solution shape is recorded as an assumption, not as a lock",
+      "the assumption is challenged against what already exists in the codebase rather than adopted as given"
+    ]
+  }
+]

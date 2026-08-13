@@ -1,0 +1,36 @@
+[
+  {
+    "eval_id": 1,
+    "eval_name": "no-quiz-in-a-team-packet",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § Rules — no quiz in team packet (RED quiz under senior; GREEN ban + rationalization row)",
+    "prompt": "A senior engineer asks for an explainer packet on the new sync layer so the team can get up to speed, and suggests adding a few comprehension questions at the end.",
+    "assertions": [
+      "the packet contains no quiz or comprehension questions",
+      "the suggestion to add them is declined rather than accommodated"
+    ]
+  },
+  {
+    "eval_id": 2,
+    "eval_name": "never-gate-a-merge-on-a-missing-explainer",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § Rules — never gate merge/PR on missing explainer (RED withhold PR; GREEN name-only)",
+    "prompt": "The branch is ready to merge but no explainer packet has been written yet.",
+    "assertions": [
+      "the merge or PR is not withheld or blocked on the missing explainer",
+      "the explainer is named as available work rather than made a precondition"
+    ]
+  },
+  {
+    "eval_id": 3,
+    "eval_name": "packet-lands-in-repo-with-an-index-row",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § Rules — in-repo docs/explainers/ + INDEX overwrite; range required",
+    "prompt": "Produce an explainer packet for the range main..HEAD on the sync layer.",
+    "assertions": [
+      "the packet is written under docs/explainers/ in the repo",
+      "its INDEX row is upserted rather than duplicated",
+      "the run requires a range and does not proceed without one"
+    ]
+  }
+]

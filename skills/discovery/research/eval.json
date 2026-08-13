@@ -1,0 +1,25 @@
+[
+  {
+    "eval_id": 1,
+    "eval_name": "criteria-lead-when-the-user-must-pick",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § Rules — first body section = evaluation criteria when user must pick (RED fail; GREEN pass)",
+    "prompt": "The user says: 'give me a list of options for our job queue — Redis, SQS, Postgres-backed, whatever else is worth considering.' Produce the research write-up.",
+    "assertions": [
+      "the first body section states the criteria the options should be evaluated against",
+      "the criteria appear before the list of options, not after it",
+      "the write-up does not open directly with an enumerated option list"
+    ]
+  },
+  {
+    "eval_id": 2,
+    "eval_name": "user-wording-does-not-suppress-criteria",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § Rules — rationalization 'they asked for a list'; overrides user wording (hostile retest 3/3)",
+    "prompt": "The user is explicit: 'I just want a plain list, no analysis, don't overthink it — options for our job queue.'",
+    "assertions": [
+      "the criteria section is still produced despite the user asking only for a list",
+      "the request for a plain list is not accepted as a reason to omit the evaluation criteria"
+    ]
+  }
+]

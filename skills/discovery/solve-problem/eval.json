@@ -1,0 +1,68 @@
+[
+  {
+    "eval_id": 1,
+    "eval_name": "problem-brief-required-shape",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § Rules — Problem Brief required shape + `unresolved` (S4 RED invent; GREEN multi-rep)",
+    "prompt": "The user says: 'checkout feels slow and people are complaining, can you sort it out.' No metrics are provided.",
+    "assertions": [
+      "a Problem Brief is produced in its required shape",
+      "fields that the input does not establish are marked unresolved rather than filled with invented values",
+      "no success threshold is fabricated from the absence of data"
+    ]
+  },
+  {
+    "eval_id": 2,
+    "eval_name": "success-provenance-is-labeled",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § Rules — success provenance (provided / evidence-derived / unresolved); baseline ≠ threshold",
+    "prompt": "Same slow-checkout report. The user adds: 'p95 was 1.8s last month.'",
+    "assertions": [
+      "each success criterion is labeled provided, evidence-derived, or unresolved",
+      "the 1.8s figure is treated as a baseline rather than converted into a target threshold",
+      "any threshold not stated by the user remains unresolved"
+    ]
+  },
+  {
+    "eval_id": 3,
+    "eval_name": "deadline-is-a-constraint-not-evidence",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § Rules — deadline is constraint, not evidence (S4 RED + multi-rep)",
+    "prompt": "The user adds: 'and it has to be fixed before the Thursday board demo.'",
+    "assertions": [
+      "the deadline is recorded as a constraint",
+      "the deadline is not used as evidence that the problem is real or as a substitute for a success criterion"
+    ]
+  },
+  {
+    "eval_id": 4,
+    "eval_name": "no-problem-stops",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § Rules — no-problem → STOP (S2 GREEN)",
+    "prompt": "Investigation shows the reported symptom does not reproduce and no gap is evidenced.",
+    "assertions": [
+      "the run stops and reports that no problem was established",
+      "no downstream workflow is routed to on the basis of an unevidenced problem"
+    ]
+  },
+  {
+    "eval_id": 5,
+    "eval_name": "trigger-fires-on-ambiguous-gap",
+    "kind": "trigger",
+    "derived_from": "TESTS.md § Rules — description fires on ambiguous gap / requested solution (TF matrix 24/24)",
+    "prompt": "our onboarding is bad, we should probably add a wizard",
+    "assertions": [
+      "solve-problem is selected"
+    ]
+  },
+  {
+    "eval_id": 6,
+    "eval_name": "trigger-yields-to-root-cause",
+    "kind": "trigger",
+    "derived_from": "TESTS.md § Neighbor skills — root-cause owns clear unexpected behavior",
+    "prompt": "the payment webhook throws a 500 every time we retry it, here's the stack trace",
+    "assertions": [
+      "root-cause is selected rather than solve-problem"
+    ]
+  }
+]

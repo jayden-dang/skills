@@ -1,0 +1,67 @@
+[
+  {
+    "eval_id": 1,
+    "eval_name": "three-execute-routes-at-exit",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § Rules — exactly three execute routes at Exit (Exit step 3 table)",
+    "prompt": "The design is approved and you have just finished writing tasks.md. Reach the Exit step.",
+    "assertions": [
+      "exactly three execute routes are presented",
+      "the routes are presented as a choice rather than one being started automatically"
+    ]
+  },
+  {
+    "eval_id": 2,
+    "eval_name": "no-silent-invention-of-execution-mode",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § Rules — no silent invent of continuous at plan time (Exit step 2 + Red Flags; RED failure 2)",
+    "prompt": "Write tasks.md for an approved design. The user has said nothing about how execution should run.",
+    "assertions": [
+      "no Execution-mode value is written into tasks.md at plan time",
+      "continuous mode is not assumed as a default",
+      "plan approval is not made to depend on choosing an execution mode first"
+    ]
+  },
+  {
+    "eval_id": 3,
+    "eval_name": "mode-write-back-belongs-to-the-execute-skill",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § Rules — mode write-back owned by execute skill",
+    "prompt": "The user picks a route at the Exit step.",
+    "assertions": [
+      "the Execution-mode line is written back by the execute skill rather than by plan-tasks",
+      "plan-tasks does not record the mode itself"
+    ]
+  },
+  {
+    "eval_id": 4,
+    "eval_name": "triad-publishes-one-feature-issue",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § Rules — triad publish is one feature issue, not one per task (Step 5; S-WP-PUBLISH RED)",
+    "prompt": "tasks.md is approved with nine tasks and the repo has a configured tracker. Publish.",
+    "assertions": [
+      "one feature issue is published, not one issue per task",
+      "the issue carries the union of the requirement IDs the tasks cover"
+    ]
+  },
+  {
+    "eval_id": 5,
+    "eval_name": "trigger-fires-on-task-planning",
+    "kind": "trigger",
+    "derived_from": "TESTS.md § Description trigger check — should-fire",
+    "prompt": "break the design into implementation tasks",
+    "assertions": [
+      "plan-tasks is selected"
+    ]
+  },
+  {
+    "eval_id": 6,
+    "eval_name": "trigger-yields-to-design",
+    "kind": "trigger",
+    "derived_from": "TESTS.md § Description trigger check — should-not-fire",
+    "prompt": "design the architecture for this feature",
+    "assertions": [
+      "design-solution is selected rather than plan-tasks"
+    ]
+  }
+]

@@ -1,0 +1,26 @@
+[
+  {
+    "eval_id": 1,
+    "eval_name": "vet-runs-immediately-not-just-named",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § RED — agents stopped at naming vet-product-flow and treated run file + HTML as authoring complete",
+    "prompt": "You have just finished authoring the review-product-flow run file and its rendered HTML for feature CHECKOUT. Continue.",
+    "assertions": [
+      "vet-product-flow is actually invoked, not merely named as a required next step",
+      "it runs immediately after the run file and HTML, before any serve, dogfood, or authoring-complete claim",
+      "producing the run file and the HTML is not treated as the deliverable being finished"
+    ]
+  },
+  {
+    "eval_id": 2,
+    "eval_name": "done-when-is-a-path-that-exists",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § GREEN form 1 and 3 — check off only when .skills/<CODE>/vet-product-flow.md exists",
+    "prompt": "You are working the todo list for review-product-flow on feature CHECKOUT and reach the terminal Vet product flow todo.",
+    "assertions": [
+      "the todo list carries a terminal Vet product flow item alongside the section todos",
+      "the vet todo is checked off only after .skills/<CODE>/vet-product-flow.md exists on disk",
+      "completion is judged by the report path existing, not by the vet step having been described or named"
+    ]
+  }
+]

@@ -1,0 +1,50 @@
+[
+  {
+    "eval_id": 1,
+    "eval_name": "explanation-is-never-terminal",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § RED — the unifying failure, 10/10: explanation is terminal; learner produced nothing graded",
+    "prompt": "Teach Pack me scripts/lint-write-handoffs.py, I have twenty minutes before a 1:1.",
+    "assertions": [
+      "the session does not end on an explanation, however good that explanation is",
+      "the learner is asked to produce something that gets graded against an oracle",
+      "prior knowledge is checked before the explaining starts rather than assumed"
+    ]
+  },
+  {
+    "eval_id": 2,
+    "eval_name": "answer-plainly-then-grade",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § RED S2 — 'B is A wearing a hat'; rule proved wrong: never give a direct answer. Hence give the answer, then never end there",
+    "prompt": "I'm stuck and standup is in four minutes. Just tell me the answer, don't do the socratic thing.",
+    "assertions": [
+      "a direct answer is given rather than the question being held hostage",
+      "the answer is immediately converted into a short production with a committed prediction checked against a real command",
+      "the refusal-to-answer stance is not adopted on the grounds of teaching rigor"
+    ]
+  },
+  {
+    "eval_id": 3,
+    "eval_name": "no-readiness-claim-without-evidence",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § RED S3 — 3/3 refused to certify, then wrote the notes file and left anyway",
+    "prompt": "I've said 'makes sense' to everything. Log what I learned and confirm I'm ready for the review tomorrow.",
+    "assertions": [
+      "readiness is not certified from the learner saying it made sense",
+      "the run goes and obtains grading evidence rather than declining to certify and then stopping",
+      "a notes file is not written as a substitute for the missing evidence"
+    ]
+  },
+  {
+    "eval_id": 4,
+    "eval_name": "manufacture-an-oracle-without-reshaping-the-mission",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § Gap test — conceptual topic, no runnable oracle (rules from reported gaps, weaker evidence than the rest of the file)",
+    "prompt": "Teach Pack me when to reach for event sourcing.",
+    "assertions": [
+      "a gradeable proxy is manufactured for a topic that bottoms out in a tradeoff rather than a fact",
+      "the mission is not narrowed to the half that happens to be gradeable",
+      "a partially-correct answer can be graded as right as far as it goes rather than forced to pass or fail"
+    ]
+  }
+]

@@ -1,0 +1,56 @@
+[
+  {
+    "eval_id": 1,
+    "eval_name": "unit-summary-binds-every-required-slot",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § RED — unit STOP message variance, mode-change write-back sometimes omitted; GREEN both reps included it",
+    "prompt": "You have finished a story unit in a build-by-story run and are producing the unit summary for the human gate.",
+    "assertions": [
+      "the unit summary fills every required slot of the contract rather than a freeform recap",
+      "when the run changes execution mode, the summary states that Execution-mode is written back into tasks.md",
+      "the mode-change write-back is present rather than omitted"
+    ]
+  },
+  {
+    "eval_id": 2,
+    "eval_name": "mode-ownership-on-invocation",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § Ship gate — invoke story skill → write story-unit if header missing",
+    "prompt": "The user routes an approved tasks.md to build-by-story, but tasks.md has no Execution-mode header.",
+    "assertions": [
+      "the skill writes Execution-mode: story-unit into tasks.md rather than proceeding with an unset mode",
+      "the header is written by the execute skill rather than being sent back to plan-tasks"
+    ]
+  },
+  {
+    "eval_id": 3,
+    "eval_name": "polish-diff-is-a-terminal-todo",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § Edit 2026-08-07 — Todos GATE: one todo per task and terminal Polish Diff",
+    "prompt": "You are setting up a build-by-story run for an approved tasks.md.",
+    "assertions": [
+      "the setup todo list carries a terminal Polish Diff item alongside the per-task todos",
+      "polish-diff runs after the last unit rather than being dropped once the task todos are green"
+    ]
+  },
+  {
+    "eval_id": 4,
+    "eval_name": "trigger-splits-story-unit-from-continuous",
+    "kind": "trigger",
+    "derived_from": "TESTS.md § Description routing — story-unit + review after each story",
+    "prompt": "execute the plan story by story, I want to review after each story",
+    "assertions": [
+      "build-by-story is selected rather than build-in-waves"
+    ]
+  },
+  {
+    "eval_id": 5,
+    "eval_name": "trigger-yields-to-continuous",
+    "kind": "trigger",
+    "derived_from": "TESTS.md § Description routing — continuous just run it → build-in-waves",
+    "prompt": "just run the whole plan continuously with subagents, don't stop for me",
+    "assertions": [
+      "build-in-waves is selected rather than build-by-story"
+    ]
+  }
+]

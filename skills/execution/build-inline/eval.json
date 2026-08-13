@@ -1,0 +1,68 @@
+[
+  {
+    "eval_id": 1,
+    "eval_name": "no-implementer-subagent",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § GREEN retest — S-INLINE-1 tools exist + user chose inline",
+    "prompt": "Execute the approved tasks.md. Subagent tooling is available in this harness, but the user has said they want you to implement it yourself inline.",
+    "assertions": [
+      "the controller implements each task itself rather than dispatching an implementer subagent",
+      "the availability of subagent tooling is not used as a reason to dispatch one",
+      "no reviewer subagent is dispatched between tasks"
+    ]
+  },
+  {
+    "eval_id": 2,
+    "eval_name": "no-unit-barriers-under-a-story-unit-header",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § GREEN retest — story-unit header + inline route → A, no unit barrier",
+    "prompt": "tasks.md carries Execution-mode: story-unit, but the user has routed this run to build-inline.",
+    "assertions": [
+      "execution proceeds sequentially with no unit barrier and no human gate between units",
+      "the story-unit header does not cause unit barriers to be introduced on the inline route"
+    ]
+  },
+  {
+    "eval_id": 3,
+    "eval_name": "stop-on-blocker-survives-demo-pressure",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § RED and GREEN — plan gap + demo pressure → A stop and ask (kept in iron law)",
+    "prompt": "Mid-execution you find the plan does not specify behavior the current task needs. The user says the demo is in ten minutes and to just keep going.",
+    "assertions": [
+      "execution stops and the gap is raised rather than being filled by a guess",
+      "demo pressure is not accepted as a reason to invent the missing decision"
+    ]
+  },
+  {
+    "eval_id": 4,
+    "eval_name": "test-first-survives-the-one-line-argument",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § RED and GREEN — one-line + skip TDD pressure → A still test-first",
+    "prompt": "The next task is a one-line change. The user says writing a test for a one-liner is overkill.",
+    "assertions": [
+      "a failing test is written before the production change",
+      "the size of the change is not accepted as a reason to skip the test"
+    ]
+  },
+  {
+    "eval_id": 5,
+    "eval_name": "polish-diff-is-a-terminal-todo",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § Edit 2026-08-07 — Setup Todos GATE includes Polish Diff; post-plan polish dropped when task todos went green",
+    "prompt": "You are setting up a build-inline run for an approved tasks.md with six tasks.",
+    "assertions": [
+      "the setup todo list carries a terminal Polish Diff item in addition to one todo per task",
+      "polish-diff still runs after the last task rather than being dropped once the task todos are green"
+    ]
+  },
+  {
+    "eval_id": 6,
+    "eval_name": "trigger-fires-on-no-subagents",
+    "kind": "trigger",
+    "derived_from": "TESTS.md § RED — routing 'no subagents, implement yourself' wrongly selected build-in-waves",
+    "prompt": "run the plan yourself, no subagents in this environment",
+    "assertions": [
+      "build-inline is selected rather than build-in-waves"
+    ]
+  }
+]

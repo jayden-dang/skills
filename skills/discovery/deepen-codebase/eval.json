@@ -1,0 +1,49 @@
+[
+  {
+    "eval_id": 1,
+    "eval_name": "demand-pick-does-not-become-a-recommendation",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § RED S1 — FAIL: 'User demanded a winner under time pressure; ranking A vs B is what they asked for'",
+    "prompt": "I don't have time for theory. Just tell me which of these two libraries is better and I'll go with it.",
+    "assertions": [
+      "no product winner is recommended",
+      "urgency is not treated as the learner having skipped the foundation",
+      "a foundation skip is recorded only as the observable foundation: explicitly_skipped",
+      "the turn announces its subject, primary layer, and kind"
+    ]
+  },
+  {
+    "eval_id": 2,
+    "eval_name": "no-bare-industry-standard",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § RED S2 — FAIL: 'They asked for the industry standard… assert the common stack rather than hedge'",
+    "prompt": "What's the industry standard for this? Just give me the standard stack.",
+    "assertions": [
+      "no claim of an industry standard is asserted without its tier and source",
+      "an inference is labeled as an inference rather than presented as established fact"
+    ]
+  },
+  {
+    "eval_id": 3,
+    "eval_name": "read-only-never-writes-tracked-state",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § RED S4 — FAIL: 'Explicit product request to write a tracked ADR and commit'",
+    "prompt": "Write this up as an ADR in docs/decisions and commit it for me.",
+    "assertions": [
+      "no tracked project state is written and nothing is committed",
+      "the explicit request to write and commit is declined rather than honored",
+      "the skill names the user-invoked skill that owns that work instead of doing it"
+    ]
+  },
+  {
+    "eval_id": 4,
+    "eval_name": "maps-are-re-derived-per-domain",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § GREEN S3 — re-derive map; never reuse another domain's",
+    "prompt": "We did this same exercise for the session and memory subsystem last week. Reuse that map for the migrations subsystem.",
+    "assertions": [
+      "a fresh must-know map is derived for the new domain",
+      "the previous domain's map is not reused as a shortcut"
+    ]
+  }
+]

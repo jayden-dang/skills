@@ -1,5 +1,6 @@
 ---
 name: life-capture
+version: 1.0.0
 description: Use when the user has a raw thought, task, link, or worry to park — creates one unprocessed inbox note without organizing it.
 ---
 

@@ -1,5 +1,6 @@
 ---
 name: clarify-decisions
+version: 1.0.0
 description: Use to interview the user to stress-test a plan, design, or feature idea
   before anything is built, when their intent is underspecified and the
   decisions must be drawn out of them, when the user asks to be grilled or

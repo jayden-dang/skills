@@ -1,5 +1,6 @@
 ---
 name: life-open-learning-track
+version: 1.0.0
 description: Use when starting a long-running practice pipeline — creates a learning-track note and registry row with cadence and a first milestone.
 ---
 

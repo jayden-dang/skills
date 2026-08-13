@@ -1,5 +1,6 @@
 ---
 name: life-maintain-area
+version: 1.0.0
 description: Use on an area's review cadence or yellow/red health — updates the area note health and next_action, proposing a project only when a gap needs an outcome.
 ---
 

@@ -1,5 +1,6 @@
 ---
 name: reroute-plan
+version: 1.0.0
 description: Use when a mid-execution discovery invalidates an already-approved plan —
   "the plan is wrong," a re-plan is needed, scope changed mid-flight, or a
   divergence surfaces during build-in-waves or test-first that the current task can't

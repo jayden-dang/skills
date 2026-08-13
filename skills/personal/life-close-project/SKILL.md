@@ -1,5 +1,6 @@
 ---
 name: life-close-project
+version: 1.0.0
 description: Use when a project is finished or abandoned — records user-confirmed evidence, updates registry, and archives the project note.
 ---
 

@@ -1,5 +1,6 @@
 ---
 name: deepen-codebase
+version: 1.0.0
 description: >
   Builds deep foundational knowledge of any codebase or technical subject —
   dual-axis curriculum, slow and deep — without shipping a product decision.

@@ -1,5 +1,6 @@
 ---
 name: load-subgraph
+version: 1.0.0
 description: Use when frame-change, inspect-change, clarify-decisions,
   design-solution, plan-tasks, root-cause, or any skill needs feature neighbors,
   cluster, overlap, reuse-miss context, blast radius, or a multi-hop feature

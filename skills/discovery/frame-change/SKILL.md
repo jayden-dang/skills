@@ -1,5 +1,6 @@
 ---
 name: frame-change
+version: 1.0.0
 description: Use at the very start of the idea-to-ship chain — when the user wants to
   add, build, or change a feature, behavior, or component, or to start a whole
   new project, and no requirements, design, or code exist yet. Triggers on

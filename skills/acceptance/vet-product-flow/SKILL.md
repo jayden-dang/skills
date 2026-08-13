@@ -1,5 +1,6 @@
 ---
 name: vet-product-flow
+version: 1.0.0
 description: >-
   Use when a review-product-flow run file (`.skills/<CODE>/review-product-flow.json`)
   already exists and needs an isolated implementation-surface judgment / missing-situation

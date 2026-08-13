@@ -1,5 +1,6 @@
 ---
 name: select-review-sample
+version: 1.0.0
 description: Produces an attention allocation over a range too large to read — a bounded sample set
   for human eyes plus the explicit unsampled residue. Run it with /select-review-sample.
 disable-model-invocation: true

@@ -1,5 +1,6 @@
 ---
 name: define-project
+version: 1.0.0
 description: Establishes or updates the repo-level documentation layer — docs/product/vision.md,
   docs/architecture/ invariants, and docs/product/guidelines.md. Run it with /establish-
   project.

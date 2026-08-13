@@ -1,5 +1,6 @@
 ---
 name: life-replan
+version: 1.0.0
 description: Use when a plan is invalidated mid-flight — classifies blast radius and records the decision on the project note after user confirm.
 ---
 

@@ -1,5 +1,6 @@
 ---
 name: life-open-project
+version: 1.0.0
 description: Use when the user commits to a new outcome — creates a project note and registry row under the WIP limit with non-empty done_when and next_action.
 ---
 

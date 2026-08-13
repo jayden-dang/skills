@@ -1,5 +1,6 @@
 ---
 name: life-plan-project
+version: 1.0.0
 description: Use when a project needs a light roadmap — updates the project note with 3–7 milestones and atomic actions only on the current milestone.
 ---
 

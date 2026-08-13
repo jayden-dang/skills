@@ -1,5 +1,6 @@
 ---
 name: review-product-flow
+version: 1.0.0
 description: Use when manually exercising a finished feature in the real running app from
   the user's seat — a hands-on product walk, case by case, over every
   user-facing ability, including the visuals, feel, and edge cases a human

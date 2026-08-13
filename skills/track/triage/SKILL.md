@@ -1,5 +1,6 @@
 ---
 name: triage
+version: 1.0.0
 description: Triages incoming tracker issues, bug reports, and external PRs — a classification, an
   investigation, or an agent-ready implementation brief. Run it with /triage.
 disable-model-invocation: true

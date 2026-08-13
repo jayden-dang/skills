@@ -1,5 +1,6 @@
 ---
 name: root-cause
+version: 1.0.0
 description: Use when anything behaves unexpectedly — a failing test, an error or
   exception, a crash, a reported bug, wrong output, a performance regression,
   a flaky CI job — and before proposing or applying any fix.

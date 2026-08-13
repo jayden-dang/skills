@@ -1,5 +1,6 @@
 ---
 name: pathfind
+version: 1.0.0
 description: Chart or advance a multi-session decision map until the route to a destination is clear.
 disable-model-invocation: true
 ---

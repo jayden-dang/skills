@@ -1,5 +1,6 @@
 ---
 name: craft-page
+version: 1.0.0
 description: Use before the first line of markup for any HTML a human will look
   at — a review-product-flow test guide, a report, a dashboard, a landing page, a published
   artifact, a standalone .html handoff. Produces a written design plan (palette,

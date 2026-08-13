@@ -1,5 +1,6 @@
 ---
 name: record-verdict
+version: 1.0.0
 description: >
   Use when land-branch or cut-release hands off a terminal human verdict and a
   decision record must be published before the production crossing runs.

@@ -1,5 +1,6 @@
 ---
 name: test-first
+version: 1.0.0
 description: Use when writing or changing any production code — a new feature, a bugfix,
   a behavior change, or a refactor — and before the first line of
   implementation exists; the test-first (TDD) gate. Also use when about to add

@@ -1,5 +1,6 @@
 ---
 name: write-handoff
+version: 1.0.0
 description: Produces a self-contained handoff document a fresh agent can resume the work from. Run
   it with /write-handoff.
 disable-model-invocation: true

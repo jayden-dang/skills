@@ -1,5 +1,6 @@
 ---
 name: gate-session
+version: 1.0.0
 description: Use when starting any conversation — establishes the rule that relevant skills are found and invoked before any response or action, including clarifying questions
 ---
 

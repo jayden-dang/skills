@@ -1,5 +1,6 @@
 ---
 name: review-invariants
+version: 1.0.0
 description: Use when a design or diff cites architecture invariants (a `Respects`
   line naming ARCH-N, or a change under a repo that has `docs/architecture/`)
   and you need to judge whether it actually conforms — the advisory,

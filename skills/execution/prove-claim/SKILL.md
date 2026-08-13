@@ -1,5 +1,6 @@
 ---
 name: prove-claim
+version: 1.0.0
 description: Use when about to say anything that implies success — "done",
   "fixed", "passing", "works", or any paraphrase — and before committing,
   opening a PR, closing a task, or reporting a subagent's result.

@@ -1,5 +1,6 @@
 ---
 name: build-inline
+version: 1.0.0
 description: Use when an approved tasks.md needs controller-side sequential
   execution without implementer subagents — inline TDD per task, progress
   ledger, stop-on-blocker, whole-branch review — for no-subagent environments

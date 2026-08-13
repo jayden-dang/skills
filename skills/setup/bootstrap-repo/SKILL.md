@@ -1,5 +1,6 @@
 ---
 name: bootstrap-repo
+version: 1.0.0
 description: Produces a working repository skeleton in an empty directory — stack chosen, test
   harness wired, tooling and CI in place. Redirects when the directory is not greenfield.
   Run it with /bootstrap-repo.

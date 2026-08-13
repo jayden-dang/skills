@@ -1,5 +1,6 @@
 ---
 name: run-spike
+version: 1.0.0
 description: Use when a design question needs a runnable answer — the user wants to
   run-spike, spike, or mock up a state model or piece of logic to feel out
   whether it holds up, or to see what a screen could look like, before

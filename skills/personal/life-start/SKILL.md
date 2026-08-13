@@ -1,5 +1,6 @@
 ---
 name: life-start
+version: 1.0.0
 description: Use when starting a Personal OS or life-vault agent session — loads the secretary stance and routes to the matching personal skill before any vault write.
 ---
 

@@ -1,5 +1,6 @@
 ---
 name: realign-spec
+version: 1.0.0
 description: Use when a feature's spec has drifted from reality — requirements changed
   mid-implementation, the implementation deviated from the approved plan, the
   feature just shipped, the specs have gone stale or out of sync, or

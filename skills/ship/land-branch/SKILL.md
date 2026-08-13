@@ -1,5 +1,6 @@
 ---
 name: land-branch
+version: 1.0.0
 description: Use when a feature branch is complete and committed and an integration
   decision is needed — merge, PR, keep, discard, or block at this boundary
   (publishes a decision record before crossings).

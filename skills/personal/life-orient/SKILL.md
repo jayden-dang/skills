@@ -1,5 +1,6 @@
 ---
 name: life-orient
+version: 1.0.0
 description: Use when the user needs a status snapshot — produces a WIP and focus briefing with exactly one recommended next focus.
 ---
 

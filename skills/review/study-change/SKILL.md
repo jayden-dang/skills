@@ -1,5 +1,6 @@
 ---
 name: study-change
+version: 1.0.0
 description: Produces a single HTML comprehension packet for a code change — Background, Intuition,
   Code, Quiz. Run it with /study-change.
 disable-model-invocation: true

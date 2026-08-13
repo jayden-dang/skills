@@ -1,5 +1,6 @@
 ---
 name: amend-feature
+version: 1.0.0
 description: Use when an already-shipped, spec'd feature needs a small in-scope change — a
   recolor, a copy edit, a tweak, a follow-up add-on to existing behavior — and
   full greenfield frame-changeing would be overkill. Produces an explicit tier

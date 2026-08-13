@@ -1,5 +1,6 @@
 ---
 name: life-process-inbox
+version: 1.0.0
 description: Use when unprocessed inbox notes need clarifying — produces a route decision per item and updates or files notes after confirm when moves are ambiguous.
 ---
 

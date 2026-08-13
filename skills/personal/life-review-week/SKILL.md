@@ -1,5 +1,6 @@
 ---
 name: life-review-week
+version: 1.0.0
 description: Use in the weekly review slot — produces a weekly review note with audits and at most N P0s marked PROPOSED until the user confirms.
 ---
 

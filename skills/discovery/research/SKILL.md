@@ -1,5 +1,6 @@
 ---
 name: research
+version: 1.0.0
 description: Use when a design, planning, or implementation question turns on external
   facts — how a library or API actually behaves, what a standard, spec, or RFC
   says, platform limits, version differences — rather than opinion, or when

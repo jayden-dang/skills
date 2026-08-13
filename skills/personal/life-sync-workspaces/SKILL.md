@@ -1,5 +1,6 @@
 ---
 name: life-sync-workspaces
+version: 1.0.0
 description: Use when reconciling disk folders under configured roots with the project registry — produces an advisory orphan/missing report without auto-creating projects.
 ---
 

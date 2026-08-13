@@ -1,5 +1,6 @@
 ---
 name: define-domain
+version: 1.0.0
 description: Use when a domain term needs defining, a glossary term is being used
   inconsistently or fuzzily, or a hard-to-reverse architectural decision worth
   an ADR is being made — maintains the project glossary (CONTEXT.md) and

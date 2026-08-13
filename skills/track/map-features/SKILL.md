@@ -1,5 +1,6 @@
 ---
 name: map-features
+version: 1.0.0
 description: Backfills Feature code lines, ROAD bindings, OWNS gaps, and
   DEPENDS_ON candidates into SSOT after you confirm each proposal. Run with
   /map-features.

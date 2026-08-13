@@ -1,5 +1,6 @@
 ---
 name: validate-feature
+version: 1.0.0
 description: Use before merging or finishing a branch, when a feature's unit tests are
   green but its user-facing behavior has not been driven through the running
   system as a real client — the acceptance / end-to-end pass over the happy

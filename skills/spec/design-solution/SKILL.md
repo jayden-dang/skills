@@ -1,5 +1,6 @@
 ---
 name: design-solution
+version: 1.0.0
 description: Use when approved requirements need their technical design — the design.md /
   architecture doc spelling out HOW the requirements get built. After
   specify-behavior, before plan-tasks.

@@ -1,5 +1,6 @@
 ---
 name: life-review-quarter
+version: 1.0.0
 description: Use at quarter boundaries — produces a quarterly review note with ≤3 themes and ≤5 commitments marked PROPOSED until confirmed.
 ---
 

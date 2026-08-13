@@ -1,5 +1,6 @@
 ---
 name: record-debt
+version: 1.0.0
 description: Banks findings that were judged real and deliberately left unfixed into the
   durable debt ledger at docs/quality/debt.md. Run it with /record-debt.
 disable-model-invocation: true

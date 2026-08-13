@@ -1,5 +1,6 @@
 ---
 name: package-change
+version: 1.0.0
 description: Use when a branch's work is finished and its commits and pull-request
   description still have to be written — before handing the branch to land-branch
   for review, push, or a PR. Also when uncommitted work needs committing as a

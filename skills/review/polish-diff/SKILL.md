@@ -1,5 +1,6 @@
 ---
 name: polish-diff
+version: 1.0.0
 description: Use when changed code needs a quality cleanup actually applied rather than
   reported — code that reimplements a helper the repo already has, needless
   complexity, dead code, wasted work or repeated I/O, tech debt, a bandaid fix

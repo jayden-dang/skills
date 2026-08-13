@@ -1,5 +1,6 @@
 ---
 name: audit-trace
+version: 1.0.0
 description: Use when checking that every requirement ID agrees across where it is
   defined and task-cited in docs/specs — the docs-only vertical integrity pass
   invoked by prove-claim, cut-release, realign-spec, and plan-tasks's coverage

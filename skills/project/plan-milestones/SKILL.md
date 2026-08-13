@@ -1,5 +1,6 @@
 ---
 name: plan-milestones
+version: 1.0.0
 description: Use when a project's milestones need planning, sequencing, replanning, or
   ANY edit to an existing roadmap — produces or revises docs/roadmap/INDEX.md, the
   milestone intent registry carrying stable MILE-N and ROAD-N IDs that later

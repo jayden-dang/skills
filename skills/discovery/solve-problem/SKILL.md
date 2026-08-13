@@ -1,5 +1,6 @@
 ---
 name: solve-problem
+version: 1.0.0
 description: Use when a symptom, opportunity, requested solution, or “problem” has no trustworthy gap or clear workflow yet — produces an evidence-grounded Problem Brief and routes it to the right discovery, diagnosis, decision, or improvement skill.
 ---
 

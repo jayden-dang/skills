@@ -1,5 +1,6 @@
 ---
 name: validate-api
+version: 1.0.0
 description: Use to validate a backend HTTP/RPC API — REST or RPC endpoints — against its
   spec by driving the running server as a real client — curl/http requests
   asserting status codes, body shape, and persistence — before merging. Covers

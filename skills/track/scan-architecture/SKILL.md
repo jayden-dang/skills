@@ -1,5 +1,6 @@
 ---
 name: scan-architecture
+version: 1.0.0
 description: Produces a codebase-wide architecture and technical-debt scan, ranked by where
   refactoring pays off next. Run it with /scan-architecture.
 disable-model-invocation: true

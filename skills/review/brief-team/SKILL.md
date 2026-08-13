@@ -1,5 +1,6 @@
 ---
 name: brief-team
+version: 1.0.0
 description: Produces a team-shared HTML pitch-and-map packet under docs/explainers/
   for a git range. Run it with /brief-team.
 disable-model-invocation: true

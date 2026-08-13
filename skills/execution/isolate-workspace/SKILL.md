@@ -1,5 +1,6 @@
 ---
 name: isolate-workspace
+version: 1.0.0
 description: Use when starting feature work, executing a plan, or making any multi-commit
   change that should not touch the user's current checkout — set up an
   isolated git worktree before the first file is edited.

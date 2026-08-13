@@ -1,5 +1,6 @@
 ---
 name: author-skills
+version: 1.0.0
 description: Use when creating, authoring, or editing a skill — its SKILL.md,
   frontmatter, or description — reviewing a skill someone else wrote, deciding
   whether a skill is ready to ship, or diagnosing why a skill won't trigger.
@@ -127,5 +128,6 @@ Create a todo for each item.
 - [ ] Cross-references are REQUIRED SUB-SKILL prose; supporting files referenced by relative name
 - [ ] Every hand-off invokes only a model-invocable skill; any `disable-model-invocation` target is named for the user to run, never invoked
 - [ ] Structural + routing check (agent-run): frontmatter valid (name + description; `disable-model-invocation: true` on user-invoked skills), verb-first name, body within the line budget; and the description trigger-tested by hand — run its should-fire and should-not-fire queries per `pressure-testing.md` and confirm each routes as intended
+- [ ] `version:` bumped — patch for wording that changes no behavior, minor for a new rule or slot, major when existing usage breaks. The RED/GREEN evidence for this edit is recorded in the skill's `TESTS.md`, and any runnable assertion it established is in its `eval.json` (`scripts/lint-skill-evals.py` validates the shape; `scripts/lint-skill-frontmatter.py` fails a missing or malformed version)
 
 **Do not batch-create skills.** Finish, test, and validate one skill completely before starting the next.

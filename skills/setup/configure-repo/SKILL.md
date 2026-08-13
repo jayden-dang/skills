@@ -1,5 +1,6 @@
 ---
 name: configure-repo
+version: 1.0.0
 description: Configures an existing repo for this skill set — a docs/agents/ layer covering prove-claim
   commands, tracker and labels, release steps, team and ownership. Run it with /setup-
   repo.

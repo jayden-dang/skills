@@ -1,5 +1,6 @@
 ---
 name: interpret-session
+version: 1.0.0
 description: Runs a companion session beside frame-change, clarify-decisions, or any technical
   discussion — in the user's native language or in English as a second-opinion debate partner —
   with an understanding pass, a committed stance, and a reply to carry back. Run it with

@@ -1,5 +1,6 @@
 ---
 name: assess-pivot-impact
+version: 1.0.0
 description: Produces a disposition ledger when a product pivot puts shipped code at
   odds with a new vision or architecture. Run it with /assess-pivot-impact.
 disable-model-invocation: true

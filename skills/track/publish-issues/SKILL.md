@@ -1,5 +1,6 @@
 ---
 name: publish-issues
+version: 1.0.0
 description: Turns a conversation, an approved spec, or a rough idea into agent-ready tracker issues
   — tracer-bullet slices with blocking edges, published to the configured tracker. Run it
   with /publish-issues.

@@ -1,5 +1,6 @@
 ---
 name: cut-release
+version: 1.0.0
 description: Cuts a release for work already merged to the release branch — version bump, tag,
   changelog, and release notes. Run it with /cut-release.
 disable-model-invocation: true

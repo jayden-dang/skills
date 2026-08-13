@@ -1,5 +1,6 @@
 ---
 name: teach-pack
+version: 1.0.0
 description: Produces a teaching workspace under .skills/teach-pack/ — a mission, graded lessons, and a
   learning record of what the user demonstrated. Run it with /teach-pack.
 disable-model-invocation: true

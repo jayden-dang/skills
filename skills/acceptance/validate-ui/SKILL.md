@@ -1,5 +1,6 @@
 ---
 name: validate-ui
+version: 1.0.0
 description: Use to validate a frontend against its spec by driving it end-to-end (e2e)
   in a real browser the way a user would — automated Playwright specs on
   Chromium, asserting visible state and persistence across reload — before

@@ -1,5 +1,6 @@
 ---
 name: life-execute-session
+version: 1.0.0
 description: Use when the user starts or ends a focus block — produces a session log and human handoff; does not perform the focus work unless granted this turn.
 ---
 

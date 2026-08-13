@@ -1,5 +1,6 @@
 ---
 name: specify-behavior
+version: 1.0.0
 description: Use when discovery is complete and a tier-1 or tier-2 change needs its
   requirements written — the user stories and EARS acceptance criteria in
   requirements.md that every later task, test, and commit cites by ID. After

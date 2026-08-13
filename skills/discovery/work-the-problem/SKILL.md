@@ -1,5 +1,6 @@
 ---
 name: work-the-problem
+version: 1.0.0
 description: >
   Works a design or framing problem to closure with multi-round breakdown,
   foundation-to-feature teaching, disk artifacts, and a carry-back brief for the

@@ -1,5 +1,6 @@
 ---
 name: run-product-walkthrough
+version: 1.0.0
 description: >-
   Use when a review-product-flow test guide already exists and its cases must be executed
   rather than handed to a human — the agent-driven pass over every case in the

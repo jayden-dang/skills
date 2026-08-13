@@ -1,5 +1,6 @@
 ---
 name: life-charter
+version: 1.0.0
 description: Use at first setup, yearly review, or major role change — produces or updates the life-charter note (roles, anti-goals, energy constraints).
 ---
 

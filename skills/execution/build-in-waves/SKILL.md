@@ -1,5 +1,6 @@
 ---
 name: build-in-waves
+version: 1.0.0
 description: Use when an approved tasks.md has Execution-mode continuous and needs
   subagent task-wave execution — dual-verdict review, parallel waves, resume after
   crash/compaction — through whole-branch review and land-branch.

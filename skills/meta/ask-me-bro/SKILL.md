@@ -1,5 +1,6 @@
 ---
 name: ask-me-bro
+version: 1.0.0
 description: Routes among the already-installed development skills to the one that fits the task at
   hand. Run it with /ask-me-bro.
 disable-model-invocation: true

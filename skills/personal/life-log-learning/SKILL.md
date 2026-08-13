@@ -1,5 +1,6 @@
 ---
 name: life-log-learning
+version: 1.0.0
 description: Use after a practice session — appends a practice log and updates the track streak, last_practice, and next_action from the user's report.
 ---
 

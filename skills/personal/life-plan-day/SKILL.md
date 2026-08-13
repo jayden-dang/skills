@@ -1,5 +1,6 @@
 ---
 name: life-plan-day
+version: 1.0.0
 description: Use at the start of a workday — creates or updates the daily note with ≤3 focuses, energy-matched blocks, and a not-today list.
 ---
 

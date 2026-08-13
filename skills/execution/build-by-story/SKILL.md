@@ -1,5 +1,6 @@
 ---
 name: build-by-story
+version: 1.0.0
 description: Use when an approved tasks.md has Execution-mode story-unit and
   needs human-gated review-unit execution — derived units, unit barriers,
   mode-change write-back, resume via unit ledger lines — through whole-branch

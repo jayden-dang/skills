@@ -1,5 +1,6 @@
 ---
 name: life-setup
+version: 1.0.0
 description: Use when installing Personal OS into a notes vault or remapping folders — produces a vault config mapping layout roles to the user's paths without forced renames.
 disable-model-invocation: true
 ---

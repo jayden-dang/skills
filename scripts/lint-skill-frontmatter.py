@@ -12,6 +12,7 @@ Checks per SKILL.md:
   - the block parses as YAML and yields a mapping
   - `name` and `description` are present, non-empty strings
   - `name` matches the skill's directory (what the catalog keys off)
+  - `version` is present and a semver string (bumped on every behavioral edit)
 
 Usage:
   lint-skill-frontmatter.py                 # scan every skills/**/SKILL.md
@@ -19,7 +20,10 @@ Usage:
 """
 import glob
 import os
+import re
 import sys
+
+SEMVER = re.compile(r"\d+\.\d+\.\d+")
 
 try:
     import yaml
@@ -61,6 +65,14 @@ def check(path):
     expected = os.path.basename(os.path.dirname(path))
     if isinstance(name, str) and name.strip() and name != expected:
         errs.append(f"name '{name}' does not match its directory '{expected}'")
+
+    version = data.get("version")
+    if version is None:
+        errs.append("missing 'version' — add `version: 1.0.0` and bump it on every "
+                    "behavioral edit (see author-skills' Ship checklist)")
+    elif not (isinstance(version, str) and SEMVER.fullmatch(version)):
+        errs.append(f"'version' must be a quoted-free semver string like 1.2.0, got {version!r} "
+                    "(YAML reads an unquoted 1.0 as a float, which is why the patch digit matters)")
     return errs
 
 

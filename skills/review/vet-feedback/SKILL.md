@@ -1,5 +1,6 @@
 ---
 name: vet-feedback
+version: 1.0.0
 description: Use when review feedback or PR comments arrive — from the user, a reviewer
   subagent, or an external reviewer — and before implementing or replying to
   any of it, especially when an item seems unclear or technically wrong.

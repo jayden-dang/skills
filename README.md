@@ -252,12 +252,35 @@ Editing skills here? Run this once after cloning:
 lefthook install
 ```
 
-It wires a `pre-commit` / `pre-push` hook that lints every `SKILL.md`
-frontmatter (`scripts/lint-skill-frontmatter.py`, needs `lefthook` and PyYAML).
-The `skills` CLI silently skips any `SKILL.md` whose YAML won't parse, so a stray
-unquoted colon can drop a skill from `npx skills add` with no error — this catches
-that before it reaches `origin`. This tooling is for *this* repo only; a repo that
-*consumes* the skill set still installs nothing.
+It wires `pre-commit` / `pre-push` hooks running four checks (needs `lefthook`
+and PyYAML). This tooling is for *this* repo only; a repo that *consumes* the
+skill set still installs nothing.
+
+| Check | Guards against |
+|---|---|
+| `lint-skill-frontmatter.py` | A `SKILL.md` whose YAML won't parse — the `skills` CLI skips it silently, so a stray unquoted colon drops a skill from `npx skills add` with no error. Also fails a missing or malformed `version:` |
+| `lint-skill-evals.py` | An `eval.json` that isn't grounded — assertions with no `TESTS.md` beside them are guesses about what agents get wrong, not recorded failures |
+| `lint-write-handoffs.py` | A dead-end hand-off: a body telling the agent to invoke a `disable-model-invocation` skill, which it cannot do |
+| `lint-context7.py` | A library-reasoning skill silently losing its Context7 reference |
+
+### Skill versions and test material
+
+Every `SKILL.md` carries `version:` (semver). Bump it on each behavioral edit —
+patch for wording that changes nothing, minor for a new rule or slot, major when
+existing usage breaks. The frontmatter lint fails a missing or malformed one.
+
+A skill's test material lives in two files with two different jobs, so they don't
+become two sources of truth:
+
+- **`TESTS.md`** — the recorded evidence. RED transcripts verbatim, the
+  rationalizations the text had to counter, what changed between iterations.
+  The *why*.
+- **`eval.json`** — the runnable assertions derived from that evidence, each
+  citing its source via `derived_from`. The *what must hold*.
+
+`lint-skill-evals.py` enforces the grounding rule (an `eval.json` requires a
+`TESTS.md` beside it) and reports coverage, so the untested gap stays visible
+rather than being filled with plausible-sounding assertions nobody observed.
 
 ## License
 

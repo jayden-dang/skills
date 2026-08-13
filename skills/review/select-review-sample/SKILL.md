@@ -281,9 +281,9 @@ merge, PR, release, or decision record either.
 
 ## Rationalizations
 
-Built from the recorded baseline runs in
-`tests/attention-allocation/red-baselines.md`. Left column is what the
-control agent actually did or said.
+Built from recorded baseline runs whose transcripts were removed in `2338b34`
+("remove test scenarios"). Left column is what the control agent actually did
+or said.
 
 | Thought | Reality |
 |---|---|

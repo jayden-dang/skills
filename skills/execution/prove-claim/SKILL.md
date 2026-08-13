@@ -1,6 +1,6 @@
 ---
 name: prove-claim
-version: 1.0.0
+version: 1.1.0
 description: Use when about to say anything that implies success — "done",
   "fixed", "passing", "works", or any paraphrase — and before committing,
   opening a PR, closing a task, or reporting a subagent's result.
@@ -20,7 +20,7 @@ If the proving command did not run just now, in this session, the claim is unava
 
 Before any status claim or expression of satisfaction:
 
-1. **IDENTIFY** — which command proves this exact claim? (Commands come from `docs/agents/project.md`. Missing? Say so, suggest `configure-repo`, and identify the command manually.)
+1. **IDENTIFY** — which command proves this exact claim? (Commands come from `docs/agents/project.md`. Missing? Say so, suggest `configure-repo`, and identify the command manually.) When the claim is that some record now *holds* a change — a ticket, a remote, a stored row — the proving command is the **read**, never the write that made it, so IDENTIFY resolves to a pair and the write alone can never satisfy this gate.
 2. **RUN** — execute it fresh and complete. No cached results, no partial scopes, no "it passed earlier".
 3. **READ** — the full output: exit code, failure count, warnings. Not the last line.
 4. **CONFIRM** — does the output actually support the claim? If no: report the real status, with the evidence. If yes: make the claim, with the evidence.
@@ -36,6 +36,7 @@ Skip any step and you are lying, not verifying.
 | "The feature works" | The affected flow driven through the running system and observed (REQUIRED SUB-SKILL: use `validate-feature`, or `review-product-flow` for a manual pass) | Green unit tests alone |
 | "The bug is fixed" | Original symptom re-tested and gone | The code changed |
 | "The agent/subagent completed X" | You inspected the diff yourself | The agent's own success report |
+| "The ticket is updated / moved / commented" | The record read back after the write — re-read the issue through the tracker's own read command and see the exact change present in it | The write command's success line; exit 0; the fact you ran it |
 | "Requirements met" | the docs-only audit-trace check is clean (REQUIRED SUB-SKILL: use `audit-trace` — task/definition integrity, not ID-in-test greps) AND each acceptance criterion checked off individually against observed behavior | Green tests alone; presence of `CODE-N.M` strings in test files |
 
 ## Regression-proof pattern
@@ -53,6 +54,7 @@ A test that survives the revert is testing nothing.
 - "Should work", "probably", "seems to", "I'm confident"
 - Satisfaction before evidence ("Great, that's done!")
 - Claiming from memory of an earlier run
+- A write command printed a success line and you have not re-read the record it claims to have changed
 - About to commit, push, or PR without a fresh run
 - Tired and wanting the task over — exhaustion is not evidence
 

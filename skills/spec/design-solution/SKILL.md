@@ -74,6 +74,7 @@ heading under Architecture is a REQUIRED shape, not free prose.
 | `Satisfies:` | Requirement IDs this module exists to meet. No Satisfies line → infrastructure (label it) or the section does not belong |
 | `Reuse:` | Highest ladder rung that held + concrete target, or `none — new code (rung 7)` + reason |
 | `Respects:` | `ARCH-N` when the design relies on a spine invariant (omit when no spine / no reliance) |
+| `Surface:` | REQUIRED when this section changes the behavior, value, shape, or signature of something that **already has readers**; omit only for new code nothing reads yet. Find them by reference search — grep the symbol, column, route, event name — never from memory. List every affected reader (in-repo call sites, tests, persisted rows, emitted events, external subscribers, docs, config) and give each exactly one disposition: **`replace`** — migrated in this change, old path deleted; **`compat`** — both paths live, allowed only for readers this change cannot reach, and it names the follow-up that removes it; **`frozen`** — a contract this change may not alter *unilaterally*: an external subscriber, a persisted row, a published event. Two ways to discharge it, and the row states which — the design builds around the contract and leaves it untouched, or the requirement genuinely mandates the change and shipping it is **gated on that owner's agreement**, which the row names as a gate. Frozen bounds who may consent, not whether the value may ever change; a `frozen` row naming neither a workaround nor a gate is unfinished |
 | `Security:` | Optional. When the design relies on standing security docs, list greppable `TB-N`, `THR-N`, and/or `CMP-N` IDs defined only in Approved `docs/security/threat-model.md` (TB/THR) or `docs/security/compliance.md` (CMP). Omit the field when not applicable. **Do not** put these IDs on `Respects:` (`Respects:` stays ARCH-only). |
 | `Reliability:` | Optional. When the design relies on standing reliability objectives, list greppable `SLO-N` IDs defined only in Approved `docs/ops/reliability.md`. Omit when not applicable. |
 | `Interface:` | What callers know — smaller than the implementation |
@@ -83,6 +84,11 @@ heading under Architecture is a REQUIRED shape, not free prose.
 Structure quality is part of the design, not a later debt scan. Trace coverage
 (`Satisfies:`) and structure quality (`Interface:` / `Depth:` / `Locality:`) are
 both done when the section is complete.
+
+`Locality:` records where the **edit** lands; `Surface:` records who is
+**affected**. A reader that needs no edit still needs a disposition — a design
+that changes what a caller receives while leaving its code untouched is the case
+this slot exists for.
 
 Adopting a brand-new third-party dependency — one the project does not already use —
 is the **user's decision**. When the ladder lands on a library the project hasn't
@@ -128,10 +134,14 @@ to build; **Depth** / **Locality** record how deep and where the change sits.
 | "Every ID has a Satisfies line — structure is fine" | Satisfies is coverage. Depth and Locality are structure. Fill both |
 | "Deletion test is obvious — skip writing it" | Unwritten depth is not a Done when. One sentence in `Depth:` |
 | "Neighbor modules are out of scope" | `Locality:` names leave / extend / extract against the scan digest |
+| "The signature didn't change, so callers need zero edits" | Zero edits is not zero impact. A reader whose returned value changes is affected — give it a `Surface:` disposition |
+| "Same shape, different number — not a contract change" | To whoever reconciles that number it is exactly a contract change. Persisted rows and external subscribers are `frozen` until their owner agrees |
+| "I named the callers in the prose above" | Prose is not an inventory. One row per reader, one disposition each, or the omission is invisible |
 
 **Done when:** every architecture section has `Satisfies:`, `Reuse:`,
 `Interface:`, `Depth:`, and `Locality:` filled per the table (and `Respects:`
-where a spine invariant applies).
+where a spine invariant applies, and `Surface:` where the section changes
+something that already has readers).
 
 ## Step 3: Agree the seams for testing
 
@@ -155,6 +165,10 @@ that skips a component).
   and `Locality:` per Step 2. For each rung-7 `Depth:` line, the sentence must
   name what callers keep knowing — redesign any section whose Depth answer is
   equivalent to restating the whole implementation.
+- **Surface coverage:** for every section carrying `Surface:`, re-run the
+  reference search yourself and confirm the inventory is complete and each row
+  carries a disposition. A `compat` row without the follow-up that removes it,
+  or a changed external/persisted reader not marked `frozen`, fails this check.
 
 **Independent design review — dispatch, don't self-review.** Fresh context has
 no stake in your framing (the bias that reinterprets a stale requirement rather

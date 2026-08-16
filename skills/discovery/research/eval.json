@@ -21,5 +21,36 @@
       "the criteria section is still produced despite the user asking only for a list",
       "the request for a plain list is not accepted as a reason to omit the evaluation criteria"
     ]
+  },
+  {
+    "eval_id": 3,
+    "eval_name": "looks-writeup-does-not-fire-research",
+    "kind": "trigger",
+    "derived_from": "TESTS.md § Description trigger — SN13 RED overtrigger",
+    "prompt": "Look into three looks for the settings page and write it up.",
+    "assertions": [
+      "the first skill invoked is not research",
+      "the first skill invoked is run-spike"
+    ]
+  },
+  {
+    "eval_id": 4,
+    "eval_name": "paper-plus-training-does-not-fire-research",
+    "kind": "trigger",
+    "derived_from": "TESTS.md § Description trigger — SN8 RED overtrigger",
+    "prompt": "Research this paper and try a few architecture variants with short training runs.",
+    "assertions": [
+      "the first skill invoked is not research"
+    ]
+  },
+  {
+    "eval_id": 5,
+    "eval_name": "look-into-library-fact-still-fires-research",
+    "kind": "trigger",
+    "derived_from": "TESTS.md § Description trigger — should-fire control SF2 still research after exclusion",
+    "prompt": "Look into how Redis Streams consumer groups handle pending entries and write it up with citations.",
+    "assertions": [
+      "the first skill invoked is research"
+    ]
   }
 ]

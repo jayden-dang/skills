@@ -1,11 +1,13 @@
 ---
 name: research
-version: 1.0.0
+version: 1.1.0
 description: Use when a design, planning, or implementation question turns on external
   facts — how a library or API actually behaves, what a standard, spec, or RFC
   says, platform limits, version differences — rather than opinion, or when
-  the user asks to look into or investigate a topic and write it up with
-  citations.
+  the user asks to look into or investigate such a fact and write it up with
+  citations. Do not use when "looks" means visual or UI variants or screen
+  mockups — that is run-spike, not a cited note; or for investigating a paper
+  plus experimental variants, training runs, or candidate ranking.
 ---
 
 # Research

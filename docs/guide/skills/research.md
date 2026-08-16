@@ -15,7 +15,7 @@
 
 When a design, planning, or implementation question turns on **external facts** — how a library or API actually behaves, what a standard, spec, or RFC says, platform limits, version differences — rather than opinion.
 
-It also fires when the user asks to look into or investigate a topic and write it up with citations.
+It also fires when the user asks to look into or investigate **such a fact** and write it up with citations. It does not fire when “looks” means visual or UI variants or screen mockups (`run-spike`), or when the ask is a paper plus experimental variants, training runs, or candidate ranking.
 
 This is the "we'd have to check" detour: a question surfaces that no amount of preference can settle, so the work is handed off and the answer comes back as a note the team can trust.
 

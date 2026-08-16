@@ -14,7 +14,8 @@ docs/specs/
     tasks.md                   # PLAN — checkbox tasks, each ending _Requirements: CODE-N.M_
 
 CONTEXT.md                     # domain glossary: terms, tight definitions, _Avoid_ lists
-docs/adr/NNNN-slug.md          # minimal ADRs — 1–3 sentences, behind a three-part gate
+docs/adr/NNNN-slug.md          # live ADRs — 1–3 sentences, behind a three-part write gate
+docs/adr/archived/             # ADRs that no longer guide a future change (define-domain prune)
 
 docs/product/vision.md         # optional project layer — repo-level product vision
 docs/architecture/INDEX.md     # optional project layer — IDed **ARCH-N** invariant spine
@@ -93,6 +94,8 @@ Offered only when **all three** hold:
 Any one missing means no ADR. The body is a short title plus **one to three sentences**: context, decision, why. Recording *that* and *why* is the value, not filling sections.
 
 A new decision that contradicts an existing ADR supersedes it explicitly by number. Never silently override a recorded decision.
+
+When an existing ADR no longer guides a future change, [`define-domain`](../skills/define-domain.md) moves it to `docs/adr/archived/` — word count and age are not the test. Classification lives in that skill; this page only names the path.
 
 ## `docs/product/` and `docs/architecture/` — the optional project layer
 

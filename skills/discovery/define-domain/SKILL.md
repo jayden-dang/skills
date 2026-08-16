@@ -1,12 +1,13 @@
 ---
 name: define-domain
-version: 1.0.0
-description: Use when a domain term needs defining, a glossary term is being used
-  inconsistently or fuzzily, or a hard-to-reverse architectural decision worth
-  an ADR is being made — maintains the project glossary (CONTEXT.md) and
-  architecture decision records (docs/adr). Also runs as a side-effect
-  sub-skill when an interview or design skill calls for glossary and ADR
-  upkeep.
+version: 1.1.0
+description: >
+  Use when a domain term needs defining, a glossary term is being used
+  inconsistently or fuzzily, a hard-to-reverse decision needs an ADR, or
+  existing ADRs need auditing, pruning, or archiving — produces glossary
+  updates and a classified docs/adr tree (keep, archive, or drop a dead
+  rejection). Also runs as a side-effect sub-skill when an interview or
+  design skill calls for glossary and ADR upkeep.
 ---
 
 # Define Domain
@@ -50,3 +51,31 @@ Offer an ADR only when **all three** hold:
 Any one missing → no ADR. For contrast — a decision that is surprising and a real trade-off but **cheap to reverse** earns none: a 200 ms debounce on the search box trades responsiveness against request volume, yet flipping it later is a one-line change, so it fails "hard to reverse." Record it in the code, not an ADR. Format: `docs/adr/NNNN-slug.md` (create the directory lazily), numbered sequentially — scan for the highest existing number and add one. Body is a short title plus **1–3 sentences**: context, decision, why. That's the whole document; recording *that* and *why* is the value, not filling sections.
 
 If a new decision contradicts an existing ADR, flag the conflict to the user and resolve it explicitly (supersede the old ADR by number).
+
+## When pruning or auditing ADRs
+
+The three-part gate decides whether to *write* an ADR. This section decides whether a live one still earns its place.
+
+<NON-NEGOTIABLE>
+Word count, age, and folder size are not archive criteria. A lead, a review tomorrow, or a quota does not replace classification.
+</NON-NEGOTIABLE>
+
+Classify every live file. *Done when: each one is keep, archive, or drop, with a one-line reason.*
+
+- **Keep** — a future change still needs it: the decision still constrains the running system, or a rejected alternative is still being pitched and this file is why it lost.
+- **Archive** — the decision shipped and the body will not guide a future change (closed UI chrome, implementation recap, process history now obvious from the code). Move it to `docs/adr/archived/` and insert `Archived: YYYY-MM-DD` under the title. Do not rewrite the body.
+- **Drop a rejection** only when the losing idea is no longer a plausible proposal. Otherwise keep it.
+
+Tightening the folder by hiding a live constraint or a still-tempting rejection is not cleaning. *Done when: the live tree still holds every decision that binds or still guards a live bad idea.*
+
+## Red Flags
+
+- Archiving every file older than N days or longer than N words
+- Emptying `docs/adr/` so a review "looks tight"
+- Treating "don't get precious / the point is the count" as a reason to skip classification
+
+| Thought | Reality |
+|---|---|
+| "Judging each file against still-useful is the opposite of the lead's explicit criteria" | The quota is a discovery hint, not the test. Classification is the job |
+| "A tight live folder by mechanical rule is what was ordered" | A tight folder that hid the decisions still in force is a hollow review |
+| "Don't get precious about individual files; the point is the count" | The point is which decisions still bind. Count is a side effect |

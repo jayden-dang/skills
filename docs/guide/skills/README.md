@@ -40,7 +40,7 @@ Turn an idea into an agreed shape. Produces no code.
 | [`clarify-decisions`](clarify-decisions.md) | model | The interview primitive; nested reuses retrieval package, standalone loads once |
 | [`research`](research.md) | model | Primary sources only. One cited markdown file, ending in Open decisions |
 | [`run-spike`](run-spike.md) | model | Throwaway code answering one design question. The answer is the only deliverable |
-| [`define-domain`](define-domain.md) | model | Maintains `CONTEXT.md` and `docs/adr/`. ADRs pass a three-part gate |
+| [`define-domain`](define-domain.md) | model | Maintains `CONTEXT.md` and `docs/adr/`. ADRs pass a three-part write gate; prune classifies keep / archive / drop |
 | [`pathfind`](pathfind.md) | `/pathfind` | Layer 0 multi-session decision map (Chart / Work) before delivery |
 | [`interpret-session`](interpret-session.md) | `/interpret-session` | Time-boxed companion: stance + paste-back reply (gấp / second-opinion) |
 | [`deepen-codebase`](deepen-codebase.md) | `/deepen-codebase` | Learning companion: dual-axis deep foundation for any subject; no product decision |

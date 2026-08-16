@@ -1,19 +1,19 @@
 # `define-domain`
 
-> Build and sharpen the project's shared vocabulary while designing — settling terms into the glossary the instant they land, and recording only the rare decisions that earn an ADR.
+> Build and sharpen the project's shared vocabulary while designing — settling terms into the glossary the instant they land, recording only the rare decisions that earn an ADR, and classifying live ADRs by whether a future change still needs them.
 
 |  |  |
 |---|---|
 | **Bucket** | discovery |
 | **Invocation** | model-invocable (the agent calls it on its own) |
 | **Reads** | `CONTEXT.md` (the glossary), the code (to check it agrees with the glossary), `docs/adr/` (existing ADRs and their numbers) |
-| **Writes** | `CONTEXT.md` (glossary terms, inline); `docs/adr/NNNN-slug.md` (sparingly, through the three-part gate) |
+| **Writes** | `CONTEXT.md` (glossary terms, inline); `docs/adr/NNNN-slug.md` (sparingly, through the three-part gate); `docs/adr/archived/` (prune pass) |
 | **Calls** | — |
 | **Called by** | [`frame-change`](frame-change.md) and other interview/design skills, as a side-effect sub-skill kept active during the conversation; [`run-spike`](run-spike.md) (for its ADR gate) |
 
 ## When it fires
 
-When a domain term needs defining, when a glossary term is being used inconsistently or fuzzily, or when a hard-to-reverse architectural decision worth an ADR is being made.
+When a domain term needs defining, when a glossary term is being used inconsistently or fuzzily, when a hard-to-reverse architectural decision worth an ADR is being made, or when existing ADRs need auditing, pruning, or archiving.
 
 It also runs as a **side-effect sub-skill**: an interview or design skill keeps it active so the glossary and ADRs stay current as the conversation moves. Merely *reading* `CONTEXT.md` for vocabulary is a habit any skill has — this skill is for *changing* the model, challenging terms, probing edges, and writing settlements down the moment they happen.
 
@@ -58,6 +58,18 @@ The format is `docs/adr/NNNN-slug.md` (directory created lazily), numbered seque
 
 If a new decision contradicts an existing ADR, the conflict is flagged to the user and resolved explicitly by **superseding the old ADR by number**. A recorded decision is never silently overridden.
 
+## When pruning or auditing ADRs
+
+The three-part gate is a write filter. It does not say what to do when someone asks to *clean* `docs/adr/`. Word count, age, and folder size are not archive criteria — a quota is a discovery hint, not the test.
+
+Each live file is classified:
+
+- **Keep** if a future change still needs it (it still constrains the running system, or it is the written reason a still-tempting idea lost).
+- **Archive** if the decision shipped and the body will not guide a future change. The file moves to `docs/adr/archived/` with an `Archived: YYYY-MM-DD` line; the body is not rewritten.
+- **Drop a rejection** only when the losing idea is no longer a plausible proposal.
+
+A tight folder that hid a live constraint or a still-pitched rejection is not cleaned.
+
 ## Worked example
 
 **A glossary term settling.** Mid-interview the user keeps saying "the space" for both the shared team area and a single document's canvas. `define-domain` challenges it: "Two different things are both *space* here — the team container and the drawing surface. Can we call the container a Workspace and the surface a Canvas?" The user agrees, and `CONTEXT.md` is edited *right then*:
@@ -81,6 +93,8 @@ Two decay patterns shape the skill.
 The first is the **glossary that drifts** — terms defined once, then used loosely until the document is fiction. The inline-the-instant-it-settles rule fights the batching that loses terms, and the glossary-only scope keeps `CONTEXT.md` a tight, trusted reference instead of a junk drawer of half-decisions and spec fragments. The opinionated `_Avoid_:` list does the rest: it does not just define the winner, it names the losing synonyms so they stop leaking back into the conversation.
 
 The second is **ADR inflation** — every decision written up until the folder is noise and the genuinely important calls are buried. The three-part gate is deliberately strict so an ADR stays a signal that *this one is hard to reverse and non-obvious*. The 1–3 sentence body keeps writing one cheap enough that the gate, not effort, is what limits them — and superseding by number, rather than editing in place, keeps the trail of *why we changed our minds* intact.
+
+The third is **quota cleaning** — the write gate is silent on prune, so under time and authority an agent will treat "archive by age / word count" as the missing rule and hide the records that still bind. Classification by future need is the prune-side counterpart of the three-part write gate.
 
 ## See also
 

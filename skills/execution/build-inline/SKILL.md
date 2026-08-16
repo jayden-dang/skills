@@ -1,6 +1,6 @@
 ---
 name: build-inline
-version: 1.1.0
+version: 1.1.1
 description: Use when an approved tasks.md needs controller-side sequential
   execution without implementer subagents — inline TDD per task, progress
   ledger, stop-on-blocker, whole-branch review — for no-subagent environments
@@ -32,9 +32,10 @@ route** — if they asked for inline, stay inline even when subagent tools exist
 **Narration:** at most one short line between tool calls. Ledger + tool results
 carry the record.
 
-**Shared controller recipe:** load `../execute-common.md` when Setup
-preflight / ledger / todos or After the last task starts. That file is the
-one home for those steps and for the polish / product-walk predicates.
+**Shared controller recipe:** REQUIRED SUB-SKILL: use `execute-common`.
+Load `../execute-common/SKILL.md` when Setup preflight / ledger / todos or
+After the last task starts. That file is the one home for those steps and
+for the polish / product-walk predicates.
 This file owns the inline iron law and the controller-as-implementer loop.
 
 ## The Iron Law
@@ -81,14 +82,14 @@ keeps the human in the conversation turn-by-turn.
 2. **Header bookkeeping.** Parse `Execution-mode:`. If missing/`unset`/invalid:
    write `Execution-mode: continuous` into `tasks.md`. If already set, leave it.
    *Done when: header is present.*
-3. **Session preflight.** Apply `../execute-common.md` **Session preflight**.
+3. **Session preflight.** Apply `../execute-common/SKILL.md` **Session preflight**.
    *Done when: that section's Done when holds.*
-4. **Ledger check.** Apply `../execute-common.md` **Ledger check**.
+4. **Ledger check.** Apply `../execute-common/SKILL.md` **Ledger check**.
    *Done when: next task is known.*
 5. **Read the plan.** Read `tasks.md` once. Capture **Global Constraints**
    (verify commands live here if `docs/agents/project.md` is missing — say so
    and suggest `configure-repo`). *Done when: constraints are in hand.*
-6. **Todos — GATE.** Apply `../execute-common.md` **Todos — GATE**.
+6. **Todos — GATE.** Apply `../execute-common/SKILL.md` **Todos — GATE**.
    *Done when: the list mirrors the plan **and** includes the Close branch todo.*
 7. **Pre-flight plan review.** One batch question for plan-internal defects
    before coding. Clean scan → no comment. *Done when: conflicts ruled or none.*
@@ -160,7 +161,7 @@ discipline.
 
 ## After the last task
 
-Apply `../execute-common.md` **Close sequence** in full. You are the fixer
+Apply `../execute-common/SKILL.md` **Close sequence** in full. You are the fixer
 under `test-first` (still no implementer subagent unless the user explicitly
 lifts the inline route). Point `inspect-change` at any Minors or notes in
 the ledger / `implementation-notes.md`.

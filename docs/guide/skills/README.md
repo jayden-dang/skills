@@ -1,6 +1,6 @@
 # Skill reference
 
-61 skills in eleven buckets (engineering package); every one has its own page.
+62 skills in eleven buckets (engineering package); every one has its own page.
 See also [Start here](../START-HERE.md).
 
 **Invocation** is the thing to check first. A **model-invocable** skill is invoked by the agent on its own when its description matches the situation. A **user-invoked** skill carries `disable-model-invocation: true` in its frontmatter — the agent *cannot* invoke it, so you run it as a slash command.
@@ -63,6 +63,7 @@ The triad. Each file approved before the next is written.
 | [`build-in-waves`](build-in-waves.md) | model | Continuous + subagents: fresh implementer per task, two-verdict reviews, parallel waves, ledger |
 | [`build-by-story`](build-by-story.md) | model | Story-unit: derived review units, human unlock after each unit, mode-change write-back |
 | [`build-inline`](build-inline.md) | model | Controller implements with `test-first`; no implementer subagents; stop-on-blocker; sequential |
+| [`execute-common`](execute-common.md) | model | Shared execute-family controller recipe (preflight, ledger, close sequence). Not an entry point |
 | [`test-first`](test-first.md) | model | **Iron Law:** no production code without a failing test first |
 | [`root-cause`](root-cause.md) | model | **Iron Law:** no fixes without root cause; `load-subgraph` only after Phase 2 (never the RED loop) |
 | [`prove-claim`](prove-claim.md) | model | **Iron Law:** no completion claims without fresh evidence |

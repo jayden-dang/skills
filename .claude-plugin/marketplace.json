@@ -36,6 +36,7 @@
         "./skills/execution/load-subgraph",
         "./skills/execution/prove-claim",
         "./skills/execution/isolate-workspace",
+        "./skills/execution/execute-common",
         "./skills/acceptance/validate-api",
         "./skills/acceptance/validate-feature",
         "./skills/acceptance/validate-ui",

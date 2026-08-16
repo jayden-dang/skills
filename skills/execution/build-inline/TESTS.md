@@ -46,5 +46,5 @@ mandatory step + red flags + rationalization rows.
 ## Edit — polish predicate + execute-common (2026-08-16)
 
 Supersedes the always-polish GREEN. Close sequence / preflight / todos live
-in `../execute-common.md`. Terminal todo is **Close branch**. Polish is an
+in `../execute-common/SKILL.md`. Terminal todo is **Close branch**. Polish is an
 observable conditional; silent skip and EOD-as-predicate remain red flags.

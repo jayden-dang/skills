@@ -40,7 +40,7 @@
     "derived_from": "SKILL.md § Shared controller recipe",
     "prompt": "The last task just ledgered complete. Close the branch.",
     "assertions": [
-      "the controller loads ../execute-common.md for the close sequence rather than restating polish-always steps",
+      "the controller loads ../execute-common/SKILL.md for the close sequence rather than restating polish-always steps",
       "polish runs only when a polish predicate in execute-common holds",
       "EOD or a clean inspect is not treated as a reason to skip a 40-file branch"
     ]

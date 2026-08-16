@@ -1,7 +1,7 @@
 # AGENTS.md — Agent Behavior Constitution
 
-> A-to-Z agentic development skill set · **79 skills across 11 categories**
-> (61 engineering + 18 Personal OS) · `jayden-dang/skills` · v1.0.0
+> A-to-Z agentic development skill set · **80 skills across 11 categories**
+> (62 engineering + 18 Personal OS) · `jayden-dang/skills` · v1.0.0
 
 This file is the single source of truth for agent behavior when working with this
 skill set on any harness. Read it first, before any skill, before any action.
@@ -401,7 +401,7 @@ Can't tick a box? The work is not done.
 | **setup** (2) | `configure-repo` (U), `bootstrap-repo` (U) |
 | **discovery** (10) | `frame-change` (m), `clarify-decisions` (m), `solve-problem` (m), `research` (m), `run-spike` (m), `define-domain` (m), `pathfind` (U), `interpret-session` (U), `deepen-codebase` (U), `work-the-problem` (U) |
 | **spec** (3) | `specify-behavior` (m), `design-solution` (m), `plan-tasks` (m) |
-| **execution** (9) | `build-in-waves` (m), `build-by-story` (m), `build-inline` (m), `test-first` (m), `root-cause` (m), `prove-claim` (m), `audit-trace` (m), `load-subgraph` (m), `isolate-workspace` (m) |
+| **execution** (10) | `build-in-waves` (m), `build-by-story` (m), `build-inline` (m), `execute-common` (m), `test-first` (m), `root-cause` (m), `prove-claim` (m), `audit-trace` (m), `load-subgraph` (m), `isolate-workspace` (m) |
 | **review** (7) | `inspect-change` (m), `polish-diff` (m), `vet-feedback` (m), `review-invariants` (m), `study-change` (U), `brief-team` (U), `select-review-sample` (U) |
 | **acceptance** (6) | `validate-feature` (m), `validate-api` (m), `validate-ui` (m), `review-product-flow` (m), `vet-product-flow` (m), `run-product-walkthrough` (m) |
 | **craft** (1) | `craft-page` (m) |

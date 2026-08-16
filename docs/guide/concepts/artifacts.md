@@ -116,7 +116,7 @@ Written once by [`configure-repo`](../skills/configure-repo.md) and then read by
 | File | Contents | Read by |
 |---|---|---|
 | `project.md` | verify commands (typecheck/lint/unit/e2e), the single-test-file pattern, test annotation conventions per layer, release steps, `## Run locally (dev)`, the audit-trace check's test globs + ignore list | `test-first`, `prove-claim`, `build-in-waves`, `isolate-workspace`, `cut-release`, `acceptance-*`, `review-product-flow`, `realign-spec`, the [audit-trace check](../resources/scripts.md#the-trace-check) |
-| `issue-tracker.md` | tracker choice, operations, PR surface, **Publish unit** (default feature), **Program sync** (default local), close linkage | `triage`, `plan-tasks`, `package-change`, `cut-release` |
+| `issue-tracker.md` | tracker choice, operations, PR surface, **Publish unit** (default feature), **Program sync** (default local), close linkage | `triage`, `plan-tasks`, `land-branch`, `cut-release` |
 | `triage-labels.md` | canonical role → this repo's label strings | `triage` |
 
 `## Run locally (dev)` is notable because it is written *by* the acceptance skills rather than by `configure-repo`: if `validate-api` or `validate-ui` has to discover how to start the app, it records the command it found, so the next run is cheap.
@@ -135,7 +135,7 @@ One subtlety [`triage`](../skills/triage.md) is emphatic about: an **already-imp
 
 Feature-scoped working files live under **`.skills/<CODE>/`** (Feature code only),
 not as a flat dump at the root. Shared trees stay at `.skills/pathfind/`,
-`research/`, `decisions/`, and `pr-packages/`. Full grammar:
+`research/`, and `decisions/`. Full grammar:
 [`templates/skills-ephemera-paths.md`](../../../templates/skills-ephemera-paths.md).
 
 | Path under `.skills/<CODE>/` | Written by | Purpose |

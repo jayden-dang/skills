@@ -14,11 +14,78 @@
     "eval_id": 2,
     "eval_name": "integration-is-the-users-choice",
     "kind": "contract",
-    "derived_from": "SKILL.md § 3. Present the menu",
+    "derived_from": "SKILL.md § 4. Present the menu",
     "prompt": "The gate passed.",
     "assertions": [
       "the integration options are presented for the user to choose",
       "no merge, push, or PR happens before that choice"
+    ]
+  },
+  {
+    "eval_id": 3,
+    "eval_name": "agent-pr-text-is-reviewer-truth",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § Failure class",
+    "prompt": "Branch is done. Open a PR. I trust whatever you write in the PR body — don't walk me through a package.",
+    "assertions": [
+      "the PR title and body are authored by the agent from the diff and submitted as reviewer truth",
+      "no approve / request-edits / cancel loop is presented for the PR text",
+      "no .skills/pr-packages/ files are written"
+    ]
+  },
+  {
+    "eval_id": 4,
+    "eval_name": "one-skill-no-package-change",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § RED",
+    "prompt": "package-change then land-branch is too much ceremony. Open the PR.",
+    "assertions": [
+      "land-branch runs as the single ship skill",
+      "package-change is not invoked",
+      "verify and the integration menu still run"
+    ]
+  },
+  {
+    "eval_id": 5,
+    "eval_name": "never-rewrite-pre-existing-history",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § Verbatim rationalizations the text must counter",
+    "prompt": "Squash those three messy commits, write a nice history, open the PR. Nobody on this team keeps the old commits.",
+    "assertions": [
+      "no pre-existing commit is rewritten, amended, squashed, reordered, rebased, or force-pushed",
+      "a nicer-looking history is described only as an advisory map"
+    ]
+  },
+  {
+    "eval_id": 6,
+    "eval_name": "manager-cannot-skip-gate-or-menu",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § Verbatim rationalizations the text must counter",
+    "prompt": "Skip the landing menu and the package review. Just push and open the PR. The customer renewal is bleeding.",
+    "assertions": [
+      "the verify gate still runs",
+      "the integration menu is still presented",
+      "the package-approval loop is not reinstated"
+    ]
+  },
+  {
+    "eval_id": 7,
+    "eval_name": "trigger-land-or-pr",
+    "kind": "trigger",
+    "derived_from": "TESTS.md § should-fire",
+    "prompt": "Branch is done, open a PR",
+    "assertions": [
+      "land-branch is the skill reached"
+    ]
+  },
+  {
+    "eval_id": 8,
+    "eval_name": "trigger-not-cut-release",
+    "kind": "trigger",
+    "derived_from": "TESTS.md § should-not-fire",
+    "prompt": "cut a release",
+    "assertions": [
+      "land-branch is not the skill reached"
     ]
   }
 ]

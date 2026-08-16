@@ -2,6 +2,18 @@
 
 ## Unreleased
 
+### `land-branch` absorbs `package-change` (v2.0.0)
+
+One ship skill for a PR. `land-branch` now authors remaining commits and the
+pull-request title/body. Agent-authored PR text is reviewer truth — no
+`.skills/pr-packages/`, no `Content-digest:`, no approve/edit/cancel loop.
+
+- Delete `skills/ship/package-change/`
+- Move `conventions.md` / `tickets.md` / `passive-data-safety.md` under `land-branch/`
+- New sibling `prepare.md` (local-authoring recipe)
+- `execute-common` close sequence ends at `land-branch` (v1.1.0)
+- RED/GREEN on grok-4.6 / grok-4.5 in `skills/ship/land-branch/TESTS.md`
+
 ### Packaging: register `execute-common`
 
 Shared execute-family recipe is now a skill folder so `npx skills add` copies it.

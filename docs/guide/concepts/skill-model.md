@@ -55,7 +55,7 @@ You can see the rule being obeyed in the wild. `root-cause` hands architectural 
 | | `study-change`, `brief-team`, `select-review-sample` | user |
 | acceptance | `validate-feature`, `validate-api`, `validate-ui`, `review-product-flow`, `vet-product-flow`, `run-product-walkthrough` | model |
 | craft | `craft-page` | model |
-| ship | `package-change`, `land-branch`, `record-verdict` | model |
+| ship | `land-branch`, `record-verdict` | model |
 | | `cut-release` | user |
 | track | `amend-feature`, `reroute-plan`, `realign-spec` | model |
 | | `triage`, `refresh-roadmap-status`, `assess-milestone`, `scan-architecture`, `map-features`, `write-handoff`, `publish-issues` | user |
@@ -68,13 +68,13 @@ Full tables: [Skill reference](../skills/README.md) and [`AGENTS.md` §11](../..
 
 A skill that nothing can reach costs its metadata on every turn and returns
 nothing. Two paths reach one: a `REQUIRED SUB-SKILL` hand-off from another skill,
-or the description matching what the user just said. Counted over the 62
+or the description matching what the user just said. Counted over the 61
 engineering skills (2026-08-16):
 
 | Path | Count |
 |---|---|
 | User-invoked — reachable only when the human types the name | 24 |
-| Model-invocable with at least one `REQUIRED SUB-SKILL` caller | 33 |
+| Model-invocable with at least one `REQUIRED SUB-SKILL` caller | 32 |
 | Model-invocable with **no** caller — description-triggered entry points | 5 |
 
 The third row is the one worth reading carefully, because "no caller" looks like
@@ -171,4 +171,4 @@ When installed without plugin hook support, `configure-repo` offers to copy `tem
 - [The gates](gates.md) — the four skills that guard rules the agent breaks under pressure
 - [`author-skills`](../skills/author-skills.md) — the full authoring doctrine and its deployment checklist
 - [`gate-session`](../skills/gate-session.md) — the session gate
-- [Skill reference](../skills/README.md) — 62 engineering skills
+- [Skill reference](../skills/README.md) — 61 engineering skills

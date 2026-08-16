@@ -2,13 +2,15 @@
 
 **Skills:** [`land-branch`](../skills/land-branch.md) · [`cut-release`](../skills/cut-release.md) · [`realign-spec`](../skills/realign-spec.md) · [`amend-feature`](../skills/amend-feature.md) · [`publish-issues`](../skills/publish-issues.md) · [`triage`](../skills/triage.md) · [`scan-architecture`](../skills/scan-architecture.md) · [`write-handoff`](../skills/write-handoff.md)
 
-## `land-branch` — the integration decision
+## `land-branch` — prepare locally, then the integration decision
 
 **Gate first.** `prove-claim` runs every verify command from `docs/agents/project.md` fresh, **and** confirms the audit-trace check is clean — a branch must not merge with untraced requirements, the same gate `cut-release` enforces. If the branch has user-facing behavior that has not been driven through the running system, `validate-feature` runs *before* Merge or PR is even offered.
 
+Then `land-branch` authors remaining commits and the PR title/body from the diff. The agent-authored PR text **is** the reviewer truth — there is no package file and no approve/edit/cancel loop.
+
 **Any failure means stop.** Show the failures. Do not present the menu.
 
-**Then exactly four options, verbatim, with no added commentary:**
+**Then exactly five options, verbatim, with no added commentary:**
 
 ```
 Implementation complete. What would you like to do?
@@ -17,6 +19,7 @@ Implementation complete. What would you like to do?
 2. Push and create a Pull Request
 3. Keep the branch as-is (I'll handle it later)
 4. Discard this work
+5. Block: reject this work at this boundary (records a terminal block verdict)
 
 Which option?
 ```

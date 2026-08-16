@@ -76,7 +76,7 @@ Three ways in: by role, by problem, or by phase.
 | **2. Specification** | `specify-behavior`, `design-solution`, `plan-tasks` | [Specification](process/specification.md) |
 | **3. Execution** | `isolate-workspace`, `build-in-waves` / `build-by-story` / `build-inline`, `test-first`, `root-cause`, `prove-claim`, `audit-trace`, `load-subgraph` | [Execution](process/execution.md) |
 | **4. Review & acceptance** | `inspect-change` (+ `load-subgraph`), `polish-diff`, `vet-feedback`, `validate-*`, product-flow suite | [Review and acceptance](process/review-and-acceptance.md) |
-| **5. Ship & maintain** | `package-change`, `land-branch`, `/cut-release`, `realign-spec`, `amend-feature`, `/map-features`, `/publish-issues`, `/triage`, `/scan-architecture`, `/write-handoff` | [Ship and maintain](process/ship-and-maintain.md) |
+| **5. Ship & maintain** | `land-branch`, `/cut-release`, `realign-spec`, `amend-feature`, `/map-features`, `/publish-issues`, `/triage`, `/scan-architecture`, `/write-handoff` | [Ship and maintain](process/ship-and-maintain.md) |
 
 ---
 

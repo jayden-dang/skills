@@ -245,7 +245,7 @@ the feature PR (close syntax from issue-tracker.md).
      - Optional: task checklist as plain markdown (not tracker issues)
    - Label only this issue with the frontier role (`ready-for-agent` mapped
      string) when it is grabbable.
-   - Record the issue id under `.skills/<CODE>/` for execute / `package-change`.
+   - Record the issue id under `.skills/<CODE>/` for execute / `land-branch`.
 4. **WHEN unit is `tasks` (legacy only):** one issue per plan task in dependency
    order, each with its own `Requirements covered:` from that task’s footer;
    record all ids under `.skills/<CODE>/`. Still no silent invent of this unit.

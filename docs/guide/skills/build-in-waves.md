@@ -8,7 +8,7 @@
 | **Invocation** | model-invocable (the agent calls it on its own) |
 | **Reads** | `tasks.md` (`Execution-mode: continuous`, Global Constraints), `.skills/<CODE>/progress.md`, `docs/agents/project.md` |
 | **Writes** | implementation commits; `.skills/` scratch — brief, report, diff package per task, plus the ledger |
-| **Calls** | [`isolate-workspace`](isolate-workspace.md), [`inspect-change`](inspect-change.md), `polish-diff`, [`validate-feature`](validate-feature.md), [`root-cause`](root-cause.md), [`package-change`](package-change.md), [`land-branch`](land-branch.md); hands off to [`build-by-story`](build-by-story.md) / [`build-inline`](build-inline.md) when mis-routed |
+| **Calls** | [`isolate-workspace`](isolate-workspace.md), [`inspect-change`](inspect-change.md), `polish-diff`, [`validate-feature`](validate-feature.md), [`root-cause`](root-cause.md), [`land-branch`](land-branch.md); hands off to [`build-by-story`](build-by-story.md) / [`build-inline`](build-inline.md) when mis-routed |
 | **Called by** | [`plan-tasks`](plan-tasks.md) (continuous route), [`write-handoff`](write-handoff.md) (resume) |
 
 ## When it fires
@@ -116,7 +116,7 @@ Conversation memory does not survive compaction. Controllers that lost their pla
 
 The close sequence lives in `skills/execution/execute-common/SKILL.md` — one home
 for waves, story, and inline. Default path: [`inspect-change`](inspect-change.md)
-→ [`validate-feature`](validate-feature.md) → [`package-change`](package-change.md)
+→ [`validate-feature`](validate-feature.md)
 → [`land-branch`](land-branch.md). `polish-diff` and the product-walk trio run
 only when their predicates hold. A skip must be written
 `skip: no polish predicate`. EOD, a clean inspect, and "feels small" are not
@@ -161,7 +161,7 @@ A four-task plan for feature `NOTES` is approved.
 
 **Task 2 — a status branch.** The implementer returns `NEEDS_CONTEXT`: it needs the interface Task 1 established, which the brief could not know. The controller supplies that one interface and re-dispatches on the **same** model — never forcing a retry with nothing changed — and the task then completes normally.
 
-**After the last task.** Once Task 4 is in the ledger, a **top-tier** `inspect-change` runs with base `git merge-base main HEAD` — never a mid-branch sha — pointed at the ledger's Minor-findings list. It returns two Minor findings plus the deferred ones. **One** fixer carrying the complete list clears them all, `polish-diff` tidies duplication the per-task reviews couldn't see, `validate-feature` drives the feature through the running system, `package-change` authors the commits and a PR package, and `land-branch` hands the merge decision to the user.
+**After the last task.** Once Task 4 is in the ledger, a **top-tier** `inspect-change` runs with base `git merge-base main HEAD` — never a mid-branch sha — pointed at the ledger's Minor-findings list. It returns two Minor findings plus the deferred ones. **One** fixer carrying the complete list clears them all, `polish-diff` tidies duplication the per-task reviews couldn't see, `validate-feature` drives the feature through the running system, `land-branch` authors the remaining commits and the PR text, then hands the merge decision to the user.
 
 ## Red flags — never
 

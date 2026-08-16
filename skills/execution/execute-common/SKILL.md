@@ -1,6 +1,6 @@
 ---
 name: execute-common
-version: 1.0.0
+version: 1.1.0
 description: Use when build-in-waves, build-by-story, or build-inline loads the shared controller recipe — produces session preflight, ledger check, close sequence, and polish or walk predicates.
 ---
 
@@ -35,7 +35,7 @@ Two questions, before any dispatch or first production edit:
    issues to the branch, pull ticket IDs into briefs/ledger, use the
    tracker's wayfinding ops for status). IF yes → resolve ticket IDs from
    branch name, plan, or a short user list; record them under `.skills/` for
-   implementer briefs and later `package-change`. IF no, or the file is
+   implementer briefs and later `land-branch`. IF no, or the file is
    absent / declares no tracker → empty ticket set; continue (unconfigured
    tracker is normal, not a failure).
 2. **Workspace / branch.** If no isolated workspace exists yet: isolate in a
@@ -94,10 +94,9 @@ After the last task (waves / inline) or last unlocked unit (story):
    predicate** below. IF any clause is true → REQUIRED SUB-SKILL: use
    `review-product-flow` (it owns vet + naming the walkthrough). IF no
    clause is true → do not open the product-walk trio.
-6. **Prepare.** REQUIRED SUB-SKILL: use `package-change`.
-7. **Finish.** REQUIRED SUB-SKILL: use `land-branch`.
+6. **Finish.** REQUIRED SUB-SKILL: use `land-branch`.
 
-Mark the **Close branch** todo done only after steps 1–7 have each run or
+Mark the **Close branch** todo done only after steps 1–6 have each run or
 been skipped under their predicate.
 
 | Thought | Reality |
@@ -141,5 +140,5 @@ True when **any** of:
   branch)
 - Silent-skip polish (no written `skip: no polish predicate`)
 - Treat EOD, demo, or "inspect was clean" as a polish predicate
-- Move to package/land with the Close branch todo still open
+- Move to land-branch with the Close branch todo still open
 - Promote checks as "ID-tagged tests" — IDs stay in docs

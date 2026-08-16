@@ -1,8 +1,8 @@
 # Passive-data safety
 
-Load this file when phase 3 (`Gather context`) requires it. Same contract as
-`brief-team`'s passive-data rules — kept local so this skill does not
-path-load another skill's folder.
+Load this file when `prepare.md` (`Gather context`) requires it. Same
+contract as `brief-team`'s passive-data rules — kept local so this skill
+does not path-load another skill's folder.
 
 WHEN embedding any repo-derived text into a commit body or PR body, follow
 these rules exactly.

@@ -1,6 +1,6 @@
 ---
 name: configure-repo
-version: 1.0.0
+version: 1.0.1
 description: Configures an existing repo for this skill set — a docs/agents/ layer covering prove-claim
   commands, tracker and labels, release steps, team and ownership. Run it with /setup-
   repo.
@@ -46,7 +46,7 @@ Walk the ten decisions below (A–J; I is optional project-docs) strictly one at
 
 ### A. Issue tracker
 
-Explainer: skills that read or write issues (`triage`, `publish-issues`, `plan-tasks` when publishing a plan, `package-change`, `cut-release`) need to know where issues live and which commands touch them.
+Explainer: skills that read or write issues (`triage`, `publish-issues`, `plan-tasks` when publishing a plan, `land-branch`, `cut-release`) need to know where issues live and which commands touch them.
 
 Options:
 
@@ -182,13 +182,13 @@ If **Yes**: note it for Step 4 (seed the three docs + the Agent-skills line). If
 
 ### J. Default PR base
 
-Explainer: `package-change` reads `Default PR base:` from `docs/agents/project.md` as the third rung of its base-resolution ladder — after an explicit invocation base and a base already recorded on an existing PR — so it stops asking once a trunk is on record. `land-branch` still runs its own topology detection (Step 2) and, on Option 1, prefers a PR package's recorded `Base:` over that detection when one exists for the session — this field feeds `package-change`'s resolution, not a value `land-branch` consumes directly.
+Explainer: `land-branch` reads `Default PR base:` from `docs/agents/project.md` as the third rung of its base-resolution ladder — after an explicit invocation base and a base already recorded on an existing PR — so it stops asking once a trunk is on record.
 
 Offer `dev`, `staging`, `main`, and the repo's own local branch list as suggestions only; no value is pre-selected — the user always names the branch themselves.
 
-Recommendation: the repo's actual trunk branch (commonly `main`) — one-line reason: it is the branch `package-change` and `land-branch` already assume unless told otherwise.
+Recommendation: the repo's actual trunk branch (commonly `main`) — one-line reason: it is the branch `land-branch` already assumes unless told otherwise.
 
-Declining: if the user declines to choose, write no value at all and skip the Step 4 item for this field — `package-change` then asks for the base on every invocation, which is what keeps the field genuinely optional under ARCH-2.
+Declining: if the user declines to choose, write no value at all and skip the Step 4 item for this field — `land-branch` then asks for the base on every invocation, which is what keeps the field genuinely optional under ARCH-2.
 
 **Done when:** the user has confirmed a value, or has explicitly declined and no value will be written.
 
@@ -256,7 +256,7 @@ Repo config the skills read:
 ```
 
 8. Ensure the local working dirs are git-ignored: the skills' scratch artifacts — `build-in-waves`'s ledger and briefs, and the scan/review digests the spec skills write — live under `.skills/`, and isolated workspaces under `.isolate-workspace/`; neither belongs in version control. Idempotently, for each pattern: `grep -qxF '.skills/' .gitignore 2>/dev/null || printf '.skills/\n' >> .gitignore` (same for `.isolate-workspace/`), then stage `.gitignore`. (A line-presence check, not `git check-ignore` — a trailing-slash pattern only matches an *existing* directory, so `check-ignore` would re-append before the dir exists.)
-9. If decision J (Default PR base) was confirmed, add `- **Default PR base:** \`<branch>\`` to the **Project posture** section of `docs/agents/project.md`, under the additive rule above — merge in, never clobber a value the user already set. If the user declined decision J, write nothing: leave the field absent so `package-change` asks per invocation.
+9. If decision J (Default PR base) was confirmed, add `- **Default PR base:** \`<branch>\`` to the **Project posture** section of `docs/agents/project.md`, under the additive rule above — merge in, never clobber a value the user already set. If the user declined decision J, write nothing: leave the field absent so `land-branch` asks per invocation.
 
 **Done when:** all files are written, `.skills/` and `.isolate-workspace/` are git-ignored, and `git status` shows only the expected additions/edits.
 

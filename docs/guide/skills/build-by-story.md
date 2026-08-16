@@ -8,7 +8,7 @@
 | **Invocation** | model-invocable |
 | **Reads** | `tasks.md` (`Execution-mode: story-unit`), `requirements.md`, `.skills/<CODE>/progress.md` |
 | **Writes** | implementation commits; task + unit review packages; ledger task and `Unit <k>: complete` lines |
-| **Calls** | [`isolate-workspace`](isolate-workspace.md), implementer/reviewer templates under `build-in-waves/`, [`inspect-change`](inspect-change.md), `polish-diff`, [`validate-feature`](validate-feature.md), [`package-change`](package-change.md), [`land-branch`](land-branch.md); mode-change write-handoff to [`build-in-waves`](build-in-waves.md) |
+| **Calls** | [`isolate-workspace`](isolate-workspace.md), implementer/reviewer templates under `build-in-waves/`, [`inspect-change`](inspect-change.md), `polish-diff`, [`validate-feature`](validate-feature.md), [`land-branch`](land-branch.md); mode-change write-handoff to [`build-in-waves`](build-in-waves.md) |
 | **Called by** | [`plan-tasks`](plan-tasks.md) (story-unit route), [`build-in-waves`](build-in-waves.md) (mode gate redirect) |
 
 ## When it fires

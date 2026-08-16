@@ -26,7 +26,7 @@ Examples: `.skills/SPAY/`, `.skills/WEBPAR/`, `.skills/SKNS/`.
 | `.skills/pathfind/<effort-slug>/` | Multi-session decision maps / knowns packages |
 | `.skills/research/` | Dated research notes (`<date>-<topic>.md`) |
 | `.skills/decisions/` | Boundary decision records (`DEC-*.md`, adoption) |
-| `.skills/pr-packages/<stable-id>/` | PR package bundles; optional `Feature-code:` in manifest |
+| `.skills/pr-packages/<stable-id>/` | **Retired.** `land-branch` no longer writes this tree. Leave existing dirs; do not author new ones. |
 | `.skills/system-docs/<entry-key>/` | System-doc authoring digests (`state.md`, `evidence.md`, `proposal.md`) for `/define-system-doc`; entry-key path mirroring (e.g. `codebase/map`) |
 
 ## Resolution order for `<CODE>`
@@ -79,7 +79,7 @@ was used for that work:
 | **Forbidden writes** | Do **not** create new loose `progress.md`, `task-N-*.md`, `review-*.diff`, `implementation-notes.md`, knowns/scan/acceptance files at the **bare** `.skills/` root |
 | **Auto-migrate** | **MUST NOT** auto-migrate or bulk-move a consumer repo's historical `.skills/` tree. Cleanup is human-initiated (`rm -rf .skills/<CODE>` or manual moves) |
 
-Shared roots (pathfind, research, decisions, pr-packages) may still be written at their shared locations.
+Shared roots (pathfind, research, decisions) may still be written at their shared locations. Do not write new `.skills/pr-packages/` trees.
 
 ## Two features, two ledgers
 

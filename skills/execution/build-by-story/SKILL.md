@@ -114,7 +114,7 @@ For each Task N in U (Depends-on order):
 2. **Build brief.** Task N block + verbatim Global Constraints →
    `.skills/<CODE>/task-N-brief.md`. Include relevant `**ARCH-N**` when a
    `docs/architecture/` spine exists. WHEN preflight recorded ticket IDs,
-   list them in the brief so implementers and later `package-change` share one
+   list them in the brief so implementers and later `land-branch` share one
    set.
 3. **Dispatch a FRESH implementer** using the template at
    `../build-in-waves/implementer-prompt.md` (one home for the implementer

@@ -1,6 +1,6 @@
 # Skill reference
 
-62 skills in eleven buckets (engineering package); every one has its own page.
+61 skills in eleven buckets (engineering package); every one has its own page.
 See also [Start here](../START-HERE.md).
 
 **Invocation** is the thing to check first. A **model-invocable** skill is invoked by the agent on its own when its description matches the situation. A **user-invoked** skill carries `disable-model-invocation: true` in its frontmatter — the agent *cannot* invoke it, so you run it as a slash command.
@@ -108,8 +108,7 @@ The visual layer. Fires before any HTML a human will look at.
 
 | Skill | Invocation | What it does |
 |---|---|---|
-| [`package-change`](package-change.md) | model | Reviewer-facing commits + PR package before land-branch |
-| [`land-branch`](land-branch.md) | model | Prove Claim + audit-trace gate, then exactly four options. "Discard" must be typed |
+| [`land-branch`](land-branch.md) | model | Verify, author commits + PR text, then merge / PR / keep / discard / block. Agent PR text is truth |
 | [`record-verdict`](record-verdict.md) | model | Immutable decision record before a production crossing |
 | [`cut-release`](cut-release.md) | `/cut-release` | Full prove-claim + audit-trace. Changelog from requirement-ID commit trailers |
 

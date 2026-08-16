@@ -88,7 +88,7 @@ For Task N:
 2. **Build the brief.** Task N block + verbatim Global Constraints →
    `.skills/<CODE>/task-N-brief.md`. Include relevant `**ARCH-N**` when a
    `docs/architecture/` spine exists. WHEN preflight recorded ticket IDs,
-   list them in the brief so implementers and later `package-change` share one
+   list them in the brief so implementers and later `land-branch` share one
    set. Apply Team band packaging to tone — never omit review obligations.
 3. **Dispatch a FRESH implementer** using `implementer-prompt.md` (beside this
    file). Dispatch inventory only: one-line placement; brief path as requirements;
@@ -181,8 +181,8 @@ ledger = survives compaction. Never let one excuse skipping the other.
 
 Apply `../execute-common/SKILL.md` **Close sequence** in full — inspect-change,
 one fixer, polish (only if the polish predicate holds), validate-feature,
-product-walk (only if the walk predicate holds), package-change,
-land-branch. Do not restate the steps here.
+product-walk (only if the walk predicate holds), land-branch. Do not
+restate the steps here.
 
 *Done when: that section's Done when holds.*
 

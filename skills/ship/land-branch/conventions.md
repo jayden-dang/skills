@@ -1,10 +1,10 @@
 # Resolve conventions — commit and PR
 
-Load this file when phase 2 (`Resolve conventions`) runs. SKILL.md owns the
-phase list and the Iron Law; this file owns the resolution recipe and is the
-**single home** of convention-source grades
+Load this file when `prepare.md` (`Resolve conventions`) runs. `prepare.md`
+owns the local-authoring recipe and the Iron Law lives in SKILL.md; this
+file is the **single home** of convention-source grades
 (`commit_subject_grade` / `pr_structure_grade`). Finding grades live in
-`SKILL.md` only.
+`prepare.md` only.
 
 Produce one convention record and hold it in memory for the rest of the
 session:
@@ -97,8 +97,8 @@ skill's own written default, not a claim derived from repository history.
 | `inferred` | Rung 2 — sampled from commit history | Labelled **inferred** and any finding raised against it is treated as **advisory** only — never a hard gate |
 
 The "Treatment" column names the **finding** grade(s) a convention of that
-source can produce — it is not a fourth convention grade. `SKILL.md` defines
-a four-value finding vocabulary — `advisory`, `reported`, `not run`,
+source can produce — it is not a fourth convention grade. `prepare.md`
+defines a four-value finding vocabulary — `advisory`, `reported`, `not run`,
 `verify-routed` — kept explicitly distinct from this file's three-value
 convention-record grades, `commit_subject_grade` and `pr_structure_grade`
 (each independently one of `declared` | `machine-enforced` | `inferred`): a
@@ -115,5 +115,5 @@ finding raised against `pr_structure` takes its treatment from
 
 Nothing resolved here is written to disk. The record lives only in the
 session's working memory for the phases and commits that follow. There is no
-persistent cache across sessions — the next `package-change` invocation
+persistent cache across sessions — the next `land-branch` invocation
 resolves fresh from rung 1.

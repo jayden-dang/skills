@@ -1,7 +1,7 @@
 # AGENTS.md — Agent Behavior Constitution
 
-> A-to-Z agentic development skill set · **80 skills across 11 categories**
-> (62 engineering + 18 Personal OS) · `jayden-dang/skills` · v1.0.0
+> A-to-Z agentic development skill set · **79 skills across 11 categories**
+> (61 engineering + 18 Personal OS) · `jayden-dang/skills` · v1.0.0
 
 This file is the single source of truth for agent behavior when working with this
 skill set on any harness. Read it first, before any skill, before any action.
@@ -115,7 +115,7 @@ the description matches the situation. Everything not listed above, including
 `run-spike`, `define-domain`, the full spec triad, the execute family,
 `test-first`, `root-cause`, `prove-claim`, `audit-trace`, `load-subgraph`,
 `isolate-workspace`, `inspect-change`, `polish-diff`, `vet-feedback`,
-`review-invariants`, the acceptance suite, `package-change`, `land-branch`,
+`review-invariants`, the acceptance suite, `land-branch`,
 `record-verdict`, `amend-feature`, `reroute-plan`, `realign-spec`, and
 `plan-milestones`.
 
@@ -324,7 +324,7 @@ docs/
   design/           # design records, including tested no-ops
   releases/ personal-os/
 .skills/            # git-ignored ephemera: .skills/<CODE>/ per feature;
-                    # shared pathfind/, research/, decisions/, pr-packages/
+                    # shared pathfind/, research/, decisions/
 ```
 
 **A consuming repo** is where `configure-repo` and the spec skills write:
@@ -405,7 +405,7 @@ Can't tick a box? The work is not done.
 | **review** (7) | `inspect-change` (m), `polish-diff` (m), `vet-feedback` (m), `review-invariants` (m), `study-change` (U), `brief-team` (U), `select-review-sample` (U) |
 | **acceptance** (6) | `validate-feature` (m), `validate-api` (m), `validate-ui` (m), `review-product-flow` (m), `vet-product-flow` (m), `run-product-walkthrough` (m) |
 | **craft** (1) | `craft-page` (m) |
-| **ship** (4) | `package-change` (m), `land-branch` (m), `record-verdict` (m), `cut-release` (U) |
+| **ship** (3) | `land-branch` (m), `record-verdict` (m), `cut-release` (U) |
 | **track** (11) | `amend-feature` (m), `reroute-plan` (m), `realign-spec` (m), `triage` (U), `record-debt` (U), `refresh-roadmap-status` (U), `assess-milestone` (U), `scan-architecture` (U), `map-features` (U), `write-handoff` (U), `publish-issues` (U) |
 | **project** (4) | `plan-milestones` (m), `define-project` (U), `define-system-doc` (U), `assess-pivot-impact` (U) |
 | **personal** (18) | Personal OS, `life-` prefixed, opt-in — see `skills/personal/README.md` |
@@ -421,7 +421,7 @@ Can't tick a box? The work is not done.
 **Main flow:** `frame-change` (+ `load-subgraph`) → `specify-behavior` →
 `design-solution` → `plan-tasks` → `isolate-workspace` → execute family →
 `inspect-change` (+ `load-subgraph`) → `polish-diff` → `validate-feature` →
-`package-change` → `land-branch` → `/cut-release` → `realign-spec`.
+`land-branch` → `/cut-release` → `realign-spec`.
 
 **Bugfix flow:** `root-cause` → mini-spec → `test-first` → `prove-claim` →
 `inspect-change` → `land-branch`.

@@ -8,7 +8,7 @@
 | **Invocation** | model-invocable |
 | **Reads** | `tasks.md`, `.skills/<CODE>/progress.md`, `docs/agents/project.md` |
 | **Writes** | implementation commits; optional task reports; ledger lines with `inline, review self` |
-| **Calls** | [`test-first`](test-first.md), [`isolate-workspace`](isolate-workspace.md), [`inspect-change`](inspect-change.md), `polish-diff`, [`validate-feature`](validate-feature.md), [`package-change`](package-change.md), [`land-branch`](land-branch.md) |
+| **Calls** | [`test-first`](test-first.md), [`isolate-workspace`](isolate-workspace.md), [`inspect-change`](inspect-change.md), `polish-diff`, [`validate-feature`](validate-feature.md), [`land-branch`](land-branch.md) |
 | **Called by** | [`plan-tasks`](plan-tasks.md) (inline route), [`build-in-waves`](build-in-waves.md) (inline write-handoff) |
 
 ## When it fires

@@ -40,7 +40,7 @@ schema 1.1, **`cluster(focus)`**, no generated graph file).
   (+ load-subgraph after Phase 2 only)                    ▼
          inspect-change ─► [polish-diff if predicate] ─► validate-feature
          (+ load-subgraph)     [product-walk if predicate]   (api/ui)
-                    ─► package-change ─► land-branch ─► /cut-release ─► realign-spec
+                    ─► land-branch ─► /cut-release ─► realign-spec
 
  MAINTENANCE: amend-feature · /publish-issues · /triage · /scan-architecture
               · /map-features · /pathfind · /write-handoff · realign-spec
@@ -123,7 +123,8 @@ You mostly describe the idea and **approve files**; the rest chains:
 9. **Close sequence** (one home: `skills/execution/execute-common/SKILL.md`):
    **`polish-diff`** only when a polish predicate holds; **`validate-feature`**
    (`validate-api` / `validate-ui`); product-walk only when a walk predicate holds.
-10. **`package-change`** → **`land-branch`** (merge / PR / keep / discard / block).
+10. **`land-branch`** — commits residue, then merge / PR / keep / discard / block
+    (agent-authored PR title and body are reviewer truth).
 11. **`/cut-release`** when shipping a version.
 12. **`realign-spec`** — triad + INDEX status (Implemented / Shipped).
 
@@ -133,7 +134,7 @@ The table lives in [on-ramps](process/on-ramps.md) — one home. Unsure → **`/
 
 ## 3. Skill index (engineering package)
 
-Full tables: [Skill reference](skills/README.md) (62 engineering skills).  
+Full tables: [Skill reference](skills/README.md) (61 engineering skills).  
 Personal OS is a **separate** package — [personal-os START-HERE](../personal-os/START-HERE.md).
 
 `U` = you run `/name` · `m` = model-invoked · `si` = session-injected
@@ -148,7 +149,7 @@ Personal OS is a **separate** package — [personal-os START-HERE](../personal-o
 | **review** | `inspect-change`, `polish-diff`, `vet-feedback`, `review-invariants`, `/study-change`, `/brief-team`, `/select-review-sample` |
 | **acceptance** | `validate-feature`, `validate-api`, `validate-ui`, `review-product-flow`, `vet-product-flow`, `run-product-walkthrough` |
 | **craft** | `craft-page` |
-| **ship** | `package-change`, `land-branch`, `record-verdict`, `/cut-release` |
+| **ship** | `land-branch`, `record-verdict`, `/cut-release` |
 | **track** | `amend-feature`, `reroute-plan`, `realign-spec`, `/triage`, `/publish-issues`, `/scan-architecture`, **`/map-features`**, `/write-handoff`, `/refresh-roadmap-status`, `/assess-milestone` |
 | **project** | `/define-project`, `/assess-pivot-impact`, `plan-milestones` |
 

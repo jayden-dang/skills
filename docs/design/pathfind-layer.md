@@ -625,7 +625,7 @@ Matt’s wayfinder ticket type **grilling** maps *functionally* to our interview
 
 **Does not authorize:** shipping skill text, tracker seeds, or architecture SSOT edits without D1 + author-skills RED.
 
-**D1 Approved:** [`docs/specs/2026-07-31-pathfind/requirements.md`](../specs/2026-07-31-pathfind/requirements.md) (feature code **PFIND**, Status: **Approved** 2026-07-31).
+**D1 Approved:** `docs/specs/2026-07-31-pathfind/requirements.md` (feature code **PFIND**, Status: **Approved** 2026-07-31). That spec was removed from this repo with the rest of its self-applied `docs/specs/` tree in `65126b7`; the statement is kept as the historical record of the approval.
 
 **Next:** feature `design.md` (or cite this file as design SSOT in tasks) → `tasks.md` → `author-skills` RED → implement per §14 / PFIND phases.
 

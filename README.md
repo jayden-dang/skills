@@ -258,8 +258,8 @@ opt into a documented CI job; it is outside the default path. See
 | [Skill reference](docs/guide/skills/README.md) | one page per skill |
 | [Examples](docs/guide/examples/tier-2-feature.md) | tier 0, 1, and 2 walkthroughs |
 | [Troubleshooting](docs/guide/resources/troubleshooting.md) | symptoms and causes |
-| [docs/architecture/](./docs/architecture/INDEX.md) | architecture SSOT (invariants + system design) |
-| [docs/product/vision.md](./docs/product/vision.md) | product north star (engineering) |
+| `docs/architecture/INDEX.md` | architecture SSOT (invariants + system design) |
+| `docs/product/vision.md` | product north star (engineering) |
 | [Personal OS](./skills/personal/README.md) | independent life/management skill set |
 
 ## Developing this repo

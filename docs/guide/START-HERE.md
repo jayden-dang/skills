@@ -2,7 +2,7 @@
 
 How the skill set works end to end: the A–Z workflow, the steps to use it in a new
 repo, and what every skill does. For the architecture behind it, see
-[`docs/architecture/`](../architecture/INDEX.md); for one page per skill, see
+`docs/architecture/INDEX.md`; for one page per skill, see
 [the skill reference](skills/README.md).
 
 The whole set is script-free for consumers. A consuming repo installs nothing
@@ -149,7 +149,7 @@ Personal OS is a **separate** package — [personal-os START-HERE](../personal-o
 
 `U` = you run `/name` · `m` = model-invoked · `si` = session-injected
 
-| Category | Skills (see also [AGENTS.md §11](../../AGENTS.md#11-quick-reference-the-56-skills)) |
+| Category | Skills (see also [AGENTS.md §11](../../AGENTS.md#11-quick-reference-every-skill)) |
 |---|---|
 | **meta** | `gate-session` (m, si), `/ask-me-bro`, `/author-skills`, `/teach-pack` |
 | **setup** | `/configure-repo`, `/bootstrap-repo` |
@@ -171,4 +171,4 @@ Personal OS is a **separate** package — [personal-os START-HERE](../personal-o
 - [Traceability](concepts/traceability.md)
 - [Process by phase](process/README.md)
 - [Examples](examples/tier-2-feature.md)
-- [`docs/architecture/`](../architecture/INDEX.md)
+- `docs/architecture/INDEX.md`

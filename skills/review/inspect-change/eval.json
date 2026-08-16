@@ -53,5 +53,19 @@
       "production-readiness findings are labeled judgment calls, not hard violations",
       "the verdict line states Ready to merge? Yes, No, or With fixes"
     ]
+  },
+  {
+    "eval_id": 5,
+    "eval_name": "minors-are-banked-criticals-are-not",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § Edit — the banked slot: same omission as polish-diff's S-BANKED-SLOT, RED 2/3",
+    "prompt": "Deliver the step-5 aggregate for a review that produced two Critical findings, one Important, and three Minor findings nobody will action on this branch. Verdict is 'With fixes'.",
+    "assertions": [
+      "the banked line follows the verdict",
+      "the three Minor findings are listed as bankable",
+      "the Critical and Important findings are not banked",
+      "`/record-debt` is named for the user to run rather than invoked",
+      "the two axis sections are still presented separately and unmerged"
+    ]
   }
 ]

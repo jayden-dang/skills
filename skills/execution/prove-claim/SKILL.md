@@ -1,6 +1,6 @@
 ---
 name: prove-claim
-version: 1.1.0
+version: 1.2.0
 description: Use when about to say anything that implies success — "done",
   "fixed", "passing", "works", or any paraphrase — and before committing,
   opening a PR, closing a task, or reporting a subagent's result.
@@ -21,7 +21,7 @@ If the proving command did not run just now, in this session, the claim is unava
 Before any status claim or expression of satisfaction:
 
 1. **IDENTIFY** — which command proves this exact claim? (Commands come from `docs/agents/project.md`. Missing? Say so, suggest `configure-repo`, and identify the command manually.) When the claim is that some record now *holds* a change — a ticket, a remote, a stored row — the proving command is the **read**, never the write that made it, so IDENTIFY resolves to a pair and the write alone can never satisfy this gate.
-2. **RUN** — execute it fresh and complete. No cached results, no partial scopes, no "it passed earlier".
+2. **RUN** — execute it fresh and complete: the project's whole suite command, not a path- or pattern-scoped subset of it. No cached results, no "it passed earlier". A scoped run's totals are that scope's, never the suite's — quote them as the suite's and the claim is false even though a real command really ran.
 3. **READ** — the full output: exit code, failure count, warnings. Not the last line.
 4. **CONFIRM** — does the output actually support the claim? If no: report the real status, with the evidence. If yes: make the claim, with the evidence.
 
@@ -64,6 +64,7 @@ A test that survives the revert is testing nothing.
 | "I just ran it ten minutes ago" | The code changed since; run it again |
 | "The agent said success" | Read the diff |
 | "Partial check is enough" | Partial proves nothing about the rest |
+| "I ran the tests for the file I changed" | You ran a subset and quoted its count as the suite's. The regression lives in the file you did not pick |
 | "I'll batch-verify everything at the end" | Each claim is verified when made; a batch at the end lets earlier false claims stand as fact meanwhile |
 | "CI will catch it after merge" | CI runs after the claim ships; the gate is before you claim, not after someone else pays |
 | "Different phrasing, so the rule doesn't apply" | The rule covers paraphrases and implications |

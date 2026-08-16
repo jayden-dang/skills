@@ -1,6 +1,6 @@
 ---
 name: inspect-change
-version: 1.0.0
+version: 1.1.0
 description: Use when a branch, PR, diff, or set of changes needs review before merging —
   produces a two-axis verdict (repo-standards conformance plus
   spec/requirements conformance, reported separately) — when build-in-waves
@@ -107,7 +107,9 @@ Ready to merge? Yes | No | With fixes
 [1–2 sentences of technical reasoning]
 ```
 
-*Done when: both axis sections and the verdict are delivered.*
+Then the **banked** line. Where the verdict ships with **Minor** findings nobody will action on this branch, those findings exist nowhere but this report — list them and name `/record-debt` for the user to run. Critical and Important are never banked; they are fixed before the merge they are holding up.
+
+*Done when: both axis sections, the verdict, and the banked line are delivered — banked as "none to bank" when no Minor survives unactioned.*
 
 ## Inline fallback (no subagent capability)
 

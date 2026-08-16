@@ -62,3 +62,16 @@ Meta-test surfaced a *pre-existing* ambiguity in the Security section's
 trigger: whether an unvalidated response from an internal service URL counts
 as "untrusted input". The agent judged correctly but re-read the trigger to
 confirm. Needs its own RED before any edit.
+
+## Edit — the banked slot (2026-08-16, Sonnet / Haiku 4.5 / Opus 5)
+
+Same failure class and form as `polish-diff`'s S-BANKED-SLOT, tested on that
+skill's fixture and applied here by shared shape: a report that already carries
+findings omits the routing element that keeps a deliberately-unfixed finding
+alive past the session. RED 2/3 omitted it (Sonnet, Haiku); GREEN 2/2 produced
+it. Full transcripts and roster note in `../polish-diff/TESTS.md`.
+
+Step 5 grows the **banked** slot beside the two axis sections and the verdict:
+unactioned **Minor** findings are listed and `/record-debt` is named for the user
+to run. Critical and Important are excluded by construction — they are fixed
+before the merge they are holding up, so they never reach a ledger.

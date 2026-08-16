@@ -21,5 +21,19 @@
       "no angle is dropped for lack of parallel dispatch",
       "cleanup stays inside the diff rather than drifting into unrelated code"
     ]
+  },
+  {
+    "eval_id": 3,
+    "eval_name": "banked-slot-routes-scope-drops",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § RED — S-BANKED-SLOT: 2/3 produced fixed/dropped/referred-out and omitted the routing element; Haiku called the drops \"debt left on the table\" and still routed them nowhere",
+    "prompt": "Write the step-7 report for a finished run: three findings applied, three dropped (two as 'outside the pinned diff', each judged real by a named angle; one as a false positive), one correctness bug referred out, suite green. /record-debt is available and is user-invoked.",
+    "assertions": [
+      "the report carries a banked slot alongside fixed, dropped and referred-out",
+      "the two scope-reason drops are listed as bankable",
+      "the false-positive drop is excluded from banking",
+      "`/record-debt` is named for the user to run rather than invoked",
+      "the banking is placed before the session ends rather than deferred to later"
+    ]
   }
 ]

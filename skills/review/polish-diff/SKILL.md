@@ -1,6 +1,6 @@
 ---
 name: polish-diff
-version: 1.0.0
+version: 1.1.0
 description: Use when changed code needs a quality cleanup actually applied rather than
   reported — code that reimplements a helper the repo already has, needless
   complexity, dead code, wasted work or repeated I/O, tech debt, a bandaid fix
@@ -89,7 +89,11 @@ The permitted deletion, and its three conditions: a test may be **deleted** when
 
 ## 7. Report
 
-State what was fixed, what was dropped and why, and — separately — any correctness bug an agent noticed in passing, referred out per rule 2. If nothing survived triage, say the code was already clean. **That is a successful run, not a failed one**; four agents finding nothing is a real result, and manufacturing a finding to justify the pass is the one outcome worse than no findings at all. *Done when: fixed / dropped / referred-out are all stated.*
+State what was fixed, what was dropped and why, and — separately — any correctness bug an agent noticed in passing, referred out per rule 2.
+
+Then the fourth slot, **banked**. A drop whose reason was *scope* — outside the pinned diff, another module's problem — is a finding someone judged real and deliberately left unfixed, and it now exists nowhere but this report: it dies with the session. List those drops and name `/record-debt` for the user to run before the context closes. A drop recorded as a false positive is already fully recorded by its reason and is never banked.
+
+If nothing survived triage, say the code was already clean. **That is a successful run, not a failed one**; four agents finding nothing is a real result, and manufacturing a finding to justify the pass is the one outcome worse than no findings at all. *Done when: fixed / dropped / referred-out / banked are all stated — banked as "none to bank" when every drop was a false positive.*
 
 ## Inline fallback (no subagent capability)
 

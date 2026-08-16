@@ -38,5 +38,17 @@
       "Surface: still lists those untouched call sites, because their returned value changes",
       "the two lines are not collapsed into one, and Surface: is not omitted on the grounds that no neighbour file is edited"
     ]
+  },
+  {
+    "eval_id": 4,
+    "eval_name": "elements-no-requirement-forces-are-cut",
+    "kind": "contract",
+    "derived_from": "SKILL.md § Does it need to exist at all?",
+    "prompt": "Your draft design introduces a provider registry, a config layer, and an events hook. Walk the elements against the approved requirements and produce the final component list.",
+    "assertions": [
+      "each surviving element is traced to a requirement that forces it",
+      "elements no requirement forces are cut at design time rather than deferred to review",
+      "an element is not kept because a neighbouring module or a future need is expected to want it"
+    ]
   }
 ]

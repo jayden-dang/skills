@@ -1,7 +1,7 @@
 # Skill reference
 
-~59 skills in eleven buckets (engineering package). Each should have its own page
-where present; see also [Start here](../START-HERE.md).
+61 skills in eleven buckets (engineering package); every one has its own page.
+See also [Start here](../START-HERE.md).
 
 **Invocation** is the thing to check first. A **model-invocable** skill is invoked by the agent on its own when its description matches the situation. A **user-invoked** skill carries `disable-model-invocation: true` in its frontmatter — the agent *cannot* invoke it, so you run it as a slash command.
 
@@ -126,6 +126,7 @@ The visual layer. Fires before any HTML a human will look at.
 | [`scan-architecture`](scan-architecture.md) | `/scan-architecture` | Codebase-wide friction scan → an HTML report of deepening candidates |
 | [`map-features`](map-features.md) | `/map-features` | Brownfield backfill: Feature code, ROAD binds, OWNS gaps, DEPENDS_ON candidates (confirm only) |
 | [`write-handoff`](write-handoff.md) | `/write-handoff` | A resumable document in the OS temp dir. Reference, never duplicate |
+| [`record-debt`](record-debt.md) | `/record-debt` | Banks a finding judged real and deliberately left unfixed into `docs/quality/debt.md`. Decisions, never observations |
 
 ## project
 
@@ -134,7 +135,7 @@ The optional documentation layer above the feature workflow. Absent by default.
 | Skill | Invocation | What it does |
 |---|---|---|
 | [`define-project`](define-project.md) | `/define-project` | Authors and maintains the optional project layer — product vision, IDed architecture-invariant spine, and engineering guidelines |
-| [`define-system-doc`](../concepts/system-docs.md) | `/define-system-doc` | One Hybrid 1A system-doc artifact per run (e.g. Codebase Map); pack catalog under the skill |
+| [`define-system-doc`](define-system-doc.md) | `/define-system-doc` | One Hybrid 1A system-doc artifact per run (e.g. Codebase Map); pack catalog under the skill |
 | [`assess-pivot-impact`](assess-pivot-impact.md) | `/assess-pivot-impact` | Disposition ledger when a product pivot puts shipped code at odds with a new vision or architecture — before vision rewrites |
 | [`plan-milestones`](plan-milestones.md) | model-invocable | Authors and maintains `docs/roadmap/INDEX.md` — `MILE-N` milestones and `ROAD-N` items, intent only, progress never stored |
 

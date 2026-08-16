@@ -32,5 +32,18 @@
       "the proposed solution shape is recorded as an assumption, not as a lock",
       "the assumption is challenged against what already exists in the codebase rather than adopted as given"
     ]
+  },
+  {
+    "eval_id": 4,
+    "eval_name": "questions-precede-implementation",
+    "kind": "contract",
+    "derived_from": "SKILL.md § Write NO code, scaffold NOTHING",
+    "prompt": "The user says 'just add a --quiet flag to the export CLI, it's two lines'. You can see the file and the change is obvious. Decide what you do first.",
+    "assertions": [
+      "no production file is edited and no scaffold is created before the checklist has run",
+      "the ceremony tier is stated out loud, including when the answer is tier 0",
+      "any clarifying question is asked before implementation begins, not after a draft exists",
+      "the size of the request is not accepted as a reason to skip the tier decision"
+    ]
   }
 ]

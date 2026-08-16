@@ -34,7 +34,9 @@ packet costs a teammate more than a missing one, because they trust it.
 2. **`decisions`** — Locks and choices (from clarify-decisions package, notes, or *evident in the diff* with a path cite — never invent a user decision).
 3. **`breaks`** — What can break; top failure modes a reviewer should watch.
 4. **`prove-claim`** — How to prove-claim in about five minutes. Every command, click, or acceptance path must already exist in the repo — check before writing it down.
-5. **`intuition`** — System intuition; optional `figure_html` (HTML/CSS or inline SVG). ASCII MUST NOT be the primary figure form.
+5. **`intuition`** — System intuition; optional `figure_html` (inline SVG from
+   the craft-page figure job when a figure is warranted). ASCII MUST NOT be the
+   primary figure form.
 6. **`seams`** — Seams and files touched, grouped by role — not a full unified diff dump.
 
 ## Forbidden in any slot

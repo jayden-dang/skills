@@ -1,6 +1,6 @@
 ---
 name: scan-architecture
-version: 1.0.0
+version: 1.1.0
 description: Produces a codebase-wide architecture and technical-debt scan, ranked by where
   refactoring pays off next. Run it with /scan-architecture.
 disable-model-invocation: true
@@ -27,7 +27,7 @@ Apply the **deletion test** to anything suspect: if this module vanished, how mu
 
 ## 2. Present the report
 
-REQUIRED SUB-SKILL: use `craft-page` before writing any markup. The treatment is utilitarian — a real type scale, a chosen palette, no hero — and the report is scanned, not read: the confidence badge and the before/after sketch have to read at a glance.
+REQUIRED SUB-SKILL: use `craft-page` before writing any markup. The treatment is utilitarian — a real type scale, a chosen palette, no hero — and the report is scanned, not read: the confidence badge and the before/after sketch have to read at a glance. The sketch is a primary figure: name the job `before/after structure` and follow `craft-page`'s diagram recipe (recipe-authored inline SVG is hand-built).
 
 Write a **self-contained HTML file** (inline CSS/SVG only — no external scripts, stylesheets, or CDNs) to the OS temp directory (`$TMPDIR`, falling back to `/tmp`; `%TEMP%` on Windows) as `architecture-review-<timestamp>.html`, so nothing lands in the repo. Open it (`open` / `xdg-open` / `start`) and tell the user the absolute path.
 
@@ -38,7 +38,7 @@ One card per candidate:
 - **Proposed direction** — one sentence, in the strict vocabulary: what would deepen
 - **Win** — bullets of at most 6 words each, named as qualities ("locality: change lands in one module", "interface shrinks, tests hit one seam")
 - **Confidence badge** — exactly one of `Strong` / `Worth exploring` / `Speculative`
-- **Before/after structure sketch** — side-by-side drawings (hand-built divs/SVG): shallow-vs-deep mass diagrams, fan-out collapses, seam lines. The sketch carries the argument; if it needs a paragraph to explain, redraw it.
+- **Before/after structure sketch** — side-by-side recipe SVG (`before/after structure`): shallow-vs-deep mass diagrams, fan-out collapses, seam lines. The sketch carries the argument; if it needs a paragraph to explain, redraw it.
 
 End with a top-recommendation section: which candidate first, one sentence why. Then ask the user which candidate they want to pursue.
 

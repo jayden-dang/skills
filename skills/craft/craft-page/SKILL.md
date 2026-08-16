@@ -1,10 +1,13 @@
 ---
 name: craft-page
-version: 1.0.0
+version: 1.1.0
 description: Use before the first line of markup for any HTML a human will look
   at — a review-product-flow test guide, a report, a dashboard, a landing page, a published
-  artifact, a standalone .html handoff. Produces a written design plan (palette,
-  type pairing, layout concept) and a page derived from it — theme-aware,
+  artifact, a standalone .html handoff. Also when a primary figure, structure
+  sketch, architecture diagram, sequence, or flowchart must be drawn inside that
+  page or packet. Produces a written design plan (palette, type pairing, layout
+  concept) and a page derived from it — and when a figure is warranted, a named
+  figure job plus inline SVG from the diagram recipe — theme-aware,
   self-contained, specific to its subject instead of templated. Also when a
   page's colors, typography, dark mode, spacing, or visual treatment need
   deciding, or when a page has come out looking generic.
@@ -46,8 +49,19 @@ Then write the plan — three REQUIRED slots, filled in before any markup:
   if the page has any.
 - **Layout** — the layout concept in one or two sentences.
 
-*Done when: the plan is written and every color and type decision in the page
-traces back to a slot in it.*
+WHEN the page or packet carries a **primary figure** (structure sketch,
+topology, sequence, flowchart — including a study-change Intuition figure or
+brief-team `figure_html`), add a fourth REQUIRED slot:
+
+- **Figure job** — exactly one of `before/after structure`,
+  `topology / architecture`, `sequence`, `flowchart`.
+
+Then load `references/diagram.md` and derive the figure from that job. This
+slot fires even when page restyle is skipped. There is no fifth job in v1.
+
+*Done when: the plan is written, every color and type decision in the page
+traces back to a slot in it, and any primary figure names one of the four
+jobs and follows `references/diagram.md`.*
 
 ## 3. Fundamentals — every page, every treatment
 
@@ -92,9 +106,11 @@ sections. Structure the cascade so it can't silently undo your spacing.
 
 **Build cleanly.** Visual bugs hide in the gap between source and output: close
 every non-void element, double-quote attributes, give keyboard focus a visible
-state, respect `prefers-reduced-motion`. For generative or decorative graphics
-reach for Canvas or WebGL rather than hand-authoring long SVG path data. Keep
-the page self-contained — inline CSS and JS, embed assets as `data:` URIs.
+state, respect `prefers-reduced-motion`. WHEN the figure job is one of the four
+in `references/diagram.md`, write inline SVG from that recipe — that SVG *is*
+hand-built. For generative or decorative graphics that are not those jobs,
+reach for Canvas or WebGL rather than long path data. Keep the page
+self-contained — inline CSS and JS, embed assets as `data:` URIs.
 
 **Write the copy from the user's side of the screen.** Words are design
 material. Name things by what people recognize, not how the system is built (a
@@ -114,10 +130,6 @@ design. Surface the summary before the detail; encode state in form as well as
 number — a pill, a chip, a severity stripe — so what needs attention reads at a
 glance. Semantic color (good / warning / critical) is separate from the accent
 and doesn't count as your accent. What's interactive looks interactive.
-
-If the page carries a chart, graph, or stat tile, load `dataviz` before writing
-the chart code. If it's a published artifact needing live data, shared state, or
-self-republishing, load `artifact-capabilities` before declaring capabilities.
 
 ## 4. Spend the freedom somewhere other than the house style
 
@@ -168,3 +180,16 @@ revised plan exactly.
 | "I'll link the font from Google Fonts" | Blocked by CSP when published, unavailable offline when handed over — it fails silently to a fallback face and the type plan evaporates |
 | "Cream, a serif, and a terracotta accent looks tasteful" | It is the current default look. Tasteful and templated at once — spend the freedom elsewhere unless the user asked for it |
 | "I'll number the sections, it looks structured" | Numbering claims the content is a sequence. If order carries no information, it's decoration that lies |
+| "Restyle was skipped, so craft-page does not apply to the figure" | Figure-gated. A primary figure still names a job and loads `references/diagram.md` |
+| "I'll load `dataviz` / `artifact-capabilities`" | Those names are not in this pack. Do not search for them. Charts are out of the v1 job set |
+| "A flex row of boxes and → is a topology diagram" | Topology is inline SVG from the recipe. CSS arrows encode a path, not containment |
+| "The figure needs its own rust/teal lock to read at a glance" | Inherit the page or shell tokens. A second palette is the one-color problem on the figure |
+
+## Red Flags
+
+- A primary figure with no spoken job, or a name that is not one of the four
+- Writing the Intuition / `figure_html` / scan sketch without loading
+  `references/diagram.md`
+- Hunting for `dataviz` or `artifact-capabilities`
+- Mermaid, a webfont CDN, or a second `.svg`/PNG file next to the page
+- CSS `→` lists or Canvas used for one of the four figure jobs

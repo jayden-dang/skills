@@ -1,6 +1,6 @@
 ---
 name: study-change
-version: 1.0.0
+version: 1.1.0
 description: Produces a single HTML comprehension packet for a code change — Background, Intuition,
   Code, Quiz. Run it with /study-change.
 disable-model-invocation: true
@@ -92,9 +92,14 @@ Stop and re-read the Iron Law if you notice yourself:
 8. Write Handoff: absolute path only. Never claim quiz pass/fail.
    **Done when:** user has the path (or the hard-stop reason).
 
-Optional craft: `REQUIRED SUB-SKILL: use craft-page` only to refine styling of
-the **same** single file — never a second deliverable; default skips craft-page
-(**craft-page optional**).
+Optional restyle: `REQUIRED SUB-SKILL: use craft-page` only to refine styling of
+the **same** single file — never a second deliverable; default skips restyle
+(**craft-page restyle optional**).
+
+WHEN writing the Intuition **primary figure**, `REQUIRED SUB-SKILL: use
+craft-page` for the figure job — this is not a restyle. Name one of the four
+jobs and derive inline SVG from its diagram recipe. ASCII is still not the
+primary form.
 
 **Done when (skill):** one openable HTML path, or honest hard-stop with no partial
 HTML presented as success.

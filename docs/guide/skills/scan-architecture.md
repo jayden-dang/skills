@@ -8,7 +8,7 @@
 | **Invocation** | **user-invoked only** — run `/scan-architecture`. `disable-model-invocation: true`: no skill may auto-invoke it; other skills only name it for the user to run |
 | **Reads** | `CONTEXT.md` (the domain names good seams), `docs/adr/` (decisions not to re-litigate), the codebase (via an explore subagent) |
 | **Writes** | a self-contained HTML report in the OS temp directory (never the repo); no code changes of its own |
-| **Calls** | an explore subagent, [`craft-page`](craft-page.md) (required, before the report's markup), [`clarify-decisions`](clarify-decisions.md), [`define-domain`](define-domain.md), then [`test-first`](test-first.md)/[`prove-claim`](prove-claim.md) (tier 0) or [`frame-change`](frame-change.md) (tier 1+) |
+| **Calls** | an explore subagent, [`craft-page`](craft-page.md) (required, before the report's markup; sketch uses the figure job `before/after structure`), [`clarify-decisions`](clarify-decisions.md), [`define-domain`](define-domain.md), then [`test-first`](test-first.md)/[`prove-claim`](prove-claim.md) (tier 0) or [`frame-change`](frame-change.md) (tier 1+) |
 | **Called by** | nobody — the user runs it directly |
 
 ## When it fires
@@ -58,7 +58,7 @@ One card per candidate:
 | **Proposed direction** | one sentence, in the strict vocabulary: what would deepen |
 | **Win** | bullets of at most 6 words each, named as qualities ("locality: change lands in one module") |
 | **Confidence badge** | exactly one of `Strong` / `Worth exploring` / `Speculative` |
-| **Before/after structure sketch** | side-by-side hand-built divs/SVG — shallow-vs-deep mass, fan-out collapses, seam lines |
+| **Before/after structure sketch** | side-by-side recipe SVG (`before/after structure`) — shallow-vs-deep mass, fan-out collapses, seam lines |
 
 The sketch carries the argument; if it needs a paragraph to explain, redraw it. The confidence badge is doing real work — it tells the user how much to trust the direction before investing clarify-decisions time in it. End with a top-recommendation section: which candidate first, one sentence why.
 

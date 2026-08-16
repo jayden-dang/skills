@@ -8,7 +8,7 @@
 | **Invocation** | model-invocable (the agent calls it on its own) |
 | **Reads** | the design system already in the repo — `CLAUDE.md`, `docs/agents/*.md`, a tokens or theme file, existing component styles |
 | **Writes** | a three-slot design plan (color / type / layout) before any markup, then the page derived from it |
-| **Called by** | [`review-product-flow`](review-product-flow.md) (**optional** craft only — default is the checked-in review-product-flow shell), [`scan-architecture`](scan-architecture.md) (required, before the architecture report's markup) |
+| **Called by** | [`scan-architecture`](scan-architecture.md) (required, before the architecture report's markup; sketch is figure-gated `before/after structure`), [`study-change`](study-change.md) (optional restyle; **required** for the Intuition primary figure), [`brief-team`](brief-team.md) (figure only, when `figure_html` is warranted), [`review-product-flow`](review-product-flow.md) (**optional** page craft only — default is the checked-in shell) |
 
 ## Where it comes from
 
@@ -59,7 +59,11 @@ Every page, every treatment. The skill carries them in full; the load-bearing on
 - **Structure encodes something true** — numbered markers (01 / 02 / 03) are right only when the content actually is a sequence.
 - **UI ≠ document** — a dashboard is scanned and operated: summary before detail, state encoded in form as well as number, semantic color kept separate from the accent.
 
-Two conditional hand-offs: `dataviz` before writing any chart code, and `artifact-capabilities` before declaring runtime capabilities on a published artifact.
+When a primary figure is warranted, a fourth plan slot names the figure job
+(`before/after structure`, `topology / architecture`, `sequence`, `flowchart`)
+and the figure is derived from `references/diagram.md`. That load fires even
+when page restyle is skipped. There is no `dataviz` or `artifact-capabilities`
+skill in this pack.
 
 ## 4. The house style to avoid
 
@@ -76,5 +80,7 @@ The principles: the hero is a thesis; typography carries the personality; motion
 ## Related
 
 - [`review-product-flow`](review-product-flow.md) — optional caller for custom craft; default review-product-flow path is cases YAML + shell `render`, not a fresh craft-page pass
-- [`scan-architecture`](scan-architecture.md) — the other caller. Its ephemeral HTML report is the UI-not-a-document case: cards scanned for a badge and a structure sketch, not read in order.
+- [`scan-architecture`](scan-architecture.md) — required page craft. The before/after sketch is the figure branch (`before/after structure`).
+- [`study-change`](study-change.md) — restyle optional; Intuition primary figure is figure-gated.
+- [`brief-team`](brief-team.md) — no restyle; `figure_html` is figure-gated when warranted.
 - [`author-skills`](author-skills.md) — the standard this skill is written against.

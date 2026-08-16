@@ -1,6 +1,6 @@
 ---
 name: brief-team
-version: 1.0.0
+version: 1.1.0
 description: Produces a team-shared HTML pitch-and-map packet under docs/explainers/
   for a git range. Run it with /brief-team.
 disable-model-invocation: true
@@ -104,7 +104,7 @@ exactly — every REQUIRED slot, in order.
    **Done when:** one `[a-z0-9-]` slug, read off a rung you can name.
 7. **Author sections** — follow `references/section-contract.md`; redact secrets per `references/passive-data-safety.md`.
    **Done when:** all six slots meet that file's substance bar; none is unfilled.
-8. **Figure** — WHERE the change is architecture-affecting or hard to grasp in prose alone: one primary figure in intuition, in the form `section-contract.md` names. WHERE not warranted: prose only; no decorative diagram.
+8. **Figure** — WHERE the change is architecture-affecting or hard to grasp in prose alone: one primary figure in intuition. WHEN that figure is warranted, `REQUIRED SUB-SKILL: use craft-page` for the figure job only (not a shell restyle): name one of the four jobs and put recipe SVG in `figure_html`. WHERE not warranted: prose only; no decorative diagram.
    **Done when:** one figure exists, or you can say why none is warranted.
 9. **Shell** — copy `shell/packet.html`; replace `/* __PACKET_DATA__ */` with one `window.__PACKET__ = { … };` assignment whose values are **double-quoted** JSON strings, carrying escaped content; keep the rest of the shell JS intact. Step 11 matches that form, so a single-quoted object fails verification even when it renders.
    **Done when:** the marker is consumed and every one of the six keys holds real content.

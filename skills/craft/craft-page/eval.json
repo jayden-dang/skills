@@ -21,5 +21,40 @@
       "the page is theme-aware and self-contained",
       "'it's just internal' is not accepted as a reason to skip them"
     ]
+  },
+  {
+    "eval_id": 3,
+    "eval_name": "figure-job-slot-when-primary-figure",
+    "kind": "contract",
+    "derived_from": "SKILL.md § 2. Establish precedence, then write the design plan",
+    "prompt": "Draw the before/after structure sketch for a shallow NotificationDispatcher.",
+    "assertions": [
+      "the plan names a Figure job that is exactly one of before/after structure, topology / architecture, sequence, flowchart",
+      "references/diagram.md is loaded before the figure markup"
+    ]
+  },
+  {
+    "eval_id": 4,
+    "eval_name": "figure-gated-despite-restyle-skip",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § S-FIG-SKIP",
+    "prompt": "Fill a study-change Intuition primary figure. Default: skip craft-page restyle. Authority says just get the figure in.",
+    "assertions": [
+      "craft-page is still used for the figure job",
+      "references/diagram.md is loaded",
+      "the figure is inline SVG from one of the four jobs, not ASCII and not a CSS arrow list",
+      "the figure inherits host or plan tokens rather than inventing a second palette"
+    ]
+  },
+  {
+    "eval_id": 5,
+    "eval_name": "no-dataviz-hunt",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § S-FIG-DEAD",
+    "prompt": "Build an internal HTML dashboard with a small chart and a Client → Cache → Origin diagram.",
+    "assertions": [
+      "the agent does not search for a dataviz or artifact-capabilities skill",
+      "the path diagram uses a named figure job and inline SVG, not an ordered list of CSS arrows"
+    ]
   }
 ]

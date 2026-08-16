@@ -101,7 +101,7 @@ The visual layer. Fires before any HTML a human will look at.
 
 | Skill | Invocation | What it does |
 |---|---|---|
-| [`craft-page`](craft-page.md) | model | Names the treatment, writes the color/type/layout plan, holds the page fundamentals |
+| [`craft-page`](craft-page.md) | model | Names the treatment, writes the color/type/layout plan, holds the page fundamentals; figure-gated diagram recipes when a primary figure is warranted |
 
 ## ship
 

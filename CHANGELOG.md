@@ -1,5 +1,18 @@
 # Changelog
 
+## Unreleased
+
+### `craft-page` figure branch (v1.1.0)
+
+Job/type recipes for primary figures. Chrome (checked-in shells) unchanged.
+
+- Fourth plan slot: figure job ∈ `before/after structure` · `topology / architecture` · `sequence` · `flowchart`
+- Sibling `references/diagram.md` (inherit host tokens; inline SVG; no mermaid/CDN/second file)
+- Figure-gated: study-change Intuition and brief-team `figure_html` load craft-page for the figure even when restyle is skipped
+- `scan-architecture` sketch = `before/after structure` (recipe SVG is hand-built)
+- Removed dangling `dataviz` / `artifact-capabilities` names
+- RED/GREEN on grok-4.6 in `skills/craft/craft-page/TESTS.md`
+
 ## 1.0.0 — 2026-08-08
 
 First **stable 1.0.0** of Engineer Pack. Range: `v1.0.0-pre-released` → this cut

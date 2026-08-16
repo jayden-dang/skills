@@ -8,7 +8,7 @@
 | **Invocation** | user-invoked (`/study-change`) |
 | **Reads** | Local git (resolved range), optional `.skills/decisions/` (read-only), optional `## Comprehend-change` / env for output dir |
 | **Writes** | One HTML file **outside** the target repo worktree |
-| **Calls** | Optional [`craft-page`](craft-page.md) (craft only — not required) |
+| **Calls** | Optional [`craft-page`](craft-page.md) restyle; **required** for the Intuition primary figure (figure-gated, not a restyle) |
 | **Called by** | none in v1 (no soft-prompts from land-branch / inspect-change) |
 
 ## When to reach for it

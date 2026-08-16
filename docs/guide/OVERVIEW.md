@@ -93,6 +93,7 @@ Three ways in: by role, by problem, or by phase.
 - [Requirement IDs](concepts/requirement-ids.md) — grammar, immutability, status lifecycle
 - [The artifact model](concepts/artifacts.md) — every file the system produces
 - [The gates](concepts/gates.md) — the four Iron Laws
+- [Verification layers](concepts/verification-layers.md) — computational / judgment / behavioral / human (map only; skills do not load this file)
 - [The skill model](concepts/skill-model.md) — how skills are built and how they compose
 - [Feature overlap](concepts/feature-graph.md) — the horizontal layer: `load-subgraph` over live specs
 

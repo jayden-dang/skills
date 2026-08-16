@@ -78,14 +78,19 @@ Present the reports under `## Standards` and `## Spec` headings — lightly clea
 
 When step 2 ended in an explicit "no spec", the Spec axis was never dispatched, and the report says so under the `## Spec` heading rather than leaving it silently empty.
 
-Every finding carries: severity (Critical / Important / Minor), file:line, why it matters, and a suggested fix unless obvious. The skill ends with the verdict block:
+Every finding carries: severity (Critical / Important / Minor), file:line, why it matters, and a suggested fix unless obvious. After the verdict comes the banked slot:
 
 ```
 Ready to merge? Yes | No | With fixes
 [1–2 sentences of technical reasoning]
 ```
 
-*Done when both axis sections and the verdict are delivered.*
+Then the **banked** slot: each unactioned Minor as a paste-ready
+[`/record-debt`](record-debt.md) entry **without** a `DEBT-N`. Name
+`/record-debt` for the user. Critical and Important are never banked. No
+Minors → say "none to bank".
+
+*Done when both axis sections, the verdict, and the banked slot are delivered.*
 
 ## The twelve baseline smells
 
@@ -146,5 +151,6 @@ Two smaller instructions carry weight for the same reason. **Skip anything tooli
 ## See also
 
 - [`vet-feedback`](vet-feedback.md) — the other side: how the author evaluates these findings as claims
+- [`record-debt`](record-debt.md) — banks unactioned Minors from the step-5 slot
 - [Traceability](../concepts/traceability.md) — why the Spec axis checks every covered ID for a tagged test
 - [`configure-repo`](configure-repo.md) — sets up the `docs/specs/INDEX.md` registry and `docs/agents/project.md` the review leans on

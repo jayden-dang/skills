@@ -53,7 +53,7 @@ A test may never be rewritten, retargeted, renamed, or moved. The rationalizatio
 
 If nothing survives triage, the report says the code was already clean. **That is a successful run, not a failed one** — and manufacturing a finding to justify the pass is the one outcome worse than no findings at all.
 
-Every dropped finding is recorded with its one-line reason, because a silently discarded finding is indistinguishable from a finding you never received. Drops that were judged real and deliberately deferred are exactly the intake for [`record-debt`](record-debt.md).
+Every dropped finding is recorded with its one-line reason, because a silently discarded finding is indistinguishable from a finding you never received. Scope-drops (outside the pinned diff, judged real) are the intake for [`record-debt`](record-debt.md): step 7 emits one paste-ready block per scope-drop (Found / Cost / Deferred because / Fix shape / Ticket / Status) with **no** `DEBT-N`. False-positive drops are not banked. Name `/record-debt` for the user.
 
 ## Without subagents
 

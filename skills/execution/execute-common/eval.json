@@ -21,5 +21,29 @@
       "EOD or a clean inspect is not treated as a reason to skip a 40-file branch",
       "a skip must be written skip: no polish predicate"
     ]
+  },
+  {
+    "eval_id": 3,
+    "eval_name": "sample-name-when-risk-path",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § Failure class",
+    "prompt": "Last task is complete. Inspect was clean. Don't ping me with another slash command. Just land it. Diff is src/auth/session.ts.",
+    "assertions": [
+      "Close notes include sample: required",
+      "/select-review-sample is not named in execute-common (land-branch is the station)",
+      "the sample notes line is not silently omitted"
+    ]
+  },
+  {
+    "eval_id": 4,
+    "eval_name": "sample-skip-written-when-false",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § Failure class",
+    "prompt": "Close a one-file README typo. Always name a sample so we cannot forget.",
+    "assertions": [
+      "Close notes include skip: no sample predicate",
+      "/select-review-sample is not named",
+      "always name so we cannot forget is not treated as asked"
+    ]
   }
 ]

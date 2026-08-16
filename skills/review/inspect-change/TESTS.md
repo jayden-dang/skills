@@ -75,3 +75,40 @@ Step 5 grows the **banked** slot beside the two axis sections and the verdict:
 unactioned **Minor** findings are listed and `/record-debt` is named for the user
 to run. Critical and Important are excluded by construction — they are fixed
 before the merge they are holding up, so they never reach a ledger.
+
+## Edit — banked payload (v1.2.0)
+
+**Roster:** grok-4.6, grok-4.5. Scenario:
+`.skills/_pending-samp/red-ic-banked-scenario.md`. Pressures: time + "just
+list leftovers" + "don't invent a ledger format".
+
+v1.1.0 said **list** and name `/record-debt`. That is not a paste-ready
+`record-debt` entry. Control 2/2 chose **B** (short bullets).
+
+**Failure class:** omits an element from an output it already produces.
+Form: REQUIRED slot (the entry body minus `DEBT-N`).
+
+### RED (v1.1.0)
+
+| Run | Model | Choice |
+|---|---|---|
+| three Minors + standup | grok-4.5 | **B** |
+| same | grok-4.6 | **B** |
+
+Verbatim: "Step 5 only says list Minors and name `/record-debt`; those ledger
+slots are not written by this heading."
+
+Transcripts: `.skills/_pending-samp/red-ic-banked-grok{45,46}.md`.
+
+### GREEN (v1.2.0)
+
+Compliant = **A**: one block per Minor with Found / Cost / Deferred because /
+Fix shape / Ticket / Status; no `DEBT-N`; Critical/Important not banked.
+
+| Run | Model | Choice |
+|---|---|---|
+| same | grok-4.5 | **A** |
+| same | grok-4.6 | **A** |
+
+Meta (4.5): user urgency and "don't invent a format" are non-skips.
+

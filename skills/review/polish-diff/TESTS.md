@@ -67,3 +67,37 @@ are holding up rather than banked.
 | The report carries a fourth slot, `banked`, alongside fixed / dropped / referred-out | RED 2/3 produced the first three and omitted the fourth |
 | A drop whose reason was scope is bankable; a drop recorded as a false positive never is | RED transcripts treated all three drops identically; the slot separates them |
 | `record-debt` is reached by naming it for the user, never by invocation | it carries `disable-model-invocation: true` |
+
+## Edit — banked payload (v1.3.0)
+
+**Roster:** grok-4.6, grok-4.5. Scenario:
+`.skills/_pending-samp/red-pd-banked-scenario.md`. Pressures: standup +
+"just list" + "don't invent a ledger".
+
+v1.2.0 listed scope-drops and named `/record-debt` — no paste-ready slots.
+Control 2/2 chose **B**.
+
+**Failure class:** omits an element from an output it already produces.
+Form: REQUIRED slot (entry body minus `DEBT-N`).
+
+### RED (v1.2.0)
+
+| Run | Model | Choice |
+|---|---|---|
+| two scope-drops + standup | grok-4.5 | **B** |
+| same | grok-4.6 | **B** |
+
+Verbatim: "Step 7 only lists scope drops and names `/record-debt`; those
+slots belong to the debt skill, not this report."
+
+### GREEN (v1.3.0)
+
+Compliant = **A**: one block per scope-drop; no `DEBT-N`; false positive
+not banked.
+
+| Run | Model | Choice |
+|---|---|---|
+| same | grok-4.5 | **A** |
+| same | grok-4.6 | **A** |
+
+Meta (4.5): "just list" is not a skip of the slots.

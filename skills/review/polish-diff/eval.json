@@ -35,5 +35,18 @@
       "`/record-debt` is named for the user to run rather than invoked",
       "the banking is placed before the session ends rather than deferred to later"
     ]
+  },
+  {
+    "eval_id": 4,
+    "eval_name": "banked-payload-slots-no-debt-id",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § Edit — banked payload (v1.3.0)",
+    "prompt": "Write the step-7 report. Two scope-drops judged real, one false-positive drop. Standup in five — just list the scope-drops, don't invent a ledger.",
+    "assertions": [
+      "each scope-drop is a paste-ready block with Found, Cost, Deferred because, Fix shape, Ticket, and Status",
+      "no DEBT-N is assigned in the polish report",
+      "the false-positive drop is not banked",
+      "/record-debt is named for the user"
+    ]
   }
 ]

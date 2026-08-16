@@ -30,7 +30,20 @@ is clean. User-facing behavior that has not been driven through the running
 system also runs [`validate-feature`](validate-feature.md) before Merge or PR
 is offered.
 
-**Any failure = withhold merge and PR.** Still offer discard / block.
+This skill is the **one human station** after close: sample withhold,
+optional `/record-debt` for this session's banked blocks, and the menu —
+all in the same message. `/study-change` and `/brief-team` are still
+named later when their predicates hold; they never withhold merge/PR.
+
+After verify is green, a **sample withhold** also applies: if the diff hits
+a B1 risk path, is more than 15 files, or the user asked for a sample, and
+this session has no attention allocation and the user has not typed
+`unsampled`, merge and PR stay withheld. Name [`/select-review-sample`](select-review-sample.md)
+for the user — do not start it. That skill stays an aid; this skill is the
+gate.
+
+**Any failure (verify, acceptance, or sample withhold) = withhold merge and PR.**
+Still offer discard / block.
 
 ## Prepare locally
 
@@ -41,9 +54,10 @@ are authored from the live diff. That text **is** the reviewer truth.
 
 ## The menu
 
-Five options when the gate is green (merge / PR / keep / discard / block).
-A request to "just open a PR" is option 2 after the menu is shown — not a
-skip of the gate or the menu.
+Five options when the gate is green (merge / PR / keep / discard / block),
+worded exactly as the skill lists them. Banked leftovers reprint in that
+same message. A request to "just open a PR" is option 2 after the menu is
+shown — not a skip of the gate or the menu.
 
 ## Executing a PR
 
@@ -53,6 +67,7 @@ session title and body written to process-temp files (not
 
 ## See also
 
+- [Verification layers](../concepts/verification-layers.md) — human withhold vs computational gate
 - [`prove-claim`](prove-claim.md) — the gate
 - [`record-verdict`](record-verdict.md) — record-before-crossing
 - [`cut-release`](cut-release.md) — version cut, not a branch merge

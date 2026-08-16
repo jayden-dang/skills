@@ -1,6 +1,6 @@
 ---
 name: build-inline
-version: 1.1.1
+version: 1.1.2
 description: Use when an approved tasks.md needs controller-side sequential
   execution without implementer subagents — inline TDD per task, progress
   ledger, stop-on-blocker, whole-branch review — for no-subagent environments
@@ -35,7 +35,7 @@ carry the record.
 **Shared controller recipe:** REQUIRED SUB-SKILL: use `execute-common`.
 Load `../execute-common/SKILL.md` when Setup preflight / ledger / todos or
 After the last task starts. That file is the one home for those steps and
-for the polish / product-walk predicates.
+for the close-sequence predicates.
 This file owns the inline iron law and the controller-as-implementer loop.
 
 ## The Iron Law

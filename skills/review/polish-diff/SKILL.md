@@ -1,6 +1,6 @@
 ---
 name: polish-diff
-version: 1.2.0
+version: 1.3.0
 description: Use when changed code needs a quality cleanup actually applied rather than
   reported — code that reimplements a helper the repo already has, needless
   complexity, dead code, wasted work or repeated I/O, tech debt, a bandaid fix
@@ -92,7 +92,20 @@ The permitted deletion, and its three conditions: a test may be **deleted** when
 
 State what was fixed, what was dropped and why, and — separately — any correctness bug an agent noticed in passing, referred out per rule 2.
 
-Then the fourth slot, **banked**. A drop whose reason was *scope* — outside the pinned diff, another module's problem — is a finding someone judged real and deliberately left unfixed, and it now exists nowhere but this report: it dies with the session. List those drops and name `/record-debt` for the user to run before the context closes. A drop recorded as a false positive is already fully recorded by its reason and is never banked.
+Then the fourth slot, **banked**. A drop whose reason was *scope* — outside the pinned diff, another module's problem — is a finding someone judged real and deliberately left unfixed, and it now exists nowhere but this report. For **each** such drop emit this block — same slot names as `record-debt`'s **The entry**, except the heading has **no** `DEBT-N` (`/record-debt` stamps the ID). Name `/record-debt` for the user to run before the context closes. A drop recorded as a false positive is already fully recorded by its reason and is never banked.
+
+```
+### `<path>` — <one-line finding>
+
+- **Found:** `<YYYY-MM-DD>` · polish-diff on `<branch or range>`
+- **Cost:** <what this makes harder or riskier, concretely>
+- **Deferred because:** outside the pinned diff
+- **Fix shape:** <one line | Unknown>
+- **Ticket:** none
+- **Status:** open
+```
+
+A slot with no answer gets `Unknown` — never omit the line. "Just list the scope-drops" / "don't invent a ledger" is not a skip of these slots. Minting `**DEBT-N**` here is a collision; do not.
 
 If nothing survived triage, say the code was already clean. **That is a successful run, not a failed one**; four agents finding nothing is a real result, and manufacturing a finding to justify the pass is the one outcome worse than no findings at all. *Done when: fixed / dropped / referred-out / banked are all stated — banked as "none to bank" when every drop was a false positive.*
 

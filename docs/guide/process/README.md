@@ -40,14 +40,17 @@ execute family               build-in-waves | build-by-story | build-inline
 inspect-change                  whole-branch, two axes: Standards + Spec-by-ID
       │
       ▼
-[polish-diff if predicate]   execute-common close sequence — polish / product-walk
+[polish-diff if predicate]   execute-common close sequence — polish / sample / product-walk
       │                      only when their observable predicates hold
       ▼
 validate-feature             drive the running system through the spec's user-facing
                              behaviors (API + UI); fix; promote to domain-language tests
       │
       ▼
-land-branch                prove-claim + audit-trace gate, author commits + PR text, then merge / PR / keep / discard / block
+[sample notes]             execute-common writes sample: required or skip
+      │
+      ▼
+land-branch                one human station: sample withhold + optional /record-debt + menu
       │
       ▼
 cut-release                      full prove-claim + clean audit-trace → changelog from commit

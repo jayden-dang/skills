@@ -1,6 +1,6 @@
 ---
 name: inspect-change
-version: 1.1.0
+version: 1.2.0
 description: Use when a branch, PR, diff, or set of changes needs review before merging —
   produces a two-axis verdict (repo-standards conformance plus
   spec/requirements conformance, reported separately) — when build-in-waves
@@ -107,9 +107,22 @@ Ready to merge? Yes | No | With fixes
 [1–2 sentences of technical reasoning]
 ```
 
-Then the **banked** line. Where the verdict ships with **Minor** findings nobody will action on this branch, those findings exist nowhere but this report — list them and name `/record-debt` for the user to run. Critical and Important are never banked; they are fixed before the merge they are holding up.
+Then the **banked** slot. Where the verdict ships with **Minor** findings nobody will action on this branch, those findings exist nowhere but this report. For **each** such Minor emit this block — same slot names as `record-debt`'s **The entry**, except the heading has **no** `DEBT-N` (`/record-debt` stamps the ID). Name `/record-debt` for the user to run. Critical and Important are never banked.
 
-*Done when: both axis sections, the verdict, and the banked line are delivered — banked as "none to bank" when no Minor survives unactioned.*
+```
+### `<path>` — <one-line finding>
+
+- **Found:** `<YYYY-MM-DD>` · inspect-change on `<branch or range>`
+- **Cost:** <what this makes harder or riskier, concretely>
+- **Deferred because:** unactioned Minor on this branch
+- **Fix shape:** <one line | Unknown>
+- **Ticket:** none
+- **Status:** open
+```
+
+A slot with no answer gets `Unknown` — never omit the line. "Just list the leftovers" / "don't invent a ledger format" is not a skip of these slots. Minting `**DEBT-N**` here is a collision; do not.
+
+*Done when: both axis sections, the verdict, and the banked slot are delivered — banked as "none to bank" when no Minor survives unactioned.*
 
 ## Inline fallback (no subagent capability)
 

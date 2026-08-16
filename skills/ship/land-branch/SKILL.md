@@ -1,13 +1,16 @@
 ---
 name: land-branch
-version: 2.0.0
+version: 2.2.1
 description: >
   Use when a feature branch is complete and an integration decision is needed
   — merge, open a pull request, push, keep, discard, or block — or when
   finished work still needs reviewer-readable commits and a pull-request
   description. Produces the crossing (or keep / discard / block) with
-  agent-authored PR title and body as reviewer truth. Not for reviewing an
-  existing PR (inspect-change) or cutting a version (cut-release).
+  agent-authored PR title and body as reviewer truth, or a red-path withhold
+  when verify, acceptance, or a required attention allocation is missing.
+  Not for reviewing an existing PR (inspect-change), cutting a version
+  (cut-release), or allocating human attention over a range
+  (select-review-sample).
 ---
 
 # Finish a Branch
@@ -35,10 +38,60 @@ If the branch has user-facing behavior that has not been driven through the
 running system, REQUIRED SUB-SKILL: use `validate-feature` before offering
 Merge or PR.
 
-**On failure:** show the failures. While any verify, trace, or required
-acceptance check fails: withhold **merge** and **PR**; still offer terminal
-**block** and **discard**. Mechanical failure alone, or pause/defer, without
-an explicit terminal block/discard → no decision record.
+**Sample withhold** — after verify, trace, and required acceptance are green,
+before the menu. Compute three observables (do not restate glob lists):
+
+- `risk_hit` — same recipe as §7b step 2 (diff paths vs B1 defaults in
+  `skills/review/select-review-sample/references/signals.md`, extended by
+  `Risk globs` in `docs/agents/project.md` when present).
+- `large` — `git diff --name-only $(git merge-base <base> HEAD) HEAD` lists
+  **more than 15 files** (`<base>` is `main`/`master` or the memoized land
+  base when you already have it).
+- `asked` — this session the user asked for a sample, an attention
+  allocation, or what they should read.
+
+`sample_required` is true when **any** of `asked`, `risk_hit`, `large` holds.
+
+An **allocation** exists only if `/select-review-sample` was run in this
+session (conversational output) or the user pasted one. Absence is absence —
+do not write a file to invent proof, and do not treat inspect-clean as an
+allocation.
+
+A **waiver** exists only when the user has typed the word `unsampled` this
+session. "Just open a PR", "I trust you", "skip theater", "inspect was
+clean", a lead's order, and one-file size are **not** that word.
+
+IF `sample_required` AND no allocation AND no waiver: withhold **merge** and
+**PR** (same red-path menu as a failed verify). Name `/select-review-sample`
+for the user to run — never invoke it (`disable-model-invocation`). State
+that merge/PR return when an allocation exists **or** they type `unsampled`.
+`unsampled` waives **only** this withhold — not verify, not the five-option
+menu, not §7b names.
+
+`/select-review-sample` remains an aid that gates nothing. **This** skill
+withholds on a missing allocation. §7b's "never withhold merge/PR" is about
+`/study-change` and `/brief-team` only.
+
+**One human station.** Sample withhold and banked leftovers live in
+**the same message** as the menu (or the red-path withhold). This is the
+only close-sequence prompt that withholds merge/PR for a missing human
+action. `/study-change` and `/brief-team` stay in §7b (names only; never
+withhold).
+
+1. Sample withhold, when active — already above.
+2. **Banked leftovers** — IF this session's `inspect-change` or
+   `polish-diff` already emitted paste-ready banked blocks, reprint those
+   blocks and name `/record-debt` for the user. Do not invent findings. Do
+   not mint `DEBT-N`. Unbanked leftovers do **not** withhold merge/PR.
+   No banked blocks this session → do not mention debt.
+
+Do not start `/select-review-sample` or `/record-debt`.
+
+**On failure:** show the failures. While any verify, trace, required
+acceptance check, **or this sample withhold** fails: withhold **merge** and
+**PR**; still offer terminal **block** and **discard**. Mechanical failure
+alone, or pause/defer, without an explicit terminal block/discard → no
+decision record.
 
 **Done when:** green path can offer the full menu, or red path has offered
 only block/discard (or the user paused).
@@ -70,8 +123,9 @@ re-select it from `origin/HEAD`, `main`, `master`, or `git merge-base`.
 
 ## 4. Present the menu
 
-Present exactly these five options, verbatim, with no added commentary
-(when the gate is green):
+Present exactly these five options, verbatim (when the gate is green).
+Do not add a sixth option or rewrite the list. §1 station content in this
+same message is not extra commentary:
 
 ```
 Implementation complete. What would you like to do?
@@ -93,8 +147,9 @@ remaining four, renumbered. On detached HEAD with a red gate, still only
 discard/block.
 
 A request to "just open a PR" is the user's pick of option 2 after the
-menu is shown — it is not a skip of this step, and it is not a skip of
-the gate.
+**green** menu is shown — it is not a skip of this step, and it is not a
+skip of the gate, including sample withhold. On an active sample withhold
+there is no option 2 to pick.
 
 **Done when:** the user has picked one menu option.
 
@@ -231,6 +286,9 @@ predicates hold.
 Never:
 
 - Offer merge or PR while any verify command fails
+- Offer merge or PR while sample withhold is active (required, no allocation, no `unsampled`)
+- Treat "just open a PR", "I trust you", "skip theater", "inspect was clean", or a lead's order as the word `unsampled`
+- Auto-run the sample skill instead of naming `/select-review-sample` for the user
 - Skip the menu because the user (or a manager) "obviously wants a PR"
 - Invoke `package-change`, write `.skills/pr-packages/`, or stop for
   approve / request-edits / cancel of the PR text
@@ -256,7 +314,12 @@ Never:
 | Thought | Reality |
 |---|---|
 | "Tests were green an hour ago, skip the gate" | Stale evidence. Anything merged on old green is unverified. |
-| "The user obviously wants a PR, skip the menu" | Show the five options. Their ask is the pick of option 2, not a skip. |
+| "The user obviously wants a PR, skip the menu" | Show the five options **when the gate is green**. Their ask is the pick of option 2, not a skip — and not a skip of sample withhold. |
+| "Just open a PR is option 2 after the menu — inspect was clean" | Option 2 exists only on a green gate. Sample withhold is part of that gate. Inspect-clean is not an allocation. |
+| "§7b says never withhold merge/PR / never soft-gate the menu" | That sentence is about `/study-change` and `/brief-team`. Sample withhold lives in §1. |
+| "Optional means the human may skip the sample skill" | They may skip running it by typing `unsampled`. They may not take merge/PR by skipping both the allocation and the word. |
+| "select-review-sample is never a gate" | That skill's posture is unchanged. **This** skill withholds on a missing allocation. |
+| "One file / skip theater / the lead said skip" | `risk_hit` is the **diff path**, not task count. Theater-skip still names §7b skills; it does not type `unsampled`. |
 | "Manager said skip the landing menu and the package review" | Authority is not a gate exemption. Drop the package review (it is gone). Keep the gate and the menu. |
 | "Current 4a requires approve/edit/cancel, so I must display the package" | There is no 4a. Agent-authored title and body are the reviewer truth. |
 | "package-change then land-branch is too much — just gh pr create" | One skill. Still verify, still show the menu, still publish the verdict. |

@@ -123,6 +123,7 @@ A skill's workflow is skipped only when the user has explicitly said to skip it.
 
 ## See also
 
+- [Verification layers](verification-layers.md) — *how* a check is performed (this page is *when*)
 - [Philosophy](../methodology/philosophy.md) — "gates, not vibes", and the five other principles
 - [Ceremony tiers](../methodology/ceremony-tiers.md) — what scales down, and what never does
 - [`author-skills`](../skills/author-skills.md) — why prohibitions work here and backfire elsewhere

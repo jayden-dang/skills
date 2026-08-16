@@ -1,6 +1,6 @@
 ---
 name: build-by-story
-version: 1.1.1
+version: 1.1.2
 description: Use when an approved tasks.md has Execution-mode story-unit and
   needs human-gated review-unit execution — derived units, unit barriers,
   mode-change write-back, resume via unit ledger lines — through whole-branch
@@ -28,7 +28,7 @@ travel as paths under `.skills/`, never pasted session history.
 **Shared controller recipe:** REQUIRED SUB-SKILL: use `execute-common`.
 Load `../execute-common/SKILL.md` when Setup preflight / ledger / todos or
 After the last unit starts. That file is the one home for those steps and
-for the polish / product-walk predicates.
+for the close-sequence predicates.
 This file owns story-unit barriers, unit derivation, and the per-unit loop.
 
 **Narration:** at most one short line between tool calls. Ledger + tool results

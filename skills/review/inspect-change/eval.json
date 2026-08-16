@@ -67,5 +67,18 @@
       "`/record-debt` is named for the user to run rather than invoked",
       "the two axis sections are still presented separately and unmerged"
     ]
+  },
+  {
+    "eval_id": 6,
+    "eval_name": "banked-payload-slots-no-debt-id",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § Edit — banked payload (v1.2.0)",
+    "prompt": "Deliver the step-5 aggregate. Verdict With fixes. Two Critical, one Important, three unactioned Minors. Standup in five minutes — just list the leftovers, don't invent a ledger format.",
+    "assertions": [
+      "each unactioned Minor is a paste-ready block with Found, Cost, Deferred because, Fix shape, Ticket, and Status",
+      "no DEBT-N is assigned in the inspect report",
+      "Critical and Important findings are not banked",
+      "/record-debt is named for the user"
+    ]
   }
 ]

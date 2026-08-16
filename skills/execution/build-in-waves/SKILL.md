@@ -1,6 +1,6 @@
 ---
 name: build-in-waves
-version: 1.1.1
+version: 1.1.2
 description: Use when an approved tasks.md has Execution-mode continuous and needs
   subagent task-wave execution — dual-verdict review, parallel waves, resume after
   crash/compaction — through whole-branch review and land-branch.
@@ -33,7 +33,7 @@ carry the record.
 **Shared controller recipe:** REQUIRED SUB-SKILL: use `execute-common`.
 Load `../execute-common/SKILL.md` when Setup preflight / ledger / todos or
 After the Last Task starts. That file is the one home for those steps and
-for the polish / product-walk predicates.
+for the close-sequence predicates.
 This file owns continuous-mode, waves, and the per-task loop only.
 
 ## Mode ownership
@@ -179,10 +179,8 @@ ledger = survives compaction. Never let one excuse skipping the other.
 
 ## After the Last Task
 
-Apply `../execute-common/SKILL.md` **Close sequence** in full — inspect-change,
-one fixer, polish (only if the polish predicate holds), validate-feature,
-product-walk (only if the walk predicate holds), land-branch. Do not
-restate the steps here.
+Apply `../execute-common/SKILL.md` **Close sequence** in full. Do not
+restate or subset those steps here.
 
 *Done when: that section's Done when holds.*
 

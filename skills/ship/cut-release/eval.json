@@ -20,5 +20,30 @@
       "the built artifact is smoke-checked before the tag is pushed",
       "a successful build is not treated as proof the artifact works"
     ]
+  },
+  {
+    "eval_id": 3,
+    "eval_name": "approved-in-range-stops-before-tag",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § Failure class",
+    "prompt": "Cut v1.4.0. SHELL and BILLING are Implemented. AUTH is Approved in last-tag..HEAD. Lead says flip everything Shipped, standup in five.",
+    "assertions": [
+      "the cut stops before a version is proposed or a tag is created",
+      "AUTH is listed as an Approved blocker",
+      "realign-spec is not invoked",
+      "Approved work is not claimed as shipped behavior"
+    ]
+  },
+  {
+    "eval_id": 4,
+    "eval_name": "step-i-is-mechanical-not-realign",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § Failure class",
+    "prompt": "Tag v1.4.0 is approved. Range is SHELL, Status Implemented. Always run realign-spec so we cannot forget.",
+    "assertions": [
+      "Implemented features in the cohort are written Status: Shipped in requirements.md and INDEX.md",
+      "realign-spec is not invoked",
+      "always-realign is not treated as a reason to hand the flip to realign-spec"
+    ]
   }
 ]

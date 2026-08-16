@@ -49,7 +49,8 @@ User-invoked (`/cut-release`). Distinct from `land-branch`, which only integrate
 | **f. Smoke-check** | exercise the built **artifact**, not the source tree |
 | **g. Tag and push** | only after explicit user approval. **Never push a tag on your own initiative** |
 | **h. release notes** | the tracker's format, keeping the requirement-grouped structure. Left as a **draft** |
-| **i. Flip status** | `realign-spec` moves shipped requirements to `Status: Shipped` |
+| **b. Range set** | partition INDEX `Status:` in `last-tag..HEAD`. `Approved`/`Draft` **stops** the cut before a version or tag |
+| **i. Flip status** | mechanical `Implemented → Shipped` on that cohort + INDEX. Does **not** call `realign-spec` |
 
 ### The payoff of the trace spine
 
@@ -83,7 +84,7 @@ Run it whenever a spec'd feature changes outside its plan: requirements changed 
 |---|---|
 | Draft → Approved | the user explicitly approved the spec — never inferred |
 | Approved → Implemented | every task box checked **and** the audit-trace check shows every live requirement covered by a test |
-| Implemented → Shipped | the feature went out in a cut-release |
+| Implemented → Shipped | **not this skill** — `cut-release` step i writes `Shipped` on the cohort |
 
 If evidence is partial, say exactly what is missing instead of transitioning.
 

@@ -1,6 +1,6 @@
 ---
 name: realign-spec
-version: 1.0.0
+version: 1.1.0
 description: Use when a feature's spec has drifted from reality — requirements changed
   mid-implementation, the implementation deviated from the approved plan, the
   feature just shipped, the specs have gone stale or out of sync, or
@@ -19,6 +19,7 @@ Work one feature at a time. Identify the spec directory first (from the user, th
 - **Never renumber requirement IDs.** IDs are immutable once approved; everything downstream cites them.
 - **Never delete a requirement.** Retire it: `~~**CODE-N.M**~~ <reason>` — struck-through IDs stop counting as defined, but the history stays legible.
 - New requirements get the next free number under their story; new tasks match the existing task format exactly.
+- **Never write `Status: Shipped`.** That transition is `cut-release` step i on the release cohort. This skill realigns one triad; it does not stamp a release.
 
 ## Steps
 
@@ -43,9 +44,14 @@ out of scope for this step (docs-only spine).
 |---|---|
 | Draft → Approved | the user explicitly approved the spec — never inferred |
 | Approved → Implemented | every task box checked AND docs-only audit-trace has zero errors AND prove-claim verify commands green |
-| Implemented → Shipped | the feature went out in a cut-release (this step is normally invoked by `cut-release`) |
+| Implemented → Shipped | **not applied here** — `cut-release` step i writes `Shipped` on the cohort |
 
-Apply any transition whose evidence exists: update the `Status:` line in `requirements.md` and the feature's row in `docs/specs/INDEX.md`. If evidence is partial, say exactly what is missing instead of transitioning.
+Apply `Draft → Approved` or `Approved → Implemented` when that evidence
+exists: update the `Status:` line in `requirements.md` and the feature's
+row in `docs/specs/INDEX.md`. If evidence is partial, say exactly what is
+missing instead of transitioning. A mid-cut-release ask to "mark the
+shipped features Shipped" is `cut-release` step i, not this skill — refuse
+the stamp, offer one-feature triad repair if there is drift.
 
 **f. After picture.** Re-run the audit-trace check and print both finding sets side by side — errors and warnings resolved, anything remaining, and what you changed to get there. Confirm `docs/specs/INDEX.md` reflects every spec's current `Status:` line, staged into this same commit.
 

@@ -1,8 +1,9 @@
 ---
 name: cut-release
-version: 1.0.0
+version: 1.1.0
 description: Cuts a release for work already merged to the release branch — version bump, tag,
-  changelog, and release notes. Run it with /cut-release.
+  changelog, release notes, and Implemented specs in range marked Shipped.
+  Run it with /cut-release.
 disable-model-invocation: true
 ---
 
@@ -32,19 +33,41 @@ grep tests for requirement IDs.
 
 **Done when:** every command has a fresh passing run you have read the output of.
 
-## b. Assemble the changelog
+## b. Release set, then changelog
 
-Find the last cut-release tag (`git describe --tags --abbrev=0`) and collect
-`git log <last-tag>..HEAD` (subjects + changed paths). Derive changelog bullets
-from `docs/specs/**` — for each feature whose files or Status moved in range,
-quote live requirement prose (domain behavior) from `requirements.md`, optionally
-parenthetical CODE for skill-native readers. Prefer path → INDEX / `**Files:**`
-ownership when binding commits to features. Group remaining commit subjects under
+Classify **before** drafting notes or proposing a version. A tag of HEAD
+ships the code of every merged feature in range — `Status:` that still
+says `Approved` is fiction. This step is the stop, not step i.
+
+**Recipe — run and read:**
+
+1. `last=$(git describe --tags --abbrev=0 2>/dev/null)` — no tag → range is
+   the whole history; say so.
+2. `git diff --name-only ${last:+$last..}HEAD` and `git log ${last:+$last..}HEAD
+   --oneline`.
+3. Map changed paths to `docs/specs/INDEX.md` features (spec-dir prefix or
+   `**Files:**` ownership). That list is the **range set**.
+4. For each feature, read `Status:` from its `requirements.md` (INDEX row if
+   the file has no line). Partition:
+   - `Implemented` → **cohort** (this cut will claim and later flip)
+   - `Shipped` → **already** (changelog as an amend if the range touched it;
+     do not flip)
+   - `Approved`, `Draft`, or missing → **blocker**
+
+**IF any blocker:** this step **fails**. STOP. List each blocker and its
+`Status:`. Do not propose a version. Do not tag. Do not invoke
+`realign-spec`. State that each blocker must reach `Implemented` first
+(`realign-spec` on that one feature — land-branch's forget-net if they
+are still landing) and then re-run `/cut-release`. `SHELL`/`BILLING`
+wait with the rest of the cohort.
+
+**IF no blockers:** draft the changelog from the **cohort** (and
+**already** amends). Quote live requirement prose from `requirements.md`,
+optionally parenthetical CODE. Group leftover commit subjects under
 **Misc**. Do **not** require or parse `Implements:` / `Guards:` trailers.
 
-If there is no prior tag, the range is the whole history; say so.
-
-**Done when:** a draft changelog exists, organized by requirement, shown to the user.
+**Done when:** either the stop list is in front of the user, or a draft
+changelog of the cohort exists and has been shown.
 
 ## c. Propose the version bump
 
@@ -95,6 +118,35 @@ Turn the changelog entry into release notes in the tracker's format (for example
 
 ## i. Flip spec status
 
-REQUIRED SUB-SKILL: use `realign-spec` to move the shipped features' requirements to `Status: Shipped` and update `docs/specs/INDEX.md`.
+The **cohort** is the Implemented list recorded at step b — same set, no
+re-discovery. For each cohort feature, write `Status: Shipped` on that
+`requirements.md` and the matching `docs/specs/INDEX.md` row. One commit.
 
-**Done when:** realign-spec's closing audit-trace report is clean.
+Do **not** invoke `realign-spec`. This skill owns `Implemented → Shipped`
+for the cohort. `realign-spec` realigns one drifted triad; it does not
+stamp a release.
+
+"Always run realign-spec so we cannot forget", "skip the spec paperwork",
+"nobody reads INDEX", and "the tag is the real work" are **not** skips of
+this step and are **not** a reason to hand the flip to `realign-spec`.
+
+**Done when:** every cohort feature is `Shipped` in the file and INDEX
+(or step b already stopped the cut).
+
+## Red flags — never
+
+- Tag while any range-set feature is `Approved`, `Draft`, or missing `Status:`
+- Invoke `realign-spec` from this skill
+- Flip a blocker (`Approved`/`Draft`) to `Shipped`
+- Skip step i because the tag exists or a lead said status can wait
+- Claim Approved work in the changelog as shipped behavior
+
+| Thought | Reality |
+|---|---|
+| "AUTH is only Approved — I'll realign it as step i after the tag" | Too late. Code is in the tag. Step b stops *before* version/tag. |
+| "Code is already on main, so they all shipped" | On-main is land. This skill tags a cohort of `Implemented` specs. |
+| "REQUIRED SUB-SKILL realign-spec is how we flip Shipped" | Not anymore. Step i is a Status/INDEX edit. `realign-spec` is one-feature anti-rot. |
+| "Always run realign-spec so we cannot forget" | Same shape as always-polish. Clean Implemented cohort → mechanical flip. |
+| "Skip the spec paperwork / nobody reads INDEX / we're done" | Step i is a gate. The tag is not the end of the sequence. |
+| "Standup in five — just cut, flip everything" | Time and a lead do not create a skip of step b's blocker list. |
+| "Flip AUTH Approved → Shipped; the cut is the evidence" | `Shipped` requires `Implemented` first. Blocker stays a blocker. |

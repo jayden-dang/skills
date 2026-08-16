@@ -8,7 +8,7 @@
 | **Invocation** | user-invoked only (`disable-model-invocation: true`) — run it as `/cut-release` |
 | **Reads** | `docs/agents/project.md` (verify commands, release steps, smoke command), `docs/specs/` (requirement text), git tags and log |
 | **Writes** | version files, `CHANGELOG.md`, the cut-release commit, the git tag, draft release notes |
-| **Calls** | [`realign-spec`](realign-spec.md) (final step, to flip spec status) |
+| **Calls** | [`audit-trace`](audit-trace.md) (prove-claim gate); [`record-verdict`](record-verdict.md) (before the tag). Does **not** call [`realign-spec`](realign-spec.md) |
 | **Called by** | no skill — it is user-invoked and may never be auto-invoked |
 
 ## When it fires
@@ -67,9 +67,9 @@ Create the tag (`git tag <version>`) and push the cut-release commit and tag onl
 
 Turn the changelog entry into release notes in the tracker's format — for example `gh cut-release create --draft`, or a notes file for manual publishing — keeping the requirement-grouped structure. Leave the cut-release a DRAFT unless the user asks to publish. **Done when:** the draft notes exist and the user knows where.
 
-### i. Flip spec status
+### b (range set) and i. Flip spec status
 
-Hand off to [`realign-spec`](realign-spec.md) to move the shipped features' requirements to `Status: Shipped` and update `docs/specs/INDEX.md`. **Done when:** realign-spec's closing audit-trace report is clean.
+Step **b** partitions `last-tag..HEAD` against INDEX `Status:` **before** a version or tag. `Implemented` is the cohort. `Approved` / `Draft` is a **blocker**: stop, list, do not tag, do not invoke `realign-spec`. Step **i** then writes `Status: Shipped` on that same Implemented cohort and INDEX — a mechanical edit, not a `realign-spec` hand-off.
 
 ## Worked example
 
@@ -96,7 +96,7 @@ The `Features` entries came from `Implements:` trailers, the `Protected behavior
 
 At gate c the skill reasons in semver terms: new requirements shipped, no public behavior removed or changed, so this is a minor bump — proposed `v1.4.0`, with the reasoning stated. The user approves the exact string. Gate d writes `v1.4.0` into the manifest and prepends the entry to `CHANGELOG.md` in a single commit, leaving `git status` clean.
 
-Gate e runs the project's ordered build steps from `docs/agents/project.md` verbatim, and gate f launches the built artifact to touch the module-switch flow rather than trusting the green source. After the user gives explicit approval, gate g tags `v1.4.0` and pushes the commit and tag. Gate h drafts `gh cut-release create --draft` notes in the same requirement-grouped shape and leaves them as a draft, and gate i runs [`realign-spec`](realign-spec.md) to flip the `SHELL` requirements to `Status: Shipped` and update `docs/specs/INDEX.md`.
+Gate e runs the project's ordered build steps from `docs/agents/project.md` verbatim, and gate f launches the built artifact to touch the module-switch flow rather than trusting the green source. After the user gives explicit approval, gate g tags `v1.4.0` and pushes the commit and tag. Gate h drafts `gh cut-release create --draft` notes in the same requirement-grouped shape and leaves them as a draft, and gate i writes `SHELL` to `Status: Shipped` and updates `docs/specs/INDEX.md` (no `realign-spec`).
 
 Had gate e's build failed instead, the stop rule would apply: report the failing step and what remains, leave `v1.4.0` untagged, and cut nothing — no tag without a passing build. The `CHANGELOG.md` commit from gate d would already exist, but no version would be published against it until a clean build is produced and the user re-approves the push.
 
@@ -128,4 +128,4 @@ Nothing here is invented by the skill on the fly — the build steps, verify com
 - [The gates](../concepts/gates.md) — how the prove-claim gate here matches the one [`land-branch`](land-branch.md) enforces
 - [Traceability](../concepts/traceability.md) — why the changelog reads in requirement text, and why untraced work blocks the cut
 - [`land-branch`](land-branch.md) — integrates a branch; `cut-release` cuts the version afterward
-- [`realign-spec`](realign-spec.md) — the final gate that flips shipped requirements to `Status: Shipped`
+- [`realign-spec`](realign-spec.md) — one-feature anti-rot / land forget-net; not this skill's step i

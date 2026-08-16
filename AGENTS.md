@@ -421,7 +421,9 @@ Can't tick a box? The work is not done.
 **Main flow:** `frame-change` (+ `load-subgraph`) → `specify-behavior` →
 `design-solution` → `plan-tasks` → `isolate-workspace` → execute family →
 `inspect-change` (+ `load-subgraph`) → `polish-diff` → `validate-feature` →
-`land-branch` → `/cut-release` → `realign-spec`.
+`land-branch` (Status: Implemented). `/cut-release` is a separate loop
+over already-Implemented work (cohort → Shipped). `realign-spec` is
+anti-rot and the land forget-net — not the cut close-out.
 
 **Bugfix flow:** `root-cause` → mini-spec → `test-first` → `prove-claim` →
 `inspect-change` → `land-branch`.

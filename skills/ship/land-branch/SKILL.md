@@ -1,6 +1,6 @@
 ---
 name: land-branch
-version: 2.2.1
+version: 2.3.0
 description: >
   Use when a feature branch is complete and an integration decision is needed
   — merge, open a pull request, push, keep, discard, or block — or when
@@ -248,9 +248,21 @@ publish.
 
 ### 7a. Spec status
 
-On merge or PR, remind the user (or run it when tasks are complete):
-REQUIRED SUB-SKILL: use `realign-spec` to update the feature's `Status:`
-and audit-trace state.
+On merge or PR only (not keep / discard / block). Identify the feature
+spec (branch, INDEX, or user). Read `Status:`. Then one row:
+
+| `Status:` | Action |
+|---|---|
+| `Draft` | Do not transition. Say explicit approval is missing. |
+| `Approved` **and** Implemented evidence (every task box checked **and** audit-trace clean **and** this land's verify green) | REQUIRED SUB-SKILL: use `realign-spec` |
+| `Approved` **and** evidence partial | Remind exactly what is missing. Do not run `realign-spec`. Do not edit `Status:`. |
+| `Implemented` or `Shipped` **and** no drift (audit-trace still clean, no `implementation-notes` **Map impact** `realign-spec`) | Skip `realign-spec`. |
+| `Implemented` or `Shipped` **and** drift | REQUIRED SUB-SKILL: use `realign-spec` (anti-rot — it does not write `Shipped`). |
+
+"Always run realign-spec so we cannot forget" is the Approved+evidence
+row, not the already-Implemented row.
+
+**Done when:** the matching row has been applied.
 
 ### 7b. Name optional human skills (risk = diff path)
 
@@ -301,6 +313,8 @@ Never:
 - Rewrite, amend, squash, reorder, or rebase a pre-existing commit
 - Execute merge/PR/discard before `record-verdict` publishes successfully
 - Emit a decision record for keep, pause/defer, or mechanical failure alone
+- Invoke `realign-spec` when `Status:` is already `Implemented` or
+  `Shipped` and there is no drift
 - Omit `/study-change` or `/brief-team` names because the branch is
   single-task, one-file, Keep-only, or a lead said "skip theater," while
   the diff still hits a risk glob
@@ -332,3 +346,6 @@ Never:
 | "No tracker configured, so invent a ticket or stall" | Empty ticket set is normal. Do not pause the crossing to file one. |
 | "The user clearly wants the ticket filed, just run /publish-issues" | `/publish-issues` is user-invoked; name it and pause, never invoke it. |
 | "Citing the .skills/ path is fine, it's where the evidence lives" | Storage location isn't a citable locator; carry title and body inline. |
+| "Tasks are complete — always run realign-spec" | Complete tasks + already `Implemented` + no drift is a skip. The forgot-net is `Approved` + evidence. |
+| "Always realign so we cannot forget" | Forgetting is `Status:` still `Approved` after a land. Already `Implemented` is not forgotten. |
+| "Lead said skip spec paperwork" | Authority is not a skip of the `Approved` + evidence row. |

@@ -50,14 +50,17 @@ validate-feature             drive the running system through the spec's user-fa
 [sample notes]             execute-common writes sample: required or skip
       │
       ▼
-land-branch                one human station: sample withhold + optional /record-debt + menu
+land-branch                one human station + Status: Implemented (realign-spec
+                             only if still Approved and evidence holds)
+      │
+      │  (many features may sit Implemented)
+      ▼
+/cut-release                   separate loop: last-tag..HEAD cohort of Implemented
+                             → version, tag, notes → those specs Shipped
+                             (does not call realign-spec)
       │
       ▼
-cut-release                      full prove-claim + clean audit-trace → changelog from commit
-                             trailers → version bump → tag → build → smoke → notes
-      │
-      ▼
-realign-spec                    mark requirements Implemented / Shipped
+realign-spec                    anti-rot / land forgot-net — not the cut close-out
 ```
 
 ## The bugfix flow (tier 1)
@@ -129,7 +132,7 @@ The chain is not one-way. Several skills feed back into earlier phases:
 - `root-cause` exits into the tier-1 mini-spec flow, which means it re-enters `specify-behavior`.
 - `scan-architecture` ends by handing its chosen candidate to `frame-change`. Architecture work earns no exemption from the spec gate.
 - `amend-feature` escalates to `frame-change` the moment a "small" change turns out to be new scope.
-- `realign-spec` is invoked from `land-branch`, `cut-release`, and `amend-feature` — and directly, whenever the audit-trace check comes back dirty.
+- `realign-spec` is invoked from `land-branch` (Approved + evidence) and `amend-feature` — and directly, whenever the audit-trace check comes back dirty. `cut-release` does not call it.
 
 ## See also
 

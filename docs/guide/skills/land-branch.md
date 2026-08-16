@@ -59,6 +59,12 @@ worded exactly as the skill lists them. Banked leftovers reprint in that
 same message. A request to "just open a PR" is option 2 after the menu is
 shown — not a skip of the gate or the menu.
 
+## After merge or PR — spec status
+
+Read `Status:`. Still `Approved` with every task checked and verify green →
+run [`realign-spec`](realign-spec.md) (forgot-net). Already `Implemented`
+and no drift → skip. This is not `/cut-release`.
+
 ## Executing a PR
 
 After `record-verdict` publishes: push, then `gh pr create` from the

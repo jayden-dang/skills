@@ -153,8 +153,11 @@ solve-problem? ──► frame-change (+ load-subgraph) ──► specify-behavi
         ▼                                                                               │
   root-cause / test-first / prove-claim  ◄── discipline skills govern ──────────────────┘
                                                                                         │
-   inspect-change (+ load-subgraph) ──► validate-feature ──► land-branch ──► cut-release ──► realign-spec
-                          (drive the running system as a real user)
+   inspect-change (+ load-subgraph) ──► validate-feature ──► land-branch
+                          (drive the running system as a real user)     (Status: Implemented)
+                                                                              │
+                                                         /cut-release ────────┘  (separate loop:
+                                                         cohort of Implemented → Shipped)
 ```
 
 - **Tier 0** (trivial): skip specs — `test-first` + `prove-claim`.

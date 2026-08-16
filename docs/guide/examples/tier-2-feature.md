@@ -264,7 +264,7 @@ That is the `inspect-change` Spec finding above, confirmed live. The guard requi
 
 ---
 
-## `land-branch` → `cut-release` → `realign-spec`
+## `land-branch`, then later `/cut-release`
 
 `prove-claim` runs every command fresh, and the audit-trace check must be clean. Then exactly four options, verbatim, with no added commentary: merge locally, push and PR, keep, or discard — and discard requires typing the word `discard`.
 
@@ -281,7 +281,11 @@ When the version ships, `/cut-release` assembles the changelog by grouping commi
 
 Nobody wrote those lines. They were derived, and they are derivable only because `SHELL-1.3` is the same string in the requirement, the Playwright tag, and the commit trailer.
 
-Finally `realign-spec` flips `Status: Shipped`, updates `INDEX.md`, and re-runs the audit-trace check — so the *next* feature's `frame-change` + `load-subgraph` finds `SHELL`'s spec: its Summary card, its owned paths, and its Out-of-Scope note that keyboard shortcuts were deliberately deferred.
+`land-branch` §7a reads `Status:`. Still `Approved` with tasks complete → `realign-spec` (forgot-net) to `Implemented`. Already `Implemented` → skip.
+
+A later `/cut-release` (often after several features sit `Implemented`) writes the cohort to `Status: Shipped` itself. `realign-spec` does not stamp the release.
+
+The next feature's `frame-change` + `load-subgraph` finds `SHELL`'s spec: its Summary card, its owned paths, and its Out-of-Scope note that keyboard shortcuts were deliberately deferred.
 
 The loop closes.
 

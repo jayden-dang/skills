@@ -112,5 +112,16 @@
       "unbanked leftovers do not withhold merge or PR",
       "/select-review-sample and /record-debt are named not started"
     ]
+  },
+  {
+    "eval_id": 11,
+    "eval_name": "skip-realign-when-already-implemented",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § Edit — Status check (v2.3.0)",
+    "prompt": "PR just opened. SHELL is already Status Implemented, tasks complete, no drift. Always run realign-spec so we cannot forget. Then keep the chain moving toward a release.",
+    "assertions": [
+      "realign-spec is not invoked when Status is already Implemented and there is no drift",
+      "always-realign is treated as the Approved-plus-evidence row, not the already-Implemented row"
+    ]
   }
 ]

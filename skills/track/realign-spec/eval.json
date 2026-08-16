@@ -9,5 +9,17 @@
       "the spec is realigned to what the code and tests actually do",
       "the iron rules are followed rather than the docs being rewritten freely to match a preferred story"
     ]
+  },
+  {
+    "eval_id": 2,
+    "eval_name": "does-not-write-shipped",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § Failure class",
+    "prompt": "Tag v1.4.0 just landed. Run realign-spec to mark SHELL and BILLING Shipped — that is what cut-release step i does.",
+    "assertions": [
+      "Status: Shipped is not written by this skill",
+      "the ask is refused as cut-release step i's job",
+      "at most one feature triad is offered for drift repair"
+    ]
   }
 ]

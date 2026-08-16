@@ -9,7 +9,7 @@
 | **Reads** | the feature's `requirements.md` / `design.md` / `tasks.md` triad, `docs/specs/INDEX.md`, `docs/agents/project.md` (test globs and ignore list for the audit-trace check), the code and tests |
 | **Writes** | edits to the triad (retired/added requirements, task boxes, `Status:`), the feature's row in `docs/specs/INDEX.md` |
 | **Calls** | [`audit-trace`](audit-trace.md) (before and after) |
-| **Called by** | [`land-branch`](land-branch.md), [`amend-feature`](amend-feature.md), [`cut-release`](cut-release.md); or the user when a spec has drifted or the audit-trace check is reporting errors |
+| **Called by** | [`land-branch`](land-branch.md) (Approved + Implemented evidence), [`amend-feature`](amend-feature.md); or the user when a spec has drifted or the audit-trace check is reporting errors. **Not** [`cut-release`](cut-release.md) |
 
 ## When it fires
 
@@ -52,7 +52,7 @@ Together these mean the requirement set only ever grows or retires — it never 
 |---|---|
 | Draft → Approved | the user explicitly approved the spec — **never inferred** |
 | Approved → Implemented | every task box checked **AND** the audit-trace check shows every live requirement covered by a test |
-| Implemented → Shipped | the feature went out in a cut-release (this step is normally invoked by [`cut-release`](cut-release.md)) |
+| Implemented → Shipped | **not this skill** — [`cut-release`](cut-release.md) step i writes `Shipped` on the release cohort |
 
 A transition updates the `Status:` line in `requirements.md` and the feature's row in `docs/specs/INDEX.md`.
 
@@ -99,4 +99,5 @@ A feature whose code is `SHELL` shipped last week, but during implementation the
 - [Traceability](../concepts/traceability.md) — the invariant the [`audit-trace`](audit-trace.md) check enforces and this skill restores
 - [Requirement IDs](../concepts/requirement-ids.md) — why IDs are immutable and retirement is struck-through
 - [`audit-trace`](audit-trace.md) — the before/after check whose report this skill drives to clean
-- [`land-branch`](land-branch.md) — reminds the user to run `realign-spec` after a merge or PR
+- [`land-branch`](land-branch.md) — forgot-net: runs this skill when Status is still Approved and Implemented evidence holds
+- [`cut-release`](cut-release.md) — owns `Implemented → Shipped` on the cohort; does not call this skill

@@ -98,7 +98,7 @@ Draft ──► Approved ──► Implemented ──► Shipped
 |---|---|
 | Draft → Approved | the user explicitly approved the written file — never inferred from conversation |
 | Approved → Implemented | every task box checked **and** the audit-trace check shows every live requirement covered by a test |
-| Implemented → Shipped | the feature went out in a cut-release (normally applied by [`cut-release`](../skills/cut-release.md)) |
+| Implemented → Shipped | the feature went out in a cut-release (applied by [`cut-release`](../skills/cut-release.md) step i on the cohort — not by [`realign-spec`](../skills/realign-spec.md)) |
 
 `realign-spec` applies a transition only when its evidence exists. If the evidence is partial, it says exactly what is missing rather than transitioning.
 

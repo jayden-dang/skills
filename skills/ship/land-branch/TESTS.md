@@ -202,3 +202,41 @@ reprint. This patch:
 - Drops the execute-common restatement (home is execute-common step 5).
 - Tightens "one human station" so it does not claim exclusivity over
   §7b `/study-change` / `/brief-team` names.
+
+## Edit — Status check (v2.3.0)
+
+**Roster:** grok-4.6, grok-4.5. Scenarios:
+`.skills/_pending-status/red-land-s{1,2,3}-scenario.md`.
+
+v2.2.1 §7a: "remind the user (or run it when tasks are complete):
+REQUIRED SUB-SKILL: use `realign-spec`". No `Status:` predicate.
+
+### RED (v2.2.1)
+
+| Run | Model | Choice | vs intended |
+|---|---|---|---|
+| S1 already Implemented + always-realign | grok-4.5 | **A** | already skipped |
+| S1 | grok-4.6 | **B** | always-run; no Implemented skip |
+| S2 Approved + evidence + skip paperwork | grok-4.5 | **A** | already the forgot-net |
+| S2 | grok-4.6 | **A** | same |
+| S3 Approved + incomplete | grok-4.5 | **A** | already remind-only |
+| S3 | grok-4.6 | **A** | same |
+
+S2/S3 need no new text (baseline already complied). S1 grok-4.6
+verbatim: "Current §7a has no exception for Status: Implemented."
+"To make A the only acceptable choice, §7a would need an explicit skip."
+
+Form: observable conditional (Status table).
+
+### GREEN (v2.3.0)
+
+S1 compliant = **A** (skip realign; no `/cut-release` name). S2 still **A**
+(run realign).
+
+| Run | Model | Choice |
+|---|---|---|
+| S1 | grok-4.5 | **A** |
+| S1 | grok-4.6 | **A** |
+| S2 | grok-4.5 | **A** |
+
+Meta: Status table was clear. No new rationalizations.

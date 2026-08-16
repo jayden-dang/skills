@@ -13,7 +13,7 @@ cleanup agents. Process guide `docs/guide/process/execution.md` matched
 the always-polish rule.
 
 **GREEN form.** Close sequence, preflight, ledger, and todos live in
-`../execute-common.md`. Polish runs only when a named predicate holds;
+`../execute-common/SKILL.md`. Polish runs only when a named predicate holds;
 a skip must be written `skip: no polish predicate`. EOD / "inspect was
 clean" / "feels small" are not predicates. Acceptance promotes
 domain-language tests, not ID tags.

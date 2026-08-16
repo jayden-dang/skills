@@ -1,6 +1,6 @@
 ---
 name: build-in-waves
-version: 1.1.0
+version: 1.1.1
 description: Use when an approved tasks.md has Execution-mode continuous and needs
   subagent task-wave execution — dual-verdict review, parallel waves, resume after
   crash/compaction — through whole-branch review and land-branch.
@@ -30,9 +30,10 @@ world. Bulk artifacts travel as file paths under `.skills/`, never as pasted tex
 **Narration:** at most one short line between tool calls. Ledger + tool results
 carry the record.
 
-**Shared controller recipe:** load `../execute-common.md` when Setup
-preflight / ledger / todos or After the Last Task starts. That file is the
-one home for those steps and for the polish / product-walk predicates.
+**Shared controller recipe:** REQUIRED SUB-SKILL: use `execute-common`.
+Load `../execute-common/SKILL.md` when Setup preflight / ledger / todos or
+After the Last Task starts. That file is the one home for those steps and
+for the polish / product-walk predicates.
 This file owns continuous-mode, waves, and the per-task loop only.
 
 ## Mode ownership
@@ -59,16 +60,16 @@ Unit barriers, unit derivation, and human unit stops live only in
 
 1. **Mode ownership.** Apply the table above. *Done when: header is `continuous`
    and you stay on this skill, or you have handed off to `build-by-story`.*
-2. **Session preflight.** Apply `../execute-common.md` **Session preflight**.
+2. **Session preflight.** Apply `../execute-common/SKILL.md` **Session preflight**.
    *Done when: that section's Done when holds.*
-3. **Ledger check.** Apply `../execute-common.md` **Ledger check**.
+3. **Ledger check.** Apply `../execute-common/SKILL.md` **Ledger check**.
    *Done when: next task is known.*
 4. **Read the plan.** Read `tasks.md` in full once. Copy **Global Constraints**
    verbatim for every reviewer dispatch. If `docs/agents/project.md` is missing,
    say so, suggest `configure-repo`, take verify commands from Global Constraints.
    When `## Team` has roster/band, load band **packaging** only — never skip
    dual-verdict review for Solo. *Done when: constraints captured word-for-word.*
-5. **Todos — GATE.** Apply `../execute-common.md` **Todos — GATE**.
+5. **Todos — GATE.** Apply `../execute-common/SKILL.md` **Todos — GATE**.
    *Done when: the list mirrors the plan **and** includes the Close branch todo.*
 6. **Pre-flight plan review.** Scan once for internal defects (contradictions,
    assertion-free tests, copy-pasted logic the plan mandates). Batch ALL findings
@@ -178,7 +179,7 @@ ledger = survives compaction. Never let one excuse skipping the other.
 
 ## After the Last Task
 
-Apply `../execute-common.md` **Close sequence** in full — inspect-change,
+Apply `../execute-common/SKILL.md` **Close sequence** in full — inspect-change,
 one fixer, polish (only if the polish predicate holds), validate-feature,
 product-walk (only if the walk predicate holds), package-change,
 land-branch. Do not restate the steps here.

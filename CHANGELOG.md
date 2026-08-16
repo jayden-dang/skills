@@ -2,6 +2,14 @@
 
 ## Unreleased
 
+### Packaging: register `execute-common`
+
+Shared execute-family recipe is now a skill folder so `npx skills add` copies it.
+
+- Move `skills/execution/execute-common.md` → `skills/execution/execute-common/SKILL.md`
+- Register `./skills/execution/execute-common` in `plugin.json` and `marketplace.json` (62 engineer paths)
+- Execute-family load path is `../execute-common/SKILL.md` (works in-repo and after flatten install)
+
 ### `craft-page` figure branch (v1.1.0)
 
 Job/type recipes for primary figures. Chrome (checked-in shells) unchanged.

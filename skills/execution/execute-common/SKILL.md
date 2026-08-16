@@ -1,9 +1,18 @@
+---
+name: execute-common
+version: 1.0.0
+description: Use when build-in-waves, build-by-story, or build-inline loads the shared controller recipe — produces session preflight, ledger check, close sequence, and polish or walk predicates.
+---
+
 # Execute-family controller recipe
 
 **One home** for the controller steps that are identical across
 `build-in-waves`, `build-by-story`, and `build-inline`. Each of those
 SKILL.md files owns only its mode iron law and per-task / per-unit loop.
 Load this file when that skill's Setup or After-last step says to.
+
+This folder is a registered Engineer Pack skill so `npx skills add`
+copies it beside the execute-family skills.
 
 ## Contents
 

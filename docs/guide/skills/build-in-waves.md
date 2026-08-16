@@ -39,7 +39,7 @@ Six steps run once before any task:
 2. **Ledger check.** Make `.skills/` git-ignored (an idempotent line-presence check, since a trailing-slash pattern won't match until the directory exists), then read `.skills/<CODE>/progress.md` if present. Every task it marks complete *is* complete — resume at the first task it does not list.
 3. **Read the plan.** Read `tasks.md` in full, once, and copy the **Global Constraints** section verbatim — it gets pasted into every reviewer dispatch unmodified. If `docs/agents/project.md` is missing, say so, suggest `configure-repo`, and take verify commands from the plan's Global Constraints instead.
 4. **Todos.** One todo per task **and** one terminal **Close branch** todo
-   (shared close sequence in `skills/execution/execute-common.md`).
+   (shared close sequence in `skills/execution/execute-common/SKILL.md`).
 5. **Pre-flight plan review.** Scan the plan once for internal defects — tasks that contradict each other or the Global Constraints, and anything the plan explicitly mandates that a reviewer would flag as a defect (an assertion-free test, a copy-pasted logic block). **Batch ALL findings into ONE question to the user**, each shown beside the plan text that mandates it, asking which governs — before any dispatch. One interrupt, not one per discovery mid-run. A clean scan needs no comment.
 6. **Wave planning.** Read each task's `Depends-on:` line and topo-sort the tasks into waves — wave 0 is every task with no unmet dependency, wave 1 the tasks freed once wave 0 lands, and so on. `Depends-on: none` marks a wave-0 task; an absent line falls back to depending on every earlier task. A plan that declares no dependencies collapses to one task per wave — the strict serial order.
 
@@ -114,7 +114,7 @@ Conversation memory does not survive compaction. Controllers that lost their pla
 
 ## After the last task
 
-The close sequence lives in `skills/execution/execute-common.md` — one home
+The close sequence lives in `skills/execution/execute-common/SKILL.md` — one home
 for waves, story, and inline. Default path: [`inspect-change`](inspect-change.md)
 → [`validate-feature`](validate-feature.md) → [`package-change`](package-change.md)
 → [`land-branch`](land-branch.md). `polish-diff` and the product-walk trio run

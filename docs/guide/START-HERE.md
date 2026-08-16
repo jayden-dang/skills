@@ -120,7 +120,7 @@ You mostly describe the idea and **approve files**; the rest chains:
 7. Per task: **`test-first`** · **`prove-claim`** (and **`audit-trace`** when claiming
    requirements met).
 8. **`inspect-change`** — Standards + Spec; neighbors again via **`load-subgraph`**.
-9. **Close sequence** (one home: `skills/execution/execute-common.md`):
+9. **Close sequence** (one home: `skills/execution/execute-common/SKILL.md`):
    **`polish-diff`** only when a polish predicate holds; **`validate-feature`**
    (`validate-api` / `validate-ui`); product-walk only when a walk predicate holds.
 10. **`package-change`** → **`land-branch`** (merge / PR / keep / discard / block).
@@ -133,7 +133,7 @@ The table lives in [on-ramps](process/on-ramps.md) — one home. Unsure → **`/
 
 ## 3. Skill index (engineering package)
 
-Full tables: [Skill reference](skills/README.md) (61 engineering skills).  
+Full tables: [Skill reference](skills/README.md) (62 engineering skills).  
 Personal OS is a **separate** package — [personal-os START-HERE](../personal-os/START-HERE.md).
 
 `U` = you run `/name` · `m` = model-invoked · `si` = session-injected
@@ -144,7 +144,7 @@ Personal OS is a **separate** package — [personal-os START-HERE](../personal-o
 | **setup** | `/configure-repo`, `/bootstrap-repo` |
 | **discovery** | `solve-problem`, `frame-change`, `clarify-decisions`, `research`, `run-spike`, `define-domain`, `/pathfind`, `/interpret-session`, `/deepen-codebase`, `/work-the-problem` |
 | **spec** | `specify-behavior`, `design-solution`, `plan-tasks` |
-| **execution** | `build-in-waves`, `build-by-story`, `build-inline`, `test-first`, `root-cause`, `prove-claim`, `audit-trace`, **`load-subgraph`**, `isolate-workspace` |
+| **execution** | `build-in-waves`, `build-by-story`, `build-inline`, `execute-common`, `test-first`, `root-cause`, `prove-claim`, `audit-trace`, **`load-subgraph`**, `isolate-workspace` |
 | **review** | `inspect-change`, `polish-diff`, `vet-feedback`, `review-invariants`, `/study-change`, `/brief-team`, `/select-review-sample` |
 | **acceptance** | `validate-feature`, `validate-api`, `validate-ui`, `review-product-flow`, `vet-product-flow`, `run-product-walkthrough` |
 | **craft** | `craft-page` |

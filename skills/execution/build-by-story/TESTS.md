@@ -58,7 +58,7 @@ After-last step 3 mandatory + mark todo; red flags; rationalization rows.
 ## Edit — polish predicate + execute-common (2026-08-16)
 
 Supersedes the always-polish GREEN. Shared controller recipe lives in
-`../execute-common.md`. Terminal todo is **Close branch**. Polish / product-walk
+`../execute-common/SKILL.md`. Terminal todo is **Close branch**. Polish / product-walk
 are observable conditionals; EOD is not a predicate.
 
 ## Ship gate

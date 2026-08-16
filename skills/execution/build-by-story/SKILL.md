@@ -1,6 +1,6 @@
 ---
 name: build-by-story
-version: 1.1.0
+version: 1.1.1
 description: Use when an approved tasks.md has Execution-mode story-unit and
   needs human-gated review-unit execution — derived units, unit barriers,
   mode-change write-back, resume via unit ledger lines — through whole-branch
@@ -25,9 +25,10 @@ off to `build-in-waves`. If the user wants no subagents, name `build-inline`.
 **Why fresh subagents:** each worker gets only its task brief; bulk artifacts
 travel as paths under `.skills/`, never pasted session history.
 
-**Shared controller recipe:** load `../execute-common.md` when Setup
-preflight / ledger / todos or After the last unit starts. That file is the
-one home for those steps and for the polish / product-walk predicates.
+**Shared controller recipe:** REQUIRED SUB-SKILL: use `execute-common`.
+Load `../execute-common/SKILL.md` when Setup preflight / ledger / todos or
+After the last unit starts. That file is the one home for those steps and
+for the polish / product-walk predicates.
 This file owns story-unit barriers, unit derivation, and the per-unit loop.
 
 **Narration:** at most one short line between tool calls. Ledger + tool results
@@ -79,9 +80,9 @@ Align `tasks.md` to the story-unit route and continue:
 
 1. **Mode ownership.** Apply the table above. *Done when: header is `story-unit`
    and you stay on this skill, or you have handed off to `build-in-waves`.*
-2. **Session preflight.** Apply `../execute-common.md` **Session preflight**.
+2. **Session preflight.** Apply `../execute-common/SKILL.md` **Session preflight**.
    *Done when: that section's Done when holds.*
-3. **Ledger check.** Apply `../execute-common.md` **Ledger check**. Resume
+3. **Ledger check.** Apply `../execute-common/SKILL.md` **Ledger check**. Resume
    also honors complete **unit** lines — skip units already ledgered complete.
    *Done when: next task/unit is known.*
 4. **Read the plan.** Read `tasks.md` once. Copy **Global Constraints**
@@ -92,7 +93,7 @@ Align `tasks.md` to the story-unit route and continue:
 5. **Derive units — GATE.** Load `story-unit-mode.md` beside this file. Run
    **Derive partition** + **File count** + print the **Unit table**. Hard-fail
    blocks dispatch. *Done when: table printed; hard-fails resolved or reported.*
-6. **Todos — GATE.** Apply `../execute-common.md` **Todos — GATE**.
+6. **Todos — GATE.** Apply `../execute-common/SKILL.md` **Todos — GATE**.
    *Done when: the list mirrors the plan **and** includes the Close branch todo.*
 7. **Pre-flight plan review.** One batch question for plan-internal defects
    before dispatch. Clean scan → no comment. *Done when: conflicts ruled or none.*
@@ -194,7 +195,7 @@ State the model **explicitly on every dispatch**.
 
 ## After the last unit
 
-Apply `../execute-common.md` **Close sequence** in full. Inspect base is
+Apply `../execute-common/SKILL.md` **Close sequence** in full. Inspect base is
 `git merge-base main HEAD` — never a last-unit-only range.
 
 *Done when: that section's Done when holds.*

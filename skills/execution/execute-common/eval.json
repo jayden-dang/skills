@@ -1,0 +1,25 @@
+[
+  {
+    "eval_id": 1,
+    "eval_name": "registered-engineer-pack-path",
+    "kind": "contract",
+    "derived_from": "SKILL.md § Execute-family controller recipe",
+    "prompt": "Install the Engineer Pack so the execute family can close a branch.",
+    "assertions": [
+      "this folder is a registered Engineer Pack skill so npx skills add copies it beside the execute-family skills",
+      "the controller loads this file when an execute-family Setup or After-last step says to"
+    ]
+  },
+  {
+    "eval_id": 2,
+    "eval_name": "close-sequence-owns-polish-predicate",
+    "kind": "contract",
+    "derived_from": "SKILL.md § Close sequence",
+    "prompt": "The last task just ledgered complete. Close the branch.",
+    "assertions": [
+      "polish runs only when a polish predicate holds",
+      "EOD or a clean inspect is not treated as a reason to skip a 40-file branch",
+      "a skip must be written skip: no polish predicate"
+    ]
+  }
+]

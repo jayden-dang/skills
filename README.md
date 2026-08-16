@@ -197,7 +197,7 @@ and countered by name. See [The gates](docs/guide/concepts/gates.md).
 | setup | `configure-repo`, `bootstrap-repo` |
 | discovery | `solve-problem`, `frame-change`, `clarify-decisions`, `research`, `run-spike`, `define-domain`, `interpret-session`, `deepen-codebase`, `work-the-problem`, `pathfind` |
 | spec | `specify-behavior`, `design-solution`, `plan-tasks` |
-| execution | `build-in-waves`, `build-by-story`, `build-inline`, `test-first`, `root-cause`, `prove-claim`, `audit-trace`, `load-subgraph`, `isolate-workspace` |
+| execution | `build-in-waves`, `build-by-story`, `build-inline`, `execute-common`, `test-first`, `root-cause`, `prove-claim`, `audit-trace`, `load-subgraph`, `isolate-workspace` |
 | review | `inspect-change`, `study-change`, `brief-team`, `select-review-sample`, `polish-diff`, `vet-feedback`, `review-invariants` |
 | acceptance | `validate-feature`, `validate-api`, `validate-ui`, `review-product-flow`, `vet-product-flow`, `run-product-walkthrough` |
 | craft | `craft-page` |
@@ -309,7 +309,7 @@ eval must cite a heading that really appears in that `SKILL.md` — so neither a
 ungrounded regression claim nor an invented contract can pass. Coverage is
 reported per kind, so a contract checklist is never mistaken for evidence.
 
-Every skill has contract evals; **16 of 79 have evidence-backed ones**. Closing
+Every skill has contract evals; **20 of 80 have evidence-backed ones**. Closing
 that gap means running real baselines, not writing more assertions.
 
 ## License

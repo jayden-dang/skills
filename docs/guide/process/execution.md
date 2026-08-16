@@ -61,7 +61,7 @@ Five steps, of which two are easy to skip and expensive to have skipped:
 - **Ledger check.** `.skills/` is git-ignored, then `.skills/<CODE>/progress.md` is read. **Every task it marks complete IS complete** — resume at the first task it does not list.
 - **Read the plan once**, copying the Global Constraints **verbatim**. They get pasted into every reviewer dispatch unmodified.
 - **Todos**, one per task **and** one terminal **Close branch** todo
-  (the shared close sequence in `skills/execution/execute-common.md`).
+  (the shared close sequence in `skills/execution/execute-common/SKILL.md`).
 - **Pre-flight plan review.** Scan the plan once for internal defects — tasks that contradict each other or the Global Constraints, and anything the plan explicitly *mandates* that a reviewer would flag as a defect (an assertion-free test, a copy-pasted logic block). Batch **all** findings into **one** question to the user, each shown beside the plan text that mandates it. One interrupt, not one per discovery mid-run.
 
 ### The per-task loop
@@ -127,7 +127,7 @@ State the model **explicitly on every dispatch** — an omitted model inherits y
 
 ## After the last task
 
-One home: [`execute-common.md`](../../../skills/execution/execute-common.md)
+One home: [`execute-common`](../../../skills/execution/execute-common/SKILL.md)
 **Close sequence**. Default path is `inspect-change` → `validate-feature` →
 `package-change` → `land-branch`. `polish-diff` and the product-walk trio
 run only when their observable predicates hold — EOD, a clean inspect, and

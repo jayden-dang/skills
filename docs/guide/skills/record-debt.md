@@ -6,7 +6,7 @@
 |---|---|
 | **Bucket** | track |
 | **Invocation** | `/record-debt` — user-invoked; the agent cannot call it |
-| **Reads** | findings named in the invocation, a build's `.skills/<CODE>/deferrals.md` carrier, `docs/agents/issue-tracker.md` |
+| **Reads** | findings named in the invocation, `docs/agents/issue-tracker.md` |
 | **Writes** | `docs/quality/debt.md` (created from `templates/quality-debt.md` when absent) |
 | **Calls** | [`prove-claim`](prove-claim.md) (before an entry may be closed) |
 | **Called by** | nothing — see *The gap worth knowing about* below |
@@ -89,10 +89,9 @@ Two skills now do, at the exact moment a bankable finding is created:
 
 Both were added on recorded evidence: asked to write the report, 2 of 3 baseline models produced fixed / dropped / referred-out and simply omitted the routing, one of them describing the drops as *"debt left on the table"* in the same breath. It is a template slot rather than a prose reminder for that reason.
 
-**Two gaps remain, and both are honest to know about:**
+Intake used to list a second source — a build's `.skills/<CODE>/deferrals.md` carrier. **No skill ever wrote that file**, so the branch sent the agent looking for something that never existed; it was removed in v1.1.0. Every other `.skills/<CODE>/*` artifact in the set has a producer, which is what made this one findable.
 
-- **Nothing writes its second intake source.** The skill offers to read a build's `.skills/<CODE>/deferrals.md` carrier, but no skill in the set produces that file. That branch is dead today; findings reach the ledger by being named in the invocation.
-- **Nothing reads the ledger.** No skill consults `docs/quality/debt.md`. It informs humans — planning, prioritisation, "what have we been carrying?" — not other agents.
+**One gap remains, and it may be by design:** nothing *reads* the ledger. No skill consults `docs/quality/debt.md`. It informs humans — planning, prioritisation, "what have we been carrying?" — not other agents.
 
 And the timing constraint the routing exists to serve: **bank in the same session as the pass that produced the finding.** A drop list stated in a report that nobody banks is gone when the context closes, and running `/record-debt` later from memory does not work — the `Found` line is precisely what a later reader cannot reconstruct.
 

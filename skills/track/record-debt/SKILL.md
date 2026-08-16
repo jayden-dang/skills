@@ -1,6 +1,6 @@
 ---
 name: record-debt
-version: 1.0.0
+version: 1.1.0
 description: Banks findings that were judged real and deliberately left unfixed into the
   durable debt ledger at docs/quality/debt.md. Run it with /record-debt.
 disable-model-invocation: true
@@ -20,9 +20,10 @@ Everything this skill writes goes to `docs/quality/debt.md` — a tracked file, 
 The user runs this, so the findings arrive however they arrive. Take them in this order:
 
 1. **Findings named in the invocation** — a pasted list, or "bank what polish-diff just found".
-2. **A deferral carrier**, when a build left one: `.skills/<CODE>/deferrals.md`. Read it,
-   propose one entry per line, and say which you are proposing before writing.
-3. **Nothing given** — ask what to bank. Do **not** go read the code and invent findings;
+   This is the live path: `polish-diff` and `inspect-change` each close their report with a
+   **banked** slot naming the findings they judged real and left unfixed, and name this skill
+   for you to run while that report is still in front of you.
+2. **Nothing given** — ask what to bank. Do **not** go read the code and invent findings;
    a fresh reading produces observations, and observations fail the admission test below.
 
 *Done when: you hold a concrete list of candidate findings, or you have asked for one.*

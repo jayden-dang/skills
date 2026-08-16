@@ -1,6 +1,6 @@
 ---
 name: build-in-waves
-version: 1.0.0
+version: 1.1.0
 description: Use when an approved tasks.md has Execution-mode continuous and needs
   subagent task-wave execution — dual-verdict review, parallel waves, resume after
   crash/compaction — through whole-branch review and land-branch.
@@ -30,6 +30,11 @@ world. Bulk artifacts travel as file paths under `.skills/`, never as pasted tex
 **Narration:** at most one short line between tool calls. Ledger + tool results
 carry the record.
 
+**Shared controller recipe:** load `../execute-common.md` when Setup
+preflight / ledger / todos or After the Last Task starts. That file is the
+one home for those steps and for the polish / product-walk predicates.
+This file owns continuous-mode, waves, and the per-task loop only.
+
 ## Mode ownership
 
 Invoking this skill selects **continuous** execution. Align `tasks.md` to that
@@ -54,36 +59,17 @@ Unit barriers, unit derivation, and human unit stops live only in
 
 1. **Mode ownership.** Apply the table above. *Done when: header is `continuous`
    and you stay on this skill, or you have handed off to `build-by-story`.*
-2. **Session preflight — two questions:**
-   1. **Issue tracker sync.** Read `docs/agents/issue-tracker.md` when present.
-      IF a tracker is configured (github / gitlab / linear / local / other named
-      backend) → ask whether this build should sync with that tracker (bind
-      issues to the branch, pull ticket IDs into briefs/ledger, use the
-      tracker's wayfinding ops for status). IF yes → resolve ticket IDs from
-      branch name, plan, or a short user list; record them under `.skills/` for
-      implementer briefs and later `package-change`. IF no, or the file is
-      absent / declares no tracker → empty ticket set; continue (unconfigured
-      tracker is normal, not a failure).
-   2. **Workspace / branch.** If no isolated workspace exists yet: isolate in a
-      worktree, or implement on the current branch? Do not create a worktree
-      unasked. Isolation → REQUIRED SUB-SKILL: use `isolate-workspace`. Current
-      branch is main/master → separate explicit consent before implementing;
-      "no worktree" is not consent to touch main/master.
-   *Done when: tracker choice (or empty set) and workspace choice are clear.*
-3. **Ledger check.** Make `.skills/` local-only:
-   `grep -qxF '.skills/' .gitignore 2>/dev/null || { printf '.skills/\n' >> .gitignore && git commit -m 'chore: ignore local skills artifacts' -- .gitignore; }`
-   Read `.skills/<CODE>/progress.md` if it exists. Every task it marks complete IS
-   complete — resume at the first task it does not list. *Done when: next task
-   is known.*
+2. **Session preflight.** Apply `../execute-common.md` **Session preflight**.
+   *Done when: that section's Done when holds.*
+3. **Ledger check.** Apply `../execute-common.md` **Ledger check**.
+   *Done when: next task is known.*
 4. **Read the plan.** Read `tasks.md` in full once. Copy **Global Constraints**
    verbatim for every reviewer dispatch. If `docs/agents/project.md` is missing,
    say so, suggest `configure-repo`, take verify commands from Global Constraints.
    When `## Team` has roster/band, load band **packaging** only — never skip
    dual-verdict review for Solo. *Done when: constraints captured word-for-word.*
-5. **Todos — GATE.** Via TodoWrite before any dispatch: **one todo per task**
-   **and** one terminal todo **Polish Diff** (whole-branch `polish-diff` before
-   acceptance — created now, not later).
-   *Done when: the list mirrors the plan **and** includes the polish-diff todo.*
+5. **Todos — GATE.** Apply `../execute-common.md` **Todos — GATE**.
+   *Done when: the list mirrors the plan **and** includes the Close branch todo.*
 6. **Pre-flight plan review.** Scan once for internal defects (contradictions,
    assertion-free tests, copy-pasted logic the plan mandates). Batch ALL findings
    into ONE question to the user before dispatch. Clean scan → no comment.
@@ -192,24 +178,12 @@ ledger = survives compaction. Never let one excuse skipping the other.
 
 ## After the Last Task
 
-1. **Whole-branch review.** REQUIRED SUB-SKILL: use `inspect-change` with base =
-   `git merge-base main HEAD` — never a mid-branch sha. Feed ledger Minors.
-   Top model tier.
-2. **One fixer** for the complete findings list → re-review. Never one fixer per
-   finding.
-3. **Polish Diff.** REQUIRED SUB-SKILL: use `polish-diff` on the whole-branch
-   diff **before** acceptance. Mark the setup **Polish Diff** todo done only
-   after it has run.
-4. **Acceptance.** REQUIRED SUB-SKILL: use `validate-feature`. Breaks → `root-cause`,
-   then promote to committed ID-tagged tests. Optional: `/select-review-sample`
-   (not a gate).
-5. **Prepare.** REQUIRED SUB-SKILL: use `package-change`.
-6. **Finish.** REQUIRED SUB-SKILL: use `land-branch`.
+Apply `../execute-common.md` **Close sequence** in full — inspect-change,
+one fixer, polish (only if the polish predicate holds), validate-feature,
+product-walk (only if the walk predicate holds), package-change,
+land-branch. Do not restate the steps here.
 
-| Thought | Reality |
-|---|---|
-| "Task todos are all green — polish can wait / skip" | The setup **Polish Diff** todo is still open; acceptance is blocked until it runs |
-| "Inspect was clean / branch is small — polish is optional" | Step 3 is required on every branch; size and a clean inspect do not drop it |
+*Done when: that section's Done when holds.*
 
 ## Inline route
 
@@ -238,8 +212,8 @@ skill's subagent loop without dispatches.
 - Tell a reviewer what not to flag, or pre-rate severity in the dispatch
 - Dispatch a reviewer without a diff package
 - Re-dispatch a task the ledger marks complete
-- Dispatch the first task before the todo list exists (tasks **and** polish-diff)
-- Skip `polish-diff`, leave its todo open, or move to acceptance/package/land without it
+- Dispatch the first task before the todo list exists (tasks **and** Close branch)
+- Skip the close sequence, silent-skip polish, or treat EOD/demo as a polish predicate
 - Fix reviewer findings in the controller context
 - Start implementation on main/master without explicit consent
 - Create a worktree without asking, or treat "current branch" as consent for main/master

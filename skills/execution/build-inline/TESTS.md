@@ -42,3 +42,9 @@
 Same failure class and form as `build-in-waves` / `build-by-story` (shared
 After-the-last-task family): Setup Todos GATE includes **Polish Diff**;
 mandatory step + red flags + rationalization rows.
+
+## Edit — polish predicate + execute-common (2026-08-16)
+
+Supersedes the always-polish GREEN. Close sequence / preflight / todos live
+in `../execute-common.md`. Terminal todo is **Close branch**. Polish is an
+observable conditional; silent skip and EOD-as-predicate remain red flags.

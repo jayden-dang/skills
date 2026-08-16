@@ -46,13 +46,14 @@
   },
   {
     "eval_id": 5,
-    "eval_name": "polish-diff-is-a-terminal-todo",
-    "kind": "behavior",
-    "derived_from": "TESTS.md § Edit 2026-08-07 — Setup Todos GATE includes Polish Diff; post-plan polish dropped when task todos went green",
+    "eval_name": "close-sequence-lives-in-execute-common",
+    "kind": "contract",
+    "derived_from": "SKILL.md § Shared controller recipe",
     "prompt": "You are setting up a build-inline run for an approved tasks.md with six tasks.",
     "assertions": [
-      "the setup todo list carries a terminal Polish Diff item in addition to one todo per task",
-      "polish-diff still runs after the last task rather than being dropped once the task todos are green"
+      "the setup todo list carries a terminal Close branch item in addition to one todo per task",
+      "polish-diff runs only when a polish predicate in execute-common holds",
+      "a written skip is required when no predicate holds — EOD is not a predicate"
     ]
   },
   {

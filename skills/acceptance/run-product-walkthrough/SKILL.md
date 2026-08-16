@@ -1,16 +1,12 @@
 ---
 name: run-product-walkthrough
-version: 1.0.0
+version: 1.0.1
 description: >-
-  Use when a review-product-flow test guide already exists and its cases must be executed
-  rather than handed to a human — the agent-driven pass over every case in the
-  guide against the running app in a real browser, judging both what the screen
-  shows and what the backend actually stored. Produces an evidence-backed run
-  file carrying a pass / fail / blocked verdict per case ID, and a guide left
-  fully accounted for. Triggers on running or resuming a half-finished test
-  guide, working a review-product-flow file end to end, or testing every case in the browser
-  and fixing what breaks. Not for authoring the guide (`review-product-flow`) or writing
-  committed e2e specs (`validate-ui`).
+  Use when a review-product-flow guide already exists and its cases must be
+  executed against the running app — agent-driven, screen plus backend
+  evidence. Produces a run file with a pass / fail / blocked verdict per case.
+  Not for authoring the guide (`review-product-flow`) or committed e2e
+  (`validate-ui`).
 ---
 
 # Run Product Walkthrough

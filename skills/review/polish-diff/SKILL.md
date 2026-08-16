@@ -1,12 +1,13 @@
 ---
 name: polish-diff
-version: 1.1.0
+version: 1.2.0
 description: Use when changed code needs a quality cleanup actually applied rather than
   reported — code that reimplements a helper the repo already has, needless
   complexity, dead code, wasted work or repeated I/O, tech debt, a bandaid fix
-  at the wrong depth. The behavior-preserving refactor and final tidy pass over a
-  diff, branch, or PR before merge, and the last step of build-in-waves. For
-  correctness bugs, a crash, or a merge verdict use inspect-change or root-cause instead.
+  at the wrong depth. The behavior-preserving refactor over a diff, branch, or
+  PR before merge, and the execute-family close step when a polish predicate
+  holds. For correctness bugs, a crash, or a merge verdict use inspect-change
+  or root-cause instead.
 ---
 
 # Polish Diff

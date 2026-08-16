@@ -69,22 +69,23 @@ Full tables: [Skill reference](../skills/README.md) and [`AGENTS.md` §11](../..
 A skill that nothing can reach costs its metadata on every turn and returns
 nothing. Two paths reach one: a `REQUIRED SUB-SKILL` hand-off from another skill,
 or the description matching what the user just said. Counted over the 61
-engineering skills (2026-08-15):
+engineering skills (2026-08-16):
 
 | Path | Count |
 |---|---|
 | User-invoked — reachable only when the human types the name | 24 |
-| Model-invocable with at least one `REQUIRED SUB-SKILL` caller | 31 |
-| Model-invocable with **no** caller — description-triggered entry points | 6 |
+| Model-invocable with at least one `REQUIRED SUB-SKILL` caller | 32 |
+| Model-invocable with **no** caller — description-triggered entry points | 5 |
 
 The third row is the one worth reading carefully, because "no caller" looks like
 an orphan and mostly is not. `gate-session` is injected by the SessionStart hook,
-not called. `solve-problem`, `amend-feature`, `vet-feedback`,
-`review-product-flow`, and `run-product-walkthrough` are **entry points**: they
-fire on what the user says, never on a hand-off, which makes their descriptions
-the only thing standing between them and never running at all. An entry point
-that undertriggers is invisible — it does not fail, it simply never appears — so
-those six carry the highest trigger-testing burden in the set.
+not called. `solve-problem`, `amend-feature`, `vet-feedback`, and
+`run-product-walkthrough` are **entry points**: they fire on what the user
+says (walkthrough is only *named* by `review-product-flow`). `review-product-flow`
+is a REQUIRED alternative of `prove-claim` and of the execute-family close
+sequence when a walk predicate holds. An entry point that undertriggers is
+invisible — it does not fail, it simply never appears — so those five carry
+the highest trigger-testing burden in the set.
 
 The census also surfaced its own gaps — `polish-diff`, `record-verdict`,
 `record-debt`, and `define-system-doc` were shipping without a page, and

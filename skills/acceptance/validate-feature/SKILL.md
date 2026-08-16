@@ -1,6 +1,6 @@
 ---
 name: validate-feature
-version: 1.0.0
+version: 1.1.0
 description: Use before merging or finishing a branch, when a feature's unit tests are
   green but its user-facing behavior has not been driven through the running
   system as a real client — the acceptance / end-to-end pass over the happy
@@ -56,8 +56,10 @@ features need both:
   **REQUIRED SUB-SKILL: use `validate-ui`**.
 - The behavior is neither an API nor a UI (a CLI, a library, a batch/cron job) →
   drive it directly against the running system yourself, record each observed
-  result in the ledger, and promote the passing checks into committed, ID-tagged
-  tests. For human-eyeball qualities (visuals, feel) hand off to `review-product-flow`.
+  result in the ledger, and promote the passing checks into committed tests
+  that describe the domain behavior (docs-only spine — no requirement-ID tags
+  required in test files). For human-eyeball qualities (visuals, feel) hand
+  off to `review-product-flow`.
 
 Hand each child its slice of the ledger by path; it writes results back to the
 same file.
@@ -68,5 +70,4 @@ Report the checklist with each item's observed result. Any item you could not
 exercise is an open risk — name it; do not let it pass silently. Then hand back
 to `land-branch`. *Done when: every checklist item is observed green against
 the running system, each failure fixed with a regression test, and the durable
-tests committed and tagged so `land-branch`'s prove-claim gate keeps enforcing
-them.*
+tests committed so `land-branch`'s prove-claim gate keeps enforcing them.*

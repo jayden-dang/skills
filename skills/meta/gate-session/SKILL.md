@@ -1,6 +1,6 @@
 ---
 name: gate-session
-version: 1.0.0
+version: 1.1.0
 description: Use when starting any conversation — establishes the rule that relevant skills are found and invoked before any response or action, including clarifying questions
 ---
 
@@ -24,19 +24,10 @@ file. If the skill turns out not to fit, you may set it aside after reading it.
 Announce "Using [skill] to [purpose]", then follow the skill exactly. If it has
 a checklist, create one todo per item.
 
-**Priority:** process skills first, then implementation skills. "Build X" →
-`frame-change` before anything, plan mode included — plans come after approved
-requirements, never before. "This is broken" with clear unexpected behavior →
-`root-cause` before any fix. Ambiguous problem / requested solution without a
-trustworthy gap or clear workflow (bug vs product, investigate vs build) →
-`solve-problem` before guessing `root-cause` or `frame-change`. Small in-scope
-change to an already-shipped, spec'd feature (a tweak, recolor, or follow-on) →
-`amend-feature`, not `frame-change`. For an incoming issue or external PR,
-suggest the user run `/triage`; to capture the current conversation, spec, or
-idea into tracker issues, suggest `/publish-issues` (both are user-invoked — you
-cannot auto-invoke them).
-Unsure which flow fits → suggest `/ask-me-bro`. Only auto-invoke model-invocable skills;
-name a user-invoked one for the user to run.
+**Priority:** process skills first, then implementation skills. When the
+entry point is unclear, load `docs/guide/process/on-ramps.md` — that table
+is the one home; do not invent a second router. Only auto-invoke
+model-invocable skills; name a user-invoked one for the user to run.
 
 **Participant boundary:** never infer skill-set membership from roster,
 CODEOWNERS, or PR authorship; only skill-mediated actions are enforced or

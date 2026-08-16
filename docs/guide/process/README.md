@@ -40,9 +40,11 @@ execute family               build-in-waves | build-by-story | build-inline
 inspect-change                  whole-branch, two axes: Standards + Spec-by-ID
       │
       ▼
+[polish-diff if predicate]   execute-common close sequence — polish / product-walk
+      │                      only when their observable predicates hold
+      ▼
 validate-feature             drive the running system through the spec's user-facing
-                             behaviors (API + UI); fix; promote to tagged tests
-                             (+ review-product-flow for a manual, human-eyeball pass)
+                             behaviors (API + UI); fix; promote to domain-language tests
       │
       ▼
 land-branch                prove-claim + audit-trace gate, then merge / PR / keep / discard
@@ -130,5 +132,6 @@ The chain is not one-way. Several skills feed back into earlier phases:
 
 - [Overview](../methodology/overview.md) — what the system is and why
 - [Ceremony tiers](../methodology/ceremony-tiers.md) — which flow your work belongs in
+- [On-ramps](on-ramps.md) — one home for which skill starts a situation
 - [`ask-me-bro`](../skills/ask-me-bro.md) — the router, when the entry point is unclear
 - [Examples](../examples/tier-2-feature.md) — the chain run end to end

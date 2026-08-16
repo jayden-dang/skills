@@ -1,6 +1,6 @@
 ---
 name: solve-problem
-version: 1.0.0
+version: 1.1.0
 description: Use when a symptom, opportunity, requested solution, or “problem” has no trustworthy gap or clear workflow yet — produces an evidence-grounded Problem Brief and routes it to the right discovery, diagnosis, decision, or improvement skill.
 ---
 
@@ -13,17 +13,12 @@ skill owns the work.
 ## Boundary
 
 Use this skill only while either the problem gap or the correct workflow is
-unclear.
+unclear. Pack entry-point **names** live in `docs/guide/process/on-ramps.md`
+— this skill only classifies the gap, then routes once.
 
-- Clear unexpected behavior, failing test, error, crash, or regression → use
-  `root-cause` directly.
-- Clear request for a new feature or behavior → use `frame-change` directly.
-- Multi-session destination still surrounded by fog → name `/pathfind` for the
-  user.
-- Small change to an already-shipped, spec'd feature → use `amend-feature`.
-- Plan invalidated during execution → use `reroute-plan`.
-
-If one of those predicates is already true, this skill is a no-op.
+If an on-ramps predicate is already true (clear unexpected behavior, clear
+new feature, shipped tweak, mid-flight plan invalid, multi-session fog),
+this skill is a no-op: follow that row instead.
 
 ## Problem Brief — REQUIRED shape
 

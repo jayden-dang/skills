@@ -60,8 +60,8 @@ Five steps, of which two are easy to skip and expensive to have skipped:
 - **Workspace check.** Never begin implementation on `main`/`master` without the user's explicit consent.
 - **Ledger check.** `.skills/` is git-ignored, then `.skills/<CODE>/progress.md` is read. **Every task it marks complete IS complete** — resume at the first task it does not list.
 - **Read the plan once**, copying the Global Constraints **verbatim**. They get pasted into every reviewer dispatch unmodified.
-- **Todos**, one per task **and** one terminal **Polish Diff** todo
-  (whole-branch `polish-diff` before acceptance — created now, not later).
+- **Todos**, one per task **and** one terminal **Close branch** todo
+  (the shared close sequence in `skills/execution/execute-common.md`).
 - **Pre-flight plan review.** Scan the plan once for internal defects — tasks that contradict each other or the Global Constraints, and anything the plan explicitly *mandates* that a reviewer would flag as a defect (an assertion-free test, a copy-pasted logic block). Batch **all** findings into **one** question to the user, each shown beside the plan text that mandates it. One interrupt, not one per discovery mid-run.
 
 ### The per-task loop
@@ -119,7 +119,7 @@ State the model **explicitly on every dispatch** — an omitted model inherits y
 
 ## The three disciplines that govern everything
 
-**`test-first`** runs inside every implementer. No production code without a failing test first; tests only at seams the design pre-agreed; every test carries its requirement ID.
+**`test-first`** runs inside every implementer. No production code without a failing test first; tests only at seams the design pre-agreed; tests describe domain behavior (IDs stay in docs).
 
 **`root-cause`** runs whenever anything behaves unexpectedly. Its Phase 1 is a gate: before any theory-building, construct and *run* a red-capable command — one that is red now because of this exact bug and goes green when it is fixed. *Build the right feedback loop and the bug is 90% fixed.* Three failed fix attempts means stop: the architecture is in question, not your latest hypothesis.
 
@@ -127,12 +127,13 @@ State the model **explicitly on every dispatch** — an omitted model inherits y
 
 ## After the last task
 
-1. **Whole-branch review** via [`inspect-change`](../skills/inspect-change.md), with base = `git merge-base main HEAD` — never a mid-branch sha. Run on the top model tier, pointed at the ledger's Minor-findings list for triage.
-2. **One fixer.** If the review returns findings, dispatch **one** fix subagent carrying the complete list. Never one fixer per finding — each extra fixer rebuilds context and re-runs suites, and a per-finding fix wave can cost more than the whole plan did. Re-review after.
-3. **Polish Diff** via `polish-diff` on the whole-branch diff before acceptance. Mark the setup todo done only after it runs.
-4. **Acceptance** via [`validate-feature`](../skills/validate-feature.md).
-5. **Prepare** via [`package-change`](../skills/package-change.md).
-6. **Finish** via [`land-branch`](../skills/land-branch.md).
+One home: [`execute-common.md`](../../../skills/execution/execute-common.md)
+**Close sequence**. Default path is `inspect-change` → `validate-feature` →
+`package-change` → `land-branch`. `polish-diff` and the product-walk trio
+run only when their observable predicates hold — EOD, a clean inspect, and
+"feels small" are not predicates. A skip must be written, never silent.
+
+**`test-first`** tests describe domain behavior; requirement IDs stay in docs.
 
 ## Next
 

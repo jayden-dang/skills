@@ -1,5 +1,23 @@
 # `build-in-waves` / implementer-prompt — deviation log
 
+## Edit — polish predicate + execute-common (2026-08-16)
+
+**Protocol:** `author-skills` (form match: condition → observable predicate;
+knows-rule-under-pressure → rationalization + red flags).
+
+**RED (current 1.0.0, 2026-08-16).** After-last required `polish-diff` on
+every branch. Three execute skills restated the same close sequence
+verbatim; `ID-tagged tests` had drifted from the docs-only spine. Agents
+under EOD still skipped polish *and* a 3-file typo branch paid four
+cleanup agents. Process guide `docs/guide/process/execution.md` matched
+the always-polish rule.
+
+**GREEN form.** Close sequence, preflight, ledger, and todos live in
+`../execute-common.md`. Polish runs only when a named predicate holds;
+a skip must be written `skip: no polish predicate`. EOD / "inspect was
+clean" / "feels small" are not predicates. Acceptance promotes
+domain-language tests, not ID tags.
+
 ## Edit — polish-diff always + setup todo (2026-08-07)
 
 **Protocol:** `author-skills` (form match: omit-from-produced → REQUIRED slot;

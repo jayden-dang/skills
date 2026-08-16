@@ -38,8 +38,8 @@ Six steps run once before any task:
 1. **Workspace check.** Never begin implementation on main/master without the user's explicit consent. If no isolated workspace exists, [`isolate-workspace`](isolate-workspace.md) is a required sub-skill. Done when you are on a dedicated branch with a clean baseline.
 2. **Ledger check.** Make `.skills/` git-ignored (an idempotent line-presence check, since a trailing-slash pattern won't match until the directory exists), then read `.skills/<CODE>/progress.md` if present. Every task it marks complete *is* complete — resume at the first task it does not list.
 3. **Read the plan.** Read `tasks.md` in full, once, and copy the **Global Constraints** section verbatim — it gets pasted into every reviewer dispatch unmodified. If `docs/agents/project.md` is missing, say so, suggest `configure-repo`, and take verify commands from the plan's Global Constraints instead.
-4. **Todos.** One todo per task **and** one terminal **Polish Diff** todo
-   (whole-branch `polish-diff` before acceptance — created now, not later).
+4. **Todos.** One todo per task **and** one terminal **Close branch** todo
+   (shared close sequence in `skills/execution/execute-common.md`).
 5. **Pre-flight plan review.** Scan the plan once for internal defects — tasks that contradict each other or the Global Constraints, and anything the plan explicitly mandates that a reviewer would flag as a defect (an assertion-free test, a copy-pasted logic block). **Batch ALL findings into ONE question to the user**, each shown beside the plan text that mandates it, asking which governs — before any dispatch. One interrupt, not one per discovery mid-run. A clean scan needs no comment.
 6. **Wave planning.** Read each task's `Depends-on:` line and topo-sort the tasks into waves — wave 0 is every task with no unmet dependency, wave 1 the tasks freed once wave 0 lands, and so on. `Depends-on: none` marks a wave-0 task; an absent line falls back to depending on every earlier task. A plan that declares no dependencies collapses to one task per wave — the strict serial order.
 
@@ -114,12 +114,13 @@ Conversation memory does not survive compaction. Controllers that lost their pla
 
 ## After the last task
 
-1. **Whole-branch review.** [`inspect-change`](inspect-change.md) is a required sub-skill, with base = the branch point (`git merge-base main HEAD`) — never a mid-branch sha. Point it at the ledger's Minor-findings list, and run it on the top model tier.
-2. **One fixer.** If it returns findings, dispatch **ONE** fix subagent carrying the complete findings list — never one fixer per finding; each extra fixer rebuilds context and re-runs suites, and a per-finding fix wave can cost more than the whole plan did. Re-review after.
-3. **Polish Diff.** `polish-diff` is a required sub-skill on the whole-branch diff; mark its setup todo done only after it runs. A plan built task by task accretes duplication and bandaid depth no single task review could see. Behavior-preserving — before acceptance, never after.
-4. **Acceptance.** [`validate-feature`](validate-feature.md) is a required sub-skill — drive the feature through the running system as a real user, because green units prove assertions pass, not that it works. Fix any break via [`root-cause`](root-cause.md), then promote the check to a committed, ID-tagged test.
-5. **Prepare the change.** [`package-change`](package-change.md) is a required sub-skill — it runs after acceptance rather than before, because acceptance can still change the code and authoring must describe what will actually ship. Commits and a PR package exist when it is done.
-6. **Finish.** [`land-branch`](land-branch.md) is a required sub-skill — the user chooses merge / PR / keep / discard / block.
+The close sequence lives in `skills/execution/execute-common.md` — one home
+for waves, story, and inline. Default path: [`inspect-change`](inspect-change.md)
+→ [`validate-feature`](validate-feature.md) → [`package-change`](package-change.md)
+→ [`land-branch`](land-branch.md). `polish-diff` and the product-walk trio run
+only when their predicates hold. A skip must be written
+`skip: no polish predicate`. EOD, a clean inspect, and "feels small" are not
+predicates.
 
 ## Sibling routes
 

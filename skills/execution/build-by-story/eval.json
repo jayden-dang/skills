@@ -52,5 +52,17 @@
     "assertions": [
       "build-in-waves is selected rather than build-by-story"
     ]
+  },
+  {
+    "eval_id": 6,
+    "eval_name": "close-sequence-lives-in-execute-common",
+    "kind": "contract",
+    "derived_from": "SKILL.md § Shared controller recipe",
+    "prompt": "The last story unit is unlocked. Close the branch.",
+    "assertions": [
+      "the controller loads ../execute-common.md for the close sequence",
+      "polish runs only when a polish predicate holds",
+      "EOD is not treated as a polish predicate"
+    ]
   }
 ]

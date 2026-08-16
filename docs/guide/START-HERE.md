@@ -38,9 +38,9 @@ schema 1.1, **`cluster(focus)`**, no generated graph file).
         ▼                                                 │
   root-cause / test-first / prove-claim / audit-trace     │
   (+ load-subgraph after Phase 2 only)                    ▼
-         inspect-change ─► polish-diff ─► validate-feature ─► package-change
-         (+ load-subgraph)                (api/ui · product-flow)
-                    ─► land-branch ─► /cut-release ─► realign-spec
+         inspect-change ─► [polish-diff if predicate] ─► validate-feature
+         (+ load-subgraph)     [product-walk if predicate]   (api/ui)
+                    ─► package-change ─► land-branch ─► /cut-release ─► realign-spec
 
  MAINTENANCE: amend-feature · /publish-issues · /triage · /scan-architecture
               · /map-features · /pathfind · /write-handoff · realign-spec
@@ -120,31 +120,20 @@ You mostly describe the idea and **approve files**; the rest chains:
 7. Per task: **`test-first`** · **`prove-claim`** (and **`audit-trace`** when claiming
    requirements met).
 8. **`inspect-change`** — Standards + Spec; neighbors again via **`load-subgraph`**.
-9. **`polish-diff`** → **`validate-feature`** (`validate-api` / `validate-ui`; optional
-   product-flow: `review-product-flow` → `vet-product-flow` → `run-product-walkthrough`).
+9. **Close sequence** (one home: `skills/execution/execute-common.md`):
+   **`polish-diff`** only when a polish predicate holds; **`validate-feature`**
+   (`validate-api` / `validate-ui`); product-walk only when a walk predicate holds.
 10. **`package-change`** → **`land-branch`** (merge / PR / keep / discard / block).
 11. **`/cut-release`** when shipping a version.
 12. **`realign-spec`** — triad + INDEX status (Implemented / Shipped).
 
 ### Other entry points
 
-| Situation | Start with |
-|---|---|
-| Ambiguous problem / requested fix without a clear gap or workflow | **`solve-problem`** → Problem Brief + one route (`root-cause` / `frame-change` / `clarify-decisions` / `STOP`) |
-| Bug / wrong behavior | describe it → **`root-cause`** (retrieval only after Phase 2) → mini-spec → `test-first` → … |
-| Small tweak to shipped, spec'd feature | **`amend-feature`** |
-| Multi-session fog | **`/pathfind`** then `frame-change` |
-| Incoming issue / PR | **`/triage`** |
-| Conversation → tracker issues | **`/publish-issues`** |
-| Plan invalidated mid-build | **`reroute-plan`** |
-| Spec drifted from code | **`realign-spec`** |
-| Architecture debt scan | **`/scan-architecture`** |
-| Pivot vs shipped code | **`/assess-pivot-impact`** then **`/define-project`** |
-| Unsure | **`/ask-me-bro`** |
+The table lives in [on-ramps](process/on-ramps.md) — one home. Unsure → **`/ask-me-bro`**.
 
 ## 3. Skill index (engineering package)
 
-Full tables: [Skill reference](skills/README.md) (~56 engineering skills).  
+Full tables: [Skill reference](skills/README.md) (61 engineering skills).  
 Personal OS is a **separate** package — [personal-os START-HERE](../personal-os/START-HERE.md).
 
 `U` = you run `/name` · `m` = model-invoked · `si` = session-injected

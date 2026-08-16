@@ -32,5 +32,28 @@
       "the returned report cites the path of the implementation-notes file",
       "the report signals concerns rather than reporting a clean done"
     ]
+  },
+  {
+    "eval_id": 4,
+    "eval_name": "close-sequence-lives-in-execute-common",
+    "kind": "contract",
+    "derived_from": "SKILL.md § Shared controller recipe",
+    "prompt": "The last task just ledgered complete. Close the branch.",
+    "assertions": [
+      "the controller loads ../execute-common.md for the close sequence rather than restating polish-always steps",
+      "polish runs only when a polish predicate in execute-common holds",
+      "EOD or a clean inspect is not treated as a reason to skip a 40-file branch"
+    ]
+  },
+  {
+    "eval_id": 5,
+    "eval_name": "after-last-points-at-common",
+    "kind": "contract",
+    "derived_from": "SKILL.md § After the Last Task",
+    "prompt": "All task todos are green. Ship it.",
+    "assertions": [
+      "After the Last Task applies execute-common Close sequence in full",
+      "acceptance does not require ID-tagged tests"
+    ]
   }
 ]

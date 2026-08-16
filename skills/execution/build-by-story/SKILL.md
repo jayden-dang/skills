@@ -1,6 +1,6 @@
 ---
 name: build-by-story
-version: 1.0.0
+version: 1.1.0
 description: Use when an approved tasks.md has Execution-mode story-unit and
   needs human-gated review-unit execution — derived units, unit barriers,
   mode-change write-back, resume via unit ledger lines — through whole-branch
@@ -24,6 +24,11 @@ off to `build-in-waves`. If the user wants no subagents, name `build-inline`.
 
 **Why fresh subagents:** each worker gets only its task brief; bulk artifacts
 travel as paths under `.skills/`, never pasted session history.
+
+**Shared controller recipe:** load `../execute-common.md` when Setup
+preflight / ledger / todos or After the last unit starts. That file is the
+one home for those steps and for the polish / product-walk predicates.
+This file owns story-unit barriers, unit derivation, and the per-unit loop.
 
 **Narration:** at most one short line between tool calls. Ledger + tool results
 carry the record.
@@ -74,26 +79,11 @@ Align `tasks.md` to the story-unit route and continue:
 
 1. **Mode ownership.** Apply the table above. *Done when: header is `story-unit`
    and you stay on this skill, or you have handed off to `build-in-waves`.*
-2. **Session preflight — two questions:**
-   1. **Issue tracker sync.** Read `docs/agents/issue-tracker.md` when present.
-      IF a tracker is configured (github / gitlab / linear / local / other named
-      backend) → ask whether this build should sync with that tracker (bind
-      issues to the branch, pull ticket IDs into briefs/ledger, use the
-      tracker's wayfinding ops for status). IF yes → resolve ticket IDs from
-      branch name, plan, or a short user list; record them under `.skills/` for
-      implementer briefs and later `package-change`. IF no, or the file is
-      absent / declares no tracker → empty ticket set; continue (unconfigured
-      tracker is normal, not a failure).
-   2. **Workspace / branch.** Isolate in a worktree, or implement on the current
-      branch? Do not create a worktree unasked. Isolation → REQUIRED SUB-SKILL:
-      use `isolate-workspace`. Current branch is main/master → separate explicit
-      consent before any implementation.
-   *Done when: tracker choice (or empty set) and workspace choice are clear.*
-3. **Ledger check.** Ensure `.skills/` is git-ignored:
-   `grep -qxF '.skills/' .gitignore 2>/dev/null || { printf '.skills/\n' >> .gitignore && git commit -m 'chore: ignore local skills artifacts' -- .gitignore; }`
-   Read `.skills/<CODE>/progress.md` if present. Every complete task **and** complete
-   unit line is authoritative — resume at the first task not listed; skip units
-   already ledgered complete. *Done when: next task/unit is known.*
+2. **Session preflight.** Apply `../execute-common.md` **Session preflight**.
+   *Done when: that section's Done when holds.*
+3. **Ledger check.** Apply `../execute-common.md` **Ledger check**. Resume
+   also honors complete **unit** lines — skip units already ledgered complete.
+   *Done when: next task/unit is known.*
 4. **Read the plan.** Read `tasks.md` once. Copy **Global Constraints**
    verbatim for every reviewer dispatch. If `docs/agents/project.md` is missing,
    say so, suggest `configure-repo`, take verify commands from Global Constraints.
@@ -102,10 +92,8 @@ Align `tasks.md` to the story-unit route and continue:
 5. **Derive units — GATE.** Load `story-unit-mode.md` beside this file. Run
    **Derive partition** + **File count** + print the **Unit table**. Hard-fail
    blocks dispatch. *Done when: table printed; hard-fails resolved or reported.*
-6. **Todos — GATE.** Via TodoWrite before any dispatch: **one todo per task**
-   **and** one terminal todo **Polish Diff** (whole-branch `polish-diff` before
-   acceptance — created now, not later).
-   *Done when: the list mirrors the plan **and** includes the polish-diff todo.*
+6. **Todos — GATE.** Apply `../execute-common.md` **Todos — GATE**.
+   *Done when: the list mirrors the plan **and** includes the Close branch todo.*
 7. **Pre-flight plan review.** One batch question for plan-internal defects
    before dispatch. Clean scan → no comment. *Done when: conflicts ruled or none.*
 8. **Unit order.** Topo-sort units (edge if any task in U depends on any task
@@ -206,22 +194,10 @@ State the model **explicitly on every dispatch**.
 
 ## After the last unit
 
-1. **Whole-branch review.** REQUIRED SUB-SKILL: use `inspect-change` with base =
-   `git merge-base main HEAD` — never a mid-branch or last-unit-only range.
-   Feed ledger Minors for triage. Top model tier.
-2. **One fixer** for the full findings list → re-review.
-3. **Polish Diff.** REQUIRED SUB-SKILL: use `polish-diff` on the whole-branch
-   diff **before** acceptance. Mark the setup **Polish Diff** todo done only
-   after it has run.
-4. **Acceptance.** REQUIRED SUB-SKILL: use `validate-feature`. Breaks →
-   `root-cause`, then promote to committed ID-tagged tests.
-5. **Prepare.** REQUIRED SUB-SKILL: use `package-change`.
-6. **Finish.** REQUIRED SUB-SKILL: use `land-branch`.
+Apply `../execute-common.md` **Close sequence** in full. Inspect base is
+`git merge-base main HEAD` — never a last-unit-only range.
 
-| Thought | Reality |
-|---|---|
-| "Task todos are all green — polish can wait / skip" | The setup **Polish Diff** todo is still open; acceptance is blocked until it runs |
-| "Inspect was clean / branch is small — polish is optional" | Step 3 is required on every branch; size and a clean inspect do not drop it |
+*Done when: that section's Done when holds.*
 
 ## Red Flags — Never
 
@@ -239,8 +215,8 @@ State the model **explicitly on every dispatch**.
 - Move on with open Critical/Important findings
 - Fix reviewer findings in the controller context
 - Re-dispatch work the ledger marks complete
-- Dispatch before the todo list exists (tasks **and** polish-diff)
-- Skip `polish-diff`, leave its todo open, or move to acceptance/package/land without it
+- Dispatch before the todo list exists (tasks **and** Close branch)
+- Skip the close sequence, silent-skip polish, or treat EOD/demo as a polish predicate
 - Implement on main/master without explicit consent
 - Create a worktree without asking
 - Silently switch to continuous rules while the header still says story-unit

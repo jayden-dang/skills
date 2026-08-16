@@ -1,6 +1,6 @@
 ---
 name: build-inline
-version: 1.0.0
+version: 1.1.0
 description: Use when an approved tasks.md needs controller-side sequential
   execution without implementer subagents — inline TDD per task, progress
   ledger, stop-on-blocker, whole-branch review — for no-subagent environments
@@ -31,6 +31,11 @@ route** — if they asked for inline, stay inline even when subagent tools exist
 
 **Narration:** at most one short line between tool calls. Ledger + tool results
 carry the record.
+
+**Shared controller recipe:** load `../execute-common.md` when Setup
+preflight / ledger / todos or After the last task starts. That file is the
+one home for those steps and for the polish / product-walk predicates.
+This file owns the inline iron law and the controller-as-implementer loop.
 
 ## The Iron Law
 
@@ -76,31 +81,15 @@ keeps the human in the conversation turn-by-turn.
 2. **Header bookkeeping.** Parse `Execution-mode:`. If missing/`unset`/invalid:
    write `Execution-mode: continuous` into `tasks.md`. If already set, leave it.
    *Done when: header is present.*
-3. **Session preflight — two questions:**
-   1. **Issue tracker sync.** Read `docs/agents/issue-tracker.md` when present.
-      IF a tracker is configured (github / gitlab / linear / local / other named
-      backend) → ask whether this build should sync with that tracker (bind
-      issues to the branch, pull ticket IDs into briefs/ledger, use the
-      tracker's wayfinding ops for status). IF yes → resolve ticket IDs from
-      branch name, plan, or a short user list; record them under `.skills/` for
-      the brief/ledger and later `package-change`. IF no, or the file is absent
-      / declares no tracker → empty ticket set; continue (unconfigured tracker
-      is normal, not a failure).
-   2. **Workspace / branch.** Worktree isolation or current branch? Do not create
-      a worktree unasked. Isolation → REQUIRED SUB-SKILL: use `isolate-workspace`.
-      main/master → separate explicit consent before implementing.
-   *Done when: tracker choice (or empty set) and workspace choice are clear.*
-4. **Ledger check.** Ensure `.skills/` is git-ignored:
-   `grep -qxF '.skills/' .gitignore 2>/dev/null || { printf '.skills/\n' >> .gitignore && git commit -m 'chore: ignore local skills artifacts' -- .gitignore; }`
-   Read `.skills/<CODE>/progress.md` if present. Complete tasks stay complete — resume
-   at the first task not listed. *Done when: next task is known.*
+3. **Session preflight.** Apply `../execute-common.md` **Session preflight**.
+   *Done when: that section's Done when holds.*
+4. **Ledger check.** Apply `../execute-common.md` **Ledger check**.
+   *Done when: next task is known.*
 5. **Read the plan.** Read `tasks.md` once. Capture **Global Constraints**
    (verify commands live here if `docs/agents/project.md` is missing — say so
    and suggest `configure-repo`). *Done when: constraints are in hand.*
-6. **Todos — GATE.** Via TodoWrite before Task 1: **one todo per task** **and**
-   one terminal todo **Polish Diff** (whole-branch `polish-diff` before
-   acceptance — created now, not later).
-   *Done when: the list mirrors the plan **and** includes the polish-diff todo.*
+6. **Todos — GATE.** Apply `../execute-common.md` **Todos — GATE**.
+   *Done when: the list mirrors the plan **and** includes the Close branch todo.*
 7. **Pre-flight plan review.** One batch question for plan-internal defects
    before coding. Clean scan → no comment. *Done when: conflicts ruled or none.*
 8. **Order.** Depends-on topo order; absent Depends-on → every earlier task;
@@ -171,25 +160,12 @@ discipline.
 
 ## After the last task
 
-1. **Whole-branch review.** REQUIRED SUB-SKILL: use `inspect-change` with base =
-   `git merge-base main HEAD` — never a mid-branch sha. Top model tier when a
-   choice exists. Point it at any Minors or notes in the ledger /
-   `implementation-notes.md`.
-2. **Fix findings** yourself under `test-first` (still no implementer subagent unless
-   the user explicitly lifts the inline route). Re-run `inspect-change` if the
-   fix surface is large.
-3. **Polish Diff.** REQUIRED SUB-SKILL: use `polish-diff` on the whole-branch
-   diff **before** acceptance. Mark the setup **Polish Diff** todo done only
-   after it has run.
-4. **Acceptance.** REQUIRED SUB-SKILL: use `validate-feature`. Breaks →
-   `root-cause`, then promote to committed ID-tagged tests.
-5. **Prepare.** REQUIRED SUB-SKILL: use `package-change`.
-6. **Finish.** REQUIRED SUB-SKILL: use `land-branch`.
+Apply `../execute-common.md` **Close sequence** in full. You are the fixer
+under `test-first` (still no implementer subagent unless the user explicitly
+lifts the inline route). Point `inspect-change` at any Minors or notes in
+the ledger / `implementation-notes.md`.
 
-| Thought | Reality |
-|---|---|
-| "Task todos are all green — polish can wait / skip" | The setup **Polish Diff** todo is still open; acceptance is blocked until it runs |
-| "Inspect was clean / branch is small — polish is optional" | Step 3 is required on every branch; size and a clean inspect do not drop it |
+*Done when: that section's Done when holds.*
 
 ## Red Flags — Never
 
@@ -204,7 +180,7 @@ discipline.
 - Start on main/master without explicit consent
 - Create a worktree without asking
 - Claim a task complete without a ledger line
-- Skip `polish-diff`, leave its todo open, or move to acceptance/package/land without it
-- Start Task 1 before the todo list exists (tasks **and** polish-diff)
+- Skip the close sequence, silent-skip polish, or treat EOD/demo as a polish predicate
+- Start Task 1 before the todo list exists (tasks **and** Close branch)
 - Hand off mid-plan to `build-in-waves` subagent loop without an explicit user
   route change

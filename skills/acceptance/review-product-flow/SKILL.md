@@ -1,14 +1,10 @@
 ---
 name: review-product-flow
-version: 1.0.0
-description: Use when manually exercising a finished feature in the real running app from
-  the user's seat — a hands-on product walk, case by case, over every
-  user-facing ability, including the visuals, feel, and edge cases a human
-  must eyeball rather than an automated test or a quick launch. Reach for it
-  to try a feature for real, walk the whole user-facing surface, or produce a
-  checkable, resumable review-product-flow guide (run file + rendered HTML) and
-  its `vet-product-flow` report, kept open beside the app — not a one-off run.
-  Not for executing an already-written guide (`run-product-walkthrough`).
+version: 1.0.1
+description: Use when a finished feature needs a hands-on product walk in the real
+  running app — visuals, feel, and eyeball edge cases. Produces a checkable
+  review-product-flow guide (run file + HTML) plus its vet report. Not for
+  executing an already-written guide (`run-product-walkthrough`).
 ---
 
 # Review Product Flow

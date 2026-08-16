@@ -55,6 +55,12 @@ only plan tasks — post-plan polish dropped when task todos went green.
 **GREEN form.** Todos GATE: one todo per task **and** terminal **Polish Diff**.
 After-last step 3 mandatory + mark todo; red flags; rationalization rows.
 
+## Edit — polish predicate + execute-common (2026-08-16)
+
+Supersedes the always-polish GREEN. Shared controller recipe lives in
+`../execute-common.md`. Terminal todo is **Close branch**. Polish / product-walk
+are observable conditionals; EOD is not a predicate.
+
 ## Ship gate
 
 - [x] Technique bare summary binds mode-change write-back (B2 fix)

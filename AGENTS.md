@@ -132,11 +132,14 @@ use \`x\`` is for model-invocable targets only — pointing it at a
 
 **Two reachability paths, and one of them is fragile.** A skill is reached either
 by a `REQUIRED SUB-SKILL` hand-off or by its description matching what the user
-said. Six model-invocable skills have no caller at all — `solve-problem`,
-`amend-feature`, `vet-feedback`, `review-product-flow`, `run-product-walkthrough`
-(plus hook-injected `gate-session`). They are entry points, so their descriptions
-are the only thing standing between them and never running. An entry point that
-undertriggers is invisible: it does not fail, it simply never appears.
+said. Five model-invocable skills have no `REQUIRED SUB-SKILL` caller —
+`solve-problem`, `amend-feature`, `vet-feedback`, `run-product-walkthrough`
+(plus hook-injected `gate-session`). `review-product-flow` is reached from
+`prove-claim` (alternative to `validate-feature`) and from the execute-family
+close sequence when a walk predicate holds. The remaining entry points fire
+on what the user said, which makes their descriptions the only thing
+standing between them and never running. An entry point that undertriggers
+is invisible: it does not fail, it simply never appears.
 
 **Participant boundary:** skills enforce and record only actions this skill set
 mediates. Never infer skill-set membership from repository membership, roster,

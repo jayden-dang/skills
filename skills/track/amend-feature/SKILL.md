@@ -1,14 +1,10 @@
 ---
 name: amend-feature
-version: 1.0.0
+version: 1.0.1
 description: Use when an already-shipped, spec'd feature needs a small in-scope change — a
-  recolor, a copy edit, a tweak, a follow-up add-on to existing behavior — and
-  full greenfield frame-changeing would be overkill. Produces an explicit tier
-  decision and a route into the light lane (test-first for a pure tweak, a mini-spec
-  for a change to spec'd behavior), escalating to frame-change only when the
-  change turns out to be genuinely new scope. Not for a brand-new feature
-  (frame-change), broken behavior (root-cause), or a spec that has drifted from the
-  code (realign-spec).
+  recolor, a copy edit, a tweak, or a follow-on. Produces a tier decision and a
+  light-lane route. Not for new features (frame-change), broken behavior
+  (root-cause), or a drifted spec (realign-spec).
 ---
 
 # Amend Feature

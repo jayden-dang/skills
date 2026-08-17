@@ -8,12 +8,12 @@
 | **Invocation** | model-invocable (the agent calls it on its own) |
 | **Reads** | the failing signal (test, error, trace, log), git history and recent changes, the owning feature's `requirements.md` |
 | **Writes** | a red-capable feedback loop and a failing regression test, one root-cause fix commit stating the cause, a tier-1 mini-spec (fix requirement + `SHALL CONTINUE TO` guard) in `requirements.md` (or `docs/specs/fixes.md`) |
-| **Calls** | [`test-first`](test-first.md) (the regression test and the fix), [`prove-claim`](prove-claim.md) (before claiming fixed), [`scan-architecture`](scan-architecture.md) (architectural findings) |
+| **Calls** | [`debug-remote`](debug-remote.md) (when the failure is already deployed and no pack exists), [`test-first`](test-first.md) (the regression test and the fix), [`prove-claim`](prove-claim.md) (before claiming fixed), [`scan-architecture`](scan-architecture.md) (architectural findings) |
 | **Called by** | [`test-first`](test-first.md) (when the change is a bugfix), [`amend-feature`](amend-feature.md), [`build-in-waves`](build-in-waves.md), [`validate-feature`](validate-feature.md), [`validate-api`](validate-api.md), [`validate-ui`](validate-ui.md) |
 
 ## When it fires
 
-Anything behaves unexpectedly — a failing test, an error or exception, a crash, a reported bug, wrong output, a performance regression, a flaky CI job — and it fires **before** any fix is proposed or applied.
+Anything behaves unexpectedly — a failing test, an error or exception, a crash, a reported bug, wrong output, a performance regression, a flaky CI job — and it fires **before** any fix is proposed or applied. If that failure is only on a **deployed** environment and there is no remote evidence pack yet, [`debug-remote`](debug-remote.md) runs first.
 
 ## The Iron Law
 

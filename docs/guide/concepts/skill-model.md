@@ -171,4 +171,4 @@ When installed without plugin hook support, `configure-repo` offers to copy `tem
 - [The gates](gates.md) — the four skills that guard rules the agent breaks under pressure
 - [`author-skills`](../skills/author-skills.md) — the full authoring doctrine and its deployment checklist
 - [`gate-session`](../skills/gate-session.md) — the session gate
-- [Skill reference](../skills/README.md) — 61 engineering skills
+- [Skill reference](../skills/README.md) — 63 engineering skills

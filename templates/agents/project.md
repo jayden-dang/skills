@@ -106,6 +106,17 @@ if that surface does not exist.
 
 Browser E2E (Playwright, Chromium): `<e.g. pnpm exec playwright test --project=chromium>`
 
+## Remote environments
+
+Read by `debug-remote` and `assess-observability`. Skip the table
+(`None — not deployed`) when nothing is live. Never put tokens here.
+
+| Environment | Deployed | Backend | Read query |
+|---|---|---|---|
+| `<development \| staging \| production>` | `<yes \| no \| unknown>` | `<product + base URL + org>` | `<read-only query that is red on the symptom>` |
+
+Or: `None — not deployed`
+
 ## release steps
 
 <Ordered list of project-specific release steps (build commands, bundling,

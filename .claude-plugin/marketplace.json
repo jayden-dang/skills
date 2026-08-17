@@ -28,6 +28,8 @@
         "./skills/spec/plan-tasks",
         "./skills/spec/specify-behavior",
         "./skills/execution/root-cause",
+        "./skills/execution/debug-remote",
+        "./skills/execution/assess-observability",
         "./skills/execution/build-inline",
         "./skills/execution/build-in-waves",
         "./skills/execution/build-by-story",

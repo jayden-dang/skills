@@ -1,6 +1,6 @@
 # Skill reference
 
-61 skills in eleven buckets (engineering package); every one has its own page.
+63 skills in eleven buckets (engineering package); every one has its own page.
 See also [Start here](../START-HERE.md).
 
 **Invocation** is the thing to check first. A **model-invocable** skill is invoked by the agent on its own when its description matches the situation. A **user-invoked** skill carries `disable-model-invocation: true` in its frontmatter — the agent *cannot* invoke it, so you run it as a slash command.
@@ -66,6 +66,8 @@ The triad. Each file approved before the next is written.
 | [`execute-common`](execute-common.md) | model | Shared execute-family controller recipe (preflight, ledger, close sequence). Not an entry point |
 | [`test-first`](test-first.md) | model | **Iron Law:** no production code without a failing test first |
 | [`root-cause`](root-cause.md) | model | **Iron Law:** no fixes without root cause; `load-subgraph` only after Phase 2 (never the RED loop) |
+| [`debug-remote`](debug-remote.md) | model | Deployed-env evidence pack (read-only); then `root-cause`. No prod writes |
+| [`assess-observability`](assess-observability.md) | model | Readiness finding set for tracing/OTLP/sampling — not an incident |
 | [`prove-claim`](prove-claim.md) | model | **Iron Law:** no completion claims without fresh evidence |
 | [`audit-trace`](audit-trace.md) | model | Deterministic traceability check — grep/git passes, fixed rules, zero errors to pass |
 | [`load-subgraph`](load-subgraph.md) | model | Ask-time neighbors (schema 1.1 path/term evidence), **`cluster(focus)`**, blast_radius from live specs; OWNS coverage; no graph file |

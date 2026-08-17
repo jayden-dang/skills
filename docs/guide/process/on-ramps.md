@@ -15,6 +15,8 @@ model-invocable skill, or name the `/slash` for the user to run.
 | New feature, nothing spec'd yet | `frame-change` |
 | Small change to an already-shipped, spec'd feature | `amend-feature` |
 | Something is broken (clear unexpected behavior) | `root-cause` |
+| Broken on a **deployed** environment (prod / staging / remote dev; traces, OpenObserve, request id) | `debug-remote` (then `root-cause` with the pack) |
+| Is our tracing / OpenObserve / sampling complete enough? | `assess-observability` |
 | Unit tests green, unsure it truly works | `validate-feature` |
 | Want to try a finished feature by hand | `review-product-flow` |
 | Have a review-product-flow guide and want the agent to run every case | `run-product-walkthrough` |

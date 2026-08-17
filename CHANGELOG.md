@@ -2,6 +2,37 @@
 
 ## Unreleased
 
+### New: `assess-observability` — telemetry readiness finding set
+
+Model-invocable. “Is tracing / OpenObserve / sampling complete?” produces a
+Must-row finding set. No completeness stamp. Does not write
+`docs/ops/observability.md` (that is `/define-system-doc`). SERVER 4xx →
+Error is a fail row, not a close.
+
+- RED: stamp/4xx **refused** (not a gate fail); shape fail was Draft at the
+  canonical ops path; trigger went to `solve-problem`
+- GREEN: finding set + `not-complete`; trigger Q1–4 fire this skill
+
+### New: `debug-remote` — deployed-environment evidence pack
+
+Model-invocable execution skill. When the failure is on production / staging /
+remote dev, the agent writes a **remote evidence pack** (identity, read-only
+Phase 1, trace/log join, access, refusals) then hands off to `root-cause`.
+Iron Law: no writes to a deployed environment; no mutating replay against
+production. Promotion is local → `dev` → staging probe → production.
+
+- `skills/execution/debug-remote/` (`SKILL.md`, `evidence-pack.md`, `TESTS.md`,
+  `eval.json`)
+- `root-cause` v1.1.0: if the failure is already deployed and no pack exists,
+  REQUIRED SUB-SKILL `debug-remote` first
+- On-ramp row + plugin / marketplace path
+- RED: grok-4.5 port-forwarded prod and looped mutating `POST`s as the loop;
+  both models treated OpenObserve as never Phase 1. GREEN: pack +
+  `telemetry-query`; no prod `POST` / exec / `set image`
+- Wording (v1.0.2 / assess v1.0.1): promotion and Must pass/fail have one
+  home each (`evidence-pack.md` / `readiness-bar.md`); pointers say WHEN to
+  load; no new rules
+
 ### `land-branch` absorbs `package-change` (v2.0.0)
 
 One ship skill for a PR. `land-branch` now authors remaining commits and the

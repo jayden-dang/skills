@@ -1,6 +1,6 @@
 ---
 name: configure-repo
-version: 1.0.1
+version: 1.1.1
 description: Configures an existing repo for this skill set — a docs/agents/ layer covering prove-claim
   commands, tracker and labels, release steps, team and ownership. Run it with /setup-
   repo.
@@ -17,7 +17,7 @@ Template seeds live in this skill set's `templates/` directory — resolve it as
 
 ## Track progress
 
-This skill has seven steps and skipping one is the common failure — an unconfigured tracker, or the Step 6 verification gate never run. Before Step 1, create a todo for each numbered step below and complete them in order, checking each off only when its **Done when** is met. Step 6 (prove the configuration works) is not optional.
+This skill has seven steps (decisions A–K inside step 2) and skipping one is the common failure — an unconfigured tracker, or the Step 6 verification gate never run. Before Step 1, create a todo for each numbered step below and complete them in order, checking each off only when its **Done when** is met. Step 6 (prove the configuration works) is not optional.
 
 ## 1. Read the setup state
 
@@ -42,7 +42,8 @@ You may still read the repo's own manifests (lockfiles, `package.json` scripts, 
 
 ## 2. Decide, one section at a time
 
-Walk the ten decisions below (A–J; I is optional project-docs) strictly one at a time: give a two-or-three-sentence explainer (what this is, which skills consume it, what changes with each choice), state your recommendation with a one-line reason, then wait for the user's answer before moving on. Never dump all sections at once. Assume the user has not seen these concepts before.
+Walk the eleven decisions below (A–K; I is optional project-docs; K is
+optional remote environments) strictly one at a time: give a two-or-three-sentence explainer (what this is, which skills consume it, what changes with each choice), state your recommendation with a one-line reason, then wait for the user's answer before moving on. Never dump all sections at once. Assume the user has not seen these concepts before.
 
 ### A. Issue tracker
 
@@ -192,6 +193,27 @@ Declining: if the user declines to choose, write no value at all and skip the St
 
 **Done when:** the user has confirmed a value, or has explicitly declined and no value will be written.
 
+### K. Remote environments (optional — default skip if nothing is deployed)
+
+Explainer: `debug-remote` and `assess-observability` read a **Remote
+environments** table from `docs/agents/project.md` so they can query
+telemetry without inventing URLs or tokens. If this repo has no deployed
+env, skip.
+
+Confirm, one row per environment the user names (`development`,
+`staging`, `production`):
+
+- Deployed? yes / no / unknown
+- Backend product (OpenObserve, Jaeger, Grafana, other) + base URL + org
+- One **read** query that proves access (error-rate or `span_status=ERROR`
+  shape — not a write, not a token)
+
+Recommend skip unless they already have a backend. Tokens never go in
+the file.
+
+**Done when:** the table is confirmed, or explicitly skipped (`None —
+not deployed` / declined).
+
 ## 3. Draft and confirm
 
 Show the user, before writing anything:
@@ -238,7 +260,9 @@ This repo is configured for a spec-driven skill set.
 - Feature flow: `frame-change` → `specify-behavior` → `design-solution` →
   `plan-tasks` → `build-in-waves`
 - Ambiguous problem / unclear gap or workflow: `solve-problem` (Problem Brief + one route)
-- Bug on-ramp: `root-cause` (clear unexpected behavior first, then a guarded fix)
+- Bug on-ramp: `root-cause` (clear unexpected behavior first, then a guarded fix);
+  deployed env: `debug-remote` then `root-cause`; telemetry readiness:
+  `assess-observability`
 - Capture a conversation/spec/idea into tracker issues: `/publish-issues` (user-run)
 - Incoming issues and PRs: `/triage` (user-run)
 - Traceability check: the docs-only `audit-trace` skill — run by `prove-claim` and `cut-release`;
@@ -249,7 +273,7 @@ This repo is configured for a spec-driven skill set.
 
 Repo config the skills read:
 
-- verify commands, release steps: `docs/agents/project.md`
+- verify commands, release steps, Remote environments: `docs/agents/project.md`
 - Team composition (roster, ownership notes, workflow band): `docs/agents/project.md` (`## Team`)
 - Issue tracker operations: `docs/agents/issue-tracker.md`
 - Triage label mapping: `docs/agents/triage-labels.md`
@@ -257,6 +281,7 @@ Repo config the skills read:
 
 8. Ensure the local working dirs are git-ignored: the skills' scratch artifacts — `build-in-waves`'s ledger and briefs, and the scan/review digests the spec skills write — live under `.skills/`, and isolated workspaces under `.isolate-workspace/`; neither belongs in version control. Idempotently, for each pattern: `grep -qxF '.skills/' .gitignore 2>/dev/null || printf '.skills/\n' >> .gitignore` (same for `.isolate-workspace/`), then stage `.gitignore`. (A line-presence check, not `git check-ignore` — a trailing-slash pattern only matches an *existing* directory, so `check-ignore` would re-append before the dir exists.)
 9. If decision J (Default PR base) was confirmed, add `- **Default PR base:** \`<branch>\`` to the **Project posture** section of `docs/agents/project.md`, under the additive rule above — merge in, never clobber a value the user already set. If the user declined decision J, write nothing: leave the field absent so `land-branch` asks per invocation.
+10. If decision K (Remote environments) was confirmed, merge the **Remote environments** table into `docs/agents/project.md` from `templates/agents/project.md` (additive). If skipped, write `None — not deployed` or omit the section.
 
 **Done when:** all files are written, `.skills/` and `.isolate-workspace/` are git-ignored, and `git status` shows only the expected additions/edits.
 

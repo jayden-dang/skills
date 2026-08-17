@@ -1,9 +1,11 @@
 ---
 name: root-cause
-version: 1.0.0
+version: 1.1.0
 description: Use when anything behaves unexpectedly — a failing test, an error or
   exception, a crash, a reported bug, wrong output, a performance regression,
-  a flaky CI job — and before proposing or applying any fix.
+  a flaky CI job — and before proposing or applying any fix. Not for a
+  failure that is only on a deployed environment with no pack yet
+  (debug-remote).
 ---
 
 # Root Cause
@@ -17,6 +19,12 @@ NO FIXES WITHOUT ROOT CAUSE INVESTIGATION FIRST
 Guess-and-patch wastes hours and plants new bugs. This process applies to every technical issue — and applies hardest when it's tempting to skip: emergencies, "obvious" one-liners, and the moment right after a previous fix didn't work.
 
 ## Phase 1 — Build the feedback loop (the gate)
+
+IF the reported failure is on a **deployed** environment (production,
+staging, remote dev) and no remote evidence pack exists yet: REQUIRED
+SUB-SKILL: use `debug-remote` first. That pack **is** this Phase 1
+signal. Do not `kubectl exec` or replay mutating requests against
+production as the loop.
 
 Before ANY theory-building, construct and RUN a **red-capable signal**: one command — a test invocation, a script, a curl — that is red now because of this exact bug and will go green when it is fixed. Build the right feedback loop and the bug is 90% fixed; every later phase merely consumes it.
 

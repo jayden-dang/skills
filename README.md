@@ -151,7 +151,7 @@ solve-problem? ──► frame-change (+ load-subgraph) ──► specify-behavi
         │ tier 0/1 shortcuts                                                            ▼
         │                          isolate-workspace ──► build-in-waves | build-by-story | build-inline
         ▼                                                                               │
-  root-cause / test-first / prove-claim  ◄── discipline skills govern ──────────────────┘
+  root-cause / debug-remote / assess-observability / test-first / prove-claim  ◄── discipline ────────────────┘
                                                                                         │
    inspect-change (+ load-subgraph) ──► validate-feature ──► land-branch
                           (drive the running system as a real user)     (Status: Implemented)
@@ -200,7 +200,7 @@ and countered by name. See [The gates](docs/guide/concepts/gates.md).
 | setup | `configure-repo`, `bootstrap-repo` |
 | discovery | `solve-problem`, `frame-change`, `clarify-decisions`, `research`, `run-spike`, `define-domain`, `interpret-session`, `deepen-codebase`, `work-the-problem`, `pathfind` |
 | spec | `specify-behavior`, `design-solution`, `plan-tasks` |
-| execution | `build-in-waves`, `build-by-story`, `build-inline`, `execute-common`, `test-first`, `root-cause`, `prove-claim`, `audit-trace`, `load-subgraph`, `isolate-workspace` |
+| execution | `build-in-waves`, `build-by-story`, `build-inline`, `execute-common`, `test-first`, `root-cause`, `debug-remote`, `assess-observability`, `prove-claim`, `audit-trace`, `load-subgraph`, `isolate-workspace` |
 | review | `inspect-change`, `study-change`, `brief-team`, `select-review-sample`, `polish-diff`, `vet-feedback`, `review-invariants` |
 | acceptance | `validate-feature`, `validate-api`, `validate-ui`, `review-product-flow`, `vet-product-flow`, `run-product-walkthrough` |
 | craft | `craft-page` |
@@ -312,7 +312,7 @@ eval must cite a heading that really appears in that `SKILL.md` — so neither a
 ungrounded regression claim nor an invented contract can pass. Coverage is
 reported per kind, so a contract checklist is never mistaken for evidence.
 
-Every skill has contract evals; **20 of 80 have evidence-backed ones**. Closing
+Every skill has contract evals; **22 of 81 have evidence-backed ones**. Closing
 that gap means running real baselines, not writing more assertions.
 
 ## License

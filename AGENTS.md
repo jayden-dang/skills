@@ -1,7 +1,7 @@
 # AGENTS.md — Agent Behavior Constitution
 
-> A-to-Z agentic development skill set · **79 skills across 11 categories**
-> (61 engineering + 18 Personal OS) · `jayden-dang/skills` · v1.0.0
+> A-to-Z agentic development skill set · **81 skills across 11 categories**
+> (63 engineering + 18 Personal OS) · `jayden-dang/skills` · v1.0.0
 
 This file is the single source of truth for agent behavior when working with this
 skill set on any harness. Read it first, before any skill, before any action.
@@ -84,6 +84,8 @@ carries a checklist, create one todo per item.
 |---|---|
 | "Build X" / "add X" / "can we support X" | `frame-change` — before plan mode, before scaffolding |
 | "This is broken", a clear unexpected behavior | `root-cause` — before any fix |
+| Broken on prod / staging / a remote env | `debug-remote` — evidence pack, then `root-cause` |
+| Is tracing / OpenObserve / sampling complete? | `assess-observability` |
 | Ambiguous problem, or a requested solution with no trustworthy gap | `solve-problem` — before guessing between the two above |
 | Small in-scope change to a shipped, spec'd feature | `amend-feature`, not `frame-change` |
 | Incoming issue or external PR | suggest `/triage` (user-run; agents cannot auto-invoke) |
@@ -113,7 +115,7 @@ Agents MUST NOT auto-invoke these — name them for the user to run (`/triage`,
 the description matches the situation. Everything not listed above, including
 `gate-session`, `frame-change`, `clarify-decisions`, `solve-problem`, `research`,
 `run-spike`, `define-domain`, the full spec triad, the execute family,
-`test-first`, `root-cause`, `prove-claim`, `audit-trace`, `load-subgraph`,
+`test-first`, `root-cause`, `debug-remote`, `assess-observability`, `prove-claim`, `audit-trace`, `load-subgraph`,
 `isolate-workspace`, `inspect-change`, `polish-diff`, `vet-feedback`,
 `review-invariants`, the acceptance suite, `land-branch`,
 `record-verdict`, `amend-feature`, `reroute-plan`, `realign-spec`, and
@@ -328,8 +330,9 @@ docs/
 ```
 
 **A consuming repo** is where `configure-repo` and the spec skills write:
-`docs/agents/project.md` (verify commands, release steps, project posture, Team
-roster), `docs/agents/issue-tracker.md`, `docs/agents/triage-labels.md`,
+`docs/agents/project.md` (verify commands, release steps, Remote environments,
+project posture, Team roster), `docs/agents/issue-tracker.md`,
+`docs/agents/triage-labels.md`,
 `docs/specs/<feature>/` (the triad) with `docs/specs/INDEX.md`, `CONTEXT.md` (the
 glossary), `docs/adr/`, `docs/architecture/` (the `ARCH-N` spine),
 `docs/roadmap/INDEX.md`, and `docs/quality/debt.md`. Skills read these at runtime;
@@ -401,7 +404,7 @@ Can't tick a box? The work is not done.
 | **setup** (2) | `configure-repo` (U), `bootstrap-repo` (U) |
 | **discovery** (10) | `frame-change` (m), `clarify-decisions` (m), `solve-problem` (m), `research` (m), `run-spike` (m), `define-domain` (m), `pathfind` (U), `interpret-session` (U), `deepen-codebase` (U), `work-the-problem` (U) |
 | **spec** (3) | `specify-behavior` (m), `design-solution` (m), `plan-tasks` (m) |
-| **execution** (10) | `build-in-waves` (m), `build-by-story` (m), `build-inline` (m), `execute-common` (m), `test-first` (m), `root-cause` (m), `prove-claim` (m), `audit-trace` (m), `load-subgraph` (m), `isolate-workspace` (m) |
+| **execution** (12) | `build-in-waves` (m), `build-by-story` (m), `build-inline` (m), `execute-common` (m), `test-first` (m), `root-cause` (m), `debug-remote` (m), `assess-observability` (m), `prove-claim` (m), `audit-trace` (m), `load-subgraph` (m), `isolate-workspace` (m) |
 | **review** (7) | `inspect-change` (m), `polish-diff` (m), `vet-feedback` (m), `review-invariants` (m), `study-change` (U), `brief-team` (U), `select-review-sample` (U) |
 | **acceptance** (6) | `validate-feature` (m), `validate-api` (m), `validate-ui` (m), `review-product-flow` (m), `vet-product-flow` (m), `run-product-walkthrough` (m) |
 | **craft** (1) | `craft-page` (m) |
@@ -425,7 +428,8 @@ Can't tick a box? The work is not done.
 over already-Implemented work (cohort → Shipped). `realign-spec` is
 anti-rot and the land forget-net — not the cut close-out.
 
-**Bugfix flow:** `root-cause` → mini-spec → `test-first` → `prove-claim` →
+**Bugfix flow:** `root-cause` (or `debug-remote` → `root-cause` when the
+failure is on a deployed environment) → mini-spec → `test-first` → `prove-claim` →
 `inspect-change` → `land-branch`.
 
 **Program layer (optional):** `/define-project` (vision + the `ARCH-N` spine) →
@@ -453,7 +457,9 @@ This repo is configured for a spec-driven skill set.
 - Feature flow: `frame-change` (+ `load-subgraph`) → `specify-behavior` →
   `design-solution` → `plan-tasks` → execute family → `inspect-change` →
   `validate-feature` → `land-branch`
-- Bug on-ramp: `root-cause` (root cause first, then a guarded fix)
+- Bug on-ramp: `root-cause` (root cause first, then a guarded fix); deployed
+  env: `debug-remote` then `root-cause`; telemetry readiness:
+  `assess-observability`
 - Ambiguous problem, or a solution requested with no clear gap: `solve-problem`
 - Capture a conversation, spec, or idea into tracker issues: `/publish-issues`
 - Multi-session decision map (Layer 0 fog): `/pathfind`
@@ -470,6 +476,6 @@ This repo is configured for a spec-driven skill set.
 
 Repo config the skills read:
 
-- Verify commands, release steps, posture, Team: `docs/agents/project.md`
+- Verify commands, release steps, Remote environments, posture, Team: `docs/agents/project.md`
 - Issue tracker operations: `docs/agents/issue-tracker.md`
 - Triage label mapping: `docs/agents/triage-labels.md`

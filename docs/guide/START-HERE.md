@@ -36,7 +36,7 @@ schema 1.1, **`cluster(focus)`**, no generated graph file).
         │                                                 │
         │ tier 0/1 shortcuts     isolate-workspace ─► build-in-waves | build-by-story | build-inline
         ▼                                                 │
-  root-cause / test-first / prove-claim / audit-trace     │
+  root-cause / debug-remote / assess-observability / test-first / prove-claim / audit-trace │
   (+ load-subgraph after Phase 2 only)                    ▼
          inspect-change ─► [polish-diff if predicate] ─► validate-feature
          (+ load-subgraph)     [product-walk if predicate]   (api/ui)
@@ -50,7 +50,7 @@ schema 1.1, **`cluster(focus)`**, no generated graph file).
 [ceremony tiers](methodology/ceremony-tiers.md)):
 
 - **Tier 0 (trivial):** `test-first` + `prove-claim` only — no specs.
-- **Tier 1 (bugfix):** `root-cause` → a mini-spec (fix requirement + a `SHALL CONTINUE TO`
+- **Tier 1 (bugfix):** `root-cause` (or `debug-remote` then `root-cause` if the failure is on a deployed env) → a mini-spec (fix requirement + a `SHALL CONTINUE TO`
   guard) → tagged regression test → `prove-claim` → `inspect-change` → `land-branch`.
 - **Tier 2 (feature):** the full triad + execute family (`build-in-waves` /
   `build-by-story` / `build-inline`).
@@ -70,6 +70,8 @@ absent. See [the artifact model](concepts/artifacts.md#docsproduct-and-docsarchi
 | `frame-change` | No code, scaffold nothing, until the tier is stated out loud |
 | `test-first` | No production code without a failing test first |
 | `root-cause` | No fixes without root-cause investigation first |
+| `debug-remote` | Deployed-env failure: read-only evidence pack, then `root-cause` |
+| `assess-observability` | Readiness finding set for tracing/OTLP/sampling |
 | `prove-claim` | No completion claims without fresh verification evidence |
 
 ## 2. Using it in a new repo — step by step
@@ -88,8 +90,9 @@ Full skill index: [Skill reference](skills/README.md) · laws: [`AGENTS.md`](../
    - **Greenfield / empty:** **`/bootstrap-repo`** → stack + harness + one green test → then configure.
    - **Existing codebase:** **`/configure-repo` only** (do not bootstrap).
 3. **`/configure-repo`** — tracker, labels, verify commands, release steps, team,
-   posture; writes `docs/agents/*.md`, seeds `docs/specs/INDEX.md` / glossary as
-   needed, `## Agent skills` in `AGENTS.md`/`CLAUDE.md`; offers session-start hook.
+   posture, optional Remote environments; writes `docs/agents/*.md`, seeds
+   `docs/specs/INDEX.md` / glossary as needed, `## Agent skills` in
+   `AGENTS.md`/`CLAUDE.md`; offers session-start hook.
    Proves commands are *wired* (content failures on an old repo are listed, not
    blocking). Installs **no** consumer linters/CI by default.
 4. **Optional**
@@ -134,7 +137,7 @@ The table lives in [on-ramps](process/on-ramps.md) — one home. Unsure → **`/
 
 ## 3. Skill index (engineering package)
 
-Full tables: [Skill reference](skills/README.md) (61 engineering skills).  
+Full tables: [Skill reference](skills/README.md) (63 engineering skills).  
 Personal OS is a **separate** package — [personal-os START-HERE](../personal-os/START-HERE.md).
 
 `U` = you run `/name` · `m` = model-invoked · `si` = session-injected
@@ -145,7 +148,7 @@ Personal OS is a **separate** package — [personal-os START-HERE](../personal-o
 | **setup** | `/configure-repo`, `/bootstrap-repo` |
 | **discovery** | `solve-problem`, `frame-change`, `clarify-decisions`, `research`, `run-spike`, `define-domain`, `/pathfind`, `/interpret-session`, `/deepen-codebase`, `/work-the-problem` |
 | **spec** | `specify-behavior`, `design-solution`, `plan-tasks` |
-| **execution** | `build-in-waves`, `build-by-story`, `build-inline`, `execute-common`, `test-first`, `root-cause`, `prove-claim`, `audit-trace`, **`load-subgraph`**, `isolate-workspace` |
+| **execution** | `build-in-waves`, `build-by-story`, `build-inline`, `execute-common`, `test-first`, `root-cause`, `debug-remote`, `assess-observability`, `prove-claim`, `audit-trace`, **`load-subgraph`**, `isolate-workspace` |
 | **review** | `inspect-change`, `polish-diff`, `vet-feedback`, `review-invariants`, `/study-change`, `/brief-team`, `/select-review-sample` |
 | **acceptance** | `validate-feature`, `validate-api`, `validate-ui`, `review-product-flow`, `vet-product-flow`, `run-product-walkthrough` |
 | **craft** | `craft-page` |

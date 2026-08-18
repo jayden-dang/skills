@@ -17,7 +17,10 @@ the card's own options.
   sketch, runnable query)
 - Implementation-grade constraints collapse to a *for the spec* tail or Weigh;
   trade-off tables cut when they restate the card's options
-- GREEN pending: comparative run v1.1.0 vs v1.2.0 on the export-contract card
+- GREEN: 3×3×3 comparative run (Sonnet, export-contract card) — walk, `→`
+  consequence, spec-tail, and table-cut rules all 0/3 baseline → 3/3 v1.2.0;
+  model-before-critique inconclusive single-turn (baseline analogy held),
+  retained on field evidence of late-session fade
 
 ### `interpret-session` volume calibration (v1.1.0)
 

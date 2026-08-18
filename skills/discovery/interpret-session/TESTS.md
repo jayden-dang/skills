@@ -73,8 +73,27 @@ implementation-grade constraints mid-analysis, trade-off tables restating
 the card's own options. v1.2.0 adds: model-before-critique (Explain follows
 into depth), `→` consequence on Verified facts, one real-shaped walk on
 external-territory cards, spec-grade detail collapsed to a tail or Weigh,
-restating tables cut. GREEN pending: comparative run (v1.1.0 vs v1.2.0) on
-the export-contract card scenario.
+restating tables cut.
+
+**Comparative run (2026-08-18, Sonnet, 3×3×3):** export-contract card verbatim
+as scenario; arms = no-skill control / v1.1.0 / v1.2.0; fresh context per rep;
+repo and research tooling withheld (card facts treated as verified) so arms
+stay comparable. Hand-scored per transcript:
+
+| Check | control | v1.1.0 | v1.2.0 |
+|---|---|---|---|
+| Real-shaped walk (hex ids, span tree, sample log, query) | 0/3 | 0/3 | 3/3 |
+| `→` consequence on labeled facts | 0/3 | 0/3 | 3/3 |
+| Dedicated for-the-spec tail | 0/3 | 0/3 | 3/3 |
+| Restating trade-off table cut | — | 1/3 | 3/3 |
+| Model before argument | 0/3 | 3/3 | 3/3 |
+
+Verdict: walk, `→`, spec-tail, and table-cut rules **earn their lines** (baseline
+misses, v1.2.0 hits, all reps). Model-before-critique is **inconclusive in this
+harness** — v1.1.0's existing Explain analogy already fired 3/3 single-turn;
+the rule's RED is the field session, where Explain faded by card 3 of 10.
+Retained on that field evidence; if the next live multi-card session shows the
+analogy holding without it, delete the depth-extension sentence as a no-op.
 
 **Change class:** additive calibration rules (SKILL.md v1.1.0): carry-back
 speaks as the user in Lock / Weigh / Still-open slots (no authorship labels,

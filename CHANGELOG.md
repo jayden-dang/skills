@@ -2,6 +2,47 @@
 
 ## Unreleased
 
+### `interpret-session` depth legibility (v1.2.0)
+
+Second finding from the same field export: deep sections were legible where
+territory was the user's repo (flow walks, `file:line`) and opaque where it
+left for external standards — expert-level argument over models never given,
+facts without consequences, spec-grade detail mid-analysis, tables restating
+the card's own options.
+
+- Explain follows into depth: a concept absent from paste + repo gets its
+  minimal model at first use (model-before-critique)
+- **Verified fact** ends with `→` consequence on the live choice
+- External-territory cards get one real-shaped walk (sample log line, trace
+  sketch, runnable query)
+- Implementation-grade constraints collapse to a *for the spec* tail or Weigh;
+  trade-off tables cut when they restate the card's options
+- GREEN pending: comparative run v1.1.0 vs v1.2.0 on the export-contract card
+
+### `interpret-session` volume calibration (v1.1.0)
+
+Field evidence (2026-08-18 companion run beside a 10-card observability
+`frame-change`): analysis quality held — six amendments landed in the other
+window's locks — but approval mechanics eroded: 17-bullet locks approved with
+one word, "high" confidence on every card, rationale skipped 5×, no
+session-wide view, digest never produced because the session ended on an
+export.
+
+- Carry-back speaks as the user (no authorship labels, no rationale
+  bookkeeping, no directing the other window's next step) in three
+  receiver-native slots — **Lock** / **Weigh (not locked)** / **Still
+  open**; a long block's round-trip names its highest-blast bullets
+- **How sure** names the check that earned it; "high, and it barely matters"
+  is a valid answer on low-stakes calls
+- **Versus the other session** becomes an Agree / Amend / Reject diff; all
+  five stance lines persist for the whole session (anti-drift red flag)
+- Cumulative decision map every 3–4 decision events or on request
+- Repeated rationale skips → decision-maker summary tier + one teach-back
+  offer
+- Export/archive request counts as a wrap-up signal → offer the digest
+- Guide + TESTS.md field-evidence record; shape check + no-op sweep per
+  small-addition practice
+
 ### New: `assess-observability` — telemetry readiness finding set
 
 Model-invocable. “Is tracing / OpenObserve / sampling complete?” produces a

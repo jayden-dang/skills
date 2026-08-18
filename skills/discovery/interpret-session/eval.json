@@ -31,5 +31,40 @@
       "the decision is carried back to the technical skill rather than ending in the companion session",
       "no language the user did not ask for is introduced into the exchange"
     ]
+  },
+  {
+    "eval_id": 4,
+    "eval_name": "lock-reply-speaks-as-the-user-in-lock-weigh-open-slots",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § Field evidence 2026-08-18 — 17-bullet locks approved with one word; bookkeeping leaked into transport",
+    "prompt": "The user settles a direction with one word after a long analysis turn, giving no reason. Write the carry-back reply, which locks the decision plus a dozen constraints the analysis proposed.",
+    "assertions": [
+      "the reply separates Lock (what the approval freezes) from Weigh (constraints the other session tests, not locked) and Still open",
+      "the reply reads as the user's own answer: no authorship labels, no rationale bookkeeping such as 'not supplied', no instruction telling the other window what to do next",
+      "the round-trip commitment below the block names the highest-blast bullets specifically rather than summarizing the block generically"
+    ]
+  },
+  {
+    "eval_id": 5,
+    "eval_name": "confidence-carries-its-check-and-versus-is-a-diff",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § Field evidence 2026-08-18 — uniform 'high' with no named check; amendments buried in prose",
+    "prompt": "A pasted card puts a live choice on the table and the stance agrees with the other session's recommendation while correcting two of its claims. Write the stance block.",
+    "assertions": [
+      "the How-sure line names the check that earned the confidence level, or states the stakes are too small to matter",
+      "the Versus line is an Agree / Amend / Reject diff with each correction listed one line per item"
+    ]
+  },
+  {
+    "eval_id": 6,
+    "eval_name": "external-concepts-get-a-model-and-a-walk",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § Field evidence 2026-08-18 — second finding: opaque depth on external-standard cards",
+    "prompt": "A pasted card asks the user to choose a telemetry join key. The analysis turns on two external concepts (trace/span structure, exemplars) that appear nowhere in the paste or the repo. Write the deep analysis behind the stance.",
+    "assertions": [
+      "each external concept gets a minimal model (sketch or analogy) before any argument built on it",
+      "the analysis includes one real-shaped artifact such as a sample log line or a two-node trace sketch",
+      "verified facts end with an explicit consequence for the live choice rather than a bare citation"
+    ]
   }
 ]

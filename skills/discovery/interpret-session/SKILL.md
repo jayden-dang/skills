@@ -1,6 +1,6 @@
 ---
 name: interpret-session
-version: 1.0.0
+version: 1.2.0
 description: Runs a companion session beside frame-change, clarify-decisions, or any technical
   discussion — in the user's native language or in English as a second-opinion debate partner —
   with an understanding pass, a committed stance, and a reply to carry back. Run it with
@@ -82,11 +82,22 @@ Two or more genuinely different courses of action are open, and the user has to 
 ```
 **What I'd do:** one option, named.
 **Why:** the single reason that dominates — not a summary of the trade-off table.
-**How sure:** high / medium / low. Say low plainly when it is low.
+**How sure:** high / medium / low, plus the check that earned it ("high — read the guard
+  tests", "medium — docs agree, no integration proof"). Say low plainly when it is low.
+  On a call where little rides on the answer, say that instead: "high, and it barely
+  matters."
 **What would flip me:** the one fact, measurement, or constraint that changes the answer.
   Cheap to check? Say so, and check it.
-**Versus the other session:** where you agree, where you don't, and why.
+**Versus the other session:** a skimmable three-part diff — **Agree:** what of theirs
+  stands · **Amend:** each correction you add, one line per item · **Reject:** anything
+  of theirs you would drop. The Amend list is the highest-value content in the turn;
+  never bury it in the prose below.
 ```
+
+All five lines appear on every live-choice turn for the whole session — dropping **How
+sure** or **What would flip me** on later cards is format drift, not brevity. And a session
+where every stance reads "high" with no named check has stopped calibrating: the label only
+helps the user decide where to spend attention when it varies with the evidence.
 
 Then the understanding pass (shape depends on companion language):
 
@@ -95,16 +106,21 @@ Then the understanding pass (shape depends on companion language):
    - **WHEN companion language is English and the paste is English:** **Restate** — claim-accurate paraphrase in plain English (not a second full copy of the paste). Preserve technical terms. Skip a separate "translation" block; the goal is understanding, not bilingual theater.
 2. **Explain** — the same idea in plain language in the **companion language**, built from **one** concrete example or analogy. Short sentences, no unexplained jargon, nothing lost. If you cannot ground it in something familiar, that is a signal the idea is still fuzzy — say so. One pass only: never re-explain the same content with a second analogy.
 
-Then the detail behind the stance. Label blocks with these claim prefixes where they apply — **Source claim**, **Verified fact**, **Inference**, **Open question** — and cover:
+   The obligation follows the analysis into depth: a concept the analysis itself introduces — absent from the paste, the repo, and its glossary — gets its minimal model (one picture, one analogy, or a three-line sketch) at first use, before any argument built on it. An expert-level critique of a model the user was never given lands as noise.
+
+Then the detail behind the stance. Label blocks with these claim prefixes where they apply — **Source claim**, **Verified fact**, **Inference**, **Open question**. A **Verified fact** is not finished at the citation: end it with `→` and what the fact does to the live choice. A fact whose consequence the reader must assemble themselves is homework, not analysis. Cover:
 
 - **Map vs territory** — where the paste is a model of the work (prompt/spec/plan) and where the codebase or reality may disagree; cite `file:line` when you checked.
 - **Knowns sketch** — when a real choice is open: what is locked, what is still unknown, what is an assumption dressed as a decision, and whether the user has **evaluation criteria** to judge the options (if not, say so and teach-pack or research criteria before piling on alternatives).
 - **Alternatives** — at least one genuinely different approach the other session did not lead with.
-- **Trade-offs** — for each live option, side by side.
+- **Trade-offs** — for each live option, side by side — only where they add something the pasted card did not already say. A table that restates the other session's own options is padding; cut it and keep the one line that differs.
 - **Hidden assumptions** — what the pasted response takes for granted that may not hold here.
 - **Risks** — where each option bites later.
 - **When each wins** — the conditions that make each the right call, tied to the posture.
+- **One concrete walk when the territory leaves the repo** — a card argued on an external standard, library, or protocol gets one real-shaped artifact: a sample log line, a two-node trace sketch, the query the user would actually run. The walk does for external territory what `file:line` does for the repo.
 - **References** — when prose cannot carry the intent, name code, components, or external implementations to point at instead of more description.
+
+Implementation-grade constraints the analysis surfaces — version pins, shutdown ordering, test lists — do not sit mid-analysis: collapse them into a short *for the spec* tail at the end, or carry them as **Weigh** items in the reply. The user is deciding direction; the implementing session consumes that grade of detail later.
 
 ## When the paste puts no choice on the table
 
@@ -127,11 +143,15 @@ And if the honest answer really is that two paths are equivalent: say which one 
 
 **Rationale rule:** when ≥2 live options exist, the user's choice closes a meaningful branch or fixes a constraint, and they have not already stated a reason — ask **one** short rationale question. If they already supplied a reason, quote it **verbatim** without re-asking. If they decline, record `Human rationale: not supplied`. **Never** infer rationale from an accepted recommendation.
 
+**When rationale is skipped repeatedly.** Two or three consecutive skips are a signal about the session, not about the question: either the user fully trusts the analysis, or the turns have outgrown what they actually read. Adapt once — lead the next stance with a two-or-three-sentence decision-maker summary before any depth, and offer a teach-back a single time ("want the three ideas behind the last few locks, in plain terms?"). If declined, keep the summary tier and drop the offer. The teach-back stays light — three ideas, in-thread, once. The rationale rule itself is unchanged.
+
 **Dissent, then comply.** When they choose against your stance, say so once — at most two sentences: what you expect to go wrong, and the earliest signal that it is going wrong. Then write what they asked for without re-arguing it. Do not raise it again on later turns unless that signal actually appears. Silent compliance is a failure of the job; so is lobbying after the decision is made.
 
 **Before an approval that binds.** When the decision on the table is approving a spec artifact — a `requirements.md`, `design.md`, or `tasks.md` the other session presents for sign-off — say in one line what the approval freezes before they give it: criterion IDs go immutable on approval, every later task, test, and commit cites them, and a wrong one is retired by strikethrough rather than renumbered. Then let them decide. Their own recorded decisions and open questions from earlier turns are the sharpest thing to check the artifact against — a criterion that contradicts one, and a decision no criterion covers, are both invisible to a reviewer who wasn't in the discussion.
 
 **Decision-event ledger.** After any turn containing a decision event, render a compact three-line ledger in a code block — `Decided` / `Open` / `Rejected-deferred`, one line each. No decision event → no ledger. Full rationale waits for the digest.
+
+**Cumulative decision map.** Every third or fourth decision event — or whenever the user asks where things stand — render one compact table across the whole session: decision point → what locked → what this session amended versus the other window → still open. The per-turn ledger shows the step; the map shows the shape. Without it, a long chain of locks leaves the user unable to see whether the pieces still fit together.
 
 ## Carrying the decision back
 
@@ -144,7 +164,13 @@ When they have converged:
 1. Write a concise, high-quality message **for the other window** — clear, specific, carrying their decision and any question or constraint that moves the discussion forward. Put it in a code block so it copies cleanly.
    - **Default:** write that message in **English** (the usual language of `frame-change` / `clarify-decisions` / review sessions).
    - **IF** the other window is clearly not English and the user asked for a reply in that language → match that language instead.
-2. **Round-trip the commitment.** Below the block, in the **companion language**, state in one or two lines what that message actually commits them to.
+   - **Speak as the user.** The other window reads this message as the user's own answer — interpret is the tool behind it, and the reply never says so. No authorship labels, no rationale bookkeeping, no mention of the companion session; when the user gave a reason, weave it in as *the* reason, the way they would state it. Provenance (verbatim rationale, `not supplied`) lives in the ledger and digest, never in the transport message.
+   - **Three slots when the message locks a decision** — in the receiving window's own vocabulary, so nothing needs translating:
+     - **Lock:** the few lines the user's approval actually freezes.
+     - **Weigh (not locked):** constraints proposed for the other session to test through its own process — it must not append these to its locks.
+     - **Still open:** what must not be silently closed.
+     One word of approval must never freeze fifteen bullets the user did not individually weigh; a constraint important enough to be non-negotiable gets decided as its own lock, not smuggled in. End on the answer itself — the other window recomputes its own next step, so no "please continue" and no naming its next card.
+2. **Round-trip the commitment.** Below the block, in the **companion language**, state in one or two lines what that message actually commits them to — and when the block runs long, extend past two lines to name the two or three highest-blast bullets: a generic summary of a long lock is not a safety net.
    - **WHEN companion language ≠ the reply language:** this is the safety net — they must not approve text in a language they chose not to decide in.
    - **WHEN companion language is English and the reply is English:** still do the one-to-two-line commitment check (what freezes, what they are authorizing). Do **not** invent a native-language restatement they never asked for.
 
@@ -162,6 +188,9 @@ When they have converged:
 | "They're short on time, so I'll skip to the recommendation" | The stance goes first precisely because they're short on time. Skip nothing — reorder |
 | "Interpret is only for non-English speakers" | English is a first-class companion language — second opinion / debate, not only a translation bridge |
 | "They picked English, so I still need a Translate section into Vietnamese" | Companion language is English → Restate, not a forced L1 translation |
+| "The guards are implied by the decision — they belong in the lock" | Implied to you. The user approves the **Lock** slot; everything else travels as **Weigh** unless it was individually weighed |
+| "Confidence really is high on every card" | Then the label carries no signal. Name the check that earned each "high" — or say the stakes are too small for it to matter |
+| "They're a developer — they know what a span / exemplar is" | Technical in their stack is not technical in this card's. A term absent from the paste and the repo gets its three-line model before the argument |
 | "English companion means skip the round-trip" | Still state what the carry-back commits them to; only skip inventing an L1 they did not choose |
 
 ## Red flags
@@ -179,10 +208,17 @@ Stop and re-read the Iron Law if you notice yourself:
 - Letting an approval that freezes identifiers pass without naming what it freezes
 - Offering only non-English languages at setup, or treating English as "other" rather than first-class
 - When companion language is English: forcing a native Translate block or inventing an L1 round-trip
+- A later stance block missing **How sure** or **What would flip me** that an earlier one carried
+- A carry-back lock where proposed constraints outnumber the user's decision, with no Lock / Weigh split
+- A carry-back that names the companion session, carries rationale bookkeeping, or directs the other window's next step
+- Four locks in and no cumulative map in sight
+- Arguing expert-level about a concept the session never gave the user a model for
+- A comparison table that restates the pasted card's own options
+- A Verified fact left as a bare citation with no `→` consequence
 
 ## End-of-session digest
 
-When the interpret-session session ends (user says they're done, or the companion work is clearly finished), produce a digest with exactly these seven provenance labels:
+When the interpret-session session ends (user says they're done, asks to export or archive the conversation, or the companion work is clearly finished), produce a digest with exactly these seven provenance labels:
 
 1. **User decisions**
 2. **Human rationale — verbatim**
@@ -191,6 +227,8 @@ When the interpret-session session ends (user says they're done, or the companio
 5. **Open questions**
 6. **Prepared reply — agent-authored**
 7. **Transport-adoption status**
+
+On an export or archive request, offer the digest alongside the export — what leaves the session should be a distillation with provenance, not only a raw transcript.
 
 Human-carried transport of the digest proves **adoption**, never authorship — agent analysis stays agent-authored after the user carries it elsewhere.
 

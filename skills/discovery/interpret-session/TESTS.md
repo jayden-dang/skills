@@ -48,6 +48,42 @@ conditional round-trip; rationalization rows + red flags.
 
 Multi-model matrix still open beyond one live rep.
 
+## Field evidence — 2026-08-18 volume calibration (v1.1.0)
+
+Source: exported live companion run beside a 10-card `frame-change`
+(klynt observability). Not a RED pressure campaign — field evidence.
+
+**Observed:** stance, code verification, and research ran per spec; six
+substantive amendments landed in the other window's locks. Failures were
+volume-mechanical, each locally correct and jointly eroding approval:
+
+- Carry-back lock blocks grew 7 → 17 bullets, approved with one word
+- "How sure: high" on 10/10 cards, no named check
+- Stance block dropped How-sure / flip lines on late cards (format drift)
+- Rationale skipped 5×, no adaptation
+- No session-wide view across 9 locks; digest never produced — session
+  ended on an export request instead of "done"
+
+**Second finding (same export → v1.2.0, depth legibility):** deep sections
+were legible where territory was the user's repo (flow walks, file:line —
+proof-path and command-shape cards) and opaque where it left for external
+standards (OTel/W3C cards): expert-level argument over models never given
+(trace/span/exemplar undefined), Verified facts without consequences,
+implementation-grade constraints mid-analysis, trade-off tables restating
+the card's own options. v1.2.0 adds: model-before-critique (Explain follows
+into depth), `→` consequence on Verified facts, one real-shaped walk on
+external-territory cards, spec-grade detail collapsed to a tail or Weigh,
+restating tables cut. GREEN pending: comparative run (v1.1.0 vs v1.2.0) on
+the export-contract card scenario.
+
+**Change class:** additive calibration rules (SKILL.md v1.1.0): carry-back
+speaks as the user in Lock / Weigh / Still-open slots (no authorship labels,
+no rationale bookkeeping, no next-step directives — frame-change reads the
+reply as the human), calibrated confidence, Agree/Amend/Reject diff,
+cumulative decision map, skip-streak summary+teach-back, export as wrap-up
+signal. Shape check + no-op sweep only; Iron Law, stance order,
+language surface, and no-choice path untouched.
+
 ## Rules this evidence owns
 
 | Rule | Evidence |

@@ -88,6 +88,18 @@ stay comparable. Hand-scored per transcript:
 | Restating trade-off table cut | — | 1/3 | 3/3 |
 | Model before argument | 0/3 | 3/3 | 3/3 |
 
+**Generalization check (same day, Sonnet, 2 reps):** a non-telemetry card in
+the same format (presigned direct-to-MinIO vs API proxy upload; external
+territory = S3 presigned/CORS semantics). Concern: the walk rule's example
+list ("sample log line, trace sketch, query") is telemetry-flavored and might
+anchor. Result 2/2: all four behaviors fired with **domain-native** artifacts —
+a presigned PUT URL with `X-Amz-*` params and a POST-policy JSON with
+`content-length-range` — no telemetry anchoring. The walk drove substance,
+not just format: both reps independently surfaced that a bare presigned PUT
+cannot enforce the locked 50MB cap at the storage layer (one dissented to
+proxy-first, one amended to POST policy) — a real card defect neither the
+card nor its recommendation mentioned. No wording change needed.
+
 Verdict: walk, `→`, spec-tail, and table-cut rules **earn their lines** (baseline
 misses, v1.2.0 hits, all reps). Model-before-critique is **inconclusive in this
 harness** — v1.1.0's existing Explain analogy already fired 3/3 single-turn;

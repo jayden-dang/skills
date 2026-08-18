@@ -43,6 +43,24 @@ Locality: …
 
 ...
 
+## UI design
+
+<Required when any Satisfies ID above is delivered through a browser-rendered
+surface — a page, screen, component, or style the user sees. Delete this whole
+section when none is.>
+
+Grounding: <precedence: the user's own words → the project's existing visual
+system → your choices. Name the token / theme / component-style file(s) this
+section draws from, or `none found — inventing; flag for a design-tokens doc`>
+
+### <Surface 1>
+
+Layout: <the composition in 1–2 sentences — placement, alignment, spacing rhythm by token>
+Components: <existing classes/components reused or extended vs new — same ladder discipline as Reuse>
+States: <one line per reachable visible state: default, hover/focus, selected/active, empty, loading, error — a state with no line ships as the browser default>
+Type & color: <sizes/faces and color roles by token name — never raw hex>
+A11y: <keyboard path, visible focus, contrast>
+
 ## Seams for testing
 
 <The public boundaries tests will be written at, agreed here — the test-first skill

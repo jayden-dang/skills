@@ -1,6 +1,6 @@
 ---
 name: design-solution
-version: 1.0.0
+version: 1.1.0
 description: Use when approved requirements need their technical design — the design.md /
   architecture doc spelling out HOW the requirements get built. After
   specify-behavior, before plan-tasks.
@@ -12,7 +12,7 @@ get satisfied. Start from the skill set's `templates/design.md` — resolve
 otherwise `../../../templates` relative to this SKILL.md. Every heading in it is a
 REQUIRED slot. The requirements file is your input contract — read it fully first.
 
-Create a todo per step (1–4) before starting, and complete them in order — this skill owns its own list, distinct from `specify-behavior`' upstream and `plan-tasks`'s downstream. Check each off only when its **Done when:** is met.
+Create a todo per step (1, 2, 2b, 3, 4) before starting, and complete them in order — this skill owns its own list, distinct from `specify-behavior`' upstream and `plan-tasks`'s downstream. Check each off only when its **Done when:** is met.
 
 ## Step 1: Context and decisions
 
@@ -144,6 +144,27 @@ to build; **Depth** / **Locality** record how deep and where the change sits.
 where a spine invariant applies, and `Surface:` where the section changes
 something that already has readers).
 
+## Step 2b: UI design — observable conditional
+
+IF any `Satisfies:` ID is delivered through a browser-rendered surface (a
+page, screen, component, or style the user sees) → fill the template's
+`## UI design` section. IF none is → delete the section.
+
+Interfaces and data flow do not design a surface: a module can satisfy every
+requirement and still ship browser-default buttons, an undesigned empty state,
+and invisible focus. This section makes those decisions here, where the user
+reviews them, instead of leaving them to whichever implementer touches the CSS.
+
+Fill it against the repo's real visual system: read the token / theme /
+component-style files the Step-1 scan found and cite tokens by name — the
+`Grounding:` line records the precedence (the user's own words, then the
+existing system, then your choices) and where the tokens come from. One `###`
+per surface; fill every slot the template names — `Layout:`, `Components:`
+(same ladder discipline as `Reuse:`), `States:`, `Type & color:`, `A11y:`.
+
+**Done when:** the section exists iff the predicate holds, and every surface
+has all five slots filled — with a line for each reachable visible state.
+
 ## Step 3: Agree the seams for testing
 
 Fill the "Seams for testing" table: the public boundaries tests will be
@@ -170,6 +191,9 @@ that skips a component).
   reference search yourself and confirm the inventory is complete and each row
   carries a disposition. A `compat` row without the follow-up that removes it,
   or a changed external/persisted reader not marked `frozen`, fails this check.
+- **UI coverage:** WHEN `## UI design` exists → every slot per surface is
+  filled, colors are token names not raw hex, and any visible state the
+  requirements make reachable (empty, error, loading) has a `States:` line.
 
 **Independent design review — dispatch, don't self-review.** Fresh context has
 no stake in your framing (the bias that reinterprets a stale requirement rather

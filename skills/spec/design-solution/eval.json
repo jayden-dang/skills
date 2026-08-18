@@ -50,5 +50,28 @@
       "elements no requirement forces are cut at design time rather than deferred to review",
       "an element is not kept because a neighbouring module or a future need is expected to want it"
     ]
+  },
+  {
+    "eval_id": 5,
+    "eval_name": "ui-design-section-fires-on-rendered-surface",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § UI design fork — RED des-a/des-b zero layout/state/a11y content; GREEN des-c all five slots",
+    "prompt": "Approved requirements add a filter bar with counts, a selected state, and an empty-state message to an existing styled board. Produce design.md.",
+    "assertions": [
+      "design.md carries a ## UI design section with Grounding naming the repo file the tokens come from",
+      "each surface fills Layout, Components, States, Type & color, and A11y",
+      "every reachable visible state (default, hover/focus, selected, empty) has a States line",
+      "colors are cited as token names, never raw hex"
+    ]
+  },
+  {
+    "eval_id": 6,
+    "eval_name": "ui-design-section-deleted-without-surface",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § UI design fork — GREEN des-d should-not-fire",
+    "prompt": "Approved requirements add load-time data validation with console warnings only; the rendered board is explicitly unchanged. Produce design.md.",
+    "assertions": [
+      "the ## UI design section is deleted rather than filled with invented visual content"
+    ]
   }
 ]

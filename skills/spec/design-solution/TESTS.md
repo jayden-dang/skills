@@ -55,3 +55,32 @@ contract to be a design constraint rather than a footnote.
 | `frozen` = may not alter **unilaterally**, discharged by workaround **or** named consent gate | Run-1 meta-test invented a 4th category; run 2 needed none |
 | `Locality:` ≠ `Surface:` (edit location vs affected reader) | RED wrote `leave` on readers whose returned value changed |
 | Rationalization row: "same shape, different number — not a contract change" | Verbatim from the RED transcript |
+
+## UI design fork (v1.1.0, 2026-08-18, sonnet)
+
+**RED** — 2 reps (des-a, des-b), fixture: static vanilla-JS board with a real
+token sheet (`--accent`/`--danger`/`--space-*` etc.), approved FILT
+requirements (filter bar + counts + selected state + empty state + overdue
+emphasis). Both reps produced structurally complete designs (Satisfies /
+Reuse / Interface / Depth / Locality all filled) with **zero visual
+dimension**: no layout composition, no interaction states (hover / focus /
+selected styling), no type or spacing decisions, no empty-state presentation,
+no a11y. Token names appeared only where a requirement's own wording forced
+them ("same emphasis treatment as the existing overdue badge"). Grep for
+gap/space/align/font/focus/hover/keyboard/aria/pill/layout: des-a 3 hits,
+des-b 2 hits — all false positives (addEventListener, "handful of lines").
+Failure class: **output has the wrong shape** → positive recipe / REQUIRED
+template slots gated on an observable predicate, not a prohibition.
+
+**GREEN** — 2 reps, updated template + Step 2b:
+
+| Rep | Scenario | Result |
+|---|---|---|
+| des-c | FILT (should-fire) | `## UI design` present: Grounding cites styles.css precedence; per-surface Layout (flex child + gap tokens + wrap), Components with ladder rungs, States incl. composed selected-and-overdue and counts-visible, Type & color at token level (14px matching `.topbar-sub`), A11y (`aria-pressed`, `role="group"`, contrast inherited from shipped pairing) |
+| des-d | LVAL console-only validation (should-not-fire) | section deleted per predicate; note in coverage check |
+
+No new rationalizations; no REFACTOR round needed.
+
+**Ship:** `templates/design.md` `## UI design` section (Grounding + five slots
+per surface); SKILL.md Step 2b observable conditional + Step 4 UI coverage
+line + todo list includes 2b.

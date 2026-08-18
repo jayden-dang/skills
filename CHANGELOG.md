@@ -2,6 +2,26 @@
 
 ## Unreleased
 
+### `teach-build` — new review skill (v1.0.0)
+
+`/teach-build`: one self-contained HTML teach packet for a finished build —
+journey (wave shape, every `implementation-notes.md` deviation with its
+Revisit line) plus operation (runtime path that must cross components
+outside the feature's diff), written to `.skills/<CODE>/teach-build.html`.
+Aid only, never a ship gate; packet stays local unless the user asks to
+publish; scout subagents Sonnet-only.
+
+- RED (Sonnet, 4 reps, two prompt arms): content was never the failure —
+  baselines found deviations and crossed the diff boundary unprompted. The
+  failure was deliverable shape variance: chat-only dumps with zero diagrams
+  on terse asks, unrequested external artifact publishes on rich ones, three
+  shapes in four runs. Form: positive contract, not prohibitions.
+- GREEN (3 reps) + edge (no-build repo → stop, name `/study-change`) +
+  meta-test recorded in `TESTS.md`; runnable assertions in `eval.json`.
+- Registered: AGENTS.md (82 skills, review 8, user-invoked 26), plugin +
+  marketplace manifests, guide page + index, ephemera basename
+  `teach-build.html`.
+
 ### `interpret-session` depth legibility (v1.2.0)
 
 Second finding from the same field export: deep sections were legible where

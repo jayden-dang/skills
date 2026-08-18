@@ -79,6 +79,7 @@ The triad. Each file approved before the next is written.
 |---|---|---|
 | [`inspect-change`](inspect-change.md) | model | Two axes — Standards and Spec — run by separate subagents and never merged; neighbors schema 1.1 via `load-subgraph` |
 | [`study-change`](study-change.md) | `/study-change` | Outbound self-check: Background → Intuition → Code → Quiz HTML packet |
+| [`teach-build`](teach-build.md) | `/teach-build` | Journey + operation teach packet: deviations retold, runtime map beyond the diff, `.skills/<CODE>/teach-build.html` |
 | [`brief-team`](brief-team.md) | `/brief-team` | Team-shared pitch+map HTML under `docs/explainers/` (no quiz, never a ship gate) |
 | [`select-review-sample`](select-review-sample.md) | `/select-review-sample` | Bounded human sample over a range, plus the explicit residue |
 | [`polish-diff`](polish-diff.md) | model | Behavior-preserving quality pass over a diff before merge |

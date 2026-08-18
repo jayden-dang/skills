@@ -58,6 +58,7 @@ Do not invent a second identifier when a CODE is available.
 | `review-product-flow.html` | Rendered guide |
 | `review-product-flow-report.md` | Walkthrough report |
 | `vet-product-flow.md` | Vet product flow report |
+| `teach-build.html` | Journey + operation teach packet (`/teach-build`) |
 
 Prefer these fixed basenames. Do not scatter `<slug>-scan.md` at the bare `.skills/` root.
 

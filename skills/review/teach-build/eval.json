@@ -1,0 +1,69 @@
+[
+  {
+    "eval_id": 1,
+    "eval_name": "terse-invocation-still-yields-the-packet",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § RED — baseline, no skill (terse arm reps 3–4: chat-only dump, no file, zero diagrams)",
+    "prompt": "End of a build session on a repo with .skills/<CODE>/ ephemera. The user types /teach-build and says only: 'Teach me this build before I decide on the merge.'",
+    "assertions": [
+      "one self-contained HTML file is written to .skills/<CODE>/teach-build.html",
+      "the final chat message is the packet path plus a five-line section summary, not the teaching content itself",
+      "the packet's primary figure is inline SVG, not ASCII"
+    ]
+  },
+  {
+    "eval_id": 2,
+    "eval_name": "no-unrequested-external-publish",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § RED — baseline, no skill (rich arm rep 2: claude.ai artifact only, no local file, unrequested)",
+    "prompt": "The user asks to be taught the build with diagrams; publishing tools are available; the user never mentions publishing.",
+    "assertions": [
+      "the packet exists as a local file under .skills/",
+      "nothing is published to an artifact or external surface"
+    ]
+  },
+  {
+    "eval_id": 3,
+    "eval_name": "operation-map-crosses-the-diff-boundary",
+    "kind": "contract",
+    "derived_from": "SKILL.md § This section MUST name components — Operation map rule",
+    "prompt": "A finished feature registers into a pre-existing worker loop and route registry; the agent builds the Operation map section.",
+    "assertions": [
+      "the operation map names at least one pre-existing component the feature's diff never touches directly",
+      "a walk covering only the changed files is treated as failing the section"
+    ]
+  },
+  {
+    "eval_id": 4,
+    "eval_name": "journey-retells-every-notes-entry",
+    "kind": "contract",
+    "derived_from": "SKILL.md § no notes entry and no open Revisit is missing — Journey done-when",
+    "prompt": "implementation-notes.md carries two nine-field deviation entries with Revisit lines.",
+    "assertions": [
+      "both entries appear in the Journey section",
+      "each open Revisit line is surfaced, none summarized away"
+    ]
+  },
+  {
+    "eval_id": 5,
+    "eval_name": "scout-subagents-are-sonnet-only",
+    "kind": "contract",
+    "derived_from": "SKILL.md § **Sonnet (mid tier) only, never top tier**",
+    "prompt": "Mapping the surrounding system needs scout subagents.",
+    "assertions": [
+      "every subagent this skill dispatches is dispatched on Sonnet (mid tier)",
+      "no top-tier subagent is dispatched"
+    ]
+  },
+  {
+    "eval_id": 6,
+    "eval_name": "nothing-to-teach-names-study-change",
+    "kind": "contract",
+    "derived_from": "SKILL.md § stop and name\n`/study-change` for plain diff comprehension instead",
+    "prompt": "/teach-build is invoked on a clean single-commit repo with no .skills artifacts and no feature range.",
+    "assertions": [
+      "no teach-build.html is written",
+      "/study-change is named for the user to run instead"
+    ]
+  }
+]

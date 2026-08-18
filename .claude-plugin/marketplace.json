@@ -50,6 +50,7 @@
         "./skills/review/review-invariants",
         "./skills/review/inspect-change",
         "./skills/review/study-change",
+        "./skills/review/teach-build",
         "./skills/review/brief-team",
         "./skills/review/polish-diff",
         "./skills/review/vet-feedback",

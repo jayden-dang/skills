@@ -21,6 +21,9 @@ the card's own options.
   consequence, spec-tail, and table-cut rules all 0/3 baseline → 3/3 v1.2.0;
   model-before-critique inconclusive single-turn (baseline analogy held),
   retained on field evidence of late-session fade
+- v1.2.1 wording: Knowns-sketch line no longer uses "teach-pack" as a verb —
+  an ambiguous hand-off to a `disable-model-invocation` skill (author-skills
+  review pass); now plain "teach or research the criteria"
 
 ### `interpret-session` volume calibration (v1.1.0)
 

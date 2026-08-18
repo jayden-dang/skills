@@ -100,6 +100,16 @@ cannot enforce the locked 50MB cap at the storage layer (one dissented to
 proxy-first, one amended to POST policy) — a real card defect neither the
 card nor its recommendation mentioned. No wording change needed.
 
+**Meta-test (upload rep 1 agent, post-run):** no compliance blocker named. Real
+findings were harness artifacts (repo/`research` withheld by the test, so the
+required-sub-skill lines had no degrade path — not a production condition) plus
+one kernel worth watching live: the claim-prefix taxonomy has no label for
+"recalled from training, unverified this session", and the agent stretched
+**Verified fact** to cover it. In production the `research` rule covers
+load-bearing external claims; if a live session shows training-recall wearing
+the Verified-fact label, tighten the label rule then. Minor vague bound noted
+("short enough to quote inline") — resolved correctly under test, no change.
+
 Verdict: walk, `→`, spec-tail, and table-cut rules **earn their lines** (baseline
 misses, v1.2.0 hits, all reps). Model-before-critique is **inconclusive in this
 harness** — v1.1.0's existing Explain analogy already fired 3/3 single-turn;

@@ -1,6 +1,6 @@
 ---
 name: interpret-session
-version: 1.2.0
+version: 1.2.1
 description: Runs a companion session beside frame-change, clarify-decisions, or any technical
   discussion — in the user's native language or in English as a second-opinion debate partner —
   with an understanding pass, a committed stance, and a reply to carry back. Run it with
@@ -111,7 +111,7 @@ Then the understanding pass (shape depends on companion language):
 Then the detail behind the stance. Label blocks with these claim prefixes where they apply — **Source claim**, **Verified fact**, **Inference**, **Open question**. A **Verified fact** is not finished at the citation: end it with `→` and what the fact does to the live choice. A fact whose consequence the reader must assemble themselves is homework, not analysis. Cover:
 
 - **Map vs territory** — where the paste is a model of the work (prompt/spec/plan) and where the codebase or reality may disagree; cite `file:line` when you checked.
-- **Knowns sketch** — when a real choice is open: what is locked, what is still unknown, what is an assumption dressed as a decision, and whether the user has **evaluation criteria** to judge the options (if not, say so and teach-pack or research criteria before piling on alternatives).
+- **Knowns sketch** — when a real choice is open: what is locked, what is still unknown, what is an assumption dressed as a decision, and whether the user has **evaluation criteria** to judge the options (if not, say so and teach or research the criteria before piling on alternatives).
 - **Alternatives** — at least one genuinely different approach the other session did not lead with.
 - **Trade-offs** — for each live option, side by side — only where they add something the pasted card did not already say. A table that restates the other session's own options is padding; cut it and keep the one line that differs.
 - **Hidden assumptions** — what the pasted response takes for granted that may not hold here.

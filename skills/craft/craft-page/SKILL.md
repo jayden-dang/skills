@@ -1,6 +1,6 @@
 ---
 name: craft-page
-version: 1.1.0
+version: 1.1.1
 description: Use before the first line of markup for any HTML a human will look
   at — a review-product-flow test guide, a report, a dashboard, a landing page, a published
   artifact, a standalone .html handoff. Also when a primary figure, structure
@@ -37,8 +37,8 @@ identity sometimes is. *Done when: the treatment is named out loud.*
 
 Precedence is fixed: **the user's own words, then the project's existing system,
 then your choices.** Before inventing anything, look for a design system already
-in the repo — `CLAUDE.md`, `docs/agents/*.md`, a tokens or theme file, existing
-component styles. When one exists, apply it; everything below fills its gaps and
+in the repo — an Approved `docs/standards/design-tokens.md`, `CLAUDE.md`,
+`docs/agents/*.md`, a tokens or theme file, existing component styles. When one exists, apply it; everything below fills its gaps and
 never overrides it.
 
 Then write the plan — three REQUIRED slots, filled in before any markup:

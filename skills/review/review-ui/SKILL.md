@@ -1,6 +1,6 @@
 ---
 name: review-ui
-version: 1.0.0
+version: 1.0.1
 description: Use when a diff or branch touching browser-rendered surfaces (HTML,
   CSS/styling, JSX/TSX/Vue/Svelte components, templates) needs its visual and
   interaction quality judged in the real running app before merge — the live
@@ -60,9 +60,10 @@ hits are recorded.*
 
 What does "right" look like, in precedence order: the feature's `design.md`
 `## UI design` section (its `States:` lines are the case list for step 4, its
-tokens the palette of record) → else the repo's token/theme file plus the
-visual language of the screens around the change. Name which contract you
-hold. *Done when: the contract source is named in the report.*
+tokens the palette of record) → an Approved `docs/standards/design-tokens.md`
+(stack, token vocabulary, numeric floors, forbidden patterns — its floors set
+severity) → else the repo's token/theme file plus the visual language of the
+screens around the change. Name which contract you hold. *Done when: the contract source is named in the report.*
 
 ## 4. Drive, capture, judge
 

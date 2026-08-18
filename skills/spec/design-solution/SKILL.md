@@ -1,6 +1,6 @@
 ---
 name: design-solution
-version: 1.1.0
+version: 1.1.1
 description: Use when approved requirements need their technical design — the design.md /
   architecture doc spelling out HOW the requirements get built. After
   specify-behavior, before plan-tasks.
@@ -155,10 +155,12 @@ requirement and still ship browser-default buttons, an undesigned empty state,
 and invisible focus. This section makes those decisions here, where the user
 reviews them, instead of leaving them to whichever implementer touches the CSS.
 
-Fill it against the repo's real visual system: read the token / theme /
-component-style files the Step-1 scan found and cite tokens by name — the
-`Grounding:` line records the precedence (the user's own words, then the
-existing system, then your choices) and where the tokens come from. One `###`
+Fill it against the repo's real visual system: an Approved
+`docs/standards/design-tokens.md` is the palette of record when present;
+otherwise read the token / theme / component-style files the Step-1 scan found.
+Cite tokens by name — the `Grounding:` line records the precedence (the user's
+own words, then the existing system, then your choices) and where the tokens
+come from. One `###`
 per surface; fill every slot the template names — `Layout:`, `Components:`
 (same ladder discipline as `Reuse:`), `States:`, `Type & color:`, `A11y:`.
 

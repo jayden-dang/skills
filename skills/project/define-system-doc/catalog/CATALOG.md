@@ -25,6 +25,7 @@ Pack-local SSOT. Maturity is authoritative only here.
 | `standards/testing` | First-class | `catalog/entries/standards/testing.md` |
 | `standards/api` | First-class | `catalog/entries/standards/api.md` |
 | `standards/ui` | First-class | `catalog/entries/standards/ui.md` |
+| `standards/design-tokens` | First-class | `catalog/entries/standards/design-tokens.md` |
 | `standards/accessibility` | First-class | `catalog/entries/standards/accessibility.md` |
 | `standards/security-coding` | First-class | `catalog/entries/standards/security-coding.md` |
 | `standards/errors-logging` | First-class | `catalog/entries/standards/errors-logging.md` |

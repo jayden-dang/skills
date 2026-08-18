@@ -1,6 +1,6 @@
 ---
 name: define-system-doc
-version: 1.0.0
+version: 1.1.0
 description: >
   Authors or updates one Hybrid 1A system-documentation artifact at the
   catalog's canonical path. Run with /define-system-doc <entry-key>.

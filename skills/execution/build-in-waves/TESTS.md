@@ -146,3 +146,36 @@ Class: **clear**. Report Contract tightened so concerns MUST cite notes path.
 | Five-field only | Task/Deviation/Cause/Choice/Revisit only | Full nine fields incl. Unknown class + Map impact |
 | Silent stretch | Map impact `none` while plan falsified | `reroute-plan` + controller `reroute-plan` |
 | Incomplete DONE_WITH_CONCERNS | Concerns in report only | Must cite notes path with complete fields |
+
+## Render check (v1.2.0, 2026-08-18, sonnet)
+
+**RED** — 2 reps, fixture: static vanilla-JS task board, task = "stats summary
+strip" (new `stats.js` + `styles.css` + `app.js` edits), Global Constraints
+named `npm run serve` + the localhost URL:
+
+| Rep | Result |
+|---|---|
+| run-a | DONE, 9/9 tests, grep'd hex colors in self-review — never rendered the page, no screenshot, zero mention of appearance |
+| run-b | DONE, 9/9 — same omission |
+
+Meta-test (run-a, verbatim): "it did not occur to me as a distinct step … I
+read `npm run serve`/localhost in the Global Constraints as environment
+information rather than an action item … string-level testing felt like the
+complete verification contract." Failure class: **omission**, not
+rationalization → form is REQUIRED report slot + observable conditional, not a
+prohibition. The tested agent named the Report Contract line as the strongest
+lever.
+
+**GREEN** — 2 reps, same fixture, updated template:
+
+| Rep | Scenario | Result |
+|---|---|---|
+| run-c | UI task (should-fire) | screenshot captured via `npx playwright screenshot` against `npm run serve`, image Read and judged against brief + existing visual language (counts, token colors, card language), Visual check slot filled |
+| run-d | pure-logic ordering helper (should-not-fire) | exact words `no render surface` on the Visual check line, zero browser use, zero PNGs |
+
+No new rationalizations in GREEN transcripts; no REFACTOR round needed.
+
+**Ship:** implementer-prompt.md step 5 **Render check** + Visual check
+REQUIRED slot in Report Contract; task-reviewer-prompt.md **Visual check**
+enforcement (missing line on a rendering diff = Important); build-inline
+per-task step 7 pointer to the one home here.

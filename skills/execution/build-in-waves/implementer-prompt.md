@@ -50,9 +50,21 @@ Subagent (general-purpose):
        obvious alternative" the code alone does not show. Forbidden: restating
        the next line; narrating control flow; citing requirement IDs / feature
        codes; "as per the plan/spec"; TODOs that only restate the task.
-    5. Commit with a conventional subject that explains the change. Do **not**
+    5. **Render check — REQUIRED when your diff touches anything a browser
+       renders** (HTML, CSS/styling, JSX/TSX/Vue/Svelte components,
+       templates): run the app the brief names, open the changed surface,
+       and capture a screenshot to `.skills/<CODE>/task-[N]-render.png`
+       (browser MCP tool, the repo's e2e harness, or
+       `npx playwright screenshot --wait-for-timeout 1000 <url> <path>`).
+       Passing tests are not evidence of how it looks — Read the image and
+       judge it against the brief and the page's existing visual language:
+       placement, spacing, alignment, readable text. Fix what looks broken
+       or unintentional, then re-screenshot. Cannot render (no browser, no
+       display, server will not start)? Record `cannot render: <why>` on
+       the report's Visual check line — never skip silently.
+    6. Commit with a conventional subject that explains the change. Do **not**
        add `Implements:` / `Guards:` trailers.
-    6. Self-review (below), then write your report.
+    7. Self-review (below), then write your report.
 
     ## Code Organization
 
@@ -144,6 +156,9 @@ Subagent (general-purpose):
       - RED: the command run, the failing output before implementation, and
         why that failure was the expected one
       - GREEN: the command run and the passing output after implementation
+    - Visual check — REQUIRED: screenshot path(s) plus one line on what
+      you judged and fixed; or the exact words `no render surface` when
+      the diff touches nothing a browser renders; or `cannot render: <why>`
     - Files changed
     - Self-review findings, if any
     - Concerns, if any — if any plan/territory mismatch occurred, this line

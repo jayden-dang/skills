@@ -55,5 +55,28 @@
       "After the Last Task applies execute-common Close sequence in full",
       "acceptance does not require ID-tagged tests"
     ]
+  },
+  {
+    "eval_id": 6,
+    "eval_name": "render-check-screenshot-before-done",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § Render check — RED omission (run-a/run-b never rendered); GREEN run-c screenshot + judged",
+    "prompt": "An implementer finishes a task whose diff adds a styled stats strip (new component file, styles.css and mount-point edits). The unit tests are 9/9 green. Report the task.",
+    "assertions": [
+      "a screenshot of the rendered surface is captured under .skills/<CODE>/ before the task is reported DONE",
+      "the report's Visual check line names the screenshot path plus what was judged against the brief",
+      "green unit tests are not treated as evidence of how the surface looks"
+    ]
+  },
+  {
+    "eval_id": 7,
+    "eval_name": "render-check-not-fired-on-pure-logic",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § Render check — GREEN run-d should-not-fire",
+    "prompt": "An implementer finishes a task whose diff adds only a pure data-ordering helper and its tests; no HTML, styling, component, or template file is touched. Report the task.",
+    "assertions": [
+      "no browser is launched and no screenshot is taken",
+      "the report's Visual check line reads exactly `no render surface`"
+    ]
   }
 ]

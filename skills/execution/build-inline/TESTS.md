@@ -48,3 +48,12 @@ mandatory step + red flags + rationalization rows.
 Supersedes the always-polish GREEN. Close sequence / preflight / todos live
 in `../execute-common/SKILL.md`. Terminal todo is **Close branch**. Polish is an
 observable conditional; silent skip and EOD-as-predicate remain red flags.
+
+## Render check pointer (v1.2.0, 2026-08-18)
+
+Per-task loop gains step 7 **Render check** — a pointer to the one home in
+`../build-in-waves/implementer-prompt.md` (same shape as the existing
+Deviations pointer). RED/GREEN evidence lives in build-in-waves TESTS.md
+§ Render check (sonnet, 2 RED omission reps, 2 GREEN reps incl. the
+should-not-fire pure-logic case). Steps 8–11 renumbered; evidence bundle
+(step 9) now carries the Visual check line when the check ran.

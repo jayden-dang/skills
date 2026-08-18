@@ -1,6 +1,6 @@
 ---
 name: build-inline
-version: 1.1.2
+version: 1.2.0
 description: Use when an approved tasks.md needs controller-side sequential
   execution without implementer subagents — inline TDD per task, progress
   ledger, stop-on-blocker, whole-branch review — for no-subagent environments
@@ -123,18 +123,24 @@ For each Task N in order:
    use `reroute-plan` (or ask); do not stretch silently.
 6. **Commit.** Conventional subject explaining the change — no `Implements:` /
    `Guards:` trailer required.
-7. **Self-check (controller, not a subagent).** Re-read the brief against the
+7. **Render check.** You **are** the implementer — WHEN the diff touches
+   anything a browser renders, apply the **Render check** step in
+   `../build-in-waves/implementer-prompt.md` (screenshot to
+   `.skills/<CODE>/task-N-render.png`, judge against the brief, fix, re-shoot);
+   the Visual check line lands in the step-9 evidence bundle.
+8. **Self-check (controller, not a subagent).** Re-read the brief against the
    diff: every requirement ID's behavior covered? TDD evidence (RED then GREEN) real?
    Output pristine? Plan File Structure respected? Fix gaps now — you have no
    separate task-reviewer pass.
-8. **Optional evidence bundle.** For non-trivial tasks, write
+9. **Optional evidence bundle.** For non-trivial tasks, write
    `.skills/<CODE>/task-N-report.md` with what changed, IDs covered, RED/GREEN
-   commands+output, concerns, deviations path or `none`. Cheap tasks may skip
+   commands+output, the Visual check line when the render check ran, concerns,
+   deviations path or `none`. Cheap tasks may skip
    the file if the commit message and ledger carry enough; when in doubt, write it.
-9. **Ledger.** Append
-   `Task N: complete (commits <base7>..<head7>, inline, review self)`.
-   Mark the todo done.
-10. **Next.** Immediately continue to the next task — no permission pause, no
+10. **Ledger.** Append
+    `Task N: complete (commits <base7>..<head7>, inline, review self)`.
+    Mark the todo done.
+11. **Next.** Immediately continue to the next task — no permission pause, no
     unit barrier. On blocker mid-task: stop the loop and ask (see **Stop
     conditions**).
 

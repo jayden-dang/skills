@@ -65,6 +65,16 @@ Subagent (general-purpose):
     instead. Warnings or noise in the reported test output are findings —
     output must be pristine.
 
+    ## Visual check
+
+    The report carries a Visual check line. When the diff touches anything
+    a browser renders (HTML, CSS/styling, components, templates), that line
+    must name a screenshot path — a missing line, or `no render surface`
+    on a diff that plainly renders, is an Important finding. When a
+    screenshot path is given, Read the image and judge the changed surface
+    against the brief: broken layout, unreadable text, or styling that
+    fights the page's existing visual language are findings like any other.
+
     ## Verdict 1: Spec Compliance
 
     Walk the brief's requirement IDs and the Global Constraints against the

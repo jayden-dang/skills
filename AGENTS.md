@@ -405,7 +405,7 @@ Can't tick a box? The work is not done.
 | **discovery** (10) | `frame-change` (m), `clarify-decisions` (m), `solve-problem` (m), `research` (m), `run-spike` (m), `define-domain` (m), `pathfind` (U), `interpret-session` (U), `deepen-codebase` (U), `work-the-problem` (U) |
 | **spec** (3) | `specify-behavior` (m), `design-solution` (m), `plan-tasks` (m) |
 | **execution** (12) | `build-in-waves` (m), `build-by-story` (m), `build-inline` (m), `execute-common` (m), `test-first` (m), `root-cause` (m), `debug-remote` (m), `assess-observability` (m), `prove-claim` (m), `audit-trace` (m), `load-subgraph` (m), `isolate-workspace` (m) |
-| **review** (8) | `inspect-change` (m), `polish-diff` (m), `vet-feedback` (m), `review-invariants` (m), `study-change` (U), `teach-build` (U), `brief-team` (U), `select-review-sample` (U) |
+| **review** (9) | `inspect-change` (m), `polish-diff` (m), `vet-feedback` (m), `review-invariants` (m), `review-ui` (m), `study-change` (U), `teach-build` (U), `brief-team` (U), `select-review-sample` (U) |
 | **acceptance** (6) | `validate-feature` (m), `validate-api` (m), `validate-ui` (m), `review-product-flow` (m), `vet-product-flow` (m), `run-product-walkthrough` (m) |
 | **craft** (1) | `craft-page` (m) |
 | **ship** (3) | `land-branch` (m), `record-verdict` (m), `cut-release` (U) |

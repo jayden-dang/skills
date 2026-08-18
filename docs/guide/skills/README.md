@@ -85,6 +85,7 @@ The triad. Each file approved before the next is written.
 | [`polish-diff`](polish-diff.md) | model | Behavior-preserving quality pass over a diff before merge |
 | [`vet-feedback`](vet-feedback.md) | model | Anti-sycophancy. Prove Claim every claim before implementing or replying |
 | [`review-invariants`](review-invariants.md) | model | Advisory, LLM-judged invariant conformance — the semantic counterpart to `audit-trace` |
+| [`review-ui`](review-ui.md) | model | Live, screenshot-backed design review of UI-touching diffs — three viewports, states, contrast, token conformance |
 
 ## acceptance
 

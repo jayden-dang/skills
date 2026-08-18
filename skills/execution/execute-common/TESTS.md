@@ -85,3 +85,11 @@ Compliant = **A** (`sample: required`, do not name here).
 | same | grok-4.5 | **A** |
 
 Meta: mid-close name is a second ping; land is the station.
+
+## Product-walk predicate v1.4.0 (2026-08-18)
+
+Two clauses added, both observable: `review-ui` reported any
+`needs-human-eyes` item; the branch adds a **new** user-facing screen or
+visual surface. Motivated by review-ui RED/GREEN (see
+`skills/review/review-ui/TESTS.md`): the prior predicate let every "UI covered
+by validate-ui" feature skip eyeball review entirely.

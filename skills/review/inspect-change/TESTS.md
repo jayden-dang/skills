@@ -112,3 +112,15 @@ Fix shape / Ticket / Status; no `DEBT-N`; Critical/Important not banked.
 
 Meta (4.5): user urgency and "don't invent a format" are non-skips.
 
+
+## UI lane (v1.3.0, 2026-08-18, sonnet)
+
+RED: inline-fallback review of a UI-touching branch with four planted visual
+defects (11/11 unit tests green). The static read caught three at sensible
+severities but banked the 375px overflow as Minor ("no responsive requirement
+in scope"), settled the `.active`×`.overdue-hot` cascade only as "fragile"
+(hypothesis, no verdict), and produced zero screenshots. GREEN: step 3d +
+`review-ui` — all four defects at target severity with screenshots/computed
+styles, plus a fifth composed-state defect only rendering could surface;
+`## UI` lane presented beside Standards/Spec; verdict counted it. Full
+evidence: `skills/review/review-ui/TESTS.md`.

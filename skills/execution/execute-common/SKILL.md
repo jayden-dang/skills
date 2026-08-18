@@ -1,6 +1,6 @@
 ---
 name: execute-common
-version: 1.3.0
+version: 1.4.0
 description: Use when build-in-waves, build-by-story, or build-inline loads the shared controller recipe — produces session preflight, ledger check, close sequence, and polish, walk, or sample predicates.
 ---
 
@@ -148,6 +148,10 @@ True when **any** of:
 - `validate-feature` reports neither-API-nor-UI
 - an approved requirement uses visual / feel / eyeball language the
   automated surfaces cannot judge
+- `review-ui`'s report (via `inspect-change`'s UI lane) lists any
+  `needs-human-eyes` item
+- the branch adds a **new** user-facing screen or visual surface — not only
+  changes within existing ones
 
 ## Red flags — never
 

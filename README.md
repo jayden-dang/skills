@@ -201,7 +201,7 @@ and countered by name. See [The gates](docs/guide/concepts/gates.md).
 | discovery | `solve-problem`, `frame-change`, `clarify-decisions`, `research`, `run-spike`, `define-domain`, `interpret-session`, `deepen-codebase`, `work-the-problem`, `pathfind` |
 | spec | `specify-behavior`, `design-solution`, `plan-tasks` |
 | execution | `build-in-waves`, `build-by-story`, `build-inline`, `execute-common`, `test-first`, `root-cause`, `debug-remote`, `assess-observability`, `prove-claim`, `audit-trace`, `load-subgraph`, `isolate-workspace` |
-| review | `inspect-change`, `study-change`, `brief-team`, `select-review-sample`, `polish-diff`, `vet-feedback`, `review-invariants` |
+| review | `inspect-change`, `study-change`, `brief-team`, `select-review-sample`, `polish-diff`, `vet-feedback`, `review-invariants`, `review-ui` |
 | acceptance | `validate-feature`, `validate-api`, `validate-ui`, `review-product-flow`, `vet-product-flow`, `run-product-walkthrough` |
 | craft | `craft-page` |
 | ship | `land-branch`, `record-verdict`, `cut-release` |

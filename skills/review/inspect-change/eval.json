@@ -80,5 +80,17 @@
       "Critical and Important findings are not banked",
       "/record-debt is named for the user"
     ]
+  },
+  {
+    "eval_id": 7,
+    "eval_name": "ui-lane-fires-on-rendered-diff",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § UI lane — RED static-only review left visual claims as inference; GREEN 3d lane produced screenshot-backed UI findings",
+    "prompt": "The reviewed range touches styles.css and a component file alongside logic changes. Run the review and aggregate.",
+    "assertions": [
+      "review-ui runs on the range and its findings appear under a ## UI heading beside ## Standards and ## Spec",
+      "UI findings carry severities that count toward the merge verdict and cite screenshot paths",
+      "a range with no rendered files skips the lane with an explicit note"
+    ]
   }
 ]

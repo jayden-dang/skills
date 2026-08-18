@@ -179,3 +179,11 @@ No new rationalizations in GREEN transcripts; no REFACTOR round needed.
 REQUIRED slot in Report Contract; task-reviewer-prompt.md **Visual check**
 enforcement (missing line on a rendering diff = Important); build-inline
 per-task step 7 pointer to the one home here.
+
+## Fresh-eyes fixes (v1.3.0, 2026-08-18, sonnet reviewer)
+
+Render check: single fixed screenshot name overwrote the shot that showed the
+problem on re-shoot — now `task-[N]-render*.png`, one suffix per
+state/viewport and per fix. Task reviewer: `cannot render: <why>` passed
+unchallenged — now judged against the brief's run command; an unconvincing
+excuse on a rendering diff is an Important finding.

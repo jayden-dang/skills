@@ -92,3 +92,14 @@ docs/design/) is lifted 1:1 into `## UI design` and cited; nothing it locked
 is re-decided. Evidence: draft-ui RED showed the locked direction's type /
 density / states dying in a commit message and being re-decided at design
 time — see `skills/craft/draft-ui/TESTS.md`.
+
+## Fresh-eyes fixes (v1.3.0, 2026-08-18, sonnet reviewer)
+
+Two defects from an independent fresh-context review: (1) the ui-brief "lift
+1:1" claim was false for Decision/Signature/Amendments, which have no
+template home — lift is now scoped to the per-surface slots, with the brief
+cited on Grounding; (2) Step 4's UI coverage was vacuously satisfied when the
+section was wrongly deleted — it now re-evaluates the Step 2b predicate
+against requirements.md, so a UI-delivered Satisfies ID with no section fails
+the check. Template hints amended (ui-brief cite on Grounding; Components
+slot carries the Reuse rung format).

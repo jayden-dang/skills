@@ -53,8 +53,10 @@ Subagent (general-purpose):
     5. **Render check — REQUIRED when your diff touches anything a browser
        renders** (HTML, CSS/styling, JSX/TSX/Vue/Svelte components,
        templates): run the app the brief names, open the changed surface,
-       and capture a screenshot to `.skills/<CODE>/task-[N]-render.png`
-       (browser MCP tool, the repo's e2e harness, or
+       and capture screenshot(s) to `.skills/<CODE>/task-[N]-render*.png` —
+       one suffix per state or viewport, and a new suffix after each fix,
+       never overwriting the shot that showed the problem (browser MCP tool,
+       the repo's e2e harness, or
        `npx playwright screenshot --wait-for-timeout 1000 <url> <path>`).
        Passing tests are not evidence of how it looks — Read the image and
        judge it against the brief and the page's existing visual language:

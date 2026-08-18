@@ -70,7 +70,10 @@ Subagent (general-purpose):
     The report carries a Visual check line. When the diff touches anything
     a browser renders (HTML, CSS/styling, components, templates), that line
     must name a screenshot path — a missing line, or `no render surface`
-    on a diff that plainly renders, is an Important finding. When a
+    on a diff that plainly renders, is an Important finding. A
+    `cannot render: <why>` is a claim like the rest of the report: judge the
+    stated reason against the run command the brief names; an unconvincing
+    excuse on a rendering diff is an Important finding. When a
     screenshot path is given, Read the image and judge the changed surface
     against the brief: broken layout, unreadable text, or styling that
     fights the page's existing visual language are findings like any other.

@@ -54,3 +54,22 @@ neighbor (e2e-with-Playwright → validate-ui; eyeball-guide-for-me →
 review-product-flow; generic "review this branch" and API-only diff →
 inspect-change; distinctive landing page → craft-page; mock-up-variants →
 run-spike; failing tests → root-cause).
+
+## Review-pass fixes (v1.1.0, 2026-08-18)
+
+Author-skills ship-checklist sweep over the shipped set found the description
+promising "dark mode" with no backing step — an observable conditional added
+to step 4 (**Themes**: second theme defined in styles → capture both, flag
+one-sided token redefinitions; none → skip, note once). Cosmetic: stray space
+in the floor-pass grep removed. Companion fixes elsewhere: inspect-change
+inline fallback now names the UI lane and `## UI` heading (1.3.1); run-spike's
+"Rules for both branches" retitled to the logic branch and the stale
+"variant switch" phrase dropped (1.1.1).
+
+## Fresh-eyes fixes (v1.2.0, 2026-08-18, sonnet reviewer)
+
+Independent fresh-context review of the shipped set surfaced: off-token-color
+floor pass had no assigned severity (now Important when a token system
+exists); Step 3's "floors set severity" and Step 4's fixed contrast numbers
+had no precedence rule (now: 4.5:1 / 1.5:1 are defaults, an Approved
+design-tokens.md overrides).

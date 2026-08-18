@@ -1,6 +1,6 @@
 ---
 name: review-ui
-version: 1.0.1
+version: 1.2.0
 description: Use when a diff or branch touching browser-rendered surfaces (HTML,
   CSS/styling, JSX/TSX/Vue/Svelte components, templates) needs its visual and
   interaction quality judged in the real running app before merge — the live
@@ -46,9 +46,10 @@ declared.*
 
 Run before opening the browser, record the output:
 
-- **Off-token color:** `grep -nE '#[0-9a-fA-F]{3,8}\b|rgba?\(' ` over the
-  changed style files. Hits outside the token-definition file(s) are findings
-  when the repo has a token system; no token system → note that instead.
+- **Off-token color:** `grep -nE '#[0-9a-fA-F]{3,8}\b|rgba?\('` over the
+  changed style files. When the repo has a token system, a hit outside the
+  token-definition file(s) is an Important finding; no token system → note
+  that instead.
 - **Suppressed focus:** `grep -nE 'outline: *(none|0)'` over the changed
   styles. A hit with no visible replacement (`:focus-visible` rule, custom
   outline/box-shadow) in the same diff is an Important finding.
@@ -87,8 +88,14 @@ working tree stays untouched.
   exercised; a state the contract names but the screen cannot reach — or
   reaches looking wrong — is a finding. Colors on screen trace to tokens.
 - **Contrast.** For each new text/background pair, compute the WCAG ratio
-  from the actual rendered values: body text below 4.5:1 is Important; below
-  1.5:1 the content is effectively invisible — Critical.
+  from the actual rendered values. Defaults: body text below 4.5:1 is
+  Important; below 1.5:1 the content is effectively invisible — Critical. An
+  Approved `design-tokens.md`'s floors override these defaults.
+- **Themes.** WHEN the app's styles define a second theme
+  (`prefers-color-scheme` media query or a `data-theme` selector) → capture
+  each changed surface in both themes; a token redefined in one theme but not
+  the other, or a new raw value that ignores the theme split, is a finding.
+  No second theme in the styles → skip, note once.
 
 Read every screenshot you capture. *Done when: every changed surface has its
 three viewport shots plus one per exercised state, all read.*

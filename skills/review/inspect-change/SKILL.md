@@ -1,6 +1,6 @@
 ---
 name: inspect-change
-version: 1.3.0
+version: 1.3.1
 description: Use when a branch, PR, diff, or set of changes needs review before merging —
   produces a two-axis verdict (repo-standards conformance plus
   spec/requirements conformance, reported separately) — when build-in-waves
@@ -135,4 +135,4 @@ A slot with no answer gets `Unknown` — never omit the line. "Just list the lef
 
 ## Inline fallback (no subagent capability)
 
-No subagent capability in this harness? Run the two axes yourself, sequentially, in one context: **Standards first** — read `standards-baseline.md`, walk the diff against each of its twelve smells, the Security section, and the Production-readiness section — then **Spec** — walk the requirements ID by ID. Finish and record one axis completely before starting the next, and still present them under separate `## Standards` and `## Spec` headings without reranking one against the other. This loses the context isolation two subagents provide, so the discipline of closing out one axis before opening the next is what keeps them from bleeding together.
+No subagent capability in this harness? Run the two axes yourself, sequentially, in one context: **Standards first** — read `standards-baseline.md`, walk the diff against each of its twelve smells, the Security section, and the Production-readiness section — then **Spec** — walk the requirements ID by ID — then, when step 3d fired, the **UI lane** per `review-ui`. Finish and record one axis completely before starting the next, and still present them under separate `## Standards`, `## Spec` (and `## UI`) headings without reranking one against the other. This loses the context isolation two subagents provide, so the discipline of closing out one axis before opening the next is what keeps them from bleeding together.

@@ -51,3 +51,10 @@ and let me pick", "mock both up for real", "explore design directions",
 right (logic spike → run-spike; distinctive landing page and HTML report →
 craft-page; design-review a branch and mobile breakage → review-ui; brand-new
 feature → frame-change; design.md for approved reqs → design-solution).
+
+## Fresh-eyes fix (v1.0.1, 2026-08-18, sonnet reviewer)
+
+The step-4 "mirror 1:1" claim over-promised: Decision, Signature, and
+Amendments have no design.md home. Wording now scopes the 1:1 lift to the
+per-surface slots; the three brief-only slots stay in the brief, which the
+design cites.

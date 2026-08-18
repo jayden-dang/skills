@@ -1,6 +1,6 @@
 ---
 name: design-solution
-version: 1.2.0
+version: 1.3.0
 description: Use when approved requirements need their technical design — the design.md /
   architecture doc spelling out HOW the requirements get built. After
   specify-behavior, before plan-tasks.
@@ -156,9 +156,11 @@ and invisible focus. This section makes those decisions here, where the user
 reviews them, instead of leaving them to whichever implementer touches the CSS.
 
 WHEN a locked `ui-brief.md` exists for this feature (beside requirements.md,
-or in `docs/design/` for the surface) → lift its slots into `## UI design`
-1:1 and cite the brief; re-decide nothing it locked. Otherwise fill the
-section yourself:
+or in `docs/design/` for the surface) → lift its per-surface slots (Layout /
+Components / States / Type & color / A11y) into `## UI design` 1:1 and cite
+the brief on the `Grounding:` line; its Decision, Signature, and Amendments
+stay in the brief — re-decide nothing it locked. Otherwise fill the section
+yourself:
 
 Fill it against the repo's real visual system: an Approved
 `docs/standards/design-tokens.md` is the palette of record when present;
@@ -198,9 +200,12 @@ that skips a component).
   reference search yourself and confirm the inventory is complete and each row
   carries a disposition. A `compat` row without the follow-up that removes it,
   or a changed external/persisted reader not marked `frozen`, fails this check.
-- **UI coverage:** WHEN `## UI design` exists → every slot per surface is
-  filled, colors are token names not raw hex, and any visible state the
-  requirements make reachable (empty, error, loading) has a `States:` line.
+- **UI coverage:** re-evaluate the Step 2b predicate against requirements.md
+  — a `Satisfies:` ID delivered through a browser-rendered surface with no
+  `## UI design` section fails this check. WHEN the section exists → every
+  slot per surface is filled, colors are token names not raw hex, and any
+  visible state the requirements make reachable (empty, error, loading) has
+  a `States:` line.
 
 **Independent design review — dispatch, don't self-review.** Fresh context has
 no stake in your framing (the bias that reinterprets a stale requirement rather

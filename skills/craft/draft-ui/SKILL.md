@@ -1,6 +1,6 @@
 ---
 name: draft-ui
-version: 1.0.0
+version: 1.0.1
 description: Use when a screen or feature's look and feel needs deciding with
   the user before it is specified or built — "what should this look like",
   "show me a few design directions", "make some variants and let me pick", a
@@ -76,8 +76,10 @@ Then loop:
 ## 4. Lock — write the ui-brief
 
 Write `docs/specs/<date>-<feature>/ui-brief.md` when the feature's spec dir
-exists; else `docs/design/<YYYY-MM-DD>-<slug>-ui-brief.md`. Slots — they
-mirror `design.md`'s `## UI design` so the design lifts them 1:1:
+exists; else `docs/design/<YYYY-MM-DD>-<slug>-ui-brief.md`. The per-surface
+slots mirror `design.md`'s `## UI design` so the design lifts them 1:1;
+Decision, Signature, and Amendments live only in the brief, which the design
+cites:
 
 - **Decision:** winner or hybrid in one line, plus why in the user's words
 - **Grounding:** token source of record

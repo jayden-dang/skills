@@ -1,6 +1,6 @@
 ---
 name: run-spike
-version: 1.1.0
+version: 1.1.1
 description: Use when a design question needs a runnable answer — the user wants to
   run-spike, spike, or mock up a state model or piece of logic to feel out
   whether it holds up, or to see what a screen could look like, before
@@ -20,13 +20,13 @@ Identify the question first — from the request, the surrounding code, or by as
 
 Picking the wrong branch wastes the whole run-spike. If it's genuinely ambiguous and the user is unreachable, choose by proximity (backend module → logic; page or component → UI) and record the assumption at the top of the run-spike.
 
-## Rules for both branches
+## Rules for the logic branch
 
 1. **Throwaway from day one, and marked as such.** Put it near the code it's exploring so context is obvious, but name it so nobody mistakes it for production (`run-spike` in the path or filename). Follow the project's existing conventions — never invent new top-level structure for it.
 2. **One command to run.** Register it with the project's existing task runner (read commands from `docs/agents/project.md` when present). The user starts it without thinking.
 3. **No persistence.** State lives in memory. Persistence is what the run-spike is *testing an idea against*, not something it depends on. If the question is explicitly about storage, use a scratch store with an unmistakable "run-spike — safe to wipe" name.
 4. **Skip the polish.** Write the logic inline, hardcoded, in the fewest lines that answer the question — no tests, and only enough error handling to keep it runnable. Speed of learning is the whole point.
-5. **Surface internal state.** After every action or variant switch, show the full relevant state. Hidden state hides the answer.
+5. **Surface internal state.** After every action, show the full relevant state. Hidden state hides the answer.
 6. **Delete or absorb when done.** Once the question is answered, remove the run-spike or fold the validated piece into real code — REQUIRED SUB-SKILL: use `test-first` when reimplementing it as production code; the run-spike's logic is a reference, not tested code.
 
 ## The answer is the only deliverable

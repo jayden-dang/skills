@@ -51,12 +51,13 @@ section when none is.>
 
 Grounding: <precedence: the user's own words → the project's existing visual
 system → your choices. Name the token / theme / component-style file(s) this
-section draws from, or `none found — inventing; flag for a design-tokens doc`>
+section draws from — or the locked ui-brief.md this section lifts from — or
+`none found — inventing; flag for a design-tokens doc`>
 
 ### <Surface 1>
 
 Layout: <the composition in 1–2 sentences — placement, alignment, spacing rhythm by token>
-Components: <existing classes/components reused or extended vs new — same ladder discipline as Reuse>
+Components: <existing classes/components reused or extended vs new — same ladder discipline and format as Reuse: `rung N — <target>`, or `new (rung 7)` + reason>
 States: <one line per reachable visible state: default, hover/focus, selected/active, empty, loading, error — a state with no line ships as the browser default>
 Type & color: <sizes/faces and color roles by token name — never raw hex>
 A11y: <keyboard path, visible focus, contrast>

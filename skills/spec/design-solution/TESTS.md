@@ -84,3 +84,11 @@ No new rationalizations; no REFACTOR round needed.
 **Ship:** `templates/design.md` `## UI design` section (Grounding + five slots
 per surface); SKILL.md Step 2b observable conditional + Step 4 UI coverage
 line + todo list includes 2b.
+
+## ui-brief lift (v1.2.0, 2026-08-18)
+
+Step 2b gains the lift conditional: a locked `ui-brief.md` (spec dir or
+docs/design/) is lifted 1:1 into `## UI design` and cited; nothing it locked
+is re-decided. Evidence: draft-ui RED showed the locked direction's type /
+density / states dying in a commit message and being re-decided at design
+time — see `skills/craft/draft-ui/TESTS.md`.

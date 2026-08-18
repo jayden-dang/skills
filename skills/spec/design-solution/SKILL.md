@@ -1,6 +1,6 @@
 ---
 name: design-solution
-version: 1.1.1
+version: 1.2.0
 description: Use when approved requirements need their technical design — the design.md /
   architecture doc spelling out HOW the requirements get built. After
   specify-behavior, before plan-tasks.
@@ -154,6 +154,11 @@ Interfaces and data flow do not design a surface: a module can satisfy every
 requirement and still ship browser-default buttons, an undesigned empty state,
 and invisible focus. This section makes those decisions here, where the user
 reviews them, instead of leaving them to whichever implementer touches the CSS.
+
+WHEN a locked `ui-brief.md` exists for this feature (beside requirements.md,
+or in `docs/design/` for the surface) → lift its slots into `## UI design`
+1:1 and cite the brief; re-decide nothing it locked. Otherwise fill the
+section yourself:
 
 Fill it against the repo's real visual system: an Approved
 `docs/standards/design-tokens.md` is the palette of record when present;

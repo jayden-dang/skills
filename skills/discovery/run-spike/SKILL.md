@@ -1,6 +1,6 @@
 ---
 name: run-spike
-version: 1.0.0
+version: 1.1.0
 description: Use when a design question needs a runnable answer — the user wants to
   run-spike, spike, or mock up a state model or piece of logic to feel out
   whether it holds up, or to see what a screen could look like, before
@@ -16,7 +16,7 @@ A run-spike is throwaway code whose only job is to answer one design question. T
 Identify the question first — from the request, the surrounding code, or by asking:
 
 - **"Does this logic / state model hold up?"** → [LOGIC.md](LOGIC.md): an interactive terminal app over a pure logic module the user can drive by hand.
-- **"What should this look like?"** → [UI.md](UI.md): several structurally different variants of one screen, switchable in the browser.
+- **"What should this look like?"** → REQUIRED SUB-SKILL: use `draft-ui` — the UI branch is that skill now: divergent real-HTML variants behind a switcher, a review loop, and a locked ui-brief. [UI.md](UI.md) is a pointer.
 
 Picking the wrong branch wastes the whole run-spike. If it's genuinely ambiguous and the user is unreachable, choose by proximity (backend module → logic; page or component → UI) and record the assumption at the top of the run-spike.
 

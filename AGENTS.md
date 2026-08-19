@@ -322,7 +322,7 @@ skills/
 templates/          # seeds the skills write into a consuming repo, + personal-os/
   agents/           # project.md, issue-tracker.md, triage-labels.md templates
 hooks/              # hooks.json + session-start.sh (the gate-session injector)
-scripts/            # the four lint passes lefthook runs
+scripts/            # the five lint passes lefthook runs
 docs/
   guide/            # the human tutorial and per-skill pages
   design/           # design records, including tested no-ops

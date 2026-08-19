@@ -1,6 +1,6 @@
 ---
 name: define-project
-version: 1.0.0
+version: 1.1.0
 description: Establishes or updates the repo-level documentation layer — docs/product/vision.md,
   docs/architecture/ invariants, and docs/product/guidelines.md. Run it with /establish-
   project.
@@ -26,8 +26,7 @@ Pick the mode from what the user asked; ask if it is unclear.
 - **update** — the layer exists. Revise it against a change signal.
 - **validate** — the layer exists. Check it against a checklist and conformance.
 
-Templates resolve as `${CLAUDE_PLUGIN_ROOT}/templates` when installed as a plugin, else
-`../../../templates` relative to this file. Every heading in each template is a REQUIRED
+Resolve pack seeds in this order, first path that exists: (1) `templates/` beside this SKILL.md, (2) `${CLAUDE_PLUGIN_ROOT}/templates` when that variable is set, (3) `../../../templates` relative to this SKILL.md. Every heading in each template is a REQUIRED
 slot — fill it or write `None`.
 
 ## Create

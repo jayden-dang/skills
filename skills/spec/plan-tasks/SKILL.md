@@ -1,6 +1,6 @@
 ---
 name: plan-tasks
-version: 1.0.0
+version: 1.1.0
 description: Use when a design is approved and the tasks.md implementation plan
   (vertical-slice tasks with requirement footers and behavior tests) needs writing,
   after design-solution and before the execute family (build-in-waves /
@@ -8,8 +8,9 @@ description: Use when a design is approved and the tasks.md implementation plan
 ---
 
 Produce `docs/specs/<YYYY-MM-DD>-<feature>/tasks.md` from the approved requirements
-and design. Start from the skill set's `templates/tasks.md` — resolve `templates/`
-as `${CLAUDE_PLUGIN_ROOT}/templates` when installed as a plugin, otherwise
+and design. Start from the skill set's `templates/tasks.md`. Resolve pack seeds
+in this order, first path that exists: (1) `templates/` beside this SKILL.md,
+(2) `${CLAUDE_PLUGIN_ROOT}/templates` when that variable is set, (3)
 `../../../templates` relative to this SKILL.md. Every slot in a task block
 (**Files**, **Interfaces**, **Depends-on**, **Steps**, `_Requirements:_`) is
 REQUIRED. Do **not** author per-task risk labels, decision-surface flags, or a

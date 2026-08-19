@@ -1,6 +1,6 @@
 ---
 name: life-setup
-version: 1.0.0
+version: 1.1.0
 description: Use when installing Personal OS into a notes vault or remapping folders — produces a vault config mapping layout roles to the user's paths without forced renames.
 disable-model-invocation: true
 ---
@@ -20,7 +20,7 @@ A working **config** file that maps logical roles → this vault's real folders,
 
 ## Templates
 
-From package `templates/personal-os/` (or install path). If missing, create minimal stubs — do not invent a second layout system.
+From package `templates/personal-os/`. Resolve pack seeds in this order, first path that exists: (1) `templates/` beside this SKILL.md, (2) `${CLAUDE_PLUGIN_ROOT}/templates` when that variable is set, (3) `../../../templates` relative to this SKILL.md. If missing, create minimal stubs — do not invent a second layout system.
 
 ## Steps
 

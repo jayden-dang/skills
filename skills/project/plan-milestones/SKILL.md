@@ -1,6 +1,6 @@
 ---
 name: plan-milestones
-version: 1.0.0
+version: 1.1.0
 description: Use when a project's milestones need planning, sequencing, replanning, or
   ANY edit to an existing roadmap — produces or revises docs/roadmap/INDEX.md, the
   milestone intent registry carrying stable MILE-N and ROAD-N IDs that later
@@ -51,8 +51,7 @@ tracks how far the work has got.
 - **create** — no `docs/roadmap/INDEX.md`. Author it.
 - **update** — it exists. Revise it against a change signal.
 
-Templates resolve as `${CLAUDE_PLUGIN_ROOT}/templates` when installed as a plugin, else
-`../../../templates` relative to this file. Every heading in `templates/roadmap-INDEX.md`
+Resolve pack seeds in this order, first path that exists: (1) `templates/` beside this SKILL.md, (2) `${CLAUDE_PLUGIN_ROOT}/templates` when that variable is set, (3) `../../../templates` relative to this SKILL.md. Every heading in `templates/roadmap-INDEX.md`
 is a REQUIRED slot — fill it or write `None`. Its comment block carries the authoritative
 structural rules **S1–S7** and the ID rules; read them there rather than restating them.
 

@@ -1,6 +1,6 @@
 ---
 name: refresh-roadmap-status
-version: 1.0.0
+version: 1.1.0
 description: Reports where a multi-milestone plan actually stands and what to do next,
   derived fresh from the roadmap, the specs, and git — never from a stored status
   file. Run it with /refresh-roadmap-status.
@@ -25,10 +25,10 @@ roadmap.
 
 The finding codes `R1`–`R11`, their conditions, and the **withholding set**
 `{R2, R4, R9, R10, R11}` are defined in `templates/roadmap-findings.md`. That file is
-authoritative — read the codes there, do not restate them. Resolve `templates/` as
-`${CLAUDE_PLUGIN_ROOT}/templates` when installed as a plugin, otherwise `../../../templates`
-relative to this SKILL.md. `assess-milestone` reads the same file, which is why it lives
-outside this skill.
+authoritative — read the codes there, do not restate them. Resolve pack seeds in this
+order, first path that exists: (1) `templates/` beside this SKILL.md, (2)
+`${CLAUDE_PLUGIN_ROOT}/templates` when that variable is set, (3)
+`../../../templates` relative to this SKILL.md. `assess-milestone` reads the same file.
 
 A **withholding** finding replaces the next action with the reason.
 

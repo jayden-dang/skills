@@ -1,6 +1,6 @@
 ---
 name: record-debt
-version: 1.1.0
+version: 1.2.0
 description: Banks findings that were judged real and deliberately left unfixed into the
   durable debt ledger at docs/quality/debt.md. Run it with /record-debt.
 disable-model-invocation: true
@@ -78,9 +78,8 @@ Every entry fills every slot. A slot with no answer gets `Unknown` — never omi
 
 ## The file
 
-`docs/quality/debt.md`. Create it from `templates/quality-debt.md` if absent — resolve
-`templates/` as `${CLAUDE_PLUGIN_ROOT}/templates` when installed as a plugin, else
-`../../../templates` relative to this file.
+`docs/quality/debt.md`. Create it from `templates/quality-debt.md` if absent.
+Resolve pack seeds in this order, first path that exists: (1) `templates/` beside this SKILL.md, (2) `${CLAUDE_PLUGIN_ROOT}/templates` when that variable is set, (3) `../../../templates` relative to this SKILL.md.
 
 IDs follow the pack's ID grammar, the same rules `ARCH-N` and `GOAL-N` obey:
 

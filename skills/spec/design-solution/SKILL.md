@@ -1,15 +1,13 @@
 ---
 name: design-solution
-version: 1.3.0
+version: 1.4.0
 description: Use when approved requirements need their technical design — the design.md /
   architecture doc spelling out HOW the requirements get built. After
   specify-behavior, before plan-tasks.
 ---
 
 Produce `docs/specs/<YYYY-MM-DD>-<feature>/design.md`: HOW the approved requirements
-get satisfied. Start from the skill set's `templates/design.md` — resolve
-`templates/` as `${CLAUDE_PLUGIN_ROOT}/templates` when installed as a plugin,
-otherwise `../../../templates` relative to this SKILL.md. Every heading in it is a
+get satisfied. Start from the skill set's `templates/design.md`. Resolve pack seeds in this order, first path that exists: (1) `templates/` beside this SKILL.md, (2) `${CLAUDE_PLUGIN_ROOT}/templates` when that variable is set, (3) `../../../templates` relative to this SKILL.md. Every heading in it is a
 REQUIRED slot. The requirements file is your input contract — read it fully first.
 
 Create a todo per step (1, 2, 2b, 3, 4) before starting, and complete them in order — this skill owns its own list, distinct from `specify-behavior`' upstream and `plan-tasks`'s downstream. Check each off only when its **Done when:** is met.

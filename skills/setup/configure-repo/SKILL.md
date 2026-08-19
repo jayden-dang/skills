@@ -1,6 +1,6 @@
 ---
 name: configure-repo
-version: 1.1.1
+version: 1.2.0
 description: Configures an existing repo for this skill set — a docs/agents/ layer covering prove-claim
   commands, tracker and labels, release steps, team and ownership. Run it with /setup-
   repo.
@@ -13,7 +13,7 @@ Configure a repository, once, so every other skill can read its answers instead 
 
 This is a conversation, not a script: explore, present what you found, decide one thing at a time with the user, then write.
 
-Template seeds live in this skill set's `templates/` directory — resolve it as `${CLAUDE_PLUGIN_ROOT}/templates` when installed as a plugin, otherwise `../../../templates` relative to this SKILL.md.
+Template seeds live in this skill set's `templates/` directory. Resolve pack seeds in this order, first path that exists: (1) `templates/` beside this SKILL.md, (2) `${CLAUDE_PLUGIN_ROOT}/templates` when that variable is set, (3) `../../../templates` relative to this SKILL.md.
 
 ## Track progress
 

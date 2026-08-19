@@ -1,6 +1,6 @@
 ---
 name: assess-milestone
-version: 1.0.0
+version: 1.1.0
 description: Produces a verdict on whether a milestone delivered what it promised, read fresh from
   the specs, the tests, and git. Run it with /assess-milestone.
 disable-model-invocation: true
@@ -114,9 +114,10 @@ Record the revision, and beside it `working tree: clean` or `modified`. A modifi
 revision, and decides what that is worth.
 
 **7. Structural preconditions.** Evaluate the **withholding set** `{R2, R4, R9, R10, R11}`
-from `templates/roadmap-findings.md` — resolve `templates/` as
-`${CLAUDE_PLUGIN_ROOT}/templates` when installed as a plugin, otherwise `../../../templates`
-relative to this SKILL.md. Read the rules there; do not restate them.
+from `templates/roadmap-findings.md`. Resolve pack seeds in this order, first path
+that exists: (1) `templates/` beside this SKILL.md, (2)
+`${CLAUDE_PLUGIN_ROOT}/templates` when that variable is set, (3)
+`../../../templates` relative to this SKILL.md. Read the rules there; do not restate them.
 
 Then filter to the findings **relevant to this milestone**: one naming that `MILE-N`, one of
 its members, or a goal it cites. Any relevant withholding finding → report it and withhold

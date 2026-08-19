@@ -1,13 +1,13 @@
 ---
 name: build-by-story
-version: 1.1.2
+version: 1.2.0
 description: Use when an approved tasks.md has Execution-mode story-unit and
   needs human-gated review-unit execution — derived units, unit barriers,
   mode-change write-back, resume via unit ledger lines — through whole-branch
   review.
 ---
 
-Ephemera paths: resolve `FEATURE_CODE` / `<CODE>` then follow `templates/skills-ephemera-paths.md` (feature root `.skills/<CODE>/`).
+Ephemera paths: resolve `FEATURE_CODE` / `<CODE>` then follow `templates/skills-ephemera-paths.md` (feature root `.skills/<CODE>/`). Resolve pack seeds in this order, first path that exists: (1) `templates/` beside this SKILL.md, (2) `${CLAUDE_PLUGIN_ROOT}/templates` when that variable is set, (3) `../../../templates` relative to this SKILL.md.
 
 
 # Build By Story

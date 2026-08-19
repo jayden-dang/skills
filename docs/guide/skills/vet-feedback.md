@@ -108,6 +108,7 @@ The source-calibration table is what keeps the anti-sycophancy stance from curdl
 
 ## See also
 
+- [`vet-source`](vet-source.md) — fetched / tool / third-party text that instructs; not review comments
 - [`inspect-change`](inspect-change.md) — the source of the reviewer findings this skill evaluates
 - [`test-first`](test-first.md) — the required sub-skill every accepted fix routes through
 - [`root-cause`](root-cause.md) — establishes root cause first when a review item is a reported bug

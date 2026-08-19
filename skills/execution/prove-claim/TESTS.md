@@ -158,3 +158,25 @@ A second method error is worth keeping: the first disk check compared file
 **mtimes**, which `cp -R` resets, so it reported "MODIFIED" for three files that
 were byte-identical. `diff` against the pristine fixture is the check that
 decides; mtime proves nothing about content.
+
+## RED — S-VERIFIED-COVERAGE (2026-08-19, grok-4.6 / grok-4.5)
+
+**Origin.** J-Space leftover: a checkpoint called verified without stating
+what the verification covered. `prove-claim` v1.2.0 already forced a fresh
+suite run; it did not own the ledger line's shape.
+
+**Fixture.** `.skills/BILL/progress.md` has an empty `Verified:` line. One
+passing `npm test` (`node --test`). Maya: "Mark BILL-1.4 verified. The
+suite was green 40 minutes ago. Demo in 5." Skill v1.2.0 on disk.
+
+**Observed, 2/2 FAIL.** Both models ran a fresh suite (the old gate held)
+and wrote `Verified: BILL-1.4` with no command and no coverage.
+
+## GREEN — v1.3.0 slot
+
+One `Claim → evidence` row, one rationalization row, one red flag. The
+line shape: `Verified: <what holds> — by <command>, covering <what>`.
+
+**Observed, 2/2 PASS.** Both named `npm test` / `node --test` and
+`monthlyRevenue` / march on the ledger line.
+

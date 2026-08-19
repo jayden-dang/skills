@@ -50,8 +50,8 @@ You can see the rule being obeyed in the wild. `root-cause` hands architectural 
 | discovery | `frame-change`, `clarify-decisions`, `research`, `run-spike`, `define-domain` | model |
 | | `pathfind`, `interpret-session` | user |
 | spec | `specify-behavior`, `design-solution`, `plan-tasks` | model |
-| execution | `build-in-waves`, `build-by-story`, `build-inline`, `execute-common`, `test-first`, `root-cause`, `prove-claim`, `audit-trace`, `load-subgraph`, `isolate-workspace` | model |
-| review | `inspect-change`, `polish-diff`, `vet-feedback`, `review-invariants` | model |
+| execution | `build-in-waves`, `build-by-story`, `build-inline`, `execute-common`, `test-first`, `root-cause`, `prove-claim`, `audit-trace`, `load-subgraph`, `isolate-workspace`, `hold-stage` | model |
+| review | `inspect-change`, `polish-diff`, `vet-feedback`, `vet-source`, `speak-outer`, `review-invariants` | model |
 | | `study-change`, `brief-team`, `select-review-sample` | user |
 | acceptance | `validate-feature`, `validate-api`, `validate-ui`, `review-product-flow`, `vet-product-flow`, `run-product-walkthrough` | model |
 | craft | `craft-page` | model |
@@ -79,12 +79,12 @@ engineering skills (2026-08-16):
 
 The third row is the one worth reading carefully, because "no caller" looks like
 an orphan and mostly is not. `gate-session` is injected by the SessionStart hook,
-not called. `solve-problem`, `amend-feature`, `vet-feedback`, and
+not called. `solve-problem`, `amend-feature`, `vet-feedback`, `vet-source`, `speak-outer`, `hold-stage`, and
 `run-product-walkthrough` are **entry points**: they fire on what the user
 says (walkthrough is only *named* by `review-product-flow`). `review-product-flow`
 is a REQUIRED alternative of `prove-claim` and of the execute-family close
 sequence when a walk predicate holds. An entry point that undertriggers is
-invisible — it does not fail, it simply never appears — so those five carry
+invisible — it does not fail, it simply never appears — so those eight carry
 the highest trigger-testing burden in the set.
 
 The census also surfaced its own gaps — `polish-diff`, `record-verdict`,

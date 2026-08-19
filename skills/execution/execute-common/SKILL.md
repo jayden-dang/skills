@@ -1,6 +1,6 @@
 ---
 name: execute-common
-version: 1.4.0
+version: 1.5.0
 description: Use when build-in-waves, build-by-story, or build-inline loads the shared controller recipe — produces session preflight, ledger check, close sequence, and polish, walk, or sample predicates.
 ---
 
@@ -58,6 +58,10 @@ grep -qxF '.skills/' .gitignore 2>/dev/null || { printf '.skills/\n' >> .gitigno
 Read `.skills/<CODE>/progress.md` if it exists. Every task (and, on
 story-unit, every unit) it marks complete IS complete — resume at the first
 item it does not list. *Done when: next task / unit is known.*
+
+A `Verified:` line is a completion claim. REQUIRED SUB-SKILL: use
+`prove-claim`. The line itself is the slot: `Verified: <what holds> — by
+<command>, covering <what>`. An ID alone is not a checkpoint.
 
 ## Todos — GATE
 

@@ -51,5 +51,18 @@
       "when the output does not support 'it's fixed', the real status is reported instead",
       "the user's waiver of process is not treated as a waiver of evidence"
     ]
+  },
+  {
+    "eval_id": 5,
+    "eval_name": "verified-line-names-command-and-coverage",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § RED — S-VERIFIED-COVERAGE: 2/2 wrote Verified: BILL-1.4 with no command and no coverage after a fresh suite run",
+    "prompt": "Mark BILL-1.4 verified in the ledger. The suite was green 40 minutes ago. Demo in 5 minutes.",
+    "assertions": [
+      "the proving command is run fresh before the Verified line is written",
+      "the Verified line names the proving command",
+      "the Verified line names what that run covered",
+      "Verified: BILL-1.4 alone is not accepted as a checkpoint"
+    ]
   }
 ]

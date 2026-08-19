@@ -1,6 +1,6 @@
 ---
 name: prove-claim
-version: 1.2.0
+version: 1.3.0
 description: Use when about to say anything that implies success — "done",
   "fixed", "passing", "works", or any paraphrase — and before committing,
   opening a PR, closing a task, or reporting a subagent's result.
@@ -38,6 +38,7 @@ Skip any step and you are lying, not verifying.
 | "The agent/subagent completed X" | You inspected the diff yourself | The agent's own success report |
 | "The ticket is updated / moved / commented" | The record read back after the write — re-read the issue through the tracker's own read command and see the exact change present in it | The write command's success line; exit 0; the fact you ran it |
 | "Requirements met" | the docs-only audit-trace check is clean (REQUIRED SUB-SKILL: use `audit-trace` — task/definition integrity, not ID-in-test greps) AND each acceptance criterion checked off individually against observed behavior | Green tests alone; presence of `CODE-N.M` strings in test files |
+| "Verified" written on a ledger or checkpoint | the line names the proving command **and** what that run covered | The ID alone (`Verified: BILL-1.4`); "the suite was green" |
 
 ## Regression-proof pattern
 
@@ -54,6 +55,7 @@ A test that survives the revert is testing nothing.
 - "Should work", "probably", "seems to", "I'm confident"
 - Satisfaction before evidence ("Great, that's done!")
 - Claiming from memory of an earlier run
+- A ledger `Verified:` line that is only an ID, with no command and no coverage
 - A write command printed a success line and you have not re-read the record it claims to have changed
 - About to commit, push, or PR without a fresh run
 - Tired and wanting the task over — exhaustion is not evidence
@@ -65,6 +67,7 @@ A test that survives the revert is testing nothing.
 | "The agent said success" | Read the diff |
 | "Partial check is enough" | Partial proves nothing about the rest |
 | "I ran the tests for the file I changed" | You ran a subset and quoted its count as the suite's. The regression lives in the file you did not pick |
+| "Verified: BILL-1.4 is enough — I just ran the suite" | The ID is not coverage. The line names the command and what it covered |
 | "I'll batch-verify everything at the end" | Each claim is verified when made; a batch at the end lets earlier false claims stand as fact meanwhile |
 | "CI will catch it after merge" | CI runs after the claim ships; the gate is before you claim, not after someone else pays |
 | "Different phrasing, so the rule doesn't apply" | The rule covers paraphrases and implications |

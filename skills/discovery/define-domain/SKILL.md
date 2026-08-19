@@ -1,6 +1,6 @@
 ---
 name: define-domain
-version: 1.1.0
+version: 1.2.0
 description: >
   Use when a domain term needs defining, a glossary term is being used
   inconsistently or fuzzily, a hard-to-reverse decision needs an ADR, or
@@ -28,7 +28,7 @@ Actively build and sharpen the project's glossary while designing. Merely *readi
 
 ## Updating CONTEXT.md
 
-Update `CONTEXT.md` **inline, the instant a term is settled** — never batch glossary edits for later; batched terms get forgotten. If no `CONTEXT.md` exists yet, create it lazily when the first term settles (seed from the skill set's `templates/CONTEXT.md` — `${CLAUDE_PLUGIN_ROOT}/templates` when installed as a plugin, otherwise `../../../templates` relative to this SKILL.md).
+Update `CONTEXT.md` **inline, the instant a term is settled** — never batch glossary edits for later; batched terms get forgotten. If no `CONTEXT.md` exists yet, create it lazily when the first term settles (seed from the skill set's `templates/CONTEXT.md`. Resolve pack seeds in this order, first path that exists: (1) `templates/` beside this SKILL.md, (2) `${CLAUDE_PLUGIN_ROOT}/templates` when that variable is set, (3) `../../../templates` relative to this SKILL.md).
 
 `CONTEXT.md` holds exactly one kind of entry: a term definition. Decisions go to ADRs; implementation detail and spec fragments go to the specs. Term format:
 

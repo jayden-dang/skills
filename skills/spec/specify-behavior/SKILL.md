@@ -1,6 +1,6 @@
 ---
 name: specify-behavior
-version: 1.0.0
+version: 1.1.0
 description: Use when discovery is complete and a tier-1 or tier-2 change needs its
   requirements written — the user stories and EARS acceptance criteria in
   requirements.md that every later task, test, and commit cites by ID. After
@@ -31,8 +31,9 @@ and the whole-file review** — a new feature code, an Out-of-Scope section, and
 full-file self-review are for a new feature, not a two-line mini-spec.
 
 **New feature** — tier 2, or anything nothing has spec'd yet. Start from the skill
-set's `templates/requirements.md` — resolve `templates/` as
-`${CLAUDE_PLUGIN_ROOT}/templates` when installed as a plugin, otherwise
+set's `templates/requirements.md`. Resolve pack seeds in this order, first
+path that exists: (1) `templates/` beside this SKILL.md, (2)
+`${CLAUDE_PLUGIN_ROOT}/templates` when that variable is set, (3)
 `../../../templates` relative to this SKILL.md. Every heading in that template is a
 REQUIRED slot: fill it, or write `None` under it — never drop one. Then run the full
 sequence below. Create a todo per step.

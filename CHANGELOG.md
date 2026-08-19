@@ -2,6 +2,22 @@
 
 ## Unreleased
 
+### Packaging: consumer-local seed copies (SEED)
+
+`npx skills add` copies only each skill folder, so repo-root `templates/` never
+reached a flatten install (`~/.agents/skills/configure-repo` → missing seeds).
+Root `templates/` stays the authoring SSOT. Every consumer skill now carries a
+byte-identical copy under its own `templates/`. Resolve order: sibling
+`templates/` beside SKILL.md, then `${CLAUDE_PLUGIN_ROOT}/templates`, then
+`../../../templates`. `scripts/lint-skill-templates.py` fails on a missing or
+drifted copy (`--write` refreshes from SSOT). Engineer Pack and Personal Pack
+(`life-setup` / `templates/personal-os/`) in the same change. No `pack-templates`
+skill.
+
+- RED: lint 43 missing copies including `configure-repo/templates/agents/project.md`
+- GREEN: copies + sibling-first resolve in 15 consumer SKILL.md files; lint 0
+- Spec: `docs/specs/fixes.md` SEED-1.1–1.3, guards SEED-2.1–2.8
+
 ### Wire `hold-stage` / `speak-outer` into callers (2026-08-19)
 
 - `inspect-change` v1.4.0: step 3e REQUIRED SUB-SKILL `hold-stage`; Spec

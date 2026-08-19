@@ -273,7 +273,7 @@ Editing skills here? Run this once after cloning:
 lefthook install
 ```
 
-It wires `pre-commit` / `pre-push` hooks running four checks (needs `lefthook`
+It wires `pre-commit` / `pre-push` hooks running five checks (needs `lefthook`
 and PyYAML). This tooling is for *this* repo only; a repo that *consumes* the
 skill set still installs nothing.
 
@@ -283,6 +283,7 @@ skill set still installs nothing.
 | `lint-skill-evals.py` | An `eval.json` that isn't grounded — assertions with no `TESTS.md` beside them are guesses about what agents get wrong, not recorded failures |
 | `lint-write-handoffs.py` | A dead-end hand-off: a body telling the agent to invoke a `disable-model-invocation` skill, which it cannot do |
 | `lint-context7.py` | A library-reasoning skill silently losing its Context7 reference |
+| `lint-skill-templates.py` | A pack seed cited by a `SKILL.md` with no sibling copy, or a copy that drifted from repo-root `templates/` — `npx skills add` only copies the skill folder |
 
 ### Skill versions and test material
 

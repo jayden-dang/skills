@@ -176,6 +176,12 @@ For a non-deterministic bug, do not chase a clean repro. Raise the reproduction 
 
 ## Setup problems
 
+### `/configure-repo` reports missing templates
+
+The pack seeds live in repo-root `templates/` (authoring SSOT) **and** as copies inside each consumer skill folder. `npx skills add` only copies the skill folder — an install from before this packaging fix has the empty `~/.agents/templates` stub and no sibling `templates/` next to `configure-repo`.
+
+Upgrade: `npx skills@latest update -g` (or re-add the pack). Then `configure-repo` resolves `templates/` beside its `SKILL.md` first. Do not symlink `~/.agents/templates` as the only fix — that path is not the one the skill text names first.
+
 ### A verify command works in my shell but fails in `test-first`
 
 `docs/agents/project.md` records commands that were *pre-filled from detection* and may never have been run. Re-run `/configure-repo` and pay attention to step 6, which classifies each command as a wiring failure, a content failure, or a pass. Setup is not done while any command is mis-wired.

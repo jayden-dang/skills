@@ -1,8 +1,8 @@
 # Templates
 
-Seed files the skills copy into a consuming repo. They live in [`templates/`](../../../templates/) at the repo root.
+Seed files the skills copy into a consuming repo. They live in [`templates/`](../../../templates/) at the repo root — that tree is the **authoring SSOT**. Each skill that reads a seed also carries a byte-identical copy under its own `templates/` so `npx skills add` (which copies only the skill folder) still has the file after flatten.
 
-When the skill set is installed as a plugin, skills resolve the directory as `${CLAUDE_PLUGIN_ROOT}/templates`; otherwise as a path relative to the SKILL.md.
+Resolve order, first path that exists: (1) `templates/` beside this SKILL.md, (2) `${CLAUDE_PLUGIN_ROOT}/templates` when that variable is set, (3) `../../../templates` relative to the SKILL.md. `scripts/lint-skill-templates.py` fails if a cite has no copy or the copy drifted from SSOT; `python3 scripts/lint-skill-templates.py --write` refreshes the copies.
 
 ## The spec triad
 

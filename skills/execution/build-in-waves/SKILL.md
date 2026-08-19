@@ -1,12 +1,12 @@
 ---
 name: build-in-waves
-version: 1.3.0
+version: 1.4.0
 description: Use when an approved tasks.md has Execution-mode continuous and needs
   subagent task-wave execution — dual-verdict review, parallel waves, resume after
   crash/compaction — through whole-branch review and land-branch.
 ---
 
-Ephemera paths: resolve `FEATURE_CODE` / `<CODE>` then follow `templates/skills-ephemera-paths.md` (feature root `.skills/<CODE>/`).
+Ephemera paths: resolve `FEATURE_CODE` / `<CODE>` then follow `templates/skills-ephemera-paths.md` (feature root `.skills/<CODE>/`). Resolve pack seeds in this order, first path that exists: (1) `templates/` beside this SKILL.md, (2) `${CLAUDE_PLUGIN_ROOT}/templates` when that variable is set, (3) `../../../templates` relative to this SKILL.md.
 
 
 # Build In Waves

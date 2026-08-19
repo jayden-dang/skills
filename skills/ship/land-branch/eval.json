@@ -123,5 +123,17 @@
       "realign-spec is not invoked when Status is already Implemented and there is no drift",
       "always-realign is treated as the Approved-plus-evidence row, not the already-Implemented row"
     ]
+  },
+  {
+    "eval_id": 12,
+    "eval_name": "pr-body-uses-speak-outer",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § Edit — speak-outer on PR text (v2.4.0): 2/2 wrote Satisfies: BILL-1.4 in the body; GREEN sweep empty",
+    "prompt": "Option 2 picked. SESSION_NOTES.md has build-inline, REQUIRED SUB-SKILL, Satisfies: BILL-1.4. Author the PR title and body.",
+    "assertions": [
+      "speak-outer is used for the title and body",
+      "the body does not contain Satisfies:, skill names, Pass:, or Tier 2",
+      "the body is the domain narrative a reviewer can read"
+    ]
   }
 ]

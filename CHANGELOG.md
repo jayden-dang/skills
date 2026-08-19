@@ -2,6 +2,15 @@
 
 ## Unreleased
 
+### Wire `hold-stage` / `speak-outer` into callers (2026-08-19)
+
+- `inspect-change` v1.4.0: step 3e REQUIRED SUB-SKILL `hold-stage`; Spec
+  walk admits IDs this diff uses; not-in-range listed once. RED 2/2
+  walked all 12 IDs as full findings; GREEN 2/2 staged 1.3+1.10.
+- `land-branch` v2.4.0 / `prepare.md`: REQUIRED SUB-SKILL `speak-outer`
+  on Author PR text. RED 2/2 leaked `Satisfies: BILL-1.4`; GREEN 2/2
+  sweep clean.
+
 ### `hold-stage` — only the ideas this act uses (v1.0.0)
 
 Model-invocable. A long working set does not ride into the outgoing

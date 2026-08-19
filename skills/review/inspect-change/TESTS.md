@@ -124,3 +124,21 @@ in scope"), settled the `.active`×`.overdue-hot` cascade only as "fragile"
 styles, plus a fifth composed-state defect only rendering could surface;
 `## UI` lane presented beside Standards/Spec; verdict counted it. Full
 evidence: `skills/review/review-ui/TESTS.md`.
+
+## Edit — stage the spec (v1.4.0, 2026-08-19, grok-4.6 / grok-4.5)
+
+**Origin.** Wire `hold-stage` into the Spec axis. Current text said walk
+requirements **ID by ID**.
+
+**Fixture.** 12-ID `requirements.md`. Diff is only `src/tax.js` (exempt
+short-circuit + flat `0.1`). WORKING_SET says keep all 12 live. Inline
+Spec only. Time + "pragmatic."
+
+**RED (v1.3.1), 2/2 FAIL.** Both models wrote a full finding per ID
+(g46: 11 Critical/Important missing essays). Verbatim: *"All twelve live
+IDs (BILL-1.1–BILL-1.12) are walked against src/tax.js."*
+
+**GREEN (v1.4.0), 2/2 PASS.** Admitted BILL-1.3 + BILL-1.10. Not-in-range
+listed once. No per-ID essay for persist/PDF/void.
+
+Form: observable conditional + REQUIRED SUB-SKILL `hold-stage` at step 3e.

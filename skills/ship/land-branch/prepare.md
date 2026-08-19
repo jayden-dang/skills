@@ -167,6 +167,10 @@ Author the pull-request **title** and **body** in session from `{ what_changed,
 why }`, the resolved `pr_structure`, and the ticket set. The agent-authored
 bytes **are** the reviewer truth.
 
+REQUIRED SUB-SKILL: use `speak-outer` for that title and body. Reviewers
+are people. `Satisfies:`, skill names, `Pass:` / `Tier 2`, and
+`REQUIRED SUB-SKILL` do not belong in the body.
+
 <HARD-GATE>
 Do not write `.skills/pr-packages/`. Do not compute a `Content-digest:`. Do
 not display the title or body for approve / request-edits / cancel. Do not

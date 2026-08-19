@@ -1,6 +1,6 @@
 ---
 name: land-branch
-version: 2.3.0
+version: 2.4.0
 description: >
   Use when a feature branch is complete and an integration decision is needed
   — merge, open a pull request, push, keep, discard, or block — or when
@@ -193,7 +193,8 @@ suite **on the merged result, before removing any worktree**. Only after
 it passes: clean up the worktree (step 6), then `git branch -d <feature-branch>`.
 
 **Option 2 — push + PR.** After the menu pick, author title and body per
-`prepare.md` **Author PR text**. After a successful record:
+`prepare.md` **Author PR text** (REQUIRED SUB-SKILL: use `speak-outer`).
+After a successful record:
 
 1. `git push -u origin <feature-branch>`.
 2. Write the session title and body to files under the process temp dir

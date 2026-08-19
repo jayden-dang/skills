@@ -9,7 +9,7 @@
 | **Invocation** | model-invocable |
 | **Reads** | `docs/agents/project.md`, `docs/agents/issue-tracker.md`, the base…head diff, worktree state |
 | **Writes** | commits it creates itself; local merges; pushed branches and PRs; deleted branches; isolate-workspace cleanup |
-| **Calls** | [`prove-claim`](prove-claim.md), [`validate-feature`](validate-feature.md) (when user-facing behavior is undriven), [`record-verdict`](record-verdict.md), [`realign-spec`](realign-spec.md) |
+| **Calls** | [`prove-claim`](prove-claim.md), [`validate-feature`](validate-feature.md) (when user-facing behavior is undriven), [`speak-outer`](speak-outer.md) (PR title and body), [`record-verdict`](record-verdict.md), [`realign-spec`](realign-spec.md) |
 | **Called by** | [`execute-common`](execute-common.md) (close sequence) |
 
 `package-change` is retired. This skill authors remaining commits and the PR

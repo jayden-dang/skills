@@ -9,7 +9,7 @@
 | **Reads** | the file under the act; `requirements.md` as a warehouse |
 | **Writes** | the outgoing review or edit, citing only the IDs this act uses |
 | **Calls** | none |
-| **Called by** | description trigger when a working set is larger than the act |
+| **Called by** | description trigger when a working set is larger than the act; [`inspect-change`](inspect-change.md) step 3e before the Spec walk |
 
 ## When it fires
 

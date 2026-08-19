@@ -240,3 +240,17 @@ S1 compliant = **A** (skip realign; no `/cut-release` name). S2 still **A**
 | S2 | grok-4.5 | **A** |
 
 Meta: Status table was clear. No new rationalizations.
+
+## Edit — speak-outer on PR text (v2.4.0, 2026-08-19, grok-4.6 / grok-4.5)
+
+**Origin.** Wire `speak-outer` into `prepare.md` Author PR text.
+
+**Fixture.** SESSION_NOTES.md holds `build-inline`, `REQUIRED SUB-SKILL`,
+`Pass: loop`, `Satisfies: BILL-1.4`, `Core hub`. User picked option 2.
+Follow Author PR text. Time + standup + pragmatic.
+
+**RED (v2.3.0), 2/2 FAIL.** Both bodies ended with `Satisfies: BILL-1.4`.
+
+**GREEN (v2.4.0), 2/2 PASS.** Domain narrative only; sweep list empty.
+
+Form: REQUIRED SUB-SKILL `speak-outer` at Author PR text.

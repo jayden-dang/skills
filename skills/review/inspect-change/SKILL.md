@@ -1,6 +1,6 @@
 ---
 name: inspect-change
-version: 1.3.1
+version: 1.4.0
 description: Use when a branch, PR, diff, or set of changes needs review before merging —
   produces a two-axis verdict (repo-standards conformance plus
   spec/requirements conformance, reported separately) — when build-in-waves
@@ -84,6 +84,15 @@ findings and its `needs-human-eyes` line for step 5. No rendered file in the
 diff → skip, inject nothing. *Done when: you hold the UI findings, or an
 explicit "no rendered surface".*
 
+## 3e. Stage the spec
+
+REQUIRED SUB-SKILL: use `hold-stage` before the Spec dispatch (and before
+the inline Spec walk). Admit the IDs this pinned diff implements or
+violates. Every other ID in the governing spec is **not in this range** —
+still report that list once if the spec promised them; do not write a
+full finding per non-home. *Done when: the Spec brief names the admitted
+set and a one-line not-in-range list (or "all IDs are in range").*
+
 ## 4. Dispatch both subagents in parallel
 
 Send ONE message containing both dispatches so they run concurrently and neither pollutes the other's context. Both are **read-only**: no mutation of the working tree, index, HEAD, or branch state; to inspect another revision, use a temporary worktree (`git worktree add <tmpdir> <sha>`), never move HEAD. Keep each brief under 400 words. Never pre-judge findings in a dispatch — no "do not flag", no pre-rated severities.
@@ -99,7 +108,7 @@ Its report is a fixed shape — four parts, in order, each part complete before 
 
 Parts (c) and (d) are each scoped by their own predicate; a part that does not apply is reported as not applying, never silently dropped. Adding a later part never licenses shortening an earlier one — (b) is walked in full whether or not (c) and (d) fire. Documented breaches may be hard findings; baseline smells, security and production-readiness items are always judgment calls; the repo's documents override the baseline; skip anything tooling enforces.
 
-**Spec subagent** gets: the diff command and commit list; the requirements.md path; the brief — walk the requirements and report (a) IDs that are missing or only partially implemented, (b) behavior in the diff no requirement asked for (scope creep), (c) IDs that look implemented but wrong; quote the requirement ID on every finding; also check that each covered ID has **behavior** covered by tests or acceptance evidence (domain-language tests — do **not** require ID tags in test source). When step 3a found overlapping features, the Spec subagent ALSO receives those neighbor cards (owned paths + Out-of-Scope) as context, and its brief directs it to flag — as a **reuse-miss** finding citing the neighbor's feature code — any place the diff reimplements behavior a shares-surface neighbor already owns.
+**Spec subagent** gets: the diff command and commit list; the requirements.md path; the step-3e admitted set and not-in-range list; the brief — walk **admitted** IDs and report (a) IDs that are missing or only partially implemented, (b) behavior in the diff no requirement asked for (scope creep), (c) IDs that look implemented but wrong; quote the requirement ID on every finding; list not-in-range IDs once (they stay missing-if-promised, not a per-ID essay); also check that each covered admitted ID has **behavior** covered by tests or acceptance evidence (domain-language tests — do **not** require ID tags in test source). When step 3a found overlapping features, the Spec subagent ALSO receives those neighbor cards (owned paths + Out-of-Scope) as context, and its brief directs it to flag — as a **reuse-miss** finding citing the neighbor's feature code — any place the diff reimplements behavior a shares-surface neighbor already owns.
 
 *Done when: both reports are back.*
 
@@ -135,4 +144,4 @@ A slot with no answer gets `Unknown` — never omit the line. "Just list the lef
 
 ## Inline fallback (no subagent capability)
 
-No subagent capability in this harness? Run the two axes yourself, sequentially, in one context: **Standards first** — read `standards-baseline.md`, walk the diff against each of its twelve smells, the Security section, and the Production-readiness section — then **Spec** — walk the requirements ID by ID — then, when step 3d fired, the **UI lane** per `review-ui`. Finish and record one axis completely before starting the next, and still present them under separate `## Standards`, `## Spec` (and `## UI`) headings without reranking one against the other. This loses the context isolation two subagents provide, so the discipline of closing out one axis before opening the next is what keeps them from bleeding together.
+No subagent capability in this harness? Run the two axes yourself, sequentially, in one context: **Standards first** — read `standards-baseline.md`, walk the diff against each of its twelve smells, the Security section, and the Production-readiness section — then **Spec** — hold-stage first, then walk admitted IDs (not-in-range once) — then, when step 3d fired, the **UI lane** per `review-ui`. Finish and record one axis completely before starting the next, and still present them under separate `## Standards`, `## Spec` (and `## UI`) headings without reranking one against the other. This loses the context isolation two subagents provide, so the discipline of closing out one axis before opening the next is what keeps them from bleeding together.

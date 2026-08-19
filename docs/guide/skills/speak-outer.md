@@ -9,7 +9,7 @@
 | **Reads** | the work (goal, next, domain facts) |
 | **Writes** | the person-facing text — a reply, status, standup note, or PR prose |
 | **Calls** | none |
-| **Called by** | description trigger when a human will read the next file |
+| **Called by** | description trigger when a human will read the next file; [`land-branch`](land-branch.md) Author PR text |
 
 ## When it fires
 

@@ -92,5 +92,18 @@
       "UI findings carry severities that count toward the merge verdict and cite screenshot paths",
       "a range with no rendered files skips the lane with an explicit note"
     ]
+  },
+  {
+    "eval_id": 8,
+    "eval_name": "spec-axis-stages-before-id-walk",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § Edit — stage the spec (v1.4.0): 2/2 walked all twelve IDs as full findings; GREEN admitted 1.3+1.10 and listed the rest once",
+    "prompt": "Inspect the Spec axis. requirements.md has BILL-1.1 through BILL-1.12. The diff adds only src/tax.js (exempt short-circuit, flat 0.1). WORKING_SET says keep all 12 live.",
+    "assertions": [
+      "hold-stage runs before the Spec walk",
+      "IDs this diff implements or violates get a full finding",
+      "IDs not in the range are listed once, not as a per-ID essay",
+      "a failing ID on this file is not dropped to keep the stage small"
+    ]
   }
 ]

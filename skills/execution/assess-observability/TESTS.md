@@ -55,3 +55,9 @@ No new rationalizations. Weakest roster model complies.
 Patch only — no behavior change, no GREEN re-run. `/define-system-doc` stays
 in After the set (not the Iron Law). WHEN scoring Must rows, load
 `readiness-bar.md`. Promotion one-home in `readiness-bar.md` § Disposition.
+
+---
+
+**Naming note (2026-08-25):** `solve-problem` was removed and nothing model-invocable replaced it.
+The RED rows above are left unedited as recorded observations; `eval.json`'s live assertion no
+longer names it.

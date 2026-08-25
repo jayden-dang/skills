@@ -60,7 +60,7 @@ See [Ceremony tiers](ceremony-tiers.md).
 ## The main chain
 
 ```
-solve-problem (when gap/workflow unclear) ──► frame-change (+ load-subgraph) ──► specify-behavior ──► …
+frame-change (+ load-subgraph) ──► specify-behavior ──► design-solution ──► plan-tasks ──► …
                                                       (gate: no code)                (EARS + IDs)
        │                                                                                      │
        │ tier 0/1 shortcuts                                                                   ▼

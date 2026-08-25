@@ -47,7 +47,7 @@ NEVER AUTO-INVOKE A USER-INVOKED SKILL — NAME IT FOR THE USER.
 |---|---|
 | `interpret-session` | Fast stance + reply — **theirs** under time pressure. You go deep. |
 | `deepen-codebase` | Pure foundation, no pick — **theirs** when nothing must close. You teach *to close*. |
-| `solve-problem` | Intake router while workflow is fog — hand there first if route is unclear. |
+| `/forge-prompt` | Ask is vague and the user wants one good prompt for a fresh session — name it for them to run. |
 | `frame-change` / `clarify-decisions` | Main ceremony — feed via carry-back; do not run their checklists. |
 | Cheerleader | Other session's rec is one option among several. |
 | Course dump | One foundation cell per beat; the tree still advances. |

@@ -1,6 +1,6 @@
 ---
 name: interpret-session
-version: 1.2.1
+version: 1.3.0
 description: Runs a companion session beside frame-change, clarify-decisions, or any technical
   discussion — in the user's native language or in English as a second-opinion debate partner —
   with an understanding pass, a committed stance, and a reply to carry back. Run it with
@@ -24,6 +24,11 @@ here, decides here, then carries a reply back.
 **Siblings:** `/work-the-problem` for multi-round deep solve + foundation teaching with disk
 artifacts; `/deepen-codebase` for pure learning with no product pick. Prefer **this** skill
 when the need is a time-boxed stance and paste-back (gấp / standup pace).
+
+**Sibling tool:** `/forge-prompt` interviews a vague ask into one prompt block for a *fresh*
+session. When the user hands you such a block to check, read it cold — the block alone, without
+their interview trail — and treat it as any other paste. Name `/forge-prompt` for them to run when
+an ask is too thin to work with; never re-run its interview here.
 
 Two companion shapes (same Iron Law, same stance, different language surface):
 

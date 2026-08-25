@@ -81,3 +81,9 @@ Patch only — no behavior change, no GREEN re-run. Promotion one-home in
 `evidence-pack.md` § Promotion. Pointer names slot Done-when / join codes /
 query shapes; valid/invalid Phase 1 kinds stay in `SKILL.md` (this GREEN).
 `After the pack` is Done-when + `root-cause` hand-off.
+
+---
+
+**Naming note (2026-08-25):** the intake router `solve-problem` was removed. Nothing model-invocable
+replaced it — the user-run `/forge-prompt` forges an ask into a prompt but routes nothing. The
+transcript rows above record what the models chose at the time and are left unedited.

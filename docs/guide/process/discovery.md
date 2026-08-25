@@ -1,16 +1,18 @@
 # Phase 1 — Discovery
 
-**Skills:** [`solve-problem`](../skills/solve-problem.md) · [`frame-change`](../skills/frame-change.md) (+ [`load-subgraph`](../skills/load-subgraph.md)) · [`clarify-decisions`](../skills/clarify-decisions.md) · [`research`](../skills/research.md) · [`run-spike`](../skills/run-spike.md) · [`define-domain`](../skills/define-domain.md) · [`/pathfind`](../skills/pathfind.md) · [`/interpret-session`](../skills/interpret-session.md) · [`/deepen-codebase`](../skills/deepen-codebase.md) · [`/work-the-problem`](../skills/work-the-problem.md)
+**Skills:** [`forge-prompt`](../skills/forge-prompt.md) · [`frame-change`](../skills/frame-change.md) (+ [`load-subgraph`](../skills/load-subgraph.md)) · [`clarify-decisions`](../skills/clarify-decisions.md) · [`research`](../skills/research.md) · [`run-spike`](../skills/run-spike.md) · [`define-domain`](../skills/define-domain.md) · [`/pathfind`](../skills/pathfind.md) · [`/interpret-session`](../skills/interpret-session.md) · [`/deepen-codebase`](../skills/deepen-codebase.md) · [`/work-the-problem`](../skills/work-the-problem.md)
 
-**Produces:** an agreed shape, a stated ceremony tier, an updated glossary, possibly an ADR, and — for tier ≥ 1 — an invocation of `specify-behavior`. From `solve-problem`: a Problem Brief and one route before that chain starts.
+**Produces:** an agreed shape, a stated ceremony tier, an updated glossary, possibly an ADR, and — for tier ≥ 1 — an invocation of `specify-behavior`.
 
 **Produces no code.** This is the gate.
 
-## Before the hard gate — ambiguous intake
+## Before the chain — forging the ask (optional, user-run)
 
-When the request is problem-shaped but the **gap** or **workflow** is still unclear (symptom with green tests, requested solution without demonstrated need, bug vs product unknown), start with [`solve-problem`](../skills/solve-problem.md). It writes one evidence-grounded Problem Brief and routes once to `root-cause`, `frame-change`, `clarify-decisions`, or `STOP`. It is an intake router — not a second delivery pipeline.
+Underspecification does not make an agent stop; it makes it act on the wrong object. When the ask does not name the exact files, objects, or IDs it means, what must not be touched, or what would settle it, the user can run [`/forge-prompt`](../skills/forge-prompt.md) first. It interviews one card at a time, in a language chosen at setup, and hands back **one paste-ready prompt block**.
 
-Clear unexpected behavior → `root-cause` directly. Clear new feature request → `frame-change` directly. Multi-session destination fog → user runs `/pathfind`.
+That block deliberately **names no lane and no next step** — it carries targets, boundaries, evidence, assumptions, open questions, and a done signal, and nothing about what to do with them. The session it is pasted into reads it cold and picks its own entry point. That is what keeps a forged prompt from anchoring the chain on a conclusion nobody tested.
+
+It sits outside this phase rather than in front of it: no skill invokes it, and an ask that already names its targets skips it entirely. Multi-session destination fog → user runs `/pathfind`; unsure which entry point applies at all → `/ask-me-bro`.
 
 ## The hard gate
 

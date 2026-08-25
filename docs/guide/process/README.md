@@ -8,7 +8,7 @@ The skill set is a chain. Each link is a hand-off written into a skill body as a
 gate-session                 session gate, injected on startup/clear/compact
       │
       ▼
-solve-problem (optional)     ambiguous gap/workflow → Problem Brief + one route
+/forge-prompt (optional)    vague ask → one prompt block for a fresh session (names no lane)
       │                      (skip when root-cause / frame-change / amend-feature already clear)
       ▼
 frame-change                   clarify-decisions + define-domain; research/run-spike detours;
@@ -108,7 +108,7 @@ realign-spec                    whenever a spec'd feature changed outside its pl
 | Phase | Skills | Page |
 |---|---|---|
 | Project layer *(optional, above the feature loop)* | `define-project`, `review-invariants` | [`define-project`](../skills/define-project.md) |
-| Discovery | `solve-problem`, `frame-change` (+ `load-subgraph`), `clarify-decisions`, `research`, `run-spike`, `define-domain`, `/pathfind`, `/interpret-session`, `/deepen-codebase`, `/work-the-problem` | [Discovery](discovery.md) |
+| Discovery | `frame-change` (+ `load-subgraph`), `clarify-decisions`, `research`, `run-spike`, `define-domain`, `/pathfind`, `/interpret-session`, `/deepen-codebase`, `/work-the-problem` | [Discovery](discovery.md) |
 | Specification | `specify-behavior`, `design-solution`, `plan-tasks` | [Specification](specification.md) |
 | Execution | `isolate-workspace`, `build-in-waves`, `build-by-story`, `build-inline`, `test-first`, `root-cause`, `prove-claim`, `audit-trace`, `load-subgraph` | [Execution](execution.md) |
 | Review & acceptance | `inspect-change` (+ `load-subgraph`), `polish-diff`, `vet-feedback`, `review-invariants`, `acceptance-*`, `review-product-flow`, `run-product-walkthrough` | [Review and acceptance](review-and-acceptance.md) |

@@ -79,7 +79,7 @@ engineering skills (2026-08-16):
 
 The third row is the one worth reading carefully, because "no caller" looks like
 an orphan and mostly is not. `gate-session` is injected by the SessionStart hook,
-not called. `solve-problem`, `amend-feature`, `vet-feedback`, `vet-source`, `speak-outer`, `hold-stage`, and
+not called. `amend-feature`, `vet-feedback`, `vet-source`, `speak-outer`, `hold-stage`, and
 `run-product-walkthrough` are **entry points**: they fire on what the user
 says (walkthrough is only *named* by `review-product-flow`). `review-product-flow`
 is a REQUIRED alternative of `prove-claim` and of the execute-family close

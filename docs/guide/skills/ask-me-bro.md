@@ -8,7 +8,7 @@
 | **Invocation** | user-invoked — run as `/ask-me-bro` (the frontmatter sets `disable-model-invocation: true`, so the agent can name it but cannot auto-invoke it) |
 | **Reads** | the user's situation and what specs already exist |
 | **Writes** | nothing — it produces a routing decision, not an artifact |
-| **Calls** | invokes the model-invocable entry point it lands on ([`solve-problem`](solve-problem.md), [`frame-change`](frame-change.md), [`root-cause`](root-cause.md), [`validate-feature`](validate-feature.md), [`review-product-flow`](review-product-flow.md)); names user-invoked ones ([`triage`](triage.md), [`scan-architecture`](scan-architecture.md), [`configure-repo`](configure-repo.md), [`bootstrap-repo`](bootstrap-repo.md), [`write-handoff`](write-handoff.md), [`cut-release`](cut-release.md), [`pathfind`](pathfind.md)) for the user to run |
+| **Calls** | invokes the model-invocable entry point it lands on ([`frame-change`](frame-change.md), [`root-cause`](root-cause.md), [`validate-feature`](validate-feature.md), [`review-product-flow`](review-product-flow.md)); names user-invoked ones ([`triage`](triage.md), [`scan-architecture`](scan-architecture.md), [`configure-repo`](configure-repo.md), [`bootstrap-repo`](bootstrap-repo.md), [`write-handoff`](write-handoff.md), [`cut-release`](cut-release.md), [`pathfind`](pathfind.md)) for the user to run |
 | **Called by** | [`gate-session`](gate-session.md) (names it when the right flow is unclear) |
 
 ## When it fires
@@ -43,7 +43,7 @@ Because `root-cause` is model-invocable, `ask-me-bro` hands off by invoking it. 
 
 > **User:** `/ask-me-bro` Checkout conversion feels off, tests are green, CEO wants the AI personalizer shipped — no gap analysis. Bug or product? Debug or build?
 
-`ask-me-bro` does **not** guess `root-cause`, `frame-change`, or multi-session `/pathfind`. It names **`solve-problem`**: write a Problem Brief (observed vs desired, facts vs assumptions, success provenance, one route). That skill then hands off to `root-cause`, `frame-change`, `clarify-decisions`, or `STOP` from an observable predicate.
+`ask-me-bro` does **not** guess `root-cause`, `frame-change`, or multi-session `/pathfind`. When the ask itself is too vague to place, it names **`/forge-prompt`** for the user to run: an interview that turns the ask into one paste-ready prompt block. That block names no lane — the session it is pasted into picks its own entry point.
 
 ## Why it is written the way it is
 
@@ -55,5 +55,5 @@ Because `root-cause` is model-invocable, `ask-me-bro` hands off by invoking it. 
 - [Methodology overview](../methodology/overview.md) — the same idea-to-ship chain in full
 - [Ceremony tiers](../methodology/ceremony-tiers.md) — the tier-0/1/2 split `ask-me-bro` routes on
 - [`gate-session`](gate-session.md) — the gate that names `ask-me-bro` when the flow is unclear
-- [`solve-problem`](solve-problem.md) — ambiguous problem intake before diagnosis or delivery
+- [`/forge-prompt`](forge-prompt.md) — user-run interview that turns a vague ask into a prompt for a fresh session
 - [`frame-change`](frame-change.md) — the default entry point for clear new behavior

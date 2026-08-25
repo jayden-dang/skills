@@ -1,7 +1,7 @@
 # On-ramps
 
 **One home** for which skill starts a situation. `gate-session`,
-`ask-me-bro`, `solve-problem`, and [START-HERE](../START-HERE.md) point
+`ask-me-bro`, and [START-HERE](../START-HERE.md) point
 here — they do not restate this table.
 
 Load this file when the entry point is unclear. Then invoke the named
@@ -11,7 +11,7 @@ model-invocable skill, or name the `/slash` for the user to run.
 |---|---|
 | Brand-new project, empty directory | `/bootstrap-repo` |
 | Existing repo, adopting this skill set | `/configure-repo` |
-| Ambiguous problem / requested fix without a clear gap or workflow | `solve-problem` |
+| Ask is short and vague; you want it turned into a proper prompt first | `/forge-prompt` |
 | New feature, nothing spec'd yet | `frame-change` |
 | Small change to an already-shipped, spec'd feature | `amend-feature` |
 | Something is broken (clear unexpected behavior) | `root-cause` |
@@ -37,7 +37,7 @@ Three rules of thumb:
 
 > Never spec what you do not understand yet. Unknowns go to `research` or `run-spike` first.
 
-> When even the *workflow* is unclear (bug vs product, investigate vs build), intake with `solve-problem` before opening a delivery chain.
+> An unnamed target is a guessed target. When the ask does not say which file, screen, endpoint, or job it means, run `/forge-prompt` first and open the chain with what it hands back. It names no next step — the session you paste into picks its own row from this table.
 
 > When two skills both seem to apply, the process skill wins. It will invoke the implementation skill itself.
 

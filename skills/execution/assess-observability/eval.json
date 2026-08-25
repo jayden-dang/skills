@@ -24,12 +24,12 @@
   },
   {
     "eval_id": 3,
-    "eval_name": "readiness-beats-solve-problem",
+    "eval_name": "readiness-beats-intake-router",
     "kind": "trigger",
     "derived_from": "TESTS.md § Failure class",
     "prompt": "Is our production tracing complete enough? We have OpenObserve. Can we upgrade sampling or is it good?",
     "assertions": [
-      "invokes assess-observability first, not solve-problem or debug-remote"
+      "invokes assess-observability first, not debug-remote"
     ]
   },
   {

@@ -2,6 +2,49 @@
 
 ## Unreleased
 
+### `/forge-prompt` — forge the ask into a prompt; `solve-problem` removed (2026-08-25)
+
+The entry ramp never fixed *what* a request meant. A slot-presence pass over the four on-ramps at
+`320e91e` found **0/4** carrying an exact-target slot, **0/4** a do-not-touch declaration, **0/4**
+a paste-ready block, and **0/4** a question budget. `solve-problem` closed the gap by labelling
+it: on `our onboarding is bad, we should probably add a wizard` it returned eight of nine slots as
+`unresolved`, asked the user nothing, and forwarded the request no better specified than it
+arrived. Removed.
+
+`/forge-prompt` (discovery, **user-invoked**, v1.0.0) is not its replacement in the routing sense
+— it sits outside every chain. It interviews a vague ask one card at a time, in a language chosen
+at setup, and hands back **one paste-ready prompt block**: what this touches (each line marked
+`[confirmed]` / `[unconfirmed]`), off limits, must keep working, what is already known, not yet
+checked, open questions, done when.
+
+**It names no lane, no skill, no step, and no classification** — that is the design decision, and
+it reverses the first draft of this change. A model-invoked on-ramp that ended in
+`Start with: <lane>` would have manufactured the bias it was meant to remove: models anchor on
+their own earlier output (arXiv 2603.01239), self-preference is strongest when authorship is known
+(arXiv 2511.05766), and prompt-level mitigations of anchoring are largely ineffective
+(arXiv 2505.15392). Transferring upstream reasoning downstream helps to a threshold then converges
+it prematurely — *selective context, not comprehensive history* (arXiv 2605.04361) — and
+cross-context review only beats same-session review when the reviewer receives **only the
+artifact** (arXiv 2603.12123). The anchor is the artifact, not the session, so the fix was to take
+the conclusion out of the artifact.
+
+- Target and boundary rules grounded in UnderSpecBench (arXiv 2607.02294): 55.8–67.8% of acted
+  runs cross a boundary; safe success 67.9% → 8.6% and wrong-target 9.6% → 75.1% as target
+  certainty degrades; shared-production action rate 65.5% vs contained 64.0%
+- Interview order from CLARITI (arXiv 2604.14624); its 3.0-vs-5.1 question result is applied as an
+  **answerability stop signal**, not a hard cap — the user drives this interview
+- Channel borrowed from `clarify-decisions` (one card per message, no picker, open-set stop), not
+  restated. No `Recommendation` slot: recommending would make it a design interview
+- Preserved from `solve-problem`: provenance or `unresolved`, facts separated from assumptions,
+  a deadline is a constraint. Dropped: gap classification as an end in itself
+- **Reverted from the first draft:** the `frame-change` / `amend-feature` / `root-cause` lane seeds
+  and their version bumps — they existed only to consume a routed brief
+- Rewired: `AGENTS.md` §2/§3/§11 (27 user-invoked, seven uncalled model-invocable), on-ramps,
+  discovery, START-HERE, README, both plugin manifests, `ask-me-bro`, `configure-repo`,
+  `work-the-problem`, `interpret-session` v1.3.0 (sibling pointer, reads a handed-over block cold)
+- Owed: multi-model roster RED/GREEN, recorded in `TESTS.md`. No trigger matrix is owed — a
+  `disable-model-invocation` description routes nothing
+
 ### Packaging: consumer-local seed copies (SEED)
 
 `npx skills add` copies only each skill folder, so repo-root `templates/` never

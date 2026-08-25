@@ -90,7 +90,7 @@ anti full-delegate; name user-invoked skills only.
 
 User types `/work-the-problem`. Model does not auto-route on description keywords.
 
-**should-not-fire (neighbors):** time-boxed stance → `interpret-session`; pure learning → `deepen-codebase`; workflow fog → `solve-problem`; main ceremony → `frame-change` / `clarify-decisions`; fact note alone → `research`.
+**should-not-fire (neighbors):** time-boxed stance → `interpret-session`; pure learning → `deepen-codebase`; vague ask needing a prompt → `/forge-prompt`; main ceremony → `frame-change` / `clarify-decisions`; fact note alone → `research`.
 
 ---
 

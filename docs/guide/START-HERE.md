@@ -23,6 +23,7 @@ schema 1.1, **`cluster(focus)`**, no generated graph file).
         ┌────────────────────┴─────────────────────────────────────────────┐
         ▼                                                                    │
   /ask-me-bro  ── "I'm lost" ── routes to an entry point below               │
+  /forge-prompt ── "my ask is vague" ── hands back one prompt to paste       │
         │                                                                    │
  SETUP (once)                                                                 │
   /bootstrap-repo (greenfield)  or  /configure-repo (existing code)           │
@@ -30,9 +31,9 @@ schema 1.1, **`cluster(focus)`**, no generated graph file).
         │                                                                    │
  IDEATION → SPEC                          BUILD                    SHIP
  ─────────────────                        ─────                    ────
- solve-problem? ─► frame-change ─► specify-behavior ─► design-solution ─► plan-tasks
- (gap/workflow unclear)  [GATE: no code]  (EARS + IDs)  (Satisfies:)  (_Requirements:_ + audit-trace)
-                         + load-subgraph (neighbors 1.1)  + fresh load-subgraph  + blast_radius + cluster
+ frame-change ─► specify-behavior ─► design-solution ─► plan-tasks
+ [GATE: no code]  (EARS + IDs)     (Satisfies:)      (_Requirements:_ + audit-trace)
+ + load-subgraph (neighbors 1.1)   + fresh load-subgraph   + blast_radius + cluster
         │                                                 │
         │ tier 0/1 shortcuts     isolate-workspace ─► build-in-waves | build-by-story | build-inline
         ▼                                                 │
@@ -146,7 +147,7 @@ Personal OS is a **separate** package — [personal-os START-HERE](../personal-o
 |---|---|
 | **meta** | `gate-session` (m, si), `/ask-me-bro`, `/author-skills`, `/teach-pack` |
 | **setup** | `/configure-repo`, `/bootstrap-repo` |
-| **discovery** | `solve-problem`, `frame-change`, `clarify-decisions`, `research`, `run-spike`, `define-domain`, `/pathfind`, `/interpret-session`, `/deepen-codebase`, `/work-the-problem` |
+| **discovery** | `frame-change`, `clarify-decisions`, `research`, `run-spike`, `define-domain`, `/forge-prompt`, `/pathfind`, `/interpret-session`, `/deepen-codebase`, `/work-the-problem` |
 | **spec** | `specify-behavior`, `design-solution`, `plan-tasks` |
 | **execution** | `build-in-waves`, `build-by-story`, `build-inline`, `execute-common`, `test-first`, `root-cause`, `debug-remote`, `assess-observability`, `prove-claim`, `audit-trace`, **`load-subgraph`**, `isolate-workspace`, `hold-stage` |
 | **review** | `inspect-change`, `polish-diff`, `vet-feedback`, `vet-source`, `speak-outer`, `review-invariants`, `/study-change`, `/brief-team`, `/select-review-sample` |

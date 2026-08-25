@@ -107,3 +107,9 @@ Hold-out 4/4. Undertrigger 0 · Overtrigger 0 on the hold-out set.
 | “look into / write it up” applies only to an external fact, not any topic | SN13 RED 4/4; GREEN/REFACTOR `run-spike` |
 | Visual/UI “looks” and screen mockups are `run-spike`, not a cited note | SN13 RED + meta X + REFACTOR 3/3 |
 | Paper plus experimental variants / training / ranking is not `research` | SN8 RED 3/4; GREEN/REFACTOR not `research` |
+
+---
+
+**Naming note (2026-08-25):** `solve-problem` was removed and nothing model-invocable replaced it.
+The observation rows above are left unedited — they record what a model chose at the time, not a
+live pointer.

@@ -203,7 +203,7 @@ and countered by name. See [The gates](docs/guide/concepts/gates.md).
 | execution | `build-in-waves`, `build-by-story`, `build-inline`, `execute-common`, `test-first`, `root-cause`, `debug-remote`, `assess-observability`, `prove-claim`, `audit-trace`, `load-subgraph`, `isolate-workspace`, `hold-stage` |
 | review | `inspect-change`, `study-change`, `brief-team`, `select-review-sample`, `polish-diff`, `vet-feedback`, `vet-source`, `speak-outer`, `review-invariants`, `review-ui` |
 | acceptance | `validate-feature`, `validate-api`, `validate-ui`, `review-product-flow`, `vet-product-flow`, `run-product-walkthrough` |
-| craft | `craft-page`, `draft-ui` |
+| craft | `craft-page`, `draft-ui`, `draft-ux` |
 | ship | `land-branch`, `record-verdict`, `cut-release` |
 | track | `amend-feature`, `reroute-plan`, `triage`, `realign-spec`, `refresh-roadmap-status`, `assess-milestone`, `scan-architecture`, `map-features`, `write-handoff`, `publish-issues`, `record-debt` |
 | project | `define-project`, `assess-pivot-impact`, `plan-milestones` (optional project / multi-milestone layer) |

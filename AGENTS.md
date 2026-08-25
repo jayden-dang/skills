@@ -1,7 +1,7 @@
 # AGENTS.md — Agent Behavior Constitution
 
-> A-to-Z agentic development skill set · **87 skills across 11 categories**
-> (69 engineering + 18 Personal OS) · `jayden-dang/skills` · v1.0.0
+> A-to-Z agentic development skill set · **88 skills across 11 categories**
+> (70 engineering + 18 Personal OS) · `jayden-dang/skills` · v1.0.0
 
 This file is the single source of truth for agent behavior when working with this
 skill set on any harness. Read it first, before any skill, before any action.
@@ -136,9 +136,9 @@ use \`x\`` is for model-invocable targets only — pointing it at a
 
 **Two reachability paths, and one of them is fragile.** A skill is reached either
 by a `REQUIRED SUB-SKILL` hand-off or by its description matching what the user
-said. Seven model-invocable skills have no `REQUIRED SUB-SKILL` caller —
-`amend-feature`, `vet-feedback`, `vet-source`, `speak-outer`, `hold-stage`, `run-product-walkthrough`
-(plus hook-injected `gate-session`). `review-product-flow` is reached from
+said. Eight model-invocable skills have no `REQUIRED SUB-SKILL` caller —
+`amend-feature`, `vet-feedback`, `vet-source`, `speak-outer`, `hold-stage`, `run-product-walkthrough`,
+`draft-ux` (plus hook-injected `gate-session`). `review-product-flow` is reached from
 `prove-claim` (alternative to `validate-feature`) and from the execute-family
 close sequence when a walk predicate holds. The remaining entry points fire
 on what the user said, which makes their descriptions the only thing
@@ -409,7 +409,7 @@ Can't tick a box? The work is not done.
 | **execution** (13) | `build-in-waves` (m), `build-by-story` (m), `build-inline` (m), `execute-common` (m), `test-first` (m), `root-cause` (m), `debug-remote` (m), `assess-observability` (m), `prove-claim` (m), `audit-trace` (m), `load-subgraph` (m), `isolate-workspace` (m), `hold-stage` (m) |
 | **review** (11) | `inspect-change` (m), `polish-diff` (m), `vet-feedback` (m), `vet-source` (m), `speak-outer` (m), `review-invariants` (m), `review-ui` (m), `study-change` (U), `teach-build` (U), `brief-team` (U), `select-review-sample` (U) |
 | **acceptance** (6) | `validate-feature` (m), `validate-api` (m), `validate-ui` (m), `review-product-flow` (m), `vet-product-flow` (m), `run-product-walkthrough` (m) |
-| **craft** (2) | `craft-page` (m), `draft-ui` (m) |
+| **craft** (3) | `craft-page` (m), `draft-ui` (m), `draft-ux` (m) |
 | **ship** (3) | `land-branch` (m), `record-verdict` (m), `cut-release` (U) |
 | **track** (11) | `amend-feature` (m), `reroute-plan` (m), `realign-spec` (m), `triage` (U), `record-debt` (U), `refresh-roadmap-status` (U), `assess-milestone` (U), `scan-architecture` (U), `map-features` (U), `write-handoff` (U), `publish-issues` (U) |
 | **project** (4) | `plan-milestones` (m), `define-project` (U), `define-system-doc` (U), `assess-pivot-impact` (U) |

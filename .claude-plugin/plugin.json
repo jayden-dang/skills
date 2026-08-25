@@ -41,6 +41,7 @@
     "./skills/acceptance/run-product-walkthrough",
     "./skills/craft/craft-page",
     "./skills/craft/draft-ui",
+    "./skills/craft/draft-ux",
     "./skills/review/select-review-sample",
     "./skills/review/review-invariants",
     "./skills/review/review-ui",

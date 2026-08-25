@@ -111,6 +111,7 @@ The visual layer. Fires before any HTML a human will look at.
 |---|---|---|
 | [`craft-page`](craft-page.md) | model | Names the treatment, writes the color/type/layout plan, holds the page fundamentals; figure-gated diagram recipes when a primary figure is warranted |
 | [`draft-ui`](draft-ui.md) | model | Divergent real-HTML screen variants + review loop + locked ui-brief the design chain lifts |
+| [`draft-ux`](draft-ux.md) | model | Runnable takes of one flow that differ in when the world changes + review loop + a locked `## Interaction` section in the same brief |
 
 ## ship
 

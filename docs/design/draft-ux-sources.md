@@ -214,6 +214,33 @@ the chain.
 
 ---
 
+## What RED did to this plan (2026-08-25, after the fact)
+
+The skill shipped as `skills/craft/draft-ux` v1.0.0. Baseline runs cut three of
+the five constraints above — recorded here because a plan that survives its own
+test unchanged usually was not tested:
+
+- **§2's reuse ladder became a no-op.** Both baseline reps already built from
+  the existing kit and one explicitly refused to add a toast variant "so the
+  locked look isn't reopened for one state". No rule was written for it, and the
+  Step-0 amendment to `draft-ui` was **not made** — it has no observed failure
+  behind it yet.
+- **The `Focus & keyboard` slot became a no-op.** Both reps moved focus to the
+  toast action unprompted.
+- **The adapter matrix did not ship.** The fixture is a static app, so nothing in
+  it exercised the React / server-rendered / Storybook lanes. Untested text does
+  not go in a skill; the matrix stays here, as research.
+- **What survived, because it failed:** the divergence requirement (two reps,
+  opposite flows, each certain the requirements forced it), the no-lock-without-a-go
+  gate (three iterations to close), the single home for the decision (one rep
+  filed a sibling `interaction-brief.md` Step 2b cannot reach, then edited an
+  Approved `requirements.md` to compensate), numbers carrying reasons, and the
+  cleanup boundary.
+- **A slot shape the plan did not predict:** the winning form was not the six
+  slots proposed above but one `###` per moment filling the *same five slots* the
+  visual sections use — which is what makes Step 2b lift it with no change to
+  `design-solution`.
+
 ## Open verification work
 
 1. Read the Storybook 10.3 release post directly (fetch failed here) and confirm

@@ -114,7 +114,11 @@ per-variant whim.
 
 Fetched; content reached this file as a summary. What it carries:
 
-- The AI features are **React-only at present**, with API changes expected.
+- The AI features are **React-only at present**, with API changes expected. The
+  second pass got the page's own wording for this, which is stronger than the
+  summary carried: *"🧪 Storybook's AI capabilities are currently in preview and
+  only supported for React projects. The API may change in future releases."*
+  Still true on the docs page at v10.5, i.e. it outlived the 10.3 release.
 - Agents read a **manifest**; `tags: ['!manifest']` excludes stories from what an
   agent sees.
 - Prop extraction quality depends on `react-docgen-typescript`; JSDoc on the
@@ -137,7 +141,7 @@ carries a caveat, and one row's **attribution turned out to be wrong**.
 
 | Claim | Where it entered | Status after re-check |
 |---|---|---|
-| Storybook 10.3 ships an **MCP server for React** letting an agent query design-system components, reuse them, write stories, and run focused component + a11y tests, with failures tied to specific stories | Search-result summary; the page fetch failed | **Confirmed, tier A** — every sub-claim quoted from primary text, plus a caveat the note had missed |
+| Storybook 10.3 ships an **MCP server for React** letting an agent query design-system components, reuse them, write stories, and run focused component + a11y tests, with failures tied to specific stories | Search-result summary; the page fetch failed | **Confirmed, tier A** — every sub-claim quoted from primary text. Caveat the note had missed: the docs page still labels the feature *preview*, React-only, API subject to change |
 | A microinteraction decomposes into **trigger / rules / feedback / loops & modes** (Dan Saffer) | Search-result summary | **Partly confirmed** — naming and order corroborated by convergent book-specific sources; the book's own text remains unread |
 | Static mockups cannot expose feedback loops, transition timing, or response patterns | Search-result summary | **Still tier B.** Not re-checked; it states the premise this skill's RED evidence independently demonstrated, so nothing rests on it |
 | Response-time budgets ≈ **0.1 s / 1 s / 10 s**, attributed to Miller, Card et al., and Nielsen | Recalled, not retrieved | **Numbers confirmed, tier A — attribution corrected.** The triad is Nielsen's synthesis, not Miller's |
@@ -239,7 +243,7 @@ repo's own ladder already encodes.
 | Context | Mount the real component with | Make it live with |
 |---|---|---|
 | SPA already running | The path `draft-ui` §2 already defines: real route, real data, subtree swap on `?variant=` — importing the real components | MSW (`delay`, error overrides) |
-| React + a design system | Storybook manifest / MCP *(confirmed; preview, React-only)*, `play` functions as runnable interaction scenarios | The story itself |
+| React + a design system | Storybook manifest / MCP — **preview, React-only, API subject to change** — plus `play` functions as runnable interaction scenarios | The story itself |
 | Server-rendered | The real partial | htmx attributes |
 | No app / no component library | Standalone pages, as `draft-ui` does today | htmx + static HTML fragments |
 

@@ -7,10 +7,11 @@ to `skills/craft/draft-ui`, and a Step-2b lift in `skills/spec/design-solution`
 
 `TESTS.md` will record *what was measured and what rule it produced*. This file
 records *where each claim came from and how far it was actually read* — because
-the two load-bearing external claims behind this design (what Storybook's MCP
-gives an agent, and what a static mockup cannot reveal) were taken from
-search-result summaries rather than source text, and a reader deciding whether
-to trust a rule needs to know which.
+several claims behind this design shipped on search-result summaries rather than
+source text, and a reader deciding whether to trust a rule needs to know which.
+A **second pass on 2026-08-25** (§ *Verified on a second pass*) closed most of
+those and corrected one attribution outright; the tiers below say where each
+claim now stands.
 
 ## Evidence strength
 
@@ -63,7 +64,7 @@ Retrieved as documentation snippets from `www/content/`, not as full pages.
 | `hx-swap="innerHTML swap:100ms settle:50ms"` | [`attributes/hx-swap.md`](https://github.com/bigskysoftware/htmx/blob/master/www/content/attributes/hx-swap.md), [`docs.md`](https://github.com/bigskysoftware/htmx/blob/master/www/content/docs.md) | **Latency and animation timing simulated with no backend** |
 | `hx-swap-oob` | [`attributes/hx-swap-oob.md`](https://github.com/bigskysoftware/htmx/blob/master/www/content/attributes/hx-swap-oob.md) | Feedback that lands somewhere other than the target — toast, badge count. Nested OOB is on by default (`htmx.config.allowNestedOobSwaps`); `tr`/`li`/SVG children need `<template>` wrappers |
 | `hx-swap="innerHTML transition:true"` | [`essays/view-transitions.md`](https://github.com/bigskysoftware/htmx/blob/master/www/content/essays/view-transitions.md) | View Transitions on a swap |
-| `hx-trigger="keyup changed delay:300ms"` | **not retrieved this session (tier B)** — asserted from background knowledge | Explicit vs implicit trigger, debounce |
+| `hx-trigger="keyup changed delay:500ms"` | [`attributes/hx-trigger.md`](https://github.com/bigskysoftware/htmx/blob/master/www/content/attributes/hx-trigger.md), [`docs.md`](https://github.com/bigskysoftware/htmx/blob/master/www/content/docs.md) — retrieved on the second pass | Explicit vs implicit trigger; `changed` + `delay` debounce (`hx-sync` cancels the in-flight request the debounce still lets through) |
 
 → **Rule produced:** htmx is adopted as the *interaction engine* for the
 no-app and server-rendered lanes — the seven rows above are close to the whole
@@ -128,20 +129,89 @@ skill does not control.
 
 ---
 
-## B — unverified: carried on a summary or on background knowledge
+## B — unverified when the skill was written, re-checked on a second pass
 
-| Claim | Where it entered | What it gates |
+Three of the four rows below were verified on 2026-08-25 after the skill shipped;
+see the next section for what each check returned. Only the Saffer row still
+carries a caveat, and one row's **attribution turned out to be wrong**.
+
+| Claim | Where it entered | Status after re-check |
 |---|---|---|
-| Storybook 10.3 ships an **MCP server for React** letting an agent query design-system components, reuse them, write stories, and run focused component + a11y tests, with failures tied to specific stories | Search-result summary of [storybook.js.org/blog/storybook-10-3](https://storybook.js.org/blog/storybook-10-3/) — **the page fetch failed** (see tier D) | The React-lane adapter row of the matrix. If it is weaker than summarised, that lane falls back to the app-embedded route, which is already proven |
-| A microinteraction decomposes into **trigger / rules / feedback / loops & modes** (Dan Saffer), still the working frame in 2025 | Search-result summary; [structure of microinteractions](https://cieden.com/book/sub-atomic/microinteractions/structure-of-microinteractions), [UXPin](https://www.uxpin.com/studio/blog/microinteractions-for-protypes/) | The *shape of the `ux-brief` slots*. Not retrieved from Saffer's text |
-| Static mockups cannot expose feedback loops, transition timing, or response patterns; higher-fidelity interaction prototypes surface usability failures static testing misses | Search-result summary, same query | The premise that the prototype must be **runnable**, not described. Plausible and consistent with `draft-ui`'s own "real HTML is the medium" stance, but unverified as stated |
-| Response-time budgets ≈ **0.1 s** feels instant, **1 s** keeps the flow of thought, **10 s** is the attention limit (Nielsen / Miller / Card) | **Recalled, not retrieved this session** | The numeric defaults in the `Timing:` slot. Verify before writing specific numbers into the skill |
+| Storybook 10.3 ships an **MCP server for React** letting an agent query design-system components, reuse them, write stories, and run focused component + a11y tests, with failures tied to specific stories | Search-result summary; the page fetch failed | **Confirmed, tier A** — every sub-claim quoted from primary text, plus a caveat the note had missed |
+| A microinteraction decomposes into **trigger / rules / feedback / loops & modes** (Dan Saffer) | Search-result summary | **Partly confirmed** — naming and order corroborated by convergent book-specific sources; the book's own text remains unread |
+| Static mockups cannot expose feedback loops, transition timing, or response patterns | Search-result summary | **Still tier B.** Not re-checked; it states the premise this skill's RED evidence independently demonstrated, so nothing rests on it |
+| Response-time budgets ≈ **0.1 s / 1 s / 10 s**, attributed to Miller, Card et al., and Nielsen | Recalled, not retrieved | **Numbers confirmed, tier A — attribution corrected.** The triad is Nielsen's synthesis, not Miller's |
 
-The first row is the load-bearing one: it is the only reason the React lane
-gets a component-aware adapter at all rather than defaulting to the
-already-working app-embedded path.
+## Verified on a second pass (2026-08-25)
 
----
+Three checks, each run against primary sources with instructions to quote the
+page and to say whether the page itself or only a snippet was read.
+
+### Storybook MCP — confirmed, and one caveat added
+
+[Storybook 10.3 release post](https://storybook.js.org/blog/storybook-10-3/)
+(6 Apr 2026) fetched successfully this time, and re-fetched as raw HTML to get
+verbatim text: *"Storybook 10.3 adds MCP for React so AI agents can reuse real
+components, write stories, and run focused component and accessibility tests."*
+The [/ai page](https://storybook.js.org/ai) carries the rest verbatim —
+*"Force agents to reuse existing components instead of inventing new ones or
+hallucinating"*, and *"Failures are tied to specific stories and assertions so
+agents know what to fix."*
+
+Detail the first pass never had: three toolsets (Dev / Docs / Test) exposing
+`list-all-documentation`, `get-documentation`, `get-storybook-story-instructions`,
+and `run-story-tests`; installed with `npx storybook add @storybook/addon-mcp`,
+served at `http://localhost:6006/mcp`.
+
+**The caveat this note was missing**, from
+[the docs page](https://storybook.js.org/docs/ai/) — current at v10.5, so the
+status has outlived the 10.3 release: *"🧪 Storybook's AI capabilities are
+currently in preview and only supported for React projects. The API may change
+in future releases."* The React-only limit therefore still holds, and the
+adapter row it gates should be read as preview-grade.
+
+### Response-time budgets — numbers confirmed, attribution corrected
+
+[Response Times: The 3 Important Limits](https://www.nngroup.com/articles/response-times-3-important-limits/)
+(Nielsen, 1993, excerpted from *Usability Engineering* ch. 5) read directly:
+0.1 s is *"about the limit for having the user feel that the system is reacting
+instantaneously"*; 1.0 s is *"about the limit for the user's flow of thought to
+stay uninterrupted, even though the user will notice the delay"*; 10 s is
+*"about the limit for keeping the user's attention focused on the dialogue"*.
+Prescriptive: *"For delays of more than 1 second, indicate to the user that the
+computer is working on the problem"*, while a percent-done indicator plus a
+signposted way to interrupt is what ~10 s demands.
+[Website Response Times](https://www.nngroup.com/articles/website-response-times/)
+(2010) reaffirms all three.
+
+**The correction:** Miller (1968) was read as the actual AFIPS PDF, and it does
+**not** state the triad. Miller's own thresholds are a **two-second rule** for
+thought continuity and **15 seconds** — not 10 — for the point past which
+conversational interaction is ruled out; his 0.1 s is keystroke feedback. The
+clean 0.1 / 1 / 10 packaging is **Nielsen's synthesis**, citing Miller and Card
+et al. as background. Attribute it to Nielsen 1993. Card, Robertson & Mackinlay
+(1991) was not retrieved and stays unverified.
+
+→ `draft-ux` §3's sentence — *"work that finishes in about a tenth of a second
+reads as instant; past about a second of silence the user needs a pending
+state"* — is a faithful compression of the prescriptive text and needs no edit.
+
+### Saffer's four parts — attribution stands, the book does not
+
+Every route to the book's own prose returned HTTP 403 (O'Reilly, Amazon,
+archive.org, a full-text mirror). What was read in full:
+[Interaction Design Foundation](https://ixdf.org/literature/article/micro-interactions-ux)
+— *"Dan Saffer, in his book Microinteractions: Designing with Details, breaks
+down the key components of micro-interactions into four essential parts: the
+trigger, the rules, feedback and loops/modes"* — corroborated independently by
+[Cieden](https://cieden.com/book/sub-atomic/microinteractions/structure-of-microinteractions),
+and consistent with the book's chapter titles (2 Triggers, 3 Rules, 4 Feedback,
+5 Loops and Modes). No source anywhere proposes a different decomposition.
+
+One wrinkle worth carrying: the publisher's jacket copy lists *five* topics —
+"triggers, rules, feedback, modes, and loops" — so "loops and modes" as a single
+named unit may be explainers' phrasing rather than Saffer's own. Keep the
+attribution; say it rests on book-specific secondary sources, not on the text.
 
 ## C — background
 
@@ -156,8 +226,9 @@ repo's own ladder already encodes.
 ## D — retrieval failed
 
 - [storybook.js.org/blog/storybook-10-3](https://storybook.js.org/blog/storybook-10-3/)
-  — WebFetch returned an empty error. Everything attributed to Storybook 10.3 in
-  this file is therefore **tier B**, from the search summary.
+  — WebFetch returned an empty error **on the first pass**. It fetched cleanly on
+  the second pass (see above), so nothing in this file rests on that failure any
+  more. Kept as a record of why the claim shipped at tier B.
 
 ---
 
@@ -168,7 +239,7 @@ repo's own ladder already encodes.
 | Context | Mount the real component with | Make it live with |
 |---|---|---|
 | SPA already running | The path `draft-ui` §2 already defines: real route, real data, subtree swap on `?variant=` — importing the real components | MSW (`delay`, error overrides) |
-| React + a design system | Storybook manifest / MCP *(tier B)*, `play` functions as runnable interaction scenarios | The story itself |
+| React + a design system | Storybook manifest / MCP *(confirmed; preview, React-only)*, `play` functions as runnable interaction scenarios | The story itself |
 | Server-rendered | The real partial | htmx attributes |
 | No app / no component library | Standalone pages, as `draft-ui` does today | htmx + static HTML fragments |
 
@@ -243,15 +314,23 @@ test unchanged usually was not tested:
 
 ## Open verification work
 
-1. Read the Storybook 10.3 release post directly (fetch failed here) and confirm
-   what the MCP server actually exposes, and whether the React-only limitation
-   still holds. This gates the React adapter row.
-2. Retrieve the response-time budgets from a primary source before any specific
-   ms number is written into the `Timing:` slot.
-3. Confirm the microinteraction decomposition against Saffer's text, or attribute
-   the slot shape to this design instead of to him.
-4. None of the three blocks building the skill; all three change how firmly its
-   rationale can be stated.
+Closed on the second pass: the Storybook MCP capabilities (confirmed, with the
+preview/React-only caveat added), and the response-time budgets (numbers
+confirmed, attribution corrected to Nielsen 1993). Neither forced a change to
+the skill text; the second cost this note a wrong attribution.
+
+Still open:
+
+1. **Card, Robertson & Mackinlay (1991)** — cited by NN/g as background for the
+   response-time advice, never retrieved here. Nothing rests on it now that the
+   triad is attributed to Nielsen.
+2. **Saffer's own text** — the four-part decomposition is corroborated only by
+   sources describing the book; every route to the book returned 403. If this
+   attribution ever needs to survive a footnote, read the book, and settle the
+   four-versus-five wrinkle in the jacket copy.
+3. **The adapter matrix is still untested** — the React, server-rendered, and
+   Storybook lanes have never been exercised by a RED run. It remains research,
+   not skill text, until a fixture on one of those stacks says otherwise.
 
 ## Search queries run
 

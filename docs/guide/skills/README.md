@@ -35,7 +35,7 @@ Turn an idea into an agreed shape. Produces no code.
 
 | Skill | Invocation | What it does |
 |---|---|---|
-| [`solve-problem`](solve-problem.md) | model | Ambiguous problem intake: Problem Brief + one route; not a delivery pipeline |
+| [`forge-prompt`](forge-prompt.md) | user | Vague ask → one paste-ready prompt block for a fresh session, via a question-by-question interview; names no next step |
 | [`frame-change`](frame-change.md) | model | **The hard gate.** No code until the ceremony tier is stated out loud; neighbors via `load-subgraph` schema 1.1 |
 | [`clarify-decisions`](clarify-decisions.md) | model | The interview primitive; nested reuses retrieval package, standalone loads once |
 | [`research`](research.md) | model | Primary sources only. One cited markdown file, ending in Open decisions |

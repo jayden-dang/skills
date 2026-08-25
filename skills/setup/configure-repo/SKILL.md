@@ -259,7 +259,7 @@ This repo is configured for a spec-driven skill set.
 
 - Feature flow: `frame-change` → `specify-behavior` → `design-solution` →
   `plan-tasks` → `build-in-waves`
-- Ambiguous problem / unclear gap or workflow: `solve-problem` (Problem Brief + one route)
+- Vague ask you want turned into a prompt for a fresh session: `/forge-prompt` (user-run)
 - Bug on-ramp: `root-cause` (clear unexpected behavior first, then a guarded fix);
   deployed env: `debug-remote` then `root-cause`; telemetry readiness:
   `assess-observability`

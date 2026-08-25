@@ -145,8 +145,8 @@ configuration.
 ## The flow
 
 ```
-solve-problem? ──► frame-change (+ load-subgraph) ──► specify-behavior ──► design-solution ──► plan-tasks
-(gap/workflow unclear)  (gate: no code)                 (EARS + IDs)         (Satisfies:)     (_Requirements:_)
+frame-change (+ load-subgraph) ──► specify-behavior ──► design-solution ──► plan-tasks
+(gate: no code)                    (EARS + IDs)         (Satisfies:)         (_Requirements:_)
         │                                                                               │
         │ tier 0/1 shortcuts                                                            ▼
         │                          isolate-workspace ──► build-in-waves | build-by-story | build-inline
@@ -198,7 +198,7 @@ and countered by name. See [The gates](docs/guide/concepts/gates.md).
 |---|---|
 | meta | `gate-session` (session gate), `ask-me-bro` (router), `author-skills`, `teach-pack` |
 | setup | `configure-repo`, `bootstrap-repo` |
-| discovery | `solve-problem`, `frame-change`, `clarify-decisions`, `research`, `run-spike`, `define-domain`, `interpret-session`, `deepen-codebase`, `work-the-problem`, `pathfind` |
+| discovery | `frame-change`, `clarify-decisions`, `research`, `run-spike`, `define-domain`, `forge-prompt`, `interpret-session`, `deepen-codebase`, `work-the-problem`, `pathfind` |
 | spec | `specify-behavior`, `design-solution`, `plan-tasks` |
 | execution | `build-in-waves`, `build-by-story`, `build-inline`, `execute-common`, `test-first`, `root-cause`, `debug-remote`, `assess-observability`, `prove-claim`, `audit-trace`, `load-subgraph`, `isolate-workspace`, `hold-stage` |
 | review | `inspect-change`, `study-change`, `brief-team`, `select-review-sample`, `polish-diff`, `vet-feedback`, `vet-source`, `speak-outer`, `review-invariants`, `review-ui` |

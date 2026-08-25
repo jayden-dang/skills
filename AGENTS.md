@@ -82,11 +82,11 @@ carries a checklist, create one todo per item.
 
 | Situation | First move |
 |---|---|
+| User wants help defining what they actually want, or a prompt to start a fresh session with | suggest `/forge-prompt` (user-run) |
 | "Build X" / "add X" / "can we support X" | `frame-change` — before plan mode, before scaffolding |
 | "This is broken", a clear unexpected behavior | `root-cause` — before any fix |
 | Broken on prod / staging / a remote env | `debug-remote` — evidence pack, then `root-cause` |
 | Is tracing / OpenObserve / sampling complete? | `assess-observability` |
-| Ambiguous problem, or a requested solution with no trustworthy gap | `solve-problem` — before guessing between the two above |
 | Small in-scope change to a shipped, spec'd feature | `amend-feature`, not `frame-change` |
 | Incoming issue or external PR | suggest `/triage` (user-run; agents cannot auto-invoke) |
 | Capture this conversation into tracker issues | suggest `/publish-issues` (user-run) |
@@ -102,10 +102,10 @@ skill's workflow only when the user has explicitly told you to. A waiver of
 
 **User-invoked skills** carry `disable-model-invocation: true` in frontmatter.
 Agents MUST NOT auto-invoke these — name them for the user to run (`/triage`,
-`/pathfind`). All 26 of them:
+`/pathfind`). All 27 of them:
 
 `ask-me-bro`, `author-skills`, `teach-pack` · `bootstrap-repo`, `configure-repo` ·
-`deepen-codebase`, `interpret-session`, `pathfind`, `work-the-problem` ·
+`deepen-codebase`, `forge-prompt`, `interpret-session`, `pathfind`, `work-the-problem` ·
 `brief-team`, `select-review-sample`, `study-change`, `teach-build` · `assess-pivot-impact`,
 `define-project`, `define-system-doc` · `cut-release` · `assess-milestone`,
 `map-features`, `publish-issues`, `record-debt`, `refresh-roadmap-status`,
@@ -113,7 +113,7 @@ Agents MUST NOT auto-invoke these — name them for the user to run (`/triage`,
 
 **Model-invoked skills** (no `disable-model-invocation`) are auto-invoked when
 the description matches the situation. Everything not listed above, including
-`gate-session`, `frame-change`, `clarify-decisions`, `solve-problem`, `research`,
+`gate-session`, `frame-change`, `clarify-decisions`, `research`,
 `run-spike`, `define-domain`, the full spec triad, the execute family,
 `test-first`, `root-cause`, `debug-remote`, `assess-observability`, `prove-claim`, `audit-trace`, `load-subgraph`,
 `isolate-workspace`, `hold-stage`, `inspect-change`, `polish-diff`, `vet-feedback`,
@@ -136,8 +136,8 @@ use \`x\`` is for model-invocable targets only — pointing it at a
 
 **Two reachability paths, and one of them is fragile.** A skill is reached either
 by a `REQUIRED SUB-SKILL` hand-off or by its description matching what the user
-said. Eight model-invocable skills have no `REQUIRED SUB-SKILL` caller —
-`solve-problem`, `amend-feature`, `vet-feedback`, `vet-source`, `speak-outer`, `hold-stage`, `run-product-walkthrough`
+said. Seven model-invocable skills have no `REQUIRED SUB-SKILL` caller —
+`amend-feature`, `vet-feedback`, `vet-source`, `speak-outer`, `hold-stage`, `run-product-walkthrough`
 (plus hook-injected `gate-session`). `review-product-flow` is reached from
 `prove-claim` (alternative to `validate-feature`) and from the execute-family
 close sequence when a walk predicate holds. The remaining entry points fire
@@ -404,7 +404,7 @@ Can't tick a box? The work is not done.
 |---|---|
 | **meta** (4) | `gate-session` (m, si), `ask-me-bro` (U), `author-skills` (U), `teach-pack` (U) |
 | **setup** (2) | `configure-repo` (U), `bootstrap-repo` (U) |
-| **discovery** (10) | `frame-change` (m), `clarify-decisions` (m), `solve-problem` (m), `research` (m), `run-spike` (m), `define-domain` (m), `pathfind` (U), `interpret-session` (U), `deepen-codebase` (U), `work-the-problem` (U) |
+| **discovery** (10) | `frame-change` (m), `clarify-decisions` (m), `research` (m), `run-spike` (m), `define-domain` (m), `forge-prompt` (U), `pathfind` (U), `interpret-session` (U), `deepen-codebase` (U), `work-the-problem` (U) |
 | **spec** (3) | `specify-behavior` (m), `design-solution` (m), `plan-tasks` (m) |
 | **execution** (13) | `build-in-waves` (m), `build-by-story` (m), `build-inline` (m), `execute-common` (m), `test-first` (m), `root-cause` (m), `debug-remote` (m), `assess-observability` (m), `prove-claim` (m), `audit-trace` (m), `load-subgraph` (m), `isolate-workspace` (m), `hold-stage` (m) |
 | **review** (11) | `inspect-change` (m), `polish-diff` (m), `vet-feedback` (m), `vet-source` (m), `speak-outer` (m), `review-invariants` (m), `review-ui` (m), `study-change` (U), `teach-build` (U), `brief-team` (U), `select-review-sample` (U) |
@@ -462,7 +462,8 @@ This repo is configured for a spec-driven skill set.
 - Bug on-ramp: `root-cause` (root cause first, then a guarded fix); deployed
   env: `debug-remote` then `root-cause`; telemetry readiness:
   `assess-observability`
-- Ambiguous problem, or a solution requested with no clear gap: `solve-problem`
+- Turn a vague ask into a prompt for a fresh session: `/forge-prompt` (user-run;
+  interviews, then hands over one block — it names no next step by design)
 - Capture a conversation, spec, or idea into tracker issues: `/publish-issues`
 - Multi-session decision map (Layer 0 fog): `/pathfind`
 - Incoming issues and PRs: `/triage`

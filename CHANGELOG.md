@@ -2,6 +2,49 @@
 
 ## Unreleased
 
+### `draft-ux` — decide how a surface behaves before it is built (2026-08-25)
+
+Nothing in the chain decided an interaction. `draft-ui` locks what a screen looks like and
+explicitly freezes its variants (*"stub any mutation"*); `review-ui`, `validate-ui`, and
+`review-product-flow` all run after the build. So the shape of the interaction was settled by
+whichever agent happened to implement it. Measured: handed identical Approved requirements, an
+identical component kit, and the same locked look, two runs shipped **opposite** flows — one
+removed the rows on click with a six-second undo, the other froze the list until the call
+returned — and each wrote its own answer up as the one the requirements forced.
+
+`draft-ux` (craft, model-invoked, **v1.0.0**) builds **2–3 runnable takes of one flow** that
+differ in *when the world changes*, on the screen's real components, hands them over with a
+recommendation, and locks only on the user's go — into `ui-brief.md`'s `## Interaction`, one
+`###` per moment in the same five slots the visual sections use, so `design-solution` Step 2b
+lifts it with no change to that skill. Every simulated delay and window carries a reason and an
+answer for the call that runs long; at cleanup the losing takes *and the winner* are deleted.
+
+The gate cost three RED/GREEN iterations. Each one closed a rationalization the transcript handed
+over verbatim: *"you told me to decide, not hand you a menu"*, then *"I wrote the deviation into
+Amendments, so it stays overrulable"*, then *"you're not available… so I wrote it into the brief
+now so the implementer has it regardless."* The absent user is now named as the case the rule
+exists for. Trigger test 18/18 against `draft-ui`, `review-ui`, `run-spike`, `validate-ui`,
+`review-product-flow`, `craft-page`, `design-solution`, `root-cause`, `amend-feature`.
+
+Three things the baseline did **not** fail at were left unwritten: a component-reuse ladder, a
+focus-and-keyboard slot, and a per-stack adapter matrix (htmx / MSW / Storybook). The research
+behind all three, graded by evidence strength, is in `docs/design/draft-ux-sources.md`.
+
+### `draft-ui` v1.1.0 — compose the kit before writing chrome (2026-08-25)
+
+Variants were grounded in the repo's *tokens* but not its *components*. In a fixture whose
+`components/` kit ships `UI.button` and a `.btn:focus-visible` ring, one baseline run in two
+hand-rolled **19 buttons** against a single `UI.button` call, re-declared the kit's chrome under
+variant names (`.fbB__saveConfirm` is `.btn--primary` with a different radius), and gave focus
+rings to its `<select>`s only — leaving all 19 controls without one. The other run did none of
+this: variance, which is the signal that a form is not binding.
+
+§1 now grounds on the kit alongside the tokens, §2 requires controls the kit ships to be composed
+from it, and §4's `Components:` slot must come out in the ladder form `design.md` expects
+(`rung N — <target>`, or `new (rung 7)` + reason) rather than prose — a lock in the RED run had
+named `UI.button`/`UI.badge` in its Grounding line while describing its controls in prose the
+lift step cannot use. GREEN 2/2 on the build rule, and the resumed lock produced the ladder form.
+
 ### `/forge-prompt` — forge the ask into a prompt; `solve-problem` removed (2026-08-25)
 
 The entry ramp never fixed *what* a request meant. A slot-presence pass over the four on-ramps at

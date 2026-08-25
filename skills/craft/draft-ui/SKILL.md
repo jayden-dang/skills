@@ -1,6 +1,6 @@
 ---
 name: draft-ui
-version: 1.0.1
+version: 1.1.0
 description: Use when a screen or feature's look and feel needs deciding with
   the user before it is specified or built — "what should this look like",
   "show me a few design directions", "make some variants and let me pick", a
@@ -23,8 +23,10 @@ re-deciding.
 ## 1. Ground, then plan N directions
 
 Gather the grounding: the user's own words; an Approved
-`docs/standards/design-tokens.md` or the repo's token/theme files; the
-feature's requirements when they exist. Default **3 variants, never more
+`docs/standards/design-tokens.md` or the repo's token/theme files; **the
+component kit screens already build from** — the render helpers and classes in
+a `components/` folder, a UI package, a design system; the feature's
+requirements when they exist. Default **3 variants, never more
 than 5**.
 
 REQUIRED SUB-SKILL: use `craft-page` — its §2 plan discipline runs once
@@ -52,6 +54,14 @@ under evaluation, hidden in production builds. No app yet → a `draft-ui/`
 folder of standalone real-HTML pages sharing one token sheet, switched by the
 same bar on a hash param, served statically. Real content throughout, never
 lorem. Variants stay read-only — stub any mutation.
+
+**Compose the kit before writing chrome.** Where the repo already ships a
+control — button, badge, toast, field — every variant uses it: its render
+helper or its class, never a re-declaration of its padding, radius, and border
+under a variant-scoped name. A re-declared control looks right in a screenshot
+and silently drops what the kit carries with it — the focus ring, the disabled
+state, the busy state. New markup is for patterns the kit does not have; the
+plan names those the way it names a token extension.
 
 Every choice in a variant's CSS traces to its plan; a variant sharing every
 choice with its neighbor betrays step 1.
@@ -83,7 +93,11 @@ cites:
 
 - **Decision:** winner or hybrid in one line, plus why in the user's words
 - **Grounding:** token source of record
-- Per surface: **Layout / Components / States / Type & color / A11y**
+- Per surface: **Layout / Components / States / Type & color / A11y** —
+  `Components:` names the kit pieces the direction uses and what is genuinely
+  new, in the ladder form `design.md` expects (`rung N — <target>`, or
+  `new (rung 7)` + reason). Prose that describes the controls without saying
+  which already exist is a slot the design cannot lift
 - **Signature:** the kept move
 - **Amendments:** what the user changed during review, as decided constraints
 
@@ -107,6 +121,7 @@ the brief waits in `docs/design/` for the feature that adopts it.
 
 | Thought | Reality |
 |---|---|
+| "Reusing the same button across variants would make them look alike" | Divergence is layout, palette-spend, type, density. Three re-implementations of one button is not three directions — it is three chances to lose the focus ring the kit already had |
 | "Three layouts on the house palette are three directions" | Identical palette, type, and density is one direction laid out three ways. Each plan names its own spends |
 | "The commit message records the decision" | A commit carries the pick; the direction's type, density, states, and signature die there. The brief is what the build reads |
 | "User picked — skip the amendments round" | The pick usually arrives with amendments. Apply, show once more, lock on their word |
@@ -117,6 +132,7 @@ the brief waits in `docs/design/` for the feature that adopts it.
 
 - A variant without its own named plan (Color / Type / Layout / Signature)
 - All variants sharing every palette, type, and density choice
+- A variant-scoped class that re-declares a control the kit already ships — or a hand-rolled control with no `:focus-visible` where the kit's has one
 - A lock without the user's explicit go
 - The decision surviving only in a commit message or ADR — no ui-brief
 - Losing variants or the switcher left in the tree

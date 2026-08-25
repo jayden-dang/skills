@@ -55,6 +55,11 @@ better specified than it arrived.
 
 ## RED-3 — external measurement (third-party, not runs of this repo)
 
+Full URLs, per-source evidence strength (read / summary-only / failed), and the open
+verification work are in `docs/design/forge-prompt-sources.md`. Two of the anchoring
+citations below and in RED-4 rest on search summaries rather than the source text; that
+file says which.
+
 - **UnderSpecBench** (arXiv 2607.02294), five agent×model configurations across OpenCode, Claude
   Code, and Codex: **55.8–67.8%** of acted runs violated at least one action boundary. Safe success
   collapses **67.9% → 8.6%** and wrong-target rises **9.6% → 75.1%** as target certainty degrades —

@@ -95,7 +95,9 @@ A `Satisfies:` line pointing at a requirement whose wording is wrong makes the t
 
 Written for an implementer who is skilled but knows **nothing** about this codebase or problem domain, and will see **only their own task** plus the Global Constraints. That constraint drives everything:
 
-- **Global Constraints**, copied verbatim from the design and `docs/agents/project.md`. Every task's requirements implicitly include this section, and it travels with each task brief.
+- **Global Constraints**, recorded by canonical source path and content hash.
+  Every task references this source; execution briefs carry only the compact
+  task delta.
 - **File structure first.** Map every file the plan creates or modifies, with one-line responsibilities, before writing any task. A file not in the map should not be touched.
 - **Tasks as vertical slices** — demoable end to end, not horizontal layers. If a slice needs prefactoring, that prefactoring is its own earlier task: *make the change easy, then make the easy change.*
 - Right-sizing: a task is the **smallest unit that carries its own test cycle and deserves its own review verdict.** Split only where a reviewer could reject one task while approving its neighbor.

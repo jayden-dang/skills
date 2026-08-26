@@ -13,11 +13,12 @@ Subagent (general-purpose):
 
     ## Your Requirements
 
-    Read [BRIEF_FILE] before anything else. That brief IS your requirements:
-    it holds the full task text and the Global Constraints that bind every
-    task, with the exact values, paths, and signatures to use verbatim. The
-    `_Requirements:_` footer at its end lists the requirement IDs this task
-    exists to satisfy.
+    Read [BRIEF_FILE] before anything else. That brief IS your task
+    requirements: it holds the task text, the canonical Global Constraints
+    path/hash, exact values, paths, and signatures to use, and the
+    `_Requirements:_` footer. Read the Global Constraints section from its
+    canonical path when a value is needed; do not ask the controller to paste a
+    second copy.
 
     ## Context
 
@@ -25,6 +26,13 @@ Subagent (general-purpose):
     decisions from earlier tasks the brief cannot know.]
 
     Work from: [DIRECTORY]
+    Feature capsule: [FEATURE_CAPSULE] (hash [CAPSULE_HASH])
+    Task delta: [TASK_DELTA] (hash [TASK_DELTA_HASH])
+    Worker lease: [WORKER_LEASE_ID]
+
+    When this is a resumed lease, retain the role contract and capsule
+    understanding. Re-read only the task delta and new evidence; do not
+    reconstruct the whole feature from the prior transcript.
 
     ## Route Task First
 
@@ -155,9 +163,11 @@ Subagent (general-purpose):
     - What you implemented (or attempted, if blocked)
     - The task's requirement IDs and how each is satisfied and tested
     - TDD evidence:
-      - RED: the command run, the failing output before implementation, and
-        why that failure was the expected one
-      - GREEN: the command run and the passing output after implementation
+      - RED: command, failing output, and why the failure was expected
+      - GREEN: command, exit code, passing output, warning/error counts,
+        revision, duration, and content hash
+      - Raw logs: paths under `.skills/<CODE>/` (open only when a reviewer
+        needs them; never paste routine logs into the report)
     - Visual check — REQUIRED: screenshot path(s) plus one line on what
       you judged and fixed; or the exact words `no render surface` when
       the diff touches nothing a browser renders; or `cannot render: <why>`
@@ -168,6 +178,8 @@ Subagent (general-purpose):
       incomplete)
     - Deviations: path to `.skills/<CODE>/implementation-notes.md`, or the exact word
       `none` if no deviation occurred
+    - Lease: worker lease ID, `continued` or `rotated`, and rotation reason if
+      a hard trigger fired
 
     Your final message is 15 lines or fewer — the detail lives in the report
     file:

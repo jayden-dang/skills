@@ -1,5 +1,16 @@
 # `plan-tasks` — pressure-test record
 
+## RED — continuous scheduler metadata (baseline, 2026-08-26)
+
+The template had no `Max-concurrency` field and described no-edge tasks only as
+one parallel wave, leaving serial fallback and isolation safety implicit.
+
+## GREEN — continuous scheduler metadata (structural, 2026-08-26)
+
+The template now records `Max-concurrency: auto` and states that no-edge tasks
+may share a ready set only when worktree isolation is safe. Live routing
+pressure was unavailable; structural verification is recorded here.
+
 Process: `author-skills` Iron Law. This file is the evidence home for Exit + dead
 fields; body rules (vertical slices, coverage) rely on guide/examples and
 sibling skills' evidence unless a new failure appears.

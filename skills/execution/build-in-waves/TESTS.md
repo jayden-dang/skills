@@ -1,5 +1,82 @@
 # `build-in-waves` / implementer-prompt — deviation log
 
+## GREEN — unified scheduler contract (structural, 2026-08-26)
+
+Fresh frontmatter/eval lint returned exit 0. A repository search found the
+continuous scheduler, ready-set lanes, shared task lifecycle, worker/reviewer
+leases, effective concurrency, and rotation contracts. Live multi-model
+pressure execution was unavailable; this is structural GREEN only.
+
+## RED — description trigger coverage (baseline, 2026-08-26)
+
+The description had no recorded should-fire / should-not-fire cases in
+`eval.json`. Routing quality was therefore unmeasured against
+`build-by-story`, `build-inline`, and `plan-tasks`.
+
+## GREEN — description trigger coverage (paper, 2026-08-26)
+
+The trigger matrix is recorded as runnable eval input. Live multi-model routing
+remains pending because this session has no model-router connector.
+
+**Should fire:** "execute the approved tasks.md continuously with subagents";
+"run independent implementation tasks in dependency waves"; "resume the
+continuous build after compaction".
+
+**Should not fire:** "hold after each story for my review" → `build-by-story`;
+"implement the plan myself inline" → `build-inline`; "write the tasks.md plan"
+→ `plan-tasks`.
+
+## RED — unified continuous scheduler and bounded leases (current v1.4.0)
+
+**Protocol:** `author-skills` / `pressure-testing.md`
+**Run mode:** controller structural baseline; live external subagent connector
+was unavailable in this session. This RED records failures observable in the
+current skill text and existing Klynt progress, not a claimed multi-model pass.
+**Pressure stack:** demo deadline + sunk cost in a long serial plan + authority
+request to "just keep the same agent" + token/cost pressure.
+
+**Scenario.** A 16-task approved `Execution-mode: continuous` plan is ordered in
+one checkout. Tasks 1–4 are tightly related and each has a clean task report;
+the user asks the controller to reuse one worker and reviewer for that semantic
+unit, keep every task's Standards/Spec verdict, avoid crossing a provider's
+long-context price cliff, and continue without a human pause. Two later tasks
+are disjoint and have usable worktree isolation.
+
+**Current-version observations (verbatim skill behavior).**
+
+- `build-in-waves/SKILL.md` says: **“Dispatch a FRESH implementer”** for every
+  task; it has no worker lease or reviewer lease contract.
+- The skill's parallel branch is a separate wave fan-out/merge recipe; there is
+  no unified ready-set scheduler with an explicit effective concurrency or a
+  runtime degradation record.
+- `execute-common/SKILL.md` owns tracker/workspace/ledger/close steps but has no
+  capability snapshot, provider/model pricing policy, projected cost check, or
+  machine-readable execution sidecar.
+- The task brief and reviewer dispatch still copy **Global Constraints**
+  verbatim, and the reviewer receives the raw report/diff contract rather than
+  a compact evidence manifest plus on-demand raw logs.
+- `build-by-story/SKILL.md` repeats the per-task implementer/reviewer loop rather
+  than loading one shared task-lifecycle home.
+
+**Failure class.** Knows the intended optimization but the current recipe cannot
+  express it: the agent either starts a fresh worker per task, crosses a
+  provider/model price cliff without a preflight decision, or invents a
+  harness-specific continuation rule. The branch also makes the same lifecycle
+  decision in two skill files, so the fix can drift.
+
+**Rationalizations captured.**
+
+| Pressure | Current tempting choice | Why it fails |
+|---|---|---|
+| Demo deadline | Keep fresh dispatches because the loop is already written | Pays startup/context rediscovery repeatedly and ignores the requested lease boundary. |
+| Sunk cost | Let the current context continue past the provider threshold | Cache/context history does not prove the next request remains below a price cliff. |
+| Authority | Treat “same agent” as an informal exception outside the skill | A lease must preserve per-task commits, reports, evidence, and verdicts. |
+| Mixed dependency graph | Choose either all-serial or all-parallel manually | Independent ready tasks can wave while each dependency lane stays sequential. |
+
+**RED verdict:** fail. The current skill set has no deterministic contract for
+runtime binding, compact payloads, bounded worker/reviewer leases, price-cliff
+rotation, or one shared task lifecycle.
+
 ## Edit — polish predicate + execute-common (2026-08-16)
 
 **Protocol:** `author-skills` (form match: condition → observable predicate;

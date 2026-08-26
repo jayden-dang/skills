@@ -77,7 +77,8 @@ It is not in the numbered list, but it shapes more of the architecture than any 
 Context windows fill. Compaction deletes. Subagents do not inherit session history. Every one of these is treated as a fact to design around rather than a limitation to complain about:
 
 - Discovery through planning happens in **one unbroken context window**; if the window fills before the plan is done, [`write-handoff`](../skills/write-handoff.md) moves the work to a fresh session.
-- `build-in-waves` gives each task a **fresh subagent** whose world is a generated brief file. The controller's context stays reserved for coordination.
+- `build-in-waves` gives each semantic lane a **bounded worker lease** whose
+  world is a generated capsule plus task delta. Hard triggers rotate the lease.
 - Bulk artifacts — briefs, diffs, reports — travel between agents **as file paths under `.skills/`**, never as pasted text.
 - Progress is appended to a **ledger on disk**, and after compaction the ledger and `git log` outrank the agent's own recollection. The single most expensive failure this system has recorded is a controller that lost its place and re-dispatched an entire completed task sequence.
 - Heavy reading is delegated to a **scan subagent** that returns a findings digest, not a file dump.

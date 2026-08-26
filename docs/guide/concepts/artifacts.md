@@ -45,7 +45,9 @@ It also carries the **Seams for testing** table, which is a contract rather than
 
 **`tasks.md`** — written for an implementer who is skilled but knows *nothing* about this codebase and will see only their own task plus the Global Constraints. That constraint drives its shape:
 
-- A **Global Constraints** section copied verbatim from the design and `docs/agents/project.md`. It travels with every task brief.
+- A canonical **Global Constraints** source recorded by path and content hash.
+  Briefs and reviewer prompts carry that reference plus a compact task delta;
+  they do not duplicate the same constraint prose.
 - A **File Structure** map written before any task. A file not in the map should not be touched.
 - Tasks as **vertical slices** — demoable end to end. If a slice needs prefactoring, that prefactoring is its own earlier task ("make the change easy, then make the easy change").
 - Per task: **Files** (create/modify/test), **Interfaces** (Consumes / Produces — how an isolated implementer learns what to call things), bite-sized TDD **Steps** with exact commands and expected output, and a `_Requirements: CODE-N.M_` **footer**.

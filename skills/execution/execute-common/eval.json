@@ -68,5 +68,41 @@
       "only evidence bound to the current HEAD fills the receipt",
       "a missing or stale producer is rerun without replaying current evidence"
     ]
+  },
+  {
+    "eval_id": 7,
+    "eval_name": "runtime-snapshot-binds-active-harness",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § RED — runtime binding and price-aware lease preflight",
+    "prompt": "Claude authored the plan, but Grok/OpenCode is executing it. Start an execute-family session.",
+    "assertions": [
+      "execution-session.json is written before the first dispatch",
+      "the snapshot records active harness, provider/model, resume/fork, isolation, cache, telemetry, and pricing capability values",
+      "unavailable capability values are recorded as unknown rather than inferred"
+    ]
+  },
+  {
+    "eval_id": 8,
+    "eval_name": "lease-preflight-rotates-on-price-cliff",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § RED — runtime binding and price-aware lease preflight",
+    "prompt": "A resumed lease has cached history but the projected next request crosses the provider/model's long-context price threshold.",
+    "assertions": [
+      "the controller estimates the next request before resuming",
+      "the lease rotates before dispatch and records the policy source and reason",
+      "cache is not treated as proof that repricing cannot occur"
+    ]
+  },
+  {
+    "eval_id": 9,
+    "eval_name": "effective-concurrency-degrades-safely",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § RED — runtime binding and price-aware lease preflight",
+    "prompt": "The plan has independent ready tasks, but the active harness cannot prove worktree isolation.",
+    "assertions": [
+      "effective_concurrency is set to one",
+      "the degradation is recorded in execution-session.json",
+      "the approved execution mode is not silently rewritten"
+    ]
   }
 ]

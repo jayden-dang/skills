@@ -1,6 +1,9 @@
 # `build-in-waves`
 
-> Drive an approved **continuous** plan to completion: independent tasks run in dependency-ordered waves, one fresh implementer subagent per task, a two-verdict review of each task's diff, a whole-branch review at the end — **no human pause between tasks**.
+> Drive an approved **continuous** plan to completion: one dependency-aware
+> scheduler uses bounded worker/reviewer leases, serial lanes for overlap, and
+> parallel ready sets only for disjoint isolated surfaces; every task gets a
+> two-verdict review and the branch a whole-branch review — **no human pause**.
 
 |  |  |
 |---|---|
@@ -19,7 +22,10 @@ An approved `tasks.md` has **`Execution-mode: continuous`** and subagent waves a
 
 Three ideas run underneath the whole skill:
 
-**Fresh subagents per task.** Each worker receives exactly the context its task needs and nothing else, so it stays focused; the controller's own context stays reserved for coordination. Subagents never inherit session history — the controller constructs their world deliberately, one dispatch at a time. Bulk artifacts (briefs, reports, diffs) travel between agents as **file paths under `.skills/`**, never as pasted text. Pasting a brief or a diff into a dispatch would burn the controller's context on material the worker can read from disk itself; passing the path keeps the coordinator lean enough to run a long plan without losing the thread.
+**Bounded leases.** Each semantic lane receives exactly the context it needs;
+the worker may resume while context, pricing, harness, and scope remain safe.
+Hard triggers rotate to a fresh worker or reviewer. Bulk artifacts travel as
+**file paths under `.skills/`**, never as pasted text.
 
 **Continuous execution.** The user asked for the plan to be executed, so it gets executed. The controller does not pause between tasks to ask "should I continue?" or post progress summaries — check-ins waste the user's time. There are exactly three legitimate stops:
 
@@ -37,7 +43,10 @@ Six steps run once before any task:
 
 1. **Workspace check.** Never begin implementation on main/master without the user's explicit consent. If no isolated workspace exists, [`isolate-workspace`](isolate-workspace.md) is a required sub-skill. Done when you are on a dedicated branch with a clean baseline.
 2. **Ledger check.** Make `.skills/` git-ignored (an idempotent line-presence check, since a trailing-slash pattern won't match until the directory exists), then read `.skills/<CODE>/progress.md` if present. Every task it marks complete *is* complete — resume at the first task it does not list.
-3. **Read the plan.** Read `tasks.md` in full, once, and copy the **Global Constraints** section verbatim — it gets pasted into every reviewer dispatch unmodified. If `docs/agents/project.md` is missing, say so, suggest `configure-repo`, and take verify commands from the plan's Global Constraints instead.
+3. **Read the plan.** Read `tasks.md` in full, once, record the canonical
+   Global Constraints path and hash, and create the runtime sidecar. If
+   `docs/agents/project.md` is missing, say so, suggest `configure-repo`, and
+   take verify commands from the plan's source instead.
 4. **Todos.** One todo per task **and** one terminal **Close branch** todo
    (shared close sequence in `skills/execution/execute-common/SKILL.md`).
 5. **Pre-flight plan review.** Scan the plan once for internal defects — tasks that contradict each other or the Global Constraints, and anything the plan explicitly mandates that a reviewer would flag as a defect (an assertion-free test, a copy-pasted logic block). **Batch ALL findings into ONE question to the user**, each shown beside the plan text that mandates it, asking which governs — before any dispatch. One interrupt, not one per discovery mid-run. A clean scan needs no comment.
@@ -48,12 +57,17 @@ Six steps run once before any task:
 Eleven steps run for each Task N. The precise ones are load-bearing:
 
 1. **Record the base.** `BASE=$(git rev-parse HEAD)` — before dispatch, always.
-2. **Build the brief.** Copy Task N plus the Global Constraints section out of `tasks.md` into `.skills/<CODE>/task-N-brief.md` verbatim — nothing else from the plan — so the worker's brief holds exactly its own task and the project-wide rules.
-3. **Dispatch a fresh implementer** using `implementer-prompt.md`. The dispatch contains exactly: one line placing the task in the project; the brief path, introduced as "this brief is your requirements — read it before anything else"; interfaces and decisions from earlier tasks the brief cannot know; the controller's resolution of any ambiguity it spotted in the brief; the report path; and **the model, stated explicitly**. Never session history, never the plan file. Exact values (numbers, magic strings, signatures) live only in the brief.
+2. **Build the brief.** Record Task N, the canonical Global Constraints
+   source path/hash, the feature capsule, and the task delta in
+   `.skills/<CODE>/task-N-brief.md` — nothing else from the plan.
+3. **Acquire or resume a worker lease** using `implementer-prompt.md`; rotate
+   fresh at a semantic boundary or hard trigger. The dispatch carries the
+   capsule path/hash, task delta, lease ID, report path, and **the model stated
+   explicitly** — never session history or the whole plan.
 4. **Answer questions.** If the implementer asks anything, answer completely before letting it proceed. Never rush it into implementation.
 5. **Handle the status** per the table below. Done when the status is `DONE` and the work is committed.
 6. **Package the diff.** Assemble `.skills/<CODE>/review-<base7>..<head7>.diff` from the commit list (`git log $BASE..HEAD`), a diffstat, and the full `git diff -U10 $BASE HEAD`. BASE is the sha from step 1 — **never `HEAD~1`**, which silently drops every commit of a multi-commit task except the last.
-7. **Dispatch a task reviewer** using `task-reviewer-prompt.md` with the brief path, the report path, the diff package path, the Global Constraints verbatim, and an explicit model.
+7. **Dispatch a task reviewer** using `task-reviewer-prompt.md` with the brief path, the report path, the diff package path, the canonical Global Constraints path/hash, and an explicit model.
 8. **Fix loop.** Critical or Important findings are dispatched to a **fix subagent** (which re-runs the covering tests — named in the dispatch — and appends results to the same report), then **re-review**. Repeat until the reviewer approves. **Never fix findings in the controller's own context — that pollutes it.** Minor findings get recorded in the ledger for the final review to triage; an unrecorded roll-up is a silent discard.
 9. **Resolve ⚠️ items.** Requirements the reviewer could not prove-claim from the diff (they live in unchanged code or span tasks) come back flagged. The controller holds the plan context the reviewer lacks, so it confirms each itself; a real gap counts as a failed spec verdict and returns to step 8.
 10. **Ledger.** Append one line to `.skills/<CODE>/progress.md`: `Task N: complete (commits <base7>..<head7>, review clean)`, and mark the todo done.
@@ -98,7 +112,7 @@ The reviewer is only useful if it is left free to judge, so the controller's dis
 
 - **Never pre-judge findings.** No "do not flag X", no "treat it as Minor at most", no pre-rated severities — those exist to spare the controller a review loop, and they defeat the review.
 - **A plan-mandated defect is still a finding.** The plan does not grade its own work, so the finding and the mandating plan text go to the user, who decides which governs. Never dismiss the finding, and never dispatch a fix that contradicts the plan without asking.
-- **Global Constraints are the attention lens.** They go in verbatim — binding requirements, exact values and formats and stated relationships — never process rules (the template carries those) and never the controller's pre-judgments.
+- **Global Constraints are the attention lens.** The reviewer receives their canonical source path/hash plus the task delta — binding requirements, exact values, formats, and relationships — never process rules or controller pre-judgments.
 - **No open-ended directives** ("check every call site", "stress-test if useful") without a concrete, task-specific reason.
 - **Do not ask a reviewer to re-run tests** the implementer already ran on the same code — the report file is the test evidence.
 
@@ -148,7 +162,9 @@ Throughout, it treats every line of the implementer's report as an **unverified 
 
 The controller assembles both bundles by hand, and that keeps all of this cheap:
 
-- The **brief** is just Task N and the Global Constraints copied out of `tasks.md` into `.skills/<CODE>/task-N-brief.md`, so the worker never sees the rest of the plan.
+- The **brief** identifies Task N, the canonical Global Constraints source
+  path/hash, the feature capsule, and the task delta; the worker never receives
+  the rest of the plan.
 - The **diff package** bundles the commit list, a diffstat, and the full `git diff -U10` between BASE and HEAD into a single `.skills/<CODE>/review-<base7>..<head7>.diff` file — the wide context is why the reviewer rarely needs to open a file separately.
 
 ## Worked example

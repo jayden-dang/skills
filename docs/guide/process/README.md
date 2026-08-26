@@ -122,7 +122,11 @@ Two facts about context shape how you run this chain, and violating either is ex
 
 **Discovery through planning belongs in one unbroken context window.** `frame-change` → `specify-behavior` → `design-solution` → `plan-tasks` is a single continuous act of thinking; each step's output depends on decisions and code knowledge accumulated in the previous ones. If the window is filling before the plan is done, do not push through — run `/write-handoff`, which writes a resumable document to the OS temp directory, and start a fresh session from it.
 
-**Execution is the opposite.** Subagent routes (`build-in-waves`, `build-by-story`) isolate *per task by design*: each task gets a fresh implementer whose world is a generated brief file. The controller stays for coordination; progress goes to `.skills/progress.md`. `build-inline` keeps the controller as implementer but still uses the ledger so compaction cannot re-run finished work.
+**Execution is the opposite.** Subagent routes (`build-in-waves`,
+`build-by-story`) use bounded semantic worker leases: serial lanes protect
+overlap, while disjoint isolated ready sets may run together. The controller
+stays for coordination; progress goes to `.skills/progress.md` and hard
+triggers rotate the lease. `build-inline` keeps the controller as implementer.
 
 ## Where a chain can restart
 

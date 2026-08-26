@@ -18,7 +18,7 @@ An approved `tasks.md` has **`Execution-mode: story-unit`**. Continuous subagent
 ## Shape
 
 1. **Derive** review units from live requirement story IDs (never PM "Human review order" lists).
-2. For each unit: run the per-task subagent loop (brief → implementer → two-verdict review → ledger).
+2. For each unit: run the shared task lifecycle (task delta → worker lease → two-verdict review → ledger) through the dependency-aware scheduler.
 3. **Unit barrier:** unit agent review → STOP with a required summary contract → wait for human unlock.
 4. Unlock: `continue` = next unit only; `stop stopping` / `just run it all` = write `Execution-mode: continuous` into `tasks.md`, then hand remaining work to `build-in-waves`.
 5. After the last unit: whole-branch agent review still runs — human unit reviews are not a substitute.

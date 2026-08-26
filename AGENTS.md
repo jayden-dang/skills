@@ -217,17 +217,19 @@ never softens the gates.**
 
 ## 6. Subagent Rules
 
-**Why subagents:** each worker receives exactly the context its task needs and
-nothing else. Subagents never inherit session history — you construct their
-world. Bulk artifacts travel as file paths under `.skills/`, never as pasted text.
+**Why subagents:** each worker receives a bounded role contract, feature
+capsule, and task delta. A worker or reviewer may resume inside a valid semantic
+lane lease; a hard trigger rotates it to a fresh context. Bulk artifacts travel
+as file paths under `.skills/`, never as pasted text.
 
 **Task hand-off protocol:**
 
 1. Record `BASE=$(git rev-parse HEAD)` before dispatch.
-2. Build the brief: Task N's block plus verbatim Global Constraints into
-   `.skills/<CODE>/task-N-brief.md`.
-3. Dispatch a fresh implementer with the brief path, interfaces from prior tasks,
-   the report path, and an explicit model tier.
+2. Build the brief: Task N's block plus a path/hash reference to canonical Global
+   Constraints into `.skills/<CODE>/task-N-brief.md`.
+3. Dispatch or resume the lane's worker with the feature capsule, task delta,
+   lease ID, report path, and explicit model tier. Start fresh at a semantic
+   boundary or hard lease trigger.
 4. On DONE, package the diff into `.skills/<CODE>/review-<base7>..<head7>.diff`
    over `$BASE..HEAD` — never `HEAD~1`.
 5. Two-verdict review: **Standards** (repo conventions + the code-smell baseline)
@@ -355,7 +357,7 @@ engineering sessions, not life-vault management.
 - Quote a path-scoped test run's totals as the suite's
 - Skip the tier-decision gate and start coding (Gate 1)
 - Auto-invoke a user-invoked skill, or direct another skill to invoke one
-- Run two implementers on the same plan in parallel
+- Run two implementers in the same worktree or on overlapping file surfaces in parallel
 - Hand a subagent the whole plan file — the brief is its world
 - Use `HEAD~1` as a review base instead of the recorded `BASE`
 - Skip re-review after a fix, or accept a review missing either verdict

@@ -1,5 +1,34 @@
 # `execute-common` — sample predicate (v1.2.0)
 
+## GREEN — runtime binding and price-aware preflight (structural, 2026-08-26)
+
+Fresh frontmatter/eval lint returned exit 0. The skill now names
+`execution-session.json`, `pricing_policy`, `effective_concurrency`, lease, and
+rotation contracts. No live provider telemetry connector was available, so
+pricing behavior remains a structural contract pending live retest.
+
+## RED — runtime binding and price-aware lease preflight (current v1.6.0)
+
+**Protocol:** `author-skills` / `pressure-testing.md`
+**Run mode:** structural baseline; no live external subagent connector was
+available in this session. **Pressure stack:** harness switch after planning +
+long serial work + provider price threshold + user asks to avoid another fresh
+start.
+
+**Scenario.** Claude authored the approved plan; Grok/OpenCode executes it. The
+controller has a worker/reviewer lease with a cached prefix and the next prompt
+is projected past the provider's long-context threshold. The user asks the
+controller to keep going and preserve the cache.
+
+**Current-version failure.** Session preflight checks only tracker sync and
+workspace/branch. No runtime capability snapshot records the active harness,
+provider/model, cache telemetry, resume/fork support, or pricing policy. No
+lease preflight compares continuing the session with starting a fresh role
+context, and no sidecar records the rotation reason or effective concurrency.
+
+**RED verdict:** fail. The shared recipe cannot express harness-neutral runtime
+binding, price-cliff rotation, or a machine-readable execution receipt.
+
 **Roster:** grok-4.6 (primary), grok-4.5 (weaker). Combined pressures: EOD +
 "don't ping me" / "land will do the rest" (S1) and "always name so we cannot
 forget" (S2). Control = v1.1.0.

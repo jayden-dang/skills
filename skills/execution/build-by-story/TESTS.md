@@ -1,5 +1,28 @@
 # `build-by-story` — test evidence
 
+## GREEN — shared task lifecycle inside review units (structural, 2026-08-26)
+
+Fresh frontmatter/eval lint returned exit 0. The skill delegates task execution
+to the shared lifecycle, reuses a clean single-task verdict, and keeps
+multi-task synthesis plus the human unit barrier. Live multi-model execution
+was unavailable; this records structural GREEN only.
+
+## RED — shared continuous task lifecycle (current v1.2.0)
+
+**Protocol:** `author-skills` / `pressure-testing.md`
+**Pressure stack:** human waiting at the unit gate + serial tasks share one
+semantic lane + a later independent task is safe to parallelize + token budget
+pressure.
+
+**Current-version failure.** The per-unit section repeats the implementer,
+reviewer, diff, and fix-loop recipe locally and explicitly says parallel waves
+inside a unit are out of scope. A worker/reviewer lease cannot be reused through
+related tasks without inventing a second contract, and the same task lifecycle
+can drift from `build-in-waves`.
+
+**RED verdict:** fail. Story-unit mode needs to load the shared task lifecycle
+and scheduler, then add only its derived-unit and human-unlock barrier.
+
 **Protocol:** `author-skills` / `pressure-testing.md`  
 **Scenario files:** removed in `2338b34` ("remove test scenarios") — the runnable prompts now live in `eval.json` beside this file.  
 

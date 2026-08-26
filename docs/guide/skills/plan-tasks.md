@@ -13,21 +13,21 @@
 
 ## When it fires
 
-After the design is Approved and before any implementation. It turns `design.md` into `tasks.md` — the breakdown into buildable, test-tagged, traceable tasks. The governing constraint shapes everything: write for an implementer who is skilled but knows **nothing** about this codebase or problem domain, and who will see ONLY their own task plus the Global Constraints. Every name, path, command, and type they need must be inside the task.
+After the design is Approved and before any implementation. It turns `design.md` into `tasks.md` — the breakdown into buildable, test-tagged, traceable tasks. The governing constraint shapes everything: write for an implementer who is skilled but knows **nothing** about this codebase or problem domain, and who will see only the task delta plus references to canonical project artifacts. Every name, path, command, and type they need must be inside the task or its referenced artifact.
 
 ## The five steps
 
 Starting from `templates/tasks.md`, the skill walks five steps.
 
-1. **Header and Global Constraints** — the constraints block copied verbatim, travelling with every task.
+1. **Header and Global Constraints** — the canonical source path and content hash, referenced by every task.
 2. **File structure first** — the map that bounds what any task may touch.
 3. **Tasks as vertical slices** — each with Files, Interfaces, Depends-on, TDD steps, and a footer.
 4. **Coverage and consistency check** — the subtle one, plus an independent plan review.
 5. **Optional publish to the issue tracker**, then the exit offering three execution routes.
 
-## Global Constraints travel with every task
+## Global Constraints anchor every task
 
-The header states Goal (one sentence), Architecture (two or three sentences), and Tech Stack. Then **Global Constraints**: project-wide rules copied verbatim from the design and `docs/agents/project.md` — test, lint, and typecheck commands; naming and i18n rules; forbidden changes. Because an isolated implementer sees only their task plus this block, every task's requirements implicitly include it. This is why it is copied verbatim rather than referenced.
+The header states Goal (one sentence), Architecture (two or three sentences), and Tech Stack. Then **Global Constraints** identifies the canonical source path and content hash for project-wide test, lint, typecheck, naming, i18n, and forbidden-change rules. Every task references this source and carries only the compact delta needed for its semantic unit.
 
 ## File structure before any task
 
@@ -41,7 +41,7 @@ Each task carries five blocks:
 
 - **Files** — Create / Modify (exact paths, line ranges when known) / Test.
 - **Interfaces** — Consumes and Produces: the names and types neighboring tasks share. This is how an isolated implementer learns what to call things.
-- **Depends-on** — the earlier tasks this one truly needs (interface it Consumes, files it builds on), as `Depends-on: Task 2, Task 4` or `Depends-on: none`. This is the parallelism signal: tasks that share no files or interfaces declare no edge, so [`build-in-waves`](build-in-waves.md) runs them together in one wave. Omit the line to fall back to strict serial order. Over-declaring serializes needlessly; under-declaring is caught by the executor's disjoint-surface check before it can collide.
+- **Depends-on** — the earlier tasks this one truly needs (interface it Consumes, files it builds on), as `Depends-on: Task 2, Task 4` or `Depends-on: none`. This is the ready-set signal: tasks that share no files or interfaces may run together only when worktree isolation is safe. Omit the line to fall back to strict serial order. Over-declaring serializes needlessly; under-declaring is caught by the executor's disjoint-surface check before it can collide.
 - **Steps** — bite-sized checkboxes, 2 to 5 minutes each, following the TDD cycle: write the failing test (complete code) → run and expect the stated failure → implement (complete code) → run and expect pass → commit with an `Implements: CODE-N.M` trailer. Exact commands and expected output, every time.
 - **Footer** — `_Requirements: CODE-N.M, CODE-N.M_`, the IDs this task implements or guards. Every task has one.
 

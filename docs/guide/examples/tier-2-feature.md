@@ -199,8 +199,8 @@ Then the loop, per task:
 
 ```
 BASE=$(git rev-parse HEAD)              ← before dispatch, always
-assemble .skills/task-2-brief.md        (copy the task block + Global Constraints verbatim)
-dispatch a FRESH implementer            (model stated explicitly; mid tier — prose task)
+assemble .skills/task-2-brief.md        (task delta + Global Constraints source path/hash)
+acquire or resume a worker lease        (model stated explicitly; mid tier — prose task)
   → it reads only the brief, works test-first via tdd,
     commits with the trailer, writes .skills/task-2-report.md
     with RED and GREEN evidence, and returns DONE in ≤15 lines

@@ -1,10 +1,9 @@
 ---
 name: build-by-story
-version: 1.2.0
+version: 2.0.0
 description: Use when an approved tasks.md has Execution-mode story-unit and
-  needs human-gated review-unit execution — derived units, unit barriers,
-  mode-change write-back, resume via unit ledger lines — through whole-branch
-  review.
+  needs a human-gated review-unit execution record with derived units, bounded
+  task leases, mode-change write-back, and a whole-branch review.
 ---
 
 Ephemera paths: resolve `FEATURE_CODE` / `<CODE>` then follow `templates/skills-ephemera-paths.md` (feature root `.skills/<CODE>/`). Resolve pack seeds in this order, first path that exists: (1) `templates/` beside this SKILL.md, (2) `${CLAUDE_PLUGIN_ROOT}/templates` when that variable is set, (3) `../../../templates` relative to this SKILL.md.
@@ -13,23 +12,27 @@ Ephemera paths: resolve `FEATURE_CODE` / `<CODE>` then follow `templates/skills-
 # Build By Story
 
 Drive an approved **story-unit** plan to completion: derive review units from
-requirement stories, implement unit-by-unit with fresh subagents, stop for a
-human after each unit, resume from the unit ledger, finish with whole-branch
-review.
+requirement stories, run the shared continuous scheduler inside each unit,
+stop for a human after each unit, resume from the unit ledger, and finish with
+whole-branch review.
 
 Continuous multi-task orchestration without unit barriers is `build-in-waves`.
 Controller-implements-without-subagents is `build-inline`. Invoking this skill
 selects **story-unit** execution. If the header already says `continuous`, hand
 off to `build-in-waves`. If the user wants no subagents, name `build-inline`.
 
-**Why fresh subagents:** each worker gets only its task brief; bulk artifacts
-travel as paths under `.skills/`, never pasted session history.
+**Context rule:** workers and reviewers resume only within a valid semantic lane
+lease. Hard rotation triggers start a fresh context from the feature capsule and
+task delta; bulk artifacts travel as paths under `.skills/`, never pasted
+session history.
 
 **Shared controller recipe:** REQUIRED SUB-SKILL: use `execute-common`.
 Load `../execute-common/SKILL.md` when Setup preflight / ledger / todos or
 After the last unit starts. That file is the one home for those steps and
 for the close-sequence predicates.
-This file owns story-unit barriers, unit derivation, and the per-unit loop.
+This file owns story-unit barriers and unit derivation. Load
+`../execute-common/task-lifecycle.md` for task dispatch/review and use the
+continuous scheduler rules from `build-in-waves` inside each unit.
 
 **Narration:** at most one short line between tool calls. Ledger + tool results
 carry the record.
@@ -85,9 +88,11 @@ Align `tasks.md` to the story-unit route and continue:
 3. **Ledger check.** Apply `../execute-common/SKILL.md` **Ledger check**. Resume
    also honors complete **unit** lines — skip units already ledgered complete.
    *Done when: next task/unit is known.*
-4. **Read the plan.** Read `tasks.md` once. Copy **Global Constraints**
-   verbatim for every reviewer dispatch. If `docs/agents/project.md` is missing,
-   say so, suggest `configure-repo`, take verify commands from Global Constraints.
+4. **Read the plan.** Read `tasks.md` once. Record the canonical Global
+   Constraints path and content hash; dispatches reference it instead of
+   pasting it into every reviewer prompt. If `docs/agents/project.md` is
+   missing, say so, suggest `configure-repo`, and take verify commands from
+   Global Constraints.
    When `## Team` has roster/band, load band **packaging** only — never skip
    dual-verdict review for Solo. *Done when: constraints captured word-for-word.*
 5. **Derive units — GATE.** Load `story-unit-mode.md` beside this file. Run
@@ -98,9 +103,10 @@ Align `tasks.md` to the story-unit route and continue:
 7. **Pre-flight plan review.** One batch question for plan-internal defects
    before dispatch. Clean scan → no comment. *Done when: conflicts ruled or none.*
 8. **Unit order.** Topo-sort units (edge if any task in U depends on any task
-   in V); tie-break lowest story number. Inside a unit, order tasks by
-   Depends-on (serial default — parallel waves inside a unit are out of scope
-   for this skill). *Done when: unit sequence is fixed.*
+   in V); tie-break lowest story number. Inside each unit, use the shared
+   ready-set scheduler: serial when only one task is ready or surfaces overlap;
+   parallel only for disjoint surfaces with safe worktree isolation. *Done when:
+   unit order and each unit's effective concurrency are fixed.*
 
 ## Per-unit loop
 
@@ -108,43 +114,22 @@ For each unit U in order:
 
 ### A. Tasks in the unit
 
-For each Task N in U (Depends-on order):
-
-1. **Record base.** `BASE=$(git rev-parse HEAD)`.
-2. **Build brief.** Task N block + verbatim Global Constraints →
-   `.skills/<CODE>/task-N-brief.md`. Include relevant `**ARCH-N**` when a
-   `docs/architecture/` spine exists. WHEN preflight recorded ticket IDs,
-   list them in the brief so implementers and later `land-branch` share one
-   set.
-3. **Dispatch a FRESH implementer** using the template at
-   `../build-in-waves/implementer-prompt.md` (one home for the implementer
-   contract — do not fork it). Dispatch inventory only: one-line placement,
-   brief path as requirements, interfaces prior tasks cannot know, ambiguity
-   resolutions, report path `.skills/<CODE>/task-N-report.md`, explicit model. Never
-   session history. Never the whole plan file.
-4. **Answer questions** fully before the implementer proceeds.
-5. **Handle status** (table below). Work must be committed on DONE.
-6. **Package diff** → `.skills/<CODE>/review-<base7>..<head7>.diff`:
-   `git log $BASE..HEAD --oneline`, `git diff --stat $BASE HEAD`,
-   `git diff -U10 $BASE HEAD`. Never `HEAD~1` as base.
-7. **Task reviewer** via `../build-in-waves/task-reviewer-prompt.md` with brief,
-   report, diff package, verbatim Global Constraints, explicit model. Spine
-   present → also REQUIRED SUB-SKILL: use `review-invariants`; `violates` enters
-   the fix loop.
-8. **Fix loop.** Critical/Important → fix subagent (re-run covering tests under
-   `test-first`, append to same report) → **re-review**. Same finding survives 3
-   cycles → stop; if plan/design/requirements invalidated, REQUIRED SUB-SKILL:
-   use `reroute-plan`; else escalate. Never fix in controller context. Minors
-   → ledger for whole-branch triage.
-9. **Resolve ⚠️ items** the reviewer could not prove-claim from the diff.
-10. **Ledger task.** `Task N: complete (commits <base7>..<head7>, review clean)`.
-    Mark todo done.
+Run `../execute-common/task-lifecycle.md` for every ready task in U. The
+scheduler supplies the lane, worker/reviewer lease IDs, base revision, brief,
+report, and diff-package paths. A clean task review is ledgered before the
+unit barrier. If U contains one task, its Standards/Spec verdicts also close
+the unit; a multi-task U receives the synthesis described below.
 
 ### B. Unit barrier (after every task in U is ledgered)
 
 Load `story-unit-mode.md` **Per-unit barrier** and run it in full. The human-facing
 STOP message MUST fill every REQUIRED slot in that recipe — no freeform
 abbreviation under time pressure.
+
+For a multi-task unit, issue one unit synthesis over the clean task verdicts
+and evidence manifests before the human stop. For a single-task unit, reuse the
+task's clean Standards/Spec verdicts; do not dispatch a duplicate reviewer over
+the same scope.
 
 **Unlock:**
 

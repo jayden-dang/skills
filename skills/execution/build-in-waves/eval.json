@@ -78,5 +78,79 @@
       "no browser is launched and no screenshot is taken",
       "the report's Visual check line reads exactly `no render surface`"
     ]
+  },
+  {
+    "eval_id": 8,
+    "eval_name": "continuous-scheduler-selects-serial-or-wave",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § RED — unified continuous scheduler and bounded leases",
+    "prompt": "An approved continuous plan has one ready task in a shared checkout, then two ready tasks with disjoint Files surfaces and usable worktree isolation. Execute it under demo and token pressure.",
+    "assertions": [
+      "the one-task ready set runs serially through the shared task lifecycle",
+      "the two disjoint ready tasks may fan out in isolated worktrees",
+      "the scheduler merges only after every task in the ready set has clean Standards and Spec verdicts",
+      "the public route remains build-in-waves and no separate build-serial skill is required"
+    ]
+  },
+  {
+    "eval_id": 9,
+    "eval_name": "price-cliff-rotates-before-resume",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § RED — unified continuous scheduler and bounded leases",
+    "prompt": "A resumed worker lease's projected prompt crosses the active provider/model long-context threshold. The prefix is cached and the user asks to keep the same agent.",
+    "assertions": [
+      "the controller runs price-aware lease preflight before resuming",
+      "the lease rotates before dispatch when the policy predicts an all-token cliff or continuing is materially more expensive",
+      "the rotation reason and policy reference are recorded in the runtime sidecar",
+      "cache presence is not treated as proof that the cliff is avoided"
+    ]
+  },
+  {
+    "eval_id": 10,
+    "eval_name": "runtime-capability-degradation-is-recorded",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § RED — unified continuous scheduler and bounded leases",
+    "prompt": "A ready set contains two disjoint tasks, but the active harness cannot prove safe worktree isolation or token telemetry.",
+    "assertions": [
+      "the execution-session sidecar records unsupported or unknown capabilities explicitly",
+      "effective concurrency is reduced to one when safe isolation is unavailable",
+      "the scheduler does not silently increase concurrency or rewrite the approved execution mode"
+    ]
+  },
+  {
+    "eval_id": 11,
+    "eval_name": "shared-lifecycle-replaces-duplicated-story-loop",
+    "kind": "contract",
+    "derived_from": "SKILL.md § Continuous scheduler",
+    "prompt": "Run a story-unit task and then a continuous task.",
+    "assertions": [
+      "both routes load execute-common/task-lifecycle.md for brief, dispatch, evidence, review, fix, and ledger rules",
+      "story-unit adds only unit derivation, human unlock, and unit synthesis",
+      "single-task story units reuse the task's clean Standards and Spec verdicts instead of dispatching a duplicate reviewer"
+    ]
+  },
+  {
+    "eval_id": 12,
+    "eval_name": "trigger-fires-on-continuous-execution",
+    "kind": "trigger",
+    "derived_from": "TESTS.md § GREEN — description trigger coverage",
+    "prompt": "execute the approved tasks.md continuously with subagents",
+    "assertions": ["build-in-waves is selected"]
+  },
+  {
+    "eval_id": 13,
+    "eval_name": "trigger-yields-to-story-route",
+    "kind": "trigger",
+    "derived_from": "TESTS.md § GREEN — description trigger coverage",
+    "prompt": "hold after each story for my review",
+    "assertions": ["build-by-story is selected rather than build-in-waves"]
+  },
+  {
+    "eval_id": 14,
+    "eval_name": "trigger-yields-to-inline-route",
+    "kind": "trigger",
+    "derived_from": "TESTS.md § GREEN — description trigger coverage",
+    "prompt": "implement the plan myself inline",
+    "assertions": ["build-inline is selected rather than build-in-waves"]
   }
 ]

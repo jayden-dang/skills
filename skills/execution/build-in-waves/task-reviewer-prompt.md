@@ -21,12 +21,22 @@ Subagent (general-purpose):
     Read the task brief: [BRIEF_FILE]. Its `_Requirements:_` footer names the
     requirement IDs this task must satisfy.
 
-    Global Constraints binding this task (verbatim from the plan):
-    [GLOBAL_CONSTRAINTS]
+    Global Constraints binding this task:
+    Canonical path: [GLOBAL_CONSTRAINTS_PATH]
+    Content hash: [GLOBAL_CONSTRAINTS_HASH]
+    Read that section when a concrete constraint is needed. Do not rely on a
+    second pasted copy in this prompt.
 
     ## What the Implementer Claims
 
     Read the implementer's report: [REPORT_FILE]
+
+    Read the compact evidence manifest in that report before opening raw logs.
+    It should name command, exit code, warning/error counts, revision, duration,
+    and content hash. Open a raw log only for a named mismatch, missing proof,
+    warning, or finding that cannot be judged from the manifest.
+
+    Reviewer lease: [REVIEWER_LEASE_ID]
 
     Treat every line of it as an unverified claim — it may be incomplete,
     inaccurate, or optimistic. Verify against the diff. Rationales are claims
@@ -141,14 +151,15 @@ Subagent (general-purpose):
     ### Assessment
     Task quality: Approved | Needs fixes
     Reasoning: [1–2 sentences]
+    Lease: [REVIEWER_LEASE_ID] — continued | rotated; name the trigger if rotated
 ```
 
 **Placeholders:**
 - `[MODEL]` — required on every dispatch
 - `[BRIEF_FILE]` — the same brief the implementer worked from (`.skills/<CODE>/task-N-brief.md`)
-- `[GLOBAL_CONSTRAINTS]` — the plan's Global Constraints, copied verbatim: exact
-  values, formats, stated relationships — never process rules (the template has
-  those), never your pre-judgments of findings
+- `[GLOBAL_CONSTRAINTS_PATH]` / `[GLOBAL_CONSTRAINTS_HASH]` — the plan's
+  canonical Global Constraints section and its content hash. Read the section
+  when a concrete value is needed; do not paste a duplicate into this prompt.
 - `[REPORT_FILE]` — the implementer's full report
 - `[BASE_SHA]` / `[HEAD_SHA]` — the sha recorded before dispatch / current commit
 - `[DIFF_FILE]` — the review bundle path (`.skills/<CODE>/review-<base7>..<head7>.diff`)

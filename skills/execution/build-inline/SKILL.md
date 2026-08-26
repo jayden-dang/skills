@@ -1,6 +1,6 @@
 ---
 name: build-inline
-version: 1.3.0
+version: 1.4.0
 description: Use when an approved tasks.md needs controller-side sequential
   execution without implementer subagents — inline TDD per task, progress
   ledger, stop-on-blocker, whole-branch review — for no-subagent environments
@@ -84,16 +84,22 @@ keeps the human in the conversation turn-by-turn.
    *Done when: header is present.*
 3. **Session preflight.** Apply `../execute-common/SKILL.md` **Session preflight**.
    *Done when: that section's Done when holds.*
-4. **Ledger check.** Apply `../execute-common/SKILL.md` **Ledger check**.
+4. **Runtime binding.** Apply `../execute-common/SKILL.md` **Runtime binding
+   and lease preflight**. Inline execution has no worker lease, but it records
+   the active harness/provider/model, pricing policy, context reserve, and
+   effective concurrency in `.skills/<CODE>/execution-session.json`.
+   *Done when: the runtime snapshot exists before the first production edit.*
+5. **Ledger check.** Apply `../execute-common/SKILL.md` **Ledger check**.
    *Done when: next task is known.*
-5. **Read the plan.** Read `tasks.md` once. Capture **Global Constraints**
-   (verify commands live here if `docs/agents/project.md` is missing — say so
-   and suggest `configure-repo`). *Done when: constraints are in hand.*
-6. **Todos — GATE.** Apply `../execute-common/SKILL.md` **Todos — GATE**.
+6. **Read the plan.** Read `tasks.md` once. Record the canonical **Global
+   Constraints** source path and content hash (verify commands live here if
+   `docs/agents/project.md` is missing — say so and suggest `configure-repo`).
+   *Done when: the source reference and task delta are in hand.*
+7. **Todos — GATE.** Apply `../execute-common/SKILL.md` **Todos — GATE**.
    *Done when: the list mirrors the plan **and** includes the Close branch todo.*
-7. **Pre-flight plan review.** One batch question for plan-internal defects
+8. **Pre-flight plan review.** One batch question for plan-internal defects
    before coding. Clean scan → no comment. *Done when: conflicts ruled or none.*
-8. **Order.** Depends-on topo order; absent Depends-on → every earlier task;
+9. **Order.** Depends-on topo order; absent Depends-on → every earlier task;
    `none` → no prereq. **Serial only** — never parallel waves / multi-worktree
    fan-out in this skill. *Done when: task sequence is fixed.*
 
@@ -102,7 +108,8 @@ keeps the human in the conversation turn-by-turn.
 For each Task N in order:
 
 1. **Record base.** `BASE=$(git rev-parse HEAD)`.
-2. **Build the brief (for yourself).** Copy Task N + Global Constraints into
+2. **Build the task capsule (for yourself).** Record Task N, the canonical
+   Global Constraints source path/hash, and the task delta in
    `.skills/<CODE>/task-N-brief.md`. That file is the contract you implement against —
    exact values, paths, signatures, `_Requirements:` IDs. Include relevant
    `**ARCH-N**` when a `docs/architecture/` spine exists. WHEN preflight

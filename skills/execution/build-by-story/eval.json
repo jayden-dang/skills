@@ -64,5 +64,29 @@
       "polish runs only when a polish predicate holds",
       "EOD is not treated as a polish predicate"
     ]
+  },
+  {
+    "eval_id": 7,
+    "eval_name": "story-unit-loads-shared-task-lifecycle",
+    "kind": "contract",
+    "derived_from": "SKILL.md § Per-unit loop",
+    "prompt": "Run the tasks inside one derived story unit.",
+    "assertions": [
+      "the route loads ../execute-common/task-lifecycle.md for task dispatch, review, evidence, fix, and ledger",
+      "the route does not maintain a second copy of the per-task lifecycle",
+      "the unit wrapper owns only derivation, human unlock, and synthesis"
+    ]
+  },
+  {
+    "eval_id": 8,
+    "eval_name": "single-task-unit-reuses-task-verdict",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § RED — shared continuous task lifecycle (current v1.2.0)",
+    "prompt": "A derived story unit contains exactly one task and its task reviewer returns clean Standards and Spec verdicts.",
+    "assertions": [
+      "the task verdict closes the unit review scope",
+      "no duplicate reviewer is dispatched over the identical diff, brief, and evidence",
+      "the human unit barrier still runs"
+    ]
   }
 ]

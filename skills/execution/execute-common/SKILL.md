@@ -1,14 +1,15 @@
 ---
 name: execute-common
-version: 1.6.0
-description: Use when build-in-waves, build-by-story, or build-inline loads the shared controller recipe — produces session preflight, ledger state, and a revision-bound close receipt.
+version: 2.0.0
+description: Use when build-in-waves, build-by-story, or build-inline loads the shared controller recipe — produces a runtime-bound session snapshot, lease state, ledger state, and a revision-bound close receipt.
 ---
 
 # Execute-family controller recipe
 
-**One home** for the controller steps that are identical across
-`build-in-waves`, `build-by-story`, and `build-inline`. Each of those
-SKILL.md files owns only its mode iron law and per-task / per-unit loop.
+**One home** for controller steps and runtime state shared across
+`build-in-waves`, `build-by-story`, and `build-inline`. Each route owns only its
+mode iron law and scheduler/unit behavior. The shared task lifecycle is in
+`task-lifecycle.md` beside this file.
 Load this file when that skill's Setup or After-last step says to.
 
 This folder is a registered Engineer Pack skill so `npx skills add`
@@ -17,6 +18,7 @@ copies it beside the execute-family skills.
 ## Contents
 
 - Session preflight
+- Runtime binding and lease preflight
 - Ledger check
 - Todos — GATE
 - Close sequence (after the last task / last unit)
@@ -46,6 +48,68 @@ Two questions, before any dispatch or first production edit:
    "no worktree" is not consent to touch main/master.
 
 *Done when: tracker choice (or empty set) and workspace choice are clear.*
+
+## Runtime binding and lease preflight
+
+After session preflight and before the first dispatch, bind the execution to the
+actual harness and provider/model in use. Planning artifacts remain portable;
+the runtime snapshot records what this session can really do.
+
+Write `.skills/<CODE>/execution-session.json` with at least:
+
+```json
+{
+  "schema_version": 1,
+  "harness": "unknown",
+  "provider": "unknown",
+  "model": "unknown",
+  "resume_context": "supported|unsupported|unknown",
+  "fork_context": "supported|unsupported|unknown",
+  "worktree_isolation": "supported|unsupported|unknown",
+  "cache_control": "none|implicit|explicit|unknown",
+  "token_telemetry": "none|aggregate|per_turn|unknown",
+  "pricing_policy": {
+    "source_url": null,
+    "observed_at": null,
+    "threshold_basis": "input_tokens|prompt_tokens|context_tokens|unknown",
+    "repricing_scope": "all_request_tokens|marginal_tokens|flat|unknown",
+    "tiers": []
+  },
+  "effective_concurrency": null,
+  "rotations": []
+}
+```
+
+Use capability facts exposed by the active harness/API. Record `unknown` when a
+fact is unavailable; never infer support from a harness name, a model family,
+or a cache key. If binding is ambiguous in a way that changes safety or cost,
+ask once and persist the answer before dispatch.
+
+Before every worker or reviewer resume, calculate the next-request estimate from
+system instructions, tool schemas, retained history, feature capsule, task
+delta, cache estimate, and output reserve. Rotate the lease before dispatch if
+any hard trigger holds:
+
+- the semantic unit ends or the next task materially changes required context;
+- the projected request exceeds the active context safety reserve;
+- the provider/model pricing policy predicts an all-token cliff, or continuing
+  costs materially more than a fresh role context;
+- compaction, harness change, broad scope/invariant change, or context confusion
+  invalidates the retained context.
+
+When `pricing_policy` is unknown, use the configured conservative budget and
+record the decision as unknown-policy; never invent a provider threshold. Add a
+rotation record with reason, previous lease ID, next lease ID, projected input
+tokens, and policy/source reference. A fresh context receives the feature
+capsule and task delta, not the entire prior transcript.
+
+If a ready set cannot safely fan out because `worktree_isolation` is unsupported
+or surfaces overlap, set `effective_concurrency` to one and record the
+degradation. Never increase concurrency beyond the approved plan.
+
+*Done when: the runtime snapshot exists before dispatch, every unavailable
+capability is explicit, and the first effective concurrency/lease decision is
+recorded.*
 
 ## Ledger check
 

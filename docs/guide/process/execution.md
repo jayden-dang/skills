@@ -39,15 +39,24 @@ Pick **one** skill (offered at `plan-tasks` Exit). Each skill owns writing
 
 ### `build-in-waves` (continuous + subagents)
 
-Drives the plan with one fresh implementer subagent per task, a two-verdict review of each task's diff, optional parallel waves, and a whole-branch review at the end.
+Drives the plan with one dependency-aware scheduler. It uses bounded worker and
+reviewer leases: one ready task when surfaces overlap or isolation is unavailable,
+and independent ready tasks together when their surfaces are disjoint. Each task
+still receives a two-verdict review and the branch a whole-branch review.
 
-**Why fresh subagents.** Each worker receives exactly the context its task needs and nothing else, so it stays focused; the controller's context stays reserved for coordination. Subagents never inherit session history — you *construct their world*. Bulk artifacts (briefs, reports, diffs) travel between agents as **file paths under `.skills/`**, never as pasted text.
+**Why bounded leases.** A worker receives exactly the context its semantic unit
+needs, then may resume while context, pricing, harness, and scope remain safe.
+Hard triggers rotate to a fresh worker or reviewer. Bulk artifacts travel as
+file paths under `.skills/`, never as pasted text.
 
 **Continuous execution.** Do not pause between tasks to ask "should I continue?" — check-ins waste the user's time. The only legitimate stops are a `BLOCKED` status you cannot resolve, ambiguity that genuinely prevents progress, or all tasks complete.
 
 ### `build-by-story` (story-unit + human gates)
 
-Same per-task subagent loop, but tasks are partitioned into **review units** derived from requirement stories. After each unit: unit agent review → **STOP for human** → unlock. "continue" advances one unit; "stop stopping" / "just run it all" must write `Execution-mode: continuous` then hand off to `build-in-waves`.
+Uses the same continuous task scheduler inside **review units** derived from
+stories. After each unit: unit synthesis → **STOP for human** → unlock.
+"continue" advances one unit; "stop stopping" / "just run it all" must write
+`Execution-mode: continuous` then hand off to `build-in-waves`.
 
 ### `build-inline` (controller implements)
 
@@ -59,7 +68,9 @@ Five steps, of which two are easy to skip and expensive to have skipped:
 
 - **Workspace check.** Never begin implementation on `main`/`master` without the user's explicit consent.
 - **Ledger check.** `.skills/` is git-ignored, then `.skills/<CODE>/progress.md` is read. **Every task it marks complete IS complete** — resume at the first task it does not list.
-- **Read the plan once**, copying the Global Constraints **verbatim**. They get pasted into every reviewer dispatch unmodified.
+- **Read the plan once**, record the canonical Global Constraints path and hash,
+  and create the runtime sidecar. Briefs reference that source instead of
+  duplicating its prose.
 - **Todos**, one per task **and** one terminal **Close branch** todo
   (the shared close sequence in `skills/execution/execute-common/SKILL.md`).
 - **Pre-flight plan review.** Scan the plan once for internal defects — tasks that contradict each other or the Global Constraints, and anything the plan explicitly *mandates* that a reviewer would flag as a defect (an assertion-free test, a copy-pasted logic block). Batch **all** findings into **one** question to the user, each shown beside the plan text that mandates it. One interrupt, not one per discovery mid-run.
@@ -68,8 +79,8 @@ Five steps, of which two are easy to skip and expensive to have skipped:
 
 ```
  1. BASE=$(git rev-parse HEAD)              ← before dispatch, always
- 2. assemble .skills/<CODE>/task-N-brief.md        (copy the task block + Global Constraints verbatim)
- 3. dispatch a FRESH implementer            (implementer-prompt.md; model stated explicitly)
+ 2. assemble .skills/<CODE>/task-N-brief.md        (task delta + source path/hash)
+ 3. acquire or resume a worker lease        (implementer-prompt.md; model stated explicitly)
  4. answer its questions completely         never rush it into implementation
  5. handle the status                       DONE / DONE_WITH_CONCERNS / NEEDS_CONTEXT / BLOCKED
  6. write .skills/<CODE>/review-<b>..<h>.diff      (git diff $BASE..HEAD)

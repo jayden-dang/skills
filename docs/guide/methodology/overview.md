@@ -82,7 +82,7 @@ Plenty of methodologies say "write requirements first." Three things here are un
 
 2. **The process is written for an agent, not a human.** Skill bodies are shaped by their observed failure mode: a skill that guards a rule the agent breaks under pressure gets a prohibition and a rationalization table; a skill whose output has the wrong shape gets a positive recipe instead, because in head-to-head tests prohibitions produced *more* of the unwanted content than no guidance at all. This doctrine is itself a skill — [`author-skills`](../skills/author-skills.md) — and every skill in the set was pressure-tested against it.
 
-3. **Context is treated as a scarce, hostile resource.** [`build-in-waves`](../skills/build-in-waves.md) hands each task to a fresh subagent whose entire world is a generated brief file; bulk artifacts travel as file paths, never pasted text. Progress is appended to a ledger on disk because conversation memory does not survive compaction — and controllers that trusted memory have re-dispatched entire completed task sequences.
+3. **Context is treated as a scarce, hostile resource.** [`build-in-waves`](../skills/build-in-waves.md) gives each semantic lane a bounded lease whose world is a generated capsule and task delta; hard triggers rotate it. Bulk artifacts travel as file paths, never pasted text. Progress is appended to a ledger on disk because conversation memory does not survive compaction.
 
 ## Where to go next
 

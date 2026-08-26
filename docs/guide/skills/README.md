@@ -60,7 +60,7 @@ The triad. Each file approved before the next is written.
 
 | Skill | Invocation | What it does |
 |---|---|---|
-| [`build-in-waves`](build-in-waves.md) | model | Continuous + subagents: fresh implementer per task, two-verdict reviews, parallel waves, ledger |
+| [`build-in-waves`](build-in-waves.md) | model | Continuous dependency-aware scheduler: bounded leases, serial/parallel ready sets, two-verdict reviews, ledger |
 | [`build-by-story`](build-by-story.md) | model | Story-unit: derived review units, human unlock after each unit, mode-change write-back |
 | [`build-inline`](build-inline.md) | model | Controller implements with `test-first`; no implementer subagents; stop-on-blocker; sequential |
 | [`execute-common`](execute-common.md) | model | Shared execute-family controller recipe (preflight, ledger, close sequence). Not an entry point |

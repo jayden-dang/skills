@@ -37,10 +37,11 @@ Leave `Execution-mode: unset` while planning — never invent continuous/story-u
 from plan size, band, or habit. Route choice and mode write-back live only at
 **Exit** (and in the chosen execute skill).
 
-Then **Global Constraints**: project-wide rules copied verbatim from the design
-and `docs/agents/project.md` — test/lint/typecheck commands, naming and i18n
-rules, forbidden changes. Every task's requirements implicitly include this
-section; it travels with each task brief. When `## Team` is present with a
+Then **Global Constraints**: project-wide rules recorded at their canonical
+source path and content hash. Resolve the source from the design and
+`docs/agents/project.md` — test/lint/typecheck commands, naming and i18n rules,
+forbidden changes. Every task references this source; execution carries a
+compact delta. When `## Team` is present with a
 non-empty **roster** or band override, derive the **band** and apply
 **packaging** from that section only: Solo tasks avoid fake multi-assignee
 theater; Small/Multi may add optional freeform owner/review notes (never a new
@@ -58,9 +59,8 @@ not treat it as SSOT. Otherwise fall back to `docs/agents/project.md` as above.
 Never maintain or invent parallel SSOTs.
 
 **Done when:** Goal, Architecture, Tech Stack, `Execution-mode:` (typically
-`unset`), and Global Constraints are written, and every command, naming/i18n
-rule, and `ARCH-N` invariant in that section is copied verbatim from its source
-file rather than paraphrased.
+`unset`), and Global Constraints source path/hash are written, and every
+constraint source is identified without inventing a parallel SSOT.
 
 ## Step 2: File structure first
 
@@ -139,7 +139,8 @@ Each task:
   interface it Consumes or whose files it builds on — as `Depends-on: Task 2,
   Task 4`, or `Depends-on: none` when it has no prerequisite. This is the
   parallelism signal: two tasks that share no files and no interface declare no
-  edge, so `build-in-waves` can run them together in one parallel wave. Omit the
+  edge, so the continuous `build-in-waves` scheduler may place them in one ready
+  set when surfaces are disjoint and worktree isolation is safe. Omit the
   line and the task falls back to depending on every prior task — safe but fully
   serial. Over-declaring needlessly serializes; under-declaring is caught by the
   executor's file-disjoint check before it can collide.

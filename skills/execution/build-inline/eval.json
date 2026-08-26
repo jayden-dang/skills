@@ -76,5 +76,17 @@
       "the Render check from ../build-in-waves/implementer-prompt.md is applied: the changed surface is screenshotted to .skills/<CODE>/ and judged before the ledger line",
       "a pure-logic task instead records no render surface and skips the browser"
     ]
+  },
+  {
+    "eval_id": 8,
+    "eval_name": "inline-runtime-binding-before-edit",
+    "kind": "contract",
+    "derived_from": "SKILL.md § Setup",
+    "prompt": "Start an inline run for an approved tasks.md under a non-default harness.",
+    "assertions": [
+      "runtime binding runs before the first production edit",
+      "execution-session.json records the active harness/provider/model and pricing policy",
+      "the task capsule references the canonical Global Constraints path and hash"
+    ]
   }
 ]

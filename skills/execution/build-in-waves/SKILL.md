@@ -1,9 +1,9 @@
 ---
 name: build-in-waves
-version: 1.4.0
+version: 2.0.0
 description: Use when an approved tasks.md has Execution-mode continuous and needs
-  subagent task-wave execution — dual-verdict review, parallel waves, resume after
-  crash/compaction — through whole-branch review and land-branch.
+  dependency-aware subagent execution with serial or parallel lanes, bounded
+  worker/reviewer leases, dual-verdict task review, and a whole-branch receipt.
 ---
 
 Ephemera paths: resolve `FEATURE_CODE` / `<CODE>` then follow `templates/skills-ephemera-paths.md` (feature root `.skills/<CODE>/`). Resolve pack seeds in this order, first path that exists: (1) `templates/` beside this SKILL.md, (2) `${CLAUDE_PLUGIN_ROOT}/templates` when that variable is set, (3) `../../../templates` relative to this SKILL.md.
@@ -11,9 +11,11 @@ Ephemera paths: resolve `FEATURE_CODE` / `<CODE>` then follow `templates/skills-
 
 # Build In Waves
 
-Drive an approved **continuous** plan to completion: independent tasks run in
-dependency-ordered waves, one fresh implementer subagent per task, a two-verdict
-review of each task's diff, a whole-branch review at the end — **no human pause
+Drive an approved **continuous** plan to completion through one dependency-aware
+scheduler. A ready set of one task runs serially; a ready set of independent,
+surface-disjoint tasks may run in parallel worktrees. Related tasks in one
+dependency lane may reuse bounded worker and reviewer leases. Every task keeps
+its own commit, report, evidence, and two verdicts; there is **no human pause
 between tasks**.
 
 **Not this skill:**
@@ -23,9 +25,10 @@ between tasks**.
 | `Execution-mode: story-unit` (human-gated review units) | REQUIRED SUB-SKILL: use `build-by-story` |
 | No subagents / controller implements / user chose inline | REQUIRED SUB-SKILL: use `build-inline` |
 
-**Why fresh subagents:** each worker receives exactly the context its task needs
-and nothing else. Subagents never inherit session history — you construct their
-world. Bulk artifacts travel as file paths under `.skills/`, never as pasted text.
+**Context rule:** a fresh context is the default at a semantic-unit boundary or
+after a hard lease trigger. Inside a valid lane lease, resume the role context
+and pass only the task delta. Bulk artifacts travel as file paths under
+`.skills/`, never as pasted text.
 
 **Narration:** at most one short line between tool calls. Ledger + tool results
 carry the record.
@@ -34,7 +37,8 @@ carry the record.
 Load `../execute-common/SKILL.md` when Setup preflight / ledger / todos or
 After the Last Task starts. That file is the one home for those steps and
 for the close-sequence predicates.
-This file owns continuous-mode, waves, and the per-task loop only.
+This file owns continuous-mode scheduling and barriers. The shared task
+lifecycle lives in `../execute-common/task-lifecycle.md` and is loaded once.
 
 ## Mode ownership
 
@@ -64,9 +68,11 @@ Unit barriers, unit derivation, and human unit stops live only in
    *Done when: that section's Done when holds.*
 3. **Ledger check.** Apply `../execute-common/SKILL.md` **Ledger check**.
    *Done when: next task is known.*
-4. **Read the plan.** Read `tasks.md` in full once. Copy **Global Constraints**
-   verbatim for every reviewer dispatch. If `docs/agents/project.md` is missing,
-   say so, suggest `configure-repo`, take verify commands from Global Constraints.
+4. **Read the plan.** Read `tasks.md` in full once. Record the Global
+   Constraints path and content hash for dispatch; the brief points to the
+   canonical section instead of pasting it into every reviewer prompt. If
+   `docs/agents/project.md` is missing, say so, suggest `configure-repo`, and
+   take verify commands from Global Constraints.
    When `## Team` has roster/band, load band **packaging** only — never skip
    dual-verdict review for Solo. *Done when: constraints captured word-for-word.*
 5. **Todos — GATE.** Apply `../execute-common/SKILL.md` **Todos — GATE**.
@@ -75,66 +81,52 @@ Unit barriers, unit derivation, and human unit stops live only in
    assertion-free tests, copy-pasted logic the plan mandates). Batch ALL findings
    into ONE question to the user before dispatch. Clean scan → no comment.
    *Done when: conflicts ruled or none.*
-7. **Wave planning.** Read each task's `Depends-on:` line. Named tasks must land
-   first; `Depends-on: none` = no prerequisite; **absent** line → depends on every
-   earlier task. Topo-sort into waves. No Depends-on edges → one task per wave
-   (strict serial). *Done when: every task sits in a wave.*
+7. **Ready-set planning.** Read every task's `Depends-on:` and `Files:` block.
+   Named tasks must land first; `Depends-on: none` means no prerequisite; an
+   absent line means every earlier task is a prerequisite. Compute the next
+   ready set from the dependency graph. A ready set may fan out only when its
+   surfaces are disjoint and the runtime has safe worktree isolation. Apply an
+   approved `Max-concurrency` cap when present; missing means `auto`.
+   *Done when: every task has a dependency position, surface-overlap result,
+   and effective lane/concurrency decision.*
 
-## Per-Task Loop
+## Continuous scheduler
 
-For Task N:
+Load `../execute-common/task-lifecycle.md` for the one task loop. The scheduler
+supplies the task ID, lane, current base revision, brief path, report path,
+review package path, and active lease IDs; the lifecycle owns dispatch, status,
+review, fix, evidence, and ledger rules.
 
-1. **Record the base.** `BASE=$(git rev-parse HEAD)` — before dispatch, always.
-2. **Build the brief.** Task N block + verbatim Global Constraints →
-   `.skills/<CODE>/task-N-brief.md`. Include relevant `**ARCH-N**` when a
-   `docs/architecture/` spine exists. WHEN preflight recorded ticket IDs,
-   list them in the brief so implementers and later `land-branch` share one
-   set. Apply Team band packaging to tone — never omit review obligations.
-3. **Dispatch a FRESH implementer** using `implementer-prompt.md` (beside this
-   file). Dispatch inventory only: one-line placement; brief path as requirements;
-   interfaces/decisions prior tasks cannot know; ambiguity resolutions; report
-   path `.skills/<CODE>/task-N-report.md`; explicit model. Never session history. Never
-   the plan file.
-4. **Answer questions** fully before the implementer proceeds.
-5. **Handle the status** per the table below. Work committed on DONE.
-6. **Package the diff** → `.skills/<CODE>/review-<base7>..<head7>.diff`:
-   `git log $BASE..HEAD --oneline`, `git diff --stat $BASE HEAD`,
-   `git diff -U10 $BASE HEAD`. Never `HEAD~1` as base.
-7. **Dispatch a task reviewer** using `task-reviewer-prompt.md` with brief,
-   report, diff package, verbatim Global Constraints, explicit model. Spine
-   present → also REQUIRED SUB-SKILL: use `review-invariants`; `violates` enters
-   the fix loop.
-8. **Fix loop.** Critical/Important → fix subagent (re-run covering tests under
-   `test-first`, append to same report) → **re-review**. Same finding survives 3 cycles
-   → stop; plan/design/requirements invalidated → REQUIRED SUB-SKILL: use
-   `reroute-plan`; else escalate. Never fix in controller context. Minors →
-   ledger for whole-branch triage.
-9. **Resolve ⚠️ items** the reviewer could not prove-claim from the diff.
-10. **Ledger.** `Task N: complete (commits <base7>..<head7>, review clean)`.
-    Mark todo done.
-11. **Next.** Advance by wave order (see **Parallel waves**), not raw task
-    number. No permission pause between tasks.
+Before each worker or reviewer resume, run the lease preflight from
+`../execute-common/SKILL.md`:
 
-## Parallel waves
+1. **Semantic boundary:** rotate at the end of the bounded unit or when the next
+   task changes the role's required context materially.
+2. **Context safety:** estimate system instructions, tools, retained history,
+   capsule, task delta, and output reserve against the active context limit.
+3. **Price safety:** apply the dated provider/model `pricing_policy`. If the
+   projected request crosses an all-token cliff, or continuing costs materially
+   more than a fresh role context, rotate before dispatch.
+4. **Hard rotation:** rotate after compaction, broad scope/invariant change,
+   harness change, or first context-confusion signal. Record the reason and
+   preserve continuity through the capsule and ledger.
 
-A single-task wave runs the Per-Task Loop on the branch — the common case. A wave
-with two or more independent tasks runs them concurrently, each in its own
-worktree, **only when `git worktree` is usable**; otherwise serial.
+### Ready sets, lanes, and barriers
 
-1. **Record the wave base.** `WBASE=$(git rev-parse HEAD)`.
-2. **Prove surfaces are disjoint.** No two briefs Create/Modify the same file.
-   Overlap → demote to serial; never parallel overlapping surfaces.
-3. **Fan out — one worktree per task.** Stay in the primary worktree at WBASE.
-   For each task: `git worktree add .isolate-workspace/<branch>-taskN -b <branch>-taskN WBASE`,
-   run **Per-Task Loop steps 1–9** inside that worktree; hold ledger/advance for
-   the barrier. Implementers run concurrently.
-4. **Barrier, then merge in task order.** Only after every wave task passed
-   review, merge each into the **feature branch** (never main/master) ascending
-   task number (`git merge --no-ff <branch>-taskN`). Conflict → STOP and escalate;
-   never resolve a wave merge blind.
-5. **Ledger once, isolate-workspace down.**
-   `Task N: complete (merged <branch>-taskN at <merge7>, review clean)` per task;
-   mark todos; `git worktree remove` each.
+1. Compute the next ready set from `Depends-on:`. A task is ready only after all
+   prerequisites are ledgered clean.
+2. If the set has one task, run the shared task lifecycle on the feature branch.
+3. If the set has multiple tasks, prove each pair's `Files:` surfaces are
+   disjoint and check `worktree_isolation`. Overlap or missing isolation reduces
+   the effective set to serial; record the degradation in the runtime sidecar.
+4. For a parallel set, record `WBASE`, create one worktree per task, and invoke
+   the shared lifecycle. A worker/reviewer lease may continue across ready sets
+   only along its own dependency lane.
+5. After every task in the set has clean Standards and Spec verdicts, merge in
+   deterministic task order. A conflict stops the scheduler; it is never solved
+   blind. Append one ledger line per task and remove isolated worktrees.
+6. Recompute the ready set. There is no permission pause between tasks in
+   continuous mode, and no task advances while its review barrier is open.
 
 ## Implementer Status Handling
 

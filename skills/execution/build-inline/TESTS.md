@@ -1,5 +1,19 @@
 # `build-inline` — test evidence
 
+## RED — shared runtime binding contract (baseline, 2026-08-26)
+
+`execute-common` defines runtime binding and canonical constraint references, but
+the inline route loaded only session preflight, ledger, and todos. Its setup
+still captured and copied Global Constraints directly, so inline execution could
+miss the runtime snapshot and price/context safety policy.
+
+## GREEN — shared runtime binding contract (structural, 2026-08-26)
+
+The inline route now loads runtime binding before the ledger, records the runtime
+snapshot, and carries the canonical constraint path/hash into its task capsule.
+Live provider telemetry was unavailable; this is structural GREEN pending a
+live harness run.
+
 **Protocol:** `author-skills` / `pressure-testing.md`  
 **Scenario files:** removed in `2338b34` ("remove test scenarios") — the runnable prompts now live in `eval.json` beside this file.  
 

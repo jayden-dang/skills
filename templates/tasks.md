@@ -1,7 +1,7 @@
 # Tasks: <Feature Name>
 
 > **For agentic workers:** after plan approval, pick one execute skill —
-> `build-in-waves` (subagent waves), `build-by-story` (human-gated story review
+> `build-in-waves` (continuous dependency-aware scheduler), `build-by-story` (human-gated story review
 > units), or `build-inline` (controller implements, no implementer subagents).
 > The chosen skill writes `Execution-mode:`. Steps use checkbox (`- [ ]`) syntax
 > for tracking.
@@ -10,6 +10,7 @@ Feature code: <CODE>
 Status: Draft
 Date: <YYYY-MM-DD>
 Execution-mode: unset
+Max-concurrency: auto
 Requirements: ./requirements.md
 Design: ./design.md
 
@@ -21,9 +22,9 @@ Design: ./design.md
 
 ## Global Constraints
 
-<Project-wide requirements copied verbatim from the design/repo config — test
-commands, lint rules, i18n rules, naming conventions. Every task's requirements
-implicitly include this section.>
+<Canonical project-wide constraints source — path plus content hash for test
+commands, lint rules, i18n rules, naming conventions. Every task references this
+source; execution carries a compact delta.>
 
 ## File Structure
 
@@ -45,7 +46,8 @@ task. A file not listed here should not be touched.>
 
 **Depends-on:** <earlier tasks that must land first, e.g. `Task 1`; or `none`.
 Omit the line for strict serial order. Tasks sharing no files or interfaces
-declare no edge — `build-in-waves` may run those together in one parallel wave.>
+declare no edge — the continuous `build-in-waves` scheduler may run those
+together when worktree isolation is safe.>
 
 - [ ] **Step 1: Write the failing test**
 

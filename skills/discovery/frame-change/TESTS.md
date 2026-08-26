@@ -68,3 +68,18 @@ before `load-subgraph`.
 **GREEN (v1.1.0), 2/2.** Both models: `INVOKED_RECONCILE: yes`;
 `reconcile-features` before `load-subgraph`; pending OBS/known-impact
 surfaced before neighbor cards.
+
+## Edit — query-first catalog context (v1.2.0)
+
+**Roster:** grok-4.6, grok-4.5. Scenario:
+`.skills/_pending-reconcile/red-catalog-fc-scenario.md` (120-row flat INDEX).
+
+**RED (v1.1.0), 2/2.** Both: `FULL_INDEX_IN_CONTEXT: yes`,
+`CODES_IN_CONTEXT_COUNT: 120` — skill said INDEX is small / read directly.
+
+**Failure class:** output/context has the wrong shape (unbounded ingest).
+Form: positive recipe via `catalog-query.md` + replace the “small” sentence.
+
+**GREEN (v1.2.0), 2/2.** Both: `FULL_INDEX_IN_CONTEXT: no`. Caps applied
+(`DOMAINS_MAX` 2 / `DIRECT_CARDS_MAX` 4); 4.6 kept 4 cards, 4.5 kept 0
+concrete CODEs (fixture path absent) but refused full ingest.

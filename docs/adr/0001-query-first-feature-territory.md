@@ -30,7 +30,11 @@ code/history → impacted feature or observed capability candidate.
 
 - Drift is detected when a spec-aware session next reads the checkout — not at
   external merge time.
-- `frame-change` / `inspect-change` should eventually REQUIRED SUB-SKILL
-  `reconcile-features` before framing or judging unowned paths (follow-on).
+- `frame-change` and `inspect-change` REQUIRED SUB-SKILL `reconcile-features`
+  (predicate / step 1b).
+- Agent context selection follows
+  `skills/execution/load-subgraph/references/catalog-query.md` (flat + optional
+  sharded; `DOMAINS_MAX` / `DIRECT_CARDS_MAX` / `NEIGHBOR_CARDS_MAX`). Pass R may
+  still enumerate the registry on disk; chat must not dump it.
 - Brownfield bootstrap proposes OBS / Recognized cards; full triads stay
   spec-on-change after human confirm.

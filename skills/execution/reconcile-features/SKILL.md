@@ -1,6 +1,6 @@
 ---
 name: reconcile-features
-version: 1.0.0
+version: 1.1.0
 description: >
   Use when external commits, a pull/merge, brownfield code, or a missing feature
   owner must be mapped back onto the capability catalog — reverse tracking,
@@ -76,6 +76,7 @@ code.
 | "GRAPH.md will help the PM browse" | No committed graph; catalog + local overlay only |
 | "uncertain is basically no-spec-impact" | uncertain stays unresolved; never silent-clean |
 | "Skip git diff — I already know the paths" | Pass 2 is mandatory; locators come from rename-aware inventory |
+| "Paste the whole INDEX so ownership is obvious" | Catalog-query caps apply to the reply; Pass R may enumerate on disk |
 
 ## Red Flags
 

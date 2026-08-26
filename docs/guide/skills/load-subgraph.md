@@ -8,7 +8,7 @@
 |---|---|
 | **Bucket** | execution |
 | **Invocation** | model-invoked |
-| **Reads** | `docs/specs/**`, INDEX, optional roadmap/architecture (P3–P5 no-op when absent) |
+| **Reads** | `docs/specs/**`, INDEX (flat or sharded catalog per `catalog-query.md`), optional roadmap/architecture (P3–P5 no-op when absent) |
 | **Writes** | none (envelope in chat only; never `docs/specs/GRAPH.md`) |
 | **Called by** | `frame-change`, `inspect-change`, `clarify-decisions`, `design-solution`, `plan-tasks`, `root-cause` |
 

@@ -1,6 +1,6 @@
 ---
 name: frame-change
-version: 1.1.0
+version: 1.2.0
 description: Use at the very start of the idea-to-ship chain — when the user wants to
   add, build, or change a feature, behavior, or component, or to start a whole
   new project, and no requirements, design, or code exist yet. Triggers on
@@ -34,8 +34,9 @@ Small requests are exactly where unexamined assumptions burn the most work, beca
 | "We talked enough, I basically know the answer" | If it isn't in an approved requirements.md, it lives only in this chat and dies with it. |
 | "The other sub-features aren't in scope right now, so Out-of-Scope is the right home" | Out-of-Scope and an ADR record a *rejection*. Work you intend to do later is deferred to a milestone via `plan-milestones` — declining it destroys the plan you just made. |
 | "Just pulled — load-subgraph on INDEX is enough" | INDEX can miss external work; when the reverse-track predicate holds, `reconcile-features` runs before `load-subgraph` |
+| "INDEX is small — paste all 120 rows into context" | Catalog is query-first; follow `catalog-query.md` caps — never dump the full registry into chat |
 
-**Red flags — stop and return to the checklist if you notice yourself:** opening an editor to "just try something"; running a generator/scaffolder; answering your own open question instead of asking; presenting one approach as the only option; drifting from interviewing into implementing; framing after a pull without `reconcile-features` when the reverse-track predicate holds.
+**Red flags — stop and return to the checklist if you notice yourself:** opening an editor to "just try something"; running a generator/scaffolder; answering your own open question instead of asking; presenting one approach as the only option; drifting from interviewing into implementing; framing after a pull without `reconcile-features` when the reverse-track predicate holds; pasting the full `docs/specs/INDEX.md` table into context because it “might be useful.”
 
 ## Checklist
 
@@ -55,7 +56,13 @@ Provisional means provisional: if step 2 surfaces any of those, it was never tie
 
 ### 1. Explore project context
 
-Read `CONTEXT.md` (use its vocabulary from here on) and `docs/specs/INDEX.md` (the feature codes and specs that already exist) directly — they are small and you need them in context. Read the **Project posture** in `docs/agents/project.md` when present — its delivery intent and lifecycle stage right-size the whole interview: a Run Spike / Research / Learning posture means do not burn questions on data migration, backward compatibility, or deprecation cost; a released / Scaling / Maintenance posture means weigh exactly those heavily. When the posture section is absent, do not assume one — proceed without right-sizing. Read **`## Team`** in the same file when present: if the **roster** is non-empty or a **Workflow band** override is set, derive the **band** and apply **packaging** using the rules and matrix written *in that section* (do not re-copy them here). State the band once. Solo: leaner peer-coordination language in approaches. Small/Multi: surface ownership and review capacity in approach trade-offs. Empty roster + blank override, or missing Team: do not invent a team and do not hard-fail. **Band never changes tier rules or Iron Laws.** When `docs/product/vision.md` exists, read it too and — once you grasp the idea — state whether it falls inside the stated product scope (an out-of-scope idea is worth surfacing before any spec work); if it does not exist, skip this, the layer is optional.
+Read `CONTEXT.md` (use its vocabulary from here on). **Do not** paste all of
+`docs/specs/INDEX.md` into context — even when the file is open or “only” dozens
+of rows. Load **`skills/execution/load-subgraph/references/catalog-query.md`**
+and run its query recipe against INDEX (flat or sharded) plus any active OBS
+overlay: keep ≤ `DOMAINS_MAX` domains and ≤ `DIRECT_CARDS_MAX` feature/OBS cards
+for this ask. Exact CODE lookup uses the `rg` form in that file. Read the
+**Project posture** in `docs/agents/project.md` when present — its delivery intent and lifecycle stage right-size the whole interview: a Run Spike / Research / Learning posture means do not burn questions on data migration, backward compatibility, or deprecation cost; a released / Scaling / Maintenance posture means weigh exactly those heavily. When the posture section is absent, do not assume one — proceed without right-sizing. Read **`## Team`** in the same file when present: if the **roster** is non-empty or a **Workflow band** override is set, derive the **band** and apply **packaging** using the rules and matrix written *in that section* (do not re-copy them here). State the band once. Solo: leaner peer-coordination language in approaches. Small/Multi: surface ownership and review capacity in approach trade-offs. Empty roster + blank override, or missing Team: do not invent a team and do not hard-fail. **Band never changes tier rules or Iron Laws.** When `docs/product/vision.md` exists, read it too and — once you grasp the idea — state whether it falls inside the stated product scope (an out-of-scope idea is worth surfacing before any spec work); if it does not exist, skip this, the layer is optional.
 
 ### Product context docs (optional)
 

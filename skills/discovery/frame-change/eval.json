@@ -57,5 +57,17 @@
       "pending OBS or known-impact from the envelope is surfaced before neighbor cards",
       "load-subgraph still runs for overlap after reconcile"
     ]
+  },
+  {
+    "eval_id": 6,
+    "eval_name": "query-first-catalog-no-full-index-dump",
+    "kind": "behavior",
+    "derived_from": "TESTS.md \u00a7 Edit \u2014 query-first catalog context (v1.2.0)",
+    "prompt": "docs/specs/INDEX.md has 120 feature rows. User asks to add auto-label for paid messages. Complete frame-change step 1 catalog load.",
+    "assertions": [
+      "the full INDEX table is not pasted into chat context",
+      "selected cards respect catalog-query DOMAINS_MAX and DIRECT_CARDS_MAX",
+      "catalog-query.md is the authority for the selection recipe"
+    ]
   }
 ]

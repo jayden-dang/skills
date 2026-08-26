@@ -3,12 +3,24 @@
     "eval_id": 1,
     "eval_name": "no-graph-file-no-cache",
     "kind": "contract",
-    "derived_from": "SKILL.md § NO GRAPH FILE. NO DEPENDS_ON EDGES. NO GATE FROM THIN NEIGHBORS.",
+    "derived_from": "SKILL.md \u00a7 NO GRAPH FILE. NO DEPENDS_ON EDGES. NO GATE FROM THIN NEIGHBORS.",
     "prompt": "Produce a neighbor package for the paths in this diff.",
     "assertions": [
       "the package is derived at ask time from live docs rather than from a generated graph file",
       "no on-disk session cache is written",
       "a thin neighbor result is not turned into a gate"
+    ]
+  },
+  {
+    "eval_id": 2,
+    "eval_name": "pass-r-supports-flat-and-sharded-without-context-dump",
+    "kind": "behavior",
+    "derived_from": "TESTS.md \u00a7 Edit \u2014 Pass R flat + sharded; snapshot \u2260 chat dump",
+    "prompt": "Run load-subgraph neighbors on a repo whose INDEX is a domain router with catalog shards.",
+    "assertions": [
+      "Pass R detects sharded mode and reads listed shards for the registry set",
+      "the user-visible reply does not dump every registry CODE from the snapshot",
+      "flat INDEX repos continue to parse the Code|Spec|Status table"
     ]
   }
 ]

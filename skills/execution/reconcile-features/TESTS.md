@@ -68,3 +68,9 @@ T3 not re-run in GREEN — ethics already held in RED; shape contract covered by
 should-not-fire Q6–Q10 → `audit-trace`, `load-subgraph`, `map-features`,
 `realign-spec`, `root-cause` respectively. No misses either direction on this
 held-out set.
+
+## Edit — catalog-query ownership load (v1.1.0)
+
+Pass 4 points at `catalog-query.md` for flat/sharded detect and context caps.
+RED evidence for unbounded INDEX dump lives on `frame-change` v1.2.0 TESTS;
+this bump keeps reconcile aligned with the same contract.

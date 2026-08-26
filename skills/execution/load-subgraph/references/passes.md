@@ -108,14 +108,27 @@ one invocation.
 
 ## Pass R — Registry
 
+Mode detect and card grammar: **`catalog-query.md`** (sibling). Pass R still
+builds the **full** in-memory registry for determinism; it does not authorize
+dumping that set into model context.
+
 1. Read `docs/specs/INDEX.md` if present; else empty registry, stop after reporting
    no specs.
-2. Each table row matching:
+2. **Mode:** if INDEX has a Domain router header
+   (`| Domain | … | Feature catalog |`) → **sharded**; else **flat**.
+3. **Flat:** each table row matching
    `\| CODE \| … \| ./path/ \| Status \| ROAD-or-— \|`
    where `CODE` is `[A-Z][A-Z0-9]{1,11}` length 2–12.
-3. Spec dir = path relative to `docs/specs/` (strip `./` and trailing `/`).
-4. For each CODE, if `requirements.md` has `Feature code: X`, prefer INDEX CODE
-   for membership; note mismatch in envelope `notes` — never key by directory slug.
+   Spec dir = path relative to `docs/specs/` (strip `./` and trailing `/`).
+4. **Sharded:** for each router row, read the listed shard path (under
+   `docs/specs/`). Parse feature cards `| CODE | … | Spec |`. Missing shard →
+   note + continue. Spec dir from the Spec cell (relative to `docs/specs/` or
+   the shard’s directory as written).
+5. For each CODE, if `requirements.md` has `Feature code: X`, prefer registry
+   CODE for membership; note mismatch in envelope `notes` — never key by
+   directory slug.
+6. `registered` = union of all CODEs from flat rows or all shards. Active OBS
+   cards are **not** registry members (they do not raise `registered`).
 
 ---
 

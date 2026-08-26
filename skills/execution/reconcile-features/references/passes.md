@@ -60,10 +60,15 @@ git diff --name-status -z -M <base>..<head>
 
 3. **Drop generated/vendor/lockfile paths** via `GENERATED_PATH_GLOBS`. Remaining
    paths are candidates.
-4. **Load catalog ownership.** From live `docs/specs/` (tracked or local overlay):
+4. **Load catalog ownership.** From live `docs/specs/` (tracked or local overlay),
+   following **`skills/execution/load-subgraph/references/catalog-query.md`**
+   (flat vs sharded detect) and load-subgraph Pass R for the full CODE set on
+   disk:
    - INDEX / shard feature cards → CODE, surface roots when present
    - each feature `tasks.md` `**Files:**` / `Files:` Create|Modify|Test path tokens
    - compute `owns_coverage` like load-subgraph (with_owns / registered)
+   - When surfacing cards to the caller, apply catalog-query context caps — do
+     not paste the whole registry into the reconcile reply
 5. **Load active overlay.** Parse `active/*.md` OBS cards; tombstone-lookup
    evidence signatures before inventing a duplicate OBS.
 6. **Classify each candidate path** (rules below). Cluster paths that share a

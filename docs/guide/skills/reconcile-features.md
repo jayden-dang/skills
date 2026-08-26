@@ -29,11 +29,17 @@ Mechanical inventory (no overlay write by default):
 ```bash
 python3 skills/execution/reconcile-features/scripts/reconcile.py \
   --repo <root> --base <sha> --head <sha> --mode changes-since-checkpoint
+
+# Index OBS + advance checkpoint (requires .skills/ gitignored + writable)
+python3 skills/execution/reconcile-features/scripts/reconcile.py \
+  --repo <root> --base <sha> --head <sha> --mode changes-since-checkpoint \
+  --write-overlay
 ```
 
 Uses index-first OWNS (`scripts/owns.py`, flat or sharded INDEX), clustering
-(`scripts/cluster.py`), and a balanced `FINDINGS_MAX` budget. Judgment corpus
-fixtures live under `scripts/testdata/corpus/`.
+(`scripts/cluster.py`), overlay write (`scripts/overlay.py`), and a balanced
+`FINDINGS_MAX` budget. Judgment corpus fixtures live under
+`scripts/testdata/corpus/`.
 
 ## Modes
 

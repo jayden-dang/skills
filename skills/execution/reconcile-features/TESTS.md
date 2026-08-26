@@ -155,3 +155,15 @@ Fixtures under `scripts/testdata/corpus/`:
 **GREEN:** Domain-router detect + shard card parse; preserve `..` when resolving
 spec dirs against the shard file. Fixture `testdata/specs-sharded/` → `SHRD`
 owns `crates/mail/src/labels.rs`.
+
+## Overlay index-then-advance (v1.3.0)
+
+**RED:** `ModuleNotFoundError: overlay`; `reconcile_repo(..., write_overlay=True)`
+left `checkpoint.advanced_to` null.
+
+**GREEN:** `scripts/overlay.py` — `can_write_overlay` requires `.skills/` in
+`.gitignore` + writable; `index_overlay` writes `state.json`, `active/<domain>.md`,
+`observations/OBS-*.json`, skips tombstoned ids, still advances checkpoint.
+CLI: `--write-overlay`.
+
+**Suite:** `python3 -m unittest discover -v` in `scripts/` → 25 OK.

@@ -17,6 +17,7 @@ from typing import Any
 
 from cluster import cluster_unowned_paths, domain_slug, surface_roots
 from owns import load_owns, owners_for_path
+from overlay import can_write_overlay, index_overlay
 
 FINDINGS_MAX = 12
 EVIDENCE_MAX = 8
@@ -278,20 +279,35 @@ def reconcile_repo(
     owns, cov = load_owns(root, specs_dir=specs_dir)
     if paths is None:
         paths = git_name_only(root, base, head) if base and head else []
-    advanced_to = None
+    previous = None
+    state_path = root / ".skills" / "reverse-features" / "state.json"
+    if state_path.is_file():
+        try:
+            previous = json.loads(state_path.read_text(encoding="utf-8")).get(
+                "last_reconciled_sha"
+            )
+        except (json.JSONDecodeError, OSError):
+            previous = None
     env = build_envelope(
         mode=mode,
         base=base or "unknown",
         head=head or "unknown",
-        previous=None,
-        advanced_to=advanced_to,
+        previous=previous,
+        advanced_to=None,
         owns=owns,
         owns_coverage=cov,
         paths=paths,
     )
-    if write_overlay:
-        # Overlay write is a separate step; default off for pure tests.
-        pass
+    if write_overlay and can_write_overlay(root):
+        result = index_overlay(root, env)
+        env["checkpoint"]["advanced_to"] = result.get("advanced_to")
+        if result.get("skipped_tombstoned"):
+            env.setdefault("notes", []).append(
+                {
+                    "kind": "tombstone_skip",
+                    "detail": sorted(result["skipped_tombstoned"]),
+                }
+            )
     return env
 
 
@@ -321,6 +337,11 @@ def main(argv: list[str] | None = None) -> int:
     p.add_argument("--head", default="HEAD")
     p.add_argument("--mode", default="full", choices=["full", "changes-since-checkpoint", "brownfield-bootstrap"])
     p.add_argument("--paths-file", type=Path, default=None, help="Optional path list (skips git)")
+    p.add_argument(
+        "--write-overlay",
+        action="store_true",
+        help="Index OBS into .skills/reverse-features/ and advance checkpoint",
+    )
     args = p.parse_args(argv)
 
     repo = args.repo.resolve()
@@ -330,10 +351,18 @@ def main(argv: list[str] | None = None) -> int:
     else:
         head = args.head
         if not args.base:
-            # default: since checkpoint or HEAD~1 — keep simple for CLI
-            base = subprocess.check_output(
-                ["git", "rev-parse", "HEAD~1"], cwd=repo, text=True
-            ).strip()
+            # Prefer checkpoint tip when present
+            state_path = repo / ".skills" / "reverse-features" / "state.json"
+            base = ""
+            if state_path.is_file():
+                try:
+                    base = json.loads(state_path.read_text()).get("last_reconciled_sha") or ""
+                except (json.JSONDecodeError, OSError):
+                    base = ""
+            if not base:
+                base = subprocess.check_output(
+                    ["git", "rev-parse", "HEAD~1"], cwd=repo, text=True
+                ).strip()
         else:
             base = args.base
         paths = git_name_only(repo, base, head)
@@ -347,7 +376,7 @@ def main(argv: list[str] | None = None) -> int:
         mode=args.mode,
         base=base,
         head=head,
-        write_overlay=False,
+        write_overlay=args.write_overlay,
     )
     sys.stdout.write(render_envelope(env))
     return 0

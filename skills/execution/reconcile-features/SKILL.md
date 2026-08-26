@@ -1,6 +1,6 @@
 ---
 name: reconcile-features
-version: 1.2.0
+version: 1.3.0
 description: >
   Use when external commits, a pull/merge, brownfield code, or a missing feature
   owner must be mapped onto the capability catalog (reverse tracking,
@@ -38,8 +38,10 @@ Print **exactly one** envelope shaped by `references/envelope.md`. When
    order, including Pass 2. Do not substitute a remembered path list.
    Prefer the bundled runner when a mechanical inventory is enough:
    `scripts/reconcile.py --repo <root> --base <sha> --head <sha> --mode <mode>`
-   (uses `scripts/owns.py` + `scripts/cluster.py`; prints the envelope; default
-   `checkpoint.advanced_to: null` until overlay write is explicitly enabled).
+   (uses `scripts/owns.py` + `scripts/cluster.py` + `scripts/overlay.py`).
+   Add `--write-overlay` to index OBS under `.skills/reverse-features/` and set
+   `checkpoint.advanced_to` when `.skills/` is writable and gitignored; otherwise
+   stay stateless (`advanced_to: null`).
 3. Load **`references/envelope.md`** and print exactly one envelope in that
    shape (banner included). This run sets `disposition: pending` for new/reopened
    OBS and for unresolved findings — do not emit `absorbed` / `dismissed` /

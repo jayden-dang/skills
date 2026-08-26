@@ -71,6 +71,7 @@ The triad. Each file approved before the next is written.
 | [`prove-claim`](prove-claim.md) | model | **Iron Law:** no completion claims without fresh evidence |
 | [`audit-trace`](audit-trace.md) | model | Deterministic traceability check — grep/git passes, fixed rules, zero errors to pass |
 | [`load-subgraph`](load-subgraph.md) | model | Ask-time neighbors (schema 1.1 path/term evidence), **`cluster(focus)`**, blast_radius from live specs; OWNS coverage; no graph file |
+| [`reconcile-features`](reconcile-features.md) | model | Reverse-track pulls/external commits onto catalog — OBS overlay + rfeat-1.0 envelope; no CODE mint, no consuming-repo CI |
 | [`isolate-workspace`](isolate-workspace.md) | model | Isolated workspace, clean baseline. Never fight the harness |
 | [`hold-stage`](hold-stage.md) | model | Only the ideas this act uses; the rest stay on disk |
 

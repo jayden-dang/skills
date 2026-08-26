@@ -50,7 +50,7 @@ You can see the rule being obeyed in the wild. `root-cause` hands architectural 
 | discovery | `frame-change`, `clarify-decisions`, `research`, `run-spike`, `define-domain` | model |
 | | `pathfind`, `interpret-session` | user |
 | spec | `specify-behavior`, `design-solution`, `plan-tasks` | model |
-| execution | `build-in-waves`, `build-by-story`, `build-inline`, `execute-common`, `test-first`, `root-cause`, `prove-claim`, `audit-trace`, `load-subgraph`, `isolate-workspace`, `hold-stage` | model |
+| execution | `build-in-waves`, `build-by-story`, `build-inline`, `execute-common`, `test-first`, `root-cause`, `prove-claim`, `audit-trace`, `load-subgraph`, `reconcile-features`, `isolate-workspace`, `hold-stage` | model |
 | review | `inspect-change`, `polish-diff`, `vet-feedback`, `vet-source`, `speak-outer`, `review-invariants` | model |
 | | `study-change`, `brief-team`, `select-review-sample` | user |
 | acceptance | `validate-feature`, `validate-api`, `validate-ui`, `review-product-flow`, `vet-product-flow`, `run-product-walkthrough` | model |

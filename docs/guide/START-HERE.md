@@ -149,7 +149,7 @@ Personal OS is a **separate** package — [personal-os START-HERE](../personal-o
 | **setup** | `/configure-repo`, `/bootstrap-repo` |
 | **discovery** | `frame-change`, `clarify-decisions`, `research`, `run-spike`, `define-domain`, `/forge-prompt`, `/pathfind`, `/interpret-session`, `/deepen-codebase`, `/work-the-problem` |
 | **spec** | `specify-behavior`, `design-solution`, `plan-tasks` |
-| **execution** | `build-in-waves`, `build-by-story`, `build-inline`, `execute-common`, `test-first`, `root-cause`, `debug-remote`, `assess-observability`, `prove-claim`, `audit-trace`, **`load-subgraph`**, `isolate-workspace`, `hold-stage` |
+| **execution** | `build-in-waves`, `build-by-story`, `build-inline`, `execute-common`, `test-first`, `root-cause`, `debug-remote`, `assess-observability`, `prove-claim`, `audit-trace`, **`load-subgraph`**, **`reconcile-features`**, `isolate-workspace`, `hold-stage` |
 | **review** | `inspect-change`, `polish-diff`, `vet-feedback`, `vet-source`, `speak-outer`, `review-invariants`, `/study-change`, `/brief-team`, `/select-review-sample` |
 | **acceptance** | `validate-feature`, `validate-api`, `validate-ui`, `review-product-flow`, `vet-product-flow`, `run-product-walkthrough` |
 | **craft** | `craft-page` |

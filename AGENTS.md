@@ -1,7 +1,7 @@
 # AGENTS.md — Agent Behavior Constitution
 
-> A-to-Z agentic development skill set · **88 skills across 11 categories**
-> (70 engineering + 18 Personal OS) · `jayden-dang/skills` · v1.0.0
+> A-to-Z agentic development skill set · **89 skills across 11 categories**
+> (71 engineering + 18 Personal OS) · `jayden-dang/skills` · v1.0.0
 
 This file is the single source of truth for agent behavior when working with this
 skill set on any harness. Read it first, before any skill, before any action.
@@ -116,7 +116,7 @@ the description matches the situation. Everything not listed above, including
 `gate-session`, `frame-change`, `clarify-decisions`, `research`,
 `run-spike`, `define-domain`, the full spec triad, the execute family,
 `test-first`, `root-cause`, `debug-remote`, `assess-observability`, `prove-claim`, `audit-trace`, `load-subgraph`,
-`isolate-workspace`, `hold-stage`, `inspect-change`, `polish-diff`, `vet-feedback`,
+`isolate-workspace`, `hold-stage`, `reconcile-features`, `inspect-change`, `polish-diff`, `vet-feedback`,
 `vet-source`,
 `speak-outer`,
 `review-invariants`, the acceptance suite, `land-branch`,
@@ -136,9 +136,11 @@ use \`x\`` is for model-invocable targets only — pointing it at a
 
 **Two reachability paths, and one of them is fragile.** A skill is reached either
 by a `REQUIRED SUB-SKILL` hand-off or by its description matching what the user
-said. Eight model-invocable skills have no `REQUIRED SUB-SKILL` caller —
+said. Nine model-invocable skills have no `REQUIRED SUB-SKILL` caller —
 `amend-feature`, `vet-feedback`, `vet-source`, `speak-outer`, `hold-stage`, `run-product-walkthrough`,
-`draft-ux` (plus hook-injected `gate-session`). `review-product-flow` is reached from
+`draft-ux`, `reconcile-features` (plus hook-injected `gate-session`). Wire
+`reconcile-features` from `frame-change` / `inspect-change` in a follow-on edit.
+`review-product-flow` is reached from
 `prove-claim` (alternative to `validate-feature`) and from the execute-family
 close sequence when a walk predicate holds. The remaining entry points fire
 on what the user said, which makes their descriptions the only thing
@@ -408,7 +410,7 @@ Can't tick a box? The work is not done.
 | **setup** (2) | `configure-repo` (U), `bootstrap-repo` (U) |
 | **discovery** (10) | `frame-change` (m), `clarify-decisions` (m), `research` (m), `run-spike` (m), `define-domain` (m), `forge-prompt` (U), `pathfind` (U), `interpret-session` (U), `deepen-codebase` (U), `work-the-problem` (U) |
 | **spec** (3) | `specify-behavior` (m), `design-solution` (m), `plan-tasks` (m) |
-| **execution** (13) | `build-in-waves` (m), `build-by-story` (m), `build-inline` (m), `execute-common` (m), `test-first` (m), `root-cause` (m), `debug-remote` (m), `assess-observability` (m), `prove-claim` (m), `audit-trace` (m), `load-subgraph` (m), `isolate-workspace` (m), `hold-stage` (m) |
+| **execution** (14) | `build-in-waves` (m), `build-by-story` (m), `build-inline` (m), `execute-common` (m), `test-first` (m), `root-cause` (m), `debug-remote` (m), `assess-observability` (m), `prove-claim` (m), `audit-trace` (m), `load-subgraph` (m), `reconcile-features` (m), `isolate-workspace` (m), `hold-stage` (m) |
 | **review** (11) | `inspect-change` (m), `polish-diff` (m), `vet-feedback` (m), `vet-source` (m), `speak-outer` (m), `review-invariants` (m), `review-ui` (m), `study-change` (U), `teach-build` (U), `brief-team` (U), `select-review-sample` (U) |
 | **acceptance** (6) | `validate-feature` (m), `validate-api` (m), `validate-ui` (m), `review-product-flow` (m), `vet-product-flow` (m), `run-product-walkthrough` (m) |
 | **craft** (3) | `craft-page` (m), `draft-ui` (m), `draft-ux` (m) |

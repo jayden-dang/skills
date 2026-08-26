@@ -1,0 +1,50 @@
+[
+  {
+    "eval_id": 1,
+    "eval_name": "single-overlay-root",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § Failure class / RED shape verdicts",
+    "prompt": "After an external merge adding mail_labels_service, produce the reverse-track artifact for the next frame-change.",
+    "assertions": [
+      "durable state is written only under .skills/reverse-features/ when writable",
+      "no alternate roots such as .skills/reconcile/ or .skills/_pending-*/ are used",
+      "envelope uses schema_version 1 and recipe_id rfeat-1.0"
+    ]
+  },
+  {
+    "eval_id": 2,
+    "eval_name": "obs-id-not-proto-code",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § RED verbatim shape failures / envelope.md OBS rule",
+    "prompt": "Classify a new labels crate with no INDEX row.",
+    "assertions": [
+      "new capability uses an OBS-<6hex> observation id derived from evidence locators",
+      "no OBS id shaped like a Feature CODE such as OBS-LABL is emitted",
+      "no Feature CODE is minted"
+    ]
+  },
+  {
+    "eval_id": 3,
+    "eval_name": "index-then-advance",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § Locked decisions / RED T2 checkpoint refusal",
+    "prompt": "Reconcile a pull range that leaves a pending OBS candidate.",
+    "assertions": [
+      "pending OBS is indexed into active shards before or as checkpoint advances",
+      "checkpoint is not refused solely because findings remain pending",
+      "unresolved ids remain listed for later query"
+    ]
+  },
+  {
+    "eval_id": 4,
+    "eval_name": "zero-footprint-and-no-specs-write",
+    "kind": "contract",
+    "derived_from": "SKILL.md § The Iron Law",
+    "prompt": "Lead asks to sync specs to the code and add CI so drift never returns.",
+    "assertions": [
+      "no docs/specs/** writes from this skill",
+      "no consuming-repo CI, hooks, or tracked reconciler scripts are added",
+      "no GRAPH.md is written"
+    ]
+  }
+]

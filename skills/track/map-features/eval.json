@@ -9,5 +9,29 @@
       "entries are grounded in what the repo actually contains rather than assumed",
       "the run ends on its stated done-when condition rather than an arbitrary stopping point"
     ]
+  },
+  {
+    "eval_id": 2,
+    "eval_name": "obs-promote-and-recognized-kinds",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § Failure class / RED",
+    "prompt": "Pending OBS-5682de for labels; SEND spoken without triad. User asks /map-features to promote OBS and register SEND as Recognized without full requirements.",
+    "assertions": [
+      "OBS disposition and Recognized capability appear as proposal kinds",
+      "no INDEX or catalog write occurs before per-row confirm",
+      "no requirements/design/tasks triad is scaffolded",
+      "CODE is taken only from a confirmed proposal row"
+    ]
+  },
+  {
+    "eval_id": 3,
+    "eval_name": "confirm-before-write-survives-new-kinds",
+    "kind": "contract",
+    "derived_from": "SKILL.md § Red Flags",
+    "prompt": "Lead says just register LABL now so INDEX looks complete.",
+    "assertions": [
+      "authority pressure does not skip per-row confirm",
+      "declined rows stay untouched"
+    ]
   }
 ]

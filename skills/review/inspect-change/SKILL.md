@@ -1,6 +1,6 @@
 ---
 name: inspect-change
-version: 1.5.0
+version: 1.5.1
 description: Use when a branch, PR, diff, or set of changes needs review before merging —
   produces a two-axis verdict (repo-standards conformance plus
   spec/requirements conformance, reported separately) — when build-in-waves
@@ -23,26 +23,29 @@ Take the base ref the caller supplied (a sha, branch, tag, or merge-base). Confi
 
 ## 1b. Reverse-track the pinned range
 
-REQUIRED SUB-SKILL: use `reconcile-features` on the pinned `base..HEAD` (mode
-`changes-since-checkpoint` with that base). Hold the rfeat-1.0 envelope. Pending
-`new-capability-candidate` / `uncertain` findings are durable OBS handles — surface
-them before step 2 treats unowned paths as a bare "ask / no spec". Do not mint
-Feature CODEs here; name `/map-features` only for later confirm-then-write.
-*Done when: the reconcile envelope is held (writable overlay or explicit
-stateless `checkpoint.advanced_to: null`).*
+REQUIRED SUB-SKILL: use `reconcile-features` on the pinned `base..HEAD`. Hold
+the envelope it prints. Step 2 consumes it; do not mint Feature CODEs here.
+*Done when: the reconcile envelope is held (or reconcile-features’ explicit
+stateless outcome).*
 
 ## 2. Locate the spec
 
-Find the governing requirements, in order:
+Find the governing requirements, in order, **using the step-1b envelope**:
 
-1. A `docs/specs/<date>-<feature>/requirements.md` matching the branch, feature
-   name, or INDEX feature code for paths in the diff.
-2. A path the caller handed you.
-3. Otherwise ask the user. If they confirm no spec exists, skip the Spec axis and say so in the final report.
+1. Envelope `known-impact` CODE → that feature’s `requirements.md`.
+2. Else a `docs/specs/<date>-<feature>/requirements.md` matching the branch,
+   feature name, or INDEX code for paths in the diff (exact CODE lookup per
+   `catalog-query.md` — do not paste INDEX).
+3. A path the caller handed you.
+4. Envelope pending OBS / known-impact / uncertain on unowned paths → **not**
+   “no spec.” Hold those handles; do not skip the Spec axis as absence.
+5. Otherwise ask the user. If they confirm no spec **and** 1b has no pending
+   OBS on those paths, skip the Spec axis and say so in the final report.
 
 (Commit trailers are not required carriers of requirement IDs — docs-only spine.)
 
-*Done when: you hold a requirements.md path, or an explicit "no spec".*
+*Done when: you hold a requirements.md path, or pending OBS / uncertain handles
+for unowned paths, or an explicit "no spec" after (5).*
 
 ## 3. Gather the standards sources
 

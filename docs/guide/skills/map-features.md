@@ -1,8 +1,7 @@
 # `map-features`
 
-> Brownfield backfill for Feature code lines, ROAD bindings, OWNS gaps,
-> DEPENDS_ON *candidates*, domain boundaries, Recognized catalog cards, and OBS
-> dispositions — propose, confirm, additive SSOT only.
+> Confirm-then-write brownfield backfill of feature IDs and catalog cards into
+> specs.
 
 |  |  |
 |---|---|

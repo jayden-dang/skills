@@ -74,7 +74,8 @@ Do not raise context caps to match the envelope.
 4. Keep ≤ `DIRECT_CARDS_MAX` direct cards (Recognized + OBS) and ≤
    `NEIGHBOR_CARDS_MAX` one-hop neighbors if already known from a prior
    load-subgraph package; otherwise leave neighbors to `load-subgraph`.
-5. Present two bands: **Recognized features** and **Observed candidates**.
+5. Present two bands: **Recognized features** and **observations** (active OBS
+   cards; not Feature CODEs).
 6. Open `requirements.md` / `tasks.md` / OBS evidence **only** for selected cards.
 7. Absence claims must carry catalog mode + `owns_coverage` when a subgraph
    package exists (grounded-claims.md).

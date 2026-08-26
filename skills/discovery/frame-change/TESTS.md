@@ -83,3 +83,9 @@ Form: positive recipe via `catalog-query.md` + replace the “small” sentence.
 **GREEN (v1.2.0), 2/2.** Both: `FULL_INDEX_IN_CONTEXT: no`. Caps applied
 (`DOMAINS_MAX` 2 / `DIRECT_CARDS_MAX` 4); 4.6 kept 4 cards, 4.5 kept 0
 concrete CODEs (fixture path absent) but refused full ingest.
+
+## Quality pass (v1.2.1) — author-skills wording sweep
+
+Description gains outcome noun; reverse-track BEFORE catalog-query; predicate
+uses checkpoint/`HEAD` (not sticky ORIG_HEAD); catalog-query pointed not
+restated. No new behavior beyond recorded sequencing intent.

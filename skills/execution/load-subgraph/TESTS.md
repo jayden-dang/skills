@@ -30,3 +30,8 @@ Form: Pass O + required `observations[]` band (Recognized stay in `neighbors[]`)
 
 **GREEN (v1.2.0 / fsubr-1.2), 2/2.** Both: `HAS_OBSERVATIONS_BAND: yes`,
 `OBS_IN_ENVELOPE: yes` (`OBS-5682de`), `NEIGHBORS_CODES_ONLY: yes`.
+
+## Quality pass (v1.2.1) — author-skills wording sweep
+
+Description drops workflow/prohibitions; envelope field walk deferred to
+envelope.md; grounded-claims keeps consuming `observations`.

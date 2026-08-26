@@ -74,3 +74,9 @@ held-out set.
 Pass 4 points at `catalog-query.md` for flat/sharded detect and context caps.
 RED evidence for unbounded INDEX dump lives on `frame-change` v1.2.0 TESTS;
 this bump keeps reconcile aligned with the same contract.
+
+## Quality pass (v1.1.1) — author-skills wording sweep
+
+Pointer-only procedure; disposition this-run = pending; envelope no-spec-impact
+aligned to classification rule 4; rationalization/red-flag parity; Done when
+checkable. No new behavior.

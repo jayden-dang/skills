@@ -30,3 +30,8 @@ outside this skill’s passes."
 
 Both: `REPORTS_DUP_CODE: yes`, `REPORTS_OBS_IN_CATALOG: yes`,
 `REPORTS_MISSING_SHARD: yes`.
+
+## Quality pass (v1.1.1) — author-skills wording sweep
+
+E13 token locked to OBS-<6hex>; opening table is the one code list; "The rules"
+no longer a stale subset; W5 skip tied to INDEX absence as contracted.

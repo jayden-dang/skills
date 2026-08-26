@@ -35,3 +35,8 @@ missing).
 
 Both: `WROTE_BEFORE_CONFIRM: no`, `TRIAD_SCAFFOLD: no`. CODE remains
 confirm-gated; flat Domain boundary deferred.
+
+## Quality pass (v1.1.1) — author-skills wording sweep
+
+User-invoked description reduced to one human line; catalog grammar pointed at
+catalog-query.md; tombstone file named; promote/absorb CODE confirm clarified.

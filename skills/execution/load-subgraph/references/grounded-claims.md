@@ -21,7 +21,7 @@ WHEN stating a conclusion from retrieval:
    hypotheses from the envelope alone — retrieval is **advisory input only**.
 4. **Ignore** unknown future `via_traces` kinds; keep consuming core fields
    (`schema_version`, `shared_paths`, `via`, path/term evidence, `owns_coverage`,
-   advisory banner).
+   `observations`, advisory banner).
 5. **Never fail a gate** solely because neighbors/cluster are empty or thin
    (frame-change, inspect-change, plan-tasks, root-cause RED loop). Soft "thin"
    means incomplete OWNS — use the exact `owns_coverage` numbers, not vibes.

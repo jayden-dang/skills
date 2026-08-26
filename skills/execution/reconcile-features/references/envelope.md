@@ -36,7 +36,7 @@ Each finding is exactly one `change_class`:
 |---|---|
 | `known-impact` | Changed path matches a Recognized feature's Files/surface-root prefix |
 | `new-capability-candidate` | Behavior-bearing surface with no Recognized owner strong enough |
-| `no-spec-impact` | Generated/vendor/lockfile/docs-only/refactor with no contract signal |
+| `no-spec-impact` | Classification rule 4 only (docs/comment/internal rename, no contract file). Generated/vendor/lockfile are dropped (rule 1), not this class |
 | `uncertain` | Behavior-bearing but ownership ambiguous — never treat as clean |
 
 ```text
@@ -48,6 +48,9 @@ evidence:
   items: [ { kind, locator, status }, … ]  # length ≤ EVIDENCE_MAX (8)
   truncated: <bool>
 disposition: pending | absorbed | dismissed | attested-no-impact
+# This skill's run emits disposition: pending for new/reopened OBS and
+# unresolved findings. absorbed / dismissed / attested-no-impact are overlay
+# cleanup after human disposition in the calling session — not this run.
 ```
 
 `OBS-<6hex>`: lowercase hex of the first 6 characters of

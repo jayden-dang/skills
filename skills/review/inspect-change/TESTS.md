@@ -160,3 +160,8 @@ pinned `base..HEAD`.
 **GREEN (v1.5.0), 2/2.** Both models: `INVOKED_RECONCILE: yes` at step 1b;
 labels handled as pending OBS (not bare no-spec, no CODE mint); then
 `load-subgraph` at 3a.
+
+## Quality pass (v1.5.1) — author-skills wording sweep
+
+Step 2 locate-spec template consumes 1b envelope (REQUIRED slot); 1b points at
+reconcile-features without restating callee internals.

@@ -1,23 +1,22 @@
 ---
 name: reconcile-features
-version: 1.1.0
+version: 1.1.1
 description: >
   Use when external commits, a pull/merge, brownfield code, or a missing feature
-  owner must be mapped back onto the capability catalog — reverse tracking,
-  changes-since-checkpoint, observed capability candidates, OBS overlay,
-  known-impact vs new-capability vs no-spec-impact — and the deliverable is a
-  bounded advisory reconciliation envelope plus local `.skills/reverse-features/`
-  index. Not for writing requirements (specify-behavior), backfilling confirmed
-  registry rows (/map-features), docs-only ID audit (audit-trace), or ask-time
-  neighbors (load-subgraph).
+  owner must be mapped onto the capability catalog (reverse tracking,
+  changes-since-checkpoint, OBS overlay) — produces one advisory reconciliation
+  envelope plus a local `.skills/reverse-features/` index. Not for writing
+  requirements (specify-behavior), confirmed registry backfill (/map-features),
+  docs-only ID audit (audit-trace), or ask-time neighbors (load-subgraph).
 ---
 
 # Reconcile Features
 
-Read-only reverse track from git/code evidence onto the capability catalog.
-Sibling of `load-subgraph` (horizontal neighbors) and `audit-trace` (vertical
-IDs): this skill answers **what changed out there, and which Recognized features
-or OBS candidates own it?**
+Reverse track from git/code evidence onto the capability catalog (no specs/CI
+writes; overlay only under `.skills/reverse-features/` when permitted). Sibling
+of `load-subgraph` (horizontal neighbors) and `audit-trace` (vertical IDs): this
+skill answers **what changed out there, and which Recognized features or
+observations own it?**
 
 ## The Iron Law
 
@@ -28,27 +27,21 @@ ONE OVERLAY ROOT. INDEX THEN ADVANCE. ENVELOPE.md IS THE SHAPE.
 
 ## What you produce
 
-Print **exactly one** envelope shaped by `references/envelope.md`
-(`schema_version: "1"`, `recipe_id: "rfeat-1.0"`). When `.skills/` is writable
-and ignored, also index active OBS cards under `.skills/reverse-features/` per
-`references/passes.md`.
-
-You do **not** invent Feature CODEs. You do **not** write `docs/specs/**`. You
-do **not** add hooks, workflows, or tracked scripts to the consuming repo. You
-do **not** write `docs/specs/GRAPH.md`. You do **not** Approve requirements from
-code.
+Print **exactly one** envelope shaped by `references/envelope.md`. When
+`.skills/` is writable and ignored, index per `references/passes.md`.
 
 ## Procedure
 
-1. Resolve the consuming repo root and mode (`changes-since-checkpoint`, `full`,
-   or `brownfield-bootstrap`).
-2. Load **`references/passes.md`** and run its passes in order — rename-aware
-   `git diff --name-status -z -M`, generated-path drop, catalog Files/surface
-   roots, active overlay + tombstone lookup, classify, cap.
-3. Load **`references/envelope.md`** and render the envelope. Banner always.
-4. Index pending/reopened OBS into `active/<domain>.md` + `observations/OBS-*.json`,
-   then advance `state.json` (`last_reconciled_sha = head`). Stateless if not
-   writable: still print the envelope with `checkpoint.advanced_to: null`.
+1. Resolve the consuming repo root and mode per `references/passes.md` Pass 1
+   (`changes-since-checkpoint`, `full`, or `brownfield-bootstrap`).
+2. Load **`references/passes.md`** and run **every** pass in that file’s Pass
+   order, including Pass 2. Do not substitute a remembered path list.
+3. Load **`references/envelope.md`** and print exactly one envelope in that
+   shape (banner included). This run sets `disposition: pending` for new/reopened
+   OBS and for unresolved findings — do not emit `absorbed` / `dismissed` /
+   `attested-no-impact` here.
+4. Index-then-advance **only** as `references/passes.md` § Checkpoint advance
+   specifies, including the stateless `advanced_to: null` case.
 5. Return the envelope to the caller. Unresolved `pending` findings must be
    surfaced before `frame-change` / `realign-spec` decisions on those surfaces.
    Name `/map-features` for confirm-then-write backfill; never auto-invoke it.
@@ -58,7 +51,7 @@ code.
 | Skill | When |
 |---|---|
 | `frame-change` | After pull/merge or when INDEX may miss external work — before tier/requirements |
-| `inspect-change` | When changed paths have no Recognized owner but look behavior-bearing |
+| `inspect-change` | Step 1b on the pinned review range |
 | `realign-spec` | Optional pre-check: which CODEs the range actually touched |
 | standalone | User asks to reverse-track, reconcile since checkpoint, or bootstrap OBS from code |
 
@@ -77,6 +70,7 @@ code.
 | "uncertain is basically no-spec-impact" | uncertain stays unresolved; never silent-clean |
 | "Skip git diff — I already know the paths" | Pass 2 is mandatory; locators come from rename-aware inventory |
 | "Paste the whole INDEX so ownership is obvious" | Catalog-query caps apply to the reply; Pass R may enumerate on disk |
+| "I'll just invoke map-features and write the INDEX rows" | Name `/map-features` for the user; never auto-invoke |
 
 ## Red Flags
 
@@ -88,9 +82,14 @@ code.
 - Writing `GRAPH.md` or treating Graphify as required (deferred in rfeat-1.0)
 - Calling the range clean while any finding is `uncertain` or `pending`
 - Auto-invoking `/map-features` or `/configure-repo`
+- Skipping Pass 2 `git diff` or classifying from memory
+- Pasting the full INDEX/catalog into the envelope or chat
+- Printing a freeform note instead of the `references/envelope.md` envelope
 
 ## Done when
 
-Envelope printed with schema 1 / rfeat-1.0; findings classified by the pass
-rules; overlay indexed (or explicit stateless); checkpoint advanced per passes.md
-or explicitly null; no CODE mint; no specs write; no consuming-repo CI.
+Exactly one `references/envelope.md` envelope is printed (advisory banner
+included); every finding’s `change_class` follows `references/passes.md`
+Classification rules; overlay written under `.skills/reverse-features/` **or**
+stateless with `checkpoint.advanced_to: null`; unresolved `pending` rows are in
+the envelope returned to the caller; `/map-features` named only, not invoked.

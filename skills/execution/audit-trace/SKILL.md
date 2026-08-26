@@ -1,24 +1,21 @@
 ---
 name: audit-trace
-version: 1.1.0
-description: Use when checking that every requirement ID agrees across where it is
-  defined and task-cited in docs/specs, or that the capability catalog INDEX /
-  shards stay intact — the docs-only vertical integrity pass invoked by
-  prove-claim, cut-release, realign-spec, and plan-tasks's coverage check, or
-  whenever requirements, tasks, or catalog rows may have drifted. Produces a
-  traceability finding set — IDs cited but never defined, duplicate definitions,
-  approved-but-uncited warnings, optional architecture Respects integrity, and
-  catalog integrity (duplicate Feature CODEs, OBS tokens in canonical tables,
-  missing shard refs). Does not search application source or tests for
-  requirement IDs.
+version: 1.1.1
+description: Use when checking that requirement IDs agree where they are defined
+  and task-cited in docs/specs, or that the capability catalog INDEX / shards
+  stay intact — the docs-only vertical pass invoked by prove-claim, cut-release,
+  realign-spec, and plan-tasks. Produces a traceability finding set (unknown
+  citations, duplicate definitions, approved-but-uncited, Respects / system-ID
+  integrity, duplicate Feature CODEs, OBS-<6hex> in Code cells, missing shard
+  refs). Does not search application source or tests for requirement IDs.
 ---
 
 # Audit Trace
 
 The vertical traceability check. It answers with evidence: **do requirement IDs
 agree across the spec triad (and optional architecture docs), and does the
-capability catalog stay free of duplicate CODEs, OBS-as-CODE, and broken shard
-refs?**
+capability catalog stay free of duplicate CODEs, `OBS-<6hex>` in Code cells, and
+broken shard refs?**
 
 It is not a judgment call. Every input is gathered with `grep` and reads —
 deterministic passes — and every finding follows a fixed rule. Two agents running
@@ -49,16 +46,16 @@ A finding set, each item an ERROR or a WARNING:
 | **E10** | error | A `Reliability:` line cites a retired (struck-through) `SLO-N` |
 | **E11** | error | The same Feature CODE appears in more than one catalog row (flat INDEX and/or shards) |
 | **E12** | error | A sharded INDEX `Feature catalog` path is missing or not a readable file under `docs/specs/` |
-| **E13** | error | A canonical catalog Code cell is an `OBS-` observation id |
+| **E13** | error | A canonical catalog Code cell is `OBS-<6hex>` (`OBS-[0-9a-f]{6}`) |
 | **W4** | warn | A catalog Spec pointer (not `—`/empty) names a missing directory under `docs/specs/` |
 | **W5** | warn | The same `OBS-<6hex>` appears in more than one `.skills/reverse-features/active/*.md` card |
 
 E4/E5/W3 come from the invariant passes, which only run when a spine exists.
 E6–E10 come from system-ID passes; skip when the defining docs are absent or
-non-authoritative. E11–E13 / W4–W5 come from catalog integrity passes; skip when
-`docs/specs/INDEX.md` is absent (same stop as "nothing to check"). **Do not** warn merely because a live system ID has no feature
-citation. **Do not** judge semantic conformance. **Do not** grep application or
-test source for these IDs.
+non-authoritative. E11–E13 and W4 run only when `docs/specs/INDEX.md` exists.
+W5 is grouped with those catalog passes and also skips when INDEX is absent,
+even if `active/` exists. **Do not** warn merely because a live system ID has
+no feature citation. **Do not** judge semantic conformance. Same docs-only rule.
 
 **Retired:** **E2** (code-side ID presence for Implemented/Shipped) is not
 emitted. Do not reintroduce a finding that greps the codebase for IDs.
@@ -194,22 +191,21 @@ Rules when defining files exist:
 ### Catalog integrity passes — only when `docs/specs/INDEX.md` exists
 
 If `docs/specs/INDEX.md` is missing, skip this section (the "nothing to check"
-stop already applies when the whole specs tree is absent). Mode detect matches
-`load-subgraph` / `catalog-query.md`: Domain router header → **sharded**; else
-**flat**.
+stop already applies when the whole specs tree is absent). Mode detect: load
+`load-subgraph`’s `catalog-query.md` (Domain router header → **sharded**; else
+**flat**).
 
-**C1. Catalog CODE rows** — collect every Code cell from the flat INDEX feature
-table and/or each shard listed by the router:
+**C1. Catalog CODE rows** — collect Code cells with CODE grammar
+`[A-Z][A-Z0-9]{1,11}` length 2–12 from the flat INDEX feature table and/or each
+shard. Shard paths come from the router `Feature catalog` cell (`./catalog/…`
+or `catalog/…`), then the same Code-row grep in each readable shard:
 
 ```bash
 # flat feature rows (Code | … | Spec | Status | …)
 grep -nE '^\| [A-Z][A-Z0-9]{1,11} \|' docs/specs/INDEX.md
-# sharded: list Feature catalog paths from the router, then Code rows in each shard
-grep -nE '^\| [A-Z][A-Z0-9_ -]+ \|' docs/specs/INDEX.md | grep -i 'catalog'
-# for each ./catalog/*.md path referenced, grep Code rows the same way
+# after resolving each shard path from the router, same Code-row grep in that file
 ```
 
-Normalize CODE = first table cell matching `[A-Z][A-Z0-9]{1,11}` length 2–12.
 Ignore Domain-id cells that are not feature cards. Build `catalogCodes` as
 CODE → [file:line, …].
 
@@ -248,28 +244,8 @@ allowed). Do **not** promote OBS into CODEs here.
 
 ## The rules
 
-With the sets in hand — `defined` (ID → {file, status}), `taskCited` — apply:
-
-- **E1** — for each ID in `taskCited` not in `defined`: report it and the citing
-  task file(s). (IDs that appear only in application or test source are not
-  task citations and never feed E1.)
-- **E3** — for each ID bold-defined in two or more distinct files: report the files.
-  (Two bold occurrences in the *same* file are not a duplicate.)
-- **W1** — for each `defined` ID whose status is exactly `Approved` and not in
-  `taskCited`: report it.
-- **W2** — for each `requirements.md` (never `fixes.md`) missing a `Status:` or a
-  `Feature code:` line: report which line is missing.
-
-When `docs/architecture/` exists, also — with `liveArch`, `retiredArch`, and
-`respectsCited` (ARCH-N → citing design) in hand:
-
-- **E4** — for each `ARCH-N` in `respectsCited` that is in neither `liveArch` nor
-  `retiredArch`: report it and the citing `design.md`.
-- **E5** — for each `ARCH-N` in `respectsCited` that is in `retiredArch`: report it
-  and the citing `design.md`.
-- **W3** — for each `ARCH-N` in `liveArch` not in `respectsCited`: report it.
-
-Status obligations at a glance:
+Apply the **opening finding table** to the sets each pass built. Status
+obligations for W1:
 
 | Status | Needs a task (W1) |
 |---|---|
@@ -298,7 +274,7 @@ design *actually* respects the invariant; that semantic call is `review-invarian
 ### Decision-record passes — only when `.skills/decisions/` exists
 
 If the repo has no `.skills/decisions/` directory, skip this section entirely; the
-finding set remains passes 1–3 (or 1–5) unchanged.
+finding set from every pass that ran remains unchanged.
 
 When `.skills/decisions/` exists, run the shipped validator (path relative to this
 skill set install, beside `record-verdict`):
@@ -316,7 +292,7 @@ does not emit an automated finding for “a production crossing lacks a record,�
 because it cannot tell skill-mediated verdicts from direct human action or
 external contribution. If an agent or human notes such an absence, treat it as a
 **warning-level concern only — never an error and never a cut-release/prove-claim gate
-fail**. Existing E1 / E3–E5 / W1–W3 semantics are unchanged by decision-record passes.
+fail**. Do not reinterpret validator lines; the opening finding table still applies.
 
 ## Output
 
@@ -329,6 +305,6 @@ trace: 24 requirements · 24 task-cited
 ```
 
 Exact wording and ordering are not contractual — the **finding set** is. If
-`docs/specs/` does not exist, say there is nothing to check and stop. When a caller
-(prove-claim, cut-release) needs a pass/fail, the gate is: zero errors (including
-catalog E11–E13 when INDEX exists).
+`docs/specs/` does not exist, say there is nothing to check and stop. Gate: zero
+errors. Catalog errors (E11–E13) count when INDEX exists; warnings W4–W5 stay
+non-fatal unless the caller says otherwise.

@@ -1,10 +1,7 @@
 ---
 name: map-features
-version: 1.1.0
-description: Backfills Feature code lines, ROAD bindings, OWNS gaps,
-  DEPENDS_ON candidates, domain boundaries, Recognized catalog cards, and OBS
-  dispositions into SSOT after you confirm each proposal. Run with
-  /map-features.
+version: 1.1.1
+description: Confirm-then-write brownfield backfill of feature IDs and catalog cards into specs.
 disable-model-invocation: true
 ---
 
@@ -15,11 +12,12 @@ Brownfield SSOT backfill for the feature-ID / catalog layer. Sibling of
 write only**.
 
 Model-invoked skills that see mapping gaps MUST **name** `/map-features` for the
-user and MUST NOT auto-invoke this skill (ARCH-5).
+user and MUST NOT auto-invoke this skill.
 
-Catalog shape (flat vs sharded) and card grammar live in
-`skills/execution/load-subgraph/references/catalog-query.md` — load it when
-emitting Domain / Recognized / OBS rows.
+Load `load-subgraph`’s `catalog-query.md` when emitting Domain / Recognized / OBS
+rows — that file is the one home for mode detect and card fields. Overlay
+tombstones follow `reconcile-features` layout (`tombstones.jsonl`); do not load
+that file into chat.
 
 ## Procedure
 
@@ -37,21 +35,21 @@ emitting Domain / Recognized / OBS rows.
    | Empty ROAD bind | INDEX Roadmap cell empty/`—` and a live `ROAD-N` is a candidate | INDEX cell only — **never invent** a new `ROAD-N` |
    | OWNS gap | significant path not in any feature’s denoised OWNS | a **Files edit proposal** for the owning feature’s `tasks.md` (Create/Modify/Test line). Do **not** invent freeform “owns:” prose as SSOT |
    | DEPENDS_ON candidate | `Reuse:` / `Interfaces: Consumes` naming another feature | optional design.md or tasks Reuse **prose** after confirm — **never** a load-subgraph edge |
-   | Domain boundary | Sharded router missing a domain for a clear surface-root cluster; or user asks to add a domain | Router row + `docs/specs/catalog/<domain>.md` with empty feature-card table header if missing. **Flat INDEX:** no write — list as deferred optional shard (`catalog-query.md`) |
-   | Recognized capability | Spoken/INDEX CODE with no triad; or a confirmed capability boundary without requirements yet | Compact catalog card only: flat INDEX row **or** shard card (Code, maturity/Status, one-line capability, match terms, 1–3 surface roots, Spec `—` if no triad). **Never** scaffold `requirements.md` / design / tasks |
-   | OBS disposition | Pending/reopened `OBS-<6hex>` in active overlay | **promote** → Recognized card (same write as above) + remove active card + tombstone `promoted→CODE`; **absorb** → tombstone `absorbed→CODE` + remove active (OWNS Files stays a separate OWNS-gap proposal); **dismiss** → tombstone + remove active. Never mint CODE: the confirmed row must include the exact CODE string the user accepted |
+   | Domain boundary | Sharded router missing a domain for a clear surface-root cluster; or user asks to add a domain | Sharded: router row + shard stub per `catalog-query.md`. Flat: no write; list as deferred optional shard |
+   | Recognized capability | Spoken/INDEX CODE with no triad; or a confirmed capability boundary without requirements yet | Compact catalog card only (grammar in `catalog-query.md`; Spec may be `—`). Never scaffold a triad. Do not write a second catalog row for a CODE that already exists |
+   | OBS disposition | Pending/reopened `OBS-<6hex>` in active overlay; each row carries action `promote` \| `absorb` \| `dismiss` | **promote** → Recognized card + remove active + tombstone `promoted→CODE` on `tombstones.jsonl`; **absorb** → tombstone `absorbed→CODE` + remove active (OWNS Files stays a separate OWNS-gap proposal); **dismiss** → tombstone + remove active. Never write `OBS-*` into a Code cell |
 
 3. Present every proposal. Write **only** rows the user explicitly confirms.
-   Declined rows stay untouched. For Recognized / OBS promote, the confirm must
-   include the **CODE token** (suggestion allowed; silent invention forbidden).
-4. Unconfirmed DEPENDS_ON candidates MUST NOT become load-subgraph edges (that
-   skill has no DEPENDS_ON pass).
-5. If CODE cannot be resolved and the user has not confirmed a CODE on that row,
+   Declined rows stay untouched. Promote and absorb confirms MUST include the
+   exact CODE token on that row (suggestion allowed; silent invention forbidden).
+   Dismiss does not take a CODE.
+4. If CODE cannot be resolved and the user has not confirmed a CODE on that row,
    list it as a first-class gap. MUST NOT key the feature by directory slug in
    user-facing results.
-6. MUST NOT write `docs/specs/GRAPH.md` or any graph projection.
-7. MUST NOT create a full triad (requirements/design/tasks) from this skill —
+5. MUST NOT write `docs/specs/GRAPH.md` or any graph projection.
+6. MUST NOT create a full triad (requirements/design/tasks) from this skill —
    name `frame-change` / `specify-behavior` when normative SHALLs are needed.
+7. If the scan finds nothing, say so and stop; do not invent kinds.
 
 ## Rationalization
 
@@ -74,10 +72,11 @@ emitting Domain / Recognized / OBS rows.
 - Writing GRAPH.md or a JSON edge store
 - Silencing “can’t resolve CODE” by using a directory name
 - Scaffolding a requirements/design/tasks triad from this skill
-- Leaving a promoted OBS in `active/` without a tombstone
+- Leaving a promoted OBS in `active/` without a tombstone on `tombstones.jsonl`
+- Writing `OBS-*` into a canonical Code cell
 
 ## Done when
 
-Every proposal was shown; only confirmed rows written additively; declined left
-intact; OBS dispositions tombstoned when confirmed; remaining gaps listed for
-the user.
+Every proposal was shown (or the scan found nothing); only confirmed rows written
+additively; declined left intact; OBS dispositions tombstoned when confirmed;
+remaining gaps listed for the user.

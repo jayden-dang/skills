@@ -3,7 +3,7 @@
     "eval_id": 1,
     "eval_name": "scan-includes-blindspot",
     "kind": "behavior",
-    "derived_from": "TESTS.md § RED — S-BS-STRUCT: scan had traps in prose but no named Blindspot section",
+    "derived_from": "TESTS.md \u00a7 RED \u2014 S-BS-STRUCT: scan had traps in prose but no named Blindspot section",
     "prompt": "The user wants to add a second auth provider to a module you have low familiarity with. Complete step 1 only.",
     "assertions": [
       "the scan digest contains a section explicitly named Blindspot",
@@ -14,7 +14,7 @@
     "eval_id": 2,
     "eval_name": "knowns-inventory-before-step-2",
     "kind": "behavior",
-    "derived_from": "TESTS.md § RED — no named Knowns inventory; GREEN four bullets",
+    "derived_from": "TESTS.md \u00a7 RED \u2014 no named Knowns inventory; GREEN four bullets",
     "prompt": "Same second-auth-provider task. Produce what step 1 requires before moving on.",
     "assertions": [
       "a knowns inventory is written before step 2 begins",
@@ -26,7 +26,7 @@
     "eval_id": 3,
     "eval_name": "assumptions-are-not-locks",
     "kind": "behavior",
-    "derived_from": "TESTS.md § Rules — assumptions ≠ locks (GREEN inventory separates solution shape from locks)",
+    "derived_from": "TESTS.md \u00a7 Rules \u2014 assumptions \u2260 locks (GREEN inventory separates solution shape from locks)",
     "prompt": "The user describes the feature and mentions in passing 'we'd use an OAuthProvider class for this'. Complete step 1.",
     "assertions": [
       "the proposed solution shape is recorded as an assumption, not as a lock",
@@ -37,13 +37,25 @@
     "eval_id": 4,
     "eval_name": "questions-precede-implementation",
     "kind": "contract",
-    "derived_from": "SKILL.md § Write NO code, scaffold NOTHING",
+    "derived_from": "SKILL.md \u00a7 Write NO code, scaffold NOTHING",
     "prompt": "The user says 'just add a --quiet flag to the export CLI, it's two lines'. You can see the file and the change is obvious. Decide what you do first.",
     "assertions": [
       "no production file is edited and no scaffold is created before the checklist has run",
       "the ceremony tier is stated out loud, including when the answer is tier 0",
       "any clarifying question is asked before implementation begins, not after a draft exists",
       "the size of the request is not accepted as a reason to skip the tier decision"
+    ]
+  },
+  {
+    "eval_id": 5,
+    "eval_name": "reverse-track-before-load-subgraph-after-pull",
+    "kind": "behavior",
+    "derived_from": "TESTS.md \u00a7 Edit \u2014 reverse-track before load-subgraph (v1.1.0)",
+    "prompt": "Just git pulled 14 commits; ORIG_HEAD differs from HEAD; user asks to frame auto-archive for stale drafts. Complete step 1 only.",
+    "assertions": [
+      "reconcile-features is invoked when the reverse-track predicate holds, before load-subgraph",
+      "pending OBS or known-impact from the envelope is surfaced before neighbor cards",
+      "load-subgraph still runs for overlap after reconcile"
     ]
   }
 ]

@@ -1,6 +1,6 @@
 ---
 name: inspect-change
-version: 1.4.0
+version: 1.5.0
 description: Use when a branch, PR, diff, or set of changes needs review before merging —
   produces a two-axis verdict (repo-standards conformance plus
   spec/requirements conformance, reported separately) — when build-in-waves
@@ -20,6 +20,16 @@ The axes are deliberately separate because a change can pass one and fail the ot
 ## 1. Pin the range — fail fast
 
 Take the base ref the caller supplied (a sha, branch, tag, or merge-base). Confirm it resolves — `git rev-parse <base>` — and that `git diff <base>...HEAD` is non-empty. A bad ref or empty diff must fail HERE, not inside two parallel subagents. Also capture `git log <base>..HEAD --oneline`. If no base was given, ask. *Done when: the ref resolves and the diff is non-empty.*
+
+## 1b. Reverse-track the pinned range
+
+REQUIRED SUB-SKILL: use `reconcile-features` on the pinned `base..HEAD` (mode
+`changes-since-checkpoint` with that base). Hold the rfeat-1.0 envelope. Pending
+`new-capability-candidate` / `uncertain` findings are durable OBS handles — surface
+them before step 2 treats unowned paths as a bare "ask / no spec". Do not mint
+Feature CODEs here; name `/map-features` only for later confirm-then-write.
+*Done when: the reconcile envelope is held (writable overlay or explicit
+stateless `checkpoint.advanced_to: null`).*
 
 ## 2. Locate the spec
 

@@ -136,10 +136,10 @@ use \`x\`` is for model-invocable targets only — pointing it at a
 
 **Two reachability paths, and one of them is fragile.** A skill is reached either
 by a `REQUIRED SUB-SKILL` hand-off or by its description matching what the user
-said. Nine model-invocable skills have no `REQUIRED SUB-SKILL` caller —
+said. Eight model-invocable skills have no `REQUIRED SUB-SKILL` caller —
 `amend-feature`, `vet-feedback`, `vet-source`, `speak-outer`, `hold-stage`, `run-product-walkthrough`,
-`draft-ux`, `reconcile-features` (plus hook-injected `gate-session`). Wire
-`reconcile-features` from `frame-change` / `inspect-change` in a follow-on edit.
+`draft-ux` (plus hook-injected `gate-session`). `reconcile-features` is reached from
+`frame-change` (reverse-track predicate) and `inspect-change` step 1b.
 `review-product-flow` is reached from
 `prove-claim` (alternative to `validate-feature`) and from the execute-family
 close sequence when a walk predicate holds. The remaining entry points fire

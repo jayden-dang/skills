@@ -50,3 +50,21 @@ locks vs assumptions.
 - `run-spike` / `research` — remain detours for unknown knowns / known unknowns.
 - `interpret-session` — map/territory technique pass (with skill): challenged OAuthProvider
   against `providers.ts`, stance lead, locks vs assumptions.
+
+## Edit — reverse-track before load-subgraph (v1.1.0)
+
+**Roster:** grok-4.6, grok-4.5. Scenario:
+`.skills/_pending-reconcile/red-wire-fc-scenario.md`. Pressures: time +
+"always just frame-change" + pragmatic.
+
+**RED (v1.0.0), 2/2.** Both models: step 1 REQUIRED SUB-SKILL only
+`load-subgraph`; `INVOKED_RECONCILE: no` despite post-pull `ORIG_HEAD≠HEAD`
+and missing `.skills/reverse-features/state.json`.
+
+**Failure class:** omits an element / conditional hand-off missing.
+Form: observable conditional + REQUIRED SUB-SKILL `reconcile-features`
+before `load-subgraph`.
+
+**GREEN (v1.1.0), 2/2.** Both models: `INVOKED_RECONCILE: yes`;
+`reconcile-features` before `load-subgraph`; pending OBS/known-impact
+surfaced before neighbor cards.

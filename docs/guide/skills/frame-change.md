@@ -8,7 +8,7 @@
 | **Invocation** | model-invocable (the agent calls it on its own) |
 | **Reads** | `CONTEXT.md` (glossary vocabulary), `docs/specs/INDEX.md` (existing feature codes and specs), `docs/agents/project.md`; code, docs, and recent commits near the idea via a scan subagent digest at `.skills/<CODE>/scan.md` |
 | **Writes** | notes, the glossary (`CONTEXT.md`), ADRs, and — via sub-skills — research notes and explicitly-marked throwaway run-spikes; nothing else |
-| **Calls** | [`load-subgraph`](load-subgraph.md), [`clarify-decisions`](clarify-decisions.md), [`define-domain`](define-domain.md), [`research`](research.md), [`run-spike`](run-spike.md), [`specify-behavior`](specify-behavior.md) (tier ≥ 1), [`test-first`](test-first.md) (tier 0) |
+| **Calls** | [`reconcile-features`](reconcile-features.md) (when reverse-track predicate holds), [`load-subgraph`](load-subgraph.md), [`clarify-decisions`](clarify-decisions.md), [`define-domain`](define-domain.md), [`research`](research.md), [`run-spike`](run-spike.md), [`specify-behavior`](specify-behavior.md) (tier ≥ 1), [`test-first`](test-first.md) (tier 0) |
 | **Called by** | the user (entry point of the chain); [`amend-feature`](amend-feature.md) when a change turns out to be genuinely new scope |
 
 ## When it fires
@@ -61,7 +61,7 @@ Each item is a todo, completed in order. The order matters: context before quest
 
 ## The overlap check
 
-Step 1 runs **`load-subgraph`** (REQUIRED SUB-SKILL) with the idea's **key terms** and the scan's **candidate paths**. `docs/specs/INDEX.md` is the registry; derivation uses live `**Files:**` (OWNS) and term match (P0), returns ranked neighbors plus **OWNS coverage**. Present each neighbor as a short summary card (owned paths + Out-of-Scope), not the full spec.
+Step 1 runs **`reconcile-features`** first when the reverse-track predicate holds (post-pull / stale checkpoint / external-commit ask), then **`load-subgraph`** (REQUIRED SUB-SKILL) with the idea's **key terms** and the scan's **candidate paths**. `docs/specs/INDEX.md` is the registry; derivation uses live `**Files:**` (OWNS) and term match (P0), returns ranked neighbors plus **OWNS coverage**. Present each neighbor as a short summary card (owned paths + Out-of-Scope), not the full spec.
 
 The check is advisory, never a gate:
 

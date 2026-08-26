@@ -10,7 +10,7 @@
 | **Invocation** | model-invoked |
 | **Reads** | git `base..head`, live `docs/specs/` (tracked or local), active OBS overlay |
 | **Writes** | local `.skills/reverse-features/` only (stateless if not writable/ignored); never `docs/specs/**`, never consuming-repo CI |
-| **Called by** | intended: `frame-change`, `inspect-change`, `realign-spec` (wire-up follow-on); also standalone on reverse-track asks |
+| **Called by** | `frame-change` (reverse-track predicate in step 1), `inspect-change` (step 1b on pinned range); also standalone on reverse-track asks |
 
 ## What it produces
 

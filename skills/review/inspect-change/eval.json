@@ -3,7 +3,7 @@
     "eval_id": 1,
     "eval_name": "production-readiness-on-a-runtime-diff",
     "kind": "behavior",
-    "derived_from": "TESTS.md § RED — S-PROD (frame gap)",
+    "derived_from": "TESTS.md \u00a7 RED \u2014 S-PROD (frame gap)",
     "prompt": "Review the Standards axis of a diff that adds tier-aware pricing behind an env flag. The diff contains: a loadTiers() helper retrying `while (true)` with no cap or timeout; a catch in the pricing path that silently falls back to the old flat-rate result; a TIERED_PRICING flag read as `!== 'off'`, so the new path is on unless disabled; a migration adding a column and running `ALTER TABLE orders ALTER COLUMN total_cents DROP NOT NULL`, where total_cents is emitted on a webhook two external partners consume; and a switch of one caller to the new function while three other callers in files the diff does not touch keep calling the old one.",
     "assertions": [
       "the report includes a production-readiness part covering items 19-24, in addition to the twelve smells and the security items",
@@ -19,7 +19,7 @@
     "eval_id": 2,
     "eval_name": "twelve-smells-survive-the-added-parts",
     "kind": "behavior",
-    "derived_from": "TESTS.md § GREEN v1 — regression: part (b) collapsed to 4 of 12",
+    "derived_from": "TESTS.md \u00a7 GREEN v1 \u2014 regression: part (b) collapsed to 4 of 12",
     "prompt": "Review the Standards axis of the same tier-pricing diff, which triggers both the security predicate and the production-readiness predicate.",
     "assertions": [
       "part (b) carries one verdict line for each of the twelve smells, numbered 1 through 12",
@@ -32,7 +32,7 @@
     "eval_id": 3,
     "eval_name": "predicates-scope-the-optional-parts",
     "kind": "behavior",
-    "derived_from": "TESTS.md § Rules this evidence owns — each optional part scoped by its own predicate",
+    "derived_from": "TESTS.md \u00a7 Rules this evidence owns \u2014 each optional part scoped by its own predicate",
     "prompt": "Review the Standards axis of a diff that only rewords prose in three README files. No code, config, storage, or contract changes.",
     "assertions": [
       "the production-readiness part is reported as not applying rather than being silently dropped",
@@ -45,7 +45,7 @@
     "eval_id": 4,
     "eval_name": "two-axis-verdict-preserved",
     "kind": "behavior",
-    "derived_from": "TESTS.md § Rules this evidence owns — production readiness sits inside Standards",
+    "derived_from": "TESTS.md \u00a7 Rules this evidence owns \u2014 production readiness sits inside Standards",
     "prompt": "Run a full inspect-change review on a feature branch that has a requirements.md and a diff touching runtime behavior. Report the result.",
     "assertions": [
       "the report presents Standards and Spec as separate sections and does not merge or rerank one against the other",
@@ -58,7 +58,7 @@
     "eval_id": 5,
     "eval_name": "minors-are-banked-criticals-are-not",
     "kind": "behavior",
-    "derived_from": "TESTS.md § Edit — the banked slot: same omission as polish-diff's S-BANKED-SLOT, RED 2/3",
+    "derived_from": "TESTS.md \u00a7 Edit \u2014 the banked slot: same omission as polish-diff's S-BANKED-SLOT, RED 2/3",
     "prompt": "Deliver the step-5 aggregate for a review that produced two Critical findings, one Important, and three Minor findings nobody will action on this branch. Verdict is 'With fixes'.",
     "assertions": [
       "the banked line follows the verdict",
@@ -72,8 +72,8 @@
     "eval_id": 6,
     "eval_name": "banked-payload-slots-no-debt-id",
     "kind": "behavior",
-    "derived_from": "TESTS.md § Edit — banked payload (v1.2.0)",
-    "prompt": "Deliver the step-5 aggregate. Verdict With fixes. Two Critical, one Important, three unactioned Minors. Standup in five minutes — just list the leftovers, don't invent a ledger format.",
+    "derived_from": "TESTS.md \u00a7 Edit \u2014 banked payload (v1.2.0)",
+    "prompt": "Deliver the step-5 aggregate. Verdict With fixes. Two Critical, one Important, three unactioned Minors. Standup in five minutes \u2014 just list the leftovers, don't invent a ledger format.",
     "assertions": [
       "each unactioned Minor is a paste-ready block with Found, Cost, Deferred because, Fix shape, Ticket, and Status",
       "no DEBT-N is assigned in the inspect report",
@@ -85,7 +85,7 @@
     "eval_id": 7,
     "eval_name": "ui-lane-fires-on-rendered-diff",
     "kind": "behavior",
-    "derived_from": "TESTS.md § UI lane — RED static-only review left visual claims as inference; GREEN 3d lane produced screenshot-backed UI findings",
+    "derived_from": "TESTS.md \u00a7 UI lane \u2014 RED static-only review left visual claims as inference; GREEN 3d lane produced screenshot-backed UI findings",
     "prompt": "The reviewed range touches styles.css and a component file alongside logic changes. Run the review and aggregate.",
     "assertions": [
       "review-ui runs on the range and its findings appear under a ## UI heading beside ## Standards and ## Spec",
@@ -97,13 +97,25 @@
     "eval_id": 8,
     "eval_name": "spec-axis-stages-before-id-walk",
     "kind": "behavior",
-    "derived_from": "TESTS.md § Edit — stage the spec (v1.4.0): 2/2 walked all twelve IDs as full findings; GREEN admitted 1.3+1.10 and listed the rest once",
+    "derived_from": "TESTS.md \u00a7 Edit \u2014 stage the spec (v1.4.0): 2/2 walked all twelve IDs as full findings; GREEN admitted 1.3+1.10 and listed the rest once",
     "prompt": "Inspect the Spec axis. requirements.md has BILL-1.1 through BILL-1.12. The diff adds only src/tax.js (exempt short-circuit, flat 0.1). WORKING_SET says keep all 12 live.",
     "assertions": [
       "hold-stage runs before the Spec walk",
       "IDs this diff implements or violates get a full finding",
       "IDs not in the range are listed once, not as a per-ID essay",
       "a failing ID on this file is not dropped to keep the stage small"
+    ]
+  },
+  {
+    "eval_id": 9,
+    "eval_name": "reverse-track-pinned-range-before-locate-spec",
+    "kind": "behavior",
+    "derived_from": "TESTS.md \u00a7 Edit \u2014 reverse-track pinned range (v1.5.0)",
+    "prompt": "Review abc1234...HEAD including a new mail_labels_service crate with no INDEX CODE. Walk through step 1b.",
+    "assertions": [
+      "reconcile-features runs on the pinned base..HEAD before locating the governing spec",
+      "unowned behavior-bearing paths produce pending OBS handles rather than silent skip",
+      "no Feature CODE is minted during inspect-change"
     ]
   }
 ]

@@ -142,3 +142,21 @@ IDs (BILL-1.1–BILL-1.12) are walked against src/tax.js."*
 listed once. No per-ID essay for persist/PDF/void.
 
 Form: observable conditional + REQUIRED SUB-SKILL `hold-stage` at step 3e.
+
+## Edit — reverse-track pinned range (v1.5.0)
+
+**Roster:** grok-4.6, grok-4.5. Scenario:
+`.skills/_pending-reconcile/red-wire-ic-scenario.md`. Pressures: time +
+authority + pragmatic.
+
+**RED (v1.4.0), 2/2.** Both models: `INVOKED_RECONCILE: no`. Labels crate
+paths handled as ask-user / no-spec without indexing an OBS candidate;
+only `load-subgraph` at 3a.
+
+**Failure class:** omits an element from the review pipeline.
+Form: REQUIRED SUB-SKILL `reconcile-features` at new step **1b** on the
+pinned `base..HEAD`.
+
+**GREEN (v1.5.0), 2/2.** Both models: `INVOKED_RECONCILE: yes` at step 1b;
+labels handled as pending OBS (not bare no-spec, no CODE mint); then
+`load-subgraph` at 3a.

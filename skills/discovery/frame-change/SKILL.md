@@ -1,6 +1,6 @@
 ---
 name: frame-change
-version: 1.0.0
+version: 1.1.0
 description: Use at the very start of the idea-to-ship chain — when the user wants to
   add, build, or change a feature, behavior, or component, or to start a whole
   new project, and no requirements, design, or code exist yet. Triggers on
@@ -33,8 +33,9 @@ Small requests are exactly where unexamined assumptions burn the most work, beca
 | "Scaffolding isn't really implementation" | A repo skeleton is a stack decision enacted without approval. It's implementation. |
 | "We talked enough, I basically know the answer" | If it isn't in an approved requirements.md, it lives only in this chat and dies with it. |
 | "The other sub-features aren't in scope right now, so Out-of-Scope is the right home" | Out-of-Scope and an ADR record a *rejection*. Work you intend to do later is deferred to a milestone via `plan-milestones` — declining it destroys the plan you just made. |
+| "Just pulled — load-subgraph on INDEX is enough" | INDEX can miss external work; when the reverse-track predicate holds, `reconcile-features` runs before `load-subgraph` |
 
-**Red flags — stop and return to the checklist if you notice yourself:** opening an editor to "just try something"; running a generator/scaffolder; answering your own open question instead of asking; presenting one approach as the only option; drifting from interviewing into implementing.
+**Red flags — stop and return to the checklist if you notice yourself:** opening an editor to "just try something"; running a generator/scaffolder; answering your own open question instead of asking; presenting one approach as the only option; drifting from interviewing into implementing; framing after a pull without `reconcile-features` when the reverse-track predicate holds.
 
 ## Checklist
 
@@ -80,6 +81,16 @@ relevant files directly.) If `docs/agents/project.md` or these files are missing
 so, suggest running `configure-repo`, and continue with what you have.
 
 The scan digest (or your direct read) MUST include a **Blindspot** section: territory-specific traps, historical constraints, and questions a newcomer would not know to ask — grounded in this repo, not generic advice. When the user signals low familiarity with the module or domain, surface that Blindspot list to them before the first preference question in step 2.
+
+**Reverse-track (observable conditional).** WHEN any of these hold — the ask
+mentions pull/merge/teammate/external commits; `ORIG_HEAD` differs from `HEAD`;
+or `.skills/reverse-features/state.json` is missing or its `last_reconciled_sha`
+is not `HEAD` — REQUIRED SUB-SKILL: use `reconcile-features` (mode
+`changes-since-checkpoint`, or `brownfield-bootstrap` when `docs/specs/` is
+absent) **before** `load-subgraph`. Surface pending OBS and known-impact cards
+from the envelope; unresolved `pending`/`uncertain` blocks framing those
+surfaces as greenfield until the user sees them. WHEN none of the predicates
+hold → skip. *Done when: rfeat envelope held, or an explicit not-applicable.*
 
 Then check whether the idea already exists. REQUIRED SUB-SKILL: use `load-subgraph`
 with the idea's **key terms** and any scan **candidate paths** (query `subgraph` or

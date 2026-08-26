@@ -22,5 +22,18 @@
       "the user-visible reply does not dump every registry CODE from the snapshot",
       "flat INDEX repos continue to parse the Code|Spec|Status table"
     ]
+  },
+  {
+    "eval_id": 3,
+    "eval_name": "observations-band-from-active-overlay",
+    "kind": "behavior",
+    "derived_from": "TESTS.md \u00a7 Edit \u2014 observations band (v1.2.0 / fsubr-1.2)",
+    "prompt": "neighbors query with paths hitting INBX Files and mail_labels_service; active OBS-5682de present.",
+    "assertions": [
+      "envelope includes an observations band",
+      "OBS-5682de appears in observations when seeds match its surface roots",
+      "neighbors contain only Feature CODEs, never OBS ids",
+      "recipe_id is fsubr-1.2"
+    ]
   }
 ]

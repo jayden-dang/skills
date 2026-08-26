@@ -45,8 +45,9 @@ roots, path to feature shard (`./catalog/<domain>.md`).
 
 **Observed card** (local `.skills/reverse-features/active/*.md`): same compact
 shape with `OBS-<6hex>`, state, confidence, evidence pointer — see
-`reconcile-features` passes. Merge into the same result set as Recognized when
-querying; never treat OBS as a Feature CODE.
+`reconcile-features` passes. `load-subgraph` Pass O merges matching OBS into the
+envelope `observations[]` band (not `neighbors[]`); never treat OBS as a Feature
+CODE.
 
 ## Context caps
 

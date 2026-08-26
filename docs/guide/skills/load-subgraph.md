@@ -8,7 +8,7 @@
 |---|---|
 | **Bucket** | execution |
 | **Invocation** | model-invoked |
-| **Reads** | `docs/specs/**`, INDEX (flat or sharded catalog per `catalog-query.md`), optional roadmap/architecture (P3–P5 no-op when absent) |
+| **Reads** | `docs/specs/**`, INDEX (flat or sharded catalog per `catalog-query.md`), `.skills/reverse-features/active/` (Pass O), optional roadmap/architecture (P3–P5 no-op when absent) |
 | **Writes** | none (envelope in chat only; never `docs/specs/GRAPH.md`) |
 | **Called by** | `frame-change`, `inspect-change`, `clarify-decisions`, `design-solution`, `plan-tasks`, `root-cause` |
 
@@ -16,7 +16,7 @@
 
 | Query | Role |
 |---|---|
-| `neighbors` / `subgraph` | Ranked overlaps with path/term evidence (`path_evidence`, `term_evidence`, `via_traces`) |
+| `neighbors` / `subgraph` | Ranked overlaps with path/term evidence (`path_evidence`, `term_evidence`, `via_traces`) plus capped `observations` band from active OBS |
 | `cluster` | Query-local digest for **exactly one** focus CODE — members, path evidence, OOS union |
 | `blast_radius` | Ownership blast for a candidate path set (plan-tasks after file map) |
 | `ancestors` / `descendants` | Roadmap/architecture edges when those layers exist |

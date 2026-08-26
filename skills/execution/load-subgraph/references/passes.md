@@ -6,9 +6,10 @@ same tree with the same query MUST produce the same edge set and seed set
 
 ## Contents
 
-- [Constants](#constants-immutable-for-v1--fsubr-11)
+- [Constants](#constants-immutable-for-v1--fsubr-12)
 - [Derivation snapshot (two-stage)](#derivation-snapshot-two-stage-per-query)
 - [Pass R — Registry](#pass-r--registry)
+- [Pass O — Active observations](#pass-o--active-observations)
 - [Pass P1 — OWNS](#pass-p1--owns)
 - [Pass D — Denoise](#pass-d--denoise)
 - [Pass P2 — OVERLAPS](#pass-p2--overlaps)
@@ -21,7 +22,7 @@ same tree with the same query MUST produce the same edge set and seed set
 
 Consumer claim rules live in **`grounded-claims.md`** (sibling file), not here.
 
-**Constants (immutable for v1 / FSUBR 1.1):**
+**Constants (immutable for v1 / FSUBR 1.2):**
 
 | Name | Value |
 |---|---|
@@ -31,7 +32,8 @@ Consumer claim rules live in **`grounded-claims.md`** (sibling file), not here.
 | `CLUSTER_MEMBERS_MAX` | `8` |
 | `PATH_EVIDENCE_MAX` / `TERM_EVIDENCE_MAX` | `5` / `5` |
 | `OOS_ITEM_MAX` / `OOS_TEXT_CEILING` | `6` / `1200` display code points |
-| `schema_version` / `recipe_id` | `"1.1"` / `"fsubr-1.1"` |
+| `OBSERVATIONS_MAX` | `4` |
+| `schema_version` / `recipe_id` | `"1.1"` / `"fsubr-1.2"` |
 | Line-suffix strip | trailing `:[0-9]+([,-][0-9]+)*` on the path token only |
 | Note kinds | `p1_block_skipped`, `p1_file_unreadable`, `cluster_focus_invalid` |
 | Note cap | **none** (dedupe `kind+code+detail` only) |
@@ -63,13 +65,15 @@ Read each path **at most once**; record every path in `read_ledger` as
    - **Missing** `tasks.md` → empty OWNS, **no** `p1_file_unreadable`.
    - **Unreadable** (exists, read/UTF-8 fails) → empty OWNS + `p1_file_unreadable`;
      continue other features.
-3. When the query supplies terms (P0) **or** kind is `subgraph` (not `cluster`):
+3. **Pass O** — active OBS overlay (see below).
+4. When the query supplies terms (P0) **or** kind is `subgraph` (not `cluster`):
    also buffer each feature’s `requirements.md` and `design.md` if present.
-   Cluster Stage A is INDEX + `tasks.md` + optional layers only; member
+   Cluster Stage A is INDEX + `tasks.md` + optional layers + OBS only; member
    `requirements.md` loads in Stage B after membership from Stage A OWNS.
-4. **Optional-layer presence sentinels** (always):
+5. **Optional-layer presence sentinels** (always):
    - `docs/roadmap/INDEX.md`
-   - `docs/architecture/INDEX.md`  
+   - `docs/architecture/INDEX.md`
+   - `.skills/reverse-features/active/` (dir)  
    Absent → `fingerprints[path] = {sha256: null, present: false}` and
    `stat_absent` in the ledger. Present → content hash + `present: true`.
 
@@ -88,13 +92,14 @@ After eligible members are computed **in memory from Stage A OWNS only**
 | Field | Content |
 |---|---|
 | `registry` | INDEX rows |
+| `observations` | active OBS cards (pending/reopened only) |
 | `source_texts` / `source_bytes` | successful reads only |
 | `owns` | CODE → path set |
 | `owns_coverage` | with_owns, registered, ratio |
 | `notes` | all reliability notes (no count cap; dedupe kind+code+detail) |
 | `fingerprints` | path → `{sha256, present}` for every path considered |
 | `read_ledger` | ordered; **each path at most once** |
-| `schema_version` / `recipe_id` | `"1.1"` / `"fsubr-1.1"` |
+| `schema_version` / `recipe_id` | `"1.1"` / `"fsubr-1.2"` |
 
 ### Queries after snapshot
 
@@ -129,6 +134,26 @@ dumping that set into model context.
    directory slug.
 6. `registered` = union of all CODEs from flat rows or all shards. Active OBS
    cards are **not** registry members (they do not raise `registered`).
+
+---
+
+## Pass O — Active observations
+
+Read-only merge of reverse-track overlay into the snapshot. OBS never become
+registry CODEs and never enter `neighbors[]`.
+
+1. If `.skills/reverse-features/active/` is absent → `observations = []`,
+   fingerprint the dir as `stat_absent`, stop Pass O.
+2. Read each `active/*.md` once. Parse compact OBS cards (see
+   `reconcile-features` / `catalog-query.md`). Keep only `pending` /
+   `reopened`.
+3. For each card record: `observation_id`, `state`, `confidence`, `capability`,
+   `match_terms` (list), `surface_roots` (path prefixes), optional evidence
+   pointer text already on the card (do **not** open `observations/*.json`
+   unless the card is selected into the capped envelope band and the caller
+   needs detail).
+4. Store in `snapshot.observations`. Tombstones are lookup-only — never load
+   `tombstones.jsonl` into context.
 
 ---
 
@@ -306,11 +331,17 @@ Pure function of the snapshot (zero file IO).
      corresponding evidence objects. No other Wave A kinds.  
    - sort key = `(shared_paths desc, via_rank desc, CODE asc)`  
      where both=2, path=1, term=0.  
-5. **Truncate once** to `NEIGHBORS_MAX`. Never append after truncate.  
-6. Envelope carries `schema_version: "1.1"`, `recipe_id: "fsubr-1.1"`,
-   `advisory: true`, `owns_coverage`, snapshot `notes` (P1 reliability notes
-   included). Never emit `depends_on` / `DEPENDS_ON`, untyped `provenance`,
-   or `edge_extensions`.
+5. **Truncate once** to `NEIGHBORS_MAX`. Never append after truncate.
+6. **Observations band** (separate from `neighbors`): from
+   `snapshot.observations`, keep cards whose `surface_roots` exact/ancestor-match
+   any seed path **or** whose `match_terms` hit caller terms (same P0 length≥3
+   filter). Rank path hits before term hits, then `observation_id` asc. Truncate
+   once to `OBSERVATIONS_MAX`. Build ObservationRow per `envelope.md`.
+7. Envelope carries `schema_version: "1.1"`, `recipe_id: "fsubr-1.2"`,
+   `advisory: true`, `owns_coverage`, `observations` (possibly empty), snapshot
+   `notes` (P1 reliability notes included). Never emit `depends_on` /
+   `DEPENDS_ON`, untyped `provenance`, or `edge_extensions`. Never put OBS ids
+   into `neighbors[]`.
 
 ---
 
@@ -344,8 +375,11 @@ Pure function of the snapshot after Stage B (zero file IO). **Not** a global
    - Apply **`OOS_ITEM_MAX` (6)** then **`OOS_TEXT_CEILING` (1200)** display
      code points (sum of emitted `text` lengths). Dropping content →
      `oos_truncated: true`; else false.
-8. Envelope: `schema_version: "1.1"`, `recipe_id: "fsubr-1.1"`, `advisory: true`,
-   `owns_coverage`, snapshot `notes`. No `depends_on` / `communities()`.
+8. **Observations band:** OBS whose `surface_roots` overlap meaningful OWNS of
+   the focus (exact/ancestor). Cap `OBSERVATIONS_MAX`. Empty list if none.
+9. Envelope: `schema_version: "1.1"`, `recipe_id: "fsubr-1.2"`, `advisory: true`,
+   `owns_coverage`, `observations`, snapshot `notes`. No `depends_on` /
+   `communities()`.
 
 ---
 
@@ -353,13 +387,17 @@ Pure function of the snapshot after Stage B (zero file IO). **Not** a global
 
 - **ancestors(CODE):** CODE, then IMPLEMENTS ROAD if any, then MILE containing that
   ROAD, then GOALs of that MILE; if no roadmap layer → `[CODE]` only.
+  `observations: []`.
 - **descendants(MILE-N):** member ROADs + CODEs with IMPLEMENTS into those ROADs.
+  `observations: []`.
 - **blast_radius(path):** strip line-suffix; CODEs whose OWNS contain exact path,
   or directory-token ownership (dir token only) where path is under that dir;
-  never expand arbitrary ancestors.
+  never expand arbitrary ancestors. Also fill `observations` for OBS whose
+  surface_roots match the path (same rank/cap as neighbors).
 - **subgraph(seeds):** resolve terms→P0, paths→OWNS owners, codes as-is; expand
   one hop via OVERLAPS; bound node list to `NEIGHBORS_MAX * 3` (seeds first, then
-  CODE asc).
+  CODE asc). Fill `observations` like neighbors (path/term match, cap
+  `OBSERVATIONS_MAX`); OBS ids never enter `nodes` / `seeds`.
 
 ---
 
@@ -368,9 +406,12 @@ Pure function of the snapshot after Stage B (zero file IO). **Not** a global
 Always set:
 
 - `advisory: true`
+- `schema_version: "1.1"`, `recipe_id: "fsubr-1.2"`
 - `owns_coverage: { with_owns, registered, ratio }` where  
   `with_owns` = count of CODEs with non-empty OWNS,  
   `registered` = registry size
+- `observations: [ ObservationRow, … ]` length ≤ `OBSERVATIONS_MAX` (empty
+  array when Pass O found none or the query leaves the band empty)
 - `p0: { matched, returned, truncated }` when P0 ran; else zeros
 - never a `depends_on` / `DEPENDS_ON` field
 - never write any file under `docs/` for the graph

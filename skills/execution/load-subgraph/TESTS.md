@@ -15,3 +15,18 @@ detect; SKILL clarifies snapshot enumeration ≠ chat dump.
 **Contract check:** flat bootstrap INDEX still parses; sharded router reads
 listed `docs/specs/catalog/*.md` shards into `registered`; OBS cards are not
 registry members.
+
+## Edit — observations band (v1.2.0 / fsubr-1.2)
+
+**Roster:** grok-4.6, grok-4.5. Scenario:
+`.skills/_pending-reconcile/red-fsub-obs-scenario.md`.
+
+**RED (v1.1.0 / fsubr-1.1), 2/2.** Both: `OBS_IN_ENVELOPE: no`,
+`HAS_OBSERVATIONS_BAND: no`, `NEIGHBORS_CODES_ONLY: yes` — Pass R explicitly
+excluded active OBS from the registry; no envelope field existed.
+
+**Failure class:** omits an element from the retrieval package.
+Form: Pass O + required `observations[]` band (Recognized stay in `neighbors[]`).
+
+**GREEN (v1.2.0 / fsubr-1.2), 2/2.** Both: `HAS_OBSERVATIONS_BAND: yes`,
+`OBS_IN_ENVELOPE: yes` (`OBS-5682de`), `NEIGHBORS_CODES_ONLY: yes`.

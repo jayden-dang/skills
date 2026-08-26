@@ -1,6 +1,6 @@
 ---
 name: validate-feature
-version: 1.1.0
+version: 1.1.1
 description: Use before merging or finishing a branch, when a feature's unit tests are
   green but its user-facing behavior has not been driven through the running
   system as a real client — the acceptance / end-to-end pass over the happy
@@ -70,4 +70,5 @@ Report the checklist with each item's observed result. Any item you could not
 exercise is an open risk — name it; do not let it pass silently. Then hand back
 to `land-branch`. *Done when: every checklist item is observed green against
 the running system, each failure fixed with a regression test, and the durable
-tests committed so `land-branch`'s prove-claim gate keeps enforcing them.*
+tests committed so the close receipt can bind acceptance to HEAD and a stale
+landing falls back to verification.*

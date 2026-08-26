@@ -127,7 +127,7 @@ You mostly describe the idea and **approve files**; the rest chains:
 9. **Close sequence** (one home: `skills/execution/execute-common/SKILL.md`):
    **`polish-diff`** only when a polish predicate holds; **`validate-feature`**
    (`validate-api` / `validate-ui`); product-walk only when a walk predicate holds.
-10. **`land-branch`** — commits residue, then merge / PR / keep / discard / block
+10. **`land-branch`** — validate close evidence, commit residue, then perform the resolved merge / PR / keep / discard / block action
     (agent-authored PR title and body are reviewer truth).
 11. **`/cut-release`** when shipping a version.
 12. **`realign-spec`** — triad + INDEX status (Implemented / Shipped).

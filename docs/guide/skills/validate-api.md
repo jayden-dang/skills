@@ -93,7 +93,7 @@ async fn empty_note_is_rejected() {
 }
 ```
 
-Now the wire behavior is guarded: `land-branch` re-runs it, and any future regression to `201` fails the suite instead of reaching a client.
+Now the wire behavior is guarded: the suite result is bound into the close receipt, stale landing evidence reruns it, and any future regression to `201` fails before reaching a client.
 
 ## Why it is written the way it is
 

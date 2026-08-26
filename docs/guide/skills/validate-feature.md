@@ -58,7 +58,7 @@ Each child locates and persists how to run its surface, exercises its slice of t
 
 The orchestrator's own job at this point is bookkeeping, not driving: the children have already exercised their slices and written results into the ledger. Report the checklist with each item's observed result, then hand back to [`land-branch`](land-branch.md). Any item you could not exercise is an **open risk** — name it explicitly; do not let it pass silently. Silent gaps are exactly how the untested edge case reaches the user.
 
-The step — and the skill — is done when every checklist item is observed green against the running system, each failure is fixed with a regression test, and the durable tests are committed and tagged so `land-branch`'s prove-claim gate keeps enforcing them.
+The step — and the skill — is done when every checklist item is observed green against the running system, each failure is fixed with a regression test, and the durable tests are committed so the close receipt can bind acceptance to HEAD and stale landing evidence falls back to verification.
 
 The distinction between the two exit states is the whole discipline. "Observed green" means the behavior was driven through the running system and watched. "Open risk" means it was not, and says so out loud. There is no third state — no item quietly assumed to work because its unit test passes.
 

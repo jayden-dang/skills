@@ -20,11 +20,11 @@ agent is forbidden to proceed. These layers are *how* a check is performed.
 | **Computational** | Tests, typecheck, lint, `audit-trace` greps | Yes — exit code / same `grep` set | `test-first`, `prove-claim`, `audit-trace`, verify commands in `docs/agents/project.md` |
 | **Judgment** | Isolated LLM review of a diff | No — another model can disagree | `inspect-change` (Standards + Spec), `polish-diff`, `review-invariants` (advisory) |
 | **Behavioral** | Drive the running system as a client | Mostly — same request, same UI | `validate-feature` → `validate-api` / `validate-ui`; product-walk trio when the walk predicate holds |
-| **Human** | A person reads a bounded sample, or types a crossing word | N/A | `/select-review-sample` (aid); `land-branch` sample withhold + menu; `/record-debt`; `record-verdict` |
+| **Human** | A person reads a bounded sample or configures a decision boundary | N/A | `/select-review-sample`; `/record-debt`; configured `record-verdict` |
 
 A layer does not replace another. Green tests do not make inspect optional.
-A `Ready to merge? Yes` from inspect does not skip `prove-claim` or the
-land menu. An attention allocation does not stamp `DEBT-N`.
+A close receipt does not replace a missing check; it binds completed checks to
+the exact revision so landing can validate instead of replay them.
 
 ## What each layer is *not*
 
@@ -35,10 +35,8 @@ land menu. An attention allocation does not stamp `DEBT-N`.
   are LLMs). Independence here is **context**: a fresh reviewer subagent,
   two unmerged axes, no “do not flag”.
 - **Behavioral** is not “the unit tests were green.”
-- **Human** is not “inspect was clean.” `land-branch` withholds merge/PR
-  when the [sample predicate](../skills/execute-common.md) holds and there
-  is no allocation and the user has not typed `unsampled`.
-  `/select-review-sample` itself remains an aid.
+- **Human** attention remains advisory. `/select-review-sample` never withholds
+  a crossing after review and acceptance evidence is bound to the receipt.
 
 ## Where it sits in the close sequence
 
@@ -52,7 +50,8 @@ inspect-change          ← judgment
   → validate-feature    ← behavioral
   → sample notes        ← write sample: required or skip (no human ping)
   → walk?               ← behavioral (conditional)
-  → land-branch         ← one human station: sample withhold + optional /record-debt + menu
+  → close receipt       ← binds all layers to base + HEAD
+  → land-branch         ← resolves intent and performs the crossing
 ```
 
 Banked Minors / scope-drops leave a paste-ready body for `/record-debt`.
@@ -62,7 +61,7 @@ That is how a judgment leftover becomes a durable human record.
 
 - [The gates](gates.md) — *when* work is forbidden
 - [`execute-common`](../skills/execute-common.md) — close-sequence home
-- [`land-branch`](../skills/land-branch.md) — sample withhold
+- [`land-branch`](../skills/land-branch.md) — exact-revision receipt consumer
 - [`inspect-change`](../skills/inspect-change.md) — two-axis judgment
 - [`prove-claim`](../skills/prove-claim.md) — computational claim gate
 - [`select-review-sample`](../skills/select-review-sample.md) — human allocation

@@ -4,25 +4,14 @@
 
 ## `land-branch` — prepare locally, then the integration decision
 
-**Gate first.** `prove-claim` runs every verify command from `docs/agents/project.md` fresh, **and** confirms the audit-trace check is clean — a branch must not merge with untraced requirements, the same gate `cut-release` enforces. If the branch has user-facing behavior that has not been driven through the running system, `validate-feature` runs *before* Merge or PR is even offered.
+**Receipt first.** Reuse exact-revision close evidence. A missing, stale, dirty,
+or incomplete receipt falls back to fresh verification and acceptance.
 
 Then `land-branch` authors remaining commits and the PR title/body from the diff. The agent-authored PR text **is** the reviewer truth — there is no package file and no approve/edit/cancel loop.
 
-**Any failure means stop.** Show the failures. Do not present the menu.
-
-**Then exactly five options, verbatim, with no added commentary:**
-
-```
-Implementation complete. What would you like to do?
-
-1. Merge back to <base-branch> locally
-2. Push and create a Pull Request
-3. Keep the branch as-is (I'll handle it later)
-4. Discard this work
-5. Block: reject this work at this boundary (records a terminal block verdict)
-
-Which option?
-```
+Explicit intent executes without a second menu. Ambiguous intent resolves from
+an existing PR or `Default landing action`; only unresolved cases ask one short
+PR/local-merge/keep question. Sampling and debt remain advisory.
 
 Three details make this safe rather than merely tidy:
 

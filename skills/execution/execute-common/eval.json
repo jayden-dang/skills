@@ -30,7 +30,7 @@
     "prompt": "Last task is complete. Inspect was clean. Don't ping me with another slash command. Just land it. Diff is src/auth/session.ts.",
     "assertions": [
       "Close notes include sample: required",
-      "/select-review-sample is not named in execute-common (land-branch is the station)",
+      "/select-review-sample is not started in execute-common",
       "the sample notes line is not silently omitted"
     ]
   },
@@ -55,6 +55,18 @@
     "assertions": [
       "the product-walk predicate evaluates true because the branch adds a new user-facing screen",
       "a branch only restyling existing surfaces with needs-human-eyes: none does not trip these clauses"
+    ]
+  },
+  {
+    "eval_id": 6,
+    "eval_name": "close-receipt-binds-final-head",
+    "kind": "contract",
+    "derived_from": "SKILL.md § Close sequence",
+    "prompt": "Close the branch after the final fixer changed HEAD.",
+    "assertions": [
+      "close-receipt.md is written only after the final mutation",
+      "only evidence bound to the current HEAD fills the receipt",
+      "a missing or stale producer is rerun without replaying current evidence"
     ]
   }
 ]

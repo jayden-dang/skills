@@ -93,3 +93,15 @@ Two clauses added, both observable: `review-ui` reported any
 visual surface. Motivated by review-ui RED/GREEN (see
 `skills/review/review-ui/TESTS.md`): the prior predicate let every "UI covered
 by validate-ui" feature skip eyeball review entirely.
+
+## Edit — exact-revision close receipt (v1.6.0, 2026-08-25)
+
+Minimal integrated pressure run with `land-branch` v2.4.0 chose the old full
+rerun and said: “The receipt says those checks were green, but the current
+contract requires them fresh.” The close sequence had no durable exact-HEAD
+receipt for landing to validate.
+
+The v1.6.0 contract writes one complete receipt after the final mutation and
+reruns only a producer whose evidence is missing or stale. The paired GREEN run
+on `gpt-5.6-luna` consumed the receipt and chose the thin landing bundle. Full
+transcripts are recorded in `skills/ship/land-branch/TESTS.md` v3.0.0.

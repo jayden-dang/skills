@@ -2,6 +2,22 @@
 
 ## Unreleased
 
+### `land-branch` v3.0.0 — thin exact-revision landing (2026-08-25)
+
+Landing no longer replays review, verification, trace, and acceptance already
+bound to the current base and HEAD. `execute-common` writes
+`.skills/<CODE>/close-receipt.md` after the final mutation; `land-branch`
+validates and consumes it, falling back to fresh producers only when the receipt
+is missing, stale, dirty, or incomplete.
+
+Explicit PR/merge/keep/discard/block intent executes without the old five-option
+menu. Sampling and banked debt are advisory, custom decision records are opt-in
+through `project.md` Decision boundaries, and ambiguous “land this” resolves
+through an existing PR or `Default landing action` before one short question.
+Local merge remains explicit-only and still verifies the merged result before
+worktree cleanup. Minimal RED/GREEN evidence is recorded in
+`skills/ship/land-branch/TESTS.md`.
+
 ### `draft-ux` — decide how a surface behaves before it is built (2026-08-25)
 
 Nothing in the chain decided an interaction. `draft-ui` locks what a screen looks like and

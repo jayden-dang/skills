@@ -16,6 +16,7 @@ Edit these two lines directly whenever the project moves phase — no wizard nee
 - **Delivery intent:** `<Production | MVP | Run Spike | Research | Learning>` — how robust and complete the output must be.
 - **Lifecycle stage:** `<Idea | Early development | Active development | Cut Released | Scaling | Maintenance>` — where the project is in its life.
 - **Default PR base:** `<branch, e.g. main>` — optional; `land-branch` reads it as the third rung of its base-resolution ladder. Leave the placeholder unset and `land-branch` asks for the base per invocation instead.
+- **Default landing action:** `<pr | merge | keep>` — optional; used only when intent is ambiguous and no existing PR resolves it.
 
 These are distinct from the product **Goals** in `docs/product/vision.md` (what success
 looks like): posture is *how carefully to build right now*, not *what to build*.

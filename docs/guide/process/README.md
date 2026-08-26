@@ -47,10 +47,10 @@ validate-feature             drive the running system through the spec's user-fa
                              behaviors (API + UI); fix; promote to domain-language tests
       │
       ▼
-[sample notes]             execute-common writes sample: required or skip
+[close receipt]            execute-common binds evidence + advisory sample to base/HEAD
       │
       ▼
-land-branch                one human station + Status: Implemented (realign-spec
+land-branch                resolve intent + crossing + Status: Implemented (realign-spec
                              only if still Approved and evidence holds)
       │
       │  (many features may sit Implemented)

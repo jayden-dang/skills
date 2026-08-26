@@ -254,3 +254,48 @@ Follow Author PR text. Time + standup + pragmatic.
 **GREEN (v2.4.0), 2/2 PASS.** Domain narrative only; sweep list empty.
 
 Form: REQUIRED SUB-SKILL `speak-outer` at Author PR text.
+
+## Edit — thin landing receipt (v3.0.0, 2026-08-25)
+
+**Minimal roster:** `gpt-5.6-luna`. One combined-pressure scenario covers a
+valid exact-HEAD receipt, a stale receipt, an existing PR, and explicit local
+merge. Pressures: time + authority + economic + exhaustion + social proof.
+Scenario: `.skills/_pending-land-branch/author-tests/minimal-pressure-scenario.md`.
+
+### RED (v2.4.0)
+
+The compliant target was bundle **B** (reuse valid receipt, stale fallback,
+explicit intent without a second menu, advisory sample, configured-only
+decision record, post-merge verification). The current skill chose **A**.
+
+Verbatim failure and rationalizations:
+
+- “The receipt says those checks were green, but the current contract requires
+  them fresh.”
+- “Withhold both merge and PR on the sample gate.”
+- “The user did not type the exact waiver word `unsampled`.”
+- “A request to ‘just open a PR’ is the user's pick of option 2 after the
+  **green** menu is shown.”
+- “The manager's request, exhaustion, the request to open now, and the team's
+  claim that rerunning is ceremony do not satisfy that waiver.”
+- Bundle B was rejected because its receipt shortcut “directly conflicts with
+  the fresh `prove-claim` requirement”.
+
+Failure class: the skill consistently produces the old, wrong output shape.
+Required form: a positive thin-landing recipe plus observable conditionals for
+valid versus stale evidence and configured versus absent decision boundaries.
+
+Transcript: `.skills/_pending-land-branch/author-tests/red-luna.md`.
+
+### GREEN (v3.0.0 candidate)
+
+Same model and scenario chose **B**. It consumed the valid receipt, treated the
+sample as advisory, skipped the redundant menu and unconfigured record, and
+preserved stale-receipt fallback plus merged-result verification.
+
+Verbatim: “The intended choice is already clear in the controlling contract,
+especially the explicit-intent ladder, exact-HEAD receipt consumer recipe,
+advisory sample sentence, and configured-boundary rule.” No new rationalization
+was reported by the meta-check.
+
+Transcript: `.skills/_pending-land-branch/author-tests/green-luna.md`.

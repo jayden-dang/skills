@@ -42,6 +42,7 @@ Do not invent a second identifier when a CODE is available.
 | Basename | Role |
 |---|---|
 | `progress.md` | Execute progress ledger — **only** for this feature |
+| `close-receipt.md` | Final review/verification/acceptance evidence bound to base + HEAD for `land-branch` |
 | `implementation-notes.md` | Mid-build deviations (append-only: Task, Unknown class, Map said, Territory showed, Deviation, Cause, Choice, Map impact, Revisit) |
 | `global-constraints.md` | Optional copy for implementer briefs |
 | `corrections.md` | Reroute-plan evidence fingerprints (this feature's plan flight) |

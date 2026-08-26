@@ -1,6 +1,6 @@
 ---
 name: validate-ui
-version: 1.0.0
+version: 1.0.1
 description: Use to validate a frontend against its spec by driving it end-to-end (e2e)
   in a real browser the way a user would — automated Playwright specs on
   Chromium, asserting visible state and persistence across reload — before
@@ -84,7 +84,8 @@ Only a deterministic failure on a real assertion goes to `root-cause`.
 
 ## 5. Commit the specs
 
-The specs are the durable artifact — commit them, tagged, so they join the
-verify suite and `land-branch` re-runs them. Record any new run command in
+The specs are the durable artifact — commit them so they join the verify suite
+bound into the close receipt, with stale landing evidence falling back to that
+suite. Record any new run command in
 project.md and note results in the ledger. *Done when: specs committed, tagged,
 green.*

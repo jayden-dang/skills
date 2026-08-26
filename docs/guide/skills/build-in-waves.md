@@ -161,7 +161,7 @@ A four-task plan for feature `NOTES` is approved.
 
 **Task 2 — a status branch.** The implementer returns `NEEDS_CONTEXT`: it needs the interface Task 1 established, which the brief could not know. The controller supplies that one interface and re-dispatches on the **same** model — never forcing a retry with nothing changed — and the task then completes normally.
 
-**After the last task.** Once Task 4 is in the ledger, a **top-tier** `inspect-change` runs with base `git merge-base main HEAD` — never a mid-branch sha — pointed at the ledger's Minor-findings list. It returns two Minor findings plus the deferred ones. **One** fixer carrying the complete list clears them all, `polish-diff` tidies duplication the per-task reviews couldn't see, `validate-feature` drives the feature through the running system, `land-branch` authors the remaining commits and the PR text, then hands the merge decision to the user.
+**After the last task.** Once Task 4 is in the ledger, a **top-tier** `inspect-change` runs with base `git merge-base main HEAD` — never a mid-branch sha — pointed at the ledger's Minor-findings list. It returns two Minor findings plus the deferred ones. **One** fixer carrying the complete list clears them all, `polish-diff` tidies duplication the per-task reviews couldn't see, `validate-feature` drives the feature through the running system, the close receipt binds that evidence to HEAD, and `land-branch` performs the resolved action.
 
 ## Red flags — never
 

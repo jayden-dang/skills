@@ -108,7 +108,7 @@ The requirement-grouped changelog is the direct dividend of the trace spine that
 
 ## Distinct from `land-branch`
 
-The two ship-bucket skills are easy to confuse and do different jobs. [`land-branch`](land-branch.md) integrates a single feature branch — it decides between merge, PR, keep, and discard — and it is model-invocable, running as the last step of [`build-in-waves`](build-in-waves.md). `cut-release` operates on work already merged to the release branch and turns it into a published version. They share exactly one thing: the verify-plus-audit-trace gate. Everything downstream — the changelog, the version bump, the build, the tag, the notes — belongs to `cut-release` alone.
+The two ship-bucket skills are easy to confuse and do different jobs. [`land-branch`](land-branch.md) integrates one feature branch and consumes exact-revision close evidence; `cut-release` operates on already-merged work and runs fresh release verification before producing a version. Changelog, version bump, build, tag, and notes belong to `cut-release` alone.
 
 ## What a finished cut-release leaves behind
 

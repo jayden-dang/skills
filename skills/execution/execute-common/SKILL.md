@@ -1,7 +1,7 @@
 ---
 name: execute-common
-version: 1.5.0
-description: Use when build-in-waves, build-by-story, or build-inline loads the shared controller recipe — produces session preflight, ledger check, close sequence, and polish, walk, or sample predicates.
+version: 1.6.0
+description: Use when build-in-waves, build-by-story, or build-inline loads the shared controller recipe — produces session preflight, ledger state, and a revision-bound close receipt.
 ---
 
 # Execute-family controller recipe
@@ -98,18 +98,20 @@ After the last task (waves / inline) or last unlocked unit (story):
 5. **Sample — observable conditional.** Evaluate the **sample
    predicate** below. IF any clause is true → write `sample: required` on
    the Close notes. IF no clause is true → write
-   `skip: no sample predicate`. Do **not** name `/select-review-sample`
-   here — `land-branch` is the **one** human station that names it (when
-   withhold is active). Silent skip (no notes line) is still a red flag.
+   `skip: no sample predicate`. Do not start `/select-review-sample`.
+   Silent skip (no notes line) is still a red flag.
    "Inspect was clean" and "always name so we cannot forget" are **not**
    predicates.
 6. **Product walk — observable conditional.** Evaluate the **walk
    predicate** below. IF any clause is true → REQUIRED SUB-SKILL: use
    `review-product-flow` (it owns vet + naming the walkthrough). IF no
    clause is true → do not open the product-walk trio.
-7. **Finish.** REQUIRED SUB-SKILL: use `land-branch`.
+7. **Close receipt.** Load `close-receipt.md` and follow its producer recipe.
+   Issue it only after the final mutation and only from evidence bound to that
+   HEAD. Rerun a producer only when its evidence is missing or stale.
+8. **Finish.** REQUIRED SUB-SKILL: use `land-branch`.
 
-Mark the **Close branch** todo done only after steps 1–7 have each run or
+Mark the **Close branch** todo done only after steps 1–8 have each run or
 been skipped under their predicate.
 
 | Thought | Reality |
@@ -119,8 +121,8 @@ been skipped under their predicate.
 | "EOD / demo — skip polish on a 40-file branch" | Time pressure is not a predicate. File count is |
 | "Always run polish so we cannot forget" | Four cleanup agents on a three-file typo is the cost this conditional exists to drop. The skip must be written, never silent |
 | "Acceptance green — also walk the product" | Walk is a separate predicate. validate-feature already drove API/UI |
-| "Sample is optional / not a gate — skip the notes line" | Predicate true → `sample: required`. Land names the skill if merge/PR would otherwise be offered. |
-| "Name the sample skill now so they have time" | Mid-close name is a second ping. Notes only here; land is the station. |
+| "Sample is optional / not a gate — skip the notes line" | Predicate true → `sample: required`; the receipt preserves the advisory. |
+| "Name the sample skill now so they have time" | Record the predicate; landing names the optional aid once. |
 | "Always name a sample so we cannot forget" | Same shape as always-polish. False predicate → write the skip, never name. |
 | "A sample skip line invents a predicate this file does not write" | The predicate is below. Silent skip is still a red flag. |
 
@@ -139,10 +141,11 @@ True when **any** of:
 
 ## Sample predicate
 
-The three observables are the ones in `land-branch` §1 **Sample withhold**
-— load that heading for `asked`, `risk_hit`, and `large`; do not copy B1
-globs. True when **any** of those three holds. "Always name so we cannot
-forget" is not `asked`.
+True when any of: the user asked for a sample or attention allocation; branch
+diff paths hit the B1 defaults in
+`skills/review/select-review-sample/references/signals.md` extended by project
+`Risk globs`; or the branch diff lists more than 15 files. "Always name so we
+cannot forget" is not an ask.
 
 ## Product-walk predicate
 
@@ -168,7 +171,8 @@ True when **any** of:
   branch)
 - Silent-skip polish (no written `skip: no polish predicate`)
 - Silent-skip sample (no written `sample: required` or `skip: no sample predicate`)
-- Name `/select-review-sample` in this skill — that name belongs to `land-branch`
+- Start `/select-review-sample` in this skill
 - Treat EOD, demo, or "inspect was clean" as a polish predicate
 - Move to land-branch with the Close branch todo still open
+- Write a partial receipt or bind it to evidence from before the last mutation
 - Promote checks as "ID-tagged tests" — IDs stay in docs

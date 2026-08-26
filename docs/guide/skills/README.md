@@ -117,7 +117,7 @@ The visual layer. Fires before any HTML a human will look at.
 
 | Skill | Invocation | What it does |
 |---|---|---|
-| [`land-branch`](land-branch.md) | model | Verify, author commits + PR text, then merge / PR / keep / discard / block. Agent PR text is truth |
+| [`land-branch`](land-branch.md) | model | Consume exact-revision close evidence, author commits + PR text, then perform the resolved crossing or disposition |
 | [`record-verdict`](record-verdict.md) | model | Immutable decision record before a production crossing |
 | [`cut-release`](cut-release.md) | `/cut-release` | Full prove-claim + audit-trace. Changelog from requirement-ID commit trailers |
 

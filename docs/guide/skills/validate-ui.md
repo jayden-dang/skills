@@ -54,7 +54,7 @@ Run the specs headless on Chromium. Any failure is a real defect. The **required
 
 ## 5. Commit the specs
 
-The specs are the durable artifact — commit them, tagged, so they join the verify suite and [`land-branch`](land-branch.md) re-runs them. Record any new run command in `project.md` and note results in the ledger. The step is done when the specs are committed, tagged, and green.
+The specs are the durable artifact — commit them so they join the verify suite bound into the close receipt; stale landing evidence falls back to that suite. Record any new run command in `project.md` and note results in the ledger. The step is done when the specs are committed and green.
 
 Unlike [`validate-api`](validate-api.md), where the durable test is a promotion of the throwaway `curl`, here the spec you wrote to drive the flow **is** the durable test from the start — there is nothing to translate. The same file that acted as the user during acceptance is the regression that guards the flow afterward.
 
@@ -92,7 +92,7 @@ test('an empty note is rejected and keeps the typed text', { tag: '@NOTE-1.2' },
 
 Run headless on Chromium. Suppose `NOTE-1.2` fails because the form clears on a rejected submit — the exact gap a mocked component test never sees, since the component test asserted the validation function returned an error and never watched the input.
 
-[`root-cause`](root-cause.md) roots the cause and fixes it; the spec stays as the regression; step 5 commits both specs, tagged, into the verify suite, where `land-branch` will re-run them on every future change to the form.
+[`root-cause`](root-cause.md) roots the cause and fixes it; the spec stays as the regression; step 5 commits both specs into the verify suite, which is bound into the close receipt and rerun when landing evidence is stale.
 
 ## Why it is written the way it is
 

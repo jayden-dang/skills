@@ -1,0 +1,92 @@
+"""RED→GREEN owns extraction tests (unittest)."""
+
+from __future__ import annotations
+
+import unittest
+from pathlib import Path
+
+from owns import extract_files_paths, load_owns, owners_for_path, parse_index_registry
+
+HERE = Path(__file__).resolve().parent
+FIXTURE = HERE / "testdata"
+
+
+class TestOwns(unittest.TestCase):
+    def test_index_does_not_require_feature_code_line(self):
+        owns, cov = load_owns(FIXTURE, specs_dir="specs")
+        self.assertIn("DEMO", owns)
+        self.assertIn("OTHR", owns)
+        self.assertEqual(cov["registered"], 3)
+        # DEMO has Files + File Structure paths
+        self.assertIn("crates/demo/src/lib.rs", owns["DEMO"])
+        self.assertIn("crates/demo/src/agent_access/mod.rs", owns["DEMO"])
+        self.assertIn("crates/config/src/mail/mod.rs", owns["DEMO"])
+        self.assertGreaterEqual(cov["with_owns"], 2)
+
+    def test_sharded_index_loads_feature_cards(self):
+        owns, cov = load_owns(FIXTURE, specs_dir="specs-sharded")
+        self.assertIn("SHRD", owns)
+        self.assertEqual(cov["registered"], 1)
+        self.assertIn("crates/mail/src/labels.rs", owns["SHRD"])
+        self.assertEqual(cov["with_owns"], 1)
+
+    def test_missing_spec_dir_recorded(self):
+        _, cov = load_owns(FIXTURE, specs_dir="specs")
+        self.assertIn("2026-01-99-missing", cov["missing_dirs"])
+
+    def test_fence_skips_ignored_path(self):
+        text = (FIXTURE / "specs/2026-01-01-demo/tasks.md").read_text()
+        paths = extract_files_paths(text)
+        self.assertNotIn("crates/ignore/me.rs", paths)
+
+    def test_spoken_section_not_registered(self):
+        idx = (FIXTURE / "specs/INDEX.md").read_text()
+        reg = parse_index_registry(idx)
+        self.assertNotIn("SEND", reg)
+
+    def test_owners_for_path_ancestor(self):
+        owns, _ = load_owns(FIXTURE, specs_dir="specs")
+        self.assertEqual(
+            owners_for_path("crates/demo/src/routes.rs", owns),
+            ["DEMO"],
+        )
+        self.assertEqual(
+            owners_for_path("crates/other/src/service.rs", owns),
+            ["OTHR"],
+        )
+        self.assertEqual(owners_for_path("crates/unknown/x.rs", owns), [])
+
+
+class TestCluster(unittest.TestCase):
+    def test_domain_from_lcp_not_substring_hijack(self):
+        from cluster import domain_slug
+
+        paths = [
+            "crates/enclave/src/agent_access/mod.rs",
+            "crates/enclave/src/agent_access/context.rs",
+            "crates/enclave/src/bootstrap/mail_stack.rs",
+        ]
+        # Must not become "labels" merely because a path contains the letters
+        self.assertEqual(domain_slug(paths), "enclave")
+
+    def test_cluster_groups_by_two_meaningful_segments(self):
+        from cluster import cluster_key, cluster_unowned_paths
+
+        paths = [
+            "crates/enclave/src/a.rs",
+            "crates/enclave/src/b.rs",
+            "apps/web/src/features/labels/x.ts",
+            "apps/web/src/features/labels/y.ts",
+        ]
+        groups = cluster_unowned_paths(paths)
+        self.assertIn("enclave/src", groups)
+        # apps/src/features stopwords → meaningful web + labels
+        self.assertIn("web/labels", groups)
+        # filenames must never become cluster segments
+        self.assertEqual(cluster_key("crates/enclave/src/a.rs"), "enclave/src")
+        self.assertEqual(cluster_key("apps/web/src/features/labels/x.ts"), "web/labels")
+        self.assertNotIn("a.rs", cluster_key("crates/enclave/src/a.rs"))
+
+
+if __name__ == "__main__":
+    unittest.main()

@@ -80,3 +80,78 @@ this bump keeps reconcile aligned with the same contract.
 Pointer-only procedure; disposition this-run = pending; envelope no-spec-impact
 aligned to classification rule 4; rationalization/red-flag parity; Done when
 checkable. No new behavior.
+
+## Precision — OWNS extract + cluster (scripts/, post-1.1.1)
+
+**RED command:**
+`cd skills/execution/reconcile-features/scripts && python3 -m unittest test_owns.TestCluster.test_cluster_groups_by_two_meaningful_segments -v`
+
+**RED output (verbatim shape):**
+`AssertionError: 'enclave/src' not found in {'enclave/a.rs': [...], 'enclave/b.rs': [...], 'labels/x.ts': [...], 'labels/y.ts': [...]}`
+
+**Root cause:** `cluster_unowned_paths` joined the first two `meaningful_segments`,
+which after stopword strip were often `[domain, filename]` (`enclave` + `a.rs`).
+`web` was also a PATH_STOPWORD, so `apps/web/.../labels/x.ts` collapsed to
+`labels/x.ts` instead of `web/labels`.
+
+**GREEN fix:** `cluster_key` strips the trailing filename, takes the first two
+meaningful directory segments, or one meaningful + the next raw segment
+(`crates/enclave/src/a.rs` → `enclave/src`). `web` removed from PATH_STOPWORDS
+(monorepo package name). Shared `owns.py` stays index-first (CODE → spec dir from
+INDEX; no `Feature code:` requirement) + fence-aware Files + File Structure.
+
+**GREEN command (whole script suite):**
+`cd skills/execution/reconcile-features/scripts && python3 -m unittest test_owns.py -v`
+→ 7 tests OK.
+
+**Mailgate dogfood** (`/Users/jayden/Developer/work/CommandOss/mailgate`,
+`HEAD~12..HEAD` @ `705ac437`):
+
+| Metric | Value |
+|---|---|
+| OWNS coverage | 4/25 (`AAEF`,`AGNT`,`ATCH`,`GIDS`); 20 INDEX dirs missing on disk; 1 dir no `tasks.md` |
+| Window paths | 386 total; 276 owned; 110 unowned |
+| Unowned clusters | 43 directory keys (e.g. `base/testkit`, `mail_labels_service/src`, `auth_service/oauth`) — no filename keys |
+| Labels surface | `crates/mail_labels_service/src/service.rs` correctly unowned (`—`) → new-capability candidate |
+| Catalog skew | `ATCH` Files lists `crates/enclave` → ancestor-owns most enclave paths (authoring breadth, not extractor miss) |
+
+## Bundled runner — `scripts/reconcile.py` (v1.2.0)
+
+**RED:** `ModuleNotFoundError: No module named 'reconcile'` from
+`test_reconcile.py`; then
+`test_new_capability_survives_cap_ahead_of_known_impact` failed when
+CODE-tuple known-impact rows filled all 12 slots before OBS candidates.
+
+**GREEN:** runner classifies + emits envelope; known-impact is one row per CODE;
+cap priority is new-capability → uncertain → known-impact → no-spec-impact.
+
+**Suite:** `python3 -m unittest test_owns.py test_reconcile.py -v` → 16 OK.
+
+**Mailgate dogfood (same window, post-cap fix):** balanced envelope shows
+~7 largest OBS clusters + 1 uncertain + 4 known-impact CODEs
+(`ATCH`,`AGNT`,`AAEF`,`GIDS`); `findings_truncated: true`.
+`crates/mail_labels_service/src/service.rs` is correctly **unowned** but
+cluster-rank ~30/38 (singleton) so it falls outside the capped 12 — gold-label
+corpus must assert it on the uncapped classify set / Critical-miss rule, not
+only on the truncated envelope.
+
+## Judgment corpus (v1.2.0)
+
+Fixtures under `scripts/testdata/corpus/`:
+
+| Case | Critical rule |
+|---|---|
+| `mailgate-labels` | `crates/mail_labels_service/src/service.rs` → `new-capability-candidate` with OBS id; never AGNT/ATCH; capped envelope still shows AGNT+ATCH known-impact; OBS id stable |
+| `klynt-authz` | 0 OWNS snapshot → ≥1 new-capability; no proto-CODE OBS substrings |
+
+**Command:** `python3 -m unittest test_corpus.py -v` → 3 OK.
+**Full scripts suite:** `python3 -m unittest discover -v` in `scripts/` → 20 OK.
+
+## Sharded INDEX (optional) — owns.py
+
+**RED:** sharded fixture registered 0 CODEs / wrong `catalog/2026-…` path because
+`str.lstrip("./")` ate `../` and Spec links lived outside cell 2.
+
+**GREEN:** Domain-router detect + shard card parse; preserve `..` when resolving
+spec dirs against the shard file. Fixture `testdata/specs-sharded/` → `SHRD`
+owns `crates/mail/src/labels.rs`.

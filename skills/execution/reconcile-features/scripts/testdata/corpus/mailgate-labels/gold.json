@@ -1,0 +1,28 @@
+{
+  "name": "mailgate-labels",
+  "description": "HEAD~12 window judgments: labels service is OBS, not AGNT/ATCH; known CODEs still surface",
+  "critical_miss": [
+    {
+      "path": "crates/mail_labels_service/src/service.rs",
+      "change_class": "new-capability-candidate",
+      "forbidden_codes": [
+        "AGNT",
+        "ATCH",
+        "AAEF",
+        "GIDS"
+      ]
+    }
+  ],
+  "must_known_impact_codes": [
+    "AGNT",
+    "ATCH"
+  ],
+  "forbidden_observation_id_substrings": [
+    "LABL",
+    "AGNT",
+    "ATCH"
+  ],
+  "stability": {
+    "path": "crates/mail_labels_service/src/service.rs"
+  }
+}

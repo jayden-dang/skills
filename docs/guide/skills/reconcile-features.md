@@ -8,7 +8,7 @@
 |---|---|
 | **Bucket** | execution |
 | **Invocation** | model-invoked |
-| **Reads** | git `base..head`, live `docs/specs/` (tracked or local), active OBS overlay |
+| **Reads** | git `base..head`, live `docs/specs/` (flat or optional sharded catalog), active OBS overlay |
 | **Writes** | local `.skills/reverse-features/` only (stateless if not writable/ignored); never `docs/specs/**`, never consuming-repo CI |
 | **Called by** | `frame-change` (reverse-track predicate in step 1), `inspect-change` (step 1b on pinned range); also standalone on reverse-track asks |
 
@@ -21,6 +21,19 @@ of pending OBS under `.skills/reverse-features/`.
 Observations use `OBS-<6hex>` from evidence locators — never Feature CODEs.
 Promotion/absorb/dismiss is human disposition; name `/map-features` for
 confirm-then-write backfill.
+
+## Bundled runner
+
+Mechanical inventory (no overlay write by default):
+
+```bash
+python3 skills/execution/reconcile-features/scripts/reconcile.py \
+  --repo <root> --base <sha> --head <sha> --mode changes-since-checkpoint
+```
+
+Uses index-first OWNS (`scripts/owns.py`, flat or sharded INDEX), clustering
+(`scripts/cluster.py`), and a balanced `FINDINGS_MAX` budget. Judgment corpus
+fixtures live under `scripts/testdata/corpus/`.
 
 ## Modes
 

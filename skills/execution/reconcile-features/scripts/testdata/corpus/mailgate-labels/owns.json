@@ -1,0 +1,35 @@
+{
+  "ATCH": [
+    "crates/enclave",
+    "crates/gateways",
+    "crates/mail_send_service",
+    "crates/persistence",
+    "crates/sui_client"
+  ],
+  "GIDS": [],
+  "AGNT": [
+    "apps/web",
+    "apps/web/src/features/agents/api/agentApi.ts",
+    "apps/web/src/features/agents/components/AgentCard.test.tsx",
+    "apps/web/src/features/agents/components/AgentCard.tsx",
+    "apps/web/src/features/agents/components/SystemAgentRow.test.tsx",
+    "apps/web/src/features/agents/components/SystemAgentRow.tsx",
+    "apps/web/src/features/agents/hooks/use-agents.ts",
+    "apps/web/src/features/agents/screens/AgentsScreen.tsx",
+    "crates/*",
+    "crates/enclave/src/agent_access/audit.rs",
+    "crates/enclave/src/agent_access/capability.rs",
+    "crates/enclave/src/agent_access/context.rs",
+    "crates/enclave/src/agent_access/mod.rs",
+    "crates/enclave/src/agent_access/provisioning.rs",
+    "crates/enclave/src/agent_access/resolver.rs",
+    "crates/persistence"
+  ],
+  "AAEF": [
+    "apps/web/src/features/agents/api/agentApi.ts",
+    "crates/agent_tools/AGENTS.md",
+    "crates/enclave/src/agent_access/capability.rs",
+    "crates/enclave/src/agent_access/context.rs",
+    "crates/enclave/src/agent_access/context_tests.rs"
+  ]
+}

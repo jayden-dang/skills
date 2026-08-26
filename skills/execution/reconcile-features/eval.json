@@ -46,5 +46,17 @@
       "no consuming-repo CI, hooks, or tracked reconciler scripts are added",
       "no GRAPH.md is written"
     ]
+  },
+  {
+    "eval_id": 5,
+    "eval_name": "mailgate-labels-critical-miss",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § Judgment corpus / mailgate-labels",
+    "prompt": "Reconcile mailgate HEAD~12 including crates/mail_labels_service/src/service.rs.",
+    "assertions": [
+      "mail_labels_service path is new-capability-candidate with OBS-<6hex>",
+      "that path is not absorbed into AGNT or ATCH as decided ownership",
+      "OBS id is not shaped like OBS-LABL"
+    ]
   }
 ]

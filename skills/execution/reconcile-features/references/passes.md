@@ -15,8 +15,13 @@ FINDINGS_MAX = 12
 EVIDENCE_MAX = 8
 SURFACE_ROOTS_MAX_PER_CARD = 3
 PATH_STOPWORDS = apps, app, src, lib, internal, routes, features, crates, packages,
-                 backend, frontend, web, server, client, test, tests, __tests__,
+                 backend, frontend, server, client, test, tests, __tests__,
                  node_modules, target, dist, build, vendor, generated, gen
+                 (web is NOT a stopword — monorepo package name apps/web/…)
+CLUSTER_KEY = two directory segments: first two meaningful, or one meaningful
+              + next raw segment (crates/enclave/src/a.rs → enclave/src;
+              apps/web/src/features/labels/x.ts → web/labels). Never use a
+              filename as a cluster segment.
 GENERATED_PATH_GLOBS = **/node_modules/**, **/target/**, **/dist/**, **/build/**,
                        **/*.lock, **/pnpm-lock.yaml, **/Cargo.lock, **/package-lock.json,
                        **/generated/**, **/*.pb.go, **/__generated__/**
@@ -63,17 +68,31 @@ git diff --name-status -z -M <base>..<head>
 4. **Load catalog ownership.** From live `docs/specs/` (tracked or local overlay),
    following **`skills/execution/load-subgraph/references/catalog-query.md`**
    (flat vs sharded detect) and load-subgraph Pass R for the full CODE set on
-   disk:
-   - INDEX / shard feature cards → CODE, surface roots when present
-   - each feature `tasks.md` `**Files:**` / `Files:` Create|Modify|Test path tokens
-   - compute `owns_coverage` like load-subgraph (with_owns / registered)
+   disk. Prefer the shared extractor
+   `skills/execution/reconcile-features/scripts/owns.py` when running
+   mechanically:
+   - INDEX / shard feature cards → CODE → spec dir (**index-first**; do **not**
+     require a `Feature code:` line in `requirements.md`)
+   - each feature `tasks.md` fence-aware `**Files:**` / `Files:` tokens plus
+     File Structure backtick path cells
+   - compute `owns_coverage` like load-subgraph (with_owns / registered);
+     missing spec dirs go in coverage `missing_dirs`
+   - Cluster unowned behavior paths with `scripts/cluster.py` (`CLUSTER_KEY`)
+     before minting OBS cards; cap surface roots per card at
+     `SURFACE_ROOTS_MAX_PER_CARD`
    - When surfacing cards to the caller, apply catalog-query context caps — do
      not paste the whole registry into the reconcile reply
 5. **Load active overlay.** Parse `active/*.md` OBS cards; tombstone-lookup
    evidence signatures before inventing a duplicate OBS.
-6. **Classify each candidate path** (rules below). Cluster paths that share a
-   non-stopword path prefix into one finding when they share change_class.
-7. **Render envelope** per `envelope.md`. Cap at `FINDINGS_MAX`.
+6. **Classify each candidate path** (rules below). Cluster unowned behavior
+   paths by `CLUSTER_KEY` into `new-capability-candidate` findings. Known-impact
+   is **one row per CODE** (a path may appear under multiple CODEs), never one
+   row per CODE-tuple — combo explosion must not starve OBS candidates.
+7. **Render envelope** per `envelope.md`. Cap at `FINDINGS_MAX` with a balanced
+   budget: emit `new-capability-candidate` clusters first (largest first),
+   reserve up to `KNOWN_IMPACT_SOFT_MIN` (4) slots for `known-impact` (one row
+   per touched CODE), keep at most one `uncertain` and one `no-spec-impact`.
+   Set `findings_truncated` when uncapped count exceeds the cap.
 8. **Index then advance** (see Checkpoint advance).
 
 No Graphify read in rfeat-1.0. No LLM-only finding without a locator from pass 2.

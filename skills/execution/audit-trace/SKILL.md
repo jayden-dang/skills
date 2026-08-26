@@ -1,20 +1,24 @@
 ---
 name: audit-trace
-version: 1.0.0
+version: 1.1.0
 description: Use when checking that every requirement ID agrees across where it is
-  defined and task-cited in docs/specs — the docs-only vertical integrity pass
-  invoked by prove-claim, cut-release, realign-spec, and plan-tasks's coverage
-  check, or whenever requirements and tasks may have drifted. Produces a
+  defined and task-cited in docs/specs, or that the capability catalog INDEX /
+  shards stay intact — the docs-only vertical integrity pass invoked by
+  prove-claim, cut-release, realign-spec, and plan-tasks's coverage check, or
+  whenever requirements, tasks, or catalog rows may have drifted. Produces a
   traceability finding set — IDs cited but never defined, duplicate definitions,
-  approved-but-uncited warnings, and optional architecture Respects integrity.
-  Does not search application source or tests for requirement IDs.
+  approved-but-uncited warnings, optional architecture Respects integrity, and
+  catalog integrity (duplicate Feature CODEs, OBS tokens in canonical tables,
+  missing shard refs). Does not search application source or tests for
+  requirement IDs.
 ---
 
 # Audit Trace
 
-The vertical traceability check. It answers one question with evidence: **does
-every requirement ID agree across where it is defined and cited in the spec
-triad (and optional architecture docs)?**
+The vertical traceability check. It answers with evidence: **do requirement IDs
+agree across the spec triad (and optional architecture docs), and does the
+capability catalog stay free of duplicate CODEs, OBS-as-CODE, and broken shard
+refs?**
 
 It is not a judgment call. Every input is gathered with `grep` and reads —
 deterministic passes — and every finding follows a fixed rule. Two agents running
@@ -43,10 +47,16 @@ A finding set, each item an ERROR or a WARNING:
 | **E8** | error | The same `TB-N`/`THR-N`/`CMP-N`/`SLO-N` is bold-defined in more than one canonical file |
 | **E9** | error | A `Reliability:` line cites an `SLO-N` with no live bold definition in Approved `docs/ops/reliability.md` |
 | **E10** | error | A `Reliability:` line cites a retired (struck-through) `SLO-N` |
+| **E11** | error | The same Feature CODE appears in more than one catalog row (flat INDEX and/or shards) |
+| **E12** | error | A sharded INDEX `Feature catalog` path is missing or not a readable file under `docs/specs/` |
+| **E13** | error | A canonical catalog Code cell is an `OBS-` observation id |
+| **W4** | warn | A catalog Spec pointer (not `—`/empty) names a missing directory under `docs/specs/` |
+| **W5** | warn | The same `OBS-<6hex>` appears in more than one `.skills/reverse-features/active/*.md` card |
 
 E4/E5/W3 come from the invariant passes, which only run when a spine exists.
 E6–E10 come from system-ID passes; skip when the defining docs are absent or
-non-authoritative. **Do not** warn merely because a live system ID has no feature
+non-authoritative. E11–E13 / W4–W5 come from catalog integrity passes; skip when
+`docs/specs/INDEX.md` is absent (same stop as "nothing to check"). **Do not** warn merely because a live system ID has no feature
 citation. **Do not** judge semantic conformance. **Do not** grep application or
 test source for these IDs.
 
@@ -67,7 +77,8 @@ not fatal, unless the caller says otherwise.
 - **Decision records** (optional): when `.skills/decisions/` exists, run the
   shipped validator (see below).
 - Skip `node_modules .git dist build target coverage .next .skills vendor` and any
-  dotfile/dot-dir when walking trees other than the intentional decision-record path.
+  dotfile/dot-dir when walking trees other than the intentional decision-record path
+  and the catalog OBS uniqueness pass (`.skills/reverse-features/active/` only).
 
 Do **not** search application or test trees for requirement-ID coverage. Legacy
 `/// REQ:` or test-title tags in a consumer repo are ignored by this check.
@@ -179,6 +190,62 @@ Rules when defining files exist:
 - **E9** — Reliability: cites SLO not in live definition set in reliability.md
 - **E10** — Reliability: cites retired SLO
 
+
+### Catalog integrity passes — only when `docs/specs/INDEX.md` exists
+
+If `docs/specs/INDEX.md` is missing, skip this section (the "nothing to check"
+stop already applies when the whole specs tree is absent). Mode detect matches
+`load-subgraph` / `catalog-query.md`: Domain router header → **sharded**; else
+**flat**.
+
+**C1. Catalog CODE rows** — collect every Code cell from the flat INDEX feature
+table and/or each shard listed by the router:
+
+```bash
+# flat feature rows (Code | … | Spec | Status | …)
+grep -nE '^\| [A-Z][A-Z0-9]{1,11} \|' docs/specs/INDEX.md
+# sharded: list Feature catalog paths from the router, then Code rows in each shard
+grep -nE '^\| [A-Z][A-Z0-9_ -]+ \|' docs/specs/INDEX.md | grep -i 'catalog'
+# for each ./catalog/*.md path referenced, grep Code rows the same way
+```
+
+Normalize CODE = first table cell matching `[A-Z][A-Z0-9]{1,11}` length 2–12.
+Ignore Domain-id cells that are not feature cards. Build `catalogCodes` as
+CODE → [file:line, …].
+
+**C2. Shard path existence (sharded only)** — for each router `Feature catalog`
+cell that looks like a relative path (`./catalog/…` or `catalog/…`), resolve
+under `docs/specs/`. Missing or not a file → **E12**.
+
+**C3. OBS tokens in canonical Code cells** — grep canonical catalog files for
+OBS-shaped first cells (hyphenated; they will not match the C1 CODE pattern):
+
+```bash
+grep -rnE '^\| OBS-[0-9a-f]{6} \|' docs/specs/INDEX.md docs/specs/catalog \
+  --include='*.md' 2>/dev/null
+```
+
+Each hit → **E13**.
+
+**C4. Spec pointer liveness** — for each catalog row whose Spec cell is neither
+empty nor `—`, resolve the directory under `docs/specs/` (strip `./` and trailing
+`/`). Missing directory → **W4**.
+
+**C5. Active OBS uniqueness (optional overlay)** — when
+`.skills/reverse-features/active/` exists, grep `OBS-[0-9a-f]{6}` in those files
+only. Same id in two cards → **W5**. Do not walk the rest of `.skills/`.
+
+Rules:
+
+- **E11** — any CODE with two or more distinct catalog row locations
+- **E12** — each missing/unreadable shard path (sharded mode)
+- **E13** — each OBS-shaped Code cell in canonical catalog files
+- **W4** — each dangling Spec pointer
+- **W5** — each duplicated active OBS id
+
+Do **not** judge whether a Recognized card *should* have a triad (Spec `—` is
+allowed). Do **not** promote OBS into CODEs here.
+
 ## The rules
 
 With the sets in hand — `defined` (ID → {file, status}), `taskCited` — apply:
@@ -263,4 +330,5 @@ trace: 24 requirements · 24 task-cited
 
 Exact wording and ordering are not contractual — the **finding set** is. If
 `docs/specs/` does not exist, say there is nothing to check and stop. When a caller
-(prove-claim, cut-release) needs a pass/fail, the gate is: zero errors.
+(prove-claim, cut-release) needs a pass/fail, the gate is: zero errors (including
+catalog E11–E13 when INDEX exists).

@@ -1,6 +1,6 @@
 # `audit-trace`
 
-> The vertical traceability check. It answers one question with evidence: does every requirement ID agree across where it is defined, cited, and tested?
+> The vertical traceability check. It answers with evidence: do requirement IDs agree across the spec triad, and does the capability catalog stay free of duplicate CODEs, OBS-as-CODE, and broken shard refs?
 
 |  |  |
 |---|---|

@@ -1,9 +1,8 @@
 ---
 name: configure-repo
-version: 1.2.0
+version: 1.3.0
 description: Configures an existing repo for this skill set — a docs/agents/ layer covering prove-claim
-  commands, tracker and labels, release steps, team and ownership. Run it with /setup-
-  repo.
+  commands, tracker and labels, release steps, team, ownership, and optional catalog-sync posture.
 disable-model-invocation: true
 ---
 
@@ -17,7 +16,7 @@ Template seeds live in this skill set's `templates/` directory. Resolve pack see
 
 ## Track progress
 
-This skill has seven steps (decisions A–K inside step 2) and skipping one is the common failure — an unconfigured tracker, or the Step 6 verification gate never run. Before Step 1, create a todo for each numbered step below and complete them in order, checking each off only when its **Done when** is met. Step 6 (prove the configuration works) is not optional.
+This skill has seven steps (decisions A–L inside step 2) and skipping one is the common failure — an unconfigured tracker, or the Step 6 verification gate never run. Before Step 1, create a todo for each numbered step below and complete them in order, checking each off only when its **Done when** is met. Step 6 (prove the configuration works) is not optional.
 
 ## 1. Read the setup state
 
@@ -42,8 +41,8 @@ You may still read the repo's own manifests (lockfiles, `package.json` scripts, 
 
 ## 2. Decide, one section at a time
 
-Walk the eleven decisions below (A–K; I is optional project-docs; K is
-optional remote environments) strictly one at a time: give a two-or-three-sentence explainer (what this is, which skills consume it, what changes with each choice), state your recommendation with a one-line reason, then wait for the user's answer before moving on. Never dump all sections at once. Assume the user has not seen these concepts before.
+Walk the twelve decisions below (A–L; I is optional project-docs; K is
+optional remote environments; L is optional catalog sync) strictly one at a time: give a two-or-three-sentence explainer (what this is, which skills consume it, what changes with each choice), state your recommendation with a one-line reason, then wait for the user's answer before moving on. Never dump all sections at once. Assume the user has not seen these concepts before.
 
 ### A. Issue tracker
 
@@ -214,6 +213,29 @@ the file.
 **Done when:** the table is confirmed, or explicitly skipped (`None —
 not deployed` / declined).
 
+### L. Catalog sync (optional — default unset / full-triad behavior)
+
+Explainer: teams that use **different skill sets** (or do not want full
+requirements/design/tasks noise on GitHub) can sync a **thin feature catalog**
+only — `docs/specs/INDEX.md` (± sharded `docs/specs/catalog/`) — while keeping
+triad workbenches local. `/map-features` then supports `export` (local triad →
+INDEX row refresh) and `materialize` (INDEX CODE → Draft stub triad at the INDEX
+path). `reconcile-features` still never writes INDEX/triad.
+
+Options:
+
+- **unset** (default) — no field or leave blank; treat like **full-triad**. Do
+  **not** rewrite `.gitignore` for specs. `/map-features` dispose-only modes.
+- **full-triad** — triad dirs under `docs/specs/<slug>/` are committed as usual.
+- **index-only** — git tracks INDEX (± catalog); ignore feature triad dirs; enable
+  map-features `export` / `materialize`.
+
+Recommend **unset** unless the user explicitly wants catalog-only sync across
+machines/skill sets. Never force index-only on a repo already committing triads
+without an explicit yes.
+
+**Done when:** catalog sync value confirmed, or explicitly left unset.
+
 ## 3. Draft and confirm
 
 Show the user, before writing anything:
@@ -231,7 +253,7 @@ Let them edit. **Done when:** the user approves the drafts.
 2. If `docs/specs/INDEX.md` is missing, create it from `templates/specs-INDEX.md`.
 
 3. If the glossary is missing, create `CONTEXT.md` from `templates/CONTEXT.md` (or a `CONTEXT-MAP.md` for multi-context, per the user's answer).
-4. Fill the **Project posture** section of `docs/agents/project.md` with the confirmed delivery intent and lifecycle stage (decision G) — two lines, replacing the template placeholders. (Additive: if the section already carries real values, update only what the user changed.)
+4. Fill the **Project posture** section of `docs/agents/project.md` with the confirmed delivery intent and lifecycle stage (decision G) — two lines, replacing the template placeholders. (Additive: if the section already carries real values, update only what the user changed.) If decision L confirmed **index-only** or **full-triad**, set `- **Catalog sync:** \`<value>\`` in the same section (additive). If L left unset, write no Catalog sync line.
 5. Fill **`## Team`** from the confirmed Decision H content (roster, ownership notes, optional band override), merging into the template shape from `templates/agents/project.md`. Replace only the Team section's confirmed fields; do not clobber other sections. If the user deferred Team, leave the section as template placeholders or omit until a fill-the-gaps run.
 6. **If the project-docs layer was opted in (decision I):** seed `docs/product/vision.md`, `docs/architecture/INDEX.md`, and `docs/product/guidelines.md` from `templates/product-vision.md`, `templates/architecture-INDEX.md`, and `templates/product-guidelines.md` (additive, per the rule above). If migrating, move the existing engineering rules into `docs/product/guidelines.md` and leave a pointer in `docs/agents/project.md`. If the layer was declined, skip this — write none of these files.
 7. Add the `## Agent skills` block. It lives in exactly **one** canonical file; any second file is a thin pointer, never a copy of the block.
@@ -282,8 +304,13 @@ Repo config the skills read:
 8. Ensure the local working dirs are git-ignored: the skills' scratch artifacts — `build-in-waves`'s ledger and briefs, and the scan/review digests the spec skills write — live under `.skills/`, and isolated workspaces under `.isolate-workspace/`; neither belongs in version control. Idempotently, for each pattern: `grep -qxF '.skills/' .gitignore 2>/dev/null || printf '.skills/\n' >> .gitignore` (same for `.isolate-workspace/`), then stage `.gitignore`. (A line-presence check, not `git check-ignore` — a trailing-slash pattern only matches an *existing* directory, so `check-ignore` would re-append before the dir exists.)
 9. If decision J (Default PR base) was confirmed, add `- **Default PR base:** \`<branch>\`` to the **Project posture** section of `docs/agents/project.md`, under the additive rule above — merge in, never clobber a value the user already set. If the user declined decision J, write nothing: leave the field absent so `land-branch` asks per invocation.
 10. If decision K (Remote environments) was confirmed, merge the **Remote environments** table into `docs/agents/project.md` from `templates/agents/project.md` (additive). If skipped, write `None — not deployed` or omit the section.
+11. **If decision L is `index-only`:** append the catalog-sync gitignore block from
+    this skill’s `templates/gitignore-index-only.snippet` (pack twin also under
+    `skills/track/map-features/templates/`) **only when** those lines are not
+    already present. Show the user the snippet and warn: do not `git add -f`
+    triad dirs. If L is unset or `full-triad`, do **not** add specs ignore rules.
 
-**Done when:** all files are written, `.skills/` and `.isolate-workspace/` are git-ignored, and `git status` shows only the expected additions/edits.
+**Done when:** all files are written, `.skills/` and `.isolate-workspace/` are git-ignored, index-only gitignore applied only when L=`index-only`, and `git status` shows only the expected additions/edits.
 
 ## 5. Offer the session-start hook
 

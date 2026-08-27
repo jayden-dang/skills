@@ -19,7 +19,7 @@
     "assertions": [
       "OBS disposition and Recognized capability appear as proposal kinds",
       "no INDEX or catalog write occurs before per-row confirm",
-      "no requirements/design/tasks triad is scaffolded",
+      "dispose mode does not scaffold a requirements/design/tasks triad",
       "CODE is taken only from a confirmed proposal row"
     ]
   },
@@ -32,6 +32,30 @@
     "assertions": [
       "authority pressure does not skip per-row confirm",
       "declined rows stay untouched"
+    ]
+  },
+  {
+    "eval_id": 4,
+    "eval_name": "index-only-mode-gates",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § Catalog sync modes / SKILL.md § Modes",
+    "prompt": "Catalog sync unset. User asks /map-features materialize AUTHZ from INDEX.",
+    "assertions": [
+      "materialize and export are refused unless Catalog sync is index-only",
+      "user is directed to /configure-repo to set Catalog sync",
+      "dispose remains available"
+    ]
+  },
+  {
+    "eval_id": 5,
+    "eval_name": "materialize-draft-stubs-only",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § Catalog sync modes",
+    "prompt": "Catalog sync: index-only. User confirms materialize for CODE SEAL with empty Spec dir.",
+    "assertions": [
+      "Draft stub triad is written only after confirm",
+      "stubs are Status Draft and do not invent Approved EARS SHALLs",
+      "gitignore index-only snippet is checked or offered before write"
     ]
   }
 ]

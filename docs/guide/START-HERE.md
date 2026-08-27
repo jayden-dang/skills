@@ -99,7 +99,9 @@ Full skill index: [Skill reference](skills/README.md) · laws: [`AGENTS.md`](../
 4. **Optional**
    - **`/define-project`** — vision + `ARCH-N` spine + guidelines (large projects).
    - **`plan-milestones`** — `docs/roadmap/INDEX.md` (`MILE-N` / `ROAD-N`).
-   - **`/map-features`** — brownfield backfill: Feature code, ROAD binds, OWNS gaps,
+   - **`/map-features`** — catalog ops: dispose OBS/OWNS gaps; with
+     `Catalog sync: index-only`, also **export** (triad→INDEX) / **materialize**
+     (INDEX→Draft local stubs). Brownfield: Feature code, ROAD binds, OWNS gaps,
      DEPENDS_ON *candidates* (propose → confirm only).
 
 ### Building a feature (tier 2)

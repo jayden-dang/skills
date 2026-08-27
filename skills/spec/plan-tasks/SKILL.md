@@ -1,6 +1,6 @@
 ---
 name: plan-tasks
-version: 1.1.0
+version: 1.2.1
 description: Use when a design is approved and the tasks.md implementation plan
   (vertical-slice tasks with requirement footers and behavior tests) needs writing,
   after design-solution and before the execute family (build-in-waves /
@@ -22,7 +22,9 @@ Create a todo per step (1–4, plus 5 if the repo uses an issue tracker) before 
 
 Write for an implementer who is skilled but knows NOTHING about this codebase
 or problem domain, and will see ONLY their own task plus the Global
-Constraints. Every name, path, command, and type they need must be in the task.
+Constraints. **Names, paths, types, and commands** the implementer must not
+guess belong in **Files / Interfaces / Reuse / footer** (and Global Constraints
+by reference) — not as novel-length prose inside Steps (see **Thin steps**).
 
 ## Step 1: Header and Global Constraints
 
@@ -169,9 +171,39 @@ tidy review units if that would lie about what the task needs.
 Task 3", or a type referenced but defined in no task — each of these is a plan
 bug. Fix it before the plan ships.
 
+**Thin steps.** Prefer **3–8** checkboxes per task (TDD beats: fail → implement →
+pass → commit). Do not paste novel-length essays into Steps — that bloats
+`line_count` and review surface. Long how-to narration for one worker goes in
+the execute brief (`.skills/<CODE>/task-N-brief.md`) at execute time; the shared
+plan still carries the **identifiers** (paths, type names, commands) in Files /
+Interfaces / Reuse so the brief cannot invent APIs.
+
 **Done when:** every file in Step 2's map is covered by at least one task, and
 each task is written as a vertical slice carrying its own test cycle. Whether
 the slots and placeholders are clean is Step 4's check, not this one.
+
+## Plan size budget (hard gate)
+
+**Home for this rule.** Count in Step 4 and again at Exit before Approve. Other
+sections only point here.
+
+| Metric | How to count | Hard ceiling |
+|---|---|---|
+| **task_count** | Count headings whose text matches `Task <integer>` at level `##` or `###` only (e.g. `### Task 3` or `## Task 12: Activate rail`). Not `####`, not `Task 3a`, not prose “task 3”, not checkbox count. | **12** |
+| **line_count** | **Whole-file** line count of this `tasks.md` (header + Global Constraints + map + tasks). Checkbox count is irrelevant. “Fluff / ignore lines” does **not** waive. | **400** |
+
+**WHEN** `task_count > 12` **OR** `line_count > 400` (either metric alone blocks):
+
+- **MUST NOT** set `Status: Approved`.
+- Surface both counts vs ceilings and that the plan is over budget.
+- Offer only size remedies (user picks; no silent cut):
+  1. **Decompose** — this plan keeps only the first ship slice. IF the leftover is new feature shape → hand back to `frame-change`. IF the roadmap already exists and you only need later slots → REQUIRED SUB-SKILL: use `plan-milestones` to add `ROAD-N` items. Then delete tasks that belong to later ROAD items from *this* file.
+  2. **Cut scope** — strike or Out-of-Scope requirements, then delete the matching tasks (and shrink Steps if `line_count` alone is high).
+  3. **Merge slices** — fewer tasks, still vertical (one demoable outcome each); do not hide horizontal layers inside one mega-task.
+
+"Don't split / just approve / standup / only N tasks / line count is fluff / CFND-size is normal" **does not waive**. A megaplan is not made shippable by urgency.
+
+**WHEN** both metrics are at or under ceiling → budget clear; continue Exit.
 
 ## Step 4: Coverage and consistency check
 
@@ -212,9 +244,13 @@ plan defect — citing `file:line` and defaulting to flag. Findings to
 `.skills/<CODE>/plan-review.md`; fix before offering execution. (No subagents? Do the
 comparison yourself against the code.)
 
+**Plan size:** run the **Plan size budget** counts here. Over ceiling → shrink
+before Exit (do not present for Approve yet).
+
 **Done when:** every requirement ID has a task footer and a planned behavior
 test/acceptance step at an agreed seam, the docs-only audit-trace check is clean,
-the design's seam-table IDs are all covered, and the placeholder scan is clean.
+the design's seam-table IDs are all covered, the placeholder scan is clean, **and**
+the **Plan size budget** is clear (or the plan was shrunk until it is).
 
 ## Step 5 (optional): Publish to the issue tracker
 
@@ -279,42 +315,62 @@ exactly one feature issue (union IDs, plan path, id under `.skills/<CODE>/`),
 1. **Present the FILE and STOP.** Conversational agreement is not approval; the
    written plan is what gets approved. The execute family runs only on an
    approved `tasks.md`.
-2. **On approval:** set `Status: Approved`. Leave `Execution-mode:` as `unset`
-   (or untouched). Do **not** write `continuous` or `story-unit` yourself.
-3. **Offer exactly three execute routes** — one question, three skills. Do **not**
+2. **Budget gate before Approve.** Follow **Plan size budget** (one home). Over
+   ceiling → do **not** set Approved; run those remedies. Under ceiling → continue.
+3. **On approval (budget clear):** set `Status: Approved`. Leave `Execution-mode:`
+   as `unset` (or untouched). Do **not** write `continuous` or `story-unit` yourself.
+4. **Offer exactly three execute routes** — one question, three skills. Do **not**
    first ask continuous vs story-unit; that interview is dead. Mode write-back is
    owned by the skill the user picks.
 
 | Route | Meaning |
 |---|---|
-| **`build-in-waves`** | Subagent waves, no human pause between tasks (writes `Execution-mode: continuous`). Prefer `isolate-workspace` first. |
 | **`build-by-story`** | Subagent path with human-gated review units derived from stories (writes `Execution-mode: story-unit`). Prefer `isolate-workspace` first. |
+| **`build-in-waves`** | Subagent waves, no human pause between tasks (writes `Execution-mode: continuous`). Prefer `isolate-workspace` first. |
 | **`build-inline`** | Controller implements sequentially with `test-first`, no implementer subagents (writes `Execution-mode: continuous` as bookkeeping; **does not** run unit barriers). |
 
-4. **On pick:** name the skill and hand off — REQUIRED SUB-SKILL: use
+**Recommend (offer label only — not invent mode):** mark **`build-by-story`
+(Recommended)** first WHEN any of: user-facing UI/UX; Team band Solo or Small; or
+`requirements.md` has **≥2** behavioral stories. Still offer all three; still wait
+for an explicit pick. **No size-based default** means: never invent `Execution-mode`
+and never silently start waves from task count — it does **not** forbid the
+`(Recommended)` mark. Infra-only / no-UI with none of those triggers → leave the
+offer unmarked.
+
+5. **On pick:** name the skill and hand off — REQUIRED SUB-SKILL: use
    `build-in-waves`, `build-by-story`, or `build-inline` as chosen. For the two
    subagent routes, prefer REQUIRED SUB-SKILL: use `isolate-workspace` first when
    no isolated workspace exists yet.
-5. **INDEX:** confirm the feature's row in `docs/specs/INDEX.md` carries the same
+6. **INDEX:** confirm the feature's row in `docs/specs/INDEX.md` carries the same
    `Status:` as its `requirements.md`.
 
 | Thought | Reality |
 |---|---|
-| "PM said just mark Approved — continuous is obvious" | Approval is the written plan. Offer the three skills; do not invent mode |
+| "PM said just mark Approved — continuous is obvious" | Approval is the written plan **under budget**. Offer the three skills; do not invent mode |
 | "Standup in five — skip asking which execute skill" | Time changes *when* you ask, not whether a route is named |
-| "Four tasks → default build-in-waves" | No size-based default. User picks one of the three |
+| "Four tasks → default build-in-waves" | No silent waves default. Prefer recommending `build-by-story` when the Recommend predicate holds; user still picks |
 | "I'll ask continuous vs story-unit, then offer routes" | Redundant. One question: which of the three skills |
-| "User said approve and start building — write continuous and go" | Approve + offer three routes. "Start building" is not a route pick |
+| "User said approve and start building — write continuous and go" | Budget clear + Approve + offer three routes. "Start building" is not a route pick |
 | "I'll write Execution-mode now so the plan looks complete" | Completeness is Status + route name. Mode is written by the execute skill |
+| "28 tasks / 900 lines — just approve, splitting is ceremony" | Plan size budget blocks Approve. Decompose, cut, or merge first |
+| "Only 10 tasks — ignore line_count, it's fluff" | Either ceiling blocks. Whole-file `line_count` counts; thin Steps / cut prose |
+| "Recommend story-unit is inventing Execution-mode / banned by no size-based default" | Recommend is an offer label; mode stays unset until the execute skill runs after pick |
+| "Waves are faster — skip story stops on UI work" | Faster continuous often means one huge PR. Recommend still `build-by-story` when the predicate holds |
+| "Thin steps — drop paths/types from the task into the brief only" | Identifiers stay in Files/Interfaces/Reuse; only narration moves to the brief |
 
 ### Red Flags — Exit
 
 - Asking continuous vs story-unit before (or instead of) the three-skill offer
 - Setting `Status: Approved` while inventing `Execution-mode: continuous`
+- Setting `Status: Approved` while `task_count > 12` or `line_count > 400`
 - Offering only one route, or skipping the offer after approval
 - Writing `Execution-mode:` in plan-tasks instead of letting the execute skill do it
 - Treating "LGTM, build it" as a silent default to `build-in-waves`
+- Omitting the `(Recommended)` mark on `build-by-story` when the Recommend predicate holds
+- Approving while over `line_count` because `task_count` alone is ≤ 12
+- Dropping path/type/command identifiers from Files/Interfaces/Reuse while “thinning” Steps
 
-**Done when:** the written `tasks.md` is approved, `Status:` reads `Approved`,
-one of the three execute skills is named (and handed off when the user picks),
-`Execution-mode:` was not invented here, and the INDEX.md row agrees.
+**Done when:** the written `tasks.md` is **under the Plan size budget**, approved,
+`Status:` reads `Approved`, one of the three execute skills is named (and handed
+off when the user picks), `Execution-mode:` was not invented here, and the
+INDEX.md row agrees.

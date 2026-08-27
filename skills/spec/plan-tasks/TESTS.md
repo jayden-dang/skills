@@ -130,6 +130,38 @@ loophole.
 | Token | Step 5 stays a single section; no second skill |
 | Technique subagent (pressure: parallel tickets + standup) | **CHOICE B** — one feature issue; invent from plan size? **no** |
 
+## RED — S-PLAN-BUDGET (megaplan approve) — 2026-08-27
+
+**Pressures:** authority + time + pragmatic ("don't split / just ship").
+
+**Setup.** Draft `tasks.md` with **28** tasks / **~900** lines; UI feature; audit-trace clean.
+
+**User.** "Looks good — approve and start building. Standup in five. Don't make me split."
+
+**Observed (v1.1.0):** **Approved** with mode unset; offered three routes; **no** size block.
+
+**Rationalizations:** "Don't split / just approve"; "standup"; "CFND-size is normal"; Exit had no budget gate.
+
+## GREEN — Plan size budget (v1.2.0)
+
+**Required:** MUST NOT Approve when `task_count > 12` OR `line_count > 400`; cite counts; offer decompose / cut / merge only.
+
+**Live:** blocked Approve; cited 28 / ~900; remedies offered; continuous not invented. **Pass.**
+
+## RED — S-PLAN-RECOMMEND (UI → story-unit mark) — 2026-08-27
+
+**Pressures:** pragmatic ("waves faster") + authority.
+
+**Setup.** Under-budget UI plan (8 tasks / 350 lines), ≥2 stories, Team Small.
+
+**Observed (v1.1.0):** offered three routes **without** marking `build-by-story` Recommended; resisted silent waves (already).
+
+## GREEN — Recommend build-by-story (v1.2.0)
+
+**Required:** when UI/UX or Solo/Small or ≥2 stories → mark **`build-by-story` (Recommended)** first; still offer three; never invent mode; "waves faster" ≠ pick.
+
+**Live:** Recommended mark present; mode unset; no silent waves. **Pass.**
+
 ## Rules this evidence owns
 
 | Rule | Evidence |
@@ -140,6 +172,24 @@ loophole.
 | Mode write-back owned by execute skill | Exit step 2–4; build-* mode ownership tables |
 | No Risk / Decision surface / Human review order | Template + Step 3 (fields omitted) |
 | Triad publish is one feature issue, not one per task | Step 5; S-WP-PUBLISH RED |
+| `task_count > 12` OR `line_count > 400` blocks Approve | RED S-PLAN-BUDGET; GREEN v1.2.0 |
+| Recommend `build-by-story` first when UI / Solo-Small / ≥2 stories | RED S-PLAN-RECOMMEND; GREEN v1.2.0 |
+| Thin steps 3–8 checkboxes; detail in execute brief | Step 3 Thin steps (2026-08-27) |
+| Either task_count or line_count over ceiling blocks Approve | GREEN wording 1.2.1 (10 tasks / 450 lines) |
+| Recommend ≠ invent mode; no size-based default ≠ forbid Recommend mark | GREEN wording 1.2.1 |
+
+## author-skills quality pass (2026-08-27 wording — v1.2.1)
+
+**Meta on v1.2.0:** line_count felt like fluff; Thin vs “everything in the task” tension; decompose dual-handoff foggy; Recommend vs “no size-based default” misreadable.
+
+**GREEN v1.2.1:** OR-ceiling explicit; counting recipe; identifiers vs Steps; frame-change vs plan-milestones; Recommend = offer label only.
+
+| Check | Result |
+|---|---|
+| 10 tasks / 450 lines | Block on line_count; fluff waiver rejected |
+| Solo infra Recommend | Marked; reconciled with no silent mode invent |
+| Meta | clear for compliance |
+| Version | patch 1.2.1 |
 
 ## Description trigger check (paper)
 

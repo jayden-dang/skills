@@ -78,12 +78,20 @@ The step is done when every requirement ID has both a task footer and a tagged t
 
 Step 5 is optional: if the repo uses an issue tracker (`docs/agents/issue-tracker.md`), publish **one feature issue** for the plan (default **Publish unit: feature**). Plan tasks stay in `tasks.md` — they are not tracker issues and not default sub-issues. The issue body describes behavior and interfaces and **never file paths**, carries the **union** of requirement IDs under `Requirements covered:`, cites the plan path and any bound `ROAD-N` / `MILE-N`, and is what the feature PR closes. Legacy one-issue-per-task is only when config or the user explicitly opts in.
 
-After the written plan is Approved, the exit offers **exactly three execute routes** — no separate continuous/story-unit interview. `Execution-mode:` may stay `unset` at approval; the chosen skill writes the matching value on start:
+### Plan size budget (hard gate)
+
+Before Approve: **`task_count ≤ 12`** **and** **`line_count ≤ 400`** (either over blocks). Count `##`/`### Task <n>` headings only; `line_count` is the **whole file**. “Only N tasks / ignore line fluff” does not waive. Remedies: decompose (new shape → `frame-change`; later ROAD slots → `plan-milestones`), cut scope, or merge vertical slices. Prefer **3–8** TDD checkboxes per task; paths/types stay in Files/Interfaces/Reuse — long narration → execute brief.
+
+### Exit routes
+
+After the written plan is **under budget** and Approved, the exit offers **exactly three execute routes** — no separate continuous/story-unit interview. `Execution-mode:` stays `unset` at approval; the chosen skill writes the matching value on start.
+
+When the feature is user-facing UI/UX, Team is Solo/Small, or requirements have ≥2 behavioral stories, mark **`build-by-story` (Recommended)** first — still offer all three; still wait for an explicit pick. That mark is **not** writing `Execution-mode` (no size-based silent waves / mode invent).
 
 | Route | Meaning |
 |---|---|
-| [`build-in-waves`](build-in-waves.md) | Subagent waves (writes `continuous`; prefer [`isolate-workspace`](isolate-workspace.md)) |
-| [`build-by-story`](build-by-story.md) | Human-gated story review units (writes `story-unit`; prefer isolate-workspace) |
+| [`build-by-story`](build-by-story.md) | Human-gated story review units (writes `story-unit`; prefer [`isolate-workspace`](isolate-workspace.md)) |
+| [`build-in-waves`](build-in-waves.md) | Subagent waves (writes `continuous`; prefer isolate-workspace) |
 | [`build-inline`](build-inline.md) | Controller implements; no implementer subagents (bookkeeping `continuous`; no unit barriers) |
 
 The spec's `INDEX.md` row is updated to note the plan exists.

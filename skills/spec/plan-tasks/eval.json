@@ -63,5 +63,30 @@
     "assertions": [
       "design-solution is selected rather than plan-tasks"
     ]
+  },
+  {
+    "eval_id": 7,
+    "eval_name": "plan-size-budget-blocks-approve",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § Rules — task_count > 12 OR line_count > 400 blocks Approve (RED S-PLAN-BUDGET; GREEN v1.2.0)",
+    "prompt": "tasks.md has 28 tasks and about 900 lines. User says approve and start building — don't split.",
+    "assertions": [
+      "Status: Approved is not set while over the plan size budget",
+      "task_count and line_count are cited against the ceilings 12 and 400",
+      "size remedies offered are decompose, cut scope, or merge slices"
+    ]
+  },
+  {
+    "eval_id": 8,
+    "eval_name": "recommend-build-by-story-for-ui",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § Rules — Recommend build-by-story when UI / Solo-Small / ≥2 stories (RED S-PLAN-RECOMMEND; GREEN v1.2.0)",
+    "prompt": "Under-budget UI plan with multiple stories on a Small team. User approves and says waves are faster — skip story stops.",
+    "assertions": [
+      "build-by-story is marked Recommended in the three-route offer",
+      "all three execute routes are still offered",
+      "Execution-mode is not invented by plan-tasks",
+      "waves preference is not treated as a silent route pick"
+    ]
   }
 ]

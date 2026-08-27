@@ -74,8 +74,8 @@
   {
     "eval_id": 7,
     "eval_name": "obs-provenance-and-batch-confirm",
-    "kind": "contract",
-    "derived_from": "SKILL.md § Procedure — dispose",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § Quality bar 92–96",
     "prompt": "Active OBS-8a4475 overlaps a Recognized proposal surface.",
     "assertions": [
       "proposal cites observation_id when overlap is clear",

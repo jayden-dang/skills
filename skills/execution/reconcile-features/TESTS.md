@@ -212,3 +212,14 @@ novel singletons flooded FINDINGS_MAX.
   survive the cap
 
 **Suite:** `python3 -m unittest discover -v` in `scripts/` → all OK.
+
+## author-skills wording pass (v1.5.1)
+
+**RED (open-code-review transcript):** agent produced a valid brownfield envelope
+but soft-pedaled setup — `.skills` not ignored / no INDEX — so OBS were not
+durable and map-features had nothing to promote. Verbatim gap: notes were easy
+to bury in a long JSON dump.
+
+**GREEN wording:** description trimmed (trigger + outcome, less workflow jargon);
+procedure requires printing every `notes[]` entry; rationalization + red-flag for
+omitting setup notes; Done when checks notes shown. Patch bump only.

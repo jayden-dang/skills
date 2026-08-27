@@ -1,13 +1,13 @@
 ---
 name: reconcile-features
-version: 1.5.0
+version: 1.5.1
 description: >
   Use when external commits, a pull/merge, brownfield code, or a missing feature
-  owner must be mapped onto the capability catalog (reverse tracking,
-  changes-since-checkpoint, OBS overlay) — produces one advisory reconciliation
-  envelope plus a local `.skills/reverse-features/` index. Not for writing
-  requirements (specify-behavior), confirmed registry backfill (/map-features),
-  docs-only ID audit (audit-trace), or ask-time neighbors (load-subgraph).
+  owner must be mapped onto the capability catalog — produces one advisory
+  reconciliation envelope plus a local `.skills/reverse-features/` index. Not
+  for writing requirements (specify-behavior), confirmed registry backfill
+  (/map-features), docs-only ID audit (audit-trace), or ask-time neighbors
+  (load-subgraph).
 ---
 
 # Reconcile Features
@@ -48,12 +48,13 @@ Print **exactly one** envelope shaped by `references/envelope.md`. When
    `attested-no-impact` here.
 4. Index-then-advance **only** as `references/passes.md` § Checkpoint advance
    specifies, including the stateless `advanced_to: null` case.
-5. Return the envelope to the caller. Unresolved `pending` findings must be
-   surfaced before `frame-change` / `realign-spec` decisions on those surfaces.
-   Name `/map-features` for confirm-then-write backfill; never auto-invoke it.
-   Surface `notes[]` from the runner (e.g. `skills_not_ignored`,
-   `specs_index_missing`) — when present, tell the user to run `/configure-repo`
-   before expecting durable OBS or a useful INDEX dispose.
+5. Return the envelope to the caller. Print every `notes[]` entry from the
+   runner (kinds include `skills_not_ignored`, `specs_index_missing`,
+   `overlay_write_skipped`). When any setup note is present, tell the user to
+   run `/configure-repo` before expecting durable OBS or a useful INDEX dispose.
+6. Name `/map-features` for confirm-then-write backfill of unresolved `pending`
+   findings; never auto-invoke it. Surfacing pending findings is required before
+   `frame-change` / `realign-spec` on those surfaces.
 
 ## Callers
 
@@ -80,6 +81,8 @@ Print **exactly one** envelope shaped by `references/envelope.md`. When
 | "Skip git diff — I already know the paths" | Pass 2 is mandatory; locators come from rename-aware inventory |
 | "Paste the whole INDEX so ownership is obvious" | Catalog-query caps apply to the reply; Pass R may enumerate on disk |
 | "I'll just invoke map-features and write the INDEX rows" | Name `/map-features` for the user; never auto-invoke |
+| "Stateless is fine — skip telling them about .skills ignore" | Print `skills_not_ignored`; durable OBS needs `/configure-repo` |
+| "No INDEX — keep reconciling without saying so" | Print `specs_index_missing`; name `/configure-repo` then `/map-features` |
 
 ## Red Flags
 
@@ -94,11 +97,13 @@ Print **exactly one** envelope shaped by `references/envelope.md`. When
 - Skipping Pass 2 `git diff` or classifying from memory
 - Pasting the full INDEX/catalog into the envelope or chat
 - Printing a freeform note instead of the `references/envelope.md` envelope
+- Omitting setup `notes[]` kinds (`skills_not_ignored`, `specs_index_missing`)
 
 ## Done when
 
 Exactly one `references/envelope.md` envelope is printed (advisory banner
 included); every finding’s `change_class` follows `references/passes.md`
 Classification rules; overlay written under `.skills/reverse-features/` **or**
-stateless with `checkpoint.advanced_to: null`; unresolved `pending` rows are in
-the envelope returned to the caller; `/map-features` named only, not invoked.
+stateless with `checkpoint.advanced_to: null`; every runner `notes[]` entry is
+shown; unresolved `pending` rows are in the envelope; `/map-features` and
+`/configure-repo` are named only, never auto-invoked.

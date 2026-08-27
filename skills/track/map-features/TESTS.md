@@ -70,3 +70,13 @@ forbid retained.
 - Materialize stub fingerprint `<!-- map-features-materialize-stub: v1 -->`;
   refuse clobber of non-stub files
 - Guide: `docs/guide/skills/catalog-sync.md` (A↔B loop + migration)
+
+## author-skills wording pass (v1.3.1)
+
+**RED:** user-invoked description packed mode/workflow detail; body duplicated
+mode tables and long dispose kinds without a tight recipe home; open-code-review
+run used stale 1.1.1 text (no preflight).
+
+**GREEN:** one plain human description line; single mode-allowance table;
+dispose/export/materialize as short recipes; export details behind
+`references/export-fields.md`; rationalization for inventing INDEX / auto-invoke.

@@ -1,8 +1,7 @@
 ---
 name: configure-repo
-version: 1.3.0
-description: Configures an existing repo for this skill set — a docs/agents/ layer covering prove-claim
-  commands, tracker and labels, release steps, team, ownership, and optional catalog-sync posture.
+version: 1.3.1
+description: Sets up docs/agents config so this skill set can run in an existing repo.
 disable-model-invocation: true
 ---
 
@@ -215,24 +214,28 @@ not deployed` / declined).
 
 ### L. Catalog sync (optional — default unset / full-triad behavior)
 
-Explainer: teams that use **different skill sets** (or do not want full
-requirements/design/tasks noise on GitHub) can sync a **thin feature catalog**
-only — `docs/specs/INDEX.md` (± sharded `docs/specs/catalog/`) — while keeping
-triad workbenches local. `/map-features` then supports `export` (local triad →
-INDEX row refresh) and `materialize` (INDEX CODE → Draft stub triad at the INDEX
-path). `reconcile-features` still never writes INDEX/triad.
+Explainer: sync a **thin** feature catalog on git (`docs/specs/INDEX.md`, optional
+shards) while keeping full triad files local — useful when teammates use
+different skill sets or do not want requirements noise on GitHub. When
+`index-only`, `/map-features` gains `export` and `materialize`. Guide:
+`docs/guide/skills/catalog-sync.md`. `reconcile-features` still never writes
+INDEX or triad.
 
 Options:
 
-- **unset** (default) — no field or leave blank; treat like **full-triad**. Do
-  **not** rewrite `.gitignore` for specs. `/map-features` dispose-only modes.
-- **full-triad** — triad dirs under `docs/specs/<slug>/` are committed as usual.
-- **index-only** — git tracks INDEX (± catalog); ignore feature triad dirs; enable
+- **unset** (default) — omit the field; same as **full-triad**. Do **not** add
+  specs gitignore rules. `/map-features` dispose-only.
+- **full-triad** — triad dirs under `docs/specs/<slug>/` stay committed.
+- **index-only** — track INDEX (± `catalog/`); ignore feature triad dirs; enable
   map-features `export` / `materialize`.
 
-Recommend **unset** unless the user explicitly wants catalog-only sync across
-machines/skill sets. Never force index-only on a repo already committing triads
-without an explicit yes.
+Recommend **unset** unless the user asks for catalog-only sync. Never force
+`index-only` on a repo already committing triads without an explicit yes.
+
+| Thought | Reality |
+|---|---|
+| "Everyone should be index-only now" | Opt-in only; default unset preserves current repos |
+| "I'll add the gitignore without saying index-only" | Snippet only when L=`index-only` and user confirmed |
 
 **Done when:** catalog sync value confirmed, or explicitly left unset.
 

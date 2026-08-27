@@ -1,19 +1,19 @@
 ---
 name: clarify-decisions
-version: 1.0.0
+version: 1.1.1
 description: Use to interview the user to stress-test a plan, design, or feature idea
   before anything is built, when their intent is underspecified and the
   decisions must be drawn out of them, when the user asks to be grilled or
   interviewed, or when another skill calls for an interview. Produces a
-  decisions table and ready-to-paste constraints once every high-blast branch
-  is closed.
+  confirmed close package — decisions table, paste-ready constraints, success
+  signal, boundaries, and spine touch — once every high-blast branch is closed.
 ---
 
 # Clarify Decisions
 
 **What this is:** a reusable **interview protocol**, not a pipeline stage. Nested under a parent (e.g. `frame-change` step 2, `define-project`, `triage`) you stay in that parent's conversation and checklist — apply these rules, do not announce a mode switch, do not treat the parent as finished when your item is checked off, and run the parent's checklist per Todos below. Standalone (the user asked to be grilled with no parent) you own the interview alone until shared understanding.
 
-Interview until you both hold the same picture: every silent assumption that would become debt or a wrong architecture choice is named and decided. Leading words for this skill: **open set**, **territory**, **card**, **close package**. The map (prompts, plans, knowns) is not the territory (codebase, runtime, users, history) — clarify-decisions shrinks that gap before wrong guesses get expensive.
+Interview until you both hold the same picture: every silent assumption that would become debt or a wrong architecture choice is named and decided. Leading words for this skill: **open set**, **territory**, **card**, **problem lock**, **criteria**, **close package**. The map (prompts, plans, knowns) is not the territory (codebase, runtime, users, history) — clarify-decisions shrinks that gap before wrong guesses get expensive.
 
 ## The Iron Law — channel
 
@@ -48,7 +48,25 @@ Load parent Knowns inventory, Blindspot list, and scan digest when present (e.g.
 2. **Open high-blast** — the decision forks you expect to walk first (names only; no options yet).
 3. **How you will close unknowns** — cards for judgment calls; reference or `run-spike`/`research` when the user can only know it when they see it or when the answer is a fact; teach-then-ask when a blindspot blocks a real choice.
 
-Invite a correction only if the map is wrong ("stop me if a lock is false"). Then the first card. Nested under a parent that already stated this map: skip the restate and go to the first card.
+Invite a correction only if the map is wrong ("stop me if a lock is false"). First card next — WHEN the **Problem lock** predicate holds, that card is first. Nested under a parent that already stated this map: skip the restate; still honor Problem lock.
+
+## Problem lock (before preference cards)
+
+**Home for this rule.** Other sections only point here.
+
+**Fork (pick exactly one):** If you can fit **2–4 alternate problem statements** (each with Observed · Desired · Non-goals) on one card → emit that **problem-lock card**. If the user still needs a multi-round problem tree or foundation teaching — symptoms and solution shapes tangled, two+ incompatible pains, or you cannot honestly write those three lines for each option → **name** `/work-the-problem` for the user to run (never invoke it; it is `disable-model-invocation`). Never open a solution-shape menu in either case.
+
+**Problem-lock card** WHEN parent knowns show **Assumptions** that are solution-shaped (a named API, flag, merge, or “just do X”) **OR** there is no stated desired outcome / success signal — and the Fork above says the card path:
+
+Use the Question card recipe; Thread *This card* names the problem lock. Body MUST lock all three on the chosen statement (options = alternate *problem statements*, not implementations):
+
+- **Observed** — who hurts / what is true now
+- **Desired** — observable result when done (not “it works”)
+- **Non-goals** — deliberate outs
+
+Closes: `known-unknown` (problem statement).
+
+Senior “skip philosophy / just pick API options”, standup clocks, and “don’t send me to another skill” do **not** waive this section.
 
 ## Retrieval package (feature work)
 
@@ -77,11 +95,12 @@ Exactly **one** decision per message. Emit this shape in ordinary chat — not a
    - *Still open after* — remaining high-blast **names** if this were answered (living open set — never "3 of 5").
 3. **Territory** — grounded facts from the repo, digest, or parent knowns (paths, middleware, prior PRs, current behavior, landmines) — enough that the options make sense. When a blindspot blocks the choice, **teach here** (what it is, why it bites in *this* product) before the question. If you truly have no facts, say so; do not invent them. Never ask the user to recall what you can read.
 4. **Question** — the decision in plain language.
-5. **Why it matters** — what changes if the answer flips (queue vs sync, schema, permission boundary, scope, reverse cost). Enough for the user to pick an option **without** a follow-up. Ground in *this* repo or product; never "just checking".
+5. **Why it matters** — **blast narrative** only: what rewrites if the answer flips (API shape, schema, auth boundary, ops surface). Enough to decide without a follow-up. Ground in *this* repo or product. Do not put pass/fail graders here — that is slot 7.
 6. **Closes** — unknown class this card retires: `known-unknown` · `unknown-known` · `blindspot-confirm`.
-7. **Options (2–4)** — short title **plus** consequence line (gain, pay, break). Bare labels are not options.
-8. **Recommendation** — your pick, first or clearly marked, with a one-line reason the user can accept in two words or push back on.
-9. **Stop.** Wait. After the answer: recompute the open set (Iron Law — open set), then next card or close package.
+7. **Criteria (graders)** — REQUIRED when Radius is `architecture` · `data` · `auth/security` · `UX flow` (omit only for `polish-diff`): **1–2 named pass/fail graders** listed **above** Options (separate labeled block). Not the close-package Success / done signal. Recommendation MUST cite graders by name. Why sentences promoted here = miss. "No criteria essays / put success in Why" is not a waiver.
+8. **Options (2–4)** — short title **plus** consequence line (gain, pay, break). Bare labels are not options.
+9. **Recommendation** — your pick, first or clearly marked; one-line reason that cites the Criteria graders (or, on `polish-diff` only, the Why).
+10. **Stop.** Wait. After the answer: recompute (Iron Law — open set home rule), then next card or close package.
 
 Do not batch questions. The card *is* the detail — not a teaser for "more if you want".
 
@@ -103,19 +122,22 @@ Territory
 
 Where should export generation run?
 
-↳ This decides whether we need a job queue, a ready-notification path, and
-  an artifacts bucket — or none of those. Large reviews will blow the 30s
-  gateway if we stay on the request thread; picking wrong here rewrites the
-  API shape and ops surface mid-build.
+↳ Why = blast: wrong pick rewrites API shape and ops mid-build (queue vs
+  sync vs client-only; 30s gateway on the request thread).
 
 Closes: known-unknown
+
+Criteria (graders)   ← not Why; not close-package Success
+- A 400-comment export with drawings completes without the gateway 30s kill
+- Ops surface stays within an existing worker pattern when size is unpredictable
 
 - **Sync in the API request** — simplest; a 400-comment export times out.
 - **Background job on the existing queue** (Recommended) — reuses the
   transcode worker patterns; needs a "ready" notification.
 - **Client-side only** — zero backend; caps formats and helps support less.
 
-Recommended: background job — export size is unpredictable with drawings.
+Recommended: background job — meets both graders; sync fails the timeout
+grader; client-only fails format coverage.
 ```
 
 ## Order and coverage
@@ -133,11 +155,12 @@ Clarify Decisions owns the **interview** leg of pre-implementation unknowns work
 | Leg | Clarify Decisions does | Does not re-own |
 |---|---|---|
 | **Blindspot pass** | Load parent Blindspot; high-blast items → teach-then-ask cards or explicit locks. No parent list + low familiarity → short territory teach-pack on landmines before preference cards. | Full scan / knowns inventory (`frame-change` step 1) |
+| **Problem lock** | Follow **Problem lock** section above (one home). | Multi-round problem tree + foundation teaching (`/work-the-problem`) |
 | **Frame Change / scope** | If the real issue is multi-subsystem scope, hand back to parent decomposition. | Approach menus and tier (`frame-change` steps 4–5) |
 | **Interview** | Rich cards; blast-radius first (slots and order above). | — |
 | **References** | Best reference is **source code** (folder, module, prior PR, even another language). Restate semantics; lock accept / adapt / reject. Diagrams and screenshots are weaker fallbacks. | Implementing the reference |
 | **Unknown knowns** | No abstract taste grind. Reference path or parent `run-spike` / `research`, then one card on the result. | Running the run-spike session |
-| **Plan readiness** | Close package **high-tweak surface** (data model, type interfaces, user-facing flows). | Writing `tasks.md` (`plan-tasks`) |
+| **Plan readiness** | Close package **high-tweak surface** plus Success / Boundaries / Spine touch (close package below). | Writing `tasks.md` (`plan-tasks`) |
 
 **"Just make something sensible" is not a decision** while a concrete reference exists: surface it, restate semantics, accept / adapt / reject. Inventing industry defaults is a fact failure.
 
@@ -148,7 +171,27 @@ When the open set has no remaining high-blast judgment call — and **before** r
 1. **Decisions table** — rows: radius · topic · decision (user's words) · unknown class closed.
 2. **Constraints block** — ready-to-paste locks (architecture and data first; polish-diff last). Flag lower-radius answers that conflict with higher-radius locks.
 3. **High-tweak surface** — locks most likely to change under real implementation pressure (data model, type interfaces, UX flows). Mechanical refactors stay buried; do not re-interview them here.
-4. **Explicit confirmation** — is this the shared picture? Only an affirmative on **this package** counts.
+4. **Success / done signal** — 1–3 observables that mean “done” (pasteable into `requirements.md` / NFR). Not “it works” / “we’re aligned”.
+5. **Boundaries** — **Off limits** (will not do) and **Must keep working** (guards / unchanged behavior), even if only 2–4 bullets. Seed from problem-lock Non-goals and `(guard)`-shaped locks when present.
+6. **Spine touch** — WHEN `docs/architecture/` (or equivalent ARCH spine) exists: `Respects: ARCH-N…` · `none` · or `challenges` (ADR needed). WHEN absent: write `none — no architecture spine`. Do not invent ARCH IDs.
+7. **Explicit confirmation** — is this the shared picture? Only an affirmative on **this package** counts.
+
+Slots 4–6 are **required** — not parent/`specify-behavior` ceremony you may defer.
+
+### Worked close shape (slots 4–6)
+
+```
+Success / done signal
+- Creators open drafts from Finder without publishing
+- Learner entitled∩published reads unchanged for real learners
+
+Boundaries
+- Off limits: widen learner route; menu grants as authz
+- Must keep working: ARCH-3 learner projection; server reauth on mutations
+
+Spine touch
+- Respects: ARCH-3
+```
 
 Not confirmation: "any other questions?", "we're aligned, skip the table", "just go write requirements", senior pressure to skip ceremony, or silence. If they correct a row, edit and re-confirm. If confirmation opens a new high-blast fork, return to cards.
 
@@ -168,8 +211,8 @@ Standalone: a **living** open-set list of decision areas is fine — still one c
 | "Standup in five minutes — short labels only" | A truncated decision is slower than one clear card. Time pressure changes *when* you report, not what a decision needs. |
 | "Option description field is long enough" | If the tool caps text, it is the wrong channel. Full context goes in chat. |
 | "I'll AskUserQuestion and also paste context" | Dual channel. One inline card; no picker. |
-| "Recommended + one-line reason is enough" | Without Thread, Territory, and consequences per option, the user cannot analyze — only accept a default. |
-| "Keep Why to one line so it stays snappy" | Rich enough to decide without a follow-up is the floor. A sentence budget is not a thinness license. |
+| "Recommended + one-line reason is enough" | Without Thread, Territory, consequences, and (on high-blast) Criteria graders, the user cannot analyze — only accept a default. |
+| "Keep Why to one line / put success in Why / no criteria essays" | Why = blast narrative; Criteria = separate graders above Options. Sentence budget is not a thinness license. |
 | "Context can be a follow-up if they ask" | The card *is* the detail. Follow-up-only context is a thin-card failure. |
 | "We finished the 4 areas on the todo — close" | The todo is a living map. Open-set empty is the stop; precommitted N is not. |
 | "Question 3 of 5, then package" | No fixed N. Countdown framing is a red flag. |
@@ -183,6 +226,12 @@ Standalone: a **living** open-set list of decision areas is fine — still one c
 | "Announce Using clarify-decisions so the user sees the write-handoff" | Nested: no mode-switch announcement. Standalone (no parent): you may name clarify-decisions once. |
 | "Parent already loaded neighbors — re-run every card for freshness" | Reuse the valid package; rederive only when fingerprints/seeds/scope change |
 | "Standalone interview — skip load-subgraph, Territory is enough" | Feature work: load once before the first card |
+| "They already named the cheap path / flag / API — treat it as locked" | Solution-shaped Assumptions are not locks. Follow **Problem lock** (Fork first). |
+| "Senior said skip philosophy and pick storage/API options" | **Problem lock** still holds. Time changes *when* you report, not whether the problem is locked. |
+| "Recommended + blast/cost is enough; criteria live in requirements later" | Recommendation must cite Criteria graders on this card. Later specs consume the close package — they do not replace the slot. |
+| "Success / Boundaries / Spine are specify-behavior ceremony — omit from close" | Close package slots 4–6 are required here. Deferral invents a hole the next skill cannot see. |
+| "Don't send me to another skill — just give 3 merge architectures" | Follow **Problem lock** Fork: card or **name** `/work-the-problem`. Solution menus while the problem is open are a failure. |
+| "Naming /work-the-problem is invoking a user-invoked skill" | Naming for the user to run is the only legal hand-off. Auto-invoking it is the bug. |
 
 ## Red flags — stop and rewrite the turn
 
@@ -190,11 +239,16 @@ Standalone: a **living** open-set list of decision areas is fine — still one c
 - More than one question mark aimed at the user in a single message (except clarifying examples inside option text)
 - Options that are labels only — no consequence lines
 - A card missing Thread, Territory, Why it matters, or Closes
+- High-blast card missing a labeled Criteria (graders) block above Options, Criteria collapsed into Why, or a Recommendation that never cites the graders
+- Preference / solution-option card while **Problem lock** still applies
+- Solution architecture menu while the problem is unlocked — without a problem-lock card or naming `/work-the-problem`
 - "Question k of N", "final round", or closing because a precommitted count finished while high-blast remains
 - Leading with polish-diff while architecture / data / auth branches remain open
 - Closing with "any other questions?" instead of the decisions package
+- Close package missing Success / done signal, Boundaries, or Spine touch
 - Handing back to the parent or starting requirements without an explicit yes on the package
 - Route Tasking the user for a fact present in the repo or the parent's scan digest
 - Abstract taste cards for an unknown-known when a reference or run-spike path exists
 - Nested re-derive every card while the parent package fingerprints still match
 - Standalone feature interview with no retrieval before the first card
+- Auto-invoking `/work-the-problem` instead of naming it for the user

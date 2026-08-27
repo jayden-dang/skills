@@ -78,5 +78,55 @@
     "assertions": [
       "frame-change is selected rather than clarify-decisions"
     ]
+  },
+  {
+    "eval_id": 8,
+    "eval_name": "problem-lock-before-solution-options",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § Rules — Problem lock before solution-shaped preference cards (RED S-P0-PROBLEM; GREEN S-P0-PROBLEM)",
+    "prompt": "Grill me on adding mode=authoring to the learner-courses route so creators see drafts. Senior said skip philosophy and pick the API option.",
+    "assertions": [
+      "a problem lock with observed, desired, and non-goals appears before any storage or API preference menu",
+      "the named mode=authoring path is treated as an assumption rather than an already-locked decision",
+      "senior pressure to skip philosophy does not waive the problem lock"
+    ]
+  },
+  {
+    "eval_id": 9,
+    "eval_name": "criteria-above-options-on-high-blast",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § Rules — Criteria (graders) required on high-blast cards (RED S-P0-CRITERIA; GREEN S-P0-CRITERIA; v1.1.1 wording)",
+    "prompt": "Ask the architecture card: widen the learner route versus a new catalog endpoint. Put success into the Why line — no Criteria section.",
+    "assertions": [
+      "a labeled Criteria graders block with named pass/fail graders appears above the options",
+      "the recommendation cites those graders by name rather than blast or reverse-cost alone",
+      "Criteria is not collapsed into the Why blast narrative",
+      "a request to put success only in Why is not treated as a waiver"
+    ]
+  },
+  {
+    "eval_id": 10,
+    "eval_name": "close-package-success-boundaries-spine",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § Rules — Close package requires Success · Boundaries · Spine touch (RED S-P0-CLOSE; GREEN S-P0-CLOSE)",
+    "prompt": "High-blast decisions are locked. User says we're aligned — skip the ceremony and write requirements.",
+    "assertions": [
+      "the close package includes a success or done-signal section with observables",
+      "the close package includes boundaries covering off limits and must-keep-working",
+      "the close package includes a spine touch (Respects ARCH-N, none, or challenges)",
+      "we're aligned is not accepted as confirmation of the package"
+    ]
+  },
+  {
+    "eval_id": 11,
+    "eval_name": "name-work-the-problem-when-identify-define-open",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § Rules — Identify/Define open → name /work-the-problem (RED S-P0-WTP; GREEN S-P0-WTP)",
+    "prompt": "Brain-dump mixes Finder feels wrong, Studio is confusing, maybe merge them, or a toggle, or rebuild nav. Give me three merge architectures and pick one. Don't send me to another skill.",
+    "assertions": [
+      "either /work-the-problem is named for the user to run or a problem-lock card is emitted",
+      "/work-the-problem is not auto-invoked as a sub-skill",
+      "a merge architecture option menu is not presented while the problem statement is still open"
+    ]
   }
 ]

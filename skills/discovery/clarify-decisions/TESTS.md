@@ -16,14 +16,19 @@ grok-class agents used for RED/GREEN in-session.
 | **S-GRILL-ROUNDS** | time + authority + exhaustion + pragmatic | **User production:** fixed round budgets / todo-as-quota; countdown framing | "We always do a fixed 4-round interview then ship the close package" / "finish the checklist you opened — don't invent more rounds" |
 | **S-GRILL-CONTEXT** | time + authority + exhaustion | **User production:** cards lack Thread/Territory; not enough to analyze | "keep clarify-decisions cards minimal — question + 2 options + recommended, no walls of context" / "why it matters can be one short line" |
 | **S-GRILL-PREIMPL** | time + authority | blindspot teach-pack only on parent; no high-tweak surface in close | "clarify-decisions is just questions; blindspot is frame-change's job forever" |
+| **S-P0-PROBLEM** (2026-08-27) | time + authority + pragmatic | **v1.0.0:** no Observed/Desired/Non-goals problem-lock before preference pressure (mode=authoring treated as next fork) | "Senior said skip philosophy and pick storage/API options" / "They already named mode=authoring — treat it as locked" / "Question 1 of 3 then ship" |
+| **S-P0-CRITERIA** (2026-08-27) | time + authority | **v1.0.0:** architecture card had Why/blast only — **no Criteria/success above Options**; rec cited ARCH cost not named criteria | "Keep why to one line, no criteria essays — just options + recommended" |
+| **S-P0-CLOSE** (2026-08-27) | authority + exhaustion + pragmatic | **v1.0.0:** close package omitted Success / Boundaries / Spine; agent said those are specify-behavior ceremony | "Success / Boundaries / Spine are specify-behavior ceremony — omit from close" / "we're aligned, skip the ceremony table" |
+| **S-P0-WTP** (2026-08-27) | time + authority + pragmatic | **v1.0.0:** did not **name** `/work-the-problem` while Identify/Define still open (did avoid merge menus) | "Don't send me to another skill" / "just give me 3 architecture options for merging" |
 
 Failure classes:
 
 - **Channel** — truncated MCQ UI under authority.
 - **Wrong shape** — card missing Thread / Territory / Closes; why stripped to labels.
 - **Fixed rounds** — precommitted N or todo quota stops while open set still has high-blast.
-- **Omitted close elements** — no decisions table / constraints / high-tweak / package confirm.
+- **Omitted close elements** — no decisions table / constraints / high-tweak / package confirm (and, after P0: no Success / Boundaries / Spine).
 - **Pre-impl gap** — abstract taste instead of reference; no teach-then-ask on blindspots.
+- **Problem/criteria gap (P0)** — solution menus before problem lock; high-blast rec without Criteria; Identify/Define without naming `/work-the-problem`.
 
 ## GREEN — upgraded skill (2026-07-27 re-run, grok-class)
 
@@ -39,6 +44,17 @@ Failure classes:
 
 Meta-test (shape/rounds agents): cited open-set Iron Law + required card slots; text was clear.
 
+## GREEN — P0 problem/criteria/close/WTP (2026-08-27, grok-class)
+
+| Scenario | Required | Observed |
+|---|---|---|
+| S-P0-PROBLEM | Problem-lock card with Observed · Desired · Non-goals before storage/API menu | **Pass** — auth/security problem-lock; mode=authoring stayed Assumption; senior “skip philosophy” rejected via Problem lock predicate |
+| S-P0-CRITERIA | Criteria/success above Options; Recommendation cites Criteria | **Pass** — two named criteria; rec tied to both; “no criteria essays” countered |
+| S-P0-CLOSE | Close slots Success · Boundaries · Spine touch + confirm | **Pass** — all three present; `Respects: ARCH-3`; omit-as-ceremony rationalization rejected |
+| S-P0-WTP | Name `/work-the-problem` (do not invoke) or problem-lock; no merge architecture menu | **Pass** — named `/work-the-problem`; no merge options while Identify/Define open |
+
+Meta-test: agents cited Problem lock / Criteria slot / close slots 4–6 / name-not-invoke; text clear under pressure.
+
 ## author-skills ship pass (2026-07-27 wording)
 
 | Check | Result |
@@ -53,6 +69,31 @@ Meta-test (shape/rounds agents): cited open-set Iron Law + required card slots; 
 | Influence (collaborative) | Authority reserved for channel + open-set gates; card is recipe/commitment |
 | Cross-refs | REQUIRED SUB-SKILL only; no disable-model-invocation hand-offs |
 
+## author-skills ship pass (2026-08-27 P0 — v1.1.0)
+
+| Check | Result |
+|---|---|
+| Description = trigger + outcome | Pass — adds success/boundaries/spine as outcome nouns; no workflow steps |
+| Form match | Pass — observable conditionals (problem lock; Criteria when radius); REQUIRED close slots 4–6 |
+| Leading words | + `problem lock`, `criteria` |
+| Duplication | Problem lock one home (section + pre-impl map pointer); Criteria one home (card slot 7); close 4–6 one home |
+| `/work-the-problem` hand-off | **Name** for user to run only — never `REQUIRED SUB-SKILL` invoke |
+| Token budget | ~240 lines / ~3.3k words — under 500-line / 5k ceiling |
+| Cross-refs | Still no disable-model-invocation invoke |
+
+## author-skills quality pass (2026-08-27 wording — v1.1.1)
+
+**RED (clarity / meta on v1.1.0):** behavior still held under pressure, but meta-test recorded documentation gaps — Identify/Define jargon without gloss; Problem lock vs WTP fork judgmental; Why vs Criteria easy to collapse; duplication weight; no worked close stub for slots 4–6.
+
+**GREEN (v1.1.1):** Fork sentence + honest 2–4 problem-statement test; Why = blast / Criteria = graders; worked close shape; rationalization dedupe; generalized “cheap path” row; Criteria slot renamed **Criteria (graders)** to unblur close-package Success.
+
+| Check | Result |
+|---|---|
+| Fork pressure re-run | Named `/work-the-problem`; quoted Fork; fork clear = yes |
+| Why vs Criteria pressure re-run | Separate graders; Why=blast labeled; no collapse |
+| Meta-test | Fork unmistakable; Why vs Criteria unmistakable; no material duplication; “text clear; nothing missing” = yes |
+| Version | patch 1.1.1 — wording/clarity only, no new behavior slots |
+
 ## Rules this evidence owns
 
 | Rule | Evidence |
@@ -65,6 +106,10 @@ Meta-test (shape/rounds agents): cited open-set Iron Law + required card slots; 
 | Blast-radius first even when user asks polish-diff first | GREEN E3 |
 | Load parent knowns/blindspot; teach-then-ask when needed | GREEN Territory + P2 |
 | Pre-impl interview map (blindspot / interview / references / unknown-knowns / plan readiness) | GREEN P2 |
+| Problem lock (Observed · Desired · Non-goals) before solution-shaped preference cards | RED S-P0-PROBLEM; GREEN S-P0-PROBLEM |
+| Criteria (graders) required on high-blast cards; Recommendation cites graders; Why ≠ Criteria | RED S-P0-CRITERIA; GREEN S-P0-CRITERIA; v1.1.1 wording |
+| Close package requires Success · Boundaries · Spine touch | RED S-P0-CLOSE; GREEN S-P0-CLOSE |
+| Identify/Define still open → name `/work-the-problem` (never invoke) or lock problem here | RED S-P0-WTP; GREEN S-P0-WTP |
 
 ## Description trigger notes
 
@@ -77,4 +122,5 @@ Meta-test (shape/rounds agents): cited open-set Iron Law + required card slots; 
 - `frame-change` owns Knowns inventory + Blindspot scan; clarify-decisions **consumes** them, runs rich interview cards + open-set stop + close package.
 - `run-spike` / `research` remain detours for unknown knowns / known unknowns — clarify-decisions offers the reference path or hands back one decision card after the detour.
 - `define-domain` stays passive side effect (glossary); does not open a second question channel.
-- `plan-tasks` consumes high-tweak surface from the close package; clarify-decisions does not write the plan.
+- `plan-tasks` / `specify-behavior` consume high-tweak, Success, Boundaries, and Spine touch from the close package; clarify-decisions does not write the plan or requirements.
+- `/work-the-problem` is **named** when Identify/Define outgrows one card — never auto-invoked.

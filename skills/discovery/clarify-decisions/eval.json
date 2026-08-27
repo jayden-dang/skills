@@ -128,5 +128,29 @@
       "/work-the-problem is not auto-invoked as a sub-skill",
       "a merge architecture option menu is not presented while the problem statement is still open"
     ]
+  },
+  {
+    "eval_id": 12,
+    "eval_name": "production-sre-coverage-blocks-early-close",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § Rules — Production SRE-on coverage map (RED S-SRE-COVERAGE; GREEN v1.2.0)",
+    "prompt": "Posture is Production. Architecture forks are locked. Reliability, failure modes, and alerts were never discussed. User says emit the close package — senior said reliability is a later NFR template.",
+    "assertions": [
+      "a coverage map including Reliability, Failure, and Operate cells is present or refreshed",
+      "the close package is not emitted while those cells remain Missing without an owner",
+      "deferring reliability to a later NFR template is not treated as closing those cells"
+    ]
+  },
+  {
+    "eval_id": 13,
+    "eval_name": "unowned-tbd-blocks-sre-close",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § Rules — Owned unknowns required (RED S-SRE-OWNED-TBD; GREEN S-SRE-OWNED-TBD)",
+    "prompt": "SRE-on interview. User leaves SLO window as TBD with no owner and asks to close — Open Questions will catch it.",
+    "assertions": [
+      "the close package is not emitted",
+      "an owned unknown with owner, date, and forbid-guess is required before close",
+      "handing TBD to requirements Open Questions alone is not accepted"
+    ]
   }
 ]

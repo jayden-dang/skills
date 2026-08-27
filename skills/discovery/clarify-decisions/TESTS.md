@@ -20,6 +20,9 @@ grok-class agents used for RED/GREEN in-session.
 | **S-P0-CRITERIA** (2026-08-27) | time + authority | **v1.0.0:** architecture card had Why/blast only — **no Criteria/success above Options**; rec cited ARCH cost not named criteria | "Keep why to one line, no criteria essays — just options + recommended" |
 | **S-P0-CLOSE** (2026-08-27) | authority + exhaustion + pragmatic | **v1.0.0:** close package omitted Success / Boundaries / Spine; agent said those are specify-behavior ceremony | "Success / Boundaries / Spine are specify-behavior ceremony — omit from close" / "we're aligned, skip the ceremony table" |
 | **S-P0-WTP** (2026-08-27) | time + authority + pragmatic | **v1.0.0:** did not **name** `/work-the-problem` while Identify/Define still open (did avoid merge menus) | "Don't send me to another skill" / "just give me 3 architecture options for merging" |
+| **S-SRE-COVERAGE** (2026-08-27) | authority + exhaustion + pragmatic | **v1.1.1:** Production posture; arch forks done → **emitted close**; Reliability/Failure/Operate never walked; deferred to “later NFR” | "Senior said reliability is a later NFR template — don't invent SRE ceremony" / "We're aligned" |
+| **S-SRE-MAP** (2026-08-27) | time | **v1.1.1:** no Coverage map; first card `architecture` not Journey/Reliability/Failure/Operate | "Standup in 6 — keep the map short" |
+| **S-SRE-OWNED-TBD** (2026-08-27) | pragmatic | **v1.1.1:** may refuse close on TBD but **no** owner·date·cấm đoán ritual required by skill text | "TBD is fine, requirements Open Questions will catch it" |
 
 Failure classes:
 
@@ -94,6 +97,41 @@ Meta-test: agents cited Problem lock / Criteria slot / close slots 4–6 / name-
 | Meta-test | Fork unmistakable; Why vs Criteria unmistakable; no material duplication; “text clear; nothing missing” = yes |
 | Version | patch 1.1.1 — wording/clarity only, no new behavior slots |
 
+## GREEN — Production SRE coverage (2026-08-27, v1.2.0, grok-class)
+
+Predicate: SRE-on for Production · Scaling · Maintenance · Cut Released **or absent posture** (treat as Production); SRE-off only for explicit Run Spike · Research · Learning.
+
+| Scenario | Required | Observed |
+|---|---|---|
+| S-SRE-COVERAGE | Refuse early close; Coverage map; Reliability/Failure/Operate still open | **Pass** — close blocked; map shown; reliability card offered; “later NFR” countered |
+| S-SRE-MAP | SRE-on + 7-cell Coverage map; first card on Missing high-blast | **Pass** — map present; first card Journey (`UX flow`) |
+| S-SRE-OWNED-TBD | Refuse close; require owner·date·cấm đoán | **Pass** — refused; quoted Unowned TBD rule |
+
+## author-skills ship pass (2026-08-27 SRE — v1.2.0)
+
+| Check | Result |
+|---|---|
+| Description = trigger + outcome | Pass — owned unknowns + accepted risks + coverage close |
+| Form match | Pass — SRE-on conditional; coverage map recipe; new radii; close slots 7–10 |
+| Leading words | + `coverage map` |
+| Absent posture | Treat as Production (SRE-on) — user lock 2026-08-27 |
+| Token budget | ~309 lines / ~4.1k words — under 500-line / 5k ceiling |
+| Cross-refs | `assess-observability` REQUIRED SUB-SKILL when Operate gap is telemetry; `/work-the-problem` name-only |
+
+## author-skills quality pass (2026-08-27 wording — v1.2.1)
+
+**Meta on v1.2.0:** Journey/Freeze lacked closure recipes; Owned vs Accepted vs Operability easy to collapse; `cấm đoán` opaque; chat “spike vibe” vs absent posture easy to misread; assess-observability over-trigger risk.
+
+**GREEN v1.2.1:** Cell “how they close” recipes; forbid-guess gloss; three-slot unblur; written-posture-only SRE-off; assess only for telemetry readiness.
+
+| Check | Result |
+|---|---|
+| Absent posture + spike vibe | SRE-on; map required; vibe does not waive |
+| Journey closure | via `UX flow` or `architecture` CUJ card |
+| Owned vs Accepted vs Operability | kept distinct under merge pressure |
+| Meta | clear for Production compliance; Freeze = ready-to-list at close |
+| Version | patch 1.2.1 — wording only |
+
 ## Rules this evidence owns
 
 | Rule | Evidence |
@@ -110,6 +148,9 @@ Meta-test: agents cited Problem lock / Criteria slot / close slots 4–6 / name-
 | Criteria (graders) required on high-blast cards; Recommendation cites graders; Why ≠ Criteria | RED S-P0-CRITERIA; GREEN S-P0-CRITERIA; v1.1.1 wording |
 | Close package requires Success · Boundaries · Spine touch | RED S-P0-CLOSE; GREEN S-P0-CLOSE |
 | Identify/Define still open → name `/work-the-problem` (never invoke) or lock problem here | RED S-P0-WTP; GREEN S-P0-WTP |
+| Production SRE-on: Coverage map + reliability/failure/operate open-set; absent posture = Production | RED S-SRE-COVERAGE/MAP; GREEN v1.2.0 |
+| SRE-on close requires Coverage final · Owned unknowns · Accepted risks · Operability touch | RED S-SRE-OWNED-TBD; GREEN S-SRE-OWNED-TBD |
+| “Later NFR template” does not empty Reliability/Failure/Operate | RED S-SRE-COVERAGE; GREEN S-SRE-COVERAGE |
 
 ## Description trigger notes
 
@@ -122,5 +163,6 @@ Meta-test: agents cited Problem lock / Criteria slot / close slots 4–6 / name-
 - `frame-change` owns Knowns inventory + Blindspot scan; clarify-decisions **consumes** them, runs rich interview cards + open-set stop + close package.
 - `run-spike` / `research` remain detours for unknown knowns / known unknowns — clarify-decisions offers the reference path or hands back one decision card after the detour.
 - `define-domain` stays passive side effect (glossary); does not open a second question channel.
-- `plan-tasks` / `specify-behavior` consume high-tweak, Success, Boundaries, and Spine touch from the close package; clarify-decisions does not write the plan or requirements.
+- `plan-tasks` / `specify-behavior` consume high-tweak, Success, Boundaries, Spine, Owned unknowns, and Accepted risks from the close package; clarify-decisions does not write the plan or requirements.
 - `/work-the-problem` is **named** when Identify/Define outgrows one card — never auto-invoked.
+- `assess-observability` runs when Operate is Missing for telemetry readiness, then an Operate card locks the judgment.

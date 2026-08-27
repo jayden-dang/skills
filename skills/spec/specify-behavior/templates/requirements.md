@@ -56,4 +56,8 @@ story**. Do not mark a behavioral story as nfr.)
 
 ## Open Questions
 
-- <resolved before Status: Approved; delete this section when empty>
+<!-- Empty before Status: Approved, OR only Owned unknowns from clarify-decisions:
+     - topic — owner — date — forbid-guess (cấm đoán: AI/dev must not invent)
+     Bare "TBD" without owner/date/forbid-guess blocks Approve. -->
+
+- <Owned unknown: topic — owner — date — forbid-guess; or delete this section when empty>

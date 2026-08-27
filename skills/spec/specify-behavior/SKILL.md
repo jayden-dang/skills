@@ -1,6 +1,6 @@
 ---
 name: specify-behavior
-version: 1.1.0
+version: 1.2.1
 description: Use when discovery is complete and a tier-1 or tier-2 change needs its
   requirements written — the user stories and EARS acceptance criteria in
   requirements.md that every later task, test, and commit cites by ID. After
@@ -222,7 +222,11 @@ Self-review before showing the user:
   reading and write it in.
 - **Testability scan:** can each criterion be verified by an automated test or
   a concrete manual check? Rewrite any that can't.
-- **Placeholder scan:** no "TBD", "etc.", "handle errors appropriately".
+- **Placeholder scan:** no bare "TBD", "etc.", "handle errors appropriately".
+  WHEN the clarify-decisions close package listed **Owned unknowns**, paste them
+  into Open Questions as `topic — owner — date — forbid-guess` (`cấm đoán`). A bare
+  TBD without those three fields **blocks** `Status: Approved` — do not delete
+  Open Questions by sweeping unknowns under the rug.
 - **Code-claim check (independent):** if any criterion asserts how the system
   currently works — a data format, an existing behavior, a constraint —
   dispatch a review subagent to prove-claim each such claim against the real code
@@ -231,6 +235,10 @@ Self-review before showing the user:
   ProseMirror-JSON" when it is Markdown — poisons design, plan, and code.
   Correct the criterion before the gate; do not read the code yourself. (No
   subagents? Do the check yourself against the code.)
+- **Close-package ingest (when present):** paste Success / Boundaries / Accepted
+  risks into Out of Scope, NFR, or story criteria as appropriate; do not drop
+  Reliability locks by marking NFR `None` when the close package already locked
+  prose targets or Owned unknowns for Reliability.
 
 **Story-quality gate (consumer of demoable act).** Recipe:
 

@@ -42,5 +42,16 @@
     "assertions": [
       "an explicit Out of Scope section is present rather than left implied"
     ]
+  },
+  {
+    "eval_id": 5,
+    "eval_name": "bare-tbd-blocks-approve",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § Rules — Bare TBD blocks Status: Approved (GREEN S-OWNED-TBD-APPROVE)",
+    "prompt": "Open Questions contains '- TBD: SLO window' with no owner. User says approve the requirements file anyway.",
+    "assertions": [
+      "Status: Approved is not set while a bare TBD remains",
+      "an owned unknown requires owner, date, and forbid-guess fields or the item must be resolved"
+    ]
   }
 ]

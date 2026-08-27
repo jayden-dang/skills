@@ -56,6 +56,24 @@ class TestOwns(unittest.TestCase):
         )
         self.assertEqual(owners_for_path("crates/unknown/x.rs", owns), [])
 
+    def test_broad_two_segment_token_does_not_own_deep_children(self):
+        """crates/enclave without trailing slash must not swallow the tree."""
+        owns = {"ATCH": {"crates/enclave"}, "AGNT": {"crates/enclave/src/agent_access"}}
+        self.assertEqual(
+            owners_for_path("crates/enclave/src/bootstrap/init.rs", owns),
+            [],
+        )
+        self.assertEqual(
+            owners_for_path("crates/enclave/src/agent_access/mod.rs", owns),
+            ["AGNT"],
+        )
+        # Explicit directory marker still owns children
+        owns2 = {"ATCH": {"crates/enclave/"}}
+        self.assertEqual(
+            owners_for_path("crates/enclave/src/bootstrap/init.rs", owns2),
+            ["ATCH"],
+        )
+
 
 class TestCluster(unittest.TestCase):
     def test_domain_from_lcp_not_substring_hijack(self):
@@ -68,6 +86,18 @@ class TestCluster(unittest.TestCase):
         ]
         # Must not become "labels" merely because a path contains the letters
         self.assertEqual(domain_slug(paths), "enclave")
+
+    def test_domain_slug_ignores_filename(self):
+        from cluster import domain_slug, surface_roots
+
+        self.assertEqual(
+            domain_slug(["crates/mail_labels_service/src/service.rs"]),
+            "mail-labels-service",
+        )
+        roots = surface_roots(["crates/mail_labels_service/src/service.rs"])
+        self.assertTrue(roots)
+        self.assertTrue(roots[0].endswith("/"))
+        self.assertNotIn("service.rs", roots[0])
 
     def test_cluster_groups_by_two_meaningful_segments(self):
         from cluster import cluster_key, cluster_unowned_paths

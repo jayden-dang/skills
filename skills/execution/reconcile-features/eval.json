@@ -56,7 +56,19 @@
     "assertions": [
       "mail_labels_service path is new-capability-candidate with OBS-<6hex>",
       "that path is not absorbed into AGNT or ATCH as decided ownership",
-      "OBS id is not shaped like OBS-LABL"
+      "OBS id is not shaped like OBS-LABL",
+      "mail_labels_service appears inside the capped FINDINGS_MAX envelope"
+    ]
+  },
+  {
+    "eval_id": 6,
+    "eval_name": "owns-breadth-no-crate-root-swallow",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § Precision ≥90 pass / broad two-segment token",
+    "prompt": "Classify crates/enclave/src/bootstrap/init.rs when ATCH OWNS only crates/enclave.",
+    "assertions": [
+      "bare two-segment crates/enclave without trailing slash does not own deep children",
+      "trailing-slash or ≥3-segment tokens still own children"
     ]
   }
 ]

@@ -166,4 +166,20 @@ left `checkpoint.advanced_to` null.
 `observations/OBS-*.json`, skips tombstoned ids, still advances checkpoint.
 CLI: `--write-overlay`.
 
-**Suite:** `python3 -m unittest discover -v` in `scripts/` → 25 OK.
+## Precision ≥90 pass (v1.4.0) — breadth + novelty boost
+
+**RED:** `crates/enclave` (2-seg, no trailing `/`) owned deep bootstrap paths as
+ATCH; novel singleton `mail_labels_service` lost to larger bulk clusters under
+`FINDINGS_MAX`.
+
+**GREEN:**
+- Ancestor OWNS only if token ends with `/` or has ≥3 segments
+- Novel size-1 clusters (first meaningful segment absent from OWNS vocab) sort
+  ahead of larger generic unowned clusters
+- Corpus `must_appear_in_capped` for `crates/mail_labels_service/src/service.rs`
+
+**Suite:** `python3 -m unittest discover -v` in `scripts/` → 27 OK.
+
+**Mailgate re-dogfood:** `mail_labels_service` appears in capped envelope +
+active overlay; ATCH hits drop from whole-enclave to attachment-specific paths;
+known-impact still lists AGNT/AAEF/GIDS/ATCH.

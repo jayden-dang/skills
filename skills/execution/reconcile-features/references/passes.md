@@ -105,10 +105,16 @@ Apply first match:
 2. Exact/ancestor match to a Recognized Files token or surface root →
    `known-impact` on that CODE (confidence high for exact/ancestor; medium if
    only a stopword-stripped segment matched more than one CODE → prefer
-   `uncertain`).
+   `uncertain`). Ancestor match requires the OWNS token to end with `/` **or**
+   have ≥ 3 path segments — a bare two-segment root like `crates/enclave`
+   is exact-only (does not own the whole tree).
 3. New behavior-bearing surface (added non-generated source, route, migration,
    schema, permission, public API) with no Recognized owner →
    `new-capability-candidate` + new `OBS-<6hex>` unless tombstoned.
+   When applying `FINDINGS_MAX`, **novel singletons** (size-1 cluster whose
+   first meaningful path segment is absent from the OWNS vocabulary) sort
+   ahead of larger generic unowned clusters so Critical-miss surfaces stay
+   visible.
 4. Docs-only, comment-only, or internal rename within an owned surface with no
    contract file → `no-spec-impact` (still record briefly when the caller asked
    about that range).

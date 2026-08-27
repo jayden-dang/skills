@@ -113,6 +113,32 @@ class TestClassify(unittest.TestCase):
         locs = [i["locator"] for r in obs for i in r["evidence"]["items"]]
         self.assertTrue(any("mail_labels_service" in loc for loc in locs))
 
+    def test_novelty_boost_surfaces_singleton_new_crate(self):
+        """Novel singleton crate beats larger unowned clusters under FINDINGS_MAX."""
+        from reconcile import classify_paths, FINDINGS_MAX, KNOWN_IMPACT_SOFT_MIN
+
+        owns = {"AGNT": {"crates/enclave/src/agent_access/mod.rs"}}
+        # Enough large clusters to fill the entire new-capability budget by size alone
+        paths: list[str] = []
+        for i in range(20):
+            for j in range(5):
+                paths.append(f"crates/bulk{i}/src/f{j}.rs")
+        paths.append("crates/mail_labels_service/src/service.rs")
+        rows = classify_paths(paths, owns)
+        new_budget = FINDINGS_MAX - 1 - min(1, KNOWN_IMPACT_SOFT_MIN)  # uncertain0 + known reserve
+        # Without boost, 20 size-5 clusters would starve the singleton
+        self.assertGreaterEqual(20, new_budget)
+        locs = [
+            i["locator"]
+            for r in rows
+            if r["change_class"] == "new-capability-candidate"
+            for i in r["evidence"]["items"]
+        ]
+        self.assertTrue(
+            any("mail_labels_service" in loc for loc in locs),
+            msg=f"mail_labels missing from capped findings: {[r.get('cluster_key') for r in rows]}",
+        )
+
 
 class TestEnvelope(unittest.TestCase):
     def test_build_envelope_required_fields(self):

@@ -79,19 +79,23 @@ def longest_common_prefix(paths: list[str]) -> list[str]:
 
 
 def domain_slug(paths: list[str]) -> str:
-    """Domain from longest common meaningful prefix — majority roots win."""
+    """Domain from longest common meaningful *directory* prefix — no filenames."""
     if not paths:
         return "platform"
-    # Prefer LCP of all paths, then strip stopwords from the right
-    lcp = longest_common_prefix(paths)
-    segs = [s for s in lcp if s and s not in PATH_STOPWORDS]
+    # LCP over directory segments only (strip trailing file basenames)
+    dir_paths = ["/".join(_directory_segments(p)) for p in paths]
+    dir_paths = [d for d in dir_paths if d]
+    if not dir_paths:
+        return "platform"
+    lcp = longest_common_prefix(dir_paths)
+    segs = [s for s in lcp if s and s not in PATH_STOPWORDS and "." not in s]
     if segs:
         slug = segs[-1].lower().replace("_", "-")[:32]
         return slug or "platform"
-    # Fall back: majority first meaningful segment
+    # Fall back: majority first meaningful directory segment
     votes: dict[str, int] = defaultdict(int)
     for p in paths:
-        ms = meaningful_segments(p)
+        ms = [s for s in meaningful_segments("/".join(_directory_segments(p))) if "." not in s]
         if ms:
             votes[ms[0].lower().replace("_", "-")[:32]] += 1
     if not votes:
@@ -100,15 +104,20 @@ def domain_slug(paths: list[str]) -> str:
 
 
 def surface_roots(paths: list[str], max_roots: int = 3) -> list[str]:
-    """Stable roots = LCP + one segment, or per-path meaningful prefixes."""
-    lcp = longest_common_prefix(paths)
+    """Stable directory roots = LCP of dirs, or per-path directory prefixes."""
+    dir_paths = ["/".join(_directory_segments(p)) for p in paths]
+    dir_paths = [d for d in dir_paths if d]
     roots: list[str] = []
-    if len(lcp) >= 2:
-        root = "/".join(lcp) + "/"
-        roots.append(root)
-        return roots[:max_roots]
+    if dir_paths:
+        lcp = longest_common_prefix(dir_paths)
+        if len(lcp) >= 2:
+            roots.append("/".join(lcp) + "/")
+            return roots[:max_roots]
+        if len(lcp) == 1:
+            roots.append(lcp[0] + "/")
+            return roots[:max_roots]
     for p in sorted(paths):
-        parts = p.split("/")
+        parts = _directory_segments(p)
         keep: list[str] = []
         for part in parts:
             keep.append(part)
@@ -116,9 +125,7 @@ def surface_roots(paths: list[str], max_roots: int = 3) -> list[str]:
                 break
         if not keep:
             continue
-        root = "/".join(keep)
-        if not root.endswith("/") and "." not in keep[-1]:
-            root += "/"
+        root = "/".join(keep) + "/"
         if root not in roots:
             roots.append(root)
         if len(roots) >= max_roots:

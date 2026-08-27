@@ -277,19 +277,43 @@ def load_owns(repo_root: Path, specs_dir: str = "docs/specs") -> tuple[dict[str,
     return owns, coverage
 
 
+# Ancestor ownership requires an explicit directory marker ("…/") or enough
+# path specificity. A bare two-segment token like `crates/enclave` must not
+# swallow an entire tree (mailgate ATCH skew).
+MIN_ANCESTOR_SEGMENTS = 3
+
+
+def _token_owns_path(tok: str, path: str) -> bool:
+    raw = tok.strip()
+    if not raw:
+        return False
+    explicit_dir = raw.endswith("/")
+    t = raw.rstrip("/")
+    if not t:
+        return False
+    if path == t:
+        return True
+    if path.endswith("/") and t.startswith(path.rstrip("/") + "/"):
+        return True
+    if not path.startswith(t + "/"):
+        return False
+    if explicit_dir:
+        return True
+    segs = [s for s in t.split("/") if s]
+    return len(segs) >= MIN_ANCESTOR_SEGMENTS
+
+
 def owners_for_path(path: str, owns: dict[str, set[str]]) -> list[str]:
-    """Return CODEs whose OWNS token is an exact/ancestor match for path."""
+    """Return CODEs whose OWNS token is an exact/ancestor match for path.
+
+    Ancestor match: token ends with `/`, or has ≥ MIN_ANCESTOR_SEGMENTS
+    segments. Broad two-segment crate roots without a trailing slash are
+    exact-only.
+    """
     hits: list[str] = []
     for code, tokens in owns.items():
         for tok in tokens:
-            t = tok.rstrip("/")
-            if not t:
-                continue
-            if path == t or path.startswith(t + "/") or (t.startswith(path.rstrip("/") + "/") if path.endswith("/") else False):
-                hits.append(code)
-                break
-            # directory token without slash owning children
-            if "/" not in t.rstrip("/") and path.startswith(t + "/"):
+            if _token_owns_path(tok, path):
                 hits.append(code)
                 break
     return sorted(set(hits))

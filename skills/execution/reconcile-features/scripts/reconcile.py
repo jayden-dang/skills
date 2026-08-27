@@ -15,7 +15,13 @@ from collections import defaultdict
 from pathlib import Path
 from typing import Any
 
-from cluster import cluster_unowned_paths, domain_slug, surface_roots
+from cluster import (
+    PATH_STOPWORDS,
+    cluster_unowned_paths,
+    domain_slug,
+    meaningful_segments,
+    surface_roots,
+)
 from owns import load_owns, owners_for_path
 from overlay import can_write_overlay, index_overlay
 
@@ -111,21 +117,48 @@ def _evidence(locators: list[str], kind: str = "path") -> dict[str, Any]:
     return {"items": items, "truncated": len(set(locators)) > EVIDENCE_MAX}
 
 
+def _owns_vocabulary(owns: dict[str, set[str]]) -> set[str]:
+    segs: set[str] = set()
+    for tokens in owns.values():
+        for tok in tokens:
+            for s in tok.replace("\\", "/").split("/"):
+                if s and s not in PATH_STOPWORDS:
+                    segs.add(s)
+    return segs
+
+
+def _novel_singleton_boost(locs: list[str], owns_vocab: set[str]) -> int:
+    """Boost size-1 clusters whose first meaningful segment is unknown to OWNS.
+
+    Keeps Critical-miss surfaces like mail_labels_service inside FINDINGS_MAX
+    when larger generic unowned clusters would otherwise fill the budget.
+    """
+    if len(locs) != 1:
+        return 0
+    ms = meaningful_segments(locs[0])
+    if not ms:
+        return 0
+    head = ms[0]
+    if head in owns_vocab:
+        return 0
+    return 1
+
+
 def classify_paths(
     paths: list[str],
     owns: dict[str, set[str]],
 ) -> list[dict[str, Any]]:
     """Classify candidate paths into finding rows (≤ FINDINGS_MAX).
 
-    Cap priority: new-capability-candidate, uncertain, known-impact,
-    no-spec-impact. Known-impact is one row per CODE (not per CODE-tuple) so
-    combo explosion cannot starve OBS candidates.
+    Cap priority: new-capability-candidate (novel singletons first), uncertain,
+    known-impact, no-spec-impact. Known-impact is one row per CODE.
     """
     candidates = [p for p in paths if not is_generated(p)]
     owned_by_code: dict[str, list[str]] = defaultdict(list)
     unowned_behavior: list[str] = []
     docs_only: list[str] = []
     uncertain: list[str] = []
+    owns_vocab = _owns_vocabulary(owns)
 
     for p in candidates:
         codes = owners_for_path(p, owns)
@@ -141,8 +174,8 @@ def classify_paths(
 
     new_caps: list[dict[str, Any]] = []
     clusters = cluster_unowned_paths(unowned_behavior)
-    for key in sorted(clusters, key=lambda k: (-len(clusters[k]), k)):
-        locs = clusters[key]
+    for key, locs in clusters.items():
+        boost = _novel_singleton_boost(locs, owns_vocab)
         new_caps.append(
             {
                 "change_class": "new-capability-candidate",
@@ -154,8 +187,19 @@ def classify_paths(
                 "domain": domain_slug(locs),
                 "surface_roots": surface_roots(locs),
                 "cluster_key": key,
+                "novelty_boost": boost,
+                "_cluster_size": len(locs),
             }
         )
+    new_caps.sort(
+        key=lambda r: (
+            -int(r.get("novelty_boost") or 0),
+            -int(r.get("_cluster_size") or 0),
+            r.get("cluster_key") or "",
+        )
+    )
+    for r in new_caps:
+        r.pop("_cluster_size", None)
 
     uncertain_rows: list[dict[str, Any]] = []
     if uncertain:

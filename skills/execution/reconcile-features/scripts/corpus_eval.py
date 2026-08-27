@@ -55,6 +55,15 @@ def evaluate_gold(
         if missing:
             failures.append(f"must_known_impact_codes missing {sorted(missing)}")
 
+    for path in gold.get("must_appear_in_capped") or []:
+        blob = "\n".join(
+            item.get("locator", "")
+            for r in rows
+            for item in (r.get("evidence") or {}).get("items") or []
+        )
+        if path not in blob:
+            failures.append(f"must_appear_in_capped missing {path}")
+
     banned = gold.get("forbidden_observation_id_substrings") or []
     for r in rows:
         oid = r.get("observation_id") or ""

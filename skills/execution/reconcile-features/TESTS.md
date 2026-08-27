@@ -183,3 +183,19 @@ ATCH; novel singleton `mail_labels_service` lost to larger bulk clusters under
 **Mailgate re-dogfood:** `mail_labels_service` appears in capped envelope +
 active overlay; ATCH hits drop from whole-enclave to attachment-specific paths;
 known-impact still lists AGNT/AAEF/GIDS/ATCH.
+
+## Cross-repo dogfood + INDEX Path column (v1.4.x)
+
+**RED (klynt/bot):** Index Path cells used backticks / bare `docs/specs/…`
+paths; parser took Name parentheticals (`(course and bootcamp)`) → OWNS 0/2
+or 0/0.
+
+**GREEN:** Prefer backtick / `docs/specs/` / dated-dir candidates over Name
+`(prose)`; normalize to dirs relative to `docs/specs/`.
+
+**Re-dogfood:**
+| Repo | Window | OWNS | Envelope shape |
+|---|---|---|---|
+| klynt | HEAD~12 | **28/29** | 4 OBS + 8 known (AUTHZ/OFR/…) |
+| bot | HEAD~8 | **1/1 SEAL** | known SEAL + uncertain + no-spec-impact |
+| skills | HEAD~15 | 0/0 (no consumer INDEX) | pack-change OBS under `scripts` |

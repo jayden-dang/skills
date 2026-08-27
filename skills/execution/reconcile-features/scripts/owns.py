@@ -78,11 +78,74 @@ def is_sharded_index(index_text: str) -> bool:
     return False
 
 
+def _normalize_spec_dir(raw: str) -> str | None:
+    """Normalize a Path/Spec cell to a dir relative to docs/specs/."""
+    d = raw.strip().strip("`").strip()
+    if not d or d in {"—", "-", "–"}:
+        return None
+    if "://" in d or d.startswith(("#", "mailto:")):
+        return None
+    # Keep ".." for shard-relative specs; only strip a leading "./"
+    if d.startswith("./"):
+        d = d[2:]
+    d = d.rstrip("/")
+    if not d:
+        return None
+    # Absolute-from-repo forms written in INDEX Path columns
+    for prefix in ("docs/specs/", "docs/specs"):
+        if d.startswith(prefix):
+            d = d[len("docs/specs/") :] if d.startswith("docs/specs/") else ""
+            break
+    d = d.rstrip("/")
+    if not d or d in {"—", "-"}:
+        return None
+    return d
+
+
+def _spec_dir_candidates(line: str) -> list[str]:
+    """Collect path-like candidates from a feature row (links + backticks + cells)."""
+    cands: list[str] = []
+    for href in LINK_DIR_RE.findall(line):
+        n = _normalize_spec_dir(href)
+        if n:
+            cands.append(n)
+    for tick in BACKTICK_PATH_RE.findall(line):
+        n = _normalize_spec_dir(tick)
+        if n:
+            cands.append(n)
+    # Bare Path cells: docs/specs/…/ or ./2026-…/ without backticks
+    for cell in line.strip().strip("|").split("|"):
+        cell = cell.strip()
+        if "docs/specs/" in cell or re.match(r"^\.?/?\d{4}-\d{2}-\d{2}-", cell):
+            n = _normalize_spec_dir(cell)
+            if n:
+                cands.append(n)
+    return cands
+
+
+def _score_spec_dir(cand: str) -> int:
+    """Higher = more likely a real Spec/Path cell, not a Name parenthetical."""
+    score = 0
+    if "/" in cand:
+        score += 5
+    if re.match(r"^\d{4}-\d{2}-\d{2}-", cand):
+        score += 5
+    if cand.startswith("catalog/"):
+        score += 3
+    if ".." in cand.split("/"):
+        score += 2
+    # Bare prose fragments like "course and bootcamp" score 0
+    if " " in cand:
+        score -= 4
+    return score
+
+
 def _parse_feature_table(text: str) -> dict[str, str]:
     """Parse feature rows: CODE → spec dir (flat INDEX or shard card table).
 
-    Spec may be the second cell (flat bootstrap) or a later Spec cell (shard
-    cards). Prefer the first markdown link that looks like a relative dir.
+    Supports mailgate-style `| CODE | [dir](dir/) | … |` and klynt-style
+    `| CODE | Name | Status | Roadmap | \`docs/specs/dir/\` |`. Prefers
+    path-like candidates over Name-cell parentheticals.
     """
     main = text.split("## Codes that are spoken")[0]
     out: dict[str, str] = {}
@@ -95,20 +158,13 @@ def _parse_feature_table(text: str) -> dict[str, str]:
         code = m.group(1)
         if code.lower() == "code":
             continue
-        # Prefer any relative dir link on the row (Spec cell position varies)
-        chosen = None
-        for href in LINK_DIR_RE.findall(line):
-            href = href.strip()
-            if "://" in href or href.startswith(("#", "mailto:")):
-                continue
-            # Keep ".." for shard-relative specs; only strip a leading "./"
-            d = href[2:] if href.startswith("./") else href
-            d = d.rstrip("/")
-            if d:
-                chosen = d
-                break
-        if chosen:
-            out[code] = chosen
+        cands = _spec_dir_candidates(line)
+        if not cands:
+            continue
+        best = max(cands, key=_score_spec_dir)
+        if _score_spec_dir(best) <= 0:
+            continue
+        out[code] = best
     return out
 
 

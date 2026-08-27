@@ -30,6 +30,39 @@ class TestOwns(unittest.TestCase):
         self.assertIn("crates/mail/src/labels.rs", owns["SHRD"])
         self.assertEqual(cov["with_owns"], 1)
 
+    def test_index_accepts_backtick_path_column(self):
+        """Klynt-style INDEX: Code | Name | Status | Roadmap | `docs/specs/…/`."""
+        from owns import parse_index_registry
+
+        text = """# Feature specs index
+
+| Code | Name | Status | Roadmap item | Path |
+| ---- | ---- | ------ | ------------ | ---- |
+| SEAL | Seal the webview | Implemented | ROAD-3 | `docs/specs/2026-08-20-seal-the-webview/` |
+| OFR | Offering kinds (course and bootcamp) | Implemented | ROAD-7 | `docs/specs/2026-08-07-offering-kinds-course-and-bootcamp/` |
+| SKIP | Spoken only | — | — | — |
+"""
+        reg = parse_index_registry(text)
+        self.assertEqual(reg.get("SEAL"), "2026-08-20-seal-the-webview")
+        self.assertEqual(
+            reg.get("OFR"), "2026-08-07-offering-kinds-course-and-bootcamp"
+        )
+        # Must NOT take "(course and bootcamp)" from the Name cell
+        self.assertNotEqual(reg.get("OFR"), "course and bootcamp")
+        self.assertNotIn("SKIP", reg)
+
+    def test_index_accepts_bare_docs_specs_path_cell(self):
+        from owns import parse_index_registry
+
+        text = """| Code | Name | Status | Roadmap item | Path |
+| PTEN | Unique username | Implemented | ROAD-1 | docs/specs/2026-08-06-unique-username-and-personal-tenant-on-signup/ |
+"""
+        reg = parse_index_registry(text)
+        self.assertEqual(
+            reg.get("PTEN"),
+            "2026-08-06-unique-username-and-personal-tenant-on-signup",
+        )
+
     def test_missing_spec_dir_recorded(self):
         _, cov = load_owns(FIXTURE, specs_dir="specs")
         self.assertIn("2026-01-99-missing", cov["missing_dirs"])

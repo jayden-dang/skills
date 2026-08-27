@@ -23,11 +23,12 @@ from cluster import (
     surface_roots,
 )
 from owns import load_owns, owners_for_path
-from overlay import can_write_overlay, index_overlay
+from overlay import _gitignore_ignores_skills, can_write_overlay, index_overlay
 
 FINDINGS_MAX = 12
 EVIDENCE_MAX = 8
 KNOWN_IMPACT_SOFT_MIN = 4  # reserve slots so OBS fill cannot erase known CODEs
+NOVEL_SINGLETON_SOFT_MAX = 3  # cap novelty-boosted size-1 OBS so bulk clusters survive
 RECIPE_ID = "rfeat-1.0"
 SCHEMA_VERSION = "1"
 
@@ -144,6 +145,59 @@ def _novel_singleton_boost(locs: list[str], owns_vocab: set[str]) -> int:
     return 1
 
 
+def setup_readiness_notes(repo_root: Path, *, specs_dir: str = "docs/specs") -> list[dict[str, Any]]:
+    """Advisory setup gaps — do not block the envelope; name /configure-repo."""
+    root = Path(repo_root)
+    notes: list[dict[str, Any]] = []
+    if not _gitignore_ignores_skills(root):
+        notes.append(
+            {
+                "kind": "skills_not_ignored",
+                "detail": (
+                    ".skills/ is not gitignored — overlay write disabled "
+                    "(stateless). Run /configure-repo so reconcile can index OBS."
+                ),
+            }
+        )
+    index = root / specs_dir / "INDEX.md"
+    if not index.is_file():
+        notes.append(
+            {
+                "kind": "specs_index_missing",
+                "detail": (
+                    f"{specs_dir}/INDEX.md missing — owns_coverage will be 0; "
+                    "brownfield-bootstrap only. Run /configure-repo (seed INDEX) "
+                    "then /map-features dispose to register Recognized cards."
+                ),
+            }
+        )
+    return notes
+
+
+def _apply_novel_singleton_cap(new_caps: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """Keep at most NOVEL_SINGLETON_SOFT_MAX boosted singletons; demote the rest."""
+    kept_boost = 0
+    out: list[dict[str, Any]] = []
+    for r in new_caps:
+        boost = int(r.get("novelty_boost") or 0)
+        if boost == 1:
+            if kept_boost >= NOVEL_SINGLETON_SOFT_MAX:
+                r = dict(r)
+                r["novelty_boost"] = 0
+                r["notes"] = list(r.get("notes") or []) + ["novelty_capped"]
+            else:
+                kept_boost += 1
+        out.append(r)
+    out.sort(
+        key=lambda row: (
+            -int(row.get("novelty_boost") or 0),
+            -int(row.get("_cluster_size") or 0),
+            row.get("cluster_key") or "",
+        )
+    )
+    return out
+
+
 def classify_paths(
     paths: list[str],
     owns: dict[str, set[str]],
@@ -198,6 +252,7 @@ def classify_paths(
             r.get("cluster_key") or "",
         )
     )
+    new_caps = _apply_novel_singleton_cap(new_caps)
     for r in new_caps:
         r.pop("_cluster_size", None)
 
@@ -262,6 +317,7 @@ def build_envelope(
     owns: dict[str, set[str]],
     owns_coverage: dict[str, Any],
     paths: list[str],
+    notes: list[dict[str, Any]] | None = None,
 ) -> dict[str, Any]:
     findings = classify_paths(paths, owns)
     uncapped = _uncapped_finding_count(paths, owns)
@@ -280,7 +336,7 @@ def build_envelope(
         },
         "findings": findings,
         "findings_truncated": uncapped > FINDINGS_MAX,
-        "notes": [],
+        "notes": list(notes or []),
     }
 
 
@@ -332,6 +388,17 @@ def reconcile_repo(
             )
         except (json.JSONDecodeError, OSError):
             previous = None
+    notes = setup_readiness_notes(root, specs_dir=specs_dir)
+    if write_overlay and not can_write_overlay(root):
+        notes.append(
+            {
+                "kind": "overlay_write_skipped",
+                "detail": (
+                    "--write-overlay requested but blocked; fix .skills/ gitignore "
+                    "via /configure-repo, then re-run."
+                ),
+            }
+        )
     env = build_envelope(
         mode=mode,
         base=base or "unknown",
@@ -341,6 +408,7 @@ def reconcile_repo(
         owns=owns,
         owns_coverage=cov,
         paths=paths,
+        notes=notes,
     )
     if write_overlay and can_write_overlay(root):
         result = index_overlay(root, env)

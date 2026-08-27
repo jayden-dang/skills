@@ -139,6 +139,56 @@ class TestClassify(unittest.TestCase):
             msg=f"mail_labels missing from capped findings: {[r.get('cluster_key') for r in rows]}",
         )
 
+    def test_novel_singleton_soft_max_limits_noise(self):
+        from reconcile import classify_paths, NOVEL_SINGLETON_SOFT_MAX
+
+        owns = {"AGNT": {"crates/enclave/src/agent_access/mod.rs"}}
+        paths = [f"crates/solo{i}/src/lib.rs" for i in range(15)]
+        # one larger unowned cluster should still appear
+        paths += [f"crates/bulkpkg/src/f{j}.rs" for j in range(6)]
+        rows = classify_paths(paths, owns)
+        novel = [
+            r
+            for r in rows
+            if r["change_class"] == "new-capability-candidate"
+            and int(r.get("novelty_boost") or 0) == 1
+        ]
+        self.assertLessEqual(len(novel), NOVEL_SINGLETON_SOFT_MAX)
+        keys = [r.get("cluster_key") for r in rows if r["change_class"] == "new-capability-candidate"]
+        self.assertTrue(any(k and k.startswith("bulkpkg") for k in keys))
+
+
+class TestSetupNotes(unittest.TestCase):
+    def test_notes_when_skills_not_ignored_and_no_index(self):
+        import tempfile
+        from pathlib import Path
+
+        from reconcile import setup_readiness_notes
+
+        with tempfile.TemporaryDirectory() as raw:
+            root = Path(raw)
+            (root / ".gitignore").write_text("node_modules/\n")
+            notes = setup_readiness_notes(root)
+            kinds = {n["kind"] for n in notes}
+            self.assertIn("skills_not_ignored", kinds)
+            self.assertIn("specs_index_missing", kinds)
+            self.assertTrue(any("configure-repo" in str(n.get("detail", "")).lower() for n in notes))
+
+    def test_clean_when_ignored_and_index_present(self):
+        import tempfile
+        from pathlib import Path
+
+        from reconcile import setup_readiness_notes
+
+        with tempfile.TemporaryDirectory() as raw:
+            root = Path(raw)
+            (root / ".gitignore").write_text(".skills/\n")
+            specs = root / "docs" / "specs"
+            specs.mkdir(parents=True)
+            (specs / "INDEX.md").write_text("# index\n")
+            notes = setup_readiness_notes(root)
+            self.assertEqual(notes, [])
+
 
 class TestEnvelope(unittest.TestCase):
     def test_build_envelope_required_fields(self):

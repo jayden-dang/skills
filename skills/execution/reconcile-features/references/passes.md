@@ -22,6 +22,9 @@ CLUSTER_KEY = two directory segments: first two meaningful, or one meaningful
               + next raw segment (crates/enclave/src/a.rs → enclave/src;
               apps/web/src/features/labels/x.ts → web/labels). Never use a
               filename as a cluster segment.
+NOVEL_SINGLETON_SOFT_MAX = 3
+              # size-1 novelty-boosted OBS capped so larger unowned clusters
+              # still enter FINDINGS_MAX; excess novelty_boost demoted to 0
 GENERATED_PATH_GLOBS = **/node_modules/**, **/target/**, **/dist/**, **/build/**,
                        **/*.lock, **/pnpm-lock.yaml, **/Cargo.lock, **/package-lock.json,
                        **/generated/**, **/*.pb.go, **/__generated__/**
@@ -114,7 +117,11 @@ Apply first match:
    When applying `FINDINGS_MAX`, **novel singletons** (size-1 cluster whose
    first meaningful path segment is absent from the OWNS vocabulary) sort
    ahead of larger generic unowned clusters so Critical-miss surfaces stay
-   visible.
+   visible — but at most `NOVEL_SINGLETON_SOFT_MAX` (3) keep the boost; the
+   rest are demoted so bulk clusters are not starved.
+   Setup readiness notes (`skills_not_ignored`, `specs_index_missing`) are
+   advisory on the envelope; they name `/configure-repo` and do not block
+   classification.
 4. Docs-only, comment-only, or internal rename within an owned surface with no
    contract file → `no-spec-impact` (still record briefly when the caller asked
    about that range).

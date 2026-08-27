@@ -199,3 +199,16 @@ or 0/0.
 | klynt | HEAD~12 | **28/29** | 4 OBS + 8 known (AUTHZ/OFR/…) |
 | bot | HEAD~8 | **1/1 SEAL** | known SEAL + uncertain + no-spec-impact |
 | skills | HEAD~15 | 0/0 (no consumer INDEX) | pack-change OBS under `scripts` |
+
+## Readiness notes + novelty soft-max (v1.5.0)
+
+**RED:** open-code-review dogfood — `.skills/` not ignored → no durable OBS;
+novel singletons flooded FINDINGS_MAX.
+
+**GREEN:**
+- `setup_readiness_notes` → `skills_not_ignored` / `specs_index_missing` naming
+  `/configure-repo` (envelope still produced)
+- `NOVEL_SINGLETON_SOFT_MAX = 3` demotes excess novelty boosts so larger clusters
+  survive the cap
+
+**Suite:** `python3 -m unittest discover -v` in `scripts/` → all OK.

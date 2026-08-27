@@ -9,6 +9,9 @@
 | **Invocation** | user-invoked only — `/map-features` |
 | **Reads** | `docs/specs/` (flat or sharded), optional roadmap, `.skills/reverse-features/active/`, `docs/agents/project.md` Catalog sync |
 | **Writes** | confirmed SSOT edits only; dispose never scaffolds a full triad; materialize may write **Draft** stubs under index-only |
+| **Preflight** | Missing `docs/specs/INDEX.md` → stop; name `/configure-repo` |
+
+Team catalog-sync how-to: [`catalog-sync.md`](catalog-sync.md).
 
 ## Modes
 
@@ -40,9 +43,11 @@ See `skills/track/map-features/SKILL.md` and
 
 ## Team sync story (INDEX-only)
 
+Full migration notes: [`catalog-sync.md`](catalog-sync.md).
+
 1. Teammate A builds with local triad (gitignored) → `/map-features` **export**
    refreshes INDEX → commit/push INDEX only.
-2. Teammate B (any skill set that can read INDEX) pulls → `/map-features`
-   **materialize** CODE → Draft stubs locally → specify-behavior as needed.
-3. Reverse-track still uses `reconcile-features` (OBS only); dispose OBS via
-   `/map-features` dispose.
+2. Teammate B pulls → `/map-features` **materialize** CODE → Draft stubs →
+   `specify-behavior` as needed.
+3. Reverse-track: `reconcile-features` (OBS) → `/map-features` **dispose**.
+   Prefer promote rows that cite `OBS-…` provenance from the overlay.

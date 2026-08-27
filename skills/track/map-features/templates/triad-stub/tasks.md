@@ -1,3 +1,4 @@
+<!-- map-features-materialize-stub: v1 -->
 # Tasks — <Feature title>
 
 **Feature code:** <CODE>

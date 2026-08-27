@@ -1,3 +1,4 @@
+<!-- map-features-materialize-stub: v1 -->
 # <Feature title>
 
 **Feature code:** <CODE>

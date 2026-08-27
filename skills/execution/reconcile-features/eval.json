@@ -70,5 +70,17 @@
       "bare two-segment crates/enclave without trailing slash does not own deep children",
       "trailing-slash or ≥3-segment tokens still own children"
     ]
+  },
+  {
+    "eval_id": 7,
+    "eval_name": "setup-readiness-notes",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § Readiness notes + novelty soft-max",
+    "prompt": "Brownfield repo: no docs/specs/INDEX.md and .skills not gitignored.",
+    "assertions": [
+      "envelope notes include skills_not_ignored and/or specs_index_missing",
+      "notes name /configure-repo",
+      "classification still runs (envelope is produced)"
+    ]
   }
 ]

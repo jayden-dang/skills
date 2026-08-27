@@ -60,3 +60,13 @@ both wrong for teams that sync INDEX only.
 
 **Eval:** behavior assertions added for mode gating; dispose triad-scaffold
 forbid retained.
+
+## Quality bar 92–96 (v1.3.0)
+
+**Additions:**
+- Preflight: missing INDEX → stop; name `/configure-repo`
+- OBS provenance on Recognized / disposition rows; batch confirm UX
+- Export field schema (`references/export-fields.md`)
+- Materialize stub fingerprint `<!-- map-features-materialize-stub: v1 -->`;
+  refuse clobber of non-stub files
+- Guide: `docs/guide/skills/catalog-sync.md` (A↔B loop + migration)

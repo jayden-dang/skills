@@ -134,7 +134,8 @@ The visual layer. Fires before any HTML a human will look at.
 | [`publish-issues`](publish-issues.md) | `/publish-issues` | Context → tracker issues. Tracer-bullet slices with blocking edges, published agent-ready |
 | [`triage`](triage.md) | `/triage` | A two-axis issue state machine. Verify the claim before recommending |
 | [`scan-architecture`](scan-architecture.md) | `/scan-architecture` | Codebase-wide friction scan → an HTML report of deepening candidates |
-| [`map-features`](map-features.md) | `/map-features` | Brownfield backfill: Feature code, ROAD binds, OWNS gaps, DEPENDS_ON, Domain / Recognized cards, OBS dispositions (confirm only) |
+| [`catalog-sync`](catalog-sync.md) | (guide) | INDEX-only catalog sync: configure-repo posture + map-features export/materialize |
+| [`map-features`](map-features.md) | `/map-features` | Catalog ops: dispose OBS/OWNS gaps; index-only export/materialize; batch confirm + OBS provenance |
 | [`write-handoff`](write-handoff.md) | `/write-handoff` | A resumable document in the OS temp dir. Reference, never duplicate |
 | [`record-debt`](record-debt.md) | `/record-debt` | Banks a finding judged real and deliberately left unfixed into `docs/quality/debt.md`. Decisions, never observations |
 

@@ -1,6 +1,6 @@
 ---
 name: reconcile-features
-version: 1.4.0
+version: 1.5.0
 description: >
   Use when external commits, a pull/merge, brownfield code, or a missing feature
   owner must be mapped onto the capability catalog (reverse tracking,
@@ -51,6 +51,9 @@ Print **exactly one** envelope shaped by `references/envelope.md`. When
 5. Return the envelope to the caller. Unresolved `pending` findings must be
    surfaced before `frame-change` / `realign-spec` decisions on those surfaces.
    Name `/map-features` for confirm-then-write backfill; never auto-invoke it.
+   Surface `notes[]` from the runner (e.g. `skills_not_ignored`,
+   `specs_index_missing`) — when present, tell the user to run `/configure-repo`
+   before expecting durable OBS or a useful INDEX dispose.
 
 ## Callers
 

@@ -1,13 +1,13 @@
 # `debug-remote`
 
-> Build a read-only remote evidence pack when the failure is on a deployed environment, then hand the pack to `root-cause`. Never write production.
+> Build a read-only remote evidence pack when the failure is on a deployed environment, then hand the pack to `root-cause`. Never write production. Human-executed containment may be presented while cause stays open.
 
 |  |  |
 |---|---|
 | **Bucket** | execution |
 | **Invocation** | model-invocable (the agent calls it on its own) |
 | **Reads** | `docs/agents/project.md` Remote environments (if present), live telemetry (read-only) |
-| **Writes** | a remote evidence pack in the session; does **not** write the live environment |
+| **Writes** | a remote evidence pack in the session (and may present human-executed containment); does **not** write the live environment |
 | **Calls** | [`root-cause`](root-cause.md) (after the pack exists) |
 | **Called by** | [`root-cause`](root-cause.md) when the failure is already deployed and no pack exists yet |
 
@@ -32,9 +32,15 @@ Valid Phase 1: read-only error-rate / `span_status=ERROR` query; curl against a 
 
 Then `root-cause` runs with the pack as its red-capable signal. Fix + `test-first` stay local.
 
+## Containment vs cause
+
+Pack completion is not causal confirmation. When impact warrants it, write a **containment brief** (who executes, action, intended effect, reversibility, causal claims remain open). Do not tell the human to wait for confirmed cause before containment may be discussed. Containment success does not accept a cause.
+
 ## Why it is written the way it is
 
 `root-cause` already stops guess-and-patch when it is loaded. The recorded failure was **shape**, not will: with only `root-cause`, grok-4.5 port-forwarded production and looped mutating `POST`s as “the red loop,” and both models treated OpenObserve as never Phase 1. The pack recipe names the legal remote signals and makes a mutating prod replay a named refusal.
+
+A later failure was **scope over-read**: grok-4.6 refused to frame human containment because the skill “only builds the pack,” and told the on-call to wait for confirmed cause. v1.1.0 makes pack vs containment orthogonal.
 
 ## See also
 

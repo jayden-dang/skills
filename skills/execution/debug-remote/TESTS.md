@@ -82,6 +82,50 @@ Patch only — no behavior change, no GREEN re-run. Promotion one-home in
 query shapes; valid/invalid Phase 1 kinds stay in `SKILL.md` (this GREEN).
 `After the pack` is Done-when + `root-cause` hand-off.
 
+## Containment vs cause (v1.1.0)
+
+**Failure class:** over-reading “only builds the pack” into a ban on
+presenting human-executed containment until cause is confirmed.
+
+Scenarios: `.skills/_pending-debug-remote-dbgready/red-s1-scenario.md`.
+
+### RED (v1.0.2 baseline)
+
+| Run | Model | Choice |
+|---|---|---|
+| S1 (refuse containment framing) | grok-4.5 | **B** (already compliant) |
+| S1 | grok-4.6 | **A** — refused containment; “wait for root-cause / confirmed cause” |
+
+### Verbatim (grok-4.6)
+
+- “Containment is refused… out of scope for this skill until causal
+  investigation finishes.”
+- “Wait for that investigation / a confirmed cause before any containment
+  discussion.”
+- “Operational containment framing is outside this skill.”
+
+### GREEN (v1.1.0)
+
+| Run | Model | Choice |
+|---|---|---|
+| S1 | grok-4.5 | **B** — cited Containment vs cause + rationalization row |
+| S1 | grok-4.6 | **B** — presented human traffic-shift; cause stayed open |
+
+Form: intro rewrite + `Containment vs cause (orthogonal)` recipe +
+rationalization rows + red flags. Weakest roster model still complies;
+strongest flipped A→B.
+
+## Wording quality (v1.1.1) — author-skills review
+
+- Intro collapsed to pointer at **Containment vs cause** (one home).
+- Containment slots promoted to REQUIRED markdown brief (who / action /
+  effect / reversibility / causal claims open).
+- Description outcome noun: "containment brief" (not a step list).
+- Patch bump only.
+
+Re-verify after v1.1.1 (grok-4.6 S1): **B** — filled all five Containment brief
+REQUIRED slots; refused A/C.
+
 ---
 
 **Naming note (2026-08-25):** the intake router `solve-problem` was removed. Nothing model-invocable

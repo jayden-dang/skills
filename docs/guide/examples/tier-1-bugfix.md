@@ -120,7 +120,7 @@ test('preserves unsaved editor state across hydration [SHELL-1.9]', …)
 `root-cause`'s exit checklist:
 
 - **Remove ALL instrumentation.** `grep` for the `[DBG-x7q2]` prefix used during Phase 3. Delete throwaway harnesses.
-- **State the confirmed root cause in the commit message.**
+- **State the proposition and human disposition status in the commit message** (never agent-authored `confirmed root cause` as acceptance).
 - **Route Task: what would have prevented this bug?**
 
 ```

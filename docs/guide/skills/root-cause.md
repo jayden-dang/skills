@@ -7,7 +7,7 @@
 | **Bucket** | execution |
 | **Invocation** | model-invocable (the agent calls it on its own) |
 | **Reads** | the failing signal (test, error, trace, log), git history and recent changes, the owning feature's `requirements.md` |
-| **Writes** | a red-capable feedback loop and a failing regression test, one root-cause fix commit stating the cause, a tier-1 mini-spec (fix requirement + `SHALL CONTINUE TO` guard) in `requirements.md` (or `docs/specs/fixes.md`) |
+| **Writes** | a red-capable feedback loop and a failing regression test, a causal disposition request (human accept/reject/supersede), one fix commit stating proposition + disposition status, a tier-1 mini-spec (fix requirement + `SHALL CONTINUE TO` guard) in `requirements.md` (or `docs/specs/fixes.md`) |
 | **Calls** | [`debug-remote`](debug-remote.md) (when the failure is already deployed and no pack exists), [`test-first`](test-first.md) (the regression test and the fix), [`prove-claim`](prove-claim.md) (before claiming fixed), [`scan-architecture`](scan-architecture.md) (architectural findings) |
 | **Called by** | [`test-first`](test-first.md) (when the change is a bugfix), [`amend-feature`](amend-feature.md), [`build-in-waves`](build-in-waves.md), [`validate-feature`](validate-feature.md), [`validate-api`](validate-api.md), [`validate-ui`](validate-ui.md) |
 
@@ -19,9 +19,12 @@ Anything behaves unexpectedly — a failing test, an error or exception, a crash
 
 ```
 NO FIXES WITHOUT ROOT CAUSE INVESTIGATION FIRST
+NO AGENT-AUTHORED AUTHORITATIVE CAUSAL ACCEPTANCE
 ```
 
 Guess-and-patch wastes hours and plants new bugs. The process applies to every technical issue, and it applies hardest exactly when it is tempting to skip: emergencies, "obvious" one-liners, and the moment right after a previous fix didn't work.
+
+The agent investigates and may **request** a causal strength. An eligible human **accepts, rejects, or supersedes** one exact proposition. Writing `confirmed root cause` into a commit is not that acceptance.
 
 ## Phase 1 — build the feedback loop (the gate)
 
@@ -73,11 +76,16 @@ Test the smallest hypothesis first, **one variable at a time** — never stack c
 
 A falsified hypothesis gets struck; move to the next, and don't pile a new fix on top of a failed one. Don't understand something? Say "I don't understand X" and investigate — never pretend and guess.
 
+## Causal disposition
+
+Keep investigation state independent from requested strength. Before authoritative confirmation, ask an eligible human to accept / reject / supersede one exact proposition against its support set. Operational success (rollback, green error rate) does not promote accepted causal strength. Green Phases 1–3 means ready to request disposition; confirmed means the human accepted.
+
 ## Phase 4 — fix
 
-1. **Failing regression test first**, via [`test-first`](test-first.md), at a **correct seam** — one that exercises the real bug pattern as it occurred. If no correct seam exists, that is itself a finding: document it and flag it for the post-mortem; a shallow test there is false confidence.
-2. **One fix** addressing the root cause. No "while I'm here" improvements, no bundled refactoring.
-3. Watch the regression test pass, re-run the full suite, and re-run the Phase 1 loop against the original un-minimised scenario.
+1. **Failing regression test first**, via [`test-first`](test-first.md), once the proposition is on the disposition request — at a **correct seam**.
+2. **Human accept** of that exact proposition before landing production-code as a corrective fix. Slack "ship it" on prose is not acceptance; in-session explicit accept of the stated proposition counts.
+3. **One fix** addressing the accepted proposition. No "while I'm here" improvements, no bundled refactoring.
+4. Watch the regression test pass, re-run the full suite, and re-run the Phase 1 loop against the original un-minimised scenario.
 
 **Three failed fix attempts = STOP.** The architecture is in question, not the latest hypothesis — especially if each fix reveals new coupling somewhere else. Discuss with the user before attempt 4.
 
@@ -85,7 +93,7 @@ A falsified hypothesis gets struck; move to the next, and don't pile a new fix o
 
 - Add a **tier-1 mini-spec**: a fix requirement plus a `SHALL CONTINUE TO` guard requirement in the owning feature's `requirements.md` (or `docs/specs/fixes.md` if no feature owns it), and tag the regression test with the new ID.
 - **Remove ALL instrumentation** — grep for the `[DBG-...]` prefixes, delete throwaway harnesses.
-- State the confirmed root cause in the commit message.
+- In the commit/PR: state the **proposition**, requested or **human-accepted** strength, scope, and support pointers — never agent-authored `confirmed root cause` as acceptance.
 - Route Task "what would have prevented this bug?" If the answer is architectural (no good seam, hidden coupling, tangled callers), hand the specifics to [`scan-architecture`](scan-architecture.md) — after the fix lands, when you know the most.
 - [`prove-claim`](prove-claim.md) is a required sub-skill before claiming the bug fixed.
 
@@ -100,6 +108,9 @@ A falsified hypothesis gets struck; move to the next, and don't pile a new fix o
 | "Too simple to need a repro" | Simple bugs have root causes too; the loop takes minutes |
 | "I'll add the regression test after the fix" | Untested fixes regress; the red test is the proof the fix fixes |
 | "One more attempt" (after 2+ failures) | Attempt 4 without an architecture discussion is thrashing |
+| "Exit says state the confirmed root cause — that commit line is acceptance" | Exit records proposition + disposition status; only an eligible human accepts |
+| "Human disposition is ceremony" | Agent-authored authoritative acceptance is forbidden; the disposition request is the gate |
+| "Staff LGTM'd the narrative / ship the Exit" | Prose LGTM ≠ accept of one exact proposition against its support set |
 
 ## User signals — return to Phase 1
 
@@ -111,6 +122,7 @@ Certain phrases from the user are a diagnostic that the process was skipped:
 | "Is that actually happening?" | You assumed without verifying — gather evidence |
 | "Will that show us anything?" | Your probe maps to no prediction — restate hypotheses |
 | "We're going in circles" | Count your failed fixes; you're probably at the architecture gate |
+| "Who accepted that cause?" | You self-certified — run the disposition request |
 
 ## Worked example
 
@@ -120,7 +132,7 @@ A test is flaky in CI and green locally.
 - **Phase 2.** The stack points at a token comparison, but instrumenting the boundary shows the bad value entering two layers earlier, so the audit-trace goes backward to the original trigger — a timer that fires before hydration.
 - **Phase 3.** Five ranked, falsifiable hypotheses; the smallest is tested first with a `[DBG-k9f1]` probe, one variable at a time; the third survives its prediction.
 - **Phase 4.** A regression test at the hydration seam fails first via `test-first`, then one fix, then the Phase 1 loop runs 200 clean iterations.
-- **Exit.** A `SHALL CONTINUE TO` guard requirement, every `[DBG-...]` line grepped out, the root cause in the commit message, and `prove-claim` before the word "fixed".
+- **Exit.** A `SHALL CONTINUE TO` guard requirement, every `[DBG-...]` line grepped out, the proposition + human disposition status in the commit message, and `prove-claim` before the word "fixed".
 
 ## Why it is written the way it is
 

@@ -1,21 +1,23 @@
 ---
 name: debug-remote
-version: 1.0.2
+version: 1.1.1
 description: >
   Use when a failure is reported on a deployed environment — production,
   staging, or a remote dev — and the red signal must come from live
   telemetry or a non-prod replay (OpenObserve, traces, spans, request id,
   error rate, incident, crash-loop, 500/502) rather than a local debugger.
-  Produces a remote evidence pack. Not for a failing local test or CI job
-  (root-cause). Not for asking whether production tracing is complete
-  enough (assess-observability).
+  Produces a remote evidence pack and, when impact warrants it, a
+  human-executed containment brief — separate from causal proof. Not for
+  a failing local test or CI job (root-cause). Not for asking whether
+  production tracing is complete enough (assess-observability).
 ---
 
 # Debug Remote
 
 The remote evidence plane for a deployed failure. Investigation after the
-pack exists is `root-cause`. This skill only builds the pack and forbids
-writing the environment.
+pack exists is `root-cause`. This skill builds the pack and forbids the
+**agent** writing the environment. Human-executed containment: see
+**Containment vs cause** (one home).
 
 ## The Iron Law
 
@@ -104,6 +106,27 @@ user-supplied read URLs; leave the rest `unresolved`.
 use `root-cause` — this pack **is** Phase 1. Do not rebuild a mutating
 prod loop.
 
+## Containment vs cause (orthogonal)
+
+Pack completion is not causal confirmation. Confirmed cause is not required
+before a human may contain impact. Presenting the brief below is not an
+agent write.
+
+WHEN active impact warrants containment, write every slot:
+
+```markdown
+## Containment brief (human-executed)
+- Who executes: <named human / on-call — not the agent>
+- Action: <runbook traffic-shift | rollback | …>
+- Intended effect: <impact / risk reduction>
+- Reversibility: <how to undo>
+- Causal claims: <remain open — list live hypotheses or "open">
+```
+
+Do not tell the human to wait for `root-cause` or a confirmed cause before
+containment may be discussed. Do not treat containment success as accepted
+cause. Causal disposition: REQUIRED SUB-SKILL: use `root-cause`.
+
 ## Rationalizations
 
 | Thought | Reality |
@@ -116,6 +139,8 @@ prod loop.
 | "Phase 4 — laptop green — kubectl set image" | Phase 4 re-runs the **original** symptom on a non-prod copy first |
 | "Staff lead / Legal / I'll take the blame" | Hotfix exception is human-executed, not agent `kubectl` |
 | "project.md has no remote block — invent the URL" | Name `/configure-repo`; unknown fields stay `unresolved` |
+| "Only builds the pack — refuse containment framing until cause is confirmed" | Pack is the evidence product; human-executed containment may be presented now; cause stays open |
+| "Pack done = cause confirmed / open the corrective fix" | Pack is Phase 1 only; hand off to `root-cause` |
 
 ## Red Flags — stop
 
@@ -124,6 +149,8 @@ prod loop.
 - Closing because a single `trace_id` search was empty
 - Shipping a laptop image to production
 - Calling the work `root-cause` Phase 3 so the Iron Law "doesn't apply"
+- Telling the human to wait for confirmed cause before any containment discussion
+- Treating pack completion as agent-confirmed cause or a corrective fix
 
 ## User signals — back to the pack
 

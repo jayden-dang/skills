@@ -1,11 +1,13 @@
 ---
 name: root-cause
-version: 1.1.0
-description: Use when anything behaves unexpectedly — a failing test, an error or
+version: 1.2.1
+description: >
+  Use when anything behaves unexpectedly — a failing test, an error or
   exception, a crash, a reported bug, wrong output, a performance regression,
-  a flaky CI job — and before proposing or applying any fix. Not for a
-  failure that is only on a deployed environment with no pack yet
-  (debug-remote).
+  a flaky CI job — and before proposing or applying any fix. Produces an
+  evidence-backed investigation whose authoritative causal confirmation is
+  a human disposition. Not for a failure that is only on a deployed
+  environment with no pack yet (debug-remote).
 ---
 
 # Root Cause
@@ -14,9 +16,12 @@ description: Use when anything behaves unexpectedly — a failing test, an error
 
 ```
 NO FIXES WITHOUT ROOT CAUSE INVESTIGATION FIRST
+NO AGENT-AUTHORED AUTHORITATIVE CAUSAL ACCEPTANCE
 ```
 
 Guess-and-patch wastes hours and plants new bugs. This process applies to every technical issue — and applies hardest when it's tempting to skip: emergencies, "obvious" one-liners, and the moment right after a previous fix didn't work.
+
+Causal confirmation is human-only — see **Causal disposition** (one home).
 
 ## Phase 1 — Build the feedback loop (the gate)
 
@@ -109,7 +114,7 @@ minimal repro remain the gate; documentation never replaces either.
    changelog, migration guide, deprecation notice, or official issue history for
    the observed version. A community answer may locate a source; it is not the
    evidence entered in the table.
-5. **Disposition.** `match=no` becomes a hypothesis candidate, not a confirmed
+5. **Claim status.** `match=no` becomes a hypothesis candidate, not a confirmed
    cause. `applicability=unresolved` blocks dependency-behavior claims; report the
    missing identity/source instead of filling it from model memory.
 
@@ -136,11 +141,53 @@ Test the smallest hypothesis first. ONE variable at a time — never stack chang
 
 Hypothesis falsified? Strike it, move to the next. Don't pile a new fix on top of a failed one.
 
+## Causal disposition — REQUIRED before authoritative confirmation
+
+Keep **investigation state** (`open` / `unresolved` / `falsified` /
+`superseded`) independent from **requested strength** (`candidate` /
+`probable_contributor` / `confirmed_for_scope`). Requested strength is a
+proposition, not an accepted result.
+
+```markdown
+## Causal disposition request
+- Proposition: <one exact causal claim>
+- Investigation state: <open | unresolved | falsified | superseded>
+- Requested strength: <candidate | probable_contributor | confirmed_for_scope>
+- Scope: <reproduced condition / environment bound>
+- Support set: <commands, outputs, artifacts that bear on this proposition>
+- Contradictions / alternatives still live: <none | list>
+- Ask: accept / reject / supersede (eligible human only)
+```
+
+<HARD-GATE>
+Do not write agent-authoritative `confirmed root cause` in a commit, PR,
+or close-out. Do not invent `probable_contributor` / `confirmed_for_scope`
+as an agent disposition. Do not treat Exit, a filled brief, or a prose
+LGTM as human acceptance of the proposition.
+</HARD-GATE>
+
+Operational success (rollback, mitigation, error rate recovered) does not
+promote accepted causal strength.
+
+Green Phases 1–3 = investigation ready to request disposition.
+**Confirmed** = eligible human accepted the proposition. Those are not the
+same.
+
 ## Phase 4 — Fix
 
-1. **Failing regression test first.** REQUIRED SUB-SKILL: use `test-first`. The test goes at a CORRECT seam — one that exercises the real bug pattern as it occurred. If no correct seam exists, that is itself a finding: document it and flag it for the post-mortem; a shallow test there is false confidence.
-2. **One fix** addressing the root cause. No "while I'm here" improvements, no bundled refactoring.
-3. Watch the regression test pass, re-run the full suite, re-run the Phase 1 loop against the original un-minimised scenario.
+1. **Failing regression test first** (REQUIRED SUB-SKILL: use `test-first`)
+   once the proposition is on the disposition request. The test goes at a
+   CORRECT seam — one that exercises the real bug pattern as it occurred.
+   If no correct seam exists, that is itself a finding: document it and
+   flag it for the post-mortem; a shallow test there is false confidence.
+2. **Human accept** of that exact proposition (strength + scope + support
+   set) before landing production-code as a corrective fix. A Slack
+   "ship it" on prose, or Phases 1–3 feeling done, is not that acceptance.
+   In-session, the user's explicit accept of the stated proposition counts.
+3. **One fix** addressing the accepted proposition. No "while I'm here"
+   improvements, no bundled refactoring.
+4. Watch the regression test pass, re-run the full suite, re-run the Phase 1
+   loop against the original un-minimised scenario.
 
 **Three failed fix attempts = STOP.** The architecture is in question, not your latest hypothesis — especially if each fix reveals new coupling somewhere else. Discuss with the user before attempt 4.
 
@@ -148,7 +195,7 @@ Hypothesis falsified? Strike it, move to the next. Don't pile a new fix on top o
 
 - Tier-1 mini-spec: add a fix requirement plus a `SHALL CONTINUE TO` guard requirement to the owning feature's `requirements.md` (or `docs/specs/fixes.md` if no feature owns it). Map the regression test to that ID in the task report / Spec review — **docs-only spine**; do not require greppable IDs in test source for consumer apps.
 - Remove ALL instrumentation: grep for your `[DBG-...]` prefixes; delete throwaway harnesses.
-- State the confirmed root cause in the commit message.
+- In the commit/PR: state the **proposition**, requested or **human-accepted** strength, scope, and support pointers. If no human disposition yet, say `requested` / `pending disposition`. **Never:** `confirmed root cause: …` as the agent's acceptance stand-in.
 - Route Task: "what would have prevented this bug?" If the answer is architectural (no good seam, hidden coupling, tangled callers), write the specifics down and tell the user to run `/scan-architecture` — after the fix lands, when you know the most.
 - REQUIRED SUB-SKILL: use `prove-claim` before claiming the bug fixed.
 
@@ -166,6 +213,17 @@ Hypothesis falsified? Strike it, move to the next. Don't pile a new fix on top o
 | "Load the feature subgraph first — that is the loop" | Phases 1–2 need a red-capable command; retrieval only after Phase 2 |
 | "Neighbor card says who owns it — skip minimize" | Ownership context is advisory after Phase 2; the minimal repro still gates Phase 3 |
 | "I know this library; fetch docs after the likely fix" | Runtime identity and version-matched owning docs complete before external-behavior hypotheses |
+| "Exit says state the confirmed root cause — that commit line is acceptance" | Exit records proposition + disposition status; only an eligible human accepts |
+| "Phases 1–3 are done; human disposition is ceremony this repo doesn't write" | The Iron Law forbids agent-authored authoritative acceptance; the disposition request is the written gate |
+| "Staff LGTM'd the narrative / ship the Exit" | Prose LGTM ≠ accept of one exact proposition against its support set |
+| "Rollback worked — upgrade to confirmed" | Mitigation success is operational; it does not promote causal strength |
+
+## Red Flags — stop
+
+- About to put agent-authored `confirmed root cause` in a commit or PR
+- About to treat Phase 4 / Exit as human causal acceptance
+- About to promote causal strength because rollback or error rate recovered
+- About to skip the disposition request because "the skill used to say confirmed"
 
 ## User signals — return to Phase 1
 
@@ -175,3 +233,4 @@ Hypothesis falsified? Strike it, move to the next. Don't pile a new fix on top o
 | "Is that actually happening?" | You assumed without verifying — gather evidence |
 | "Will that show us anything?" | Your probe maps to no prediction — restate hypotheses |
 | "We're going in circles" | Count your failed fixes; you're probably at the architecture gate |
+| "Who accepted that cause?" | You self-certified — run the disposition request |

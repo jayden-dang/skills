@@ -1,7 +1,7 @@
 # AGENTS.md — Agent Behavior Constitution
 
-> A-to-Z agentic development skill set · **89 skills across 11 categories**
-> (71 engineering + 18 Personal OS) · `jayden-dang/skills` · v1.0.0
+> A-to-Z agentic development skill set · **90 skills across 11 categories**
+> (72 engineering + 18 Personal OS) · `jayden-dang/skills` · v1.0.0
 
 This file is the single source of truth for agent behavior when working with this
 skill set on any harness. Read it first, before any skill, before any action.
@@ -102,10 +102,11 @@ skill's workflow only when the user has explicitly told you to. A waiver of
 
 **User-invoked skills** carry `disable-model-invocation: true` in frontmatter.
 Agents MUST NOT auto-invoke these — name them for the user to run (`/triage`,
-`/pathfind`). All 27 of them:
+`/pathfind`). All 28 of them:
 
 `ask-me-bro`, `author-skills`, `teach-pack` · `bootstrap-repo`, `configure-repo` ·
-`deepen-codebase`, `forge-prompt`, `interpret-session`, `pathfind`, `work-the-problem` ·
+`deepen-codebase`, `forge-prompt`, `interpret-session`, `pathfind`, `tour-system`,
+`work-the-problem` ·
 `brief-team`, `select-review-sample`, `study-change`, `teach-build` · `assess-pivot-impact`,
 `define-project`, `define-system-doc` · `cut-release` · `assess-milestone`,
 `map-features`, `publish-issues`, `record-debt`, `refresh-roadmap-status`,
@@ -408,7 +409,7 @@ Can't tick a box? The work is not done.
 |---|---|
 | **meta** (4) | `gate-session` (m, si), `ask-me-bro` (U), `author-skills` (U), `teach-pack` (U) |
 | **setup** (2) | `configure-repo` (U), `bootstrap-repo` (U) |
-| **discovery** (10) | `frame-change` (m), `clarify-decisions` (m), `research` (m), `run-spike` (m), `define-domain` (m), `forge-prompt` (U), `pathfind` (U), `interpret-session` (U), `deepen-codebase` (U), `work-the-problem` (U) |
+| **discovery** (11) | `frame-change` (m), `clarify-decisions` (m), `research` (m), `run-spike` (m), `define-domain` (m), `forge-prompt` (U), `pathfind` (U), `interpret-session` (U), `deepen-codebase` (U), `tour-system` (U), `work-the-problem` (U) |
 | **spec** (3) | `specify-behavior` (m), `design-solution` (m), `plan-tasks` (m) |
 | **execution** (14) | `build-in-waves` (m), `build-by-story` (m), `build-inline` (m), `execute-common` (m), `test-first` (m), `root-cause` (m), `debug-remote` (m), `assess-observability` (m), `prove-claim` (m), `audit-trace` (m), `load-subgraph` (m), `reconcile-features` (m), `isolate-workspace` (m), `hold-stage` (m) |
 | **review** (11) | `inspect-change` (m), `polish-diff` (m), `vet-feedback` (m), `vet-source` (m), `speak-outer` (m), `review-invariants` (m), `review-ui` (m), `study-change` (U), `teach-build` (U), `brief-team` (U), `select-review-sample` (U) |
@@ -470,6 +471,7 @@ This repo is configured for a spec-driven skill set.
   interviews, then hands over one block — it names no next step by design)
 - Capture a conversation, spec, or idea into tracker issues: `/publish-issues`
 - Multi-session decision map (Layer 0 fog): `/pathfind`
+- Learn a codebase/capability via path-verified tours: `/tour-system`
 - Incoming issues and PRs: `/triage`
 - Brownfield feature-ID / Files backfill: `/map-features`
 - Traceability check: `audit-trace` — run by `prove-claim` and `/cut-release`;

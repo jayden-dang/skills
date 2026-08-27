@@ -1,0 +1,71 @@
+[
+  {
+    "eval_id": 1,
+    "eval_name": "tour-not-prose-quiz",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § Failure class / RED",
+    "prompt": "Learn open-code-review before standup — explain the whole system in chat and quiz after each file.",
+    "assertions": [
+      "primary outcome is ordered stops plus a local ledger, not a quiz HTML packet",
+      "no graded production is required at every file stop",
+      "one graded production occurs at semantic checkpoint or journey close"
+    ]
+  },
+  {
+    "eval_id": 2,
+    "eval_name": "subgraph-advisory-not-proof",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § Failure class / RED",
+    "prompt": "Tour REVW; load-subgraph shows neighbors; mark demonstrated because the envelope looks right.",
+    "assertions": [
+      "load-subgraph is treated as advisory only",
+      "demonstrated requires source, test, or runtime evidence cites"
+    ]
+  },
+  {
+    "eval_id": 3,
+    "eval_name": "handoff-name-only",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § Failure class / RED T-HAND",
+    "prompt": "Learner reachability claim is contradicted. Senior says run teach-pack for them now.",
+    "assertions": [
+      "teach-pack is named for the user, not auto-invoked",
+      "no inline explain-then-reprobe remediation loop",
+      "a handoff capsule names exactly one primary route"
+    ]
+  },
+  {
+    "eval_id": 4,
+    "eval_name": "iron-law-contract",
+    "kind": "contract",
+    "derived_from": "SKILL.md § The Iron Law",
+    "prompt": "Authority asks for GRAPH.md and a persisted feature-graph so learning sticks.",
+    "assertions": [
+      "no persisted feature graph or Graphify requirement",
+      "no quiz packet as the primary outcome",
+      "no user-invoked skill auto-invoke"
+    ]
+  },
+  {
+    "eval_id": 5,
+    "eval_name": "change-impact-hard-stop",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § Failure class / RED T-CHANGE",
+    "prompt": "change-impact with omitted range and pure untracked files only.",
+    "assertions": [
+      "run hard-stops with diagnostic only",
+      "no demonstrated ledger state and no success export"
+    ]
+  },
+  {
+    "eval_id": 6,
+    "eval_name": "neighbor-boundaries",
+    "kind": "trigger",
+    "derived_from": "TESTS.md § Description trigger",
+    "prompt": "User wants a five-question HTML comprehension packet for a PR range before merge.",
+    "assertions": [
+      "tour-system does not steal study-change's quiz-packet job",
+      "study-change remains the named skill for that ask during coexistence"
+    ]
+  }
+]

@@ -44,7 +44,7 @@ schema 1.1, **`cluster(focus)`**, no generated graph file).
                     ─► land-branch ─► /cut-release ─► realign-spec
 
  MAINTENANCE: amend-feature · /publish-issues · /triage · /scan-architecture
-              · /map-features · /pathfind · /write-handoff · realign-spec
+              · /map-features · /tour-system · /pathfind · /write-handoff · realign-spec
 ```
 
 **Ceremony tiers** decide how much of the chain you run (see
@@ -149,7 +149,7 @@ Personal OS is a **separate** package — [personal-os START-HERE](../personal-o
 |---|---|
 | **meta** | `gate-session` (m, si), `/ask-me-bro`, `/author-skills`, `/teach-pack` |
 | **setup** | `/configure-repo`, `/bootstrap-repo` |
-| **discovery** | `frame-change`, `clarify-decisions`, `research`, `run-spike`, `define-domain`, `/forge-prompt`, `/pathfind`, `/interpret-session`, `/deepen-codebase`, `/work-the-problem` |
+| **discovery** | `frame-change`, `clarify-decisions`, `research`, `run-spike`, `define-domain`, `/forge-prompt`, `/pathfind`, `/interpret-session`, `/deepen-codebase`, `/tour-system`, `/work-the-problem` |
 | **spec** | `specify-behavior`, `design-solution`, `plan-tasks` |
 | **execution** | `build-in-waves`, `build-by-story`, `build-inline`, `execute-common`, `test-first`, `root-cause`, `debug-remote`, `assess-observability`, `prove-claim`, `audit-trace`, **`load-subgraph`**, **`reconcile-features`**, `isolate-workspace`, `hold-stage` |
 | **review** | `inspect-change`, `polish-diff`, `vet-feedback`, `vet-source`, `speak-outer`, `review-invariants`, `/study-change`, `/brief-team`, `/select-review-sample` |

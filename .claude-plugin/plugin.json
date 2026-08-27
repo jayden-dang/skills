@@ -17,6 +17,7 @@
     "./skills/discovery/run-spike",
     "./skills/discovery/research",
     "./skills/discovery/pathfind",
+    "./skills/discovery/tour-system",
     "./skills/spec/design-solution",
     "./skills/spec/plan-tasks",
     "./skills/spec/specify-behavior",

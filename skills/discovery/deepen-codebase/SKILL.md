@@ -45,6 +45,7 @@ NEVER WRITE TRACKED PROJECT STATE. NEVER AUTO-INVOKE A USER-INVOKED SKILL.
 | `work-the-problem` | Multi-round problem tree + in-service teaching + carry-back — **theirs** when a frame-change question must close. You stay pure learning. |
 | `teach-pack` | Graded productions + durable workspace — **theirs**. Soft probe here; **name** `/teach-pack` when sticky proof is needed. |
 | `study-change` | One git-range HTML packet — **theirs**. Scope here is a *topic*. |
+| `tour-system` | System/capability learning tours + ledger — **theirs**. Soft-name when the ask is atlas/tour/journey over the whole product. |
 | `research` | External owning-source note — **sub-skill** for material F2/F3/F4 claims. |
 | `clarify-decisions` / `frame-change` | Product forks and ceremony — **theirs**. |
 | Translator / cheerleader | Understanding is entry; ownership of the model is the job. |

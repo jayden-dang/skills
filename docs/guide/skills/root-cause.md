@@ -68,11 +68,9 @@ Two moves matter when the system has depth:
 
 Write **3–5 ranked, falsifiable hypotheses before testing any** — a single hypothesis anchors you to the first plausible idea. Each needs a stated prediction: "if X is the cause, then changing Y makes the bug disappear." No statable prediction means it is a vibe — sharpen it or discard it. Show the ranked list to the user (they often re-rank it instantly), but don't block if they are away.
 
-Test the smallest hypothesis first, **one variable at a time** — never stack changes, because stacked changes hide which one worked and which one broke something new. A few instrumentation rules keep the search clean:
+Test the smallest hypothesis first, **one variable at a time** — never stack changes, because stacked changes hide which one worked and which one broke something new.
 
-- Prefer a debugger or REPL when available — one breakpoint beats ten logs.
-- Otherwise use targeted logs with a **unique prefix per probe** (e.g. `[DBG-x7q2]`) so cleanup is a single grep — never log-everything-and-grep.
-- Performance bugs are the exception: measure a baseline first (profiler, timing harness), then bisect, because logs mislead here.
+**Runtime inspection** is a discriminating experiment under Phase 3 (not a Phase 1 substitute). On a **local or dedicated** process with an existing red loop and minimal repro, prefer debugger / REPL / DAP (or DevTools/CDP for browser-only failures): use the hypothesis prediction and record inspection evidence (prediction, tool, commands, observation, confirms/falsifies/inconclusive). On a **shared deployed** environment, do not attach — stay on [`debug-remote`](debug-remote.md) boundaries and probe locally. Otherwise use targeted `[DBG-…]` logs. Perf/memory: baseline with profiler/sanitizer first. Attaching is not causal acceptance.
 
 A falsified hypothesis gets struck; move to the next, and don't pile a new fix on top of a failed one. Don't understand something? Say "I don't understand X" and investigate — never pretend and guess.
 
@@ -111,6 +109,8 @@ Keep investigation state independent from requested strength. Before authoritati
 | "Exit says state the confirmed root cause — that commit line is acceptance" | Exit records proposition + disposition status; only an eligible human accepts |
 | "Human disposition is ceremony" | Agent-authored authoritative acceptance is forbidden; the disposition request is the gate |
 | "Staff LGTM'd the narrative / ship the Exit" | Prose LGTM ≠ accept of one exact proposition against its support set |
+| "I attached the debugger, so the cause is confirmed" | Attach is an experiment; acceptance is still human disposition |
+| "Prod/staging — just lldb/exec to see locals" | Shared deployed envs stay on `debug-remote` read-only; probes start local |
 
 ## User signals — return to Phase 1
 

@@ -1,6 +1,6 @@
 ---
 name: root-cause
-version: 1.2.1
+version: 1.2.3
 description: >
   Use when anything behaves unexpectedly — a failing test, an error or
   exception, a crash, a reported bug, wrong output, a performance regression,
@@ -137,7 +137,39 @@ that artifact.
 
 Write 3–5 ranked hypotheses before testing any (a single hypothesis anchors you to the first plausible idea). Each must be falsifiable with a stated prediction: "if X is the cause, then changing Y makes the bug disappear". If you cannot state the prediction, it is a vibe — sharpen it or discard it. Show the ranked list to the user (they often re-rank it instantly); don't block if they're away.
 
-Test the smallest hypothesis first. ONE variable at a time — never stack changes. Instrument with a debugger/REPL when available (one breakpoint beats ten logs), else targeted logs with a unique prefix per probe (e.g. `[DBG-x7q2]`) so cleanup is one grep — never log-everything-and-grep. Performance bugs: measure a baseline first (profiler, timing harness), then bisect; logs mislead here. Don't understand something? Say "I don't understand X" and investigate — never pretend and guess.
+Test the smallest hypothesis first. ONE variable at a time — never stack changes.
+
+**Runtime inspection** — a discriminating experiment under this phase, not a
+substitute for Phase 1. Use the hypothesis's stated prediction. Attaching is
+not causal acceptance (see Causal disposition).
+
+WHEN the process under test is **local or a dedicated checkout** (red signal
+and minimal repro already exist): prefer a debugger, REPL, or DAP session
+over log spam — one breakpoint or watch beats ten prints. Browser-only
+failures may use DevTools/CDP the same way. Record:
+
+```markdown
+## Inspection evidence
+- Prediction: <from the hypothesis under test>
+- Tool: <debugger | REPL | DAP | DevTools/CDP | profiler | [DBG-…] log>
+- Commands: <literal>
+- Observation: <frame / locals / snapshot / paste>
+- Outcome: <confirms | falsifies | inconclusive>
+```
+
+WHEN the failure lives only on a **shared deployed** environment: do not
+`exec`/attach there — that boundary is `debug-remote`. Run Phase 3 probes on
+a local or dedicated copy, or stick to non-mutating evidence.
+
+OTHERWISE (no debugger available, or a log trail fits better): targeted logs
+with a unique prefix per probe (e.g. `[DBG-x7q2]`) so cleanup is one grep —
+never log-everything-and-grep.
+
+Performance or memory-class bugs: measure a baseline first (profiler,
+sanitizer, timing harness), then bisect; logs mislead here.
+
+Don't understand something? Say "I don't understand X" and investigate —
+never pretend and guess.
 
 Hypothesis falsified? Strike it, move to the next. Don't pile a new fix on top of a failed one.
 
@@ -217,6 +249,8 @@ same.
 | "Phases 1–3 are done; human disposition is ceremony this repo doesn't write" | The Iron Law forbids agent-authored authoritative acceptance; the disposition request is the written gate |
 | "Staff LGTM'd the narrative / ship the Exit" | Prose LGTM ≠ accept of one exact proposition against its support set |
 | "Rollback worked — upgrade to confirmed" | Mitigation success is operational; it does not promote causal strength |
+| "I attached the debugger, so the cause is confirmed" | Attach is an experiment; acceptance is still human disposition |
+| "Prod/staging — just lldb/exec to see locals" | Shared deployed envs stay on `debug-remote` read-only; probes start local |
 
 ## Red Flags — stop
 
@@ -224,6 +258,8 @@ same.
 - About to treat Phase 4 / Exit as human causal acceptance
 - About to promote causal strength because rollback or error rate recovered
 - About to skip the disposition request because "the skill used to say confirmed"
+- About to attach/exec a debugger on a shared deployed environment
+- About to treat "we used the debugger" as accepted cause
 
 ## User signals — return to Phase 1
 

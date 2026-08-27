@@ -82,6 +82,19 @@ No-op / duplication / hierarchy pass (no new failure class):
 Re-verify after v1.2.1 (grok-4.5): S1 **B**, S2 **B** — disposition gate held;
 Phase 4 sequencing (test → accept → fix) cited correctly.
 
+## Runtime inspection wording (v1.2.2 → v1.2.3)
+
+v1.2.2: Phase 3 debugger/REPL/DAP as conditional discriminating experiment
+(local/dedicated, prediction + pasted state, no shared-env attach, attach ≠
+acceptance). Research Option B. No new gate.
+
+v1.2.3 author-skills quality pass (patch only):
+
+- Removed defensive meta ("not a new gate").
+- Split WHEN local / WHEN shared-deployed / OTHERWISE logs (clear predicates).
+- Inspection evidence → REQUIRED markdown slots (form match for omit-shape).
+- Guide rationalizations synced for attach rows.
+
 ## Trigger queries
 
 Both models, closed list including neighbors:

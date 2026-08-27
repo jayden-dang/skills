@@ -55,10 +55,10 @@ Do not invent a second identifier when a CODE is available.
 | `design-review.md` | Design independent review |
 | `plan-review.md` | Plan independent review |
 | `acceptance.md` | validate-feature ledger |
-| `review-product-flow.json` | Product-flow run file |
-| `review-product-flow.html` | Rendered guide |
-| `review-product-flow-report.md` | Walkthrough report |
-| `vet-product-flow.md` | Vet product flow report |
+| `flow-guide.json` | Product-flow run file |
+| `flow-guide.html` | Rendered guide |
+| `flow-guide-report.md` | Walkthrough report |
+| `vet-flow-guide.md` | Vet flow guide report |
 | `teach-build.html` | Journey + operation teach packet (`/teach-build`) |
 
 Prefer these fixed basenames. Do not scatter `<slug>-scan.md` at the bare `.skills/` root.

@@ -8,7 +8,7 @@
 | **Invocation** | model-invocable (loaded by the execute family; do not start here) |
 | **Reads** | `docs/agents/issue-tracker.md` when present; `.skills/<CODE>/progress.md` |
 | **Writes** | Close-branch notes and `.skills/<CODE>/close-receipt.md` |
-| **Calls** | [`inspect-change`](inspect-change.md), [`polish-diff`](polish-diff.md), [`validate-feature`](validate-feature.md), [`review-product-flow`](review-product-flow.md), [`land-branch`](land-branch.md) |
+| **Calls** | [`inspect-change`](inspect-change.md), [`polish-diff`](polish-diff.md), [`validate-feature`](validate-feature.md), [`write-flow-guide`](write-flow-guide.md), [`land-branch`](land-branch.md) |
 | **Called by** | [`build-in-waves`](build-in-waves.md), [`build-by-story`](build-by-story.md), [`build-inline`](build-inline.md) |
 
 ## What it is

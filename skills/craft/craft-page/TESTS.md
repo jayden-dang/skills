@@ -128,8 +128,8 @@ the cache miss", "flowchart of the retry decision", "the landing page
 looks generic", "pick a palette and type for this report".
 
 **should-not-fire:** embed variants in the running app → `run-spike` /
-`UI.md`; cases YAML + `review-product-flow render` (default) →
-`review-product-flow`; mermaid in chat for deepen → `deepen-codebase`;
+`UI.md`; cases YAML + `flow-guide render` (default) →
+`write-flow-guide`; mermaid in chat for deepen → `deepen-codebase`;
 pure API fact → `research`.
 
 ## Neighbor skills
@@ -140,4 +140,4 @@ pure API fact → `research`.
   use craft-page for the figure job.
 - `brief-team` — no restyle; WHEN `figure_html` warranted, same figure
   branch.
-- `review-product-flow` — default still forbids page craft.
+- `write-flow-guide` — default still forbids page craft.

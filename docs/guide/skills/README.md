@@ -84,13 +84,13 @@ The triad. Each file approved before the next is written.
 | [`study-change`](study-change.md) | `/study-change` | Outbound self-check: Background → Intuition → Code → Quiz HTML packet |
 | [`teach-build`](teach-build.md) | `/teach-build` | Journey + operation teach packet: deviations retold, runtime map beyond the diff, `.skills/<CODE>/teach-build.html` |
 | [`brief-team`](brief-team.md) | `/brief-team` | Team-shared pitch+map HTML under `docs/explainers/` (no quiz, never a ship gate) |
-| [`select-review-sample`](select-review-sample.md) | `/select-review-sample` | Bounded human sample over a range, plus the explicit residue |
+| [`select-sample`](select-sample.md) | `/select-sample` | Bounded human sample over a range, plus the explicit residue |
 | [`polish-diff`](polish-diff.md) | model | Behavior-preserving quality pass over a diff before merge |
 | [`vet-feedback`](vet-feedback.md) | model | Anti-sycophancy. Prove Claim every claim before implementing or replying |
 | [`vet-source`](vet-source.md) | model | Fetched / tool / third-party text that instructs: keep the original job, drop the orders |
 | [`speak-outer`](speak-outer.md) | model | Person-facing text: outer register, no process machinery |
-| [`review-invariants`](review-invariants.md) | model | Advisory, LLM-judged invariant conformance — the semantic counterpart to `audit-trace` |
-| [`review-ui`](review-ui.md) | model | Live, screenshot-backed design review of UI-touching diffs — three viewports, states, contrast, token conformance |
+| [`inspect-invariants`](inspect-invariants.md) | model | Advisory, LLM-judged invariant conformance — the semantic counterpart to `audit-trace` |
+| [`inspect-ui`](inspect-ui.md) | model | Live, screenshot-backed design review of UI-touching diffs — three viewports, states, contrast, token conformance |
 
 ## acceptance
 
@@ -101,9 +101,9 @@ Green units prove assertions pass. These prove the feature works.
 | [`validate-feature`](validate-feature.md) | model | The orchestrator. Derives an ID-keyed checklist and dispatches by surface |
 | [`validate-api`](validate-api.md) | model | Drives the running backend as a real client. Promotes checks to tagged tests |
 | [`validate-ui`](validate-ui.md) | model | Drives the frontend in real Chromium via Playwright. Commits the specs |
-| [`review-product-flow`](review-product-flow.md) | model | The manual sibling. Builds a persistent, checkable HTML artifact |
-| [`vet-product-flow`](vet-product-flow.md) | model | Isolated implementation-surface judgment before dogfood; missing-situation findings |
-| [`run-product-walkthrough`](run-product-walkthrough.md) | model | Executes an existing review-product-flow guide in a real browser; run ledger with FE+BE evidence |
+| [`write-flow-guide`](write-flow-guide.md) | model | The manual sibling. Builds a persistent, checkable HTML artifact |
+| [`vet-flow-guide`](vet-flow-guide.md) | model | Isolated implementation-surface judgment before dogfood; missing-situation findings |
+| [`run-flow-guide`](run-flow-guide.md) | model | Executes an existing guide from write-flow-guide in a real browser; run ledger with FE+BE evidence |
 
 ## craft
 

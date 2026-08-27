@@ -2,6 +2,25 @@
 
 ## Unreleased
 
+### Rename: 6 skills for naming consistency (v2.0.0 each)
+
+`review-invariants`, `review-ui`, and `select-review-sample` (review) and
+`review-product-flow`, `vet-product-flow`, and `run-product-walkthrough`
+(acceptance) used the word "review" for two unrelated meanings across
+categories, and the product-flow trio spelled its shared artifact three
+different ways ("product-flow" / "product-walkthrough" / "review-product-flow").
+
+Renamed to `inspect-invariants` and `inspect-ui` — both are lanes `inspect-change`
+invokes, and now read as its family — `select-sample` (drops the redundant
+"review", already implied by the `review/` bucket), and `write-flow-guide` →
+`vet-flow-guide` → `run-flow-guide`, a pipeline that now shares one artifact
+noun ("flow guide") end to end. The CLI script and its run-file/report/pid
+naming convention (`scripts/review-product-flow` → `scripts/flow-guide`,
+`*-review-product-flow.json` → `*-flow-guide.json`) and the `VPF-N` finding-ID
+prefix (→ `VFG-N`) moved with it. Every cross-reference across `skills/`,
+`docs/guide/`, `AGENTS.md`, `README.md`, and the marketplace manifests was
+updated; no behavior changed.
+
 ### `land-branch` v3.0.0 — thin exact-revision landing (2026-08-25)
 
 Landing no longer replays review, verification, trace, and acceptance already
@@ -21,8 +40,8 @@ worktree cleanup. Minimal RED/GREEN evidence is recorded in
 ### `draft-ux` — decide how a surface behaves before it is built (2026-08-25)
 
 Nothing in the chain decided an interaction. `draft-ui` locks what a screen looks like and
-explicitly freezes its variants (*"stub any mutation"*); `review-ui`, `validate-ui`, and
-`review-product-flow` all run after the build. So the shape of the interaction was settled by
+explicitly freezes its variants (*"stub any mutation"*); `inspect-ui`, `validate-ui`, and
+`write-flow-guide` all run after the build. So the shape of the interaction was settled by
 whichever agent happened to implement it. Measured: handed identical Approved requirements, an
 identical component kit, and the same locked look, two runs shipped **opposite** flows — one
 removed the rows on click with a six-second undo, the other froze the list until the call
@@ -39,8 +58,8 @@ The gate cost three RED/GREEN iterations. Each one closed a rationalization the 
 over verbatim: *"you told me to decide, not hand you a menu"*, then *"I wrote the deviation into
 Amendments, so it stays overrulable"*, then *"you're not available… so I wrote it into the brief
 now so the implementer has it regardless."* The absent user is now named as the case the rule
-exists for. Trigger test 18/18 against `draft-ui`, `review-ui`, `run-spike`, `validate-ui`,
-`review-product-flow`, `craft-page`, `design-solution`, `root-cause`, `amend-feature`.
+exists for. Trigger test 18/18 against `draft-ui`, `inspect-ui`, `run-spike`, `validate-ui`,
+`write-flow-guide`, `craft-page`, `design-solution`, `root-cause`, `amend-feature`.
 
 Three things the baseline did **not** fail at were left unwritten: a component-reuse ladder, a
 focus-and-keyboard slot, and a per-stack adapter matrix (htmx / MSW / Storybook). The research
@@ -339,7 +358,7 @@ the pack, not EARS IDs.
 
 - **`publish-issues`** — publish one feature issue; clarify ROAD vs CODE ownership
 - Execute-family setup: require **polish-diff** and auto-vet via setup todos
-  (`build-in-waves` / `build-by-story` / `build-inline` + review-product-flow path)
+  (`build-in-waves` / `build-by-story` / `build-inline` + write-flow-guide path)
 
 ### Packaging
 
@@ -392,9 +411,9 @@ not frozen).
 
 #### Acceptance / review
 
-- **review-product-flow** run file v2 + serve/guide sync (DFSYNC) and coverage taxonomy
-- **`run-product-walkthrough`** — agent-driven guide execution with FE+BE evidence
-- **`vet-product-flow`** — isolation judgment / missing-situation map before dogfood
+- **write-flow-guide** run file v2 + serve/guide sync (DFSYNC) and coverage taxonomy
+- **`run-flow-guide`** — agent-driven guide execution with FE+BE evidence
+- **`vet-flow-guide`** — isolation judgment / missing-situation map before dogfood
 - **`brief-team`**, **`study-change`**, decision-record (DREC) path at ship boundaries
 
 #### Project / system docs
@@ -469,16 +488,16 @@ encodes a preferred choice. Explicit train→ship only via neutral
 
 ## 0.3.0 — 2026-07-31
 
-### Feature: one review-product-flow run file, plus an optional live guide (`DFSYNC`)
+### Feature: one write-flow-guide run file, plus an optional live guide (`DFSYNC`)
 
-A review-product-flow run used to be three files that did not know about each other — the
+A write-flow-guide run used to be three files that did not know about each other — the
 cases YAML, a rendered HTML snapshot of it, and a markdown ledger where the
 verdicts actually lived. A person holding the guide could not see what the agent
 had proven, and a person testing by hand had nowhere to put what they found.
 
-**Breaking.** `.skills/<slug>-review-product-flow.cases.yaml` and
-`.skills/<slug>-review-product-flow-run.md` are replaced by a single
-`.skills/<slug>-review-product-flow.json` (`version: 2`). There is no migration path and no
+**Breaking.** `.skills/<slug>-write-flow-guide.cases.yaml` and
+`.skills/<slug>-write-flow-guide-run.md` are replaced by a single
+`.skills/<slug>-flow-guide.json` (`version: 2`). There is no migration path and no
 v1 reader: `.skills/` is git-ignored scratch, so delete the old files and
 re-author. Passing a `.yaml`/`-run.md` path now gives a named error instead of a
 confusing parse failure.
@@ -490,9 +509,9 @@ confusing parse failure.
 - **Human ticks are recorded, never authoritative.** Each case carries two
   field spaces that share no key name: `run` (the agent's verdict, `saw`,
   `server`) and `human` (`checked`, `at`, `comment`). Nothing promotes one into
-  the other, `review-product-flow next` ignores `human` entirely, and the HTTP surface
+  the other, `write-flow-guide next` ignores `human` entirely, and the HTTP surface
   rejects any attempt to write a verdict. See ADR 0006.
-- **`review-product-flow serve`** binds `127.0.0.1:8787` and serves a guide that follows the
+- **`flow-guide serve`** binds `127.0.0.1:8787` and serves a guide that follows the
   run and accepts the person's ticks. It is optional by construction: `render`
   bakes current verdicts into the HTML, so a guide opened by double-click is
   correct with nothing running, and says on the page that it is a render-time
@@ -505,10 +524,10 @@ confusing parse failure.
   a field-scoped patch, and `os.replace`.
 
 Skill bodies, `references/cases-schema.md`, and the human guides are rewritten
-for the run file; `run-product-walkthrough` now ends a run by asking whether to stop a
+for the run file; `run-flow-guide` now ends a run by asking whether to stop a
 server it started.
 
-Contract: `docs/specs/2026-07-30-review-product-flow-sync/`.
+Contract: `docs/specs/2026-07-30-write-flow-guide-sync/`.
 
 ## 0.2.7 — 2026-07-30
 
@@ -569,41 +588,41 @@ flow.
 
 ## 0.2.4 — 2026-07-27
 
-### `review-product-flow` / `run-product-walkthrough` — cases YAML + CLI ledger (no guide ticks for agents)
+### `write-flow-guide` / `run-flow-guide` — cases YAML + CLI ledger (no guide ticks for agents)
 
 Stops agent progress living in HTML `localStorage` (Chrome ticks burned tokens)
-and stops re-authoring full CSS per review-product-flow pass.
+and stops re-authoring full CSS per write-flow-guide pass.
 
-- **Cases SSOT:** `.skills/<slug>-review-product-flow.cases.yaml` with required slots
+- **Cases SSOT:** `.skills/<slug>-write-flow-guide.cases.yaml` with required slots
   (`id`, `req`, `kind`, `title`, `setup`, `try`, `expect`, `backend`)
-- **Shell:** `skills/acceptance/review-product-flow/shell/guide.html` — theme-aware, kind
+- **Shell:** `skills/acceptance/write-flow-guide/shell/guide.html` — theme-aware, kind
   chips, human-only localStorage ticks
-- **CLI:** `skills/acceptance/review-product-flow/scripts/review-product-flow` —
+- **CLI:** `skills/acceptance/write-flow-guide/scripts/flow-guide` —
   `list` / `show` / `init` / `status` / `next` / `mark` / `render` / `report`
-- **`review-product-flow` skill:** write cases → `render`; `craft-page` opt-in only
-- **`run-product-walkthrough` skill:** Iron Law adds *progress lives in the ledger*; browser
+- **`write-flow-guide` skill:** write cases → `render`; `craft-page` opt-in only
+- **`run-flow-guide` skill:** Iron Law adds *progress lives in the ledger*; browser
   only for the product under test; `mark` enforces `saw` + `server`
-- **Contract:** `docs/specs/2026-07-27-review-product-flow-cli/contract.md`
+- **Contract:** `docs/specs/2026-07-27-write-flow-guide-cli/contract.md`
 - **Tests:** `tests/test_dogfood_cli.py`; scenarios in
-  `tests/run-product-walkthrough/scenarios-cli.md`
+  `tests/run-flow-guide/scenarios-cli.md`
 
 ### Packaging
 
 - Engineer Pack version **0.2.4** (skill/docs + scripts; plugin path list
-  unchanged — scripts ship inside the review-product-flow skill folder)
+  unchanged — scripts ship inside the write-flow-guide skill folder)
 
 ## 0.2.3 — 2026-07-26
 
-### `review-product-flow` coverage gate + case taxonomy
+### `write-flow-guide` coverage gate + case taxonomy
 
-Stops happy-only review-product-flow guides: each ability area needs non-happy cases (edge /
+Stops happy-only guides from write-flow-guide: each ability area needs non-happy cases (edge /
 error / nonbehavior / persist) or a greppable coverage exception.
 
 - **Taxonomy** on every row: `data-kind` = `happy` \| `edge` \| `error` \|
   `nonbehavior` \| `persist` \| `visual` \| `journey`
 - **Coverage rules** replace "≥1 case per requirement ID" as the sole bar
 - **Self-check** before hand-off: count kinds per section
-- **`run-product-walkthrough`**: ledger carries `kind`; no demo-only happy-path subset
+- **`run-flow-guide`**: ledger carries `kind`; no demo-only happy-path subset
 - Guide + review-and-acceptance docs updated
 
 ### Packaging
@@ -612,19 +631,19 @@ error / nonbehavior / persist) or a greppable coverage exception.
 
 ## 0.2.2 — 2026-07-26
 
-### New: `run-product-walkthrough` + machine-drivable review-product-flow guides
+### New: `run-flow-guide` + machine-drivable guides from write-flow-guide
 
-Agent-driven execution of an existing review-product-flow HTML guide in a real browser, with
+Agent-driven execution of an existing write-flow-guide HTML guide in a real browser, with
 paired front-end and backend evidence, a resumable run ledger, and a fix loop
 through `root-cause`.
 
-- **New skill** `skills/acceptance/run-product-walkthrough/` — model-invocable; outcome is
+- **New skill** `skills/acceptance/run-flow-guide/` — model-invocable; outcome is
   an evidence-backed run ledger (pass / fail / blocked per case), not committed
-  e2e specs (`validate-ui`) and not guide authoring (`review-product-flow`)
-- **`review-product-flow` upgrade** — every case row carries `data-case`, `data-req`,
+  e2e specs (`validate-ui`) and not guide authoring (`write-flow-guide`)
+- **`write-flow-guide` upgrade** — every case row carries `data-case`, `data-req`,
   `data-backend`, `data-setup`; guide always written to a known file path;
   descriptions disambiguate author vs drive
-- **RED/GREEN** recorded under `tests/run-product-walkthrough/` (baselines on `grok-4.5`)
+- **RED/GREEN** recorded under `tests/run-flow-guide/` (baselines on `grok-4.5`)
 - **Inventory:** plugin + marketplace, guide page, AGENTS/README skill counts,
   See also links from acceptance neighbors
 

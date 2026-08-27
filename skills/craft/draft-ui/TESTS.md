@@ -44,12 +44,12 @@ the brief. The winner's draft code was deleted, not promoted.
 
 ## Trigger test (2026-08-18, sonnet)
 
-12 routing queries against run-spike, craft-page, review-ui, design-solution,
+12 routing queries against run-spike, craft-page, inspect-ui, design-solution,
 frame-change: **12/12** — should-fire ("what should X look like", "variants
 and let me pick", "mock both up for real", "explore design directions",
 "clickable takes of the empty state") all reached draft-ui; traps landed
 right (logic spike → run-spike; distinctive landing page and HTML report →
-craft-page; design-review a branch and mobile breakage → review-ui; brand-new
+craft-page; design-review a branch and mobile breakage → inspect-ui; brand-new
 feature → frame-change; design.md for approved reqs → design-solution).
 
 ## Fresh-eyes fix (v1.0.1, 2026-08-18, sonnet reviewer)

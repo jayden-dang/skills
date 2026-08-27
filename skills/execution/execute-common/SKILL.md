@@ -162,13 +162,13 @@ After the last task (waves / inline) or last unlocked unit (story):
 5. **Sample — observable conditional.** Evaluate the **sample
    predicate** below. IF any clause is true → write `sample: required` on
    the Close notes. IF no clause is true → write
-   `skip: no sample predicate`. Do not start `/select-review-sample`.
+   `skip: no sample predicate`. Do not start `/select-sample`.
    Silent skip (no notes line) is still a red flag.
    "Inspect was clean" and "always name so we cannot forget" are **not**
    predicates.
 6. **Product walk — observable conditional.** Evaluate the **walk
    predicate** below. IF any clause is true → REQUIRED SUB-SKILL: use
-   `review-product-flow` (it owns vet + naming the walkthrough). IF no
+   `write-flow-guide` (it owns vet + naming the walkthrough). IF no
    clause is true → do not open the product-walk trio.
 7. **Close receipt.** Load `close-receipt.md` and follow its producer recipe.
    Issue it only after the final mutation and only from evidence bound to that
@@ -207,7 +207,7 @@ True when **any** of:
 
 True when any of: the user asked for a sample or attention allocation; branch
 diff paths hit the B1 defaults in
-`skills/review/select-review-sample/references/signals.md` extended by project
+`skills/review/select-sample/references/signals.md` extended by project
 `Risk globs`; or the branch diff lists more than 15 files. "Always name so we
 cannot forget" is not an ask.
 
@@ -219,7 +219,7 @@ True when **any** of:
 - `validate-feature` reports neither-API-nor-UI
 - an approved requirement uses visual / feel / eyeball language the
   automated surfaces cannot judge
-- `review-ui`'s report (via `inspect-change`'s UI lane) lists any
+- `inspect-ui`'s report (via `inspect-change`'s UI lane) lists any
   `needs-human-eyes` item
 - the branch adds a **new** user-facing screen or visual surface — not only
   changes within existing ones
@@ -235,7 +235,7 @@ True when **any** of:
   branch)
 - Silent-skip polish (no written `skip: no polish predicate`)
 - Silent-skip sample (no written `sample: required` or `skip: no sample predicate`)
-- Start `/select-review-sample` in this skill
+- Start `/select-sample` in this skill
 - Treat EOD, demo, or "inspect was clean" as a polish predicate
 - Move to land-branch with the Close branch todo still open
 - Write a partial receipt or bind it to evidence from before the last mutation

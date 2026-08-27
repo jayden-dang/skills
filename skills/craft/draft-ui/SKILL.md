@@ -9,7 +9,7 @@ description: Use when a screen or feature's look and feel needs deciding with
   running app, or standalone pages when no app exists), a review-and-amend
   loop with the user, and a locked ui-brief.md that design-solution's UI
   design section lifts instead of re-deciding. Not for judging an already
-  built diff (review-ui), logic or state spikes (run-spike), or a standalone
+  built diff (inspect-ui), logic or state spikes (run-spike), or a standalone
   document page (craft-page).
 ---
 

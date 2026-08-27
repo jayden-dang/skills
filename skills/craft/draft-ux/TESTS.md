@@ -123,8 +123,8 @@ call"* — with the moment list visible in the report.
 
 ## Trigger test (2026-08-25, sonnet)
 
-18 routing queries against `draft-ui`, `craft-page`, `review-ui`, `run-spike`,
-`validate-ui`, `review-product-flow`, `design-solution`, `root-cause`,
+18 routing queries against `draft-ui`, `craft-page`, `inspect-ui`, `run-spike`,
+`validate-ui`, `write-flow-guide`, `design-solution`, `root-cause`,
 `amend-feature`: **18/18**. All 9 should-fire queries reached `draft-ux`
 ("should the message appear right away or wait for the server", "undo-vs-confirm
 before we build it", "what should the app do if the upload takes 20 seconds",

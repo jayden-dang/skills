@@ -37,7 +37,7 @@ docs/agents/                   # per-repo config, written once by configure-repo
 
 The three files are written in order, each gated on the user's approval of the *previous file*, not on conversational agreement.
 
-**`requirements.md`** — the durable source of intent. A feature code, a `Status:` line, numbered stories, and [EARS](../resources/ears.md) acceptance criteria carrying [hierarchical IDs](requirement-ids.md). Guard criteria (`SHALL CONTINUE TO`) protect existing behavior the feature touches. An explicit **Out of Scope** section defends against scope creep during implementation and review — and it is read again later by `inspect-change` and `review-product-flow`.
+**`requirements.md`** — the durable source of intent. A feature code, a `Status:` line, numbered stories, and [EARS](../resources/ears.md) acceptance criteria carrying [hierarchical IDs](requirement-ids.md). Guard criteria (`SHALL CONTINUE TO`) protect existing behavior the feature touches. An explicit **Out of Scope** section defends against scope creep during implementation and review — and it is read again later by `inspect-change` and `write-flow-guide`.
 
 **`design.md`** — how the approved requirements get satisfied. Every `###` architecture section carries a `Satisfies: CODE-N.M, CODE-N.M` line. A section with no `Satisfies:` line is either infrastructure (and says so) or does not belong in this feature.
 
@@ -117,7 +117,7 @@ Written once by [`configure-repo`](../skills/configure-repo.md) and then read by
 
 | File | Contents | Read by |
 |---|---|---|
-| `project.md` | verify commands (typecheck/lint/unit/e2e), the single-test-file pattern, test annotation conventions per layer, release steps, `## Run locally (dev)`, the audit-trace check's test globs + ignore list | `test-first`, `prove-claim`, `build-in-waves`, `isolate-workspace`, `cut-release`, `acceptance-*`, `review-product-flow`, `realign-spec`, the [audit-trace check](../resources/scripts.md#the-trace-check) |
+| `project.md` | verify commands (typecheck/lint/unit/e2e), the single-test-file pattern, test annotation conventions per layer, release steps, `## Run locally (dev)`, the audit-trace check's test globs + ignore list | `test-first`, `prove-claim`, `build-in-waves`, `isolate-workspace`, `cut-release`, `acceptance-*`, `write-flow-guide`, `realign-spec`, the [audit-trace check](../resources/scripts.md#the-trace-check) |
 | `issue-tracker.md` | tracker choice, operations, PR surface, **Publish unit** (default feature), **Program sync** (default local), close linkage | `triage`, `plan-tasks`, `land-branch`, `cut-release` |
 | `triage-labels.md` | canonical role → this repo's label strings | `triage` |
 

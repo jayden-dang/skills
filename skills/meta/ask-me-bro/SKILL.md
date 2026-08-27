@@ -16,7 +16,7 @@ row. That table is the one home — do not invent a parallel list here.
 
 **How to hand off:** if the entry point is model-invocable (`frame-change`,
 `frame-change`, `amend-feature`, `root-cause`, `validate-feature`,
-`review-product-flow`, `reroute-plan`, `realign-spec`, `plan-milestones`),
+`write-flow-guide`, `reroute-plan`, `realign-spec`, `plan-milestones`),
 invoke it and let it take over. If it is a user-invoked skill (`triage`,
 `publish-issues`, `scan-architecture`, `configure-repo`, `bootstrap-repo`,
 `define-project`, `refresh-roadmap-status`, `assess-milestone`,

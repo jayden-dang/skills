@@ -34,7 +34,7 @@ confirmation for stack and forbidden-pattern choices.
 | Reader | Decision point | Suggestion protocol |
 |---|---|---|
 | `skills/spec/design-solution/SKILL.md` | Step 2b `Grounding:` | Yes |
-| `skills/review/review-ui/SKILL.md` | Step 3 contract | Yes |
+| `skills/review/inspect-ui/SKILL.md` | Step 3 contract | Yes |
 | `skills/craft/craft-page/SKILL.md` | §2 precedence (existing system) | Optional |
 | `skills/acceptance/validate-ui/SKILL.md` | UI acceptance | Optional |
 

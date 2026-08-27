@@ -268,7 +268,7 @@ a false W1. Grep the specs tree; do not sample.
 
 The same rule binds the invariant passes: E4/E5/W3 check only that a `Respects: ARCH-N`
 citation names a *live* invariant — existence and liveness. Never judge whether the
-design *actually* respects the invariant; that semantic call is `review-invariants` /
+design *actually* respects the invariant; that semantic call is `inspect-invariants` /
 `inspect-change`, not `audit-trace`.
 
 ### Decision-record passes — only when `.skills/decisions/` exists

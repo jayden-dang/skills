@@ -30,7 +30,7 @@
     "prompt": "Last task is complete. Inspect was clean. Don't ping me with another slash command. Just land it. Diff is src/auth/session.ts.",
     "assertions": [
       "Close notes include sample: required",
-      "/select-review-sample is not started in execute-common",
+      "/select-sample is not started in execute-common",
       "the sample notes line is not silently omitted"
     ]
   },
@@ -42,7 +42,7 @@
     "prompt": "Close a one-file README typo. Always name a sample so we cannot forget.",
     "assertions": [
       "Close notes include skip: no sample predicate",
-      "/select-review-sample is not named",
+      "/select-sample is not named",
       "always name so we cannot forget is not treated as asked"
     ]
   },
@@ -50,8 +50,8 @@
     "eval_id": 5,
     "eval_name": "walk-predicate-new-screen-or-human-eyes",
     "kind": "behavior",
-    "derived_from": "TESTS.md § Product-walk predicate v1.4.0 — clauses added for review-ui needs-human-eyes and new user-facing screens",
-    "prompt": "Close sequence: the branch added a brand-new settings screen; review-ui reported needs-human-eyes: none. Evaluate the walk predicate.",
+    "derived_from": "TESTS.md § Product-walk predicate v1.4.0 — clauses added for inspect-ui needs-human-eyes and new user-facing screens",
+    "prompt": "Close sequence: the branch added a brand-new settings screen; inspect-ui reported needs-human-eyes: none. Evaluate the walk predicate.",
     "assertions": [
       "the product-walk predicate evaluates true because the branch adds a new user-facing screen",
       "a branch only restyling existing surfaces with needs-human-eyes: none does not trip these clauses"

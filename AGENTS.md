@@ -107,7 +107,7 @@ Agents MUST NOT auto-invoke these — name them for the user to run (`/triage`,
 `ask-me-bro`, `author-skills`, `teach-pack` · `bootstrap-repo`, `configure-repo` ·
 `deepen-codebase`, `forge-prompt`, `interpret-session`, `pathfind`, `tour-system`,
 `work-the-problem` ·
-`brief-team`, `select-review-sample`, `study-change`, `teach-build` · `assess-pivot-impact`,
+`brief-team`, `select-sample`, `study-change`, `teach-build` · `assess-pivot-impact`,
 `define-project`, `define-system-doc` · `cut-release` · `assess-milestone`,
 `map-features`, `publish-issues`, `record-debt`, `refresh-roadmap-status`,
 `scan-architecture`, `triage`, `write-handoff` · Personal OS: `life-setup`.
@@ -120,7 +120,7 @@ the description matches the situation. Everything not listed above, including
 `isolate-workspace`, `hold-stage`, `reconcile-features`, `inspect-change`, `polish-diff`, `vet-feedback`,
 `vet-source`,
 `speak-outer`,
-`review-invariants`, the acceptance suite, `land-branch`,
+`inspect-invariants`, the acceptance suite, `land-branch`,
 `record-verdict`, `amend-feature`, `reroute-plan`, `realign-spec`, and
 `plan-milestones`.
 
@@ -138,10 +138,10 @@ use \`x\`` is for model-invocable targets only — pointing it at a
 **Two reachability paths, and one of them is fragile.** A skill is reached either
 by a `REQUIRED SUB-SKILL` hand-off or by its description matching what the user
 said. Eight model-invocable skills have no `REQUIRED SUB-SKILL` caller —
-`amend-feature`, `vet-feedback`, `vet-source`, `speak-outer`, `hold-stage`, `run-product-walkthrough`,
+`amend-feature`, `vet-feedback`, `vet-source`, `speak-outer`, `hold-stage`, `run-flow-guide`,
 `draft-ux` (plus hook-injected `gate-session`). `reconcile-features` is reached from
 `frame-change` (reverse-track predicate) and `inspect-change` step 1b.
-`review-product-flow` is reached from
+`write-flow-guide` is reached from
 `prove-claim` (alternative to `validate-feature`) and from the execute-family
 close sequence when a walk predicate holds. The remaining entry points fire
 on what the user said, which makes their descriptions the only thing
@@ -412,8 +412,8 @@ Can't tick a box? The work is not done.
 | **discovery** (11) | `frame-change` (m), `clarify-decisions` (m), `research` (m), `run-spike` (m), `define-domain` (m), `forge-prompt` (U), `pathfind` (U), `interpret-session` (U), `deepen-codebase` (U), `tour-system` (U), `work-the-problem` (U) |
 | **spec** (3) | `specify-behavior` (m), `design-solution` (m), `plan-tasks` (m) |
 | **execution** (14) | `build-in-waves` (m), `build-by-story` (m), `build-inline` (m), `execute-common` (m), `test-first` (m), `root-cause` (m), `debug-remote` (m), `assess-observability` (m), `prove-claim` (m), `audit-trace` (m), `load-subgraph` (m), `reconcile-features` (m), `isolate-workspace` (m), `hold-stage` (m) |
-| **review** (11) | `inspect-change` (m), `polish-diff` (m), `vet-feedback` (m), `vet-source` (m), `speak-outer` (m), `review-invariants` (m), `review-ui` (m), `study-change` (U), `teach-build` (U), `brief-team` (U), `select-review-sample` (U) |
-| **acceptance** (6) | `validate-feature` (m), `validate-api` (m), `validate-ui` (m), `review-product-flow` (m), `vet-product-flow` (m), `run-product-walkthrough` (m) |
+| **review** (11) | `inspect-change` (m), `polish-diff` (m), `vet-feedback` (m), `vet-source` (m), `speak-outer` (m), `inspect-invariants` (m), `inspect-ui` (m), `study-change` (U), `teach-build` (U), `brief-team` (U), `select-sample` (U) |
+| **acceptance** (6) | `validate-feature` (m), `validate-api` (m), `validate-ui` (m), `write-flow-guide` (m), `vet-flow-guide` (m), `run-flow-guide` (m) |
 | **craft** (3) | `craft-page` (m), `draft-ui` (m), `draft-ux` (m) |
 | **ship** (3) | `land-branch` (m), `record-verdict` (m), `cut-release` (U) |
 | **track** (11) | `amend-feature` (m), `reroute-plan` (m), `realign-spec` (m), `triage` (U), `record-debt` (U), `refresh-roadmap-status` (U), `assess-milestone` (U), `scan-architecture` (U), `map-features` (U), `write-handoff` (U), `publish-issues` (U) |

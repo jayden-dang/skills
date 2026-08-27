@@ -8,7 +8,7 @@
 | **Invocation** | user-invoked — run as `/ask-me-bro` (the frontmatter sets `disable-model-invocation: true`, so the agent can name it but cannot auto-invoke it) |
 | **Reads** | the user's situation and what specs already exist |
 | **Writes** | nothing — it produces a routing decision, not an artifact |
-| **Calls** | invokes the model-invocable entry point it lands on ([`frame-change`](frame-change.md), [`root-cause`](root-cause.md), [`validate-feature`](validate-feature.md), [`review-product-flow`](review-product-flow.md)); names user-invoked ones ([`triage`](triage.md), [`scan-architecture`](scan-architecture.md), [`configure-repo`](configure-repo.md), [`bootstrap-repo`](bootstrap-repo.md), [`write-handoff`](write-handoff.md), [`cut-release`](cut-release.md), [`pathfind`](pathfind.md)) for the user to run |
+| **Calls** | invokes the model-invocable entry point it lands on ([`frame-change`](frame-change.md), [`root-cause`](root-cause.md), [`validate-feature`](validate-feature.md), [`write-flow-guide`](write-flow-guide.md)); names user-invoked ones ([`triage`](triage.md), [`scan-architecture`](scan-architecture.md), [`configure-repo`](configure-repo.md), [`bootstrap-repo`](bootstrap-repo.md), [`write-handoff`](write-handoff.md), [`cut-release`](cut-release.md), [`pathfind`](pathfind.md)) for the user to run |
 | **Called by** | [`gate-session`](gate-session.md) (names it when the right flow is unclear) |
 
 ## When it fires

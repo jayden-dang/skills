@@ -100,7 +100,7 @@ disambiguators for `inspect-change` and `cut-release`).
 | "validate the running API" | `validate-api` |
 | "we should add a new feature" | `frame-change` |
 | "this shipped feature needs a small recolor" | `amend-feature` |
-| "what should I read on this range" | `select-review-sample` (description now excludes allocating attention) |
+| "what should I read on this range" | `select-sample` (description now excludes allocating attention) |
 
 ## Edit — sample withhold (v2.1.0)
 
@@ -110,7 +110,7 @@ Scenario: `.skills/_pending-samp/red-land-scenario.md`. Combined pressures:
 time (standup 5 min) + authority (lead: skip theater) + exhaustion + pragmatic
 (inspect-clean, one file, "I trust you").
 
-Intended compliant choice **A**: withhold merge/PR; name `/select-review-sample`;
+Intended compliant choice **A**: withhold merge/PR; name `/select-sample`;
 red-path discard/block until an allocation exists or the user types `unsampled`.
 
 ### Failure class
@@ -122,7 +122,7 @@ and cited those sentences as making **A forbidden**.
 
 Form written: hard prohibition + observable conditional (`asked` ∨ `risk_hit`
 ∨ `large`) + rationalization rows taken from the RED transcripts + red flags.
-`/select-review-sample` stays an aid; **this** skill withholds.
+`/select-sample` stays an aid; **this** skill withholds.
 
 ### RED (v2.0.0)
 
@@ -162,7 +162,7 @@ study/brief.
 
 **Roster:** grok-4.6, grok-4.5. Scenario:
 `.skills/_pending-samp/red-land-station-scenario.md`. Intended: same
-message as withhold/menu names `/select-review-sample` **and** reprints
+message as withhold/menu names `/select-sample` **and** reprints
 session banked blocks + names `/record-debt` (debt is not a withhold).
 
 v2.1.0 sample-withhold only. Control 2/2 chose **B**.

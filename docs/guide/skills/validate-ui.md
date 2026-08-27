@@ -106,6 +106,6 @@ Chromium specifically, and headless, are chosen to keep the run cheap and repeat
 
 - [`validate-feature`](validate-feature.md) — the orchestrator that hands it a ledger slice
 - [`validate-api`](validate-api.md) — the same contract for a backend surface
-- [`review-product-flow`](review-product-flow.md) — the manual sibling, for judgment a Playwright spec cannot make
-- [`run-product-walkthrough`](run-product-walkthrough.md) — agent-run an existing review-product-flow guide (run ledger, not committed specs)
+- [`write-flow-guide`](write-flow-guide.md) — the manual sibling, for judgment a Playwright spec cannot make
+- [`run-flow-guide`](run-flow-guide.md) — agent-run an existing guide from write-flow-guide (run ledger, not committed specs)
 - [`root-cause`](root-cause.md) — the red loop every failing spec drops into

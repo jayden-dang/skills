@@ -59,7 +59,7 @@ features need both:
   result in the ledger, and promote the passing checks into committed tests
   that describe the domain behavior (docs-only spine — no requirement-ID tags
   required in test files). For human-eyeball qualities (visuals, feel) hand
-  off to `review-product-flow`.
+  off to `write-flow-guide`.
 
 Hand each child its slice of the ledger by path; it writes results back to the
 same file.

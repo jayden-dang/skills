@@ -69,7 +69,7 @@ with emptiness/coverage stated per grounded-claims.md.*
 
 ## 3b. Invariant conformance (advisory)
 
-When `docs/architecture/` exists, REQUIRED SUB-SKILL: use `review-invariants` on the diff — it returns a per-`Respects: ARCH-N` verdict (respects / violates / unclear). Hold the violates/unclear verdicts for step 5. This lane is advisory by construction and stays OUT of the two hard axes — it never becomes a merge blocker. If `docs/architecture/` does not exist, skip this step and inject nothing. *Done when: you hold the invariant verdicts, or an explicit "no spine".*
+When `docs/architecture/` exists, REQUIRED SUB-SKILL: use `inspect-invariants` on the diff — it returns a per-`Respects: ARCH-N` verdict (respects / violates / unclear). Hold the violates/unclear verdicts for step 5. This lane is advisory by construction and stays OUT of the two hard axes — it never becomes a merge blocker. If `docs/architecture/` does not exist, skip this step and inject nothing. *Done when: you hold the invariant verdicts, or an explicit "no spine".*
 
 ## 3c. Codebase navigation docs (optional context)
 
@@ -92,7 +92,7 @@ nav doc would clarify the review; never auto-invoke.
 
 WHEN the step-1 range's `--name-only` list includes files a browser renders
 (HTML, CSS/styling, JSX/TSX/Vue/Svelte components, templates) → REQUIRED
-SUB-SKILL: use `review-ui` on the same range. Hold its screenshot-backed
+SUB-SKILL: use `inspect-ui` on the same range. Hold its screenshot-backed
 findings and its `needs-human-eyes` line for step 5. No rendered file in the
 diff → skip, inject nothing. *Done when: you hold the UI findings, or an
 explicit "no rendered surface".*
@@ -127,7 +127,7 @@ Parts (c) and (d) are each scoped by their own predicate; a part that does not a
 
 ## 5. Aggregate
 
-Present the reports under `## Standards` and `## Spec` headings — lightly cleaned at most. Do NOT merge, dedupe across axes, or rerank one axis's findings against the other's; that reranking is exactly what the separation prevents. When step 3b produced invariant verdicts, present them under a separate `## Invariants (advisory)` heading — a third lane, never merged into or reranked against Standards/Spec. When step 3d ran, present `review-ui`'s findings under a `## UI` heading — its findings carry severities and count toward the verdict exactly like the two axes' (they are screenshot-backed, not advisory), and its `needs-human-eyes` line is reproduced verbatim.
+Present the reports under `## Standards` and `## Spec` headings — lightly cleaned at most. Do NOT merge, dedupe across axes, or rerank one axis's findings against the other's; that reranking is exactly what the separation prevents. When step 3b produced invariant verdicts, present them under a separate `## Invariants (advisory)` heading — a third lane, never merged into or reranked against Standards/Spec. When step 3d ran, present `inspect-ui`'s findings under a `## UI` heading — its findings carry severities and count toward the verdict exactly like the two axes' (they are screenshot-backed, not advisory), and its `needs-human-eyes` line is reproduced verbatim.
 
 Every finding carries: severity (Critical / Important / Minor), file:line, why it matters, and a suggested fix unless obvious.
 
@@ -157,4 +157,4 @@ A slot with no answer gets `Unknown` — never omit the line. "Just list the lef
 
 ## Inline fallback (no subagent capability)
 
-No subagent capability in this harness? Run the two axes yourself, sequentially, in one context: **Standards first** — read `standards-baseline.md`, walk the diff against each of its twelve smells, the Security section, and the Production-readiness section — then **Spec** — hold-stage first, then walk admitted IDs (not-in-range once) — then, when step 3d fired, the **UI lane** per `review-ui`. Finish and record one axis completely before starting the next, and still present them under separate `## Standards`, `## Spec` (and `## UI`) headings without reranking one against the other. This loses the context isolation two subagents provide, so the discipline of closing out one axis before opening the next is what keeps them from bleeding together.
+No subagent capability in this harness? Run the two axes yourself, sequentially, in one context: **Standards first** — read `standards-baseline.md`, walk the diff against each of its twelve smells, the Security section, and the Production-readiness section — then **Spec** — hold-stage first, then walk admitted IDs (not-in-range once) — then, when step 3d fired, the **UI lane** per `inspect-ui`. Finish and record one axis completely before starting the next, and still present them under separate `## Standards`, `## Spec` (and `## UI`) headings without reranking one against the other. This loses the context isolation two subagents provide, so the discipline of closing out one axis before opening the next is what keeps them from bleeding together.

@@ -9,9 +9,9 @@ description: Use when what a surface *does* is still open — what happens when
   that differ in feel, built on the screen's real components, a pick from the
   user, and a locked `## Interaction` section inside `ui-brief.md` that
   `design-solution` lifts instead of re-deciding. Not for what a surface looks
-  like (draft-ui), judging an already built diff (review-ui), a logic or
+  like (draft-ui), judging an already built diff (inspect-ui), a logic or
   state-model spike (run-spike), committed e2e specs (validate-ui), or a human
-  product walk (review-product-flow).
+  product walk (write-flow-guide).
 ---
 
 # Draft UX

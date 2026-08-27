@@ -33,7 +33,7 @@ Skip any step and you are lying, not verifying.
 |---|---|---|
 | "Tests pass" | Full fresh run, zero failures, output read | An earlier run; a subset; "should pass" |
 | "Build/lint/typecheck clean" | That command, exit 0, zero warnings | A different tool passing |
-| "The feature works" | The affected flow driven through the running system and observed (REQUIRED SUB-SKILL: use `validate-feature`, or `review-product-flow` for a manual pass) | Green unit tests alone |
+| "The feature works" | The affected flow driven through the running system and observed (REQUIRED SUB-SKILL: use `validate-feature`, or `write-flow-guide` for a manual pass) | Green unit tests alone |
 | "The bug is fixed" | Original symptom re-tested and gone | The code changed |
 | "The agent/subagent completed X" | You inspected the diff yourself | The agent's own success report |
 | "The ticket is updated / moved / commented" | The record read back after the write — re-read the issue through the tracker's own read command and see the exact change present in it | The write command's success line; exit 0; the fact you ran it |

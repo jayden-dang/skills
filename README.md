@@ -201,8 +201,8 @@ and countered by name. See [The gates](docs/guide/concepts/gates.md).
 | discovery | `frame-change`, `clarify-decisions`, `research`, `run-spike`, `define-domain`, `forge-prompt`, `interpret-session`, `deepen-codebase`, `work-the-problem`, `pathfind` |
 | spec | `specify-behavior`, `design-solution`, `plan-tasks` |
 | execution | `build-in-waves`, `build-by-story`, `build-inline`, `execute-common`, `test-first`, `root-cause`, `debug-remote`, `assess-observability`, `prove-claim`, `audit-trace`, `load-subgraph`, `reconcile-features`, `isolate-workspace`, `hold-stage` |
-| review | `inspect-change`, `study-change`, `brief-team`, `select-review-sample`, `polish-diff`, `vet-feedback`, `vet-source`, `speak-outer`, `review-invariants`, `review-ui` |
-| acceptance | `validate-feature`, `validate-api`, `validate-ui`, `review-product-flow`, `vet-product-flow`, `run-product-walkthrough` |
+| review | `inspect-change`, `study-change`, `brief-team`, `select-sample`, `polish-diff`, `vet-feedback`, `vet-source`, `speak-outer`, `inspect-invariants`, `inspect-ui` |
+| acceptance | `validate-feature`, `validate-api`, `validate-ui`, `write-flow-guide`, `vet-flow-guide`, `run-flow-guide` |
 | craft | `craft-page`, `draft-ui`, `draft-ux` |
 | ship | `land-branch`, `record-verdict`, `cut-release` |
 | track | `amend-feature`, `reroute-plan`, `triage`, `realign-spec`, `refresh-roadmap-status`, `assess-milestone`, `scan-architecture`, `map-features`, `write-handoff`, `publish-issues`, `record-debt` |

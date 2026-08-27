@@ -122,7 +122,7 @@ Not an EARS form, but it lives in the same file and it is read by three later sk
 - Reordering modules in the rail.
 ```
 
-[`inspect-change`](../skills/inspect-change.md)'s Spec axis reads it to identify scope creep. [`review-product-flow`](../skills/review-product-flow.md) turns each entry into a *deliberate non-behavior* the tester checks does **not** happen. And a future [`frame-change`](../skills/frame-change.md) on an adjacent idea reads it — **`load-subgraph`** surfaces what this feature already declined (as a Summary-card Out-of-Scope field) before proposing to build it again.
+[`inspect-change`](../skills/inspect-change.md)'s Spec axis reads it to identify scope creep. [`write-flow-guide`](../skills/write-flow-guide.md) turns each entry into a *deliberate non-behavior* the tester checks does **not** happen. And a future [`frame-change`](../skills/frame-change.md) on an adjacent idea reads it — **`load-subgraph`** surfaces what this feature already declined (as a Summary-card Out-of-Scope field) before proposing to build it again.
 
 ## See also
 

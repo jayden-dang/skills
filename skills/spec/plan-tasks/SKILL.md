@@ -14,7 +14,7 @@ in this order, first path that exists: (1) `templates/` beside this SKILL.md,
 `../../../templates` relative to this SKILL.md. Every slot in a task block
 (**Files**, **Interfaces**, **Depends-on**, **Steps**, `_Requirements:_`) is
 REQUIRED. Do **not** author per-task risk labels, decision-surface flags, or a
-Human-review-order section — risk is measured by select-review-sample risk globs
+Human-review-order section — risk is measured by select-sample risk globs
 against the actual diff; review units are **derived** from user stories at
 `build-by-story` time (see that skill).
 

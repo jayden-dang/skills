@@ -8,7 +8,7 @@
 | **Invocation** | model-invocable (the agent calls it on its own) |
 | **Reads** | the spec triad — `requirements.md`, `design.md`, `tasks.md`; the working ledger `.skills/<slug>-acceptance.md` |
 | **Writes** | `.skills/<slug>-acceptance.md` (a git-ignored acceptance ledger, one todo per item); committed ID-tagged tests for non-API/non-UI surfaces |
-| **Calls** | [`validate-api`](validate-api.md), [`validate-ui`](validate-ui.md), [`review-product-flow`](review-product-flow.md), [`root-cause`](root-cause.md) (through its children) |
+| **Calls** | [`validate-api`](validate-api.md), [`validate-ui`](validate-ui.md), [`write-flow-guide`](write-flow-guide.md), [`root-cause`](root-cause.md) (through its children) |
 | **Called by** | [`build-in-waves`](build-in-waves.md), [`land-branch`](land-branch.md), [`prove-claim`](prove-claim.md) |
 
 ## When it fires
@@ -23,7 +23,7 @@ Its place in the chain is fixed: it runs **after [`inspect-change`](inspect-chan
 
 Each of those passes every assertion someone wrote and still ships broken. The unit tests are green because they assert what the code does; none of them drove the feature as a real client, which is the only thing that surfaces the mismatch.
 
-This is an orchestrator. It does little validation itself; it derives the work, splits it by surface, hands each slice to a child skill, and closes the loop. What sets it apart from a manual [`review-product-flow`](review-product-flow.md) pass is what it leaves behind: committed, ID-tagged tests, not a one-time walkthrough.
+This is an orchestrator. It does little validation itself; it derives the work, splits it by surface, hands each slice to a child skill, and closes the loop. What sets it apart from a manual [`write-flow-guide`](write-flow-guide.md) pass is what it leaves behind: committed, ID-tagged tests, not a one-time walkthrough.
 
 ## The three steps
 
@@ -50,7 +50,7 @@ The checklist splits by where each behavior lives, and most features need more t
 | HTTP/RPC API a client calls | **required sub-skill** [`validate-api`](validate-api.md) |
 | A frontend a user drives | **required sub-skill** [`validate-ui`](validate-ui.md) |
 | Neither — a CLI, a library, a batch/cron job | drive it directly against the running system yourself, record each observed result in the ledger, and promote the passing checks into committed, ID-tagged tests |
-| Human-eyeball qualities — visuals, feel | hand off to [`review-product-flow`](review-product-flow.md) |
+| Human-eyeball qualities — visuals, feel | hand off to [`write-flow-guide`](write-flow-guide.md) |
 
 Each child locates and persists how to run its surface, exercises its slice of the checklist against the live system, fixes failures through [`root-cause`](root-cause.md), and promotes the passing checks into committed, ID-tagged tests. Hand each child its slice of the ledger **by path** — it writes its results back into the same file, so the ledger stays the single record of what was observed.
 
@@ -107,6 +107,6 @@ It is also why the skill is an orchestrator rather than a monolith. API validati
 
 - [The gates](../concepts/gates.md) — where acceptance sits relative to the prove-claim and audit-trace gates
 - [`validate-api`](validate-api.md) and [`validate-ui`](validate-ui.md) — the two automated children
-- [`review-product-flow`](review-product-flow.md) — the manual child, for judgment a test cannot make
-- [`run-product-walkthrough`](run-product-walkthrough.md) — run an existing review-product-flow guide end to end in the browser
+- [`write-flow-guide`](write-flow-guide.md) — the manual child, for judgment a test cannot make
+- [`run-flow-guide`](run-flow-guide.md) — run an existing guide from write-flow-guide end to end in the browser
 - [`land-branch`](land-branch.md) — the skill that runs it before offering Merge or PR

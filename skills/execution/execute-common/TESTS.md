@@ -40,7 +40,7 @@ Fixtures: `fixture-session-ttl` (`src/auth/session.ts`), `fixture-docs-only`
 ## Failure class
 
 **S1 — knows the aside, skips the name.** v1.1.0 step 4: `Optional: name
-/select-review-sample (not a gate).` Auth path is not a written condition.
+/select-sample (not a gate).` Auth path is not a written condition.
 2/2 chose **B** (go to land, no name).
 
 **S2 — omits a required skip slot.** No sample predicate existed, so writing
@@ -65,7 +65,7 @@ Transcripts: `.skills/_pending-samp/red-ec-s1-grok{45,46}.md`,
 
 ### Verbatim
 
-- "The current recipe marks `/select-review-sample` optional / not a gate."
+- "The current recipe marks `/select-sample` optional / not a gate."
 - "Auth/session path is not a written gate for naming sample."
 - "Write `skip: no sample predicate` like polish invents a sample predicate the skill never defines."
 - "Silent skip is a red flag for polish only."
@@ -117,10 +117,10 @@ Meta: mid-close name is a second ping; land is the station.
 
 ## Product-walk predicate v1.4.0 (2026-08-18)
 
-Two clauses added, both observable: `review-ui` reported any
+Two clauses added, both observable: `inspect-ui` reported any
 `needs-human-eyes` item; the branch adds a **new** user-facing screen or
-visual surface. Motivated by review-ui RED/GREEN (see
-`skills/review/review-ui/TESTS.md`): the prior predicate let every "UI covered
+visual surface. Motivated by inspect-ui RED/GREEN (see
+`skills/review/inspect-ui/TESTS.md`): the prior predicate let every "UI covered
 by validate-ui" feature skip eyeball review entirely.
 
 ## Edit — exact-revision close receipt (v1.6.0, 2026-08-25)

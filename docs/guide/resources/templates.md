@@ -51,7 +51,7 @@ Written once by [`configure-repo`](../skills/configure-repo.md) into `docs/agent
 
 | Template | Becomes | Read by |
 |---|---|---|
-| [`agents/project.md`](../../../templates/agents/project.md) | `docs/agents/project.md` | `test-first`, `prove-claim`, `build-in-waves`, `isolate-workspace`, `cut-release`, the acceptance skills, `review-product-flow`, `run-spike`, `debug-remote`, `assess-observability` |
+| [`agents/project.md`](../../../templates/agents/project.md) | `docs/agents/project.md` | `test-first`, `prove-claim`, `build-in-waves`, `isolate-workspace`, `cut-release`, the acceptance skills, `write-flow-guide`, `run-spike`, `debug-remote`, `assess-observability` |
 | [`agents/issue-tracker.md`](../../../templates/agents/issue-tracker.md) | `docs/agents/issue-tracker.md` | `triage`, `plan-tasks`, `cut-release` |
 | [`agents/triage-labels.md`](../../../templates/agents/triage-labels.md) | `docs/agents/triage-labels.md` | `triage` |
 

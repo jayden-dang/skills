@@ -120,10 +120,10 @@ defects (11/11 unit tests green). The static read caught three at sensible
 severities but banked the 375px overflow as Minor ("no responsive requirement
 in scope"), settled the `.active`×`.overdue-hot` cascade only as "fragile"
 (hypothesis, no verdict), and produced zero screenshots. GREEN: step 3d +
-`review-ui` — all four defects at target severity with screenshots/computed
+`inspect-ui` — all four defects at target severity with screenshots/computed
 styles, plus a fifth composed-state defect only rendering could surface;
 `## UI` lane presented beside Standards/Spec; verdict counted it. Full
-evidence: `skills/review/review-ui/TESTS.md`.
+evidence: `skills/review/inspect-ui/TESTS.md`.
 
 ## Edit — stage the spec (v1.4.0, 2026-08-19, grok-4.6 / grok-4.5)
 

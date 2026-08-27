@@ -133,7 +133,7 @@ found.
 
 - Walk each doc against its template — every REQUIRED slot filled or `None`; the vision
   has real scope boundaries; every invariant is one imperative rule with a unique ID.
-- REQUIRED SUB-SKILL: use `review-invariants` across the feature `design.md` files to
+- REQUIRED SUB-SKILL: use `inspect-invariants` across the feature `design.md` files to
   surface any design that violates an invariant it cites.
 - Run the `audit-trace` check for invariant referential integrity (E4/E5/W3).
 - Validate mode CONTINUES TO avoid dispatching the create-mode brownfield scan — Step 1

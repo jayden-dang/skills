@@ -2,7 +2,7 @@
 name: craft-page
 version: 1.1.1
 description: Use before the first line of markup for any HTML a human will look
-  at — a review-product-flow test guide, a report, a dashboard, a landing page, a published
+  at — a write-flow-guide test guide, a report, a dashboard, a landing page, a published
   artifact, a standalone .html handoff. Also when a primary figure, structure
   sketch, architecture diagram, sequence, or flowchart must be drawn inside that
   page or packet. Produces a written design plan (palette, type pairing, layout

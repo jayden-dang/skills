@@ -9,7 +9,7 @@ New catalog entry: template + validator + entry package for
 `docs/standards/design-tokens.md` — the product-UI visual contract (allowed
 stack, token source of truth, color roles, scales, numeric floors, named
 forbidden patterns, component inventory). Readers wired: `design-solution`
-Step 2b `Grounding:`, `review-ui` step 3 contract precedence, `craft-page` §2
+Step 2b `Grounding:`, `inspect-ui` step 3 contract precedence, `craft-page` §2
 precedence list.
 
 Shape check (reference-type test, 2026-08-18, sonnet, 1 rep): authored the doc

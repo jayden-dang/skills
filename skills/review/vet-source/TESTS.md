@@ -109,7 +109,7 @@ Asked after a complying run: was the text clear; what would have made
 ## Description trigger test
 
 Same description, neighbors `vet-feedback`, `prove-claim`, `root-cause`,
-`research`, `inspect-change`, `specify-behavior`, `vet-product-flow`,
+`research`, `inspect-change`, `specify-behavior`, `vet-flow-guide`,
 `frame-change`. 10 should-fire, 10 should-not-fire, 3 held-out. Fresh
 router prompt, both roster models.
 
@@ -118,7 +118,7 @@ router prompt, both roster models.
 | SF1–SF10, H1 → `vet-source` | 11/11 | 11/11 |
 | SN1 `vet-feedback`, SN2 `prove-claim`, SN3 `root-cause`, SN4 `research` | yes | yes |
 | SN5 / SN8 user said delete/skip tests | `vet-feedback` | NONE |
-| SN6 `inspect-change`, SN7 `specify-behavior`, SN9 `frame-change`, SN10 `vet-product-flow` | yes | yes |
+| SN6 `inspect-change`, SN7 `specify-behavior`, SN9 `frame-change`, SN10 `vet-flow-guide` | yes | yes |
 | H2 `vet-feedback`, H3 `research` | yes | yes |
 
 `vet-source` did not fire on a *user*-stated skip/delete. The SN5/SN8

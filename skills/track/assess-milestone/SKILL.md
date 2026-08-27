@@ -172,14 +172,14 @@ exactly the estimate this layer refuses to hold.
 
 ### Attention
 
-`/select-review-sample` produces a sample set and an explicit residue over a range, and it
+`/select-sample` produces a sample set and an explicit residue over a range, and it
 persists **no file unless the user asked it to**. So there is nothing to discover on disk.
 
 - The user **supplies** an allocation covering the range from the committed baseline to the
   candidate closing revision — a path they had it write, or its pasted output → count its
   sample set as sampled, and carry its residue forward as **explicitly unreviewed**, with the
   unit counts, in the assessment.
-- No allocation supplied → record the range as **unsampled** and name `/select-review-sample`
+- No allocation supplied → record the range as **unsampled** and name `/select-sample`
   for the user to run.
 
 It is user-invoked: name it, never run it yourself.
@@ -328,7 +328,7 @@ costs the same as one with two.
 ## Red flags — stop
 
 - You are about to write to `docs/roadmap/INDEX.md` — that file is `plan-milestones`'s alone
-- You are about to run `/refresh-roadmap-status` or `/select-review-sample` yourself rather than naming
+- You are about to run `/refresh-roadmap-status` or `/select-sample` yourself rather than naming
   them for the user — both are user-invoked
 - You are about to resolve a baseline from a date instead of a SHA
 - You are about to produce a verdict while a relevant withholding finding stands

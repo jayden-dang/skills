@@ -8,7 +8,7 @@
 | **Invocation** | model-invocable (the agent calls it on its own) |
 | **Reads** | `docs/agents/project.md` (the proving commands); the full output of whatever command it runs |
 | **Writes** | nothing — it runs proving commands and reads their output; it produces evidence, not files |
-| **Calls** | [`validate-feature`](validate-feature.md) or [`review-product-flow`](review-product-flow.md) (to prove "the feature works"), the [`audit-trace`](audit-trace.md) check (to prove "requirements met") |
+| **Calls** | [`validate-feature`](validate-feature.md) or [`write-flow-guide`](write-flow-guide.md) (to prove "the feature works"), the [`audit-trace`](audit-trace.md) check (to prove "requirements met") |
 | **Called by** | nearly every skill before a completion claim — [`test-first`](test-first.md), [`root-cause`](root-cause.md), [`build-in-waves`](build-in-waves.md), [`land-branch`](land-branch.md), [`write-handoff`](write-handoff.md), and more |
 
 ## When it fires
@@ -44,7 +44,7 @@ Each claim has a required proof and a set of things that are never sufficient fo
 |---|---|---|
 | "Tests pass" | Full fresh run, zero failures, output read | An earlier run; a subset; "should pass" |
 | "Build/lint/typecheck clean" | That command, exit 0, zero warnings | A different tool passing |
-| "The feature works" | The affected flow driven through the running system and observed ([`validate-feature`](validate-feature.md), or [`review-product-flow`](review-product-flow.md) for a manual pass) | Green unit tests alone |
+| "The feature works" | The affected flow driven through the running system and observed ([`validate-feature`](validate-feature.md), or [`write-flow-guide`](write-flow-guide.md) for a manual pass) | Green unit tests alone |
 | "The bug is fixed" | Original symptom re-tested and gone | The code changed |
 | "The agent/subagent completed X" | You inspected the diff yourself | The agent's own success report |
 | "Requirements met" | the [`audit-trace`](audit-trace.md) check passes with zero errors, AND each acceptance criterion checked off individually against observed behavior | Green tests alone |

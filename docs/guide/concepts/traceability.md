@@ -75,7 +75,7 @@ A repo that opts into the [project layer](../skills/define-project.md) gets a se
 | **E5** | a `Respects: ARCH-N` cites a retired (struck-through) invariant |
 | **W3** | a live invariant is cited by no `design.md` |
 
-This is deliberately *referential integrity only* — does the cited invariant exist, and is it live — never whether the design genuinely respects it. That judgement is a separate, advisory, LLM-judged check ([`review-invariants`](../skills/review-invariants.md)), kept out of `audit-trace` so the determinism principle holds.
+This is deliberately *referential integrity only* — does the cited invariant exist, and is it live — never whether the design genuinely respects it. That judgement is a separate, advisory, LLM-judged check ([`inspect-invariants`](../skills/inspect-invariants.md)), kept out of `audit-trace` so the determinism principle holds.
 
 ## What "covered" actually means
 

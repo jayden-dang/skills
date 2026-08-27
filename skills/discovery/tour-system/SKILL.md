@@ -1,8 +1,7 @@
 ---
 name: tour-system
-version: 1.0.0
-description: Produces a path-verified system learning tour and local ledger — atlas,
-  tour, journey, or change-impact. Run it with /tour-system.
+version: 1.1.0
+description: Produces a path-verified learning tour and local ledger. Run with /tour-system.
 disable-model-invocation: true
 ---
 
@@ -35,7 +34,9 @@ Hard-stop → diagnostic only; never partial success export or fake `demonstrate
 
 ## Modes
 
-Ask which mode when unclear:
+Ask which mode when unclear. If the user named a **surface** (CLI, path, CODE)
+without a mode: short atlas (INDEX or tree), then one `journey` or `tour` on
+that surface.
 
 | Mode | Question |
 |---|---|
@@ -55,12 +56,19 @@ Ask which mode when unclear:
 
 ## Procedure
 
-1. **Preflight.** Consuming-repo root. Prefer live `docs/specs/INDEX.md`; if
-   missing, name `/configure-repo` and continue atlas only from visible tree
-   signals — do not invent CODEs. For `change-impact`, WHEN resolving range,
-   load `references/resolved-range.md` and follow it exactly.
+1. **Preflight.** Consuming-repo root.
+   - Prefer live `docs/specs/INDEX.md`; if missing, name `/configure-repo` and
+     continue atlas only from visible tree signals (packages, cmd/entrypoints) —
+     do not invent CODEs from folder names.
+   - Confirm `.skills/` is gitignored (`git check-ignore -v .skills/` or
+     equivalent). If not: warn once, name `/configure-repo`; still write under
+     `.skills/study/` — do **not** patch the consumer `.gitignore` unless the
+     user asked or `/configure-repo` is running.
+   - For `change-impact`, WHEN resolving range, load
+     `references/resolved-range.md` and follow it exactly.
 2. **Build the tour.**
-   - `atlas`: INDEX rows + pending OBS; orientation stops only.
+   - `atlas`: INDEX rows + pending OBS; orientation stops only. Tree-only atlas:
+     entrypoints and package surfaces — never invented Feature CODEs.
    - `tour`: REQUIRED SUB-SKILL: use `load-subgraph` (neighbors/cluster/blast as
      fits); order stops by path evidence.
    - `journey`: pick entry → persistence/output; cite real paths each hop.
@@ -80,9 +88,9 @@ Ask which mode when unclear:
    those skills yourself.
 6. **Export (change-impact only).** Only if requested; WHEN exporting, load
    `references/export.md`.
-7. **Neighbors.** `/study-change` stays for HTML quiz packets until retirement
-   gate; `/teach-pack` stays for concept drill with oracle. Name them for the
-   user — do not absorb their contracts.
+7. **Neighbors.** Name `/study-change` or `/teach-pack` when the ask is their
+   job (HTML quiz packet / concept drill with oracle). Do not absorb their
+   contracts — routing table in `references/handoff.md`.
 
 ## Rationalization
 
@@ -97,6 +105,9 @@ Ask which mode when unclear:
 | "Missing evidence means contradicted" | Use `unverified` / `open_gap` |
 | "Pure untracked — summarize the branch" | Hard-stop per ResolvedRange |
 | "Alias /study-change to this skill" | Forbidden — no user→user invoke alias |
+| "I'll add `.skills/` to gitignore while I'm here" | Warn + name `/configure-repo`; this skill does not own consumer ignore |
+| "Folders look like features — mint CODE AGENT" | Tree atlas uses path labels only; CODEs come from INDEX |
+| "User said run it — skip mode and dump prose" | Named surface → atlas then one journey/tour; else ask |
 
 ## Red Flags
 
@@ -109,6 +120,7 @@ Ask which mode when unclear:
 - Inline explain-then-reprobe after `contradicted`
 - Partial success export or success ledger after hard-stop
 - Inventing Feature CODEs
+- Patching consumer `.gitignore` from this skill without user ask / `/configure-repo`
 
 ## Done when
 

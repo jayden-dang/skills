@@ -80,6 +80,15 @@ now a rule in `SKILL.md`:
 | "The corpus the entire lesson is graded against has nowhere to live" | **`evidence/`** in the workspace |
 | "An agent reading the Iron Law literally might cram a probe into the mission message" | **The law binds the lesson, not the message** |
 
+## Neighbor pointer (v1.0.1)
+
+**RED (observed routing gap):** system-learning asks that land on teach-pack get
+a lecture/drill when the user needed an atlas/journey; without an outbound name,
+agents never surface `/tour-system`.
+
+**GREEN:** SKILL.md § Neighbors names `/tour-system` for path-verified
+system/capability tours; teach-pack keeps concept/procedure drill.
+
 ## Not yet done
 
 - Meta-test (asking a complying agent what would have made the text clearer).

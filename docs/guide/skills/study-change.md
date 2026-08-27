@@ -21,6 +21,7 @@
 - You need a **Standards + Spec** merge verdict → [`inspect-change`](inspect-change.md)
 - You need a production-boundary decision record → [`land-branch`](land-branch.md) / [`record-verdict`](record-verdict.md) / [`cut-release`](cut-release.md)
 - You want a multi-lesson tutoring session → [`teach-pack`](teach-pack.md)
+- You want a system/capability **tour** (atlas / journey), not a quiz packet → [`tour-system`](tour-system.md)
 
 ## Range defaults (D!)
 
@@ -44,4 +45,4 @@ Optional read-only enrichment when `.skills/decisions/` exists: forward-cite `DE
 ## Related
 
 - Philosophy: human understanding as the bottleneck; answerability remains DREC’s job
-- [`inspect-change`](inspect-change.md) · [`land-branch`](land-branch.md) · [`craft-page`](craft-page.md)
+- [`tour-system`](tour-system.md) · [`inspect-change`](inspect-change.md) · [`land-branch`](land-branch.md) · [`craft-page`](craft-page.md)

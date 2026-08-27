@@ -46,5 +46,16 @@
       "the mission is not narrowed to the half that happens to be gradeable",
       "a partially-correct answer can be graded as right as far as it goes rather than forced to pass or fail"
     ]
+  },
+  {
+    "eval_id": 5,
+    "eval_name": "name-tour-system-for-system-tours",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § Neighbor pointer (v1.0.1)",
+    "prompt": "I started teach-pack but I need a path-verified atlas and journey over the product, not concept drill.",
+    "assertions": [
+      "tour-system is named for the user for system/capability tours",
+      "teach-pack keeps concept/procedure drill and does not absorb the tour contract"
+    ]
   }
 ]

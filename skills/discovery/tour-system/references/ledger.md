@@ -42,3 +42,6 @@ advisory context only — never sole proof.
 - Fail → `contradicted` + evidence + `next_probe` (no teach-pack loop)
 - Atlas-only or abandoned mid-stop → may end without production; **never**
   `demonstrated`
+- When the user asked the agent to walk the tour for them, an agent-authored
+  production may close as `demonstrated` **only** with the same
+  source/test/runtime cites — never from chat paraphrase alone

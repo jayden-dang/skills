@@ -23,9 +23,12 @@ Name **exactly one** primary route:
 |---|---|
 | Missing mental model / foundation / repo structure | `/deepen-codebase` |
 | Need procedure/prediction practice until they can do it | `/teach-pack` |
-| Focus is a **resolved range** and user wants a comprehension **packet** | `/study-change` (coexistence — **not** a remediation route) |
+| Focus is a **resolved range** and user wants a comprehension **packet** | `/study-change` (coexistence until retirement gate — **not** a remediation route) |
 
 Optional: repeated misconception → prefer naming `/teach-pack`.
+
+`/study-change` and `/teach-pack` stay installed; this skill does not delete or
+alias them. Name them — never auto-invoke.
 
 ## Capsule fields
 

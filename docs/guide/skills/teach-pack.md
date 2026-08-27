@@ -69,6 +69,7 @@ This is a deliberate departure from the strict-Socratic teaching skills, which f
 
 ## See also
 
+- [`tour-system`](tour-system.md) — path-verified system/capability tours; use that when the ask is atlas/journey, not concept drill
 - [`deepen-codebase`](deepen-codebase.md) — session learning companion (explain/map first); promote here when you need graded stickiness
 - [`research`](research.md) — where a topic goes when it needs a trusted source before it can be taught
 - [`clarify-decisions`](clarify-decisions.md) — the interview primitive; shares the one-question-then-stop discipline, but elicits *your* intent rather than building *your* knowledge

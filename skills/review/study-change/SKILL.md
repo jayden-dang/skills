@@ -1,6 +1,6 @@
 ---
 name: study-change
-version: 1.1.0
+version: 1.1.1
 description: Produces a single HTML comprehension packet for a code change — Background, Intuition,
   Code, Quiz. Run it with /study-change.
 disable-model-invocation: true
@@ -185,3 +185,9 @@ triggers without rewriting the packet contract.
 Do not auto-run at build-in-waves / pre-integration / session-end. Do not soft-prompt
 from land-branch, inspect-change, release, or neighbors. Do not block ship menus.
 Absence of packets on external work is not a methodology violation (ARCH-6).
+
+## Neighbors
+
+System/capability learning (atlas, tour, journey — not a quiz packet): name
+`/tour-system` for the user. This skill stays the HTML comprehension packet for a
+**resolved range** until its retirement gate.

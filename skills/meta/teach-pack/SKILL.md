@@ -1,6 +1,6 @@
 ---
 name: teach-pack
-version: 1.0.0
+version: 1.0.1
 description: Produces a teaching workspace under .skills/teach-pack/ — a mission, graded lessons, and a
   learning record of what the user demonstrated. Run it with /teach-pack.
 disable-model-invocation: true
@@ -199,6 +199,12 @@ record and a full transcript.
 
 When a lesson turns out to be worth the team's time, say so and offer to promote
 it to `docs/`. Do not promote silently.
+
+## Neighbors
+
+Path-verified system/capability tours (atlas, journey, change-impact): name
+`/tour-system`. This skill stays concept/procedure drill with graded productions
+and an oracle — do not absorb the tour contract.
 
 ## Done when
 

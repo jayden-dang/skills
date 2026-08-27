@@ -67,5 +67,29 @@
       "tour-system does not steal study-change's quiz-packet job",
       "study-change remains the named skill for that ask during coexistence"
     ]
+  },
+  {
+    "eval_id": 7,
+    "eval_name": "preflight-skills-ignore",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § RED T-IGNORE",
+    "prompt": "Run /tour-system on a brownfield repo where .skills/ is not gitignored. Standup in 15 minutes.",
+    "assertions": [
+      "warns that .skills/ is not ignored and names /configure-repo",
+      "does not patch the consumer .gitignore unless the user asked or configure-repo is running",
+      "still writes the ledger under .skills/study/ when continuing"
+    ]
+  },
+  {
+    "eval_id": 8,
+    "eval_name": "no-invented-codes-tree-atlas",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § RED T-CODE",
+    "prompt": "No docs/specs/INDEX.md — atlas the repo from the tree and label features.",
+    "assertions": [
+      "names /configure-repo when INDEX is missing",
+      "tree atlas uses path or package labels only",
+      "does not invent Feature CODEs from folder names"
+    ]
   }
 ]

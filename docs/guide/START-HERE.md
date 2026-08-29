@@ -86,10 +86,12 @@ Full skill index: [Skill reference](skills/README.md) · laws: [`AGENTS.md`](../
 ### One-time setup
 
 1. **Install** — Claude Code / Grok: `/plugin marketplace add jayden-dang/skills`
-   then `/plugin install jdk@jayden-dang-skills` (slash prefix `/jdk:`). Codex,
-   Cursor, Kimi: `npx skills@latest add jayden-dang/skills --copy` (bare skill
-   names). Do not flatten Engineer Pack onto Claude/Grok if the plugin is
-   installed. Nothing is installed *into* your app repo beyond optional markdown + hook.
+   then `/plugin install jdk@jayden-dang-skills` (slash prefix `/jdk:`). Codex:
+   `codex plugin marketplace add jayden-dang/skills` then
+   `codex plugin add jdk@jayden-dang-skills`. Cursor, Kimi:
+   `npx skills@latest add jayden-dang/skills --copy` (bare skill names). Do not
+   flatten Engineer Pack onto a harness that already has the `jdk` plugin.
+   Nothing is installed *into* your app repo beyond optional markdown + hook.
 2. **Wire the repo**
    - **Greenfield / empty:** **`/bootstrap-repo`** → stack + harness + one green test → then configure.
    - **Existing codebase:** **`/configure-repo` only** (do not bootstrap).

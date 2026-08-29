@@ -88,10 +88,22 @@ Personal Pack is **not** in this plugin.
 
 Then, once per **code** repo, run `/configure-repo`. See [Adopting](docs/guide/resources/adopting.md).
 
-### Other agents (Codex, Cursor, Kimi, …)
+### Codex (CLI / ChatGPT)
 
-These harnesses do not load this repo as a Claude/Grok plugin. Flatten with the
-`skills` CLI — skill **folder names stay the same**, so you invoke `/frame-change`
+Codex installs from the same GitHub repo, not Claude's `/plugin` command:
+
+```bash
+codex plugin marketplace add jayden-dang/skills
+codex plugin add jdk@jayden-dang-skills
+```
+
+The plugin namespace is `jdk` (same slug). Do not also flatten Engineer Pack
+into Codex skill dirs on the same machine.
+
+### Other agents (Cursor, Kimi, …)
+
+These harnesses do not load this repo as a plugin. Flatten with the `skills`
+CLI — skill **folder names stay the same**, so you invoke `/frame-change`
 (or `$frame-change`), not `/jdk:frame-change`.
 
 ```bash

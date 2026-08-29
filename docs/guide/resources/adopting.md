@@ -11,7 +11,14 @@
 
 Grok: `grok plugin marketplace add jayden-dang/skills` then `grok plugin install jdk --trust`.
 
-**Codex, Cursor, Kimi, and other flatten agents** — skill folder names unchanged (`/frame-change`, not `/jdk:frame-change`):
+**Codex** — same GitHub marketplace, Codex CLI:
+
+```bash
+codex plugin marketplace add jayden-dang/skills
+codex plugin add jdk@jayden-dang-skills
+```
+
+**Cursor, Kimi, and other flatten agents** — skill folder names unchanged (`/frame-change`, not `/jdk:frame-change`):
 
 ```bash
 npx skills@latest add jayden-dang/skills --copy

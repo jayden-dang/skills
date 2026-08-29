@@ -10,7 +10,7 @@
       "displayName": "Engineer Pack",
       "source": "./",
       "description": "Engineer Pack (jdk, jayden-dang-kit): A-to-Z agentic development (ideation to release, requirements traceability, roadmap/milestones). Personal Pack is separate — not included here.",
-      "version": "1.1.0",
+      "version": "1.2.0",
       "author": {
         "name": "Jayden Dang"
       },

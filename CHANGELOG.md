@@ -2,6 +2,21 @@
 
 ## Unreleased
 
+### Packaging: Codex plugin for Engineer Pack (`jdk`)
+
+Codex CLI / ChatGPT can install the same pack:
+
+```bash
+codex plugin marketplace add jayden-dang/skills
+codex plugin add jdk@jayden-dang-skills
+```
+
+- `.codex-plugin/plugin.json` — Codex manifest (`name` `jdk`, `skills` `./skills/`)
+- `.agents/plugins/marketplace.json` — Codex/ChatGPT catalog (Engineer Pack only)
+- Claude manifests stay the source of truth for Claude/Grok; version **1.2.0**
+- Codex walks `skills/` recursively; Personal OS folders under `skills/personal/`
+  may appear namespaced as `jdk:life-*` if that scan includes them
+
 ### Packaging: Engineer Pack slug `jdk` (jayden-dang-kit)
 
 The Engineer Pack plugin identity is **`jdk`** (picker label still **Engineer Pack**).

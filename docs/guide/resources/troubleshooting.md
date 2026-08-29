@@ -84,6 +84,18 @@ The plugin is not enabled, or a flattened copy is shadowing it. Check `/plugin`
 for `jdk` enabled. Do not keep both a flatten install and the plugin on Claude
 or Grok.
 
+### Codex does not see `/jdk:` or `jdk:frame-change`
+
+Codex does not use Claude's `/plugin install`. Add the marketplace, then the plugin:
+
+```bash
+codex plugin marketplace add jayden-dang/skills
+codex plugin add jdk@jayden-dang-skills
+```
+
+`codex plugin marketplace list` and `codex plugin list` show the configured
+name. Flatten (`npx skills add -a codex`) still uses bare skill names.
+
 ### I already had `engineer-pack` installed as a plugin
 
 The Engineer Pack slug is now `jdk`. Uninstall `engineer-pack` if it is still

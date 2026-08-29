@@ -64,10 +64,24 @@ is what the lockfile is for.
 
 ## Codex CLI
 
-Codex reads `AGENTS.md` from the repo root natively — no extra file needed. It
-picks up the behavior contract on its own. Codex has no session-start hook, so
-the gate is enforced by `AGENTS.md` being in context rather than by re-injection
-after compaction; after a long session, re-point it at `AGENTS.md` if it drifts.
+Install Engineer Pack as a Codex plugin (slug `jdk`):
+
+```bash
+codex plugin marketplace add jayden-dang/skills
+codex plugin add jdk@jayden-dang-skills
+```
+
+That uses `.codex-plugin/plugin.json` and `.agents/plugins/marketplace.json`.
+Do not also flatten Engineer Pack into `~/.agents/skills` / `~/.codex/skills`
+on the same machine.
+
+Codex also reads `AGENTS.md` from the repo root natively. It has no session-start
+hook, so the gate is enforced by `AGENTS.md` being in context rather than by
+re-injection after compaction; after a long session, re-point it at `AGENTS.md`
+if it drifts.
+
+Fallback without the plugin: `npx skills@latest add jayden-dang/skills --copy -a codex`
+(bare skill names, not `jdk:`).
 
 ## Cursor
 

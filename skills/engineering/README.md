@@ -19,6 +19,7 @@ skills/setup/
 This directory holds a **package index only**, so the monorepo can describe an engineering package without a breaking path migration.
 
 - Default Claude / Grok plugin: `.claude-plugin/plugin.json` (slug `jdk`, display name Engineer Pack)
+- Codex plugin: `.codex-plugin/plugin.json` + `.agents/plugins/marketplace.json` (slug `jdk`)
 - Dual-pack registry: `.claude-plugin/marketplace.json` (`jdk` + `personal-pack`)
 - Guide: [docs/guide/START-HERE.md](../../docs/guide/START-HERE.md)
 

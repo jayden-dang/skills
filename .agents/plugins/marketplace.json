@@ -1,0 +1,20 @@
+{
+  "name": "jayden-dang-skills",
+  "interface": {
+    "displayName": "Jayden Dang Skills"
+  },
+  "plugins": [
+    {
+      "name": "jdk",
+      "source": {
+        "source": "local",
+        "path": "./"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer Tools"
+    }
+  ]
+}

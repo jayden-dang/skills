@@ -96,6 +96,22 @@ codex plugin add jdk@jayden-dang-skills
 `codex plugin marketplace list` and `codex plugin list` show the configured
 name. Flatten (`npx skills add -a codex`) still uses bare skill names.
 
+### Kimi `/jdk:frame-change` is unknown
+
+Kimi namespaces **plugin commands** as `/jdk:<command>`. Engineer Pack ships
+`SKILL.md` files, not `commands/`. Invoke `/skill:frame-change`. Install with
+`/plugins install https://github.com/jayden-dang/skills`, then `/reload`.
+Do not keep a flatten copy in `~/.kimi-code/skills` or `~/.agents/skills` on
+the same machine.
+
+### OpenCode does not see Engineer Pack skills
+
+OpenCode is not a Claude/Codex plugin host. Open this clone (root `opencode.json`
+lists Engineer Pack category dirs) or copy those paths into
+`~/.config/opencode/opencode.json`. Flattening `skills/<category>/` into
+`~/.agents/skills/` makes category folders look like skill IDs. The `skill`
+tool uses the leaf folder name (`frame-change`), not `/jdk:frame-change`.
+
 ### I already had `engineer-pack` installed as a plugin
 
 The Engineer Pack slug is now `jdk`. Uninstall `engineer-pack` if it is still

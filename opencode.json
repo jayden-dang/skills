@@ -1,0 +1,16 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "skills": [
+    "./skills/meta",
+    "./skills/setup",
+    "./skills/discovery",
+    "./skills/spec",
+    "./skills/execution",
+    "./skills/review",
+    "./skills/acceptance",
+    "./skills/craft",
+    "./skills/ship",
+    "./skills/track",
+    "./skills/project"
+  ]
+}

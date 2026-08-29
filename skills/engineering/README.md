@@ -20,6 +20,8 @@ This directory holds a **package index only**, so the monorepo can describe an e
 
 - Default Claude / Grok plugin: `.claude-plugin/plugin.json` (slug `jdk`, display name Engineer Pack)
 - Codex plugin: `.codex-plugin/plugin.json` + `.agents/plugins/marketplace.json` (slug `jdk`)
+- Kimi plugin: `.kimi-plugin/plugin.json` + `.kimi-plugin/marketplace.json` (slug `jdk`; invoke `/skill:<name>`)
+- OpenCode: repo-root `opencode.json` (`skills` = Engineer Pack category dirs)
 - Dual-pack registry: `.claude-plugin/marketplace.json` (`jdk` + `personal-pack`)
 - Guide: [docs/guide/START-HERE.md](../../docs/guide/START-HERE.md)
 

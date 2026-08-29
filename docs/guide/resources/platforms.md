@@ -33,15 +33,17 @@ then `grok plugin install jdk --trust`).
 
 ## Installing skills for every other agent
 
-The `skills` CLI fans out to agent stores that do not load Claude/Grok plugins
-(Codex, Cursor, Kimi, …). Flatten keeps bare skill names, not the `/jdk:` prefix:
+The `skills` CLI fans out to agent stores that do **not** load this repo as a
+plugin (Cursor, …). Flatten keeps bare skill names, not the `/jdk:` prefix:
 
 ```bash
 npx skills@latest add jayden-dang/skills -a '*' --copy
 ```
 
-If you already installed `jdk` as a Claude/Grok plugin, omit Claude from that
-fan-out (do not use `-a '*'` blindly).
+If you already installed `jdk` as a Claude/Grok/Codex/Kimi plugin, omit those
+agents from the fan-out (do not use `-a '*'` blindly). OpenCode should use this
+repo's `opencode.json` (or a global copy of its `skills` paths), not a flatten
+of the nested `skills/<category>/` tree.
 
 `-a '*'` targets every detected agent, `--copy` writes real directories instead of
 symlinks, and `npx skills@latest update` refreshes them later. The CLI records a
@@ -50,10 +52,11 @@ symlinks, and `npx skills@latest update` refreshes them later. The CLI records a
 
 | Agent | Store | Form |
 |---|---|---|
-| Claude Code | `~/.claude/skills/` | symlink is fine — it follows them |
-| Codex CLI | `~/.agents/skills/` | needs `--copy` (see below) |
-| Kimi | `~/.kimi-code/skills/` | needs `--copy`, same reason, untested |
-| opencode | — | no skills mechanism; reads `AGENTS.md` |
+| Claude Code | plugin `jdk`, or `~/.claude/skills/` | plugin `/jdk:<skill>`; flatten is bare names |
+| Codex CLI | plugin `jdk`, or `~/.agents/skills/` | plugin namespace `jdk`; flatten needs `--copy` |
+| Kimi Code | plugin `jdk`, or `~/.kimi-code/skills/` | plugin `/skill:<name>`; do not flatten on top |
+| OpenCode | `opencode.json` `skills` paths, plus `~/.config/opencode/skills` / `~/.agents/skills` | `skill` tool by folder name; clone this repo or point at category dirs |
+| Cursor | `.cursor/skills/` / `~/.agents/skills/` | flatten `/skill-name` |
 
 **Why `--copy` matters.** Codex resolves skills from `<project>/.agents/skills`, then
 `$CODEX_HOME/skills` (deprecated), then `$HOME/.agents/skills`, then its own system
@@ -82,6 +85,61 @@ if it drifts.
 
 Fallback without the plugin: `npx skills@latest add jayden-dang/skills --copy -a codex`
 (bare skill names, not `jdk:`).
+
+## Kimi Code CLI
+
+Install Engineer Pack as a Kimi plugin (slug `jdk`):
+
+```text
+/plugins install https://github.com/jayden-dang/skills
+```
+
+That uses `.kimi-plugin/plugin.json` (explicit skill paths, same list as Claude)
+and optional `.kimi-plugin/marketplace.json` (`version: 2`). After install, run
+`/reload` or start a new session.
+
+Kimi **commands** are namespaced `/jdk:<command>`. This pack ships skills, not
+command wrappers, so you invoke `/skill:frame-change` (and the model can auto-load
+from `description`). That is not `/jdk:frame-change`.
+
+Do not also flatten Engineer Pack into `~/.kimi-code/skills` or `~/.agents/skills`
+on the same machine.
+
+## OpenCode
+
+OpenCode discovers `SKILL.md` from `.opencode/skills`, `~/.config/opencode/skills`,
+and Claude/agents compatibility dirs, including nested folders. Its **plugins**
+are npm/TS hooks, not skill packs — there is no `/jdk:` marketplace.
+
+This repo ships `opencode.json` with `skills` set to the eleven Engineer Pack
+category directories (`./skills/discovery`, …), not `./skills` (that would also
+load Personal Pack). Clone this repo and run OpenCode in it, or copy those paths
+into `~/.config/opencode/opencode.json` pointing at the clone:
+
+```json
+{
+  "$schema": "https://opencode.ai/config.json",
+  "skills": [
+    "/absolute/path/to/skills/skills/meta",
+    "/absolute/path/to/skills/skills/setup",
+    "/absolute/path/to/skills/skills/discovery",
+    "/absolute/path/to/skills/skills/spec",
+    "/absolute/path/to/skills/skills/execution",
+    "/absolute/path/to/skills/skills/review",
+    "/absolute/path/to/skills/skills/acceptance",
+    "/absolute/path/to/skills/skills/craft",
+    "/absolute/path/to/skills/skills/ship",
+    "/absolute/path/to/skills/skills/track",
+    "/absolute/path/to/skills/skills/project"
+  ]
+}
+```
+
+The skill ID is the folder that contains `SKILL.md` (`frame-change`). Load with
+the `skill` tool. OpenCode also reads `AGENTS.md`.
+
+Do not flatten the nested `skills/<category>/` tree into `~/.agents/skills/`
+for OpenCode — category names are not skills.
 
 ## Cursor
 

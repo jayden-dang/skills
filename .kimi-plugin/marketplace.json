@@ -1,0 +1,10 @@
+{
+  "version": "2",
+  "plugins": [
+    {
+      "id": "jdk",
+      "displayName": "Engineer Pack",
+      "source": "https://github.com/jayden-dang/skills"
+    }
+  ]
+}

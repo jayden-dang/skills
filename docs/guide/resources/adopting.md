@@ -18,13 +18,23 @@ codex plugin marketplace add jayden-dang/skills
 codex plugin add jdk@jayden-dang-skills
 ```
 
-**Cursor, Kimi, and other flatten agents** — skill folder names unchanged (`/frame-change`, not `/jdk:frame-change`):
+**Kimi Code CLI** — plugin (slug `jdk`). Skills invoke as `/skill:<name>` (not `/jdk:<name>`). Do not also flatten Engineer Pack into `~/.kimi-code/skills/` or `~/.agents/skills` on the same machine.
+
+```text
+/plugins install https://github.com/jayden-dang/skills
+```
+
+Then `/reload` or a new session. Optional catalog: `/plugins marketplace` with `.kimi-plugin/marketplace.json`.
+
+**OpenCode** — this repo ships `opencode.json` that points at Engineer Pack category folders (not Personal Pack). Clone and open the repo, or copy those `skills` paths into `~/.config/opencode/opencode.json` against a local clone. Invoke via the `skill` tool (`frame-change`), not `/jdk:`. Do not flatten this tree into `~/.agents/skills/` if OpenCode would then see category folders as skill IDs.
+
+**Cursor and other flatten agents** — skill folder names unchanged (`/frame-change`, not `/jdk:frame-change`):
 
 ```bash
 npx skills@latest add jayden-dang/skills --copy
 ```
 
-Update: plugin manager / `grok plugin update jdk` on Claude and Grok; `npx skills@latest update` on flatten installs.
+Update: plugin manager / `grok plugin update jdk` on Claude and Grok; reinstall the GitHub URL on Kimi; `npx skills@latest update` on flatten installs.
 
 **Dev mode** — for working on this repo, so `git pull` updates the skills in place. Clone it and symlink the engineering skill folders into `~/.claude/skills` (flatten — do not combine with a `jdk` plugin install on the same Claude/Grok machine):
 

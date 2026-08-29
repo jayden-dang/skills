@@ -88,7 +88,10 @@ Full skill index: [Skill reference](skills/README.md) · laws: [`AGENTS.md`](../
 1. **Install** — Claude Code / Grok: `/plugin marketplace add jayden-dang/skills`
    then `/plugin install jdk@jayden-dang-skills` (slash prefix `/jdk:`). Codex:
    `codex plugin marketplace add jayden-dang/skills` then
-   `codex plugin add jdk@jayden-dang-skills`. Cursor, Kimi:
+   `codex plugin add jdk@jayden-dang-skills`. Kimi Code:
+   `/plugins install https://github.com/jayden-dang/skills` then `/reload`
+   (`/skill:frame-change`). OpenCode: clone this repo (root `opencode.json`) or
+   copy its `skills` paths into `~/.config/opencode/opencode.json`. Cursor:
    `npx skills@latest add jayden-dang/skills --copy` (bare skill names). Do not
    flatten Engineer Pack onto a harness that already has the `jdk` plugin.
    Nothing is installed *into* your app repo beyond optional markdown + hook.

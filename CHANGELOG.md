@@ -2,6 +2,28 @@
 
 ## Unreleased
 
+### Packaging: Kimi Code + OpenCode for Engineer Pack (`jdk`)
+
+Kimi installs the pack as a plugin; OpenCode loads it as skill sources. Cursor
+and Copilot CLI are unchanged (flatten / not added).
+
+```text
+/plugins install https://github.com/jayden-dang/skills
+```
+
+- `.kimi-plugin/plugin.json` — `name` `jdk`, `interface.displayName` Engineer Pack,
+  `skills` = the same explicit leaf paths as Claude (nested `skills/<category>/<name>`)
+- `.kimi-plugin/marketplace.json` — Kimi catalog `version: 2`, Engineer Pack only
+- Invoke on Kimi as `/skill:frame-change` (commands would be `/jdk:…`; this pack
+  does not ship `commands/`)
+- `opencode.json` — `skills` lists the eleven Engineer Pack category dirs, not
+  `./skills` (Personal Pack stays out). OpenCode plugins are npm hooks; there is
+  no `/jdk:` marketplace. Load with the `skill` tool
+- Claude / Codex manifests version **1.3.0**
+- Check: `python3 scripts/check-plugin-slug.py`
+- Do not flatten Engineer Pack onto Kimi or OpenCode when the plugin / config
+  path is in use
+
 ### Packaging: Codex plugin for Engineer Pack (`jdk`)
 
 Codex CLI / ChatGPT can install the same pack:

@@ -100,7 +100,25 @@ codex plugin add jdk@jayden-dang-skills
 The plugin namespace is `jdk` (same slug). Do not also flatten Engineer Pack
 into Codex skill dirs on the same machine.
 
-### Other agents (Cursor, Kimi, …)
+### Kimi Code CLI
+
+```text
+/plugins install https://github.com/jayden-dang/skills
+```
+
+Then `/reload` or a new session. Skills invoke as `/skill:frame-change` (Kimi
+namespaces **commands** as `/jdk:…`; this pack ships skills, not command files).
+Do not also flatten Engineer Pack into `~/.kimi-code/skills` or `~/.agents/skills`
+on the same machine.
+
+### OpenCode
+
+This repo's `opencode.json` lists Engineer Pack category folders. Clone and open
+it, or copy those `skills` paths into `~/.config/opencode/opencode.json` against
+a local clone. Load with the `skill` tool (`frame-change`). OpenCode plugins are
+npm hooks, not a `/jdk:` marketplace.
+
+### Other agents (Cursor, …)
 
 These harnesses do not load this repo as a plugin. Flatten with the `skills`
 CLI — skill **folder names stay the same**, so you invoke `/frame-change`

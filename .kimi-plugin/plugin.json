@@ -1,12 +1,19 @@
 {
   "name": "jdk",
-  "displayName": "Engineer Pack",
   "version": "1.3.0",
-  "description": "Engineer Pack (jdk, jayden-dang-kit): A-to-Z agentic development (ideation to release, requirements traceability, roadmap/milestones). Personal Pack is separate — not included here.",
+  "description": "Engineer Pack (jdk, jayden-dang-kit): A-to-Z agentic development (ideation to release, requirements traceability, roadmap/milestones). Personal Pack is separate \u2014 not included here.",
   "author": {
-    "name": "Jayden Dang"
+    "name": "Jayden Dang",
+    "url": "https://github.com/jayden-dang"
   },
-  "hooks": "./hooks/hooks.json",
+  "homepage": "https://github.com/jayden-dang/skills",
+  "repository": "https://github.com/jayden-dang/skills",
+  "license": "MIT",
+  "keywords": [
+    "skills",
+    "spec",
+    "traceability"
+  ],
   "skills": [
     "./skills/discovery/forge-prompt",
     "./skills/discovery/frame-change",
@@ -80,5 +87,12 @@
     "./skills/meta/teach-pack",
     "./skills/meta/gate-session",
     "./skills/meta/author-skills"
-  ]
+  ],
+  "interface": {
+    "displayName": "Engineer Pack",
+    "shortDescription": "Spec-driven coding: ideation to ship",
+    "longDescription": "Engineer Pack (jayden-dang-kit). Invoke skills with /skill:<name>. Personal Pack is a separate install.",
+    "developerName": "Jayden Dang",
+    "category": "Developer Tools"
+  }
 }

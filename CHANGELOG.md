@@ -2,6 +2,30 @@
 
 ## Unreleased
 
+### Packaging: Engineer Pack slug `jdk` (jayden-dang-kit)
+
+The Engineer Pack plugin identity is **`jdk`** (picker label still **Engineer Pack**).
+Slash on Claude Code / Grok: `/jdk:frame-change`. Install:
+
+```text
+/plugin marketplace add jayden-dang/skills
+/plugin install jdk@jayden-dang-skills
+```
+
+**Breaking** for anyone who had the plugin installed as `engineer-pack`: uninstall
+that entry and install `jdk`. Skill *directory* names are unchanged.
+
+Primary install for Claude/Grok is the marketplace plugin (session-start hook
+ships with it). Do not flatten Engineer Pack into `~/.claude/skills/` on the same
+machine. Codex / Cursor / Kimi keep `npx skills add … --copy` (bare `/frame-change`).
+Updates: plugin manager / `grok plugin update jdk` vs `npx skills update`.
+
+- `.claude-plugin/plugin.json` + marketplace Engineer Pack entry: `name` `jdk`,
+  `displayName` Engineer Pack, version **1.1.0**
+- Personal Pack unchanged (`personal-pack`)
+- Docs: README, START-HERE, adopting, platforms, troubleshooting, engineering README
+- Check: `python3 scripts/check-plugin-slug.py`
+
 ### Rename: 6 skills for naming consistency (v2.0.0 each)
 
 `review-invariants`, `review-ui`, and `select-review-sample` (review) and

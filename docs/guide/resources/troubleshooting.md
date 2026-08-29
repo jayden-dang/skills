@@ -64,6 +64,31 @@ A `requirements.md` declares a feature code with no row in `docs/specs/INDEX.md`
 
 ---
 
+## Install / slash prefix
+
+### I installed with `npx skills` on Claude and do not see `/jdk:`
+
+Flatten copies each skill folder into `~/.claude/skills/<name>/`, so the command
+is `/frame-change`. The `/jdk:` prefix exists only when Engineer Pack is
+installed as the `jdk` plugin. Uninstall the flattened copy (or skip Claude in
+`-a '*'`) and install:
+
+```text
+/plugin marketplace add jayden-dang/skills
+/plugin install jdk@jayden-dang-skills
+```
+
+### `/jdk:frame-change` is unknown, but `/frame-change` works
+
+The plugin is not enabled, or a flattened copy is shadowing it. Check `/plugin`
+for `jdk` enabled. Do not keep both a flatten install and the plugin on Claude
+or Grok.
+
+### I already had `engineer-pack` installed as a plugin
+
+The Engineer Pack slug is now `jdk`. Uninstall `engineer-pack` if it is still
+listed, then `/plugin install jdk@jayden-dang-skills`.
+
 ## Skills do not fire
 
 ### The agent answers without invoking any skill

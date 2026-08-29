@@ -17,19 +17,31 @@ repo file can run this system by reading that one.
 
 Full support. The `SessionStart` hook in `hooks/hooks.json` injects
 `meta/gate-session` on every `startup | clear | compact`, so the gate survives
-compaction automatically. Install with the CLI, or as a Claude Code plugin:
+compaction automatically. Install as a plugin so commands are `/jdk:<skill>`
+and the hook ships with the pack:
 
-```bash
-npx skills@latest add jayden-dang/skills
+```text
+/plugin marketplace add jayden-dang/skills
+/plugin install jdk@jayden-dang-skills
 ```
 
-## Installing skills for every agent
+Do **not** also run `npx skills add` targeting Claude Code on the same machine —
+flatten plus plugin duplicates every skill (`/frame-change` and `/jdk:frame-change`).
 
-The `skills` CLI fans out to every agent store it detects:
+Grok reads the same marketplace (`grok plugin marketplace add jayden-dang/skills`
+then `grok plugin install jdk --trust`).
+
+## Installing skills for every other agent
+
+The `skills` CLI fans out to agent stores that do not load Claude/Grok plugins
+(Codex, Cursor, Kimi, …). Flatten keeps bare skill names, not the `/jdk:` prefix:
 
 ```bash
 npx skills@latest add jayden-dang/skills -a '*' --copy
 ```
+
+If you already installed `jdk` as a Claude/Grok plugin, omit Claude from that
+fan-out (do not use `-a '*'` blindly).
 
 `-a '*'` targets every detected agent, `--copy` writes real directories instead of
 symlinks, and `npx skills@latest update` refreshes them later. The CLI records a

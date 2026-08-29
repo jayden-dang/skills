@@ -2,13 +2,24 @@
 
 ## Install
 
-```bash
-npx skills@latest add jayden-dang/skills
+**Claude Code / Grok** — plugin (slug `jdk`, picker label Engineer Pack). Do not also flatten Engineer Pack into `~/.claude/skills/` on the same machine.
+
+```text
+/plugin marketplace add jayden-dang/skills
+/plugin install jdk@jayden-dang-skills
 ```
 
-Or install it as a Claude Code plugin — this repo is a valid plugin, shipping the skills plus a `SessionStart` hook that keeps the skill-check gate alive across `/clear` and compaction.
+Grok: `grok plugin marketplace add jayden-dang/skills` then `grok plugin install jdk --trust`.
 
-**Dev mode** — for working on this repo, so `git pull` updates the skills in place. Clone it and symlink the engineering skill folders into `~/.claude/skills`:
+**Codex, Cursor, Kimi, and other flatten agents** — skill folder names unchanged (`/frame-change`, not `/jdk:frame-change`):
+
+```bash
+npx skills@latest add jayden-dang/skills --copy
+```
+
+Update: plugin manager / `grok plugin update jdk` on Claude and Grok; `npx skills@latest update` on flatten installs.
+
+**Dev mode** — for working on this repo, so `git pull` updates the skills in place. Clone it and symlink the engineering skill folders into `~/.claude/skills` (flatten — do not combine with a `jdk` plugin install on the same Claude/Grok machine):
 
 ```bash
 for cat in meta discovery spec execution review acceptance craft ship track project setup; do

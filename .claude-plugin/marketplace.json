@@ -6,10 +6,11 @@
   "description": "Two independent skill packs: Engineer Pack (software) and Personal Pack (life/vault management).",
   "plugins": [
     {
-      "name": "engineer-pack",
+      "name": "jdk",
+      "displayName": "Engineer Pack",
       "source": "./",
-      "description": "Engineer Pack: A-to-Z agentic development (ideation to release, requirements traceability, roadmap/milestones). Personal Pack is separate — not included here.",
-      "version": "1.0.0",
+      "description": "Engineer Pack (jdk, jayden-dang-kit): A-to-Z agentic development (ideation to release, requirements traceability, roadmap/milestones). Personal Pack is separate — not included here.",
+      "version": "1.1.0",
       "author": {
         "name": "Jayden Dang"
       },

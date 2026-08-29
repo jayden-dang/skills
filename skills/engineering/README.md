@@ -18,8 +18,8 @@ skills/setup/
 
 This directory holds a **package index only**, so the monorepo can describe an engineering package without a breaking path migration.
 
-- Default Claude / `npx skills` plugin: `.claude-plugin/plugin.json` (`engineer-pack`)
-- Dual-pack registry for `npx skills`: `.claude-plugin/marketplace.json` (Engineer Pack + Personal Pack)
+- Default Claude / Grok plugin: `.claude-plugin/plugin.json` (slug `jdk`, display name Engineer Pack)
+- Dual-pack registry: `.claude-plugin/marketplace.json` (`jdk` + `personal-pack`)
 - Guide: [docs/guide/START-HERE.md](../../docs/guide/START-HERE.md)
 
 A separate, optional package for life/vault management: [../personal/README.md](../personal/README.md) (`personal-pack`).

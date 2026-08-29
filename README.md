@@ -2,9 +2,9 @@
 
 This repository hosts **independent skill packages**. Install only what you need.
 
-| Package | `npx skills` name | Path | Default install? | Role |
+| Package | Plugin / pack name | Path | Default install? | Role |
 |---|---|---|---|---|
-| **Engineer Pack** | `engineer-pack` | `skills/{meta,discovery,spec,…}/` | **Yes** (default plugin) | Spec-driven coding: ideation → ship |
+| **Engineer Pack** | `jdk` (jayden-dang-kit) | `skills/{meta,discovery,spec,…}/` | **Yes** (default plugin) | Spec-driven coding: ideation → ship |
 | **Personal Pack** | `personal-pack` | `skills/personal/` | **Opt-in** | Life + multi-project *management* (secretary/coach) |
 
 - Personal OS (standalone): **[skills/personal/README.md](skills/personal/README.md)** · **[docs/personal-os/START-HERE.md](docs/personal-os/START-HERE.md)**
@@ -54,47 +54,69 @@ changelog         Module selection persists across launches — SHELL-1.2  # fro
 
 ## Install
 
-### Engineering (default)
+### Engineering (default) — Claude Code and Grok
 
-```bash
-npx skills@latest add jayden-dang/skills
+Install **as a plugin** so skills appear under `/jdk:` (jayden-dang-kit) and the
+session-start hook ships with the pack. Do **not** also flatten Engineer Pack
+into `~/.claude/skills/` on the same machine — you would get both `/frame-change`
+and `/jdk:frame-change`.
+
+**Claude Code**
+
+```text
+/plugin marketplace add jayden-dang/skills
+/plugin install jdk@jayden-dang-skills
 ```
 
-It clones this repo, reads `.claude-plugin/marketplace.json`, and offers the packs
-by name. Useful flags:
+Update later with the plugin manager (`/plugin` → update) or
+`/plugin marketplace update jayden-dang-skills`. Rollback: uninstall or disable
+`jdk`.
+
+**Grok**
+
+```bash
+grok plugin marketplace add jayden-dang/skills
+grok plugin install jdk --trust
+```
+
+Update with `grok plugin update jdk`. Rollback: `grok plugin uninstall jdk`.
+
+The picker label is **Engineer Pack**; the slug you type and install is `jdk`.
+Personal Pack is **not** in this plugin.
+
+**Nothing to install into your app repo.** Pure `SKILL.md` — no vendored runtime.
+
+Then, once per **code** repo, run `/configure-repo`. See [Adopting](docs/guide/resources/adopting.md).
+
+### Other agents (Codex, Cursor, Kimi, …)
+
+These harnesses do not load this repo as a Claude/Grok plugin. Flatten with the
+`skills` CLI — skill **folder names stay the same**, so you invoke `/frame-change`
+(or `$frame-change`), not `/jdk:frame-change`.
+
+```bash
+npx skills@latest add jayden-dang/skills --copy
+```
+
+Useful flags:
 
 | Flag | Effect |
 |---|---|
 | `-a '*'` | install into **every** agent store the CLI detects, not just the current one |
 | `-g` | install globally (user-level) rather than into the current project |
-| `--copy` | copy instead of symlinking — needed for agents that don't follow symlinked skill dirs (Codex CLI is one; verified absent from its list when symlinked, found when copied) |
+| `--copy` | copy instead of symlinking — **required for Codex** (verified absent from its list when symlinked, found when copied) |
 | `-s '*'` | take every skill without the interactive picker |
 
 Upgrading is `npx skills@latest update` (`-g` / `-p` to pick scope). The CLI writes
-a `skills-lock.json`, and `experimental_install` restores from it — so a machine or
-a teammate can be brought to the exact same set without this repo being vendored
-anywhere.
+a `skills-lock.json`, and `experimental_install` restores from it.
 
-Or as a Claude Code plugin (this repo is a valid plugin: **Engineer Pack** + a
-session-start hook). Personal Pack is **not** in the default plugin list.
+See [Running on other platforms](docs/guide/resources/platforms.md) for which
+agents need `--copy` and why.
 
-**Nothing to install into your repo.** Pure `SKILL.md` — no vendored runtime.
-
-Dev symlink — for **working on this repo**, engineering only (so `git pull` updates
-in place). Not the install path; use the CLI above for that:
-
-```bash
-git clone https://github.com/jayden-dang/skills ~/dev/skills
-cd ~/dev/skills
-for cat in meta discovery spec execution review acceptance craft ship track project setup; do
-  for d in skills/$cat/*/; do
-    [ -f "$d/SKILL.md" ] || continue
-    ln -sfn "$PWD/$d" ~/.claude/skills/"$(basename "$d")"
-  done
-done
-```
-
-Then, once per **code** repo, run `/configure-repo`. See [Adopting](docs/guide/resources/adopting.md).
+**Other platforms.** Nothing here is Claude-specific — the skills are plain
+`SKILL.md` and the traceability check is `grep`/`git` the agent drives.
+`AGENTS.md` at the repo root is the portable behavior contract; Codex CLI reads
+it natively and Cursor picks up `.cursor/rules/gate-session.mdc`.
 
 ### Personal OS (opt-in, independent)
 
@@ -109,20 +131,22 @@ engineering-only install never pulls these in.
 
 In your notes vault, run `life-setup` once.
 
-To install into *every* agent store on the machine, use the CLI's own fan-out:
+### Dev symlink (this repo only)
+
+For **working on this repo**, engineering only (so `git pull` updates in place).
+This flattens into `~/.claude/skills/` — do not combine with a plugin install of
+`jdk` on the same Claude/Grok machine.
 
 ```bash
-npx skills@latest add jayden-dang/skills -a '*' --copy
+git clone https://github.com/jayden-dang/skills ~/dev/skills
+cd ~/dev/skills
+for cat in meta discovery spec execution review acceptance craft ship track project setup; do
+  for d in skills/$cat/*/; do
+    [ -f "$d/SKILL.md" ] || continue
+    ln -sfn "$PWD/$d" ~/.claude/skills/"$(basename "$d")"
+  done
+done
 ```
-
-See [Running on other platforms](docs/guide/resources/platforms.md) for which
-agents need `--copy` and why.
-
-**Other platforms.** Nothing here is Claude-specific — the skills are plain
-`SKILL.md` and the traceability check is `grep`/`git` the agent drives.
-`AGENTS.md` at the repo root is the portable behavior contract; Codex CLI reads
-it natively and Cursor picks up `.cursor/rules/gate-session.mdc`. See
-[Running on other platforms](docs/guide/resources/platforms.md).
 
 ### Recommended prerequisite: the Context7 MCP
 

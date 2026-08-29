@@ -103,5 +103,16 @@
       "speak-outer is used for the PR title and body",
       "process tokens are absent from reviewer prose"
     ]
+  },
+  {
+    "eval_id": 11,
+    "eval_name": "cleanup-only-under-worktrees-parent",
+    "kind": "contract",
+    "derived_from": "SKILL.md § 7. Worktree cleanup",
+    "prompt": "Local merge succeeded and the suite is green. Clean up the worktree.",
+    "assertions": [
+      "only a worktree under .worktrees/ or worktrees/ is removed, or a leftover tree under .isolate-workspace/ or isolate-workspace/",
+      "a harness-owned or externally managed workspace is not removed"
+    ]
   }
 ]

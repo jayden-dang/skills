@@ -117,7 +117,7 @@ Each maps to the label string *this repo actually uses*, so `triage` never creat
 
 `docs/agents/project.md` (including posture and Team), `issue-tracker.md`, and `triage-labels.md`; `docs/specs/INDEX.md` if missing; `CONTEXT.md` if missing; and an `## Agent skills` block into **exactly one canonical file** — `AGENTS.md` by default, with a short `CLAUDE.md` pointing at it, so Claude Code finds instructions by its native filename without duplicating them.
 
-It writes markdown only — no scripts, no linters, no CI, no git hooks land in the repo. It also ensures `.skills/` and `.isolate-workspace/` are git-ignored.
+It writes markdown only — no scripts, no linters, no CI, no git hooks land in the repo. It also ensures `.skills/` and `.worktrees/` are git-ignored.
 
 **The additive rule governs everything:** existing files are edited in place, never clobbered.
 

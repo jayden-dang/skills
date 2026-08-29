@@ -79,9 +79,9 @@ A single-task wave runs the loop above inline on the branch — the common case.
 
 1. **Record the wave base.** `WBASE=$(git rev-parse HEAD)` — every task in the wave branches from this one sha.
 2. **Prove the surfaces are disjoint.** Confirm from the briefs that no two tasks in the wave Create or Modify the same file. An overlap means a `Depends-on` edge was missed — those tasks drop back to serial rather than run in parallel.
-3. **Fan out, one worktree per task.** The controller stays in the primary worktree (the feature branch at WBASE); each task gets its own. `git worktree add .isolate-workspace/<branch>-taskN -b <branch>-taskN WBASE`, then run per-task loop steps 1–9 inside each worktree concurrently — steps 10–11 (ledger, advance) are held for the barrier. On a fresh branch, step 1's `BASE` already equals WBASE, so the brief, dispatch, package, review, and fix loop are unchanged — just scoped to the worktree.
+3. **Fan out, one worktree per task.** The controller stays in the primary worktree (the feature branch at WBASE); each task gets its own. `git worktree add .worktrees/<branch>-taskN -b <branch>-taskN WBASE`, then run per-task loop steps 1–9 inside each worktree concurrently — steps 10–11 (ledger, advance) are held for the barrier. On a fresh branch, step 1's `BASE` already equals WBASE, so the brief, dispatch, package, review, and fix loop are unchanged — just scoped to the worktree.
 4. **Barrier, then merge in task order.** Only once every task in the wave has passed review, and back in the primary worktree, merge each branch into the **feature branch** (never main/master) in ascending task number. A conflict here means the disjoint check missed a shared surface — stop and escalate; never resolve a wave merge blind.
-5. **Ledger once, isolate-workspace down.** At the barrier the controller — the sole ledger writer — appends one line per wave task naming its `--no-ff` merge commit as the head, rolls up each task's held Minor findings, and removes the isolate-workspace. Writing only here is what keeps the ledger race-free.
+5. **Ledger once, worktrees down.** At the barrier the controller — the sole ledger writer — appends one line per wave task naming its `--no-ff` merge commit as the head, rolls up each task's held Minor findings, and removes the `.worktrees/` task trees. Writing only here is what keeps the ledger race-free.
 
 Isolation plus the disjoint-surface check is what makes concurrency safe: two implementers never share a working tree, and the ledger is never written from inside one.
 
@@ -123,7 +123,7 @@ Conversation memory does not survive compaction. Controllers that lost their pla
 - Read `.skills/<CODE>/progress.md` on start, and resume after the last complete task.
 - After a compaction or resume, trust the ledger and `git log` over recollection — the commits the ledger names exist in git even when context no longer remembers writing them.
 - Never re-dispatch a task the ledger marks complete.
-- A crash mid-wave leaves uncommitted, unmerged isolate-workspace: discard them and re-run the whole wave off WBASE. Nothing is ledgered or merged until the barrier, so the re-run is idempotent.
+- A crash mid-wave leaves uncommitted, unmerged worktrees under `.worktrees/`: discard them and re-run the whole wave off WBASE. Nothing is ledgered or merged until the barrier, so the re-run is idempotent.
 - If `.skills/` is wiped, reconstruct progress from `git log`.
 
 ## After the last task

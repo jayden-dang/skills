@@ -1,6 +1,6 @@
 ---
 name: configure-repo
-version: 1.3.1
+version: 1.4.0
 description: Sets up docs/agents config so this skill set can run in an existing repo.
 disable-model-invocation: true
 ---
@@ -27,7 +27,7 @@ Check the setup markers — all by reading files in the repo:
 - `## Team` section inside `docs/agents/project.md` — present and filled, or a gap?
 - An `## Agent skills` section in `CLAUDE.md` / `AGENTS.md` (note which of the two files exists)
 - Seed files the skill set expects: `docs/specs/INDEX.md`, a glossary (`CONTEXT.md` or `CONTEXT-MAP.md`)
-- `.skills/` and `.isolate-workspace/` present in `.gitignore`
+- `.skills/` and `.worktrees/` present in `.gitignore`
 
 Then branch on what you found:
 
@@ -304,7 +304,7 @@ Repo config the skills read:
 - Triage label mapping: `docs/agents/triage-labels.md`
 ```
 
-8. Ensure the local working dirs are git-ignored: the skills' scratch artifacts — `build-in-waves`'s ledger and briefs, and the scan/review digests the spec skills write — live under `.skills/`, and isolated workspaces under `.isolate-workspace/`; neither belongs in version control. Idempotently, for each pattern: `grep -qxF '.skills/' .gitignore 2>/dev/null || printf '.skills/\n' >> .gitignore` (same for `.isolate-workspace/`), then stage `.gitignore`. (A line-presence check, not `git check-ignore` — a trailing-slash pattern only matches an *existing* directory, so `check-ignore` would re-append before the dir exists.)
+8. Ensure the local working dirs are git-ignored: the skills' scratch artifacts — `build-in-waves`'s ledger and briefs, and the scan/review digests the spec skills write — live under `.skills/`, and isolated workspaces under `.worktrees/` (the same parent `isolate-workspace` uses); neither belongs in version control. Idempotently, for each pattern: `grep -qxF '.skills/' .gitignore 2>/dev/null || printf '.skills/\n' >> .gitignore` (same for `.worktrees/`), then stage `.gitignore`. Do not add a `.isolate-workspace/` line — that was the old parallel parent. Leave an existing `.isolate-workspace/` ignore in place (additive). (A line-presence check, not `git check-ignore` — a trailing-slash pattern only matches an *existing* directory, so `check-ignore` would re-append before the dir exists.)
 9. If decision J (Default PR base) was confirmed, add `- **Default PR base:** \`<branch>\`` to the **Project posture** section of `docs/agents/project.md`, under the additive rule above — merge in, never clobber a value the user already set. If the user declined decision J, write nothing: leave the field absent so `land-branch` asks per invocation.
 10. If decision K (Remote environments) was confirmed, merge the **Remote environments** table into `docs/agents/project.md` from `templates/agents/project.md` (additive). If skipped, write `None — not deployed` or omit the section.
 11. **If decision L is `index-only`:** append the catalog-sync gitignore block from
@@ -313,7 +313,7 @@ Repo config the skills read:
     already present. Show the user the snippet and warn: do not `git add -f`
     triad dirs. If L is unset or `full-triad`, do **not** add specs ignore rules.
 
-**Done when:** all files are written, `.skills/` and `.isolate-workspace/` are git-ignored, index-only gitignore applied only when L=`index-only`, and `git status` shows only the expected additions/edits.
+**Done when:** all files are written, `.skills/` and `.worktrees/` are git-ignored, index-only gitignore applied only when L=`index-only`, and `git status` shows only the expected additions/edits.
 
 ## 5. Offer the session-start hook
 

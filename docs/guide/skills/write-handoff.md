@@ -84,7 +84,7 @@ Read the finished document **as a skeptic**: could a fresh agent, given only thi
 A session has spent an afternoon on a caching feature and context is nearly full. The user runs `/write-handoff caching`. The skill writes `handoff-caching-1720579200.md` to `$TMPDIR` and fills the five sections:
 
 - **Goal** — "cut report-page load time by caching the aggregation query; in the user's words, 'reports should feel instant on repeat views'."
-- **Current state** — on branch `feat/report-cache` in the worktree `.isolate-workspace/report-cache`, tree dirty with an uncommitted spike in `src/cache/`.
+- **Current state** — on branch `feat/report-cache` in the worktree `.worktrees/report-cache`, tree dirty with an uncommitted spike in `src/cache/`.
 - **Tried and rejected** — an in-memory LRU was dropped because the app runs multi-process and the caches diverged; a blanket HTTP cache-control header was dropped because the data must invalidate on write. Each carries its *why*, so the successor does not retry either.
 - **Next actions** — starting with the literal next command: "run the failing test in `src/cache/aggregate.test.ts`, then implement Redis-backed memoization behind the `AggregateCache` seam."
 - **Suggested skills** — "resume under [`test-first`](test-first.md) — a RED test already exists; run [`prove-claim`](prove-claim.md) before any done claim."

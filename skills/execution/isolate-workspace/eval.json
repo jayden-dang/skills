@@ -20,5 +20,28 @@
       "a clean baseline is established before feature work begins",
       "a failing baseline halts rather than being carried into the feature work"
     ]
+  },
+  {
+    "eval_id": 3,
+    "eval_name": "default-parent-is-worktrees",
+    "kind": "contract",
+    "derived_from": "SKILL.md § Step 1 — Create the workspace",
+    "prompt": "Start the approved plan in an isolated worktree. No native harness tool, no existing worktree parent, no stated path preference.",
+    "assertions": [
+      "the git-fallback parent created is .worktrees/",
+      ".isolate-workspace/ is not created as the default parent",
+      "a new gitignore line is appended only when .worktrees/ is not already ignored"
+    ]
+  },
+  {
+    "eval_id": 4,
+    "eval_name": "reuse-existing-worktrees-parent",
+    "kind": "contract",
+    "derived_from": "SKILL.md § Step 1 — Create the workspace",
+    "prompt": "The repo already has .worktrees/ at the root. Set up isolation.",
+    "assertions": [
+      "the existing .worktrees/ directory is reused",
+      "a second isolation parent is not created"
+    ]
   }
 ]

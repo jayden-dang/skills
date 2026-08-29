@@ -10,5 +10,16 @@
       "sections are decided one at a time rather than as one bulk questionnaire",
       "the resulting choices are recorded in the repo rather than only in chat"
     ]
+  },
+  {
+    "eval_id": 2,
+    "eval_name": "gitignore-worktrees-not-isolate-workspace",
+    "kind": "contract",
+    "derived_from": "SKILL.md § 4. Write",
+    "prompt": "Finish setup and write the files.",
+    "assertions": [
+      ".worktrees/ is ensured in .gitignore",
+      ".isolate-workspace/ is not added as a second isolation gitignore pattern"
+    ]
   }
 ]

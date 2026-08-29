@@ -152,5 +152,16 @@
     "derived_from": "TESTS.md § GREEN — description trigger coverage",
     "prompt": "implement the plan myself inline",
     "assertions": ["build-inline is selected rather than build-in-waves"]
+  },
+  {
+    "eval_id": 15,
+    "eval_name": "parallel-worktrees-use-worktrees-parent",
+    "kind": "contract",
+    "derived_from": "SKILL.md § Ready sets, lanes, and barriers",
+    "prompt": "Two disjoint ready tasks fan out in parallel worktrees.",
+    "assertions": [
+      "each task worktree is created under .worktrees/",
+      "a parallel wave does not mint .isolate-workspace/ as a second parent"
+    ]
   }
 ]

@@ -1,6 +1,6 @@
 ---
 name: land-branch
-version: 3.0.0
+version: 3.1.0
 description: >
   Use when a finished feature branch needs integration or disposition —
   produces a local merge, pull request, kept branch, discard, or block with
@@ -145,7 +145,7 @@ failure.
 
 Applies only after a green local merge or confirmed discard.
 
-- Remove only a worktree below `.isolate-workspace/` or `isolate-workspace/`.
+- Remove only a worktree below `.worktrees/` or `worktrees/`, or a leftover tree below `.isolate-workspace/` or `isolate-workspace/`.
 - Never remove a harness-owned or externally managed workspace.
 - `cd` to the main repo root before removal, then run `git worktree prune`.
 

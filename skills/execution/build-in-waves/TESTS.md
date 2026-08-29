@@ -1,5 +1,15 @@
 # `build-in-waves` / implementer-prompt — deviation log
 
+## Edit — parallel parent is `.worktrees/` (v2.1.0)
+
+**RED (v2.0.0 guide + leftover path):** parallel fan-out used
+`.isolate-workspace/<branch>-taskN`, a second parent beside `.worktrees/`.
+
+**GREEN:** ready-set worktrees are created under `.worktrees/`, the same parent
+`isolate-workspace` selects. Crash cleanup discards unmerged trees there.
+
+---
+
 ## GREEN — unified scheduler contract (structural, 2026-08-26)
 
 Fresh frontmatter/eval lint returned exit 0. A repository search found the

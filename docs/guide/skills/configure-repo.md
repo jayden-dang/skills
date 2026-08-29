@@ -61,7 +61,7 @@ Before writing anything, show the user the three `docs/agents/*.md` files' conte
 
 **The additive rule: existing files are edited in place, never clobbered** — if a target already exists, content is merged and everything the user wrote is preserved. The step writes `docs/agents/project.md`, `docs/agents/issue-tracker.md`, and `docs/agents/triage-labels.md` from the matching `templates/agents/*` seeds, keeping only the chosen tracker's operations section and recording the PR-surface answer; creates `docs/specs/INDEX.md` if missing; and creates the glossary (`CONTEXT.md` or `CONTEXT-MAP.md`) if missing.
 
-The `## Agent skills` block lives in exactly **one** canonical file; any second file is a thin pointer, never a copy. When neither `CLAUDE.md` nor `AGENTS.md` exists (the default), `AGENTS.md` becomes canonical and a short `CLAUDE.md` points at it. When only one exists it is canonical. When both exist the block goes in whichever already carries real agent instructions, and never in both; an existing `## Agent skills` section is updated in place, never duplicated. Finally the step git-ignores `.skills/` (the `build-in-waves` ledger and scan digests) and `.isolate-workspace/` idempotently by line-presence check. Done when all files are written, both dirs are ignored, and `git status` shows only expected changes.
+The `## Agent skills` block lives in exactly **one** canonical file; any second file is a thin pointer, never a copy. When neither `CLAUDE.md` nor `AGENTS.md` exists (the default), `AGENTS.md` becomes canonical and a short `CLAUDE.md` points at it. When only one exists it is canonical. When both exist the block goes in whichever already carries real agent instructions, and never in both; an existing `## Agent skills` section is updated in place, never duplicated. Finally the step git-ignores `.skills/` (the `build-in-waves` ledger and scan digests) and `.worktrees/` idempotently by line-presence check. Done when all files are written, both dirs are ignored, and `git status` shows only expected changes.
 
 ### 5. Offer the session-start hook
 
@@ -97,7 +97,7 @@ Adopting the set into an existing TypeScript + Vitest library with a GitHub remo
 
 **Decide.** A is **github**; external PRs are a request surface, so `triage` will pull them in. B maps the five state roles to new labels (offered for creation with consent) and `bug`/`enhancement` to the existing GitHub defaults. C confirms `pnpm exec tsc -b`, `pnpm lint`, `pnpm test`, no e2e, single-file pattern `pnpm exec vitest run <path>`. D records a single Vitest layer using `annotate('CODE-N.M', 'requirement')`. E is an empty cut-release list — a library with no bundling. F is single-context `CONTEXT.md`.
 
-**Write.** The three `docs/agents/*.md` files land, the issue-tracker file keeps only the github section, `AGENTS.md` is created canonical with the `## Agent skills` block and a thin `CLAUDE.md` pointer, and `.skills/` and `.isolate-workspace/` are added to `.gitignore`. Nothing is copied into the repo but markdown config.
+**Write.** The three `docs/agents/*.md` files land, the issue-tracker file keeps only the github section, `AGENTS.md` is created canonical with the `## Agent skills` block and a thin `CLAUDE.md` pointer, and `.skills/` and `.worktrees/` are added to `.gitignore`. Nothing is copied into the repo but markdown config.
 
 **Opt-in.** The user accepts the session-start hook — `templates/session-start.sh` copied into `.claude/hooks/` and referenced in `.claude/settings.json` via `$CLAUDE_PROJECT_DIR`.
 

@@ -20,7 +20,7 @@ Three details make this safe rather than merely tidy:
 - **Large or architecture-affecting branches** may name `/brief-team` so the team gets a pitch+map under `docs/explainers/` — optional, never a merge gate. Author self-check remains `/study-change`.
 - **Discard requires the user to literally type `discard`.** Anything else — including "yes", "confirm", "do it" — is not confirmation.
 
-Worktree cleanup happens only for merge and discard, and only for a worktree whose path sits under `.isolate-workspace/` or `isolate-workspace/`. That provenance means this skill set created it. Anything else, including harness-owned workspaces, is not yours to remove.
+Worktree cleanup happens only for merge and discard, and only for a worktree whose path sits under `.worktrees/` or `worktrees/` (or a leftover `.isolate-workspace/` / `isolate-workspace/` tree). That provenance means this skill set created it. Anything else, including harness-owned workspaces, is not yours to remove.
 
 ## `cut-release` — nine gates, no partial releases
 

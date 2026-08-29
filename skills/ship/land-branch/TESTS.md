@@ -299,3 +299,12 @@ advisory sample sentence, and configured-boundary rule.” No new rationalizatio
 was reported by the meta-check.
 
 Transcript: `.skills/_pending-land-branch/author-tests/green-luna.md`.
+
+## Edit — cleanup parent is `.worktrees/` (v3.1.0)
+
+**RED (v3.0.0):** §7 removed only trees under `.isolate-workspace/` or
+`isolate-workspace/`, so a `.worktrees/` isolation tree could not be cleaned.
+
+**GREEN:** cleanup provenance is `.worktrees/` or `worktrees/`, plus leftover
+legacy `.isolate-workspace/` / `isolate-workspace/` trees so an old parent can
+still be removed. Harness-owned workspaces stay untouched.

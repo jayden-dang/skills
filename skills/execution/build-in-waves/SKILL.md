@@ -1,6 +1,6 @@
 ---
 name: build-in-waves
-version: 2.0.0
+version: 2.1.0
 description: Use when an approved tasks.md has Execution-mode continuous and needs
   dependency-aware subagent execution with serial or parallel lanes, bounded
   worker/reviewer leases, dual-verdict task review, and a whole-branch receipt.
@@ -119,9 +119,10 @@ Before each worker or reviewer resume, run the lease preflight from
 3. If the set has multiple tasks, prove each pair's `Files:` surfaces are
    disjoint and check `worktree_isolation`. Overlap or missing isolation reduces
    the effective set to serial; record the degradation in the runtime sidecar.
-4. For a parallel set, record `WBASE`, create one worktree per task, and invoke
-   the shared lifecycle. A worker/reviewer lease may continue across ready sets
-   only along its own dependency lane.
+4. For a parallel set, record `WBASE`, create one worktree per task under
+   `.worktrees/` (`git worktree add .worktrees/<branch>-taskN -b <branch>-taskN WBASE`),
+   and invoke the shared lifecycle. A worker/reviewer lease may continue across
+   ready sets only along its own dependency lane.
 5. After every task in the set has clean Standards and Spec verdicts, merge in
    deterministic task order. A conflict stops the scheduler; it is never solved
    blind. Append one ledger line per task and remove isolated worktrees.
@@ -166,7 +167,7 @@ ledger = survives compaction. Never let one excuse skipping the other.
 - On start, read `.skills/<CODE>/progress.md`; resume after the last complete task.
 - After compaction, trust the ledger and `git log` over memory.
 - Never re-dispatch a task the ledger marks complete.
-- Crash mid-wave → discard unmerged isolate-workspace; re-run the whole wave off WBASE.
+- Crash mid-wave → discard unmerged worktrees under `.worktrees/`; re-run the whole wave off WBASE.
 - `.skills/` is git-ignored; if wiped, reconstruct from `git log`.
 
 ## After the Last Task

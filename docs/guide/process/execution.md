@@ -17,7 +17,7 @@ Horizontal neighbors for review are [`load-subgraph`](../skills/load-subgraph.md
 
 1. **Detect isolation that already exists.** Compare `git rev-parse --git-dir` against `--git-common-dir`. If they differ you are probably in a linked worktree — but guard against submodules first, since `git rev-parse --show-superproject-working-tree` printing a path means you are in a submodule, not a worktree.
 2. **Use the harness's native workspace tool** if one exists. A native tool manages placement, branching, and cleanup itself; creating a manual worktree alongside it leaves phantom state the harness cannot see.
-3. **Fall back to `git worktree`**, into `.isolate-workspace/`.
+3. **Fall back to `git worktree`**, into `.worktrees/`.
 
 Before creating anything inside a project-local directory, the directory must be confirmed git-ignored — and the `.gitignore` entry is deliberately **left as an uncommitted working-tree change**. Git honors it immediately, and committing it here would write a commit to the user's *current* branch, the exact thing this skill promises not to touch.
 

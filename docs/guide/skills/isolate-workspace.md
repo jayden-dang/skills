@@ -42,9 +42,11 @@ Done when you know which of the three cases you are in, and have consent if crea
 **1b. Git fallback.** Pick the directory by priority, and use the chosen one in every command that follows — the list is real only if the commands honor it:
 
 1. An explicit user instruction — always wins
-2. An existing `.isolate-workspace/` at the repo root
-3. An existing `isolate-workspace/` (if both exist, `.isolate-workspace/` wins)
-4. Neither → create `.isolate-workspace/`
+2. An existing `.worktrees/` at the repo root
+3. An existing `worktrees/` (if both exist, `.worktrees/` wins)
+4. An existing `.isolate-workspace/` (legacy — reuse it; do not mint a second parent)
+5. An existing `isolate-workspace/` (legacy)
+6. None of the above → create `.worktrees/`
 
 Before creating anything inside a project-local directory, confirm it is git-ignored. The ignore entry is deliberately **left as an uncommitted working-tree change** — git honors it immediately, and committing `.gitignore` here would write a commit to the user's *current* branch, the exact thing this skill promises not to touch:
 
@@ -86,7 +88,7 @@ Four hard prohibitions, each the inverse of a step above:
 
 ## Worked example
 
-A plan is about to be executed on a normal checkout. **Step 0:** `git rev-parse --git-dir` and `--git-common-dir` resolve to the same path, so this is not a linked worktree; `--show-superproject-working-tree` prints nothing, so it is not a submodule either. The user has no stated preference, so the skill asks, and the user agrees to isolation. **Step 1:** the harness exposes no native worktree tool, so the git fallback runs; there is no existing `.isolate-workspace/` or `isolate-workspace/`, so `.isolate-workspace/` is created. `git check-ignore -q .isolate-workspace` fails, so `.isolate-workspace/` is appended to `.gitignore` — and left uncommitted, because a commit here would land on the user's current branch. Then `git worktree add .isolate-workspace/feat-login -b feat-login`. **Step 2:** a `pnpm-lock.yaml` is present, so `pnpm install` runs. **Step 3:** the suite runs green — 143 passing, 0 failures — so the report goes out and execution can begin. Had the baseline come back red, the skill would have stopped and asked rather than let pre-existing failures masquerade as new bugs.
+A plan is about to be executed on a normal checkout. **Step 0:** `git rev-parse --git-dir` and `--git-common-dir` resolve to the same path, so this is not a linked worktree; `--show-superproject-working-tree` prints nothing, so it is not a submodule either. The user has no stated preference, so the skill asks, and the user agrees to isolation. **Step 1:** the harness exposes no native worktree tool, so the git fallback runs; there is no existing `.worktrees/` or `worktrees/`, so `.worktrees/` is created. `git check-ignore -q .worktrees` fails, so `.worktrees/` is appended to `.gitignore` — and left uncommitted, because a commit here would land on the user's current branch. Then `git worktree add .worktrees/feat-login -b feat-login`. **Step 2:** a `pnpm-lock.yaml` is present, so `pnpm install` runs. **Step 3:** the suite runs green — 143 passing, 0 failures — so the report goes out and execution can begin. Had the baseline come back red, the skill would have stopped and asked rather than let pre-existing failures masquerade as new bugs.
 
 ## Why it is written the way it is
 

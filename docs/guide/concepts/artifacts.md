@@ -30,7 +30,7 @@ docs/agents/                   # per-repo config, written once by configure-repo
 
 .out-of-scope/                 # rejection knowledge base — one file per concept
 .skills/                       # git-ignored ephemera (see below)
-.isolate-workspace/                    # git-ignored isolated workspaces
+.worktrees/                    # git-ignored isolated workspaces
 ```
 
 ## The spec triad

@@ -1,6 +1,6 @@
 ---
 name: build-inline
-version: 1.4.0
+version: 1.4.1
 description: Use when an approved tasks.md needs controller-side sequential
   execution without implementer subagents — inline TDD per task, progress
   ledger, stop-on-blocker, whole-branch review — for no-subagent environments
@@ -183,7 +183,7 @@ the ledger / `implementation-notes.md`.
 
 ## Red Flags — Never
 
-- Skip the tracker-sync or workspace preflight
+- Skip the tracker-sync, occupancy, or workspace preflight
 - Invent a tracker or ticket set when config is absent or the user declined sync
 - Dispatch an implementer or task-reviewer subagent while on this skill
 - Skip `test-first` / write production code before a failing test

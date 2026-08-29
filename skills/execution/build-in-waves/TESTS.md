@@ -1,5 +1,15 @@
 # `build-in-waves` / implementer-prompt — deviation log
 
+## Edit — occupancy red-flag pointer (v2.1.1)
+
+Red flag now names skipping occupancy with tracker-sync and workspace.
+Kickoff write `Approved` → `In-progress` lives in `execute-common` Session
+preflight (one home). RED/GREEN: `skills/execution/execute-common/TESTS.md`
+§ catalog occupancy.
+
+---
+
+
 ## Edit — parallel parent is `.worktrees/` (v2.1.0)
 
 **RED (v2.0.0 guide + leftover path):** parallel fan-out used

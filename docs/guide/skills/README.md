@@ -64,7 +64,7 @@ The triad. Each file approved before the next is written.
 | [`build-in-waves`](build-in-waves.md) | model | Continuous dependency-aware scheduler: bounded leases, serial/parallel ready sets, two-verdict reviews, ledger |
 | [`build-by-story`](build-by-story.md) | model | Story-unit: derived review units, human unlock after each unit, mode-change write-back |
 | [`build-inline`](build-inline.md) | model | Controller implements with `test-first`; no implementer subagents; stop-on-blocker; sequential |
-| [`execute-common`](execute-common.md) | model | Shared execute-family controller recipe (preflight, ledger, close sequence). Not an entry point |
+| [`execute-common`](execute-common.md) | model | Shared execute-family controller recipe (In-progress stamp, preflight, ledger, close). Not an entry point |
 | [`test-first`](test-first.md) | model | **Iron Law:** no production code without a failing test first |
 | [`root-cause`](root-cause.md) | model | **Iron Law:** no fixes without root cause; `load-subgraph` only after Phase 2 (never the RED loop) |
 | [`debug-remote`](debug-remote.md) | model | Deployed-env evidence pack (read-only); then `root-cause`. No prod writes |

@@ -1,5 +1,14 @@
 # `audit-trace` — catalog integrity (v1.1.0)
 
+## Edit — In-progress is a Status value (v1.2.0)
+
+Pass 2 vocabulary is now `Draft | Approved | In-progress | Implemented |
+Shipped`. W1 applies to `Approved` and `In-progress`. Occupancy writer is
+`execute-common`, not this check.
+
+---
+
+
 **Roster:** grok-4.6, grok-4.5.
 **Scenario:** `.skills/_pending-reconcile/red-audit-catalog-scenario.md`.
 

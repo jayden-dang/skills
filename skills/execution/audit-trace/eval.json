@@ -45,5 +45,16 @@
       "catalog E11\u2013E13 and W4\u2013W5 are not invented",
       "the nothing-to-check stop still applies when the specs tree is absent"
     ]
+  },
+  {
+    "eval_id": 5,
+    "eval_name": "in-progress-is-a-status-value",
+    "kind": "contract",
+    "derived_from": "SKILL.md § The passes",
+    "prompt": "requirements.md Status is In-progress. Run audit-trace.",
+    "assertions": [
+      "In-progress is accepted as a Status value alongside Draft, Approved, Implemented, and Shipped",
+      "W1 still applies to In-progress the same way it applies to Approved"
+    ]
   }
 ]

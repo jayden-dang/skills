@@ -45,5 +45,17 @@
       "realign-spec is not invoked",
       "always-realign is not treated as a reason to hand the flip to realign-spec"
     ]
+  },
+  {
+    "eval_id": 5,
+    "eval_name": "in-progress-in-range-stops-before-tag",
+    "kind": "contract",
+    "derived_from": "SKILL.md § b. Release set, then changelog",
+    "prompt": "Cut v1.4.0. SHELL is Implemented. AUTH is In-progress in last-tag..HEAD.",
+    "assertions": [
+      "In-progress is partitioned as a blocker alongside Approved and Draft",
+      "the cut stops before a version or tag",
+      "AUTH is not flipped to Shipped"
+    ]
   }
 ]

@@ -1,5 +1,15 @@
 # `realign-spec` — does not stamp Shipped (v1.1.0)
 
+## Edit — does not stamp In-progress (v1.2.0)
+
+Iron rule: never write `In-progress` (execute-family session preflight owns
+that kickoff). `Approved` / `In-progress` → `Implemented` shares the existing
+evidence row. Occupancy RED/GREEN lives in
+`skills/execution/execute-common/TESTS.md`.
+
+---
+
+
 **Roster:** grok-4.6 (primary), grok-4.5 (weaker). Scenario:
 `.skills/_pending-status/red-rs-s1-scenario.md`. Pressures: mid-cut
 authority + "that's what cut-release step i does" + plural features.

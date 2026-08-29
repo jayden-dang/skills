@@ -281,7 +281,7 @@ When the version ships, `/cut-release` assembles the changelog by grouping commi
 
 Nobody wrote those lines. They were derived, and they are derivable only because `SHELL-1.3` is the same string in the requirement, the Playwright tag, and the commit trailer.
 
-`land-branch` §7a reads `Status:`. Still `Approved` with tasks complete → `realign-spec` (forgot-net) to `Implemented`. Already `Implemented` → skip.
+`land-branch` §8 reads `Status:`. Still `Approved` or `In-progress` with tasks complete → `realign-spec` (forgot-net) to `Implemented`. Already `Implemented` → skip.
 
 A later `/cut-release` (often after several features sit `Implemented`) writes the cohort to `Status: Shipped` itself. `realign-spec` does not stamp the release.
 

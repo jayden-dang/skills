@@ -1,5 +1,14 @@
 # `build-inline` — test evidence
 
+## Edit — occupancy red-flag pointer (v1.4.1)
+
+Red flag now names skipping occupancy. Kickoff write lives in
+`execute-common` Session preflight. RED/GREEN:
+`skills/execution/execute-common/TESTS.md` § catalog occupancy.
+
+---
+
+
 ## RED — shared runtime binding contract (baseline, 2026-08-26)
 
 `execute-common` defines runtime binding and canonical constraint references, but

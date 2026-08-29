@@ -163,5 +163,16 @@
       "each task worktree is created under .worktrees/",
       "a parallel wave does not mint .isolate-workspace/ as a second parent"
     ]
+  },
+  {
+    "eval_id": 16,
+    "eval_name": "setup-loads-occupancy-preflight",
+    "kind": "contract",
+    "derived_from": "SKILL.md § Setup",
+    "prompt": "Start a continuous build. INDEX SHELL is Approved. Isolate in a worktree.",
+    "assertions": [
+      "Setup session preflight is execute-common Session preflight, including catalog occupancy",
+      "skipping occupancy is named as a red flag alongside tracker-sync and workspace"
+    ]
   }
 ]

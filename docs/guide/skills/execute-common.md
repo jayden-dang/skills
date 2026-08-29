@@ -7,13 +7,13 @@
 | **Bucket** | execution |
 | **Invocation** | model-invocable (loaded by the execute family; do not start here) |
 | **Reads** | `docs/agents/issue-tracker.md` when present; `.skills/<CODE>/progress.md` |
-| **Writes** | Close-branch notes and `.skills/<CODE>/close-receipt.md` |
+| **Writes** | `Approved` → `In-progress` on `requirements.md` + INDEX (before worktrees); Close-branch notes and `.skills/<CODE>/close-receipt.md` |
 | **Calls** | [`inspect-change`](inspect-change.md), [`polish-diff`](polish-diff.md), [`validate-feature`](validate-feature.md), [`write-flow-guide`](write-flow-guide.md), [`land-branch`](land-branch.md) |
 | **Called by** | [`build-in-waves`](build-in-waves.md), [`build-by-story`](build-by-story.md), [`build-inline`](build-inline.md) |
 
 ## What it is
 
-One home for session preflight, ledger check, the Close branch todo, and the
+One home for session preflight (tracker, In-progress stamp, workspace), ledger check, the Close branch todo, and the
 close sequence. After the final mutation it writes a receipt binding review,
 verification, trace, acceptance, product-walk, and advisory sample state to the
 exact base and HEAD. `land-branch` consumes that receipt instead of replaying

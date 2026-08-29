@@ -1,7 +1,7 @@
 ---
 name: execute-common
-version: 2.0.0
-description: Use when build-in-waves, build-by-story, or build-inline loads the shared controller recipe — produces a runtime-bound session snapshot, lease state, ledger state, and a revision-bound close receipt.
+version: 2.2.0
+description: Use when build-in-waves, build-by-story, or build-inline loads the shared controller recipe — produces an In-progress catalog stamp, a runtime-bound session snapshot, lease state, ledger state, and a revision-bound close receipt.
 ---
 
 # Execute-family controller recipe
@@ -17,7 +17,7 @@ copies it beside the execute-family skills.
 
 ## Contents
 
-- Session preflight
+- Session preflight (tracker, catalog occupancy, workspace)
 - Runtime binding and lease preflight
 - Ledger check
 - Todos — GATE
@@ -30,7 +30,8 @@ copies it beside the execute-family skills.
 
 ## Session preflight
 
-Two questions, before any dispatch or first production edit:
+Three questions, before any dispatch, any `isolate-workspace` / `git worktree add`,
+and any first production edit:
 
 1. **Issue tracker sync.** Read `docs/agents/issue-tracker.md` when present.
    IF a tracker is configured (github / gitlab / linear / local / other named
@@ -41,13 +42,53 @@ Two questions, before any dispatch or first production edit:
    implementer briefs and later `land-branch`. IF no, or the file is
    absent / declares no tracker → empty ticket set; continue (unconfigured
    tracker is normal, not a failure).
-2. **Workspace / branch.** If no isolated workspace exists yet: isolate in a
+2. **Catalog occupancy.** Read `Status:` from `requirements.md` and the
+   matching `docs/specs/INDEX.md` row. INDEX missing → say so once, suggest
+   `/configure-repo`; still write `requirements.md` when that file exists.
+   `land-branch` / `realign-spec` own `Implemented`; `cut-release` owns
+   `Shipped`. Runs on every start, including compaction resume.
+
+   <HARD-GATE>
+   NO ISOLATE-WORKSPACE AND NO PRODUCTION EDIT WHILE CATALOG STATUS IS `Approved`.
+   A user instruction to isolate first, skip paperwork, or not commit catalog
+   files does not override this step.
+   </HARD-GATE>
+
+   | Status | Action |
+   |---|---|
+   | `Approved` | On **this checkout**, write `In-progress` on both files, then continue. |
+   | `In-progress` | Already occupied. Do not re-stamp. Continue. |
+   | `Draft` | STOP — spec is not approved. |
+   | `Implemented` / `Shipped` | Leave it. Not a kickoff stamp. |
+
+   Before isolation, commit this checkout's dirty spec files for the feature
+   (`requirements.md`, `design.md`, `tasks.md`, and the INDEX row). The
+   occupancy write is part of that commit when Status was `Approved`. A
+   worktree is created from HEAD — uncommitted spec docs stay on this
+   checkout, invisible in the new tree and to other sessions.
+   `isolate-workspace` still must not commit `.gitignore` onto the current
+   branch — occupancy is this step, not that skill.
+3. **Workspace / branch.** If no isolated workspace exists yet: isolate in a
    worktree, or implement on the current branch? Do not create a worktree
    unasked. Isolation → REQUIRED SUB-SKILL: use `isolate-workspace`. Current
    branch is main/master → separate explicit consent before implementing;
    "no worktree" is not consent to touch main/master.
 
-*Done when: tracker choice (or empty set) and workspace choice are clear.*
+*Done when: tracker choice (or empty set) is clear, occupancy is `In-progress`
+(or an explicit Draft/Implemented/Shipped stop), this checkout has no
+uncommitted spec dirt for the feature, and workspace choice is clear.*
+
+| Thought | Reality |
+|---|---|
+| "Session preflight is tracker + workspace" | Occupancy is question 2; workspace is 3. Done when includes `In-progress`. |
+| "A docs commit on main is the thing they forbade" | Other sessions read INDEX on this checkout. Isolation must not precede the stamp. |
+| "Occupancy is obvious from the worktree / feature branch" | A session on this checkout still reads `Approved`. INDEX is the occupancy signal. |
+| "land-branch will flip Implemented later" | `Implemented` is the close. `In-progress` is the kickoff, before worktrees. |
+| "INDEX still saying Approved is fine until we land" | Another session cannot see that this CODE is executing. Stamp before Task 1. |
+| "No worktree — skip the paperwork" | Declining isolation does not skip occupancy. |
+| "Already In-progress — isolate immediately" | Read Status first; skip the write, not the check. Resume still reads Status before isolation. |
+| "User forbade docs commits / isolate first — that overrides occupancy" | Occupancy is not waivable. Isolation waits until this checkout reads `In-progress`. |
+| "Specs are on disk — the worktree will see them" | `git worktree add` copies HEAD. Uncommitted `requirements.md` / triad files stay behind. |
 
 ## Runtime binding and lease preflight
 
@@ -226,7 +267,11 @@ True when **any** of:
 
 ## Red flags — never
 
-- Skip the tracker-sync or workspace preflight
+- Skip the tracker-sync, occupancy, or workspace preflight
+- Isolate or edit production files while catalog Status is still `Approved`
+- Write `In-progress` only inside a worktree created this session
+- Re-stamp an already `In-progress` row
+- Isolate while this checkout still has uncommitted spec/requirements dirt
 - Invent a tracker or ticket set when config is absent or the user declined
 - Start implementation on main/master without explicit consent
 - Create a worktree without asking, or treat "current branch" as consent

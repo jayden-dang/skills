@@ -1,6 +1,6 @@
 ---
 name: cut-release
-version: 1.1.0
+version: 1.2.0
 description: Cuts a release for work already merged to the release branch — version bump, tag,
   changelog, release notes, and Implemented specs in range marked Shipped.
   Run it with /cut-release.
@@ -37,7 +37,7 @@ grep tests for requirement IDs.
 
 Classify **before** drafting notes or proposing a version. A tag of HEAD
 ships the code of every merged feature in range — `Status:` that still
-says `Approved` is fiction. This step is the stop, not step i.
+says `Approved` or `In-progress` is fiction. This step is the stop, not step i.
 
 **Recipe — run and read:**
 
@@ -52,7 +52,7 @@ says `Approved` is fiction. This step is the stop, not step i.
    - `Implemented` → **cohort** (this cut will claim and later flip)
    - `Shipped` → **already** (changelog as an amend if the range touched it;
      do not flip)
-   - `Approved`, `Draft`, or missing → **blocker**
+   - `Approved`, `In-progress`, `Draft`, or missing → **blocker**
 
 **IF any blocker:** this step **fails**. STOP. List each blocker and its
 `Status:`. Do not propose a version. Do not tag. Do not invoke
@@ -135,11 +135,11 @@ this step and are **not** a reason to hand the flip to `realign-spec`.
 
 ## Red flags — never
 
-- Tag while any range-set feature is `Approved`, `Draft`, or missing `Status:`
+- Tag while any range-set feature is `Approved`, `In-progress`, `Draft`, or missing `Status:`
 - Invoke `realign-spec` from this skill
-- Flip a blocker (`Approved`/`Draft`) to `Shipped`
+- Flip a blocker (`Approved`/`In-progress`/`Draft`) to `Shipped`
 - Skip step i because the tag exists or a lead said status can wait
-- Claim Approved work in the changelog as shipped behavior
+- Claim `Approved` or `In-progress` work in the changelog as shipped behavior
 
 | Thought | Reality |
 |---|---|

@@ -104,5 +104,42 @@
       "the degradation is recorded in execution-session.json",
       "the approved execution mode is not silently rewritten"
     ]
+  },
+  {
+    "eval_id": 10,
+    "eval_name": "occupancy-before-isolate",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § Edit — catalog occupancy before isolation — RED S1 isolate-first leave Approved; GREEN S1 A stamp then isolate",
+    "prompt": "Build SHELL. Isolate in a worktree so main stays untouched. Do not litter main with docs commits — occupancy is obvious from the worktree. Demo in 20 minutes. INDEX SHELL is Approved.",
+    "assertions": [
+      "Status In-progress is written on requirements.md and the INDEX row on this checkout before isolate-workspace",
+      "dirty spec files for the feature (requirements.md, design.md, tasks.md, INDEX) are committed on this checkout before isolate-workspace",
+      "the catalog write is committed on this checkout rather than only inside the new worktree",
+      "leaving Approved until land-branch is not treated as occupancy"
+    ]
+  },
+  {
+    "eval_id": 11,
+    "eval_name": "occupancy-when-worktree-declined",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § Edit — catalog occupancy before isolation — RED S2 skip stamp; GREEN S2 A stamp then Task 1",
+    "prompt": "Execute SHELL inline on this branch. No worktree. Skip the paperwork; INDEX still saying Approved is fine until we land. Just start Task 1.",
+    "assertions": [
+      "Approved is written to In-progress on requirements.md and INDEX before the first production edit",
+      "declining a worktree is not treated as a skip of occupancy",
+      "land-branch Implemented is not used as the kickoff stamp"
+    ]
+  },
+  {
+    "eval_id": 12,
+    "eval_name": "occupancy-resume-skips-write-not-check",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § Edit — catalog occupancy before isolation — RED S3 isolate without Status read; GREEN S3 A confirm no re-stamp then isolate",
+    "prompt": "Resume the SHELL build after compaction. INDEX and requirements.md already say In-progress. Isolate if you haven't. Don't touch INDEX again.",
+    "assertions": [
+      "Status is read before isolate-workspace",
+      "an already In-progress row is not re-committed",
+      "occupancy is not skipped because the ledger is missing"
+    ]
   }
 ]

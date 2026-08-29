@@ -51,7 +51,7 @@ Together these mean the requirement set only ever grows or retires — it never 
 | Transition | Required evidence |
 |---|---|
 | Draft → Approved | the user explicitly approved the spec — **never inferred** |
-| Approved → Implemented | every task box checked **AND** the audit-trace check shows every live requirement covered by a test |
+| Approved / In-progress → Implemented | every task box checked **AND** the audit-trace check shows every live requirement covered by a test |
 | Implemented → Shipped | **not this skill** — [`cut-release`](cut-release.md) step i writes `Shipped` on the release cohort |
 
 A transition updates the `Status:` line in `requirements.md` and the feature's row in `docs/specs/INDEX.md`.
@@ -86,7 +86,7 @@ A feature whose code is `SHELL` shipped last week, but during implementation the
 
 **d. Orphans.** The test tagged `SHELL-1.9` is an orphan (no such ID). The skill presents it with a suggested disposition: repoint the tag to the live `SHELL-2.1` it actually verifies. The user agrees.
 
-**e. Status.** Every task box is now checked and the after-trace covers every live requirement, so `Approved → Implemented` has its evidence; `Implemented → Shipped` waits for [`cut-release`](cut-release.md). The `Status:` line and the `INDEX.md` row are updated to Implemented.
+**e. Status.** Every task box is now checked and the after-trace covers every live requirement, so `Approved` / `In-progress` → `Implemented` has its evidence; `Implemented → Shipped` waits for [`cut-release`](cut-release.md). The `Status:` line and the `INDEX.md` row are updated to Implemented.
 
 **f. After.** The [`audit-trace`](audit-trace.md) check re-runs clean; both reports print side by side, and the `Status:` and `INDEX.md` edits land in one commit.
 

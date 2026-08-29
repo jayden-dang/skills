@@ -47,7 +47,7 @@ short question. Local merge, discard, and block are never inferred.
 
 ## After merge or PR — spec status
 
-Read `Status:`. Still `Approved` with every task checked and verify green →
+Read `Status:`. Still `Approved` or `In-progress` with every task checked and verify green →
 run [`realign-spec`](realign-spec.md) (forgot-net). Already `Implemented`
 and no drift → skip. This is not `/cut-release`.
 

@@ -28,10 +28,9 @@ plan-tasks                   vertical-slice tasks with _Requirements:_ footers;
                              coverage check; (optional) publish issues
       │
       ▼
-isolate-workspace                    isolated workspace, clean baseline
-      │
-      ▼
-execute family               build-in-waves | build-by-story | build-inline
+execute family               occupancy first: Approved → In-progress on INDEX
+                             (this checkout, before worktrees), then isolate-workspace
+                             build-in-waves | build-by-story | build-inline
                              per task: brief → implement (test-first) → review/ledger →
                              two-verdict review → fixes → ledger
                              [debug on failures; prove-claim before any claim]
@@ -51,7 +50,7 @@ validate-feature             drive the running system through the spec's user-fa
       │
       ▼
 land-branch                resolve intent + crossing + Status: Implemented (realign-spec
-                             only if still Approved and evidence holds)
+                             only if still Approved / In-progress and evidence holds)
       │
       │  (many features may sit Implemented)
       ▼
@@ -136,7 +135,7 @@ The chain is not one-way. Several skills feed back into earlier phases:
 - `root-cause` exits into the tier-1 mini-spec flow, which means it re-enters `specify-behavior`.
 - `scan-architecture` ends by handing its chosen candidate to `frame-change`. Architecture work earns no exemption from the spec gate.
 - `amend-feature` escalates to `frame-change` the moment a "small" change turns out to be new scope.
-- `realign-spec` is invoked from `land-branch` (Approved + evidence) and `amend-feature` — and directly, whenever the audit-trace check comes back dirty. `cut-release` does not call it.
+- `realign-spec` is invoked from `land-branch` (Approved / In-progress + evidence) and `amend-feature` — and directly, whenever the audit-trace check comes back dirty. `cut-release` does not call it.
 
 ## See also
 

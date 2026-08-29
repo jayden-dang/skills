@@ -1,5 +1,15 @@
 # `land-branch` — merge of `package-change` (v2.0.0)
 
+## Edit — In-progress close-loop (v3.2.0)
+
+§8 Status table treats `In-progress` like `Approved` (realign when evidence
+holds; report when partial). Occupancy writer is `execute-common` kickoff,
+not this close. Evidence:
+`skills/execution/execute-common/TESTS.md` § catalog occupancy.
+
+---
+
+
 **Roster:** grok-4.6 (primary), grok-4.5 (weaker). Combined-pressure RED against
 current `package-change` v1.0.0 + `land-branch` v1.0.0. Transcripts:
 `.skills/_pending-unify-ship/red-s{1,2,3}-grok{45,46}.md`.

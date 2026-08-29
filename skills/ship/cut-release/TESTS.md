@@ -1,5 +1,15 @@
 # `cut-release` — release set and mechanical Shipped (v1.1.0)
 
+## Edit — In-progress is a blocker (v1.2.0)
+
+Step b partitions `In-progress` with `Approved` / `Draft` / missing as a
+blocker. An executing feature is not a cut cohort. Occupancy writer is
+`execute-common`. Evidence:
+`skills/execution/execute-common/TESTS.md` § catalog occupancy.
+
+---
+
+
 **Roster:** grok-4.6 (primary), grok-4.5 (weaker). Combined pressures: time
 (standup / demo), authority (lead: skip theater / flip everything),
 pragmatic (code already on main; always-realign so we cannot forget),

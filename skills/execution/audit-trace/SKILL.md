@@ -1,6 +1,6 @@
 ---
 name: audit-trace
-version: 1.1.1
+version: 1.2.0
 description: Use when checking that requirement IDs agree where they are defined
   and task-cited in docs/specs, or that the capability catalog INDEX / shards
   stay intact — the docs-only vertical pass invoked by prove-claim, cut-release,
@@ -34,7 +34,7 @@ A finding set, each item an ERROR or a WARNING:
 |---|---|---|
 | **E1** | error | A task cites an ID that no requirements file defines |
 | **E3** | error | The same ID is defined (bold) in more than one file |
-| **W1** | warn | An `Approved` requirement is cited by no task |
+| **W1** | warn | An `Approved` or `In-progress` requirement is cited by no task |
 | **W2** | warn | A `requirements.md` is missing its `Status:` or `Feature code:` line |
 | **E4** | error | A `Respects:` line cites an `ARCH-N` no `docs/architecture/` file defines |
 | **E5** | error | A `Respects:` line cites a retired (struck-through) `ARCH-N` |
@@ -105,7 +105,7 @@ the result. A plain (non-bold) ID in a requirements file is prose, not a definit
 grep -rnE '^(Status:|Feature code:)' docs/specs --include='*requirements.md'
 ```
 
-`Status:` is one of `Draft | Approved | Implemented | Shipped` (first match wins).
+`Status:` is one of `Draft | Approved | In-progress | Implemented | Shipped` (first match wins).
 
 **3. Task citations** — IDs on `_Requirements:` lines.
 
@@ -250,7 +250,7 @@ obligations for W1:
 | Status | Needs a task (W1) |
 |---|---|
 | Draft | no |
-| Approved | **yes** |
+| Approved / In-progress | **yes** |
 | Implemented / Shipped | no (task history may remain; no code-side ID gate) |
 
 `Status: Implemented` / `Shipped` evidence is process (tasks checked, verify green,

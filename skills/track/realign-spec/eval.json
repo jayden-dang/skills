@@ -21,5 +21,16 @@
       "the ask is refused as cut-release step i's job",
       "at most one feature triad is offered for drift repair"
     ]
+  },
+  {
+    "eval_id": 3,
+    "eval_name": "does-not-write-in-progress",
+    "kind": "contract",
+    "derived_from": "SKILL.md § Iron rules",
+    "prompt": "SHELL is Approved and the user asks realign-spec to mark it In-progress because build is starting.",
+    "assertions": [
+      "Status: In-progress is not written by this skill",
+      "Approved or In-progress may transition to Implemented when the evidence exists"
+    ]
   }
 ]

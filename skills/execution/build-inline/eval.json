@@ -88,5 +88,16 @@
       "execution-session.json records the active harness/provider/model and pricing policy",
       "the task capsule references the canonical Global Constraints path and hash"
     ]
+  },
+  {
+    "eval_id": 9,
+    "eval_name": "setup-loads-occupancy-preflight",
+    "kind": "contract",
+    "derived_from": "SKILL.md § Setup",
+    "prompt": "Start an inline build. No worktree. INDEX is Approved.",
+    "assertions": [
+      "Setup session preflight is execute-common Session preflight, including catalog occupancy",
+      "skipping occupancy is named as a red flag alongside tracker-sync and workspace"
+    ]
   }
 ]

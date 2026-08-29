@@ -79,7 +79,7 @@ The [audit-trace check](../resources/scripts.md#the-trace-check) reports three e
 | **E1** | a task or test cites an ID that is not defined in any requirements file |
 | **E2** | a requirements file with `Status: Implemented` or `Shipped` has a requirement with zero test references |
 | **E3** | the same ID is defined more than once |
-| **W1** | a requirements file with `Status: Approved` has a requirement not cited by any task |
+| **W1** | a requirements file with `Status: Approved` or `In-progress` has a requirement not cited by any task |
 | **W2** | a requirements file is missing a `Status:` line or a `Feature code:` line |
 
 The interplay between W1 and E2 is the one to understand, and [`plan-tasks`](../skills/plan-tasks.md) calls it out explicitly. A task footer citing an ID satisfies W1 while the spec is merely `Approved`. But a footer is not a test. The moment the feature flips to `Implemented`, that same uncovered ID becomes an **E2 error**.
@@ -91,13 +91,14 @@ So `plan-tasks`'s coverage check goes further than the audit-trace check can at 
 The `Status:` line on `requirements.md` is what arms E2.
 
 ```
-Draft ──► Approved ──► Implemented ──► Shipped
+Draft ──► Approved ──► In-progress ──► Implemented ──► Shipped
 ```
 
 | Transition | Evidence required |
 |---|---|
 | Draft → Approved | the user explicitly approved the written file — never inferred from conversation |
-| Approved → Implemented | every task box checked **and** the audit-trace check shows every live requirement covered by a test |
+| Approved → In-progress | execute-family session preflight, **before** worktrees, so another session reading INDEX sees this CODE executing |
+| Approved / In-progress → Implemented | every task box checked **and** the audit-trace check shows every live requirement covered by a test |
 | Implemented → Shipped | the feature went out in a cut-release (applied by [`cut-release`](../skills/cut-release.md) step i on the cohort — not by [`realign-spec`](../skills/realign-spec.md)) |
 
 `realign-spec` applies a transition only when its evidence exists. If the evidence is partial, it says exactly what is missing rather than transitioning.

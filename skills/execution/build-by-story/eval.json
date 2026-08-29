@@ -88,5 +88,16 @@
       "no duplicate reviewer is dispatched over the identical diff, brief, and evidence",
       "the human unit barrier still runs"
     ]
+  },
+  {
+    "eval_id": 9,
+    "eval_name": "setup-loads-occupancy-preflight",
+    "kind": "contract",
+    "derived_from": "SKILL.md § Setup",
+    "prompt": "Start a story-unit build. INDEX is Approved. Isolate if needed.",
+    "assertions": [
+      "Setup session preflight is execute-common Session preflight, including catalog occupancy",
+      "skipping occupancy is named as a red flag alongside tracker-sync and workspace"
+    ]
   }
 ]

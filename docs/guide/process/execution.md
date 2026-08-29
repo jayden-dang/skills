@@ -1,9 +1,12 @@
 # Phase 3 — Execution
 
-**Skills:** [`isolate-workspace`](../skills/isolate-workspace.md) → one of
+**Skills:** one of
 [`build-in-waves`](../skills/build-in-waves.md) |
 [`build-by-story`](../skills/build-by-story.md) |
-[`build-inline`](../skills/build-inline.md), governed throughout by
+[`build-inline`](../skills/build-inline.md)
+(session preflight in [`execute-common`](../skills/execute-common.md) stamps
+`In-progress`, then [`isolate-workspace`](../skills/isolate-workspace.md)),
+governed throughout by
 [`test-first`](../skills/test-first.md), [`root-cause`](../skills/root-cause.md),
 [`prove-claim`](../skills/prove-claim.md), and [`audit-trace`](../skills/audit-trace.md).
 Horizontal neighbors for review are [`load-subgraph`](../skills/load-subgraph.md)
@@ -11,9 +14,12 @@ Horizontal neighbors for review are [`load-subgraph`](../skills/load-subgraph.md
 
 **Produces:** commits, tests, a progress ledger, and a branch ready for review.
 
-## Isolate first
+## Occupancy, then isolate
 
-`isolate-workspace` runs before the first file is edited. Its order of preference is strict, and the reason is stated plainly: **never fight the harness.**
+[`execute-common`](../skills/execute-common.md) **Session preflight** is the
+one home: `Approved` → `In-progress` on this checkout, then
+[`isolate-workspace`](../skills/isolate-workspace.md) before the first
+production edit. Isolation order of preference is strict: **never fight the harness.**
 
 1. **Detect isolation that already exists.** Compare `git rev-parse --git-dir` against `--git-common-dir`. If they differ you are probably in a linked worktree — but guard against submodules first, since `git rev-parse --show-superproject-working-tree` printing a path means you are in a submodule, not a worktree.
 2. **Use the harness's native workspace tool** if one exists. A native tool manages placement, branching, and cleanup itself; creating a manual worktree alongside it leaves phantom state the harness cannot see.
@@ -64,8 +70,9 @@ No implementer or task-reviewer subagents. You implement each task yourself unde
 
 ### Setup
 
-Five steps, of which two are easy to skip and expensive to have skipped:
+Session preflight plus setup, of which occupancy and workspace are easy to skip and expensive to have skipped:
 
+- **Catalog occupancy.** `execute-common` Session preflight question 2 — before any worktree.
 - **Workspace check.** Never begin implementation on `main`/`master` without the user's explicit consent.
 - **Ledger check.** `.skills/` is git-ignored, then `.skills/<CODE>/progress.md` is read. **Every task it marks complete IS complete** — resume at the first task it does not list.
 - **Read the plan once**, record the canonical Global Constraints path and hash,

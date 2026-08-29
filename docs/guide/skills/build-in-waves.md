@@ -41,7 +41,7 @@ Anything else is momentum the skill is built to protect.
 
 Six steps run once before any task:
 
-1. **Workspace check.** Never begin implementation on main/master without the user's explicit consent. If no isolated workspace exists, [`isolate-workspace`](isolate-workspace.md) is a required sub-skill. Done when you are on a dedicated branch with a clean baseline.
+1. **Session preflight.** [`execute-common`](execute-common.md) — occupancy on this checkout, then workspace / [`isolate-workspace`](isolate-workspace.md). Never implement on main/master without consent.
 2. **Ledger check.** Make `.skills/` git-ignored (an idempotent line-presence check, since a trailing-slash pattern won't match until the directory exists), then read `.skills/<CODE>/progress.md` if present. Every task it marks complete *is* complete — resume at the first task it does not list.
 3. **Read the plan.** Read `tasks.md` in full, once, record the canonical
    Global Constraints path and hash, and create the runtime sidecar. If

@@ -1,6 +1,6 @@
 ---
 name: build-in-waves
-version: 2.1.0
+version: 2.1.1
 description: Use when an approved tasks.md has Execution-mode continuous and needs
   dependency-aware subagent execution with serial or parallel lanes, bounded
   worker/reviewer leases, dual-verdict task review, and a whole-branch receipt.
@@ -191,7 +191,7 @@ skill's subagent loop without dispatches.
   `build-inline`)
 - Run unit barriers, unit derivation, or human unit stops under continuous
 - Pause between tasks to ask permission to continue
-- Skip the tracker-sync or workspace preflight
+- Skip the tracker-sync, occupancy, or workspace preflight
 - Invent a tracker or ticket set when config is absent or the user declined sync
 - Run two implementers in the **same worktree**, or parallel without isolated
   isolate-workspace and a disjoint-surface check

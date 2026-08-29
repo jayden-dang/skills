@@ -29,7 +29,7 @@ So the roadmap carries no progress column, no per-milestone status field, no cha
 
 `Commitment` — `Planned | Committed | Closed` — is kept, because *whether you have committed* is a human decision nobody can derive. That is a different thing from how far the work has got.
 
-This was not an argument from taste. A baseline agent with no skill invented **two** progress stores unprompted: a `Status` column reusing `Draft → Approved → Implemented → Shipped` at milestone granularity, and a change log "as the mechanism for recording status changes over time". The rule exists because that is the default reflex.
+This was not an argument from taste. A baseline agent with no skill invented **two** progress stores unprompted: a `Status` column reusing `Draft → Approved → In-progress → Implemented → Shipped` at milestone granularity, and a change log "as the mechanism for recording status changes over time". The rule exists because that is the default reflex.
 
 ## Three ID namespaces, three owners
 

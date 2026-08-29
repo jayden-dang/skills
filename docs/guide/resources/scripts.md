@@ -40,7 +40,7 @@ Because step 2 is a textual `grep`, **coverage is textual**: an ID string presen
 | **E1** | a task or test cites an ID that is not defined in any requirements file |
 | **E2** | a requirements file with `Status: Implemented` or `Shipped` has a requirement with zero test references |
 | **E3** | the same ID is defined more than once |
-| **W1** | a requirements file with `Status: Approved` has a requirement not cited by any task |
+| **W1** | a requirements file with `Status: Approved` or `In-progress` has a requirement not cited by any task |
 | **W2** | a requirements file is missing a `Status:` line or a `Feature-code:` line |
 
 Any **E** is a failure the invoking skill must act on; **W** findings are surfaced but do not fail the gate on their own. Zero requirements is a valid clean state.

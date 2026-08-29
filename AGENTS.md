@@ -395,7 +395,7 @@ A change is done ONLY when ALL of the following hold:
 - The progress ledger carries a line for every completed task
 - `inspect-change` clean on both axes (Standards and Spec)
 - `validate-feature` has confirmed the user-facing behavior on the running system
-- Feature status updated: Draft → Approved → Implemented → Shipped
+- Feature status updated: Draft → Approved → In-progress → Implemented → Shipped
 
 Can't tick a box? The work is not done.
 
@@ -429,11 +429,12 @@ Can't tick a box? The work is not done.
 | `build-inline` | No implementer subagents; the user watches the controller implement |
 
 **Main flow:** `frame-change` (+ `load-subgraph`) → `specify-behavior` →
-`design-solution` → `plan-tasks` → `isolate-workspace` → execute family →
-`inspect-change` (+ `load-subgraph`) → `polish-diff` → `validate-feature` →
-`land-branch` (Status: Implemented). `/cut-release` is a separate loop
-over already-Implemented work (cohort → Shipped). `realign-spec` is
-anti-rot and the land forget-net — not the cut close-out.
+`design-solution` → `plan-tasks` → execute family (`Approved` → `In-progress`
+on INDEX, then `isolate-workspace`) → `inspect-change` (+ `load-subgraph`) →
+`polish-diff` → `validate-feature` → `land-branch` (Status: Implemented).
+`/cut-release` is a separate loop over already-Implemented work (cohort →
+Shipped). `realign-spec` is anti-rot and the land forget-net — not the cut
+close-out.
 
 **Bugfix flow:** `root-cause` (or `debug-remote` → `root-cause` when the
 failure is on a deployed environment) → mini-spec → `test-first` → `prove-claim` →

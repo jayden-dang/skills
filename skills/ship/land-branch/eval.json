@@ -114,5 +114,16 @@
       "only a worktree under .worktrees/ or worktrees/ is removed, or a leftover tree under .isolate-workspace/ or isolate-workspace/",
       "a harness-owned or externally managed workspace is not removed"
     ]
+  },
+  {
+    "eval_id": 12,
+    "eval_name": "in-progress-plus-evidence-realigns",
+    "kind": "contract",
+    "derived_from": "SKILL.md § 8. Close the loop",
+    "prompt": "PR is opening. SHELL Status is In-progress, every task is checked, trace is clean, crossing evidence holds.",
+    "assertions": [
+      "In-progress with complete evidence is handed to realign-spec the same way Approved is",
+      "In-progress is not treated as a skip the way Implemented with no drift is"
+    ]
   }
 ]

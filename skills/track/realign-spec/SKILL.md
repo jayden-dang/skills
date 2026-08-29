@@ -1,6 +1,6 @@
 ---
 name: realign-spec
-version: 1.1.0
+version: 1.2.0
 description: Use when a feature's spec has drifted from reality — requirements changed
   mid-implementation, the implementation deviated from the approved plan, the
   feature just shipped, the specs have gone stale or out of sync, or
@@ -20,6 +20,7 @@ Work one feature at a time. Identify the spec directory first (from the user, th
 - **Never delete a requirement.** Retire it: `~~**CODE-N.M**~~ <reason>` — struck-through IDs stop counting as defined, but the history stays legible.
 - New requirements get the next free number under their story; new tasks match the existing task format exactly.
 - **Never write `Status: Shipped`.** That transition is `cut-release` step i on the release cohort. This skill realigns one triad; it does not stamp a release.
+- **Never write `Status: In-progress`.** That transition is `execute-common` session preflight.
 
 ## Steps
 
@@ -43,13 +44,13 @@ out of scope for this step (docs-only spine).
 | Transition | Required evidence |
 |---|---|
 | Draft → Approved | the user explicitly approved the spec — never inferred |
-| Approved → Implemented | every task box checked AND docs-only audit-trace has zero errors AND prove-claim verify commands green |
+| Approved / In-progress → Implemented | every task box checked AND docs-only audit-trace has zero errors AND prove-claim verify commands green |
 | Implemented → Shipped | **not applied here** — `cut-release` step i writes `Shipped` on the cohort |
 
-Apply `Draft → Approved` or `Approved → Implemented` when that evidence
-exists: update the `Status:` line in `requirements.md` and the feature's
-row in `docs/specs/INDEX.md`. If evidence is partial, say exactly what is
-missing instead of transitioning. A mid-cut-release ask to "mark the
+Apply `Draft → Approved` or `Approved`/`In-progress` → `Implemented` when that
+evidence exists: update the `Status:` line in `requirements.md` and the
+feature's row in `docs/specs/INDEX.md`. If evidence is partial, say exactly
+what is missing instead of transitioning. A mid-cut-release ask to "mark the
 shipped features Shipped" is `cut-release` step i, not this skill — refuse
 the stamp, offer one-feature triad repair if there is drift.
 

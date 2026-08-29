@@ -1,3 +1,84 @@
+# `execute-common`
+
+## Edit — catalog occupancy before isolation (v2.1.0, 2026-08-29)
+
+**Protocol:** `author-skills` / `pressure-testing.md`
+**Roster:** grok-4.6 (primary), grok-4.5 (weaker).
+**Form:** omit-from-produced → REQUIRED slot (Session preflight question 2) +
+observable Status table + HARD-GATE + rationalization rows from the RED
+transcripts.
+**Scenarios / transcripts:** `.skills/_pending-in-progress/`
+
+Hole: INDEX / `requirements.md` had no kickoff write `Approved` → `In-progress`,
+so a second session reading the catalog still saw `Approved` after a build
+started. Occupancy must land on **this checkout** before `isolate-workspace`.
+
+**Pressure stack:** demo clock + "don't litter main" + "the worktree is the
+occupancy signal" + declined-worktree / standup + compaction resume.
+
+### RED (v2.0.0 — two-question preflight)
+
+| Run | Model | Choice | vs intended |
+|---|---|---|---|
+| S1 kickoff + isolate | grok-4.5 | **B** | isolate first, leave `Approved` |
+| S1 | grok-4.6 | **B** | same |
+| S2 declined worktree | grok-4.5 | **B** | skip stamp, start Task 1 |
+| S2 | grok-4.6 | **B** | same |
+| S3 already `In-progress` | grok-4.5 | **B** | isolate without Status read |
+| S3 | grok-4.6 | **B** | same |
+
+6/6 failed. Control = current v2.0.0 text.
+
+**Verbatim**
+
+- "Session preflight is two questions only: tracker sync and workspace/branch"
+- "A docs commit of `Status: In-progress` on this checkout would be a commit on main, which isolate-workspace exists not to touch and which the user forbade"
+- "Occupancy-from-INDEX-before-isolate is not a session-preflight step"
+- "The word `In-progress` does not appear in `build-in-waves` or `execute-common`"
+- "land-branch will flip Implemented later"
+- "INDEX still saying Approved is fine until we land"
+- "Occupancy is already done; confirming it would invent a gate"
+
+### GREEN (v2.1.0)
+
+Compliant: S1/S2 **A** (stamp both files on this checkout, commit, then isolate
+or Task 1). S3 **A** (read Status, no re-stamp, then isolate).
+
+| Run | Model | Choice |
+|---|---|---|
+| S1 | grok-4.5 | **A** |
+| S1 | grok-4.6 | **A** |
+| S2 | grok-4.5 | **A** |
+| S2 | grok-4.6 | **A** |
+| S3 | grok-4.5 | **A** |
+| S3 | grok-4.6 | **A** |
+
+Weakest roster model complies. No new GREEN rationalizations that survived
+the HARD-GATE.
+
+**Meta-test (S1 grok-4.6, then HARD-GATE retest grok-4.5):** occupancy was a
+numbered step, so "user forbade docs commits / isolate first" still looked
+like a process waiver (`User instructions override skills`). Added
+`<HARD-GATE>`: occupancy is not waivable; resume still reads Status before
+isolation. HARD-GATE retest: **A**, cited the gate.
+
+**Spec-doc commit (v2.2.0).** Occupancy already committed the Status stamp.
+A worktree is created from HEAD, so leftover dirty `design.md` / `tasks.md` /
+`requirements.md` on this checkout would not appear in the new tree. Before
+isolation, commit this feature's dirty spec files; occupancy is part of that
+commit when Status was `Approved`. `.gitignore` stays uncommitted
+(`isolate-workspace`).
+
+**Quality pass (v2.1.1, author-skills):** no-op + duplication sweep — dropped
+post-table prose that restated the HARD-GATE, Status table, and rationalization
+rows; kept the isolate-workspace `.gitignore` boundary (one home, that skill).
+HARD-GATE compacted to the absolute plus the user-override class the meta-test
+named; enumerated waivers live only in the rationalization table. Description
+outcome noun is `In-progress catalog stamp`. INDEX seed no longer claims
+`specify-behavior` writes every cell.
+
+---
+
 # `execute-common` — sample predicate (v1.2.0)
 
 ## GREEN — runtime binding and price-aware preflight (structural, 2026-08-26)

@@ -1,6 +1,6 @@
 ---
 name: build-by-story
-version: 2.0.0
+version: 2.0.1
 description: Use when an approved tasks.md has Execution-mode story-unit and
   needs a human-gated review-unit execution record with derived units, bounded
   task leases, mode-change write-back, and a whole-branch review.
@@ -187,7 +187,7 @@ Apply `../execute-common/SKILL.md` **Close sequence** in full. Inspect base is
 
 ## Red Flags — Never
 
-- Skip the tracker-sync or workspace preflight
+- Skip the tracker-sync, occupancy, or workspace preflight
 - Invent a tracker or ticket set when config is absent or the user declined sync
 - Start the next unit (or ledger unit complete as if unlocked) without human
   unlock or a written mode change

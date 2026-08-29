@@ -1,6 +1,6 @@
 ---
 name: plan-milestones
-version: 1.1.0
+version: 1.1.1
 description: Use when a project's milestones need planning, sequencing, replanning, or
   ANY edit to an existing roadmap — produces or revises docs/roadmap/INDEX.md, the
   milestone intent registry carrying stable MILE-N and ROAD-N IDs that later
@@ -191,7 +191,7 @@ Every row below is a verbatim rationalization from a baseline run, or its direct
 |---|---|
 | "A status column would make this trackable" | It makes it *stale*. Feature progress lives in `requirements.md` `Status:`, mirrored into the INDEX row. `/refresh-roadmap-status` derives the rest |
 | "I'll add a change log so status history survives" | That is the same second copy wearing a different hat. Git already holds the history of this file |
-| "Reuse the feature lifecycle at milestone granularity" | `Draft → Approved → Implemented → Shipped` describes a *spec*. A milestone carries a commitment, not a lifecycle |
+| "Reuse the feature lifecycle at milestone granularity" | `Draft → Approved → In-progress → Implemented → Shipped` describes a *spec*. A milestone carries a commitment, not a lifecycle |
 | "Sharing matters more now, so it should be MILE-2" | Order is table position; identity is the ID. Move the row, keep the number |
 | "I renumbered so the order reads naturally" | Every renumber silently repoints anything that cited the old number |
 | "We are not doing it, so remove the line" | Defer it with a date and a reason. A deleted item takes its rationale with it |

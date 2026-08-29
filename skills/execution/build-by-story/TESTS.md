@@ -1,5 +1,14 @@
 # `build-by-story` — test evidence
 
+## Edit — occupancy red-flag pointer (v2.0.1)
+
+Red flag now names skipping occupancy. Kickoff write lives in
+`execute-common` Session preflight. RED/GREEN:
+`skills/execution/execute-common/TESTS.md` § catalog occupancy.
+
+---
+
+
 ## GREEN — shared task lifecycle inside review units (structural, 2026-08-26)
 
 Fresh frontmatter/eval lint returned exit 0. The skill delegates task execution

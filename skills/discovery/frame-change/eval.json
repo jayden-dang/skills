@@ -48,14 +48,15 @@
   },
   {
     "eval_id": 5,
-    "eval_name": "reverse-track-before-load-subgraph-after-pull",
+    "eval_name": "reverse-track-names-map-features-after-pull",
     "kind": "behavior",
-    "derived_from": "TESTS.md \u00a7 Edit \u2014 reverse-track before load-subgraph (v1.1.0)",
-    "prompt": "Just git pulled 14 commits; ORIG_HEAD differs from HEAD; user asks to frame auto-archive for stale drafts. Complete step 1 only.",
+    "derived_from": "TESTS.md \u00a7 Edit \u2014 reverse-track names map-features (v1.3.0)",
+    "prompt": "Just git pulled 14 commits; last_reconciled_sha != HEAD; user asks to frame auto-archive for stale drafts. Complete step 1 only.",
     "assertions": [
-      "reconcile-features is invoked when the reverse-track predicate holds, before load-subgraph",
-      "pending OBS or known-impact from the envelope is surfaced before neighbor cards",
-      "load-subgraph still runs for overlap after reconcile"
+      "/map-features is named for the user when the reverse-track predicate holds",
+      "reconcile-features is not invoked (skill removed)",
+      "map-features is not auto-invoked",
+      "load-subgraph still runs for overlap after naming"
     ]
   },
   {

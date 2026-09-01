@@ -49,9 +49,26 @@ A card reads roughly like this:
 
 That single Out-of-Scope line is often the whole answer: the new idea was already considered here and set aside, with a reason.
 
-## `docs/specs/INDEX.md` — the registry
+## Shared catalog — Domain router + shards
 
-`INDEX.md` is the sole feature registry. Every feature code is unique repo-wide, forever, and is registered here — by [`specify-behavior`](../skills/specify-behavior.md) — before the requirements file that uses it is written. It is the one place that enumerates every feature, so an overlap search always knows the full set of neighbors to consider.
+The sole feature registry is shared: `docs/specs/INDEX.md` is a **Domain
+router**; feature cards live in `docs/specs/catalog/<domain>.md`. Every feature
+code is unique repo-wide, forever, and is registered in the owning shard — by
+[`specify-behavior`](../skills/specify-behavior.md) — before the requirements
+file that uses it is written. Overlap search walks the router into the shards so
+it always knows the full set of neighbors. A flat Code table on INDEX is
+invalid — empty registry until [`/map-features`](../skills/map-features.md)
+**Domain boundary** migrate.
+
+**Router:**
+
+```markdown
+| Domain | Scope | Surface roots | Feature catalog |
+|---|---|---|---|
+| app | Shell and chip UI | `src/shell/` | [catalog](./catalog/app.md) |
+```
+
+**Shard (`catalog/app.md`) — illustrative cards:**
 
 ```markdown
 | Code | Feature | Spec | Status | Roadmap item |
@@ -92,7 +109,7 @@ Its completion criterion is a sentence the agent must be able to say: *which exi
 
 **[`inspect-change`](../skills/inspect-change.md), at the back of the chain.** It runs **`load-subgraph`** with the diff's changed paths (and optional terms). When a neighbor comes back, the **Spec** subagent receives its card, with a brief directing it to flag — as a *reuse-miss* finding citing the neighbor's feature code and a path or term — any place the diff reimplements behavior a neighbor already owns.
 
-**[`/map-features`](../skills/map-features.md)** (user-invoked) backfills brownfield gaps — missing Feature codes, ROAD binds, OWNS via Files edits, DEPENDS_ON *candidates* — with human confirm only. It does not materialize a graph.
+**[`/map-features`](../skills/map-features.md)** (user-invoked) runs reverse-track as dispose step 0, then backfills brownfield gaps — Domain-boundary migrate, missing Feature codes, ROAD binds, OWNS via Files edits, DEPENDS_ON *candidates*, OBS promote/absorb/dismiss — with human confirm only. It does not materialize a graph.
 
 ## An advisory signal, never a gate
 

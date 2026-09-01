@@ -1,6 +1,6 @@
 ---
 name: configure-repo
-version: 1.4.0
+version: 1.5.0
 description: Sets up docs/agents config so this skill set can run in an existing repo.
 disable-model-invocation: true
 ---
@@ -26,7 +26,8 @@ Check the setup markers — all by reading files in the repo:
 - `docs/agents/project.md`, `docs/agents/issue-tracker.md`, `docs/agents/triage-labels.md` — present and filled in, or missing?
 - `## Team` section inside `docs/agents/project.md` — present and filled, or a gap?
 - An `## Agent skills` section in `CLAUDE.md` / `AGENTS.md` (note which of the two files exists)
-- Seed files the skill set expects: `docs/specs/INDEX.md`, a glossary (`CONTEXT.md` or `CONTEXT-MAP.md`)
+- Seed files the skill set expects: `docs/specs/INDEX.md` (domain router) +
+  `docs/specs/catalog/<domain>.md`, a glossary (`CONTEXT.md` or `CONTEXT-MAP.md`)
 - `.skills/` and `.worktrees/` present in `.gitignore`
 
 Then branch on what you found:
@@ -214,12 +215,12 @@ not deployed` / declined).
 
 ### L. Catalog sync (optional — default unset / full-triad behavior)
 
-Explainer: sync a **thin** feature catalog on git (`docs/specs/INDEX.md`, optional
-shards) while keeping full triad files local — useful when teammates use
-different skill sets or do not want requirements noise on GitHub. When
-`index-only`, `/map-features` gains `export` and `materialize`. Guide:
-`docs/guide/skills/catalog-sync.md`. `reconcile-features` still never writes
-INDEX or triad.
+Explainer: sync a **thin** shared feature catalog on git (`docs/specs/INDEX.md`
+router + `docs/specs/catalog/`) while keeping full triad files local — useful when
+teammates use different skill sets or do not want requirements noise on GitHub.
+When `index-only`, `/map-features` gains `export` and `materialize`. Guide:
+`docs/guide/skills/catalog-sync.md`. Reverse-track inside `/map-features` dispose
+never writes INDEX or triad without confirm.
 
 Options:
 
@@ -253,7 +254,10 @@ Let them edit. **Done when:** the user approves the drafts.
 **The additive rule: existing files are edited in place, never clobbered.** If a target file already exists, merge your content into it and preserve everything the user wrote.
 
 1. Write `docs/agents/project.md`, `docs/agents/issue-tracker.md`, and `docs/agents/triage-labels.md`, seeded from `templates/agents/project.md`, `templates/agents/issue-tracker.md`, and `templates/agents/triage-labels.md`. In the issue-tracker file keep only the chosen tracker's operations section, record the PR-surface answer, and fill **Publish unit**, **Program sync**, **Program write role**, and **Close linkage** from Decision A (defaults: `feature` / `local` / `ic` / tracker-native close syntax).
-2. If `docs/specs/INDEX.md` is missing, create it from `templates/specs-INDEX.md`.
+2. If `docs/specs/INDEX.md` is missing, create it from `templates/specs-INDEX.md`
+   **and** seed `docs/specs/catalog/app.md` from `templates/specs-catalog-domain.md`
+   (replace `<Domain>` with `App`). If INDEX exists but is a flat Code table,
+   name `/map-features` Domain boundary migrate — do not invent shards silently.
 
 3. If the glossary is missing, create `CONTEXT.md` from `templates/CONTEXT.md` (or a `CONTEXT-MAP.md` for multi-context, per the user's answer).
 4. Fill the **Project posture** section of `docs/agents/project.md` with the confirmed delivery intent and lifecycle stage (decision G) — two lines, replacing the template placeholders. (Additive: if the section already carries real values, update only what the user changed.) If decision L confirmed **index-only** or **full-triad**, set `- **Catalog sync:** \`<value>\`` in the same section (additive). If L left unset, write no Catalog sync line.

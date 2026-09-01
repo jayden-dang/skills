@@ -1,6 +1,6 @@
 ---
 name: specify-behavior
-version: 1.2.1
+version: 1.3.0
 description: Use when discovery is complete and a tier-1 or tier-2 change needs its
   requirements written — the user stories and EARS acceptance criteria in
   requirements.md that every later task, test, and commit cites by ID. After
@@ -41,14 +41,17 @@ sequence below. Create a todo per step.
 ## Step 1: Register the feature code
 
 Pick a short unique prefix (2–12 chars, A–Z0–9, starts with a letter — e.g.
-`SHELL`, `SYNC2`). Check `docs/specs/INDEX.md`; add a row there BEFORE writing
-requirements. Never reuse a retired code.
+`SHELL`, `SYNC2`). The catalog is **shared**: `docs/specs/INDEX.md` is the Domain
+router; feature cards live in `docs/specs/catalog/<domain>.md`. Add a card row to
+the owning **shard** BEFORE writing requirements (ensure a router row exists for
+that domain). Never put feature Code rows on INDEX itself. Never reuse a retired
+code. Flat INDEX → stop and name `/map-features` Domain boundary migrate.
 
 **Bind the roadmap item.** Slot vs CODE definitions live in `plan-milestones`
 (**ROAD-N is a slot, not a feature**). This step only writes the join.
 
 WHERE `docs/roadmap/INDEX.md` exists and this work implements one of its items, put that
-item's `ROAD-N` in the row's **Roadmap item** column. WHERE there is no roadmap, or the work
+item's `ROAD-N` in the shard row's **Roadmap item** column. WHERE there is no roadmap, or the work
 was never a roadmap item, write `—`.
 
 This column is the only plan↔spec join, and this step is its only writer — never invent a
@@ -57,7 +60,7 @@ This column is the only plan↔spec join, and this step is its only writer — n
 another ROAD.
 
 **Promote ephemera.** IF a `.skills/_pending-<slug>/` directory was used for this work, move it to `.skills/<CODE>/` (`mv` when CODE dir absent) so subsequent writes use the Feature root — see `templates/skills-ephemera-paths.md`.
-**Done when:** the code has a row in INDEX.md with status Draft, and its Roadmap item cell
+**Done when:** the code has a Draft card in the owning shard, and its Roadmap item cell
 holds a `ROAD-N` or `—`, and that ROAD is not already bound to another CODE.
 
 ## Step 2: Write stories and EARS criteria

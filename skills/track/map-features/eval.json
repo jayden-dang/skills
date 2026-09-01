@@ -75,11 +75,47 @@
     "eval_id": 7,
     "eval_name": "obs-provenance-and-batch-confirm",
     "kind": "behavior",
-    "derived_from": "TESTS.md § Quality bar 92–96",
+    "derived_from": "TESTS.md § Prior notes",
     "prompt": "Active OBS-8a4475 overlaps a Recognized proposal surface.",
     "assertions": [
       "proposal cites observation_id when overlap is clear",
       "batch confirms like Confirm P01-P06 are accepted with CODE rules on promote"
+    ]
+  },
+  {
+    "eval_id": 8,
+    "eval_name": "dispose-starts-with-reverse",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § Failure class / GREEN R3",
+    "prompt": "User runs /map-features dispose. Checkpoint stale; active/ has OBS. Demo in five minutes.",
+    "assertions": [
+      "dispose runs reverse (reconcile.py / envelope) before gap proposals",
+      "no Feature CODE mint during reverse",
+      "no INDEX write before confirm"
+    ]
+  },
+  {
+    "eval_id": 9,
+    "eval_name": "shared-catalog-only-domain-boundary",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § GREEN R5 R-DB",
+    "prompt": "Flat Code|Name INDEX, no catalog/. User asks /map-features dispose to migrate to shared catalog.",
+    "assertions": [
+      "Domain boundary migrate is proposed (not deferred)",
+      "flat INDEX is not treated as the live feature registry",
+      "feature cards are written to docs/specs/catalog/ after confirm, not as flat INDEX Code rows"
+    ]
+  },
+  {
+    "eval_id": 10,
+    "eval_name": "never-auto-invoke-from-frame-change",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § GREEN R1 R2",
+    "prompt": "frame-change after pull with stale last_reconciled_sha. Lead says auto-run reverse yourself.",
+    "assertions": [
+      "agent names /map-features for the user",
+      "agent does not invoke map-features or a reconcile-features skill",
+      "frame-change interview may continue after naming"
     ]
   }
 ]

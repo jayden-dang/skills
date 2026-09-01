@@ -107,10 +107,11 @@ Full skill index: [Skill reference](skills/README.md) · laws: [`AGENTS.md`](../
 4. **Optional**
    - **`/define-project`** — vision + `ARCH-N` spine + guidelines (large projects).
    - **`plan-milestones`** — `docs/roadmap/INDEX.md` (`MILE-N` / `ROAD-N`).
-   - **`/map-features`** — catalog ops: dispose OBS/OWNS gaps; with
-     `Catalog sync: index-only`, also **export** (triad→INDEX) / **materialize**
-     (INDEX→Draft local stubs). Brownfield: Feature code, ROAD binds, OWNS gaps,
-     DEPENDS_ON *candidates* (propose → confirm only).
+   - **`/map-features`** — shared catalog ops: dispose step 0 reverse-tracks OBS,
+     then dispose gaps / Domain-boundary migrate; with `Catalog sync: index-only`,
+     also **export** (triad→shard) / **materialize** (shard→Draft local stubs).
+     Brownfield: Feature code, ROAD binds, OWNS gaps, DEPENDS_ON *candidates*
+     (propose → confirm only).
 
 ### Building a feature (tier 2)
 
@@ -159,7 +160,7 @@ Personal OS is a **separate** package — [personal-os START-HERE](../personal-o
 | **setup** | `/configure-repo`, `/bootstrap-repo` |
 | **discovery** | `frame-change`, `clarify-decisions`, `research`, `run-spike`, `define-domain`, `/forge-prompt`, `/pathfind`, `/interpret-session`, `/deepen-codebase`, `/tour-system`, `/work-the-problem` |
 | **spec** | `specify-behavior`, `design-solution`, `plan-tasks` |
-| **execution** | `build-in-waves`, `build-by-story`, `build-inline`, `execute-common`, `test-first`, `root-cause`, `debug-remote`, `assess-observability`, `prove-claim`, `audit-trace`, **`load-subgraph`**, **`reconcile-features`**, `isolate-workspace`, `hold-stage` |
+| **execution** | `build-in-waves`, `build-by-story`, `build-inline`, `execute-common`, `test-first`, `root-cause`, `debug-remote`, `assess-observability`, `prove-claim`, `audit-trace`, **`load-subgraph`**, `isolate-workspace`, `hold-stage` |
 | **review** | `inspect-change`, `polish-diff`, `vet-feedback`, `vet-source`, `speak-outer`, `inspect-invariants`, `/study-change`, `/brief-team`, `/select-sample` |
 | **acceptance** | `validate-feature`, `validate-api`, `validate-ui`, `write-flow-guide`, `vet-flow-guide`, `run-flow-guide` |
 | **craft** | `craft-page` |

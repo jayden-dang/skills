@@ -1,4 +1,4 @@
-"""Deterministic reconcile-features runner (rfeat-1.0).
+"""Deterministic map-features reverse runner (rfeat-1.0).
 
 Pure classification + envelope builder. Optional git/CLI wrappers for
 mechanical runs. Never mints Feature CODEs or writes docs/specs/.
@@ -442,7 +442,7 @@ def render_envelope(env: dict[str, Any]) -> str:
 
 
 def main(argv: list[str] | None = None) -> int:
-    p = argparse.ArgumentParser(description="reconcile-features rfeat-1.0 runner")
+    p = argparse.ArgumentParser(description="map-features reverse rfeat-1.0 runner")
     p.add_argument("--repo", type=Path, default=Path.cwd())
     p.add_argument("--specs-dir", default="docs/specs")
     p.add_argument("--base", default="")

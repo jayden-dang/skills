@@ -57,4 +57,4 @@ open-code-review via capabilities".
 
 **should-not-fire:** quiz HTML for a ship range → `study-change`; graded concept
 drill → `teach-pack`; dispose OBS → `map-features`; reverse-track only →
-`reconcile-features`; ask-time neighbors alone → `load-subgraph`.
+`/map-features` (user-run); ask-time neighbors alone → `load-subgraph`.

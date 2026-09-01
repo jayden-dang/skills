@@ -36,7 +36,7 @@ See `skills/discovery/tour-system/SKILL.md` and its `references/`.
 
 ## Related
 
-- Catalog build: [`reconcile-features`](reconcile-features.md), [`map-features`](map-features.md)
+- Catalog build / reverse + dispose: [`map-features`](map-features.md)
 - Ask-time neighbors: [`load-subgraph`](load-subgraph.md)
 - Concept drill: [`teach-pack`](teach-pack.md) (kept)
 - Diff HTML quiz packet: [`study-change`](study-change.md) (coexistence until gate)

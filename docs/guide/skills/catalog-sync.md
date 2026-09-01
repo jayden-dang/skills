@@ -19,9 +19,9 @@ gitignore so `docs/specs/INDEX.md` (± `docs/specs/catalog/`) stays tracked whil
 
 | Who | Steps |
 |---|---|
-| A (author) | Local triad → `/map-features` **export** → commit/push **INDEX only** |
+| A (author) | Local triad → `/map-features` **export** → commit/push **INDEX** (± `catalog/`) only |
 | B (teammate) | `git pull` → `/map-features` **materialize** CODE → Draft stubs → `specify-behavior` when needed |
-| Either | `reconcile-features` for OBS → `/map-features` **dispose** |
+| Either | `/map-features` **dispose** (step 0 reverse → OBS promote/absorb/dismiss) |
 
 ## Migrate full-triad → index-only
 
@@ -48,4 +48,4 @@ Materialize stubs start with:
 If a target file exists **without** this marker (or with real content), refuse
 clobber — ask the user.
 
-See also: [`map-features`](map-features.md), [`reconcile-features`](reconcile-features.md).
+See also: [`map-features`](map-features.md) (dispose step 0 covers reverse-track).

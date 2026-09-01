@@ -30,9 +30,9 @@ class TestOwns(unittest.TestCase):
         self.assertIn("crates/mail/src/labels.rs", owns["SHRD"])
         self.assertEqual(cov["with_owns"], 1)
 
-    def test_index_accepts_backtick_path_column(self):
-        """Klynt-style INDEX: Code | Name | Status | Roadmap | `docs/specs/…/`."""
-        from owns import parse_index_registry
+    def test_flat_index_rejected(self):
+        """Flat Code|… tables on INDEX are not a shared catalog — empty registry."""
+        from owns import is_shared_catalog, parse_index_registry
 
         text = """# Feature specs index
 
@@ -40,24 +40,35 @@ class TestOwns(unittest.TestCase):
 | ---- | ---- | ------ | ------------ | ---- |
 | SEAL | Seal the webview | Implemented | ROAD-3 | `docs/specs/2026-08-20-seal-the-webview/` |
 | OFR | Offering kinds (course and bootcamp) | Implemented | ROAD-7 | `docs/specs/2026-08-07-offering-kinds-course-and-bootcamp/` |
+"""
+        self.assertFalse(is_shared_catalog(text))
+        self.assertEqual(parse_index_registry(text), {})
+
+    def test_shard_accepts_backtick_path_column(self):
+        """Feature cards in a shard still accept klynt-style Path cells."""
+        from owns import _parse_feature_table
+
+        text = """| Code | Name | Status | Roadmap item | Path |
+| ---- | ---- | ------ | ------------ | ---- |
+| SEAL | Seal the webview | Implemented | ROAD-3 | `docs/specs/2026-08-20-seal-the-webview/` |
+| OFR | Offering kinds (course and bootcamp) | Implemented | ROAD-7 | `docs/specs/2026-08-07-offering-kinds-course-and-bootcamp/` |
 | SKIP | Spoken only | — | — | — |
 """
-        reg = parse_index_registry(text)
+        reg = _parse_feature_table(text)
         self.assertEqual(reg.get("SEAL"), "2026-08-20-seal-the-webview")
         self.assertEqual(
             reg.get("OFR"), "2026-08-07-offering-kinds-course-and-bootcamp"
         )
-        # Must NOT take "(course and bootcamp)" from the Name cell
         self.assertNotEqual(reg.get("OFR"), "course and bootcamp")
         self.assertNotIn("SKIP", reg)
 
-    def test_index_accepts_bare_docs_specs_path_cell(self):
-        from owns import parse_index_registry
+    def test_shard_accepts_bare_docs_specs_path_cell(self):
+        from owns import _parse_feature_table
 
         text = """| Code | Name | Status | Roadmap item | Path |
 | PTEN | Unique username | Implemented | ROAD-1 | docs/specs/2026-08-06-unique-username-and-personal-tenant-on-signup/ |
 """
-        reg = parse_index_registry(text)
+        reg = _parse_feature_table(text)
         self.assertEqual(
             reg.get("PTEN"),
             "2026-08-06-unique-username-and-personal-tenant-on-signup",
@@ -74,8 +85,13 @@ class TestOwns(unittest.TestCase):
 
     def test_spoken_section_not_registered(self):
         idx = (FIXTURE / "specs/INDEX.md").read_text()
-        reg = parse_index_registry(idx)
+        reg = parse_index_registry(idx, specs_dir=FIXTURE / "specs")
         self.assertNotIn("SEND", reg)
+        self.assertIn("DEMO", reg)
+
+    def test_shared_fixture_catalog_shape(self):
+        _, cov = load_owns(FIXTURE, specs_dir="specs")
+        self.assertEqual(cov["catalog_shape"], "shared")
 
     def test_owners_for_path_ancestor(self):
         owns, _ = load_owns(FIXTURE, specs_dir="specs")

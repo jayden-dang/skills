@@ -72,7 +72,6 @@ The triad. Each file approved before the next is written.
 | [`prove-claim`](prove-claim.md) | model | **Iron Law:** no completion claims without fresh evidence |
 | [`audit-trace`](audit-trace.md) | model | Deterministic traceability check — grep/git passes, fixed rules, zero errors to pass |
 | [`load-subgraph`](load-subgraph.md) | model | Ask-time neighbors (schema 1.1 path/term evidence), **`cluster(focus)`**, blast_radius from live specs; OWNS coverage; no graph file |
-| [`reconcile-features`](reconcile-features.md) | model | Reverse-track pulls/external commits onto catalog — OBS overlay + rfeat-1.0 envelope; no CODE mint, no consuming-repo CI |
 | [`isolate-workspace`](isolate-workspace.md) | model | Isolated workspace, clean baseline. Never fight the harness |
 | [`hold-stage`](hold-stage.md) | model | Only the ideas this act uses; the rest stay on disk |
 
@@ -136,7 +135,7 @@ The visual layer. Fires before any HTML a human will look at.
 | [`triage`](triage.md) | `/triage` | A two-axis issue state machine. Verify the claim before recommending |
 | [`scan-architecture`](scan-architecture.md) | `/scan-architecture` | Codebase-wide friction scan → an HTML report of deepening candidates |
 | [`catalog-sync`](catalog-sync.md) | (guide) | INDEX-only catalog sync: configure-repo posture + map-features export/materialize |
-| [`map-features`](map-features.md) | `/map-features` | Catalog ops: dispose OBS/OWNS gaps; index-only export/materialize; batch confirm + OBS provenance |
+| [`map-features`](map-features.md) | `/map-features` | Shared catalog ops: dispose step 0 reverse + gaps / Domain-boundary migrate; index-only export/materialize |
 | [`write-handoff`](write-handoff.md) | `/write-handoff` | A resumable document in the OS temp dir. Reference, never duplicate |
 | [`record-debt`](record-debt.md) | `/record-debt` | Banks a finding judged real and deliberately left unfixed into `docs/quality/debt.md`. Decisions, never observations |
 

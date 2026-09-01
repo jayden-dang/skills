@@ -70,12 +70,13 @@ git diff --name-status -z -M <base>..<head>
    paths are candidates.
 4. **Load catalog ownership.** From live `docs/specs/` (tracked or local overlay),
    following **`skills/execution/load-subgraph/references/catalog-query.md`**
-   (flat vs sharded detect) and load-subgraph Pass R for the full CODE set on
-   disk. Prefer the shared extractor
-   `skills/execution/reconcile-features/scripts/owns.py` when running
-   mechanically:
-   - INDEX / shard feature cards → CODE → spec dir (**index-first**; do **not**
+   (shared catalog only: Domain router + `catalog/*.md`) and load-subgraph Pass R
+   for the full CODE set on disk. Prefer the shared extractor
+   `skills/track/map-features/scripts/owns.py` when running mechanically:
+   - Router → shard feature cards → CODE → spec dir (**index-first**; do **not**
      require a `Feature code:` line in `requirements.md`)
+   - Flat feature tables on INDEX → empty registry + note `flat_index_rejected`;
+     name `/map-features` Domain boundary migrate — do not parse flat as CODEs
    - each feature `tasks.md` fence-aware `**Files:**` / `Files:` tokens plus
      File Structure backtick path cells
    - compute `owns_coverage` like load-subgraph (with_owns / registered);
@@ -84,7 +85,7 @@ git diff --name-status -z -M <base>..<head>
      before minting OBS cards; cap surface roots per card at
      `SURFACE_ROOTS_MAX_PER_CARD`
    - When surfacing cards to the caller, apply catalog-query context caps — do
-     not paste the whole registry into the reconcile reply
+     not paste the whole registry into the reply
 5. **Load active overlay.** Parse `active/*.md` OBS cards; tombstone-lookup
    evidence signatures before inventing a duplicate OBS.
 6. **Classify each candidate path** (rules below). Cluster unowned behavior

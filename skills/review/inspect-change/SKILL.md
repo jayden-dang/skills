@@ -1,6 +1,6 @@
 ---
 name: inspect-change
-version: 1.5.1
+version: 1.6.0
 description: Use when a branch, PR, diff, or set of changes needs review before merging —
   produces a two-axis verdict (repo-standards conformance plus
   spec/requirements conformance, reported separately) — when build-in-waves
@@ -21,12 +21,22 @@ The axes are deliberately separate because a change can pass one and fail the ot
 
 Take the base ref the caller supplied (a sha, branch, tag, or merge-base). Confirm it resolves — `git rev-parse <base>` — and that `git diff <base>...HEAD` is non-empty. A bad ref or empty diff must fail HERE, not inside two parallel subagents. Also capture `git log <base>..HEAD --oneline`. If no base was given, ask. *Done when: the ref resolves and the diff is non-empty.*
 
-## 1b. Reverse-track the pinned range
+## 1b. Reverse-track the pinned range (scripts, read-only)
 
-REQUIRED SUB-SKILL: use `reconcile-features` on the pinned `base..HEAD`. Hold
-the envelope it prints. Step 2 consumes it; do not mint Feature CODEs here.
-*Done when: the reconcile envelope is held (or reconcile-features’ explicit
-stateless outcome).*
+Run the map-features reverse runner on the pinned `base..HEAD` — **advisory
+envelope only**, no dispose writes to INDEX/shards:
+
+```bash
+python3 skills/track/map-features/scripts/reconcile.py \
+  --repo <root> --base <base> --head HEAD --mode full
+```
+
+Add `--write-overlay` only when `.skills/` is writable and gitignored (same
+contract as `/map-features` dispose step 0). Hold the envelope it prints. Step 2
+consumes it; do not mint Feature CODEs here. Pending OBS → **name** `/map-features`
+for disposition; never auto-invoke it.
+*Done when: the reverse envelope is held (or the runner’s explicit stateless
+outcome).*
 
 ## 2. Locate the spec
 

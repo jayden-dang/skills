@@ -145,7 +145,7 @@ registry CODEs and never enter `neighbors[]`.
 1. If `.skills/reverse-features/active/` is absent → `observations = []`,
    fingerprint the dir as `stat_absent`, stop Pass O.
 2. Read each `active/*.md` once. Parse compact OBS cards (see
-   `reconcile-features` / `catalog-query.md`). Keep only `pending` /
+   `map-features` references/passes.md / `catalog-query.md`). Keep only `pending` /
    `reopened`.
 3. For each card record: `observation_id`, `state`, `confidence`, `capability`,
    `match_terms` (list), `surface_roots` (path prefixes), optional evidence

@@ -6,7 +6,8 @@ Everything the skill set produces lands in a known place with a known shape. Thi
 
 ```
 docs/specs/
-  INDEX.md                     # feature-code registry — a code is registered here before use
+  INDEX.md                     # Domain router — points at catalog/<domain>.md shards
+  catalog/<domain>.md          # feature cards (Code registered in the owning shard)
   fixes.md                     # optional shared home for tier-1 fix/guard requirements
   <YYYY-MM-DD>-<feature>/
     requirements.md            # WHAT — EARS acceptance criteria with hierarchical IDs
@@ -55,9 +56,24 @@ It also carries the **Seams for testing** table, which is a contract rather than
 
 Templates for all three live in [`templates/`](../resources/templates.md).
 
-## `docs/specs/INDEX.md` — the registry
+## `docs/specs/INDEX.md` + `catalog/` — the shared registry
 
-The sole feature registry. A feature code is unique repo-wide, forever. `specify-behavior` registers it here *before* writing the requirements file, and never reuses a retired code.
+The sole feature registry is the **shared** catalog: a Domain router on INDEX plus
+feature cards in `docs/specs/catalog/<domain>.md`. A feature code is unique
+repo-wide, forever. `specify-behavior` registers it in the owning **shard**
+*before* writing the requirements file, and never reuses a retired code. A flat
+`| Code | … |` feature table on INDEX is not a valid live registry — migrate via
+[`/map-features`](../skills/map-features.md) **Domain boundary**.
+
+**Domain router (`INDEX.md`):**
+
+```markdown
+| Domain | Scope | Surface roots | Feature catalog |
+|---|---|---|---|
+| app | Default application domain | `src/` | [catalog](./catalog/app.md) |
+```
+
+**Feature shard (`catalog/app.md`) — compact card row (illustrative):**
 
 ```markdown
 | Code | Feature | Spec | Status | Roadmap item |
@@ -65,9 +81,18 @@ The sole feature registry. A feature code is unique repo-wide, forever. `specify
 | SHELL | Left icon rail for module switching | ./2026-07-09-shell/ | Implemented | ROAD-3 |
 ```
 
-The last column binds the feature **CODE** (delivery unit) to the [roadmap](../skills/plan-milestones.md) **ROAD-N slot** it implements, or `—` when the project has no roadmap layer. ROAD and CODE are different objects even when the slug looks like the feature name; at most one live CODE binds a ROAD. It is the join [`refresh-roadmap-status`](../skills/refresh-roadmap-status.md) reads to tell a planned item from a specced one.
+The Roadmap column binds the feature **CODE** (delivery unit) to the
+[roadmap](../skills/plan-milestones.md) **ROAD-N slot** it implements, or `—`
+when the project has no roadmap layer. ROAD and CODE are different objects even
+when the slug looks like the feature name; at most one live CODE binds a ROAD.
+It is the join [`refresh-roadmap-status`](../skills/refresh-roadmap-status.md)
+reads to tell a planned item from a specced one.
 
-Because it enumerates every feature, it is what [`load-subgraph`](../skills/load-subgraph.md) reads first when [`frame-change`](../skills/frame-change.md) or [`inspect-change`](../skills/inspect-change.md) asks which neighbors share an idea or a diff — see [feature overlap](feature-graph.md).
+Because the shards enumerate every feature, they are what
+[`load-subgraph`](../skills/load-subgraph.md) reads (via the router) when
+[`frame-change`](../skills/frame-change.md) or
+[`inspect-change`](../skills/inspect-change.md) asks which neighbors share an
+idea or a diff — see [feature overlap](feature-graph.md).
 
 ## `CONTEXT.md` — the glossary
 

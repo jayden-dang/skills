@@ -1,6 +1,6 @@
 ---
 name: frame-change
-version: 1.2.3
+version: 1.3.0
 description: Use at the very start of the idea-to-ship chain — when the user wants to
   add, build, or change a feature, behavior, or component, or to start a new
   project, and the asked-for behavior has no spec yet. Produces an agreed shape
@@ -33,10 +33,11 @@ Small requests are exactly where unexamined assumptions burn the most work, beca
 | "Scaffolding isn't really implementation" | A repo skeleton is a stack decision enacted without approval. It's implementation. |
 | "We talked enough, I basically know the answer" | If it isn't in an approved requirements.md, it lives only in this chat and dies with it. |
 | "The other sub-features aren't in scope right now, so Out-of-Scope is the right home" | Out-of-Scope and an ADR record a *rejection*. Work you intend to do later is deferred to a milestone via `plan-milestones` — declining it destroys the plan you just made. |
-| "Just pulled — load-subgraph on INDEX is enough" | INDEX can miss external work; when reverse-track’s WHEN holds, `reconcile-features` runs before catalog-query and `load-subgraph` |
+| "Just pulled — load-subgraph on INDEX is enough" | INDEX can miss external work; when reverse-track’s WHEN holds, **name** `/map-features` (dispose runs reverse) — do not auto-invoke it or run a deleted reconcile skill |
 | "INDEX is small — paste all 120 rows into context" | Catalog is query-first; `catalog-query.md` is the one home — never dump the full registry into chat |
+| "I'll just invoke reconcile-features / map-features myself" | `reconcile-features` is gone; `/map-features` is user-invoked — name it only |
 
-**Red flags — stop and return to the checklist if you notice yourself:** opening an editor to "just try something"; running a generator/scaffolder; answering your own open question instead of asking; presenting one approach as the only option; drifting from interviewing into implementing; starting overlap/catalog work while reverse-track’s WHEN still holds (missing or stale `last_reconciled_sha`, or an explicit post-pull ask); pasting the full `docs/specs/INDEX.md` table into context because it “might be useful.”
+**Red flags — stop and return to the checklist if you notice yourself:** opening an editor to "just try something"; running a generator/scaffolder; answering your own open question instead of asking; presenting one approach as the only option; drifting from interviewing into implementing; auto-running reverse-track or inventing a `reconcile-features` call; pasting the full catalog into context because it “might be useful.”
 
 ## Checklist
 
@@ -58,17 +59,17 @@ Provisional means provisional: if step 2 surfaces any of those, it was never tie
 
 Read `CONTEXT.md` (use its vocabulary from here on).
 
-**Reverse-track (observable conditional).** Read
+**Reverse-track (observable conditional — name only).** Read
 `.skills/reverse-features/state.json` when present, and `git rev-parse HEAD`.
 WHEN the file is missing **or** `last_reconciled_sha` is not `HEAD` **or** the
-user ask is explicitly post-pull / post-merge / external-commit → REQUIRED
-SUB-SKILL: use `reconcile-features` **before** catalog-query and
-`load-subgraph`. Surface pending OBS / known-impact / uncertain from the
-envelope; unresolved `pending`/`uncertain` are not greenfield on those surfaces
-until the user sees them. WHEN `last_reconciled_sha` equals `HEAD` and the ask
-is not post-pull → skip. Do not treat a leftover `ORIG_HEAD` as a second stale
-signal (range resolution stays inside `reconcile-features`).
-*Done when: rfeat envelope held, or an explicit not-applicable.*
+user ask is explicitly post-pull / post-merge / external-commit → **name**
+`/map-features` for the user (dispose step 0 runs reverse + proposals). Do
+**not** auto-invoke it and do **not** call a `reconcile-features` skill (removed).
+Unresolved pending OBS on those surfaces are not greenfield until the user has
+been pointed at `/map-features`. WHEN `last_reconciled_sha` equals `HEAD` and
+the ask is not post-pull → skip. Do not treat a leftover `ORIG_HEAD` as a second
+stale signal.
+*Done when: `/map-features` named when WHEN holds, or an explicit not-applicable.*
 
 **Do not** paste `docs/specs/INDEX.md` into context — even when the file is open
 or “only” dozens of rows. Load `load-subgraph`’s `catalog-query.md` and run it

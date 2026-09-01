@@ -108,14 +108,16 @@
   },
   {
     "eval_id": 9,
-    "eval_name": "reverse-track-pinned-range-before-locate-spec",
+    "eval_name": "reverse-track-scripts-read-only-before-locate-spec",
     "kind": "behavior",
-    "derived_from": "TESTS.md \u00a7 Edit \u2014 reverse-track pinned range (v1.5.0)",
+    "derived_from": "TESTS.md \u00a7 Edit \u2014 reverse-track scripts (v1.6.0)",
     "prompt": "Review abc1234...HEAD including a new mail_labels_service crate with no INDEX CODE. Walk through step 1b.",
     "assertions": [
-      "reconcile-features runs on the pinned base..HEAD before locating the governing spec",
+      "map-features/scripts/reconcile.py runs on the pinned base..HEAD before locating the governing spec",
+      "reconcile-features skill is not loaded",
       "unowned behavior-bearing paths produce pending OBS handles rather than silent skip",
-      "no Feature CODE is minted during inspect-change"
+      "no Feature CODE is minted during inspect-change",
+      "pending OBS disposition names /map-features only"
     ]
   }
 ]

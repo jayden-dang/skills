@@ -8,7 +8,7 @@
 | **Invocation** | model-invocable (the agent calls it on its own) |
 | **Reads** | the diff `git diff <base>...HEAD`, commit list, `docs/specs/INDEX.md`, a feature's `requirements.md`, CLAUDE.md, lint/formatter configs, CONTRIBUTING docs, `CONTEXT.md`, `docs/agents/project.md`, `standards-baseline.md` (beside the skill) |
 | **Writes** | nothing — the review is read-only; it produces a report, not commits |
-| **Calls** | [`reconcile-features`](reconcile-features.md) on the pinned range (step 1b); two READ-ONLY subagents (Standards, Spec) dispatched in parallel; [`load-subgraph`](load-subgraph.md) for the duplication / neighbor check; [`hold-stage`](hold-stage.md) before the Spec walk |
+| **Calls** | map-features reverse runner **read-only** on the pinned range (step 1b); **names** [`/map-features`](map-features.md) when pending OBS need dispose; two READ-ONLY subagents (Standards, Spec) dispatched in parallel; [`load-subgraph`](load-subgraph.md) for the duplication / neighbor check; [`hold-stage`](hold-stage.md) before the Spec walk |
 | **Called by** | [`build-in-waves`](build-in-waves.md) (final whole-branch review), or the user asking to review work since some ref |
 
 ## When it fires

@@ -67,8 +67,8 @@ STOP_SEGMENTS = {
 }
 
 
-def is_sharded_index(index_text: str) -> bool:
-    """True when INDEX carries a Domain router table (optional scale-out)."""
+def is_shared_catalog(index_text: str) -> bool:
+    """True when INDEX is a Domain router (shared catalog — the only valid shape)."""
     for line in index_text.splitlines():
         if not line.startswith("|"):
             continue
@@ -76,6 +76,11 @@ def is_sharded_index(index_text: str) -> bool:
         if cells and cells[0] == "domain" and any("feature catalog" in c for c in cells):
             return True
     return False
+
+
+def is_sharded_index(index_text: str) -> bool:
+    """Alias for is_shared_catalog (legacy name)."""
+    return is_shared_catalog(index_text)
 
 
 def _normalize_spec_dir(raw: str) -> str | None:
@@ -171,13 +176,13 @@ def _parse_feature_table(text: str) -> dict[str, str]:
 def parse_index_registry(index_text: str, specs_dir: Path | None = None) -> dict[str, str]:
     """Return CODE → spec dir relative to docs/specs/ (no trailing slash).
 
-    Flat INDEX: feature table in INDEX.md.
-    Sharded INDEX: Domain router → read each Feature catalog shard and union
-    feature cards. Spec paths in shards may be relative to the shard file;
-    results are normalized to be relative to docs/specs/.
+    Shared catalog only: Domain router in INDEX.md → each Feature catalog
+    shard under catalog/*.md. Flat feature tables on INDEX return {}.
+    Spec paths in shards may be relative to the shard file; results are
+    normalized to be relative to docs/specs/.
     """
-    if not is_sharded_index(index_text):
-        return _parse_feature_table(index_text)
+    if not is_shared_catalog(index_text):
+        return {}
 
     if specs_dir is None:
         return {}
@@ -306,6 +311,7 @@ def load_owns(repo_root: Path, specs_dir: str = "docs/specs") -> tuple[dict[str,
         return {}, {"with_owns": 0, "registered": 0, "ratio": 0.0, "missing_dirs": []}
 
     index_text = index_path.read_text(encoding="utf-8", errors="replace")
+    shared = is_shared_catalog(index_text)
     registry = parse_index_registry(index_text, specs_dir=specs)
     owns: dict[str, set[str]] = {c: set() for c in registry}
     missing_dirs: list[str] = []
@@ -329,9 +335,9 @@ def load_owns(repo_root: Path, specs_dir: str = "docs/specs") -> tuple[dict[str,
         "registered": registered,
         "ratio": ratio,
         "missing_dirs": missing_dirs,
+        "catalog_shape": "shared" if shared else "flat_rejected",
     }
     return owns, coverage
-
 
 # Ancestor ownership requires an explicit directory marker ("…/") or enough
 # path specificity. A bare two-segment token like `crates/enclave` must not

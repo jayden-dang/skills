@@ -165,3 +165,12 @@ labels handled as pending OBS (not bare no-spec, no CODE mint); then
 
 Step 2 locate-spec template consumes 1b envelope (REQUIRED slot); 1b points at
 reconcile-features without restating callee internals.
+
+## Edit — reverse-track scripts read-only (v1.6.0)
+
+**Desired failure of v1.5.x:** REQUIRED SUB-SKILL `reconcile-features` (skill
+removed in map-features v2).
+
+**GREEN (v1.6.0):** step 1b runs `skills/track/map-features/scripts/reconcile.py`
+on pinned range; holds envelope; names `/map-features` for dispose; never loads
+a reconcile-features skill.

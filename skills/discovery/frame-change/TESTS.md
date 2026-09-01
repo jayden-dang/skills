@@ -89,3 +89,14 @@ concrete CODEs (fixture path absent) but refused full ingest.
 Description gains outcome noun; reverse-track BEFORE catalog-query; predicate
 uses checkpoint/`HEAD` (not sticky ORIG_HEAD); catalog-query pointed not
 restated. No new behavior beyond recorded sequencing intent.
+
+## Edit — reverse-track names map-features (v1.3.0)
+
+**Roster:** control-current-skills (RED vs desired), then v1.3.0 text.
+
+**Desired failure of v1.2.x:** auto-invokes `reconcile-features` on reverse
+predicate (R1/R2 in map-features TESTS.md v2 RED).
+
+**GREEN (v1.3.0):** WHEN predicate holds → **name** `/map-features` only; never
+invoke reconcile-features (removed) or auto-invoke map-features; load-subgraph
+still runs for overlap.

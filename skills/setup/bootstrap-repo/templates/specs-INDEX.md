@@ -1,23 +1,18 @@
 # Spec Index
 
-Feature-code registry: every requirements.md registers its code here before use.
-Codes are 2-12 chars, A-Z0-9, start with a letter, unique forever (never reuse a
-retired code).
+Domain router for the capability catalog. Feature cards live under
+`docs/specs/catalog/<domain>.md` — **not** in this file. Register a CODE in the
+owning shard before writing `requirements.md`. Codes are 2–12 chars, A-Z0-9,
+start with a letter, unique forever (never reuse a retired code).
 
-**Roadmap item** binds this feature CODE (delivery unit) to the `ROAD-N` program **slot** it
-implements, when the project has a `docs/roadmap/INDEX.md`. Write `—` when there is no
-roadmap layer, or when this work was not planned as a roadmap item. At most one live CODE
-may name a given ROAD (`R6`). The column is what lets `refresh-roadmap-status` join plan to
-spec; `specify-behavior` is the only writer of the **Roadmap item** cell.
+Agents query via pack `load-subgraph/references/catalog-query.md`; they must not
+paste the full catalog into context.
 
-This **flat** table is the default. Agents query it (see pack
-`load-subgraph/references/catalog-query.md`); they must not assume it stays small
-enough to paste whole into context. Optional later scale-out: replace this table
-with a Domain router + `docs/specs/catalog/<domain>.md` shards — not required at
-bootstrap.
+**Roadmap item** on each shard card binds the feature CODE to a live `ROAD-N`
+when `docs/roadmap/INDEX.md` exists. Write `—` when there is no roadmap layer.
+At most one live CODE may name a given ROAD (`R6`). `specify-behavior` is the
+only writer of the **Roadmap item** cell on new features.
 
-Status is one of `Draft | Approved | In-progress | Implemented | Shipped`.
-
-| Code | Feature | Spec | Status | Roadmap item |
-|---|---|---|---|---|
-| <CODE> | <Feature name> | ./<YYYY-MM-DD>-<feature>/ | Draft | — |
+| Domain | Scope | Surface roots | Feature catalog |
+|---|---|---|---|
+| app | Default application domain | `src/` | [catalog](./catalog/app.md) |

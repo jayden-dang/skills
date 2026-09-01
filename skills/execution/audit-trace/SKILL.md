@@ -1,6 +1,6 @@
 ---
 name: audit-trace
-version: 1.2.0
+version: 1.3.0
 description: Use when checking that requirement IDs agree where they are defined
   and task-cited in docs/specs, or that the capability catalog INDEX / shards
   stay intact — the docs-only vertical pass invoked by prove-claim, cut-release,
@@ -44,8 +44,9 @@ A finding set, each item an ERROR or a WARNING:
 | **E8** | error | The same `TB-N`/`THR-N`/`CMP-N`/`SLO-N` is bold-defined in more than one canonical file |
 | **E9** | error | A `Reliability:` line cites an `SLO-N` with no live bold definition in Approved `docs/ops/reliability.md` |
 | **E10** | error | A `Reliability:` line cites a retired (struck-through) `SLO-N` |
-| **E11** | error | The same Feature CODE appears in more than one catalog row (flat INDEX and/or shards) |
-| **E12** | error | A sharded INDEX `Feature catalog` path is missing or not a readable file under `docs/specs/` |
+| **E11** | error | The same Feature CODE appears in more than one catalog row (across shards) |
+| **E12** | error | A router `Feature catalog` path is missing or not a readable file under `docs/specs/` |
+| **E14** | error | INDEX has a flat `| Code | … |` feature table (no Domain router) — shared catalog required |
 | **E13** | error | A canonical catalog Code cell is `OBS-<6hex>` (`OBS-[0-9a-f]{6}`) |
 | **W4** | warn | A catalog Spec pointer (not `—`/empty) names a missing directory under `docs/specs/` |
 | **W5** | warn | The same `OBS-<6hex>` appears in more than one `.skills/reverse-features/active/*.md` card |
@@ -191,27 +192,30 @@ Rules when defining files exist:
 ### Catalog integrity passes — only when `docs/specs/INDEX.md` exists
 
 If `docs/specs/INDEX.md` is missing, skip this section (the "nothing to check"
-stop already applies when the whole specs tree is absent). Mode detect: load
-`load-subgraph`’s `catalog-query.md` (Domain router header → **sharded**; else
-**flat**).
+stop already applies when the whole specs tree is absent). Shape: load
+`load-subgraph`’s `catalog-query.md` — **shared catalog only** (Domain router +
+`catalog/*.md`).
+
+**C0. Shared shape** — INDEX must carry a Domain router header
+(`| Domain | … | Feature catalog |`). If INDEX instead has a flat feature table
+(`| Code | … |` rows with CODE grammar and no Domain router) → **E14**. Name
+`/map-features` Domain boundary migrate. Do not parse flat INDEX rows as
+`catalogCodes`.
 
 **C1. Catalog CODE rows** — collect Code cells with CODE grammar
-`[A-Z][A-Z0-9]{1,11}` length 2–12 from the flat INDEX feature table and/or each
-shard. Shard paths come from the router `Feature catalog` cell (`./catalog/…`
-or `catalog/…`), then the same Code-row grep in each readable shard:
+`[A-Z][A-Z0-9]{1,11}` length 2–12 from each **shard** only. Shard paths come from
+the router `Feature catalog` cell (`./catalog/…` or `catalog/…`), then:
 
 ```bash
-# flat feature rows (Code | … | Spec | Status | …)
-grep -nE '^\| [A-Z][A-Z0-9]{1,11} \|' docs/specs/INDEX.md
-# after resolving each shard path from the router, same Code-row grep in that file
+# after resolving each shard path from the router
+grep -nE '^\| [A-Z][A-Z0-9]{1,11} \|' docs/specs/catalog/<domain>.md
 ```
 
-Ignore Domain-id cells that are not feature cards. Build `catalogCodes` as
-CODE → [file:line, …].
+Ignore Domain-id cells on INDEX. Build `catalogCodes` as CODE → [file:line, …].
 
-**C2. Shard path existence (sharded only)** — for each router `Feature catalog`
-cell that looks like a relative path (`./catalog/…` or `catalog/…`), resolve
-under `docs/specs/`. Missing or not a file → **E12**.
+**C2. Shard path existence** — for each router `Feature catalog` cell that looks
+like a relative path (`./catalog/…` or `catalog/…`), resolve under `docs/specs/`.
+Missing or not a file → **E12**.
 
 **C3. OBS tokens in canonical Code cells** — grep canonical catalog files for
 OBS-shaped first cells (hyphenated; they will not match the C1 CODE pattern):
@@ -233,8 +237,9 @@ only. Same id in two cards → **W5**. Do not walk the rest of `.skills/`.
 
 Rules:
 
+- **E14** — INDEX is flat (no Domain router) when INDEX exists
 - **E11** — any CODE with two or more distinct catalog row locations
-- **E12** — each missing/unreadable shard path (sharded mode)
+- **E12** — each missing/unreadable shard path
 - **E13** — each OBS-shaped Code cell in canonical catalog files
 - **W4** — each dangling Spec pointer
 - **W5** — each duplicated active OBS id

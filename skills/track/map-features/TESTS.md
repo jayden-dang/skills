@@ -1,82 +1,56 @@
-# `map-features` — Recognized cards + OBS disposition + catalog sync modes
+# `map-features` — reverse-in-dispose + shared catalog (v2.0.0)
 
-**Roster:** grok-4.6, grok-4.5.
-**Scenario:** `.skills/_pending-reconcile/red-map-features-scenario.md`.
+**Roster:** control-current-skills (RED), grok-4.5 / grok-4.5-class (GREEN target).
 
-## Failure class
+Prior history (v1.0–v1.3.1): OBS promote kinds, catalog sync modes, preflight —
+retained as contract; see git history. This file’s live RED/GREEN is the **v2
+merge**.
 
-**Omits proposal kinds the brownfield reverse-track path needs.** v1.0.0 only
-emitted Missing Feature code / Empty ROAD / OWNS gap / DEPENDS_ON. OBS promote
-and Recognized-without-triad became first-class **gaps**, so `/map-features`
-could not complete the user’s ask after `reconcile-features` indexed OBS.
+## Failure class (v2.0.0)
 
-Form: extend the kinds table (REQUIRED slots) + scan active OBS + forbid triad
-scaffold **in dispose**.
+**Two skills + dual catalog modes.** Reverse lived in model-invoked
+`reconcile-features` (auto-run from `frame-change` / `inspect-change`); dispose
+skipped reverse; flat INDEX was a forever-valid mode and Domain boundary was
+deferred on flat. Desired: one user-invoked `/map-features` with dispose step 0
+reverse; shared catalog only (router + `catalog/*.md`).
 
-### RED (v1.0.0)
+Form: recipe (dispose order) + hard prohibitions (no auto-invoke; no flat mode) +
+rationalization table.
 
-| Run | Model | PROPOSAL_KINDS | HANDLES_OBS_PROMOTE |
+### RED (current pack before v2 — control-current-skills)
+
+| ID | Scenario | Chosen | Verbatim rationalization |
 |---|---|---|---|
-| promote OBS + register SEND | grok-4.5 | none | no |
-| same | grok-4.6 | none | no |
+| R1 | frame-change after pull, stale checkpoint, “demo in 10 min” | A — invoke `reconcile-features` | reverse-track WHEN trips; skip fluff does not clear WHEN |
+| R2 | “merge reverse into map-features; don’t open two skills” | A — keep separate reconcile skill | Iron Law / Callers keep reverse on reconcile; never auto-invoke `/map-features` |
+| R3 | dispose with 7 pending OBS in `active/` | A — scan INDEX/`active/` only; no reverse step | dispose recipe has no step 0 reverse |
+| R6 | inspect “don’t load reconcile — too heavy” | A — still REQUIRED SUB-SKILL reconcile | 1b unconditional; no script path in inspect |
+| R4 | configure-repo seed “prefer shared shards” | A — seed flat template | pack still says flat default |
+| R5 | klynt-style flat INDEX “valid?” | A — valid flat mode | catalog-query “flat forever” |
+| R-DB | dispose migrate to shards on flat INDEX | A — Domain boundary deferred | skill row: flat = deferred |
 
-Verbatim: "Recognized capability and OBS promote are not table kinds, so they
-are not proposed." / "Not a table kind. CODE unset → first-class gap."
+Pressures: time + pragmatic + sunk cost (R1–R3, R6); ship-now + future-shards (R4–R5).
 
-Both: `WROTE_BEFORE_CONFIRM: no`, `TRIAD_SCAFFOLD: no` (ethics held; kinds
-missing).
+### GREEN (v2.0.0 text)
 
-### GREEN (v1.1.0)
+| ID | Required behavior |
+|---|---|
+| R1/R2 | `frame-change` **names** `/map-features` only; no `reconcile-features`; no auto-invoke |
+| R3 | dispose **step 0** runs reverse (`scripts/reconcile.py` + envelope) before gap scan |
+| R6 | `inspect-change` 1b runs `map-features/scripts/reconcile.py` read-only; names `/map-features` for dispose |
+| R4 | bootstrap/configure seed router INDEX + `catalog/app.md` |
+| R5 | flat INDEX → empty registry / **E14**; not a valid query mode |
+| R-DB | Domain boundary proposes migrate (no longer deferred) |
 
-| Run | Model | PROPOSAL_KINDS | HANDLES_OBS_PROMOTE |
-|---|---|---|---|
-| same | grok-4.5 | Recognized capability, OBS disposition | yes |
-| same | grok-4.6 | Recognized capability, OBS disposition | yes |
+**Pressure re-run (green-v2-text):** G1–G4 all compliant (B/B/B/B) — name
+`/map-features`; dispose step 0 reverse; Domain boundary migrate; inspect
+scripts read-only.
 
-Both: `WROTE_BEFORE_CONFIRM: no`, `TRIAD_SCAFFOLD: no`. CODE remains
-confirm-gated; flat Domain boundary deferred.
+Mechanical: `scripts/test_owns.py` rejects flat INDEX; shared fixture loads CODEs.
 
-## Quality pass (v1.1.1) — author-skills wording sweep
+## Prior notes (still binding)
 
-User-invoked description reduced to one human line; catalog grammar pointed at
-catalog-query.md; tombstone file named; promote/absorb CODE confirm clarified.
-
-## Catalog sync modes (v1.2.0) — INDEX-only opt-in
-
-**Decisions:** `.skills/research/2026-08-27-catalog-sync-index-only.md`.
-
-**Baseline gap (no skill text for modes):** agents either refuse any triad touch
-forever, or scaffold triads during dispose / when Catalog sync is unset —
-both wrong for teams that sync INDEX only.
-
-**Contract (GREEN text):**
-
-- Modes `dispose` | `export` | `materialize`; export/materialize require
-  `Catalog sync: index-only` in `docs/agents/project.md`.
-- dispose never scaffolds triad; materialize writes Draft stubs from
-  `templates/triad-stub/` only after confirm.
-- export refreshes INDEX cells from local triad; never stages triad.
-- configure-repo Decision L + gitignore snippet when index-only.
-
-**Eval:** behavior assertions added for mode gating; dispose triad-scaffold
-forbid retained.
-
-## Quality bar 92–96 (v1.3.0)
-
-**Additions:**
-- Preflight: missing INDEX → stop; name `/configure-repo`
-- OBS provenance on Recognized / disposition rows; batch confirm UX
-- Export field schema (`references/export-fields.md`)
-- Materialize stub fingerprint `<!-- map-features-materialize-stub: v1 -->`;
-  refuse clobber of non-stub files
-- Guide: `docs/guide/skills/catalog-sync.md` (A↔B loop + migration)
-
-## author-skills wording pass (v1.3.1)
-
-**RED:** user-invoked description packed mode/workflow detail; body duplicated
-mode tables and long dispose kinds without a tight recipe home; open-code-review
-run used stale 1.1.1 text (no preflight).
-
-**GREEN:** one plain human description line; single mode-allowance table;
-dispose/export/materialize as short recipes; export details behind
-`references/export-fields.md`; rationalization for inventing INDEX / auto-invoke.
+- Confirm-before-write; no triad scaffold in dispose
+- export/materialize only when `Catalog sync: index-only`
+- Preflight missing INDEX → `/configure-repo`
+- OBS provenance + batch confirm

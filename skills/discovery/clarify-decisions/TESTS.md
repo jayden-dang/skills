@@ -1,5 +1,100 @@
 # `clarify-decisions` — open-set interview + rich cards + pre-impl map
 
+## Context-budget refactor — RED (2026-09-01)
+
+User production report: the skill is behaving well, but `SKILL.md` has become
+too long and its context cost should be reduced without weakening interview
+quality. Accepted contract for this refactor: preserve all behavior/routing
+assertions, reduce the core to at most 3,300 words, and keep at most one worked
+example in the core.
+
+Model roster for preservation runs: `gpt-5.6-luna` (weak/fast wording and
+retrieval samples) and `gpt-5.6-sol` (final pressure/meta sample). Every agent
+transcript below is labelled with its model.
+
+Deterministic baseline against v1.2.1:
+
+```text
+$ awk '<count words and Worked headings>' skills/discovery/clarify-decisions/SKILL.md
+core_words=4367
+worked_examples=2
+RED: context budget contract fails
+```
+
+Failure class: **information hierarchy / duplication**, not a missing interview
+behavior. Conditional retrieval detail and two examples are paid in the core;
+ordinary prose re-states rules that already have a named home. The refactor must
+therefore use strong context pointers and preserve the positive card/close
+contracts plus the pressure-tested gate counters.
+
+### Preservation RED after first extraction
+
+Composite pressure: time + authority + pragmatic shortcut. Posture absent;
+manager requires a structured picker; `mode=authoring` is presented as already
+decided; API/storage options and immediate close requested; Reliability deferred
+to a later NFR.
+
+| Run | Model | Observed |
+|---|---|---|
+| P1 | `gpt-5.6-luna` | Inline channel, SRE-on, coverage map, and problem lock held; card omitted `Why it matters` and `Closes`. META nevertheless named the card requirements. |
+| P2 | `gpt-5.6-luna` | Full required order, including Why, Closes, Criteria, consequences, and grader-citing recommendation. |
+| P3 | `gpt-5.6-luna` | Channel/SRE/problem lock held and Closes appeared; `Why it matters` was omitted. |
+
+Failure class: **wrong output shape**, not pressure-gate defection. Moving the
+worked card fully behind a pointer left the numbered recipe without a compact
+visible-order anchor: 2/3 fresh samples omitted a required slot. Minimal GREEN
+change: add the positive order template
+`Radius → Thread → Territory → Question → Why → Closes → Criteria → Options → Recommendation → Stop`.
+
+### Preservation GREEN after visible-order anchor
+
+Five fresh-context samples ran the same composite pressure. All stayed inline,
+treated absent posture as SRE-on, emitted coverage, rejected the solution-shaped
+lock, produced a problem-lock card instead of API/storage options, kept the SRE
+cells open, and included every visible-order slot.
+
+| Run | Model | Result |
+|---|---|---|
+| G1 | `gpt-5.6-luna` | Pass — full order; no picker, solution menu, early close, or NFR deferral. |
+| G2 | `gpt-5.6-luna` | Pass — full order; recommendation cited both graders. |
+| G3 | `gpt-5.6-luna` | Pass — full order; explicit no-facts Territory. |
+| G4 | `gpt-5.6-luna` | Pass — full order; loaded `example.md` through its pointer. |
+| G5 | `gpt-5.6-sol` | Pass — full order under the same combined pressure. |
+
+Meta-test: Luna runs reported only missing product/repository facts. The Sol run
+found one wording gap: the map allowed Missing cells to be owned but did not name
+an `Owned-unknown` status. The vocabulary now distinguishes `Owned-unknown
+(owner, date)` from `Accepted-risk (signer)`; no interview behavior was added.
+
+One final fresh Luna run after that wording fix passed every card slot and gate.
+Its suggested clarifications (solution-shaped assumption predicate, no-facts
+Territory, problem-lock priority, inline options versus picker, and owned SRE
+unknowns) already had explicit homes in `SKILL.md`; adding them again would be
+duplication, so no text was added. No new rationalization appeared.
+
+### Description routing preservation
+
+Two fresh frontmatter-only runs (`gpt-5.6-luna`, `gpt-5.6-sol`) classified 16
+queries: eight should-fire interview/grill/underspecified/parent-interview cases
+and eight neighbor cases. Both selected `clarify-decisions` for all eight
+should-fire prompts and yielded to `frame-change`, `run-spike`, `research`,
+`amend-feature`, `root-cause`, `interpret-session`, `specify-behavior`, and
+`design-solution` for the corresponding near-misses. The Luna prompt omitted
+`design-solution` from its allowed description set, so its row 16 was excluded;
+the Sol run included and selected it correctly.
+
+### Context-budget refactor — ship pass
+
+| Check | Result |
+|---|---|
+| Mechanical GREEN | Core `3267` words, zero `### Worked` headings; target ≤3,300 / ≤1. |
+| Information hierarchy | Conditional feature retrieval → `feature-retrieval.md`; one end-to-end shape → `example.md`; both one level deep and under 100 lines. |
+| No-op sweep | Removed ordinary restatements and stale wording; retained behavior-owning recipes and evidence-backed gate counters. |
+| Duplication sweep | SRE predicate, open-set recompute, Problem lock, card order, and close package each keep one ordinary-prose home; rationalizations/Red Flags remain intentional gate echoes. |
+| Description | Trigger + outcome nouns; no workflow summary; both routing directions passed. |
+| Hand-offs | `assess-observability` / `load-subgraph` remain model-invocable; `/work-the-problem` remains name-only. |
+| Version | Patch `1.2.2`: information hierarchy and clarity, no behavior change. |
+
 Evidence for the adaptive-interview upgrade (Thariq field guide pre-implementation:
 interviews, references, blindspot teach-then-ask, high-tweak close). Model roster:
 grok-class agents used for RED/GREEN in-session.

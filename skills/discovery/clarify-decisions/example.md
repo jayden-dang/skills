@@ -32,13 +32,27 @@ Criteria (graders)
 - A 400-comment export with drawings completes without the gateway 30s kill.
 - Unpredictable size stays within an existing operations pattern.
 
-- **Sync in the API request** — simplest; large exports time out.
-- **Background job on the existing queue** (Recommended) — reuses transcode
-  worker patterns; needs a ready notification.
-- **Client-side only** — zero backend; limits formats and supportability.
+- **Sync in the API request** — gains the smallest API change, but pays by
+  holding the request open. It breaks on the known 30s gateway limit and is the
+  better fit only if export size can be bounded below that limit.
+- **Background job on the existing queue** (Recommended) — gains an existing
+  long-running operations pattern and survives unpredictable size. It pays for
+  job state plus a ready notification; it breaks if the queue cannot preserve
+  export authorization context.
+- **Client-side only** — gains zero backend work, but pays with restricted
+  formats and browser resource use. It breaks supportability for large drawing
+  exports and fits only if product scope accepts those limits.
 
-Recommended: background job — meets both graders; sync fails the timeout
-grader; client-only fails format coverage.
+Recommendation
+- **Pick:** background job on the existing queue.
+- **Decisive factors:** the gateway-limit grader rules out sync; the existing
+  operations-pattern grader favors the transcode queue already in Territory.
+- **Runner-up:** sync is simpler, but loses on the measured 30s boundary.
+- **Accepted trade-off:** add job state and a ready notification.
+- **Confidence / evidence gap:** high on execution locus; notification UX is
+  still unproven.
+- **Reopen trigger:** a measured upper bound keeps every supported export below
+  30s, or the existing queue cannot carry the caller's authorization context.
 ```
 
 ## Close excerpt when Coverage ON

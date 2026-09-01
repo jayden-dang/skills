@@ -39,7 +39,12 @@ Inline chat only. No fixed round count. Stop when high-blast forks are empty; wh
 
 Radii: `architecture` · `data` · `auth/security` · `UX flow` · `polish-diff` (+ `reliability` · `failure` · `operate` when ON).
 
-Slots: Thread, Territory, Why (blast), Closes, Criteria (graders) on high-blast, Options+consequences, Recommendation citing graders.
+Slots: Thread, Territory, Why (blast), Closes, Criteria (graders) on high-blast,
+Options with causal consequences, and a Recommendation decision argument. The
+argument names the pick, decisive Territory/Criteria, runner-up, accepted
+trade-off, confidence/evidence gap, and reopen trigger. `polish-diff` keeps a
+one-sentence recommendation. Technical names and boundaries stay exact; local
+explanations make their causal effect understandable.
 
 ## Close package
 

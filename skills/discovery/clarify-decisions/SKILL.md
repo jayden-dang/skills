@@ -1,6 +1,6 @@
 ---
 name: clarify-decisions
-version: 1.3.1
+version: 1.4.0
 description: Use to interview or grill the user before building an underspecified
   plan, design, or feature idea, including when another skill calls for an
   interview. Produces a confirmed close package of decisions, constraints,
@@ -129,6 +129,10 @@ and grounded-claim rules. Otherwise do not load it.
 ## Question card (every turn)
 
 Exactly **one** decision per message in chat. Every slot is **required**.
+Write for the person deciding now: use connected cause-and-effect sentences in
+their domain language. Preserve exact technical terms, service names, and
+boundaries; gloss them where used instead of replacing them with vague
+simplifications.
 
 1. **Radius** — one of: `architecture` · `data` · `auth/security` · `UX flow` · `polish-diff` (label it). When Coverage ON, also `reliability` · `failure` · `operate` per `production-coverage.md`. When OFF, do not use those three.
 2. **Thread** — three short lines the user can scan before the question:
@@ -140,8 +144,24 @@ Exactly **one** decision per message in chat. Every slot is **required**.
 5. **Why it matters** — **blast narrative** only: what rewrites if the answer flips (API shape, schema, auth boundary, ops surface). Enough to decide without a follow-up. Ground in *this* repo or product. Do not put pass/fail graders here — that is slot 7.
 6. **Closes** — unknown class this card retires: `known-unknown` · `unknown-known` · `blindspot-confirm`.
 7. **Criteria (graders)** — REQUIRED when Radius is `architecture` · `data` · `auth/security` · `UX flow`, or (Coverage ON) `reliability` · `failure` · `operate` (omit only for `polish-diff`): **1–2 named pass/fail graders** listed **above** Options (separate labeled block). Not the close-package Success / done signal. Recommendation MUST cite graders by name. Why sentences promoted here = miss. "No criteria essays / put success in Why" is not a waiver.
-8. **Options (2–4)** — short title **plus** consequence line (gain, pay, break). Bare labels are not options.
-9. **Recommendation** — your pick, first or clearly marked; one-line reason that cites the Criteria graders (or, on `polish-diff` only, the Why).
+8. **Options (2–4)** — short title, then enough causal detail to judge it. On
+   every radius except `polish-diff`, explain what it **gains**, what it **pays**,
+   what can **break**, and when it is the **better fit**; labels are optional,
+   connected sentences are not. On `polish-diff`, one consequence sentence per
+   option is enough. Bare labels and telegraphic fragments are not options.
+9. **Recommendation** — your pick, first or clearly marked. On `polish-diff`,
+   give one sentence grounded in Why. Every other radius gets a compact,
+   checkable decision argument:
+   - **Pick** — the option.
+   - **Decisive factors** — the Territory facts and named Criteria that make it
+     win now.
+   - **Runner-up** — the strongest alternative and why it loses on a decisive
+     factor.
+   - **Accepted trade-off** — the real cost taken with the pick.
+   - **Confidence / evidence gap** — how strongly the Territory supports the
+     pick and what fact is still missing.
+   - **Reopen trigger** — observable evidence or a constraint change that would
+     make the runner-up better; “if requirements change” is not a trigger.
 10. **Stop.** Wait. After the answer: recompute (Iron Law — open set home rule), then next card or close package.
 
 Visible order: `Radius → Thread → Territory → Question → Why it matters →
@@ -211,7 +231,7 @@ Standalone: a **living** open-set list of decision areas is fine — still one c
 |---|---|
 | "House style / the lead said use the picker / its description is long enough / I'll paste context too" | Channel is the Iron Law. One inline card; capped or dual-channel UI truncates consequences. |
 | "Standup in five minutes — short labels only" | Pressure changes when you report, not what a decision needs. |
-| "Recommended + one-line reason is enough" | Without Thread, Territory, consequences, and Criteria, the user can only accept a default. |
+| "The graders are named, so a one-line recommendation is enough" | A conclusion is not a decision argument. Show why the pick beats its runner-up, the trade-off accepted, the evidence gap, and what would reopen it. |
 | "Put success in Why / no criteria essays" | Why is blast; Criteria are separate graders above Options. |
 | "Context can be a follow-up if they ask" | The card is the detail; follow-up-only context is a thin-card failure. |
 | "We finished the four areas / question 3 of 5, then package" | Open-set empty is the stop; todos and countdowns are not. |
@@ -240,7 +260,7 @@ Standalone: a **living** open-set list of decision areas is fine — still one c
 - Calling `AskUserQuestion` or any truncated MCQ tool for a clarify-decisions decision
 - More than one question mark aimed at the user in a single message (except clarifying examples inside option text)
 - A card missing Thread, Territory, Why, Closes, option consequences, or the
-  high-blast Criteria block and grader-citing Recommendation
+  high-blast Criteria block and checkable Recommendation argument
 - Any preference or solution menu while **Problem lock** applies, without its
   card or naming `/work-the-problem`
 - "Question k of N", "final round", or closing because a precommitted count finished while high-blast remains

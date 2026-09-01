@@ -1,5 +1,88 @@
 # `clarify-decisions` — open-set interview + rich cards + pre-impl map
 
+## Decision-argument and card-legibility upgrade — RED (2026-09-01, author-skills)
+
+User production report: card replies are “hơi máy móc và khó hiểu”; the desired
+voice is easier to understand “nhưng ko làm mất đi technical”. The proposed
+upgrade also asked whether a diagram should appear only when it materially helps
+the user judge the system.
+
+Model roster fixed before the valid run:
+
+- `gpt-5.6-sol` — top tier, broad design judgment
+- `gpt-5.6-luna` — weak/cheap tier the skill must still carry
+
+The first probe batch was excluded: its shared brief exposed the verdict rubric
+after the scenarios, so a model could retrieve the expected answer. The valid
+fresh-context runs used v1.3.1, stopped reading at the next scenario heading,
+and contained no verdict rubric.
+
+### Valid baseline (v1.3.1 as written)
+
+| Scenario | Model | Choice / observed | Verbatim rationale or gap |
+|---|---|---|---|
+| **S-ARGUMENT** | `gpt-5.6-sol` | **A — RED:** gain/pay/break option fragments + one-line recommendation; no runner-up, accepted trade-off, confidence gap, or reopen trigger | “current `SKILL.md` explicitly requires consequence-bearing options and a one-line recommendation citing the named graders. That makes A the conforming choice… B requires recommendation fields the current recipe does not require and conflicts with its explicit one-line form.” |
+| **S-ARGUMENT** | `gpt-5.6-luna` | **B — control pass:** produced the full checkable argument despite the one-line contract | “A is insufficient because a terse recommendation does not make the trade-off or evidence gap checkable.” |
+| **S-DIAGRAM-NEEDED** | `gpt-5.6-sol` | **B — control pass:** one Mermaid flow in Territory | “B follows sound communication judgment rather than an explicit skill rule.” |
+| **S-DIAGRAM-NEEDED** | `gpt-5.6-luna` | **B — control pass:** one Mermaid flow in Territory | “the topology, trust edges, and dual audit feeds are themselves decision context, so prose-only loses material structure.” |
+| **S-DIAGRAM-NOOP** | `gpt-5.6-sol` | **A — control pass:** no visual on copy-only card | “A flow diagram would depict already-decided behavior rather than clarify the live fork; a comparison table would duplicate two concise option consequence lines.” |
+| **S-DIAGRAM-NOOP** | `gpt-5.6-luna` | **A — control pass:** no visual on copy-only card | “B or C would add ceremony without reducing uncertainty.” |
+
+Failure classes:
+
+- **Wrong recommendation shape** — the literal one-line contract caps the
+  strongest model at a conclusion, not a checkable decision argument.
+- **Mechanical legibility** — current gain/pay/break fragments reproduce the
+  user-observed terse, mechanical voice; no local contract says to preserve
+  exact technical terms while explaining their causal effect in reader language.
+- **Diagram behavior not yet failed** — both roster models selected the smallest
+  useful visual and omitted decorative visuals. Per the no-op test, no diagram
+  rule is justified by this run alone.
+
+Diagram variance probe (`gpt-5.6-luna`, fresh context each): topology case chose
+one Territory Mermaid in **5/5** valid runs; copy-only pressure chose no visual
+in **3/3** valid runs. Verbatim: “one diagram makes topology, fan-out, and
+ownership immediately scannable”; “Mermaid would redraw already-locked behavior
+and add ceremony.” This proposed rule is a tested no-op on the roster and is not
+added to `SKILL.md` in this edit.
+
+Desired GREEN contract for observed failures: high-blast Options explain Gain ·
+Pay · Break · Best when in connected causal language; the Recommendation names
+Pick · decisive factors · runner-up · accepted trade-off · confidence/evidence
+gap · reopen trigger. `polish-diff` stays light.
+
+### GREEN — v1.4.0
+
+| Scenario | Model | Observed |
+|---|---|---|
+| **S-ARGUMENT** | `gpt-5.6-sol` | **B — pass:** causal option explanations; all six Recommendation lines present and grounded; “No instruction was materially ambiguous.” |
+| **S-ARGUMENT** | `gpt-5.6-luna` | **B — pass:** all six lines; runner-up lost on the demonstrated predicate-omission risk; concrete 24-hour / tenant-growth reopen triggers. |
+| **S-CAUSAL-UNSEEN** | `gpt-5.6-luna` | **Pass:** preserved `at-least-once`, unique `(provider,event_id)`, non-idempotent email, exactly-once, and outbox; explained how retries cause loss/duplicates; exposed the remaining downstream idempotency gap instead of claiming exactly-once. |
+
+Meta-test: both roster models said the new output contract was clear and named
+no wording that would have made compliance easier. No new rationalization
+appeared in the GREEN transcripts.
+
+Wording variance (`gpt-5.6-luna`, S-ARGUMENT, fresh context): **5/5** emitted
+Gain/Pay/Break/Best-when consequences plus all six Recommendation lines. Picks
+varied between shared tables and tenant schemas because tenant count and RLS
+evidence were deliberately absent; the process shape converged, and every run
+made that evidence gap and an observable reopen trigger explicit.
+
+### author-skills ship pass (2026-09-01 — v1.4.0)
+
+| Check | Result |
+|---|---|
+| Failure form | Wrong output shape → positive REQUIRED card contract; mechanical omission → local causal-language recipe |
+| Description / routing | Frontmatter description is byte-for-byte unchanged from v1.3.1; prior two-direction routing evidence still applies |
+| Weakest model | `gpt-5.6-luna` GREEN on baseline and unseen webhook case; 5/5 wording convergence |
+| No-op sweep | Diagram wording omitted after 5/5 useful-visual and 3/3 no-visual controls already behaved correctly |
+| Duplication | Causal voice has one home at Question card; option and recommendation shapes each have one home in slots 8/9; example only instantiates them |
+| Influence | Collaborative recipe/commitment; no new hard gate or warmth framing |
+| Core budget | 283 lines / 3214 words; supporting example remains one level deep and under 100 lines |
+| Cross-refs / hand-offs | No hand-off changed; full hand-off lint reports 0 dead hand-offs |
+| Version | Minor `1.4.0`: new required option/recommendation output shape |
+
 ## Production coverage thinning — RED (2026-09-01, author-skills)
 
 User lock: SRE/coverage is too heavy for the interview primitive; small edits and
@@ -323,6 +406,8 @@ Predicate: SRE-on for Production · Scaling · Maintenance · Cut Released **or 
 | “Later NFR template” does not empty R/F/O when Coverage ON | RED S-SRE-COVERAGE; GREEN S-SRE-COVERAGE |
 | Coverage OFF when posture absent, MVP/Early, tier-0 brief, or polish without ops ask | RED S-GATE-ABSENT / S-GATE-POLISH; GREEN v1.3.0 |
 | Coverage ON requires Production **and** Cut Released/Scaling/Maintenance **and** surface latch or ops ask; load `production-coverage.md` | RED S-GATE-*; GREEN v1.3.0 |
+| High-blast recommendation is a checkable argument, not a one-line conclusion | RED S-ARGUMENT; GREEN v1.4.0; 5/5 wording variance |
+| Card explains causal effects while preserving exact technical terms and boundaries | User production report; GREEN S-CAUSAL-UNSEEN |
 
 ## Description trigger notes
 

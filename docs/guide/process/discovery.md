@@ -52,7 +52,11 @@ Any feature whose spec matches is read as its **Summary card, not its full spec*
 `clarify-decisions` takes over. The load-bearing rules:
 
 - **Inline chat only** — never a truncated MCQ picker; every question needs full context.
-- **One question card per message** — radius, why it matters, options with consequences, recommendation. Wait for the answer.
+- **One question card per message** — radius, why it matters, options with
+  causal consequences, then a recommendation that shows why the pick beats the
+  runner-up, what trade-off it accepts, and what evidence would reopen it. Keep
+  exact technical terms while explaining their effect in reader language. Wait
+  for the answer.
 - **Blast-radius first** — architecture, data, and auth before polish, even when the user asks for color first.
 - **Walk every branch** of the decision tree, in dependency order.
 - **Facts are yours; decisions are the user's.** Look up the codebase and the parent's Blindspot / Knowns digests; only judgment calls go to the user.

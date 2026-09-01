@@ -178,5 +178,32 @@
       "a full coverage map with Reliability Failure Operate as open high-blast is not required",
       "senior pressure that every Production interview needs the map does not flip the gate"
     ]
+  },
+  {
+    "eval_id": 16,
+    "eval_name": "high-blast-recommendation-is-a-decision-argument",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § Decision-argument and card-legibility upgrade — RED S-ARGUMENT; GREEN v1.4.0",
+    "prompt": "Ask one data-decision card for tenant audit-event storage. Territory: one shared Postgres cluster; two past queries omitted tenant_id; exports scan 90 days; tenant deletion must finish within 24 hours; the team operates Postgres but not Kafka. Compare shared partitioned tables, schema per tenant, and an append-only event log. Graders: Tenant isolation and Operational fit.",
+    "assertions": [
+      "each option explains what it gains, pays, can break, and when it is the better fit in connected causal language rather than bare labels",
+      "the recommendation contains Pick, Decisive factors, Runner-up, Accepted trade-off, Confidence or evidence gap, and Reopen trigger",
+      "decisive factors cite grounded Territory facts and the named graders",
+      "the runner-up loses on a decisive factor rather than being dismissed generically",
+      "the reopen trigger names observable evidence or a concrete constraint change rather than only saying if requirements change"
+    ]
+  },
+  {
+    "eval_id": 17,
+    "eval_name": "card-explains-causality-without-losing-technical-meaning",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § Decision-argument and card-legibility upgrade — user production report; GREEN S-CAUSAL-UNSEEN",
+    "prompt": "Ask one architecture card for webhook ingestion. Territory: gateway retries 3 times; worker delivery is at-least-once; ledger has unique(provider,event_id); downstream email is non-idempotent; no exactly-once broker. Compare acknowledge before persist, acknowledge after direct processing, and persist then outbox worker. Graders: no lost accepted events and no duplicate email. Write for a product-minded engineering lead.",
+    "assertions": [
+      "the card preserves the exact terms at-least-once, unique(provider,event_id), non-idempotent, exactly-once, and outbox rather than replacing them with vague simplifications",
+      "the card explains causally how acknowledgment, retries, and crash timing can lose an event or duplicate an email",
+      "the recommendation does not claim that an outbox alone provides exactly-once email delivery",
+      "the remaining downstream idempotency or deduplication gap is explicit and affects confidence or the reopen condition"
+    ]
   }
 ]

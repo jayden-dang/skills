@@ -118,10 +118,14 @@ def _spec_dir_candidates(line: str) -> list[str]:
         n = _normalize_spec_dir(tick)
         if n:
             cands.append(n)
-    # Bare Path cells: docs/specs/…/ or ./2026-…/ without backticks
+    # Bare Path cells: docs/specs/…/, ./2026-…/, or ../2026-…/ (shard-relative)
     for cell in line.strip().strip("|").split("|"):
         cell = cell.strip()
-        if "docs/specs/" in cell or re.match(r"^\.?/?\d{4}-\d{2}-\d{2}-", cell):
+        if (
+            "docs/specs/" in cell
+            or re.match(r"^\.?/?\d{4}-\d{2}-\d{2}-", cell)
+            or re.match(r"^(\.\./)+\d{4}-\d{2}-\d{2}-", cell)
+        ):
             n = _normalize_spec_dir(cell)
             if n:
                 cands.append(n)

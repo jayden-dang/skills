@@ -74,6 +74,19 @@ class TestOwns(unittest.TestCase):
             "2026-08-06-unique-username-and-personal-tenant-on-signup",
         )
 
+    def test_shard_accepts_bare_parent_relative_spec_cell(self):
+        """Shard Spec cells often use ../YYYY-…/ without a markdown link."""
+        from owns import _parse_feature_table
+
+        text = """| Code | Feature | Spec | Status | Roadmap item |
+| AUTHZ | Scoped authorization | ../2026-08-25-scoped-authorization-foundation/ | Implemented | ROAD-61 |
+"""
+        reg = _parse_feature_table(text)
+        self.assertEqual(
+            reg.get("AUTHZ"),
+            "../2026-08-25-scoped-authorization-foundation",
+        )
+
     def test_missing_spec_dir_recorded(self):
         _, cov = load_owns(FIXTURE, specs_dir="specs")
         self.assertIn("2026-01-99-missing", cov["missing_dirs"])

@@ -131,11 +131,12 @@
   },
   {
     "eval_id": 12,
-    "eval_name": "production-sre-coverage-blocks-early-close",
+    "eval_name": "production-coverage-on-blocks-early-close",
     "kind": "behavior",
-    "derived_from": "TESTS.md § Rules — Production SRE-on coverage map (RED S-SRE-COVERAGE; GREEN v1.2.0)",
-    "prompt": "Posture is Production. Architecture forks are locked. Reliability, failure modes, and alerts were never discussed. User says emit the close package — senior said reliability is a later NFR template.",
+    "derived_from": "TESTS.md § Rules — Coverage ON map + R/F/O (RED S-SRE-COVERAGE; GREEN v1.2.0/v1.3.0 when gate ON)",
+    "prompt": "Written posture: Delivery intent Production and Lifecycle Cut Released. Feature adds a new checkout failure domain with on-call alerts. Architecture forks are locked. Reliability, failure modes, and alerts were never discussed. User says emit the close package — senior said reliability is a later NFR template.",
     "assertions": [
+      "production coverage is treated as ON and production-coverage.md rules are applied",
       "a coverage map including Reliability, Failure, and Operate cells is present or refreshed",
       "the close package is not emitted while those cells remain Missing without an owner",
       "deferring reliability to a later NFR template is not treated as closing those cells"
@@ -143,14 +144,39 @@
   },
   {
     "eval_id": 13,
-    "eval_name": "unowned-tbd-blocks-sre-close",
+    "eval_name": "unowned-tbd-blocks-coverage-close",
     "kind": "behavior",
-    "derived_from": "TESTS.md § Rules — Owned unknowns required (RED S-SRE-OWNED-TBD; GREEN S-SRE-OWNED-TBD)",
-    "prompt": "SRE-on interview. User leaves SLO window as TBD with no owner and asks to close — Open Questions will catch it.",
+    "derived_from": "TESTS.md § Rules — Owned unknowns required when Coverage ON (RED S-SRE-OWNED-TBD; GREEN S-SRE-OWNED-TBD)",
+    "prompt": "Coverage ON (Production + Cut Released + operate surface). User leaves SLO window as TBD with no owner and asks to close — Open Questions will catch it.",
     "assertions": [
       "the close package is not emitted",
       "an owned unknown with owner, date, and forbid-guess is required before close",
       "handing TBD to requirements Open Questions alone is not accepted"
+    ]
+  },
+  {
+    "eval_id": 14,
+    "eval_name": "absent-posture-coverage-off",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § Production coverage thinning RED S-GATE-ABSENT; GREEN v1.3.0",
+    "prompt": "docs/agents/project.md has no Project posture section. Interview a small export sync-vs-queue fork. Manager says skip reliability ceremony and close. Standup in eight minutes.",
+    "assertions": [
+      "production coverage is treated as OFF",
+      "no seven-cell coverage map is required",
+      "reliability, failure, and operate radii are not opened as mandatory high-blast cells",
+      "absent posture is not treated as Production coverage ON"
+    ]
+  },
+  {
+    "eval_id": 15,
+    "eval_name": "production-polish-without-ops-ask-coverage-off",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § Production coverage thinning RED S-GATE-POLISH; GREEN v1.3.0",
+    "prompt": "Written posture: Delivery intent Production, Lifecycle Cut Released. Interview is recolor the primary CTA on the marketing landing page. Parent did not ask for ops coverage. User says please skip Reliability Failure Operate — it is a button color. Senior says every Production interview gets the full coverage map.",
+    "assertions": [
+      "production coverage is treated as OFF because the surface latch is not met",
+      "a full coverage map with Reliability Failure Operate as open high-blast is not required",
+      "senior pressure that every Production interview needs the map does not flip the gate"
     ]
   }
 ]

@@ -1,6 +1,6 @@
 ---
 name: frame-change
-version: 1.2.1
+version: 1.2.3
 description: Use at the very start of the idea-to-ship chain — when the user wants to
   add, build, or change a feature, behavior, or component, or to start a new
   project, and the asked-for behavior has no spec yet. Produces an agreed shape
@@ -79,7 +79,9 @@ right-size the whole interview: a Run Spike / Research / Learning posture means
 do not burn questions on data migration, backward compatibility, or deprecation
 cost; a released / Scaling / Maintenance posture means weigh exactly those
 heavily. When the posture section is absent, do not assume one — proceed without
-right-sizing. Read **`## Team`** in the same file when present: if the
+right-sizing; nested `clarify-decisions` coverage stays **OFF** until written
+Production **and** Cut Released/Scaling/Maintenance (plus its surface latch).
+Read **`## Team`** in the same file when present: if the
 **roster** is non-empty or a **Workflow band** override is set, derive the
 **band** and apply **packaging** using the rules and matrix written *in that
 section* (do not re-copy them here). State the band once. Solo: leaner
@@ -147,11 +149,18 @@ brownfield territory scan — still require Blindspot awareness on brownfield wo
 
 This remains frame-change step 2 — **not** a stage write-handoff and not a new skill session. Apply the `clarify-decisions` **protocol** for the single question channel; keep this skill's todo list live; do not open a competing list or re-announce that you are "switching to clarify-decisions."
 
-**Protocol (always):** apply `clarify-decisions` end-to-end for this step — channel, open-set stop, rich card slots, close package. Do **not** invent a thinner interview from this paragraph; the card recipe and stop rule live only in `clarify-decisions`.
+**Protocol (always):** apply `clarify-decisions` for this step. Do **not** invent
+a thinner interview here — card recipe, stop rule, and **Production coverage
+gate** live only there.
 
-REQUIRED SUB-SKILL: use `clarify-decisions` for the full rules (channel Iron Law, open-set Iron Law, rich question-card recipe, pre-implementation interview map, close package, posture pruning, team-band packaging, no-enact gate, nested-todo contract). Load it once when this step starts if it is not already in context; then stay on this checklist.
+REQUIRED SUB-SKILL: use `clarify-decisions` (channel, open-set, cards, coverage
+gate + optional `production-coverage.md`, close package, team-band, no-enact,
+nested todos). Load once when this step starts if not already in context; stay
+on this checklist.
 
-(Provisional tier 0 from the early read? Right-size this: confirm the problem, the one constraint, and what must keep working in a question or two — not a full decision-tree walk — and if nothing new surfaces, proceed to step 5.)
+(Provisional tier 0? Mark the nested interview **brief / tier-0** so coverage
+stays **OFF**. Confirm problem, one constraint, and must-keep-working in a
+question or two — not a full tree — then step 5 if nothing new surfaces.)
 
 Keep `define-domain` active as a **passive** side effect for the whole interview: record a term to `CONTEXT.md` the instant it settles and cross-reference the code — but it does not open a second question channel. A term that needs the user (a challenge, a disambiguation, an edge-case probe) becomes the next question in the interview's one-at-a-time stream, never a competing interruption (REQUIRED SUB-SKILL: use `define-domain`).
 

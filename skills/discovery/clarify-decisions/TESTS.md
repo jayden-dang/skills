@@ -1,5 +1,80 @@
 # `clarify-decisions` — open-set interview + rich cards + pre-impl map
 
+## Production coverage thinning — RED (2026-09-01, author-skills)
+
+User lock: SRE/coverage is too heavy for the interview primitive; small edits and
+absent/MVP posture must not force a full coverage map. Direction C: three-part
+gate + `production-coverage.md` addendum.
+
+Model roster: `grok-4.6` (RED baseline on v1.2.2; GREEN on v1.3.0).
+
+### Baseline failures (v1.2.2 as written)
+
+| Scenario | Pressures | Observed | Verbatim rationalization / skill cite |
+|---|---|---|---|
+| **S-GATE-ABSENT** | time + authority + pragmatic | **Choice B — SRE-on**; 7-cell map; Reliability/Failure/Operate Missing | Skill: "OR absent/unspecified" ⇒ SRE-on. "Only the written posture sets SRE-off; chat vibes do not." Manager skip + standup do not flip. |
+| **S-GATE-POLISH** | authority + exhaustion + pragmatic | **Choice B — SRE-on** on Production · Cut Released **button recolor**; R/F/O stay Missing | Skill: "SRE-on applies to every feature interview in that band." User “it’s a button” does not waive. Rejected Clear-as-N/A. |
+| **S-GATE-MVP** | authority + social + pragmatic | **Choice A — SRE-off** (MVP · Early) | Agent used “not in SRE-on list” — predicate underspecified (MVP neither ON nor OFF list). Meta: “SKILL.md … never lists MVP.” |
+
+Failure classes:
+
+- **Wrong gate (absent)** — observable conditional treats absent as Production.
+- **Wrong latch (every Production feature)** — no operate/launch / ops-ask latch.
+- **Ambiguous MVP** — Delivery intent MVP not named OFF.
+- **Information hierarchy** — full coverage recipe paid in core on every run.
+
+Desired GREEN contract (user-locked): Coverage ON only when Production **and**
+Cut Released/Scaling/Maintenance **and** not tier-0/brief **and**
+(operate/launch surface **or** explicit ops ask). Addendum behind
+`production-coverage.md`.
+
+### GREEN — v1.3.0 (grok-4.6)
+
+| Scenario | Required | Observed |
+|---|---|---|
+| S-GATE-ABSENT | Coverage OFF; no map; no R/F/O | **Pass** — Choice A; cited absent ⇒ OFF; problem-lock before sync/queue |
+| S-GATE-POLISH | Coverage OFF despite Production · Cut Released | **Pass** — Choice A; part 3 latch failed; senior “every interview” countered |
+| S-GATE-OPERATE (preservation) | Coverage ON; refuse early close; map with R/F/O Missing | **Pass** — Choice B; loaded `production-coverage.md`; later-NFR rejected |
+
+Meta (all three): gate text clear; “all three” unmistakable; polish OFF vs operate ON discriminated.
+
+### author-skills ship pass (2026-09-01 — v1.3.0)
+
+| Check | Result |
+|---|---|
+| Failure form | Observable conditional (three-part gate) + recipe behind pointer |
+| Description | Trigger + outcome; coverage outcomes gated in wording; no workflow dump |
+| Addendum | `production-coverage.md` one level deep; loaded only when ON |
+| Core words | ~3224 (under prior 3300 soft target) |
+| frame-change sync | Brief/tier-0 marks coverage OFF; absent posture not treated as Production |
+| Guide sync | `docs/guide/skills/clarify-decisions.md` + discovery.md |
+| eval.json | Eval 12–13 retargeted to ON path; eval 14–15 OFF path |
+| Version | Minor `1.3.0` — new gate rule + slot ownership split |
+
+### author-skills quality pass (2026-09-01 — v1.3.1 wording)
+
+**Goal:** no-op / duplication sweep + clearer gate wording; **no behavior change**
+from v1.3.0 GREEN.
+
+| Edit | Why |
+|---|---|
+| Gate ON/OFF prose shortened; lifecycle as **or** | Meta: middots after **and** read as one compound name |
+| Part 2 renamed **Full-path interview** | Meta: “Not brief” was a negation heading |
+| OFF path: “slots 4–6 + problem lock”, not Frame/Contract | Meta: cell names invited keeping a map when OFF |
+| Right-size: migration skip ≠ drop arch/data cards | Meta: over-read of “skips migration grills” |
+| Merged coverage rationalization rows; dropped `⊥` | Dup + opaque symbol |
+| `production-coverage.md` + guides + frame-change tightened | Same facts, fewer tokens |
+
+**Meta re-run (`grok-4.6`):** gate still unmistakable; cases 1–3 same as v1.3.0
+GREEN (OFF / OFF / ON-no-close). Named two wording invites → fixed above; no new
+behavior holes.
+
+| Check | Result |
+|---|---|
+| Core words | ~2955 (was ~3257) |
+| Addendum words | ~435 (was ~539) |
+| Version | Patch `1.3.1` — wording/clarity only |
+
 ## Context-budget refactor — RED (2026-09-01)
 
 User production report: the skill is behaving well, but `SKILL.md` has become
@@ -243,9 +318,11 @@ Predicate: SRE-on for Production · Scaling · Maintenance · Cut Released **or 
 | Criteria (graders) required on high-blast cards; Recommendation cites graders; Why ≠ Criteria | RED S-P0-CRITERIA; GREEN S-P0-CRITERIA; v1.1.1 wording |
 | Close package requires Success · Boundaries · Spine touch | RED S-P0-CLOSE; GREEN S-P0-CLOSE |
 | Identify/Define still open → name `/work-the-problem` (never invoke) or lock problem here | RED S-P0-WTP; GREEN S-P0-WTP |
-| Production SRE-on: Coverage map + reliability/failure/operate open-set; absent posture = Production | RED S-SRE-COVERAGE/MAP; GREEN v1.2.0 |
-| SRE-on close requires Coverage final · Owned unknowns · Accepted risks · Operability touch | RED S-SRE-OWNED-TBD; GREEN S-SRE-OWNED-TBD |
-| “Later NFR template” does not empty Reliability/Failure/Operate | RED S-SRE-COVERAGE; GREEN S-SRE-COVERAGE |
+| Production coverage ON (legacy v1.2): map + R/F/O open-set; absent = Production | RED S-SRE-COVERAGE/MAP; GREEN v1.2.0 — **superseded by v1.3.0 gate** |
+| Coverage ON close requires Coverage final · Owned unknowns · Accepted risks · Operability touch | RED S-SRE-OWNED-TBD; GREEN S-SRE-OWNED-TBD (when gate ON) |
+| “Later NFR template” does not empty R/F/O when Coverage ON | RED S-SRE-COVERAGE; GREEN S-SRE-COVERAGE |
+| Coverage OFF when posture absent, MVP/Early, tier-0 brief, or polish without ops ask | RED S-GATE-ABSENT / S-GATE-POLISH; GREEN v1.3.0 |
+| Coverage ON requires Production **and** Cut Released/Scaling/Maintenance **and** surface latch or ops ask; load `production-coverage.md` | RED S-GATE-*; GREEN v1.3.0 |
 
 ## Description trigger notes
 

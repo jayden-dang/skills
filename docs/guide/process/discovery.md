@@ -57,6 +57,7 @@ Any feature whose spec matches is read as its **Summary card, not its full spec*
 - **Walk every branch** of the decision tree, in dependency order.
 - **Facts are yours; decisions are the user's.** Look up the codebase and the parent's Blindspot / Knowns digests; only judgment calls go to the user.
 - **Close package** — decisions table + ready-to-paste constraints + explicit confirmation before anything is enacted.
+- **Production coverage** — map + ops close slots only when clarify’s three-part gate is ON; absent/MVP/brief/polish-without-ops stay OFF.
 
 `define-domain` runs as a side effect throughout: challenge terms against the glossary the moment usage conflicts with it, sharpen fuzzy language into one canonical term, stress-test relationships with concrete edge cases, and cross-reference the code when the user asserts how something works. Update `CONTEXT.md` **inline, the instant a term settles** — batched glossary edits get forgotten.
 

@@ -41,7 +41,10 @@ Recommended: background job — meets both graders; sync fails the timeout
 grader; client-only fails format coverage.
 ```
 
-## Close excerpt when SRE-on
+## Close excerpt when Coverage ON
+
+(Only when `SKILL.md` Production coverage gate is ON and
+`production-coverage.md` was loaded.)
 
 ```text
 Success / done signal

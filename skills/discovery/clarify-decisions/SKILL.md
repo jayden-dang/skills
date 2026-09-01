@@ -1,11 +1,11 @@
 ---
 name: clarify-decisions
-version: 1.2.2
+version: 1.3.1
 description: Use to interview or grill the user before building an underspecified
   plan, design, or feature idea, including when another skill calls for an
   interview. Produces a confirmed close package of decisions, constraints,
-  success, boundaries, spine touch, owned unknowns, and accepted risks after
-  every high-blast branch and Production SRE coverage cell is closed or owned.
+  success, boundaries, and spine touch — plus owned unknowns, accepted risks,
+  and operability when the production-coverage gate is on.
 ---
 
 # Clarify Decisions
@@ -37,12 +37,15 @@ authority, deadlines, and a nominally long description field are not exceptions.
 THERE IS NO FIXED ROUND COUNT.
 NEVER "Question k of N", "last of 5", or "we budgeted four cards".
 Stop only when the open set is empty of judgment calls that change
-architecture, data, auth/security, UX flow, reliability, failure,
-operate, or implementation scope — AND, when Production SRE coverage
-is on, no coverage-map cell remains Missing without an owner.
+architecture, data, auth/security, UX flow, or implementation scope —
+AND, when the production-coverage gate is ON, judgment calls on
+reliability, failure, and operate, with no coverage-map cell Missing
+without an owner.
 ```
 
-**Open set** = high-blast unknowns still undecided + branches the last answer opened + parent known-unknowns still needing a user lock + (when SRE-on) coverage cells that are Missing without owner.
+**Open set** = high-blast unknowns still undecided + branches the last answer
+opened + parent known-unknowns still needing a user lock + (when coverage ON)
+coverage cells that are Missing without owner.
 
 **Home rule:** recompute the open set **after every answer**, then either the next card or the close package. Every other mention of "recompute" points here.
 
@@ -50,57 +53,54 @@ A pre-listed todo is a **living map**, not a quota: append opened branches, drop
 resolved ones, and never close while a high-blast item remains. Pressure changes
 *when* you report progress, not whether an unstated decision exists.
 
-## Production SRE coverage (when)
+## Production coverage gate (when)
 
-**SRE-on** WHEN Project posture (parent or `docs/agents/project.md`) is
-**Production · Scaling · Maintenance · Cut Released**, OR absent/unspecified.
+**Home for the ON/OFF predicate.** When ON, load and follow
+`production-coverage.md` (map, radii, close slots 7–10). When OFF, do not load
+it. Authority and chat vibes never flip the gate.
 
-**SRE-off** WHEN posture is explicitly **Run Spike · Research · Learning**. Skip
-the coverage map and SRE radii; Frame, Contract, and Boundaries still apply.
+Evaluate **once** before the starting map (re-check only if written posture,
+brief flag, or operate/launch surface changes):
 
-Only the written posture sets SRE-off; chat vibes do not.
+**ON** only when **all three** hold:
 
-SRE-on applies to every feature interview in that band. Missing reliability docs
-means prose targets or Owned unknowns, never invented SLO IDs.
+1. **Posture band** — written Delivery intent **Production** **and** Lifecycle
+   is **Cut Released** or **Scaling** or **Maintenance** (parent or
+   `docs/agents/project.md`).
+2. **Full-path interview** — parent did **not** mark this interview **tier 0**
+   or **brief**.
+3. **Surface latch** — operate/launch surface (alerts, rollback, SLOs, on-call,
+   deploy/takeover, new failure domain) **or** user/parent explicitly asks for
+   ops/reliability coverage.
+
+**OFF** otherwise — including absent posture; **MVP · Run Spike · Research ·
+Learning**; Lifecycle **Idea · Early · Active development**; polish/copy/recolor
+with no latch; “build SRE habits” chat without the written band + latch.
+
+When OFF: omit the coverage map entirely; no `reliability` / `failure` /
+`operate` radii; close omits slots 7–10. Core close slots 4–6 (Success,
+Boundaries, Spine) and problem lock still apply.
 
 ## Starting map (before the first card)
 
 Load parent Knowns, Blindspot, and scan digest when present (for example
-`.skills/<CODE>/{knowns,scan}.md` or the `_pending-<slug>` equivalents). State
-SRE-on or SRE-off, then emit **one short thought-partner map** in chat:
+`.skills/<CODE>/{knowns,scan}.md` or `_pending-<slug>` equivalents). State
+**Coverage ON** or **OFF** (if OFF, which gate part failed), then one short
+thought-partner map:
 
-1. **Locked** — what you treat as fixed (posture, explicit non-negotiables, digest facts).
-2. **Coverage map** — REQUIRED when SRE-on (omit the table when SRE-off). Cells and status only — not prose essays:
-
-   Statuses: `Clear` · `Partial` · `Missing` · `Owned-unknown (owner, date)` ·
-   `Accepted-risk (signer)`.
-
-| Cell | Status |
-|---|---|
-| Frame | … |
-| Journey | … |
-| Contract | … |
-| Reliability | … |
-| Failure | … |
-| Operate | … |
-| Freeze | … |
-
-   **Cell meanings + how they close (one home):**
-   - **Frame** — problem lock (Problem lock section).
-   - **Journey** — CUJ path + breakpoints + measured vs unmeasured. **No Journey radius:** close via `UX flow` (user-facing CUJ) or `architecture` (system-path CUJ) cards, then set Journey Clear/Partial.
-   - **Contract** — API/state/idempotency/authz via `data` / `auth/security` / `architecture` cards.
-   - **Reliability** — SLI measure point + SLO-shaped target + error-budget *policy* (burn thresholds). Cite `SLO-N` only from Approved docs; else prose or Owned unknown. Radius: `reliability`.
-   - **Failure** — SPOF/deps/partition/overload/operator-error; accept vs mitigate. Radius: `failure`.
-   - **Operate** — pageable alert action, rollback, residual toil. Radius: `operate`. IF the gap is specifically telemetry/tracing readiness → REQUIRED SUB-SKILL: use `assess-observability`, **then** one `operate` card on the finding. Rollback/page/toil alone → `operate` card only (no assess).
-   - **Freeze** — **not a card radius.** Becomes Clear only when Owned unknowns + Accepted risks are ready to list at close (each may be `none`).
-3. **Open high-blast** — names derived from Missing/Partial cells (same ledger as the coverage map — do not keep a second invented list). Reliability · Failure · Operate are high-blast — never “later NFR”.
-4. **How you will close unknowns** — cards for judgment; reference,
-   `run-spike`, or `research` for facts; teach-then-ask on blindspots. Follow the
-   Operate cell rule above for telemetry gaps.
+1. **Locked** — fixed posture, non-negotiables, digest facts.
+2. **Coverage map** — when ON only (table + cell recipes in
+   `production-coverage.md`).
+3. **Open high-blast** — ON: Missing/Partial cells from that file; OFF:
+   arch/data/auth/UX/scope forks only.
+4. **How you will close** — judgment cards; reference / `run-spike` /
+   `research` for facts; teach-then-ask on blindspots; Operate path only when ON
+   (see `production-coverage.md`).
 
 Invite correction only if a lock is false. First card: **Problem lock** when its
-predicate holds, otherwise the highest-blast Missing cell. If the parent already
-stated the map, do not restate it; still refresh coverage after answers.
+predicate holds, else highest-blast open item (when ON, prefer Missing coverage
+cells). Parent already stated the map → do not restate; when ON, still refresh
+coverage after answers.
 
 ## Problem lock (before preference cards)
 
@@ -130,7 +130,7 @@ and grounded-claim rules. Otherwise do not load it.
 
 Exactly **one** decision per message in chat. Every slot is **required**.
 
-1. **Radius** — one of: `architecture` · `data` · `auth/security` · `UX flow` · `reliability` · `failure` · `operate` · `polish-diff` (label it). When SRE-off, do not use `reliability` / `failure` / `operate`.
+1. **Radius** — one of: `architecture` · `data` · `auth/security` · `UX flow` · `polish-diff` (label it). When Coverage ON, also `reliability` · `failure` · `operate` per `production-coverage.md`. When OFF, do not use those three.
 2. **Thread** — three short lines the user can scan before the question:
    - *Locked so far* — 1–3 decisions already taken that constrain this fork (or "none yet").
    - *This card* — the single fork now.
@@ -139,7 +139,7 @@ Exactly **one** decision per message in chat. Every slot is **required**.
 4. **Question** — the decision in plain language.
 5. **Why it matters** — **blast narrative** only: what rewrites if the answer flips (API shape, schema, auth boundary, ops surface). Enough to decide without a follow-up. Ground in *this* repo or product. Do not put pass/fail graders here — that is slot 7.
 6. **Closes** — unknown class this card retires: `known-unknown` · `unknown-known` · `blindspot-confirm`.
-7. **Criteria (graders)** — REQUIRED when Radius is `architecture` · `data` · `auth/security` · `UX flow` · `reliability` · `failure` · `operate` (omit only for `polish-diff`): **1–2 named pass/fail graders** listed **above** Options (separate labeled block). Not the close-package Success / done signal. Recommendation MUST cite graders by name. Why sentences promoted here = miss. "No criteria essays / put success in Why" is not a waiver.
+7. **Criteria (graders)** — REQUIRED when Radius is `architecture` · `data` · `auth/security` · `UX flow`, or (Coverage ON) `reliability` · `failure` · `operate` (omit only for `polish-diff`): **1–2 named pass/fail graders** listed **above** Options (separate labeled block). Not the close-package Success / done signal. Recommendation MUST cite graders by name. Why sentences promoted here = miss. "No criteria essays / put success in Why" is not a waiver.
 8. **Options (2–4)** — short title **plus** consequence line (gain, pay, break). Bare labels are not options.
 9. **Recommendation** — your pick, first or clearly marked; one-line reason that cites the Criteria graders (or, on `polish-diff` only, the Why).
 10. **Stop.** Wait. After the answer: recompute (Iron Law — open set home rule), then next card or close package.
@@ -154,14 +154,15 @@ a confirmed exemplar or when the required output shape is uncertain.
 
 ## Order and coverage
 
-- **Blast-radius first.** Next open-set item that can change architecture, data model, public API, auth/security, UX flow, reliability, failure, operate, or implementation scope — **even when the user asks to start with polish** or “skip SRE / later NFR”.
-- **Coverage drives order when SRE-on.** Prefer cards that close Missing cells over Partial; never close the interview while Reliability · Failure · Operate are Missing without owner.
-- **Walk every branch.** Dependency order; opened sub-branches before the trunk. Stop rule = open-set empty (Iron Law — open set).
-- **Judgment only to the user.** Facts load in Territory; only forks that need a human lock become cards.
-- **Right-size to posture.** Follow **Production SRE coverage**. SRE-off also
-  skips migration, backward-compatibility, and deprecation grills; SRE-on presses
-  them. Posture and Team band are orthogonal.
-- **Package to team band.** When `## Team` has a non-empty roster or a Workflow band override, read band and packaging from that section. Small/Multi: optional ownership/reviewer probes when relevant; Accepted-risk and Owned-unknown **owner** fields still required when SRE-on (owner may be the solo IC). Solo or Team absent: no multi-person assignee theater. Never invent a team; never hard-fail for missing Team.
+- **Blast-radius first.** Prefer forks that change architecture, data, public API, auth/security, UX flow, or scope — even if the user opens on polish. When Coverage ON, also R/F/O per `production-coverage.md`.
+- **Coverage order when ON.** One home: `production-coverage.md` (Missing before Partial; R/F/O stop).
+- **Walk every branch.** Dependency order; sub-branches before trunk. Stop = open-set empty.
+- **Judgment only to the user.** Facts in Territory; only human locks become cards.
+- **Right-size.** Follow **Production coverage gate**. OFF does not *force*
+  migration / backward-compat / deprecation preference cards; ON presses those
+  when the latch holds. Arch/data forks that happen to involve migration still
+  get cards if they are open-set judgments. Posture and Team band are independent.
+- **Team band.** If `## Team` has a roster or Workflow band override, package from that section. Small/Multi may probe ownership; when Coverage ON, Accepted-risk / Owned-unknown owners still required (solo IC ok). Never invent a team; never hard-fail on missing Team.
 
 ## Pre-implementation interview map
 
@@ -174,7 +175,7 @@ Clarify Decisions owns the **interview** leg of pre-implementation unknowns work
 | **Scope** | Hand multi-subsystem decomposition back to the parent. | Approach menus and tier |
 | **References** | Prefer source code; restate semantics; lock accept/adapt/reject. | Implementing the reference |
 | **Unknown knowns** | Use a reference, `run-spike`, or `research`, then one result card. | Running the detour session |
-| **SRE / readiness** | Follow the named SRE and Close package homes. | Reliability docs, PRR, requirements, or `tasks.md` |
+| **Production coverage** | Follow **Production coverage gate**; when ON, `production-coverage.md` + Close slots 7–10. | Reliability docs, PRR, requirements, or `tasks.md` |
 
 **"Just make something sensible" is not a decision** while a concrete reference
 exists: restate it, then lock accept/adapt/reject.
@@ -184,18 +185,15 @@ exists: restate it, then lock accept/adapt/reject.
 When the open set has no remaining high-blast judgment call — and **before** returning control to a parent or claiming shared understanding — emit:
 
 1. **Decisions table** — rows: radius · topic · decision (user's words) · unknown class closed.
-2. **Constraints block** — ready-to-paste locks (architecture and data first; reliability/failure/operate next; polish-diff last). Flag lower-radius answers that conflict with higher-radius locks.
+2. **Constraints block** — ready-to-paste locks (architecture and data first; when Coverage ON, reliability/failure/operate next; polish-diff last). Flag lower-radius answers that conflict with higher-radius locks.
 3. **High-tweak surface** — locks most likely to change under real implementation pressure (data model, type interfaces, UX flows). Mechanical refactors stay buried; do not re-interview them here.
 4. **Success / done signal** — 1–3 observables that mean “done” (pasteable into `requirements.md` / NFR). Prefer CUJ-shaped observables when Journey was walked. Not “it works” / “we’re aligned”.
 5. **Boundaries** — **Off limits** (will not do) and **Must keep working** (guards / unchanged behavior), even if only 2–4 bullets. Seed from problem-lock Non-goals and `(guard)`-shaped locks when present.
 6. **Spine touch** — WHEN `docs/architecture/` (or equivalent ARCH spine) exists: `Respects: ARCH-N…` · `none` · or `challenges` (ADR needed). WHEN absent: write `none — no architecture spine`. Do not invent ARCH IDs.
-7. **Coverage final** — REQUIRED when SRE-on: final status per cell (no Missing without owner). Omit when SRE-off.
-8. **Owned unknowns** — REQUIRED when SRE-on: every *undecided* TBD as topic · **owner** · **date** · **forbid-guess** (`cấm đoán`: AI/dev must not invent the answer). If none: `none`. Unowned TBD ⇒ open set not empty — do not emit close. **Not** the same as Accepted risks.
-9. **Accepted risks** — REQUIRED when SRE-on: each *decided keep-the-risk* row · why tolerable vs CUJ/SLO · **signer**. If none: `none`. A deferred number/policy is an Owned unknown, not an Accepted risk.
-10. **Operability touch** — REQUIRED when SRE-on: **rollback** (one command / flag / restore) + **who is paged** for the top failure. May cite one Owned unknown only to defer *that ops line* — not to swallow the whole Operate cell. Omit when SRE-off.
+7–10. **Coverage final · Owned unknowns · Accepted risks · Operability touch** — REQUIRED when Coverage ON; recipes only in `production-coverage.md`. Omit when OFF.
 11. **Explicit confirmation** — is this the shared picture? Only an affirmative on **this package** counts.
 
-Slots 4–6 always required. Slots 7–10 required when SRE-on — not “later NFR template” ceremony.
+Slots 4–6 always required. Slots 7–10 required only when Coverage ON.
 
 Not confirmation: "any other questions?", "we're aligned, skip the table", "just go write requirements", "reliability is a later NFR", senior pressure to skip ceremony, or silence. If they correct a row, edit and re-confirm. If confirmation opens a new high-blast fork or a Missing cell, return to cards.
 
@@ -229,13 +227,13 @@ Standalone: a **living** open-set list of decision areas is fine — still one c
 | "Criteria live in requirements later" | Recommendation cites card graders; later specs do not replace them. |
 | "Success / Boundaries / Spine belong downstream" | Close slots 4–6 are required here. |
 | "Don't send me elsewhere; give three merge architectures / naming the skill is invoking it" | Follow the **Problem lock** Fork. Name `/work-the-problem` for the user; never auto-invoke it or show solution menus while the problem is open. |
-| "Reliability is later / architecture is done / standup, skip the map" | Under SRE-on, Missing coverage stays open; later templates and time pressure do not replace the coverage map or cards. |
-| "TBD is fine — Open Questions will catch it" | Unowned TBD blocks close. Owned unknowns need owner · date · cấm đoán. |
-| "No docs/ops/reliability.md — skip Reliability cell" | Still lock prose targets or an Owned unknown. Do not invent SLO-N IDs. |
-| "Accepted-risk without a signer — obvious" | Signer is required when SRE-on. Solo IC may sign as IC. |
-| "User said learning spike vibe — skip coverage (posture absent)" | Written posture only. Absent/unspecified ⇒ SRE-on. Chat vibes do not flip the band. |
-| "Put TBD and accepted risk in one bucket — same Freeze thing" | Owned unknowns = undecided+forbid-guess; Accepted risks = decided keep-the-risk+signer; Operability = rollback+page. Three slots. |
-| "Journey has no radius so skip the Journey cell" | Close Journey via `UX flow` or `architecture` CUJ cards, then update the cell. |
+| "Reliability is later / architecture is done / standup, skip the map" | When Coverage ON, Missing cells stay open; later templates do not replace `production-coverage.md`. |
+| "TBD is fine — Open Questions will catch it" / "no reliability.md — skip cell" / "Accepted-risk without signer" | When ON: unowned TBD blocks close; prose or Owned unknown still required; signer required (solo IC ok). No invented SLO-N. |
+| "Absent/MVP/Early = Production coverage" / "every Prod interview gets the map" / "build habits" / "failure-domain feel without band" | ON needs **all three** gate parts. Absent, MVP, Early, polish without latch, and chat stay OFF. |
+| "Parent tier-0 brief still needs full coverage" | Brief / tier-0 fails part 2 (full-path) ⇒ OFF. |
+| "OFF — keep a partial coverage map anyway" | OFF omits the map entirely. Core close is slots 4–6 + problem lock. |
+| "OFF — skip any arch/data card that smells like migration" | OFF skips forced migration/compat *preference* ceremony; open-set arch/data judgments still get cards. |
+| "Put TBD and accepted risk in one bucket" / "Journey has no radius — skip cell" | When ON: three distinct close slots; Journey via `UX flow` / `architecture` CUJ — see `production-coverage.md`. |
 
 ## Red flags — stop and rewrite the turn
 
@@ -246,13 +244,12 @@ Standalone: a **living** open-set list of decision areas is fine — still one c
 - Any preference or solution menu while **Problem lock** applies, without its
   card or naming `/work-the-problem`
 - "Question k of N", "final round", or closing because a precommitted count finished while high-blast remains
-- Leading with polish-diff while architecture / data / auth / reliability / failure / operate branches remain open
+- Leading with polish-diff while architecture / data / auth (or, when Coverage ON, reliability / failure / operate) branches remain open
 - Closing with "any other questions?" instead of the decisions package
 - Close package missing Success / done signal, Boundaries, or Spine touch
-- SRE-on start without Coverage map; close with a Missing/unowned cell or a
-  deferred “later NFR”
-- SRE-on close missing Coverage final, Owned unknowns, Accepted risks, or
-  Operability touch
+- Coverage ON without `production-coverage.md` / map, or close with Missing/unowned cell or “later NFR”
+- Coverage ON close missing slots 7–10; or Coverage ON when any gate part fails (absent, MVP/Early, brief, polish without latch)
+- Coverage OFF yet emitting R/F/O cards or close slots 7–10
 - Handing back to the parent or starting requirements without an explicit yes on the package
 - Asking the user for a fact already present in the repo or parent scan
 - Abstract taste cards for an unknown-known when a reference or run-spike path exists
@@ -260,7 +257,7 @@ Standalone: a **living** open-set list of decision areas is fine — still one c
 - Standalone feature interview with no retrieval before the first card
 - Auto-invoking `/work-the-problem` instead of naming it for the user
 - Inventing greppable SLO-N / TB-N / THR-N IDs without Approved doc definitions
-- Treating chat “spike/learning vibe” as SRE-off when posture is absent or still Production
+- Treating chat “build SRE habits” as Coverage ON without the written gate
 - Merging Owned unknowns into Accepted risks (or either into Operability touch)
-- Leaving Journey Missing with no `UX flow` / `architecture` CUJ card because “no Journey radius”
+- Leaving Journey Missing (when ON) with no `UX flow` / `architecture` CUJ card
 - Calling `assess-observability` for every Operate hole (only telemetry/tracing readiness gaps)

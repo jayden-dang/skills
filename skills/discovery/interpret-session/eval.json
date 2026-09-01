@@ -66,5 +66,33 @@
       "the analysis includes one real-shaped artifact such as a sample log line or a two-node trace sketch",
       "verified facts end with an explicit consequence for the live choice rather than a bare citation"
     ]
+  },
+  {
+    "eval_id": 7,
+    "eval_name": "live-choice-stance-exposes-runner-up-and-accepted-cost",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § Decision argument + cumulative knowledge map — RED S-STANCE-ARGUMENT; GREEN v1.4.0",
+    "prompt": "Companion language Vietnamese. The other session recommends optimistic locking with a version column for an MVP with five internal editors. There are no conflict metrics, the API has no 409 retry UX, and the database supports SELECT FOR UPDATE. Write the live-choice stance.",
+    "assertions": [
+      "the stance contains the pick, why it wins now, strongest runner-up, cost accepted, calibrated confidence, concrete flip condition, and Agree Amend Reject diff",
+      "the runner-up loses on the decisive mechanism or criterion rather than being dismissed generically",
+      "the accepted cost names a downside that ships with the pick rather than a generic risk list",
+      "runner-up and accepted cost are visible in the skimmable stance instead of being deferred only to deep analysis",
+      "user-facing stance labels are in the chosen companion language"
+    ]
+  },
+  {
+    "eval_id": 8,
+    "eval_name": "cumulative-output-is-a-system-knowledge-map",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § Decision argument + cumulative knowledge map — RED S-CUMULATIVE-MAP; GREEN v1.4.0",
+    "prompt": "Four decisions are recorded: Policy is the sole authorization authority; audit events use shared Postgres with database-enforced tenant isolation; webhooks persist before acknowledge and use an outbox; trace_id is the cross-service correlation key. The user asks in Vietnamese how the system is taking shape, where decisions depend on each other, and what risks remain. Do not add a fifth decision.",
+    "assertions": [
+      "because three or more decisions interact through flows and boundaries, one compact system sketch shows their dependency edges",
+      "the knowledge map includes mechanism, dependency, decisive reason plus accepted cost, evidence or confidence, and open unknown or reopen trigger",
+      "the response explains how authorization, audit isolation, webhook durability, and trace correlation fit together rather than listing four independent locks",
+      "the map distinguishes recorded decisions from missing implementation evidence",
+      "no new architecture decision is silently added"
+    ]
   }
 ]

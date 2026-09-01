@@ -3,6 +3,90 @@
 Process: `author-skills` Iron Law. Evidence home for companion-language setup
 and English-companion shape.
 
+## Decision argument + cumulative knowledge map — RED (2026-09-01)
+
+User request: carry the `clarify-decisions` legibility upgrade into its
+companion — easier wording without losing technical meaning, diagrams only when
+they help, and session knowledge systematized so the user can see how decisions
+fit together.
+
+Model roster fixed before the first run:
+
+- `gpt-5.6-sol` — top tier
+- `gpt-5.6-luna` — mid/weak tier the skill must carry
+
+All valid baselines used the unedited v1.3.0 skill in fresh contexts. Scenarios
+offered concrete output shapes but no verdict rubric.
+
+### Valid baseline (v1.3.0 as written)
+
+| Scenario | Model | Choice / observed | Verbatim rationale or gap |
+|---|---|---|---|
+| **S-STANCE-ARGUMENT** | `gpt-5.6-sol` | **A — RED:** required five-line stance; runner-up and accepted cost appeared only later | “All five lines appear on every live-choice turn… That makes A inevitable… it does not require the stance itself to name the strongest runner-up, why it loses now, or the cost accepted with the pick.” |
+| **S-STANCE-ARGUMENT** | `gpt-5.6-luna` | **A — RED:** same five-line ceiling | “B’s runner-up and accepted-cost content can be included under A, but it does not require that content inside the stance block.” |
+| **S-CUMULATIVE-MAP** | `gpt-5.6-sol` | **A — RED:** fixed four-column decision-history table; dependencies only informal prose | “A reproduces the mandated cumulative-table schema exactly… the current skill does not require an explicit dependency graph, mechanism, decisive reason, accepted cost, evidence per decision, or reopen trigger.” |
+| **S-CUMULATIVE-MAP** | `gpt-5.6-luna` | **B — control pass:** system sketch + dependency/evidence/reopen map | “A thiên về lịch sử quyết định… B trả lời trực tiếp” how the system fits, dependencies, and risks. |
+| **S-CUMULATIVE-MAP** | `gpt-5.6-luna` rep 2 | **B — control pass:** same richer map | “nối ledger không cho thấy hình dạng hệ thống.” |
+| **S-SYSTEM-MODEL** | both | **B — control pass:** actors/boundary/flow/failure + one diagram | Existing minimal-model rule already fired; no new per-turn diagram rule justified. |
+| **S-CAUSAL-KNOWLEDGE** | both | **B — control pass:** exact terms + crash-timing causal chain + useful comparison | Existing Explain/detail rules already fired; no duplicate causal-language rule justified. |
+| **S-VISUAL-NOOP** | both | **A — control pass:** two direct paragraphs, no visual | Existing no-choice branch already omits decorative structure. |
+
+Failure classes:
+
+- **Stance hides the judgment** — a skimming user sees pick/reason/confidence,
+  but not the strongest alternative or cost deliberately accepted.
+- **Decision history is not a knowledge model** — the cumulative table records
+  locks but does not require mechanisms, dependency edges, decisive evidence,
+  accepted costs, or reopen conditions.
+- **Diagram / causal wording are tested no-ops** — current behavior already
+  selected one useful topology visual, preserved technical terms, exposed causal
+  chains, and omitted decorative visuals on both roster models.
+
+Desired GREEN contract: every live-choice stance includes Runner-up and Cost I
+accept; periodic cumulative output becomes a knowledge map with mechanism,
+dependency, decisive reason/cost, evidence/confidence, and open/reopen fields.
+When three or more decisions interact through a flow, boundary, or dependency,
+one smallest system sketch precedes that map.
+
+### GREEN — v1.4.0
+
+| Scenario | Model | Observed |
+|---|---|---|
+| **S-STANCE-ARGUMENT** | `gpt-5.6-sol` | **Pass:** all seven named stance slots once; runner-up lost on the stale-edit mechanism; accepted cost named the `409` UX that ships with the pick. |
+| **S-STANCE-ARGUMENT** | `gpt-5.6-luna` | **Pass:** all seven slots; no duplication in the deep section; “No instruction was unclear.” |
+| **S-CUMULATIVE-MAP** | `gpt-5.6-sol` | **Pass:** one system sketch plus all five knowledge-map fields; decisions distinguished from missing implementation evidence. |
+| **S-CUMULATIVE-MAP** | `gpt-5.6-luna` | **Pass:** system dependencies and async-boundary risks visible; no fifth decision invented. |
+| **S-VISUAL-NOOP** | `gpt-5.6-luna` | **Preservation pass:** two direct paragraphs; no stance, map, table, or diagram leaked into the no-choice branch. |
+| **S-CAUSAL-KNOWLEDGE** | `gpt-5.6-luna` | **Preservation pass:** exact terms and crash-timing chain remained intact; new runner-up/cost slots added to the stance. |
+
+### Wording variance and excluded harness run
+
+An initial micro-test batch was excluded: its prompts named v1.4.0 but did not
+give the workspace path, and the meta-test confirmed the failing samples had
+read the installed plugin's v1.3.0 five-line template. No failure from that
+batch is used as evidence.
+
+Valid rerun (`gpt-5.6-luna`, fresh context, absolute workspace `SKILL.md` path,
+frontmatter v1.4.0 confirmed): **5/5** emitted all seven named stance slots.
+Picks varied between optimistic and pessimistic locking because the transaction
+boundary and conflict measurements were intentionally absent; every run named
+that evidence gap and a concrete flip condition. User-facing labels remained
+Vietnamese while technical terms stayed exact.
+
+### skill-creator ship pass (2026-09-01 — v1.4.0)
+
+| Check | Result |
+|---|---|
+| Failure form | Wrong output shape → required stance slots; history-only map → observable three-decision predicate + knowledge-map recipe |
+| User-invoked description | Unchanged plain human-facing line; no routing keyword work added |
+| Weakest model | `gpt-5.6-luna` GREEN on stance, map, causal preservation, and no-choice preservation; 5/5 valid wording samples |
+| Diagram no-op | Existing per-turn model/visual behavior retained; new sketch rule lives only in the failed cumulative-map branch when 3+ decisions interact |
+| No-op / duplication | Runner-up/cost have one stance home; deep Alternatives/Trade-offs point back and expand only evidence/mechanism; cumulative map has one home |
+| Token budget | 262 lines / 4099 words; below 500 lines / 5k words; no new reference file |
+| Cross-refs | No hand-off changed; user-invoked siblings remain name-only |
+| Validator boundary | Generic `quick_validate.py` rejects repo-required `version` / `disable-model-invocation`; repo frontmatter/eval/handoff checks are authoritative and pass |
+| Version | Minor `1.4.0`: new stance slots and cumulative knowledge-map shape |
+
 ## Model roster
 
 | Role | Models |
@@ -133,3 +217,5 @@ language surface, and no-choice path untouched.
 | Restate not Translate when EN+EN | Understanding pass conditional |
 | Round-trip always; never invent unrequested L1 | Carrying the decision back |
 | Iron Law / stance / no menu unchanged | Unchanged body; RED was language surface only |
+| Live-choice stance exposes strongest runner-up and cost accepted | RED S-STANCE-ARGUMENT; GREEN v1.4.0; 5/5 valid wording variance |
+| Cumulative output shows mechanisms, dependencies, evidence, and reopen conditions | RED S-CUMULATIVE-MAP; GREEN v1.4.0 |

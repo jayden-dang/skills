@@ -1,6 +1,6 @@
 ---
 name: interpret-session
-version: 1.3.0
+version: 1.4.0
 description: Runs a companion session beside frame-change, clarify-decisions, or any technical
   discussion — in the user's native language or in English as a second-opinion debate partner —
   with an understanding pass, a committed stance, and a reply to carry back. Run it with
@@ -86,7 +86,10 @@ Two or more genuinely different courses of action are open, and the user has to 
 
 ```
 **What I'd do:** one option, named.
-**Why:** the single reason that dominates — not a summary of the trade-off table.
+**Why it wins now:** the grounded fact from the paste or repo, or the evaluation
+  criterion, that dominates.
+**Runner-up:** the strongest alternative and why it loses on that decisive factor.
+**Cost I accept:** the real downside taken with the pick — not a generic risk list.
 **How sure:** high / medium / low, plus the check that earned it ("high — read the guard
   tests", "medium — docs agree, no integration proof"). Say low plainly when it is low.
   On a call where little rides on the answer, say that instead: "high, and it barely
@@ -99,8 +102,11 @@ Two or more genuinely different courses of action are open, and the user has to 
   never bury it in the prose below.
 ```
 
-All five lines appear on every live-choice turn for the whole session — dropping **How
-sure** or **What would flip me** on later cards is format drift, not brevity. And a session
+All seven **named slots** appear on every live-choice turn for the whole session.
+**Agree / Amend / Reject are parts of the single Versus slot, not three stance
+slots**; they never replace **Runner-up** or **Cost I accept**. Dropping either of
+those, **How sure**, or **What would flip me** on later cards is format drift, not
+brevity. And a session
 where every stance reads "high" with no named check has stopped calibrating: the label only
 helps the user decide where to spend attention when it varies with the evidence.
 
@@ -117,8 +123,8 @@ Then the detail behind the stance. Label blocks with these claim prefixes where 
 
 - **Map vs territory** — where the paste is a model of the work (prompt/spec/plan) and where the codebase or reality may disagree; cite `file:line` when you checked.
 - **Knowns sketch** — when a real choice is open: what is locked, what is still unknown, what is an assumption dressed as a decision, and whether the user has **evaluation criteria** to judge the options (if not, say so and teach or research the criteria before piling on alternatives).
-- **Alternatives** — at least one genuinely different approach the other session did not lead with.
-- **Trade-offs** — for each live option, side by side — only where they add something the pasted card did not already say. A table that restates the other session's own options is padding; cut it and keep the one line that differs.
+- **Alternatives** — at least one genuinely different approach the other session did not lead with. The strongest runner-up already lives in the stance; do not repeat it here unless the causal mechanism needs expansion.
+- **Trade-offs** — side by side only where they add evidence or mechanism beyond **Runner-up** and **Cost I accept**. A table that restates the stance or the pasted card's own options is padding; cut it and keep the one line that differs.
 - **Hidden assumptions** — what the pasted response takes for granted that may not hold here.
 - **Risks** — where each option bites later.
 - **When each wins** — the conditions that make each the right call, tied to the posture.
@@ -156,7 +162,16 @@ And if the honest answer really is that two paths are equivalent: say which one 
 
 **Decision-event ledger.** After any turn containing a decision event, render a compact three-line ledger in a code block — `Decided` / `Open` / `Rejected-deferred`, one line each. No decision event → no ledger. Full rationale waits for the digest.
 
-**Cumulative decision map.** Every third or fourth decision event — or whenever the user asks where things stand — render one compact table across the whole session: decision point → what locked → what this session amended versus the other window → still open. The per-turn ledger shows the step; the map shows the shape. Without it, a long chain of locks leaves the user unable to see whether the pieces still fit together.
+**Cumulative knowledge map.** Every third or fourth decision event — or whenever
+the user asks where things stand — show how the decisions form one system, not
+only when they happened. When **three or more** decisions interact through a
+flow, boundary, or dependency, precede the table with **one smallest system
+sketch** showing those edges. Then render one compact table:
+`mechanism → depends on → decisive reason + cost accepted → evidence/confidence
+→ still open or reopen trigger`. Include what this session amended versus the
+other window inside the relevant cell, not as a history-only column. The
+per-turn ledger shows the step; this map shows the system and the user's current
+knowledge of it.
 
 ## Carrying the decision back
 
@@ -195,6 +210,7 @@ When they have converged:
 | "They picked English, so I still need a Translate section into Vietnamese" | Companion language is English → Restate, not a forced L1 translation |
 | "The guards are implied by the decision — they belong in the lock" | Implied to you. The user approves the **Lock** slot; everything else travels as **Weigh** unless it was individually weighed |
 | "Confidence really is high on every card" | Then the label carries no signal. Name the check that earned each "high" — or say the stakes are too small for it to matter |
+| "Runner-up and trade-off can live in the deep section; the stance should stay five lines" | The stance is what a time-pressed user reads. Put the strongest rejected option and accepted cost beside the pick; deepen them later only when needed. |
 | "They're a developer — they know what a span / exemplar is" | Technical in their stack is not technical in this card's. A term absent from the paste and the repo gets its three-line model before the argument |
 | "English companion means skip the round-trip" | Still state what the carry-back commits them to; only skip inventing an L1 they did not choose |
 
@@ -214,9 +230,11 @@ Stop and re-read the Iron Law if you notice yourself:
 - Offering only non-English languages at setup, or treating English as "other" rather than first-class
 - When companion language is English: forcing a native Translate block or inventing an L1 round-trip
 - A later stance block missing **How sure** or **What would flip me** that an earlier one carried
+- A live-choice stance missing **Runner-up** or **Cost I accept**
 - A carry-back lock where proposed constraints outnumber the user's decision, with no Lock / Weigh split
 - A carry-back that names the companion session, carries rationale bookkeeping, or directs the other window's next step
-- Four locks in and no cumulative map in sight
+- Four locks in and no cumulative knowledge map in sight, or a history table
+  that never shows mechanisms and dependency edges
 - Arguing expert-level about a concept the session never gave the user a model for
 - A comparison table that restates the pasted card's own options
 - A Verified fact left as a bare citation with no `→` consequence

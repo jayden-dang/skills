@@ -5,6 +5,16 @@ Repo-root templates/ is the authoring original. `npx skills add` copies only
 each skill folder, so every cited seed must also live at
 <skill-dir>/templates/<relpath> and match the SSOT bytes.
 
+Push before relying on an edit here. The marketplace is registered against a
+remote (~/.claude/plugins/known_marketplaces.json records this repo as
+source github: jayden-dang/skills), so a plugin update refreshes the checkout
+from origin and re-derives every install under
+~/.claude/plugins/cache/<marketplace>/<plugin>/<version>/. An SSOT-plus-mirror
+edit that is committed locally but unpushed is therefore reverted in every
+derived copy at the next update — including the one a running session reads.
+Committing is not enough; the fix is durable only once it is on origin. Use
+--write to mirror rather than copying by hand.
+
 A cite is a greppable templates/<relpath> in that skill's SKILL.md whose
 relpath names a file or directory under repo-root templates/. A skill's
 private tree (for example define-system-doc/templates/) is ignored because

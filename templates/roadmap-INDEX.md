@@ -18,8 +18,10 @@ Structural rules — AUTHORITATIVE. Both `plan-milestones` (before its approval 
 `refresh-roadmap-status` (as finding R11) validate against this list. A roadmap is structurally
 defective when any of these does not hold:
 
-  S1  every MILE-N and ROAD-N is defined exactly once
-  S2  every ROAD-N sits under exactly one milestone
+  S1  every MILE-N and ROAD-N is defined exactly once — a definition lives in a
+      Members: slot or a Deferred: slot, struck through or not
+  S2  every ROAD-N sits under exactly one milestone, counting definitions in
+      both slots
   S3  every milestone carries a non-empty Outcome sentence
   S4  no Depends-on names a milestone appearing later in the milestone table
   S5  every Depends-on resolves to exactly one live, non-struck-through MILE-N

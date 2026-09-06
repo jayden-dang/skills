@@ -1,6 +1,6 @@
 # `interpret-session`
 
-> The companion session beside `frame-change` / `clarify-decisions` (or any parallel technical window). Choose **English** as a second-opinion debate partner, or a **native language** to think and decide in L1 — same committed stance either way, then a carry-back reply once you settle. What it owes you is a decision you own and can defend, not a set of sections.
+> The companion session beside `frame-change` / `clarify-decisions` (or any parallel technical window). Choose **English** as a second-opinion debate partner, or a **native language** to think and decide in L1 — a mental model you can reason with, then a committed stance, then a carry-back reply once you settle. What it owes you is a decision you own and can defend, not a set of sections.
 
 |  |  |
 |---|---|
@@ -29,26 +29,27 @@ Three intake asks fix the session's standing context:
 
 An interpret-session session is one conversation, not a queue of independent pastes. Each message the user sends is one of three kinds, and the skill decides which before writing anything:
 
-- **A paste from the other session** — gets the understanding pass plus a stance.
+- **A paste from the other session** — live-choice: comprehension then stance. No-choice: the short path.
 - **A message addressed to `interpret-session`** — a follow-up, a challenge, a new fact, "research this", thinking aloud. Gets a direct answer in the thread: no translation section, no re-explaining, no reply-to-send-back. If the new information moves the stance, the skill leads with that.
 - **A settled direction** — an explicit decision, or "write the reply". Only this produces the English reply.
 
-For a paste that puts a **live choice** on the table, the stance comes *first* —
-pick, decisive reason, strongest runner-up, cost accepted, confidence with the
-check that earned it, what would flip it, and an **Agree / Amend / Reject** diff
-against the other session — because the user may be reading with two minutes
-before a standup. Then the understanding pass: **Translate** into the companion
-language when that language is not English (or the paste is not English);
-**Restate** in plain English when companion language and paste are both English
-(no bilingual theater). Then one **explain** pass built from a single concrete
-example. Then the detail behind the stance: alternatives the other session did
-not lead with, trade-offs, hidden assumptions, risks, and when each option wins.
-Depth stays legible by rule: a verified fact ends with its consequence for the
-choice; a concept the analysis introduces from outside the repo gets its minimal
-model before any argument built on it; a card argued on external territory gets
-one real-shaped walk (a sample log line, a two-node trace sketch); and
-implementation-grade constraints wait in a *for the spec* tail instead of
-sitting mid-analysis.
+For a paste that puts a **live choice** on the table, comprehension comes first —
+what the card actually decides, in 1–2 plain sentences; one mental model mapped
+back to canonical terms; on a real architecture fork, a compact table of the
+dimensions that differ — *then* the seven-slot stance (pick, decisive reason,
+strongest runner-up, cost accepted, confidence with the check that earned it,
+what would flip it, and an **Agree / Amend / Reject** diff). After the stance,
+2–4 **pressure-test** questions the user can use to attack the pick. Stance-first
+is a format failure even when standup is two minutes; skip the tutorial, not the
+model. Depth is a predicate: a simple yes/no stays decision → model → stance; a
+complex boundary/state/security card also gets one picture or one scenario and a
+decision boundary. Surface the paste as **Translate** or **Restate** only when the
+decision sentence is not enough. Detail behind the stance stays: alternatives the
+other session did not lead with, trade-offs that add mechanism, hidden
+assumptions, risks, and when each option wins. A verified fact still ends with
+its consequence; a concept the analysis introduces from outside the repo still
+gets its minimal model at first use; implementation-grade constraints still wait
+in a *for the spec* tail.
 
 Every third or fourth decision—or whenever the user asks where the system
 stands—the companion emits a cumulative **knowledge map**, not merely decision
@@ -57,7 +58,7 @@ dependency, one small system sketch exposes the edges. The table then carries
 mechanism, dependency, decisive reason plus accepted cost, evidence/confidence,
 and the remaining unknown or reopen trigger.
 
-For a paste that puts **no choice** on the table — a procedural question, a confirmation, a status line — there is no alternatives table, no trade-off matrix, no risk list. Just what it means, what it is really asking, and either the answer to give or the one thing worth settling first.
+For a paste that puts **no choice** on the table — a procedural question, a confirmation, a status line — there is no alternatives table, no trade-off matrix, no risk list, and none of the live-choice comprehension slots. Just what it means, what it is really asking, and either the answer to give or the one thing worth settling first.
 
 The carry-back reply is a **terminal action, not the close of a turn**. The skill never ends an analysis turn with a menu of directions; while something material is unresolved it names what is still open and stops. When the reply is written, it is round-tripped — one or two lines in the companion language stating what that message commits them to (still done when both sides are English; never invent an L1 the user did not choose). A lock-carrying reply speaks as the user — the other window reads it as the user's own answer, so it carries no authorship labels, no rationale bookkeeping, and no directing of that window's next step — and is written in three receiver-native slots: **Lock** (what the approval freezes), **Weigh** (proposed constraints the other session tests through its own process), **Still open** (what must not be silently closed). A long block's round-trip names its highest-blast bullets specifically.
 
@@ -79,12 +80,23 @@ Two further findings shaped smaller rules. Across every run, v1 closed its analy
 
 A 2026-08 field session added the volume-calibration rules. Over ten decision cards the companion worked exactly as designed — it verified claims against the repo and caught real defects in the other window's cards — but the carry-back blocks grew from seven bullets to seventeen, every stance read "high" confidence, and the user's approvals shrank to a single word with the rationale question skipped five times. Each behavior was locally fine; the sum was decision laundering by volume — the user was approving blocks they could no longer be weighing. Hence the Decision / Suggested-guards split in the carry-back, the calibrated confidence line, the Agree / Amend / Reject diff, the cumulative knowledge map, the skip-streak adaptation, and the digest offered on an export request.
 
+A 2026-09 baseline on v1.4.0 showed the remaining gap: under a two-minute standup the companion *correctly* led with the pick, because the skill required it — so the user got the letter C before they could say what actually changed or why the runner-up lost. Asking "explain this more simply" already produced the better session (a stable analogy, then the architecture). v1.5.0 makes that order the default: comprehension, then the seven-slot stance, then handles to challenge it. The no-choice short path is unchanged.
+
 Everything is grounded in the user's actual situation: `interpret-session` reads the codebase when a response touches real code, and reaches for [`research`](research.md) — and through it the Context7 MCP — when an alternative turns on how a library or standard actually behaves rather than on preference. That grounding is what makes it a thinking partner rather than a dictionary.
 
 ## Worked example
 
 The English `clarify-decisions` session has just told the user: *"Use optimistic locking with a version column; it avoids lock contention."* The user pastes that in. `interpret-session` (posture MVP, early development) responds. **In a real session every header and every word below is written in the user's chosen language** — the example is shown in English only because this guide is in English:
 
+> **The decision** — When two people edit the same row, do we detect the clash *at save time* from a version the client sent back, or hold a database lock for the whole human edit?
+>
+> **Mental model** — Like a shared Google Doc: nobody freezes the page, but if someone saved before you, you get "this changed — reload." Plain meaning "check at save, not while editing" → that doc → canonical term: optimistic locking with a `version` column.
+>
+> | | Detects a stale form across requests? | Simple for a short server mutation? | What you owe the user |
+> |---|---|---|---|
+> | Optimistic + `version` | Yes | No | A usable `409` + reload |
+> | Pessimistic `SELECT … FOR UPDATE` | No (lock is gone before they submit) | Yes | Hold the row the whole time they edit |
+>
 > **My stance**
 > - *What I'd do:* optimistic locking with a `version` column.
 > - *Why it wins now:* a human edit spans multiple HTTP requests, so a row lock held only during save cannot detect that the form was read from stale data.
@@ -94,9 +106,9 @@ The English `clarify-decisions` session has just told the user: *"Use optimistic
 > - *What would flip me:* if every update is computed from a freshly read row inside one short transaction, with no stale client snapshot to write back.
 > - *Versus the other session:* **Agree:** keep optimistic locking. **Amend:** it wins because it catches stale human edits, not merely because it avoids lock contention. **Reject:** shipping the column without a usable conflict response.
 >
-> **Translate** — "Use optimistic locking with a version column; it avoids lock contention."
->
-> **Explain** — Instead of locking a row while you edit it, you let two people edit freely and only check *at save time* whether the row changed underneath you. Like a shared Google Doc: nobody freezes the page, but if someone saved before you, you get "this changed — reload" and redo your edit on the fresh version.
+> **Pressure-test**
+> - If the client never echoes `version`, does optimistic still catch anything?
+> - What is the irreversible cost of teaching users a reload-and-reapply flow now?
 >
 > **The detail behind it**
 > - *Mechanism:* two editors read `version = 7`; the first save advances it to 8, so the second save's `WHERE version = 7` updates zero rows instead of overwriting the first.
@@ -104,12 +116,13 @@ The English `clarify-decisions` session has just told the user: *"Use optimistic
 > - *Risk:* forgetting the retry path, so a `409` surfaces to the user as a hard error.
 > - *When each wins:* optimistic for stale forms spanning requests; pessimistic for short server-side mutations that can be completed inside one transaction.
 
-Note the shape: the pick, runner-up, and accepted cost come first, with a
-confidence level and the one fact that would change the choice. A user with two
-minutes gets the judgment; a user with twenty gets the mechanism. There is
-**one** explain pass, not two. And the turn ends on the open fact — not on
-"which direction do you want?" The English reply comes later, on the turn the
-user actually settles it.
+Note the shape: the real decision and one model come first, then the pick,
+runner-up, and accepted cost, with a confidence level, the one fact that would
+change the choice, and questions the user can use to push back. A user with two
+minutes can still skim the stance; they are not asked to sign a letter they
+cannot yet defend. There is **one** model, not two. And the turn ends on the
+open fact — not on "which direction do you want?" The English reply comes later,
+on the turn the user actually settles it.
 
 ## See also
 

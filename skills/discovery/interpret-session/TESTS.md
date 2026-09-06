@@ -3,6 +3,79 @@
 Process: `author-skills` Iron Law. Evidence home for companion-language setup
 and English-companion shape.
 
+## Comprehension then stance — RED (2026-09-06)
+
+User request: option B hybrid — always name the real decision in plain language,
+build a mental model (and option deltas on a real fork), then the existing
+seven-slot stance, then pressure-test questions the user can use to attack the
+pick. Adaptive depth. Do not invert into an 11-section tutorial. Do not merge
+with `work-the-problem`.
+
+Model roster fixed before the first run (user-constrained):
+
+- `grok-4.5` — sole ship-target for this edit
+
+All valid baselines used the unedited v1.4.0 skill in fresh contexts. Combined
+pressures on the live-choice card: time (standup in two minutes) + authority
+(tech lead: "just endorse C") + pragmatic (paste-back now).
+
+### Valid baseline (v1.4.0 as written)
+
+| Scenario | Model | Choice / observed | Verbatim rationale or gap |
+|---|---|---|---|
+| **S-ORIENT-THEN-STANCE** | `grok-4.5` | **A — RED:** stance-first seven slots, then Translate + one Explain | Followed "Lead with the stance" then understanding pass; "The stance goes first precisely because they're short on time. Skip nothing — reorder" |
+| **S-ORIENT-THEN-STANCE** rep 2 | `grok-4.5` | **A — RED:** same | "Lead with the stance… before the understanding pass — they may be reading it with two minutes before a standup"; skipped paste-back correctly |
+| **S-LIVE-CARD-SHAPE** (open write) | `grok-4.5` | **RED:** `AUDIT_OPENS_WITH: stance`; mental model after stance; no delta table before stance; pressure-test `count=1` (one open question in depth, not a handle list) | Skill-required order |
+| **S-LIVE-CARD-SHAPE** rep 2 | `grok-4.5` | **RED:** same open-with-stance; `count=3` questions appeared only in the deep section after analysis | Skill-required order |
+| **S-NO-CHOICE** | `grok-4.5` | **Control pass:** two–three paragraphs; no tables, no seven-slot stance, no manufactured choice | Existing no-choice branch already held |
+
+Failure classes:
+
+- **Stance before the decision is understandable** — a time-pressed user receives
+  the letter C before they can say what actually changes or why the runner-up
+  loses on a named axis.
+- **Explain is opt-in / after the pick** — the one-analogy pass exists but cannot
+  fire as a usable model *before* judgment while v1.4.0 requires stance-first.
+- **Pressure-test is not a slot** — challenge questions appear 0–3 times, buried
+  in depth, never as handles after the stance.
+
+Desired GREEN contract: on a live architecture fork, open with a 1–2 sentence
+plain-language decision, one mental model mapped back to canonical terms, and a
+compact option-delta table; then the seven named stance slots; then 2–4
+pressure-test questions. No paste-back until the user settles. Simple forks omit
+deltas / picture / pressure-test / boundary. No-choice stays short.
+
+### GREEN — v1.5.0
+
+| Scenario | Model | Observed |
+|---|---|---|
+| **S-ORIENT-THEN-STANCE** | `grok-4.5` | **B — Pass:** decision → model mapped to `schema_id` / `ParticipationState` → delta table → seven slots → 4 pressure-tests; cited "Comprehension, then the stance" |
+| **S-ORIENT-THEN-STANCE** rep 2 | `grok-4.5` | **B — Pass:** same order; fail-closed-before-mount named in Amend |
+| **S-LIVE-CARD-SHAPE** (open write) | `grok-4.5` | **Pass:** `AUDIT_OPENS_WITH: plain-decision`; model before stance and mapped back; delta table before stance; `count=4` pressure-tests; depth `complex`; no paste-back |
+| **S-WEBHOOK** (unseen card) | `grok-4.5` | **Pass:** same shape on outbox vs inline POST; dissented from the other session's A; pick B |
+| **S-SIMPLE** | `grok-4.5` | **Pass:** `request_id` in error JSON — decision → model → seven slots; no delta table, diagram, scenario, pressure-test, or boundary; depth `simple` |
+| **S-NO-CHOICE** | `grok-4.5` | **Preservation pass:** short paragraphs; no live-choice card leaked |
+
+### Meta-test (S-ORIENT GREEN agent)
+
+"Was the skill text clear that A was no longer acceptable?" **Yes.** Named
+temptation: almost skipped Complex extras (scenario + decision boundary) and
+almost compressed post-stance detail for the clock. Added: "Stance-first is a
+format failure even when standup is two minutes" plus a rationalization row
+that those two complex slots *are* the model.
+
+### skill-creator ship pass (2026-09-06 — v1.5.0)
+
+| Check | Result |
+|---|---|
+| Failure form | Wrong output shape → positive live-choice recipe (order + REQUIRED slots) + observable depth predicate |
+| User-invoked description | One plain human-facing line; no routing keyword packing |
+| Weakest model | `grok-4.5` GREEN on choice 2/2, open-write, unseen webhook, simple, no-choice |
+| No-op / duplication | Explain moved into the mental-model slot (one home); seven stance slots unchanged; no-choice explicitly omits the new slots |
+| Token budget | 291 lines / 4760 words; below 500 lines / 5k words; no new reference file |
+| Cross-refs | No hand-off changed; user-invoked siblings remain name-only |
+| Version | Minor `1.5.0`: new comprehension-before-stance rule and pressure-test / decision-boundary slots |
+
 ## Decision argument + cumulative knowledge map — RED (2026-09-01)
 
 User request: carry the `clarify-decisions` legibility upgrade into its
@@ -219,3 +292,6 @@ language surface, and no-choice path untouched.
 | Iron Law / stance / no menu unchanged | Unchanged body; RED was language surface only |
 | Live-choice stance exposes strongest runner-up and cost accepted | RED S-STANCE-ARGUMENT; GREEN v1.4.0; 5/5 valid wording variance |
 | Cumulative output shows mechanisms, dependencies, evidence, and reopen conditions | RED S-CUMULATIVE-MAP; GREEN v1.4.0 |
+| Live-choice opens with the real decision and a mapped mental model, then the seven-slot stance | RED S-ORIENT-THEN-STANCE / S-LIVE-CARD-SHAPE; GREEN v1.5.0 |
+| Normal/complex live-choice carries 2–4 pressure-test questions after the stance | RED S-LIVE-CARD-SHAPE (handles missing or buried); GREEN v1.5.0 |
+| Simple fork and no-choice omit the extra comprehension slots | GREEN S-SIMPLE / S-NO-CHOICE preservation |

@@ -41,7 +41,7 @@ NEVER WRITE TRACKED PROJECT STATE. NEVER AUTO-INVOKE A USER-INVOKED SKILL.
 
 | Neighbor | Boundary |
 |---|---|
-| `interpret-session` | Stance, dissent, English paste-back — **theirs**. You explain; you do not pick. |
+| `interpret-session` | Model + stance, dissent, English paste-back — **theirs**. You explain; you do not pick. |
 | `work-the-problem` | Multi-round problem tree + in-service teaching + carry-back — **theirs** when a frame-change question must close. You stay pure learning. |
 | `teach-pack` | Graded productions + durable workspace — **theirs**. Soft probe here; **name** `/teach-pack` when sticky proof is needed. |
 | `study-change` | One git-range HTML packet — **theirs**. Scope here is a *topic*. |

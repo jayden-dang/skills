@@ -23,7 +23,7 @@ ceremony window; does not drive spec or code. Siblings:
 
 | Companion | When |
 |---|---|
-| `/interpret-session` | Time-boxed stance + paste-back |
+| `/interpret-session` | Time-boxed mental model + stance + paste-back |
 | `/deepen-codebase` | Pure learning; no product problem to close |
 | **`/work-the-problem`** | Multi-round solve + in-service teaching + carry-back |
 
@@ -45,7 +45,7 @@ NEVER AUTO-INVOKE A USER-INVOKED SKILL — NAME IT FOR THE USER.
 
 | Neighbor | Boundary |
 |---|---|
-| `interpret-session` | Fast stance + reply — **theirs** under time pressure. You go deep. |
+| `interpret-session` | Fast model + stance + reply — **theirs** under time pressure. You go deep. |
 | `deepen-codebase` | Pure foundation, no pick — **theirs** when nothing must close. You teach *to close*. |
 | `/forge-prompt` | Ask is vague and the user wants one good prompt for a fresh session — name it for them to run. |
 | `frame-change` / `clarify-decisions` | Main ceremony — feed via carry-back; do not run their checklists. |

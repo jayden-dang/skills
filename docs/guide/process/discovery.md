@@ -85,7 +85,7 @@ Then return to the interview with the evidence and put the decision back to the 
 
 Parallel windows beside the main work thread (any phase — not discovery-only):
 
-- **[`/interpret-session`](../skills/interpret-session.md)** — time-boxed committed stance and the paste-back reply (gấp / standup pace).
+- **[`/interpret-session`](../skills/interpret-session.md)** — time-boxed mental model, committed stance, and the paste-back reply (gấp / standup pace).
 - **[`/deepen-codebase`](../skills/deepen-codebase.md)** — pure learning companion: dual-axis foundation for **any** subject; no product pick.
 - **[`/work-the-problem`](../skills/work-the-problem.md)** — multi-round problem tree (identify → define → foundation→feature → breakdown↔solve) with **disk artifacts**, in-service teaching so the user grows with AI, then a carry-back brief once leaves close or are explicitly deferred.
 
@@ -93,7 +93,7 @@ They are siblings, not modes of each other:
 
 | Need | Companion |
 |---|---|
-| Fast defendable pick + reply | `/interpret-session` |
+| Fast defendable pick + reply (model first) | `/interpret-session` |
 | Hollow mental model, no product close | `/deepen-codebase` |
 | Deep solve + learn while closing a frame-change question | `/work-the-problem` |
 

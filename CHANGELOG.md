@@ -18,6 +18,9 @@ failure even when standup is two minutes.
 
 - RED/GREEN on `grok-4.5` in `skills/discovery/interpret-session/TESTS.md`
 - Guide worked example reordered to match
+- v1.5.1 wording sweep: drop restated Iron Law / depth-table / padding-cut
+  prose; merge overlapping standup rationalizations; skip-streak names simple
+  depth so it cannot skip the mental model. No new slots.
 
 ### Packaging: Kimi Code + OpenCode for Engineer Pack (`jdk`)
 

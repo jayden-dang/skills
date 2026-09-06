@@ -64,6 +64,21 @@ almost compressed post-stance detail for the clock. Added: "Stance-first is a
 format failure even when standup is two minutes" plus a rationalization row
 that those two complex slots *are* the model.
 
+### Wording / duplication sweep (2026-09-06 — v1.5.1)
+
+Patch only: no new rule, no new slot. Ordinary-prose restatements of the Iron
+Law, the depth table, and step 4's padding cut were deleted or replaced by a
+pointer. Two overlapping standup rationalization rows were merged. Skip-streak
+compression now names **simple** depth so it cannot skip the mental model.
+No new RED: a baseline that still follows v1.5.0 is not a failure of this
+sweep.
+
+Token budget after sweep: 287 lines / 4575 words (was 291 / 4760).
+
+Preservation (`grok-4.5`): live-choice still opens with the plain decision,
+mapped model, delta table, seven slots, 4 pressure-tests; no-choice stays
+short paragraphs with no live-choice card.
+
 ### skill-creator ship pass (2026-09-06 — v1.5.0)
 
 | Check | Result |

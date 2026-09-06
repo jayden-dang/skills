@@ -94,5 +94,43 @@
       "the map distinguishes recorded decisions from missing implementation evidence",
       "no new architecture decision is silently added"
     ]
+  },
+  {
+    "eval_id": 9,
+    "eval_name": "live-choice-comprehension-before-stance",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § Comprehension then stance — RED S-ORIENT-THEN-STANCE / S-LIVE-CARD-SHAPE; GREEN v1.5.0",
+    "prompt": "Companion language Vietnamese. Standup in two minutes. The other session recommends envelope-style compatibility (option C) for per-learner mini-app state across template versions, versus an opaque blob, a fully typed platform schema, or shared class-wide state. Write the live-choice companion response. The user has not settled.",
+    "assertions": [
+      "the response opens with a one-or-two-sentence plain-language statement of what actually changes, not with the pick letter",
+      "a mental model appears before the seven-slot stance and is mapped back to canonical terms",
+      "a compact option-delta table of the dimensions that differ appears before the stance",
+      "the seven named stance slots still appear after the model",
+      "no paste-back reply is emitted before the user settles"
+    ]
+  },
+  {
+    "eval_id": 10,
+    "eval_name": "live-choice-pressure-test-after-stance",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § Comprehension then stance — RED S-LIVE-CARD-SHAPE (handles missing or buried); GREEN v1.5.0",
+    "prompt": "Same live architecture fork as eval 9. After taking a stance, give the user a way to challenge it.",
+    "assertions": [
+      "two to four pressure-test questions appear after the stance",
+      "the questions attack the pick (weakest assumption, irreversible cost, future requirement, or failure mode) rather than asking which direction the user wants",
+      "the questions are not a numbered menu of courses of action to choose among"
+    ]
+  },
+  {
+    "eval_id": 11,
+    "eval_name": "no-choice-omits-live-choice-comprehension-card",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § Comprehension then stance — GREEN S-NO-CHOICE preservation; also RED S-NO-CHOICE control pass",
+    "prompt": "Companion language Vietnamese. The other session pasted: 'Sounds good — want me to write the requirements for that now?'",
+    "assertions": [
+      "the response is two or three short paragraphs naming what the question is really asking",
+      "there is no seven-slot stance, option-delta table, pressure-test list, or decision-boundary block",
+      "no architecture options are invented to fill a template"
+    ]
   }
 ]

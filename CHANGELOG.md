@@ -2,6 +2,23 @@
 
 ## Unreleased
 
+### `interpret-session` v1.5.0 — comprehension then stance
+
+Live-choice turns were optimized for a two-minute skim of the pick. Under that
+contract the companion correctly opened with the letter C, then explained.
+Users who needed to *defend* the pick had to ask for a simpler explanation
+before the decision was usable.
+
+v1.5.0 keeps the seven-slot stance, the no-choice short path, and paste-back
+after settlement. It inserts a comprehension layer in front: the real decision
+in 1–2 sentences, one mental model mapped back to canonical terms, option
+deltas on a real fork, then the stance, then 2–4 pressure-test questions.
+Depth is a predicate (simple / normal / complex). Stance-first is a format
+failure even when standup is two minutes.
+
+- RED/GREEN on `grok-4.5` in `skills/discovery/interpret-session/TESTS.md`
+- Guide worked example reordered to match
+
 ### Packaging: Kimi Code + OpenCode for Engineer Pack (`jdk`)
 
 Kimi installs the pack as a plugin; OpenCode loads it as skill sources. Cursor

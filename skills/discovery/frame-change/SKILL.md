@@ -1,6 +1,6 @@
 ---
 name: frame-change
-version: 1.4.0
+version: 1.5.0
 description: Use at the very start of the idea-to-ship chain — when the user wants to
   add, build, or change a feature, behavior, or component, or to start a new
   project, and the asked-for behavior has no spec yet. Produces an agreed shape
@@ -37,11 +37,16 @@ Small requests are exactly where unexamined assumptions burn the most work, beca
 | "INDEX is small — paste all 120 rows into context" | Catalog is query-first; `catalog-query.md` is the one home — never dump the full registry into chat |
 | "I'll just invoke reconcile-features / map-features myself" | `reconcile-features` is gone; `/map-features` is user-invoked — name it only |
 
-**Red flags — stop and return to the checklist if you notice yourself:** opening an editor to "just try something"; running a generator/scaffolder; answering your own open question instead of asking; presenting one approach as the only option; drifting from interviewing into implementing; auto-running reverse-track or inventing a `reconcile-features` call; pasting the full catalog into context because it “might be useful.”
+**Red flags — stop and return to the checklist if you notice yourself:** opening an editor to "just try something"; running a generator/scaffolder; answering your own open question instead of asking; presenting one approach as the only option; drifting from interviewing into implementing; auto-running reverse-track or inventing a `reconcile-features` call; pasting the full catalog into context because it “might be useful.”; narrating step 1 before the six-step list is visible.
 
 ## Checklist
 
-**Todos first — GATE.** The very first action of every frame-change — before you read `CONTEXT.md`, dispatch a scan, or ask a single question — is to create the todo list: one todo per checklist item below (steps 1–6) via your harness's todo tool (`TodoWrite` in Claude Code; the equivalent in Kimi, Codex, or wherever this runs). This fires for EVERY request, no matter how simple it looks — the HARD-GATE above is what you must NOT do; this is what you MUST do first. The list holds this skill's six steps only; do not add downstream stages (`specify-behavior`, `design-solution`, `plan-tasks`) — each creates its own list on handoff. Do not proceed until the list exists, then complete the items in order, checking each off only when its **Done when** is met.
+**Todos first — GATE.** The very first action of every frame-change — before you read `CONTEXT.md`, dispatch a scan, or ask a single question — is to put this skill's six steps on a **visible list**, one item per checklist step (1–6):
+
+- **The harness exposes a todo / task-list tool** → create the list there.
+- **It does not** → write the six steps as a checklist in your first reply, and restate it with each item's status at every step boundary.
+
+The gate closes on the same observable either way: **the list exists and the user can see it.** A harness without a todo tool is a rendering difference, never a reason to carry the six steps in your head. This fires for EVERY request, no matter how simple it looks — the HARD-GATE above is what you must NOT do; this is what you MUST do first. The list holds this skill's six steps only; do not add downstream stages (`specify-behavior`, `design-solution`, `plan-tasks`) — each creates its own list on handoff. Do not proceed until the list is visible, then complete the items in order, checking each off only when its **Done when** is met.
 
 **Right-size with an early tier read.** Once step 1 gives you the context, make a
 *provisional* tier call:

@@ -1,6 +1,6 @@
 ---
 name: write-flow-guide
-version: 2.0.0
+version: 2.1.0
 description: Use when a finished feature needs a hands-on product walk in the real
   running app — visuals, feel, and eyeball edge cases. Produces a checkable
   flow guide (run file + HTML) plus its vet report. Not for
@@ -36,7 +36,9 @@ a one-seat user pass. Permission/role cases belong when the UI exposes them
 
 ## Todos — GATE
 
-Before §1, create one todo per section (1–4) via TodoWrite, **and** one terminal
+Before §1, put one item per section (1–4) on a **visible list** — the harness's
+todo / task-list tool when it exposes one, otherwise a checklist written into your
+reply and restated at each section boundary — **and** one terminal
 todo **Vet flow guide** (`vet-flow-guide` on the run file — created now, not
 later). Check the vet todo off **only** when
 `.skills/<CODE>/vet-flow-guide.md` exists for this run file.

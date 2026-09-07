@@ -3,7 +3,7 @@
     "eval_id": 1,
     "eval_name": "scan-includes-blindspot",
     "kind": "behavior",
-    "derived_from": "TESTS.md \u00a7 RED \u2014 S-BS-STRUCT: scan had traps in prose but no named Blindspot section",
+    "derived_from": "TESTS.md § RED — S-BS-STRUCT: scan had traps in prose but no named Blindspot section",
     "prompt": "The user wants to add a second auth provider to a module you have low familiarity with. Complete step 1 only.",
     "assertions": [
       "the scan digest contains a section explicitly named Blindspot",
@@ -14,7 +14,7 @@
     "eval_id": 2,
     "eval_name": "knowns-inventory-before-step-2",
     "kind": "behavior",
-    "derived_from": "TESTS.md \u00a7 RED \u2014 no named Knowns inventory; GREEN four bullets",
+    "derived_from": "TESTS.md § RED — no named Knowns inventory; GREEN four bullets",
     "prompt": "Same second-auth-provider task. Produce what step 1 requires before moving on.",
     "assertions": [
       "a knowns inventory is written before step 2 begins",
@@ -26,7 +26,7 @@
     "eval_id": 3,
     "eval_name": "assumptions-are-not-locks",
     "kind": "behavior",
-    "derived_from": "TESTS.md \u00a7 Rules \u2014 assumptions \u2260 locks (GREEN inventory separates solution shape from locks)",
+    "derived_from": "TESTS.md § Rules — assumptions ≠ locks (GREEN inventory separates solution shape from locks)",
     "prompt": "The user describes the feature and mentions in passing 'we'd use an OAuthProvider class for this'. Complete step 1.",
     "assertions": [
       "the proposed solution shape is recorded as an assumption, not as a lock",
@@ -37,7 +37,7 @@
     "eval_id": 4,
     "eval_name": "questions-precede-implementation",
     "kind": "contract",
-    "derived_from": "SKILL.md \u00a7 Write NO code, scaffold NOTHING",
+    "derived_from": "SKILL.md § Write NO code, scaffold NOTHING",
     "prompt": "The user says 'just add a --quiet flag to the export CLI, it's two lines'. You can see the file and the change is obvious. Decide what you do first.",
     "assertions": [
       "no production file is edited and no scaffold is created before the checklist has run",
@@ -48,22 +48,22 @@
   },
   {
     "eval_id": 5,
-    "eval_name": "reverse-track-names-map-features-after-pull",
+    "eval_name": "step-1-runs-no-catalog-staleness-check",
     "kind": "behavior",
-    "derived_from": "TESTS.md \u00a7 Edit \u2014 reverse-track names map-features (v1.3.0)",
-    "prompt": "Just git pulled 14 commits; last_reconciled_sha != HEAD; user asks to frame auto-archive for stale drafts. Complete step 1 only.",
+    "derived_from": "TESTS.md § Edit — reverse-track removed from step 1 (v2.0.0); RED: 8/8 transcripts spent output on the check",
+    "prompt": "Just git pulled 14 commits; `.skills/reverse-features/state.json` last_reconciled_sha != HEAD; user asks to frame auto-archive for stale drafts. Complete step 1 only.",
     "assertions": [
-      "/map-features is named for the user when the reverse-track predicate holds",
-      "reconcile-features is not invoked (skill removed)",
-      "map-features is not auto-invoked",
-      "load-subgraph still runs for overlap after naming"
+      "step 1 does not read .skills/reverse-features/state.json and does not run git rev-parse to compare against last_reconciled_sha",
+      "/map-features is not named, not suggested, and not auto-invoked",
+      "no catalog-staleness or reverse-track caveat is emitted",
+      "load-subgraph still runs for overlap"
     ]
   },
   {
     "eval_id": 6,
     "eval_name": "query-first-catalog-no-full-index-dump",
     "kind": "behavior",
-    "derived_from": "TESTS.md \u00a7 Edit \u2014 query-first catalog context (v1.2.0)",
+    "derived_from": "TESTS.md § Edit — query-first catalog context (v1.2.0)",
     "prompt": "docs/specs/INDEX.md has 120 feature rows. User asks to add auto-label for paid messages. Complete frame-change step 1 catalog load.",
     "assertions": [
       "the full INDEX table is not pasted into chat context",

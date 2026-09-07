@@ -8,7 +8,7 @@
 | **Invocation** | model-invocable (the agent calls it on its own) |
 | **Reads** | `CONTEXT.md` (glossary vocabulary), catalog query over `docs/specs/INDEX.md` (selected cards — not a full-table dump), `docs/agents/project.md`; code, docs, and recent commits near the idea via a scan subagent digest at `.skills/<CODE>/scan.md` |
 | **Writes** | notes, the glossary (`CONTEXT.md`), ADRs, and — via sub-skills — research notes and explicitly-marked throwaway run-spikes; nothing else |
-| **Calls** | **names** [`/map-features`](map-features.md) when reverse-track predicate holds (never auto-invoke); [`load-subgraph`](load-subgraph.md); [`clarify-decisions`](clarify-decisions.md), [`define-domain`](define-domain.md), [`research`](research.md), [`run-spike`](run-spike.md), [`specify-behavior`](specify-behavior.md) (tier ≥ 1), [`test-first`](test-first.md) (tier 0) |
+| **Calls** | [`load-subgraph`](load-subgraph.md); [`clarify-decisions`](clarify-decisions.md), [`define-domain`](define-domain.md), [`research`](research.md), [`run-spike`](run-spike.md), [`specify-behavior`](specify-behavior.md) (tier ≥ 1), [`test-first`](test-first.md) (tier 0) |
 | **Called by** | the user (entry point of the chain); [`amend-feature`](amend-feature.md) when a change turns out to be genuinely new scope |
 
 ## When it fires
@@ -61,7 +61,7 @@ Each item is a todo, completed in order. The order matters: context before quest
 
 ## The overlap check
 
-Step 1 **names** [`/map-features`](map-features.md) when the reverse-track predicate holds (post-pull / stale checkpoint / external-commit ask) — dispose step 0 runs reverse; do not auto-invoke it or invent a deleted `reconcile-features` call. Then run **`load-subgraph`** (REQUIRED SUB-SKILL) with the idea's **key terms** and the scan's **candidate paths**. The shared catalog is the registry (Domain router INDEX + `docs/specs/catalog/*.md`); derivation uses live `**Files:**` (OWNS) and term match (P0), returns ranked neighbors plus **OWNS coverage**. Present each neighbor as a short summary card (owned paths + Out-of-Scope), not the full spec.
+Step 1 runs **no catalog-staleness check**: it does not read `.skills/reverse-features/state.json`, does not compare `last_reconciled_sha` against `HEAD`, and does not name [`/map-features`](map-features.md). Keeping the catalog current is the user's call, made by running `/map-features` when they want it — see [Catalog currency](#catalog-currency) below. Run **`load-subgraph`** (REQUIRED SUB-SKILL) with the idea's **key terms** and the scan's **candidate paths**. The shared catalog is the registry (Domain router INDEX + `docs/specs/catalog/*.md`); derivation uses live `**Files:**` (OWNS) and term match (P0), returns ranked neighbors plus **OWNS coverage**. Present each neighbor as a short summary card (owned paths + Out-of-Scope), not the full spec.
 
 The check is advisory, never a gate:
 
@@ -70,6 +70,29 @@ The check is advisory, never a gate:
 - **Thin OWNS coverage** — report the ratio; thin is not an error.
 
 Step 1 is done when you can state in one paragraph what the project is, what already exists near the idea, and which glossary terms apply — and you have named which existing features share the idea's surface (citing codes) or that none does, with OWNS coverage stated.
+
+## Catalog currency
+
+`frame-change` does **not** check whether the capability catalog is up to date. It reads the
+catalog as it finds it and runs `load-subgraph` against that.
+
+This is deliberate. The check it used to run compared `.skills/reverse-features/state.json`'s
+`last_reconciled_sha` against `HEAD`, and after any merge or PR those differ — so on a repo
+with normal git activity the predicate held on essentially every invocation, and every
+`frame-change` spent a paragraph naming `/map-features`. Measured over eight recorded runs it
+fired 8/8, including on a checkout with no git repo at all, where it produced only an
+"explicit not-applicable" caveat.
+
+**The trade-off, stated plainly.** With no staleness check, `frame-change`'s overlap finding
+is only as current as the catalog. If features have landed that were never indexed, step 1
+can report "no overlap" when an un-indexed neighbor exists. The judgment is that a warning
+which fires every single time carries no information — an always-on signal is not a signal —
+and that catalog currency is better handled deliberately.
+
+**So: run [`/map-features`](map-features.md) yourself** when you have pulled work you did not
+write, after a batch of merges, or whenever the catalog feels behind. It is a user-invoked
+skill (`disable-model-invocation: true`) and always was — this change removes the automatic
+nagging, not the capability.
 
 ## The ceremony tiers
 

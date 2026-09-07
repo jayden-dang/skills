@@ -1,6 +1,6 @@
 ---
 name: frame-change
-version: 1.5.0
+version: 2.0.0
 description: Use at the very start of the idea-to-ship chain — when the user wants to
   add, build, or change a feature, behavior, or component, or to start a new
   project, and the asked-for behavior has no spec yet. Produces an agreed shape
@@ -37,7 +37,7 @@ Small requests are exactly where unexamined assumptions burn the most work, beca
 | "INDEX is small — paste all 120 rows into context" | Catalog is query-first; `catalog-query.md` is the one home — never dump the full registry into chat |
 | "I'll just invoke reconcile-features / map-features myself" | `reconcile-features` is gone; `/map-features` is user-invoked — name it only |
 
-**Red flags — stop and return to the checklist if you notice yourself:** opening an editor to "just try something"; running a generator/scaffolder; answering your own open question instead of asking; presenting one approach as the only option; drifting from interviewing into implementing; auto-running reverse-track or inventing a `reconcile-features` call; pasting the full catalog into context because it “might be useful.”; narrating step 1 before the six-step list is visible.
+**Red flags — stop and return to the checklist if you notice yourself:** opening an editor to "just try something"; running a generator/scaffolder; answering your own open question instead of asking; presenting one approach as the only option; drifting from interviewing into implementing; running a reverse-track / catalog-staleness check, or inventing a `reconcile-features` call — catalog currency is `/map-features`, which the user runs; pasting the full catalog into context because it “might be useful.”; narrating step 1 before the six-step list is visible.
 
 ## Checklist
 
@@ -63,18 +63,6 @@ Provisional means provisional: if step 2 surfaces any of those, it was never tie
 ### 1. Explore project context
 
 Read `CONTEXT.md` (use its vocabulary from here on).
-
-**Reverse-track (observable conditional — name only).** Read
-`.skills/reverse-features/state.json` when present, and `git rev-parse HEAD`.
-WHEN the file is missing **or** `last_reconciled_sha` is not `HEAD` **or** the
-user ask is explicitly post-pull / post-merge / external-commit → **name**
-`/map-features` for the user (dispose step 0 runs reverse + proposals). Do
-**not** auto-invoke it and do **not** call a `reconcile-features` skill (removed).
-Unresolved pending OBS on those surfaces are not greenfield until the user has
-been pointed at `/map-features`. WHEN `last_reconciled_sha` equals `HEAD` and
-the ask is not post-pull → skip. Do not treat a leftover `ORIG_HEAD` as a second
-stale signal.
-*Done when: `/map-features` named when WHEN holds, or an explicit not-applicable.*
 
 **Do not** paste `docs/specs/INDEX.md` into context — even when the file is open
 or “only” dozens of rows. Load `load-subgraph`’s `catalog-query.md` and run it

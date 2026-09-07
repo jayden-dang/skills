@@ -184,3 +184,56 @@ that the skill had been leaning on the harness for half the rule.
 
 **Change class:** portability fix to an existing gate. Checklist steps, tier rules, HARD-GATE,
 and terminal states untouched.
+
+## Edit — reverse-track removed from step 1 (v2.0.0)
+
+**Ask.** The catalog-staleness check fired on every `frame-change`. After any merge or PR
+`last_reconciled_sha` differs from `HEAD`, so on a repo with normal git activity the WHEN
+always held and every invocation spent output naming `/map-features` — even on a solo repo
+where nothing external had landed. User's call: make catalog currency something they invoke,
+not something every frame nags about.
+
+**RED — measured, not argued.** Eight `frame-change` transcripts recorded earlier the same
+day (the todo-gate RED/GREEN runs, v1.4.0 through v1.5.1) were scored for reverse-track
+output:
+
+| Transcript set | Reps | Fired | Output spent |
+|---|---|---|---|
+| v1.4.0 RED | 4 | 4/4 | 43–54 words each |
+| v1.5.0 GREEN | 2 | 2/2 | 43–45 words each |
+| v1.5.1 REFACTOR | 2 | 2/2 | 41–56 words each |
+
+**8/8 — a 100% fire rate.** The fixture had no git repo at all, so every one of those fires
+produced only an "explicit not-applicable" caveat: pure waste, plus a `state.json` read, a
+`git rev-parse HEAD`, and eleven lines of skill body carried in context on every turn.
+
+A predicate that holds on every run carries no information. That is the whole argument: an
+always-on warning is not a warning.
+
+**Change.** The `**Reverse-track (observable conditional — name only)**` block is deleted
+from step 1. No `.skills/reverse-features/state.json` read, no `HEAD` comparison, no
+`/map-features` naming. The red flag is kept and sharpened — with the block gone it is the
+only thing left stopping an agent from running the check spontaneously.
+
+`map-features` itself is unchanged and was already `disable-model-invocation: true`; it never
+could be auto-invoked. This removes the automatic nagging, not the capability.
+
+**Accepted trade-off, recorded so it is not discovered later.** Overlap findings are now only
+as current as the catalog. If features landed without being indexed, step 1 can state "no
+overlap" while an un-indexed neighbor exists. The user runs `/map-features` after pulling
+work they did not write.
+
+**Orphans fixed in the same pass.** `eval.json` #5 asserted "/map-features is named for the
+user when the reverse-track predicate holds" — an assertion that would now fail forever
+against the skill; rewritten to assert the inverse. `docs/guide/skills/frame-change.md` listed
+`/map-features` under **Calls** and described the predicate in step 1; corrected, and a
+**Catalog currency** section added carrying the trade-off above.
+
+**GREEN verification: pending at commit time.** Fixture upgraded to a real git repo with
+`last_reconciled_sha` deliberately set to all-zeros (stale) and `Bash` allowed, so the agent
+*could* run `git rev-parse` if anything still asked it to. Result recorded in a follow-up
+commit.
+
+**Change class:** removal of an auto-firing conditional. Major bump — existing usage relied
+on the warning. Checklist steps, tier rules, HARD-GATE, todo gate, and terminal states
+untouched.

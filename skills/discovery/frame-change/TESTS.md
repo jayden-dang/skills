@@ -229,10 +229,32 @@ against the skill; rewritten to assert the inverse. `docs/guide/skills/frame-cha
 `/map-features` under **Calls** and described the predicate in step 1; corrected, and a
 **Catalog currency** section added carrying the trade-off above.
 
-**GREEN verification: pending at commit time.** Fixture upgraded to a real git repo with
-`last_reconciled_sha` deliberately set to all-zeros (stale) and `Bash` allowed, so the agent
-*could* run `git rev-parse` if anything still asked it to. Result recorded in a follow-up
-commit.
+**GREEN — 1 of 2. The instruction is gone; the behavior leaks.** Fixture upgraded to a real
+git repo with `last_reconciled_sha` set to all-zeros (maximally stale) and `Bash` allowed, so
+the agent *could* run the check if anything still asked.
+
+- **Rep 1 — pass.** Zero mentions of reverse-track, `/map-features`, `last_reconciled_sha`, or
+  staleness. Step 1 still did its real work: catalog overlap ("No overlap — this is genuinely
+  new scope", citing ORD-100/ORD-120), Blindspot list, Knowns inventory.
+- **Rep 2 — fail.** Volunteered it unprompted: "Also flagging: `.skills/reverse-features/
+  state.json` shows `last_reconciled_sha` unset against current HEAD — you may want to run
+  `/map-features` at some point to reconcile the catalog, though the single 'init' commit
+  history here suggests there's nothing hidden to find."
+
+**Diagnosis.** Deleting the instruction stops the skill *asking* for the check; it does not
+stop the agent *offering* it. `.skills/reverse-features/state.json` is a conspicuous file in
+the tree, and an agent exploring project context finds it and reasons its way to the same
+nag on its own. The sharpened step-1 red flag ("running a reverse-track / catalog-staleness
+check … catalog currency is `/map-features`, which the user runs") did not bind — it sits
+mid-sentence in a run-on red-flag line, competing with five other items.
+
+Removal alone is therefore a partial fix: it cuts the guaranteed 8/8 cost to an occasional
+volunteered one. Closing the remaining leak needs the prescribed gate form — a rationalization
+row naming the thought ("the state file is stale, I should mention it") against the reality
+(an always-true predicate is not a finding; the user runs `/map-features` when they want it) —
+not another prose tweak. Left open deliberately rather than iterated blind: an earlier
+REFACTOR in this same file (v1.5.1, rejected) regressed by rewriting wording against a weak
+signal, and the lesson is recorded above.
 
 **Change class:** removal of an auto-firing conditional. Major bump — existing usage relied
 on the warning. Checklist steps, tier rules, HARD-GATE, todo gate, and terminal states

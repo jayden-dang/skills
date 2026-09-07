@@ -1,6 +1,6 @@
 ---
 name: configure-repo
-version: 1.5.0
+version: 1.6.0
 description: Sets up docs/agents config so this skill set can run in an existing repo.
 disable-model-invocation: true
 ---
@@ -142,14 +142,15 @@ Confirm:
 
 ### G. Project posture
 
-Explainer: two standing facts about the project — its **delivery intent** (how robust the output must be) and its **lifecycle stage** (where it is in its life). `frame-change` and `clarify-decisions` read them to right-size ceremony (a run-spike need not weigh data migration or deprecation; a released, scaling system weighs them heavily), and `interpret-session` / `deepen-codebase` reuse them so they never re-ask. They live in `docs/agents/project.md` and the user edits those two lines directly as the project moves phase.
+Explainer: three standing facts about the project — its **delivery intent** (the quality bar the output must meet), its **lifecycle stage** (where it is in its life), and its **compat obligation** (who is already committed to the current schemas, endpoints, and formats). `frame-change` and `clarify-decisions` read them to right-size ceremony — compat obligation alone decides the migration / backward-compat / deprecation lens — and `interpret-session` / `deepen-codebase` reuse them so they never re-ask. They live in `docs/agents/project.md` and the user edits those lines directly as the project moves phase.
 
-Confirm both, pre-filled from repo signals — never invented:
+Confirm these, pre-filled from repo signals — never invented:
 
-- **Delivery intent** — Production / MVP / Run Spike / Research / Learning. Recommend from what the repo shows (a published package or cut-release workflow → Production; a bare greenfield spike → Run Spike); default **MVP** when unclear.
+- **Delivery intent** — Production / MVP / Run Spike / Research / Learning. The quality bar, not a release state: **Production** never means the project has shipped. Recommend from what the repo shows (a published package or cut-release workflow → Production; a bare greenfield spike → Run Spike); default **MVP** when unclear.
 - **Lifecycle stage** — Idea / Early development / Active development / Cut Released / Scaling / Maintenance. Recommend from git signals (tags or a cut-release history → Cut Released; a young repo with few commits → Early development); default **Early development** when unclear.
+- **Compat obligation** — None / Internal / External. Ask only when the repo contradicts the derivation the template's Project posture section gives from Lifecycle stage (pre-release → None, released → External): a published package, a versioned public API, or a deployed database under a pre-release lifecycle argues for a written override. Otherwise leave the line out and let the derivation stand — an unwritten line is the working default, not a gap.
 
-**Done when:** both posture values are confirmed by the user.
+**Done when:** delivery intent and lifecycle stage are confirmed by the user, and compat obligation is either confirmed as an override or deliberately left to the derivation.
 
 ### H. Team
 
@@ -260,7 +261,7 @@ Let them edit. **Done when:** the user approves the drafts.
    name `/map-features` Domain boundary migrate — do not invent shards silently.
 
 3. If the glossary is missing, create `CONTEXT.md` from `templates/CONTEXT.md` (or a `CONTEXT-MAP.md` for multi-context, per the user's answer).
-4. Fill the **Project posture** section of `docs/agents/project.md` with the confirmed delivery intent and lifecycle stage (decision G) — two lines, replacing the template placeholders. (Additive: if the section already carries real values, update only what the user changed.) If decision L confirmed **index-only** or **full-triad**, set `- **Catalog sync:** \`<value>\`` in the same section (additive). If L left unset, write no Catalog sync line.
+4. Fill the **Project posture** section of `docs/agents/project.md` with the confirmed delivery intent and lifecycle stage (decision G), replacing the template placeholders. Write a `- **Compat obligation:** \`<value>\`` line only when decision G confirmed an override; when it left the derivation standing, delete the placeholder line so the derivation applies. (Additive: if the section already carries real values, update only what the user changed.) If decision L confirmed **index-only** or **full-triad**, set `- **Catalog sync:** \`<value>\`` in the same section (additive). If L left unset, write no Catalog sync line.
 5. Fill **`## Team`** from the confirmed Decision H content (roster, ownership notes, optional band override), merging into the template shape from `templates/agents/project.md`. Replace only the Team section's confirmed fields; do not clobber other sections. If the user deferred Team, leave the section as template placeholders or omit until a fill-the-gaps run.
 6. **If the project-docs layer was opted in (decision I):** seed `docs/product/vision.md`, `docs/architecture/INDEX.md`, and `docs/product/guidelines.md` from `templates/product-vision.md`, `templates/architecture-INDEX.md`, and `templates/product-guidelines.md` (additive, per the rule above). If migrating, move the existing engineering rules into `docs/product/guidelines.md` and leave a pointer in `docs/agents/project.md`. If the layer was declined, skip this — write none of these files.
 7. Add the `## Agent skills` block. It lives in exactly **one** canonical file; any second file is a thin pointer, never a copy of the block.

@@ -1,6 +1,6 @@
 ---
 name: frame-change
-version: 1.3.0
+version: 1.4.0
 description: Use at the very start of the idea-to-ship chain — when the user wants to
   add, build, or change a feature, behavior, or component, or to start a new
   project, and the asked-for behavior has no spec yet. Produces an agreed shape
@@ -75,13 +75,17 @@ stale signal.
 or “only” dozens of rows. Load `load-subgraph`’s `catalog-query.md` and run it
 as the one home (mode, query recipe, context caps, exact CODE lookup), including
 any active OBS already indexed. Read the **Project posture** in
-`docs/agents/project.md` when present — its delivery intent and lifecycle stage
-right-size the whole interview: a Run Spike / Research / Learning posture means
-do not burn questions on data migration, backward compatibility, or deprecation
-cost; a released / Scaling / Maintenance posture means weigh exactly those
-heavily. When the posture section is absent, do not assume one — proceed without
-right-sizing; nested `clarify-decisions` coverage stays **OFF** until written
-Production **and** Cut Released/Scaling/Maintenance (plus its surface latch).
+`docs/agents/project.md` when present — it right-sizes the whole interview.
+**Delivery intent** is the quality bar the approaches must meet, never a release
+state. **Compat obligation** decides the migration lens — the written line, else
+derived from Lifecycle stage (Idea / Early / Active development → **None**; Cut
+Released / Scaling / Maintenance → **External**): on **None**, approaches land
+one shape and spend no scope on backward compatibility, versioned names, or
+deprecation cost, because no consumer is committed to the current ones; on
+**Internal** / **External**, weigh exactly those. When the posture section is
+absent, do not assume one — proceed without right-sizing; nested
+`clarify-decisions` coverage stays **OFF** until written Production **and** Cut
+Released/Scaling/Maintenance (plus its surface latch).
 Read **`## Team`** in the same file when present: if the
 **roster** is non-empty or a **Workflow band** override is set, derive the
 **band** and apply **packaging** using the rules and matrix written *in that

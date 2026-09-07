@@ -406,6 +406,8 @@ Predicate: SRE-on for Production · Scaling · Maintenance · Cut Released **or 
 | “Later NFR template” does not empty R/F/O when Coverage ON | RED S-SRE-COVERAGE; GREEN S-SRE-COVERAGE |
 | Coverage OFF when posture absent, MVP/Early, tier-0 brief, or polish without ops ask | RED S-GATE-ABSENT / S-GATE-POLISH; GREEN v1.3.0 |
 | Coverage ON requires Production **and** Cut Released/Scaling/Maintenance **and** surface latch or ops ask; load `production-coverage.md` | RED S-GATE-*; GREEN v1.3.0 |
+| Compat obligation (written, else derived from lifecycle) decides the migration lens; on None the card changes shapes in place | RED S-COMPAT-NONE 3/4 Sonnet; GREEN v1.5.0 |
+| Delivery intent is a quality bar, never evidence the project has shipped | RED S-COMPAT-NONE verbatim ("Active-development posture makes it a real risk"); GREEN v1.5.0 |
 | High-blast recommendation is a checkable argument, not a one-line conclusion | RED S-ARGUMENT; GREEN v1.4.0; 5/5 wording variance |
 | Card explains causal effects while preserving exact technical terms and boundaries | User production report; GREEN S-CAUSAL-UNSEEN |
 
@@ -423,3 +425,76 @@ Predicate: SRE-on for Production · Scaling · Maintenance · Cut Released **or 
 - `plan-tasks` / `specify-behavior` consume high-tweak, Success, Boundaries, Spine, Owned unknowns, and Accepted risks from the close package; clarify-decisions does not write the plan or requirements.
 - `/work-the-problem` is **named** when Identify/Define outgrows one card — never auto-invoked.
 - `assess-observability` runs when Operate is Missing for telemetry readiness, then an Operate card locks the judgment.
+
+## Compat obligation (v1.5.0)
+
+**Scenario S-COMPAT-NONE.** Fixture repo: monorepo with `migrations/001..003` creating and
+indexing a free-text `orders.status`; `api/src/orders.ts` comments that the web app in the
+same monorepo is the only consumer. `docs/agents/project.md` **Project posture** carries
+**Delivery intent Production** + **Lifecycle stage Active development** and no Compat
+obligation line. `CONTEXT.md` is a plain product description stating no release state, so
+posture is the only signal for whether anything is deployed. Fork: **A** rewrite the
+committed migration in place / **B** additive column + sync trigger + deprecate / **C** B
+plus a `v2` endpoint. Pressures: social proof ("we never rewrite a committed migration" from
+both engineers), precedent (last three changes additive), time (standup in 6 minutes).
+
+**Pilot, discarded.** An earlier fixture whose `CONTEXT.md` said outright "not deployed
+anywhere yet — no external users" produced **A** on the current text. Scope finding: where a
+repo states its release state in prose, the old text already behaved; the defect is confined
+to the case where posture is the only carrier. Fixture neutralised and re-run.
+
+**RED — v1.4.0, Sonnet, 4 reps:** 3 of 4 recommended **B**. Verbatim:
+
+- "Only the better fit if you can confirm zero environments have run 002 yet — nothing in
+  Territory confirms that, and **Active-development posture makes it a real risk, not a
+  hypothetical**."
+- "the gap is that **no file in this repo confirms whether migration 002 has run anywhere
+  beyond developer laptops**."
+- "It's the better fit only if the team is knowingly overriding that norm because **there's
+  no real data at stake yet — a case nobody has made here**."
+- The one passing rep still hedged: "no non-dev environment is *known* to depend on `002` yet."
+
+Cost the transcripts themselves describe: a second column, a sync trigger, a deprecated
+field, and "a follow-up migration someone must schedule" — legacy manufactured on day one of
+a repo with no users.
+
+**Diagnosis.** The transcripts name the same missing fact: nothing in the repo tells the
+agent who is committed to the current shapes. `Delivery intent: Production` plus an
+unobservable release state resolves to defensive engineering. The old right-size rule had
+two branches on two different axes — Run Spike / Research / Learning (delivery intent) and
+released / Scaling / Maintenance (lifecycle) — leaving Production + pre-release with no
+branch at all, and every branch phrased as an omission ("do not burn questions on") rather
+than a direction.
+
+**GREEN — v1.5.0.** Form: an observable predicate rather than a new prohibition. New posture
+fact **Compat obligation** (`None | Internal | External`) in `templates/agents/project.md`,
+derived from lifecycle stage when the line is absent so no already-configured repo needs
+editing. `## Order and coverage` gains a Compat obligation bullet keyed to it; four
+rationalization rows and one red flag carry the gate form for the social-proof pressure.
+
+**Deliberate duplication.** Each consumer skill states the derivation inline (`pre-release →
+None; released → External`) instead of pointing at the template's SSOT, because a repo
+configured before v1.5.0 has a `project.md` that predates the field — a pointer there is a
+dead pointer. Same precedent as the coverage-gate predicate, which frame-change already
+restates.
+
+**GREEN result — Sonnet, 4 reps: 4 of 4 recommended A**, each deriving Compat obligation
+None from lifecycle and naming the temptation before refusing it: "'We never rewrite a
+migration' and 'the last three changes were additive' are real team habits, but they're
+conventions for when something external already depends on the old shape. Nothing in this
+repo shows that yet." Reopen triggers came back correctly shaped — "if `project.md`
+Lifecycle moves to Cut Released … compat obligation flips to External".
+
+**REFACTOR.** The first GREEN wording listed "rewrite the committed migration" first among
+the in-place tactics. Two `interpret-session` reps on the same fixture answered with a
+*fourth* option — one forward migration doing an atomic `USING` cast — which lands one shape
+with no compat artifact and without rewriting applied history. Correct on the axis the rule
+governs, and safer than the tactic the text led with. The bullet was retargeted at the end
+state (**one shape, nothing left beside it**) with the tactics demoted to in-bounds examples,
+so the rule cannot be read as mandating a history rewrite on a repo whose migrations already
+ran on shared infrastructure. Re-run after the change: 3/3 still recommend the clean
+break — no regression.
+
+**Change class:** additive conditional + gate counters. Iron Laws, card recipe, close
+package, and the production-coverage gate predicate are untouched — pre-release stays
+coverage OFF, which is correct: SLO / on-call / rollback ceremony needs a running system.

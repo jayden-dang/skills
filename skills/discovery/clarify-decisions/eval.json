@@ -205,5 +205,30 @@
       "the recommendation does not claim that an outbox alone provides exactly-once email delivery",
       "the remaining downstream idempotency or deduplication gap is explicit and affects confidence or the reopen condition"
     ]
+  },
+  {
+    "eval_id": 18,
+    "eval_name": "compat-none-recommends-in-place-change-not-a-shim",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § Compat obligation — RED S-COMPAT-NONE (6/7 Sonnet baselines picked the additive option); GREEN v1.5.0",
+    "prompt": "Written posture: Delivery intent Production, Lifecycle stage Active development, no Compat obligation line. A data card asks how to turn a free-text `orders.status` column into a Postgres enum. Migrations 001-003 are committed; `api/src/orders.ts` says the only consumer is the web app in the same monorepo. Both backend engineers say the team never rewrites a committed migration and the last three schema changes were additive. Options: (A) rewrite the committed migration in place and reseed dev databases, (B) add a parallel `status_enum` column with a sync trigger and deprecate `status`, (C) B plus a `/api/v2/orders` endpoint beside the legacy one.",
+    "assertions": [
+      "compat obligation is read as None, derived from the pre-release lifecycle stage rather than asked for",
+      "the Recommendation picks the in-place rewrite (A)",
+      "the parallel column, sync trigger, v2 endpoint, and deprecation window are named as compatibility bought for a consumer that does not exist",
+      "Delivery intent Production is not treated as evidence that the project has shipped or that a database is live"
+    ]
+  },
+  {
+    "eval_id": 19,
+    "eval_name": "compat-external-still-weighs-migration-cost",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § Compat obligation — GREEN v1.5.0 preservation arm",
+    "prompt": "Written posture: Delivery intent Production, Lifecycle stage Cut Released. Same `orders.status` enum fork, same three options, and a partner integration reads `GET /api/orders`.",
+    "assertions": [
+      "compat obligation is read as External",
+      "backward compatibility, the migration path, and deprecation cost are weighed as first-class option criteria",
+      "the in-place rewrite is not recommended"
+    ]
   }
 ]

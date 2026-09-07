@@ -8,15 +8,22 @@ back to this file otherwise.
 
 ## Project posture
 
-The project's standing intent and lifecycle phase. Skills read this instead of re-asking:
-`frame-change` and `clarify-decisions` right-size migration / compat / deprecation against
-it; `interpret-session` reuses it. `clarify-decisions` production coverage needs Delivery
-**Production** + Lifecycle **Cut Released / Scaling / Maintenance** + operate/launch
-surface (or an ops ask); MVP, absent, and Early/Active stay off. Edit these two lines when
-the project moves phase.
+The project's standing intent, lifecycle phase, and compatibility obligation. Skills read
+this instead of re-asking: `frame-change` and `clarify-decisions` right-size migration /
+compat / deprecation against **Compat obligation**; `interpret-session` reuses all three.
+`clarify-decisions` production coverage needs Delivery **Production** + Lifecycle
+**Cut Released / Scaling / Maintenance** + operate/launch surface (or an ops ask); MVP,
+absent, and Early/Active stay off. Edit these lines when the project moves phase.
 
-- **Delivery intent:** `<Production | MVP | Run Spike | Research | Learning>` — how robust and complete the output must be.
+**SSOT:** the **Compat obligation** values and what each one means live only here. Skills
+carry a one-clause copy of the derivation because a repo configured before the field existed
+has no Compat obligation text in this file for them to read — change the meanings here, and
+the derivation in `frame-change`, `clarify-decisions`, `interpret-session`, and
+`work-the-problem` with it.
+
+- **Delivery intent:** `<Production | MVP | Run Spike | Research | Learning>` — the quality bar the output must meet. A bar, not a release state: **Production** says how well the code must be built, never that the project has shipped.
 - **Lifecycle stage:** `<Idea | Early development | Active development | Cut Released | Scaling | Maintenance>` — where the project is in its life.
+- **Compat obligation:** `<None | Internal | External>` — who is already committed to the current shapes, and so what a change is allowed to break. **None:** nothing outside this repo depends on any current schema, endpoint, or file format. **Internal:** other services or teams in the same org read them. **External:** users, customers, or third-party clients depend on them. **Derived when the line is absent** — Lifecycle Idea / Early development / Active development → **None**; Cut Released / Scaling / Maintenance → **External**. Write the line only to override that default: a pre-release repo whose staging data must survive, or a released service whose API nobody outside the team calls.
 - **Catalog sync:** `<unset | index-only | full-triad>` — optional. Shared catalog shape is always Domain router INDEX + `docs/specs/catalog/*.md` (not a flat Code table on INDEX). **`index-only`:** git tracks `docs/specs/INDEX.md` (± `docs/specs/catalog/`); feature triad dirs stay local (gitignored workbenches); `/map-features` may `export` / `materialize`. **`full-triad`:** triad dirs are committed as usual; map-features dispose-only (no materialize/export modes). **`unset` or absent:** same as full-triad (safe default — do not rewrite `.gitignore`).
 - **Default PR base:** `<branch, e.g. main>` — optional; `land-branch` reads it as the third rung of its base-resolution ladder. Leave the placeholder unset and `land-branch` asks for the base per invocation instead.
 - **Default landing action:** `<pr | merge | keep>` — optional; used only when intent is ambiguous and no existing PR resolves it.

@@ -310,3 +310,46 @@ language surface, and no-choice path untouched.
 | Live-choice opens with the real decision and a mapped mental model, then the seven-slot stance | RED S-ORIENT-THEN-STANCE / S-LIVE-CARD-SHAPE; GREEN v1.5.0 |
 | Normal/complex live-choice carries 2–4 pressure-test questions after the stance | RED S-LIVE-CARD-SHAPE (handles missing or buried); GREEN v1.5.0 |
 | Simple fork and no-choice omit the extra comprehension slots | GREEN S-SIMPLE / S-NO-CHOICE preservation |
+| Compat obligation, not delivery intent, tunes the migration/compat/deprecation lean | RED S-COMPAT-NONE 3/3 Sonnet; GREEN v1.6.0 |
+
+## Compat obligation (v1.6.0)
+
+**Scenario S-COMPAT-NONE.** Same fixture as `clarify-decisions` TESTS.md § Compat obligation:
+pre-release monorepo, posture **Delivery intent Production** + **Lifecycle stage Active
+development**, no Compat obligation line, `CONTEXT.md` silent on release state. The paste is
+a data card offering **A** in-place rewrite of the committed migration / **B** parallel
+column + sync trigger + deprecation / **C** B plus a `v2` endpoint, with the other session
+recommending **B** because "additive migrations are the safe default for a Production
+project".
+
+**RED — v1.5.1, Sonnet, 3 scored reps:** 3 of 3 stances picked **B**. Verbatim:
+
+- "under **Production/Active development (docs/agents/project.md:5-6), migration files that
+  have executed against a real database are receipts, not drafts**."
+- "any database (dev, staging, or **a real prod under Active development**) that already ran
+  002 will **not** replay an in-place edit to it."
+- "this is a `Production`, `Active development` project — **migration 002 has to be assumed
+  live somewhere real**, and A's plan has zero story for that."
+
+All three cite the posture lines by name and derive the opposite of the truth. The companion
+did not merely fail to dissent — it manufactured the deployment premise itself, then agreed
+with the other session on the strength of it.
+
+**GREEN — v1.6.0.** Setup item 2 now separates the two facts: delivery intent is the quality
+bar, and **compat obligation** — written, else derived from lifecycle stage — is what tunes
+migration, backward-compat, and deprecation. On None, a stance recommending a parallel
+column, a `v2` name, or a deprecation window is recommending compatibility with a consumer
+that does not exist. The absent-posture fallback now asks three values, not two.
+
+**GREEN result — Sonnet, 4 reps: 4 of 4 rejected the compat scaffolding.** Two picked A;
+two produced a fourth option (one forward migration, atomic `USING` cast) that lands the same
+single shape without rewriting applied history. All four derived Compat obligation None, and
+the Amend slot did the intended correction verbatim: "the recommendation justifies B by
+citing 'Production project' — that's delivery intent (the quality bar), not the migration
+lens; the lens is compat obligation, which this project's own posture derives to None."
+
+The two fourth-option answers fed the `clarify-decisions` REFACTOR (see its TESTS.md §
+Compat obligation): the rule now names the end state rather than a tactic.
+
+**Change class:** additive setup calibration. Iron Law, stance slots, depth predicate,
+language surface, and the no-choice path untouched.

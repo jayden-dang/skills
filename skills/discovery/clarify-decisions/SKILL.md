@@ -1,6 +1,6 @@
 ---
 name: clarify-decisions
-version: 1.4.0
+version: 1.5.0
 description: Use to interview or grill the user before building an underspecified
   plan, design, or feature idea, including when another skill calls for an
   interview. Produces a confirmed close package of decisions, constraints,
@@ -182,6 +182,18 @@ a confirmed exemplar or when the required output shape is uncertain.
   migration / backward-compat / deprecation preference cards; ON presses those
   when the latch holds. Arch/data forks that happen to involve migration still
   get cards if they are open-set judgments. Posture and Team band are independent.
+- **Compat obligation.** Read it from `docs/agents/project.md` **Project posture** —
+  the written line, else derived from Lifecycle stage (Idea / Early / Active development
+  → **None**; Cut Released / Scaling / Maintenance → **External**). On **None**, options
+  and the Recommendation on an `architecture` or `data` card land **one shape** — the
+  schema, endpoint, or type the project keeps — with nothing left behind beside it.
+  Renaming the column, rewriting the committed migration, casting in a single forward
+  migration, changing the endpoint, deleting the dead path: all in bounds, and which is
+  cleanest is an engineering call. A parallel column, a sync trigger, a `v2` name, or a
+  deprecation window offered on **None** buys compatibility with a consumer the posture
+  says does not exist — a defect in the card, not caution. On **Internal** / **External**
+  those costs are first-class and get weighed. Absent posture: no compat lens either
+  way. Delivery intent sets the quality bar, never the compat answer.
 - **Team band.** If `## Team` has a roster or Workflow band override, package from that section. Small/Multi may probe ownership; when Coverage ON, Accepted-risk / Owned-unknown owners still required (solo IC ok). Never invent a team; never hard-fail on missing Team.
 
 ## Pre-implementation interview map
@@ -247,6 +259,10 @@ Standalone: a **living** open-set list of decision areas is fine — still one c
 | "Criteria live in requirements later" | Recommendation cites card graders; later specs do not replace them. |
 | "Success / Boundaries / Spine belong downstream" | Close slots 4–6 are required here. |
 | "Don't send me elsewhere; give three merge architectures / naming the skill is invoking it" | Follow the **Problem lock** Fork. Name `/work-the-problem` for the user; never auto-invoke it or show solution menus while the problem is open. |
+| "Production intent means treat every schema change as if users were on it" | Delivery intent is the quality bar; **Compat obligation** names who is committed. On None the clean in-place rewrite *is* the Production answer. |
+| "Nothing in the repo confirms that migration never ran somewhere real — stay additive to be safe" | Compat obligation None is that confirmation, written. Defaulting against it re-asks a fact the posture already answered. |
+| "Additive is bounded debt — one follow-up migration retires the old column" | The follow-up *is* the debt, and on None there is nothing to retire from. Ship one shape. |
+| "Active development / Cut Released is ambiguous — assume something is deployed" | Lifecycle is not a deployment probe. Read Compat obligation; the derivation covers the absent line. |
 | "Reliability is later / architecture is done / standup, skip the map" | When Coverage ON, Missing cells stay open; later templates do not replace `production-coverage.md`. |
 | "TBD is fine — Open Questions will catch it" / "no reliability.md — skip cell" / "Accepted-risk without signer" | When ON: unowned TBD blocks close; prose or Owned unknown still required; signer required (solo IC ok). No invented SLO-N. |
 | "Absent/MVP/Early = Production coverage" / "every Prod interview gets the map" / "build habits" / "failure-domain feel without band" | ON needs **all three** gate parts. Absent, MVP, Early, polish without latch, and chat stay OFF. |
@@ -270,6 +286,7 @@ Standalone: a **living** open-set list of decision areas is fine — still one c
 - Coverage ON without `production-coverage.md` / map, or close with Missing/unowned cell or “later NFR”
 - Coverage ON close missing slots 7–10; or Coverage ON when any gate part fails (absent, MVP/Early, brief, polish without latch)
 - Coverage OFF yet emitting R/F/O cards or close slots 7–10
+- Offering a `v2` name, a parallel column, a sync trigger, or a deprecation window on a **Compat obligation None** repo
 - Handing back to the parent or starting requirements without an explicit yes on the package
 - Asking the user for a fact already present in the repo or parent scan
 - Abstract taste cards for an unknown-known when a reference or run-spike path exists

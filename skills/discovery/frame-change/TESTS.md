@@ -144,19 +144,43 @@ visible."
 `execute-common` §Todos (v2.3.0), neither of which carried even a portability clause.
 `TodoWrite` no longer appears anywhere in `skills/`, `docs/`, or `templates/`.
 
-**GREEN result — rep 1: PARTIAL.** The six-step list now appears, visible, with per-item
-status markers (`1. ✅ Explore project context` / `2. ⏳ Interview` / `3. ⬜ …`) — the total
-loss seen in 3 of 5 RED reps is gone. But it is emitted *after* step 1's findings and the
-provisional tier read, not as the first action, which trips this edit's own new red flag.
-So: the fallback branch binds, its **placement** does not.
+**GREEN result — v1.5.0, 2 reps: PARTIAL, and converged.** Both produce the six-step list,
+visible, with per-item status markers (`1. ✅ Explore project context` / `2. ⏳ Interview` /
+`3. ⬜ …`). The total loss seen in 3 of 5 RED reps is gone. Both emit it *after* step 1's
+findings rather than first, tripping this edit's own new red flag. So the fallback branch
+binds; its **placement** does not. Two reps, one shape — the form is binding, just to the
+wrong position.
 
-**Known limit of this harness.** These reps run headless (`claude -p`), where the agent
-composes one reply for the whole turn. That measures whether the list exists and is visible;
-it is a weak probe of "first action", which an interactive session would show directly.
-Placement needs either an interactive rep or a REFACTOR that makes position observable
-(e.g. the list is the reply's first block). Recorded as open, not as green.
+(A third rep was discarded as contaminated: it spanned the moment the fixture's skill copy
+was swapped to v1.5.1, so it cannot be attributed to either version.)
 
-Reps 2–3 pending at commit time.
+### Rejected REFACTOR — v1.5.1 placement wording (do not retry as written)
+
+Hypothesis: name the position and placement follows. The fallback branch was rewritten to
+"the six-step checklist **is the first block of your first reply**, above any findings", with
+the gate's closing observable changed to "the list is visible before the first step's output
+is" plus a sentence explaining that a late checklist is a summary, not a plan.
+
+**Result — 2 reps: worse than v1.5.0.** Rep 1 produced **no list at all** — the RED failure
+mode returning. Rep 2 produced a late list, as before. Two reps, two shapes: where v1.5.0
+converged, v1.5.1 diverged, so by `pressure-testing.md`'s variance rule the rewrite is
+strictly the weaker text. Reverted; `main` keeps v1.5.0.
+
+**Likely mechanism, unconfirmed (n=2).** The edit replaced an imperative with a copula —
+"**write** the six steps as a checklist" became "the six-step checklist **is** the first
+block". Chasing the placement detail deleted the verb that made the line an instruction,
+which is the "positive recipe" rule in `author-skills` inverted. A future attempt should keep
+the imperative *and* add the position, not trade one for the other.
+
+**Placement stays open, and not because nobody has tried.** These reps run headless
+(`claude -p`), where the agent composes one reply per turn — a good probe of whether the list
+exists, a poor one for "first action". Two wording attempts have not moved it against this
+measurement. The next attempt should be an interactive-session rep, not a third rewrite
+scored the same weak way.
+
+**What the original bug hid.** In a harness *with* a todo tool the tool call is inherently
+first, so position was enforced by the harness, never by this text. Removing the tool exposed
+that the skill had been leaning on the harness for half the rule.
 
 **Change class:** portability fix to an existing gate. Checklist steps, tier rules, HARD-GATE,
 and terminal states untouched.

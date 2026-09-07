@@ -100,3 +100,63 @@ predicate (R1/R2 in map-features TESTS.md v2 RED).
 **GREEN (v1.3.0):** WHEN predicate holds → **name** `/map-features` only; never
 invoke reconcile-features (removed) or auto-invoke map-features; load-subgraph
 still runs for overlap.
+
+## Edit — todo gate is portable (v1.5.0)
+
+**Roster:** Sonnet only. Harness under test: a Claude Code build with **no `TodoWrite`** —
+verified absent from the direct tool list, absent from the deferred list, and a `ToolSearch`
+for "todo list task checklist write" returns CronList / TaskOutput / TaskStop / browser
+tools and no todo tool.
+
+**The false fact.** v1.4.0 line 44 read: "create the todo list … via your harness's todo
+tool (**`TodoWrite` in Claude Code**; the equivalent in Kimi, Codex, or wherever this runs).
+… **Do not proceed until the list exists**." The parenthetical asserts a fact this build
+falsifies, so the gate's closing condition was unsatisfiable — the skill's first hard gate
+could not fire, and no skill in the set defined a fallback.
+
+**Fixture.** OrderFlow repo plus `docs/specs/INDEX.md` + `catalog/orders.md` (ORD-100,
+ORD-120) so the catalog query resolves, and the full skills tree under `skillref/`. Ask:
+"add order status change notifications — when an order moves to `shipped` or `cancelled`,
+the customer gets told."
+
+**RED — v1.4.0, 5 observations, 2 shapes, gate lost in 3:**
+
+| Rep | Behavior |
+|---|---|
+| fc-solo | **No list, no mention.** Opens "Step 1 (project context) is done." |
+| fc-1 | **No list, no mention.** Opens "Step 1 done." |
+| fc-3 | **No list, no mention.** Opens "Step 1 findings before moving to the interview." |
+| fc-4 | Visible inline checklist — "six steps, todo-tracked (no TodoWrite tool in this environment, so I'm tracking it inline)" |
+| field report | Visible inline checklist, same explicit note; and the tier read came *before* step 1, where this skill puts the provisional call after step 1 |
+
+Per `pressure-testing.md`, variance this wide means the form is not binding. The majority
+outcome is the gate evaporating, taking with it the mechanism that keeps the six steps
+ordered and forces each **Done when** check.
+
+**GREEN — v1.5.0.** Form: a conditional keyed to an observable predicate (does the harness
+expose a todo tool), not an unconditional rule plus an exemption. Both branches close on one
+observable — *the list exists and the user can see it* — so the gate is satisfiable in every
+harness. The tool-name assertion is deleted: naming one harness's tool is the kind of fact
+that rots, and it did. Red flag added: "narrating step 1 before the six-step list is
+visible."
+
+**Same false fact fixed in the same pass:** `write-flow-guide` §Todos (v2.1.0) and
+`execute-common` §Todos (v2.3.0), neither of which carried even a portability clause.
+`TodoWrite` no longer appears anywhere in `skills/`, `docs/`, or `templates/`.
+
+**GREEN result — rep 1: PARTIAL.** The six-step list now appears, visible, with per-item
+status markers (`1. ✅ Explore project context` / `2. ⏳ Interview` / `3. ⬜ …`) — the total
+loss seen in 3 of 5 RED reps is gone. But it is emitted *after* step 1's findings and the
+provisional tier read, not as the first action, which trips this edit's own new red flag.
+So: the fallback branch binds, its **placement** does not.
+
+**Known limit of this harness.** These reps run headless (`claude -p`), where the agent
+composes one reply for the whole turn. That measures whether the list exists and is visible;
+it is a weak probe of "first action", which an interactive session would show directly.
+Placement needs either an interactive rep or a REFACTOR that makes position observable
+(e.g. the list is the reply's first block). Recorded as open, not as green.
+
+Reps 2–3 pending at commit time.
+
+**Change class:** portability fix to an existing gate. Checklist steps, tier rules, HARD-GATE,
+and terminal states untouched.

@@ -1,6 +1,6 @@
 ---
 name: execute-common
-version: 2.2.0
+version: 2.3.0
 description: Use when build-in-waves, build-by-story, or build-inline loads the shared controller recipe — produces an In-progress catalog stamp, a runtime-bound session snapshot, lease state, ledger state, and a revision-bound close receipt.
 ---
 
@@ -170,7 +170,9 @@ A `Verified:` line is a completion claim. REQUIRED SUB-SKILL: use
 
 ## Todos — GATE
 
-Via TodoWrite before any dispatch or Task 1: **one todo per task** **and**
+Before any dispatch or Task 1, on a **visible list** — the harness's todo /
+task-list tool when it exposes one, otherwise a checklist written into your reply
+and restated at each task boundary: **one todo per task** **and**
 one terminal todo **Close branch** (the close sequence below — created now,
 not later). Add a **Polish Diff** todo only when a polish predicate is
 already known to hold (user asked up front). Otherwise create the Polish

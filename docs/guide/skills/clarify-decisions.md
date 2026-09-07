@@ -27,6 +27,20 @@ Underspecified intent before build; user asks to be grilled; or a parent require
 
 When ON, load `production-coverage.md` (Frame · Journey · Contract · Reliability · Failure · Operate · Freeze). Missing cells without owner keep the open set alive.
 
+## Compat obligation
+
+Separate from the coverage gate, and read on every interview. `docs/agents/project.md`
+**Project posture** carries a **Compat obligation** — `None` / `Internal` / `External` —
+written, or derived from lifecycle stage when the line is absent (pre-release → None,
+released → External). It, not delivery intent, decides the migration lens.
+
+On **None**, options and the Recommendation on an `architecture` or `data` card change the
+shape in place: rewrite the committed migration, rename the column, change the endpoint,
+delete the dead path. A parallel column, a sync trigger, a `v2` name, or a deprecation
+window on a None repo buys compatibility with a consumer the posture says does not exist —
+a defect in the card, not caution. On **Internal** / **External** those costs are
+first-class. Absent posture: no compat lens either way.
+
 ## Channel and open set
 
 Inline chat only. No fixed round count. Stop when high-blast forks are empty; when ON, also no coverage cell Missing without owner.

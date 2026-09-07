@@ -107,7 +107,7 @@ Each maps to the label string *this repo actually uses*, so `triage` never creat
 
 **F. Docs layout.** Specs at `docs/specs/`, ADRs at `docs/adr/`, and a glossary that is either single-context (one root `CONTEXT.md`) or multi-context (a `CONTEXT-MAP.md` pointing at per-context files, typically a monorepo).
 
-**G. Project posture.** Delivery intent and lifecycle stage in `docs/agents/project.md` — how carefully to build right now.
+**G. Project posture.** Delivery intent, lifecycle stage, and compat obligation in `docs/agents/project.md` — how carefully to build right now, and what a change is allowed to break.
 
 **H. Team composition.** Roster and optional ownership notes in `docs/agents/project.md` `## Team`, drafted from local git/CODEOWNERS/manifests then confirmed. Skills package collaboration by Solo/Small/Multi **band** without changing process gates.
 

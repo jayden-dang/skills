@@ -1,6 +1,6 @@
 ---
 name: interpret-session
-version: 1.5.1
+version: 1.6.0
 description: Companion beside a technical discussion — in the user's language or English —
   that builds a mental model you can reason with, takes a stance, and produces a paste-back
   reply. Run with /interpret-session.
@@ -62,7 +62,7 @@ The first two halves fail the same way — the user is left holding an unresolve
    When the user has already written to you in a non-English language, propose that language and let them confirm in a tap — still show **English** as an equal option (they may want English critique even if they greeted you in L1).
    From the loop onward, write **every** section header, label, and explanation in the chosen companion language. Stance-block labels and claim prefixes appear in English in *this* file only as skill documentation. Verbatim code/identifiers stay as in the paste. Carry-back rules: see **Carrying the decision back**.
 
-2. **Project posture — reuse, don't re-ask.** Read the **Project posture** section of `docs/agents/project.md` (delivery intent + lifecycle stage). When it's there, adopt those values silently and just state the one line you read ("Reusing project posture: MVP, early development") — do not ask. Only when the file or that section is absent, ask the two directly, in English: delivery intent (Production / MVP / Run Spike / Research / Learning) and lifecycle stage (Idea / Early development / Active development / Cut Released / Scaling / Maintenance). This posture tunes how hard the analysis leans on migration, backward-compat, and deprecation.
+2. **Project posture — reuse, don't re-ask.** Read the **Project posture** section of `docs/agents/project.md` (delivery intent + lifecycle stage). When it's there, adopt those values silently and just state the one line you read ("Reusing project posture: MVP, early development") — do not ask. Only when the file or that section is absent, ask the three directly, in English: delivery intent (Production / MVP / Run Spike / Research / Learning), lifecycle stage (Idea / Early development / Active development / Cut Released / Scaling / Maintenance), and compat obligation (None / Internal / External). Delivery intent is the quality bar, not a release state. The migration lens comes from **compat obligation** — the written line, else derived from lifecycle stage (Idea / Early / Active development → **None**; Cut Released / Scaling / Maintenance → **External**): on **None**, a stance recommending a parallel column, a `v2` name, or a deprecation window is recommending compatibility with a consumer that does not exist; on **Internal** / **External**, weigh those costs as first-class.
 
 3. **Feedback wanted** (ask, in English — this is per-session, not a project fact): Critical review / Alternative ideas / Architecture / Product / Trade-off analysis / General understanding. Route Task 1–2 more only if they would materially sharpen the analysis. Do not interrogate — this is a quick intake.
 

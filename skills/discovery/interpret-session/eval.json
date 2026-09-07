@@ -132,5 +132,18 @@
       "there is no seven-slot stance, option-delta table, pressure-test list, or decision-boundary block",
       "no architecture options are invented to fill a template"
     ]
+  },
+  {
+    "eval_id": 12,
+    "eval_name": "stance-reads-compat-obligation-not-delivery-intent",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § Compat obligation — RED S-COMPAT-NONE (3/3 Sonnet baselines picked the additive option); GREEN v1.6.0",
+    "prompt": "Project posture read from the repo: Delivery intent Production, Lifecycle stage Active development, no Compat obligation line. The other session pasted a data card on turning a free-text `orders.status` column into an enum, recommending option B — a parallel column with a sync trigger and a deprecation window — because 'additive migrations are the safe default for a Production project'. Option A rewrites the committed migration in place; the repo's only consumer is the web app in the same monorepo.",
+    "assertions": [
+      "compat obligation is read as None, derived from the pre-release lifecycle stage",
+      "the stance picks the in-place rewrite over the parallel-column option",
+      "the Versus slot amends or rejects the other session's 'Production means additive' reasoning",
+      "Production delivery intent is not read as evidence that a database is live or that migrations have run for real"
+    ]
   }
 ]

@@ -13,7 +13,7 @@ schema: foundation-note/v1
 subject: <topic name>
 target_language: <code or name>
 learner_familiarity: new | partial | strong
-project_posture: <delivery intent + lifecycle, or unknown>
+project_posture: <delivery intent + lifecycle + compat obligation, or unknown>
 
 ## Must-know (foundation cards)
 - (<kind>) <card> — <one line>

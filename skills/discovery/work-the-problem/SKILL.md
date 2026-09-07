@@ -1,6 +1,6 @@
 ---
 name: work-the-problem
-version: 1.0.0
+version: 1.1.0
 description: >
   Works a design or framing problem to closure with multi-round breakdown,
   foundation-to-feature teaching, disk artifacts, and a carry-back brief for the
@@ -62,8 +62,10 @@ Ask in English until companion language is chosen. Numbered list or `AskUserQues
 2. **Learner posture** — familiarity `new` | `partial` | `strong`; goal: close a
    frame-change question | stuck decision | both.
 3. **Project posture** — reuse `docs/agents/project.md` **Project posture** when
-   present (one-line adopt). Else ask delivery intent + lifecycle. Scales ops
-   language only; never skips foundation.
+   present (one-line adopt). Else ask delivery intent + lifecycle + compat
+   obligation. Scales ops language only; never skips foundation. On compat
+   obligation **None** (written, else derived: pre-release lifecycle → None), a root worked in
+   terms of keeping an old shape alive is the wrong root.
 4. **Problem lock** — short name · why now · anchor (paste | path | question | symptom).
 5. **Success test** — one sentence for when the root counts as *worked*.
 6. **Artifact slug** — kebab id (default from problem name).

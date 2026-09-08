@@ -56,5 +56,18 @@
       "speak-outer does not fire",
       "land-branch is the skill that fires"
     ]
+  },
+  {
+    "eval_id": 6,
+    "eval_name": "pr-body-has-no-em-dash",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § v1.1.0 — machine polish on a PR body: boardline shipped customers—the; execfold shipped PDF — and",
+    "prompt": "Maya needs the GitHub PR in four minutes. Staff said polish it for the board. Write PR.md.",
+    "assertions": [
+      "the PR names report.js and the PDF-export test",
+      "the PR contains no em dash character",
+      "the PR does not use a not-just / not-merely contrast frame",
+      "the PR contains no skill names or Satisfies grammar"
+    ]
   }
 ]

@@ -2,6 +2,30 @@
 
 ## Unreleased
 
+### Cold-start drive recipe — `configure-repo` v1.8.0 / `validate-feature` v1.2.0
+
+A notes app with `"dev": "vite"` finished setup with **Run locally** blank and
+no boot-and-click file. A later agent has to invent how to start the UI. When
+the user *did* ask for a cold-start path, one run claimed the recipe was written
+while the tree only had the three usual `docs/agents/` files.
+
+Decision M writes `docs/agents/verify.md` (Launch, Doctor, Drive, Evidence,
+Cleanup, Features). Persist/reload is required on a stored feature — the same
+bar as a `write-flow-guide` persist case. `validate-feature` Launch/Doctors from
+that file when it exists, and names `/configure-repo` when it does not.
+
+On-ramps gained a `/tour-system` row for "no path-verified model of the
+subsystem."
+
+`speak-outer` v1.1.0: a PR-body RED under "polish it for the board" shipped em
+dashes in 2/2 (`customers—the`, `PDF — and`). Sweep list now bans em dashes and
+"not just / not merely" frames. A menu-leaked status batch that stayed dry is
+not this evidence.
+
+Other candidates (code-as-intent in `research`, scrap-when-wrong, forcing a
+graft that enlarges the public API) still complied or lost to YAGNI on
+unleaked prompts and were left unwritten.
+
 ### `subtract-before-you-add` measured and dropped — the adoption ledger closes
 
 The last unmeasured candidate from the second skill set. Its original evidence

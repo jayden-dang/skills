@@ -1,8 +1,8 @@
 ---
 name: speak-outer
-version: 1.0.0
-description: Use when writing anything a person will read — a status, a reply,
-  a standup note, a PR body — produces outer-register prose with no process
+version: 1.1.0
+description: Use when writing anything a person will read (a status, a reply,
+  a standup note, a PR body). Produces outer-register prose with no process
   machinery.
 ---
 
@@ -22,13 +22,14 @@ labels, requirement-citation grammar, and ledger jargon stay off the page.
 
 ## The Sequence
 
-1. **NAME THE READER** — a person, not the next skill. *Done when: you can
+1. **NAME THE READER:** a person, not the next skill. *Done when: you can
    say who will read this out loud.*
-2. **WRITE THE OUTER** — what is in, what is next, in the words of the
+2. **WRITE THE OUTER:** what is in, what is next, in the words of the
    work (invoice, report, PDF, test). *Done when: a manager could read it
    without knowing this skill set exists.*
-3. **SWEEP** — delete every process token before the file lands. *Done
-   when: the sweep list below is empty in the outgoing text.*
+3. **SWEEP:** delete every process token and every machine-polish mark
+   before the file lands. *Done when: the sweep list below is empty in the
+   outgoing text.*
 
 ## Sweep list
 
@@ -38,6 +39,8 @@ These tokens do not appear in anything a person reads:
 - `REQUIRED SUB-SKILL`
 - `Pass:`, `Tier 2`, `Satisfies:`, `Core hub`
 - "closed the loop", "execute loop", "prove the claim" as process talk
+- em dashes (`—`), including glued ones (`customers—the`). Use a period or a comma.
+- contrast frames: "not just X, but Y" / "not merely a bugfix, a foundation"
 
 The ledger, session notes, and inner working set may still use those
 tokens. They are not the reply.
@@ -51,13 +54,15 @@ tokens. They are not the reply.
 | "Core hub is how we say where rounding lives" | Say `report.js`. "Hub" is inner register. |
 | "build-inline / Pass: loop belongs in a status" | That is the inner track leaking. The outer names the work, not the protocol. |
 | "I'll leave the jargon; she can skip it" | If she has to skip it, it should not have been written. |
+| "Staff said polish it for the board" | The boardline PR sold trust-erosion with an em dash. Facts in two short sentences. |
 
-## Red Flags — stop and rewrite the outer
+## Red Flags: stop and rewrite the outer
 
 - You are about to paste session notes or a skill checklist into a reply
 - The draft contains `REQUIRED SUB-SKILL`, `Satisfies:`, or a skill name
 - You wrote "closed the loop" or "execute loop" to a human
 - The first sentence names a skill instead of the work
+- The draft contains `—` or a "not just / not merely" contrast frame
 
 If a leak already landed, rewrite the file before doing anything else.
 
@@ -72,6 +77,6 @@ Maya: "I'm back. What happened?"
 
 Outer:
 
-> Still on BILL-1.4 — invoice totals should round once, in `report.js`.
+> Still on BILL-1.4. Invoice totals should round once, in `report.js`.
 > Next is a failing test for PDF export on the unrounded path.
 

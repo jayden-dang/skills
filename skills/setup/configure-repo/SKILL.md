@@ -1,6 +1,6 @@
 ---
 name: configure-repo
-version: 1.7.0
+version: 1.8.0
 description: Sets up docs/agents config so this skill set can run in an existing repo.
 disable-model-invocation: true
 ---
@@ -15,13 +15,13 @@ Template seeds live in this skill set's `templates/` directory. Resolve pack see
 
 ## Track progress
 
-This skill has seven steps (decisions A–L inside step 2) and skipping one is the common failure — an unconfigured tracker, or the Step 6 verification gate never run. Before Step 1, create a todo for each numbered step below and complete them in order, checking each off only when its **Done when** is met. Step 6 (prove the configuration works) is not optional.
+This skill has seven steps (decisions A–M inside step 2) and skipping one is the common failure — an unconfigured tracker, or the Step 6 verification gate never run. Before Step 1, create a todo for each numbered step below and complete them in order, checking each off only when its **Done when** is met. Step 6 (prove the configuration works) is not optional.
 
 ## 1. Read the setup state
 
 This step does one thing: determine whether the repo is already configured for the skill set, and how completely. Read the repo's **own files only** — do not probe external services or their auth (no `gh auth`, `gh label list`, `glab`, no Linear MCP call) and do not read the user's shell environment (no `env`, no `*_API_KEY` probing). Detection is not the job here: the *user* drives what gets set up in Step 2, and any service or toolchain specifics are gathered later, in service of a choice the user has already made. Check the setup markers — all by reading files in the repo:
 
-- `docs/agents/project.md`, `docs/agents/issue-tracker.md`, `docs/agents/triage-labels.md` — present and filled in, or missing?
+- `docs/agents/project.md`, `docs/agents/issue-tracker.md`, `docs/agents/triage-labels.md`, `docs/agents/verify.md` — present and filled in, or missing?
 - `## Team` section inside `docs/agents/project.md` — present and filled, or a gap?
 - An `## Agent skills` section in `CLAUDE.md` / `AGENTS.md` (note which of the two files exists)
 - Seed files the skill set expects: `docs/specs/INDEX.md` (domain router) + `docs/specs/catalog/<domain>.md`, a glossary (`CONTEXT.md` or `CONTEXT-MAP.md`)
@@ -38,7 +38,7 @@ You may still read the repo's own manifests (lockfiles, `package.json` scripts, 
 
 ## 2. Decide, one section at a time
 
-Walk the twelve decisions below (A–L; I is optional project-docs; K is optional remote environments; L is optional catalog sync) strictly one at a time: give a two-or-three-sentence explainer (what this is, which skills consume it, what changes with each choice), state your recommendation with a one-line reason, then wait for the user's answer before moving on. Never dump all sections at once. Assume the user has not seen these concepts before.
+Walk the thirteen decisions below (A–M; I is optional project-docs; K is optional remote environments; L is optional catalog sync; M is the cold-start drive recipe) strictly one at a time: give a two-or-three-sentence explainer (what this is, which skills consume it, what changes with each choice), state your recommendation with a one-line reason, then wait for the user's answer before moving on. Never dump all sections at once. Assume the user has not seen these concepts before.
 
 ### A. Issue tracker
 
@@ -124,11 +124,15 @@ Explainer: `land-branch` reads `Default PR base:` from `docs/agents/project.md` 
 
 **Done when:** catalog sync value confirmed, or explicitly left unset.
 
+### M. Cold-start drive recipe (optional — default Yes when a runnable surface exists)
+
+**WHEN this decision is offered, read `verify-control.md` beside this file and follow it exactly** — the offer, skip rule, write step, and prove step. `npm test` is not a boot-and-click recipe. **Done when:** Yes with `docs/agents/verify.md`, or explicit Skip.
+
 ## 3. Draft and confirm
 
 Show the user, before writing anything:
 
-- the three `docs/agents/*.md` files' contents (including confirmed `## Team` when Decision H was confirmed)
+- the `docs/agents/*.md` files' contents (including `verify.md` when Decision M is Yes, and confirmed `## Team` when Decision H was confirmed)
 - the `## Agent skills` block destined for CLAUDE.md/AGENTS.md
 
 Let them edit. **Done when:** the user approves the drafts.
@@ -158,8 +162,9 @@ The block (include the project-docs bullet only if decision I was Yes) is seeded
 9. If decision J (Default PR base) was confirmed, add `- **Default PR base:** \`<branch>\`` to the **Project posture** section of `docs/agents/project.md`, under the additive rule above — merge in, never clobber a value the user already set. If the user declined decision J, write nothing: leave the field absent so `land-branch` asks per invocation.
 10. Follow the write step in `remote-environments.md` for decision K.
 11. Follow the write step in `catalog-sync-choice.md` for decision L (index-only gitignore append).
+12. Follow the write step in `verify-control.md` for decision M.
 
-**Done when:** all files are written, `.skills/` and `.worktrees/` are git-ignored, index-only gitignore applied only when L=`index-only`, and `git status` shows only the expected additions/edits.
+**Done when:** all files are written, `.skills/` and `.worktrees/` are git-ignored, index-only gitignore applied only when L=`index-only`, M's write ran or skipped, and `git status` shows only the expected additions/edits.
 
 ## 5. Offer Context7 MCP
 
@@ -183,10 +188,11 @@ Be cost-aware — do not run the whole suite to prove wiring:
 - Unit/e2e runners: prove the runner resolves its config cheaply — run the **single-test-file pattern** from `project.md` against one existing test file, or the runner's collect-only/list mode. Never trigger a full e2e run during setup; state that the full run is the user's to do later.
 - Audit Trace check: run it (REQUIRED SUB-SKILL: use `audit-trace`) and confirm it reports a clean finding set — zero requirements is a valid clean state. The check is `grep`/`git` over `docs/specs/` (and optional architecture), not application test trees.
 - If the tracker is a remote service (`github` / `gitlab` / `linear`), prove it is reachable and authenticated with **one read-only call** — `gh issue list` / `glab issue list`, or for Linear a single MCP list call (or a minimal `issues` GraphQL query). This verifies the tracker the *user already chose*; it is not the setup-time detection Step 1 forbids — the choice is made, and this call only proves it works. A missing CLI, an unauthenticated session, or a disconnected or unauthenticated MCP server is a wiring failure; it would otherwise stay hidden until `triage` fails weeks later. `local` and `other` need no reachability check.
+- Decision M = Yes: follow the **Prove** step in `verify-control.md` (Doctor, then one Drive). A recipe never executed is a draft.
 
 Report a small table: each command → wired? → passed / failed / pre-existing.
 
-**Done when:** every configured command is proven **wired** (no wiring failures remain), the audit-trace check runs clean, the configured tracker answers a read-only call, and any content failures are listed for the user.
+**Done when:** every configured command is proven **wired** (no wiring failures remain), the audit-trace check runs clean, the configured tracker answers a read-only call, Decision M is proven or skipped, and any content failures are listed for the user.
 
 ## 7. Finish
 

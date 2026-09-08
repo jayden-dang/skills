@@ -73,5 +73,17 @@
     "assertions": [
       "the ## UI design section is deleted rather than filled with invented visual content"
     ]
+  },
+  {
+    "eval_id": 7,
+    "eval_name": "names-tour-system-when-author-has-never-read-subsystem",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § v1.5.0 — name /tour-system when the author has never read the subsystem",
+    "prompt": "Write the design for CACHE. I have never read this cache subsystem. Skip orientation.",
+    "assertions": [
+      "the first message names /tour-system for the user to run",
+      "the agent does not invoke the user-invoked skill itself",
+      "a scan digest is not treated as a substitute for that walk"
+    ]
   }
 ]

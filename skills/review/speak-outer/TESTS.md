@@ -84,3 +84,27 @@ H2 `vet-feedback`.
 
 Not run as a 5-rep A/B. One form bound 4/4.
 
+## v1.1.0 — machine polish on a PR body (2026-09-08)
+
+**Roster:** grok-4.5. A/B/C menus in an earlier batch named the dry option
+and 3/3 complied; that batch is discarded as a leak.
+
+**RED (v1.0.0 loaded).** Maya needs a GitHub PR in four minutes. Staff:
+"Polish it. Dry notes bounce off the board. Sell why rounding matters."
+No option menu. No tell-vocabulary in the prompt.
+
+| Rep | File | Verdict |
+|---|---|---|
+| boardline | `PR.md` | **FAIL** glued em dash `customers—the` plus trust-erosion sell |
+| execfold | `PR.md` | **FAIL** spaced em dash `PDF — and how finance` |
+
+Process tokens were already gone. The remaining leak is polish punctuation
+the boardline file actually shipped.
+
+**GREEN:** sweep list adds em dashes and "not just / not merely" frames.
+Worked example no longer models an em dash. Re-run the same PR prompt.
+
+**Observed (grok-4.5 ×2, `pressline` / `inkboard`).** Both `PR.md` files name
+`report.js` and the PDF-export test. Zero em dashes. Zero "not just / not
+merely". Zero process tokens.
+

@@ -93,3 +93,41 @@ existing convention rather than a new one.
 The distinction matters for anyone repeating this: a pointer earns its place
 either because some runs skip it, or because it is scoped to one phase of a long
 run. A pointer that is neither is just an extra hop.
+
+## v1.8.0 — cold-start drive recipe (Decision M)
+
+**Roster:** grok-4.5 only (this edit).
+
+**RED (v1.6.1, no Decision M).** Fixture `plainsetup`: Vite
+notes app, `"dev": "vite"` in `package.json`, user locked A–L and Context7 skip,
+never mentioned booting or clicking. Agent wrote `docs/agents/project.md` with
+**Run locally (dev)** Backend/API row blank and no Frontend command, and no
+`docs/agents/verify.md`. `DONE.txt` listed only the existing wizard outputs.
+
+When a second fixture (`notewell`) *did* ask for a cold-start click path, the
+same model improvised `docs/agents/drive.md` — so the job is doable, but the
+wizard does not produce it unless the user already knows to ask.
+
+A third fixture (`paperkite`) was given the same extra ask. It **reported**
+option A (recipe written and one feature proven) while the tree only had
+`project.md` / `issue-tracker.md` / `triage-labels.md` — no `verify.md`, no
+`drive.md`. Score the files, not the letter.
+
+Verbatim cost: a later agent has to invent `npm run dev` and the create-note
+click path; **Run locally** shipped empty on a repo that had a `dev` script.
+
+**GREEN (v1.8.0, grok-4.5 ×2, fixtures `notecove` / `papercove`).** Same locked
+A–L plus **Yes** on Decision M. Install and long-running server forbidden
+(`drive: unproven` allowed).
+
+Both wrote `docs/agents/verify.md` with Launch, Doctor, Drive, Evidence,
+Cleanup, Features. Both filled **Run locally** Frontend as `npm run dev` /
+`http://localhost:5173`. Both named a reload persist check. RED's empty
+Frontend row did not recur.
+
+**No-ops recorded the same day, not written.** research "code is not intent"
+2/2; reroute-plan scrap 2/2 Design-level; design-solution graft 2/2 (forcing
+`snapshot()` lost to YAGNI). A leaked speak-outer menu stayed dry; an unleaked
+PR-body prompt shipped em dashes and is recorded on speak-outer v1.1.0.
+design-solution v1.5.0 names `/tour-system` when the author has never read the
+subsystem. On-ramps gained a `/tour-system` row.

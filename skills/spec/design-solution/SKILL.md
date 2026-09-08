@@ -1,6 +1,6 @@
 ---
 name: design-solution
-version: 1.4.1
+version: 1.5.0
 description: Use when approved requirements need their technical design — the design.md /
   architecture doc spelling out HOW the requirements get built. After
   specify-behavior, before plan-tasks.
@@ -19,6 +19,10 @@ surface — signatures, data shapes, save/load paths — into a digest file (`.s
 or `.skills/_pending-<slug>/scan.md` before CODE), not raw source; pull a specific file into
 context only when a decision hinges on its exact contents. (No subagents? Read the surface
 directly, only the parts a decision needs.)
+
+WHEN the user has said they have never read the touched subsystem, **name**
+`/tour-system` for them to run before treating a scan digest as a traced model.
+Do not invoke it. The on-ramps table is the one home for that row.
 
 **After the scan digest and before the reuse ladder:** run a **fresh** retrieval.
 REQUIRED SUB-SKILL: use `load-subgraph` seeded with the feature **CODE**,

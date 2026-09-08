@@ -98,7 +98,7 @@ Full skill index: [Skill reference](skills/README.md) · laws: [`AGENTS.md`](../
 2. **Wire the repo**
    - **Greenfield / empty:** **`/bootstrap-repo`** → stack + harness + one green test → then configure.
    - **Existing codebase:** **`/configure-repo` only** (do not bootstrap).
-3. **`/configure-repo`** — tracker, labels, verify commands, release steps, team,
+3. **`/configure-repo`** — tracker, labels, verify commands, cold-start drive recipe, release steps, team,
    posture, optional Remote environments; writes `docs/agents/*.md`, seeds
    `docs/specs/INDEX.md` / glossary as needed, `## Agent skills` in
    `AGENTS.md`/`CLAUDE.md`; offers Context7 MCP.

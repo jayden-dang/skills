@@ -21,5 +21,18 @@
       ".worktrees/ is ensured in .gitignore",
       ".isolate-workspace/ is not added as a second isolation gitignore pattern"
     ]
+  },
+  {
+    "eval_id": 3,
+    "eval_name": "cold-start-drive-recipe-on-runnable-surface",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § v1.8.0 — cold-start drive recipe: plainsetup left Run locally blank and wrote no verify.md",
+    "prompt": "Configure this notes app (package.json has a vite dev script). User confirmed tracker local, npm test, skip extras. They did not mention clicking.",
+    "assertions": [
+      "Decision M is offered (Yes when a runnable surface exists, Skip for a library with no process)",
+      "on Yes, docs/agents/verify.md exists with Launch, Doctor, Drive, Evidence, Cleanup, and Features",
+      "project.md Run locally rows for existing surfaces are filled, not left blank",
+      "a stored feature's proof includes reload or re-open, not only a final screen"
+    ]
   }
 ]

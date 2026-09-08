@@ -7,7 +7,7 @@
 | **Bucket** | setup |
 | **Invocation** | user-invoked — run as `/configure-repo`; no skill may auto-invoke it, others only name it for the user to run |
 | **Reads** | `git remote`, `CLAUDE.md` / `AGENTS.md`, existing lockfiles and CI, tracker labels, `docs/agents/` |
-| **Writes** | `docs/agents/project.md`, `docs/agents/issue-tracker.md`, `docs/agents/triage-labels.md`, seed spec files, the `## Agent skills` block |
+| **Writes** | `docs/agents/project.md`, `docs/agents/issue-tracker.md`, `docs/agents/triage-labels.md`, `docs/agents/verify.md` (Decision M), seed spec files, the `## Agent skills` block |
 | **Calls** | the discipline of [`prove-claim`](prove-claim.md) (Step 6 gate) |
 | **Called by** | nothing — it is user-invoked; [`bootstrap-repo`](bootstrap-repo.md) redirects the user here when a directory is not greenfield |
 
@@ -27,7 +27,7 @@ Before asking anything, learn the repo's starting state: `git remote -v` (GitHub
 
 ### 2. Decide, one section at a time
 
-Eleven decisions (A–K), walked strictly one at a time: a two-or-three-sentence explainer, a recommendation with a one-line reason, then a wait for the user's answer. The skill assumes the user has never seen these concepts and never dumps all sections at once. Decision **I** (optional project-docs layer) defaults to No. Decision **K** (Remote environments) is skipped when nothing is deployed.
+Thirteen decisions (A–M), walked strictly one at a time: a two-or-three-sentence explainer, a recommendation with a one-line reason, then a wait for the user's answer. The skill assumes the user has never seen these concepts and never dumps all sections at once. Decision **I** (optional project-docs layer) defaults to No. Decision **K** (Remote environments) is skipped when nothing is deployed.
 
 - **A. Issue tracker.** Where issues live and which commands touch them, for `triage`, `plan-tasks` when publishing tasks, and `cut-release`. Options are **github** (`gh`), **gitlab** (`glab`), **linear** (a connected MCP server, preferred, or the GraphQL API — for teams that track work in Linear rather than the code host), **local** (markdown files under `.scratch/<feature>/` each carrying a `Status:` line), and **other** (freeform prose describing the workflow). Linear will not appear in `git remote`, so it is offered whenever the user says the team lives there even if the host is GitHub or GitLab. A github/gitlab follow-up asks whether external pull requests are a request surface; if yes, `triage` pulls external PRs into the same queue. Skipped entirely for linear/local/other.
 - **B. Triage label mapping.** `triage` moves issues through canonical roles but must apply this repo's actual label strings or it creates duplicates. The seven canonical roles are five states and two categories:
@@ -52,6 +52,8 @@ Eleven decisions (A–K), walked strictly one at a time: a two-or-three-sentence
 - **I. Project-docs layer (optional, default No).** Optional product vision, architecture-invariant spine, and engineering guidelines via [`define-project`](define-project.md). Small repos should decline.
 - **J. Default PR base.** Optional trunk `land-branch` reads from `docs/agents/project.md`. The user names the branch; declining leaves the field unset.
 - **K. Remote environments (optional — skip if nothing is deployed).** Table in `docs/agents/project.md` that [`debug-remote`](debug-remote.md) and [`assess-observability`](assess-observability.md) read (backend + read query, never tokens). Done when the table is confirmed or explicitly skipped.
+- **L. Catalog sync (optional).** INDEX-only vs full-triad; default unset.
+- **M. Cold-start drive recipe.** Yes when a UI, CLI, or HTTP process exists: writes `docs/agents/verify.md` (Launch / Doctor / Drive / Evidence / Cleanup / Features) and fills **Run locally**. Skip for a library with nothing to boot. A stored feature's proof includes reload or re-open. Step 6 runs Doctor, then one Drive. [`validate-feature`](validate-feature.md) reads this file.
 
 ### 3. Draft and confirm
 
@@ -81,7 +83,7 @@ Each configured verify command is run fresh and classified. The distinction that
 - **Content failure** — the tool ran correctly but reported problems: type errors, lint warnings, failing tests. The command is wired right; the repo has pre-existing issues. These are recorded for the user and do **not** block setup.
 - **Pass** — wired and green.
 
-The gate is cost-aware. Typecheck and lint run in full. Test runners are proven cheaply — the single-test-file pattern against one existing file, or collect-only mode — never a full e2e run during setup. The [`audit-trace`](audit-trace.md) check needs no wiring proof — it is a set of `grep`/`git` passes, not an installed tool — so the gate instead confirms its inputs: the specs directory exists and the test globs and ignore list from Decision C are recorded (with zero requirements the check is trivially clean). A remote tracker (github / gitlab / linear) is proven reachable and authenticated with one read-only call; local and other need no check. The step reports a small table: each command → wired? → passed / failed / pre-existing. Done when every command is proven wired, the audit-trace inputs are recorded, the tracker answers, and content failures are listed.
+The gate is cost-aware. Typecheck and lint run in full. Test runners are proven cheaply — the single-test-file pattern against one existing file, or collect-only mode — never a full e2e run during setup. The [`audit-trace`](audit-trace.md) check needs no wiring proof — it is a set of `grep`/`git` passes, not an installed tool — so the gate instead confirms its inputs: the specs directory exists and the test globs and ignore list from Decision C are recorded (with zero requirements the check is trivially clean). A remote tracker (github / gitlab / linear) is proven reachable and authenticated with one read-only call; local and other need no check. Decision M = Yes runs Doctor, then one Drive (or records `drive: unproven`). The step reports a small table: each command → wired? → passed / failed / pre-existing. Done when every command is proven wired, the audit-trace inputs are recorded, the tracker answers, Decision M is proven or skipped, and content failures are listed.
 
 ### 7. Finish
 

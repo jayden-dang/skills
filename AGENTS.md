@@ -498,5 +498,6 @@ This repo is configured for a spec-driven skill set.
 Repo config the skills read:
 
 - Verify commands, release steps, Remote environments, posture, Team: `docs/agents/project.md`
+- Cold-start drive (Launch / Doctor / Drive / Evidence): `docs/agents/verify.md`
 - Issue tracker operations: `docs/agents/issue-tracker.md`
 - Triage label mapping: `docs/agents/triage-labels.md`

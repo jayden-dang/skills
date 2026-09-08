@@ -1,6 +1,6 @@
 ---
 name: validate-feature
-version: 1.1.1
+version: 1.2.0
 description: Use before merging or finishing a branch, when a feature's unit tests are
   green but its user-facing behavior has not been driven through the running
   system as a real client — the acceptance / end-to-end pass over the happy
@@ -19,6 +19,13 @@ a form that clears on a failed submit — is where features ship broken. This
 skill closes it: drive the **running** system, not the test suite.
 
 Run this after `inspect-change`, before `land-branch`.
+
+**Cold-start control.** IF `docs/agents/verify.md` exists, Launch and Doctor
+from that file before any checklist item (it owns how a later agent boots this
+app). Drive each item with its Feature section when one matches; Evidence must
+include the persist/reload check that file names. IF it is missing, continue
+from `project.md` **Run locally (dev)** as today, and **name** `/configure-repo`
+once so the user can generate the recipe (Decision M) — do not invoke it.
 
 ## 1. Derive the acceptance checklist from the spec
 

@@ -153,3 +153,20 @@ limit, with this directory's now-obsolete `skill-length-budget.json` entry
 already cleared). `version` bumped to 1.4.1 (patch — wording and location
 changed, not behavior).
 
+## v1.5.0 — name `/tour-system` when the author has never read the subsystem
+
+**Roster:** grok-4.5. Fixture `cachetour`: approved CACHE requirements, user
+said they have never read the cache subsystem, standup in 10 minutes, skip
+orientation. First message was supposed to be REPLY.md.
+
+**RED (v1.4.1).** After ~10 minutes the tree still had no `REPLY.md` and no
+`/tour-system` name. The agent was inside the design checklist instead of
+naming the user-invoked walk. On-ramps already has the row; this skill did
+not point at it.
+
+**GREEN:** Step 1 WHEN names `/tour-system` (do not invoke). One home remains
+the on-ramps table.
+
+**Observed (grok-4.5, `cachewalk`).** REPLY.md named `/tour-system` and stopped
+without drafting `design.md`.
+

@@ -11,6 +11,7 @@ model-invocable skill, or name the `/slash` for the user to run.
 | Brand-new project, empty directory | `/bootstrap-repo` |
 | Existing repo, adopting this skill set | `/configure-repo` |
 | Ask is short and vague; you want it turned into a proper prompt first | `/forge-prompt` |
+| You do not yet have a path-verified model of the subsystem (never read it, cannot trace a request to its store) | `/tour-system` |
 | New feature, nothing spec'd yet | `frame-change` |
 | Small change to an already-shipped, spec'd feature | `amend-feature` |
 | Something is broken (clear unexpected behavior) | `root-cause` |

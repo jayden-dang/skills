@@ -1,6 +1,6 @@
 ---
 name: build-by-story
-version: 2.0.1
+version: 2.0.3
 description: Use when an approved tasks.md has Execution-mode story-unit and
   needs a human-gated review-unit execution record with derived units, bounded
   task leases, mode-change write-back, and a whole-branch review.
@@ -18,19 +18,12 @@ whole-branch review.
 
 Continuous multi-task orchestration without unit barriers is `build-in-waves`.
 Controller-implements-without-subagents is `build-inline`. Invoking this skill
-selects **story-unit** execution. If the header already says `continuous`, hand
-off to `build-in-waves`. If the user wants no subagents, name `build-inline`.
+selects **story-unit** execution; continuous-header handoff is in Mode
+ownership below. If the user wants no subagents, name `build-inline`.
 
-**Context rule:** workers and reviewers resume only within a valid semantic lane
-lease. Hard rotation triggers start a fresh context from the feature capsule and
-task delta; bulk artifacts travel as paths under `.skills/`, never pasted
-session history.
-
-**Shared controller recipe:** REQUIRED SUB-SKILL: use `execute-common`.
-Load `../execute-common/SKILL.md` when Setup preflight / ledger / todos or
-After the last unit starts. That file is the one home for those steps and
-for the close-sequence predicates.
-This file owns story-unit barriers and unit derivation. Load
+**Shared controller recipe:** REQUIRED SUB-SKILL: use `execute-common` — the
+one home for preflight/ledger/todos/close, applied where each Setup step below
+says. This file owns story-unit barriers and unit derivation; load
 `../execute-common/task-lifecycle.md` for task dispatch/review and use the
 continuous scheduler rules from `build-in-waves` inside each unit.
 
@@ -85,14 +78,13 @@ Align `tasks.md` to the story-unit route and continue:
    and you stay on this skill, or you have handed off to `build-in-waves`.*
 2. **Session preflight.** Apply `../execute-common/SKILL.md` **Session preflight**.
    *Done when: that section's Done when holds.*
-3. **Ledger check.** Apply `../execute-common/SKILL.md` **Ledger check**. Resume
-   also honors complete **unit** lines — skip units already ledgered complete.
+3. **Ledger check.** Apply `../execute-common/SKILL.md` **Ledger check** (its
+   story-unit clause covers skipping units already ledgered complete).
    *Done when: next task/unit is known.*
 4. **Read the plan.** Read `tasks.md` once. Record the canonical Global
-   Constraints path and content hash; dispatches reference it instead of
-   pasting it into every reviewer prompt. If `docs/agents/project.md` is
-   missing, say so, suggest `configure-repo`, and take verify commands from
-   Global Constraints.
+   Constraints path and content hash; dispatches reference and take verify
+   commands from it instead of pasting it into every reviewer prompt. If
+   `docs/agents/project.md` is missing, say so and suggest `configure-repo`.
    When `## Team` has roster/band, load band **packaging** only — never skip
    dual-verdict review for Solo. *Done when: constraints captured word-for-word.*
 5. **Derive units — GATE.** Load `story-unit-mode.md` beside this file. Run
@@ -102,11 +94,10 @@ Align `tasks.md` to the story-unit route and continue:
    *Done when: the list mirrors the plan **and** includes the Close branch todo.*
 7. **Pre-flight plan review.** One batch question for plan-internal defects
    before dispatch. Clean scan → no comment. *Done when: conflicts ruled or none.*
-8. **Unit order.** Topo-sort units (edge if any task in U depends on any task
-   in V); tie-break lowest story number. Inside each unit, use the shared
-   ready-set scheduler: serial when only one task is ready or surfaces overlap;
-   parallel only for disjoint surfaces with safe worktree isolation. *Done when:
-   unit order and each unit's effective concurrency are fixed.*
+8. **Unit order.** Fixed already by step 5's Derive partition. Inside each
+   unit, use the shared ready-set scheduler: serial when only one task is
+   ready or surfaces overlap; parallel only for disjoint surfaces with safe
+   worktree isolation. *Done when: concurrency is fixed per unit.*
 
 ## Per-unit loop
 
@@ -117,19 +108,16 @@ For each unit U in order:
 Run `../execute-common/task-lifecycle.md` for every ready task in U. The
 scheduler supplies the lane, worker/reviewer lease IDs, base revision, brief,
 report, and diff-package paths. A clean task review is ledgered before the
-unit barrier. If U contains one task, its Standards/Spec verdicts also close
-the unit; a multi-task U receives the synthesis described below.
+unit barrier; that file's single-task close-out and no-duplicate-reviewer rule
+governs whether B below still needs to dispatch.
 
 ### B. Unit barrier (after every task in U is ledgered)
 
 Load `story-unit-mode.md` **Per-unit barrier** and run it in full. The human-facing
 STOP message MUST fill every REQUIRED slot in that recipe — no freeform
-abbreviation under time pressure.
-
-For a multi-task unit, issue one unit synthesis over the clean task verdicts
-and evidence manifests before the human stop. For a single-task unit, reuse the
-task's clean Standards/Spec verdicts; do not dispatch a duplicate reviewer over
-the same scope.
+abbreviation under time pressure. A multi-task unit's one unit-scope dispatch
+(from A) is its synthesis; a single-task unit already closed in A and is not
+re-reviewed here.
 
 **Unlock:**
 
@@ -149,7 +137,7 @@ Resume the per-unit loop. After the last unit's unlock and ledger line →
 | Status | Your move |
 |---|---|
 | **DONE** | Package diff → task review. |
-| **DONE_WITH_CONCERNS** | Read concerns **and** `.skills/<CODE>/implementation-notes.md`. Entries must match the nine-field **Deviations** recipe in `../build-in-waves/implementer-prompt.md`. Missing notes path, incomplete fields, or five-field-only while claiming deviation → incomplete — re-dispatch to log first. **Map impact** `reroute-plan` / `realign-spec` or plan-falsifying → REQUIRED SUB-SKILL: use `reroute-plan` (do not accept as clean DONE). |
+| **DONE_WITH_CONCERNS** | Read concerns **and** `.skills/<CODE>/implementation-notes.md`. Entries must match the nine-field **Deviations** recipe in `../execute-common/implementer-prompt.md`. Missing notes path, incomplete fields, or five-field-only while claiming deviation → incomplete — re-dispatch to log first. **Map impact** `reroute-plan` / `realign-spec` or plan-falsifying → REQUIRED SUB-SKILL: use `reroute-plan` (do not accept as clean DONE). |
 | **NEEDS_CONTEXT** | Supply what was named; re-dispatch same model. |
 | **BLOCKED** | Context → supply; ceiling → stronger model; too large → split; plan wrong → REQUIRED SUB-SKILL: use `reroute-plan`. |
 
@@ -172,7 +160,6 @@ State the model **explicitly on every dispatch**.
 
 ## Durable progress
 
-- Start: read `.skills/<CODE>/progress.md`; trust it and `git log` over memory.
 - Never re-dispatch a task or re-open a unit the ledger marks complete.
 - After compaction, resume at the first task without a complete line; unit
   complete lines mean the human barrier already closed for that unit.

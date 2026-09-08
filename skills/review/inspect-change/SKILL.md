@@ -1,6 +1,6 @@
 ---
 name: inspect-change
-version: 1.6.0
+version: 1.7.0
 description: Use when a branch, PR, diff, or set of changes needs review before merging —
   produces a two-axis verdict (repo-standards conformance plus
   spec/requirements conformance, reported separately) — when build-in-waves
@@ -134,6 +134,27 @@ Parts (c) and (d) are each scoped by their own predicate; a part that does not a
 **Spec subagent** gets: the diff command and commit list; the requirements.md path; the step-3e admitted set and not-in-range list; the brief — walk **admitted** IDs and report (a) IDs that are missing or only partially implemented, (b) behavior in the diff no requirement asked for (scope creep), (c) IDs that look implemented but wrong; quote the requirement ID on every finding; list not-in-range IDs once (they stay missing-if-promised, not a per-ID essay); also check that each covered admitted ID has **behavior** covered by tests or acceptance evidence (domain-language tests — do **not** require ID tags in test source). When step 3a found overlapping features, the Spec subagent ALSO receives those neighbor cards (owned paths + Out-of-Scope) as context, and its brief directs it to flag — as a **reuse-miss** finding citing the neighbor's feature code — any place the diff reimplements behavior a shares-surface neighbor already owns.
 
 *Done when: both reports are back.*
+
+## 4b. Second Standards pass — when the harness can
+
+The Standards axis is the one that carries most of what a review catches, and a
+single pass over it leaves findings on the table. When the harness can dispatch
+another read-only subagent, send a second Standards reviewer with the identical
+brief in its own fresh context. Prefer a different model when the harness offers
+a choice; take a second pass on the same model when it does not, because the
+second pass is what pays and the model difference is a bonus nobody here has
+measured. Name in the report which model each Standards pass ran on, or `unknown`
+— never infer it from the harness name.
+
+**Merge the two as a union, never as a vote.** A finding one reviewer raised and
+the other missed is not weaker for being alone. Measured on a seeded diff, four
+reviewers agreed on the first five findings and split on the rest, and the two
+findings raised by exactly one reviewer were the deepest in the set — an audit
+log that could not reconstruct the incident its own code enables, and an implicit
+trust boundary in first-touch provisioning. Weighting by agreement would have
+demoted both. Deduplicate where two reports describe one defect, keep both
+framings when they name different failures of the same line, and drop nothing for
+lack of a second voice.
 
 ## 5. Aggregate
 

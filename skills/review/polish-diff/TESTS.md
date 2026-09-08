@@ -101,3 +101,33 @@ not banked.
 | same | grok-4.6 | **A** |
 
 Meta (4.5): "just list" is not a skip of the slots.
+
+## Reader-load revert criterion — proposed, dropped (2026-09-08)
+
+**Proposal.** Add a success measure to this skill: a cleanup that does not reduce
+the layers between a question and its answer gets reverted. Imported from another
+skill set, where it is a standing principle.
+
+**Method.** 2 reps, Sonnet, isolated copies. A `report-builder` repo where a
+teammate's cleanup turned an eight-line function into twenty-six across seven
+definitions — `_is_settled`, `_extract_amount`, `_sum_settled`, `_compute_tax`,
+`_compute_net`, `_assemble` — each used exactly once, behaviour identical, suite
+green. One change in the pass was genuinely good: naming the tax rate. The prompt
+asked whether the cleanup ships and never used the words reader, layer,
+indirection, or revert.
+
+**Result: 2 of 2 refused it, on reader-load grounds, in those terms.**
+
+> to understand "what does `build` compute," a reader now has to jump through
+> five extra symbol lookups for logic that was already obvious inline
+
+> it's indirection dressed up as decomposition, and it made the file 3x longer
+> without changing what it does
+
+Both verified behaviour was unchanged before judging, both kept the named
+constant, both proposed the inlined replacement, and both said green tests cannot
+catch this because nothing behavioural changed.
+
+**Dropped.** The criterion is already how this judgment gets made. What this skill
+already asks for — the concrete cost per finding, and `prove-claim` on the result
+— was enough.

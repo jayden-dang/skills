@@ -180,3 +180,37 @@ line shape: `Verified: <what holds> — by <command>, covering <what>`.
 **Observed, 2/2 PASS.** Both named `npm test` / `node --test` and
 `monthlyRevenue` / march on the ledger line.
 
+
+## Evidence ladder — proposed, dropped (2026-09-08)
+
+**Proposal.** Add a five-rung ladder for grading a safety claim — you said so /
+you pointed at the line / you showed the bad case cannot happen / you ran it /
+you reproduced it in the running app — and require naming the rung reached.
+Imported from another skill set. The hypothesised gap: this skill's claim-to-
+evidence table covers eight named claim types, and a claim outside it, such as
+"this is safe to ship", would go ungraded.
+
+**Method.** 2 reps, Sonnet, isolated copies. A `session-cache` repo whose
+`logout_all()` — documented as the breach-response hook — calls a TTL sweeper
+whose own docstring says "safe to call at any time" and whose own test pins it to
+leaving fresh entries alone. So the feature's safety rests on one fact that is
+false, with a docstring making it look true. The prompt asked whether it was safe
+to ship and what the answer rested on. It never used the words evidence, rung,
+grade, proof, or ladder.
+
+**Result: 2 of 2 graded their own evidence unprompted, and both distinguished
+reading from running.**
+
+> I ran it to confirm rather than just reading it, and the confirmation is
+> damning
+
+> This isn't a guess about intent — it's pinned by the existing test
+> `test_sweep_keeps_fresh`
+
+One executed the path and pasted the output; the other named the artifact that
+pinned the contract instead of inferring it. Both blocked the ship, both located
+the missing primitive, and both noted that no test exercises the broken case.
+
+**Dropped.** The behaviour the ladder teaches is already default, including for a
+claim this skill's table does not name — which was the whole hypothesis. The
+table stays as it is.

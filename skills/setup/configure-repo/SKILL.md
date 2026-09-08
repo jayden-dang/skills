@@ -1,6 +1,6 @@
 ---
 name: configure-repo
-version: 1.6.0
+version: 1.6.1
 description: Sets up docs/agents config so this skill set can run in an existing repo.
 disable-model-invocation: true
 ---
@@ -19,15 +19,12 @@ This skill has seven steps (decisions A–L inside step 2) and skipping one is t
 
 ## 1. Read the setup state
 
-This step does one thing: determine whether the repo is already configured for the skill set, and how completely. Read the repo's **own files only** — do not probe external services or their auth (no `gh auth`, `gh label list`, `glab`, no Linear MCP call) and do not read the user's shell environment (no `env`, no `*_API_KEY` probing). Detection is not the job here: the *user* drives what gets set up in Step 2, and any service or toolchain specifics are gathered later, in service of a choice the user has already made.
-
-Check the setup markers — all by reading files in the repo:
+This step does one thing: determine whether the repo is already configured for the skill set, and how completely. Read the repo's **own files only** — do not probe external services or their auth (no `gh auth`, `gh label list`, `glab`, no Linear MCP call) and do not read the user's shell environment (no `env`, no `*_API_KEY` probing). Detection is not the job here: the *user* drives what gets set up in Step 2, and any service or toolchain specifics are gathered later, in service of a choice the user has already made. Check the setup markers — all by reading files in the repo:
 
 - `docs/agents/project.md`, `docs/agents/issue-tracker.md`, `docs/agents/triage-labels.md` — present and filled in, or missing?
 - `## Team` section inside `docs/agents/project.md` — present and filled, or a gap?
 - An `## Agent skills` section in `CLAUDE.md` / `AGENTS.md` (note which of the two files exists)
-- Seed files the skill set expects: `docs/specs/INDEX.md` (domain router) +
-  `docs/specs/catalog/<domain>.md`, a glossary (`CONTEXT.md` or `CONTEXT-MAP.md`)
+- Seed files the skill set expects: `docs/specs/INDEX.md` (domain router) + `docs/specs/catalog/<domain>.md`, a glossary (`CONTEXT.md` or `CONTEXT-MAP.md`)
 - `.skills/` and `.worktrees/` present in `.gitignore`
 
 Then branch on what you found:
@@ -41,110 +38,41 @@ You may still read the repo's own manifests (lockfiles, `package.json` scripts, 
 
 ## 2. Decide, one section at a time
 
-Walk the twelve decisions below (A–L; I is optional project-docs; K is
-optional remote environments; L is optional catalog sync) strictly one at a time: give a two-or-three-sentence explainer (what this is, which skills consume it, what changes with each choice), state your recommendation with a one-line reason, then wait for the user's answer before moving on. Never dump all sections at once. Assume the user has not seen these concepts before.
+Walk the twelve decisions below (A–L; I is optional project-docs; K is optional remote environments; L is optional catalog sync) strictly one at a time: give a two-or-three-sentence explainer (what this is, which skills consume it, what changes with each choice), state your recommendation with a one-line reason, then wait for the user's answer before moving on. Never dump all sections at once. Assume the user has not seen these concepts before.
 
 ### A. Issue tracker
 
-Explainer: skills that read or write issues (`triage`, `publish-issues`, `plan-tasks` when publishing a plan, `land-branch`, `cut-release`) need to know where issues live and which commands touch them.
+Explainer: skills that read or write issues (`triage`, `publish-issues`, `plan-tasks` when publishing a plan, `land-branch`, `cut-release`) need to know where issues live and which commands touch them. Options: **github**, **gitlab**, **linear**, **local**, **other**. Recommend only from the repo's local git remote — a GitHub remote → github, a GitLab remote → gitlab, no remote → local — and always let the user overrule it. Do not probe a service or its auth to guess the tracker. Linear is a separate service and will not appear in `git remote`, so present it as an option and pick it whenever the user says the team lives in Linear, even if the code host is GitHub/GitLab.
 
-Options:
-
-- **github** — repo issues via the `gh` CLI
-- **gitlab** — repo issues via the `glab` CLI
-- **linear** — issues in Linear, via a connected Linear MCP server (preferred) or the Linear GraphQL API; for teams that track work in Linear rather than in the code host
-- **local** — markdown files under `.scratch/<feature>/`, each carrying a `Status:` line; good for solo repos or repos without a remote
-- **other** — the user describes their workflow in a paragraph; record it as freeform prose
-
-Recommend only from the repo's local git remote — a GitHub remote → github, a GitLab remote → gitlab, no remote → local — and always let the user overrule it. Do not probe a service or its auth to guess the tracker. Linear is a separate service and will not appear in `git remote`, so present it as an option and pick it whenever the user says the team lives in Linear, even if the code host is GitHub/GitLab.
-
-Follow-up (github/gitlab only): **are external pull requests a request surface?** Explainer: open-source repos often receive feature requests as PRs — a PR is an issue with attached code. If yes, `triage` pulls external PRs into the same queue and state machine. Default: no. Skip the question entirely for linear/local/other — for a Linear shop, requests arrive as Linear issues and any PRs stay in the linked code host, not the triage queue.
-
-Follow-up (all remote trackers + local): **Publish unit for approved plans?** Explainer: after `plan-tasks`, the triad can open tracker work. Default **`feature`** — one issue per feature/plan; tasks stay in `tasks.md` (not issues, not default sub-issues). Legacy **`tasks`** (one issue per plan task) is opt-in only — noisy. Recommend **feature**.
-
-Follow-up (when tracker is not `local` / `other`): **Program sync for milestones and roads?** Explainer: `MILE-N` / `ROAD-N` already live in `docs/roadmap/` (optional, local-first). Remote mirrors are optional and easy to spam.
-
-- **local** (default) — no remote milestones/initiatives/Projects for program IDs; feature issues may *cite* ROAD/MILE in the body only.
-- **labels** / **project_fields** — put ROAD/MILE as metadata on the feature issue only.
-- **initiatives** (or org Project as program board) — for leads who want a remote program view.
-
-Also record **who is running setup** for write scope:
-
-| Project class / role | Publish unit | Program sync |
-|---|---|---|
-| Personal / solo owner | offer; default feature | offer; default local |
-| Company IC / dev | offer feature if they can open issues | **default local**; do not require them to create Initiatives/Milestones |
-| Company lead / PM / admin | offer full matrix | offer full matrix |
-| No issue-create permission | skip remote publish / local files only | local only |
-
-If the user is IC or unsure of admin rights, write **Program sync: local** and **Program write role: ic** unless they explicitly opt into a lead path. Never invent remote program objects after a permission failure — degrade and record the fallback in `issue-tracker.md`.
+**WHEN the tracker is chosen, read `issue-tracker-followups.md` beside this file and follow it exactly** — what each option means, the PR-surface, Publish unit, and Program sync follow-up questions, the write-scope table, and the IC-default rule all live there.
 
 **Done when:** tracker choice, PR-surface (if applicable), Publish unit, Program sync, and Program write role are confirmed (or declined to defaults: feature + local + ic).
 
 ### B. Triage label mapping
 
-Explainer: `triage` moves issues through canonical roles, but it must apply the label strings this repo actually uses, or it will create duplicates.
-
-The canonical roles — five states and two categories:
-
-| Role | Meaning |
-|---|---|
-| needs-triage | awaiting evaluation |
-| needs-info | waiting on the reporter |
-| ready-for-agent | fully specified; an agent can pick it up cold |
-| ready-for-human | needs human judgment or access |
-| wontfix | will not be actioned |
-| bug | something is broken |
-| enhancement | new capability or improvement |
-
-List the tracker's existing labels next to the roles and propose a mapping (default: each role's string equals its name); the user confirms it. For any mapped label the tracker does not have yet, offer to create it — only with the user's explicit consent. For local trackers, the role names themselves are the vocabulary; defaults are fine. For **linear**, list the team's existing workflow states and labels first (via the MCP server or API), then map the state roles to Linear workflow states where one fits (e.g. `ready-for-agent` → a "Todo"/"Ready" state, `wontfix` → a "Canceled" state) and the category roles (`bug`/`enhancement`) to Linear labels.
+**WHEN this decision runs, read `triage-label-mapping.md` beside this file and follow it exactly** — the canonical-roles table, the mapping proposal, label creation consent, and the linear-specific branch.
 
 **Done when:** every canonical role maps to a confirmed label string.
 
 ### C. verify commands
 
-Explainer: `test-first`, `prove-claim`, `build-in-waves`, and `cut-release` all run this repo's proof commands; they must be exact, not guessed.
-
-Confirm each, pre-filled from what you detected: typecheck, lint, unit tests, e2e/smoke, and the **single-test-file pattern** (the command shape for running one test file — the tight loop `test-first` lives in).
-
-**Done when:** each command has been confirmed by the user (or explicitly marked "none").
+Explainer: `test-first`, `prove-claim`, `build-in-waves`, and `cut-release` all run this repo's proof commands; they must be exact, not guessed. Confirm each, pre-filled from what you detected: typecheck, lint, unit tests, e2e/smoke, and the **single-test-file pattern** (the command shape for running one test file — the tight loop `test-first` lives in). **Done when:** each command has been confirmed by the user (or explicitly marked "none").
 
 ### D. Traceability (docs-only)
 
-Explainer: requirement IDs live in `docs/specs/**`. The `audit-trace` check is
-**docs-only** — it greps requirements and task footers, not application tests.
-Do **not** require `/// REQ:`, `@CODE-N.M`, or IDs in test titles for consumer
-apps. Optional note in project.md: legacy annotations are ignored; do not add new ones.
-
-Confirm the specs directory path if non-default; skip inventing test-annotation tables.
-
-**Done when:** docs-only trace posture is confirmed (specs path; no mandatory
-consumer ID-in-test convention).
+Explainer: requirement IDs live in `docs/specs/**`. The `audit-trace` check is **docs-only** — it greps requirements and task footers, not application tests. Do **not** require `/// REQ:`, `@CODE-N.M`, or IDs in test titles for consumer apps. Optional note in project.md: legacy annotations are ignored; do not add new ones. Confirm the specs directory path if non-default; skip inventing test-annotation tables. **Done when:** docs-only trace posture is confirmed (specs path; no mandatory consumer ID-in-test convention).
 
 ### E. release steps
 
-Explainer: the `cut-release` skill executes an ordered list of project-specific commands — build, bundle, sign, publish — and it refuses to improvise them.
-
-Draft the ordered list from what you found (build scripts, packaging config) and confirm. Include the smoke-check command if one exists.
-
-**Done when:** the ordered release steps are confirmed (an empty list is a valid answer for libraries with no build).
+Explainer: the `cut-release` skill executes an ordered list of project-specific commands — build, bundle, sign, publish — and it refuses to improvise them. Draft the ordered list from what you found (build scripts, packaging config) and confirm. Include the smoke-check command if one exists. **Done when:** the ordered release steps are confirmed (an empty list is a valid answer for libraries with no build).
 
 ### F. Docs layout
 
-Explainer: spec and discovery skills read `docs/specs/`, `docs/adr/`, and the domain glossary; they need to know the shape.
-
-Confirm:
-
-- Specs at `docs/specs/`, ADRs at `docs/adr/` (create the directories if missing)
-- Glossary layout: **single-context** (one root `CONTEXT.md` — most repos) or **multi-context** (a root `CONTEXT-MAP.md` pointing at per-context `CONTEXT.md` files — typically monorepos)
-
-**Done when:** layout is confirmed.
+Explainer: spec and discovery skills read `docs/specs/`, `docs/adr/`, and the domain glossary; they need to know the shape. Confirm specs at `docs/specs/`, ADRs at `docs/adr/` (create the directories if missing), and glossary layout — **single-context** (one root `CONTEXT.md` — most repos) or **multi-context** (a root `CONTEXT-MAP.md` pointing at per-context `CONTEXT.md` files — typically monorepos). **Done when:** layout is confirmed.
 
 ### G. Project posture
 
-Explainer: three standing facts about the project — its **delivery intent** (the quality bar the output must meet), its **lifecycle stage** (where it is in its life), and its **compat obligation** (who is already committed to the current schemas, endpoints, and formats). `frame-change` and `clarify-decisions` read them to right-size ceremony — compat obligation alone decides the migration / backward-compat / deprecation lens — and `interpret-session` / `deepen-codebase` reuse them so they never re-ask. They live in `docs/agents/project.md` and the user edits those lines directly as the project moves phase.
-
-Confirm these, pre-filled from repo signals — never invented:
+Explainer: three standing facts about the project — its **delivery intent** (the quality bar the output must meet), its **lifecycle stage** (where it is in its life), and its **compat obligation** (who is already committed to the current schemas, endpoints, and formats). `frame-change` and `clarify-decisions` read them to right-size ceremony — compat obligation alone decides the migration / backward-compat / deprecation lens — and `interpret-session` / `deepen-codebase` reuse them so they never re-ask. They live in `docs/agents/project.md` and the user edits those lines directly as the project moves phase. Confirm these, pre-filled from repo signals — never invented:
 
 - **Delivery intent** — Production / MVP / Run Spike / Research / Learning. The quality bar, not a release state: **Production** never means the project has shipped. Recommend from what the repo shows (a published package or cut-release workflow → Production; a bare greenfield spike → Run Spike); default **MVP** when unclear.
 - **Lifecycle stage** — Idea / Early development / Active development / Cut Released / Scaling / Maintenance. Recommend from git signals (tags or a cut-release history → Cut Released; a young repo with few commits → Early development); default **Early development** when unclear.
@@ -154,13 +82,7 @@ Confirm these, pre-filled from repo signals — never invented:
 
 ### H. Team
 
-Explainer: **team** composition — the **roster** of people/roles and optional CODEOWNERS ownership notes — is standing context for `frame-change`, `clarify-decisions`, `plan-tasks`, `build-in-waves`, `inspect-change`, `land-branch`, and `write-handoff`. Those skills **package** collaboration by **band** (Solo / Small / Multi) using the rules written in `docs/agents/project.md` `## Team`. Wrong band → wrong packaging (invented reviewers on a solo repo, or silent ownership on a multi-person one). Same class of fact as Project posture; orthogonal to delivery intent / lifecycle stage.
-
-**WHEN Decision H runs, read `team-inference.md` beside this file and follow it exactly** — local git / CODEOWNERS / AUTHORS / CONTRIBUTORS / package manifests only; **infer-then-confirm**.
-
-Explainer for the user (short): you will see a draft roster from local metadata; edit names, roles, or switch to count form (`N × Role`); nothing is written until you confirm.
-
-Recommend: accept the draft after re-roling placeholders to real titles when you know them; use count form when privacy matters; set a **Workflow band override** only when the roster does not match how this repo is actually run (e.g. monorepo with one agent user).
+**WHEN Decision H runs, read `team-inference.md` beside this file and follow it exactly** — why band packaging matters, the explainer for the user, the recommend defaults, local git / CODEOWNERS / AUTHORS / CONTRIBUTORS / package manifests only, **infer-then-confirm**.
 
 | Thought | Reality |
 |---|---|
@@ -173,66 +95,27 @@ Recommend: accept the draft after re-roling placeholders to real titles when you
 
 ### I. Project-docs layer (optional — default No)
 
-Explainer: large or long-lived projects can add an optional repo-level layer above the feature workflow — a product vision (`docs/product/vision.md`), an IDed architecture-invariant spine (`docs/architecture/`), and engineering guidelines (`docs/product/guidelines.md`), all authored by `define-project`. When these exist, `frame-change`, `design-solution`, `plan-tasks`, `build-in-waves`, and `inspect-change` consult them; when they do not, nothing changes. Small repos should decline — it can be added later with `/define-project`.
+**WHEN this decision is offered, read `project-docs-layer.md` beside this file and follow it exactly** — what the layer is, which skills consult it, and the migration offer when guidelines already exist elsewhere.
 
 Recommendation: **No** unless this is a large, multi-feature project.
-
-If **Yes**: note it for Step 4 (seed the three docs + the Agent-skills line). If `docs/agents/project.md` or an existing `CLAUDE.md`/`AGENTS.md` already carries engineering guidelines, offer to migrate them into `docs/product/guidelines.md`, leaving a pointer behind.
 
 **Done when:** the layer is opted in or declined.
 
 ### J. Default PR base
 
-Explainer: `land-branch` reads `Default PR base:` from `docs/agents/project.md` as the third rung of its base-resolution ladder — after an explicit invocation base and a base already recorded on an existing PR — so it stops asking once a trunk is on record.
-
-Offer `dev`, `staging`, `main`, and the repo's own local branch list as suggestions only; no value is pre-selected — the user always names the branch themselves.
-
-Recommendation: the repo's actual trunk branch (commonly `main`) — one-line reason: it is the branch `land-branch` already assumes unless told otherwise.
-
-Declining: if the user declines to choose, write no value at all and skip the Step 4 item for this field — `land-branch` then asks for the base on every invocation, which is what keeps the field genuinely optional under ARCH-2.
+Explainer: `land-branch` reads `Default PR base:` from `docs/agents/project.md` as the third rung of its base-resolution ladder — after an explicit invocation base and a base already recorded on an existing PR — so it stops asking once a trunk is on record. Offer `dev`, `staging`, `main`, and the repo's own local branch list as suggestions only; no value is pre-selected — the user always names the branch themselves. Recommendation: the repo's actual trunk branch (commonly `main`) — it is the branch `land-branch` already assumes unless told otherwise. Declining: if the user declines to choose, write no value at all and skip the Step 4 item for this field — `land-branch` then asks for the base on every invocation, which is what keeps the field genuinely optional under ARCH-2.
 
 **Done when:** the user has confirmed a value, or has explicitly declined and no value will be written.
 
 ### K. Remote environments (optional — default skip if nothing is deployed)
 
-Explainer: `debug-remote` and `assess-observability` read a **Remote
-environments** table from `docs/agents/project.md` so they can query
-telemetry without inventing URLs or tokens. If this repo has no deployed
-env, skip.
+**WHEN this decision is offered, read `remote-environments.md` beside this file and follow it exactly** — what to confirm per environment, the token rule, and the matching write step.
 
-Confirm, one row per environment the user names (`development`,
-`staging`, `production`):
-
-- Deployed? yes / no / unknown
-- Backend product (OpenObserve, Jaeger, Grafana, other) + base URL + org
-- One **read** query that proves access (error-rate or `span_status=ERROR`
-  shape — not a write, not a token)
-
-Recommend skip unless they already have a backend. Tokens never go in
-the file.
-
-**Done when:** the table is confirmed, or explicitly skipped (`None —
-not deployed` / declined).
+**Done when:** the table is confirmed, or explicitly skipped (`None — not deployed` / declined).
 
 ### L. Catalog sync (optional — default unset / full-triad behavior)
 
-Explainer: sync a **thin** shared feature catalog on git (`docs/specs/INDEX.md`
-router + `docs/specs/catalog/`) while keeping full triad files local — useful when
-teammates use different skill sets or do not want requirements noise on GitHub.
-When `index-only`, `/map-features` gains `export` and `materialize`. Guide:
-`docs/guide/skills/catalog-sync.md`. Reverse-track inside `/map-features` dispose
-never writes INDEX or triad without confirm.
-
-Options:
-
-- **unset** (default) — omit the field; same as **full-triad**. Do **not** add
-  specs gitignore rules. `/map-features` dispose-only.
-- **full-triad** — triad dirs under `docs/specs/<slug>/` stay committed.
-- **index-only** — track INDEX (± `catalog/`); ignore feature triad dirs; enable
-  map-features `export` / `materialize`.
-
-Recommend **unset** unless the user asks for catalog-only sync. Never force
-`index-only` on a repo already committing triads without an explicit yes.
+**WHEN this decision is offered, read `catalog-sync-choice.md` beside this file and follow it exactly** — what thin-catalog sync means, the three option definitions, and the write step (Step 4, item 11). Guide for the user: `docs/guide/skills/catalog-sync.md`.
 
 | Thought | Reality |
 |---|---|
@@ -255,10 +138,7 @@ Let them edit. **Done when:** the user approves the drafts.
 **The additive rule: existing files are edited in place, never clobbered.** If a target file already exists, merge your content into it and preserve everything the user wrote.
 
 1. Write `docs/agents/project.md`, `docs/agents/issue-tracker.md`, and `docs/agents/triage-labels.md`, seeded from `templates/agents/project.md`, `templates/agents/issue-tracker.md`, and `templates/agents/triage-labels.md`. In the issue-tracker file keep only the chosen tracker's operations section, record the PR-surface answer, and fill **Publish unit**, **Program sync**, **Program write role**, and **Close linkage** from Decision A (defaults: `feature` / `local` / `ic` / tracker-native close syntax).
-2. If `docs/specs/INDEX.md` is missing, create it from `templates/specs-INDEX.md`
-   **and** seed `docs/specs/catalog/app.md` from `templates/specs-catalog-domain.md`
-   (replace `<Domain>` with `App`). If INDEX exists but is a flat Code table,
-   name `/map-features` Domain boundary migrate — do not invent shards silently.
+2. If `docs/specs/INDEX.md` is missing, create it from `templates/specs-INDEX.md` **and** seed `docs/specs/catalog/app.md` from `templates/specs-catalog-domain.md` (replace `<Domain>` with `App`). If INDEX exists but is a flat Code table, name `/map-features` Domain boundary migrate — do not invent shards silently.
 
 3. If the glossary is missing, create `CONTEXT.md` from `templates/CONTEXT.md` (or a `CONTEXT-MAP.md` for multi-context, per the user's answer).
 4. Fill the **Project posture** section of `docs/agents/project.md` with the confirmed delivery intent and lifecycle stage (decision G), replacing the template placeholders. Write a `- **Compat obligation:** \`<value>\`` line only when decision G confirmed an override; when it left the derivation standing, delete the placeholder line so the derivation applies. (Additive: if the section already carries real values, update only what the user changed.) If decision L confirmed **index-only** or **full-triad**, set `- **Catalog sync:** \`<value>\`` in the same section (additive). If L left unset, write no Catalog sync line.
@@ -270,71 +150,20 @@ Let them edit. **Done when:** the user approves the drafts.
    - **Both exist:** put the block in whichever already carries real agent instructions; make the other a pointer only if it is not already substantive. Never place the block in both.
    - If an `## Agent skills` section already exists in the canonical file, update it in place — never append a duplicate, never touch surrounding sections.
 
-   The `CLAUDE.md` pointer, when you create one:
+   The `CLAUDE.md` pointer, when you create one, is seeded verbatim from `templates/claude-md-pointer.md`.
 
-   ```markdown
-   # CLAUDE.md
-
-   The canonical agent instructions for this repo live in **[AGENTS.md](AGENTS.md)** —
-   read it first. It applies to Claude too; this file exists only so Claude Code
-   finds it by its native name.
-   ```
-
-The block (include the project-docs bullet only if decision I was Yes):
-
-```markdown
-## Agent skills
-
-This repo is configured for a spec-driven skill set.
-
-- Feature flow: `frame-change` → `specify-behavior` → `design-solution` →
-  `plan-tasks` → `build-in-waves`
-- Vague ask you want turned into a prompt for a fresh session: `/forge-prompt` (user-run)
-- Bug on-ramp: `root-cause` (clear unexpected behavior first, then a guarded fix);
-  deployed env: `debug-remote` then `root-cause`; telemetry readiness:
-  `assess-observability`
-- Capture a conversation/spec/idea into tracker issues: `/publish-issues` (user-run)
-- Incoming issues and PRs: `/triage` (user-run)
-- Traceability check: the docs-only `audit-trace` skill — run by `prove-claim` and `cut-release`;
-  keep it clean
-- Project docs (layer enabled): `/define-project` maintains
-  `docs/product/vision.md`, the `docs/architecture/` invariant spine, and
-  `docs/product/guidelines.md`; the feature skills consult them
-
-Repo config the skills read:
-
-- verify commands, release steps, Remote environments: `docs/agents/project.md`
-- Team composition (roster, ownership notes, workflow band): `docs/agents/project.md` (`## Team`)
-- Issue tracker operations: `docs/agents/issue-tracker.md`
-- Triage label mapping: `docs/agents/triage-labels.md`
-```
+The block (include the project-docs bullet only if decision I was Yes) is seeded verbatim from `templates/agent-skills-block.md`.
 
 8. Ensure the local working dirs are git-ignored: the skills' scratch artifacts — `build-in-waves`'s ledger and briefs, and the scan/review digests the spec skills write — live under `.skills/`, and isolated workspaces under `.worktrees/` (the same parent `isolate-workspace` uses); neither belongs in version control. Idempotently, for each pattern: `grep -qxF '.skills/' .gitignore 2>/dev/null || printf '.skills/\n' >> .gitignore` (same for `.worktrees/`), then stage `.gitignore`. Do not add a `.isolate-workspace/` line — that was the old parallel parent. Leave an existing `.isolate-workspace/` ignore in place (additive). (A line-presence check, not `git check-ignore` — a trailing-slash pattern only matches an *existing* directory, so `check-ignore` would re-append before the dir exists.)
 9. If decision J (Default PR base) was confirmed, add `- **Default PR base:** \`<branch>\`` to the **Project posture** section of `docs/agents/project.md`, under the additive rule above — merge in, never clobber a value the user already set. If the user declined decision J, write nothing: leave the field absent so `land-branch` asks per invocation.
-10. If decision K (Remote environments) was confirmed, merge the **Remote environments** table into `docs/agents/project.md` from `templates/agents/project.md` (additive). If skipped, write `None — not deployed` or omit the section.
-11. **If decision L is `index-only`:** append the catalog-sync gitignore block from
-    this skill’s `templates/gitignore-index-only.snippet` (pack twin also under
-    `skills/track/map-features/templates/`) **only when** those lines are not
-    already present. Show the user the snippet and warn: do not `git add -f`
-    triad dirs. If L is unset or `full-triad`, do **not** add specs ignore rules.
+10. Follow the write step in `remote-environments.md` for decision K.
+11. Follow the write step in `catalog-sync-choice.md` for decision L (index-only gitignore append).
 
 **Done when:** all files are written, `.skills/` and `.worktrees/` are git-ignored, index-only gitignore applied only when L=`index-only`, and `git status` shows only the expected additions/edits.
 
 ## 5. Offer the session-start hook
 
-The skill set installs nothing else into the repo — no linters, no CI steps, no git hooks. Two optional offers remain — one keeps the skill-usage gate alive, the other gives the skills current library facts:
-
-**Session-start hook.** If this skill set was installed without plugin hook support, offer to add a `SessionStart` hook (matcher `startup|clear|compact`) so the gate survives `/clear` and compaction. **Vendor the hook into the repo — never reference a path outside it.** An absolute path (e.g. to the skill set's own working copy) is committed into `.claude/settings.json` and breaks on any other machine, in CI, or if that copy moves. Instead:
-   - Copy `templates/session-start.sh` to `.claude/hooks/session-start.sh` in the repo and `chmod +x` it. It is dependency-free (plain `cat`), so it runs in any project regardless of toolchain.
-   - Reference it in `.claude/settings.json` via the project-dir variable, not an absolute path:
-     ```json
-     { "hooks": { "SessionStart": [ { "matcher": "startup|clear|compact",
-       "hooks": [ { "type": "command",
-         "command": "\"$CLAUDE_PROJECT_DIR/.claude/hooks/session-start.sh\"" } ] } ] } }
-     ```
-   - Merge into any existing `SessionStart` block additively; do not clobber other hooks.
-
-**Context7 MCP — for live library docs.** Several skills reason about third-party libraries — `research` when a question turns on how a library behaves, `design-solution` when the reuse ladder reaches a new dependency. Left to training knowledge alone, an agent cites versions and APIs that may be months stale. Recommend the user install the **Context7 MCP server**, which serves current, version-specific documentation from the source; explain that the library skills prefer it when present and fall back to fetching official docs when it is absent. It is an agent-environment tool, not a repo file: for Claude Code add it to the project's `.mcp.json` (or the user's MCP config); for another harness (Kimi, Codex, …) add it to that harness's MCP configuration. When the user opts in, record it in `docs/agents/project.md` (a one-line "Library docs: Context7 MCP (preferred)" note) so the skills know to reach for it. This is a recommendation only — never block setup on it, and do not attempt to install or authenticate it yourself.
+**WHEN this step runs, read `optional-offers.md` beside this file and follow it exactly** — the vendored (never absolute-path) session-start hook install and the Context7 MCP recommendation.
 
 **Done when:** both offers — the session-start hook and the Context7 MCP recommendation — have an explicit yes/no, and any yes is implemented (the hook installed, or the Context7 note written to `docs/agents/project.md`).
 

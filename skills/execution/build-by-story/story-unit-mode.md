@@ -74,7 +74,7 @@ After every task in the unit is DONE and ledgered:
 2. Package `.skills/<CODE>/review-unit-<k>-<base7>..<head7>.diff` (same shape as a task
    package: log, stat, `git diff -U10`).
 3. Dispatch **task reviewer** once at **unit scope** (two-verdict) over that
-   range, using `../build-in-waves/task-reviewer-prompt.md`. Human is never first
+   range, using `../execute-common/task-reviewer-prompt.md`. Human is never first
    reviewer of the unit diff.
 4. Fix loop until clean (same circuit breaker as tasks).
 5. **STOP.** Send the human-facing message using the **Unit summary contract**

@@ -9,7 +9,7 @@
 | **Reads** | `docs/agents/issue-tracker.md` (Pathfind operations), optional territory scan / knowns under `.skills/pathfind/` |
 | **Writes** | Map + decision tickets on tracker (or local `.skills/pathfind/`), knowns package |
 | **Calls** | `clarify-decisions`, `research`, `run-spike`, `define-domain` (passive); **names** handoff skills only |
-| **Called by** | nobody auto — user runs it; `ask-me-bro` may *name* it |
+| **Called by** | nobody auto — user runs it; `zone-mode` may *name* it |
 
 ## When it fires
 

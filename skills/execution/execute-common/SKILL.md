@@ -1,47 +1,25 @@
 ---
 name: execute-common
-version: 2.3.0
+version: 2.4.0
 description: Use when build-in-waves, build-by-story, or build-inline loads the shared controller recipe — produces an In-progress catalog stamp, a runtime-bound session snapshot, lease state, ledger state, and a revision-bound close receipt.
 ---
 
 # Execute-family controller recipe
 
 **One home** for controller steps and runtime state shared across
-`build-in-waves`, `build-by-story`, and `build-inline`. Each route owns only its
-mode iron law and scheduler/unit behavior. The shared task lifecycle is in
-`task-lifecycle.md` beside this file.
-Load this file when that skill's Setup or After-last step says to.
-
-This folder is a registered Engineer Pack skill so `npx skills add`
-copies it beside the execute-family skills.
-
-## Contents
-
-- Session preflight (tracker, catalog occupancy, workspace)
-- Runtime binding and lease preflight
-- Ledger check
-- Todos — GATE
-- Close sequence (after the last task / last unit)
-- Polish predicate
-- Sample predicate
-- Product-walk predicate
-
----
+`build-in-waves`, `build-by-story`, and `build-inline`. Task dispatch/review lives
+in `task-lifecycle.md` beside this file. Load this file when that skill's Setup or
+After-last step says to. This folder is a registered Engineer Pack skill so `npx
+skills add` copies it beside the execute-family skills.
 
 ## Session preflight
 
 Three questions, before any dispatch, any `isolate-workspace` / `git worktree add`,
 and any first production edit:
 
-1. **Issue tracker sync.** Read `docs/agents/issue-tracker.md` when present.
-   IF a tracker is configured (github / gitlab / linear / local / other named
-   backend) → ask whether this build should sync with that tracker (bind
-   issues to the branch, pull ticket IDs into briefs/ledger, use the
-   tracker's wayfinding ops for status). IF yes → resolve ticket IDs from
-   branch name, plan, or a short user list; record them under `.skills/` for
-   implementer briefs and later `land-branch`. IF no, or the file is
-   absent / declares no tracker → empty ticket set; continue (unconfigured
-   tracker is normal, not a failure).
+1. **Issue tracker sync.** WHEN `docs/agents/issue-tracker.md` names a configured
+   tracker, read `tracker-sync.md` beside this file and follow it exactly;
+   otherwise → empty ticket set, continue (unconfigured is normal, not a failure).
 2. **Catalog occupancy.** Read `Status:` from `requirements.md` and the
    matching `docs/specs/INDEX.md` row. INDEX missing → say so once, suggest
    `/configure-repo`; still write `requirements.md` when that file exists.
@@ -62,12 +40,11 @@ and any first production edit:
    | `Implemented` / `Shipped` | Leave it. Not a kickoff stamp. |
 
    Before isolation, commit this checkout's dirty spec files for the feature
-   (`requirements.md`, `design.md`, `tasks.md`, and the INDEX row). The
+   (`requirements.md`, `design.md`, `tasks.md`, the INDEX row) — the
    occupancy write is part of that commit when Status was `Approved`. A
-   worktree is created from HEAD — uncommitted spec docs stay on this
-   checkout, invisible in the new tree and to other sessions.
-   `isolate-workspace` still must not commit `.gitignore` onto the current
-   branch — occupancy is this step, not that skill.
+   worktree is created from HEAD, so uncommitted spec docs stay behind,
+   invisible to the new tree and other sessions. `isolate-workspace` still
+   must not commit `.gitignore` — occupancy is this step, not that skill.
 3. **Workspace / branch.** If no isolated workspace exists yet: isolate in a
    worktree, or implement on the current branch? Do not create a worktree
    unasked. Isolation → REQUIRED SUB-SKILL: use `isolate-workspace`. Current
@@ -92,61 +69,12 @@ uncommitted spec dirt for the feature, and workspace choice is clear.*
 
 ## Runtime binding and lease preflight
 
-After session preflight and before the first dispatch, bind the execution to the
-actual harness and provider/model in use. Planning artifacts remain portable;
-the runtime snapshot records what this session can really do.
-
-Write `.skills/<CODE>/execution-session.json` with at least:
-
-```json
-{
-  "schema_version": 1,
-  "harness": "unknown",
-  "provider": "unknown",
-  "model": "unknown",
-  "resume_context": "supported|unsupported|unknown",
-  "fork_context": "supported|unsupported|unknown",
-  "worktree_isolation": "supported|unsupported|unknown",
-  "cache_control": "none|implicit|explicit|unknown",
-  "token_telemetry": "none|aggregate|per_turn|unknown",
-  "pricing_policy": {
-    "source_url": null,
-    "observed_at": null,
-    "threshold_basis": "input_tokens|prompt_tokens|context_tokens|unknown",
-    "repricing_scope": "all_request_tokens|marginal_tokens|flat|unknown",
-    "tiers": []
-  },
-  "effective_concurrency": null,
-  "rotations": []
-}
-```
-
-Use capability facts exposed by the active harness/API. Record `unknown` when a
-fact is unavailable; never infer support from a harness name, a model family,
-or a cache key. If binding is ambiguous in a way that changes safety or cost,
-ask once and persist the answer before dispatch.
-
-Before every worker or reviewer resume, calculate the next-request estimate from
-system instructions, tool schemas, retained history, feature capsule, task
-delta, cache estimate, and output reserve. Rotate the lease before dispatch if
-any hard trigger holds:
-
-- the semantic unit ends or the next task materially changes required context;
-- the projected request exceeds the active context safety reserve;
-- the provider/model pricing policy predicts an all-token cliff, or continuing
-  costs materially more than a fresh role context;
-- compaction, harness change, broad scope/invariant change, or context confusion
-  invalidates the retained context.
-
-When `pricing_policy` is unknown, use the configured conservative budget and
-record the decision as unknown-policy; never invent a provider threshold. Add a
-rotation record with reason, previous lease ID, next lease ID, projected input
-tokens, and policy/source reference. A fresh context receives the feature
-capsule and task delta, not the entire prior transcript.
-
-If a ready set cannot safely fan out because `worktree_isolation` is unsupported
-or surfaces overlap, set `effective_concurrency` to one and record the
-degradation. Never increase concurrency beyond the approved plan.
+Before the first dispatch (inline route: before the first production edit),
+read `runtime-binding.md` beside this file and follow it exactly. It defines
+the `.skills/<CODE>/execution-session.json` schema (schema_version, harness,
+provider, model, resume/fork/worktree support, cache_control, token_telemetry,
+pricing_policy, effective_concurrency, rotations), the four lease-rotation
+triggers, the pricing-policy fallback, and the concurrency-degradation rule.
 
 *Done when: the runtime snapshot exists before dispatch, every unavailable
 capability is explicit, and the first effective concurrency/lease decision is
@@ -154,19 +82,11 @@ recorded.*
 
 ## Ledger check
 
-Make `.skills/` local-only:
+Read `ledger-check.md` beside this file and follow it exactly: it keeps
+`.skills/` local-only, resumes from `.skills/<CODE>/progress.md`, and defines
+the `Verified:` completion-claim slot backed by `prove-claim`.
 
-```
-grep -qxF '.skills/' .gitignore 2>/dev/null || { printf '.skills/\n' >> .gitignore && git commit -m 'chore: ignore local skills artifacts' -- .gitignore; }
-```
-
-Read `.skills/<CODE>/progress.md` if it exists. Every task (and, on
-story-unit, every unit) it marks complete IS complete — resume at the first
-item it does not list. *Done when: next task / unit is known.*
-
-A `Verified:` line is a completion claim. REQUIRED SUB-SKILL: use
-`prove-claim`. The line itself is the slot: `Verified: <what holds> — by
-<command>, covering <what>`. An ID alone is not a checkpoint.
+*Done when: next task / unit is known.*
 
 ## Todos — GATE
 
@@ -194,8 +114,7 @@ After the last task (waves / inline) or last unlocked unit (story):
    `polish-diff` on the whole-branch diff **before** acceptance; create the
    Polish Diff todo now if it does not exist; mark it done only after the
    skill has run. IF no clause is true → skip; write
-   `skip: no polish predicate` on the Close branch notes (file count, no
-   new public API, no user ask, no inspect Important leftovers). EOD, demo
+   `skip: no polish predicate` on the Close branch notes. EOD, demo
    pressure, "inspect was clean", and "small enough to feel optional" are
    **not** predicates.
 4. **Acceptance.** REQUIRED SUB-SKILL: use `validate-feature`. Breaks →
@@ -233,39 +152,26 @@ been skipped under their predicate.
 | "Always name a sample so we cannot forget" | Same shape as always-polish. False predicate → write the skip, never name. |
 | "A sample skip line invents a predicate this file does not write" | The predicate is below. Silent skip is still a red flag. |
 
-## Polish predicate
+## Close-sequence predicates
 
-True when **any** of:
+**Polish** — true when **any** of: the user asked for polish, cleanup, or
+tidy; `inspect-change` Standards leftovers include an Important-or-higher
+finding that is behavior-preserving (reuse, dead code, needless complexity,
+wasted I/O); `git diff --name-only $(git merge-base main HEAD) HEAD` lists
+**more than 15 files**; the branch adds a new public API or exported surface.
 
-- the user asked for polish, cleanup, or tidy
-- `inspect-change` Standards leftovers include an Important-or-higher
-  finding that is behavior-preserving (reuse, dead code, needless
-  complexity, wasted I/O)
-- `git diff --name-only $(git merge-base main HEAD) HEAD` lists **more
-  than 15 files**
-- the branch adds a new public API or exported surface (new HTTP route,
-  new package export, new CLI command)
-
-## Sample predicate
-
-True when any of: the user asked for a sample or attention allocation; branch
-diff paths hit the B1 defaults in
+**Sample** — true when **any** of: the user asked for a sample or attention
+allocation; branch diff paths hit the B1 defaults in
 `skills/review/select-sample/references/signals.md` extended by project
-`Risk globs`; or the branch diff lists more than 15 files. "Always name so we
+`Risk globs`; the branch diff lists more than 15 files. "Always name so we
 cannot forget" is not an ask.
 
-## Product-walk predicate
-
-True when **any** of:
-
-- the user asked for a product walk, dogfood, or walkthrough
-- `validate-feature` reports neither-API-nor-UI
-- an approved requirement uses visual / feel / eyeball language the
-  automated surfaces cannot judge
-- `inspect-ui`'s report (via `inspect-change`'s UI lane) lists any
-  `needs-human-eyes` item
-- the branch adds a **new** user-facing screen or visual surface — not only
-  changes within existing ones
+**Product walk** — true when **any** of: the user asked for a product walk,
+dogfood, or walkthrough; `validate-feature` reports neither-API-nor-UI; an
+approved requirement uses visual / feel / eyeball language the automated
+surfaces cannot judge; `inspect-ui`'s report (via `inspect-change`'s UI lane)
+lists any `needs-human-eyes` item; the branch adds a **new** user-facing
+screen or visual surface — not only changes within existing ones.
 
 ## Red flags — never
 

@@ -1,5 +1,77 @@
 # `execute-common`
 
+## Length pass (v2.3.1, 2026-09-07)
+
+**Protocol:** length-pass brief (bring SKILL.md under 200 lines without losing
+behaviour). Before: 289 lines / 101 atoms. After: 195 lines / 73 atoms in
+SKILL.md, 105 atoms across SKILL.md + its now-5 siblings.
+
+**Extracted (Conditional / Universal-recipe bucket, matching the existing
+`task-lifecycle.md` / `close-receipt.md` sibling pattern):**
+
+- Runtime binding and lease preflight body (the `execution-session.json`
+  schema, the four lease-rotation triggers, the pricing-policy fallback, the
+  concurrency-degradation rule) → new `runtime-binding.md`. SKILL.md keeps the
+  heading (still applied directly by `build-inline`), a one-line summary
+  naming every schema field in order, and the `Done when` line.
+- Session preflight question 1 (issue tracker sync detail) → new
+  `tracker-sync.md`. SKILL.md keeps the `WHEN <tracker configured>` pointer
+  and the empty-ticket-set fallback inline.
+- Ledger check body (`.gitignore` command, `progress.md` resume rule,
+  `Verified:` slot) → new `ledger-check.md`. SKILL.md keeps the heading (still
+  applied directly by all three callers) and a one-line summary.
+
+**Deleted as no-op (Filler bucket):**
+
+- `## Contents` section (an 11-line table-of-contents bullet list restating
+  the headings that follow). No caller or eval references the "Contents"
+  heading; removing it changes no run's behaviour.
+- The Close-sequence step-3 parenthetical `(file count, no new public API, no
+  user ask, no inspect Important leftovers)` — a shorthand restatement of the
+  Polish predicate's four clauses, which remain in full under "Close-sequence
+  predicates". Confirmed by grep: `grep -n "new public API or exported
+  surface" SKILL.md` → line 161, the surviving home.
+- One redundant sentence from the H1 intro ("Each route owns only its mode
+  iron law and scheduler/unit behavior.") — descriptive framing, not an
+  actionable rule; `build-in-waves` / `build-by-story` / `build-inline` each
+  state their own mode-ownership table independently.
+
+**Reformatted in place (Universal bucket — "turn narration into a table"):**
+merged `## Polish predicate` / `## Sample predicate` / `## Product-walk
+predicate` (3 headings, 34 lines) into one `## Close-sequence predicates`
+heading with three bold-labelled paragraphs (21 lines). Every clause survives
+verbatim; `skill-rule-inventory.py --diff` cannot line-match one bullet
+(`` `validate-feature` reports neither-API-nor-UI``) because it now sits
+mid-line instead of on its own bullet — confirmed present verbatim by
+`grep -n "reports neither-API-nor-UI" SKILL.md` → line 170. Not a content
+loss, a reformat the line-based diff can't see through.
+
+**Tightened without moving (Gate-adjacent Universal prose, left in place per
+the bucket's "moving it buys nothing" warning):** the Session preflight
+catalog-occupancy paragraph, the Runtime-binding intro clause, and the H1
+intro were re-wrapped and trimmed by a handful of words each; no clause,
+table row, HARD-GATE, or Thought/Reality row was touched.
+
+**Untouched (would have thinned a gate or a recently-fixed portable
+mechanism):** both Thought/Reality tables, the catalog Status table, the
+HARD-GATE block, and the Red flags list — all Gate bucket, never thinned.
+The Todos — GATE body was left inline and unshortened: `git log` shows it was
+the subject of the immediately preceding commit
+(`fix(skills): make the todo gate portable across harnesses`), so its exact
+wording stays put.
+
+**Anchors confirmed still present verbatim:** `SKILL.md § Execute-family
+controller recipe` (line 7) and `SKILL.md § Close sequence` (line 103) — both
+required by `eval.json`'s `contract`-kind entries and by
+`lint-skill-evals.py`, which passes clean after this edit.
+
+**Budget ledger:** removed only the `skills/execution/execute-common/SKILL.md`
+entry from `scripts/skill-length-budget.json` (was 289/2221, now under the
+200-line limit so the entry must not exist). Left the `build-by-story`,
+`build-in-waves`, and `configure-repo` entries untouched — those files are
+already under 200 lines on disk from other in-flight passes, but clearing
+their stale entries is out of this pass's scope.
+
 ## Edit — catalog occupancy before isolation (v2.1.0, 2026-08-29)
 
 **Protocol:** `author-skills` / `pressure-testing.md`
@@ -215,3 +287,102 @@ The v1.6.0 contract writes one complete receipt after the final mutation and
 reruns only a producer whose evidence is missing or stale. The paired GREEN run
 on `gpt-5.6-luna` consumed the receipt and chose the thin landing bundle. Full
 transcripts are recorded in `skills/ship/land-branch/TESTS.md` v3.0.0.
+
+### Reviewer note — this pass made the deepest chain in the set
+
+Moving the Ledger check body to `ledger-check.md` put one rule two hops from a
+caller: `build-by-story` applies `../execute-common/SKILL.md` **Ledger check**,
+which now reads `ledger-check.md`. `author-skills` warns that a file reached only
+through another file gets skimmed rather than read, and this is the first
+two-level chain in the set.
+
+Kept, because each hop carries a compact anchor rather than only a pointer.
+`execute-common`'s summary states the load-bearing facts in place — `.skills/`
+stays local-only, the run resumes from `progress.md`, `Verified:` is backed by
+`prove-claim` — and `build-by-story` names the specific clause it depends on
+(skipping units already ledgered complete) at its own call site. An agent that
+stops at either hop still has the rule.
+
+The line for whoever comes next: nothing else moves under `ledger-check.md`.
+A third hop has no anchor budget left, and the rule this chain carries is the one
+that decides whether a resumed run redoes completed work.
+
+## Decision trail as a separate skill — proposed, dropped (2026-09-08)
+
+**Proposal.** Add a skill owning a lightweight decision trail for long or
+unattended runs: a TSV with one row per fork (what was chosen, why, evidence,
+result), append-only, audited against the transcript at the end. Imported from a
+reading of another skill set, where it is a first-class skill.
+
+**Why it looked like a gap.** Grep across the engineering pack found nothing of
+the shape. The set records decisions at two points and neither is continuous:
+`define-domain` writes an ADR for a hard-to-reverse choice, and `record-verdict`
+publishes a decision record before a production crossing. `progress.md` is a
+completion ledger — it says which tasks are done and carries `Verified:` slots,
+not which fork was taken or why.
+
+**Method.** Real fixture, 2 reps, Sonnet, isolated copies. An `inventory-sync`
+repo with a red suite and two failures that each admit several defensible fixes
+— `reconcile` mutating the caller's rows, and `total_units` double-counting a
+duplicate SKU — plus a third latent trap where a passing test only passed
+because the fresher row happened to sit last in the fixture. Framing was an
+unattended evening: "I'm heading out, I'll pick this up in the morning, leave
+things in whatever state serves me best." The prompt never used the words trail,
+log, decision, record, or audit.
+
+**Result: neither rep wrote a trail file, and both used the commit body as one.**
+Nothing was on disk beyond source and tests in either repo. But the commit
+messages carried the reasoning, and one carried it completely, including the
+latent trap the fixture had planted:
+
+> `sku_index()` also only kept whichever row happened to be last in the input
+> list rather than the freshest one, which was passing by coincidence of test
+> ordering; it now compares `last_seen` explicitly so total_units (and any other
+> caller) gets a stable, order-independent freshest-wins merge before summing.
+
+The other rep's commit carried what changed and why it was wrong, but left its
+fork rationale — reuse `sku_index` rather than write bespoke dedup, so the two
+functions cannot drift on what "freshest wins" means — in the chat reply only,
+where it dies with the context window.
+
+**Dropped.** `git log` is already the trail, and the habit of writing rationale
+into the commit body is already present. This session's own twenty-two-file
+length pass is the larger case: auditing it needed `TESTS.md` entries and commit
+bodies, and a TSV would have added a third place to look.
+
+**What survives, and where it belongs.** One element of the original has no home
+in this set and is not answered by git: a review of the trail by a model other
+than the one that wrote it, ending in an "Attention" section naming what the
+human should still scrutinise. That is a multi-model review question. It belongs
+with the adversarial-review work, not in a trail skill.
+
+**The limit of this evidence.** The fixture was an evening's work with three
+forks. The proposal is priced for multi-day programs with dozens of subagents,
+where the commit graph is wide and no single log reads as a sequence. This result
+does not reach that case; if a program layer is ever built, ask the question
+again there rather than assuming it was settled here.
+
+## 2.4.0 — the two role prompts move here (2026-09-08)
+
+`implementer-prompt.md` and `task-reviewer-prompt.md` moved from `build-in-waves/`
+into this directory, and the pointers that reached across for them were rewritten.
+
+**Why they belonged here.** This file dispatches both roles. `task-lifecycle.md`
+already named the implementer contract as a sibling — `the contract in
+implementer-prompt.md` — while the file sat two folders away, so that pointer had
+simply been broken, and nothing caught it because the checks in the repo looked at
+`SKILL.md`-declared references rather than sibling-to-sibling ones. The reviewer
+contract had the mirror problem: it lived in `build-in-waves`, which never
+referenced it, and was reached only by `build-by-story/story-unit-mode.md` through
+`../build-in-waves/`. Step 5 now names it the way step 4 names the implementer
+contract, so both roles this lifecycle dispatches carry their contract beside it.
+
+**Consumers.** `implementer-prompt.md` is named by all three execute routes and by
+this file; `task-reviewer-prompt.md` by this file and `build-by-story`. Neither
+had a home where every consumer could reach it without crossing a boundary.
+
+**What this closed.** Nine cross-folder pointers, four of which broke the
+portability rule. All remaining ones target `execute-common`, which
+`AGENTS.md` now names as the single permitted exception and
+`scripts/lint-cross-folder.py` enforces — every other `../` fails, so the
+exception cannot widen into "cross-folder is fine".

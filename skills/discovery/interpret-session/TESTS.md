@@ -3,6 +3,65 @@
 Process: `author-skills` Iron Law. Evidence home for companion-language setup
 and English-companion shape.
 
+## Length pass (2026-09-07 — v1.6.1)
+
+Patch only: wording and location, not behaviour. No contract-eval anchors exist for
+this file (all `eval.json` `derived_from` entries point at `TESTS.md §`, none at
+`SKILL.md §`), so the rule-inventory diff was the only mechanical net.
+
+**Moved (verbatim) to new sibling files, replaced inline with a heading + skip
+condition + one-line summary + pointer:**
+
+- "When the paste puts no choice on the table" body → `no-live-choice.md`
+  (fires only on a non-live-choice paste).
+- "Cumulative knowledge map" recipe → `knowledge-map.md` (fires only every
+  third/fourth decision event or on request).
+- Steps 4–5 ("Option deltas", "Picture or one scenario"), steps 7–8
+  ("Pressure-test", "Decision boundary"), and the "detail behind the stance"
+  claim-prefix table → `depth-extras.md` (all four fire only on a normal/complex
+  fork — the depth table inline already states the predicate; a simple fork or
+  no-choice paste never reaches them, confirmed by the existing Red flag
+  "Rendering the full live-choice card on a simple fork or a no-choice paste").
+
+**Deleted as a duplicate:** the "Not a cheerleader…" bullet under "What this is
+NOT". Surviving home: the Rationalizations row "Endorsing the other session
+would make me a cheerleader" | "Cheerleading is agreeing *without weighing*.
+Agreeing after weighing three options is the job" (`grep -n cheerleader
+SKILL.md` → line 134, inside the protected Rationalizations table). That row
+carries the same fact — agreeing without weighing is cheerleading, agreeing
+after weighing is the job — and it sits where the pressure actually lands, per
+`author-skills`'s own rationale for not deduplicating gate content elsewhere.
+
+**Untouched (protected gates):** the Iron Law box, the full Rationalizations
+table, the full Red flags list, and the Read-only posture line — no wording or
+order changes.
+
+**Reformatted, not moved (real content unchanged):** several sequences of
+bold-lead paragraphs (`## When the user decides`, the "detail behind the
+stance" bullets before their extraction, the carry-back Lock/Weigh/Still-open
+trio) were converted to tight lists/tables and inter-item blank lines removed,
+matching the compaction already used by the End-of-session digest's 7-item
+list elsewhere in this same file. This is spacing, not a rewrap-join: every
+distinctive word from each item survives (confirmed by the `--diff` run below).
+
+**Anchors confirmed present:** none required (no `SKILL.md § heading`
+`derived_from` entries exist for this file).
+
+**Atom count:** 109 atoms before → 106 atoms in `SKILL.md` alone after, 122
+atoms across `SKILL.md` + the three new siblings (some atoms were reformatted
+from bullets/paragraphs into table rows or vice versa, which the tool double
+counts across the boundary — see `--diff` below for the substantive check).
+
+**`--diff` result** (`skill-rule-inventory.py --diff SKILL.md SKILL.md
+no-live-choice.md knowledge-map.md depth-extras.md`): 15 atoms reworded
+(70–100% distinctive-word survival, wording tightened only) and exactly 1 with
+no home — the cheerleader bullet above, confirmed intentional.
+
+**Line/word count:** 287 lines / 4645 words → 195 lines / 4061 words. Line
+count hit the ≤195 target (200-line hard limit, 5-line margin) via real
+extraction (3 sibling files) and real word cuts (−584 words, −12.6%), not
+rewrap: `lint-skill-length.py` passes at 195/200.
+
 ## Comprehension then stance — RED (2026-09-06)
 
 User request: option B hybrid — always name the real decision in plain language,

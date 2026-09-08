@@ -121,7 +121,7 @@ listed, then `/plugin install jdk@jayden-dang-skills`.
 
 ### The agent answers without invoking any skill
 
-The [`gate-session`](../skills/gate-session.md) gate is not in context. It is injected by a `SessionStart` hook with matcher `startup|clear|compact`.
+The [`zone-mode`](../skills/zone-mode.md) gate is not in context. It is injected by a `SessionStart` hook with matcher `startup|clear|compact`.
 
 - Installed as a plugin? The hook ships in `hooks/hooks.json`.
 - Installed by symlink, or into a harness with no hook support? Re-run `/configure-repo` and accept the session-start hook, which copies `templates/session-start.sh` into `.claude/hooks/` and wires it through `$CLAUDE_PROJECT_DIR`.
@@ -146,7 +146,7 @@ Rewrite the description as **trigger + outcome noun, never the workflow**.
 
 `triage` carries `disable-model-invocation: true`. The agent *cannot* invoke it. Some skill body is directing a hand-off to a user-invoked target — that is a real bug, not a style nit. A hand-off reaches a user-invoked skill only by *naming it for the user to run*.
 
-The user-invoked set includes (non-exhaustive): `/ask-me-bro`, `/author-skills`, `/teach-pack`, `/configure-repo`, `/bootstrap-repo`, `/define-project`, `/assess-pivot-impact`, `/triage`, `/scan-architecture`, `/map-features`, `/pathfind`, `/interpret-session`, `/deepen-codebase`, `/work-the-problem`, `/study-change`, `/brief-team`, `/select-sample`, `/write-handoff`, `/publish-issues`, `/cut-release`, `/refresh-roadmap-status`, `/assess-milestone`. Full list: [`AGENTS.md` §3](../../../AGENTS.md#3-skill-types--invocation-rules).
+The user-invoked set includes (non-exhaustive): `/author-skills`, `/teach-pack`, `/configure-repo`, `/bootstrap-repo`, `/define-project`, `/assess-pivot-impact`, `/triage`, `/scan-architecture`, `/map-features`, `/pathfind`, `/interpret-session`, `/deepen-codebase`, `/work-the-problem`, `/study-change`, `/brief-team`, `/select-sample`, `/write-handoff`, `/publish-issues`, `/cut-release`, `/refresh-roadmap-status`, `/assess-milestone`. Full list: [`AGENTS.md` §3](../../../AGENTS.md#3-skill-types--invocation-rules).
 
 ---
 
@@ -244,4 +244,4 @@ Upgrade: `npx skills@latest update -g` (or re-add the pack). Then `configure-rep
 - [Traceability — the spine](../concepts/traceability.md) — what the audit-trace check is and the finding codes
 - [The gates](../concepts/gates.md) — what each Iron Law is preventing
 - [`realign-spec`](../skills/realign-spec.md) — the skill for realigning a drifted spec
-- [`ask-me-bro`](../skills/ask-me-bro.md) — the router, when you do not know which flow you are in
+- [`zone-mode`](../skills/zone-mode.md) — the session gate; it routes when you do not know which flow you are in

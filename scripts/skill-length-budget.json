@@ -1,0 +1,14 @@
+{
+  "limit": 200,
+  "comment": "Files still over the limit, with the count they may not exceed. Entries come out as files are trimmed; none may be added by hand or raised. See scripts/lint-skill-length.py.",
+  "over_limit": {
+    "skills/discovery/deepen-codebase/SKILL.md": {
+      "lines": 242,
+      "words": 1685
+    },
+    "skills/discovery/work-the-problem/SKILL.md": {
+      "lines": 245,
+      "words": 1579
+    }
+  }
+}

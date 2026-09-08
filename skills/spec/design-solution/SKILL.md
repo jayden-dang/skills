@@ -1,61 +1,45 @@
 ---
 name: design-solution
-version: 1.4.0
+version: 1.4.1
 description: Use when approved requirements need their technical design — the design.md /
   architecture doc spelling out HOW the requirements get built. After
   specify-behavior, before plan-tasks.
 ---
 
-Produce `docs/specs/<YYYY-MM-DD>-<feature>/design.md`: HOW the approved requirements
-get satisfied. Start from the skill set's `templates/design.md`. Resolve pack seeds in this order, first path that exists: (1) `templates/` beside this SKILL.md, (2) `${CLAUDE_PLUGIN_ROOT}/templates` when that variable is set, (3) `../../../templates` relative to this SKILL.md. Every heading in it is a
+Produce `docs/specs/<YYYY-MM-DD>-<feature>/design.md`: HOW the approved requirements get satisfied. Start from the skill set's `templates/design.md` — first path that exists: `templates/` beside this SKILL.md, else `${CLAUDE_PLUGIN_ROOT}/templates`, else `../../../templates`. Every heading in it is a
 REQUIRED slot. The requirements file is your input contract — read it fully first.
 
 Create a todo per step (1, 2, 2b, 3, 4) before starting, and complete them in order — this skill owns its own list, distinct from `specify-behavior`' upstream and `plan-tasks`'s downstream. Check each off only when its **Done when:** is met.
 
 ## Step 1: Context and decisions
 
-Explain in 2–4 paragraphs what exists today, which constraint shapes the
-approach, and the alternative that constraint rules out. To learn "what exists today" without flooding this context, dispatch
-a **scan subagent** to map the touched surface — the seams the design will name:
-current signatures, data shapes, save/load paths — returning a digest file
-(`.skills/<CODE>/scan.md (or `.skills/_pending-<slug>/scan.md` before CODE)`), not raw source. Design against the digest; pull a
-specific file into context only when a decision hinges on its exact contents.
-(No subagents? Read the surface directly, but only the parts a decision needs.)
+Explain in 2–4 paragraphs what exists today, which constraint shapes the approach, and
+the alternative that constraint rules out. Dispatch a **scan subagent** to map the touched
+surface — signatures, data shapes, save/load paths — into a digest file (`.skills/<CODE>/scan.md`,
+or `.skills/_pending-<slug>/scan.md` before CODE), not raw source; pull a specific file into
+context only when a decision hinges on its exact contents. (No subagents? Read the surface
+directly, only the parts a decision needs.)
 
 **After the scan digest and before the reuse ladder:** run a **fresh** retrieval.
 REQUIRED SUB-SKILL: use `load-subgraph` seeded with the feature **CODE**,
-requirement **terms**, and scan **candidate paths** (`neighbors` or `subgraph` as
-fits; schema 1.1). Do not reuse a stale parent package for this step — fresh means
-current SSOT. **Grounded claims** (one home): follow
-`skills/execution/load-subgraph/references/grounded-claims.md` — never invent
-`Reuse:` from the envelope alone; climb the ladder for real reuse.
+requirement **terms**, and scan **candidate paths** (`neighbors` or `subgraph` as fits; schema
+1.1) — not a stale parent package; fresh means current SSOT. **Grounded claims** (one home):
+follow `skills/execution/load-subgraph/references/grounded-claims.md` — never invent `Reuse:`
+from the envelope alone; climb the ladder for real reuse.
 
-Record the decisions locked during discovery as a numbered list.
-Any decision that is hard to reverse AND surprising without context AND a real
+Record the decisions locked during discovery as a numbered list. Any decision that is hard to reverse AND surprising without context AND a real
 trade-off also gets an ADR (REQUIRED SUB-SKILL: `define-domain` owns the ADR
 gate).
 
-When a `docs/architecture/` spine exists, its `**ARCH-N**` invariants are inputs to
-this design: read them and note which ones this feature relies on (you will cite them
-in Step 2). If a design decision must *contradict* an invariant, that is an
-ADR-or-supersede event — record the ADR, or supersede the invariant by strikethrough
-in the spine — never a silent violation. No spine? Skip this; the layer is optional.
+When a `docs/architecture/` spine exists, its `**ARCH-N**` invariants are inputs to this design:
+read them and note which this feature relies on (cite them in Step 2). If a decision must
+*contradict* an invariant, that is an ADR-or-supersede event — record the ADR, or supersede the
+invariant by strikethrough in the spine — never a silent violation. No spine? Skip this; optional.
 
 ### Optional system docs (consult recipe)
 
-**Load:** `skills/project/define-system-doc/consult-recipe.md` (authority, hard-constraint
-precedence, no-op, once-per-entry suggest, never auto-invoke).
-
-| When the design… | Consult if Approved | Cite as |
-|---|---|---|
-| Crosses trust / compliance | `docs/security/threat-model.md`, `compliance.md`, `posture.md` | optional `Security:` TB/THR/CMP only — never on `Respects:` |
-| Sets reliability targets | `docs/ops/reliability.md` | optional `Reliability:` SLO only |
-| Touches API/UI/a11y/security-coding/instrumentation | matching `docs/standards/<name>.md` | design constraints prose |
-| Needs system/data/integrations/runtime shape | `docs/architecture/{system,data,integrations,runtime}.md` | narrative; spine ARCH-N stays `Respects:` only |
-| Names cross-module structure | `docs/codebase/{modules,ownership,dependencies}.md` | Locality / Reuse guidance |
-
-Do not invent TB/THR/CMP/SLO numbers without bold definitions in Approved docs. Shape docs
-never redefine ARCH-N. Suggest `/define-system-doc <entry-key>` only when the gap is material.
+WHEN the design crosses trust/compliance, reliability, a standards area, architecture shape,
+or cross-module structure, read `system-docs.md` beside this file and follow it exactly.
 
 **Done when:** the Context and decisions section names the binding constraint,
 the alternative rejected because of it, fresh retrieval has run, and — where a
@@ -80,36 +64,31 @@ heading under Architecture is a REQUIRED shape, not free prose.
 | `Depth:` | **Rung 7 (new module):** one-sentence **deletion test** — if this module vanished, what must callers still know to rebuild the behavior? Redesign until that answer is a *small* interface, not the full implementation. **Reuse of existing (rungs 2–5):** `n/a — extends <target>` |
 | `Locality:` | Where a change for these Satisfies IDs lands, and neighbor impact on modules the Step-1 scan already saw: `leave` \| `extend` \| `extract` plus one short clause |
 
-Structure quality is part of the design, not a later debt scan. Trace coverage
-(`Satisfies:`) and structure quality (`Interface:` / `Depth:` / `Locality:`) are
-both done when the section is complete.
+Structure quality is part of the design, not a later debt scan. Trace coverage (`Satisfies:`)
+and structure quality (`Interface:` / `Depth:` / `Locality:`) are both done when the section
+is complete.
 
-`Locality:` records where the **edit** lands; `Surface:` records who is
-**affected**. A reader that needs no edit still needs a disposition — a design
-that changes what a caller receives while leaving its code untouched is the case
-this slot exists for.
+`Locality:` records where the **edit** lands; `Surface:` records who is **affected**. A reader
+that needs no edit still needs a disposition — a design that changes what a caller receives
+while leaving its code untouched is the case this slot exists for.
 
-Adopting a brand-new third-party dependency — one the project does not already use —
-is the **user's decision**. When the ladder lands on a library the project hasn't
-adopted, stop and put it to the user: what it is, why it fits, cost (maintain,
-footprint, supply chain). Ground the pitch in current facts via the **Context7 MCP**
-(or `research`) before naming version or API. Wait for agreement before writing it
-into the design; if they decline, fall back down the ladder. An *already-installed*
-dependency (rung 5) needs no such ask. The new-dependency *adoption* is the
-user's call; the `Reuse:` line still records the rung that held.
+Adopting a brand-new third-party dependency — one the project does not already use — is the
+**user's decision**. When the ladder lands on a library the project hasn't adopted, stop and
+put it to the user: what it is, why it fits, cost (maintain, footprint, supply chain). Ground
+the pitch in current facts via the **Context7 MCP** (or `research`) before naming version or
+API, and wait for agreement before writing it into the design; if they decline, fall back down
+the ladder. An *already-installed* dependency (rung 5) needs no such ask — only the new-dependency
+*adoption* is the user's call; the `Reuse:` line still records the rung that held.
 
-For the genuinely hard parts, design it twice: dispatch 2–3 parallel subagents
-with divergent constraints (minimize the interface / maximize flexibility /
-optimize the common caller), compare on **interface depth** and **seam
-placement**, and commit to one with a stated reason. Be opinionated — a strong
-recommendation, not a menu. "Genuinely hard" means the interface itself is in
-question — a new persistence boundary, a concurrency model, a plugin seam. A
-part with one obvious shape does not qualify: adding a field to an existing
-store, wiring a new route through an established pattern, or a plain CRUD form
-is a single-design job.
+For the genuinely hard parts, design it twice: dispatch 2–3 parallel subagents with divergent
+constraints (minimize the interface / maximize flexibility / optimize the common caller),
+compare on **interface depth** and **seam placement**, and commit to one with a stated reason —
+opinionated, not a menu. "Genuinely hard" means the interface itself is in question — a new
+persistence boundary, a concurrency model, a plugin seam — not a part with one obvious shape
+(a field on an existing store, a new route through an established pattern, a plain CRUD form).
 
-Before committing to build any module, climb the **reuse ladder** and stop at the
-highest rung that holds — the cheapest thing that already works beats new code:
+Before committing to build any module, climb the **reuse ladder** and stop at the highest rung
+that holds — the cheapest thing that already works beats new code:
 
 1. **Does it need to exist at all?** No requirement forces it → cut it (YAGNI).
 2. **Already in this codebase?** A helper, util, type, or pattern the Step-1 scan found →
@@ -120,13 +99,12 @@ highest rung that holds — the cheapest thing that already works beats new code
 6. **Can it be one line?** One line.
 7. **Only then** — the minimum new code that works (then fill `Depth:`).
 
-The ladder climbs the Step-1 scan digest after you understand the problem. It
-never licenses cutting a corner that matters: keep input validation at trust
-boundaries, error handling that prevents data loss, security, accessibility, and
-everything the requirements asked for.
+The ladder climbs the Step-1 scan digest after you understand the problem. It never licenses
+cutting a corner that matters: input validation at trust boundaries, error handling that
+prevents data loss, security, accessibility, and everything the requirements asked for.
 
-The levers chain: the **scan** gathers what exists; the **ladder** decides whether
-to build; **Depth** / **Locality** record how deep and where the change sits.
+The levers chain: the **scan** gathers what exists; the **ladder** decides whether to build;
+**Depth** / **Locality** record how deep and where the change sits.
 
 | Thought | Reality |
 |---|---|
@@ -138,9 +116,8 @@ to build; **Depth** / **Locality** record how deep and where the change sits.
 | "I named the callers in the prose above" | Prose is not an inventory. One row per reader, one disposition each, or the omission is invisible |
 
 **Done when:** every architecture section has `Satisfies:`, `Reuse:`,
-`Interface:`, `Depth:`, and `Locality:` filled per the table (and `Respects:`
-where a spine invariant applies, and `Surface:` where the section changes
-something that already has readers).
+`Interface:`, `Depth:`, and `Locality:` filled per the table (and `Respects:` where a spine
+invariant applies, and `Surface:` where the section changes something that already has readers).
 
 ## Step 2b: UI design — observable conditional
 
@@ -148,67 +125,44 @@ IF any `Satisfies:` ID is delivered through a browser-rendered surface (a
 page, screen, component, or style the user sees) → fill the template's
 `## UI design` section. IF none is → delete the section.
 
-Interfaces and data flow do not design a surface: a module can satisfy every
-requirement and still ship browser-default buttons, an undesigned empty state,
-and invisible focus. This section makes those decisions here, where the user
-reviews them, instead of leaving them to whichever implementer touches the CSS.
-
-WHEN a locked `ui-brief.md` exists for this feature (beside requirements.md,
-or in `docs/design/` for the surface) → lift its per-surface slots (Layout /
-Components / States / Type & color / A11y) into `## UI design` 1:1 and cite
-the brief on the `Grounding:` line; its Decision, Signature, and Amendments
-stay in the brief — re-decide nothing it locked. Otherwise fill the section
-yourself:
-
-Fill it against the repo's real visual system: an Approved
-`docs/standards/design-tokens.md` is the palette of record when present;
-otherwise read the token / theme / component-style files the Step-1 scan found.
-Cite tokens by name — the `Grounding:` line records the precedence (the user's
-own words, then the existing system, then your choices) and where the tokens
-come from. One `###`
-per surface; fill every slot the template names — `Layout:`, `Components:`
-(same ladder discipline as `Reuse:`), `States:`, `Type & color:`, `A11y:`.
+To fill it — lifting a locked `ui-brief.md` or building fresh against the repo's real
+visual system — read `ui-design-recipe.md` beside this file and follow it exactly.
 
 **Done when:** the section exists iff the predicate holds, and every surface
 has all five slots filled — with a line for each reachable visible state.
 
 ## Step 3: Agree the seams for testing
 
-Fill the "Seams for testing" table: the public boundaries tests will be
-written at, which requirement IDs each seam covers, and the test kind
-(unit/integration/e2e). Prefer existing seams; the ideal number of NEW seams
-is zero or one. The `test-first` skill refuses to write tests at seams not agreed
-here — this table is the contract.
+Fill the "Seams for testing" table: the public boundaries tests will be written at, which
+requirement IDs each seam covers, and the test kind (unit/integration/e2e). Prefer existing
+seams; the ideal number of NEW seams is zero or one. The `test-first` skill refuses to write
+tests at seams not agreed here — this table is the contract.
 **Done when:** every requirement ID maps to at least one seam row.
 
 ## Step 4: Coverage self-check, then the approval gate
 
-Walk requirements.md top to bottom: every ID appears in exactly one Satisfies
-line (or is listed as deliberately unmapped, with a reason). Then scan for
-placeholders and internal contradictions (a name used two ways, a data flow
-that skips a component).
+Walk requirements.md top to bottom: every ID appears in exactly one Satisfies line (or is
+listed as deliberately unmapped, with a reason). Then scan for placeholders and internal
+contradictions (a name used two ways, a data flow that skips a component).
 
 - **Reuse coverage:** prove-claim every architecture section has a `Reuse:` line
   that matches the ladder rung it claims.
 - **Structure coverage:** prove-claim every section has `Interface:`, `Depth:`,
-  and `Locality:` per Step 2. For each rung-7 `Depth:` line, the sentence must
-  name what callers keep knowing — redesign any section whose Depth answer is
-  equivalent to restating the whole implementation.
+  and `Locality:` per Step 2 — each rung-7 `Depth:` sentence must name what callers keep
+  knowing; redesign any section whose Depth answer restates the whole implementation.
 - **Surface coverage:** for every section carrying `Surface:`, re-run the
-  reference search yourself and confirm the inventory is complete and each row
-  carries a disposition. A `compat` row without the follow-up that removes it,
-  or a changed external/persisted reader not marked `frozen`, fails this check.
+  reference search yourself and confirm the inventory is complete and each row carries a
+  disposition. A `compat` row with no removal follow-up, or a changed external/persisted
+  reader not marked `frozen`, fails this check.
 - **UI coverage:** re-evaluate the Step 2b predicate against requirements.md
   — a `Satisfies:` ID delivered through a browser-rendered surface with no
   `## UI design` section fails this check. WHEN the section exists → every
-  slot per surface is filled, colors are token names not raw hex, and any
-  visible state the requirements make reachable (empty, error, loading) has
-  a `States:` line.
+  slot per surface is filled, colors are token names not raw hex, and any reachable
+  visible state (empty, error, loading) has a `States:` line.
 
-**Independent design review — dispatch, don't self-review.** Fresh context has
-no stake in your framing (the bias that reinterprets a stale requirement rather
-than catching it). Dispatch a review subagent with this design, requirements.md,
-the Step-1 scan digest when present, and the repo; have it prove-claim:
+**Independent design review — dispatch, don't self-review.** Fresh context has no stake in
+your framing (the bias that reinterprets a stale requirement rather than catching it). Dispatch
+a review subagent with this design, requirements.md, the Step-1 scan digest when present, and the repo; have it prove-claim:
 
 1. **Code-facing claims** — each named seam, signature, and data path exists as
    described; each `Satisfies:` mapping is achievable at that seam — grep/read
@@ -218,24 +172,20 @@ the Step-1 scan digest when present, and the repo; have it prove-claim:
    `Locality:` line is consistent with the scan digest (neighbors named leave /
    extend / extract for a reason).
 
-Findings go to `.skills/<CODE>/design-review.md`; you fix them without loading
-the code here. (No subagents? Do this pass yourself in a fresh read of the code
-and the digest.)
+Findings go to `.skills/<CODE>/design-review.md`; you fix them without loading the code here.
+(No subagents? Do this pass yourself in a fresh read of the code and the digest.)
 
-**Upstream sync-back — do not skip.** Designing routinely surfaces a fact that
-contradicts an *approved* requirement: a premise that turned out false, a
-mechanism the requirement named wrong, a constraint that does not hold (e.g. the
-requirement says the stored body is ProseMirror-JSON but you discover it is
+**Upstream sync-back — do not skip.** Designing routinely surfaces a fact that contradicts an
+*approved* requirement: a premise that turned out false, a mechanism the requirement named
+wrong, a constraint that does not hold (e.g. the requirement says the stored body is ProseMirror-JSON but you discover it is
 Markdown). When that happens you MUST correct the requirement's own text and
-re-surface it for approval — never satisfy a requirement by quietly
-reinterpreting words you now know are false. A `Satisfies:` line pointing at a
-requirement whose wording is wrong makes the trace spine cite a lie, and the
-error survives all the way to code. The same holds for an ADR you are writing
-that contradicts an existing one: supersede it explicitly by number. If you
-changed any requirement, say exactly which and why when you present for approval.
+re-surface it for approval — never satisfy a requirement by quietly reinterpreting words you
+now know are false. A `Satisfies:` line pointing at a requirement whose wording is wrong makes
+the trace spine cite a lie, and the error survives all the way to code. The same holds for an
+ADR you are writing that contradicts an existing one: supersede it explicitly by number. If
+you changed any requirement, say exactly which and why when you present for approval.
 
-Present the FILE to the user, section by section for large designs, and STOP
-for approval. On approval set `Status: Approved`.
+Present the FILE to the user, section by section for large designs, and STOP for approval. On approval set `Status: Approved`.
 
 ## Exit
 

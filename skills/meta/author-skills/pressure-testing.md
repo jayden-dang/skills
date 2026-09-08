@@ -3,7 +3,7 @@
 Load this file when running the RED, GREEN, or REFACTOR phase of `author-skills` — it defines how to test a skill on subagents.
 
 - [Test behavior, not recall](#test-behavior-not-recall)
-- [Building a scenario](#building-a-scenario) — pressure types
+- [Building a scenario](#building-a-scenario) — keeping the test invisible, pressure types
 - [Protocol](#protocol) — the model roster, RED / GREEN / REFACTOR
 - [Micro-tests for wording](#micro-tests-for-wording)
 - [Testing non-gate skills](#testing-non-gate-skills) — technique, reference
@@ -27,6 +27,18 @@ A scenario earns its verdict when the agent cannot tell it is a test:
 3. **Make the agent act.** "Choose and do it now", not "what should one do?" Hypotheticals invite hypothetical discipline.
 4. **Close the easy exits.** "I would ask the user" without picking an option is not an answer; say so in the prompt.
 5. **Frame it as live work.** Open with a line such as: "This is a real task, not a discussion. Decide and act." List the skill under test as available context.
+
+### Keep the test invisible
+
+"Cannot tell it is a test" is the claim the five points above serve; this is how it is actually held. Everything the agent can see is part of the scenario — its working directory, the paths in its prompt, the name of the file it loads — and each one can announce the experiment. Sanitize all of it:
+
+- **No test vocabulary in any path or filename the agent reads or works in.** Not `variant`, `candidate`, `rep-N`, `track`, `scenario`, `eval`, `abtest`, or a bare `A`/`B`. Give each cell its own project-shaped fixture name rather than one name plus a suffix, and materialise reps into fresh random parents so no agent sees a numbered sibling.
+- **Install the skill where a consuming project would put it** (`.claude/skills/<name>/SKILL.md`), never at its authoring path here. The category segment in `skills/<category>/<name>/` announces that the fixture is this repo, and an agent that knows it is inside the skills repo knows it is being measured.
+- **The prompt never contains the text under test.** Quoting the rule you are measuring turns a compliance test into a reading test. In the control cell it is worse: the agent is asked about a rule its own skill does not contain, and infers the setup from the mismatch.
+- **The prompt never seeds the rule's vocabulary.** If the rule turns on "layers", no option may use the word "layer". The agent reasons in whatever terms you hand it, and the cell stops isolating anything.
+- **One agent never learns another exists.** No second variant, no other reps, no comparison.
+
+A leak does not weaken a result, it voids it, and it is normally found after the spend. A clean sixteen-run experiment in this repo was declared untrustworthy on one of its two tracks because the option text had handed the agent the rule's own key word before it chose.
 
 ### Pressure types
 
@@ -62,7 +74,16 @@ If the control complies, there is no failure to fix — do not write the skill t
 
 ### 2. With the skill — GREEN
 
-Same scenarios, skill present. The agent should choose the compliant option and cite the skill while doing it. Still failing? The text is unclear or incomplete — revise and re-run before adding anything new.
+Same scenarios, skill present. Still failing? The text is unclear or incomplete — revise and re-run before adding anything new.
+
+Score each claim against its own source of truth, never against the agent's account of itself.
+
+| Question | Settled by | Never by |
+|---|---|---|
+| What did it do? | The artifact. Diff the working tree — a transcript claiming a deletion with the symbol still present is a fail whatever the words say | Its own report |
+| Did the skill carry the decision? | The transcript. Which files it opened, and whether the rule surfaces anywhere in its reasoning | Reading a citation as proof |
+
+Citing a rule is not evidence the rule did the work. The inference runs one way only: a rule absent from every GREEN transcript went unread, which is an organization finding rather than a content one — one run here scored 3/5 compliance with 0/5 transcripts using the rule's key word at all, and the fix was placement, not wording. Meta-testing asks the agent directly on purpose, after it has already been scored, and never as the score.
 
 ### 3. Loophole hunt — REFACTOR
 

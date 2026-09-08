@@ -1,7 +1,7 @@
 ---
-name: gate-session
-version: 1.1.0
-description: Use when starting any conversation — establishes the rule that relevant skills are found and invoked before any response or action, including clarifying questions
+name: zone-mode
+version: 1.0.0
+description: Use when starting any conversation — establishes the rule that relevant skills are found and invoked before any response or action, including clarifying questions, and how to hand off once the entry point is named
 ---
 
 <SUBAGENT-EXEMPT>
@@ -26,13 +26,30 @@ a checklist, create one todo per item.
 
 **Priority:** process skills first, then implementation skills. When the
 entry point is unclear, load `docs/guide/process/on-ramps.md` — that table
-is the one home; do not invent a second router. Only auto-invoke
-model-invocable skills; name a user-invoked one for the user to run.
+is the one home; do not invent a second router.
 
 **Participant boundary:** never infer skill-set membership from roster,
 CODEOWNERS, or PR authorship; only skill-mediated actions are enforced or
 recorded. Treat supplied evidence as supplied — do not invent mediation that did
 not happen.
+
+## Handing off
+
+Once the entry point is named, how you reach it depends on the target:
+
+- **Model-invocable** (no `disable-model-invocation` in its frontmatter) — invoke
+  it and let it take over.
+- **User-invoked** (`disable-model-invocation: true`) — you cannot invoke it.
+  Name it for the user to run: "run `/triage`". Telling the agent to invoke one
+  is a dead-end hand-off, a real bug rather than a style nit, and
+  `scripts/lint-write-handoffs.py` fails it.
+
+Do not start executing a chosen flow from inside this skill. Route, then hand
+over.
+
+**Context hygiene:** keep discovery through plan in one unbroken context window.
+If the window is filling before the plan is done, tell the user to run
+`/write-handoff`. Execution sessions are context-isolated per task by design.
 
 ## Red Flags — you are rationalizing
 

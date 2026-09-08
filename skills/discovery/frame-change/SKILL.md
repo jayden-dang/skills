@@ -1,6 +1,6 @@
 ---
 name: frame-change
-version: 2.0.0
+version: 2.0.1
 description: Use at the very start of the idea-to-ship chain — when the user wants to
   add, build, or change a feature, behavior, or component, or to start a new
   project, and the asked-for behavior has no spec yet. Produces an agreed shape
@@ -68,51 +68,32 @@ Read `CONTEXT.md` (use its vocabulary from here on).
 or “only” dozens of rows. Load `load-subgraph`’s `catalog-query.md` and run it
 as the one home (mode, query recipe, context caps, exact CODE lookup), including
 any active OBS already indexed. Read the **Project posture** in
-`docs/agents/project.md` when present — it right-sizes the whole interview.
-**Delivery intent** is the quality bar the approaches must meet, never a release
-state. **Compat obligation** decides the migration lens — the written line, else
-derived from Lifecycle stage (Idea / Early / Active development → **None**; Cut
-Released / Scaling / Maintenance → **External**): on **None**, approaches land
-one shape and spend no scope on backward compatibility, versioned names, or
-deprecation cost, because no consumer is committed to the current ones; on
-**Internal** / **External**, weigh exactly those. When the posture section is
+`docs/agents/project.md` when present — it right-sizes the whole interview. WHEN
+Project posture or `## Team` is present in that file, read `project-posture.md`
+beside this file and follow it exactly for how Delivery intent, Compat
+obligation, and Team band/packaging are derived. When the posture section is
 absent, do not assume one — proceed without right-sizing; nested
 `clarify-decisions` coverage stays **OFF** until written Production **and** Cut
-Released/Scaling/Maintenance (plus its surface latch).
-Read **`## Team`** in the same file when present: if the
-**roster** is non-empty or a **Workflow band** override is set, derive the
-**band** and apply **packaging** using the rules and matrix written *in that
-section* (do not re-copy them here). State the band once. Solo: leaner
-peer-coordination language in approaches. Small/Multi: surface ownership and
-review capacity in approach trade-offs. Empty roster + blank override, or
-missing Team: do not invent a team and do not hard-fail. **Band never changes
-tier rules or Iron Laws.** When `docs/product/vision.md` exists, read it too and
-— once you grasp the idea — state whether it falls inside the stated product
-scope (an out-of-scope idea is worth surfacing before any spec work); if it does
-not exist, skip this, the layer is optional.
+Released/Scaling/Maintenance (plus its surface latch). Empty roster + blank
+override, or missing Team: do not invent a team and do not hard-fail. **Band
+never changes tier rules or Iron Laws.** When `docs/product/vision.md` exists,
+read it too and — once you grasp the idea — state whether it falls inside the
+stated product scope (an out-of-scope idea is worth surfacing before any spec
+work); if it does not exist, skip this, the layer is optional.
 
 ### Product context docs (optional)
 
-**Applicability:** the idea touches users, success criteria, or product principles.
-
-**Paths:** `docs/product/personas.md`, `metrics.md`, `principles.md` (validators under
-`skills/project/define-system-doc/validators/product/`). Vision remains
-`docs/product/vision.md` (define-project).
-
-**Consult:** follow `skills/project/define-system-doc/consult-recipe.md` (authority,
-no-op, once-per-entry suggest, never auto-invoke). When Approved, use personas/metrics/
-principles to right-size scope and users; they do not outrank vision non-goals/hard
-constraints. Suggest `/define-system-doc product/personas|metrics|principles` only when
-that gap is material.
+WHEN the idea touches users, success criteria, or product principles, read
+`product-context.md` beside this file and follow it exactly (paths, validators,
+and the consult-recipe's authority / no-op / suggest rules).
 
 For anything heavier — code, docs, and recent commits near this idea — dispatch a
-**scan subagent** that explores and writes a findings digest to
-`.skills/<CODE>/scan.md` (or `.skills/_pending-<slug>/scan.md` before CODE) (what
-exists near the idea, the files and seams it touches, applicable constraints —
-findings, not file dumps), returning only that path; work from the digest instead of
-pulling raw files into this conversation. (No subagents in this harness? Read the few
-relevant files directly.) If `docs/agents/project.md` or these files are missing, say
-so, suggest running `configure-repo`, and continue with what you have.
+**scan subagent** that writes a findings digest (what exists near the idea, the
+files and seams it touches, applicable constraints — findings, not file dumps) to
+`.skills/<CODE>/scan.md` (or `.skills/_pending-<slug>/scan.md` before CODE),
+returning only that path; work from the digest, not raw files. No subagents here?
+Read the few relevant files directly. If `docs/agents/project.md` or these files
+are missing, say so, suggest `configure-repo`, and continue with what you have.
 
 The scan digest (or your direct read) MUST include a **Blindspot** section: territory-specific traps, historical constraints, and questions a newcomer would not know to ask — grounded in this repo, not generic advice. When the user signals low familiarity with the module or domain, surface that Blindspot list to them before the first preference question in step 2.
 

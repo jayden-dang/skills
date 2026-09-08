@@ -37,9 +37,10 @@ worker context after a semantic-unit boundary or any hard rotation trigger.
    `git diff -U10 $BASE HEAD` into
    `.skills/<CODE>/review-<base7>..<head7>.diff`. Never use `HEAD~1` as base.
 5. Dispatch or resume the reviewer with the task brief path, report path, diff
-   package path, evidence manifest, reviewer lease ID, and explicit model. The
-   reviewer returns separate Standards and Spec verdicts. A task review is
-   independent of the whole-branch review.
+   package path, evidence manifest, reviewer lease ID, and explicit model, against
+   the contract in `task-reviewer-prompt.md`. The reviewer returns separate
+   Standards and Spec verdicts. A task review is independent of the whole-branch
+   review.
 6. Critical/Important findings go through one fix dispatch for the complete
    finding set, then a fresh re-review. Three surviving cycles stop the build
    and escalate. The controller never fixes reviewer findings directly.

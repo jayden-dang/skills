@@ -26,13 +26,13 @@ Three loading levels, and each costs differently:
 | **Body** — the SKILL.md text | paid every turn *once the skill fires* |
 | **Reference file** — a sibling `.md` behind a pointer | costs nothing until the pointer is followed |
 
-That budget is why discipline skills keep their core body to roughly 500 words, why the hard ceiling for any SKILL.md body is ~500 lines, and why the session-injected `gate-session` is the shortest gate in the set. Length is a failure mode in itself, even when every line is live.
+That budget is why discipline skills keep their core body to roughly 500 words, why the hard ceiling for any SKILL.md body is 200 lines held by `scripts/lint-skill-length.py`, and why the session-injected `zone-mode` is the shortest gate in the set. Length is a failure mode in itself, even when every line is live.
 
 ## The two invocation kinds
 
 **Model-invocable** skills have no special frontmatter. The agent invokes them on its own when the description matches the situation. These hold reusable discipline: `test-first`, `prove-claim`, `root-cause`, `clarify-decisions`, `design-solution`.
 
-**User-invoked** skills carry `disable-model-invocation: true`. The agent *cannot* auto-invoke them; the user runs them as a slash command. These orchestrate: `/ask-me-bro`, `/configure-repo`, `/bootstrap-repo`, `/define-project`, `/pathfind`, `/map-features`, `/triage`, `/scan-architecture`, `/write-handoff`, `/publish-issues`, `/cut-release`, `/author-skills`, `/teach-pack`, and others listed in [`AGENTS.md` §3](../../../AGENTS.md#3-skill-types--invocation-rules).
+**User-invoked** skills carry `disable-model-invocation: true`. The agent *cannot* auto-invoke them; the user runs them as a slash command. These orchestrate: `/configure-repo`, `/bootstrap-repo`, `/define-project`, `/pathfind`, `/map-features`, `/triage`, `/scan-architecture`, `/write-handoff`, `/publish-issues`, `/cut-release`, `/author-skills`, `/teach-pack`, and others listed in [`AGENTS.md` §3](../../../AGENTS.md#3-skill-types--invocation-rules).
 
 The composition rule falls out of that:
 
@@ -40,12 +40,12 @@ The composition rule falls out of that:
 
 And the corollary, which `author-skills` calls a real bug rather than a style nit: **no skill body may tell the agent to *invoke* a user-invoked skill.** Directing the agent to invoke a `disable-model-invocation` target is a dead-end hand-off — the invocation silently cannot happen. A hand-off reaches a user-invoked skill only by *naming it for the user to run*: "run `/triage`", "suggest the user run `/write-handoff`".
 
-You can see the rule being obeyed in the wild. `root-cause` hands architectural findings to `scan-architecture` — but `scan-architecture` is user-invoked, so `gate-session` says: *"name a user-invoked one for the user to run."* Meanwhile `build-in-waves` writes `REQUIRED SUB-SKILL: use \`inspect-change\`` freely, because `inspect-change` is model-invocable.
+You can see the rule being obeyed in the wild. `root-cause` hands architectural findings to `scan-architecture` — but `scan-architecture` is user-invoked, so `zone-mode` says: *"name a user-invoked one for the user to run."* Meanwhile `build-in-waves` writes `REQUIRED SUB-SKILL: use \`inspect-change\`` freely, because `inspect-change` is model-invocable.
 
 | Bucket | Skills | Kind |
 |---|---|---|
-| meta | `gate-session` | model (session-injected) |
-| | `ask-me-bro`, `author-skills`, `teach-pack` | user |
+| meta | `zone-mode` | model (session-injected) |
+| | `author-skills`, `teach-pack` | user |
 | setup | `configure-repo`, `bootstrap-repo` | user |
 | discovery | `frame-change`, `clarify-decisions`, `research`, `run-spike`, `define-domain` | model |
 | | `pathfind`, `interpret-session` | user |
@@ -78,7 +78,7 @@ engineering skills (2026-08-16):
 | Model-invocable with **no** caller — description-triggered entry points | 5 |
 
 The third row is the one worth reading carefully, because "no caller" looks like
-an orphan and mostly is not. `gate-session` is injected by the SessionStart hook,
+an orphan and mostly is not. `zone-mode` is injected by the SessionStart hook,
 not called. `amend-feature`, `vet-feedback`, `vet-source`, `speak-outer`, `hold-stage`, and
 `run-flow-guide` are **entry points**: they fire on what the user
 says (walkthrough is only *named* by `write-flow-guide`). `write-flow-guide`
@@ -162,7 +162,7 @@ This is why the rationalization tables in `test-first`, `root-cause`, `prove-cla
 
 ## Activation
 
-The set ships as a Claude Code plugin. `hooks/hooks.json` registers a `SessionStart` hook with matcher `startup|clear|compact` that injects the full text of `gate-session` into context — so the skill-check gate survives `/clear` and compaction, the two moments it would otherwise silently disappear.
+The set ships as a Claude Code plugin. `hooks/hooks.json` registers a `SessionStart` hook with matcher `startup|clear|compact` that injects the full text of `zone-mode` into context — so the skill-check gate survives `/clear` and compaction, the two moments it would otherwise silently disappear.
 
 When installed without plugin hook support, `configure-repo` offers to copy `templates/session-start.sh` into the project's own `.claude/hooks/` and reference it via `$CLAUDE_PROJECT_DIR` — never an absolute path, which would be committed into `.claude/settings.json` and break on every other machine.
 
@@ -170,5 +170,5 @@ When installed without plugin hook support, `configure-repo` offers to copy `tem
 
 - [The gates](gates.md) — the four skills that guard rules the agent breaks under pressure
 - [`author-skills`](../skills/author-skills.md) — the full authoring doctrine and its deployment checklist
-- [`gate-session`](../skills/gate-session.md) — the session gate
+- [`zone-mode`](../skills/zone-mode.md) — the session gate and router
 - [Skill reference](../skills/README.md) — 63 engineering skills

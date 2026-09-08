@@ -1,8 +1,7 @@
 # On-ramps
 
-**One home** for which skill starts a situation. `gate-session`,
-`ask-me-bro`, and [START-HERE](../START-HERE.md) point
-here — they do not restate this table.
+**One home** for which skill starts a situation. `zone-mode` and
+[START-HERE](../START-HERE.md) point here — they do not restate this table.
 
 Load this file when the entry point is unclear. Then invoke the named
 model-invocable skill, or name the `/slash` for the user to run.
@@ -31,7 +30,6 @@ model-invocable skill, or name the `/slash` for the user to run.
 | Spec has drifted from the code, or the audit-trace check comes back dirty | `realign-spec` |
 | Mid-execution plan is wrong | `reroute-plan` |
 | Multi-session destination still foggy | `/pathfind` |
-| Unsure which row applies | `/ask-me-bro` |
 
 Three rules of thumb:
 
@@ -41,5 +39,5 @@ Three rules of thumb:
 
 > When two skills both seem to apply, the process skill wins. It will invoke the implementation skill itself.
 
-`ask-me-bro` owns **how** to hand off (invoke a model skill vs name a
-user-invoked one). This file owns **which** name to pick.
+`zone-mode` owns **how** to hand off — invoke a model-invocable skill, name a
+user-invoked one for the user to run. This file owns **which** name to pick.

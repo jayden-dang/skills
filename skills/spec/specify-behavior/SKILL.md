@@ -1,10 +1,9 @@
 ---
 name: specify-behavior
-version: 1.3.0
-description: Use when discovery is complete and a tier-1 or tier-2 change needs its
-  requirements written — the user stories and EARS acceptance criteria in
-  requirements.md that every later task, test, and commit cites by ID. After
-  frame-change, before any design or code.
+version: 1.3.1
+description: Use when discovery is complete and a tier-1 or tier-2 change needs its requirements
+  written — the user stories and EARS acceptance criteria in requirements.md that every later
+  task, test, and commit cites by ID. After frame-change, before any design or code.
 ---
 
 Produce `docs/specs/<YYYY-MM-DD>-<feature>/requirements.md` from the approved
@@ -14,29 +13,23 @@ this conversation, and every task, test, and commit will cite their IDs.
 ## Two modes — pick by what you were handed
 
 **Tier-1 mini-spec** — a fix plus a guard for an **already-approved** feature
-(you came from `amend-feature` or `root-cause`). You are not authoring a new
-`requirements.md`. Append to the owning feature's `requirements.md` (or
-`docs/specs/fixes.md` if no feature owns it):
+(from `amend-feature` or `root-cause`). Not a new `requirements.md`: append to
+the owning feature's `requirements.md` (or `docs/specs/fixes.md` if unowned)
+the **fix requirement** (one EARS criterion, Step 2's forms) and its
+**`SHALL CONTINUE TO` guard** (Step 3, for the behavior the fix must not break).
 
-- the **fix requirement** — one EARS criterion (Step 2's forms) for the
-  corrected behavior;
-- its **`SHALL CONTINUE TO` guard** — Step 3, for the behavior the fix must not
-  break.
+Self-review just those two criteria: the ambiguity and testability scans, plus
+the code-claim check (Step 5) only when a criterion asserts how the system
+*currently* works — a guard usually does. Present both for approval, keep the
+feature's `Status`, and exit to `test-first`. **Skip Steps 1 and 4 and the
+whole-file review** — those are for a new feature, not a two-line mini-spec.
 
-Then self-review just those two criteria: the ambiguity and testability scans,
-plus the code-claim check (Step 5) only when a criterion asserts how the system
-*currently* works — a guard usually does. Present the two appended criteria for
-approval, keep the feature's `Status`, and exit to `test-first`. **Skip Steps 1 and 4
-and the whole-file review** — a new feature code, an Out-of-Scope section, and a
-full-file self-review are for a new feature, not a two-line mini-spec.
-
-**New feature** — tier 2, or anything nothing has spec'd yet. Start from the skill
-set's `templates/requirements.md`. Resolve pack seeds in this order, first
-path that exists: (1) `templates/` beside this SKILL.md, (2)
-`${CLAUDE_PLUGIN_ROOT}/templates` when that variable is set, (3)
-`../../../templates` relative to this SKILL.md. Every heading in that template is a
-REQUIRED slot: fill it, or write `None` under it — never drop one. Then run the full
-sequence below. Create a todo per step.
+**New feature** — tier 2, or anything nothing has spec'd yet. Start from
+`templates/requirements.md`, resolving pack seeds in order, first path that
+exists: `templates/` beside this SKILL.md, else `${CLAUDE_PLUGIN_ROOT}/templates`
+when set, else `../../../templates` relative to this SKILL.md. Every heading in
+that template is a REQUIRED slot: fill it, or write `None` — never drop one.
+Then run the full sequence below, one todo per step.
 
 ## Step 1: Register the feature code
 
@@ -44,20 +37,12 @@ Pick a short unique prefix (2–12 chars, A–Z0–9, starts with a letter — e
 `SHELL`, `SYNC2`). The catalog is **shared**: `docs/specs/INDEX.md` is the Domain
 router; feature cards live in `docs/specs/catalog/<domain>.md`. Add a card row to
 the owning **shard** BEFORE writing requirements (ensure a router row exists for
-that domain). Never put feature Code rows on INDEX itself. Never reuse a retired
-code. Flat INDEX → stop and name `/map-features` Domain boundary migrate.
+that domain). Never put Code rows on INDEX itself; never reuse a retired code.
+Flat INDEX → stop and name `/map-features` Domain boundary migrate.
 
-**Bind the roadmap item.** Slot vs CODE definitions live in `plan-milestones`
-(**ROAD-N is a slot, not a feature**). This step only writes the join.
-
-WHERE `docs/roadmap/INDEX.md` exists and this work implements one of its items, put that
-item's `ROAD-N` in the shard row's **Roadmap item** column. WHERE there is no roadmap, or the work
-was never a roadmap item, write `—`.
-
-This column is the only plan↔spec join, and this step is its only writer — never invent a
-`ROAD-N` here. IF the chosen ROAD is already bound to another CODE (`R6` in
-`templates/roadmap-findings.md`) → stop and surface the collision; do not rebind or mint
-another ROAD.
+**Bind the roadmap item.** WHERE `docs/roadmap/INDEX.md` exists, read `roadmap-bind.md` beside
+this file and follow it exactly — the shard row's **Roadmap item** column is the only
+plan↔spec join. WHERE there is no roadmap, or the work was never a roadmap item, write `—`.
 
 **Promote ephemera.** IF a `.skills/_pending-<slug>/` directory was used for this work, move it to `.skills/<CODE>/` (`mv` when CODE dir absent) so subsequent writes use the Feature root — see `templates/skills-ephemera-paths.md`.
 **Done when:** the code has a Draft card in the owning shard, and its Roadmap item cell
@@ -70,14 +55,10 @@ EARS statements carrying hierarchical IDs `**CODE-N.M**` — **N is the story
 number** (same N as the `## N` heading). That identity is load-bearing: later
 skills derive review units from it.
 
-Each behavioral story carries:
-
-```
-**Story:** As a <actor>, I want <capability>, so that <benefit>.
-```
-
-The `**Story:**` line must name **one demoable act** a person can do or prove-claim
-once the story lands — not a technical layer ("the storage layer is rewritten").
+Each behavioral story carries a `**Story:**` line: `As a <actor>, I want
+<capability>, so that <benefit>.` That line must name **one demoable act** a
+person can do or prove-claim once the story lands — not a technical layer
+("the storage layer is rewritten").
 
 EARS forms:
 
@@ -119,72 +100,26 @@ Walk the four quality attributes:
 - **Performance** — latency, throughput, resource ceilings.
 - **Security** — authn/authz, data protection, the trust boundaries crossed.
 - **Reliability** — availability, error budget, recovery, durability.
-- **Accessibility** — conformance target (e.g. WCAG 2.1 AA), keyboard and
-  screen-reader support.
+- **Accessibility** — conformance target (e.g. WCAG 2.1 AA), keyboard/SR support.
 
 ### System docs for NFR grounding (thin consult)
 
-**Load:** `skills/project/define-system-doc/consult-recipe.md` (authority,
-hard-constraint precedence, no-op when absent/non-authoritative, once-per-entry
-suggest, never auto-invoke).
-
-**When:** before writing each quality-attribute line that is **material** for
-this feature (the attribute is not already headed for `None`). Do **not** load
-architecture narrative, codebase map/modules/ownership/deps, or ops runbooks
-here — those are design-solution / plan-tasks layer.
-
-| Attribute material when… | Consult if Approved | Ground the NFR with… |
-|---|---|---|
-| Feature owns a measured latency/throughput surface | `docs/product/metrics.md` first; if Absent/non-authoritative, then `docs/ops/reliability.md` for latency/throughput **SLO** lines only | standing product metric, else greppable `SLO-N` that names this surface — never a freehand number when either doc defines one |
-| Crosses authn/authz, tenant scope, public vs admin data, or compliance | `docs/security/threat-model.md`; also `compliance.md` when regulatory | greppable `TB-N` / `THR-N` / `CMP-N` **only** when bold-defined in those docs |
-| Owns availability, error budget, recovery, or durability targets | `docs/ops/reliability.md` | greppable `SLO-N` (or stated error-budget rule) **only** when bold-defined. A pure latency SLO used under Performance does **not** force Reliability material |
-| Ships UI a person perceives (not headless/API-only) | `docs/standards/accessibility.md` | house conformance target and keyboard/SR rules |
-
-**Story actors (not an NFR slot):** WHEN a `**Story:**` line names a product role
-and `docs/product/personas.md` is Approved, align the actor with standing persona
-vocabulary — do not invent a parallel cast.
-
-**Hard constraints for this step** (outrank any system doc — consult-recipe):
-confirmed frame-change decisions and vision non-goals. Live `ARCH-N` the feature
-already relies on stays binding; do not invent a contradicting NFR.
-
-**Write rules after consult:**
-
-- **Approved + material:** write the NFR EARS criterion so its measurable target
-  (and any TB/THR/CMP/SLO ID you cite) comes from the Approved doc — not from
-  industry habit or a number you invent. Name verification method as today.
-- **Absent or non-authoritative (after the table's full path):** CONTINUE
-  (no-op). Then, in order: (1) frame-change lock that already states a target →
-  use it; (2) else domain-judgment EARS **without** a fabricated greppable ID;
-  (3) else `None — no standing <entry> target`. Suggest
-  `/define-system-doc <entry-key>` **at most once per entry** when the gap is
-  material for *this* feature; never auto-invoke.
-- **Do not invent** TB/THR/CMP/SLO (or product metric IDs) without a bold
-  definition in an Approved doc. Prefer omitting the ID (prose target from a
-  lock) or `None — no standing <entry> target` over a fabricated ID.
-- Design-solution still owns HOW (`Security:` / `Reliability:` design slots,
-  seams, modules). This step only mints **WHAT** quality criteria as `CODE-N.M`.
-
-Write each applicable attribute as an EARS criterion (Step 2's forms) that names a
-**measurable-or-checkable target AND its verification method**, carrying a
-hierarchical `**CODE-N.M**` ID so it traces through tasks and tests exactly like
-a behavioral criterion. Example (targets illustrated only — prefer standing docs
-when Approved):
-
-- `**CODE-3.1** WHEN the notes list renders 1,000 items THE SYSTEM SHALL paint
-  the first screen within 200 ms at p95 — verified by a CI performance trace.`
+WHEN an attribute is material for this feature (not already headed for
+`None`), read `nfr-grounding.md` beside this file and follow it exactly —
+which system doc to consult per attribute, the hard constraints that outrank
+it, and the write rules after consult. Do **not** invent a TB/THR/CMP/SLO (or
+product metric) ID without a bold definition in an Approved doc.
 
 An attribute that does not apply is **not silently dropped**: record it as
 `None` with a short reason (e.g. "Accessibility: None — headless CLI") so the
 skip is a visible decision, not an oversight. `None` is for non-material
 attributes, **not** a shortcut past consult when the attribute *is* material.
 
-The category is **additive, never a new gate**: a feature with no quality-attribute
-concerns records `None` across the four and its behavioral criteria, structure,
-and both authoring modes are unchanged — NFRs surface quality concerns, they do
-not block on them. In tier-1 mini-spec mode, capture an NFR only when the fix
-itself is a quality-attribute change (run this thin consult only for that
-attribute); the category adds no NFR obligation to a behavioral mini-spec.
+The category is **additive, never a new gate**: a feature with no
+quality-attribute concerns records `None` across the four, and nothing else
+about the file or either authoring mode changes. In tier-1 mode, capture an
+NFR only when the fix itself is a quality-attribute change — the category adds
+no NFR obligation to a behavioral mini-spec.
 
 | Thought | Reality |
 |---|---|
@@ -225,45 +160,34 @@ Self-review before showing the user:
   reading and write it in.
 - **Testability scan:** can each criterion be verified by an automated test or
   a concrete manual check? Rewrite any that can't.
-- **Placeholder scan:** no bare "TBD", "etc.", "handle errors appropriately".
-  WHEN the clarify-decisions close package listed **Owned unknowns**, paste them
-  into Open Questions as `topic — owner — date — forbid-guess` (`cấm đoán`). A bare
-  TBD without those three fields **blocks** `Status: Approved` — do not delete
-  Open Questions by sweeping unknowns under the rug.
+- **Placeholder scan:** no bare "TBD", "etc.", "handle errors appropriately". WHEN the
+  clarify-decisions close package listed **Owned unknowns**, paste them into Open Questions as
+  `topic — owner — date — forbid-guess` (`cấm đoán`). A bare TBD without those three fields
+  **blocks** `Status: Approved` — do not delete Open Questions by sweeping unknowns under the rug.
 - **Code-claim check (independent):** if any criterion asserts how the system
-  currently works — a data format, an existing behavior, a constraint —
-  dispatch a review subagent to prove-claim each such claim against the real code
-  (grep/read the files, cite `file:line`, flag any that don't hold), writing
-  findings to `.skills/<CODE>/req-review.md`. A false premise here — "the body is
-  ProseMirror-JSON" when it is Markdown — poisons design, plan, and code.
-  Correct the criterion before the gate; do not read the code yourself. (No
-  subagents? Do the check yourself against the code.)
-- **Close-package ingest (when present):** paste Success / Boundaries / Accepted
-  risks into Out of Scope, NFR, or story criteria as appropriate; do not drop
-  Reliability locks by marking NFR `None` when the close package already locked
-  prose targets or Owned unknowns for Reliability.
+  currently works, read `self-review-conditional.md` beside this file and
+  follow it exactly — dispatch a review subagent to prove-claim it against the
+  real code before the gate; a false premise here poisons design, plan, and code.
+- **Close-package ingest:** when a clarify-decisions close package exists, read
+  `self-review-conditional.md` beside this file and follow it exactly — do not
+  let it excuse marking an NFR `None` when the close package already locked it.
 
-**Story-quality gate (consumer of demoable act).** Recipe:
+**Story-quality gate (consumer of demoable act).** List every non-NFR `## N`
+with its `**Story:**` line and have the user confirm each names **one**
+demoable act; split/rewrite and re-present any that fail. Only once all are
+confirmed, and the user has approved the file, may you set `Status: Approved`.
+Never silent-approve — "looks fine" without the per-story yes is not confirmation.
 
-1. List every non-NFR `## N` with its `**Story:**` line.
-2. Ask the user to confirm each names **one** demoable act.
-3. **IF** any fails → split/rewrite and re-present. **IF** all confirmed → you may
-   set `Status: Approved` after they approve the file.
-4. Never silent-approve. "Looks fine" without the per-story yes is not confirmation.
-
-Then present the FILE to the user for review and STOP. Do not proceed to
-design on the strength of conversational agreement — the written requirements
-are what get approved. On approval (including story-quality confirmation), set
-`Status: Approved`.
+Then present the FILE to the user for review and STOP — do not proceed to
+design on the strength of conversational agreement; the written requirements
+are what get approved.
 **Done when:** the user has approved the written file and confirmed each
 behavioral story is one demoable act.
 
 ## ID immutability
 
-Once Status is Approved, IDs never change meaning and are never renumbered.
-Retire a requirement by striking it through (`~~**CODE-1.2**~~ superseded by
-CODE-1.4`). the `audit-trace` check treats struck-through IDs as undefined, so citing
-tests/tasks surface immediately.
+Once Approved, IDs never change meaning or get renumbered. Retire one by striking it through
+(`~~**CODE-1.2**~~ superseded by CODE-1.4`) — `audit-trace` treats struck IDs as undefined, so citing tests/tasks surface immediately.
 
 ## Exit
 

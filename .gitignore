@@ -3,3 +3,4 @@ node_modules/
 *.log
 .skills/
 .worktrees/
+.fastembed_cache/

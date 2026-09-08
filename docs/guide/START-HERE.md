@@ -18,11 +18,11 @@ schema 1.1, **`cluster(focus)`**, no generated graph file).
 ## 1. The A–Z workflow
 
 ```
-                        gate-session  ── session gate: 1% rule before every response
+                        zone-mode     ── session gate: 1% rule before every response
                              │
         ┌────────────────────┴─────────────────────────────────────────────┐
         ▼                                                                    │
-  /ask-me-bro  ── "I'm lost" ── routes to an entry point below               │
+  zone-mode    ── routes any situation to an entry point below              │
   /forge-prompt ── "my ask is vague" ── hands back one prompt to paste       │
         │                                                                    │
  SETUP (once)                                                                 │
@@ -79,7 +79,7 @@ absent. See [the artifact model](concepts/artifacts.md#docsproduct-and-docsarchi
 
 **Mental model:** you drive with **slash commands** (`/…`) and plain-English
 requests; most skills are **model-invoked** and fire when their trigger matches.
-The session gate ([`gate-session`](skills/gate-session.md)), re-injected by the
+The session gate ([`zone-mode`](skills/zone-mode.md)), re-injected by the
 session-start hook after `/clear` and compaction, keeps the 1% rule alive.
 Full skill index: [Skill reference](skills/README.md) · laws: [`AGENTS.md`](../../AGENTS.md).
 
@@ -145,7 +145,7 @@ You mostly describe the idea and **approve files**; the rest chains:
 
 ### Other entry points
 
-The table lives in [on-ramps](process/on-ramps.md) — one home. Unsure → **`/ask-me-bro`**.
+The table lives in [on-ramps](process/on-ramps.md) — one home, and `zone-mode` reads it when the entry point is unclear.
 
 ## 3. Skill index (engineering package)
 
@@ -156,7 +156,7 @@ Personal OS is a **separate** package — [personal-os START-HERE](../personal-o
 
 | Category | Skills (see also [AGENTS.md §11](../../AGENTS.md#11-quick-reference-every-skill)) |
 |---|---|
-| **meta** | `gate-session` (m, si), `/ask-me-bro`, `/author-skills`, `/teach-pack` |
+| **meta** | `zone-mode` (m, si), `/author-skills`, `/teach-pack` |
 | **setup** | `/configure-repo`, `/bootstrap-repo` |
 | **discovery** | `frame-change`, `clarify-decisions`, `research`, `run-spike`, `define-domain`, `/forge-prompt`, `/pathfind`, `/interpret-session`, `/deepen-codebase`, `/tour-system`, `/work-the-problem` |
 | **spec** | `specify-behavior`, `design-solution`, `plan-tasks` |

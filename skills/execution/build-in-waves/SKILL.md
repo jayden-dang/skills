@@ -1,13 +1,12 @@
 ---
 name: build-in-waves
-version: 2.1.1
+version: 2.1.3
 description: Use when an approved tasks.md has Execution-mode continuous and needs
   dependency-aware subagent execution with serial or parallel lanes, bounded
   worker/reviewer leases, dual-verdict task review, and a whole-branch receipt.
 ---
 
 Ephemera paths: resolve `FEATURE_CODE` / `<CODE>` then follow `templates/skills-ephemera-paths.md` (feature root `.skills/<CODE>/`). Resolve pack seeds in this order, first path that exists: (1) `templates/` beside this SKILL.md, (2) `${CLAUDE_PLUGIN_ROOT}/templates` when that variable is set, (3) `../../../templates` relative to this SKILL.md.
-
 
 # Build In Waves
 
@@ -17,13 +16,6 @@ surface-disjoint tasks may run in parallel worktrees. Related tasks in one
 dependency lane may reuse bounded worker and reviewer leases. Every task keeps
 its own commit, report, evidence, and two verdicts; there is **no human pause
 between tasks**.
-
-**Not this skill:**
-
-| Intent | Use instead |
-|---|---|
-| `Execution-mode: story-unit` (human-gated review units) | REQUIRED SUB-SKILL: use `build-by-story` |
-| No subagents / controller implements / user chose inline | REQUIRED SUB-SKILL: use `build-inline` |
 
 **Context rule:** a fresh context is the default at a semantic-unit boundary or
 after a hard lease trigger. Inside a valid lane lease, resume the role context
@@ -154,21 +146,18 @@ Scale reviewer tier to diff size and risk.
 
 ## Reviewer-Prompt Hygiene
 
-- Never pre-judge findings ("do not flag X", "Minor at most", "the plan chose this").
 - A plan-mandated defect is still a finding — ask which governs.
 - No open-ended "check everything" without a concrete task-specific reason.
 - Do not re-run tests the implementer already evidenced in the report.
 
 ## Durable Progress
 
-Conversation memory does not survive compaction. Todos = live session view;
-ledger = survives compaction. Never let one excuse skipping the other.
+Todos are the live session view; the ledger survives compaction. After
+compaction, trust the ledger and `git log` over conversation memory.
 
-- On start, read `.skills/<CODE>/progress.md`; resume after the last complete task.
-- After compaction, trust the ledger and `git log` over memory.
-- Never re-dispatch a task the ledger marks complete.
-- Crash mid-wave → discard unmerged worktrees under `.worktrees/`; re-run the whole wave off WBASE.
-- `.skills/` is git-ignored; if wiped, reconstruct from `git log`.
+- Crash mid-wave → discard unmerged worktrees under `.worktrees/` and re-run
+  the whole wave off WBASE; if `.skills/` (git-ignored) is wiped, reconstruct
+  from `git log`.
 
 ## After the Last Task
 
@@ -191,21 +180,13 @@ skill's subagent loop without dispatches.
   `build-inline`)
 - Run unit barriers, unit derivation, or human unit stops under continuous
 - Pause between tasks to ask permission to continue
-- Skip the tracker-sync, occupancy, or workspace preflight
-- Invent a tracker or ticket set when config is absent or the user declined sync
 - Run two implementers in the **same worktree**, or parallel without isolated
   isolate-workspace and a disjoint-surface check
 - Merge or ledger a parallel wave before every task in it passed review
 - Hand a subagent the whole plan file — the brief is its world
-- Use `HEAD~1` as a review base
 - Skip re-review after a fix, or accept a review missing either verdict
 - Move to the next task with open Critical/Important findings
 - Let implementer self-review substitute for task review
 - Tell a reviewer what not to flag, or pre-rate severity in the dispatch
 - Dispatch a reviewer without a diff package
 - Re-dispatch a task the ledger marks complete
-- Dispatch the first task before the todo list exists (tasks **and** Close branch)
-- Skip the close sequence, silent-skip polish, or treat EOD/demo as a polish predicate
-- Fix reviewer findings in the controller context
-- Start implementation on main/master without explicit consent
-- Create a worktree without asking, or treat "current branch" as consent for main/master

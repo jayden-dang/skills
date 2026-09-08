@@ -1,6 +1,6 @@
 ---
 name: vet-flow-guide
-version: 2.0.0
+version: 2.0.1
 description: >-
   Use when a write-flow-guide run file (`.skills/<CODE>/flow-guide.json`)
   already exists and needs an isolated implementation-surface judgment / missing-situation
@@ -56,20 +56,13 @@ without a new report.
 2. Dispatch a **read-only** subagent. The subagent runs the map (step 3) and
    writes the report (step 5), or returns full report text for the controller
    to write **verbatim** — the controller does not re-judge content.
-3. Writing the **vet report** is allowed. Product code and the run file stay
-   unmodified.
 
 ### Inline fallback (no subagents)
 
-State out loud:
-
-```
-AUTHORING CLOSED — starting isolated vet-flow-guide pass
-```
-
-Load only the brief inputs. Run steps 3–5. Forbidden: continuing from open
-case-authoring todos, “just also count kinds,” or declaring clean without a
-report file.
+WHEN no subagents are available, read `references/inline-fallback.md` beside
+this file and follow it exactly: state `AUTHORING CLOSED — starting isolated
+vet-flow-guide pass` out loud, then load only the brief inputs and run steps
+3–5.
 
 *Done when: isolation mode is stated and the map runs outside open authoring.*
 
@@ -100,10 +93,9 @@ hygiene counts.
 ### Hygiene note (optional, non-blocking)
 
 May list author §1 hygiene observations (requirement-ID coverage, non-happy
-kinds, schema/kind/status) under a **separate** report section that does **not**
-create open missing-situation findings and does **not** affect the dogfood
-gate. Never title that section “complete for real users.” Mechanical
-schema/kind/status passes are **not** this skill’s product claim.
+kinds, schema/kind/status) under a **separate** report section that does
+**not** create open missing-situation findings, does **not** affect the
+dogfood gate, and is never this skill’s product claim (see Red Flags).
 
 *Done when: every inspected surface is matched or filed; uninspected surfaces
 are omitted.*
@@ -148,9 +140,6 @@ On **re-check**: still-open same `surface_key` **reuses** the same `VFG-N`; new
 misses get the next free integer; resolved misses move to `## Cleared this pass`
 (open list is authoritative for the gate).
 
-Report write is allowed. Product codebase and the run file remain **unmodified**
-during judgment (read-only).
-
 Exit by handing report path + `open_count` to the caller (author fix loop or
 walkthrough gate).
 
@@ -158,42 +147,15 @@ walkthrough gate).
 
 ## 6. Guide-gap fix loop
 
-When the report has open missing-situation findings, the **controller** (or
-author re-entry) runs this loop. Judgment itself stays read-only on the run
-file — patches happen **outside** the vet pass, then a fresh re-check.
-
-| Step | Owner | Rule |
-|---|---|---|
-| 1. Order | controller | Order open findings by severity: Critical → Important → Minor. Severity orders work only; it does not drop findings from the gate. |
-| 2. Patch | controller or fixer | Patch the **run file only** (add/reshape cases, sections, authored slots). Re-render HTML via the write-flow-guide `render` path. **No product code patches** and no mid-drive invent-cases. |
-| 3. Re-vet | always isolated | **IMMEDIATELY** after run-file patches (before dogfood, before “clean” claims): re-invoke `vet-flow-guide` in a **fresh isolated** pass (new subagent or new `AUTHORING CLOSED` pass). Set `pass_kind: re-check` and `prior_report` to the previous report path. The dogfood gate re-evaluates **only against the new report** — never the prior open list, never hand-edited “fixed” marks on the old report. |
-| 4. Clear | gate / report | Clear a finding only when it is **absent from the new open list**, or when the user names it in an explicit **named override**. Never self-declare clean without a new report. Never rewrite the old report’s open list by hand and call that a re-check. |
-| 5. Escalate | controller | IF open finding count is **≥ 5** OR the required rewrite spans **≥ 2 ability areas** (multi-section rewrite) THEN dispatch an **isolated fixer subagent**. |
-| 6. Cap | controller | Cap at **2 re-judgment cycles**. IF 2 full re-judgment cycles complete with open findings still present THEN **stop for the human** (fix more, named override listing remaining `VFG-N`, or shrink surface) rather than thrashing. |
-
-### Fixer subagent (when escalated)
-
-Write brief to `.skills/<CODE>/vfg-fix-brief.md`:
-
-- open finding set (`VFG-N`, severity, situation, evidence pointers)
-- run-file path
-- not full session history
-
-Fixer patches the run file (+ re-render) only. Fixer must **not** self-declare
-clean. After fixer DONE, controller always re-invokes fresh `vet-flow-guide`.
-
-### What does not keep the loop alive
-
-Non-code-grounded items, taste (novelty / feel / polish), and anything outside
-the skill claim **do not keep the fix loop alive** as if they were
-missing-situation findings. Drop or refuse them; only code-grounded open
-findings drive patch → re-vet.
-
-### Separation from judgment
-
-During judgment the product codebase and run file remain unmodified (read-only);
-report write only. Guide-gap patches are a **separate** controller loop after a
-report exists — never inside the map/write steps above.
+WHEN the report has open missing-situation findings, read
+`references/guide-gap-loop.md` beside this file and follow it exactly: order
+findings by severity, patch the run file only (never product code) and
+re-render, re-vet in a fresh isolated pass before any dogfood or “clean”
+claim, clear a finding only via a new report or a named override, escalate to
+an isolated fixer subagent at ≥ 5 open findings or ≥ 2 ability areas, and cap
+at 2 re-judgment cycles before stopping for the human. Non-code-grounded and
+taste items never keep this loop alive (§4); judgment itself stays read-only
+throughout — only the report gets written.
 
 *Done when: open findings are fixed and re-checked clean, named-overridden, or
 stopped for the human after 2 re-judgment cycles.*

@@ -1,11 +1,11 @@
 # AGENTS.md — Agent Behavior Constitution
 
-> A-to-Z agentic development skill set · **89 skills across 11 categories**
+> A-to-Z agentic development skill set · **88 skills across 11 categories**
 > (71 engineering + 18 Personal OS) · `jayden-dang/skills` · v1.0.0
 
 This file is the single source of truth for agent behavior when working with this
 skill set on any harness. Read it first, before any skill, before any action.
-Where a harness has no session-start hook to inject `gate-session`, this file is
+Where a harness has no session-start hook to inject `zone-mode`, this file is
 the fallback that keeps the gates alive — that is why Codex, opencode, and Cursor
 are pointed here rather than at the hook.
 
@@ -90,7 +90,7 @@ carries a checklist, create one todo per item.
 | Small in-scope change to a shipped, spec'd feature | `amend-feature`, not `frame-change` |
 | Incoming issue or external PR | suggest `/triage` (user-run; agents cannot auto-invoke) |
 | Capture this conversation into tracker issues | suggest `/publish-issues` (user-run) |
-| Unsure which flow fits | suggest `/ask-me-bro` (user-run) |
+| Unsure which flow fits | `zone-mode` routes it from `docs/guide/process/on-ramps.md` |
 
 **User instructions override skills; skills override agent defaults.** Skip a
 skill's workflow only when the user has explicitly told you to. A waiver of
@@ -104,7 +104,7 @@ skill's workflow only when the user has explicitly told you to. A waiver of
 Agents MUST NOT auto-invoke these — name them for the user to run (`/triage`,
 `/pathfind`). All 28 of them:
 
-`ask-me-bro`, `author-skills`, `teach-pack` · `bootstrap-repo`, `configure-repo` ·
+`author-skills`, `teach-pack` · `bootstrap-repo`, `configure-repo` ·
 `deepen-codebase`, `forge-prompt`, `interpret-session`, `pathfind`, `tour-system`,
 `work-the-problem` ·
 `brief-team`, `select-sample`, `study-change`, `teach-build` · `assess-pivot-impact`,
@@ -114,7 +114,7 @@ Agents MUST NOT auto-invoke these — name them for the user to run (`/triage`,
 
 **Model-invoked skills** (no `disable-model-invocation`) are auto-invoked when
 the description matches the situation. Everything not listed above, including
-`gate-session`, `frame-change`, `clarify-decisions`, `research`,
+`zone-mode`, `frame-change`, `clarify-decisions`, `research`,
 `run-spike`, `define-domain`, the full spec triad, the execute family,
 `test-first`, `root-cause`, `debug-remote`, `assess-observability`, `prove-claim`, `audit-trace`, `load-subgraph`,
 `isolate-workspace`, `hold-stage`, `inspect-change`, `polish-diff`, `vet-feedback`,
@@ -124,7 +124,21 @@ the description matches the situation. Everything not listed above, including
 `record-verdict`, `amend-feature`, `reroute-plan`, `realign-spec`, and
 `plan-milestones`.
 
-**Session-injected skill:** `gate-session` is injected by the `SessionStart` hook
+**Execute family installs as a unit.** A skill folder is otherwise self-contained,
+because `npx skills add` copies one folder at a time and a `../other-skill/file.md`
+pointer breaks for anyone installing that skill alone. One exception is written
+down rather than tolerated: `build-in-waves`, `build-by-story` and `build-inline`
+share a controller recipe in `execute-common` — the task lifecycle, the ledger
+check, the close receipt, the runtime binding, and the prompt contracts for the
+implementer and reviewer roles it dispatches. That is roughly four hundred lines
+referenced twenty-odd times by the three, and `build-inline` without it is not a
+degraded skill, it is not a skill. Copying it three ways would make every change
+to the shared lifecycle a three-place edit. So `execute-common` is the **only**
+folder any skill may reference across a boundary; every other `../` still fails,
+which is what stops the exception widening into "cross-folder is fine".
+`scripts/lint-cross-folder.py` enforces it.
+
+**Session-injected skill:** `zone-mode` is injected by the `SessionStart` hook
 (`hooks/hooks.json`, matcher `startup|clear|compact`), so the 1% rule survives
 `/clear` and compaction. On harnesses without hook support, this file carries
 that role.
@@ -139,7 +153,7 @@ use \`x\`` is for model-invocable targets only — pointing it at a
 by a `REQUIRED SUB-SKILL` hand-off or by its description matching what the user
 said. Eight model-invocable skills have no `REQUIRED SUB-SKILL` caller —
 `amend-feature`, `vet-feedback`, `vet-source`, `speak-outer`, `hold-stage`, `run-flow-guide`,
-`draft-ux` (plus hook-injected `gate-session`). Reverse-track is **not** a
+`draft-ux` (plus hook-injected `zone-mode`). Reverse-track is **not** a
 separate skill: when the reverse predicate holds, callers **name** `/map-features`
 (dispose step 0). `write-flow-guide` is reached from
 `prove-claim` (alternative to `validate-feature`) and from the execute-family
@@ -253,7 +267,7 @@ feature across compaction and crash. Trust the ledger and `git log`, never
 memory. Never re-dispatch a task the ledger marks complete.
 
 **Subagent-exempt:** a subagent dispatched for one specific task ignores
-`gate-session` and follows its brief only.
+`zone-mode` and follows its brief only.
 
 ---
 
@@ -294,8 +308,12 @@ Engineering skills carry no prefix; Personal OS skills are namespaced `life-`
 because their bare verbs would collide once both packs are installed.
 
 **Budget:** discipline skills keep the core body to ~500 words; the hard ceiling
-for any SKILL.md is ~500 lines / 5k words. Past that, split detail behind a
-well-worded pointer to a sibling file, one level deep.
+for any SKILL.md is **200 lines**, enforced by `scripts/lint-skill-length.py`
+against a budget that only decreases. Files still above it are listed in
+`scripts/skill-length-budget.json` with the count they may not exceed; an entry
+comes out when its file drops under the limit and can never go back in. Over
+budget, split detail behind a well-worded pointer to a sibling file, one level
+deep, or delete what fails the no-op test.
 
 **Evidence files beside the skill:** `TESTS.md` holds the recorded RED/GREEN
 evidence — transcripts, the rationalizations the text had to counter, what
@@ -326,7 +344,7 @@ skills/
   personal/                                           # Personal OS, opt-in, life-* prefix
 templates/          # seeds the skills write into a consuming repo, + personal-os/
   agents/           # project.md, issue-tracker.md, triage-labels.md templates
-hooks/              # hooks.json + session-start.sh (the gate-session injector)
+hooks/              # hooks.json + session-start.sh (the zone-mode injector)
 scripts/            # the five lint passes lefthook runs
 docs/
   guide/            # the human tutorial and per-skill pages
@@ -407,7 +425,7 @@ Can't tick a box? The work is not done.
 
 | Category | Skills |
 |---|---|
-| **meta** (4) | `gate-session` (m, si), `ask-me-bro` (U), `author-skills` (U), `teach-pack` (U) |
+| **meta** (3) | `zone-mode` (m, si), `author-skills` (U), `teach-pack` (U) |
 | **setup** (2) | `configure-repo` (U), `bootstrap-repo` (U) |
 | **discovery** (11) | `frame-change` (m), `clarify-decisions` (m), `research` (m), `run-spike` (m), `define-domain` (m), `forge-prompt` (U), `pathfind` (U), `interpret-session` (U), `deepen-codebase` (U), `tour-system` (U), `work-the-problem` (U) |
 | **spec** (3) | `specify-behavior` (m), `design-solution` (m), `plan-tasks` (m) |

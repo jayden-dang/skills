@@ -1,30 +1,28 @@
 ---
 name: plan-milestones
-version: 1.1.1
+version: 1.1.2
 description: Use when a project's milestones need planning, sequencing, replanning, or
   ANY edit to an existing roadmap — produces or revises docs/roadmap/INDEX.md, the
-  milestone intent registry carrying stable MILE-N and ROAD-N IDs that later
-  feature specs bind to. Triggers on "plan the milestones", "build a roadmap",
-  "what order should we build this in", "break this project into milestones", and
-  on a frame-change that decomposed work into several independent sub-features —
-  and equally on every change to a roadmap that already exists, such as "update
-  the roadmap", "drop this item", "we're not doing X anymore", "reorder the
-  milestones", "move sharing ahead of search", "reword this outcome", "commit to
-  the next milestone", "this milestone shipped", or any request that edits
-  docs/roadmap/INDEX.md. Not for one feature's requirements
-  (specify-behavior), and not for reporting where the plan currently stands
+  milestone intent registry carrying stable MILE-N and ROAD-N IDs that later feature specs
+  bind to. Triggers on "plan the milestones", "build a roadmap", "what order
+  should we build this in", "break this project into milestones", a frame-change that
+  decomposed work into independent sub-features, and equally on any edit to a roadmap that
+  already exists — "update the roadmap", "drop this item", "we're not doing X anymore",
+  "reorder the milestones", "move sharing ahead of search", "reword this outcome", "commit
+  to the next milestone", "this milestone shipped", or any request touching
+  docs/roadmap/INDEX.md. Not for one feature's
+  requirements (specify-behavior), and not for reporting where the plan currently stands
   (refresh-roadmap-status).
 ---
 
 # Plan Milestones
 
-Author and maintain `docs/roadmap/INDEX.md` — the program layer between the product
-vision and any single feature's spec. It answers *which milestones exist, in what order,
-holding which work, and which of them we have actually committed to.*
-
-**Where this sits:** `define-project` (vision) → **`plan-milestones`** (milestones) →
-`frame-change` → `specify-behavior` → … A roadmap item becomes a feature when
-`specify-behavior` registers a code for it — see Who owns what.
+Author and maintain `docs/roadmap/INDEX.md` — the program layer between the product vision
+and a single feature's spec: which milestones exist, in what order, holding what work, and
+which are actually committed to. **Where this sits:** `define-project` (vision) →
+**`plan-milestones`** (milestones) → `frame-change` → `specify-behavior` → … A roadmap item
+becomes a feature once `specify-behavior`, the sole registrar of feature codes, registers it
+in `docs/specs/INDEX.md` — a file this skill never touches.
 
 ## The Iron Law
 
@@ -35,16 +33,13 @@ THE ROADMAP RECORDS INTENT. PROGRESS IS DERIVED, NEVER STORED HERE.
 Intent is what no tool can work out for itself: the outcome a milestone promises, the
 order, what belongs to it, what was deferred and why, and whether a human has committed
 to it. Progress is already written down once — as `Status:` in each feature's own
-`requirements.md`, mirrored into its `docs/specs/INDEX.md` row.
+`requirements.md`, mirrored into its `docs/specs/INDEX.md` row — and a second copy of it
+here would only drift from that one (see Rationalizations for why).
 
-So this file gets **no** progress column, **no** per-milestone status field, **no** change
-log of status transitions, and **no** percentage complete. A second copy of status drifts
-from the first, and the moment it drifts nobody can tell which one is lying. `/refresh-roadmap-status`
-derives the current picture on demand from the specs and git.
-
-`Commitment` is not progress. `Planned | Committed | Closed` records a *human decision*
-— nobody can derive whether you have committed to a milestone. Keep it; keep nothing that
-tracks how far the work has got.
+So this file gets **no** progress column, status field, change log, or percentage complete;
+`/refresh-roadmap-status` derives the current picture on demand from the specs and git.
+`Commitment` is not progress, though: `Planned | Committed | Closed` records a *human
+decision* that nobody can derive — keep that field, and keep nothing that tracks progress.
 
 ## Modes
 
@@ -57,25 +52,24 @@ structural rules **S1–S7** and the ID rules; read them there rather than resta
 
 ## Create
 
-1. **Read the inputs.** `docs/product/vision.md` when it exists — its `**GOAL-N**` IDs are
-   what milestones cite. `docs/specs/INDEX.md` for features that already exist (a
-   brownfield project's shipped work belongs in an early milestone, not nowhere). The
-   decomposition you were handed, if you came from `frame-change`.
+1. **Read the inputs:** `docs/product/vision.md` when it exists, for the `**GOAL-N**` IDs
+   milestones cite; `docs/specs/INDEX.md`, since a brownfield project's shipped work
+   belongs in an early milestone, not nowhere; and any decomposition you were handed from
+   `frame-change`.
    *Done when: you can name the goals in play and the work already shipped.*
 2. **Fill the template** to `docs/roadmap/INDEX.md`. One `MILE-N` per milestone; one
    `ROAD-N` per item, under exactly one milestone, identified by ID and slug.
    *Done when: every REQUIRED slot is filled or reads `None`.*
-3. **Group by user value.** A milestone's `Outcome:` is one sentence naming what a person
-   can do once it lands — testable by a reader who has not seen the code. A milestone whose
-   outcome can only be phrased as work performed ("the storage layer is rewritten") is a
-   technical layer, not a milestone: fold it into the milestone whose outcome it enables.
-   Prefer fewer and larger milestones when the design is settled; split where early
-   feedback could redirect what follows.
-   *Done when: every milestone has an outcome a reader could test it against.*
-4. **Cite goals.** WHERE `docs/product/vision.md` exists, each milestone's `Goals:` names
-   the live `GOAL-N` IDs it serves, and every live goal no milestone cites is recorded under
-   `## Goal dispositions` as `Deferred` or `Out-of-scope` with a date and a reason. WHERE no
-   vision exists, write `Goals: None` and leave the dispositions table empty.
+3. **Group by user value.** A milestone's `Outcome:` names, in one sentence, what a person
+   can do once it lands, testable by a reader who has not seen the code. An outcome only
+   phrasable as work performed ("the storage layer is rewritten") is a technical layer, not
+   a milestone — fold it into the milestone it enables. Prefer fewer, larger milestones when
+   the design is settled; split where early feedback could redirect what follows.
+   *Done when: every milestone has a testable outcome.*
+4. **Cite goals.** WHERE a vision exists, each milestone's `Goals:` names the live `GOAL-N`
+   IDs it serves, and every live goal no milestone cites goes under `## Goal dispositions` as
+   `Deferred` or `Out-of-scope`, dated and reasoned. WHERE none exists, write `Goals: None`
+   and leave the dispositions table empty.
    *Done when: no live goal is unaccounted for, or there is no vision.*
 5. **Declare surfaces.** Each item's `Surfaces:` names the components or paths it is
    expected to touch, or `None` with a reason when the surface is not yet knowable.
@@ -84,26 +78,22 @@ structural rules **S1–S7** and the ID rules; read them there rather than resta
 
 ## Update
 
-The change signal is a new milestone, a reordering, a scope change, a commitment, a
-closure, or an item that is no longer wanted.
+The change signal is a new milestone, a reordering, a scope change, a commitment, a closure,
+or an item no longer wanted.
 
-**Every ID already in the file is permanent.** Reordering the milestone table changes the
-order; it changes no ID. An item that moves to another milestone keeps its `ROAD-N`. Retire
-an ID only by strikethrough with a reason — `~~**ROAD-4**~~ dropped 2026-07-25: no custom
-search UI` — so the history stays readable and no future reference dangles.
+**Every ID already in the file is permanent.** Reordering the table changes order, never an
+ID; an item moved to another milestone keeps its `ROAD-N`. Retire one only by strikethrough
+with a reason — `~~**ROAD-4**~~ dropped 2026-07-25: no custom search UI` — so history stays
+readable and no reference dangles. **An item you no longer want is deferred, not deleted**:
+move it to its milestone's `Deferred:` slot with a date and a reason — deleting the line
+destroys the one record that the option was ever considered (see Rationalizations).
 
-**An item you no longer want is deferred, not deleted.** It moves to its milestone's
-`Deferred:` slot with a date and a reason. Deleting the line destroys the one record that
-the option was ever considered, which is exactly what a reader six months later needs.
+**A material change to an `Approved` roadmap demotes it.** Set `Status: Draft`, then run the
+gate again. Material means any milestone's outcome, membership, ordering, commitment state,
+or goal citations (see Rationalizations for why an edit does not stay pre-approved).
 
-**A material change to an `Approved` roadmap demotes it.** Set `Status: Draft`, then run
-the gate again. Material means: any milestone's outcome, membership, ordering, commitment
-state, or goal citations. Presenting edited content under an `Approved` stamp tells every
-later reader that a version nobody approved was approved.
-
-**Record a closure — gated.** A `Committed → Closed` transition is the one edit this skill
-cannot make on its own say-so. Closing a milestone asserts that it *delivered*, and nothing
-in this file can establish that.
+**Closing a milestone** — only on a `Committed → Closed` transition, skipped for every other
+edit — asserts a milestone *delivered*, which nothing in this file can establish on its own say-so.
 
 <HARD-GATE>
 Refuse a `Committed → Closed` transition that arrives without an assessment handoff, and name
@@ -126,16 +116,8 @@ in `templates/milestone-assessment.md` first; an unparseable assessment cannot a
 anything.
 </HARD-GATE>
 
-Then write into `Closed:` the SHA **read from the assessment file**, verbatim — not the one
-the write-handoff carried. Where the two ever diverge, the file is the record and the write-handoff is
-hearsay. That marker is how a later reader resolves what shipped in the milestone.
-
-Never re-run the assessment, and never append a block to the assessment file: this skill
-reads that file and writes only the roadmap. Then run **## The approval gate** as usual — the
-assessment gate is additive and precedes it, never replaces it.
-
-Every other update — a new milestone, a reorder, a reword, a commitment, a deferral — reaches
-the approval gate exactly as before. This gate fires on closure alone.
+Once the gate clears, read `closure-writeback.md` beside this file and follow it exactly —
+it covers writing the `Closed:` SHA and re-running the approval gate.
 
 *Done when: the change is applied, no ID moved or vanished, and the gate has run.*
 
@@ -149,17 +131,12 @@ explicitly approved it. Conversational agreement is not approval; a roadmap you 
 yourself was never approved.
 </HARD-GATE>
 
-Walk S1–S7 as a checklist, naming each defect and where it sits. Then present the file and
-stop. On approval, set `Status: Approved` and tell the user that `/refresh-roadmap-status` reports
-where the plan stands whenever they want it.
+Walk S1–S7 as a checklist, naming each defect and where it sits, then present the file and
+stop. On approval, set `Status: Approved`; `/refresh-roadmap-status` reports where the plan
+stands whenever the user wants it.
 
-**Done when:** the S1–S7 walk is clean, the user has approved the written file, and
-`Status:` reads `Approved`.
-
-## Who owns what
-
-`docs/specs/INDEX.md` belongs to `specify-behavior`, which is the sole registrar of
-feature codes. This skill leaves that file untouched.
+*Done when: the S1–S7 walk is clean, the user has approved the written file, and `Status:`
+reads `Approved`.*
 
 ## ROAD-N is a slot, not a feature
 
@@ -172,16 +149,13 @@ feature codes. This skill leaves that file untouched.
 | Progress | Never stored here | `Status:` on requirements / INDEX |
 | Join | — | INDEX **Roadmap item** → at most one CODE per ROAD (`R6`) |
 
-Creating a ROAD does not create a feature. Binding is later, when `specify-behavior`
-writes the INDEX cell. Matching slug text does not merge the IDs.
-
-A milestone **outcome** often needs **several** ROAD slots (member list order). Each
-slot gets its own feature when work starts — do not fold a whole milestone into one
-CODE, and do not mint two CODEs for one ROAD (`R6`).
-
-This skill never creates remote tracker program objects (GitHub milestones, Linear
-initiatives, Projects). Program remote mirror is opt-in via `configure-repo` →
-`docs/agents/issue-tracker.md` (**Program sync**); default is local-only.
+Creating a ROAD does not create a feature — binding is later, when `specify-behavior`
+writes the INDEX cell; matching slug text does not merge the IDs. A milestone **outcome**
+often needs **several** ROAD slots (member list order), each binding its own feature when
+work starts: never fold a whole milestone into one CODE, and never mint two CODEs for one
+ROAD (`R6`). This skill never creates remote tracker program objects (GitHub milestones,
+Linear initiatives, Projects) either; that mirror is opt-in via `configure-repo` →
+`docs/agents/issue-tracker.md` (**Program sync**) and local-only by default.
 
 ## Rationalizations
 
@@ -217,5 +191,5 @@ Every row below is a verbatim rationalization from a baseline run, or its direct
 ## No-op
 
 If asked to consult a roadmap when `docs/roadmap/INDEX.md` does not exist, say the project
-has no roadmap layer and that this skill can author one — then stop. The layer is optional;
-the feature flow works fully without it, and nothing here is a gate on that flow.
+has no roadmap layer yet and that this skill can author one, then stop — the layer is
+optional and nothing here gates the feature flow without it.

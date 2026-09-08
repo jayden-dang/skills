@@ -127,3 +127,85 @@ User types `/deepen-codebase`. Model does not auto-route on description keywords
 6. Iron Laws absorb write/auto-invoke bans (single home).
 7. Ranking-is-preference rationalization + red flag.
 8. Description shortened to plain user-invoked deliverable line.
+
+---
+
+## 2026-09-07 — length pass (v1.0.0 → v1.0.1)
+
+Target was ≤195 lines. Not reached — see "Why 195 was not reachable" below.
+Result: **251 → 242 lines**, **1771 → 1685 words**. No `SKILL.md § <heading>`
+eval anchors exist for this file (all four `eval.json` entries derive from
+`TESTS.md §`), so there were no anchor headings to preserve mechanically.
+
+**Moved (Conditional bucket — heading names the skip predicate "when stuck"):**
+The `## When stuck — owner of truth` table (owner/route rows + the
+auto-research paragraph) relocated verbatim to new sibling
+`references/when-stuck.md`. `SKILL.md` keeps the heading, the skip condition
+("WHEN unsure how to source a claim mid-turn"), and a one-line summary of the
+six owner categories, per the repo's pointer convention. Confirmed no other
+skill's SKILL.md references this table internally (`grep -rn "When stuck"
+skills/` outside this directory returns nothing relevant).
+
+**Deleted as same-file duplication:** the closing sentence of the "Where this
+sits" intro paragraph — "When the user must close a product problem and learn
+in the same loop, they run `/work-the-problem` instead." — restated the
+`## What this is NOT` table's `work-the-problem` row verbatim in substance
+("theirs when a frame-change question must close. You stay pure learning.").
+Surviving home: line 44, `| `work-the-problem` | Multi-round problem tree +
+in-service teaching + carry-back — **theirs** when a frame-change question
+must close. You stay pure learning. |`.
+
+**Atom count:** `skill-rule-inventory.py --diff` — 99 atoms at HEAD, 101 across
+`SKILL.md` + `references/when-stuck.md` now (the when-stuck table's rows count
+as slightly more atoms once isolated). Result: "every atom still has a home,
+and every sibling is named." No atom in the "no home" bucket.
+
+**Lints:** every `scripts/lint-*.py` passes on the new file (ran the full
+`for s in scripts/lint-*.py` sweep from the brief — zero `FAIL` lines).
+
+### Why 195 was not reachable
+
+This file already carries 99 rule atoms in ~1685 words after the cut above —
+about 17 words/atom, among the tersest in the repo, with no slack left to
+extract honestly:
+
+- **Gates (never touched):** Iron Laws, Rationalizations
+  (`| Thought | Reality |`), Red flags — all three sit directly behind the RED
+  scenarios in `eval.json` (demand-a-pick, bare industry-standard, write a
+  tracked ADR, domain-map reuse) and the brief forbids moving or thinning
+  them.
+- **Universal, no stated skip predicate:** `## What this is NOT`,
+  `## Setup`, `## Dual-axis curriculum`, the `Authority (absolute)` table,
+  `Depth order`, `## Message → output`, `## Analytical turn — required
+  shape`, `## Read-only`, `## Close`. None of these headings or opening
+  lines name a conditional ("only when…", "optional", "skip if…"); every one
+  is reached on every run of the skill (setup once, then every analytical
+  turn touches Depth order / Message→output / Analytical-turn-shape).
+  `Authority (absolute)` in particular duplicates `references/curriculum.md`'s
+  fuller "Authority ladder" in substance, but it is the compact inline form
+  that eval #2 (`no-bare-industry-standard`) directly exercises — removing it
+  from `SKILL.md` would drop enforcement to a file the model might not reload
+  mid-turn, which is exactly the loss the brief warns against.
+- **`### Layer recipes (positive)`** was the one candidate seriously
+  considered as a Worked-example extraction (9 rows illustrating what "Teach
+  — the primary layer only" must contain per layer). Rejected: unlike a
+  single worked illustration, this table is consulted on **every** teaching
+  turn (whichever primary layer that turn announces), not on a rare branch.
+  The brief's own caution for this bucket — "this repo lost a required
+  output slot in 2 of 3 runs once by moving the whole thing" — describes
+  exactly this failure mode for content read every turn; extracting it would
+  risk silently dropping a required Teach-step element rather than saving a
+  rule.
+- `## Optional foundation-note` is genuinely Conditional but was already at
+  the minimum: heading + skip condition + one-line summary, pointing at
+  `references/foundation-note-v1.md` for the full packet shape. Nothing left
+  to move.
+
+No further duplicate sentence was found on inspection (the Read-only section,
+Iron Laws, Rationalizations, and Red flags all restate the "no tracked
+writes" rule, but that is the intentional gate-plus-detail pattern the brief
+exempts, not prose duplication with a single deletable copy).
+
+**Lowest honest number reached this pass: 242 lines / 1685 words.** Getting to
+195 from here would require thinning a Gate or extracting Universal content
+whose absence a live turn could silently skip — both against the brief.

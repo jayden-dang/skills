@@ -5,7 +5,7 @@ The skill set is a chain. Each link is a hand-off written into a skill body as a
 ## The main flow: idea → ship (tier 2)
 
 ```
-gate-session                 session gate, injected on startup/clear/compact
+zone-mode                    session gate and router, injected on startup/clear/compact
       │
       ▼
 /forge-prompt (optional)    vague ask → one prompt block for a fresh session (names no lane)
@@ -142,5 +142,5 @@ The chain is not one-way. Several skills feed back into earlier phases:
 - [Overview](../methodology/overview.md) — what the system is and why
 - [Ceremony tiers](../methodology/ceremony-tiers.md) — which flow your work belongs in
 - [On-ramps](on-ramps.md) — one home for which skill starts a situation
-- [`ask-me-bro`](../skills/ask-me-bro.md) — the router, when the entry point is unclear
+- [`zone-mode`](../skills/zone-mode.md) — the session gate; it routes when the entry point is unclear
 - [Examples](../examples/tier-2-feature.md) — the chain run end to end

@@ -2,6 +2,91 @@
 
 ## Unreleased
 
+### `zone-mode` v1.0.0 — the session gate absorbs the router (**breaking**)
+
+`gate-session` and `ask-me-bro` are gone; `zone-mode` replaces both, and the set
+drops from 89 skills to 88. They were one job split in two: the gate said find the
+skill before acting, the router owned how to reach it once named — invoke a
+model-invocable target, name a user-invoked one for the user to run. That second
+half is what stops a dead-end hand-off, and it sat behind a slash command someone
+had to remember to type. The `SessionStart` hook injects `zone-mode` on startup,
+`/clear` and compaction, so routing is now always on rather than on request.
+
+At 69 lines it is shorter than the 81 the two files spent, deliberately: the hook
+injects it verbatim into every session, so this is the one skill whose every token
+is paid twice over. The Cursor `mode:`/`reminder:` frontmatter of the skill it was
+modelled on was not ported — this set ships to five harnesses, and the hook is the
+stronger stickiness because it survives the two moments context is lost.
+
+### Execute family — role prompts move to `execute-common` (**breaking**)
+
+`implementer-prompt.md` and `task-reviewer-prompt.md` moved out of
+`build-in-waves/`. Nine cross-folder pointers ran through the family; four broke
+the portability rule `AGENTS.md` states, and one was simply broken —
+`execute-common/task-lifecycle.md` named the implementer contract as a sibling
+while it sat two folders away. Both role prompts now live beside the lifecycle
+that dispatches those roles.
+
+The exception is written down rather than tolerated: the execute family installs
+as a unit, and `execute-common` is the only folder any skill may reference across
+a boundary. `scripts/lint-cross-folder.py` fails every other `../`.
+
+### Length pass — 22 skills, mean 137 to 119 lines
+
+Every `SKILL.md` now carries a 200-line ceiling held by
+`scripts/lint-skill-length.py` against a budget that only decreases. Conditional
+recipes moved to siblings behind their own skip predicates; gate blocks were not
+thinned. Two skills stop short of the target and say so with their reasons
+recorded — `work-the-problem` and `deepen-codebase` are near seventeen words per
+rule with nothing left to extract, and their budget entries were lowered rather
+than cleared so neither can grow back.
+
+### `author-skills` v1.3.0 — how skill tests are run and scored
+
+Three additions, each with a recorded baseline. Test scenarios are blinded: no
+test vocabulary in any path the agent reads, and neither the text under test nor
+its key words in the prompt — three of three baseline runs leaked, one after
+spending sixteen live runs. Results are scored from the artifact and the
+transcript, never the agent's own account of itself. Counters carry the
+consequence the baseline recorded rather than a general one.
+
+Parallel skill edits get a rule of their own: they are safe on disjoint surfaces
+and only there. A shared ledger has one writer, a surviving home is proved against
+committed state, and a worker's files are not read until it reports.
+
+### `inspect-change` v1.7.0 — a second Standards pass, merged as a union
+
+Measured on a seeded diff with four reviewers: the top five findings were
+unanimous and everything extra sat in the tail, which split within a model as much
+as across one. So the second pass is what pays and a different model is a bonus,
+taken when the harness offers one and named either way.
+
+Agreement weighting was tested and not imported. The two findings raised by
+exactly one reviewer were the deepest in the set, and nothing at any agreement
+level was noise, so the rule would have demoted the two findings a senior reviewer
+wants first.
+
+### `root-cause` v1.3.0 — an exit for the artifact case
+
+Phase 1 gates on a red-capable command and its only escape told an agent holding a
+cpuprofile to go and ask for a captured artifact. When the evidence *is* the
+capture, the artifact is the loop: reduce it to the frame, retainer chain or
+blocked thread carrying the symptom, attribute it to a file and symbol, and hand
+back a cited diagnosis.
+
+### Tooling — four checks the set did not have
+
+`lint-skill-length.py` holds every `SKILL.md` to 200 lines and tracks words too,
+because a line ceiling is gameable by rewrapping. `skill-rule-inventory.py` lists
+a skill's rule atoms and diffs them across an edit, separating a reworded rule
+from a deleted one. `lint-cross-folder.py` enforces the one permitted exception to
+folder self-containment. `qa-set.py` checks the set as a set — sibling
+reachability, eval anchors after a heading moves, manifest/tree agreement, the
+session hook, evidence beside a changed skill — and its first run found all three
+plugin manifests listing a skill deleted months earlier, which every existing lint
+had passed over.
+
+
 ### `interpret-session` v1.5.0 — comprehension then stance
 
 Live-choice turns were optimized for a two-minute skim of the pick. Under that

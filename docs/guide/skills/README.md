@@ -15,8 +15,7 @@ The skills that govern the other skills.
 
 | Skill | Invocation | What it does |
 |---|---|---|
-| [`gate-session`](gate-session.md) | model (session-injected) | The gate. If there is even a 1% chance a skill applies, invoke it first |
-| [`ask-me-bro`](ask-me-bro.md) | `/ask-me-bro` | The router. Maps any situation to the right entry point |
+| [`zone-mode`](zone-mode.md) | model (session-injected) | The gate and router. If there is even a 1% chance a skill applies, invoke it first; then hand off by invocability |
 | [`author-skills`](author-skills.md) | `/author-skills` | TDD for process documentation. The standard every skill here is written against |
 | [`teach-pack`](teach-pack.md) | `/teach-pack` | Guided teaching of the methodology |
 
@@ -164,7 +163,7 @@ prove-claim       NO COMPLETION CLAIMS WITHOUT FRESH VERIFICATION EVIDENCE
 And the one above them, injected into every session:
 
 ```
-gate-session  If there is even a 1% chance a skill applies, you MUST invoke it first.
+zone-mode     If there is even a 1% chance a skill applies, you MUST invoke it first.
 ```
 
 See [The gates](../concepts/gates.md) for why each is written as a prohibition rather than as advice.

@@ -9,7 +9,7 @@ Four hard prohibitions. They are not guidance, they are not preferences, and the
 | No fix before a root cause | [`root-cause`](../skills/root-cause.md) | `NO FIXES WITHOUT ROOT CAUSE INVESTIGATION FIRST` |
 | No completion claim without fresh evidence | [`prove-claim`](../skills/prove-claim.md) | `NO COMPLETION CLAIMS WITHOUT FRESH VERIFICATION EVIDENCE` |
 
-A fifth sits above them all: [`gate-session`](../skills/gate-session.md), the session gate, which says that if there is even a **1% chance** a skill applies to what you are about to do, you must invoke it first — before clarifying questions, before exploring the codebase, before checking a single file.
+A fifth sits above them all: [`zone-mode`](../skills/zone-mode.md), the session gate, which says that if there is even a **1% chance** a skill applies to what you are about to do, you must invoke it first — before clarifying questions, before exploring the codebase, before checking a single file.
 
 ## Why they are written as prohibitions
 
@@ -98,7 +98,7 @@ A test that survives the revert is testing nothing.
 
 ## The gate above the gates
 
-`gate-session` is injected into every session by a `SessionStart` hook (matcher `startup|clear|compact`) so the rule survives `/clear` and context compaction. Its `<NON-NEGOTIABLE>` block:
+`zone-mode` is injected into every session by a `SessionStart` hook (matcher `startup|clear|compact`) so the rule survives `/clear` and context compaction. Its `<NON-NEGOTIABLE>` block:
 
 > If there is even a 1% chance a skill applies to what you are about to do, you MUST invoke that skill first. This is not a judgment call you get to make per-task. You cannot reason your way out of it.
 

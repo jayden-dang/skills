@@ -1,6 +1,6 @@
 ---
 name: build-inline
-version: 1.4.1
+version: 1.4.2
 description: Use when an approved tasks.md needs controller-side sequential
   execution without implementer subagents — inline TDD per task, progress
   ledger, stop-on-blocker, whole-branch review — for no-subagent environments
@@ -122,7 +122,7 @@ For each Task N in order:
    not by embedding IDs in source. Work only the files the plan names.
 5. **Deviations.** WHEN territory forces you off the brief: you **are** the
    implementer — follow the **Deviations** recipe in
-   `../build-in-waves/implementer-prompt.md` (nine-field entry under
+   `../execute-common/implementer-prompt.md` (nine-field entry under
    `.skills/<CODE>/implementation-notes.md`: **Unknown class**, **Map said**,
    **Territory showed**, **Map impact**, etc.). Log **before** finishing the
    task; append only. IF **Map impact** is `reroute-plan` / `realign-spec` or
@@ -132,7 +132,7 @@ For each Task N in order:
    `Guards:` trailer required.
 7. **Render check.** You **are** the implementer — WHEN the diff touches
    anything a browser renders, apply the **Render check** step in
-   `../build-in-waves/implementer-prompt.md` (screenshot to
+   `../execute-common/implementer-prompt.md` (screenshot to
    `.skills/<CODE>/task-N-render.png`, judge against the brief, fix, re-shoot);
    the Visual check line lands in the step-9 evidence bundle.
 8. **Self-check (controller, not a subagent).** Re-read the brief against the

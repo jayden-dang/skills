@@ -259,3 +259,49 @@ signal, and the lesson is recorded above.
 **Change class:** removal of an auto-firing conditional. Major bump — existing usage relied
 on the warning. Checklist steps, tier rules, HARD-GATE, todo gate, and terminal states
 untouched.
+
+## Length pass (v2.0.1) — 2026-09-07
+
+**Ask.** Bring `SKILL.md` under the 200-line ceiling (target ≤195) without losing any
+behaviour, per the batch length-pass brief. Before: 211 lines, 53 atoms.
+
+**What moved (verbatim, Conditional bucket).**
+
+- Step 1's Delivery intent / Compat obligation / Team band+packaging elaboration
+  (the "when present" detail under Project posture and `## Team`) → new sibling
+  `project-posture.md`. Step 1 keeps the trigger line, the absent-case fallback
+  (`clarify-decisions` coverage stays OFF, empty-roster handling, "Band never
+  changes tier rules or Iron Laws"), and the optional `vision.md` scope check
+  inline, and now points to `project-posture.md` for the derivation rules.
+- The whole "Product context docs (optional)" block (Applicability / Paths /
+  Consult) → new sibling `product-context.md`. The heading, its skip condition,
+  and a one-line summary of what the sibling covers stay inline.
+
+**What was tightened (no content dropped).** The scan-subagent paragraph
+(step 1) was reworded to drop a redundant clause ("explores and… instead of
+pulling raw files into this conversation" → "writes… work from the digest, not
+raw files"); every fact it stated (digest destination incl. the pending-slug
+variant, digest contents, return-only-the-path, no-subagent fallback, missing-file
+handling) is still present.
+
+**Untouched.** `<HARD-GATE>`, the Thought/Reality table and its red-flags line,
+the todo-first gate in `## Checklist`, all six numbered steps' Done-when lines,
+the Knowns inventory bullets (locks vs. assumptions stays worded exactly as
+tested), and everything step 1 records about `docs/specs/INDEX.md` query-first
+loading and the reverse-track removal (v2.0.0) — none of that prose was touched,
+so nothing this pass did can reintroduce the catalog-staleness check.
+
+**Atom count.** 53 atoms in `SKILL.md` at HEAD → 58 atoms across
+`SKILL.md` + `project-posture.md` + `product-context.md` now
+(`skill-rule-inventory.py --diff`: every atom has a home, every sibling named;
+no atom fell into "with no home").
+
+**Anchor confirmed.** `SKILL.md § Write NO code, scaffold NOTHING` — the
+`<HARD-GATE>` line carrying this exact string is unchanged (`grep` count: 1).
+
+**Result.** 211 → 192 lines (19 lines cut, 2 new sibling files). Version bumped
+2.0.0 → 2.0.1 (wording and location changed, not behaviour). `lint-skill-length.py`
+now reports this file at or under the 200-line limit and says to delete its
+`{"lines": 211, "words": 2571}` entry from `scripts/skill-length-budget.json`.
+Left that entry in place per the batch brief — the reviewer clears the shared
+ledger once, after the batch.

@@ -207,3 +207,109 @@ no step list. Execute-family names are chain position, not workflow.
 
 Class: **clear** if agent cites Exit steps. Fail if agent still treats
 "start building" as silent `build-in-waves` without offering the three skills.
+
+## Length pass (2026-09-07, v1.2.1 → v1.2.2)
+
+376 → 195 lines (target ≤195). No `SKILL.md §` contract-eval anchors exist for
+this skill (confirmed via `eval.json`: every `derived_from` is `TESTS.md §
+...`), so `lint-skill-evals.py` protected nothing here — the rule-inventory
+diff was the only mechanical net, leaned on hard per the trim brief.
+
+**Extracted (conditional blocks, skip predicate already stated inline):**
+- Step 5's publish mechanics (Publish-unit resolution order, issue title/body
+  shape, per-unit branching) → new sibling `publish-recipe.md`. Inline keeps
+  the skip condition, a one-line pointer, and the Gate content (Thought/Reality
+  table, Red Flags, Done when) which never moves.
+- Step 2's optional system-docs consult (codebase/standards authority table,
+  conflict handling, no-op path) → new sibling `system-docs-consult.md`.
+  Inline keeps the heading, the WHEN predicate, and a one-line summary — same
+  pointer shape as `design-solution`'s `system-docs.md`.
+
+**Restructured (Universal bucket — "turn narration into a table"):** every
+multi-bullet prose block was converted to `| Slot/Check/Step | Rule |` tables,
+then rows with adjacent, non-competing concerns were merged onto one row
+(content preserved verbatim or near-verbatim, only connective prose trimmed):
+- Step 3's six task-block bullets (Files/Reuse/Interfaces/Depends-on/Steps/
+  Footer) → one table; No-placeholders and Thin-steps folded in as rows, then
+  Files+Reuse+Interfaces+Depends-on further merged onto one row.
+- Step 4's eight coverage-check bullets → one table; audit-trace + behavior
+  coverage + seam-table reconcile merged onto one row; type/name + Reuse
+  consistency + reuse-miss merged onto one row; spec alignment + upstream
+  sync-back merged onto one row; independent-review + Plan-size merged onto
+  one row.
+- Exit's six numbered steps + the three-row Route table + the Recommend
+  paragraph → one table (steps 1–2 merged, 5–6 merged, route meanings and the
+  Recommend predicate folded into the "Offer three routes" row).
+- Step 1's three-row standards-fallback table: rows 2 and 3 (the two fallback
+  tiers) merged onto one row, ordering preserved via "2, then 3" + "when
+  absent; else".
+- Step 2 and Step 2b merged into one `## Step 2: File structure and
+  retrieval` (no other skill in the tree cites plan-tasks' "Step 2b" by name —
+  verified via repo-wide grep — so the merge is safe; it also fixes a stale
+  mismatch where 5 numbered steps existed under an intro claiming "todo per
+  step (1–4)").
+
+**Duplication removed (surviving home confirmed by grep):** the intro's
+rationale for banning per-task risk labels/decision-surface
+flags/Human-review-order (now points to Step 3's Gate table, which already
+states the same rule as a Thought/Reality rebuttal); the Recommend paragraph's
+"no size-based default" clause (already stated by two Exit Gate-table rows:
+"Recommend story-unit is inventing Execution-mode..." and "Four tasks →
+default build-in-waves...").
+
+**Untouched (per brief):** the `## Plan size budget (hard gate)` section in
+full (metric table, remedy list, the quoted-rationalization line) — the brief
+named this the one hard gate to leave alone. All three `| Thought | Reality |`
+tables and both `### Red Flags` bullet lists are byte-for-byte the same rule
+content as before the pass (surrounding prose was tightened, the rows/bullets
+themselves were not).
+
+**Atom count:** 119 atoms (HEAD) → 104 atoms across `SKILL.md` +
+`publish-recipe.md` + `system-docs-consult.md`. The drop is expected: merging
+6+ rows onto 1 collapses several separately-matched atom lines into one row
+that still carries every fact (the rule-inventory tool counts physical
+table/bullet lines, not distinct facts). `--diff` reported 30 atoms
+"reworded" (≥70% word survival — expected given heavy table restructuring)
+and 10 "with no home" by its literal-match heuristic; all 10 were manually
+verified present via `grep` against their new location (see run log): the
+`docs/product/guidelines.md` pointer-only/legacy-fallback conditions, the
+second `load-subgraph` retrieval query, the Reuse/Steps/Type-name-consistency/
+Upstream-sync-back/Seam-table-reconcile facts folded into merged table rows,
+the old standalone `| Route | Meaning |` table header (a no-op — its content
+rows survive, folded into Exit's step table), and the Recommend trigger list
+(folded into the "Offer three routes" row).
+
+**Anchors:** no `SKILL.md §` anchors exist for this file; nothing to confirm
+against `lint-skill-evals.py` beyond the pre-existing pass.
+
+**Lint:** `lint-skill-length.py` reports 195 lines (at/under the 200 limit) and
+asks for the budget entry to be cleared — left for the reviewer per the trim
+brief (shared ledger, other files mid-edit in the same batch). All other
+`scripts/lint-*.py` pass.
+
+### Reviewer note — where the inventory tool degrades, and what was read by hand
+
+This pass converted three bullet lists into tables and merged rows, which is the
+one edit shape `skill-rule-inventory.py` handles worst. Merging four bullets into
+one row spreads each bullet's distinctive words across a row carrying three other
+bullets' words, so coverage falls below the 70% threshold and a preserved rule
+reads like a lost one. Thirty atoms scored "reworded" and ten "no home"; every one
+of the ten had a merged table row as its closest match.
+
+Five were read by hand on review, chosen as the ones that would cost most if
+wrong: the `docs/product/guidelines.md` pointer-only condition, the
+`docs/standards/` absent-tree fallback, the second `load-subgraph` cluster query,
+the upstream sync-back rule, and the build-by-story recommend trigger. All five
+survive. The standards fallback is the one worth naming: its original prose
+carried four conditions and the new table row carries all four — standards when
+present, guidelines as legacy fallback only when standards is absent, never when
+guidelines is pointer-only, else `project.md`. The word "unmigrated" is gone,
+which is descriptive rather than operative.
+
+The Plan size budget section is intact: both ceilings (12 tasks, 400 lines), both
+metrics, all three remedies, and the line refusing urgency as a waiver. Only its
+"home for this rule" sentence reflowed. All nineteen Thought/Reality rows survive.
+
+For anyone repeating this on a file with no contract anchors: the tool narrows
+what to read, it does not replace reading, and a table restructure is exactly
+where that gap is widest.

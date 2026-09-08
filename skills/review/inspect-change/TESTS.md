@@ -174,3 +174,59 @@ removed in map-features v2).
 **GREEN (v1.6.0):** step 1b runs `skills/track/map-features/scripts/reconcile.py`
 on pinned range; holds envelope; names `/map-features` for dispose; never loads
 a reconcile-features skill.
+
+## Second Standards pass — v1.7.0 (2026-09-08)
+
+**Question.** Another skill set runs several reviewers on different models over
+one diff and weights findings by agreement: two or more models independently
+raising something is high signal, a lone finding is lower confidence. Two claims
+sit inside that — a second reviewer is worth its cost, and the second reviewer
+must be a different model — and the set had neither.
+
+**Method.** One seeded diff, four reviewers, identical brief, four isolated
+copies, no reviewer told what was planted or how many. A `quota-service`
+multi-tenant module with eight planted defects across correctness, security,
+concurrency, API design and test coverage. Two reviewers on one model, two on
+another.
+
+**What they found.** Eleven distinct defects surfaced, three of which nobody had
+planted and all three real — a negative-`units` path that lets a caller
+manufacture unlimited quota, an audit log that records the action before the
+decision and never records the amount or outcome, and first-touch provisioning
+silently letting whichever caller arrives first set a tenant's cap. No reviewer
+produced a false positive.
+
+| Finding | A1 | A2 | B1 | B2 |
+|---|---|---|---|---|
+| Read-then-write race defeats the cap | ✓ | ✓ | ✓ | ✓ |
+| `bulk_check` consumes despite its name, no rollback | ✓ | ✓ | ✓ | ✓ |
+| `token` never checked against `tenant` | ✓ | ✓ | ✓ | ✓ |
+| `raise_cap` unvalidated | ✓ | ✓ | ✓ | ✓ |
+| Negative `units` (unplanted) | ✓ | ✓ | ✓ | ✓ |
+| Raw token written to logs | ✓ | ✓ | ✓ | — |
+| `cap` argument silently ignored | — | ✓ | ✓ | — |
+| Test gap on three public functions | — | — | ✓ | ✓ |
+| Global connection, `check_same_thread=False` | — | part | ✓ | — |
+| Audit log cannot reconstruct an incident (unplanted) | — | — | — | ✓ |
+| Provisioning is a trust boundary (unplanted) | — | — | ✓ | — |
+
+**Result 1 — a second pass pays, and the model is not what pays.** The top five
+findings were unanimous; every reviewer got them alone. All the additional value
+sat in the tail, and the tail split *within* a model as much as across one: A2
+caught the ignored `cap` argument that A1 missed, and the two same-model
+reviewers framed `bulk_check` as two different defects, one an atomicity failure
+and one a cross-tenant denial of service. Both were right. One suggestive
+model-level pattern exists — the test-coverage gap came from 2 of 2 on one model
+and 0 of 2 on the other — but two reviewers per arm cannot separate that from
+chance, and the skill text says so rather than claiming it.
+
+**Result 2 — agreement weighting is not imported, because it inverts here.** The
+two findings raised by exactly one reviewer were the two deepest in the set. No
+finding at any agreement level was noise, so agreement carried no signal to
+weight by; applying the rule would have demoted the audit-adequacy finding and
+the provisioning trust boundary, which are the two a senior reviewer would want
+first. Merge is a union.
+
+**Limit.** The diff was deliberately defect-dense. On a clean diff a second
+reviewer adds cost and possibly noise rather than findings, and nothing here
+measures that case.

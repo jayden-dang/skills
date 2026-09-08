@@ -96,6 +96,60 @@ system/capability tours; teach-pack keeps concept/procedure drill.
   *reported* gaps, not from a scenario in which an agent was observed mishandling
   a partially-correct answer. Weaker evidence than the rest of this file.
 
+## 2026-09-07 — length pass (v1.0.1 → v1.0.2)
+
+`SKILL.md` was 213 lines, 1838 words; zero of its eval.json anchors are
+`SKILL.md § ...` (all five `derived_from` entries point at this file), so
+the rule-inventory diff was the only mechanical net for this trim — no
+heading was load-bearing for `lint-skill-evals.py`.
+
+No block qualified as Conditional or Worked-example-with-a-second-home, so
+nothing was extracted to a sibling file — the brief's instinct that this
+file could reach target by tightening alone held. Every heading, the Iron
+Law box, the rationalization table, and the Red Flags bullets are untouched
+verbatim.
+
+What moved: nothing left the file. What changed: prose around the Iron Law,
+the numbered lesson steps, the oracle sub-sections, the "when they ask"
+section, and the workspace bullets were tightened — redundant clauses cut,
+adjacent short paragraphs on the same point merged (removing the blank-line
+separator, not the words), one duplicate illustration removed from
+"manufacture the oracle" (the review-comments example duplicated the
+event-sourcing/CRUD-schema example already illustrating the same rule;
+"Build the fixture, pull the record, run the query" generalizes both and
+was kept).
+
+Result: 194 lines, 1679 words (13.5% fewer lines, 8.6% fewer words — a real
+cut, not a reflow: word loss and line loss track each other rather than the
+line count dropping out from under a flat word count).
+
+`skill-rule-inventory.py`: 42 atoms before, 42 atoms after. `--diff` reworded
+10 atoms (all ≥70% distinctive-word overlap, meaning survive unchanged
+otherwise the check works, they had to be too) and flagged 1 with no exact
+textual home:
+
+- *"Right as far as it goes"* branch (Grade step 5) — paraphrased hard enough
+  to drop to 40% word overlap. Manually verified all four facts survive at
+  `SKILL.md:56-59`: true-and-well-reasoned-but-insufficient, commonest on a
+  tradeoff-bottomed topic, say-plainly-then-probe-the-gap, and
+  grading-it-wrong-teaches-them-to-stop-committing-to-answers. `grep -n
+  "Right as far as it goes" SKILL.md` → line 56. No rule lost, just reworded
+  past the diff tool's similarity threshold.
+
+Anchors confirmed still present (verbatim, unchanged): `## The Iron Law`,
+`## The lesson`, `## The oracle`, `## When they ask you for the answer`,
+`## Red flags`, `## The workspace`, `## Neighbors`, `## Done when` — none of
+these are cited by eval.json, but they were left untouched anyway since
+nothing required moving them.
+
+`scripts/lint-skill-length.py`: reports the file now under the 200-line
+limit and asks for its `skill-length-budget.json` entry to be cleared — left
+alone per the batch instruction; the reviewer clears it once after the
+batch. All other `scripts/lint-*.py` pass.
+
+Nothing was judged too risky to touch — no gate needed thinning, so no
+number was traded for a rule.
+
 ## Method note
 
 Three early runs were discarded, and the reason is worth keeping. The first S1/S3

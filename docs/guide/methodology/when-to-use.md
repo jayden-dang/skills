@@ -26,7 +26,7 @@ This skill set is opinionated and it costs something. Knowing when it earns its 
 
 ## Choosing your entry point
 
-If you are unsure, run `/ask-me-bro`. The situation table and the three
+If you are unsure, `zone-mode` routes from the on-ramps table. That table and the three
 rules of thumb live in [on-ramps](../process/on-ramps.md) — one home.
 
 ## The distinction people get wrong most often
@@ -54,5 +54,5 @@ generated capsule plus task delta.
 
 - [Ceremony tiers](ceremony-tiers.md) — how the system scales down for small work
 - [Philosophy](philosophy.md) — the principles behind these boundaries
-- [`ask-me-bro`](../skills/ask-me-bro.md) — the router, when you are unsure
+- [`zone-mode`](../skills/zone-mode.md) — the session gate and router
 - [Adopting the skill set](../resources/adopting.md) — the practical install path

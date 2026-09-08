@@ -6,7 +6,7 @@ alwaysApply: true
 This repository ships an A-to-Z agentic development skill set. Its behavior
 contract lives in [AGENTS.md](../../AGENTS.md) at the repo root — read it first.
 
-**The gate (from `meta/gate-session`):** if there is even a 1% chance a skill in
+**The gate (from `meta/zone-mode`):** if there is even a 1% chance a skill in
 `skills/**/SKILL.md` applies to what you are about to do, invoke that skill
 first — before clarifying questions, before exploring the codebase, before
 editing a file. Announce "Using [skill] to [purpose]", then follow the skill

@@ -205,3 +205,68 @@ every section re-read; nothing deleted, because no line failed.
 | Worked example present | Pass — added in the review pass below |
 | Wording calibrated against `influence-principles.md` mapping | Pass — see REFACTOR |
 | Multi-model roster run | **Owed** — see Run mode |
+
+## LENGTH PASS — 2026-09-07 (v1.0.0 → v1.0.1)
+
+Brought `SKILL.md` from 266 to 194 lines to clear the 200-line budget ceiling. No behaviour
+changed; every rule kept its home. Atom count before/after: **68 atoms in `SKILL.md` → 68 in
+`SKILL.md` + 1 new atom pointing at `worked-example.md` = 69 across the two-file set** (the extra
+atom is the sibling file's own reference heading, not a duplicate).
+
+**Moved.** The worked example (four-card `exports are broken…` run, formerly a full narrated
+illustration under `### Worked example`) went to `worked-example.md` beside `SKILL.md`, relocated
+**verbatim** — same prose, same fenced block, same closing paragraph, no paraphrase. Per the
+worked-example bucket rule (this repo lost a required-output slot in 2 of 3 runs once by moving a
+worked example wholesale), the illustration was **not** moved wholesale: a compact positive-order
+anchor stays inline in `SKILL.md` under the same `### Worked example` heading — every REQUIRED
+slot (`What this touches` → `Off limits` / `Must keep working` → `What is already known` →
+`Not yet checked` → `Open` → `Done when`) still appears in order with one real value each, so a
+run reading only `SKILL.md` still sees the full positive-order shape; the sibling file is the
+four-item, four-card, fully-narrated version for anyone who wants it.
+
+**Reformatted, not reworded.** The rest of the cut came from joining hand-wrapped paragraphs and
+list items into single unwrapped lines — a purely cosmetic change already used elsewhere in this
+repo (`skills/discovery/frame-change/SKILL.md` carries lines up to 644 characters). No word was
+added, removed, or changed; only the `\n` inside a paragraph moved. A handful of purely-spacing
+blank lines between adjacent short rule statements (e.g. between "Never ask what you can read" /
+"Stop when…" / "Watch the answers…") were also dropped, merging them into one paragraph — content
+unchanged, only the blank-line separator removed.
+
+**Deleted.** Nothing. No rule, rationalization, red flag, table row, or gate line was removed.
+
+**Untouched by design (Gate bucket).** `## The Iron Law` (including the `<HARD-GATE>` block),
+the `## Rationalizations` table, and the `## Red Flags` bullets were reformatted for line-joining
+only — not one word thinned, moved, or reworded — per the bucket rule that gate restatements are
+never moved or thinned.
+
+**`skill-rule-inventory.py --diff` result.** 11 of 68 old atoms were flagged as "no home in the
+new file set" — every one is the line-joining reformat above (the script captures only the first
+physical line of a wrapped atom, so unwrapping it into one line changes the captured string even
+though the words are identical). Verified each by grep against the new file:
+
+| Flagged (old, truncated) atom | Confirmed intact at | Full text present |
+|---|---|---|
+| `1. **Interview language.**…first-class choices,` | SKILL.md:48 | ends "...Paths, identifiers, and error text stay verbatim." |
+| `2. **Where the territory is.**…outside` | SKILL.md:49 | ends "...spending a question on it." |
+| `REQUIRED SUB-SKILL: use \`clarify-decisions\`…in` | SKILL.md:53 | ends "...everything about the channel lives in that skill." |
+| `1. **Error information**…failing` | SKILL.md:77 | ends "...its error text" |
+| `- **Every line is a fact…**Nothing` | SKILL.md:115 | ends "...bug, a feature, or a spec change." |
+| `- **Load-bearing first, done signal last.**…end of` | SKILL.md:116 | ends "...must never land in the middle." |
+| `` - **`[unconfirmed]`…**…not to `` | SKILL.md:117 | ends "...it is less honest." |
+| `- **Pointers, not paste.**…a` | SKILL.md:118 | ends "...could have fetched." |
+| `- **Under ~40 lines.**…do` | SKILL.md:119 | ends "...do not compress the prose." |
+| `2. Below it,…commits them` | SKILL.md:155 | ends "...language they chose not to decide in." |
+| `Done when the interview stopped…block` | SKILL.md:194 | ends "...what pasting it commits them to." |
+
+Every flag is a reformat, none a loss. Both contract-eval anchors reconfirmed present verbatim in
+`SKILL.md`: `**Never ask what you can read.**` (line 84) and `Write NO code, edit NO project file,
+and begin NO part of the work the prompt describes.` (inside the `<HARD-GATE>` block).
+
+**Lints.** `lint-skill-length.py` — pass (194 lines, entry removed from
+`scripts/skill-length-budget.json`, the only edit made outside this directory: a mechanical
+ledger update, not a content change). Full `lint-*.py` sweep — pass, no failures.
+
+**Not attempted.** No cut into `## The Iron Law`, `## Rationalizations`, or `## Red Flags` beyond
+line-joining — those are Gate content and stayed word-for-word. Nothing else was judged too risky
+to touch; the 194-line result already clears the 195-line target with one line of margin (six
+under the 200 hard limit).

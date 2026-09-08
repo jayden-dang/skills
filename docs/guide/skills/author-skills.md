@@ -75,6 +75,6 @@ An author wants a skill that stops agents from marking a task done on a stale te
 ## See also
 
 - [The skill model](../concepts/skill-model.md) — what a skill is and how it loads
-- [`gate-session`](gate-session.md) — the session-injected gate authored under this doctrine
+- [`zone-mode`](zone-mode.md) — the session-injected gate authored under this doctrine
 - [`test-first`](test-first.md) — the same RED/GREEN/REFACTOR loop applied to production code
 - [The gates](../concepts/gates.md) — the pressure-gate pattern this skill defines

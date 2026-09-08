@@ -498,3 +498,94 @@ break — no regression.
 **Change class:** additive conditional + gate counters. Iron Laws, card recipe, close
 package, and the production-coverage gate predicate are untouched — pre-release stays
 coverage OFF, which is correct: SLO / on-call / rollback ceremony needs a running system.
+
+## Length pass — v1.5.1 (2026-09-07)
+
+**Goal:** bring `SKILL.md` from 300 to at most 195 lines with zero behavior loss,
+per the batch-wide length-budget ratchet. No RED/GREEN re-run — pure information
+hierarchy and no-op reflow, not a content change.
+
+**What moved:** nothing left this file. Every edit was either (a) joining a
+hard-wrapped paragraph into one physical line — zero words changed, only the
+source line breaks — or (b) folding a short standalone paragraph into an
+adjacent paragraph in the same section. No sibling file gained new content;
+`example.md` / `feature-retrieval.md` / `production-coverage.md` are untouched.
+
+**What was deleted outright (real cuts, not reflow):**
+
+- The trailing callout in **Pre-implementation interview map** — `"Just make
+  something sensible" is not a decision... restate it, then lock
+  accept/adapt/reject.` — duplicated the same table's own **References** row
+  (`Prefer source code; restate semantics; lock accept/adapt/reject.`) and the
+  Rationalizations row `"Just pick industry best practice" | Load the Territory
+  reference; restate and lock it.`. Two surviving homes, both unchanged.
+- The `## Retrieval package (feature work)` heading was removed; its one rule
+  sentence (`WHEN feature work involves neighbors...`) now lives inline at the
+  end of **Question card**, next to the sibling `example.md` pointer it already
+  sat beside in spirit. Verified: `grep -n "feature-retrieval.md" SKILL.md`
+  still hits.
+- The `## Todos` heading was removed; its two rules (nested / standalone) now
+  close out **The Iron Law — open set**, the section the intro's "Follow
+  **Todos**" forward-reference already points a reader's attention toward.
+  Verified: `grep -n "Todos:" SKILL.md` still hits, both clauses intact.
+- Three short **Order and coverage** bullets (`Coverage order when ON`, `Walk
+  every branch`, `Judgment only to the user`) were merged into one bullet —
+  none is individually named by `TESTS.md` or `eval.json` (only `Blast-radius
+  first` is), and every distinctive fact (dependency order, sub-branches before
+  trunk, stop = open-set empty, facts live in Territory) survives in the merged
+  line. Confirmed by `grep -n "dependency order\|sub-branches before trunk"
+  SKILL.md`.
+- The Production coverage gate's three-part ON test was briefly tried as a
+  table, then reverted to a plain numbered list — the table's header +
+  separator cost 2 more lines than it saved, so the numbered-list form (already
+  used by **Starting map**) stayed.
+
+**Anchors:** `eval.json`'s 19 `derived_from` entries all point at `TESTS.md §
+...`; none are of the `SKILL.md § <heading>` form, so `lint-skill-evals.py`
+protects nothing in this file and no heading had to be preserved for that
+reason. Confirmed unchanged by a clean `lint-skill-evals.py` run.
+
+**Gate content untouched:** both `## The Iron Law` code fences, the full
+Rationalizations table (30 rows), and the full Red Flags list (25 bullets) were
+not reworded, reflowed, or reordered — only the ordinary prose immediately
+around the two Iron Law boxes was tightened, per the length-pass bucket rule.
+
+**Atom count:** `skill-rule-inventory.py` — 121 atoms before, 116 after (the
+count drop is the 3-bullet merge and a few WHEN/MUST-bearing sentences folded
+into neighboring prose, not lost rules — see the `--diff` result below).
+
+**`--diff` result:** 20 atoms scored "reworded" at 78–100% distinctive-word
+survival (pure reflow/merge, no words dropped); 2 scored "no home" at 50% and
+67% — both false negatives of the tool's whitespace tokenizer tripping on
+punctuation glued to a word (`branch.` / `order;` / `trunk.` no longer match
+`branch` / `order,` / `trunk` after the sentence was rejoined). Manually
+verified both: the `## Retrieval package` heading's rule text and the `Walk
+every branch` bullet's facts are confirmed present by the greps above.
+
+**Line/word count:** 300 → 194 lines; 3,531 → 3,516 words. Line budget entry in
+`scripts/skill-length-budget.json` is ready to clear (left for the reviewer per
+the batch instructions, since other files were trimming in the same window).
+
+**Version:** patch `1.5.1` — wording/location only, no behavior change.
+
+### Reviewer note — the line count was met by rewrapping, and the context cost did not move
+
+This pass reports 300 → 194 lines. It also reports 3531 → 3516 words: fifteen
+words out of three and a half thousand. Almost the whole reduction came from
+joining hard-wrapped paragraphs onto single lines, which changes what `wc -l`
+says and changes nothing an agent pays for.
+
+That is not a shortcut the pass took. Nothing was left to extract. The two largest
+sections are the Rationalizations table and the Red flags list, both gate content
+that never moves; the remaining ten sections run nine to twenty-five lines each,
+and the genuinely conditional material — the worked example, feature retrieval,
+the production-coverage gate — was already pushed to siblings by the trim in
+`8579a54`. This file grew back from roughly 183 lines to 300 by gaining rules,
+not prose: posture, compat obligation, SRE coverage. At twenty-nine words per
+rule atom it was already terse before this pass started.
+
+So read the number honestly. A 200-line ceiling is a proxy for what a turn costs,
+and on the densest file in the set the proxy came apart: the ceiling is satisfied
+and the cost is unchanged. If this file needs to get cheaper, the next move is
+deciding which rules it should stop carrying, which is a scope question for its
+owner and not something a length pass can answer.

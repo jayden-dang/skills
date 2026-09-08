@@ -12,7 +12,7 @@ Underspecification does not make an agent stop; it makes it act on the wrong obj
 
 That block deliberately **names no lane and no next step** — it carries targets, boundaries, evidence, assumptions, open questions, and a done signal, and nothing about what to do with them. The session it is pasted into reads it cold and picks its own entry point. That is what keeps a forged prompt from anchoring the chain on a conclusion nobody tested.
 
-It sits outside this phase rather than in front of it: no skill invokes it, and an ask that already names its targets skips it entirely. Multi-session destination fog → user runs `/pathfind`; unsure which entry point applies at all → `/ask-me-bro`.
+It sits outside this phase rather than in front of it: no skill invokes it, and an ask that already names its targets skips it entirely. Multi-session destination fog → user runs `/pathfind`; unsure which entry point applies at all → `zone-mode` reads the on-ramps table.
 
 ## The hard gate
 

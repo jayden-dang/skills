@@ -88,7 +88,7 @@ cold. That is the cross-context review configuration the literature backs.
 
 | Situation | Go to |
 |---|---|
-| You know what you want; you just don't know which entry point applies | [`/ask-me-bro`](ask-me-bro.md) |
+| You know what you want; you just don't know which entry point applies | [on-ramps](../process/on-ramps.md), which `zone-mode` reads |
 | The open item is a design fork, not a missing target | [`clarify-decisions`](clarify-decisions.md) |
 | Multi-session destination still foggy | [`/pathfind`](pathfind.md) |
 | The ask already names targets, boundaries, and a done signal | just start the work |
@@ -97,4 +97,4 @@ cold. That is the cross-context review configuration the literature backs.
 
 - Skill body: [`skills/discovery/forge-prompt/SKILL.md`](../../../skills/discovery/forge-prompt/SKILL.md)
 - Evidence and design record: [`skills/discovery/forge-prompt/TESTS.md`](../../../skills/discovery/forge-prompt/TESTS.md)
-- [`clarify-decisions`](clarify-decisions.md) · [`/interpret-session`](interpret-session.md) · [`/ask-me-bro`](ask-me-bro.md)
+- [`clarify-decisions`](clarify-decisions.md) · [`/interpret-session`](interpret-session.md)

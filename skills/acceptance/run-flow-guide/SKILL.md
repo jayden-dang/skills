@@ -1,6 +1,6 @@
 ---
 name: run-flow-guide
-version: 2.0.0
+version: 2.0.1
 description: >-
   Use when a guide from write-flow-guide already exists and its cases must be
   executed against the running app — agent-driven, screen plus backend
@@ -11,10 +11,7 @@ description: >-
 
 # Run Flow Guide
 
-Execute an existing guide from write-flow-guide against the **product app** in a real browser.
-The deliverable is the **run file** — every case ID accounted for with quoted
-screen evidence and, when the case touches server-owned state, a server-side
-probe that actually ran. A chat summary is not the deliverable.
+Execute an existing guide from write-flow-guide against the **product app** in a real browser. The deliverable is the **run file** — every case ID accounted for with quoted screen evidence and, when the case touches server-owned state, a server-side probe that actually ran. A chat summary is not the deliverable.
 
 ## The Iron Law
 
@@ -23,36 +20,16 @@ NO CASE IS TICKED ON THE SCREEN ALONE
 A HUMAN TICK IS RECORDED, NEVER A VERDICT
 ```
 
-If the case's Expect (or `backend`) touches state the server owns, the case's
-`run` block carries **both** `saw` (quoted UI) **and** `server` (probe command +
-result) before `verdict: pass`. Pure presentation records
-`server: none — presentational`.
-
-"Write Flow Guide judges product behavior on screen, not wire traffic" is false for any
-case that claims create, update, delete, or persistence. The screen is necessary;
-it is not sufficient.
-
-A person's tick in the guide lands in that case's `human` block, which the agent
-can read and must never promote: it says someone looked, not that the thing
-works. Agents **must not** open the guide in Chrome (or any browser) to mark
-progress — that burns tokens and writes to the wrong field space. Use `write-flow-guide
-mark`.
-
-Probe ladder (strongest first): the request/response the UI just made → read-back
-through the app's own API → store peek (DB / file / cache) → reload or restart
-for durability. A red console error or 5xx on the wire fails the case even when
-the screen looks right. Do not invent probe results you did not run.
+If the case's Expect (or `backend`) touches state the server owns, the `run` block carries **both** `saw` (quoted UI) **and** `server` (probe + result) before `verdict: pass`; pure presentation records `server: none — presentational`. (Rationalizations below name every excuse for skipping this; Red Flags name the Chrome-ticking trap.)
+Probe ladder (strongest first): the UI's own request/response → read-back through the app's API → store peek (DB/file/cache) → reload/restart for durability. A red console error or 5xx fails the case even when the screen looks right — never invent a probe result you did not run.
 
 ## CLI (required for progress)
 
-Resolve the write-flow-guide skill root (this monorepo:
-`skills/acceptance/write-flow-guide`; when installed, the skill package path). Every
-subcommand takes the **one** run file — cases and verdicts live in it together:
+Resolve the write-flow-guide skill root (`skills/acceptance/write-flow-guide` in this monorepo, else the installed package path). Every subcommand takes the **one** run file — cases and verdicts live in it together:
 
 ```bash
 DF="python3 <skill-root>/scripts/flow-guide"
 RUN=.skills/<CODE>/flow-guide.json
-
 $DF list   $RUN
 $DF show   $RUN CASE-1
 $DF init   $RUN                       # seed pending in place
@@ -62,45 +39,25 @@ $DF status $RUN
 $DF report $RUN -o .skills/<CODE>/flow-guide-report.md
 ```
 
-`mark pass` refuses empty `--saw` / `--server`. Presentational cases require
-`--server 'none — presentational'`, and a case with a real `backend` is refused
-that string — the rules cannot be skipped, because `backend` now travels in the
-same file as the verdict.
-
-**Optional live guide.** `$DF serve $RUN` binds `127.0.0.1:8787` and serves a
-page that follows the run and accepts the person's ticks. It is optional by
-construction: `render` bakes current verdicts into the HTML, so a guide opened
-by double-click is correct with nothing running. Do not drive the guide; it is
-for the human beside you.
+`mark pass` refuses empty `--saw` / `--server`; a presentational case must pass `--server 'none — presentational'`, and a case with a real `backend` is refused that same string — unskippable, since `backend` now travels with the verdict.
+**Optional live guide.** WHEN a person will tick cases live while you drive, read `serve.md` beside this file and follow it exactly — not required, since `render` already bakes verdicts into static HTML.
 
 ## 1. Preconditions — origin and app
 
 Confirm the target origin **before the first product click**:
 
-- Default: local dev from `docs/agents/project.md` (`## Run locally (dev)`).
-  Start the app if it is down.
-- Non-local origin (staging, production, shared QA): **stop**. Ask for an
-  explicit yes in this thread naming that origin. "Whatever is fastest", a demo
-  deadline, or an already-open tab is **not** consent.
-- Drive a **dedicated product tab**. Do not hijack a tab the user is working in.
-- Do **not** open the write-flow-guide HTML as a drive target.
-- Avoid controls that raise native `alert` / `confirm` (they freeze many browser
-  bridges); warn the user first if a case requires one.
+- Default: local dev from `docs/agents/project.md` (`## Run locally (dev)`); start the app if it is down.
+- Non-local origin (staging, production, shared QA): **stop** and get an explicit in-thread yes naming that origin — "whatever is fastest", a demo deadline, or an already-open tab is **not** consent.
+- Drive a **dedicated product tab** — never the user's own tab, and never the write-flow-guide HTML itself.
+- Avoid controls that raise native `alert` / `confirm` (they freeze many browser bridges); warn the user first if a case requires one.
 
-*Done when: origin is local, or non-local consent is on the record, and the app
-loads.*
+*Done when: origin is local, or non-local consent is on the record, and the app loads.*
 
 ## 2. Seed the run file before any drive
 
-The run file is the one `write-flow-guide` wrote: `.skills/<CODE>/flow-guide.json`.
+The run file is the one `write-flow-guide` wrote: `.skills/<CODE>/flow-guide.json`. Seed it: `$DF init $RUN`.
 
-```bash
-$DF init $RUN
-```
-
-If it already holds verdicts, **trust them** — `init` refuses to reset without
-`--force`, and that refusal is the resume path, not an obstacle. Create one todo
-per case. Resume: `$DF next` (first non-`pass`).
+If it already holds verdicts, **trust them** — `init` refuses to reset without `--force`, and that refusal is the resume path, not an obstacle. Create one todo per case; resume with `$DF next` (first non-`pass`).
 
 Each case's `run` block:
 
@@ -111,13 +68,8 @@ Each case's `run` block:
 | `server` | probe + result, or `none — presentational` |
 | `notes` | setup used, fix / `root-cause` hand-off, re-drive |
 
-Beside it sits `human` — `checked`, `at`, `comment` — written only by a person
-through the served guide. Read it as a signal about where to look. Never copy it
-into `verdict`, and never let it stand in for evidence you did not gather.
-
-**No case, not run.** Skipping a case because it is "the same CRUD pattern",
-"only happy paths for the demo", because a lead said spot-check is fine, or to
-"save time" leaves it `pending` or `blocked` — never silent `pass`.
+Beside it sits `human` — `checked`, `at`, `comment` — written only by a person through the served guide. Read it as a signal about where to look; never copy it into `verdict`, and never let it stand in for evidence you did not gather.
+**No case, not run.** Skipping a case for any reason — pattern-matching, time pressure, a lead's OK — leaves it `pending`/`blocked`, never silent `pass`.
 
 *Done when: every case has run state and a todo, all `pending` (or restored).*
 
@@ -185,65 +137,27 @@ In file order (`$DF next` until empty):
 
 1. `$DF show $RUN <CASE-ID>` — load Try / Expect / setup / backend.
 2. Apply setup so the case can run independently.
-3. Execute Try against the **product app** only (Chrome extension tools when
-   present; else headed Chromium/Playwright). Do not hard-depend on a
-   package-external browser skill. Do **not** open the guide HTML to tick boxes.
+3. Execute Try against the **product app** only (Chrome extension tools when present; else headed Chromium/Playwright) — no hard dependency on a package-external browser skill.
 4. Fill `saw` from what is actually visible on the product.
 5. Run the backend probe when required; fill `server`.
-6. `$DF mark … pass|fail|blocked --saw … --server …` only when evidence slots
-   match the Iron Law. Mark the todo done only on `pass`.
+6. `$DF mark … pass|fail|blocked --saw … --server …` only when evidence slots match the Iron Law; mark the todo done only on `pass`.
 
 *Done when: the row is `pass`, or routed through §4.*
 
-## 4. Failure routing
+## 4. Failure routing — only when a driven case is not `pass`
 
-Re-drive the failed case once from a clean setup, then classify by observation.
-**Master** (this controller) owns case selection, evidence slots, `mark`
-pass/fail/blocked, and **re-test** after a fix — never hand those to a fix
-subagent.
-
-| Observation | Action |
-|---|---|
-| Deterministic fail on a real Expect / backend assertion | **Product defect.** Master marks `fail` with full evidence (`saw`/`server`). Dispatch an isolated **subagent** with a red-capable brief only: case id, `req`, try/expect, saw/server, repro — **not** the full session history or long dogfood context. Master does **not** patch product code in the walkthrough session. Subagent **REQUIRED SUB-SKILL: use `root-cause`** (and **test-first**); isolation is **not** a free patch without root-cause. |
-| Flaky, or guide wrong (stale label, missing seed, bad Expect) | Fix the case's authored slots in the **run file** (re-`render` the HTML if the human has it open); re-drive. Do not send guide bugs to `root-cause`. |
-| Shared precondition broken (login, server down, seed missing) | Stop the run. Leave remaining cases `pending`/`blocked`. Downstream is untested, not passing. |
-
-**On DONE** (subagent reports fixed): control returns to the **master**. Restart
-the app if needed, re-drive the failed case from a clean setup, **and** re-drive
-every already-`pass` case whose `req` the product fix touched (grep the diff for
-requirement IDs or the modules those cases exercise).
-
-**Loops stay separate.** The guide-gap fix loop (`vet-flow-guide`: patch run
-file → re-vet) is **not** this product-defect dogfood loop. Guide-gap findings
-are **not** routed here — the §2a gate should have blocked drive; if a missing
-situation is discovered mid-run, treat it as guide wrong / re-enter vet, not as
-a product defect. Product defects do not absorb missing-situation findings.
-
-**Caps (D2):** 3 distinct fix attempts on the same case → stop and escalate.
-5 product-defect fix cycles in the whole run → stop with a partial run file.
-Do not mark untested cases `pass` to clear the board.
-
-Durable asset for a product fix: the regression test `root-cause` already requires
-under TDD — not a silent promotion of the whole guide into Playwright
-(`validate-ui` is that path, only if the user asks).
+**Master** (this controller) owns case selection, evidence, `mark`, and re-test — never a fix subagent. Re-drive once from a clean setup, then read `failure-routing.md` beside this file and follow it exactly: it routes a deterministic defect to an isolated `root-cause` subagent (never patched in this session), a flaky or guide-wrong case back to the run file, and a broken shared precondition to a stopped run with the rest `pending`/`blocked` — plus the post-fix re-test rule, the guide-gap boundary, and the fix-attempt caps.
 
 ## 5. Close the run
 
 When every case is `pass`, or the run stops on a cap / precondition / escalate:
 
-1. The run file is authoritative. A person's ticks are never required, and never
-   substitute for a verdict you did not earn.
+1. The run file is authoritative — a person's ticks are never required, and never substitute for a verdict you did not earn.
 2. `$DF report $RUN -o .skills/<CODE>/flow-guide-report.md`
-3. **If you started `$DF serve`, ask the user whether to stop it.** Do not stop
-   it silently — they may still be reading the guide — and do not walk away
-   leaving a process holding a port. On yes: `$DF serve $RUN --stop`. On no:
-   hand them that exact command.
-4. Hand the user: path to the run file, path to the report, any
-   `blocked`/`pending` cases and why.
+3. If you started `$DF serve`, follow the stop step in `serve.md` — never silently, and never leaving a process holding the port.
+4. Hand the user: path to the run file, path to the report, and any `blocked`/`pending` cases and why.
 
-*Done when: every case ID is accounted for in the run file, the report matches
-it, and any server this run started has been stopped or explicitly left up at
-the user's word — no bare "all good."*
+*Done when: every case ID is accounted for in the run file, the report matches it, and any server this run started has been stopped or explicitly left up at the user's word — no bare "all good."*
 
 ## Rationalizations
 

@@ -1,4 +1,4 @@
-# `gate-session`
+# `zone-mode`
 
 > The skill-check gate. Relevant skills are found and invoked before any response, any action, even any clarifying question.
 
@@ -8,7 +8,7 @@
 | **Invocation** | model-invocable, but injected into every session by the `session-start.sh` SessionStart hook — so in practice it is always present, surviving `/clear` and context compaction |
 | **Reads** | the incoming task, and CLAUDE.md (which outranks it in the precedence order) |
 | **Writes** | nothing — it produces the *act* of invoking the right skill, not an artifact |
-| **Calls** | [`frame-change`](frame-change.md), [`root-cause`](root-cause.md), [`amend-feature`](amend-feature.md) (auto-invoked when they fit); names [`ask-me-bro`](ask-me-bro.md), [`triage`](triage.md) for the user to run |
+| **Calls** | [`frame-change`](frame-change.md), [`root-cause`](root-cause.md), [`amend-feature`](amend-feature.md) (auto-invoked when they fit); names [`triage`](triage.md) and other user-invoked skills for the user to run |
 | **Called by** | nothing — it is session-injected, not reached through a hand-off |
 
 ## When it fires
@@ -34,7 +34,7 @@ The skill orders the search: process skills first, then implementation skills. I
 - A vague ask the user wants turned into a proper prompt: name [`/forge-prompt`](forge-prompt.md) for them to run — it is user-invoked and cannot be auto-invoked.
 - A small in-scope change to an already-shipped, spec'd feature — a tweak, recolor, or follow-on — routes to [`amend-feature`](amend-feature.md), not `frame-change`.
 - An incoming issue or external PR routes to [`triage`](triage.md), which the agent names for the user because it is user-invoked and cannot be auto-invoked.
-- When the fit is unclear, the agent suggests [`ask-me-bro`](ask-me-bro.md).
+- When the fit is unclear, the agent reads [on-ramps](../process/on-ramps.md) and names the row.
 
 The dividing line runs through model-invocability: the agent auto-invokes only model-invocable skills, and names a user-invoked one for the user to run. There is also a plan-mode clause — if the work is creative (new behavior, a new feature), run `frame-change` first, because plans come only after approved requirements.
 
@@ -67,11 +67,11 @@ The tempting move is to open the file and make the edit. The skill blocks it: th
 
 ## Why it is written the way it is
 
-`gate-session` is the session-injected entry gate, and per [`author-skills`](author-skills.md) that dictates two things. First, its baseline failure is an agent that knows skills exist and skips the check under the pressure of seeming helpful and fast — a pressure-gate failure, which is why the page carries a `<NON-NEGOTIABLE>` absolute plus a rationalization table rather than soft "prefer" guidance. Second, because it is paid on every turn of every session, its token budget is unforgiving: the body stays minimal, and every line has to survive the no-op test. The whole skill is a single rule with just enough scaffolding — priority order, red flags, precedence — to make that one rule hold under pressure without bloating the per-turn cost.
+`zone-mode` is the session-injected entry gate, and per [`author-skills`](author-skills.md) that dictates two things. First, its baseline failure is an agent that knows skills exist and skips the check under the pressure of seeming helpful and fast — a pressure-gate failure, which is why the page carries a `<NON-NEGOTIABLE>` absolute plus a rationalization table rather than soft "prefer" guidance. Second, because it is paid on every turn of every session, its token budget is unforgiving: the body stays minimal, and every line has to survive the no-op test. The whole skill is a single rule with just enough scaffolding — priority order, red flags, precedence — to make that one rule hold under pressure without bloating the per-turn cost.
 
 ## See also
 
 - [The skill model](../concepts/skill-model.md) — how skills are discovered, loaded, and invoked
-- [`ask-me-bro`](ask-me-bro.md) — the router the agent names when the right flow is unclear
+- [on-ramps](../process/on-ramps.md) — the one home for which skill starts a situation
 - [`author-skills`](author-skills.md) — the authoring doctrine behind this gate's shape
 - [Methodology overview](../methodology/overview.md) — the idea-to-ship chain this gate opens

@@ -123,7 +123,7 @@ It writes markdown only — no scripts, no linters, no CI, no git hooks land in 
 
 ### The one opt-in
 
-Offered, and applied only on a yes: the **session-start hook** — copied into the repo at `.claude/hooks/session-start.sh` and referenced via `$CLAUDE_PROJECT_DIR`, never an absolute path (which would break on every other machine). It is dependency-free and re-injects the [`gate-session`](../skills/gate-session.md) gate on `startup | clear | compact`.
+Offered, and applied only on a yes: the **session-start hook** — copied into the repo at `.claude/hooks/session-start.sh` and referenced via `$CLAUDE_PROJECT_DIR`, never an absolute path (which would break on every other machine). It is dependency-free and re-injects the [`zone-mode`](../skills/zone-mode.md) gate on `startup | clear | compact`.
 
 A hard headless gate — running the audit-trace check in CI, or a git pre-push hook — is optional and team-specific. It lives outside the default path, so `configure-repo` does not wire one; the audit-trace check runs inside `prove-claim` and `cut-release` regardless.
 

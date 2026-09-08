@@ -103,3 +103,53 @@ section was wrongly deleted — it now re-evaluates the Step 2b predicate
 against requirements.md, so a UI-delivered Satisfies ID with no section fails
 the check. Template hints amended (ui-brief cite on Grounding; Components
 slot carries the Reuse rung format).
+
+## Length pass (v1.4.1, 2026-09-07)
+
+242 → 192 lines (58 atoms before; 61 atom-lines now, spread across SKILL.md plus
+the two new sibling files — extra atoms are net-new pointer sentences, nothing
+old lost a home). `skill-rule-inventory.py --diff` against HEAD reports every
+atom still has a home.
+
+**Extracted (both were conditional-bucket candidates: the heading itself names
+the skip predicate):**
+
+- `### Optional system docs (consult recipe)` — the five-row consult table plus
+  the `Load:`/`Do not invent…` prose moved verbatim to new sibling
+  `system-docs.md`. Inline now carries only the heading and a one-line `WHEN …
+  read system-docs.md … follow it exactly` pointer. Surviving home: `grep -n
+  "Crosses trust / compliance" system-docs.md` → line 8, verbatim.
+- `## Step 2b: UI design` recipe body — the "Interfaces and data flow do not
+  design a surface" rationale, the `ui-brief.md` lift paragraph, and the
+  "fill it yourself" token-grounding paragraph moved verbatim to new sibling
+  `ui-design-recipe.md`. Inline keeps the heading, the IF/ELSE predicate
+  (unchanged, since Step 4's UI coverage check refers back to "the Step 2b
+  predicate" by name), a one-line pointer to the recipe, and the `Done when:`
+  line. Surviving home: `grep -n "WHEN a locked" ui-design-recipe.md` → line 8,
+  verbatim.
+
+**Deleted:** nothing — every removed line is one of the two relocations above,
+not a deletion. No duplication or filler bucket was found in this file.
+
+**Tightened, not moved:** the Step 1 scan/retrieval paragraphs, the Step 2
+dependency-adoption and design-it-twice paragraphs, the ladder framing prose,
+and the Step 4 coverage-bullet continuations were reworded for concision.
+Every heading, table row, numbered ladder/list item, `Done when:` line, and
+`WHEN`/`IF`/`MUST`/`REQUIRED SUB-SKILL` line was left byte-identical on its own
+line so the rule-inventory atom match stays exact; only the plain-prose lines
+around them were rewritten or merged. One accidental content drop during this
+pass (the `ProseMirror-JSON but you discover it is` example clause in the
+upstream-sync-back paragraph) was caught by re-reading the diff and restored
+before the final trim.
+
+**Anchors confirmed present:** the one `derived_from: SKILL.md § …` contract
+anchor, `SKILL.md § Does it need to exist at all?`, still appears verbatim —
+`grep -n "Does it need to exist at all?" SKILL.md` → line 93 (ladder rung 1).
+
+**Lint:** `lint-skill-evals.py`, `lint-skill-frontmatter.py`, and
+`lint-skill-templates.py` all pass for this directory.
+`lint-skill-length.py SKILL.md` reports OK at 192 lines (under the 200-line
+limit, with this directory's now-obsolete `skill-length-budget.json` entry
+already cleared). `version` bumped to 1.4.1 (patch — wording and location
+changed, not behavior).
+

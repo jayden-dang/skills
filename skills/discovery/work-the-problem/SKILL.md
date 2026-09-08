@@ -1,6 +1,6 @@
 ---
 name: work-the-problem
-version: 1.1.0
+version: 1.1.1
 description: >
   Works a design or framing problem to closure with multi-round breakdown,
   foundation-to-feature teaching, disk artifacts, and a carry-back brief for the
@@ -19,13 +19,8 @@ What you owe them is dual:
 2. **Foundation → feature understanding they can defend** — not full AI delegation.
 
 **Where this sits:** user-invoked companion only. Does not replace the main
-ceremony window; does not drive spec or code. Siblings:
-
-| Companion | When |
-|---|---|
-| `/interpret-session` | Time-boxed mental model + stance + paste-back |
-| `/deepen-codebase` | Pure learning; no product problem to close |
-| **`/work-the-problem`** | Multi-round solve + in-service teaching + carry-back |
+ceremony window; does not drive spec or code — sibling boundaries in **What
+this is NOT**, below.
 
 ## The Iron Laws
 
@@ -97,25 +92,12 @@ Load `references/process.md` for phases, heuristics, and the full leaf recipe.
 7 Recompose → 8 Look back → 9 Carry-back
 ```
 
-Multi-round breakdown↔solve is the normal path.
-
 ## Foundation (in-service)
 
 Load `references/foundation-ladder.md` when mapping a subject or before ranking
-options.
-
-**Order (`new` / `partial`):**
-
-```text
-F0 → F1 → F5 (if repo) → F2/F3 (cited) → Gap/Fail → Delta (≥2 real options only)
-```
-
-- One primary layer per teaching beat; announce it (see turn contract).
-- `strong`: F0/F1 hole-check, fill holes only; no silent jump to Delta.
-- Skip only on clear user text → record `foundation: explicitly_skipped` on disk.
-- Pure multi-turn study, no product close → **name** `/deepen-codebase` (do not invoke).
-- Never "industry standard / best practice" without tier + source.
-- Repo claims need `file:line` after reading.
+options — depth order (`new`/`partial`/`strong`), the `deepen-codebase` handoff,
+the `explicitly_skipped` record rule, and the source-tier authority ladder all
+live there; this file does not restate them.
 
 ## Analytical turn — required shape
 
@@ -172,8 +154,6 @@ Suggested repo improvements → **suggestions only** in leaf-log / carry-back.
 
 ## User ownership
 
-This skill is never the time-boxed path (that is `/interpret-session`).
-
 1. **Articulate default** — soft probe or user restates leaf / sketches plan before
    the solution dump. Skip only if they said "just solve" for that leaf → record
    `engagement: delegated`; still give one flip condition.
@@ -204,14 +184,11 @@ rebuild the tree from chat alone.
 **Terminal only** — user settled root direction or said "write the reply". Mid-solve:
 name open leaves; do not offer a direction menu.
 
-1. Fenced message for the **main window** (default English): decision · dominant why ·
-   locks · residuals · foundation not to re-litigate · flip conditions · next
-   frame-change step · optional suggested repo changes.
+1. Fenced message for the **main window** (default English), field order and
+   content per `references/artifacts.md` § carry-back.md template.
 2. Write `carry-back.md` (same content + provenance).
 3. **Commitment restatement** in companion language (1–2 lines). Never invent an L1
    they did not choose.
-
-Full shape: `references/artifacts.md` § carry-back.
 
 ## End-of-session digest
 

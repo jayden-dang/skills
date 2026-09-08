@@ -1,13 +1,8 @@
 ---
 name: root-cause
-version: 1.2.3
+version: 1.3.0
 description: >
-  Use when anything behaves unexpectedly — a failing test, an error or
-  exception, a crash, a reported bug, wrong output, a performance regression,
-  a flaky CI job — and before proposing or applying any fix. Produces an
-  evidence-backed investigation whose authoritative causal confirmation is
-  a human disposition. Not for a failure that is only on a deployed
-  environment with no pack yet (debug-remote).
+  Use when anything behaves unexpectedly — a failing test, an error or exception, a crash, a reported bug, wrong output, a performance regression, a flaky CI job — and before proposing or applying any fix. Produces an evidence-backed investigation whose authoritative causal confirmation is a human disposition. Not for a failure that is only on a deployed environment with no pack yet (debug-remote).
 ---
 
 # Root Cause
@@ -25,11 +20,7 @@ Causal confirmation is human-only — see **Causal disposition** (one home).
 
 ## Phase 1 — Build the feedback loop (the gate)
 
-IF the reported failure is on a **deployed** environment (production,
-staging, remote dev) and no remote evidence pack exists yet: REQUIRED
-SUB-SKILL: use `debug-remote` first. That pack **is** this Phase 1
-signal. Do not `kubectl exec` or replay mutating requests against
-production as the loop.
+IF the reported failure is on a **deployed** environment (production, staging, remote dev) and no remote evidence pack exists yet: REQUIRED SUB-SKILL: use `debug-remote` first. That pack **is** this Phase 1 signal. Do not `kubectl exec` or replay mutating requests against production as the loop.
 
 Before ANY theory-building, construct and RUN a **red-capable signal**: one command — a test invocation, a script, a curl — that is red now because of this exact bug and will go green when it is fixed. Build the right feedback loop and the bug is 90% fixed; every later phase merely consumes it.
 
@@ -52,6 +43,8 @@ Then **tighten it**: faster (cache setup, narrow scope — seconds, not minutes)
 
 Genuinely cannot build one? Say so explicitly, list what you tried, and ask the user for a reproducing environment, a captured artifact, or permission to add temporary instrumentation. Do not proceed on vibes.
 
+**WHEN the evidence you were handed *is* the artifact** — a cpuprofile, heap snapshot, spindump, trace, or captured event log dropped in after the fact — no red-capable command exists to build, and asking for a captured artifact you are already holding is a loop. The artifact is the loop. Read it, reduce it to the one frame, retainer chain, or blocked thread that carries the symptom, and attribute that back to a file and symbol. The deliverable is a cited diagnosis, not a fix: hand it back and re-enter Phase 1 once someone can state the symptom as a command that goes red.
+
 **Gate check:** name the command, paste one run of its red output.
 
 ## Phase 2 — Reproduce and minimise
@@ -68,70 +61,17 @@ gates progress.
 
 ## After Phase 2 — feature-ownership context (before Phase 3)
 
-When Phase 2 is complete and you have a **path or stable term**, and **before**
-Phase 3 hypotheses: REQUIRED SUB-SKILL: use `load-subgraph` for ownership /
-neighbor context (seed paths/terms; `neighbors` or `blast_radius` as fits).
-**Grounded claims** (one home): follow
-`skills/execution/load-subgraph/references/grounded-claims.md` — never invent
-root-cause hypotheses from the envelope; never skip the red loop because neighbors
-look suggestive.
+When Phase 2 is complete and you have a **path or stable term**, and **before** Phase 3 hypotheses: REQUIRED SUB-SKILL: use `load-subgraph` for ownership / neighbor context (seed paths/terms; `neighbors` or `blast_radius` as fits). **Grounded claims** (one home): follow `skills/execution/load-subgraph/references/grounded-claims.md` — never invent root-cause hypotheses from the envelope; never skip the red loop because neighbors look suggestive.
 
 ### Ops docs after Phase 2 (optional — never replaces the red loop)
 
-**Only after Phase 2.** Phases 1–2 still require a red-capable command first. **Load:**
-`skills/project/define-system-doc/consult-recipe.md`.
-
-**Paths when applicable:** `docs/ops/runbooks.md` (and runbook slugs),
-`docs/ops/observability.md`, `docs/ops/disaster-recovery.md` — advisory Phase 3+
-context only; never a substitute for the red loop. No-op when absent; suggest once
-`/define-system-doc ops/runbooks|observability|disaster-recovery` if material;
-never auto-invoke.
+**Only after Phase 2** (Phases 1–2 still require a red-capable command first). **Load:** `skills/project/define-system-doc/consult-recipe.md`. **Paths when applicable:** `docs/ops/runbooks.md` (and runbook slugs), `docs/ops/observability.md`, `docs/ops/disaster-recovery.md` — advisory Phase 3+ context only, never a substitute for the red loop. No-op when absent; suggest once `/define-system-doc ops/runbooks|observability|disaster-recovery` if material; never auto-invoke.
 
 ### External dependency evidence after Phase 2 (conditional — before Phase 3)
 
-IF the minimized failure path crosses a versioned external dependency — a
-library, framework, SDK, database, cache, search/observability platform, cloud
-service, external API, CLI, provider distribution, or protocol — THEN complete
-this evidence gate before writing hypotheses. The Phase 1 signal and Phase 2
-minimal repro remain the gate; documentation never replaces either.
+IF the minimized failure path crosses a versioned external dependency — a library, framework, SDK, database, cache, search/observability platform, cloud service, external API, CLI, provider distribution, or protocol — THEN complete this evidence gate before writing hypotheses. The Phase 1 signal and Phase 2 minimal repro remain the gate; documentation never replaces either.
 
-1. **Runtime identity.** Capture product, distribution/provider, server/runtime
-   version, client/SDK version, topology/deployment mode, effective relevant
-   configuration, and the exact error/output. The artifact cites the literal
-   Phase 1 command and red output; a handoff claim that they ran is not evidence.
-   Unknown fields stay `unresolved`.
-2. **Owning documentation.** REQUIRED SUB-SKILL: use `research` for the exact
-   failing concept. For libraries/frameworks/APIs, it resolves current
-   documentation through Context7 first. Match the source to the observed
-   version/provider; latest docs do not establish older-runtime behavior.
-3. **Contract diff.** Produce this artifact before Phase 3:
-
-| Surface | Actual runtime evidence | Official documented expectation | Applicability | Match |
-|---|---|---|---|---|
-| `<failing concept>` | `<captured value/error>` | `<owning-source behavior>` | `<matching version/provider, mismatch, or unresolved>` | `<yes, no, unresolved>` |
-
-4. **History check.** When actual and current docs disagree, inspect the owning
-   changelog, migration guide, deprecation notice, or official issue history for
-   the observed version. A community answer may locate a source; it is not the
-   evidence entered in the table.
-5. **Claim status.** `match=no` becomes a hypothesis candidate, not a confirmed
-   cause. `applicability=unresolved` blocks dependency-behavior claims; report the
-   missing identity/source instead of filling it from model memory.
-
-When runtime access or identity is unavailable, use this disposition verbatim in
-the artifact:
-
-```text
-Runtime evidence unavailable: <missing access/artifact>.
-Version-matched owning documentation cannot be resolved.
-Current official documentation is reference only; applicability is unresolved.
-Phase 3 external-behavior hypotheses are blocked pending: <required evidence>.
-```
-
-**Gate check:** the Phase 1 command/red output is cited; runtime identity is
-explicit; an owning source is version-matched or explicitly unavailable; every
-table cell is filled; and no Phase 3 hypothesis claims external behavior beyond
-that artifact.
+WHEN this applies, read `external-dependency-evidence.md` beside this file and follow it exactly: runtime identity, owning documentation via `research`, a contract-diff table, a history check on disagreement, and claim status — every step gated on the Phase 1 red output, with a verbatim unresolved disposition when runtime evidence is unavailable.
 
 ## Phase 3 — Hypothesise
 
@@ -139,14 +79,9 @@ Write 3–5 ranked hypotheses before testing any (a single hypothesis anchors yo
 
 Test the smallest hypothesis first. ONE variable at a time — never stack changes.
 
-**Runtime inspection** — a discriminating experiment under this phase, not a
-substitute for Phase 1. Use the hypothesis's stated prediction. Attaching is
-not causal acceptance (see Causal disposition).
+**Runtime inspection** — a discriminating experiment under this phase, not a substitute for Phase 1. Use the hypothesis's stated prediction. Attaching is not causal acceptance (see Causal disposition).
 
-WHEN the process under test is **local or a dedicated checkout** (red signal
-and minimal repro already exist): prefer a debugger, REPL, or DAP session
-over log spam — one breakpoint or watch beats ten prints. Browser-only
-failures may use DevTools/CDP the same way. Record:
+WHEN the process under test is **local or a dedicated checkout** (red signal and minimal repro already exist): prefer a debugger, REPL, or DAP session over log spam — one breakpoint or watch beats ten prints. Browser-only failures may use DevTools/CDP the same way. Record:
 
 ```markdown
 ## Inspection evidence
@@ -157,28 +92,19 @@ failures may use DevTools/CDP the same way. Record:
 - Outcome: <confirms | falsifies | inconclusive>
 ```
 
-WHEN the failure lives only on a **shared deployed** environment: do not
-`exec`/attach there — that boundary is `debug-remote`. Run Phase 3 probes on
-a local or dedicated copy, or stick to non-mutating evidence.
+WHEN the failure lives only on a **shared deployed** environment: do not `exec`/attach there — that boundary is `debug-remote`. Run Phase 3 probes on a local or dedicated copy, or stick to non-mutating evidence.
 
-OTHERWISE (no debugger available, or a log trail fits better): targeted logs
-with a unique prefix per probe (e.g. `[DBG-x7q2]`) so cleanup is one grep —
-never log-everything-and-grep.
+OTHERWISE (no debugger available, or a log trail fits better): targeted logs with a unique prefix per probe (e.g. `[DBG-x7q2]`) so cleanup is one grep — never log-everything-and-grep.
 
-Performance or memory-class bugs: measure a baseline first (profiler,
-sanitizer, timing harness), then bisect; logs mislead here.
+Performance or memory-class bugs: measure a baseline first (profiler, sanitizer, timing harness), then bisect; logs mislead here.
 
-Don't understand something? Say "I don't understand X" and investigate —
-never pretend and guess.
+Don't understand something? Say "I don't understand X" and investigate — never pretend and guess.
 
 Hypothesis falsified? Strike it, move to the next. Don't pile a new fix on top of a failed one.
 
 ## Causal disposition — REQUIRED before authoritative confirmation
 
-Keep **investigation state** (`open` / `unresolved` / `falsified` /
-`superseded`) independent from **requested strength** (`candidate` /
-`probable_contributor` / `confirmed_for_scope`). Requested strength is a
-proposition, not an accepted result.
+Keep **investigation state** (`open` / `unresolved` / `falsified` / `superseded`) independent from **requested strength** (`candidate` / `probable_contributor` / `confirmed_for_scope`). Requested strength is a proposition, not an accepted result.
 
 ```markdown
 ## Causal disposition request
@@ -201,25 +127,14 @@ LGTM as human acceptance of the proposition.
 Operational success (rollback, mitigation, error rate recovered) does not
 promote accepted causal strength.
 
-Green Phases 1–3 = investigation ready to request disposition.
-**Confirmed** = eligible human accepted the proposition. Those are not the
-same.
+Green Phases 1–3 = investigation ready to request disposition. **Confirmed** = eligible human accepted the proposition. Those are not the same.
 
 ## Phase 4 — Fix
 
-1. **Failing regression test first** (REQUIRED SUB-SKILL: use `test-first`)
-   once the proposition is on the disposition request. The test goes at a
-   CORRECT seam — one that exercises the real bug pattern as it occurred.
-   If no correct seam exists, that is itself a finding: document it and
-   flag it for the post-mortem; a shallow test there is false confidence.
-2. **Human accept** of that exact proposition (strength + scope + support
-   set) before landing production-code as a corrective fix. A Slack
-   "ship it" on prose, or Phases 1–3 feeling done, is not that acceptance.
-   In-session, the user's explicit accept of the stated proposition counts.
-3. **One fix** addressing the accepted proposition. No "while I'm here"
-   improvements, no bundled refactoring.
-4. Watch the regression test pass, re-run the full suite, re-run the Phase 1
-   loop against the original un-minimised scenario.
+1. **Failing regression test first** (REQUIRED SUB-SKILL: use `test-first`) once the proposition is on the disposition request. The test goes at a CORRECT seam — one that exercises the real bug pattern as it occurred. If no correct seam exists, that is itself a finding: document it and flag it for the post-mortem; a shallow test there is false confidence.
+2. **Human accept** of that exact proposition (strength + scope + support set) before landing production-code as a corrective fix. A Slack "ship it" on prose, or Phases 1–3 feeling done, is not that acceptance. In-session, the user's explicit accept of the stated proposition counts.
+3. **One fix** addressing the accepted proposition. No "while I'm here" improvements, no bundled refactoring.
+4. Watch the regression test pass, re-run the full suite, re-run the Phase 1 loop against the original un-minimised scenario.
 
 **Three failed fix attempts = STOP.** The architecture is in question, not your latest hypothesis — especially if each fix reveals new coupling somewhere else. Discuss with the user before attempt 4.
 

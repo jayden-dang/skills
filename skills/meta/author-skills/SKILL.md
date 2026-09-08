@@ -1,6 +1,6 @@
 ---
 name: author-skills
-version: 1.0.0
+version: 1.3.0
 description: Use when creating, authoring, or editing a skill — its SKILL.md,
   frontmatter, or description — reviewing a skill someone else wrote, deciding
   whether a skill is ready to ship, or diagnosing why a skill won't trigger.
@@ -41,6 +41,8 @@ Classify the baseline failure before writing anything; the form that fixes one f
 | Behavior should depend on a condition | A conditional keyed to an observable predicate ("if `design.md` exists, cite its seams") | An unconditional rule plus exemption clauses |
 | A check that must never be skipped or misjudged | A recipe of deterministic primitives the skill has the agent run and read — fixed `grep`/`git`/schema passes plus fixed rules on their output (see `audit-trace`) | Prose describing the check in the abstract — "confirm coverage" invites interpretation; a named pass over a named input, with a rule on the result, does not |
 
+**Counter with the recorded consequence, not a general one.** The baseline tells you what the failure actually cost: the commit a rebase silently dropped, the billing path it would have reached, the four runs in five that took the shortcut. Carry those into the text. A counter written from the general case — "a shipped regression is worse than a missed deadline" — is true, fits any skill, and is negotiable for exactly that reason, because nothing in it happened. The recorded one cannot be argued down to a hypothetical. Handed one RED transcript and asked to counter it, three drafts of three reproduced every rationalization faithfully and dropped every specific that made them expensive.
+
 **No nuance clauses.** "Don't X unless it matters" reopens the negotiation the rule just closed — appending one nuance clause to a winning recipe degrades it from consistent to noisy. A real exception becomes its own conditional on an observable predicate. Exemption clauses don't scope, either: "the limit doesn't apply to code blocks" still suppresses code blocks — restructure so the rule can't reach the exempt part.
 
 ## Frontmatter and naming
@@ -63,7 +65,7 @@ Write skills with these terms; review skills against them.
 - **Duplication** — one meaning given a second home. The deliberate inverse of a leading word, which repeats a *token* to concentrate attention; duplication repeats the *meaning*, so changing the behavior becomes a multi-place edit and the restated rule reads as weightier than its rank. The no-op sweep does not catch it — each copy is live and passes on its own — so sweep for it separately: name the one home for each rule, and delete or replace every other statement of it with a pointer to that home. **The prescribed gate form is exempt**: a `## Red Flags` bullet or a rationalization row echoes its rule *on purpose*, as the counter the failure table calls for — it is the rule's symptom, not a second home for it. Count a restatement as duplication only when both sites are ordinary prose.
 - **Negation trap** — a prohibition names the banned behavior into context, where it half-reads as an instruction. Prompt the positive ("write one-line comments") so the banned pattern is never spoken. The one exception is pressure-gate skills, where hard prohibitions plus explicit counters are exactly the right tool — see the failure table above.
 - **Information hierarchy** — in-skill steps, then in-skill reference, then disclosed reference behind a context pointer. Inline what every run needs; push behind a pointer what only some branches reach. The pointer's *wording*, not its target, decides whether the material is ever loaded — a must-read file behind a limp pointer is a variance bug: sharpen the pointer before inlining the content. Keep reference files **one level deep** from SKILL.md (a file reached only through another file gets skimmed, not read); give any reference over ~100 lines a table of contents at the top.
-- **Token budget** — session-injected skills stay minimal: every token is paid on every turn. Three loading levels set the budget: metadata (name + description, ~100 tokens) is paid every turn of every session; the body is paid every turn *once the skill fires*; a reference file costs nothing until its pointer is followed. Discipline skills keep the core body to ~500 words or fewer (tables and code blocks excluded); the hard ceiling for any SKILL.md body is **~500 lines / 5k words** — past that, split detail behind a pointer. Length is a failure mode in itself, even when every line is live.
+- **Token budget** — session-injected skills stay minimal: every token is paid on every turn. Three loading levels set the budget: metadata (name + description, ~100 tokens) is paid every turn of every session; the body is paid every turn *once the skill fires*; a reference file costs nothing until its pointer is followed. Discipline skills keep the core body to ~500 words or fewer (tables and code blocks excluded); the hard ceiling for any SKILL.md body is **200 lines**, held by `scripts/lint-skill-length.py` against a budget that only decreases — past that, split detail behind a pointer, or delete what fails the no-op test. A ceiling nothing checks is a wish: the one file trimmed by 225 lines without one stood at 300 again within weeks. Length is a failure mode in itself, even when every line is live.
 
 ## When not to write one at all
 
@@ -103,6 +105,7 @@ Create a todo for each item.
 
 **RED**
 - [ ] Pressure scenarios written (3+ combined pressures for gate skills) per `pressure-testing.md`
+- [ ] Scenario sanitized per `pressure-testing.md`: no test vocabulary in any path the agent sees, and neither the text under test nor its key words appear in the prompt
 - [ ] Model roster named; baseline run on each model the skill ships to, every transcript labelled with its model
 - [ ] Baseline run without the skill (or with the old version); failures and rationalizations recorded verbatim
 - [ ] Baseline actually failed — otherwise stop, nothing to write
@@ -112,7 +115,9 @@ Create a todo for each item.
 - [ ] Description = trigger + outcome noun, no workflow steps; verb-first name; literal keywords a user types present
 - [ ] Description trigger-tested: should-fire / should-not-fire queries run, both directions checked (per `pressure-testing.md`)
 - [ ] Minimal text addressing the recorded failures; one worked example at most
+- [ ] Counters carry what the baseline recorded — the number, the path, the near-miss — not a general consequence
 - [ ] Re-run with the skill on every model in the roster: the weakest one complies
+- [ ] Scored from artifacts and transcripts, never from the agent's own report; a citation was not read as proof the rule did the work
 
 **REFACTOR**
 - [ ] New rationalizations countered explicitly; rationalization table and red-flags list built (gate skills)
@@ -124,10 +129,16 @@ Create a todo for each item.
 - [ ] No-op sweep: every sentence passes the no-op test or is deleted whole
 - [ ] Duplication sweep (separate pass — the no-op sweep cannot catch it): each rule has one named home; restatements deleted or replaced by a pointer
 - [ ] Every `disable-model-invocation` description is one plain human-facing line — no trigger keywords, no symptom words
-- [ ] Core body within token budget (≤~500 lines / 5k words); reference disclosed behind well-worded pointers, one level deep; any reference >100 lines has a TOC
+- [ ] Core body within token budget (≤200 lines, `lint-skill-length.py` green); reference disclosed behind well-worded pointers, one level deep; any reference >100 lines has a TOC
 - [ ] Cross-references are REQUIRED SUB-SKILL prose; supporting files referenced by relative name
 - [ ] Every hand-off invokes only a model-invocable skill; any `disable-model-invocation` target is named for the user to run, never invoked
 - [ ] Structural + routing check (agent-run): frontmatter valid (name + description; `disable-model-invocation: true` on user-invoked skills), verb-first name, body within the line budget; and the description trigger-tested by hand — run its should-fire and should-not-fire queries per `pressure-testing.md` and confirm each routes as intended
 - [ ] `version:` bumped — patch for wording that changes no behavior, minor for a new rule or slot, major when existing usage breaks. The RED/GREEN evidence for this edit is recorded in the skill's `TESTS.md`, and any runnable assertion it established is in its `eval.json` (`scripts/lint-skill-evals.py` validates the shape; `scripts/lint-skill-frontmatter.py` fails a missing or malformed version)
 
 **Do not batch-create skills.** Finish, test, and validate one skill completely before starting the next.
+
+**Editing several skills at once is a different question, and the answer is disjoint surfaces.** The rule above is about shipping a skill whose test cycle never ran; it does not forbid parallel workers. What parallelism costs is shared state, and a twenty-two-file length pass in this repo paid that cost three times in one day, with every individual edit correctly tested. Before dispatching a second worker, name what both of them write.
+
+- **A shared ledger has one writer.** One pass regenerated the repo's length budget and reset the entries of three files its neighbours were still editing, from whatever sat on disk that instant. Workers report an entry as ready to clear; the reviewer clears it once, after the batch.
+- **Never prove a surviving home against uncommitted work.** One pass justified a deletion by naming a sibling file a neighbouring worker had created minutes earlier and not committed. Resolve a home with `git show HEAD:<path>`, not against the working tree.
+- **Do not read a worker's files until it reports.** A directory mid-edit is a state nobody chose. Two conclusions drawn that way in one day were both wrong, and one of them shipped a linter enforcing a failure that had never happened before it was caught and deleted.

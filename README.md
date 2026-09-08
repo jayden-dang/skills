@@ -146,7 +146,7 @@ agents need `--copy` and why.
 **Other platforms.** Nothing here is Claude-specific — the skills are plain
 `SKILL.md` and the traceability check is `grep`/`git` the agent drives.
 `AGENTS.md` at the repo root is the portable behavior contract; Codex CLI reads
-it natively and Cursor picks up `.cursor/rules/gate-session.mdc`.
+it natively and Cursor picks up `.cursor/rules/zone-mode.mdc`.
 
 ### Personal OS (opt-in, independent)
 
@@ -228,7 +228,7 @@ maintains a repo-level product vision plus an IDed architecture-invariant spine
 checks those citations the same way it checks requirement IDs. A repo that opts into
 nothing behaves exactly as above.
 
-Lost? Invoke `/ask-me-bro` — it routes any situation to the right entry point.
+Lost? `zone-mode` routes any situation to the right entry point, from the on-ramps table.
 
 ## The four gates
 
@@ -250,7 +250,7 @@ and countered by name. See [The gates](docs/guide/concepts/gates.md).
 
 | Bucket | Skills |
 |---|---|
-| meta | `gate-session` (session gate), `ask-me-bro` (router), `author-skills`, `teach-pack` |
+| meta | `zone-mode` (session gate + router), `author-skills`, `teach-pack` |
 | setup | `configure-repo`, `bootstrap-repo` |
 | discovery | `frame-change`, `clarify-decisions`, `research`, `run-spike`, `define-domain`, `forge-prompt`, `interpret-session`, `deepen-codebase`, `work-the-problem`, `pathfind` |
 | spec | `specify-behavior`, `design-solution`, `plan-tasks` |
@@ -367,7 +367,7 @@ eval must cite a heading that really appears in that `SKILL.md` — so neither a
 ungrounded regression claim nor an invented contract can pass. Coverage is
 reported per kind, so a contract checklist is never mistaken for evidence.
 
-Every skill has contract evals; **22 of 81 have evidence-backed ones**. Closing
+Every skill has contract evals; **41 of 88 have evidence-backed ones**. Closing
 that gap means running real baselines, not writing more assertions.
 
 ## License

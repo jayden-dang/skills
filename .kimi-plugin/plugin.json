@@ -38,7 +38,6 @@
     "./skills/execution/test-first",
     "./skills/execution/audit-trace",
     "./skills/execution/load-subgraph",
-    "./skills/execution/reconcile-features",
     "./skills/execution/prove-claim",
     "./skills/execution/isolate-workspace",
     "./skills/execution/hold-stage",
@@ -83,9 +82,8 @@
     "./skills/project/define-system-doc",
     "./skills/project/assess-pivot-impact",
     "./skills/project/plan-milestones",
-    "./skills/meta/ask-me-bro",
     "./skills/meta/teach-pack",
-    "./skills/meta/gate-session",
+    "./skills/meta/zone-mode",
     "./skills/meta/author-skills"
   ],
   "interface": {

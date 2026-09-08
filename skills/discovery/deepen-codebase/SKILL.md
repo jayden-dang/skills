@@ -1,6 +1,6 @@
 ---
 name: deepen-codebase
-version: 1.0.0
+version: 1.0.1
 description: >
   Builds deep foundational knowledge of any codebase or technical subject —
   dual-axis curriculum, slow and deep — without shipping a product decision.
@@ -22,8 +22,7 @@ option deltas (unranked), failure modes, and open gaps — in their language,
 `interpret-session` · `work-the-problem` · this skill). Not a mode of interpret or
 work-the-problem, not brainstorm, not discovery-only. Runs on **any subject**
 (module, bug, seam, library, greenfield literacy, onboarding, paste). Feature work
-is a common anchor, never required. When the user must **close a product problem**
-and learn in the same loop, they run `/work-the-problem` instead.
+is a common anchor, never required.
 
 ## The Iron Laws
 
@@ -176,18 +175,10 @@ shape. Incomplete open cells beat fiction.
 
 ## When stuck — owner of truth
 
-| Owner | Route |
-|---|---|
-| Repo fact | Read and cite |
-| Material external fact | REQUIRED SUB-SKILL: `research`; disclose note path; libraries via Context7 per repo policy |
-| Conceptual blindspot | Smallest explanation + one example |
-| Product pick | Symmetric criteria only; user may run `/interpret-session` |
-| Runtime unknown | Name cheapest check; user may run `/run-spike` |
-| No source | Open map; stop inventing |
-
-**Auto-research** only for a **named** F2/F3/F4 cell that would change the model
-and lacks authoritative evidence. User forbids research → cell stays open; model
-memory is not fact.
+WHEN unsure how to source a claim mid-turn, read `references/when-stuck.md`
+beside this file and follow it exactly. Routes by owner: repo fact, material
+external fact (`research` required), conceptual blindspot, product pick,
+runtime unknown, no source.
 
 ## Optional foundation-note
 

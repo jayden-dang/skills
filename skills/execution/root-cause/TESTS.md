@@ -109,3 +109,91 @@ Both models, closed list including neighbors:
 | 13 spec drift | `realign-spec` | `realign-spec` | `realign-spec` |
 | 14 write tasks.md | `plan-tasks` | `plan-tasks` | `plan-tasks` |
 | 15 review PR | `inspect-change` | `inspect-change` | `inspect-change` |
+
+## 2026-09-07 — length pass (v1.2.3 → v1.2.4)
+
+Brought `SKILL.md` from 272 to 185 lines (target ≤195). No rule atoms lost —
+gate content (Iron Law, HARD-GATE, Rationalizations table, Red Flags) was
+never moved or thinned, per the length-pass bucket rules.
+
+**Moved (Conditional bucket):** the "External dependency evidence after
+Phase 2" recipe (steps 1–5, contract-diff table, unresolved-disposition
+block, gate check — originally SKILL.md lines 90–134) relocated verbatim to
+new sibling `external-dependency-evidence.md`. SKILL.md keeps the heading,
+the `IF … THEN` skip condition, and a one-line pointer naming every step the
+sibling covers (runtime identity, `research`-sourced owning docs,
+contract-diff table, history check, claim status, gated disposition).
+
+**Deleted:** nothing — no rule was cut, only reformatted or relocated.
+
+**Reformatted (no words changed):** merged hard-wrapped paragraphs and list
+items back onto single source lines across the frontmatter description,
+Phase 1's deployed-environment IF, the After-Phase-2 ownership and Ops-docs
+paragraphs, Phase 3's WHEN-local / WHEN-shared-deployed / OTHERWISE
+sub-conditions, the Causal-disposition intro, and Phase 4's four numbered
+steps. Pure line-break changes; every word is unchanged and in place.
+
+**Atom count:** 77 atoms before → 70 in SKILL.md alone / 78 across
+{SKILL.md, external-dependency-evidence.md} after (`skill-rule-inventory.py`).
+The `--diff` run flagged 10 atoms as "no home" — all 10 are reformatting
+artifacts from the line-merge above (the tool keys atoms to line
+boundaries); each was confirmed present verbatim in SKILL.md by literal
+`grep -F` (see below), not lost:
+
+- `IF the reported failure is on a **deployed** environment (production…` —
+  present in full on the Phase 1 paragraph line.
+- `Phase 3 hypotheses: REQUIRED SUB-SKILL: use \`load-subgraph\` for
+  ownership…` — present in the After-Phase-2 paragraph line.
+- `IF the minimized failure path crosses a versioned external dependency…`
+  — present as the (still-inline) skip-condition paragraph.
+- `WHEN the process under test is **local or a dedicated checkout**…` —
+  present in the Phase 3 debugger-preference line.
+- `WHEN the failure lives only on a **shared deployed** environment…` —
+  present in the Phase 3 shared-deployed line.
+- Phase 4 numbered items 1–4 (`**Failing regression test first**…`,
+  `**Human accept**…`, `**One fix**…`, `Watch the regression test pass…`) —
+  all four present verbatim, one per numbered line.
+
+**Anchors confirmed present** (machine-checked by `lint-skill-evals.py` via
+`derived_from: "SKILL.md § …"`):
+- `NO FIXES WITHOUT ROOT CAUSE INVESTIGATION FIRST` — Iron Law block.
+- `NO AGENT-AUTHORED AUTHORITATIVE CAUSAL ACCEPTANCE` — Iron Law block.
+- `Phase 1 — Build the feedback loop (the gate)` — heading unchanged.
+
+**Lint results:** `lint-skill-frontmatter.py`, `lint-skill-templates.py`,
+`lint-context7.py`, `lint-skill-evals.py`, `lint-write-handoffs.py` all pass.
+`lint-skill-length.py` reports SKILL.md now under the 200-line limit and
+asks for its stale entry to be deleted from
+`scripts/skill-length-budget.json` via `--write` — left undone here since
+that file sits outside `skills/execution/root-cause/` and this pass's scope
+was that one directory; the reviewer should run
+`python3 scripts/lint-skill-length.py --write` to close the ratchet.
+
+Nothing was judged too risky to touch — the only gate-bucket content in this
+file (Iron Law, HARD-GATE, Rationalizations, Red Flags) was left completely
+untouched, word- and line-for-line.
+
+## 1.3.0 — the artifact case, and the loop the old escape sent you round
+
+Phase 1 gates on a red-capable command and says so absolutely: no red-capable
+command, no Phase 2. That is right for a bug and wrong as a universal, because it
+has no exit for the case where the evidence is a capture handed over after the
+fact — a cpuprofile, a heap snapshot, a spindump, a trace.
+
+The escape it did have was circular. "Genuinely cannot build one? ... ask the user
+for a reproducing environment, **a captured artifact**, or permission" tells an
+agent holding a cpuprofile to go and ask for a captured artifact.
+
+This was found by reading, not by a baseline, and it is a defect in the text
+rather than a behaviour gap: the instruction cannot be followed as written by the
+reader it applies to. The fix names the case, says the artifact is the loop, and
+sets the deliverable — reduce the capture to the frame, retainer chain, or blocked
+thread carrying the symptom, attribute it to a file and symbol, hand back a cited
+diagnosis, and re-enter Phase 1 when someone can state the symptom as a command
+that goes red.
+
+**Deliberately not built:** a forensics skill, or a metric-hillclimb skill. Both
+were on the import list. There is no evidence in this repo's history of trace or
+profile work, and a skill nobody runs is the ceremony this whole pass has been
+cutting. The circular sentence was a real defect and got a real fix; the rest
+waits for a reason.

@@ -16,7 +16,7 @@ repo file can run this system by reading that one.
 ## Claude Code (native)
 
 Full support. The `SessionStart` hook in `hooks/hooks.json` injects
-`meta/gate-session` on every `startup | clear | compact`, so the gate survives
+`meta/zone-mode` on every `startup | clear | compact`, so the gate survives
 compaction automatically. Install as a plugin so commands are `/jdk:<skill>`
 and the hook ships with the pack:
 
@@ -144,7 +144,7 @@ for OpenCode — category names are not skills.
 ## Cursor
 
 Cursor loads `.cursor/rules/*.mdc`. This repo ships
-[`.cursor/rules/gate-session.mdc`](../../../.cursor/rules/gate-session.mdc) as an
+[`.cursor/rules/zone-mode.mdc`](../../../.cursor/rules/zone-mode.mdc) as an
 `alwaysApply` rule that carries the gate and points at `AGENTS.md`. Copy the
 `.cursor/` directory (and `AGENTS.md`, `skills/`) into the target repo, or open
 this repo directly. That rule is Cursor's substitute for the session-start hook.
@@ -153,7 +153,7 @@ this repo directly. That rule is Cursor's substitute for the session-start hook.
 
 If the harness can load a repo-root convention file (`AGENTS.md`, `CLAUDE.md`,
 or similar), point it there. If it supports an always-on rule or system-prompt
-append, give it the gate paragraph from `.cursor/rules/gate-session.mdc`. The
+append, give it the gate paragraph from `.cursor/rules/zone-mode.mdc`. The
 skills and templates work unchanged — only the injection path differs.
 
 ## What is not portable

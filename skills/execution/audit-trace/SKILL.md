@@ -1,6 +1,6 @@
 ---
 name: audit-trace
-version: 1.3.0
+version: 1.3.1
 description: Use when checking that requirement IDs agree where they are defined
   and task-cited in docs/specs, or that the capability catalog INDEX / shards
   stay intact — the docs-only vertical pass invoked by prove-claim, cut-release,
@@ -124,128 +124,24 @@ three-level `CODE-1.2.3` can never be read as a citation of `CODE-1.2`.
 ### Invariant passes — only when `docs/architecture/` exists
 
 If the repo has no `docs/architecture/` directory, skip passes 4–5 entirely; the
-finding set is passes 1–3, unchanged. When the spine exists, add:
-
-**4. Invariant definitions** — bold `**ARCH-N**` in the spine, split into a *retired*
-set (struck) and a *live* set (survivors), exactly as pass 1 handles requirements.
-
-```bash
-# retired invariants — the E5 set (struck-through, captured BEFORE deletion)
-grep -rhoE '~~\*\*ARCH-[0-9]+\*\*~~' docs/architecture | grep -oE 'ARCH-[0-9]+' | sort -u
-# live invariants — strike spans deleted first, then match (as in pass 1)
-grep -rh '' docs/architecture --include='*.md' \
-  | sed -E 's/~~[^~]*~~//g' \
-  | grep -oE '\*\*ARCH-[0-9]+\*\*' | grep -oE 'ARCH-[0-9]+' | sort -u
-```
-
-The first grep is the **retired** set; the second (struck spans removed) is the
-**live** set. An `ARCH-N` in neither is undefined.
-
-**5. Respects citations** — each `ARCH-N` on a `Respects:` line in any `design.md`.
-
-```bash
-grep -rnE 'Respects:.*ARCH-[0-9]+' docs/specs --include='*design.md' \
-  | grep -oE '^[^:]+:|ARCH-[0-9]+'
-```
-
-Each cited `ARCH-N` belongs to the `design.md` it sits in.
+finding set is passes 1–3, unchanged. WHEN the spine exists, read
+`invariant-passes.md` beside this file and follow it exactly.
 
 ### System-ID passes — security and reliability (optional docs)
 
-Skip entirely when the relevant canonical file is missing. Only extract
-**definitions** from:
-
-| Family | Definition file (canonical) |
-|---|---|
-| `TB-N`, `THR-N` | `docs/security/threat-model.md` |
-| `CMP-N` | `docs/security/compliance.md` |
-| `SLO-N` | `docs/ops/reliability.md` |
-
-Definitions are bold `**TB-N**` / `**THR-N**` / `**CMP-N**` / `**SLO-N**` after
-striking `~~…~~` spans (same retirement rule as requirements). Numbering is
-repo-wide per family; never renumber or reuse.
-
-**Citations** only from feature `design.md` lines:
-
-```bash
-# Security citations — only on Security: lines
-grep -rnE '^Security:.*(TB|THR|CMP)-[0-9]+' docs/specs --include='*design.md' \
-  | grep -oE '^[^:]+:|(TB|THR|CMP)-[0-9]+'
-
-# Reliability citations — only on Reliability: lines
-grep -rnE '^Reliability:.*SLO-[0-9]+' docs/specs --include='*design.md' \
-  | grep -oE '^[^:]+:|SLO-[0-9]+'
-```
-
-Do **not** treat these IDs as task-footer citations. Do **not** emit a warning
-solely because a live system ID is uncited by any design.
-
-Rules when defining files exist:
-
-- **E6** — Security: cites TB/THR/CMP not in live definition set
-- **E7** — Security: cites retired TB/THR/CMP
-- **E8** — same system ID bold-defined in two or more distinct definition files
-- **E9** — Reliability: cites SLO not in live definition set in reliability.md
-- **E10** — Reliability: cites retired SLO
-
+Skip entirely when the relevant canonical file is missing. WHEN
+`docs/security/threat-model.md`, `docs/security/compliance.md`, or
+`docs/ops/reliability.md` exists, read `system-id-passes.md` beside this file and
+follow it exactly. Do **not** treat these IDs as task-footer citations, and do
+**not** warn solely because a live system ID is uncited by any design.
 
 ### Catalog integrity passes — only when `docs/specs/INDEX.md` exists
 
 If `docs/specs/INDEX.md` is missing, skip this section (the "nothing to check"
-stop already applies when the whole specs tree is absent). Shape: load
-`load-subgraph`’s `catalog-query.md` — **shared catalog only** (Domain router +
-`catalog/*.md`).
-
-**C0. Shared shape** — INDEX must carry a Domain router header
-(`| Domain | … | Feature catalog |`). If INDEX instead has a flat feature table
-(`| Code | … |` rows with CODE grammar and no Domain router) → **E14**. Name
-`/map-features` Domain boundary migrate. Do not parse flat INDEX rows as
-`catalogCodes`.
-
-**C1. Catalog CODE rows** — collect Code cells with CODE grammar
-`[A-Z][A-Z0-9]{1,11}` length 2–12 from each **shard** only. Shard paths come from
-the router `Feature catalog` cell (`./catalog/…` or `catalog/…`), then:
-
-```bash
-# after resolving each shard path from the router
-grep -nE '^\| [A-Z][A-Z0-9]{1,11} \|' docs/specs/catalog/<domain>.md
-```
-
-Ignore Domain-id cells on INDEX. Build `catalogCodes` as CODE → [file:line, …].
-
-**C2. Shard path existence** — for each router `Feature catalog` cell that looks
-like a relative path (`./catalog/…` or `catalog/…`), resolve under `docs/specs/`.
-Missing or not a file → **E12**.
-
-**C3. OBS tokens in canonical Code cells** — grep canonical catalog files for
-OBS-shaped first cells (hyphenated; they will not match the C1 CODE pattern):
-
-```bash
-grep -rnE '^\| OBS-[0-9a-f]{6} \|' docs/specs/INDEX.md docs/specs/catalog \
-  --include='*.md' 2>/dev/null
-```
-
-Each hit → **E13**.
-
-**C4. Spec pointer liveness** — for each catalog row whose Spec cell is neither
-empty nor `—`, resolve the directory under `docs/specs/` (strip `./` and trailing
-`/`). Missing directory → **W4**.
-
-**C5. Active OBS uniqueness (optional overlay)** — when
-`.skills/reverse-features/active/` exists, grep `OBS-[0-9a-f]{6}` in those files
-only. Same id in two cards → **W5**. Do not walk the rest of `.skills/`.
-
-Rules:
-
-- **E14** — INDEX is flat (no Domain router) when INDEX exists
-- **E11** — any CODE with two or more distinct catalog row locations
-- **E12** — each missing/unreadable shard path
-- **E13** — each OBS-shaped Code cell in canonical catalog files
-- **W4** — each dangling Spec pointer
-- **W5** — each duplicated active OBS id
-
-Do **not** judge whether a Recognized card *should* have a triad (Spec `—` is
-allowed). Do **not** promote OBS into CODEs here.
+stop already applies when the whole specs tree is absent). WHEN INDEX exists,
+read `catalog-passes.md` beside this file and follow it exactly. Do **not** judge
+whether a Recognized card *should* have a triad (Spec `—` is allowed), and do
+**not** promote OBS into CODEs here.
 
 ## The rules
 
@@ -279,25 +175,8 @@ design *actually* respects the invariant; that semantic call is `inspect-invaria
 ### Decision-record passes — only when `.skills/decisions/` exists
 
 If the repo has no `.skills/decisions/` directory, skip this section entirely; the
-finding set from every pass that ran remains unchanged.
-
-When `.skills/decisions/` exists, run the shipped validator (path relative to this
-skill set install, beside `record-verdict`):
-
-```bash
-sh skills/ship/record-verdict/validate-records.sh --mode=audit-trace
-```
-
-Merge its diagnostic lines into the report **verbatim**. Exit code 1 → treat as
-audit-trace errors (gate fail). Exit code 2 → decision-record passes **not-run**
-(never "passed"). Exit 0 → no decision-record errors (warnings may still appear).
-
-Do not reinterpret validator findings. **Crossing-without-record:** the validator
-does not emit an automated finding for “a production crossing lacks a record,”
-because it cannot tell skill-mediated verdicts from direct human action or
-external contribution. If an agent or human notes such an absence, treat it as a
-**warning-level concern only — never an error and never a cut-release/prove-claim gate
-fail**. Do not reinterpret validator lines; the opening finding table still applies.
+finding set from every pass that ran remains unchanged. WHEN it exists, read
+`decision-record-pass.md` beside this file and follow it exactly.
 
 ## Output
 

@@ -107,4 +107,4 @@ A write-handoff fails in exactly one way: the successor has to come back and ask
 - [`prove-claim`](prove-claim.md) — the kind of gate a Suggested-skills line points the successor at
 - [Artifacts](../concepts/artifacts.md) — the durable specs/plans a write-handoff references rather than copies
 - [`isolate-workspace`](isolate-workspace.md) — the branch/worktree state Current state records exactly
-- [`gate-session`](gate-session.md) — the successor's entry point for picking up the suggested skills
+- [`zone-mode`](zone-mode.md) — the successor's entry point for picking up the suggested skills

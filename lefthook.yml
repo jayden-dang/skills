@@ -29,6 +29,15 @@
 # beside that skill and match repo-root templates/ (the authoring SSOT).
 # See scripts/lint-skill-templates.py.
 #
+# length holds SKILL.md bodies to a budget that can only decrease. A trim that
+# nothing enforces regrows: clarify-decisions was cut by 225 lines in 8579a54 and
+# stood at 300 again within weeks. See scripts/lint-skill-length.py.
+#
+# qa-set checks the set as a set — sibling reachability, eval anchors after a
+# heading moves, manifest/tree agreement, the session hook, evidence beside a
+# changed skill, budget honesty. A manifest listing a skill deleted months ago
+# passed every other lint until it ran. See scripts/qa-set.py.
+#
 # Run `lefthook install` once to wire these into .git/hooks.
 
 pre-commit:
@@ -51,6 +60,9 @@ pre-commit:
       glob: "{skills/**/SKILL.md,templates/**}"
       # Cross-skill check — always scans the whole set, not just staged files.
       run: python3 scripts/lint-skill-templates.py
+    length:
+      glob: "skills/**/SKILL.md"
+      run: python3 scripts/lint-skill-length.py {staged_files}
 
 pre-push:
   commands:
@@ -65,3 +77,7 @@ pre-push:
       run: python3 scripts/lint-context7.py
     templates:
       run: python3 scripts/lint-skill-templates.py
+    qa-set:
+      run: python3 scripts/qa-set.py
+    length:
+      run: python3 scripts/lint-skill-length.py

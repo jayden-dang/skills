@@ -270,3 +270,49 @@ length pass that moved its conditional pass groups to siblings did not strand th
 recipes in prose.
 
 No skill in the set describes a check it should be running. Nothing shipped.
+
+## `subtract-before-you-add` (2026-09-08) — the last open item, closed on evidence
+
+The nineteenth candidate from the pstack reading, and the only one that had gone
+unmeasured. At A1 its evidence was contaminated: 2 of 3 baseline reps preferred
+relocating text to deleting it, but the brief itself said "without losing any
+rule that changes agent behavior", so the caution it measured may have been the
+prompt's rather than the model's. It was recorded as deferred, not dropped, and
+this settles it.
+
+**The neutral fixture the deferral asked for.** A webhook ingest service with
+dead weight beside a real addition, and a ticket that says nothing about keeping
+or removing anything: add a v3 envelope normalizer, cover it, leave the suite
+green. Three implementer reps on Sonnet, three fresh project-shaped fixtures in
+unrelated parents, no test vocabulary in any path.
+
+**Implementers: 3 of 3 added on top.** 45–49 insertions, 2 deletions, every one
+of them a rewrite of a line they were already editing. All three edited
+`SUPPORTED_ENVELOPE_VERSIONS` — the exact constant that makes the v1 branch
+unreachable — and all three left `"v1": normalize_v1` in the dispatch table.
+One named the deadness in its own report and justified keeping it: "already
+dead-lettered… consistent with its retired 2025-11 docstring".
+
+**But that is where the principle stops, because the set catches this
+downstream, and the catch is measured in `inspect-change/TESTS.md`.**
+`standards-baseline.md` item 6 already covers "functions, branches, flags, or
+exports the diff adds **or keeps** that nothing reaches". Six Standards
+reviewers over two fixtures: `no hit` 3/3 where the deadness predated the diff
+(correct — diff scope is what keeps a review readable), `HIT` 3/3 where the diff
+itself stranded the code, each naming the orphaned symbol unprompted.
+
+**Verdict: no-op, dropped.** Ten of the nineteen were dropped because the set
+already defends the ground by another mechanism; this is the eleventh, and the
+mechanism is a review baseline rather than an implementer rule. Shipping
+`subtract-before-you-add` would have added a second home for a rule item 6
+already owns, which the duplication sweep exists to prevent.
+
+**What the implementer result does and does not license.** It is a real
+measurement — agents do not subtract unprompted — but "left a pre-existing dead
+branch alone while doing an unrelated ticket" is the same scope discipline the
+reviewers articulated, and calling it a defect would require showing the cost.
+Nothing here shows it. If a future change is ever traced back to an unreachable
+branch that survived because nobody owned removing it, that is the baseline this
+rule was missing, and the question is worth re-asking with it in hand.
+
+**All nineteen candidates are now measured: 8 shipped, 11 dropped, 0 open.**

@@ -230,3 +230,57 @@ first. Merge is a union.
 **Limit.** The diff was deliberately defect-dense. On a clean diff a second
 reviewer adds cost and possibly noise rather than findings, and nothing here
 measures that case.
+
+## Smell 6 (dead code) — measured, and it fires on the case that matters (2026-09-08)
+
+`standards-baseline.md` item 6 reads "functions, branches, flags, or exports the
+diff **adds or keeps** that nothing reaches". The "keeps" half had never been
+exercised, and it is the half a proposed `subtract-before-you-add` principle
+would have duplicated. Six Standards subagents on Sonnet, dispatched with the
+step-4 brief verbatim, over two fixtures that differ in one respect: who made
+the code unreachable.
+
+**Fixture A — the deadness predates the diff.** A webhook ingest service whose
+`normalize_v1` sits in the `NORMALIZERS` dispatch table while
+`SUPPORTED_ENVELOPE_VERSIONS = ("v2",)` already excludes it. The diff adds a v3
+normalizer and edits that constant to `("v2", "v3")`.
+
+3 of 3 recorded **no hit** on smell 6, and 2 of 3 named the stranded branch
+precisely before excluding it:
+
+- "untouched by these hunks, so it's out of scope here"
+- "that gap predates this diff and isn't touched by it"
+
+**This is correct, not a failure.** A reviewer who reports every pre-existing
+defect in every file a diff touches returns unbounded noise; diff scope is the
+discipline that makes the report readable. The reviewers were right and the
+fixture was the thing at fault.
+
+**Fixture B — the diff does the stranding.** Same service, `v1` reachable
+beforehand. The change adds v3 *and* replaces `envelope_version` dispatch with
+shape detection, which leaves `NORMALIZERS`, `SUPPORTED_ENVELOPE_VERSIONS`, and
+`normalize_v1` with no reader — all three orphaned by the change itself.
+
+3 of 3 reported **HIT**, unprompted and with the mechanism named: the dict "built
+two lines above it is now entirely orphaned"; the constant "still imported but
+never referenced anywhere in `ingest.py` after the diff removes the one line that
+used it". One reviewer went further and executed a v1 envelope through `ingest()`
+to confirm the route was gone before writing the finding.
+
+**Verdict: the rule as written is sufficient; nothing shipped.** Item 6 fires
+3/3 on the case it exists for and stays quiet 3/3 on the case that would be
+noise, which is the behavior the two halves of "adds or keeps" describe.
+
+**A rejected edit, recorded so it is not re-proposed.** Between the two fixtures
+the phrase was sharpened — "judge reachability against the tree as it will be
+after the diff… 'it predates the diff' is not an exit" — and re-run on fixture A.
+It moved nothing: 3 of 3 still `no hit`, one of them reusing the new wording
+verbatim while reaching the same conclusion. The edit was reverted on two
+independent grounds. It was a measured no-op, and it countered a failure the
+fixture had never produced — the same defect as the linter deleted in `1.3.0`,
+which `author-skills` now has a rule about.
+
+**Limit.** Both fixtures are single-service Python of a few hundred lines where
+reachability is decidable by reading two files. Nothing here measures item 6 on a
+diff whose stranding runs through dynamic dispatch, a plugin registry, or another
+repo.

@@ -2,6 +2,30 @@
 
 ## Unreleased
 
+### `subtract-before-you-add` measured and dropped — the adoption ledger closes
+
+The last unmeasured candidate from the second skill set. Its original evidence
+was contaminated by a brief that forbade losing rules, so it was deferred rather
+than dropped; a neutral fixture settles it.
+
+Three implementers on Sonnet, handed a ticket that says nothing about keeping or
+removing anything, all added on top: 45-49 insertions against 2 deletions, every
+one of them editing the exact constant that made a neighbouring branch
+unreachable and leaving that branch in the dispatch table.
+
+The set catches this downstream, and the catch was measured rather than assumed.
+`inspect-change`'s Standards baseline already owns "functions, branches, flags,
+or exports the diff adds **or keeps** that nothing reaches". Six reviewers over
+two fixtures: silent 3/3 where the deadness predated the diff, which is the
+scope discipline that keeps a review readable, and HIT 3/3 where the diff itself
+stranded the code, each naming the orphaned symbol unprompted. No text shipped
+and no version moved; a sharpened wording tried in between moved nothing (3/3
+unchanged) and was reverted, since it also countered a failure the fixture never
+produced.
+
+Nineteen candidates, all now measured: **8 shipped, 11 dropped, 0 open.**
+
+
 ### `zone-mode` v1.0.0 — the session gate absorbs the router (**breaking**)
 
 `gate-session` and `ask-me-bro` are gone; `zone-mode` replaces both, and the set

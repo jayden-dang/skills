@@ -68,6 +68,14 @@ moved into siblings). Version bumped 1.6.0 → 1.6.1 (patch: wording/location
 only, no behavior change). `scripts/skill-length-budget.json` entry for this
 file removed (now under the 200-line limit).
 
+## Edit — drop session-start hook offer (v1.7.0)
+
+**RED:** Step 5 still offered to vendor a `SessionStart` hook that injected
+`zone-mode` (or leftover `gate-session` copies) at startup / clear / compact.
+
+**GREEN:** Step 5 offers Context7 MCP only. No session-start template is
+copied. `/zone-mode` is user-run. Version 1.6.1 → 1.7.0.
+
 ### Reviewer note — two pointers are phase-scoped, not skip-scoped
 
 `triage-label-mapping.md` and `optional-offers.md` sit behind "WHEN this decision

@@ -6,7 +6,6 @@
   "author": {
     "name": "Jayden Dang"
   },
-  "hooks": "./hooks/hooks.json",
   "skills": [
     "./skills/discovery/forge-prompt",
     "./skills/discovery/frame-change",

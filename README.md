@@ -56,8 +56,8 @@ changelog         Module selection persists across launches — SHELL-1.2  # fro
 
 ### Engineering (default) — Claude Code and Grok
 
-Install **as a plugin** so skills appear under `/jdk:` (jayden-dang-kit) and the
-session-start hook ships with the pack. Do **not** also flatten Engineer Pack
+Install **as a plugin** so skills appear under `/jdk:` (jayden-dang-kit). Do
+**not** also flatten Engineer Pack
 into `~/.claude/skills/` on the same machine — you would get both `/frame-change`
 and `/jdk:frame-change`.
 
@@ -146,7 +146,7 @@ agents need `--copy` and why.
 **Other platforms.** Nothing here is Claude-specific — the skills are plain
 `SKILL.md` and the traceability check is `grep`/`git` the agent drives.
 `AGENTS.md` at the repo root is the portable behavior contract; Codex CLI reads
-it natively and Cursor picks up `.cursor/rules/zone-mode.mdc`.
+it natively. `/zone-mode` is user-run — it is not injected at session start.
 
 ### Personal OS (opt-in, independent)
 
@@ -228,7 +228,7 @@ maintains a repo-level product vision plus an IDed architecture-invariant spine
 checks those citations the same way it checks requirement IDs. A repo that opts into
 nothing behaves exactly as above.
 
-Lost? `zone-mode` routes any situation to the right entry point, from the on-ramps table.
+Lost? run `/zone-mode` — it routes any situation to the right entry point, from the on-ramps table.
 
 ## The four gates
 

@@ -123,7 +123,7 @@ It writes markdown only — no scripts, no linters, no CI, no git hooks land in 
 
 ### The one opt-in
 
-Offered, and applied only on a yes: the **session-start hook** — copied into the repo at `.claude/hooks/session-start.sh` and referenced via `$CLAUDE_PROJECT_DIR`, never an absolute path (which would break on every other machine). It is dependency-free and re-injects the [`zone-mode`](../skills/zone-mode.md) gate on `startup | clear | compact`.
+Offered, and applied only on a yes: **Context7 MCP** for live library docs. There is no session-start hook. Run [`/zone-mode`](../skills/zone-mode.md) when you want the full gate loaded.
 
 A hard headless gate — running the audit-trace check in CI, or a git pre-push hook — is optional and team-specific. It lives outside the default path, so `configure-repo` does not wire one; the audit-trace check runs inside `prove-claim` and `cut-release` regardless.
 
@@ -149,11 +149,11 @@ You get a table: each command → wired? → passed / failed / pre-existing.
 
 You do not have to spec the whole codebase. The skill set works on a per-feature basis, and the audit-trace check treats zero requirements as a clean state.
 
-**The fastest first pass.** You do not have to answer every question deeply on day one. Accept each of `configure-repo`'s recommended defaults, choose the `local` markdown tracker if you have no strong preference, and decline the session-start hook for now. That gets you a working trace spine and detected verify commands with the fewest decisions — enough to take one feature through the chain. Re-run `/configure-repo` later to add the hook once the workflow has earned its place; it is additive and never clobbers your earlier answers.
+**The fastest first pass.** You do not have to answer every question deeply on day one. Accept each of `configure-repo`'s recommended defaults, choose the `local` markdown tracker if you have no strong preference. That gets you a working trace spine and detected verify commands with the fewest decisions — enough to take one feature through the chain.
 
 A reasonable path:
 
-1. Run `/configure-repo`. Take the session-start hook opt-in.
+1. Run `/configure-repo`.
 2. Take the **next** feature through the full chain — `frame-change` → the triad → `build-in-waves`. One feature code, one spec folder.
 3. Take the next **bug** through `root-cause` and let it write its tier-1 mini-spec into `docs/specs/fixes.md`.
 4. Leave the existing code alone. Untraced code is not an error; only an *implemented requirement without a covering test* is.

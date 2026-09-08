@@ -98,7 +98,7 @@ A test that survives the revert is testing nothing.
 
 ## The gate above the gates
 
-`zone-mode` is injected into every session by a `SessionStart` hook (matcher `startup|clear|compact`) so the rule survives `/clear` and context compaction. Its `<NON-NEGOTIABLE>` block:
+`/zone-mode` is user-run. The 1% rule also lives in `AGENTS.md`. Its `<NON-NEGOTIABLE>` block:
 
 > If there is even a 1% chance a skill applies to what you are about to do, you MUST invoke that skill first. This is not a judgment call you get to make per-task. You cannot reason your way out of it.
 

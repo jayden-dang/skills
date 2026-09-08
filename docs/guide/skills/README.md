@@ -15,7 +15,7 @@ The skills that govern the other skills.
 
 | Skill | Invocation | What it does |
 |---|---|---|
-| [`zone-mode`](zone-mode.md) | model (session-injected) | The gate and router. If there is even a 1% chance a skill applies, invoke it first; then hand off by invocability |
+| [`zone-mode`](zone-mode.md) | user | The gate and router. Run `/zone-mode` to load the 1% rule and hand off by invocability |
 | [`author-skills`](author-skills.md) | `/author-skills` | TDD for process documentation. The standard every skill here is written against |
 | [`teach-pack`](teach-pack.md) | `/teach-pack` | Guided teaching of the methodology |
 

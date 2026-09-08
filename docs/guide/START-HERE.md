@@ -6,7 +6,7 @@ repo, and what every skill does. For the architecture behind it, see
 [the skill reference](skills/README.md).
 
 The whole set is script-free for consumers. A consuming repo installs nothing
-executable beyond the optional session-start hook — traceability is the
+executable — traceability is the
 [`audit-trace`](skills/audit-trace.md) skill (deterministic `grep`/`git` passes),
 and feature overlap is **ask-time derivation** via
 [`load-subgraph`](skills/load-subgraph.md) over live `docs/specs/` (neighbors
@@ -18,11 +18,11 @@ schema 1.1, **`cluster(focus)`**, no generated graph file).
 ## 1. The A–Z workflow
 
 ```
-                        zone-mode     ── session gate: 1% rule before every response
+                        /zone-mode    ── user-run gate: 1% rule + router
                              │
         ┌────────────────────┴─────────────────────────────────────────────┐
         ▼                                                                    │
-  zone-mode    ── routes any situation to an entry point below              │
+  /zone-mode   ── routes any situation to an entry point below              │
   /forge-prompt ── "my ask is vague" ── hands back one prompt to paste       │
         │                                                                    │
  SETUP (once)                                                                 │
@@ -79,8 +79,8 @@ absent. See [the artifact model](concepts/artifacts.md#docsproduct-and-docsarchi
 
 **Mental model:** you drive with **slash commands** (`/…`) and plain-English
 requests; most skills are **model-invoked** and fire when their trigger matches.
-The session gate ([`zone-mode`](skills/zone-mode.md)), re-injected by the
-session-start hook after `/clear` and compaction, keeps the 1% rule alive.
+The 1% rule lives in [`AGENTS.md`](../../AGENTS.md). Run [`/zone-mode`](skills/zone-mode.md)
+when you want the full gate loaded — it is not injected at session start.
 Full skill index: [Skill reference](skills/README.md) · laws: [`AGENTS.md`](../../AGENTS.md).
 
 ### One-time setup
@@ -94,14 +94,14 @@ Full skill index: [Skill reference](skills/README.md) · laws: [`AGENTS.md`](../
    copy its `skills` paths into `~/.config/opencode/opencode.json`. Cursor:
    `npx skills@latest add jayden-dang/skills --copy` (bare skill names). Do not
    flatten Engineer Pack onto a harness that already has the `jdk` plugin.
-   Nothing is installed *into* your app repo beyond optional markdown + hook.
+   Nothing is installed *into* your app repo beyond optional markdown.
 2. **Wire the repo**
    - **Greenfield / empty:** **`/bootstrap-repo`** → stack + harness + one green test → then configure.
    - **Existing codebase:** **`/configure-repo` only** (do not bootstrap).
 3. **`/configure-repo`** — tracker, labels, verify commands, release steps, team,
    posture, optional Remote environments; writes `docs/agents/*.md`, seeds
    `docs/specs/INDEX.md` / glossary as needed, `## Agent skills` in
-   `AGENTS.md`/`CLAUDE.md`; offers session-start hook.
+   `AGENTS.md`/`CLAUDE.md`; offers Context7 MCP.
    Proves commands are *wired* (content failures on an old repo are listed, not
    blocking). Installs **no** consumer linters/CI by default.
 4. **Optional**
@@ -152,11 +152,11 @@ The table lives in [on-ramps](process/on-ramps.md) — one home, and `zone-mode`
 Full tables: [Skill reference](skills/README.md) (69 engineering skills).  
 Personal OS is a **separate** package — [personal-os START-HERE](../personal-os/START-HERE.md).
 
-`U` = you run `/name` · `m` = model-invoked · `si` = session-injected
+`U` = you run `/name` · `m` = model-invoked
 
 | Category | Skills (see also [AGENTS.md §11](../../AGENTS.md#11-quick-reference-every-skill)) |
 |---|---|
-| **meta** | `zone-mode` (m, si), `/author-skills`, `/teach-pack` |
+| **meta** | `/zone-mode`, `/author-skills`, `/teach-pack` |
 | **setup** | `/configure-repo`, `/bootstrap-repo` |
 | **discovery** | `frame-change`, `clarify-decisions`, `research`, `run-spike`, `define-domain`, `/forge-prompt`, `/pathfind`, `/interpret-session`, `/deepen-codebase`, `/tour-system`, `/work-the-problem` |
 | **spec** | `specify-behavior`, `design-solution`, `plan-tasks` |

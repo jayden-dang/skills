@@ -65,21 +65,8 @@ Written once by [`configure-repo`](../skills/configure-repo.md) into `docs/agent
 |---|---|---|
 | [`CONTEXT.md`](../../../templates/CONTEXT.md) | root `CONTEXT.md` | The domain glossary. Created *lazily* by [`define-domain`](../skills/define-domain.md) when the first term settles, if `configure-repo` did not already seed it |
 | [`specs-INDEX.md`](../../../templates/specs-INDEX.md) | `docs/specs/INDEX.md` | The feature-code registry `frame-change` and `inspect-change` search for overlap |
-| [`session-start.sh`](../../../templates/session-start.sh) | `.claude/hooks/session-start.sh` | Copied **into the repo**, never referenced by absolute path |
 
-This is the whole seed set. Nothing executable beyond the session-start hook lands in a consuming repo — no linters, no CI, no git hooks — and even that hook is a single opt-in.
-
-### Why the session hook is copied into the repo
-
-An absolute path to the skill set's own working copy would be committed into `.claude/settings.json` and break on every other machine, in CI, and if that copy ever moves. So `configure-repo` copies the script into the repo and references it through the project-dir variable:
-
-```json
-{ "hooks": { "SessionStart": [ { "matcher": "startup|clear|compact",
-  "hooks": [ { "type": "command",
-    "command": "\"$CLAUDE_PROJECT_DIR/.claude/hooks/session-start.sh\"" } ] } ] } }
-```
-
-The script is dependency-free, so it runs in any project regardless of toolchain.
+This is the whole seed set. Nothing executable lands in a consuming repo — no linters, no CI, no git hooks, no session-start hook.
 
 ## The additive rule
 
@@ -87,7 +74,7 @@ Every template application obeys one rule, stated in `configure-repo`:
 
 > **Existing files are edited in place, never clobbered.** If a target file already exists, merge your content into it and preserve everything the user wrote.
 
-This applies to `.gitignore` (idempotent line-presence checks), to `CLAUDE.md` / `AGENTS.md` (the `## Agent skills` block lives in exactly one canonical file; any second file is a thin pointer, never a copy), and to the hook config (merge into an existing `SessionStart` block, never overwrite it).
+This applies to `.gitignore` (idempotent line-presence checks) and to `CLAUDE.md` / `AGENTS.md` (the `## Agent skills` block lives in exactly one canonical file; any second file is a thin pointer, never a copy).
 
 ## See also
 

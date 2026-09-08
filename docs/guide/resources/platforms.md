@@ -4,9 +4,8 @@ The skill set was built for Claude Code, but nothing in it is Claude-specific.
 Everything is plain text a reasoning agent acts on: the skills are `SKILL.md`
 files, the portable behavior contract is `AGENTS.md`, and the audit-trace check is a
 set of `grep`/`git` passes the agent drives itself — there is no interpreter or
-binary to port. The only platform-specific part is *how the gate gets injected* —
-the mechanism that reminds the agent to check for a skill before it acts. This
-page covers that per platform.
+binary to port. There is no session-start injector. The 1% rule lives in `AGENTS.md`;
+`/zone-mode` is user-run. This page covers how each platform loads the pack.
 
 The portable contract for every platform is [`AGENTS.md`](../../../AGENTS.md) at
 the repo root: the Four Iron Laws, the 1% rule, the trace-spine citation rules,
@@ -15,10 +14,7 @@ repo file can run this system by reading that one.
 
 ## Claude Code (native)
 
-Full support. The `SessionStart` hook in `hooks/hooks.json` injects
-`meta/zone-mode` on every `startup | clear | compact`, so the gate survives
-compaction automatically. Install as a plugin so commands are `/jdk:<skill>`
-and the hook ships with the pack:
+Full support. Install as a plugin so commands are `/jdk:<skill>`:
 
 ```text
 /plugin marketplace add jayden-dang/skills
@@ -78,10 +74,9 @@ That uses `.codex-plugin/plugin.json` and `.agents/plugins/marketplace.json`.
 Do not also flatten Engineer Pack into `~/.agents/skills` / `~/.codex/skills`
 on the same machine.
 
-Codex also reads `AGENTS.md` from the repo root natively. It has no session-start
-hook, so the gate is enforced by `AGENTS.md` being in context rather than by
-re-injection after compaction; after a long session, re-point it at `AGENTS.md`
-if it drifts.
+Codex also reads `AGENTS.md` from the repo root natively. After a long session,
+re-point it at `AGENTS.md` if it drifts. Run `/zone-mode` when you want the
+full gate loaded.
 
 Fallback without the plugin: `npx skills@latest add jayden-dang/skills --copy -a codex`
 (bare skill names, not `jdk:`).
@@ -143,25 +138,15 @@ for OpenCode — category names are not skills.
 
 ## Cursor
 
-Cursor loads `.cursor/rules/*.mdc`. This repo ships
-[`.cursor/rules/zone-mode.mdc`](../../../.cursor/rules/zone-mode.mdc) as an
-`alwaysApply` rule that carries the gate and points at `AGENTS.md`. Copy the
-`.cursor/` directory (and `AGENTS.md`, `skills/`) into the target repo, or open
-this repo directly. That rule is Cursor's substitute for the session-start hook.
+Cursor reads `AGENTS.md`. There is no always-apply rule and no session-start
+hook. Run `/zone-mode` when you want the full gate loaded.
 
 ## Any other harness
 
 If the harness can load a repo-root convention file (`AGENTS.md`, `CLAUDE.md`,
-or similar), point it there. If it supports an always-on rule or system-prompt
-append, give it the gate paragraph from `.cursor/rules/zone-mode.mdc`. The
-skills and templates work unchanged — only the injection path differs.
+or similar), point it there. The skills and templates work unchanged.
 
 ## What is not portable
-
-- **Automatic re-injection after compaction** is a Claude Code hook feature.
-  Elsewhere the gate lives in an always-on rule or the root contract file, which
-  is durable but not self-healing across a context reset — re-anchor manually if
-  the agent drifts.
 - **Subagent dispatch** in `build-in-waves` assumes a harness that can spawn
   fresh, isolated subagents. Where that is unavailable, `build-in-waves`'s inline
   fallback runs the same loop in a single context.

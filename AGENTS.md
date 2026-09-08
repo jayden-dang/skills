@@ -5,9 +5,8 @@
 
 This file is the single source of truth for agent behavior when working with this
 skill set on any harness. Read it first, before any skill, before any action.
-Where a harness has no session-start hook to inject `zone-mode`, this file is
-the fallback that keeps the gates alive — that is why Codex, opencode, and Cursor
-are pointed here rather than at the hook.
+The 1% rule lives here. `/zone-mode` is user-run when you want the full gate
+loaded into the session; agents must not auto-invoke it.
 
 **Human tutorial (setup + feature loop + entry points):**
 [`docs/guide/START-HERE.md`](docs/guide/START-HERE.md) · skill pages:
@@ -90,7 +89,7 @@ carries a checklist, create one todo per item.
 | Small in-scope change to a shipped, spec'd feature | `amend-feature`, not `frame-change` |
 | Incoming issue or external PR | suggest `/triage` (user-run; agents cannot auto-invoke) |
 | Capture this conversation into tracker issues | suggest `/publish-issues` (user-run) |
-| Unsure which flow fits | `zone-mode` routes it from `docs/guide/process/on-ramps.md` |
+| Unsure which flow fits | suggest `/zone-mode` (user-run) — it routes from `docs/guide/process/on-ramps.md` |
 
 **User instructions override skills; skills override agent defaults.** Skip a
 skill's workflow only when the user has explicitly told you to. A waiver of
@@ -102,9 +101,9 @@ skill's workflow only when the user has explicitly told you to. A waiver of
 
 **User-invoked skills** carry `disable-model-invocation: true` in frontmatter.
 Agents MUST NOT auto-invoke these — name them for the user to run (`/triage`,
-`/pathfind`). All 28 of them:
+`/pathfind`, `/zone-mode`). All 28 of them:
 
-`author-skills`, `teach-pack` · `bootstrap-repo`, `configure-repo` ·
+`zone-mode`, `author-skills`, `teach-pack` · `bootstrap-repo`, `configure-repo` ·
 `deepen-codebase`, `forge-prompt`, `interpret-session`, `pathfind`, `tour-system`,
 `work-the-problem` ·
 `brief-team`, `select-sample`, `study-change`, `teach-build` · `assess-pivot-impact`,
@@ -114,7 +113,7 @@ Agents MUST NOT auto-invoke these — name them for the user to run (`/triage`,
 
 **Model-invoked skills** (no `disable-model-invocation`) are auto-invoked when
 the description matches the situation. Everything not listed above, including
-`zone-mode`, `frame-change`, `clarify-decisions`, `research`,
+`frame-change`, `clarify-decisions`, `research`,
 `run-spike`, `define-domain`, the full spec triad, the execute family,
 `test-first`, `root-cause`, `debug-remote`, `assess-observability`, `prove-claim`, `audit-trace`, `load-subgraph`,
 `isolate-workspace`, `hold-stage`, `inspect-change`, `polish-diff`, `vet-feedback`,
@@ -138,11 +137,6 @@ folder any skill may reference across a boundary; every other `../` still fails,
 which is what stops the exception widening into "cross-folder is fine".
 `scripts/lint-cross-folder.py` enforces it.
 
-**Session-injected skill:** `zone-mode` is injected by the `SessionStart` hook
-(`hooks/hooks.json`, matcher `startup|clear|compact`), so the 1% rule survives
-`/clear` and compaction. On harnesses without hook support, this file carries
-that role.
-
 **Orchestration rule:** a user-invoked skill may invoke model-invoked skills; a
 model-invoked skill must never invoke a user-invoked one. `REQUIRED SUB-SKILL:
 use \`x\`` is for model-invocable targets only — pointing it at a
@@ -151,9 +145,9 @@ use \`x\`` is for model-invocable targets only — pointing it at a
 
 **Two reachability paths, and one of them is fragile.** A skill is reached either
 by a `REQUIRED SUB-SKILL` hand-off or by its description matching what the user
-said. Eight model-invocable skills have no `REQUIRED SUB-SKILL` caller —
+said. Seven model-invocable skills have no `REQUIRED SUB-SKILL` caller —
 `amend-feature`, `vet-feedback`, `vet-source`, `speak-outer`, `hold-stage`, `run-flow-guide`,
-`draft-ux` (plus hook-injected `zone-mode`). Reverse-track is **not** a
+`draft-ux`. Reverse-track is **not** a
 separate skill: when the reverse predicate holds, callers **name** `/map-features`
 (dispose step 0). `write-flow-guide` is reached from
 `prove-claim` (alternative to `validate-feature`) and from the execute-family
@@ -267,7 +261,7 @@ feature across compaction and crash. Trust the ledger and `git log`, never
 memory. Never re-dispatch a task the ledger marks complete.
 
 **Subagent-exempt:** a subagent dispatched for one specific task ignores
-`zone-mode` and follows its brief only.
+`/zone-mode` and follows its brief only.
 
 ---
 
@@ -344,7 +338,6 @@ skills/
   personal/                                           # Personal OS, opt-in, life-* prefix
 templates/          # seeds the skills write into a consuming repo, + personal-os/
   agents/           # project.md, issue-tracker.md, triage-labels.md templates
-hooks/              # hooks.json + session-start.sh (the zone-mode injector)
 scripts/            # the five lint passes lefthook runs
 docs/
   guide/            # the human tutorial and per-skill pages
@@ -421,11 +414,11 @@ Can't tick a box? The work is not done.
 
 ## 11. Quick Reference: Every Skill
 
-**Legend:** (m) model-invoked · (U) user-invoked · (si) session-injected
+**Legend:** (m) model-invoked · (U) user-invoked
 
 | Category | Skills |
 |---|---|
-| **meta** (3) | `zone-mode` (m, si), `author-skills` (U), `teach-pack` (U) |
+| **meta** (3) | `zone-mode` (U), `author-skills` (U), `teach-pack` (U) |
 | **setup** (2) | `configure-repo` (U), `bootstrap-repo` (U) |
 | **discovery** (11) | `frame-change` (m), `clarify-decisions` (m), `research` (m), `run-spike` (m), `define-domain` (m), `forge-prompt` (U), `pathfind` (U), `interpret-session` (U), `deepen-codebase` (U), `tour-system` (U), `work-the-problem` (U) |
 | **spec** (3) | `specify-behavior` (m), `design-solution` (m), `plan-tasks` (m) |

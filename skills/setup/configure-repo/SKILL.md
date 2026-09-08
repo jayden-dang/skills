@@ -1,6 +1,6 @@
 ---
 name: configure-repo
-version: 1.6.1
+version: 1.7.0
 description: Sets up docs/agents config so this skill set can run in an existing repo.
 disable-model-invocation: true
 ---
@@ -161,11 +161,11 @@ The block (include the project-docs bullet only if decision I was Yes) is seeded
 
 **Done when:** all files are written, `.skills/` and `.worktrees/` are git-ignored, index-only gitignore applied only when L=`index-only`, and `git status` shows only the expected additions/edits.
 
-## 5. Offer the session-start hook
+## 5. Offer Context7 MCP
 
-**WHEN this step runs, read `optional-offers.md` beside this file and follow it exactly** — the vendored (never absolute-path) session-start hook install and the Context7 MCP recommendation.
+**WHEN this step runs, read `optional-offers.md` beside this file and follow it exactly** — the Context7 MCP recommendation.
 
-**Done when:** both offers — the session-start hook and the Context7 MCP recommendation — have an explicit yes/no, and any yes is implemented (the hook installed, or the Context7 note written to `docs/agents/project.md`).
+**Done when:** the Context7 MCP recommendation has an explicit yes/no, and a yes is recorded in `docs/agents/project.md`.
 
 ## 6. Prove the configuration actually works — GATE
 
@@ -182,12 +182,11 @@ Be cost-aware — do not run the whole suite to prove wiring:
 - Typecheck and lint: run in full (bounded).
 - Unit/e2e runners: prove the runner resolves its config cheaply — run the **single-test-file pattern** from `project.md` against one existing test file, or the runner's collect-only/list mode. Never trigger a full e2e run during setup; state that the full run is the user's to do later.
 - Audit Trace check: run it (REQUIRED SUB-SKILL: use `audit-trace`) and confirm it reports a clean finding set — zero requirements is a valid clean state. The check is `grep`/`git` over `docs/specs/` (and optional architecture), not application test trees.
-- If you installed the session-start hook, execute `.claude/hooks/session-start.sh` and confirm it prints one line of valid JSON.
 - If the tracker is a remote service (`github` / `gitlab` / `linear`), prove it is reachable and authenticated with **one read-only call** — `gh issue list` / `glab issue list`, or for Linear a single MCP list call (or a minimal `issues` GraphQL query). This verifies the tracker the *user already chose*; it is not the setup-time detection Step 1 forbids — the choice is made, and this call only proves it works. A missing CLI, an unauthenticated session, or a disconnected or unauthenticated MCP server is a wiring failure; it would otherwise stay hidden until `triage` fails weeks later. `local` and `other` need no reachability check.
 
 Report a small table: each command → wired? → passed / failed / pre-existing.
 
-**Done when:** every configured command is proven **wired** (no wiring failures remain), the audit-trace check runs clean, the hook (if installed) fires, the configured tracker answers a read-only call, and any content failures are listed for the user.
+**Done when:** every configured command is proven **wired** (no wiring failures remain), the audit-trace check runs clean, the configured tracker answers a read-only call, and any content failures are listed for the user.
 
 ## 7. Finish
 

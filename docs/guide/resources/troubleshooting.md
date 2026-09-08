@@ -121,12 +121,7 @@ listed, then `/plugin install jdk@jayden-dang-skills`.
 
 ### The agent answers without invoking any skill
 
-The [`zone-mode`](../skills/zone-mode.md) gate is not in context. It is injected by a `SessionStart` hook with matcher `startup|clear|compact`.
-
-- Installed as a plugin? The hook ships in `hooks/hooks.json`.
-- Installed by symlink, or into a harness with no hook support? Re-run `/configure-repo` and accept the session-start hook, which copies `templates/session-start.sh` into `.claude/hooks/` and wires it through `$CLAUDE_PROJECT_DIR`.
-
-Prove Claim it fires: execute `.claude/hooks/session-start.sh` and confirm it prints one line of valid JSON.
+The 1% rule lives in `AGENTS.md`. `/zone-mode` is user-run and is not injected at session start. Run `/zone-mode` when you want the full gate loaded. Model-invocable skills still fire from their descriptions.
 
 ### A specific skill never triggers
 

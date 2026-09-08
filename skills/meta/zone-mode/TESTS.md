@@ -1,5 +1,18 @@
 # zone-mode — recorded test evidence
 
+## 1.1.0 — user-invoked; SessionStart injector removed (2026-09-08)
+
+**RED:** leftover `SessionStart` hooks (plugin `hooks/hooks.json`, vendored
+`.claude/hooks/session-start.sh`, Cursor `alwaysApply` rule) still injected
+this skill at session start, including copies that named the deleted
+`gate-session` skill. Auto-injection fought the user's preference that the
+gate load only when they run `/zone-mode`.
+
+**GREEN:** `disable-model-invocation: true`. No pack SessionStart hook, no
+consumer-repo session-start template, no Cursor always-apply rule. Agents
+name `/zone-mode` for the user; they do not auto-invoke it. `AGENTS.md`
+carries the 1% rule without a hook.
+
 ## 1.0.0 — formed from gate-session and ask-me-bro (2026-09-08)
 
 This skill is a merge, not a new gate. Its content and the evidence behind it come

@@ -102,15 +102,17 @@ for m in (".claude-plugin/plugin.json", ".claude-plugin/marketplace.json", ".kim
     check(f"{os.path.basename(m)} lists only real skills", listed <= tree,
           "; ".join(sorted(listed - tree)[:3]))
 
-# 8 session hook runs and injects the gate
-r = subprocess.run(["bash", "hooks/session-start.sh"], capture_output=True, text=True)
-ok = r.returncode == 0
-if ok:
-    try:
-        ctx = json.loads(r.stdout)["hookSpecificOutput"]["additionalContext"]
-        ok = "zone-mode" in ctx and "## The Rule" in ctx and "## Handing off" in ctx
-    except Exception: ok = False
-check("session hook injects zone-mode with both sections", ok)
+# 8 no SessionStart injector ships with the pack
+hook_files = [
+    "hooks/hooks.json",
+    "hooks/session-start.sh",
+    "templates/session-start.sh",
+    "skills/setup/configure-repo/templates/session-start.sh",
+]
+present = [f for f in hook_files if os.path.exists(f)]
+plugin = json.load(open(".claude-plugin/plugin.json"))
+check("no session-start hook files remain", not present, ", ".join(present))
+check("plugin.json does not register hooks", "hooks" not in plugin)
 
 # 9 changed skills carry a TESTS.md entry
 changed = subprocess.run(["git", "diff", "--name-only", "main...HEAD"],

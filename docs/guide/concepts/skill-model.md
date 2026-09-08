@@ -26,7 +26,7 @@ Three loading levels, and each costs differently:
 | **Body** — the SKILL.md text | paid every turn *once the skill fires* |
 | **Reference file** — a sibling `.md` behind a pointer | costs nothing until the pointer is followed |
 
-That budget is why discipline skills keep their core body to roughly 500 words, why the hard ceiling for any SKILL.md body is 200 lines held by `scripts/lint-skill-length.py`, and why the session-injected `zone-mode` is the shortest gate in the set. Length is a failure mode in itself, even when every line is live.
+That budget is why discipline skills keep their core body to roughly 500 words, why the hard ceiling for any SKILL.md body is 200 lines held by `scripts/lint-skill-length.py`, and why `zone-mode` is the shortest gate in the set. Length is a failure mode in itself, even when every line is live.
 
 ## The two invocation kinds
 
@@ -44,8 +44,7 @@ You can see the rule being obeyed in the wild. `root-cause` hands architectural 
 
 | Bucket | Skills | Kind |
 |---|---|---|
-| meta | `zone-mode` | model (session-injected) |
-| | `author-skills`, `teach-pack` | user |
+| meta | `zone-mode`, `author-skills`, `teach-pack` | user |
 | setup | `configure-repo`, `bootstrap-repo` | user |
 | discovery | `frame-change`, `clarify-decisions`, `research`, `run-spike`, `define-domain` | model |
 | | `pathfind`, `interpret-session` | user |
@@ -78,13 +77,13 @@ engineering skills (2026-08-16):
 | Model-invocable with **no** caller — description-triggered entry points | 5 |
 
 The third row is the one worth reading carefully, because "no caller" looks like
-an orphan and mostly is not. `zone-mode` is injected by the SessionStart hook,
-not called. `amend-feature`, `vet-feedback`, `vet-source`, `speak-outer`, `hold-stage`, and
+an orphan and mostly is not. `/zone-mode` is user-run. `amend-feature`,
+`vet-feedback`, `vet-source`, `speak-outer`, `hold-stage`, and
 `run-flow-guide` are **entry points**: they fire on what the user
 says (walkthrough is only *named* by `write-flow-guide`). `write-flow-guide`
 is a REQUIRED alternative of `prove-claim` and of the execute-family close
 sequence when a walk predicate holds. An entry point that undertriggers is
-invisible — it does not fail, it simply never appears — so those eight carry
+invisible — it does not fail, it simply never appears — so those seven carry
 the highest trigger-testing burden in the set.
 
 The census also surfaced its own gaps — `polish-diff`, `record-verdict`,
@@ -162,9 +161,7 @@ This is why the rationalization tables in `test-first`, `root-cause`, `prove-cla
 
 ## Activation
 
-The set ships as a Claude Code plugin. `hooks/hooks.json` registers a `SessionStart` hook with matcher `startup|clear|compact` that injects the full text of `zone-mode` into context — so the skill-check gate survives `/clear` and compaction, the two moments it would otherwise silently disappear.
-
-When installed without plugin hook support, `configure-repo` offers to copy `templates/session-start.sh` into the project's own `.claude/hooks/` and reference it via `$CLAUDE_PROJECT_DIR` — never an absolute path, which would be committed into `.claude/settings.json` and break on every other machine.
+The set ships as a Claude Code plugin. There is no SessionStart hook. The 1% rule lives in `AGENTS.md`. `/zone-mode` is user-run when you want the full gate loaded.
 
 ## See also
 

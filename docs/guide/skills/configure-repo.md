@@ -7,7 +7,7 @@
 | **Bucket** | setup |
 | **Invocation** | user-invoked — run as `/configure-repo`; no skill may auto-invoke it, others only name it for the user to run |
 | **Reads** | `git remote`, `CLAUDE.md` / `AGENTS.md`, existing lockfiles and CI, tracker labels, `docs/agents/` |
-| **Writes** | `docs/agents/project.md`, `docs/agents/issue-tracker.md`, `docs/agents/triage-labels.md`, seed spec files, the `## Agent skills` block, the opt-in session-start hook |
+| **Writes** | `docs/agents/project.md`, `docs/agents/issue-tracker.md`, `docs/agents/triage-labels.md`, seed spec files, the `## Agent skills` block |
 | **Calls** | the discipline of [`prove-claim`](prove-claim.md) (Step 6 gate) |
 | **Called by** | nothing — it is user-invoked; [`bootstrap-repo`](bootstrap-repo.md) redirects the user here when a directory is not greenfield |
 
@@ -63,15 +63,13 @@ Before writing anything, show the user the three `docs/agents/*.md` files' conte
 
 The `## Agent skills` block lives in exactly **one** canonical file; any second file is a thin pointer, never a copy. When neither `CLAUDE.md` nor `AGENTS.md` exists (the default), `AGENTS.md` becomes canonical and a short `CLAUDE.md` points at it. When only one exists it is canonical. When both exist the block goes in whichever already carries real agent instructions, and never in both; an existing `## Agent skills` section is updated in place, never duplicated. Finally the step git-ignores `.skills/` (the `build-in-waves` ledger and scan digests) and `.worktrees/` idempotently by line-presence check. Done when all files are written, both dirs are ignored, and `git status` shows only expected changes.
 
-### 5. Offer the session-start hook
+### 5. Offer Context7 MCP
 
-One optional install — offered, acted on only with a yes:
+One optional recommendation — offered, acted on only with a yes: install the Context7 MCP for live library docs, and record that choice in `docs/agents/project.md`. There is no session-start hook. `/zone-mode` is user-run.
 
-**Session-start hook.** If the set was installed without plugin hook support, a `SessionStart` hook (matcher `startup|clear|compact`) keeps the skill-usage gate alive across `/clear` and compaction. The hook is copied into the repo — `templates/session-start.sh` to `.claude/hooks/` and `chmod +x`'d, then referenced in `.claude/settings.json` via `$CLAUDE_PROJECT_DIR`, never an absolute path (which would break on any other machine). Merged additively into any existing `SessionStart` block.
+The set installs nothing else — no scripts, no CI steps, no git hooks. The [`audit-trace`](audit-trace.md) check is a set of `grep`/`git` passes an agent runs directly, so there is nothing to install and nothing to wire; `prove-claim` and `cut-release` run it inline when they need it.
 
-The set installs nothing else — no scripts, no CI steps, no git hooks. The [`audit-trace`](audit-trace.md) check is a set of `grep`/`git` passes an agent runs directly, so there is nothing to install and nothing to wire; `prove-claim` and `cut-release` run it inline when they need it. A repo that wants a hard headless gate can add its own CI step, but authoring one is out of scope here.
-
-Done when the offer has an explicit yes/no and a yes is implemented.
+Done when the offer has an explicit yes/no and a yes is recorded.
 
 ### 6. Prove the configuration actually works — GATE
 
@@ -83,7 +81,7 @@ Each configured verify command is run fresh and classified. The distinction that
 - **Content failure** — the tool ran correctly but reported problems: type errors, lint warnings, failing tests. The command is wired right; the repo has pre-existing issues. These are recorded for the user and do **not** block setup.
 - **Pass** — wired and green.
 
-The gate is cost-aware. Typecheck and lint run in full. Test runners are proven cheaply — the single-test-file pattern against one existing file, or collect-only mode — never a full e2e run during setup. The [`audit-trace`](audit-trace.md) check needs no wiring proof — it is a set of `grep`/`git` passes, not an installed tool — so the gate instead confirms its inputs: the specs directory exists and the test globs and ignore list from Decision C are recorded (with zero requirements the check is trivially clean). An installed session-start hook is executed and must print one line of valid JSON. A remote tracker (github / gitlab / linear) is proven reachable and authenticated with one read-only call; local and other need no check. The step reports a small table: each command → wired? → passed / failed / pre-existing. Done when every command is proven wired, the audit-trace inputs are recorded, any installed hook fires, the tracker answers, and content failures are listed.
+The gate is cost-aware. Typecheck and lint run in full. Test runners are proven cheaply — the single-test-file pattern against one existing file, or collect-only mode — never a full e2e run during setup. The [`audit-trace`](audit-trace.md) check needs no wiring proof — it is a set of `grep`/`git` passes, not an installed tool — so the gate instead confirms its inputs: the specs directory exists and the test globs and ignore list from Decision C are recorded (with zero requirements the check is trivially clean). A remote tracker (github / gitlab / linear) is proven reachable and authenticated with one read-only call; local and other need no check. The step reports a small table: each command → wired? → passed / failed / pre-existing. Done when every command is proven wired, the audit-trace inputs are recorded, the tracker answers, and content failures are listed.
 
 ### 7. Finish
 
@@ -99,7 +97,7 @@ Adopting the set into an existing TypeScript + Vitest library with a GitHub remo
 
 **Write.** The three `docs/agents/*.md` files land, the issue-tracker file keeps only the github section, `AGENTS.md` is created canonical with the `## Agent skills` block and a thin `CLAUDE.md` pointer, and `.skills/` and `.worktrees/` are added to `.gitignore`. Nothing is copied into the repo but markdown config.
 
-**Opt-in.** The user accepts the session-start hook — `templates/session-start.sh` copied into `.claude/hooks/` and referenced in `.claude/settings.json` via `$CLAUDE_PROJECT_DIR`.
+**Opt-in.** The user accepts Context7 MCP; the choice is recorded in `docs/agents/project.md`.
 
 **Prove — GATE.** `pnpm exec tsc -b` and `pnpm lint` run in full: lint reports three pre-existing warnings — a **content** failure, recorded not blocking. `pnpm exec vitest run` against one existing spec resolves the config: pass. The [`audit-trace`](audit-trace.md) check needs no wiring — its inputs are recorded (specs at `docs/specs/`, the Vitest test glob), and with zero requirements it is trivially clean. `gh issue list` returns cleanly, proving the tracker is authenticated. The table shows every command wired, the three lint warnings flagged as pre-existing.
 
@@ -111,5 +109,5 @@ The whole skill is built around a single failure mode: a config that reads plaus
 
 - [Adopting the skill set](../resources/adopting.md) — the wider story of bringing an existing repo under the set
 - [`bootstrap-repo`](bootstrap-repo.md) — the greenfield sibling that hands off here
-- [Templates](../resources/templates.md) — the `docs/agents/*` and session-start seeds this skill writes from
+- [Templates](../resources/templates.md) — the `docs/agents/*` seeds this skill writes from
 - [`audit-trace`](audit-trace.md) — the traceability check the configured specs directory and test globs feed

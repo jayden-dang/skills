@@ -5,15 +5,15 @@
 |  |  |
 |---|---|
 | **Bucket** | meta |
-| **Invocation** | model-invocable, but injected into every session by the `session-start.sh` SessionStart hook — so in practice it is always present, surviving `/clear` and context compaction |
+| **Invocation** | user-invoked (`/zone-mode`) — agents name it; they do not auto-invoke it or inject it at session start |
 | **Reads** | the incoming task, and CLAUDE.md (which outranks it in the precedence order) |
 | **Writes** | nothing — it produces the *act* of invoking the right skill, not an artifact |
 | **Calls** | [`frame-change`](frame-change.md), [`root-cause`](root-cause.md), [`amend-feature`](amend-feature.md) (auto-invoked when they fit); names [`triage`](triage.md) and other user-invoked skills for the user to run |
-| **Called by** | nothing — it is session-injected, not reached through a hand-off |
+| **Called by** | the user, via `/zone-mode` |
 
 ## When it fires
 
-At the start of every conversation, and again on every turn, because the SessionStart hook re-injects its full text after `/clear` and after compaction. The hook wraps the skill body in an `<IMPORTANT>` block and hands it to the model as additional context, so the skill-check rule is present before the agent has read a single file.
+When the user runs `/zone-mode`. It is not injected at session start, `/clear`, or compaction. The 1% rule still lives in `AGENTS.md`; this skill is the full gate plus router, loaded on demand.
 
 The one carve-out is stated in the skill itself: a `<SUBAGENT-EXEMPT>` block tells any agent dispatched as a subagent to execute one specific task to ignore the skill and follow its brief instead. That is what keeps a task-scoped subagent from re-entering the whole discovery flow on work its parent already framed.
 
@@ -67,7 +67,7 @@ The tempting move is to open the file and make the edit. The skill blocks it: th
 
 ## Why it is written the way it is
 
-`zone-mode` is the session-injected entry gate, and per [`author-skills`](author-skills.md) that dictates two things. First, its baseline failure is an agent that knows skills exist and skips the check under the pressure of seeming helpful and fast — a pressure-gate failure, which is why the page carries a `<NON-NEGOTIABLE>` absolute plus a rationalization table rather than soft "prefer" guidance. Second, because it is paid on every turn of every session, its token budget is unforgiving: the body stays minimal, and every line has to survive the no-op test. The whole skill is a single rule with just enough scaffolding — priority order, red flags, precedence — to make that one rule hold under pressure without bloating the per-turn cost.
+`zone-mode` is the user-run entry gate (`/zone-mode`), and per [`author-skills`](author-skills.md) that dictates two things. First, its baseline failure is an agent that knows skills exist and skips the check under the pressure of seeming helpful and fast — a pressure-gate failure, which is why the page carries a `<NON-NEGOTIABLE>` absolute plus a rationalization table rather than soft "prefer" guidance. Second, the body stays minimal, and every line has to survive the no-op test. The whole skill is a single rule with just enough scaffolding — priority order, red flags, precedence — to make that one rule hold under pressure.
 
 ## See also
 

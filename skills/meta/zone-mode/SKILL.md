@@ -1,7 +1,8 @@
 ---
 name: zone-mode
-version: 1.0.0
-description: Use when starting any conversation — establishes the rule that relevant skills are found and invoked before any response or action, including clarifying questions, and how to hand off once the entry point is named
+version: 1.1.0
+description: Load the 1% skill-check gate and hand off to the right entry point.
+disable-model-invocation: true
 ---
 
 <SUBAGENT-EXEMPT>

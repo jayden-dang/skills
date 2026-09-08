@@ -82,3 +82,10 @@ not fiction.
 locally** rows for existing surfaces are filled, Doctor ran, and either one
 feature was driven or `drive: unproven` plus the blocker is recorded.
 **Done when (Skip):** the skip is explicit in the conversation; no verify file.
+
+## Maintain
+
+WHEN features drift or Launch/Doctor fail after app changes: re-read the
+feature map under Features/, re-run Doctor + one Drive, and patch
+`docs/agents/verify.md` with evidence. Do not edit product code in that pass.
+

@@ -1,0 +1,26 @@
+[
+  {
+    "eval_id": 1,
+    "eval_name": "keep-list-is-named",
+    "kind": "contract",
+    "derived_from": "SKILL.md \u00a7 Exceptions (keep only these)",
+    "prompt": "Which comments may survive /no-comments?",
+    "assertions": [
+      "license or legal headers may be kept",
+      "public API doc contracts may be kept",
+      "external dependency or protocol constraints may be kept with proof"
+    ]
+  },
+  {
+    "eval_id": 2,
+    "eval_name": "uses-comment-sicko-brief",
+    "kind": "contract",
+    "derived_from": "SKILL.md \u00a7 Steps",
+    "prompt": "How does /no-comments review comments?",
+    "assertions": [
+      "a read-only subagent is spawned with comment-sicko-brief.md",
+      "MUST KILL flags name reshape targets",
+      "the reviewer does not rewrite application code"
+    ]
+  }
+]

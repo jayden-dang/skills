@@ -386,3 +386,8 @@ portability rule. All remaining ones target `execute-common`, which
 `AGENTS.md` now names as the single permitted exception and
 `scripts/lint-cross-folder.py` enforces — every other `../` fails, so the
 exception cannot widen into "cross-folder is fine".
+
+## v2.5.0 — decision trail OVERRIDE (2026-09-08)
+
+Prior drop: TSV trail skill unnecessary on evening fixtures. User override
+required `decision-trail.md` armed from execute-common predicates anyway.

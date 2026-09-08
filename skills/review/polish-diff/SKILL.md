@@ -1,6 +1,6 @@
 ---
 name: polish-diff
-version: 1.3.0
+version: 1.4.0
 description: Use when changed code needs a quality cleanup actually applied rather than
   reported — code that reimplements a helper the repo already has, needless
   complexity, dead code, wasted work or repeated I/O, tech debt, a bandaid fix
@@ -53,15 +53,15 @@ Flag changes implemented at the wrong depth. Special cases layered onto shared i
 
 ### Comment discipline (controller applies; may fold into Simplification)
 
-Also scan the diff for comments that violate the default-zero rule:
+Default-zero still applies here. WHEN the diff is comment-heavy or the user
+asked for an aggressive comment pass → **name** `/no-comments` for them to run
+(do not invoke it). Otherwise:
 
-- **Delete or rewrite:** comments that restate the next line of code; narrate
-  control flow; cite requirement IDs or feature codes; say "as per the plan/spec";
-  or TODOs that only restate the task.
+- **Delete or rewrite:** comments that restate the next line; narrate control
+  flow; cite requirement IDs; say "as per the plan/spec"; TODOs that restate
+  the task.
 - **Keep:** non-obvious invariants, hazards, protocol/wire constraints, and
-  "why not the obvious alternative" notes the code alone does not show.
-
-Name the concrete comment to delete or the one-line hazard form to keep.
+  "why not the obvious alternative" the code alone does not show.
 
 *Done when: all four agents have reported (comment discipline may be a fifth
 pass by the controller when subagents are the four angles only).*

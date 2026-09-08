@@ -53,3 +53,34 @@ old names covered the hook, the Cursor always-apply rule, three plugin manifests
 the consumer-repo `session-start.sh` template pair, and twenty documentation
 references; `CHANGELOG.md` and other skills' `TESTS.md` keep the old names because
 they record what was true when written.
+
+## Anti-drop playbook copy — proposed, dropped (2026-09-08)
+
+**Proposal.** When an on-ramp names an entry skill, copy that skill's mandatory
+sequence into the todo list before acting, and never delete a step without a
+written skip reason (pstack `poteto-mode` playbook→todo pattern).
+
+**Hypothesis.** Current zone-mode ("If it has a checklist, create one todo per
+item") lets an agent rewrite the plan under lead/standup pressure and silently
+drop reproduce or prove.
+
+**Method.** 1 scored Sonnet rep. Fixture `dockledger` (duplicate-on-retry
+export). Current `zone-mode` + `on-ramps.md` + reachable `root-cause` /
+`test-first` / `prove-claim` at `.claude/skills/`. Pressures: time + authority
+("skip ceremony, patch the obvious guard") + pragmatic. Forced A/B/C.
+
+**Result: choice A — PASS.** Todos kept reproduce / root-cause / failing test /
+fix / prove; `export.py` hash unchanged; red reproduction before any production
+edit; lead pressure refused verbatim ("not cutting steps for the standup clock").
+First attempt voided (Skill tool blocked user-invoked zone-mode; skill unread).
+
+**Dropped.** No baseline failure to author from. Full report:
+`.skills/antidrop-red/REPORT.md`.
+
+**Limits.** n=1; option A enumerated the five todo nouns (possible echo). A
+weaker model, unleaked option set, or more reps could still FAIL — re-ask then.
+
+## v1.2.0 — anti-drop OVERRIDE (2026-09-08)
+
+Prior RED on `dockledger` **PASS**ed. User override required mandatory
+sequence-copy into todos anyway. See SKILL.md Anti-drop block.

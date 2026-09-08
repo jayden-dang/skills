@@ -1,7 +1,7 @@
 # AGENTS.md — Agent Behavior Constitution
 
-> A-to-Z agentic development skill set · **88 skills across 11 categories**
-> (71 engineering + 18 Personal OS) · `jayden-dang/skills` · v1.0.0
+> A-to-Z agentic development skill set · **91 skills across 11 categories**
+> (74 engineering + 18 Personal OS) · `jayden-dang/skills` · v1.0.0
 
 This file is the single source of truth for agent behavior when working with this
 skill set on any harness. Read it first, before any skill, before any action.
@@ -101,12 +101,12 @@ skill's workflow only when the user has explicitly told you to. A waiver of
 
 **User-invoked skills** carry `disable-model-invocation: true` in frontmatter.
 Agents MUST NOT auto-invoke these — name them for the user to run (`/triage`,
-`/pathfind`, `/zone-mode`). All 28 of them:
+`/pathfind`, `/zone-mode`). All 30 of them:
 
-`zone-mode`, `author-skills`, `teach-pack` · `bootstrap-repo`, `configure-repo` ·
+`zone-mode`, `author-skills`, `reflect`, `teach-pack` · `bootstrap-repo`, `configure-repo` ·
 `deepen-codebase`, `forge-prompt`, `interpret-session`, `pathfind`, `tour-system`,
 `work-the-problem` ·
-`brief-team`, `select-sample`, `study-change`, `teach-build` · `assess-pivot-impact`,
+`brief-team`, `select-sample`, `study-change`, `teach-build`, `no-comments` · `assess-pivot-impact`,
 `define-project`, `define-system-doc` · `cut-release` · `assess-milestone`,
 `map-features`, `publish-issues`, `record-debt`, `refresh-roadmap-status`,
 `scan-architecture`, `triage`, `write-handoff` · Personal OS: `life-setup`.
@@ -418,12 +418,12 @@ Can't tick a box? The work is not done.
 
 | Category | Skills |
 |---|---|
-| **meta** (3) | `zone-mode` (U), `author-skills` (U), `teach-pack` (U) |
+| **meta** (4) | `zone-mode` (U), `author-skills` (U), `reflect` (U), `teach-pack` (U) |
 | **setup** (2) | `configure-repo` (U), `bootstrap-repo` (U) |
-| **discovery** (11) | `frame-change` (m), `clarify-decisions` (m), `research` (m), `run-spike` (m), `define-domain` (m), `forge-prompt` (U), `pathfind` (U), `interpret-session` (U), `deepen-codebase` (U), `tour-system` (U), `work-the-problem` (U) |
+| **discovery** (12) | `frame-change` (m), `clarify-decisions` (m), `research` (m), `why` (m), `run-spike` (m), `define-domain` (m), `forge-prompt` (U), `pathfind` (U), `interpret-session` (U), `deepen-codebase` (U), `tour-system` (U), `work-the-problem` (U) |
 | **spec** (3) | `specify-behavior` (m), `design-solution` (m), `plan-tasks` (m) |
 | **execution** (13) | `build-in-waves` (m), `build-by-story` (m), `build-inline` (m), `execute-common` (m), `test-first` (m), `root-cause` (m), `debug-remote` (m), `assess-observability` (m), `prove-claim` (m), `audit-trace` (m), `load-subgraph` (m), `isolate-workspace` (m), `hold-stage` (m) |
-| **review** (11) | `inspect-change` (m), `polish-diff` (m), `vet-feedback` (m), `vet-source` (m), `speak-outer` (m), `inspect-invariants` (m), `inspect-ui` (m), `study-change` (U), `teach-build` (U), `brief-team` (U), `select-sample` (U) |
+| **review** (12) | `inspect-change` (m), `polish-diff` (m), `no-comments` (U), `vet-feedback` (m), `vet-source` (m), `speak-outer` (m), `inspect-invariants` (m), `inspect-ui` (m), `study-change` (U), `teach-build` (U), `brief-team` (U), `select-sample` (U) |
 | **acceptance** (6) | `validate-feature` (m), `validate-api` (m), `validate-ui` (m), `write-flow-guide` (m), `vet-flow-guide` (m), `run-flow-guide` (m) |
 | **craft** (3) | `craft-page` (m), `draft-ui` (m), `draft-ux` (m) |
 | **ship** (3) | `land-branch` (m), `record-verdict` (m), `cut-release` (U) |

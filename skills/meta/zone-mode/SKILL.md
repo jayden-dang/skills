@@ -1,6 +1,6 @@
 ---
 name: zone-mode
-version: 1.1.0
+version: 1.2.0
 description: Load the 1% skill-check gate and hand off to the right entry point.
 disable-model-invocation: true
 ---
@@ -24,6 +24,12 @@ file. If the skill turns out not to fit, you may set it aside after reading it.
 
 Announce "Using [skill] to [purpose]", then follow the skill exactly. If it has
 a checklist, create one todo per item.
+
+**Anti-drop (OVERRIDE 2026-09-08).** After the entry skill is named, copy its
+mandatory sequence (Iron Law / Steps / Done-when chain) into the visible todo
+list **before** acting. Never delete a step silently — write
+`skip: <reason>` on that todo, or keep it open. Lead pressure, standup clocks,
+and "skip ceremony" do not erase reproduce / design / prove steps.
 
 **Priority:** process skills first, then implementation skills. When the
 entry point is unclear, load `docs/guide/process/on-ramps.md` — that table

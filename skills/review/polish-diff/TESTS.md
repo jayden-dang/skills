@@ -131,3 +131,8 @@ catch this because nothing behavioural changed.
 **Dropped.** The criterion is already how this judgment gets made. What this skill
 already asks for — the concrete cost per finding, and `prove-claim` on the result
 — was enough.
+
+## v1.4.0 — name `/no-comments` (2026-09-08)
+
+Comment-heavy diffs may name `/no-comments`. Extreme keep-list lives there;
+this skill keeps the soft default-zero pass.

@@ -170,3 +170,7 @@ the on-ramps table.
 **Observed (grok-4.5, `cachewalk`).** REPLY.md named `/tour-system` and stopped
 without drafting `design.md`.
 
+## v1.6.0 — graft + principles OVERRIDE (2026-09-08)
+
+Prior graft-enlarge-API measurement lost to YAGNI 2/2. User override required
+base+graft wording and `design-principles.md` anyway.

@@ -2,6 +2,24 @@
 
 ## Unreleased
 
+### pstack open upgrades — OVERRIDE ship (2026-09-08)
+
+User override of the no-op bar after Sonnet RED **PASS**es and prior drops.
+Shipped anyway (each SKILL/TESTS notes OVERRIDE):
+
+- **`why`** (discovery) — design archaeology; research hands rationale asks here
+- **`no-comments`** (review, user-invoked) — extreme keep-list + Comment Sicko brief
+- **`reflect`** (meta, user-invoked) — transcript lessons → approved skill edits
+  via `/author-skills`
+- **`inspect-change` v1.8.0** — `blast-prove.md` lane (runtime safety fact)
+- **`execute-common` v2.5.0** — `decision-trail.md` TSV for long/unattended runs
+- **`zone-mode` v1.2.0** — anti-drop: copy entry sequence into todos
+- **`design-solution` v1.6.0** — base+graft + `design-principles.md`
+- **`polish-diff` v1.4.0** — names `/no-comments` when comment-heavy
+
+Prior same-day RED PASSes (`wirekeep`, `dockledger`) and earlier drops remain
+on record; OVERRIDE does not erase them.
+
 ### Cold-start drive recipe — `configure-repo` v1.8.0 / `validate-feature` v1.2.0
 
 A notes app with `"dev": "vite"` finished setup with **Run locally** blank and

@@ -113,3 +113,9 @@ Hold-out 4/4. Undertrigger 0 · Overtrigger 0 on the hold-out set.
 **Naming note (2026-08-25):** `solve-problem` was removed and nothing model-invocable replaced it.
 The observation rows above are left unedited — they record what a model chose at the time, not a
 live pointer.
+
+## v1.2.0 — hand design archaeology to `why` (2026-09-08)
+
+WHEN the ask is rationale/history rather than external facts, REQUIRED
+SUB-SKILL `why`. Prior code-as-intent baseline complied; `why` ships under
+user OVERRIDE.

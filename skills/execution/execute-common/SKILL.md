@@ -1,6 +1,6 @@
 ---
 name: execute-common
-version: 2.4.0
+version: 2.5.0
 description: Use when build-in-waves, build-by-story, or build-inline loads the shared controller recipe — produces an In-progress catalog stamp, a runtime-bound session snapshot, lease state, ledger state, and a revision-bound close receipt.
 ---
 
@@ -8,9 +8,8 @@ description: Use when build-in-waves, build-by-story, or build-inline loads the 
 
 **One home** for controller steps and runtime state shared across
 `build-in-waves`, `build-by-story`, and `build-inline`. Task dispatch/review lives
-in `task-lifecycle.md` beside this file. Load this file when that skill's Setup or
-After-last step says to. This folder is a registered Engineer Pack skill so `npx
-skills add` copies it beside the execute-family skills.
+in `task-lifecycle.md` beside this file. Load when that skill's Setup or After-last
+says to. Registered so `npx skills add` copies it with the execute family.
 
 ## Session preflight
 
@@ -88,6 +87,13 @@ the `Verified:` completion-claim slot backed by `prove-claim`.
 
 *Done when: next task / unit is known.*
 
+## Decision trail — observable conditional
+
+WHEN user asked for a decision trail / show-work, OR unattended overnight /
+multi-day, OR `effective_concurrency` > 1 with multiple open units → read
+`decision-trail.md` beside this file and follow it exactly; ELSE write
+`skip: no decision-trail predicate` on Close notes.
+
 ## Todos — GATE
 
 Before any dispatch or Task 1, on a **visible list** — the harness's todo /
@@ -150,7 +156,6 @@ been skipped under their predicate.
 | "Sample is optional / not a gate — skip the notes line" | Predicate true → `sample: required`; the receipt preserves the advisory. |
 | "Name the sample skill now so they have time" | Record the predicate; landing names the optional aid once. |
 | "Always name a sample so we cannot forget" | Same shape as always-polish. False predicate → write the skip, never name. |
-| "A sample skip line invents a predicate this file does not write" | The predicate is below. Silent skip is still a red flag. |
 
 ## Close-sequence predicates
 
@@ -187,7 +192,7 @@ screen or visual surface — not only changes within existing ones.
 - Dispatch the first task before the todo list exists (tasks **and** Close
   branch)
 - Silent-skip polish (no written `skip: no polish predicate`)
-- Silent-skip sample (no written `sample: required` or `skip: no sample predicate`)
+- Silent-skip sample or decision-trail (no written skip / required line)
 - Start `/select-sample` in this skill
 - Treat EOD, demo, or "inspect was clean" as a polish predicate
 - Move to land-branch with the Close branch todo still open

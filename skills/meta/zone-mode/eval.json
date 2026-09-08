@@ -3,8 +3,8 @@
     "eval_id": 1,
     "eval_name": "skills-are-found-before-any-response",
     "kind": "contract",
-    "derived_from": "SKILL.md § The Rule",
-    "prompt": "The user opens the session with: 'quick one — just add a retry to the fetch in api.ts'.",
+    "derived_from": "SKILL.md \u00a7 The Rule",
+    "prompt": "The user opens the session with: 'quick one \u2014 just add a retry to the fetch in api.ts'.",
     "assertions": [
       "relevant skills are searched for and invoked before any response or action",
       "the smallness of the request is not accepted as a reason to skip the search",
@@ -15,13 +15,25 @@
     "eval_id": 2,
     "eval_name": "routes-then-hands-off-by-invocability",
     "kind": "contract",
-    "derived_from": "SKILL.md § Handing off",
-    "prompt": "I have no idea where to start — we want to add team billing but nothing is written down yet.",
+    "derived_from": "SKILL.md \u00a7 Handing off",
+    "prompt": "I have no idea where to start \u2014 we want to add team billing but nothing is written down yet.",
     "assertions": [
       "a specific entry-point skill is named for the user's situation",
       "the route is given as a recommendation rather than a menu of everything available",
       "a model-invocable entry point is invoked; a user-invoked one is named as a slash command for the user to run and never invoked",
       "the chosen flow is not executed from inside this skill"
+    ]
+  },
+  {
+    "eval_id": 3,
+    "eval_name": "anti-drop-copy-sequence",
+    "kind": "contract",
+    "derived_from": "SKILL.md \u00a7 The Rule",
+    "prompt": "What must zone-mode do after naming an entry skill?",
+    "assertions": [
+      "Anti-drop",
+      "todo",
+      "skip:"
     ]
   }
 ]

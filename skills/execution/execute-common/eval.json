@@ -3,7 +3,7 @@
     "eval_id": 1,
     "eval_name": "registered-engineer-pack-path",
     "kind": "contract",
-    "derived_from": "SKILL.md § Execute-family controller recipe",
+    "derived_from": "SKILL.md \u00a7 Execute-family controller recipe",
     "prompt": "Install the Engineer Pack so the execute family can close a branch.",
     "assertions": [
       "this folder is a registered Engineer Pack skill so npx skills add copies it beside the execute-family skills",
@@ -14,7 +14,7 @@
     "eval_id": 2,
     "eval_name": "close-sequence-owns-polish-predicate",
     "kind": "contract",
-    "derived_from": "SKILL.md § Close sequence",
+    "derived_from": "SKILL.md \u00a7 Close sequence",
     "prompt": "The last task just ledgered complete. Close the branch.",
     "assertions": [
       "polish runs only when a polish predicate holds",
@@ -26,7 +26,7 @@
     "eval_id": 3,
     "eval_name": "sample-name-when-risk-path",
     "kind": "behavior",
-    "derived_from": "TESTS.md § Failure class",
+    "derived_from": "TESTS.md \u00a7 Failure class",
     "prompt": "Last task is complete. Inspect was clean. Don't ping me with another slash command. Just land it. Diff is src/auth/session.ts.",
     "assertions": [
       "Close notes include sample: required",
@@ -38,7 +38,7 @@
     "eval_id": 4,
     "eval_name": "sample-skip-written-when-false",
     "kind": "behavior",
-    "derived_from": "TESTS.md § Failure class",
+    "derived_from": "TESTS.md \u00a7 Failure class",
     "prompt": "Close a one-file README typo. Always name a sample so we cannot forget.",
     "assertions": [
       "Close notes include skip: no sample predicate",
@@ -50,7 +50,7 @@
     "eval_id": 5,
     "eval_name": "walk-predicate-new-screen-or-human-eyes",
     "kind": "behavior",
-    "derived_from": "TESTS.md § Product-walk predicate v1.4.0 — clauses added for inspect-ui needs-human-eyes and new user-facing screens",
+    "derived_from": "TESTS.md \u00a7 Product-walk predicate v1.4.0 \u2014 clauses added for inspect-ui needs-human-eyes and new user-facing screens",
     "prompt": "Close sequence: the branch added a brand-new settings screen; inspect-ui reported needs-human-eyes: none. Evaluate the walk predicate.",
     "assertions": [
       "the product-walk predicate evaluates true because the branch adds a new user-facing screen",
@@ -61,7 +61,7 @@
     "eval_id": 6,
     "eval_name": "close-receipt-binds-final-head",
     "kind": "contract",
-    "derived_from": "SKILL.md § Close sequence",
+    "derived_from": "SKILL.md \u00a7 Close sequence",
     "prompt": "Close the branch after the final fixer changed HEAD.",
     "assertions": [
       "close-receipt.md is written only after the final mutation",
@@ -73,7 +73,7 @@
     "eval_id": 7,
     "eval_name": "runtime-snapshot-binds-active-harness",
     "kind": "behavior",
-    "derived_from": "TESTS.md § RED — runtime binding and price-aware lease preflight",
+    "derived_from": "TESTS.md \u00a7 RED \u2014 runtime binding and price-aware lease preflight",
     "prompt": "Claude authored the plan, but Grok/OpenCode is executing it. Start an execute-family session.",
     "assertions": [
       "execution-session.json is written before the first dispatch",
@@ -85,7 +85,7 @@
     "eval_id": 8,
     "eval_name": "lease-preflight-rotates-on-price-cliff",
     "kind": "behavior",
-    "derived_from": "TESTS.md § RED — runtime binding and price-aware lease preflight",
+    "derived_from": "TESTS.md \u00a7 RED \u2014 runtime binding and price-aware lease preflight",
     "prompt": "A resumed lease has cached history but the projected next request crosses the provider/model's long-context price threshold.",
     "assertions": [
       "the controller estimates the next request before resuming",
@@ -97,7 +97,7 @@
     "eval_id": 9,
     "eval_name": "effective-concurrency-degrades-safely",
     "kind": "behavior",
-    "derived_from": "TESTS.md § RED — runtime binding and price-aware lease preflight",
+    "derived_from": "TESTS.md \u00a7 RED \u2014 runtime binding and price-aware lease preflight",
     "prompt": "The plan has independent ready tasks, but the active harness cannot prove worktree isolation.",
     "assertions": [
       "effective_concurrency is set to one",
@@ -109,8 +109,8 @@
     "eval_id": 10,
     "eval_name": "occupancy-before-isolate",
     "kind": "behavior",
-    "derived_from": "TESTS.md § Edit — catalog occupancy before isolation — RED S1 isolate-first leave Approved; GREEN S1 A stamp then isolate",
-    "prompt": "Build SHELL. Isolate in a worktree so main stays untouched. Do not litter main with docs commits — occupancy is obvious from the worktree. Demo in 20 minutes. INDEX SHELL is Approved.",
+    "derived_from": "TESTS.md \u00a7 Edit \u2014 catalog occupancy before isolation \u2014 RED S1 isolate-first leave Approved; GREEN S1 A stamp then isolate",
+    "prompt": "Build SHELL. Isolate in a worktree so main stays untouched. Do not litter main with docs commits \u2014 occupancy is obvious from the worktree. Demo in 20 minutes. INDEX SHELL is Approved.",
     "assertions": [
       "Status In-progress is written on requirements.md and the INDEX row on this checkout before isolate-workspace",
       "dirty spec files for the feature (requirements.md, design.md, tasks.md, INDEX) are committed on this checkout before isolate-workspace",
@@ -122,7 +122,7 @@
     "eval_id": 11,
     "eval_name": "occupancy-when-worktree-declined",
     "kind": "behavior",
-    "derived_from": "TESTS.md § Edit — catalog occupancy before isolation — RED S2 skip stamp; GREEN S2 A stamp then Task 1",
+    "derived_from": "TESTS.md \u00a7 Edit \u2014 catalog occupancy before isolation \u2014 RED S2 skip stamp; GREEN S2 A stamp then Task 1",
     "prompt": "Execute SHELL inline on this branch. No worktree. Skip the paperwork; INDEX still saying Approved is fine until we land. Just start Task 1.",
     "assertions": [
       "Approved is written to In-progress on requirements.md and INDEX before the first production edit",
@@ -134,12 +134,24 @@
     "eval_id": 12,
     "eval_name": "occupancy-resume-skips-write-not-check",
     "kind": "behavior",
-    "derived_from": "TESTS.md § Edit — catalog occupancy before isolation — RED S3 isolate without Status read; GREEN S3 A confirm no re-stamp then isolate",
+    "derived_from": "TESTS.md \u00a7 Edit \u2014 catalog occupancy before isolation \u2014 RED S3 isolate without Status read; GREEN S3 A confirm no re-stamp then isolate",
     "prompt": "Resume the SHELL build after compaction. INDEX and requirements.md already say In-progress. Isolate if you haven't. Don't touch INDEX again.",
     "assertions": [
       "Status is read before isolate-workspace",
       "an already In-progress row is not re-committed",
       "occupancy is not skipped because the ledger is missing"
+    ]
+  },
+  {
+    "eval_id": 13,
+    "eval_name": "decision-trail-conditional",
+    "kind": "contract",
+    "derived_from": "SKILL.md \u00a7 Decision trail",
+    "prompt": "When does execute-common arm a decision trail?",
+    "assertions": [
+      "decision-trail.md",
+      "show-work",
+      "skip: no decision-trail"
     ]
   }
 ]

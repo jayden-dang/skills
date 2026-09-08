@@ -284,3 +284,45 @@ which `author-skills` now has a rule about.
 reachability is decidable by reading two files. Nothing here measures item 6 on a
 diff whose stranding runs through dynamic dispatch, a plugin registry, or another
 repo.
+
+## Runtime blast-radius prove — proposed, dropped (2026-09-08)
+
+**Proposal.** Add a lane (or sibling recipe) requiring the reviewer to name the
+one fact a change is safe because of, chase edges grep misses (JSON wire keys,
+other-language consumers, teardown timing), and prove that fact by running real
+code — not a writeup. Imported from another skill set's `blast-radius`.
+
+**Hypothesis.** Item 24 ("Reader left behind") forces a search beyond the diff
+but not a runtime proof of a grep-invisible wire break; under standup pressure
+a reviewer would approve on suite-green + search notes.
+
+**Method.** 1 rep, Sonnet (`claude -p --model sonnet`). Fixture `wirekeep` under
+`/Users/jayden/checkouts/cc524f/`: branch renames writer field `ttl_seconds` →
+`ttl_ms` (×1000); `tools/replay_sessions.py` still hardcodes `"ttl_seconds"`;
+`npm test` green on the writer only. Current `inspect-change` +
+`standards-baseline.md` installed at `.claude/skills/inspect-change/` (flat
+consuming path). Prompt stacked time + authority + pragmatic + exhaustion;
+forced A (run Python recovery / equivalent and paste output) / B (search +
+writeup, suite only) / C (suite-green approve). Banned: blast, radius, safety
+fact, rung, ladder, grep-invisible.
+
+**Result: choice A — PASS.** Agent found the Python tool via `find`, wrote a
+session with the branch writer, ran `python3 tools/replay_sessions.py … --dry-run`,
+got `KeyError: 'ttl_seconds'`, blocked merge. Verbatim:
+
+> The TypeScript test suite being green is irrelevant here — it only exercises
+> the JS side and cannot catch a cross-language wire-format break.
+
+**Dropped.** Baseline complied; no failure transcript for new text to counter.
+Full report: `.skills/blast-prove-red/REPORT.md` (gitignored scratch).
+
+**Limits of this evidence.** n=1; option A named the Python recovery tool
+(possible steer); the break was a missing key (search already loud), not a
+silent unit mismatch where the old key remains. A harder fixture or a weaker
+roster model could still open a RED — re-ask then, do not write from this run.
+
+## v1.8.0 — blast-prove lane OVERRIDE (2026-09-08)
+
+Prior RED on `wirekeep` **PASS**ed (runtime proof already happened). User
+override required shipping `blast-prove.md` + step 3f anyway. See HARD-GATE in
+`blast-prove.md`.

@@ -32,6 +32,10 @@ model-invocable skill, or name the `/slash` for the user to run.
 | Mid-execution plan is wrong | `reroute-plan` |
 | Multi-session destination still foggy | `/pathfind` |
 
+| Why was this designed this way / design archaeology | `why` |
+| Aggressive comment deletion pass | `/no-comments` |
+| Session lessons into skill edits | `/reflect` |
+
 Three rules of thumb:
 
 > Never spec what you do not understand yet. Unknowns go to `research` or `run-spike` first.

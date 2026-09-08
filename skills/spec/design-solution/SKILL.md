@@ -1,6 +1,6 @@
 ---
 name: design-solution
-version: 1.5.0
+version: 1.6.0
 description: Use when approved requirements need their technical design — the design.md /
   architecture doc spelling out HOW the requirements get built. After
   specify-behavior, before plan-tasks.
@@ -85,11 +85,13 @@ the ladder. An *already-installed* dependency (rung 5) needs no such ask — onl
 *adoption* is the user's call; the `Reuse:` line still records the rung that held.
 
 For the genuinely hard parts, design it twice: dispatch 2–3 parallel subagents with divergent
-constraints (minimize the interface / maximize flexibility / optimize the common caller),
-compare on **interface depth** and **seam placement**, and commit to one with a stated reason —
-opinionated, not a menu. "Genuinely hard" means the interface itself is in question — a new
-persistence boundary, a concurrency model, a plugin seam — not a part with one obvious shape
-(a field on an existing store, a new route through an established pattern, a plain CRUD form).
+constraints (minimize the interface / maximize flexibility / optimize the common caller).
+Each candidate writes its own path plus a rationale (alternatives rejected). **Pick a base**
+on interface depth and seam placement; **graft** ≤2 ideas from losers by hand (do not average);
+record rejections. Wild divergence → re-frame, do not blend. Opinionated, not a menu.
+"Genuinely hard" = the interface itself is in question (new persistence boundary, concurrency
+model, plugin seam) — not one-obvious-shape work (field on an existing store, route through an
+established pattern, plain CRUD). WHEN locking, read `design-principles.md` beside this file.
 
 Before committing to build any module, climb the **reuse ladder** and stop at the highest rung
 that holds — the cheapest thing that already works beats new code:

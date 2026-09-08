@@ -24,6 +24,7 @@
     "./skills/discovery/work-the-problem",
     "./skills/discovery/run-spike",
     "./skills/discovery/research",
+    "./skills/discovery/why",
     "./skills/discovery/pathfind",
     "./skills/discovery/tour-system",
     "./skills/spec/design-solution",
@@ -59,6 +60,7 @@
     "./skills/review/teach-build",
     "./skills/review/brief-team",
     "./skills/review/polish-diff",
+    "./skills/review/no-comments",
     "./skills/review/vet-feedback",
     "./skills/review/vet-source",
     "./skills/review/speak-outer",
@@ -84,7 +86,8 @@
     "./skills/project/plan-milestones",
     "./skills/meta/teach-pack",
     "./skills/meta/zone-mode",
-    "./skills/meta/author-skills"
+    "./skills/meta/author-skills",
+    "./skills/meta/reflect"
   ],
   "interface": {
     "displayName": "Engineer Pack",

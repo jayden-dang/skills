@@ -1,6 +1,6 @@
 ---
 name: inspect-change
-version: 1.7.0
+version: 1.8.0
 description: Use when a branch, PR, diff, or set of changes needs review before merging —
   produces a two-axis verdict (repo-standards conformance plus
   spec/requirements conformance, reported separately) — when build-in-waves
@@ -116,6 +116,14 @@ still report that list once if the spec promised them; do not write a
 full finding per non-home. *Done when: the Spec brief names the admitted
 set and a one-line not-in-range list (or "all IDs are in range").*
 
+## 3f. Blast prove — observable conditional
+
+WHEN the pinned range changes runtime behavior, storage, a wire/contract
+shape, or configuration → read `blast-prove.md` beside this file and follow
+it exactly before the merge verdict. Hold the `## Blast prove` block for
+step 5. Docs/test-only diffs → skip. *Done when: proven or explicitly
+unproven, or "no runtime surface".*
+
 ## 4. Dispatch both subagents in parallel
 
 Send ONE message containing both dispatches so they run concurrently and neither pollutes the other's context. Both are **read-only**: no mutation of the working tree, index, HEAD, or branch state; to inspect another revision, use a temporary worktree (`git worktree add <tmpdir> <sha>`), never move HEAD. Keep each brief under 400 words. Never pre-judge findings in a dispatch — no "do not flag", no pre-rated severities.
@@ -158,7 +166,7 @@ lack of a second voice.
 
 ## 5. Aggregate
 
-Present the reports under `## Standards` and `## Spec` headings — lightly cleaned at most. Do NOT merge, dedupe across axes, or rerank one axis's findings against the other's; that reranking is exactly what the separation prevents. When step 3b produced invariant verdicts, present them under a separate `## Invariants (advisory)` heading — a third lane, never merged into or reranked against Standards/Spec. When step 3d ran, present `inspect-ui`'s findings under a `## UI` heading — its findings carry severities and count toward the verdict exactly like the two axes' (they are screenshot-backed, not advisory), and its `needs-human-eyes` line is reproduced verbatim.
+Present the reports under `## Standards` and `## Spec` headings — lightly cleaned at most. Do NOT merge, dedupe across axes, or rerank one axis's findings against the other's; that reranking is exactly what the separation prevents. When step 3b produced invariant verdicts, present them under a separate `## Invariants (advisory)` heading — a third lane, never merged into or reranked against Standards/Spec. When step 3d ran, present `inspect-ui`'s findings under a `## UI` heading — its findings carry severities and count toward the verdict exactly like the two axes' (they are screenshot-backed, not advisory), and its `needs-human-eyes` line is reproduced verbatim. When step 3f ran, present its block under `## Blast prove` — an unproven safety fact blocks **Ready to merge? Yes**.
 
 Every finding carries: severity (Critical / Important / Minor), file:line, why it matters, and a suggested fix unless obvious.
 

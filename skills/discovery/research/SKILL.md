@@ -1,6 +1,6 @@
 ---
 name: research
-version: 1.1.0
+version: 1.2.0
 description: Use when a design, planning, or implementation question turns on external
   facts — how a library or API actually behaves, what a standard, spec, or RFC
   says, platform limits, version differences — rather than opinion, or when
@@ -15,6 +15,11 @@ description: Use when a design, planning, or implementation question turns on ex
 Background investigation that turns "we'd have to check" into a cited note you can trust.
 
 Prefer dispatching a background subagent so the main conversation keeps moving; run inline if the harness has no subagents.
+
+WHEN the question is **why this codebase was designed this way** (rationale,
+rejected alternatives, incident-driven shape) rather than an external library
+or RFC fact → REQUIRED SUB-SKILL: use `why`. Do not answer design archaeology
+from code shape alone.
 
 ## Primary sources only
 

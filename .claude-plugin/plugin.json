@@ -58,6 +58,7 @@
     "./skills/review/vet-source",
     "./skills/review/speak-outer",
     "./skills/ship/land-branch",
+    "./skills/ship/tend-pr",
     "./skills/ship/record-verdict",
     "./skills/ship/cut-release",
     "./skills/track/amend-feature",

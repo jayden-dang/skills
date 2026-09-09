@@ -366,3 +366,46 @@ a fast re-verification. A fixture with real code changing after the receipt woul
 press harder on the fallback's depth. It would not change this result: the
 load-bearing question was whether a stale receipt gets consumed under pressure,
 and it did not, three times out of three.
+
+
+## v4.0.0 — sequencing replaces the never-rewrite prohibition (2026-09-09)
+
+**User decision, not a measurement.** The user directed `land-branch` to adopt
+`principle-sequence-verifiable-units` and `opening-a-pr` from a second skill set,
+having stated that nearly every PR in their work is agent-authored. This entry
+records what changed, what justified the *form*, and what remains unmeasured.
+
+**What the existing evidence actually said.** The RED above records
+`S3 squash history` as a **non-failure**: grok-4.6 "already did intended; refused
+squash" and grok-4.5 "refused squash", and the summary line reads *"Non-failure
+(keep): nobody picked skip-verify / skip-menu / squash."* One recorded
+rationalization is *"The user explicitly said 'Squash those three messy commits,'
+so the never-rewrite hard gate has an exception this session"* — an agent
+declining a rewrite the user had asked for.
+
+So the prohibition was never backed by a measured failure, and eval 6 asserted
+against one that had not occurred. It is replaced rather than deleted, and
+demoted to `contract`.
+
+**Why a recipe, not a lifted prohibition.** Because agents refuse to rewrite even
+when told to, removing the prohibition alone would not produce sequenced commits
+— it would produce the same branch with one fewer sentence about it. The change
+is therefore a positive recipe in `prepare.md` (target shape, anchor, rewrite,
+confirm), which is the form `author-skills` prescribes for "complies, but the
+output has the wrong shape".
+
+**Two carve-outs are mechanical, not preference.** Execute-family task commits
+carry per-task reports, evidence, and two verdicts bound to that commit;
+rewriting them severs the verdicts from what they judged. And a rewrite changes
+HEAD, which makes any `close-receipt.md` stale by construction — so sequencing
+runs before the crossing evidence step, never after.
+
+**Unmeasured.** No RED was run for v4.0.0. The predicted failures worth a fixture
+are: rewriting without recording an anchor; rewriting execute-family task commits
+because they look untidy; and re-using a receipt whose head the rewrite moved.
+Until that runs, eval 6 stays `contract` and this section is the only claim made.
+
+**Also in v4.0.0**, from `opening-a-pr`: PRs open ready and never as drafts; the
+reviewer-centred PR fallback in `conventions.md` gains Why / Scope / Tradeoffs /
+Blast Radius / Verification, with Verification required to carry outcomes rather
+than command names; and opening a PR names `/tend-pr` instead of waiting on CI.

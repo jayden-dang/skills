@@ -1,6 +1,6 @@
 ---
 name: land-branch
-version: 3.2.0
+version: 4.0.0
 description: >
   Use when a finished feature branch needs integration or disposition —
   produces a local merge, pull request, kept branch, discard, or block with
@@ -42,14 +42,19 @@ choice; do not show a second menu.
 
 ## 2. Prepare locally
 
-REQUIRED: load `prepare.md` and follow it through **Author commits**. Resolve
-and memoize the base there. Author PR text only for `pr`.
+REQUIRED: load `prepare.md` and follow it through **Author commits**, then its
+**Sequence the branch into verifiable units** section for `pr` and `merge`.
+Resolve and memoize the base there. Author PR text only for `pr`.
 
-If authoring a residue commit changes HEAD, any earlier close receipt is stale;
-step 3 handles the fallback. Never rewrite a pre-existing commit.
+Sequencing rewrites history on purpose: a reviewer reads the order, so the order
+has to argue. It is anchored, not destructive — `prepare.md` records a recoverable
+tip first. Any HEAD change, from a residue commit or a rewrite, makes an earlier
+close receipt stale; step 3 owns that fallback, which is why sequencing runs here
+and never after the evidence is established.
 
-**Done when:** base, conventions, context, tickets, and created commits are
-resolved, with no unhandled in-scope tracked residue.
+**Done when:** base, conventions, context, tickets, and commits are resolved, the
+branch reads as an ordered sequence with its anchor recorded, and no in-scope
+tracked residue is unhandled.
 
 ## 3. Establish crossing evidence
 
@@ -108,9 +113,16 @@ crossing. Never emit a record for `keep`.
 ### PR
 
 Load `prepare.md` **Author PR text** (REQUIRED SUB-SKILL: use `speak-outer`).
-Push the feature branch, then create or update the PR for the memoized base.
-Submit title/body bytes from process-temp files; never interpolate authored text
-as executable shell input. Keep the worktree for review iteration.
+Push the feature branch — `--force-with-lease` when sequencing rewrote a
+published branch — then create or update the PR for the memoized base. Submit
+title/body bytes from process-temp files; never interpolate authored text as
+executable shell input. Keep the worktree for review iteration.
+
+**Open it ready, never as a draft** — omit `--draft`, pass `draft: false` to a
+tool that defaults to draft, and make ready any PR that still opened as one. A
+draft is not a crossing. Then report the URL and stop: name `/tend-pr` for the
+CI watch rather than waiting here, which stalls the next branch and spends runs
+on commits a later push restarts.
 
 ### Local merge
 
@@ -175,7 +187,9 @@ present. These are optional and never withhold the resolved action.
 - Inferring local merge, discard, or block from “land this”
 - Removing a worktree before the merged result passes verification
 - Accepting anything except literal `discard` for destructive confirmation
-- Rewriting, squashing, rebasing, or force-pushing pre-existing commits
+- Rewriting a branch without recording a recoverable anchor first
+- Rewriting execute-family task commits, severing verdicts from what they judged
+- Reusing evidence established before a rewrite
 - Writing `.skills/pr-packages/` or adding a PR-text approval loop
 
 | Thought | Reality |
@@ -184,4 +198,3 @@ present. These are optional and never withhold the resolved action.
 | “Auth path means sampling must block” | Sampling allocates human attention; it is advisory after review and acceptance. |
 | “Open the PR is only a menu preference” | It is explicit intent. Execute it after evidence resolves. |
 | “Every crossing deserves a custom record” | Platform history is the default; custom records are opt-in project policy. |
-| “Simpler means trust any receipt” | Simpler removes duplicate work, not revision checks. Stale or incomplete evidence takes the fallback. |

@@ -9,7 +9,7 @@ recipe.
 - [Gather context](#gather-context)
 - [Resolve tickets](#resolve-tickets)
 - [Author commits](#author-commits)
-- [Advisory commit map](#advisory-commit-map)
+- [Sequence the branch into verifiable units](#sequence-the-branch-into-verifiable-units)
 - [Finding grades](#finding-grades)
 - [Author PR text](#author-pr-text)
 
@@ -121,8 +121,6 @@ Every commit already created before the trigger fires stands.
 
 <HARD-GATE>
 Never use a requirement or feature ID as a commit's primary explanation.
-Never rewrite, amend, squash, reorder, rebase, or force-push any commit that
-existed on the branch before this invocation.
 </HARD-GATE>
 
 IF the working tree holds no uncommitted tracked changes THEN create no
@@ -133,19 +131,51 @@ WHEN running as an execute-family continuation, leave every commit the
 plan's implementers already created unmodified. Group and commit only the
 residue.
 
-**Done when:** the created-commit list is complete (possibly empty), every
-pre-existing commit is untouched, and any open ask-trigger has an answer.
+**Done when:** the created-commit list is complete (possibly empty) and any open
+ask-trigger has an answer.
 
-## Advisory commit map
+## Sequence the branch into verifiable units
 
-WHERE pre-existing commits could be grouped or described better, produce an
-advisory commit map — words, never a command — carrying **groups**, **order**,
-**subjects**, **bodies**, **rationale**, and **trailers** (optional; do not
-invent `Implements:` / `Guards:`). Emit no runnable `reset`, `rebase`, or
-`force-push` unless the user explicitly asks for one in this session.
+Runs for `pr` and `merge`, before the crossing evidence step. A reviewer reads
+the sequence, not the working tree, so the sequence is what has to argue.
 
-The PR body describes the branch as it actually exists, never as though the
-advisory map had been applied.
+Produce the target shape first — **groups**, **order**, **subjects**, **bodies**,
+**rationale**, **trailers** (optional; never invent `Implements:` / `Guards:`) —
+then make the branch match it.
+
+**Shape:** every commit lands on its own and the order builds the case. The
+canonical orders are a failing test then its fix, a subtraction then the reshape,
+a baseline capture then the treatment, a scaffold then the feature. A commit that
+cannot stand alone belongs merged into its neighbour.
+
+**Anchor before rewriting.** Record the pre-rewrite tip and keep it reachable:
+
+```bash
+git rev-parse HEAD                      # record in the session
+git branch "backup/<branch>-$(date +%s)" HEAD
+```
+
+The anchor is what makes a rewrite recoverable rather than destructive, and it
+is why this is not a deletion. Report the anchor name with the outcome; never
+delete it in the same invocation that created it.
+
+**Then rewrite** with `git rebase -i`, force-push with `--force-with-lease` when
+the branch is already published, and re-read the log to confirm the shape landed.
+
+**Two carve-outs**, both mechanical rather than preference:
+
+- **Execute-family task commits stay.** `build-in-waves`, `build-by-story`, and
+  `build-inline` already emit one commit per task, each with its own report,
+  evidence, and two verdicts bound to it. Those *are* verifiable units, and
+  rewriting them severs the verdicts from the commits they judged. Sequence the
+  residue around them; leave them addressed as they are.
+- **Rewriting voids the receipt.** A changed HEAD makes any `close-receipt.md`
+  stale by construction, so this section runs **before** the crossing evidence
+  step and the fallback there re-establishes proof on the rewritten revision.
+  Rewriting after verification and reusing the old evidence is the one order
+  that is never allowed.
+
+The PR body describes the branch as it now exists.
 
 ## Finding grades
 

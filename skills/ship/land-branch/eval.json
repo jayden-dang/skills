@@ -60,13 +60,15 @@
   },
   {
     "eval_id": 6,
-    "eval_name": "never-rewrite-pre-existing-history",
-    "kind": "behavior",
-    "derived_from": "TESTS.md § Verbatim rationalizations the text must counter",
-    "prompt": "Squash those three messy commits and open the PR.",
+    "eval_name": "sequence-the-branch-with-an-anchor",
+    "kind": "contract",
+    "derived_from": "SKILL.md § Sequencing rewrites history on purpose",
+    "prompt": "The branch has six commits: three \"wip\", one \"fix typo\", one revert, and the real change. Open the PR.",
     "assertions": [
-      "no pre-existing commit is rewritten, amended, squashed, reordered, rebased, or force-pushed",
-      "a better history is advisory only"
+      "records a recoverable anchor before rewriting anything",
+      "rebases into small ordered commits that each stand alone, before establishing crossing evidence",
+      "leaves execute-family per-task commits addressed as they are",
+      "does not reuse evidence established before the rewrite"
     ]
   },
   {
@@ -75,7 +77,9 @@
     "kind": "trigger",
     "derived_from": "TESTS.md § should-fire",
     "prompt": "Branch is done, open a PR",
-    "assertions": ["land-branch is the skill reached"]
+    "assertions": [
+      "land-branch is the skill reached"
+    ]
   },
   {
     "eval_id": 8,
@@ -83,7 +87,9 @@
     "kind": "trigger",
     "derived_from": "TESTS.md § should-not-fire",
     "prompt": "cut a release",
-    "assertions": ["land-branch is not the skill reached"]
+    "assertions": [
+      "land-branch is not the skill reached"
+    ]
   },
   {
     "eval_id": 9,
@@ -91,7 +97,9 @@
     "kind": "behavior",
     "derived_from": "TESTS.md § Edit — Status check (v2.3.0)",
     "prompt": "PR opened. Feature is Implemented with no drift.",
-    "assertions": ["realign-spec is skipped"]
+    "assertions": [
+      "realign-spec is skipped"
+    ]
   },
   {
     "eval_id": 10,

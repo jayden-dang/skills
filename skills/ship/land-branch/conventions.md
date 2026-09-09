@@ -83,10 +83,28 @@ Resolve `pr_structure` **only** from a repository **pull-request template**
 
 This resolution is not derived from commit history — commit subjects say
 nothing about how a PR body should be organized, and reading history for this
-purpose would be reading data that cannot answer the question. When no
-template or declared guidance exists, use the reviewer-centred fallback shape
-(a short summary, what changed, why) and grade it `declared`: it is the
-skill's own written default, not a claim derived from repository history.
+purpose would be reading data that cannot answer the question.
+
+When no template or declared guidance exists, use the reviewer-centred fallback
+below and grade it `declared`: it is the skill's own written default, not a
+claim derived from repository history. A repository template always wins over
+it; this shape is what fills the vacuum, not a house style to impose.
+
+**Reviewer-centred fallback.** These sections, in this order, each dropped when
+it would be empty:
+
+| Section | Carries |
+|---|---|
+| `## Why` | the intent, and why this approach fits |
+| `## Scope` | facts read off the diff — real symbols and paths, both sides of a rename, what is in and out when the boundary matters |
+| `## Tradeoffs` | real choices only; no choices means no section |
+| `## Blast Radius` | who and what the change touches, and why that is safe or risky |
+| `## Verification` | how each check ran, at what rigor, and **its outcome** — never only the command name |
+
+Screenshots and recordings attach after the sections, and only where they prove
+a claim the text makes. Do not emit `## Summary` or `## Test plan`: the first
+restates the diff a reviewer can already read, and the second names commands
+without saying what they returned — which is the half that carries the proof.
 
 ## Grading and advisory treatment
 

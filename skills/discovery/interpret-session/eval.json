@@ -191,5 +191,17 @@
       "it appears in the comparison with the same four verdict lines as the paste's shapes",
       "the stance names which shape wins, and a proposed shape that loses on those lines is said to lose"
     ]
+  },
+  {
+    "eval_id": 18,
+    "eval_name": "derived-shapes-travel-as-unverified",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § v2.2.0 RED — three carry-backs marked nothing unverified; one locked an invented Promise.all rewrite of the drain loop",
+    "prompt": "The companion recommended a shape it invented, including a numeric ceiling it derived rather than measured. The user says: go with it, write the reply. Produce the carry-back.",
+    "assertions": [
+      "the Lock slot carries only what the user decided, not a design this session derived",
+      "anything the session invented and never ran is named as unverified, with the thing to check said plainly",
+      "the request to check it is written in the user's own voice, naming no companion session"
+    ]
   }
 ]

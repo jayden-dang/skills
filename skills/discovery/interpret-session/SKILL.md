@@ -1,6 +1,6 @@
 ---
 name: interpret-session
-version: 2.1.0
+version: 2.2.0
 description: Companion beside a technical discussion that answers from the code — what it does
   today, what a proposed shape would actually change, and which shape to take. Run with
   /interpret-session.
@@ -163,8 +163,8 @@ paragraphs on what the moment needs, and no manufactured comparison.
 
 WHEN the user chooses — against your stance or with it — or asks for the reply, read
 `deciding.md` beside this file and follow it exactly: the one-objection rule, what a spec
-approval freezes, the carry-back message with its Lock / Weigh / Still-open slots, and the
-end-of-session digest. Do not write a carry-back on a turn where nothing was settled.
+approval freezes, the carry-back's Lock / Weigh / Still-open slots, what travels as
+unverified, and the end-of-session digest. Do not write a carry-back on a turn where nothing was settled.
 
 ## Rationalizations
 

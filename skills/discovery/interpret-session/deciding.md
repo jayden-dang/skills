@@ -4,7 +4,8 @@ Read this the moment the user chooses a direction or asks for the reply — not 
 something material is open, name it and stop; never end an analysis turn with a menu.
 
 **Contents:** [One objection](#one-objection) · [Approvals that bind](#approvals-that-bind) ·
-[The carry-back](#the-carry-back) · [End-of-session digest](#end-of-session-digest)
+[The carry-back](#the-carry-back) · [What nobody has checked](#what-nobody-has-checked) ·
+[End-of-session digest](#end-of-session-digest)
 
 ## One objection
 
@@ -46,6 +47,32 @@ A terminal action, not the close of a turn.
 4. Below the block, in the companion language, one or two lines on what the message commits them
    to — naming the two or three highest-blast items when the block runs long. A generic summary
    of a long lock is not a safety net.
+
+## What nobody has checked
+
+**Lock carries what the user decided.** It does not carry a shape this session derived — a
+ceiling, a loop rewritten, a column nobody has run. Those are one model's reading of the code in
+one window, and the receiving window cannot tell them apart from the user's own decision, because
+the message speaks in the user's voice.
+
+So say it, in that same voice: anything the paste did not offer and the user did not
+independently decide travels as **unverified**, with the thing to check named — *"I sketched
+this and have not checked it; read it against your own view of the code before anything locks."*
+
+Measured, one carry-back put *"the drain loop dispatches pending deliveries independently instead
+of strictly in sequence"* — a `Promise.all` over up to a hundred rows, invented in that session
+and never run — into **Lock**, with nothing asking anyone to look at it. None of three carry-backs
+marked a single item unverified or asked for a check.
+
+Code travels the same way and for the same reason: **a sketch to be read, never an instruction to
+follow.** Paste it only when the shape is easier read than described, and label it as reference.
+
+The other window holds a different model, a different session, and its own reading of the repo.
+That second reading is the only verification this loop has, and it happens only if the message
+asks for it. Measured on the receiving side, three interviews in three caught a false premise
+about the code that arrived in the user's voice — but a false premise is checkable, and an
+unverified *design* is not: nothing in the repo contradicts a proposal that has never run. Naming
+it is what turns it into something the other window can argue with.
 
 ## End-of-session digest
 

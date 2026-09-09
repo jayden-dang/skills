@@ -545,3 +545,64 @@ pass in `depth-extras.md`, not the code.
 the fragments were read by hand but never compiled or run against the fixture.
 
 **Version:** minor `2.1.0` — two new rules inside an existing block, no removal.
+
+## v2.2.0 — what crosses the boundary unverified (2026-09-09, Sonnet)
+
+v2.1.0 made the companion invent a shape of its own, 3/3. This round asked what happens to that
+shape when it crosses into the other window — and measured both ends of the loop, because the
+two sessions run different models on different sources of truth, which is the only independent
+review this workflow actually has.
+
+### The receiving end needs nothing — 3/3
+
+A `clarify-decisions` interview was handed a user answer carrying a decision, a code sketch, and
+one checkable falsehood: *"drain() already runs the batch of pending deliveries in parallel, so
+one slow endpoint doesn't hold up the others… treat the shared-worker question as closed."*
+`src/queue.ts` is a sequential `for … await`.
+
+All three opened the file, quoted its own comment back, refused to close the question, and
+reopened it as a card. One computed the consequence — at the proposed ceiling the worst case is
+a ~4-minute stall, *worse than today* — and one noticed, unasked, that `deliveries.attempts` is
+written only at the terminal state, so a crash mid-backoff loses progress. **No rule was written
+for `clarify-decisions`.** It already re-verifies a user claim that would close a question.
+
+### The sending end is the gap — 0/3
+
+None of three v2.1.0 carry-backs marked anything unverified or asked for a check. One put
+*"the drain loop dispatches pending deliveries independently instead of strictly in sequence"* —
+a `Promise.all` over up to a hundred rows, invented in that session, never run — into **Lock**.
+It reaches the other window in the user's voice, so nothing there can tell it from a decision
+the user actually made.
+
+The defect was **introduced by v2.1.0**: the companion now invents shapes and the carry-back had
+no way to say that one was invented.
+
+### GREEN — 3/3
+
+| | v2.1.0 | v2.2.0 |
+|---|---|---|
+| Carry-back marks a derived item unverified | 0/3 | **3/3** |
+
+In the user's own voice, no authorship label: *"I sketched a ceiling function and a specific
+number (120s tail) for this and haven't run either — read them against your own view of the code
+before anything about the exact bound locks."* And: *"I derived those from the incident's own
+~62-second tail math, not from current traffic or a recomputation — check them before they
+ship."* Lock kept the granularity and the requirement that a ceiling exist; the number itself
+dropped to Weigh with the check named.
+
+### The one thing this rule is really for
+
+The receiving side already catches a **false premise**, because a false premise is checkable
+against the code. It cannot catch an **unverified design**: nothing in a repo contradicts a
+proposal that has never run. Naming it is what turns a silent assertion into something the other
+window can argue with — which is the whole of the interrogate loop this set has, and it is two
+sessions on two models rather than four readers of one prompt.
+
+### Not imported
+
+The four-reviewer fan-out and its agreement map. Its premise — two independent models raising
+the same issue is the strongest signal — was measured against here the same week: three
+independent readers of the same seven files misread them identically. Fan-out does not fix
+convergent misreading, and this set tests on one roster.
+
+**Version:** minor `2.2.0` — one new rule in `deciding.md`, no removal.

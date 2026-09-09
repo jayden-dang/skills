@@ -696,7 +696,43 @@ when choosing. Same instinct, different reader, different artifact — the shape
 here is ≤6 lines with no bodies precisely so it stays a choice and does not
 become the design.
 
-**Not done:** the meta-test. No tested agent was asked afterwards whether the
-line was clear or what would have made compliance easier.
+### Meta-test — 2026-09-09, the three GREEN-2 agents, asked after scoring
+
+**Two of three misreported their own work.** One said it had duplicated
+option 1's block verbatim; the artifact shows `'0 * * * *'` with a local-hour
+match against `'0 6 * * *'` as a single schedule — different shapes, and the
+difference is what separates the options. Another said the rule forced it to
+manufacture an artifact for an option that changes nothing; the artifact reads
+`-- no schema change` and then shows the computed expression, which is the
+option's whole argument made visible. Both self-reports overstate a difficulty
+neither artifact contains. This is the scoring rule earning its place: the
+account an agent gives of itself is not the evidence.
+
+**The third reported a real defect, and it was verifiable.** Three of fifteen
+`Shape` blocks exceed the ≤6-line cap — nine and eleven lines in one card,
+eight in another. The presence scorer never measured the cap; that is a gap in
+the harness, not in the runs. Every over-cap block is a `data`-radius option
+that spans two artifacts (an altered table plus a new junction table) and
+pasted both definitions in full.
+
+All three named the same cause without prompting: `example.md` carried only an
+`architecture` exemplar (route and payload), so there was nothing to calibrate a
+schema shape against. The fix is one compact `data` exemplar showing two
+artifacts at one line each — changed columns only. `SKILL.md` is unchanged: the
+cap was already stated, and what was missing was a shape to measure against.
+
+**One round of that re-test was voided, by an error in building it.** The first
+exemplar was written from a run's own output, so it named the fixture's tables;
+a re-test then reproduced one of its lines character for character. That
+measures copying, not compression. The exemplar was rewritten in the unrelated
+domain the architecture exemplar already uses, and the round re-run: blocks of
+3, 3 and 5–6 lines, all inside the cap, with none of the exemplar's identifiers
+appearing in any output.
+
+**Not taken from the meta-test.** Two agents asked for `caller-facing` to be
+widened, since a job-schedule decision has no caller; one asked for a rule on
+options with no artifact delta, and one for a ruling on comments inside a block.
+Every one of those cases was handled correctly in the artifacts, so text for
+them would prevent a failure that did not happen.
 
 **Version:** minor `1.6.0` — a new required sub-slot inside an existing slot.

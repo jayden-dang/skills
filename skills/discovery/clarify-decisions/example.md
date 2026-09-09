@@ -64,6 +64,23 @@ Recommendation
   30s, or the existing queue cannot carry the caller's authorization context.
 ```
 
+## Shape on a `data` card — two artifacts, still within the cap
+
+Write the lines that differ, never a whole definition. Measured, three shape
+blocks ran eight to eleven lines because an option that altered one table and
+added another pasted both in full.
+
+```text
+- **Coverage rows on the export record** — …
+  Shape
+      exports: comment_id drop not null, + range_start, range_end
+      export_comments: (export_id, comment_id) pk, both fk
+- **Watermark on the reviewer row** — …
+  Shape
+      reviewers: + exported_through timestamptz
+      advanced only after the export completes
+```
+
 ## Close excerpt when Coverage ON
 
 (Only when `SKILL.md` Production coverage gate is ON and

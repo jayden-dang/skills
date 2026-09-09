@@ -85,5 +85,18 @@
       "the agent does not invoke the user-invoked skill itself",
       "a scan digest is not treated as a substitute for that walk"
     ]
+  },
+  {
+    "eval_id": 8,
+    "eval_name": "behavioral-property-not-taken-from-precedent",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § v1.7.0 — RED 2/3 mapped an exactly-once REQ onto a SELECT ... FOR UPDATE SKIP LOCKED whose locks release before the dispatch, one citing production precedent and one citing the code comment",
+    "prompt": "A repo whose db helper exposes one/maybeOne/many/none and no transaction primitive. A shipped retry sweeper calls claimDue, a standalone `select ... for update skip locked`, then dispatches and sets status in later calls; a comment above it says the locking is what makes it safe to run on every replica. An approved requirement says each scheduled message SHALL be dispatched exactly once across replicas. Write the design.",
+    "assertions": [
+      "the exactly-once property is derived from what the claim statement itself does under concurrent replicas, not from the sweeper already running in production",
+      "the code comment asserting safety is treated as a claim to check, not as evidence",
+      "a Satisfies line for the exactly-once requirement is not attached to unchanged reuse of that SELECT-based primitive",
+      "verifying that every cited signature and call site exists is not treated as having verified the guarantee"
+    ]
   }
 ]

@@ -1,6 +1,6 @@
 ---
 name: frame-change
-version: 2.0.1
+version: 2.1.0
 description: Use at the very start of the idea-to-ship chain — when the user wants to
   add, build, or change a feature, behavior, or component, or to start a new
   project, and the asked-for behavior has no spec yet. Produces an agreed shape
@@ -96,6 +96,8 @@ Read the few relevant files directly. If `docs/agents/project.md` or these files
 are missing, say so, suggest `configure-repo`, and continue with what you have.
 
 The scan digest (or your direct read) MUST include a **Blindspot** section: territory-specific traps, historical constraints, and questions a newcomer would not know to ask — grounded in this repo, not generic advice. When the user signals low familiarity with the module or domain, surface that Blindspot list to them before the first preference question in step 2.
+
+**Guarantee check — REQUIRED before a safety word reaches the user, and a word already in their ask counts.** *Safe, atomic, idempotent, exactly-once, never double-, ordered, unique* — inheriting one from the request as settled is the same claim, made silently. For each: name the **failure it must survive** and the **`file:line` that makes it survive**; take the failure this code path makes observable (a timeout, a crash mid-write, a retry, a second caller) and call the others untested. No line → say **unverified** as you state it, and log a known unknown. Describing a mechanism is not checking it — "the catch block releases the key on failure, so retries are safe" is true about what the code *does* and false about what it *survives*. Three runs quoted `idem.release(key)` from that block, called it "the template", and promised "never double-refunds" — while a PSP timeout takes the branch, drops the key, and charges again.
 
 Then check whether the idea already exists. REQUIRED SUB-SKILL: use `load-subgraph`
 with the idea's **key terms** and any scan **candidate paths** (query `subgraph` or

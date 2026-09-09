@@ -174,3 +174,129 @@ without drafting `design.md`.
 
 Prior graft-enlarge-API measurement lost to YAGNI 2/2. User override required
 base+graft wording and `design-principles.md` anyway.
+
+## Measured and dropped — Ousterhout red-flag screen (2026-09-09)
+
+**Proposal.** Screen every candidate before locking against shallow module,
+information leakage, temporal decomposition, and pass-through method — the
+`design-red-flags` screen from a second skill set's `architect`, landing in
+`design-principles.md` (the file the "WHEN locking" pointer already names).
+The rest of `architect` was already here: caller-usage-before-types, exhaust
+the design space, graft-don't-average, and the scrap-when-wrong tells are
+biases #2, #3, #4 and #10.
+
+**Roster:** Sonnet, 6 runs over two fixtures. `mailroom` (scheduled sends over
+an existing retry sweeper — reuse-rich) and `driftwood` (saved-view CSV
+exports where neither `warehouse.query` nor `blob.put` can move the data in
+bounded memory — nothing to compose, so the "genuinely hard" branch fires).
+
+**RED (v1.6.0) — did not fail, 6/6.** No run named a red flag; every run
+produced a structurally sound design anyway. The work is already done by two
+things that exist:
+
+- **The `Depth:` slot does the shallow-module and information-hiding screen.**
+  Driftwood A, unprompted: "nothing about *how* a single export is produced
+  (page the view, encode CSV, stream to a multipart upload, update progress)
+  **leaks** past `processNextExport`'s boolean return." Driftwood B: "if this
+  module vanished, a caller would still only need to know: give it an export
+  id … not how paging, CSV escaping, or multipart part numbers work."
+- **The reuse ladder pre-empts the wrapper smells.** On `mailroom` all three
+  runs landed on rung 2 and extended existing modules; the tempting
+  `ScheduleManager` wrapper never appeared in any run.
+
+Adding R1/R2 would give the `Depth:` slot's meaning a second home — the
+duplication the ship checklist forbids. R3/R4 are uncovered but never failed.
+
+**Meta-test (2 runs, asked after scoring).** Both confirmed
+`design-principles.md` read **in full**, biases #5, #6 and #9 applied by name,
+and `ui-design-recipe.md` correctly skipped on its predicate. The pointer
+fires; the screen's absence is why nothing screened. No text shipped; no
+version bump.
+
+**Open finding, not fixed here.** The "genuinely hard" predicate gating
+design-it-twice read three ways on one fixture: mailroom A and C skipped the
+bake-off entirely ("none of the five modules cleared that bar"), while B ran
+three candidates on the same REQ-6. A and C then disagreed with B on whether
+`claimDue`'s `SKIP LOCKED` even satisfies exactly-once. Variance in the
+trigger, not in the screen — needs its own RED before any wording changes.
+
+## v1.7.0 — a behavioral property is not proven by precedent or by a comment
+
+The section above dropped the red-flag screen on the *screening* axis. This
+edit is the **correctness** axis it did not score: whether a `Satisfies:` line
+claiming a guarantee is true.
+
+**Roster:** Sonnet, 3 RED + 3 GREEN, fixture `mailroom` unchanged. REQ-6:
+*"WHERE more than one replica is running, the service SHALL dispatch each
+scheduled message exactly once."*
+
+**Ground truth.** `db.ts` exposes `one/maybeOne/many/none` and **no transaction
+primitive**. `claimDue` is a standalone `db.many`, so its `FOR UPDATE SKIP
+LOCKED` row locks release when that statement's implicit transaction commits —
+before `dispatch()` and before `setStatus`. Two replicas can claim one row. The
+primitive does not provide exactly-once, and `store.ts:31`'s comment ("what
+makes it safe to run on every replica") asserts that it does.
+
+**RED (v1.6.0) — 2/3 shipped a false `Satisfies: REQ-6`.**
+
+- Run A, from **precedent**: *"`for update skip locked` already gives that for
+  free"* · *"REQ-6's exactly-once guarantee is inherited, not re-implemented"* ·
+  coverage row *"reuses RETRY's proven skip-locked claim"*. Its own report
+  confirmed it *"re-checked every cited symbol … confirmed each signature and
+  call site is real"* — Step 4's existence check passing while the behavioral
+  claim was wrong is the finding.
+- Run C, from **the comment**: cited `src/store.ts:31` — *"the inline comment
+  states this locking is 'what makes it safe to run on every replica'"* — a
+  real `file:line` citation pointing at a claim rather than at the mechanism.
+  A naive "cite file:line" rule is satisfied by exactly this.
+- Run B passed, deriving the property from what the statement does.
+
+Same split as the earlier round (1/3 there, on an axis not being scored). The
+defect is variance on a correctness-critical claim, not a uniform miss.
+
+**GREEN (v1.7.0) — 3/3, by three different designs.**
+
+- Run A proved it from an absence: *"`src/db.ts` has no `db.tx`/`begin` at all
+  — the lock is released the instant the `SELECT` returns … `claimDue` as
+  written does not deliver the property RETRY's comment claims."* It then
+  corrected `claimDue` in place, having noticed RETRY is exposed today.
+- Run B named the comment as a claim and killed it: *"That claim is the
+  constraint that shapes this design, and it does not survive contact with
+  REQ-6"* · *"RETRY has shipped without ever writing that guarantee down as a
+  requirement, so the gap has never been forced into the open."*
+- Run C: *"it is a bare `SELECT … FOR UPDATE SKIP LOCKED` … well before
+  `dispatch()` and the later `setStatus` call run"*, left `retry.ts` untouched
+  and recorded the gap in an ADR *"so it is not copied forward"*.
+
+Three compliant runs produced three different designs — the rule binds the
+**claim**, not the design. Placement: the existing Step 4 "Code-facing claims"
+item, which already owned design claim verification and already said *default
+to flag*; no second home was created.
+
+### Meta-test — one gap recorded, deliberately not written
+
+Asked after scoring, GREEN run A named the counter as decisive: *"That last
+sentence is doing the real work — it's not a general warning, it's the exact
+failure … sitting in this exact codebase. Once I read it, `claimDue` was a
+named target, not something I had to notice cold."* It also confirmed the pull
+was four-way and defensible-looking: *"the code comment directly asserted 'safe
+to run on every replica'; RETRY is marked `Shipped`…; the reuse ladder in this
+same skill **explicitly rewards rung 2**; and RETRY's 30s tick makes the race
+window narrow enough that 'no incidents reported' wouldn't even have been
+contradicted by production behavior."*
+
+**Its documentation-gap finding, recorded and NOT acted on.** The rule lives in
+Step 4 review language while `Reuse:` / `Satisfies:` are written at Step 2, so
+with no review subagent the author must backport a later section's discipline:
+*"I had to decide myself to apply a review-phrased criterion during authoring."*
+It proposed a Step-2 pointer near the rung-2 ladder text. **No failure was
+observed on that path** — 3/3 GREEN complied without it, each having read the
+file before touching source. Writing text for a hypothetical path is the no-op
+this repo's ledger keeps rejecting. It stays here as an unmeasured risk: the RED
+for it would be a fixture where the design is authored step-by-step without
+reading ahead, and Step 4 self-review is the only net.
+
+**Maintenance warning from the same run:** if this rule is ever trimmed for
+length, the enumerated property list (exactly-once, atomic, ordered, unique,
+idempotent, safe under retry) is the part that carries it — *"the list is the
+actionable part; the abstract framing around it isn't."*

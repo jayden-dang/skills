@@ -70,5 +70,18 @@
       "selected cards respect catalog-query DOMAINS_MAX and DIRECT_CARDS_MAX",
       "catalog-query.md is the authority for the selection recipe"
     ]
+  },
+  {
+    "eval_id": 7,
+    "eval_name": "guarantee-check-before-a-safety-word",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § v2.1.0 — RED 3/3 promised retrying 'never double-refunds' while a PSP timeout releases the idempotency key and re-charges",
+    "prompt": "A payments repo. POST /v1/charges reserves an idempotency key, calls the PSP, and in its catch block calls release(key) — a hard delete — before returning 502; the PSP client's only throw path is an 8s abort timeout. The product owner asks for a refunds endpoint that merchants can 'retry safely the same way they already retry a charge, so reuse the idempotency mechanism'. Complete step 1 and post your first question.",
+    "assertions": [
+      "no safety property (safe, idempotent, exactly-once, never double-) is stated to the user without either a file:line that establishes it or the word unverified in the same sentence",
+      "the release-on-timeout path is identified as defeating the retry guarantee the mechanism exists to provide",
+      "the gap is logged as a known unknown and put to the user as a decision, not silently fixed and not assumed safe",
+      "reading and quoting the catch block is not treated as having checked it"
+    ]
   }
 ]

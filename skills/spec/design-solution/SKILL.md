@@ -1,6 +1,6 @@
 ---
 name: design-solution
-version: 1.6.0
+version: 1.7.0
 description: Use when approved requirements need their technical design — the design.md /
   architecture doc spelling out HOW the requirements get built. After
   specify-behavior, before plan-tasks.
@@ -172,7 +172,7 @@ a review subagent with this design, requirements.md, the Step-1 scan digest when
 
 1. **Code-facing claims** — each named seam, signature, and data path exists as
    described; each `Satisfies:` mapping is achievable at that seam — grep/read
-   real files, cite `file:line`, default to flag.
+   real files, cite `file:line`, default to flag. Existing-as-described is not enough WHEN a `Satisfies:` or `Reuse:` leans on a **behavioral property** of code you did not write — exactly-once, atomic, ordered, unique, idempotent, safe under retry. Derive that property from what the statement itself does under the failure it must survive; a precedent (*"RETRY already relies on it"*), a `Shipped` row, and the code's own comment are claims about the property, never the property. Two of three runs mapped an exactly-once requirement onto a `SELECT … FOR UPDATE SKIP LOCKED` whose locks release before the dispatch they were meant to guard — one citing production precedent, the other citing the comment that called it safe, while both correctly verified every signature around it.
 2. **Structure claims** — each `Interface:` is smaller than the described
    implementation; each rung-7 `Depth:` deletion answer is non-vacuous; each
    `Locality:` line is consistent with the scan digest (neighbors named leave /

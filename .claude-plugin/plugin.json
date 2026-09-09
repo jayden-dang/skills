@@ -2,7 +2,7 @@
   "name": "jdk",
   "displayName": "Engineer Pack",
   "version": "1.3.0",
-  "description": "Engineer Pack (jdk, jayden-dang-kit): A-to-Z agentic development (ideation to release, requirements traceability, roadmap/milestones). Personal Pack is separate \u2014 not included here.",
+  "description": "Engineer Pack (jdk, jayden-dang-kit): A-to-Z agentic development (ideation to release, requirements traceability, roadmap/milestones). Personal Pack is separate — not included here.",
   "author": {
     "name": "Jayden Dang"
   },
@@ -26,6 +26,7 @@
     "./skills/execution/debug-remote",
     "./skills/execution/assess-observability",
     "./skills/execution/build-inline",
+    "./skills/execution/build-on-host",
     "./skills/execution/build-in-waves",
     "./skills/execution/build-by-story",
     "./skills/execution/test-first",

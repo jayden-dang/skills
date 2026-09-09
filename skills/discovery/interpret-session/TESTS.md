@@ -687,3 +687,62 @@ that turn is read in a terminal and a terminal renders no mermaid; mermaid once 
 doc, a PR body, or an artifact. Every drawing measured in this file was ASCII.
 
 **Version:** minor `2.6.0`.
+
+## v2.7.0 — `Rung` deleted, and nothing put in its place (2026-09-09)
+
+### Three fixtures beyond the one it was built on
+
+`bellcast` had carried every measurement to this point — one repo, one paste, one fork shape.
+Three more, each isolating one variable, two runs apiece.
+
+| Fixture | The variable | Result |
+|---|---|---|
+| `stavelot` — where frontmatter validation lives | **no shared resource anywhere** | 2/2 four blocks held; both caught the paste's false "already throws" premise; both independently proposed the same third shape (validate in `toPage`) |
+| `brackwater` — running total vs ledger, **paste accurate in every claim** | the false-positive direction | 2/2 invented no correction — "the paste's description of the current code is accurate" — and both then found a real defect nobody planted: `adjust()`'s two writes are not in a transaction. One verified that against node-postgres's own docs rather than memory |
+| `pellhaven` — "write requirements now, or walk the schema questions first?" | no live choice | 2/2 took the short path: 263 and 323 words, no blocks, no table |
+
+`Invariant` did not need a shared resource to have content: on `stavelot` it became the module's
+documented contract — *"`frontmatter.ts`'s documented guarantee is 'no validation', domain-agnostic
+parsing; this welds it to `Page`'s fields."*
+
+Two things got worse. The drawing rule fell to **2/4** off the fixture it was tuned on, and one of
+those two was mermaid inside a companion turn, where the rule says ASCII because a terminal renders
+no mermaid. And `Rung` failed everywhere.
+
+### Why `Rung` was cut
+
+Across seven runs it never once decided anything. `windermill-court` scored `2` for all three
+shapes. `harkness-yard` and `thorncastle-way` wrote prose where a rung number belongs — "high",
+"low", "n/a, no new code". On `bellcast` it tracked `Locality`. A fixed column that reads the same
+down every shape is a column the reader learns to skip.
+
+### And nothing replaced it
+
+A research pass read all seven artifacts and tallied what the stance's own `Why it wins now`
+sentence actually cited. Note at `.skills/research/2026-09-09-shape-verdict-third-line.md`.
+
+**`Invariant` was the sole named decider in 6 of 7 runs**, and in the seventh it narrowed the field
+to a tie that `Depth` broke. Candidates were scored against that: *who must agree* and
+*cost-of-being-wrong versus cost-of-waiting* read identically for every shape in all seven runs —
+the same failure shape as `Rung`. *Blast radius* mostly restates `Invariant`. *Failure mode*
+duplicates the Stance's own `Cost I accept` and `What would flip me`. **Reversibility** is the
+best-grounded candidate and has a clean non-redundancy proof against `Locality` — on
+`thorncastle-way` two shapes both score `extend` and diverge sharply on cost-to-undo — but it was
+never the decisive factor in any run, only a secondary cost. Text with no recorded failure behind
+it is a no-op, so it was not written.
+
+**One thing did escape all three lines**, in one run of seven: `ellingsby-park`'s deciding sentence
+credited the pick with *not requiring a guess at an unmeasured production fact*. `Invariant`'s
+keep / break / silent-on vocabulary has no slot for a conditional like "keeps it **if and only if**
+the cache write is also made atomic". It is already carried in prose by the Stance's `How sure` and
+`What would flip me`, so no line was added — recorded here as the thing to watch.
+
+### `Locality` survives a test `Rung` failed, and the difference matters
+
+`Locality` was **also** never the cited decider in any of the seven runs. It stays anyway, and the
+distinction is worth naming so it is not cut later on a careless reading: `Locality` **discriminates**
+— its cells differ per shape in every run (`extend` against `extract`, one neighbour against three).
+`Rung` did not. A line earns its column by telling the shapes apart; being the tiebreaker is a
+different and rarer job, and on this evidence only `Invariant` and `Depth` do that one.
+
+**Version:** minor `2.7.0` — one line removed from an existing table.

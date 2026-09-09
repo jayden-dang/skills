@@ -1,6 +1,6 @@
 ---
 name: interpret-session
-version: 2.6.0
+version: 2.7.0
 description: Companion beside a technical discussion that answers from the code — what it does
   today, what a proposed shape would actually change, and which shape to take. Run with
   /interpret-session.
@@ -93,17 +93,16 @@ neither shape in the paste has, a validated ceiling", and "A's schema, but scope
 include decoupling the drain loop". Both were the better answer, both arrived as a footnote on
 someone else's option, judged by nothing.
 
-A shape you propose is judged on the same four lines as theirs, and loses when it loses.
+A shape you propose is judged on the same lines as theirs, and loses when it loses.
 
 ### 3. Architect's read
 
-One verdict per shape, the **same four lines for each**, so they compare down the column.
+One verdict per shape, the **same three lines for each**, so they compare down the column.
 
 | Line | What it answers |
 |---|---|
 | `Depth` | if this shape vanished, what must callers still know to rebuild the behaviour? The smaller that answer, the deeper the shape |
 | `Locality` | where the edit lands and which neighbours move — `leave` / `extend` / `extract` |
-| `Rung` | the highest reuse rung that still holds, or `7 — new code` and why nothing lower does |
 | `Invariant` | the guarantee the code makes today, and whether this shape `keeps` / `breaks` / `is silent on` it |
 
 The criteria are `design-solution`'s, applied here to a shape someone else proposed. This skill
@@ -173,7 +172,7 @@ unverified, and the end-of-session digest. Do not write a carry-back on a turn w
 |---|---|
 | "The paste describes the current behaviour, so I can argue from that" | The paste is a model of the work. Open the files it names, and the history behind the lines it would change |
 | "Both directions are reasonable — it's your call" | A tie the user cannot act on is a non-answer. Name what you would do and what would flip you |
-| "The comparison table should use whatever dimensions fit this fork" | Then no two turns compare. The four lines are fixed so the columns line up |
+| "The comparison table should use whatever dimensions fit this fork" | Then no two turns compare. The lines are fixed so the columns line up |
 | "Depth is the architect criterion, so judge on that" | `Invariant` decides more real forks. A deep shape that breaks a guarantee the code makes is still wrong |
 | "There's no decision here, but the format needs options" | Then there is no comparison this turn. Inventing options you cannot choose between is the worst output in this skill |
 | "Offering three directions to choose from is helpful" | It hands the work back. Name what is open instead |
@@ -196,5 +195,5 @@ unverified, and the end-of-session digest. Do not write a carry-back on a turn w
 - A heading that promises a picture over a paragraph that draws nothing
 
 **Done when:** on a live choice the user can see what the code does today, what each shape would
-change, how the shapes compare on the same four lines, and where you stand — and the carry-back,
+change, how the shapes compare on the same lines, and where you stand — and the carry-back,
 when they settle, locks only what they decided. Otherwise: open questions named, digest handed over.

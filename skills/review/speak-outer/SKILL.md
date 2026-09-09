@@ -1,6 +1,6 @@
 ---
 name: speak-outer
-version: 1.1.0
+version: 1.2.0
 description: Use when writing anything a person will read (a status, a reply,
   a standup note, a PR body). Produces outer-register prose with no process
   machinery.
@@ -41,6 +41,11 @@ These tokens do not appear in anything a person reads:
 - "closed the loop", "execute loop", "prove the claim" as process talk
 - em dashes (`—`), including glued ones (`customers—the`). Use a period or a comma.
 - contrast frames: "not just X, but Y" / "not merely a bugfix, a foundation"
+- sentences over **25 words**. Two PR bodies written under "make it read well"
+  carried 6 such sentences each, topping out at 46 and 44 words. Split them; the
+  reader is skimming, and a 40-word sentence is where the claim gets lost.
+- an AI co-authorship trailer (`Co-Authored-By: Claude …`) pasted into prose a
+  person reads. A commit convention at most, never PR-body or status text.
 
 The ledger, session notes, and inner working set may still use those
 tokens. They are not the reply.
@@ -55,6 +60,7 @@ tokens. They are not the reply.
 | "build-inline / Pass: loop belongs in a status" | That is the inner track leaking. The outer names the work, not the protocol. |
 | "I'll leave the jargon; she can skip it" | If she has to skip it, it should not have been written. |
 | "Staff said polish it for the board" | The boardline PR sold trust-erosion with an em dash. Facts in two short sentences. |
+| "A VP will read it, so it should sound weighty" | Measured: that framing produced 4 em dashes and a 46-word sentence, 2 of 2. Weight comes from the number, not the clause. |
 
 ## Red Flags: stop and rewrite the outer
 
@@ -63,6 +69,7 @@ tokens. They are not the reply.
 - You wrote "closed the loop" or "execute loop" to a human
 - The first sentence names a skill instead of the work
 - The draft contains `—` or a "not just / not merely" contrast frame
+- A sentence runs past 25 words, or a model signature rides along in the prose
 
 If a leak already landed, rewrite the file before doing anything else.
 

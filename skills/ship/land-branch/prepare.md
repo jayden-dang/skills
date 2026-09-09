@@ -10,6 +10,7 @@ recipe.
 - [Resolve tickets](#resolve-tickets)
 - [Author commits](#author-commits)
 - [Sequence the branch into verifiable units](#sequence-the-branch-into-verifiable-units)
+- [Forge, stacks, and a subagent that opens the PR](#forge-stacks-and-a-subagent-that-opens-the-pr)
 - [Finding grades](#finding-grades)
 - [Author PR text](#author-pr-text)
 
@@ -191,6 +192,39 @@ from the grade of the **specific** convention it was raised against:
 Surface every finding in the session close-out. Do not block a PR on
 `advisory` or `reported` findings. Do not write findings into the PR body.
 
+## Forge, stacks, and a subagent that opens the PR
+
+**Forge, once.** Resolve which CLI speaks to the host before the first PR
+operation and keep that choice for create, edit, view, and merge in this
+session. `gh` is the default; `docs/agents/issue-tracker.md` overrides it when
+it names another. Record the choice, and do not mix two forges' state in one
+run.
+
+**Prefer several narrow PRs to one wide one.** A reviewer reads a small diff
+properly and skims a large one, so splitting is a review-quality decision rather
+than bookkeeping. Split when the branch carries separable landable units — the
+same units **Sequence the branch** already produced.
+
+A stack is a base-branch chain, not a pile of branches:
+
+- the root PR targets the trunk;
+- every child branch is cut from its parent's **exact tip** and its PR targets
+  the **parent branch**, never the trunk;
+- branch from the trunk only for work that is genuinely independent.
+
+Create a child with `gh pr create --base <parent-branch>`; retarget an existing
+one with `gh pr edit <pr> --base <parent-branch>`. A child pointed at the trunk
+shows the parent's commits as its own and makes the diff unreadable, which is
+the failure this ordering prevents.
+
+Nothing here reshapes a stack after the fact: retargeting an **open** chain is
+`tend-pr` territory, and that skill refuses it. Get the bases right at creation.
+
+**A subagent that opens the PR** runs the same preparation — review, comment
+cleanup, PR text — then returns the URL to its parent and stops. It does not
+watch checks and it does not start a tend pass. The parent decides what happens
+next, because the parent is the one that knows whether more branches are coming.
+
 ## Author PR text
 
 Author the pull-request **title** and **body** in session from `{ what_changed,
@@ -208,10 +242,14 @@ stop the crossing for a package review. An edit the user later asks for is
 ordinary follow-up, not a pre-submit approval loop.
 </HARD-GATE>
 
-`title` is one line in the resolved PR-title shape (or a plain imperative
-summary when none is declared). `body` is reviewer-facing only: the
-diff-derived narrative, ticket linkage from `tickets.md`, and nothing a
-reviewer should not see. Never cite a `.skills/` path.
+`title` is one line. The convention record holds no title shape, so resolve it
+from what the title will become: where the repo squash-merges, the PR title
+lands as the commit subject and takes `commit_subject_form`; otherwise it is a
+plain imperative summary that invents no project format.
+
+`body` is reviewer-facing only: the diff-derived narrative, ticket linkage from
+`tickets.md`, and nothing a reviewer should not see. Never cite a `.skills/`
+path.
 
 Hold title and body in session until SKILL.md option 2 submits them.
 

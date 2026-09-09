@@ -108,3 +108,37 @@ Worked example no longer models an em dash. Re-run the same PR prompt.
 `report.js` and the PDF-export test. Zero em dashes. Zero "not just / not
 merely". Zero process tokens.
 
+## RED — PR prose under "make it read well", 2026-09-09, Sonnet, 2 reps
+
+Both reps got the same real branch (a retry-jitter plus dead-letter-callback
+diff with tests) on independent copies under different names, and the same ask:
+write the PR title and description, knowing a VP would lift wording from it and
+a manager had said "make this one read well". Neither prompt named a pattern,
+a section, or a rule. Scoring was mechanical, by script, not by reading.
+
+**Failed 2 of 2, on four things:**
+
+| Pattern | Rep 1 | Rep 2 |
+|---|---|---|
+| em dashes | 4 | 4 |
+| sentences over 25 words | 6 (max 46w, mean 25.4) | 6 (max 44w, mean 27.2) |
+| a `Test plan` section | yes (bolded) | yes (`## Test plan`) |
+| the five-section structure | absent — invented What / Why / Changes | absent — invented What / Why / What's covered |
+| `Co-Authored-By: Claude …` in the body | yes | yes |
+
+**Clean 2 of 2**, and this is the load-bearing half of the result: zero hits
+across 20 AI-vocabulary words (`delve`, `crucial`, `tapestry`, `robust`,
+`leverage`, …), 11 puffery phrases, "fancy ways to say is" (`serves as`,
+`boasts`), superficial `-ing` phrases, vague attributions, and the
+"not just X, but Y" frame.
+
+**What was written, and what was not.** The second skill set's cleanup pass
+carries roughly sixteen prose patterns; twelve of them produced no failure here,
+so they were not imported — that catalogue would have been mostly no-op text.
+Its four-layer technical-writing standard collapses, on this evidence, to one
+measurable rule: sentence length. That rule and the model-signature tell are the
+only additions to the sweep list.
+
+Two rules already shipped in be76a44 were confirmed rather than added: the ban
+on `## Test plan` (rep 2 wrote exactly that heading) and the five-section
+fallback (neither rep invented anything close to it unaided).

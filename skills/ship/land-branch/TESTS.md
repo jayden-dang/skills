@@ -409,3 +409,31 @@ Until that runs, eval 6 stays `contract` and this section is the only claim made
 reviewer-centred PR fallback in `conventions.md` gains Why / Scope / Tradeoffs /
 Blast Radius / Verification, with Verification required to carry outcomes rather
 than command names; and opening a PR names `/tend-pr` instead of waiting on CI.
+
+
+## v4.0.0 addendum — forge, stacks, and the subagent hand-off (2026-09-09)
+
+Three capability gaps, added to `prepare.md` rather than argued for: the forge
+is resolved once per session and not mixed; a stack is defined as a base-branch
+chain where each child targets its parent branch and is cut from the parent's
+exact tip; and a subagent that opens a PR returns the URL to its parent without
+starting a check watch.
+
+Unmeasured, and capability-shaped rather than gate-shaped — before this, nothing
+in the skill described a child PR's base at all, so an agent asked to split work
+into a stack had no definition to follow. The reviewer-quality argument for
+splitting is stated once and not repeated; the ordering rule is the part that
+carries information a control cannot derive.
+
+The retarget boundary is deliberate: reshaping an **open** chain is `tend-pr`
+territory and that skill refuses it, so the bases have to be right at creation.
+
+**Dangling reference fixed while verifying the wiring.** `prepare.md` said the
+PR title takes "the resolved PR-title shape", but the convention record carries
+only `commit_subject_form`, `commit_subject_grade`, `pr_structure` and
+`pr_structure_grade` — there is no title shape in it. The line degraded safely
+via its own "or a plain imperative summary" clause, so nothing broke, but it
+named a field that does not exist. Resolved against an existing field instead of
+adding a fifth: where the repo squash-merges the PR title becomes the commit
+subject and takes `commit_subject_form`, otherwise it is a plain imperative
+summary.

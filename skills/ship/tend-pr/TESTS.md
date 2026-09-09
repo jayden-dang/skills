@@ -66,6 +66,25 @@ run, and that run then never finishes its turn. `land-branch` therefore *names*
 Its description is one plain human-facing line for the same reason: the agent
 never routes on it, so keyword packing there would be text nothing reads.
 
+## v1.1.0 — one tender at a time (2026-09-09)
+
+Two looping tends on one PR undo each other: both push, each restarts the
+other's checks, and the second to read a thread answers one the first already
+answered.
+
+There was no way to detect it. The other tender can be another machine, so no
+local file settles it — which makes this a **capability** addition rather than a
+gate: without a claim on the PR itself there is nothing for an agent to check,
+and nothing to obey or violate. The claim is a one-line comment naming mode,
+host and time; a claim older than 60 minutes with no push or comment since is
+dead, so a crashed session cannot lock a PR forever.
+
+`check` and `threads-only` neither claim nor stop — neither loops, and a single
+status read collides with nothing.
+
+Unmeasured. A baseline here would have to run two tends concurrently, which is
+worth building only if this starts costing something.
+
 ## Boundary with `land-branch`
 
 `land-branch` v4.0.0 rewrites history on purpose, before the PR exists.

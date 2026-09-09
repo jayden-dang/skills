@@ -1,6 +1,6 @@
 ---
 name: tend-pr
-version: 1.0.0
+version: 1.1.0
 description: Takes one open pull request to merge-ready, or names the blocker that stops it.
   Run it with /tend-pr.
 disable-model-invocation: true
@@ -62,6 +62,30 @@ no stack-wide submit. Sequencing and rewriting belong to `land-branch`, before
 the PR exists. Anything rebase-shaped is reported upward with the branch named,
 not performed.
 </HARD-GATE>
+
+### One tender at a time
+
+A looping mode (`drive`, `background`) claims the frontier. Two of them on one
+PR undo each other: both push, each restarts the other's checks, and the second
+to read a thread answers one the first already answered.
+
+There is no local way to know — the other tender may be another machine — so the
+claim lives on the PR itself:
+
+1. Before the first poll, read the frontier's recent comments for a live claim
+   from another tender. Live means inside the staleness window below.
+2. None found → post a one-line claim naming the mode, the host, and the time,
+   then start.
+3. One found → stop. Report which tender holds it and since when. Do not "just
+   fix the one thing" underneath another loop.
+4. On finish, post that the claim is released.
+
+**Staleness:** a claim older than 60 minutes with no push and no comment since
+is dead — say so in the reply, take the frontier, and post a fresh claim. A
+crashed session must not lock a PR forever.
+
+`check` and `threads-only` do not claim and do not stop: neither loops, and a
+single status read cannot collide with anything.
 
 ## 3. Conflicts, then threads, then CI — in that order
 

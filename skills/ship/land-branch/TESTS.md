@@ -437,3 +437,25 @@ named a field that does not exist. Resolved against an existing field instead of
 adding a fifth: where the repo squash-merges the PR title becomes the commit
 subject and takes `commit_subject_form`, otherwise it is a plain imperative
 summary.
+
+
+## v4.1.0 — the verdict is posted on the PR (2026-09-09)
+
+Crossing evidence was established in step 3 and then stayed in `.skills/`, which
+is git-ignored and local to one working copy. The reviewer saw a diff and a green
+tick; the proof behind them reached nobody, and neither did the fact that the
+branch had been judged by an agent other than the one that wrote it — which is
+the whole reason the evidence is worth anything.
+
+`prepare.md` **Post the verdict** now puts it on the PR: the head SHA it binds
+to, each check and **what it returned**, the surface actually driven, what was
+skipped and under which predicate, and who established it. Through
+`speak-outer`, with no `.skills/` path, receipt slot, or skill name in it.
+
+Two rules that are not decoration. Re-post rather than edit when a later push
+moves the head, because an edited comment silently reattributes old evidence to
+new code. And say so plainly when the crossing was **withheld** — a PR with no
+verdict comment and a PR that failed verification must not look alike.
+
+Capability, not gate: nothing in the set could move a verdict out of `.skills/`
+before this. Unmeasured, and recorded as such.

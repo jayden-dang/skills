@@ -1,6 +1,6 @@
 ---
 name: land-branch
-version: 4.0.0
+version: 4.1.0
 description: >
   Use when a finished feature branch needs integration or disposition —
   produces a local merge, pull request, kept branch, discard, or block with
@@ -113,16 +113,16 @@ crossing. Never emit a record for `keep`.
 ### PR
 
 Load `prepare.md` **Author PR text** (REQUIRED SUB-SKILL: use `speak-outer`).
-Push the feature branch — `--force-with-lease` when sequencing rewrote a
-published branch — then create or update the PR for the memoized base. Submit
-title/body bytes from process-temp files; never interpolate authored text as
-executable shell input. Keep the worktree for review iteration.
+Push the branch — `--force-with-lease` when sequencing rewrote a published one —
+then create or update the PR for the memoized base. Submit title/body bytes from
+process-temp files, never interpolated as shell input; keep the worktree.
 
 **Open it ready, never as a draft** — omit `--draft`, pass `draft: false` to a
 tool that defaults to draft, and make ready any PR that still opened as one. A
-draft is not a crossing. Then report the URL and stop: name `/tend-pr` for the
-CI watch rather than waiting here, which stalls the next branch and spends runs
-on commits a later push restarts.
+draft is not a crossing. Post step 3's evidence onto the PR per `prepare.md`
+**Post the verdict**, then report the URL and stop: name `/tend-pr` for the CI
+watch rather than waiting here, which stalls the next branch and burns runs on
+commits a later push restarts.
 
 ### Local merge
 

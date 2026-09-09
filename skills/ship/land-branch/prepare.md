@@ -11,6 +11,7 @@ recipe.
 - [Author commits](#author-commits)
 - [Sequence the branch into verifiable units](#sequence-the-branch-into-verifiable-units)
 - [Forge, stacks, and a subagent that opens the PR](#forge-stacks-and-a-subagent-that-opens-the-pr)
+- [Post the verdict](#post-the-verdict)
 - [Finding grades](#finding-grades)
 - [Author PR text](#author-pr-text)
 
@@ -191,6 +192,32 @@ from the grade of the **specific** convention it was raised against:
 
 Surface every finding in the session close-out. Do not block a PR on
 `advisory` or `reported` findings. Do not write findings into the PR body.
+
+## Post the verdict
+
+Runs for `pr`, once the pull request exists and SKILL.md step 3 has resolved
+crossing evidence. The evidence lives in `.skills/`, which is git-ignored and
+local to one working copy — so without this step the reviewer sees a diff and a
+green tick, and the proof behind them reaches nobody.
+
+Post one comment on the PR carrying, in the reader's words:
+
+- the revision it binds to (the head SHA), so a later push visibly outdates it;
+- each check that ran and **what it returned**, not its name;
+- the surface that was actually driven, when acceptance or a product walk ran;
+- what was skipped, and under which predicate;
+- who established it — the review that judged the branch is a different agent
+  from the one that wrote it, and saying so is the point of posting at all.
+
+REQUIRED SUB-SKILL: use `speak-outer`. Never paste a `.skills/` path, a receipt
+slot name, a skill name, or a `Satisfies:` line: the comment is for a reviewer,
+and a reader who has to decode it learns nothing from it.
+
+Re-post rather than edit when a later push changes the head: an edited comment
+silently reattributes old evidence to new code, while a second comment leaves
+the sequence a reviewer can read. When the crossing was **withheld**, say that
+plainly and name the failing evidence — a PR with no verdict comment and a PR
+that failed verification must not look alike.
 
 ## Forge, stacks, and a subagent that opens the PR
 

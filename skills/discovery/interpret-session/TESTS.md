@@ -412,3 +412,84 @@ Compat obligation): the rule now names the end state rather than a tactic.
 
 **Change class:** additive setup calibration. Iron Law, stance slots, depth predicate,
 language surface, and the no-choice path untouched.
+
+## v2.0.0 — answer from the code, in four blocks (2026-09-09, Sonnet)
+
+User production report: the replies are "quá nhiều chữ dạng probe", rigid, template-shaped —
+and the ask was for the companion to work the way a design step does: read the code, trace the
+flow, run the history, then answer in terms of what changes.
+
+### Setup
+
+Fixture `bellcast`, a webhook delivery service with five real commits. `src/dispatch.ts` holds
+`MAX_ATTEMPTS = 5` with exponential backoff; `src/queue.ts` drains every endpoint through one
+sequential loop; commit `1cee6ce` ("fix: cap dispatch attempts at 5 (#412)") records the
+incident that walked the number back from 12 and ends *"Revisit only with a per-endpoint budget
+that keeps the global drain bounded."*
+
+The paste — written as if from the spec window — proposes per-endpoint versus per-account retry
+policy and carries two claims the repo contradicts: that the service retries "3 times with a
+fixed one-second delay", and that both shapes are "additive — nothing existing changes".
+
+Three fresh parents per round, skill installed at `.claude/skills/` as a consuming repo would.
+
+### RED — v1.6.1, and half the brief was already true
+
+| Measured on the artifact | v1.6.1 |
+|---|---|
+| Read the code, corrected the attempts and delay claim | **3/3** |
+| Named the shared drain loop | **3/3** |
+| Read git history, found `#412` | **2/3** |
+| `file:line` citations | 9 · 12 · 15 |
+| Four-block answer | **0/3** |
+| Same comparison lines across shapes | **0/3** |
+| Words | 1562 · 1886 · 1900 |
+
+**"Make it search the code and run the history" is a no-op.** Three of three did it unprompted;
+one run read `git log -p`, found the revert, quoted the commit's own condition back, and
+concluded that neither pasted option was safe as sold. Writing a rule for that would have been
+text with no failure behind it — the same finding as the orientation format dropped from
+`frame-change` the same week.
+
+**The failure is form.** Every run built its own comparison axes: schema / read-path / coherence
+in one, storage / migration / support story in the next, and a table titled "what actually
+differs given this schema" in the third — with **no line shared by all three** and no deletion
+test in any. Judgment was present and scattered across 1500–1900 words, so nothing could be
+compared, within a turn or between turns.
+
+### GREEN — v2.0.0
+
+| | v1.6.1 | v2.0.0 |
+|---|---|---|
+| Four blocks (Today · What changes · Architect's read · Stance) | 0/3 | **3/3** |
+| `Depth` / `Locality` / `Rung` / `Invariant` on every shape | 0/3 | **3/3** |
+| History read | 2/3 | **3/3** |
+| Words | 1783 mean | **1386 mean** (−22%) |
+
+The verdict table is what changed the answer, not just its shape. All three GREEN runs reached
+the same conclusion — *neither* shape re-establishes the bound `#412` set, so the fork the paste
+posed is not the fork that matters — and one wrote the `Invariant` row for both shapes as
+**silent on**, then said so in a sentence: "that's the fork this decision is really on, not
+endpoint vs. account." Only one RED run got near that, buried in a detail section.
+
+### What was cut, and why
+
+- **Ledger and cumulative knowledge map** — the user's call, taken with the redesign. Eval 8 was
+  removed with the rule.
+- **The rationale question and its `Human rationale: not supplied` bookkeeping** — the user
+  called it too heavy. A companion that bills a reason before it will carry a message makes the
+  cheap turn expensive; the reason is the user's to give or keep.
+- **The depth ladder** (simple / normal / complex rendering rows) — replaced by four blocks that
+  always render, with the deeper evidence pass behind a predicate in `depth-extras.md`.
+
+### The criteria are borrowed, not re-homed
+
+`Depth` / `Locality` / `Rung` are `design-solution`'s, applied here to a shape someone else
+proposed rather than one this agent is writing; `SKILL.md` says so in place. The named
+design-smell screen was **not** imported: it was measured at 6/6 with no defect to prevent,
+because `Depth:` already performs it.
+
+`Invariant` is the line with no prior home, and the fixture is why it exists: the decisive fact
+was neither interface size nor migration cost but a guarantee a commit had already bounded.
+
+**Version:** major `2.0.0` — the output contract changed and two rules were removed.

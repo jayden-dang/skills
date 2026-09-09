@@ -82,20 +82,6 @@
     ]
   },
   {
-    "eval_id": 8,
-    "eval_name": "cumulative-output-is-a-system-knowledge-map",
-    "kind": "behavior",
-    "derived_from": "TESTS.md § Decision argument + cumulative knowledge map — RED S-CUMULATIVE-MAP; GREEN v1.4.0",
-    "prompt": "Four decisions are recorded: Policy is the sole authorization authority; audit events use shared Postgres with database-enforced tenant isolation; webhooks persist before acknowledge and use an outbox; trace_id is the cross-service correlation key. The user asks in Vietnamese how the system is taking shape, where decisions depend on each other, and what risks remain. Do not add a fifth decision.",
-    "assertions": [
-      "because three or more decisions interact through flows and boundaries, one compact system sketch shows their dependency edges",
-      "the knowledge map includes mechanism, dependency, decisive reason plus accepted cost, evidence or confidence, and open unknown or reopen trigger",
-      "the response explains how authorization, audit isolation, webhook durability, and trace correlation fit together rather than listing four independent locks",
-      "the map distinguishes recorded decisions from missing implementation evidence",
-      "no new architecture decision is silently added"
-    ]
-  },
-  {
     "eval_id": 9,
     "eval_name": "live-choice-comprehension-before-stance",
     "kind": "behavior",
@@ -144,6 +130,42 @@
       "the stance picks the in-place rewrite over the parallel-column option",
       "the Versus slot amends or rejects the other session's 'Production means additive' reasoning",
       "Production delivery intent is not read as evidence that a database is live or that migrations have run for real"
+    ]
+  },
+  {
+    "eval_id": 13,
+    "eval_name": "answer-corrects-the-paste-against-the-code",
+    "kind": "contract",
+    "derived_from": "SKILL.md § 1. Today — the block exists so the correction lands before the stance",
+    "prompt": "A companion paste proposes two shapes for a retry policy and states the service retries three times with a fixed one-second delay. The repo's dispatch module sets MAX_ATTEMPTS = 5 with exponential backoff. Respond to the paste.",
+    "assertions": [
+      "the reply states what the code does today, citing the file where the constant lives",
+      "the paste's wrong description of current behaviour is named as wrong before the stance is given",
+      "the correction is not deferred to a detail section below the recommendation"
+    ]
+  },
+  {
+    "eval_id": 14,
+    "eval_name": "shapes-compare-on-the-same-four-lines",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § v2.0.0 RED — three turns built three different comparison tables, no line shared by all three, no deletion test in any",
+    "prompt": "A paste puts two storage shapes for a new per-customer setting on the table. Give the companion response.",
+    "assertions": [
+      "every shape is judged on the same four lines — depth, locality, reuse rung, and the invariant the code makes today",
+      "the four lines are identical across shapes so the shapes can be compared down the column",
+      "the comparison is not a set of dimensions invented for this fork alone"
+    ]
+  },
+  {
+    "eval_id": 15,
+    "eval_name": "carry-back-asks-for-no-rationale",
+    "kind": "contract",
+    "derived_from": "SKILL.md § When the user settles the direction — the one-objection rule, and no rationale billed before the reply",
+    "prompt": "After the analysis the user replies only: 'go with B, write the reply.' Produce what comes next.",
+    "assertions": [
+      "the carry-back message is written without first asking the user to justify the choice",
+      "no placeholder recording that a rationale was or was not supplied appears anywhere in the output",
+      "the message speaks as the user and does not mention the companion session"
     ]
   }
 ]

@@ -230,5 +230,17 @@
       "backward compatibility, the migration path, and deprecation cost are weighed as first-class option criteria",
       "the in-place rewrite is not recommended"
     ]
+  },
+  {
+    "eval_id": 20,
+    "eval_name": "architecture-option-carries-a-shape",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § The `Shape` sub-slot on options — RED 2026-09-09, 3/3 options prose-only",
+    "prompt": "A notification service emails customers once per scan event and product wants one daily summary instead. Interview them, opening on where the rollup's per-customer progress gets stored.",
+    "assertions": [
+      "every option on the architecture or data card shows the caller-facing difference as it would be written — a column, type, signature, route, or payload",
+      "each shown fragment is set off from the option's prose rather than named inside a sentence",
+      "no option defers its shape to another option's, and none is left as a title with consequences only"
+    ]
   }
 ]

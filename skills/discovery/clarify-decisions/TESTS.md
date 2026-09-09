@@ -589,3 +589,114 @@ and on the densest file in the set the proxy came apart: the ceiling is satisfie
 and the cost is unchanged. If this file needs to get cheaper, the next move is
 deciding which rules it should stop carrying, which is a scope question for its
 owner and not something a length pass can answer.
+
+## The `Shape` sub-slot on options — RED (2026-09-09, Sonnet, 3/3 failed)
+
+User production report: the interview "chỉ hỏi, không giải thích… hoàn toàn là
+chữ, không code" — the reader cannot see what any option would become. The
+proposal came from a second skill set whose design step writes the caller's
+usage before the types, and asked whether that belongs at the moment the *user*
+chooses rather than at the moment the agent writes a design doc.
+
+Half of that idea had already been measured and dropped the same week: that
+set's orientation format was a no-op because 3/3 baselines volunteered the
+runtime walk unprompted, and `Territory` already carries repo facts per card.
+This run tested the other half — the **option**, not the orientation.
+
+### Setup
+
+Fixture `wharfline`, a freight consignment service with a real per-event notify
+route, a `pg-boss` worker precedent, an unused `eventsForCustomerSince` helper,
+and four tables. A product owner's brief asks for a daily rollup and ends "I
+don't know how this should be built. Tell me what you need decided." She is
+offline, so the reply is written to a file — which is also the artifact scored.
+
+Three fresh parents, one run each, v1.5.1 installed at `.claude/skills/` as a
+consuming repo would install it. Model: Sonnet, per the roster rule. The prompt
+contains none of *shape, code, signature, schema, type, payload, example,
+concrete* — the words the rule turns on.
+
+### Result — 3/3 cards, zero visible shapes
+
+| Run | Fork it opened | Options carried |
+|---|---|---|
+| 1 | how a rollup tracks which scans it already sent | prose; `rolled_up_at timestamptz` named mid-sentence |
+| 2 | rollup replaces per-event mail, or coexists | prose; no artifact named in any option |
+| 3 | whether ingest stops emailing and only records | prose; "a new per-customer flag", unnamed |
+
+Zero fenced blocks and zero set-off literals in any of the three files. The
+cards were otherwise strong: run 2's Territory cited `eventsForCustomerSince`,
+the `0 2 * * *` cron and the unused `timezone` column; run 1 rejected a
+time-cursor because a depot scan can arrive after its own `occurred_at`. So
+grounding is not the gap.
+
+**The gap is one step further in.** Run 2 named seventeen symbols in backticks,
+four of them with arguments — and every one sat in `Thread` or `Territory`.
+The agent *names* code fluently and never *shows* a shape, so the three options
+reduce to three titles: "Replace per-event sending entirely", "Keep real-time
+under 40", "Per-customer toggle". Run 1 came closest and still stopped at a
+column name inside a sentence, with no DDL and no query beside it.
+
+**Variance is the second finding.** All three runs opened a *different* fork —
+policy, retry-tracking, ingest responsibility — and all three wrote options in
+the identical form. The existing recipe binds hard on form; a slot added to it
+should bind equally hard.
+
+### Form
+
+Per the failure table this is "omits an element from something it already
+produces" → a REQUIRED slot in the template it fills, not a prohibition and not
+a red-flag bullet. Text is five lines inside slot 8, keyed to an observable
+predicate (`architecture` or `data`), plus the worked shapes in `example.md` —
+which all three runs read, and whose prose-only options are what they
+reproduced.
+
+### GREEN — 2026-09-09, Sonnet, two rounds
+
+Same fixture, same prompt, fresh parents each round. Scored from the written
+file by script (`Shape` block present per option bullet), then read by hand.
+
+| Round | Text | Options carrying a shape |
+|---|---|---|
+| RED | v1.5.1 | 0/3 · 0/3 · 0/3 |
+| GREEN 1 | v1.6.0, slot + worked shapes in `example.md` | 3/3 · 2/2 · **1/3** |
+| GREEN 2 | slot tightened | 3/3 · 3/3 · 3/3 |
+
+**The GREEN-1 partial is the whole REFACTOR.** One card shaped the option it
+recommended and left the other two as titles, defending both omissions in
+prose: the second option said "using the same watermark table as above", and
+the third put its cutoff query inside a sentence
+(``max(sent_at) from notifications where customer_id = ...``). Both readings
+are defensible against "REQUIRED inside each option" — which is why the line
+now says *every* option, names `"same as option 1, but…"` as not a shape, and
+carries that card as its recorded consequence. Nine of nine options after.
+
+The shapes are what the slot asked for and nothing more: `alter table
+notifications alter column consignment_id drop not null`, a two-column junction
+table, `job writes: rollup_watermark = max(event.occurredAt) only after send
+succeeds`. No bodies, none over six lines.
+
+### One finding the slot was not written for
+
+Writing the shape surfaced a defect that prose hid. `notifications.consignment_id`
+is `NOT NULL` and one rollup email spans many consignments — a schema conflict
+that has to be resolved before any option can ship. **No RED card contains the
+string "not null" at all.** Two GREEN cards raised it, both inside the DDL they
+were writing.
+
+That is one fixture and a plausible mechanism, not a law: a column's constraint
+is adjacent to the column you are writing and remote from the sentence you are
+writing about it. Worth watching, not worth a rule yet.
+
+### Boundary with the design step
+
+`design-principles.md` #2 ("caller usage before types") governs what the *agent*
+derives when writing `design.md`. This slot governs what the *user* compares
+when choosing. Same instinct, different reader, different artifact — the shape
+here is ≤6 lines with no bodies precisely so it stays a choice and does not
+become the design.
+
+**Not done:** the meta-test. No tested agent was asked afterwards whether the
+line was clear or what would have made compliance easier.
+
+**Version:** minor `1.6.0` — a new required sub-slot inside an existing slot.

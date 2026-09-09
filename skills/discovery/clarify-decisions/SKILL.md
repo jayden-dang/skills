@@ -1,6 +1,6 @@
 ---
 name: clarify-decisions
-version: 1.5.1
+version: 1.6.0
 description: Use to interview or grill the user before building an underspecified
   plan, design, or feature idea, including when another skill calls for an
   interview. Produces a confirmed close package of decisions, constraints,
@@ -84,6 +84,11 @@ Exactly **one** decision per message in chat. Every slot is **required**. Write 
 6. **Closes** — unknown class this card retires: `known-unknown` · `unknown-known` · `blindspot-confirm`.
 7. **Criteria (graders)** — REQUIRED when Radius is `architecture` · `data` · `auth/security` · `UX flow`, or (Coverage ON) `reliability` · `failure` · `operate` (omit only for `polish-diff`): **1–2 named pass/fail graders** listed **above** Options (separate labeled block). Not the close-package Success / done signal. Recommendation MUST cite graders by name. Why sentences promoted here = miss. "No criteria essays / put success in Why" is not a waiver.
 8. **Options (2–4)** — short title, then enough causal detail to judge it. On every radius except `polish-diff`, explain what it **gains**, what it **pays**, what can **break**, and when it is the **better fit**; labels are optional, connected sentences are not. On `polish-diff`, one consequence sentence per option is enough. Bare labels and telegraphic fragments are not options.
+   **Shape** — REQUIRED inside every option when Radius is `architecture` or
+   `data`: the caller-facing difference as it would be written — signature, type,
+   column, route, or payload, ≤6 lines, no bodies. Prose naming an artifact is not
+   a shape, and "same as option 1, but…" is not one: measured, a card that shaped
+   only the option it recommended left the other two as titles to compare against.
 9. **Recommendation** — your pick, first or clearly marked. On `polish-diff`, give one sentence grounded in Why. Every other radius gets a compact, checkable decision argument:
    - **Pick** — the option.
    - **Decisive factors** — the Territory facts and named Criteria that make it win now.

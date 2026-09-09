@@ -35,13 +35,22 @@ Criteria (graders)
 - **Sync in the API request** — gains the smallest API change, but pays by
   holding the request open. It breaks on the known 30s gateway limit and is the
   better fit only if export size can be bounded below that limit.
+  Shape
+      POST /api/reviews/:id/export  ->  200 { url }   (caller holds the request)
 - **Background job on the existing queue** (Recommended) — gains an existing
   long-running operations pattern and survives unpredictable size. It pays for
   job state plus a ready notification; it breaks if the queue cannot preserve
   export authorization context.
+  Shape
+      POST /api/reviews/:id/export  ->  202 { jobId }
+      GET  /api/exports/:jobId      ->  { status, url? }
+      jobs/export payload              { reviewId, requestedBy }
 - **Client-side only** — gains zero backend work, but pays with restricted
   formats and browser resource use. It breaks supportability for large drawing
   exports and fits only if product scope accepts those limits.
+  Shape
+      no endpoint; in the browser
+      exportReview(review: Review): Blob
 
 Recommendation
 - **Pick:** background job on the existing queue.

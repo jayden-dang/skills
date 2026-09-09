@@ -522,7 +522,7 @@ it. That transcript pair is the counter now written into the rule.
 |---|---|---|
 | Own shape with its own verdict column | 0/3 | **3/3** |
 | Code fences | 0 · 0 · 1 | **6 · 8 · 6** |
-| Diagram | 0/3 | 3/3 |
+| Diagram | 0/3 | 0/3 — see the correction below |
 | Words | 1386 mean | 1811 mean |
 
 The three own-shapes were not the same shape, and that is the point: a ceiling clamped in
@@ -606,3 +606,84 @@ independent readers of the same seven files misread them identically. Fan-out do
 convergent misreading, and this set tests on one roster.
 
 **Version:** minor `2.2.0` — one new rule in `deciding.md`, no removal.
+
+### Correction — the diagram row above was wrong when first written
+
+It was published as 0/3 → 3/3. It is 0/3 → 0/3. The scorer counted a regex alternative `\|--`,
+which matches the separator row of a markdown table (`|---|---|`), and every reply contains a
+table. Re-measured on box-drawing characters and on `mermaid`: **zero in all six replies**, across
+v2.1.0 and v2.2.0. The commit message for v2.1.0 carries the same wrong claim; this note is the
+correction of record.
+
+The cause in the text, found by the user reading an artifact rather than the number: v1.6.1 said
+"one **ASCII diagram** … **or** one walk of an actor through before / during / after". The v2.0.0
+rewrite compressed that to "One picture", and *picture* reads as metaphor. Six turns in six then
+headed a paragraph `## One picture` and wrote an analogy under it — the checkout-lane model for
+head-of-line blocking in one, which is a good analogy and not a drawing.
+
+## v2.3.0 — a picture means characters on the page (2026-09-09, Sonnet)
+
+RED is the six replies above: 0/6 drew anything, under wording that let an analogy satisfy the
+slot. The rule now names the artifact — "a drawing means characters on the page: boxes, arrows,
+two columns, a sequence" — and says plainly that an analogy is the model, not the picture, so the
+two stop competing for one slot.
+
+The rule also has **one home** now. v2.1.0 had it twice: "draw it when the change is easier seen
+than read" inside the change block, and "one picture" in the comprehension section. Same meaning,
+two places, which is the duplication the length sweep does not catch.
+
+## v2.4 – v2.6 — getting a drawing to happen (2026-09-09, Sonnet)
+
+Three wordings, nine runs, then two that worked. The sequence is the finding.
+
+| Version | The rule said | Drew |
+|---|---|---|
+| 2.0–2.2 | "one picture … when the shape is easier seen than read" | **0/6** |
+| 2.3 | + "a drawing means characters on the page: boxes, arrows" | **0/3** |
+| 2.4 | trigger keyed to a line already written, + one worked drawing | **2/3** |
+| 2.5 | the drawing describes the system, two worked kinds | **3/3** |
+
+**Naming the artifact was not enough.** v2.3 said in plain words that an analogy is not a picture
+and that a drawing is characters on the page. Three more runs drew nothing, because the *trigger*
+was still a taste judgement — "easier seen than read" — and an agent that decides no is not
+breaking the rule.
+
+**What moved it was a trigger that is read rather than judged**: draw WHEN a shape's `Locality`
+names more than one component, or its `Invariant` names a resource more than one actor uses. Both
+lines are already written in block 3, so the condition is a lookup. That plus one worked drawing
+took it to 2/3 — and the one miss had the predicate fire (`Locality`: "`queue.ts`'s `drain()`
+materially rewritten, plus A's change") and still drew nothing.
+
+**What closed it was the exemplar being of the right kind.** The 2.4 drawing compared the options,
+which is a decision tree, and the verdict table is already that. Replacing it with a drawing of
+**the system** — the drain loop as it actually runs, then the same system as a sequence answering
+a question the first could not — took it to 3/3, and all three runs drew a topology of the
+service rather than a comparison of shapes.
+
+This is the second time in one day that an exemplar bound a shape where a sentence could not; the
+first was `clarify-decisions`' `Shape` slot. Two instances, one mechanism, no rule written for it.
+
+### Two corrections to this file's own record
+
+The v2.1.0 table above claimed 3/3 diagrams. It was 0/3 — the scorer's regex included `\|--`,
+which matches a markdown table separator, and every reply has tables. Re-measured on box-drawing
+characters and `mermaid`.
+
+The kinds table first shipped with names invented here — flow / ownership / sequence / lifecycle /
+layering — beside `craft-page`'s existing figure recipes (topology-architecture, sequence,
+before/after structure, flowchart). Two vocabularies for one set of jobs is drift. It now uses the
+house names, and says a question about *who decides* is topology with the owner labelled.
+
+### Form, and what came from reading a third-party mermaid skill
+
+Taken: the diagram-type selection framing, and two mechanics — an unknown word breaks a mermaid
+diagram, and a bad parameter **fails silently**, so rendering is not proof of meaning.
+
+Not taken: its "always diagram when starting a project / documenting a system / onboarding". That
+is an always-rule with no predicate, which is exactly the shape that measured 0/9 here.
+
+Form is now keyed to where the drawing is read: ASCII while it stays in the companion turn, since
+that turn is read in a terminal and a terminal renders no mermaid; mermaid once it travels into a
+doc, a PR body, or an artifact. Every drawing measured in this file was ASCII.
+
+**Version:** minor `2.6.0`.

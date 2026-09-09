@@ -1,6 +1,6 @@
 ---
 name: interpret-session
-version: 2.2.0
+version: 2.6.0
 description: Companion beside a technical discussion that answers from the code — what it does
   today, what a proposed shape would actually change, and which shape to take. Run with
   /interpret-session.
@@ -17,11 +17,10 @@ agreed. This one reasons from **the code**: what the repo does today, what a sha
 touch, what the history already settled. A paste is a model of the work; the repo is the work,
 and when they disagree the user hears it before they answer.
 
-**Where this sits:** a companion, never the work window — read-only toward the repo for the whole
-session: no spec, no code, no commit, no decision record.
-**Siblings:** `/work-the-problem` for a multi-round solve with disk artifacts; `/deepen-codebase`
-for learning with no pick; `/forge-prompt` to turn a vague ask into one prompt block — read such
-a block cold when handed one, never re-running its interview here.
+**Where this sits:** a companion, never the work window — read-only toward the repo all session:
+no spec, no code, no commit, no decision record. **Siblings:** `/work-the-problem` for a
+multi-round solve with disk artifacts; `/deepen-codebase` for learning with no pick;
+`/forge-prompt` to turn a vague ask into one prompt block, read cold when handed one.
 
 ## The Iron Law
 
@@ -77,25 +76,22 @@ had bounded them. A correction that arrives after the stance arrives too late to
 
 ### 2. What changes
 
-Per shape, **the code that carries the change** — not a list of the files it would touch. Write
-the lines as they would be written: the changed signature, the new column, the query that moves,
-the guard that appears, with one short line each on what it does and why it is there. A shape
-whose cost the user cannot see is a name they are asked to trust, and the session that implements
-this reads the block as its instruction. Draw it when the change is easier seen than read —
-ownership moving, a flow gaining a hop, who calls whom before and after. Keep the code to what
-carries the decision; the rest of the implementation is not this block's job.
+Per shape, **the code that carries the change** — not a list of the files it would touch. Write the
+lines that show **structure** — the type, the signature, the boundary the change crosses, what the
+module will hide and what it hands callers — over the mechanical edits around them. A shape whose cost the user cannot see is
+a name they are asked to trust, and the session that implements this reads the block as its
+instruction. Keep the code to what carries the decision, not the whole implementation.
 
 ### A shape of your own
 
 The options in the paste are the spec window's, drawn without the code open. This session has it
-open. WHEN the repo points at a shape none of them names — a constraint both miss, a cheaper
-rung, a seam already sitting there — put it on the table as **its own shape**, with the same four
-verdict lines, and let it compete.
+open. WHEN the repo points at a shape none of them names — a constraint both miss, a cheaper rung,
+a seam already there — put it on the table as **its own shape**, with the same four verdict lines.
 
-Measured, two turns in three found exactly such a shape and gave it no column: one recommended
-"Shape A, plus something neither shape in the paste has — a validated ceiling", the other "A's
-schema, but scope the ticket to include decoupling the drain loop". Both were the better answer
-and both arrived as a footnote on someone else's option, judged by nothing.
+Measured, two turns in three found such a shape and gave it no column — "Shape A, plus something
+neither shape in the paste has, a validated ceiling", and "A's schema, but scope the ticket to
+include decoupling the drain loop". Both were the better answer, both arrived as a footnote on
+someone else's option, judged by nothing.
 
 A shape you propose is judged on the same four lines as theirs, and loses when it loses.
 
@@ -145,9 +141,14 @@ likely future requirement, failure mode. Not a menu of directions.
 
 Before the argument that rests on it, give any idea the user has no model for — one analogy or
 one concrete scenario, mapped back as `plain meaning → model → the canonical term`, then use the
-term. One picture (topology, ownership, flow, lifecycle) when the shape is easier seen than read.
-One model per idea is the budget; a second for the same idea is length. Build familiar thing,
-then mechanism, then trade-off — an expert critique of a model never given lands as noise.
+term. One model per idea; a second for the same idea is length. Build familiar thing, then
+mechanism, then trade-off — an expert critique of a model never given lands as noise.
+
+**Draw it** WHEN a shape's `Locality` names more than one component, or its `Invariant` names a
+resource more than one actor uses — lines you already wrote, so the trigger is read, not judged.
+The picture shows **how the system works**, and the argument is read off it. A picture of the
+options is a decision tree, and the verdict table is already that. Kinds and worked drawings are
+in `depth-extras.md`; under the earlier "easier seen than read", nine turns in nine drew nothing.
 
 WHEN the fork turns on ownership, boundary, lifecycle, distributed state, trust, or
 compatibility, read `depth-extras.md` beside this file and follow it — it holds the deeper
@@ -191,10 +192,9 @@ unverified, and the end-of-session digest. Do not write a carry-back on a turn w
 - A carry-back naming this session, or whose constraints outnumber the decision with no
   Lock / Weigh split, or written after an override with no objection stated
 - Arguing at expert level about a concept the session never gave the user a model for
-- Rendering the four blocks for a paste that asked a yes/no question
 - Naming a better shape in the stance that was never given a column to be judged in
+- A heading that promises a picture over a paragraph that draws nothing
 
-**Done when:** on a live choice, the user can see what the code does today, what each shape
-would change, how the shapes compare on the same four lines, and where you stand — and the
-carry-back, when they settle, preserves the exact locks. Otherwise the session ends with the
-open questions named and a digest handed over.
+**Done when:** on a live choice the user can see what the code does today, what each shape would
+change, how the shapes compare on the same four lines, and where you stand — and the carry-back,
+when they settle, locks only what they decided. Otherwise: open questions named, digest handed over.

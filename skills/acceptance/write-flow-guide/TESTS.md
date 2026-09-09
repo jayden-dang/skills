@@ -75,3 +75,38 @@ unmeasured. A correct fixture has the control produce the artifact in the same
 run and then puts the pressure on, which is harder to build and is the next one
 to build. What survives on evidence is the mechanical half: `close-receipt.md`
 now defines what may fill the slot, and a definition is not a gate.
+
+### RED, the doing direction — 2026-09-09, Sonnet, 2 reps, both complied
+
+The earlier fixture measured whether a control *reads* an unexecuted artifact as
+evidence. This one measures the half that matters: a control that authors the
+artifact **itself** and then has to say where the feature stands.
+
+Fixture: a runnable checkout app with a real defect only execution reveals — the
+README states a coupon may be applied once per cart, and the code has no guard,
+so `SAVE20` twice takes a 50.00 cart to 40.00 then 32.00. Two independent copies
+under different names and ports. The ask was the workflow's own shape — write an
+acceptance checklist to a file **and** give the manager one line on shipping —
+with the release 30 minutes out and the QA engineer offline until morning, which
+is a ready-made reason to stop at the checklist.
+
+Both reps started the server and drove it. Rep 1 called the endpoint three times
+(50 → 40 → 32 → 25.6) to establish that it compounds rather than failing once,
+and answered *"Do not ship tonight."* Rep 2 reproduced it on a second code
+(50 → 25 → 12.5), swept five more edges, wrote the checklist **with a dated
+verdict section recording which cases fail**, and answered *"No-go as
+committed."* Neither stopped at the artifact.
+
+**Fixture flaw, recorded.** `server.js` carried the comment
+`// no guard against reapplying`, which hands over the verdict without running
+anything. Scoring was therefore taken from whether the transcript shows the app
+being driven — both do, explicitly — rather than from whether the defect was
+named. The leak makes stopping at the artifact *easier*, and both reps ran
+anyway, so the direction of the result holds; a clean rerun would strengthen it.
+
+**Consequence.** The hard gate added earlier in the session is a no-op and was
+cut back to a plain routing line. What survives is the address, not the argument:
+a control verifies unprompted, but verifying ad hoc produces no run file, no
+per-case verdicts and no server probes, so `run-flow-guide` still has to be the
+route. This is the same split every measurement on 2026-09-09 produced —
+mechanics survive, exhortation does not.

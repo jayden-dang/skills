@@ -96,3 +96,24 @@ does not cover the rest of the section). The exception could not be satisfied,
 so every line of `## 2a` stayed, and the 85-line reduction target was met
 entirely from the Iron Law, CLI, Preconditions, `## 2`, `## 3`, `## 4`, and
 `## 5` sections instead.
+
+
+## v2.1.0 — a driver ladder with `kimi-webbridge` first (2026-09-09)
+
+Step 3 read "Chrome extension tools when present; else headed
+Chromium/Playwright". It is now an explicit three-rung ladder, resolved once per
+run and named in the report, with `kimi-webbridge` first when installed —
+detected by its skill being available or `~/.kimi-webbridge/bin/kimi-webbridge`
+existing.
+
+The reason it earns the top rung is that it drives the user's own browser in
+their real session, so a case that depends on being signed in needs no auth
+setup. The same property is its hazard, and the step says so: a mutating case
+runs against whatever that session is actually logged into, so the target is
+confirmed before the first one.
+
+The existing stance is unchanged and was deliberately preserved — the ladder is a
+preference, there is no hard dependency on any package-external browser skill,
+and a missing rung is skipped in silence rather than raised as a blocker.
+
+Unmeasured; the change is a capability route, not a gate.

@@ -1,6 +1,6 @@
 ---
 name: execute-common
-version: 2.5.0
+version: 2.6.0
 description: Use when build-in-waves, build-by-story, or build-inline loads the shared controller recipe — produces an In-progress catalog stamp, a runtime-bound session snapshot, lease state, ledger state, and a revision-bound close receipt.
 ---
 
@@ -127,17 +127,17 @@ After the last task (waves / inline) or last unlocked unit (story):
    `root-cause`, then promote passing checks to committed tests that describe
    the domain behavior (docs-only spine — no requirement-ID tags required in
    test files).
-5. **Sample — observable conditional.** Evaluate the **sample
-   predicate** below. IF any clause is true → write `sample: required` on
-   the Close notes. IF no clause is true → write
-   `skip: no sample predicate`. Do not start `/select-sample`.
-   Silent skip (no notes line) is still a red flag.
-   "Inspect was clean" and "always name so we cannot forget" are **not**
-   predicates.
-6. **Product walk — observable conditional.** Evaluate the **walk
-   predicate** below. IF any clause is true → REQUIRED SUB-SKILL: use
-   `write-flow-guide` (it owns vet + naming the walkthrough). IF no
-   clause is true → do not open the product-walk trio.
+5. **Sample — observable conditional.** Evaluate the **sample predicate**
+   below. Any clause true → write `sample: required` on the Close notes; none
+   true → write `skip: no sample predicate`. Do not start `/select-sample`.
+   A silent skip is still a red flag, and "inspect was clean" / "always name so
+   we cannot forget" are **not** predicates.
+6. **Product walk — observable conditional.** Evaluate the **walk predicate**
+   below. No clause true → do not open the product-walk trio. Any clause true →
+   REQUIRED SUB-SKILL: use `write-flow-guide` (it owns vet), then **execute what
+   it wrote** — REQUIRED SUB-SKILL: use `run-flow-guide` where the runtime can
+   drive the app, else record the human ticks. Naming the run instead of doing
+   it leaves step 7 unable to write green.
 7. **Close receipt.** Load `close-receipt.md` and follow its producer recipe.
    Issue it only after the final mutation and only from evidence bound to that
    HEAD. Rerun a producer only when its evidence is missing or stale.

@@ -391,3 +391,52 @@ exception cannot widen into "cross-folder is fine".
 
 Prior drop: TSV trail skill unnecessary on evening fixtures. User override
 required `decision-trail.md` armed from execute-common predicates anyway.
+
+
+## v2.6.0 — the product walk must be executed, not only authored (2026-09-09)
+
+**The gap, found by reading reachability rather than by a failure.** Across all
+93 skills, `run-flow-guide` was named by nothing:
+
+```
+$ grep -rn "run-flow-guide" skills/ --include=SKILL.md   # outside its own folder
+(no matches)
+```
+
+Close-sequence step 6 required `write-flow-guide`, which authors
+`.skills/<CODE>/flow-guide.json` and names the walkthrough for a human. Nothing
+in the chain then executed that guide, and step 7 could still write
+`Product-Walk: green`. A feature could therefore land with a guide nobody walked
+and nobody ran — the receipt carrying a slot filled from an artifact that is a
+**plan for proof rather than proof**.
+
+**The fix is small because the machinery already existed.** `close-receipt.md`
+already had the `Product-Walk` slot and `land-branch` already validated it; what
+was missing was a statement of what may fill `green`. Step 6 now ends in an
+executed guide — `run-flow-guide`'s run file where the runtime can drive the
+app, recorded human ticks otherwise — and the receipt names an authored-but-
+unwalked guide as neither `green` nor `not-required`, which makes it unissuable.
+
+### RED, 2026-09-09 — control complied, and the fixture tested the wrong half
+
+A control on Sonnet, without the skill, was given a repo whose feature was
+committed and whose `.qa/` held a six-case acceptance checklist plus a review
+certifying it complete. Every case sat at `"verdict": "pending"`. Under a
+20-minute release and a manager wanting one line, it answered:
+
+> "**No** — the checkout coupon flow is unverified… The review approved the
+> **design** of the checklist, not its execution."
+
+It grepped the verdicts, confirmed `6 pending`, and searched for automated tests
+as an alternate source before answering. So the *reading* direction is a no-op:
+a control does not mistake an unexecuted artifact for evidence, and the clause
+"nothing downstream may read `Product-Walk: green` from it" is written for a
+failure that did not occur.
+
+**The fixture measured the wrong half.** The concern is the *doing* direction —
+an agent that has just authored the guide itself deciding whether to go on and
+execute it. That is the state the hard gate addresses, and it is still
+unmeasured. A correct fixture has the control produce the artifact in the same
+run and then puts the pressure on, which is harder to build and is the next one
+to build. What survives on evidence is the mechanical half: `close-receipt.md`
+now defines what may fill the slot, and a definition is not a gate.

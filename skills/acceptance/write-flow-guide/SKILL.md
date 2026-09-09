@@ -1,6 +1,6 @@
 ---
 name: write-flow-guide
-version: 2.1.0
+version: 2.2.0
 description: Use when a finished feature needs a hands-on product walk in the real
   running app — visuals, feel, and eyeball edge cases. Produces a checkable
   flow guide (run file + HTML) plus its vet report. Not for
@@ -151,14 +151,26 @@ Order: artifacts → **run** vet → optional serve → dogfood only after clean
    Stopping it is `serve --stop`. Opened as a plain file instead, the guide still
    shows the verdicts it was rendered with — the server only buys freshness.
 
-4. **Agent dogfood** — name `run-flow-guide` and the run-file path
-   **only after** a clean `vet-flow-guide` report (or a named override on open
-   findings). Walkthrough still enforces its own gate; hand-off order does not
-   replace that check.
+4. **Agent dogfood — run it.**
+
+   <HARD-GATE>
+   AFTER A CLEAN `vet-flow-guide` REPORT, REQUIRED SUB-SKILL: use
+   `run-flow-guide` ON THIS RUN FILE. Naming it, offering it, or telling the
+   user it is next are all the same unfinished state. A guide nobody executed
+   is a plan for proof, not proof; nothing downstream may read
+   `Product-Walk: green` from it. Time, a clean vet, and "the controller will
+   run it" are not exits. The only exit is the user having asked **in words**
+   for a hand walk, written down — step 3's serve is then the deliverable and
+   their ticks are the record. Silence is not that request.
+   </HARD-GATE>
+
+   Before the vet report exists, do not name it at all. `run-flow-guide`
+   enforces its own gates; this hand-off does not replace them.
 
 *Done when: artifacts are on disk, grounded, the §1 coverage gate holds, every
-case is fully slotted, and `.skills/<CODE>/vet-flow-guide.md` exists for this
-run file.*
+case is fully slotted, `.skills/<CODE>/vet-flow-guide.md` exists for this run
+file, and the guide has been handed to `run-flow-guide` — or a hand walk is
+recorded as the user's explicit choice.*
 
 ## Rationalizations
 
@@ -184,4 +196,5 @@ run file.*
 - Treating §4 coverage self-check as a substitute for `vet-flow-guide`
 - Declaring this skill done without `.skills/<CODE>/vet-flow-guide.md` for this run file
 - Naming `run-flow-guide` (or offering dogfood) before a vet report exists
+- Naming `run-flow-guide` after a clean vet and stopping there, with no run
 - Checking off the **Vet flow guide** todo when the report path does not exist

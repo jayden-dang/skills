@@ -1,6 +1,6 @@
 ---
 name: run-flow-guide
-version: 2.0.1
+version: 2.1.0
 description: >-
   Use when a guide from write-flow-guide already exists and its cases must be
   executed against the running app — agent-driven, screen plus backend
@@ -137,7 +137,12 @@ In file order (`$DF next` until empty):
 
 1. `$DF show $RUN <CASE-ID>` — load Try / Expect / setup / backend.
 2. Apply setup so the case can run independently.
-3. Execute Try against the **product app** only (Chrome extension tools when present; else headed Chromium/Playwright) — no hard dependency on a package-external browser skill.
+3. Execute Try against the **product app** only, on the first driver in this ladder that is actually installed — resolve it once per run and say which one the run used:
+   1. **`kimi-webbridge`** when present (its skill is available, or `~/.kimi-webbridge/bin/kimi-webbridge` exists). It drives the user's own browser in their real session, so a case that depends on being signed in needs no auth setup at all. That is also its hazard: a case that creates, edits, or deletes runs against whatever that session is really logged into, so confirm the target before the first mutating case and never point it at production data the guide did not say to touch.
+   2. **Chrome extension tools** when present.
+   3. **Headed Chromium / Playwright.**
+
+   The ladder is a preference, never a requirement: there is no hard dependency on any package-external browser skill, and a missing rung is skipped in silence rather than reported as a blocker.
 4. Fill `saw` from what is actually visible on the product.
 5. Run the backend probe when required; fill `server`.
 6. `$DF mark … pass|fail|blocked --saw … --server …` only when evidence slots match the Iron Law; mark the todo done only on `pass`.

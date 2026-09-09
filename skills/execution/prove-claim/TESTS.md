@@ -214,3 +214,33 @@ the missing primitive, and both noted that no test exercises the broken case.
 **Dropped.** The behaviour the ladder teaches is already default, including for a
 claim this skill's table does not name — which was the whole hypothesis. The
 table stays as it is.
+
+
+## v1.4.0 — an authored guide is not a walked one (2026-09-09)
+
+The "The feature works" row named `write-flow-guide` as an alternative to
+`validate-feature`. Authoring a guide proves nothing; the row now requires the
+guide **executed** — a `run-flow-guide` run file or recorded human ticks — and
+names the unwalked guide explicitly in the never-sufficient column. Paired with
+`execute-common` v2.6.0, which closed the same gap in the close sequence.
+
+Unmeasured, and recorded as such.
+
+## Compared against a second skill set's prove-it-works principle (2026-09-09)
+
+Read side by side at the user's request. This skill is the stricter of the two
+on every axis they share: it requires a fresh full-suite run rather than any
+run, it forbids a scoped run's totals standing in for the suite's, it demands a
+read-back for any claim that a record now holds a change, and it carries the
+revert-and-confirm pattern for regression tests. The other set has none of those.
+
+One idea there is genuinely absent here and is **not** being shipped on a
+reading alone: *"the strongest proof is a deterministic script that re-runs the
+same comparison, not a one-time eyeball… keep its output as an artifact a
+reviewer can re-run."* The distinction is real — this skill proves a claim to
+the agent making it, now; that one proves it to a reviewer, later.
+
+It is left unwritten because it is a technique rule, and every technique rule
+measured on 2026-09-09 was a no-op on the control. It is a candidate for a
+fixture, not text: give a control a migration whose correctness is a comparison
+between old and new output, and see whether it eyeballs once or scripts it.

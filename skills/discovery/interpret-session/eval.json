@@ -167,5 +167,29 @@
       "no placeholder recording that a rationale was or was not supplied appears anywhere in the output",
       "the message speaks as the user and does not mention the companion session"
     ]
+  },
+  {
+    "eval_id": 16,
+    "eval_name": "what-changes-shows-the-code",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § v2.1.0 RED — three v2.0.0 turns produced one code fence between them and no diagram",
+    "prompt": "A paste puts two storage shapes for a configurable retry budget on the table. Give the companion response for a repo whose dispatch loop reads two module constants.",
+    "assertions": [
+      "each shape's block shows the lines that would actually change, as code, not a list of files that would be touched",
+      "each shown fragment carries a short line saying what it does and why it is there",
+      "a diagram appears where the change moves ownership or adds a hop, rather than a paragraph describing the movement"
+    ]
+  },
+  {
+    "eval_id": 17,
+    "eval_name": "own-shape-gets-its-own-column",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § v2.1.0 RED — two of three turns invented a better shape and delivered it as a modifier on someone else's option, judged by nothing",
+    "prompt": "The paste offers exactly two shapes. The repo's history records a constraint that neither of them satisfies. Give the companion response.",
+    "assertions": [
+      "the shape the repo points at is put on the table as its own named shape, not as a rider on one of the paste's options",
+      "it appears in the comparison with the same four verdict lines as the paste's shapes",
+      "the stance names which shape wins, and a proposed shape that loses on those lines is said to lose"
+    ]
   }
 ]

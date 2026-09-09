@@ -1,6 +1,6 @@
 ---
 name: interpret-session
-version: 2.0.0
+version: 2.1.0
 description: Companion beside a technical discussion that answers from the code — what it does
   today, what a proposed shape would actually change, and which shape to take. Run with
   /interpret-session.
@@ -77,9 +77,27 @@ had bounded them. A correction that arrives after the stance arrives too late to
 
 ### 2. What changes
 
-Per shape, the surface a change would actually touch — files, columns, signatures, call sites —
-six lines at most, no bodies. The lines that differ, not a description of them. A shape whose
-cost the user cannot see is a name they are being asked to trust.
+Per shape, **the code that carries the change** — not a list of the files it would touch. Write
+the lines as they would be written: the changed signature, the new column, the query that moves,
+the guard that appears, with one short line each on what it does and why it is there. A shape
+whose cost the user cannot see is a name they are asked to trust, and the session that implements
+this reads the block as its instruction. Draw it when the change is easier seen than read —
+ownership moving, a flow gaining a hop, who calls whom before and after. Keep the code to what
+carries the decision; the rest of the implementation is not this block's job.
+
+### A shape of your own
+
+The options in the paste are the spec window's, drawn without the code open. This session has it
+open. WHEN the repo points at a shape none of them names — a constraint both miss, a cheaper
+rung, a seam already sitting there — put it on the table as **its own shape**, with the same four
+verdict lines, and let it compete.
+
+Measured, two turns in three found exactly such a shape and gave it no column: one recommended
+"Shape A, plus something neither shape in the paste has — a validated ceiling", the other "A's
+schema, but scope the ticket to include decoupling the drain loop". Both were the better answer
+and both arrived as a footnote on someone else's option, judged by nothing.
+
+A shape you propose is judged on the same four lines as theirs, and loses when it loses.
 
 ### 3. Architect's read
 
@@ -167,7 +185,6 @@ end-of-session digest. Do not write a carry-back on a turn where nothing was set
 
 - Opining on a file that exists in this repo without having opened it
 - A stance on a constant, a bound, or a default whose commit history was never read
-- Letting a wrong claim about current behaviour stand because the paste's conclusion still holds
 - A comparison whose lines differ from the last turn's, or that restates the paste's own options
 - Closing an analysis with "it's your call", or with a numbered menu of directions
 - Producing a carry-back on a turn where the user has not settled the direction
@@ -175,6 +192,7 @@ end-of-session digest. Do not write a carry-back on a turn where nothing was set
   Lock / Weigh split, or written after an override with no objection stated
 - Arguing at expert level about a concept the session never gave the user a model for
 - Rendering the four blocks for a paste that asked a yes/no question
+- Naming a better shape in the stance that was never given a column to be judged in
 
 **Done when:** on a live choice, the user can see what the code does today, what each shape
 would change, how the shapes compare on the same four lines, and where you stand — and the

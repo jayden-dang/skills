@@ -493,3 +493,55 @@ because `Depth:` already performs it.
 was neither interface size nor migration cost but a guarantee a commit had already bounded.
 
 **Version:** major `2.0.0` — the output contract changed and two rules were removed.
+
+## v2.1.0 — show the code, and bring a shape of your own (2026-09-09, Sonnet)
+
+Two user asks after reading a v2.0.0 turn: the change block should show the code that carries
+the change rather than the files it touches, with a diagram where one helps; and the companion
+should not stay inside the options the spec window handed it, since it is the session with the
+repo open.
+
+### RED — measured on the v2.0.0 artifacts themselves
+
+| | v2.0.0 |
+|---|---|
+| Code fences in the whole reply | 0 · 0 · 1 |
+| Diagram | 0/3 |
+| A shape of its own, given a column | **0/3** |
+
+**The expensive part is not that it failed to think of one.** Two of three turns found the
+better answer and gave it away as a footnote: *"Shape A, plus something neither shape in the
+paste has — a validated ceiling"*, and *"A's schema, but scope the ticket to include decoupling
+the drain loop"*. Both were right, both were attached to someone else's option as a modifier,
+and neither was ever judged — the verdict table had two columns and the third shape was not in
+it. That transcript pair is the counter now written into the rule.
+
+### GREEN — v2.1.0
+
+| | v2.0.0 | v2.1.0 |
+|---|---|---|
+| Own shape with its own verdict column | 0/3 | **3/3** |
+| Code fences | 0 · 0 · 1 | **6 · 8 · 6** |
+| Diagram | 0/3 | 3/3 |
+| Words | 1386 mean | 1811 mean |
+
+The three own-shapes were not the same shape, and that is the point: a ceiling clamped in
+`dispatch`, a validated bound on attempts × delay, and `Promise.all` over the drain loop plus a
+ceiling. Each is a different reading of the same commit message, and each was scored against A
+and B on the same four lines rather than asserted.
+
+One run scored its **own** shape as incomplete — `Invariant: keeps the ceiling, still leaves the
+shared-loop part unaddressed` — which is the behaviour the closing line of the rule was written
+for: a shape you propose loses when it loses.
+
+### Cost, stated plainly
+
+The reply got longer, from 1386 words to 1811. That is the trade the user asked for: v2.0.0 had
+cut length by 22% and this gives it back and more. It buys real code, a diagram, and a third
+shape with a verdict. If length becomes the complaint again, the block to cut is the evidence
+pass in `depth-extras.md`, not the code.
+
+**Not measured:** whether the shown code is *correct* — a scorer counted fences and columns, and
+the fragments were read by hand but never compiled or run against the fixture.
+
+**Version:** minor `2.1.0` — two new rules inside an existing block, no removal.

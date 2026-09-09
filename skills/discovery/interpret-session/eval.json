@@ -146,13 +146,13 @@
   },
   {
     "eval_id": 14,
-    "eval_name": "shapes-compare-on-the-same-four-lines",
+    "eval_name": "shapes-compare-on-the-same-lines",
     "kind": "behavior",
     "derived_from": "TESTS.md § v2.0.0 RED — three turns built three different comparison tables, no line shared by all three, no deletion test in any",
     "prompt": "A paste puts two storage shapes for a new per-customer setting on the table. Give the companion response.",
     "assertions": [
-      "every shape is judged on the same four lines — depth, locality, reuse rung, and the invariant the code makes today",
-      "the four lines are identical across shapes so the shapes can be compared down the column",
+      "every shape is judged on the same three lines — depth, locality, and the invariant the code makes today",
+      "the three lines are identical across shapes so the shapes can be compared down the column",
       "the comparison is not a set of dimensions invented for this fork alone"
     ]
   },
@@ -188,7 +188,7 @@
     "prompt": "The paste offers exactly two shapes. The repo's history records a constraint that neither of them satisfies. Give the companion response.",
     "assertions": [
       "the shape the repo points at is put on the table as its own named shape, not as a rider on one of the paste's options",
-      "it appears in the comparison with the same four verdict lines as the paste's shapes",
+      "it appears in the comparison with the same verdict lines as the paste's shapes",
       "the stance names which shape wins, and a proposed shape that loses on those lines is said to lose"
     ]
   },

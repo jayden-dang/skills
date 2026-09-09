@@ -75,14 +75,11 @@ from later, so an imprecise boundary here becomes an over-broad lock there.
 
 ## The evidence pass
 
-Label each block with the claim it is making, so the user can tell what you checked from what you
-concluded:
-
-- **Source claim** — what the paste asserts.
-- **Verified fact** — what you read, cited `file:line` or a commit, ending in `→` and what the
-  fact does to the live choice. A fact whose consequence the reader must assemble is homework.
-- **Inference** — supported by the evidence but not stated by it. Say which pieces.
-- **Open question** — no source answers it, and it matters.
+Keep what you checked separable from what you concluded: a fact you read carries its `file:line`
+or commit **and** what it does to the live choice, and an inference says which pieces it rests on.
+Measured, the four prescribed labels (Source claim / Verified fact / Inference / Open question)
+appear in 2 of 28 replies while the separation itself survives in nearly all of them, so the
+separation is the rule and the labels were dropped.
 
 Cover, where they apply:
 

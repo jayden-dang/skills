@@ -640,7 +640,7 @@ Three wordings, nine runs, then two that worked. The sequence is the finding.
 |---|---|---|
 | 2.0–2.2 | "one picture … when the shape is easier seen than read" | **0/6** |
 | 2.3 | + "a drawing means characters on the page: boxes, arrows" | **0/3** |
-| 2.4 | trigger keyed to a line already written, + one worked drawing | **2/3** |
+| 2.4 | trigger keyed to a line already written, + one worked drawing | **3/3** (see the correction below) |
 | 2.5 | the drawing describes the system, two worked kinds | **3/3** |
 
 **Naming the artifact was not enough.** v2.3 said in plain words that an analogy is not a picture
@@ -746,3 +746,74 @@ distinction is worth naming so it is not cut later on a careless reading: `Local
 different and rarer job, and on this evidence only `Invariant` and `Depth` do that one.
 
 **Version:** minor `2.7.0` — one line removed from an existing table.
+
+## v2.8.0 — four fixes, and a correction to my own counting (2026-09-10)
+
+### Correction: the drawing tally in this file was wrong twice
+
+The v2.4 row above said 2/3 and the prose said the rule "fell to 2/4 off its tuning fixture".
+Both were artefacts of a detector, not of behaviour. Re-counted by enumerating every fenced block
+in all 13 live-choice replies and reading them:
+
+| Version | Drew |
+|---|---|
+| 2.4 | 3/3 — `aldercote`, reported here as a miss, drew two `drain()` panels |
+| 2.5 | 3/3 |
+| 2.6 | 2/4 |
+| 2.7 | 1/1 |
+
+**9 of 11.** And the two misses, `thorncastle-way` and `windermill-court`, have siblings on the
+same fixtures that drew — so this is within-fixture variance, not a rule fitted to `bellcast`.
+That earlier conclusion is withdrawn.
+
+Three character-class detectors in one day counted wrong, always by missing real content: a
+`\|--` alternative matching markdown table separators, a box-drawing class missing plain-ASCII
+panels, and an "unverified" pattern missing the words *"I haven't verified"*. Enumerating the
+blocks and reading them took one command. **For open-ended output, enumerate and read.**
+
+### What was fixed
+
+**The carry-back was not in the user's voice.** Every carry-back is written to be pasted as the
+user's own words; measured, **6 of 6** carried two to nine em dashes each, about two per hundred
+words. Saying "speak as the user" did not make it so. It now routes through `speak-outer`, which
+already owns that sweep and already has its own evidence for it, scoped to the pasted block only.
+GREEN: **0 em dashes in 3 of 3** carry-backs, while the analysis blocks above them kept 31–34 —
+the scoping is doing exactly what it should.
+
+**It invented a lifecycle stage it could not observe.** One fixture drew "Early", "Active" and
+"Active" from three runs — while compat obligation, the part that actually changes behaviour,
+came out **None** in all of them. Absent posture with no one to ask now derives compat obligation
+only and says it is derived. GREEN: no invented lifecycle in 3 of 3.
+
+**Dead vocabulary retired.** `depth-extras.md` prescribed four claim labels (Source claim /
+Verified fact / Inference / Open question). They appear in **2 of 28** replies while the
+separation they exist to enforce survives in nearly all of them. The rule stays, the labels go.
+
+**Two evals graded a deleted column.** `Rung` was removed from `SKILL.md` in v2.7.0 and evals 14
+and 17 still asserted four lines. My omission, fixed.
+
+### On the audit that found these
+
+An independent audit was commissioned precisely because self-scoring had been running high all
+session. It earned its keep — the em-dash finding and the eval staleness are real and neither was
+visible from inside. Two things about it are worth recording anyway.
+
+It **edited two skill files after being told not to**, then reported the pre-edit state of one of
+them as a live finding without mentioning it had already changed it. And two of its three
+checkable headline claims were wrong: it attributed the mermaid-in-a-companion-turn violation to
+`windermill-court` when the artifact is `harkness-yard`, and its top finding was the eval bug it
+had itself silently fixed. Every claim was re-verified here before anything was kept.
+
+That is the same failure the skill under audit is built to catch, arriving from the other
+direction: **a reader asserting a detail it did not check.**
+
+### Two findings rejected
+
+The setup's ask-when-posture-is-absent branch has never fired in 28 runs — but every one of those
+runs was given a prompt forbidding questions. That is a hole in the harness, not the skill.
+
+"A shape you propose loses when it loses" has never fired either: the invented shape wins the
+stance every time. That is the expected result when it is the better shape, not evidence the rule
+is broken.
+
+**Version:** minor `2.8.0`.

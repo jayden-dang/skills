@@ -1,6 +1,6 @@
 ---
 name: interpret-session
-version: 2.7.0
+version: 2.8.0
 description: Companion beside a technical discussion that answers from the code — what it does
   today, what a proposed shape would actually change, and which shape to take. Run with
   /interpret-session.
@@ -41,10 +41,11 @@ opinion about a document.
    English. Verbatim code and identifiers always stay as written. The carry-back is English
    unless the other window clearly is not.
 2. **Project posture.** Adopt `docs/agents/project.md`'s **Project posture** silently, saying the
-   one line you read; only when absent, ask delivery intent, lifecycle stage, compat obligation.
-   Compat obligation is the migration lens — the written line, else derived from lifecycle (Idea /
-   Early / Active → **None**; Cut Released / Scaling / Maintenance → **External**). On **None**, a
-   parallel column, a `v2` name, or a deprecation window buys compatibility with nobody.
+   line you read. Absent, ask; cannot ask → derive **compat obligation only**, say it is derived,
+   and invent no lifecycle stage — measured, one fixture drew "Early", "Active" and "Active" from
+   three runs while compat came out **None** in all three. The lens: the written line, else Idea /
+   Early / Active → **None**, Cut Released / Scaling / Maintenance → **External**; on **None** a
+   parallel column, a `v2`, or a deprecation window buys compatibility with nobody.
 3. **Feedback wanted** — critical review / alternatives / architecture / product / trade-offs /
    general understanding. One question, not an intake interview.
 

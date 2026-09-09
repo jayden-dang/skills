@@ -33,7 +33,11 @@ A terminal action, not the close of a turn.
 1. A message **for the other window**, in a code block so it copies cleanly. English, unless
    that window clearly is not.
 2. **Speak as the user.** That window reads it as their own answer. No authorship labels, no
-   mention of this session, no provenance bookkeeping of any kind.
+   mention of this session, no provenance bookkeeping of any kind. Saying so is not enough to make
+   it true: measured, six carry-backs in six carried two to nine em dashes each, about two per
+   hundred words, in a message claiming to be the user's own writing. REQUIRED SUB-SKILL: use
+   `speak-outer` on the block before handing it over — it owns that sweep. The four analysis blocks
+   above are yours and keep their own register; only the block being pasted goes through it.
 3. **Three slots when it locks something:**
    - **Lock** — the few lines their approval actually freezes.
    - **Weigh (not locked)** — constraints for that session to test through its own process. It

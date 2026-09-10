@@ -1,6 +1,6 @@
 ---
 name: interpret-session
-version: 2.8.0
+version: 2.10.0
 description: Companion beside a technical discussion that answers from the code — what it does
   today, what a proposed shape would actually change, and which shape to take. Run with
   /interpret-session.
@@ -146,9 +146,9 @@ mechanism, then trade-off — an expert critique of a model never given lands as
 
 **Draw it** WHEN a shape's `Locality` names more than one component, or its `Invariant` names a
 resource more than one actor uses — lines you already wrote, so the trigger is read, not judged.
-The picture shows **how the system works**, and the argument is read off it. A picture of the
-options is a decision tree, and the verdict table is already that. Kinds and worked drawings are
-in `depth-extras.md`; under the earlier "easier seen than read", nine turns in nine drew nothing.
+ASCII, at the detail a node label can carry — the limit, the count, the ordering, not just a
+name. It shows **the system around the decision**, not the options: a picture of the options is a
+decision tree and the verdict table is already that. Read `diagrams.md` and follow it.
 
 WHEN the fork turns on ownership, boundary, lifecycle, distributed state, trust, or
 compatibility, read `depth-extras.md` beside this file and follow it — it holds the deeper

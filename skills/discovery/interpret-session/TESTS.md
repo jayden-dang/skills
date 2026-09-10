@@ -817,3 +817,63 @@ stance every time. That is the expected result when it is the better shape, not 
 is broken.
 
 **Version:** minor `2.8.0`.
+
+## v2.9 → v2.10 — the drawing gets its own file, and stays ASCII (2026-09-10)
+
+### RED — the drawings were redrawing the question
+
+Enumerated across four replies with drawings, the symbols each one used:
+
+| Run | Symbols in the drawing | Beyond what the paste named |
+|---|---|---|
+| `ellingsby-park` | `stock.quantity`, `stock_audit` | **none** |
+| `littondale` | `adjust()`, `getLevel()`, `rebuild()`, the two tables | one, its own invention |
+| `morwenna-gate` | `page.ts`, `feed.ts`, `build.ts` | one |
+| `fernaby-row` | `drain()`, `dispatch()` | **both** |
+
+Two in four drew only what the paste had already named. The one that reached furthest into the
+repo is the one whose drawing made the fork legible.
+
+### The mermaid detour, and what it was actually worth
+
+v2.9.0 made mermaid the default after a third-party mermaid skill was read. Three runs produced
+three clean mermaid diagrams with `classDef` marks. Then the default came back to ASCII on the
+user's call, and the reason matters: **the companion turn is read in a terminal, and a terminal
+renders no mermaid** — so those three well-formed diagrams were, in the place they were actually
+read, three blocks of unrendered source.
+
+What the detour was worth is the *detail*, not the format. The mermaid nodes carried facts —
+`drain: one loop, limit 100`, `build — readdirSync().map(toPage), no per-file catch` — where the
+earlier ASCII carried bare names. That became a rule of its own: **every node carries the fact
+that makes it matter, not just its name**, numbers included.
+
+`classDef` colours became two marks that work in a terminal: `[*]` on what the pick changes,
+`[!]` on what carries the guarantee. When they land on different boxes, that gap is the argument.
+
+### GREEN — 3/3, and one run improved the notation
+
+All three drew, all three in ASCII, none reached for mermaid.
+
+`quillon-bank` marked four boxes and appended a time panel to the same drawing, putting `[*]` on
+`dispatch()` where the pick sets values and `[!]` on `queue.drain()` where the guarantee lives —
+two different boxes, which is the whole argument in one glance.
+
+`lyndhurst-mead` **extended the convention unprompted**: with three shapes on the table it used
+`[A]` `[B]` `[C]` instead of one `[*]`, marking where each shape acts, and its terminal node
+spells out a different consequence per shape — "one bad file aborts the WHOLE build, under A and
+C … under B nothing ever aborts". The mermaid version of the same drawing had said only "no
+per-file catch".
+
+`estover-hill` drew the failure as a literal band between two round trips, with `[!]` pointing at
+*the comment's promise* — the guarantee at risk living in a docstring rather than in code.
+
+Drawings moved to `diagrams.md` (their own file, one home); `depth-extras.md` fell from 99 lines
+to 41 and its now-stale "a drawing is due" pointer was corrected.
+
+**Not taken from the third-party skill:** its PNG/SVG pipeline, Confluence and wiki publishing,
+file-naming scheme, framework example library, design-doc templates, and its error-recovery chain
+through external search MCPs — none of which a read-only companion turn touches. Taken: type
+selection by what the fork is about, the marking idea, and one mechanic — a bad mermaid parameter
+**fails silently**, so a diagram that renders is not proof it says what you meant.
+
+**Version:** minor `2.10.0`.

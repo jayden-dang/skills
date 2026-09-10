@@ -1,70 +1,11 @@
 # The deeper detail pass
 
-Read this for either of two reasons: a drawing is due (`SKILL.md`'s trigger — a `Locality` naming
-more than one component, or an `Invariant` naming a shared resource), or the fork turns on
-ownership, boundary, lifecycle, distributed state, trust, or compatibility, where the four blocks
-carry the decision but not yet the evidence behind it. Neither holds → skip this file.
+Read this when the fork turns on ownership, boundary, lifecycle, distributed state, trust, or
+compatibility — where the four blocks carry the decision but not yet the evidence behind it. On a
+plain two-option fork, skip this file. Drawings live in `diagrams.md`, not here.
 
-**Contents:** [What a drawing looks like](#what-a-drawing-looks-like) ·
-[Decision boundary](#decision-boundary) · [The evidence pass](#the-evidence-pass) ·
+**Contents:** [Decision boundary](#decision-boundary) · [The evidence pass](#the-evidence-pass) ·
 [Where implementation detail goes](#where-implementation-detail-goes)
-
-## What a drawing looks like
-
-The picture describes **the system**, not the menu. Its job is to make the argument legible: the
-reader should be able to point at the box where the problem happens. Pick the kind the fork turns
-on — one picture, whichever kind fits.
-
-Name the job before the first mark, from the set this repo already uses for figures
-(`craft-page`'s recipes) — do not invent a fifth name for one of these:
-
-| Job | Use it when the fork is about |
-|---|---|
-| **topology / architecture** | what calls what, where work happens, which layer owns a rule. A question about *who decides* a value is this job with the owner labelled on the box |
-| **sequence** | order, blocking, a window, a race — anything whose argument is "and then" |
-| **before/after structure** | the change moves a boundary, and the point is which side something lands on |
-| **flowchart** | a process with branches that the reader has to walk |
-
-### Which form — ASCII or mermaid
-
-Keyed to where the drawing is read, not to taste:
-
-- **Stays in the companion turn** → ASCII. It is read in a terminal, and a terminal renders no
-  mermaid. Every drawing measured here was ASCII.
-- **Travels into something that renders it** — a doc, a PR body, an artifact, a repo markdown
-  file → mermaid, which is versionable and renders in GitHub, VS Code and Notion.
-
-Two mermaid mechanics worth knowing before you write one: an unknown word breaks the diagram, and
-a bad parameter **fails silently** rather than erroring — so a diagram that renders is not proof
-the diagram says what you meant. Braces inside a `%%` comment break it too.
-
-### Worked — flow, for a fork about a shared worker
-
-```
-  ingest ──▶ deliveries(pending) ──▶ drain() ──▶ dispatch() ──▶ partner endpoint
-                                       │            │
-                                       │            └─ retries inline: sleep 2,4,8,16,32s
-                                       └─ one worker, 100 rows a pass, strictly in order:
-                                          row N+1 starts only once row N's retries end
-```
-
-Everything the argument needs is now pointable. The retry budget lives in the box on the right;
-the cost of raising it lands in the box on the left, which belongs to everyone. That sentence is
-read off the picture rather than asserted at the reader.
-
-### Worked — sequence, same system, different question
-
-```
-  t=0      partner stops answering
-  t=0      delivery 1 starts its 5 attempts   ─┐
-  t=62s    delivery 1 gives up, marked dead    │  deliveries 2..100 sit idle,
-  t=62s    delivery 2 starts                   │  nothing wrong with any of them
-  t=2h04m  delivery 100 finally starts        ─┘
-```
-
-Same code, and the second drawing answers a question the first cannot: how long the queue is
-behind, which is what the incident was actually about. Draw the state that changes; leave out the
-architecture that does not.
 
 ## Decision boundary
 

@@ -1,6 +1,6 @@
 ---
 name: interpret-session
-version: 2.11.0
+version: 2.12.0
 description: Companion beside a technical discussion that answers from the code — what it does
   today, what a proposed shape would actually change, and which shape to take. Run with
   /interpret-session.
@@ -177,7 +177,7 @@ unverified, and the end-of-session digest. Do not write a carry-back on a turn w
 | "The comparison table should use whatever dimensions fit this fork" | Then no two turns compare. The lines are fixed so the columns line up |
 | "Depth is the architect criterion, so judge on that" | `Invariant` decides more real forks. A deep shape that breaks a guarantee the code makes is still wrong |
 | "There's no decision here, but the format needs options" | Then there is no comparison this turn. Inventing options you cannot choose between is the worst output in this skill |
-| "I explained it plainly; a second analogy adds depth" | It adds length. One model per idea |
+| "The analysis is done and the pick is obvious, so the reply is the next step" | Finishing the analysis is not settling the direction. Measured in real use, that move closed the user's fork for them, unasked |
 | "They picked English, so I still owe a translation block" | English companion means restate, not translate. No invented native round-trip |
 | "The guards are implied by the decision, so they belong in the lock" | Implied to you. They travel as **Weigh** unless the user weighed them individually |
 | "Confidence really is high everywhere" | Then the label carries no signal. Name the check, or say the stakes are too small to matter |

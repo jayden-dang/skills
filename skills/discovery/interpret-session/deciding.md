@@ -28,7 +28,17 @@ reviewer who was not in the discussion.
 
 ## The carry-back
 
-A terminal action, not the close of a turn.
+A terminal action, not the close of a turn. **The user settles a direction, or asks for the
+reply. Nothing else opens this.**
+
+Finishing the analysis is not settling it. Measured in real use: a session produced a full
+four-block read of an apex-routing fork, then wrote and handed over a carry-back on the same
+turn, unasked — closing the user's direction on their behalf on a decision about what their
+product's public front door is. The analysis felt complete, the pick felt obvious, and writing
+the reply felt like finishing the job. It was taking the decision.
+
+While something material is open, name it and stop. A turn that ends with "here is what you
+could send" has sent it.
 
 1. A message **for the other window**, in a code block so it copies cleanly. English, unless
    that window clearly is not.
@@ -38,11 +48,24 @@ A terminal action, not the close of a turn.
    hundred words, in a message claiming to be the user's own writing. REQUIRED SUB-SKILL: use
    `speak-outer` on the block before handing it over — it owns that sweep. The four analysis blocks
    above are yours and keep their own register; only the block being pasted goes through it.
-3. **Three slots when it locks something:**
+3. **Facts travel whole; commitments travel narrow.** The two halves of the block are not
+   governed by the same rule, and collapsing them is what makes a carry-back either bloated or
+   useless.
+
+   **Corrections** — every place the other window has the code wrong, each with the `file:line`
+   or the commit that settles it. These cost the user nothing to pass on: they are not agreeing
+   to anything by repeating a fact. Withholding one leaves that window reasoning from a false
+   premise, and it will keep building on it. Measured, the receiving interview re-verifies a
+   claim that arrives in the user's voice 3 times in 3 — a citation turns that into opening one
+   file instead of a fresh hunt. Measured in real use, a carry-back passed two corrections and
+   dropped every citation behind them.
+
+   **Then the three commitment slots:**
    - **Lock** — the few lines their approval actually freezes.
    - **Weigh (not locked)** — constraints for that session to test through its own process. It
      must not append these to its locks.
-   - **Still open** — what must not be quietly closed.
+   - **Still open** — what must not be quietly closed, including the one fact that would reverse
+     the pick if it turned out otherwise.
 
    One word of approval must never freeze fifteen bullets nobody weighed individually. A
    constraint important enough to be non-negotiable gets decided as its own lock, not smuggled

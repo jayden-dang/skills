@@ -922,3 +922,64 @@ once it is written down.
 Not yet a rule — two instances, one of them fixed an hour ago. Recorded as the thing to watch.
 
 **Version:** minor `2.11.0`.
+
+## v2.12.0 — the first real session, and what a harness cannot see (2026-09-10)
+
+The user ran the skill for real: a live multi-turn companion session on their own codebase, on a
+fork about what their product's public front door should be, against a repo with ROAD items,
+requirement IDs and a real commit history. **It was not run on this repo's test roster** — the
+session was on chatgpt.com, so the model was outside the single-model roster everything here has
+been measured on.
+
+### What held, in real use
+
+The **native-language branch fired for the first time** — the whole analysis in the user's
+language, the carry-back in English. Forty-one harness runs had never exercised it.
+
+The Iron Law held on a real codebase. Three corrections to the other window, each cited: that
+"actual app inline" is not an existing seam (`useDesktopViewer.ts:187`, `DesktopSurface.tsx:238`);
+that the runtime deliberately binds no launcher for a public session (`react.ts:12`); that two of
+the other session's arguments overstated their sources — `requirements.md:133` scopes a
+prohibition to the tenant surface, not the apex. It then pulled commit `24d3db44` to show the
+boundary was drawn on purpose.
+
+A shape of its own — a fourth, not among the three pasted — got its own column and won the
+stance. The drawing carried `MountResolver`, bound only to an owner tenure, which the paste never
+mentioned and which is the whole reason the pasted favourite is hard. `Invariant` decided again.
+
+### What failed — and only real use could show it
+
+**It wrote a carry-back on a turn where nothing was settled.** The user confirms they never asked
+for a reply. The rule already existed, in `deciding.md`'s first line and in `SKILL.md`'s red
+flags, and it was not enough.
+
+The cost is not style. On a decision about what a product's public front door is, the session
+moved from *analysis the user decides from* to *here is the answer, take it* — and closed the
+fork on the user's behalf.
+
+**The harness cannot reproduce this, in either shape.** Eleven runs that were not asked for a
+reply wrote none. Two more, rebuilt to answer in-thread with no file to write — the shape closest
+to a live chat — also wrote none. Thirteen clean, one real failure.
+
+The reason is structural: a harness prompt hands over one deliverable and one file, and the turn
+ends when the file is written. A conversation has no such edge, and "here is what you could send"
+is the natural way to close one. That the failure came from a model outside the roster makes the
+counter more necessary rather than less: a rule this roster obeys unprompted may still need to be
+said out loud for a different model.
+
+So the counter is written from the recorded consequence, and marked here as **RED from real use,
+no GREEN available**. Watch the next real session.
+
+### Also fixed: what the carry-back carries
+
+The real carry-back passed two of its three corrections and **dropped every citation behind
+them**. That is a loss with a measured cost on the other side: the receiving interview
+re-verifies a claim arriving in the user's voice 3 times in 3, and a `file:line` turns that into
+opening one file instead of a fresh hunt.
+
+The fix is a line, not a volume: **facts travel whole, commitments travel narrow.** Corrections
+now travel with their citations, because repeating a fact commits the user to nothing — while
+Lock / Weigh / Still open stay as narrow as they were, since those are what a one-word approval
+freezes. `Still open` also now carries the fact that would reverse the pick.
+
+**Version:** minor `2.12.0`.

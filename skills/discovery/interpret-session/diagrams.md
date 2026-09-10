@@ -92,10 +92,20 @@ that changes; leave out the architecture that does not.
 
 ## Form
 
-Plain ASCII, because the companion turn is read in a terminal and a terminal renders no mermaid.
-Keep the labels doing the work — boxes are optional, facts are not.
+**Setup answered this.** ASCII or mermaid, and it is not yours to revisit each turn — the answer
+is a fact about where the user reads, and switching mid-session makes the drawings incomparable.
 
-WHEN the drawing is going somewhere that renders mermaid — a doc, a PR body, a repo markdown file
-— write it as mermaid there instead, same content and same marks. Two mechanics if you do: an
-unknown word breaks the diagram, and **a bad parameter fails silently**, so a diagram that renders
-is not proof it says what you meant; and no braces inside a `%%` comment.
+**ASCII.** Labels do the work; boxes are optional, facts are not. The marks are `[*]` and `[!]`.
+
+**Mermaid.** Same content, same marks — carry them as node text (`"drain — one loop [!]"`) or with
+`classDef`, whichever the diagram type allows. Pick the type from the table above:
+`flowchart` for topology, `sequenceDiagram` for order, `erDiagram` for references,
+`stateDiagram-v2` for lifecycle. Where a type may not render, `flowchart TD` always does.
+
+Three mechanics for mermaid: an unknown word breaks the diagram; **a bad parameter fails
+silently**, so a diagram that renders is not proof it says what you meant; and no braces inside a
+`%%` comment. Keep node ids short and alphanumeric, and put the words in the label.
+
+A drawing that has to travel — into a doc, a PR body, a repo markdown file — goes as mermaid
+whatever the session setting, since that destination renders it and a terminal is not the reader
+there.

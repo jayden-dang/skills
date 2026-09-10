@@ -877,3 +877,48 @@ selection by what the fork is about, the marking idea, and one mechanic — a ba
 **fails silently**, so a diagram that renders is not proof it says what you meant.
 
 **Version:** minor `2.10.0`.
+
+## v2.11.0 — the drawing form is a setup question (2026-09-10)
+
+v2.10.0 hard-coded ASCII, on the reasoning that a companion turn is read in a terminal and a
+terminal renders no mermaid. That reasoning was a **guess about the user's reader**. It is wrong
+whenever the session runs in the desktop app, a place where mermaid renders and carries more than
+ASCII can — and the skill had no way to find out.
+
+Setup now asks, second, right after the language: *where will you read this?* The answer is a
+fact only the user holds, and `diagrams.md` states it is not revisited per turn, since switching
+mid-session makes the drawings incomparable.
+
+### GREEN — four runs, two arms, neither told which format to use
+
+The prompts said only **"I read this in a terminal"** or **"I read this in the Claude desktop
+app"**. Neither contained the words ascii or mermaid.
+
+| Arm | Runs | Result |
+|---|---|---|
+| terminal | `starcross-way`, `woolmer-bridge` | **2/2 ASCII**, no mermaid |
+| desktop app | `redmayne-fold`, `ilverton-cross` | **2/2 mermaid**, no ASCII drawing |
+
+Marks carried in both forms: 4 and 2 in the ASCII arm, 9 and 5 in the mermaid arm.
+
+**The mermaid arm produced the best drawing of the whole series.** `redmayne-fold` branched all
+three shapes off a single node — `retry budget — today: MAX_ATTEMPTS=5 … one constant for every
+account [!]` — and showed A and B flowing back into the blocking `dispatch()` while only C
+reroutes to a rewritten one. It also drew the retry loop as a genuine self-edge,
+`D -->|"attempt failed, budget left"| D`, which ASCII cannot render cleanly. That is the case for
+asking rather than assuming: the format that fits the reader is not always the poorer one.
+
+The ASCII arm lost nothing it had. `woolmer-bridge` opened its drawing on the repo's actual
+offending file, `content/hello.md (no description key)`, grounding the picture in a real instance
+rather than an abstract node.
+
+### The pattern this is the second instance of
+
+Twice now the skill was caught **deriving a fact it could have asked for**: a lifecycle stage in
+v2.8.0, and the drawing form here. Both were invented confidently and both were sometimes wrong.
+Neither was visible from inside the runs, because a derived answer looks exactly like a known one
+once it is written down.
+
+Not yet a rule — two instances, one of them fixed an hour ago. Recorded as the thing to watch.
+
+**Version:** minor `2.11.0`.

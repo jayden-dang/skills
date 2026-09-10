@@ -1,6 +1,6 @@
 ---
 name: interpret-session
-version: 2.10.0
+version: 2.11.0
 description: Companion beside a technical discussion that answers from the code — what it does
   today, what a proposed shape would actually change, and which shape to take. Run with
   /interpret-session.
@@ -34,20 +34,21 @@ opinion about a document.
 
 ## Setup — once, at the start, in English
 
-1. **Companion language.** Which language every explanation and label uses from here on.
-   Offer **English** and **native / other** as equal first-class choices — no default. English
-   is a full companion (second opinion, debate), not a fallback for people who read English.
-   When the user has already written in another language, propose that one, still beside
-   English. Verbatim code and identifiers always stay as written. The carry-back is English
-   unless the other window clearly is not.
-2. **Project posture.** Adopt `docs/agents/project.md`'s **Project posture** silently, saying the
+1. **Companion language.** Which language every explanation and label uses from here on. Offer
+   **English** and **native / other** as equal first-class choices, no default — English is a full
+   companion, not a fallback for people who read English. Already writing in another language →
+   propose that one, still beside English. Code and identifiers stay verbatim; the carry-back is
+   English unless the other window clearly is not.
+2. **Drawing form — ASCII or mermaid.** Where will you read this? Mermaid renders in the desktop
+   app, a doc, a PR body; a terminal shows source. A fact about their reader, not a taste to derive.
+3. **Project posture.** Adopt `docs/agents/project.md`'s **Project posture** silently, saying the
    line you read. Absent, ask; cannot ask → derive **compat obligation only**, say it is derived,
-   and invent no lifecycle stage — measured, one fixture drew "Early", "Active" and "Active" from
-   three runs while compat came out **None** in all three. The lens: the written line, else Idea /
-   Early / Active → **None**, Cut Released / Scaling / Maintenance → **External**; on **None** a
-   parallel column, a `v2`, or a deprecation window buys compatibility with nobody.
-3. **Feedback wanted** — critical review / alternatives / architecture / product / trade-offs /
-   general understanding. One question, not an intake interview.
+   and invent no lifecycle stage — measured, one fixture drew "Early", "Active" and "Active" while
+   compat came out **None** in all three. The lens: the written line, else Idea / Early / Active →
+   **None**, else **External**; on **None** a parallel column, a `v2`, or a deprecation window
+   buys compatibility with nobody.
+4. **Feedback wanted** — critical review / alternatives / architecture / product / trade-offs /
+   understanding. One question, not an intake interview.
 
 ## Read the message before answering it
 
@@ -146,8 +147,8 @@ mechanism, then trade-off — an expert critique of a model never given lands as
 
 **Draw it** WHEN a shape's `Locality` names more than one component, or its `Invariant` names a
 resource more than one actor uses — lines you already wrote, so the trigger is read, not judged.
-ASCII, at the detail a node label can carry — the limit, the count, the ordering, not just a
-name. It shows **the system around the decision**, not the options: a picture of the options is a
+In the form chosen at setup, at the detail a node label can carry — the limit, the count, the
+ordering, not just a name. It shows **the system around the decision**, not the options: a picture of the options is a
 decision tree and the verdict table is already that. Read `diagrams.md` and follow it.
 
 WHEN the fork turns on ownership, boundary, lifecycle, distributed state, trust, or
@@ -176,7 +177,6 @@ unverified, and the end-of-session digest. Do not write a carry-back on a turn w
 | "The comparison table should use whatever dimensions fit this fork" | Then no two turns compare. The lines are fixed so the columns line up |
 | "Depth is the architect criterion, so judge on that" | `Invariant` decides more real forks. A deep shape that breaks a guarantee the code makes is still wrong |
 | "There's no decision here, but the format needs options" | Then there is no comparison this turn. Inventing options you cannot choose between is the worst output in this skill |
-| "Offering three directions to choose from is helpful" | It hands the work back. Name what is open instead |
 | "I explained it plainly; a second analogy adds depth" | It adds length. One model per idea |
 | "They picked English, so I still owe a translation block" | English companion means restate, not translate. No invented native round-trip |
 | "The guards are implied by the decision, so they belong in the lock" | Implied to you. They travel as **Weigh** unless the user weighed them individually |

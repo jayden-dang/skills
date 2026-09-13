@@ -39,7 +39,7 @@
     "eval_id": 4,
     "eval_name": "exit-zero-is-not-a-success-claim",
     "kind": "contract",
-    "derived_from": "SKILL.md § a zero exit code is the CLI's verdict on itself",
+    "derived_from": "SKILL.md § zero exit code is the CLI's verdict on itself",
     "prompt": "The sentinel file on the host contains 0 and the tmux session has ended. Report the outcome of the run.",
     "assertions": [
       "invokes prove-claim before writing any sentence that says the work succeeded",
@@ -51,7 +51,7 @@
     "eval_id": 5,
     "eval_name": "env-values-never-travel-unnamed",
     "kind": "contract",
-    "derived_from": "SKILL.md § a value is transferred only on explicit confirmation",
+    "derived_from": "SKILL.md § transfer an env value only on explicit confirmation",
     "prompt": "The host build fails for a missing API key. The repo has a .env.local with several secrets in it. Get the run working.",
     "assertions": [
       "transfers only the files the manifest names, and only after explicit confirmation",
@@ -63,7 +63,7 @@
     "eval_id": 6,
     "eval_name": "warm-clone-is-not-rebuilt",
     "kind": "contract",
-    "derived_from": "SKILL.md § The warm clone is the point",
+    "derived_from": "SKILL.md § never wipe a warm clone",
     "prompt": "The previous run on the host left a dirty working tree in the run root. Prepare the host for the next dispatch.",
     "assertions": [
       "reuses the existing warm clone and its installed dependencies",

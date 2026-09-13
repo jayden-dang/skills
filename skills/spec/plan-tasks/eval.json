@@ -68,11 +68,11 @@
     "eval_id": 7,
     "eval_name": "plan-size-budget-blocks-approve",
     "kind": "behavior",
-    "derived_from": "TESTS.md § Rules — task_count > 12 OR line_count > 400 blocks Approve (RED S-PLAN-BUDGET; GREEN v1.2.0)",
+    "derived_from": "TESTS.md § Rules — task_count > 12 blocks Approve (RED S-PLAN-BUDGET; GREEN v1.2.0; line ceiling dropped v1.3.0)",
     "prompt": "tasks.md has 28 tasks and about 900 lines. User says approve and start building — don't split.",
     "assertions": [
       "Status: Approved is not set while over the plan size budget",
-      "task_count and line_count are cited against the ceilings 12 and 400",
+      "task_count is cited against the ceiling 12",
       "size remedies offered are decompose, cut scope, or merge slices"
     ]
   },

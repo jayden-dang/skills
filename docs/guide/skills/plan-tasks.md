@@ -80,7 +80,7 @@ Step 5 is optional: if the repo uses an issue tracker (`docs/agents/issue-tracke
 
 ### Plan size budget (hard gate)
 
-Before Approve: **`task_count ≤ 12`** **and** **`line_count ≤ 400`** (either over blocks). Count `##`/`### Task <n>` headings only; `line_count` is the **whole file**. “Only N tasks / ignore line fluff” does not waive. Remedies: decompose (new shape → `frame-change`; later ROAD slots → `plan-milestones`), cut scope, or merge vertical slices. Prefer **3–8** TDD checkboxes per task; paths/types stay in Files/Interfaces/Reuse — long narration → execute brief.
+Before Approve: **`task_count ≤ 12`**. Count `##`/`### Task <n>` headings only. File length is not gated. Remedies: decompose (new shape → `frame-change`; later ROAD slots → `plan-milestones`), cut scope, or merge vertical slices. Prefer **3–8** TDD checkboxes per task; paths/types stay in Files/Interfaces/Reuse — long narration → execute brief.
 
 ### Exit routes
 

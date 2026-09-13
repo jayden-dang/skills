@@ -1,6 +1,6 @@
 ---
 name: plan-tasks
-version: 1.2.2
+version: 1.3.0
 description: Use when a design is approved and the tasks.md implementation plan
   (vertical-slice tasks with requirement footers and behavior tests) needs writing,
   after design-solution and before the execute family (build-in-waves /
@@ -79,7 +79,7 @@ Each task carries these slots:
 | Slot | Rule |
 |---|---|
 | **Files, Reuse, Interfaces, Depends-on** | Files: Create / Modify / Test, each path **hardened** in backticks (e.g. `` `src/foo/bar.ts` ``); never glue a line number/range into the path token (`path:86-103` is forbidden) — ranges go in surrounding prose or a separate annotation (new plans only; P1 ownership extraction still accepts legacy glued forms in already-written `tasks.md`). Reuse: the concrete existing code/library/pattern this task builds on, copied **verbatim** from the design section's `Reuse:` line — same `<rung> — <concrete target>` grammar (e.g. `Reuse: existing — src/util/dates:parseISO (rung 2)`); copy, don't reinterpret — Step 4 checks it against the design's line. Interfaces: Consumes / Produces — the names and types neighboring tasks share, so an isolated implementer learns what to call things. Depends-on: the earlier tasks this one truly needs — those whose interface it Consumes or whose files it builds on — as `Depends-on: Task 2, Task 4`, or `Depends-on: none`. Parallelism signal: two tasks sharing no files and no interface declare no edge, so the continuous `build-in-waves` scheduler may place them in one ready set when surfaces are disjoint and worktree isolation is safe; omitting the line falls back to depending on every prior task (safe but fully serial) — over-declaring needlessly serializes, under-declaring is caught by the executor's file-disjoint check before it can collide. Governs build waves — never reorder or narrow dependencies solely to tidy review units if that would lie about what the task needs. |
-| **Steps (thin, 3–8 checkboxes)** | Bite-sized checkboxes (2–5 min each, prefer **3–8** per task), TDD cycle: failing test (complete code describing **behavior**, not embedding requirement IDs in application/test source) → run, expect the stated failure → implement (complete code) → run, expect pass → commit with a conventional subject explaining the change (no `Implements:` / `Guards:` trailer required or taught). No novel-length essays here — that bloats `line_count` and review surface; long how-to narration for one worker goes in the execute brief (`.skills/<CODE>/task-N-brief.md`) at execute time, while the shared plan keeps **identifiers** (paths, type names, commands) in Files / Interfaces / Reuse so the brief cannot invent APIs. |
+| **Steps (thin, 3–8 checkboxes)** | Bite-sized checkboxes (2–5 min each, prefer **3–8** per task), TDD cycle: failing test (complete code describing **behavior**, not embedding requirement IDs in application/test source) → run, expect the stated failure → implement (complete code) → run, expect pass → commit with a conventional subject explaining the change (no `Implements:` / `Guards:` trailer required or taught). No novel-length essays here — that bloats review surface; long how-to narration for one worker goes in the execute brief (`.skills/<CODE>/task-N-brief.md`) at execute time, while the shared plan keeps **identifiers** (paths, type names, commands) in Files / Interfaces / Reuse so the brief cannot invent APIs. |
 | **Footer** | `` `_Requirements: CODE-N.M, CODE-N.M_` `` — the IDs this task implements or guards; every task has one. **Default: one story's IDs** (same story number N); multi-story footers **merge** those stories into one review unit under `build-by-story` (plan-quality signal — not a ban, not a reason to lie about Depends-on). IDs live in this footer (and in requirements/design), not in production source or test titles. No placeholders anywhere in a slot — "TBD", "add appropriate error handling", "similar to Task 3", or a type referenced but defined in no task — each is a plan bug; fix it before the plan ships. |
 
 | Thought | Reality |
@@ -100,20 +100,19 @@ other sections only point here.
 | Metric | How to count | Hard ceiling |
 |---|---|---|
 | **task_count** | Count headings whose text matches `Task <integer>` at level `##` or `###` only (e.g. `### Task 3` or `## Task 12: Activate rail`). Not `####`, not `Task 3a`, not prose “task 3”, not checkbox count. | **12** |
-| **line_count** | **Whole-file** line count of this `tasks.md` (header + Global Constraints + map + tasks). Checkbox count is irrelevant. “Fluff / ignore lines” does **not** waive. | **400** |
 
-**WHEN** `task_count > 12` **OR** `line_count > 400` (either metric alone blocks):
+**WHEN** `task_count > 12`:
 
 - **MUST NOT** set `Status: Approved`.
-- Surface both counts vs ceilings and that the plan is over budget.
+- Surface the count vs the ceiling and that the plan is over budget.
 - Offer only size remedies (user picks; no silent cut):
   1. **Decompose** — this plan keeps only the first ship slice. IF the leftover is new feature shape → hand back to `frame-change`. IF the roadmap already exists and you only need later slots → REQUIRED SUB-SKILL: use `plan-milestones` to add `ROAD-N` items. Then delete tasks that belong to later ROAD items from *this* file.
-  2. **Cut scope** — strike or Out-of-Scope requirements, then delete the matching tasks (and shrink Steps if `line_count` alone is high).
+  2. **Cut scope** — strike or Out-of-Scope requirements, then delete the matching tasks.
   3. **Merge slices** — fewer tasks, still vertical (one demoable outcome each); do not hide horizontal layers inside one mega-task.
 
-"Don't split / just approve / standup / only N tasks / line count is fluff / CFND-size is normal" **does not waive**. A megaplan is not made shippable by urgency.
+"Don't split / just approve / standup / CFND-size is normal" **does not waive**. A megaplan is not made shippable by urgency.
 
-**WHEN** both metrics are at or under ceiling → budget clear; continue Exit.
+**WHEN** `task_count ≤ 12` → budget clear; continue Exit.
 
 ## Step 4: Coverage and consistency check
 
@@ -172,8 +171,7 @@ exactly one feature issue (union IDs, plan path, id under `.skills/<CODE>/`),
 | "I'll ask continuous vs story-unit, then offer routes" | Redundant. One question: which of the three skills |
 | "User said approve and start building — write continuous and go" | Budget clear + Approve + offer three routes. "Start building" is not a route pick |
 | "I'll write Execution-mode now so the plan looks complete" | Completeness is Status + route name. Mode is written by the execute skill |
-| "28 tasks / 900 lines — just approve, splitting is ceremony" | Plan size budget blocks Approve. Decompose, cut, or merge first |
-| "Only 10 tasks — ignore line_count, it's fluff" | Either ceiling blocks. Whole-file `line_count` counts; thin Steps / cut prose |
+| "28 tasks — just approve, splitting is ceremony" | Plan size budget blocks Approve. Decompose, cut, or merge first |
 | "Recommend story-unit is inventing Execution-mode / banned by no size-based default" | Recommend is an offer label; mode stays unset until the execute skill runs after pick |
 | "Waves are faster — skip story stops on UI work" | Faster continuous often means one huge PR. Recommend still `build-by-story` when the predicate holds |
 | "Thin steps — drop paths/types from the task into the brief only" | Identifiers stay in Files/Interfaces/Reuse; only narration moves to the brief |
@@ -182,12 +180,11 @@ exactly one feature issue (union IDs, plan path, id under `.skills/<CODE>/`),
 
 - Asking continuous vs story-unit before (or instead of) the three-skill offer
 - Setting `Status: Approved` while inventing `Execution-mode: continuous`
-- Setting `Status: Approved` while `task_count > 12` or `line_count > 400`
+- Setting `Status: Approved` while `task_count > 12`
 - Offering only one route, or skipping the offer after approval
 - Writing `Execution-mode:` in plan-tasks instead of letting the execute skill do it
 - Treating "LGTM, build it" as a silent default to `build-in-waves`
 - Omitting the `(Recommended)` mark on `build-by-story` when the Recommend predicate holds
-- Approving while over `line_count` because `task_count` alone is ≤ 12
 - Dropping path/type/command identifiers from Files/Interfaces/Reuse while “thinning” Steps
 
 **Done when:** `tasks.md` is **under the Plan size budget**, `Status: Approved`,

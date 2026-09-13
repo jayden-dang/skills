@@ -13,6 +13,11 @@ One read, answering both "how is my work going" and "what is this machine
 holding". Run it over plain SSH — nothing here needs a credential — except the
 pull-request state, which needs the tmux server like the rest of the return leg.
 
+The repo's `scripts/host-status.sh` (see `host-provisioning.md` § The status
+script) already implements the per-run half: `status` for one run, `runs` for
+every record in the repo. Use it rather than retyping these reads; what it does
+not cover is the host's own line at the end of this section.
+
 **Mid-run, the state column is the whole answer.** `SKILL.md` Phase 5 polls this
 same read:
 

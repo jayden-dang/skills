@@ -1,7 +1,7 @@
 # Host provisioning
 
-First-run setup for a build host, and the schema of the manifest every later run
-reads. Run once per host, then once per repo.
+First-run setup for a build host, plus the two schemas every later run reads —
+the host manifest and the per-run record. Run once per host, then once per repo.
 
 This file holds **actions**, not rules. The rules those actions serve — why the
 tmux server must come from the console, why a warm clone is never wiped, why an
@@ -64,6 +64,67 @@ it must reach every tool the install and verify commands need — a Docker CLI i
 `/usr/local/bin` and a runtime under `$HOME` are both installed, working, and
 invisible without it.
 
+## The run record
+
+`.skills/<CODE>/host-run.json`, local-only, one per run. The manifest describes
+the *host*; this describes the *run*, and it is the only place a per-run value is
+written down — `host-status.sh` reads it rather than being edited per feature.
+
+```json
+{
+  "code": "SURF", "slot": 0,
+  "branch": "feat/s0-SURF",
+  "base_sha": "08bb54c3f27e6060b44e4561c0bda2d5c75de6d2",
+  "route": "build-in-waves", "agent": "grok", "model": "grok-4.5",
+  "driver_status": "verified",
+  "alias": "jayden-host", "path": "<the manifest PATH, verbatim>",
+  "session": "bh-SURF-s0",
+  "workdir": "~/builds/klynt-wt/s0-SURF",
+  "log": "<workdir>/.skills/SURF/host-run.log",
+  "sentinel": "<workdir>/.skills/SURF/host-run.exit",
+  "plan": "docs/specs/2026-09-10-surface-composition/tasks.md",
+  "progress_glob": "~/.grok/sessions/<url-encoded workdir>/*/summary.json",
+  "compose_project": "klynt-s0-surf",
+  "port_env": {"POSTGRES_PORT": 20000, "KLYNT_BACKEND_PORT": 20003},
+  "return": "pr", "dispatched_at": "2026-09-10T06:06:08Z",
+  "env_files_transferred": [".env"], "notes": []
+}
+```
+
+Four fields exist only so a later read needs no guesswork, and each is cheap to
+write at dispatch and expensive to reconstruct afterwards:
+
+| Field | Why it is recorded, not derived |
+|---|---|
+| `path` | The manifest is a YAML block inside a markdown file; a reader would have to parse it to send a single command |
+| `plan` | Repo-relative path to `tasks.md`, so checkbox progress is readable without knowing the spec directory |
+| `progress_glob` | The driver row's `progress` field, resolved to this run's directory. Driver-specific knowledge stops here |
+| `port_env` | The slot's block, already assigned — what a tunnel forwards and what a port check looks for |
+
+Set `closed: true` at reclaim. The record itself stays: it is how an artifact
+with no live run is recognised later.
+
+## The status script
+
+One copy per repo at `scripts/host-status.sh` (or wherever the repo keeps its
+scripts), seeded verbatim from `templates/host-status.sh` beside `SKILL.md` and
+committed. It is the user's read of a run from their own machine:
+
+```
+scripts/host-status.sh                 # status of the only open run
+scripts/host-status.sh -c SURF wait    # poll to a terminal state
+scripts/host-status.sh diff --stat     # what the run has committed since BASE
+scripts/host-status.sh tunnel          # the run's ports, forwarded here
+```
+
+**Never edit a run's values into it.** A per-run copy is how the next feature
+ends up with a script pointing at the last feature's session. Everything that
+varies is in the run record; if the script needs something the record lacks, the
+record gains a field.
+
+It is read-only by construction — no return, no push, no reclaim. Those are
+`return-leg.md` and `reclaim.md`, and neither is one keystroke.
+
 ## Per-host setup
 
 1. **Pick the alias.** Try each candidate: `ssh -o BatchMode=yes -o
@@ -89,3 +150,5 @@ invisible without it.
    `scp`/`rsync` and mode 600.
 7. **Smoke**: run the driver's `auth_check` from inside the clone. A green smoke
    here is what lets Phase 1 pass cheaply on later runs.
+8. **Status script**: copy `templates/host-status.sh` to the repo's script
+   directory, `chmod +x`, and commit it. Once per repo, not once per run.

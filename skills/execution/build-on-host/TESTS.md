@@ -1,4 +1,4 @@
-# `build-on-host` — remote execution on any agent CLI (v1.0.0)
+# `build-on-host` — remote execution on any agent CLI (v1.1.0)
 
 **Status of the evidence.** A host probe session, an end-to-end execution trial,
 and a **six-scenario RED baseline that did not fail**. Every claim below is a
@@ -296,3 +296,44 @@ and should be tested as one: retrieval-and-apply, not pressure.
 No scenario covered the auth gate, the base-SHA gate, one-plan-one-run, the
 duplicate-pull-request check, or `lsof +D` versus `pgrep -f` as a choice an agent
 makes under pressure. Those remain unmeasured — not vindicated.
+
+
+## v1.1.0 — the status script, from a live run
+
+The first real use of this skill (klynt, feature `SURF`, grok, 2026-09-10) ended
+with a hand-written `.skills/SURF/host-status.sh`: correct, and wrong in the way
+that matters — the alias, session, worktree, base SHA, plan path, and the grok
+session glob were all typed into it, so the second feature would need a second
+script. `templates/host-status.sh` is that script with every one of those values
+moved into `.skills/<CODE>/host-run.json`.
+
+Verified against the SURF run **while it was still running**, from this machine:
+
+| Command | Result |
+|---|---|
+| `state` | `running`, exit 3 — CODE resolved from the single open record, no argument given |
+| `status` | RUNNING · 3 commits ahead of `08bb54c3` · heartbeat 0m old, 378 messages · plan `In-progress` · 5 of 7 ports listening · 4 containers on `klynt-s0-surf` |
+| `diff` | 43 files, +287/−261 since BASE; `diff --stat -- frontend/src/entities/app/` narrowed to 6 |
+| `log` | `(log is 0 bytes …)` — grok's `--output-format json` writes at exit, and the message says so rather than looking like a stall |
+| `peek 20` | pane held `:` and an unconsumed key from an earlier attach; trailing pad rows squeezed |
+| `runs` | one row, `SURF feat/s0-SURF running jayden-host` |
+
+Two findings the run itself produced, both now in `SKILL.md` Phase 4:
+
+- **The sentinel was dispatched pre-expanded.** The run record's own notes say
+  it was redispatched after `echo $? > <SENTINEL>` was expanded by the local
+  shell at `tmux new-session` time. A sentinel holding a constant is worse than
+  no sentinel: it is a green exit code for a run nobody watched.
+- **`checked: 0 / unchecked: 41`** while two tasks were done and reviewed. The
+  execute route tracks progress in `.skills/<CODE>/progress.md`, not by ticking
+  `tasks.md` boxes mid-run, so the plan line is a coarse signal and the commit
+  count is the honest one. Left as observed; not this skill's ledger to change.
+
+### Still untested
+
+`wait`, `attach`, and `tunnel` were not exercised — `wait` and `attach` because
+the run was live and neither is worth interrupting it for, `tunnel` because the
+run's backend and frontend ports were not yet listening. Their remote reads are
+the same three primitives the verified commands use (`tmux has-session`, the
+sentinel file, `ssh -L`), which is a reason to expect them to work, not evidence
+that they do.

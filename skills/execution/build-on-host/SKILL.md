@@ -1,6 +1,6 @@
 ---
 name: build-on-host
-version: 1.0.0
+version: 1.1.0
 description: Use when an approved tasks.md should run somewhere other than this
   machine — offload the build to a remote host, build server, or second machine
   over ssh, unattended, under whichever agent CLI that host runs (grok, codex,
@@ -21,8 +21,8 @@ that host runs. This skill owns the host, the base commit, and the return path.
 session, one log, one exit sentinel. Everything CLI-specific — headless flag,
 working-directory flag, autonomy flag, auth check, log shape — lives in
 `runner-drivers.md` and nowhere else; a new agent CLI is a new row there, never
-an edit to these steps. Runs are **full-autonomy**: each driver's
-`autonomy_full` flag, in a run directory of its own. No allowlist profile here.
+an edit to these steps. Runs are **full-autonomy** — each driver's
+`autonomy_full` flag, in a run directory of its own, no allowlist profile.
 
 ## What this skill does not own
 
@@ -39,13 +39,12 @@ once with the exact one-time fix beside each; do not fix them silently.
 
 1. **Alias.** Try the manifest's alias, then its fallbacks, in order:
    `ssh -o BatchMode=yes -o ConnectTimeout=8 <alias> true`. Record the winner.
-2. **Toolchain.** `git`, `tmux`, the driver's `bin`, and anything the repo's
+2. **Toolchain.** `git`, `tmux`, the driver's `bin`, and whatever the repo's
    install and verify commands need, all resolving **with the PATH the manifest
-   declares** — a non-interactive `ssh` shell reads neither `.zshrc` nor
-   `.zprofile`. It precedes the tmux check because without that PATH,
-   `ssh <alias> 'tmux ls'` answers `command not found` on a host running tmux,
-   which the next check reads as "no server". Docker and per-language toolchains
-   hide here too: installed, running, and invisible to a bare `ssh`.
+   declares** — a non-interactive `ssh` reads neither `.zshrc` nor `.zprofile`.
+   It precedes the tmux check because without that PATH, `ssh <alias> 'tmux ls'`
+   answers `command not found` on a host running tmux, which reads as "no server".
+   Docker and language toolchains hide here too, invisible to a bare `ssh`.
 3. **tmux server.** `ssh <alias> '<manifest PATH>; tmux ls'`. A server started
    from the host's **GUI login** must already exist — panes forked from it
    inherit an unlocked login keychain, and keychain-backed CLIs fail without it.
@@ -57,9 +56,8 @@ once with the exact one-time fix beside each; do not fix them silently.
    not over plain SSH. Failure → STOP with that driver's login command.
 
    <HARD-GATE>
-   NO DISPATCH ON A FAILED OR SKIPPED AUTH CHECK. A run that starts unauthenticated
-   burns the lease and returns nothing. Neither a user instruction to "just try it"
-   nor a previously green check on another agent overrides this.
+   NO DISPATCH ON A FAILED OR SKIPPED AUTH CHECK. An unauthenticated run burns the
+   lease and returns nothing — not on "just try it", not on another agent's green.
    </HARD-GATE>
 6. **Skills reachable.** Use the driver's `skills_check` to confirm the picked
    route plus `execute-common`, `prove-claim`, `test-first`,
@@ -74,11 +72,10 @@ gate is open.*
 The manifest is `docs/agents/host-build.md`, committed, never holding a secret
 value; per-run state is `.skills/<CODE>/host-run.json`, local-only. Missing
 manifest, or anything below unbuilt → read `host-provisioning.md` beside this
-file and follow it exactly — run root,
-bare repo, warm clone, the `hostbuild` remote, install, and env-file transfer in
-their idempotent form. Two of its rules do not bend. The warm clone is the point:
-never wipe and re-clone to "start clean" unless the user asked. And for env files,
-a value is transferred only on explicit confirmation, for the files the manifest
+file and follow it exactly — run root, bare repo, warm clone, the `hostbuild`
+remote, install, and env-file transfer in their idempotent form. Two of its rules
+do not bend: never wipe a warm clone to "start clean" unless the user asked, and
+transfer an env value only on explicit confirmation, for the files the manifest
 names — record names, never values.
 
 WHEN `max_concurrency` is above 1, also read `run-isolation.md` and follow it
@@ -105,9 +102,8 @@ the host builds.
 4. **Compare `git rev-parse HEAD` on the host against `BASE` as strings.**
 
    <HARD-GATE>
-   NO DISPATCH WHILE THE TWO SHAs DIFFER. A host that is "on the right branch" is
-   not the same claim as a host on the right commit, and a stale checkout produces
-   a diff nobody can trace to the approved plan.
+   NO DISPATCH WHILE THE TWO SHAs DIFFER. "On the right branch" is not "on the
+   right commit"; a stale checkout produces a diff nobody can trace to the plan.
    </HARD-GATE>
 
 *Done when: both sides print the same SHA, and both are in the run record.*
@@ -126,31 +122,35 @@ the host builds.
      '<PATH exports>; cd <RUNDIR> && <driver command> > <LOG> 2>&1; echo $? > <SENTINEL>'
    ```
 
-   The sentinel is written by the shell, not the agent, so a crashed CLI still
-   produces an exit code.
-4. Write the run record. *Done when: `tmux has-session -t bh-<CODE>` is true and
-   the record names the session, log, and sentinel.*
+   The sentinel is written by the shell, so a crashed CLI still produces an exit
+   code — but only if `$?` reaches the host **unexpanded**; expanded locally it
+   sends a constant, and a dead run reads as clean. Where the quoting is
+   anything but trivial, write the command to a host dispatch script instead.
+4. Write the run record, and seed `scripts/host-status.sh` from `templates/` if
+   the repo has none — `host-provisioning.md` owns both schemas. `path`, `plan`,
+   `progress_glob` and `port_env` cost nothing now and cannot be reconstructed
+   from a session name later; one status script per repo, since a per-run copy
+   watches last week's session. *Done when: `tmux has-session -t bh-<CODE>` is
+   true, the record names the session, log, and sentinel, and the script reads
+   the run.*
 
 ## Phase 5 — Watch and close
 
-Poll — never hold the SSH connection open for the length of a build. The signal
-table lives in `reclaim.md` § Status, which answers the same question mid-run as
-it does afterwards; read it and follow it. The one trap worth naming here: a
-driver whose `log_format` emits a single object at the end leaves the log at
-**0 bytes** for the whole run, so the session and the driver's `progress` field
-are the liveness signals and a silent log is what working looks like.
+Poll with the repo's `scripts/host-status.sh` — never hold the SSH connection
+open for the length of a build, and never hand-roll a read the script already
+makes. The signal table it implements lives in `reclaim.md` § Status, which
+answers the same question mid-run as it does afterwards; read it and follow it.
 
 On finish, read `return-leg.md` beside this file and follow it exactly — it owns
 the order the work travels in, both return modes, and the token wiring `pr`
-needs. Do not improvise a return: the agent commits in the host's **working
-clone**, which the bare repo `hostbuild` points at has never seen, so a fetch run
-straight after the build returns the commit you pushed *out*, exits 0, and reads
-as success.
+needs. Do not improvise: the agent commits in the host's **working clone**, which
+the bare repo `hostbuild` points at has never seen, so a fetch straight after the
+build returns the commit you pushed *out*, exits 0, and reads as success.
 
 Report: route, agent and model, base SHA, commits returned, the driver's own
-usage/cost fields when it emits them, and every check that was skipped. Any
-sentence claiming the work succeeded goes through REQUIRED SUB-SKILL: use
-`prove-claim` first — a zero exit code is the CLI's verdict on itself.
+usage/cost fields when it emits them, and every check skipped. Any sentence
+claiming success goes through REQUIRED SUB-SKILL: use `prove-claim` first — a
+zero exit code is the CLI's verdict on itself.
 
 *Done when: the returned tip differs from `BASE`, the return mode is applied,
 and no success sentence is unproven.*
@@ -160,10 +160,10 @@ and no success sentence is unproven.*
 A finished run keeps holding the host until something takes it back. Read
 `reclaim.md` beside this file and follow it exactly — it owns the status read,
 the reclaimable-vs-quarantined verdict, the enumerate-then-delete order, and the
-merged trigger. Two rules from it: reclaim fires on a pull request that is
-actually `MERGED` with a merge commit, never on one merely closed; and an age
-policy may stop processes and containers but **may never delete a worktree** —
-that is a user's call, made against the status view.
+merged trigger. Two rules from it: reclaim fires on a pull request actually
+`MERGED` with a merge commit, never one merely closed; and an age policy may stop
+processes and containers but **may never delete a worktree** — a user's call,
+made against the status view.
 
 *Done when: the run's compute is released and its slot is free, or the run is
 quarantined and visible in status with a reason.*
@@ -173,9 +173,11 @@ quarantined and visible in status with a reason.*
 | "Remote is unreachable over SSH, so the agent can't be logged in" | Plain SSH cannot open the login keychain. Check inside the tmux server before concluding anything about auth |
 | "tmux isn't running — I'll start one over SSH" | A server started from SSH has no keychain. Ask for one from the console |
 | "The host is on the feature branch, so it's on the right commit" | Compare SHAs as strings. Branch names drift; SHAs do not |
+| "The log is 0 bytes — the run has stalled" | A driver emitting one object at exit writes nothing until it does. Session and heartbeat are the liveness signals |
 | "Two runs, so two clones — safer" | Measured safe: six parallel worktrees and commits, `git fsck` clean. Isolate per run, share the store |
 | "The CLI exited 0, so the feature is done" | That is the CLI's verdict on itself. `prove-claim` decides what you may say |
 | "Copy the whole .env across — it's faster than listing names" | The manifest names what travels. Unlisted secrets do not leave this machine |
+| "This run needs its own status script — the paths are different" | The paths are in the run record. One script per repo reads any run; a per-run copy watches the previous feature by next week |
 
 ### Red Flags
 
@@ -188,6 +190,7 @@ quarantined and visible in status with a reason.*
 - Falling back to `fetch` when `GH_TOKEN` is missing instead of stopping
 - Reporting success from a zero exit code without `prove-claim`
 - Sending env values the manifest does not name, or recording a value anywhere
+- A per-run copy of the status script, or a record missing the fields it reads
 - Re-cloning a warm run root to "start clean" unasked
 - Reaching for `--force` on a worktree, or an override without `!override`
 - Deleting a worktree whose commits are not provably somewhere else

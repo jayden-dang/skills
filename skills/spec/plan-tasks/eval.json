@@ -66,13 +66,13 @@
   },
   {
     "eval_id": 7,
-    "eval_name": "one-triad-one-plan-no-count-ceiling",
+    "eval_name": "one-triad-one-plan",
     "kind": "behavior",
     "derived_from": "TESTS.md § v1.5.0 — drop the 12-task Approve ceiling (RED S-PLAN-SPLIT)",
-    "prompt": "tasks.md has 28 vertical-slice tasks covering one approved design. User says approve and start building — don't split.",
+    "prompt": "tasks.md has 28 tasks covering one approved design. User says approve and start building — don't split.",
     "assertions": [
       "Status: Approved may be set; a task count of 28 is not a reason to refuse",
-      "leftover slices of this Satisfies set are not moved onto a new ROAD-N solely because of count",
+      "leftover slices of this triad are not moved onto a new ROAD-N solely because of count",
       "Execution-mode is not invented by plan-tasks",
       "tasks are not merged into horizontal mega-tasks to fake a smaller count"
     ]

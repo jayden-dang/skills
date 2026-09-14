@@ -1,6 +1,6 @@
 ---
 name: plan-tasks
-version: 1.5.0
+version: 1.5.1
 description: Use when a design is approved and the tasks.md implementation plan
   (vertical-slice tasks with requirement footers and behavior tests) needs writing,
   after design-solution and before the execute family (build-in-waves /
@@ -96,19 +96,16 @@ Step 4's check, not this one.
 
 **Home for this rule** — Step 4 and Exit only point here.
 
-Task count follows the approved design and requirements. There is **no**
-numeric Approve ceiling. One feature triad is one `tasks.md`. **MUST NOT**
-move leftover slices of the same Satisfies set onto another `ROAD-N` because
-the count is large: that fragments the feature. `frame-change` /
-`plan-milestones` own *independent subsystems* or a *new feature shape*, not
-overflow from this plan. Cut scope only when the user strikes requirements.
-Merge only when the result stays a vertical slice (Step 3) — never to fake a
-smaller count.
+Write every vertical slice of the approved design and requirements into this
+`tasks.md`. One feature triad is one plan. `frame-change` / `plan-milestones`
+own *independent subsystems* or a *new feature shape*, not leftover slices
+of this triad. Cut scope only when the user strikes requirements. Merge only
+when the result stays a vertical slice (Step 3).
 
 | Thought | Reality |
 |---|---|
-| "28 tasks — decompose leftover onto a later ROAD so this can Approve" | Count is not a gate. Leftover slices of this design stay in this file. |
-| "I'll merge layers into one mega-task so the file looks smaller" | No ceiling to satisfy. Horizontal hiding is still a Step 3 plan bug. |
+| "28 tasks — decompose leftover onto a later ROAD so this can Approve" | Leftover slices of this triad stay in this file. That split fragments the feature. |
+| "I'll merge layers into one mega-task so the file looks smaller" | Horizontal hiding is still a Step 3 plan bug. |
 
 ## Step 4: Coverage and consistency check
 
@@ -117,7 +114,7 @@ smaller count.
 | **Coverage: audit-trace, behavior steps, seam-table** | REQUIRED SUB-SKILL: use `audit-trace` — every Approved requirement cited by ≥1 task footer (uncited IDs mean incomplete, or strike with a reason); docs-only, no IDs in test source. Each footer ID needs a TDD step (or manual/acceptance step) asserting **behavior** in domain language — never `[CODE-N.M]`, `/// REQ:`, or `@CODE-N.M` in test source; map IDs to tests in the task report / Spec review, not production trees. If `design.md` has a "Seams for testing" table, every ID in every row needs a planned test/acceptance step at that seam — an ID promised but left uncovered is *dropped coverage*: add the step, don't renumber. |
 | **Type/name + Reuse consistency + reuse-miss** | The same function must have the same name and signature in every task that mentions it. Flag any task whose `Reuse:` line disagrees with the design section's `Reuse:` line. Also flag any task whose Files **Create** something the scan digest or an already-installed dependency already provides — build on it instead (task-granularity sibling of `inspect-change`'s `reuse-miss`; advisory, not a hard block). |
 | **Spec alignment + upstream sync-back** | Re-read requirements.md once, checking each criterion against the task that claims it. If a requirement proves *wrong or infeasible as written* — not merely uncovered — correct it in requirements.md and re-surface for approval; do not bury a workaround in a task that leaves the requirement lying — a plan that satisfies a false requirement ships the falsehood. |
-| **Independent plan review (dispatch, don't self-review)** | The checks above are doc-only and stay here; the codebase comparison does not. Dispatch a review subagent with the plan, requirements.md, design.md, and the repo; have it prove-claim against real code every symbol, signature, path, import, and **hardcoded test value** the plan asserts — a fabricated golden or a guessed API is the classic plan defect — citing `file:line` and defaulting to flag. Findings to `.skills/<CODE>/plan-review.md`; fix before offering execution (no subagents? do the comparison yourself). Confirm **One triad, one plan** (one home): leftover slices of this Satisfies set are still in this file. |
+| **Independent plan review (dispatch, don't self-review)** | The checks above are doc-only and stay here; the codebase comparison does not. Dispatch a review subagent with the plan, requirements.md, design.md, and the repo; have it prove-claim against real code every symbol, signature, path, import, and **hardcoded test value** the plan asserts — a fabricated golden or a guessed API is the classic plan defect — citing `file:line` and defaulting to flag. Findings to `.skills/<CODE>/plan-review.md`; fix before offering execution (no subagents? do the comparison yourself). Check **One triad, one plan** (one home). |
 
 **Done when:** every requirement ID has a task footer and a planned behavior
 test at an agreed seam; audit-trace, the seam-table reconcile, and the
@@ -154,7 +151,7 @@ exactly one feature issue (union IDs, plan path, id under `.skills/<CODE>/`),
 
 | Step | Rule |
 |---|---|
-| **1–2. Present** | Present the FILE and STOP — conversational agreement is not approval; the written plan is what gets approved, and the execute family runs only on an approved `tasks.md`. Follow **One triad, one plan** (one home): count is not an Approve gate. |
+| **1–2. Present** | Present the FILE and STOP — conversational agreement is not approval; the written plan is what gets approved, and the execute family runs only on an approved `tasks.md`. Follow **One triad, one plan** (one home). |
 | **3. On approval** | Set `Status: Approved`. Leave `Execution-mode:` as `unset` (or untouched); do **not** write `continuous` or `story-unit` yourself. |
 | **4. Offer three routes** | Exactly three, one question — do **not** first ask continuous vs story-unit (that interview is dead); mode write-back owned by the picked skill. `build-by-story`: subagent path, human-gated review units derived from stories (writes `story-unit`). `build-in-waves`: subagent waves, no human pause between tasks (writes `continuous`). `build-inline`: controller implements sequentially with `test-first`, no implementer subagents (writes `continuous` as bookkeeping; **does not** run unit barriers). **Recommend (label only, not invent mode):** mark **`build-by-story` (Recommended)** first WHEN user-facing UI/UX, Team Solo/Small, or `requirements.md` has **≥2** behavioral stories — still offer all three, still wait for the pick; no triggers → leave unmarked (not invent mode, not a size default — see gate table below). |
 | **5–6. On pick, INDEX** | Name the skill and hand off — REQUIRED SUB-SKILL: use `build-in-waves`, `build-by-story`, or `build-inline` as chosen (for the two subagent routes, prefer REQUIRED SUB-SKILL: use `isolate-workspace` first when none exists yet). WHEN `docs/agents/host-build.md` exists, ask **once after the pick** whether the chosen route runs here or on the build host — offload → REQUIRED SUB-SKILL: use `build-on-host`, which wraps the pick rather than replacing it. Then confirm the feature's row in `docs/specs/INDEX.md` carries the same `Status:` as its `requirements.md`. |
@@ -173,6 +170,6 @@ exactly one feature issue (union IDs, plan path, id under `.skills/<CODE>/`),
 - Offering only one route, or treating "LGTM, build it" as `build-in-waves`
 - Omitting `(Recommended)` on `build-by-story` when the Recommend predicate holds
 
-**Done when:** `tasks.md` keeps this triad's slices in one file, `Status: Approved`,
+**Done when:** **One triad, one plan** holds, `Status: Approved`,
 one of the three execute skills named (and handed off on pick),
 `Execution-mode:` not invented here, and the INDEX.md row agrees.

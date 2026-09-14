@@ -80,7 +80,7 @@ Step 5 is optional: if the repo uses an issue tracker (`docs/agents/issue-tracke
 
 ### One triad, one plan
 
-Task count follows the approved design and requirements — there is **no** numeric Approve ceiling. One feature triad is one `tasks.md`. Do not move leftover slices of the same Satisfies set onto another `ROAD-N` because the count is large: that fragments the feature. `frame-change` / `plan-milestones` own independent subsystems or a new feature shape, not overflow from this plan. Prefer **3–8** TDD checkboxes per task; paths/types stay in Files/Interfaces/Reuse — long narration → execute brief.
+Write every vertical slice of the approved design and requirements into this `tasks.md`. One feature triad is one plan. `frame-change` / `plan-milestones` own independent subsystems or a new feature shape, not leftover slices of this triad. Prefer **3–8** TDD checkboxes per task; paths/types stay in Files/Interfaces/Reuse — long narration → execute brief.
 
 ### Exit routes
 

@@ -27,6 +27,17 @@ slot contracts, no invented `Execution-mode`, three execute routes: unchanged.
 Live-agent GREEN not re-run; structural + session RED. Same honesty as the
 v1.3.0 line-ceiling drop.
 
+## v1.5.1 — author-skills wording pass (2026-09-14)
+
+v1.5.0 body led with **MUST NOT** + "no numeric Approve ceiling". Failure class
+is *complies, wrong output shape* (ROAD-split), so the form is a positive
+recipe — one triad is one `tasks.md` — not a leading prohibition (`author-skills`
+failure table; `influence-principles`: plan-tasks is a recipe). "No ceiling" /
+"count is not a gate" named the dropped metric into SKILL.md: same no-op /
+negation trap v1.3.0 already measured on "file length is not gated". Dropped
+from the body. Step 4 / Exit are pointers only. Leading word: **triad**.
+Eval prompt no longer seeds "vertical-slice". Behavior unchanged.
+
 ## v1.4.0 — Exit itinerary trim (2026-09-14)
 
 **RED.** Eight-row Exit thought table scripted how to *talk* about routes, not
@@ -210,7 +221,7 @@ loophole.
 | Mode write-back owned by execute skill | Exit step 2–4; build-* mode ownership tables |
 | No Risk / Decision surface / Human review order | Template + Step 3 (fields omitted) |
 | Triad publish is one feature issue, not one per task | Step 5; S-WP-PUBLISH RED |
-| One triad, one plan — no numeric Approve ceiling; leftover slices stay in this file | RED S-PLAN-SPLIT (v1.4.0 gate vs 2026-09-14 user); GREEN v1.5.0 |
+| One triad, one plan — leftover slices stay in this file | RED S-PLAN-SPLIT (v1.4.0 gate vs 2026-09-14 user); GREEN v1.5.0; wording v1.5.1 |
 | ~~`task_count > 12` blocks Approve~~ | History: RED S-PLAN-BUDGET; GREEN v1.2.0; dropped v1.5.0 |
 | Recommend `build-by-story` first when UI / Solo-Small / ≥2 stories | RED S-PLAN-RECOMMEND; GREEN v1.2.0 |
 | Thin steps 3–8 checkboxes; detail in execute brief | Step 3 Thin steps (2026-08-27) |

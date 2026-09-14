@@ -1,5 +1,18 @@
 # `clarify-decisions` — open-set interview + rich cards + pre-impl map
 
+## v1.7.0 — itinerary trim (2026-09-14)
+
+**RED.** 3,583-word root: 10-slot card + ~30 rationalization rows paid on every
+interview turn. High-freedom judgment written as a recipe (OpenAI Astra;
+Anthropic degrees of freedom).
+
+**GREEN.** Root keeps Iron Laws, coverage gate, Problem lock, 10 required card
+slots (including Shape and the six-line recommendation argument), Compat
+obligation, close package. Slot expansion and extra coverage counters moved to
+`card-recipe.md`. Words 3583 → 2144. Eval-owned headings and slot names
+unchanged.
+
+
 ## Decision-argument and card-legibility upgrade — RED (2026-09-01, author-skills)
 
 User production report: card replies are “hơi máy móc và khó hiểu”; the desired

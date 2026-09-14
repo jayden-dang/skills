@@ -1,5 +1,13 @@
 # `work-the-problem` — author-skills validation
 
+## v1.2.0 — neighbor/rationale extraction (2026-09-14)
+
+**RED.** 245-line / 1579-word root over the 200-line ratchet.
+
+**GREEN.** Iron Laws stay in the root. Neighbor table, rationalizations, and
+red flags moved to `references/boundaries.md`, loaded at setup.
+
+
 **Roster:** grok-4.5 (harness primary; weakest = only model this pass)  
 **Scenario files:** removed in `2338b34` ("remove test scenarios") — the runnable prompts now live in `eval.json` beside this file.  
 **Date:** 2026-08-08  

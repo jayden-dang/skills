@@ -1,6 +1,6 @@
 ---
 name: zone-mode
-version: 1.2.0
+version: 1.3.0
 description: Load the 1% skill-check gate and hand off to the right entry point.
 disable-model-invocation: true
 ---
@@ -9,6 +9,13 @@ disable-model-invocation: true
 If you were dispatched as a subagent to execute one specific task, ignore this
 skill and follow your brief.
 </SUBAGENT-EXEMPT>
+
+## Opt-in overlay
+
+This skill is the **opt-in 1% overlay**, not the default constitution.
+`AGENTS.md` §2 loads a skill when its description matches or a parent names it.
+A speculative 1% chance is not enough unless this overlay is on. Running
+`/zone-mode` tightens to the rule below.
 
 <NON-NEGOTIABLE>
 If there is even a 1% chance a skill applies to what you are about to do, you

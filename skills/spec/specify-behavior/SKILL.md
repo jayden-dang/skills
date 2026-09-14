@@ -1,6 +1,6 @@
 ---
 name: specify-behavior
-version: 1.3.1
+version: 1.4.0
 description: Use when discovery is complete and a tier-1 or tier-2 change needs its requirements
   written — the user stories and EARS acceptance criteria in requirements.md that every later
   task, test, and commit cites by ID. After frame-change, before any design or code.
@@ -116,18 +116,8 @@ skip is a visible decision, not an oversight. `None` is for non-material
 attributes, **not** a shortcut past consult when the attribute *is* material.
 
 The category is **additive, never a new gate**: a feature with no
-quality-attribute concerns records `None` across the four, and nothing else
-about the file or either authoring mode changes. In tier-1 mode, capture an
-NFR only when the fix itself is a quality-attribute change — the category adds
-no NFR obligation to a behavioral mini-spec.
-
-| Thought | Reality |
-|---|---|
-| "Design will set security/SLO targets later" | Design `Satisfies` NFR IDs; freestyled design prose is not a `CODE-N.M` contract |
-| "Industry default (200 ms / WCAG AA) is fine" | Approved house docs outrank habit; inventing a target when the matching doc is Approved is a miss |
-| "No system docs — invent TB-1 so design can cite it" | No bold definition → no ID; use prose or `None — no standing threat-model` |
-| "Consult means load architecture and codebase map" | Wrong layer; thin table only — design-solution owns shape docs |
-| "Standup in five — mark all four None" | Material attributes need a criterion or an honest reason; time changes *when* you report, not whether consult ran |
+quality-attribute concerns records `None` across the four. In tier-1 mode,
+capture an NFR only when the fix itself is a quality-attribute change.
 
 **Done when:** the NFR section carries `**Section-kind:** nfr`; each of the four
 quality attributes is either an IDed NFR criterion or explicitly `None` with

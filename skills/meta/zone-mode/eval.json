@@ -35,5 +35,17 @@
       "todo",
       "skip:"
     ]
+  },
+  {
+    "eval_id": 4,
+    "eval_name": "one-percent-is-opt-in-overlay",
+    "kind": "contract",
+    "derived_from": "SKILL.md § Opt-in overlay",
+    "prompt": "A research-and-report request is in progress under the default constitution, without /zone-mode.",
+    "assertions": [
+      "this skill is the opt-in 1% overlay, not the default constitution",
+      "the default constitution invokes a skill when its description matches or a parent names it",
+      "a speculative 1% chance is not enough to load a skill unless this overlay is on"
+    ]
   }
 ]

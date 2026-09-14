@@ -4,11 +4,12 @@ The skill set was built for Claude Code, but nothing in it is Claude-specific.
 Everything is plain text a reasoning agent acts on: the skills are `SKILL.md`
 files, the portable behavior contract is `AGENTS.md`, and the audit-trace check is a
 set of `grep`/`git` passes the agent drives itself — there is no interpreter or
-binary to port. There is no session-start injector. The 1% rule lives in `AGENTS.md`;
-`/zone-mode` is user-run. This page covers how each platform loads the pack.
+binary to port. There is no session-start injector. Default invocation is
+description-match in `AGENTS.md`; `/zone-mode` is the opt-in 1% overlay. This page
+covers how each platform loads the pack.
 
 The portable contract for every platform is [`AGENTS.md`](../../../AGENTS.md) at
-the repo root: the Four Iron Laws, the 1% rule, the trace-spine citation rules,
+the repo root: the Four Iron Laws, the invocation contract, the trace-spine citation rules,
 the subagent protocol, and the full skill inventory. Any harness that can read a
 repo file can run this system by reading that one.
 

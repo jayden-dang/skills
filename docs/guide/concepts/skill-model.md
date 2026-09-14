@@ -161,7 +161,7 @@ This is why the rationalization tables in `test-first`, `root-cause`, `prove-cla
 
 ## Activation
 
-The set ships as a Claude Code plugin. There is no SessionStart hook. The 1% rule lives in `AGENTS.md`. `/zone-mode` is user-run when you want the full gate loaded.
+The set ships as a Claude Code plugin. There is no SessionStart hook. Default invocation is description-match (`AGENTS.md` §2). `/zone-mode` is user-run when you want the 1% overlay loaded.
 
 ## See also
 

@@ -2,6 +2,28 @@
 
 ## Unreleased
 
+### Invocation contract + high-freedom skill trim (2026-09-14)
+
+Research: OpenAI Astra (recipes now hinder stronger models), Anthropic degrees
+of freedom, Liu et al. lost-in-the-middle, Khan prompting inversion. Observed
+RED: the always-on 1% rule over-loaded skills on a research-and-report ask.
+
+- **`AGENTS.md` §2** — default invocation is description-match or
+  `REQUIRED SUB-SKILL`. Speculative 1% chance is not enough. §11 inventory
+  table replaced by a pointer to `docs/guide/skills/README.md`.
+- **`zone-mode` v1.3.0** — opt-in 1% overlay. Heading `Opt-in overlay`.
+- **High-freedom routers:** `frame-change` v2.2.0 (2582→1304 words),
+  `clarify-decisions` v1.7.0 (3583→2144; `card-recipe.md`),
+  `design-solution` v1.8.0, `plan-tasks` v1.4.0, `inspect-change` v1.9.0,
+  `specify-behavior` v1.4.0. Gates, EARS, Surface, three execute routes, and
+  eval-owned headings kept.
+- **`deepen-codebase` v1.1.0 / `work-the-problem` v1.2.0** — neighbor tables
+  and extra rationalizations behind `references/boundaries.md`.
+- Guide pages (START-HERE, gates, skill-model, platforms, troubleshooting,
+  skill README, zone-mode) updated so 1% is overlay, not default.
+
+Iron Laws, test-first, occupancy, and evidence gates were not thinned.
+
 ### pstack open upgrades — OVERRIDE ship (2026-09-08)
 
 User override of the no-op bar after Sonnet RED **PASS**es and prior drops.

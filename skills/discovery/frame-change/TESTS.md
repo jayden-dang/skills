@@ -1,5 +1,19 @@
 # `frame-change` — knowns inventory + blindspot (unknowns loop)
 
+## v2.2.0 — itinerary trim (2026-09-14)
+
+**RED.** Research session + OpenAI Astra: high-freedom product-shaping written
+as a 2,582-word itinerary (8 sub-skill calls in the root). Guardrail-to-handcuff:
+recipe-style constraints that once helped weaker models now overconstrain
+stronger ones. The 1% constitution loaded this skill on a research-and-report
+ask.
+
+**GREEN.** Root is a router: HARD-GATE, six steps, Blindspot, Knowns,
+guarantee check, catalog-query, spoken tier. Interview is
+`clarify-decisions`, not a restated card schema. Words 2582 → 1304. Eval
+anchors (`Write NO code, scaffold NOTHING`, Blindspot, Knowns, catalog-query,
+unverified) unchanged.
+
 ## Baseline already strong (no-op if re-stated alone)
 
 | Scenario | Result |

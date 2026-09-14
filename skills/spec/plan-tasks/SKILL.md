@@ -1,6 +1,6 @@
 ---
 name: plan-tasks
-version: 1.3.0
+version: 1.4.0
 description: Use when a design is approved and the tasks.md implementation plan
   (vertical-slice tasks with requirement footers and behavior tests) needs writing,
   after design-solution and before the execute family (build-in-waves /
@@ -165,27 +165,16 @@ exactly one feature issue (union IDs, plan path, id under `.skills/<CODE>/`),
 
 | Thought | Reality |
 |---|---|
-| "PM said just mark Approved — continuous is obvious" | Approval is the written plan **under budget**. Offer the three skills; do not invent mode |
-| "Standup in five — skip asking which execute skill" | Time changes *when* you ask, not whether a route is named |
-| "Four tasks → default build-in-waves" | No silent waves default. Prefer recommending `build-by-story` when the Recommend predicate holds; user still picks |
-| "I'll ask continuous vs story-unit, then offer routes" | Redundant. One question: which of the three skills |
-| "User said approve and start building — write continuous and go" | Budget clear + Approve + offer three routes. "Start building" is not a route pick |
-| "I'll write Execution-mode now so the plan looks complete" | Completeness is Status + route name. Mode is written by the execute skill |
-| "28 tasks — just approve, splitting is ceremony" | Plan size budget blocks Approve. Decompose, cut, or merge first |
-| "Recommend story-unit is inventing Execution-mode / banned by no size-based default" | Recommend is an offer label; mode stays unset until the execute skill runs after pick |
-| "Waves are faster — skip story stops on UI work" | Faster continuous often means one huge PR. Recommend still `build-by-story` when the predicate holds |
-| "Thin steps — drop paths/types from the task into the brief only" | Identifiers stay in Files/Interfaces/Reuse; only narration moves to the brief |
+| "PM said just mark Approved — continuous is obvious" | Offer the three skills. Do not invent mode. |
+| "I'll ask continuous vs story-unit, then offer routes" | One question: which of the three skills. |
+| "I'll write Execution-mode now so the plan looks complete" | Mode is written by the execute skill. |
 
 ### Red Flags — Exit
 
-- Asking continuous vs story-unit before (or instead of) the three-skill offer
-- Setting `Status: Approved` while inventing `Execution-mode: continuous`
-- Setting `Status: Approved` while `task_count > 12`
-- Offering only one route, or skipping the offer after approval
-- Writing `Execution-mode:` in plan-tasks instead of letting the execute skill do it
-- Treating "LGTM, build it" as a silent default to `build-in-waves`
-- Omitting the `(Recommended)` mark on `build-by-story` when the Recommend predicate holds
-- Dropping path/type/command identifiers from Files/Interfaces/Reuse while “thinning” Steps
+- Asking continuous vs story-unit before the three-skill offer
+- Setting `Status: Approved` while inventing `Execution-mode:` or while `task_count > 12`
+- Offering only one route, or treating "LGTM, build it" as `build-in-waves`
+- Omitting `(Recommended)` on `build-by-story` when the Recommend predicate holds
 
 **Done when:** `tasks.md` is **under the Plan size budget**, `Status: Approved`,
 one of the three execute skills named (and handed off on pick),

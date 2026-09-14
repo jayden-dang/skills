@@ -121,7 +121,7 @@ listed, then `/plugin install jdk@jayden-dang-skills`.
 
 ### The agent answers without invoking any skill
 
-The 1% rule lives in `AGENTS.md`. `/zone-mode` is user-run and is not injected at session start. Run `/zone-mode` when you want the full gate loaded. Model-invocable skills still fire from their descriptions.
+Default invocation is description-match (`AGENTS.md` §2). `/zone-mode` is user-run and is not injected at session start. Run `/zone-mode` when you want the 1% overlay. Model-invocable skills still fire from their descriptions.
 
 ### A specific skill never triggers
 

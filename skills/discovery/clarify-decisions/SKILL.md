@@ -1,6 +1,6 @@
 ---
 name: clarify-decisions
-version: 1.6.0
+version: 1.7.0
 description: Use to interview or grill the user before building an underspecified
   plan, design, or feature idea, including when another skill calls for an
   interview. Produces a confirmed close package of decisions, constraints,
@@ -71,55 +71,34 @@ Closes: `known-unknown` (problem statement). Senior “skip philosophy / just pi
 
 ## Question card (every turn)
 
-Exactly **one** decision per message in chat. Every slot is **required**. Write for the person deciding now: use connected cause-and-effect sentences in their domain language. Preserve exact technical terms, service names, and boundaries; gloss them where used instead of replacing them with vague simplifications.
+Exactly **one** decision per message. Every slot is **required**. Load
+`card-recipe.md` with the first card (slot expansion, Shape, recommendation
+argument). Load `example.md` when no parent supplies a confirmed exemplar.
+WHEN feature work involves neighbors, overlap, or reuse, load
+`feature-retrieval.md` before the first card; otherwise do not.
 
-1. **Radius** — one of: `architecture` · `data` · `auth/security` · `UX flow` · `polish-diff` (label it). When Coverage ON, also `reliability` · `failure` · `operate` per `production-coverage.md`. When OFF, do not use those three.
-2. **Thread** — three short lines the user can scan before the question:
-   - *Locked so far* — 1–3 decisions already taken that constrain this fork (or "none yet").
-   - *This card* — the single fork now.
-   - *Still open after* — remaining high-blast **names** if this were answered (living open set — never "3 of 5").
-3. **Territory** — grounded facts from the repo, digest, or parent knowns (paths, middleware, prior PRs, current behavior, landmines) — enough that the options make sense. When a blindspot blocks the choice, **teach here** (what it is, why it bites in *this* product) before the question. If you truly have no facts, say so; do not invent them. Never ask the user to recall what you can read.
+1. **Radius** — `architecture` · `data` · `auth/security` · `UX flow` · `polish-diff`. Coverage ON also `reliability` · `failure` · `operate`.
+2. **Thread** — *Locked so far* · *This card* · *Still open after* (names, never "3 of 5").
+3. **Territory** — grounded repo facts; teach a blocking blindspot here; do not invent; never ask the user to recall what you can read.
 4. **Question** — the decision in plain language.
-5. **Why it matters** — **blast narrative** only: what rewrites if the answer flips (API shape, schema, auth boundary, ops surface). Enough to decide without a follow-up. Ground in *this* repo or product. Do not put pass/fail graders here — that is slot 7.
-6. **Closes** — unknown class this card retires: `known-unknown` · `unknown-known` · `blindspot-confirm`.
-7. **Criteria (graders)** — REQUIRED when Radius is `architecture` · `data` · `auth/security` · `UX flow`, or (Coverage ON) `reliability` · `failure` · `operate` (omit only for `polish-diff`): **1–2 named pass/fail graders** listed **above** Options (separate labeled block). Not the close-package Success / done signal. Recommendation MUST cite graders by name. Why sentences promoted here = miss. "No criteria essays / put success in Why" is not a waiver.
-8. **Options (2–4)** — short title, then enough causal detail to judge it. On every radius except `polish-diff`, explain what it **gains**, what it **pays**, what can **break**, and when it is the **better fit**; labels are optional, connected sentences are not. On `polish-diff`, one consequence sentence per option is enough. Bare labels and telegraphic fragments are not options.
-   **Shape** — REQUIRED inside every option when Radius is `architecture` or
-   `data`: the caller-facing difference as it would be written — signature, type,
-   column, route, or payload, ≤6 lines, no bodies. Prose naming an artifact is not
-   a shape, and "same as option 1, but…" is not one: measured, a card that shaped
-   only the option it recommended left the other two as titles to compare against.
-9. **Recommendation** — your pick, first or clearly marked. On `polish-diff`, give one sentence grounded in Why. Every other radius gets a compact, checkable decision argument:
-   - **Pick** — the option.
-   - **Decisive factors** — the Territory facts and named Criteria that make it win now.
-   - **Runner-up** — the strongest alternative and why it loses on a decisive factor.
-   - **Accepted trade-off** — the real cost taken with the pick.
-   - **Confidence / evidence gap** — how strongly the Territory supports the pick and what fact is still missing.
-   - **Reopen trigger** — observable evidence or a constraint change that would make the runner-up better; “if requirements change” is not a trigger.
-10. **Stop.** Wait. After the answer: recompute (Iron Law — open set home rule), then next card or close package.
+5. **Why it matters** — blast narrative only (what rewrites if the answer flips). Graders are slot 7.
+6. **Closes** — `known-unknown` · `unknown-known` · `blindspot-confirm`.
+7. **Criteria (graders)** — REQUIRED on high-blast radii (omit only `polish-diff`): 1–2 named pass/fail graders **above** Options. Recommendation MUST cite graders by name.
+8. **Options (2–4)** — gains, pays, can break, better-fit. Bare labels are not options.
+   **Shape** — REQUIRED on `architecture` or `data` for **every** option: caller-facing difference (signature, type, column, route, payload), ≤6 lines, no bodies. Prose naming an artifact is not a shape. "same as option 1, but…" is not one.
+9. **Recommendation** — Pick · Decisive factors · Runner-up · Accepted trade-off · Confidence / evidence gap · Reopen trigger (observable; “if requirements change” is not a trigger).
+10. **Stop.** Wait. Recompute the open set, then next card or close package.
 
-Visible order: `Radius → Thread → Territory → Question → Why it matters → Closes → Criteria → Options → Recommendation → Stop`. Do not batch questions — the card is the detail. Before the first card or close package, load `example.md` when no parent supplies a confirmed exemplar or when the required output shape is uncertain. WHEN feature work involves neighbors, overlap, or reuse, also load and follow `feature-retrieval.md` before the first card — it owns package validity, refresh, and grounded-claim rules; otherwise do not load it.
+Visible order: `Radius → Thread → Territory → Question → Why it matters → Closes → Criteria → Options → Recommendation → Stop`.
 
 ## Order and coverage
 
-- **Blast-radius first.** Prefer forks that change architecture, data, public API, auth/security, UX flow, or scope — even if the user opens on polish. When Coverage ON, also R/F/O per `production-coverage.md`.
-- **Coverage order, branch order, and whose judgment counts.** Coverage order when ON: one home, `production-coverage.md` (Missing before Partial; R/F/O stop). Walk every branch in dependency order, sub-branches before trunk — stop is open-set empty. Judgment only to the user: facts live in Territory; only human locks become cards.
-- **Right-size.** Follow **Production coverage gate**. OFF does not *force* migration / backward-compat / deprecation preference cards; ON presses those when the latch holds. Arch/data forks that happen to involve migration still get cards if they are open-set judgments. Posture and Team band are independent.
-- **Compat obligation.** Read it from `docs/agents/project.md` **Project posture** — the written line, else derived from Lifecycle stage (Idea / Early / Active development → **None**; Cut Released / Scaling / Maintenance → **External**). On **None**, options and the Recommendation on an `architecture` or `data` card land **one shape** — the schema, endpoint, or type the project keeps — with nothing left behind beside it. Renaming the column, rewriting the committed migration, casting in a single forward migration, changing the endpoint, deleting the dead path: all in bounds, and which is cleanest is an engineering call. A parallel column, a sync trigger, a `v2` name, or a deprecation window offered on **None** buys compatibility with a consumer the posture says does not exist — a defect in the card, not caution. On **Internal** / **External** those costs are first-class and get weighed. Absent posture: no compat lens either way. Delivery intent sets the quality bar, never the compat answer.
-- **Team band.** If `## Team` has a roster or Workflow band override, package from that section. Small/Multi may probe ownership; when Coverage ON, Accepted-risk / Owned-unknown owners still required (solo IC ok). Never invent a team; never hard-fail on missing Team.
+- **Blast-radius first.** Architecture, data, public API, auth/security, UX flow, or scope before polish — even if the user opens on polish.
+- **Coverage order** when ON: `production-coverage.md` (Missing before Partial). Stop is open-set empty. Facts in Territory; only human locks become cards.
+- **Compat obligation.** Read it from `docs/agents/project.md` **Project posture** — the written line, else derived from Lifecycle (Idea / Early / Active development → **None**; Cut Released / Scaling / Maintenance → **External**). On **None**, options and the Recommendation on an `architecture` or `data` card land **one shape** with nothing left behind. A parallel column, a sync trigger, a `v2` name, or a deprecation window on **None** is a defect. On **Internal** / **External** those costs are first-class. Delivery intent sets the quality bar, never the compat answer.
+- **Team band.** Roster or Workflow band override → package from that section. Never invent a team.
 
-## Pre-implementation interview map
-
-Clarify Decisions owns the **interview** leg of pre-implementation unknowns work. Other legs are open-set *sources* or handoffs — not extra fixed rounds:
-
-| Leg | Clarify Decisions does | Does not re-own |
-|---|---|---|
-| **Blindspots** | Consume the parent's list; teach then ask on high-blast items. | Full scan / Knowns inventory |
-| **Problem** | Follow **Problem lock**. | Multi-round problem tree or foundation teaching |
-| **Scope** | Hand multi-subsystem decomposition back to the parent. | Approach menus and tier |
-| **References** | Prefer source code; restate semantics; lock accept/adapt/reject. | Implementing the reference |
-| **Unknown knowns** | Use a reference, `run-spike`, or `research`, then one result card. | Running the detour session |
-| **Production coverage** | Follow **Production coverage gate**; when ON, `production-coverage.md` + Close slots 7–10. | Reliability docs, PRR, requirements, or `tasks.md` |
+Interview only. Blindspots: consume the parent's list. Problem: follow **Problem lock**. Scope decomposition: hand back to the parent. Unknown knowns: reference / `run-spike` / `research`, then one result card.
 
 ## Close package (required)
 
@@ -140,60 +119,27 @@ Slots 4–6 always required. Slots 7–10 required only when Coverage ON. Not co
 
 | Thought | Reality |
 |---|---|
-| "House style / the lead said use the picker / its description is long enough / I'll paste context too" | Channel is the Iron Law. One inline card; capped or dual-channel UI truncates consequences. |
-| "Standup in five minutes — short labels only" | Pressure changes when you report, not what a decision needs. |
-| "The graders are named, so a one-line recommendation is enough" | A conclusion is not a decision argument. Show why the pick beats its runner-up, the trade-off accepted, the evidence gap, and what would reopen it. |
+| "House style / the lead said use the picker" | Channel is the Iron Law. One inline card. |
+| "The graders are named, so a one-line recommendation is enough" | Show why the pick beats its runner-up, the trade-off, the evidence gap, and the reopen trigger. |
 | "Put success in Why / no criteria essays" | Why is blast; Criteria are separate graders above Options. |
-| "Context can be a follow-up if they ask" | The card is the detail; follow-up-only context is a thin-card failure. |
-| "We finished the four areas / question 3 of 5, then package" | Open-set empty is the stop; todos and countdowns are not. |
-| "User asked for button color first" | Blast-radius first still holds. Polish Diff after architecture, data, and auth forks. |
-| "We're aligned / senior said just write requirements" | Shared understanding is the package + yes; authority cannot make an unstated decision exist. |
-| "I'll assume the safe default and mark done" | Assumptions are not decisions. One card; wait. |
-| "Just pick industry best practice" | Load the Territory reference; restate and lock it. |
-| "Park the parent / open a short clarify-decisions checklist" | Nesting is the clean switch. Decision areas stay inside the parent's in-progress interview item. |
-| "Announce Using clarify-decisions for the hand-off" | Nested: no mode-switch announcement. Standalone may name the skill once. |
-| "Parent already loaded neighbors — re-run every card for freshness" | Reuse the valid package; rederive only when fingerprints/seeds/scope change |
-| "Standalone interview — skip load-subgraph, Territory is enough" | Feature work: load once before the first card |
-| "They named the cheap path / senior said skip philosophy and pick API options" | Solution-shaped assumptions are not locks. Follow **Problem lock**, regardless of time or authority. |
-| "Criteria live in requirements later" | Recommendation cites card graders; later specs do not replace them. |
+| "We finished the four areas / question 3 of 5, then package" | Open-set empty is the stop. |
+| "User asked for button color first" | Blast-radius first. Polish after architecture, data, and auth. |
+| "We're aligned / senior said just write requirements" | Shared understanding is the package + yes. |
+| "They named the cheap path / skip philosophy and pick API options" | Solution-shaped assumptions are not locks. Follow **Problem lock**. |
 | "Success / Boundaries / Spine belong downstream" | Close slots 4–6 are required here. |
-| "Don't send me elsewhere; give three merge architectures / naming the skill is invoking it" | Follow the **Problem lock** Fork. Name `/work-the-problem` for the user; never auto-invoke it or show solution menus while the problem is open. |
-| "Production intent means treat every schema change as if users were on it" | Delivery intent is the quality bar; **Compat obligation** names who is committed. On None the clean in-place rewrite *is* the Production answer. |
-| "Nothing in the repo confirms that migration never ran somewhere real — stay additive to be safe" | Compat obligation None is that confirmation, written. Defaulting against it re-asks a fact the posture already answered. |
-| "Additive is bounded debt — one follow-up migration retires the old column" | The follow-up *is* the debt, and on None there is nothing to retire from. Ship one shape. |
-| "Active development / Cut Released is ambiguous — assume something is deployed" | Lifecycle is not a deployment probe. Read Compat obligation; the derivation covers the absent line. |
-| "Reliability is later / architecture is done / standup, skip the map" | When Coverage ON, Missing cells stay open; later templates do not replace `production-coverage.md`. |
-| "TBD is fine — Open Questions will catch it" / "no reliability.md — skip cell" / "Accepted-risk without signer" | When ON: unowned TBD blocks close; prose or Owned unknown still required; signer required (solo IC ok). No invented SLO-N. |
-| "Absent/MVP/Early = Production coverage" / "every Prod interview gets the map" / "build habits" / "failure-domain feel without band" | ON needs **all three** gate parts. Absent, MVP, Early, polish without latch, and chat stay OFF. |
-| "Parent tier-0 brief still needs full coverage" | Brief / tier-0 fails part 2 (full-path) ⇒ OFF. |
-| "OFF — keep a partial coverage map anyway" | OFF omits the map entirely. Core close is slots 4–6 + problem lock. |
-| "OFF — skip any arch/data card that smells like migration" | OFF skips forced migration/compat *preference* ceremony; open-set arch/data judgments still get cards. |
-| "Put TBD and accepted risk in one bucket" / "Journey has no radius — skip cell" | When ON: three distinct close slots; Journey via `UX flow` / `architecture` CUJ — see `production-coverage.md`. |
+| "Don't send me elsewhere; naming the skill is invoking it" | Name `/work-the-problem`; never auto-invoke it. |
+| "Stay additive to be safe / v2 name on a None repo" | Compat obligation None: one shape. A `v2` name, parallel column, or deprecation window is a defect. |
+| "Reliability is later / skip the map" | Coverage ON: Missing cells stay open. Extra rows: `card-recipe.md`. |
 
 ## Red flags — stop and rewrite the turn
 
-- Calling `AskUserQuestion` or any truncated MCQ tool for a clarify-decisions decision
-- More than one question mark aimed at the user in a single message (except clarifying examples inside option text)
-- A card missing Thread, Territory, Why, Closes, option consequences, or the
-  high-blast Criteria block and checkable Recommendation argument
-- Any preference or solution menu while **Problem lock** applies, without its
-  card or naming `/work-the-problem`
-- "Question k of N", "final round", or closing because a precommitted count finished while high-blast remains
-- Leading with polish-diff while architecture / data / auth (or, when Coverage ON, reliability / failure / operate) branches remain open
-- Closing with "any other questions?" instead of the decisions package
-- Close package missing Success / done signal, Boundaries, or Spine touch
-- Coverage ON without `production-coverage.md` / map, or close with Missing/unowned cell or “later NFR”
-- Coverage ON close missing slots 7–10; or Coverage ON when any gate part fails (absent, MVP/Early, brief, polish without latch)
-- Coverage OFF yet emitting R/F/O cards or close slots 7–10
-- Offering a `v2` name, a parallel column, a sync trigger, or a deprecation window on a **Compat obligation None** repo
-- Handing back to the parent or starting requirements without an explicit yes on the package
-- Asking the user for a fact already present in the repo or parent scan
-- Abstract taste cards for an unknown-known when a reference or run-spike path exists
-- Nested re-derive every card while the parent package fingerprints still match
-- Standalone feature interview with no retrieval before the first card
-- Auto-invoking `/work-the-problem` instead of naming it for the user
-- Inventing greppable SLO-N / TB-N / THR-N IDs without Approved doc definitions
-- Treating chat “build SRE habits” as Coverage ON without the written gate
-- Merging Owned unknowns into Accepted risks (or either into Operability touch)
-- Leaving Journey Missing (when ON) with no `UX flow` / `architecture` CUJ card
-- Calling `assess-observability` for every Operate hole (only telemetry/tracing readiness gaps)
+- Calling `AskUserQuestion` or any truncated MCQ tool
+- More than one user-aimed question mark in a message (except examples inside option text)
+- A card missing Thread, Territory, Why, Closes, option consequences, high-blast Criteria, or the recommendation argument
+- A preference or solution menu while **Problem lock** applies, without its card or naming `/work-the-problem`
+- "Question k of N" or closing on a count while high-blast remains
+- Leading with polish-diff while architecture / data / auth (or Coverage ON: R/F/O) remain open
+- Close package missing Success, Boundaries, or Spine touch, or treating "we're aligned" as confirmation
+- Coverage ON without the map / slots 7–10, or Coverage ON when any gate part fails
+- Offering a `v2` name, parallel column, sync trigger, or deprecation window on **Compat obligation None**
+- Auto-invoking `/work-the-problem`; inventing SLO-N / TB-N / THR-N IDs; merging Owned unknowns into Accepted risks

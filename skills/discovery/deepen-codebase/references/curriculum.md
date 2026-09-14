@@ -10,7 +10,8 @@ checking whether a turn invents "canonical" claims.
 3. Default depth order
 4. Change lens (four comparison layers)
 5. Authority ladder
-6. Worked sketches (illustrative only — never hard-code as the skill's domain)
+6. Teach must-include (per primary layer)
+7. Worked sketches (illustrative only — never hard-code as the skill's domain)
 
 ---
 
@@ -96,7 +97,23 @@ The four layers do **not** replace F0/F1/Fail/Ops.
 
 ---
 
-## 6. Worked sketches (illustrative only)
+## 6. Teach must-include
+
+When the announced primary layer is taught, include at least:
+
+| Primary | Must include |
+|---|---|
+| F0 | Why the problem is hard; 2–5 slow constraints; what fails if ignored |
+| F1 | Term table or boundary diagram; at least one commonly-collapsed pair |
+| F3 | Happy-path sequence; write path vs read path if state exists |
+| F5 | What the repo does; `file:line` after reading |
+| F2/F4 | Named lens + source; what the lens does **not** decide |
+| Gap | Intentional tradeoff vs debt; cost of leaving it |
+| Delta | Unranked before/after on technical surfaces only; no winner |
+| Fail/Eval | Failure modes + how a wrong model would be caught |
+| Ops | Constraints scaled to project posture |
+
+## 7. Worked sketches (illustrative only)
 
 These show **shape**, not the skill's fixed curriculum. Replace entirely for
 other subjects.

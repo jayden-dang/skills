@@ -1,6 +1,6 @@
 ---
 name: design-solution
-version: 1.7.0
+version: 1.8.0
 description: Use when approved requirements need their technical design — the design.md /
   architecture doc spelling out HOW the requirements get built. After
   specify-behavior, before plan-tasks.
@@ -84,14 +84,9 @@ API, and wait for agreement before writing it into the design; if they decline, 
 the ladder. An *already-installed* dependency (rung 5) needs no such ask — only the new-dependency
 *adoption* is the user's call; the `Reuse:` line still records the rung that held.
 
-For the genuinely hard parts, design it twice: dispatch 2–3 parallel subagents with divergent
-constraints (minimize the interface / maximize flexibility / optimize the common caller).
-Each candidate writes its own path plus a rationale (alternatives rejected). **Pick a base**
-on interface depth and seam placement; **graft** ≤2 ideas from losers by hand (do not average);
-record rejections. Wild divergence → re-frame, do not blend. Opinionated, not a menu.
-"Genuinely hard" = the interface itself is in question (new persistence boundary, concurrency
-model, plugin seam) — not one-obvious-shape work (field on an existing store, route through an
-established pattern, plain CRUD). WHEN locking, read `design-principles.md` beside this file.
+Genuinely hard interface (new persistence, concurrency, plugin seam) — not CRUD or
+an extra field: read `design-principles.md` and pick a base; graft ≤2 ideas; do not
+average. One-obvious-shape work skips this.
 
 Before committing to build any module, climb the **reuse ladder** and stop at the highest rung
 that holds — the cheapest thing that already works beats new code:
@@ -109,17 +104,10 @@ The ladder climbs the Step-1 scan digest after you understand the problem. It ne
 cutting a corner that matters: input validation at trust boundaries, error handling that
 prevents data loss, security, accessibility, and everything the requirements asked for.
 
-The levers chain: the **scan** gathers what exists; the **ladder** decides whether to build;
-**Depth** / **Locality** record how deep and where the change sits.
-
 | Thought | Reality |
 |---|---|
-| "Every ID has a Satisfies line — structure is fine" | Satisfies is coverage. Depth and Locality are structure. Fill both |
-| "Deletion test is obvious — skip writing it" | Unwritten depth is not a Done when. One sentence in `Depth:` |
-| "Neighbor modules are out of scope" | `Locality:` names leave / extend / extract against the scan digest |
-| "The signature didn't change, so callers need zero edits" | Zero edits is not zero impact. A reader whose returned value changes is affected — give it a `Surface:` disposition |
-| "Same shape, different number — not a contract change" | To whoever reconciles that number it is exactly a contract change. Persisted rows and external subscribers are `frozen` until their owner agrees |
-| "I named the callers in the prose above" | Prose is not an inventory. One row per reader, one disposition each, or the omission is invisible |
+| "The signature didn't change, so callers need zero edits" | Zero edits is not zero impact. Give each reader a `Surface:` disposition. |
+| "I named the callers in the prose above" | Prose is not an inventory. One row per reader, one disposition each. |
 
 **Done when:** every architecture section has `Satisfies:`, `Reuse:`,
 `Interface:`, `Depth:`, and `Locality:` filled per the table (and `Respects:` where a spine
@@ -170,13 +158,13 @@ contradictions (a name used two ways, a data flow that skips a component).
 your framing (the bias that reinterprets a stale requirement rather than catching it). Dispatch
 a review subagent with this design, requirements.md, the Step-1 scan digest when present, and the repo; have it prove-claim:
 
-1. **Code-facing claims** — each named seam, signature, and data path exists as
-   described; each `Satisfies:` mapping is achievable at that seam — grep/read
-   real files, cite `file:line`, default to flag. Existing-as-described is not enough WHEN a `Satisfies:` or `Reuse:` leans on a **behavioral property** of code you did not write — exactly-once, atomic, ordered, unique, idempotent, safe under retry. Derive that property from what the statement itself does under the failure it must survive; a precedent (*"RETRY already relies on it"*), a `Shipped` row, and the code's own comment are claims about the property, never the property. Two of three runs mapped an exactly-once requirement onto a `SELECT … FOR UPDATE SKIP LOCKED` whose locks release before the dispatch they were meant to guard — one citing production precedent, the other citing the comment that called it safe, while both correctly verified every signature around it.
-2. **Structure claims** — each `Interface:` is smaller than the described
-   implementation; each rung-7 `Depth:` deletion answer is non-vacuous; each
-   `Locality:` line is consistent with the scan digest (neighbors named leave /
-   extend / extract for a reason).
+1. **Code-facing claims** — named seams and paths exist (`file:line`). A
+   behavioral property (exactly-once, atomic, idempotent) is derived from what
+   the statement does under the failure it must survive — not from a precedent
+   or a comment. Two of three runs mapped exactly-once onto `SKIP LOCKED` locks
+   that release before the dispatch they were meant to guard.
+2. **Structure claims** — `Interface:` smaller than the implementation; rung-7
+   `Depth:` non-vacuous; `Locality:` matches the scan digest.
 
 Findings go to `.skills/<CODE>/design-review.md`; you fix them without loading the code here.
 (No subagents? Do this pass yourself in a fresh read of the code and the digest.)

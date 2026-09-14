@@ -1,5 +1,15 @@
 # `plan-tasks` — pressure-test record
 
+## v1.4.0 — Exit itinerary trim (2026-09-14)
+
+**RED.** Eight-row Exit thought table scripted how to *talk* about routes, not
+the task contract (OpenAI: overly specific guidance now hinders).
+
+**GREEN.** Exit still offers exactly three skills, does not invent
+`Execution-mode`, blocks Approve over 12 tasks. Thought table keeps the three
+load-bearing counters. Recommend predicate and Red Flags remain.
+
+
 ## RED — continuous scheduler metadata (baseline, 2026-08-26)
 
 The template had no `Max-concurrency` field and described no-edge tasks only as

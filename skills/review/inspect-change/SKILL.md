@@ -1,6 +1,6 @@
 ---
 name: inspect-change
-version: 1.8.0
+version: 1.9.0
 description: Use when a branch, PR, diff, or set of changes needs review before merging —
   produces a two-axis verdict (repo-standards conformance plus
   spec/requirements conformance, reported separately) — when build-in-waves
@@ -59,11 +59,7 @@ for unowned paths, or an explicit "no spec" after (5).*
 
 ## 3. Gather the standards sources
 
-Collect whatever documents how code here should be written: CLAUDE.md, lint and formatter configs, CONTRIBUTING-style docs, plus CONTEXT.md for the repo's canonical vocabulary. Prefer **`docs/standards/`** (INDEX + applicable domain files) when present; IF only unmigrated `docs/product/guidelines.md` remains, use it as legacy fallback; IF guidelines is pointer-only, follow its links to `docs/standards/`. If `docs/agents/project.md` is missing, note it and suggest running `configure-repo`, then proceed with what exists. When `## Team` is present with a non-empty **roster** or band override, read **band** and **packaging** from that section: dual-axis review always; Solo report addresses the solo author; Small/Multi emphasize path ownership using ownership notes when present. Missing Team → pre-feature default.
-
-**System-docs suggest:** IF standards are missing and the Standards axis lacks house rules, follow `skills/project/define-system-doc/consult-recipe.md` — suggest once `/define-system-doc standards/INDEX` (or testing/errors-logging); never auto-invoke.
-
-On top of the repo's own documents, the Standards axis always carries `standards-baseline.md` (beside this file) — twelve code-quality smells that apply even when the repo documents nothing, plus a Security section and a Production-readiness section, each scoped by its own predicate — the file states them, and the Standards brief in step 4 is where they bind. Two rules bind it: a documented repo standard always overrides the baseline, and every baseline hit is a labeled judgment call, never a hard violation. Skip anything tooling already enforces — a reviewer repeating the linter is noise. *Done when: the source list and the baseline path are in hand.*
+Collect how code here should be written: CLAUDE.md, lint/formatter configs, CONTEXT.md, prefer **`docs/standards/`**. Missing `docs/agents/project.md` → note it, suggest `configure-repo`. Standards axis always carries `standards-baseline.md` (twelve smells + Security + Production-readiness). A documented repo standard overrides the baseline. Skip what tooling already enforces. *Done when: the source list and the baseline path are in hand.*
 
 ## 3a. Check for duplication against existing features
 

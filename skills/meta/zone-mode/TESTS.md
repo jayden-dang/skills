@@ -1,5 +1,23 @@
 # zone-mode — recorded test evidence
 
+## 1.3.0 — 1% is opt-in overlay (2026-09-14)
+
+**RED (this session, grok-4.6, research-and-report request).** User asked to
+research papers on skill verbosity and report which of *this* pack's skills to
+upgrade. `AGENTS.md` §2 said "if there is even a 1% chance a skill applies, MUST
+invoke it first." The controller loaded `research`, `speak-outer`, `vet-source`,
+`skill-design-principles`, and launched the `deep-research` workflow before
+opening a source. `frame-change` and `hold-stage` were considered on a
+speculative 1% even though the ask was research-then-report, not a new feature.
+Verbatim rationalization: "If there is even a 1% chance a skill applies to what
+you are about to do, you MUST invoke that skill first." That is the
+over-emphasis OpenAI names: descriptions and invocation rules that over-trigger
+load instructions that do not help the task.
+
+**GREEN.** Constitution default (`AGENTS.md` §2): load when the description
+matches or a parent names `REQUIRED SUB-SKILL`. This skill remains the 1%
+overlay, user-run only. Heading `Opt-in overlay` is the contract home.
+
 ## 1.1.0 — user-invoked; SessionStart injector removed (2026-09-08)
 
 **RED:** leftover `SessionStart` hooks (plugin `hooks/hooks.json`, vendored

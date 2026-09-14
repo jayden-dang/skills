@@ -1,6 +1,6 @@
 ---
 name: deepen-codebase
-version: 1.0.1
+version: 1.1.0
 description: >
   Builds deep foundational knowledge of any codebase or technical subject —
   dual-axis curriculum, slow and deep — without shipping a product decision.
@@ -38,16 +38,8 @@ NEVER WRITE TRACKED PROJECT STATE. NEVER AUTO-INVOKE A USER-INVOKED SKILL.
 
 ## What this is NOT
 
-| Neighbor | Boundary |
-|---|---|
-| `interpret-session` | Model + stance, dissent, English paste-back — **theirs**. You explain; you do not pick. |
-| `work-the-problem` | Multi-round problem tree + in-service teaching + carry-back — **theirs** when a frame-change question must close. You stay pure learning. |
-| `teach-pack` | Graded productions + durable workspace — **theirs**. Soft probe here; **name** `/teach-pack` when sticky proof is needed. |
-| `study-change` | One git-range HTML packet — **theirs**. Scope here is a *topic*. |
-| `tour-system` | System/capability learning tours + ledger — **theirs**. Soft-name when the ask is atlas/tour/journey over the whole product. |
-| `research` | External owning-source note — **sub-skill** for material F2/F3/F4 claims. |
-| `clarify-decisions` / `frame-change` | Product forks and ceremony — **theirs**. |
-| Translator / cheerleader | Understanding is entry; ownership of the model is the job. |
+Neighbor boundaries, rationalizations, and red flags: `references/boundaries.md`.
+Load at setup and whenever a pick or skip-foundation temptation appears.
 
 ## Setup — once per session
 
@@ -159,19 +151,7 @@ Every teaching turn uses this contract (order fixed):
 **Never** invent facts, mechanisms, options, or reference claims to fill the
 shape. Incomplete open cells beat fiction.
 
-### Layer recipes (positive)
-
-| Primary | Must include |
-|---|---|
-| F0 | Why the problem is hard; 2–5 slow constraints; what fails if ignored |
-| F1 | Term table or boundary diagram; at least one commonly-collapsed pair |
-| F3 | Happy-path sequence (steps); write path vs read path if state exists |
-| F5 | What the repo does; `file:line` after reading; map vs model |
-| F2/F4 | Named lens + source; what the lens does **not** decide |
-| Gap | Intentional tradeoff vs debt; cost of leaving it |
-| Delta | Unranked before/after on technical surfaces only; no winner |
-| Fail/Eval | Failure modes + how a wrong model would be caught |
-| Ops | Constraints scaled to project posture |
+Layer recipes (what each primary must include): `references/curriculum.md`.
 
 ## When stuck — owner of truth
 
@@ -206,37 +186,6 @@ foundation: delivered | explicitly_skipped | partial
 **Done when** user ends session and this block is delivered, or they switch away
 after cards + open map are stated. Never mastery or ship-ready claims.
 
-## Rationalizations
+## Rationalizations and red flags
 
-| Thought | Reality |
-|---|---|
-| "Paste already explains the design — skip F0" | Paste is a source claim. Foundation before delta |
-| "They asked which option / no lecture" | Demand for a pick is not a skip. Unranked delta only after foundation rule; name `/interpret-session` for a stance |
-| "Demo in 20 minutes — skip foundation" | Urgency is not `explicitly_skipped`. Thin the layer; keep order |
-| "Standard practice is X" | Tier + source, or **inference** |
-| "Cover every layer this turn" | One primary layer |
-| "I know this stack from training" | Read F5; research F2–F4 when material |
-| "Reuse last subject's checklist" | Re-derive must-know map |
-| "Soft probe skipped — wasted turn" | Cards and open map still count |
-| "Long session → they leveled up" | Close block only |
-| "Write an ADR / update the spec" | Read-only |
-| "I'll run teach-pack for them" | Name `/teach-pack`; user invokes |
-| "Ranking options isn't recommending" | Ranking encodes preference. Unranked only |
-| "Strong familiarity means skip announce/layer" | Announce every turn; hole-check still runs |
-
-## Red flags
-
-Stop and re-read the Iron Laws if you:
-
-- Recommend, rank, or soft-lean a product option
-- Say "standard/canonical/best practice" without tier + source
-- Open Delta before F0+F1 without `foundation: explicitly_skipped`
-- Reuse another domain's must-know map
-- Opine on repo code without reading it
-- Dump multiple Axis B layers in one turn
-- Emit stance, English ship-reply, or treat this skill as interpret
-- Claim learning complete / senior-ready
-- Write tracked project files
-- Auto-invoke a user-invoked skill
-- Skip the announce block on an analytical turn
-- Invent cells to complete a template
+Load `references/boundaries.md`. Iron Laws above still bind.

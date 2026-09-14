@@ -5,8 +5,9 @@
 
 This file is the single source of truth for agent behavior when working with this
 skill set on any harness. Read it first, before any skill, before any action.
-The 1% rule lives here. `/zone-mode` is user-run when you want the full gate
-loaded into the session; agents must not auto-invoke it.
+The invocation contract lives here: load a skill when its description matches,
+or when a parent names it. `/zone-mode` is user-run when you want the 1% full
+gate loaded into the session; agents must not auto-invoke it.
 
 **Human tutorial (setup + feature loop + entry points):**
 [`docs/guide/START-HERE.md`](docs/guide/START-HERE.md) · skill pages:
@@ -66,13 +67,17 @@ unverified solution shape into requirement SHALLs.
 
 ---
 
-## 2. The 1% Rule & Skill Invocation Contract
+## 2. Skill Invocation Contract
 
-**If there is even a 1% chance a skill applies to what you are about to do, you
-MUST invoke that skill first.** This is not a judgment call per-task. You cannot
-reason your way out of it.
+Load a model-invocable skill when **its description matches** what you are about
+to do, or when a parent names it as `REQUIRED SUB-SKILL`. Do not load a skill on
+a speculative chance it might apply. Over-triggering loads instructions that do
+not help the task and dilutes the ones that do.
 
-Invoke relevant or requested skills BEFORE any response or action — before
+`/zone-mode` is the opt-in 1% overlay: run it when you want every plausible
+skill loaded. Agents must not auto-invoke it.
+
+Invoke matched or requested skills BEFORE any response or action — before
 clarifying questions, before exploring the codebase, before checking a single
 file. Announce "Using [skill] to [purpose]", then follow the skill exactly. If it
 carries a checklist, create one todo per item.
@@ -414,22 +419,8 @@ Can't tick a box? The work is not done.
 
 ## 11. Quick Reference: Every Skill
 
-**Legend:** (m) model-invoked · (U) user-invoked
-
-| Category | Skills |
-|---|---|
-| **meta** (4) | `zone-mode` (U), `author-skills` (U), `reflect` (U), `teach-pack` (U) |
-| **setup** (2) | `configure-repo` (U), `bootstrap-repo` (U) |
-| **discovery** (12) | `frame-change` (m), `clarify-decisions` (m), `research` (m), `why` (m), `run-spike` (m), `define-domain` (m), `forge-prompt` (U), `pathfind` (U), `interpret-session` (U), `deepen-codebase` (U), `tour-system` (U), `work-the-problem` (U) |
-| **spec** (3) | `specify-behavior` (m), `design-solution` (m), `plan-tasks` (m) |
-| **execution** (13) | `build-in-waves` (m), `build-by-story` (m), `build-inline` (m), `execute-common` (m), `test-first` (m), `root-cause` (m), `debug-remote` (m), `assess-observability` (m), `prove-claim` (m), `audit-trace` (m), `load-subgraph` (m), `isolate-workspace` (m), `hold-stage` (m) |
-| **review** (12) | `inspect-change` (m), `polish-diff` (m), `no-comments` (U), `vet-feedback` (m), `vet-source` (m), `speak-outer` (m), `inspect-invariants` (m), `inspect-ui` (m), `study-change` (U), `teach-build` (U), `brief-team` (U), `select-sample` (U) |
-| **acceptance** (6) | `validate-feature` (m), `validate-api` (m), `validate-ui` (m), `write-flow-guide` (m), `vet-flow-guide` (m), `run-flow-guide` (m) |
-| **craft** (3) | `craft-page` (m), `draft-ui` (m), `draft-ux` (m) |
-| **ship** (3) | `land-branch` (m), `record-verdict` (m), `cut-release` (U) |
-| **track** (11) | `amend-feature` (m), `reroute-plan` (m), `realign-spec` (m), `triage` (U), `record-debt` (U), `refresh-roadmap-status` (U), `assess-milestone` (U), `scan-architecture` (U), `map-features` (U), `write-handoff` (U), `publish-issues` (U) |
-| **project** (4) | `plan-milestones` (m), `define-project` (U), `define-system-doc` (U), `assess-pivot-impact` (U) |
-| **personal** (18) | Personal OS, `life-` prefixed, opt-in — see `skills/personal/README.md` |
+Full inventory: [`docs/guide/skills/README.md`](docs/guide/skills/README.md).
+Do not paste that table into context.
 
 **Execute family — pick one after an approved `tasks.md`:**
 

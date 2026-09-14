@@ -1,5 +1,15 @@
 # `deepen-codebase` — author-skills validation
 
+## v1.1.0 — neighbor/rationale extraction (2026-09-14)
+
+**RED.** 242-line / 1685-word root over the 200-line ratchet. Neighbor table
+and rationalizations paid every turn of a high-freedom learning skill.
+
+**GREEN.** Iron Laws stay in the root. Neighbor table, extra rationalizations,
+and red flags moved to `references/boundaries.md`, loaded at setup. Eval-owned
+bans (no pick, no bare "standard", no tracked writes) remain in the Iron Laws.
+
+
 **Roster:** grok-4.5 (harness primary)  
 **Scenario files:** removed in `2338b34` ("remove test scenarios") — the runnable prompts now live in `eval.json` beside this file.  
 **Date:** 2026-08-05  

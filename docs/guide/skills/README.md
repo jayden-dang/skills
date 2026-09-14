@@ -15,7 +15,7 @@ The skills that govern the other skills.
 
 | Skill | Invocation | What it does |
 |---|---|---|
-| [`zone-mode`](zone-mode.md) | user | The gate and router. Run `/zone-mode` to load the 1% rule and hand off by invocability |
+| [`zone-mode`](zone-mode.md) | user | The gate and router. Run `/zone-mode` to load the opt-in 1% overlay and hand off by invocability |
 | [`author-skills`](author-skills.md) | `/author-skills` | TDD for process documentation. The standard every skill here is written against |
 | [`teach-pack`](teach-pack.md) | `/teach-pack` | Guided teaching of the methodology |
 
@@ -160,11 +160,13 @@ root-cause        NO FIXES WITHOUT ROOT CAUSE INVESTIGATION FIRST
 prove-claim       NO COMPLETION CLAIMS WITHOUT FRESH VERIFICATION EVIDENCE
 ```
 
-And the one above them, injected into every session:
+And the opt-in overlay, loaded only when the user runs `/zone-mode`:
 
 ```
 zone-mode     If there is even a 1% chance a skill applies, you MUST invoke it first.
 ```
+
+Default constitution (`AGENTS.md` §2): load when the description matches or a parent names the skill.
 
 See [The gates](../concepts/gates.md) for why each is written as a prohibition rather than as advice.
 

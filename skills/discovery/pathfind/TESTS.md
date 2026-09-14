@@ -1,5 +1,10 @@
 # TESTS — pathfind
 
+## 2026-09-14 — v1.0.2 wording
+
+Rationalization row now names the invocation contract instead of the retired
+always-on 1% rule. No new baseline; wording only.
+
 ## 2026-09-07 — length pass (v1.0.0 → v1.0.1)
 
 **Before:** 248 lines / 1642 words / 98 rule atoms.

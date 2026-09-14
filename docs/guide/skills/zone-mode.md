@@ -13,7 +13,7 @@
 
 ## When it fires
 
-When the user runs `/zone-mode`. It is not injected at session start, `/clear`, or compaction. The 1% rule still lives in `AGENTS.md`; this skill is the full gate plus router, loaded on demand.
+When the user runs `/zone-mode`. It is not injected at session start, `/clear`, or compaction. Default invocation is description-match in `AGENTS.md` §2. This skill is the opt-in 1% overlay plus router, loaded on demand.
 
 The one carve-out is stated in the skill itself: a `<SUBAGENT-EXEMPT>` block tells any agent dispatched as a subagent to execute one specific task to ignore the skill and follow its brief instead. That is what keeps a task-scoped subagent from re-entering the whole discovery flow on work its parent already framed.
 

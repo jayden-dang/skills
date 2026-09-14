@@ -13,12 +13,12 @@ and feature overlap is **ask-time derivation** via
 schema 1.1, **`cluster(focus)`**, no generated graph file).
 
 **Human tutorial (setup + feature loop + variants):** this page.  
-**Agent constitution (laws, 1% rule, DoD):** [`AGENTS.md`](../../AGENTS.md).
+**Agent constitution (laws, invocation contract, DoD):** [`AGENTS.md`](../../AGENTS.md).
 
 ## 1. The A–Z workflow
 
 ```
-                        /zone-mode    ── user-run gate: 1% rule + router
+                        /zone-mode    ── user-run gate: opt-in 1% overlay + router
                              │
         ┌────────────────────┴─────────────────────────────────────────────┐
         ▼                                                                    │
@@ -79,8 +79,8 @@ absent. See [the artifact model](concepts/artifacts.md#docsproduct-and-docsarchi
 
 **Mental model:** you drive with **slash commands** (`/…`) and plain-English
 requests; most skills are **model-invoked** and fire when their trigger matches.
-The 1% rule lives in [`AGENTS.md`](../../AGENTS.md). Run [`/zone-mode`](skills/zone-mode.md)
-when you want the full gate loaded — it is not injected at session start.
+Default invocation is description-match (`AGENTS.md` §2). Run [`/zone-mode`](skills/zone-mode.md)
+when you want the 1% overlay loaded — it is not injected at session start.
 Full skill index: [Skill reference](skills/README.md) · laws: [`AGENTS.md`](../../AGENTS.md).
 
 ### One-time setup
@@ -170,7 +170,7 @@ Personal OS is a **separate** package — [personal-os START-HERE](../personal-o
 
 ## Where to go next
 
-- [`AGENTS.md`](../../AGENTS.md) — agent constitution (Iron Laws, 1% rule, DoD)
+- [`AGENTS.md`](../../AGENTS.md) — agent constitution (Iron Laws, invocation contract, DoD)
 - [Methodology overview](methodology/overview.md)
 - [Feature overlap / load-subgraph](concepts/feature-graph.md) — neighbors 1.1, cluster, callers
 - [Traceability](concepts/traceability.md)

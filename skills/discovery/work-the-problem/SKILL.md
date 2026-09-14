@@ -1,6 +1,6 @@
 ---
 name: work-the-problem
-version: 1.1.1
+version: 1.2.0
 description: >
   Works a design or framing problem to closure with multi-round breakdown,
   foundation-to-feature teaching, disk artifacts, and a carry-back brief for the
@@ -38,14 +38,8 @@ NEVER AUTO-INVOKE A USER-INVOKED SKILL — NAME IT FOR THE USER.
 
 ## What this is NOT
 
-| Neighbor | Boundary |
-|---|---|
-| `interpret-session` | Fast model + stance + reply — **theirs** under time pressure. You go deep. |
-| `deepen-codebase` | Pure foundation, no pick — **theirs** when nothing must close. You teach *to close*. |
-| `/forge-prompt` | Ask is vague and the user wants one good prompt for a fresh session — name it for them to run. |
-| `frame-change` / `clarify-decisions` | Main ceremony — feed via carry-back; do not run their checklists. |
-| Cheerleader | Other session's rec is one option among several. |
-| Course dump | One foundation cell per beat; the tree still advances. |
+Neighbor boundaries, rationalizations, and red flags: `references/boundaries.md`.
+Load at setup and whenever a pick or skip-foundation temptation appears.
 
 ## Setup — once
 
@@ -121,16 +115,9 @@ Every solve/teach turn (order fixed):
 
 ## Message → output
 
-| Message | Produce |
-|---|---|
-| First turn after setup | Identify + Define root; write tree; foundation beat if needed |
-| Paste from main window | Claim hygiene → map to tree → work highest-blast open leaf |
-| Continue / "work leaf N" | Leaf recipe; disk |
-| Follow-up / challenge / new fact | Direct answer; if stance moves, lead with that; disk |
-| Evidence return | Bind to leaf; update status |
-| User closes a leaf | Look-back transfer card; recompose check; disk |
-| "Write the reply" / root settled | Carry-back only |
-| Session end | Digest + residual tree; disk consistent |
+First turn: Identify + Define + tree. Paste: claim hygiene then highest-blast
+open leaf. Continue / evidence / close-leaf: recipe + disk. "Write the reply"
+or root settled: carry-back only. Session end: digest + residual tree.
 
 ## Act (evidence, not shipping)
 
@@ -192,16 +179,10 @@ name open leaves; do not offer a direction menu.
 
 ## End-of-session digest
 
-1. User decisions  
-2. Human rationale — verbatim  
-3. Verified evidence  
-4. Work-the-problem analysis — agent-authored  
-5. Open / deferred leaves  
-6. Prepared carry-back — agent-authored (if any)  
-7. Foundation summary (`foundation: delivered | partial | explicitly_skipped`)  
-8. Transport-adoption status  
-
-Human carry proves **adoption**, not authorship.
+Eight slots (user decisions, human rationale verbatim, verified evidence,
+analysis, open/deferred leaves, prepared carry-back, `foundation:` field,
+transport-adoption): see `references/artifacts.md`. Human carry proves
+**adoption**, not authorship.
 
 ## Done when
 
@@ -211,35 +192,6 @@ residuals named, digest delivered, and disk updated.
 Only session artifacts under `.skills/work-the-problem/` and notes via `research`
 are writable. No commits, tracked docs, ADRs, specs, or `Status: Approved`.
 
-## Rationalizations
+## Rationalizations and red flags
 
-| Thought | Reality |
-|---|---|
-| "Overview is enough; frame-change will finish it" | Close leaves or explicit defer |
-| "They're in a hurry — skip foundation" | Time-boxed path is `/interpret-session`. Here: thin prose, keep order |
-| "I'll just generate the full answer" | Full-delegate is atrophy. Articulate or record `delegated` |
-| "Just solve / paste-ready now closes the root" | `engagement: delegated` skips articulation only — not foundation, not terminal carry-back while leaves are open |
-| "Chat memory is enough mid-loop" | Persist artifacts every changing turn |
-| "Both options are fine — your call" | Name what you'd do and the flip condition |
-| "Standard practice is X" | Tier + source, or label inference |
-| "I'll run run-spike / deepen for them" | Name the skill; user invokes |
-| "One turn for every leaf" | One active leaf per turn |
-| "Suggested code change → implement it" | Read-only; suggestion in carry-back only |
-| "Urgency means foundation: skipped" | Urgency ≠ explicit skip |
-
-## Red flags
-
-Stop and re-read the Iron Laws if you:
-
-- Rank options before F0/F1 without recorded skip
-- Close root with silent open leaves
-- Manufacture options for a yes/no
-- End mid-solve with a direction menu
-- Opine on repo code without reading it
-- Auto-invoke a user-invoked skill
-- Claim mastery / leveled-up
-- Skip disk after a state-changing turn
-- Write tracked project files or enact decisions
-- Act as interpret (stance-only, no tree)
-- Skip the announce block on an analytical turn
-- Treat "just solve" / demo clock as license for carry-back while ROOT is still open
+Load `references/boundaries.md`. Iron Laws above still bind.

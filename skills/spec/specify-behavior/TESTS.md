@@ -1,5 +1,12 @@
 # `specify-behavior` — Open Questions ownership (2026-08-27)
 
+## v1.4.0 — NFR thought-table trim (2026-09-14)
+
+NFR consult already lives in `nfr-grounding.md`. The five-row thought table
+was a second home. Root still walks the four attributes, keeps
+`Section-kind: nfr`, and forbids inventing TB/THR/CMP/SLO IDs.
+
+
 Companion to clarify-decisions v1.2.0 Owned unknowns. Model roster: grok-class.
 
 ## Baseline failure (pre-1.2.0)

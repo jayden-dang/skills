@@ -1,5 +1,12 @@
 # `inspect-change` — Standards axis: production readiness (items 19–24)
 
+## v1.9.0 — standards-gather trim (2026-09-14)
+
+Step 3 root now points at `standards-baseline.md` instead of restating lint
+fallback and Team-band packaging. Two-axis contract, 3f Blast prove heading,
+and banked slot unchanged.
+
+
 Model roster: Sonnet. Fixture: a diff adding tier-aware pricing behind an env
 flag — an uncapped retry loop, a swallowed fallback to the old path, an
 opt-*out* flag, a migration dropping `NOT NULL` on a column two external

@@ -1,5 +1,16 @@
 # `design-solution` — the `Surface:` slot (affected-reader disposition)
 
+## v1.8.0 — itinerary trim (2026-09-14)
+
+**RED.** Dual-design dispatch and a six-row thought table scripted judgment
+the model already has (OpenAI: recipes now hinder). Surface / Reuse / UI
+evals still need those slots.
+
+**GREEN.** Dual-design points at `design-principles.md`. Thought table keeps
+the two Surface counters. Ladder heading `Does it need to exist at all?`
+and the `Surface:` contract unchanged.
+
+
 Model roster: Sonnet. Fixture: a TypeScript billing service where
 `calculateTotal` has four in-repo callers, a persisted `orders.total_cents`
 row, and an `order.settled` webhook consumed by two external partners.

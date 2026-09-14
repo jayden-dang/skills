@@ -2,6 +2,17 @@
 
 ## Unreleased
 
+### `plan-tasks` v1.5.0 — no 12-task Approve ceiling (2026-09-14)
+
+Task count follows the approved design and requirements. A 12-task Approve
+block forced leftover slices onto a later `ROAD-N`, which fragments one
+feature. Dropped. Home is `## One triad, one plan`. Vertical-slice shape,
+thin Steps, slot contracts, unset `Execution-mode`, and the three execute
+routes stay. `design-solution` contracts already matched; no body change.
+
+RED: v1.4.0 `WHEN task_count > 12` MUST NOT Approve + decompose-to-ROAD.
+GREEN: structural; live-agent not re-run.
+
 ### Invocation contract + high-freedom skill trim (2026-09-14)
 
 Research: OpenAI Astra (recipes now hinder stronger models), Anthropic degrees

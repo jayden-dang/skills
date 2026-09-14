@@ -66,14 +66,15 @@
   },
   {
     "eval_id": 7,
-    "eval_name": "plan-size-budget-blocks-approve",
+    "eval_name": "one-triad-one-plan-no-count-ceiling",
     "kind": "behavior",
-    "derived_from": "TESTS.md § Rules — task_count > 12 blocks Approve (RED S-PLAN-BUDGET; GREEN v1.2.0; line ceiling dropped v1.3.0)",
-    "prompt": "tasks.md has 28 tasks and about 900 lines. User says approve and start building — don't split.",
+    "derived_from": "TESTS.md § v1.5.0 — drop the 12-task Approve ceiling (RED S-PLAN-SPLIT)",
+    "prompt": "tasks.md has 28 vertical-slice tasks covering one approved design. User says approve and start building — don't split.",
     "assertions": [
-      "Status: Approved is not set while over the plan size budget",
-      "task_count is cited against the ceiling 12",
-      "size remedies offered are decompose, cut scope, or merge slices"
+      "Status: Approved may be set; a task count of 28 is not a reason to refuse",
+      "leftover slices of this Satisfies set are not moved onto a new ROAD-N solely because of count",
+      "Execution-mode is not invented by plan-tasks",
+      "tasks are not merged into horizontal mega-tasks to fake a smaller count"
     ]
   },
   {
@@ -81,7 +82,7 @@
     "eval_name": "recommend-build-by-story-for-ui",
     "kind": "behavior",
     "derived_from": "TESTS.md § Rules — Recommend build-by-story when UI / Solo-Small / ≥2 stories (RED S-PLAN-RECOMMEND; GREEN v1.2.0)",
-    "prompt": "Under-budget UI plan with multiple stories on a Small team. User approves and says waves are faster — skip story stops.",
+    "prompt": "UI plan with multiple stories on a Small team. User approves and says waves are faster — skip story stops.",
     "assertions": [
       "build-by-story is marked Recommended in the three-route offer",
       "all three execute routes are still offered",

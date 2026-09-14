@@ -1,13 +1,41 @@
 # `plan-tasks` — pressure-test record
 
+## v1.5.0 — drop the 12-task Approve ceiling (2026-09-14)
+
+**RED (this session, against v1.4.0).** User: apply research-aligned
+design/task writing, but drop the 12-task ceiling — tasks follow design and
+requirements; splitting leftover onto another ROAD fragments the feature.
+
+v1.4.0 `## Plan size budget (hard gate)`: `WHEN task_count > 12` **MUST NOT**
+set `Status: Approved`; remedy 1 **Decompose** keeps the first ship slice,
+hands leftover to `plan-milestones` as `ROAD-N`, then deletes those tasks
+from *this* file. Urgency / "don't split" did not waive.
+
+That is the defect: a coherent Satisfies set whose vertical slices exceed 12
+cannot stay one triad. The count gate *forces* the fragmentation the user
+named.
+
+**Pressures the old gate trained:** authority + time + "don't split" — and
+the skill still refused Approve and offered ROAD split.
+
+**GREEN.** No numeric Approve ceiling. Home: `## One triad, one plan`.
+Leftover slices of the same Satisfies set stay in this `tasks.md`.
+`frame-change` / `plan-milestones` still own independent subsystems or a
+*new* feature shape, not overflow. Vertical-slice shape, thin Steps 3–8,
+slot contracts, no invented `Execution-mode`, three execute routes: unchanged.
+
+Live-agent GREEN not re-run; structural + session RED. Same honesty as the
+v1.3.0 line-ceiling drop.
+
 ## v1.4.0 — Exit itinerary trim (2026-09-14)
 
 **RED.** Eight-row Exit thought table scripted how to *talk* about routes, not
 the task contract (OpenAI: overly specific guidance now hinders).
 
 **GREEN.** Exit still offers exactly three skills, does not invent
-`Execution-mode`, blocks Approve over 12 tasks. Thought table keeps the three
-load-bearing counters. Recommend predicate and Red Flags remain.
+`Execution-mode`. Thought table keeps the three load-bearing counters.
+Recommend predicate and Red Flags remain. (The 12-task Approve block this
+version still carried is dropped in v1.5.0.)
 
 
 ## RED — continuous scheduler metadata (baseline, 2026-08-26)
@@ -182,14 +210,15 @@ loophole.
 | Mode write-back owned by execute skill | Exit step 2–4; build-* mode ownership tables |
 | No Risk / Decision surface / Human review order | Template + Step 3 (fields omitted) |
 | Triad publish is one feature issue, not one per task | Step 5; S-WP-PUBLISH RED |
-| `task_count > 12` blocks Approve | RED S-PLAN-BUDGET; GREEN v1.2.0 |
+| One triad, one plan — no numeric Approve ceiling; leftover slices stay in this file | RED S-PLAN-SPLIT (v1.4.0 gate vs 2026-09-14 user); GREEN v1.5.0 |
+| ~~`task_count > 12` blocks Approve~~ | History: RED S-PLAN-BUDGET; GREEN v1.2.0; dropped v1.5.0 |
 | Recommend `build-by-story` first when UI / Solo-Small / ≥2 stories | RED S-PLAN-RECOMMEND; GREEN v1.2.0 |
 | Thin steps 3–8 checkboxes; detail in execute brief | Step 3 Thin steps (2026-08-27) |
 | Recommend ≠ invent mode; no size-based default ≠ forbid Recommend mark | GREEN wording 1.2.1 |
 
 ## Line ceiling dropped (2026-09-13 — v1.3.0)
 
-The user asked to drop the 400-line ceiling: whole-file length no longer blocks Approve. `task_count > 12` stays the hard gate; thin Steps stay as readability guidance. The v1.2.1 notes below about blocking on `line_count` are history, not current rules.
+The user asked to drop the 400-line ceiling: whole-file length no longer blocks Approve. Through v1.4.0, `task_count > 12` stayed the hard gate; v1.5.0 drops that too. Thin Steps stay as readability guidance. The v1.2.1 notes below about blocking on `line_count` are history, not current rules.
 
 **No-op sweep (Sonnet, 3 fresh runs, skill text without a drafted "file length is not gated" sentence):** 7 tasks / 560 lines, 9 / 640, 11 / 820 — all three cleared the budget on `task_count`, approved, and asked for no shortening; one flagged 10–12-checkbox tasks as advisory against "prefer 3–8", not a blocker. The sentence was a no-op (and a second home for Thin steps), so it was deleted before ship.
 

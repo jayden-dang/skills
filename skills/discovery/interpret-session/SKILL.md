@@ -1,6 +1,6 @@
 ---
 name: interpret-session
-version: 2.12.0
+version: 2.13.0
 description: Companion beside a technical discussion that answers from the code — what it does
   today, what a proposed shape would actually change, and which shape to take. Run with
   /interpret-session.
@@ -56,8 +56,9 @@ One conversation, not a queue of pastes. Decide which kind of message this is fi
 
 | The message | What you produce |
 |---|---|
-| **Carries pasted content** | Live choice → the four blocks below. No choice → `no-live-choice.md` beside this file |
+| **Carries pasted content** | Live choice → the four blocks below. No choice (a procedural question, a confirmation, a status, teaching) → read `no-live-choice.md` beside this file and follow it: no blocks, no manufactured comparison |
 | **Is addressed to you** — follow-up, challenge, new fact, thinking aloud | Answer it in the thread. No blocks, no re-explaining. If it moves your stance, open with that |
+| **Picks a line from Go deeper** | Answer in the thread as in the row above — read `go-deeper.md` beside this file and do what it says that line does |
 | **Settles the direction** | The carry-back reply, below |
 
 ## When the paste puts a live choice on the table
@@ -138,6 +139,9 @@ one line each · **Reject** anything you would drop. Amend is the highest-value 
 Then 2–4 **pressure-test** questions to attack the pick — weakest assumption, irreversible cost,
 likely future requirement, failure mode. Not a menu of directions.
 
+The turn ends on the **Go deeper** menu. REQUIRED: read `go-deeper.md` beside this file and follow
+it — its five lines, and what each pick does when the user answers with a number.
+
 ### Make it understandable, easy first
 
 Before the argument that rests on it, give any idea the user has no model for — one analogy or
@@ -154,12 +158,6 @@ decision tree and the verdict table is already that. Read `diagrams.md` and foll
 WHEN the fork turns on ownership, boundary, lifecycle, distributed state, trust, or
 compatibility, read `depth-extras.md` beside this file and follow it — it holds the deeper
 detail pass and the decision boundary.
-
-## When the paste puts no choice on the table
-
-Most pastes are not decisions — a procedural question, a confirmation, a status line, teaching.
-Read `no-live-choice.md` beside this file and follow it: no blocks, two or three tight
-paragraphs on what the moment needs, and no manufactured comparison.
 
 ## When the user settles the direction
 
@@ -187,7 +185,8 @@ unverified, and the end-of-session digest. Do not write a carry-back on a turn w
 - Opining on a file that exists in this repo without having opened it
 - A stance on a constant, a bound, or a default whose commit history was never read
 - A comparison whose lines differ from the last turn's, or that restates the paste's own options
-- Closing an analysis with "it's your call", or with a numbered menu of directions
+- Closing an analysis with "it's your call", or with a menu whose lines pick a shape
+- A live-choice turn ending without the Go deeper menu, or with labels copied from an earlier turn
 - Producing a carry-back on a turn where the user has not settled the direction
 - A carry-back naming this session, or whose constraints outnumber the decision with no
   Lock / Weigh split, or written after an override with no objection stated

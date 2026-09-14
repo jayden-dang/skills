@@ -1,7 +1,7 @@
 # After the user settles
 
 Read this the moment the user chooses a direction or asks for the reply — not before. While
-something material is open, name it and stop; never end an analysis turn with a menu.
+something material is open, name it and stop; never end an analysis turn with a menu of directions.
 
 **Contents:** [One objection](#one-objection) · [Approvals that bind](#approvals-that-bind) ·
 [The carry-back](#the-carry-back) · [What nobody has checked](#what-nobody-has-checked) ·

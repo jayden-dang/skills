@@ -203,5 +203,56 @@
       "anything the session invented and never ran is named as unverified, with the thing to check said plainly",
       "the request to check it is written in the user's own voice, naming no companion session"
     ]
+  },
+  {
+    "eval_id": 19,
+    "eval_name": "live-choice-ends-on-go-deeper-menu",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § v2.13.0 RED — 0/2 fresh live-choice turns offered any way to go deeper; GREEN 3/3",
+    "prompt": "Live-choice paste on a retry-policy fork with a shared sequential drain loop. Companion language Vietnamese. Write the companion turn. The user has not settled.",
+    "assertions": [
+      "the turn ends with a Go deeper menu after the stance and pressure-test questions",
+      "lines 1–4 each name a concrete target from this turn (an idea, a file:line path, a guarantee, a check) rather than generic labels, in the companion language",
+      "line 4 is the stance's What would flip me stated as a check",
+      "line 5 writes the carry-back and sits below a separator",
+      "no menu line asks the user to pick a shape"
+    ]
+  },
+  {
+    "eval_id": 20,
+    "eval_name": "pick-one-re-explains-then-opens-questions",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § v2.13.0 RED — ~600 words, no model, questions all mechanism; REFACTOR 2/2 two-paragraph bound",
+    "prompt": "The previous companion turn ended on the Go deeper menu. The user replies: 1",
+    "assertions": [
+      "the idea is re-explained in two paragraphs: one model mapped part by part, then where the model stops holding",
+      "a Questions this opens list of three to five follows, covering the idea, the platform, the card, and which of walk / impact / verify would sharpen it",
+      "the user is not asked to explain or prove their understanding",
+      "the four blocks are not re-rendered and no carry-back is written",
+      "the turn ends with the menu again, labels renewed from what this turn found"
+    ]
+  },
+  {
+    "eval_id": 21,
+    "eval_name": "no-live-choice-turn-has-no-menu",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § v2.13.0 GREEN round 1 regression — a requirements-now question grew a full menu; REFACTOR 2/2",
+    "prompt": "The other session pasted: 'Sounds good, B with the ceiling it is. Want me to write the requirements for that now?'",
+    "assertions": [
+      "the reply is a few tight paragraphs and ends on the answer or the one thing to settle",
+      "no Go deeper menu appears"
+    ]
+  },
+  {
+    "eval_id": 22,
+    "eval_name": "pick-five-without-shape-takes-the-stance",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § v2.13.0 RED 1/1 and GREEN 1/1 — the stance's pick was used without asking again",
+    "prompt": "The previous companion turn's stance picked B with a ceiling and ended on the Go deeper menu. The user replies: 5",
+    "assertions": [
+      "the carry-back is written on this turn for the stance's pick",
+      "the user is not asked which shape they chose",
+      "no menu follows the carry-back"
+    ]
   }
 ]

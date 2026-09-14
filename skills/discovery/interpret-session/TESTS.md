@@ -983,3 +983,86 @@ Lock / Weigh / Still open stay as narrow as they were, since those are what a on
 freezes. `Still open` also now carries the fact that would reverse the pick.
 
 **Version:** minor `2.12.0`.
+
+## v2.13.0 — the Go deeper menu (2026-09-14, Sonnet)
+
+User request: after a live-choice turn, give a user who has not fully understood a numbered way
+to go further — explain again, walk the code, impact, verify — plus a separated line that writes
+the carry-back. The loop should sharpen the card before the reply leaves. Decided by the user:
+pick 1 re-explains and lists questions the user may answer or skip, with no check of the user's
+understanding; pick 5 with no shape named takes the stance's pick, without asking again.
+
+Evidence read before writing: suggested follow-ups help or hurt by label quality, not by being
+there (Zou et al. 2022, *IP&M*); five distinct options carry no credible choice-overload risk
+(Scheibehenne et al. 2010 meta-analysis); a commit item shown as a peer of the depth items reads
+as the endorsed next step (default-effect literature; no direct study of this pattern). That is
+why line 5 sits below a rule.
+
+### Setup
+
+Fixture `bellcast`, as in v2.0.0. Two harness shapes: a fresh live-choice paste, and a thread
+whose previous companion turn ends on a menu and whose last user message is a single digit — the
+same thread for RED and GREEN. Skill installed at `.claude/skills/`, reply in-thread, no files.
+
+### RED — v2.12.0
+
+| Measured | RED |
+|---|---|
+| Fresh live-choice ends with a depth menu | **0/2** — both end on pressure-test question 4 |
+| A pick turn ends with a menu | 1/5 — and that one copied the previous labels word for word, missing the gap it had just found (the runbook never looks in the policy table) |
+| Pick 1: mapped model | 0/1 — about 600 words, no model |
+| Pick 1: questions touch the card or point at a next pick | 0/1 — three questions, all mechanism |
+| Pick 2 state trace, pick 3 pre-mortem, pick 4 check with stance held/changed | 1/1 each — already there |
+| Pick 5 with no shape → stance pick, no re-ask | 1/1 — already there |
+
+**Most of the brief was already true.** What each pick does when chosen needed one line each, not
+counters. The failure was the menu never being offered — an omitted element, so a REQUIRED slot
+pointing at `go-deeper.md`.
+
+### GREEN — round 1
+
+| Measured | RED | GREEN |
+|---|---|---|
+| Fresh live-choice ends with menu, concrete labels, 5 below the rule, no shape-picking line | 0/2 | **3/3** (one in Vietnamese) |
+| Picks 1–4 end with a renewed menu | 1/5 stale | **4/4** |
+| Pick 1: mapped model + where it breaks; questions across idea / platform / card / next pick | 0/1 | **2/2** |
+| Pick 1 length, bound "short" | ~600w | 650w, 750w — **0/2** |
+| Line 4 is the stance's flip fact | – | **2/4** |
+| Pick 5 no shape → stance pick | 1/1 | 1/1 |
+| No-live-choice turn has no menu | – | **0/1 — regression** |
+
+The regression: a turn on "want me to write the requirements now?" ended on a full menu offering
+to walk and verify a fork nobody had put on the table. The scope sentence lived only in
+`go-deeper.md`; `no-live-choice.md` said nothing about how its turn ends.
+
+### REFACTOR
+
+Three changes, each from a recorded failure: `no-live-choice.md` now says the turn ends on its last
+paragraph, with the regression as the counter; pick 1 is bound to two paragraphs and one- or
+two-line questions; line 4 is bound to the stance's **What would flip me**.
+
+| Measured | GREEN r1 | REFACTOR |
+|---|---|---|
+| No-live-choice turn has no menu | 0/1 | **2/2** |
+| Pick 1 in two paragraphs | 0/2 | **2/2** (~520w, ~600w total) |
+| Line 4 is the flip fact | 2/4 | 2/2 exact on pick turns; 1 adjacent on a fresh turn |
+| Header in the companion language | 0/1 | 0/1 |
+
+The header stayed English in both Vietnamese runs: the literal in the template block beat the prose
+around it. The clause was dropped and `Go deeper` made the fixed header rather than fought.
+
+**Not measured:** a real multi-turn session with the menu. The harness gives each pick one turn;
+whether users actually loop, and whether renewed labels stay useful three picks deep, only real
+use will show.
+
+**Version:** minor `2.13.0` — a new REQUIRED slot and a new reference file.
+
+### Wording sweep before commit
+
+Review against the author-skills sweeps removed a second home for the no-choice exclusion, a
+restated "answer in the thread" rule, a depth-not-direction sentence the template already enforces,
+and a "do not check understanding" prohibition no run needed (0/5 quizzed). The dispatch-table
+pointer to `go-deeper.md` was sharpened, and the red flag now names the recorded failure (copied
+labels). Rechecked once each: no-choice turn, no menu; pick 1, two paragraphs, no quiz, menu
+renewed with line 4 on the flip fact — though five questions of up to three lines put the turn
+back near 700 words.

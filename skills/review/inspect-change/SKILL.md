@@ -1,6 +1,6 @@
 ---
 name: inspect-change
-version: 1.9.0
+version: 1.9.1
 description: Use when a branch, PR, diff, or set of changes needs review before merging —
   produces a two-axis verdict (repo-standards conformance plus
   spec/requirements conformance, reported separately) — when build-in-waves

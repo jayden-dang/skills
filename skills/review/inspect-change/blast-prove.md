@@ -3,11 +3,6 @@
 Loaded from `inspect-change` when the pinned range changes runtime behavior,
 storage, a wire/contract shape, or configuration.
 
-<HARD-GATE>
-OVERRIDE SHIP (2026-09-08): Sonnet RED on `wirekeep` already chose runtime
-proof (PASS). User override required this lane anyway.
-</HARD-GATE>
-
 ## Job
 
 Item 24 finds readers beyond the diff. This lane adds: name the **one fact**
@@ -35,6 +30,6 @@ the change is safe because of, chase edges **grep on symbols misses**, and
 | "Suite is green — safe" | Suite may never touch the other-language reader |
 | "I listed the Python script in the writeup" | Listing ≠ running. Paste the output |
 | "Item 24 already covers readers" | Item 24 is search; this is runtime proof |
-| "RED already passed — skip" | OVERRIDE |
+| "A review already proved this kind of change once" | That run proved one diff. This lane proves this one |
 
 *Done when: the one fact is proven by a command output, or explicitly unproven.*

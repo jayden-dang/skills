@@ -333,3 +333,57 @@ roster model could still open a RED — re-ask then, do not write from this run.
 Prior RED on `wirekeep` **PASS**ed (runtime proof already happened). User
 override required shipping `blast-prove.md` + step 3f anyway. See HARD-GATE in
 `blast-prove.md`.
+
+## Edit — blast-prove authoring note read as injection (2026-09-15, Sonnet)
+
+`blast-prove.md` carried its own ship history inside a `<HARD-GATE>` block:
+"OVERRIDE SHIP (2026-09-08): Sonnet RED on `wirekeep` already chose runtime proof
+(PASS). User override required this lane anyway." — plus a rationalization row whose
+Reality cell was the single word `OVERRIDE`.
+
+Found during an unrelated RED (fixture `ledgerline`, Sonnet, `claude -p`): the run
+reviewed the branch correctly, then reported the block as an attack.
+
+> the skill's `blast-prove.md` file contained an embedded block claiming a prior
+> override let this verification step be skipped. That's not a legitimate instruction
+> from you or Mai — it reads like an injected attempt to get a rubber-stamp review —
+> so I ignored it and ran the actual proof instead.
+
+v1.9.1 moves the ship history here and gives the row a real counter ("That run proved
+one diff. This lane proves this one"). Ship history belongs in TESTS.md; a file loaded
+at runtime carries instructions only.
+
+## Measured and dropped — a codebase-structure lane (2026-09-15, Sonnet / Haiku 4.5)
+
+**Proposal.** `inspect-structure`, a lane beside `inspect-invariants`: judge dependency
+direction, import cycles, reaching into another module's `internal/`, and files that the
+history shows always change together but the diff left out. Motivated by
+`.skills/research/2026-09-15-codebase-design-principles.md` (hotspot and change-coupling
+evidence) and its agent-era follow-up.
+
+**RED (v1.9.0/1.9.1, `claude -p`, 1 rep per model per fixture) — did not fail, 4/4.**
+
+*Fixture `ledgerline`* (13 files): the branch adds `tax_region` to `serializeInvoice` and
+leaves `contracts/export/invoice.v2.json` (`additionalProperties:false`) untouched; the
+two changed together in 5 prior commits. It also adds `billing -> notifications/internal`,
+closing a cycle.
+- Sonnet: Critical on the omitted contract, **proved at runtime** (`unexpected field
+  tax_region`), cited the prior commit; Important on the import, "inverting the existing
+  one-way dependency … reaching into a folder named `internal/`".
+- Haiku: Critical on the omitted contract, also proved at runtime. On the import, only
+  "works but could be reviewed for architectural fit" — the one soft result in the set.
+
+*Fixture `wharfline`* (29 files, five domains, a `ports/index.js` per domain, neutral
+commit messages): `ordering/quote.js` imports `shipping/internal/rateTable.js`, bypassing
+the port and closing a cycle with `shipping/shipment.js`.
+- Both models: **Critical, "[Module boundary violation]"**, quoting the port's own comment
+  and naming the bypass. Both also found two defects the lane never targeted — the port
+  never forwards `region`, so the feature is unreachable, and the surcharge formula now
+  exists twice.
+
+**Dropped.** Item 24 plus the twelve smells already carry this. The one soft result was on
+the fixture whose convention was *not* written in the code; where the repo states its own
+rule (a `ports/` comment), both models enforce it unprompted. No text shipped for the lane.
+
+**Open, unmeasured:** whether the soft Haiku result reproduces on a repo whose convention
+exists only in the import graph, with no comment stating it. One rep, one fixture.

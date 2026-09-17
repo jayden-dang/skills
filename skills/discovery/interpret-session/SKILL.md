@@ -1,6 +1,6 @@
 ---
 name: interpret-session
-version: 2.15.0
+version: 2.16.0
 description: Companion beside a technical discussion that answers from the code — what it does
   today, what a proposed shape would actually change, and which shape to take. Run with
   /interpret-session.
@@ -57,8 +57,8 @@ One conversation, not a queue of pastes. Decide which kind of message this is fi
 | The message | What you produce |
 |---|---|
 | **Carries pasted content** | The first such message opens on a map → read `session-map.md` beside this file. Then: live choice → the four blocks below. No choice (a procedural question, a confirmation, a status, teaching) → read `no-live-choice.md` beside this file and follow it: no blocks, no manufactured comparison |
-| **Is addressed to you** — follow-up, challenge, new fact, thinking aloud | Answer it in the thread. No blocks, no re-explaining. If it moves your stance, open with that |
-| **Picks a line from Go deeper** | Answer in the thread as in the row above — read `go-deeper.md` beside this file and do what it says that line does |
+| **Is addressed to you** — follow-up, challenge, new fact, thinking aloud | Answer it in the thread. No blocks, no re-explaining, no menu. If it moves your stance, open with that |
+| **Picks a line from Go deeper** — a bare number after a menu | That menu's line, never the paste's option with the same number; `0` is the carry-back. Read `go-deeper.md` beside this file and do what it says that line does |
 | **Hands over a close package, or a requirements / design / tasks file for sign-off** | Read `reviewing.md` beside this file and follow it: no four blocks, no menu |
 | **Settles the direction** | The carry-back reply, below |
 
@@ -141,7 +141,7 @@ Then 2–4 **pressure-test** questions to attack the pick — weakest assumption
 likely future requirement, failure mode. Not a menu of directions.
 
 The turn ends on the **Go deeper** menu. REQUIRED: read `go-deeper.md` beside this file and follow
-it — its six lines, and what each pick does when the user answers with a number.
+it — which moves this round gets, and what each pick does when the user answers with a number.
 
 ### Make it understandable, easy first
 
@@ -187,7 +187,7 @@ Still-open slots, what travels as unverified, and the end-of-session digest. Do 
 - A comparison whose lines differ from the last turn's, or that restates the paste's own options
 - Closing an analysis with "it's your call", or with a menu whose lines pick a shape
 - A first answer that starts on the code or an analogy before saying what the session is about
-- A live-choice turn ending without the Go deeper menu, or with labels copied from an earlier turn
+- A live-choice turn ending without the Go deeper menu, on copied labels, or on the same kinds of move every round
 - Producing a carry-back on a turn where the user has not settled the direction
 - A carry-back naming this session, or whose constraints outnumber the decision with no
   Lock / Weigh split, or written after an override with no objection stated

@@ -208,13 +208,13 @@
     "eval_id": 19,
     "eval_name": "live-choice-ends-on-go-deeper-menu",
     "kind": "behavior",
-    "derived_from": "TESTS.md § v2.13.0 RED — 0/2 fresh live-choice turns offered any way to go deeper; GREEN 3/3",
+    "derived_from": "TESTS.md § v2.13.0 RED — 0/2 fresh live-choice turns offered any way to go deeper; GREEN 3/3; v2.16.0 GREEN — lines chosen by round kind, 0 writes the carry-back",
     "prompt": "Live-choice paste on a retry-policy fork with a shared sequential drain loop. Companion language Vietnamese. Write the companion turn. The user has not settled.",
     "assertions": [
       "the turn ends with a Go deeper menu after the stance and pressure-test questions",
-      "line 1 names the fork, the feature and the pick for a plain whole-card view; lines 2–5 each name a concrete target from this turn (an idea, a file:line path, a guarantee, a check) rather than generic labels, in the companion language",
-      "line 5 is the stance's What would flip me stated as a check",
-      "line 6 writes the carry-back and sits below a separator",
+      "each line carries a kind tag and names a concrete target from this turn (an idea, a file:line path, a line of the stance, a check), in the companion language",
+      "on this costly-to-reverse fork the lines lead with Walk, Stress and Verify, and the Verify line is the stance's What would flip me",
+      "0 writes the carry-back and sits below a separator",
       "no menu line asks the user to pick a shape"
     ]
   },
@@ -223,13 +223,13 @@
     "eval_name": "pick-one-re-explains-then-opens-questions",
     "kind": "behavior",
     "derived_from": "TESTS.md § v2.13.0 RED — ~600 words, no model, questions all mechanism; REFACTOR 2/2 two-paragraph bound",
-    "prompt": "The previous companion turn ended on the Go deeper menu. The user replies: 2",
+    "prompt": "The previous companion turn ended on a Go deeper menu whose line 2 was Explain. The user replies: 2",
     "assertions": [
       "the idea is re-explained in two paragraphs: one model mapped part by part, then where the model stops holding",
-      "a Questions this opens list of three to five follows, covering the idea, the platform, the card, and which of walk / impact / verify would sharpen it",
+      "a Questions this opens list of three to five follows, covering the idea, the platform, the card, and which next menu line would sharpen it",
       "the user is not asked to explain or prove their understanding",
       "the four blocks are not re-rendered and no carry-back is written",
-      "the turn ends with the menu again, labels renewed from what this turn found"
+      "the turn ends with the menu again, lines chosen afresh from what this turn found"
     ]
   },
   {
@@ -245,10 +245,10 @@
   },
   {
     "eval_id": 22,
-    "eval_name": "pick-five-without-shape-takes-the-stance",
+    "eval_name": "pick-zero-without-shape-takes-the-stance",
     "kind": "behavior",
     "derived_from": "TESTS.md § v2.13.0 RED 1/1 and GREEN 1/1 — the stance's pick was used without asking again",
-    "prompt": "The previous companion turn's stance picked B with a ceiling and ended on the Go deeper menu. The user replies: 6",
+    "prompt": "The previous companion turn's stance picked B with a ceiling and ended on the Go deeper menu. The user replies: 0",
     "assertions": [
       "the carry-back is written on this turn for the stance's pick",
       "the user is not asked which shape they chose",
@@ -260,14 +260,14 @@
     "eval_name": "pick-one-gives-the-card-plainly-with-ranked-reasons",
     "kind": "behavior",
     "derived_from": "TESTS.md § v2.14.0 — user request: a whole-card view before going deep into one part",
-    "prompt": "The previous companion turn ended on the Go deeper menu. The user replies: 1",
+    "prompt": "The previous companion turn ended on a Go deeper menu whose line 1 was Overview · the card, plainly. The user replies: 1",
     "assertions": [
       "the reply says in plain words what is being decided, for which feature, and why it came up",
       "per shape, what someone using or running the feature would notice, without re-rendering the code blocks",
       "the stance's pick is named",
       "three to five reasons follow, ranked most decisive first, and reason 1 matches the stance's Why it wins now",
       "the four blocks are not re-rendered and no carry-back is written",
-      "the turn ends with the menu again, labels renewed"
+      "the turn ends with the menu again, lines chosen afresh and the card not offered again"
     ]
   },
   {
@@ -308,6 +308,49 @@
     "assertions": [
       "the required field is named as breaking existing callers under the External posture",
       "a prose claim about today that the code contradicts is named with file:line, even outside a criterion"
+    ]
+  },
+  {
+    "eval_id": 27,
+    "eval_name": "bare-number-answers-the-menu-not-the-paste",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § v2.16.0 RED — a bare 1 was read as the paste's Option 1 and a carry-back went out unasked; GREEN 1/1",
+    "prompt": "The paste offered Option 1 and Option 2. The previous companion turn ended on a Go deeper menu whose line 1 was Overview · the card, plainly. The user replies: 1",
+    "assertions": [
+      "the reply gives the card plainly, not a decision for Option 1",
+      "no carry-back is written"
+    ]
+  },
+  {
+    "eval_id": 28,
+    "eval_name": "scope-round-menu-offers-overview-and-challenge",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § v2.16.0 RED — 0/2 scope-round menus offered an overview or a challenge to the framing, both offered a code walk and a pre-mortem; GREEN 2/2",
+    "prompt": "Later in the session, after per-endpoint retry policy was locked, the other window asks whether to fold a customer's maintenance-window request into this feature or open a separate feature. Write the companion turn.",
+    "assertions": [
+      "the Go deeper menu includes an Overview line on where the session stands or what this round changed",
+      "the menu includes a Challenge line aimed at the framing of the scope question"
+    ]
+  },
+  {
+    "eval_id": 29,
+    "eval_name": "user-written-message-ends-without-menu",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § v2.16.0 RED — 2/4 user-written messages (a question, a challenge) ended on a Go deeper menu; GREEN 0/4",
+    "prompt": "After a live-choice turn that ended on a Go deeper menu, the user writes: I don't really get the drain part — explain it simpler.",
+    "assertions": [
+      "the question is answered in the thread",
+      "no Go deeper menu appears"
+    ]
+  },
+  {
+    "eval_id": 30,
+    "eval_name": "argued-mechanism-drops-explain",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § v2.16.0 RED — 2/2 menus after the user argued the mechanism still offered Explain; GREEN 0/2",
+    "prompt": "The user has just argued that the retry ceiling is obsolete once delivery runs concurrently. The other window now pastes a live choice on how to bound worker concurrency. Write the companion turn.",
+    "assertions": [
+      "the Go deeper menu has no Explain line"
     ]
   }
 ]

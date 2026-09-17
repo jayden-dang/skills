@@ -1189,3 +1189,82 @@ them — every defect named, but the change asked for was in `design.md`, not `t
 may read as noise; a Go deeper menu on sign-off turns.
 
 **Version:** minor `2.15.0` — a new dispatch row and reference file.
+
+## v2.16.0 — a Go deeper menu that follows the round (2026-09-17, Sonnet)
+
+User request: the menu always offered the same five kinds of question while the rounds beside it
+change kind every time — an architecture fork, a scope question, a fork with no data — so it helped
+little. Make it vary with the question, the level, the context. Decided by the user: `0` writes the
+carry-back; a no-choice turn still has no menu. Suggested and taken: the kind shows as a tag on each
+line.
+
+Evidence read before writing: move vocabularies from question taxonomies (Graesser & Person 1994;
+King 1990 — fixed stems filled with situation content beat unguided questioning); different moves by
+situation (Snowden & Boone 2007, Cynefin); overview first, details on demand (Shneiderman 1996);
+guidance that helps a novice hurts an expert (Kalyuga 2007, expertise reversal); step-level
+granularity is near the ceiling (VanLehn 2011). Real use was thin: one session, one menu, no number
+picked — the user asked for the overview and then challenged a cost line of the stance, a move no
+menu line offered.
+
+### Setup
+
+Fixture `bellcast`. Two chained seven-turn threads, English and Vietnamese, each turn a fresh agent
+reading the thread so far: t1 the retry-policy fork (costly to reverse, External) · t2 the user asks
+what "drain" means · t3 where the ceiling constants live (internal, cheap to reverse) · t4 a bare `1`
+· t5 scope: fold Acme's maintenance windows in or not · t6 the user argues the ceiling is obsolete
+under concurrent workers · t7 bounding worker concurrency with no production numbers. Both RED and
+GREEN routed Vietnamese t3 to the no-choice path, so that thread skipped t4.
+
+### RED — v2.15.0
+
+| Measured | RED |
+|---|---|
+| Menu lines drawn only from the five template kinds | **9/9 menus** |
+| Scope round: overview, what changed, or a challenge to the framing | **0/2** — both offered a code walk and a pre-mortem |
+| No-data fork: a probe line | 0/2 |
+| After the user argued the mechanism: Explain still offered | **2/2** |
+| A line attacking a line of the stance or steelmanning the runner-up | **0/9** |
+| A line on where the session stands across rounds | **0/9** |
+| Menu on a user-written message | **2/4** — a question was taken as pick 2 |
+| Bare `1` read as menu line 1 | **0/1** — read as the paste's Option 1; a carry-back went out unasked |
+| Labels name the turn's target | 9/9 |
+
+Not a no-op. Content renewed every turn; the kind of move never did, and the only adaptation was
+dropping lines.
+
+### GREEN
+
+`go-deeper.md` rewritten: six kinds (Overview, Explain, Walk, Challenge, Stress, Verify), a table
+choosing lines by the round, the user's own messages as a level signal, `0` for the carry-back, and
+the number rule. `SKILL.md`: the bare-number dispatch row, "no menu" on messages addressed to the
+companion, the pointer and red flag.
+
+| Measured | RED | GREEN |
+|---|---|---|
+| Menus with a move outside the old five kinds | 0/9 | **7/8** |
+| Scope round: Overview + Challenge the framing | 0/2 | **2/2** |
+| No-data fork: smallest probe | 0/2 | 1/2 |
+| After the user argued: Explain offered | 2/2 | **0/2** |
+| Challenge line anywhere | 0/9 | **4/8** |
+| Where-we-are / what-changed line | 0/9 | **6/8** |
+| Cheap-to-reverse fork: no Stress | – | **1/1** |
+| Menu on a user-written message | 2/4 | **0/4** |
+| Bare `1` → menu line 1 | 0/1 | **1/1** — gave the card plainly, renewed menu with a Challenge line |
+| `0` writes the carry-back | – | 8/8 |
+| Lines numbered in table order | – | 5/8 |
+| One line per kind | – | 7/8 — one menu offered two Overview lines |
+
+The Challenge line aimed at the user's own disputed point appeared in neither t7; in both, the new
+stance no longer rested on that point, so the rule was sharpened rather than enforced as written.
+
+### REFACTOR
+
+The order rule now names the six kinds inline; the Challenge rule applies when the stance still rests
+on the point the user disputed. Rechecked the two out-of-order Vietnamese turns: t1 read Walk ·
+Stress · Verify, t7 read Overview · Walk · Stress · Verify, no Explain. **2/2**.
+
+**Not measured:** Where we are, What this round changed and Challenge picks actually taken — no run
+answered those numbers; English t7 still offered a code walk on a fork with no code; whether a real
+user reads the tags or picks by number.
+
+**Version:** minor `2.16.0` — the menu's lines and numbering change.

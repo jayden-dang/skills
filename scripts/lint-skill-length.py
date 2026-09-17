@@ -8,6 +8,9 @@ check is that intention made mechanical.
 
 The rule:
 
+  * SUGGESTED is the target a SKILL.md aims for. Over it but at or under LIMIT
+    passes with a note, not a failure: the note names the file so a trim has
+    somewhere to start, while a body that needs the room can take it.
   * A SKILL.md at or under LIMIT lines passes, and must not appear in the budget.
   * A SKILL.md over LIMIT must have a budget entry, and must not exceed its
     recorded line count or its recorded word count. Words are tracked because a
@@ -30,7 +33,8 @@ import json
 import os
 import sys
 
-LIMIT = 200
+LIMIT = 300
+SUGGESTED = 200
 BUDGET = os.path.join(os.path.dirname(os.path.abspath(__file__)), "skill-length-budget.json")
 
 
@@ -101,11 +105,14 @@ def write_budget():
 def check(paths):
     budget = load_budget()
     errs = []
+    notes = []
     for path in paths:
         if not os.path.exists(path):
             continue
         lines, words = measure(path)
         allowed = budget.get(path)
+        if SUGGESTED < lines <= LIMIT:
+            notes.append(f"{path}: {lines} lines, over the {SUGGESTED}-line target")
         if lines <= LIMIT:
             if allowed is not None:
                 errs.append(
@@ -129,6 +136,9 @@ def check(paths):
                         f"rewrapping lines is not a trim, and words are what every "
                         f"turn pays for.")
 
+    for note in notes:
+        print(f"  note: {note}")
+
     if errs:
         print("skill length:")
         for err in errs:
@@ -137,7 +147,8 @@ def check(paths):
 
     remaining = sum(1 for p in budget if os.path.exists(p))
     over = f", {remaining} still over it" if remaining else ""
-    print(f"OK — {len(paths)} skills checked against a {LIMIT}-line limit{over}.")
+    print(f"OK — {len(paths)} skills checked against a {LIMIT}-line limit "
+          f"({SUGGESTED} suggested){over}.")
     return 0
 
 

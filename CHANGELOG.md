@@ -2,6 +2,14 @@
 
 ## Unreleased
 
+### Skill length — 300-line ceiling, 200 suggested (2026-09-17)
+
+`lint-skill-length.py` now fails a `SKILL.md` past **300** lines and only notes
+one past **200**. The ratchet is unchanged: a file over the ceiling still needs a
+budget entry that can only go down. 200 stays the target in `AGENTS.md`,
+`author-skills` v1.3.1 and the skill-model guide; a body past it says why it
+needs the room.
+
 ### `plan-tasks` v1.5.1 — one triad, one plan (2026-09-14)
 
 A 12-task Approve block forced leftover slices onto a later `ROAD-N`, which

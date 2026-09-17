@@ -306,9 +306,10 @@ section for the anti-patterns; checklists whose steps end on a checkable
 Engineering skills carry no prefix; Personal OS skills are namespaced `life-`
 because their bare verbs would collide once both packs are installed.
 
-**Budget:** discipline skills keep the core body to ~500 words; the hard ceiling
-for any SKILL.md is **200 lines**, enforced by `scripts/lint-skill-length.py`
-against a budget that only decreases. Files still above it are listed in
+**Budget:** discipline skills keep the core body to ~500 words; aim for
+**200 lines** or fewer in any SKILL.md; the hard ceiling is **300 lines**,
+enforced by `scripts/lint-skill-length.py` against a budget that only decreases,
+which notes (without failing) each file past 200. Files still above it are listed in
 `scripts/skill-length-budget.json` with the count they may not exceed; an entry
 comes out when its file drops under the limit and can never go back in. Over
 budget, split detail behind a well-worded pointer to a sibling file, one level

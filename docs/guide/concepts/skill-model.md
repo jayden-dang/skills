@@ -26,7 +26,7 @@ Three loading levels, and each costs differently:
 | **Body** — the SKILL.md text | paid every turn *once the skill fires* |
 | **Reference file** — a sibling `.md` behind a pointer | costs nothing until the pointer is followed |
 
-That budget is why discipline skills keep their core body to roughly 500 words, why the hard ceiling for any SKILL.md body is 200 lines held by `scripts/lint-skill-length.py`, and why `zone-mode` is the shortest gate in the set. Length is a failure mode in itself, even when every line is live.
+That budget is why discipline skills keep their core body to roughly 500 words, why a SKILL.md body aims for 200 lines under a hard ceiling of 300 held by `scripts/lint-skill-length.py`, and why `zone-mode` is the shortest gate in the set. Length is a failure mode in itself, even when every line is live.
 
 ## The two invocation kinds
 

@@ -1066,3 +1066,63 @@ pointer to `go-deeper.md` was sharpened, and the red flag now names the recorded
 labels). Rechecked once each: no-choice turn, no menu; pick 1, two paragraphs, no quiz, menu
 renewed with line 4 on the flip fact — though five questions of up to three lines put the turn
 back near 700 words.
+
+## v2.14.0 — the card from above, and a map before the first card (2026-09-17, Sonnet)
+
+User request, two parts. **(1)** Go deeper only went *into* one part of the card; add a line that
+gives the whole card plainly first — what it is, what it does to the feature, the pick, and three to
+five reasons ranked by importance. **(2)** The first answer after setup should say what the session
+is about before anything else — the problem, what the session will do, what is in hand, what is not.
+
+### Setup
+
+Fixture `bellcast`, rebuilt to the v2.0.0 description (five commits, `e87906e` carries the `#412`
+message), same paste. Skill installed at `.claude/skills/`. One run in Vietnamese, one in English;
+each wrote the first turn and then answered a bare `1`. The English run also took a third message —
+a no-choice paste ("per-endpoint with the ceiling it is — write the requirements now?").
+
+### RED — v2.13.0, part 2 only
+
+Part 1 is a new menu line; a menu template cannot offer it before it exists, so there was nothing to
+baseline. Part 2 could already be happening unprompted, so it was checked first.
+
+| Measured | RED |
+|---|---|
+| First answer says what the session is about before the card | **0/2** — one opened on the cashier analogy, one on `### 1. Today` |
+
+Not a no-op.
+
+### GREEN
+
+| Measured | GREEN |
+|---|---|
+| First answer opens on the map, four bullets, before Today / analogy / drawing | **2/2** (Vietnamese run translated the header) |
+| Map argues nothing — correction left to Today, no pick | **2/2** |
+| Map's missing-facts line says whether the choice turns on them | 1/2 explicit, 1/2 implied |
+| A later no-choice paste on the same problem gets no second map, and no menu | **1/1** |
+| Menu line 1 names the fork, feature and pick | **2/2** |
+| Pick 1: four parts, no four blocks re-rendered, no carry-back | **2/2** (~600w, ~350w) |
+| Pick 1: three to five ranked reasons, reason 1 = stance's Why it wins now | 2/2 ranked; **1/2** reason 1 exact |
+| Pick 1: line 1 dropped from the renewed menu, stance unmoved | **2/2** |
+| Renewed menu keeps its numbers | **1/2 — failure** |
+
+The failure: the Vietnamese run dropped line 1 and renumbered the rest, so carry-back became `5`
+and `5 · Verify` became `4`. A user answering with a number would get the wrong pick. One English
+run also invented why the fork came up ("a customer wants control") where the paste said nothing;
+seen once, left unfixed — "nothing the card did not already establish" already forbids it.
+
+### REFACTOR
+
+`go-deeper.md` now says a number belongs to its line and a dropped line leaves its number unused.
+Rechecked the failing case — same thread, Vietnamese, bare `1`: menu read `2 · 3 · 4 · 5 · ─── · 6`,
+and reason 1 was the stance's **Why it wins now** word for word (the `Invariant` line). **1/1** each.
+
+**The map moved to its own file.** Inline, it put `SKILL.md` at 221 lines, and the pre-commit
+length lint holds it at 200. It now lives in `session-map.md`, pointed to from the dispatch row for
+pasted content. Rechecked once, Vietnamese first turn: the map still opened the turn, before the
+analogy and Today, and the menu held six lines. **1/1**.
+
+**Not measured:** the map on a first paste with no live choice; whether a user in real use reads the
+map or skips it; line 1 offered again after a stance actually moves.
+
+**Version:** minor `2.14.0` — a new opening block and a new menu line, which renumbers picks 2–6.

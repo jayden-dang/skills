@@ -212,9 +212,9 @@
     "prompt": "Live-choice paste on a retry-policy fork with a shared sequential drain loop. Companion language Vietnamese. Write the companion turn. The user has not settled.",
     "assertions": [
       "the turn ends with a Go deeper menu after the stance and pressure-test questions",
-      "lines 1–4 each name a concrete target from this turn (an idea, a file:line path, a guarantee, a check) rather than generic labels, in the companion language",
-      "line 4 is the stance's What would flip me stated as a check",
-      "line 5 writes the carry-back and sits below a separator",
+      "line 1 names the fork, the feature and the pick for a plain whole-card view; lines 2–5 each name a concrete target from this turn (an idea, a file:line path, a guarantee, a check) rather than generic labels, in the companion language",
+      "line 5 is the stance's What would flip me stated as a check",
+      "line 6 writes the carry-back and sits below a separator",
       "no menu line asks the user to pick a shape"
     ]
   },
@@ -223,7 +223,7 @@
     "eval_name": "pick-one-re-explains-then-opens-questions",
     "kind": "behavior",
     "derived_from": "TESTS.md § v2.13.0 RED — ~600 words, no model, questions all mechanism; REFACTOR 2/2 two-paragraph bound",
-    "prompt": "The previous companion turn ended on the Go deeper menu. The user replies: 1",
+    "prompt": "The previous companion turn ended on the Go deeper menu. The user replies: 2",
     "assertions": [
       "the idea is re-explained in two paragraphs: one model mapped part by part, then where the model stops holding",
       "a Questions this opens list of three to five follows, covering the idea, the platform, the card, and which of walk / impact / verify would sharpen it",
@@ -248,11 +248,39 @@
     "eval_name": "pick-five-without-shape-takes-the-stance",
     "kind": "behavior",
     "derived_from": "TESTS.md § v2.13.0 RED 1/1 and GREEN 1/1 — the stance's pick was used without asking again",
-    "prompt": "The previous companion turn's stance picked B with a ceiling and ended on the Go deeper menu. The user replies: 5",
+    "prompt": "The previous companion turn's stance picked B with a ceiling and ended on the Go deeper menu. The user replies: 6",
     "assertions": [
       "the carry-back is written on this turn for the stance's pick",
       "the user is not asked which shape they chose",
       "no menu follows the carry-back"
+    ]
+  },
+  {
+    "eval_id": 23,
+    "eval_name": "pick-one-gives-the-card-plainly-with-ranked-reasons",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § v2.14.0 — user request: a whole-card view before going deep into one part",
+    "prompt": "The previous companion turn ended on the Go deeper menu. The user replies: 1",
+    "assertions": [
+      "the reply says in plain words what is being decided, for which feature, and why it came up",
+      "per shape, what someone using or running the feature would notice, without re-rendering the code blocks",
+      "the stance's pick is named",
+      "three to five reasons follow, ranked most decisive first, and reason 1 matches the stance's Why it wins now",
+      "the four blocks are not re-rendered and no carry-back is written",
+      "the turn ends with the menu again, labels renewed"
+    ]
+  },
+  {
+    "eval_id": 24,
+    "eval_name": "first-answer-opens-on-the-session-map",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § v2.14.0 RED — 0/2 first turns said what the session was about; both opened on an analogy or on Today",
+    "prompt": "First message after setup: a live-choice paste on a retry-policy fork. Write the companion turn.",
+    "assertions": [
+      "the turn opens on a What this session is about map before Today, any analogy, or any drawing",
+      "the map names the problem, what the session will settle, what is in hand, and what is not yet known with whether the choice turns on it",
+      "the map carries no stance and does not argue the correction Today makes",
+      "a later paste on the same problem does not get a second map"
     ]
   }
 ]

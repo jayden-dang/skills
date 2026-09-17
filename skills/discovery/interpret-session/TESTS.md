@@ -1126,3 +1126,66 @@ analogy and Today, and the menu held six lines. **1/1**.
 map or skips it; line 1 offered again after a stance actually moves.
 
 **Version:** minor `2.14.0` — a new opening block and a new menu line, which renumbers picks 2–6.
+
+## v2.15.0 — signing off what the other window wrote (2026-09-17, Sonnet)
+
+User request: after `clarify-decisions` closes, the work moves to `requirements.md`, `design.md` and
+`tasks.md`, each written, reviewed by its own subagent (`.skills/<CODE>/req-review.md`,
+`design-review.md`, `plan-review.md`) with fixes applied, then presented for approval. The
+live-choice card does not fit a document, but a new session would lose the decisions. Decided by
+the user: a review mode inside this session, all three documents in scope, the companion reads
+the files from disk.
+
+### Setup
+
+Fixture `bellcast` plus a thread: the first live-choice turn, then a carry-back that locks three
+lines (per-endpoint policy; `deliver()` enforces the ceiling on every attempt; over-ceiling values
+get a 422, no clamping), weighs a hold-time bound, leaves drain decoupling open, and marks the
+ceiling value 5 unverified. On disk: a close package, the three documents and their three review
+files, with 24 defects planted — reversed and weakened locks (two of them applied as review fixes),
+a weighed item frozen as 60s, the open question closed, `Open questions: (none)`, undecided
+account-level scope, a required field on the customer-facing `POST /endpoints` under External
+posture, a context line repeating the false "3 retries at 1s", and the unverified 5 stated as
+settled. Two runs per round: Vietnamese on close package → requirements, English on design → tasks.
+
+### RED — v2.14.0
+
+| Measured | RED |
+|---|---|
+| Close package / requirements / design / tasks, planted defects named | 4/6 · 6/8 · 4/5 · 3/5 |
+| Reversed Locks named, including the two applied by review fixes | **4/4 turns** |
+| Four blocks rendered on a sign-off | 0/4 — all routed to the no-choice path |
+| Unverified item carried forward | **0/2** |
+| `Open questions: (none)` named while questions were open | 0/1 |
+| Required field under External posture named as breaking callers | **0/1** — argued the opposite |
+| A line on what approval freezes | **0/4** |
+
+The premise that sold this change was half false. The companion already checked the documents
+against the session's locks, unprompted, and read the review files. What it missed was everything
+that is not a Lock — weighed, open and unverified lines — plus claims about the code outside
+criteria, and the freeze line, whose rule lived in `deciding.md`, read only after the user settles.
+The planned per-document lenses and a fixed review card were not written.
+
+### GREEN
+
+`reviewing.md`: read from disk, the five-row slot table, the code-and-readers paragraph, a verdict /
+freezes / findings reply. Dispatch row added; the approvals rule moved out of `deciding.md`.
+
+| Measured | RED | GREEN |
+|---|---|---|
+| Planted defects named | 17/24 | **22/24** (5/6 · 8/8 · 5/5 · 4/5) |
+| Freeze line | 0/4 | **4/4** |
+| Unverified ceiling | 0/2 | 0/2 |
+
+REFACTOR 1 sharpened the Unverified row to name a derived number sitting as a test value: rechecked
+0/2. REFACTOR 2 added a **Ledger** listing every carry-back line with a status, kept ones included:
+**2/2**, one naming the value dropped from the close package, one naming it as RETRY-1.2's default.
+
+**Cost:** the ledger runs replies to ~650–720 words. On a standalone tasks turn with no design turn
+before it, the findings anchored on the upstream documents rather than on the task steps that build
+them — every defect named, but the change asked for was in `design.md`, not `tasks.md`.
+
+**Not measured:** a real session where the documents are right, where a ledger of all-kept lines
+may read as noise; a Go deeper menu on sign-off turns.
+
+**Version:** minor `2.15.0` — a new dispatch row and reference file.

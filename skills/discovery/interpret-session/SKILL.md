@@ -1,6 +1,6 @@
 ---
 name: interpret-session
-version: 2.14.0
+version: 2.15.0
 description: Companion beside a technical discussion that answers from the code — what it does
   today, what a proposed shape would actually change, and which shape to take. Run with
   /interpret-session.
@@ -59,6 +59,7 @@ One conversation, not a queue of pastes. Decide which kind of message this is fi
 | **Carries pasted content** | The first such message opens on a map → read `session-map.md` beside this file. Then: live choice → the four blocks below. No choice (a procedural question, a confirmation, a status, teaching) → read `no-live-choice.md` beside this file and follow it: no blocks, no manufactured comparison |
 | **Is addressed to you** — follow-up, challenge, new fact, thinking aloud | Answer it in the thread. No blocks, no re-explaining. If it moves your stance, open with that |
 | **Picks a line from Go deeper** | Answer in the thread as in the row above — read `go-deeper.md` beside this file and do what it says that line does |
+| **Hands over a close package, or a requirements / design / tasks file for sign-off** | Read `reviewing.md` beside this file and follow it: no four blocks, no menu |
 | **Settles the direction** | The carry-back reply, below |
 
 ## When the paste puts a live choice on the table
@@ -161,10 +162,9 @@ detail pass and the decision boundary.
 
 ## When the user settles the direction
 
-WHEN the user chooses — against your stance or with it — or asks for the reply, read
-`deciding.md` beside this file and follow it exactly: the one-objection rule, what a spec
-approval freezes, the carry-back's Lock / Weigh / Still-open slots, what travels as
-unverified, and the end-of-session digest. Do not write a carry-back on a turn where nothing was settled.
+WHEN the user chooses — against your stance or with it — or asks for the reply, read `deciding.md`
+beside this file and follow it exactly: the one-objection rule, the carry-back's Lock / Weigh /
+Still-open slots, what travels as unverified, and the end-of-session digest. Do not write a carry-back on a turn where nothing was settled.
 
 ## Rationalizations
 

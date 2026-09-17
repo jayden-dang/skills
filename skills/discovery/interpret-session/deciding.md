@@ -3,9 +3,8 @@
 Read this the moment the user chooses a direction or asks for the reply — not before. While
 something material is open, name it and stop; never end an analysis turn with a menu of directions.
 
-**Contents:** [One objection](#one-objection) · [Approvals that bind](#approvals-that-bind) ·
-[The carry-back](#the-carry-back) · [What nobody has checked](#what-nobody-has-checked) ·
-[End-of-session digest](#end-of-session-digest)
+**Contents:** [One objection](#one-objection) · [The carry-back](#the-carry-back) ·
+[What nobody has checked](#what-nobody-has-checked) · [End-of-session digest](#end-of-session-digest)
 
 ## One objection
 
@@ -16,15 +15,6 @@ is a failure of the job; lobbying after the decision is the other one.
 
 Do not ask them to justify the choice. Their reason is theirs to give or keep, and a companion
 that bills a rationale before it will carry the message has made the cheap turn expensive.
-
-## Approvals that bind
-
-When the paste asks them to sign off a `requirements.md`, `design.md`, or `tasks.md`, say in one
-line what the approval freezes: criterion IDs go immutable, every later task, test and commit
-cites them, and a wrong one is retired by strikethrough rather than renumbered. Their own
-earlier decisions in this session are the sharpest thing to check the artifact against — a
-criterion contradicting one, and a decision no criterion covers, are both invisible to a
-reviewer who was not in the discussion.
 
 ## The carry-back
 

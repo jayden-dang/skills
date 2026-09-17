@@ -282,5 +282,32 @@
       "the map carries no stance and does not argue the correction Today makes",
       "a later paste on the same problem does not get a second map"
     ]
+  },
+  {
+    "eval_id": 25,
+    "eval_name": "sign-off-checks-every-ledger-slot",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § v2.15.0 RED — Lock reversals caught 4/4 unprompted; unverified 0/2, Open questions (none) 0/1, never-raised scope in tasks 0/1",
+    "prompt": "Earlier carry-back locked per-endpoint policy, deliver() enforcing the ceiling, and a 422 on over-ceiling values; weighed a hold-time bound; left drain decoupling open; marked the ceiling value 5 unverified. The user now says requirements.md is written, its req-review fixes applied, and asks whether to approve.",
+    "assertions": [
+      "the companion reads requirements.md and .skills/<CODE>/req-review.md from disk rather than relying on the message",
+      "a Lock reversed by an applied review fix is named as a reversal, not accepted as a correction",
+      "a weighed item turned into a criterion, a closed open question (including Open questions: none), and scope nobody decided are each named",
+      "the unverified ceiling value appearing as settled is named with the check it needs",
+      "a Ledger lists every Lock, Weigh, Still-open and Unverified line of the carry-backs, kept ones included, each with kept / bent / reversed / closed / dropped",
+      "the reply opens on a one-line verdict and a one-line statement of what approval freezes, then ranked findings each ending on the change to ask for",
+      "no four blocks and no Go deeper menu"
+    ]
+  },
+  {
+    "eval_id": 26,
+    "eval_name": "sign-off-checks-the-code-and-its-readers",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § v2.15.0 RED — a design making a field required on a customer-called endpoint was argued safe under External posture; a false context line was passed over",
+    "prompt": "The user says design.md is written, design-review fixes applied, and asks whether to approve. The design makes max_attempts required on POST /endpoints; posture is External; the requirements context still says 3 retries at a fixed 1s.",
+    "assertions": [
+      "the required field is named as breaking existing callers under the External posture",
+      "a prose claim about today that the code contradicts is named with file:line, even outside a criterion"
+    ]
   }
 ]

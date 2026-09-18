@@ -29,27 +29,18 @@ Three intake asks fix the session's standing context:
 
 An interpret-session session is one conversation, not a queue of independent pastes. Each message the user sends is one of three kinds, and the skill decides which before writing anything:
 
-- **A paste from the other session** — live-choice: comprehension then stance. No-choice: the short path.
+- **A paste from the other session** — live-choice: gist, the graph you must hold, one run, the pick, the lock. No-choice: the short path.
 - **A message addressed to `interpret-session`** — a follow-up, a challenge, a new fact, "research this", thinking aloud. Gets a direct answer in the thread: no translation section, no re-explaining, no reply-to-send-back. If the new information moves the stance, the skill leads with that.
 - **A settled direction** — an explicit decision, or "write the reply". Only this produces the English reply.
 
-For a paste that puts a **live choice** on the table, comprehension comes first —
-what the card actually decides, in 1–2 plain sentences; one mental model mapped
-back to canonical terms; on a real architecture fork, a compact table of the
-dimensions that differ — *then* the seven-slot stance (pick, decisive reason,
-strongest runner-up, cost accepted, confidence with the check that earned it,
-what would flip it, and an **Agree / Amend / Reject** diff). After the stance,
-2–4 **pressure-test** questions the user can use to attack the pick. Stance-first
-is a format failure even when standup is two minutes; skip the tutorial, not the
-model. Depth is a predicate: a simple yes/no stays decision → model → stance; a
-complex boundary/state/security card also gets one picture or one scenario and a
-decision boundary. Surface the paste as **Translate** or **Restate** only when the
-decision sentence is not enough. Detail behind the stance stays: alternatives the
-other session did not lead with, trade-offs that add mechanism, hidden
-assumptions, risks, and when each option wins. A verified fact still ends with
-its consequence; a concept the analysis introduces from outside the repo still
-gets its minimal model at first use; implementation-grade constraints still wait
-in a *for the spec* tail.
+For a paste that puts a **live choice** on the table, the turn **is** the card:
+a one-sentence **gist** that distinguishes the options; the **graph** of parts
+the question stands on (how they connect, where the model stops, one system
+diagram); **one run** of a named person through that graph; the **pick**; a
+**lock strip** of paste-vs-repo facts that would move it; a **fence** for what
+this card does not decide. Today / Architect / the seven stance slots are
+computed, not shown. **Go deeper** is two hops — Deeper (technical overview),
+Lowest (`file:line` walk) — then `0` writes the carry-back.
 
 Every third or fourth decision—or whenever the user asks where the system
 stands—the companion emits a cumulative **knowledge map**, not merely decision
@@ -116,13 +107,9 @@ The English `clarify-decisions` session has just told the user: *"Use optimistic
 > - *Risk:* forgetting the retry path, so a `409` surfaces to the user as a hard error.
 > - *When each wins:* optimistic for stale forms spanning requests; pessimistic for short server-side mutations that can be completed inside one transaction.
 
-Note the shape: the real decision and one model come first, then the pick,
-runner-up, and accepted cost, with a confidence level, the one fact that would
-change the choice, and questions the user can use to push back. A user with two
-minutes can still skim the stance; they are not asked to sign a letter they
-cannot yet defend. There is **one** model, not two. And the turn ends on the
-open fact — not on "which direction do you want?" The English reply comes later,
-on the turn the user actually settles it.
+Note the shape from v3: gist first, then the graph and one run, then the pick.
+Architect tables wait behind Go deeper. The English reply comes later, on the
+turn the user actually settles it.
 
 ## See also
 

@@ -1,6 +1,7 @@
 # Drawing the system
 
-Load this when `SKILL.md` says a drawing is due. It owns the form; `SKILL.md` owns the trigger.
+Load this when `plain-card.md` draws the neighborhood, or a Go deeper hop draws a finer grain.
+It owns the form; those files own the trigger.
 
 **Contents:** [What to draw](#what-to-draw) · [How much detail](#how-much-detail) ·
 [Pick the shape of the picture](#pick-the-shape-of-the-picture) ·

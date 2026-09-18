@@ -1,6 +1,6 @@
 ---
 name: interpret-session
-version: 2.16.0
+version: 3.0.0
 description: Companion beside a technical discussion that answers from the code — what it does
   today, what a proposed shape would actually change, and which shape to take. Run with
   /interpret-session.
@@ -56,9 +56,9 @@ One conversation, not a queue of pastes. Decide which kind of message this is fi
 
 | The message | What you produce |
 |---|---|
-| **Carries pasted content** | The first such message opens on a map → read `session-map.md` beside this file. Then: live choice → the four blocks below. No choice (a procedural question, a confirmation, a status, teaching) → read `no-live-choice.md` beside this file and follow it: no blocks, no manufactured comparison |
+| **Carries pasted content** | The first such message opens on a map → read `session-map.md` beside this file. Then: live choice → compute `grounding.md`, write `plain-card.md`. No choice (a procedural question, a confirmation, a status, teaching) → read `no-live-choice.md` beside this file and follow it: no card, no manufactured comparison |
 | **Is addressed to you** — follow-up, challenge, new fact, thinking aloud | Answer it in the thread. No blocks, no re-explaining, no menu. If it moves your stance, open with that |
-| **Picks a line from Go deeper** — a bare number after a menu | That menu's line, never the paste's option with the same number; `0` is the carry-back. Read `go-deeper.md` beside this file and do what it says that line does |
+| **Picks a line from Go deeper** — a bare number after a menu | That menu's line, never the paste's option with the same number; `0` is the carry-back; a number with no matching line is not. Read `go-deeper.md` beside this file and do what it says that line does |
 | **Hands over a close package, or a requirements / design / tasks file for sign-off** | Read `reviewing.md` beside this file and follow it: no four blocks, no menu |
 | **Settles the direction** | The carry-back reply, below |
 
@@ -68,97 +68,14 @@ Ground it first: open the files the paste touches, and read the history behind t
 would change (`git log -p`, `git blame`, the commit that set a constant). REQUIRED SUB-SKILL:
 use `why` when the question is why the current shape exists and the answer is not in the diff;
 REQUIRED SUB-SKILL: use `research` when a claim turns on how a library, API, or standard
-actually behaves. Then write four blocks, in this order.
+actually behaves. Then compute the verdicts — REQUIRED: read `grounding.md` beside this file
+— and write the turn the user reads — REQUIRED: read `plain-card.md` beside this file and
+follow it. Gist, the graph they must hold, one run, the pick, the lock strip, the fence.
+Do not render Today, Architect's read, or the seven stance slots on this turn; hops 1–2
+draw from those verdicts.
 
-### 1. Today
-
-What the code does now at the point the paste touches, cited `file:line` — and every place the
-paste describes it wrong, named plainly. Measured, one paste claimed three attempts at a fixed
-one-second delay where the file held `MAX_ATTEMPTS = 5` with exponential backoff, and called
-both its options purely additive while a commit in the same repo recorded the incident that
-had bounded them. A correction that arrives after the stance arrives too late to change it.
-
-### 2. What changes
-
-Per shape, **the code that carries the change** — not a list of the files it would touch. Write the
-lines that show **structure** — the type, the signature, the boundary the change crosses, what the
-module will hide and what it hands callers — over the mechanical edits around them. A shape whose cost the user cannot see is
-a name they are asked to trust, and the session that implements this reads the block as its
-instruction. Keep the code to what carries the decision, not the whole implementation.
-
-### A shape of your own
-
-The options in the paste are the spec window's, drawn without the code open. This session has it
-open. WHEN the repo points at a shape none of them names — a constraint both miss, a cheaper rung,
-a seam already there — put it on the table as **its own shape**, with the same four verdict lines.
-
-Measured, two turns in three found such a shape and gave it no column — "Shape A, plus something
-neither shape in the paste has, a validated ceiling", and "A's schema, but scope the ticket to
-include decoupling the drain loop". Both were the better answer, both arrived as a footnote on
-someone else's option, judged by nothing.
-
-A shape you propose is judged on the same lines as theirs, and loses when it loses.
-
-### 3. Architect's read
-
-One verdict per shape, the **same three lines for each**, so they compare down the column.
-
-| Line | What it answers |
-|---|---|
-| `Depth` | if this shape vanished, what must callers still know to rebuild the behaviour? The smaller that answer, the deeper the shape |
-| `Locality` | where the edit lands and which neighbours move — `leave` / `extend` / `extract` |
-| `Invariant` | the guarantee the code makes today, and whether this shape `keeps` / `breaks` / `is silent on` it |
-
-The criteria are `design-solution`'s, applied here to a shape someone else proposed. This skill
-does not redefine them and does not screen for named design smells — that screen was measured
-against the `Depth:` slot and found to prevent nothing.
-
-`Invariant` decides more real forks than `Depth` does, and it is the line prose buries. It is
-also the one that needs the history: a guarantee is what the code makes true under the failure
-it must survive, and the commit that set a bound usually says which failure that was.
-
-Measured, three companion turns on one paste built three different comparison tables — schema /
-read-path / coherence, then storage / migration / support story, then one titled "what actually
-differs given this schema" — with no line shared by all three. Nothing could be compared across
-turns, and the deletion test appeared in none of them.
-
-### 4. Stance
-
-```
-**What I'd do:** one shape, named.
-**Why it wins now:** the grounded fact or criterion that dominates — from the repo where possible.
-**Runner-up:** the strongest alternative and why it loses on that same factor.
-**Cost I accept:** the real downside taken with the pick, not a generic risk list.
-**How sure:** high / medium / low, plus the check that earned it. A session where every card
-reads "high" with no named check has stopped calibrating.
-**What would flip me:** the one fact or measurement that changes the answer. Cheap to check?
-Check it.
-**Versus the other session:** **Agree** what of theirs stands · **Amend** each correction,
-one line each · **Reject** anything you would drop. Amend is the highest-value content here.
-```
-
-Then 2–4 **pressure-test** questions to attack the pick — weakest assumption, irreversible cost,
-likely future requirement, failure mode. Not a menu of directions.
-
-The turn ends on the **Go deeper** menu. REQUIRED: read `go-deeper.md` beside this file and follow
-it — which moves this round gets, and what each pick does when the user answers with a number.
-
-### Make it understandable, easy first
-
-Before the argument that rests on it, give any idea the user has no model for — one analogy or
-one concrete scenario, mapped back as `plain meaning → model → the canonical term`, then use the
-term. One model per idea; a second for the same idea is length. Build familiar thing, then
-mechanism, then trade-off — an expert critique of a model never given lands as noise.
-
-**Draw it** WHEN a shape's `Locality` names more than one component, or its `Invariant` names a
-resource more than one actor uses — lines you already wrote, so the trigger is read, not judged.
-In the form chosen at setup, at the detail a node label can carry — the limit, the count, the
-ordering, not just a name. It shows **the system around the decision**, not the options: a picture of the options is a
-decision tree and the verdict table is already that. Read `diagrams.md` and follow it.
-
-WHEN the fork turns on ownership, boundary, lifecycle, distributed state, trust, or
-compatibility, read `depth-extras.md` beside this file and follow it — it holds the deeper
-detail pass and the decision boundary.
+The turn ends on the **Go deeper** menu. REQUIRED: read `go-deeper.md` beside this file —
+two hops (Deeper, Lowest), then `0` writes the carry-back.
 
 ## When the user settles the direction
 
@@ -179,6 +96,10 @@ Still-open slots, what travels as unverified, and the end-of-session digest. Do 
 | "They picked English, so I still owe a translation block" | English companion means restate, not translate. No invented native round-trip |
 | "The guards are implied by the decision, so they belong in the lock" | Implied to you. They travel as **Weigh** unless the user weighed them individually |
 | "Confidence really is high everywhere" | Then the label carries no signal. Name the check, or say the stakes are too small to matter |
+| "The four blocks are the answer; anyone who needs the card can pick it from Go deeper" | Measured, they never did. They typed "explain the card and your pick more simply" and then skipped every depth line except carry-back |
+| "A one-line analogy before Today is the understanding pass" | It was decoration. The graph they could act on mapped parts, named where the model stops, and ran one person through it |
+| "The previous session numbered carry-back 5, so this one should too" | `0` is the carry-back on every turn, including a resume |
+| "Walk / Challenge / Stress still belong on the first menu" | Two hops. The kinds menu was never picked. Hop 1 is the technical overview; hop 2 is the file:line walk |
 
 ## Red flags
 
@@ -187,7 +108,10 @@ Still-open slots, what travels as unverified, and the end-of-session digest. Do 
 - A comparison whose lines differ from the last turn's, or that restates the paste's own options
 - Closing an analysis with "it's your call", or with a menu whose lines pick a shape
 - A first answer that starts on the code or an analogy before saying what the session is about
-- A live-choice turn ending without the Go deeper menu, on copied labels, or on the same kinds of move every round
+- A live-choice turn that opens on Today, a one-line analogy, or Architect's read before the gist
+- A live-choice turn with no graph of parts-and-connections, or a graph that is a glossary
+- A live-choice turn ending without the Go deeper menu, or a menu that is not two hops then `0`
+- A Go deeper menu that numbers the carry-back anything but `0`, or that uses Explain again / Walk it / Impact / Verify, or Walk / Challenge / Stress / Verify
 - Producing a carry-back on a turn where the user has not settled the direction
 - A carry-back naming this session, or whose constraints outnumber the decision with no
   Lock / Weigh split, or written after an override with no objection stated
@@ -195,6 +119,7 @@ Still-open slots, what travels as unverified, and the end-of-session digest. Do 
 - Naming a better shape in the stance that was never given a column to be judged in
 - A heading that promises a picture over a paragraph that draws nothing
 
-**Done when:** on a live choice the user can see what the code does today, what each shape would
-change, how the shapes compare on the same lines, and where you stand — and the carry-back,
-when they settle, locks only what they decided. Otherwise: open questions named, digest handed over.
+**Done when:** on a live choice the user can read a gist that distinguishes the options, hold
+the graph the question stands on, walk one person through it, see the pick and the lock, and
+know what this card does not decide — before any architect table. The carry-back, when they
+settle, locks only what they decided. Otherwise: open questions named, digest handed over.

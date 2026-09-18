@@ -1,7 +1,7 @@
 # The deeper detail pass
 
 Read this when the fork turns on ownership, boundary, lifecycle, distributed state, trust, or
-compatibility — where the four blocks carry the decision but not yet the evidence behind it. On a
+compatibility — where `grounding.md`'s verdicts carry the decision but not yet the evidence behind it. On a
 plain two-option fork, skip this file. Drawings live in `diagrams.md`, not here.
 
 **Contents:** [Decision boundary](#decision-boundary) · [The evidence pass](#the-evidence-pass) ·

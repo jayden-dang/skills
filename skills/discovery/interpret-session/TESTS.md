@@ -367,6 +367,10 @@ language surface, and no-choice path untouched.
 | Live-choice stance exposes strongest runner-up and cost accepted | RED S-STANCE-ARGUMENT; GREEN v1.4.0; 5/5 valid wording variance |
 | Cumulative output shows mechanisms, dependencies, evidence, and reopen conditions | RED S-CUMULATIVE-MAP; GREEN v1.4.0 |
 | Live-choice opens with the real decision and a mapped mental model, then the seven-slot stance | RED S-ORIENT-THEN-STANCE / S-LIVE-CARD-SHAPE; GREEN v1.5.0 |
+| Live-choice opens on This card (Asks / Options / I'd pick / Not) before Today | RED v2.17.0 real-use export; GREEN v2.17.0 |
+| Go deeper after that opening does not re-offer the card; carry-back is `0` even after a resume | RED v2.17.0 copied five-line menu; GREEN v2.17.0 |
+| Live-choice turn 1 is gist + graph + one run + lock strip + fence; four blocks leave the screen | RED v3.0.0 (v2.17 still dumped Today/Architect); GREEN v3.0.0 |
+| Go deeper is two hops (Deeper, Lowest) then `0` | RED v3.0.0 kinds menu unused; GREEN v3.0.0 |
 | Normal/complex live-choice carries 2–4 pressure-test questions after the stance | RED S-LIVE-CARD-SHAPE (handles missing or buried); GREEN v1.5.0 |
 | Simple fork and no-choice omit the extra comprehension slots | GREEN S-SIMPLE / S-NO-CHOICE preservation |
 | Compat obligation, not delivery intent, tunes the migration/compat/deprecation lean | RED S-COMPAT-NONE 3/3 Sonnet; GREEN v1.6.0 |
@@ -1268,3 +1272,125 @@ answered those numbers; English t7 still offered a code walk on a fork with no c
 user reads the tags or picks by number.
 
 **Version:** minor `2.16.0` — the menu's lines and numbering change.
+
+## v2.17.0 — the card the user can decide from (2026-09-18)
+
+User request, after exporting a real companion session (`~/.grok/last-copy.txt`, klynt
+ROAD-101, Vietnamese, mermaid, resumed from Codex): each interpret response is still
+hard to read; they frequently have to ask for the card explained again; wording and
+content make the turn worse to skim.
+
+### RED — real use, v2.16.0 as written
+
+Not a harness run. The export is the baseline.
+
+| Measured on the transcript | Result |
+|---|---|
+| Live-choice turns that opened on **This card** (Asks / Options / pick / why not) | **0/~10** — every one opened on a one-line `Hình dung` plus `### 1. Today` |
+| User had to type "giải thích lại 1 cách dễ hiểu hơn về card và lựa chọn của bạn" | **1** — after the size-ceiling card |
+| That asked-for turn used Asks, one-line options, pick, why not, one model used through the paragraph | **1/1** — and they locked on the next message |
+| Go deeper lines other than carry-back actually picked | **0** — `5` on every remaining card, twice in a row when the first did not land |
+| Menu followed v2.16.0 (Overview / Explain / Walk / Challenge / Stress / Verify, carry-back `0`) | **0** — every menu was the retired five: Explain again / Walk it / Impact / Verify / `5 · Write the carry-back` |
+| Architect Depth / Locality / Invariant tables in the lead | every live-choice turn |
+| One-line analogy reused as the model through the argument | **0** — `thùng xe` / `sổ nháp` / `dấu mộc` sat above Today and were dropped |
+
+Failure classes:
+
+- **The plain card is opt-in, so it never runs.** v2.14.0 put *The card, plainly* on Go
+  deeper line 1. In real use the menu never offered it, and the user never picked a
+  depth line. They asked in free text for the thing the first response should have been.
+- **A one-line analogy is not an understanding pass.** `Make it understandable, easy
+  first` produced a `Hình dung` sentence, then the four blocks. The user still did not
+  know what the card asked or why the pick won.
+- **A resumed session copies the previous agent's menu.** Codex had numbered
+  carry-back `5`. Grok read `go-deeper.md` and still emitted that five-line form, so
+  `0` and Overview never appeared.
+
+The four blocks still earned their keep: every card produced real paste-vs-repo
+corrections (ROAD-60 is bucket cutover, account delete is soft, `unit_in_scope`
+rejects an ancestor chain, `ack.limits` is closed). The defect is what the user has
+to read *before* they can use those corrections.
+
+Desired GREEN contract: every live-choice turn opens on **This card** (Asks, Options
+in one line each, I'd pick, Not, plus the corrections that would move the pick), in
+ordinary sentences, before Today. The four blocks still follow. Go deeper does not
+re-offer *The card, plainly* on that turn. Carry-back is `0` even when a previous
+agent numbered it `5`.
+
+### GREEN — v2.17.0
+
+`plain-card.md` is the home. `SKILL.md` requires it before the four blocks.
+`go-deeper.md` spends *The card, plainly* on the opening, points Restating at the
+same file, and forbids copying a `5 · Write the carry-back` menu.
+
+Form: wrong output shape → positive recipe (what the opening IS), not a prohibition
+on Today. The four blocks stay; they move below the card.
+
+**Harness** (`grok-4.5`, fixture `harbor-relay` under `/tmp/rowen-wharf`, skill
+copied to `.claude/skills/interpret-session/`, Vietnamese + mermaid). RED not
+re-run — real-use export is the baseline.
+
+| Assertion | A live-choice | B stale resume menu |
+|---|---|---|
+| Opens on Asks / Options / I'd pick / Not before Today | **PASS** | **PASS** |
+| One-line `Hình dung` is not the opening | **PASS** | — |
+| Four blocks after the card; no unasked carry-back | **PASS** | **PASS** |
+| 3-attempts / 1s claim corrected on the card | **PASS** | — |
+| Carry-back numbered `0`, not `5` | **PASS** | **PASS** |
+| Menu is not Explain again / Walk it / Impact / Verify / 5 | — | **PASS** |
+| Costly fork leads with Walk / Stress / Verify | — | **PASS** (Walk) |
+
+A first-paste session map sat above the card in A, as `session-map.md` still
+requires. That is not the recorded RED shape. No new rationalization.
+
+Preservation: no-choice still has no menu; carry-back still waits for a settle;
+Iron Law and Depth / Locality / Invariant unchanged.
+
+**Version:** minor `2.17.0` — a new opening slot. Existing usage does not break;
+the four blocks remain, after the card.
+
+## v3.0.0 — gist, graph, one run; two hops (2026-09-18)
+
+User locked option B plus the neighborhood graph, then cluster 2 (gist line, one
+episode, fence). Writing: gist first; old→new; where the model stops. Episode
+always; fence always. Carry-back stays `0`.
+
+### RED — v2.17.0 as written (real use + the sample they rejected)
+
+v2.17 still rendered Today / Architect / seven slots on turn 1 under the card.
+The user called that mechanical. Go deeper was still a kinds menu
+(Walk / Challenge / Stress / Verify); they never picked a kind, only carry-back.
+
+Desired GREEN: turn 1 = gist · connected graph · one named-actor run · pick ·
+lock strip · fence. No `### 1. Today`. Menu = Deeper · Lowest · `0`.
+
+### GREEN — v3.0.0
+
+`plain-card.md` is the turn. `grounding.md` is computed, not rendered.
+`go-deeper.md` is two hops. Major: the four-block-on-turn-1 contract is gone.
+
+**Harness** (`grok-4.5`, fixtures `millpond-relay` / `cinder-quay`, skill copied to
+`.claude/skills/interpret-session/`, Vietnamese + mermaid). RED not re-run.
+
+| Assertion | A retry fork | B stale resume, storage |
+|---|---|---|
+| Gist before Today / Architect / seven slots | **PASS** | **PASS** |
+| Connected graph + where the model stops | **PASS** | **PASS** |
+| One mermaid of that graph, not of the options | **PASS** | **PASS** |
+| Named-actor run today vs pick | **PASS** | **PASS** |
+| I'd pick + fence | **PASS** | **PASS** |
+| 3-attempts / 1s corrected on turn 1 with file cite | **PASS** | — |
+| No `### 1. Today`; no Depth table | **PASS** | **PASS** |
+| No unasked carry-back | **PASS** | **PASS** |
+| Two hops then `0`; not Explain/Walk/Impact/5 | **PASS** | **PASS** |
+
+A named `#412`'s third shape (per-endpoint plus global drain ceiling). B refused
+the stale `5 · Write the carry-back` menu and picked Checkpoint from `store.ts`.
+Residual, not scored fails: B left hop labels in English; A rendered Lowest as
+`Thấp nhất`. Installed `~/.agents/skills/interpret-session` is still 2.16.0 —
+harness used the project copy.
+
+Preservation: no-choice still has no menu; carry-back still waits for a settle;
+Iron Law unchanged. Depth / Locality / Invariant still computed, shown on hop 1.
+
+**Version:** major `3.0.0` — live-choice output contract changed.

@@ -13,8 +13,8 @@ Write it after grounding, so what it calls known has been read:
 ```
 
 One or two lines a bullet, content in the companion language. The map argues nothing: where the
-paste and the code disagree it says so in a clause and leaves the correction to **Today**; the pick
-belongs to **Stance**. A later paste gets a new map only when it opens a problem this one did not
-cover. Measured, two first turns on the same paste opened on an analogy and on `Today` —
-neither said what was being decided, what the session would hand back, or what nobody in the
-room could answer yet.
+paste and the code disagree it says so in a clause and leaves the correction to the lock
+strip; the pick belongs to the card, not here. A later paste gets a new map only when it opens
+a problem this one did not cover. Measured, two first turns on the same paste opened on an analogy
+and on `Today` — neither said what was being decided, what the session would hand back, or what
+nobody in the room could answer yet.

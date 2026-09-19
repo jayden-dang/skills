@@ -97,6 +97,9 @@ that changes; leave out the architecture that does not.
 is a fact about where the user reads, and switching mid-session makes the drawings incomparable.
 
 **ASCII.** Labels do the work; boxes are optional, facts are not. The marks are `[*]` and `[!]`.
+ASCII names the lines and arrows, never the words: labels stay in the companion language with
+its own letters and accents intact. Measured, a drawing stripped every accent from its labels
+and handed the reader a third spelling of words the card had just used.
 
 **Mermaid.** Same content, same marks — carry them as node text (`"drain — one loop [!]"`) or with
 `classDef`, whichever the diagram type allows. Pick the type from the table above:

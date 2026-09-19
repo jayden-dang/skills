@@ -1,8 +1,8 @@
 # Grounding — compute, do not render on turn 1
 
 After opening the files, before writing `plain-card.md`. These verdicts are the
-source for the gist, the lock strip, and Go deeper hops 1–2. They are not the
-opening of the turn.
+source for the fork, the lean, the paste-vs-code facts, and Go deeper hops 1–2. They
+are not the opening of the turn.
 
 **Contents:** [Today](#1-today) · [What changes](#2-what-changes) ·
 [A shape of your own](#a-shape-of-your-own) · [Architect's read](#3-architects-read) ·
@@ -18,7 +18,8 @@ additive while a commit in the same repo recorded the incident that had bounded
 them. A correction that arrives after the user can type `0` arrives too late.
 
 Hop 1 renders this in ordinary sentences. Turn 1 carries only the disagreements
-that would move the pick, in the lock strip.
+that would move the pick, under the card's paste-vs-code heading — as facts, not as
+things the user confirms.
 
 ## 2. What changes
 
@@ -70,8 +71,8 @@ actually differs given this schema" — with no line shared by all three.
 **Versus:** **Agree** · **Amend** each correction, one line · **Reject**.
 ```
 
-Turn 1's pick, Not, and lock strip are this stance in ordinary sentences. Do not
-re-render the seven slots on turn 1.
+Turn 1's lean, full pick, and what `0` would freeze are this stance in ordinary
+sentences. Do not re-render the seven slots on turn 1.
 
 WHEN the fork turns on ownership, boundary, lifecycle, distributed state, trust,
 or compatibility, read `depth-extras.md` — its evidence pass feeds hop 1; its

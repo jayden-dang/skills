@@ -1,9 +1,9 @@
 ---
 name: interpret-session
-version: 3.0.0
+version: 3.1.0
 description: Companion beside a technical discussion that answers from the code — what it does
-  today, what a proposed shape would actually change, and which shape to take. Run with
-  /interpret-session.
+  today, what a proposed shape would actually change, and which shape to take — in a card a
+  person can retell in three sentences. Run with /interpret-session.
 disable-model-invocation: true
 ---
 
@@ -70,18 +70,27 @@ use `why` when the question is why the current shape exists and the answer is no
 REQUIRED SUB-SKILL: use `research` when a claim turns on how a library, API, or standard
 actually behaves. Then compute the verdicts — REQUIRED: read `grounding.md` beside this file
 — and write the turn the user reads — REQUIRED: read `plain-card.md` beside this file and
-follow it. Gist, the graph they must hold, one run, the pick, the lock strip, the fence.
-Do not render Today, Architect's read, or the seven stance slots on this turn; hops 1–2
-draw from those verdicts.
+follow it. The fork in one sentence, the lean in one sentence, the graph they must hold, one
+walk, the full pick, where the paste disagrees with the code, what `0` would freeze, the
+fence. Do not render Today, Architect's read, or the seven stance slots on this turn; hops
+1–2 draw from those verdicts. Every heading on the card is a question in the companion
+language, from the table in `plain-card.md` — never an internal name.
 
-The turn ends on the **Go deeper** menu. REQUIRED: read `go-deeper.md` beside this file —
-two hops (Deeper, Lowest), then `0` writes the carry-back.
+The turn ends on the **Go deeper** menu. REQUIRED: read `go-deeper.md` beside this file — two
+hops, the system in more detail then the `file:line` walk, labelled in the companion language;
+then `0` writes the carry-back.
 
 ## When the user settles the direction
 
 WHEN the user chooses — against your stance or with it — or asks for the reply, read `deciding.md`
 beside this file and follow it exactly: the one-objection rule, the carry-back's Lock / Weigh /
 Still-open slots, what travels as unverified, and the end-of-session digest. Do not write a carry-back on a turn where nothing was settled.
+
+WHEN the user asks for the picture they can carry into a coding session, or after the third
+live-choice on the same neighborhood, read `model-note.md` beside this file: one offer, opt-in,
+written under `.skills/interpret-session/<slug>/model.md` only on a yes, and never into the
+product repo unless they name the path. Name `/tour-system` or `/deepen-codebase` instead when
+what they want is a whole-system tour or a foundation with no pick.
 
 ## Rationalizations
 
@@ -97,6 +106,9 @@ Still-open slots, what travels as unverified, and the end-of-session digest. Do 
 | "The guards are implied by the decision, so they belong in the lock" | Implied to you. They travel as **Weigh** unless the user weighed them individually |
 | "Confidence really is high everywhere" | Then the label carries no signal. Name the check, or say the stakes are too small to matter |
 | "The four blocks are the answer; anyone who needs the card can pick it from Go deeper" | Measured, they never did. They typed "explain the card and your pick more simply" and then skipped every depth line except carry-back |
+| "The card is for me; the user will ask if they don't understand it" | They did ask, and what they wanted was the card they already had, minus the protocol. A card that needs a follow-up question has failed at the one job it has |
+| "Gist / Lock strip / Fence are clear enough once I define them" | Those are this skill's protocol. On the card they become a second vocabulary the user must learn before they can read their own decision. Headings are questions in the companion language |
+| "A durable note would be a decision record, and this skill writes nothing" | A model note is a picture of the neighborhood plus copies of locks the user already settled. It is how the next session does not rebuild the same four boxes. Off by default, offered once, and the product repo stays untouched unless they name a path |
 | "A one-line analogy before Today is the understanding pass" | It was decoration. The graph they could act on mapped parts, named where the model stops, and ran one person through it |
 | "The previous session numbered carry-back 5, so this one should too" | `0` is the carry-back on every turn, including a resume |
 | "Walk / Challenge / Stress still belong on the first menu" | Two hops. The kinds menu was never picked. Hop 1 is the technical overview; hop 2 is the file:line walk |
@@ -108,7 +120,13 @@ Still-open slots, what travels as unverified, and the end-of-session digest. Do 
 - A comparison whose lines differ from the last turn's, or that restates the paste's own options
 - Closing an analysis with "it's your call", or with a menu whose lines pick a shape
 - A first answer that starts on the code or an analogy before saying what the session is about
-- A live-choice turn that opens on Today, a one-line analogy, or Architect's read before the gist
+- A live-choice turn that opens on Today, a one-line analogy, or Architect's read before the fork
+- A live-choice whose first two headings are not the fork and the lean, or that opens the picture or the full pick before them
+- A heading on the card printed as `Gist`, `Lock strip`, `Fence`, `Hop`, `Stance`, `Invariant`, `Locality`, `Depth`, or `Carry-back`
+- User-facing headings or menu labels left in English when the companion language is not English
+- A first live-choice of a session with no four-line how-to-read note, or a later one that repeats it
+- A paste-vs-repo correction filed under what `0` would freeze, as though a fact were something to approve — or a paste-vs-code heading printed with "none" under it
+- Writing under `.skills/interpret-session/` or `docs/` without being asked, or naming the note `foundation-cards.md`, `CONTEXT.md`, or an ADR
 - A live-choice turn with no graph of parts-and-connections, or a graph that is a glossary
 - A live-choice turn ending without the Go deeper menu, or a menu that is not two hops then `0`
 - A Go deeper menu that numbers the carry-back anything but `0`, or that uses Explain again / Walk it / Impact / Verify, or Walk / Challenge / Stress / Verify
@@ -119,7 +137,8 @@ Still-open slots, what travels as unverified, and the end-of-session digest. Do 
 - Naming a better shape in the stance that was never given a column to be judged in
 - A heading that promises a picture over a paragraph that draws nothing
 
-**Done when:** on a live choice the user can read a gist that distinguishes the options, hold
-the graph the question stands on, walk one person through it, see the pick and the lock, and
-know what this card does not decide — before any architect table. The carry-back, when they
-settle, locks only what they decided. Otherwise: open questions named, digest handed over.
+**Done when:** on a live choice the user can retell — in three sentences, with no jargon and no
+hop taken — the fork, the picture of four to seven parts, and the pick, and knows what this card
+does not decide. The card's first two headings already split the options and name the lean. The
+carry-back, when they settle, locks only what they decided; a model note, if they asked for one,
+is a picture plus copied locks, not a spec. Otherwise: open questions named, digest handed over.

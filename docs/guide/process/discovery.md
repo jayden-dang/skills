@@ -85,7 +85,7 @@ Then return to the interview with the evidence and put the decision back to the 
 
 Parallel windows beside the main work thread (any phase — not discovery-only):
 
-- **[`/interpret-session`](../skills/interpret-session.md)** — time-boxed mental model, committed stance, and the paste-back reply (gấp / standup pace).
+- **[`/interpret-session`](../skills/interpret-session.md)** — the companion window: a card you can retell (fork, lean, the picture, the pick), then the paste-back reply once you settle.
 - **[`/deepen-codebase`](../skills/deepen-codebase.md)** — pure learning companion: dual-axis foundation for **any** subject; no product pick.
 - **[`/work-the-problem`](../skills/work-the-problem.md)** — multi-round problem tree (identify → define → foundation→feature → breakdown↔solve) with **disk artifacts**, in-service teaching so the user grows with AI, then a carry-back brief once leaves close or are explicitly deferred.
 

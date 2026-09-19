@@ -7,7 +7,7 @@
 | **Bucket** | discovery |
 | **Invocation** | user-invoked (`/interpret-session`) — a session mode you turn on, not auto-fired |
 | **Reads** | the pasted responses; the codebase when a response touches code that lives here |
-| **Writes** | nothing durable; it enacts no code, files, or plan execution |
+| **Writes** | nothing in the product repo; it enacts no code, files, or plan execution. One optional gitignored note at `.skills/interpret-session/<slug>/model.md`, offered once and written only if the user asks |
 | **Calls** | [`research`](research.md) when an alternative or assumption turns on external fact |
 | **Called by** | — (run directly by the user, in parallel with the other session) |
 
@@ -29,25 +29,38 @@ Three intake asks fix the session's standing context:
 
 An interpret-session session is one conversation, not a queue of independent pastes. Each message the user sends is one of three kinds, and the skill decides which before writing anything:
 
-- **A paste from the other session** — live-choice: gist, the graph you must hold, one run, the pick, the lock. No-choice: the short path.
+- **A paste from the other session** — live-choice: the fork, the lean, the graph you must hold, one walk, the pick. No-choice: the short path.
 - **A message addressed to `interpret-session`** — a follow-up, a challenge, a new fact, "research this", thinking aloud. Gets a direct answer in the thread: no translation section, no re-explaining, no reply-to-send-back. If the new information moves the stance, the skill leads with that.
 - **A settled direction** — an explicit decision, or "write the reply". Only this produces the English reply.
 
-For a paste that puts a **live choice** on the table, the turn **is** the card:
-a one-sentence **gist** that distinguishes the options; the **graph** of parts
-the question stands on (how they connect, where the model stops, one system
-diagram); **one run** of a named person through that graph; the **pick**; a
-**lock strip** of paste-vs-repo facts that would move it; a **fence** for what
-this card does not decide. Today / Architect / the seven stance slots are
-computed, not shown. **Go deeper** is two hops — Deeper (technical overview),
-Lowest (`file:line` walk) — then `0` writes the carry-back.
+For a paste that puts a **live choice** on the table, the turn **is** the card,
+and its bar is that the user can retell it in three sentences with no hop taken.
+The first two lines are the **fork** (one sentence that distinguishes the options)
+and the **lean** (the shape plus the repo fact that decides it, marked not locked).
+Then the **graph** of parts the question stands on (how they connect, where the
+picture stops, one system diagram); **one walk** of a named person through that
+graph; the **full pick** with each loser judged on the same fact; **where the
+paste disagrees with the code**, as facts with `file:line`; **what a `0` would
+freeze**, as commitments; and a **fence** for what this card does not decide.
+Facts and commitments are two headings because a user does not confirm a fact.
+The first live-choice of a session also carries a four-line note on how to read
+the card; later ones do not repeat it.
 
-Every third or fourth decision—or whenever the user asks where the system
-stands—the companion emits a cumulative **knowledge map**, not merely decision
-history. When three or more decisions interact through a flow, boundary, or
-dependency, one small system sketch exposes the edges. The table then carries
-mechanism, dependency, decisive reason plus accepted cost, evidence/confidence,
-and the remaining unknown or reopen trigger.
+Today / Architect / the seven stance slots are computed, not shown. **Go deeper**
+is two hops — the system in more detail, then the `file:line` walk — then `0`
+writes the carry-back. Every heading and menu label the user reads is a question
+in the companion language: `Gist`, `Lock strip`, `Fence`, `Deeper` and `Lowest`
+are the skill's internal names and never appear on the card.
+
+Nothing durable is emitted on a schedule. When the user asks for the picture they
+could carry into a coding session — or after the third live-choice on the same
+neighborhood — the companion makes **one** offer to write a **model note**: the
+four-to-seven-part picture, the locks the user already settled, what is still
+open, and what the paste got wrong, with `file:line` on every code claim. It is
+off by default, written only on a yes, and lands at
+`.skills/interpret-session/<slug>/model.md`; the product repo is untouched unless
+the user names a path. A tour of the whole system is [`tour-system`](tour-system.md),
+and a foundation with no pick is [`deepen-codebase`](deepen-codebase.md).
 
 For a paste that puts **no choice** on the table — a procedural question, a confirmation, a status line — there is no alternatives table, no trade-off matrix, no risk list, and none of the live-choice comprehension slots. Just what it means, what it is really asking, and either the answer to give or the one thing worth settling first.
 
@@ -69,47 +82,94 @@ A later baseline run on the v1 text surfaced a third failure, and it is the reas
 
 Two further findings shaped smaller rules. Across every run, v1 closed its analysis with a three-or-four-item menu of directions, because the reply was section 5 of a loop and the skill needed a decision to emit it — so the reply became a terminal action gated on convergence instead. And when the user overrode the recommendation with no reason given, v1 complied in total silence: it recorded the decision and wrote the reply without once saying it still disagreed. Hence **dissent, then comply** — one objection, at most two sentences, naming what it expects to go wrong and the earliest signal, and then no re-litigating.
 
-A 2026-08 field session added the volume-calibration rules. Over ten decision cards the companion worked exactly as designed — it verified claims against the repo and caught real defects in the other window's cards — but the carry-back blocks grew from seven bullets to seventeen, every stance read "high" confidence, and the user's approvals shrank to a single word with the rationale question skipped five times. Each behavior was locally fine; the sum was decision laundering by volume — the user was approving blocks they could no longer be weighing. Hence the Decision / Suggested-guards split in the carry-back, the calibrated confidence line, the Agree / Amend / Reject diff, the cumulative knowledge map, the skip-streak adaptation, and the digest offered on an export request.
+A 2026-08 field session added the volume-calibration rules. Over ten decision cards the companion worked exactly as designed — it verified claims against the repo and caught real defects in the other window's cards — but the carry-back blocks grew from seven bullets to seventeen, every stance read "high" confidence, and the user's approvals shrank to a single word with the rationale question skipped five times. Each behavior was locally fine; the sum was decision laundering by volume — the user was approving blocks they could no longer be weighing. Hence the Decision / Suggested-guards split in the carry-back, the calibrated confidence line, the Agree / Amend / Reject diff, the skip-streak adaptation, and the digest offered on an export request. (That session's cumulative knowledge map has since become the opt-in model note described above — emitted on request, not on a count.)
 
 A 2026-09 baseline on v1.4.0 showed the remaining gap: under a two-minute standup the companion *correctly* led with the pick, because the skill required it — so the user got the letter C before they could say what actually changed or why the runner-up lost. Asking "explain this more simply" already produced the better session (a stable analogy, then the architecture). v1.5.0 makes that order the default: comprehension, then the seven-slot stance, then handles to challenge it. The no-choice short path is unchanged.
+
+Two further rounds cut what the user was reading. v3.0.0 moved Today, the architect comparison and the seven stance slots off turn 1 into the depth hops, because a ten-card field session showed the user asking for the card and the pick again, more simply, and then never taking a hop. v3.1.0 finished the job on the layer they read. The card still failed for two reasons that had nothing to do with which blocks were shown: its headings were the skill's own protocol (`Gist`, `Lock strip`, `Fence`) — a second vocabulary to learn before you can read your own decision — and the pick sat behind the whole argument, so a reader scanning the first screen could not tell what was being chosen or which way the session leaned. So the headings became questions in the companion language, the fork and the lean became the first two lines, and paste-vs-repo corrections got their own heading, separate from what a `0` would freeze — because a user does not confirm a fact, and a correction mixed into a list of things to approve arrives as something to approve. The first card of a session also explains in four lines how to read itself, since progressive disclosure that depends on the user taking a hop is not disclosure at all when nobody takes one. And because every picture used to die with the session, the model note exists to carry the four-to-seven-box picture plus the locks already settled into the next session — off by default, offered once, and never written into the product repo unless the user names the path.
 
 Everything is grounded in the user's actual situation: `interpret-session` reads the codebase when a response touches real code, and reaches for [`research`](research.md) — and through it the Context7 MCP — when an alternative turns on how a library or standard actually behaves rather than on preference. That grounding is what makes it a thinking partner rather than a dictionary.
 
 ## Worked example
 
-The English `clarify-decisions` session has just told the user: *"Use optimistic locking with a version column; it avoids lock contention."* The user pastes that in. `interpret-session` (posture MVP, early development) responds. **In a real session every header and every word below is written in the user's chosen language** — the example is shown in English only because this guide is in English:
+The other window has just pasted three shapes for a webhook relay's retry policy:
+per-endpoint `maxAttempts` / `baseDelay` fields, a circuit breaker on top of the
+existing global constants, or per-endpoint policy plus a global ceiling on the
+drain loop. It recommends the first, "purely additive", and states that the relay
+retries three times on a fixed one-second delay. **In a real session every heading
+and every line below is written in the user's chosen companion language** — it is
+English here because this guide is:
 
-> **The decision** — When two people edit the same row, do we detect the clash *at save time* from a version the client sent back, or hold a database lock for the whole human edit?
+> **What this session is about**
+> - **The problem:** one slow endpoint delays every other endpoint's deliveries, and the other window wants retry policy made configurable.
+> - **What we'll settle here:** where retry policy lives — per endpoint, or bounded globally. The reply that leaves carries that one decision.
+> - **What we have:** `src/retry.ts`, `src/drain.ts`, `src/store.ts` and their history; posture MVP / Early / compat None.
+> - **What we don't have yet:** whether any endpoint actually needs a different bound. Nobody in the thread holds that number; the choice between per-endpoint and global turns on it.
 >
-> **Mental model** — Like a shared Google Doc: nobody freezes the page, but if someone saved before you, you get "this changed — reload." Plain meaning "check at save, not while editing" → that doc → canonical term: optimistic locking with a `version` column.
+> How to read this card:
+> 1. The first two lines are what is being chosen, and which way I lean
+> 2. The picture is the system around the decision, not the options
+> 3. "I'd pick" locks nothing — 0 is what writes the reply that goes back
+> 4. 1 = the system in more detail · 2 = walk it file by file
 >
-> | | Detects a stale form across requests? | Simple for a short server mutation? | What you owe the user |
-> |---|---|---|---|
-> | Optimistic + `version` | Yes | No | A usable `409` + reload |
-> | Pessimistic `SELECT … FOR UPDATE` | No (lock is gone before they submit) | Yes | Hold the row the whole time they edit |
+> **What is being chosen**
+> Whether each endpoint carries its own retry bound, or the bound stays one number the whole drain loop shares.
 >
-> **My stance**
-> - *What I'd do:* optimistic locking with a `version` column.
-> - *Why it wins now:* a human edit spans multiple HTTP requests, so a row lock held only during save cannot detect that the form was read from stale data.
-> - *Runner-up:* pessimistic locking (`SELECT … FOR UPDATE`) is simpler for a short server-side mutation, but loses when the client sends back an older snapshot.
-> - *Cost I accept:* the MVP needs a clear `409` conflict response and a minimal reload/reapply path.
-> - *How sure:* medium — checked the schema and edit flow, but there is no integration proof for the conflict path.
-> - *What would flip me:* if every update is computed from a freshly read row inside one short transaction, with no stale client snapshot to write back.
-> - *Versus the other session:* **Agree:** keep optimistic locking. **Amend:** it wins because it catches stale human edits, not merely because it avoids lock contention. **Reject:** shipping the column without a usable conflict response.
+> **Which way I lean** (not locked)
+> Keep one bound and add the ceiling on the loop. The loop is sequential (`src/drain.ts:7`), so per-endpoint tuning cannot stop one endpoint from delaying the rest.
 >
-> **Pressure-test**
-> - If the client never echoes `version`, does optimistic still catch anything?
-> - What is the irreversible cost of teaching users a reload-and-reapply flow now?
+> **Hold this picture**
+> - "how many times we retry" → `shouldRetry` + `MAX_ATTEMPTS = 5` (`src/retry.ts:4`, `:13-15`) → the bound, exponential with jitter
+> - "one pass over everything pending" → `drain` → sequential `for` loop, awaits each delivery
+> - "what a delivery remembers" → `Delivery.attempt` → per-row counter, no global counter exists
+> - "what an endpoint knows" → `Endpoint` (`src/store.ts:10`) → id, url, secret — no retry fields today
 >
-> **The detail behind it**
-> - *Mechanism:* two editors read `version = 7`; the first save advances it to 8, so the second save's `WHERE version = 7` updates zero rows instead of overwriting the first.
-> - *Hidden assumption:* the client sends back a snapshot read earlier rather than a server-side mutation calculated from a fresh row.
-> - *Risk:* forgetting the retry path, so a `409` surfaces to the user as a hard error.
-> - *When each wins:* optimistic for stale forms spanning requests; pessimistic for short server-side mutations that can be completed inside one transaction.
+> Where the picture stops: this is one relay process. It says nothing about two relays draining the same queue.
+>
+> ```
+> Endpoint { id, url, secret }      no retry fields today
+>       |
+>       v
+> drain() — sequential for-loop over pending      [*] where the ceiling would land
+>       |
+>       +--> shouldRetry(attempt, status) — MAX_ATTEMPTS = 5, 429 + 5xx   [!] bounded since the 2026-05 stall
+>       |
+>       `--> save() — per-delivery attempt counter, no global ceiling
+> ```
+>
+> **One person walking through it**
+> Ren has one endpoint returning 503 all morning.
+> Today: each delivery to it burns 5 attempts with exponential backoff, and because the loop is sequential every other endpoint waits behind it.
+> Under per-endpoint fields: Ren can set that endpoint to 1 attempt — but only once someone notices and edits it, and every other endpoint still waits during the attempt.
+> Under a loop ceiling: the pass stops spending time on the bad endpoint whether or not anyone tuned it.
+>
+> **Why not the other one**
+> I'd pick the ceiling on `drain`, because the guarantee the code makes today is a bounded pass (`src/retry.ts:4`, `src/retry.ts:13-15`), and the bound the incident set was about the loop, not about one endpoint.
+> Not per-endpoint fields alone: they are additive, and they leave the shared loop exactly as slow.
+> Not the circuit breaker alone: it parks an endpoint after the damage, and needs consecutive-failure state nothing in `store.ts` keeps yet.
+> Who it hits: whoever operates the relay. No API consumer changes.
+>
+> **Where the paste disagrees with the code**
+> The paste says three attempts on a fixed one-second delay; `src/retry.ts:4-5` sets `MAX_ATTEMPTS = 5` with a 250 ms base, and `src/retry.ts:8-11` is exponential backoff with full jitter.
+> The paste calls option A purely additive; the commit that bounded attempts records the 2026-05 stall, so the bound is a decision this fork would reopen, not empty space.
+>
+> **If you confirm, this freezes**
+> The retry bound stays one number, and the ceiling lands on the drain loop rather than on endpoint config.
+> Accepted cost: an endpoint that genuinely needs a different bound has no way to say so until someone reopens this.
+>
+> **This card does not decide**
+> Whether the drain loop becomes concurrent per endpoint. The paste implies it; this card does not answer it.
+>
+> **Go deeper**
+> 1 · The system in more detail — what the 2026-05 commit bounded, and what the sequential loop costs
+> 2 · Walk it file by file — `drain.ts:7` through `shouldRetry` with the numbers
+> ───
+> 0 · Write the reply to carry back
 
-Note the shape from v3: gist first, then the graph and one run, then the pick.
-Architect tables wait behind Go deeper. The English reply comes later, on the
-turn the user actually settles it.
+A reader who stops after the first two lines already knows the fork and the lean.
+A reader who also holds the four boxes can retell the system to tomorrow's coding
+session — which is the bar the card is written to. The reply back to the other
+window comes later, on the turn the user actually settles it.
 
 ## See also
 

@@ -83,15 +83,16 @@
   },
   {
     "eval_id": 9,
-    "eval_name": "live-choice-comprehension-before-stance",
+    "eval_name": "live-choice-opens-on-fork-and-lean",
     "kind": "behavior",
-    "derived_from": "TESTS.md § v3.0.0 RED — four blocks on turn 1 still unread; GREEN gist + graph + one run",
+    "derived_from": "TESTS.md § v3.1.0 RED — a v3.0.0 card the user could not scan; fork and lean must be the first eight lines",
     "prompt": "Companion language Vietnamese. Standup in two minutes. The other session recommends envelope-style compatibility (option C) for per-learner mini-app state across template versions, versus an opaque blob, a fully typed platform schema, or shared class-wide state. Write the live-choice companion response. The user has not settled.",
     "assertions": [
-      "the response opens on a one-sentence gist that distinguishes the options, before ### 1. Today, Architect's read, or the seven stance slots",
-      "a connected graph of parts the question stands on appears, with where the model stops, and one system diagram of that graph not of the options",
-      "one named-actor run of 4–8 lines walks that graph today versus the pick",
-      "I'd pick names the shape and the repo fact; a fence names what this card does not decide",
+      "the card's first two headings are the fork in one sentence and the lean in one sentence, the lean marked not locked, with nothing above them but the session map and the how-to-read note",
+      "a connected graph of parts the question stands on appears after those lines, with where the picture stops, and one system diagram of that graph not of the options",
+      "one named-actor walk of 4–8 lines goes through that graph today versus the lean",
+      "the full pick names the shape and the repo fact, and a fence names what this card does not decide",
+      "### 1. Today, Architect's read, and the seven stance slots do not appear on this turn",
       "no paste-back reply is emitted before the user settles"
     ]
   },
@@ -102,7 +103,8 @@
     "derived_from": "TESTS.md § v3.0.0 — pressure-test moves to hop 1; unused on turn 1 in the field session",
     "prompt": "The previous companion turn was a live-choice on envelope-style state and ended on a Go deeper menu whose line 1 was Deeper. The user replies: 1",
     "assertions": [
-      "the hop is the technical overview (Today and the Depth / Locality / Invariant comparison in sentences), not a re-render of turn 1",
+      "the hop is the technical overview — what the code does today, and the three-criterion comparison in ordinary sentences — not a re-render of turn 1",
+      "Depth, Locality and Invariant are not printed as headings; what each one means is said in the companion language",
       "two to four pressure-test questions may close the hop and attack the pick rather than asking which direction the user wants",
       "the questions are not a numbered menu of shapes",
       "no carry-back is written"
@@ -211,9 +213,9 @@
     "derived_from": "TESTS.md § v3.0.0 — two hops then 0; retired Walk/Challenge/Stress menu",
     "prompt": "Live-choice paste on a retry-policy fork with a shared sequential drain loop. Companion language Vietnamese. Write the companion turn. The user has not settled.",
     "assertions": [
-      "the turn ends with a Go deeper menu of exactly two hops — Deeper then Lowest — then 0 writes the carry-back below a separator",
-      "each hop label names a concrete target from this turn, in the companion language",
-      "0 writes the carry-back and sits below a separator",
+      "the turn ends with a two-hop Go deeper menu — the system in more detail, then the file-by-file walk — then 0 writes the carry-back below a separator",
+      "every label and the menu header are in the companion language, and no label is Deeper, Lowest, Gist, Fence, Lock strip, Hop or Carry-back",
+      "each hop label names a concrete target from this turn",
       "no menu line asks the user to pick a shape, and Walk / Challenge / Stress / Verify is not the template"
     ]
   },
@@ -260,7 +262,7 @@
     "derived_from": "TESTS.md § v3.0.0 — turn 1 already spent the card; pick 1 is Deeper",
     "prompt": "The previous companion turn ended on a Go deeper menu whose line 1 was Deeper. The user replies: 1",
     "assertions": [
-      "the reply is hop 1 (technical overview), not a restatement of the gist",
+      "the reply is hop 1 (the system in more detail), not a restatement of the fork and the lean",
       "the four blocks as a turn-1 template are not re-rendered and no carry-back is written",
       "the turn ends with the menu again"
     ]
@@ -323,8 +325,8 @@
     "derived_from": "TESTS.md § v2.16.0 RED — 0/2 scope-round menus offered an overview or a challenge to the framing, both offered a code walk and a pre-mortem; GREEN 2/2",
     "prompt": "Later in the session, after per-endpoint retry policy was locked, the other window asks whether to fold a customer's maintenance-window request into this feature or open a separate feature. Write the companion turn.",
     "assertions": [
-      "the Go deeper menu is two hops (Deeper, Lowest) then 0, not Walk / Challenge / Stress",
-      "0 writes the carry-back below a separator"
+      "the Go deeper menu is two hops — the system in more detail, then the file-by-file walk — then 0, not Walk / Challenge / Stress",
+      "0 writes the carry-back below a separator, labelled in the companion language"
     ]
   },
   {
@@ -350,14 +352,14 @@
   },
   {
     "eval_id": 31,
-    "eval_name": "live-choice-opens-on-the-card",
+    "eval_name": "live-choice-card-is-retellable-without-a-hop",
     "kind": "behavior",
     "derived_from": "TESTS.md § v3.0.0 RED — v2.17 still rendered four blocks on turn 1; user wanted gist, graph, one run",
     "prompt": "Companion language Vietnamese. A pasted card asks whether stored payload size is a platform constant, a per-version manifest quota, or a per-instance creator quota. The other session recommends the constant. Write the live-choice companion turn. The user has not settled.",
     "assertions": [
-      "the turn opens on a one-sentence gist that distinguishes the options",
-      "a connected graph of 4–7 parts appears, with where the model stops, and one system diagram of that graph",
-      "one named-actor run of 4–8 lines walks the graph today versus the pick",
+      "the card opens on one sentence naming the fork, then one sentence naming the lean and the repo fact behind it, marked not locked, before the picture, the walk or the full pick",
+      "a connected graph of 4–7 parts appears, with where the picture stops, and one system diagram of that graph",
+      "one named-actor walk of 4–8 lines goes through the graph today versus the lean",
       "Today, Architect's read, and the seven stance slots do not appear on this turn",
       "a fence names what this card does not decide",
       "no carry-back is written"
@@ -371,8 +373,61 @@
     "prompt": "A live-choice turn on a costly-to-reverse storage fork has just been written. The previous agent in this thread numbered carry-back as 5 and labelled the menu Explain again, Walk it, Impact, Verify. Write this turn's Go deeper menu.",
     "assertions": [
       "carry-back is numbered 0 and sits below a separator, not as line 5",
-      "the menu is exactly two hops — Deeper then Lowest — then 0",
-      "the labels are not Explain again / Walk it / Impact / Verify and not Walk / Challenge / Stress / Verify"
+      "the menu is exactly two hops — the system in more detail, then the file-by-file walk — then 0",
+      "the labels are not Explain again / Walk it / Impact / Verify, not Walk / Challenge / Stress / Verify, and not the internal names Deeper / Lowest"
+    ]
+  },
+  {
+    "eval_id": 33,
+    "eval_name": "card-headings-are-questions-in-the-companion-language",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § v3.1.0 RED — internal names rendered as user-facing headings; menu labels left in English while the card was translated",
+    "prompt": "Companion language Vietnamese, drawing ASCII. A live-choice paste asks whether retry policy becomes per-endpoint config, a circuit breaker on the global constants, or per-endpoint policy plus a global drain ceiling. Write the live-choice companion turn. The user has not settled.",
+    "assertions": [
+      "no user-facing heading or menu label is Gist, Lock strip, Fence, Hop, Stance, Invariant, Locality, Depth, Carry-back, One run, Deeper or Lowest",
+      "every heading is a question a reader of the companion language would recognise — what is being chosen, which way I lean, hold this picture, one person walking through it, why not the other one, if you confirm this freezes, what this card does not decide",
+      "the headings are in the companion language, not English, and no English heading is printed beside the translation",
+      "code identifiers, file paths and requirement-style names stay verbatim"
+    ]
+  },
+  {
+    "eval_id": 34,
+    "eval_name": "how-to-read-note-appears-once-per-session",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § v3.1.0 RED — the user asked for the card and the pick again more simply, then took no hop; the card never said how to read itself",
+    "prompt": "Two live-choice pastes arrive in the same companion session, one after the other on the same neighborhood. Write both turns.",
+    "assertions": [
+      "the first live-choice carries a four-line how-to-read note before the fork, in the companion language, covering: the first two lines are the fork and the lean, the picture is the system not the options, the pick locks nothing until 0, and what 1 and 2 do",
+      "the note is four lines, not a tutorial",
+      "the second live-choice of the session does not repeat the note and goes straight to the fork"
+    ]
+  },
+  {
+    "eval_id": 35,
+    "eval_name": "paste-corrections-are-facts-not-things-to-confirm",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § v3.1.0 RED — corrections filed under the lock strip, mixed in with commitments the user was being asked to approve",
+    "prompt": "A live-choice paste claims the relay retries three times with a fixed one-second delay and calls its options purely additive. The code sets MAX_ATTEMPTS = 5 with exponential backoff, and a commit records the incident that bounded it. Write the live-choice companion turn.",
+    "assertions": [
+      "the paste-vs-repo disagreements appear under their own heading, each one sentence with file:line, presented as facts about the code",
+      "what a 0 would freeze is a separate heading carrying commitments only, not corrections",
+      "a card whose paste matches the repo omits the paste-vs-code heading rather than printing it with 'none' under it",
+      "derived numbers are not filed as verified facts"
+    ]
+  },
+  {
+    "eval_id": 36,
+    "eval_name": "model-note-is-offered-once-and-written-only-on-yes",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § v3.1.0 RED — every artifact died with the session; the v1.6.1 knowledge map emitted unasked and the product repo is read-only here",
+    "prompt": "Third live-choice on the same neighborhood in one session. The user then asks for the picture they could hand to a coding session tomorrow.",
+    "assertions": [
+      "no file is written on a live-choice turn",
+      "the note is offered once, and written only after the user says yes",
+      "the path offered is .skills/interpret-session/<slug>/model.md, and nothing is written into the product repo or docs/ unless the user names the path",
+      "the note is not named foundation-cards.md or CONTEXT.md and is not written as an ADR or a decision record",
+      "the note carries the picture, the locks the user already settled, what is still open, and what the paste got wrong — with file:line on code claims",
+      "/tour-system and /deepen-codebase are named when what the user asks for reaches past this session's neighborhood — a whole-system tour, or a foundation with no pick — and not appended to an offer that answers the ask as made"
     ]
   }
 ]

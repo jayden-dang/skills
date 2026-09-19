@@ -1394,3 +1394,85 @@ Preservation: no-choice still has no menu; carry-back still waits for a settle;
 Iron Law unchanged. Depth / Locality / Invariant still computed, shown on hop 1.
 
 **Version:** major `3.0.0` — live-choice output contract changed.
+
+## v3.1.0 — the layer the user reads (2026-09-19, Sonnet)
+
+Research done outside the pack landed as a change set: headings become questions in
+the companion language, the fork and the lean become the first two lines, the lock
+strip splits into facts and commitments, the first card explains how to read itself,
+and the picture gets an opt-in durable home. Iron law, grounding, the two-hop menu and
+the carry-back are untouched.
+
+### RED — v3.0.0 as written
+
+**Harness.** Sonnet, fixture `tidewell-relay` (TypeScript webhook relay: `retry.ts`
+with `MAX_ATTEMPTS = 5` and exponential backoff bounded by the commit that fixed a
+2026-05 drain stall, a sequential `drain.ts` loop, `store.ts` with a per-delivery
+attempt counter and no global ceiling). Companion language Vietnamese, ASCII, posture
+read from `docs/agents/project.md` (MVP / Early / None). Skill read from a v3.0.0
+snapshot. First paste of the session, live choice on where retry policy lives; the
+paste claims three attempts on a fixed one-second delay and calls its options purely
+additive. Full record: scratchpad `v31-record/RED-A-v300-notes.md`.
+
+| Assertion | Verdict | Observed |
+|---|---|---|
+| Fork **and** lean in the first eight lines, lean marked not locked | **FAIL** | map, then an unheaded one-sentence fork, then the drawing and the walk; the pick arrives about sixty lines in, after the three option lines, and nothing is marked not-locked |
+| No internal name as a user-facing heading or label | **FAIL** (3) | `To hold this card` printed as a heading; both hop labels rendered as literal translations of `Deeper` and `Lowest`, naming no target; `carry-back` left in English on line `0` |
+| Four-line how-to-read note on the first live-choice | **FAIL** | absent |
+| Paste-vs-repo facts separate from what `0` would freeze | **FAIL** | one block mixed three corrections (the 3×1s claim, "purely additive", "widen") with the accepted cost and the unverified derived numbers — corrections filed as things the user confirms by typing `0` |
+| Fence; no unasked carry-back; no writes | **PASS** | — |
+
+The analysis under all of that was strong: every paste error caught with `file:line`,
+the incident commit read, the backoff ceiling derived and marked unverified. What failed
+was only the layer the user reads — which is what v3.0.0's own field session had already
+said, and why hops went unused.
+
+### GREEN — v3.1.0
+
+**Harness.** Same fixture, same paste, same setup, Sonnet, skill read live from
+`skills/discovery/interpret-session/`.
+
+| Assertion | A — first live-choice |
+|---|---|
+| Session map, then the how-to-read note, then the card | **PASS** |
+| How-to-read is four lines, companion language, the four jobs | **PASS** |
+| Fork heading, one sentence, options distinguishable from it alone | **PASS** |
+| Lean heading, marked not locked, carrying the repo fact | **PASS** (cited the incident comment in `retry.ts`) |
+| No internal name as a heading or a menu label | **PASS** — every heading and all three menu lines in the companion language; no `Deeper`, no `Lowest`, no `carry-back` |
+| Picture of 4–7 parts with where it stops; diagram of the system | **PASS** (six parts, each with `file:line`) |
+| Named-actor walk, today versus the lean | **PASS** |
+| Paste-vs-code facts under their own heading, with `file:line` | **PASS** (three, including the "purely additive" claim against `drain.ts:13-14`) |
+| What `0` would freeze carries commitments only | **PASS**, cost marked as cost |
+| Fence; no carry-back; no writes | **PASS** |
+
+The three failures the RED run showed on headings, the missing how-to-read note,
+and the merged lock strip are all closed. Two refinements came out of the run
+rather than out of the research:
+
+- The map legitimately sits above the card on a first paste, so "the first eight
+  lines" was the wrong unit. `plain-card.md`, the red flag and `Done when` now
+  say **the card's first two headings**, with only the map and the how-to-read
+  note allowed above them.
+- The drawing came back with every accent stripped from its labels while the
+  prose around it kept them — a third spelling of words the card had just used.
+  `diagrams.md` now says ASCII names the lines and arrows, never the words.
+
+| Assertion | B — second live-choice, same session |
+|---|---|
+| No how-to-read note on the second card; it opens on the fork | **PASS** |
+| No second session map on the same problem | **PASS** |
+| Lean marked not locked, carrying the repo fact | **PASS** (the incident is measured in minutes, so the ceiling is time) |
+| Headings and menu in the companion language, no internal names | **PASS** |
+| Picture, where it stops, one system diagram, named-actor walk | **PASS** — accents kept inside the drawing this time, so the RED stripping was variance the `diagrams.md` line now binds |
+| Paste-vs-code separate from what `0` would freeze | **PASS**, one disagreement rather than the two-to-four the file asks for |
+| Fence; no carry-back; no writes | **PASS** |
+| Model note offered once, path named, written only on a yes | **PASS** — named `.skills/interpret-session/<slug>/model.md`, said gitignored, said the product repo is untouched unless a path is given, and stopped for confirmation |
+| Sibling skills named in the offer | **not as written** — the offer stayed two lines and named neither `/tour-system` nor `/deepen-codebase` |
+
+The last row is the rule's fault, not the run's: the user asked for a picture of
+this neighborhood, which is exactly what the note is, so appending two other skill
+names would be noise on every offer. `model-note.md` now names a sibling only when
+the ask reaches past the neighborhood; the eval matches.
+
+**Version:** minor `3.1.0` — new slots and renamed user-facing headings, no change
+to the iron law, the grounding verdicts, the two hops, or the carry-back.

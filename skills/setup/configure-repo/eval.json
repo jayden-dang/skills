@@ -34,5 +34,17 @@
       "project.md Run locally rows for existing surfaces are filled, not left blank",
       "a stored feature's proof includes reload or re-open, not only a final screen"
     ]
+  },
+  {
+    "eval_id": 4,
+    "eval_name": "webbridge-bootstrap-when-missing",
+    "kind": "contract",
+    "derived_from": "SKILL.md § 6. Prove the configuration actually works — GATE",
+    "prompt": "Finish setup. This machine has no kimi-webbridge binary.",
+    "assertions": [
+      "the official OS bootstrap runs before the prove commands",
+      "an existing binary is started rather than downloaded again",
+      "a disconnected browser extension is named as a store install and does not block the rest of setup"
+    ]
   }
 ]

@@ -131,3 +131,18 @@ Frontend row did not recur.
 PR-body prompt shipped em dashes and is recorded on speak-outer v1.1.0.
 design-solution v1.5.0 names `/tour-system` when the author has never read the
 subsystem. On-ramps gained a `/tour-system` row.
+
+## v1.10.0 — install kimi-webbridge when it is missing (2026-09-27)
+
+**Control:** v1.9.0. Step 6 proves repo commands and, on Decision M, one Drive.
+Nothing in the wizard checks `~/.kimi-webbridge/bin/kimi-webbridge` or runs an
+installer. A machine without the daemon finishes "set up" and the UI skills
+then have no driver.
+
+**Form:** Step 6 reads `webbridge-setup.md` first. Missing binary → the
+official bootstrap (`https://cdn.kimi.com/webbridge/install.sh` on macOS/Linux,
+`install.ps1` on Windows), which downloads the daemon, starts it, and installs
+the skill. Existing binary → `start` only, never `upgrade` / `stop`. The
+browser extension stays a store install the user does; a disconnect is named
+once and does not block the other proves. `install_skill.sh` is the wrong
+script: it copies a skill for Kimi Desktop and does not download the daemon.

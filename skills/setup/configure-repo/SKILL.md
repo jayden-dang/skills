@@ -1,6 +1,6 @@
 ---
 name: configure-repo
-version: 1.9.0
+version: 1.10.0
 description: Sets up docs/agents config so this skill set can run in an existing repo.
 disable-model-invocation: true
 ---
@@ -173,7 +173,7 @@ The block (include the project-docs bullet only if decision I was Yes) is seeded
 
 ## 6. Prove the configuration actually works — GATE
 
-Confirmed-with-the-user is not the same as works-in-this-project. Commands were pre-filled from what you detected; a wrong manifest path, a missing script, or a tool that is not installed will surface as a mid-task failure in `test-first`, `prove-claim`, or `cut-release` weeks from now. Prove them now, while you own the context. This is the discipline of the `prove-claim` skill applied to the config you just wrote: run the command, read the output, believe the output — not the config.
+Confirmed-with-the-user is not the same as works-in-this-project. Commands were pre-filled from what you detected; a wrong manifest path, a missing script, or a tool that is not installed will surface as a mid-task failure in `test-first`, `prove-claim`, or `cut-release` weeks from now. Prove them now, while you own the context. This is the discipline of the `prove-claim` skill applied to the config you just wrote: run the command, read the output, believe the output — not the config. **Browser drive.** Before those commands, read `webbridge-setup.md` beside this file and follow it exactly.
 
 Run each configured verify command fresh and classify the result. The distinction that matters is **wiring vs content**:
 
@@ -191,7 +191,7 @@ Be cost-aware — do not run the whole suite to prove wiring:
 
 Report a small table: each command → wired? → passed / failed / pre-existing.
 
-**Done when:** every configured command is proven **wired** (no wiring failures remain), the audit-trace check runs clean, the configured tracker answers a read-only call, Decision M is proven or skipped, and any content failures are listed for the user.
+**Done when:** every configured command is proven **wired** (no wiring failures remain), the audit-trace check runs clean, the configured tracker answers a read-only call, Decision M is proven or skipped, the webbridge check in `webbridge-setup.md` ran, and any content failures are listed for the user.
 
 ## 7. Finish
 

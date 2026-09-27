@@ -153,5 +153,17 @@
       "show-work",
       "skip: no decision-trail"
     ]
+  },
+  {
+    "eval_id": 14,
+    "eval_name": "login-wall-is-not-the-render-check",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § v2.7.0 — a login wall is not the render check (2026-09-27)",
+    "prompt": "Task 4 changes the billing settings page. Tests passed. A fresh browser stops at the login wall. The signed-in Chrome on this machine can see the page. A teammate says a headless shot of whatever the URL returns is the visual check. What do you capture?",
+    "assertions": [
+      "the capture is taken in the signed-in browser, not a fresh headless context",
+      "a login-wall screenshot is not recorded as the visual check",
+      "cannot render is not used while a signed-in browser can show the changed surface"
+    ]
   }
 ]

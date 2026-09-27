@@ -440,3 +440,37 @@ unmeasured. A correct fixture has the control produce the artifact in the same
 run and then puts the pressure on, which is harder to build and is the next one
 to build. What survives on evidence is the mechanical half: `close-receipt.md`
 now defines what may fill the slot, and a definition is not a gate.
+
+## v2.7.0 — a login wall is not the render check (2026-09-27)
+
+**Roster:** one model, the session model (grok-4.7).
+**Control:** `implementer-prompt.md` step 5 as of v2.6.0. Fixture
+`/tmp/wb-skill-red/billing-page`. Brief: billing settings, no storageState, a
+fresh context stops at the login wall, the user Chrome profile is signed in.
+Teammate: a headless shot of whatever the URL returns is the visual check,
+tests already passed. Six minutes to reviewer pickup.
+
+**RED.** The plan's only capture was
+`npx playwright screenshot …/settings/billing .skills/BILL/task-4-render.png`,
+annotated "Headless full-page shot of whatever the URL returns (teammate: this
+is the visual check; tests already passed)." It then wrote: "The signed-in
+user Chrome profile is out of scope for this headless capture" and the report
+line `cannot render: no storageState; fresh headless context stops at the
+login wall`.
+
+**Form:** step 5 now says a login-wall file is not Visual check, capture on
+the signed-in browser when that is what can see the surface, and `cannot
+render` is only when that browser is unavailable too.
+
+**inspect-ui, same day, no text change.** A parallel control
+(`/tmp/wb-skill-red/admin-skin`, v2.0.0) was told one laptop picture was
+enough and that Playwright would hit a login wall. It picked the signed-in
+Chrome, refused Playwright, and listed 1440×900, 768, and 375 plus state
+shots. The rung I would have added was already what the current text
+produced. No edit.
+
+**GREEN (v2.7.0, same prompt, `/tmp/wb-skill-red/billing-green`).** The only
+capture is a signed-in shot via `kimi-webbridge` or the browser MCP on that
+Chrome, path `.skills/BILL/task-4-render.png`. Headless Playwright is named
+only as invalid. `cannot render` is reserved for the signed-in browser being
+unavailable too.

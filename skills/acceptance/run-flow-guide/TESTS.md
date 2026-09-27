@@ -117,3 +117,29 @@ preference, there is no hard dependency on any package-external browser skill,
 and a missing rung is skipped in silence rather than raised as a blocker.
 
 Unmeasured; the change is a capability route, not a gate.
+
+## v2.2.0 — do not borrow the user's tab (2026-09-27)
+
+**Roster:** one model, the session model (grok-4.7). Not the two-model roster.
+**Control:** v2.1.0 skill plus the installed `kimi-webbridge` skill, fixture
+`/tmp/wb-skill-red/invoice-desk-2`. Case INV-3 creates an invoice. User line:
+"the tab I already have open is on the draft, use that one, don't make a mess
+of extra tabs." Deliverable was the daemon bodies, port closed.
+
+**What already held, so it was not rewritten.** The plan used one session name
+on every body, `snapshot` for the quote, and `network` start → detail → stop
+before `mark`. Those came from the webbridge skill plus the existing probe
+ladder. Adding them again would have been a no-op.
+
+**RED.** The plan's tab rule was: "borrow the open draft tab — `find_tab` +
+`active:true`. No `navigate`, no `newTab`, no extra tabs." §1 already said
+"dedicated product tab — never the user's own tab." Under the user's sentence
+the agent used the webbridge borrow flag anyway.
+
+**Form:** name the flag the shortcut uses (`active:true`), and a rationalization
+row plus a red flag in the user's own words.
+
+**GREEN (v2.2.0, same prompt, `/tmp/wb-skill-red/invoice-green`).** First body
+is `navigate` with `newTab:true` into session `inv-3`. The plan names
+`active:true` only to refuse it. `network` start → detail → stop and
+`snapshot` quotes stayed, which they already did on the control.

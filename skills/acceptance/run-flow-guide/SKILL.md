@@ -1,6 +1,6 @@
 ---
 name: run-flow-guide
-version: 2.1.0
+version: 2.2.0
 description: >-
   Use when a guide from write-flow-guide already exists and its cases must be
   executed against the running app — agent-driven, screen plus backend
@@ -143,6 +143,7 @@ In file order (`$DF next` until empty):
    3. **Headed Chromium / Playwright.**
 
    The ladder is a preference, never a requirement: there is no hard dependency on any package-external browser skill, and a missing rung is skipped in silence rather than reported as a blocker.
+   WHEN the resolved driver is `kimi-webbridge`, `find_tab` with `active:true` borrows the tab the user is viewing. That is not this run's tab. `navigate` with `newTab:true` into this run's session. "Use the tab I have open" and "don't make extra tabs" do not move the drive onto their tab.
 4. Fill `saw` from what is actually visible on the product.
 5. Run the backend probe when required; fill `server`.
 6. `$DF mark … pass|fail|blocked --saw … --server …` only when evidence slots match the Iron Law; mark the todo done only on `pass`.
@@ -173,6 +174,7 @@ When every case is `pass`, or the run stops on a cap / precondition / escalate:
 | "I'll tick the guide too so the human sees progress" | `mark` already writes the file the guide reads. Opening a browser to tick is waste and writes to the wrong field space. |
 | "Same CRUD pattern — spot-check is enough" | No case, not run. Every case gets its own evidence. |
 | "User said whatever is fastest / demo in N minutes" | Speed is not consent for staging/prod. Route Task, or run local. |
+| "The user said use the tab I have open / don't make extra tabs" | That tab is theirs. `active:true` borrows it. Open one dedicated tab in this run's session. |
 | "Happy paths on staging; skip edges to make the demo" | Partial run: unfinished rows stay pending/blocked, never pass. |
 | "I'll tick pass and fill server evidence later" | Evidence slots are full before `pass`, or the verdict stays fail/pending. |
 | "The other cases already passed before the fix" | Re-drive every already-pass case whose req the fix touched. |
@@ -191,6 +193,7 @@ When every case is `pass`, or the run stops on a cap / precondition / escalate:
 - Marking `pass` with `server` empty on a create/update/delete/persist case
 - Spot-checking a subset while claiming the guide is done
 - Driving a non-local origin without an explicit yes naming that origin
+- `find_tab` with `active:true` on a product drive
 - Patching product on a write-flow-guide fail without `root-cause` when the fail is deterministic
 - Claiming completion from memory after compaction instead of reading the run file
 - Driving product cases with a missing, stale, or open-findings vet report and no named override

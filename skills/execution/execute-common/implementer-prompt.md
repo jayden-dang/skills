@@ -69,9 +69,15 @@ Subagent (general-purpose):
        Passing tests are not evidence of how it looks — Read the image and
        judge it against the brief and the page's existing visual language:
        placement, spacing, alignment, readable text. Fix what looks broken
-       or unintentional, then re-screenshot. Cannot render (no browser, no
-       display, server will not start)? Record `cannot render: <why>` on
-       the report's Visual check line — never skip silently.
+       or unintentional, then re-screenshot. A fresh context that stops on
+       a login wall is not a shot of the changed surface: WHEN that surface
+       is visible in the signed-in browser on this machine (`kimi-webbridge`,
+       or a browser MCP on that Chrome) and the repo has no saved
+       storageState, capture there. A login-wall file does not satisfy
+       Visual check, and passing tests do not make it the check. Record
+       `cannot render: <why>` only when no browser, no display, the server
+       will not start, or that signed-in browser is unavailable too — never
+       skip silently, and never label a login-wall shot as the check.
     6. Commit with a conventional subject that explains the change. Do **not**
        add `Implements:` / `Guards:` trailers.
     7. Self-review (below), then write your report.

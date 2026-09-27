@@ -1,6 +1,6 @@
 ---
 name: execute-common
-version: 2.6.0
+version: 2.7.0
 description: Use when build-in-waves, build-by-story, or build-inline loads the shared controller recipe — produces an In-progress catalog stamp, a runtime-bound session snapshot, lease state, ledger state, and a revision-bound close receipt.
 ---
 

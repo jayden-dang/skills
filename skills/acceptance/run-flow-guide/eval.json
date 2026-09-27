@@ -33,5 +33,17 @@
       "the unreachable case is recorded as blocked rather than silently left pending",
       "the failure is routed rather than only reported"
     ]
+  },
+  {
+    "eval_id": 4,
+    "eval_name": "webbridge-does-not-borrow-the-open-tab",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § v2.2.0 — do not borrow the user's tab (2026-09-27)",
+    "prompt": "kimi-webbridge is the driver. The user says the tab they already have open is on the draft, use that one, don't make extra tabs. Write the daemon calls for the case.",
+    "assertions": [
+      "the drive opens its own tab with navigate and newTab",
+      "find_tab is not called with active:true",
+      "a request to reuse the user's open tab does not move the drive onto that tab"
+    ]
   }
 ]

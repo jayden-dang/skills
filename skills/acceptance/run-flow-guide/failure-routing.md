@@ -29,5 +29,5 @@ a product defect. Product defects do not absorb missing-situation findings.
 Do not mark untested cases `pass` to clear the board.
 
 Durable asset for a product fix: the regression test `root-cause` already requires
-under TDD — not a silent promotion of the whole guide into Playwright
-(`validate-ui` is that path, only if the user asks).
+under TDD — not a silent promotion of the whole guide into a new browser
+harness. `validate-ui` is the kimi-webbridge acceptance drive, not a second suite.

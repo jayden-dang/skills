@@ -15,7 +15,7 @@
 
 When a write-flow-guide **run file already exists** and the guide needs an **isolated** judgment pass before agent dogfood — “vet the guide,” “are we missing situations the implementation already exposes?,” or (the default) **immediately after** `write-flow-guide` finishes the run file, as part of that skill’s hand-over.
 
-**Not for:** authoring cases ([`write-flow-guide`](write-flow-guide.md)); driving cases in the browser ([`run-flow-guide`](run-flow-guide.md)); committed Playwright ([`validate-ui`](validate-ui.md)).
+**Not for:** authoring cases ([`write-flow-guide`](write-flow-guide.md)); driving cases in the browser ([`run-flow-guide`](run-flow-guide.md)); the acceptance drive ([`validate-ui`](validate-ui.md)).
 
 ## The Iron Law
 
@@ -42,5 +42,5 @@ REPORT WRITE ONLY — NEVER MUTATE PRODUCT CODE OR THE RUN FILE
 
 - [`write-flow-guide`](write-flow-guide.md) — author cases + render shell
 - [`run-flow-guide`](run-flow-guide.md) — execute cases after clean vet
-- [`validate-ui`](validate-ui.md) — committed Playwright sibling
+- [`validate-ui`](validate-ui.md) — kimi-webbridge acceptance drive
 - [`vet-feedback`](vet-feedback.md) — different skill (anti-sycophancy on review comments)

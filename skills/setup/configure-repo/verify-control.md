@@ -26,6 +26,7 @@ Wait for Yes or Skip. Do not generate on a silent default.
 | "`npm test` is enough — validate-ui will discover the rest" | RED: a notes app with `"dev": "vite"` left **Run locally** blank and wrote no drive file. The next agent invented clicks. |
 | "I'll fill Run locally later" | Empty rows are what shipped. Fill them in this decision. |
 | "A Playwright spec is the recipe" | Specs are durable tests. The recipe is how a cold agent launches and drives before those specs exist. |
+| "I'll install Playwright so the drive is repeatable" | A web UI is driven with kimi-webbridge in the user's browser. Do not create a browser harness for the recipe |
 
 **Done when (decision):** Yes or an explicit Skip.
 
@@ -35,7 +36,7 @@ Answer from the codebase; ask only what you cannot observe:
 
 - **Surface:** web UI, CLI/TUI, API, desktop, library. Pick the primary; note the rest.
 - **Run:** the repo's own documented start command. Ports, env, seed, auth.
-- **Drive:** existing harness first (Playwright, curl, PTY). Then a generic recipe.
+- **Drive:** kimi-webbridge for a web UI; curl for HTTP; a PTY for a CLI. Do not install a new browser harness.
 - **Observe:** screenshots, transcripts, response bodies, logs, DB/files.
 - **Isolate:** can two instances run side by side? If not, say so — do not
   double-drive a shared session.

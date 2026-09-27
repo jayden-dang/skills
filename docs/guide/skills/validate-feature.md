@@ -101,7 +101,7 @@ Had the browser refused to boot, that UI row would appear under **Open risks** b
 
 The git-ignored ledger is the connective tissue: it lets a fan-out of children share one record without polluting the committed tree, and it is what makes the final report a single honest accounting rather than a scatter of subagent messages.
 
-It is also why the skill is an orchestrator rather than a monolith. API validation, browser validation, and human-eyeball judgment are genuinely different disciplines with different tools — `curl` and a fresh `GET`, a Playwright session on Chromium, a hand-checked artifact. Rather than fold all three into one skill, `validate-feature` keeps its own job small — decide what to check and where each check lives — and delegates the exercising to a child built for that surface. The orchestrator owns the accounting; the children own the driving.
+It is also why the skill is an orchestrator rather than a monolith. API validation, browser validation, and human-eyeball judgment are genuinely different disciplines with different tools — `curl` and a fresh `GET`, a kimi-webbridge drive in the user's browser, a hand-checked artifact. Rather than fold all three into one skill, `validate-feature` keeps its own job small — decide what to check and where each check lives — and delegates the exercising to a child built for that surface. The orchestrator owns the accounting; the children own the driving.
 
 ## See also
 

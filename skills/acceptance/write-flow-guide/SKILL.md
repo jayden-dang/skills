@@ -1,6 +1,6 @@
 ---
 name: write-flow-guide
-version: 2.2.0
+version: 2.3.0
 description: Use when a finished feature needs a hands-on product walk in the real
   running app — visuals, feel, and eyeball edge cases. Produces a checkable
   flow guide (run file + HTML) plus its vet report. Not for
@@ -153,9 +153,9 @@ Order: artifacts → **run** vet → optional serve → dogfood only after clean
 
 4. **Agent dogfood — run it.** After a clean `vet-flow-guide` report (or a
    named override on open findings), REQUIRED SUB-SKILL: use `run-flow-guide`
-   on this run file. Before the report exists, do not name it at all.
-
-   The hand-off is a **route, not a gate**: a control measured on 2026-09-09
+   on this run file. Before the report exists, do not name it at all. That
+   drive is kimi-webbridge via `run-flow-guide` — do not author a Playwright
+   suite as the walk. The hand-off is a **route, not a gate**: a control measured on 2026-09-09
    drove the app unprompted rather than stopping at the artifact it had just
    written, so nothing here needs to argue it into verifying. What it does need
    is the address — verification done ad hoc produces no run file, no per-case
@@ -183,6 +183,7 @@ recorded as the user's explicit choice.*
 | "§4 coverage self-check already ran — skip vet" | Self-check is same-session authoring hygiene, not an isolated implementation-surface judgment. It is **not a substitute for vet**. |
 | "I'll name vet as next and stop — the controller will run it" | Step 2 **runs** `vet-flow-guide`; naming is not completion |
 | "Artifacts are on disk — authoring is done" | Done when the vet report exists, not when the JSON/HTML land |
+| "I'll add a Playwright suite so the walk is repeatable" | The walk is the run file, driven through kimi-webbridge |
 
 ## Red Flags
 

@@ -73,3 +73,13 @@ floor pass had no assigned severity (now Important when a token system
 exists); Step 3's "floors set severity" and Step 4's fixed contrast numbers
 had no precedence rule (now: 4.5:1 / 1.5:1 are defaults, an Approved
 design-tokens.md overrides).
+
+## v2.1.0 — the camera is kimi-webbridge (2026-09-27)
+
+v2.0.0 named the camera as "the repo's e2e harness, a browser MCP tool, or
+`npx playwright screenshot`". A public page could be shot headless and miss
+the signed-in session. The three sizes stay. They are set with
+`Emulation.setDeviceMetricsOverride` before each webbridge screenshot.
+Playwright is not a camera. A same-day control of v2.0.0 on a login-walled
+admin page already refused Playwright and kept 1440 / 768 / 375; this edit
+closes the public-page hole the wording still left open.

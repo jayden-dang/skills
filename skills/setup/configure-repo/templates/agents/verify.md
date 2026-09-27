@@ -31,7 +31,7 @@ Pass: `<observable>`. Fail: do not Drive; fix Launch or record the blocker.
 
 ## Drive
 
-Harness: `<Playwright | curl | PTY | other>` with **stable handles** (ARIA /
+Harness: `<kimi-webbridge | curl | PTY | other>` with **stable handles** (ARIA /
 data attributes / prompt strings / routes), not coordinates.
 
 Isolation: `<two instances can run | refuse to double-drive a shared instance>`.

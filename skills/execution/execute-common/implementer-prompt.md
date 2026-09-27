@@ -61,23 +61,22 @@ Subagent (general-purpose):
     5. **Render check — REQUIRED when your diff touches anything a browser
        renders** (HTML, CSS/styling, JSX/TSX/Vue/Svelte components,
        templates): run the app the brief names, open the changed surface,
-       and capture screenshot(s) to `.skills/<CODE>/task-[N]-render*.png` —
-       one suffix per state or viewport, and a new suffix after each fix,
-       never overwriting the shot that showed the problem (browser MCP tool,
-       the repo's e2e harness, or
-       `npx playwright screenshot --wait-for-timeout 1000 <url> <path>`).
+       and capture screenshot(s) with kimi-webbridge to
+       `.skills/<CODE>/task-[N]-render*.png` — one suffix per state or
+       viewport, and a new suffix after each fix, never overwriting the shot
+       that showed the problem. Follow that skill: one session for the task,
+       `navigate` with `newTab:true`, never `find_tab` `active:true`. A sized
+       shot sets the viewport first with `cdp` `Emulation.setDeviceMetricsOverride`
+       (`width`, `height`, `deviceScaleFactor` 1, `mobile` false), then
+       `screenshot`. Do not use Playwright or a fresh headless browser.
        Passing tests are not evidence of how it looks — Read the image and
        judge it against the brief and the page's existing visual language:
        placement, spacing, alignment, readable text. Fix what looks broken
-       or unintentional, then re-screenshot. A fresh context that stops on
-       a login wall is not a shot of the changed surface: WHEN that surface
-       is visible in the signed-in browser on this machine (`kimi-webbridge`,
-       or a browser MCP on that Chrome) and the repo has no saved
-       storageState, capture there. A login-wall file does not satisfy
-       Visual check, and passing tests do not make it the check. Record
-       `cannot render: <why>` only when no browser, no display, the server
-       will not start, or that signed-in browser is unavailable too — never
-       skip silently, and never label a login-wall shot as the check.
+       or unintentional, then re-screenshot. A login-wall file does not
+       satisfy Visual check. Record `cannot render: <why>` only when no
+       browser, no display, the server will not start, or kimi-webbridge
+       cannot connect — never skip silently, and never label a login-wall
+       shot as the check.
     6. Commit with a conventional subject that explains the change. Do **not**
        add `Implements:` / `Guards:` trailers.
     7. Self-review (below), then write your report.

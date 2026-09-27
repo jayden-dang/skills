@@ -1,20 +1,20 @@
 ---
 name: validate-ui
-version: 1.0.1
-description: Use to validate a frontend against its spec by driving it end-to-end (e2e)
-  in a real browser the way a user would — automated Playwright specs on
-  Chromium, asserting visible state and persistence across reload — before
-  merging. Covers the happy-path and edge-case flows that component unit tests
-  mock away. Also checks for and sets up a Playwright/Chromium harness, and
-  persists the local run command, when the repo has none.
+version: 2.0.0
+description: Use to validate a frontend against its spec by driving it in the user's
+  browser through kimi-webbridge — click, type, reload — and asserting visible
+  state and persistence, before merging. Not a Playwright harness. Covers the
+  flows component tests mock away. Also persists the local run command when
+  the repo has none.
 ---
 
 # Acceptance — UI
 
-Drive the app in a real browser the way a user will: click, type, submit,
-reload, and assert on what's actually on screen. Component tests mock the
-network and prove the component's own logic; this proves the wired stack —
-render, request, response, re-render, persistence.
+Drive the running app in the user's Chrome or Edge through kimi-webbridge.
+Click, type, submit, reload, and assert on what is actually on screen.
+Component tests mock the network; this proves the wired stack. A fresh
+headless browser is a different session — it is not this drive, and this
+skill does not install one.
 
 Invoked by `validate-feature` with a slice of the acceptance ledger, or run
 directly against a frontend change. Work through the ledger in order.
@@ -28,11 +28,11 @@ under `## Run locally (dev)`. *Done when: the app loads AND the commands are
 recorded.*
 
 **Preconditions — auth, data, environment.** If the flows need a logged-in
-session, a seeded account or fixture data, or environment configuration (env
-vars, a test database), discover how the repo provides them and record it in
-project.md — capture a reusable signed-in state (e.g. a saved `storageState`)
-rather than logging in by hand in every spec. A run that stalls on a login wall
-or an empty screen is testing the harness, not the feature.
+session, a seeded account, or environment configuration, discover how the repo
+provides them and record it in project.md. The signed-in browser is the
+session. Do not mint a `storageState` file for a headless runner. A run that
+stalls on a login wall stops for the user to sign in once in the drive's tab,
+then continues. An empty screen is not a pass.
 
 ### UI / accessibility standards (optional)
 
@@ -41,51 +41,63 @@ or an empty screen is testing the harness, not the feature.
 Consult when Approved; no-op when absent; suggest once
 `/define-system-doc standards/ui|accessibility` if material; never auto-invoke.
 
-## 2. Ensure an e2e harness
+## 2. The driver is kimi-webbridge
 
-If the repo already standardizes on a different e2e framework (Cypress,
-WebdriverIO, Nightwatch, a native mobile driver), write the flows in **that**
-harness. With no incumbent e2e harness, default to Playwright/Chromium.
+Follow the `kimi-webbridge` skill. One session name for this feature, on every
+command. First `navigate` uses `newTab:true`. `find_tab` with `active:true`
+borrows the user's tab — do not. If the daemon is down, start it. If the
+extension is not connected, relay the help page that skill names and stop.
+Do not install `@playwright/test`, Cypress, or any other browser harness for
+this pass, and do not drive the flow in a fresh headless browser because one
+is already in the repo. *Done when: the drive tab is open on the app through
+kimi-webbridge, or the extension-not-connected stop is on the record.*
 
-Check for a Playwright harness: `@playwright/test` installed and a
-`playwright.config.*` with a Chromium project. If present, use it. If not, set it up: install
-`@playwright/test`, add a config with a `chromium` project and the dev-server
-`baseURL`, a test directory, and record the run command
-(`… playwright test --project=chromium`) in project.md. *Done when: the
-Playwright command runs against Chromium — even with zero specs — and is
-recorded.*
+## 3. Drive each checklist flow
 
-## 3. Turn each checklist flow into a spec
+For each UI item in the ledger, act as a user. `snapshot` to find the control
+by role or name, then `click` or `fill`. Assert visible outcomes — text on
+screen, the input cleared, list order, an error message shown — and quote
+that text into the ledger. Where the criterion says "persists", `navigate` to
+the same URL again and assert the state survived. Where the check is what the
+server stored, `network` `start` before the action and `detail` before `stop`,
+and record status plus the response fact. Map requirement IDs in the ledger,
+not in application source.
 
-For each UI item in the ledger, write a Playwright spec that acts as a user:
-locate elements by role or label (`getByRole`, `getByLabel`), type and click,
-and assert on visible outcomes — text on screen, the input cleared, list order,
-an error message shown. Where the criterion says "persists", `page.reload()` and
-assert the state survives. Name tests for the user-visible behavior they prove;
-map to requirement IDs in the report or task footer — do not require ID tags in
-the Playwright source.
+## 4. Triage what breaks
 
-## 4. Run on Chromium and triage what breaks
+No failure is waved away. Re-drive the failing flow once:
 
-Run the specs headless on Chromium. No failure is waved away — but route it by
-an observable test. Re-run the failing spec:
-
-- **Deterministic failure on a user-visible assertion** — wrong text, wrong
+- **Deterministic failure on a user-visible outcome** — wrong text, wrong
   status, a missing element that should render — is a **product defect**.
-  REQUIRED SUB-SKILL: use `root-cause`; the failing spec is your red-capable loop.
-  Fix the root cause, keep the spec as the regression.
-- **Non-deterministic** (passes on re-run) or a **harness fault** — a locator
-  that no longer matches, a missing wait or race, absent seed state — is a
-  defect in the **spec**, not the product. Make it deterministic (role/label
-  locators, awaited assertions, real fixtures) and re-run.
+  REQUIRED SUB-SKILL: use `root-cause`. The red loop is this same webbridge
+  drive, not a new browser suite. A regression for the fix lands in the repo's
+  existing test stack via `test-first`.
+- **Non-deterministic** (passes on re-drive) or a **drive fault** — a ref that
+  no longer matches, a missing wait, absent seed state — is fixed in the
+  drive, not by standing up another harness.
 
-Only a deterministic failure on a real assertion goes to `root-cause`.
-*Done when: every UI flow passes in a fresh Chromium run.*
+Only a deterministic failure on a real outcome goes to `root-cause`.
+*Done when: every UI flow passes on a fresh webbridge drive.*
 
-## 5. Commit the specs
+## 5. Record the drive
 
-The specs are the durable artifact — commit them so they join the verify suite
-bound into the close receipt, with stale landing evidence falling back to that
-suite. Record any new run command in
-project.md and note results in the ledger. *Done when: specs committed, tagged,
-green.*
+Write `.skills/<CODE>/validate-ui.md`: one block per flow, the quoted screen
+text, the reload result, and pass or fail. That file is the acceptance
+evidence. Note results in the ledger. Do not commit a browser-harness suite
+from this pass. *Done when: the record is on disk and every flow in it passed.*
+
+## Rationalizations
+
+| Thought | Reality |
+|---|---|
+| "No Playwright, so I'll install it and CI can re-run" | This pass is the user's browser. Do not create that harness here |
+| "Headless is more reliable" | It is a different session. Flows that need the signed-in browser never run there |
+| "The repo already has a browser suite, so drive that" | Leave it. This acceptance drive is still kimi-webbridge |
+| "A login wall means the feature failed" | Stop for one sign-in in the drive tab, then continue |
+
+## Red Flags
+
+- Adding a browser test dependency or config for this pass
+- A pass recorded from a fresh headless browser
+- `find_tab` with `active:true`
+- A login-wall screenshot treated as the flow's result

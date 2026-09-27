@@ -115,7 +115,7 @@ if that surface does not exist.
 | Backend / API | `<command>` | `<e.g. GET http://localhost:<port>/health → 200>` |
 | Frontend | `<command>` | `<e.g. http://localhost:5173 serves the app>` |
 
-Browser E2E (Playwright, Chromium): `<e.g. pnpm exec playwright test --project=chromium>`
+Browser drive (kimi-webbridge): the user's Chrome or Edge. Do not add a Playwright suite for acceptance.
 
 ## Remote environments
 

@@ -90,9 +90,9 @@ Most features need both of the first two. Each child gets its slice of the ledge
 
 **`validate-api`** starts the server — and if `docs/agents/project.md` has no `## Run locally (dev)` entry, it discovers the command, confirms the server answers, and *writes the command back into project.md* so the next run is cheap. Then each checklist item becomes a real request, and the assertion is the **full expectation**: status, body shape (names, casing, id type), and — where the criterion says "persists" — a fresh `GET` reading it back; where it says "across restart", a restart and another read.
 
-**`validate-ui`** does the same for the frontend, ensuring a Playwright/Chromium harness exists (setting one up if not — done when the Playwright command runs against Chromium *even with zero specs*). Each flow becomes a spec that acts as a user: locate by role or label, type and click, and assert on **visible outcomes** — text on screen, the input cleared, list order, an error shown. Where the criterion says "persists", `page.reload()` and assert the state survives.
+**`validate-ui`** does the same for the frontend, in the user's browser through kimi-webbridge. It does not install a Playwright harness. Each flow is driven as a user: locate by role or name, type and click, and assert on **visible outcomes** — text on screen, the input cleared, list order, an error shown. Where the criterion says "persists", open the same URL again and assert the state survives.
 
-Both fix what breaks through `root-cause` — *the failing request or the failing spec is already your red-capable loop* — and both **promote the passing checks into committed, ID-tagged tests**, so they join the verify suite and guard the behavior forever after.
+Both fix what breaks through `root-cause`. API checks are promoted into the repo's existing tests. The UI acceptance evidence is the webbridge drive record; a UI defect's regression lands in that same existing stack, not in a new browser harness.
 
 ### 3. Close the loop
 
@@ -110,7 +110,7 @@ It scopes the happy path, the edge cases, **and the deliberate non-behaviors** �
 
 ## `run-flow-guide` — run the guide
 
-When the catalog already exists and the agent should drive every case: `write-flow-guide init` a run ledger first, confirm local origin (or explicit non-local consent), execute Try against the **product app** only, `write-flow-guide mark` with `saw` + `server` evidence, never open the guide HTML to tick localStorage boxes, route product defects through `root-cause`, re-drive with a regression sweep, and `write-flow-guide report` when finished. This is a **run**, not a durable Playwright suite — that remains `validate-ui`.
+When the catalog already exists and the agent should drive every case: `write-flow-guide init` a run ledger first, confirm local origin (or explicit non-local consent), execute Try against the **product app** only, `write-flow-guide mark` with `saw` + `server` evidence, never open the guide HTML to tick localStorage boxes, route product defects through `root-cause`, re-drive with a regression sweep, and `write-flow-guide report` when finished. This is a **run** through kimi-webbridge. `validate-ui` is the same driver used as the acceptance pass, not a separate Playwright suite.
 
 ## Next
 

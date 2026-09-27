@@ -55,7 +55,7 @@ Every test carries the ID of the requirement it verifies, using the conventions 
 
 | Layer | Convention |
 |---|---|
-| E2E (e.g. Playwright) | `{ tag: ['@CODE-N.M'] }` |
+| E2E in the repo's existing suite | the test's domain name — no new browser harness |
 | Unit (e.g. Vitest) | `annotate('CODE-N.M', 'requirement')`, or the ID in the test name |
 | Compiled languages (e.g. Rust) | `/// REQ: CODE-N.M` doc comment above the test |
 

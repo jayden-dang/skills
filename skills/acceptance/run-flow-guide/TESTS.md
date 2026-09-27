@@ -143,3 +143,12 @@ row plus a red flag in the user's own words.
 is `navigate` with `newTab:true` into session `inv-3`. The plan names
 `active:true` only to refuse it. `network` start → detail → stop and
 `snapshot` quotes stayed, which they already did on the control.
+
+## v2.3.0 — no Playwright rung (2026-09-27)
+
+v2.2.0 still listed "Headed Chromium / Playwright" as rung 3 and called the
+ladder a preference that skips a missing rung in silence. The acceptance drive
+and the render check were still allowed to fall through to a fresh browser.
+The rung is gone. Chrome extension tools remain only when the webbridge binary
+is absent. A missing driver is `blocked`, with the help page, not a headless
+substitute.

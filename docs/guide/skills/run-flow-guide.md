@@ -60,5 +60,5 @@ Earlier runs still burned browser tokens ticking guide checkboxes even though D1
 ## See also
 
 - [`write-flow-guide`](write-flow-guide.md) — author cases + render shell
-- [`validate-ui`](validate-ui.md) — committed Playwright
+- [`validate-ui`](validate-ui.md) — the kimi-webbridge acceptance drive
 - [`root-cause`](root-cause.md) — product defects mid-run

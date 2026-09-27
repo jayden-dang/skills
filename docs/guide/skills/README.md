@@ -98,7 +98,7 @@ Green units prove assertions pass. These prove the feature works.
 |---|---|---|
 | [`validate-feature`](validate-feature.md) | model | The orchestrator. Derives an ID-keyed checklist and dispatches by surface |
 | [`validate-api`](validate-api.md) | model | Drives the running backend as a real client. Promotes checks to tagged tests |
-| [`validate-ui`](validate-ui.md) | model | Drives the frontend in real Chromium via Playwright. Commits the specs |
+| [`validate-ui`](validate-ui.md) | model | Drives the frontend in the user's browser through kimi-webbridge. Records the drive |
 | [`write-flow-guide`](write-flow-guide.md) | model | The manual sibling. Builds a persistent, checkable HTML artifact |
 | [`vet-flow-guide`](vet-flow-guide.md) | model | Isolated implementation-surface judgment before dogfood; missing-situation findings |
 | [`run-flow-guide`](run-flow-guide.md) | model | Executes an existing guide from write-flow-guide in a real browser; run ledger with FE+BE evidence |

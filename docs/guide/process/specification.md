@@ -112,7 +112,7 @@ This is the subtlest thing in the phase.
 
 The audit-trace check verifies every `Approved` requirement is cited by at least one task footer. But **a footer is not a test.** A footer citation with no tagged test passes the audit-trace check today (Approved → W1 warning) and fails **E2** the moment the feature is marked `Implemented`.
 
-So `plan-tasks` requires more: every requirement ID must also appear in a **test annotation inside some task's steps** — `[SHELL-1.2]` in a Vitest title, `/// REQ: SHELL-1.2` on a Rust test, `@SHELL-1.2` in a Playwright tag. And it reconciles against the design's seam table: an ID the design *promised* to cover but the plan left untagged is **dropped coverage**. Add the test; never renumber.
+So `plan-tasks` requires more: every requirement ID must also appear in a **test annotation inside some task's steps** — `[SHELL-1.2]` in a Vitest title, `/// REQ: SHELL-1.2` on a Rust test, or the domain name of an existing end-to-end test. And it reconciles against the design's seam table: an ID the design *promised* to cover but the plan left untagged is **dropped coverage**. Add the test; never renumber.
 
 A guard or negative requirement counts only if a real test asserts it. When a behavior cannot be unit-tested in isolation, tag the e2e task or an existing test that already exercises it — one test may carry several IDs.
 

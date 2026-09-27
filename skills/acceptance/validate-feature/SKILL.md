@@ -1,12 +1,13 @@
 ---
 name: validate-feature
-version: 1.2.0
+version: 1.3.0
 description: Use before merging or finishing a branch, when a feature's unit tests are
   green but its user-facing behavior has not been driven through the running
   system as a real client — the acceptance / end-to-end pass over the happy
   paths and edge cases that pass in isolation yet break in practice.
-  Orchestrates API- and UI-surface validation and leaves committed tests
-  behind, unlike a manual product walk. Also when the repo has no
+  Orchestrates API- and UI-surface validation. The UI drive is the user's
+  browser through kimi-webbridge, not a new Playwright suite. A defect still
+  leaves a regression in the repo's existing tests. Also when the repo has no
   documented way to run the app locally.
 ---
 
@@ -60,7 +61,8 @@ features need both:
 - The change exposes an HTTP/RPC API a client calls →
   **REQUIRED SUB-SKILL: use `validate-api`**.
 - The change has a frontend a user drives →
-  **REQUIRED SUB-SKILL: use `validate-ui`**.
+  **REQUIRED SUB-SKILL: use `validate-ui`**. That drive is kimi-webbridge.
+  It does not install a browser harness.
 - The behavior is neither an API nor a UI (a CLI, a library, a batch/cron job) →
   drive it directly against the running system yourself, record each observed
   result in the ledger, and promote the passing checks into committed tests
@@ -75,7 +77,8 @@ same file.
 
 Report the checklist with each item's observed result. Any item you could not
 exercise is an open risk — name it; do not let it pass silently. Then hand back
-to `land-branch`. *Done when: every checklist item is observed green against
-the running system, each failure fixed with a regression test, and the durable
-tests committed so the close receipt can bind acceptance to HEAD and a stale
-landing falls back to verification.*
+to `land-branch`. The UI acceptance evidence is `.skills/<CODE>/validate-ui.md`
+from the webbridge drive. A product defect still gets its regression in the
+repo's existing test stack. *Done when: every checklist item is observed green
+against the running system, each failure fixed with a regression test in that
+existing stack, and the UI drive record is on disk.*

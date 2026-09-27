@@ -474,3 +474,11 @@ capture is a signed-in shot via `kimi-webbridge` or the browser MCP on that
 Chrome, path `.skills/BILL/task-4-render.png`. Headless Playwright is named
 only as invalid. `cannot render` is reserved for the signed-in browser being
 unavailable too.
+
+## v2.8.0 — Playwright is not a camera (2026-09-27)
+
+v2.7.0 still named `npx playwright screenshot` as a legal capture, and sent
+the agent to webbridge only when a fresh context hit a login wall. A public
+page with no login wall could still be shot headless. The render check now
+captures with kimi-webbridge, sets a sized viewport through
+`Emulation.setDeviceMetricsOverride`, and does not use Playwright.

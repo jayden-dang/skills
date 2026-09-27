@@ -1,6 +1,6 @@
 ---
 name: inspect-ui
-version: 2.0.0
+version: 2.1.0
 description: Use when a diff or branch touching browser-rendered surfaces (HTML,
   CSS/styling, JSX/TSX/Vue/Svelte components, templates) needs its visual and
   interaction quality judged in the real running app before merge — the live
@@ -68,8 +68,12 @@ screens around the change. Name which contract you hold. *Done when: the contrac
 
 ## 4. Drive, capture, judge
 
-Per changed surface, in the running app (the repo's e2e harness, a browser MCP
-tool, or `npx playwright screenshot`). Screenshots land under
+Per changed surface, in the running app, driven with kimi-webbridge (one
+session, `navigate` with `newTab:true`, never `find_tab` `active:true`). Set
+each viewport with `cdp` `Emulation.setDeviceMetricsOverride` before
+`screenshot`: 1440×900, 768×900, and 375×900 (`deviceScaleFactor` 1, `mobile`
+false). A shot of the window's current size is not one of those three. Do not
+use Playwright. Screenshots land under
 `.skills/<CODE>/inspect-ui/` (no CODE → `.skills/inspect-ui/<branch>/`); the
 working tree stays untouched.
 
@@ -121,6 +125,7 @@ three viewport shots plus one per exercised state, all read.*
 | "Tests are green, so it renders fine" | The tests assert strings and DOM state, not pixels. The invisible-text bug passes a `.match()` test |
 | "Both classes probably compose — different properties" | Produce the composed state and look. Declaration order is not a verdict |
 | "Screenshot captured — attach and move on" | An unread screenshot is not evidence. Read it, then judge |
+| "Playwright is the reliable camera" | The review drives the user's browser through kimi-webbridge, at the three set sizes |
 
 ## Red Flags
 

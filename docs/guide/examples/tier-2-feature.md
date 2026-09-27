@@ -279,7 +279,7 @@ When the version ships, `/cut-release` assembles the changelog by grouping commi
 - Unsaved editor state survives a module switch — SHELL-1.3
 ```
 
-Nobody wrote those lines. They were derived, and they are derivable only because `SHELL-1.3` is the same string in the requirement, the Playwright tag, and the commit trailer.
+Nobody wrote those lines. They were derived, and they are derivable only because `SHELL-1.3` is the same string in the requirement and the task that cites it.
 
 `land-branch` §8 reads `Status:`. Still `Approved` or `In-progress` with tasks complete → `realign-spec` (forgot-net) to `Implemented`. Already `Implemented` → skip.
 

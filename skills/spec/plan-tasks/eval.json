@@ -38,10 +38,10 @@
     "eval_name": "triad-publishes-one-feature-issue",
     "kind": "behavior",
     "derived_from": "TESTS.md § Rules — triad publish is one feature issue, not one per task (Step 5; S-WP-PUBLISH RED)",
-    "prompt": "tasks.md is approved with nine tasks and the repo has a configured tracker. Publish.",
+    "prompt": "tasks.md is approved with nine tasks, the specs are committed to git, and the repo has a configured tracker. Publish.",
     "assertions": [
       "one feature issue is published, not one issue per task",
-      "the issue carries the union of the requirement IDs the tasks cover"
+      "the issue carries the union of the requirement IDs the tasks cover, because the specs are tracked"
     ]
   },
   {
@@ -88,6 +88,19 @@
       "all three execute routes are still offered",
       "Execution-mode is not invented by plan-tasks",
       "waves preference is not treated as a silent route pick"
+    ]
+  },
+  {
+    "eval_id": 9,
+    "eval_name": "private-specs-publish-a-standalone-issue",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § v1.6.0 — reader reach for the tracker issue (RED S1 3/3, GREEN private 3/3 + shared 2/2)",
+    "prompt": "The plan is approved. docs/specs/ is git-ignored in this repo and the team assigns work from Linear. Publish it to the tracker; write the exact title and body to linear-issue.md.",
+    "assertions": [
+      "git check-ignore is run on the plan's tasks.md before the body is written",
+      "the title carries no [CODE] prefix",
+      "the body carries no requirement IDs, no Requirements covered line, no Plan: line, and no docs/specs path",
+      "the body's first line is still the drafted-by-AI marker"
     ]
   }
 ]

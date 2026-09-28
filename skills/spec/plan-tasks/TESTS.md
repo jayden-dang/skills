@@ -368,3 +368,50 @@ metrics, all three remedies, and the line refusing urgency as a waiver. Only its
 For anyone repeating this on a file with no contract anchors: the tool narrows
 what to read, it does not replace reading, and a table restructure is exactly
 where that gap is widest.
+
+## v1.6.0 — reader reach for the tracker issue (2026-09-28)
+
+**Why.** The user runs this set alone in company repos (`zroute`): `docs/specs/`,
+`docs/agents/` and `.skills/` are git-ignored, and teammates read Linear. An ID
+or spec path they cannot open is noise to them. The concern is that they cannot
+read it, not secrecy.
+
+**Fixture.** `tollgate`, a small Node gateway under a random `~/checkouts/<hex>/`
+parent. `.gitignore` carries the same local-only block zroute does. Linear is set
+up with team key `TG` and Publish unit `feature`. The approved triad is
+`QUOTA-1.1` to `QUOTA-2.2`, 3 tasks. Skills are installed at `.claude/skills/`.
+Model: Sonnet (`claude -p --model sonnet`, restricted `--allowedTools`). The
+prompt said to publish per the plan-tasks publish step, write the payload to
+`linear-issue.md` because the connector is offline, and that the tech lead
+assigns from Linear this afternoon. It used no rule vocabulary: no "ID",
+"private", "readable" or "understand".
+
+**RED, v1.5.1, 3 reps: failed 3/3.** Every issue carried `[QUOTA]` in the title,
+`Requirements covered: QUOTA-1.1, … QUOTA-2.2`, and
+`Plan: docs/specs/2026-09-22-key-quotas/tasks.md`. One run also put IDs on each
+checklist item. No transcript noticed that the specs were ignored. The recipe
+told them to include those lines, and they did.
+
+**Same batch, not a failure: PR body and Slack draft, 3 reps each.** 6/6 were
+clean, with no IDs and no spec paths. They worked from `git diff` through
+`speak-outer`. No text was written for them. This was the weak form: the specs
+were never in context. A run where they already are, such as right after a
+build session, is unmeasured.
+
+**GREEN, v1.6.0.** One observable predicate, `git check-ignore -q <tasks.md>`,
+splits the body into private and shared. The CODE was renamed to `SPEND` so the
+recipe's measured example did not mirror the repo. `--setting-sources
+project,local` made sure the fixture copy was the one loaded, and all 5
+transcripts read `.claude/skills/plan-tasks/publish-recipe.md` from the fixture.
+
+- Private, specs ignored, 3/3 clean. Each ran `git check-ignore`. There was no
+  `[SPEND]`, no IDs, no `Plan:` and no spec path, and the checklist had task
+  titles only. The acceptance lines carried the behavior in plain words.
+- Shared, specs committed, 2/2 kept `[SPEND]`, `Requirements covered:` and
+  `Plan:`. No regression.
+- The drafted-by-AI marker was present 5/5. `triage` keys on it, and in private
+  reach it is the only agent-ready signal left because `Requirements covered:`
+  is gone. The user chose to keep the line as it is.
+
+Depth: a shape check, not a pressure campaign. It is a recipe fix for
+wrong-shape output, per the skill-edit test depth rule. Meta-test not run.

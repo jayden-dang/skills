@@ -2,6 +2,23 @@
 
 ## Unreleased
 
+### `/forge-goal` v1.0.0 — a goal that ends (2026-10-01)
+
+New user-invoked discovery skill beside `/forge-prompt`. It turns an outcome
+into one launch-ready block for `/goal` in Claude Code, Codex, or any agent
+CLI: every done and guard line is a command plus the output that proves it,
+probed read-only before hand-over, and the bound and stop calls sit inside the
+block as `BLOCKED:` / `STOPPED:` lines. Iron Law: every line is settled by
+output the run prints, because Claude Code's evaluator reads only the
+transcript.
+
+RED (Sonnet, 6 real `claude -p` sessions, 3 fixtures): no bound 6/6; stop
+written beside the condition 6/6; zero questions asked 6/6 with an invented
+400/500 ms bar; a mobile criterion checked "by loading the page"; an existing
+`npm run bench` ignored; three outcomes bundled. GREEN 6/6 on all seven; two
+REFACTOR rounds closed unrun checks reported as holding with a REQUIRED
+`Probes` slot. Evidence: `skills/discovery/forge-goal/TESTS.md`.
+
 ### Skill length — 300-line ceiling, 200 suggested (2026-09-17)
 
 `lint-skill-length.py` now fails a `SKILL.md` past **300** lines and only notes

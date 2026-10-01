@@ -1,7 +1,7 @@
 # AGENTS.md — Agent Behavior Constitution
 
-> A-to-Z agentic development skill set · **93 skills across 11 categories**
-> (75 engineering + 18 Personal OS) · `jayden-dang/skills` · v1.0.0
+> A-to-Z agentic development skill set · **94 skills across 11 categories**
+> (76 engineering + 18 Personal OS) · `jayden-dang/skills` · v1.0.0
 
 This file is the single source of truth for agent behavior when working with this
 skill set on any harness. Read it first, before any skill, before any action.
@@ -87,6 +87,7 @@ carries a checklist, create one todo per item.
 | Situation | First move |
 |---|---|
 | User wants help defining what they actually want, or a prompt to start a fresh session with | suggest `/forge-prompt` (user-run) |
+| User wants an agent to run unattended toward a condition (`/goal` in Claude Code or Codex) | suggest `/forge-goal` (user-run) |
 | "Build X" / "add X" / "can we support X" | `frame-change` — before plan mode, before scaffolding |
 | "This is broken", a clear unexpected behavior | `root-cause` — before any fix |
 | Broken on prod / staging / a remote env | `debug-remote` — evidence pack, then `root-cause` |
@@ -106,13 +107,13 @@ skill's workflow only when the user has explicitly told you to. A waiver of
 
 **User-invoked skills** carry `disable-model-invocation: true` in frontmatter.
 Agents MUST NOT auto-invoke these — name them for the user to run (`/triage`,
-`/pathfind`, `/zone-mode`). All 30 of them:
+`/pathfind`, `/zone-mode`). All 32 of them:
 
 `zone-mode`, `author-skills`, `reflect`, `teach-pack` · `bootstrap-repo`, `configure-repo` ·
-`deepen-codebase`, `forge-prompt`, `interpret-session`, `pathfind`, `tour-system`,
+`deepen-codebase`, `forge-goal`, `forge-prompt`, `interpret-session`, `pathfind`, `tour-system`,
 `work-the-problem` ·
 `brief-team`, `select-sample`, `study-change`, `teach-build`, `no-comments` · `assess-pivot-impact`,
-`define-project`, `define-system-doc` · `cut-release` · `assess-milestone`,
+`define-project`, `define-system-doc` · `cut-release`, `tend-pr` · `assess-milestone`,
 `map-features`, `publish-issues`, `record-debt`, `refresh-roadmap-status`,
 `scan-architecture`, `triage`, `write-handoff` · Personal OS: `life-setup`.
 
@@ -473,6 +474,8 @@ This repo is configured for a spec-driven skill set.
   `assess-observability`
 - Turn a vague ask into a prompt for a fresh session: `/forge-prompt` (user-run;
   interviews, then hands over one block — it names no next step by design)
+- Turn an outcome into a launch-ready `/goal` for an unattended run (Claude Code,
+  Codex, any agent CLI): `/forge-goal` (user-run)
 - Capture a conversation, spec, or idea into tracker issues: `/publish-issues`
 - Multi-session decision map (Layer 0 fog): `/pathfind`
 - Learn a codebase/capability via path-verified tours: `/tour-system`

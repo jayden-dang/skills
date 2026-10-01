@@ -9,6 +9,7 @@ zone-mode                    session gate and router, injected on startup/clear/
       │
       ▼
 /forge-prompt (optional)    vague ask → one prompt block for a fresh session (names no lane)
+/forge-goal (optional)      outcome → one /goal block for an unattended run (checks, guards, bound, stops)
       │                      (skip when root-cause / frame-change / amend-feature already clear)
       ▼
 frame-change                   clarify-decisions + define-domain; research/run-spike detours;

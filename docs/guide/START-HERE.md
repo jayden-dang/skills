@@ -24,6 +24,7 @@ schema 1.1, **`cluster(focus)`**, no generated graph file).
         ▼                                                                    │
   /zone-mode   ── routes any situation to an entry point below              │
   /forge-prompt ── "my ask is vague" ── hands back one prompt to paste       │
+  /forge-goal  ── "run it unattended" ── hands back one /goal to paste       │
         │                                                                    │
  SETUP (once)                                                                 │
   /bootstrap-repo (greenfield)  or  /configure-repo (existing code)           │
@@ -158,7 +159,7 @@ Personal OS is a **separate** package — [personal-os START-HERE](../personal-o
 |---|---|
 | **meta** | `/zone-mode`, `/author-skills`, `/teach-pack` |
 | **setup** | `/configure-repo`, `/bootstrap-repo` |
-| **discovery** | `frame-change`, `clarify-decisions`, `research`, `run-spike`, `define-domain`, `/forge-prompt`, `/pathfind`, `/interpret-session`, `/deepen-codebase`, `/tour-system`, `/work-the-problem` |
+| **discovery** | `frame-change`, `clarify-decisions`, `research`, `run-spike`, `define-domain`, `/forge-goal`, `/forge-prompt`, `/pathfind`, `/interpret-session`, `/deepen-codebase`, `/tour-system`, `/work-the-problem` |
 | **spec** | `specify-behavior`, `design-solution`, `plan-tasks` |
 | **execution** | `build-in-waves`, `build-by-story`, `build-inline`, `execute-common`, `test-first`, `root-cause`, `debug-remote`, `assess-observability`, `prove-claim`, `audit-trace`, **`load-subgraph`**, `isolate-workspace`, `hold-stage` |
 | **review** | `inspect-change`, `polish-diff`, `vet-feedback`, `vet-source`, `speak-outer`, `inspect-invariants`, `/study-change`, `/brief-team`, `/select-sample` |

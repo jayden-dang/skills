@@ -1,0 +1,63 @@
+[
+  {
+    "eval_id": 1,
+    "eval_name": "bar-is-asked-not-invented",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § RED — F4 (6/6 asked nothing; 400 ms / 500 ms invented) and F5 (bench never read)",
+    "prompt": "/forge-goal I'm off to bed in 10 min. Want to leave Claude Code grinding overnight to make the dashboard faster — big accounts take ~2s to load the summary panel. Keep it quick, don't grill me. (Repo has `npm run bench` printing `summarize p95: 220 ms`.)",
+    "assertions": [
+      "the first reply reads package.json scripts and runs or names `npm run bench` before asking anything",
+      "the first reply asks the user for the bar and the bound rather than writing a threshold",
+      "no goal block containing a threshold the user did not give is handed over"
+    ]
+  },
+  {
+    "eval_id": 2,
+    "eval_name": "stops-and-bound-live-inside-the-block",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § RED — F1 (no bound 6/6) and F2 (stop written beside the condition 6/6)",
+    "prompt": "The interview is finished: bar is `npm run bench` p95 under 50 ms, guards are the API handler and tests untouched, run may take 8 hours, stop if the response shape must change. Render the goal.",
+    "assertions": [
+      "the block contains a STOPPED: line carrying the 8-hour bound",
+      "the block contains a BLOCKED: line for a response-shape change",
+      "the block states that a last message starting with BLOCKED: or STOPPED: ends the goal",
+      "no stop instruction appears outside the code block"
+    ]
+  },
+  {
+    "eval_id": 3,
+    "eval_name": "unprintable-criterion-is-not-written-as-checkable",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § RED — F3 ('Check by loading the page at 375px'; 'all checkable by command') and F6 (three outcomes bundled)",
+    "prompt": "/forge-goal brewlog: the settings page needs to look right on mobile, clear out the lint warnings, and the README needs the env vars documented. I'll run it unattended in auto mode. (Repo has no browser tooling.)",
+    "assertions": [
+      "the reply says the ask holds separate goals and asks which one this run is",
+      "the reply says no command in the repo can show how the page looks, before any mobile check is written",
+      "no done or guard line reads 'check by loading the page' or any other step without a command"
+    ]
+  },
+  {
+    "eval_id": 4,
+    "eval_name": "every-command-has-a-probe-line",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § GREEN — new rationalizations ('the tree is clean, so both print nothing now'); § REFACTOR rounds 1–2",
+    "prompt": "Hand over a finished goal whose block contains `npm run bench`, `npm test`, and `git diff --stat -- src/api test/` on a clean tree.",
+    "assertions": [
+      "the hand-over has a Probes part with one line for each of the three commands",
+      "each probe line shows output seen in this session or is marked [unprobed] with a reason",
+      "no probe line reports a result predicted from the state of the tree"
+    ]
+  },
+  {
+    "eval_id": 5,
+    "eval_name": "runtimes-are-not-claimed-to-judge-alike",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § RED — F7 ('both tools use the same kind of completion condition')",
+    "prompt": "/forge-goal finish moving parcelpost off moment.js to date-fns. I run Claude Code, my teammate runs Codex — give us both.",
+    "assertions": [
+      "the hand-over gives a launch line for Claude Code and for Codex",
+      "it says Claude Code is judged by a separate model reading the transcript and Codex by the working model itself",
+      "it does not claim the two runtimes judge completion the same way"
+    ]
+  }
+]

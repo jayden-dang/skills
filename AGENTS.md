@@ -87,7 +87,7 @@ carries a checklist, create one todo per item.
 | Situation | First move |
 |---|---|
 | User wants help defining what they actually want, or a prompt to start a fresh session with | suggest `/forge-prompt` (user-run) |
-| User wants an agent to run unattended toward a condition (`/goal` in Claude Code or Codex) | suggest `/forge-goal` (user-run) |
+| User wants an agent to keep working unattended until something is verifiably done (`/goal`, an overnight run) | suggest `/forge-goal` (user-run) |
 | "Build X" / "add X" / "can we support X" | `frame-change` — before plan mode, before scaffolding |
 | "This is broken", a clear unexpected behavior | `root-cause` — before any fix |
 | Broken on prod / staging / a remote env | `debug-remote` — evidence pack, then `root-cause` |
@@ -474,8 +474,8 @@ This repo is configured for a spec-driven skill set.
   `assess-observability`
 - Turn a vague ask into a prompt for a fresh session: `/forge-prompt` (user-run;
   interviews, then hands over one block — it names no next step by design)
-- Turn an outcome into a launch-ready `/goal` for an unattended run (Claude Code,
-  Codex, any agent CLI): `/forge-goal` (user-run)
+- Define what an unattended run should achieve and forge it into one goal prompt
+  with a verify-every-round loop, for any agent: `/forge-goal` (user-run)
 - Capture a conversation, spec, or idea into tracker issues: `/publish-issues`
 - Multi-session decision map (Layer 0 fog): `/pathfind`
 - Learn a codebase/capability via path-verified tours: `/tour-system`

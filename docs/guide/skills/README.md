@@ -34,7 +34,7 @@ Turn an idea into an agreed shape. Produces no code.
 
 | Skill | Invocation | What it does |
 |---|---|---|
-| [`forge-goal`](forge-goal.md) | user | Outcome → one launch-ready `/goal` block for Claude Code, Codex, or any agent CLI: probed checks, guards, a bound, and `BLOCKED:` / `STOPPED:` lines a separate judge can settle |
+| [`forge-goal`](forge-goal.md) | user | Native-language interview that finds what you want an unattended run to achieve → one paste-ready goal prompt for any agent: probed checks, guards, a verify-every-round loop, a fresh final audit, and `BLOCKED:` / `STOPPED:` lines |
 | [`forge-prompt`](forge-prompt.md) | user | Vague ask → one paste-ready prompt block for a fresh session, via a question-by-question interview; names no next step |
 | [`frame-change`](frame-change.md) | model | **The hard gate.** No code until the ceremony tier is stated out loud; neighbors via `load-subgraph` schema 1.1 |
 | [`clarify-decisions`](clarify-decisions.md) | model | The interview primitive; nested reuses retrieval package, standalone loads once |

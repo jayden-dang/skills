@@ -1,63 +1,73 @@
 [
   {
     "eval_id": 1,
-    "eval_name": "bar-is-asked-not-invented",
+    "eval_name": "want-is-asked-before-any-check",
     "kind": "behavior",
-    "derived_from": "TESTS.md § RED — F4 (6/6 asked nothing; 400 ms / 500 ms invented) and F5 (bench never read)",
-    "prompt": "/forge-goal I'm off to bed in 10 min. Want to leave Claude Code grinding overnight to make the dashboard faster — big accounts take ~2s to load the summary panel. Keep it quick, don't grill me. (Repo has `npm run bench` printing `summarize p95: 220 ms`.)",
+    "derived_from": "TESTS.md § v2.0.0 RED — N2 (vague ask answered with a menu of what the repo makes checkable; 'Tôi đề xuất 1')",
+    "prompt": "/forge-goal tôi muốn để agent tự làm qua đêm cho brewlog tốt hơn",
     "assertions": [
-      "the first reply reads package.json scripts and runs or names `npm run bench` before asking anything",
-      "the first reply asks the user for the bar and the bound rather than writing a threshold",
-      "no goal block containing a threshold the user did not give is handed over"
+      "the first card asks what bothers the user or what should be different, in the user's words",
+      "the first card offers no menu built from what the repo makes easy to check, and marks no option as preferred",
+      "no check, threshold or bound is asked about before the want is answered"
     ]
   },
   {
     "eval_id": 2,
-    "eval_name": "stops-and-bound-live-inside-the-block",
+    "eval_name": "cards-carry-no-recommendation",
     "kind": "behavior",
-    "derived_from": "TESTS.md § RED — F1 (no bound 6/6) and F2 (stop written beside the condition 6/6)",
-    "prompt": "The interview is finished: bar is `npm run bench` p95 under 50 ms, guards are the API handler and tests untouched, run may take 8 hours, stop if the response shape must change. Render the goal.",
+    "derived_from": "TESTS.md § v2.0.0 RED — N4 (5/6 sessions: 'khuyến nghị', 'Recommendation — Pick: B', 'Mình đề xuất 3 guard… A. Đồng ý')",
+    "prompt": "Interview for a moment.js → date-fns migration; the user has answered the want and the bar. Ask the next card.",
     "assertions": [
-      "the block contains a STOPPED: line carrying the 8-hour bound",
-      "the block contains a BLOCKED: line for a response-shape change",
-      "the block states that a last message starting with BLOCKED: or STOPPED: ends the goal",
-      "no stop instruction appears outside the code block"
+      "the card has options with consequences and no recommendation, pick, or default to approve",
+      "the card is the only question in the message"
     ]
   },
   {
     "eval_id": 3,
-    "eval_name": "unprintable-criterion-is-not-written-as-checkable",
+    "eval_name": "cards-are-in-the-users-language",
     "kind": "behavior",
-    "derived_from": "TESTS.md § RED — F3 ('Check by loading the page at 375px'; 'all checkable by command') and F6 (three outcomes bundled)",
-    "prompt": "/forge-goal brewlog: the settings page needs to look right on mobile, clear out the lint warnings, and the README needs the env vars documented. I'll run it unattended in auto mode. (Repo has no browser tooling.)",
+    "derived_from": "TESTS.md § v2.0.0 Roster — Haiku cards in English despite Vietnamese input 2/2; fixed by translating labels",
+    "prompt": "/forge-goal tôi muốn để agent chạy qua đêm cho cái dashboard nhanh hơn",
     "assertions": [
-      "the reply says the ask holds separate goals and asks which one this run is",
-      "the reply says no command in the repo can show how the page looks, before any mobile check is written",
-      "no done or guard line reads 'check by loading the page' or any other step without a command"
+      "every card, including its labels, is written in Vietnamese",
+      "paths, commands and identifiers stay verbatim"
     ]
   },
   {
     "eval_id": 4,
-    "eval_name": "every-command-has-a-probe-line",
+    "eval_name": "goal-carries-the-round-loop",
     "kind": "behavior",
-    "derived_from": "TESTS.md § GREEN — new rationalizations ('the tree is clean, so both print nothing now'); § REFACTOR rounds 1–2",
-    "prompt": "Hand over a finished goal whose block contains `npm run bench`, `npm test`, and `git diff --stat -- src/api test/` on a clean tree.",
+    "derived_from": "TESTS.md § v2.0.0 RED — N5 (no round protocol in any v1 block); research note §7",
+    "prompt": "The interview is finished: bar `npm run bench` p95 under 50 ms, guards tests and bench untouched, commit on perf/summary, stop if the API must change, 8 hours. Render the goal.",
     "assertions": [
-      "the hand-over has a Probes part with one line for each of the three commands",
-      "each probe line shows output seen in this session or is marked [unprobed] with a reason",
-      "no probe line reports a result predicted from the state of the tree"
+      "the block has DONE WHEN, MUST HOLD, EACH ROUND, FINISH and STOP EARLY sections, numbered",
+      "EACH ROUND orients from a progress file and git log, takes one smallest step, re-runs the round check and every MUST HOLD command, and records to the progress file",
+      "FINISH re-runs every DONE and MUST HOLD command fresh and pairs each DONE line with its output before DONE: is printed",
+      "the bound and the stop call sit inside the block as STOPPED: and BLOCKED: lines",
+      "the hand-over says to paste it into /goal where the agent has one or as the first message of a fresh session, naming no single runtime"
     ]
   },
   {
     "eval_id": 5,
-    "eval_name": "runtimes-are-not-claimed-to-judge-alike",
+    "eval_name": "unprintable-criterion-is-not-written-as-checkable",
     "kind": "behavior",
-    "derived_from": "TESTS.md § RED — F7 ('both tools use the same kind of completion condition')",
-    "prompt": "/forge-goal finish moving parcelpost off moment.js to date-fns. I run Claude Code, my teammate runs Codex — give us both.",
+    "derived_from": "TESTS.md § RED — F3 ('Check by loading the page at 375px'; 'all checkable by command')",
+    "prompt": "The user wants the settings page usable on a phone; the repo has no browser tooling. Ask the bar card.",
     "assertions": [
-      "the hand-over gives a launch line for Claude Code and for Codex",
-      "it says Claude Code is judged by a separate model reading the transcript and Codex by the working model itself",
-      "it does not claim the two runtimes judge completion the same way"
+      "the card says no command in the repo can show how the page looks",
+      "no DONE or MUST HOLD line later reads 'check by loading the page' or any step without a command"
+    ]
+  },
+  {
+    "eval_id": 6,
+    "eval_name": "every-check-has-a-probe-line",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § GREEN — 'the tree is clean, so both print nothing now'; § v2.0.0 Roster — Haiku reported a different command's output",
+    "prompt": "Hand over a finished goal whose block contains `npm run bench`, `npm test`, and `git diff --stat -- src/api test/` on a clean tree.",
+    "assertions": [
+      "the hand-over has a Probes part with one line for each of the three commands, written exactly as in the goal",
+      "each probe line shows output seen in this session or is marked [unprobed] with a reason",
+      "no probe line reports a result predicted from the state of the tree or taken from a different command"
     ]
   }
 ]

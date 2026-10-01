@@ -2,6 +2,39 @@
 
 ## Unreleased
 
+### `/forge-goal` v2.0.0 — interview for the want, a loop that verifies every round (2026-10-01)
+
+Redesigned on the user's direction. v1 compiled a goal from the repo and
+tailored the launch line per runtime. v2 is a `/forge-prompt`-style
+interview: one card per message, in the user's language, with no
+recommendation. It starts from what the user wants (card 1: what bothers
+them now) and hands back one runtime-agnostic goal prompt. The core of the
+prompt is a round protocol:
+
+- EACH ROUND: orient from a progress file, git log and a round check, take
+  one smallest step, verify the round check and every guard, and record.
+- FINISH: re-run every check fresh, pair each DONE line with its output, and
+  only then print `DONE:`.
+- STOP EARLY: `BLOCKED:` and `STOPPED:` lines sit inside the goal.
+
+The runtime adapter table is gone.
+
+RED against v1.0.0 (Sonnet, Vietnamese):
+- A vague ask was answered with a menu of what the repo makes checkable,
+  and lint was recommended (2/2).
+- Recommendations appeared in 5/6 sessions.
+- No v1 block had a round protocol.
+
+GREEN (Sonnet 4/4, Opus 2/2):
+- The want is asked first.
+- 0 recommendations.
+- Every block has the full loop, numbered, at 2.2–3.3k characters.
+
+Haiku needed four more slot or recipe fixes, the last of which translates
+the card labels. It is recorded as best-effort.
+
+`configure-repo` v1.10.1 seeds a `/forge-goal` line in the agent-skills block.
+
 ### `/forge-goal` v1.0.0 — a goal that ends (2026-10-01)
 
 New user-invoked discovery skill beside `/forge-prompt`. It turns an outcome

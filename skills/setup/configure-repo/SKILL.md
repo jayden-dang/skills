@@ -1,6 +1,6 @@
 ---
 name: configure-repo
-version: 1.10.0
+version: 1.10.1
 description: Sets up docs/agents config so this skill set can run in an existing repo.
 disable-model-invocation: true
 ---

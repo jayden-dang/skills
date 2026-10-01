@@ -99,3 +99,64 @@ and disclosed, so no text added.
 | Read-only probe before hand-over | D3 (user-approved 2026-10-01); RED parcelpost showed the value — `npm test` could not run |
 | One block for every runtime, written for the strictest judge | F7 + research conclusion 5: an outside judge's checks also satisfy Codex's self-audit |
 | Channel borrowed from `clarify-decisions` | One home per rule (duplication sweep), as `forge-prompt` does |
+
+---
+
+# v2.0.0 — redesign: a forge-prompt-style interview around a round loop (2026-10-01)
+
+**User direction (verbatim, translated):** the skill must help the user define what they want in
+their native language, then produce one complete prompt to paste into a fresh session on any agent
+— "don't care about the runtime"; focus on the goal structure, because it runs long-term, so
+verifying or testing every round is crucial; "the goal loop structure is the key". v1's runtime
+adapter table (and the unshipped v1.1.0 WIP extending it to Qwen / Cursor / Kimi / Gemini / opencode
+/ Grok) was dropped. The other-CLI research stays in `.skills/research/2026-10-01-goal-prompt.md`.
+
+Loop sources (research note §7): A-HARNESS orient-from-progress-file-and-git, one feature at a time,
+"only mark… passing after careful testing", end with commit + progress update; CX-GOALS checkpoints
++ progress log; CX-TPL requirement→evidence completion audit; Qwen goals.md "a check that ran long
+before completion… has to run again".
+
+## RED — v1.0.0 (the edit baseline), Sonnet, Vietnamese asks, 6 sessions
+
+| # | Failure | Rate | Verbatim |
+|---|---|---|---|
+| N2 | Vague ask answered with a menu of what the repo makes checkable, not the user's want | brewlog 2/2 | options "Dọn lint / README khớp code / Chặn path traversal"; "Tôi đề xuất **1**, vì đã có sẵn lệnh kiểm tra" — the persona wanted the phone layout |
+| N4 | Recommendation or pre-filled default in cards | 5/6 sessions, 2–6 hits each | "A (khuyến nghị)", "Recommendation — Pick: B", "Mình đề xuất 3 guard… A. Đồng ý" |
+| N5 | Final prompt has no round protocol (orient / verify each round / progress log / fresh final audit) | every v1 block (structural) | — |
+| N6 | Prompt bound to one runtime | every v1 block | "Claude Code: `/goal <block>`. Nên chạy ở auto mode…" |
+| — | Native language, one card per message | already 4/4 on Sonnet | no text written for Sonnet; see Haiku below |
+
+## GREEN — v2.0.0, Sonnet, 4 full interviews (brewlog vague ×2, tallyboard, parcelpost)
+
+| | RED | GREEN |
+|---|---|---|
+| Want asked first on a vague ask | 0/2 | 2/2 ("Hiện tại điều gì ở brewlog làm bạn khó chịu…?"), no menu |
+| Recommendations (grep `khuyến nghị|đề xuất|recommend|Pick:`) | 5/6 sessions | 0/4 |
+| EACH ROUND + FINISH + progress file in the block | 0 | 4/4 |
+| Runtime-agnostic "Run it" line | 0 | 4/4 |
+| User-given guards / stops kept as their own lines | — | 4/4 (parcelpost: 4 `BLOCKED:` lines, one per stop the user named) |
+| Block size | — | 2,233–3,257 chars, numbered |
+
+REFACTOR: brewlog-2 argued `git log` (an orient command) "không cần `[unprobed]`" → the Probes slot
+now covers DONE, MUST HOLD and round-check commands only.
+
+## Roster
+
+**Opus** (2 full interviews): compliant throughout — Vietnamese, one card, want first, no pick; it
+pinned "output identical" with a SHA-256 of the current output on 250k rows, and surfaced a
+conflict between "no width > 375px" and "desktop unchanged" as its own card.
+
+**Haiku** (v2.0.0 first text, 2 sessions): cards in English despite Vietnamese input 2/2; three
+cards stacked in one message 1/2; method in the round step ("optimize summarize() logic
+(single-pass aggregation…)"); an invented "Commit on main"; `npm start` offered as a check.
+Fixes, each a slot or recipe item rather than prose: "One card per message, in the language the
+user writes in"; card 3 "a command that exits"; pre-render check gains "traces to an answer — one
+that does not is invented" and "no line says how to do the work"; red flag for stacked / wrong-
+language cards. Rerun (2 sessions): one card per message, no method lines, no invented commit;
+still English labels in brewlog. Diagnosis: the card template's English labels were copied. Fix:
+"with every label translated into the user's language". Rerun turn 1 ×2: Vietnamese 2/2, want first.
+Residual on Haiku, accepted and recorded: example lists in the want card, pre-filled scope hints in
+Territory ("Can touch: …"), weak round checks (`git diff --stat`). The skill is user-run in a main
+session; Sonnet and Opus are the shipping roster, Haiku is best-effort.
+
+Raw logs: `.skills/forge-goal-runs/` (git-ignored).

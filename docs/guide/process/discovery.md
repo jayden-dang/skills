@@ -10,7 +10,7 @@
 
 Underspecification does not make an agent stop; it makes it act on the wrong object. When the ask does not name the exact files, objects, or IDs it means, what must not be touched, or what would settle it, the user can run [`/forge-prompt`](../skills/forge-prompt.md) first. It interviews one card at a time, in a language chosen at setup, and hands back **one paste-ready prompt block**.
 
-When the ask is for an **unattended run** — `/goal` in Claude Code or Codex — run [`/forge-goal`](../skills/forge-goal.md) instead. It hands back one goal block whose every line a separate judge can settle from printed output: probed checks, guards, a bound, and `BLOCKED:` / `STOPPED:` lines.
+When the ask is for an **unattended run** — `/goal`, an overnight session, any agent — run [`/forge-goal`](../skills/forge-goal.md) instead. It interviews in the user's language until the want is defined, then hands back one goal prompt whose every done line is settled by printed output, with a verify-every-round loop, a fresh final audit, and `BLOCKED:` / `STOPPED:` lines.
 
 That `/forge-prompt` block deliberately **names no lane and no next step** — it carries targets, boundaries, evidence, assumptions, open questions, and a done signal, and nothing about what to do with them. The session it is pasted into reads it cold and picks its own entry point. That is what keeps a forged prompt from anchoring the chain on a conclusion nobody tested.
 

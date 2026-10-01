@@ -32,7 +32,7 @@ The skill orders the search: process skills first, then implementation skills. I
 - "Build X" routes to [`frame-change`](frame-change.md) before anything else.
 - "This is broken" with clear unexpected behavior routes to [`root-cause`](root-cause.md) before any fix.
 - A vague ask the user wants turned into a proper prompt: name [`/forge-prompt`](forge-prompt.md) for them to run — it is user-invoked and cannot be auto-invoked.
-- An unattended run toward a condition (`/goal` in Claude Code or Codex): name [`/forge-goal`](forge-goal.md) for the user to run — also user-invoked.
+- Work the user wants an agent to keep doing unattended until verifiably done (`/goal`, an overnight run): name [`/forge-goal`](forge-goal.md) for the user to run — also user-invoked.
 - A small in-scope change to an already-shipped, spec'd feature — a tweak, recolor, or follow-on — routes to [`amend-feature`](amend-feature.md), not `frame-change`.
 - An incoming issue or external PR routes to [`triage`](triage.md), which the agent names for the user because it is user-invoked and cannot be auto-invoked.
 - When the fit is unclear, the agent reads [on-ramps](../process/on-ramps.md) and names the row.

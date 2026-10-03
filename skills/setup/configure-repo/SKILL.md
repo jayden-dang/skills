@@ -1,6 +1,6 @@
 ---
 name: configure-repo
-version: 1.10.1
+version: 1.11.0
 description: Sets up docs/agents config so this skill set can run in an existing repo.
 disable-model-invocation: true
 ---
@@ -56,7 +56,7 @@ Explainer: skills that read or write issues (`triage`, `publish-issues`, `plan-t
 
 ### C. verify commands
 
-Explainer: `test-first`, `prove-claim`, `build-in-waves`, and `cut-release` all run this repo's proof commands; they must be exact, not guessed. Confirm each, pre-filled from what you detected: typecheck, lint, unit tests, e2e/smoke, and the **single-test-file pattern** (the command shape for running one test file — the tight loop `test-first` lives in). **Done when:** each command has been confirmed by the user (or explicitly marked "none").
+Explainer: `test-first`, `prove-claim`, `build-in-waves`, and `cut-release` all run this repo's proof commands; they must be exact, not guessed. Confirm each, pre-filled from what you detected: typecheck, lint, unit tests, e2e/smoke, and the **single-test-file pattern** (the command shape for running one test file — the tight loop `test-first` lives in; it must narrow what gets *built*, not only what runs — e.g. `cargo nextest run -p <crate> --test <file>`, never a bare name filter that compiles every test binary in the package). Then the two optional gates: **Task gate** (tests of the changed units plus their dependents — e.g. `cargo nextest run -p a -p b`, `vitest related`, `nx affected`) and **Wave gate** (compile and lint every target, e.g. `cargo check --workspace --all-targets` + lint). Mark them "none" when the whole suite takes a couple of minutes — then the suite is the gate. **Done when:** each command has been confirmed by the user (or explicitly marked "none").
 
 ### D. Traceability (docs-only)
 

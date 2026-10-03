@@ -2,6 +2,34 @@
 
 ## Unreleased
 
+### Verify tiers — the whole suite runs once, at close (2026-10-03)
+
+`test-first` 1.1.0 · `execute-common` 2.9.0 · `build-in-waves` 2.2.0 · `prove-claim`
+1.5.0 · `configure-repo` 1.11.0 · AGENTS.md Gate 2.
+
+On a compiled workspace, "run the full suite at every GREEN" was either paid in full (Sonnet
+planned 3–6 eighteen-minute runs per task) or dropped silently (a 25-task Rust build scoped
+every GREEN, ran no lint, and closed on eight clippy fixups). Breadth is now tiered:
+
+- RED, GREEN and refactor run the narrowest command that builds the test's target.
+- Once per task, at the final commit, the **task gate** runs the changed units plus their
+  dependents and lint against a baseline recorded at session start. The agent escalates to
+  the whole suite when the change reaches what the build graph cannot see (schema,
+  migrations, shared fixtures, manifests, generated contracts, a root package) and names
+  the reason. Reviewers treat a short scope or a missed escalation as Important.
+- A parallel merge runs the **wave gate** (compile and lint every target). Lanes keep one
+  worktree for the run, so build caches stay warm.
+- The whole suite runs at close and is the only thing that fills the receipt's
+  `Verification` slot.
+
+`configure-repo` asks for a single-test pattern that narrows the compile, plus optional
+Task gate and Wave gate commands.
+
+RED/GREEN (Sonnet, 4 + 4): one whole-suite run per task instead of 3–6 (33–36 min against
+65–125 min), one policy across controllers instead of two invented ones, lint judged
+against a baseline instead of claimed clean or suppressed. Lane worktrees and the wave
+gate are tested by shape only. Record: `skills/execution/test-first/TESTS.md`.
+
 ### `/forge-goal` v2.0.0 — interview for the want, a loop that verifies every round (2026-10-01)
 
 Redesigned on the user's direction. v1 compiled a goal from the repo and

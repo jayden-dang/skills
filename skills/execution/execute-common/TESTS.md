@@ -1,5 +1,14 @@
 # `execute-common`
 
+## Verify tiers (v2.9.0, 2026-10-03)
+
+RED/GREEN for this change is recorded once, in `skills/execution/test-first/TESTS.md`
+§ Verify tiers — Sonnet, 4 RED + 4 GREEN runs on a paper Rust workspace (implementer and
+controller scenarios). This file's part: lint baseline in `ledger-check.md`, task-gate slot in
+`implementer-prompt.md`, gate checks in `task-reviewer-prompt.md`, `Verification` owned by
+the whole suite in `close-receipt.md`.
+
+
 ## Length pass (v2.3.1, 2026-09-07)
 
 **Protocol:** length-pass brief (bring SKILL.md under 200 lines without losing

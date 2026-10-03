@@ -26,7 +26,9 @@ Created: <UTC timestamp>
 1. Resolve base ref/SHA and current head ref/SHA.
 2. Confirm tracked-tree porcelain is empty; untracked files do not affect it.
 3. Use only evidence produced at the current head. A check run before the last
-   mutation cannot fill a slot; rerun only the stale producer.
+   mutation cannot fill a slot; rerun only the stale producer. `Verification`
+   is the project's whole suite plus lint and format — task gates and wave
+   gates never fill it, however green.
 4. Write every slot exactly once. Do not write a partial receipt.
 
 ## Consumer validation

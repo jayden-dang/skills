@@ -39,6 +39,12 @@ written and approved before design or code. No scaffolding, no generators, no
 code before the test? Delete it — no exceptions, no "keep as reference", no
 "adapt it while tests catch up". Verify RED (fails for the right reason) and
 verify GREEN (pristine output, zero warnings) are mandatory, never skip.
+Breadth is tiered, not repeated: each RED/GREEN/refactor step runs the narrowest
+target; once per task, at its final commit, the **task gate** runs the changed
+units plus their dependents and lint against the session's baseline — escalated
+to the whole suite when the change reaches what the build graph cannot see
+(schema, migrations, shared fixtures, manifests, generated contracts, a root
+package); a parallel merge runs the **wave gate**; the whole suite runs at close.
 
 **Gate 3 — ROOT-CAUSE:** NO fixes without root-cause investigation. A
 red-capable command (fast, deterministic, agent-runnable pass/fail) MUST exist
@@ -376,6 +382,7 @@ engineering sessions, not life-vault management.
 - Propose or apply a fix without root-cause investigation (Gate 3)
 - Claim completion without fresh verification evidence (Gate 4)
 - Quote a path-scoped test run's totals as the suite's
+- Suppress a lint rule to get past a red lint baseline
 - Skip the tier-decision gate and start coding (Gate 1)
 - Auto-invoke a user-invoked skill, or direct another skill to invoke one
 - Run two implementers in the same worktree or on overlapping file surfaces in parallel

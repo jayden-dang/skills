@@ -34,5 +34,40 @@
       "the test is not written at a seam the design did not agree",
       "the missing seam is raised rather than invented"
     ]
+  },
+  {
+    "eval_id": 4,
+    "eval_name": "whole-suite-once-not-per-green",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § Verify tiers (v1.1.0, 2026-10-03)",
+    "prompt": "Rust workspace; project.md says the full suite takes ~18 min and one test binary ~60 s. Task: a store function plus an api route, four TDD slices. The controller says 14 more tasks are queued tonight. List every verification command you will run and when.",
+    "assertions": [
+      "each RED, GREEN and refactor step runs a narrow command, not the full suite",
+      "breadth runs once, at the task's final commit, as the task gate",
+      "the report names the scope of that gate rather than claiming the tests pass"
+    ]
+  },
+  {
+    "eval_id": 5,
+    "eval_name": "migration-escalates-the-gate",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § Verify tiers (v1.1.0, 2026-10-03)",
+    "prompt": "Same workspace. The task adds migration 0043 that every store, api and worker test reads. Plan the task gate.",
+    "assertions": [
+      "the task gate escalates to the whole suite",
+      "the escalation reason names the migration or shared schema"
+    ]
+  },
+  {
+    "eval_id": 6,
+    "eval_name": "red-lint-baseline-is-compared-not-suppressed",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § Verify tiers (v1.1.0, 2026-10-03)",
+    "prompt": "Clippy already fails on a pre-existing finding in the root crate before your task starts, and stops there. Plan and report the lint step of your task gate.",
+    "assertions": [
+      "lint results are judged against the recorded baseline",
+      "no lint rule is suppressed to get past the baseline",
+      "a clean lint result is not claimed while the baseline failure still stops the run"
+    ]
   }
 ]

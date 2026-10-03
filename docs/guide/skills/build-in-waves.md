@@ -79,9 +79,10 @@ A single-task wave runs the loop above inline on the branch — the common case.
 
 1. **Record the wave base.** `WBASE=$(git rev-parse HEAD)` — every task in the wave branches from this one sha.
 2. **Prove the surfaces are disjoint.** Confirm from the briefs that no two tasks in the wave Create or Modify the same file. An overlap means a `Depends-on` edge was missed — those tasks drop back to serial rather than run in parallel.
-3. **Fan out, one worktree per task.** The controller stays in the primary worktree (the feature branch at WBASE); each task gets its own. `git worktree add .worktrees/<branch>-taskN -b <branch>-taskN WBASE`, then run per-task loop steps 1–9 inside each worktree concurrently — steps 10–11 (ledger, advance) are held for the barrier. On a fresh branch, step 1's `BASE` already equals WBASE, so the brief, dispatch, package, review, and fix loop are unchanged — just scoped to the worktree.
+3. **Fan out, one worktree per lane.** The controller stays in the primary worktree (the feature branch at WBASE). Each lane keeps one worktree for the whole run, so its build cache stays warm — on a compiled language a fresh worktree per task rebuilds every dependency from cold. First use: `git worktree add .worktrees/<branch>-lane<k> -b <branch>-taskN WBASE`; later waves: `git -C .worktrees/<branch>-lane<k> switch -c <branch>-taskN WBASE`. Then run per-task loop steps 1–9 inside each worktree concurrently — steps 10–11 (ledger, advance) are held for the barrier. On a fresh branch, step 1's `BASE` already equals WBASE, so the brief, dispatch, package, review, and fix loop are unchanged — just scoped to the worktree.
 4. **Barrier, then merge in task order.** Only once every task in the wave has passed review, and back in the primary worktree, merge each branch into the **feature branch** (never main/master) in ascending task number. A conflict here means the disjoint check missed a shared surface — stop and escalate; never resolve a wave merge blind.
-5. **Ledger once, worktrees down.** At the barrier the controller — the sole ledger writer — appends one line per wave task naming its `--no-ff` merge commit as the head, rolls up each task's held Minor findings, and removes the `.worktrees/` task trees. Writing only here is what keeps the ledger race-free.
+4a. **Wave gate.** At the merged HEAD, compile and lint every target in the workspace (`project.md` **Wave gate**, else its typecheck and lint commands), judged against the lint baseline. Each task's gate proved its own lane; this is what catches two lanes that are green apart and broken together. Red means no ledger lines: `root-cause`, one fix dispatch, gate again.
+5. **Ledger once, worktrees down.** At the barrier the controller — the sole ledger writer — appends one line per wave task naming its `--no-ff` merge commit as the head and rolls up each task's held Minor findings. Lane worktrees stay for the next wave and come down after the last one. Writing only here is what keeps the ledger race-free.
 
 Isolation plus the disjoint-surface check is what makes concurrency safe: two implementers never share a working tree, and the ledger is never written from inside one.
 
@@ -123,7 +124,7 @@ Conversation memory does not survive compaction. Controllers that lost their pla
 - Read `.skills/<CODE>/progress.md` on start, and resume after the last complete task.
 - After a compaction or resume, trust the ledger and `git log` over recollection — the commits the ledger names exist in git even when context no longer remembers writing them.
 - Never re-dispatch a task the ledger marks complete.
-- A crash mid-wave leaves uncommitted, unmerged worktrees under `.worktrees/`: discard them and re-run the whole wave off WBASE. Nothing is ledgered or merged until the barrier, so the re-run is idempotent.
+- A crash mid-wave leaves uncommitted, unmerged task branches in the lane worktrees: discard them, switch the lanes back to WBASE, and re-run the whole wave off WBASE. Nothing is ledgered or merged until the barrier, so the re-run is idempotent.
 - If `.skills/` is wiped, reconstruct progress from `git log`.
 
 ## After the last task

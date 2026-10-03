@@ -43,11 +43,13 @@ Work one vertical slice at a time: one behavior, one test, one minimal implement
 
 3. **GREEN — write the simplest code that passes.** No speculative parameters, no extra features, no touching unrelated code.
 
-4. **Verify GREEN — mandatory.** Run the full suite. The new test passes, every other test still passes, and the output is pristine: zero warnings, zero stray errors, nothing you are "planning to clean up". If the new test fails, fix the code — never loosen the test.
+4. **Verify GREEN — mandatory.** Run the narrowest command that builds and runs the new test's target. The new test passes, every other test in that run still passes, and the output is pristine: zero warnings, zero stray errors, nothing you are "planning to clean up". If the new test fails, fix the code — never loosen the test.
 
-5. **REFACTOR — only while green.** Remove duplication, improve names, extract helpers. Re-run the suite after each change. Add no behavior.
+5. **REFACTOR — only while green.** Remove duplication, improve names, extract helpers. Re-run that same command after each change. Add no behavior.
 
 Then take the next slice.
+
+**The task gate — once per task, at the final commit.** Tests of every unit you changed plus every unit that depends on it, then lint and format over the same units against the lint baseline recorded at session start (a finding not in the baseline is yours; never suppress a rule to get past it). Escalate to the whole suite when the change reaches what the build graph cannot see — schema or migrations, shared fixtures, build manifests or feature flags, generated contracts, a root package — and name the reason. When the whole suite takes a couple of minutes, it *is* the gate. The report names the scope it ran; a gate run is never quoted as the suite, which runs once at close.
 
 ## Requirement tagging
 
@@ -105,7 +107,7 @@ test('restores the persisted module after hydration [SHELL-1.2]', async () => {
 
 Run the single-file command from `docs/agents/project.md`. It fails with `expected 'notes', received undefined` — the failure the root cause predicted, not an import error. That is a valid RED.
 
-**GREEN.** Make `restoreModule()` await hydration. Nothing else. Run the full suite: the new test passes, the other 47 still pass, output pristine.
+**GREEN.** Make `restoreModule()` await hydration. Nothing else. Run the test file: it passes. Task gate: the whole suite takes four seconds, so it is the gate — the new test passes, the other 47 still pass, output pristine.
 
 **REFACTOR.** Nothing to clean. Commit:
 
@@ -125,7 +127,7 @@ Note what the expected value is *not*: `store.read('activeModule')`. That would 
 The skill ends on a checklist, and it hands off to [`prove-claim`](prove-claim.md) before any completion claim is spoken:
 
 - Every new behavior has a test you watched fail first, for the expected reason
-- Full suite green, output pristine
+- Task gate green at the final commit with its scope named (or the whole suite, with the escalation reason), output pristine, no lint finding outside the baseline
 - Every test tagged with its requirement ID
 - All tests sit at seams agreed in `design.md` (or agreed with the user)
 - Mocks only at system boundaries, complete data structures, no assertions on mocks

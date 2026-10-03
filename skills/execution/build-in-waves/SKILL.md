@@ -1,6 +1,6 @@
 ---
 name: build-in-waves
-version: 2.1.3
+version: 2.2.0
 description: Use when an approved tasks.md has Execution-mode continuous and needs
   dependency-aware subagent execution with serial or parallel lanes, bounded
   worker/reviewer leases, dual-verdict task review, and a whole-branch receipt.
@@ -111,13 +111,20 @@ Before each worker or reviewer resume, run the lease preflight from
 3. If the set has multiple tasks, prove each pair's `Files:` surfaces are
    disjoint and check `worktree_isolation`. Overlap or missing isolation reduces
    the effective set to serial; record the degradation in the runtime sidecar.
-4. For a parallel set, record `WBASE`, create one worktree per task under
-   `.worktrees/` (`git worktree add .worktrees/<branch>-taskN -b <branch>-taskN WBASE`),
-   and invoke the shared lifecycle. A worker/reviewer lease may continue across
+4. For a parallel set, record `WBASE`. Each lane keeps **one worktree for the
+   whole run** so its build cache stays warm — a fresh worktree per task
+   rebuilds from cold. First use:
+   `git worktree add .worktrees/<branch>-lane<k> -b <branch>-taskN WBASE`;
+   later sets: `git -C .worktrees/<branch>-lane<k> switch -c <branch>-taskN WBASE`.
+   Invoke the shared lifecycle. A worker/reviewer lease may continue across
    ready sets only along its own dependency lane.
 5. After every task in the set has clean Standards and Spec verdicts, merge in
    deterministic task order. A conflict stops the scheduler; it is never solved
-   blind. Append one ledger line per task and remove isolated worktrees.
+   blind. Then run the **wave gate** at the merged HEAD: compile and lint every
+   target in the workspace (`project.md` **Wave gate**, else its typecheck and
+   lint commands), judged against the lint baseline. Red → no ledger lines;
+   REQUIRED SUB-SKILL: use `root-cause`, one fix dispatch, gate again. Green →
+   one ledger line per task. Remove lane worktrees after the last ready set.
 6. Recompute the ready set. There is no permission pause between tasks in
    continuous mode, and no task advances while its review barrier is open.
 
@@ -155,8 +162,8 @@ Scale reviewer tier to diff size and risk.
 Todos are the live session view; the ledger survives compaction. After
 compaction, trust the ledger and `git log` over conversation memory.
 
-- Crash mid-wave → discard unmerged worktrees under `.worktrees/` and re-run
-  the whole wave off WBASE; if `.skills/` (git-ignored) is wiped, reconstruct
+- Crash mid-wave → discard unmerged task branches, switch lane worktrees back
+  to WBASE, and re-run the whole wave off WBASE; if `.skills/` (git-ignored) is wiped, reconstruct
   from `git log`.
 
 ## After the Last Task
@@ -182,7 +189,7 @@ skill's subagent loop without dispatches.
 - Pause between tasks to ask permission to continue
 - Run two implementers in the **same worktree**, or parallel without isolated
   isolate-workspace and a disjoint-surface check
-- Merge or ledger a parallel wave before every task in it passed review
+- Merge a parallel wave before every task in it passed review, or ledger it before the wave gate is green
 - Hand a subagent the whole plan file — the brief is its world
 - Skip re-review after a fix, or accept a review missing either verdict
 - Move to the next task with open Critical/Important findings

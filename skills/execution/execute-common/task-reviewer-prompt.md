@@ -75,6 +75,14 @@ Subagent (general-purpose):
     instead. Warnings or noise in the reported test output are findings —
     output must be pristine.
 
+    Check the report's task gate against the diff. Each of these is an
+    Important finding: a changed unit, or a unit that depends on one, missing
+    from the gate's scope; no lint result, or a lint finding outside the
+    baseline; a lint rule suppressed to get past the baseline; a diff that
+    touches schema or migrations, shared fixtures, build manifests or
+    feature flags, generated contracts, or a root package, with no
+    whole-suite escalation; a gate run quoted as the whole suite.
+
     ## Visual check
 
     The report carries a Visual check line. When the diff touches anything

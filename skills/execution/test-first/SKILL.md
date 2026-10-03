@@ -1,6 +1,6 @@
 ---
 name: test-first
-version: 1.0.0
+version: 1.1.0
 description: Use when writing or changing any production code — a new feature, a bugfix,
   a behavior change, or a refactor — and before the first line of
   implementation exists; the test-first (TDD) gate. Also use when about to add
@@ -39,11 +39,21 @@ before any fix.
 
 **GREEN — write the simplest code that passes.** No speculative parameters, no extra features, no touching unrelated code.
 
-**Verify GREEN — mandatory.** Run the full suite. Confirm: the new test passes, every other test still passes, and the output is pristine — zero warnings, zero stray errors, nothing you're "planning to clean up". New test fails? Fix the code, never loosen the test. Other tests fail? Fix now, before anything else.
+**Verify GREEN — mandatory.** Run the narrowest command that builds and runs the new test's target (the single-file pattern). Confirm: the new test passes, every other test in that run still passes, and the output is pristine — zero warnings, zero stray errors, nothing you're "planning to clean up". New test fails? Fix the code, never loosen the test. Other tests fail? Fix now, before anything else.
 
-**REFACTOR — only while green.** Remove duplication, improve names, extract helpers. Re-run the suite after each change. Add no behavior.
+**REFACTOR — only while green.** Remove duplication, improve names, extract helpers. Re-run that same command after each change. Add no behavior.
 
 Then take the next slice.
+
+## The task gate — once, before you claim the work done
+
+Each step above stays narrow; breadth is paid once, at the final commit:
+
+1. **Tests** of every unit you changed plus every unit that depends on it — the project's **Task gate** command, else derive it from the build graph (changed packages and their reverse dependencies).
+2. **Lint and format** over the same units, against the lint baseline recorded at session start. A finding absent from the baseline is yours. Never suppress a lint rule to get past a red baseline.
+3. **Escalate to the whole suite** when the change reaches what the build graph cannot see: schema or migrations, shared fixtures or test data, build manifests or feature flags, generated contracts, a root package nearly everything depends on. You judge it and name the reason.
+
+When the whole suite is cheap (a couple of minutes), it *is* the gate — run it. Report the scope you ran: `Task gate: <commands> — covering <units>`, or `Whole suite: <command> — escalated: <reason>`. A gate run is never quoted as the suite; the whole suite runs at close.
 
 ## Requirement linkage (docs-only)
 
@@ -95,6 +105,10 @@ Mock setup longer than the test logic, or a test that fails when a mock is remov
 | "The test is hard to write" | Hard to test means hard to use — simplify the interface, don't skip the test |
 | "TDD slows me down" | Slower than typing, faster than debugging |
 | "This file has no tests anyway" | You're changing it; your change gets a test |
+| "Run the whole suite on every GREEN to be safe" | Six 18-minute runs per task buys nothing the task gate and the close run don't. Narrow each step; gate once |
+| "The scoped run passed — tests pass" | Name the scope you ran. "Tests pass" is the whole suite's claim |
+| "Lint was already red, so allow the rule / it can't be checked" | Compare against the baseline. Suppressing the rule hides your findings with the old one |
+| "It's only a migration file, the crate tests cover it" | Every test reads that schema. Escalate |
 
 ## Red flags — stop and start over
 
@@ -110,7 +124,7 @@ Any of these: delete the untested code, return to RED.
 ## Before claiming done
 
 - [ ] Every new behavior has a test you watched fail first, for the expected reason — error paths and boundary values count as behaviors
-- [ ] Full suite green, output pristine (zero warnings/errors)
+- [ ] Task gate green at the final commit with its scope named — or the whole suite, with the escalation reason — output pristine, no lint finding outside the baseline
 - [ ] Each new behavior maps to a requirement in the task brief / report (IDs stay in docs, not required in test source)
 - [ ] All tests sit at seams agreed in `design.md` (or agreed with the user)
 - [ ] Mocks only at system boundaries, complete data structures, no assertions on mocks

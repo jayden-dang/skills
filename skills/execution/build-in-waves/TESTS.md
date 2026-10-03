@@ -1,5 +1,14 @@
 # `build-in-waves` / implementer-prompt — deviation log
 
+## Verify tiers (v2.2.0, 2026-10-03)
+
+RED/GREEN for this change is recorded once, in `skills/execution/test-first/TESTS.md`
+§ Verify tiers — Sonnet, 4 RED + 4 GREEN runs on a paper Rust workspace (implementer and
+controller scenarios). This file's part: lane worktrees reused across ready sets, wave gate after a
+parallel merge. Both are shape-only so far: the fixture's shared test database made both
+controllers serialize.
+
+
 ## Length pass — cross-file duplication with execute-common (v2.1.2, 2026-09-07)
 
 **Goal:** SKILL.md was 211 lines (87 atoms, 2.4 lines/atom — densest file in the

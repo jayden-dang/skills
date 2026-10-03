@@ -56,7 +56,7 @@ expected '#4f46e5', received '#2563eb'
 
 That is a valid RED — it fails because the value is the old one, not because of a typo or a missing import.
 
-**GREEN:** change one token. Run the full suite. 48 passing, output pristine.
+**GREEN:** change one token. Run the test file: it passes. The whole suite takes seconds, so it is the task gate too: 48 passing, output pristine.
 
 **REFACTOR:** nothing.
 

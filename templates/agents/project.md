@@ -94,7 +94,18 @@ Run in this order; all must pass before any completion claim.
 | Unit tests | `<command>` |
 | E2E / smoke | `<command>` |
 
-Single test file: `<command pattern, e.g. npx vitest run <path>>`
+Single test file: `<command pattern, e.g. npx vitest run <path>>` — must narrow what
+gets built, not only what runs.
+
+Task gate (changed units + their dependents; `none` when the whole suite is fast):
+`<command pattern, e.g. cargo nextest run -p <crate> -p <dependent>>`
+
+Wave gate (compile + lint every target after a parallel merge; `none` = typecheck + lint):
+`<command>`
+
+The whole suite runs once, at close. Each task runs its task gate instead, escalating
+to the whole suite when the change reaches what the build graph cannot see (schema,
+migrations, shared fixtures, manifests, generated contracts, a root package).
 
 The traceability check is not a command here — the `audit-trace` skill runs it as
 `grep`/`git` over `docs/specs/` (and optional architecture). It is **docs-only**

@@ -1,6 +1,6 @@
 ---
 name: execute-common
-version: 2.8.0
+version: 2.9.0
 description: Use when build-in-waves, build-by-story, or build-inline loads the shared controller recipe — produces an In-progress catalog stamp, a runtime-bound session snapshot, lease state, ledger state, and a revision-bound close receipt.
 ---
 
@@ -81,11 +81,11 @@ recorded.*
 
 ## Ledger check
 
-Read `ledger-check.md` beside this file and follow it exactly: it keeps
-`.skills/` local-only, resumes from `.skills/<CODE>/progress.md`, and defines
-the `Verified:` completion-claim slot backed by `prove-claim`.
+Read `ledger-check.md` beside this file and follow it exactly: `.skills/` stays
+local-only, resume from `.skills/<CODE>/progress.md`, record the lint baseline
+task gates are judged against, and the `Verified:` slot is `prove-claim`'s.
 
-*Done when: next task / unit is known.*
+*Done when: next task / unit is known and `Lint baseline:` is recorded.*
 
 ## Decision trail — observable conditional
 

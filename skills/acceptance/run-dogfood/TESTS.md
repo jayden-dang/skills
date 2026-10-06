@@ -152,3 +152,10 @@ and the render check were still allowed to fall through to a fresh browser.
 The rung is gone. Chrome extension tools remain only when the webbridge binary
 is absent. A missing driver is `blocked`, with the help page, not a headless
 substitute.
+
+## v3.0.0 — renamed from run-flow-guide (2026-10-06)
+
+Renamed with `write-dogfood`. The §2a gate now reads
+`.skills/<CODE>/dogfood-review.md` (written by `write-dogfood`'s reviewer
+subagent) instead of `vet-flow-guide.md`, and points back to `write-dogfood`'s
+review fix loop. The gate's logic is unchanged; no baseline was re-run.

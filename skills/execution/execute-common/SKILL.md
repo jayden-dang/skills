@@ -1,6 +1,6 @@
 ---
 name: execute-common
-version: 2.9.0
+version: 2.9.1
 description: Use when build-in-waves, build-by-story, or build-inline loads the shared controller recipe — produces an In-progress catalog stamp, a runtime-bound session snapshot, lease state, ledger state, and a revision-bound close receipt.
 ---
 
@@ -134,8 +134,8 @@ After the last task (waves / inline) or last unlocked unit (story):
    we cannot forget" are **not** predicates.
 6. **Product walk — observable conditional.** Evaluate the **walk predicate**
    below. No clause true → do not open the product-walk trio. Any clause true →
-   REQUIRED SUB-SKILL: use `write-flow-guide` (it owns vet), then **execute what
-   it wrote** — REQUIRED SUB-SKILL: use `run-flow-guide` where the runtime can
+   REQUIRED SUB-SKILL: use `write-dogfood` (it owns vet), then **execute what
+   it wrote** — REQUIRED SUB-SKILL: use `run-dogfood` where the runtime can
    drive the app, else record the human ticks. Naming the run instead of doing
    it leaves step 7 unable to write green.
 7. **Close receipt.** Load `close-receipt.md` and follow its producer recipe.

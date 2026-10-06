@@ -30,5 +30,5 @@ Broken layout at a common viewport width is **Important** even when no requireme
 ## Boundaries
 
 - Asserting spec'd behavior end-to-end in the user's browser is [`validate-ui`](validate-ui.md).
-- Authoring a human eyeball walkthrough is [`write-flow-guide`](write-flow-guide.md) — `inspect-ui` is the agent's eyes, not the human's.
+- Authoring a human eyeball walkthrough is [`write-dogfood`](write-dogfood.md) — `inspect-ui` is the agent's eyes, not the human's.
 - Designing a page's look in the first place is [`craft-page`](craft-page.md); this skill judges what got built.

@@ -1,7 +1,7 @@
 # AGENTS.md — Agent Behavior Constitution
 
-> A-to-Z agentic development skill set · **89 skills across 11 categories**
-> (71 engineering + 18 Personal OS) · `jayden-dang/skills` · v1.0.0
+> A-to-Z agentic development skill set · **88 skills across 11 categories**
+> (70 engineering + 18 Personal OS) · `jayden-dang/skills` · v1.0.0
 
 This file is the single source of truth for agent behavior when working with this
 skill set on any harness. Read it first, before any skill, before any action.
@@ -157,10 +157,10 @@ use \`x\`` is for model-invocable targets only — pointing it at a
 **Two reachability paths, and one of them is fragile.** A skill is reached either
 by a `REQUIRED SUB-SKILL` hand-off or by its description matching what the user
 said. Eight model-invocable skills have no `REQUIRED SUB-SKILL` caller —
-`amend-feature`, `vet-feedback`, `vet-source`, `speak-outer`, `hold-stage`, `run-flow-guide`,
+`amend-feature`, `vet-feedback`, `vet-source`, `speak-outer`, `hold-stage`, `run-dogfood`,
 `draft-ux`, `understand`. Reverse-track is **not** a
 separate skill: when the reverse predicate holds, callers **name** `/map-features`
-(dispose step 0). `write-flow-guide` is reached from
+(dispose step 0). `write-dogfood` is reached from
 `prove-claim` (alternative to `validate-feature`) and from the execute-family
 close sequence when a walk predicate holds. The remaining entry points fire
 on what the user said, which makes their descriptions the only thing

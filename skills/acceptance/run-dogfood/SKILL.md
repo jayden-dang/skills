@@ -1,17 +1,17 @@
 ---
-name: run-flow-guide
-version: 2.3.0
+name: run-dogfood
+version: 3.0.0
 description: >-
-  Use when a guide from write-flow-guide already exists and its cases must be
+  Use when a guide from write-dogfood already exists and its cases must be
   executed against the running app — agent-driven, screen plus backend
   evidence. Produces a run file with a pass / fail / blocked verdict per case.
-  Not for authoring the guide (`write-flow-guide`) or committed e2e
+  Not for authoring the guide (`write-dogfood`) or committed e2e
   (`validate-ui`).
 ---
 
-# Run Flow Guide
+# Run Dogfood
 
-Execute an existing guide from write-flow-guide against the **product app** in a real browser. The deliverable is the **run file** — every case ID accounted for with quoted screen evidence and, when the case touches server-owned state, a server-side probe that actually ran. A chat summary is not the deliverable.
+Execute an existing guide from write-dogfood against the **product app** in a real browser. The deliverable is the **run file** — every case ID accounted for with quoted screen evidence and, when the case touches server-owned state, a server-side probe that actually ran. A chat summary is not the deliverable.
 
 ## The Iron Law
 
@@ -25,18 +25,18 @@ Probe ladder (strongest first): the UI's own request/response → read-back thro
 
 ## CLI (required for progress)
 
-Resolve the write-flow-guide skill root (`skills/acceptance/write-flow-guide` in this monorepo, else the installed package path). Every subcommand takes the **one** run file — cases and verdicts live in it together:
+Resolve the write-dogfood skill root (`skills/acceptance/write-dogfood` in this monorepo, else the installed package path). Every subcommand takes the **one** run file — cases and verdicts live in it together:
 
 ```bash
-DF="python3 <skill-root>/scripts/flow-guide"
-RUN=.skills/<CODE>/flow-guide.json
+DF="python3 <skill-root>/scripts/dogfood"
+RUN=.skills/<CODE>/dogfood.json
 $DF list   $RUN
 $DF show   $RUN CASE-1
 $DF init   $RUN                       # seed pending in place
 $DF next   $RUN                       # first case still to prove
 $DF mark   $RUN CASE-1 pass --saw '…quoted UI…' --server '…probe…'
 $DF status $RUN
-$DF report $RUN -o .skills/<CODE>/flow-guide-report.md
+$DF report $RUN -o .skills/<CODE>/dogfood-report.md
 ```
 
 `mark pass` refuses empty `--saw` / `--server`; a presentational case must pass `--server 'none — presentational'`, and a case with a real `backend` is refused that same string — unskippable, since `backend` now travels with the verdict.
@@ -48,14 +48,14 @@ Confirm the target origin **before the first product click**:
 
 - Default: local dev from `docs/agents/project.md` (`## Run locally (dev)`); start the app if it is down.
 - Non-local origin (staging, production, shared QA): **stop** and get an explicit in-thread yes naming that origin — "whatever is fastest", a demo deadline, or an already-open tab is **not** consent.
-- Drive a **dedicated product tab** — never the user's own tab, and never the write-flow-guide HTML itself.
+- Drive a **dedicated product tab** — never the user's own tab, and never the write-dogfood HTML itself.
 - Avoid controls that raise native `alert` / `confirm` (they freeze many browser bridges); warn the user first if a case requires one.
 
 *Done when: origin is local, or non-local consent is on the record, and the app loads.*
 
 ## 2. Seed the run file before any drive
 
-The run file is the one `write-flow-guide` wrote: `.skills/<CODE>/flow-guide.json`. Seed it: `$DF init $RUN`.
+The run file is the one `write-dogfood` wrote: `.skills/<CODE>/dogfood.json`. Seed it: `$DF init $RUN`.
 
 If it already holds verdicts, **trust them** — `init` refuses to reset without `--force`, and that refusal is the resume path, not an obstacle. Create one todo per case; resume with `$DF next` (first non-`pass`).
 
@@ -73,11 +73,11 @@ Beside it sits `human` — `checked`, `at`, `comment` — written only by a pers
 
 *Done when: every case has run state and a todo, all `pending` (or restored).*
 
-## 2a. Hard gate — fresh vet-flow-guide report (before any product drive)
+## 2a. Hard gate — fresh review report (before any product drive)
 
 <HARD-GATE>
 ```
-NO PRODUCT CASE IS DRIVEN WITHOUT A FRESH CLEAN VET REPORT
+NO PRODUCT CASE IS DRIVEN WITHOUT A FRESH CLEAN REVIEW REPORT
 (OR AN IN-THREAD YES THAT NAMES EACH REMAINING OPEN VFG-N)
 ```
 
@@ -89,11 +89,11 @@ remains mandatory before product clicks.
 Run this algorithm **before §3** (before the first product click / drive loop):
 
 ```
-REPORT = .skills/<CODE>/vet-flow-guide.md
-IF missing REPORT → STOP (run vet-flow-guide)
+REPORT = .skills/<CODE>/dogfood-review.md
+IF missing REPORT → STOP (write-dogfood §5 independent review)
 Parse REPORT: run_file, cases_fingerprint, open findings
 IF run_file path ≠ this RUN (normalized) → STOP
-IF sha256(authored cases of RUN) ≠ cases_fingerprint → STOP (stale; re-vet)
+IF sha256(authored cases of RUN) ≠ cases_fingerprint → STOP (stale; re-review)
 IF open findings non-empty:
   IF chat has explicit user yes naming EACH open VFG-N id → proceed
      (append override line to .skills/<CODE>/progress.md or the walkthrough close notes:
@@ -106,13 +106,13 @@ ELSE → proceed (origin/app preconditions remain mandatory before product click
 `run_file` matches this run file path **and** its `cases_fingerprint` matches
 the SHA-256 of the run file's **authored** cases. Recipe SSOT (key order,
 compact JSON, omit `run`/`human`/`rev`): load
-`skills/acceptance/vet-flow-guide/references/report-schema.md` (or the skill
+`skills/acceptance/write-dogfood/references/review-schema.md` (or the skill
 package path when installed). Verdict marks and human ticks do **not** stale the
 report; authoring edits that change cases **do**. Recompute the fingerprint from
 the run file — do not trust a chat claim of freshness.
 
 **Open findings block drive.** Every open code-grounded missing-situation finding
-is **blocking** until fixed (guide-gap loop in `vet-flow-guide`) or named in
+is **blocking** until fixed (review fix loop in `write-dogfood`) or named in
 an explicit in-thread yes. Severity labels (Critical / Important / Minor) order
 fixes only — severity **does not** soften the gate, drop a finding from the open
 set, or reintroduce a hard-only-on-Critical rule. Bare “just go”, “demo in N
@@ -120,8 +120,8 @@ minutes”, silent skip, or a yes that does not name each remaining open `VFG-N`
 is **not** an override.
 
 **On STOP:** list open findings (ids + severity + situation). Point the user to
-the **guide-gap** fix loop in `vet-flow-guide` (patch run file by severity →
-re-render → re-invoke fresh isolated `vet-flow-guide`; gate uses only the new
+the review fix loop in `write-dogfood` (patch run file by severity →
+re-render → dispatch a fresh reviewer; gate uses only the new
 report). Do not invent cases mid-drive to paper over the gate.
 
 **Override trail:** when the user names each open `VFG-N`, append a greppable
@@ -153,7 +153,7 @@ In file order (`$DF next` until empty):
 When every case is `pass`, or the run stops on a cap / precondition / escalate:
 
 1. The run file is authoritative — a person's ticks are never required, and never substitute for a verdict you did not earn.
-2. `$DF report $RUN -o .skills/<CODE>/flow-guide-report.md`
+2. `$DF report $RUN -o .skills/<CODE>/dogfood-report.md`
 3. If you started `$DF serve`, follow the stop step in `serve.md` — never silently, and never leaving a process holding the port.
 4. Hand the user: path to the run file, path to the report, and any `blocked`/`pending` cases and why.
 
@@ -163,7 +163,7 @@ When every case is `pass`, or the run stops on a cap / precondition / escalate:
 
 | Thought | Reality |
 |---|---|
-| "Write Flow Guide judges the screen, not wire traffic" | State cases require a server probe. Screen-only is not a pass. |
+| "Write Dogfood judges the screen, not wire traffic" | State cases require a server probe. Screen-only is not a pass. |
 | "The human ticked it, so the case is done" | A tick says someone looked. `pass` needs `saw` and `server`. The two never merge. |
 | "I'll tick the guide too so the human sees progress" | `mark` already writes the file the guide reads. Opening a browser to tick is waste and writes to the wrong field space. |
 | "Same CRUD pattern — spot-check is enough" | No case, not run. Every case gets its own evidence. |
@@ -177,20 +177,20 @@ When every case is `pass`, or the run stops on a cap / precondition / escalate:
 | "Only Critical findings block drive" | Every open finding blocks. Severity orders fix only. |
 | "I'll patch the product in this long dogfood thread" | Master marks fail; dispatch a subagent with a red-capable brief. Master re-tests. |
 | "Isolation means skip root-cause / test-first" | Subagent still runs `root-cause` (+ test-first). Isolation ≠ free patch. |
-| "Guide-gap miss mid-run — treat as product defect" | Separate loops. Guide wrong / re-enter vet; do not absorb missing-situation findings into root-cause. |
+| "Guide-gap miss mid-run — treat as product defect" | Separate loops. Guide wrong / re-enter the review; do not absorb missing-situation findings into root-cause. |
 
 ## Red Flags
 
-- Opening the write-flow-guide HTML in a browser to tick checkboxes during the run
+- Opening the write-dogfood HTML in a browser to tick checkboxes during the run
 - Copying a `human` tick into `verdict`, or citing one as evidence
 - Ending a run without asking about a server this run started
 - Marking `pass` with `server` empty on a create/update/delete/persist case
 - Spot-checking a subset while claiming the guide is done
 - Driving a non-local origin without an explicit yes naming that origin
 - `find_tab` with `active:true` on a product drive
-- Patching product on a write-flow-guide fail without `root-cause` when the fail is deterministic
+- Patching product on a write-dogfood fail without `root-cause` when the fail is deterministic
 - Claiming completion from memory after compaction instead of reading the run file
-- Driving product cases with a missing, stale, or open-findings vet report and no named override
+- Driving product cases with a missing, stale, or open-findings review report and no named override
 - Treating bare “just go” or severity=Minor as a gate pass
 - Patching product in the master dogfood context instead of a red-capable subagent brief
 - Clearing a product defect without `root-cause` / test-first because “it was isolated”

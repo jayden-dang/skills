@@ -1,12 +1,12 @@
 # Run file schema (v2)
 
-Load when authoring or validating a write-flow-guide run file. One JSON file per run holds
+Load when authoring or validating a write-dogfood run file. One JSON file per run holds
 the authored cases **and** the verdicts, so what the agent records is what the
 person reads.
 
 ## Path
 
-`.skills/<CODE>/flow-guide.json`
+`.skills/<CODE>/dogfood.json`
 
 ## Shape
 
@@ -16,7 +16,7 @@ person reads.
   "rev": 0,
   "feature": "notes",
   "slug": "notes",
-  "title": "Notes App — Flow Guide",
+  "title": "Notes App — Dogfood",
   "origin": "http://localhost:5173",
   "intro": "Local app: http://localhost:5173. API: http://localhost:3001.",
   "sections": [
@@ -76,11 +76,11 @@ without either clobbering the other.
 
 | Block | Fields | Written by |
 |---|---|---|
-| `run` | `verdict` (`pending`/`pass`/`fail`/`blocked`), `saw`, `server`, `notes` | the agent, via `write-flow-guide mark` |
+| `run` | `verdict` (`pending`/`pass`/`fail`/`blocked`), `saw`, `server`, `notes` | the agent, via `dogfood mark` |
 | `human` | `checked`, `at`, `comment` | a person, via the served guide |
 
 A `human` tick records that someone looked. It never becomes a `verdict`, it
-never advances `write-flow-guide next`, and no flag makes it evidence — see
+never advances `dogfood next`, and no flag makes it evidence — see
 `docs/adr/0006-human-ticks-are-recorded-never-authoritative.md`.
 
 ## CLI
@@ -88,8 +88,8 @@ never advances `write-flow-guide next`, and no flag makes it evidence — see
 Every subcommand takes the one run file.
 
 ```bash
-DF="python3 skills/acceptance/write-flow-guide/scripts/flow-guide"
-RUN=.skills/<CODE>/flow-guide.json
+DF="python3 skills/acceptance/write-dogfood/scripts/dogfood"
+RUN=.skills/<CODE>/dogfood.json
 
 $DF list   $RUN
 $DF show   $RUN CASE-1
@@ -97,8 +97,8 @@ $DF init   $RUN                      # seed pending in place; --force to reset
 $DF next   $RUN                      # first case whose verdict is not pass
 $DF mark   $RUN CASE-1 pass --saw 'list shows "Alpha"' --server 'GET /api/notes includes Alpha'
 $DF status $RUN
-$DF report $RUN -o .skills/<CODE>/flow-guide-report.md
-$DF render $RUN -o .skills/<CODE>/flow-guide.html
+$DF report $RUN -o .skills/<CODE>/dogfood-report.md
+$DF render $RUN -o .skills/<CODE>/dogfood.html
 $DF serve  $RUN                      # optional live guide on 127.0.0.1:8787
 $DF serve  $RUN --stop
 ```

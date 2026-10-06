@@ -45,6 +45,6 @@ Write `.skills/<CODE>/validate-ui.md` with one block per flow, the quoted screen
 
 - [`validate-feature`](validate-feature.md) — the orchestrator that hands it a ledger slice
 - [`validate-api`](validate-api.md) — the same contract for a backend surface
-- [`write-flow-guide`](write-flow-guide.md) — the manual sibling, for judgment a drive does not settle
-- [`run-flow-guide`](run-flow-guide.md) — agent-run an existing guide, same browser driver
+- [`write-dogfood`](write-dogfood.md) — the manual sibling, for judgment a drive does not settle
+- [`run-dogfood`](run-dogfood.md) — agent-run an existing guide, same browser driver
 - [`root-cause`](root-cause.md) — the red loop a failing flow drops into

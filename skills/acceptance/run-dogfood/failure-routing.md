@@ -1,6 +1,6 @@
 # Failure routing
 
-WHEN a driven case is not `pass` — read from `run-flow-guide/SKILL.md` § 4.
+WHEN a driven case is not `pass` — read from `run-dogfood/SKILL.md` § 4.
 
 Re-drive the failed case once from a clean setup, then classify by observation.
 **Master** (this controller) owns case selection, evidence slots, `mark`
@@ -18,10 +18,10 @@ the app if needed, re-drive the failed case from a clean setup, **and** re-drive
 every already-`pass` case whose `req` the product fix touched (grep the diff for
 requirement IDs or the modules those cases exercise).
 
-**Loops stay separate.** The guide-gap fix loop (`vet-flow-guide`: patch run
-file → re-vet) is **not** this product-defect dogfood loop. Guide-gap findings
+**Loops stay separate.** The review fix loop (`write-dogfood`: patch run
+file → fresh reviewer) is **not** this product-defect dogfood loop. Guide-gap findings
 are **not** routed here — the §2a gate should have blocked drive; if a missing
-situation is discovered mid-run, treat it as guide wrong / re-enter vet, not as
+situation is discovered mid-run, treat it as guide wrong / re-enter the review, not as
 a product defect. Product defects do not absorb missing-situation findings.
 
 **Caps (D2):** 3 distinct fix attempts on the same case → stop and escalate.

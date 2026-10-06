@@ -1,6 +1,6 @@
 ---
 name: draft-ux
-version: 1.0.0
+version: 1.0.1
 description: Use when what a surface *does* is still open — what happens when
   the button is pressed, whether the row leaves the list at once or after the
   call returns, undo versus a confirm dialog, what a slow call or a failed one
@@ -11,7 +11,7 @@ description: Use when what a surface *does* is still open — what happens when
   `design-solution` lifts instead of re-deciding. Not for what a surface looks
   like (draft-ui), judging an already built diff (inspect-ui), a logic or
   state-model spike (run-spike), committed e2e specs (validate-ui), or a human
-  product walk (write-flow-guide).
+  product walk (write-dogfood).
 ---
 
 # Draft UX

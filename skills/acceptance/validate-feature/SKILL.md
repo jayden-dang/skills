@@ -1,6 +1,6 @@
 ---
 name: validate-feature
-version: 1.3.0
+version: 1.3.1
 description: Use before merging or finishing a branch, when a feature's unit tests are
   green but its user-facing behavior has not been driven through the running
   system as a real client — the acceptance / end-to-end pass over the happy
@@ -68,7 +68,7 @@ features need both:
   result in the ledger, and promote the passing checks into committed tests
   that describe the domain behavior (docs-only spine — no requirement-ID tags
   required in test files). For human-eyeball qualities (visuals, feel) hand
-  off to `write-flow-guide`.
+  off to `write-dogfood`.
 
 Hand each child its slice of the ledger by path; it writes results back to the
 same file.

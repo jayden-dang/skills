@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Write Flow Guide guide</title>
+<title>Dogfood guide</title>
 <style>
   :root {
     --bg: #0f1419;
@@ -181,7 +181,7 @@
 </head>
 <body>
   <header>
-    <h1 id="title">Write Flow Guide guide</h1>
+    <h1 id="title">Dogfood guide</h1>
     <p class="muted" id="origin-line"></p>
     <p class="intro muted" id="intro"></p>
     <p class="banner" id="snapshot-banner" hidden></p>
@@ -197,7 +197,7 @@
   <p class="agent-note">
     Your tick records that you looked — it never becomes a <code>pass</code>, which
     needs quoted screen evidence and a server probe. The agent writes verdicts with
-    <code>write-flow-guide mark</code> and never ticks these boxes itself.
+    <code>dogfood mark</code> and never ticks these boxes itself.
   </p>
 
 <script>
@@ -206,7 +206,7 @@ window.__WALK_PRODUCT__ = window.__WALK_PRODUCT__ || {
   "version": 1,
   "feature": "example",
   "slug": "example",
-  "title": "Write Flow Guide guide",
+  "title": "Dogfood guide",
   "origin": "",
   "intro": "",
   "sections": []
@@ -215,7 +215,7 @@ window.__WALK_PRODUCT__ = window.__WALK_PRODUCT__ || {
 
 (function () {
   var data = window.__WALK_PRODUCT__;
-  var storageKey = "write-flow-guide-ticks:" + (data.slug || data.feature || "guide");
+  var storageKey = "write-dogfood-ticks:" + (data.slug || data.feature || "guide");
 
   // Mode is decided by the URL this page was loaded from. Under file:// the
   // page is entirely self-contained: the verdicts baked in at render time are
@@ -227,13 +227,13 @@ window.__WALK_PRODUCT__ = window.__WALK_PRODUCT__ || {
     banner.textContent =
       "Verdicts below are the snapshot taken when this page was rendered" +
       (data.rendered_at ? " (" + data.rendered_at + ")" : "") +
-      " — not live. Re-run `flow-guide render` to refresh, or `flow-guide serve` " +
+      " — not live. Re-run `dogfood render` to refresh, or `dogfood serve` " +
       "to follow the run as it happens.";
     banner.hidden = false;
   }
 
-  document.getElementById("title").textContent = data.title || "Write Flow Guide guide";
-  document.title = data.title || "Write Flow Guide guide";
+  document.getElementById("title").textContent = data.title || "Dogfood guide";
+  document.title = data.title || "Dogfood guide";
   var originEl = document.getElementById("origin-line");
   if (data.origin) {
     originEl.innerHTML = "Origin: <code>" + escapeHtml(data.origin) + "</code>";

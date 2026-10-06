@@ -8,7 +8,7 @@
 | **Invocation** | model-invocable (the agent calls it on its own) |
 | **Reads** | the design system already in the repo — `CLAUDE.md`, `docs/agents/*.md`, a tokens or theme file, existing component styles |
 | **Writes** | a three-slot design plan (color / type / layout) before any markup, then the page derived from it |
-| **Called by** | [`scan-architecture`](scan-architecture.md) (required, before the architecture report's markup; sketch is figure-gated `before/after structure`), [`understand`](understand.md) (**required** for the Map figure and page design), [`write-flow-guide`](write-flow-guide.md) (**optional** page craft only — default is the checked-in shell) |
+| **Called by** | [`scan-architecture`](scan-architecture.md) (required, before the architecture report's markup; sketch is figure-gated `before/after structure`), [`understand`](understand.md) (**required** for the Map figure and page design), [`write-dogfood`](write-dogfood.md) (**optional** page craft only — default is the checked-in shell) |
 
 ## Where it comes from
 
@@ -19,7 +19,7 @@ This skill is a rewrite of Claude Code's built-in `artifact-design`, renamed so 
 
 ## When it fires
 
-Before the first line of markup for any HTML a human will look at: a write-flow-guide test guide, a report, a dashboard, a landing page, a published artifact, a standalone `.html` handoff. Also when a page's colors, typography, dark mode, spacing, or visual treatment need deciding — or when a page has come out looking generic and needs a reason why.
+Before the first line of markup for any HTML a human will look at: a write-dogfood test guide, a report, a dashboard, a landing page, a published artifact, a standalone `.html` handoff. Also when a page's colors, typography, dark mode, spacing, or visual treatment need deciding — or when a page has come out looking generic and needs a reason why.
 
 ## 1. Name the treatment
 
@@ -79,7 +79,7 @@ The principles: the hero is a thesis; typography carries the personality; motion
 
 ## Related
 
-- [`write-flow-guide`](write-flow-guide.md) — optional caller for custom craft; default write-flow-guide path is cases YAML + shell `render`, not a fresh craft-page pass
+- [`write-dogfood`](write-dogfood.md) — optional caller for custom craft; default write-dogfood path is the run file + shell `render`, not a fresh craft-page pass
 - [`scan-architecture`](scan-architecture.md) — required page craft. The before/after sketch is the figure branch (`before/after structure`).
 - [`understand`](understand.md) — Map figure and page design.
 - [`author-skills`](author-skills.md) — the standard this skill is written against.

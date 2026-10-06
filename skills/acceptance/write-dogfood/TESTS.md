@@ -110,3 +110,51 @@ a control verifies unprompted, but verifying ad hoc produces no run file, no
 per-case verdicts and no server probes, so `run-flow-guide` still has to be the
 route. This is the same split every measurement on 2026-09-09 produced —
 mechanics survive, exhortation does not.
+
+## v3.0.0 — renamed from write-flow-guide; vet-flow-guide merged in (2026-10-06)
+
+The user asked to fold `vet-flow-guide` into this skill: it was only ever the
+isolated re-check step after authoring, and as its own skill it cost context and
+tokens on every run. They also renamed the pair to `write-dogfood` /
+`run-dogfood`; the artifacts became `.skills/<CODE>/dogfood.json`,
+`dogfood.html`, and `dogfood-review.md`, and the CLI became `scripts/dogfood`.
+
+**Why it was a cost (measured, not a behavior RED).** The author's context
+used to load `write-flow-guide` SKILL.md (11.4 KB), then the `vet-flow-guide`
+SKILL.md (10.0 KB) through its REQUIRED SUB-SKILL hand-off, then the judgment
+brief (2.2 KB): 23.6 KB. Now it loads this SKILL.md (12.3 KB) and
+`references/review-brief.md` (1.4 KB): 13.7 KB, about 42% less. The reviewer's
+doctrine, `references/review.md` (4.1 KB), is read only by the reviewer
+subagent. One model-invocable description (~0.6 KB) also left every
+session's catalog. The behavior under test is the same as before — the review
+already ran in an isolated subagent — so the check is that the split still
+works, not a new RED.
+
+Model roster: Sonnet (`skill-tester`). Fixture `notely`: a static notes app
+(`src/index.html`, `src/app.js`), five EARS IDs, and a run file of four cases
+that seeds three misses — delete (NOTE-1.3 has no case at all), the
+"Too long (max 80)" error (NOTE-1.5), and the "No notes yet" empty state.
+
+**GREEN A — the author at §5.** The prompt said §1–4 were done and to continue;
+the spawn tool was absent, so the dispatch went to a file. It read only
+SKILL.md and `references/review-brief.md` — **not** `references/review.md`. It
+wrote `.skills/NOTE/review-brief.md` with correct paths (`design.md`/`tasks.md`
+`—` because absent; surfaces `src/index.html`, `src/app.js`, `src/app.css`),
+dispatched the template prompt on `sonnet`, left the Independent review todo
+unchecked, and did not name `run-dogfood`.
+
+**GREEN B — the reviewer, fed A's dispatch verbatim.** It found 3/3 seeded
+misses with correct evidence lines (`src/app.js:12-16`, `src/app.js:28` plus
+`src/index.html:3` `maxlength="200"`, `src/index.html:6` / `src/app.js:19`).
+Its `cases_fingerprint` matched the author-computed
+`8359c0fa…949f35f` exactly. The run file and `src/app.js` hashes were unchanged.
+Hygiene notes stayed in their own section, outside `open_count`. Wobble:
+`stamped_at` was a placeholder midnight time, not the real one — left as is,
+since freshness is judged by the fingerprint, not the timestamp.
+
+CLI smoke after the rename: `--help`, `init`, `list`, `render`, `status`, and
+`report` all ran on a fresh run file; the rendered page is titled
+"Dogfood guide" with no `flow-guide` left in it.
+
+Not re-run: the fix loop (`references/review-fix-loop.md`) and the inline
+`AUTHORING CLOSED` path — both moved over with their wording intact.

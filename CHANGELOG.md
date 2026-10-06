@@ -2,6 +2,25 @@
 
 ## Unreleased
 
+### write-dogfood + run-dogfood — the review moves inside, the names say what they do (2026-10-06)
+
+`write-flow-guide` → `write-dogfood` 3.0.0 and `run-flow-guide` → `run-dogfood` 3.0.0.
+`vet-flow-guide` is removed; its review is now §5 of `write-dogfood`. Artifacts:
+`.skills/<CODE>/dogfood.json`, `dogfood.html`, `dogfood-review.md`; the CLI is
+`scripts/dogfood`. Pointer renames: `validate-feature` 1.3.1, `craft-page` 1.1.4,
+`draft-ux` 1.0.1, `execute-common` 2.9.1, `prove-claim` 1.5.1, `inspect-ui` 2.1.1.
+
+The vet skill was only ever the isolated re-check run right after authoring, yet the author
+had to load all of it. Now the author fills a one-page brief and dispatches a fresh
+read-only subagent. Only that subagent reads the review recipe (`references/review.md`).
+The author's context drops from 23.6 KB to 13.7 KB. On Sonnet, the author read only the
+brief and dispatched correctly. The reviewer, fed that dispatch verbatim, found all three
+seeded misses with correct line evidence, matched the case fingerprint exactly, and changed
+no file but its report.
+
+A repo holding an old `flow-guide.json` re-runs `write-dogfood`. The `run-dogfood` gate now
+reads `dogfood-review.md`.
+
 ### brief-team removed (2026-10-06)
 
 The user dropped `brief-team` (team pitch+map HTML under `docs/explainers/`) as no longer

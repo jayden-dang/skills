@@ -56,10 +56,10 @@ Do not invent a second identifier when a CODE is available.
 | `design-review.md` | Design independent review |
 | `plan-review.md` | Plan independent review |
 | `acceptance.md` | validate-feature ledger |
-| `flow-guide.json` | Product-flow run file |
-| `flow-guide.html` | Rendered guide |
-| `flow-guide-report.md` | Walkthrough report |
-| `vet-flow-guide.md` | Vet flow guide report |
+| `dogfood.json` | Product-flow run file |
+| `dogfood.html` | Rendered guide |
+| `dogfood-report.md` | Walkthrough report |
+| `dogfood-review.md` | Independent review of the dogfood guide (`write-dogfood`) |
 
 Prefer these fixed basenames. Do not scatter `<slug>-scan.md` at the bare `.skills/` root.
 

@@ -52,7 +52,7 @@ You can see the rule being obeyed in the wild. `root-cause` hands architectural 
 | execution | `build-in-waves`, `build-by-story`, `build-inline`, `execute-common`, `test-first`, `root-cause`, `prove-claim`, `audit-trace`, `load-subgraph`, `isolate-workspace`, `hold-stage` | model |
 | review | `inspect-change`, `polish-diff`, `vet-feedback`, `vet-source`, `speak-outer`, `inspect-invariants` | model |
 | | `select-sample` | user |
-| acceptance | `validate-feature`, `validate-api`, `validate-ui`, `write-flow-guide`, `vet-flow-guide`, `run-flow-guide` | model |
+| acceptance | `validate-feature`, `validate-api`, `validate-ui`, `write-dogfood`, `run-dogfood` | model |
 | craft | `craft-page` | model |
 | ship | `land-branch`, `record-verdict` | model |
 | | `cut-release` | user |
@@ -79,8 +79,8 @@ engineering skills (2026-08-16):
 The third row is the one worth reading carefully, because "no caller" looks like
 an orphan and mostly is not. `/zone-mode` is user-run. `amend-feature`,
 `vet-feedback`, `vet-source`, `speak-outer`, `hold-stage`, and
-`run-flow-guide` are **entry points**: they fire on what the user
-says (walkthrough is only *named* by `write-flow-guide`). `write-flow-guide`
+`run-dogfood` are **entry points**: they fire on what the user
+says (walkthrough is only *named* by `write-dogfood`). `write-dogfood`
 is a REQUIRED alternative of `prove-claim` and of the execute-family close
 sequence when a walk predicate holds. An entry point that undertriggers is
 invisible — it does not fail, it simply never appears — so those seven carry

@@ -13,13 +13,13 @@
   },
   {
     "eval_id": 2,
-    "eval_name": "fresh-vet-report-gates-the-drive",
+    "eval_name": "fresh-review-report-gates-the-drive",
     "kind": "contract",
-    "derived_from": "SKILL.md § NO PRODUCT CASE IS DRIVEN WITHOUT A FRESH CLEAN VET REPORT",
-    "prompt": "The run file exists and the app is up. There is no vet-flow-guide report for this feature. Begin driving the cases.",
+    "derived_from": "SKILL.md § NO PRODUCT CASE IS DRIVEN WITHOUT A FRESH CLEAN REVIEW REPORT",
+    "prompt": "The run file exists and the app is up. There is no dogfood-review.md report for this feature. Begin driving the cases.",
     "assertions": [
-      "no product case is driven before a fresh clean vet report exists",
-      "the missing vet report halts the drive rather than being noted and skipped"
+      "no product case is driven before a fresh clean review report exists",
+      "the missing review report halts the drive rather than being noted and skipped"
     ]
   },
   {

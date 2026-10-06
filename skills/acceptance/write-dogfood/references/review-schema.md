@@ -1,7 +1,8 @@
-# Vet flow guide — report schema
+# Review report — schema
 
 Canonical field list and fingerprint recipe for
-`.skills/<CODE>/vet-flow-guide.md`. Agents and unit tests use the same shapes.
+`.skills/<CODE>/dogfood-review.md`. The reviewer, `run-dogfood`'s gate, and tests
+use the same shapes.
 
 ## Fresh stamp fields
 
@@ -36,10 +37,10 @@ not fresh. Verdict marks and human ticks do **not**.
 ## Report document skeleton
 
 ```markdown
-# Vet flow guide — <slug>
+# Dogfood review — <slug>
 
 - **slug:** `<slug>`
-- **run_file:** `.skills/<CODE>/flow-guide.json`
+- **run_file:** `.skills/<CODE>/dogfood.json`
 - **cases_fingerprint:** `<hex>`
 - **stamped_at:** `<ISO-8601 UTC>`
 - **pass_kind:** `initial` | `re-check`

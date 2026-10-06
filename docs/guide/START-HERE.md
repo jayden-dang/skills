@@ -163,7 +163,7 @@ Personal OS is a **separate** package — [personal-os START-HERE](../personal-o
 | **spec** | `specify-behavior`, `design-solution`, `plan-tasks` |
 | **execution** | `build-in-waves`, `build-by-story`, `build-inline`, `execute-common`, `test-first`, `root-cause`, `debug-remote`, `assess-observability`, `prove-claim`, `audit-trace`, **`load-subgraph`**, `isolate-workspace`, `hold-stage` |
 | **review** | `inspect-change`, `polish-diff`, `vet-feedback`, `vet-source`, `speak-outer`, `inspect-invariants`, `/select-sample` |
-| **acceptance** | `validate-feature`, `validate-api`, `validate-ui`, `write-flow-guide`, `vet-flow-guide`, `run-flow-guide` |
+| **acceptance** | `validate-feature`, `validate-api`, `validate-ui`, `write-dogfood`, `run-dogfood` |
 | **craft** | `craft-page` |
 | **ship** | `land-branch`, `record-verdict`, `/cut-release` |
 | **track** | `amend-feature`, `reroute-plan`, `realign-spec`, `/triage`, `/publish-issues`, `/scan-architecture`, **`/map-features`**, `/write-handoff`, `/refresh-roadmap-status`, `/assess-milestone` |

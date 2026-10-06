@@ -1,22 +1,24 @@
 ---
-name: write-flow-guide
-version: 2.3.0
-description: Use when a finished feature needs a hands-on product walk in the real
-  running app — visuals, feel, and eyeball edge cases. Produces a checkable
-  flow guide (run file + HTML) plus its vet report. Not for
-  executing an already-written guide (`run-flow-guide`).
+name: write-dogfood
+version: 3.0.0
+description: Use when a finished feature needs dogfooding — a hands-on product
+  walk in the real running app covering visuals, feel, and eyeball edge cases —
+  or when an existing dogfood guide needs re-reviewing for missing situations.
+  Produces a checkable dogfood guide (run file + HTML) plus an independent review
+  report from a clean-context reviewer. Not for executing an already-written
+  guide (`run-dogfood`).
 ---
 
-# Write Flow Guide
+# Write Dogfood
 
 A product walk is a human driving the real app through every user-facing
 ability and judging what they see. The deliverable is a **run file**, a
-**rendered human guide**, and a **`vet-flow-guide` report** — grounded in the
+**rendered human guide**, and an **independent review report** — grounded in the
 app's own rendering, one row per ability case, each tagged with the requirement
 ID and a **case kind**. Cases and verdicts live in the same file, so what the
 agent proves is what the person reads. Build the artifacts; a chat message is
 not the deliverable. A guide of only happy paths is not done. Authoring is not
-complete until the vet report exists.
+complete until the review report exists.
 
 ## Case taxonomy (every guide uses these kinds)
 
@@ -39,10 +41,9 @@ a one-seat user pass. Permission/role cases belong when the UI exposes them
 Before §1, put one item per section (1–4) on a **visible list** — the harness's
 todo / task-list tool when it exposes one, otherwise a checklist written into your
 reply and restated at each section boundary — **and** one terminal
-todo **Vet flow guide** (`vet-flow-guide` on the run file — created now, not
-later). Check the vet todo off **only** when
-`.skills/<CODE>/vet-flow-guide.md` exists for this run file.
-*Done when: the list exists before scoping and includes the vet todo.*
+todo **Independent review** (§5 step 2 — created now, not later). Check it off
+**only** when `.skills/<CODE>/dogfood-review.md` exists for this run file.
+*Done when: the list exists before scoping and includes the review todo.*
 
 ## 1. Scope every ability — coverage gate
 
@@ -92,7 +93,7 @@ is running and every not-yet-visible behavior has an observation method.*
 
 **Authoring SSOT is the run file**, not hand-rolled HTML.
 
-1. Write `.skills/<CODE>/flow-guide.json` (schema: load sibling
+1. Write `.skills/<CODE>/dogfood.json` (schema: load sibling
    `references/cases-schema.md` when unsure). Every case carries all required
    slots: `id`, `req`, `kind`, `title`, `setup`, `try`, `expect`, `backend`
    (`backend` is the server-side assertion, or the literal `presentational`).
@@ -102,12 +103,12 @@ is running and every not-yet-visible behavior has an observation method.*
    custom craft:
 
    ```bash
-   python3 <skill-root>/scripts/flow-guide render .skills/<CODE>/flow-guide.json \
-     -o .skills/<CODE>/flow-guide.html
+   python3 <skill-root>/scripts/dogfood render .skills/<CODE>/dogfood.json \
+     -o .skills/<CODE>/dogfood.html
    ```
 
    Resolve `<skill-root>` to this skill's install path (in this monorepo:
-   `skills/acceptance/write-flow-guide`). The shell is `shell/guide.html` — theme-aware
+   `skills/acceptance/write-dogfood`). The shell is `shell/guide.html` — theme-aware
    CSS/JS, kind chips, verdict badges, and `data-*` attributes. The rendered page
    carries the verdicts as of render time and says so, so it is correct on a
    double-click with nothing running.
@@ -125,24 +126,35 @@ holds, every case has all required slots.*
 
 ## 5. Hand over
 
-Order: artifacts → **run** vet → optional serve → dogfood only after clean vet.
+Order: artifacts → **independent review** → optional serve → drive only after a
+clean review.
 
 1. **Artifacts** — give both paths (run file + HTML), the fastest way in — a
    ~30-second first pass that lights the feature up (usually the first `happy`
    row) — then degraded-feature notes and coverage exceptions.
 
-2. **Vet IMMEDIATELY.** After the run file and rendered HTML are on disk and §4
-   coverage holds, **IMMEDIATELY** REQUIRED SUB-SKILL: use `vet-flow-guide` on
-   the run file — before serve, dogfood, or any “authoring done” claim. Mark the
-   **Vet flow guide** todo done only when `.skills/<CODE>/vet-flow-guide.md`
-   exists. §1 / §4 coverage self-check is authoring hygiene, not a substitute
-   for this report.
+2. **Independent review — spawn it IMMEDIATELY.** You wrote the cases, so you
+   cannot see what they miss. After the run file and HTML are on disk and §4
+   coverage holds — before serve, the drive, or any "authoring done" claim —
+   fill `references/review-brief.md` beside this file and dispatch its prompt to
+   a **fresh, read-only subagent** (mid tier). Do not open `references/review.md`
+   yourself; it is the reviewer's recipe, and keeping it out of your context is
+   the point. Write the reviewer's returned report verbatim if it could not;
+   never re-judge it. Check off **Independent review** only when
+   `.skills/<CODE>/dogfood-review.md` exists.
+   - **No subagents in this harness?** Say `AUTHORING CLOSED — starting the
+     independent review` out loud, then read `references/review.md` and follow
+     it with only the brief's inputs.
+   - **Open findings?** Read `references/review-fix-loop.md` beside this file
+     and follow it exactly.
+   - **"Re-review the guide" on an existing run file** starts here, with
+     `pass_kind: re-check`.
 
 3. **Optional serve** — offer the live guide when they will be testing by hand
    alongside the agent:
 
    ```bash
-   python3 <skill-root>/scripts/flow-guide serve .skills/<CODE>/flow-guide.json
+   python3 <skill-root>/scripts/dogfood serve .skills/<CODE>/dogfood.json
    ```
 
    It binds `127.0.0.1:8787`, follows verdicts as the agent records them, and
@@ -151,10 +163,10 @@ Order: artifacts → **run** vet → optional serve → dogfood only after clean
    Stopping it is `serve --stop`. Opened as a plain file instead, the guide still
    shows the verdicts it was rendered with — the server only buys freshness.
 
-4. **Agent dogfood — run it.** After a clean `vet-flow-guide` report (or a
-   named override on open findings), REQUIRED SUB-SKILL: use `run-flow-guide`
+4. **Agent dogfood — run it.** After a clean review report (or a
+   named override on open findings), REQUIRED SUB-SKILL: use `run-dogfood`
    on this run file. Before the report exists, do not name it at all. That
-   drive is kimi-webbridge via `run-flow-guide` — do not author a Playwright
+   drive is kimi-webbridge via `run-dogfood` — do not author a Playwright
    suite as the walk. The hand-off is a **route, not a gate**: a control measured on 2026-09-09
    drove the app unprompted rather than stopping at the artifact it had just
    written, so nothing here needs to argue it into verifying. What it does need
@@ -165,8 +177,8 @@ Order: artifacts → **run** vet → optional serve → dogfood only after clean
    deliverable and their ticks are the record.
 
 *Done when: artifacts are on disk, grounded, the §1 coverage gate holds, every
-case is fully slotted, `.skills/<CODE>/vet-flow-guide.md` exists for this run
-file, and the guide has been handed to `run-flow-guide` — or a hand walk is
+case is fully slotted, `.skills/<CODE>/dogfood-review.md` exists for this run
+file, and the guide has been handed to `run-dogfood` — or a hand walk is
 recorded as the user's explicit choice.*
 
 ## Rationalizations
@@ -177,22 +189,24 @@ recorded as the user's explicit choice.*
 | "I'll craft-page a unique layout for this feature" | Default is the checked-in shell. Custom craft only when the user asks. |
 | "They're in a native desktop app, not a browser, so an artifact doesn't fit" | The artifact is a companion reference kept open beside the app; the app being native is no reason to inline the guide into chat. |
 | "I'll describe the badge in words" | The user checks against what they SEE. Mirror the real rendering, or the Expect is unverifiable. |
-| "One happy case per requirement is enough" | The coverage gate requires non-happy kinds (or a written exception). Happy-only is a demo, not write-flow-guide. |
-| "Edges belong in unit tests, not the guide" | Write Flow Guide is the user-facing surface. If the user can hit the edge, it gets a row. |
-| "Worse cases mean load/chaos/fuzz" | Those are other harnesses. Write Flow Guide worse cases are edge, error, nonbehavior, persist. |
-| "§4 coverage self-check already ran — skip vet" | Self-check is same-session authoring hygiene, not an isolated implementation-surface judgment. It is **not a substitute for vet**. |
-| "I'll name vet as next and stop — the controller will run it" | Step 2 **runs** `vet-flow-guide`; naming is not completion |
-| "Artifacts are on disk — authoring is done" | Done when the vet report exists, not when the JSON/HTML land |
+| "One happy case per requirement is enough" | The coverage gate requires non-happy kinds (or a written exception). Happy-only is a demo, not write-dogfood. |
+| "Edges belong in unit tests, not the guide" | Write Dogfood is the user-facing surface. If the user can hit the edge, it gets a row. |
+| "Worse cases mean load/chaos/fuzz" | Those are other harnesses. Write Dogfood worse cases are edge, error, nonbehavior, persist. |
+| "§4 coverage self-check already ran — skip the review" | Self-check is the author grading their own cases. It is **not a substitute for the independent review**. |
+| "I'll review it myself — I know the code by now" | The author's context is exactly what hides the gaps. A fresh subagent, or `AUTHORING CLOSED` when there are none |
+| "I'll name the review as next and stop" | Step 2 **dispatches** the reviewer; naming is not completion |
+| "Artifacts are on disk — authoring is done" | Done when the review report exists, not when the JSON/HTML land |
 | "I'll add a Playwright suite so the walk is repeatable" | The walk is the run file, driven through kimi-webbridge |
 
 ## Red Flags
 
-- Hand-writing a full HTML/CSS page instead of the run file + `flow-guide render`
+- Hand-writing a full HTML/CSS page instead of the run file + `dogfood render`
 - Missing `backend` / `setup` / `kind` on any case
 - Happy-only section without a greppable coverage exception
-- Telling the agent to mark progress via guide ticks instead of `write-flow-guide mark`
-- Treating §4 coverage self-check as a substitute for `vet-flow-guide`
-- Declaring this skill done without `.skills/<CODE>/vet-flow-guide.md` for this run file
-- Naming `run-flow-guide` (or offering dogfood) before a vet report exists
-- Verifying the feature ad hoc instead of through `run-flow-guide`, leaving no run file
-- Checking off the **Vet flow guide** todo when the report path does not exist
+- Telling the agent to mark progress via guide ticks instead of `dogfood mark`
+- Treating §4 coverage self-check as a substitute for the independent review
+- Reading `references/review.md` in the authoring context when subagents exist
+- Declaring this skill done without `.skills/<CODE>/dogfood-review.md` for this run file
+- Naming `run-dogfood` (or offering the drive) before a review report exists
+- Verifying the feature ad hoc instead of through `run-dogfood`, leaving no run file
+- Checking off the **Independent review** todo when the report path does not exist

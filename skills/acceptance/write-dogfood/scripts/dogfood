@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""Flow Guide CLI — one JSON run file per write-flow-guide run.
+"""Dogfood CLI — one JSON run file per write-dogfood run.
 
-`.skills/<slug>-flow-guide.json` (version 2) holds the authored case slots and two
+`.skills/<CODE>/dogfood.json` (version 2) holds the authored case slots and two
 disjoint per-case field spaces: `run` for the agent's evidence-backed verdict,
 `human` for a person's tick. A tick is recorded, never authoritative — see
 docs/adr/0006-human-ticks-are-recorded-never-authoritative.md.
@@ -56,7 +56,7 @@ def load_run_file(path: Path) -> Dict[str, Any]:
     if path.suffix.lower() in {".yaml", ".yml"} or path.name.endswith("-run.md"):
         raise SystemExit(
             f"error: {path.name} is a v1 artifact; this CLI reads only the v2 JSON "
-            "run file (.skills/<slug>-flow-guide.json). Delete the v1 files and re-author."
+            "run file (.skills/<CODE>/dogfood.json). Delete the v1 files and re-author."
         )
     if not path.is_file():
         raise SystemExit(f"error: run file not found: {path}")
@@ -69,7 +69,7 @@ def load_run_file(path: Path) -> Dict[str, Any]:
         if embedded is None:
             raise SystemExit(
                 f"error: {path.name} carries no embedded run document "
-                "(was it rendered by `flow-guide render`?)"
+                "(was it rendered by `dogfood render`?)"
             )
         return normalize_run_doc(embedded, source=str(path))
 
@@ -168,7 +168,7 @@ def normalize_run_doc(data: Dict[str, Any], source: str = "") -> Dict[str, Any]:
             cases.append(case)
         out_sections.append({"name": str(name), "cases": cases})
 
-    slug = str(data.get("slug") or data.get("feature") or Path(source).stem or "flow-guide")
+    slug = str(data.get("slug") or data.get("feature") or Path(source).stem or "dogfood")
     intro = str(data.get("intro") or "")
     try:
         rev = int(data.get("rev", 0))
@@ -179,7 +179,7 @@ def normalize_run_doc(data: Dict[str, Any], source: str = "") -> Dict[str, Any]:
         "rev": rev,
         "feature": str(data.get("feature") or slug),
         "slug": slug,
-        "title": str(data.get("title") or f"{slug} — Write Flow Guide"),
+        "title": str(data.get("title") or f"{slug} — Write Dogfood"),
         "origin": str(data.get("origin") or ""),
         "intro": intro.rstrip() + ("\n" if intro else ""),
         "sections": out_sections,
@@ -285,7 +285,7 @@ def _acquire(lock: Path) -> int:
                 continue
             if time.monotonic() > deadline:
                 raise SystemExit(
-                    f"error: could not acquire {lock.name}; another flow-guide write "
+                    f"error: could not acquire {lock.name}; another dogfood write "
                     "has held it for too long. Remove the file if no writer is running."
                 )
             time.sleep(0.01)
@@ -459,7 +459,7 @@ def make_handler(run_path: Path, token: str, shell_path: Path):
     import http.server
 
     class Handler(http.server.BaseHTTPRequestHandler):
-        # Quiet by default: the server runs in the background beside a flow-guide
+        # Quiet by default: the server runs in the background beside a dogfood
         # session, and a request log per poll would bury anything worth reading.
         def log_message(self, fmt, *args):  # noqa: A003
             pass
@@ -555,13 +555,13 @@ def make_handler(run_path: Path, token: str, shell_path: Path):
 
 
 def pidfile_path(run_path: Path) -> Path:
-    """`.skills/<slug>-flow-guide-serve.pid`, beside the run file it serves."""
+    """`.skills/<slug>-dogfood-serve.pid`, beside the run file it serves."""
     stem = Path(run_path).name
-    for suffix in ("-flow-guide.json", ".json"):
+    for suffix in ("-dogfood.json", ".json"):
         if stem.endswith(suffix):
             stem = stem[: -len(suffix)]
             break
-    return Path(run_path).parent / f"{stem}-flow-guide-serve.pid"
+    return Path(run_path).parent / f"{stem}-dogfood-serve.pid"
 
 
 def read_pidfile(path: Path) -> Optional[Dict[str, Any]]:
@@ -733,7 +733,7 @@ def cmd_render(args: argparse.Namespace) -> int:
     out = (
         Path(args.output)
         if args.output
-        else Path.cwd() / ".skills" / f"{doc['slug']}-flow-guide.html"
+        else Path.cwd() / ".skills" / f"{doc['slug']}-dogfood.html"
     )
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(html_out, encoding="utf-8")
@@ -748,7 +748,7 @@ def cmd_report(args: argparse.Namespace) -> int:
         return str(s or "").replace("|", "\\|").replace("\n", " ")
 
     lines = [
-        "# Write Flow Guide run report",
+        "# Write Dogfood run report",
         f"- source: `{doc.get('source', '')}`",
         f"- slug: {doc.get('slug', '')}",
         f"- rev: {doc['rev']}",
@@ -850,7 +850,7 @@ def cmd_serve(args: argparse.Namespace) -> int:
     # below never returns to flush it. The documented usage is exactly that —
     # backgrounded with output to a file — so an unflushed URL is invisible.
     print(f"http://127.0.0.1:{port}/", flush=True)
-    print(f"serving {path} — flow-guide serve {path} --stop", file=sys.stderr, flush=True)
+    print(f"serving {path} — dogfood serve {path} --stop", file=sys.stderr, flush=True)
     try:
         server.serve_forever()
     except KeyboardInterrupt:
@@ -865,9 +865,9 @@ def cmd_serve(args: argparse.Namespace) -> int:
 
 def build_parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(
-        prog="flow-guide",
+        prog="dogfood",
         description=(
-            "Write Flow Guide run-file CLI. One JSON file per run holds the cases and the "
+            "Write Dogfood run-file CLI. One JSON file per run holds the cases and the "
             "verdicts; a human tick is recorded beside a verdict, never as one."
         ),
     )
@@ -875,7 +875,7 @@ def build_parser() -> argparse.ArgumentParser:
 
     def with_run_file(parser_obj):
         parser_obj.add_argument(
-            "run_file", help="Path to .skills/<slug>-flow-guide.json"
+            "run_file", help="Path to .skills/<CODE>/dogfood.json"
         )
         return parser_obj
 

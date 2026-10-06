@@ -7,7 +7,7 @@ A later agent has never seen this app. `npm test` does not teach it how to boot
 the process, click a feature, and prove the result survived reload. That agent
 reads `docs/agents/verify.md` (and the **Run locally (dev)** table in
 `project.md`). `validate-feature`, `validate-ui`, `validate-api`, and
-`write-flow-guide` consume it.
+`write-dogfood` consume it.
 
 ## Offer
 
@@ -58,7 +58,7 @@ IF Yes:
    routes, commands, or menus. Each feature file-section answers: what it is,
    how a user reaches it, how to drive it, what observable end state (including
    **reload / re-open / re-read**) proves it. A final screen without a persist
-   check is not proof — same bar `write-flow-guide` uses for `persist` cases.
+   check is not proof — same bar `write-dogfood` uses for `persist` cases.
 4. **Evidence** lives under `.skills/verify/` (gitignored). Cleanup must not
    delete evidence.
 

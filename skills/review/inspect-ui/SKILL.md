@@ -1,6 +1,6 @@
 ---
 name: inspect-ui
-version: 2.1.0
+version: 2.1.1
 description: Use when a diff or branch touching browser-rendered surfaces (HTML,
   CSS/styling, JSX/TSX/Vue/Svelte components, templates) needs its visual and
   interaction quality judged in the real running app before merge — the live
@@ -11,7 +11,7 @@ description: Use when a diff or branch touching browser-rendered surfaces (HTML,
   interaction and composed states, and design-contract conformance — settling
   cascade and severity questions by driving the app, never by inference from
   the diff. Not for asserting spec'd behavior e2e (validate-ui), authoring a
-  human product walk (write-flow-guide), or styling a standalone page
+  human product walk (write-dogfood), or styling a standalone page
   (craft-page).
 ---
 

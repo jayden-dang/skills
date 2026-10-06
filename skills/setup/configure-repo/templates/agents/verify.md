@@ -1,7 +1,7 @@
 # Verify / control — cold-start drive recipe
 
 Written by `configure-repo` (Decision M). Read by `validate-feature`,
-`validate-ui`, `validate-api`, and `write-flow-guide`. A later agent that has
+`validate-ui`, `validate-api`, and `write-dogfood`. A later agent that has
 never seen this app follows this file instead of inventing commands.
 
 **App:** `<name>`

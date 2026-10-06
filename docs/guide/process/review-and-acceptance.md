@@ -1,6 +1,6 @@
 # Phase 4 — Review and acceptance
 
-**Skills:** [`inspect-change`](../skills/inspect-change.md) · [`vet-feedback`](../skills/vet-feedback.md) · [`validate-feature`](../skills/validate-feature.md) → [`validate-api`](../skills/validate-api.md) / [`validate-ui`](../skills/validate-ui.md) · [`write-flow-guide`](../skills/write-flow-guide.md) · [`run-flow-guide`](../skills/run-flow-guide.md)
+**Skills:** [`inspect-change`](../skills/inspect-change.md) · [`vet-feedback`](../skills/vet-feedback.md) · [`validate-feature`](../skills/validate-feature.md) → [`validate-api`](../skills/validate-api.md) / [`validate-ui`](../skills/validate-ui.md) · [`write-dogfood`](../skills/write-dogfood.md) · [`run-dogfood`](../skills/run-dogfood.md)
 
 **Produces:** a two-axis merge verdict, and committed ID-tagged tests that prove the feature works against the running system.
 
@@ -84,7 +84,7 @@ The spec is the source: *a behavior nobody hand-fed you is still on the hook, an
 | An HTTP/RPC API a client calls | `validate-api` |
 | A frontend a user drives | `validate-ui` |
 | Neither — a CLI, a library, a batch job | drive it directly, record results, promote to ID-tagged tests |
-| Human-eyeball qualities (visuals, feel) | `write-flow-guide` |
+| Human-eyeball qualities (visuals, feel) | `write-dogfood` |
 
 Most features need both of the first two. Each child gets its slice of the ledger **by path** and writes results back to the same file.
 
@@ -98,19 +98,19 @@ Both fix what breaks through `root-cause`. API checks are promoted into the repo
 
 Report the checklist with each item's observed result. **Any item you could not exercise is an open risk — name it.** Do not let it pass silently.
 
-## `write-flow-guide` — the manual sibling
+## `write-dogfood` — the manual sibling
 
 For the judgment an automated test cannot make: visuals, feel, and the edge cases a human must eyeball.
 
-The deliverable is not a chat message. It is a **cases YAML catalog** (authoring SSOT) plus a **shell-rendered HTML guide** for humans — one case per ability, each with `kind`, grounded Try/Expect, and a `backend` slot. A **coverage gate** forbids happy-only sections. Render with the write-flow-guide CLI (`scripts/flow-guide render`); do not invent a full custom CSS page by default. Human checkbox ticks may use localStorage; they are never the agent progress path.
+The deliverable is not a chat message. It is a **run file** (`.skills/<CODE>/dogfood.json`, the authoring SSOT) plus a **shell-rendered HTML guide** for humans — one case per ability, each with `kind`, grounded Try/Expect, and a `backend` slot. A **coverage gate** forbids happy-only sections. Render with the `dogfood` CLI (`scripts/dogfood render`); do not invent a full custom CSS page by default. Human checkbox ticks are recorded, never the agent progress path. Right after authoring, a **fresh read-only subagent** reviews the guide against the shipped code and writes `dogfood-review.md`; the author never grades its own cases.
 
 It scopes the happy path, the edge cases, **and the deliberate non-behaviors** — what should *not* happen, taken from the spec's Out-of-Scope decisions. And a behavior with no UI surface still gets a case, with a real way to observe it (a devtools `invoke(...)`, a read-only DB peek), never a pretend screen.
 
 > "A markdown checklist in chat is enough" → It saves no tick, cannot show the real badge being checked against, and scrolls away.
 
-## `run-flow-guide` — run the guide
+## `run-dogfood` — run the guide
 
-When the catalog already exists and the agent should drive every case: `write-flow-guide init` a run ledger first, confirm local origin (or explicit non-local consent), execute Try against the **product app** only, `write-flow-guide mark` with `saw` + `server` evidence, never open the guide HTML to tick localStorage boxes, route product defects through `root-cause`, re-drive with a regression sweep, and `write-flow-guide report` when finished. This is a **run** through kimi-webbridge. `validate-ui` is the same driver used as the acceptance pass, not a separate Playwright suite.
+When the guide already exists and its review is clean, and the agent should drive every case: `dogfood init` the run state first, confirm local origin (or explicit non-local consent), execute Try against the **product app** only, `dogfood mark` with `saw` + `server` evidence, never open the guide HTML to tick localStorage boxes, route product defects through `root-cause`, re-drive with a regression sweep, and `dogfood report` when finished. This is a **run** through kimi-webbridge. `validate-ui` is the same driver used as the acceptance pass, not a separate Playwright suite.
 
 ## Next
 

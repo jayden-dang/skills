@@ -1,6 +1,6 @@
 ---
 name: prove-claim
-version: 1.5.0
+version: 1.5.1
 description: Use when about to say anything that implies success — "done",
   "fixed", "passing", "works", or any paraphrase — and before committing,
   opening a PR, closing a task, or reporting a subagent's result.
@@ -34,7 +34,7 @@ Skip any step and you are lying, not verifying.
 | "Tests pass" | Full fresh run, zero failures, output read | An earlier run; a subset; "should pass" |
 | "Task gate green" | That gate at the final commit, its scope named: changed units, their dependents, lint against the baseline — or the whole suite with the escalation reason | Quoting it as "Tests pass"; a scope missing a changed unit or a dependent |
 | "Build/lint/typecheck clean" | That command, exit 0, zero warnings | A different tool passing |
-| "The feature works" | The affected flow driven through the running system and observed (REQUIRED SUB-SKILL: use `validate-feature`; for a product walk, the guide **executed** — `run-flow-guide`'s run file, or recorded human ticks) | Green unit tests alone; a `write-flow-guide` guide that exists but was never walked |
+| "The feature works" | The affected flow driven through the running system and observed (REQUIRED SUB-SKILL: use `validate-feature`; for a product walk, the guide **executed** — `run-dogfood`'s run file, or recorded human ticks) | Green unit tests alone; a `write-dogfood` guide that exists but was never walked |
 | "The bug is fixed" | Original symptom re-tested and gone | The code changed |
 | "The agent/subagent completed X" | You inspected the diff yourself | The agent's own success report |
 | "The ticket is updated / moved / commented" | The record read back after the write — re-read the issue through the tracker's own read command and see the exact change present in it | The write command's success line; exit 0; the fact you ran it |

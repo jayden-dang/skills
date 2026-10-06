@@ -52,7 +52,6 @@
         "./skills/craft/craft-page",
         "./skills/craft/draft-ui",
         "./skills/craft/draft-ux",
-        "./skills/review/select-sample",
         "./skills/review/inspect-invariants",
         "./skills/review/inspect-ui",
         "./skills/review/inspect-change",

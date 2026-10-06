@@ -42,7 +42,6 @@ Every heading below is a REQUIRED slot — fill it or write `None`.
 **Evidence:** &lt;what a user can now do, and the member features that deliver it&gt;
 **Goal coverage:** &lt;GOAL-N advanced — evidence&gt; | &lt;GOAL-N Unresolved — verdict withheld&gt;
 **Deferrals:** &lt;ROAD-N slug → MILE-N (YYYY-MM-DD, reason) — honest | no destination&gt;
-**Attention:** &lt;sample N units / residue N units — unreviewed&gt; | &lt;range unsampled&gt;
 **Plan accuracy:** &lt;+N added · N moved out · N deferred · N days&gt;
 **Findings:** &lt;finding&gt; → &lt;amend | reroute-plan | plan-milestones | define-domain | /publish-issues&gt;
 **Rationale:** &lt;the reasoning behind the verdict, so a later reader can check it&gt;
@@ -90,7 +89,6 @@ stays passive data on every later read.
 **Evidence:** SRCH and IDX are Shipped, but a reader still cannot search across workspaces
 **Goal coverage:** GOAL-2 advanced — SRCH covers single-workspace search
 **Deferrals:** ROAD-7 cross-workspace-index → MILE-4 (2026-07-20, blocked on vendor API) — honest
-**Attention:** sample 4 units / residue 6 units — unreviewed
 **Plan accuracy:** +1 added · 1 moved out · 1 deferred · 21 days
 **Findings:** outcome sentence promised more than the members could deliver → plan-milestones
 **Rationale:** every member shipped; the shortfall is scope, not delivery

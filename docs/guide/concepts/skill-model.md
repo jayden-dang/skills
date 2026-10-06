@@ -51,7 +51,6 @@ You can see the rule being obeyed in the wild. `root-cause` hands architectural 
 | spec | `specify-behavior`, `design-solution`, `plan-tasks` | model |
 | execution | `build-in-waves`, `build-by-story`, `build-inline`, `execute-common`, `test-first`, `root-cause`, `prove-claim`, `audit-trace`, `load-subgraph`, `isolate-workspace`, `hold-stage` | model |
 | review | `inspect-change`, `polish-diff`, `vet-feedback`, `vet-source`, `speak-outer`, `inspect-invariants` | model |
-| | `select-sample` | user |
 | acceptance | `validate-feature`, `validate-api`, `validate-ui`, `write-dogfood`, `run-dogfood` | model |
 | craft | `craft-page` | model |
 | ship | `land-branch`, `record-verdict` | model |

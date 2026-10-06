@@ -93,3 +93,8 @@ and the one field that cannot be judged by reading — it has to be trigger-test
 and a length pass is not the place to spend that budget. The brief for this batch
 never mentioned descriptions, which is why the pass had no reason to leave it
 alone; it does now.
+
+## Template sync — Attention slot removed (2026-10-06)
+
+The shared `milestone-assessment.md` template lost its `**Attention:**` slot
+when `select-sample` was dropped. No behavior of this skill changes.

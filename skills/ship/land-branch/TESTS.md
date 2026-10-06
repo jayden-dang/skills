@@ -459,3 +459,9 @@ verdict comment and a PR that failed verification must not look alike.
 
 Capability, not gate: nothing in the set could move a verdict out of `.skills/`
 before this. Unmeasured, and recorded as such.
+
+## v4.2.0 — sample line removed (2026-10-06)
+
+`select-sample` was dropped. The advisory "name `/select-sample` when the
+receipt says `Sample: required`" paragraph and the description's routing clause
+are gone; the receipt no longer carries a `Sample:` slot. No baseline re-run.

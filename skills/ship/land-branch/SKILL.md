@@ -1,12 +1,11 @@
 ---
 name: land-branch
-version: 4.1.2
+version: 4.2.0
 description: >
   Use when a finished feature branch needs integration or disposition —
   produces a local merge, pull request, kept branch, discard, or block with
   reviewer-readable commits and pull-request text. Not for reviewing an
-  existing PR (inspect-change), cutting a version (cut-release), or allocating
-  human attention over a range (select-sample).
+  existing PR (inspect-change) or cutting a version (cut-release).
 ---
 
 # Finish a Branch
@@ -72,8 +71,6 @@ fixed validation recipe against `.skills/<CODE>/close-receipt.md`.
   `validate-feature`. A failure withholds only `pr` and `merge`; report the
   failing evidence and leave `keep`, `discard`, and `block` available.
 
-The sample line is advisory. When the receipt says `Sample: required`, name
-`/select-sample` once without invoking it and continue the crossing.
 If this session holds paste-ready banked blocks, reprint them and name
 `/record-debt`; they never withhold the crossing.
 

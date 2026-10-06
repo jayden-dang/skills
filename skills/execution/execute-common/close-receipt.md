@@ -17,7 +17,6 @@ Verification: green — <full commands and result summary>
 Trace: clean — <audit result summary>
 Acceptance: green|not-applicable — <observed surface or reason>
 Product-Walk: green|not-required — <run-file verdicts or recorded ticks, or predicate reason>
-Sample: required|not-required — <predicate facts>
 Created: <UTC timestamp>
 ```
 

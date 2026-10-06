@@ -1,6 +1,6 @@
 ---
 name: assess-milestone
-version: 1.1.2
+version: 1.2.0
 description: Produces a verdict on whether a milestone delivered what it promised, read fresh from the specs, the tests, and git. Run it with /assess-milestone.
 disable-model-invocation: true
 ---
@@ -100,15 +100,6 @@ Run `git diff <baseline>..<candidate> -- docs/roadmap/INDEX.md` and read it unde
 These are observed facts and nothing else. Derive **no** velocity, capacity, estimate, or projected date from them, and carry none of them into any planning decision. The roadmap records ordering and commitment, not schedule — an average items-per-milestone figure is exactly the estimate this layer refuses to hold.
 </HARD-GATE>
 
-### Attention
-
-`/select-sample` produces a sample set and an explicit residue over a range, and persists **no file unless the user asked it to** — there is nothing to discover on disk.
-
-- The user **supplies** an allocation covering the range from the committed baseline to the candidate closing revision — a path they had it write, or its pasted output → count its sample set as sampled, and carry its residue forward as **explicitly unreviewed**, with the unit counts, in the assessment.
-- No allocation supplied → record the range as **unsampled** and name `/select-sample` for the user to run.
-
-It is user-invoked: name it, never run it yourself.
-
 ### Routing findings
 
 Every finding gets exactly one destination — this skill keeps no action-item list of its own, because a second list is a second place for work to rot.
@@ -187,7 +178,7 @@ One full read each of the roadmap, the spec index, the vision, and the assessmen
 ## Red flags — stop
 
 - You are about to write to `docs/roadmap/INDEX.md` — that file is `plan-milestones`'s alone
-- You are about to run `/refresh-roadmap-status` or `/select-sample` yourself rather than naming them for the user — both are user-invoked
+- You are about to run `/refresh-roadmap-status` yourself rather than naming it for the user — it is user-invoked
 - You are about to resolve a baseline from a date instead of a SHA
 - You are about to produce a verdict while a relevant withholding finding stands
 - You are about to let a value that failed its shape check reach a command

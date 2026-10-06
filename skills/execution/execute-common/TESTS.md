@@ -491,3 +491,13 @@ the agent to webbridge only when a fresh context hit a login wall. A public
 page with no login wall could still be shot headless. The render check now
 captures with kimi-webbridge, sets a sized viewport through
 `Emulation.setDeviceMetricsOverride`, and does not use Playwright.
+
+## v2.10.0 — sample step removed (2026-10-06)
+
+`select-sample` was dropped by the user, who splits PRs per feature and reads
+them with `understand`. Close-sequence step 5 (the sample predicate), its three
+rationalization rows, its red flag, and the receipt's `Sample:` slot are gone;
+steps 6–8 became 5–7. Evals `sample-name-when-risk-path` and
+`sample-skip-written-when-false` were removed with the step. The sample
+predicate's own evidence above stays as history. No baseline re-run: this
+deletes a step rather than changing one.

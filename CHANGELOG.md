@@ -2,6 +2,16 @@
 
 ## Unreleased
 
+### select-sample removed (2026-10-06)
+
+The user splits PRs per feature and reads them with `understand <range>`, so the attention
+allocation over a large range is no longer needed. Also removed: close-sequence step 5
+(sample predicate) in `execute-common` 2.10.0 and the receipt's `Sample:` slot; the advisory
+sample paragraph in `land-branch` 4.2.0; the `### Attention` section and template slot in
+`assess-milestone` 1.2.0 (template shared with `plan-milestones`). `qa-set` now fails on
+live references to `select-sample`. Old receipts that still carry a `Sample:` line stay
+valid, because the validator counts only the template's keys.
+
 ### write-dogfood + run-dogfood — the review moves inside, the names say what they do (2026-10-06)
 
 `write-flow-guide` → `write-dogfood` 3.0.0 and `run-flow-guide` → `run-dogfood` 3.0.0.

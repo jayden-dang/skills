@@ -255,7 +255,7 @@ and countered by name. See [The gates](docs/guide/concepts/gates.md).
 | discovery | `frame-change`, `clarify-decisions`, `research`, `run-spike`, `define-domain`, `forge-goal`, `forge-prompt`, `interpret-session`, `understand`, `work-the-problem`, `pathfind` |
 | spec | `specify-behavior`, `design-solution`, `plan-tasks` |
 | execution | `build-in-waves`, `build-by-story`, `build-inline`, `execute-common`, `test-first`, `root-cause`, `debug-remote`, `assess-observability`, `prove-claim`, `audit-trace`, `load-subgraph`, `isolate-workspace`, `hold-stage` |
-| review | `inspect-change`, `select-sample`, `polish-diff`, `vet-feedback`, `vet-source`, `speak-outer`, `inspect-invariants`, `inspect-ui` |
+| review | `inspect-change`, `polish-diff`, `vet-feedback`, `vet-source`, `speak-outer`, `inspect-invariants`, `inspect-ui` |
 | acceptance | `validate-feature`, `validate-api`, `validate-ui`, `write-dogfood`, `run-dogfood` |
 | craft | `craft-page`, `draft-ui`, `draft-ux` |
 | ship | `land-branch`, `record-verdict`, `cut-release` |

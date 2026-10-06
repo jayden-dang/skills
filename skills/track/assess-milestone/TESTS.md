@@ -104,3 +104,9 @@ passes and the fixed rule on each output, which is the exact form `author-skills
 prescribes for a check that must not be misjudged. Words per atom is a screening
 signal, not a verdict — it pointed at the right file for the wrong reason, and the
 remaining density is earning its keep.
+
+## v1.2.0 — Attention section removed (2026-10-06)
+
+`select-sample` was dropped, so the assessment no longer records an attention
+allocation: the `### Attention` section, its red-flag mention, and the
+template's `**Attention:**` slot are gone. No baseline re-run.

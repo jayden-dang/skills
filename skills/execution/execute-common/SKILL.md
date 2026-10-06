@@ -1,6 +1,6 @@
 ---
 name: execute-common
-version: 2.9.1
+version: 2.10.0
 description: Use when build-in-waves, build-by-story, or build-inline loads the shared controller recipe — produces an In-progress catalog stamp, a runtime-bound session snapshot, lease state, ledger state, and a revision-bound close receipt.
 ---
 
@@ -127,23 +127,18 @@ After the last task (waves / inline) or last unlocked unit (story):
    `root-cause`, then promote passing checks to committed tests that describe
    the domain behavior (docs-only spine — no requirement-ID tags required in
    test files).
-5. **Sample — observable conditional.** Evaluate the **sample predicate**
-   below. Any clause true → write `sample: required` on the Close notes; none
-   true → write `skip: no sample predicate`. Do not start `/select-sample`.
-   A silent skip is still a red flag, and "inspect was clean" / "always name so
-   we cannot forget" are **not** predicates.
-6. **Product walk — observable conditional.** Evaluate the **walk predicate**
+5. **Product walk — observable conditional.** Evaluate the **walk predicate**
    below. No clause true → do not open the product-walk trio. Any clause true →
    REQUIRED SUB-SKILL: use `write-dogfood` (it owns vet), then **execute what
    it wrote** — REQUIRED SUB-SKILL: use `run-dogfood` where the runtime can
    drive the app, else record the human ticks. Naming the run instead of doing
-   it leaves step 7 unable to write green.
-7. **Close receipt.** Load `close-receipt.md` and follow its producer recipe.
+   it leaves step 6 unable to write green.
+6. **Close receipt.** Load `close-receipt.md` and follow its producer recipe.
    Issue it only after the final mutation and only from evidence bound to that
    HEAD. Rerun a producer only when its evidence is missing or stale.
-8. **Finish.** REQUIRED SUB-SKILL: use `land-branch`.
+7. **Finish.** REQUIRED SUB-SKILL: use `land-branch`.
 
-Mark the **Close branch** todo done only after steps 1–8 have each run or
+Mark the **Close branch** todo done only after steps 1–7 have each run or
 been skipped under their predicate.
 
 | Thought | Reality |
@@ -153,9 +148,6 @@ been skipped under their predicate.
 | "EOD / demo — skip polish on a 40-file branch" | Time pressure is not a predicate. File count is |
 | "Always run polish so we cannot forget" | Four cleanup agents on a three-file typo is the cost this conditional exists to drop. The skip must be written, never silent |
 | "Acceptance green — also walk the product" | Walk is a separate predicate. validate-feature already drove API/UI |
-| "Sample is optional / not a gate — skip the notes line" | Predicate true → `sample: required`; the receipt preserves the advisory. |
-| "Name the sample skill now so they have time" | Record the predicate; landing names the optional aid once. |
-| "Always name a sample so we cannot forget" | Same shape as always-polish. False predicate → write the skip, never name. |
 
 ## Close-sequence predicates
 
@@ -164,12 +156,6 @@ tidy; `inspect-change` Standards leftovers include an Important-or-higher
 finding that is behavior-preserving (reuse, dead code, needless complexity,
 wasted I/O); `git diff --name-only $(git merge-base main HEAD) HEAD` lists
 **more than 15 files**; the branch adds a new public API or exported surface.
-
-**Sample** — true when **any** of: the user asked for a sample or attention
-allocation; branch diff paths hit the B1 defaults in
-`skills/review/select-sample/references/signals.md` extended by project
-`Risk globs`; the branch diff lists more than 15 files. "Always name so we
-cannot forget" is not an ask.
 
 **Product walk** — true when **any** of: the user asked for a product walk,
 dogfood, or walkthrough; `validate-feature` reports neither-API-nor-UI; an
@@ -192,8 +178,7 @@ screen or visual surface — not only changes within existing ones.
 - Dispatch the first task before the todo list exists (tasks **and** Close
   branch)
 - Silent-skip polish (no written `skip: no polish predicate`)
-- Silent-skip sample or decision-trail (no written skip / required line)
-- Start `/select-sample` in this skill
+- Silent-skip decision-trail (no written skip / required line)
 - Treat EOD, demo, or "inspect was clean" as a polish predicate
 - Move to land-branch with the Close branch todo still open
 - Write a partial receipt or bind it to evidence from before the last mutation

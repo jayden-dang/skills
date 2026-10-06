@@ -93,7 +93,7 @@ check("every SKILL.md eval anchor resolves", not bad, "; ".join(bad[:3]))
 # write-dogfood + run-dogfood; release notes keep the names as history.
 DELETED = ["gate-session", "ask-me-bro", "tour-system", "deepen-codebase",
            "study-change", "teach-build", "teach-pack", "brief-team",
-           "vet-flow-guide", "write-flow-guide", "run-flow-guide"]
+           "vet-flow-guide", "write-flow-guide", "run-flow-guide", "select-sample"]
 dead = subprocess.run(["grep", "-rl", *[a for n in DELETED for a in ("-e", n)],
                        "--include=*.md", "--include=*.json", "--include=*.mdc",
                        "--include=*.sh", "."], capture_output=True, text=True).stdout.split()

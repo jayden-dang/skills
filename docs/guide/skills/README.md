@@ -17,7 +17,6 @@ The skills that govern the other skills.
 |---|---|---|
 | [`zone-mode`](zone-mode.md) | user | The gate and router. Run `/zone-mode` to load the opt-in 1% overlay and hand off by invocability |
 | [`author-skills`](author-skills.md) | `/author-skills` | TDD for process documentation. The standard every skill here is written against |
-| [`teach-pack`](teach-pack.md) | `/teach-pack` | Guided teaching of the methodology |
 
 ## setup
 
@@ -41,10 +40,9 @@ Turn an idea into an agreed shape. Produces no code.
 | [`research`](research.md) | model | Primary sources only. One cited markdown file, ending in Open decisions |
 | [`run-spike`](run-spike.md) | model | Throwaway code answering one design question. The answer is the only deliverable |
 | [`define-domain`](define-domain.md) | model | Maintains `CONTEXT.md` and `docs/adr/`. ADRs pass a three-part write gate; prune classifies keep / archive / drop |
-| [`tour-system`](tour-system.md) | `/tour-system` | Path-verified system learning tours (atlas/tour/journey/change-impact) + local ledger |
+| [`understand`](understand.md) | model, or `/understand` | How a feature, component, or change works: a short plain answer plus, past 3 files, one local HTML page — diagram, step-through, surprises, self-check — ending on one question |
 | [`pathfind`](pathfind.md) | `/pathfind` | Layer 0 multi-session decision map (Chart / Work) before delivery |
 | [`interpret-session`](interpret-session.md) | `/interpret-session` | Companion window: a card you can retell — fork, lean, the picture, the pick — then a paste-back reply |
-| [`deepen-codebase`](deepen-codebase.md) | `/deepen-codebase` | Learning companion: dual-axis deep foundation for any subject; no product decision |
 | [`work-the-problem`](work-the-problem.md) | `/work-the-problem` | Multi-round deep solve + foundation→feature teaching + disk artifacts + carry-back |
 
 ## spec
@@ -80,8 +78,6 @@ The triad. Each file approved before the next is written.
 | Skill | Invocation | What it does |
 |---|---|---|
 | [`inspect-change`](inspect-change.md) | model | Two axes — Standards and Spec — run by separate subagents and never merged; neighbors schema 1.1 via `load-subgraph` |
-| [`study-change`](study-change.md) | `/study-change` | Outbound self-check: Background → Intuition → Code → Quiz HTML packet |
-| [`teach-build`](teach-build.md) | `/teach-build` | Journey + operation teach packet: deviations retold, runtime map beyond the diff, `.skills/<CODE>/teach-build.html` |
 | [`brief-team`](brief-team.md) | `/brief-team` | Team-shared pitch+map HTML under `docs/explainers/` (no quiz, never a ship gate) |
 | [`select-sample`](select-sample.md) | `/select-sample` | Bounded human sample over a range, plus the explicit residue |
 | [`polish-diff`](polish-diff.md) | model | Behavior-preserving quality pass over a diff before merge |

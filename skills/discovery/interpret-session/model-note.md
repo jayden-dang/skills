@@ -11,10 +11,10 @@ the one offer. Off by default.
 **Where.** `.skills/interpret-session/<slug>/model.md` — a gitignored learning
 artifact. Never write into the product repo unless the user names the path. Do not
 name it `foundation-cards.md`, `CONTEXT.md`, or anything under `docs/adr/`; those
-names belong to `deepen-codebase` and `define-domain`.
+names belong to `define-domain`.
 
-**What it is not.** `/tour-system` walks path-verified stops across the repo;
-`/deepen-codebase` teaches a subject with no pick; `/work-the-problem` closes a
+**What it is not.** `/understand` explains how a feature or the system works, with
+no pick; `/work-the-problem` closes a
 problem tree; `/pathfind` maps multi-session decisions; `/record-debt` tracks
 technical debt. If that is what the user wants, name the skill and stop.
 
@@ -63,7 +63,7 @@ Once per session, after a settle or after the third card, one question in the
 companion language: whether to write this note to
 `.skills/interpret-session/<slug>/model.md` so the next session does not rebuild
 the picture, and that `docs/` is possible if they name the path. Two lines, not a
-menu of skills — name `/tour-system` or `/deepen-codebase` only when what they
+menu of skills — name `/understand` only when what they
 asked for reaches past this session's neighborhood, which is the case this file
 opens on, not every offer.
 

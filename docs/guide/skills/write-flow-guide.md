@@ -64,7 +64,7 @@ Offer `flow-guide serve` when they will also be testing by hand.
 
 ## Why it is written this way
 
-Rebuilding CSS/JS every write-flow-guide pass wasted tokens and tempted agents to treat localStorage as progress. Cases + shell matches the `study-change` packet pattern: fixed shell, filled content. Agent progress for execution lives in the ledger CLI under `run-flow-guide`.
+Rebuilding CSS/JS every write-flow-guide pass wasted tokens and tempted agents to treat localStorage as progress. Cases + shell: fixed shell, filled content. Agent progress for execution lives in the ledger CLI under `run-flow-guide`.
 
 ## See also
 

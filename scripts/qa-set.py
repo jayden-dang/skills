@@ -88,10 +88,16 @@ for p in skills:
 check("every SKILL.md eval anchor resolves", not bad, "; ".join(bad[:3]))
 
 # 6 no references to deleted skills
-dead = subprocess.run(["grep", "-rl", "-e", "gate-session", "-e", "ask-me-bro",
+# tour-system, deepen-codebase, study-change, teach-build and teach-pack merged
+# into understand; release notes keep the names as history.
+DELETED = ["gate-session", "ask-me-bro", "tour-system", "deepen-codebase",
+           "study-change", "teach-build", "teach-pack"]
+dead = subprocess.run(["grep", "-rl", *[a for n in DELETED for a in ("-e", n)],
                        "--include=*.md", "--include=*.json", "--include=*.mdc",
                        "--include=*.sh", "."], capture_output=True, text=True).stdout.split()
-dead = [f for f in dead if "/.git/" not in f and "CHANGELOG" not in f and "/TESTS.md" not in f and "/.skills/" not in f]
+dead = [f for f in dead if "/.git/" not in f and "CHANGELOG" not in f and "/TESTS.md" not in f
+        and "/.skills/" not in f and "/docs/releases/" not in f and "settings.local.json" not in f
+        and "/.remember/" not in f]
 check("no live references to deleted skills", not dead, "; ".join(dead[:4]))
 
 # 7 manifests match the tree

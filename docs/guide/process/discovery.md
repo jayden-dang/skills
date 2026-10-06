@@ -1,6 +1,6 @@
 # Phase 1 — Discovery
 
-**Skills:** [`forge-prompt`](../skills/forge-prompt.md) · [`forge-goal`](../skills/forge-goal.md) · [`frame-change`](../skills/frame-change.md) (+ [`load-subgraph`](../skills/load-subgraph.md)) · [`clarify-decisions`](../skills/clarify-decisions.md) · [`research`](../skills/research.md) · [`run-spike`](../skills/run-spike.md) · [`define-domain`](../skills/define-domain.md) · [`/pathfind`](../skills/pathfind.md) · [`/interpret-session`](../skills/interpret-session.md) · [`/deepen-codebase`](../skills/deepen-codebase.md) · [`/work-the-problem`](../skills/work-the-problem.md)
+**Skills:** [`forge-prompt`](../skills/forge-prompt.md) · [`forge-goal`](../skills/forge-goal.md) · [`frame-change`](../skills/frame-change.md) (+ [`load-subgraph`](../skills/load-subgraph.md)) · [`clarify-decisions`](../skills/clarify-decisions.md) · [`research`](../skills/research.md) · [`run-spike`](../skills/run-spike.md) · [`define-domain`](../skills/define-domain.md) · [`/pathfind`](../skills/pathfind.md) · [`/interpret-session`](../skills/interpret-session.md) · [`understand`](../skills/understand.md) · [`/work-the-problem`](../skills/work-the-problem.md)
 
 **Produces:** an agreed shape, a stated ceremony tier, an updated glossary, possibly an ADR, and — for tier ≥ 1 — an invocation of `specify-behavior`.
 
@@ -88,7 +88,7 @@ Then return to the interview with the evidence and put the decision back to the 
 Parallel windows beside the main work thread (any phase — not discovery-only):
 
 - **[`/interpret-session`](../skills/interpret-session.md)** — the companion window: a card you can retell (fork, lean, the picture, the pick), then the paste-back reply once you settle.
-- **[`/deepen-codebase`](../skills/deepen-codebase.md)** — pure learning companion: dual-axis foundation for **any** subject; no product pick.
+- **[`understand`](../skills/understand.md)** — how a feature, component, change, or concept works: plain answer, a local HTML page past 3 files, one check question; no product pick.
 - **[`/work-the-problem`](../skills/work-the-problem.md)** — multi-round problem tree (identify → define → foundation→feature → breakdown↔solve) with **disk artifacts**, in-service teaching so the user grows with AI, then a carry-back brief once leaves close or are explicitly deferred.
 
 They are siblings, not modes of each other:
@@ -96,7 +96,7 @@ They are siblings, not modes of each other:
 | Need | Companion |
 |---|---|
 | Fast defendable pick + reply (model first) | `/interpret-session` |
-| Hollow mental model, no product close | `/deepen-codebase` |
+| Hollow mental model, no product close | `understand` (or just ask how it works) |
 | Deep solve + learn while closing a frame-change question | `/work-the-problem` |
 
 ### 4. Propose approaches

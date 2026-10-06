@@ -1,6 +1,6 @@
 ---
 name: craft-page
-version: 1.1.1
+version: 1.1.2
 description: Use before the first line of markup for any HTML a human will look
   at — a write-flow-guide test guide, a report, a dashboard, a landing page, a published
   artifact, a standalone .html handoff. Also when a primary figure, structure
@@ -50,7 +50,7 @@ Then write the plan — three REQUIRED slots, filled in before any markup:
 - **Layout** — the layout concept in one or two sentences.
 
 WHEN the page or packet carries a **primary figure** (structure sketch,
-topology, sequence, flowchart — including a study-change Intuition figure or
+topology, sequence, flowchart — including an `understand` Map figure or
 brief-team `figure_html`), add a fourth REQUIRED slot:
 
 - **Figure job** — exactly one of `before/after structure`,

@@ -12,7 +12,7 @@ model-invocable skill, or name the `/slash` for the user to run.
 | Existing repo, adopting this skill set | `/configure-repo` |
 | Ask is short and vague; you want it turned into a proper prompt first | `/forge-prompt` |
 | You want an agent to keep working unattended until a condition holds (`/goal`) | `/forge-goal` |
-| You do not yet have a path-verified model of the subsystem (never read it, cannot trace a request to its store) | `/tour-system` |
+| You do not yet have a path-verified model of the subsystem (never read it, cannot trace a request to its store) | `understand` (or just ask how it works) |
 | New feature, nothing spec'd yet | `frame-change` |
 | Small change to an already-shipped, spec'd feature | `amend-feature` |
 | Something is broken (clear unexpected behavior) | `root-cause` |

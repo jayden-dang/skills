@@ -1,10 +1,7 @@
 # Foundation ladder — work-the-problem
 
 Teaching is **in service of closing the problem**, not a parallel course.
-Pure multi-layer study with no product close → **name** `/deepen-codebase`.
-
-Aligned with `deepen-codebase` Axis B so `foundation-note/v1` packets can import.
-Do not load deepen's full curriculum unless the user wants a pure learning detour.
+Pure study with no product close → **name** `/understand`.
 
 ## TOC
 
@@ -15,7 +12,7 @@ Do not load deepen's full curriculum unless the user wants a pure learning detou
 5. Teaching beat
 6. Foundation → feature
 7. Programming fundamentals
-8. Handoff to deepen-codebase
+8. Handoff to understand
 
 ---
 
@@ -113,13 +110,11 @@ Attach to the active leaf when material (not a lecture dump):
 - Trust boundaries
 - Cost of irreversibility
 
-## 8. Handoff to deepen-codebase
+## 8. Handoff to understand
 
-**Name** `/deepen-codebase` when:
+**Name** `/understand` when:
 
 - User wants slow multi-layer study with **no** carry-back pressure
 - Same gap needs two re-explains / sticky proof
 - Subject is far larger than the active leaf (domain onboarding)
 
-Returning `foundation-note/v1` → import cards into `foundation-cards.md` with
-provenance preserved; do not re-derive from scratch.

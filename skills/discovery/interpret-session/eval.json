@@ -427,7 +427,7 @@
       "the path offered is .skills/interpret-session/<slug>/model.md, and nothing is written into the product repo or docs/ unless the user names the path",
       "the note is not named foundation-cards.md or CONTEXT.md and is not written as an ADR or a decision record",
       "the note carries the picture, the locks the user already settled, what is still open, and what the paste got wrong — with file:line on code claims",
-      "/tour-system and /deepen-codebase are named when what the user asks for reaches past this session's neighborhood — a whole-system tour, or a foundation with no pick — and not appended to an offer that answers the ask as made"
+      "/understand is named when what the user asks for reaches past this session's neighborhood — how a feature or the system works, with no pick — and not appended to an offer that answers the ask as made"
     ]
   }
 ]

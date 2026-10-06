@@ -1,7 +1,7 @@
 # AGENTS.md — Agent Behavior Constitution
 
-> A-to-Z agentic development skill set · **94 skills across 11 categories**
-> (76 engineering + 18 Personal OS) · `jayden-dang/skills` · v1.0.0
+> A-to-Z agentic development skill set · **90 skills across 11 categories**
+> (72 engineering + 18 Personal OS) · `jayden-dang/skills` · v1.0.0
 
 This file is the single source of truth for agent behavior when working with this
 skill set on any harness. Read it first, before any skill, before any action.
@@ -68,7 +68,7 @@ inventory + blindspot, `clarify-decisions`, `research` / `run-spike`), surface
 high-blast decisions in `plan-tasks`, take story-derived review units at
 `build-by-story`, log mid-build **deviations** in
 `.skills/<CODE>/implementation-notes.md` during execute, and let the human
-re-check understanding with `/study-change` before merge. Do not freeze
+re-check understanding with `understand` before merge. Do not freeze
 unverified solution shape into requirement SHALLs.
 
 ---
@@ -113,12 +113,11 @@ skill's workflow only when the user has explicitly told you to. A waiver of
 
 **User-invoked skills** carry `disable-model-invocation: true` in frontmatter.
 Agents MUST NOT auto-invoke these — name them for the user to run (`/triage`,
-`/pathfind`, `/zone-mode`). All 32 of them:
+`/pathfind`, `/zone-mode`). All 27 of them:
 
-`zone-mode`, `author-skills`, `reflect`, `teach-pack` · `bootstrap-repo`, `configure-repo` ·
-`deepen-codebase`, `forge-goal`, `forge-prompt`, `interpret-session`, `pathfind`, `tour-system`,
-`work-the-problem` ·
-`brief-team`, `select-sample`, `study-change`, `teach-build`, `no-comments` · `assess-pivot-impact`,
+`zone-mode`, `author-skills`, `reflect` · `bootstrap-repo`, `configure-repo` ·
+`forge-goal`, `forge-prompt`, `interpret-session`, `pathfind`, `work-the-problem` ·
+`brief-team`, `select-sample`, `no-comments` · `assess-pivot-impact`,
 `define-project`, `define-system-doc` · `cut-release`, `tend-pr` · `assess-milestone`,
 `map-features`, `publish-issues`, `record-debt`, `refresh-roadmap-status`,
 `scan-architecture`, `triage`, `write-handoff` · Personal OS: `life-setup`.
@@ -157,9 +156,9 @@ use \`x\`` is for model-invocable targets only — pointing it at a
 
 **Two reachability paths, and one of them is fragile.** A skill is reached either
 by a `REQUIRED SUB-SKILL` hand-off or by its description matching what the user
-said. Seven model-invocable skills have no `REQUIRED SUB-SKILL` caller —
+said. Eight model-invocable skills have no `REQUIRED SUB-SKILL` caller —
 `amend-feature`, `vet-feedback`, `vet-source`, `speak-outer`, `hold-stage`, `run-flow-guide`,
-`draft-ux`. Reverse-track is **not** a
+`draft-ux`, `understand`. Reverse-track is **not** a
 separate skill: when the reverse predicate holds, callers **name** `/map-features`
 (dispose step 0). `write-flow-guide` is reached from
 `prove-claim` (alternative to `validate-feature`) and from the execute-family
@@ -485,7 +484,7 @@ This repo is configured for a spec-driven skill set.
   with a verify-every-round loop, for any agent: `/forge-goal` (user-run)
 - Capture a conversation, spec, or idea into tracker issues: `/publish-issues`
 - Multi-session decision map (Layer 0 fog): `/pathfind`
-- Learn a codebase/capability via path-verified tours: `/tour-system`
+- Understand a feature, component, or change (code-grounded page + one check question): `understand`, or just ask
 - Incoming issues and PRs: `/triage`
 - Brownfield feature-ID / Files backfill: `/map-features`
 - Traceability check: `audit-trace` — run by `prove-claim` and `/cut-release`;

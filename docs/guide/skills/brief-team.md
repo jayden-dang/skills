@@ -18,7 +18,7 @@
 After a **large** or **architecture-affecting** change, before or during PR review,
 when the team needs a shared mental model. Not every PR. Not a merge gate.
 
-For **author** self-check with a quiz, use [`study-change`](study-change.md)
+For **author** self-check with questions, use [`understand`](understand.md)
 instead (outside the repo).
 
 ## What you get
@@ -60,6 +60,6 @@ than a missing one, because they trust it.
 
 ## See also
 
-- [`study-change`](study-change.md) — author self-check + quiz  
+- [`understand`](understand.md) — author self-check: page + one question  
 - [`land-branch`](land-branch.md) — may name this skill optionally  
 - [`clarify-decisions`](clarify-decisions.md) — pre-impl close package feeds decisions when present  

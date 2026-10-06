@@ -82,4 +82,3 @@ When publication fails, what gets reported depends on whether the verdict has a 
 
 - [`land-branch`](land-branch.md) — one of the two legal emitters
 - [`cut-release`](cut-release.md) — the other
-- [`study-change`](study-change.md) — reads published records when reconstructing what was decided

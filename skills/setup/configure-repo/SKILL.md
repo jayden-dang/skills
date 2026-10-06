@@ -1,6 +1,6 @@
 ---
 name: configure-repo
-version: 1.11.0
+version: 1.11.1
 description: Sets up docs/agents config so this skill set can run in an existing repo.
 disable-model-invocation: true
 ---
@@ -72,7 +72,7 @@ Explainer: spec and discovery skills read `docs/specs/`, `docs/adr/`, and the do
 
 ### G. Project posture
 
-Explainer: three standing facts about the project — its **delivery intent** (the quality bar the output must meet), its **lifecycle stage** (where it is in its life), and its **compat obligation** (who is already committed to the current schemas, endpoints, and formats). `frame-change` and `clarify-decisions` read them to right-size ceremony — compat obligation alone decides the migration / backward-compat / deprecation lens — and `interpret-session` / `deepen-codebase` reuse them so they never re-ask. They live in `docs/agents/project.md` and the user edits those lines directly as the project moves phase. Confirm these, pre-filled from repo signals — never invented:
+Explainer: three standing facts about the project — its **delivery intent** (the quality bar the output must meet), its **lifecycle stage** (where it is in its life), and its **compat obligation** (who is already committed to the current schemas, endpoints, and formats). `frame-change` and `clarify-decisions` read them to right-size ceremony — compat obligation alone decides the migration / backward-compat / deprecation lens — and `interpret-session` reuses them so they never re-ask. They live in `docs/agents/project.md` and the user edits those lines directly as the project moves phase. Confirm these, pre-filled from repo signals — never invented:
 
 - **Delivery intent** — Production / MVP / Run Spike / Research / Learning. The quality bar, not a release state: **Production** never means the project has shipped. Recommend from what the repo shows (a published package or cut-release workflow → Production; a bare greenfield spike → Run Spike); default **MVP** when unclear.
 - **Lifecycle stage** — Idea / Early development / Active development / Cut Released / Scaling / Maintenance. Recommend from git signals (tags or a cut-release history → Cut Released; a young repo with few commits → Early development); default **Early development** when unclear.

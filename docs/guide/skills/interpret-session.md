@@ -59,8 +59,8 @@ four-to-seven-part picture, the locks the user already settled, what is still
 open, and what the paste got wrong, with `file:line` on every code claim. It is
 off by default, written only on a yes, and lands at
 `.skills/interpret-session/<slug>/model.md`; the product repo is untouched unless
-the user names a path. A tour of the whole system is [`tour-system`](tour-system.md),
-and a foundation with no pick is [`deepen-codebase`](deepen-codebase.md).
+the user names a path. How a feature or the whole system works, with no pick, is
+[`understand`](understand.md).
 
 For a paste that puts **no choice** on the table — a procedural question, a confirmation, a status line — there is no alternatives table, no trade-off matrix, no risk list, and none of the live-choice comprehension slots. Just what it means, what it is really asking, and either the answer to give or the one thing worth settling first.
 
@@ -173,7 +173,7 @@ window comes later, on the turn the user actually settles it.
 
 ## See also
 
-- [`deepen-codebase`](deepen-codebase.md) — sibling learning companion (any subject foundation); may share an optional knowledge-only `foundation-note/v1`
+- [`understand`](understand.md) — sibling for learning how something works, with no pick
 - [`work-the-problem`](work-the-problem.md) — multi-round deep solve + in-service teaching + disk artifacts when overview is not enough
 - [`frame-change`](frame-change.md) — the English session `interpret-session` usually runs beside
 - [`clarify-decisions`](clarify-decisions.md) — the interview primitive whose questions often land in a `interpret-session` session

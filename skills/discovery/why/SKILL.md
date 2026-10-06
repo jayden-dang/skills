@@ -1,7 +1,7 @@
 ---
 name: why
-version: 1.0.0
-description: Use when asking why code or a design exists this way — design rationale, rejected alternatives, regression history, postmortems, or where a threshold came from — produces a cited confidence-graded note. Not for how the runtime flows (tour-system / scan) or library API facts (research).
+version: 1.0.1
+description: Use when asking why code or a design exists this way — design rationale, rejected alternatives, regression history, postmortems, or where a threshold came from — produces a cited confidence-graded note. Not for how the runtime flows (understand / scan) or library API facts (research).
 ---
 
 # Why
@@ -13,7 +13,7 @@ OVERRIDE SHIP (2026-09-08): same-day baseline for "code is not intent" already
 complied 2/2. User override required this skill anyway.
 </HARD-GATE>
 
-Companion: `/tour-system` or a scan for mechanics; `research` for library/RFC facts.
+Companion: `understand` or a scan for mechanics; `research` for library/RFC facts.
 This skill owns historical forcing functions.
 
 ## Iron Law

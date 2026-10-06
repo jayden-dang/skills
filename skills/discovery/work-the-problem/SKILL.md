@@ -1,6 +1,6 @@
 ---
 name: work-the-problem
-version: 1.2.0
+version: 1.2.1
 description: >
   Works a design or framing problem to closure with multi-round breakdown,
   foundation-to-feature teaching, disk artifacts, and a carry-back brief for the
@@ -89,7 +89,7 @@ Load `references/process.md` for phases, heuristics, and the full leaf recipe.
 ## Foundation (in-service)
 
 Load `references/foundation-ladder.md` when mapping a subject or before ranking
-options — depth order (`new`/`partial`/`strong`), the `deepen-codebase` handoff,
+options — depth order (`new`/`partial`/`strong`), the `/understand` handoff,
 the `explicitly_skipped` record rule, and the source-tier authority ladder all
 live there; this file does not restate them.
 

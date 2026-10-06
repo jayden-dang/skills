@@ -27,6 +27,7 @@ Examples: `.skills/SPAY/`, `.skills/WEBPAR/`, `.skills/SKNS/`.
 | `.skills/research/` | Dated research notes (`<date>-<topic>.md`) |
 | `.skills/decisions/` | Boundary decision records (`DEC-*.md`, adoption) |
 | `.skills/pr-packages/<stable-id>/` | **Retired.** `land-branch` no longer writes this tree. Leave existing dirs; do not author new ones. |
+| `.skills/understand/` | Explainer pages (`<slug>.html`) from `understand` |
 | `.skills/system-docs/<entry-key>/` | System-doc authoring digests (`state.md`, `evidence.md`, `proposal.md`) for `/define-system-doc`; entry-key path mirroring (e.g. `codebase/map`) |
 
 ## Resolution order for `<CODE>`
@@ -59,7 +60,6 @@ Do not invent a second identifier when a CODE is available.
 | `flow-guide.html` | Rendered guide |
 | `flow-guide-report.md` | Walkthrough report |
 | `vet-flow-guide.md` | Vet flow guide report |
-| `teach-build.html` | Journey + operation teach packet (`/teach-build`) |
 
 Prefer these fixed basenames. Do not scatter `<slug>-scan.md` at the bare `.skills/` root.
 

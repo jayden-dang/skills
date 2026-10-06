@@ -1,6 +1,6 @@
 ---
 name: interpret-session
-version: 3.1.0
+version: 3.1.1
 description: Companion beside a technical discussion that answers from the code — what it does
   today, what a proposed shape would actually change, and which shape to take — in a card a
   person can retell in three sentences. Run with /interpret-session.
@@ -19,7 +19,7 @@ and when they disagree the user hears it before they answer.
 
 **Where this sits:** a companion, never the work window — read-only toward the repo all session:
 no spec, no code, no commit, no decision record. **Siblings:** `/work-the-problem` for a
-multi-round solve with disk artifacts; `/deepen-codebase` for learning with no pick;
+multi-round solve with disk artifacts; `understand` for learning with no pick;
 `/forge-prompt` to turn a vague ask into one prompt block, read cold when handed one.
 
 ## The Iron Law
@@ -89,8 +89,8 @@ Still-open slots, what travels as unverified, and the end-of-session digest. Do 
 WHEN the user asks for the picture they can carry into a coding session, or after the third
 live-choice on the same neighborhood, read `model-note.md` beside this file: one offer, opt-in,
 written under `.skills/interpret-session/<slug>/model.md` only on a yes, and never into the
-product repo unless they name the path. Name `/tour-system` or `/deepen-codebase` instead when
-what they want is a whole-system tour or a foundation with no pick.
+product repo unless they name the path. Name `/understand` instead when
+what they want is how a feature or the system works, with no pick.
 
 ## Rationalizations
 

@@ -1,6 +1,6 @@
 ---
 name: select-sample
-version: 2.0.1
+version: 2.0.2
 description: Produces an attention allocation over a range too large to read — a bounded sample set
   for human eyes plus the explicit unsampled residue. Run it with /select-sample.
 disable-model-invocation: true
@@ -161,7 +161,7 @@ follow it exactly.
 ## Boundaries
 
 - **No decision-record interaction.** Nothing is written under `.skills/decisions/` (`record-verdict` gains no emitter) and nothing is read from there — `.skills/` is git-ignored, so records never reach a diff unit; B5 covers tracked surfaces only.
-- **Names, never invokes.** For deeper comprehension of a sampled unit, run `/study-change` — named here, never invoked.
+- **Names, never invokes.** For deeper comprehension of a sampled unit, run `/understand <range>` — named here, never invoked.
 - **Participant boundary.** Work this skill set did not mediate is outside its concern — no allocation there is not a finding, and an external contributor owes nothing here.
 - **No config, no problem.** A repo without an `## Attention signals` section runs on the defaults in `references/signals.md`, with no warning.
 

@@ -1,6 +1,6 @@
 ---
 name: design-solution
-version: 1.8.0
+version: 1.8.1
 description: Use when approved requirements need their technical design — the design.md /
   architecture doc spelling out HOW the requirements get built. After
   specify-behavior, before plan-tasks.
@@ -21,7 +21,7 @@ context only when a decision hinges on its exact contents. (No subagents? Read t
 directly, only the parts a decision needs.)
 
 WHEN the user has said they have never read the touched subsystem, **name**
-`/tour-system` for them to run before treating a scan digest as a traced model.
+`/understand` for them to run before treating a scan digest as a traced model.
 Do not invoke it. The on-ramps table is the one home for that row.
 
 **After the scan digest and before the reuse ladder:** run a **fresh** retrieval.

@@ -10,7 +10,7 @@
 | **Invocation** | user-invoked (`/select-sample`) |
 | **Reads** | Local git (resolved range), optional `## Attention signals` in `docs/agents/project.md` |
 | **Writes** | Nothing by default; one file **outside** the worktree on explicit request |
-| **Calls** | none — names [`study-change`](study-change.md) for you to run |
+| **Calls** | none — names [`understand`](understand.md) for you to run |
 | **Called by** | none — [`build-in-waves`](build-in-waves.md) names it once as an optional aside |
 
 ## What it is
@@ -34,7 +34,7 @@ It produces **one allocation** over a git range:
 ## When not to
 
 - You need a **Standards + Spec** merge verdict → [`inspect-change`](inspect-change.md)
-- You want to understand one change deeply → [`study-change`](study-change.md), which this skill names for you on a sampled unit
+- You want to understand one change deeply → [`understand`](understand.md), which this skill names for you on a sampled unit
 - You want duplication and dead code cleaned up → `polish-diff`
 - You need a production-boundary decision record → [`land-branch`](land-branch.md) / `record-verdict`
 
@@ -86,5 +86,5 @@ a function of the range, not of a saved artifact.
 
 - Philosophy: the sampling loop from "Own the Outer Loop" — attention is the
   scarce resource; answerability stays DREC's job and comprehension stays XDIFF's
-- [`inspect-change`](inspect-change.md) · [`study-change`](study-change.md) ·
+- [`inspect-change`](inspect-change.md) · [`understand`](understand.md) ·
   [`build-in-waves`](build-in-waves.md)

@@ -8,7 +8,7 @@ appears.
 | Neighbor | Boundary |
 |---|---|
 | `interpret-session` | Fast stance + reply — **theirs** under time pressure. You go deep. |
-| `deepen-codebase` | Pure foundation, no pick — **theirs** when nothing must close. |
+| `understand` | How something works, no pick — **theirs** when nothing must close. |
 | `/forge-prompt` | Vague ask → one prompt. Name it for the user to run. |
 | `frame-change` / `clarify-decisions` | Main ceremony — feed via carry-back; do not run their checklists. |
 

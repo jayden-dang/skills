@@ -38,7 +38,7 @@
     "eval_name": "figure-gated-despite-restyle-skip",
     "kind": "behavior",
     "derived_from": "TESTS.md § S-FIG-SKIP",
-    "prompt": "Fill a study-change Intuition primary figure. Default: skip craft-page restyle. Authority says just get the figure in.",
+    "prompt": "Fill an understand Map primary figure. Default: skip craft-page restyle. Authority says just get the figure in.",
     "assertions": [
       "craft-page is still used for the figure job",
       "references/diagram.md is loaded",

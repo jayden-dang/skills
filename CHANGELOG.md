@@ -2,6 +2,42 @@
 
 ## Unreleased
 
+### understand — one skill for learning how the code works (2026-10-06)
+
+New: `understand` 1.0.0 (model-invocable). Removed: `tour-system`, `deepen-codebase`,
+`study-change`, `teach-build`, `teach-pack`. Pointer renames: `interpret-session` 3.1.1,
+`work-the-problem` 1.2.1, `why` 1.0.1, `select-sample` 2.0.2, `land-branch` 4.1.1,
+`design-solution` 1.8.1, `write-handoff` 1.0.1, `configure-repo` 1.11.1, `craft-page`
+1.1.2. `qa-set` now fails on live references to the five removed names.
+
+Five user-invoked skills covered one need, and none of them was clearly the right one to
+pick. Baselines on Sonnet showed the content was never the problem: with or without
+`tour-system`, the agent found all five buried behaviors in the fixture feature. The
+problem was delivery. Every arm answered in prose only, with no diagram. `deepen-codebase`
+asked four setup questions in English to a Vietnamese user and read no code.
+`tour-system` opened with an INDEX/.gitignore preamble, marked the learner `demonstrated`
+before they had answered anything, and ended by naming three other skills.
+
+`understand` answers in the first turn, in the user's language. It traces the subject from
+entry to effect, with `file:line` on every hop. When the trace crosses 3+ files it writes
+one local page, `.skills/understand/<slug>.html`, with five sections:
+
+- In short
+- Map (inline SVG)
+- Walk one example (step back and forward through real code and data)
+- Surprises
+- Check yourself
+
+The chat answer is the gist, the page path, and one question. The user's answer is graded
+against the code. Diffs, finished builds, outside concepts, "quiz me", and "go deeper"
+are rows in one table, not separate skills. The ladder of plain controlled sentences, then
+a diagram, then an interactive page comes from Karpathy's 2026-10-02 post on reading LLM
+output. The closing question is added because a page that reads well can feel understood
+before it is.
+
+RED 3 arms → GREEN 3 rounds (7 reps) + 28 trigger queries, all Sonnet. Details in
+`skills/discovery/understand/TESTS.md`.
+
 ### Verify tiers — the whole suite runs once, at close (2026-10-03)
 
 `test-first` 1.1.0 · `execute-common` 2.9.0 · `build-in-waves` 2.2.0 · `prove-claim`

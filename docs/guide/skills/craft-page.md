@@ -8,7 +8,7 @@
 | **Invocation** | model-invocable (the agent calls it on its own) |
 | **Reads** | the design system already in the repo — `CLAUDE.md`, `docs/agents/*.md`, a tokens or theme file, existing component styles |
 | **Writes** | a three-slot design plan (color / type / layout) before any markup, then the page derived from it |
-| **Called by** | [`scan-architecture`](scan-architecture.md) (required, before the architecture report's markup; sketch is figure-gated `before/after structure`), [`study-change`](study-change.md) (optional restyle; **required** for the Intuition primary figure), [`brief-team`](brief-team.md) (figure only, when `figure_html` is warranted), [`write-flow-guide`](write-flow-guide.md) (**optional** page craft only — default is the checked-in shell) |
+| **Called by** | [`scan-architecture`](scan-architecture.md) (required, before the architecture report's markup; sketch is figure-gated `before/after structure`), [`understand`](understand.md) (**required** for the Map figure and page design), [`brief-team`](brief-team.md) (figure only, when `figure_html` is warranted), [`write-flow-guide`](write-flow-guide.md) (**optional** page craft only — default is the checked-in shell) |
 
 ## Where it comes from
 
@@ -81,6 +81,6 @@ The principles: the hero is a thesis; typography carries the personality; motion
 
 - [`write-flow-guide`](write-flow-guide.md) — optional caller for custom craft; default write-flow-guide path is cases YAML + shell `render`, not a fresh craft-page pass
 - [`scan-architecture`](scan-architecture.md) — required page craft. The before/after sketch is the figure branch (`before/after structure`).
-- [`study-change`](study-change.md) — restyle optional; Intuition primary figure is figure-gated.
+- [`understand`](understand.md) — Map figure and page design.
 - [`brief-team`](brief-team.md) — no restyle; `figure_html` is figure-gated when warranted.
 - [`author-skills`](author-skills.md) — the standard this skill is written against.

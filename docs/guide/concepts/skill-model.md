@@ -32,7 +32,7 @@ That budget is why discipline skills keep their core body to roughly 500 words, 
 
 **Model-invocable** skills have no special frontmatter. The agent invokes them on its own when the description matches the situation. These hold reusable discipline: `test-first`, `prove-claim`, `root-cause`, `clarify-decisions`, `design-solution`.
 
-**User-invoked** skills carry `disable-model-invocation: true`. The agent *cannot* auto-invoke them; the user runs them as a slash command. These orchestrate: `/configure-repo`, `/bootstrap-repo`, `/define-project`, `/pathfind`, `/map-features`, `/triage`, `/scan-architecture`, `/write-handoff`, `/publish-issues`, `/cut-release`, `/author-skills`, `/teach-pack`, and others listed in [`AGENTS.md` §3](../../../AGENTS.md#3-skill-types--invocation-rules).
+**User-invoked** skills carry `disable-model-invocation: true`. The agent *cannot* auto-invoke them; the user runs them as a slash command. These orchestrate: `/configure-repo`, `/bootstrap-repo`, `/define-project`, `/pathfind`, `/map-features`, `/triage`, `/scan-architecture`, `/write-handoff`, `/publish-issues`, `/cut-release`, `/author-skills`, and others listed in [`AGENTS.md` §3](../../../AGENTS.md#3-skill-types--invocation-rules).
 
 The composition rule falls out of that:
 
@@ -44,14 +44,14 @@ You can see the rule being obeyed in the wild. `root-cause` hands architectural 
 
 | Bucket | Skills | Kind |
 |---|---|---|
-| meta | `zone-mode`, `author-skills`, `teach-pack` | user |
+| meta | `zone-mode`, `author-skills` | user |
 | setup | `configure-repo`, `bootstrap-repo` | user |
-| discovery | `frame-change`, `clarify-decisions`, `research`, `run-spike`, `define-domain` | model |
+| discovery | `frame-change`, `clarify-decisions`, `research`, `run-spike`, `define-domain`, `understand` | model |
 | | `pathfind`, `interpret-session` | user |
 | spec | `specify-behavior`, `design-solution`, `plan-tasks` | model |
 | execution | `build-in-waves`, `build-by-story`, `build-inline`, `execute-common`, `test-first`, `root-cause`, `prove-claim`, `audit-trace`, `load-subgraph`, `isolate-workspace`, `hold-stage` | model |
 | review | `inspect-change`, `polish-diff`, `vet-feedback`, `vet-source`, `speak-outer`, `inspect-invariants` | model |
-| | `study-change`, `brief-team`, `select-sample` | user |
+| | `brief-team`, `select-sample` | user |
 | acceptance | `validate-feature`, `validate-api`, `validate-ui`, `write-flow-guide`, `vet-flow-guide`, `run-flow-guide` | model |
 | craft | `craft-page` | model |
 | ship | `land-branch`, `record-verdict` | model |

@@ -2,6 +2,24 @@
 
 ## Unreleased
 
+### run-dogfood 4.0.0 — fix and unblock until every case passes, report once (2026-10-06)
+
+Earlier versions stopped after one round to report, leaving fails and blocks open. The run now
+loops until every case is `pass` or **parked**, and only then reports. A case is parked when it
+still fails after 3 fix attempts (Gate 3), or when it is blocked on something only a person can
+supply. A `fail` goes to one isolated `root-cause` fix subagent at a time. A `blocked` case goes to
+the new `unblock.md` ladder: start the app, run the migration, create the record or test account,
+or set local env with a dev stand-in. Human-only blockers are listed: credentials, a non-local
+origin, real-world side effects, no driver. The run-wide cap of 5 fix cycles is gone. The close
+runs the whole suite once and appends four sections to the report: Why it failed, Why it was
+blocked, Notable changes, Awaiting your accept.
+
+`root-cause` 1.4.0: under an unattended caller that defers disposition, the fix commits on the
+unmerged branch as `pending disposition` and does not merge before the human accepts it. On
+Sonnet, both RED runs stopped after round one: an interim report, the seed/admin/env changes
+called "nobody authorised", and a wait for the user's accept. GREEN ran to a single close
+message carrying all four sections.
+
 ### select-sample removed (2026-10-06)
 
 The user splits PRs per feature and reads them with `understand <range>`, so the attention

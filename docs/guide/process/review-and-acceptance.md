@@ -110,7 +110,7 @@ It scopes the happy path, the edge cases, **and the deliberate non-behaviors** â
 
 ## `run-dogfood` â€” run the guide
 
-When the guide already exists and its review is clean, and the agent should drive every case: `dogfood init` the run state first, confirm local origin (or explicit non-local consent), execute Try against the **product app** only, `dogfood mark` with `saw` + `server` evidence, never open the guide HTML to tick localStorage boxes, route product defects through `root-cause`, re-drive with a regression sweep, and `dogfood report` when finished. This is a **run** through kimi-webbridge. `validate-ui` is the same driver used as the acceptance pass, not a separate Playwright suite.
+When the guide already exists and its review is clean, and the agent should drive every case: `dogfood init` the run state first, confirm local origin (or explicit non-local consent), execute Try against the **product app** only, `dogfood mark` with `saw` + `server` evidence, never open the guide HTML to tick localStorage boxes, route product defects to one `root-cause` fix subagent at a time, build missing local preconditions instead of stopping on them, re-drive with a regression sweep, and loop until every case passes or is parked. Only then does it `dogfood report` and tell the user why each case failed or was blocked and what changed. This is a **run** through kimi-webbridge. `validate-ui` is the same driver used as the acceptance pass, not a separate Playwright suite.
 
 ## Next
 

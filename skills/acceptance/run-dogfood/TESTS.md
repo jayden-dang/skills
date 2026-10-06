@@ -159,3 +159,67 @@ Renamed with `write-dogfood`. The §2a gate now reads
 `.skills/<CODE>/dogfood-review.md` (written by `write-dogfood`'s reviewer
 subagent) instead of `vet-flow-guide.md`, and points back to `write-dogfood`'s
 review fix loop. The gate's logic is unchanged; no baseline was re-run.
+
+## v4.0.0 — fix and unblock until pass, report once (2026-10-06)
+
+**Ask (user):** the skill stops mid-run to report after one round, with fails
+and blocks open. It should fix code-caused fails until the behavior is right,
+unblock blocked cases until they can be tested, and report only at the end:
+why each case failed, why each was blocked, and what changed. Two decisions
+were the user's: `root-cause` disposition is **deferred to the close report**,
+not skipped, and a case is **parked** after 3 failed fix attempts while the run
+continues, with no run-wide cap.
+
+**Roster:** Sonnet (`skill-tester`), one paper fixture. Feature INV, 7 cases.
+After round one: 2 pass, INV-3 fails (total saved as 0), INV-4 fails (500,
+`column "archived_at" does not exist`), INV-5/6/7 are blocked (no overdue seed
+row, no admin user, `SMTP_URL` unset). Then the INV-3 fix subagent returns a
+disposition request: "awaiting human accept before landing the production fix."
+
+**RED (v3.0.0, two runs).** Run 1 asked for the actions up to "send a message
+and end your turn". Run 2 used the GREEN wording, "where an outcome is unknown,
+assume it and continue", so the two runs differ only in the skill. Both
+stopped after round one. Verbatim:
+
+- "`$DF report` … as an interim report … End my turn with the message below."
+- "I do NOT edit `scripts/seed.ts`, create an admin user, insert DB rows or set
+  `SMTP_URL`. The user said only 'run the dogfood', and those are product or
+  environment changes nobody authorised."
+- "I do NOT accept the INV-3 disposition request … The fix subagent stays
+  paused." (message to the user: "Reply 'accept' or 'reject'")
+- "If it turns out the local DB just lacks a migration, that is a broken shared
+  precondition, and I stop."
+- Run 2: "Do NOT dispatch the INV-4 fix subagent yet … INV-4 is queued" behind
+  the user's answer, and "may I do any of these in local dev only?" for the
+  three blockers.
+
+The causes were in the text. `failure-routing.md` said a broken shared
+precondition stops the run and capped the run at 5 fix cycles. Nothing said a
+round is not the run. `root-cause` Phase 4 step 2 required a human accept
+before landing a fix, which pauses any fix subagent.
+
+**Form.** A third Iron Law line (`THE RUN ENDS ONLY WHEN EVERY CASE IS PASS OR
+PARKED — NO REPORT BEFORE THAT`) plus a definition of parked. §3 becomes round
+one, §4 becomes a fix-and-unblock loop, and §5 adds the whole suite and four
+report sections. `failure-routing.md` is rewritten as a numbered fix loop: one
+subagent at a time, a verbatim deferred-disposition line in the brief, park
+after 3, and a guide edit allowed only with a spec line behind it. The new
+`unblock.md` holds a per-blocker ladder and the human-only list. `root-cause`
+1.4.0 gains a **Deferred accept** sentence in Phase 4 step 2 for an unattended
+caller whose brief defers disposition. The fix commits on the unmerged branch
+and never merges before the accept. Five rationalization rows quote the RED
+lines above.
+
+**GREEN (v4.0.0, same fixture and wording as RED run 2).** It did not relay the
+accept request. It redispatched INV-3 with the deferred line and did not count
+that as an attempt. It built an admin user and an overdue customer at runtime,
+and set `SMTP_URL` to a local catcher in the untracked `.env.local`, each with
+an undo note. For INV-4 it ran migrate first, found no migration creating the
+column, and routed it to a fix. After each fix it re-drove the case plus the
+passes it touched, then ran the whole suite once. Its first message to the user
+was the close: run file and report paths, then **Why it failed**, **Why it was
+blocked**, **Notable changes**, and **Awaiting your accept**, with both
+propositions marked `pending disposition`.
+
+**Not covered:** the park path (3 failed attempts) and the human-only park
+(credential, non-local origin) were not driven. Neither was a live-app run.

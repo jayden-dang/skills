@@ -197,3 +197,19 @@ were on the import list. There is no evidence in this repo's history of trace or
 profile work, and a skill nobody runs is the ceremony this whole pass has been
 cutting. The circular sentence was a real defect and got a real fix; the rest
 waits for a reason.
+
+## v1.4.0 — deferred accept for an unattended caller (2026-10-06)
+
+Phase 4 step 2 now has an exception. When an unattended caller's brief says it
+defers disposition to its close report, the fix is committed on the unmerged
+branch marked `pending disposition`, and the request goes into that report.
+Nothing merges before an eligible human accepts. The HARD-GATE is unchanged:
+no agent-authored `confirmed`.
+
+Evidence is in `run-dogfood/TESTS.md` § v4.0.0. On the v3.0.0 text, a fix
+subagent's "awaiting human accept before landing" paused the whole dogfood run
+in both RED runs. With this sentence plus the caller's verbatim brief line, the
+GREEN run committed the fix as `pending disposition` and carried both
+propositions into the close report's **Awaiting your accept** section. The
+user chose this design (defer, not skip) on 2026-10-06. Root-cause's own evals
+are unaffected: none of them sets up an unattended caller.

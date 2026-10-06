@@ -1,6 +1,6 @@
 ---
 name: root-cause
-version: 1.3.0
+version: 1.4.0
 description: >
   Use when anything behaves unexpectedly — a failing test, an error or exception, a crash, a reported bug, wrong output, a performance regression, a flaky CI job — and before proposing or applying any fix. Produces an evidence-backed investigation whose authoritative causal confirmation is a human disposition. Not for a failure that is only on a deployed environment with no pack yet (debug-remote).
 ---
@@ -132,7 +132,7 @@ Green Phases 1–3 = investigation ready to request disposition. **Confirmed** =
 ## Phase 4 — Fix
 
 1. **Failing regression test first** (REQUIRED SUB-SKILL: use `test-first`) once the proposition is on the disposition request. The test goes at a CORRECT seam — one that exercises the real bug pattern as it occurred. If no correct seam exists, that is itself a finding: document it and flag it for the post-mortem; a shallow test there is false confidence.
-2. **Human accept** of that exact proposition (strength + scope + support set) before landing production-code as a corrective fix. A Slack "ship it" on prose, or Phases 1–3 feeling done, is not that acceptance. In-session, the user's explicit accept of the stated proposition counts.
+2. **Human accept** of that exact proposition (strength + scope + support set) before landing production-code as a corrective fix. A Slack "ship it" on prose, or Phases 1–3 feeling done, is not that acceptance. In-session, the user's explicit accept of the stated proposition counts. **Deferred accept:** when an unattended caller's brief says it defers disposition to its close report (`run-dogfood` does), apply the fix and commit it on that unmerged branch marked `pending disposition`. Do not ask mid-run. The request travels in the caller's close report, and the fix does not merge before an eligible human accepts it.
 3. **One fix** addressing the accepted proposition. No "while I'm here" improvements, no bundled refactoring.
 4. Watch the regression test pass, re-run the full suite, re-run the Phase 1 loop against the original un-minimised scenario.
 

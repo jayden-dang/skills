@@ -1,24 +1,29 @@
 ---
 name: run-dogfood
-version: 3.0.0
+version: 4.0.0
 description: >-
   Use when a guide from write-dogfood already exists and its cases must be
   executed against the running app — agent-driven, screen plus backend
-  evidence. Produces a run file with a pass / fail / blocked verdict per case.
-  Not for authoring the guide (`write-dogfood`) or committed e2e
+  evidence. Produces a run file in which every case ends pass or parked, with
+  product defects fixed and blockers cleared inside the same unattended run,
+  and one end-of-run report saying why each case failed or was blocked and
+  what changed. Not for authoring the guide (`write-dogfood`) or committed e2e
   (`validate-ui`).
 ---
 
 # Run Dogfood
 
-Execute an existing guide from write-dogfood against the **product app** in a real browser. The deliverable is the **run file** — every case ID accounted for with quoted screen evidence and, when the case touches server-owned state, a server-side probe that actually ran. A chat summary is not the deliverable.
+Execute an existing guide from write-dogfood against the **product app** in a real browser. Fix what fails and build what blocks until every case passes. The deliverable is the **run file** — every case ID accounted for with quoted screen evidence and, when the case touches server-owned state, a server-side probe that actually ran — plus one report at the end. A chat summary is not the deliverable.
 
 ## The Iron Law
 
 ```
 NO CASE IS TICKED ON THE SCREEN ALONE
 A HUMAN TICK IS RECORDED, NEVER A VERDICT
+THE RUN ENDS ONLY WHEN EVERY CASE IS PASS OR PARKED — NO REPORT BEFORE THAT
 ```
+
+**Parked** means one of two things only: a case still failing after 3 fix attempts (Gate 3), or a case blocked on something only a person can supply (the list is in `unblock.md`). Any other `fail` is a fix to dispatch. Any other `blocked` is a precondition to build. Both are work, not a report. Waiting on a fix subagent is not a stop: end the turn with no verdict table and no question, and resume when the subagent returns.
 
 If the case's Expect (or `backend`) touches state the server owns, the `run` block carries **both** `saw` (quoted UI) **and** `server` (probe + result) before `verdict: pass`; pure presentation records `server: none — presentational`. (Rationalizations below name every excuse for skipping this; Red Flags name the Chrome-ticking trap.)
 Probe ladder (strongest first): the UI's own request/response → read-back through the app's API → store peek (DB/file/cache) → reload/restart for durability. A red console error or 5xx fails the case even when the screen looks right — never invent a probe result you did not run.
@@ -49,13 +54,14 @@ Confirm the target origin **before the first product click**:
 - Default: local dev from `docs/agents/project.md` (`## Run locally (dev)`); start the app if it is down.
 - Non-local origin (staging, production, shared QA): **stop** and get an explicit in-thread yes naming that origin — "whatever is fastest", a demo deadline, or an already-open tab is **not** consent.
 - Drive a **dedicated product tab** — never the user's own tab, and never the write-dogfood HTML itself.
-- Avoid controls that raise native `alert` / `confirm` (they freeze many browser bridges); warn the user first if a case requires one.
+- Avoid controls that raise native `alert` / `confirm` (they freeze many browser bridges); `unblock.md` covers a case that requires one.
+- Fixes land as commits on the checked-out branch. If that branch is `main`/`master`, ask once here, before the drive, or move to a branch first (`isolate-workspace`). The drive never stops later to ask.
 
 *Done when: origin is local, or non-local consent is on the record, and the app loads.*
 
 ## 2. Seed the run file before any drive
 
-The run file is the one `write-dogfood` wrote: `.skills/<CODE>/dogfood.json`. Seed it: `$DF init $RUN`.
+The run file is the one `write-dogfood` wrote: `.skills/<CODE>/dogfood.json`. Seed it: `$DF init $RUN`. Record `RUN_BASE=$(git rev-parse HEAD)` in the run file's first case notes or `.skills/<CODE>/progress.md`; the close report diffs from it.
 
 If it already holds verdicts, **trust them** — `init` refuses to reset without `--force`, and that refusal is the resume path, not an obstacle. Create one todo per case; resume with `$DF next` (first non-`pass`).
 
@@ -66,7 +72,7 @@ Each case's `run` block:
 | `verdict` | `pending` \| `pass` \| `fail` \| `blocked` |
 | `saw` | what was on screen — **quoted**, not paraphrased |
 | `server` | probe + result, or `none — presentational` |
-| `notes` | setup used, fix / `root-cause` hand-off, re-drive |
+| `notes` | setup used, then one line per event: failure cause, fix commit + `attempt n/3`, unblock built, re-drive. Append, never overwrite — pass the old notes plus the new line to `--notes` |
 
 Beside it sits `human` — `checked`, `at`, `comment` — written only by a person through the served guide. Read it as a signal about where to look; never copy it into `verdict`, and never let it stand in for evidence you did not gather.
 **No case, not run.** Skipping a case for any reason — pattern-matching, time pressure, a lead's OK — leaves it `pending`/`blocked`, never silent `pass`.
@@ -86,7 +92,7 @@ and no `mark` of a driven case** until the gate passes. Origin consent (§1)
 remains mandatory before product clicks.
 </HARD-GATE>
 
-Run this algorithm **before §3** (before the first product click / drive loop):
+Run this algorithm **before §3** (before the first product click / drive loop). Mid-run, a guide edit from `failure-routing.md` stales the report: run `write-dogfood`'s review fix loop yourself and resume. That is not a stop.
 
 ```
 REPORT = .skills/<CODE>/dogfood-review.md
@@ -131,9 +137,9 @@ line to `.skills/<CODE>/progress.md` (or walkthrough close notes), e.g.
 *Done when: report present, `run_file` + `cases_fingerprint` match, and either
 `open_count` is 0 or every open `VFG-N` is named in-thread with an override trail.*
 
-## 3. Drive each pending case
+## 3. Drive each case — round one
 
-In file order (`$DF next` until empty):
+Drive every case once, in file order (`$DF list`):
 
 1. `$DF show $RUN <CASE-ID>` — load Try / Expect / setup / backend.
 2. Apply setup so the case can run independently.
@@ -142,22 +148,34 @@ In file order (`$DF next` until empty):
 5. Run the backend probe when required; fill `server`.
 6. `$DF mark … pass|fail|blocked --saw … --server …` only when evidence slots match the Iron Law; mark the todo done only on `pass`.
 
-*Done when: the row is `pass`, or routed through §4.*
+*Done when: every case carries `pass`, `fail`, or `blocked`. The end of round one is not the end of the run.*
 
-## 4. Failure routing — only when a driven case is not `pass`
+## 4. Fix and unblock — loop until every case is pass or parked
 
-**Master** (this controller) owns case selection, evidence, `mark`, and re-test — never a fix subagent. Re-drive once from a clean setup, then read `failure-routing.md` beside this file and follow it exactly: it routes a deterministic defect to an isolated `root-cause` subagent (never patched in this session), a flaky or guide-wrong case back to the run file, and a broken shared precondition to a stopped run with the rest `pending`/`blocked` — plus the post-fix re-test rule, the guide-gap boundary, and the fix-attempt caps.
+**Master** (this controller) owns case selection, evidence, `mark`, and re-test — never a fix subagent. Clear shared blockers first, because one of them can unblock several cases. Then:
+
+- `blocked` → read `unblock.md` beside this file and follow it exactly: build the missing precondition locally, then drive the case.
+- `fail` → read `failure-routing.md` beside this file and follow it exactly: re-drive once, dispatch one isolated `root-cause` fix subagent at a time (never patched in this session), re-test the case plus the passes the fix touched, and park after 3 failed attempts.
+
+Loop with `$DF next` until every case it could return is parked.
+
+*Done when: every case is `pass`, or `fail`/`blocked` with notes starting `PARKED —`.*
 
 ## 5. Close the run
 
-When every case is `pass`, or the run stops on a cap / precondition / escalate:
+When every case is `pass` or parked:
 
 1. The run file is authoritative — a person's ticks are never required, and never substitute for a verdict you did not earn.
-2. `$DF report $RUN -o .skills/<CODE>/dogfood-report.md`
-3. If you started `$DF serve`, follow the stop step in `serve.md` — never silently, and never leaving a process holding the port.
-4. Hand the user: path to the run file, path to the report, and any `blocked`/`pending` cases and why.
+2. If any product fix landed, run the project's whole suite once (Gate 4). A red suite is a `fail` to route: go back to §4.
+3. `$DF report $RUN -o .skills/<CODE>/dogfood-report.md`, then append these sections to it, built from the case notes and `git log $RUN_BASE..HEAD`:
+   - **Why it failed**: every case that was ever `fail`, with the cause (the fix's proposition), the fix commit, and the final verdict.
+   - **Why it was blocked**: every case that was ever `blocked`, with what was missing and what was built to clear it. For a parked case, give the exact thing the person must supply.
+   - **Notable changes**: product commits, files changed outside a fix (seed, env, config, migration), guide edits with the spec line behind them, and anything surprising seen on the way.
+   - **Awaiting your accept**: each `root-cause` disposition request still `pending disposition`, so the person accepts or rejects it before `land-branch`.
+4. If you started `$DF serve`, follow the stop step in `serve.md` — never silently, and never leaving a process holding the port.
+5. Hand the user the run file path, the report path, and those four sections in brief. This is the first report since the run began.
 
-*Done when: every case ID is accounted for in the run file, the report matches it, and any server this run started has been stopped or explicitly left up at the user's word — no bare "all good."*
+*Done when: every case ID is accounted for in the run file, the report carries the four sections, and any server this run started has been stopped or explicitly left up at the user's word — no bare "all good."*
 
 ## Rationalizations
 
@@ -178,6 +196,11 @@ When every case is `pass`, or the run stops on a cap / precondition / escalate:
 | "I'll patch the product in this long dogfood thread" | Master marks fail; dispatch a subagent with a red-capable brief. Master re-tests. |
 | "Isolation means skip root-cause / test-first" | Subagent still runs `root-cause` (+ test-first). Isolation ≠ free patch. |
 | "Guide-gap miss mid-run — treat as product defect" | Separate loops. Guide wrong / re-enter the review; do not absorb missing-situation findings into root-cause. |
+| "First pass is done — send an interim report and end my turn" | A round is not the run. Fix, unblock, re-drive. Report once, at §5. |
+| "Seed, users and env are product changes nobody authorised" | Local fixtures are the case's setup. Build them (`unblock.md`) and list them under Notable changes. |
+| "The fix waits for the user's accept before it lands" | This run defers disposition to the close report. The fix lands on the branch as `pending disposition` and does not merge before the accept. |
+| "A missing migration is a broken shared precondition — stop" | Run the migration locally. A precondition you can build is an unblock, not a stop. |
+| "The app does X, so the Expect must be wrong" | Only the spec can show the Expect is wrong. Without a spec line, it is a product defect. |
 
 ## Red Flags
 
@@ -194,3 +217,6 @@ When every case is `pass`, or the run stops on a cap / precondition / escalate:
 - Treating bare “just go” or severity=Minor as a gate pass
 - Patching product in the master dogfood context instead of a red-capable subagent brief
 - Clearing a product defect without `root-cause` / test-first because “it was isolated”
+- Ending a turn with a report or a question while a case is `fail`/`blocked` and not parked
+- Leaving a case `blocked` on something you could build on the local origin
+- Editing an Expect to match what the app does

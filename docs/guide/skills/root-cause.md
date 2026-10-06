@@ -81,7 +81,7 @@ Keep investigation state independent from requested strength. Before authoritati
 ## Phase 4 — fix
 
 1. **Failing regression test first**, via [`test-first`](test-first.md), once the proposition is on the disposition request — at a **correct seam**.
-2. **Human accept** of that exact proposition before landing production-code as a corrective fix. Slack "ship it" on prose is not acceptance; in-session explicit accept of the stated proposition counts.
+2. **Human accept** of that exact proposition before landing production-code as a corrective fix. Slack "ship it" on prose is not acceptance; in-session explicit accept of the stated proposition counts. **Deferred accept:** under an unattended caller that defers disposition to its close report ([`run-dogfood`](run-dogfood.md)), the fix is committed on the unmerged branch marked `pending disposition`, the request travels in that report, and nothing merges before the human accepts.
 3. **One fix** addressing the accepted proposition. No "while I'm here" improvements, no bundled refactoring.
 4. Watch the regression test pass, re-run the full suite, and re-run the Phase 1 loop against the original un-minimised scenario.
 

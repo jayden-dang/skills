@@ -57,7 +57,6 @@
         "./skills/review/inspect-invariants",
         "./skills/review/inspect-ui",
         "./skills/review/inspect-change",
-        "./skills/review/brief-team",
         "./skills/review/polish-diff",
         "./skills/review/no-comments",
         "./skills/review/vet-feedback",

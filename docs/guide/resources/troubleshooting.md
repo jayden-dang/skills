@@ -141,7 +141,7 @@ Rewrite the description as **trigger + outcome noun, never the workflow**.
 
 `triage` carries `disable-model-invocation: true`. The agent *cannot* invoke it. Some skill body is directing a hand-off to a user-invoked target — that is a real bug, not a style nit. A hand-off reaches a user-invoked skill only by *naming it for the user to run*.
 
-The user-invoked set includes (non-exhaustive): `/author-skills`, `/configure-repo`, `/bootstrap-repo`, `/define-project`, `/assess-pivot-impact`, `/triage`, `/scan-architecture`, `/map-features`, `/pathfind`, `/interpret-session`, `/work-the-problem`, `/brief-team`, `/select-sample`, `/write-handoff`, `/publish-issues`, `/cut-release`, `/refresh-roadmap-status`, `/assess-milestone`. Full list: [`AGENTS.md` §3](../../../AGENTS.md#3-skill-types--invocation-rules).
+The user-invoked set includes (non-exhaustive): `/author-skills`, `/configure-repo`, `/bootstrap-repo`, `/define-project`, `/assess-pivot-impact`, `/triage`, `/scan-architecture`, `/map-features`, `/pathfind`, `/interpret-session`, `/work-the-problem`, `/select-sample`, `/write-handoff`, `/publish-issues`, `/cut-release`, `/refresh-roadmap-status`, `/assess-milestone`. Full list: [`AGENTS.md` §3](../../../AGENTS.md#3-skill-types--invocation-rules).
 
 ---
 

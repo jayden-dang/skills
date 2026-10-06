@@ -1,6 +1,6 @@
 ---
 name: craft-page
-version: 1.1.2
+version: 1.1.3
 description: Use before the first line of markup for any HTML a human will look
   at — a write-flow-guide test guide, a report, a dashboard, a landing page, a published
   artifact, a standalone .html handoff. Also when a primary figure, structure
@@ -50,8 +50,7 @@ Then write the plan — three REQUIRED slots, filled in before any markup:
 - **Layout** — the layout concept in one or two sentences.
 
 WHEN the page or packet carries a **primary figure** (structure sketch,
-topology, sequence, flowchart — including an `understand` Map figure or
-brief-team `figure_html`), add a fourth REQUIRED slot:
+topology, sequence, flowchart — including an `understand` Map figure), add a fourth REQUIRED slot:
 
 - **Figure job** — exactly one of `before/after structure`,
   `topology / architecture`, `sequence`, `flowchart`.
@@ -188,7 +187,7 @@ revised plan exactly.
 ## Red Flags
 
 - A primary figure with no spoken job, or a name that is not one of the four
-- Writing the Intuition / `figure_html` / scan sketch without loading
+- Writing the `understand` Map / scan sketch without loading
   `references/diagram.md`
 - Hunting for `dataviz` or `artifact-capabilities`
 - Mermaid, a webfont CDN, or a second `.svg`/PNG file next to the page

@@ -78,7 +78,6 @@ The triad. Each file approved before the next is written.
 | Skill | Invocation | What it does |
 |---|---|---|
 | [`inspect-change`](inspect-change.md) | model | Two axes — Standards and Spec — run by separate subagents and never merged; neighbors schema 1.1 via `load-subgraph` |
-| [`brief-team`](brief-team.md) | `/brief-team` | Team-shared pitch+map HTML under `docs/explainers/` (no quiz, never a ship gate) |
 | [`select-sample`](select-sample.md) | `/select-sample` | Bounded human sample over a range, plus the explicit residue |
 | [`polish-diff`](polish-diff.md) | model | Behavior-preserving quality pass over a diff before merge |
 | [`vet-feedback`](vet-feedback.md) | model | Anti-sycophancy. Prove Claim every claim before implementing or replying |

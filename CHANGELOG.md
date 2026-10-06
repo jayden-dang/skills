@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+### brief-team removed (2026-10-06)
+
+The user dropped `brief-team` (team pitch+map HTML under `docs/explainers/`) as no longer
+needed. Author self-check before merge stays `/understand <range>`. Pointer edits:
+`land-branch` 4.1.2, `write-handoff` 1.0.2, `craft-page` 1.1.3. `qa-set` now also fails on
+live references to `brief-team`.
+
 ### understand — one skill for learning how the code works (2026-10-06)
 
 New: `understand` 1.0.0 (model-invocable). Removed: `tour-system`, `deepen-codebase`,

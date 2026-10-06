@@ -1,8 +1,7 @@
 # Diagram recipes
 
 Load this file WHEN a primary figure is warranted — a scan-architecture
-structure sketch, an `understand` Map figure, or a brief-team
-`figure_html`. Page restyle may be skipped; this file still loads.
+structure sketch or an `understand` Map figure. Page restyle may be skipped; this file still loads.
 
 - [Name the job](#name-the-job)
 - [Tokens](#tokens)

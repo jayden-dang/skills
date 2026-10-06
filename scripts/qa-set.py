@@ -89,9 +89,10 @@ check("every SKILL.md eval anchor resolves", not bad, "; ".join(bad[:3]))
 
 # 6 no references to deleted skills
 # tour-system, deepen-codebase, study-change, teach-build and teach-pack merged
-# into understand; release notes keep the names as history.
+# into understand, and brief-team was dropped; release notes keep the names as
+# history.
 DELETED = ["gate-session", "ask-me-bro", "tour-system", "deepen-codebase",
-           "study-change", "teach-build", "teach-pack"]
+           "study-change", "teach-build", "teach-pack", "brief-team"]
 dead = subprocess.run(["grep", "-rl", *[a for n in DELETED for a in ("-e", n)],
                        "--include=*.md", "--include=*.json", "--include=*.mdc",
                        "--include=*.sh", "."], capture_output=True, text=True).stdout.split()

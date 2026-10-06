@@ -1,6 +1,6 @@
 ---
 name: land-branch
-version: 4.1.1
+version: 4.1.2
 description: >
   Use when a finished feature branch needs integration or disposition —
   produces a local merge, pull request, kept branch, discard, or block with
@@ -174,8 +174,7 @@ On PR or merge, inspect feature `Status:`:
 | `Implemented` / `Shipped`, drift | REQUIRED SUB-SKILL: use `realign-spec` |
 
 For PR, merge, or keep: name `/understand <range>` when multi-task or risk paths are
-present; name `/brief-team` when those conditions or architecture impact are
-present. These are optional and never withhold the resolved action.
+present. It is optional and never withholds the resolved action.
 
 ## Red Flags
 

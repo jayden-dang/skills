@@ -1,6 +1,6 @@
 ---
 name: assess-milestone
-version: 1.2.0
+version: 1.2.1
 description: Produces a verdict on whether a milestone delivered what it promised, read fresh from the specs, the tests, and git. Run it with /assess-milestone.
 disable-model-invocation: true
 ---

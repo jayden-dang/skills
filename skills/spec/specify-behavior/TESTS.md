@@ -90,3 +90,9 @@ and the rest of the `lint-*.py` suite pass clean.
 **Line count:** 271 → 195 (SKILL.md). `lint-skill-length.py` budget entry
 cleared for this file.
 
+
+## Template sync — R11 names S8 (2026-10-14)
+
+The shared `roadmap-findings.md` now lists `S8` (the roadmap's `After:` item-order
+rule, added in plan-milestones 1.2.0) among the structural rules `R11` reports. No
+behavior of this skill changes beyond reading the longer rule list.

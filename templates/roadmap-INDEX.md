@@ -28,6 +28,10 @@ defective when any of these does not hold:
   S6  every live GOAL-N in vision.md is cited by a milestone or listed under
       Goal dispositions
   S7  the milestone table and every milestone block parse
+  S8  every After: value is `none` or comma-separated ROAD-N / MILE-N, each defined
+      once, live, and neither the item itself nor its own milestone; and following
+      After edges (an item without After waiting on the member above it) never
+      returns to the item it left
 
 ID rules:
 - Grammar: **MILE-<n>** and **ROAD-<n>**, flat and repo-wide.
@@ -36,9 +40,14 @@ ID rules:
 - A ROAD-N keeps its ID when it moves between milestones.
 - Milestone ORDER is table row order; milestone IDENTITY is the MILE-N. Reordering the
   table never renumbers anything.
-- ITEM order is list position within a milestone's Members, and it carries the build
-  order: an item is buildable once the items above it are done. Same rule as milestones —
-  order is position, identity is the ID, so resequencing members renumbers nothing.
+- ITEM order is the After: field, written between the slug and Surfaces:
+  `- **ROAD-7** <slug> — After: ROAD-5, MILE-2 — Surfaces: ...`. It names what must
+  be done before this item starts: a ROAD-N in any milestone, or a MILE-N meaning
+  every live member of that milestone. `none` means it can start now. IDs only — a
+  reason belongs in Blockers:. Items whose After is done build in parallel. An item
+  with no After: field (written before this rule) waits on the member above it, and
+  the first member on its milestone's Depends-on. Order is the field, identity is
+  the ID, so resequencing renumbers nothing.
 - GOAL-N is defined in docs/product/vision.md and only cited here. Feature codes are
   defined in docs/specs/INDEX.md and never written here — a roadmap item is identified
   by its ROAD-N and slug until a feature spec binds to it.
@@ -59,8 +68,8 @@ ID rules:
 do once it lands, not what was built>
 **Goals:** GOAL-1, GOAL-2
 **Members:**
-- **ROAD-1** <slug> — Surfaces: `src/<area>/`, `src/<file>.ts`
-- **ROAD-2** <slug> — Surfaces: None — <reason the surface is not yet knowable>
+- **ROAD-1** <slug> — After: none — Surfaces: `src/<area>/`, `src/<file>.ts`
+- **ROAD-2** <slug> — After: ROAD-1 — Surfaces: None — <reason the surface is not yet knowable>
 **Depends-on:** none
 **Commitment:** Committed <YYYY-MM-DD>
 **Closed:** None
@@ -72,7 +81,7 @@ do once it lands, not what was built>
 **Outcome:** <one testable user-value sentence>
 **Goals:** GOAL-3
 **Members:**
-- **ROAD-3** <slug> — Surfaces: `src/<area>/`
+- **ROAD-3** <slug> — After: MILE-1 — Surfaces: `src/<area>/`
 **Depends-on:** MILE-1
 **Commitment:** Planned
 **Closed:** None

@@ -1,6 +1,6 @@
 ---
 name: refresh-roadmap-status
-version: 1.1.0
+version: 1.2.0
 description: Reports where a multi-milestone plan actually stands and what to do next,
   derived fresh from the roadmap, the specs, and git — never from a stored status
   file. Run it with /refresh-roadmap-status.
@@ -41,7 +41,7 @@ A **withholding** finding replaces the next action with the reason.
 - each bound feature's `requirements.md` — its `Status:` line, for `R10` and the ladder.
 - `.skills/<CODE>/progress.md (see `templates/skills-ephemera-paths.md`; optional: scan `.skills/*/progress.md` when CODE unknown)` — **only if it exists.** Advisory local evidence that never overrides
   a tracked `Status:`; its absence is not a finding.
-- `S1`–`S7` are defined in `templates/roadmap-INDEX.md`'s comment block, which the roadmap
+- `S1`–`S8` are defined in `templates/roadmap-INDEX.md`'s comment block, which the roadmap
   carries a copy of. That block is authoritative — read the rules there, do not restate them.
 
 ## The passes

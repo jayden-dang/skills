@@ -20,5 +20,17 @@
       "the roadmap is presented and approved before it is written as the committed plan",
       "approval is obtained rather than assumed from silence"
     ]
+  },
+  {
+    "eval_id": 3,
+    "eval_name": "order-is-after-field",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § 2026-10-14 — `After:` item order and rule S8",
+    "prompt": "Record that ROAD-6 goes first, ROAD-7 and ROAD-8 run in parallel after ROAD-6, and ROAD-10 needs only ROAD-3 from the previous milestone.",
+    "assertions": [
+      "every member of the touched milestone carries an `After:` field between its slug and `Surfaces:`",
+      "After values are only `none`, ROAD-N or MILE-N IDs, with no prose",
+      "the parallel items share the same After value instead of being ordered by list position"
+    ]
   }
 ]

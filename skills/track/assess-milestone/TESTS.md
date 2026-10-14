@@ -110,3 +110,9 @@ remaining density is earning its keep.
 `select-sample` was dropped, so the assessment no longer records an attention
 allocation: the `### Attention` section, its red-flag mention, and the
 template's `**Attention:**` slot are gone. No baseline re-run.
+
+## Template sync — R11 names S8 (2026-10-14)
+
+The shared `roadmap-findings.md` now lists `S8` (the roadmap's `After:` item-order
+rule, added in plan-milestones 1.2.0) among the structural rules `R11` reports. No
+behavior of this skill changes beyond reading the longer rule list.

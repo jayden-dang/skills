@@ -98,3 +98,48 @@ alone; it does now.
 
 The shared `milestone-assessment.md` template lost its `**Attention:**` slot
 when `select-sample` was dropped. No behavior of this skill changes.
+
+## 2026-10-14 — `After:` item order and rule S8 (1.1.3 → 1.2.0)
+
+Roster: Sonnet (`skill-tester`), as the user named. Fixture: a three-milestone
+`tidepool` roadmap, skill installed at `.claude/skills/plan-milestones/`, user
+asks to record "ROAD-6 first; 7 and 8 in parallel after 6; 9 needs only 6; 10
+needs only ROAD-3 from MILE-2 … I pick what can run in parallel on Sundays".
+
+**Production evidence.** The klynt roadmap this skill maintained for two months
+(51 milestones, ~250 items) carried item order only as list position plus prose:
+41 `Needs ROAD-N`, 9 `gated on`, 133 item lines with no edge at all, and real
+parallelism written as `Blockers:` sentences ("ROAD-177, ROAD-178 and ROAD-186
+in parallel → ROAD-189 and ROAD-190 → …"). The parallel lanes were then
+hand-copied into `docs/specs/INDEX.md` and went stale within a week (snapshot
+dated 2026-10-03, struck through by a 2026-10-10 sequence).
+
+**RED (1.1.3), 2 runs.** Both runs invented a per-item `After:` field
+unprompted — so the *idea* is a no-op — but in two shapes:
+
+- run 1: `— Surfaces: … — After: none (first)` (after Surfaces) and
+  `After: ROAD-3 (MILE-2); nothing in MILE-3, may start any time` (prose in the
+  value); did not touch the header rule "list position is build order", which
+  the new field now contradicts.
+- run 2: `— After: None — Surfaces: …` (before Surfaces), `After: ROAD-3 (MILE-2)`;
+  added its own rule to the header comment.
+
+Both said they did not walk S1–S7. Failure class: **wrong shape**, not a broken
+rule → a fixed grammar in the template plus a structural rule, not prose.
+
+**GREEN 1, 2 runs.** Template: `After:` between slug and Surfaces, IDs only,
+`none`, S8 (dangling / self / cycle). Both runs wrote the identical grammar and
+synced the header. New variance: run 1 left ROAD-6 without `After:` — "I didn't
+want to write `none`, because that would claim ROAD-6 can start immediately,
+which you didn't say" — run 2 wrote `After: none`. The grammar had no way to
+say "after the whole previous milestone".
+
+**GREEN 2, 2 runs.** `After:` also takes `MILE-N` (every live member of that
+milestone); a resequencing writes `After:` on every member of the milestones it
+touches. Both runs produced a byte-identical MILE-3 block:
+`ROAD-6 After: MILE-2`, `7/8/9 After: ROAD-6`, `10 After: ROAD-3`, and both
+walked S8 by hand. Converged — stopped here.
+
+Synced: `templates/roadmap-INDEX.md` (+ the two skill copies), `R11` now names
+`S8` in every `roadmap-findings.md` copy, guide page, define-system-doc entry.
+Not addressed (pre-existing, out of scope): RED runs skipping the S1–S7 walk.

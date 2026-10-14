@@ -16,7 +16,7 @@ Always applicable when the project uses this skill-set surface.
 templates/roadmap-INDEX.md (pack root)
 
 ## Validator
-None — S1–S7 structural rules in plan-milestones
+None — S1–S8 structural rules in plan-milestones
 
 ## Evidence sources
 Existing skill procedures and pack templates.

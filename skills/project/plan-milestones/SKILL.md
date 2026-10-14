@@ -1,6 +1,6 @@
 ---
 name: plan-milestones
-version: 1.1.3
+version: 1.2.0
 description: Use when a project's milestones need planning, sequencing, replanning, or
   ANY edit to an existing roadmap — produces or revises docs/roadmap/INDEX.md, the
   milestone intent registry carrying stable MILE-N and ROAD-N IDs that later feature specs
@@ -48,7 +48,7 @@ decision* that nobody can derive — keep that field, and keep nothing that trac
 
 Resolve pack seeds in this order, first path that exists: (1) `templates/` beside this SKILL.md, (2) `${CLAUDE_PLUGIN_ROOT}/templates` when that variable is set, (3) `../../../templates` relative to this SKILL.md. Every heading in `templates/roadmap-INDEX.md`
 is a REQUIRED slot — fill it or write `None`. Its comment block carries the authoritative
-structural rules **S1–S7** and the ID rules; read them there rather than restating them.
+structural rules **S1–S8** and the ID rules; read them there rather than restating them.
 
 ## Create
 
@@ -71,15 +71,19 @@ structural rules **S1–S7** and the ID rules; read them there rather than resta
    `Deferred` or `Out-of-scope`, dated and reasoned. WHERE none exists, write `Goals: None`
    and leave the dispositions table empty.
    *Done when: no live goal is unaccounted for, or there is no vision.*
-5. **Declare surfaces.** Each item's `Surfaces:` names the components or paths it is
-   expected to touch, or `None` with a reason when the surface is not yet knowable.
-   *Done when: every item has a surface line.*
+5. **Declare order and surfaces.** Each item's `After:` names, in the template's form,
+   what it waits for, or `none`. Its `Surfaces:` names the components or paths it
+   is expected to touch, or `None` with a reason when the surface is not yet knowable.
+   *Done when: every item has an `After:` and a `Surfaces:` line.*
 6. Run **## The approval gate**.
 
 ## Update
 
 The change signal is a new milestone, a reordering, a scope change, a commitment, a closure,
 or an item no longer wanted.
+
+**A resequencing is written as `After:`** on every member of each milestone it touches,
+in the template's form; list position alone carries no order once `After:` is present.
 
 **Every ID already in the file is permanent.** Reordering the table changes order, never an
 ID; an item moved to another milestone keeps its `ROAD-N`. Retire one only by strikethrough
@@ -124,18 +128,18 @@ it covers writing the `Closed:` SHA and re-running the approval gate.
 ## The approval gate
 
 <HARD-GATE>
-Validate S1–S7 from the template's rule block. Report every defect you find and STOP —
+Validate S1–S8 from the template's rule block. Report every defect you find and STOP —
 a roadmap with a structural defect does not reach the user for approval. When the file is
 clean, present it WHOLE and STOP. `Status: Approved` is written only after the user has
 explicitly approved it. Conversational agreement is not approval; a roadmap you approved
 yourself was never approved.
 </HARD-GATE>
 
-Walk S1–S7 as a checklist, naming each defect and where it sits, then present the file and
+Walk S1–S8 as a checklist, naming each defect and where it sits, then present the file and
 stop. On approval, set `Status: Approved`; `/refresh-roadmap-status` reports where the plan
 stands whenever the user wants it.
 
-*Done when: the S1–S7 walk is clean, the user has approved the written file, and `Status:`
+*Done when: the S1–S8 walk is clean, the user has approved the written file, and `Status:`
 reads `Approved`.*
 
 ## ROAD-N is a slot, not a feature

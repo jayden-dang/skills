@@ -50,13 +50,14 @@ Authoritative wording lives in the skill body under the same heading: ROAD = pro
 `MILE-N` and `ROAD-N` are stable from first definition, retired only by strikethrough with a reason. Two consequences worth stating plainly:
 
 - **Order is table position; identity is the ID.** Moving Sharing ahead of Search reorders rows. It does not renumber anything.
+- **Item order is the `After:` field, not list position.** Each item names what must be done before it starts — `After: ROAD-6`, `After: MILE-2` for a whole milestone, or `none` — so items that can run in parallel say so, and a script can compute what is ready to start. Baseline agents asked to record "7 and 8 in parallel after 6" each invented such a field on their own, in a different shape every run; the template fixes one shape so it parses. Rule `S8` rejects a dangling ID or a cycle.
 - **An item you no longer want is deferred, not deleted.** It moves to its milestone's `Deferred:` slot with a date and a reason, because a deleted line takes its rationale with it.
 
 Note that `ARCH-4` covers `CODE-N.M` and `ARCH-N` only. These namespaces are governed by the skill's own rules, not by that invariant — a deliberate choice, so planning IDs can be reshuffled while unstarted without breaking a repo-wide invariant.
 
 ## The approval gate
 
-The skill validates the seven structural rules `S1`–`S7` carried in the template's comment block — the same set [`refresh-roadmap-status`](refresh-roadmap-status.md) re-checks as finding `R11`. Any defect is reported and the roadmap does not reach the user for approval. When clean, the whole file is presented and the skill stops; `Status: Approved` is written only after an explicit approval.
+The skill validates the eight structural rules `S1`–`S8` carried in the template's comment block — the same set [`refresh-roadmap-status`](refresh-roadmap-status.md) re-checks as finding `R11`. Any defect is reported and the roadmap does not reach the user for approval. When clean, the whole file is presented and the skill stops; `Status: Approved` is written only after an explicit approval.
 
 A material change to an already-approved roadmap — outcome, membership, ordering, commitment state, or goal citations — sets `Status: Draft` and re-enters that gate. An amended plan is a different plan.
 

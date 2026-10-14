@@ -15,9 +15,9 @@ Not a seed. Unlike the other files in this directory, nothing copies this one in
 consumer repo — `configure-repo` and `define-project` name the template files they write
 individually and never glob. It sits here because `templates/` is this set's only
 cross-skill content mechanism: `roadmap-INDEX.md`'s comment block already carries the
-authoritative S1–S7 structural rules for the same two skills.
+authoritative S1–S8 structural rules for the same two skills.
 
-S1–S7 (structural defects of the roadmap artifact) live in roadmap-INDEX.md.
+S1–S8 (structural defects of the roadmap artifact) live in roadmap-INDEX.md.
 R1–R11 (findings derived across the roadmap, the specs, and the vision) live here.
 R11 is the seam between them: it fires when the artifact violates its own S-rules.
 -->
@@ -36,7 +36,7 @@ R11 is the seam between them: it fires when the artifact violates its own S-rule
 | **R8** | info | a feature row's `Roadmap item` is empty while a roadmap exists — *unplanned* | no |
 | **R9** | error | a `Closed` milestone holds a non-deferred `ROAD-N` that is unbound, or bound to a feature whose `Status:` is not `Shipped` | **yes** |
 | **R10** | error | a feature's `requirements.md` `Status:` differs from its `docs/specs/INDEX.md` row | **yes** |
-| **R11** | error | the roadmap is unparseable, violates `S1`, `S3`, `S4`, `S5` or `S7`, or holds a `Depends-on` not resolving to exactly one live `MILE-N` | **yes** |
+| **R11** | error | the roadmap is unparseable, violates `S1`, `S3`, `S4`, `S5`, `S7` or `S8`, or holds a `Depends-on` not resolving to exactly one live `MILE-N` | **yes** |
 
 **Withholding set:** `{R2, R4, R9, R10, R11}` — the five codes whose `Withholds` column reads
 yes. A finding in this set replaces the next action with the reason it withheld. `R7` and
@@ -63,7 +63,7 @@ order), `members` (item → milestone), `bindings` (code → `ROAD-N`), and `sta
 - **R9** — for each milestone whose `Commitment` is `Closed`: each member not listed in its
   `Deferred:` slot that is unbound, or whose feature's spec `Status:` is not `Shipped`.
 - **R10** — each code whose INDEX status differs from its spec `Status:`.
-- **R11** — the roadmap failing to parse, or violating `S1`, `S3`, `S4`, `S5`, `S7`, or a
+- **R11** — the roadmap failing to parse, or violating `S1`, `S3`, `S4`, `S5`, `S7`, `S8`, or a
   `Depends-on` not resolving to exactly one live `MILE-N`.
 
 Scoping these findings to a single milestone is `assess-milestone`'s concern, not a property

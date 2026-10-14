@@ -1,6 +1,6 @@
 ---
 name: chart-progress
-version: 1.0.0
+version: 1.1.0
 description: Generates a weekly progress dashboard (one HTML page) of what finished, what is building, what is ready to start, and the roadmap graph. Run it with /chart-progress.
 disable-model-invocation: true
 ---
@@ -42,28 +42,45 @@ page then says there is no roadmap, and the rest still renders.*
 
 ## Write the notes
 
-Read the snapshot, then write `.skills/dashboard/<today>.notes.json`:
+The notes open the page, so they are written for the person reading it on a Sunday, not for
+the snapshot. Write `.skills/dashboard/<today>.notes.json`:
 
 ```json
-{"summary": "two or three sentences on the week",
- "recommendations": ["…", "…", "…"]}
+{"summary": "Two or three sentences.", "recommendations": ["One sentence.", "…"]}
 ```
 
-- **summary** — what finished, what is building, and the one thing that changed the plan.
-  Quote counts and IDs from the snapshot as they are.
-- **recommendations** — at most five, each naming the IDs it acts on, drawn from these
-  snapshot fields: `graph.ready` (ranked by commitment, milestone order, then `graph.unlocks`),
-  features with `status: In-progress`, `graph.closable` (name `/assess-milestone`),
-  `graph.conflicts` (which ready items must not run together), and `findings`.
-- When `coverage.with_after` is below `coverage.live_items`, the ready set and critical path
-  are built from list order for the items without `After:`. Say so once in the summary and
-  recommend backfilling `After:` through `plan-milestones` before trusting the lanes.
+Draw the content from the snapshot — what finished (`windows.week`), what is building, what is
+ready (`graph.ready`, ranked by commitment, milestone order, then `graph.unlocks`), what overlaps
+(`graph.conflicts`), milestones ready to close (`graph.closable`), and `findings`. Then write it
+in the page's own words:
 
-A number you believe is wrong is written as a note beside it ("FTRASH is in the 10-10 batch —
-the record caught up that day"), never corrected on the page. The page shows what the record
-says; the notes say what you think of it.
+- **Name things the way the page does:** a feature by its catalog name, a roadmap item by its
+  feature name or its slug read as words, a milestone by its name. An ID goes in parentheses
+  after the name, only when the reader will need it to act.
+- **States in plain words:** finished, in build, ready to start, not started, ready to close.
+- **No snapshot vocabulary:** no field names, file paths, rule codes, or commit hashes.
+- **summary** — what the week amounted to, and the one thing that changes next week's plan.
+- **recommendations** — at most five, each one sentence, starting with a verb, naming what to
+  do and why.
+- When `coverage.with_after` is below `coverage.live_items`, one recommendation says the
+  roadmap does not yet record what each item waits for, so the ready list is a guess, and names
+  `plan-milestones` to add it.
 
-*Done when: every ID in the notes appears in the snapshot.*
+Both runs of 1.0.0 wrote "coverage.with_after is 0", "are in graph.closable" and
+"frontend/src/widgets/assistant/" into the summary — the first paragraph on the page — and the
+user read the result as "machine-readable, not human-readable". Shaped like this instead:
+
+```json
+{"summary": "A quieter week: the feed poller finished and read state went into build, so reading is one feature from done. Sharing cannot start until read state lands, which makes it next week's bottleneck.",
+ "recommendations": ["Finish Read state (READ) first; Share links and everything after it wait on it.",
+  "Start Analytics now, but not beside Read state, since both change the database migrations."]}
+```
+
+A number you believe is wrong is written as a note beside it, never corrected on the page.
+The page shows what the record says; the notes say what you think of it.
+
+*Done when: every name and ID in the notes appears in the snapshot, and no field name, path,
+rule code or hash does.*
 
 ## Render and hand over
 
@@ -93,7 +110,8 @@ page points at belong to `plan-milestones`, `realign-spec`, or `/assess-mileston
 ## Red Flags
 
 - Writing a generator, a query, or a `git log` pass of your own to fill in a number
-- A count in the notes that differs from the snapshot field it names
+- A count in the notes that differs from the snapshot
+- A snapshot field name, file path, rule code or commit hash in the notes
 - Reading `Blockers:` prose to decide what is ready
 - Editing the HTML after `render.py` wrote it
 - Writing anywhere outside `.skills/dashboard/`

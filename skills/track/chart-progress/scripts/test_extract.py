@@ -162,6 +162,23 @@ class TestExtract(unittest.TestCase):
         # ROAD-9 sits between ROAD-8 and ROAD-10 without After:
         self.assertEqual(self.items["ROAD-9"]["after"], ["ROAD-8"])
 
+    def test_a_struck_item_keeps_the_slug_it_had_before_it_was_struck(self):
+        with tempfile.TemporaryDirectory() as t:
+            root = Path(t) / "demo"
+            root.mkdir()
+            r = Repo(root)
+            r.write("docs/specs/INDEX.md", INDEX)
+            r.write("docs/specs/catalog/core.md", catalog([]))
+            r.write("docs/roadmap/INDEX.md", ROADMAP)
+            r.commit("seed", "2026-09-01")
+            r.write("docs/roadmap/INDEX.md", ROADMAP.replace("- **ROAD-7** public-view — After: ROAD-6 — Surfaces: `web/public/`",
+                                                             "- ~~**ROAD-7**~~ delivered 2026-10-10 inside ROAD-6"))
+            r.commit("strike", "2026-10-10")
+            snap = extract(root, today="2026-10-14")
+        week = snap["windows"]["week"]
+        self.assertEqual(week["roadmap_dropped"], ["ROAD-7"])
+        self.assertEqual(week["roadmap_slugs"]["ROAD-7"], "public-view")
+
     def test_struck_and_deferred_items_are_not_live(self):
         self.assertEqual(self.items["ROAD-4"]["state"], "retired")
         self.assertEqual(self.items["ROAD-11"]["state"], "deferred")
@@ -203,7 +220,12 @@ class TestExtract(unittest.TestCase):
         self.assertEqual(sorted(month["finished"]), ["POLL", "SUBS"])
         self.assertEqual(week["adrs"], ["ADR-0002"])
         self.assertEqual(week["roadmap_new"], ["ROAD-9"])
+        self.assertEqual(self.snap["windows"]["month"]["roadmap_slugs"].get("ROAD-4"), None)
         self.assertEqual(week["roadmap_revived"], [])
+
+    def test_a_feature_carries_its_catalog_name(self):
+        f = {x["code"]: x for x in self.snap["features"]}
+        self.assertEqual(f["POLL"]["name"], "Poll feature")
 
     def test_in_progress_features_carry_ledger_progress(self):
         f = {x["code"]: x for x in self.snap["features"]}
@@ -318,6 +340,16 @@ class TestExtract(unittest.TestCase):
             outs.append(out.read_bytes())
         self.assertEqual(outs[0], outs[1])
         self.assertEqual(outs[1], outs[2])
+
+    def test_weekly_finished_counts_cover_the_last_eight_weeks(self):
+        weekly = self.snap["weekly"]
+        self.assertEqual(len(weekly), 8)
+        self.assertEqual(weekly[-1], {"start": "2026-10-08", "end": "2026-10-14", "finished": 1})
+        self.assertEqual(weekly[-3], {"start": "2026-09-24", "end": "2026-09-30", "finished": 1})
+
+    def test_a_feature_in_build_carries_the_day_it_started(self):
+        f = {x["code"]: x for x in self.snap["features"]}
+        self.assertEqual(f["READ"]["started"], "2026-10-12")
 
     def test_after_coverage_is_reported(self):
         cov = self.snap["coverage"]

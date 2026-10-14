@@ -61,3 +61,29 @@ Found by diffing the two runs' artifacts, not by their reports:
 
 `scripts/test_extract.py` and `scripts/test_render.py` (unittest, stdlib only), each test
 watched failing first. Run: `cd scripts && python3 -m unittest`.
+
+## 2026-10-14 — 1.1.0: a page for a person
+
+**RED — user review of 1.0.0.** "It is still more machine-readable than human-readable." On the
+klynt page: IDs and kebab-case slugs led every row (`ROAD-107 · ai-quota-campaigns · MILE-26`),
+states were internal words (`unspecced`, `specced`, `framing`), the critical path was a string
+of IDs, overlaps were a list of raw paths, dates were ISO. The notes from both 1.0.0 GREEN runs
+— the first paragraph on the page — carried snapshot vocabulary verbatim: "coverage.with_after
+is 0", "are in graph.closable", "frontend/src/widgets/assistant/", "S7".
+
+Failure class: wrong shape → a positive recipe. The page (render.py) became a weekly briefing:
+names first with the ID as a small tag, plain states from one `STATE` table, human dates
+("Sat 10 Oct"), finished work grouped by day, an 8-week trend, build age, ready items grouped
+under their milestone's name and outcome, overlaps as "Shares code with <name> (<state>) —
+<area>", finished milestones left off the map. Each property has a render test, watched
+failing first (8 failed on 1.0.0). The readability tests caught a real bug the old page hid:
+feature names parsed as `[spec]` (the spec column, not the name column).
+
+The notes section became a recipe with one worked example from an unrelated project (not
+klynt, so the GREEN fixture could not be copied from it).
+
+**GREEN — 2 runs on klynt.** Both notes files: zero field names, paths, rule codes, hashes or
+bare IDs (`grep` over the written files); features, items and milestones named the way the
+page names them; the missing-`After:` caveat in plain words naming plan-milestones. One loose
+claim survived in run 1 ("three assistant features" while one of the three is a Library
+feature) — prose accuracy, not vocabulary; not addressed.

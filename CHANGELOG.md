@@ -2,7 +2,7 @@
 
 ## Unreleased
 
-### chart-progress 1.0.0 and plan-milestones 1.2.0 — a weekly dashboard on a parseable roadmap (2026-10-14)
+### chart-progress 1.1.0 and plan-milestones 1.2.0 — a weekly dashboard on a parseable roadmap (2026-10-14)
 
 `/chart-progress` writes one self-contained HTML page for the end-of-week review: finished in
 the last 7 and 30 days, building with ledger task progress, ready to start ranked by commitment
@@ -12,6 +12,11 @@ architecture invariants and latest ADRs, and structural health. Two stdlib scrip
 number; the agent writes only the notes. On Sonnet, two baseline runs on the same repo and day
 counted 7 and 14 features finished and 30 and 16 items ready, at about seven minutes and 140k
 tokens each; with the skill both runs reported the same numbers in about half a minute.
+
+1.1.0 rewrites the page for a person rather than a parser, after the user's review of 1.0.0:
+names before IDs, plain states, human dates, finished work by day, an 8-week trend, ready work
+under its milestone's outcome, overlaps said with names, finished milestones off the map. The
+agent's notes follow a plain-words recipe; 1.0.0 notes had carried field names and paths.
 
 `plan-milestones` 1.2.0: item order is an `After:` field (`ROAD-N`, `MILE-N`, or `none`)
 between the slug and `Surfaces:`; an item without it keeps the old list-order reading.

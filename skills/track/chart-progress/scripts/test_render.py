@@ -65,19 +65,59 @@ class TestRender(unittest.TestCase):
         self.assertIn("MILE-2", plan)
         self.assertIn("/assess-milestone", plan)
 
-    def test_overlaps_are_grouped_by_shared_path(self):
-        snap = json_copy(self.snap)
-        snap["graph"]["conflicts"] = [{"items": ["ROAD-5", "ROAD-10"], "paths": ["api/migrations/"]},
-                                      {"items": ["ROAD-5", "ROAD-12"], "paths": ["api/migrations/"]}]
-        plan = render(snap, None).split('id="plan"', 1)[1].split("</section>", 1)[0]
-        self.assertEqual(plan.count("<code>api/migrations/</code>"), 1)
-
     def test_a_feature_without_a_ledger_does_not_read_as_zero_done(self):
         from render import progress
         snap = {"features": [{"code": "AWID", "tasks_total": 31, "tasks_done": None}]}
         cell = progress(snap, "AWID")
-        self.assertNotIn("0/31", cell)
-        self.assertIn("31 tasks, no ledger", cell)
+        self.assertNotIn("0 of 31", cell)
+        self.assertIn("31 tasks planned, none logged yet", cell)
+
+    def visible(self, page: str) -> str:
+        page = re.sub(r"<(style|script|title|desc)[^>]*>.*?</\1>", " ", page, flags=re.S)
+        return re.sub(r"\s+", " ", re.sub(r"<[^>]+>", " ", page))
+
+    def section(self, sid: str) -> str:
+        return self.visible(self.html.split(f'id="{sid}"', 1)[1].split("</section>", 1)[0])
+
+    def test_the_page_speaks_plain_words_not_internal_field_names(self):
+        text = self.visible(self.html).lower()
+        for word in ("unspecced", "specced", "closable", "critical path", "snapshot", "coverage", "slug", "ledger"):
+            self.assertNotIn(word, text, word)
+
+    def test_the_title_names_the_week(self):
+        self.assertIn("Week of 8–14 Oct 2026", self.visible(self.html))
+
+    def test_finished_work_is_listed_by_name_and_human_date(self):
+        happened = self.section("happened")
+        self.assertIn("Poll feature", happened)
+        self.assertIn("Mon 12 Oct", happened)
+
+    def test_items_to_start_read_as_names_under_their_milestone(self):
+        plan = self.section("plan")
+        self.assertIn("Analytics", plan)        # ROAD-10 slug "analytics"
+        self.assertIn("Sharing", plan)          # its milestone's name
+        self.assertIn("A person shares a post.", plan)  # the milestone's outcome
+
+    def test_work_in_build_shows_progress_and_age_in_words(self):
+        plan = self.section("plan")
+        self.assertIn("Read feature", plan)
+        self.assertIn("2 of 3 tasks done", plan)
+        self.assertIn("started Mon 12 Oct", plan)
+
+    def test_the_eight_week_trend_is_drawn(self):
+        happened = self.section("happened")
+        self.assertIn("Finished per week", happened)
+
+    def test_finished_milestones_are_left_off_the_map(self):
+        roadmap = self.html.split('id="roadmap"', 1)[1].split("</section>", 1)[0]
+        overview = re.search(r"<svg.*?</svg>", roadmap, flags=re.S).group(0)
+        self.assertNotIn("Accounts", overview)  # MILE-1 is Closed
+        self.assertIn("1 finished milestone not shown", self.visible(roadmap))
+
+    def test_overlaps_are_said_with_names(self):
+        plan = self.section("plan")
+        self.assertIn("Shares code with Read feature (in build) — migrations", plan)
+        self.assertNotIn("api/migrations/", plan)  # the path lives in the tooltip, the area in the text
 
     def test_notes_are_escaped(self):
         self.assertIn("Start ROAD-10 &lt;now&gt;", self.html)

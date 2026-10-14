@@ -19,14 +19,19 @@ The split exists because the baseline did not hold still. Two agents asked for t
 
 ## What it shows
 
-| View | Derived from |
+The page reads top to bottom like a weekly briefing. Things are named the way a person knows them — a feature by its catalog name, a roadmap item by its feature name or its slug read as words, a milestone by its name — with the ID as a small tag beside it. States are plain words (done, in build, ready, not started), and dates read "Sat 10 Oct".
+
+| Section | What it answers |
 |---|---|
-| **Plan next week** | the ready set (every open item whose `After:` is done), ranked committed-first, then milestone order, then how many items it unlocks; what is building, with task progress from the ledger; the critical path; milestones whose members are all done but are not `Closed`; paths that ready and building items share |
-| **What happened** | status changes in the catalog's first-parent history for the last 7 and 30 days, dated when they landed; a commit that moves three or more features to done at once is flagged as a batch, since its date is when the record caught up; roadmap items that entered, came back from deferred, or left the plan; new ADRs; commits by conventional scope |
-| **Roadmap** | the milestone graph, columns by dependency depth; each milestone opens to its own item graph, outside predecessors dashed, items without `After:` marked "implied order" |
-| **Catalog** | per domain: status mix, open features, latest finished |
-| **Architecture** | each `ARCH-N` with the number of designs whose `Respects:` line cites it; the latest ADRs |
-| **Health** | `S8` (dangling or cyclic `After:`), a milestone whose table row and block disagree on commitment, duplicate ADR numbers, and `After:` coverage |
+| **The week in brief** | the agent's summary and suggestions, then four numbers: finished this week, in build, ready to start, milestones ready to close |
+| **Next week** | what is still in build, how long it has been there and how many of its tasks are done; what is ready to start, grouped under each milestone's name and outcome, committed milestones first, with what each opens up and what it shares code with; milestones whose work is all done; the longest chain still ahead |
+| **What happened** | features finished this week, day by day; a note when one commit marked several done at once; what went into build; new specs; roadmap changes; new decisions; finished per week over 8 weeks; the last 30 days behind a fold |
+| **The roadmap** | unfinished milestones as a graph, columns in the order they can happen; each opens to its own items, with items it waits on elsewhere dashed and "order assumed" where the roadmap does not say |
+| **By area** | each catalog area: its mix of states, what is open, what finished lately |
+| **Architecture** | the latest decisions; the architecture rules and how many designs name each, behind a fold |
+| **Housekeeping** | how many roadmap items record what they wait for, and gaps in the records — a broken `After:`, a milestone whose table and section disagree, a decision number used twice |
+
+Every number comes from the snapshot. Finished and started are status changes in the catalog's first-parent history, dated when they landed; ready means every item the roadmap says it waits for is done.
 
 ## Item order is `After:`
 

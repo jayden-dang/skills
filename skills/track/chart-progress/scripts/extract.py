@@ -134,7 +134,7 @@ def parse_catalog(root: Path) -> list[dict]:
                     spec_dir = spec_dir.relative_to(root.resolve()).as_posix()
                 except ValueError:
                     spec_dir = None
-            name = middle.split("|")[1].strip() if "|" in middle else middle.strip()
+            name = middle.split("|")[0].strip()
             name = re.sub(r"\s*\(.*$", "", name)
             feats.append({
                 "code": m.group(2), "name": name, "domain": domain, "spec": spec_dir,
@@ -390,15 +390,15 @@ def transitions(root: Path, since: str) -> list[dict]:
     return events
 
 
-def roadmap_ids_at(root: Path, before: str) -> tuple[set[str], set[str]] | None:
-    """(live, deferred) ROAD-N sets at the last commit before a date."""
+def roadmap_ids_at(root: Path, before: str) -> tuple[set[str], set[str], dict[str, str]] | None:
+    """(live, deferred, slugs) for ROAD-N at the last commit before a date."""
     rev = run_git(root, "rev-list", "-1", "--first-parent", f"--before={before}T00:00:00", "HEAD").strip()
     if not rev:
         return None
     text = run_git(root, "show", f"{rev}:docs/roadmap/INDEX.md")
     _, items = parse_roadmap(text)
     live = {k for k, v in items.items() if not v["retired"] and not v["deferred"]}
-    return live, {k for k, v in items.items() if v["deferred"]}
+    return live, {k for k, v in items.items() if v["deferred"]}, {k: v["slug"] for k, v in items.items()}
 
 
 def window(root: Path, since: str, events: list[dict], items: dict, adrs: list[dict]) -> dict:
@@ -412,8 +412,10 @@ def window(root: Path, since: str, events: list[dict], items: dict, adrs: list[d
     before = roadmap_ids_at(root, since)
     live_now = {k for k, v in items.items() if v["state"] not in ("retired", "deferred")}
     new = revived = dropped = []
+    slugs: dict[str, str] = {}
     if before is not None:
-        was_live, was_deferred = before
+        was_live, was_deferred, old_slugs = before
+        slugs = {r: old_slugs[r] for r in sorted(was_live - live_now, key=num) if r in old_slugs}
         new = sorted(live_now - was_live - was_deferred, key=num)
         revived = sorted(live_now & was_deferred, key=num)
         dropped = sorted(was_live - live_now, key=num)
@@ -434,7 +436,7 @@ def window(root: Path, since: str, events: list[dict], items: dict, adrs: list[d
     batches = [b | {"codes": sorted(b["codes"])} for b in per_commit.values() if len(b["codes"]) >= 3]
     return {
         "since": since, "finished": finished, "batches": batches, "started": started, "specced": specced,
-        "events": inside, "roadmap_new": new, "roadmap_revived": revived, "roadmap_dropped": dropped,
+        "events": inside, "roadmap_new": new, "roadmap_revived": revived, "roadmap_dropped": dropped, "roadmap_slugs": slugs,
         "adrs": [a["id"] for a in adrs if a["date"] and a["date"] >= since],
         "commits": len(subjects), "merges": merges,
         "scopes": sorted(scopes.items(), key=lambda kv: (-kv[1], kv[0]))[:15],
@@ -530,7 +532,17 @@ def extract(root: Path | str, today: str | None = None) -> dict:
     for a in adrs:
         seen_adr[a["id"]] = seen_adr.get(a["id"], 0) + 1
     findings += [{"rule": "ADR", "item": k, "detail": f"{v} files carry this number"} for k, v in seen_adr.items() if v > 1]
-    events = transitions(root, month)
+    history = (today_d - dt.timedelta(days=55)).isoformat()  # 8 whole weeks incl. today
+    events = transitions(root, history)
+    weekly = []
+    for k in range(7, -1, -1):
+        end = today_d - dt.timedelta(days=7 * k)
+        start = end - dt.timedelta(days=6)
+        done = {e["code"] for e in events if start.isoformat() <= e["date"] <= end.isoformat() and e["to"] in DONE}
+        weekly.append({"start": start.isoformat(), "end": end.isoformat(), "finished": len(done)})
+    for f in feats:
+        starts = [e["date"] for e in events if e["code"] == f["code"] and e["to"] == "In-progress"]
+        f["started"] = starts[-1] if starts else None
     live = [v for v in items.values() if v["state"] not in ("retired", "deferred")]
     for ms in milestones:
         mine = [items[r] for r in ms["members"] if items[r]["state"] not in ("retired", "deferred")]
@@ -554,6 +566,7 @@ def extract(root: Path | str, today: str | None = None) -> dict:
         "features": feats,
         "domains": sorted(domains.values(), key=lambda d: d["domain"]),
         "graph": g,
+        "weekly": weekly,
         "windows": {
             "week": window(root, week, events, items, adrs),
             "month": window(root, month, events, items, adrs),

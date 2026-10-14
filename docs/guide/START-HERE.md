@@ -166,7 +166,7 @@ Personal OS is a **separate** package — [personal-os START-HERE](../personal-o
 | **acceptance** | `validate-feature`, `validate-api`, `validate-ui`, `write-dogfood`, `run-dogfood` |
 | **craft** | `craft-page` |
 | **ship** | `land-branch`, `record-verdict`, `/cut-release` |
-| **track** | `amend-feature`, `reroute-plan`, `realign-spec`, `/triage`, `/publish-issues`, `/scan-architecture`, **`/map-features`**, `/write-handoff`, `/refresh-roadmap-status`, `/assess-milestone` |
+| **track** | `amend-feature`, `reroute-plan`, `realign-spec`, `/triage`, `/publish-issues`, `/scan-architecture`, **`/map-features`**, `/write-handoff`, `/refresh-roadmap-status`, `/chart-progress`, `/assess-milestone` |
 | **project** | `/define-project`, `/assess-pivot-impact`, `plan-milestones` |
 
 ## Where to go next

@@ -28,6 +28,7 @@ Examples: `.skills/SPAY/`, `.skills/WEBPAR/`, `.skills/SKNS/`.
 | `.skills/decisions/` | Boundary decision records (`DEC-*.md`, adoption) |
 | `.skills/pr-packages/<stable-id>/` | **Retired.** `land-branch` no longer writes this tree. Leave existing dirs; do not author new ones. |
 | `.skills/understand/` | Explainer pages (`<slug>.html`) from `understand` |
+| `.skills/dashboard/` | Weekly progress pages from `/chart-progress` (`<date>.json` snapshot, `<date>.notes.json`, `<date>.html`) |
 | `.skills/system-docs/<entry-key>/` | System-doc authoring digests (`state.md`, `evidence.md`, `proposal.md`) for `/define-system-doc`; entry-key path mirroring (e.g. `codebase/map`) |
 
 ## Resolution order for `<CODE>`

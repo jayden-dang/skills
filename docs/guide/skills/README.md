@@ -1,6 +1,6 @@
 # Skill reference
 
-69 skills in eleven buckets (engineering package); every one has its own page.
+70 skills in eleven buckets (engineering package); every one has its own page.
 See also [Start here](../START-HERE.md).
 
 **Invocation** is the thing to check first. A **model-invocable** skill is invoked by the agent on its own when its description matches the situation. A **user-invoked** skill carries `disable-model-invocation: true` in its frontmatter — the agent *cannot* invoke it, so you run it as a slash command.
@@ -123,6 +123,7 @@ The visual layer. Fires before any HTML a human will look at.
 | [`reroute-plan`](reroute-plan.md) | model | The mid-flight rewind decision. Classifies a plan-invalidating discovery to the lowest broken artifact and routes the re-entry |
 | [`realign-spec`](realign-spec.md) | model | The anti-rot skill. Realigns the triad with what the code actually does |
 | [`refresh-roadmap-status`](refresh-roadmap-status.md) | `/refresh-roadmap-status` | The horizontal check. Derives where the plan stands from the roadmap, the specs and git, then names one next action. Writes nothing |
+| [`chart-progress`](chart-progress.md) | `/chart-progress` | The weekly dashboard. One HTML page of what finished, what is building, what is ready to start, the roadmap graph, catalog domains and architecture, every number from a fixed parse. Writes only under `.skills/dashboard/` |
 | [`assess-milestone`](assess-milestone.md) | `/assess-milestone` | The close gate. Judges whether a milestone's outcome was achieved, records it append-only, and holds the close until you dispose of the verdict |
 | [`publish-issues`](publish-issues.md) | `/publish-issues` | Context → tracker issues. Tracer-bullet slices with blocking edges, published agent-ready |
 | [`triage`](triage.md) | `/triage` | A two-axis issue state machine. Verify the claim before recommending |

@@ -2,6 +2,23 @@
 
 ## Unreleased
 
+### chart-progress 1.0.0 and plan-milestones 1.2.0 — a weekly dashboard on a parseable roadmap (2026-10-14)
+
+`/chart-progress` writes one self-contained HTML page for the end-of-week review: finished in
+the last 7 and 30 days, building with ledger task progress, ready to start ranked by commitment
+and what each item unlocks, the critical path, milestones ready to close, paths that ready and
+building items share, the milestone graph with a per-milestone item graph, catalog domains,
+architecture invariants and latest ADRs, and structural health. Two stdlib scripts derive every
+number; the agent writes only the notes. On Sonnet, two baseline runs on the same repo and day
+counted 7 and 14 features finished and 30 and 16 items ready, at about seven minutes and 140k
+tokens each; with the skill both runs reported the same numbers in about half a minute.
+
+`plan-milestones` 1.2.0: item order is an `After:` field (`ROAD-N`, `MILE-N`, or `none`)
+between the slug and `Surfaces:`; an item without it keeps the old list-order reading.
+Structural rule `S8` rejects a dangling or self target and a cycle, and `R11` reports it in
+`refresh-roadmap-status` 1.2.0, `assess-milestone` 1.2.1 and `specify-behavior` 1.4.1. Both
+baseline runs invented such a field on their own, each in a different shape.
+
 ### run-dogfood 4.0.0 — fix and unblock until every case passes, report once (2026-10-06)
 
 Earlier versions stopped after one round to report, leaving fails and blocks open. The run now

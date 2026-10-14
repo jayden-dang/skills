@@ -67,6 +67,7 @@
     "./skills/track/amend-feature",
     "./skills/track/assess-milestone",
     "./skills/track/refresh-roadmap-status",
+    "./skills/track/chart-progress",
     "./skills/track/reroute-plan",
     "./skills/track/publish-issues",
     "./skills/track/write-handoff",

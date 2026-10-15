@@ -415,3 +415,12 @@ transcripts read `.claude/skills/plan-tasks/publish-recipe.md` from the fixture.
 
 Depth: a shape check, not a pressure campaign. It is a recipe fix for
 wrong-shape output, per the skill-edit test depth rule. Meta-test not run.
+
+## v1.7.0 — covering is not one test per ID (2026-10-15)
+
+**RED (Sonnet, 1 rep).** CFG-1.1..1.10, one seam. Plan: 10 tests, one per criterion,
+including three that only pin defaults; the agent noted the rules "pull in two directions"
+(every ID needs its own test vs 3–8 steps) and resolved it by batching steps, not tests.
+
+**GREEN.** With "same shape at the same seam share one table-driven test": 3 tests (8-row
+rejection table, 3-row defaults table, one pass-through), 8 steps, footer cites all ten IDs.

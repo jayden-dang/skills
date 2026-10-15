@@ -53,5 +53,17 @@
       "Status: Approved is not set while a bare TBD remains",
       "an owned unknown requires owner, date, and forbid-guess fields or the item must be resolved"
     ]
+  },
+  {
+    "eval_name": "one-rule-many-inputs-one-criterion",
+    "kind": "contract",
+    "derived_from": "SKILL.md § Step 2",
+    "prompt": "How should specify-behavior write a rule that applies to several fields, such as endpoint, accessKey and secretKey all required?",
+    "assertions": [
+      "one criterion",
+      "naming them all",
+      "not one criterion per input"
+    ],
+    "eval_id": 6
   }
 ]

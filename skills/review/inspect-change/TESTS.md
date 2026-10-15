@@ -387,3 +387,25 @@ rule (a `ports/` comment), both models enforce it unprompted. No text shipped fo
 
 **Open, unmeasured:** whether the soft Haiku result reproduces on a repo whose convention
 exists only in the import graph, with no comment stating it. One rep, one fixture.
+
+## v1.10.0 — tests part (e), items 25–27 (2026-10-15)
+
+Motivated by klynt: ~11k tests, many pin constants (`defaults_to_600`) or repeat one
+failure per field. Standards had twelve smells and no look at test files; Spec only asked
+whether an ID had *a* test, so a tautological test counted as coverage.
+
+**RED (Sonnet, 1 rep, fixture `/tmp/tt-fixture`: `validate()` + 12 tests — six near-identical
+`rejects_*`, three default-literal tests, `DEFAULTS has upload 600`, `typeof === "object"`,
+a one-field "accepts valid config").** Four-part report, twelve smells, security, production
+readiness — and **nothing about the test file**. Not one of the pin-a-constant, duplicate, or
+vacuous tests was named.
+
+**GREEN (same fixture, new text).** Part (e) present. Items 25 hit on the three default
+tests and `DEFAULTS has upload 600` ("clearest case: asserts the constant against itself");
+item 26 on the six `rejects_*` with an `it.each` fold; item 27 on `typeof` and on the
+one-field accept test (strengthen to `toEqual`). Also listed untested behavior (NaN, empty
+bucket).
+
+**Dropped (A, `test-first`).** Same fixture, Sonnet, test-first as-is: wrote 10 tests,
+folded defaults into one, skipped DEFAULTS and duplicates, refused to invent NaN cases. No
+failure to answer; no text shipped.

@@ -17,6 +17,8 @@ reaching a sink · 17 Sensitive data in the clear · 18 Weak or misused crypto.
 Production readiness, only when the diff changes runtime behavior: 19 Unbounded
 failure mode · 20 Silent degradation · 21 Unsafe default · 22 Irreversible
 migration · 23 No operational signal · 24 Reader left behind.
+Tests, only when the diff adds or changes test files: 25 Pins what the code
+says · 26 Same failure, separate test · 27 Cannot fail.
 
 1. **Duplicated knowledge** — one fact or rule (a formula, a validation, a
    mapping) encoded in two or more places in the diff, so a future change must
@@ -159,3 +161,30 @@ at 3am, not whether the lines are tidy.
     readers that matter here are the files it did not touch. → Migrate the
     readers you own in this change; for the ones you cannot reach, name them
     and the follow-up that retires the old path.
+
+## Tests — when the diff adds or changes test files
+
+The twelve ask whether code reads well; these ask whether the tests earn
+their run time. A suite pays for every test on every run, by every parallel
+agent, so a test that cannot catch a defect is a cost with no return. Same
+rules as above: each is a labeled judgment call and a documented repo standard
+overrides it. Judge each *added or changed* test, not the old suite.
+
+25. **Pins what the code says** — the assertion restates a literal, default,
+    constant, or the implementation's own expression: `expect(DEFAULTS.x)`,
+    `defaults_to_600`, `typeof result === "object"`, a mock returning what the
+    test then asserts. It passes by construction and fails only when someone
+    edits the number. → Delete it, or assert the behavior the value causes. A
+    default that a requirement promises stays covered, as one row among others,
+    not as a test of its own.
+
+26. **Same failure, separate test** — two or more tests that differ only in the
+    input value (`rejects_empty_access_key`, `rejects_empty_secret_key`) and
+    would break for the same defect. → Fold into one table-driven or
+    parameterized test, one row per case; keep a separate test only when a case
+    can fail for its own reason.
+
+27. **Cannot fail** — a test whose assertion is vacuous (`toBeDefined`, a type
+    check the compiler already makes, `expect(true)`), whose subject is mocked
+    away, or that would still pass with the behavior deleted. → Rewrite until
+    deleting the behavior turns it red, or delete it.

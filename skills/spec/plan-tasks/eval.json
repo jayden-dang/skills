@@ -102,5 +102,18 @@
       "the body carries no requirement IDs, no Requirements covered line, no Plan: line, and no docs/specs path",
       "the body's first line is still the drafted-by-AI marker"
     ]
+  },
+  {
+    "eval_name": "same-shape-ids-share-one-table-test",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § v1.7.0 — RED: one test per ID",
+    "prompt": "requirements CFG-1.1..1.10 are all at the single seam validate(): four required-field rejections, two timeout-bound rejections, three defaults, one pass-through. Write Task 1's Steps.",
+    "assertions": [
+      "rejections of the same shape share one table-driven test with a row per case",
+      "the defaults share one table-driven test with a row per default",
+      "the planned test count is well below ten",
+      "the footer still cites every one of the ten IDs"
+    ],
+    "eval_id": 10
   }
 ]

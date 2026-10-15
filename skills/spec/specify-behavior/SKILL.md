@@ -1,6 +1,6 @@
 ---
 name: specify-behavior
-version: 1.4.1
+version: 1.5.0
 description: Use when discovery is complete and a tier-1 or tier-2 change needs its requirements
   written — the user stories and EARS acceptance criteria in requirements.md that every later
   task, test, and commit cites by ID. After frame-change, before any design or code.
@@ -69,7 +69,9 @@ EARS forms:
 - `THE SYSTEM SHALL <behavior>` — always-true invariants
 
 One observable behavior per criterion. If a sentence needs "and", it is
-usually two criteria. There is **no criteria-count cap** — size is visible later
+usually two criteria. One rule applied to several inputs (a field list, a set of defaults) is
+one criterion naming them all, not one criterion per input — per-input IDs
+become per-input tests downstream. There is **no criteria-count cap** — size is visible later
 from task file paths at plan/execute preflight, not from counting EARS lines.
 **Done when:** every story has ≥1 criterion, every criterion has exactly one
 WHEN/WHILE/IF/WHERE/ubiquitous form, and each `**Story:**` names one demoable act.

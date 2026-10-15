@@ -96,3 +96,9 @@ cleared for this file.
 The shared `roadmap-findings.md` now lists `S8` (the roadmap's `After:` item-order
 rule, added in plan-milestones 1.2.0) among the structural rules `R11` reports. No
 behavior of this skill changes beyond reading the longer rule list.
+
+## v1.5.0 — one rule, many inputs, one criterion (2026-10-15)
+
+Companion to plan-tasks 1.7.0: per-input criteria become per-input IDs, which become
+per-input tests. Shape check only (see plan-tasks TESTS.md RED: 10 criteria → 10 tests).
+Contract eval asserts the SKILL.md sentence.

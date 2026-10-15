@@ -1,6 +1,6 @@
 ---
 name: inspect-change
-version: 1.9.1
+version: 1.10.0
 description: Use when a branch, PR, diff, or set of changes needs review before merging —
   produces a two-axis verdict (repo-standards conformance plus
   spec/requirements conformance, reported separately) — when build-in-waves
@@ -126,14 +126,15 @@ Send ONE message containing both dispatches so they run concurrently and neither
 
 **Standards subagent** gets: the diff command and commit list; the standards-source paths; the path to `standards-baseline.md`, which it MUST read first.
 
-Its report is a fixed shape — four parts, in order, each part complete before the next:
+Its report is a fixed shape — five parts, in order, each part complete before the next:
 
 - **(a) Documented standards** — every place the diff breaks a repo-documented rule, citing the document and rule. Include CONTEXT.md vocabulary drift (a diff that renames or re-terms a glossary concept is a finding).
 - **(b) The twelve smells** — one verdict line per smell, numbered 1–12, **including the ones that did not hit**. Write the smell's name then `HIT` (naming it and quoting the hunk) or `no hit`. A part-(b) section with fewer than twelve verdict lines is incomplete and gets re-run.
 - **(c) Security** — items 13–18, only for hunks crossing a trust boundary (untrusted input, secret handling, a privileged action). No boundary crossed → say so once and move on; do not manufacture findings.
 - **(d) Production readiness** — items 19–24, only when the diff changes runtime behavior, storage, a contract, or configuration. Name the item and what an operator would see when it bites. Item 24 MUST be answered from a search of the repo **beyond the diff** — the readers it asks about live in files the diff does not touch, so a diff-only reading always returns a false clean.
+- **(e) Tests** — items 25–27, only when the diff adds or changes test files. One verdict line per added or changed test file, or per test when a file holds few: name the test and item number, quote the assertion. A test that restates a literal, repeats another test's failure, or could not fail is a finding; never report "covered" on the strength of a test that is one of these. No test files in the diff → say so once.
 
-Parts (c) and (d) are each scoped by their own predicate; a part that does not apply is reported as not applying, never silently dropped. Adding a later part never licenses shortening an earlier one — (b) is walked in full whether or not (c) and (d) fire. Documented breaches may be hard findings; baseline smells, security and production-readiness items are always judgment calls; the repo's documents override the baseline; skip anything tooling enforces.
+Parts (c), (d) and (e) are each scoped by their own predicate; a part that does not apply is reported as not applying, never silently dropped. Adding a later part never licenses shortening an earlier one — (b) is walked in full whether or not (c), (d) and (e) fire. Documented breaches may be hard findings; baseline smells, security and production-readiness items are always judgment calls; the repo's documents override the baseline; skip anything tooling enforces.
 
 **Spec subagent** gets: the diff command and commit list; the requirements.md path; the step-3e admitted set and not-in-range list; the brief — walk **admitted** IDs and report (a) IDs that are missing or only partially implemented, (b) behavior in the diff no requirement asked for (scope creep), (c) IDs that look implemented but wrong; quote the requirement ID on every finding; list not-in-range IDs once (they stay missing-if-promised, not a per-ID essay); also check that each covered admitted ID has **behavior** covered by tests or acceptance evidence (domain-language tests — do **not** require ID tags in test source). When step 3a found overlapping features, the Spec subagent ALSO receives those neighbor cards (owned paths + Out-of-Scope) as context, and its brief directs it to flag — as a **reuse-miss** finding citing the neighbor's feature code — any place the diff reimplements behavior a shares-surface neighbor already owns.
 

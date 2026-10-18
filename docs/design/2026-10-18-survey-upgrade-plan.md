@@ -603,10 +603,10 @@ wrote small tasks in the controller 2/4 → 0/4). **T8 shipped** (`reroute-plan`
 4. **Roster** — `haiku` + `sonnet`, or add `opus` for the orchestrator (T19)?
 5. **T23 tracker echo** — also comment the PR link on the foreign feature's
    existing issue (a ledger write, allowed under `propose`), or PR only?
+6. **Spike → build** — may a spike start the build when the operator invites a head start
+   (today: yes, test-first), or does it always stop at the answer and hand over to
+   `plan-tasks`? RED recorded in `2026-10-18-spike-pipeline-no-op.md`.
 7. **Product walk on a library-only branch.** `execute-common`'s walk predicate fires when
    `validate-feature` reports neither-API-nor-UI, and pure helpers can't be walked, so
    the run waits for the operator (T9 r2). Keep, or make that clause `not-required` when
    the branch adds no reachable surface?
-6. **Spike → build** — may a spike start the build when the operator invites a head start
-   (today: yes, test-first), or does it always stop at the answer and hand over to
-   `plan-tasks`? RED recorded in `2026-10-18-spike-pipeline-no-op.md`.

@@ -135,7 +135,9 @@
     "kind": "trigger",
     "derived_from": "TESTS.md § GREEN — description trigger coverage",
     "prompt": "execute the approved tasks.md continuously with subagents",
-    "assertions": ["build-in-waves is selected"]
+    "assertions": [
+      "build-in-waves is selected"
+    ]
   },
   {
     "eval_id": 13,
@@ -143,7 +145,9 @@
     "kind": "trigger",
     "derived_from": "TESTS.md § GREEN — description trigger coverage",
     "prompt": "hold after each story for my review",
-    "assertions": ["build-by-story is selected rather than build-in-waves"]
+    "assertions": [
+      "build-by-story is selected rather than build-in-waves"
+    ]
   },
   {
     "eval_id": 14,
@@ -151,7 +155,9 @@
     "kind": "trigger",
     "derived_from": "TESTS.md § GREEN — description trigger coverage",
     "prompt": "implement the plan myself inline",
-    "assertions": ["build-inline is selected rather than build-in-waves"]
+    "assertions": [
+      "build-inline is selected rather than build-in-waves"
+    ]
   },
   {
     "eval_id": 15,
@@ -173,6 +179,18 @@
     "assertions": [
       "Setup session preflight is execute-common Session preflight, including catalog occupancy",
       "skipping occupancy is named as a red flag alongside tracker-sync and workspace"
+    ]
+  },
+  {
+    "eval_id": 17,
+    "eval_name": "small-tasks-still-dispatch",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § v2.3.0 — size never changes the route (2026-10-18)",
+    "prompt": "Build FMT from its approved tasks.md with build-in-waves on a branch off dev; stop before the close sequence. (Four tiny independent tasks whose code the plan already gives.)",
+    "assertions": [
+      "every task gets its own implementer dispatch before its review",
+      "every task gets its own reviewer dispatch",
+      "the controller writes no task code itself"
     ]
   }
 ]

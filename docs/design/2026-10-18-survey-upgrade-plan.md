@@ -507,7 +507,8 @@ agreement holds. T4 (batched decisions) also closed as a tested no-op, 6/6 —
 an explicit request to batch beat `build-inline`'s stop-and-ask. Order changed
 to capability gaps first: **T16 shipped** (`sweep-backlog`), **T10 shipped** (`land-branch` 4.3.0 ship
 guard); T17 closed as a tested no-op. Headless harness built (`run-headless.sh`); T6 closed as
-a tested no-op on jdk. **T7 shipped** (`show-run-status`). Next: T8 (operator amend), T19.
+a tested no-op on jdk. **T7 shipped** (`show-run-status`). T6 side finding fixed: `build-in-waves` 2.3.0 (haiku
+wrote small tasks in the controller 2/4 → 0/4). Next: T8 (operator amend), T19.
 
 ## 12. Open decisions
 

@@ -62,3 +62,7 @@ and built the tasks inline. One said so: "I did not follow the build-in-waves pr
 though. I did the work inline, so the review and ledger steps it prescribes were
 skipped." That is a `build-in-waves` compliance failure on the weakest model, outside
 the survey's scope; worth its own RED/GREEN pass.
+
+Follow-up (same day): the 4-of-6 figure was confounded by a visible 1 USD budget. Re-run
+with 5 USD: 2 of 4 haiku runs still wrote the tasks in the controller. Fixed in
+`build-in-waves` 2.3.0 — evidence in its `TESTS.md` § v2.3.0.

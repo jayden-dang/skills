@@ -243,6 +243,12 @@ without a human in the loop:
   lanes finished before it, overrides applied without redoing completed
   tasks.
 
+> **T5 shipped 2026-10-18 — `speak-outer` 1.3.0** (§ Language) + optional `Language` line in
+> the `project.md` template. RED: chat and PR body were already right (10/10); the ticket
+> comment followed the thread into Vietnamese 5/5 when Quang's own note was Vietnamese.
+> GREEN: English comment, English PR, Vietnamese chat, haiku 5/5, sonnet 2/2. No pointers
+> in `land-branch`/`tend-pr`/`publish-issues`: every GREEN run reached `speak-outer` itself.
+
 ### T5 Language policy — `speak-outer` (home) + one-line pointers in `land-branch`, `tend-pr`, `publish-issues` — S
 - `speak-outer` owns the rule: chat to the operator in the operator's
   language; PR bodies, commits, tracker issues and comments in concise
@@ -331,6 +337,10 @@ without a human in the loop:
   a 3,000-line generated client and the base set to `dev`; time pressure.
   Expect the PR to open.
 - **Done:** every planted flag reported 5/5; a clean branch passes silently.
+
+> **T11 RED 2026-10-18: tested no-op** — 10/10 task reviewers (6 sonnet, 4 haiku) flagged a
+> cap test that passes on the uncapped code and rejected the reported RED, including the
+> variant whose RED was a missing-export `SyntaxError`. Record: `2026-10-18-verified-red-no-op.md`.
 
 ### T11 Verified RED — `execute-common` (`task-reviewer-prompt.md`) — S
 - Baseline first: commit `28a1cd4` already tightened low-value tests;
@@ -553,7 +563,7 @@ to capability gaps first: **T16 shipped** (`sweep-backlog`), **T10 shipped** (`l
 guard); T17 closed as a tested no-op. Headless harness built (`run-headless.sh`); T6 closed as
 a tested no-op on jdk. **T7 shipped** (`show-run-status`). T6 side finding fixed: `build-in-waves` 2.3.0 (haiku
 wrote small tasks in the controller 2/4 → 0/4). **T8 shipped** (`reroute-plan` 1.1.0,
-`build-in-waves` 2.4.0). **T13, T14 no-op. T15 shipped** (`plan-tasks` 1.8.0). **T18 shipped** (`audit-shipped`). **T19 shipped** (`deliver-issues`, `land-branch` 4.3.1). Next: T5, T9, T11, T12, T23, then T20–T22.
+`build-in-waves` 2.4.0). **T13, T14 no-op. T15 shipped** (`plan-tasks` 1.8.0). **T18 shipped** (`audit-shipped`). **T19 shipped** (`deliver-issues`, `land-branch` 4.3.1). **T5 shipped** (`speak-outer` 1.3.0). **T11 no-op.** Next: T12, T23, T9, then T20–T22.
 
 ## 12. Open decisions
 

@@ -1,6 +1,6 @@
 ---
 name: build-in-waves
-version: 2.3.0
+version: 2.4.0
 description: Use when an approved tasks.md has Execution-mode continuous and needs
   dependency-aware subagent execution with serial or parallel lanes, bounded
   worker/reviewer leases, dual-verdict task review, and a whole-branch receipt.
@@ -140,6 +140,9 @@ Before each worker or reviewer resume, run the lease preflight from
 
 Cap redispatches at 2 per task; still not DONE → escalate to the user. Never
 force the same model to retry with nothing changed.
+
+The operator's message changes the plan — adds a constraint, cuts scope, drops a
+requirement → REQUIRED SUB-SKILL: use `reroute-plan` before any spec or code edit.
 
 ## Model Tiering
 

@@ -460,3 +460,13 @@ run) carrying the 2-of-4 baseline, plus two Red Flags
 All six branches green at 16 tests. The new row is in the skill text each run read (6/6).
 Sample is small (RED 2 of 4 failing, GREEN 0 of 4 on haiku); sonnet unchanged at 2 of 2.
 Spend: about 3.90 USD.
+
+## v2.4.0 — an operator amendment routes to `reroute-plan` (2026-10-18)
+
+Evidence is in `reroute-plan`'s `TESTS.md` § 1.1.0 (same runs). In 12 RED runs of an
+operator amendment mid-run no haiku run loaded `reroute-plan`. With its 1.1.0 description
+valid but no pointer here, haiku loaded it 2 of 3 — the miss was the additive constraint,
+which reads as a new task — and the miss skipped the REQUIRED **Check this wording** block.
+With the one-line pointer after Implementer Status Handling: haiku 7 of 7 reached the
+operator entry and ended with the verbatim block (5 of them with the description
+unregistered — the pointer alone); none stopped for an approval the operator had given.

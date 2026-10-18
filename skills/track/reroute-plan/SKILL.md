@@ -1,10 +1,11 @@
 ---
 name: reroute-plan
-version: 1.0.0
+version: 1.1.0
 description: Use when a mid-execution discovery invalidates an already-approved plan —
   "the plan is wrong," a re-plan is needed, scope changed mid-flight, or a
   divergence surfaces during build-in-waves or test-first that the current task can't
-  absorb. Produces a blast-radius classification of the lowest invalidated
+  absorb — or when the operator amends a running build — adds a constraint, cuts
+  scope, drops a requirement. Produces a blast-radius classification of the lowest invalidated
   artifact plus a re-entry decision or change proposal, never a silent
   rewrite. Not for a post-ship in-scope tweak (amend-feature), broken code against a
   still-valid spec (root-cause), or the mechanical reconciliation that runs after
@@ -17,7 +18,30 @@ The mid-flight rewind decision for when a discovery falsifies an approved plan. 
 
 Three phases, in order: diagnose, classify, route. Two hard stops, never an auto-rewrite.
 
+**Who found the change decides the entry.** You or a worker found it → Phase 1. It is
+in the operator's own message — they say what is added, changed, or cut → Operator
+amendment, below.
+
+## Operator amendment — their message is both approvals
+
+The operator who says "take the status out" has already ruled go and chosen the change;
+Phase 1 and Phase 2 do not stop again. Twelve baseline runs got such a message while the
+operator was in meetings until 4: one stopped at Phase 1 and did nothing all afternoon;
+three read this skill and skipped its stops on their own authority.
+
+1. Classify the lowest invalidated artifact as in Phase 2, and append the ledger line
+   (Idempotency, below). The level says which artifacts change; nobody is asked.
+2. Edit those artifacts and everything below them, the way their owning skill would,
+   without that skill's file-approval stop.
+3. Carry the build on as the operator said.
+4. The report ends with a REQUIRED **Check this wording** block: every requirement,
+   design, and task line you wrote or struck, verbatim, with its file. This block is
+   where the approval you skipped happens. Across twelve baseline amendments, eleven
+   rewrote an `Approved` spec and not one quoted the words it wrote.
+
 ## Phase 1 — Diagnose (hard stop for the user)
+
+A discovery — not an operator amendment.
 
 Author a structured diagnosis notice with five labelled parts:
 

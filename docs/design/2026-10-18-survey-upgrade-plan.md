@@ -287,6 +287,15 @@ without a human in the loop:
 - **Done:** answers "where are we" for a run mid-wave, a parked run, and a
   run waiting on CI, with every field traceable to its source.
 
+> **T8 shipped 2026-10-18 — `reroute-plan` 1.1.0 + `build-in-waves` 2.4.0.** The expected
+> failure (full replan, ignored constraint) never happened: 12/12 RED runs kept every
+> untouched task's commits and ledger lines, by new commits. The real one: `reroute-plan`'s
+> stops fired on a change the operator had ordered — 1 run stopped all afternoon, 3 broke
+> the stops on their own — and 11/12 rewrote an `Approved` spec without quoting a word of
+> it. Fix: an Operator amendment entry (their message is both approvals) with a REQUIRED
+> **Check this wording** block; a pointer in `build-in-waves` so haiku reaches it (7/7).
+> No `amendments.md` and no `execute-common` change — no baseline asked for either.
+
 ### T8 Operator amendment — `reroute-plan` + `execute-common` — M
 - Add an operator entry to `reroute-plan`: add an issue, add or change a
   constraint, cut scope. It reuses the blast-radius classification to find
@@ -508,7 +517,8 @@ an explicit request to batch beat `build-inline`'s stop-and-ask. Order changed
 to capability gaps first: **T16 shipped** (`sweep-backlog`), **T10 shipped** (`land-branch` 4.3.0 ship
 guard); T17 closed as a tested no-op. Headless harness built (`run-headless.sh`); T6 closed as
 a tested no-op on jdk. **T7 shipped** (`show-run-status`). T6 side finding fixed: `build-in-waves` 2.3.0 (haiku
-wrote small tasks in the controller 2/4 → 0/4). Next: T8 (operator amend), T19.
+wrote small tasks in the controller 2/4 → 0/4). **T8 shipped** (`reroute-plan` 1.1.0,
+`build-in-waves` 2.4.0). Next: T13 spike, T14 incident, T15 visualize, T18 audit, T19.
 
 ## 12. Open decisions
 

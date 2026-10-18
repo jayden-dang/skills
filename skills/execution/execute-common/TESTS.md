@@ -501,3 +501,58 @@ steps 6–8 became 5–7. Evals `sample-name-when-risk-path` and
 `sample-skip-written-when-false` were removed with the step. The sample
 predicate's own evidence above stays as history. No baseline re-run: this
 deletes a step rather than changing one.
+
+## v2.11.0 — cost in the close receipt (2026-10-18)
+
+Roster: haiku and sonnet, headless (`skill-fixtures/run-headless.sh`, `claude -p
+--setting-sources project,local`, `FIXTURE_GH=1`). Fixture `harbor-ledger` with a local
+bare origin. The full close chain is installed: `build-in-waves`, `execute-common`,
+`test-first`, `isolate-workspace`, `inspect-change`, `prove-claim`, `audit-trace`,
+`hold-stage`, `load-subgraph`, `polish-diff`, `validate-feature`, `write-dogfood`,
+`run-dogfood`, `land-branch`, `record-debt`, `speak-outer`, `inspect-ui`,
+`inspect-invariants`. Prompt: "/build-in-waves — The <late fee | formatting helpers>
+plan is approved. Build it to the end and close the run. I'm at the Port Authority until
+5, so don't wait on me." It never mentions cost. Scored by reading the receipt against
+the runtime's own per-dispatch `usage` events in the transcript.
+
+### RED — 2.10.0, haiku
+
+| Run | Plan | Dispatches | Usage the runtime reported | Receipt | Cost named anywhere |
+|---|---|---|---|---|---|
+| r1 | formatting | 10 | 10 sync `<usage>` blocks, 186,596 tokens | not written (fixture lacked the close-chain skills) | no |
+| r2 | formatting | 10 | 10 completion notices | not written (stopped at the product walk, below) | no |
+| r3 | late fee | 6 | 6 completion notices | written, PR to `dev` | no |
+
+Every dispatch's tokens reached the controller. The schema has no slot for them, and no
+receipt, ledger line or final message named one. Failure class: an element omitted from
+something already produced → a REQUIRED slot (`Cost:`) plus a producer step that says
+where the numbers come from and that a missing number is written `unavailable`, never
+estimated.
+
+### GREEN — 2.11.0, late-fee plan
+
+| | g1 haiku | g2 sonnet |
+|---|---|---|
+| `Cost:` slot | yes | yes |
+| dispatches counted / runtime | 8 / 8 | 17 / 17 |
+| tokens in receipt / runtime | 187,080 / 188,502 | 370,615 / 370,615 |
+| controller and USD | `unavailable` | `unavailable` |
+| run cost | 0.80 USD | 2.31 USD |
+
+g1's whole-branch and re-review entries match the runtime to the token. Its implementer,
+reviewer and fix entries each run 400–550 tokens under the runtime event's
+`total_tokens`, consistent with the controller reading a different counter in its
+notice. No figure was invented, and no role was left out. Plan T9's Done line (the
+receipt carries the slot on every close) holds on 2 of 2 closes.
+
+### Found on the way, not changed
+
+r2, the formatting plan, stopped at close step 5 and never closed. The walk predicate's
+clause "`validate-feature` reports neither-API-nor-UI" fired on four pure helpers that
+nothing calls yet. The run then found the walk could not drive them: "a walk cannot drive
+pure functions. Needs Lan's decision (wire helpers into the report, or waive walk)." A
+library-only branch therefore cannot close while the operator is away. That is a policy
+question for the owner, recorded in the survey plan's open decisions, and no text was
+changed for it.
+
+Spend: about 4.7 USD.

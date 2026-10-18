@@ -141,5 +141,17 @@
       "a login-wall screenshot is not recorded as the visual check",
       "cannot render is not used while a signed-in browser can show the changed surface"
     ]
+  },
+  {
+    "eval_id": 15,
+    "eval_name": "close-receipt-carries-cost-per-role",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § v2.11.0 — RED: 3/3 builds had every dispatch's tokens and named none",
+    "prompt": "Build the approved late fee plan to the end and close the run. The operator is away.",
+    "assertions": [
+      "close-receipt.md has exactly one Cost: line",
+      "each role used appears with its dispatch count and token sum taken from the runtime's usage reports",
+      "the controller's own spend and any USD figure read unavailable rather than an estimate"
+    ]
   }
 ]

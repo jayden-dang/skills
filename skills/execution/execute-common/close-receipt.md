@@ -6,7 +6,7 @@ evidence. This is the single home of the receipt schema and validity recipe.
 Write `.skills/<CODE>/close-receipt.md` only after the final mutation:
 
 ```text
-Receipt-Version: 1
+Receipt-Version: 2
 Base-Ref: <ref>
 Base-SHA: <full-sha>
 Head-Ref: <ref>
@@ -17,6 +17,7 @@ Verification: green — <full commands and result summary>
 Trace: clean — <audit result summary>
 Acceptance: green|not-applicable — <observed surface or reason>
 Product-Walk: green|not-required — <run-file verdicts or recorded ticks, or predicate reason>
+Cost: <role> <n>× <tokens> tokens; … ; controller unavailable — <source>
 Created: <UTC timestamp>
 ```
 
@@ -28,7 +29,17 @@ Created: <UTC timestamp>
    mutation cannot fill a slot; rerun only the stale producer. `Verification`
    is the project's whole suite plus lint and format — task gates and wave
    gates never fill it, however green.
-4. Write every slot exactly once. Do not write a partial receipt.
+4. Fill `Cost` from the usage the runtime returned with each dispatch: the `<usage>`
+   block at the end of a subagent result, or its completion notice (`subagent_tokens`,
+   `total_tokens`). One entry per role, in the order the run used them: implementer,
+   task reviewer, fix, whole-branch review, polish, acceptance, and any other. Each
+   entry gives the dispatch count and summed tokens. A dispatch whose usage is no
+   longer in hand, from an earlier session or compacted away, makes its role read
+   `<n>× unavailable`. The controller's own tokens and any USD figure are
+   `unavailable` unless the runtime reports them: write that word, never an estimate.
+   Three baseline builds dispatched 6 to 10 subagents each, and the runtime reported
+   every dispatch's tokens. No receipt, ledger or final message named one.
+5. Write every slot exactly once. Do not write a partial receipt.
 
 ## Consumer validation
 

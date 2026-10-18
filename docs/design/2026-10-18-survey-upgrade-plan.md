@@ -313,6 +313,12 @@ without a human in the loop:
 - **Done:** only the touched task reruns; others keep their commits and
   review receipts.
 
+> **T9 shipped 2026-10-18 — `execute-common` 2.11.0** (`close-receipt.md`: `Cost:` slot,
+> Receipt-Version 2). RED: 3/3 builds had every dispatch's tokens in hand and named none.
+> GREEN: haiku 8/8 dispatches (sum within 1% of the runtime), sonnet 17/17 exact;
+> controller and USD `unavailable`. Side finding: a library-only branch stalls at the
+> product walk (open decision 7).
+
 ### T9 Token and cost telemetry in the close receipt — `execute-common` (`close-receipt.md`) — S
 - REQUIRED slot: tokens and cost per role/tier from `token_telemetry`;
   `unavailable` written explicitly when the runtime gives none.
@@ -585,7 +591,7 @@ to capability gaps first: **T16 shipped** (`sweep-backlog`), **T10 shipped** (`l
 guard); T17 closed as a tested no-op. Headless harness built (`run-headless.sh`); T6 closed as
 a tested no-op on jdk. **T7 shipped** (`show-run-status`). T6 side finding fixed: `build-in-waves` 2.3.0 (haiku
 wrote small tasks in the controller 2/4 → 0/4). **T8 shipped** (`reroute-plan` 1.1.0,
-`build-in-waves` 2.4.0). **T13, T14 no-op. T15 shipped** (`plan-tasks` 1.8.0). **T18 shipped** (`audit-shipped`). **T19 shipped** (`deliver-issues`, `land-branch` 4.3.1). **T5 shipped** (`speak-outer` 1.3.0). **T11 no-op.** **T12 no-op. T23 shipped** (`land-branch` 4.4.0). **T21, T22 done.** Next: T9 and T20 (both need headless budget).
+`build-in-waves` 2.4.0). **T13, T14 no-op. T15 shipped** (`plan-tasks` 1.8.0). **T18 shipped** (`audit-shipped`). **T19 shipped** (`deliver-issues`, `land-branch` 4.3.1). **T5 shipped** (`speak-outer` 1.3.0). **T11 no-op.** **T12 no-op. T23 shipped** (`land-branch` 4.4.0). **T21, T22 done.** **T9 shipped. T20 run.** All tasks closed except T3c (deferred).
 
 ## 12. Open decisions
 
@@ -597,6 +603,10 @@ wrote small tasks in the controller 2/4 → 0/4). **T8 shipped** (`reroute-plan`
 4. **Roster** — `haiku` + `sonnet`, or add `opus` for the orchestrator (T19)?
 5. **T23 tracker echo** — also comment the PR link on the foreign feature's
    existing issue (a ledger write, allowed under `propose`), or PR only?
+7. **Product walk on a library-only branch.** `execute-common`'s walk predicate fires when
+   `validate-feature` reports neither-API-nor-UI, and pure helpers can't be walked, so
+   the run waits for the operator (T9 r2). Keep, or make that clause `not-required` when
+   the branch adds no reachable surface?
 6. **Spike → build** — may a spike start the build when the operator invites a head start
    (today: yes, test-first), or does it always stop at the answer and hand over to
    `plan-tasks`? RED recorded in `2026-10-18-spike-pipeline-no-op.md`.

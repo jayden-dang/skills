@@ -1,6 +1,6 @@
 ---
 name: run-spike
-version: 1.1.1
+version: 2.0.0
 description: Use when a design question needs a runnable answer — the user wants to
   run-spike, spike, or mock up a state model or piece of logic to feel out
   whether it holds up, or to see what a screen could look like, before
@@ -27,8 +27,15 @@ Picking the wrong branch wastes the whole run-spike. If it's genuinely ambiguous
 3. **No persistence.** State lives in memory. Persistence is what the run-spike is *testing an idea against*, not something it depends on. If the question is explicitly about storage, use a scratch store with an unmistakable "run-spike — safe to wipe" name.
 4. **Skip the polish.** Write the logic inline, hardcoded, in the fewest lines that answer the question — no tests, and only enough error handling to keep it runnable. Speed of learning is the whole point.
 5. **Surface internal state.** After every action, show the full relevant state. Hidden state hides the answer.
-6. **Delete or absorb when done.** Once the question is answered, remove the run-spike or fold the validated piece into real code — REQUIRED SUB-SKILL: use `test-first` when reimplementing it as production code; the run-spike's logic is a reference, not tested code.
+6. **Stop at the answer.** Once the question is answered, delete the run-spike. A spike
+   writes no production code, even when the operator invites a head start: the next
+   step is `plan-tasks`, after the review settles the answer's open questions, and the
+   answer names it. Four of four runs given that invitation wrote `src/latefee.ts`. One
+   also rewired `src/invoice.ts`, which Minh owns, and the public API, around a "marina-local
+   today" its own answer had left open for Thursday's review. Another amended decision 2
+   of the `Approved` design without asking. A head start is a plan that is ready to
+   approve, not code that has to be unpicked.
 
 ## The answer is the only deliverable
 
-Nothing about the run-spike's code matters afterward — only what it taught you. Capture the question and its answer somewhere durable: an ADR (if it clears the ADR gate in `define-domain`), a requirement in the feature's requirements.md, or the commit message that deletes/absorbs the run-spike. If the user isn't around to give the verdict, leave a clearly-marked placeholder for it next to the run-spike so it gets filled in before deletion.
+Nothing about the run-spike's code matters afterward — only what it taught you. Capture the question and its answer somewhere durable: an ADR (if it clears the ADR gate in `define-domain`), a requirement in the feature's requirements.md, or the commit message that deletes the run-spike. If the user isn't around to give the verdict, leave a clearly-marked placeholder for it next to the run-spike so it gets filled in before deletion.

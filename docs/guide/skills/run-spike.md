@@ -8,7 +8,7 @@
 | **Invocation** | model-invocable (the agent calls it on its own) |
 | **Reads** | the host project's stack and task runner (`docs/agents/project.md` when present); the surrounding code the question is about |
 | **Writes** | throwaway code marked `run-spike` in its path or filename; the captured answer into an ADR, requirement, or commit message |
-| **Calls** | [`test-first`](test-first.md) when the validated piece is reimplemented as production code; the ADR gate in [`define-domain`](define-domain.md) |
+| **Calls** | the ADR gate in [`define-domain`](define-domain.md); names [`plan-tasks`](plan-tasks.md) as the next step |
 | **Called by** | [`frame-change`](frame-change.md) (the "does this feel right?" evidence detour) |
 
 ## When it fires
@@ -37,7 +37,7 @@ The two branches differ in what they build, but they share six rules that keep e
 3. **No persistence.** State lives in memory. Persistence is what the run-spike is *testing an idea against*, not something it depends on. If storage itself is the question, use a scratch store with an unmistakable "run-spike — safe to wipe" name.
 4. **Skip the polish.** No tests, no abstractions, no error handling beyond staying runnable. Speed of learning is the whole point.
 5. **Surface internal state.** After every action or variant switch, show the full relevant state — hidden state hides the answer.
-6. **Delete or absorb when done.** Once the question is answered, remove the run-spike or fold the validated piece into real code. Reimplementing it as production code is a REQUIRED SUB-SKILL call to [`test-first`](test-first.md) — the run-spike's logic is a reference, not tested code. Never leave it to rot.
+6. **Stop at the answer.** Once the question is answered, delete the run-spike. A spike writes no production code, even when the operator invites a head start. The next step is [`plan-tasks`](plan-tasks.md), after the review settles the answer's open questions. In the baseline, all four runs that were invited to start building did so, and two went beyond what the answer supported.
 
 ## The logic branch
 
@@ -61,7 +61,7 @@ A single route reads a `?variant=` query param and renders the matching componen
 
 Nothing about the run-spike's code matters afterward — only what it taught you. That is the one line to remember from the whole skill.
 
-Capture the question and its answer somewhere durable: an ADR (if it clears the ADR gate in [`define-domain`](define-domain.md)), a requirement in the feature's requirements.md, or the commit message that deletes or absorbs the run-spike. If the user is not around to give the verdict, leave a clearly-marked placeholder for it next to the run-spike so it gets filled in before deletion — an un-captured answer is a run-spike that ran for nothing.
+Capture the question and its answer somewhere durable: an ADR (if it clears the ADR gate in [`define-domain`](define-domain.md)), a requirement in the feature's requirements.md, or the commit message that deletes the run-spike. If the user is not around to give the verdict, leave a clearly-marked placeholder for it next to the run-spike so it gets filled in before deletion — an un-captured answer is a run-spike that ran for nothing.
 
 ## Worked example
 
@@ -77,7 +77,7 @@ The run-spike is then deleted, and when the machine is built for real it goes th
 
 ## Why it is written the way it is
 
-The failure the skill guards against is a run-spike that quietly becomes production — untested code, written for speed of learning, drifting into the real system because it "already works." The throwaway-from-day-one marking, the no-tests rule, and the requirement that any real reimplementation pass through [`test-first`](test-first.md) all exist to keep that boundary hard.
+The failure the skill guards against is a run-spike that quietly becomes production — untested code, written for speed of learning, drifting into the real system because it "already works." The throwaway-from-day-one marking, the no-tests rule, and the stop at the answer all exist to keep that boundary hard. Real code starts from a plan.
 
 Splitting into two branches keeps each honest. A logic question answered with a pretty screen, or a look-and-feel question answered with a state machine, both miss — so the skill forces the question to be named before any code, and lets that choice pick the shape.
 
@@ -87,5 +87,5 @@ Making "the answer is the only deliverable" explicit stops the effort from being
 
 - [`frame-change`](frame-change.md) — the caller that detours here for a runnable answer
 - [`research`](research.md) — the other evidence detour, for external-fact questions
-- [`test-first`](test-first.md) — the gate any validated piece passes through to become production code
+- [`plan-tasks`](plan-tasks.md) — where the build starts once the answer is reviewed
 - [`define-domain`](define-domain.md) — owns the ADR gate the answer may be captured in

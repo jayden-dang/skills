@@ -400,6 +400,11 @@ Missing: **feature → owner**, and any PR step that uses it.
   planted cross-module side effect is noticed with text only.
 - **Done:** the planted side effect is visible on the map.
 
+> **T16 shipped 2026-10-18 — `sweep-backlog` 1.0.0** (`skills/track/sweep-backlog/`).
+> RED 6/6 missed the fix already on `dev`, 5/6 edited the tracker before asking
+> (four status vocabularies), 1/6 asked one question. GREEN + REFACTOR cleared all
+> three on both models (6/6). Evidence in the skill's `TESTS.md`.
+
 ### T16 Backlog sweep — new user-invoked skill `sweep-backlog` — M
 - Distinct trigger from `triage` (incoming queue) — split justified.
 - **Deterministic passes:** tracker list assigned to me; per issue
@@ -481,7 +486,9 @@ three times, batched decisions twice).
 Update 2026-10-18: T0.1 done; T1, T2, T3a, T3b closed as tested no-ops (24/24
 compliant runs); T3c deferred. Governance needs no jdk text — a prose working
 agreement holds. T4 (batched decisions) also closed as a tested no-op, 6/6 —
-an explicit request to batch beat `build-inline`'s stop-and-ask. Next: **T5**.
+an explicit request to batch beat `build-inline`'s stop-and-ask. Order changed
+to capability gaps first: **T16 shipped** (`sweep-backlog`); next **T10** (ship guard),
+then **T6** (host concurrency), T17, T7.
 
 ## 12. Open decisions
 

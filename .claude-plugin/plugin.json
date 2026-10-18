@@ -68,6 +68,7 @@
     "./skills/track/realign-spec",
     "./skills/track/record-debt",
     "./skills/track/triage",
+    "./skills/track/sweep-backlog",
     "./skills/setup/bootstrap-repo",
     "./skills/setup/configure-repo",
     "./skills/project/define-project",

@@ -423,6 +423,10 @@ Missing: **feature → owner**, and any PR step that uses it.
 - **Done:** on the fixture, every planted case is classified correctly and
   the human gets exactly one question.
 
+> **T17 RED 2026-10-18: tested no-op for the git part, 6/6** — squash merges recognised,
+> WIP/dirty/spike kept, remotes untouched. Containers excluded on purpose (the host's real
+> Docker daemon is reachable). Record: `2026-10-18-housekeeping-no-op.md`.
+
 ### T17 Workspace housekeeping — new user-invoked skill `tidy-workspace` — S
 - **Deterministic passes:** `git worktree list`; branches whose PR is merged
   (`gh pr list --state merged`) or merged into base; containers and volumes
@@ -493,7 +497,7 @@ compliant runs); T3c deferred. Governance needs no jdk text — a prose working
 agreement holds. T4 (batched decisions) also closed as a tested no-op, 6/6 —
 an explicit request to batch beat `build-inline`'s stop-and-ask. Order changed
 to capability gaps first: **T16 shipped** (`sweep-backlog`), **T10 shipped** (`land-branch` 4.3.0 ship
-guard); next **T6** (host concurrency), then T17, T7.
+guard); T17 closed as a tested no-op. Next: harness for subagent dispatch, then **T6**, T7.
 
 ## 12. Open decisions
 

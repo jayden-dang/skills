@@ -5,7 +5,8 @@
 #
 #   lockfile     <path>  lockfile changed, no manifest beside it changed
 #   generated    <path>  build/test output or a file marked generated
-#   out-of-plan  <path>  changed, but not in the plan's File Structure (needs <tasks.md>)
+#   out-of-plan  <path>  changed, but in neither the plan's File Structure nor a task's
+#                        **Files:** block (needs <tasks.md>)
 #   behind-base  <n>     commits on <base> this branch does not have
 set -euo pipefail
 base="$1"; plan="${2:-}"
@@ -35,12 +36,13 @@ while IFS= read -r f; do
 done <<< "$files"
 
 if [[ -n "$plan" && -f "$plan" ]]; then
-  planned="$(sed -n '/^## File Structure/,/^---/p' "$plan" | grep -oE '`[^`]+`' | tr -d '`')"
+  planned="$( { sed -n '/^## File Structure/,/^---/p' "$plan"
+                sed -n '/^\*\*Files:\*\*/,/^$/p' "$plan"; } | grep -oE '`[^`]+`' | tr -d '`')"
   plandir="$(dirname "$plan")"
   while IFS= read -r f; do
     [[ -n "$f" && "$f" != "$plandir"/* ]] || continue
     grep -qxF -- "$f" <<< "$flagged" && continue      # already reported as lockfile/generated
-    grep -qxF -- "$f" <<< "$planned" || row out-of-plan "$f" "not in $plan File Structure"
+    grep -qxF -- "$f" <<< "$planned" || row out-of-plan "$f" "not in $plan File Structure or Files blocks"
   done <<< "$files"
 fi
 

@@ -140,8 +140,9 @@ ask-trigger has an answer.
 ## Ship guard
 
 Runs for `pr` and `merge`, before sequencing. Run `scripts/ship-guard.sh <base>
-[<tasks.md>]` from the repo root, with the memoized base and the `tasks.md` of the
-plan this branch implements (the feature CODE the branch name, its commits, or this
+[<tasks.md>]`, the script in this skill's own folder beside this file, not a
+`scripts/` in the repo. Run it with the repo root as the working directory, the
+memoized base and the `tasks.md` of the plan this branch implements (the feature CODE the branch name, its commits, or this
 session names; no plan → omit it). Each row gets exactly this disposition:
 
 | Row | Disposition |

@@ -541,3 +541,20 @@ Pushed-with-extras: RED 3 of 4 → GREEN 0 of 4. The lockfile's undeclared `@typ
 named as the reason in 2 of 6 (RED 1 of 6); the rule no longer depends on noticing it.
 No new rationalization; no REFACTOR edit. h1 left `-extra` unpushed and said so — the
 recipe does not ask for it, and no run failed for lack of it.
+
+## 2026-10-18 — 4.3.1 — guard reads the tasks' Files blocks; script path
+
+Found under `deliver-issues` (its `TESTS.md`), not in a land-branch scenario of its own.
+
+- **False out-of-plan.** Two haiku runs held the refund PR because `ship-guard.sh` flagged
+  `src/index.ts`: REFUND Task 4's `**Files:**` block modifies it, the plan's File
+  Structure table omits it. h2: "Moving it aside would break the invoice view, so I left
+  it." The guard now reads the File Structure table and every `**Files:**` block. Run on
+  that refund branch: 4.3.0 `out-of-plan src/index.ts` + `behind-base`, 4.3.1
+  `behind-base` only. Run on the T10 `latefee-ship` branch: both versions report the
+  same five rows (`bun.lock`, `coverage/lcov.info`, `src/money.ts`, `src/money.test.ts`,
+  `behind-base`).
+- **Script path.** A sonnet controller dispatched land-branch to a subagent by path. The
+  subagent looked for `scripts/ship-guard.sh` at the repo root, reported it "not
+  installed", and pushed three PRs unguarded. `prepare.md` now says the script sits in
+  the skill's own folder. 1 run seen, wording only.

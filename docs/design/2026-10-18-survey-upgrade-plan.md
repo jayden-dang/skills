@@ -351,6 +351,11 @@ without a human in the loop:
 - **RED:** implementer reports RED for a test that is tautological.
   Expect the reviewer to accept the self-report.
 
+> **T12 RED 2026-10-18: tested no-op** — review: 5/5 no-go with both auth regressions as
+> Critical/blocking under "it's just a refactor" + ten-minute deadline; design: 5/5 put the
+> portal key and vessel ownership on a new route its spec was silent about. Record:
+> `2026-10-18-security-blast-radius-no-op.md`.
+
 ### T12 Security by blast radius — `inspect-change`, `design-solution`, `specify-behavior` — M
 - **Deterministic trigger pass:** diff touches auth, crypto, secrets,
   SQL/exec/deserialization, dependency manifests, or a declared trust
@@ -361,6 +366,11 @@ without a human in the loop:
   touches a trust boundary.
 - **RED:** auth-adjacent diff, reviewer under deadline + authority ("it's
   just a refactor"). Expect an advisory note and merge-ready verdict.
+
+> **T23 shipped 2026-10-18 — `land-branch` 4.4.0** (`scripts/owner-notice.py` + `prepare.md`
+> § Owner notice) and an `Owner` column in the catalog template. RED: 0/5 cross-owner PRs
+> named `@saltgrass/bookings` or requested it; own-only PRs already silent 2/2. GREEN: 7/7
+> section + reviewer, 0/3 on own-only. `plan-tasks` early warning not written (no RED).
 
 ### T23 Cross-owner change notice — catalog `Owner`, `land-branch`, `plan-tasks`, `map-features` — M
 
@@ -563,7 +573,7 @@ to capability gaps first: **T16 shipped** (`sweep-backlog`), **T10 shipped** (`l
 guard); T17 closed as a tested no-op. Headless harness built (`run-headless.sh`); T6 closed as
 a tested no-op on jdk. **T7 shipped** (`show-run-status`). T6 side finding fixed: `build-in-waves` 2.3.0 (haiku
 wrote small tasks in the controller 2/4 → 0/4). **T8 shipped** (`reroute-plan` 1.1.0,
-`build-in-waves` 2.4.0). **T13, T14 no-op. T15 shipped** (`plan-tasks` 1.8.0). **T18 shipped** (`audit-shipped`). **T19 shipped** (`deliver-issues`, `land-branch` 4.3.1). **T5 shipped** (`speak-outer` 1.3.0). **T11 no-op.** Next: T12, T23, T9, then T20–T22.
+`build-in-waves` 2.4.0). **T13, T14 no-op. T15 shipped** (`plan-tasks` 1.8.0). **T18 shipped** (`audit-shipped`). **T19 shipped** (`deliver-issues`, `land-branch` 4.3.1). **T5 shipped** (`speak-outer` 1.3.0). **T11 no-op.** **T12 no-op. T23 shipped** (`land-branch` 4.4.0). Next: T9, then T20–T22.
 
 ## 12. Open decisions
 

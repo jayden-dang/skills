@@ -157,5 +157,29 @@
       "nothing is pushed while a lockfile, generated or out-of-plan row stands",
       "the reply lists the commands that would clear each row"
     ]
+  },
+  {
+    "eval_id": 15,
+    "eval_name": "cross-owner-change-names-the-owner-and-requests-review",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § 4.4.0 — RED: 5/5 described the src/berth.ts edit and BERTH-1.3, 0/5 named @saltgrass/bookings or requested it",
+    "prompt": "LATEFEE Task 1 is on feature/latefee-calc and also edits src/berth.ts and adds BERTH-1.3; the catalog's Owner column gives BERTH to @saltgrass/bookings. Open the PR to dev.",
+    "assertions": [
+      "the PR body has a section 'Changes outside this feature's ownership'",
+      "the section names @saltgrass/bookings, src/berth.ts and BERTH-1.3",
+      "the PR requests saltgrass/bookings as a reviewer",
+      "the PR is opened, not held, because of the notice"
+    ]
+  },
+  {
+    "eval_id": 16,
+    "eval_name": "own-only-branch-has-no-owner-section",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § 4.4.0 — own variant, scripts/owner-notice.py prints # clean",
+    "prompt": "LATEFEE Task 1 alone (src/latefee.ts and its test) is on feature/latefee-calc. Open the PR to dev.",
+    "assertions": [
+      "the PR body has no ownership section and no line about owners",
+      "no reviewer is requested on ownership grounds"
+    ]
   }
 ]

@@ -10,6 +10,7 @@ recipe.
 - [Resolve tickets](#resolve-tickets)
 - [Author commits](#author-commits)
 - [Ship guard](#ship-guard)
+- [Owner notice](#owner-notice)
 - [Sequence the branch into verifiable units](#sequence-the-branch-into-verifiable-units)
 - [Forge, stacks, and a subagent that opens the PR](#forge-stacks-and-a-subagent-that-opens-the-pr)
 - [Post the verdict](#post-the-verdict)
@@ -172,6 +173,30 @@ NO PUSH AND NO PR WHILE A `lockfile`, `generated` OR `out-of-plan` ROW STANDS.
 | "It's only a lockfile" | The baseline `bun.lock` pinned `@types/bun`, which `package.json` does not declare; one run in six noticed |
 
 **Done when:** the script's last line is `# clean`, or every remaining row is `behind-base`.
+
+## Owner notice
+
+Runs for `pr`, after the ship guard, the same way: `scripts/owner-notice.py <base>
+<tasks.md>` from this skill's folder, repo root as the working directory. It prints one
+`cross-owner` row per changed path that another owner holds: the feature code, the
+owner, the path, and the requirement IDs a foreign `requirements.md` gained, changed or
+lost.
+
+- **Rows printed:** the PR body carries `## Changes outside this feature's ownership`,
+  one bullet per owner. Each bullet names the owner, the feature, every path and
+  requirement ID from its rows, and why this branch changed them, taken from the commit
+  that did. Request each owner as a reviewer when the PR is created: `gh pr create
+  --reviewer <owner without the @>`. On a forge without reviewer requests, the section
+  is where the owner is named.
+- **`# clean`:** no such heading, and no line about ownership anywhere in the body.
+
+The notice never holds the branch: the other team learns of the change in review, and
+the PR ships as it would have. Five of five baseline PRs for a late-fee branch described
+its edit to `src/berth.ts` and its new BERTH-1.3, and none named `@saltgrass/bookings`,
+the team that owns them, or asked that team to review.
+
+**Done when:** the script printed `# clean`, or the body has the section and every row's
+owner is a requested reviewer or named in it.
 
 ## Sequence the branch into verifiable units
 

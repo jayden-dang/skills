@@ -558,3 +558,61 @@ Found under `deliver-issues` (its `TESTS.md`), not in a land-branch scenario of 
   subagent looked for `scripts/ship-guard.sh` at the repo root, reported it "not
   installed", and pushed three PRs unguarded. `prepare.md` now says the script sits in
   the skill's own folder. 1 run seen, wording only.
+
+## 2026-10-18 — 4.4.0 — owner notice on cross-owner changes
+
+Roster: sonnet (`skill-tester`) and haiku (`skill-tester-haiku`), in-session runners.
+Fixture `harbor-ledger` + `latefee-plan` overlay + `scenarios/cross-owner.sh`. The catalog
+carries an `Owner` column: BERTH → `@saltgrass/bookings`, LATEFEE and REFUND →
+`@saltgrass/billing`. `feature/latefee-calc` holds LATEFEE Task 1, already pushed. In the
+cross variant it also exports `daysBetween` from `src/berth.ts` and adds BERTH-1.3 to
+BERTH's requirements, both named in the approved plan so the ship guard passes. The own
+variant holds Task 1 alone. Installed: `land-branch`, `speak-outer`; the `gh` shim logs
+`--reviewer`. Lan: "LATEFEE Task 1 is done on feature/latefee-calc. Open the PR to dev
+please." Nothing in the prompt mentions owners. Scored by `scenarios/owner-score.py` from
+the PR log only.
+
+### RED — 4.3.1
+
+| | cross ×5 (3 h, 2 s) | own ×2 (h) |
+|---|---|---|
+| body describes the `berth.ts` edit and BERTH-1.3 | 5/5 | — |
+| body names `@saltgrass/bookings` | 0/5 | — |
+| owner requested as reviewer | 0/5 | — |
+| body says nothing about owners | — | 2/2 |
+
+The runs that thought about ownership read `project.md`'s path-level notes and stopped
+there. x-h2: "the PR doesn't touch `src/invoice.ts` (Minh's) or `docs/api.md` (Quang's),
+and the body says so." The catalog's Owner column was never consulted. The own-only half
+passed the no-op test, so the GREEN text has no clause for it; its job there is to stay
+silent.
+
+Failure class → form: a check that is misjudged (who owns a changed path) → a
+deterministic pass (`scripts/owner-notice.py`: spec directory, then Surface roots, then
+the shard's `Owner:` line, then Ownership notes) plus a conditional REQUIRED section in the
+body, keyed to the script's output. The script deliberately ignores the editing plan's
+`**Files:**` block, because the late-fee plan lists `src/berth.ts` too. Ownership read
+from it would make every cross-owner edit look like the branch's own.
+
+### GREEN — 4.4.0
+
+| | cross ×7 (5 h, 2 s) | own ×3 (h) |
+|---|---|---|
+| `## Changes outside this feature's ownership` | 7/7 | 0/3 |
+| names `@saltgrass/bookings`, `src/berth.ts`, BERTH-1.3 | 7/7 | — |
+| `--reviewer saltgrass/bookings` | 7/7 | 0/3 |
+| any owner line in the body | — | 0/3 |
+
+Each section gave the reason from the commit. x-h3: "I changed them so the fee and the
+stay count share one day-count function instead of two copies." o-h1: "Reviewers: none
+were requested, since there were no cross-owner changes." The plan's T23 Done line (5/5 on
+the weakest model, both variants) is met.
+
+Script, checked on its own: cross → two rows (`BERTH-1.3 added` on the requirements,
+`src/berth.ts`), own → `# clean`, a catalog with no Owner column → `# clean`.
+
+Not written, because no run failed for lack of it: the `Cross-owner:` line in
+`plan-tasks`, and `map-features` / `specify-behavior` filling the column. The
+`specs-catalog-domain.md` template gains the column and the shard `Owner:` line. Not
+covered: GitLab or other forges without `--reviewer`, an owner token that is a person
+rather than a team, and a PR that strikes a foreign requirement.

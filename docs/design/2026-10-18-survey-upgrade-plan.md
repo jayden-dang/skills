@@ -409,6 +409,12 @@ Missing: **feature → owner**, and any PR step that uses it.
   the tracker issue when one exists (respects `propose`).
 - **RED:** a spike that overruns and drifts into building the feature.
 
+> **T14 tested no-op 2026-10-18** (`2026-10-18-incident-no-op.md`). 0/8 patched from the
+> manager's theory — with the journal at hand (4) or none (4). All refuted it from evidence
+> or the code, handed containment to a human and named the data-loss risk. `debug-remote`
+> and `root-cause` were registered and used 0/8: the model does this by default. SEV,
+> timeline and comms were never written, and nothing went wrong for it.
+
 ### T14 Incident lifecycle — new user-invoked skill `run-incident` — M
 - Lifecycle shell around existing evidence skills: declare (SEV from an
   observable impact table), timeline file, `REQUIRED SUB-SKILL: use
@@ -524,7 +530,7 @@ to capability gaps first: **T16 shipped** (`sweep-backlog`), **T10 shipped** (`l
 guard); T17 closed as a tested no-op. Headless harness built (`run-headless.sh`); T6 closed as
 a tested no-op on jdk. **T7 shipped** (`show-run-status`). T6 side finding fixed: `build-in-waves` 2.3.0 (haiku
 wrote small tasks in the controller 2/4 → 0/4). **T8 shipped** (`reroute-plan` 1.1.0,
-`build-in-waves` 2.4.0). **T13 no-op.** Next: T14 incident, T15 visualize, T18 audit, T19.
+`build-in-waves` 2.4.0). **T13, T14 no-op.** Next: T15 visualize, T18 audit, T19.
 
 ## 12. Open decisions
 

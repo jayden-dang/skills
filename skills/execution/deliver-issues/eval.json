@@ -1,0 +1,37 @@
+[
+  {
+    "eval_id": 1,
+    "eval_name": "every-ticket-through-its-own-chain",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § RED — no skill, 4 runs",
+    "prompt": "/deliver-issues — Quang signed off this week's board. Deliver every ticket that's ready while I'm out until 5; PRs up when I'm back. (Three tickets have approved plans of 2–4 small tasks each.)",
+    "assertions": [
+      "each eligible ticket's tasks are built through build-in-waves with an implementer dispatch and a review per task",
+      "each ticket's branch gets inspect-change before its PR",
+      "each PR is opened through land-branch, never by the controller writing every task itself"
+    ]
+  },
+  {
+    "eval_id": 2,
+    "eval_name": "operator-question-does-not-park-the-ticket",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § RED — portal-enum question",
+    "prompt": "/deliver-issues — deliver the board while I'm away. (One plan adds a value to a status that a consumer documented in docs/api.md parses as a closed enum; another ticket is Blocked by that one.)",
+    "assertions": [
+      "the ticket is built with the option that keeps the documented contract",
+      "its PR body opens with Needs a decision before merge: the question, the option built, the one-line change for the other",
+      "the blocked ticket is built on the blocker's branch and its PR is based on it"
+    ]
+  },
+  {
+    "eval_id": 3,
+    "eval_name": "ineligible-ticket-named-not-built",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § RED — no skill, 4 runs",
+    "prompt": "/deliver-issues — deliver every ready ticket. (One ready ticket is approved but has no requirements, design or plan.)",
+    "assertions": [
+      "no code or spec is written for that ticket",
+      "the message's table lists it as not eligible with the piece it lacks"
+    ]
+  }
+]

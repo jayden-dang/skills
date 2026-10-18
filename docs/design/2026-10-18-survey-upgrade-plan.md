@@ -488,6 +488,15 @@ Missing: **feature → owner**, and any PR step that uses it.
 
 ## Phase 5 — Multi-issue orchestrator
 
+> **T19 shipped 2026-10-18 — `deliver-issues` 1.0.0** (`skills/execution/`), with
+> `land-branch` 4.3.1. RED 4/4 wrote all ten tasks in the controller — 0 reviewer
+> dispatches, 0 `inspect-change`, 0 `land-branch` — and haiku parked tickets on the portal
+> question (1–2 PRs vs sonnet's 3). Iron Law + the chain as REQUIRED sub-skills + "build the
+> contract-keeping option, ask in the PR, carry on". Final haiku 2/2 and sonnet 1/1: three
+> PRs through per-task review, inspect and landing, late fee stacked, the spec-less ticket
+> named. Found on the way: `ship-guard.sh` ignored per-task `**Files:**` blocks (false
+> `out-of-plan`), and its path was misread when loaded by path — both fixed.
+
 ### T19 `deliver-issues` — new user-invoked skill — L
 - Reads the autonomy policy, builds the dependency frontier from the
   tracker, and drives each **signed-off** issue through the existing chain
@@ -544,7 +553,7 @@ to capability gaps first: **T16 shipped** (`sweep-backlog`), **T10 shipped** (`l
 guard); T17 closed as a tested no-op. Headless harness built (`run-headless.sh`); T6 closed as
 a tested no-op on jdk. **T7 shipped** (`show-run-status`). T6 side finding fixed: `build-in-waves` 2.3.0 (haiku
 wrote small tasks in the controller 2/4 → 0/4). **T8 shipped** (`reroute-plan` 1.1.0,
-`build-in-waves` 2.4.0). **T13, T14 no-op. T15 shipped** (`plan-tasks` 1.8.0). **T18 shipped** (`audit-shipped`). Next: T19.
+`build-in-waves` 2.4.0). **T13, T14 no-op. T15 shipped** (`plan-tasks` 1.8.0). **T18 shipped** (`audit-shipped`). **T19 shipped** (`deliver-issues`, `land-branch` 4.3.1). Next: T5, T9, T11, T12, T23, then T20–T22.
 
 ## 12. Open decisions
 

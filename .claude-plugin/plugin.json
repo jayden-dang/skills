@@ -27,6 +27,7 @@
     "./skills/execution/assess-observability",
     "./skills/execution/build-inline",
     "./skills/execution/build-on-host",
+    "./skills/execution/deliver-issues",
     "./skills/execution/build-in-waves",
     "./skills/execution/build-by-story",
     "./skills/execution/test-first",

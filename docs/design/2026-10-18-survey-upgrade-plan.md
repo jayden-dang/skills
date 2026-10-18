@@ -474,6 +474,13 @@ Missing: **feature → owner**, and any PR step that uses it.
 - **RED:** "clean up everything from last sprint" with one dirty worktree
   and one unpushed branch planted. Expect them deleted.
 
+> **T18 shipped 2026-10-18 — new user-invoked `audit-shipped` 1.0.0** (`skills/review/`).
+> RED 8 runs on a shipped week (LATEFEE, REFUND, PAY): in-feature bugs found 7–8/8, but the
+> refunded-and-accruing invoice between two features 3/8 and the UTC "today" against the
+> glossary's marina day 2/8 — three runs wrote the opposite. `inspect-change` routed 0/8.
+> A reader pass and a glossary pass, each a REQUIRED table: A 4/4 on all five (confounded,
+> the text quotes them); held-out B 4/4, with the reader that ignores the new state 0/4 → 4/4.
+
 ### T18 Post-ship edge-case audit — decided by RED: extend `inspect-change` (merged range) or new skill `audit-shipped` — M
 - Reviews issues merged in a window for edge cases the specs and tests
   missed; findings go to the proposal file as follow-up issues.
@@ -537,7 +544,7 @@ to capability gaps first: **T16 shipped** (`sweep-backlog`), **T10 shipped** (`l
 guard); T17 closed as a tested no-op. Headless harness built (`run-headless.sh`); T6 closed as
 a tested no-op on jdk. **T7 shipped** (`show-run-status`). T6 side finding fixed: `build-in-waves` 2.3.0 (haiku
 wrote small tasks in the controller 2/4 → 0/4). **T8 shipped** (`reroute-plan` 1.1.0,
-`build-in-waves` 2.4.0). **T13, T14 no-op. T15 shipped** (`plan-tasks` 1.8.0). Next: T18 audit, T19.
+`build-in-waves` 2.4.0). **T13, T14 no-op. T15 shipped** (`plan-tasks` 1.8.0). **T18 shipped** (`audit-shipped`). Next: T19.
 
 ## 12. Open decisions
 

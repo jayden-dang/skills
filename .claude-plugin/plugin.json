@@ -46,6 +46,7 @@
     "./skills/craft/draft-ux",
     "./skills/review/inspect-invariants",
     "./skills/review/inspect-ui",
+    "./skills/review/audit-shipped",
     "./skills/review/inspect-change",
     "./skills/review/polish-diff",
     "./skills/review/no-comments",

@@ -595,6 +595,13 @@ wrote small tasks in the controller 2/4 → 0/4). **T8 shipped** (`reroute-plan`
 
 ## 12. Open decisions
 
+> **Decided 2026-10-18 by the owner:** 1 keep today's behaviour, no new defaults (fields
+> land only with a RED: `Language` so far). 2 proposals stay in `.skills/<CODE>/`, as
+> every run already put them. 3 `repo` first, Notion later. 4 roster stays haiku +
+> sonnet. 5 PR only, no comment on the foreign feature's issue. 6 a spike stops at the
+> answer and hands over to `plan-tasks` (`run-spike` 2.0.0). 7 a library-only branch
+> gets no walk (`execute-common` 2.12.0).
+
 1. **Defaults.** `Tracker writes: propose` and `Decision mode: batched` as the
    new defaults, or keep today's behaviour as default and opt in?
 2. **Proposal file home** for `Draft surface: repo` — `docs/roadmap/proposals.md`

@@ -556,3 +556,25 @@ question for the owner, recorded in the survey plan's open decisions, and no tex
 changed for it.
 
 Spend: about 4.7 USD.
+
+## v2.12.0 — no walk on a library-only branch (2026-10-18)
+
+The owner decided this on 2026-10-18 (survey plan, open decision 7). The clause
+"`validate-feature` reports neither-API-nor-UI" now fires the walk only when the branch
+also adds an entry point a person runs: a CLI command, a script, a scheduled job.
+
+RED is v2.11.0's r2 above. Four formatting helpers with no caller made the walk predicate
+true, the walk could not drive them, and the run stopped unclosed waiting for Lan. GREEN
+uses the same fixture, overlay `fmt-plan`, with the full close chain and the same prompt:
+
+| | haiku | sonnet |
+|---|---|---|
+| closed with a receipt | yes | yes |
+| `Product-Walk:` | `not-required — no entry point a person runs …` | `not-required — library code nothing runs yet …` |
+| `Acceptance:` | `not-applicable — … unit tests are the acceptance` | `not-applicable — … each FMT-1.x driven directly with bun` |
+| `Cost:` still filled | yes | yes |
+| PR to `dev` | yes | yes |
+| run cost | 1.19 USD | 1.61 USD |
+
+Not covered: a branch that adds a CLI command or a cron script, where the clause should
+still fire.

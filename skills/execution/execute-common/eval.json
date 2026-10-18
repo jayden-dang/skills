@@ -153,5 +153,17 @@
       "each role used appears with its dispatch count and token sum taken from the runtime's usage reports",
       "the controller's own spend and any USD figure read unavailable rather than an estimate"
     ]
+  },
+  {
+    "eval_id": 16,
+    "eval_name": "library-only-branch-closes-without-a-walk",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § v2.12.0 — RED v2.11.0 r2 stalled at the walk on four pure helpers; GREEN haiku and sonnet closed",
+    "prompt": "Build the approved formatting-helpers plan (four pure functions nothing calls yet) to the end and close the run. The operator is away.",
+    "assertions": [
+      "the run writes the close receipt and lands the branch",
+      "Product-Walk reads not-required, citing no entry point a person runs",
+      "the run does not stop to ask the operator about a walk"
+    ]
   }
 ]

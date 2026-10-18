@@ -1,6 +1,6 @@
 ---
 name: execute-common
-version: 2.11.0
+version: 2.12.0
 description: Use when build-in-waves, build-by-story, or build-inline loads the shared controller recipe — produces an In-progress catalog stamp, a runtime-bound session snapshot, lease state, ledger state, and a revision-bound close receipt.
 ---
 
@@ -158,11 +158,17 @@ wasted I/O); `git diff --name-only $(git merge-base main HEAD) HEAD` lists
 **more than 15 files**; the branch adds a new public API or exported surface.
 
 **Product walk** — true when **any** of: the user asked for a product walk,
-dogfood, or walkthrough; `validate-feature` reports neither-API-nor-UI; an
+dogfood, or walkthrough; `validate-feature` reports neither-API-nor-UI **and** the
+branch adds an entry point a person runs (a CLI command, a script, a scheduled job); an
 approved requirement uses visual / feel / eyeball language the automated
 surfaces cannot judge; `inspect-ui`'s report (via `inspect-change`'s UI lane)
 lists any `needs-human-eyes` item; the branch adds a **new** user-facing
 screen or visual surface — not only changes within existing ones.
+
+A branch that adds only library code nothing runs yet gets no walk: Product-Walk is
+`not-required` and its unit tests are the acceptance. Four formatting helpers with no
+caller left one baseline close unfinished. The run reported "a walk cannot drive pure
+functions" and stopped to wait for Lan, who was at the Port Authority until 5.
 
 ## Red flags — never
 

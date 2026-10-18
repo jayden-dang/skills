@@ -72,6 +72,7 @@
         "./skills/track/publish-issues",
         "./skills/track/write-handoff",
         "./skills/track/scan-architecture",
+        "./skills/track/show-run-status",
         "./skills/track/map-features",
         "./skills/track/realign-spec",
         "./skills/track/record-debt",

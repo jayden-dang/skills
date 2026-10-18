@@ -272,6 +272,10 @@ without a human in the loop:
 - **Done:** fixture: two runs together never exceed the host cap; the
   Live lanes table matches the running agents at every wave.
 
+> **T7 shipped 2026-10-18 — `show-run-status` 1.0.0** (`skills/track/show-run-status/`).
+> RED: parked decision missed 2/6 (one inverted), unpushed commit 2/6, stale ticket 5/6.
+> GREEN: 6/6 on all six facts, both models.
+
 ### T7 Run status — new user-invoked skill `show-run-status` — M
 - Distinct trigger from `refresh-roadmap-status` ("where is this run" vs
   "where is the roadmap"), so the split is justified.
@@ -503,7 +507,7 @@ agreement holds. T4 (batched decisions) also closed as a tested no-op, 6/6 —
 an explicit request to batch beat `build-inline`'s stop-and-ask. Order changed
 to capability gaps first: **T16 shipped** (`sweep-backlog`), **T10 shipped** (`land-branch` 4.3.0 ship
 guard); T17 closed as a tested no-op. Headless harness built (`run-headless.sh`); T6 closed as
-a tested no-op on jdk. Next: **T7** (run status), then T19.
+a tested no-op on jdk. **T7 shipped** (`show-run-status`). Next: T8 (operator amend), T19.
 
 ## 12. Open decisions
 

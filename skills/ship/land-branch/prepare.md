@@ -9,6 +9,7 @@ recipe.
 - [Gather context](#gather-context)
 - [Resolve tickets](#resolve-tickets)
 - [Author commits](#author-commits)
+- [Ship guard](#ship-guard)
 - [Sequence the branch into verifiable units](#sequence-the-branch-into-verifiable-units)
 - [Forge, stacks, and a subagent that opens the PR](#forge-stacks-and-a-subagent-that-opens-the-pr)
 - [Post the verdict](#post-the-verdict)
@@ -135,6 +136,41 @@ residue.
 
 **Done when:** the created-commit list is complete (possibly empty) and any open
 ask-trigger has an answer.
+
+## Ship guard
+
+Runs for `pr` and `merge`, before sequencing. Run `scripts/ship-guard.sh <base>
+[<tasks.md>]` from the repo root, with the memoized base and the `tasks.md` of the
+plan this branch implements (the feature CODE the branch name, its commits, or this
+session names; no plan → omit it). Each row gets exactly this disposition:
+
+| Row | Disposition |
+|---|---|
+| `lockfile` | drop from the branch |
+| `generated` | drop from the branch |
+| `out-of-plan` | move to `<branch>-extra` — unless the operator named that change for this PR in this session |
+| `behind-base` | one line in the PR body with the count; rebase only when asked |
+
+**Drop** = `git rm --cached <path>` in a commit of its own; the file stays on disk.
+**Move** = branch `<branch>-extra` from the base, commit the paths there
+(`git checkout <head> -- <paths>`), then restore them to the base version on this
+branch in a commit of its own. Both are forward commits: they need no history
+rewrite, and sequencing may fold them later. Name every dropped path and the
+`-extra` branch in the PR body. Re-run the script; continue only when no
+`lockfile`, `generated` or `out-of-plan` row remains.
+
+<HARD-GATE>
+NO PUSH AND NO PR WHILE A `lockfile`, `generated` OR `out-of-plan` ROW STANDS.
+</HARD-GATE>
+
+| Thought | Reality |
+|---|---|
+| "It is disclosed in the PR body" | Baseline: three of the four runs that could push named these files in the body and pushed them anyway. The reviewer approves the diff; a paragraph removes nothing |
+| "The rewrite was denied, so I'll leave them" | Drop and move are forward commits. The one baseline run that used them shipped a clean branch |
+| "No one can answer before the deadline" | Nothing here needs an answer: the files stay on disk and on `<branch>-extra` |
+| "It's only a lockfile" | The baseline `bun.lock` pinned `@types/bun`, which `package.json` does not declare; one run in six noticed |
+
+**Done when:** the script's last line is `# clean`, or every remaining row is `behind-base`.
 
 ## Sequence the branch into verifiable units
 

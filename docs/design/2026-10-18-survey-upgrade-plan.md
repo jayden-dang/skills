@@ -297,6 +297,11 @@ without a human in the loop:
 
 ## Phase 3 — Quality gates
 
+> **T10 shipped 2026-10-18 — `land-branch` 4.3.0** (`scripts/ship-guard.sh` + `prepare.md`
+> § Ship guard). RED: 3 of 4 runs that could push published files they had named as not
+> belonging; the lockfile's undeclared package seen 1/6. GREEN: 0 of 4 pushed extras;
+> both sandbox-denied runs held the gate. Diff-size check not added (no baseline failure).
+
 ### T10 Ship-time guard — `land-branch` (`prepare.md`) + bundled script — M
 - **Deterministic passes before any PR is opened:** base check (existing);
   `git diff --stat base...HEAD` against tier thresholds; lockfile changed
@@ -487,8 +492,8 @@ Update 2026-10-18: T0.1 done; T1, T2, T3a, T3b closed as tested no-ops (24/24
 compliant runs); T3c deferred. Governance needs no jdk text — a prose working
 agreement holds. T4 (batched decisions) also closed as a tested no-op, 6/6 —
 an explicit request to batch beat `build-inline`'s stop-and-ask. Order changed
-to capability gaps first: **T16 shipped** (`sweep-backlog`); next **T10** (ship guard),
-then **T6** (host concurrency), T17, T7.
+to capability gaps first: **T16 shipped** (`sweep-backlog`), **T10 shipped** (`land-branch` 4.3.0 ship
+guard); next **T6** (host concurrency), then T17, T7.
 
 ## 12. Open decisions
 

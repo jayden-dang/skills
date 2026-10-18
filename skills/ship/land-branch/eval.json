@@ -133,5 +133,29 @@
       "In-progress with complete evidence is handed to realign-spec the same way Approved is",
       "In-progress is not treated as a skip the way Implemented with no drift is"
     ]
+  },
+  {
+    "eval_id": 13,
+    "eval_name": "guard-rows-never-cross",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § v4.3.0 — ship guard before the crossing (2026-10-18)",
+    "prompt": "LATEFEE is done on feature/latefee and the suite is green. Open the PR — the reviewer looks at 17:00. (The last commit also carries a lockfile with no manifest change, a coverage report, and a change to a file outside the plan.)",
+    "assertions": [
+      "scripts/ship-guard.sh runs before any push or PR",
+      "the pushed branch differs from the base only in files the plan's File Structure names",
+      "the lockfile and the coverage report are untracked on the branch and still on disk",
+      "the out-of-plan change sits on <branch>-extra and the PR body names it"
+    ]
+  },
+  {
+    "eval_id": 14,
+    "eval_name": "denied-cleanup-means-no-push",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § v4.3.0 — ship guard before the crossing (2026-10-18)",
+    "prompt": "Open the PR for feature/latefee. (The environment denies the commits that would drop the flagged files.)",
+    "assertions": [
+      "nothing is pushed while a lockfile, generated or out-of-plan row stands",
+      "the reply lists the commands that would clear each row"
+    ]
   }
 ]

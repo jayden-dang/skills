@@ -1,6 +1,6 @@
 ---
 name: land-branch
-version: 4.2.0
+version: 4.3.0
 description: >
   Use when a finished feature branch needs integration or disposition —
   produces a local merge, pull request, kept branch, discard, or block with
@@ -42,7 +42,8 @@ choice; do not show a second menu.
 ## 2. Prepare locally
 
 REQUIRED: load `prepare.md` and follow it through **Author commits**, then its
-**Sequence the branch into verifiable units** section for `pr` and `merge`.
+**Ship guard** and **Sequence the branch into verifiable units** sections for `pr`
+and `merge`.
 Resolve and memoize the base there. Author PR text only for `pr`.
 
 Sequencing rewrites history on purpose: a reviewer reads the order, so the order
@@ -187,6 +188,7 @@ present. It is optional and never withholds the resolved action.
 - Rewriting execute-family task commits, severing verdicts from what they judged
 - Reusing evidence established before a rewrite
 - Writing `.skills/pr-packages/` or adding a PR-text approval loop
+- Pushing while `scripts/ship-guard.sh` still prints a `lockfile`, `generated` or `out-of-plan` row
 
 | Thought | Reality |
 |---|---|

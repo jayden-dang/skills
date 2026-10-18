@@ -253,6 +253,11 @@ without a human in the loop:
 
 ## Phase 2 — Execution control and observability
 
+> **T6 RED 2026-10-18: tested no-op on jdk** — 12/12 headless sessions ran one subagent at a
+> time (with or without the stated limit); two concurrent builds never exceeded 2 in
+> flight. The cap belongs in the cmk port. Side finding: haiku built inline, skipping
+> dispatch, in 4/6 sessions. Record: `2026-10-18-host-concurrency-no-op.md`.
+
 ### T6 Host-level concurrency and lane visibility — `execute-common` (`runtime-binding.md`, `task-lifecycle.md`) + `build-in-waves` — M
 - **Deterministic primitive:** a bundled script in `execute-common/scripts/`
   that reads CPU count, free memory and load average (macOS `sysctl`/`vm_stat`,
@@ -497,7 +502,8 @@ compliant runs); T3c deferred. Governance needs no jdk text — a prose working
 agreement holds. T4 (batched decisions) also closed as a tested no-op, 6/6 —
 an explicit request to batch beat `build-inline`'s stop-and-ask. Order changed
 to capability gaps first: **T16 shipped** (`sweep-backlog`), **T10 shipped** (`land-branch` 4.3.0 ship
-guard); T17 closed as a tested no-op. Next: harness for subagent dispatch, then **T6**, T7.
+guard); T17 closed as a tested no-op. Headless harness built (`run-headless.sh`); T6 closed as
+a tested no-op on jdk. Next: **T7** (run status), then T19.
 
 ## 12. Open decisions
 

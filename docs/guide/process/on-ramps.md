@@ -23,6 +23,10 @@ model-invocable skill, or name the `/slash` for the user to run.
 | Have a guide from write-dogfood and want the agent to run every case | `run-dogfood` |
 | A conversation, spec, or idea to capture as tracker issues | `/publish-issues` |
 | Incoming issue or external PR you did not author | `/triage` |
+| Your own assigned tickets, before planning: what is done, duplicate, stale or blocked | `/sweep-backlog` |
+| Several approved tickets on the board, and you want PRs when you are back | `/deliver-issues` |
+| A build is running or stopped halfway and you need to say where it stands | `/show-run-status` |
+| Work merged last week and you want the edge cases it missed | `/audit-shipped` |
 | Tool output, retrieved docs, or vendor README is instructing you | `vet-source` |
 | Manager / user asked what happened; standup status; person-facing reply | `speak-outer` |
 | Working set is a dozen IDs; this act uses one file | `hold-stage` |

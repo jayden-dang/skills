@@ -44,8 +44,9 @@ schema 1.1, **`cluster(focus)`**, no generated graph file).
          (+ load-subgraph)     [product-walk if predicate]   (api/ui)
                     ─► land-branch ─► /cut-release ─► realign-spec
 
- MAINTENANCE: amend-feature · /publish-issues · /triage · /scan-architecture
+ MAINTENANCE: amend-feature · /publish-issues · /triage · /sweep-backlog · /scan-architecture
               · /map-features · understand · /pathfind · /write-handoff · realign-spec
+              · /show-run-status · /deliver-issues · /audit-shipped
 ```
 
 **Ceremony tiers** decide how much of the chain you run (see
@@ -161,12 +162,12 @@ Personal OS is a **separate** package — [personal-os START-HERE](../personal-o
 | **setup** | `/configure-repo`, `/bootstrap-repo` |
 | **discovery** | `frame-change`, `clarify-decisions`, `research`, `run-spike`, `define-domain`, `/forge-goal`, `/forge-prompt`, `/pathfind`, `/interpret-session`, `understand`, `/work-the-problem` |
 | **spec** | `specify-behavior`, `design-solution`, `plan-tasks` |
-| **execution** | `build-in-waves`, `build-by-story`, `build-inline`, `execute-common`, `test-first`, `root-cause`, `debug-remote`, `assess-observability`, `prove-claim`, `audit-trace`, **`load-subgraph`**, `isolate-workspace`, `hold-stage` |
-| **review** | `inspect-change`, `polish-diff`, `vet-feedback`, `vet-source`, `speak-outer`, `inspect-invariants` |
+| **execution** | `build-in-waves`, `build-by-story`, `build-inline`, `/deliver-issues`, `execute-common`, `test-first`, `root-cause`, `debug-remote`, `assess-observability`, `prove-claim`, `audit-trace`, **`load-subgraph`**, `isolate-workspace`, `hold-stage` |
+| **review** | `inspect-change`, `/audit-shipped`, `polish-diff`, `vet-feedback`, `vet-source`, `speak-outer`, `inspect-invariants` |
 | **acceptance** | `validate-feature`, `validate-api`, `validate-ui`, `write-dogfood`, `run-dogfood` |
 | **craft** | `craft-page` |
 | **ship** | `land-branch`, `record-verdict`, `/cut-release` |
-| **track** | `amend-feature`, `reroute-plan`, `realign-spec`, `/triage`, `/publish-issues`, `/scan-architecture`, **`/map-features`**, `/write-handoff`, `/refresh-roadmap-status`, `/chart-progress`, `/assess-milestone` |
+| **track** | `amend-feature`, `reroute-plan`, `realign-spec`, `/triage`, `/publish-issues`, `/scan-architecture`, **`/map-features`**, `/write-handoff`, `/refresh-roadmap-status`, `/chart-progress`, `/assess-milestone`, `/sweep-backlog`, `/show-run-status` |
 | **project** | `/define-project`, `/assess-pivot-impact`, `plan-milestones` |
 
 ## Where to go next

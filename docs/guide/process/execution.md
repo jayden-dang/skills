@@ -153,6 +153,10 @@ run only when their observable predicates hold — EOD, a clean inspect, and
 
 **`test-first`** tests describe domain behavior; requirement IDs stay in docs.
 
+## `/deliver-issues` — a whole board, unattended
+
+When several tickets are approved and ready, [`/deliver-issues`](../skills/deliver-issues.md) takes each one through the chain above: `build-in-waves`, then `inspect-change`, then `land-branch` as a pull request. Tickets run in dependency order, and a ticket blocked by another branches from that ticket's branch. A question that would stop a single-ticket run is built the safe way and put at the top of that pull request. The run ends with one message. While a build is running or stopped, [`/show-run-status`](../skills/show-run-status.md) reports where one feature stands.
+
 ## Next
 
 → [Phase 4 — Review and acceptance](review-and-acceptance.md)
@@ -161,4 +165,5 @@ run only when their observable predicates hold — EOD, a clean inspect, and
 
 - [The gates](../concepts/gates.md) — `test-first`, `root-cause`, and `prove-claim` in detail
 - [`build-in-waves`](../skills/build-in-waves.md) · [`build-by-story`](../skills/build-by-story.md) · [`build-inline`](../skills/build-inline.md)
+- [`deliver-issues`](../skills/deliver-issues.md) · [`show-run-status`](../skills/show-run-status.md)
 - [The artifact model](../concepts/artifacts.md) — what lives in `.skills/`

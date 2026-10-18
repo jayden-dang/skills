@@ -536,10 +536,17 @@ Missing: **feature → owner**, and any PR step that uses it.
 - Run T19 under `propose` + `batched` on one real repository, record the
   run in `docs/design/` (interruptions, cap held, cost line, PRs).
 
+> **T21 done 2026-10-18** — guide pages for `sweep-backlog`, `show-run-status`,
+> `audit-shipped`, `deliver-issues`; routing pages, edited-skill pages, CHANGELOG. Gaps that
+> predate the branch (`build-on-host`, `tend-pr` pages) left as found.
+
 ### T21 Docs and inventory sync (single writer) — S
 - `AGENTS.md` inventory and routing table, `docs/guide/skills/*`,
   `docs/guide/process/*`, `START-HERE.md`, `skill-length-budget.json`,
   release notes.
+
+> **T22 done 2026-10-18** — `2026-10-18-cmk-conversion-map.md`: one row per task, the
+> four bundled scripts, the no-ops to re-test on cmk, ten open questions.
 
 ### T22 cmk conversion map — S
 - Per skill: cmk target (`cmk:delivery-*` edit or new), what carries over,
@@ -573,7 +580,7 @@ to capability gaps first: **T16 shipped** (`sweep-backlog`), **T10 shipped** (`l
 guard); T17 closed as a tested no-op. Headless harness built (`run-headless.sh`); T6 closed as
 a tested no-op on jdk. **T7 shipped** (`show-run-status`). T6 side finding fixed: `build-in-waves` 2.3.0 (haiku
 wrote small tasks in the controller 2/4 → 0/4). **T8 shipped** (`reroute-plan` 1.1.0,
-`build-in-waves` 2.4.0). **T13, T14 no-op. T15 shipped** (`plan-tasks` 1.8.0). **T18 shipped** (`audit-shipped`). **T19 shipped** (`deliver-issues`, `land-branch` 4.3.1). **T5 shipped** (`speak-outer` 1.3.0). **T11 no-op.** **T12 no-op. T23 shipped** (`land-branch` 4.4.0). Next: T9, then T20–T22.
+`build-in-waves` 2.4.0). **T13, T14 no-op. T15 shipped** (`plan-tasks` 1.8.0). **T18 shipped** (`audit-shipped`). **T19 shipped** (`deliver-issues`, `land-branch` 4.3.1). **T5 shipped** (`speak-outer` 1.3.0). **T11 no-op.** **T12 no-op. T23 shipped** (`land-branch` 4.4.0). **T21, T22 done.** Next: T9 and T20 (both need headless budget).
 
 ## 12. Open decisions
 

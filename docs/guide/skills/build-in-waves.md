@@ -117,6 +117,10 @@ The reviewer is only useful if it is left free to judge, so the controller's dis
 - **No open-ended directives** ("check every call site", "stress-test if useful") without a concrete, task-specific reason.
 - **Do not ask a reviewer to re-run tests** the implementer already ran on the same code — the report file is the test evidence.
 
+## When you change the plan mid-run
+
+If your own message adds a constraint, cuts scope or drops a requirement while a build is running, the controller runs [`reroute-plan`](reroute-plan.md) before it edits any spec or code. It does not just carry on with the old plan.
+
 ## Durable progress
 
 Conversation memory does not survive compaction. Controllers that lost their place have re-dispatched **entire completed task sequences** — the single most expensive failure this loop has. The ledger, not the todos, is the source of truth:
@@ -182,6 +186,8 @@ A four-task plan for feature `NOTES` is approved.
 
 ## Red flags — never
 
+- Write a task's code in the controller because the task is small. Size never changes the route: code the controller writes is `build-inline`, and here every task gets its own implementer and its own review.
+- Review several tasks in one reviewer dispatch.
 - Run two implementers in the same worktree, or run a wave in parallel without isolated isolate-workspace and a disjoint-surface check.
 - Merge or ledger a parallel wave before every task in it has passed review.
 - Hand a subagent the whole plan file — the brief is its world.

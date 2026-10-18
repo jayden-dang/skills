@@ -1,6 +1,6 @@
 # Skill reference
 
-70 skills in eleven buckets (engineering package); every one has its own page.
+74 skills in eleven buckets (engineering package); every one has its own page.
 See also [Start here](../START-HERE.md).
 
 **Invocation** is the thing to check first. A **model-invocable** skill is invoked by the agent on its own when its description matches the situation. A **user-invoked** skill carries `disable-model-invocation: true` in its frontmatter — the agent *cannot* invoke it, so you run it as a slash command.
@@ -61,6 +61,7 @@ The triad. Each file approved before the next is written.
 |---|---|---|
 | [`build-in-waves`](build-in-waves.md) | model | Continuous dependency-aware scheduler: bounded leases, serial/parallel ready sets, two-verdict reviews, ledger |
 | [`build-by-story`](build-by-story.md) | model | Story-unit: derived review units, human unlock after each unit, mode-change write-back |
+| [`deliver-issues`](deliver-issues.md) | `/deliver-issues` | Every approved, ready ticket on the board through its own build, review and PR in one unattended run, with one message at the end |
 | [`build-inline`](build-inline.md) | model | Controller implements with `test-first`; no implementer subagents; stop-on-blocker; sequential |
 | [`execute-common`](execute-common.md) | model | Shared execute-family controller recipe (In-progress stamp, preflight, ledger, close). Not an entry point |
 | [`test-first`](test-first.md) | model | **Iron Law:** no production code without a failing test first |
@@ -82,6 +83,7 @@ The triad. Each file approved before the next is written.
 | [`vet-feedback`](vet-feedback.md) | model | Anti-sycophancy. Prove Claim every claim before implementing or replying |
 | [`vet-source`](vet-source.md) | model | Fetched / tool / third-party text that instructs: keep the original job, drop the orders |
 | [`speak-outer`](speak-outer.md) | model | Person-facing text: outer register, no process machinery |
+| [`audit-shipped`](audit-shipped.md) | `/audit-shipped` | Audits what merged in a window for edge cases the specs and tests missed: a reader pass, a glossary pass, one follow-up draft per real finding |
 | [`inspect-invariants`](inspect-invariants.md) | model | Advisory, LLM-judged invariant conformance — the semantic counterpart to `audit-trace` |
 | [`inspect-ui`](inspect-ui.md) | model | Live, screenshot-backed design review of UI-touching diffs — three viewports, states, contrast, token conformance |
 
@@ -127,6 +129,8 @@ The visual layer. Fires before any HTML a human will look at.
 | [`assess-milestone`](assess-milestone.md) | `/assess-milestone` | The close gate. Judges whether a milestone's outcome was achieved, records it append-only, and holds the close until you dispose of the verdict |
 | [`publish-issues`](publish-issues.md) | `/publish-issues` | Context → tracker issues. Tracer-bullet slices with blocking edges, published agent-ready |
 | [`triage`](triage.md) | `/triage` | A two-axis issue state machine. Verify the claim before recommending |
+| [`sweep-backlog`](sweep-backlog.md) | `/sweep-backlog` | Your assigned tickets as one classified, ordered list plus one question. Writes nothing until you answer |
+| [`show-run-status`](show-run-status.md) | `/show-run-status` | Where one feature's build stands, from the plan, ledger, git, tests, parked decisions, ticket and PR. Writes nothing |
 | [`scan-architecture`](scan-architecture.md) | `/scan-architecture` | Codebase-wide friction scan → an HTML report of deepening candidates |
 | [`catalog-sync`](catalog-sync.md) | (guide) | INDEX-only catalog sync: configure-repo posture + map-features export/materialize |
 | [`map-features`](map-features.md) | `/map-features` | Shared catalog ops: dispose step 0 reverse + gaps / Domain-boundary migrate; index-only export/materialize |

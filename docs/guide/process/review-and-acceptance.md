@@ -112,6 +112,10 @@ It scopes the happy path, the edge cases, **and the deliberate non-behaviors** �
 
 When the guide already exists and its review is clean, and the agent should drive every case: `dogfood init` the run state first, confirm local origin (or explicit non-local consent), execute Try against the **product app** only, `dogfood mark` with `saw` + `server` evidence, never open the guide HTML to tick localStorage boxes, route product defects to one `root-cause` fix subagent at a time, build missing local preconditions instead of stopping on them, re-drive with a regression sweep, and loop until every case passes or is parked. Only then does it `dogfood report` and tell the user why each case failed or was blocked and what changed. This is a **run** through kimi-webbridge. `validate-ui` is the same driver used as the acceptance pass, not a separate Playwright suite.
 
+## `/audit-shipped` — after the merge
+
+[`inspect-change`](../skills/inspect-change.md) reviews a branch before it merges. [`/audit-shipped`](../skills/audit-shipped.md) looks at work that has already merged in a window (the last 7 days unless you say otherwise). It lists every reader of each new field state across the repo, runs the inputs that cross features, and checks each glossary term against the line that implements it. Each real finding becomes a follow-up draft.
+
 ## Next
 
 → [Phase 5 — Ship and maintain](ship-and-maintain.md)
@@ -120,5 +124,6 @@ When the guide already exists and its review is clean, and the agent should driv
 
 - [Traceability](../concepts/traceability.md) — what "covered" means, and what it does not prove
 - [`inspect-change`](../skills/inspect-change.md) — the twelve baseline smells
+- [`audit-shipped`](../skills/audit-shipped.md) — the post-merge audit
 - [`validate-feature`](../skills/validate-feature.md) — the orchestrator
 - [Feature overlap](../concepts/feature-graph.md) — the reuse-miss check

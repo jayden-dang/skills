@@ -2,6 +2,26 @@
 
 ## Unreleased
 
+### Survey upgrade: four new skills, five edits, eight tested no-ops (2026-10-18)
+
+New, all user-invoked (`disable-model-invocation: true`), each with a `TESTS.md` of RED and GREEN runs on sonnet and haiku:
+
+- `/sweep-backlog` 1.0.0 (track): your assigned tickets as one classified, dependency-ordered list with one question for the calls only you can make. Writes nothing to the tracker until you answer. A script checks every branch for commits that name each ticket.
+- `/show-run-status` 1.0.0 (track): where one feature's build stands, from seven fixed sources, in six slots. The tracker ticket and any parked decision are always reported.
+- `/audit-shipped` 1.0.0 (review): audits what merged in a window with a reader pass and a glossary pass, and drafts one follow-up per real finding.
+- `/deliver-issues` 1.0.0 (execution): every approved, ready ticket goes through `build-in-waves`, `inspect-change` and `land-branch` as its own PR in one unattended run. A question becomes a "Needs a decision before merge" note in that PR, and the run ends with one message.
+
+Edited:
+
+- `land-branch` 4.3.0 to 4.4.0: a ship guard script runs before a PR or merge (4.3.0, fixed in 4.3.1 to read each task's `Files` block). An owner notice script (4.4.0) names the other team in the PR body and requests them as reviewers when the PR changes their code or spec.
+- `build-in-waves` 2.3.0 and 2.4.0: size never changes the route, so a controller does not write a small task itself. An operator message that changes the plan goes to `reroute-plan` first.
+- `reroute-plan` 1.1.0: an operator's own amendment counts as both approvals, and the report ends with a "Check this wording" block quoting every line written or struck.
+- `plan-tasks` 1.8.0: a change map page when the operator asks to see one.
+- `speak-outer` 1.3.0: a Language section. The reply follows the operator's language. Text written into the repo or tracker follows the `Language:` line in `docs/agents/project.md`, else English.
+- Templates: `templates/agents/project.md` gets an optional `Language:` line, and `templates/specs-catalog-domain.md` gets an Owner column and a shard `Owner:` line.
+
+Tested and left unchanged, each recorded in `docs/design/`: `2026-10-18-tracker-writes-no-op.md`, `2026-10-18-batched-decisions-no-op.md`, `2026-10-18-housekeeping-no-op.md`, `2026-10-18-host-concurrency-no-op.md`, `2026-10-18-spike-pipeline-no-op.md`, `2026-10-18-incident-no-op.md`, `2026-10-18-verified-red-no-op.md`, `2026-10-18-security-blast-radius-no-op.md`.
+
 ### chart-progress 1.1.0 and plan-milestones 1.2.0 — a weekly dashboard on a parseable roadmap (2026-10-14)
 
 `/chart-progress` writes one self-contained HTML page for the end-of-week review: finished in

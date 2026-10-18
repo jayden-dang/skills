@@ -69,5 +69,27 @@
       "the PR does not use a not-just / not-merely contrast frame",
       "the PR contains no skill names or Satisfies grammar"
     ]
+  },
+  {
+    "eval_id": 7,
+    "eval_name": "tracker-comment-in-english-under-a-vietnamese-thread",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § v1.3.0 — RED: 5/5 wrote Quang's ticket comment in Vietnamese under his Vietnamese note while the PR body stayed English",
+    "prompt": "(Vietnamese) Lan: open the PR for feat/nightly-backup and leave Quang a comment on the ticket he'll get at a glance: the PR is up, cron must be installed by hand after merge, the real NAS is untested. Quang's last note on the ticket is in Vietnamese; project.md has no Language line.",
+    "assertions": [
+      "the new ticket comment is in English",
+      "the PR title and body are in English",
+      "the reply to Lan is in Vietnamese"
+    ]
+  },
+  {
+    "eval_id": 8,
+    "eval_name": "language-line-overrides-english",
+    "kind": "contract",
+    "derived_from": "SKILL.md § Language",
+    "prompt": "docs/agents/project.md says `Language: Vietnamese`. Write the PR body and a ticket comment.",
+    "assertions": [
+      "the PR body and the ticket comment are in Vietnamese"
+    ]
   }
 ]

@@ -27,6 +27,7 @@ the derivation in `frame-change`, `clarify-decisions`, `interpret-session`, and
 - **Catalog sync:** `<unset | index-only | full-triad>` — optional. Shared catalog shape is always Domain router INDEX + `docs/specs/catalog/*.md` (not a flat Code table on INDEX). **`index-only`:** git tracks `docs/specs/INDEX.md` (± `docs/specs/catalog/`); feature triad dirs stay local (gitignored workbenches); `/map-features` may `export` / `materialize`. **`full-triad`:** triad dirs are committed as usual; map-features dispose-only (no materialize/export modes). **`unset` or absent:** same as full-triad (safe default — do not rewrite `.gitignore`).
 - **Default PR base:** `<branch, e.g. main>` — optional; `land-branch` reads it as the third rung of its base-resolution ladder. Leave the placeholder unset and `land-branch` asks for the base per invocation instead.
 - **Default landing action:** `<pr | merge | keep>` — optional; used only when intent is ambiguous and no existing PR resolves it.
+- **Language:** `<English | a language>` — optional; the language of PRs, commits, tracker issues and comments. Absent means English. Replies to the operator follow the operator's own language either way.
 
 These are distinct from the product **Goals** in `docs/product/vision.md` (what success
 looks like): posture is *how carefully to build right now*, not *what to build*.

@@ -397,6 +397,12 @@ Missing: **feature → owner**, and any PR step that uses it.
 
 ## Phase 4 — Lifecycle edges
 
+> **T13 tested no-op 2026-10-18** (`2026-10-18-spike-pipeline-no-op.md`). 8/8 spikes
+> answered correctly with evidence, recorded the answer on the ticket, and did not
+> overrun; 0/4 built when the answer was no. When it held and the operator invited a head
+> start, 4/4 wrote production code test-first — allowed by `run-spike` today; whether a
+> spike may ever start the build is open decision 6.
+
 ### T13 Spike pipeline — `run-spike` + `research` — S
 - REQUIRED slots: question, hypothesis, kill criterion, time-box; output
   lands durably (`docs/research/` or an ADR in the consuming repo) and links
@@ -518,7 +524,7 @@ to capability gaps first: **T16 shipped** (`sweep-backlog`), **T10 shipped** (`l
 guard); T17 closed as a tested no-op. Headless harness built (`run-headless.sh`); T6 closed as
 a tested no-op on jdk. **T7 shipped** (`show-run-status`). T6 side finding fixed: `build-in-waves` 2.3.0 (haiku
 wrote small tasks in the controller 2/4 → 0/4). **T8 shipped** (`reroute-plan` 1.1.0,
-`build-in-waves` 2.4.0). Next: T13 spike, T14 incident, T15 visualize, T18 audit, T19.
+`build-in-waves` 2.4.0). **T13 no-op.** Next: T14 incident, T15 visualize, T18 audit, T19.
 
 ## 12. Open decisions
 
@@ -530,3 +536,6 @@ wrote small tasks in the controller 2/4 → 0/4). **T8 shipped** (`reroute-plan`
 4. **Roster** — `haiku` + `sonnet`, or add `opus` for the orchestrator (T19)?
 5. **T23 tracker echo** — also comment the PR link on the foreign feature's
    existing issue (a ledger write, allowed under `propose`), or PR only?
+6. **Spike → build** — may a spike start the build when the operator invites a head start
+   (today: yes, test-first), or does it always stop at the answer and hand over to
+   `plan-tasks`? RED recorded in `2026-10-18-spike-pipeline-no-op.md`.

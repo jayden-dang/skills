@@ -532,6 +532,11 @@ Missing: **feature → owner**, and any PR step that uses it.
 
 ## Phase 6 — Proof and release
 
+> **T20 run 2026-10-18 on klynt** (sandboxed clone, read-only `gh`): 4 ready tickets, 0
+> eligible (all `Implemented`, labels stale), each named with its proof, one message, 0
+> writes, 0.01 USD. The build chain did not run: the board had no approved, unbuilt
+> ticket. Record: `2026-10-18-dogfood-klynt.md`.
+
 ### T20 Real-repo dogfood — M
 - Run T19 under `propose` + `batched` on one real repository, record the
   run in `docs/design/` (interruptions, cap held, cost line, PRs).

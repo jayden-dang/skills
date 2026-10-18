@@ -215,6 +215,13 @@ without a human in the loop:
 - **Done:** fixture: unsigned draft cannot reach the tracker; signed draft
   publishes; status lists pending drafts.
 
+> **T4 RED 2026-10-18: tested no-op, 6/6** (`build-inline`, 3 sonnet + 3 haiku).
+> Asked to batch, every run kept working past each planted conflict, held only
+> the dependent work, never shipped the breaking enum, and ended with one list
+> of picks. Record: `2026-10-18-batched-decisions-no-op.md`. Untested:
+> `build-in-waves` (needs a runner that can dispatch subagents) and an
+> interactive session where the agent can ask mid-run.
+
 ### T4 Batched decisions — `execute-common` (`decision-trail.md`), `clarify-decisions` (new `batch-card.md`), `build-in-waves`, `build-by-story` — M
 - Classify every mid-run decision by an observable rule:
   **local-reversible** (inside one task's file scope, no contract, no
@@ -473,8 +480,8 @@ three times, batched decisions twice).
 
 Update 2026-10-18: T0.1 done; T1, T2, T3a, T3b closed as tested no-ops (24/24
 compliant runs); T3c deferred. Governance needs no jdk text — a prose working
-agreement holds. Next: **T4** (batched decisions — jdk's own rule pulls the
-other way, so a real failure is likely), then **T5**.
+agreement holds. T4 (batched decisions) also closed as a tested no-op, 6/6 —
+an explicit request to batch beat `build-inline`'s stop-and-ask. Next: **T5**.
 
 ## 12. Open decisions
 

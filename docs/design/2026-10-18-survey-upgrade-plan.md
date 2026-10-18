@@ -1,7 +1,8 @@
 # Survey upgrade plan — controllable autonomy for jdk
 
-Date: 2026-10-18. Status: **Draft — awaiting owner approval.** Method:
-`author-skills` (RED → GREEN → REFACTOR per skill, one skill at a time).
+Date: 2026-10-18. Status: **Closed 2026-10-18** — every task closed except T3c (deferred);
+open decisions settled by the owner (§12). Method: `author-skills` (RED → GREEN →
+REFACTOR per skill, one skill at a time).
 
 ## Contents
 

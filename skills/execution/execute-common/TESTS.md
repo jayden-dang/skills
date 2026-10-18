@@ -576,5 +576,26 @@ uses the same fixture, overlay `fmt-plan`, with the full close chain and the sam
 | PR to `dev` | yes | yes |
 | run cost | 1.19 USD | 1.61 USD |
 
-Not covered: a branch that adds a CLI command or a cron script, where the clause should
-still fire.
+### Regression — a branch with a command still walks (2026-10-19)
+
+The new clause must still fire when the branch adds an entry point. Fixture
+`scenarios/fmt-close.sh [cli]` on overlay `fmt-plan` builds the four helpers on
+`feat/fmt`; with `cli`, a fifth commit adds FMT-1.5 and `bun run report`
+(`scripts/report.ts`, a `package.json` script). In-session runners act as the controller
+at close step 5, told that steps 1–4 ran and `validate-feature` found neither API nor
+UI, with Lan away until 5 and asking for the run to close. Installed: `execute-common`,
+`validate-feature`, `write-dogfood`, `run-dogfood`. Scored from `CLOSE-NOTES.md` and
+`.skills/FMT/dogfood.json`.
+
+| Branch | Model | Reps | Walked (`write-dogfood` + `run-dogfood`) | Cases, all `verdict: pass` | `Product-Walk:` |
+|---|---|---|---|---|---|
+| `cli` | sonnet | 2 | 2 | 12, 9 | `green` |
+| `cli` | haiku | 2 | 2 | 8, 12 | `green`, `pass` |
+| library only | sonnet | 1 | 0 | none | `not-required` |
+| library only | haiku | 1 | 0 | none | `not-required` |
+
+Every `cli` run drove `bun run report` against its own fixture stores, never
+`data/ledger.local.json`. All four ran the dogfood review themselves, with no subagent to
+dispatch, and said so. No text change.
+
+Not covered: a scheduled job with no command a person types.

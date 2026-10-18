@@ -426,6 +426,13 @@ Missing: **feature → owner**, and any PR step that uses it.
   handed in the prompt. Expect a fix from the theory.
 - **Trigger test** against `debug-remote` and `root-cause`.
 
+> **T15 shipped 2026-10-18 — `plan-tasks` 1.8.0.** Text already carried the planted
+> cross-feature collision 8/8, so "always emit a map" fails the no-op test. The failure is
+> the picture when asked: 3 inline ASCII + 1 none, collision on 0. A conditional change
+> map through `craft-page` (four parts, `grep` for other plans on the same files): 10/10
+> pages carried the collision on the figure, until two haiku drew it inline instead
+> ("covers the same ground"); countered, 3/3. Unasked, 0/2 drew one.
+
 ### T15 Visualize planned changes — `plan-tasks` (+ `craft-page` figure job) — M
 - When a plan touches ≥2 modules or tier ≥2 (observable), plan-tasks emits a
   **change map** page before approval: components touched, new or changed
@@ -530,7 +537,7 @@ to capability gaps first: **T16 shipped** (`sweep-backlog`), **T10 shipped** (`l
 guard); T17 closed as a tested no-op. Headless harness built (`run-headless.sh`); T6 closed as
 a tested no-op on jdk. **T7 shipped** (`show-run-status`). T6 side finding fixed: `build-in-waves` 2.3.0 (haiku
 wrote small tasks in the controller 2/4 → 0/4). **T8 shipped** (`reroute-plan` 1.1.0,
-`build-in-waves` 2.4.0). **T13, T14 no-op.** Next: T15 visualize, T18 audit, T19.
+`build-in-waves` 2.4.0). **T13, T14 no-op. T15 shipped** (`plan-tasks` 1.8.0). Next: T18 audit, T19.
 
 ## 12. Open decisions
 

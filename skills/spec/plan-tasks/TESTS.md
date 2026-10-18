@@ -424,3 +424,66 @@ including three that only pin defaults; the agent noted the rules "pull in two d
 
 **GREEN.** With "same shape at the same seam share one table-driven test": 3 tests (8-row
 rejection table, 3-row defaults table, one pass-through), 8 steps, footer cites all ten IDs.
+
+## v1.8.0 — the change map (2026-10-18)
+
+Roster: sonnet and haiku, headless (`skill-fixtures/run-headless.sh`, budget 3–5 USD).
+Fixture: `harbor-ledger` as built — LATEFEE `Approved` requirements and design, no
+`tasks.md`; REFUND `Approved` with a `tasks.md` whose Task 4 rewrites `invoiceView` to
+`(invoice, refunds)`. LATEFEE's design rewrites the same function to `(invoice, today)`.
+Neither spec names the other. Installed: `plan-tasks`, `audit-trace`, `craft-page`,
+`understand`, `design-solution`, `specify-behavior`, `define-domain`. Scored from the
+written `tasks.md`, any `.html` under the checkout (the SVG text and the page text read
+separately) and the final reply (`scenarios/plan-score.py`).
+
+Prompts (Lan): **text** — "Write the plan, then walk me through what it's going to change
+before I approve it — Minh and Quang are reviewing it with me at 3"; **pic** — the same,
+with "give me a picture of what it's going to change — which parts of the system it
+touches and how they connect".
+
+### RED — 1.7.0
+
+| | text (4) | pic (4) |
+|---|---|---|
+| Reply names the REFUND collision on `invoiceView` | 4 | 4 |
+| Names harbor-portal / `docs/api.md` | 4 | 4 |
+| A picture | 0 | 3 inline ASCII, 1 none |
+| The collision on the picture | — | 0 of 3 |
+| An HTML artifact / `craft-page` loaded | 0 / 0 | 0 / 0 |
+
+Text alone carried the collision every time, so a map on every plan fails the no-op test —
+the plan's original "≥2 modules → always emit" predicate is not written. The failure is
+the picture when one is asked for: every one drew LATEFEE's own call chain; h1 drew the
+merged `invoiceView(invoice, refunds, today)` that neither plan holds, as if decided.
+
+Form: wrong shape on an observable request → a conditional ("the operator asks to see
+what the plan changes") with a recipe of four parts and a deterministic pass
+(`grep -ln '<path>' docs/specs/*/tasks.md` per file in the plan's `**Files:**` lines),
+built through `craft-page`'s `before/after structure` job.
+
+### GREEN — 1.8.0 draft, 6 runs (pic: 2 sonnet, 4 haiku; text: 1 sonnet, 1 haiku)
+
+pic 6/6 wrote `.skills/LATEFEE/change-map.html` (inline SVG, no CDN) with the collision on
+the figure and both signatures. text 0/2 drew a map — the conditional held. One haiku map
+(gh1) dropped the `docs/api.md` its plan modifies, and Quang with it; one (gh4) had it only
+in the list beside the figure.
+
+### REFACTOR
+
+1. Files anchored to the plan's `**Files:**` lines, docs included, with gh1's miss as the
+   counter. Re-run 3 haiku + 1 sonnet: page-wide 4/4; rh1 put owners in a list beside the
+   figure. The baseline failure was the collision missing from the picture, not owners —
+   so only the collision is required on the figure; files, owners and consumers on the
+   page.
+2. Two haiku runs on that text drew the picture inline and skipped the page, verbatim:
+   "I drew the picture above inline instead to keep the review moving"; "the diagram above
+   covers the same ground." Countered with the RED record (three inline pictures, the
+   collision on none). Re-run 3 haiku: 3/3 pages, collision on the figure, all four parts.
+
+Rendered and read one map (rs1, `skill-fixtures/transcripts/2026-10-18-t15/png/`): before/
+after columns, NEW/CHANGED marks, owners, harbor-portal, a COLLISION · REFUND box over the
+three files both plans edit, and both plans' `invoiceView` side by side.
+
+Not covered: a plan with no collision (the map still renders, item 4 empty); `show-run-
+status` colouring progress on the map (the plan's T15 follow-on — no baseline asked);
+GitHub/Linear specs held outside `docs/specs/`. Spend: about 2.65 USD.

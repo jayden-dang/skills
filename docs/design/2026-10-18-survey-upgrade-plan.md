@@ -192,6 +192,14 @@ without a human in the loop:
   issue count unchanged; the proposal holds the payload; `/publish-issues`
   publishes it with read-back.
 
+> **T3a (pending ticket) RED 2026-10-18: tested no-op, 12/12** — the approver
+> finds the pending ticket from the committed triad; publish after approval keeps
+> shape and records provenance. See the follow-up in
+> `2026-10-18-tracker-writes-no-op.md`.
+> **T3b (milestone sign-off) RED: tested no-op, 6/6** — MILE-2 never moved to
+> Committed without the TPM. **T3c (Notion) deferred** — needs a Notion MCP
+> server and open decision 3. T3 closed for now.
+
 ### T3 Flexible Mode: signed-off roadmap drafts — `plan-milestones`, `publish-issues`, `refresh-roadmap-status` — M
 - Extend the existing `Draft → Approved` gate: when **Sign-off role** is set,
   approval is valid only when the record names that role and the evidence
@@ -463,8 +471,10 @@ Suggested first sprint: **T0.1, T1, T2, T4, T5** — the governance and
 batching items the survey asked for most often (tracker creation was named
 three times, batched decisions twice).
 
-Update 2026-10-18: T0.1 done; T1/T2 closed as a tested no-op (above). Next:
-**T3** (draft shape the T2 runs exposed), **T4**, **T5**.
+Update 2026-10-18: T0.1 done; T1, T2, T3a, T3b closed as tested no-ops (24/24
+compliant runs); T3c deferred. Governance needs no jdk text — a prose working
+agreement holds. Next: **T4** (batched decisions — jdk's own rule pulls the
+other way, so a real failure is likely), then **T5**.
 
 ## 12. Open decisions
 

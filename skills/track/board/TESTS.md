@@ -57,3 +57,15 @@ specs are `Implemented`. Two causes:
 `|---|` line follows, and also matches a `[CODE]` title. On the same board it now reports
 five open tickets whose spec reads `Implemented`: the four, plus #261 [CCOL], which the T20
 dogfood had missed.
+
+## 1.0.2 — tier-1 fixes (2026-10-19), W10
+
+`board.py` counts a `bug` as eligible ("eligible, tier-1 fix") when its `Requirements
+covered:` IDs are all defined in a `requirements.md` or in `docs/specs/fixes.md`, with
+one of them a `SHALL CONTINUE TO` guard. Such a ticket never draws an "open, but <CODE>
+reads Implemented" line, because a bug on a shipped feature is normal.
+
+Checked deterministically on the W10 fixture:
+- #28 with BERTH-4.1 and its guard 4.2: `eligible, tier-1 fix`, and no disagreement line.
+- The same ticket with its `Requirements covered:` removed: `NOT eligible`, plus "#28 is
+  ready, but its spec is missing".

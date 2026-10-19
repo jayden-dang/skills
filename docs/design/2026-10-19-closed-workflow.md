@@ -1,6 +1,6 @@
 # One closed workflow — the ticket is the hub
 
-Date: 2026-10-19. Status: **Approved 2026-10-19; W0–W9 done; W10 (triage-ready bugs) open.** Method: `author-skills`.
+Date: 2026-10-19. Status: **Approved 2026-10-19; W0–W10 done.** Method: `author-skills`.
 Every transition ships only after its own RED.
 
 ## Contents
@@ -190,3 +190,17 @@ to close the gap, and the owner decides:
   `root-cause` and writes the mini-spec.
 - `deliver-issues` gains a tier-1 lane: a ticket with a triage agent brief goes through
   `root-cause`, then a `test-first` fix, then review, then landing.
+
+## 9. W10: bugs reach Ready through Shaping (2026-10-19), option A
+
+The owner chose to route bugs through Shaping.
+
+| Skill | RED | GREEN |
+|---|---|---|
+| `triage` 1.1.0: a bug whose cause is still open goes to `shaping` | klynt #242: 3/4 recommended `ready-for-agent` | 3/3 `status:shaping`, 0 writes |
+| `shape` 1.1.0: tier 1 ends Ready, with `Requirements covered: <fix>, <guard>` | 0/3 left a ticket `/go` could take | 3/3 |
+| `deliver-issues` 2.1.0: a tier-1 fix is eligible and built with `test-first` | 3/3 bounced #28 back to Shaping | 3/3 claimed → PR `Closes #28` → in-review → closed on merge |
+| `board` 1.0.2: a tier-1 fix is eligible, and a bug on a shipped feature is not reported as disagreeing | — | checked deterministically, both directions |
+
+On klynt, #242 still carries `ready-for-agent` from the W9 triage. Under 1.1.0 it belongs in
+`status:shaping`. That is a tracker write, so it is left for the owner.

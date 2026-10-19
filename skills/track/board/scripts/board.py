@@ -81,6 +81,30 @@ for shard in sorted(Path("docs/specs/catalog").glob("*.md")) if Path("docs/specs
             spec[row["code"]] = triad((shard.parent / path).resolve())
 
 
+# Requirement lines, for tier-1 bugs: a fix requirement and its SHALL CONTINUE TO guard,
+# appended to a feature that may already read Implemented.
+req = {}
+for f in Path("docs/specs").rglob("requirements.md") if Path("docs/specs").is_dir() else []:
+    for m in re.finditer(r"\*\*([A-Z][A-Z0-9-]*-\d+(?:\.\d+)*)\*\*(.*)", f.read_text()):
+        req[m.group(1)] = m.group(2)
+for f in [Path("docs/specs/fixes.md")] if Path("docs/specs/fixes.md").exists() else []:
+    for m in re.finditer(r"\*\*([A-Z][A-Z0-9-]*-\d+(?:\.\d+)*)\*\*(.*)", f.read_text()):
+        req[m.group(1)] = m.group(2)
+
+
+def covered(i):
+    m = re.search(r"Requirements covered:\s*(.+)", i.get("body") or "")
+    return re.findall(r"[A-Z][A-Z0-9-]*-\d+(?:\.\d+)*", m.group(1)) if m else []
+
+
+def tier1(i):
+    """A bug whose covered IDs are all defined, one of them a SHALL CONTINUE TO guard."""
+    if "bug" not in [roles.get(l, l) for l in names(i.get("labels"), "name")]:
+        return False
+    ids = covered(i)
+    return bool(ids) and all(x in req for x in ids) and any("SHALL CONTINUE TO" in req[x] for x in ids)
+
+
 def names(xs, key):
     return [x[key] if isinstance(x, dict) else x for x in xs or []]
 
@@ -125,7 +149,7 @@ for i in issues:
     by[rs[0] if rs else "needs-triage"].append(i)
     code = code_of(i)
     st = spec.get(code) if code else None
-    if st and st["requirements"] in ("Implemented", "Shipped"):
+    if st and st["requirements"] in ("Implemented", "Shipped") and not tier1(i):
         drift.append(f"#{i['number']} is open, but {code} reads {st['requirements']}")
 
 print(f"board: {len(issues)} open tickets · {len(prs)} open PRs · me={me or 'unknown'}")
@@ -173,12 +197,12 @@ if not by["building"]:
 print("### Ready")
 for i in by["ready-for-agent"]:
     st = spec.get(code_of(i) or "")
-    ok = st and all(v == "Approved" for v in st.values())
+    ok = tier1(i) or (st and all(v == "Approved" for v in st.values()))
     if not ok and not (st and st["requirements"] in ("Implemented", "Shipped")):
         drift.append(f"#{i['number']} is ready, but its spec is " + ("missing" if not st else ", ".join(f"{k} {v}" for k, v in st.items())))
     blk = [int(b) for b in re.findall(r"Blocked by:\s*((?:#\d+[ ,]*)+)", i.get("body") or "") for b in re.findall(r"\d+", b)]
     blk = [b for b in blk if b in open_nums]
-    print(f"- #{i['number']} {i['title']} — {'eligible' if ok else 'NOT eligible'}" + (f", blocked by {', '.join('#%d' % b for b in blk)}" if blk else ""))
+    print(f"- #{i['number']} {i['title']} — {('eligible, tier-1 fix' if tier1(i) else 'eligible') if ok else 'NOT eligible'}" + (f", blocked by {', '.join('#%d' % b for b in blk)}" if blk else ""))
 if not by["ready-for-agent"]:
     print("none")
 

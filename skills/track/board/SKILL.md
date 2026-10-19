@@ -1,6 +1,6 @@
 ---
 name: board
-version: 1.0.1
+version: 1.0.2
 description: Shows the whole board by state, starting with everything waiting on you, and every place the board and the repo disagree. Run it with /board.
 disable-model-invocation: true
 ---

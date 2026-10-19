@@ -44,5 +44,17 @@
       "that ticket gets one comment naming the missing pieces"
     ],
     "eval_id": 4
+  },
+  {
+    "eval_name": "tier1-fix-built-test-first",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § 2.1.0",
+    "prompt": "/go #28 — the same-day booking fix is approved; get it to a PR.",
+    "assertions": [
+      "#28 is treated as eligible although its feature has no tasks.md",
+      "it is claimed, then built with test-first (red tests for the fix and its guard)",
+      "its PR closes #28 and the ticket moves to in-review"
+    ],
+    "eval_id": 5
   }
 ]

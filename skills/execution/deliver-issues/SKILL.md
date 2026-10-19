@@ -1,6 +1,6 @@
 ---
 name: deliver-issues
-version: 2.0.0
+version: 2.1.0
 description: Use when every ready ticket on the board, or a named set of tickets, must be built, reviewed and opened as pull requests in one unattended run — the multi-ticket delivery behind /go, /deliver-issues, "deliver the board", "build every ready ticket", ending with one message for whatever needs the operator.
 ---
 
@@ -29,8 +29,13 @@ review that never ran.
 Read the tracker operations from `docs/agents/issue-tracker.md`. When the operator named
 tickets, the ready tickets in scope are those alone. A ticket is eligible
 when its status is the tracker's ready state and its feature's `requirements.md`,
-`design.md` and `tasks.md` all read `Status: Approved`. Order the eligible ones by
-`Blocked by:`.
+`design.md` and `tasks.md` all read `Status: Approved`. A **tier-1 fix** is eligible too.
+That is a `bug` whose `Requirements covered:` IDs are all defined in a `requirements.md`
+or in `docs/specs/fixes.md`, with one of them a `SHALL CONTINUE TO` guard: the mini-spec
+`/shape` writes once its root cause is confirmed. Its feature may read `Implemented`, and it
+has no `tasks.md` of its own. Three baseline runs moved an approved fix like this, #28
+(BERTH-4.1 and its guard 4.2), back to `shaping` for lacking `tasks.md`, which would send
+every fixed bug round the loop forever. Order the eligible ones by `Blocked by:`.
 
 Every other ready ticket leaves the ready column before any build starts. In one edit,
 swap its ready role for `shaping` (`docs/agents/triage-labels.md`). Then comment the pieces
@@ -45,7 +50,10 @@ lacks.*
 
 1. **Branch** from `Default PR base:` in `docs/agents/project.md`. A ticket blocked by
    one delivered in this run branches from that ticket's branch instead.
-2. REQUIRED SUB-SKILL: use `build-in-waves` on its `tasks.md`.
+2. REQUIRED SUB-SKILL: use `build-in-waves` on its `tasks.md`. For a tier-1 fix, first
+   claim the ticket the way `../execute-common/tracker-sync.md` says and record it in
+   `.skills/<CODE>/tickets.md`. Then REQUIRED SUB-SKILL: use `test-first`, with one red
+   test for the fix requirement and one for its guard.
 3. REQUIRED SUB-SKILL: use `inspect-change` on the ticket's range.
 4. REQUIRED SUB-SKILL: use `land-branch` with action `pr`. A stacked ticket's PR is
    based on its blocker's branch.

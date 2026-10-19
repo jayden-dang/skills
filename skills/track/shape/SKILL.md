@@ -1,6 +1,6 @@
 ---
 name: shape
-version: 1.0.1
+version: 1.1.0
 description: Writes what a ticket needs before an agent can build it — the spec triad, or the root cause for a bug — and stops at your approval. Run it with /shape #N.
 disable-model-invocation: true
 ---
@@ -21,8 +21,19 @@ each gate that only the operator may pass. The states are the roles in `docs/age
    - **Tier 2:** REQUIRED SUB-SKILL: use `specify-behavior`, then `design-solution`, then
      `plan-tasks`. Each one stops at its own approval gate, and so does this command. The
      next `/shape #N` resumes at the first piece that is not yet `Approved`.
-3. **Ready.** When the plan is approved, `plan-tasks` publishes onto this same ticket
-   and swaps `shaping` for `ready-for-agent`.
+3. **Ready.**
+   - **Tier 2:** when the plan is approved, `plan-tasks` publishes onto this same ticket and
+     swaps `shaping` for `ready-for-agent`.
+   - **Tier 1:** the fix is ready once the operator accepts the cause and approves the
+     mini-spec: the fix requirement and its `SHALL CONTINUE TO` guard. An approval given
+     up front for a stated fix counts when the drafted text says exactly that; quote it
+     in the comment. Then, in one edit, write `Requirements covered: <fix ID>, <guard ID>`
+     into the ticket body and swap `shaping` for `ready-for-agent`. `/go` reads that line
+     to recognise a tier-1 fix.
+
+   In three baseline runs, Lan had approved #28's fix up front. One kept it in Shaping. One
+   made it Ready but wrote no `Requirements covered:`, so `/go` would have sent it back. One
+   left the mini-spec as Draft and waited.
 
 At every stop, comment on the ticket what is waiting and on whom: "requirements.md
 drafted, waiting for Lan's approval". `/board` then shows the ticket under Shaping with

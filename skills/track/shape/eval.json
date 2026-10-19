@@ -10,5 +10,17 @@
       "a comment on #24 names what is waiting and on whom"
     ],
     "eval_id": 1
+  },
+  {
+    "eval_name": "tier1-ready-with-requirements-covered",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § 1.1.0",
+    "prompt": "/shape #28 — I accept the cause; I approve a mini-spec saying a same-day stay counts as one night.",
+    "assertions": [
+      "the up-front approval is quoted on the ticket",
+      "the ticket body gains Requirements covered: <fix>, <guard>",
+      "shaping is swapped for ready-for-agent in one edit"
+    ],
+    "eval_id": 2
   }
 ]

@@ -140,3 +140,31 @@ this skill itself. The description is now a model-facing routing line.
 Should-not-fire, 0 of 3 runs loaded any skill and 0 wrote to the tracker:
 - "Is the plan for #23 approved, and what does it cover?" (haiku)
 - "Which tickets on the board are ready right now?" (haiku and sonnet)
+
+## 2.1.0 — a tier-1 fix is eligible and built test-first (2026-10-19), W10
+
+The fixture is `harbor-ledger` with overlays `latefee-plan` and `fmt-plan`, plus four
+scenarios in order:
+- `gh-board.sh` puts the board on a stateful `bin/gh`, never GitHub.
+- `gh-roles.sh` maps the `status:*` labels.
+- `wf-pre-bug.sh` files #28, "Same-day booking breaks the invoice API".
+- `wf-pre-tier1.sh` (for `/go`) or `wf-pre-bugshaping.sh` (for `/shape`). `wf-pre-tier1.sh`
+  confirms the cause, amends BERTH-1.2, adds BERTH-4.1 (the fix) and BERTH-4.2 (its
+  `SHALL CONTINUE TO` guard), and puts `Requirements covered: BERTH-4.1, BERTH-4.2` on a
+  Ready #28. `wf-pre-bugshaping.sh` puts #28 in `status:shaping` with a triage brief that
+  marks the cause as open.
+
+The design is `docs/design/2026-10-19-closed-workflow.md` (W10, option A, the owner's choice).
+
+Prompt: "/go #28 — the same-day booking fix is approved; get it to a PR."
+
+**RED (2.0.0): 2 haiku, 1 sonnet.** 0/3 built it. 3/3 moved #28 from `ready-for-agent`
+back to `status:shaping` because `docs/specs/2026-09-22-berth-booking/tasks.md` does
+not exist. A fixed bug would loop between Shaping and Ready forever.
+
+**GREEN (2.1.0).** A `bug` whose `Requirements covered:` IDs are all defined, with one
+of them a `SHALL CONTINUE TO` guard, is eligible. It is claimed, built with `test-first`
+(one red test for the fix and one for the guard), reviewed, and landed.
+- Claimed with `building`: 3/3.
+- Branch `fix/28-…`, PR carrying `Closes #28`, moved to `in-review`: 3/3.
+- Closed after the scripted merge: 3/3.

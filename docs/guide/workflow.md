@@ -64,6 +64,11 @@ and they write state and comments only on the ticket they are working.
    question." You answer and merge; the merges close the tickets.
 5. End of the sprint: `/cut-release` → v0.5.0, and its tickets read `shipped`.
 
+A bug takes the same road. `/triage` confirms it and sends it to Shaping while the cause is
+open. `/shape #N` runs `root-cause`. When you accept the cause and approve the fix
+requirement and its `SHALL CONTINUE TO` guard, the ticket is Ready with `Requirements
+covered:` naming both. `/go` then builds it test-first.
+
 ## Setting it up
 
 `/configure-repo` maps the state roles to your tracker's labels. Four of them are newer:

@@ -37,8 +37,9 @@ reach the tracker.
 
 - **repo** (default): the roadmap file only.
 - **notion**: needs a connected Notion MCP server.
-  1. Run `notion-get-users` with `self` on every connected Notion server, and note the
-     workspace each one reaches. Two servers can be signed in to the same workspace.
+  1. Run `notion-get-self` on every connected Notion server, and note the workspace each
+     one reaches. Two servers can be signed in to the same workspace: Claude Code keeps
+     one sign-in per server URL.
   2. Find the project's drafts database and `notion-fetch` it. Bind it only when
      `notion-get-users` lists the sign-off role in that workspace. Then fill the template's
      `### Notion draft surface` block from what those calls returned.

@@ -32,7 +32,7 @@ Source: Notion's MCP docs (`developers.notion.com/guides/mcp`, read through Cont
   - `notion-create-pages`: `parent` plus a list of pages, each with properties and markdown content.
   - `notion-update-page`.
   - `notion-get-comments` and `notion-create-comment`.
-  - `notion-get-users`: with `self`, it returns the connected user.
+  - `notion-get-self`: the connection's workspace and user. `notion-get-users` with `user_id: "self"` returns the user only.
 - **A create without a `parent` makes a private page.** The docs say: "If a parent is not
   specified, a private page will be created." Nobody but the connected user can see that page,
   so the TPM never sees the draft.
@@ -99,7 +99,7 @@ no-ops. They are recorded in `plan-milestones/TESTS.md` and written nowhere.
 2. **Several workspaces:** Claude Code stores OAuth sign-ins "per endpoint". Two server
    names on `https://mcp.notion.com/mcp` may therefore share one sign-in and reach the same
    workspace. The docs neither confirm nor rule this out. `configure-repo` checks
-   `notion-get-users self` on every server and refuses to bind across workspaces, so a shared
+   `notion-get-self` on every server and refuses to bind across workspaces, so a shared
    sign-in surfaces at setup. Two ways to keep each repo on its own workspace:
    - **Local scope per repo.** `claude mcp add --scope local --transport http notion https://mcp.notion.com/mcp`
      inside each repo, then `/mcp` → Re-authenticate, choosing that repo's workspace.

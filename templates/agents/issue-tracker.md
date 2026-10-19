@@ -25,7 +25,7 @@ Only when **Draft surface** is `notion`; delete this block otherwise.
 
 - **Drafts data source:** `collection://<id>` — `<Workspace> / <page> / <database>`. The ID
   is the binding. It is the same on every machine, and a server name is not.
-- **Workspace:** `<name>` (`<workspace_id>`, from `notion-get-users` with `self`)
+- **Workspace:** `<name>` (`<workspace_id>`, from `notion-get-self`)
 - **Server at setup:** `<MCP server name>`. On any machine, use the connected Notion server
   whose `notion-fetch` returns the data source. If none returns it, write nothing to
   Notion.

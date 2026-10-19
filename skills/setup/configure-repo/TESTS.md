@@ -192,3 +192,14 @@ in that workspace. Otherwise write `repo` and name the `/mcp` Re-authenticate st
 | right workspace: template fields, `collection://1ed6db…` | 2/2 | 3/3 |
 
 Not covered: a solo repo whose sign-off role is the user, where membership is trivially true.
+
+## 2026-10-19 — `notion-get-self` (1.12.0 → 1.12.1)
+
+Found by the real-Notion dogfood (`docs/design/2026-10-19-notion-draft-surface.md`). The
+hosted server has `notion-get-self`, which returns the workspace and the user. Its
+`notion-get-users` takes `user_id: "self"` and returns the user without the workspace.
+The sonnet setup on CommandOSS called both and bound the right database. Wording only:
+step 1 and the template's Workspace line now name `notion-get-self`. The fixture server
+gained the same tool. Re-run on haiku with the WORKTREE, both servers called
+`notion-get-self` 2/2. The right workspace bound `collection://1ed6db…` 1/1, and the
+wrong workspace wrote `repo` 1/1.

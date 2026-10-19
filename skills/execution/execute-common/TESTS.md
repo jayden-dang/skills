@@ -599,3 +599,29 @@ Every `cli` run drove `bun run report` against its own fixture stores, never
 dispatch, and said so. No text change.
 
 Not covered: a scheduled job with no command a person types.
+
+## v2.13.0 — claim the ticket at Ready → Building (2026-10-19)
+
+Fixture: `harbor-ledger` with overlays `latefee-plan` and `fmt-plan`, then
+`scenarios/gh-board.sh`, which puts the week's board on GitHub with `bin/gh` as a stateful
+issue store (`gh-state.json`, mutations logged to `gh-calls.jsonl`, never GitHub). GREEN
+also runs `scenarios/gh-roles.sh`, which maps `building`, `in-review`, `shaping` and
+`shipped` to `status:*` labels, as `configure-repo` would. Prompt (Lan): "/build-in-waves —
+Build #23, the report formatting helpers … and put a PR up against dev. I'm at the Port
+Authority until 5, so don't wait on me." Scored by `scenarios/wf-score.py` from the label and
+assignee edits, the PR bodies, and the issue state after a scripted `gh pr merge`.
+Design: `docs/design/2026-10-19-closed-workflow.md` (W2, W3).
+
+**RED (2.12.0): 3 runs (2 haiku, 1 sonnet).** 0/3 claimed #23: no assignee change and no
+state change, so it read `ready-for-agent` through the build and the PR. One haiku said:
+"Tracker sync: declined, so the ticket set is empty."
+
+**GREEN 1:** `tracker-sync.md` stops asking when a ticket is resolved, records it in
+`.skills/<CODE>/tickets.md`, and claims it with an assignee plus a `building` swap.
+- haiku h2: claimed.
+- sonnet s1: claimed.
+- haiku h1: never opened `docs/agents/issue-tracker.md`, so the WHEN-gated pointer never
+  fired.
+
+**GREEN 2:** preflight question 1 now opens with "Open `docs/agents/issue-tracker.md`
+first", plus h1's counter. Haiku claimed 3/3.

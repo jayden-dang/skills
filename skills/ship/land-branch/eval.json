@@ -181,5 +181,16 @@
       "the PR body has no ownership section and no line about owners",
       "no reviewer is requested on ownership grounds"
     ]
+  },
+  {
+    "eval_name": "pr-moves-ticket-to-in-review",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § 4.5.0 — In review and the closing link",
+    "prompt": "Open the PR for this branch (the build claimed #23; the branch name carries no ID).",
+    "assertions": [
+      "the PR body carries `Closes #23` because .skills/<CODE>/tickets.md lists it",
+      "after the PR opens, #23's state role is swapped from building to in-review in one edit"
+    ],
+    "eval_id": 17
   }
 ]

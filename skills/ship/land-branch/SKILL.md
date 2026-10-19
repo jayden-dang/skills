@@ -1,6 +1,6 @@
 ---
 name: land-branch
-version: 4.4.0
+version: 4.5.0
 description: >
   Use when a finished feature branch needs integration or disposition —
   produces a local merge, pull request, kept branch, discard, or block with
@@ -118,7 +118,8 @@ process-temp files, never interpolated as shell input; keep the worktree.
 **Open it ready, never as a draft** — omit `--draft`, pass `draft: false` to a
 tool that defaults to draft, and make ready any PR that still opened as one. A
 draft is not a crossing. Post step 3's evidence onto the PR per `prepare.md`
-**Post the verdict**, then report the URL and stop: name `/tend-pr` for the CI
+**Post the verdict**, and move the ticket set per `tickets.md` **After the PR opens**. Then
+report the URL and stop: name `/tend-pr` for the CI
 watch rather than waiting here, which stalls the next branch and burns runs on
 commits a later push restarts.
 

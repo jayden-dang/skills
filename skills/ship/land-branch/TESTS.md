@@ -616,3 +616,38 @@ Not written, because no run failed for lack of it: the `Cross-owner:` line in
 `specs-catalog-domain.md` template gains the column and the shard `Owner:` line. Not
 covered: GitLab or other forges without `--reviewer`, an owner token that is a person
 rather than a team, and a PR that strikes a foreign requirement.
+
+## 4.5.0 — In review and the closing link (2026-10-19)
+
+Fixture: `harbor-ledger` with overlays `latefee-plan` and `fmt-plan`, then
+`scenarios/gh-board.sh`, which puts the week's board on GitHub with `bin/gh` as a stateful
+issue store (`gh-state.json`, mutations logged to `gh-calls.jsonl`, never GitHub). GREEN
+also runs `scenarios/gh-roles.sh`, which maps `building`, `in-review`, `shaping` and
+`shipped` to `status:*` labels, as `configure-repo` would. Prompt (Lan): "/build-in-waves —
+Build #23, the report formatting helpers … and put a PR up against dev. I'm at the Port
+Authority until 5, so don't wait on me." Scored by `scenarios/wf-score.py` from the label and
+assignee edits, the PR bodies, and the issue state after a scripted `gh pr merge`.
+Design: `docs/design/2026-10-19-closed-workflow.md` (W2, W3).
+
+**RED (4.4.0):**
+- `Closes #23` in the PR: 1/3 (sonnet only).
+- Moved to in-review: 0/3.
+- Closed after the merge: 1/3. The two haiku branches, `feat/report-formatting` and
+  `feat/fmt-report-formatting`, carried no ID, so the ticket set was empty.
+
+**GREEN (with `execute-common` 2.13.0):** `tickets.md` starts from
+`.skills/<CODE>/tickets.md` and the named ticket, and a new **After the PR opens** section
+swaps the state role to `in-review`.
+
+| | GREEN 1 (h1, h2, s1) | GREEN 2 (h1, h2, h3) |
+|---|---|---|
+| `Closes #23` | 2/3 (h1 had no ticket set, see execute-common) | 3/3 |
+| moved to `status:in-review` | 2/3 | 2/3 |
+| closed after the merge | 2/3 | 3/3 |
+
+Every run that reached `land-branch` moved the ticket: 4/4. The two misses are h1 in
+GREEN 1, which had no ticket set, and h2 in GREEN 2. h2's close stopped on two Important
+findings, and it opened the PR itself with `gh pr create`, without `land-branch`.
+
+Not covered: bypassing `land-branch` at close. The execute family's step 7 already
+requires it, and no text here would reach a run that never loads this skill.

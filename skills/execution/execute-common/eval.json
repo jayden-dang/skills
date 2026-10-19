@@ -165,5 +165,17 @@
       "Product-Walk reads not-required, citing no entry point a person runs",
       "the run does not stop to ask the operator about a walk"
     ]
+  },
+  {
+    "eval_name": "named-ticket-is-claimed",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § v2.13.0 — claim the ticket",
+    "prompt": "/build-in-waves — Build #23 (plan approved) and put a PR up against dev. Don't wait on me.",
+    "assertions": [
+      "docs/agents/issue-tracker.md is read before any dispatch",
+      "#23 is assigned to the session's tracker user and its state role is swapped from ready-for-agent to building in one edit, before the first implementer",
+      "the ticket ID is written to .skills/<CODE>/tickets.md"
+    ],
+    "eval_id": 17
   }
 ]

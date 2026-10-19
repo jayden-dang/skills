@@ -1,6 +1,6 @@
 ---
 name: execute-common
-version: 2.12.0
+version: 2.13.0
 description: Use when build-in-waves, build-by-story, or build-inline loads the shared controller recipe — produces an In-progress catalog stamp, a runtime-bound session snapshot, lease state, ledger state, and a revision-bound close receipt.
 ---
 
@@ -16,9 +16,11 @@ says to. Registered so `npx skills add` copies it with the execute family.
 Three questions, before any dispatch, any `isolate-workspace` / `git worktree add`,
 and any first production edit:
 
-1. **Issue tracker sync.** WHEN `docs/agents/issue-tracker.md` names a configured
-   tracker, read `tracker-sync.md` beside this file and follow it exactly;
-   otherwise → empty ticket set, continue (unconfigured is normal, not a failure).
+1. **Issue tracker sync.** Open `docs/agents/issue-tracker.md` first. When it names a
+   tracker, read `tracker-sync.md` beside this file and follow it exactly: a ticket the
+   operator named is claimed here, before any dispatch. One haiku build of #23 never
+   opened the file, so the ticket was never claimed and its PR never closed it. No file,
+   or no tracker named → empty ticket set, continue (unconfigured is normal, not a failure).
 2. **Catalog occupancy.** Read `Status:` from `requirements.md` and the
    matching `docs/specs/INDEX.md` row. INDEX missing → say so once, suggest
    `/configure-repo`; still write `requirements.md` when that file exists.

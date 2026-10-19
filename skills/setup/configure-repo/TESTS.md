@@ -203,3 +203,10 @@ step 1 and the template's Workspace line now name `notion-get-self`. The fixture
 gained the same tool. Re-run on haiku with the WORKTREE, both servers called
 `notion-get-self` 2/2. The right workspace bound `collection://1ed6db…` 1/1, and the
 wrong workspace wrote `repo` 1/1.
+
+## 2026-10-19 — four more state roles (1.12.1 → 1.13.0), closed workflow W1
+
+`triage-labels.md` gains `shaping`, `building`, `in-review` and `shipped`. Decision B
+proposes `status:<role>` for them. This is structural: the RED and GREEN that need the
+roles are in `execute-common` 2.13.0 (claim) and `land-branch` 4.5.0 (in review), and both
+ran on a board that maps them. Design: `docs/design/2026-10-19-closed-workflow.md`.

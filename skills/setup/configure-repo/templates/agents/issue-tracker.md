@@ -15,8 +15,23 @@ and program writers read these fields.
 | **Close linkage** | Tracker-native close text for the feature PR | e.g. GitHub `Closes #N` |
 | **Program sync** | `local` — MILE/ROAD only in `docs/roadmap/`. `labels` / `project_fields` — metadata on the feature issue only. `initiatives` — lead/admin remote program mirror | `local` |
 | **Program write role** | `owner` \| `lead` \| `ic` — who may create remote program objects | `ic` (with Program sync `local`) |
+| **Draft surface** | `repo` — milestone drafts live in `docs/roadmap/INDEX.md` only. `notion` — each milestone draft is also a page in the Notion database below, where the sign-off role signs it off before any of its tickets reach the tracker | `repo` |
 
 Slot vs CODE: one home in `plan-milestones` (**ROAD-N is a slot, not a feature**).
+
+### Notion draft surface
+
+Only when **Draft surface** is `notion`; delete this block otherwise.
+
+- **Drafts data source:** `collection://<id>` — `<Workspace> / <page> / <database>`. The ID
+  is the binding. It is the same on every machine, and a server name is not.
+- **Workspace:** `<name>` (`<workspace_id>`, from `notion-get-users` with `self`)
+- **Server at setup:** `<MCP server name>`. On any machine, use the connected Notion server
+  whose `notion-fetch` returns the data source. If none returns it, write nothing to
+  Notion.
+- **Sign-off:** `Status` = `Signed off` with `Signed off by` = `<name of the sign-off role's
+  Notion user>`. Only that person sets either property; agents write `Draft` or
+  `In review`.
 
 ## Wayfinding operations
 

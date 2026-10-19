@@ -28,6 +28,34 @@ Follow-up (when tracker is not `local` / `other`): **Program sync for milestones
 - **labels** / **project_fields** — put ROAD/MILE as metadata on the feature issue only.
 - **initiatives** (or org Project as program board) — for leads who want a remote program view.
 
+## Draft surface (all trackers)
+
+Follow-up: **where do milestone drafts wait for sign-off?** Explainer: `plan-milestones`
+drafts each milestone in `docs/roadmap/INDEX.md`. With `notion`, it also writes a page in
+one Notion database, the sign-off role signs that page off, and only then do its tickets
+reach the tracker.
+
+- **repo** (default): the roadmap file only.
+- **notion**: needs a connected Notion MCP server.
+  1. Run `notion-get-users` with `self` on every connected Notion server, and note the
+     workspace each one reaches. Two servers can be signed in to the same workspace.
+  2. Find the project's drafts database and `notion-fetch` it. Bind it only when
+     `notion-get-users` lists the sign-off role in that workspace. Then fill the template's
+     `### Notion draft surface` block from what those calls returned.
+  3. If the sign-off role is not listed, write **Draft surface** `repo`. Tell the user which
+     workspace each server reached, and that the project's own workspace needs a sign-in:
+     `/mcp`, then the server, then **Re-authenticate**, choosing that workspace.
+
+  Why step 3 is there: one test made Klynt Labs the only workspace either server could reach.
+  All six setups then bound harbor-ledger to Klynt's "Ledger / Roadmap drafts", another
+  company's database. Two of them saw that Quang was not a member of that workspace, and
+  still wrote him in as the sign-off person.
+
+`plan-milestones` and `refresh-roadmap-status` read only the **Draft surface** row and that
+block in `docs/agents/issue-tracker.md`. They never read a Notion binding written anywhere
+else. One baseline setup recorded it in a new `project.md` section, and that repo's
+drafts would have stayed out of both skills.
+
 ## Write scope by role
 
 Also record **who is running setup** for write scope:

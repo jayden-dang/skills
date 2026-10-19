@@ -2,6 +2,18 @@
 
 ## Unreleased
 
+### Notion as the draft surface for Flexible Mode (2026-10-19, plan T3c)
+
+Milestone drafts can wait for the TPM's sign-off in Notion before any ticket reaches the tracker, in the right Notion area when one person works across several projects and workspaces.
+
+- `templates/agents/issue-tracker.md`: a **Draft surface** row (`repo` or `notion`) and a `### Notion draft surface` block. The binding is the drafts data source ID, the workspace, the setup server, and the Sign-off line (`Status` = `Signed off` with `Signed off by` = the sign-off role).
+- `configure-repo` 1.12.0: a Draft surface follow-up. It binds a Notion database only when the sign-off role is a member of its workspace; otherwise it writes `repo` and names the `/mcp` Re-authenticate step.
+- `plan-milestones` 1.3.0: with Draft surface `notion`, the milestone also becomes a Notion page with a REQUIRED `## Tickets on sign-off` section (`notion-draft.md`). The description now covers Notion drafts awaiting sign-off.
+- `refresh-roadmap-status` 1.3.0: a Notion drafts pass that quotes the sign-off role's newest comment on every draft not yet signed off.
+- `publish-issues`: unchanged. With a ticket list on the signed page it published exactly that list 5/5.
+
+Evidence: each skill's `TESTS.md` and `docs/design/2026-10-19-notion-draft-surface.md`.
+
 ### Survey upgrade: four new skills, five edits, eight tested no-ops (2026-10-18)
 
 New, all user-invoked (`disable-model-invocation: true`), each with a `TESTS.md` of RED and GREEN runs on sonnet and haiku:

@@ -1,6 +1,6 @@
 ---
 name: plan-milestones
-version: 1.2.0
+version: 1.3.0
 description: Use when a project's milestones need planning, sequencing, replanning, or
   ANY edit to an existing roadmap — produces or revises docs/roadmap/INDEX.md, the
   milestone intent registry carrying stable MILE-N and ROAD-N IDs that later feature specs
@@ -9,8 +9,9 @@ description: Use when a project's milestones need planning, sequencing, replanni
   decomposed work into independent sub-features, and equally on any edit to a roadmap that
   already exists — "update the roadmap", "drop this item", "we're not doing X anymore",
   "reorder the milestones", "move sharing ahead of search", "reword this outcome", "commit
-  to the next milestone", "this milestone shipped", or any request touching
-  docs/roadmap/INDEX.md. Not for one feature's
+  to the next milestone", "this milestone shipped", "draft the next milestone in Notion for
+  sign-off", or any request touching docs/roadmap/INDEX.md or a roadmap draft awaiting the
+  TPM's sign-off. Not for one feature's
   requirements (specify-behavior), and not for reporting where the plan currently stands
   (refresh-roadmap-status).
 ---
@@ -126,6 +127,9 @@ it covers writing the `Closed:` SHA and re-running the approval gate.
 *Done when: the change is applied, no ID moved or vanished, and the gate has run.*
 
 ## The approval gate
+
+WHEN `docs/agents/issue-tracker.md` reads **Draft surface** `notion`, read `notion-draft.md`
+beside this file and follow it before this gate: the sign-off role signs off that page.
 
 <HARD-GATE>
 Validate S1–S8 from the template's rule block. Report every defect you find and STOP —

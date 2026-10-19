@@ -146,3 +146,49 @@ the skill. Existing binary → `start` only, never `upgrade` / `stop`. The
 browser extension stays a store install the user does; a disconnect is named
 once and does not block the other proves. `install_skill.sh` is the wrong
 script: it copies a skill for Kimi Desktop and does not download the daemon.
+
+## 2026-10-19 — Draft surface follow-up (1.11.1 → 1.12.0), plan T3c
+
+Roster: haiku and sonnet, headless (`skill-fixtures/run-headless.sh` with `FIXTURE_MCP`).
+`mcp/fake-mcp.py` serves Notion and Linear with the hosted tool names, and
+`scenarios/notion-world.py` seeds two Notion workspaces. `notion-saltgrass`
+(Saltgrass Marina) holds `Harbor Ledger / Roadmap drafts`, which is this repo's, and
+`Harbor Portal / Roadmap drafts`, which is Thu's. `notion-klynt` (Klynt Labs) holds
+`Ledger / Roadmap drafts`. Linear has teams `LED` and `POR`. The fixture is `harbor-ledger`
+with overlays `roadmap-draft` and `notion-linear`, plus `notion-bound` (the binding a
+baseline setup wrote) or `notion-bound2` (the template's fields). Scored by
+`scenarios/notion-score.py` from the server state files and `mcp-calls.jsonl`, never from
+the reply. Full record: `docs/design/2026-10-19-notion-draft-surface.md`.
+
+The prompt (Lan) runs `/configure-repo`: "Quang (our TPM) wants roadmap drafts in Notion
+… My Notion is connected to this session. Set this repo up for that."
+
+**RED (1.11.1), both workspaces reachable.** All 3 of 3 runs bound the right database by ID
+and wrote down the server. They put it in their own sections, with three shapes across the
+three runs. That is a no-op for picking the area, but the downstream skills need one place
+to key on, so the template gained a **Draft surface** row and a `### Notion draft surface`
+block.
+
+**GREEN 1 (template only).** On haiku, 3/3 filled the template's fields. On sonnet, 0/1:
+the repo was already configured, and sonnet edited `issue-tracker.md` without reading the
+template, writing a `## Roadmap drafts (Notion)` section into `project.md` instead. That
+section is invisible to `plan-milestones` and `refresh-roadmap-status`. Fix: Decision A's
+follow-ups ask for Draft surface, and Write step 1 says an already-configured repo gains
+the rows it lacks.
+
+**RED (1.11.1) and GREEN 1, wrong workspace.** Both servers were signed in to Klynt Labs,
+the shared-sign-in case Claude Code's per-endpoint OAuth makes possible. 3/3 RED and 3/3
+GREEN 1 runs bound harbor-ledger to Klynt's `Ledger / Roadmap drafts`. Two of them saw
+the problem and bound it anyway. Verbatim (sonnet): "He isn't a member of the Klynt Labs
+Notion workspace … I wrote `Quang Vo` as the sign-off person anyway."
+
+**GREEN 2 (1.12.0).** The new rule: bind only when `notion-get-users` lists the sign-off role
+in that workspace. Otherwise write `repo` and name the `/mcp` Re-authenticate step.
+
+| | haiku | sonnet |
+|---|---|---|
+| wrong workspace: Draft surface `repo`, nothing bound | 3/3 | 1/1 |
+| wrong workspace: told Lan which workspace both servers reach | 3/3 | 1/1 |
+| right workspace: template fields, `collection://1ed6db…` | 2/2 | 3/3 |
+
+Not covered: a solo repo whose sign-off role is the user, where membership is trivially true.

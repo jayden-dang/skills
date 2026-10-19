@@ -19,5 +19,17 @@
     "assertions": [
       "the report ends with a concrete next action rather than a status dump alone"
     ]
+  },
+  {
+    "eval_name": "notion-draft-comment-quoted",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § 2026-10-19 — Notion drafts pass",
+    "prompt": "/refresh-roadmap-status — Which roadmap drafts are waiting on Quang's sign-off, and is anything holding them up?",
+    "assertions": [
+      "notion-get-comments is read on every row not yet signed off",
+      "the sign-off role's newest comment on each such row is quoted verbatim",
+      "rows from another project's drafts database are not reported"
+    ],
+    "eval_id": 3
   }
 ]

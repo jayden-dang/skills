@@ -1,8 +1,8 @@
 # Survey upgrade plan — controllable autonomy for jdk
 
-Date: 2026-10-18. Status: **Closed 2026-10-18** — every task closed except T3c (deferred);
-open decisions settled by the owner (§12). Method: `author-skills` (RED → GREEN →
-REFACTOR per skill, one skill at a time).
+Date: 2026-10-18. Status: **Closed 2026-10-19** — every task closed, T3c last; open
+decisions settled by the owner (§12). Method: `author-skills` (RED → GREEN → REFACTOR
+per skill, one skill at a time).
 
 ## Contents
 
@@ -215,6 +215,13 @@ without a human in the loop:
   Linear" under time pressure. Expect publish without TPM sign-off.
 - **Done:** fixture: unsigned draft cannot reach the tracker; signed draft
   publishes; status lists pending drafts.
+
+> **T3c shipped 2026-10-19:** `configure-repo` 1.12.0, `plan-milestones` 1.3.0,
+> `refresh-roadmap-status` 1.3.0, and the template's Draft surface fields. RED: setup bound
+> another company's database 3/3 when only that workspace was reachable; a real sign-off
+> published 2/5; status quoted the TPM's blocking comment 1/7. GREEN: 4/4, 4/4, 4/4.
+> Picking the right area, with one workspace or several, was a no-op given an ID binding.
+> Record: `2026-10-19-notion-draft-surface.md`.
 
 > **T4 RED 2026-10-18: tested no-op, 6/6** (`build-inline`, 3 sonnet + 3 haiku).
 > Asked to batch, every run kept working past each planted conflict, held only
@@ -592,7 +599,7 @@ to capability gaps first: **T16 shipped** (`sweep-backlog`), **T10 shipped** (`l
 guard); T17 closed as a tested no-op. Headless harness built (`run-headless.sh`); T6 closed as
 a tested no-op on jdk. **T7 shipped** (`show-run-status`). T6 side finding fixed: `build-in-waves` 2.3.0 (haiku
 wrote small tasks in the controller 2/4 → 0/4). **T8 shipped** (`reroute-plan` 1.1.0,
-`build-in-waves` 2.4.0). **T13, T14 no-op. T15 shipped** (`plan-tasks` 1.8.0). **T18 shipped** (`audit-shipped`). **T19 shipped** (`deliver-issues`, `land-branch` 4.3.1). **T5 shipped** (`speak-outer` 1.3.0). **T11 no-op.** **T12 no-op. T23 shipped** (`land-branch` 4.4.0). **T21, T22 done.** **T9 shipped. T20 run.** All tasks closed except T3c (deferred).
+`build-in-waves` 2.4.0). **T13, T14 no-op. T15 shipped** (`plan-tasks` 1.8.0). **T18 shipped** (`audit-shipped`). **T19 shipped** (`deliver-issues`, `land-branch` 4.3.1). **T5 shipped** (`speak-outer` 1.3.0). **T11 no-op.** **T12 no-op. T23 shipped** (`land-branch` 4.4.0). **T21, T22 done.** **T9 shipped. T20 run. T3c shipped** (Notion draft surface). All tasks closed.
 
 ## 12. Open decisions
 

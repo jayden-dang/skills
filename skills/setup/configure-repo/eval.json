@@ -46,5 +46,27 @@
       "an existing binary is started rather than downloaded again",
       "a disconnected browser extension is named as a store install and does not block the rest of setup"
     ]
+  },
+  {
+    "eval_name": "notion-binding-needs-signoff-member",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § 2026-10-19 — Draft surface follow-up",
+    "prompt": "/configure-repo — roadmap drafts go to Notion for Quang to sign off. My Notion is connected. (Every connected Notion server reaches a workspace Quang is not a member of.)",
+    "assertions": [
+      "Draft surface is written as `repo` and no Notion database is bound",
+      "the reply names the workspace each Notion server reaches and the /mcp Re-authenticate step"
+    ],
+    "eval_id": 5
+  },
+  {
+    "eval_name": "notion-binding-in-template-fields",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § 2026-10-19 — Draft surface follow-up",
+    "prompt": "/configure-repo — roadmap drafts go to Notion for Quang to sign off. My Notion is connected.",
+    "assertions": [
+      "docs/agents/issue-tracker.md gains a Draft surface row reading `notion`",
+      "its `### Notion draft surface` block names the drafts data source by `collection://` ID, the workspace, the server, and the Sign-off line"
+    ],
+    "eval_id": 6
   }
 ]

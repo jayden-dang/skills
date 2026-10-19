@@ -61,6 +61,10 @@ The skill validates the eight structural rules `S1`–`S8` carried in the templa
 
 A material change to an already-approved roadmap — outcome, membership, ordering, commitment state, or goal citations — sets `Status: Draft` and re-enters that gate. An amended plan is a different plan.
 
+## Notion drafts
+
+When `docs/agents/issue-tracker.md` reads **Draft surface** `notion`, each new or changed milestone also becomes a page in the bound Notion database, where the sign-off role (the TPM) signs it off. The page carries a REQUIRED `## Tickets on sign-off` section listing every tracker ticket that publishing the milestone would create. The sign-off then approves exactly those tickets. Without the list, three of five publishing runs refused to act on a real sign-off, because "the sign-off is on the milestone"; with it, five of five created exactly the list. The rule lives in `notion-draft.md` beside the skill. Picking the right database when one person has several projects needed no rule, because the binding is a data source ID. See `docs/design/2026-10-19-notion-draft-surface.md`.
+
 ## Two rules deliberately absent
 
 Forward-dependency detection and surface-overlap consolidation were specified, tested, and **retired** — fresh baseline agents did both unprompted, so writing them in would have been no-op text. Forward dependencies are still caught structurally, by `S4` in the rule block and by `refresh-roadmap-status`'s `R11`. The `Surfaces:` slot stays, because it is the data that makes overlap visible; what went away is the instruction to reason about it.

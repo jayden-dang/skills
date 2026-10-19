@@ -651,3 +651,11 @@ findings, and it opened the PR itself with `gh pr create`, without `land-branch`
 
 Not covered: bypassing `land-branch` at close. The execute family's step 7 already
 requires it, and no text here would reach a run that never loads this skill.
+
+## 4.5.1 — owner notice reads a catalog table split by a blank line (2026-10-19)
+
+The `/board` dogfood on klynt found that `docs/specs/catalog/learning.md` has a blank line
+inside its table. `owner-notice.py` parsed catalogs the same way `board.py` did, so a row
+after the blank line was taken as a header and its feature had no owner. A header is now
+the row a `|---|` line follows. Checked on a two-part table: the row after the blank line
+(BBB, `@org/beta`) is reported as cross-owner, and the branch's own feature (AAA) is not.

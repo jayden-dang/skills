@@ -1,6 +1,6 @@
 ---
 name: land-branch
-version: 4.5.0
+version: 4.5.1
 description: >
   Use when a finished feature branch needs integration or disposition —
   produces a local merge, pull request, kept branch, discard, or block with

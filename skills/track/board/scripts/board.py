@@ -47,19 +47,38 @@ if tl.exists():
             roles[label.strip()] = role
 STATES = ["needs-triage", "shaping", "ready-for-agent", "building", "in-review", "needs-info", "ready-for-human", "wontfix", "shipped"]
 
-# Feature status ← "Requirements covered: CODE-…" → catalog row → requirements.md Status.
+# Feature status ← "Requirements covered: CODE-…" (or a "[CODE]" title) → catalog row → the
+# triad's Status lines. Columns are found by header name; a Spec cell may be a path, a
+# `path`, or a markdown link [spec](path).
+def triad(d):
+    st = {}
+    for f in ("requirements", "design", "tasks"):
+        p = d / f"{f}.md"
+        m = re.search(r"^Status:\s*(\w[\w-]*)", p.read_text(), re.M) if p.exists() else None
+        st[f] = m.group(1) if m else "missing"
+    return st
+
+
 spec = {}
 for shard in sorted(Path("docs/specs/catalog").glob("*.md")) if Path("docs/specs/catalog").is_dir() else []:
-    for line in shard.read_text().splitlines():
+    lines, head = shard.read_text().splitlines(), None
+    for n, line in enumerate(lines):
+        if not line.startswith("|"):
+            continue  # a blank line inside a catalog table does not end it
         cells = [c.strip() for c in line.strip().strip("|").split("|")]
-        if len(cells) > 3 and re.fullmatch(r"[A-Z][A-Z0-9-]*", cells[0]):
-            d = (shard.parent / cells[2].strip("`")).resolve()
-            st = {}
-            for f in ("requirements", "design", "tasks"):
-                p = d / f"{f}.md"
-                m = re.search(r"^Status:\s*(\w[\w-]*)", p.read_text(), re.M) if p.exists() else None
-                st[f] = m.group(1) if m else "missing"
-            spec[cells[0]] = st
+        if n + 1 < len(lines) and re.fullmatch(r"\|?[\s:|-]+\|?", lines[n + 1].strip()) and "-" in lines[n + 1]:
+            head = [c.lower() for c in cells]  # a header is the row a |---| line follows
+            continue
+        if head is None or set("".join(cells)) <= set("-: ") or "code" not in head or "spec" not in head:
+            continue
+        row = dict(zip(head, cells))
+        if not re.fullmatch(r"[A-Z][A-Z0-9-]*", row.get("code", "")):
+            continue
+        cell = row["spec"]
+        m = re.search(r"\]\(([^)]+)\)", cell) or re.search(r"`([^`]+)`", cell)
+        path = (m.group(1) if m else cell).strip()
+        if path and path not in ("—", "-"):
+            spec[row["code"]] = triad((shard.parent / path).resolve())
 
 
 def names(xs, key):
@@ -67,7 +86,8 @@ def names(xs, key):
 
 
 def code_of(i):
-    m = re.search(r"Requirements covered:\s*([A-Z][A-Z0-9-]*?)-\d", i.get("body") or "")
+    m = re.search(r"Requirements covered:\s*([A-Z][A-Z0-9-]*?)-\d", i.get("body") or "") \
+        or re.match(r"\[([A-Z][A-Z0-9-]*)\]", i.get("title") or "")
     return m.group(1) if m else None
 
 
@@ -154,7 +174,7 @@ print("### Ready")
 for i in by["ready-for-agent"]:
     st = spec.get(code_of(i) or "")
     ok = st and all(v == "Approved" for v in st.values())
-    if not ok:
+    if not ok and not (st and st["requirements"] in ("Implemented", "Shipped")):
         drift.append(f"#{i['number']} is ready, but its spec is " + ("missing" if not st else ", ".join(f"{k} {v}" for k, v in st.items())))
     blk = [int(b) for b in re.findall(r"Blocked by:\s*((?:#\d+[ ,]*)+)", i.get("body") or "") for b in re.findall(r"\d+", b)]
     blk = [b for b in blk if b in open_nums]

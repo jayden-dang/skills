@@ -40,3 +40,20 @@ with two state roles. Prompt: "/board — What's waiting on me this morning? …
 
 Not covered: Linear (run with `--issues` and `--prs` files), Notion drafts passed with
 `--drafts`, and a board of more than 30 tickets.
+
+## 2026-10-19 — 1.0.1, found by the klynt dogfood (closed workflow W9)
+
+`/board` ran on the real KlyntLabs/klynt board through `/tmp/klynt-dogfood/bin/gh`: reads go
+to GitHub, writes are logged and never sent. Both haiku and sonnet ran `board.py`, and 0
+writes reached GitHub. But the script told them that the four stale `ready-for-agent`
+tickets (#258, #253, #252, #243) had "no spec" and should be swapped to `shaping`. Their
+specs are `Implemented`. Two causes:
+- **Link in the Spec cell.** klynt writes it as a markdown link, `[spec](../dir/)`, and the
+  script read only a bare path or a `` `path` ``.
+- **Blank line inside the table.** `learning.md` has one, and the script took the next row
+  (CFGC) as a new header, so CFGC, QUIZ and FLASH were lost.
+
+1.0.1 finds columns by header name, reads a link target, treats a header as the row a
+`|---|` line follows, and also matches a `[CODE]` title. On the same board it now reports
+five open tickets whose spec reads `Implemented`: the four, plus #261 [CCOL], which the T20
+dogfood had missed.

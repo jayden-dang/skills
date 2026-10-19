@@ -28,14 +28,15 @@ for shard in sorted(Path("docs/specs/catalog").glob("*.md")) if Path("docs/specs
     text = shard.read_text()
     m = re.search(r"^Owner:\s*(\S+)", text, re.M)
     shard_owner = m.group(1) if m else ""
-    header = None
-    for line in text.splitlines():
+    header, lines = None, text.splitlines()
+    for n, line in enumerate(lines):
         if not line.startswith("|"):
-            header = None
-            continue
+            continue  # a blank line inside a catalog table does not end it
         cells = [c.strip() for c in line.strip().strip("|").split("|")]
+        if n + 1 < len(lines) and re.fullmatch(r"\|?[\s:|-]+\|?", lines[n + 1].strip()) and "-" in lines[n + 1]:
+            header = [c.lower() for c in cells]  # a header is the row a |---| line follows
+            continue
         if header is None:
-            header = [c.lower() for c in cells]
             continue
         if set("".join(cells)) <= set("-: "):
             continue

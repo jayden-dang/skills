@@ -57,6 +57,10 @@ Read `Status:`. Still `Approved` or `In-progress` with every task checked and ve
 run [`realign-spec`](realign-spec.md) (forgot-net). Already `Implemented`
 and no drift → skip. This is not `/cut-release`.
 
+## The ticket
+
+The ticket set starts from `.skills/<CODE>/tickets.md` and the ticket you named, so the PR body carries `Closes #N` even when the branch name has no ID. When the PR opens, the ticket's state role moves to `in-review`. The merge is yours; `Closes #N` then closes the ticket. See [the workflow](../workflow.md).
+
 ## Executing a PR
 
 Push, then create or update the PR from session title/body files. A custom

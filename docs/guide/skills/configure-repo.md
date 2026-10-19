@@ -31,7 +31,7 @@ Thirteen decisions (A–M), walked strictly one at a time: a two-or-three-senten
 
 - **A. Issue tracker.** Where issues live and which commands touch them, for `triage`, `plan-tasks` when publishing tasks, and `cut-release`. Options are **github** (`gh`), **gitlab** (`glab`), **linear** (a connected MCP server, preferred, or the GraphQL API — for teams that track work in Linear rather than the code host), **local** (markdown files under `.scratch/<feature>/` each carrying a `Status:` line), and **other** (freeform prose describing the workflow). Linear will not appear in `git remote`, so it is offered whenever the user says the team lives there even if the host is GitHub or GitLab. A github/gitlab follow-up asks whether external pull requests are a request surface; if yes, `triage` pulls external PRs into the same queue. Skipped entirely for linear/local/other.
 - **A, follow-up: Draft surface.** `repo` (default) or `notion`. For `notion` the skill runs `notion-get-self` on every connected Notion server, because Claude Code keeps one sign-in per server URL, so two servers can reach the same workspace. It then fetches the project's drafts database and fills the `### Notion draft surface` block in `docs/agents/issue-tracker.md`: the data source ID, the workspace, the server, and the Sign-off line. It binds only when the sign-off role is a member of that workspace. Otherwise it writes `repo` and tells the user to re-authenticate the server in `/mcp` against the project's workspace. With only another company's workspace reachable, six of six baseline setups bound the repo to that company's database.
-- **B. Triage label mapping.** `triage` moves issues through canonical roles but must apply this repo's actual label strings or it creates duplicates. The seven canonical roles are five states and two categories:
+- **B. Triage label mapping.** `triage` moves issues through canonical roles but must apply this repo's actual label strings or it creates duplicates. The eleven canonical roles are nine states and two categories:
 
   | Role | Meaning |
   |---|---|
@@ -39,11 +39,15 @@ Thirteen decisions (A–M), walked strictly one at a time: a two-or-three-senten
   | needs-info | waiting on the reporter |
   | ready-for-agent | fully specified; an agent can pick it up cold |
   | ready-for-human | needs human judgment or access |
+  | shaping | its spec or root cause is being written |
+  | building | claimed; a build is running on it |
+  | in-review | its pull request is open, waiting on a person |
+  | shipped | closed and in a release |
   | wontfix | will not be actioned |
   | bug | something is broken |
   | enhancement | new capability or improvement |
 
-  The repo's existing labels are shown next to the roles and a mapping proposed (default: each role's string equals its name). Missing labels are created only with explicit consent. For local trackers the role names are the vocabulary. For linear the team's existing workflow states and labels are listed first, then state roles are mapped to workflow states and category roles to Linear labels. Done when every role maps to a confirmed label string.
+  The four newer states (`shaping`, `building`, `in-review`, `shipped`) are what the [five-command workflow](../workflow.md) moves a ticket through, and they are proposed as `status:<role>`. A ticket carries one state role at a time. The repo's existing labels are shown next to the roles and a mapping proposed (default: each role's string equals its name). Missing labels are created only with explicit consent. For local trackers the role names are the vocabulary. For linear the team's existing workflow states and labels are listed first, then state roles are mapped to workflow states and category roles to Linear labels. Done when every role maps to a confirmed label string.
 - **C. verify commands.** The proof commands `test-first`, `prove-claim`, `build-in-waves`, and `cut-release` run — exact, not guessed. Confirm typecheck, lint, unit tests, e2e/smoke, and the **single-test-file pattern** (the tight loop `test-first` lives in), plus the test locations and any ignore list the [`audit-trace`](audit-trace.md) check reads. Done when each is confirmed or explicitly marked "none".
 - **D. Test annotation conventions.** Every test carries the requirement ID it covers, and the [`audit-trace`](audit-trace.md) check greps for those IDs, so the convention must be greppable and match the repo's frameworks — an e2e tag like `{ tag: ['@CODE-N.M'] }`, a unit annotation or the ID in the test name, a `/// REQ: CODE-N.M` doc comment for compiled languages. Done when every test layer has a confirmed convention.
 - **E. release steps.** `cut-release` executes an ordered list of project-specific commands — build, bundle, sign, publish — and refuses to improvise them. Draft the list from the build scripts and packaging config found, including any smoke-check command. Done when the ordered steps are confirmed; an empty list is valid for a library with no build.
@@ -96,7 +100,7 @@ Adopting the set into an existing TypeScript + Vitest library with a GitHub remo
 
 **Explore.** `git remote -v` shows a GitHub origin; no Linear signal. `AGENTS.md` is absent, `CLAUDE.md` absent. `pnpm-lock.yaml` and a `package.json` with `test`, `lint`, `typecheck` scripts. A `.github/workflows/ci.yml` exists. `gh label list` returns the default GitHub label set.
 
-**Decide.** A is **github**; external PRs are a request surface, so `triage` will pull them in. B maps the five state roles to new labels (offered for creation with consent) and `bug`/`enhancement` to the existing GitHub defaults. C confirms `pnpm exec tsc -b`, `pnpm lint`, `pnpm test`, no e2e, single-file pattern `pnpm exec vitest run <path>`. D records a single Vitest layer using `annotate('CODE-N.M', 'requirement')`. E is an empty cut-release list — a library with no bundling. F is single-context `CONTEXT.md`.
+**Decide.** A is **github**; external PRs are a request surface, so `triage` will pull them in. B maps the state roles to new labels (offered for creation with consent) and `bug`/`enhancement` to the existing GitHub defaults. C confirms `pnpm exec tsc -b`, `pnpm lint`, `pnpm test`, no e2e, single-file pattern `pnpm exec vitest run <path>`. D records a single Vitest layer using `annotate('CODE-N.M', 'requirement')`. E is an empty cut-release list — a library with no bundling. F is single-context `CONTEXT.md`.
 
 **Write.** The three `docs/agents/*.md` files land, the issue-tracker file keeps only the github section, `AGENTS.md` is created canonical with the `## Agent skills` block and a thin `CLAUDE.md` pointer, and `.skills/` and `.worktrees/` are added to `.gitignore`. Nothing is copied into the repo but markdown config.
 

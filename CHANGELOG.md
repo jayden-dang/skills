@@ -2,6 +2,30 @@
 
 ## Unreleased
 
+### One closed workflow: five commands, one board (2026-10-19)
+
+Every piece of work is a ticket in one state, and each move between states belongs to one command or one person. The short path is `/idea`, `/shape #N`, `/go`, `/board`, `/cut-release` (`docs/guide/workflow.md`). Every old command still works.
+
+New, all user-invoked (`disable-model-invocation: true`), each with a `TESTS.md` of RED and GREEN runs:
+
+- `/board` 1.0.0 (track): the whole board by state, what waits on you first, and every place the board and the repo disagree. `scripts/board.py` prints every section; the skill writes nothing.
+- `/idea` 1.0.0 (track): an idea becomes a ticket, framed, waiting in Shaping with its tier and open questions.
+- `/shape #N` 1.0.0 (track): the spec triad, or the root cause for a bug, stopping at each approval; the approved plan makes the ticket Ready.
+- `/go [#N…]` 1.0.0 (execution): builds the named tickets, or every ready one, through `deliver-issues`.
+
+Edited:
+
+- `deliver-issues` 1.1.0 to 2.0.0: a ready ticket that cannot be built moves to `shaping` with a comment (1.1.0). 2.0.0 is model-invocable (the flag is gone) so `/go` can route to it; the scope is the tickets you name. `/deliver-issues` still works when typed.
+- `execute-common` 2.13.0: the ticket is claimed at preflight (assignee and `building`), tracker sync no longer asks when a ticket is resolved, and the set is recorded in `.skills/<CODE>/tickets.md`.
+- `land-branch` 4.5.0: the ticket set starts from `.skills/<CODE>/tickets.md`, the PR links `Closes #N`, and the ticket moves to `in-review` when the PR opens.
+- `cut-release` 1.3.0: the tickets a cut ships get `shipped` and a "Shipped in v<version>" comment.
+- `plan-tasks` 1.9.0: publishing onto the feature's existing ticket updates it in place, with one state role.
+- `configure-repo` 1.13.0: four new state roles, `shaping`, `building`, `in-review` and `shipped`, proposed as `status:<role>`.
+- `templates/agents/triage-labels.md`: the four new roles and the rule that a ticket carries one state role.
+- `AGENTS.md`: the user-invoked list gains `board`, `idea`, `shape` and `go`, loses `deliver-issues`, and now counts 33.
+
+Evidence: `docs/design/2026-10-19-closed-workflow.md` and each skill's `TESTS.md`.
+
 ### Notion as the draft surface for Flexible Mode (2026-10-19, plan T3c)
 
 Milestone drafts can wait for the TPM's sign-off in Notion before any ticket reaches the tracker, in the right Notion area when one person works across several projects and workspaces.
@@ -13,6 +37,13 @@ Milestone drafts can wait for the TPM's sign-off in Notion before any ticket rea
 - `publish-issues`: unchanged. With a ticket list on the signed page it published exactly that list 5/5.
 
 Evidence: each skill's `TESTS.md` and `docs/design/2026-10-19-notion-draft-surface.md`.
+
+### Survey decisions 6–7 and the close receipt (2026-10-18)
+
+- `execute-common` 2.11.0: the close receipt gains a `Cost:` slot (Receipt-Version 2).
+- `execute-common` 2.12.0: a library-only branch gets no product walk. A branch that adds a command still walks.
+- `run-spike` 2.0.0 (**breaking**): a spike stops at the answer. It never writes production code, even when invited to give a head start, and the next step is `plan-tasks`.
+- `configure-repo` 1.12.1: each connected Notion server is checked with `notion-get-self`, because two servers can reach the same workspace.
 
 ### Survey upgrade: four new skills, five edits, eight tested no-ops (2026-10-18)
 

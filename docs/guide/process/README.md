@@ -103,7 +103,7 @@ amend-feature                        small in-scope change to a shipped, spec'd 
 /sweep-backlog               your assigned tickets → one classified list, one question
                              → nothing written to the tracker until you answer
 
-/deliver-issues              every ready, approved ticket → its own build, review and PR
+/go [#N…]                    (runs deliver-issues) the named or every ready ticket → its own build, review and PR
                              → one message at the end
 
 /show-run-status             one feature's run → done, in flight, waiting on you, not shipped

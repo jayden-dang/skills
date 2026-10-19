@@ -155,7 +155,7 @@ run only when their observable predicates hold — EOD, a clean inspect, and
 
 ## `/deliver-issues` — a whole board, unattended
 
-When several tickets are approved and ready, [`/deliver-issues`](../skills/deliver-issues.md) takes each one through the chain above: `build-in-waves`, then `inspect-change`, then `land-branch` as a pull request. Tickets run in dependency order, and a ticket blocked by another branches from that ticket's branch. A question that would stop a single-ticket run is built the safe way and put at the top of that pull request. The run ends with one message. While a build is running or stopped, [`/show-run-status`](../skills/show-run-status.md) reports where one feature stands.
+When several tickets are approved and ready, [`/go`](../skills/go.md) (or [`/deliver-issues`](../skills/deliver-issues.md) directly; `/go #N` names the tickets) takes each one through the chain above: `build-in-waves`, then `inspect-change`, then `land-branch` as a pull request. Tickets run in dependency order, and a ticket blocked by another branches from that ticket's branch. A question that would stop a single-ticket run is built the safe way and put at the top of that pull request. The run ends with one message. While a build is running or stopped, [`/show-run-status`](../skills/show-run-status.md) reports where one feature stands.
 
 ## Next
 

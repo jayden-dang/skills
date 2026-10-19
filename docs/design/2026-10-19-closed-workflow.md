@@ -1,6 +1,6 @@
 # One closed workflow — the ticket is the hub
 
-Date: 2026-10-19. Status: **Approved by the owner 2026-10-19.** Method: `author-skills`.
+Date: 2026-10-19. Status: **Approved 2026-10-19; W0–W8 shipped, W9 pending.** Method: `author-skills`.
 Every transition ships only after its own RED.
 
 ## Contents
@@ -101,7 +101,7 @@ approve gate when `Draft surface` is `notion` (T3c).
 command is `/board`.
 
 A `disable-model-invocation` skill cannot be invoked by another skill, so the routes need
-model-invocable targets. **`deliver-issues` and `show-run-status` drop the flag.** Their
+model-invocable targets. **`deliver-issues` drops the flag** (`/go` invokes it). `show-run-status` keeps it: `/board #N` names it for the operator rather than invoking it. Their
 descriptions become model-facing routing lines, and `/deliver-issues` and
 `/show-run-status` still work when typed. Every other skill is unchanged and still typed
 by name when wanted. The guide leads with the five.
@@ -134,6 +134,19 @@ already complies.
 | W7 | `/idea`, `/shape`, `/go` entries; drop the flag on `deliver-issues` and `show-run-status` | trigger tests both ways; `/go LED-7` builds one named ticket |
 | W8 | Guide: one workflow page leading START-HERE, AGENTS.md routing, CHANGELOG (with the missing `execute-common` 2.11/2.12 and `run-spike` 2.0.0 entries) | — |
 | W9 | Dogfood on a real GitHub board | — |
+
+> **Status**
+>
+> - W0 done: `bin/gh` is a stateful issue store; scenarios `gh-board.sh`, `gh-roles.sh`, `gh-light.sh`, `gh-released.sh`, `gh-release-steps.sh`, `wf-run.sh` and `wf-score.py`.
+> - W1 shipped with W2: `configure-repo` 1.13.0 and the four roles in `triage-labels.md`.
+> - W2 shipped: `execute-common` 2.13.0. RED 0/3 claimed; GREEN claim 5/5 after the pointer fix.
+> - W3 shipped: `land-branch` 4.5.0. RED `Closes #23` 1/3, in-review 0/3, closed after merge 1/3; GREEN `Closes` 5/6, in-review 4/4 where `land-branch` ran.
+> - W4 shipped as `deliver-issues` 1.1.0: a ready ticket that cannot be built leaves the ready column for `shaping` with a comment. RED 0/3, GREEN 3/3. The parked-question-as-`needs-info` part has no run in any `TESTS.md`.
+> - W5 shipped: `cut-release` 1.3.0. RED 0/3 changed the ticket; GREEN haiku 2/2, sonnet 1/1.
+> - W6 shipped: `board` 1.0.0. RED 2/3 missed the untriaged ticket and 0/3 caught the ready ticket with no spec; GREEN 3/3 on both, 0 tracker writes.
+> - W7 shipped: `idea` 1.0.0 (GREEN 3/3 on one state role and the frame comment), `shape` 1.0.0 (2/2), `go` 1.0.0 and `deliver-issues` 2.0.0 (`/go #23` built only #23 and kept the claim, in-review, `Closes` chain; 0/3 should-not-fire runs loaded a skill). `plan-tasks` 1.9.0 is the RED behind `shape`: 2/3 left two state roles, GREEN 4/4.
+> - W8 done: this sync (workflow guide, AGENTS.md, START-HERE, skill pages, CHANGELOG).
+> - W9 pending: dogfood on a real GitHub board.
 
 Order: W0 → W1+W2 → W3 → W4 → W5 → W6 → W7 → W8 → W9. `execute-common` is touched by W2
 and W4, so they run serially.

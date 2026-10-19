@@ -5,11 +5,11 @@
 |  |  |
 |---|---|
 | **Bucket** | execution |
-| **Invocation** | `/deliver-issues` (user-invoked; `disable-model-invocation: true`) |
+| **Invocation** | model-invocable since 2.0.0; `/deliver-issues` still works when typed. [`/go`](go.md) is the short way in |
 | **Reads** | `docs/agents/issue-tracker.md`, `docs/agents/project.md` (`Default PR base:`), each ticket's `Blocked by:`, and each feature's `requirements.md`, `design.md` and `tasks.md` |
 | **Writes** | one branch and one pull request per eligible ticket, through the skills it calls |
 | **Calls** | [`build-in-waves`](build-in-waves.md), [`inspect-change`](inspect-change.md) and [`land-branch`](land-branch.md) with action `pr`, once per ticket |
-| **Called by** | nobody — it is user-invoked |
+| **Called by** | [`/go`](go.md) |
 
 ## When it fires
 
@@ -27,6 +27,10 @@ For each eligible ticket, in order:
 4. Land it with `land-branch` as a pull request. A stacked ticket's pull request is based on its blocker's branch.
 
 The rule behind it: a board of tickets is not a reason to skip any of the three steps for one of them.
+
+## Named tickets, claims and in-review
+
+Since 2.0.0 the run covers the tickets you name and no others; with no names it covers every ready ticket, as before. Every other ticket keeps its state. A ready ticket that cannot be built, because it has no approved spec, moves to `shaping` with a comment naming what is missing (1.1.0), so it leaves the ready column. Each ticket it builds is claimed when its build starts and moves to `in-review` when its pull request opens, through [`execute-common`](execute-common.md) and [`land-branch`](land-branch.md). See [the workflow](../workflow.md).
 
 ## When a question comes up
 

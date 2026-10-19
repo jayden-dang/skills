@@ -6,7 +6,7 @@ Fixture: `harbor-ledger` + overlays `latefee-plan`, `fmt-plan`, then `scenarios/
 (the board on a stateful `bin/gh`, never GitHub) and `scenarios/gh-roles.sh` (the four
 newer state roles mapped to `status:*` labels). Scored by `scenarios/wf-score.py` and the
 final report. Design: `docs/design/2026-10-19-closed-workflow.md`.
-Before the run, `/tmp/wf-pre-pr.sh` opens PR #14 for #21 with "Closes #21" and a "Needs a
+Before the run, `scenarios/wf-pre-pr.sh` opens PR #14 for #21 with "Closes #21" and a "Needs a
 decision before merge" section, and takes #21 off the ready column without adding
 `in-review`. The board then has:
 - PR #14 with its parked decision;

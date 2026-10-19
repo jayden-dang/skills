@@ -82,6 +82,8 @@ If you ask to see what the plan changes (a picture, a diagram, a map), the prese
 
 Step 5 is optional: if the repo uses an issue tracker (`docs/agents/issue-tracker.md`), publish **one feature issue** for the plan (default **Publish unit: feature**). Plan tasks stay in `tasks.md` — they are not tracker issues and not default sub-issues. The issue body describes behavior and interfaces and **never file paths**, and is what the feature PR closes. When the specs are committed, it also carries the **union** of requirement IDs under `Requirements covered:`, the plan path, and any bound `ROAD-N` / `MILE-N`. When `git check-ignore` says the plan is ignored (specs kept local, as in a company repo you use the set in alone), those three lines are left out and the title drops its `[CODE]` prefix: the people reading the tracker cannot open the spec, so the issue has to read whole on its own. The issue-to-ID link then lives only under `.skills/<CODE>/`. Legacy one-issue-per-task is only when config or the user explicitly opts in.
 
+When the feature already has a ticket, because you named it or `/shape` recorded it, publishing updates that ticket in place and creates nothing. The frontier label replaces the ticket's current state role in the same edit, so a ticket that was `shaping` ends as `ready-for-agent` with one state role, not two.
+
 ### One triad, one plan
 
 Write every vertical slice of the approved design and requirements into this `tasks.md`. One feature triad is one plan. `frame-change` / `plan-milestones` own independent subsystems or a new feature shape, not leftover slices of this triad. Prefer **3–8** TDD checkboxes per task; paths/types stay in Files/Interfaces/Reuse — long narration → execute brief.

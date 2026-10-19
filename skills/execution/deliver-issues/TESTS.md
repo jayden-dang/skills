@@ -127,3 +127,16 @@ ready. I'm at the Port Authority until 5; put anything you need from me in one m
 take a comment naming the missing pieces, before any build starts.
 - #24 moved to `status:shaping` with a comment: 3/3.
 - #23's chain was unchanged: 3/3.
+
+## 2.0.0 — model-invocable, so `/go` can route to it (2026-10-19)
+
+Breaking for one reason: `disable-model-invocation` is gone, so the agent may now start
+this skill itself. The description is now a model-facing routing line.
+- §1 scopes the frontier to the tickets the operator names.
+- `/deliver-issues` still works when typed.
+- Evidence is under `go/TESTS.md`: `/go #23` built only #23 and kept the claim → in-review
+  → `Closes` chain.
+
+Should-not-fire, 0 of 3 runs loaded any skill and 0 wrote to the tracker:
+- "Is the plan for #23 approved, and what does it cover?" (haiku)
+- "Which tickets on the board are ready right now?" (haiku and sonnet)

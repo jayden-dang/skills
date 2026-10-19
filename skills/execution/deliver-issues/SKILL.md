@@ -1,8 +1,7 @@
 ---
 name: deliver-issues
-version: 1.1.0
-description: Delivers every eligible ticket on the board to its own reviewed pull request in one unattended run, with one message for whatever needs the operator. Run it with /deliver-issues.
-disable-model-invocation: true
+version: 2.0.0
+description: Use when every ready ticket on the board, or a named set of tickets, must be built, reviewed and opened as pull requests in one unattended run — the multi-ticket delivery behind /go, /deliver-issues, "deliver the board", "build every ready ticket", ending with one message for whatever needs the operator.
 ---
 
 # Deliver Issues
@@ -27,7 +26,8 @@ review that never ran.
 
 ## 1. The frontier
 
-Read the tracker operations from `docs/agents/issue-tracker.md`. A ticket is eligible
+Read the tracker operations from `docs/agents/issue-tracker.md`. When the operator named
+tickets, the ready tickets in scope are those alone. A ticket is eligible
 when its status is the tracker's ready state and its feature's `requirements.md`,
 `design.md` and `tasks.md` all read `Status: Approved`. Order the eligible ones by
 `Blocked by:`.

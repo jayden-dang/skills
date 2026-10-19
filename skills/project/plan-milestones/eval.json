@@ -32,5 +32,17 @@
       "After values are only `none`, ROAD-N or MILE-N IDs, with no prose",
       "the parallel items share the same After value instead of being ordered by list position"
     ]
+  },
+  {
+    "eval_name": "notion-draft-lists-its-tickets",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § 2026-10-19 — Notion draft page",
+    "prompt": "Next milestone after MILE-2: vessel owners get a monthly statement in December. Put it in Notion as a draft so Quang can sign it off.",
+    "assertions": [
+      "the page is created in the Drafts data source named in docs/agents/issue-tracker.md",
+      "the page carries a `## Tickets on sign-off` section with one line per ticket publishing would create",
+      "Status reads Draft and Signed off by is empty"
+    ],
+    "eval_id": 4
   }
 ]

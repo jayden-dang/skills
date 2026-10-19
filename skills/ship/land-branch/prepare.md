@@ -9,6 +9,8 @@ recipe.
 - [Gather context](#gather-context)
 - [Resolve tickets](#resolve-tickets)
 - [Author commits](#author-commits)
+- [Ship guard](#ship-guard)
+- [Owner notice](#owner-notice)
 - [Sequence the branch into verifiable units](#sequence-the-branch-into-verifiable-units)
 - [Forge, stacks, and a subagent that opens the PR](#forge-stacks-and-a-subagent-that-opens-the-pr)
 - [Post the verdict](#post-the-verdict)
@@ -135,6 +137,66 @@ residue.
 
 **Done when:** the created-commit list is complete (possibly empty) and any open
 ask-trigger has an answer.
+
+## Ship guard
+
+Runs for `pr` and `merge`, before sequencing. Run `scripts/ship-guard.sh <base>
+[<tasks.md>]`, the script in this skill's own folder beside this file, not a
+`scripts/` in the repo. Run it with the repo root as the working directory, the
+memoized base and the `tasks.md` of the plan this branch implements (the feature CODE the branch name, its commits, or this
+session names; no plan → omit it). Each row gets exactly this disposition:
+
+| Row | Disposition |
+|---|---|
+| `lockfile` | drop from the branch |
+| `generated` | drop from the branch |
+| `out-of-plan` | move to `<branch>-extra` — unless the operator named that change for this PR in this session |
+| `behind-base` | one line in the PR body with the count; rebase only when asked |
+
+**Drop** = `git rm --cached <path>` in a commit of its own; the file stays on disk.
+**Move** = branch `<branch>-extra` from the base, commit the paths there
+(`git checkout <head> -- <paths>`), then restore them to the base version on this
+branch in a commit of its own. Both are forward commits: they need no history
+rewrite, and sequencing may fold them later. Name every dropped path and the
+`-extra` branch in the PR body. Re-run the script; continue only when no
+`lockfile`, `generated` or `out-of-plan` row remains.
+
+<HARD-GATE>
+NO PUSH AND NO PR WHILE A `lockfile`, `generated` OR `out-of-plan` ROW STANDS.
+</HARD-GATE>
+
+| Thought | Reality |
+|---|---|
+| "It is disclosed in the PR body" | Baseline: three of the four runs that could push named these files in the body and pushed them anyway. The reviewer approves the diff; a paragraph removes nothing |
+| "The rewrite was denied, so I'll leave them" | Drop and move are forward commits. The one baseline run that used them shipped a clean branch |
+| "No one can answer before the deadline" | Nothing here needs an answer: the files stay on disk and on `<branch>-extra` |
+| "It's only a lockfile" | The baseline `bun.lock` pinned `@types/bun`, which `package.json` does not declare; one run in six noticed |
+
+**Done when:** the script's last line is `# clean`, or every remaining row is `behind-base`.
+
+## Owner notice
+
+Runs for `pr`, after the ship guard, the same way: `scripts/owner-notice.py <base>
+<tasks.md>` from this skill's folder, repo root as the working directory. It prints one
+`cross-owner` row per changed path that another owner holds: the feature code, the
+owner, the path, and the requirement IDs a foreign `requirements.md` gained, changed or
+lost.
+
+- **Rows printed:** the PR body carries `## Changes outside this feature's ownership`,
+  one bullet per owner. Each bullet names the owner, the feature, every path and
+  requirement ID from its rows, and why this branch changed them, taken from the commit
+  that did. Request each owner as a reviewer when the PR is created: `gh pr create
+  --reviewer <owner without the @>`. On a forge without reviewer requests, the section
+  is where the owner is named.
+- **`# clean`:** no such heading, and no line about ownership anywhere in the body.
+
+The notice never holds the branch: the other team learns of the change in review, and
+the PR ships as it would have. Five of five baseline PRs for a late-fee branch described
+its edit to `src/berth.ts` and its new BERTH-1.3, and none named `@saltgrass/bookings`,
+the team that owns them, or asked that team to review.
+
+**Done when:** the script printed `# clean`, or the body has the section and every row's
+owner is a requested reviewer or named in it.
 
 ## Sequence the branch into verifiable units
 

@@ -1,6 +1,6 @@
 ---
 name: build-in-waves
-version: 2.2.0
+version: 2.4.0
 description: Use when an approved tasks.md has Execution-mode continuous and needs
   dependency-aware subagent execution with serial or parallel lanes, bounded
   worker/reviewer leases, dual-verdict task review, and a whole-branch receipt.
@@ -51,6 +51,7 @@ Unit barriers, unit derivation, and human unit stops live only in
 | "Header says story-unit — stay and run waves anyway" | Hand off to `build-by-story` |
 | "I'll derive units as a size signal then continuous" | Waves come from Depends-on only |
 | "Lead wants human stops — pause inside continuous" | Human-gated stops are `build-by-story` |
+| "The tasks are small and fully specified — I'll write them myself" | Size never changes the route. Code written by the controller is `build-inline`; here every task gets its own implementer dispatch and its own review. In the baseline, 2 of 4 runs wrote all four tasks in the controller and only then dispatched reviewers — one reviewed all four in a single batch |
 
 ## Setup
 
@@ -140,6 +141,9 @@ Before each worker or reviewer resume, run the lease preflight from
 Cap redispatches at 2 per task; still not DONE → escalate to the user. Never
 force the same model to retry with nothing changed.
 
+The operator's message changes the plan — adds a constraint, cuts scope, drops a
+requirement → REQUIRED SUB-SKILL: use `reroute-plan` before any spec or code edit.
+
 ## Model Tiering
 
 State the model **explicitly on every dispatch** — omitted model inherits the
@@ -193,6 +197,8 @@ skill's subagent loop without dispatches.
 - Hand a subagent the whole plan file — the brief is its world
 - Skip re-review after a fix, or accept a review missing either verdict
 - Move to the next task with open Critical/Important findings
+- Write a task's code in the controller instead of dispatching its implementer
+- Review several tasks in one reviewer dispatch
 - Let implementer self-review substitute for task review
 - Tell a reviewer what not to flag, or pre-rate severity in the dispatch
 - Dispatch a reviewer without a diff package

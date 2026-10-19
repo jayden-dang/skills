@@ -17,6 +17,10 @@ schema 1.1, **`cluster(focus)`**, no generated graph file).
 
 ## 1. The A–Z workflow
 
+The short path is five commands on one board: `/idea`, `/shape #N`, `/go`, `/board` and
+`/cut-release`. [The workflow](workflow.md) is the one-page guide to it; the diagram below
+is the full chain they wrap.
+
 ```
                         /zone-mode    ── user-run gate: opt-in 1% overlay + router
                              │
@@ -44,8 +48,11 @@ schema 1.1, **`cluster(focus)`**, no generated graph file).
          (+ load-subgraph)     [product-walk if predicate]   (api/ui)
                     ─► land-branch ─► /cut-release ─► realign-spec
 
- MAINTENANCE: amend-feature · /publish-issues · /triage · /scan-architecture
+ FIVE COMMANDS (docs/guide/workflow.md): /idea ─► /shape #N ─► /go ─► /board ─► /cut-release
+
+ MAINTENANCE: amend-feature · /publish-issues · /triage · /sweep-backlog · /scan-architecture
               · /map-features · understand · /pathfind · /write-handoff · realign-spec
+              · /show-run-status · /deliver-issues (model-invocable; /go runs it) · /audit-shipped
 ```
 
 **Ceremony tiers** decide how much of the chain you run (see
@@ -150,7 +157,7 @@ The table lives in [on-ramps](process/on-ramps.md) — one home, and `zone-mode`
 
 ## 3. Skill index (engineering package)
 
-Full tables: [Skill reference](skills/README.md) (69 engineering skills).  
+Full tables: [Skill reference](skills/README.md) (78 engineering skills).  
 Personal OS is a **separate** package — [personal-os START-HERE](../personal-os/START-HERE.md).
 
 `U` = you run `/name` · `m` = model-invoked
@@ -161,12 +168,12 @@ Personal OS is a **separate** package — [personal-os START-HERE](../personal-o
 | **setup** | `/configure-repo`, `/bootstrap-repo` |
 | **discovery** | `frame-change`, `clarify-decisions`, `research`, `run-spike`, `define-domain`, `/forge-goal`, `/forge-prompt`, `/pathfind`, `/interpret-session`, `understand`, `/work-the-problem` |
 | **spec** | `specify-behavior`, `design-solution`, `plan-tasks` |
-| **execution** | `build-in-waves`, `build-by-story`, `build-inline`, `execute-common`, `test-first`, `root-cause`, `debug-remote`, `assess-observability`, `prove-claim`, `audit-trace`, **`load-subgraph`**, `isolate-workspace`, `hold-stage` |
-| **review** | `inspect-change`, `polish-diff`, `vet-feedback`, `vet-source`, `speak-outer`, `inspect-invariants` |
+| **execution** | `build-in-waves`, `build-by-story`, `build-inline`, `/go`, `deliver-issues`, `execute-common`, `test-first`, `root-cause`, `debug-remote`, `assess-observability`, `prove-claim`, `audit-trace`, **`load-subgraph`**, `isolate-workspace`, `hold-stage` |
+| **review** | `inspect-change`, `/audit-shipped`, `polish-diff`, `vet-feedback`, `vet-source`, `speak-outer`, `inspect-invariants` |
 | **acceptance** | `validate-feature`, `validate-api`, `validate-ui`, `write-dogfood`, `run-dogfood` |
 | **craft** | `craft-page` |
 | **ship** | `land-branch`, `record-verdict`, `/cut-release` |
-| **track** | `amend-feature`, `reroute-plan`, `realign-spec`, `/triage`, `/publish-issues`, `/scan-architecture`, **`/map-features`**, `/write-handoff`, `/refresh-roadmap-status`, `/chart-progress`, `/assess-milestone` |
+| **track** | `amend-feature`, `reroute-plan`, `realign-spec`, `/triage`, `/publish-issues`, `/scan-architecture`, **`/map-features`**, `/write-handoff`, `/refresh-roadmap-status`, `/chart-progress`, `/assess-milestone`, `/sweep-backlog`, `/show-run-status`, `/idea`, `/shape`, `/board` |
 | **project** | `/define-project`, `/assess-pivot-impact`, `plan-milestones` |
 
 ## Where to go next

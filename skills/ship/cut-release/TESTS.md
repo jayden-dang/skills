@@ -72,3 +72,32 @@ Only S1 grok-4.6 failed (always-run when already Implemented).
 
 `/cut-release` is `disable-model-invocation`. The user types the name.
 No should-fire / should-not-fire description test.
+
+## 1.3.0 — the tickets a cut ships read `shipped` (2026-10-19), closed workflow W5
+
+The fixture is `harbor-ledger` with overlays `latefee-plan` and `fmt-plan`, then these
+scenarios in order:
+- `gh-board.sh` puts the board on a stateful `bin/gh`, never GitHub.
+- `gh-release-steps.sh` adds the release steps and a smoke command.
+- `gh-roles.sh` maps the `status:*` labels.
+- `gh-released.sh` tags v0.4.0, builds FMT, marks it `Implemented`, and merges PR #14
+  (`Closes #23`), which closes #23 with `status:in-review`.
+
+Prompt (Lan): "/cut-release — Cut the release from dev. If every gate passes, the version
+and the tag are approved." It also supplies the accepted risk and the response-if-wrong
+in her own words, which `record-verdict` needs. Without them every run stopped at the
+record (1/1), which is correct.
+
+A first fixture had no release steps, and all three runs stopped at step e (3/3), as the
+stop rule says.
+
+**RED (1.2.0): 2 haiku and 1 sonnet, all cut v0.5.0.** In 0/3 did #23 change. It stayed a
+closed issue reading `status:in-review`, with no comment, so the board could not tell
+merged from released.
+
+**GREEN (1.3.0):** step i ends with the cut's tickets. The ones a merged PR in the range
+closed get their state role swapped for `shipped` and a `Shipped in v<version>` comment.
+- haiku: 2/2.
+- sonnet: 0/1 on the first run. The fixture's `gh pr list` ignored `--state merged`, so
+  the run found no merged PR and reported "the tracker CLI isn't available". After the
+  shim was fixed: 1/1.

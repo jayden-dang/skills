@@ -19,7 +19,7 @@ changed mid-flight, or a divergence surfaces during [`build-in-waves`](build-in-
 artifact is now false and how far back to rewind, then delegates — it never rewrites a
 requirement, a design, a plan, or audit-trace metadata itself.
 
-Three phases, in order: diagnose, classify, route. Two hard stops, never an auto-rewrite.
+Three phases, in order: diagnose, classify, route. Two hard stops, never an auto-rewrite. That is the path for a discovery. When the change comes from the operator's own message instead, see [the operator amendment](#when-the-operator-amends-the-plan) below.
 
 ## 1. Diagnose (hard stop for the user)
 
@@ -88,6 +88,17 @@ level, and the outcome. If the current divergence would re-classify the same alr
 evidence to the same lowest invalidated artifact, with no new evidence, do **not** re-enter
 that level again — escalate to the user instead. A genuinely new discovery is not blocked:
 record its fingerprint, level, and outcome as a new ledger line, and classify normally.
+
+## When the operator amends the plan
+
+If the operator's own message says what to add, change or cut ("take the status out"), that message is both approvals. The two stops would only ask them something they have just answered, so they do not run. The skill:
+
+1. Classifies the lowest invalidated artifact as above and appends the ledger line.
+2. Edits that artifact and everything below it, without the owning skill's file-approval stop.
+3. Carries the build on as the operator said.
+4. Ends its report with a **Check this wording** block that quotes, with file names, every requirement, design and task line it wrote or struck.
+
+That block is where the approval it skipped happens. In twelve baseline runs of this kind, one stopped at the first stop and did nothing all afternoon, three skipped the stops on their own say-so, and eleven rewrote an approved spec without quoting the new words.
 
 ## Red flags — you are in the wrong lane
 

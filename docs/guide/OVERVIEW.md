@@ -56,6 +56,11 @@ Three ways in: by role, by problem, or by phase.
 | …cut a release | [`/cut-release`](skills/cut-release.md) |
 | …capture a conversation or idea into tracker issues | [`/publish-issues`](skills/publish-issues.md) |
 | …handle an incoming issue | [`/triage`](skills/triage.md) |
+| …put an idea on the board, shape it, build it, and see what waits on me | the five commands: [`/idea`](skills/idea.md) → [`/shape #N`](skills/shape.md) → [`/go`](skills/go.md) → [`/board`](skills/board.md) → [`/cut-release`](skills/cut-release.md); see [the workflow](workflow.md) |
+| …sort my assigned tickets before planning | [`/sweep-backlog`](skills/sweep-backlog.md) |
+| …turn every ready ticket on the board into a reviewed PR while I am away | [`/go`](skills/go.md) (runs [`deliver-issues`](skills/deliver-issues.md)) |
+| …see where one feature's build stands right now | [`/show-run-status`](skills/show-run-status.md) |
+| …check what merged this week for missed edge cases | [`/audit-shipped`](skills/audit-shipped.md) |
 | …find where to refactor next | [`/scan-architecture`](skills/scan-architecture.md) |
 | …backfill feature codes / ROAD / OWNS on brownfield | [`/map-features`](skills/map-features.md) |
 | …chart multi-session decision fog | [`/pathfind`](skills/pathfind.md) |
@@ -74,9 +79,9 @@ Three ways in: by role, by problem, or by phase.
 | **0. Setup** | `/configure-repo`, `/bootstrap-repo` | [Adopting](resources/adopting.md) |
 | **1. Discovery** | `frame-change` (+ `load-subgraph`), `clarify-decisions`, `research`, `run-spike`, `define-domain`, `/pathfind`, `/interpret-session`, `understand`, `/work-the-problem` | [Discovery](process/discovery.md) |
 | **2. Specification** | `specify-behavior`, `design-solution`, `plan-tasks` | [Specification](process/specification.md) |
-| **3. Execution** | `isolate-workspace`, `build-in-waves` / `build-by-story` / `build-inline`, `test-first`, `root-cause`, `prove-claim`, `audit-trace`, `load-subgraph` | [Execution](process/execution.md) |
-| **4. Review & acceptance** | `inspect-change` (+ `load-subgraph`), `polish-diff`, `vet-feedback`, `validate-*`, product-flow suite | [Review and acceptance](process/review-and-acceptance.md) |
-| **5. Ship & maintain** | `land-branch`, `/cut-release`, `realign-spec`, `amend-feature`, `/map-features`, `/publish-issues`, `/triage`, `/scan-architecture`, `/write-handoff` | [Ship and maintain](process/ship-and-maintain.md) |
+| **3. Execution** | `isolate-workspace`, `build-in-waves` / `build-by-story` / `build-inline`, `/go`, `deliver-issues`, `test-first`, `root-cause`, `prove-claim`, `audit-trace`, `load-subgraph` | [Execution](process/execution.md) |
+| **4. Review & acceptance** | `inspect-change` (+ `load-subgraph`), `/audit-shipped`, `polish-diff`, `vet-feedback`, `validate-*`, product-flow suite | [Review and acceptance](process/review-and-acceptance.md) |
+| **5. Ship & maintain** | `land-branch`, `/cut-release`, `realign-spec`, `amend-feature`, `/map-features`, `/publish-issues`, `/triage`, `/sweep-backlog`, `/show-run-status`, `/scan-architecture`, `/write-handoff` | [Ship and maintain](process/ship-and-maintain.md) |
 
 ---
 

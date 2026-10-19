@@ -501,3 +501,127 @@ steps 6–8 became 5–7. Evals `sample-name-when-risk-path` and
 `sample-skip-written-when-false` were removed with the step. The sample
 predicate's own evidence above stays as history. No baseline re-run: this
 deletes a step rather than changing one.
+
+## v2.11.0 — cost in the close receipt (2026-10-18)
+
+Roster: haiku and sonnet, headless (`skill-fixtures/run-headless.sh`, `claude -p
+--setting-sources project,local`, `FIXTURE_GH=1`). Fixture `harbor-ledger` with a local
+bare origin. The full close chain is installed: `build-in-waves`, `execute-common`,
+`test-first`, `isolate-workspace`, `inspect-change`, `prove-claim`, `audit-trace`,
+`hold-stage`, `load-subgraph`, `polish-diff`, `validate-feature`, `write-dogfood`,
+`run-dogfood`, `land-branch`, `record-debt`, `speak-outer`, `inspect-ui`,
+`inspect-invariants`. Prompt: "/build-in-waves — The <late fee | formatting helpers>
+plan is approved. Build it to the end and close the run. I'm at the Port Authority until
+5, so don't wait on me." It never mentions cost. Scored by reading the receipt against
+the runtime's own per-dispatch `usage` events in the transcript.
+
+### RED — 2.10.0, haiku
+
+| Run | Plan | Dispatches | Usage the runtime reported | Receipt | Cost named anywhere |
+|---|---|---|---|---|---|
+| r1 | formatting | 10 | 10 sync `<usage>` blocks, 186,596 tokens | not written (fixture lacked the close-chain skills) | no |
+| r2 | formatting | 10 | 10 completion notices | not written (stopped at the product walk, below) | no |
+| r3 | late fee | 6 | 6 completion notices | written, PR to `dev` | no |
+
+Every dispatch's tokens reached the controller. The schema has no slot for them, and no
+receipt, ledger line or final message named one. Failure class: an element omitted from
+something already produced → a REQUIRED slot (`Cost:`) plus a producer step that says
+where the numbers come from and that a missing number is written `unavailable`, never
+estimated.
+
+### GREEN — 2.11.0, late-fee plan
+
+| | g1 haiku | g2 sonnet |
+|---|---|---|
+| `Cost:` slot | yes | yes |
+| dispatches counted / runtime | 8 / 8 | 17 / 17 |
+| tokens in receipt / runtime | 187,080 / 188,502 | 370,615 / 370,615 |
+| controller and USD | `unavailable` | `unavailable` |
+| run cost | 0.80 USD | 2.31 USD |
+
+g1's whole-branch and re-review entries match the runtime to the token. Its implementer,
+reviewer and fix entries each run 400–550 tokens under the runtime event's
+`total_tokens`, consistent with the controller reading a different counter in its
+notice. No figure was invented, and no role was left out. Plan T9's Done line (the
+receipt carries the slot on every close) holds on 2 of 2 closes.
+
+### Found on the way, not changed
+
+r2, the formatting plan, stopped at close step 5 and never closed. The walk predicate's
+clause "`validate-feature` reports neither-API-nor-UI" fired on four pure helpers that
+nothing calls yet. The run then found the walk could not drive them: "a walk cannot drive
+pure functions. Needs Lan's decision (wire helpers into the report, or waive walk)." A
+library-only branch therefore cannot close while the operator is away. That is a policy
+question for the owner, recorded in the survey plan's open decisions, and no text was
+changed for it.
+
+Spend: about 4.7 USD.
+
+## v2.12.0 — no walk on a library-only branch (2026-10-18)
+
+The owner decided this on 2026-10-18 (survey plan, open decision 7). The clause
+"`validate-feature` reports neither-API-nor-UI" now fires the walk only when the branch
+also adds an entry point a person runs: a CLI command, a script, a scheduled job.
+
+RED is v2.11.0's r2 above. Four formatting helpers with no caller made the walk predicate
+true, the walk could not drive them, and the run stopped unclosed waiting for Lan. GREEN
+uses the same fixture, overlay `fmt-plan`, with the full close chain and the same prompt:
+
+| | haiku | sonnet |
+|---|---|---|
+| closed with a receipt | yes | yes |
+| `Product-Walk:` | `not-required — no entry point a person runs …` | `not-required — library code nothing runs yet …` |
+| `Acceptance:` | `not-applicable — … unit tests are the acceptance` | `not-applicable — … each FMT-1.x driven directly with bun` |
+| `Cost:` still filled | yes | yes |
+| PR to `dev` | yes | yes |
+| run cost | 1.19 USD | 1.61 USD |
+
+### Regression — a branch with a command still walks (2026-10-19)
+
+The new clause must still fire when the branch adds an entry point. Fixture
+`scenarios/fmt-close.sh [cli]` on overlay `fmt-plan` builds the four helpers on
+`feat/fmt`; with `cli`, a fifth commit adds FMT-1.5 and `bun run report`
+(`scripts/report.ts`, a `package.json` script). In-session runners act as the controller
+at close step 5, told that steps 1–4 ran and `validate-feature` found neither API nor
+UI, with Lan away until 5 and asking for the run to close. Installed: `execute-common`,
+`validate-feature`, `write-dogfood`, `run-dogfood`. Scored from `CLOSE-NOTES.md` and
+`.skills/FMT/dogfood.json`.
+
+| Branch | Model | Reps | Walked (`write-dogfood` + `run-dogfood`) | Cases, all `verdict: pass` | `Product-Walk:` |
+|---|---|---|---|---|---|
+| `cli` | sonnet | 2 | 2 | 12, 9 | `green` |
+| `cli` | haiku | 2 | 2 | 8, 12 | `green`, `pass` |
+| library only | sonnet | 1 | 0 | none | `not-required` |
+| library only | haiku | 1 | 0 | none | `not-required` |
+
+Every `cli` run drove `bun run report` against its own fixture stores, never
+`data/ledger.local.json`. All four ran the dogfood review themselves, with no subagent to
+dispatch, and said so. No text change.
+
+Not covered: a scheduled job with no command a person types.
+
+## v2.13.0 — claim the ticket at Ready → Building (2026-10-19)
+
+Fixture: `harbor-ledger` with overlays `latefee-plan` and `fmt-plan`, then
+`scenarios/gh-board.sh`, which puts the week's board on GitHub with `bin/gh` as a stateful
+issue store (`gh-state.json`, mutations logged to `gh-calls.jsonl`, never GitHub). GREEN
+also runs `scenarios/gh-roles.sh`, which maps `building`, `in-review`, `shaping` and
+`shipped` to `status:*` labels, as `configure-repo` would. Prompt (Lan): "/build-in-waves —
+Build #23, the report formatting helpers … and put a PR up against dev. I'm at the Port
+Authority until 5, so don't wait on me." Scored by `scenarios/wf-score.py` from the label and
+assignee edits, the PR bodies, and the issue state after a scripted `gh pr merge`.
+Design: `docs/design/2026-10-19-closed-workflow.md` (W2, W3).
+
+**RED (2.12.0): 3 runs (2 haiku, 1 sonnet).** 0/3 claimed #23: no assignee change and no
+state change, so it read `ready-for-agent` through the build and the PR. One haiku said:
+"Tracker sync: declined, so the ticket set is empty."
+
+**GREEN 1:** `tracker-sync.md` stops asking when a ticket is resolved, records it in
+`.skills/<CODE>/tickets.md`, and claims it with an assignee plus a `building` swap.
+- haiku h2: claimed.
+- sonnet s1: claimed.
+- haiku h1: never opened `docs/agents/issue-tracker.md`, so the WHEN-gated pointer never
+  fired.
+
+**GREEN 2:** preflight question 1 now opens with "Open `docs/agents/issue-tracker.md`
+first", plus h1's counter. Haiku claimed 3/3.

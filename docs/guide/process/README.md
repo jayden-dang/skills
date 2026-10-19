@@ -100,6 +100,16 @@ amend-feature                        small in-scope change to a shipped, spec'd 
 /triage                      incoming issues and external PRs → the state machine
                              → ready-for-agent brief → execute or implement directly
 
+/sweep-backlog               your assigned tickets → one classified list, one question
+                             → nothing written to the tracker until you answer
+
+/go [#N…]                    (runs deliver-issues) the named or every ready ticket → its own build, review and PR
+                             → one message at the end
+
+/show-run-status             one feature's run → done, in flight, waiting on you, not shipped
+
+/audit-shipped               what merged this week → edge cases missed → follow-up drafts
+
 realign-spec                    whenever a spec'd feature changed outside its plan
 ```
 
@@ -110,9 +120,9 @@ realign-spec                    whenever a spec'd feature changed outside its pl
 | Project layer *(optional, above the feature loop)* | `define-project`, `inspect-invariants` | [`define-project`](../skills/define-project.md) |
 | Discovery | `frame-change` (+ `load-subgraph`), `clarify-decisions`, `research`, `run-spike`, `define-domain`, `/pathfind`, `/interpret-session`, `understand`, `/work-the-problem` | [Discovery](discovery.md) |
 | Specification | `specify-behavior`, `design-solution`, `plan-tasks` | [Specification](specification.md) |
-| Execution | `isolate-workspace`, `build-in-waves`, `build-by-story`, `build-inline`, `test-first`, `root-cause`, `prove-claim`, `audit-trace`, `load-subgraph` | [Execution](execution.md) |
-| Review & acceptance | `inspect-change` (+ `load-subgraph`), `polish-diff`, `vet-feedback`, `inspect-invariants`, `acceptance-*`, `write-dogfood`, `run-dogfood` | [Review and acceptance](review-and-acceptance.md) |
-| Ship & maintain | `land-branch`, `cut-release`, `realign-spec`, `amend-feature`, `/map-features`, `publish-issues`, `triage`, `scan-architecture`, `write-handoff` | [Ship and maintain](ship-and-maintain.md) |
+| Execution | `isolate-workspace`, `build-in-waves`, `build-by-story`, `build-inline`, `/deliver-issues`, `test-first`, `root-cause`, `prove-claim`, `audit-trace`, `load-subgraph` | [Execution](execution.md) |
+| Review & acceptance | `inspect-change` (+ `load-subgraph`), `/audit-shipped`, `polish-diff`, `vet-feedback`, `inspect-invariants`, `acceptance-*`, `write-dogfood`, `run-dogfood` | [Review and acceptance](review-and-acceptance.md) |
+| Ship & maintain | `land-branch`, `cut-release`, `realign-spec`, `amend-feature`, `/map-features`, `publish-issues`, `triage`, `sweep-backlog`, `show-run-status`, `scan-architecture`, `write-handoff` | [Ship and maintain](ship-and-maintain.md) |
 
 The **project layer** is optional and sits above the per-feature chain: on a large project, [`define-project`](../skills/define-project.md) writes a repo-level product vision and an IDed architecture-invariant spine that the discovery, spec, execution, and review phases consult when present — and ignore cleanly when absent. See [the artifact model](../concepts/artifacts.md#docsproduct-and-docsarchitecture--the-optional-project-layer).
 

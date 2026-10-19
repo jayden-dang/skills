@@ -423,3 +423,50 @@ a sibling while it sat two folders away, so that pointer had simply been broken.
 Both role prompts now live beside the lifecycle that dispatches those roles, which
 is where they belonged. Every remaining `../` in the set targets `execute-common`,
 and `scripts/lint-cross-folder.py` fails any that does not.
+
+## v2.3.0 — size never changes the route (2026-10-18)
+
+Found as a side result of plan T6 (`docs/design/2026-10-18-host-concurrency-no-op.md`):
+haiku built tasks inline in 4 of 6 sessions. Those runs were confounded — the harness passed
+`--max-budget-usd 1`, which the model sees ("the budget is $1 total, so I'll keep the
+orchestration lean"), and the prompt said the laptop chokes past two agents. RED re-run with
+both removed.
+
+Harness: `skill-fixtures/run-headless.sh` (`claude -p --setting-sources project,local`, budget
+5 USD), overlay `fmt-plan` (four independent tasks, `Depends-on: none`). Installed:
+`build-in-waves`, `execute-common`, `test-first`, `isolate-workspace`. Prompt: build FMT with
+`build-in-waves` on a branch off `dev`, no tracker sync, stop before the close sequence, do not
+ask. Scored from the stream-json transcript: each top-level `Agent` dispatch classed
+implementer (I) or reviewer (R) by its description.
+
+### RED — 2.2.0, haiku, 4 runs
+
+| r1 | r2 | r3 | r4 |
+|---|---|---|---|
+| IRIRIRIR | RRRR — controller wrote all four tasks | IRIRIRIR | R — controller wrote all four, one review for all four |
+
+Verbatim: r2 "The tasks are four small pure functions with explicit tests"; r4 "The tasks are
+small and fully specified". The skill's own rule ("Do not half-run this skill's subagent loop
+without dispatches", § Inline route, near the end) appears in neither transcript's reasoning —
+an organization finding: the counter has to sit where the runs read.
+
+### GREEN — 2.3.0: a rationalization row in the Mode ownership table (read early by every
+run) carrying the 2-of-4 baseline, plus two Red Flags
+
+| haiku r1 | r2 | r3 | r4 | sonnet r5 | r6 |
+|---|---|---|---|---|---|
+| IRIRIRIR | IRIRIRIR | IRIRIRIR | IRIRIRIR | IRIRIRIR | IRIRIRIR |
+
+All six branches green at 16 tests. The new row is in the skill text each run read (6/6).
+Sample is small (RED 2 of 4 failing, GREEN 0 of 4 on haiku); sonnet unchanged at 2 of 2.
+Spend: about 3.90 USD.
+
+## v2.4.0 — an operator amendment routes to `reroute-plan` (2026-10-18)
+
+Evidence is in `reroute-plan`'s `TESTS.md` § 1.1.0 (same runs). In 12 RED runs of an
+operator amendment mid-run no haiku run loaded `reroute-plan`. With its 1.1.0 description
+valid but no pointer here, haiku loaded it 2 of 3 — the miss was the additive constraint,
+which reads as a new task — and the miss skipped the REQUIRED **Check this wording** block.
+With the one-line pointer after Implementer Status Handling: haiku 7 of 7 reached the
+operator entry and ended with the verbatim block (5 of them with the description
+unregistered — the pointer alone); none stopped for an approval the operator had given.

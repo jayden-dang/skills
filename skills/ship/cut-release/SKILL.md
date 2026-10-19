@@ -1,6 +1,6 @@
 ---
 name: cut-release
-version: 1.2.0
+version: 1.3.0
 description: Cuts a release for work already merged to the release branch — version bump, tag,
   changelog, release notes, and Implemented specs in range marked Shipped.
   Run it with /cut-release.
@@ -130,8 +130,15 @@ stamp a release.
 "nobody reads INDEX", and "the tag is the real work" are **not** skips of
 this step and are **not** a reason to hand the flip to `realign-spec`.
 
-**Done when:** every cohort feature is `Shipped` in the file and INDEX
-(or step b already stopped the cut).
+Then the cohort's tickets, when `docs/agents/issue-tracker.md` names a tracker. A ticket
+belongs to the cut when a PR merged in the range closed it: the range's merge commits and
+PR bodies name it with a closing keyword (`Closes #N`). For each one, swap its state
+role for `shipped` (`docs/agents/triage-labels.md`) and comment `Shipped in v<version>`,
+both with the tracker's ops. Three baseline cuts tagged v0.5.0 and left #23 reading
+`status:in-review` on a closed issue, so the board could not tell merged from released.
+
+**Done when:** every cohort feature is `Shipped` in the file and INDEX, and every ticket
+its range closed reads `shipped` (or step b already stopped the cut).
 
 ## Red flags — never
 

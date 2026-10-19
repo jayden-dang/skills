@@ -1,6 +1,6 @@
 ---
 name: execute-common
-version: 2.10.0
+version: 2.13.0
 description: Use when build-in-waves, build-by-story, or build-inline loads the shared controller recipe — produces an In-progress catalog stamp, a runtime-bound session snapshot, lease state, ledger state, and a revision-bound close receipt.
 ---
 
@@ -16,9 +16,11 @@ says to. Registered so `npx skills add` copies it with the execute family.
 Three questions, before any dispatch, any `isolate-workspace` / `git worktree add`,
 and any first production edit:
 
-1. **Issue tracker sync.** WHEN `docs/agents/issue-tracker.md` names a configured
-   tracker, read `tracker-sync.md` beside this file and follow it exactly;
-   otherwise → empty ticket set, continue (unconfigured is normal, not a failure).
+1. **Issue tracker sync.** Open `docs/agents/issue-tracker.md` first. When it names a
+   tracker, read `tracker-sync.md` beside this file and follow it exactly: a ticket the
+   operator named is claimed here, before any dispatch. One haiku build of #23 never
+   opened the file, so the ticket was never claimed and its PR never closed it. No file,
+   or no tracker named → empty ticket set, continue (unconfigured is normal, not a failure).
 2. **Catalog occupancy.** Read `Status:` from `requirements.md` and the
    matching `docs/specs/INDEX.md` row. INDEX missing → say so once, suggest
    `/configure-repo`; still write `requirements.md` when that file exists.
@@ -158,11 +160,17 @@ wasted I/O); `git diff --name-only $(git merge-base main HEAD) HEAD` lists
 **more than 15 files**; the branch adds a new public API or exported surface.
 
 **Product walk** — true when **any** of: the user asked for a product walk,
-dogfood, or walkthrough; `validate-feature` reports neither-API-nor-UI; an
+dogfood, or walkthrough; `validate-feature` reports neither-API-nor-UI **and** the
+branch adds an entry point a person runs (a CLI command, a script, a scheduled job); an
 approved requirement uses visual / feel / eyeball language the automated
 surfaces cannot judge; `inspect-ui`'s report (via `inspect-change`'s UI lane)
 lists any `needs-human-eyes` item; the branch adds a **new** user-facing
 screen or visual surface — not only changes within existing ones.
+
+A branch that adds only library code nothing runs yet gets no walk: Product-Walk is
+`not-required` and its unit tests are the acceptance. Four formatting helpers with no
+caller left one baseline close unfinished. The run reported "a walk cannot drive pure
+functions" and stopped to wait for Lan, who was at the Port Authority until 5.
 
 ## Red flags — never
 

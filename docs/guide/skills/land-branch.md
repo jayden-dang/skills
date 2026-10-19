@@ -39,6 +39,12 @@ Base is resolved from an explicit value, an existing PR, or `Default PR base:`
 and created; pre-existing history is never rewritten. The PR title and body
 are authored from the live diff. That text **is** the reviewer truth.
 
+## Ship guard and owner notice
+
+Before a `pr` or `merge`, two read-only scripts in the skill's own folder check the branch. `ship-guard.sh` lists lockfiles changed without their manifest, generated files, files that are in neither the plan's file map nor a task's `Files` block, and how far the branch is behind its base. Lockfile and generated files are dropped from the branch, and out-of-plan files move to a `<branch>-extra` branch, unless you named them for this PR. Nothing is pushed while any of those rows stand. A behind-base count goes in the PR body as one line.
+
+For a PR, `owner-notice.py` finds changed files that another team owns, using the Owner column in the feature catalog, the shard's `Owner:` line, or the Ownership notes in `project.md`. When it finds any, the PR body gets a "Changes outside this feature's ownership" section and each owner is requested as a reviewer. It never holds the branch. Files with no owner are never reported.
+
 ## Intent
 
 Explicit PR, merge, keep, discard, or block intent executes without a second
@@ -50,6 +56,10 @@ short question. Local merge, discard, and block are never inferred.
 Read `Status:`. Still `Approved` or `In-progress` with every task checked and verify green →
 run [`realign-spec`](realign-spec.md) (forgot-net). Already `Implemented`
 and no drift → skip. This is not `/cut-release`.
+
+## The ticket
+
+The ticket set starts from `.skills/<CODE>/tickets.md` and the ticket you named, so the PR body carries `Closes #N` even when the branch name has no ID. When the PR opens, the ticket's state role moves to `in-review`. The merge is yours; `Closes #N` then closes the ticket. See [the workflow](../workflow.md).
 
 ## Executing a PR
 

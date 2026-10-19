@@ -1,7 +1,7 @@
 # AGENTS.md — Agent Behavior Constitution
 
-> A-to-Z agentic development skill set · **88 skills across 11 categories**
-> (70 engineering + 18 Personal OS) · `jayden-dang/skills` · v1.0.0
+> A-to-Z agentic development skill set · **96 skills across 11 categories**
+> (78 engineering + 18 Personal OS) · `jayden-dang/skills` · v1.0.0
 
 This file is the single source of truth for agent behavior when working with this
 skill set on any harness. Read it first, before any skill, before any action.
@@ -101,6 +101,7 @@ carries a checklist, create one todo per item.
 | Small in-scope change to a shipped, spec'd feature | `amend-feature`, not `frame-change` |
 | Incoming issue or external PR | suggest `/triage` (user-run; agents cannot auto-invoke) |
 | Capture this conversation into tracker issues | suggest `/publish-issues` (user-run) |
+| New idea to put on the board, or "what is waiting on me" | suggest `/idea <text>` or `/board` (user-run); then `/shape #N`, `/go`, `/cut-release`. The path: [`docs/guide/workflow.md`](docs/guide/workflow.md) |
 | Unsure which flow fits | suggest `/zone-mode` (user-run) — it routes from `docs/guide/process/on-ramps.md` |
 
 **User instructions override skills; skills override agent defaults.** Skip a
@@ -113,19 +114,21 @@ skill's workflow only when the user has explicitly told you to. A waiver of
 
 **User-invoked skills** carry `disable-model-invocation: true` in frontmatter.
 Agents MUST NOT auto-invoke these — name them for the user to run (`/triage`,
-`/pathfind`, `/zone-mode`). All 26 of them:
+`/pathfind`, `/zone-mode`). All 33 of them:
 
 `zone-mode`, `author-skills`, `reflect` · `bootstrap-repo`, `configure-repo` ·
 `forge-goal`, `forge-prompt`, `interpret-session`, `pathfind`, `work-the-problem` ·
 `no-comments` · `assess-pivot-impact`,
-`define-project`, `define-system-doc` · `cut-release`, `tend-pr` · `assess-milestone`,
+`define-project`, `define-system-doc` · `audit-shipped`, `cut-release`, `tend-pr` · `assess-milestone`,
 `map-features`, `publish-issues`, `record-debt`, `refresh-roadmap-status`, `chart-progress`,
-`scan-architecture`, `triage`, `write-handoff` · Personal OS: `life-setup`.
+`scan-architecture`, `show-run-status`, `sweep-backlog`, `triage`, `write-handoff` ·
+the five-command path: `board`, `idea`, `shape`, `go` (with `cut-release` above) · Personal OS: `life-setup`.
 
 **Model-invoked skills** (no `disable-model-invocation`) are auto-invoked when
 the description matches the situation. Everything not listed above, including
 `frame-change`, `clarify-decisions`, `research`,
-`run-spike`, `define-domain`, the full spec triad, the execute family,
+`run-spike`, `define-domain`, the full spec triad, the execute family (including
+`deliver-issues`, which `/go` runs),
 `test-first`, `root-cause`, `debug-remote`, `assess-observability`, `prove-claim`, `audit-trace`, `load-subgraph`,
 `isolate-workspace`, `hold-stage`, `inspect-change`, `polish-diff`, `vet-feedback`,
 `vet-source`,
@@ -458,7 +461,7 @@ never a direct file edit. A pivot that collides with shipped code goes through
 `/assess-pivot-impact` first.
 
 **Maintenance:** `amend-feature` (small in-scope changes), `/triage` (incoming
-issues), `realign-spec` (spec drift), `/scan-architecture` (periodic deepening),
+issues), `/board` (what waits on whom), `realign-spec` (spec drift), `/scan-architecture` (periodic deepening),
 `/map-features` (reverse OBS, dispose gaps, Domain-boundary migrate), `/record-debt` (bank a
 finding judged real and left unfixed).
 
@@ -486,6 +489,8 @@ This repo is configured for a spec-driven skill set.
 - Multi-session decision map (Layer 0 fog): `/pathfind`
 - Understand a feature, component, or change (code-grounded page + one check question): `understand`, or just ask
 - Incoming issues and PRs: `/triage`
+- The short path, one board: `/idea` → `/shape #N` → `/go` → `/board` → `/cut-release`
+  (user-run; `docs/guide/workflow.md`)
 - Brownfield feature-ID / Files backfill: `/map-features`
 - Traceability check: `audit-trace` — run by `prove-claim` and `/cut-release`;
   keep it clean

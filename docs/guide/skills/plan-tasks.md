@@ -74,9 +74,15 @@ Then the **independent plan review**, dispatched not self-run. The doc-only chec
 
 The step is done when every requirement ID has both a task footer and a tagged test, [`audit-trace`](audit-trace.md) is clean, the design's seam-table IDs are all covered, and the placeholder scan is clean.
 
+## A change map, when you ask for one
+
+If you ask to see what the plan changes (a picture, a diagram, a map), the presentation includes a change map. It is a page at `.skills/<CODE>/change-map.html`, drawn through [`craft-page`](craft-page.md). It shows every file in the plan's `Files` lines, docs included, marked new or changed, with its owner from `docs/agents/project.md`. It also shows the calls the plan adds, each outside consumer of a changed surface, and any other unshipped plan that touches the same file, drawn as a collision with each plan's own wording. A picture drawn inline in the reply does not count as the map. Without the request, no map is made.
+
 ## Publishing and the three exits
 
 Step 5 is optional: if the repo uses an issue tracker (`docs/agents/issue-tracker.md`), publish **one feature issue** for the plan (default **Publish unit: feature**). Plan tasks stay in `tasks.md` — they are not tracker issues and not default sub-issues. The issue body describes behavior and interfaces and **never file paths**, and is what the feature PR closes. When the specs are committed, it also carries the **union** of requirement IDs under `Requirements covered:`, the plan path, and any bound `ROAD-N` / `MILE-N`. When `git check-ignore` says the plan is ignored (specs kept local, as in a company repo you use the set in alone), those three lines are left out and the title drops its `[CODE]` prefix: the people reading the tracker cannot open the spec, so the issue has to read whole on its own. The issue-to-ID link then lives only under `.skills/<CODE>/`. Legacy one-issue-per-task is only when config or the user explicitly opts in.
+
+When the feature already has a ticket, because you named it or `/shape` recorded it, publishing updates that ticket in place and creates nothing. The frontier label replaces the ticket's current state role in the same edit, so a ticket that was `shaping` ends as `ready-for-agent` with one state role, not two.
 
 ### One triad, one plan
 

@@ -1,6 +1,6 @@
 # Phase 5 — Ship and maintain
 
-**Skills:** [`land-branch`](../skills/land-branch.md) · [`cut-release`](../skills/cut-release.md) · [`realign-spec`](../skills/realign-spec.md) · [`amend-feature`](../skills/amend-feature.md) · [`publish-issues`](../skills/publish-issues.md) · [`triage`](../skills/triage.md) · [`scan-architecture`](../skills/scan-architecture.md) · [`write-handoff`](../skills/write-handoff.md)
+**Skills:** [`land-branch`](../skills/land-branch.md) · [`cut-release`](../skills/cut-release.md) · [`realign-spec`](../skills/realign-spec.md) · [`amend-feature`](../skills/amend-feature.md) · [`publish-issues`](../skills/publish-issues.md) · [`triage`](../skills/triage.md) · [`sweep-backlog`](../skills/sweep-backlog.md) · [`show-run-status`](../skills/show-run-status.md) · [`scan-architecture`](../skills/scan-architecture.md) · [`write-handoff`](../skills/write-handoff.md)
 
 ## `land-branch` — prepare locally, then the integration decision
 
@@ -118,6 +118,14 @@ Two rules that are easy to get backwards:
 
 - **Issues born agent-ready are out of scope.** Anything published from a plan (recognizable by a `Requirements covered:` section) or by `publish-issues` (recognizable by its AI-drafted marker line) already has a real spec. Running it through triage adds a second, weaker one.
 - **An "already implemented" close does not write to `.out-of-scope/`.** That knowledge base records *rejections*; logging built features there poisons future dedup checks.
+
+## `/sweep-backlog` — your own queue
+
+[`/triage`](../skills/triage.md) handles tickets coming in. [`/sweep-backlog`](../skills/sweep-backlog.md) reads the ones already assigned to you. It checks every branch for commits that name each ticket, puts each ticket in one class (landed, duplicate, obsolete, blocked outside the team, blocked, ready), orders the rest by what blocks them, and asks one question for the calls only you can make, each with a pick. It writes nothing to the tracker until you answer.
+
+## `/show-run-status` — where a build stands
+
+[`/show-run-status`](../skills/show-run-status.md) answers "where are we with this feature?" for a build that is running or stopped. It reads the plan, the ledger, git, the unit tests, parked decisions, the ticket and the pull request, and says where they disagree. It changes nothing.
 
 ## `/scan-architecture` — the periodic scan
 

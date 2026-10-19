@@ -1,6 +1,6 @@
 ---
 name: land-branch
-version: 4.2.0
+version: 4.5.1
 description: >
   Use when a finished feature branch needs integration or disposition —
   produces a local merge, pull request, kept branch, discard, or block with
@@ -42,7 +42,8 @@ choice; do not show a second menu.
 ## 2. Prepare locally
 
 REQUIRED: load `prepare.md` and follow it through **Author commits**, then its
-**Sequence the branch into verifiable units** section for `pr` and `merge`.
+**Ship guard** and **Sequence the branch into verifiable units** sections for `pr`
+and `merge`.
 Resolve and memoize the base there. Author PR text only for `pr`.
 
 Sequencing rewrites history on purpose: a reviewer reads the order, so the order
@@ -117,7 +118,8 @@ process-temp files, never interpolated as shell input; keep the worktree.
 **Open it ready, never as a draft** — omit `--draft`, pass `draft: false` to a
 tool that defaults to draft, and make ready any PR that still opened as one. A
 draft is not a crossing. Post step 3's evidence onto the PR per `prepare.md`
-**Post the verdict**, then report the URL and stop: name `/tend-pr` for the CI
+**Post the verdict**, and move the ticket set per `tickets.md` **After the PR opens**. Then
+report the URL and stop: name `/tend-pr` for the CI
 watch rather than waiting here, which stalls the next branch and burns runs on
 commits a later push restarts.
 
@@ -187,6 +189,7 @@ present. It is optional and never withholds the resolved action.
 - Rewriting execute-family task commits, severing verdicts from what they judged
 - Reusing evidence established before a rewrite
 - Writing `.skills/pr-packages/` or adding a PR-text approval loop
+- Pushing while `scripts/ship-guard.sh` still prints a `lockfile`, `generated` or `out-of-plan` row
 
 | Thought | Reality |
 |---|---|

@@ -1,8 +1,8 @@
 ---
 name: speak-outer
-version: 1.2.0
+version: 1.3.0
 description: Use when writing anything a person will read (a status, a reply,
-  a standup note, a PR body). Produces outer-register prose with no process
+  a standup note, a PR body, a ticket comment). Produces outer-register prose with no process
   machinery.
 ---
 
@@ -49,6 +49,18 @@ These tokens do not appear in anything a person reads:
 
 The ledger, session notes, and inner working set may still use those
 tokens. They are not the reply.
+
+## Language
+
+- **The reply to the operator:** the language the operator wrote in.
+- **Anything written into the repo or the tracker** (PR title and body, commit, issue,
+  ticket or PR comment): the `Language:` line in `docs/agents/project.md`, else English.
+  The thread's language does not change it, and neither does the reader's.
+
+Five of five runs asked in Vietnamese for a comment Quang would "get at a glance" wrote
+it in Vietnamese, under his own Vietnamese note. Each wrote the PR body for the same
+change in English, so one change's record split across two languages. At a glance means
+short sentences, in the record's language.
 
 ## Rationalizations
 

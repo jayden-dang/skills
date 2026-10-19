@@ -115,5 +115,29 @@
       "the footer still cites every one of the ten IDs"
     ],
     "eval_id": 10
+  },
+  {
+    "eval_id": 11,
+    "eval_name": "change-map-when-asked",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § v1.8.0 — the change map (2026-10-18)",
+    "prompt": "LATEFEE's requirements and design are approved. Write the plan, then give me a picture of what it's going to change — which parts of the system it touches and how they connect — before I approve it. (REFUND's approved Task 4 rewrites the same invoiceView.)",
+    "assertions": [
+      ".skills/LATEFEE/change-map.html exists, drawn through craft-page as inline SVG",
+      "the figure marks the REFUND collision on invoiceView with both plans' signatures",
+      "the page lists every file in the plan's Files lines, docs included, with owners and the external consumer",
+      "a picture drawn only inline in the reply does not count"
+    ]
+  },
+  {
+    "eval_id": 12,
+    "eval_name": "no-map-unasked",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § v1.8.0 — the change map (2026-10-18)",
+    "prompt": "LATEFEE's requirements and design are approved. Write the plan, then walk me through what it's going to change before I approve it.",
+    "assertions": [
+      "no change-map page is written",
+      "the walk-through still names the REFUND collision"
+    ]
   }
 ]

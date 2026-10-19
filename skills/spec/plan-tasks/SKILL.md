@@ -1,6 +1,6 @@
 ---
 name: plan-tasks
-version: 1.7.0
+version: 1.9.0
 description: Use when a design is approved and the tasks.md implementation plan
   (vertical-slice tasks with requirement footers and behavior tests) needs writing,
   after design-solution and before the execute family (build-in-waves /
@@ -146,6 +146,32 @@ feature PR.
 **Done when:** skipped (no tracker / cannot publish), **or** unit `feature` with
 exactly one feature issue (union IDs, plan path, id under `.skills/<CODE>/`),
 **or** unit `tasks` with one issue per plan task and ids recorded.
+
+## Change map — when the operator asks to see it
+
+WHEN the operator asks to see what the plan changes — a picture, diagram, map — the
+presentation includes a change map. REQUIRED SUB-SKILL: use `craft-page`, figure job
+`before/after structure`; write `.skills/<CODE>/change-map.html` and give its path. Four
+baseline runs asked for a picture: one drew none, three drew the feature's own call chain
+in ASCII, and none showed that REFUND's Task 4 rewrites the same `invoiceView` — one drew
+the merged signature `invoiceView(invoice, refunds, today)` that neither plan holds.
+
+The files are every path in the plan's `**Files:**` lines, docs included — one early
+haiku map dropped the `docs/api.md` its plan modifies, and its owner with it. Run
+`grep -ln '<path>' docs/specs/*/tasks.md` for each. The page shows:
+
+1. Each of those files, marked new or changed, with its owner from
+   `docs/agents/project.md` Ownership notes.
+2. The calls and imports the plan adds or changes between them.
+3. Each external consumer of a changed surface (the design's `Surface:` lines).
+4. On the figure itself: each other plan the grep names whose `requirements.md` is not
+   `Shipped`, as a collision on that file, with the signature or change as each plan
+   writes it.
+
+A picture drawn inline in the reply is not the map, even when it "covers the same ground":
+the three baseline pictures were inline, and the collision was on none of them.
+
+*Done when: the page exists with all four, and every collision is on the figure.*
 
 ## Exit
 

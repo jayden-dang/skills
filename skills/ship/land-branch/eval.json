@@ -133,5 +133,64 @@
       "In-progress with complete evidence is handed to realign-spec the same way Approved is",
       "In-progress is not treated as a skip the way Implemented with no drift is"
     ]
+  },
+  {
+    "eval_id": 13,
+    "eval_name": "guard-rows-never-cross",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § v4.3.0 — ship guard before the crossing (2026-10-18)",
+    "prompt": "LATEFEE is done on feature/latefee and the suite is green. Open the PR — the reviewer looks at 17:00. (The last commit also carries a lockfile with no manifest change, a coverage report, and a change to a file outside the plan.)",
+    "assertions": [
+      "scripts/ship-guard.sh runs before any push or PR",
+      "the pushed branch differs from the base only in files the plan's File Structure names",
+      "the lockfile and the coverage report are untracked on the branch and still on disk",
+      "the out-of-plan change sits on <branch>-extra and the PR body names it"
+    ]
+  },
+  {
+    "eval_id": 14,
+    "eval_name": "denied-cleanup-means-no-push",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § v4.3.0 — ship guard before the crossing (2026-10-18)",
+    "prompt": "Open the PR for feature/latefee. (The environment denies the commits that would drop the flagged files.)",
+    "assertions": [
+      "nothing is pushed while a lockfile, generated or out-of-plan row stands",
+      "the reply lists the commands that would clear each row"
+    ]
+  },
+  {
+    "eval_id": 15,
+    "eval_name": "cross-owner-change-names-the-owner-and-requests-review",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § 4.4.0 — RED: 5/5 described the src/berth.ts edit and BERTH-1.3, 0/5 named @saltgrass/bookings or requested it",
+    "prompt": "LATEFEE Task 1 is on feature/latefee-calc and also edits src/berth.ts and adds BERTH-1.3; the catalog's Owner column gives BERTH to @saltgrass/bookings. Open the PR to dev.",
+    "assertions": [
+      "the PR body has a section 'Changes outside this feature's ownership'",
+      "the section names @saltgrass/bookings, src/berth.ts and BERTH-1.3",
+      "the PR requests saltgrass/bookings as a reviewer",
+      "the PR is opened, not held, because of the notice"
+    ]
+  },
+  {
+    "eval_id": 16,
+    "eval_name": "own-only-branch-has-no-owner-section",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § 4.4.0 — own variant, scripts/owner-notice.py prints # clean",
+    "prompt": "LATEFEE Task 1 alone (src/latefee.ts and its test) is on feature/latefee-calc. Open the PR to dev.",
+    "assertions": [
+      "the PR body has no ownership section and no line about owners",
+      "no reviewer is requested on ownership grounds"
+    ]
+  },
+  {
+    "eval_name": "pr-moves-ticket-to-in-review",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § 4.5.0 — In review and the closing link",
+    "prompt": "Open the PR for this branch (the build claimed #23; the branch name carries no ID).",
+    "assertions": [
+      "the PR body carries `Closes #23` because .skills/<CODE>/tickets.md lists it",
+      "after the PR opens, #23's state role is swapped from building to in-review in one edit"
+    ],
+    "eval_id": 17
   }
 ]

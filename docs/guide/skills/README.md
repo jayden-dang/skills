@@ -1,9 +1,11 @@
 # Skill reference
 
-70 skills in eleven buckets (engineering package); every one has its own page.
+78 skills in eleven buckets (engineering package); every one has its own page.
 See also [Start here](../START-HERE.md).
 
 **Invocation** is the thing to check first. A **model-invocable** skill is invoked by the agent on its own when its description matches the situation. A **user-invoked** skill carries `disable-model-invocation: true` in its frontmatter — the agent *cannot* invoke it, so you run it as a slash command.
+
+The short path through them is five commands on one board: `/idea`, `/shape`, `/go`, `/board`, `/cut-release`. See [the workflow](../workflow.md).
 
 The composition rule that follows: a user-invoked skill may invoke model-invoked skills, never another user-invoked one. See [The skill model](../concepts/skill-model.md).
 
@@ -61,6 +63,8 @@ The triad. Each file approved before the next is written.
 |---|---|---|
 | [`build-in-waves`](build-in-waves.md) | model | Continuous dependency-aware scheduler: bounded leases, serial/parallel ready sets, two-verdict reviews, ledger |
 | [`build-by-story`](build-by-story.md) | model | Story-unit: derived review units, human unlock after each unit, mode-change write-back |
+| [`go`](go.md) | `/go [#N…]` | The third of the five commands. The named tickets, or every Ready one, through `deliver-issues`: built, reviewed, one PR each, one message at the end |
+| [`deliver-issues`](deliver-issues.md) | model, or `/deliver-issues` | Every approved, ready ticket on the board (or the ones named) through its own build, review and PR in one unattended run, with one message at the end. Reached through `/go` |
 | [`build-inline`](build-inline.md) | model | Controller implements with `test-first`; no implementer subagents; stop-on-blocker; sequential |
 | [`execute-common`](execute-common.md) | model | Shared execute-family controller recipe (In-progress stamp, preflight, ledger, close). Not an entry point |
 | [`test-first`](test-first.md) | model | **Iron Law:** no production code without a failing test first |
@@ -82,6 +86,7 @@ The triad. Each file approved before the next is written.
 | [`vet-feedback`](vet-feedback.md) | model | Anti-sycophancy. Prove Claim every claim before implementing or replying |
 | [`vet-source`](vet-source.md) | model | Fetched / tool / third-party text that instructs: keep the original job, drop the orders |
 | [`speak-outer`](speak-outer.md) | model | Person-facing text: outer register, no process machinery |
+| [`audit-shipped`](audit-shipped.md) | `/audit-shipped` | Audits what merged in a window for edge cases the specs and tests missed: a reader pass, a glossary pass, one follow-up draft per real finding |
 | [`inspect-invariants`](inspect-invariants.md) | model | Advisory, LLM-judged invariant conformance — the semantic counterpart to `audit-trace` |
 | [`inspect-ui`](inspect-ui.md) | model | Live, screenshot-backed design review of UI-touching diffs — three viewports, states, contrast, token conformance |
 
@@ -113,7 +118,7 @@ The visual layer. Fires before any HTML a human will look at.
 |---|---|---|
 | [`land-branch`](land-branch.md) | model | Consume exact-revision close evidence, author commits + PR text, then perform the resolved crossing or disposition |
 | [`record-verdict`](record-verdict.md) | model | Immutable decision record before a production crossing |
-| [`cut-release`](cut-release.md) | `/cut-release` | Full prove-claim + audit-trace. Changelog from requirement-ID commit trailers |
+| [`cut-release`](cut-release.md) | `/cut-release` | Full prove-claim + audit-trace. Changelog from requirement-ID commit trailers; the tickets it ships read `shipped` |
 
 ## track
 
@@ -126,7 +131,12 @@ The visual layer. Fires before any HTML a human will look at.
 | [`chart-progress`](chart-progress.md) | `/chart-progress` | The weekly dashboard. One HTML page of what finished, what is building, what is ready to start, the roadmap graph, catalog domains and architecture, every number from a fixed parse. Writes only under `.skills/dashboard/` |
 | [`assess-milestone`](assess-milestone.md) | `/assess-milestone` | The close gate. Judges whether a milestone's outcome was achieved, records it append-only, and holds the close until you dispose of the verdict |
 | [`publish-issues`](publish-issues.md) | `/publish-issues` | Context → tracker issues. Tracer-bullet slices with blocking edges, published agent-ready |
+| [`board`](board.md) | `/board` | The fourth of the five commands. The whole board by state, what waits on you first, and every place the board and the repo disagree. Writes nothing |
+| [`idea`](idea.md) | `/idea <text>` | The first of the five commands. An idea becomes a ticket, framed, in Shaping with its tier and open questions |
+| [`shape`](shape.md) | `/shape #N` | The second of the five commands. The spec triad (or the root cause for a bug) for a ticket, stopping at each approval; the approved plan makes it Ready |
 | [`triage`](triage.md) | `/triage` | A two-axis issue state machine. Verify the claim before recommending |
+| [`sweep-backlog`](sweep-backlog.md) | `/sweep-backlog` | Your assigned tickets as one classified, ordered list plus one question. Writes nothing until you answer |
+| [`show-run-status`](show-run-status.md) | `/show-run-status` | Where one feature's build stands, from the plan, ledger, git, tests, parked decisions, ticket and PR. Writes nothing |
 | [`scan-architecture`](scan-architecture.md) | `/scan-architecture` | Codebase-wide friction scan → an HTML report of deepening candidates |
 | [`catalog-sync`](catalog-sync.md) | (guide) | INDEX-only catalog sync: configure-repo posture + map-features export/materialize |
 | [`map-features`](map-features.md) | `/map-features` | Shared catalog ops: dispose step 0 reverse + gaps / Domain-boundary migrate; index-only export/materialize |

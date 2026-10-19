@@ -1,6 +1,6 @@
 ---
 name: refresh-roadmap-status
-version: 1.2.0
+version: 1.3.0
 description: Reports where a multi-milestone plan actually stands and what to do next,
   derived fresh from the roadmap, the specs, and git — never from a stored status
   file. Run it with /refresh-roadmap-status.
@@ -98,6 +98,16 @@ test -f .skills/<CODE>/progress.md && grep -nE '^Task ' .skills/<CODE>/progress.
 # or, when scanning all features: for f in .skills/*/progress.md; do ...; done
 ```
 
+**7. Notion drafts — only when `docs/agents/issue-tracker.md` reads Draft surface `notion`.**
+`notion-fetch` its **Drafts data source**. For every row whose `Status` and
+`Signed off by` do not yet read the **Sign-off** line, run `notion-get-comments` on
+that row's page. In the output, give each such row a `draft` line: its title, its
+`Status`, and the sign-off role's newest comment, quoted verbatim. Quote `no comment`
+when there is none. That comment is what stands between the draft and its sign-off.
+Six of seven runs fetched only the table and told Lan "The only thing holding it is
+Quang's review". Quang's comment on MILE-2 asked: "Drop that phrase or split refunds out,
+then I'll sign."
+
 ## The rules
 
 The six passes above produce `liveGoals`, `retiredGoals`, `goalCitations`, `dispositions`,
@@ -154,6 +164,7 @@ Counts, then findings, then the one next action:
 refresh-roadmap-status: 3 milestones · 7 items · 5 bound · 2 unspecced · 5 goals · 1 dispositioned
   ERROR R10 SRCH status mismatch — INDEX says Approved, requirements.md says Implemented
   info  R7  ROAD-6 payments-webhook is unspecced
+  draft MILE-4 Search — In review — Quang: "Split ranking out, then I'll sign."
   NEXT  withheld — R10 must be resolved first (realign-spec realigns a drifted Status)
 ```
 

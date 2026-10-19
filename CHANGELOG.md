@@ -2,6 +2,70 @@
 
 ## Unreleased
 
+### One closed workflow: five commands, one board (2026-10-19)
+
+Every piece of work is a ticket in one state, and each move between states belongs to one command or one person. The short path is `/idea`, `/shape #N`, `/go`, `/board`, `/cut-release` (`docs/guide/workflow.md`). Every old command still works.
+
+New, all user-invoked (`disable-model-invocation: true`), each with a `TESTS.md` of RED and GREEN runs:
+
+- `/board` 1.0.0 (track): the whole board by state, what waits on you first, and every place the board and the repo disagree. `scripts/board.py` prints every section; the skill writes nothing.
+- `/idea` 1.0.0 (track): an idea becomes a ticket, framed, waiting in Shaping with its tier and open questions.
+- `/shape #N` 1.0.0 (track): the spec triad, or the root cause for a bug, stopping at each approval; the approved plan makes the ticket Ready.
+- `/go [#N…]` 1.0.0 (execution): builds the named tickets, or every ready one, through `deliver-issues`.
+
+Edited:
+
+- `deliver-issues` 1.1.0 to 2.0.0: a ready ticket that cannot be built moves to `shaping` with a comment (1.1.0). 2.0.0 is model-invocable (the flag is gone) so `/go` can route to it; the scope is the tickets you name. `/deliver-issues` still works when typed.
+- `execute-common` 2.13.0: the ticket is claimed at preflight (assignee and `building`), tracker sync no longer asks when a ticket is resolved, and the set is recorded in `.skills/<CODE>/tickets.md`.
+- `land-branch` 4.5.0: the ticket set starts from `.skills/<CODE>/tickets.md`, the PR links `Closes #N`, and the ticket moves to `in-review` when the PR opens.
+- `cut-release` 1.3.0: the tickets a cut ships get `shipped` and a "Shipped in v<version>" comment.
+- `plan-tasks` 1.9.0: publishing onto the feature's existing ticket updates it in place, with one state role.
+- `configure-repo` 1.13.0: four new state roles, `shaping`, `building`, `in-review` and `shipped`, proposed as `status:<role>`.
+- Bugs (W10): `triage` 1.1.0 sends a bug whose cause is still open to `shaping`; `shape` 1.1.0 ends tier 1 Ready with `Requirements covered: <fix>, <guard>`; `deliver-issues` 2.1.0 builds such a tier-1 fix with `test-first`; `board` 1.0.2 counts it as eligible.
+- `templates/agents/triage-labels.md`: the four new roles and the rule that a ticket carries one state role.
+- `AGENTS.md`: the user-invoked list gains `board`, `idea`, `shape` and `go`, loses `deliver-issues`, and now counts 33.
+
+Evidence: `docs/design/2026-10-19-closed-workflow.md` and each skill's `TESTS.md`.
+
+### Notion as the draft surface for Flexible Mode (2026-10-19, plan T3c)
+
+Milestone drafts can wait for the TPM's sign-off in Notion before any ticket reaches the tracker, in the right Notion area when one person works across several projects and workspaces.
+
+- `templates/agents/issue-tracker.md`: a **Draft surface** row (`repo` or `notion`) and a `### Notion draft surface` block. The binding is the drafts data source ID, the workspace, the setup server, and the Sign-off line (`Status` = `Signed off` with `Signed off by` = the sign-off role).
+- `configure-repo` 1.12.0: a Draft surface follow-up. It binds a Notion database only when the sign-off role is a member of its workspace; otherwise it writes `repo` and names the `/mcp` Re-authenticate step.
+- `plan-milestones` 1.3.0: with Draft surface `notion`, the milestone also becomes a Notion page with a REQUIRED `## Tickets on sign-off` section (`notion-draft.md`). The description now covers Notion drafts awaiting sign-off.
+- `refresh-roadmap-status` 1.3.0: a Notion drafts pass that quotes the sign-off role's newest comment on every draft not yet signed off.
+- `publish-issues`: unchanged. With a ticket list on the signed page it published exactly that list 5/5.
+
+Evidence: each skill's `TESTS.md` and `docs/design/2026-10-19-notion-draft-surface.md`.
+
+### Survey decisions 6–7 and the close receipt (2026-10-18)
+
+- `execute-common` 2.11.0: the close receipt gains a `Cost:` slot (Receipt-Version 2).
+- `execute-common` 2.12.0: a library-only branch gets no product walk. A branch that adds a command still walks.
+- `run-spike` 2.0.0 (**breaking**): a spike stops at the answer. It never writes production code, even when invited to give a head start, and the next step is `plan-tasks`.
+- `configure-repo` 1.12.1: each connected Notion server is checked with `notion-get-self`, because two servers can reach the same workspace.
+
+### Survey upgrade: four new skills, five edits, eight tested no-ops (2026-10-18)
+
+New, all user-invoked (`disable-model-invocation: true`), each with a `TESTS.md` of RED and GREEN runs on sonnet and haiku:
+
+- `/sweep-backlog` 1.0.0 (track): your assigned tickets as one classified, dependency-ordered list with one question for the calls only you can make. Writes nothing to the tracker until you answer. A script checks every branch for commits that name each ticket.
+- `/show-run-status` 1.0.0 (track): where one feature's build stands, from seven fixed sources, in six slots. The tracker ticket and any parked decision are always reported.
+- `/audit-shipped` 1.0.0 (review): audits what merged in a window with a reader pass and a glossary pass, and drafts one follow-up per real finding.
+- `/deliver-issues` 1.0.0 (execution): every approved, ready ticket goes through `build-in-waves`, `inspect-change` and `land-branch` as its own PR in one unattended run. A question becomes a "Needs a decision before merge" note in that PR, and the run ends with one message.
+
+Edited:
+
+- `land-branch` 4.3.0 to 4.4.0: a ship guard script runs before a PR or merge (4.3.0, fixed in 4.3.1 to read each task's `Files` block). An owner notice script (4.4.0) names the other team in the PR body and requests them as reviewers when the PR changes their code or spec.
+- `build-in-waves` 2.3.0 and 2.4.0: size never changes the route, so a controller does not write a small task itself. An operator message that changes the plan goes to `reroute-plan` first.
+- `reroute-plan` 1.1.0: an operator's own amendment counts as both approvals, and the report ends with a "Check this wording" block quoting every line written or struck.
+- `plan-tasks` 1.8.0: a change map page when the operator asks to see one.
+- `speak-outer` 1.3.0: a Language section. The reply follows the operator's language. Text written into the repo or tracker follows the `Language:` line in `docs/agents/project.md`, else English.
+- Templates: `templates/agents/project.md` gets an optional `Language:` line, and `templates/specs-catalog-domain.md` gets an Owner column and a shard `Owner:` line.
+
+Tested and left unchanged, each recorded in `docs/design/`: `2026-10-18-tracker-writes-no-op.md`, `2026-10-18-batched-decisions-no-op.md`, `2026-10-18-housekeeping-no-op.md`, `2026-10-18-host-concurrency-no-op.md`, `2026-10-18-spike-pipeline-no-op.md`, `2026-10-18-incident-no-op.md`, `2026-10-18-verified-red-no-op.md`, `2026-10-18-security-blast-radius-no-op.md`.
+
 ### chart-progress 1.1.0 and plan-milestones 1.2.0 — a weekly dashboard on a parseable roadmap (2026-10-14)
 
 `/chart-progress` writes one self-contained HTML page for the end-of-week review: finished in

@@ -20,5 +20,16 @@
       "issues already born agent-ready are not re-triaged",
       "they are recognised by their marker rather than by guesswork"
     ]
+  },
+  {
+    "eval_name": "unconfirmed-bug-to-shaping",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § 1.1.0",
+    "prompt": "/triage #242 — recommend its state.",
+    "assertions": [
+      "a confirmed bug whose root cause is not established is recommended for shaping, not ready-for-agent",
+      "the brief marks the cause open and names /shape #N"
+    ],
+    "eval_id": 3
   }
 ]

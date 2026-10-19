@@ -118,6 +118,7 @@ When the sequence completes cleanly, the repo carries a consistent set of artifa
 - A pushed git tag naming the version (gate g).
 - Draft release notes in the tracker, requirement-grouped (gate h).
 - The shipped requirements moved to `Status: Shipped` in `docs/specs/`, with `INDEX.md` updated (gate i).
+- The tickets the cut ships, those a merged PR in the range closed, with their state role swapped for `shipped` and a `Shipped in v<version>` comment (gate i). Before 1.3.0 a release left them indistinguishable from merged-not-released.
 
 If any gate stopped the sequence, only the artifacts of the gates that ran exist, and the version is not considered published. That is the whole point of the stop rule: the set of artifacts is always internally consistent, never a tag pointing at an unbuilt version or notes describing an artifact that was never produced.
 

@@ -1,6 +1,6 @@
 ---
 name: configure-repo
-version: 1.11.1
+version: 1.13.0
 description: Sets up docs/agents config so this skill set can run in an existing repo.
 disable-model-invocation: true
 ---
@@ -44,9 +44,9 @@ Walk the fourteen decisions below (A–N; I is optional project-docs; K is optio
 
 Explainer: skills that read or write issues (`triage`, `publish-issues`, `plan-tasks` when publishing a plan, `land-branch`, `cut-release`) need to know where issues live and which commands touch them. Options: **github**, **gitlab**, **linear**, **local**, **other**. Recommend only from the repo's local git remote — a GitHub remote → github, a GitLab remote → gitlab, no remote → local — and always let the user overrule it. Do not probe a service or its auth to guess the tracker. Linear is a separate service and will not appear in `git remote`, so present it as an option and pick it whenever the user says the team lives in Linear, even if the code host is GitHub/GitLab.
 
-**WHEN the tracker is chosen, read `issue-tracker-followups.md` beside this file and follow it exactly** — what each option means, the PR-surface, Publish unit, and Program sync follow-up questions, the write-scope table, and the IC-default rule all live there.
+**WHEN the tracker is chosen, read `issue-tracker-followups.md` beside this file and follow it exactly** — what each option means, the PR-surface, Publish unit, Program sync, and Draft surface follow-up questions, the write-scope table, and the IC-default rule all live there.
 
-**Done when:** tracker choice, PR-surface (if applicable), Publish unit, Program sync, and Program write role are confirmed (or declined to defaults: feature + local + ic).
+**Done when:** tracker choice, PR-surface (if applicable), Publish unit, Program sync, Program write role, and Draft surface are confirmed (or declined to defaults: feature + local + ic + repo).
 
 ### B. Triage label mapping
 
@@ -139,7 +139,7 @@ Let them edit. **Done when:** the user approves the drafts.
 
 **The additive rule: existing files are edited in place, never clobbered.** If a target file already exists, merge your content into it and preserve everything the user wrote.
 
-1. Write `docs/agents/project.md`, `docs/agents/issue-tracker.md`, and `docs/agents/triage-labels.md`, seeded from `templates/agents/project.md`, `templates/agents/issue-tracker.md`, and `templates/agents/triage-labels.md`. In the issue-tracker file keep only the chosen tracker's operations section, record the PR-surface answer, and fill **Publish unit**, **Program sync**, **Program write role**, and **Close linkage** from Decision A (defaults: `feature` / `local` / `ic` / tracker-native close syntax).
+1. Write `docs/agents/project.md`, `docs/agents/issue-tracker.md`, and `docs/agents/triage-labels.md`, seeded from `templates/agents/project.md`, `templates/agents/issue-tracker.md`, and `templates/agents/triage-labels.md`. In the issue-tracker file keep only the chosen tracker's operations section, record the PR-surface answer, and fill **Publish unit**, **Program sync**, **Program write role**, **Draft surface** (with its `### Notion draft surface` block when `notion`), and **Close linkage** from Decision A (defaults: `feature` / `local` / `ic` / `repo` / tracker-native close syntax). A repo already configured gains the rows it lacks from the template.
 2. If `docs/specs/INDEX.md` is missing, create it from `templates/specs-INDEX.md` **and** seed `docs/specs/catalog/app.md` from `templates/specs-catalog-domain.md` (replace `<Domain>` with `App`). If INDEX exists but is a flat Code table, name `/map-features` Domain boundary migrate — do not invent shards silently.
 
 3. If the glossary is missing, create `CONTEXT.md` from `templates/CONTEXT.md` (or a `CONTEXT-MAP.md` for multi-context, per the user's answer).

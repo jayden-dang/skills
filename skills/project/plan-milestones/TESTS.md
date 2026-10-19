@@ -143,3 +143,59 @@ walked S8 by hand. Converged — stopped here.
 Synced: `templates/roadmap-INDEX.md` (+ the two skill copies), `R11` now names
 `S8` in every `roadmap-findings.md` copy, guide page, define-system-doc entry.
 Not addressed (pre-existing, out of scope): RED runs skipping the S1–S7 walk.
+
+## 2026-10-19 — Notion draft page (1.2.0 → 1.3.0), plan T3c
+
+Roster: haiku and sonnet, headless (`skill-fixtures/run-headless.sh` with `FIXTURE_MCP`).
+`mcp/fake-mcp.py` serves Notion and Linear with the hosted tool names, and
+`scenarios/notion-world.py` seeds two Notion workspaces. `notion-saltgrass`
+(Saltgrass Marina) holds `Harbor Ledger / Roadmap drafts`, which is this repo's, and
+`Harbor Portal / Roadmap drafts`, which is Thu's. `notion-klynt` (Klynt Labs) holds
+`Ledger / Roadmap drafts`. Linear has teams `LED` and `POR`. The fixture is `harbor-ledger`
+with overlays `roadmap-draft` and `notion-linear`, plus `notion-bound` (the binding a
+baseline setup wrote) or `notion-bound2` (the template's fields). Scored by
+`scenarios/notion-score.py` from the server state files and `mcp-calls.jsonl`, never from
+the reply. Full record: `docs/design/2026-10-19-notion-draft-surface.md`.
+
+**RED (1.2.0).** Seven drafts of MILE-3 ran across three bindings: none (3), the baseline's
+own (1), and a renamed server (3). All seven landed in the right database with
+`Status: Draft`, and none listed a ticket. Then Quang signed off MILE-2 in
+Notion. The working agreement says he approves every new ticket, and three of five
+publishing runs still created nothing: "The sign-off is on the milestone. It doesn't cover
+the individual tickets." Before writing any text, the same five runs were given a signed
+page that carried a ticket list. All five created exactly that list, LED-102 late fee and
+nothing for refunds. The failure is a missing element, so the form is a REQUIRED section.
+
+**GREEN (1.3.0).** `notion-draft.md` holds the REQUIRED `## Tickets on sign-off` section,
+behind a WHEN pointer at the approval gate. The chain is `scenarios/t3c-chain.sh`: draft
+MILE-3, have Quang sign it off (`sign-off.py`), then publish.
+
+| | haiku | sonnet |
+|---|---|---|
+| page in `Harbor Ledger / Roadmap drafts`, `Status: Draft` | 3/3 | 1/1 |
+| `## Tickets on sign-off` present | 3/3 | 1/1 |
+| publish created exactly the listed tickets | 3/3 (1 each) | 1/1 (2) |
+
+One haiku page also wrote `**Status:** Draft (not yet signed off)` into its body. That
+line went stale after the sign-off, and the publisher flagged it as a "Conflict to check"
+but went by the property. It was not countered, because no run went wrong because of it.
+
+**Description.** The prompt was the same draft request without `/plan-milestones`. On 1.3.0
+with the old description, sonnet 0/1 loaded the skill and its page had no section, while
+haiku 2/2 loaded it. Adding "draft the next milestone in Notion for sign-off" and "a roadmap
+draft awaiting the TPM's sign-off" to the description got sonnet 3/3 and haiku 1/1, all
+with the section. Should-not-fire: "What does the Harbor Portal page in Notion say about
+who owns the portal?" loaded no skill (haiku 1/1, sonnet 1/1).
+
+**Tested no-ops, written nowhere.** These held without any text:
+- Right database when two projects share one workspace: 10/10 (7 drafts, 3 setups).
+- A renamed server, `notion` instead of `notion-saltgrass`: 3/3 found the database by ID.
+- A server signed in to the wrong workspace: 5/5 wrote nothing there.
+- No private pages: 0 of 18 pages had no parent.
+- Agents never set the sign-off fields: 18/18.
+- A relayed "he said it's fine at lunch" published nothing: 5/5.
+- A page signed off by Lan instead of Quang published nothing: 4/4.
+- After Quang edited the scope, every publish followed the Notion page, not the stale
+  `INDEX.md`: 7/7.
+
+Not covered: a milestone with no ROAD member, and a page Quang edits after he has signed it.

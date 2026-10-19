@@ -13,7 +13,7 @@
 
 ## When it fires
 
-When writing a status, a reply, a standup note, a PR body, or any other
+When writing a status, a reply, a standup note, a PR body, a ticket comment, or any other
 text a person will read. It does **not** fire on landing a branch
 ([`land-branch`](land-branch.md)), on a completion claim
 ([`prove-claim`](prove-claim.md)), or on a handoff
@@ -27,6 +27,10 @@ NOTHING A PERSON READS CARRIES PROCESS MACHINERY
 
 Skill names, `REQUIRED SUB-SKILL`, `Pass:` / `Tier 2` / `Satisfies:`, and
 "closed the loop" stay in the inner notes. The outer names the work.
+
+## Language
+
+The reply to you is in the language you wrote in. Anything written into the repo or the tracker (a PR title or body, a commit, an issue, a ticket or PR comment) uses the `Language:` line in `docs/agents/project.md`, else English. The language of the thread does not change that. Without this rule, five of five runs asked in Vietnamese wrote the ticket comment in Vietnamese and the PR body in English, which split one change's record across two languages.
 
 ## Why it is written the way it is
 

@@ -10,7 +10,7 @@
       "displayName": "Engineer Pack",
       "source": "./",
       "description": "Engineer Pack (jdk, jayden-dang-kit): A-to-Z agentic development (ideation to release, requirements traceability, roadmap/milestones). Personal Pack is separate — not included here.",
-      "version": "1.3.0",
+      "version": "1.4.0",
       "author": {
         "name": "Jayden Dang"
       },
@@ -36,6 +36,7 @@
         "./skills/execution/build-inline",
         "./skills/execution/build-on-host",
         "./skills/execution/deliver-issues",
+        "./skills/execution/go",
         "./skills/execution/build-in-waves",
         "./skills/execution/build-by-story",
         "./skills/execution/test-first",
@@ -79,6 +80,9 @@
         "./skills/track/realign-spec",
         "./skills/track/record-debt",
         "./skills/track/triage",
+        "./skills/track/idea",
+        "./skills/track/shape",
+        "./skills/track/board",
         "./skills/track/sweep-backlog",
         "./skills/setup/bootstrap-repo",
         "./skills/setup/configure-repo",

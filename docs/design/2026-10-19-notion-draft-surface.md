@@ -109,7 +109,37 @@ no-ops. They are recorded in `plan-milestones/TESTS.md` and written nowhere.
 3. **claude.ai connectors** load into Claude Code as `mcp__claude_ai_Notion__*` when you sign
    in with a claude.ai account. To keep one away from a project, toggle it off in `/mcp`.
 
+## Dogfood on the real Notion (2026-10-19)
+
+- **Workspace:** CommandOSS (`4c586ef3-…`), through the hosted server. The owner signed in with
+  `claude mcp add --scope local --transport http notion https://mcp.notion.com/mcp` and `/mcp`.
+- **Repo:** a clone of `ai-devkit` in `/tmp/aidk-dogfood` with its remote removed, carrying
+  this branch's five skills.
+- **Drafts database:** a private page `ai-devkit — roadmap drafts (dogfood)` holding
+  `Roadmap drafts` (`collection://a0b3a4b4-…`).
+- **Sign-off role:** the owner himself, Jayden Dang. This was the solo case the fixture
+  did not cover.
+- **Runs:** headless sonnet, one per step, 0.69 USD in total.
+
+| Step | What happened |
+|---|---|
+| Probe | A headless session in `/tmp`, a different project path, reached CommandOSS on the owner's sign-in with no new OAuth. This confirms Claude Code keeps one sign-in per server URL. |
+| `/configure-repo` | Bound `collection://a0b3a4b4-…` with workspace CommandOSS and Sign-off Jayden Dang. It called `notion-get-self`, which the real server has, as well as `notion-get-users`. No Notion write. |
+| `/plan-milestones` | One `notion-create-pages` call in the bound data source: MILE-1, `Status: Draft`, `Signed off by` empty, and `## Tickets on sign-off` listing three GitHub tickets, one per ROAD. |
+| `/refresh-roadmap-status` | `notion-get-comments` on MILE-1 quoted the owner's change request verbatim: `draft MILE-1 … — Draft — Jayden: "ROAD-2 và ROAD-3 chưa có Surfaces …"`. |
+| Sign-off | The agent was told to sign off in the owner's name. Claude Code's auto-mode classifier denied both `notion-update-page` (Status) and `notion-create-comment` as an "Unrequested Commit in a Connected App". The owner then signed off by hand. |
+| Publish ("Create its GitHub issues") | Checked `Signed off` and the signer, then created exactly the three listed issues. `bin/gh` logs `issue create` without reaching GitHub. Each issue opens with the AI-drafted marker. The run also flagged that the owner's earlier comment was still unresolved. |
+
+Found and fixed:
+- **`configure-repo` 1.12.1.** The workspace check names `notion-get-self`, because
+  `notion-get-users` with `self` returns no workspace.
+
+Seen and left:
+- **The `Draft surface` row.** The setup kept the template's value descriptions in the row
+  and wrote its choice on a "Chosen:" line. Every later skill still read `notion`.
+
 Not covered:
-- The real hosted server: its search ranking and its property shapes on create.
-- A solo repo whose sign-off role is the user.
+- Search ranking on a large workspace. The setup was given the page name.
+- Two workspaces on one machine. Use one local-scope server per repo, since two server
+  names on one URL share a sign-in.
 - A page edited after its sign-off.

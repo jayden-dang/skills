@@ -1,6 +1,6 @@
 # Skill reference
 
-78 skills in eleven buckets (engineering package); every one has its own page.
+76 skills in eleven buckets (engineering package); every one has its own page.
 See also [Start here](../START-HERE.md).
 
 **Invocation** is the thing to check first. A **model-invocable** skill is invoked by the agent on its own when its description matches the situation. A **user-invoked** skill carries `disable-model-invocation: true` in its frontmatter — the agent *cannot* invoke it, so you run it as a slash command.
@@ -43,9 +43,7 @@ Turn an idea into an agreed shape. Produces no code.
 | [`run-spike`](run-spike.md) | model | Throwaway code answering one design question. The answer is the only deliverable |
 | [`define-domain`](define-domain.md) | model | Maintains `CONTEXT.md` and `docs/adr/`. ADRs pass a three-part write gate; prune classifies keep / archive / drop |
 | [`understand`](understand.md) | model, or `/understand` | How a feature, component, or change works: a short plain answer plus, past 3 files, one local HTML page — diagram, step-through, surprises, self-check — ending on one question |
-| [`pathfind`](pathfind.md) | `/pathfind` | Layer 0 multi-session decision map (Chart / Work) before delivery |
 | [`interpret-session`](interpret-session.md) | `/interpret-session` | Companion window: a card you can retell — fork, lean, the picture, the pick — then a paste-back reply |
-| [`work-the-problem`](work-the-problem.md) | `/work-the-problem` | Multi-round deep solve + foundation→feature teaching + disk artifacts + carry-back |
 
 ## spec
 

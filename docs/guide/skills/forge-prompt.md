@@ -90,7 +90,6 @@ cold. That is the cross-context review configuration the literature backs.
 |---|---|
 | You know what you want; you just don't know which entry point applies | [on-ramps](../process/on-ramps.md), which `zone-mode` reads |
 | The open item is a design fork, not a missing target | [`clarify-decisions`](clarify-decisions.md) |
-| Multi-session destination still foggy | [`/pathfind`](pathfind.md) |
 | The ask already names targets, boundaries, and a done signal | just start the work |
 
 ## See also

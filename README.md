@@ -252,7 +252,7 @@ and countered by name. See [The gates](docs/guide/concepts/gates.md).
 |---|---|
 | meta | `zone-mode` (session gate + router), `author-skills` |
 | setup | `configure-repo`, `bootstrap-repo` |
-| discovery | `frame-change`, `clarify-decisions`, `research`, `run-spike`, `define-domain`, `forge-goal`, `forge-prompt`, `interpret-session`, `understand`, `work-the-problem`, `pathfind` |
+| discovery | `frame-change`, `clarify-decisions`, `research`, `run-spike`, `define-domain`, `forge-goal`, `forge-prompt`, `interpret-session`, `understand` |
 | spec | `specify-behavior`, `design-solution`, `plan-tasks` |
 | execution | `build-in-waves`, `build-by-story`, `build-inline`, `execute-common`, `test-first`, `root-cause`, `debug-remote`, `assess-observability`, `prove-claim`, `audit-trace`, `load-subgraph`, `isolate-workspace`, `hold-stage` |
 | review | `inspect-change`, `polish-diff`, `vet-feedback`, `vet-source`, `speak-outer`, `inspect-invariants`, `inspect-ui` |

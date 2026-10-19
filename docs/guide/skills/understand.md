@@ -53,4 +53,3 @@ setup questions before any answer, and process words in the reply.
 
 - **Why** the code was designed this way → [`why`](why.md)
 - Choosing between options in a live discussion → [`interpret-session`](interpret-session.md)
-- Working a problem to a decision → [`work-the-problem`](work-the-problem.md)

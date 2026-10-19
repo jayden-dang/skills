@@ -8,7 +8,7 @@
 | **Invocation** | model-invocable |
 | **Reads** | codebase/docs; parent Knowns / Blindspot; Project posture |
 | **Writes** | nothing production (glossary via `define-domain` only) |
-| **Calls** | may **name** `/work-the-problem`; `assess-observability` when Coverage ON and Operate is a telemetry gap; `research` / `run-spike` for facts |
+| **Calls** | `assess-observability` when Coverage ON and Operate is a telemetry gap; `research` / `run-spike` for facts |
 | **Called by** | [`frame-change`](frame-change.md) step 2; any skill that needs an interview |
 
 ## When it fires
@@ -47,7 +47,7 @@ Inline chat only. No fixed round count. Stop when high-blast forks are empty; wh
 
 ## Problem lock
 
-2–4 alternate problem statements (Observed · Desired · Non-goals) on one card, or **name** `/work-the-problem`. No solution menu either way.
+2–4 alternate problem statements (Observed · Desired · Non-goals) on one card. No solution menu.
 
 ## Question card
 
@@ -67,4 +67,4 @@ When ON: also coverage final · owned unknowns · accepted risks · operability.
 
 ## See also
 
-- [`frame-change`](frame-change.md) · [`work-the-problem`](work-the-problem.md) · [`assess-observability`](assess-observability.md) · [`research`](research.md) · [`run-spike`](run-spike.md) · [`specify-behavior`](specify-behavior.md)
+- [`frame-change`](frame-change.md) · [`assess-observability`](assess-observability.md) · [`research`](research.md) · [`run-spike`](run-spike.md) · [`specify-behavior`](specify-behavior.md)

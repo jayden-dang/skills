@@ -38,6 +38,12 @@
 # changed skill, budget honesty. A manifest listing a skill deleted months ago
 # passed every other lint until it ran. See scripts/qa-set.py.
 #
+# plugin-slug guards the Engineer Pack identity (jdk) and that the Claude and Kimi
+# skill lists match. It sat unwired until a Kimi list that lacked four skills had
+# been failing it for weeks; qa-set now also checks the manifests against the tree
+# and the counts written in AGENTS.md and the guide, at commit and not only at push.
+# See scripts/check-plugin-slug.py.
+#
 # Run `lefthook install` once to wire these into .git/hooks.
 
 pre-commit:
@@ -63,6 +69,13 @@ pre-commit:
     length:
       glob: "skills/**/SKILL.md"
       run: python3 scripts/lint-skill-length.py {staged_files}
+    plugin-slug:
+      glob: "{.claude-plugin/**,.kimi-plugin/**,.codex-plugin/**,.agents/**,opencode.json}"
+      run: python3 scripts/check-plugin-slug.py
+    qa-set:
+      # Set-level check — manifests against the tree, hand-written counts against the tree.
+      glob: "{skills/**,.claude-plugin/**,.kimi-plugin/**,AGENTS.md,docs/guide/**}"
+      run: python3 scripts/qa-set.py
 
 pre-push:
   commands:
@@ -79,5 +92,7 @@ pre-push:
       run: python3 scripts/lint-skill-templates.py
     qa-set:
       run: python3 scripts/qa-set.py
+    plugin-slug:
+      run: python3 scripts/check-plugin-slug.py
     length:
       run: python3 scripts/lint-skill-length.py

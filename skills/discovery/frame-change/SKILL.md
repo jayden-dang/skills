@@ -1,6 +1,6 @@
 ---
 name: frame-change
-version: 2.2.0
+version: 2.2.1
 description: Use at the very start of the idea-to-ship chain — when the user wants to
   add, build, or change a feature, behavior, or component, or to start a new
   project, and the asked-for behavior has no spec yet. Produces an agreed shape
@@ -102,10 +102,6 @@ fine; optional `.skills/<CODE>/knowns.md`):
 - **Unknown knowns** — taste the user can recognize but not yet specify.
 - **Assumptions (not locks)** — solution shape the user proposed. Never promote
   an assumption into a requirement SHALL until it is chosen as a lock.
-
-WHERE the user points at a pathfind knowns package, seed from it. Do not re-open
-closed pathfind decisions. Pathfind knowns do not replace Blindspot or a
-brownfield scan.
 
 **Done when:** one paragraph on what the project is, what exists near the idea,
 which glossary terms apply, which features share the surface (or none) —

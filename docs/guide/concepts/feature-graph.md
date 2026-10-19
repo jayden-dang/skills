@@ -93,8 +93,7 @@ Horizontal retrieval is **advisory** at every moment. Required callers:
 | [`root-cause`](../skills/root-cause.md) | after Phase 2 only — never Phases 1–2 RED loop | retrieval for context |
 
 Build-family skills (`build-in-waves` / `build-by-story` / `build-inline`) are
-**not** required callers. [`/pathfind`](../skills/pathfind.md) keeps its decision
-map separate — never merge pathfind tickets into feature-subgraph edges.
+**not** required callers.
 
 **Grounded claims.** Every overlap, reuse-miss, or Out-of-Scope / “already
 declined” conclusion must cite a **feature CODE**, an **edge or trace kind**,

@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### Removed: `pathfind` and `work-the-problem` (2026-10-19)
+
+Both user-invoked discovery skills are gone from the Engineer Pack (94 skills, 76 engineering; 31 user-invoked). Pointers to them came out of `clarify-decisions` 1.7.1 (the problem-lock card is the one path), `interpret-session` 3.1.2, `frame-change` 2.2.1, the guide, the manifests and the templates (the Pathfind operations section of `issue-tracker.md`, the `.skills/pathfind/` row). Recorded TESTS and release notes keep the names as history.
+
 ### One closed workflow: five commands, one board (2026-10-19)
 
 Every piece of work is a ticket in one state, and each move between states belongs to one command or one person. The short path is `/idea`, `/shape #N`, `/go`, `/board`, `/cut-release` (`docs/guide/workflow.md`). Every old command still works.

@@ -161,8 +161,8 @@ One subtlety [`triage`](../skills/triage.md) is emphatic about: an **already-imp
 ## `.skills/` — git-ignored ephemera
 
 Feature-scoped working files live under **`.skills/<CODE>/`** (Feature code only),
-not as a flat dump at the root. Shared trees stay at `.skills/pathfind/`,
-`research/`, and `decisions/`. Full grammar:
+not as a flat dump at the root. Shared trees stay at `research/` and
+`decisions/`. Full grammar:
 [`templates/skills-ephemera-paths.md`](../../../templates/skills-ephemera-paths.md).
 
 | Path under `.skills/<CODE>/` | Written by | Purpose |

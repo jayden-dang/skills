@@ -174,7 +174,6 @@ window comes later, on the turn the user actually settles it.
 ## See also
 
 - [`understand`](understand.md) — sibling for learning how something works, with no pick
-- [`work-the-problem`](work-the-problem.md) — multi-round deep solve + in-service teaching + disk artifacts when overview is not enough
 - [`frame-change`](frame-change.md) — the English session `interpret-session` usually runs beside
 - [`clarify-decisions`](clarify-decisions.md) — the interview primitive whose questions often land in a `interpret-session` session
 - [`research`](research.md) — where the analysis sends a claim that turns on external fact

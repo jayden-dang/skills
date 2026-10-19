@@ -51,7 +51,7 @@ is the full chain they wrap.
  FIVE COMMANDS (docs/guide/workflow.md): /idea ─► /shape #N ─► /go ─► /board ─► /cut-release
 
  MAINTENANCE: amend-feature · /publish-issues · /triage · /sweep-backlog · /scan-architecture
-              · /map-features · understand · /pathfind · /write-handoff · realign-spec
+              · /map-features · understand · /write-handoff · realign-spec
               · /show-run-status · /deliver-issues (model-invocable; /go runs it) · /audit-shipped
 ```
 
@@ -157,7 +157,7 @@ The table lives in [on-ramps](process/on-ramps.md) — one home, and `zone-mode`
 
 ## 3. Skill index (engineering package)
 
-Full tables: [Skill reference](skills/README.md) (78 engineering skills).  
+Full tables: [Skill reference](skills/README.md) (76 engineering skills).  
 Personal OS is a **separate** package — [personal-os START-HERE](../personal-os/START-HERE.md).
 
 `U` = you run `/name` · `m` = model-invoked
@@ -166,7 +166,7 @@ Personal OS is a **separate** package — [personal-os START-HERE](../personal-o
 |---|---|
 | **meta** | `/zone-mode`, `/author-skills` |
 | **setup** | `/configure-repo`, `/bootstrap-repo` |
-| **discovery** | `frame-change`, `clarify-decisions`, `research`, `run-spike`, `define-domain`, `/forge-goal`, `/forge-prompt`, `/pathfind`, `/interpret-session`, `understand`, `/work-the-problem` |
+| **discovery** | `frame-change`, `clarify-decisions`, `research`, `run-spike`, `define-domain`, `/forge-goal`, `/forge-prompt`, `/interpret-session`, `understand` |
 | **spec** | `specify-behavior`, `design-solution`, `plan-tasks` |
 | **execution** | `build-in-waves`, `build-by-story`, `build-inline`, `/go`, `deliver-issues`, `execute-common`, `test-first`, `root-cause`, `debug-remote`, `assess-observability`, `prove-claim`, `audit-trace`, **`load-subgraph`**, `isolate-workspace`, `hold-stage` |
 | **review** | `inspect-change`, `/audit-shipped`, `polish-diff`, `vet-feedback`, `vet-source`, `speak-outer`, `inspect-invariants` |

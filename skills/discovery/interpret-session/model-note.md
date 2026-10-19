@@ -14,8 +14,7 @@ name it `foundation-cards.md`, `CONTEXT.md`, or anything under `docs/adr/`; thos
 names belong to `define-domain`.
 
 **What it is not.** `/understand` explains how a feature or the system works, with
-no pick; `/work-the-problem` closes a
-problem tree; `/pathfind` maps multi-session decisions; `/record-debt` tracks
+no pick; `/record-debt` tracks
 technical debt. If that is what the user wants, name the skill and stop.
 
 It is also not a decision record the product must obey. The locks in it are copies

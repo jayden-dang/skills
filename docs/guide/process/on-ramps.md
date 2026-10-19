@@ -35,7 +35,6 @@ model-invocable skill, or name the `/slash` for the user to run.
 | Cutting a version | `/cut-release` |
 | Spec has drifted from the code, or the audit-trace check comes back dirty | `realign-spec` |
 | Mid-execution plan is wrong | `reroute-plan` |
-| Multi-session destination still foggy | `/pathfind` |
 
 | Why was this designed this way / design archaeology | `why` |
 | Aggressive comment deletion pass | `/no-comments` |

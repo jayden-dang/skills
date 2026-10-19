@@ -63,7 +63,6 @@ Three ways in: by role, by problem, or by phase.
 | …check what merged this week for missed edge cases | [`/audit-shipped`](skills/audit-shipped.md) |
 | …find where to refactor next | [`/scan-architecture`](skills/scan-architecture.md) |
 | …backfill feature codes / ROAD / OWNS on brownfield | [`/map-features`](skills/map-features.md) |
-| …chart multi-session decision fog | [`/pathfind`](skills/pathfind.md) |
 | …hand off before my context fills | [`/write-handoff`](skills/write-handoff.md) |
 | …fix a spec that drifted from the code | [`realign-spec`](skills/realign-spec.md) |
 | …write a new skill | [`author-skills`](skills/author-skills.md) → [The skill model](concepts/skill-model.md) |
@@ -77,7 +76,7 @@ Three ways in: by role, by problem, or by phase.
 | Phase | Skills | Guide page |
 |---|---|---|
 | **0. Setup** | `/configure-repo`, `/bootstrap-repo` | [Adopting](resources/adopting.md) |
-| **1. Discovery** | `frame-change` (+ `load-subgraph`), `clarify-decisions`, `research`, `run-spike`, `define-domain`, `/pathfind`, `/interpret-session`, `understand`, `/work-the-problem` | [Discovery](process/discovery.md) |
+| **1. Discovery** | `frame-change` (+ `load-subgraph`), `clarify-decisions`, `research`, `run-spike`, `define-domain`, `/interpret-session`, `understand` | [Discovery](process/discovery.md) |
 | **2. Specification** | `specify-behavior`, `design-solution`, `plan-tasks` | [Specification](process/specification.md) |
 | **3. Execution** | `isolate-workspace`, `build-in-waves` / `build-by-story` / `build-inline`, `/go`, `deliver-issues`, `test-first`, `root-cause`, `prove-claim`, `audit-trace`, `load-subgraph` | [Execution](process/execution.md) |
 | **4. Review & acceptance** | `inspect-change` (+ `load-subgraph`), `/audit-shipped`, `polish-diff`, `vet-feedback`, `validate-*`, product-flow suite | [Review and acceptance](process/review-and-acceptance.md) |

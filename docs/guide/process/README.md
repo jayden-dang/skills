@@ -118,7 +118,7 @@ realign-spec                    whenever a spec'd feature changed outside its pl
 | Phase | Skills | Page |
 |---|---|---|
 | Project layer *(optional, above the feature loop)* | `define-project`, `inspect-invariants` | [`define-project`](../skills/define-project.md) |
-| Discovery | `frame-change` (+ `load-subgraph`), `clarify-decisions`, `research`, `run-spike`, `define-domain`, `/pathfind`, `/interpret-session`, `understand`, `/work-the-problem` | [Discovery](discovery.md) |
+| Discovery | `frame-change` (+ `load-subgraph`), `clarify-decisions`, `research`, `run-spike`, `define-domain`, `/interpret-session`, `understand` | [Discovery](discovery.md) |
 | Specification | `specify-behavior`, `design-solution`, `plan-tasks` | [Specification](specification.md) |
 | Execution | `isolate-workspace`, `build-in-waves`, `build-by-story`, `build-inline`, `/deliver-issues`, `test-first`, `root-cause`, `prove-claim`, `audit-trace`, `load-subgraph` | [Execution](execution.md) |
 | Review & acceptance | `inspect-change` (+ `load-subgraph`), `/audit-shipped`, `polish-diff`, `vet-feedback`, `inspect-invariants`, `acceptance-*`, `write-dogfood`, `run-dogfood` | [Review and acceptance](review-and-acceptance.md) |

@@ -1,7 +1,7 @@
 # AGENTS.md — Agent Behavior Constitution
 
-> A-to-Z agentic development skill set · **96 skills across 11 categories**
-> (78 engineering + 18 Personal OS) · `jayden-dang/skills` · v1.0.0
+> A-to-Z agentic development skill set · **94 skills across 11 categories**
+> (76 engineering + 18 Personal OS) · `jayden-dang/skills` · v1.0.0
 
 This file is the single source of truth for agent behavior when working with this
 skill set on any harness. Read it first, before any skill, before any action.
@@ -114,10 +114,10 @@ skill's workflow only when the user has explicitly told you to. A waiver of
 
 **User-invoked skills** carry `disable-model-invocation: true` in frontmatter.
 Agents MUST NOT auto-invoke these — name them for the user to run (`/triage`,
-`/pathfind`, `/zone-mode`). All 33 of them:
+`/zone-mode`). All 31 of them:
 
 `zone-mode`, `author-skills`, `reflect` · `bootstrap-repo`, `configure-repo` ·
-`forge-goal`, `forge-prompt`, `interpret-session`, `pathfind`, `work-the-problem` ·
+`forge-goal`, `forge-prompt`, `interpret-session` ·
 `no-comments` · `assess-pivot-impact`,
 `define-project`, `define-system-doc` · `audit-shipped`, `cut-release`, `tend-pr` · `assess-milestone`,
 `map-features`, `publish-issues`, `record-debt`, `refresh-roadmap-status`, `chart-progress`,
@@ -359,7 +359,7 @@ docs/
   design/           # design records, including tested no-ops
   releases/ personal-os/
 .skills/            # git-ignored ephemera: .skills/<CODE>/ per feature;
-                    # shared pathfind/, research/, decisions/
+                    # shared research/, decisions/
 ```
 
 **A consuming repo** is where `configure-repo` and the spec skills write:
@@ -486,7 +486,6 @@ This repo is configured for a spec-driven skill set.
 - Define what an unattended run should achieve and forge it into one goal prompt
   with a verify-every-round loop, for any agent: `/forge-goal` (user-run)
 - Capture a conversation, spec, or idea into tracker issues: `/publish-issues`
-- Multi-session decision map (Layer 0 fog): `/pathfind`
 - Understand a feature, component, or change (code-grounded page + one check question): `understand`, or just ask
 - Incoming issues and PRs: `/triage`
 - The short path, one board: `/idea` → `/shape #N` → `/go` → `/board` → `/cut-release`

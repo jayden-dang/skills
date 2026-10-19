@@ -3,7 +3,8 @@
 
 Each lint script guards one property of one file. This checks the set as a set —
 that every sibling a skill ships is reachable, that eval anchors still resolve
-after a heading moves, that the plugin manifests and the tree agree, that the
+after a heading moves, that the plugin manifests and the tree agree both ways, that the hand-written skill
+counts match the tree, that the
 session hook still injects the gate, that a changed skill left evidence behind,
 and that the length budget describes reality. A manifest listing a skill deleted
 months ago passed every lint in the repo until this ran.
@@ -109,6 +110,43 @@ for m in (".claude-plugin/plugin.json", ".claude-plugin/marketplace.json", ".kim
     listed = {x for x in re.findall(r'"(\./skills/[^"]+)"', raw)}
     check(f"{os.path.basename(m)} lists only real skills", listed <= tree,
           "; ".join(sorted(listed - tree)[:3]))
+
+# 7b every engineering skill is listed, and the manifests agree with each other
+# A skill on disk that no manifest lists is never installed: /idea, /shape, /go and
+# /board sat in that state for a day while the check above passed.
+def listed_in(path, plugin=None):
+    d = json.load(open(path))
+    if plugin:
+        d = next(x for x in d["plugins"] if x["name"] == plugin)
+    return set(d["skills"])
+
+engineering = {t for t in tree if "/skills/personal/" not in t.replace("./", "/", 1)}
+personal = tree - engineering
+jdk = listed_in(".claude-plugin/plugin.json")
+check("plugin.json lists every engineering skill", engineering <= jdk,
+      "; ".join(sorted(engineering - jdk)[:4]))
+check("marketplace.json jdk entry equals plugin.json", listed_in(".claude-plugin/marketplace.json", "jdk") == jdk)
+check(".kimi-plugin/plugin.json equals plugin.json", listed_in(".kimi-plugin/plugin.json") == jdk,
+      "; ".join(sorted(jdk ^ listed_in(".kimi-plugin/plugin.json"))[:4]))
+check("personal-os.plugin.json lists exactly the personal skills",
+      listed_in(".claude-plugin/personal-os.plugin.json") == personal)
+
+# 7c hand-written totals match the tree
+# The figures are prose in several files and were edited by hand to 94/76/31 once;
+# the tree is the only source of truth.
+total, n_eng, n_personal = len(tree), len(engineering), len(personal)
+user_invoked = sum("disable-model-invocation: true" in open(p).read() for p in skills)
+def claim(path, pattern, expect, label):
+    m = re.search(pattern, open(path).read())
+    got = int(m.group(1)) if m else None
+    check(f"{path}: {label} = {expect}", got == expect, f"found {got}")
+claim("AGENTS.md", r"\*\*(\d+) skills across", total, "skills")
+claim("AGENTS.md", r"\((\d+) engineering \+", n_eng, "engineering")
+claim("AGENTS.md", r"\+ (\d+) Personal OS\)", n_personal, "Personal OS")
+claim("AGENTS.md", r"All (\d+) of them", user_invoked, "user-invoked")
+claim("docs/guide/skills/README.md", r"(?m)^(\d+) skills in eleven buckets", n_eng, "engineering")
+claim("docs/guide/START-HERE.md", r"\((\d+) engineering skills\)", n_eng, "engineering")
+claim("docs/guide/methodology/overview.md", r"\*\*~(\d+) skills\*\*", n_eng, "engineering")
 
 # 8 no SessionStart injector ships with the pack
 hook_files = [

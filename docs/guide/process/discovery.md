@@ -1,6 +1,6 @@
 # Phase 1 — Discovery
 
-**Skills:** [`forge-prompt`](../skills/forge-prompt.md) · [`forge-goal`](../skills/forge-goal.md) · [`frame-change`](../skills/frame-change.md) (+ [`load-subgraph`](../skills/load-subgraph.md)) · [`clarify-decisions`](../skills/clarify-decisions.md) · [`research`](../skills/research.md) · [`run-spike`](../skills/run-spike.md) · [`define-domain`](../skills/define-domain.md) · [`/pathfind`](../skills/pathfind.md) · [`/interpret-session`](../skills/interpret-session.md) · [`understand`](../skills/understand.md) · [`/work-the-problem`](../skills/work-the-problem.md)
+**Skills:** [`forge-prompt`](../skills/forge-prompt.md) · [`forge-goal`](../skills/forge-goal.md) · [`frame-change`](../skills/frame-change.md) (+ [`load-subgraph`](../skills/load-subgraph.md)) · [`clarify-decisions`](../skills/clarify-decisions.md) · [`research`](../skills/research.md) · [`run-spike`](../skills/run-spike.md) · [`define-domain`](../skills/define-domain.md) · [`/interpret-session`](../skills/interpret-session.md) · [`understand`](../skills/understand.md)
 
 **Produces:** an agreed shape, a stated ceremony tier, an updated glossary, possibly an ADR, and — for tier ≥ 1 — an invocation of `specify-behavior`.
 
@@ -14,7 +14,7 @@ When the ask is for an **unattended run** — `/goal`, an overnight session, any
 
 That `/forge-prompt` block deliberately **names no lane and no next step** — it carries targets, boundaries, evidence, assumptions, open questions, and a done signal, and nothing about what to do with them. The session it is pasted into reads it cold and picks its own entry point. That is what keeps a forged prompt from anchoring the chain on a conclusion nobody tested.
 
-It sits outside this phase rather than in front of it: no skill invokes it, and an ask that already names its targets skips it entirely. Multi-session destination fog → user runs `/pathfind`; unsure which entry point applies at all → `zone-mode` reads the on-ramps table.
+It sits outside this phase rather than in front of it: no skill invokes it, and an ask that already names its targets skips it entirely. Unsure which entry point applies at all → `zone-mode` reads the on-ramps table.
 
 ## The hard gate
 
@@ -89,7 +89,6 @@ Parallel windows beside the main work thread (any phase — not discovery-only):
 
 - **[`/interpret-session`](../skills/interpret-session.md)** — the companion window: a card you can retell (fork, lean, the picture, the pick), then the paste-back reply once you settle.
 - **[`understand`](../skills/understand.md)** — how a feature, component, change, or concept works: plain answer, a local HTML page past 3 files, one check question; no product pick.
-- **[`/work-the-problem`](../skills/work-the-problem.md)** — multi-round problem tree (identify → define → foundation→feature → breakdown↔solve) with **disk artifacts**, in-service teaching so the user grows with AI, then a carry-back brief once leaves close or are explicitly deferred.
 
 They are siblings, not modes of each other:
 
@@ -97,7 +96,6 @@ They are siblings, not modes of each other:
 |---|---|
 | Fast defendable pick + reply (model first) | `/interpret-session` |
 | Hollow mental model, no product close | `understand` (or just ask how it works) |
-| Deep solve + learn while closing a frame-change question | `/work-the-problem` |
 
 ### 4. Propose approaches
 

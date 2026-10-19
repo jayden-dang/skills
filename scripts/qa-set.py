@@ -91,10 +91,14 @@ check("every SKILL.md eval anchor resolves", not bad, "; ".join(bad[:3]))
 # 6 no references to deleted skills
 # tour-system, deepen-codebase, study-change, teach-build and teach-pack merged
 # into understand, brief-team was dropped, and the flow-guide trio became
-# write-dogfood + run-dogfood; release notes keep the names as history.
+# write-dogfood + run-dogfood; pathfind and work-the-problem were retired on
+# 2026-10-19. Release notes keep the names as history. Retiring a skill means
+# adding its name here first, so this check lists every pointer left behind,
+# including a live eval.json that still names it.
 DELETED = ["gate-session", "ask-me-bro", "tour-system", "deepen-codebase",
            "study-change", "teach-build", "teach-pack", "brief-team",
-           "vet-flow-guide", "write-flow-guide", "run-flow-guide", "select-sample"]
+           "vet-flow-guide", "write-flow-guide", "run-flow-guide", "select-sample",
+           "pathfind", "work-the-problem"]
 dead = subprocess.run(["grep", "-rl", *[a for n in DELETED for a in ("-e", n)],
                        "--include=*.md", "--include=*.json", "--include=*.mdc",
                        "--include=*.sh", "."], capture_output=True, text=True).stdout.split()

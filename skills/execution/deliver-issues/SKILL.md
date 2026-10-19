@@ -1,6 +1,6 @@
 ---
 name: deliver-issues
-version: 2.2.0
+version: 2.3.0
 description: Use when every ready ticket on the board, or a named set of tickets, must be built, reviewed and opened as pull requests in one unattended run — the multi-ticket delivery behind /go, /deliver-issues, "deliver the board", "build every ready ticket", ending with one message for whatever needs the operator.
 ---
 
@@ -90,6 +90,8 @@ approved plans ended the afternoon with no PR.
 One message, in this order:
 
 1. A table with one row per ready ticket: PR and base, or not eligible and what it lacks.
+   A row whose PR adds a command a person runs or a new user-facing screen ends with
+   `not walked by hand — /write-dogfood`; the build never opens that walk itself.
 2. Every **Needs a decision before merge** item, each with its PR and the option built.
 
 *Done when: the message is sent and every ready ticket has a row.*

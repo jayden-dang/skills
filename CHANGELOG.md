@@ -25,7 +25,7 @@ Edited:
 - `cut-release` 1.3.0: the tickets a cut ships get `shipped` and a "Shipped in v<version>" comment.
 - `plan-tasks` 1.9.0: publishing onto the feature's existing ticket updates it in place, with one state role.
 - `configure-repo` 1.13.0: four new state roles, `shaping`, `building`, `in-review` and `shipped`, proposed as `status:<role>`.
-- Bugs (W10): `triage` 1.1.0 sends a bug whose cause is still open to `shaping`; `shape` 1.1.0 ends tier 1 Ready with `Requirements covered: <fix>, <guard>`; `deliver-issues` 2.2.0 hands review and landing to the Close sequence instead of repeating them; 2.1.0 builds such a tier-1 fix with `test-first`; `board` 1.0.2 counts it as eligible.
+- Bugs (W10): `triage` 1.1.0 sends a bug whose cause is still open to `shaping`; `shape` 1.1.0 ends tier 1 Ready with `Requirements covered: <fix>, <guard>`; `deliver-issues` 2.3.0 adds a `not walked by hand — /write-dogfood` note to the closing message for a PR that adds a command or screen; 2.2.0 hands review and landing to the Close sequence instead of repeating them; 2.1.0 builds such a tier-1 fix with `test-first`; `board` 1.0.2 counts it as eligible.
 - `templates/agents/triage-labels.md`: the four new roles and the rule that a ticket carries one state role.
 - `AGENTS.md`: the user-invoked list gains `board`, `idea`, `shape` and `go`, loses `deliver-issues`, and now counts 33.
 

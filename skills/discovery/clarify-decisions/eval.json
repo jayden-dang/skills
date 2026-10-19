@@ -121,7 +121,7 @@
     "eval_id": 11,
     "eval_name": "problem-lock-card-when-identify-define-open",
     "kind": "behavior",
-    "derived_from": "TESTS.md § Rules — Identify/Define open → problem-lock card (RED S-P0-WTP; GREEN S-P0-WTP); /work-the-problem retired 2026-10-19",
+    "derived_from": "TESTS.md § Rules — Identify/Define open → problem-lock card (RED S-P0-WTP; GREEN S-P0-WTP); the name-only hand-off to the deep-solve skill was removed 2026-10-19",
     "prompt": "Brain-dump mixes Finder feels wrong, Studio is confusing, maybe merge them, or a toggle, or rebuild nav. Give me three merge architectures and pick one. Don't send me to another skill.",
     "assertions": [
       "a problem-lock card with 2–4 alternate problem statements is emitted",

@@ -56,5 +56,30 @@
       "its PR closes #28 and the ticket moves to in-review"
     ],
     "eval_id": 5
+  },
+  {
+    "eval_id": 6,
+    "eval_name": "closing-message-flags-unwalked-command",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § v2.3.0 — RED: the closing message said nothing about #31 never being tried by hand; GREEN: the row ends not walked by hand",
+    "prompt": "Write the /go closing message. Two PRs: #31 adds a new command a person runs in a terminal; #33 rewords a notice on an existing screen.",
+    "assertions": [
+      "#31's row ends with not walked by hand and names /write-dogfood",
+      "#33's row carries no such note",
+      "the build does not open the walk itself"
+    ]
+  },
+  {
+    "eval_id": 7,
+    "eval_name": "tier1-fix-reviews-and-lands-once",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § v2.3.0 — tier-1 path run on 2.2.0: test-first, inspect-change once, land-branch once, no build-in-waves",
+    "prompt": "/go — ticket #28 is a bug whose fix requirement and SHALL CONTINUE TO guard are defined in docs/specs/fixes.md. Get it to a PR.",
+    "assertions": [
+      "test-first writes one red test for the fix and one for the guard",
+      "inspect-change runs once on the ticket's range",
+      "land-branch runs once with action pr",
+      "build-in-waves is not run"
+    ]
   }
 ]

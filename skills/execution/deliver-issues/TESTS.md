@@ -174,3 +174,26 @@ of them a `SHALL CONTINUE TO` guard, is eligible. It is claimed, built with `tes
 Evidence is the v3.0.0 section of `skills/execution/execute-common/TESTS.md`: same two RED
 runs, same two GREEN runs. §2.3 now points at the Close sequence instead of restating
 `inspect-change` and `land-branch` as steps 3 and 4.
+
+## v2.3.0 — the closing message says which PRs were not walked by hand (2026-10-19)
+
+Fixture: `quayside-ledger`, the skills installed under `.claude/skills/`, nothing executed.
+Both Sonnet, one run each.
+
+**Tier-1 path, no text change (2.2.0).** Prompt: `/go` overnight, ticket #28 is a bug whose
+`Requirements covered: BERTH-4.1, BERTH-4.2` are defined in `docs/specs/fixes.md`, the second a
+`SHALL CONTINUE TO` guard. The run claimed #28, branched, then `test-first`, `inspect-change`
+once, `land-branch` once with action `pr`; it named `build-in-waves`, `build-by-story` and
+`build-inline` as not called because there is no `tasks.md`. `land-branch` ran `prove-claim`,
+`audit-trace` and `validate-feature` itself since a tier-1 fix has no close receipt. No
+failure, so no text; the run closes the "tier-1 fix via §2.3" gap left open by v2.2.0.
+
+**RED (2.2.0): 1 run.** Two PRs, #31 adding a command a person runs and #33 rewording a notice
+on an existing screen. The closing message was a table of PR and base, plus "Needs a decision
+before merge: none". 0/1 told the operator that #31 had never been tried by hand, now that the
+build no longer opens a product walk.
+
+**GREEN (2.3.0): 1 run.** §4 item 1 gains one clause. The row for #31 ended
+`not walked by hand — /write-dogfood`; the row for #33 carried no note.
+
+Not covered: a branch that adds a new screen, haiku, and a repeat to separate the slot from luck.

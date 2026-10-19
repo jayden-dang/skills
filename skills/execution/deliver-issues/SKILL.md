@@ -1,6 +1,6 @@
 ---
 name: deliver-issues
-version: 1.0.0
+version: 1.1.0
 description: Delivers every eligible ticket on the board to its own reviewed pull request in one unattended run, with one message for whatever needs the operator. Run it with /deliver-issues.
 disable-model-invocation: true
 ---
@@ -29,9 +29,17 @@ review that never ran.
 
 Read the tracker operations from `docs/agents/issue-tracker.md`. A ticket is eligible
 when its status is the tracker's ready state and its feature's `requirements.md`,
-`design.md` and `tasks.md` all read `Status: Approved`. List each other ready ticket with
-the piece it lacks. Order the eligible ones by `Blocked by:`.
-*Done when: every ready ticket is eligible, in order, or listed with what it lacks.*
+`design.md` and `tasks.md` all read `Status: Approved`. Order the eligible ones by
+`Blocked by:`.
+
+Every other ready ticket leaves the ready column before any build starts. In one edit,
+swap its ready role for `shaping` (`docs/agents/triage-labels.md`). Then comment the pieces
+it lacks on it: which of `requirements.md`, `design.md` and `tasks.md` is missing or not
+`Approved`. In three baseline runs #24 had no spec, and all three left it
+`ready-for-agent`, saying "not eligible" only in the final message. The board kept offering
+it to the next run and to every person.
+*Done when: every ready ticket is eligible, in order, or moved to `shaping` with what it
+lacks.*
 
 ## 2. Each eligible ticket, in order
 

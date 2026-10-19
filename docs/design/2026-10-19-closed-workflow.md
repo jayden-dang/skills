@@ -94,8 +94,11 @@ approve gate when `Draft surface` is `notion` (T3c).
 | `/idea <text>` | Files the idea as a ticket in Inbox and frames it (tier, neighbours, questions). | `frame-change` → `clarify-decisions`, `load-subgraph`, `research`, `run-spike` |
 | `/shape <ID>` | Writes what the tier needs, then stops at the approve gate. | `specify-behavior`, `design-solution`, `plan-tasks`, or `root-cause` |
 | `/go [ID…]` | Takes the named tickets, or every Ready one, to In review. One PR per ticket, one message at the end. | `deliver-issues` |
-| `/status [ID]` | The board, by state, led by **Waiting on you**: In review, Needs input with its question, Human-only, and drafts awaiting sign-off. With an ID it gives that ticket's build detail. | own collector; `show-run-status` for one ticket |
+| `/board [ID]` | The board, by state, led by **Waiting on you**: In review, Needs input with its question, Human-only, and drafts awaiting sign-off. With an ID it gives that ticket's build detail. | own collector; `show-run-status` for one ticket |
 | `/cut-release` | Done → Shipped (exists; stays user-only because it crosses to production). | — |
+
+`/status` is taken by Claude Code itself (account and connection status), so the board
+command is `/board`.
 
 A `disable-model-invocation` skill cannot be invoked by another skill, so the routes need
 model-invocable targets. **`deliver-issues` and `show-run-status` drop the flag.** Their
@@ -127,7 +130,7 @@ already complies.
 | W3 | In review and `Closes #N` (`land-branch`) | the PR opens and the ticket still reads Ready; the branch lacks the ID, so there is no `Closes`, and the merge leaves the ticket open (klynt 4/4) |
 | W4 | Needs input on the ticket (`deliver-issues` / `execute-common`) | a parked question lives only in the PR or the final message; the board shows nothing waiting |
 | W5 | Shipped (`cut-release`) | a release leaves the shipped tickets indistinguishable from merged-not-released |
-| W6 | `/status` board, Waiting on you first | with today's skills, "what's waiting on me" misses In review, Human-only, or a parked question |
+| W6 | `/board`, Waiting on you first | with today's skills, "what's waiting on me" misses In review, Human-only, or a parked question |
 | W7 | `/idea`, `/shape`, `/go` entries; drop the flag on `deliver-issues` and `show-run-status` | trigger tests both ways; `/go LED-7` builds one named ticket |
 | W8 | Guide: one workflow page leading START-HERE, AGENTS.md routing, CHANGELOG (with the missing `execute-common` 2.11/2.12 and `run-spike` 2.0.0 entries) | — |
 | W9 | Dogfood on a real GitHub board | — |

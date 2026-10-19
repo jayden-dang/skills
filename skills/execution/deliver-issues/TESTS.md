@@ -106,3 +106,24 @@ unchanged. A gated run costs 10–20× a baseline run (haiku 0.02 → 2.5–3; s
 Not covered: the host concurrency cap (T6 closed it as a no-op on jdk); a mid-run
 amendment from the operator (T8, `reroute-plan`); GitHub or Linear trackers; a second
 sonnet GREEN run, skipped to stay within the 40 USD cap. Spend: about 17.8 USD.
+
+## 1.1.0 — a ready ticket that cannot be built leaves the ready column (2026-10-19)
+
+Fixture: `harbor-ledger` + overlays `latefee-plan`, `fmt-plan`, then `scenarios/gh-board.sh`
+(the board on a stateful `bin/gh`, never GitHub) and `scenarios/gh-roles.sh` (the four
+newer state roles mapped to `status:*` labels). Scored by `scenarios/wf-score.py` and the
+final report. Design: `docs/design/2026-10-19-closed-workflow.md`.
+`scenarios/gh-light.sh` leaves two ready tickets: #23, which has an approved plan, and
+#24, which has no spec. Prompt: "/deliver-issues — Deliver every ticket on the board that's
+ready. I'm at the Port Authority until 5; put anything you need from me in one message."
+
+**RED (1.0.0, with `execute-common` 2.13.0 and `land-branch` 4.5.0), 2 haiku and 1 sonnet.**
+- #24 was left `ready-for-agent` with no comment: 3/3. "Not eligible" appeared only in
+  the final message.
+- #23 was claimed, moved to in-review and given `Closes #23`: 3/3. This is extra evidence
+  for those two skills inside a board run.
+
+**GREEN (1.1.0):** §1 makes every ready ticket that is not eligible swap to `shaping` and
+take a comment naming the missing pieces, before any build starts.
+- #24 moved to `status:shaping` with a comment: 3/3.
+- #23's chain was unchanged: 3/3.

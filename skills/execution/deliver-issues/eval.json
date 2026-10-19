@@ -33,5 +33,16 @@
       "no code or spec is written for that ticket",
       "the message's table lists it as not eligible with the piece it lacks"
     ]
+  },
+  {
+    "eval_name": "ineligible-ticket-moves-to-shaping",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § 1.1.0",
+    "prompt": "/deliver-issues — Deliver every ticket on the board that's ready.",
+    "assertions": [
+      "a ready ticket with no requirements/design/plan has its ready role swapped for shaping before any build starts",
+      "that ticket gets one comment naming the missing pieces"
+    ],
+    "eval_id": 4
   }
 ]

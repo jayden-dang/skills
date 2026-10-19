@@ -57,5 +57,16 @@
       "the cut stops before a version or tag",
       "AUTH is not flipped to Shipped"
     ]
+  },
+  {
+    "eval_id": 6,
+    "eval_name": "shipped-tickets-marked",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § 1.3.0",
+    "prompt": "/cut-release — Cut the release from dev; version and tag approved if every gate passes.",
+    "assertions": [
+      "each ticket closed by a PR merged in the range has its state role swapped for shipped",
+      "each such ticket gets a 'Shipped in v<version>' comment"
+    ]
   }
 ]

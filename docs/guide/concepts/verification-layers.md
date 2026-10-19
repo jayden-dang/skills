@@ -19,7 +19,7 @@ agent is forbidden to proceed. These layers are *how* a check is performed.
 |---|---|---|---|
 | **Computational** | Tests, typecheck, lint, `audit-trace` greps | Yes — exit code / same `grep` set | `test-first`, `prove-claim`, `audit-trace`, verify commands in `docs/agents/project.md` |
 | **Judgment** | Isolated LLM review of a diff | No — another model can disagree | `inspect-change` (Standards + Spec), `polish-diff`, `inspect-invariants` (advisory) |
-| **Behavioral** | Drive the running system as a client | Mostly — same request, same UI | `validate-feature` → `validate-api` / `validate-ui`; product-walk trio when the walk predicate holds |
+| **Behavioral** | Drive the running system as a client | Mostly — same request, same UI | `validate-feature` → `validate-api` / `validate-ui`; a product walk (`write-dogfood`, `run-dogfood`) is run by the user |
 | **Human** | A person reads the change or configures a decision boundary | N/A | `understand <range>`; `/record-debt`; configured `record-verdict` |
 
 A layer does not replace another. Green tests do not make inspect optional.

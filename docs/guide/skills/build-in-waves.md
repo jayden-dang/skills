@@ -136,8 +136,8 @@ Conversation memory does not survive compaction. Controllers that lost their pla
 The close sequence lives in `skills/execution/execute-common/SKILL.md` — one home
 for waves, story, and inline. Default path: [`inspect-change`](inspect-change.md)
 → [`validate-feature`](validate-feature.md)
-→ [`land-branch`](land-branch.md). `polish-diff` and the product-walk trio run
-only when their predicates hold. A skip must be written
+→ [`land-branch`](land-branch.md). `polish-diff` runs
+only when its predicate holds. A skip must be written
 `skip: no polish predicate`. EOD, a clean inspect, and "feels small" are not
 predicates.
 

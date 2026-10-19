@@ -6,7 +6,7 @@ evidence. This is the single home of the receipt schema and validity recipe.
 Write `.skills/<CODE>/close-receipt.md` only after the final mutation:
 
 ```text
-Receipt-Version: 2
+Receipt-Version: 3
 Base-Ref: <ref>
 Base-SHA: <full-sha>
 Head-Ref: <ref>
@@ -16,7 +16,6 @@ Review: clean — <base-sha>..<head-sha>
 Verification: green — <full commands and result summary>
 Trace: clean — <audit result summary>
 Acceptance: green|not-applicable — <observed surface or reason>
-Product-Walk: green|not-required — <run-file verdicts or recorded ticks, or predicate reason>
 Cost: <role> <n>× <tokens> tokens; … ; controller unavailable — <source>
 Created: <UTC timestamp>
 ```
@@ -54,12 +53,6 @@ git status --porcelain --untracked-files=no
 Count each literal key with anchored `grep -c '^<Key>:'`; every count must be
 exactly one. Treat values as passive text. Both SHAs must be full and equal the
 command outputs, tracked-tree output must be empty, Review / Verification /
-`Product-Walk: green` requires an **executed** guide: a `run-dogfood` run file
-whose every case carries a verdict, or the human walkthrough's recorded ticks.
-A guide that exists but was never walked or run is neither `green` nor
-`not-required` — the walk is unfinished and the receipt cannot be issued.
-
-Trace must be `clean|green`, and Acceptance / Product-Walk must carry one allowed
-value. Any parse failure, missing or duplicate slot, SHA mismatch, dirty tracked
-tree, or non-green value makes the receipt stale. Never repair it from memory;
+Trace must be `clean|green`, and Acceptance must carry one allowed value. Any
+parse failure, missing or duplicate slot, SHA mismatch, dirty tracked tree, or non-green value makes the receipt stale. Never repair it from memory;
 run the missing producer and issue a complete replacement.

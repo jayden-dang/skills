@@ -168,3 +168,9 @@ of them a `SHALL CONTINUE TO` guard, is eligible. It is claimed, built with `tes
 - Claimed with `building`: 3/3.
 - Branch `fix/28-…`, PR carrying `Closes #28`, moved to `in-review`: 3/3.
 - Closed after the scripted merge: 3/3.
+
+## v2.2.0 — review and landing have one home (2026-10-19)
+
+Evidence is the v3.0.0 section of `skills/execution/execute-common/TESTS.md`: same two RED
+runs, same two GREEN runs. §2.3 now points at the Close sequence instead of restating
+`inspect-change` and `land-branch` as steps 3 and 4.

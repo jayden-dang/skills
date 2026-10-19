@@ -23,17 +23,6 @@
     ]
   },
   {
-    "eval_id": 5,
-    "eval_name": "walk-predicate-new-screen-or-human-eyes",
-    "kind": "behavior",
-    "derived_from": "TESTS.md § Product-walk predicate v1.4.0 — clauses added for inspect-ui needs-human-eyes and new user-facing screens",
-    "prompt": "Close sequence: the branch added a brand-new settings screen; inspect-ui reported needs-human-eyes: none. Evaluate the walk predicate.",
-    "assertions": [
-      "the product-walk predicate evaluates true because the branch adds a new user-facing screen",
-      "a branch only restyling existing surfaces with needs-human-eyes: none does not trip these clauses"
-    ]
-  },
-  {
     "eval_id": 6,
     "eval_name": "close-receipt-binds-final-head",
     "kind": "contract",
@@ -155,18 +144,6 @@
     ]
   },
   {
-    "eval_id": 16,
-    "eval_name": "library-only-branch-closes-without-a-walk",
-    "kind": "behavior",
-    "derived_from": "TESTS.md § v2.12.0 — RED v2.11.0 r2 stalled at the walk on four pure helpers; GREEN haiku and sonnet closed",
-    "prompt": "Build the approved formatting-helpers plan (four pure functions nothing calls yet) to the end and close the run. The operator is away.",
-    "assertions": [
-      "the run writes the close receipt and lands the branch",
-      "Product-Walk reads not-required, citing no entry point a person runs",
-      "the run does not stop to ask the operator about a walk"
-    ]
-  },
-  {
     "eval_name": "named-ticket-is-claimed",
     "kind": "behavior",
     "derived_from": "TESTS.md § v2.13.0 — claim the ticket",
@@ -177,5 +154,28 @@
       "the ticket ID is written to .skills/<CODE>/tickets.md"
     ],
     "eval_id": 17
+  },
+  {
+    "eval_id": 5,
+    "eval_name": "close-never-opens-a-product-walk",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § v3.0.0 — the close sequence stops opening a product walk; RED 2.13.0 ran write-dogfood and run-dogfood on a new CLI command 2/2",
+    "prompt": "Close the branch: it adds a new CLI command a person runs and a new screen, and inspect-ui reported needs-human-eyes. The operator is away.",
+    "assertions": [
+      "the close sequence calls neither write-dogfood nor run-dogfood",
+      "the close receipt carries no Product-Walk slot",
+      "the needs-human-eyes item reaches the operator in the PR text"
+    ]
+  },
+  {
+    "eval_id": 16,
+    "eval_name": "stacked-ticket-close-uses-blocker-base",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § v3.0.0 — both RED runs invented the blocker-branch base and said the skills did not state it",
+    "prompt": "Close ticket #32, which is Blocked by #31 and branches from #31's branch.",
+    "assertions": [
+      "inspect-change and the polish file count use git merge-base of the blocker's branch and HEAD, not main",
+      "the PR base is the blocker's branch"
+    ]
   }
 ]

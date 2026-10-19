@@ -40,8 +40,8 @@ execute family               occupancy first: Approved → In-progress on INDEX
 inspect-change                  whole-branch, two axes: Standards + Spec-by-ID
       │
       ▼
-[polish-diff if predicate]   execute-common close sequence — polish / sample / product-walk
-      │                      only when their observable predicates hold
+[polish-diff if predicate]   execute-common close sequence — polish only when its
+      │                      observable predicate holds
       ▼
 validate-feature             drive the running system through the spec's user-facing
                              behaviors (API + UI); fix; promote to domain-language tests

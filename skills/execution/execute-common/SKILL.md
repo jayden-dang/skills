@@ -1,6 +1,6 @@
 ---
 name: execute-common
-version: 2.13.0
+version: 3.0.0
 description: Use when build-in-waves, build-by-story, or build-inline loads the shared controller recipe — produces an In-progress catalog stamp, a runtime-bound session snapshot, lease state, ledger state, and a revision-bound close receipt.
 ---
 
@@ -113,8 +113,11 @@ Diff todo at close-sequence step 3 if a predicate then holds.
 After the last task (waves / inline) or last unlocked unit (story):
 
 1. **Whole-branch review.** REQUIRED SUB-SKILL: use `inspect-change` with
-   base = `git merge-base main HEAD` — never a mid-branch sha. Feed ledger
-   Minors. Top model tier.
+   base = `git merge-base <branch-base> HEAD` — never a mid-branch sha.
+   `<branch-base>` is `main`, or the blocker's branch when the ticket is
+   stacked on one (`deliver-issues`): a stacked ticket reviewed against `main`
+   re-reviews its blocker's diff and counts that diff's files toward polish.
+   Feed ledger Minors. Top model tier.
 2. **One fixer** for the complete findings list → re-review. Never one fixer
    per finding. Inline route: you are the fixer under `test-first`.
 3. **Polish Diff — observable conditional.** Evaluate the **polish
@@ -129,18 +132,12 @@ After the last task (waves / inline) or last unlocked unit (story):
    `root-cause`, then promote passing checks to committed tests that describe
    the domain behavior (docs-only spine — no requirement-ID tags required in
    test files).
-5. **Product walk — observable conditional.** Evaluate the **walk predicate**
-   below. No clause true → do not open the product-walk trio. Any clause true →
-   REQUIRED SUB-SKILL: use `write-dogfood` (it owns vet), then **execute what
-   it wrote** — REQUIRED SUB-SKILL: use `run-dogfood` where the runtime can
-   drive the app, else record the human ticks. Naming the run instead of doing
-   it leaves step 6 unable to write green.
-6. **Close receipt.** Load `close-receipt.md` and follow its producer recipe.
+5. **Close receipt.** Load `close-receipt.md` and follow its producer recipe.
    Issue it only after the final mutation and only from evidence bound to that
    HEAD. Rerun a producer only when its evidence is missing or stale.
-7. **Finish.** REQUIRED SUB-SKILL: use `land-branch`.
+6. **Finish.** REQUIRED SUB-SKILL: use `land-branch`.
 
-Mark the **Close branch** todo done only after steps 1–7 have each run or
+Mark the **Close branch** todo done only after steps 1–6 have each run or
 been skipped under their predicate.
 
 | Thought | Reality |
@@ -149,28 +146,14 @@ been skipped under their predicate.
 | "Inspect was clean / branch is small — skip polish" | Clean inspect and "feels small" are not predicates. Count files; check public API; read inspect leftovers |
 | "EOD / demo — skip polish on a 40-file branch" | Time pressure is not a predicate. File count is |
 | "Always run polish so we cannot forget" | Four cleanup agents on a three-file typo is the cost this conditional exists to drop. The skip must be written, never silent |
-| "Acceptance green — also walk the product" | Walk is a separate predicate. validate-feature already drove API/UI |
 
-## Close-sequence predicates
+## Close-sequence predicate
 
 **Polish** — true when **any** of: the user asked for polish, cleanup, or
 tidy; `inspect-change` Standards leftovers include an Important-or-higher
 finding that is behavior-preserving (reuse, dead code, needless complexity,
-wasted I/O); `git diff --name-only $(git merge-base main HEAD) HEAD` lists
+wasted I/O); `git diff --name-only $(git merge-base <branch-base> HEAD) HEAD` lists
 **more than 15 files**; the branch adds a new public API or exported surface.
-
-**Product walk** — true when **any** of: the user asked for a product walk,
-dogfood, or walkthrough; `validate-feature` reports neither-API-nor-UI **and** the
-branch adds an entry point a person runs (a CLI command, a script, a scheduled job); an
-approved requirement uses visual / feel / eyeball language the automated
-surfaces cannot judge; `inspect-ui`'s report (via `inspect-change`'s UI lane)
-lists any `needs-human-eyes` item; the branch adds a **new** user-facing
-screen or visual surface — not only changes within existing ones.
-
-A branch that adds only library code nothing runs yet gets no walk: Product-Walk is
-`not-required` and its unit tests are the acceptance. Four formatting helpers with no
-caller left one baseline close unfinished. The run reported "a walk cannot drive pure
-functions" and stopped to wait for Lan, who was at the Port Authority until 5.
 
 ## Red flags — never
 

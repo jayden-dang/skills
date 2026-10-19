@@ -16,12 +16,12 @@ New, all user-invoked (`disable-model-invocation: true`), each with a `TESTS.md`
 Edited:
 
 - `deliver-issues` 1.1.0 to 2.0.0: a ready ticket that cannot be built moves to `shaping` with a comment (1.1.0). 2.0.0 is model-invocable (the flag is gone) so `/go` can route to it; the scope is the tickets you name. `/deliver-issues` still works when typed.
-- `execute-common` 2.13.0: the ticket is claimed at preflight (assignee and `building`), tracker sync no longer asks when a ticket is resolved, and the set is recorded in `.skills/<CODE>/tickets.md`.
+- `execute-common` 3.0.0: the close sequence no longer opens a product walk (`write-dogfood` and `run-dogfood` are yours to run), the receipt drops `Product-Walk` (Receipt-Version 3), and a stacked ticket is reviewed against its blocker's branch. 2.13.0: the ticket is claimed at preflight (assignee and `building`), tracker sync no longer asks when a ticket is resolved, and the set is recorded in `.skills/<CODE>/tickets.md`.
 - `land-branch` 4.5.0: the ticket set starts from `.skills/<CODE>/tickets.md`, the PR links `Closes #N`, and the ticket moves to `in-review` when the PR opens.
 - `cut-release` 1.3.0: the tickets a cut ships get `shipped` and a "Shipped in v<version>" comment.
 - `plan-tasks` 1.9.0: publishing onto the feature's existing ticket updates it in place, with one state role.
 - `configure-repo` 1.13.0: four new state roles, `shaping`, `building`, `in-review` and `shipped`, proposed as `status:<role>`.
-- Bugs (W10): `triage` 1.1.0 sends a bug whose cause is still open to `shaping`; `shape` 1.1.0 ends tier 1 Ready with `Requirements covered: <fix>, <guard>`; `deliver-issues` 2.1.0 builds such a tier-1 fix with `test-first`; `board` 1.0.2 counts it as eligible.
+- Bugs (W10): `triage` 1.1.0 sends a bug whose cause is still open to `shaping`; `shape` 1.1.0 ends tier 1 Ready with `Requirements covered: <fix>, <guard>`; `deliver-issues` 2.2.0 hands review and landing to the Close sequence instead of repeating them; 2.1.0 builds such a tier-1 fix with `test-first`; `board` 1.0.2 counts it as eligible.
 - `templates/agents/triage-labels.md`: the four new roles and the rule that a ticket carries one state role.
 - `AGENTS.md`: the user-invoked list gains `board`, `idea`, `shape` and `go`, loses `deliver-issues`, and now counts 33.
 

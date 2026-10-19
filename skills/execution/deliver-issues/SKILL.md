@@ -1,6 +1,6 @@
 ---
 name: deliver-issues
-version: 2.1.0
+version: 2.2.0
 description: Use when every ready ticket on the board, or a named set of tickets, must be built, reviewed and opened as pull requests in one unattended run — the multi-ticket delivery behind /go, /deliver-issues, "deliver the board", "build every ready ticket", ending with one message for whatever needs the operator.
 ---
 
@@ -54,11 +54,12 @@ lacks.*
    claim the ticket the way `../execute-common/tracker-sync.md` says and record it in
    `.skills/<CODE>/tickets.md`. Then REQUIRED SUB-SKILL: use `test-first`, with one red
    test for the fix requirement and one for its guard.
-3. REQUIRED SUB-SKILL: use `inspect-change` on the ticket's range.
-4. REQUIRED SUB-SKILL: use `land-branch` with action `pr`. A stacked ticket's PR is
-   based on its blocker's branch.
+3. The Close sequence in `../execute-common/SKILL.md` owns the whole-branch `inspect-change`
+   and `land-branch`; this run asks it for action `pr`. A tier-1 fix has no `build-in-waves`
+   run, so it takes `inspect-change` on its range and then `land-branch` itself. A stacked
+   ticket's `<branch-base>` and PR base are its blocker's branch.
 
-*Done when: the ticket has a PR whose review and receipt came from those three skills.*
+*Done when: the ticket has a PR whose review and receipt came from those two skills.*
 
 ## 3. A question only the operator can answer
 

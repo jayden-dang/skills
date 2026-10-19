@@ -45,7 +45,7 @@ is the full chain they wrap.
   root-cause / debug-remote / assess-observability / test-first / prove-claim / audit-trace │
   (+ load-subgraph after Phase 2 only)                    ▼
          inspect-change ─► [polish-diff if predicate] ─► validate-feature
-         (+ load-subgraph)     [product-walk if predicate]   (api/ui)
+         (+ load-subgraph)                                   (api/ui)
                     ─► land-branch ─► /cut-release ─► realign-spec
 
  FIVE COMMANDS (docs/guide/workflow.md): /idea ─► /shape #N ─► /go ─► /board ─► /cut-release
@@ -145,7 +145,7 @@ You mostly describe the idea and **approve files**; the rest chains:
 8. **`inspect-change`** — Standards + Spec; neighbors again via **`load-subgraph`**.
 9. **Close sequence** (one home: `skills/execution/execute-common/SKILL.md`):
    **`polish-diff`** only when a polish predicate holds; **`validate-feature`**
-   (`validate-api` / `validate-ui`); product-walk only when a walk predicate holds.
+   (`validate-api` / `validate-ui`). A product walk (`write-dogfood`, `run-dogfood`) is yours to run.
 10. **`land-branch`** — validate close evidence, commit residue, then perform the resolved merge / PR / keep / discard / block action
     (agent-authored PR title and body are reviewer truth).
 11. **`/cut-release`** when shipping a version.

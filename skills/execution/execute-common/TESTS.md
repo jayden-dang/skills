@@ -625,3 +625,34 @@ state change, so it read `ready-for-agent` through the build and the PR. One hai
 
 **GREEN 2:** preflight question 1 now opens with "Open `docs/agents/issue-tracker.md`
 first", plus h1's counter. Haiku claimed 3/3.
+
+## v3.0.0 — the close sequence stops opening a product walk (2026-10-19)
+
+Fixture: `harbor-billing`, the skills installed under `.claude/skills/` (`deliver-issues`,
+`execute-common`, `build-in-waves`, `build-inline`, `land-branch`, `inspect-change`), nothing
+executed. Prompt: the controller runs `/go` overnight; ticket #31's last task has merged, the
+branch adds a CLI command `harbor invoices export` and touches 18 files; #32 is Blocked by #31.
+Deliverable: the ordered skill calls until the PR is open, and #32's review and PR bases.
+Both Sonnet.
+
+**RED (2.13.0): 2 runs.** 2/2 called `write-dogfood` then `run-dogfood`, the walk predicate
+holding on "a CLI command a person runs". One said "If the runtime cannot drive it, I record the
+ticks instead, because the walk must be finished before the receipt can be issued." 0/2 called
+`inspect-change` or `land-branch` twice because of `deliver-issues` §2.3 and §2.4: both folded
+them into the Close sequence, so the duplication was in the text and not in the runs. 2/2 gave
+a stacked ticket the blocker's branch as base and said so: "This substitution is my own
+reading. The skills do not state it for stacked tickets", against the Close sequence's literal
+`git merge-base main HEAD`.
+
+**GREEN (3.0.0 / deliver-issues 2.2.0): 2 runs.** Close step 5 and the walk predicate are gone,
+the receipt drops `Product-Walk` (Receipt-Version 3), and `<branch-base>` replaces `main` in
+close step 1 and the polish count. `deliver-issues` §2.3 points at the Close sequence for
+review and landing and keeps `inspect-change` then `land-branch` only for a tier-1 fix, which
+has no `build-in-waves` run.
+- CLI branch: no dogfood skill; `inspect-change` once (plus re-review only after a fix or
+  polish moved HEAD), `land-branch` once; #32 reviewed against `<#31-branch>`, PR based on it.
+- New screen with `needs-human-eyes`: no dogfood skill; the taste call went into the PR body
+  under "Needs a decision before merge".
+
+Not covered: a tier-1 fix run through the new §2.3, and `build-by-story` / `build-inline`
+closes, which share the Close sequence and were not run separately.

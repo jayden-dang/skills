@@ -147,8 +147,8 @@ State the model **explicitly on every dispatch** — an omitted model inherits y
 
 One home: [`execute-common`](../../../skills/execution/execute-common/SKILL.md)
 **Close sequence**. Default path is `inspect-change` → `validate-feature` →
-exact-revision close receipt → `land-branch`. `polish-diff` and the product-walk trio
-run only when their observable predicates hold — EOD, a clean inspect, and
+exact-revision close receipt → `land-branch`. `polish-diff`
+runs only when its observable predicate holds — EOD, a clean inspect, and
 "feels small" are not predicates. A skip must be written, never silent.
 
 **`test-first`** tests describe domain behavior; requirement IDs stay in docs.

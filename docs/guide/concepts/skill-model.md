@@ -80,8 +80,8 @@ an orphan and mostly is not. `/zone-mode` is user-run. `amend-feature`,
 `vet-feedback`, `vet-source`, `speak-outer`, `hold-stage`, and
 `run-dogfood` are **entry points**: they fire on what the user
 says (walkthrough is only *named* by `write-dogfood`). `write-dogfood`
-is a REQUIRED alternative of `prove-claim` and of the execute-family close
-sequence when a walk predicate holds. An entry point that undertriggers is
+is a REQUIRED alternative of `prove-claim`; the execute-family close sequence
+never opens a walk, you do. An entry point that undertriggers is
 invisible — it does not fail, it simply never appears — so those seven carry
 the highest trigger-testing burden in the set.
 

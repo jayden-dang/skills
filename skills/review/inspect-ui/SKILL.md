@@ -1,6 +1,6 @@
 ---
 name: inspect-ui
-version: 2.1.1
+version: 2.1.2
 description: Use when a diff or branch touching browser-rendered surfaces (HTML,
   CSS/styling, JSX/TSX/Vue/Svelte components, templates) needs its visual and
   interaction quality judged in the real running app before merge — the live
@@ -112,8 +112,7 @@ three viewport shots plus one per exercised state, all read.*
   done — go back and capture it.
 - `needs-human-eyes:` — the genuine taste calls the running app cannot settle
   (does this feel right for the brand? is this treatment too loud?). Write
-  `none` when empty; this line feeds the product-walk predicate in
-  `execute-common`.
+  `none` when empty; the operator reads it to decide on a hand walk.
 - Verdict line: `UI: clean | findings | cannot drive (static only)`.
 
 ## Rationalizations

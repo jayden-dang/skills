@@ -1,6 +1,6 @@
 ---
 name: idea
-version: 1.0.0
+version: 1.0.1
 description: Puts an idea on the board as a ticket and frames it, so it waits in Shaping with its tier and open questions. Run it with /idea <the idea>.
 disable-model-invocation: true
 ---
@@ -9,7 +9,7 @@ disable-model-invocation: true
 
 The first of the five commands (`/idea`, `/shape`, `/go`, `/board`, `/cut-release`). It
 takes an idea from the operator's head onto the board, where the workflow can track it.
-States and owners: `docs/guide/workflow.md`.
+The states are the roles in `docs/agents/triage-labels.md`.
 
 1. **File it.** Create one ticket with the tracker ops in `docs/agents/issue-tracker.md`.
    The title is the idea in a line. The body is the operator's words verbatim, plus

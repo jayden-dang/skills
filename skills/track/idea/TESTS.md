@@ -25,3 +25,11 @@ open agreement.
 - Frame comment with the tier and numbered open questions: 3/3.
 
 Not covered: tier 0, which should go straight to Ready.
+
+## 1.0.1 — no pointer to a jdk-repo page (2026-10-19)
+
+The klynt dogfood ran `/idea` and reported that `docs/guide/workflow.md`, which the skill
+named for states and owners, "doesn't exist in this checkout". That page lives in the jdk
+repo, not in the repos that install the skill. The pointer now names
+`docs/agents/triage-labels.md`, which `configure-repo` writes into every repo. Wording
+only.

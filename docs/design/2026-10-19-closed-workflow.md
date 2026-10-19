@@ -1,6 +1,6 @@
 # One closed workflow — the ticket is the hub
 
-Date: 2026-10-19. Status: **Approved 2026-10-19; W0–W8 shipped, W9 pending.** Method: `author-skills`.
+Date: 2026-10-19. Status: **Approved 2026-10-19; W0–W9 done; W10 (triage-ready bugs) open.** Method: `author-skills`.
 Every transition ships only after its own RED.
 
 ## Contents
@@ -163,3 +163,30 @@ The owner decided these on 2026-10-19.
 4. **Agent writes on the ticket in hand.** The agent changes a ticket's state and comments
    on it without asking. Creating or closing a ticket still follows the repo's working
    agreement. `/idea` creates its ticket because the operator asked for it.
+
+## 8. W9 — dogfood on the klynt board (2026-10-19)
+
+KlyntLabs/klynt (GitHub). The owner approved these writes: the four `status:*` labels,
+closing the implemented tickets, triage, and one `/idea` ticket. The mapping went in as
+a PR. All skill runs were headless sonnet or haiku, from a sandbox clone of the owner's
+checkout with its remote removed. The owner's checkout and its 18 unpushed commits were
+not touched.
+
+| Step | Writes | Result |
+|---|---|---|
+| `/board`, read-only through the `gh` guard (haiku, sonnet) | 0 | Both ran `board.py`. It called the four stale `ready-for-agent` tickets spec-less: klynt's catalog writes the Spec cell as a markdown link, and `learning.md` has a blank line inside its table. **Fixed in `board` 1.0.1**, and the same table bug in `land-branch` 4.5.1 (`owner-notice.py`). Re-run: five open tickets whose spec reads `Implemented`: #258, #253, #252, #243, and #261 [CCOL], which T20 had missed. |
+| Labels | 4 created | `status:shaping`, `status:building`, `status:in-review`, `status:shipped` |
+| Mapping | PR #265 | `docs/agents/triage-labels.md` gains the four roles, on a branch from `origin/dev` |
+| Close the implemented | 5 closed | Each closed with a comment citing the spec path, `Status: Implemented` and the commit. None was marked shipped, since no release is confirmed. |
+| `/triage` #262, #260, #242 (sonnet) | 0, then 6 | The first run stopped for confirmation, as the skill says. After the owner chose: #242 `ready-for-agent`, #262 and #260 `ready-for-human`, each with a brief and one state label. |
+| `/idea` (sonnet) | 1 issue, 1 edit, 1 comment | #266 "Export flashcard review history as CSV", `status:shaping`, with a frame comment. It found that FLASH-12.3 must change for the export. It reported that `docs/guide/workflow.md` is missing in the consuming repo, **fixed in `idea`, `shape` and `go` 1.0.1**. |
+| `/board` after | 0 | #266 Shaping; #262 and #260 Human-only; PR #265 In review; #242 Ready but flagged as having no spec. |
+
+**Open design gap (W10).** `/triage` makes a confirmed bug `ready-for-agent` with an agent
+brief. `/go` (`deliver-issues`) and `/board` count a ticket as Ready only when its spec
+triad is `Approved`. So #242 sits in Ready, but nothing will build it. There are two ways
+to close the gap, and the owner decides:
+- Triage puts a bug that needs a root cause into `shaping`. Then `/shape` runs
+  `root-cause` and writes the mini-spec.
+- `deliver-issues` gains a tier-1 lane: a ticket with a triage agent brief goes through
+  `root-cause`, then a `test-first` fix, then review, then landing.

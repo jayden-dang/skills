@@ -1,6 +1,6 @@
 ---
 name: triage
-version: 1.0.0
+version: 1.1.0
 description: Triages incoming tracker issues, bug reports, and external PRs — a classification, an
   investigation, or an agent-ready implementation brief. Run it with /triage.
 disable-model-invocation: true
@@ -25,7 +25,7 @@ Supporting reference: [agent-brief-template.md](agent-brief-template.md) — the
 Two axes; every triaged issue carries **exactly one label from each**:
 
 - **Category:** `bug` (broken behavior) or `enhancement` (new capability)
-- **State:** `needs-triage` → one of `needs-info` / `ready-for-agent` / `ready-for-human` / `wontfix`
+- **State:** `needs-triage` → one of `needs-info` / `shaping` / `ready-for-agent` / `ready-for-human` / `wontfix`
 
 `needs-info` returns to `needs-triage` when the reporter replies. These are canonical role names — apply the repo's mapped label strings, never the raw role names, unless they coincide. If an issue carries conflicting state labels, flag it and ask the user before touching it.
 
@@ -50,6 +50,7 @@ When asked "what needs attention", query the tracker and present three buckets, 
 3. **Recommend.** Tell the user your category + state recommendation with the reasoning and the evidence from steps 1–2. If the request is ambiguous or underspecified in ways only the user can resolve — REQUIRED SUB-SKILL: use `clarify-decisions` to shape it one question at a time before locking the recommendation. Wait for the user's direction.
 
 4. **Apply the outcome:**
+   - `shaping` — a confirmed bug whose root cause is not yet established, so the brief would send an agent to investigate. Post the agent brief with the cause marked open, and name `/shape #N`, which runs `root-cause` and writes the tier-1 mini-spec the build needs. In three of four baseline triages of klynt #242, the brief itself said "requires a root-cause investigation before the fix" and the recommendation was still `ready-for-agent`. `/go` and `/board` count a ticket as Ready only once its spec is approved, so #242 sat in Ready with nothing able to build it.
    - `ready-for-agent` — post an agent brief built from [agent-brief-template.md](agent-brief-template.md). The brief is the contract; the original body and thread are only context.
    - `ready-for-human` — same brief structure, plus one line on why it cannot be delegated (judgment call, external access, design decision, manual testing).
    - `needs-info` — post triage notes: what has been established so far, then specific, answerable questions for the reporter (never "please provide more info").

@@ -487,3 +487,22 @@ three files both plans edit, and both plans' `invoiceView` side by side.
 Not covered: a plan with no collision (the map still renders, item 4 empty); `show-run-
 status` colouring progress on the map (the plan's T15 follow-on — no baseline asked);
 GitHub/Linear specs held outside `docs/specs/`. Spend: about 2.65 USD.
+
+## 1.9.0 — publishing onto the ticket the feature already has (2026-10-19), closed workflow
+
+The fixture is `harbor-ledger` with overlays `latefee-plan` and `fmt-plan`, then
+`scenarios/gh-board.sh` (the board on a stateful `bin/gh`) and `gh-roles.sh`. #23 is
+relabelled `status:shaping`, the state of a ticket whose spec is still being written.
+Prompt (Lan): "/plan-tasks — The formatting plan … is approved — Quang signed it off this
+morning. Publish it to the tracker; the ticket is #23." Installed: `plan-tasks`,
+`audit-trace`, `load-subgraph`, `publish-issues`.
+
+**RED (1.8.0): 2 haiku and 1 sonnet.** All three updated #23 in place and created nothing
+(3/3). Two of the three added `ready-for-agent` and kept `status:shaping`, so the ticket
+held two state roles.
+
+**GREEN (1.9.0).** Step 4 of `publish-recipe.md` now says a named or recorded ticket *is*
+the feature issue, and that the frontier label replaces the current state role in the
+same edit. 3 haiku and 1 sonnet:
+- one state role (`ready-for-agent`): 4/4;
+- no new issue: 4/4.

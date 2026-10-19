@@ -12,7 +12,10 @@
 3. Resolve **reader reach** with one pass: `git check-ignore -q <path to this
    tasks.md>`. Exit 0 → **private**: the specs are git-ignored, so the people
    reading the tracker cannot open them. Otherwise → **shared**.
-4. **WHEN unit is `feature`:** create **exactly one** issue:
+4. **WHEN unit is `feature`:** one issue per plan. When the operator named the feature's
+   ticket, or `.skills/<CODE>/` records one, that ticket **is** the issue: update its
+   title, body and labels in place, and create nothing. Otherwise create **exactly one**
+   issue:
    - **Title:** shared → `[CODE] <feature outcome>`; private →
      `<feature outcome>`. Same sense as the plan Goal either way.
    - **Body** (behavior and interfaces, never file paths):
@@ -29,7 +32,10 @@
      docs/specs/…/tasks.md` to a tech lead who assigns work from Linear and
      can open none of them. The acceptance lines already carry that meaning.
    - Label only this issue with the frontier role (`ready-for-agent` mapped
-     string) when it is grabbable.
+     string) when it is grabbable. Remove its current state role (`shaping`,
+     `needs-triage`) in the same edit: a ticket carries one state role. Two of three
+     baseline publishes onto #23 added `ready-for-agent` beside `status:shaping`, and the
+     board read it as both being shaped and ready.
    - Record the issue id under `.skills/<CODE>/` for execute / `land-branch`.
      That record is where the ID ↔ issue trace lives when reach is private.
 5. **WHEN unit is `tasks` (legacy only):** one issue per plan task in dependency

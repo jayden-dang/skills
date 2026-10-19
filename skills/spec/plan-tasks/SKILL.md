@@ -1,6 +1,6 @@
 ---
 name: plan-tasks
-version: 1.8.0
+version: 1.9.0
 description: Use when a design is approved and the tasks.md implementation plan
   (vertical-slice tasks with requirement footers and behavior tests) needs writing,
   after design-solution and before the execute family (build-in-waves /

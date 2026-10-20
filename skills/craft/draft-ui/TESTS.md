@@ -123,3 +123,42 @@ for `app.js` and `index.html`, variants and switcher deleted, brief plus one
 screenshot surviving. The same run flagged that its own chips had been drafted
 without the kit's focus treatment — the red flag this version adds, caught by
 the agent against itself.
+
+## v1.2.0 — the worked-in screen's job (2026-10-20, sonnet RED; GREEN pending)
+
+Source: a read of taste-skill's app-screen run (Leonxlnx/taste-skill
+`references/app-screens.md` §2.2: one question, one finding, the main job one
+click away). Answer key written before the run:
+`.skills/research/2026-10-20-taste-red/`.
+
+Fixture: static "Shipyard" deploy dashboard, Overview a stub, approved DEPL
+requirements (deploys, error rate, incidents, services, roll back). Data
+truth: checkout-svc v2.31.0 at 14:05 took errors 0.3% → 4.1%; INC-412 open.
+
+### RED (v1.1.0, 1 rep)
+
+Mechanics held — three divergent named plans, kit composed, switcher, lock on
+the user's explicit go, cleanup. The job did not:
+
+- No plan or pitch named what the person opening the screen must know first.
+- No variant stated the finding in words. A captioned "up from 0.3% at 13:00"
+  with no deploy named; B labelled its chart **"payouts-worker failed twice"**,
+  pointing at the wrong deploys.
+- All three put "Roll back" on the two *failed* payouts-worker deploys (never
+  live) and no action on the succeeded v2.31.0 that caused the incident. The
+  locked brief codified it: *"Failed deploys show a failed pill and a Roll
+  back button; succeeded rows have no action."*
+- Every requested block was above the fold at 1440×900 — that check passed.
+
+Text added: the three lines (Question / Finding / Primary job) before any
+plan for a worked-in screen, the step-1 Done-when clause, the brief's `Job:`
+slot, one Red Flag. The example is deliberately not from the fixture.
+
+### GREEN — not yet run
+
+Five attempts (skill-tester sonnet ×3, skill-tester-haiku ×1, general-purpose
+opus ×1) ended before any output on an API safeguards error, each reporting
+`model sent to the API: claude-sonnet-5-5`. Shipped on the RED evidence at the
+user's call. Owed: phase 1 + phase 2 on the same fixture (`/tmp/taste-red/A`
+at commit 43433fc), judged against the answer key; an eval entry once GREEN
+exists.

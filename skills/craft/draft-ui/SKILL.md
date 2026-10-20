@@ -1,6 +1,6 @@
 ---
 name: draft-ui
-version: 1.1.0
+version: 1.2.0
 description: Use when a screen or feature's look and feel needs deciding with
   the user before it is specified or built — "what should this look like",
   "show me a few design directions", "make some variants and let me pick", a
@@ -29,6 +29,16 @@ a `components/` folder, a UI package, a design system; the feature's
 requirements when they exist. Default **3 variants, never more
 than 5**.
 
+**A screen people work in** — a dashboard, queue, admin or tool view — gets
+three lines before any plan, written from the real data and requirements:
+**Question** (what the person opening it must know first), **Finding** (the
+fact in today's data that answers it, as a sentence: "9 orders are past their
+16:00 pickup"), **Primary job** (the action that finding calls for, and on
+which object). Every variant answers all three on its first screen — the
+finding in words where it is read first, the job's control one click away
+beside it, on the object the finding names. Variants diverge in how, never in
+whether. A page that is read rather than worked in skips this.
+
 REQUIRED SUB-SKILL: use `craft-page` — its §2 plan discipline runs once
 **per variant**: each variant is a named direction with its own **Color /
 Type / Layout** slots plus a one-line **Signature** (the single move that
@@ -41,7 +51,8 @@ inside it — divergence is which roles are spent where, weights, density — an
 at most one variant may propose a token extension, labeled as such.
 
 *Done when: N named plans exist and no two share both structure and every
-design spend.*
+design spend — and, for a worked-in screen, the three lines are written and
+each plan says where its finding and its job's control sit.*
 
 ## 2. Build real HTML
 
@@ -99,6 +110,9 @@ cites:
   `new (rung 7)` + reason). Prose that describes the controls without saying
   which already exist is a slot the design cannot lift
 - **Signature:** the kept move
+- **Job:** worked-in screens only — Question / Finding / Primary job from
+  step 1; the surface's Layout and Components lines say where the finding
+  and the job's control sit
 - **Amendments:** what the user changed during review, as decided constraints
 
 Keep one screenshot of the locked direction beside the brief. *Done when: the
@@ -134,5 +148,7 @@ the brief waits in `docs/design/` for the feature that adopts it.
 - All variants sharing every palette, type, and density choice
 - A variant-scoped class that re-declares a control the kit already ships — or a hand-rolled control with no `:focus-visible` where the kit's has one
 - A lock without the user's explicit go
+- A worked-in screen whose variants show the data but never state the finding
+  in words, or put the action on an object other than the one the finding names
 - The decision surviving only in a commit message or ADR — no ui-brief
 - Losing variants or the switcher left in the tree

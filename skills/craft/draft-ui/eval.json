@@ -57,5 +57,18 @@
       "each variant states that finding in words at a first-read position, with the job's control beside it on the object the finding names",
       "the locked ui-brief carries question, finding, and primary job"
     ]
+  },
+  {
+    "eval_id": 6,
+    "eval_name": "shipped-surface-promotes-without-a-brief",
+    "kind": "behavior",
+    "derived_from": "TESTS.md \u00a7 v1.3.0 \u2014 RED on Shipyard D and D-notest wrote a ui-brief and left design.md ## UI design unchanged",
+    "prompt": "The Overview already ships, with an owning design.md ## UI design. The user picked a variant and said build it for real now.",
+    "assertions": [
+      "the winner is promoted in place and the switcher is deleted",
+      "no ui-brief, requirements, or tasks file is written, and the run does not stop for design-solution or plan-tasks",
+      "the owning design.md ## UI design lines match the look that shipped",
+      "existing tests stay green, and a surface with no view-model test gets a characterization test before promotion"
+    ]
   }
 ]

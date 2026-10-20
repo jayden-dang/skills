@@ -1,24 +1,26 @@
 ---
 name: draft-ui
-version: 1.2.0
-description: Use when a screen or feature's look and feel needs deciding with
+version: 1.3.0
+description: >-
+  Use when a screen or feature's look and feel needs deciding with
   the user before it is specified or built — "what should this look like",
   "show me a few design directions", "make some variants and let me pick", a
   UI mockup exploration clicked through in the real browser. Produces 2–5
   divergent real-HTML variants behind a floating switcher (embedded in the
-  running app, or standalone pages when no app exists), a review-and-amend
-  loop with the user, and a locked ui-brief.md that design-solution's UI
-  design section lifts instead of re-deciding. Not for judging an already
-  built diff (inspect-ui), logic or state spikes (run-spike), or a standalone
-  document page (craft-page).
+  running app, or standalone pages when no app exists) and a review-and-amend
+  loop. An unshipped surface locks a ui-brief.md that design-solution lifts.
+  A surface that already ships promotes the winner in place and updates the
+  owning design.md UI design lines. Not for judging an already built diff
+  (inspect-ui), logic or state spikes (run-spike), or a standalone document
+  page (craft-page).
 ---
 
 # Draft UI
 
 Deciding a surface's look is a workflow, not a one-shot render: divergent
 directions built as real HTML, reviewed by the user in the browser, amended,
-and only then locked into a brief the build chain lifts instead of
-re-deciding.
+and only then either promoted onto a surface that already ships (§4) or
+locked into a brief the build chain lifts instead of re-deciding.
 
 ## 1. Ground, then plan N directions
 
@@ -94,7 +96,24 @@ Then loop:
 
 *Done when: the user has said lock/go on a specific variant or hybrid.*
 
-## 4. Lock — write the ui-brief
+## 4. A shipped surface — promote
+
+WHEN an owning `design.md` already has `## UI design` for this surface and
+the winner changes no behavior an acceptance criterion describes, "build it"
+is tier 0. Promote the winner in place. Update those `## UI design` lines to
+the look that shipped. Do not write a ui-brief, requirements, or tasks, and do
+not stop for `design-solution` or `plan-tasks`. Delete the switcher and the
+losing variants. Keep the existing tests green. WHEN that surface has no test
+at the view-model seam, add a characterization test there before the
+promotion. A winner that adds behavior the spec never described routes that
+part through `amend-feature`.
+
+*Done when: the tree has the winner, no switcher, `## UI design` matches it,
+and the seam test is green.*
+
+## 5. Lock — write the ui-brief
+
+Otherwise:
 
 Write `docs/specs/<date>-<feature>/ui-brief.md` when the feature's spec dir
 exists; else `docs/design/<YYYY-MM-DD>-<slug>-ui-brief.md`. The per-surface
@@ -118,18 +137,20 @@ cites:
 Keep one screenshot of the locked direction beside the brief. *Done when: the
 brief exists with every slot filled and the user-visible decision quoted.*
 
-## 5. Clean up
+## 6. Clean up — unshipped only
 
-Delete the losing variants, the switcher, and all scaffolding. The winner's
-code was written under draft constraints — the production build **rewrites it
-from the brief** under `test-first`, never promotes it as-is. What survives:
-the brief, its screenshot, and a cleanup commit referencing the brief path.
+Skip this step when §4 already promoted the winner. Otherwise delete the
+losing variants, the switcher, and all scaffolding. The winner's code was
+written under draft constraints — the production build **rewrites it from the
+brief** under `test-first`, never promotes it as-is. What survives: the brief,
+its screenshot, and a cleanup commit referencing the brief path.
 
 ## Hand-off
 
-The chain consumes the lock: `design-solution` Step 2b lifts `## UI design`
-from an existing ui-brief instead of re-deciding. When no spec exists yet,
-the brief waits in `docs/design/` for the feature that adopts it.
+A promotion (§4) ends here. Otherwise the chain consumes the lock:
+`design-solution` Step 2b lifts `## UI design` from an existing ui-brief
+instead of re-deciding. When no spec exists yet, the brief waits in
+`docs/design/` for the feature that adopts it.
 
 ## Rationalizations
 
@@ -140,7 +161,8 @@ the brief waits in `docs/design/` for the feature that adopts it.
 | "The commit message records the decision" | A commit carries the pick; the direction's type, density, states, and signature die there. The brief is what the build reads |
 | "User picked — skip the amendments round" | The pick usually arrives with amendments. Apply, show once more, lock on their word |
 | "No app yet, so describe the options in chat" | Real HTML is the medium. No app → standalone pages behind the same switcher |
-| "The winning variant works — promote its code" | Draft code. The build rewrites from the brief under test-first |
+| "The winning variant works — promote its code" | Draft code, when the surface is not shipped yet. The build rewrites from the brief under test-first |
+| "It already shipped, so lock a brief and rewrite it under the spec chain" | The user said build it. Update the owning `## UI design` and promote the winner. A new ui-brief restarts a cycle they did not ask for |
 
 ## Red Flags
 
@@ -150,5 +172,6 @@ the brief waits in `docs/design/` for the feature that adopts it.
 - A lock without the user's explicit go
 - A worked-in screen whose variants show the data but never state the finding
   in words, or put the action on an object other than the one the finding names
-- The decision surviving only in a commit message or ADR — no ui-brief
+- The decision surviving only in a commit message or ADR — no ui-brief, on a surface that has no `## UI design` yet
+- A go on a shipped surface that writes a ui-brief, or leaves `## UI design` describing the previous look
 - Losing variants or the switcher left in the tree

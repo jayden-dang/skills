@@ -181,3 +181,45 @@ ladder form. Variants, switcher, and `styles/draft-overview.css` deleted.
 Commit `0811f71`.
 
 GREEN = Q1–Q3 and Q5. Q4 held from the RED run (Ledger also passes it).
+
+## v1.3.0 — a shipped surface promotes (2026-10-20, skill-tester Sonnet)
+
+Answer key written before the run: `answer-key-round3.md`. Fixtures restored
+from `fixture-D.bundle` (`c5b8a2a`) and `fixture-D-notest.bundle` (`4238a97`).
+
+### RED (v1.2.0, 1 rep each)
+
+Both runs showed directions, stopped for the pick, then on "build it" wrote
+`ui-brief.md` and rewrote the Overview from that brief. `design.md` `## UI
+design` still describes the KPI row and the full-width chart.
+
+| | D (pick: bench) `cf99b2e` | D-notest (pick: floor) `f8edc71` |
+|---|---|---|
+| R1 ui-brief or a spec stop | ui-brief.md | ui-brief.md |
+| R2 route | rewrite from the brief | rewrite from the brief |
+| R3 residue | switcher gone; rollback calls `rollback` | switcher gone; rollback real |
+| R4 tests and the three checks | `node --test test/*.mjs` 8/8. `?mock=incidents-down` keeps deploys and says incidents failed. Filter moves All (10)→(2) and Failed (2)→(0). p95 "—" on payouts-worker | `node --test test/*.mjs` 3/3 |
+| R5 | chart 160→240 as asked; KPI row no longer on the page | chart raised to 280 as asked |
+| R6 `## UI design` | unchanged | unchanged |
+| R7 shots read | `ui-bench.png` only | 1280 and 390, chart 280, no clip |
+| R8 seam test | n/a — model tests already existed | `test/overview.test.mjs` added before the rewrite |
+
+Session folds: `d-{strip,bench,figure}-1440.png`, `dn-{signal,floor,queue}-1440.png`.
+
+Text added (v1.3.0): §4 promote on a shipped surface, §6 scoped to the unshipped path, one rationalization row, one red flag.
+
+### GREEN (v1.3.0, skill-tester Sonnet, 1 rep each, same bundles)
+
+D pick: brief, chart taller. Diff vs `c5b8a2a` is `pages/overview.js`, `pages/overview.css`, and `design.md` only. No ui-brief. `## UI design` names the finding sentence, Roll back under it, and the two-column brief. `node --test test/*.mjs` 5/5. Live: `?mock=incidents-down` keeps Deploys and reports the incidents failure; filter moves All to 2 and Failed to 0; p95 renders "—". Switcher gone.
+
+D-notest pick: sentence, chart taller. Same three files plus new `test/model.test.mjs` (characterization of the 15:50 seam, written before the screen change). No ui-brief. `## UI design` names the finding row and the 168px chart. `node --test test/*.mjs` 3/3. Same three live checks pass. Switcher gone.
+
+R1 absent, R2 promote, R3 clean, R4 pass, R6 pass, R8 present on D-notest. R5 is the taller chart the user asked for. R7: both runs shot desktop and 390 and reported the finding intact. No further text.
+
+Session review before commit (2026-10-20): §4's opening now carries the
+tier-0 condition from `amend-feature` ("changes no behavior an acceptance
+criterion describes") and routes added behavior there — the first draft
+called every "build it" tier 0. Its last sentence ("Screenshot … at ≤400px
+and read both for a clipped line") was cut: round 3 did not fail on it, and
+its source, craft-page 1.2.0, was withdrawn as a camera artifact (see
+craft-page TESTS.md v1.3.0).

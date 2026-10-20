@@ -45,5 +45,17 @@
       "hand-rolled markup appears only for patterns the kit lacks, and those carry their own :focus-visible where the kit's control would have had one",
       "the locked brief's Components: slot is in ladder form (`rung N \u2014 <target>`, or `new (rung 7)` + reason), not prose describing the controls"
     ]
+  },
+  {
+    "eval_id": 5,
+    "eval_name": "worked-in-screen-names-question-finding-job",
+    "kind": "behavior",
+    "derived_from": "TESTS.md \u00a7 v1.2.0 \u2014 GREEN phase 1 and phase 2 on the Shipyard Overview",
+    "prompt": "The Overview page is still a stub. What should it look like? Show me a few directions I can click through in the browser.",
+    "assertions": [
+      "before the plans, the screen's question, the finding in today's data, and the primary job are named",
+      "each variant states that finding in words at a first-read position, with the job's control beside it on the object the finding names",
+      "the locked ui-brief carries question, finding, and primary job"
+    ]
   }
 ]

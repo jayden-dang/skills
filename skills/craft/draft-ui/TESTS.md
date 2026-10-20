@@ -154,11 +154,30 @@ Text added: the three lines (Question / Finding / Primary job) before any
 plan for a worked-in screen, the step-1 Done-when clause, the brief's `Job:`
 slot, one Red Flag. The example is deliberately not from the fixture.
 
-### GREEN — not yet run
+### GREEN (v1.2.0, 2026-10-20 rerun, skill-tester Sonnet, 1 rep)
 
-Five attempts (skill-tester sonnet ×3, skill-tester-haiku ×1, general-purpose
-opus ×1) ended before any output on an API safeguards error, each reporting
-`model sent to the API: claude-sonnet-5-5`. Shipped on the RED evidence at the
-user's call. Owed: phase 1 + phase 2 on the same fixture (`/tmp/taste-red/A`
-at commit 43433fc), judged against the answer key; an eval entry once GREEN
-exists.
+Same fixture, `/tmp/taste-red/A` at `43433fc`. Five earlier attempts died on
+the API safeguards error before any output (see results.md). This rerun finished.
+
+**Phase 1.** Question, finding, and primary job written before the three plans.
+Variants Band / Ledger / Floor. Session folds at 1440×900:
+`.skills/research/2026-10-20-taste-red/{band,ledger,floor}-1440.png`.
+
+| | Band | Ledger | Floor |
+|---|---|---|---|
+| Q1 question named | yes — one question above the plans: "Is production healthy right now, and which deploy do I undo if it isn't?" | same | same |
+| Q2 finding in words at first read | yes — 502s, INC-412, 4.1% up from about 0.3%, checkout-svc v2.31.0 at 14:05 | yes | yes |
+| Q3 roll back that deploy, one click, next to the finding | yes — "Roll back checkout-svc to v2.30.2" in the band. Failed payouts rows have no rollback | yes — same button on the finding row | yes — same button on the finding row |
+| Q4 every DEPL block's header and first rows | services header below the fold | yes | deploys' first rows show; the rest of the table is below |
+
+Stopped at the hand-over. No brief yet. Server killed.
+
+**Phase 2.** Pick relayed: "Ledger, as it is. Go — lock it."
+
+**Q5 pass.** `docs/specs/2026-10-20-deploy-overview/ui-brief.md` carries Question,
+Finding, and Primary job under `Job:`. Decision quotes the user. Components in
+ladder form. Variants, switcher, and `styles/draft-overview.css` deleted.
+`git diff 43433fc --stat` is the brief plus `ledger.png` only. Tree clean.
+Commit `0811f71`.
+
+GREEN = Q1–Q3 and Q5. Q4 held from the RED run (Ledger also passes it).

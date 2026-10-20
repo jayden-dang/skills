@@ -20,7 +20,7 @@ When a diff or branch touches anything a browser renders — HTML, CSS/styling, 
 1. **Scopes** the changed rendered surfaces and maps each to a screen.
 2. **Starts the app** (same run-command contract as `validate-ui`). Can't run → the whole review is labeled `unverified (static)`, loudly.
 3. **Floor passes**, deterministic: grep the changed styles for raw hex/rgb outside the token system and for `outline: none` with no visible focus replacement.
-4. **Drives and captures**: three viewports (1440×900 / 768 / 375) with a horizontal-overflow check at each; every reachable and composed interaction state (hover, Tab-focus, selected, empty, error); a walk of the design contract's `States:` lines; WCAG contrast ratios computed from actual rendered values.
+4. **Drives and captures**: three viewports (1440×900 / 768 / 375) with a horizontal-overflow check at each; every reachable and composed interaction state (hover, Tab-focus, selected, empty, error); a walk of the design contract's `States:` lines; a data-truth check — a state that hides data that loaded fine, prints a missing value as a number or a real zero as a dash, or shows counts that ignore the filter in view is Important, whatever the `States:` line's wording; WCAG contrast ratios computed from actual rendered values.
 5. **Reports** findings with severity + `file:line` + screenshot path, a `needs-human-eyes` list of genuine taste calls (which you read to decide on a hand walk), and a `UI: clean | findings | cannot drive` verdict line.
 
 ## Severity stance

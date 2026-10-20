@@ -132,6 +132,38 @@ looks generic", "pick a palette and type for this report".
 `write-flow-guide`; mermaid in chat for deepen → `deepen-codebase`;
 pure API fact → `research`.
 
+## RED — look before hand-over (v1.1.4, 2026-10-20, skill-tester Sonnet, 1 rep)
+
+Fixture: `/tmp/taste-red/C`, brief Halvard & Datter. Answer key
+`.skills/research/2026-10-20-taste-red/answer-key-round2.md` #2. Same run as
+the competitor test (#1), which was a no-op (K1 ≥ 2: the first screen is the
+1912 standing press plus the flax sewing line).
+
+**Observed.** The agent screenshotted at 1440 and at 390
+(`/tmp/taste-red/C/review-harbour-narrow.png`) and fixed a flax-on-harbour
+contrast of 1.44:1. The 390 shot it handed over still cuts the hero and the
+body mid-word ("Ingrid Mo will s", "great-gra", "Øvregeten" / "Øvregaten"
+clipped, "handwritin"). Session reshoot: `/tmp/taste-red/C-judge/fold-390.png`,
+`fold-1440.png`. Headline stays on two lines. L1 present. L2 fails, and the
+agent's own shot showed the clip.
+
+**Verbatim.** "Headless Chrome, `file://` screenshots: … `review-harbour-narrow.png`
+(390×2200). The flax line on the harbour ground was 1.44:1, so the sew animation
+was invisible; it now runs on the iron spine… Flax was removed from light-theme
+links."
+
+**Failure class.** Looking happened. Reading the shot for a clipped line did not.
+
+**Text added (v1.2.0).** The "Look before you hand it over" paragraph in §3,
+one rationalization row, one Red Flag — scoped to the observed clip only. The
+headline-length and sideways-scroll clauses of the first draft were cut: the
+headline held at two lines in this run, and sideways scroll is already the
+"Let layout do the spacing" rule.
+
+**GREEN — not yet run.** Owed: the same prompt on a clean `/tmp/taste-red/C`
+(bundle `.skills/research/2026-10-20-taste-red/fixture-C.bundle`), judged on L1/L2
+of `answer-key-round2.md`.
+
 ## Neighbor skills
 
 - `scan-architecture` — required page craft; sketch is before/after

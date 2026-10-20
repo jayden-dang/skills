@@ -41,5 +41,17 @@
     "assertions": [
       "the report is `no rendered surface` and the review stops without launching a browser"
     ]
+  },
+  {
+    "eval_id": 5,
+    "eval_name": "state-that-hides-or-misstates-data-is-important",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § v2.2.0 — RED rated a one-source failure that blanked loaded blocks and filter-blind counts as Minor and asked whether the banner was 'too loud'; GREEN rated both Important",
+    "prompt": "A dashboard diff: when one of four data calls fails, the whole page is replaced by an error banner; tab counts stay the same when a filter narrows the rows; the design's States line only says 'error — an error message'. Severity?",
+    "assertions": [
+      "both are reported as Important or higher, not Minor",
+      "neither is placed in needs-human-eyes as a taste call",
+      "matching the States line's wording is not used to clear the error-state finding"
+    ]
   }
 ]

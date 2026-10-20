@@ -83,3 +83,34 @@ the signed-in session. The three sizes stay. They are set with
 Playwright is not a camera. A same-day control of v2.0.0 on a login-walled
 admin page already refused Playwright and kept 1440 / 768 / 375; this edit
 closes the public-page hole the wording still left open.
+
+## v2.2.0 — data truth (2026-10-20, sonnet, 1 RED + 1 GREEN)
+
+Source: a read of taste-skill's app-screen state rules (Leonxlnx/taste-skill
+`references/app-screens.md` §11), kept only where a baseline failed. Answer
+key written before either run: `.skills/research/2026-10-20-taste-red/`.
+
+Fixture: static "Shipyard" deploy dashboard, branch `depl-overview` vs
+`main`, approved DEPL requirements and a design.md whose `States:` lines are
+vague ("error — an error message"). Five planted data-state defects, all
+passing `node --test`, plus `.tab:focus { outline: none }` as control.
+
+| Planted | RED (2.1.2) | GREEN (2.2.0) |
+|---|---|---|
+| Open incidents = 0 rendered `--` at KPI size | Important | Important |
+| null p95 rendered `0 ms` | Important | Important |
+| one source down blanks the whole page | **Minor**, and moved to needs-human-eyes: *"Is the full-width red error banner too loud, or right, for a paged-engineer context?"* | **Important** — "the words match, but the screen loses loaded data" |
+| tab counts ignore the service filter | **Minor** | **Important** |
+| full-view spinner instead of kept layout | "fine" | no finding — dropped from scope |
+| focus control | Important | Important |
+
+Failure class: not blindness — RED saw every defect but rated the ones that
+hide loaded data or show a wrong count as polish, and turned one into a taste
+question. Text added: the **Data truth** bullet in step 4, one rationalization
+row (the RED line verbatim), one Red Flag. The spinner item was not adopted:
+taste-skill itself marks its loading rule a house rule, "not in the study".
+GREEN found no new over-trigger; its other Important findings (overflow at
+768/375, pill contrast ~3.8:1) come from pre-existing rules and are real.
+
+Camera in both runs: headless Chrome over CDP, since kimi-webbridge is not
+reachable from a subagent. Limits: one rep per side, Sonnet only.

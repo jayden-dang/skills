@@ -1,6 +1,6 @@
 ---
 name: inspect-ui
-version: 2.1.2
+version: 2.2.0
 description: Use when a diff or branch touching browser-rendered surfaces (HTML,
   CSS/styling, JSX/TSX/Vue/Svelte components, templates) needs its visual and
   interaction quality judged in the real running app before merge — the live
@@ -88,6 +88,13 @@ working tree stays untouched.
   code makes possible (two classes on one element, emphasis while selected).
   The collision a static read can only call "fragile" is settled here by
   producing it and looking.
+- **Data truth.** A state that withholds or misstates data is a correctness
+  finding — Important at least, never Minor and never a `needs-human-eyes`
+  taste call: one failed source blanking blocks whose data loaded fine; a
+  missing value printed as a number ("0 ms"); a real zero printed as a missing
+  mark ("--"); a count that does not follow the filter or tab in view. People
+  act on what the screen says. Matching a `States:` line's words ("an error
+  message") does not clear it.
 - **Contract walk.** Each `States:` line in the UI design section gets
   exercised; a state the contract names but the screen cannot reach — or
   reaches looking wrong — is a finding. Colors on screen trace to tokens.
@@ -124,6 +131,7 @@ three viewport shots plus one per exercised state, all read.*
 | "Tests are green, so it renders fine" | The tests assert strings and DOM state, not pixels. The invisible-text bug passes a `.match()` test |
 | "Both classes probably compose — different properties" | Produce the composed state and look. Declaration order is not a verdict |
 | "Screenshot captured — attach and move on" | An unread screenshot is not evidence. Read it, then judge |
+| "Is the full-width red error banner too loud, or right? — needs-human-eyes" | Loudness is taste; three blocks that loaded and are now hidden is lost data. That is a finding |
 | "Playwright is the reliable camera" | The review drives the user's browser through kimi-webbridge, at the three set sizes |
 
 ## Red Flags
@@ -132,4 +140,5 @@ three viewport shots plus one per exercised state, all read.*
 - Skipping the 375px viewport
 - Judging a composed state from declaration order instead of producing it
 - `outline: none` passing because "the design never mentioned focus"
+- A state that hides loaded data or shows a wrong number, rated Minor
 - Mutating the working tree, index, or branch state during review

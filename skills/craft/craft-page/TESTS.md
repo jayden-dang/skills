@@ -160,9 +160,16 @@ headline-length and sideways-scroll clauses of the first draft were cut: the
 headline held at two lines in this run, and sideways scroll is already the
 "Let layout do the spacing" rule.
 
-**GREEN — not yet run.** Owed: the same prompt on a clean `/tmp/taste-red/C`
-(bundle `.skills/research/2026-10-20-taste-red/fixture-C.bundle`), judged on L1/L2
-of `answer-key-round2.md`.
+**GREEN (v1.2.0, 2026-10-20 rerun, skill-tester Sonnet, 1 rep).** Same prompt
+on a clean `/tmp/taste-red/C` (`7073d18` from `fixture-C.bundle`). L1 present:
+the agent shot desktop 1280 and narrow 390
+(`.skills/research/2026-10-20-taste-red/green-c-agent-desktop.png`,
+`green-c-agent-390.png`) and rewrote the visit card after a 500px layout had
+been cropped to 390. L2 clean: an emulated 390×900 viewport
+(`green-c-emulated-390.png`) has `scrollWidth === 390`, no element past the
+viewport, and the thesis on two lines. A raw `--window-size=390` shot
+(`green-c-390.png`) is a 500px layout cropped to 390 and is not the layout
+under test. No further text.
 
 ## Neighbor skills
 
@@ -173,3 +180,22 @@ of `answer-key-round2.md`.
 - `brief-team` — no restyle; WHEN `figure_html` warranted, same figure
   branch.
 - `write-flow-guide` — default still forbids page craft.
+
+## v1.3.0 — the 1.2.0 rule withdrawn: its RED was a camera artifact (2026-10-20)
+
+Headless Chrome does not lay a page out narrower than 500px. `--window-size=390,300`
+on a page that prints its own width reports `innerWidth=500 docW=500`
+(`.skills/research/2026-10-20-taste-red/camera-check-w390.png`), so the shot is a
+500px layout cropped to 390. That is what the RED showed: the agent's
+`review-harbour-narrow.png` and the session's `fold-390.png` were both taken with
+`--window-size`, and the lines "ending mid-word" run past the crop, not past the
+page. The GREEN run saw the same split — its raw `--window-size=390` shot was
+cropped, while an emulated 390×900 viewport had `scrollWidth === 390`. The RED
+page itself was not kept, so it cannot be re-measured.
+
+No real failure stands behind "Look before you hand it over", and with a
+`--window-size` camera it would send agents after clips that do not exist. The
+§3 paragraph, its rationalization row, its Red Flag, eval 6, and the guide line
+are removed; the text is back to 1.1.4. Narrow shots for any future baseline:
+`Emulation.setDeviceMetricsOverride` over CDP (as `inspect-ui` already
+prescribes), never `--window-size` below 500.

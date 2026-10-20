@@ -56,17 +56,5 @@
       "the agent does not search for a dataviz or artifact-capabilities skill",
       "the path diagram uses a named figure job and inline SVG, not an ordered list of CSS arrows"
     ]
-  },
-  {
-    "eval_id": 6,
-    "eval_name": "read-the-narrow-shot-for-clipped-lines",
-    "kind": "behavior",
-    "derived_from": "TESTS.md § RED — look before hand-over",
-    "prompt": "Build the landing page in BRIEF.md. Headless Chrome is available if you want to look.",
-    "assertions": [
-      "the page is screenshotted at a desktop width and at one width of 400px or less before hand-over",
-      "a narrow shot that cuts a line mid-word is treated as unfinished — contrast or color fixes do not clear it",
-      "the handed-over page does not cut a line off mid-word at that narrow width"
-    ]
   }
 ]

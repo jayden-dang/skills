@@ -1,6 +1,6 @@
 ---
 name: craft-page
-version: 1.2.0
+version: 1.3.0
 description: Use before the first line of markup for any HTML a human will look
   at — a write-dogfood test guide, a report, a dashboard, a landing page, a published
   artifact, a standalone .html handoff. Also when a primary figure, structure
@@ -99,11 +99,6 @@ tables, code, diagrams — gets `overflow-x: auto` on its own container so the
 body never scrolls sideways. Use `font-variant-numeric: tabular-nums` wherever
 digits line up in columns.
 
-**Look before you hand it over.** Screenshot at a desktop width and at one
-width ≤400px, then read the shots for a line cut off at the edge. A word that
-ends mid-way ("great-gra") means the page is not finished, whatever else you
-fixed — an unread shot is the same as not looking.
-
 **Watch selector specificity.** It is easy to generate classes that cancel each
 other out — a `.section` rule fighting a `.cta` rule over the padding between
 sections. Structure the cascade so it can't silently undo your spacing.
@@ -188,7 +183,6 @@ revised plan exactly.
 | "I'll load `dataviz` / `artifact-capabilities`" | Those names are not in this pack. Do not search for them. Charts are out of the v1 job set |
 | "A flex row of boxes and → is a topology diagram" | Topology is inline SVG from the recipe. CSS arrows encode a path, not containment |
 | "The figure needs its own rust/teal lock to read at a glance" | Inherit the page or shell tokens. A second palette is the one-color problem on the figure |
-| "I already screenshotted the narrow page and fixed the contrast" | The narrow shot already showed body lines ending mid-word. A contrast fix does not clear a clip |
 
 ## Red Flags
 
@@ -198,4 +192,3 @@ revised plan exactly.
 - Hunting for `dataviz` or `artifact-capabilities`
 - Mermaid, a webfont CDN, or a second `.svg`/PNG file next to the page
 - CSS `→` lists or Canvas used for one of the four figure jobs
-- A hand-over whose narrow screenshot cuts a line off at the edge

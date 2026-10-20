@@ -53,7 +53,6 @@ Every page, every treatment. The skill carries them in full; the load-bearing on
 - **Choose neutrals** — a grey biased slightly toward the accent's hue reads as chosen; a pure mid-grey reads as inherited.
 - **Design both themes at the token level** — palette as custom properties on `:root`, redefined under `@media (prefers-color-scheme: dark)` and again under `:root[data-theme="dark"]` / `:root[data-theme="light"]` so an explicit toggle overrides the OS preference in both directions. Components are styled through the tokens, never inside the media query.
 - **Let layout do the spacing** — flex/grid with `gap`, `overflow-x: auto` on wide content's own container, `tabular-nums` where digits line up.
-- **Look before hand-over** — screenshot at a desktop width and at one width ≤400px, and read the shots for a line cut off at the edge; a word ending mid-way means the page is not finished, whatever else was fixed.
 - **Watch selector specificity** — a `.section` rule fighting a `.cta` rule silently undoes your spacing.
 - **Build cleanly** — closed elements, quoted attributes, visible focus state, `prefers-reduced-motion`, Canvas or WebGL over hand-authored SVG path data, everything self-contained.
 - **Copy is design material** — named from the user's side of the screen, active voice, a control that says exactly what happens.

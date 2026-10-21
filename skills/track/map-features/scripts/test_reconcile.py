@@ -237,6 +237,27 @@ class TestLoadFixture(unittest.TestCase):
         self.assertIn("known-impact", classes)
         self.assertIn("new-capability-candidate", classes)
 
+    def test_surface_root_of_recognized_card_is_known_impact(self):
+        from reconcile import reconcile_repo
+
+        env = reconcile_repo(
+            FIXTURE,
+            specs_dir="specs-recognized",
+            paths=["crates/indexer/src/pipeline.rs", "contract/sources/mailgate.move"],
+            mode="full",
+            base="0" * 40,
+            head="1" * 40,
+            write_overlay=False,
+        )
+        self.assertEqual(env["owns_coverage"]["registered"], 3)
+        impacted = {
+            c for f in env["findings"] if f["change_class"] == "known-impact" for c in f["codes"]
+        }
+        self.assertEqual(impacted, {"PIDX", "MOVE"})
+        self.assertNotIn(
+            "new-capability-candidate", {f["change_class"] for f in env["findings"]}
+        )
+
 
 if __name__ == "__main__":
     unittest.main()

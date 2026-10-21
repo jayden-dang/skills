@@ -87,6 +87,28 @@ class TestOwns(unittest.TestCase):
             "../2026-08-25-scoped-authorization-foundation",
         )
 
+    def test_spec_dash_card_does_not_borrow_a_surface_root(self):
+        """A Recognized card with Spec — registers with no spec dir."""
+        from owns import _parse_feature_table
+
+        text = """| Code | Feature | Spec | Status | Owner | Roadmap item | Match terms | Surface roots |
+|---|---|---|---|---|---|---|---|
+| PIDX | Indexer | — | Recognized |  | — | indexer | `crates/indexer/` |
+| MOVE | Move contracts | — | Recognized |  | — | move | `contract/` |
+"""
+        self.assertEqual(_parse_feature_table(text), {"PIDX": "", "MOVE": ""})
+
+    def test_recognized_cards_own_their_surface_roots(self):
+        owns, cov = load_owns(FIXTURE, specs_dir="specs-recognized")
+        self.assertEqual(cov["registered"], 3)
+        self.assertEqual(cov["missing_dirs"], [])
+        # OWNS coverage stays a tasks.md Files metric
+        self.assertEqual(cov["with_owns"], 0)
+        self.assertEqual(owners_for_path("crates/indexer/src/pipeline.rs", owns), ["PIDX"])
+        self.assertEqual(owners_for_path("contract/sources/mailgate.move", owns), ["MOVE"])
+        self.assertEqual(owners_for_path("crates/gateways/src/sweeper.rs", owns), ["SWEEP"])
+        self.assertEqual(owners_for_path("crates/gateways/src/other.rs", owns), [])
+
     def test_missing_spec_dir_recorded(self):
         _, cov = load_owns(FIXTURE, specs_dir="specs")
         self.assertIn("2026-01-99-missing", cov["missing_dirs"])

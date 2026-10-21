@@ -26,6 +26,7 @@ LABELED_PATH_RE = re.compile(
 )
 BACKTICK_PATH_RE = re.compile(r"`([^`]+)`")
 TABLE_PATH_RE = re.compile(r"`([^`]+)`")
+CATALOG_STATUSES = {"draft", "approved", "in-progress", "implemented", "shipped", "recognized"}
 
 STOP_BASENAMES = {
     "package.json",
@@ -149,23 +150,64 @@ def _score_spec_dir(cand: str) -> int:
     return score
 
 
-def _parse_feature_table(text: str) -> dict[str, str]:
-    """Parse feature rows: CODE → spec dir (flat INDEX or shard card table).
+def _row_cells(line: str) -> list[str]:
+    return [c.strip() for c in line.strip().strip("|").split("|")]
 
-    Supports mailgate-style `| CODE | [dir](dir/) | … |` and klynt-style
-    `| CODE | Name | Status | Roadmap | \`docs/specs/dir/\` |`. Prefers
-    path-like candidates over Name-cell parentheticals.
-    """
+
+def _header_columns(cells: list[str]) -> dict[str, int] | None:
+    """Column index by lowercased header name, when the row is a Code header."""
+    names = [c.lower() for c in cells]
+    if not names or names[0] != "code":
+        return None
+    return {name: i for i, name in enumerate(names)}
+
+
+def _spec_cell_dir(cell: str) -> str | None:
+    link = LINK_DIR_RE.search(cell)
+    return _normalize_spec_dir(link.group(1) if link else cell)
+
+
+def _feature_rows(text: str):
+    """Yield (code, line, cells, header columns or None) for each feature row."""
     main = text.split("## Codes that are spoken")[0]
-    out: dict[str, str] = {}
+    columns: dict[str, int] | None = None
     for line in main.splitlines():
         if not line.startswith("|"):
             continue
-        m = INDEX_ROW_RE.match(line)
-        if not m:
+        cells = _row_cells(line)
+        header = _header_columns(cells)
+        if header is not None:
+            columns = header
             continue
-        code = m.group(1)
-        if code.lower() == "code":
+        m = INDEX_ROW_RE.match(line)
+        if m:
+            yield m.group(1), line, cells, columns
+
+
+def _parse_feature_table(text: str) -> dict[str, str]:
+    """Parse feature rows: CODE → spec dir (flat INDEX or shard card table).
+
+    With a `Spec` or `Path` header column, only that cell names the spec dir;
+    a card whose Spec is `—` but whose Status is a catalog status maps to ""
+    (registered, no triad). Without one, supports mailgate-style
+    `| CODE | [dir](dir/) | … |` and klynt-style
+    `| CODE | Name | Status | Roadmap | \`docs/specs/dir/\` |`, preferring
+    path-like candidates over Name-cell parentheticals.
+    """
+    out: dict[str, str] = {}
+    for code, line, cells, columns in _feature_rows(text):
+        spec_col = None
+        if columns is not None:
+            spec_col = columns.get("spec", columns.get("path"))
+        if spec_col is not None:
+            spec = _spec_cell_dir(cells[spec_col]) if spec_col < len(cells) else None
+            if spec:
+                out[code] = spec
+                continue
+            status_col = columns.get("status")
+            status = cells[status_col].lower() if status_col is not None and status_col < len(cells) else ""
+            if status in CATALOG_STATUSES:
+                out[code] = ""
             continue
         cands = _spec_dir_candidates(line)
         if not cands:
@@ -177,29 +219,63 @@ def _parse_feature_table(text: str) -> dict[str, str]:
     return out
 
 
+def _parse_surface_roots(text: str) -> dict[str, set[str]]:
+    """CODE → path tokens from a `Surface roots` header column."""
+    out: dict[str, set[str]] = {}
+    for code, _line, cells, columns in _feature_rows(text):
+        col = columns.get("surface roots") if columns else None
+        if col is None or col >= len(cells):
+            continue
+        roots = {d for d in (_denoise(t) for t in BACKTICK_PATH_RE.findall(cells[col])) if d}
+        if roots:
+            out[code] = roots
+    return out
+
+
 def parse_index_registry(index_text: str, specs_dir: Path | None = None) -> dict[str, str]:
     """Return CODE → spec dir relative to docs/specs/ (no trailing slash).
 
     Shared catalog only: Domain router in INDEX.md → each Feature catalog
     shard under catalog/*.md. Flat feature tables on INDEX return {}.
     Spec paths in shards may be relative to the shard file; results are
-    normalized to be relative to docs/specs/.
+    normalized to be relative to docs/specs/. A card with Spec `—` maps to "".
     """
-    if not is_shared_catalog(index_text):
-        return {}
-
-    if specs_dir is None:
-        return {}
-
     out: dict[str, str] = {}
+    specs_root = Path(specs_dir).resolve() if specs_dir is not None else None
+    for shard_path, shard_text in _shard_texts(index_text, specs_dir):
+        for code, rel in _parse_feature_table(shard_text).items():
+            if not rel:
+                out[code] = ""
+                continue
+            # shard may say ../2026-01-01-demo/ — resolve against shard dir
+            resolved = (shard_path.parent / rel).resolve()
+            try:
+                norm = resolved.relative_to(specs_root).as_posix()
+            except ValueError:
+                norm = rel[2:] if rel.startswith("./") else rel
+            out[code] = norm.rstrip("/")
+    return out
+
+
+def parse_index_surface_roots(index_text: str, specs_dir: Path | None = None) -> dict[str, set[str]]:
+    """Return CODE → Surface roots path tokens across every catalog shard."""
+    out: dict[str, set[str]] = {}
+    for _, shard_text in _shard_texts(index_text, specs_dir):
+        for code, roots in _parse_surface_roots(shard_text).items():
+            out.setdefault(code, set()).update(roots)
+    return out
+
+
+def _shard_texts(index_text: str, specs_dir: Path | None):
+    """Yield (shard path, text) for each Feature catalog shard in the router."""
+    if specs_dir is None or not is_shared_catalog(index_text):
+        return
     for line in index_text.splitlines():
         if not line.startswith("|"):
             continue
-        cells = [c.strip() for c in line.strip("|").split("|")]
-        if not cells or cells[0].lower() == "domain":
-            continue
+        cells = _row_cells(line)
         # Domain | Scope | Surface roots | Feature catalog
-        if len(cells) < 4:
+        if not cells or cells[0].lower() == "domain" or len(cells) < 4:
             continue
         link = LINK_DIR_RE.search(cells[3])
         if not link:
@@ -207,21 +283,8 @@ def parse_index_registry(index_text: str, specs_dir: Path | None = None) -> dict
         shard_href = link.group(1).strip()
         shard_rel = shard_href[2:] if shard_href.startswith("./") else shard_href
         shard_path = (Path(specs_dir) / shard_rel).resolve()
-        if not shard_path.is_file():
-            continue
-        shard_text = shard_path.read_text(encoding="utf-8", errors="replace")
-        raw = _parse_feature_table(shard_text)
-        shard_parent = shard_path.parent
-        specs_root = Path(specs_dir).resolve()
-        for code, rel in raw.items():
-            # shard may say ../2026-01-01-demo/ — resolve against shard dir
-            resolved = (shard_parent / rel).resolve()
-            try:
-                norm = resolved.relative_to(specs_root).as_posix()
-            except ValueError:
-                norm = rel[2:] if rel.startswith("./") else rel
-            out[code] = norm.rstrip("/")
-    return out
+        if shard_path.is_file():
+            yield shard_path, shard_path.read_text(encoding="utf-8", errors="replace")
 
 
 def _plausible_path(token: str) -> bool:
@@ -307,7 +370,11 @@ def extract_files_paths(tasks_text: str) -> set[str]:
 
 
 def load_owns(repo_root: Path, specs_dir: str = "docs/specs") -> tuple[dict[str, set[str]], dict]:
-    """Build CODE → OWNS path set and coverage stats."""
+    """Build CODE → owned path set and coverage stats.
+
+    Owned paths are tasks.md Files tokens plus the card's Surface roots;
+    `with_owns` counts tasks.md Files OWNS only.
+    """
     root = Path(repo_root)
     specs = root / specs_dir
     index_path = specs / "INDEX.md"
@@ -321,6 +388,8 @@ def load_owns(repo_root: Path, specs_dir: str = "docs/specs") -> tuple[dict[str,
     missing_dirs: list[str] = []
 
     for code, rel in registry.items():
+        if not rel:
+            continue
         spec_path = specs / rel
         if not spec_path.is_dir():
             missing_dirs.append(rel)
@@ -333,6 +402,9 @@ def load_owns(repo_root: Path, specs_dir: str = "docs/specs") -> tuple[dict[str,
 
     registered = len(registry)
     with_owns = sum(1 for p in owns.values() if p)
+    for code, roots in parse_index_surface_roots(index_text, specs_dir=specs).items():
+        if code in owns:
+            owns[code] |= roots
     ratio = round(with_owns / registered, 3) if registered else 0.0
     coverage = {
         "with_owns": with_owns,

@@ -259,7 +259,7 @@ and countered by name. See [The gates](docs/guide/concepts/gates.md).
 | acceptance | `validate-feature`, `validate-api`, `validate-ui`, `write-dogfood`, `run-dogfood` |
 | craft | `craft-page`, `draft-ui`, `draft-ux` |
 | ship | `land-branch`, `record-verdict`, `cut-release` |
-| track | `amend-feature`, `reroute-plan`, `triage`, `realign-spec`, `refresh-roadmap-status`, `chart-progress`, `assess-milestone`, `scan-architecture`, `map-features`, `write-handoff`, `publish-issues`, `record-debt` |
+| track | `amend-feature`, `reroute-plan`, `triage`, `realign-spec`, `refresh-roadmap-status`, `chart-progress`, `brief-road`, `assess-milestone`, `scan-architecture`, `map-features`, `write-handoff`, `publish-issues`, `record-debt` |
 | project | `define-project`, `assess-pivot-impact`, `plan-milestones` (optional project / multi-milestone layer) |
 
 One page per skill in the [skill reference](docs/guide/skills/README.md).

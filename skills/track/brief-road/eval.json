@@ -1,0 +1,79 @@
+[
+  {
+    "eval_id": 1,
+    "eval_name": "verdict-from-predecessor-status",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § 2026-10-23 — 1.0.0 — RED and GREEN round 1",
+    "prompt": "/brief-road ROAD-81 (klynt, branch dev)",
+    "assertions": [
+      "the catalog row of every member above ROAD-81 in MILE-16 is looked up before any verdict",
+      "the verdict is Blocked by ROAD-44, and only ROAD-44",
+      "slot 5 lists one row per predecessor with its CODE and Status",
+      "ADR-0031 and ADR-0006 appear under Decided with their files",
+      "Scope now holds at most five one-line deliverables and no acceptance-criteria list"
+    ]
+  },
+  {
+    "eval_id": 2,
+    "eval_name": "decisions-reached-without-a-cited-path",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § 2026-10-23 — 1.0.0 — GREEN round 2 and round 3",
+    "prompt": "/brief-road ROAD-172 (klynt, branch dev)",
+    "assertions": [
+      "grep -rlE 'ROAD-172\\b' .skills/ runs and .skills/CCOL/ is read",
+      "Decided cites C13 or K19 from .skills/CCOL/decisions.md, not 'nothing recorded'",
+      "the verdict is Blocked by ROAD-49, ROAD-50, ROAD-169, ROAD-170 and ROAD-171",
+      "Code today cites an existing course-browser file at file:line",
+      "the message ends on one question"
+    ]
+  },
+  {
+    "eval_id": 3,
+    "eval_name": "ready-holdout",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § 2026-10-23 — 1.0.0 — GREEN round 1 holdout ROAD-139",
+    "prompt": "/brief-road ROAD-139 (klynt, branch dev)",
+    "assertions": [
+      "the verdict is Ready, with ROAD-136, ROAD-137 and ROAD-138 each shown Implemented",
+      "lock 5 is cited under Decided with its decisions file",
+      "slot 1 opens with the person and the action, not a milestone ID or list position",
+      "slot 4 defines at least one term used in slots 1-3"
+    ]
+  },
+  {
+    "eval_id": 4,
+    "eval_name": "struck-item-says-delivered-or-dropped",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § Remaining branches — R1 and R1b",
+    "prompt": "/brief-road ROAD-73 (klynt, branch dev)",
+    "assertions": [
+      "the answer says the item is closed because it was delivered, not dropped",
+      "the struck reason is quoted",
+      "no eight-slot brief follows"
+    ]
+  },
+  {
+    "eval_id": 5,
+    "eval_name": "after-milestone-predecessors",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § Remaining branches — R3",
+    "prompt": "/brief-road ROAD-12 (bot copy whose ROAD-12 carries After: MILE-2)",
+    "assertions": [
+      "the predecessors are every MILE-2 member, ROAD-3 to ROAD-7",
+      "ROAD-11 is not listed as a predecessor",
+      "the verdict is Blocked by ROAD-4, ROAD-5, ROAD-6 and ROAD-7"
+    ]
+  },
+  {
+    "eval_id": 6,
+    "eval_name": "surface-named-in-words-is-searched",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § Remaining branches — R4 to R4c",
+    "prompt": "/brief-road ROAD-214 (klynt, branch dev), on Haiku",
+    "assertions": [
+      "Code today cites a file under backend/crates/services/course_build_service/",
+      "evals/ is reported as holding only widget_selection, so the review eval set is new",
+      "no Surface is called absent without a find over its words"
+    ]
+  }
+]

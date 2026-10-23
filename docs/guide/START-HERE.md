@@ -157,7 +157,7 @@ The table lives in [on-ramps](process/on-ramps.md) — one home, and `zone-mode`
 
 ## 3. Skill index (engineering package)
 
-Full tables: [Skill reference](skills/README.md) (76 engineering skills).  
+Full tables: [Skill reference](skills/README.md) (77 engineering skills).  
 Personal OS is a **separate** package — [personal-os START-HERE](../personal-os/START-HERE.md).
 
 `U` = you run `/name` · `m` = model-invoked
@@ -173,7 +173,7 @@ Personal OS is a **separate** package — [personal-os START-HERE](../personal-o
 | **acceptance** | `validate-feature`, `validate-api`, `validate-ui`, `write-dogfood`, `run-dogfood` |
 | **craft** | `craft-page` |
 | **ship** | `land-branch`, `record-verdict`, `/cut-release` |
-| **track** | `amend-feature`, `reroute-plan`, `realign-spec`, `/triage`, `/publish-issues`, `/scan-architecture`, **`/map-features`**, `/write-handoff`, `/refresh-roadmap-status`, `/chart-progress`, `/assess-milestone`, `/sweep-backlog`, `/show-run-status`, `/idea`, `/shape`, `/board` |
+| **track** | `amend-feature`, `reroute-plan`, `realign-spec`, `/triage`, `/publish-issues`, `/scan-architecture`, **`/map-features`**, `/write-handoff`, `/refresh-roadmap-status`, `/chart-progress`, `/brief-road`, `/assess-milestone`, `/sweep-backlog`, `/show-run-status`, `/idea`, `/shape`, `/board` |
 | **project** | `/define-project`, `/assess-pivot-impact`, `plan-milestones` |
 
 ## Where to go next

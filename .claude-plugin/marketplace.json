@@ -81,6 +81,7 @@
         "./skills/track/idea",
         "./skills/track/shape",
         "./skills/track/board",
+        "./skills/track/brief-road",
         "./skills/track/sweep-backlog",
         "./skills/setup/bootstrap-repo",
         "./skills/setup/configure-repo",

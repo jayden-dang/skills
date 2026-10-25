@@ -466,3 +466,15 @@ code is declared off-limits.
 Compliance was proportionate in both: the rule bought a flagged unknown and a
 decision card, not a scope expansion into shipped code. No new rationalization
 appeared in either transcript, so the loophole hunt stops here.
+
+## v2.3.0 — the first approach on a familiar feature is the product that ships it (2026-10-25, Sonnet)
+
+Step 4 now leads with the shipped product, cut to fit, when the idea is a feature
+shipped products already have, and step 3's `research` detour names that lookup.
+The interview card carries the same rule (`clarify-decisions` 1.8.0); evidence
+for both — RED 0/2 on delete and share, GREEN on delete, share, an unseen
+reminders run that failed on order, and an unseen search run that passed after
+the fix — is recorded in `clarify-decisions/TESTS.md` § v1.8.0, since every run
+entered through this skill and stopped on the nested card.
+
+**Version:** minor `2.3.0`.

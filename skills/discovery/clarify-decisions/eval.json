@@ -241,5 +241,19 @@
       "each shown fragment is set off from the option's prose rather than named inside a sentence",
       "no option defers its shape to another option's, and none is left as a title with consequences only"
     ]
+  },
+  {
+    "eval_id": 21,
+    "eval_name": "familiar-feature-card-leads-with-the-proven-reference",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § v1.8.0 RED — delete and share cards drew every option from scratch; GREEN reminders drew the reference last",
+    "prompt": "Nested under frame-change, the problem is locked: an owner can give one other person edit access to a note and revoke it. Write the first solution card.",
+    "assertions": [
+      "the first option is a shipped product's version of the feature, cut to fit, drawn before any option of the agent's own",
+      "the product is named with how it behaves; without research it is marked recalled and unverified, with the page that would confirm it",
+      "the product's pieces are listed in the order a user meets them, and each dropped piece carries one reason tied to the repo or posture",
+      "when two references split on the card's own question, the card says which one this repo resembles and why",
+      "the reference option is judged by the same Criteria as the others"
+    ]
   }
 ]

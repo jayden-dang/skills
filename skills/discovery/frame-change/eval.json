@@ -83,5 +83,16 @@
       "the gap is logged as a known unknown and put to the user as a decision, not silently fixed and not assumed safe",
       "reading and quoting the catch block is not treated as having checked it"
     ]
+  },
+  {
+    "eval_id": 8,
+    "eval_name": "familiar-feature-first-approach-is-the-shipped-product",
+    "kind": "contract",
+    "derived_from": "SKILL.md § 4. Propose approaches — the first approach on a feature shipped products already have",
+    "prompt": "The user asks to add search to a notes app. Propose approaches.",
+    "assertions": [
+      "the first approach is the product that ships the feature, confirmed through research or marked recalled and unverified",
+      "every piece it ships is listed and each piece the repo does not need is cut with one reason"
+    ]
   }
 ]

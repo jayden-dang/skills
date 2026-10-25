@@ -1,6 +1,6 @@
 ---
 name: frame-change
-version: 2.2.1
+version: 2.3.0
 description: Use at the very start of the idea-to-ship chain — when the user wants to
   add, build, or change a feature, behavior, or component, or to start a new
   project, and the asked-for behavior has no spec yet. Produces an agreed shape
@@ -129,8 +129,9 @@ clarify-decisions close package is confirmed.
 
 *Full-path only; tier 0 skips this.*
 
-- External facts, APIs, libraries, standards → REQUIRED SUB-SKILL: use `research`
-  (Context7 MCP for current library docs).
+- External facts, APIs, libraries, standards, or how a shipped product does the
+  feature on the table → REQUIRED SUB-SKILL: use `research` (Context7 MCP for
+  current library docs).
 - "Does this model/flow actually feel right?" → REQUIRED SUB-SKILL: use `run-spike`.
 
 Return with the evidence and put the decision back to the user.
@@ -140,6 +141,11 @@ Return with the evidence and put the decision back to the user.
 
 *Full-path only; tier 0 skips this.* Present 2–3 genuinely different approaches
 with trade-offs. Lead with a recommendation. YAGNI-prune. The user picks.
+WHEN the idea is a feature shipped products already have, the first approach is
+the product that ships it — confirmed through `research`, or marked recalled and
+unverified — with every piece it ships listed and each piece this repo does
+not need cut, one reason each. Designing from nothing is where the overbuild
+comes from.
 **Done when:** the user has chosen an approach (possibly a hybrid).
 
 ### 5. Decide the ceremony tier — out loud

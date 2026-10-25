@@ -8,7 +8,7 @@
 | **Invocation** | model-invocable |
 | **Reads** | codebase/docs; parent Knowns / Blindspot; Project posture |
 | **Writes** | nothing production (glossary via `define-domain` only) |
-| **Calls** | `assess-observability` when Coverage ON and Operate is a telemetry gap; `research` / `run-spike` for facts |
+| **Calls** | `assess-observability` when Coverage ON and Operate is a telemetry gap; `research` / `run-spike` for facts, and `research` for how a shipped product does the feature on the card |
 | **Called by** | [`frame-change`](frame-change.md) step 2; any skill that needs an interview |
 
 ## When it fires
@@ -59,6 +59,16 @@ argument names the pick, decisive Territory/Criteria, runner-up, accepted
 trade-off, confidence/evidence gap, and reopen trigger. `polish-diff` keeps a
 one-sentence recommendation. Technical names and boundaries stay exact; local
 explanations make their causal effect understandable.
+
+When the card decides a feature that shipped products already have (undo on
+delete, sharing and access, invites, retries, notifications, search), one option
+is **the proven reference, cut to fit**. The card names the product and why it is
+known to work, confirmed through `research` or marked recalled and unverified. It
+lists every piece the product ships, in the order a user meets them, and cuts
+each piece this repo does not need, one reason each. What is left is judged by
+the same Criteria as any other option. Two baseline interviews drew every option
+from scratch. One recommended a single `editor_id` column for sharing, a hard
+limit of one collaborator that no note app people share in has.
 
 ## Close package
 

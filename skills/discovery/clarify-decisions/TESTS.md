@@ -749,3 +749,54 @@ Every one of those cases was handled correctly in the artifacts, so text for
 them would prevent a failure that did not happen.
 
 **Version:** minor `1.6.0` — a new required sub-slot inside an existing slot.
+
+## v1.8.0 — the proven reference, cut to fit (2026-10-25, Sonnet)
+
+A feature shipped products already have (undo on delete, sharing, reminders,
+search) was answered with options drawn from scratch. The user's observation:
+left to itself the model overbuilds, and the fix belongs where options are
+generated — this card and `frame-change` step 4 — not in `design-solution`,
+which follows requirements already written. The same rule shipped first in
+`interpret-session` 3.2.0.
+
+### Setup
+
+Fixture `quillnest` (`/tmp/is-fixture-quillnest`): TypeScript notes server,
+hard delete, a `changes` feed devices replay by `seq` and keyed by `owner_id`,
+no job runner, commit `e901613` recording a ghost-notes incident. Posture MVP /
+Early / None. Runner `skill-tester` (Sonnet), no web. Each run enters through
+`frame-change`, which nests this skill; the problem-lock answer is scripted, and
+the run stops on the first card whose options are solution shapes.
+
+### RED — v1.7.1
+
+| Run | Product named | What the card did |
+|---|---|---|
+| accidental delete | **FAIL** — none | `deleted_notes` table vs `deleted_at` vs a client-only Undo, which was offered standalone and rejected |
+| share a note to co-edit | **FAIL** — none | recommended `notes.editor_id`, a hard one-collaborator cap, with `note_shares` as runner-up |
+
+### GREEN — v1.8.0, round 1
+
+| Run | Product named + unverified + page | Pieces in user order | Cut, one reason each | Reference drawn first / is the option |
+|---|---|---|---|---|
+| delete | **PASS** (Apple Notes, Keep, Evernote; "long-running, mass-market") | **PASS** — 7, Undo second | **PASS** | **PASS** — A is the reference; Undo now rides with the Trash |
+| share | **PASS** (Apple Notes Collaborate, Google Docs) | **PASS** — 11 | **PASS** | **PASS** — pick flipped from `editor_id` to a share list |
+| reminders (unseen) | **PASS** (Keep, Apple Reminders) | **PASS** — 8 | **PASS** | **FAIL** — two own options first, reference third, "the same as A"; the two products split on the card's own question (server push vs device-local) and the split went unused |
+
+The delete and share GREENs are **contaminated**: the Measured paragraph names
+`editor_id` and "pair it with a Trash", and the share run echoed it ("Reference
+products keep a list"). Only the unseen reminders run counts as clean, and it
+failed on order. Round 2 tested on another unseen feature.
+
+### GREEN — round 2, after "draw it first" and "a split between references is the evidence"
+
+| Assertion | search (unseen) |
+|---|---|
+| Reference before any own option | **PASS** — stated as "the first option is the proven reference" |
+| Product named, unverified, page | **PASS** (Apple Notes, Simplenote; Evernote-style server index as the other side) |
+| Split used as evidence | **PASS** — "this repo resembles the device-held products, because sync already puts the full note set on every device" |
+| Pieces in user order, cut one reason each | **PASS** — 10 pieces; tags/attachments/typo tolerance/ranking cut |
+| Outcome | client-side filter, no route, no schema change — the cheapest shape that passes both graders |
+| Why the reference is known to work | **not as written** — missing in 4 of 5 GREEN runs across both skills |
+
+**Version:** minor `1.8.0` — a new sub-slot inside Options.

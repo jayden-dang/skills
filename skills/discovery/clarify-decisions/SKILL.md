@@ -1,6 +1,6 @@
 ---
 name: clarify-decisions
-version: 1.7.1
+version: 1.8.0
 description: Use to interview or grill the user before building an underspecified
   plan, design, or feature idea, including when another skill calls for an
   interview. Produces a confirmed close package of decisions, constraints,
@@ -86,6 +86,7 @@ WHEN feature work involves neighbors, overlap, or reuse, load
 7. **Criteria (graders)** — REQUIRED on high-blast radii (omit only `polish-diff`): 1–2 named pass/fail graders **above** Options. Recommendation MUST cite graders by name.
 8. **Options (2–4)** — gains, pays, can break, better-fit. Bare labels are not options.
    **Shape** — REQUIRED on `architecture` or `data` for **every** option: caller-facing difference (signature, type, column, route, payload), ≤6 lines, no bodies. Prose naming an artifact is not a shape. "same as option 1, but…" is not one.
+   **Reference** — WHEN the decision is a feature shipped products already have (undo on delete, sharing and access, invites, retries, notifications, search): the first option is the proven reference, cut to fit. Recipe: `card-recipe.md` § Reference.
 9. **Recommendation** — Pick · Decisive factors · Runner-up · Accepted trade-off · Confidence / evidence gap · Reopen trigger (observable; “if requirements change” is not a trigger).
 10. **Stop.** Wait. Recompute the open set, then next card or close package.
 
@@ -126,6 +127,7 @@ Slots 4–6 always required. Slots 7–10 required only when Coverage ON. Not co
 | "User asked for button color first" | Blast-radius first. Polish after architecture, data, and auth. |
 | "We're aligned / senior said just write requirements" | Shared understanding is the package + yes. |
 | "They named the cheap path / skip philosophy and pick API options" | Solution-shaped assumptions are not locks. Follow **Problem lock**. |
+| "I know this domain — I'll draw the options from the code" | Sharing, undo, invites: someone shipped these and users learned them there. Start from that product and cut; options drawn from nothing are where the overbuild and the odd shape come from. |
 | "Success / Boundaries / Spine belong downstream" | Close slots 4–6 are required here. |
 | "Stay additive to be safe / v2 name on a None repo" | Compat obligation None: one shape. A `v2` name, parallel column, or deprecation window is a defect. |
 | "Reliability is later / skip the map" | Coverage ON: Missing cells stay open. Extra rows: `card-recipe.md`. |
@@ -141,4 +143,5 @@ Slots 4–6 always required. Slots 7–10 required only when Coverage ON. Not co
 - Close package missing Success, Boundaries, or Spine touch, or treating "we're aligned" as confirmation
 - Coverage ON without the map / slots 7–10, or Coverage ON when any gate part fails
 - Offering a `v2` name, parallel column, sync trigger, or deprecation window on **Compat obligation None**
+- A card on a feature shipped products already have whose options name no product
 - Inventing SLO-N / TB-N / THR-N IDs; merging Owned unknowns into Accepted risks

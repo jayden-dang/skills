@@ -1,6 +1,6 @@
 ---
 name: configure-repo
-version: 1.13.0
+version: 1.13.1
 description: Sets up docs/agents config so this skill set can run in an existing repo.
 disable-model-invocation: true
 ---
@@ -15,7 +15,7 @@ Template seeds live in this skill set's `templates/` directory. Resolve pack see
 
 ## Track progress
 
-This skill has seven steps (decisions A–N inside step 2) and skipping one is the common failure — an unconfigured tracker, or the Step 6 verification gate never run. Before Step 1, create a todo for each numbered step below and complete them in order, checking each off only when its **Done when** is met. Step 6 (prove the configuration works) is not optional.
+This skill has seven steps (decisions A–M inside step 2) and skipping one is the common failure — an unconfigured tracker, or the Step 6 verification gate never run. Before Step 1, create a todo for each numbered step below and complete them in order, checking each off only when its **Done when** is met. Step 6 (prove the configuration works) is not optional.
 
 ## 1. Read the setup state
 
@@ -38,7 +38,7 @@ You may still read the repo's own manifests (lockfiles, `package.json` scripts, 
 
 ## 2. Decide, one section at a time
 
-Walk the fourteen decisions below (A–N; I is optional project-docs; K is optional remote environments; L is optional catalog sync; M is the cold-start drive recipe; N is an optional remote build host) strictly one at a time: give a two-or-three-sentence explainer (what this is, which skills consume it, what changes with each choice), state your recommendation with a one-line reason, then wait for the user's answer before moving on. Never dump all sections at once. Assume the user has not seen these concepts before.
+Walk the thirteen decisions below (A–M; I is optional project-docs; K is optional remote environments; L is optional catalog sync; M is the cold-start drive recipe) strictly one at a time: give a two-or-three-sentence explainer (what this is, which skills consume it, what changes with each choice), state your recommendation with a one-line reason, then wait for the user's answer before moving on. Never dump all sections at once. Assume the user has not seen these concepts before.
 
 ### A. Issue tracker
 
@@ -122,10 +122,6 @@ Explainer: `land-branch` reads `Default PR base:` from `docs/agents/project.md` 
 
 **WHEN this decision is offered, read `verify-control.md` beside this file and follow it exactly** — the offer, skip rule, write step, and prove step. `npm test` is not a boot-and-click recipe. **Done when:** Yes with `docs/agents/verify.md`, or explicit Skip.
 
-### N. Build host (optional — default skip; there is no shared host)
-
-**WHEN this decision is offered, read `build-host.md` beside this file and follow it exactly** — what to confirm, the never-a-secret rule, and the write step. Offer it only when the user says they have a second machine of their own to build on; there is no shared host and `build-on-host` stays invisible without `docs/agents/host-build.md`. **Done when:** the manifest is written and its host answers preflight, or the decision is skipped and no such file exists.
-
 ## 3. Draft and confirm
 
 Show the user, before writing anything:
@@ -161,7 +157,6 @@ The block (include the project-docs bullet only if decision I was Yes) is seeded
 10. Follow the write step in `remote-environments.md` for decision K.
 11. Follow the write step in `catalog-sync-choice.md` for decision L (index-only gitignore append).
 12. Follow the write step in `verify-control.md` for decision M.
-13. Follow the write step in `build-host.md` for decision N.
 
 **Done when:** all files are written, `.skills/` and `.worktrees/` are git-ignored, index-only gitignore applied only when L=`index-only`, M's write ran or skipped, and `git status` shows only the expected additions/edits.
 

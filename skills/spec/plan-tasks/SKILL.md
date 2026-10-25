@@ -1,6 +1,6 @@
 ---
 name: plan-tasks
-version: 1.9.0
+version: 1.9.1
 description: Use when a design is approved and the tasks.md implementation plan
   (vertical-slice tasks with requirement footers and behavior tests) needs writing,
   after design-solution and before the execute family (build-in-waves /
@@ -180,7 +180,7 @@ the three baseline pictures were inline, and the collision was on none of them.
 | **1–2. Present** | Present the FILE and STOP — conversational agreement is not approval; the written plan is what gets approved, and the execute family runs only on an approved `tasks.md`. Follow **One triad, one plan** (one home). |
 | **3. On approval** | Set `Status: Approved`. Leave `Execution-mode:` as `unset` (or untouched); do **not** write `continuous` or `story-unit` yourself. |
 | **4. Offer three routes** | Exactly three, one question — do **not** first ask continuous vs story-unit (that interview is dead); mode write-back owned by the picked skill. `build-by-story`: subagent path, human-gated review units derived from stories (writes `story-unit`). `build-in-waves`: subagent waves, no human pause between tasks (writes `continuous`). `build-inline`: controller implements sequentially with `test-first`, no implementer subagents (writes `continuous` as bookkeeping; **does not** run unit barriers). **Recommend (label only, not invent mode):** mark **`build-by-story` (Recommended)** first WHEN user-facing UI/UX, Team Solo/Small, or `requirements.md` has **≥2** behavioral stories — still offer all three, still wait for the pick; no triggers → leave unmarked (not invent mode, not a size default — see gate table below). |
-| **5–6. On pick, INDEX** | Name the skill and hand off — REQUIRED SUB-SKILL: use `build-in-waves`, `build-by-story`, or `build-inline` as chosen (for the two subagent routes, prefer REQUIRED SUB-SKILL: use `isolate-workspace` first when none exists yet). WHEN `docs/agents/host-build.md` exists, ask **once after the pick** whether the chosen route runs here or on the build host — offload → REQUIRED SUB-SKILL: use `build-on-host`, which wraps the pick rather than replacing it. Then confirm the feature's row in `docs/specs/INDEX.md` carries the same `Status:` as its `requirements.md`. |
+| **5–6. On pick, INDEX** | Name the skill and hand off — REQUIRED SUB-SKILL: use `build-in-waves`, `build-by-story`, or `build-inline` as chosen (for the two subagent routes, prefer REQUIRED SUB-SKILL: use `isolate-workspace` first when none exists yet). Then confirm the feature's row in `docs/specs/INDEX.md` carries the same `Status:` as its `requirements.md`. |
 
 | Thought | Reality |
 |---|---|

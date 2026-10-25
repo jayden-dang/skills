@@ -157,7 +157,7 @@ The table lives in [on-ramps](process/on-ramps.md) — one home, and `zone-mode`
 
 ## 3. Skill index (engineering package)
 
-Full tables: [Skill reference](skills/README.md) (77 engineering skills).  
+Full tables: [Skill reference](skills/README.md) (76 engineering skills).  
 Personal OS is a **separate** package — [personal-os START-HERE](../personal-os/START-HERE.md).
 
 `U` = you run `/name` · `m` = model-invoked

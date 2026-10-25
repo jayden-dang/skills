@@ -1,6 +1,6 @@
 ---
 name: interpret-session
-version: 3.1.2
+version: 3.2.0
 description: Companion beside a technical discussion that answers from the code — what it does
   today, what a proposed shape would actually change, and which shape to take — in a card a
   person can retell in three sentences. Run with /interpret-session.
@@ -46,8 +46,6 @@ opinion about a document.
    compat came out **None** in all three. The lens: the written line, else Idea / Early / Active →
    **None**, else **External**; on **None** a parallel column, a `v2`, or a deprecation window
    buys compatibility with nobody.
-4. **Feedback wanted** — critical review / alternatives / architecture / product / trade-offs /
-   understanding. One question, not an intake interview.
 
 ## Read the message before answering it
 
@@ -67,9 +65,9 @@ Ground it first: open the files the paste touches, and read the history behind t
 would change (`git log -p`, `git blame`, the commit that set a constant). REQUIRED SUB-SKILL:
 use `why` when the question is why the current shape exists and the answer is not in the diff;
 REQUIRED SUB-SKILL: use `research` when a claim turns on how a library, API, or standard
-actually behaves. Then compute the verdicts — REQUIRED: read `grounding.md` beside this file
-— and write the turn the user reads — REQUIRED: read `plain-card.md` beside this file and
-follow it. The fork in one sentence, the lean in one sentence, the graph they must hold, one
+actually behaves, or how a shipped product does the feature on the table. Then compute the
+verdicts — REQUIRED: read `grounding.md` beside this file — and write the turn the user reads
+— REQUIRED: read `plain-card.md` beside this file and follow it. The fork in one sentence, the lean in one sentence, the graph they must hold, one
 walk, the full pick, where the paste disagrees with the code, what `0` would freeze, the
 fence. Do not render Today, Architect's read, or the seven stance slots on this turn; hops
 1–2 draw from those verdicts. Every heading on the card is a question in the companion
@@ -98,6 +96,7 @@ what they want is how a feature or the system works, with no pick.
 | "The paste describes the current behaviour, so I can argue from that" | The paste is a model of the work. Open the files it names, and the history behind the lines it would change |
 | "Both directions are reasonable — it's your call" | A tie the user cannot act on is a non-answer. Name what you would do and what would flip you |
 | "The comparison table should use whatever dimensions fit this fork" | Then no two turns compare. The lines are fixed so the columns line up |
+| "Neither option is right, so I'll design a better third shape" | Undo on delete, retries, invites — products people already use ship these, and users learned them there. Start from the one that works and cut what this repo does not need; a shape drawn from nothing is where the overbuild comes from |
 | "Depth is the architect criterion, so judge on that" | `Invariant` decides more real forks. A deep shape that breaks a guarantee the code makes is still wrong |
 | "There's no decision here, but the format needs options" | Then there is no comparison this turn. Inventing options you cannot choose between is the worst output in this skill |
 | "The analysis is done and the pick is obvious, so the reply is the next step" | Finishing the analysis is not settling the direction. Measured in real use, that move closed the user's fork for them, unasked |
@@ -134,6 +133,7 @@ what they want is how a feature or the system works, with no pick.
   Lock / Weigh split, or written after an override with no objection stated
 - Arguing at expert level about a concept the session never gave the user a model for
 - Naming a better shape in the stance that was never given a column to be judged in
+- A fork on a feature shipped products already have, answered with a shape no product was named for
 - A heading that promises a picture over a paragraph that draws nothing
 
 **Done when:** on a live choice the user can retell — in three sentences, with no jargon and no

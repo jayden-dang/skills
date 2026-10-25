@@ -1476,3 +1476,69 @@ the ask reaches past the neighborhood; the eval matches.
 
 **Version:** minor `3.1.0` — new slots and renamed user-facing headings, no change
 to the iron law, the grounding verdicts, the two hops, or the carry-back.
+
+## v3.2.0 — no feedback-kind question, and a proven reference on familiar forks (2026-10-25, Sonnet)
+
+Two changes from one field complaint: the setup's fourth question (feedback wanted —
+critical review / alternatives / architecture / product / trade-offs / understanding)
+"does almost nothing", and when a fork is a feature shipped products already have, the
+companion should start from the one that is known to work and cut it to fit, rather
+than design from nothing — which is where the overbuild comes from.
+
+### Setup
+
+Fixture `quillnest` under `/tmp/is-fixture-quillnest`: a TypeScript notes server.
+`store.ts` hard-deletes (`DELETE FROM notes`) and writes a `changes` row in the same
+transaction; devices replay `changes` by `seq` (`sync/pull.ts`, `sync/NOTES.md`); no job
+runner (`src/jobs/README.md`); commit `e901613` records the ghost-notes incident from a
+cleanup script that deleted rows outside `store.ts`. Posture MVP / Early / None. Paste:
+accidental deletes, two tickets, one unrecoverable; claims deletes are already soft;
+A = confirm dialog, B = full Trash with nightly purge and a 7/30/90 retention setting.
+Companion Vietnamese, ASCII. Runner `skill-tester` (Sonnet), no web.
+
+### RED — v3.1.2 as written
+
+Static check first: no file in the skill read the feedback answer. It survived the
+v2→v3 rewrite (`0cfb3dd`) as a line after the per-depth routing that once consumed it
+was deleted.
+
+| Assertion | critical review | alternatives |
+|---|---|---|
+| Pick | soft delete in `store.ts` + Trash, Restore, Delete forever; no purge, no retention | soft delete + Restore; no purge, no retention |
+| Card shape | same order and headings | same order and headings |
+| A shipped product named for the feature | **FAIL** — none | **FAIL** — none |
+| The undo those products put first weighed | **FAIL** | **FAIL** |
+
+The feedback answer moved neither the pick nor the card. The complaint's second half
+(a different answer draws a different decision) did not reproduce on n=2; the question
+is deleted as a no-op, not as a repair. Both runs drew a third shape from scratch.
+
+### GREEN — v3.2.0
+
+Round 1, `grounding.md` § A proven reference as first written:
+
+| Assertion | familiar fork | internal fork (owner check in `store.ts` vs `routes.ts`) |
+|---|---|---|
+| Setup carries no feedback question; card unchanged | **PASS** | **PASS** |
+| Product named, marked recalled/unverified, page to check | **PASS** (Gmail, Apple Notes) | n/a |
+| Every piece listed, cut one reason each | **PARTIAL** — trash, restore, purge, retention; no undo | n/a |
+| Shape derived from the reference, not cited after | **FAIL** — same shape as RED, reference appended in the full pick | n/a |
+| No reference on a fork inside the repo | n/a | **PASS** — none; also found `upsertNote` has no owner guard |
+
+Round 2, after "list every piece in the order a user meets them, the first one included"
+and "what stays **is** the third shape, not a citation added to one you already drew":
+
+| Assertion | familiar fork |
+|---|---|
+| Product named, unverified, page to check | **PASS** (Google Keep, Apple Notes "Recently Deleted") |
+| Every piece in user order, first included | **PASS** — delete → Undo bar → Trash → Restore → Delete forever → auto-purge |
+| Cut one reason each | **PASS** — Undo later, purge (no job runner, `src/jobs/README.md:1`), retention (MVP), confirm dialog (the references do not use one for delete) |
+| Shape derived from the reference | **PASS** — the pick is stated as the reference after the cut |
+| Why the reference is known to work | **not as written** — products named, no years, scale or guideline given |
+
+The pick held at a slim Trash across all four runs, which is defensible on this repo;
+what changed is where the shape came from and what got weighed — the reference's own
+evidence retired option A, which no RED run argued.
+
+**Version:** minor `3.2.0` — a new rule and a removed setup question; iron law, card
+order, hops and carry-back unchanged.

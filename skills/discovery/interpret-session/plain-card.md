@@ -123,7 +123,9 @@ One line each: what someone using or running it would notice.
 
 **I'd pick** — the shape, and the repo fact that decides it, in the same language
 as the fork. A shape the repo points at that the paste did not name gets its own
-line here, judged with the others; it loses when it loses.
+line here, judged with the others; it loses when it loses. A proven reference
+(`grounding.md`) gets its line the same way: the product, what was kept, and what
+was cut to fit this repo.
 
 **Not** — each loser, one line, on that same fact.
 

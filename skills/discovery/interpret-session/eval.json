@@ -429,5 +429,41 @@
       "the note carries the picture, the locks the user already settled, what is still open, and what the paste got wrong — with file:line on code claims",
       "/understand is named when what the user asks for reaches past this session's neighborhood — how a feature or the system works, with no pick — and not appended to an offer that answers the ask as made"
     ]
+  },
+  {
+    "eval_id": 37,
+    "eval_name": "familiar-feature-fork-starts-from-a-proven-reference",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § v3.2.0 RED — two turns on accidental note deletion drew a third shape from scratch and named no product that ships the feature",
+    "prompt": "First live-choice paste: users accidentally delete notes; the paste offers a confirm dialog or a full Trash with a nightly purge and a retention setting. Write the companion turn.",
+    "assertions": [
+      "at least one shipped product that has the feature is named, with how it behaves",
+      "a reference not confirmed through research is marked recalled and unverified, with the page that would confirm it",
+      "the reference's pieces are listed in the order a user meets them, the first one included",
+      "each piece dropped carries one reason tied to this repo's code or posture",
+      "the shape that remains after the cut is judged beside the paste's options, not appended as a citation to a shape drawn first"
+    ]
+  },
+  {
+    "eval_id": 38,
+    "eval_name": "fork-inside-the-repo-gets-no-reference",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § v3.2.0 GREEN — internal fork (owner check in store.ts vs routes.ts)",
+    "prompt": "Live-choice paste: should the owner check stay in the store's SQL or move to the route handler? Write the companion turn.",
+    "assertions": [
+      "no shipped product is named as a reference for where the check lives",
+      "the pick rests on the repo's own guarantee and history"
+    ]
+  },
+  {
+    "eval_id": 39,
+    "eval_name": "setup-asks-no-feedback-kind",
+    "kind": "contract",
+    "derived_from": "SKILL.md § Setup — three questions: companion language, drawing form, project posture",
+    "prompt": "Start a companion session.",
+    "assertions": [
+      "setup asks companion language, drawing form, and project posture (or reads posture from docs/agents/project.md)",
+      "setup does not ask what kind of feedback the user wants"
+    ]
   }
 ]

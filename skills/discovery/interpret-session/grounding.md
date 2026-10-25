@@ -5,7 +5,8 @@ source for the fork, the lean, the paste-vs-code facts, and Go deeper hops 1–2
 are not the opening of the turn.
 
 **Contents:** [Today](#1-today) · [What changes](#2-what-changes) ·
-[A shape of your own](#a-shape-of-your-own) · [Architect's read](#3-architects-read) ·
+[A shape of your own](#a-shape-of-your-own) · [A proven reference](#a-proven-reference) ·
+[Architect's read](#3-architects-read) ·
 [Stance](#4-stance)
 
 ## 1. Today
@@ -40,6 +41,32 @@ decoupling the drain loop". Both were the better answer, both arrived as a
 footnote, judged by nothing. A shape you propose loses when it loses.
 
 On turn 1 it appears as a named choice in `plain-card.md`, not as a rider.
+
+## A proven reference
+
+WHEN the fork is about a feature people already use in shipped products — undo on
+delete, retries, invites and roles, notifications, search, a token scale — find the
+product that ships it before drawing a shape of your own. REQUIRED SUB-SKILL: use
+`research` to confirm how it behaves. No lookup in reach → name it as recalled,
+unverified, and say the page you would check. A reference you cannot point at
+does not decide the pick.
+
+Name the product and why it is known to work — years in use, scale, a published
+guideline. List **every piece it ships**, in the order a user meets them, the
+first one included. Then **adapt by cutting**: drop each piece this repo's code
+and posture do not need, one reason each. What stays **is** the third shape,
+judged on the same three lines with no head start. The reference is where the
+shape comes from, not a citation added to one you already drew. It shows the
+feature works for users; it does not show it fits this code.
+
+Measured, two turns on accidental note deletion each drew a third shape from
+scratch — soft delete plus a Trash page — and neither named a product that ships
+the feature, or weighed the undo those products put first. With this section in
+place a third turn named the products, but only after drawing the same shape,
+and listed every piece except that undo.
+
+Not when the fork is inside the repo — where a check lives, which module owns a
+field. No product ships that, and a reference there is decoration.
 
 ## 3. Architect's read
 

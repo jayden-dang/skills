@@ -708,3 +708,18 @@ constraint for repos that keep specs out of git. build-inline step 10 points her
 **GREEN, 3.2.0.** Tracked (sonnet 1, haiku 1): 2/2 ticked Task 1's four steps and committed
 `docs(MEDIA): tick Task 1`, with Task 2 untouched. Ignored (haiku 1): ticked all 4 on disk,
 committed nothing, and `docs/specs` stayed untracked.
+
+## 2026-10-30 — lock pushes skip the pre-push hook (3.2.0 → 3.2.1)
+
+Found when the owner ran the lease race against klynt's GitHub remote. Each lock push ran
+klynt's whole pre-push hook (`backend-machete` + `moon-checks`, 454 s each). The push results
+never came back within the run, so the race on GitHub is still unmeasured. The snippet is a
+command, so it was checked as one, on a bare repo whose pre-push hook prints and exits 1:
+- the 3.2.0 command ran the hook and failed, and no lock was created;
+- with `--no-verify` the lock was created (`[new branch] … -> locks/migrations`);
+- a second taker with `--no-verify` was still rejected (`stale info`), so the lease still
+  carries the atomicity.
+
+The release command was added with the same flag, because `git push --delete` runs pre-push too.
+`--no-verify` is scoped to these two empty-tree lock pushes (owner's choice of option 1 over
+skipping `locks/*` in each repo's lefthook config).

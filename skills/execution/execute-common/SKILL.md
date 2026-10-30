@@ -1,6 +1,6 @@
 ---
 name: execute-common
-version: 3.2.0
+version: 3.2.1
 description: Use when build-in-waves, build-by-story, or build-inline loads the shared controller recipe — produces an In-progress catalog stamp, a runtime-bound session snapshot, lease state, ledger state, and a revision-bound close receipt.
 ---
 
@@ -40,12 +40,15 @@ and any first production edit:
    ```bash
    git fetch origin
    sha=$(git commit-tree "$(git hash-object -t tree /dev/null)" -m "slot: <ROAD-N> <#issue>")
-   git push --force-with-lease=refs/heads/locks/migrations: origin "${sha}:refs/heads/locks/migrations"
+   git push --no-verify --force-with-lease=refs/heads/locks/migrations: origin "${sha}:refs/heads/locks/migrations"
    ```
 
    Pushed → this session holds the slot. Rejected → `git log -1 --format=%s
    origin/locks/migrations` names the holder; continue only when it names this ROAD. The
-   holder deletes the branch once its `Delivered-by:` resolves on the integration ref. Two
+   holder releases it once its `Delivered-by:` resolves on the integration ref:
+   `git push --no-verify origin --delete locks/migrations`. `--no-verify` belongs to these
+   two lock pushes only — the commit has an empty tree, and in klynt the pre-push checks
+   took 7.5 minutes per lock push. Two
    baseline controllers started MEDIA, whose Task 1 creates `migrations/0007_media_blocks.sql`,
    and pushed the `In-progress` stamp without taking the slot; nothing stopped a second
    session from taking 0007 too.

@@ -324,7 +324,7 @@ def item_states(root: Path, items: dict, by_mile: dict, feats: list[dict], proof
         for r in f["roads"]:
             by_road.setdefault(r, f)
         for r in f.get("amends", []):
-            by_amend.setdefault(r, f)
+            by_amend.setdefault(r, []).append(f)   # one item may be delivered by amending several features
         tasks = root / f["spec"] / "tasks.md" if f["spec"] else None
         f["delivered_by"], f["groups"] = task_groups(tasks.read_text()) if tasks and tasks.exists() else (None, {})
     pending = set()
@@ -348,8 +348,8 @@ def item_states(root: Path, items: dict, by_mile: dict, feats: list[dict], proof
 
     for it in items.values():
         f = by_road.get(it["id"])
-        host = None if f else by_amend.get(it["id"])
-        it["feature"] = (f or host or {}).get("code")
+        hosts = [] if f else by_amend.get(it["id"], [])
+        it["feature"] = f["code"] if f else (",".join(h["code"] for h in hosts) or None)
         it["status"] = f["status"] if f else None
         it["delivery"] = None
         if it["retired"]:
@@ -364,14 +364,15 @@ def item_states(root: Path, items: dict, by_mile: dict, feats: list[dict], proof
             it["state"] = "building"
         elif f:
             it["state"] = "specced"
-        elif host:
-            g = host["groups"].get(it["id"])
-            if not g:
+        elif hosts:
+            groups = [h["groups"].get(it["id"]) for h in hosts]
+            if not all(groups):
                 it["state"] = "specced"
-            elif g["open"] or not g["ticked"]:
+            elif any(g["open"] or not g["ticked"] for g in groups):
                 it["state"] = "building"
-            else:
-                it["state"] = delivered(it["id"], g["delivered_by"])
+            else:   # done only when every host's group is delivered
+                states = [delivered(it["id"], g["delivered_by"]) for g in groups]
+                it["state"] = "done" if all(st == "done" for st in states) else "in-review"
         elif it["id"] in pending:
             it["state"] = "framing"
         else:

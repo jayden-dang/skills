@@ -31,7 +31,7 @@ R11 is the seam between them: it fires when the artifact violates its own S-rule
 | **R3** | error | `vision.md` defines the same `GOAL-N` more than once | no |
 | **R4** | error | a `ROAD-N` sits under no milestone, or under more than one | **yes** |
 | **R5** | error | a `Roadmap item` binding does not resolve to exactly one live primary `ROAD-N`, or names an `amends` item that is not live | no |
-| **R6** | error | two feature codes bind the same `ROAD-N` as primary, or two amend the same one | no |
+| **R6** | error | two feature codes bind the same `ROAD-N` as primary | no |
 | **R7** | info | a `ROAD-N` has no feature code bound to it — *unspecced* | no |
 | **R8** | info | a feature row's `Roadmap item` is empty while a roadmap exists — *unplanned* | no |
 | **R9** | error | a `Closed` milestone holds a non-deferred `ROAD-N` that is unbound, or bound to a feature whose `Status:` is not `Shipped` | **yes** |
@@ -57,7 +57,7 @@ order), `members` (item → milestone), `bindings` (code → `ROAD-N`), and `sta
 - **R3** — each `GOAL-N` appearing more than once in `liveGoals`.
 - **R4** — each `ROAD-N` whose `members` count is not exactly 1.
 - **R5** — each non-empty binding whose part before `amends` is not exactly one live `ROAD-N`, or whose `amends` list names a non-live one.
-- **R6** — each `ROAD-N` named as primary by two or more bindings, or in two or more `amends` lists.
+- **R6** — each `ROAD-N` named as primary by two or more bindings. Several `amends` lists may name one item: it was delivered by changing several features.
 - **R7** — each live `ROAD-N` named by no binding, primary or `amends`.
 - **R8** — each feature row with an empty binding.
 - **R9** — for each milestone whose `Commitment` is `Closed`: each member not listed in its

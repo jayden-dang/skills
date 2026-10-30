@@ -116,3 +116,18 @@ review and blocking Desktop foundation. One haiku run left a stray `gh.err` in
 
 Not covered: a run with real tracker issues (only unit-tested through `claims_from_issues`),
 and the leaf-level overlap rule. Shared-path detection is unchanged.
+
+## 2026-10-30 — an item amended by several features (1.2.0 → 1.2.1)
+
+Found while backfilling klynt. ROAD-219 was delivered by changing both CPLAN and CBUILD: each
+tasks.md carries a `## ROAD-219 amendment` group. The extractor kept only the first host
+(`setdefault`), so ROAD-219 read as done from CPLAN's group whatever CBUILD's said. The shared
+`roadmap-findings.md` R6 also called two `amends` lists naming one item an error. That rule
+was added during authoring; the owner's decision D never stated it.
+
+Test-first: `test_an_item_amended_by_two_features_waits_for_every_group` (PLAN's group ticked
+and delivered, BUILD's with an open box) failed with `'done' != 'building'`. Now every host's
+group must exist (else specced), any open box means building, and done needs every group
+delivered (else in-review). R6 now judges primary binds only. 69 tests green. klynt after the
+backfill (`ROAD-127 amends ROAD-219`, `ROAD-179 amends ROAD-219, ROAD-220`): ROAD-219 and
+ROAD-220 read done instead of ready.

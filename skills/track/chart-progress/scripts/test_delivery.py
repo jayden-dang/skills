@@ -194,6 +194,29 @@ class TestDeliveryProof(unittest.TestCase):
         self.assertEqual(self.items["ROAD-5"]["state"], "done")
         self.assertEqual(self.items["ROAD-5"]["feature"], "PLAN")
 
+    def test_an_item_amended_by_two_features_waits_for_every_group(self):
+        with tempfile.TemporaryDirectory() as t:
+            root = Path(t) / "demo"
+            root.mkdir()
+            build(root)
+            r = Repo.__new__(Repo)
+            r.root = root
+            r.write("docs/specs/catalog/core.md", catalog([
+                ("PLAN", "Implemented", "ROAD-2 amends ROAD-5"),
+                ("BUILD", "Implemented", "ROAD-3 amends ROAD-5"),
+                ("ASSET", "Implemented", "ROAD-8"),
+            ]))
+            r.write("docs/specs/2026-09-01-build/tasks.md",
+                    "# Tasks\n\nDelivered-by: PR #13\n\n### Task 1: run\n\n- [x] Step 1\n\n"
+                    "## ROAD-5 amendment: the build refuses a default-project brief\n\n"
+                    "### Task 4: refuse at build time\n\n- [x] Step 1\n- [ ] Step 2\n")
+            r.commit("docs: second host", "2026-09-11")
+            snap = extract(root, today="2026-10-14")
+        items = {i["id"]: i for i in snap["items"]}
+        # PLAN's group is ticked and delivered; BUILD's still has an open box
+        self.assertEqual(items["ROAD-5"]["state"], "building")
+        self.assertFalse(any(f["rule"] == "R6" for f in snap["findings"]))
+
     def test_ambiguous_or_unresolvable_delivery_is_a_finding_and_never_done(self):
         with tempfile.TemporaryDirectory() as t:
             root = Path(t) / "demo"

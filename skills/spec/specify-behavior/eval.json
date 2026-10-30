@@ -65,5 +65,29 @@
       "not one criterion per input"
     ],
     "eval_id": 6
+  },
+  {
+    "eval_id": 7,
+    "eval_name": "amend-delivered-road-binding",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § 2026-10-30 — a roadmap item delivered by amending a feature (1.5.0 → 1.6.0)",
+    "prompt": "Tier-1 mini-spec from amend-feature: this change to PLAN (bound to ROAD-2) is how roadmap item ROAD-5 gets delivered; there is no separate feature.",
+    "assertions": [
+      "the catalog cell reads `ROAD-2 amends ROAD-5`",
+      "tasks.md gains a `## ROAD-5 amendment:` group with unticked tasks before any code",
+      "no new feature code is registered"
+    ]
+  },
+  {
+    "eval_id": 8,
+    "eval_name": "claim-before-spec",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § 2026-10-30 — claim the ROAD before writing its spec (1.6.0)",
+    "prompt": "Write ROAD-6's requirements now; the tracker has #301 'ROAD-6 desktop foundation' open and assigned to another person.",
+    "assertions": [
+      "the tracker is read live before any catalog row or requirements file is written",
+      "the run stops with nothing written and names the issue and its assignee",
+      "when the claim issue cannot be created or assigned, the run stops and names the command instead of writing the spec"
+    ]
   }
 ]

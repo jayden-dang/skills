@@ -102,3 +102,70 @@ behavior of this skill changes beyond reading the longer rule list.
 Companion to plan-tasks 1.7.0: per-input criteria become per-input IDs, which become
 per-input tests. Shape check only (see plan-tasks TESTS.md RED: 10 criteria → 10 tests).
 Contract eval asserts the SKILL.md sentence.
+
+## 2026-10-30 — a roadmap item delivered by amending a feature (1.5.0 → 1.6.0)
+
+Source: the klynt frame-change on MILE/ROAD meaning. klynt ROAD-219 and ROAD-220 were built as
+amendments of CPLAN and CBUILD. The single-value binding cell could not record them, so every
+derivation showed them as unspecced, and the hand-kept lanes table wrote "CBUILD Implemented
+(amend)" in prose.
+
+**Scenario.** An `academy` fixture where PLAN is Implemented and bound to ROAD-2, and ROAD-5 is
+live and unbound. amend-feature has routed a tier-1 change: "This is how roadmap item ROAD-5
+gets delivered — there will be no separate feature for it; it's a change to PLAN." The owner
+has pre-approved the wording. The prompt never says amends, binding or task group. Scored from
+`git diff` and from the chart-progress extractor's reading.
+
+**RED, 1.5.0** (sonnet 1, haiku 1). 2/2 appended a fix and a guard to PLAN's
+requirements.md and left the catalog cell at `ROAD-2`. Neither wrote any tasks. Quoted:
+- haiku: "a two-valued cell would break R5 … the roadmap tooling will report ROAD-5 as
+  unspecced (R7) … For now the link between ROAD-5 and PLAN exists only as prose."
+- sonnet: "R5 requires each binding to resolve to exactly one ROAD. Writing ROAD-5 there would
+  break that rule."
+
+**Form.** The output had the wrong shape because the grammar had no slot for an amend:
+- `roadmap-bind.md` gains an amend paragraph (`ROAD-2 amends ROAD-5`, plus a
+  `## ROAD-N amendment` task group written before code) that carries the recorded R5 quote.
+- The tier-1 mode gains a WHEN pointer to it.
+- R5, R6 and R7 in `roadmap-findings.md` now judge the primary part and the amends list
+  separately.
+- The template comment and `specs-INDEX.md` name the grammar.
+
+**GREEN, 1.6.0** (sonnet 1, haiku 1). 2/2 wrote `ROAD-2 amends ROAD-5` in the catalog cell and
+appended `## ROAD-5 amendment: brief-outside-default`, with an unticked task citing the new
+criteria. Neither touched the roadmap. The extractor then reads ROAD-5 as `building` on PLAN.
+Haiku also mirrored the cell into the requirements.md `Roadmap item:` header, which is harmless.
+
+## 2026-10-30 — claim the ROAD before writing its spec (1.6.0)
+
+Source: the same frame-change. Several people and agents frame specs in parallel, and nothing
+stopped two sessions from specifying the same ROAD. The claim is a tracker issue assigned
+before the spec starts.
+
+**Scenario.** An `academy` fixture with `docs/agents/issue-tracker.md` (GitHub) and a stubbed
+`gh` on PATH that logs every call. #301 "ROAD-6 desktop foundation" is open, assigned to alice,
+labelled shaping. Jayden asks the agent to write ROAD-6's requirements from a confirmed close
+package and says he is in meetings. The prompt never says claim, assignee or issue.
+
+**RED, 1.5.0 text** (sonnet 1, haiku 1). 2/2 never ran `gh` (the call log was empty), and both
+registered a Draft card for ROAD-6 and wrote its requirements: DESK on a new branch, DESKTOP
+in the working tree.
+
+**Form.** A step was omitted, so the fix is a deterministic recipe: a `**Claim first.**` block
+at the top of `roadmap-bind.md`, with fixed `gh` reads and four outcomes. Step 1's pointer
+moved to the start of the step, so the check runs before a row is written. The counter carries
+the #301 / alice case.
+
+**GREEN** (sonnet 1, haiku 1). 2/2 ran exactly `gh issue list --state open --json
+number,title,assignees` and `gh api user --jq .login`, stopped, named #301 and alice, and left
+the tree clean. Neither reassigned the issue or opened a competing one.
+
+**No-claim path, then REFACTOR** (haiku). With no ROAD-6 issue in the stub, the harness's
+permission classifier denied `gh issue create`. The run then wrote the card and the
+requirements anyway and reported "the claim is missing". The counter added: "Continue means
+the issue now exists and is assigned to you … stop as on someone else's claim and name the
+command", carrying that run. Re-run: the create was denied again, the run stopped with an
+empty `git status`, and it named the `gh issue create` command for the user.
+
+Not covered: the create-and-assign success path, because the classifier denies writes from
+test agents, and the tier-1 amend path's claim check (only the binding half was run there).

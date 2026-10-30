@@ -64,6 +64,12 @@ Before showing the user anything, the skill runs four scans:
 
 Then the skill presents the **written file** and stops. Conversational agreement is not approval — the file is what gets approved, and on approval its `Status` becomes Approved. The template carries an **Open Questions** section for anything still unresolved; every entry must be settled before the status flips, and the section is deleted once empty. Approving a file with open questions would leave the design step to guess, which is exactly the ambiguity the scans exist to remove.
 
+## Claim and bind the roadmap item
+
+When the repo has a roadmap and a tracker config, Step 1 reads the tracker live before writing anything. An open issue whose title names the `ROAD-N` is that item's claim. If it is someone else's, the skill stops. If it is unassigned, the skill assigns it to itself, and if no issue exists, it creates one. If that write fails, the skill stops too. Without this check, two baseline runs specified ROAD-6 while #301 was assigned to someone else, and neither looked at the tracker.
+
+A roadmap item delivered by changing an existing feature, as a tier-1 mini-spec, keeps that feature's own item and is bound after `amends`: `ROAD-2 amends ROAD-5`. Its tasks go under a `## ROAD-5 amendment:` heading in the feature's `tasks.md`, written before any code. Before this rule, both baseline runs left the item unbound, believing a second value would break `R5`, so it showed as unspecced indefinitely.
+
 ## ID immutability
 
 Once `Status` is Approved, an ID never changes meaning and is never renumbered. To retire a requirement you strike it through: `~~**CODE-1.2**~~ superseded by CODE-1.4`. The [`audit-trace`](audit-trace.md) check treats a struck-through ID as undefined, so any test or task still citing it surfaces immediately as an E1 error rather than rotting silently. This is why the ID, not the prose, is the unit of reference across the whole system — see [Requirement IDs](../concepts/requirement-ids.md).

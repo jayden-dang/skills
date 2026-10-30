@@ -1,6 +1,6 @@
 ---
 name: specify-behavior
-version: 1.5.0
+version: 1.6.0
 description: Use when discovery is complete and a tier-1 or tier-2 change needs its requirements
   written — the user stories and EARS acceptance criteria in requirements.md that every later
   task, test, and commit cites by ID. After frame-change, before any design or code.
@@ -22,7 +22,9 @@ Self-review just those two criteria: the ambiguity and testability scans, plus
 the code-claim check (Step 5) only when a criterion asserts how the system
 *currently* works — a guard usually does. Present both for approval, keep the
 feature's `Status`, and exit to `test-first`. **Skip Steps 1 and 4 and the
-whole-file review** — those are for a new feature, not a two-line mini-spec.
+whole-file review** — those are for a new feature, not a two-line mini-spec. WHEN the
+hand-off says the change delivers a roadmap item (`ROAD-N`), read `roadmap-bind.md` beside
+this file and follow its claim and amend paragraphs before exiting.
 
 **New feature** — tier 2, or anything nothing has spec'd yet. Start from
 `templates/requirements.md`, resolving pack seeds in order, first path that
@@ -33,6 +35,9 @@ Then run the full sequence below, one todo per step.
 
 ## Step 1: Register the feature code
 
+WHERE `docs/roadmap/INDEX.md` exists, read `roadmap-bind.md` beside this file before anything
+else in this step — its claim check can stop the step before a row is written.
+
 Pick a short unique prefix (2–12 chars, A–Z0–9, starts with a letter — e.g.
 `SHELL`, `SYNC2`). The catalog is **shared**: `docs/specs/INDEX.md` is the Domain
 router; feature cards live in `docs/specs/catalog/<domain>.md`. Add a card row to
@@ -40,9 +45,8 @@ the owning **shard** BEFORE writing requirements (ensure a router row exists for
 that domain). Never put Code rows on INDEX itself; never reuse a retired code.
 Flat INDEX → stop and name `/map-features` Domain boundary migrate.
 
-**Bind the roadmap item.** WHERE `docs/roadmap/INDEX.md` exists, read `roadmap-bind.md` beside
-this file and follow it exactly — the shard row's **Roadmap item** column is the only
-plan↔spec join. WHERE there is no roadmap, or the work was never a roadmap item, write `—`.
+**Bind the roadmap item.** WHERE `docs/roadmap/INDEX.md` exists, follow `roadmap-bind.md`
+exactly — the shard row's **Roadmap item** column is the only plan↔spec join. WHERE there is no roadmap, or the work was never a roadmap item, write `—`.
 
 **Promote ephemera.** IF a `.skills/_pending-<slug>/` directory was used for this work, move it to `.skills/<CODE>/` (`mv` when CODE dir absent) so subsequent writes use the Feature root — see `templates/skills-ephemera-paths.md`.
 **Done when:** the code has a Draft card in the owning shard, and its Roadmap item cell

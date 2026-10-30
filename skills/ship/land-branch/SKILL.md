@@ -1,6 +1,6 @@
 ---
 name: land-branch
-version: 4.6.0
+version: 4.7.0
 description: >
   Use when a finished feature branch needs integration or disposition —
   produces a local merge, pull request, kept branch, discard, or block with
@@ -167,8 +167,9 @@ On PR or merge, inspect feature `Status:`:
 | Status | Action |
 |---|---|
 | `Draft` | report missing approval; do not transition |
-| `Approved` / `In-progress` + every task checked + clean trace + crossing evidence | REQUIRED SUB-SKILL: use `realign-spec` |
-| `Approved` / `In-progress` + partial evidence | report the missing evidence |
+| `Approved` / `In-progress` + no `- [ ]` left in `tasks.md` + clean trace + crossing evidence | write `Status: Implemented` in `requirements.md` and its INDEX row yourself, with the delivery record below |
+| `Approved` / `In-progress` + an open box or a trace finding | REQUIRED SUB-SKILL: use `realign-spec` |
+| `Approved` / `In-progress` + partial crossing evidence | report the missing evidence |
 | `Implemented` / `Shipped`, no drift | skip |
 | `Implemented` / `Shipped`, drift | REQUIRED SUB-SKILL: use `realign-spec` |
 

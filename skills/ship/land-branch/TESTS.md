@@ -692,3 +692,29 @@ writing `Delivered-by: PR #N` after the PR opens was never run.
 Side finding, not caused by this edit: `ship-guard.sh` exits 1 with no output when the plan has
 no File Structure or `**Files:**` block (its grep runs under `set -e`). Three runs hit it and
 fell back to running the script without the plan.
+
+## 2026-10-30 — stamp Implemented without realign-spec in the normal case (4.6.0 → 4.7.0)
+
+Source: the owner's call, paired with execute-common 3.2.0 ticking boxes per task. Step 8 used
+to route the normal case through realign-spec, and its gate ("every task checked") depended on
+ticks that only realign-spec wrote. The step now stamps `Status: Implemented` in
+`requirements.md` and the INDEX row itself when no `- [ ]` is left, the trace is clean and the
+crossing evidence holds. An open box or a trace finding still goes to realign-spec.
+
+**Run** (router-plus-shard fixture, realign-spec and audit-trace installed, explicit local
+merge of a fully ticked feature). 4.6.0 (sonnet 1, haiku 1): 2/2 read and followed
+realign-spec, then stamped Implemented. 4.7.0 (sonnet 1, haiku 1): 2/2 stamped Implemented with
+the delivery record. Haiku did not open realign-spec; sonnet read it but did not run it ("every
+task box was checked and the trace was clean"). Tool calls and wall time: sonnet 12 / 58 s →
+15 / 69 s, haiku 11 / 155 s → 9 / 73 s. Honest reading: the outcome is the same. Haiku halved
+its time; sonnet did not get cheaper on a fixture without `design.md`. This is a requested simplification, not a fix for a failing baseline.
+
+**Ignored specs — tested no-op.** With `docs/specs/` git-ignored (haiku 1, sonnet 1 on 4.6.0),
+2/2 edited Status and `Delivered-by` in place, refused to commit, and did not `git add -f`. No
+text was added for that case.
+
+Side finding (pre-existing, not changed): when spec registry files (`docs/specs/INDEX.md`, a
+catalog shard) are committed on the feature branch, `ship-guard.sh` flags them `out-of-plan`.
+3 of 4 runs then moved them to a `-extra` branch, leaving `dev` without the feature's catalog
+row. Today it can happen with an in-place (no worktree) build, whose occupancy stamp commits on
+the current branch.

@@ -53,9 +53,7 @@ short question. Local merge, discard, and block are never inferred.
 
 ## After merge or PR — spec status
 
-Read `Status:`. Still `Approved` or `In-progress` with every task checked and verify green →
-run [`realign-spec`](realign-spec.md) (forgot-net). Already `Implemented`
-and no drift → skip. This is not `/cut-release`.
+Read `Status:`. Still `Approved` or `In-progress`, no `- [ ]` left in `tasks.md`, a clean trace and green verify → land-branch writes `Implemented` in `requirements.md` and the INDEX row itself, together with the delivery record. The execute family ticks each task as it closes (execute-common 3.2.0), so the boxes can be trusted here. An open box or a trace finding → run [`realign-spec`](realign-spec.md) (forgot-net). Already `Implemented` and no drift → skip. This is not `/cut-release`.
 
 ## Recording the delivery
 

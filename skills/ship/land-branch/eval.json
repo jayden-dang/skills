@@ -203,5 +203,16 @@
       "after the merge a `docs(<CODE>): record delivery` commit on the base adds `Delivered-by: <merge sha>` to the feature's tasks.md",
       "the SHA written is the merge result on the base, so it resolves as an ancestor of the integration ref"
     ]
+  },
+  {
+    "eval_id": 19,
+    "eval_name": "stamp-implemented-when-ticked",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § 2026-10-30 — stamp Implemented without realign-spec in the normal case (4.6.0 → 4.7.0)",
+    "prompt": "Merge a feature whose tasks.md has every box ticked, a clean trace and green verify into dev locally.",
+    "assertions": [
+      "Status: Implemented is written in requirements.md and its INDEX row by land-branch itself",
+      "realign-spec is not run when no box is open and the trace is clean"
+    ]
   }
 ]

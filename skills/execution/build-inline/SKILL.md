@@ -1,6 +1,6 @@
 ---
 name: build-inline
-version: 1.4.2
+version: 1.5.0
 description: Use when an approved tasks.md needs controller-side sequential
   execution without implementer subagents — inline TDD per task, progress
   ledger, stop-on-blocker, whole-branch review — for no-subagent environments
@@ -145,7 +145,8 @@ For each Task N in order:
    deviations path or `none`. Cheap tasks may skip
    the file if the commit message and ledger carry enough; when in doubt, write it.
 10. **Ledger.** Append
-    `Task N: complete (commits <base7>..<head7>, inline, review self)`.
+    `Task N: complete (commits <base7>..<head7>, inline, review self)`, then tick the
+    plan exactly as `../execute-common/task-lifecycle.md` step 7 says.
     Mark the todo done.
 11. **Next.** Immediately continue to the next task — no permission pause, no
     unit barrier. On blocker mid-task: stop the loop and ask (see **Stop

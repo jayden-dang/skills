@@ -80,3 +80,9 @@ Deviations pointer). RED/GREEN evidence lives in build-in-waves TESTS.md
 § Render check (sonnet, 2 RED omission reps, 2 GREEN reps incl. the
 should-not-fire pure-logic case). Steps 8–11 renumbered; evidence bundle
 (step 9) now carries the Visual check line when the check ran.
+
+## 2026-10-30 — tick the plan after the ledger line (1.4.2 → 1.5.0)
+
+Step 10 now points to `execute-common/task-lifecycle.md` step 7's "tick the plan" after the
+ledger line, so inline builds leave the same tracked record as subagent builds. Evidence lives
+in execute-common's TESTS.md (3.2.0). No separate inline run was made.

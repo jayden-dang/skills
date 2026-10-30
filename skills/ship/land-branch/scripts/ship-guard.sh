@@ -36,14 +36,29 @@ while IFS= read -r f; do
 done <<< "$files"
 
 if [[ -n "$plan" && -f "$plan" ]]; then
+  # no match must not end the script: grep exits 1 under pipefail when the plan lists no paths
   planned="$( { sed -n '/^## File Structure/,/^---/p' "$plan"
-                sed -n '/^\*\*Files:\*\*/,/^$/p' "$plan"; } | grep -oE '`[^`]+`' | tr -d '`')"
-  plandir="$(dirname "$plan")"
-  while IFS= read -r f; do
-    [[ -n "$f" && "$f" != "$plandir"/* ]] || continue
-    grep -qxF -- "$f" <<< "$flagged" && continue      # already reported as lockfile/generated
-    grep -qxF -- "$f" <<< "$planned" || row out-of-plan "$f" "not in $plan File Structure or Files blocks"
-  done <<< "$files"
+                sed -n '/^\*\*Files:\*\*/,/^$/p' "$plan"; } | { grep -oE '`[^`]+`' || true; } | tr -d '`')"
+  plandir="$(dirname "$plan")"; specs="$(dirname "$plandir")"
+  code=""   # a plan with no requirements.md beside it has no code, so no registry exemption
+  [[ -f "$plandir/requirements.md" ]] && code="$(sed -n 's/^Feature code:[[:space:]]*\([A-Z][A-Z0-9]*\).*/\1/p' "$plandir/requirements.md" | head -1)"
+  # a registry file (spec INDEX, catalog shard) is the feature's own when every changed line is its row
+  own_row() {
+    [[ -n "$code" && ( "$1" == "$specs/INDEX.md" || "$1" == "$specs"/catalog/*.md ) ]] || return 1
+    # no -q: an early exit would SIGPIPE git diff and, under pipefail, exempt the file by mistake
+    [[ -z "$(git diff -U0 "$base"...HEAD -- "$1" | { grep -E '^[+-]' || true; } \
+             | { grep -vE '^(\+\+\+|---) ' || true; } | { grep -vF "| $code |" || true; })" ]]
+  }
+  if [[ -z "$planned" ]]; then
+    echo "# out-of-plan not checked: $plan lists no File Structure or Files paths"
+  else
+    while IFS= read -r f; do
+      [[ -n "$f" && "$f" != "$plandir"/* ]] || continue
+      grep -qxF -- "$f" <<< "$flagged" && continue      # already reported as lockfile/generated
+      own_row "$f" && continue
+      grep -qxF -- "$f" <<< "$planned" || row out-of-plan "$f" "not in $plan File Structure or Files blocks"
+    done <<< "$files"
+  fi
 fi
 
 behind="$(git rev-list --count HEAD.."$base")"

@@ -214,5 +214,17 @@
       "Status: Implemented is written in requirements.md and its INDEX row by land-branch itself",
       "realign-spec is not run when no box is open and the trace is clean"
     ]
+  },
+  {
+    "eval_id": 20,
+    "eval_name": "ship-guard-out-of-plan",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § 2026-10-30 — ship-guard.sh: two out-of-plan defects (4.7.0 → 4.7.1)",
+    "prompt": "Run ship-guard.sh against a plan with no Files block, and against a branch whose only registry change is the feature's own catalog row.",
+    "assertions": [
+      "a plan with no listed paths prints `# out-of-plan not checked` and exits 0",
+      "the feature's own catalog row is not reported out-of-plan",
+      "another feature's catalog row is still reported out-of-plan"
+    ]
   }
 ]

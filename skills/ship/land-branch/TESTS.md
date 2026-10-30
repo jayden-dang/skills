@@ -718,3 +718,29 @@ catalog shard) are committed on the feature branch, `ship-guard.sh` flags them `
 3 of 4 runs then moved them to a `-extra` branch, leaving `dev` without the feature's catalog
 row. Today it can happen with an in-place (no worktree) build, whose occupancy stamp commits on
 the current branch.
+
+## 2026-10-30 — ship-guard.sh: two out-of-plan defects (4.7.0 → 4.7.1)
+
+Found during the 4.6.0 and 4.7.0 runs; root-caused under `root-cause`. Both propositions were
+accepted by the owner in-session ("đồng ý, sửa và commit luôn"), strength `confirmed_for_scope`.
+
+1. **Silent exit.** When a plan lists no path in a File Structure or `**Files:**` block,
+   `grep -oE` matches nothing and exits 1. Under `set -euo pipefail` that fails the
+   `planned="$(…)"` assignment, and the script exits 1 with no output. `bash -x` stopped right
+   after the grep; a one-variable probe (`{ grep … || true; }`) exited 0. Making it only stop
+   crashing would flag every changed file as out-of-plan, and runs move out-of-plan files to
+   `-extra`, which would empty the feature. So a plan with no paths now prints
+   `# out-of-plan not checked: …` and skips the check. The same fix first introduced a second
+   silent exit when no `requirements.md` sits beside the plan (sed on a missing file under
+   pipefail); a test caught it before commit.
+2. **Own registry rows flagged.** The check exempted only the plan's own directory, so
+   `docs/specs/INDEX.md` and `docs/specs/catalog/*.md` changed on the feature branch were always
+   out-of-plan, and 3 of 4 land runs moved them to `-extra`. A registry file is now exempt only
+   when every changed line in its diff carries `| <CODE> |`, where CODE comes from `Feature
+   code:` in the plan's `requirements.md`. Another feature's row, or a router change, is still
+   flagged. The diff is read without `grep -q`, because an early exit would SIGPIPE `git diff`
+   and, under pipefail, exempt the file by mistake.
+
+Regression tests: `scripts/test_ship_guard.py` (5) — no paths, no requirements.md, own row,
+another feature's row, an unlisted code file. 2 were red before the fix, plus the one added for
+the self-introduced crash; all 5 are green after.

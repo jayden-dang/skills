@@ -1,6 +1,6 @@
 ---
 name: land-branch
-version: 4.5.1
+version: 4.6.0
 description: >
   Use when a finished feature branch needs integration or disposition —
   produces a local merge, pull request, kept branch, discard, or block with
@@ -171,6 +171,14 @@ On PR or merge, inspect feature `Status:`:
 | `Approved` / `In-progress` + partial evidence | report the missing evidence |
 | `Implemented` / `Shipped`, no drift | skip |
 | `Implemented` / `Shipped`, drift | REQUIRED SUB-SKILL: use `realign-spec` |
+
+**Record the delivery.** On PR or merge, when the branch implements a feature that has a
+`tasks.md`, write one line into it: `Delivered-by: PR #N` (the number of the PR just opened)
+or `Delivered-by: <merge sha>` (the local merge commit). It goes under the plan's header for
+the feature's own work, or inside the `## ROAD-N amendment` group when the branch delivered
+that amendment. Commit it as `docs(<CODE>): record delivery` — on the PR branch and push, or
+on `<base>` after the merge. Derived progress counts an item done only when this line
+resolves to a commit on the integration ref; without it a merged item stays in review.
 
 For PR, merge, or keep: name `/understand <range>` when multi-task or risk paths are
 present. It is optional and never withholds the resolved action.

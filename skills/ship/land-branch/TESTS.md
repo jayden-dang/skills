@@ -659,3 +659,36 @@ inside its table. `owner-notice.py` parsed catalogs the same way `board.py` did,
 after the blank line was taken as a header and its feature had no owner. A header is now
 the row a `|---|` line follows. Checked on a two-part table: the row after the blank line
 (BBB, `@org/beta`) is reported as cross-owner, and the branch's own feature (AAA) is not.
+
+## 2026-10-30 — record the delivery on PR or merge (4.5.1 → 4.6.0)
+
+Source: the klynt frame-change. Derived progress now counts an item done only when
+`Delivered-by:` in its `tasks.md` resolves to a commit on the integration ref, and land-branch
+is the step that knows the PR number or the merge SHA.
+
+**Fixture lesson first.** The first RED fixture already held a `docs(asset): record delivery`
+commit and `Delivered-by:` lines in other plans. The 4.5.1 baseline copied that precedent and
+wrote the line unprompted. That leaked the behavior under test, so the run was discarded. The
+clean fixture keeps `Delivery proof: required` in `docs/agents/project.md`, but no plan carries
+the line and no commit shows it.
+
+**RED, 4.5.1, clean** (haiku 1, sonnet 1). Explicit local merge of `feat/desk` into `dev`, no
+remote. 2/2 merged (fast-forward), re-ran the verify commands and deleted the branch. 0/2
+wrote `Delivered-by:`, so the merged item would stay in review.
+
+**Form.** An omitted step, so it gets one recipe paragraph, "Record the delivery", in step 8.
+It names the line, where it goes (the plan header, or the `## ROAD-N amendment` group), and the
+commit (on the PR branch, or on `<base>` after the merge).
+
+**GREEN, 4.6.0, clean** (haiku 1, sonnet 1). 2/2 committed `docs(DESK): record delivery` on
+`dev`: one wrote `Delivered-by: eb9c25d` after a `--no-ff` merge, the other wrote
+`Delivered-by: 319bee6` after a fast-forward. Both SHAs resolve as ancestors of the
+integration ref through chart-progress's resolver. The dirty-fixture GREEN runs (haiku 1,
+sonnet 1) did the same.
+
+Not covered: the PR path. The harness classifier denies `gh pr create` from test agents, so
+writing `Delivered-by: PR #N` after the PR opens was never run.
+
+Side finding, not caused by this edit: `ship-guard.sh` exits 1 with no output when the plan has
+no File Structure or `**Files:**` block (its grep runs under `set -e`). Three runs hit it and
+fell back to running the script without the plan.

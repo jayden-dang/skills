@@ -57,6 +57,10 @@ Read `Status:`. Still `Approved` or `In-progress` with every task checked and ve
 run [`realign-spec`](realign-spec.md) (forgot-net). Already `Implemented`
 and no drift → skip. This is not `/cut-release`.
 
+## Recording the delivery
+
+On a PR or a merge, land-branch writes `Delivered-by: PR #N` or `Delivered-by: <merge sha>` into the feature's `tasks.md` (inside the `## ROAD-N amendment` group for an amendment) and commits it as `docs(<CODE>): record delivery`. With `Delivery proof: required`, [`chart-progress`](chart-progress.md) counts an item done only when that line resolves to a commit on the integration ref. Without the step, both clean baseline runs merged and left the item in review.
+
 ## The ticket
 
 The ticket set starts from `.skills/<CODE>/tickets.md` and the ticket you named, so the PR body carries `Closes #N` even when the branch name has no ID. When the PR opens, the ticket's state role moves to `in-review`. The merge is yours; `Closes #N` then closes the ticket. See [the workflow](../workflow.md).

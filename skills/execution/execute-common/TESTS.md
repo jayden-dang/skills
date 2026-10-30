@@ -656,3 +656,33 @@ has no `build-in-waves` run.
 
 Not covered: a tier-1 fix run through the new §2.3, and `build-by-story` / `build-inline`
 closes, which share the Close sequence and were not run separately.
+
+## 2026-10-30 — take the serialized-surface slot before the stamp (3.0.0 → 3.1.0)
+
+Source: the klynt frame-change. klynt renumbered migrations after parallel branches took the
+same number at least three times (`ea397f207`, `a6d8766f0`, `536e63ccd`), and the only rule
+was the prose "at most two at once" in its specs index. The lock is a remote branch,
+`locks/<surface>`, created with `git push --force-with-lease=<ref>:` (empty expect = must not
+exist). Locally verified on a bare repo: a second create is rejected with "stale info", and of
+two concurrent creates exactly one wins. GitHub itself is untested.
+
+**Held slot — a tested no-op, so no text.** Fixture: a bare `origin` holding
+`locks/migrations` = "slot: ROAD-6 #301"; `project.md` lists `Serialized surfaces:
+`migrations/``; MEDIA's Task 1 creates `migrations/0007_media_blocks.sql`. On 3.0.0
+(sonnet 1, haiku 1), 2/2 noticed the lock and declined to start Task 1, both saying nothing
+documents the lock protocol. A "held → stop" rule would be a no-op, so none was written.
+
+**Free slot — RED, 3.0.0** (sonnet 1, haiku 1). Same fixture, lock deleted. 2/2 stamped and
+pushed `In-progress`. 0/2 took the slot, so `ls-remote` showed only `refs/heads/dev`.
+
+**Form.** An omitted step, so step 2 gets a recipe: "Take the slot first", with the three
+commands, the pushed/rejected outcomes, and release after `Delivered-by:` resolves. The counter
+carries the MEDIA / 0007 runs.
+
+**GREEN, 3.1.0** (sonnet 1, haiku 1). 2/2 created `refs/heads/locks/migrations` with
+"slot: ROAD-1 MEDIA" before the stamp. Both hit one defect in the snippet: under zsh,
+`"$sha:refs/…"` reads `:r` as a history modifier ("malformed refspec"). Both recovered by
+hand. The snippet now reads `"${sha}:refs/…"`, checked in zsh.
+
+Not covered: release after delivery (lanes.md reports a lock held by a done ROAD), and two
+controllers racing on a real GitHub remote.

@@ -1,6 +1,6 @@
 ---
 name: execute-common
-version: 3.0.0
+version: 3.1.0
 description: Use when build-in-waves, build-by-story, or build-inline loads the shared controller recipe — produces an In-progress catalog stamp, a runtime-bound session snapshot, lease state, ledger state, and a revision-bound close receipt.
 ---
 
@@ -32,6 +32,23 @@ and any first production edit:
    A user instruction to isolate first, skip paperwork, or not commit catalog
    files does not override this step.
    </HARD-GATE>
+
+   **Take the slot first.** WHEN `docs/agents/project.md` lists `Serialized surfaces:` and a
+   `**Files:**` path in this plan sits under one (`migrations/`), take that surface's lock
+   before the stamp below — a branch on the remote, created only if it does not exist:
+
+   ```bash
+   git fetch origin
+   sha=$(git commit-tree "$(git hash-object -t tree /dev/null)" -m "slot: <ROAD-N> <#issue>")
+   git push --force-with-lease=refs/heads/locks/migrations: origin "${sha}:refs/heads/locks/migrations"
+   ```
+
+   Pushed → this session holds the slot. Rejected → `git log -1 --format=%s
+   origin/locks/migrations` names the holder; continue only when it names this ROAD. The
+   holder deletes the branch once its `Delivered-by:` resolves on the integration ref. Two
+   baseline controllers started MEDIA, whose Task 1 creates `migrations/0007_media_blocks.sql`,
+   and pushed the `In-progress` stamp without taking the slot; nothing stopped a second
+   session from taking 0007 too.
 
    | Status | Action |
    |---|---|

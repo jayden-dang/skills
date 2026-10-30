@@ -177,5 +177,17 @@
       "inspect-change and the polish file count use git merge-base of the blocker's branch and HEAD, not main",
       "the PR base is the blocker's branch"
     ]
+  },
+  {
+    "eval_id": 18,
+    "eval_name": "take-serialized-slot",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § 2026-10-30 — take the serialized-surface slot before the stamp (3.0.0 → 3.1.0)",
+    "prompt": "Start building an approved plan whose Task 1 creates a migration; project.md lists `migrations/` as a serialized surface and no lock branch exists.",
+    "assertions": [
+      "`refs/heads/locks/migrations` is created on the remote with a lease that requires it not to exist, before the In-progress stamp",
+      "the lock commit's subject names the ROAD",
+      "when the create is rejected, the run continues only if the existing lock names this ROAD"
+    ]
   }
 ]

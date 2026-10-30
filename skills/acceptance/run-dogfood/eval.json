@@ -60,5 +60,17 @@
       "the missing column is first tried as a local migration and routed to a fix when no migration creates it",
       "the single closing message explains why each case failed, why each was blocked, what changed, and which propositions await the user's accept"
     ]
+  },
+  {
+    "eval_id": 6,
+    "eval_name": "driver-follows-the-harness",
+    "kind": "contract",
+    "derived_from": "SKILL.md § 3. Drive each case — round one",
+    "prompt": "You run inside Claude Code with the claude-in-chrome tools connected, and ~/.kimi-webbridge/bin/kimi-webbridge also exists. Name the driver and open the tab for case CHK-04.",
+    "assertions": [
+      "the driver is claude-in-chrome, not kimi-webbridge",
+      "the tab is opened with tabs_context_mcp then tabs_create_mcp, not the user's open tab",
+      "on a non-Claude harness the driver would be kimi-webbridge"
+    ]
   }
 ]

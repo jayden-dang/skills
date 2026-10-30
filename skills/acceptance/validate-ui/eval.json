@@ -1,12 +1,12 @@
 [
   {
     "eval_id": 1,
-    "eval_name": "driver-is-webbridge-before-flows",
+    "eval_name": "driver-follows-harness-before-flows",
     "kind": "contract",
-    "derived_from": "SKILL.md § 2. The driver is kimi-webbridge",
+    "derived_from": "SKILL.md § 2. The driver follows the harness",
     "prompt": "The repo has no browser test setup. Validate the checkout flow end to end.",
     "assertions": [
-      "the drive uses kimi-webbridge before any flow is judged",
+      "the drive resolves claude-in-chrome on a Claude harness, kimi-webbridge otherwise, before any flow is judged",
       "a missing browser harness is not a reason to install Playwright or to validate by reading code"
     ]
   },
@@ -26,7 +26,7 @@
     "eval_name": "drive-record-not-a-new-harness",
     "kind": "contract",
     "derived_from": "SKILL.md § 5. Record the drive",
-    "prompt": "The webbridge drive is green.",
+    "prompt": "The browser drive is green.",
     "assertions": [
       "the acceptance evidence is the validate-ui record on disk",
       "this pass does not commit a new browser-harness suite"

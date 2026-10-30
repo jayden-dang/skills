@@ -1,6 +1,6 @@
 ---
 name: run-dogfood
-version: 4.0.0
+version: 4.1.0
 description: >-
   Use when a guide from write-dogfood already exists and its cases must be
   executed against the running app — agent-driven, screen plus backend
@@ -143,7 +143,7 @@ Drive every case once, in file order (`$DF list`):
 
 1. `$DF show $RUN <CASE-ID>` — load Try / Expect / setup / backend.
 2. Apply setup so the case can run independently.
-3. Execute Try against the **product app** only. The driver is `kimi-webbridge` when its skill is available or `~/.kimi-webbridge/bin/kimi-webbridge` exists — the user's own browser, so a signed-in case needs no auth setup, and a mutating case runs against whatever that session is logged into: confirm the target before the first one and never point it at production data the guide did not name. Chrome extension tools are the fallback only when that binary is absent. There is no Playwright rung. Resolve the driver once and name it. If neither is connected, mark the case `blocked` and relay the webbridge help page. `find_tab` with `active:true` borrows the user's tab — `navigate` with `newTab:true` into this run's session instead. "Use the tab I have open" does not move the drive onto their tab.
+3. Execute Try against the **product app** only. Resolve the driver once and name it: on a Claude harness (Claude Code, Claude desktop) with the `claude-in-chrome` tools connected it is `claude-in-chrome`; on any other harness it is `kimi-webbridge`, and a Claude harness without the extension falls back to it too. Both drive the user's own browser, so a signed-in case needs no auth setup, and a mutating case runs against whatever that session is logged into: confirm the target before the first one and never point it at production data the guide did not name. There is no Playwright rung. If neither is connected, mark the case `blocked` and relay the connect instructions of the driver the harness would have used. Never borrow the user's open tab: with `kimi-webbridge`, `find_tab` with `active:true` borrows it, so `navigate` with `newTab:true` into this run's session instead; with `claude-in-chrome`, call `tabs_context_mcp` first, then `tabs_create_mcp` for this run's tab and never reuse an id from another session. "Use the tab I have open" does not move the drive onto their tab.
 4. Fill `saw` from what is actually visible on the product.
 5. Run the backend probe when required; fill `server`.
 6. `$DF mark … pass|fail|blocked --saw … --server …` only when evidence slots match the Iron Law; mark the todo done only on `pass`.

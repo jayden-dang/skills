@@ -223,3 +223,16 @@ propositions marked `pending disposition`.
 
 **Not covered:** the park path (3 failed attempts) and the human-only park
 (credential, non-local origin) were not driven. Neither was a live-app run.
+
+## v4.1.0 — driver follows the harness (2026-10-30)
+
+Request: on a Claude harness drive with `claude-in-chrome`; on any other
+harness drive with `kimi-webbridge`. The old text ranked `kimi-webbridge` first
+and Chrome extension tools as fallback only when the binary was absent, so a
+Claude harness with both installed took the Kimi path.
+
+**Form.** §3 step 3 and the `unblock.md` driver row pick the driver by harness;
+a Claude harness without the extension falls back to `kimi-webbridge`; the
+no-borrowed-tab rule now names the `claude-in-chrome` equivalent
+(`tabs_context_mcp`, then `tabs_create_mcp`). Routing, not a gate: checked by
+shape (one fixture per harness), not a pressure campaign.

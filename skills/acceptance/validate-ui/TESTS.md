@@ -15,3 +15,11 @@ recorded for the implementer render check in `execute-common` TESTS.md v2.7.0.
 the durable artifact is `.skills/<CODE>/validate-ui.md` rather than a new suite.
 A product defect still gets its regression through `root-cause` / `test-first`
 in the repo's existing tests.
+
+## v2.1.0 — driver follows the harness (2026-10-30)
+
+Same request as `run-dogfood` 4.1.0: `claude-in-chrome` on a Claude harness,
+`kimi-webbridge` on any other. §2 now resolves the driver once and carries the
+no-borrowed-tab rule for both. Routing, not a gate: no pressure campaign; the
+shape check is the one `run-dogfood` ran against the same wording.
+`validate-feature` 1.3.2 only follows the rename.

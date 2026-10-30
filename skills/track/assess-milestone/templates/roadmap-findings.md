@@ -15,9 +15,9 @@ Not a seed. Unlike the other files in this directory, nothing copies this one in
 consumer repo — `configure-repo` and `define-project` name the template files they write
 individually and never glob. It sits here because `templates/` is this set's only
 cross-skill content mechanism: `roadmap-INDEX.md`'s comment block already carries the
-authoritative S1–S8 structural rules for the same two skills.
+authoritative S1–S9 structural rules for the same two skills.
 
-S1–S8 (structural defects of the roadmap artifact) live in roadmap-INDEX.md.
+S1–S9 (structural defects of the roadmap artifact) live in roadmap-INDEX.md.
 R1–R11 (findings derived across the roadmap, the specs, and the vision) live here.
 R11 is the seam between them: it fires when the artifact violates its own S-rules.
 -->
@@ -30,8 +30,8 @@ R11 is the seam between them: it fires when the artifact violates its own S-rule
 | **R2** | error | a live `GOAL-N` is neither cited by a milestone nor listed under `## Goal dispositions` | **yes** |
 | **R3** | error | `vision.md` defines the same `GOAL-N` more than once | no |
 | **R4** | error | a `ROAD-N` sits under no milestone, or under more than one | **yes** |
-| **R5** | error | a `Roadmap item` binding does not resolve to exactly one live `ROAD-N` | no |
-| **R6** | error | two feature codes bind the same `ROAD-N` | no |
+| **R5** | error | a `Roadmap item` binding does not resolve to exactly one live primary `ROAD-N`, or names an `amends` item that is not live | no |
+| **R6** | error | two feature codes bind the same `ROAD-N` as primary, or two amend the same one | no |
 | **R7** | info | a `ROAD-N` has no feature code bound to it — *unspecced* | no |
 | **R8** | info | a feature row's `Roadmap item` is empty while a roadmap exists — *unplanned* | no |
 | **R9** | error | a `Closed` milestone holds a non-deferred `ROAD-N` that is unbound, or bound to a feature whose `Status:` is not `Shipped` | **yes** |
@@ -56,9 +56,9 @@ order), `members` (item → milestone), `bindings` (code → `ROAD-N`), and `sta
 - **R2** — each `liveGoals` entry in neither `goalCitations` nor `dispositions`.
 - **R3** — each `GOAL-N` appearing more than once in `liveGoals`.
 - **R4** — each `ROAD-N` whose `members` count is not exactly 1.
-- **R5** — each non-empty binding not resolving to exactly one live `ROAD-N`.
-- **R6** — each `ROAD-N` named by two or more bindings.
-- **R7** — each live `ROAD-N` named by no binding.
+- **R5** — each non-empty binding whose part before `amends` is not exactly one live `ROAD-N`, or whose `amends` list names a non-live one.
+- **R6** — each `ROAD-N` named as primary by two or more bindings, or in two or more `amends` lists.
+- **R7** — each live `ROAD-N` named by no binding, primary or `amends`.
 - **R8** — each feature row with an empty binding.
 - **R9** — for each milestone whose `Commitment` is `Closed`: each member not listed in its
   `Deferred:` slot that is unbound, or whose feature's spec `Status:` is not `Shipped`.

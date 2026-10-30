@@ -199,3 +199,51 @@ who owns the portal?" loaded no skill (haiku 1/1, sonnet 1/1).
   `INDEX.md`: 7/7.
 
 Not covered: a milestone with no ROAD member, and a page Quang edits after he has signed it.
+
+## 2026-10-30 — `## Focus`, the priority slot (1.4.0)
+
+Source: the klynt frame-change on MILE/ROAD meaning (close package in the session's
+`.skills/_pending-roadmap-focus/close.md`). klynt kept its working priority in a
+hand-written "parallel lanes" table inside `docs/specs/INDEX.md`, because the roadmap had
+no place for it.
+
+**Scenario.** A brownfield `learnhub` roadmap with six milestones, sanitized and installed at
+`.claude/skills/plan-milestones/`. The lead asks: "Make the roadmap itself show our priority
+order: AI course authoring first, then the course desktop, then the dogfood evidence. Course
+authoring needs ROAD-57 from lesson media, so that one has to happen alongside it. ROAD-27
+(secrets) should also get picked up early as a filler while those run — but the rest of
+production operations waits." The lead is offline, so the agent cannot ask questions. The
+prompt never says focus, now, next or lane. Scored from `git diff`.
+
+**RED, 1.3.0** (sonnet 2, haiku 2). All four kept IDs, membership and Commitment, and all
+four demoted to Draft. All four also expressed milestone priority by moving table rows, and
+none had a structured place for item-level priority:
+- sonnet ×1, haiku ×2 wrote "ROAD-57 runs alongside MILE-40" into `Blockers:` lines.
+- sonnet ×1 wrote a free note under the header: "A row order can't express 'one item runs
+  early', so I added a two-line note under the header."
+- haiku ×1 invented a dependency: `ROAD-244 — After: MILE-40, MILE-52, MILE-56`.
+- haiku ×1 moved 31 lines of milestone blocks to match the new row order.
+- MILE-21's position varied: after MILE-40 in one run, after MILE-56 in three.
+
+**Form.** Wrong shape, not a broken rule, so the fix is a REQUIRED slot plus a recipe:
+- `## Focus` with `Now:` and `Next:` in After-style ID grammar, plus rule S9.
+- Table row order renamed to dependency order.
+- A Focus paragraph in Update that carries the recorded ROAD-244 edge and the `Blockers:` prose.
+- One rationalization row taken verbatim from the note run.
+
+**GREEN, 1.4.0** (sonnet 2, haiku 2). 4/4 added only `## Focus` and demoted to Draft. None
+touched table rows, `After:`, `Blockers:` or Commitment. 3/4 wrote the identical line
+`**Now:** MILE-40, ROAD-57, MILE-52, MILE-56, ROAD-27`. One sonnet run left ROAD-57 out, citing
+the one-step pull through ROAD-128's `After: ROAD-57`, which is correct under the Focus rules.
+No new rationalization appeared, so no REFACTOR round was needed. The extractor in
+`chart-progress` still parses a roadmap that carries `## Focus` (6 milestones, 18 items, no
+findings).
+
+Not covered: a Focus edit that also arrives with a commitment change, and the 5-entry cap
+under pressure. Every GREEN run had ≤5 entries without pushback.
+
+**Duplication trim, re-checked.** The Update paragraph's restatement of the MILE-N / ROAD-N
+entry meaning was replaced with a pointer to the template's Focus rules, and the run was
+repeated on haiku ×2. 2/2 again added only `## Focus` (7+/2−), with no change to table
+rows, After, Blockers or Commitment. One run placed ROAD-57 after MILE-56 rather than
+second; the order inside Now is the requester's to set, and both readings are faithful.

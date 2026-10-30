@@ -10,8 +10,9 @@ paste the full catalog into context.
 
 **Roadmap item** on each shard card binds the feature CODE to a live `ROAD-N`
 when `docs/roadmap/INDEX.md` exists. Write `—` when there is no roadmap layer.
-At most one live CODE may name a given ROAD (`R6`). `specify-behavior` is the
-only writer of the **Roadmap item** cell on new features.
+At most one live CODE may name a given ROAD (`R6`). A ROAD delivered by changing an
+existing feature follows that feature's own ROAD after `amends`: `ROAD-2 amends ROAD-5`.
+`specify-behavior` is the only writer of the **Roadmap item** cell.
 
 | Domain | Scope | Surface roots | Feature catalog |
 |---|---|---|---|

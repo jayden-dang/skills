@@ -8,8 +8,8 @@ The program layer: milestone INTENT, above any single feature and below the prod
 vision. Optional — only multi-milestone projects need it. `plan-milestones` authors it;
 `refresh-roadmap-status` derives progress from it without writing anything.
 
-This file owns intent only: outcomes, ordering, membership, dependencies, commitments,
-blockers, deferrals, goal dispositions. It never records how far a feature has got —
+This file owns intent only: outcomes, priority, ordering, membership, dependencies,
+commitments, blockers, deferrals, goal dispositions. It never records how far a feature has got —
 that lives once, as `Status:` in the feature's own requirements.md, mirrored into its
 docs/specs/INDEX.md row. Every heading below is a REQUIRED slot — fill it or write
 `None`.
@@ -32,14 +32,29 @@ defective when any of these does not hold:
       once, live, and neither the item itself nor its own milestone; and following
       After edges (an item without After waiting on the member above it) never
       returns to the item it left
+  S9  Focus holds two lines, Now: and Next:, each `None` or comma-separated MILE-N /
+      ROAD-N, each defined once and live; no ID appears twice across both lines; Now
+      holds at most 5 entries
+
+Focus rules:
+- PRIORITY lives only in ## Focus: the human's order of attention, first entry highest.
+  IDs only — no feature code, no status, no reason. Commitment is a separate decision
+  and stays as it is when Focus changes.
+- An entry is exactly one of MILE-N (its live members) or ROAD-N (that item alone).
+  Each entry also pulls in the items its members name directly in After:; a deeper
+  predecessor is reported, never pulled in. A ROAD-N entry is how one item runs ahead
+  of the rest of its milestone.
+- After: names only work that must exist first, and Blockers: only why an item waits.
+  Neither carries priority: an invented After edge keeps an item blocked after its real
+  predecessor is done.
 
 ID rules:
 - Grammar: **MILE-<n>** and **ROAD-<n>**, flat and repo-wide.
 - Stable from first definition. Retire by strikethrough with a reason
   (~~**MILE-3**~~ superseded by MILE-5) — never renumber, never reuse.
 - A ROAD-N keeps its ID when it moves between milestones.
-- Milestone ORDER is table row order; milestone IDENTITY is the MILE-N. Reordering the
-  table never renumbers anything.
+- Table row order is dependency order (S4), not priority; milestone IDENTITY is the
+  MILE-N. Reordering the table never renumbers anything.
 - ITEM order is the After: field, written between the slug and Surfaces:
   `- **ROAD-7** <slug> — After: ROAD-5, MILE-2 — Surfaces: ...`. It names what must
   be done before this item starts: a ROAD-N in any milestone, or a MILE-N meaning
@@ -54,8 +69,15 @@ ID rules:
 - ROAD-N is a program SLOT (intent + order + Surfaces). A feature CODE is a separate
   delivery unit. Creating a ROAD does not create a feature. Binding is the INDEX
   "Roadmap item" cell (specify-behavior only). At most one live CODE binds a ROAD (R6).
+  A ROAD delivered by changing an existing feature is bound in that feature's cell after
+  the word `amends`: `ROAD-127 amends ROAD-219`.
   Same slug language does not make the IDs the same object.
 -->
+
+## Focus
+
+**Now:** MILE-2, ROAD-1
+**Next:** None
 
 | ID | Milestone | Outcome | Depends-on | Commitment |
 |---|---|---|---|---|

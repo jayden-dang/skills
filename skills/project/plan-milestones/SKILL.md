@@ -1,6 +1,6 @@
 ---
 name: plan-milestones
-version: 1.3.0
+version: 1.4.0
 description: Use when a project's milestones need planning, sequencing, replanning, or
   ANY edit to an existing roadmap — produces or revises docs/roadmap/INDEX.md, the
   milestone intent registry carrying stable MILE-N and ROAD-N IDs that later feature specs
@@ -49,7 +49,7 @@ decision* that nobody can derive — keep that field, and keep nothing that trac
 
 Resolve pack seeds in this order, first path that exists: (1) `templates/` beside this SKILL.md, (2) `${CLAUDE_PLUGIN_ROOT}/templates` when that variable is set, (3) `../../../templates` relative to this SKILL.md. Every heading in `templates/roadmap-INDEX.md`
 is a REQUIRED slot — fill it or write `None`. Its comment block carries the authoritative
-structural rules **S1–S8** and the ID rules; read them there rather than restating them.
+structural rules **S1–S9** and the ID rules; read them there rather than restating them.
 
 ## Create
 
@@ -83,6 +83,14 @@ structural rules **S1–S8** and the ID rules; read them there rather than resta
 The change signal is a new milestone, a reordering, a scope change, a commitment, a closure,
 or an item no longer wanted.
 
+**A priority change is written in `## Focus` and nowhere else** — "build X first, then Y",
+"pull this item forward", "pick that one up as a filler". Put the IDs on `Now:` / `Next:`
+in the order asked, following the template's Focus rules. Leave table rows, `After:`,
+`Blockers:` and `Commitment` as they are. Asked to make operations wait behind three milestones, a baseline run wrote
+`ROAD-244 — After: MILE-40, MILE-52, MILE-56`: a dependency nobody had, which keeps
+ROAD-244 blocked after its real predecessor ships. The others moved table rows and wrote
+"ROAD-57 runs alongside" into `Blockers:` prose, which no reader or tool can order.
+
 **A resequencing is written as `After:`** on every member of each milestone it touches,
 in the template's form; list position alone carries no order once `After:` is present.
 
@@ -94,8 +102,8 @@ move it to its milestone's `Deferred:` slot with a date and a reason — deletin
 destroys the one record that the option was ever considered (see Rationalizations).
 
 **A material change to an `Approved` roadmap demotes it.** Set `Status: Draft`, then run the
-gate again. Material means any milestone's outcome, membership, ordering, commitment state,
-or goal citations (see Rationalizations for why an edit does not stay pre-approved).
+gate again. Material means any milestone's outcome, membership, ordering, Focus, commitment
+state, or goal citations (see Rationalizations for why an edit does not stay pre-approved).
 
 **Closing a milestone** — only on a `Committed → Closed` transition, skipped for every other
 edit — asserts a milestone *delivered*, which nothing in this file can establish on its own say-so.
@@ -132,18 +140,18 @@ WHEN `docs/agents/issue-tracker.md` reads **Draft surface** `notion`, read `noti
 beside this file and follow it before this gate: the sign-off role signs off that page.
 
 <HARD-GATE>
-Validate S1–S8 from the template's rule block. Report every defect you find and STOP —
+Validate S1–S9 from the template's rule block. Report every defect you find and STOP —
 a roadmap with a structural defect does not reach the user for approval. When the file is
 clean, present it WHOLE and STOP. `Status: Approved` is written only after the user has
 explicitly approved it. Conversational agreement is not approval; a roadmap you approved
 yourself was never approved.
 </HARD-GATE>
 
-Walk S1–S8 as a checklist, naming each defect and where it sits, then present the file and
+Walk S1–S9 as a checklist, naming each defect and where it sits, then present the file and
 stop. On approval, set `Status: Approved`; `/refresh-roadmap-status` reports where the plan
 stands whenever the user wants it.
 
-*Done when: the S1–S8 walk is clean, the user has approved the written file, and `Status:`
+*Done when: the S1–S9 walk is clean, the user has approved the written file, and `Status:`
 reads `Approved`.*
 
 ## ROAD-N is a slot, not a feature
@@ -174,7 +182,8 @@ Every row below is a verbatim rationalization from a baseline run, or its direct
 | "A status column would make this trackable" | It makes it *stale*. Feature progress lives in `requirements.md` `Status:`, mirrored into the INDEX row. `/refresh-roadmap-status` derives the rest |
 | "I'll add a change log so status history survives" | That is the same second copy wearing a different hat. Git already holds the history of this file |
 | "Reuse the feature lifecycle at milestone granularity" | `Draft → Approved → In-progress → Implemented → Shipped` describes a *spec*. A milestone carries a commitment, not a lifecycle |
-| "Sharing matters more now, so it should be MILE-2" | Order is table position; identity is the ID. Move the row, keep the number |
+| "Sharing matters more now, so it should be MILE-2" | Priority is `## Focus`; identity is the ID. Put it on `Now:`, keep the number |
+| "A row order can't express 'one item runs early', so I added a note" | `ROAD-N` on `Now:` is that item running early. A note is prose nothing can order |
 | "I renumbered so the order reads naturally" | Every renumber silently repoints anything that cited the old number |
 | "We are not doing it, so remove the line" | Defer it with a date and a reason. A deleted item takes its rationale with it |
 | "It is a planning artifact, so no approval gate applies" | The gate is what makes the roadmap a commitment rather than a draft someone wrote. It applies |

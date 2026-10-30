@@ -54,6 +54,17 @@ class TestRender(unittest.TestCase):
         self.assertIn("POLL", happened)
         self.assertIn("SUBS", happened)
 
+    def test_in_review_items_and_delivery_findings_render_in_plain_words(self):
+        import test_delivery
+        with tempfile.TemporaryDirectory() as t:
+            root = Path(t) / "demo"
+            root.mkdir()
+            test_delivery.build(root)
+            snap = extract(root, today="2026-10-14")
+        html = render(snap, {"summary": "", "recommendations": []})
+        self.assertIn("In review", html)
+        self.assertNotIn("in-review", re.sub(r'class="[^"]*"', "", html).replace("data-kind", ""))
+
     def test_batches_and_closable_milestones_are_shown(self):
         snap = json_copy(self.snap)
         snap["windows"]["week"]["batches"] = [{"sha": "b324ee232", "date": "2026-10-10", "codes": ["AAA", "BBB", "CCC"]}]

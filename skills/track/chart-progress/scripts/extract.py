@@ -136,9 +136,12 @@ def parse_catalog(root: Path) -> list[dict]:
                     spec_dir = None
             name = middle.split("|")[0].strip()
             name = re.sub(r"\s*\(.*$", "", name)
+            # `ROAD-127 amends ROAD-219, ROAD-220`: one primary bind, then the items it amends
+            primary, _, amended = m.group(6).partition("amends")
             feats.append({
                 "code": m.group(2), "name": name, "domain": domain, "spec": spec_dir,
-                "status": m.group(5), "roads": re.findall(r"ROAD-\d+", m.group(6)),
+                "status": m.group(5), "roads": re.findall(r"ROAD-\d+", primary),
+                "amends": re.findall(r"ROAD-\d+", amended),
             })
     return feats
 
@@ -153,6 +156,90 @@ def ledger_progress(root: Path, feat: dict) -> None:
     if ledger.exists():
         done = set(re.findall(r"Task (\w+?)\b[^\n:]*: complete", ledger.read_text()))
         feat["tasks_done"] = len(done)
+
+
+# ---------------------------------------------------------------- delivery proof
+
+
+def project_settings(root: Path) -> dict[str, str]:
+    """`- **Field:** value` bullets from docs/agents/project.md, backticks stripped."""
+    path = root / "docs/agents/project.md"
+    out: dict[str, str] = {}
+    if path.exists():
+        for line in path.read_text().splitlines():
+            m = re.match(r"^\s*-\s*\*\*([^*]+):\*\*\s*(.*)$", line)
+            if m:
+                out[m.group(1).strip()] = m.group(2).strip()
+    return out
+
+
+def integration(root: Path, settings: dict[str, str], override: str | None) -> dict:
+    base = settings.get("Default PR base", "").strip("` ")
+    ref = override or settings.get("Integration ref", "").strip("` ") or (f"origin/{base}" if base else "")
+    sha = run_git(root, "rev-parse", "--verify", "-q", f"{ref}^{{commit}}").strip() if ref else ""
+    return {"ref": ref or None, "sha": sha or None,
+            "proof_required": settings.get("Delivery proof", "").strip("` ").lower() == "required"}
+
+
+def task_groups(text: str) -> tuple[str | None, dict[str, dict]]:
+    """The plan's own Delivered-by, and each `## ROAD-N amendment` group's Delivered-by and ticks."""
+    plain = None
+    groups: dict[str, dict] = {}
+    current = None
+    for line in text.splitlines():
+        if line.startswith("## "):
+            g = re.match(r"^## (ROAD-\d+) amendment", line)
+            current = groups.setdefault(g.group(1), {"delivered_by": None, "open": 0, "ticked": 0}) if g else None
+            continue
+        d = re.match(r"^Delivered-by:\s*(.+?)\s*$", line)
+        if d:
+            if current is not None:
+                current["delivered_by"] = current["delivered_by"] or d.group(1)
+            else:
+                plain = plain or d.group(1)
+        elif current is not None and re.match(r"^\s*- \[ \]", line):
+            current["open"] += 1
+        elif current is not None and re.match(r"^\s*- \[[xX]\]", line):
+            current["ticked"] += 1
+    return plain, groups
+
+
+class Resolver:
+    """Resolves a Delivered-by value to exactly one commit on the integration ref, or says why not."""
+
+    def __init__(self, root: Path, ref_sha: str | None):
+        self.root, self.ref = root, ref_sha
+        log = run_git(root, "log", "--format=%H%x09%s", ref_sha) if ref_sha else ""
+        self.subjects = [l.split("\t", 1) for l in log.splitlines() if "\t" in l]
+
+    def resolve(self, value: str | None) -> dict:
+        if not value:
+            return {"ref": None, "resolved": False, "why": "no Delivered-by"}
+        if not self.ref:
+            return {"ref": value, "resolved": False, "why": "integration ref not found"}
+        pr = re.fullmatch(r"PR #(\d+)", value)
+        if pr:
+            n = pr.group(1)
+            hits = [sha for sha, subj in self.subjects
+                    if re.search(rf"\(#{n}\)$", subj) or re.match(rf"Merge pull request #{n}\b", subj)]
+            if len(hits) == 1:
+                return {"ref": value, "resolved": True, "commit": hits[0]}
+            return {"ref": value, "resolved": False,
+                    "why": "not on the integration ref" if not hits else f"{len(hits)} commits match"}
+        if re.fullmatch(r"[0-9a-f]{7,40}", value):
+            known = run_git(self.root, "rev-parse", "--verify", "-q", f"{value}^{{commit}}").strip()
+            if not known:
+                return {"ref": value, "resolved": False, "why": "unknown commit"}
+            on_ref = subprocess.run(["git", "merge-base", "--is-ancestor", known, self.ref],
+                                    cwd=self.root, capture_output=True).returncode == 0
+            return {"ref": value, "resolved": on_ref, **({"commit": known} if on_ref else {"why": "not on the integration ref"})}
+        return {"ref": value, "resolved": False, "why": "not `PR #N` or a commit SHA"}
+
+    def candidates(self, code: str) -> list[str]:
+        """Integration commits that name a feature code — merge or squash subjects. Proposals only."""
+        pat = re.compile(rf"\b{re.escape(code)}\b")
+        return [sha for sha, subj in self.subjects
+                if pat.search(subj) and (subj.startswith("merge") or subj.startswith("Merge") or re.search(r"\(#\d+\)$", subj))]
 
 
 # ---------------------------------------------------------------- graph
@@ -229,11 +316,17 @@ def structural_findings(items: dict, by_mile: dict) -> list[dict]:
     return out
 
 
-def item_states(root: Path, items: dict, by_mile: dict, feats: list[dict]) -> None:
-    by_road = {}
+def item_states(root: Path, items: dict, by_mile: dict, feats: list[dict], proof: dict) -> list[dict]:
+    """Sets each item's state; with delivery proof on, done also needs Delivered-by on the integration ref."""
+    findings: list[dict] = []
+    by_road, by_amend = {}, {}
     for f in feats:
         for r in f["roads"]:
             by_road.setdefault(r, f)
+        for r in f.get("amends", []):
+            by_amend.setdefault(r, f)
+        tasks = root / f["spec"] / "tasks.md" if f["spec"] else None
+        f["delivered_by"], f["groups"] = task_groups(tasks.read_text()) if tasks and tasks.exists() else (None, {})
     pending = set()
     skills = root / ".skills"
     if skills.is_dir():
@@ -241,24 +334,49 @@ def item_states(root: Path, items: dict, by_mile: dict, feats: list[dict]) -> No
             m = re.match(r"_pending-road(\d+)", p.name)
             if m:
                 pending.add(f"ROAD-{int(m.group(1))}")
+
+    def delivered(rid: str, value: str | None) -> str:
+        if not proof["required"]:
+            return "done"
+        d = proof["resolver"].resolve(value)
+        items[rid]["delivery"] = d
+        if d["resolved"]:
+            return "done"
+        if d["why"] != "not on the integration ref":
+            findings.append({"rule": "DELIVERY", "item": rid, "detail": f"{value or 'Delivered-by'}: {d['why']}"})
+        return "in-review"
+
     for it in items.values():
         f = by_road.get(it["id"])
-        it["feature"] = f["code"] if f else None
+        host = None if f else by_amend.get(it["id"])
+        it["feature"] = (f or host or {}).get("code")
         it["status"] = f["status"] if f else None
+        it["delivery"] = None
         if it["retired"]:
             it["state"] = "retired"
         elif it["deferred"]:
             it["state"] = "deferred"
-        elif by_mile[it["milestone"]]["commitment"] == "Closed" or (f and f["status"] in DONE):
+        elif by_mile[it["milestone"]]["commitment"] == "Closed":
             it["state"] = "done"
+        elif f and f["status"] in DONE:
+            it["state"] = delivered(it["id"], f["delivered_by"])
         elif f and f["status"] == "In-progress":
             it["state"] = "building"
         elif f:
             it["state"] = "specced"
+        elif host:
+            g = host["groups"].get(it["id"])
+            if not g:
+                it["state"] = "specced"
+            elif g["open"] or not g["ticked"]:
+                it["state"] = "building"
+            else:
+                it["state"] = delivered(it["id"], g["delivered_by"])
         elif it["id"] in pending:
             it["state"] = "framing"
         else:
             it["state"] = "unspecced"
+    return findings
 
 
 def graph(items: dict, by_mile: dict) -> dict:
@@ -276,7 +394,7 @@ def graph(items: dict, by_mile: dict) -> dict:
         unmet = [p for p in preds(rid) if p in open_]
         if unmet:
             blocked[rid] = unmet
-        elif live[rid]["state"] != "building":
+        elif live[rid]["state"] not in ("building", "in-review"):
             ready.append(rid)
 
     # longest chain of unfinished items; ties break on lowest IDs
@@ -498,7 +616,82 @@ def parse_architecture(root: Path, feats: list[dict]) -> list[dict]:
 # ---------------------------------------------------------------- main
 
 
-def extract(root: Path | str, today: str | None = None) -> dict:
+# ---------------------------------------------------------------- focus and slots
+
+
+def parse_focus(text: str) -> dict:
+    """The `## Focus` slot: Now and Next as ordered ID lists. Absent slot → both empty."""
+    out = {"present": False, "now": [], "next": []}
+    inside = False
+    for line in text.splitlines():
+        if line.startswith("## "):
+            inside = line.strip() == "## Focus"
+            out["present"] = out["present"] or inside
+            continue
+        m = re.match(r"^\*\*(Now|Next):\*\*\s*(.*)$", line) if inside else None
+        if m and m.group(2).strip() != "None":
+            out[m.group(1).lower()] = [t.strip() for t in m.group(2).split(",") if t.strip()]
+    return out
+
+
+def focus_lanes(items: dict, by_mile: dict, focus: dict, g: dict) -> tuple[list[dict], list[dict]]:
+    """One lane per Focus entry: its items plus their direct After predecessors (S9 + F-OUT findings)."""
+    findings: list[dict] = []
+    live = {k for k, v in items.items() if v["state"] not in ("retired", "deferred")}
+    entries = [(e, "now") for e in focus["now"]] + [(e, "next") for e in focus["next"]]
+    if len(focus["now"]) > 5:
+        findings.append({"rule": "S9", "item": "Focus", "detail": f"Now holds {len(focus['now'])} entries, more than 5"})
+    seen: set[str] = set()
+    lanes = []
+    for entry, horizon in entries:
+        if entry in seen:
+            findings.append({"rule": "S9", "item": entry, "detail": f"{entry} appears twice in Focus"})
+            continue
+        seen.add(entry)
+        ok = (entry.startswith("MILE-") and entry in by_mile and not by_mile[entry]["retired"]) or entry in live
+        if not ok:
+            findings.append({"rule": "S9", "item": entry, "detail": f"{entry} is not a live milestone or item"})
+            continue
+        base = [r for r in expand(items, by_mile, entry) if r in live]
+        pulled = {p for r in base for tok in items[r]["after"] for p in expand(items, by_mile, tok) if p in live}
+        members = sorted(set(base) | pulled, key=num)
+        lanes.append({
+            "entry": entry, "horizon": horizon, "items": members,
+            "ready": [r for r in members if r in g["ready"]],
+            "blocked": {r: g["blocked"][r] for r in members if r in g["blocked"]},
+            **{state: [r for r in members if items[r]["state"] == state] for state in ("building", "in-review", "done")},
+        })
+    covered = {r for lane in lanes for r in lane["items"]}
+    reported = set()
+    for r in sorted(covered, key=num):
+        if items[r]["state"] == "done":
+            continue
+        for p in g["blocked"].get(r, []):
+            if p not in covered and (r, p) not in reported:
+                reported.add((r, p))
+                findings.append({"rule": "F-OUT", "item": r, "detail": f"waits on {p}, outside Focus"})
+    for lane in lanes:
+        if lane["entry"].startswith("ROAD-") and items[lane["entry"]]["state"] == "done":
+            findings.append({"rule": "S9", "item": lane["entry"], "detail": f"{lane['entry']} is done but still in Focus"})
+    return lanes, findings
+
+
+def migration_slots(root: Path, settings: dict[str, str], items: dict, g: dict) -> tuple[dict, list[dict]]:
+    """Each serialized surface's lock branch: who holds it, and which ready items wait for it."""
+    slots, findings = {}, []
+    for surface in TICK.findall(settings.get("Serialized surfaces", "")):
+        lock = "locks/" + surface.strip("/").replace("/", "-")
+        ref = f"refs/remotes/origin/{lock}"
+        subject = run_git(root, "log", "-1", "--format=%s", ref).strip()
+        holder = (re.findall(r"ROAD-\d+", subject) or [None])[0]
+        touches = [r for r in g["ready"] if r != holder and any(s == surface or s.startswith(surface) for s in items[r]["surfaces"])]
+        slots[surface] = {"lock": lock, "holder": holder, "waiting": [{"item": r} for r in touches]}
+        if holder and holder in items and items[holder]["state"] == "done":
+            findings.append({"rule": "SLOT", "item": holder, "detail": f"holds {surface} but is done; delete {lock}"})
+    return slots, findings
+
+
+def extract(root: Path | str, today: str | None = None, integration_ref: str | None = None) -> dict:
     root = Path(root)
     today_d = dt.date.fromisoformat(today) if today else dt.date.today()
     week = (today_d - dt.timedelta(days=6)).isoformat()    # 7 calendar days incl. today
@@ -510,9 +703,17 @@ def extract(root: Path | str, today: str | None = None) -> dict:
     feats = parse_catalog(root)
     for f in feats:
         ledger_progress(root, f)
+    settings = project_settings(root)
+    integ = integration(root, settings, integration_ref)
     resolve(items, by_mile)
-    item_states(root, items, by_mile, feats)
-    findings = structural_findings(items, by_mile)
+    proof = {"required": integ["proof_required"], "resolver": Resolver(root, integ["sha"])}
+    delivery_findings = item_states(root, items, by_mile, feats, proof)
+    findings = structural_findings(items, by_mile) + delivery_findings
+    candidates = {f["code"]: proof["resolver"].candidates(f["code"]) for f in feats
+                  if proof["required"] and f["status"] in DONE and not f["delivered_by"]}
+    if integ["proof_required"] and not integ["sha"]:
+        findings.append({"rule": "DELIVERY", "item": integ["ref"] or "Integration ref",
+                         "detail": "integration ref not found; nothing can count as done"})
     for rid, it in items.items():
         if it.get("duplicate"):
             findings.append({"rule": "S1", "item": rid, "detail": "defined more than once"})
@@ -527,6 +728,10 @@ def extract(root: Path | str, today: str | None = None) -> dict:
         and (live := [items[r] for r in ms["members"] if items[r]["state"] not in ("retired", "deferred")])
         and all(i["state"] == "done" for i in live)
     ]
+    focus = parse_focus(roadmap.read_text()) if roadmap.exists() else {"present": False, "now": [], "next": []}
+    focus["lanes"], focus_findings = focus_lanes(items, by_mile, focus, g)
+    slots, slot_findings = migration_slots(root, settings, items, g)
+    findings += focus_findings + slot_findings
     adrs = parse_adrs(root)
     seen_adr: dict[str, int] = {}
     for a in adrs:
@@ -547,7 +752,7 @@ def extract(root: Path | str, today: str | None = None) -> dict:
     for ms in milestones:
         mine = [items[r] for r in ms["members"] if items[r]["state"] not in ("retired", "deferred")]
         ms["counts"] = {s: sum(1 for i in mine if i["state"] == s) for s in
-                        ("done", "building", "specced", "framing", "unspecced")}
+                        ("done", "in-review", "building", "specced", "framing", "unspecced")}
     domains: dict[str, dict] = {}
     for f in feats:
         d = domains.setdefault(f["domain"], {"domain": f["domain"], "counts": {}, "features": []})
@@ -561,6 +766,10 @@ def extract(root: Path | str, today: str | None = None) -> dict:
         "head": run_git(root, "rev-parse", "--short", "HEAD").strip(),
         "branch": run_git(root, "rev-parse", "--abbrev-ref", "HEAD").strip(),
         "has_roadmap": roadmap.exists(),
+        "integration": integ,
+        "focus": focus,
+        "slots": slots,
+        "delivery_candidates": candidates if integ["proof_required"] else {},
         "milestones": milestones,
         "items": sorted(items.values(), key=lambda i: num(i["id"])),
         "features": feats,
@@ -586,8 +795,9 @@ def main() -> int:
     ap.add_argument("root")
     ap.add_argument("--today")
     ap.add_argument("--out")
+    ap.add_argument("--integration-ref", help="ref that counts as integrated (default origin/<Default PR base>)")
     a = ap.parse_args()
-    snap = extract(a.root, a.today)
+    snap = extract(a.root, a.today, a.integration_ref)
     text = json.dumps(snap, indent=1, ensure_ascii=False)
     if a.out:
         Path(a.out).parent.mkdir(parents=True, exist_ok=True)

@@ -1,7 +1,7 @@
 ---
 name: chart-progress
-version: 1.1.0
-description: Generates a weekly progress dashboard (one HTML page) of what finished, what is building, what is ready to start, and the roadmap graph. Run it with /chart-progress.
+version: 1.2.0
+description: Generates a weekly progress dashboard (one HTML page) of what finished, what is building, what is ready to start, and the roadmap graph, plus the docs/roadmap/lanes.md file of parallel lanes. Run it with /chart-progress.
 disable-model-invocation: true
 ---
 
@@ -89,11 +89,31 @@ python3 <skill>/scripts/render.py "$d/$today.json" --notes "$d/$today.notes.json
 ```
 
 Open it (`open` / `xdg-open` / `start`) and reply with the absolute path, the summary, and the
-recommendations — nothing else. The page is local and read-only: no file outside
-`.skills/dashboard/` is written, and no status, roadmap line, or spec is touched. Repairs the
+recommendations — nothing else. The page is local and read-only: outside `.skills/dashboard/`
+the only file written is `lanes.py`'s `docs/roadmap/lanes.md`, and no status, roadmap line, or
+spec is touched. Repairs the
 page points at belong to `plan-milestones`, `realign-spec`, or `/assess-milestone`.
 
 *Done when: the HTML opens and the reply names its path.*
+
+## Write the lanes file
+
+When the snapshot's `focus.present` is true, regenerate `docs/roadmap/lanes.md` — the lanes
+each `## Focus` entry implies, who has claimed what, and who waits for a serialized surface.
+Claims are open tracker issues read once, so take the reading first; with no GitHub tracker or
+no `gh` access, drop `--issues` and the file says claims were not read:
+
+```bash
+gh issue list --state open --json number,title,assignees,labels,updatedAt,state --limit 500 > "$d/issues.json"
+python3 <skill>/scripts/lanes.py "$d/$today.json" --issues "$d/issues.json" \
+  --tracker-read "$(date -u +%FT%TZ)" --out docs/roadmap/lanes.md
+```
+
+The file is generated: it is never edited by hand, and a wrong line is fixed at its source —
+`## Focus`, an `After:`, a `Delivered-by:`, or the issue. Leave committing it to the user.
+
+*Done when: `docs/roadmap/lanes.md` names the source ref and SHA and the tracker reading time,
+or the snapshot has no Focus and the file was not written.*
 
 ## What the page derives, and from where
 
@@ -102,10 +122,13 @@ page points at belong to `plan-milestones`, `realign-spec`, or `/assess-mileston
 | Finished / started / new specs | catalog `Status` changes in first-parent git history, dated when they landed on the branch; one commit moving 3+ features to done is flagged as a batch |
 | Building, task progress | catalog `In-progress`; `### Task N:` in `tasks.md` against `Task N: complete` in `.skills/<CODE>/progress.md` |
 | Ready, blocked, critical path, unlocks | roadmap `After:` (an item without it waits on the member above it) joined to catalog status |
+| Done vs in review | with `Delivery proof: required` in `docs/agents/project.md`: an Implemented feature, or a fully ticked `## ROAD-N amendment` group, is done only when its `Delivered-by:` (`PR #N` or a merge SHA) resolves to one commit on the integration ref (`--integration-ref`, else `Integration ref:`, else `origin/<Default PR base>`); otherwise in review, which unlocks nothing. Unresolved ones get proposed commits in `delivery_candidates` |
+| Lanes | each `## Focus` entry: a milestone's live members or one item, plus the items they name directly in `After:` |
+| Slots | `Serialized surfaces:` in `docs/agents/project.md`; the holder is the ROAD named on the `origin/locks/<surface>` branch |
 | Shared paths | backtick paths in `Surfaces:` of ready and building items, ignoring container directories |
 | Milestones ready to close | every live member done, milestone not `Closed` |
 | Architecture | `- **ARCH-N**` lines; `Respects:` lines in each feature's `design.md`; `docs/adr/NNNN-*.md` |
-| Health | `S8` (dangling or cyclic `After:`), table/block commitment disagreement, duplicate ADR numbers, `After:` coverage |
+| Health | `S8` (dangling or cyclic `After:`), `S9` (Focus), `F-OUT` (a lane item waiting outside Focus), `DELIVERY`, `SLOT`, table/block commitment disagreement, duplicate ADR numbers, `After:` coverage |
 
 ## Red Flags
 
@@ -113,8 +136,8 @@ page points at belong to `plan-milestones`, `realign-spec`, or `/assess-mileston
 - A count in the notes that differs from the snapshot
 - A snapshot field name, file path, rule code or commit hash in the notes
 - Reading `Blockers:` prose to decide what is ready
-- Editing the HTML after `render.py` wrote it
-- Writing anywhere outside `.skills/dashboard/`
+- Editing the HTML after `render.py` wrote it, or `lanes.md` after `lanes.py` wrote it
+- Writing anywhere outside `.skills/dashboard/` other than `lanes.py`'s `docs/roadmap/lanes.md`
 
 ## No-op
 

@@ -87,3 +87,32 @@ bare IDs (`grep` over the written files); features, items and milestones named t
 page names them; the missing-`After:` caveat in plain words naming plan-milestones. One loose
 claim survived in run 1 ("three assistant features" while one of the three is a Library
 feature) — prose accuracy, not vocabulary; not addressed.
+
+## 2026-10-30 — lanes, delivery proof, migration slot (1.1.0 → 1.2.0)
+
+Source: the klynt frame-change on roadmap Focus and parallel lanes. klynt maintained its
+parallel lanes by hand in `docs/specs/INDEX.md`; that table was refreshed 5 times in 6 days
+and carried dated status columns.
+
+**Code, test-first.** `test_delivery.py` (17) and `test_lanes.py` (7) were written first and
+watched fail: `KeyError: 'integration'`, `'focus'`, `'slots'`, and `'done' != 'in-review'`.
+The render test failed on `KeyError: 'in-review'`. The fixture squash-merges PRs onto `dev`,
+like klynt does: 3/3 recent klynt PR heads are not ancestors of `origin/dev`, and PR #279 has
+7 commits but its integration commit has 1 parent. Suite: 68 tests green.
+
+**klynt measurement** (origin/dev d48c1aa89, proof switched on in a scratch run only). Of 99
+Implemented or Shipped CODEs, 13 have exactly one candidate integration commit naming them, 42
+have several, and 44 have none. Turning `Delivery proof: required` on before backfill would put
+nearly every item in review. That is why the switch is opt-in, and why candidates are proposed
+in `delivery_candidates`, never written.
+
+**SKILL text, shape check.** 1.1.0 never mentions `lanes.md`, so no run on it can produce the
+file; that is the baseline. GREEN on 1.2.0 (sonnet 1, haiku 1) ran `/chart-progress` on an
+`academy` fixture with a Focus slot and no git remote. Both runs wrote `docs/roadmap/lanes.md`
+with `Source: origin/dev@<sha>` and dropped `--issues` after `gh` failed, so the file reads
+"Tracker read: not read". Neither run hand-edited the file, and both notes named BUILD as in
+review and blocking Desktop foundation. One haiku run left a stray `gh.err` in
+`.skills/dashboard/`, which is inside the allowed directory and was not countered.
+
+Not covered: a run with real tracker issues (only unit-tested through `claims_from_issues`),
+and the leaf-level overlap rule. Shared-path detection is unchanged.

@@ -21,12 +21,13 @@ from pathlib import Path
 
 # Plain words for item states. One home: every label on the page comes from here.
 STATE = {
-    "done": "Done", "building": "In build", "specced": "Spec written", "framing": "Being shaped",
+    "done": "Done", "in-review": "In review", "building": "In build", "specced": "Spec written", "framing": "Being shaped",
     "unspecced": "Not started", "ready": "Ready", "deferred": "Deferred", "retired": "Dropped",
 }
 ACRONYMS = {"ai", "api", "ui", "ux", "adr", "ci", "url", "pdf", "sql", "s3", "tts", "id", "os",
             "e2e", "csp", "fsrs", "llm", "otlp", "sso", "oauth", "rpo", "rto", "dns", "cdn"}
-FINDING = {"S8": "Roadmap order", "S7": "Milestone status", "S1": "Defined twice", "ADR": "Decision number"}
+FINDING = {"S8": "Roadmap order", "S7": "Milestone status", "S1": "Defined twice", "ADR": "Decision number",
+           "S9": "Focus", "F-OUT": "Outside Focus", "DELIVERY": "Delivery proof", "SLOT": "Migration slot"}
 
 CSS = """
 :root{--paper:#F5F7F4;--panel:#FFFFFF;--ink:#18211E;--muted:#5B6A64;--rule:#D9DFDB;

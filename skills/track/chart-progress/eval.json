@@ -33,5 +33,17 @@
       "the notes contain no snapshot field names, file paths, rule codes or commit hashes",
       "features, items and milestones are named by name, with an ID only in parentheses after a name"
     ]
+  },
+  {
+    "eval_id": 4,
+    "eval_name": "lanes-file-from-focus",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § 2026-10-30 — lanes, delivery proof, migration slot (1.1.0 → 1.2.0)",
+    "prompt": "/chart-progress in a repo whose roadmap has a ## Focus slot and no reachable tracker.",
+    "assertions": [
+      "docs/roadmap/lanes.md is written by lanes.py and names the source ref and SHA",
+      "without tracker access the file says claims were not read instead of inventing claims",
+      "lanes.md is not edited by hand after lanes.py writes it"
+    ]
   }
 ]

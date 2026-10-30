@@ -17,9 +17,9 @@ When you have an idea and want it on the board, not in your head. It is the firs
 
 ## What it does
 
-1. **File it.** One ticket: the title is the idea in a line, the body is your words verbatim plus anything you linked. It gets exactly one state role, `needs-triage`. If the working agreement gates new tickets, it drafts the ticket, creates nothing, and says who must approve it.
+1. **File it.** One ticket: the title is the idea in a line, the body is your words verbatim plus anything you linked. It gets exactly one state role, `needs-triage`, and you as assignee, so everyone else sees the idea is being framed. If the working agreement gates new tickets, it drafts the ticket, creates nothing, and says who must approve it.
 2. **Frame it.** It runs [`frame-change`](frame-change.md) on the idea.
-3. **Record the frame.** In one edit the ticket swaps `needs-triage` for `shaping`. A comment carries the stated tier, the neighbours found, and the open questions, numbered. Tier 0 skips Shaping: the ticket goes straight to `ready-for-agent`.
+3. **Record the frame.** In one edit the ticket swaps `needs-triage` for `shaping`. A comment carries the stated tier, the neighbours found, and the open questions, numbered. Tier 0 skips Shaping: the ticket goes straight to `ready-for-agent`. When the frame added roadmap items and you named the one you carry on with, that `ROAD-N` goes at the start of the title, which is where the claim check before a spec looks. The other new items get a ticket only when someone claims them.
 
 It ends with the ticket's URL and the next command, `/shape #N`.
 
@@ -29,7 +29,9 @@ Without the skill, with an open working agreement, all three runs filed a ticket
 
 With the skill, all three filed with `needs-triage`, stated tier 2, swapped to `status:shaping` as the only state role, and commented the tier and numbered questions. See `skills/track/idea/TESTS.md`.
 
-Not covered: tier 0, which should go straight to Ready.
+The 1.1.0 runs, on an in-repo tracker CLI because the harness denies `gh issue create` to test agents, measured the claim. Without the text, 2/2 filed the ticket unassigned and 2/2 left the title alone after the operator named ROAD-251. With it, all four did both.
+
+Not covered: tier 0, which should go straight to Ready, and a frame where nobody names the item they carry on with.
 
 ## See also
 

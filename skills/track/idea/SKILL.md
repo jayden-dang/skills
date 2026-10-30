@@ -1,6 +1,6 @@
 ---
 name: idea
-version: 1.0.1
+version: 1.1.0
 description: Puts an idea on the board as a ticket and frames it, so it waits in Shaping with its tier and open questions. Run it with /idea <the idea>.
 disable-model-invocation: true
 ---
@@ -14,13 +14,22 @@ The states are the roles in `docs/agents/triage-labels.md`.
 1. **File it.** Create one ticket with the tracker ops in `docs/agents/issue-tracker.md`.
    The title is the idea in a line. The body is the operator's words verbatim, plus
    anything they linked. Give it exactly one state role, `needs-triage`, from
-   `docs/agents/triage-labels.md`. If the repo's working agreement gates new tickets,
+   `docs/agents/triage-labels.md`, and assign it to the operator in the same create — the
+   assignee is how everyone else sees that this idea is being framed. Two baseline runs
+   filed it with `assignees: []`. If the repo's working agreement gates new tickets,
    follow the agreement: draft the ticket, create nothing, and say who must approve it.
-   *Done when: the ticket exists with one state role, or the draft names its approver.*
+   *Done when: the ticket exists with one state role and the operator assigned, or the draft
+   names its approver.*
 2. **Frame it.** REQUIRED SUB-SKILL: use `frame-change` on the ticket's idea.
 3. **Record the frame on the ticket.** In one edit, swap `needs-triage` for `shaping`.
    Then comment the stated tier, the neighbours `frame-change` found, and the open
    questions, numbered. Tier 0 skips Shaping: swap to `ready-for-agent` and say so.
+   WHEN the frame added roadmap items and the operator named the one they carry on with,
+   put that `ROAD-N` at the start of the title in the same edit (`ROAD-251 Weekly digest…`):
+   the claim check before a spec is written reads titles. Unnamed → leave the title. The
+   other new items get no ticket here. Two runs left the title alone after the operator said
+   he would carry on with ROAD-251; one wrote "Jayden is taking this one" into the comment,
+   where no claim check reads.
    *Done when: the ticket carries one state role and the comment.*
 
 One ticket, one state role. One baseline run that filed an idea labelled it `needs-info`

@@ -10,5 +10,17 @@
       "the ticket ends with shaping as its only state role and a comment carrying the tier and numbered open questions"
     ],
     "eval_id": 1
+  },
+  {
+    "eval_id": 2,
+    "eval_name": "ticket-is-the-frame-claim",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § 2026-10-30 — the ticket is the frame's claim (1.0.1 → 1.1.0)",
+    "prompt": "/idea Learners should get a weekly digest of what they studied. — then, after a frame that minted ROAD-251 and ROAD-252 with the operator carrying on with ROAD-251, record the frame.",
+    "assertions": [
+      "the ticket is created with the operator assigned",
+      "after the frame the title starts with ROAD-251 and the state role is shaping",
+      "no ticket is opened for ROAD-252"
+    ]
   }
 ]

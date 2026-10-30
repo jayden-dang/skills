@@ -69,3 +69,18 @@ Checked deterministically on the W10 fixture:
 - #28 with BERTH-4.1 and its guard 4.2: `eligible, tier-1 fix`, and no disagreement line.
 - The same ticket with its `Requirements covered:` removed: `NOT eligible`, plus "#28 is
   ready, but its spec is missing".
+
+## 2026-10-30 — Shaping shows who is framing (1.0.2 → 1.1.0)
+
+Source: the klynt frame-change. A ROAD's claim is the assigned tracker issue, opened before
+framing. `board.py` already fetched assignees but printed them only for Human-only, so a
+ticket being framed by someone else looked free.
+
+Test-first: `scripts/test_board.py` feeds two shaping tickets (#301 assigned to alice, #302
+unassigned). It failed with `'alice' not found in '- #301 ROAD-6 desktop foundation — no spec
+yet'`. After the change it passes: Shaping lines read `— alice — no spec yet` and
+`— unassigned — …`, with `(you)` when the assignee is the session user. The SKILL text gains a
+half-line naming it. No agent run was needed: the reply quotes the script's output.
+
+Not changed: `/idea` assigning the operator at file time. The harness classifier denies
+`gh issue create` from test agents even against a stub, so that edit has no runnable test yet.

@@ -170,7 +170,9 @@ for title, s in (("Needs input (the open question)", "needs-info"), ("Shaping (s
         extra = last_comment(i) if s == "needs-info" else ""
         if s == "shaping":
             st = spec.get(code_of(i) or "")
-            extra = "no spec yet" if not st else ", ".join(f"{k} {v}" for k, v in st.items())
+            who = ", ".join(names(i.get("assignees"), "login")) or "unassigned"
+            extra = f"{who}{' (you)' if me and me in who else ''} — " + (
+                "no spec yet" if not st else ", ".join(f"{k} {v}" for k, v in st.items()))
         print(f"- #{i['number']} {i['title']}" + (f" — {extra}" if extra else ""))
     if not by[s]:
         print("none")

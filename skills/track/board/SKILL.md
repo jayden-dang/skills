@@ -1,6 +1,6 @@
 ---
 name: board
-version: 1.0.2
+version: 1.1.0
 description: Shows the whole board by state, starting with everything waiting on you, and every place the board and the repo disagree. Run it with /board.
 disable-model-invocation: true
 ---
@@ -43,7 +43,7 @@ The script is read-only, and so is this skill: write nothing to the tracker.
 1. **Waiting on you.** Every entry under that heading, each with the one thing to do:
    - a PR: review and merge, quoting its decision verbatim when it has one;
    - a question: answer it;
-   - Shaping: write the spec (`/shape #N`) or approve it;
+   - Shaping: write the spec (`/shape #N`) or approve it — each line names who is framing it;
    - Inbox: triage it (`/triage`);
    - Human-only: do it (yours), or who holds it;
    - a draft: sign off, or answer its comment.

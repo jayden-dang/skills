@@ -686,3 +686,25 @@ hand. The snippet now reads `"${sha}:refs/…"`, checked in zsh.
 
 Not covered: release after delivery (lanes.md reports a lock held by a done ROAD), and two
 controllers racing on a real GitHub remote.
+
+## 2026-10-30 — tick the plan when a task closes (3.1.0 → 3.2.0)
+
+Source: the owner's call to tick `tasks.md` at task completion instead of waiting for
+realign-spec, so land-branch can check the boxes itself. klynt evidence: 20 of 98 Implemented
+specs still had open boxes (14 with none ticked), and ticks landed in bulk afterwards (e.g.
+`docs(grnd): tick Tasks 1-14 now that their commits and checks are green`). Completion was
+recorded only in the git-ignored ledger.
+
+**RED, 3.1.0** (sonnet 1, haiku 1). Controller at task-lifecycle step 5 with Task 1's clean
+review in hand, specs tracked. 2/2 appended the ledger line and left every box in `tasks.md`
+open. No commit.
+
+**Form.** An omitted step, so step 7 gets "tick the plan". It names the boxes (inside the
+`## ROAD-N amendment` group when the task belongs to one), and uses a `git check-ignore`
+conditional: tracked → commit `docs(<CODE>): tick Task N` alone on the feature branch;
+ignored → edit and commit nothing, never `git add -f`. The ignored branch is the owner's
+constraint for repos that keep specs out of git. build-inline step 10 points here.
+
+**GREEN, 3.2.0.** Tracked (sonnet 1, haiku 1): 2/2 ticked Task 1's four steps and committed
+`docs(MEDIA): tick Task 1`, with Task 2 untouched. Ignored (haiku 1): ticked all 4 on disk,
+committed nothing, and `docs/specs` stayed untracked.

@@ -49,6 +49,15 @@ worker context after a semantic-unit boundary or any hard rotation trigger.
 
    `Task N: complete (commits <base7>..<head7>, review clean)`
 
+   Then **tick the plan**: mark every step of Task N `- [x]` in `tasks.md` — inside its
+   `## ROAD-N amendment` group when the task belongs to one. The ledger is local; the tick
+   is the record other people, `land-branch` and `chart-progress` read. WHEN
+   `git check-ignore -q <path to tasks.md>` fails (the plan is tracked), commit that file
+   alone as `docs(<CODE>): tick Task N` on the feature branch, so the tick reaches the
+   integration branch with the code. WHEN it succeeds (specs are kept out of git), edit the
+   file and commit nothing — never `git add -f` it. Two baseline controllers ledgered Task 1
+   and left every box in `tasks.md` open.
+
 For a unit containing exactly one task, this task's clean Standards and Spec
 verdicts also close the unit. Do not dispatch a duplicate unit reviewer over
 the same diff, brief, and evidence. A multi-task unit still needs unit

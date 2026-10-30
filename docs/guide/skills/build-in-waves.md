@@ -10,7 +10,7 @@
 | **Bucket** | execution |
 | **Invocation** | model-invocable (the agent calls it on its own) |
 | **Reads** | `tasks.md` (`Execution-mode: continuous`, Global Constraints), `.skills/<CODE>/progress.md`, `docs/agents/project.md` |
-| **Writes** | implementation commits; `.skills/` scratch — brief, report, diff package per task, plus the ledger |
+| **Writes** | implementation commits; a `docs(<CODE>): tick Task N` commit per task (edited in place, not committed, when specs are git-ignored); `.skills/` scratch — brief, report, diff package per task, plus the ledger |
 | **Calls** | [`isolate-workspace`](isolate-workspace.md), [`inspect-change`](inspect-change.md), `polish-diff`, [`validate-feature`](validate-feature.md), [`root-cause`](root-cause.md), [`land-branch`](land-branch.md); hands off to [`build-by-story`](build-by-story.md) / [`build-inline`](build-inline.md) when mis-routed |
 | **Called by** | [`plan-tasks`](plan-tasks.md) (continuous route), [`write-handoff`](write-handoff.md) (resume) |
 

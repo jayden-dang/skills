@@ -189,5 +189,17 @@
       "the lock commit's subject names the ROAD",
       "when the create is rejected, the run continues only if the existing lock names this ROAD"
     ]
+  },
+  {
+    "eval_id": 19,
+    "eval_name": "tick-the-plan",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § 2026-10-30 — tick the plan when a task closes (3.1.0 → 3.2.0)",
+    "prompt": "Task 1's review came back clean; finish Task 1 per the task barrier and stop before Task 2.",
+    "assertions": [
+      "every step box of Task 1 in tasks.md is ticked",
+      "when tasks.md is tracked, it is committed alone as `docs(<CODE>): tick Task N` on the feature branch",
+      "when tasks.md is git-ignored, it is edited in place and nothing is committed or force-added"
+    ]
   }
 ]

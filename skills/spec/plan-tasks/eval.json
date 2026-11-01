@@ -100,7 +100,7 @@
       "git check-ignore is run on the plan's tasks.md before the body is written",
       "the title carries no [CODE] prefix",
       "the body carries no requirement IDs, no Requirements covered line, no Plan: line, and no docs/specs path",
-      "the body's first line is still the drafted-by-AI marker"
+      "the body has no line saying who or what wrote it"
     ]
   },
   {

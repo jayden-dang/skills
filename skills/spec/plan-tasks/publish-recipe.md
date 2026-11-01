@@ -18,26 +18,18 @@
    issue:
    - **Title:** shared → `[CODE] <feature outcome>`; private →
      `<feature outcome>`. Same sense as the plan Goal either way.
-   - **Body** (behavior and interfaces, never file paths):
-     - first line: `> *This issue was drafted by AI with \`plan-tasks\`.*`
-     - What ships (end-to-end), high-level acceptance
-     - shared only: `Requirements covered:` — **union** of every task footer ID
-     - shared only: `Plan:` path to this `tasks.md`
-     - shared only: `Roadmap:` `ROAD-N` / `MILE-N` when INDEX binds them
-     - Optional: task checklist as plain markdown (not tracker issues), each
-       item its task title alone
-   - Private means every line reads whole to someone holding only the tracker
-     and the code. Measured: with `docs/specs/` ignored, 3/3 issues still sent
-     `[QUOTA]`, `Requirements covered: QUOTA-1.1 … QUOTA-2.2` and `Plan:
-     docs/specs/…/tasks.md` to a tech lead who assigns work from Linear and
-     can open none of them. The acceptance lines already carry that meaning.
-   - Label only this issue with the frontier role (`ready-for-agent` mapped
-     string) when it is grabbable. Remove its current state role (`shaping`,
+   - **Body:** as `docs/agents/issue-tracker.md` **Issue format** says, with the plan filling Outcome,
+     Acceptance and Out of scope. A ticket's `## Problem` stays as written. No such section: name
+     `/configure-repo`, show the draft, create nothing.
+   - **Estimate:** the rubric in **Issue format**, judged against this plan, unless the operator named one.
+     Two of three baseline publishes left 2 on a five-task plan, one adding "2 may be low".
+   - **State:** `ready-for-agent` (mapped string) when it is grabbable, else `shaping`. Remove its current state role (`shaping`,
      `needs-triage`) in the same edit: a ticket carries one state role. Two of three
      baseline publishes onto #23 added `ready-for-agent` beside `status:shaping`, and the
      board read it as both being shaped and ready.
-   - Record the issue id under `.skills/<CODE>/` for execute / `land-branch`.
-     That record is where the ID ↔ issue trace lives when reach is private.
+   - Record the issue ID as a line in `.skills/<CODE>/tickets.md` for `/board`, `/go` and `land-branch`.
+     When reach is private, the line also carries `covers:` with the union of task footer IDs. One
+     baseline wrote `.skills/STMT/issue.md`, which nothing reads.
 5. **WHEN unit is `tasks` (legacy only):** one issue per plan task in dependency
    order, each with its own `Requirements covered:` from that task's footer
    (shared only, as in step 4); record all ids under `.skills/<CODE>/`. Still no

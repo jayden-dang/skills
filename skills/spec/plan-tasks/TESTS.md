@@ -506,3 +506,21 @@ the feature issue, and that the frontier label replaces the current state role i
 same edit. 3 haiku and 1 sonnet:
 - one state role (`ready-for-agent`): 4/4;
 - no new issue: 4/4.
+
+## 2026-11-01 — publish follows the repo's issue format
+
+Design: `docs/design/2026-11-01-issue-format.md`. Fixture: a generated repo with an in-repo tracker CLI, the
+new `Issue format` seed, an approved five-task plan, and a ticket with the operator's Problem and estimate 2.
+
+**RED, publish-recipe on the new seed** (private sonnet 1 and haiku 1, shared haiku 1). The seed carried the
+format: 3/3 kept the Problem, dropped the task list and the marker, and followed reach. "The recipe wants one
+as the first body line. The repo's Issue format says no line may name who wrote the issue." Two failures
+remained. 2/3 left the estimate at 2 on five tasks, one adding "2 may be low". One recorded the ticket in
+`.skills/STMT/issue.md`, which nothing reads.
+
+**Form.** A REQUIRED slot for the estimate and an exact path for the record. The old body list and marker
+contradicted the seed and were replaced by a pointer.
+
+**GREEN** (same cells). 3/3 revised the estimate (5, 3, 5), recorded in `.skills/STMT/tickets.md`, kept the Problem and
+created no issue. Private: `covers:` on the line and no ID on the tracker. Shared: `[STMT]` title and the trace lines last.
+

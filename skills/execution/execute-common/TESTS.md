@@ -723,3 +723,15 @@ command, so it was checked as one, on a bare repo whose pre-push hook prints and
 The release command was added with the same flag, because `git push --delete` runs pre-push too.
 `--no-verify` is scoped to these two empty-tree lock pushes (owner's choice of option 1 over
 skipping `locks/*` in each repo's lefthook config).
+
+## 2026-11-01 — a blocked ticket is not claimed (3.2.1 → 3.3.0)
+
+Design: `docs/design/2026-11-01-issue-format.md`. Fixture: a generated repo with an in-repo tracker CLI and a board of
+tickets. Prompt: the operator names tickets to build and asks for the claim.
+
+**RED, 3.2.1** (sonnet 1, haiku 1). 2/2 moved #2 to `building` while its blocker #9 was still in shaping, adding "the
+build may stall on it". 2/2 left alice's #1 alone unprompted, so no text was written for that.
+
+**GREEN, 3.3.0** (same cells, plus an unblocked #3). 2/2 left #2 as it was and named #9, left alice's #1 alone, and
+claimed #3 with no question. Record lines kept `covers:`.
+

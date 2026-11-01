@@ -15,6 +15,10 @@ the plan was published as.
   `building`, using the label mapped in `docs/agents/triage-labels.md`. If `building` has
   no mapped label, comment "Building on `<branch>`" instead, and name the missing role in
   the close report.
+- **A resolved ticket with an open blocker this build does not also deliver:** leave it as it is, claim
+  nothing, and report the blocker. Blockers come from the tracker's relation or a `Blocked by:` line.
+  Two baseline runs moved #2 to `building` while its blocker #9 was still in shaping, adding only
+  that "the build may stall on it".
 - **None resolved:** ask whether this build should sync, and take a short list of IDs. No
   answer, or no → empty ticket set; continue.
 

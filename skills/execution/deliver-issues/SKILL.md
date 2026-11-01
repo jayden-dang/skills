@@ -1,6 +1,6 @@
 ---
 name: deliver-issues
-version: 2.3.0
+version: 2.4.0
 description: Use when every ready ticket on the board, or a named set of tickets, must be built, reviewed and opened as pull requests in one unattended run — the multi-ticket delivery behind /go, /deliver-issues, "deliver the board", "build every ready ticket", ending with one message for whatever needs the operator.
 ---
 
@@ -35,7 +35,11 @@ or in `docs/specs/fixes.md`, with one of them a `SHALL CONTINUE TO` guard: the m
 `/shape` writes once its root cause is confirmed. Its feature may read `Implemented`, and it
 has no `tasks.md` of its own. Three baseline runs moved an approved fix like this, #28
 (BERTH-4.1 and its guard 4.2), back to `shaping` for lacking `tasks.md`, which would send
-every fixed bug round the loop forever. Order the eligible ones by `Blocked by:`.
+every fixed bug round the loop forever. Where specs are private, a ticket's feature and covered IDs are on its line in `.skills/<CODE>/tickets.md`. Order the eligible ones by their blockers, from the tracker's relation or a `Blocked by:` line.
+
+A ticket with an open blocker outside this run, or assigned to someone else, lacks nothing: it stays
+as it is and gets a row in the final message. One of two baseline runs sent such a ticket to `shaping`
+with its spec approved, calling that "my judgment call".
 
 Every other ready ticket leaves the ready column before any build starts. In one edit,
 swap its ready role for `shaping` (`docs/agents/triage-labels.md`). Then comment the pieces

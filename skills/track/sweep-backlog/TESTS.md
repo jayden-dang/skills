@@ -111,3 +111,9 @@ ticket counts as read, a ticket both blocked-external and blocked, which half of
 pair to keep, and that "until it reaches `main`" depends on the repo's flow. All six runs
 resolved each of the four the same way and correctly, so a sentence for any of them would
 fail the no-op test; recorded, not added.
+
+## 2026-11-01 — native blocking relations, no edit
+
+RED, 1.0.0 on the new seed (haiku 1): classed both natively blocked tickets `blocked` with their blockers, ordered them
+after those, and wrote nothing. No failure, so no text was written.
+

@@ -197,3 +197,15 @@ build no longer opens a product walk.
 `not walked by hand — /write-dogfood`; the row for #33 carried no note.
 
 Not covered: a branch that adds a new screen, haiku, and a repeat to separate the slot from luck.
+
+## 2026-11-01 — blocked and assigned tickets stay put (2.3.0 → 2.4.0)
+
+Fixture as in `execute-common`'s entry of this date, on private specs. Prompt: section 1 only, deciding and writing nothing.
+
+**RED, 2.3.0** (sonnet 1, haiku 1). 2/2 recognised the private tier-1 fix from `.skills/EXPORT/tickets.md`, ordered the
+blocker first from the native relation, and held alice's ticket. One failure: sonnet sent #2, blocked and with its spec
+approved, to `shaping`, "my judgment call", since the rule said every other ready ticket leaves the column.
+
+**GREEN, 2.4.0** (sonnet 1). #1 and #2 stayed as they were with a row each, naming alice and #9. #3, #5, #4 eligible in
+that order, with #4 based on #5's branch. No haiku GREEN, since haiku held this at RED.
+

@@ -108,8 +108,7 @@ and Claude/agents compatibility dirs, including nested folders. Its **plugins**
 are npm/TS hooks, not skill packs — there is no `/jdk:` marketplace.
 
 This repo ships `opencode.json` with `skills` set to the eleven Engineer Pack
-category directories (`./skills/discovery`, …), not `./skills` (that would also
-load Personal Pack). Clone this repo and run OpenCode in it, or copy those paths
+category directories (`./skills/discovery`, …), not `./skills`. Clone this repo and run OpenCode in it, or copy those paths
 into `~/.config/opencode/opencode.json` pointing at the clone:
 
 ```json

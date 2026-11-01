@@ -3,13 +3,13 @@
   "owner": {
     "name": "Jayden Dang"
   },
-  "description": "Two independent skill packs: Engineer Pack (software) and Personal Pack (life/vault management).",
+  "description": "Engineer Pack: A-to-Z agentic development skill set.",
   "plugins": [
     {
       "name": "jdk",
       "displayName": "Engineer Pack",
       "source": "./",
-      "description": "Engineer Pack (jdk, jayden-dang-kit): A-to-Z agentic development (ideation to release, requirements traceability, roadmap/milestones). Personal Pack is separate — not included here.",
+      "description": "Engineer Pack (jdk, jayden-dang-kit): A-to-Z agentic development (ideation to release, requirements traceability, roadmap/milestones).",
       "version": "1.4.0",
       "author": {
         "name": "Jayden Dang"
@@ -91,36 +91,6 @@
         "./skills/meta/zone-mode",
         "./skills/meta/author-skills",
         "./skills/meta/reflect"
-      ]
-    },
-    {
-      "name": "personal-pack",
-      "source": "./",
-      "description": "Personal Pack: independent life and multi-project management skills. Secretary/coach role. Install separately from Engineer Pack.",
-      "version": "0.2.1",
-      "author": {
-        "name": "Jayden Dang"
-      },
-      "skills": [
-        "./skills/personal/life-start",
-        "./skills/personal/life-setup",
-        "./skills/personal/life-sync-workspaces",
-        "./skills/personal/life-capture",
-        "./skills/personal/life-process-inbox",
-        "./skills/personal/life-orient",
-        "./skills/personal/life-plan-day",
-        "./skills/personal/life-execute-session",
-        "./skills/personal/life-open-project",
-        "./skills/personal/life-plan-project",
-        "./skills/personal/life-close-project",
-        "./skills/personal/life-maintain-area",
-        "./skills/personal/life-open-learning-track",
-        "./skills/personal/life-log-learning",
-        "./skills/personal/life-review-week",
-        "./skills/personal/life-review-quarter",
-        "./skills/personal/life-replan",
-        "./skills/personal/life-charter",
-        "./skills/project/define-system-doc"
       ]
     }
   ]

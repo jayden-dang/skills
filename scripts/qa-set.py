@@ -124,29 +124,24 @@ def listed_in(path, plugin=None):
         d = next(x for x in d["plugins"] if x["name"] == plugin)
     return set(d["skills"])
 
-engineering = {t for t in tree if "/skills/personal/" not in t.replace("./", "/", 1)}
-personal = tree - engineering
+engineering = tree
 jdk = listed_in(".claude-plugin/plugin.json")
 check("plugin.json lists every engineering skill", engineering <= jdk,
       "; ".join(sorted(engineering - jdk)[:4]))
 check("marketplace.json jdk entry equals plugin.json", listed_in(".claude-plugin/marketplace.json", "jdk") == jdk)
 check(".kimi-plugin/plugin.json equals plugin.json", listed_in(".kimi-plugin/plugin.json") == jdk,
       "; ".join(sorted(jdk ^ listed_in(".kimi-plugin/plugin.json"))[:4]))
-check("personal-os.plugin.json lists exactly the personal skills",
-      listed_in(".claude-plugin/personal-os.plugin.json") == personal)
 
 # 7c hand-written totals match the tree
 # The figures are prose in several files and were edited by hand to 94/76/31 once;
 # the tree is the only source of truth.
-total, n_eng, n_personal = len(tree), len(engineering), len(personal)
+total, n_eng = len(tree), len(engineering)
 user_invoked = sum("disable-model-invocation: true" in open(p).read() for p in skills)
 def claim(path, pattern, expect, label):
     m = re.search(pattern, open(path).read())
     got = int(m.group(1)) if m else None
     check(f"{path}: {label} = {expect}", got == expect, f"found {got}")
 claim("AGENTS.md", r"\*\*(\d+) skills across", total, "skills")
-claim("AGENTS.md", r"\((\d+) engineering \+", n_eng, "engineering")
-claim("AGENTS.md", r"\+ (\d+) Personal OS\)", n_personal, "Personal OS")
 claim("AGENTS.md", r"All (\d+) of them", user_invoked, "user-invoked")
 claim("docs/guide/skills/README.md", r"(?m)^(\d+) skills in eleven buckets", n_eng, "engineering")
 claim("docs/guide/START-HERE.md", r"\((\d+) engineering skills\)", n_eng, "engineering")

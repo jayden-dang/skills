@@ -1,7 +1,6 @@
 # AGENTS.md — Agent Behavior Constitution
 
-> A-to-Z agentic development skill set · **94 skills across 11 categories**
-> (76 engineering + 18 Personal OS) · `jayden-dang/skills` · v1.0.0
+> A-to-Z agentic development skill set · **76 skills across 11 categories** · `jayden-dang/skills` · v1.0.0
 
 This file is the single source of truth for agent behavior when working with this
 skill set on any harness. Read it first, before any skill, before any action.
@@ -114,7 +113,7 @@ skill's workflow only when the user has explicitly told you to. A waiver of
 
 **User-invoked skills** carry `disable-model-invocation: true` in frontmatter.
 Agents MUST NOT auto-invoke these — name them for the user to run (`/triage`,
-`/zone-mode`). All 32 of them:
+`/zone-mode`). All 31 of them:
 
 `zone-mode`, `author-skills`, `reflect` · `bootstrap-repo`, `configure-repo` ·
 `forge-goal`, `forge-prompt`, `interpret-session` ·
@@ -122,7 +121,7 @@ Agents MUST NOT auto-invoke these — name them for the user to run (`/triage`,
 `define-project`, `define-system-doc` · `audit-shipped`, `cut-release`, `tend-pr` · `assess-milestone`,
 `map-features`, `publish-issues`, `record-debt`, `refresh-roadmap-status`, `chart-progress`, `brief-road`,
 `scan-architecture`, `show-run-status`, `sweep-backlog`, `triage`, `write-handoff` ·
-the five-command path: `board`, `idea`, `shape`, `go` (with `cut-release` above) · Personal OS: `life-setup`.
+the five-command path: `board`, `idea`, `shape`, `go` (with `cut-release` above).
 
 **Model-invoked skills** (no `disable-model-invocation`) are auto-invoked when
 the description matches the situation. Everything not listed above, including
@@ -312,8 +311,7 @@ section for the anti-patterns; checklists whose steps end on a checkable
 `Done when:` criterion; and a no-op path for when the conditions do not apply.
 
 **Naming:** verb-first, kebab-case — `specify-behavior`, `inspect-change`.
-Engineering skills carry no prefix; Personal OS skills are namespaced `life-`
-because their bare verbs would collide once both packs are installed.
+Skills carry no prefix.
 
 **Budget:** discipline skills keep the core body to ~500 words; aim for
 **200 lines** or fewer in any SKILL.md; the hard ceiling is **300 lines**,
@@ -350,14 +348,13 @@ skills/
   meta/ setup/ discovery/ spec/ execution/ review/    # engineering (default plugin)
   acceptance/ craft/ ship/ track/ project/
   engineering/                                        # package index README only
-  personal/                                           # Personal OS, opt-in, life-* prefix
-templates/          # seeds the skills write into a consuming repo, + personal-os/
+templates/          # seeds the skills write into a consuming repo
   agents/           # project.md, issue-tracker.md, triage-labels.md templates
 scripts/            # the five lint passes lefthook runs
 docs/
   guide/            # the human tutorial and per-skill pages
   design/           # design records, including tested no-ops
-  releases/ personal-os/
+  releases/
 .skills/            # git-ignored ephemera: .skills/<CODE>/ per feature;
                     # shared research/, decisions/
 ```
@@ -371,10 +368,6 @@ glossary), `docs/adr/`, `docs/architecture/` (the `ARCH-N` spine),
 `docs/roadmap/INDEX.md`, and `docs/quality/debt.md`. Skills read these at runtime;
 when one is missing, say so once per session and suggest `configure-repo` rather
 than inventing the content.
-
-**Packages:** engineering and Personal OS install independently. Personal skills
-run on a **secretary default** — management only. The Iron Laws above govern
-engineering sessions, not life-vault management.
 
 ---
 

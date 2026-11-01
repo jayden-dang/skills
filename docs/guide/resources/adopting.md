@@ -26,7 +26,7 @@ codex plugin add jdk@jayden-dang-skills
 
 Then `/reload` or a new session. Optional catalog: `/plugins marketplace` with `.kimi-plugin/marketplace.json`.
 
-**OpenCode** — this repo ships `opencode.json` that points at Engineer Pack category folders (not Personal Pack). Clone and open the repo, or copy those `skills` paths into `~/.config/opencode/opencode.json` against a local clone. Invoke via the `skill` tool (`frame-change`), not `/jdk:`. Do not flatten this tree into `~/.agents/skills/` if OpenCode would then see category folders as skill IDs.
+**OpenCode** — this repo ships `opencode.json` that points at Engineer Pack category folders. Clone and open the repo, or copy those `skills` paths into `~/.config/opencode/opencode.json` against a local clone. Invoke via the `skill` tool (`frame-change`), not `/jdk:`. Do not flatten this tree into `~/.agents/skills/` if OpenCode would then see category folders as skill IDs.
 
 **Cursor and other flatten agents** — skill folder names unchanged (`/frame-change`, not `/jdk:frame-change`):
 
@@ -44,7 +44,6 @@ for cat in meta discovery spec execution review acceptance craft ship track proj
 done
 ```
 
-A blind `skills/*/*/` loop would also install Personal OS.
 
 ## Then configure the repo, once
 

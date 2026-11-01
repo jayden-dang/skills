@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### Removed: the Personal Pack / Personal OS (2026-11-01)
+
+All 18 `life-*` skills, `skills/personal/`, `templates/personal-os/`, `docs/personal-os/`, `personal-os.plugin.json` and the `personal-pack` marketplace entry are gone; the repo ships only the Engineer Pack (76 skills). `qa-set.py` and `check-plugin-slug.py` no longer expect a personal pack. Older entries keep the name as history.
+
 ### Removed: `build-on-host` (2026-10-25)
 
 The remote-build skill is gone from the Engineer Pack (94 skills, 76 engineering; 32 user-invoked). Its pointers came out of `plan-tasks` 1.9.1 (no run-here-or-on-the-host question after the route pick), `configure-repo` 1.13.1 (Decision N and `build-host.md` removed; decisions are A–M), and the manifests. Recorded TESTS and design notes keep the name as history.

@@ -1,15 +1,8 @@
 # Skills
 
-This repository hosts **independent skill packages**. Install only what you need.
-
-| Package | Plugin / pack name | Path | Default install? | Role |
-|---|---|---|---|---|
-| **Engineer Pack** | `jdk` (jayden-dang-kit) | `skills/{meta,discovery,spec,…}/` | **Yes** (default plugin) | Spec-driven coding: ideation → ship |
-| **Personal Pack** | `personal-pack` | `skills/personal/` | **Opt-in** | Life + multi-project *management* (secretary/coach) |
-
-- Personal OS (standalone): **[skills/personal/README.md](skills/personal/README.md)** · **[docs/personal-os/START-HERE.md](docs/personal-os/START-HERE.md)**
-
-Each package stands alone. Personal OS does **not** depend on the engineering package, and engineering installs do **not** require it.
+| Package | Plugin / pack name | Path | Role |
+|---|---|---|---|
+| **Engineer Pack** | `jdk` (jayden-dang-kit) | `skills/{meta,discovery,spec,…}/` | Spec-driven coding: ideation → ship |
 
 ---
 
@@ -82,7 +75,6 @@ grok plugin install jdk --trust
 Update with `grok plugin update jdk`. Rollback: `grok plugin uninstall jdk`.
 
 The picker label is **Engineer Pack**; the slug you type and install is `jdk`.
-Personal Pack is **not** in this plugin.
 
 **Nothing to install into your app repo.** Pure `SKILL.md` — no vendored runtime.
 
@@ -147,19 +139,6 @@ agents need `--copy` and why.
 `SKILL.md` and the traceability check is `grep`/`git` the agent drives.
 `AGENTS.md` at the repo root is the portable behavior contract; Codex CLI reads
 it natively. `/zone-mode` is user-run — it is not injected at session start.
-
-### Personal OS (opt-in, independent)
-
-Full guide: [skills/personal/README.md](skills/personal/README.md).
-
-```bash
-npx skills@latest add jayden-dang/skills
-```
-
-Pick **Personal Pack** at the prompt — the two packs are listed separately, so an
-engineering-only install never pulls these in.
-
-In your notes vault, run `life-setup` once.
 
 ### Dev symlink (this repo only)
 
@@ -264,23 +243,6 @@ and countered by name. See [The gates](docs/guide/concepts/gates.md).
 
 One page per skill in the [skill reference](docs/guide/skills/README.md).
 
-### Personal OS (opt-in, independent package)
-
-Standalone product docs: [skills/personal/README.md](skills/personal/README.md) · [docs/personal-os/START-HERE.md](docs/personal-os/START-HERE.md).
-
-| | |
-|---|---|
-| gate | `life-start` |
-| setup | `life-setup` |
-| capture | `life-capture`, `life-process-inbox` |
-| plan | `life-orient`, `life-plan-day`, `life-execute-session` |
-| portfolio | `life-open-project`, `life-plan-project`, `life-close-project`, `life-maintain-area` |
-| learning | `life-open-learning-track`, `life-log-learning` |
-| review | `life-review-week`, `life-review-quarter`, `life-replan`, `life-charter` |
-| disk | `life-sync-workspaces` |
-
-Templates: `templates/personal-os/`.
-
 ## Traceability, without a linter
 
 The vertical layer — does every requirement agree across definition and task
@@ -317,7 +279,6 @@ opt into a documented CI job; it is outside the default path. See
 | [Troubleshooting](docs/guide/resources/troubleshooting.md) | symptoms and causes |
 | `docs/architecture/INDEX.md` | architecture SSOT (invariants + system design) |
 | `docs/product/vision.md` | product north star (engineering) |
-| [Personal OS](./skills/personal/README.md) | independent life/management skill set |
 
 ## Developing this repo
 

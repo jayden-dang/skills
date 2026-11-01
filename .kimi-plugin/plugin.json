@@ -1,7 +1,7 @@
 {
   "name": "jdk",
   "version": "1.4.0",
-  "description": "Engineer Pack (jdk, jayden-dang-kit): A-to-Z agentic development (ideation to release, requirements traceability, roadmap/milestones). Personal Pack is separate — not included here.",
+  "description": "Engineer Pack (jdk, jayden-dang-kit): A-to-Z agentic development (ideation to release, requirements traceability, roadmap/milestones).",
   "author": {
     "name": "Jayden Dang",
     "url": "https://github.com/jayden-dang"
@@ -95,7 +95,7 @@
   "interface": {
     "displayName": "Engineer Pack",
     "shortDescription": "Spec-driven coding: ideation to ship",
-    "longDescription": "Engineer Pack (jayden-dang-kit). Invoke skills with /skill:<name>. Personal Pack is a separate install.",
+    "longDescription": "Engineer Pack (jayden-dang-kit). Invoke skills with /skill:<name>.",
     "developerName": "Jayden Dang",
     "category": "Developer Tools"
   }

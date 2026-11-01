@@ -14,7 +14,7 @@
   "interface": {
     "displayName": "Engineer Pack",
     "shortDescription": "Spec-driven coding: ideation to ship",
-    "longDescription": "Engineer Pack (jayden-dang-kit). Slash/plugin namespace jdk. Personal Pack is a separate install.",
+    "longDescription": "Engineer Pack (jayden-dang-kit). Slash/plugin namespace jdk.",
     "developerName": "Jayden Dang",
     "category": "Developer Tools"
   }

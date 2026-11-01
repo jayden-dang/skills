@@ -53,8 +53,8 @@ def main() -> None:
         fail(f"marketplace.json plugins names={names!r}, missing {SLUG!r}")
     if "engineer-pack" in names:
         fail("marketplace.json still lists engineer-pack; Engineer Pack slug is jdk")
-    if "personal-pack" not in names:
-        fail("marketplace.json dropped personal-pack")
+    if "personal-pack" in names:
+        fail("marketplace.json still lists personal-pack; the Personal Pack was removed")
 
     eng = next(p for p in market["plugins"] if p["name"] == SLUG)
     if eng.get("displayName") != DISPLAY:
@@ -131,7 +131,7 @@ def main() -> None:
             f"expected Engineer Pack category dirs {OPENCODE_SKILL_SOURCES!r}"
         )
     if "./skills" in oc.get("skills", []) or "./skills/" in oc.get("skills", []):
-        fail("opencode.json must not point at ./skills (that includes Personal Pack)")
+        fail("opencode.json must not point at ./skills ")
 
     print(f"ok: plugin and marketplace Engineer Pack slug is {SLUG}")
 

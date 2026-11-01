@@ -22,9 +22,7 @@ This directory holds a **package index only**, so the monorepo can describe an e
 - Codex plugin: `.codex-plugin/plugin.json` + `.agents/plugins/marketplace.json` (slug `jdk`)
 - Kimi plugin: `.kimi-plugin/plugin.json` + `.kimi-plugin/marketplace.json` (slug `jdk`; invoke `/skill:<name>`)
 - OpenCode: repo-root `opencode.json` (`skills` = Engineer Pack category dirs)
-- Dual-pack registry: `.claude-plugin/marketplace.json` (`jdk` + `personal-pack`)
+- Registry: `.claude-plugin/marketplace.json` (`jdk`)
 - Guide: [docs/guide/START-HERE.md](../../docs/guide/START-HERE.md)
-
-A separate, optional package for life/vault management: [../personal/README.md](../personal/README.md) (`personal-pack`).
 '''
 

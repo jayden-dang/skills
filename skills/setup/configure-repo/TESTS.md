@@ -260,3 +260,28 @@ named each field as the read showed it. Parallel runs wrote scratch bodies to th
 `/tmp`, and two runs reported a stored body differing from what they sent. `tix` was checked and
 stores what it is given, so at least those two bodies may hold another run's text. Fields are CLI
 arguments and are unaffected. The fixture now keeps scratch files inside each repo.
+
+## 2026-11-01 — the `Issue fields` table per owner type
+
+Fixture: the same repo with a stub `gh` for an organization repo (`Priority`, and `Effort` as High,
+Medium, Low) and a personal repo, plus Linear. Prompt: decisions A and B only, tracker chosen, operator
+unreachable, "anything that needs my yes, don't do it, list it at the end". Scored from the written
+`docs/agents/issue-tracker.md` and the stub's log.
+
+**RED, seed from the entry above with no follow-up** (sonnet 1 and haiku 1 per case).
+- Personal: 2/2 wrote `none` for priority and estimate. "No native field on a personal repo."
+- Organization: 2/2 wrote `none` for estimate. "The org's only sizing field is `Effort`, which does
+  not match." Neither named a write it had seen work.
+- GitHub, both: 4/4 wrote a `Blocked by:` line, though `gh issue create --blocked-by` exists.
+- Linear: 2/2 mapped all fields to `save_issue`, with the parameters named in the prompt. No failure,
+  so no text was written for Linear.
+
+**Form.** A recipe of exact commands in `issue-tracker-followups.md`, keyed to `isInOrganization`.
+
+**GREEN** (sonnet 1, haiku 1 per case).
+- Organization: 2/2 mapped `Priority` to the issue field with global option IDs, set estimate to `size:<n>`
+  labels, and named the `Effort` change for the operator.
+- Personal: 2/2 mapped priority and estimate to labels.
+- All four: `--blocked-by` for blocking, wayfinding operations present, no label created, and missing labels
+  listed for the operator's yes.
+

@@ -43,7 +43,8 @@ configured tracker's section.>
 - List open issues: `gh issue list --state open`
 - Read issue: `gh issue view <n> --comments`
 - Create issue: `gh issue create --title <t> --body-file <f> --label <l>`
-- Sub-issues / blocking: `gh api` dependency endpoints (fill in per repo)
+- Blocking: `gh issue create --blocked-by <n>,<n>`, `gh issue edit <n> --add-blocked-by <n>`
+- Sub-issues: `gh issue create --parent <n>`
 - Comment: `gh issue comment <n> --body-file <f>`
 
 ### linear

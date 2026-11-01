@@ -46,7 +46,7 @@ Explainer: skills that read or write issues (`triage`, `publish-issues`, `plan-t
 
 **WHEN the tracker is chosen, read `issue-tracker-followups.md` beside this file and follow it exactly** — what each option means, the PR-surface, Publish unit, Program sync, and Draft surface follow-up questions, the write-scope table, and the IC-default rule all live there.
 
-**Done when:** tracker choice, PR-surface (if applicable), Publish unit, Program sync, Program write role, and Draft surface are confirmed (or declined to defaults: feature + local + ic + repo).
+**Done when:** tracker choice, PR-surface (if applicable), Publish unit, Program sync, Program write role, and Draft surface are confirmed, the `Issue fields` table has a write and a read in every row (or declined to defaults: feature + local + ic + repo).
 
 ### B. Triage label mapping
 

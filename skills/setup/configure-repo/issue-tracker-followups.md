@@ -57,6 +57,47 @@ block in `docs/agents/issue-tracker.md`. They never read a Notion binding writte
 else. One baseline setup recorded it in a new `project.md` section, and that repo's
 drafts would have stayed out of both skills.
 
+## Issue fields (all trackers)
+
+Fill the `Issue fields` table in `docs/agents/issue-tracker.md`. Every row names a write and a read.
+
+On GitHub, run `gh repo view --json isInOrganization`. All four baseline setups wrote "none" for
+priority, estimate or both, and a `Blocked by:` line for blocking, so issues on those repos could
+never carry the fields. These rows hold on both owner types:
+
+| Field | Write | Read |
+|---|---|---|
+| Assignee | `gh issue create --assignee <login>` | `gh issue view <n> --json assignees` |
+| Status | `gh issue create --label <role string>` | `gh issue view <n> --json labels` |
+| Blocking | `gh issue create --blocked-by <n>,<n>` | `gh issue view <n> --json blockedBy` |
+
+**`isInOrganization` true:** priority and estimate are the organization's issue fields. Read their IDs:
+
+```bash
+gh api graphql -f query='{organization(login:"<org>"){issueFields(first:20){nodes{... on IssueFieldSingleSelect{id name options{id name}}}}}}'
+```
+
+Use these global IDs. The REST list's numeric option IDs are rejected. Write each value after the create,
+with the issue's ID from `gh issue view <n> --json id`, and list every option's ID in the row:
+
+```bash
+gh api graphql -f query='mutation{setIssueFieldValue(input:{issueId:"<issue id>",issueFields:[{fieldId:"<field id>",singleSelectOptionId:"<option id>"}]}){clientMutationId}}'
+```
+
+Read both with `gh api repos/<owner>/<repo>/issues/<n> --jq .issue_field_values`.
+
+The estimate scale is 1, 2, 3, 5, 8. Where `Effort` offers other options, name the change for the
+operator, since it reaches every repo in that organization. Until they agree, the estimate row uses
+`size:<n>` labels.
+
+**`isInOrganization` false:** `--label priority:<urgent|high|medium|low>` and `--label size:<n>`, read
+with `gh issue view <n> --json labels`.
+
+**Labels that do not exist yet:** list them for the operator and create them on their yes.
+
+**Local tracker:** each field is a line in the issue file: `Assignee:`, `Status:`, `Priority:`,
+`Estimate:`, and `Blocked by:`.
+
 ## Write scope by role
 
 Also record **who is running setup** for write scope:

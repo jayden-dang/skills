@@ -68,5 +68,31 @@
       "its `### Notion draft surface` block names the drafts data source by `collection://` ID, the workspace, the server, and the Sign-off line"
     ],
     "eval_id": 6
+  },
+  {
+    "eval_id": 7,
+    "eval_name": "issue-fields-follow-the-owner-type",
+    "kind": "behavior",
+    "derived_from": "TESTS.md 2026-11-01 Issue fields",
+    "prompt": "Decisions A and B only. Tracker is GitHub Issues on this organization repo, whose Effort field offers High, Medium, Low. I am away; anything that needs my yes, list it at the end.",
+    "assertions": [
+      "every row of the Issue fields table names a write and a read",
+      "priority maps to the organization's issue field using global option IDs",
+      "estimate maps to size labels until the operator agrees to change Effort",
+      "blocking uses gh issue create --blocked-by",
+      "no label is created and the missing labels are listed"
+    ]
+  },
+  {
+    "eval_id": 8,
+    "eval_name": "personal-repo-maps-fields-to-labels",
+    "kind": "behavior",
+    "derived_from": "TESTS.md 2026-11-01 Issue fields",
+    "prompt": "Decisions A and B only. Tracker is GitHub Issues on this personal repo. I am away; anything that needs my yes, list it at the end.",
+    "assertions": [
+      "priority maps to priority:<level> labels",
+      "estimate maps to size:<n> labels",
+      "no row reads none"
+    ]
   }
 ]

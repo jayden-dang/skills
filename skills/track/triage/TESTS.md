@@ -25,3 +25,20 @@ turns on a pricing decision, so the probe cannot show this failure.
 is not yet established", with the brief marking the cause as open and naming `/shape #N`.
 On the same re-triage, all 3 runs (2 haiku, 1 sonnet) recommended `status:shaping` and
 said to remove `ready-for-agent`. 0 writes reached GitHub.
+
+## 2026-11-01 — select by state, brief in the issue format (1.1.0 → 1.2.0)
+
+Design: `docs/design/2026-11-01-issue-format.md`. Fixture: a generated repo with an in-repo tracker CLI, the new
+`Issue format` seed, and five issues: unlabeled, `enhancement` only, `needs-triage`, `needs-info` with a reply,
+and a planned `status:shaping` ticket with no marker.
+
+**RED, 1.1.0** (sonnet 1, haiku 1). 2/2 opened the comment with the AI line and used the old brief shape, on a
+file whose seed forbids it. 2/2 left the `enhancement`-only issue out of the buckets; one called it "an inconsistent
+issue and I left it alone". 2/2 left assignee, priority and estimate empty on the ticket they made ready.
+
+**Form.** An observable predicate on state, and the brief's sections pointed at the seed.
+
+**GREEN, 1.2.0** (sonnet 1, haiku 1). 2/2 listed all four in-scope issues, skipped the planned ticket with a
+reason, and posted a brief with the bug sections plus Acceptance and Out of scope, with no AI line, type, function
+or path. 2/2 also set all four fields. Direct state change, haiku 1: stated the edits and waited for a yes.
+

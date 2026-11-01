@@ -378,7 +378,7 @@ Recorded while building. Evidence per skill is in each `TESTS.md`.
 - **`skills-ephemera-paths.md` unedited.** Its promotion rule already says to merge. Task 5's six files were not touched.
 - **Rubric row added.** `high` also covers a deadline this week, after the same deadline split `high` and `medium` across runs.
 - **ISSUEFMT-1.4 in practice.** A bug's title names what goes wrong, as all five surveyed bug templates do, and the seed says so.
+- **Field write proven.** `setIssueFieldValue` set `Priority` after `gh issue create` on `KlyntLabs/klynt` #286 with the owner's token, and REST `issue_field_values` read back Medium. The issue was deleted. `createIssue(issueFields:)` was proven on #285 first.
 - **Not proven.**
   - The claim's create path in GREEN: the permission classifier denied `tools/tix create` in 2 of 2 runs. It rests on RED.
-  - `setIssueFieldValue`: the follow-up uses it for organization repos, and no write has run. `createIssue(issueFields:)` was proven on `KlyntLabs/klynt` #285.
   - `notion-draft.md` was not run. It is unedited.

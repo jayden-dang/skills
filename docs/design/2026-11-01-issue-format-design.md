@@ -117,7 +117,7 @@ Locality: extend the followups file. `SKILL.md` Done-when gains one word.
 | Tracker | Priority and estimate | Blocking | Read |
 |---|---|---|---|
 | Linear | `save_issue` `priority`, `estimate` | `save_issue` `blockedBy` | `get_issue` |
-| GitHub, organization | `createIssue` `issueFields`, global IDs from GraphQL `organization.issueFields` (the REST list gives only numeric option IDs, which the mutation rejects) | `gh issue create --blocked-by` | `issue_field_values` on the REST issue |
+| GitHub, organization | `setIssueFieldValue` after create, global IDs from GraphQL `organization.issueFields` (the REST list gives only numeric option IDs, which the mutation rejects) | `gh issue create --blocked-by` | `issue_field_values` on the REST issue |
 | GitHub, personal | `--label priority:<p> --label size:<n>` | `gh issue create --blocked-by` | `gh issue view --json labels,blockedBy` |
 | GitLab | Labels, as GitHub personal | Unverified, `Blocked by:` line until checked | `glab issue view` |
 | Local | `Priority:`, `Estimate:` lines | `Blocked by:` line | The file |
@@ -126,7 +126,7 @@ Owner type comes from `gh repo view --json isInOrganization`. An organization wh
 options are not 1, 2, 3, 5, 8 gets the change named for the operator, because it reaches every repo
 in that organization. Without consent, the estimate maps to `size:*` labels on that repo.
 
-The `createIssue` shape is proven: a run on `KlyntLabs/klynt` set `Priority` at create with `fieldId` and the option's global ID, using a token holding only `repo` and `read:org`. REST `issue_field_values` read back `{"issue_field_name":"Priority","single_select_option":{"name":"Medium"}}`.
+Both write shapes are proven on `KlyntLabs/klynt` with a token holding only `repo` and `read:org`: `createIssue` with `issueFields` (#285), and `setIssueFieldValue` after `gh issue create` (#286), which the follow-up uses. Both take `fieldId` and the option's global ID. REST `issue_field_values` read back `{"issue_field_name":"Priority","single_select_option":{"name":"Medium"}}`.
 
 ### Writers
 

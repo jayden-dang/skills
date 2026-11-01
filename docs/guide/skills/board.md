@@ -17,7 +17,7 @@ When you sit down and want to know what is waiting on you and what the agents ar
 
 ## What it does
 
-It runs `scripts/board.py`, which prints every section every time. On GitHub it asks `gh` itself. On any other tracker the skill writes the open tickets and PRs as JSON first, using the ops in `docs/agents/issue-tracker.md`.
+It runs `scripts/board.py`, which prints every section every time. A blocker comes from the tracker's relation or a `Blocked by:` line. A private ticket's feature and covered IDs come from `.skills/<CODE>/tickets.md`. On GitHub it asks `gh` itself. On any other tracker the skill writes the open tickets and PRs as JSON first, using the ops in `docs/agents/issue-tracker.md`.
 
 The report has three parts, in this order:
 

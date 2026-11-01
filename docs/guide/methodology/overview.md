@@ -26,7 +26,7 @@ Every feature gets a **spec triad** in `docs/specs/<date>-<feature>/`:
 - `design.md` — HOW, where every architecture section names the requirement IDs it `Satisfies:`
 - `tasks.md` — the PLAN, where every task ends with a `_Requirements: SHELL-1.2_` footer
 
-That ID then flows outward into everything downstream: the test that verifies the behavior carries it as a tag, the commit that implements it carries it as a trailer, the issue that tracks it carries it in a `Requirements covered:` section, and the changelog entry that announces it is assembled from those trailers.
+That ID then flows outward into everything downstream: the test that verifies the behavior carries it as a tag, the commit that implements it carries it as a trailer, the issue that tracks it carries it in a `Requirements covered:` line where specs are shared, and the changelog entry that announces it is assembled from those trailers.
 
 And then — this is the part that makes it real rather than aspirational — a **deterministic check**, not human diligence, keeps the chain honest. The [`audit-trace`](../resources/scripts.md#the-trace-check) skill runs a fixed sequence of `grep` and `git` passes — invoked by `prove-claim`, `cut-release`, and `realign-spec` — and reports it when a task cites a requirement that does not exist, when a shipped requirement has no covering test, or when an ID is defined twice. Unchecked audit-trace matrices rot; this one is machine-checked from primitives every repo already has.
 

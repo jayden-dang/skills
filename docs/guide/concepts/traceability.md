@@ -39,7 +39,8 @@ test                     test('restores the persisted module [SHELL-1.2]', …)
 commit                   Implements: SHELL-1.2
         │
         ▼
-issue / changelog        Requirements covered: SHELL-1.2
+issue (shared specs)     Requirements covered: SHELL-1.2
+changelog
                          "Module selection persists across launches — SHELL-1.2"
 ```
 

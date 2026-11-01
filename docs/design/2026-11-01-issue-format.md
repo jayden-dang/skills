@@ -1,7 +1,7 @@
 # Requirements: One issue format
 
 Feature code: ISSUEFMT
-Status: Approved
+Status: Implemented
 Date: 2026-11-01
 
 This repo keeps no `docs/specs/` catalog or roadmap (AGENTS.md section 8), so the record lives

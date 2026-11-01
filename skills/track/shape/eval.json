@@ -18,7 +18,7 @@
     "prompt": "/shape #28 — I accept the cause; I approve a mini-spec saying a same-day stay counts as one night.",
     "assertions": [
       "the up-front approval is quoted on the ticket",
-      "the ticket body gains Requirements covered: <fix>, <guard>",
+      "where specs are shared the ticket body gains Requirements covered: <fix>, <guard>, and where private the ticket's line in tickets.md gains covers: <fix>, <guard>",
       "shaping is swapped for ready-for-agent in one edit"
     ],
     "eval_id": 2

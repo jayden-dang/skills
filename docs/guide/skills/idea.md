@@ -17,9 +17,9 @@ When you have an idea and want it on the board, not in your head. It is the firs
 
 ## What it does
 
-1. **File it.** One ticket: the title is the idea in a line, the body is your words verbatim plus anything you linked. It gets exactly one state role, `needs-triage`, and you as assignee, so everyone else sees the idea is being framed. If the working agreement gates new tickets, it drafts the ticket, creates nothing, and says who must approve it.
+1. **File it.** One ticket: the title is the idea in a line, your words go verbatim under Problem, and the other sections read `Not decided yet`. It gets exactly one state role, `needs-triage`, and you as assignee, so everyone else sees the idea is being framed. If the working agreement gates new tickets, it drafts the ticket, creates nothing, and says who must approve it.
 2. **Frame it.** It runs [`frame-change`](frame-change.md) on the idea.
-3. **Record the frame.** In one edit the ticket swaps `needs-triage` for `shaping`. A comment carries the stated tier, the neighbours found, and the open questions, numbered. Tier 0 skips Shaping: the ticket goes straight to `ready-for-agent`. When the frame added roadmap items and you named the one you carry on with, that `ROAD-N` goes at the start of the title, which is where the claim check before a spec looks. The other new items get a ticket only when someone claims them.
+3. **Record the frame.** In one edit the ticket swaps `needs-triage` for `shaping`. A comment carries the stated tier, the neighbours found, and the open questions, numbered. Tier 0 skips Shaping: the ticket goes straight to `ready-for-agent`. When the frame added roadmap items and you named the one you carry on with, the claim is recorded for the check before a spec. Where the roadmap is shared, that `ROAD-N` starts the title. Where it is private, the title stays and `.skills/_pending-<slug>/tickets.md` holds it. The other new items get a ticket only when someone claims them.
 
 It ends with the ticket's URL and the next command, `/shape #N`.
 

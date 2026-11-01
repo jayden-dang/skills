@@ -17,7 +17,7 @@ When you want the board's ready tickets turned into pull requests while you are 
 
 ## What it does
 
-A ticket is eligible when its status is the tracker's ready state and its `requirements.md`, `design.md` and `tasks.md` all read `Status: Approved`. Each other ready ticket is listed with the piece it lacks. Eligible tickets are ordered by `Blocked by:`.
+A ticket is eligible when its status is the tracker's ready state and its `requirements.md`, `design.md` and `tasks.md` all read `Status: Approved`. Where specs are private, a ticket's feature and covered IDs come from its line in `.skills/<CODE>/tickets.md`. A ticket with an open blocker outside the run, or assigned to someone else, stays as it is and gets a row. Each other ready ticket is listed with the piece it lacks. Eligible tickets are ordered by `Blocked by:`.
 
 For each eligible ticket, in order:
 

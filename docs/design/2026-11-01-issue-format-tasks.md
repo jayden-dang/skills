@@ -7,7 +7,7 @@
 > for tracking.
 
 Feature code: ISSUEFMT
-Status: Approved
+Status: Implemented
 Date: 2026-11-01
 Execution-mode: unset
 Max-concurrency: auto
@@ -87,8 +87,8 @@ Source: `AGENTS.md`, sha256 `ab727c56f55c` (prefix). This repo has no `docs/agen
 
 **Depends-on:** none
 
-- [ ] **Step 1: Build the fixture and scorer.** Run `make.sh /tmp/if-red shared` and create one issue by hand that breaks each rule; `score.py` must print a FAIL for each.
-- [ ] **Step 2: RED.** Fixture holds today's seed. Two `skill-tester` and two `skill-tester-haiku` runs of each prompt, no skill named:
+- [x] **Step 1: Build the fixture and scorer.** Run `make.sh /tmp/if-red shared` and create one issue by hand that breaks each rule; `score.py` must print a FAIL for each.
+- [x] **Step 2: RED.** Fixture holds today's seed. Two `skill-tester` and two `skill-tester-haiku` runs of each prompt, no skill named:
   - A: "File a ticket: exports write NaN for empty numeric cells."
   - B: "File a ticket: let owners export invoices as CSV."
   - C: "File two tickets: CSV export, and PDF export, which needs CSV export done first."
@@ -96,15 +96,15 @@ Source: `AGENTS.md`, sha256 `ab727c56f55c` (prefix). This repo has no `docs/agen
   - F: "File a ticket and leave it in shaping: reports feel slow. Nothing about the scope is decided."
 
   Run `score.py`, expect FAILs on sections, priority, estimate, edges or read-back. Record verbatim. If nothing fails, stop and drop this text.
-- [ ] **Step 3: Write the sections** from the design's draft into `templates/agents/issue-tracker.md`, delete the marker bullets from Conventions, add the block's line, and mirror with `python3 scripts/lint-skill-templates.py --write`.
-- [ ] **Step 4: GREEN.** Rerun A to F on a new fixture with the new seed, on `shared` and `private`. Expect all PASS. Then:
+- [x] **Step 3: Write the sections** from the design's draft into `templates/agents/issue-tracker.md`, delete the marker bullets from Conventions, add the block's line, and mirror with `python3 scripts/lint-skill-templates.py --write`.
+- [x] **Step 4: GREEN.** Rerun A to F on a new fixture with the new seed, on `shared` and `private`. Expect all PASS. Then:
   - `--no-native-edges`, prompt C: expect one `Blocked by: #N` line.
   - `--local`, prompt A: expect `Priority:` and `Estimate:` lines in the file.
   - `--fail-field estimate`, prompt B: expect the issue kept, estimate named as missing, nothing in the body.
   - `--no-format`, prompt A: expect no issue created and `/configure-repo` named.
 
   Record in `TESTS.md`.
-- [ ] **Step 5: Commit** `feat(configure-repo): seed one issue format for every writer`.
+- [x] **Step 5: Commit** `feat(configure-repo): seed one issue format for every writer`.
 
 _Requirements: ISSUEFMT-1.1, ISSUEFMT-1.2, ISSUEFMT-1.3, ISSUEFMT-1.4, ISSUEFMT-1.5, ISSUEFMT-1.6, ISSUEFMT-1.7, ISSUEFMT-1.9, ISSUEFMT-2.1, ISSUEFMT-2.3, ISSUEFMT-2.4, ISSUEFMT-3.1, ISSUEFMT-3.2, ISSUEFMT-3.3, ISSUEFMT-3.4, ISSUEFMT-3.5, ISSUEFMT-3.7, ISSUEFMT-3.8, ISSUEFMT-3.9, ISSUEFMT-4.1, ISSUEFMT-4.2, ISSUEFMT-4.6, ISSUEFMT-4.8, ISSUEFMT-4.9, ISSUEFMT-5.1, ISSUEFMT-5.2_
 
@@ -126,10 +126,10 @@ _Requirements: ISSUEFMT-1.1, ISSUEFMT-1.2, ISSUEFMT-1.3, ISSUEFMT-1.4, ISSUEFMT-
 
 **Depends-on:** Task 1
 
-- [ ] **Step 1: RED.** Two runs per model of `/configure-repo` on stubbed `gh` for an organization repo, a personal repo, and Linear. Expect an empty or guessed `Issue fields` table. Record verbatim.
-- [ ] **Step 2: Add the follow-up**: the mapping table from the design, the owner-type check, consent for label or option changes, and the label fallback.
-- [ ] **Step 3: GREEN.** Rerun. Expect the right row for each case, a named change with consent before any write, every existing question still asked, and the wayfinding operations still in the written file. Add `eval.json` entries citing `TESTS.md`.
-- [ ] **Step 4: Commit** `feat(configure-repo): map the four issue fields per tracker`.
+- [x] **Step 1: RED.** Two runs per model of `/configure-repo` on stubbed `gh` for an organization repo, a personal repo, and Linear. Expect an empty or guessed `Issue fields` table. Record verbatim.
+- [x] **Step 2: Add the follow-up**: the mapping table from the design, the owner-type check, consent for label or option changes, and the label fallback.
+- [x] **Step 3: GREEN.** Rerun. Expect the right row for each case, a named change with consent before any write, every existing question still asked, and the wayfinding operations still in the written file. Add `eval.json` entries citing `TESTS.md`.
+- [x] **Step 4: Commit** `feat(configure-repo): map the four issue fields per tracker`.
 
 _Requirements: ISSUEFMT-4.3, ISSUEFMT-4.4, ISSUEFMT-4.5, ISSUEFMT-4.7, ISSUEFMT-7.1, ISSUEFMT-7.2_
 
@@ -150,10 +150,10 @@ _Requirements: ISSUEFMT-4.3, ISSUEFMT-4.4, ISSUEFMT-4.5, ISSUEFMT-4.7, ISSUEFMT-
 
 **Depends-on:** Task 1
 
-- [ ] **Step 1: RED.** Two runs per model of `/publish-issues` on an idea with two slices, the second blocked by the first, on a fixture with the new seed, with and without `--no-native-edges`. Expect the skill's own template and label rule to win over the seed. Record verbatim. If nothing fails, keep only the version bump's removal of duplicate text and say so.
-- [ ] **Step 2: Replace** the issue template, local template and marker lines with the writer sentence, and replace the frontier rule with the same state role for all slices, except local `.scratch/` files.
-- [ ] **Step 3: GREEN.** Rerun with `score.py`. Expect all PASS, one state role on each slice, the edge in the form the fixture supports, and no slice created before the operator approves the breakdown. Add `eval.json` entries citing `TESTS.md`.
-- [ ] **Step 4: Commit** `feat(publish-issues): follow the repo's issue format`.
+- [x] **Step 1: RED.** Two runs per model of `/publish-issues` on an idea with two slices, the second blocked by the first, on a fixture with the new seed, with and without `--no-native-edges`. Expect the skill's own template and label rule to win over the seed. Record verbatim. If nothing fails, keep only the version bump's removal of duplicate text and say so.
+- [x] **Step 2: Replace** the issue template, local template and marker lines with the writer sentence, and replace the frontier rule with the same state role for all slices, except local `.scratch/` files.
+- [x] **Step 3: GREEN.** Rerun with `score.py`. Expect all PASS, one state role on each slice, the edge in the form the fixture supports, and no slice created before the operator approves the breakdown. Add `eval.json` entries citing `TESTS.md`.
+- [x] **Step 4: Commit** `feat(publish-issues): follow the repo's issue format`.
 
 _Requirements: ISSUEFMT-5.8, ISSUEFMT-7.3_
 
@@ -175,10 +175,10 @@ _Requirements: ISSUEFMT-5.8, ISSUEFMT-7.3_
 
 **Depends-on:** Task 1, Task 5
 
-- [ ] **Step 1: RED.** Two runs per model of publishing an approved plan onto an existing ticket with an operator-written Problem and estimate 2, on `shared` and `private`. Expect a lost Problem, a task checklist, or no revised estimate. Record verbatim.
-- [ ] **Step 2: Edit the recipe**: follow the format, keep Problem, drop the task checklist, revise the estimate unless the operator set it, `shaping` when not grabbable, and write `covers:` when private. Update eval id 9.
-- [ ] **Step 3: GREEN.** Rerun. On `shared` expect the `[CODE]` title and the trace lines last; on `private`, none of them and a `covers:` line. Expect exactly one issue.
-- [ ] **Step 4: Commit** `feat(plan-tasks): publish plans in the repo's issue format`.
+- [x] **Step 1: RED.** Two runs per model of publishing an approved plan onto an existing ticket with an operator-written Problem and estimate 2, on `shared` and `private`. Expect a lost Problem, a task checklist, or no revised estimate. Record verbatim.
+- [x] **Step 2: Edit the recipe**: follow the format, keep Problem, drop the task checklist, revise the estimate unless the operator set it, `shaping` when not grabbable, and write `covers:` when private. Update eval id 9.
+- [x] **Step 3: GREEN.** Rerun. On `shared` expect the `[CODE]` title and the trace lines last; on `private`, none of them and a `covers:` line. Expect exactly one issue.
+- [x] **Step 4: Commit** `feat(plan-tasks): publish plans in the repo's issue format`.
 
 _Requirements: ISSUEFMT-1.10, ISSUEFMT-2.2, ISSUEFMT-2.7, ISSUEFMT-3.6, ISSUEFMT-7.4_
 
@@ -208,10 +208,10 @@ _Requirements: ISSUEFMT-1.10, ISSUEFMT-2.2, ISSUEFMT-2.7, ISSUEFMT-3.6, ISSUEFMT
 
 **Depends-on:** Task 1
 
-- [ ] **Step 1: RED.** Two runs per model: `/idea Learners should get a weekly digest` to step 1, and `/shape` of an approved tier-1 fix, on `shared` and `private`. Expect words outside Problem, no priority or estimate, and `Requirements covered:` on `private`. Record verbatim.
-- [ ] **Step 2: Edit both skills**, and the promotion paragraph to append `tickets.md` lines when `.skills/<CODE>/` exists. Mirror with `--write`.
-- [ ] **Step 3: GREEN.** Rerun. Expect verbatim words under Problem, `Not decided yet` elsewhere, the shaping swap and frame comment intact, the waiting comment from `/shape` intact, the tier-1 line in the body where shared and in the record where private, and a `/shape` rewrite keeping an existing line's `road:`. Check that `land-branch` still takes every ID, by running its ticket step against a record with `covers:`.
-- [ ] **Step 4: Commit** `feat(track): file ideas and fixes in the repo's issue format`.
+- [x] **Step 1: RED.** Two runs per model: `/idea Learners should get a weekly digest` to step 1, and `/shape` of an approved tier-1 fix, on `shared` and `private`. Expect words outside Problem, no priority or estimate, and `Requirements covered:` on `private`. Record verbatim.
+- [x] **Step 2: Edit both skills**, and the promotion paragraph to append `tickets.md` lines when `.skills/<CODE>/` exists. Mirror with `--write`.
+- [x] **Step 3: GREEN.** Rerun. Expect verbatim words under Problem, `Not decided yet` elsewhere, the shaping swap and frame comment intact, the waiting comment from `/shape` intact, the tier-1 line in the body where shared and in the record where private, and a `/shape` rewrite keeping an existing line's `road:`. Check that `land-branch` still takes every ID, by running its ticket step against a record with `covers:`.
+- [x] **Step 4: Commit** `feat(track): file ideas and fixes in the repo's issue format`.
 
 _Requirements: ISSUEFMT-1.8, ISSUEFMT-7.5, ISSUEFMT-7.6, ISSUEFMT-7.10_
 
@@ -233,10 +233,10 @@ _Requirements: ISSUEFMT-1.8, ISSUEFMT-7.5, ISSUEFMT-7.6, ISSUEFMT-7.10_
 
 **Depends-on:** Task 1
 
-- [ ] **Step 1: RED.** Two runs per model on a queue of five: a stranger's bug with no label, a category-only issue, `needs-triage`, `needs-info` with a new reply, and a `shaping` ticket with no marker. Expect the last one triaged, the marker line in the comment, and type names in the brief. Record verbatim.
-- [ ] **Step 2: Replace** the Scope rule with the state rule, delete the comment marker, and rewrite the brief's fields to the issue's sections without `Key interfaces`.
-- [ ] **Step 3: GREEN.** Rerun. Expect the first four in scope, the fifth skipped with a reason, and no marker. Run "move #42 to ready-for-agent": expect a direct state change.
-- [ ] **Step 4: Commit** `feat(triage): select by state and brief in the issue format`.
+- [x] **Step 1: RED.** Two runs per model on a queue of five: a stranger's bug with no label, a category-only issue, `needs-triage`, `needs-info` with a new reply, and a `shaping` ticket with no marker. Expect the last one triaged, the marker line in the comment, and type names in the brief. Record verbatim.
+- [x] **Step 2: Replace** the Scope rule with the state rule, delete the comment marker, and rewrite the brief's fields to the issue's sections without `Key interfaces`.
+- [x] **Step 3: GREEN.** Rerun. Expect the first four in scope, the fifth skipped with a reason, and no marker. Run "move #42 to ready-for-agent": expect a direct state change.
+- [x] **Step 4: Commit** `feat(triage): select by state and brief in the issue format`.
 
 _Requirements: ISSUEFMT-1.11, ISSUEFMT-6.2, ISSUEFMT-6.3, ISSUEFMT-6.4, ISSUEFMT-6.5, ISSUEFMT-6.6_
 
@@ -258,10 +258,10 @@ _Requirements: ISSUEFMT-1.11, ISSUEFMT-6.2, ISSUEFMT-6.3, ISSUEFMT-6.4, ISSUEFMT
 
 **Depends-on:** Task 5
 
-- [ ] **Step 1: RED.** Two runs per model of writing requirements for a `ROAD-6` item on `private` and `shared`, each with and without an existing ticket, and once with `ROAD-6` already assigned to alice. Expect `ROAD-6` in the title on `private`, and a duplicate on rerun. Record verbatim.
-- [ ] **Step 2: Add the private branch**, and make the create follow the format with state `shaping`.
-- [ ] **Step 3: GREEN.** Rerun. On `private` expect no `ROAD-N` on the tracker, a `road:` record, no second ticket on rerun, and a stop on alice's ticket. On `shared` expect today's claim. Expect a stop naming `/configure-repo` on `--no-format`. Publish from a signed Notion draft listing one ticket: expect that ticket alone. Run `python3 skills/track/chart-progress/scripts/test_lanes.py`, expect `OK`.
-- [ ] **Step 4: Commit** `feat(specify-behavior): claim a roadmap item by reach`.
+- [x] **Step 1: RED.** Two runs per model of writing requirements for a `ROAD-6` item on `private` and `shared`, each with and without an existing ticket, and once with `ROAD-6` already assigned to alice. Expect `ROAD-6` in the title on `private`, and a duplicate on rerun. Record verbatim.
+- [x] **Step 2: Add the private branch**, and make the create follow the format with state `shaping`.
+- [x] **Step 3: GREEN.** Rerun. On `private` expect no `ROAD-N` on the tracker, a `road:` record, no second ticket on rerun, and a stop on alice's ticket. On `shared` expect today's claim. Expect a stop naming `/configure-repo` on `--no-format`. Publish from a signed Notion draft listing one ticket: expect that ticket alone. Run `python3 skills/track/chart-progress/scripts/test_lanes.py`, expect `OK`.
+- [x] **Step 4: Commit** `feat(specify-behavior): claim a roadmap item by reach`.
 
 _Requirements: ISSUEFMT-2.5, ISSUEFMT-2.6, ISSUEFMT-7.12_
 
@@ -283,7 +283,7 @@ _Requirements: ISSUEFMT-2.5, ISSUEFMT-2.6, ISSUEFMT-7.12_
 
 **Depends-on:** Task 5
 
-- [ ] **Step 1: Write the tests** in `test_board.py`, each building in its tempdir whichever of `docs/agents/triage-labels.md`, `docs/specs/catalog/<domain>.md`, the feature's `requirements.md`, `design.md` and `tasks.md`, and `.skills/<CODE>/tickets.md` it needs, one per behavior:
+- [x] **Step 1: Write the tests** in `test_board.py`, each building in its tempdir whichever of `docs/agents/triage-labels.md`, `docs/specs/catalog/<domain>.md`, the feature's `requirements.md`, `design.md` and `tasks.md`, and `.skills/<CODE>/tickets.md` it needs, one per behavior:
   - a ticket with `blockedBy: {"nodes": [{"number": 1}]}` and #1 open prints `blocked by #1`;
   - the same with #1 closed prints no block;
   - a ticket whose body says `Blocked by: #1` still prints it;
@@ -293,10 +293,10 @@ _Requirements: ISSUEFMT-2.5, ISSUEFMT-2.6, ISSUEFMT-7.12_
   - a record under `.skills/_pending-x/` resolves no feature;
   - an issues file with no `blockedBy` key prints every section;
   - with a stub `gh` on `PATH` that rejects `blockedBy`, a run with no `--issues` still lists the tickets.
-- [ ] **Step 2: Run** `python3 skills/track/board/scripts/test_board.py`. Expect these to fail on missing output: the open native edge, the two private records, and the `gh` retry. Expect these guards to pass today: the closed native edge, the `Blocked by:` line, the shared bug, the `_pending-x` record and the no-key file.
-- [ ] **Step 3: Implement** `records()`, the fallback in `covered()` and `code_of()`, the union in the blocked calculation filtered through `open_nums`, and `blockedBy` in the `gh` call, retrying without it on failure.
-- [ ] **Step 4: Run** the same command. Expect `OK` with pristine output.
-- [ ] **Step 5: Commit** `feat(board): read native edges and private ticket records`.
+- [x] **Step 2: Run** `python3 skills/track/board/scripts/test_board.py`. Expect these to fail on missing output: the open native edge, the two private records, and the `gh` retry. Expect these guards to pass today: the closed native edge, the `Blocked by:` line, the shared bug, the `_pending-x` record and the no-key file.
+- [x] **Step 3: Implement** `records()`, the fallback in `covered()` and `code_of()`, the union in the blocked calculation filtered through `open_nums`, and `blockedBy` in the `gh` call, retrying without it on failure.
+- [x] **Step 4: Run** the same command. Expect `OK` with pristine output.
+- [x] **Step 5: Commit** `feat(board): read native edges and private ticket records`.
 
 _Requirements: ISSUEFMT-2.8, ISSUEFMT-2.9, ISSUEFMT-5.3, ISSUEFMT-7.9_
 
@@ -321,10 +321,10 @@ _Requirements: ISSUEFMT-2.8, ISSUEFMT-2.9, ISSUEFMT-5.3, ISSUEFMT-7.9_
 
 **Depends-on:** Task 8
 
-- [ ] **Step 1: RED.** Two runs per model: a build on a ticket assigned to alice; `/go` on a board with one ticket assigned to alice, one with a native edge to an open ticket outside the run, one private tier-1 fix, and two eligible tickets where the higher number blocks the lower; `/sweep-backlog` with a native edge. Expect silent reassignment, a blocked ticket built, the fix sent back, and the pair built in number order. Record verbatim.
-- [ ] **Step 2: Add** the assignee and blocker checks to `tracker-sync.md`, the record read, edge order and held-back rows to `deliver-issues`, native edges to `sweep-backlog`, and to both writers of the record, keeping a line's existing fields.
-- [ ] **Step 3: GREEN.** Rerun. Expect a question on alice's ticket; under `/go`, her ticket and the blocked ticket unbuilt with a row each, and the rest delivered; the fix delivered; the pair built blocker first; the unassigned ticket claimed with no question and its record line keeping `covers:`; and `/sweep-backlog` classing the edge `blocked` and writing nothing before the answer.
-- [ ] **Step 4: Commit** `feat(execution): hold back tickets owned by others or blocked`.
+- [x] **Step 1: RED.** Two runs per model: a build on a ticket assigned to alice; `/go` on a board with one ticket assigned to alice, one with a native edge to an open ticket outside the run, one private tier-1 fix, and two eligible tickets where the higher number blocks the lower; `/sweep-backlog` with a native edge. Expect silent reassignment, a blocked ticket built, the fix sent back, and the pair built in number order. Record verbatim.
+- [x] **Step 2: Add** the assignee and blocker checks to `tracker-sync.md`, the record read, edge order and held-back rows to `deliver-issues`, native edges to `sweep-backlog`, and to both writers of the record, keeping a line's existing fields.
+- [x] **Step 3: GREEN.** Rerun. Expect a question on alice's ticket; under `/go`, her ticket and the blocked ticket unbuilt with a row each, and the rest delivered; the fix delivered; the pair built blocker first; the unassigned ticket claimed with no question and its record line keeping `covers:`; and `/sweep-backlog` classing the edge `blocked` and writing nothing before the answer.
+- [x] **Step 4: Commit** `feat(execution): hold back tickets owned by others or blocked`.
 
 _Requirements: ISSUEFMT-3.10, ISSUEFMT-3.11, ISSUEFMT-5.4, ISSUEFMT-5.5, ISSUEFMT-5.7, ISSUEFMT-7.7, ISSUEFMT-7.8_
 
@@ -359,10 +359,26 @@ _Requirements: ISSUEFMT-3.10, ISSUEFMT-3.11, ISSUEFMT-5.4, ISSUEFMT-5.5, ISSUEFM
 
 **Depends-on:** Task 2, Task 3, Task 4, Task 6, Task 7, Task 9
 
-- [ ] **Step 1: Find stale statements.** Run `grep -rnE --exclude=TESTS.md --exclude=eval.json "drafted by AI|generated by AI during|Key interfaces|frontier" AGENTS.md docs/guide skills templates` and expect only `plan-tasks` Step 5 uses of frontier that this change did not alter, and the local `.scratch/` rule. Run the same with `Requirements covered` and expect only lines stating it as shared-reach behavior. Each other hit is an edit.
-- [ ] **Step 2: Reword** each hit and the section 4 table in `AGENTS.md` to the reach rule.
-- [ ] **Step 3: Check `show-run-status`.** On a fixture from `make.sh /tmp/if-rs shared --local` with a `.scratch/` issue titled `[QUOTA] …`, run `bash <repo>/skills/track/show-run-status/scripts/collect.sh QUOTA` from the fixture. Expect the `tracker` section to list that file. This reads the local path, since the script calls real `gh` otherwise.
-- [ ] **Step 4: Whole check.** Run `python3 scripts/qa-set.py`, `python3 skills/track/board/scripts/test_board.py` and `python3 skills/track/chart-progress/scripts/test_lanes.py`. Expect zero failures.
-- [ ] **Step 5: Commit** `docs: state the one issue format everywhere`.
+- [x] **Step 1: Find stale statements.** Run `grep -rnE --exclude=TESTS.md --exclude=eval.json "drafted by AI|generated by AI during|Key interfaces|frontier" AGENTS.md docs/guide skills templates` and expect only `plan-tasks` Step 5 uses of frontier that this change did not alter, and the local `.scratch/` rule. Run the same with `Requirements covered` and expect only lines stating it as shared-reach behavior. Each other hit is an edit.
+- [x] **Step 2: Reword** each hit and the section 4 table in `AGENTS.md` to the reach rule.
+- [x] **Step 3: Check `show-run-status`.** On a fixture from `make.sh /tmp/if-rs shared --local` with a `.scratch/` issue titled `[QUOTA] …`, run `bash <repo>/skills/track/show-run-status/scripts/collect.sh QUOTA` from the fixture. Expect the `tracker` section to list that file. This reads the local path, since the script calls real `gh` otherwise.
+- [x] **Step 4: Whole check.** Run `python3 scripts/qa-set.py`, `python3 skills/track/board/scripts/test_board.py` and `python3 skills/track/chart-progress/scripts/test_lanes.py`. Expect zero failures.
+- [x] **Step 5: Commit** `docs: state the one issue format everywhere`.
 
 _Requirements: ISSUEFMT-7.11, ISSUEFMT-8.1_
+
+---
+
+## Deviations from this plan
+
+Recorded while building. Evidence per skill is in each `TESTS.md`.
+
+- **Batched prompts.** Task 1 ran A to F as one prompt per run, not one run per prompt, to keep the run count down. Later tasks ran one sonnet and one haiku per cell, not two each.
+- **Text not written, because the baseline did not fail:** `/idea`'s create step, `/sweep-backlog`'s native edges, the assignee guard in `tracker-sync.md`, the Linear row in the follow-up, GitLab and local follow-up cells beyond one line. The requirements hold on the seed or unprompted.
+- **`skills-ephemera-paths.md` unedited.** Its promotion rule already says to merge. Task 5's six files were not touched.
+- **Rubric row added.** `high` also covers a deadline this week, after the same deadline split `high` and `medium` across runs.
+- **ISSUEFMT-1.4 in practice.** A bug's title names what goes wrong, as all five surveyed bug templates do, and the seed says so.
+- **Not proven.**
+  - The claim's create path in GREEN: the permission classifier denied `tools/tix create` in 2 of 2 runs. It rests on RED.
+  - `setIssueFieldValue`: the follow-up uses it for organization repos, and no write has run. `createIssue(issueFields:)` was proven on `KlyntLabs/klynt` #285.
+  - `notion-draft.md` was not run. It is unedited.

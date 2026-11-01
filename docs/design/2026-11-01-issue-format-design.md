@@ -1,7 +1,7 @@
 # Design: One issue format
 
 Feature code: ISSUEFMT
-Status: Approved
+Status: Implemented
 Date: 2026-11-01
 Requirements: ./2026-11-01-issue-format.md
 

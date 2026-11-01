@@ -49,7 +49,7 @@ Defining the same ID twice is error **E3**.
 | Vitest test | `annotate('SHELL-1.2', 'requirement')`, or the ID in the test name |
 | Rust test | `/// REQ: SHELL-1.2` doc comment above the test |
 | Commit message | an `Implements: SHELL-1.2` or `Guards: SHELL-1.3` trailer |
-| Issue body | a `Requirements covered:` section |
+| Issue body | a `Requirements covered:` line, where specs are shared |
 | Changelog entry | assembled from the trailers, rendered as the requirement's own text |
 
 The per-layer test conventions are not hardcoded. [`configure-repo`](../skills/configure-repo.md) asks which convention each test layer in *this* repo uses and records the answers in `docs/agents/project.md`; [`test-first`](../skills/test-first.md) and the [audit-trace check](../resources/scripts.md#the-trace-check) both read from there. The only hard requirement is that the convention be **greppable**.

@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+### Changed: one issue format for every writer (2026-11-01)
+
+`docs/agents/issue-tracker.md` now carries `## Issue format` and `## Issue fields`. Every new issue, with or without a skill loaded, has one shape per kind and an assignee, priority, estimate and status. Internal IDs follow reach: `CODE`, requirement IDs and `ROAD-N` appear on the tracker only where specs or the roadmap are shared. No line says who or what wrote an issue or comment. `/triage` selects by state. `/board` and `/go` read native blocking relations and `.skills/<CODE>/tickets.md`.
+
+**Breaking for adopting repos:** until a repo re-runs `/configure-repo` to gain the `Issue format` section, writers show a draft and create no issue, and a roadmap claim stops there. Baseline: 28/28 issues missed the sections and an estimate; with the seed, 0/28. Design: `docs/design/2026-11-01-issue-format.md`.
+
 ### Removed: the Personal Pack / Personal OS (2026-11-01)
 
 All 18 `life-*` skills, `skills/personal/`, `templates/personal-os/`, `docs/personal-os/`, `personal-os.plugin.json` and the `personal-pack` marketplace entry are gone; the repo ships only the Engineer Pack (76 skills). `qa-set.py` and `check-plugin-slug.py` no longer expect a personal pack. Older entries keep the name as history.

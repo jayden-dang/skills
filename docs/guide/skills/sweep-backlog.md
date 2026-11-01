@@ -29,7 +29,7 @@ Each ticket gets exactly one class, first match wins:
 | `duplicate` | another ticket of yours asks for the same outcome |
 | `obsolete` | a later comment or doc says the need is gone, quoted with its date |
 | `blocked-external` | someone outside the team must act first |
-| `blocked` | `Blocked by:` names an open ticket |
+| `blocked` | the tracker's relation or a `Blocked by:` line names an open ticket |
 | `ready` | none of the above |
 
 The `ready` and `blocked` tickets are put in dependency order.

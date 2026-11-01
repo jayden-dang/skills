@@ -199,7 +199,7 @@ never renumber.
 | `requirements.md` | `**CODE-N.M**` bold, opening an EARS statement |
 | `design.md` | `Satisfies: CODE-N.M, …` per section |
 | `tasks.md` | `_Requirements: CODE-N.M, …_` footer per task |
-| Issue body (optional) | a `Requirements covered` section |
+| Issue body | `Requirements covered:` as a last line, only where specs are shared. Private specs: `.skills/<CODE>/tickets.md` |
 | Application source, tests, commits | **no IDs required** — domain language only |
 | Changelog | derived from specs and commit subjects, not trailer parsing |
 
@@ -497,5 +497,5 @@ Repo config the skills read:
 
 - Verify commands, release steps, Remote environments, posture, Team: `docs/agents/project.md`
 - Cold-start drive (Launch / Doctor / Drive / Evidence): `docs/agents/verify.md`
-- Issue tracker operations: `docs/agents/issue-tracker.md`
+- Issue tracker operations and the format every new issue follows: `docs/agents/issue-tracker.md`
 - Triage label mapping: `docs/agents/triage-labels.md`

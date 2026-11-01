@@ -118,7 +118,7 @@ A guard or negative requirement counts only if a real test asserts it. When a be
 
 Finally, an **independent plan review subagent** verifies against real code every symbol, signature, path, import, and **hardcoded test value** the plan asserts. A fabricated golden value or a guessed API is the classic plan defect.
 
-**Optionally**, publish each task as a tracker issue in dependency order — native sub-issues and blocking links where supported. The issue body describes *behavior and interfaces, never file paths*, and includes a `Requirements covered:` list. (Those issues are then out of scope for `/triage`, which skips anything born agent-ready.)
+**Optionally**, publish the plan as one tracker issue, in the format `docs/agents/issue-tracker.md` sets. (`/triage` skips it, since it already carries a state.)
 
 ## Exit
 

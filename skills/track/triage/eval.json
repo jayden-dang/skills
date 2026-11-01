@@ -12,13 +12,13 @@
   },
   {
     "eval_id": 2,
-    "eval_name": "agent-drafted-issues-are-skipped",
+    "eval_name": "issues-with-a-state-are-skipped",
     "kind": "contract",
     "derived_from": "SKILL.md § Scope rule",
-    "prompt": "The queue contains issues carrying the publish-issues marker line.",
+    "prompt": "The queue contains issues already carrying a state role beyond needs-triage.",
     "assertions": [
-      "issues already born agent-ready are not re-triaged",
-      "they are recognised by their marker rather than by guesswork"
+      "issues already carrying a state are not re-triaged",
+      "they are recognised by their state role rather than by the body text"
     ]
   },
   {

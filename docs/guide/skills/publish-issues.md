@@ -25,17 +25,7 @@ Because it is `disable-model-invocation: true`, no skill auto-invokes it; a skil
 | A tier-2 feature needing a traceable `requirements.md` → `design.md` → `tasks.md` | [`plan-tasks`](plan-tasks.md) (publishes **one feature issue** by default) | `publish-issues` skips the triad, so it produces no requirement-ID audit-trace |
 | A raw incoming issue or external PR to evaluate | [`triage`](triage.md) | `publish-issues` is outgoing; `triage` is incoming |
 
-`plan-tasks` is the **heavyweight, traceable** publish path — **one feature issue** carries the union of `Requirements covered:` IDs (tasks stay in `tasks.md`). `publish-issues` is the **lightweight capture** path for work that never went through the triad (one issue per tracer-bullet slice). The two never publish the same work.
-
-## The AI marker
-
-Every issue `publish-issues` publishes opens its body with this exact line:
-
-```
-> *This issue was drafted by AI with `publish-issues`.*
-```
-
-That line does double duty. It discloses AI authorship, and it is the **marker `triage` reads to skip these issues** — they are born agent-ready, so re-triaging them would stack a second, weaker spec on a real one. It is the outgoing mirror of `plan-tasks`'s `Requirements covered:` marker, which `triage` skips for the same reason.
+`plan-tasks` is the **heavyweight, traceable** publish path — **one feature issue** per plan (tasks stay in `tasks.md`). `publish-issues` is the **lightweight capture** path for work that never went through the triad (one issue per tracer-bullet slice). The two never publish the same work.
 
 ## Process
 
@@ -43,15 +33,15 @@ That line does double duty. It discloses AI authorship, and it is the **marker `
 2. **Explore the codebase.** So titles and descriptions use the project's domain glossary (`CONTEXT.md`) and respect the area's ADRs. Look for a **prefactor** that makes the later work easier — "make the change easy, then make the easy change" — and sequence it as the first slice.
 3. **Draft vertical slices.** Each slice cuts a narrow but **complete** path through every layer (schema, API, UI, tests), is demoable on its own, and fits one fresh context window. Give each its **blocking edges** — the slices that must finish before it can start. **Wide refactors** are the exception: a mechanical change whose blast radius breaks thousands of call sites can't land as one vertical slice, so it is sequenced **expand → migrate (in batches) → contract**, each batch its own issue, CI green batch to batch.
 4. **Quiz the user.** Present the breakdown as a numbered list — Title, Blocked by, What it delivers — and ask whether the granularity and the edges are right, and whether any should be merged or split. When a slice is underspecified in a way only the user can resolve, [`clarify-decisions`](clarify-decisions.md) shapes it one question at a time. Iterate until approved.
-5. **Publish.** In **dependency order, blockers first**, so each edge can reference a real identifier. On a remote tracker: one issue per slice, native sub-issue/blocking links where the platform has them; on a local tracker: one file per slice under `.scratch/<feature>/issues/NN-slug.md`, numbered in dependency order. The `ready-for-agent` label is applied **only to what is actually grabbable**: where the tracker *enforces* the blocking edge (native dependency links, Linear `blocks` relations) every slice gets it; where "Blocked by" is only text (GitHub Issues, local files) only the **frontier** — slices with no open blocker — gets it, and the user promotes each slice as its blockers close. Otherwise an autonomous agent grabs a labeled-but-blocked issue it cannot finish. Work the frontier, publishing any slice whose blockers are already published. **Never close or modify a parent issue.**
+5. **Publish.** In **dependency order, blockers first**, so each edge can reference a real identifier. On a remote tracker: one issue per slice, with its blocking edge as **Issue format** says; on a local tracker: one file per slice under `.scratch/<feature>/issues/NN-slug.md`, numbered in dependency order. Every slice carries the same state role, `ready-for-agent`, and the edge holds a blocked slice back, because `/board` and `/go` read it. Local files keep `blocked` in `Status:` behind the frontier. Work the frontier, publishing any slice whose blockers are already published. **Never close or modify a parent issue.**
 
 ## What a published issue contains
 
-Behavior and interfaces, **never file paths or line numbers** — they go stale while the issue waits. The body carries what to build (end-to-end behavior, from the user's view), independently verifiable acceptance criteria, and the Blocked-by list. When the work is covered by an existing spec, the relevant criteria cite the requirement IDs (`CODE-N.M`) so the trace stays intact. A run-spike's decision-pinning snippet (a state machine, reducer, schema, or type shape) may be inlined; a working demo may not.
+What `docs/agents/issue-tracker.md` **Issue format** says: Problem, Outcome, Acceptance and Out of scope, with an assignee, priority, estimate and status. Where specs are shared and an existing spec covers the work, the last line is `Requirements covered:` with its IDs.
 
 ## Exit
 
-The skill names the **frontier** — the slices that can start immediately — and points the user at the next step: work each slice with [`build-in-waves`](build-in-waves.md) (or inline [`test-first`](test-first.md)), clearing context between slices. Because the issues carry the AI marker, `triage` leaves them alone.
+The skill names the **frontier** — the slices that can start immediately — and points the user at the next step: work each slice with [`build-in-waves`](build-in-waves.md) (or inline [`test-first`](test-first.md)), clearing context between slices. Because the issues carry a state role, `triage` leaves them alone.
 
 ## Why it is written the way it is
 

@@ -67,3 +67,17 @@ drafted text matches it, and the approval is quoted. `Requirements covered: <fix
 
 Not covered: that uncommitted spec directory. `root-cause` says the mini-spec goes into
 the owning feature's `requirements.md`.
+
+## 2026-11-01 — the tier-1 line follows reach (1.1.0 → 1.2.0)
+
+Design: `docs/design/2026-11-01-issue-format.md`. Fixture: a generated repo with an in-repo tracker CLI, the
+new `Issue format` seed, and an approved tier-1 fix in `docs/specs/fixes.md`.
+
+**RED, 1.1.0, private specs** (sonnet 1, haiku 1). 2/2 kept the IDs off the ticket, as the seed says, and
+wrote only `#3` to `.skills/EXPORT/tickets.md`. "`/go` may not recognise it as a tier 1 fix." Nothing
+recorded the covered IDs, so `/board` and `/go` could not resolve the fix.
+
+**GREEN, 1.2.0.** Private, sonnet 1 and haiku 1: 2/2 wrote `covers: EXPORT-1.1, EXPORT-1.2` on the ticket's
+line and no ID on the tracker, and `board.py` prints `eligible, tier-1 fix` from that line. Shared, haiku
+1: `Requirements covered:` as the last body line. The swap to `ready-for-agent` held in all three.
+

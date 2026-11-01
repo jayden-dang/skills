@@ -1,6 +1,6 @@
 ---
 name: shape
-version: 1.1.0
+version: 1.2.0
 description: Writes what a ticket needs before an agent can build it — the spec triad, or the root cause for a bug — and stops at your approval. Run it with /shape #N.
 disable-model-invocation: true
 ---
@@ -13,7 +13,7 @@ each gate that only the operator may pass. The states are the roles in `docs/age
 1. **Take the ticket.** Read it and its comments with the tracker ops in
    `docs/agents/issue-tracker.md`. In one edit, make `shaping` its only state role
    (`docs/agents/triage-labels.md`). Write its ID to `.skills/<CODE>/tickets.md` once the
-   feature has a code.
+   feature has a code, keeping any fields already on its line.
 2. **Route by tier.** Use the tier the ticket's frame comment states. If it has none,
    REQUIRED SUB-SKILL: use `frame-change` first.
    - **Tier 1:** REQUIRED SUB-SKILL: use `root-cause`. The fix requirement and its guard
@@ -27,9 +27,12 @@ each gate that only the operator may pass. The states are the roles in `docs/age
    - **Tier 1:** the fix is ready once the operator accepts the cause and approves the
      mini-spec: the fix requirement and its `SHALL CONTINUE TO` guard. An approval given
      up front for a stated fix counts when the drafted text says exactly that; quote it
-     in the comment. Then, in one edit, write `Requirements covered: <fix ID>, <guard ID>`
-     into the ticket body and swap `shaping` for `ready-for-agent`. `/go` reads that line
-     to recognise a tier-1 fix.
+     in the comment. Then, in one edit, record `<fix ID>, <guard ID>` and swap `shaping` for
+     `ready-for-agent`. `/go` reads them to recognise a tier-1 fix. Where specs are shared,
+     they are a last body line, `Requirements covered: <fix ID>, <guard ID>`. Where specs are
+     private, they go on the ticket's line in `.skills/<CODE>/tickets.md`, as `covers: <fix ID>,
+     <guard ID>`. Two baseline runs on private specs rightly kept the IDs off the ticket, wrote
+     only `#3` to that file, and left `/go` unable to recognise the fix.
 
    In three baseline runs, Lan had approved #28's fix up front. One kept it in Shaping. One
    made it Ready but wrote no `Requirements covered:`, so `/go` would have sent it back. One

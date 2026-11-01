@@ -120,7 +120,9 @@ body is its first section: no line says who or what wrote it.
 means specs are private, so no feature code, requirement ID or spec path appears anywhere on the
 tracker. The same check on `docs/roadmap/INDEX.md` governs `ROAD-N` and `MILE-N`. Where specs are
 shared, a plan's issue is titled `[CODE] <outcome>` and its last lines are `Requirements covered:`,
-`Plan:` and `Roadmap:`. Where the roadmap is shared, `ROAD-N` leads the title of its claim.
+`Plan:` and `Roadmap:`. Where the roadmap is shared, `ROAD-N` leads the title of its claim. What
+stays off the tracker goes in `.skills/<CODE>/tickets.md`, where `/board` and `/go` read it, one line
+per ticket with the ID first: `<ticket id> covers: <requirement IDs> road: <ROAD-N>`.
 
 **Fill all four fields, using the `Issue fields` table:**
 

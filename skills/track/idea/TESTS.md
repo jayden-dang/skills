@@ -63,3 +63,10 @@ the title to `ROAD-251 Weekly digest of what learners studied` and the label to 
 edit, and opened no ticket for ROAD-252.
 
 Not covered: the unnamed branch (frame mints items, operator names none, title left alone).
+
+## 2026-11-01 — the new `Issue format` seed, no edit
+
+RED, 1.1.0 on the new seed, private specs (sonnet 1, haiku 1), step 1 only: 2/2 put the operator's words
+verbatim under Problem, `Not decided yet` in the other sections, and set all four fields. No failure, so no
+text was written for the create step.
+

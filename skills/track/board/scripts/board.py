@@ -2,9 +2,11 @@
 """board.py [--issues FILE] [--prs FILE] [--drafts FILE] [--me LOGIN] — the board, by state.
 
 Run from the repo root. Read-only. With no files on a github tracker it asks `gh` itself:
-  gh issue list --state open --json number,title,labels,assignees,comments,body --limit 300
+  gh issue list --state open --json number,title,labels,assignees,comments,body,blockedBy --limit 300
   gh pr list --state open --json number,title,body,headRefName --limit 100
-Any other tracker: write the same JSON shapes from its own ops and pass the files.
+Any other tracker: write the same JSON shapes from its own ops and pass the files. `blockedBy`
+({"nodes": [{"number": n}]}) is optional. A `.skills/<CODE>/tickets.md` line gives a private ticket's
+feature and covered IDs: `<ticket id> covers: <ids> road: <ROAD-N>`, with only the ID required.
 --drafts is a JSON list of {"title", "status", "comment"} rows awaiting sign-off.
 
 Every section always prints, `none` when empty, so a missing source shows as missing.
@@ -17,10 +19,11 @@ ap.add_argument("--issues"); ap.add_argument("--prs"); ap.add_argument("--drafts
 o = ap.parse_args()
 
 
-def gh(*args):
+def gh(*args, quiet=False):
     r = subprocess.run(["gh", *args], capture_output=True, text=True)
     if r.returncode:
-        print(f"# source failed: gh {' '.join(args[:2])}: {r.stderr.strip()[:200]}")
+        if not quiet:
+            print(f"# source failed: gh {' '.join(args[:2])}: {r.stderr.strip()[:200]}")
         return None
     return r.stdout
 
@@ -32,7 +35,12 @@ def load(path, *cmd):
     return json.loads(out) if out else []
 
 
-issues = load(o.issues, "issue", "list", "--state", "open", "--json", "number,title,labels,assignees,comments,body", "--limit", "300")
+ISSUE_FIELDS = "number,title,labels,assignees,comments,body"
+if o.issues:
+    issues = load(o.issues)
+else:  # an older gh rejects blockedBy and would otherwise lose the whole list
+    out = gh("issue", "list", "--state", "open", "--json", ISSUE_FIELDS + ",blockedBy", "--limit", "300", quiet=True)
+    issues = json.loads(out) if out else load(None, "issue", "list", "--state", "open", "--json", ISSUE_FIELDS, "--limit", "300")
 prs = [p for p in load(o.prs, "pr", "list", "--state", "open", "--json", "number,title,body,headRefName,state", "--limit", "100")
        if str(p.get("state", "OPEN")).upper() == "OPEN"]
 drafts = json.loads(Path(o.drafts).read_text()) if o.drafts else None
@@ -92,9 +100,27 @@ for f in [Path("docs/specs/fixes.md")] if Path("docs/specs/fixes.md").exists() e
         req[m.group(1)] = m.group(2)
 
 
+def records():
+    """Private tickets carry no IDs, so the join is local: ticket ID, less any `#` → feature and covered IDs."""
+    out = {}
+    for f in Path(".skills").glob("*/tickets.md"):
+        code = None if f.parent.name.startswith("_pending-") else f.parent.name
+        for line in f.read_text().splitlines():
+            if not line.strip():
+                continue
+            m = re.search(r"covers:\s*(.*?)(?:\s+road:|$)", line)
+            out[line.split()[0].lstrip("#")] = {"code": code, "covers": re.findall(r"[A-Z][A-Z0-9-]*-\d+(?:\.\d+)*", m.group(1)) if m else []}
+    return out
+
+
+record = records()
+
+
 def covered(i):
     m = re.search(r"Requirements covered:\s*(.+)", i.get("body") or "")
-    return re.findall(r"[A-Z][A-Z0-9-]*-\d+(?:\.\d+)*", m.group(1)) if m else []
+    if m:
+        return re.findall(r"[A-Z][A-Z0-9-]*-\d+(?:\.\d+)*", m.group(1))
+    return record.get(str(i["number"]), {}).get("covers", [])
 
 
 def tier1(i):
@@ -112,7 +138,7 @@ def names(xs, key):
 def code_of(i):
     m = re.search(r"Requirements covered:\s*([A-Z][A-Z0-9-]*?)-\d", i.get("body") or "") \
         or re.match(r"\[([A-Z][A-Z0-9-]*)\]", i.get("title") or "")
-    return m.group(1) if m else None
+    return m.group(1) if m else record.get(str(i["number"]), {}).get("code")
 
 
 def state_of(i):
@@ -203,6 +229,7 @@ for i in by["ready-for-agent"]:
     if not ok and not (st and st["requirements"] in ("Implemented", "Shipped")):
         drift.append(f"#{i['number']} is ready, but its spec is " + ("missing" if not st else ", ".join(f"{k} {v}" for k, v in st.items())))
     blk = [int(b) for b in re.findall(r"Blocked by:\s*((?:#\d+[ ,]*)+)", i.get("body") or "") for b in re.findall(r"\d+", b)]
+    blk += [n["number"] for n in (i.get("blockedBy") or {}).get("nodes", [])]
     blk = [b for b in blk if b in open_nums]
     print(f"- #{i['number']} {i['title']} — {('eligible, tier-1 fix' if tier1(i) else 'eligible') if ok else 'NOT eligible'}" + (f", blocked by {', '.join('#%d' % b for b in blk)}" if blk else ""))
 if not by["ready-for-agent"]:

@@ -84,3 +84,15 @@ half-line naming it. No agent run was needed: the reply quotes the script's outp
 
 Not changed: `/idea` assigning the operator at file time. The harness classifier denies
 `gh issue create` from test agents even against a stub, so that edit has no runnable test yet.
+
+## 2026-11-01 — native edges and private ticket records (`board.py`)
+
+Probe on the old script. A blocked ticket filed the way `publish-issues` prescribed, `## Blocked by`
+then `- #1`, printed with no block. A `plan-tasks` issue in a repo with git-ignored specs, with no
+`[CODE]` and no `Requirements covered:`, printed "its spec is missing".
+
+`test_board.py` RED: an open native edge printed no block, two private records resolved no feature, and
+a `gh` rejecting `blockedBy` lost the list. The closed-edge, `Blocked by:` line, shared tier-1,
+`_pending-` and no-key tests passed before the change and guard it. GREEN: all 10 pass. `test_lanes.py`
+is unchanged and passes.
+

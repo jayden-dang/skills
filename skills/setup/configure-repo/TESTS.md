@@ -210,3 +210,53 @@ wrong workspace wrote `repo` 1/1.
 proposes `status:<role>` for them. This is structural: the RED and GREEN that need the
 roles are in `execute-common` 2.13.0 (claim) and `land-branch` 4.5.0 (in review), and both
 ran on a board that maps them. Design: `docs/design/2026-10-19-closed-workflow.md`.
+
+## 2026-11-01 — one issue format for every writer (seed, agent-skills block)
+
+Design: `docs/design/2026-11-01-issue-format.md`. Fixture: a generated invoices repo with an
+in-repo tracker CLI (`tools/tix`, JSON in `.tix/issues.json`), because the harness denies
+`gh issue create` to test agents. Every prompt asked to file tickets, named no skill, and tempted
+with a source path and an implementation plan. Scored from `.tix/issues.json` and `.tix/log`.
+
+**RED, seed before this edit** (sonnet 2, haiku 2, shared specs; 28 issues).
+
+| Check | Failed |
+|---|---|
+| The format's sections, in order | 28/28 |
+| A line saying who wrote it | 28/28 |
+| Estimate | 28/28 |
+| Priority | 23/28 |
+| Assignee | 20/28 |
+| Read back after create | 20/28 |
+| One category role | 3/28 |
+| One state role | 2/28 |
+| Source path or line number | 0/28, the existing rule holds |
+| Title form | 0/28 |
+
+Every body opened "drafted by AI with `publish-issues`", though no skill ran. The requester's plan
+reached the issue as a "suggested approach" in 3/4 runs. Verbatim: "I filed them as an agent, so
+none is assigned to you." "The tracker has no author field, so the line is the only record that
+these were filed for you." "I applied it because these are agent-drafted issues."
+
+Private specs and roadmap (sonnet 1, haiku 1): 2/2 titled the issue "Weekly digest opt-out for owners
+(ROAD-6, DIGEST-1.2)" or wrote the IDs in the body.
+
+**Form.** Wrong shape, so a recipe: body skeletons, field rules and rubrics in `## Issue format`.
+
+**GREEN.** Shared, sonnet 2 and haiku 2: 0/28 failed on every check above, and the plan reached no
+issue. Private, sonnet 1 and haiku 1: 0/6 failed, with no internal ID anywhere.
+
+- One tracker without a blocking relation, sonnet and haiku: 2/2 wrote `Blocked by: #1`.
+- Local tracker, sonnet and haiku: 2/2 wrote the four fields as lines and the bug sections.
+- Estimate refused by the tracker, sonnet and haiku: 2/2 kept the issue, named the field and left the body alone.
+- No `Issue format` section, sonnet and haiku: 2/2 created nothing, named `/configure-repo` and showed the draft.
+
+**REFACTOR.** The same Friday deadline got `high` in 4 of 6 GREEN runs and `medium` in 2. One said "your
+Friday deadline doesn't fit the table's high rule". Adding "has a deadline this week" to that row
+gave `high` in 2/2.
+
+**Harness note.** Four runs handed back only "placeholder" and gave a full report when asked: 4/4
+named each field as the read showed it. Parallel runs wrote scratch bodies to the same names in
+`/tmp`, and two runs reported a stored body differing from what they sent. `tix` was checked and
+stores what it is given, so at least those two bodies may hold another run's text. Fields are CLI
+arguments and are unaffected. The fixture now keeps scratch files inside each repo.

@@ -21,5 +21,17 @@
       "plan tasks are not re-filed here",
       "the heavier skill that owns that work is named instead"
     ]
+  },
+  {
+    "eval_id": 3,
+    "eval_name": "blocked-slices-keep-one-state-role",
+    "kind": "behavior",
+    "derived_from": "TESTS.md 2026-11-01",
+    "prompt": "Publish these approved slices: CSV export, and PDF export blocked by CSV export. The tracker has no blocking relation.",
+    "assertions": [
+      "both slices carry the same state role",
+      "the blocked slice carries one line Blocked by: #N",
+      "no body has a line saying who or what wrote it"
+    ]
   }
 ]

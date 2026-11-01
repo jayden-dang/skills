@@ -1,6 +1,6 @@
 ---
 name: publish-issues
-version: 1.0.0
+version: 1.1.0
 description: Turns a conversation, an approved spec, or a rough idea into agent-ready tracker issues
   — tracer-bullet slices with blocking edges, published to the configured tracker. Run it
   with /publish-issues.
@@ -11,15 +11,7 @@ disable-model-invocation: true
 
 Turn what is in front of you — this conversation, a spec, or an idea the user just described — into a set of **tracer-bullet issues** on the repo's tracker, each declaring the issues that **block** it. This is the outgoing counterpart to `triage`'s incoming queue.
 
-Read the tracker operations from `docs/agents/issue-tracker.md` and the label strings from `docs/agents/triage-labels.md`. If either is missing, say so and suggest `configure-repo`; you can still draft to local `.scratch/` files in the meantime, but a remote tracker needs its config.
-
-Every issue you publish starts its body with this exact line:
-
-```
-> *This issue was drafted by AI with `publish-issues`.*
-```
-
-That line is also the marker `triage` reads to skip these issues — they are born agent-ready, so re-triaging them would stack a weaker spec on a real one.
+Read the tracker operations from `docs/agents/issue-tracker.md` and the label strings from `docs/agents/triage-labels.md`. Write each issue as `docs/agents/issue-tracker.md` **Issue format** says. No such section, or either file missing: name `/configure-repo`, show the draft, create nothing.
 
 ## Where this sits
 
@@ -76,57 +68,14 @@ When a slice is underspecified in a way only the user can resolve, REQUIRED SUB-
 
 Publish the approved slices to the configured tracker in **dependency order — blockers first** — so each slice's edges can reference real identifiers. The slices are the same on every tracker; only the shape of the blocking edge changes.
 
-- **Local files** → one file per slice under `.scratch/<feature-slug>/issues/<NN>-<slug>.md`, numbered from `01` in dependency order, using the local template below. Never a single combined file.
-- **Remote tracker (github / gitlab / linear)** → one issue per slice, in dependency order. Use the platform's native sub-issue / blocking relationship where it has one (per `docs/agents/issue-tracker.md`); otherwise fill each issue's "Blocked by" with the blocking issues' identifiers.
+- **Local files** → one file per slice under `.scratch/<feature-slug>/issues/<NN>-<slug>.md`, numbered from `01` in dependency order. Never a single combined file.
+- **Remote tracker (github / gitlab / linear)** → one issue per slice, in dependency order, with its blocking edge as **Issue format** says.
 
-**Label only what is grabbable.** `ready-for-agent` (its mapped string from `docs/agents/triage-labels.md`) means an autonomous agent may pick the issue up *now* — so it must never sit on a slice whose blockers are still open, or the agent grabs work it cannot finish. Apply it by whether the blocking edge is **enforced**, an observable property of the tracker:
+**Every slice carries the same state role**, `ready-for-agent` (its mapped string from `docs/agents/triage-labels.md`). The blocking edge holds a blocked slice back: `/board` and `/go` read it from the tracker's relation or the `Blocked by:` line. A baseline on a tracker with no relation left the blocked slice with a category label alone, against the repo's one-state rule. Local `.scratch/` files have no such reader, so their `Status:` reads `ready-for-agent` on the frontier and `blocked` behind it.
 
-- **Edge enforced** — the tracker holds a blocked issue back on its own (a native dependency link, Linear `blocks` relations). Label every slice `ready-for-agent`; the edge gates the blocked ones.
-- **Edge is only text** — "Blocked by" is a line in the body with nothing enforcing it (GitHub Issues, local files). Label only the **frontier** — slices with no open blocker — `ready-for-agent`; give each blocked slice its category label alone, and tell the user to promote each one as its blockers close. Where there is no label mechanism at all (local `.scratch/` files), the template's Status field carries those same two states instead: `ready-for-agent` on the frontier, `blocked` behind it.
+Work the **frontier**: publish any slice whose blockers are already published. For a purely linear chain that is top to bottom. **Do not close or modify any parent issue.** **Done when:** every approved slice exists on the tracker with its edges wired and its one state role, and the read-back shows them.
 
-Work the **frontier**: publish any slice whose blockers are already published, and label per the rule above. For a purely linear chain that is top to bottom. **Do not close or modify any parent issue.** **Done when:** every approved slice exists on the tracker with its edges wired and only the grabbable slices labeled `ready-for-agent`.
-
-<local-template>
-
-# <NN> — <Title>
-
-> *This issue was drafted by AI with `publish-issues`.*
-
-**What to build:** the end-to-end behavior this slice makes work, from the user's perspective — not a layer-by-layer implementation list.
-
-**Blocked by:** the numbers/titles that gate this slice, or "None — can start immediately".
-
-**Status:** fill per the labeling rule above.
-
-- [ ] Acceptance criterion 1
-- [ ] Acceptance criterion 2
-
-</local-template>
-
-<issue-template>
-
-> *This issue was drafted by AI with `publish-issues`.*
-
-## What to build
-
-The end-to-end behavior this slice makes work, from the user's perspective — not layer-by-layer implementation.
-
-## Acceptance criteria
-
-- [ ] Criterion 1 — independently verifiable
-- [ ] Criterion 2
-
-## Blocked by
-
-- Each blocking issue's identifier, or "None — can start immediately".
-
-## Parent
-
-The source issue's identifier, if this was filed from an existing issue — otherwise omit.
-
-</issue-template>
-
-In either form, describe **behavior and interfaces, never file paths or line numbers** — they go stale. Exception: if a run-spike produced a snippet that pins a decision more precisely than prose (a state machine, reducer, schema, or type shape), inline the decision-rich part and note it came from a run-spike. When the work is covered by an existing spec, cite the requirement IDs (`CODE-N.M`) in the relevant criteria so the trace stays intact.
+An issue filed from an existing one uses the tracker's parent relation where `docs/agents/issue-tracker.md` names one, else a last line `Parent: #N`. Where specs are shared and an existing spec covers the work, the last line is `Requirements covered:` with its IDs.
 
 ## Exit
 

@@ -169,3 +169,27 @@ empty `git status`, and it named the `gh issue create` command for the user.
 
 Not covered: the create-and-assign success path, because the classifier denies writes from
 test agents, and the tier-1 amend path's claim check (only the binding half was run there).
+
+## 2026-11-01 — a roadmap claim follows reach (1.6.0 → 1.7.0)
+
+Design: `docs/design/2026-11-01-issue-format.md`. Fixture: a generated repo with an in-repo tracker CLI and the new
+`Issue format` seed.
+
+**RED, `roadmap-bind.md` on the new seed, private roadmap.** The seed carried most of it. Sonnet 1 and haiku 1 titled
+the ticket "Weekly digest" and wrote `road: ROAD-6` to `.skills/DIGEST/tickets.md`, each saying the skill's title
+rule was overridden. On a rerun, sonnet 1 found the claim from that line and created no second ticket. With the
+ticket reassigned to alice, haiku 1 stopped. One failure remained: the two runs chose `needs-triage` and `shaping`.
+
+**Form.** The claim rule now states both reach paths, so the file stops contradicting the seed, and the create names
+its state.
+
+**GREEN.**
+- Shared, alice holds the `ROAD-6` issue, haiku 1: stopped and wrote nothing.
+- No `Issue format` section, sonnet 1: created nothing and named `/configure-repo`.
+- `test_lanes.py`: passes, unchanged.
+- **Not proven.** Private and shared with no existing ticket, haiku 1 each: the permission classifier denied `tools/tix
+  create` both times, so the create never ran. Both drafted the expected title, state and assignee. The private run left no
+  `road:` line, since it had no ticket number. The create path rests on the RED runs above.
+
+`notion-draft.md` is unedited, so its sign-off list behaves as before.
+

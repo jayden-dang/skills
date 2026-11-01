@@ -70,3 +70,11 @@ RED, 1.1.0 on the new seed, private specs (sonnet 1, haiku 1), step 1 only: 2/2 
 verbatim under Problem, `Not decided yet` in the other sections, and set all four fields. No failure, so no
 text was written for the create step.
 
+## 2026-11-01 — the claim on a private roadmap (1.1.0 → 1.2.0)
+
+**RED, 1.1.0 on the new seed, private roadmap** (haiku 1). The seed kept `ROAD-6` off the title, and the run recorded it in
+`.skills/ROAD-6/tickets.md`, where `/board` would read `ROAD-6` as the feature code.
+
+**GREEN, 1.2.0** (sonnet 1, haiku 1). 2/2 kept the title, wrote `1 road: ROAD-6` to `.skills/_pending-weekly-digest/tickets.md`,
+gave ROAD-7 no ticket, and kept the swap to `status:shaping` and the frame comment.
+

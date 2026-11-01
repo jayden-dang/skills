@@ -8,12 +8,16 @@ feature**). This step only writes the join.
 **Claim first.** WHERE `docs/agents/issue-tracker.md` exists and this work implements or
 amends a `ROAD-N`, read the tracker live before writing anything — never a generated lanes
 file. With GitHub: `gh issue list --state open --json number,title,assignees` and
-`gh api user --jq .login`. An open issue whose **title** names the `ROAD-N` is its claim:
+`gh api user --jq .login`. Where the roadmap is shared (`git check-ignore -q docs/roadmap/INDEX.md`
+exits non-zero), an open issue whose **title** names the `ROAD-N` is its claim. Where it is private,
+the claim is the ticket on the line reading `road: ROAD-N` in `.skills/*/tickets.md`:
 
 - assigned to someone else → stop; write nothing, and name the issue and its assignee;
 - assigned to you → continue, and cite the issue number in your reply;
 - unassigned → assign it to yourself (the file's Assign operation), then continue;
-- no such issue → create one titled `ROAD-N <slug>` and assign it to yourself, then continue.
+- no such issue → create it as `docs/agents/issue-tracker.md` **Issue format** says, with state
+  `shaping`, assigned to yourself, and titled `ROAD-N <slug>` where the roadmap is shared. Where it is
+  private, write its line in `.skills/<CODE>/tickets.md` with `road: ROAD-N`. Then continue.
 
 Continue means the issue now exists and is assigned to you. When the create or the assign
 fails — a permission denial, no `gh` login — stop as on someone else's claim and name the

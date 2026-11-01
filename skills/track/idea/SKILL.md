@@ -1,6 +1,6 @@
 ---
 name: idea
-version: 1.1.0
+version: 1.2.0
 description: Puts an idea on the board as a ticket and frames it, so it waits in Shaping with its tier and open questions. Run it with /idea <the idea>.
 disable-model-invocation: true
 ---
@@ -25,9 +25,10 @@ The states are the roles in `docs/agents/triage-labels.md`.
    Then comment the stated tier, the neighbours `frame-change` found, and the open
    questions, numbered. Tier 0 skips Shaping: swap to `ready-for-agent` and say so.
    WHEN the frame added roadmap items and the operator named the one they carry on with,
-   put that `ROAD-N` at the start of the title in the same edit (`ROAD-251 Weekly digest…`):
-   the claim check before a spec is written reads titles. Unnamed → leave the title. The
-   other new items get no ticket here. Two runs left the title alone after the operator said
+   record the claim in the same edit, for the check before a spec is written. Where the roadmap is
+   shared, that `ROAD-N` starts the title (`ROAD-251 Weekly digest…`). Where it is private, the title
+   stays and `.skills/_pending-<slug>/tickets.md` gets the line `<ticket id> road: ROAD-N`, since the
+   feature has no code yet. Unnamed → change nothing. The other new items get no ticket here. Two runs left the title alone after the operator said
    he would carry on with ROAD-251; one wrote "Jayden is taking this one" into the comment,
    where no claim check reads.
    *Done when: the ticket carries one state role and the comment.*

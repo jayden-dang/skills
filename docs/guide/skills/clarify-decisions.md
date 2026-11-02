@@ -75,6 +75,10 @@ limit of one collaborator that no note app people share in has.
 Always: decisions · constraints · high-tweak · success · boundaries · spine · yes.  
 When ON: also coverage final · owned unknowns · accepted risks · operability.
 
+## Card or default (v1.9.0)
+
+Measured over six interviews, one run spent a card on what another read from the code, and two runs cut a date picker because a nearby filter existed, leaving a bookkeeper's own period with no control. So each open item is now tested first. A changed meaning, a new state, or who pays, holds or loses is always a card, even when no column is added. Otherwise a point the repo settles, or a pick that builds nothing and leaves nobody worse off, becomes a `default` row in the close package, where the user still confirms it. A reference piece cut as already on the screen must name the control that does that part of the task, or it is a gap. On an unseen fixture the old text ran past six answers without closing, and the new text closed in five or six with the money and hold cards intact. This is not evidence of less overbuild, and a few weak defaults remain.
+
 ## See also
 
 - [`frame-change`](frame-change.md) · [`assess-observability`](assess-observability.md) · [`research`](research.md) · [`run-spike`](run-spike.md) · [`specify-behavior`](specify-behavior.md)

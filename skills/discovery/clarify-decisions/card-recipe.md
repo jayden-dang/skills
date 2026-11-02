@@ -53,8 +53,11 @@ option is **the proven reference, cut to fit**:
   unverified, with the page that would confirm it.
 - **Pieces** — every piece it ships, in the order a user meets them, the first
   one included.
-- **Cut** — each piece this repo's code and posture do not need, one reason
-  each. What is left is the option, with its Shape like any other.
+- **Cut** — each piece the person's task, this repo's code, or its posture does
+  not need, one reason each. A piece cut as already on the screen names the
+  control that does that part of the task, `file:line`. No such control → it is
+  a gap: the piece stays, or the gap goes in Territory. What is left is the
+  option, with its Shape like any other.
 
 Draw it **first**, before any option of your own. It is where an option comes
 from, not a citation added to ones you already drew. When two references split

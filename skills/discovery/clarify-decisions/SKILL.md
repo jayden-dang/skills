@@ -1,6 +1,6 @@
 ---
 name: clarify-decisions
-version: 1.8.0
+version: 1.9.0
 description: Use to interview or grill the user before building an underspecified
   plan, design, or feature idea, including when another skill calls for an
   interview. Produces a confirmed close package of decisions, constraints,
@@ -64,10 +64,25 @@ Invite correction only if a lock is false. First card: **Problem lock** when its
 **Problem-lock card** WHEN parent knowns show **Assumptions** that are solution-shaped (a named API, flag, merge, or “just do X”) **OR** there is no stated desired outcome / success signal — and the Fork above says the card path: use the Question card recipe; Thread *This card* names the problem lock. Body MUST lock all three on the chosen statement (options = alternate *problem statements*, not implementations):
 
 - **Observed** — who hurts / what is true now
-- **Desired** — observable result when done (not “it works”)
+- **Desired** — observable result when done (not “it works”), in the words of the person's own work, exact enough that a screen could fail it
 - **Non-goals** — deliberate outs
 
 Closes: `known-unknown` (problem statement). Senior “skip philosophy / just pick API options”, standup clocks, and “don’t send me to another skill” do **not** waive this section.
+
+## Card or default
+
+Test each open item before writing its card.
+
+**Always a card:** the answer changes what an existing field, route or screen means, adds a state a person can be in, or decides who pays, who holds what, or what someone loses. This holds when no column is added.
+
+**Otherwise a default**, when either holds:
+
+- **The repo settles it:** Territory holds one reading, with `file:line`, and no option has a case of its own.
+- **The pick builds nothing:** the recommendation adds no route, column, screen or job, and no person or amount of money ends up worse off than today.
+
+A default leaves the open set and becomes one row in the close package's Decisions table, class `default`, with its reason and `file:line`.
+
+Measured, six interviews spent 36 cards: one run spent a card on what another read from the code, and cards recommending no build took the same full ceremony.
 
 ## Question card (every turn)
 
@@ -105,7 +120,7 @@ Interview only. Blindspots: consume the parent's list. Problem: follow **Problem
 
 When the open set has no remaining high-blast judgment call — and **before** returning control to a parent or claiming shared understanding — emit:
 
-1. **Decisions table** — rows: radius · topic · decision (user's words) · unknown class closed.
+1. **Decisions table** — rows: radius · topic · decision (user's words) · unknown class closed, or `default` with its reason and `file:line`.
 2. **Constraints block** — ready-to-paste locks (architecture and data first; when Coverage ON, reliability/failure/operate next; polish-diff last). Flag lower-radius answers that conflict with higher-radius locks.
 3. **High-tweak surface** — locks most likely to change under real implementation pressure (data model, type interfaces, UX flows). Mechanical refactors stay buried; do not re-interview them here.
 4. **Success / done signal** — 1–3 observables that mean “done” (pasteable into `requirements.md` / NFR). Prefer CUJ-shaped observables when Journey was walked. Not “it works” / “we’re aligned”.
@@ -128,6 +143,9 @@ Slots 4–6 always required. Slots 7–10 required only when Coverage ON. Not co
 | "We're aligned / senior said just write requirements" | Shared understanding is the package + yes. |
 | "They named the cheap path / skip philosophy and pick API options" | Solution-shaped assumptions are not locks. Follow **Problem lock**. |
 | "I know this domain — I'll draw the options from the code" | Sharing, undo, invites: someone shipped these and users learned them there. Start from that product and cut; options drawn from nothing are where the overbuild and the odd shape come from. |
+| "A nearby control already covers this reference piece" | Name the control that does this part of the person's task, `file:line`. Two interviews cut a piece on a nearby filter and locked it Off limits, and the person's own period still had no control. |
+| "No column is added, so this is a default" | A hold that changed what a counter means went through as a default on that reason, and a lapsed offer that cost someone their place did too. Meaning, state and loss are cards. |
+| "One more card is the safe choice" | A card on a settled point spends the user's attention on nothing. Its default row still reaches them in the package they confirm. |
 | "Success / Boundaries / Spine belong downstream" | Close slots 4–6 are required here. |
 | "Stay additive to be safe / v2 name on a None repo" | Compat obligation None: one shape. A `v2` name, parallel column, or deprecation window is a defect. |
 | "Reliability is later / skip the map" | Coverage ON: Missing cells stay open. Extra rows: `card-recipe.md`. |
@@ -145,3 +163,5 @@ Slots 4–6 always required. Slots 7–10 required only when Coverage ON. Not co
 - Offering a `v2` name, parallel column, sync trigger, or deprecation window on **Compat obligation None**
 - A card on a feature shipped products already have whose options name no product
 - Inventing SLO-N / TB-N / THR-N IDs; merging Owned unknowns into Accepted risks
+- A reference piece cut as already covered, with no control named for the person's task
+- A card on a point the repo settles, or a default that changes a meaning, adds a state, or decides who pays, holds or loses

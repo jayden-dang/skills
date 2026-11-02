@@ -800,3 +800,69 @@ failed on order. Round 2 tested on another unseen feature.
 | Why the reference is known to work | **not as written** — missing in 4 of 5 GREEN runs across both skills |
 
 **Version:** minor `1.8.0` — a new sub-slot inside Options.
+
+## v1.9.0 — a cut names its control, and a settled point is a default (2026-11-02, Sonnet + Haiku)
+
+Two failures from a measurement of the interview as it ran, entered through `frame-change`
+with a raw ask and every answer "agree". Nothing in either failure lives in `frame-change`.
+Records: scratch `.skills/FRAMEMEASURE/runs/scores.md`.
+
+### Setup
+
+Runners `skill-tester` (Sonnet) and `skill-tester-haiku` (Haiku), no web, fresh parent per
+cell, skills installed under `.claude/skills/` without `TESTS.md` and `eval.json`. Cap of six
+answers. Scored from returned cards against criteria written before each run.
+
+- `tallybrook`: invoicing, Active / External, no tickets. Rolling presets only in `FilterBar.tsx`.
+- `snipbook`: booking, customer rescheduling. `ironloop`: gyms, membership pause.
+- `stillroom`: unseen, studio class waitlist. `MyBookings` lists confirmed bookings only, the
+  money and hold decisions are real, and the repo settles who may join.
+
+### RED — v1.8.0, six interviews
+
+| Fixture, model | Cards | Closed | UX cards |
+|---|---|---|---|
+| tallybrook Sonnet / Haiku | 5 / 5 | yes | 1 / 1 |
+| snipbook Sonnet / Haiku | 6 / 6 | yes | 3 / 3 |
+| ironloop Sonnet / Haiku | 7 shown / 5 | no / yes | 2 / 2 |
+
+- **Cut on the nearby control, 2/2 on tallybrook:** *"Date-range dialog: the page's existing
+  preset and status filters already say it."* Haiku then listed a date picker Off limits. The
+  person's own period still had no control, and no card asked what period they need.
+- **Ceremony on settled points:** one run spent a card on who may export while another read the
+  same answer from `routes.ts`. Cards recommended a free pause and no backfill with full graders.
+- **No big overbuild, 0/6.** Every problem lock recommended the narrowest statement.
+
+Control on unseen `stillroom`, v1.8.0: Sonnet 6 shown with 2 open, Haiku 7 shown, neither closed
+inside the cap, zero default rows. Both already kept the leave piece, so the cut rule did not
+discriminate on this fixture; it discriminates on tallybrook only.
+
+### GREEN
+
+| Draft | Run | Cards | Cut names its control | Guard: hold, money stay cards |
+|---|---|---|---|---|
+| 1 | tallybrook Sonnet / Haiku | 4 / 3 | **PASS** 2/2 | delivery defaulted on both, against the written criterion |
+| 1 | stillroom Sonnet | 5 | PASS | a lapsed offer that costs a place defaulted |
+| 1 | stillroom Haiku | 3 | PASS | **FAIL** a hold changing `booked_count`'s meaning defaulted, "no new column" |
+| 2 | tallybrook Haiku | 4 | **PASS** "a gap, not something to cut" | **PASS** delivery and columns are cards |
+| 2 | stillroom Haiku ×2 | 6 / 6 | PASS | **PASS** 2/2 |
+| 2 | stillroom Sonnet | 5 | PASS | PASS on hold and money |
+
+Draft 2 added "Always a card": a changed meaning, a new state, or who pays, holds or loses.
+
+A real gain the rule did not aim at: with the settled points out of the way, a tallybrook card
+asked whether Total already includes VAT, which no RED run asked, and the 20,000-row cap did not come back.
+
+### Known limits
+
+- Weak defaults remain on the last text: Sonnet defaulted a cancel guard that changes a route's
+  behaviour and a My Bookings section; Haiku defaulted a leave route; a lapse rule entered a
+  Thread with no card of its own. All four reach the user in the package they confirm.
+- tallybrook Sonnet was not re-run on the final text.
+- The always-agree script is not a real interview, the fixtures are self-built, n is small, and
+  one author wrote the criteria and scored them. No meta-test or five-rep wording test was run.
+- Step 4 of `frame-change`, after the package, was not measured.
+- Picks stayed the size the problem lock chose. This edit is not evidence of less overbuild.
+
+**Version:** minor `1.9.0` — a new card-or-default test, a `default` Decisions class, and a
+sharper Cut and Desired.

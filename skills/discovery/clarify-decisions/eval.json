@@ -255,5 +255,40 @@
       "when two references split on the card's own question, the card says which one this repo resembles and why",
       "the reference option is judged by the same Criteria as the others"
     ]
+  },
+  {
+    "eval_id": 22,
+    "eval_name": "cut-names-the-control",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § v1.9.0 GREEN — tallybrook",
+    "prompt": "Interview on exporting invoices, where the list offers rolling presets only and a bookkeeper works in calendar periods. Write the next card.",
+    "assertions": [
+      "a reference piece cut as already on the screen names the control that does that part of the task, with file:line",
+      "a part of the task with no control is stated as a gap, not cut",
+      "Desired is written in the person's own work, exact enough that a screen could fail it"
+    ]
+  },
+  {
+    "eval_id": 23,
+    "eval_name": "settled-point-is-a-default-row",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § v1.9.0 GREEN — tallybrook and stillroom",
+    "prompt": "Interview where the new route's access has one reading in the code and no option has a case of its own. Reach the close package.",
+    "assertions": [
+      "no card is spent on that point",
+      "the close package's Decisions table carries it as class default with its reason and file:line",
+      "the package still asks for explicit confirmation"
+    ]
+  },
+  {
+    "eval_id": 24,
+    "eval_name": "meaning-state-and-money-stay-cards",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § v1.9.0 GREEN — draft 1 failure, stillroom Haiku",
+    "prompt": "Interview on a class waitlist where holding a freed spot would change what booked_count means, and a member's credit must be spent at some point. Write the cards.",
+    "assertions": [
+      "how the spot is held is a card, even when no column is added",
+      "when the credit is spent is a card"
+    ]
   }
 ]

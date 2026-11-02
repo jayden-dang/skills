@@ -6,6 +6,7 @@ are not the opening of the turn.
 
 **Contents:** [Today](#1-today) · [What changes](#2-what-changes) ·
 [A shape of your own](#a-shape-of-your-own) · [A proven reference](#a-proven-reference) ·
+[The person's task](#the-persons-task) ·
 [Architect's read](#3-architects-read) ·
 [Stance](#4-stance)
 
@@ -53,8 +54,8 @@ does not decide the pick.
 
 Name the product and why it is known to work — years in use, scale, a published
 guideline. List **every piece it ships**, in the order a user meets them, the
-first one included. Then **adapt by cutting**: drop each piece this repo's code
-and posture do not need, one reason each. What stays **is** the third shape,
+first one included. Then **adapt by cutting**: drop each piece the person's task,
+this repo's code, or its posture does not need, one reason each. What stays **is** the third shape,
 judged on the same three lines with no head start. The reference is where the
 shape comes from, not a citation added to one you already drew. It shows the
 feature works for users; it does not show it fits this code.
@@ -67,6 +68,31 @@ and listed every piece except that undo.
 
 Not when the fork is inside the repo — where a check lives, which module owns a
 field. No product ships that, and a reference there is decoration.
+
+## The person's task
+
+WHEN the shapes differ in what someone using the product sees or does, compute
+this for each shape. The card's walk prints it.
+
+- **The task** — who they are, what they came to get, and what they do with it next,
+  in the words of their own work, exact enough that a screen could fail it. Take it
+  from what users said: tickets, `docs/product/personas.md`, quotes in the paste.
+  None in reach → derive it from who the posture says uses the product and who they
+  answer to outside it, and mark it **assumed**. A task that echoes an option the
+  screen already offers was fitted to the screen; write it again from the work.
+- **The walk** — run that task to its end, until the person holds what they came
+  for. Break the task into its parts and name the control each part uses on the
+  screen as it stands, `file:line`. A part with no control is a gap, in every shape
+  that does not add one.
+- **The count** — what the shape asks of them: steps, decisions, new concepts.
+- **The cut** — a piece no step of the task needs goes, and the task is the reason,
+  even when the code makes the piece cheap.
+
+Measured, four walks with no ticket in the repo gave the person exactly what
+today's screen could already express, and none hit the gap that a ticket in the
+same repo exposed in four runs of four.
+
+Not when the person would not notice which shape shipped, however much the code differs.
 
 ## 3. Architect's read
 

@@ -465,5 +465,41 @@
       "setup asks companion language, drawing form, and project posture (or reads posture from docs/agents/project.md)",
       "setup does not ask what kind of feedback the user wants"
     ]
+  },
+  {
+    "eval_id": 40,
+    "eval_name": "task-line-when-shapes-differ-to-the-person",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § v3.3.0 GREEN — tallybrook and snipbook, no tickets",
+    "prompt": "Live-choice paste: a small export button or a full Export Center, recommending the Center. No ticket or persona in the repo. Write the companion turn.",
+    "assertions": [
+      "the walk opens on one line naming who the person is, what they came to get, and what they do with it next",
+      "the task is marked assumed when no user said it",
+      "the task does not echo an option the screen already offers",
+      "each shape carries its steps, decisions and new concepts"
+    ]
+  },
+  {
+    "eval_id": 41,
+    "eval_name": "gap-names-the-missing-control",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § v3.3.0 GREEN — draft 3, tallybrook and held-out ironloop",
+    "prompt": "Same fork, where the person's task needs a value the screen has no control for. Write the companion turn.",
+    "assertions": [
+      "the part of the task with no control is named with file:line",
+      "no shape is called gap-free while that part still has no control",
+      "a piece no step of the task needs is cut with the task as the reason, even when the code makes it cheap"
+    ]
+  },
+  {
+    "eval_id": 42,
+    "eval_name": "internal-fork-gets-no-task-line",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § v3.3.0 GREEN — snipbook internal fork",
+    "prompt": "Live-choice paste: should the cutoff check stay in the route, move to the repo, or move to a new module? Write the companion turn.",
+    "assertions": [
+      "no shipped product is named as a reference",
+      "the pick rests on the repo's own callers and guarantees"
+    ]
   }
 ]

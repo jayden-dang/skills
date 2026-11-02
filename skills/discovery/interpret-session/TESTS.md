@@ -1542,3 +1542,87 @@ evidence retired option A, which no RED run argued.
 
 **Version:** minor `3.2.0` — a new rule and a removed setup question; iron law, card
 order, hops and carry-back unchanged.
+
+## v3.3.0 — the person's task on forks a person meets (2026-11-02, Sonnet + Haiku)
+
+Field complaint: agents overcomplicate at `frame-change`, and the companion should stand
+where a user stands and build on UX that already ships instead of researching new UX. The
+literal ask was to play a real user. Outside the repo, the sources say a persona is the weak
+form: simulated users run cooperative and positive (arXiv 2603.11245), persona detail did not
+help predict real preferences (arXiv 2605.18311, n = 2073), and an LLM walkthrough found 3 of
+the 10 failure points humans found until it was asked to flag them during the walk (arXiv
+2512.03568). So three arms: v3.2.0, role-play, and a structured walk.
+
+### Setup
+
+Runners `skill-tester` (Sonnet) and `skill-tester-haiku` (Haiku), no web, Vietnamese, ASCII,
+fresh random parent per cell, skill installed under `.claude/skills/` without `TESTS.md` and
+`eval.json`. Scored from returned turns against criteria written before each run.
+
+- `tallybrook`: invoicing app, Active / External. Paste recommends an Export Center. Planted:
+  no calendar period in `FilterBar.tsx`, VAT selected but not shown, `LIMIT 25` on the view.
+  With and without `docs/support/export-requests.md`.
+- `snipbook`: booking app, customer rescheduling, recommended Customer Portal. Infrastructure
+  really exists, so code does not argue against it. Plus an internal fork: where the cutoff
+  check lives.
+- `ironloop`: gym app, membership pause. Held out until the final text.
+
+### RED — v3.2.0 and role-play, tickets in the repo
+
+| Assertion | v3.2.0 (4 runs) | Role-play (4 runs) |
+|---|---|---|
+| Names the person's job | 4/4 | 4/4 |
+| Finds all three planted gaps | 4/4 | 4/4 |
+| Cuts a piece on the person's need | 4/4 | 4/4 |
+| No invented user words used as evidence | 4/4 | **0/4** |
+
+Role-play moved no pick and found no extra gap. It added invented quotes, one set under real
+ticket authors' names: *"Lan: 'Cho tôi file tháng trước, không cần cái gì khác.'"* Neither
+author wrote that. It is dropped on evidence, and no text forbids it because no other arm
+produced the failure. On this fixture v3.2.0 passes, but ticket T-412 says "A file would be
+enough", which hands over the answer.
+
+### RED — v3.2.0, tickets removed (one variable)
+
+| Assertion | Result |
+|---|---|
+| Calendar-period gap found | **0/4** (4/4 with tickets) |
+| Person's need stated without inventing it | **2/4** — *"đáp đúng điều support đang bị hỏi"* after the map said nobody knows what support is asked |
+| Names who could settle the job | 4/4, so no text for it |
+| Basis of the pick | code and scale 4/4 |
+
+The walk's person was fitted to the code: "unpaid, All time", "Last 90 days, paid". On
+`snipbook`, 0/2 printed a task or a count, and cuts rested on "no evidence", not on the task.
+
+### GREEN
+
+| Draft | Task line + count | Task from the work | Gap named | Internal fork clean |
+|---|---|---|---|---|
+| 1, prose in `grounding.md` | 6/8 | 1/4 | 1/4 | 2/2 |
+| 2, required slot on the card | 8/8 | 4/4 | 1/4, others wrote "no gap" with no such control | 0/1 |
+| 3, name the control per part | 6/6 | 6/6 | **6/6**, holdout 2/2 | 1/2 |
+| 4, "would the person notice" | 1/1 | 1/1 | 1/1, holdout | 2/3 |
+
+Held-out `ironloop`, draft 3 and 4, 3/3: named that no control sets when a pause ends
+(`PlanCard.tsx`), and cut the survey, plan comparison and win-back because the member's task
+needs no step of them, though the rule engine and sequences exist. No invented quotes in 23
+runs across the drafts. Carry-back after `0`, 2/2: the assumed need stayed out of **Lock**, in **Weigh** and
+**Still open**; `deciding.md` needed no text.
+
+### Known limits
+
+- **Picks did not change.** No run in any arm picked the overbuilt option, on any fixture. This
+  edit changes what the card shows and why pieces go. It does not show that it prevents
+  overbuild, and these fixtures did not reproduce overbuild at this stage. `frame-change` itself
+  was not measured.
+- On the final text, Haiku printed a task line on the internal fork in its one run, while writing
+  that the person sees no difference; Sonnet stayed clean 2/2. The pick and content stayed right.
+  Accepted.
+- The final text differs from draft 3 by one test sentence. It was re-run on one Haiku run of the
+  held-out fixture and on the internal fork, not on all of `tallybrook` again.
+- The fixtures are self-built, n is small, and one author wrote the criteria and scored them.
+- A count of steps is an estimate from a walk on paper, and an assumed task is one model's guess.
+  Nothing here says the UX is better for real users; that takes real users.
+
+**Version:** minor `3.3.0` — a new required slot on a condition; iron law, card order, hops and
+carry-back unchanged.

@@ -1,6 +1,6 @@
 ---
 name: interpret-session
-version: 3.2.0
+version: 3.3.0
 description: Companion beside a technical discussion that answers from the code — what it does
   today, what a proposed shape would actually change, and which shape to take — in a card a
   person can retell in three sentences. Run with /interpret-session.
@@ -135,6 +135,8 @@ what they want is how a feature or the system works, with no pick.
 - Naming a better shape in the stance that was never given a column to be judged in
 - A fork on a feature shipped products already have, answered with a shape no product was named for
 - A heading that promises a picture over a paragraph that draws nothing
+- Shapes that differ to the person, walked with no task line, or a task that echoes an option the screen already offers
+- A walk that says no gap without naming the control each part of the task uses
 
 **Done when:** on a live choice the user can retell — in three sentences, with no jargon and no
 hop taken — the fork, the picture of four to seven parts, and the pick, and knows what this card

@@ -20,7 +20,7 @@ The first paste of a problem also opens on the map from `session-map.md`.
 2. **The fork** — one sentence that distinguishes the options.
 3. **The lean** — one sentence: the shape plus the repo fact. Not the seven stance slots.
 4. **Hold this picture** — the connected parts, where the model stops, one diagram.
-5. **One walk** — 4–8 lines, named actor, today versus the lean.
+5. **One walk** — 4–8 lines, named actor, today versus the lean. When the shapes differ to the person, it opens on their task.
 6. **The full pick** — why those options exist, the pick, each loser on the same fact, who it hits.
 7. **Paste vs code** — only the disagreements that would move the pick. Omit the heading if none.
 8. **If they confirm** — what `0` would freeze.
@@ -115,6 +115,19 @@ asked for the card again.
 Four to eight lines. A named person walks **this** graph: today, then under the
 lean. Numbers from the code. The trap — the paste looks like a widen and is a
 hide — lives here, not as a lecture. This is not the hop-2 `file:line` walk.
+
+WHEN the shapes differ in what someone using the product sees or does, the walk is
+`grounding.md` § The person's task, in these lines, every one required, written in
+the companion language:
+
+```
+Task (assumed, if it is): <who> needs <the exact thing> to <what they do next>.
+Today: <where that task stops>.
+<Shape>: <how the task runs to its end>. Asks: <n> steps, <n> decisions, <n> new concepts. Gap: <the part of the task with no control, file:line>.
+```
+
+One `<Shape>` line per shape. If the person would not notice which shape shipped,
+write the walk above instead, with no task line.
 
 ## The full pick
 

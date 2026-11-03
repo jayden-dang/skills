@@ -97,5 +97,21 @@ class FileRefs(unittest.TestCase):
         self.assertEqual(cv.file_refs("recorded run, GET /health"), [])
 
 
+class SheetFilter(unittest.TestCase):
+    def test_named_frames_are_the_ones_selected(self):
+        vf = cv.sheet_filter([12, 40, 95], 30.0)
+        self.assertIn(r"select='eq(n\,12)+eq(n\,40)+eq(n\,95)'", vf)
+        self.assertIn("tile=4x1", vf)
+
+    def test_rows_grow_with_the_lines(self):
+        self.assertIn("tile=4x3", cv.sheet_filter(list(range(9)), 30.0))
+
+    def test_without_named_frames_it_samples_evenly(self):
+        vf = cv.sheet_filter(None, 48.0)
+        self.assertIn("fps=1/3.0", vf)
+        self.assertIn("tile=4x4", vf)
+        self.assertNotIn("select", vf)
+
+
 if __name__ == "__main__":
     unittest.main()

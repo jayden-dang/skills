@@ -1,6 +1,6 @@
 ---
 name: make-video
-version: 1.0.0
+version: 1.2.0
 description: Makes a narrated 1080p video of a built feature, a pull request, or a release, from the real code and the running app. Run it with /make-video <feature, branch, or tag>.
 disable-model-invocation: true
 ---
@@ -58,6 +58,12 @@ It prints the project path, under `.skills/video/`. Fill every value in `src/tok
 repo's design tokens and name that file in its `Source:` comment. Find them through
 `docs/standards/`, `docs/agents/`, then any theme or tokens file. A repo with none keeps the
 template's values, and your report says so.
+
+List every font the tokens name in `src/fonts.tsx`, with its file copied into `public/fonts/`. A font
+the repo only links from a service gets downloaded the same way. One run named a Google font and never
+loaded it: the film came out in Helvetica, the check passed, and its report called it "Figtree-like".
+The render now stops on a font it cannot draw. With no file to be had, take that name out of the tokens
+and say so in your report.
 
 *Done when: `Source:` names a file, or your report will say there is none.*
 
@@ -147,12 +153,18 @@ recording. Use `rate` up to 2 when a recording runs longer than its lines.
 ## 6. Render and check
 
 ```bash
-(cd <project> && npx tsc --noEmit && npx remotion render Film out/film.mp4)
+(cd <project> && npx tsc --noEmit && node preview.mjs)
+```
+
+Read `out/preview.png` as an image: one frame at the end of each line. Fix what it shows, then render.
+
+```bash
+(cd <project> && npx remotion render Film out/film.mp4)
 python3 "$SKILL/scripts/check_video.py" <project> . <project>/out/film.mp4 --sheet /tmp/<slug>-sheet.png
 ```
 
-Read the contact sheet as an image. Fix text cut off by its box, a frame with the subject off
-screen, and any `FAIL` line, then render and check again.
+Read the contact sheet as an image: the same frames, from the finished film. Fix text cut off by its
+box, a frame with the subject off screen, and any `FAIL` line, then render and check again.
 
 *Done when: the check prints `PASS` and the sheet shows no fault.*
 

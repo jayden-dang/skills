@@ -49,4 +49,20 @@ export const layout = (scene: Scene) => {
   return {starts, lengths, duration: Math.max(starts[last] + lengths[last] + pace.tail, clipEnd + 10)};
 };
 
-export const totalFrames = () => scenes.reduce((sum, s) => sum + layout(s).duration, 0) - TRANSITION * Math.max(0, scenes.length - 1);
+// Each scene with its absolute start. Neighbours overlap by TRANSITION.
+export const placed = (() => {
+  let from = 0;
+  return scenes.map((scene) => {
+    const entry = {scene, from, ...layout(scene)};
+    from += entry.duration - TRANSITION;
+    return entry;
+  });
+})();
+
+// The last moment of every line: what the preview and the contact sheet show.
+export const beatFrames = () => placed.flatMap(({from, starts, lengths}) => starts.map((start, i) => from + start + lengths[i] - 4));
+
+export const totalFrames = () => {
+  const last = placed[placed.length - 1];
+  return last ? last.from + last.duration : 0;
+};

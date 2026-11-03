@@ -2,19 +2,22 @@
 // Source: <path to the project's tokens>
 export const t = {
   fontSans: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
+  fontHead: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif', // headings; the same as fontSans unless the project differs
   fontMono: 'ui-monospace, Menlo, monospace',
-  ground: '#1b2430',
-  panel: '#f5f6f8',
-  panelSoft: '#ffffff',
-  panelBorder: 'rgba(0, 0, 0, 0.08)',
+  headWeight: 650,
+  headTracking: '-0.02em',
+  ground: '#eceef2', // behind everything: any CSS background, so a gradient works
+  onGround: '#15181e', // the narration, on the ground
+  panel: '#ffffff', // the window; translucent when panelBlur is set
+  panelSoft: '#ffffff', // solid, for cards inside the window
+  panelBorder: 'rgba(20, 24, 31, 0.1)',
   panelBlur: 'none',
-  ink: '#14181f',
+  borderWidth: 1,
+  ink: '#15181e', // text on the panel
   muted: '#5b6573',
-  onGround: '#ffffff',
-  accent: '#2f6fed',
-  onAccent: '#ffffff',
+  accent: '#2c5be0', // must read on the panel
   bad: '#c02a4a',
-  radius: 24,
-  radiusSmall: 14,
-  shadow: '0 24px 70px rgba(0, 0, 0, 0.35)',
+  radius: 22,
+  radiusSmall: 12,
+  shadow: '0 24px 60px rgba(20, 24, 31, 0.14)',
 };

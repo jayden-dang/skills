@@ -2,6 +2,14 @@
 
 ## Unreleased
 
+### Changed: `make-video` 1.2.0, the right font, no empty footage, larger type (2026-11-03)
+
+A film now stops on a font the machine cannot draw. Before, a run named a Google font and never loaded it: the film came out in Helvetica and the check passed. Font files go in `public/fonts/` and `src/fonts.tsx`. The window keeps only the height a `focus` rect needs, so the app's empty lower half stays out of the film. Captions, points and titles are larger, and the contact sheet shows the end of each line instead of fixed steps. Three Haiku runs and one Sonnet run passed, including a font from a service. A new preview did not cut full renders; it stays because the sheet reads its frames. See `skills/craft/make-video/TESTS.md`.
+
+### Changed: `make-video` 1.1.0, one window that fits each scene (2026-11-03)
+
+Every film now uses one window that changes shape to hug its scene, with the narration under it on the project's background. Before, every scene sat in the same large panel, which stood mostly blank on short lists, and the `staged` label could cover the app. Text too long for the window stops the render and names the scene. `src/script.json` is unchanged. `src/tokens.ts` gains `fontHead`, `headWeight`, `headTracking` and `borderWidth`, and `ground` takes any CSS background. The layout was chosen across four unlike token sets so it does not favor one project. Three Haiku runs and one Sonnet run all passed the check with no empty window on any contact sheet. See `skills/craft/make-video/TESTS.md`.
+
 ### Added: `/shape #N --auto` writes the whole spec and hands you one review page (2026-11-03)
 
 `shape` 1.3.0. The session you typed in conducts a `work` session and a read-only `interpret-session` session over cross-session messaging, keeps the machine awake, wakes a stopped session, checks which skills really ran from their transcripts (`scripts/skill_receipt.py`), audits the files, runs one advisor, and writes `review.html`. Every file stays `Status: Draft` until you approve on that page. Baseline: without it, `--auto` stopped at requirements on Sonnet and skipped the interview on Haiku; a hand-run charter skipped three required steps and died silently twice. Ran through approval to Ready on Sonnet, and to the page on a Haiku conductor; about 45 minutes for a one-command feature. Not yet run on a real repo.

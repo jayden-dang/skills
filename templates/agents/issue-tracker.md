@@ -12,7 +12,7 @@ and program writers read these fields.
 | Field | Values | Default |
 |---|---|---|
 | **Publish unit** | `feature` — one issue per approved plan; tasks stay in `tasks.md`. `tasks` — legacy one issue per plan task | `feature` |
-| **Close linkage** | Tracker-native close text for the feature PR | e.g. GitHub `Closes #N` |
+| **Close linkage** | Tracker-native close text for the feature PR or a local merge commit | e.g. GitHub `Closes #N` |
 | **Program sync** | `local` — MILE/ROAD only in `docs/roadmap/`. `labels` / `project_fields` — metadata on the feature issue only. `initiatives` — lead/admin remote program mirror | `local` |
 | **Program write role** | `owner` \| `lead` \| `ic` — who may create remote program objects | `ic` (with Program sync `local`) |
 | **Draft surface** | `repo` — milestone drafts live in `docs/roadmap/INDEX.md` only. `notion` — each milestone draft is also a page in the Notion database below, where the sign-off role signs it off before any of its tickets reach the tracker | `repo` |
@@ -46,6 +46,7 @@ configured tracker's section.>
 - Blocking: `gh issue create --blocked-by <n>,<n>`, `gh issue edit <n> --add-blocked-by <n>`
 - Sub-issues: `gh issue create --parent <n>`
 - Comment: `gh issue comment <n> --body-file <f>`
+- Close: `gh issue close <n> --comment <text>`
 
 ### linear
 
@@ -62,6 +63,7 @@ common MCP gap for multi-issue graphs (`publish-issues`). Default
 | Read an issue | `issue(id: "<UUID>")` → `title description comments { nodes { body } }` — resolve a human identifier like `ENG-123` via an `issues` filter, not the `id:` argument (which takes the UUID) |
 | Create an issue | `issueCreate` mutation: `teamId`, `title`, `description`, `labelIds`, optional `parentId` for a sub-issue |
 | Comment | `commentCreate` mutation: `issueId`, `body` |
+| Close an issue | `issueUpdate` mutation: `id`, `stateId` of a workflow state whose `type` is `completed` |
 | Blocking edge | `issueRelationCreate` mutation with `type: blocks` |
 
 GraphQL endpoint: `https://api.linear.app/graphql` (POST, `Content-Type: application/json`).
@@ -78,6 +80,7 @@ Roles live in Linear's native fields: map them to workflow **states** and
 - Issues live in `.scratch/<feature>/issues/NN-slug.md`
 - Each file carries a `Status: <state>` line; PRDs in `.scratch/<feature>/PRD.md`
 - "Claiming" = setting `Assignee:` in the file and committing
+- "Closing" = setting `Status: closed` in the file and committing
 
 ## Issue format
 

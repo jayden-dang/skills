@@ -1,6 +1,6 @@
 ---
 name: configure-repo
-version: 1.14.0
+version: 1.15.0
 description: Sets up docs/agents config so this skill set can run in an existing repo.
 disable-model-invocation: true
 ---
@@ -15,7 +15,7 @@ Template seeds live in this skill set's `templates/` directory. Resolve pack see
 
 ## Track progress
 
-This skill has seven steps (decisions A–M inside step 2) and skipping one is the common failure — an unconfigured tracker, or the Step 6 verification gate never run. Before Step 1, create a todo for each numbered step below and complete them in order, checking each off only when its **Done when** is met. Step 6 (prove the configuration works) is not optional.
+This skill has seven steps (decisions A–N inside step 2) and skipping one is the common failure — an unconfigured tracker, or the Step 6 verification gate never run. Before Step 1, create a todo for each numbered step below and complete them in order, checking each off only when its **Done when** is met. Step 6 (prove the configuration works) is not optional.
 
 ## 1. Read the setup state
 
@@ -38,7 +38,7 @@ You may still read the repo's own manifests (lockfiles, `package.json` scripts, 
 
 ## 2. Decide, one section at a time
 
-Walk the thirteen decisions below (A–M; I is optional project-docs; K is optional remote environments; L is optional catalog sync; M is the cold-start drive recipe) strictly one at a time: give a two-or-three-sentence explainer (what this is, which skills consume it, what changes with each choice), state your recommendation with a one-line reason, then wait for the user's answer before moving on. Never dump all sections at once. Assume the user has not seen these concepts before.
+Walk the fourteen decisions below (A–N; I is optional project-docs; K is optional remote environments; L is optional catalog sync; M is the cold-start drive recipe) strictly one at a time: give a two-or-three-sentence explainer (what this is, which skills consume it, what changes with each choice), state your recommendation with a one-line reason, then wait for the user's answer before moving on. Never dump all sections at once. Assume the user has not seen these concepts before.
 
 ### A. Issue tracker
 
@@ -122,6 +122,12 @@ Explainer: `land-branch` reads `Default PR base:` from `docs/agents/project.md` 
 
 **WHEN this decision is offered, read `verify-control.md` beside this file and follow it exactly** — the offer, skip rule, write step, and prove step. `npm test` is not a boot-and-click recipe. **Done when:** Yes with `docs/agents/verify.md`, or explicit Skip.
 
+### N. Default landing action
+
+Explainer: `land-branch` reads `Default landing action:` when a request does not name the outcome. **`pr`:** every branch goes up as a pull request. **`merge`:** a green local merge is pushed to the base and the tickets it completed are closed, with no pull request; choosing it is the standing permission for that push. **`keep`:** the branch stays as it is. Recommendation: `pr` when anyone else reads a diff before it lands, `merge` when nobody does. No value is pre-selected: two baseline setups listed 14 and 15 questions for the operator and neither listed this one.
+
+**Done when:** the user has confirmed a value, or has explicitly declined and no value will be written.
+
 ## 3. Draft and confirm
 
 Show the user, before writing anything:
@@ -157,6 +163,7 @@ The block (include the project-docs bullet only if decision I was Yes) is seeded
 10. Follow the write step in `remote-environments.md` for decision K.
 11. Follow the write step in `catalog-sync-choice.md` for decision L (index-only gitignore append).
 12. Follow the write step in `verify-control.md` for decision M.
+13. If decision N was confirmed, set `- **Default landing action:** \`<value>\`` in the **Project posture** section of `docs/agents/project.md`, under the additive rule above. If the user declined it, remove the placeholder line so `land-branch` asks per invocation.
 
 **Done when:** all files are written, `.skills/` and `.worktrees/` are git-ignored, index-only gitignore applied only when L=`index-only`, M's write ran or skipped, and `git status` shows only the expected additions/edits.
 

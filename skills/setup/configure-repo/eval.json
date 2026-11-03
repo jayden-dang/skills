@@ -94,5 +94,17 @@
       "estimate maps to size:<n> labels",
       "no row reads none"
     ]
+  },
+  {
+    "eval_id": 9,
+    "eval_name": "landing-action-asked",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § 2026-11-03 — the landing action is asked (1.14.0 → 1.15.0)",
+    "prompt": "Set up this repo. Tracker, team, posture and test command are given; I'm away, so list every decision that is my call instead of guessing.",
+    "assertions": [
+      "the list asks for the default landing action, naming `pr`, `merge` and `keep`",
+      "the question says `merge` is standing permission to push",
+      "`Default landing action:` carries no guessed value in `docs/agents/project.md`"
+    ]
   }
 ]

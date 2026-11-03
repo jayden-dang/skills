@@ -27,7 +27,7 @@ Before asking anything, learn the repo's starting state: `git remote -v` (GitHub
 
 ### 2. Decide, one section at a time
 
-Thirteen decisions (A–M), walked strictly one at a time: a two-or-three-sentence explainer, a recommendation with a one-line reason, then a wait for the user's answer. The skill assumes the user has never seen these concepts and never dumps all sections at once. Decision **I** (optional project-docs layer) defaults to No. Decision **K** (Remote environments) is skipped when nothing is deployed.
+Fourteen decisions (A–N), walked strictly one at a time: a two-or-three-sentence explainer, a recommendation with a one-line reason, then a wait for the user's answer. The skill assumes the user has never seen these concepts and never dumps all sections at once. Decision **I** (optional project-docs layer) defaults to No. Decision **K** (Remote environments) is skipped when nothing is deployed.
 
 - **A. Issue tracker.** Where issues live and which commands touch them, for `triage`, `plan-tasks` when publishing tasks, and `cut-release`. Options are **github** (`gh`), **gitlab** (`glab`), **linear** (a connected MCP server, preferred, or the GraphQL API — for teams that track work in Linear rather than the code host), **local** (markdown files under `.scratch/<feature>/` each carrying a `Status:` line), and **other** (freeform prose describing the workflow). Linear will not appear in `git remote`, so it is offered whenever the user says the team lives there even if the host is GitHub or GitLab. A github/gitlab follow-up asks whether external pull requests are a request surface; if yes, `triage` pulls external PRs into the same queue. Skipped entirely for linear/local/other.
 - **A, follow-up: Issue fields.** Fills the `Issue fields` table in `issue-tracker.md`, the write and read for assignee, status, priority, estimate and blocking. On GitHub an organization repo uses the organization's issue fields and a personal repo uses `priority:*` and `size:*` labels. Any label or option change is named for you first.
@@ -60,6 +60,7 @@ Thirteen decisions (A–M), walked strictly one at a time: a two-or-three-senten
 - **K. Remote environments (optional — skip if nothing is deployed).** Table in `docs/agents/project.md` that [`debug-remote`](debug-remote.md) and [`assess-observability`](assess-observability.md) read (backend + read query, never tokens). Done when the table is confirmed or explicitly skipped.
 - **L. Catalog sync (optional).** INDEX-only vs full-triad; default unset.
 - **M. Cold-start drive recipe.** Yes when a UI, CLI, or HTTP process exists: writes `docs/agents/verify.md` (Launch / Doctor / Drive / Evidence / Cleanup / Features) and fills **Run locally**. Skip for a library with nothing to boot. A stored feature's proof includes reload or re-open. Step 6 runs Doctor, then one Drive. [`validate-feature`](validate-feature.md) reads this file.
+- **N. Default landing action.** What `land-branch` does when a request does not name the outcome: `pr`, `merge` or `keep`. `merge` also lets it push the base after a green local merge and close the tickets the merge completed. Declining leaves the field unset, and `land-branch` asks each time.
 
 ### 3. Draft and confirm
 

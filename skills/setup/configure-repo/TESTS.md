@@ -285,3 +285,19 @@ unreachable, "anything that needs my yes, don't do it, list it at the end". Scor
 - All four: `--blocked-by` for blocking, wayfinding operations present, no label created, and missing labels
   listed for the operator's yes.
 
+## 2026-11-03 — the landing action is asked (1.14.0 → 1.15.0)
+
+Fixture: a small Python repo with a local `origin`. Prompt: tracker, team, posture and test command
+given, operator away, "anything that is my call, leave unset and put it in your final message as the
+complete list of questions". Scored from `docs/agents/project.md` and that list.
+
+**RED, 1.14.0** (haiku 1, sonnet 1). Questions listed: 15 and 14. Landing action among them: 0/2.
+`Default landing action:` in the written `project.md`: 0/2, so every landing asked again, and a repo
+that always merges locally never recorded it.
+
+**Form.** An omitted element, so a decision slot beside J, and a write step.
+
+**GREEN, 1.15.0** (haiku 1, sonnet 1). Landing action among the questions, naming `pr`, `merge` and
+`keep` and the push permission: 2/2. A guessed value in `project.md`: 0/2. The GitHub close op written
+into `docs/agents/issue-tracker.md`: 2/2.
+

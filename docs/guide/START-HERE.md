@@ -6,7 +6,8 @@ repo, and what every skill does. For the architecture behind it, see
 [the skill reference](skills/README.md).
 
 The whole set is script-free for consumers. A consuming repo installs nothing
-executable — traceability is the
+executable (`/make-video` puts Remotion in the git-ignored `.skills/video/` only
+when you run it) — traceability is the
 [`audit-trace`](skills/audit-trace.md) skill (deterministic `grep`/`git` passes),
 and feature overlap is **ask-time derivation** via
 [`load-subgraph`](skills/load-subgraph.md) over live `docs/specs/` (neighbors
@@ -157,7 +158,7 @@ The table lives in [on-ramps](process/on-ramps.md) — one home, and `zone-mode`
 
 ## 3. Skill index (engineering package)
 
-Full tables: [Skill reference](skills/README.md) (76 engineering skills).  
+Full tables: [Skill reference](skills/README.md) (77 engineering skills).  
 
 `U` = you run `/name` · `m` = model-invoked
 
@@ -170,7 +171,7 @@ Full tables: [Skill reference](skills/README.md) (76 engineering skills).
 | **execution** | `build-in-waves`, `build-by-story`, `build-inline`, `/go`, `deliver-issues`, `execute-common`, `test-first`, `root-cause`, `debug-remote`, `assess-observability`, `prove-claim`, `audit-trace`, **`load-subgraph`**, `isolate-workspace`, `hold-stage` |
 | **review** | `inspect-change`, `/audit-shipped`, `polish-diff`, `vet-feedback`, `vet-source`, `speak-outer`, `inspect-invariants` |
 | **acceptance** | `validate-feature`, `validate-api`, `validate-ui`, `write-dogfood`, `run-dogfood` |
-| **craft** | `craft-page` |
+| **craft** | `craft-page`, `/make-video` |
 | **ship** | `land-branch`, `record-verdict`, `/cut-release` |
 | **track** | `amend-feature`, `reroute-plan`, `realign-spec`, `/triage`, `/publish-issues`, `/scan-architecture`, **`/map-features`**, `/write-handoff`, `/refresh-roadmap-status`, `/chart-progress`, `/brief-road`, `/assess-milestone`, `/sweep-backlog`, `/show-run-status`, `/idea`, `/shape`, `/board` |
 | **project** | `/define-project`, `/assess-pivot-impact`, `plan-milestones` |

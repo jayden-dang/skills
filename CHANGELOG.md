@@ -10,6 +10,10 @@
 
 `/shape --auto` calls it to stop on a road that is not Ready. A run with no such check started two sessions on a road whose predecessor was still in progress. Trigger test: 16/16 should fire, 0/16 should not.
 
+### Added: `/make-video` 1.0.0 (2026-11-03)
+
+A narrated 1080p film of a built feature, a branch, or a release, on a Remotion template the skill copies into `.skills/video/`. The agent writes `src/script.json` and `src/tokens.ts`; `scripts/` records clips, speaks the lines, and runs a fixed check. Narration is English unless the request names another language. Seven runs without it got the facts right and made slideshows under 1080p; twelve runs with it all reached 1080p and passed the check. See `skills/craft/make-video/TESTS.md`. A spec-triad source is planned separately.
+
 ### Changed: a local merge is a full landing under `Default landing action: merge` (2026-11-03)
 
 `land-branch` 4.8.0 merges with `--no-ff` and the tickets' closing keywords, pushes the base, then reads each ticket back. A completed ticket that is still open is closed with a comment naming the merge, on any base; GitHub acts on the keyword only on the default branch. A partial ticket moves to `needs-info`. A rejected push stops with the merge local and the tickets unchanged, and a repo set to anything else keeps its merges local. `configure-repo` 1.15.0 asks for the landing action, and the tracker seed gains a close operation. Existing repos need `Default landing action:` and the close operation added.

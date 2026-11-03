@@ -1,6 +1,6 @@
 # AGENTS.md — Agent Behavior Constitution
 
-> A-to-Z agentic development skill set · **76 skills across 11 categories** · `jayden-dang/skills` · v1.0.0
+> A-to-Z agentic development skill set · **77 skills across 11 categories** · `jayden-dang/skills` · v1.0.0
 
 This file is the single source of truth for agent behavior when working with this
 skill set on any harness. Read it first, before any skill, before any action.
@@ -113,14 +113,14 @@ skill's workflow only when the user has explicitly told you to. A waiver of
 
 **User-invoked skills** carry `disable-model-invocation: true` in frontmatter.
 Agents MUST NOT auto-invoke these — name them for the user to run (`/triage`,
-`/zone-mode`). All 30 of them:
+`/zone-mode`). All 31 of them:
 
 `zone-mode`, `author-skills`, `reflect` · `bootstrap-repo`, `configure-repo` ·
 `forge-goal`, `forge-prompt`, `interpret-session` ·
 `no-comments` · `assess-pivot-impact`,
 `define-project`, `define-system-doc` · `audit-shipped`, `cut-release`, `tend-pr` · `assess-milestone`,
 `map-features`, `publish-issues`, `record-debt`, `refresh-roadmap-status`, `chart-progress`,
-`scan-architecture`, `show-run-status`, `sweep-backlog`, `triage`, `write-handoff` ·
+`scan-architecture`, `show-run-status`, `sweep-backlog`, `triage`, `write-handoff`, `make-video` ·
 the five-command path: `board`, `idea`, `shape`, `go` (with `cut-release` above).
 
 **Model-invoked skills** (no `disable-model-invocation`) are auto-invoked when

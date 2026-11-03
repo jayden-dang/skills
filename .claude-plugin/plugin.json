@@ -43,6 +43,7 @@
     "./skills/craft/craft-page",
     "./skills/craft/draft-ui",
     "./skills/craft/draft-ux",
+    "./skills/craft/make-video",
     "./skills/review/inspect-invariants",
     "./skills/review/inspect-ui",
     "./skills/review/audit-shipped",

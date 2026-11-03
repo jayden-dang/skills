@@ -111,9 +111,22 @@ def check_refs(s, repo):
     return faults
 
 
-def contact_sheet(mp4, out, duration):
-    step = max(1.5, duration / 16)
-    run("ffmpeg", "-v", "error", "-y", "-i", mp4, "-vf", f"fps=1/{step},scale=480:-1,tile=4x4", "-frames:v", "1", out)
+def sheet_filter(frames, duration):
+    if frames:
+        picks = "+".join(rf"eq(n\,{f})" for f in frames)
+        rows = (len(frames) + 3) // 4
+        return f"select='{picks}',scale=480:-1,tile=4x{rows}"
+    return f"fps=1/{max(1.5, duration / 16)},scale=480:-1,tile=4x4"
+
+
+def beat_frames(project):
+    """The frames preview.mjs chose: the last moment of each line. Empty when it has not run."""
+    path = os.path.join(project, "out", "beats.json")
+    return json.load(open(path)) if os.path.exists(path) else None
+
+
+def contact_sheet(mp4, out, frames, duration):
+    run("ffmpeg", "-v", "error", "-y", "-i", mp4, "-vf", sheet_filter(frames, duration), "-frames:v", "1", out)
 
 
 def main(argv):
@@ -124,7 +137,7 @@ def main(argv):
     print(json.dumps({k: m[k] for k in ("width", "height", "duration", "loudness", "peak", "freezes", "silences")}))
     faults = validate_script(s) + check_refs(s, repo) + judge_media(m)
     if sheet:
-        contact_sheet(mp4, sheet, m["duration"])
+        contact_sheet(mp4, sheet, beat_frames(project), m["duration"])
         print(f"sheet: {sheet}")
     for f in faults:
         print(f"FAIL {f}")

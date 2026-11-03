@@ -9,27 +9,27 @@ export const clamp = {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'} as co
 const OUT = Easing.bezier(0.16, 1, 0.3, 1);
 export const enter = (frame: number, at: number, length = 18) => interpolate(frame, [at, at + length], [0, 1], {...clamp, easing: OUT});
 
-const MAX_H = 790;
+const MAX_H = 760;
 const head = {fontFamily: t.fontHead, fontWeight: t.headWeight, letterSpacing: t.headTracking};
 
 /* The window hugs its text, so each scene measures before it draws. */
 
 const titleMetrics = (scene: Scene) => {
-  const w = 1320;
-  const title = fit(scene.id, scene.title, [112, 92, 76, 60], w - 120, 2, headFace);
-  const sub = scene.subtitle ? fit(scene.id, scene.subtitle, [40, 34], w - 120, 2) : null;
-  const h = Math.max(320, 150 + title.lines * title.size * 1.05 + (sub ? 24 + sub.lines * sub.size * 1.2 : 0));
+  const w = 1500;
+  const title = fit(scene.id, scene.title, [136, 112, 92, 76], w - 120, 2, headFace);
+  const sub = scene.subtitle ? fit(scene.id, scene.subtitle, [46, 40], w - 120, 2) : null;
+  const h = Math.max(340, 150 + title.lines * title.size * 1.05 + (sub ? 24 + sub.lines * sub.size * 1.2 : 0));
   return {w, h, title, sub};
 };
 
 const pointsMetrics = (scene: Scene) => {
   const points = scene.points ?? [];
   const dense = points.length > 3;
-  const w = dense ? 1640 : 1400;
+  const w = dense ? 1640 : 1500;
   const textWidth = w - 144 - 46;
-  const title = fit(scene.id, scene.title, [68, 56], w - 144, 2, headFace);
+  const title = fit(scene.id, scene.title, [76, 62], w - 144, 2, headFace);
   const titleH = title.lines * title.size * 1.1 + 32;
-  for (const size of dense ? [42, 36, 30] : [52, 42, 36, 30]) {
+  for (const size of dense ? [48, 42, 36, 30] : [62, 52, 42, 36, 30]) {
     const rows = points.map((p) => fit(scene.id, p, [size], textWidth, 2).lines * size * 1.15 + size * 0.95);
     const h = 112 + titleH + rows.reduce((a, b) => a + b, 0);
     if (h <= MAX_H) return {w, h, title, size, rows};
@@ -38,10 +38,10 @@ const pointsMetrics = (scene: Scene) => {
 };
 
 const flowMetrics = (scene: Scene) => {
-  const w = 1500;
-  const title = fit(scene.id, scene.title, [68, 56], w - 144, 2, headFace);
+  const w = 1560;
+  const title = fit(scene.id, scene.title, [76, 62], w - 144, 2, headFace);
   const top = 60 + title.lines * title.size * 1.1 + 40;
-  return {w, h: 700, title, top};
+  return {w, h: 720, title, top};
 };
 
 export const graphicSize = (scene: Scene) => {
@@ -95,17 +95,17 @@ export const FlowScene: React.FC<Props> = ({scene, starts}) => {
   const sources = scene.sources ?? [];
   const width = w - 144;
   const height = h - top - 40;
-  const chipW = width * 0.32;
-  const chipH = Math.min(84, (height / Math.max(1, sources.length)) * 0.82);
-  const spread = sources.length > 1 ? Math.min((height - chipH) / (sources.length - 1), 136) : 0;
+  const chipW = width * 0.34;
+  const chipH = Math.min(96, (height / Math.max(1, sources.length)) * 0.82);
+  const spread = sources.length > 1 ? Math.min((height - chipH) / (sources.length - 1), 150) : 0;
   const midY = height / 2;
   const y = (i: number) => midY + (i - (sources.length - 1) / 2) * spread;
   const targetX = width * 0.66;
   const targetW = width - targetX;
-  const target = fit(scene.id, scene.target ?? '', [172, 126, 90, 64, 50], targetW, 2, headFace);
-  const note = scene.note ? fit(scene.id, scene.note, [31, 26], targetW, 3) : null;
+  const target = fit(scene.id, scene.target ?? '', [190, 140, 100, 70, 54], targetW, 2, headFace);
+  const note = scene.note ? fit(scene.id, scene.note, [36, 30], targetW, 3) : null;
   const targetP = enter(frame, starts[0] + 24);
-  const labelSize = [40, 33, 27].find((size) => sources.every((s) => {
+  const labelSize = [46, 38, 30].find((size) => sources.every((s) => {
     const lines = linesOf(s, size, chipW - 52);
     return lines <= 2 && lines * size * 1.1 <= chipH - 14;
   }));

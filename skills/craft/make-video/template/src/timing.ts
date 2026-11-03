@@ -59,6 +59,9 @@ export const placed = (() => {
   });
 })();
 
+// The last moment of every line: what the preview and the contact sheet show.
+export const beatFrames = () => placed.flatMap(({from, starts, lengths}) => starts.map((start, i) => from + start + lengths[i] - 4));
+
 export const totalFrames = () => {
   const last = placed[placed.length - 1];
   return last ? last.from + last.duration : 0;

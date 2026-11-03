@@ -1,33 +1,41 @@
 import {Audio} from '@remotion/media';
-import {AbsoluteFill, Easing, interpolate, Sequence, staticFile, useCurrentFrame} from 'remotion';
-import {ClipScene} from './ClipScene';
+import {useState} from 'react';
+import {AbsoluteFill, interpolate, Sequence, staticFile, useCurrentFrame} from 'remotion';
+import {CLIP_W, clipHeights, ClipScene, MOVE, MOVE_EASING} from './ClipScene';
+import {WithFonts} from './fonts';
 import {clamp, enter, FlowScene, graphicSize, PointsScene, TitleScene} from './GraphicScenes';
-import {Beat, placed, Scene, TRANSITION} from './timing';
+import {Beat, placed, TRANSITION} from './timing';
 import {t} from './tokens';
 
-/* One window lives through the whole film and changes shape to fit each scene. The narration sits under it. */
+/* One window lives through the whole film and changes shape to fit each line. The narration sits under it. */
 
 type Box = {x: number; y: number; w: number; h: number};
-const CLIP_WIDTH = 1440;
-const CENTER_Y = 452;
+const CENTER_Y = 412;
+const centered = (w: number, h: number): Box => ({x: (1920 - w) / 2, y: CENTER_Y - h / 2, w, h});
 
-const boxFor = (scene: Scene): Box => {
-  if (scene.kind === 'clip') return {x: (1920 - CLIP_WIDTH) / 2, y: 26, w: CLIP_WIDTH, h: (CLIP_WIDTH * 9) / 16};
-  const {w, h} = graphicSize(scene);
-  return {x: (1920 - w) / 2, y: CENTER_Y - h / 2, w, h};
-};
+// Every shape the window takes, in order, with the frame it starts moving there. Measured text, so
+// this runs inside WithFonts, once the project's fonts are in.
+const shapesOf = () =>
+  placed.flatMap(({scene, from, starts}) => {
+    if (scene.kind !== 'clip') {
+      const {w, h} = graphicSize(scene);
+      return [{at: from, box: centered(w, h)}];
+    }
+    return clipHeights(scene).map((h, i) => ({at: i === 0 ? from : from + starts[i], box: centered(CLIP_W, h)}));
+  });
 
 const Window: React.FC<{children: React.ReactNode}> = ({children}) => {
   const frame = useCurrentFrame();
+  const [shapes] = useState(shapesOf);
   const input: number[] = [];
   const boxes: Box[] = [];
-  placed.forEach(({scene, from}, i) => {
+  shapes.forEach(({at, box}, i) => {
     if (i === 0) return;
-    input.push(from, from + 24);
-    boxes.push(boxFor(placed[i - 1].scene), boxFor(scene));
+    const start = Math.max(at, (input[input.length - 1] ?? -1) + 1);
+    input.push(start, start + MOVE);
+    boxes.push(shapes[i - 1].box, box);
   });
-  const first = boxFor(placed[0].scene);
-  const at = (key: keyof Box) => (input.length ? interpolate(frame, input, boxes.map((b) => b[key]), {...clamp, easing: Easing.bezier(0.5, 0, 0.1, 1)}) : first[key]);
+  const at = (key: keyof Box) => (input.length ? interpolate(frame, input, boxes.map((b) => b[key]), {...clamp, easing: MOVE_EASING}) : shapes[0].box[key]);
   return (
     <div style={{position: 'absolute', left: at('x'), top: at('y'), width: at('w'), height: at('h'), boxSizing: 'border-box', borderRadius: t.radius, background: t.panel, backdropFilter: t.panelBlur, border: `${t.borderWidth}px solid ${t.panelBorder}`, boxShadow: t.shadow, overflow: 'hidden', color: t.ink, scale: String(0.96 + 0.04 * enter(frame, 0, 24)), opacity: enter(frame, 0, 12)}}>
       {children}
@@ -46,32 +54,35 @@ const Caption: React.FC<{beat: Beat}> = ({beat}) => {
   const frame = useCurrentFrame();
   const p = enter(frame, 0, 10);
   return (
-    <div style={{position: 'absolute', left: 200, right: 200, top: 866, textAlign: 'center', opacity: p, translate: `0px ${(1 - p) * 8}px`}}>
-      <div style={{fontSize: 42, fontWeight: 550, lineHeight: 1.2, letterSpacing: '-0.01em', color: t.onGround, textWrap: 'balance'}}>{beat.text}</div>
-      <div style={{fontFamily: t.fontMono, fontSize: 21, color: t.onGround, opacity: 0.72, marginTop: 10}}>{beat.ref}</div>
+    <div style={{position: 'absolute', left: 140, right: 140, top: 826, textAlign: 'center', opacity: p, translate: `0px ${(1 - p) * 8}px`}}>
+      <div style={{fontSize: 50, fontWeight: 550, lineHeight: 1.18, letterSpacing: '-0.012em', color: t.onGround, textWrap: 'balance'}}>{beat.text}</div>
+      <div style={{fontFamily: t.fontMono, fontSize: 24, color: t.onGround, opacity: 0.72, marginTop: 10}}>{beat.ref}</div>
     </div>
   );
 };
 
 const Staged: React.FC<{text: string}> = ({text}) => (
-  <div style={{position: 'absolute', right: 36, bottom: 18, padding: '7px 18px', borderRadius: Math.max(t.radiusSmall, 6), background: t.panelSoft, border: `${t.borderWidth}px solid ${t.bad}`, color: t.bad, fontSize: 24, fontWeight: 600}}>{text}</div>
+  <div style={{position: 'absolute', right: 40, bottom: 20, padding: '6px 18px', borderRadius: Math.max(t.radiusSmall, 6), background: t.panelSoft, border: `${t.borderWidth}px solid ${t.bad}`, color: t.bad, fontSize: 26, fontWeight: 600}}>{text}</div>
 );
 
-export const Film: React.FC = () => (
+const Scenes: React.FC = () => (
   <AbsoluteFill style={{background: t.ground, fontFamily: t.fontSans}}>
     <Window>
       {placed.map(({scene, from, duration, starts, lengths}, s) => {
-        const box = boxFor(scene);
         const props = {scene, starts, lengths};
         return (
           <Sequence key={scene.id} from={from} durationInFrames={duration} name={scene.title}>
             <SceneFade duration={duration} first={s === 0} last={s === placed.length - 1}>
-              <div style={{position: 'absolute', left: 0, top: 0, width: box.w, height: box.h}}>
-                {scene.kind === 'title' ? <TitleScene {...props} /> : null}
-                {scene.kind === 'points' ? <PointsScene {...props} /> : null}
-                {scene.kind === 'flow' ? <FlowScene {...props} /> : null}
-                {scene.kind === 'clip' ? <ClipScene {...props} duration={duration} width={CLIP_WIDTH} /> : null}
-              </div>
+              {scene.kind === 'clip' ? (
+                <ClipScene {...props} duration={duration} />
+              ) : (
+                // Sized to the scene's own shape, so its text holds still while the window moves.
+                <div style={{position: 'absolute', left: 0, top: 0, width: graphicSize(scene).w, height: graphicSize(scene).h}}>
+                  {scene.kind === 'title' ? <TitleScene {...props} /> : null}
+                  {scene.kind === 'points' ? <PointsScene {...props} /> : null}
+                  {scene.kind === 'flow' ? <FlowScene {...props} /> : null}
+                </div>
+              )}
             </SceneFade>
           </Sequence>
         );
@@ -91,4 +102,10 @@ export const Film: React.FC = () => (
       </Sequence>
     ))}
   </AbsoluteFill>
+);
+
+export const Film: React.FC<{beats: number[]}> = () => (
+  <WithFonts>
+    <Scenes />
+  </WithFonts>
 );

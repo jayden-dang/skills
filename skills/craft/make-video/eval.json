@@ -74,5 +74,16 @@
       "the staged label does not overlap the footage",
       "src/Video.tsx and src/GraphicScenes.tsx are unchanged from the template"
     ]
+  },
+  {
+    "eval_id": 7,
+    "eval_name": "a-font-the-film-names-is-the-font-it-draws",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § RED, 2026-11-03: 1.1.0 against Remotion's own guidance",
+    "prompt": "Please make a narrated explainer video of the delay alerts feature for Thursday's all-hands. About a minute. (The repo's design tokens name a typeface linked from a font service, with no file in the repo.)",
+    "assertions": [
+      "a frame from the finished film is set in the font the tokens name",
+      "src/fonts.tsx lists that font and public/fonts holds its files, or the report says the name was removed because no file could be had"
+    ]
   }
 ]

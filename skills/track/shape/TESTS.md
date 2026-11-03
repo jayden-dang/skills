@@ -139,3 +139,22 @@ Fixes: `--model sonnet` in the launch line, the hard stop now reads "change a co
 **Timing.** About 45 minutes on Sonnet and over 60 on Haiku with Opus peers, for a one-command feature. `plan-tasks` running the whole plan in a scratch copy took about 15 of those. Not measured: which step could go.
 
 Not covered: the "config or data file" wording through a full run; a hard stop that should fire; a real repo; Haiku conductor with Sonnet peers through to a page; trust dialog handling (every run here had its folder trusted by hand). If a conductor is killed, its `caffeinate` lives up to its 6-hour limit.
+
+## 2026-11-03 — 1.4.0: the final review goes to `work`, the page shows the closed spec
+
+**RED, the operator's own run.** NAVORI ROAD-9, 1.3.1, on the real repo. The page held 32 choice groups and 5,310 visible words, and its reply box had to be copied back. The audit found ten items, one of them high, and most were a citation or a label. They reached `work` only after the operator read them. The operator's whole answer: "fix the audit findings", then "approve", with no card ever picked. Their words: the review should tell `work` directly, the final page should hold only what is settled, and they should approve only at the last step, with nothing to copy.
+
+**GREEN, Sonnet, fresh repo, no intervention.** About 45 minutes to the page.
+- Order on disk: audit, `final-review.md`, then the page. The page names the commit, `0aad3bc`, and that is `HEAD`.
+- Receipt: `missing: none`, 6 subagents, `research` ran; the conductor ran `brief-road` and `craft-page`.
+- Final review: 13 items, 5 applied, 8 rejected, each with a reason. `interpret` reviewed what moved in 2 rounds. It closed a real gap: a requirement said one event per booking while the design collapsed duplicates.
+- Page: 0 radio buttons, 0 checkboxes, 0 text boxes, 516 words before the first collapsed section, 1,606 in all, 4 items under Needs you, ending on "type approve".
+- `approve` typed in the chat: three files `Approved` and committed. **The ticket stayed `shaping`.** Auto mode refused `work` the label swap as an external write, though an earlier run's `work` got through. The conductor then asked the operator how to proceed, with the peers still open. The fix moves the publish to the conductor, where the operator's word arrives directly.
+- Shape check of that fix, Sonnet, same run, conductor resumed with the new step: it published, the read shows `ready-for-agent`, the peers closed, `/go #4` named. The label swap went through in the conductor session. Title and body stayed as they were, so this check does not cover replacing them.
+
+**A weakness this run showed.** `work` rejected all 7 of the advisor's OPTIONAL cuts, so the session that wrote a requirement judged whether to remove it. Its reasons cite code or a standard, and one rejection corrected the advisor from a command it ran. But nothing was cut, and the largest item (`CALEX-5.2`, about 290 plan lines) only reached the operator because `work` chose to list it. One run on a small fixture does not say whether this is sound judgement or authors defending their text.
+
+**The largest declined cut stays in view.** Same closed run, final review and report edited so `work` no longer lists `CALEX-5.2` itself. Prompt: write only the page's Needs you part. Sonnet, one run per arm. Without the rule: five items, `CALEX-5.2` and its 290 plan lines not among them. With it: item 1 names `CALEX-5.2` and Task 8, about 293 lines, says only the authors argued for keeping it, gives what reversing costs, and keeps a lean of its own. The operator still chooses nothing on the page; they see it and may say so.
+
+Not covered: 1.4.0 on a real repo; 1.4.0's new approval step from a fresh start rather than a resumed session; replacing a ticket's title and body at publish; two final-review rounds with a new audit finding; a final-review item that cannot settle; a hard stop.
+

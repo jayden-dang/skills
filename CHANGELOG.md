@@ -6,6 +6,10 @@
 
 `shape` 1.3.0. The session you typed in conducts a `work` session and a read-only `interpret-session` session over cross-session messaging, keeps the machine awake, wakes a stopped session, checks which skills really ran from their transcripts (`scripts/skill_receipt.py`), audits the files, runs one advisor, and writes `review.html`. Every file stays `Status: Draft` until you approve on that page. Baseline: without it, `--auto` stopped at requirements on Sonnet and skipped the interview on Haiku; a hand-run charter skipped three required steps and died silently twice. Ran through approval to Ready on Sonnet, and to the page on a Haiku conductor; about 45 minutes for a one-command feature. Not yet run on a real repo.
 
+### Changed: `/shape --auto` fixes its own findings before you see the page (2026-11-03)
+
+`shape` 1.4.0. Audit findings and the advisor's items now go straight to `work`, which applies or rejects each with a reason and has `interpret` review what moved. The page is written last, on the closed spec, with no controls: type `approve` or say what to change. Baseline: on a real road the page held 32 choice groups and 5,310 words, and the operator picked none. After: 516 words before the collapsed parts and 4 items that need you, on a small repo. `work` rejected all 7 suggested cuts in that run, and whether that is judgement or authors defending their text is not yet known, so the largest cut it declines is always among the items that need you.
+
 ### Changed: `brief-road` 1.1.0 is model-invoked (2026-11-03)
 
 `/shape --auto` calls it to stop on a road that is not Ready. A run with no such check started two sessions on a road whose predecessor was still in progress. Trigger test: 16/16 should fire, 0/16 should not.

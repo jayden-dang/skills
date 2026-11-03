@@ -12,7 +12,7 @@ Design and evidence: `docs/design/2026-10-19-closed-workflow.md`.
 |---|---|
 | `/idea <text>` | The idea is a ticket in Shaping, with its tier and its open questions |
 | `/shape #N` | The spec (or the root cause, for a bug), stopping at each approval. When the plan is approved, the ticket is Ready |
-| `/shape #N --auto` | The whole spec unattended, by two sessions that check each other, then one review page. You approve once, there, and the ticket is Ready |
+| `/shape #N --auto` | The whole spec unattended, by two sessions that check each other and fix the final review's findings, then one page on the closed spec. Type `approve` and the ticket is Ready |
 | `/go [#N…]` | Each named ticket, or every Ready one, built, reviewed and opened as a PR. One message at the end |
 | `/board` | Everything waiting on you, what the agents are doing, and where the board and the repo disagree |
 | `/cut-release` | A release. The tickets it ships read `shipped` |

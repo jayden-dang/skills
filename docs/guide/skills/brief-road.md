@@ -5,11 +5,11 @@
 |  |  |
 |---|---|
 | **Bucket** | track |
-| **Invocation** | `/brief-road ROAD-N` (user-invoked; `disable-model-invocation: true`) |
+| **Invocation** | `/brief-road ROAD-N`, or fires when you ask about one roadmap item; `/shape --auto` calls it |
 | **Reads** | `docs/roadmap/INDEX.md` (the entry and its milestone block), `docs/specs/INDEX.md` and `docs/specs/catalog/*.md` (the "Roadmap item" cell), `.skills/<CODE>/` and `.skills/_pending-road<N>/`, cited `.skills/…` paths and ADRs, `CONTEXT.md`, the Surfaces paths the entry names |
 | **Writes** | nothing — the brief is a chat message |
 | **Calls** | nothing |
-| **Called by** | nobody — it is user-invoked |
+| **Called by** | [`/shape --auto`](shape.md), before it opens any session |
 
 ## Why it exists
 

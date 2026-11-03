@@ -3,7 +3,7 @@
     "eval_id": 1,
     "eval_name": "verdict-from-predecessor-status",
     "kind": "behavior",
-    "derived_from": "TESTS.md § 2026-10-23 — 1.0.0 — RED and GREEN round 1",
+    "derived_from": "TESTS.md \u00a7 2026-10-23 \u2014 1.0.0 \u2014 RED and GREEN round 1",
     "prompt": "/brief-road ROAD-81 (klynt, branch dev)",
     "assertions": [
       "the catalog row of every member above ROAD-81 in MILE-16 is looked up before any verdict",
@@ -17,7 +17,7 @@
     "eval_id": 2,
     "eval_name": "decisions-reached-without-a-cited-path",
     "kind": "behavior",
-    "derived_from": "TESTS.md § 2026-10-23 — 1.0.0 — GREEN round 2 and round 3",
+    "derived_from": "TESTS.md \u00a7 2026-10-23 \u2014 1.0.0 \u2014 GREEN round 2 and round 3",
     "prompt": "/brief-road ROAD-172 (klynt, branch dev)",
     "assertions": [
       "grep -rlE 'ROAD-172\\b' .skills/ runs and .skills/CCOL/ is read",
@@ -31,7 +31,7 @@
     "eval_id": 3,
     "eval_name": "ready-holdout",
     "kind": "behavior",
-    "derived_from": "TESTS.md § 2026-10-23 — 1.0.0 — GREEN round 1 holdout ROAD-139",
+    "derived_from": "TESTS.md \u00a7 2026-10-23 \u2014 1.0.0 \u2014 GREEN round 1 holdout ROAD-139",
     "prompt": "/brief-road ROAD-139 (klynt, branch dev)",
     "assertions": [
       "the verdict is Ready, with ROAD-136, ROAD-137 and ROAD-138 each shown Implemented",
@@ -44,7 +44,7 @@
     "eval_id": 4,
     "eval_name": "struck-item-says-delivered-or-dropped",
     "kind": "behavior",
-    "derived_from": "TESTS.md § Remaining branches — R1 and R1b",
+    "derived_from": "TESTS.md \u00a7 Remaining branches \u2014 R1 and R1b",
     "prompt": "/brief-road ROAD-73 (klynt, branch dev)",
     "assertions": [
       "the answer says the item is closed because it was delivered, not dropped",
@@ -56,7 +56,7 @@
     "eval_id": 5,
     "eval_name": "after-milestone-predecessors",
     "kind": "behavior",
-    "derived_from": "TESTS.md § Remaining branches — R3",
+    "derived_from": "TESTS.md \u00a7 Remaining branches \u2014 R3",
     "prompt": "/brief-road ROAD-12 (bot copy whose ROAD-12 carries After: MILE-2)",
     "assertions": [
       "the predecessors are every MILE-2 member, ROAD-3 to ROAD-7",
@@ -68,12 +68,23 @@
     "eval_id": 6,
     "eval_name": "surface-named-in-words-is-searched",
     "kind": "behavior",
-    "derived_from": "TESTS.md § Remaining branches — R4 to R4c",
+    "derived_from": "TESTS.md \u00a7 Remaining branches \u2014 R4 to R4c",
     "prompt": "/brief-road ROAD-214 (klynt, branch dev), on Haiku",
     "assertions": [
       "Code today cites a file under backend/crates/services/course_build_service/",
       "evals/ is reported as holding only widget_selection, so the review eval set is new",
       "no Surface is called absent without a find over its words"
+    ]
+  },
+  {
+    "eval_id": 7,
+    "eval_name": "fires-on-a-question-about-one-road",
+    "kind": "trigger",
+    "derived_from": "TESTS.md \u00a7 2026-11-03 \u2014 1.1.0: model-invoked",
+    "prompt": "can we start ROAD-4 yet",
+    "assertions": [
+      "the agent calls brief-road",
+      "\"let's build ROAD-4\" goes to frame-change, and \"we're not doing ROAD-4 anymore\" goes to plan-milestones"
     ]
   }
 ]

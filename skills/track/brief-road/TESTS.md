@@ -135,3 +135,22 @@ already worked for Scope now.
 
 Fix: the red flag for unopened paths now covers every `file:line` in the brief.
 | R4e | Haiku | ROAD-214 | pass — every `file:line` cited is one it opened or grepped (`slot_step.rs:223`, `requirements.md:173` CBUILD-3.5, spot-checked); every slot within its limit; Ready |
+
+## 2026-11-03 — 1.1.0: model-invoked
+
+Asked for by the operator, so that `/shape --auto` can check a road's readiness. Fixture: a generated marina
+CLI repo with this set installed under `.claude/skills/`.
+
+**RED.** `/shape #4 --auto` with no readiness step, Sonnet 1. `ROAD-4`'s `After: ROAD-3` is `In-progress` in the
+catalog. The conductor opened a worktree, wrote "ROAD-4 follows ROAD-3" as a Lock and started two sessions.
+It never looked up ROAD-3.
+
+**Trigger test.** `claude -p --model claude-sonnet-5-5 --max-turns 1`, 16 queries, 2 reps each.
+Should fire: 16/16 called `brief-road` ("What is ROAD-4?", "can we start ROAD-4 yet", "is ROAD-4 blocked?",
+"ROAD-4 ready to frame?", "what's left out of ROAD-4", "what does road 4 actually deliver", a plain "explain"
+request, and one query in another language).
+Should not fire: 0/16. "let's build ROAD-4" went to `frame-change`; "drop it", "add a roadmap item" and "reorder the
+milestones" went to `plan-milestones`; "write the requirements" to `specify-behavior`; "how does quay list work"
+and "where does the whole roadmap stand" read the repo directly, and "explain how bookings are stored" to `understand` or the repo.
+
+Not covered: the body is unchanged, so the 1.0.0 brief evidence stands for Sonnet and Haiku. The trigger test ran on Sonnet only.

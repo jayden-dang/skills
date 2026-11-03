@@ -1,8 +1,7 @@
 ---
 name: brief-road
-version: 1.0.0
-description: Explains one roadmap item in plain words — what it delivers, what it leaves out, and whether it is ready to frame, blocked, or already built. Run it with /brief-road ROAD-N.
-disable-model-invocation: true
+version: 1.1.0
+description: Use when one roadmap item (ROAD-N) needs explaining or checking before anyone frames it — what is ROAD-81, what does it deliver, can we start ROAD-9, is it ready or blocked, what does it leave out — produces a two-minute plain-words brief with a Ready / Blocked by / In flight / Built verdict. Not for where the whole roadmap stands, and not for building the item (frame-change) or editing the roadmap (plan-milestones).
 ---
 
 # Brief Road

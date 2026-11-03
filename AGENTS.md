@@ -113,13 +113,13 @@ skill's workflow only when the user has explicitly told you to. A waiver of
 
 **User-invoked skills** carry `disable-model-invocation: true` in frontmatter.
 Agents MUST NOT auto-invoke these — name them for the user to run (`/triage`,
-`/zone-mode`). All 31 of them:
+`/zone-mode`). All 30 of them:
 
 `zone-mode`, `author-skills`, `reflect` · `bootstrap-repo`, `configure-repo` ·
 `forge-goal`, `forge-prompt`, `interpret-session` ·
 `no-comments` · `assess-pivot-impact`,
 `define-project`, `define-system-doc` · `audit-shipped`, `cut-release`, `tend-pr` · `assess-milestone`,
-`map-features`, `publish-issues`, `record-debt`, `refresh-roadmap-status`, `chart-progress`, `brief-road`,
+`map-features`, `publish-issues`, `record-debt`, `refresh-roadmap-status`, `chart-progress`,
 `scan-architecture`, `show-run-status`, `sweep-backlog`, `triage`, `write-handoff` ·
 the five-command path: `board`, `idea`, `shape`, `go` (with `cut-release` above).
 

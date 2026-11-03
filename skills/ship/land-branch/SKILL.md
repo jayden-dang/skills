@@ -1,6 +1,6 @@
 ---
 name: land-branch
-version: 4.7.1
+version: 4.8.0
 description: >
   Use when a finished feature branch needs integration or disposition —
   produces a local merge, pull request, kept branch, discard, or block with
@@ -125,11 +125,16 @@ commits a later push restarts.
 
 ### Local merge
 
-Only explicit intent reaches this action. From the main repo root:
+Explicit intent or `Default landing action: merge` reaches this action. From the main repo root:
 
 ```bash
-git checkout "<base>" && git pull && git merge "<feature-branch>"
+git checkout "<base>" && git pull
+git merge --no-ff "<feature-branch>" -m "Merge <feature-branch>" -m "<linkage>"
 ```
+
+`<linkage>` is every `linkage_syntax` in the ticket set, one per line; with none, drop the second
+`-m`. `--no-ff` gives the linkage a commit to live in: all six baseline merges fast-forwarded,
+which leaves no commit for it.
 
 The merged result is a new revision. Run the full verify suite on it before any
 cleanup. On failure, keep the worktree and branch and report the failure. On
@@ -184,6 +189,25 @@ resolves to a commit on the integration ref; without it a merged item stays in r
 For PR, merge, or keep: name `/understand <range>` when multi-task or risk paths are
 present. It is optional and never withholds the resolved action.
 
+## 9. Publish a local merge
+
+Runs after a green local merge and step 8, WHEN `Default landing action:` in
+`docs/agents/project.md` reads `merge` or the request itself asks to push. Otherwise leave the
+base unpushed and the tracker untouched, and report the commits ahead of the remote and each
+ticket still open.
+
+1. `git push origin "<base>"`. No remote, or the push is rejected: stop and report it. The merge
+   stays local, nothing is forced, and every ticket stays as it is, because a closed ticket says
+   the code is on the remote.
+2. REQUIRED: load `tickets.md` **After a local merge** and follow it.
+
+Six baseline landings under `Default landing action: merge` merged and stopped there: 0/6 pushed
+and 0/6 wrote to the tracker, each telling the operator to push and to close the ticket by hand.
+One real merge left its ticket on `building` beside a spec already `Implemented`.
+
+**Done when:** the remote base equals the local base and each ticket reads as `tickets.md` says,
+or the report names what stopped it.
+
 ## Red Flags
 
 - Rerunning checks already proven by a valid current-revision receipt
@@ -191,7 +215,8 @@ present. It is optional and never withholds the resolved action.
 - Showing a choice menu after the user already gave explicit intent
 - Withholding PR/merge for a sample, study packet, team brief, or debt record
 - Publishing a decision record when no matching project boundary config exists
-- Inferring local merge, discard, or block from “land this”
+- Inferring a local merge from “land this” with no `Default landing action: merge` on record
+- Inferring discard or block from “land this”
 - Removing a worktree before the merged result passes verification
 - Accepting anything except literal `discard` for destructive confirmation
 - Rewriting a branch without recording a recoverable anchor first

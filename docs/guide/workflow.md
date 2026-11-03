@@ -62,6 +62,8 @@ and they write state and comments only on the ticket they are working.
    with a comment saying what it lacks. You get one message.
 4. Next morning: `/board` → "Waiting on you: PR #14 (decision: …), PR #15, #25's
    question." You answer and merge; the merges close the tickets.
+   Under `Default landing action: merge`, `land-branch` merges, pushes and closes the ticket
+   itself, and a build that delivered only part of its ticket moves it to Needs input.
 5. End of the sprint: `/cut-release` → v0.5.0, and its tickets read `shipped`.
 
 A bug takes the same road. `/triage` confirms it and sends it to Shaping while the cause is

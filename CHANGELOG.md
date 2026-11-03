@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### Changed: a local merge is a full landing under `Default landing action: merge` (2026-11-03)
+
+`land-branch` 4.8.0 merges with `--no-ff` and the tickets' closing keywords, pushes the base, then reads each ticket back. A completed ticket that is still open is closed with a comment naming the merge, on any base; GitHub acts on the keyword only on the default branch. A partial ticket moves to `needs-info`. A rejected push stops with the merge local and the tickets unchanged, and a repo set to anything else keeps its merges local. `configure-repo` 1.15.0 asks for the landing action, and the tracker seed gains a close operation. Existing repos need `Default landing action:` and the close operation added.
+
 ### Changed: `build-in-waves` 2.5.0 frees lanes after each wave (2026-11-03)
 
 After every green wave gate the controller removes the lanes the next ready set does not use and deletes the merged task branches. Lanes used by the next set stay, detached, so consecutive parallel sets keep a warm build cache. A parallel set after a serial stretch now rebuilds cold. A lane with uncommitted work refuses removal, stays in place and is named in the ledger.

@@ -744,3 +744,50 @@ accepted by the owner in-session ("đồng ý, sửa và commit luôn"), strengt
 Regression tests: `scripts/test_ship_guard.py` (5) — no paths, no requirements.md, own row,
 another feature's row, an unlisted code file. 2 were red before the fix, plus the one added for
 the self-introduced crash; all 5 are green after.
+
+## 2026-11-03 — a local merge pushes and closes its tickets (4.7.1 → 4.8.0)
+
+Real failure first. In a personal repo, `030774d` merged and pushed by hand left #6 `OPEN`,
+`status:building`, beside a spec already `Implemented`. On a repo whose base is `dev`, PR #291's
+`Closes #288` linked nothing, since GitHub acts on the keyword only on the default branch: #288
+was closed by hand and kept `status:in-review`.
+
+Fixture: a Python repo with a bare `origin`, a stateful `./scripts/gh`, and a post-receive hook that
+closes on a keyword only for pushes to `main`, as GitHub does. A finished branch, a valid close
+receipt and `.skills/NOTE/tickets.md`. Prompt: "Finish the branch. … I'm going offline until
+tomorrow." Nothing in it names a merge, a push or a ticket. Scored from `git`, the remote and the
+tracker's state and call log.
+
+**RED, 4.7.1** (haiku 1, sonnet 1 per case; base `main`, base `dev`, partial ticket).
+- Merged under `Default landing action: merge`: 6/6.
+- Pushed: 0/6. Any tracker write: 0/6. Keyword in history: 0/6. Merge commit: 0/6 (all fast-forward).
+- Verbatim: "Push `main` yourself when you want it public." "The skill moves tickets to `in-review`
+  only after a PR opens, and a local merge opens none, so check the tracker and close it by hand."
+
+**Form.** Omitted steps, so a step of the skill and a table, not prohibitions: `--no-ff` with the
+linkage in §6, step 9, and `tickets.md` **After a local merge**.
+
+**GREEN, 4.8.0** (haiku 1, sonnet 1 per case unless noted).
+
+| Case | Result |
+|---|---|
+| `merge`, base `main`, full | 2/2 pushed with `Closes #6` in a merge commit; `CLOSED`, no state role; `Delivered-by` on the remote |
+| `merge`, base `dev`, full | 2/2 pushed, keyword did not fire, closed with `Landed in <sha> on dev`, no state role |
+| `merge`, partial | 2/2 no keyword, `OPEN`, `needs-info`, comment names what landed and what is left |
+| `merge`, push rejected | 2/2 no force, ticket untouched, report names the rejection |
+| `pr`, "Merge it into main locally" | 2/2 merged, not pushed, no tracker write |
+| `pr`, "Merge it into main locally and push" (haiku 1) | pushed, keyword closed the ticket, state role removed |
+| `pr`, no named action (haiku 1) | PR opened, `in-review`: unchanged |
+
+Deviation left alone: on base `main` all three runs commented `Landed in …` on a ticket the keyword had
+already closed, where the table asks only for the role to go. The comment costs nothing.
+
+Not covered: Linear and local trackers, a config with no close op, and a real GitHub push. The
+keyword's behavior on a direct push comes from GitHub's docs and the fixture's hook, not from a run
+against GitHub.
+
+**`cut-release`, no change.** Fixture: the merged state above with `Closes #6` in the merge commit and
+no PR. 3/3 finished runs (haiku 2, sonnet 1) found #6 from the merge commit and moved it to
+`status:shipped`, despite the text's "a PR merged in the range". A fourth stopped on a flat INDEX in
+the fixture and was discarded. No failure, so no text.
+

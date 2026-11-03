@@ -120,3 +120,22 @@ the report.
 Three baseline PRs for #23 left it reading `ready-for-agent`. Two of them carried no
 `Closes #23` because the branch was `feat/report-formatting`, and those merges left #23
 open. On the klynt board, all four `ready-for-agent` tickets were already `Implemented`.
+
+## After a local merge
+
+Runs from SKILL.md step 9, once the push succeeded. Read each ticket with the tracker's read op,
+then write with its close, comment and label ops and the roles in `docs/agents/triage-labels.md`:
+
+| Class | State read | Do |
+|---|---|---|
+| `fully-completed` | open | close it, comment `Landed in <merge sha> on <base>`, remove its state role |
+| `fully-completed` | closed | remove its state role |
+| `partial` | any | swap its state role for `needs-info`, and comment what landed at `<merge sha>`, what the ticket still asks for, and the question: continue or close |
+| `related` | any | nothing |
+
+Read each ticket back and report its state and labels as the read shows them. When the config
+names no close op, or `needs-info` has no mapped label, do the rest and name the ticket and the
+missing op or role in the report.
+
+GitHub acts on a closing keyword only on the default branch. On a repo whose base is `dev`, a
+merged `Closes #288` linked nothing, and the ticket was closed by hand still reading `in-review`.

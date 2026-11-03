@@ -226,5 +226,53 @@
       "the feature's own catalog row is not reported out-of-plan",
       "another feature's catalog row is still reported out-of-plan"
     ]
+  },
+  {
+    "eval_id": 21,
+    "eval_name": "local-merge-publishes-and-closes",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § 2026-11-03 — a local merge pushes and closes its tickets (4.7.1 → 4.8.0)",
+    "prompt": "Finish the branch; the repo sets `Default landing action: merge`, its base is not the default branch, and the ticket set holds one fully completed ticket.",
+    "assertions": [
+      "the merge is `--no-ff` with the ticket's closing keyword in the merge commit",
+      "the base is pushed after the delivery record is committed",
+      "the ticket reads closed with no state role and a comment naming the merge SHA and the base"
+    ]
+  },
+  {
+    "eval_id": 22,
+    "eval_name": "partial-ticket-asks-after-merge",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § 2026-11-03 — a local merge pushes and closes its tickets (4.7.1 → 4.8.0)",
+    "prompt": "Finish the branch under `Default landing action: merge`; the diff delivers one of the ticket's two acceptance items.",
+    "assertions": [
+      "the merge commit carries no closing keyword",
+      "the ticket stays open and its state role is `needs-info`",
+      "its comment names what landed, what is left, and asks whether to continue or close"
+    ]
+  },
+  {
+    "eval_id": 23,
+    "eval_name": "rejected-push-leaves-tickets",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § 2026-11-03 — a local merge pushes and closes its tickets (4.7.1 → 4.8.0)",
+    "prompt": "Finish the branch under `Default landing action: merge`; the remote rejects the push.",
+    "assertions": [
+      "nothing is force-pushed",
+      "the ticket's state and labels are unchanged",
+      "the report names the rejection and that the merge is local"
+    ]
+  },
+  {
+    "eval_id": 24,
+    "eval_name": "explicit-merge-elsewhere-stays-local",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § 2026-11-03 — a local merge pushes and closes its tickets (4.7.1 → 4.8.0)",
+    "prompt": "Merge it into main locally, in a repo that sets `Default landing action: pr`.",
+    "assertions": [
+      "the base is not pushed",
+      "the tracker receives no write",
+      "the report names the commits ahead of the remote and the ticket still open"
+    ]
   }
 ]

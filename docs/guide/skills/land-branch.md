@@ -49,7 +49,8 @@ For a PR, `owner-notice.py` finds changed files that another team owns, using th
 
 Explicit PR, merge, keep, discard, or block intent executes without a second
 menu. Ambiguous intent resolves through existing PR, project default, then one
-short question. Local merge, discard, and block are never inferred.
+short question. Discard and block are never inferred, and a local merge is inferred only from
+`Default landing action: merge`.
 
 ## After merge or PR — spec status
 
@@ -62,6 +63,14 @@ On a PR or a merge, land-branch writes `Delivered-by: PR #N` or `Delivered-by: <
 ## The ticket
 
 The ticket set starts from `.skills/<CODE>/tickets.md` and the ticket you named, so the PR body carries `Closes #N` even when the branch name has no ID. When the PR opens, the ticket's state role moves to `in-review`. The merge is yours; `Closes #N` then closes the ticket. See [the workflow](../workflow.md).
+
+## Executing a local merge
+
+The merge is `--no-ff`, and its message carries the closing keyword of every ticket the diff completes. The merged result is verified, the worktree is removed, and the delivery record is committed.
+
+When `Default landing action:` reads `merge`, or the request asks to push, `land-branch` then pushes the base and reads each ticket back. A completed ticket that is still open gets closed with `Landed in <merge sha> on <base>`, which is what covers a base that is not the default branch, where GitHub ignores the keyword. A completed ticket loses its state role either way. A partial ticket moves to `needs-info`, with a comment saying what landed, what is left, and asking whether to continue or close.
+
+A rejected push, or no remote, stops there: the merge stays local, nothing is forced, and no ticket changes. In any other repo a local merge stays local, and the report names the commits ahead of the remote and each ticket still open.
 
 ## Executing a PR
 

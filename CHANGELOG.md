@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### Changed: `build-in-waves` 2.5.0 frees lanes after each wave (2026-11-03)
+
+After every green wave gate the controller removes the lanes the next ready set does not use and deletes the merged task branches. Lanes used by the next set stay, detached, so consecutive parallel sets keep a warm build cache. A parallel set after a serial stretch now rebuilds cold. A lane with uncommitted work refuses removal, stays in place and is named in the ledger.
+
 ### Changed: one issue format for every writer (2026-11-01)
 
 `docs/agents/issue-tracker.md` now carries `## Issue format` and `## Issue fields`. Every new issue, with or without a skill loaded, has one shape per kind and an assignee, priority, estimate and status. Internal IDs follow reach: `CODE`, requirement IDs and `ROAD-N` appear on the tracker only where specs or the roadmap are shared. No line says who or what wrote an issue or comment. `/triage` selects by state. `/board` and `/go` read native blocking relations and `.skills/<CODE>/tickets.md`.

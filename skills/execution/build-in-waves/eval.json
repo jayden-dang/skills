@@ -203,5 +203,29 @@
       "reroute-plan is loaded before any spec or code edit",
       "the report ends with a Check this wording block quoting the spec lines written or struck"
     ]
+  },
+  {
+    "eval_id": 19,
+    "eval_name": "unused-lanes-and-merged-branches-released",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § v2.5.0 — release lanes and merged task branches after each wave (2026-11-03)",
+    "prompt": "Tasks 3, 4, 5 ran in three lanes and have clean verdicts. Task 6 is the only next ready task; Tasks 8 and 9 will run in parallel later, and a cold build takes 6 minutes. Continue up to the next dispatch.",
+    "assertions": [
+      "after the green wave gate, git worktree list shows no lane worktree",
+      "the merged task branches no longer exist",
+      "no --force or -D appears in the commands run"
+    ]
+  },
+  {
+    "eval_id": 20,
+    "eval_name": "refused-lane-stays-and-is-ledgered",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § v2.5.0 — release lanes and merged task branches after each wave (2026-11-03)",
+    "prompt": "Tasks 3, 4, 5 ran in three lanes with clean verdicts; lane 3 holds an untracked file. Tasks 6 and 7 are the next ready set. Continue up to the next dispatch.",
+    "assertions": [
+      "lanes 1 and 2 remain detached",
+      "lane 3 and its untracked file remain, with no --force used",
+      "the ledger names lane 3 and its task branch"
+    ]
   }
 ]

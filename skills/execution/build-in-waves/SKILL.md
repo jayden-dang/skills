@@ -1,6 +1,6 @@
 ---
 name: build-in-waves
-version: 2.4.0
+version: 2.5.0
 description: Use when an approved tasks.md has Execution-mode continuous and needs
   dependency-aware subagent execution with serial or parallel lanes, bounded
   worker/reviewer leases, dual-verdict task review, and a whole-branch receipt.
@@ -112,11 +112,10 @@ Before each worker or reviewer resume, run the lease preflight from
 3. If the set has multiple tasks, prove each pair's `Files:` surfaces are
    disjoint and check `worktree_isolation`. Overlap or missing isolation reduces
    the effective set to serial; record the degradation in the runtime sidecar.
-4. For a parallel set, record `WBASE`. Each lane keeps **one worktree for the
-   whole run** so its build cache stays warm — a fresh worktree per task
-   rebuilds from cold. First use:
-   `git worktree add .worktrees/<branch>-lane<k> -b <branch>-taskN WBASE`;
-   later sets: `git -C .worktrees/<branch>-lane<k> switch -c <branch>-taskN WBASE`.
+4. For a parallel set, record `WBASE`. Reuse a lane that still exists, so its
+   build cache stays warm — a fresh worktree rebuilds from cold. Lane directory
+   exists: `git -C .worktrees/<branch>-lane<k> switch -c <branch>-taskN WBASE`;
+   missing: `git worktree add .worktrees/<branch>-lane<k> -b <branch>-taskN WBASE`.
    Invoke the shared lifecycle. A worker/reviewer lease may continue across
    ready sets only along its own dependency lane.
 5. After every task in the set has clean Standards and Spec verdicts, merge in
@@ -125,9 +124,37 @@ Before each worker or reviewer resume, run the lease preflight from
    target in the workspace (`project.md` **Wave gate**, else its typecheck and
    lint commands), judged against the lint baseline. Red → no ledger lines;
    REQUIRED SUB-SKILL: use `root-cause`, one fix dispatch, gate again. Green →
-   one ledger line per task. Remove lane worktrees after the last ready set.
+   one ledger line per task.
 6. Recompute the ready set. There is no permission pause between tasks in
    continuous mode, and no task advances while its review barrier is open.
+7. **Release before the next dispatch.** After every green wave gate, let `N` be
+   the lanes the **next** ready set uses: its effective concurrency when above 1,
+   otherwise 0 — a one-task set runs on the feature branch and an empty set is
+   the end of the run. From the feature checkout:
+
+   ```bash
+   # every lane numbered above N
+   git worktree remove .worktrees/<branch>-lane<k>
+   # every lane numbered N or below
+   git -C .worktrees/<branch>-lane<k> switch --detach
+   # then every task branch this feature has merged
+   for b in $(git for-each-ref --merged HEAD --format='%(refname:short)' 'refs/heads/<branch>-task*'); do
+     git branch -d "$b"
+   done
+   ```
+
+   Only `N` decides: a lane the next set does not use goes even when a later set
+   will want it. PINWIN kept every lane "for the whole run": lane 3 sat 13 hours
+   on a branch merged in wave 1, lanes 1 and 2 (about 32 GB by the last wave) sat
+   idle through four serial tasks, and 17 merged task branches stayed behind. A
+   cold rebuild is the accepted price.
+
+   Use these exact forms, without `--force` or `-D`. A refused or denied command
+   means that lane or branch stays: name it in the ledger and go on to the next
+   step.
+
+   *Done when: `git worktree list` shows at most `N` lanes, and each merged task
+   branch is deleted or named in the ledger.*
 
 ## Implementer Status Handling
 

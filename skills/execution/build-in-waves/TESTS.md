@@ -470,3 +470,47 @@ which reads as a new task — and the miss skipped the REQUIRED **Check this wor
 With the one-line pointer after Implementer Status Handling: haiku 7 of 7 reached the
 operator entry and ended with the verbatim block (5 of them with the description
 unregistered — the pointer alone); none stopped for an approval the operator had given.
+
+## v2.5.0 — release lanes and merged task branches after each wave (2026-11-03)
+
+**Real run behind it.** klynt PINWIN on 2.4.0 (grok-4.7), read from its ledger and `git worktree list`
+on 2026-11-03: lane 3 sat 13 hours on `feat/pinwin-task14`, merged in wave 1. Lanes 1 and 2 (`du`: 24G
+and 7.8G at the last wave) sat idle through serial Tasks 20, 21, 22 and 24. 17 merged task branches stayed,
+because no text deleted them.
+
+**Fixture:** a real git repo in a fresh temp parent. Wave of Tasks 3, 4, 5 in three lanes with an ignored
+`target/`, reviews clean, nothing merged, `project.md` stating a 6-minute cold build. The prompt says to
+continue up to the next dispatch and names none of the release vocabulary. Scored from `git worktree list`
+and `git branch`.
+
+### RED — 2.4.0
+
+| Run | Next ready set | Lanes left | Merged task branches left |
+|---|---|---|---|
+| sonnet tollgate | Task 6 alone, parallel set later | 3 of 3 | 3 of 3 |
+| haiku quillpress | Task 6 alone, parallel set later | 3 of 3 | 3 of 3 |
+| sonnet harborline | Tasks 6, 7 | 3 (lane 3 idle) | 3 of 3 |
+| haiku ferrygate | Tasks 6, 7 | 3 (lane 3 idle) | 3 of 3 |
+
+Verbatim: sonnet "The skill says to remove them only after the last parallel ready set, and Tasks 8 and 9
+will be one"; haiku "Lane 3 ... is idle. It stays for the run and is removed only after the last ready set."
+
+### GREEN — 2.5.0 (step 7 of the scheduler)
+
+| Run | Next ready set | Lanes left | Merged task branches left |
+|---|---|---|---|
+| haiku ambermill, sonnet cinderway | Task 6 alone, parallel set later | 0 | 0 |
+| haiku duskfield, sonnet ebonreach | Tasks 6, 7 | 1, 2, detached | 0 |
+| haiku fernhollow | none | 0 | 0 |
+| haiku glasswick | Tasks 6–9, recorded concurrency 3 | 1, 2, 3, detached | 0 |
+| haiku hazelport, sonnet ironmere | Tasks 6, 7, untracked `notes.tmp` in lane 3 | 1, 2, detached; lane 3 kept | `task5` kept |
+
+Both untracked-file runs: `git worktree remove` refused, no `--force`, `notes.tmp` intact, lane 3 and its
+branch named in the ledger. Both one-task runs named the 6-minute cold rebuild and removed the lanes anyway.
+Haiku juniperbay (lane 1 detached, lane 2 gone, Tasks 6 and 7 next): `switch -c` in lane 1 and
+`git worktree add -b` for lane 2, both at the feature HEAD.
+
+After these runs only the counter sentence changed: the PINWIN figures were corrected (31 GB to about 32 GB, 19 branches to 17) and "costs minutes once" became "is the accepted price". Not re-run.
+
+Not run: a controller carrying the release across a whole multi-wave build, or a real Rust cold rebuild. The
+cold-rebuild cost after a serial stretch is accepted, not measured. `build-by-story` was not edited or tested.

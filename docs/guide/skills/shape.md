@@ -29,7 +29,7 @@ At every stop it comments what is waiting and on whom, such as "requirements.md 
 
 The page says what changes for you, what the agents got wrong, what you decide, what could be cut, what it touches, what happens when it runs, how far to trust it, and what the report after the build will hold. You pick on the page and paste the reply back. Changes go back through both sessions. Every file stays `Status: Draft` until you approve, and only then is the ticket Ready for [`/go`](go.md).
 
-It needs Claude Code's cross-session messaging, `tmux`, and a trusted repo. Tier-1 bugs use the plain command, because a root cause waits on you. A road that is not Ready stops with what it waits on.
+It needs Claude Code's cross-session messaging, `tmux`, and a trusted repo. Expect about 45 minutes for even a small feature, so start it when you are leaving the machine. Tier-1 bugs use the plain command, because a root cause waits on you. A road that is not Ready stops with what it waits on.
 
 ## What the tests showed
 

@@ -119,4 +119,23 @@ and the peer sat 26 minutes on a prompt to read its charter. The conductor stopp
 
 **`skill_receipt.py`.** Tests in `scripts/test_skill_receipt.py`, watched red first, 6/6 green. On the real ROAD-9 sessions it reports `missing: clarify-decisions, load-subgraph; subagents below 1`.
 
-Not covered when this was committed: Haiku through to a page (running); the rest of the change loop and an approval through to Ready; the `brief-road` stop on a blocked road (RED only); a hard stop; a real repo. Trust dialog handling is untested: every run here had its folder trusted by hand.
+## 2026-11-03 — 1.3.1: what the rest of the runs found
+
+**Sonnet, the operator's reply.** A change: the conductor kept the files `Draft` and did not read it as approval; `work` applied it, `interpret` re-reviewed, the audit reran and found one more gap (a `9999-12-31` date raises `OverflowError`), and the page was rewritten. Then "Approved": the three files read `Approved`, the catalog row too, the ticket reads `ready-for-agent`, the peers closed, and the conductor named `/go #4`.
+
+**Haiku conductor, through to a page** (it started before the `brief-road` step existed). All ten parts, 11 choices, one figure. The receipt worked as the gate it is: it failed on `missing: clarify-decisions`, `work` ran it, and it passed with 7 subagents. Five defects, all in this text:
+- No `--model` in the launch line: both peers ran on the machine's Opus 5.5 default.
+- "write outside" fired a hard stop on Python's `.pyc` cache under `~/Library/Caches/com.apple.python`, before the tasks gate closed. The peers disagreed on whether it counted.
+- `{conductor}` was filled with an invented name, `shape-4-conductor`.
+- It asked the operator, three times, whether to stop another run's sessions it saw in `ListAgents`.
+- `RUN/audit.md` was never written; the findings went straight onto the page.
+
+Fixes: `--model sonnet` in the launch line, the hard stop now reads "change a config or data file", `{conductor}` comes from `ListAgents`, other sessions are not part of the run, and step 7 has a Done when.
+
+**GREEN, shape check, fresh repos.**
+- Blocked road (`After: ROAD-3` is `In-progress`), Sonnet 1, Haiku 1: both called `brief-road`, stopped before any worktree or session, said what it waits on. 2/2 against the RED above.
+- Ready road, Haiku conductor: both peers on Sonnet 5.5, charter names the conductor `keelford`. Stopped by hand once the peers were up.
+
+**Timing.** About 45 minutes on Sonnet and over 60 on Haiku with Opus peers, for a one-command feature. `plan-tasks` running the whole plan in a scratch copy took about 15 of those. Not measured: which step could go.
+
+Not covered: the "config or data file" wording through a full run; a hard stop that should fire; a real repo; Haiku conductor with Sonnet peers through to a page; trust dialog handling (every run here had its folder trusted by hand). If a conductor is killed, its `caffeinate` lives up to its 6-hour limit.

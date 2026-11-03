@@ -55,7 +55,7 @@ This ticket is the only one. Create no issue. A skill that wants a claim uses th
 
 ## Hard stops: write the report and end
 - A persisted format or a migration, or anything that moves money.
-- A test or a step that would write outside `{WT}`, `{RUN}` or a temporary directory.
+- A test or a step that would change a config or data file outside `{WT}`, `{RUN}` or a temporary directory.
 - Two Lock lines that contradict each other.
 - A change to the vision, or a pivot (`/define-project`, `/assess-pivot-impact`), or a catalog needing `/map-features`.
 

@@ -33,7 +33,8 @@ read, so the word meant nothing when they opened them.
    Otherwise step 1 of `SKILL.md`. Pick a short `<slug>` from the ticket.
    `RUN` = absolute path of `.skills/_pending-<slug>/auto/` in this checkout. Create it.
    *Done when: the ticket's only state role is `shaping` and `RUN` exists.*
-2. **Charter.** Copy `charter-template.md` to `RUN/charter.md` and fill every `{slot}`. For Locks, read:
+2. **Charter.** Copy `charter-template.md` to `RUN/charter.md` and fill every `{slot}`. `{conductor}` is this
+   session's name, from the first line `ListAgents` prints. For Locks, read:
    the ticket; its `ROAD-N` line and milestone outcome in `docs/roadmap/INDEX.md`; every line
    `grep -n` finds for the road's name or feature in `docs/ARCHITECTURE.md`, `docs/architecture/`,
    `CONTEXT.md`, `docs/adr/`; every `close-package.md` under `.skills/` naming that `ROAD-N`.
@@ -43,9 +44,10 @@ read, so the word meant nothing when they opened them.
    background and stop it at step 9. A run with nothing holding the Mac died mid-response when it slept.
 5. **Open the peers.** Fill `interpret-prompt.md` and `work-prompt.md` into `RUN/`. In one tmux session
    `<slug>`, from `WT`:
-   `claude --name <slug>-interpret --permission-mode auto "$(cat RUN/interpret-prompt.md)"`, wait
-   until `ListAgents` shows it idle, then the same for `<slug>-work`. The mode is `auto` whatever this
-   session runs in: a peer on `default` sat 26 minutes on a prompt to read its own charter.
+   `claude --name <slug>-interpret --model sonnet --permission-mode auto "$(cat RUN/interpret-prompt.md)"`,
+   wait until `ListAgents` shows it idle, then the same for `<slug>-work`. Both flags are fixed: a peer on
+   `default` sat 26 minutes on a prompt to read its own charter, and two with no `--model` ran on the
+   machine's Opus default. Other sessions `ListAgents` shows are not part of this run, whatever they are named.
    A pane asking to trust the folder → stop and tell the operator to trust it; answering it is theirs.
    *Done when: `ListAgents` lists both.*
 6. **Watch.** Start `Monitor` with this command, filled in, and re-arm it whenever it expires:
@@ -80,6 +82,7 @@ read, so the word meant nothing when they opened them.
    - every `Weigh` line in `RUN/ledger.md`: `grep` its value in `requirements.md` and `design.md`. Present
      with no `agent-decided` label → a finding.
    - every `Status:` line reads `Draft`, and a sample of ten `file:line` citations open to what they claim.
+   *Done when: `RUN/audit.md` holds each pass's result, and the receipt prints `missing: none` or its line is on the page.*
 8. **Advisor, then the page.** Dispatch one read-only subagent with `advisor-prompt.md` filled in, on a
    mid-tier model. Do not send its answer to the peers. Open what each claim cites and mark any that
    the file contradicts. Then read `review-page.md` beside this file and write `RUN/review.html`.

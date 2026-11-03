@@ -4,7 +4,7 @@
 
 ### Added: `/shape #N --auto` writes the whole spec and hands you one review page (2026-11-03)
 
-`shape` 1.3.0. The session you typed in conducts a `work` session and a read-only `interpret-session` session over cross-session messaging, keeps the machine awake, wakes a stopped session, checks which skills really ran from their transcripts (`scripts/skill_receipt.py`), audits the files, runs one advisor, and writes `review.html`. Every file stays `Status: Draft` until you approve on that page. Baseline: without it, `--auto` stopped at requirements on Sonnet and skipped the interview on Haiku; a hand-run charter skipped three required steps and died silently twice. Ran through to the page on Sonnet; Haiku and the approval path are not yet covered.
+`shape` 1.3.0. The session you typed in conducts a `work` session and a read-only `interpret-session` session over cross-session messaging, keeps the machine awake, wakes a stopped session, checks which skills really ran from their transcripts (`scripts/skill_receipt.py`), audits the files, runs one advisor, and writes `review.html`. Every file stays `Status: Draft` until you approve on that page. Baseline: without it, `--auto` stopped at requirements on Sonnet and skipped the interview on Haiku; a hand-run charter skipped three required steps and died silently twice. Ran through approval to Ready on Sonnet, and to the page on a Haiku conductor; about 45 minutes for a one-command feature. Not yet run on a real repo.
 
 ### Changed: `brief-road` 1.1.0 is model-invoked (2026-11-03)
 

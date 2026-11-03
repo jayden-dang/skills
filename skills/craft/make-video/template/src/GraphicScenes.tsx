@@ -1,132 +1,137 @@
-import {useGsapTimeline} from '@remotion/gsap';
-import gsap from 'gsap';
-import {DrawSVGPlugin} from 'gsap/DrawSVGPlugin';
-import {AbsoluteFill} from 'remotion';
-import {FPS, Scene} from './timing';
+import {AbsoluteFill, Easing, interpolate, useCurrentFrame} from 'remotion';
+import {fit, headFace, linesOf} from './fit';
+import {Scene} from './timing';
 import {t} from './tokens';
 
-gsap.registerPlugin(DrawSVGPlugin);
+type Props = {scene: Scene; starts: number[]; lengths: number[]};
 
-type Props = {scene: Scene; starts: number[]};
+export const clamp = {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'} as const;
+const OUT = Easing.bezier(0.16, 1, 0.3, 1);
+export const enter = (frame: number, at: number, length = 18) => interpolate(frame, [at, at + length], [0, 1], {...clamp, easing: OUT});
 
-const sec = (f: number) => f / FPS;
-const FRAME = {x: 96, y: 56, w: 1728, h: 850};
-const deps = (starts: number[]) => ({dependencies: [starts.join()]});
-const wordsIn = (timeline: gsap.core.Timeline, words: Element[]) =>
-  timeline.fromTo(words, {opacity: 0, y: 18}, {opacity: 1, y: 0, duration: 0.5, stagger: 0.07, ease: 'power3.out'}, 0.08);
+const MAX_H = 790;
+const head = {fontFamily: t.fontHead, fontWeight: t.headWeight, letterSpacing: t.headTracking};
 
-const Words: React.FC<{text: string; size: number; color?: string}> = ({text, size, color}) => (
-  <div style={{fontSize: size, fontWeight: 700, letterSpacing: '-0.022em', lineHeight: 1.1, color}}>
-    {text.split(' ').map((w, i) => (
-      <span key={i} data-word="" style={{display: 'inline-block', marginRight: '0.24em', opacity: 0}}>
-        {w}
-      </span>
-    ))}
-  </div>
-);
+/* The window hugs its text, so each scene measures before it draws. */
 
-const Panel: React.FC<{children: React.ReactNode}> = ({children}) => (
-  <div
-    style={{
-      position: 'absolute',
-      left: FRAME.x,
-      top: FRAME.y,
-      width: FRAME.w,
-      height: FRAME.h,
-      boxSizing: 'border-box',
-      padding: '56px 72px',
-      borderRadius: t.radius,
-      background: t.panel,
-      backdropFilter: t.panelBlur,
-      border: `1px solid ${t.panelBorder}`,
-      boxShadow: t.shadow,
-      color: t.ink,
-    }}
-  >
-    {children}
-  </div>
-);
+const titleMetrics = (scene: Scene) => {
+  const w = 1320;
+  const title = fit(scene.id, scene.title, [112, 92, 76, 60], w - 120, 2, headFace);
+  const sub = scene.subtitle ? fit(scene.id, scene.subtitle, [40, 34], w - 120, 2) : null;
+  const h = Math.max(320, 150 + title.lines * title.size * 1.05 + (sub ? 24 + sub.lines * sub.size * 1.2 : 0));
+  return {w, h, title, sub};
+};
 
-export const TitleScene: React.FC<Props> = ({scene, starts}) => {
-  const scope = useGsapTimeline<HTMLDivElement>(({timeline, selector}) => {
-    wordsIn(timeline, selector('[data-word]'));
-    timeline.fromTo(selector('[data-sub]'), {opacity: 0, y: 14}, {opacity: 1, y: 0, duration: 0.5, ease: 'power3.out'}, 0.5);
-  }, deps(starts));
+const pointsMetrics = (scene: Scene) => {
+  const points = scene.points ?? [];
+  const dense = points.length > 3;
+  const w = dense ? 1640 : 1400;
+  const textWidth = w - 144 - 46;
+  const title = fit(scene.id, scene.title, [68, 56], w - 144, 2, headFace);
+  const titleH = title.lines * title.size * 1.1 + 32;
+  for (const size of dense ? [42, 36, 30] : [52, 42, 36, 30]) {
+    const rows = points.map((p) => fit(scene.id, p, [size], textWidth, 2).lines * size * 1.15 + size * 0.95);
+    const h = 112 + titleH + rows.reduce((a, b) => a + b, 0);
+    if (h <= MAX_H) return {w, h, title, size, rows};
+  }
+  throw new Error(`${scene.id}: too many points for one scene. Split it.`);
+};
+
+const flowMetrics = (scene: Scene) => {
+  const w = 1500;
+  const title = fit(scene.id, scene.title, [68, 56], w - 144, 2, headFace);
+  const top = 60 + title.lines * title.size * 1.1 + 40;
+  return {w, h: 700, title, top};
+};
+
+export const graphicSize = (scene: Scene) => {
+  if (scene.kind === 'title') return titleMetrics(scene);
+  if (scene.kind === 'points') return pointsMetrics(scene);
+  return flowMetrics(scene);
+};
+
+export const TitleScene: React.FC<Props> = ({scene}) => {
+  const frame = useCurrentFrame();
+  const {title, sub} = titleMetrics(scene);
+  const p = enter(frame, 6, 26);
   return (
-    <AbsoluteFill ref={scope} style={{justifyContent: 'center', padding: '0 140px 150px', color: t.onGround, textAlign: 'center'}}>
-      <Words text={scene.title} size={118} />
-      {scene.subtitle ? (
-        <div data-sub="" style={{fontSize: 44, fontWeight: 500, marginTop: 26, opacity: 0}}>
-          {scene.subtitle}
-        </div>
-      ) : null}
+    <AbsoluteFill style={{justifyContent: 'center', alignItems: 'center', textAlign: 'center', padding: '0 60px'}}>
+      <div style={{...head, fontSize: title.size, lineHeight: 1.05, textWrap: 'balance', opacity: p, translate: `0px ${(1 - p) * 18}px`}}>{scene.title}</div>
+      {sub ? <div style={{fontSize: sub.size, fontWeight: 500, lineHeight: 1.2, color: t.muted, marginTop: 24, textWrap: 'balance', opacity: enter(frame, 18, 22)}}>{scene.subtitle}</div> : null}
     </AbsoluteFill>
   );
 };
 
-export const PointsScene: React.FC<Props> = ({scene, starts}) => {
+// A point arrives on its beat. Extra points arrive evenly through the last beat.
+const pointAt = (starts: number[], lengths: number[], count: number, i: number) => {
+  const last = starts.length - 1;
+  if (i < last || count <= starts.length) return starts[Math.min(i, last)];
+  return starts[last] + (i - last) * (lengths[last] / (count - last));
+};
+
+export const PointsScene: React.FC<Props> = ({scene, starts, lengths}) => {
+  const frame = useCurrentFrame();
+  const {title, size, rows} = pointsMetrics(scene);
   const points = scene.points ?? [];
-  const scope = useGsapTimeline<HTMLDivElement>(({timeline, selector}) => {
-    wordsIn(timeline, selector('[data-word]'));
-    points.forEach((_, i) => {
-      const at = sec(starts[Math.min(i, starts.length - 1)]) + (i >= starts.length ? (i - starts.length + 1) * 0.25 : 0);
-      timeline.fromTo(selector(`#p${i}`), {opacity: 0, y: 18}, {opacity: 1, y: 0, duration: 0.4, ease: 'power3.out'}, at);
-    });
-  }, deps(starts));
   return (
-    <AbsoluteFill ref={scope}>
-      <Panel>
-        <Words text={scene.title} size={84} />
-        <div style={{display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: points.length > 3 ? 16 : 26, height: 590}}>
-          {points.map((p, i) => (
-            <div key={p} id={`p${i}`} style={{padding: points.length > 3 ? '20px 36px' : '34px 44px', borderRadius: t.radiusSmall, background: t.panelSoft, border: `1px solid ${t.panelBorder}`, fontSize: points.length > 3 ? 40 : 52, fontWeight: 600, lineHeight: 1.18, opacity: 0}}>
-              {p}
-            </div>
-          ))}
-        </div>
-      </Panel>
-    </AbsoluteFill>
+    <div style={{position: 'absolute', inset: 0, padding: '56px 72px', boxSizing: 'border-box'}}>
+      <div style={{...head, fontSize: title.size, lineHeight: 1.1, marginBottom: 32, opacity: enter(frame, 6, 20)}}>{scene.title}</div>
+      {points.map((p, i) => {
+        const shown = enter(frame, pointAt(starts, lengths, points.length, i), 16);
+        return (
+          <div key={p} style={{display: 'flex', alignItems: 'center', height: rows[i], fontSize: size, fontWeight: 550, lineHeight: 1.15, letterSpacing: '-0.01em', opacity: 0.16 + 0.84 * shown, translate: `${(shown - 1) * 14}px 0px`}}>
+            <div style={{width: 16, height: 16, borderRadius: t.radius === 0 ? 0 : 99, background: t.accent, marginRight: 30, flexShrink: 0, opacity: shown}} />
+            {p}
+          </div>
+        );
+      })}
+    </div>
   );
 };
 
 export const FlowScene: React.FC<Props> = ({scene, starts}) => {
+  const frame = useCurrentFrame();
+  const {w, h, title, top} = flowMetrics(scene);
   const sources = scene.sources ?? [];
-  const gap = sources.length > 1 ? 470 / (sources.length - 1) : 0;
-  const top = sources.length > 1 ? 340 : 575;
-  const scope = useGsapTimeline<HTMLDivElement>(({timeline, selector}) => {
-    wordsIn(timeline, selector('[data-word]'));
-    sources.forEach((_, i) => {
-      const at = sec(starts[Math.min(i, starts.length - 1)]) + (i >= starts.length ? (i - starts.length + 1) * 0.35 : 0);
-      timeline.fromTo(selector(`#s${i}`), {opacity: 0, x: -30}, {opacity: 1, x: 0, duration: 0.38, ease: 'power3.out'}, at);
-      timeline.fromTo(selector(`#l${i}`), {drawSVG: '0% 0%'}, {drawSVG: '0% 100%', duration: 0.5, ease: 'power1.in'}, at + 0.14);
-    });
-    timeline.fromTo(selector('#target'), {opacity: 0, scale: 0.7, transformOrigin: '50% 50%'}, {opacity: 1, scale: 1, duration: 0.5, ease: 'back.out(1.7)'}, sec(starts[0]) + 0.6);
-    if (scene.note) timeline.fromTo(selector('#note'), {opacity: 0, y: 12}, {opacity: 1, y: 0, duration: 0.4, ease: 'power2.out'}, sec(starts[starts.length - 1]));
-  }, deps(starts));
+  const width = w - 144;
+  const height = h - top - 40;
+  const chipW = width * 0.32;
+  const chipH = Math.min(84, (height / Math.max(1, sources.length)) * 0.82);
+  const spread = sources.length > 1 ? Math.min((height - chipH) / (sources.length - 1), 136) : 0;
+  const midY = height / 2;
+  const y = (i: number) => midY + (i - (sources.length - 1) / 2) * spread;
+  const targetX = width * 0.66;
+  const targetW = width - targetX;
+  const target = fit(scene.id, scene.target ?? '', [172, 126, 90, 64, 50], targetW, 2, headFace);
+  const note = scene.note ? fit(scene.id, scene.note, [31, 26], targetW, 3) : null;
+  const targetP = enter(frame, starts[0] + 24);
+  const labelSize = [40, 33, 27].find((size) => sources.every((s) => {
+    const lines = linesOf(s, size, chipW - 52);
+    return lines <= 2 && lines * size * 1.1 <= chipH - 14;
+  }));
+  if (!labelSize) throw new Error(`${scene.id}: the sources do not fit. Shorten them, or use fewer.`);
   return (
-    <AbsoluteFill ref={scope}>
-      <Panel>
-        <Words text={scene.title} size={84} />
-      </Panel>
-      <svg viewBox="0 0 1920 1080" style={{position: 'absolute', inset: 0, width: 1920, height: 1080}}>
-        {sources.map((_, i) => {
-          const y = top + i * gap;
-          return <path key={i} id={`l${i}`} d={`M800 ${y} C 940 ${y}, 980 575, 1130 575`} fill="none" stroke={t.accent} strokeWidth={5} strokeLinecap="round" />;
+    <div style={{position: 'absolute', inset: 0}}>
+      <div style={{...head, position: 'absolute', left: 72, right: 72, top: 56, fontSize: title.size, lineHeight: 1.1, opacity: enter(frame, 6, 20)}}>{scene.title}</div>
+      <div style={{position: 'absolute', left: 72, top, width, height}}>
+        <svg width={width} height={height} style={{position: 'absolute', left: 0, top: 0, overflow: 'visible'}}>
+          {sources.map((_, i) => {
+            const at = starts[Math.min(i, starts.length - 1)];
+            const p = interpolate(frame, [at + 6, at + 26], [0, 1], {...clamp, easing: Easing.bezier(0.45, 0, 0.3, 1)});
+            return <path key={i} d={`M${chipW} ${y(i)} C ${chipW + 136} ${y(i)}, ${targetX - 154} ${midY}, ${targetX - 10} ${midY}`} pathLength={1} strokeDasharray={1} strokeDashoffset={1 - p} fill="none" stroke={t.accent} strokeWidth={4} strokeLinecap="round" opacity={p > 0 ? 1 : 0} />;
+          })}
+        </svg>
+        {sources.map((s, i) => {
+          const p = enter(frame, starts[Math.min(i, starts.length - 1)]);
+          return (
+            <div key={s} style={{position: 'absolute', left: 0, top: y(i) - chipH / 2, width: chipW, height: chipH, boxSizing: 'border-box', padding: '0 26px', display: 'flex', alignItems: 'center', borderRadius: t.radiusSmall, background: t.panelSoft, border: `${t.borderWidth}px solid ${t.panelBorder}`, color: t.ink, fontSize: labelSize, fontWeight: 600, lineHeight: 1.1, opacity: p, translate: `${(p - 1) * 24}px 0px`}}>
+              {s}
+            </div>
+          );
         })}
-      </svg>
-      {sources.map((s, i) => (
-        <div key={s} id={`s${i}`} style={{position: 'absolute', left: 168, top: top + i * gap - 54, width: 632, height: 108, boxSizing: 'border-box', padding: '0 34px', display: 'flex', alignItems: 'center', borderRadius: t.radiusSmall, background: t.panelSoft, border: `1px solid ${t.panelBorder}`, color: t.ink, fontSize: 40, fontWeight: 600, opacity: 0}}>
-          {s}
-        </div>
-      ))}
-      <div id="target" style={{position: 'absolute', left: 1140, top: 450, width: 620, height: 250, display: 'flex', alignItems: 'center', justifyContent: 'center', textAlign: 'center', color: t.accent, fontSize: scene.target && scene.target.length < 8 ? 190 : 66, fontWeight: 700, letterSpacing: '-0.02em', lineHeight: 1.05, opacity: 0}}>
-        {scene.target}
+        <div style={{...head, position: 'absolute', left: targetX, top: midY - (target.lines * target.size * 1.02) / 2 - (note ? 30 : 0), width: targetW, fontSize: target.size, lineHeight: 1.02, color: t.accent, opacity: targetP, scale: String(0.92 + 0.08 * targetP)}}>{scene.target}</div>
+        {note ? <div style={{position: 'absolute', left: targetX, top: midY + (target.lines * target.size * 1.02) / 2 - 12, width: targetW, color: t.muted, fontSize: note.size, fontWeight: 500, lineHeight: 1.22, opacity: enter(frame, starts[starts.length - 1])}}>{scene.note}</div> : null}
       </div>
-      {scene.note ? (
-        <div id="note" style={{position: 'absolute', left: 1140, top: 720, width: 620, textAlign: 'center', color: t.muted, fontSize: 36, fontWeight: 500, lineHeight: 1.2, opacity: 0}}>
-          {scene.note}
-        </div>
-      ) : null}
-    </AbsoluteFill>
+    </div>
   );
 };

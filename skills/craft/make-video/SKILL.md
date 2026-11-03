@@ -1,6 +1,6 @@
 ---
 name: make-video
-version: 1.0.0
+version: 1.1.0
 description: Makes a narrated 1080p video of a built feature, a pull request, or a release, from the real code and the running app. Run it with /make-video <feature, branch, or tag>.
 disable-model-invocation: true
 ---

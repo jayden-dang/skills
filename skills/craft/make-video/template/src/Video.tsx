@@ -1,53 +1,94 @@
 import {Audio} from '@remotion/media';
-import {linearTiming, TransitionSeries} from '@remotion/transitions';
-import type {TransitionPresentation, TransitionPresentationComponentProps} from '@remotion/transitions';
-import {AbsoluteFill, Sequence, staticFile} from 'remotion';
+import {AbsoluteFill, Easing, interpolate, Sequence, staticFile, useCurrentFrame} from 'remotion';
 import {ClipScene} from './ClipScene';
-import {FlowScene, PointsScene, TitleScene} from './GraphicScenes';
-import {Beat, layout, scenes, TRANSITION} from './timing';
+import {clamp, enter, FlowScene, graphicSize, PointsScene, TitleScene} from './GraphicScenes';
+import {Beat, placed, Scene, TRANSITION} from './timing';
 import {t} from './tokens';
 
-const Through: React.FC<TransitionPresentationComponentProps<Record<string, never>>> = ({children, presentationDirection, presentationProgress}) => (
-  <AbsoluteFill style={{opacity: presentationDirection === 'exiting' ? Math.max(0, 1 - presentationProgress * 2) : Math.max(0, presentationProgress * 2 - 1)}}>{children}</AbsoluteFill>
-);
-const through = (): TransitionPresentation<Record<string, never>> => ({component: Through, props: {}});
+/* One window lives through the whole film and changes shape to fit each scene. The narration sits under it. */
 
-const Caption: React.FC<{beat: Beat}> = ({beat}) => (
-  <>
-    <div style={{position: 'absolute', left: 34, right: 34, top: 12, fontSize: 38, fontWeight: 500, lineHeight: 1.18, textWrap: 'balance'}}>{beat.text}</div>
-    <div style={{position: 'absolute', left: 34, bottom: 9, fontFamily: t.fontMono, fontSize: 20, color: t.muted}}>{beat.ref}</div>
-  </>
-);
+type Box = {x: number; y: number; w: number; h: number};
+const CLIP_WIDTH = 1440;
+const CENTER_Y = 452;
+
+const boxFor = (scene: Scene): Box => {
+  if (scene.kind === 'clip') return {x: (1920 - CLIP_WIDTH) / 2, y: 26, w: CLIP_WIDTH, h: (CLIP_WIDTH * 9) / 16};
+  const {w, h} = graphicSize(scene);
+  return {x: (1920 - w) / 2, y: CENTER_Y - h / 2, w, h};
+};
+
+const Window: React.FC<{children: React.ReactNode}> = ({children}) => {
+  const frame = useCurrentFrame();
+  const input: number[] = [];
+  const boxes: Box[] = [];
+  placed.forEach(({scene, from}, i) => {
+    if (i === 0) return;
+    input.push(from, from + 24);
+    boxes.push(boxFor(placed[i - 1].scene), boxFor(scene));
+  });
+  const first = boxFor(placed[0].scene);
+  const at = (key: keyof Box) => (input.length ? interpolate(frame, input, boxes.map((b) => b[key]), {...clamp, easing: Easing.bezier(0.5, 0, 0.1, 1)}) : first[key]);
+  return (
+    <div style={{position: 'absolute', left: at('x'), top: at('y'), width: at('w'), height: at('h'), boxSizing: 'border-box', borderRadius: t.radius, background: t.panel, backdropFilter: t.panelBlur, border: `${t.borderWidth}px solid ${t.panelBorder}`, boxShadow: t.shadow, overflow: 'hidden', color: t.ink, scale: String(0.96 + 0.04 * enter(frame, 0, 24)), opacity: enter(frame, 0, 12)}}>
+      {children}
+    </div>
+  );
+};
+
+const SceneFade: React.FC<{duration: number; first: boolean; last: boolean; children: React.ReactNode}> = ({duration, first, last, children}) => {
+  const frame = useCurrentFrame();
+  const inn = first ? 1 : interpolate(frame, [TRANSITION / 2, TRANSITION], [0, 1], clamp);
+  const out = last ? 1 : interpolate(frame, [duration - TRANSITION, duration - TRANSITION / 2], [1, 0], clamp);
+  return <AbsoluteFill style={{opacity: Math.min(inn, out)}}>{children}</AbsoluteFill>;
+};
+
+const Caption: React.FC<{beat: Beat}> = ({beat}) => {
+  const frame = useCurrentFrame();
+  const p = enter(frame, 0, 10);
+  return (
+    <div style={{position: 'absolute', left: 200, right: 200, top: 866, textAlign: 'center', opacity: p, translate: `0px ${(1 - p) * 8}px`}}>
+      <div style={{fontSize: 42, fontWeight: 550, lineHeight: 1.2, letterSpacing: '-0.01em', color: t.onGround, textWrap: 'balance'}}>{beat.text}</div>
+      <div style={{fontFamily: t.fontMono, fontSize: 21, color: t.onGround, opacity: 0.72, marginTop: 10}}>{beat.ref}</div>
+    </div>
+  );
+};
 
 const Staged: React.FC<{text: string}> = ({text}) => (
-  <div style={{position: 'absolute', right: 96, top: 26, padding: '8px 20px', borderRadius: 999, background: t.panel, border: `2px solid ${t.bad}`, color: t.bad, fontSize: 28, fontWeight: 600}}>{text}</div>
+  <div style={{position: 'absolute', right: 36, bottom: 18, padding: '7px 18px', borderRadius: Math.max(t.radiusSmall, 6), background: t.panelSoft, border: `${t.borderWidth}px solid ${t.bad}`, color: t.bad, fontSize: 24, fontWeight: 600}}>{text}</div>
 );
 
 export const Film: React.FC = () => (
-  <AbsoluteFill style={{background: t.ground, fontFamily: t.fontSans, color: t.ink}}>
-    <TransitionSeries>
-      {scenes.flatMap((scene, s) => {
-        const {starts, lengths, duration} = layout(scene);
-        const parts = [
-          <TransitionSeries.Sequence key={scene.id} name={scene.title} durationInFrames={duration}>
-            {scene.kind === 'clip' ? <ClipScene scene={scene} starts={starts} lengths={lengths} duration={duration} /> : null}
-            {scene.kind === 'title' ? <TitleScene scene={scene} starts={starts} /> : null}
-            {scene.kind === 'points' ? <PointsScene scene={scene} starts={starts} /> : null}
-            {scene.kind === 'flow' ? <FlowScene scene={scene} starts={starts} /> : null}
-            {scene.staged ? <Staged text={scene.staged} /> : null}
-            <div style={{position: 'absolute', left: 96, top: 922, width: 1728, height: 138, boxSizing: 'border-box', borderRadius: t.radiusSmall, background: t.panel, backdropFilter: t.panelBlur, border: `1px solid ${t.panelBorder}`, color: t.ink}}>
-              {scene.beats.map((beat, i) => (
-                <Sequence key={`${scene.id}-${i}`} from={starts[i]} durationInFrames={i === scene.beats.length - 1 ? duration - starts[i] : starts[i + 1] - starts[i]} layout="none" name={`line ${i + 1}`}>
-                  <Audio src={staticFile(`voice/${scene.id}-${i}.mp3`)} />
-                  <Caption beat={beat} />
-                </Sequence>
-              ))}
-            </div>
-          </TransitionSeries.Sequence>,
-        ];
-        if (s < scenes.length - 1) parts.push(<TransitionSeries.Transition key={`${scene.id}-t`} presentation={through()} timing={linearTiming({durationInFrames: TRANSITION})} />);
-        return parts;
+  <AbsoluteFill style={{background: t.ground, fontFamily: t.fontSans}}>
+    <Window>
+      {placed.map(({scene, from, duration, starts, lengths}, s) => {
+        const box = boxFor(scene);
+        const props = {scene, starts, lengths};
+        return (
+          <Sequence key={scene.id} from={from} durationInFrames={duration} name={scene.title}>
+            <SceneFade duration={duration} first={s === 0} last={s === placed.length - 1}>
+              <div style={{position: 'absolute', left: 0, top: 0, width: box.w, height: box.h}}>
+                {scene.kind === 'title' ? <TitleScene {...props} /> : null}
+                {scene.kind === 'points' ? <PointsScene {...props} /> : null}
+                {scene.kind === 'flow' ? <FlowScene {...props} /> : null}
+                {scene.kind === 'clip' ? <ClipScene {...props} duration={duration} width={CLIP_WIDTH} /> : null}
+              </div>
+            </SceneFade>
+          </Sequence>
+        );
       })}
-    </TransitionSeries>
+    </Window>
+    {placed.map(({scene, from, duration, starts}, s) => (
+      <Sequence key={scene.id} from={from} durationInFrames={duration} name={`${scene.title}: narration`}>
+        <SceneFade duration={duration} first={s === 0} last={s === placed.length - 1}>
+          {scene.beats.map((beat, i) => (
+            <Sequence key={i} from={starts[i]} durationInFrames={(starts[i + 1] ?? duration) - starts[i]} layout="none" name={`line ${i + 1}`}>
+              <Audio src={staticFile(`voice/${scene.id}-${i}.mp3`)} />
+              <Caption beat={beat} />
+            </Sequence>
+          ))}
+          {scene.staged ? <Staged text={scene.staged} /> : null}
+        </SceneFade>
+      </Sequence>
+    ))}
   </AbsoluteFill>
 );

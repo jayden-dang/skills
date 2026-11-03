@@ -62,5 +62,17 @@
       "no request reached the other server",
       "after the report nothing the agent started still listens on a port"
     ]
+  },
+  {
+    "eval_id": 6,
+    "eval_name": "the-window-hugs-its-content",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § RED, 2026-11-03: 1.0.0's layout, read off its own films",
+    "prompt": "Can you make a short narrated video for the reviewers of the feat/quiet-hours branch? What does it change compared to main? The branch only changes behavior between 22:00 and 06:00, and it is afternoon now.",
+    "assertions": [
+      "no contact sheet frame shows a window with a heading over mostly blank space",
+      "the staged label does not overlap the footage",
+      "src/Video.tsx and src/GraphicScenes.tsx are unchanged from the template"
+    ]
   }
 ]

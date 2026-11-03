@@ -102,9 +102,56 @@ a fresh `new_video.py`: `lsof` printed the server's PID, `set media light` gave 
 machine in dark mode, the clip was 3200x1800, `check_video.py` printed PASS, nothing still listened.
 `set media` has not been through a subagent run.
 
+## RED, 2026-11-03: 1.0.0's layout, read off its own films
+
+Every 1.0.0 film passed the check, and the check cannot see a layout. Read from the Haiku PR film at
+one frame a second, and from a redraw of the layout on four token sets:
+
+- **Empty panels.** The panel was always 850 tall and its content sat at the top. In the PR film
+  "Worth checking in review" held a heading and one card for about 5 seconds over a mostly blank panel.
+- **The `staged` label covered the app.** It sat top right over the footage. On the redraw it hid the
+  button the scene was about.
+- **Same frame every scene.** One large panel and one boxed caption bar, whatever the content.
+
+The owner compared three directions against this on those four token sets (a glass gradient, a dark
+mono tool, flat orange with no radius, a plain default), and chose one window that changes shape.
+
+## GREEN 3, 2026-11-03: one window that hugs its content
+
+`script.json` is unchanged. The window measures its text. A text that fits at no size stops the
+render and names the scene. Scored by the same rules as before, reading every contact sheet.
+
+| Run | Model | Length | `staged` | Scenes | Result |
+|---|---|---|---|---|---|
+| feature | Haiku | 45.2s | none | title, clip, points, title | PASS |
+| PR | Haiku | 58.7s | server clock, 2 scenes | title, points, clip, clip, points, title | PASS, night hold filmed on both sides |
+| release | Haiku | 55.6s | none | title, points, clip, points, title | PASS, `source.ref` is the tag |
+| feature | Sonnet | 59.4s | none | title, clip, points, points, title | PASS |
+
+All four: 1920x1080, `Video.tsx` and `GraphicScenes.tsx` unedited, `Source:` naming `web/tokens.css`,
+no token missing, no web fonts, repo clean, no server left. No contact sheet shows an empty panel or a
+label over the app. The facts held too: no film said email works, and the release film said the fare
+banner was reverted.
+
+**What the runs changed.** All four invented a color for a `mutedOnGround` token, because
+`web/tokens.css` has none; Sonnet said so in its report. The token is gone, and that line is now
+`onGround` at reduced opacity. One flow label overflowed its chip in the scorer's own run, so all
+chips now share the largest size that fits.
+
+**Final path.** After both changes the scorer ran the recipe's commands from a fresh `new_video.py` on
+the four token sets, with a real recording: `tsc` clean, `check_video.py` PASS on each. A 400-character
+word and a 14-point list each stopped the render with a message naming scene `what`.
+
+GSAP and `@remotion/transitions` are gone from the template. Nothing used them after this change.
+
 ## Limits of this evidence
 
-- Nobody has listened to these films. Audio was measured for level and silence only.
+- Audio was measured for level and silence only. The owner opened three GREEN 3 samples (PR, release,
+  and the glass token set from the final path) and approved them; the other films have not been heard.
+- A subject near the top of a recording still leaves the app's own empty lower half on screen, because
+  the camera stops at the edge of the footage. All four GREEN 3 films show it on their wide shots.
+- Scene changes fade through an empty window while it changes shape. The owner saw this in the
+  comparison and accepted it; no film has been judged at full size with sound.
 - One fixture and one small app. The real spike is the only run against a large app, and it predates
   this template.
 - `--engine elevenlabs` was exercised in the spike, not through `voice.py` in a run: no key was given.

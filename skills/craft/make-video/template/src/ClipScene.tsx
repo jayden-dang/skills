@@ -1,25 +1,25 @@
 import {Video} from '@remotion/media';
-import {AbsoluteFill, Easing, Img, interpolate, Sequence, staticFile, useCurrentFrame} from 'remotion';
+import {Easing, Img, interpolate, Sequence, staticFile, useCurrentFrame} from 'remotion';
 import {clipLength, Rect, Scene} from './timing';
 import {t} from './tokens';
 
 // Recordings are driven at this CSS size; focus and ring rects use its pixels.
 const VIEW_W = 1600;
-const VIEW_H = 900;
 const K = 1920 / VIEW_W;
-const VISIBLE_H = 910;
 const MOVE = 26;
+const clamp = {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'} as const;
 
 const camera = (focus?: Rect) => {
   if (!focus) return {s: 1, x: 0, y: 0};
-  const s = Math.max(1, Math.min(3, (1920 * 0.86) / (focus.w * K), (VISIBLE_H * 0.86) / (focus.h * K)));
+  const s = Math.max(1, Math.min(3, (1920 * 0.86) / (focus.w * K), (1080 * 0.86) / (focus.h * K)));
   const cx = (focus.x + focus.w / 2) * K;
   const cy = (focus.y + focus.h / 2) * K;
-  const clamp = (v: number, low: number) => Math.min(0, Math.max(low, v));
-  return {s, x: clamp(960 - s * cx, 1920 - 1920 * s), y: clamp(VISIBLE_H / 2 - s * cy, 1080 - VIEW_H * K * s)};
+  const limit = (v: number, low: number) => Math.min(0, Math.max(low, v));
+  return {s, x: limit(960 - s * cx, 1920 - 1920 * s), y: limit(540 - s * cy, 1080 - 1080 * s)};
 };
 
-export const ClipScene: React.FC<{scene: Scene; starts: number[]; lengths: number[]; duration: number}> = ({scene, starts, lengths, duration}) => {
+// Plays inside the window at `width`; everything here is drawn at 1920x1080 and scaled down.
+export const ClipScene: React.FC<{scene: Scene; starts: number[]; lengths: number[]; duration: number; width: number}> = ({scene, starts, lengths, duration, width}) => {
   const frame = useCurrentFrame();
   let previous = camera();
   const input: number[] = [];
@@ -32,15 +32,10 @@ export const ClipScene: React.FC<{scene: Scene; starts: number[]; lengths: numbe
     values.push(previous, target);
     previous = target;
   });
-  const at = (key: 's' | 'x' | 'y') =>
-    interpolate(frame, input, values.map((v) => v[key]), {
-      extrapolateLeft: 'clamp',
-      extrapolateRight: 'clamp',
-      easing: Easing.bezier(0.33, 0, 0.2, 1),
-    });
+  const at = (key: 's' | 'x' | 'y') => interpolate(frame, input, values.map((v) => v[key]), {...clamp, easing: Easing.bezier(0.33, 0, 0.2, 1)});
   const entries = scene.beats.flatMap((beat, i) => (beat.clip ? [{beat, from: starts[i]}] : []));
   return (
-    <AbsoluteFill style={{overflow: 'hidden'}}>
+    <div style={{position: 'absolute', left: 0, top: 0, width: 1920, height: 1080, transformOrigin: '0 0', scale: String(width / 1920)}}>
       <div style={{position: 'absolute', left: 0, top: 0, width: 1920, height: 1080, transformOrigin: '0 0', translate: `${at('x')}px ${at('y')}px`, scale: String(at('s'))}}>
         {entries.map(({beat, from}, i) => {
           const until = entries[i + 1]?.from ?? duration;
@@ -68,12 +63,12 @@ export const ClipScene: React.FC<{scene: Scene; starts: number[]; lengths: numbe
                 height: beat.ring.h * K + 12,
                 borderRadius: t.radiusSmall,
                 border: `3px solid ${t.accent}`,
-                opacity: interpolate(frame, [from + 8, from + 14, to - 6, to], [0, 1, 1, 0], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'}),
+                opacity: interpolate(frame, [from + 8, from + 14, to - 6, to], [0, 1, 1, 0], clamp),
               }}
             />
           );
         })}
       </div>
-    </AbsoluteFill>
+    </div>
   );
 };

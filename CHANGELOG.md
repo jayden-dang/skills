@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### Changed: `make-video` 1.1.0, one window that fits each scene (2026-11-03)
+
+Every film now uses one window that changes shape to hug its scene, with the narration under it on the project's background. Before, every scene sat in the same large panel, which stood mostly blank on short lists, and the `staged` label could cover the app. Text too long for the window stops the render and names the scene. `src/script.json` is unchanged. `src/tokens.ts` gains `fontHead`, `headWeight`, `headTracking` and `borderWidth`, and `ground` takes any CSS background. The layout was chosen across four unlike token sets so it does not favor one project. Three Haiku runs and one Sonnet run all passed the check with no empty window on any contact sheet. See `skills/craft/make-video/TESTS.md`.
+
 ### Added: `/shape #N --auto` writes the whole spec and hands you one review page (2026-11-03)
 
 `shape` 1.3.0. The session you typed in conducts a `work` session and a read-only `interpret-session` session over cross-session messaging, keeps the machine awake, wakes a stopped session, checks which skills really ran from their transcripts (`scripts/skill_receipt.py`), audits the files, runs one advisor, and writes `review.html`. Every file stays `Status: Draft` until you approve on that page. Baseline: without it, `--auto` stopped at requirements on Sonnet and skipped the interview on Haiku; a hand-run charter skipped three required steps and died silently twice. Ran through approval to Ready on Sonnet, and to the page on a Haiku conductor; about 45 minutes for a one-command feature. Not yet run on a real repo.

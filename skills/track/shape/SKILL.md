@@ -1,7 +1,7 @@
 ---
 name: shape
-version: 1.2.0
-description: Writes what a ticket needs before an agent can build it — the spec triad, or the root cause for a bug — and stops at your approval. Run it with /shape #N.
+version: 1.3.0
+description: Writes what a ticket needs before an agent can build it — the spec triad, or the root cause for a bug — and stops at your approval, or with --auto writes the whole spec unattended and hands you one review page. Run it with /shape #N.
 disable-model-invocation: true
 ---
 
@@ -9,6 +9,8 @@ disable-model-invocation: true
 
 The second of the five commands. It moves a ticket from Shaping to Ready, and stops at
 each gate that only the operator may pass. The states are the roles in `docs/agents/triage-labels.md`.
+
+WHEN the command carries `--auto`, read `auto.md` beside this file and follow it exactly, in place of the steps below.
 
 1. **Take the ticket.** Read it and its comments with the tracker ops in
    `docs/agents/issue-tracker.md`. In one edit, make `shaping` its only state role

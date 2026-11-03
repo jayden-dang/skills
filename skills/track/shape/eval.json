@@ -2,8 +2,8 @@
   {
     "eval_name": "shape-takes-the-ticket-and-stops-at-approval",
     "kind": "behavior",
-    "derived_from": "TESTS.md § 2026-10-19 — 1.0.0",
-    "prompt": "/shape #24 — leave me whatever needs my approval.",
+    "derived_from": "TESTS.md \u00a7 2026-10-19 \u2014 1.0.0",
+    "prompt": "/shape #24 \u2014 leave me whatever needs my approval.",
     "assertions": [
       "#24's only state role becomes shaping, in one edit",
       "the run stops at the first approval gate",
@@ -14,13 +14,28 @@
   {
     "eval_name": "tier1-ready-with-requirements-covered",
     "kind": "behavior",
-    "derived_from": "TESTS.md § 1.1.0",
-    "prompt": "/shape #28 — I accept the cause; I approve a mini-spec saying a same-day stay counts as one night.",
+    "derived_from": "TESTS.md \u00a7 1.1.0",
+    "prompt": "/shape #28 \u2014 I accept the cause; I approve a mini-spec saying a same-day stay counts as one night.",
     "assertions": [
       "the up-front approval is quoted on the ticket",
       "where specs are shared the ticket body gains Requirements covered: <fix>, <guard>, and where private the ticket's line in tickets.md gains covers: <fix>, <guard>",
       "shaping is swapped for ready-for-agent in one edit"
     ],
     "eval_id": 2
+  },
+  {
+    "eval_name": "auto-writes-the-whole-spec-and-a-page",
+    "kind": "behavior",
+    "derived_from": "TESTS.md \u00a7 2026-11-03 \u2014 1.3.0: `--auto`",
+    "prompt": "/shape #4 --auto",
+    "assertions": [
+      "two more sessions are opened, one running the spec chain and one read-only",
+      "skill_receipt.py on the work session prints missing: none",
+      "requirements.md, design.md and tasks.md exist and each reads Status: Draft",
+      "the branch's diff touches only docs",
+      "no new tracker issue exists and the ticket's state stays shaping",
+      "a review page holds what changes, audit findings, decisions, advisor cuts, what it touches, the runtime path, the receipt, the after-build frame, detail and a copyable reply"
+    ],
+    "eval_id": 3
   }
 ]

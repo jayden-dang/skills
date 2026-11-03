@@ -23,11 +23,19 @@ When a ticket sits in Shaping and you want it to reach Ready. It is the second o
 
 At every stop it comments what is waiting and on whom, such as "requirements.md drafted, waiting for Lan's approval", so [`/board`](board.md) shows the ticket under Shaping with that line.
 
+## `--auto`
+
+`/shape #N --auto` writes the whole spec with nobody at the keyboard, then hands you one page. The session you typed in conducts: it checks the road with [`brief-road`](brief-road.md), writes a charter from what the repo already decided, opens a `work` session and a read-only [`interpret-session`](interpret-session.md) session in tmux, keeps the machine awake, and wakes a session that stops. When they finish it reads their transcripts to see which skills really ran, audits the files, runs one outside advisor, and writes `review.html`.
+
+The page says what changes for you, what the agents got wrong, what you decide, what could be cut, what it touches, what happens when it runs, how far to trust it, and what the report after the build will hold. You pick on the page and paste the reply back. Changes go back through both sessions. Every file stays `Status: Draft` until you approve, and only then is the ticket Ready for [`/go`](go.md).
+
+It needs Claude Code's cross-session messaging, `tmux`, and a trusted repo. Tier-1 bugs use the plain command, because a root cause waits on you. A road that is not Ready stops with what it waits on.
+
 ## What the tests showed
 
 The RED is in [`plan-tasks`](plan-tasks.md) 1.9.0: publishing onto an existing ticket left two state roles in 2 of 3 runs, and that fix lives in `plan-tasks`. With `/shape #24` on a ticket labelled ready with no spec, both haiku runs made `shaping` the only state role, framed it as tier 2, stopped for the answers before writing any requirements, and commented what waited and on whom. See `skills/track/shape/TESTS.md`.
 
-Not covered: the resume path after approval, and tier 1.
+Not covered: the resume path after approval, and tier 1. `--auto` ran through to its page on Sonnet; its evidence and gaps are in the skill's `TESTS.md`.
 
 ## See also
 

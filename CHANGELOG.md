@@ -2,6 +2,14 @@
 
 ## Unreleased
 
+### Added: `/shape #N --auto` writes the whole spec and hands you one review page (2026-11-03)
+
+`shape` 1.3.0. The session you typed in conducts a `work` session and a read-only `interpret-session` session over cross-session messaging, keeps the machine awake, wakes a stopped session, checks which skills really ran from their transcripts (`scripts/skill_receipt.py`), audits the files, runs one advisor, and writes `review.html`. Every file stays `Status: Draft` until you approve on that page. Baseline: without it, `--auto` stopped at requirements on Sonnet and skipped the interview on Haiku; a hand-run charter skipped three required steps and died silently twice. Ran through to the page on Sonnet; Haiku and the approval path are not yet covered.
+
+### Changed: `brief-road` 1.1.0 is model-invoked (2026-11-03)
+
+`/shape --auto` calls it to stop on a road that is not Ready. A run with no such check started two sessions on a road whose predecessor was still in progress. Trigger test: 16/16 should fire, 0/16 should not.
+
 ### Changed: a local merge is a full landing under `Default landing action: merge` (2026-11-03)
 
 `land-branch` 4.8.0 merges with `--no-ff` and the tickets' closing keywords, pushes the base, then reads each ticket back. A completed ticket that is still open is closed with a comment naming the merge, on any base; GitHub acts on the keyword only on the default branch. A partial ticket moves to `needs-info`. A rejected push stops with the merge local and the tickets unchanged, and a repo set to anything else keeps its merges local. `configure-repo` 1.15.0 asks for the landing action, and the tracker seed gains a close operation. Existing repos need `Default landing action:` and the close operation added.

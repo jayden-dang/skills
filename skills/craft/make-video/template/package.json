@@ -1,0 +1,24 @@
+{
+  "name": "film",
+  "private": true,
+  "license": "UNLICENSED",
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "render": "remotion render Film out/film.mp4"
+  },
+  "dependencies": {
+    "@remotion/cli": "4.0.540",
+    "@remotion/gsap": "4.0.540",
+    "@remotion/media": "4.0.540",
+    "@remotion/transitions": "4.0.540",
+    "gsap": "3.15.0",
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
+    "remotion": "4.0.540"
+  },
+  "devDependencies": {
+    "@types/react": "19.3.0",
+    "@types/web": "0.0.166",
+    "typescript": "5.9.3"
+  }
+}

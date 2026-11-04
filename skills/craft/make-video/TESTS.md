@@ -202,3 +202,116 @@ check now treats them as built in.
 - No description trigger test: the skill is user-invoked, so its description routes nothing.
 - Runs ran with this session's shell restrictions, which refused some heredocs and `git worktree`
   forms. Two runs used a plain copy or `git archive` instead. A normal shell has not been tested.
+
+## RED, 2026-11-03: a spec, on 1.2.0
+
+Fixture: `tidegate` plus a committed, unbuilt triad, `docs/specs/2026-11-rebooking`, 14 IDs across 4 stories, a design with
+a call path, an `Offer` type, a refusal table and three decisions. Request: "I have not read this spec and nothing of it is
+built yet. I want a technical film of it, not a marketing slide film ... 60 seconds." The requester cannot be reached.
+
+| Run | Model | Result |
+|---|---|---|
+| 1.2.0 installed | Sonnet | No film. "A subject with no code yet is out of scope": it stopped and offered to wait for the build |
+| 1.2.0 installed | Haiku | 67.3s against 60. Went around the rule. `source.kind` `feature`, **0 of 14 IDs**, three `points` scenes. Cut for length: "the API contract shape", offer states, masking |
+| Nothing in the repo | Sonnet | 53.6s, `source.kind` `feature`, **0 of 14 IDs**, three `points` scenes, no route, no status code, no type. The sheet is bullet slides |
+
+The third run was meant as a no-skill control and is not one: it found the machine's global install of `make-video` and said
+so. Read as a second sample of 1.2.0 on the same request.
+
+**Verbatim.** "A film made from the spec text alone would be the unchecked slideshow the skill exists to prevent" (Sonnet).
+"The narration does not read out every requirement ID, the 409/404 refusal table, the contract type or the test seams"
+(Sonnet, third run). "The film no longer explains phone masking, the offer states, or the API contract shape" (Haiku).
+
+Form: the output had the wrong shape, so the answer is a recipe plus scene kinds the template owns, and a check on what
+reached the screen, not a prohibition.
+
+## GREEN, 2026-11-03: a spec, on 2.0.0
+
+Scored from each script and MP4, re-running `check_video.py` as the scorer. All PASS, all 1920x1080, all voiced by ElevenLabs.
+
+| Run | Model | Length | IDs cited | Stories | Scenes |
+|---|---|---|---|---|---|
+| 14 IDs, English | Sonnet | 55.9s | 11 of 14 | 4 of 4 | the 8 of the recipe, in order |
+| 14 IDs, English | Haiku | 57.4s | 13 of 14 | 4 of 4 | the 8 of the recipe, in order |
+| 14 IDs, Vietnamese, under `shape` | Sonnet | 56.0s | 10 of 14 | 4 of 4 | 9, two `ears` |
+| 14 IDs, Vietnamese, under `shape` | Haiku | 58.5s | 9 of 14 | 4 of 4 | the recipe's |
+| PINWIN, a real 108-ID triad | Sonnet | 95.1s | 35 of 108 | 19 of 19 | 10, two `ears`, one `code` |
+
+The route, the `Offer` type and the 409 and 404 are on screen in every film on the small spec. Haiku's film no longer drops
+the contract. Vietnamese films keep rules and code in the spec's English, as asked.
+
+**What the sheets found that the check could not, all fixed in the template.** The `planned` label sat over the corner of a
+full-height window, so it moved to the bottom. A `sequence` label printed its backticks literally. Neither fix has been through
+another subagent run. The final template was rendered end to end from a fresh `new_video.py` and printed PASS, and a still of a
+backticked label shows both fixes.
+
+**Meta.** Two runs asked how long a `code` line may be, which the page now says. One asked which rules to keep past three, and
+that stays a judgment. One hit this harness's refusal of a JSON literal in a shell command, which is not the skill's.
+
+**Voice.** Unit tests in `scripts/test_voice.py`, watched red first: no key stops before any call, `--engine` is refused, a refused
+call leaves no file, `spoken` replaces what is said, and a rerun pays only for the line that changed. A real film on the small
+spec billed 674 to 740 characters and PINWIN 1,404.
+
+**Not covered.** Nobody has listened: Vietnamese intelligibility on `eleven_flash_v2_5` stays at the spike's measure, about 11% with
+tones. Feature, PR and release films were not re-run on this version; `say` going away is their only behavior change, and
+those paths carry the same `voice.py`. A spec with no contract in its design.
+
+**Trigger, now that it is model-invocable.** Ten requests against six neighboring descriptions, Sonnet and Haiku, identical and as
+intended: video of a release, of a PR, of a spec and a demo clip route here; "explain the checkout flow", "walk me through this
+branch" and "teach me this spec's offer states" go to `understand`; requirements, an HTML report and an end-to-end check go elsewhere.
+
+## RED, 2026-11-03: the walkthrough, judged by its owner
+
+The films of "GREEN, a spec, on 2.0.0" passed every check. Their owner watched one: it summarizes and justifies, and it does not
+make them understand the feature. They pointed to Karpathy's note on bespoke 3b1b-style explainers and ASD-STE100.
+
+**Cause, measured from the scripts.** The recipe ordered scenes by the spec's files and the check demanded every story, so the film
+recited. Lines giving a reason (so, because, but, if):
+
+| Film | Reasons | Scene changes |
+|---|---|---|
+| Walkthrough, Sonnet, 14 IDs | 1 of 23, 4% | 8 |
+| Walkthrough, Haiku, 14 IDs | 2 of 22, 9% | 8 |
+| Walkthrough, Sonnet, Vietnamese | 0 of 20 | 9 |
+| Walkthrough, Haiku, Vietnamese | 0 of 21 | 9 |
+| Walkthrough, Sonnet, PINWIN | 0 of 30 | 9 |
+| Hand-written explainer, 14 IDs | 11 of 17, 64% | 1 |
+| Hand-written PINWIN, English | 9 of 21, 42% | 7, with footage |
+| Hand-written PINWIN, Vietnamese | 11 of 21, 52% | 7, with footage |
+
+The owner watched the hand-written films and chose that direction. Those films were written by the author, not an agent, and were
+the shape to aim at. Evidence of agents following the text is the next section.
+
+The owner first said 60 seconds, then 120 at most for a large spec. Explaining a 14-ID spec by hand took 86 seconds, so the limit
+is 120 for every spec, a recommendation the owner accepted when they approved the direction.
+
+## GREEN, 2026-11-03: the explainer, on 2.0.0
+
+**Limit of this round.** ElevenLabs refused every call: "Your subscription has a failed or incomplete payment." So agents used a stand-in
+that estimates line lengths from word counts, and stopped at `preview.mjs`. No agent run reached a render or `check_video.py`'s media
+checks. Script rules were run by the scorer against each script. The request named no structure: "Make me a film of it, so I understand the feature."
+
+| Run | Model | Reasons | Script faults | Left out | Length, estimated |
+|---|---|---|---|---|---|
+| 14 IDs | Sonnet | 12 of 19, 63% | none | 3 | about 110s |
+| 14 IDs | Haiku | 12 of 19, 63% | none | 5 | about 105s |
+| 14 IDs, Vietnamese | Haiku | 11 of 15, 73% | none | 4 | about 100s |
+| PINWIN, 108 IDs | Sonnet | 12 of 24, 50% | none | 91 | about 112s |
+
+All four found a named example without being asked and told it through "but what if". Read from the sheets, three faults remained, all
+in this text:
+
+- Four of four opened on "This film explains how...", because step 3 required a `title` scene first.
+- Two of four rewound: Lan accepted, then "what if Lan answers late" took her seat back. The recipe had split going right from what goes wrong.
+- Three of four first previews cut something off with the camera.
+
+**After those three edits, Haiku, fresh repo.** 11 of 14 lines give a reason, 78%. It opens "Staff cancel Lan's 08:15 ferry, and nobody tells her",
+on a `world`. Time only runs forward. About 65 to 70 seconds. No script fault, 6 IDs left out. It still took three previews to fit its camera boxes,
+and asked for a larger worked sample. Not added: nothing in the sheets required it.
+
+**Trigger for reasons.** `check_video.py` fails a spec film under a third. The word list is `en` and `vi` only, and an agent could pass it with empty "so"s. It
+catches a list of facts, which is what was measured, and does not measure understanding. Only a person watching does.
+
+**Three things the PINWIN capture found, fixed.** A refused voice call printed only "401", which reads as a bad key and hid an unpaid invoice: `voice.py` now prints the vendor's sentence, test first. Vietnamese writes each syllable as a token, so 20 "words" was about 4 seconds and the lines came out clipped: the limit is 30 there. A line can change the world part way through, with `then`, because a long line left one still frame for 7.9 seconds.
+
+**Not covered.** A render of an agent's explainer with real voice. Anyone hearing any film. A built feature through this recipe by an agent: PINWIN's footage film was hand-written, and its server claims were checked by hand on an isolated plane. Footage of today's behavior inside a spec film is left out, since running an app under `--auto` has never been measured.

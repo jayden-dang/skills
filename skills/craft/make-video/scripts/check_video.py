@@ -9,11 +9,18 @@ import re
 import subprocess
 import sys
 
-KINDS = ("feature", "pr", "release")
+KINDS = ("feature", "pr", "release", "spec")
 MAX_WORDS = 20
+MAX_WORDS_BY_LANGUAGE = {"vi": 30}  # Vietnamese writes each syllable as a token
 MAX_STILL = 6.0
 MAX_SILENCE = 3.0
 MIN_CLIP_WIDTH = 1600
+SPEC_MAX = 120
+# Lines that say why. Walkthrough films measured 0 to 9% of their lines; explanations 42 to 64%.
+REASON_WORDS = {
+    "en": r"\b(so|because|but|if|since|otherwise)\b",
+    "vi": r"(^|\s)(nên|vì|nhưng|nếu|vậy|muốn)(\s|$)",
+}
 
 
 def validate_script(s):
@@ -22,7 +29,9 @@ def validate_script(s):
         faults.append("language is missing")
     source = s.get("source") or {}
     if source.get("kind") not in KINDS:
-        faults.append("source.kind must be feature, pr or release")
+        faults.append("source.kind must be feature, pr, release or spec")
+    if source.get("kind") == "spec" and not source.get("spec"):
+        faults.append("source.spec is missing")
     if not source.get("ref"):
         faults.append("source.ref is missing")
     for scene in s.get("scenes", []):
@@ -33,8 +42,75 @@ def validate_script(s):
         for i, beat in enumerate(beats):
             if not (beat.get("ref") or "").strip():
                 faults.append(f"{sid}-{i}: no source")
-            if len((beat.get("text") or "").split()) > MAX_WORDS:
-                faults.append(f"{sid}-{i}: over {MAX_WORDS} words")
+            limit = MAX_WORDS_BY_LANGUAGE.get(s.get("language"), MAX_WORDS)
+            if len((beat.get("text") or "").split()) > limit:
+                faults.append(f"{sid}-{i}: over {limit} words")
+    return faults
+
+
+def live_ids(requirements):
+    """The IDs requirements.md defines. A struck-through ID is retired and does not count."""
+    return set(re.findall(r"(?<!~~)\*\*([A-Z][A-Z0-9]*-\d+\.\d+)\*\*", requirements))
+
+
+def cited_ids(s):
+    return {i for scene in s.get("scenes", []) for beat in scene.get("beats", []) for i in re.findall(r"[A-Z][A-Z0-9]*-\d+\.\d+", beat.get("ref", ""))}
+
+
+def judge_spec(s, requirements):
+    faults = []
+    scenes = s.get("scenes", [])
+    if not s.get("planned"):
+        faults.append("planned label is missing")
+    for i in sorted(cited_ids(s) - live_ids(requirements)):
+        faults.append(f"{i} is not in requirements.md")
+    kinds = [scene.get("kind") for scene in scenes]
+    for scene in scenes:
+        if scene.get("kind") == "clip":
+            faults.append(f"{scene.get('id')}: a spec film shows no footage")
+    if kinds.count("points") > 1:
+        faults.append(f"{kinds.count('points')} points scenes: a spec film has at most 1")
+    if "world" not in kinds:
+        faults.append("no world scene")
+    words = REASON_WORDS.get(s.get("language"))
+    if words:
+        lines = [beat.get("text", "") for scene in scenes for beat in scene.get("beats", [])]
+        reasons = sum(1 for line in lines if re.search(words, line, re.I))
+        if lines and reasons * 3 < len(lines):
+            faults.append(f"{reasons} of {len(lines)} lines give a reason; an explanation needs a third")
+    return faults
+
+
+def uncited(s, requirements):
+    """What the film leaves out, in the spec's order: the page lists it."""
+    key = lambda i: [int(n) for n in re.findall(r"\d+", i)]
+    return sorted(live_ids(requirements) - cited_ids(s), key=key)
+
+
+def judge_length(duration):
+    return [f"{duration:.1f}s is over the {SPEC_MAX}s limit"] if duration > SPEC_MAX else []
+
+
+def judge_quotes(s, read):
+    """A rule or a code block on screen is the source's own words. read(path) gives a file at the pinned commit, or None."""
+    faults = []
+    folder = (s.get("source") or {}).get("spec", "")
+    requirements = read(f"{folder}/requirements.md") or ""
+    for scene in s.get("scenes", []):
+        sid = scene.get("id")
+        for rule in scene.get("rules", []):
+            line = next((l for l in requirements.splitlines() if f"**{rule.get('id')}**" in l), "")
+            if not rule.get("text") or rule["text"] not in line:
+                faults.append(f"{sid}: {rule.get('id')} is not in the spec's words")
+        if scene.get("kind") == "code":
+            text = read(scene.get("file", ""))
+            if text is None:
+                faults.append(f"{sid}: {scene.get('file')} is not at the pinned commit")
+                continue
+            held = text.splitlines()
+            for i, line in enumerate(scene.get("lines", [])):
+                if line.strip() and line not in held:
+                    faults.append(f"{sid}: line {i + 1} is not in {scene.get('file')}")
     return faults
 
 
@@ -136,6 +212,21 @@ def main(argv):
     m = probe(mp4)
     print(json.dumps({k: m[k] for k in ("width", "height", "duration", "loudness", "peak", "freezes", "silences")}))
     faults = validate_script(s) + check_refs(s, repo) + judge_media(m)
+    source = s.get("source") or {}
+    if source.get("kind") == "spec" and source.get("spec"):
+        shown = run("git", "-C", repo, "show", f"{source.get('ref')}:{source['spec']}/requirements.md")
+        if shown.returncode != 0:
+            faults.append(f"{source['spec']}/requirements.md is not in {source.get('ref')}")
+        else:
+            def read(path):
+                held = run("git", "-C", repo, "show", f"{source.get('ref')}:{path}")
+                return held.stdout if held.returncode == 0 else None
+
+            faults += judge_spec(s, shown.stdout) + judge_length(m["duration"]) + judge_quotes(s, read)
+            left_out = uncited(s, shown.stdout)
+            print(f"not in the film: {len(left_out)} of {len(live_ids(shown.stdout))} IDs, in out/uncited.json")
+            os.makedirs(os.path.join(project, "out"), exist_ok=True)
+            json.dump(left_out, open(os.path.join(project, "out", "uncited.json"), "w"))
     if sheet:
         contact_sheet(mp4, sheet, beat_frames(project), m["duration"])
         print(f"sheet: {sheet}")

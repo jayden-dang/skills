@@ -8,6 +8,7 @@ export const t = {
   headTracking: '-0.02em',
   ground: '#eceef2', // behind everything: any CSS background, so a gradient works
   onGround: '#15181e', // the narration, on the ground
+  onGroundShadow: 'none', // for a project whose text on its wallpaper carries one
   panel: '#ffffff', // the window; translucent when panelBlur is set
   panelSoft: '#ffffff', // solid, for cards inside the window
   panelBorder: 'rgba(20, 24, 31, 0.1)',

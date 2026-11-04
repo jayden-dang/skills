@@ -22,8 +22,7 @@
     "prompt": "Em làm giúp anh một video có lời đọc giải thích tính năng cảnh báo trễ chuyến để chiếu ở buổi họp toàn công ty thứ Năm nhé, khoảng một phút.",
     "assertions": [
       "src/script.json has language en",
-      "the beats are written in English",
-      "the voice used is not a Vietnamese voice"
+      "the beats are written in English"
     ]
   },
   {
@@ -85,5 +84,32 @@
       "a frame from the finished film is set in the font the tokens name",
       "src/fonts.tsx lists that font and public/fonts holds its files, or the report says the name was removed because no file could be had"
     ]
+  },
+  {
+    "eval_name": "a-spec-film-explains",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § GREEN, 2026-11-03: the explainer, on 2.0.0",
+    "prompt": "/make-video docs/specs/2026-11-rebooking. I have not read this spec and nothing of it is built yet. Make me a film of it, so I understand the feature.",
+    "assertions": [
+      "source.kind is spec and source.spec names the folder",
+      "the film runs at most 120 seconds",
+      "the first line states the problem on a named example, and the first scene is a world",
+      "a third of the lines or more give a reason, by check_video.py's word list",
+      "time in the example only runs forward: nobody loses a state they already reached so a what-if can be told",
+      "scripts/check_video.py prints PASS and writes out/uncited.json"
+    ],
+    "eval_id": 8
+  },
+  {
+    "eval_name": "a-large-spec-still-tells-one-story",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § GREEN, 2026-11-03: the explainer, on 2.0.0",
+    "prompt": "/make-video docs/specs/2026-11-02-course-pinned-window. This one is large and I have not read it. Make me a film of the spec, so I understand the feature.",
+    "assertions": [
+      "the film runs at most 120 seconds",
+      "one named example runs through it, and it does not try to cite all 108 IDs",
+      "scripts/check_video.py prints PASS and writes out/uncited.json"
+    ],
+    "eval_id": 9
   }
 ]

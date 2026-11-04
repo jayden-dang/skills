@@ -26,11 +26,11 @@ The voice comes through [Vibi](https://vibi.pro/docs), with no other engine, so 
 
 ## A film of a spec
 
-A spec film is what `/shape #N --auto --video` makes in place of most of the review page, and you can ask for one directly. It runs 120 seconds at most. Every frame says it is planned and not built, and watching it approves nothing.
+A spec film is what `/shape #N --auto --video` puts on its spec sheet, and you can ask for one directly. It runs 120 seconds at most. Every frame says it is planned and not built, and watching it approves nothing.
 
 It explains and does not walk the spec. It opens on what goes wrong today, follows one named example, and takes each "but what if" to the rule that answers it. Films made by following the spec's files gave a reason in 0 to 9% of their lines; these give one in 42 to 64%. Everything happens in one `world` scene, where things stay on screen and change on the word that names the change, with a camera. `ears`, `code` and `table` scenes hold exact spec text when the point needs it.
 
-`check_video.py` fails a film with no `world`, anything on screen cut by the camera, a line that changes nothing or runs more than 9 words (14 in Vietnamese) on one state, a hold over 4.5 seconds, fewer than a third of its lines giving a reason, an ID the spec does not define, a reworded rule or code line, footage, or more than one bullet scene. It does not require every requirement: it writes the ones the film leaves out to `out/uncited.json`, and the review page lists them. The recipe is `explainer.md`. A built feature can use the same recipe, with real footage for what a person sees and a `world` for what no screen shows.
+`check_video.py` fails a film with no `world`, anything on screen cut by the camera, a line that changes nothing or runs more than 9 words (14 in Vietnamese) on one state, a hold over 4.5 seconds, fewer than a third of its lines giving a reason, an ID the spec does not define, a reworded rule or code line, footage, or more than one bullet scene. It does not require every requirement: it writes the ones the film leaves out to `out/uncited.json`, and the spec sheet says what each of them asks. The recipe is `explainer.md`. A built feature can use the same recipe, with real footage for what a person sees and a `world` for what no screen shows.
 
 ## Why it is a template and a check
 

@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### Changed: `/shape --auto` hands you one spec sheet, with or without a film (2026-11-04)
+
+The review page is now a technical sheet: one page of lettered panels in a ruled frame, like an engineering drawing. It holds a map of every requirement, one example you step through with Back and Next, the most important rules with their clauses labelled, what happens when something fails, what agents decided for you, the plan, the few things that need you, and a title block. Under `--video` the film sits in the first panel, each walk step links to its moment in the film, and every requirement the film leaves out is explained on the sheet. Before, the page with a film had no figure, and it listed what the film left out as bare IDs. The sheet stays in the run folder, uncommitted, and is written again when the spec changes. `shape` 1.7.0.
+
 ### Changed: every film has one look, and things change on the word (2026-11-04)
 
 `make-video` films now share one look: near-black, hairline bands, cut-corner frames with a moving spectrum edge, and fonts shipped in the template, Vietnamese included. A project's own design system is used only when you ask, or with `/shape --auto --video --project-style`. Inside a `world`, changes land on the word that names them, numbers roll in the top band, seats turn over, and a quiet sound layer sits under the voice. `check_video.py` fails a line that runs more than 9 words on one state and, on a spec film, a hold over 4.5 seconds. Breaking: the `pill` shape is now `row`, and `then` is a list keyed by the words of the line. `make-video` 3.0.0, `shape` 1.6.0.

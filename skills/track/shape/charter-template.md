@@ -1,7 +1,7 @@
 # Charter: {ticket} {title}
 
 Written by the conductor from the operator's `/shape {ticket} --auto`. The operator reads the result on the
-review page, and nothing here is approved until then.
+spec sheet, and nothing here is approved until then.
 
 ## Sessions
 - `{slug}-work` runs the spec chain. `{slug}-interpret` reads the repo and reviews, and writes only under `RUN`.

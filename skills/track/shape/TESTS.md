@@ -190,3 +190,46 @@ call falling back to the full page. `--en` named explicitly. Rewriting the film 
 ## 1.6.0: `--project-style` (2026-11-04)
 
 The owner reversed the rule that a film follows the project's design system: `make-video` keeps one look, and this flag asks for the project's. A shape check, one Haiku run reading `auto.md` for `--auto`, `--auto --video --vi` and `--auto --video --project-style`: film, language, look and spec language right on all three. Not run through live peers. The look itself is measured in `make-video`'s `TESTS.md`.
+
+## 1.7.0: the spec sheet (2026-11-04)
+
+The owner read Karpathy's ladder for reading model output (controlled language, then a diagram, then an HTML page, then a
+3b1b-style explainer video) and its attached STE100 sheet: lettered panels in a ruled frame, a structure tree, annotated
+sentences, tables, limit bars, a title block. They asked for that document beside every closed spec, film or not, with a step-through
+of one example, kept in `RUN` and never committed. Fixture: `tidegate` with the closed REBOOK triad and a `RUN` holding what step 8
+leaves, resumed at step 9 with the peers gone; under `--video` an 86-second explainer of the same spec already at `RUN/film.mp4`,
+with its `out/scenes.json` and `out/uncited.json` (4 IDs left out). Every sheet rendered at 1440 wide and read by the scorer.
+
+**RED, on 1.6.0, `--video`.**
+
+| Model | Open words | Figures | Walk | IDs left out by the film |
+|---|---|---|---|---|
+| Sonnet | 315 | 0 | none | listed bare: "REBOOK-2.4, 3.2, 3.4, 4.2. The film explains; it does not cover." |
+| Haiku | 322 | 0 | none | the same bare list |
+
+Both followed the thin form exactly, so this is the text's shape and not a lapse: "Its primary figure is the film, so it draws no other."
+
+**GREEN round 1, first draft, `--video`.** Both drew panels A to I, a map tree, a stepped walk and labelled rules, with every live ID.
+Two faults from the renders, both now in the text:
+- Labels unreadable. Haiku's map and plan had `viewBox` 640 to 880 wide drawn into a 520 to 630 px panel, so labels rendered at 7.2 to 8.5 px; Sonnet's two half-width figures at 6.0 and 6.6 px.
+- Haiku's rule brackets were absolutely positioned and sat on the next line of the rule. Sonnet left the right third of row A empty.
+Neither had looked at its own render. Sonnet 1,287 open words, Haiku 1,529, with Needs you items of 80 to 100 words.
+
+**GREEN round 2, the text as shipped.**
+
+| Run | Model | Open words | Figures, smallest label | Walk | Language |
+|---|---|---|---|---|---|
+| `--video --vi` | Haiku | 912 | 2, 11.8 px | 7 steps, Next changes the SVG and the sentence, 4 film links | English (see below) |
+| no film | Sonnet | 1,258 | 2, read off the render | 7 steps, Next changes both | English |
+| `--vi`, no film | Haiku | 875 | 3, read off the render | 8 steps | Vietnamese, IDs and rules verbatim |
+
+All three: grid rows as written, no overlap or cut text in the render, 0 inputs, no remote fonts or scripts, the approve line last,
+every spec file `Draft`, the sheet untracked. Each conductor rendered its sheet in headless Chrome before handing over. Each ID the film
+left out has its meaning in panel C, D or E. The `--vi` Haiku map wrote IDs as `1.1` under a `REBOOK` root, so 2 of 14 never
+appeared in full; the map now says "written in full". Not re-run after that word.
+
+**Not settled.** The `--video --vi` Haiku run wrote English because the film it was handed was English, which a real run cannot
+produce: step 9 narrates the film in `LANG`. Every run found the same planted gap (final-review item 3 says applied, the files do
+not) and put it under Needs you rather than fixing a spec file, which is right with the peers closed. Not covered: a live run through
+peers, a refused film, the walk on a narrow screen, and whether the owner reads the sheet faster than the old page; only they can judge that.
+Renders and scores: `.skills/SPECSHEET/` in the authoring checkout.

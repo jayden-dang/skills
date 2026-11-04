@@ -25,15 +25,15 @@ At every stop it comments what is waiting and on whom, such as "requirements.md 
 
 ## `--auto`
 
-`/shape #N --auto` writes the whole spec with nobody at the keyboard, then hands you one page. The session you typed in conducts: it checks the road with [`brief-road`](brief-road.md), writes a charter from what the repo already decided, opens a `work` session and a read-only [`interpret-session`](interpret-session.md) session in tmux, keeps the machine awake, and wakes a session that stops. When they finish it reads their transcripts to see which skills really ran, audits the files, and runs one outside advisor. It sends those findings straight to `work`, which fixes or rejects each with a reason and has `interpret` review what moved. Only then does it write `review.html`.
+`/shape #N --auto` writes the whole spec with nobody at the keyboard, then hands you one technical sheet of the spec. The session you typed in conducts: it checks the road with [`brief-road`](brief-road.md), writes a charter from what the repo already decided, opens a `work` session and a read-only [`interpret-session`](interpret-session.md) session in tmux, keeps the machine awake, and wakes a session that stops. When they finish it reads their transcripts to see which skills really ran, audits the files, and runs one outside advisor. It sends those findings straight to `work`, which fixes or rejects each with a reason and has `interpret` review what moved. Only then does it write `sheet.html`.
 
-The page shows the closed spec: what changes for you, the few things that need you, what the final review changed, and what happens when it runs, with the rest collapsed. It has nothing to fill in. Type `approve`, or say what to change in plain words, and changes go back through both sessions. Every file stays `Status: Draft` until you approve, and only then is the ticket Ready for [`/go`](go.md).
+The sheet is one page of lettered panels in a ruled frame, like an engineering drawing: a map of every requirement, one example you step through with Back and Next, the rules that matter most with their clauses labelled, what happens when something fails, what agents decided for you, the plan, and the few things that need you. Three collapsed parts sit under it: what the final review changed, what the spec touches, and how far to trust it. Only the two walk buttons are controls, so there is nothing to fill in. It stays in the run folder, uncommitted, and is written again when the spec changes. Type `approve`, or say what to change in plain words, and changes go back through both sessions. Every file stays `Status: Draft` until you approve, and only then is the ticket Ready for [`/go`](go.md).
 
 Two more flags go with `--auto`:
 
-- **`--video`** adds a film that explains the closed spec, up to 120 seconds, made by [`make-video`](make-video.md). The page then gets thin: the film, what needs you, an index of its scenes, the requirements the film leaves out, and links to the spec files. There is no film without this flag, and a film that cannot be made leaves you the full page with the reason at the top. The spec's narration goes to Vibi and the provider behind it, so leave this flag off a repo whose specs must stay on the machine.
+- **`--video`** adds a film that explains the closed spec, up to 120 seconds, made by [`make-video`](make-video.md). The sheet embeds it in its first panel, links each step of its example to the film's moment, and marks which requirements the film leaves out, then says on the sheet what each of those asks. There is no film without this flag, and a film that cannot be made leaves the sheet with the reason in that panel. The spec's narration goes to Vibi and the provider behind it, so leave this flag off a repo whose specs must stay on the machine.
 - **`--project-style`** gives that film your project's fonts, colors and radii. Without it the film has `make-video`'s default look, in any repo.
-- **`--vi`** writes the film and the page in Vietnamese. `--en` is the default, whatever language you type the command in. The spec, the charter and both sessions stay in English under either flag.
+- **`--vi`** writes the film and the sheet in Vietnamese. `--en` is the default, whatever language you type the command in. The spec, the charter and both sessions stay in English under either flag.
 
 It needs Claude Code's cross-session messaging, `tmux`, and a trusted repo. Expect about 45 minutes for even a small feature, so start it when you are leaving the machine. Tier-1 bugs use the plain command, because a root cause waits on you. A road that is not Ready stops with what it waits on.
 
@@ -41,7 +41,7 @@ It needs Claude Code's cross-session messaging, `tmux`, and a trusted repo. Expe
 
 The RED is in [`plan-tasks`](plan-tasks.md) 1.9.0: publishing onto an existing ticket left two state roles in 2 of 3 runs, and that fix lives in `plan-tasks`. With `/shape #24` on a ticket labelled ready with no spec, both haiku runs made `shaping` the only state role, framed it as tier 2, stopped for the answers before writing any requirements, and commented what waited and on whom. See `skills/track/shape/TESTS.md`.
 
-Not covered: the resume path after approval, and tier 1. `--auto` ran through to its page on Sonnet; its evidence and gaps are in the skill's `TESTS.md`.
+Not covered: the resume path after approval, and tier 1. `--auto` ran through to its page on Sonnet, before the sheet replaced that page; its evidence and gaps are in the skill's `TESTS.md`.
 
 ## See also
 

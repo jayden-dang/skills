@@ -1,24 +1,29 @@
-// Fill every value from the project's design tokens and name that file on the next line.
-// Source: <path to the project's tokens>
+// The film's look. It stays as it is unless the request asks for the project's own look.
+// Source: make-video's default look
 export const t = {
-  fontSans: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
-  fontHead: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif', // headings; the same as fontSans unless the project differs
-  fontMono: 'ui-monospace, Menlo, monospace',
-  headWeight: 650,
+  fontSans: '"Space Grotesk", sans-serif',
+  fontHead: '"Space Grotesk", sans-serif', // headings; the same as fontSans unless the project differs
+  fontMono: '"Roboto Mono", monospace',
+  headWeight: 300,
   headTracking: '-0.02em',
-  ground: '#eceef2', // behind everything: any CSS background, so a gradient works
-  onGround: '#15181e', // the narration, on the ground
+  ground: '#0a090f', // behind everything: any CSS background, so a gradient works
+  onGround: '#efefe5', // the narration and the labels in the two bands
   onGroundShadow: 'none', // for a project whose text on its wallpaper carries one
-  panel: '#ffffff', // the window; translucent when panelBlur is set
-  panelSoft: '#ffffff', // solid, for cards inside the window
-  panelBorder: 'rgba(20, 24, 31, 0.1)',
+  onGroundAccent: '#26f4d0', // the numbers and sources in the bands: must read on the ground
+  line: '#353539', // the hairlines of the two bands
+  panel: 'linear-gradient(187deg,#1c1b21f2,#121217f2 89%)', // the window; translucent when panelBlur is set
+  panelSoft: '#17161c', // solid, for cards inside the window
+  panelBorder: '#353539',
   panelBlur: 'none',
   borderWidth: 1,
-  ink: '#15181e', // text on the panel
-  muted: '#5b6573',
-  accent: '#2c5be0', // must read on the panel
-  bad: '#c02a4a',
-  radius: 22,
-  radiusSmall: 12,
-  shadow: '0 24px 60px rgba(20, 24, 31, 0.14)',
+  ink: '#efefe5', // text on the panel
+  muted: '#a0a09a',
+  accent: '#26f4d0', // must read on the panel
+  warn: '#f8cf3e', // something held or waiting
+  bad: '#fc6756',
+  radius: 0,
+  radiusSmall: 0,
+  shadow: 'none',
+  cut: 26, // the corner cut from a window and a card; 0 draws radius instead
+  spectrum: ['#fc6756', '#f8cf3e', '#26f4d0', '#724ce8'], // the moving edge of a frame; [] draws panelBorder instead
 };

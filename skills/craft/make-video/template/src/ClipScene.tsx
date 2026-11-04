@@ -6,7 +6,7 @@ import {t} from './tokens';
 // Recordings are driven at this CSS size; focus and ring rects use its pixels.
 const VIEW_W = 1600;
 const K = 1920 / VIEW_W;
-export const CLIP_W = 1360;
+export const CLIP_W = 1540;
 const CLIP_MAX_H = (CLIP_W * 9) / 16;
 const CLIP_MIN_H = 300;
 const U = CLIP_W / 1920;

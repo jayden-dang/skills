@@ -38,40 +38,44 @@ Choose what explains the feature and leave the rest out: `check_video.py` writes
 
 ## 3. Draw one world
 
-One `world` scene holds the things the film talks about. They stay on screen and change, so the eye never has to find its place
-again. Use several only for parts that share nothing.
+One `world` scene holds the things the film talks about. They stay on screen and change as the voice names the change, so the eye
+never has to find its place again. Use several only for parts that share nothing. The world is 1800 by 840: fill it.
 
 ```json
-{"id": "world", "kind": "world", "title": "Rebooking",
+{"id": "world", "kind": "world", "title": "How an offer gets a seat",
  "objects": [
-   {"id": "ferry", "shape": "card", "head": true, "x": 70, "y": 90, "w": 470, "h": 300, "label": "08:15 to Cat Ba", "size": 40},
-   {"id": "lan", "shape": "pill", "x": 190, "y": 170, "w": 230, "h": 86, "label": "Lan", "tone": "accent", "fill": true}
+   {"id": "old", "shape": "card", "head": true, "x": 0, "y": 0, "w": 820, "h": 840, "label": "08:15"},
+   {"id": "lan", "shape": "row", "index": "01", "x": 36, "y": 200, "w": 748, "h": 128, "label": "Lan"},
+   {"id": "new", "shape": "card", "head": true, "x": 1110, "y": 0, "w": 690, "h": 840, "label": "09:30", "sub": "Cat Ba"},
+   {"id": "seat", "shape": "seat", "x": 1146, "y": 200, "w": 618, "h": 160, "label": "Free seat", "tone": "accent", "size": 40}
  ],
  "beats": [
-   {"text": "Lan has a seat on the 08:15 ferry.", "ref": "docs/specs/rebooking/design.md:9",
-    "world": {"set": {"ferry": {}, "lan": {}}, "camera": {"x": -140, "y": 40, "w": 900, "h": 374}}},
-   {"text": "Staff cancel it, so she needs another seat.", "ref": "REBOOK-1.1",
-    "world": {"set": {"ferry": {"label": "08:15 cancelled", "tone": "bad"}}, "arrows": [{"from": "lan", "to": "ferry"}],
-              "then": {"after": 0.5, "set": {"lan": {"tone": "bad"}}}}}
+   {"text": "Staff cancel the 08:15, so Lan needs another seat.", "ref": "docs/specs/rebooking/design.md:9",
+    "world": {"set": {"old": {}, "lan": {}},
+              "then": [{"at": "so Lan", "set": {"old": {"sub": "Cancelled", "subTone": "bad"}}}]}},
+   {"text": "The offer holds the free seat on the 09:30 while she decides.", "ref": "REBOOK-2.1",
+    "world": {"set": {"new": {}, "seat": {}}, "stats": {"Free seats": 1},
+              "then": [{"at": "while she", "set": {"seat": {"label": "Lan", "sub": "Held", "tone": "warn", "timer": 1800}}, "arrows": [{"from": "lan", "to": "seat", "tone": "warn"}], "stats": {"Free seats": 0}}]}}
  ]}
 ```
 
 | Slot | Means |
 |---|---|
-| `objects` | Everything in the world, hidden until a beat names it. `shape` is `card`, `pill`, `seat`, `code` or `note`. `tone` is `ink`, `accent`, `bad` or `muted` |
-| `world.set` | Only what this line changes: `{}` shows a thing, `hidden: true` removes it, a new `x`, `y`, `label` or `tone` moves or morphs it |
-| `world.arrows` | The arrows from this line on. `[]` clears them |
-| `world.camera` | The part of the world in frame, `h` = `w` x 740 / 1780. It carries over until set again. Nothing on screen may be cut by the frame, and the check fails one that is: hide it, or widen the camera |
-| `world.then` | A second change, `after` a share of the line, for a line over about 5 seconds |
+| `objects` | Everything in the world, hidden until a beat names it. `shape` is `card` (a frame, with `head: true` its `label` is large, top left, and `sub` is a tag beside it), `row` (a line of a list: `label`, `sub` at its right, optional `index`), `seat` (a place that can be taken; a new `label` turns it over like a card, `timer` in seconds counts down on it, and `timer: 0` takes it away), `code` or `note` (a short mono caption). `tone` and `subTone` are `ink`, `accent`, `warn`, `bad` or `muted` |
+| `world.set` | Only what this moment changes: `{}` shows a thing, `hidden: true` removes it, a new `x`, `y`, `label`, `sub` or `tone` moves or morphs it |
+| `world.arrows` | The arrows from this moment on, each `{from, to}`, with an optional `tone` and `label`. `[]` clears them |
+| `world.camera` | The part of the world in frame, `h` = `w` x 840 / 1800. It carries over until set again. Nothing on screen may be cut by the frame, and the check fails one that is: hide it, or widen the camera |
+| `world.stats` | Numbers worth keeping in view, such as `{"Free seats": 2}`. They sit in the top band and roll when they change. Two or three at most |
+| `world.then` | More changes inside this line, each landing on the word it starts on: `{"at": "so Lan", "set": ...}`. It takes `set`, `arrows`, `camera` and `stats` |
+
+Put a change on the word that names it, and let no more than 9 words pass without one (14 in Vietnamese): nine words run about 3.5 seconds. Two runs on the old text made one change a line, and 21 of their 25 world lines ran past that, which is what a slideshow is. The check fails such a line, and a line that changes nothing.
 
 Draw it so that it reads at a glance. Each rule here answers something a contact sheet showed:
 
 - List containers first and what moves last: `objects` order is depth, and a passenger moved onto a later ferry vanished behind it.
-- Set `head: true` on a container, or what it holds sits on its name.
-- Start the camera close on the first thing and widen as the world grows. A first draft sat small in one corner of an empty frame.
-- Put parts far apart, `x` past 2000, and move the camera between them. Keep every label at 36 or larger at the widest view of its part.
-- Change something on every line. The last line too: one film closed on the frame before it.
-- Place things so an arrow crosses nothing: it runs straight between the two boxes.
+- Set `head: true` on a container, or what it holds sits on its name, and leave its top 190 for the name.
+- Put parts far apart, `x` past 2000, and move the camera between them. Keep every label at 30 or larger at the widest view of its part.
+- Place things so an arrow crosses nothing: it leaves the side of its box that faces its target.
 - Give a route, a type or a code name as a `code` object, in the spec's own characters.
 
 When exact words carry the point, an `ears` scene holds requirements, with `rules` of `{id, text}` copied from `requirements.md`, and

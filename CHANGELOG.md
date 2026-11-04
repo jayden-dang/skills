@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### Changed: every film has one look, and things change on the word (2026-11-04)
+
+`make-video` films now share one look: near-black, hairline bands, cut-corner frames with a moving spectrum edge, and fonts shipped in the template, Vietnamese included. A project's own design system is used only when you ask, or with `/shape --auto --video --project-style`. Inside a `world`, changes land on the word that names them, numbers roll in the top band, seats turn over, and a quiet sound layer sits under the voice. `check_video.py` fails a line that runs more than 9 words on one state and, on a spec film, a hold over 4.5 seconds. Breaking: the `pill` shape is now `row`, and `then` is a list keyed by the words of the line. `make-video` 3.0.0, `shape` 1.6.0.
+
 ### Added: a film of the spec in `/shape --auto --video`, with `--en` and `--vi` (2026-11-03)
 
 `/shape #N --auto --video` makes a film that explains the closed spec, 120 seconds at most, and the review page thins to the film, what needs you, a scene index, what the film leaves out, and links to the spec. `--vi` writes the film and the page in Vietnamese, and `--en` is the default whatever language you type in; the spec and both sessions stay English. `shape` 1.5.0.

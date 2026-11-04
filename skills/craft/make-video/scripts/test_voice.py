@@ -195,5 +195,26 @@ class Speak(unittest.TestCase):
         self.assertEqual(len(self.posts), 1)
 
 
+class WordTimes(unittest.TestCase):
+    def test_words_share_the_speech_by_length(self):
+        self.assertEqual(voice.word_starts("aaa bbb", [(0.0, 2.0)]), [0.0, 1.0])
+
+    def test_a_pause_is_skipped_not_shared(self):
+        # Two words spoken either side of a one-second pause.
+        self.assertEqual(voice.word_starts("aaa bbb", [(0.0, 1.0), (2.0, 3.0)]), [0.0, 2.0])
+
+    def test_a_longer_word_takes_longer(self):
+        starts = voice.word_starts("a bbbbbbb c", [(0.0, 3.0)])
+        self.assertLess(starts[1], 1.0)
+        self.assertGreater(starts[2], 2.0)
+
+    def test_speech_spans_come_from_the_gaps(self):
+        log = "silence_start: 0\nsilence_end: 0.3 | silence_duration: 0.3\nsilence_start: 1.2\nsilence_end: 1.6 | silence_duration: 0.4\nsilence_start: 2.5\n"
+        self.assertEqual(voice.spans_from(log, 2.7), [(0.3, 1.2), (1.6, 2.5)])
+
+    def test_no_gap_is_one_span(self):
+        self.assertEqual(voice.spans_from("", 2.0), [(0.0, 2.0)])
+
+
 if __name__ == "__main__":
     unittest.main()

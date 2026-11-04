@@ -1,5 +1,6 @@
 import {AbsoluteFill, Easing, interpolate, useCurrentFrame} from 'remotion';
 import {fit, headFace, linesOf} from './fit';
+import {Letters} from './Look';
 import {Scene} from './timing';
 import {t} from './tokens';
 
@@ -9,7 +10,7 @@ export const clamp = {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'} as co
 const OUT = Easing.bezier(0.16, 1, 0.3, 1);
 export const enter = (frame: number, at: number, length = 18) => interpolate(frame, [at, at + length], [0, 1], {...clamp, easing: OUT});
 
-const MAX_H = 760;
+const MAX_H = 840;
 const head = {fontFamily: t.fontHead, fontWeight: t.headWeight, letterSpacing: t.headTracking};
 
 /* The window hugs its text, so each scene measures before it draws. */
@@ -56,7 +57,7 @@ export const TitleScene: React.FC<Props> = ({scene}) => {
   const p = enter(frame, 6, 26);
   return (
     <AbsoluteFill style={{justifyContent: 'center', alignItems: 'center', textAlign: 'center', padding: '0 60px'}}>
-      <div style={{...head, fontSize: title.size, lineHeight: 1.05, textWrap: 'balance', opacity: p, translate: `0px ${(1 - p) * 18}px`}}>{scene.title}</div>
+      {title.lines === 1 ? <Letters text={scene.title} start={8} size={title.size} /> : <div style={{...head, fontSize: title.size, lineHeight: 1.05, textWrap: 'balance', opacity: p, translate: `0px ${(1 - p) * 18}px`}}>{scene.title}</div>}
       {sub ? <div style={{fontSize: sub.size, fontWeight: 500, lineHeight: 1.2, color: t.muted, marginTop: 24, textWrap: 'balance', opacity: enter(frame, 18, 22)}}>{scene.subtitle}</div> : null}
     </AbsoluteFill>
   );

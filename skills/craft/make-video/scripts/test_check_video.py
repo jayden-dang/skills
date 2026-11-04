@@ -206,23 +206,23 @@ def showing(**world_change):
 
 class WorldCamera(unittest.TestCase):
     def test_a_camera_holding_all_it_shows_has_no_faults(self):
-        s = world([box("a", 100, 100, 200, 100)], [showing(set={"a": {}}, camera={"x": 0, "y": 0, "w": 890, "h": 370})])
+        s = world([box("a", 100, 100, 200, 100)], [showing(set={"a": {}}, camera={"x": 0, "y": 0, "w": 900, "h": 420})])
         self.assertEqual(cv.judge_world(s), [])
 
     def test_a_thing_cut_by_the_camera_is_a_fault(self):
-        s = world([box("late", 800, 100, 400, 100)], [showing(set={"late": {}}, camera={"x": 0, "y": 0, "w": 890, "h": 370})])
+        s = world([box("late", 800, 100, 400, 100)], [showing(set={"late": {}}, camera={"x": 0, "y": 0, "w": 900, "h": 420})])
         self.assertIn("w-0: late is cut by the camera", cv.judge_world(s))
 
     def test_a_thing_wholly_out_of_frame_is_no_fault(self):
-        s = world([box("far", 3000, 100, 200, 100)], [showing(set={"far": {}}, camera={"x": 0, "y": 0, "w": 890, "h": 370})])
+        s = world([box("far", 3000, 100, 200, 100)], [showing(set={"far": {}}, camera={"x": 0, "y": 0, "w": 900, "h": 420})])
         self.assertEqual(cv.judge_world(s), [])
 
     def test_a_hidden_thing_is_no_fault(self):
-        s = world([box("a", 800, 100, 400, 100)], [showing(camera={"x": 0, "y": 0, "w": 890, "h": 370})])
+        s = world([box("a", 800, 100, 400, 100)], [showing(camera={"x": 0, "y": 0, "w": 900, "h": 420})])
         self.assertEqual(cv.judge_world(s), [])
 
     def test_a_background_filling_the_frame_is_no_fault(self):
-        s = world([box("desk", 0, 0, 1780, 740)], [showing(set={"desk": {}}, camera={"x": 100, "y": 100, "w": 890, "h": 370})])
+        s = world([box("desk", 0, 0, 1800, 840)], [showing(set={"desk": {}}, camera={"x": 100, "y": 100, "w": 900, "h": 420})])
         self.assertEqual(cv.judge_world(s), [])
 
     def test_the_default_camera_is_the_whole_world(self):
@@ -231,14 +231,14 @@ class WorldCamera(unittest.TestCase):
 
     def test_a_camera_carries_over_and_a_later_move_is_judged(self):
         s = world([box("a", 100, 100, 200, 100)], [
-            showing(set={"a": {}}, camera={"x": 0, "y": 0, "w": 890, "h": 370}),
+            showing(set={"a": {}}, camera={"x": 0, "y": 0, "w": 900, "h": 420}),
             showing(set={"a": {"x": 800}}),
         ])
         self.assertIn("w-1: a is cut by the camera", cv.judge_world(s))
 
     def test_a_change_part_way_through_a_line_is_judged(self):
         s = world([box("a", 100, 100, 200, 100), box("b", 800, 100, 400, 100)], [
-            showing(set={"a": {}}, camera={"x": 0, "y": 0, "w": 890, "h": 370}, then={"after": 0.5, "set": {"b": {}}}),
+            showing(set={"a": {}}, camera={"x": 0, "y": 0, "w": 900, "h": 420}, then=[{"at": "Second", "set": {"b": {}}}]),
         ])
         self.assertIn("w-0: b is cut by the camera", cv.judge_world(s))
 
@@ -249,7 +249,7 @@ class WorldCamera(unittest.TestCase):
 
     def test_one_cut_thing_reports_once_while_the_camera_holds(self):
         s = world([box("a", 800, 100, 400, 100)], [
-            showing(set={"a": {}}, camera={"x": 0, "y": 0, "w": 890, "h": 370}),
+            showing(set={"a": {}}, camera={"x": 0, "y": 0, "w": 900, "h": 420}),
             showing(),
         ])
         self.assertEqual(cv.judge_world(s), ["w-0: a is cut by the camera"])
@@ -338,6 +338,68 @@ class SheetFilter(unittest.TestCase):
         self.assertIn("fps=1/3.0", vf)
         self.assertIn("tile=4x4", vf)
         self.assertNotIn("select", vf)
+
+
+class Pace(unittest.TestCase):
+    def film(self, *lines, language="en"):
+        return {"language": language, "scenes": [{"id": "w", "kind": "world", "objects": [], "beats": list(lines)}]}
+
+    def line(self, words, **world):
+        return {"text": " ".join(f"w{i}" for i in range(words)), "ref": "x", "world": world}
+
+    def test_a_short_line_with_a_change_passes(self):
+        self.assertEqual(cv.judge_pace(self.film(self.line(9, set={"a": {}}))), [])
+
+    def test_a_long_line_with_one_change_is_a_fault(self):
+        self.assertEqual(cv.judge_pace(self.film(self.line(20, set={"a": {}}))), ["w-0: 20 words with nothing changing"])
+
+    def test_a_change_part_way_breaks_the_run(self):
+        self.assertEqual(cv.judge_pace(self.film(self.line(18, set={"a": {}}, then=[{"at": "w9", "set": {"b": {}}}]))), [])
+
+    def test_a_late_change_leaves_the_long_run_before_it(self):
+        self.assertEqual(cv.judge_pace(self.film(self.line(20, set={"a": {}}, then=[{"at": "w15", "set": {"b": {}}}]))), ["w-0: 15 words with nothing changing"])
+
+    def test_a_line_that_changes_nothing_is_a_fault(self):
+        self.assertEqual(cv.judge_pace(self.film(self.line(5))), ["w-0: nothing changes on this line"])
+
+    def test_vietnamese_counts_syllables(self):
+        self.assertEqual(cv.judge_pace(self.film(self.line(14, set={"a": {}}), language="vi")), [])
+        self.assertEqual(cv.judge_pace(self.film(self.line(15, set={"a": {}}), language="vi")), ["w-0: 15 words with nothing changing"])
+
+    def test_a_change_at_words_the_line_does_not_say_is_a_fault(self):
+        self.assertEqual(cv.judge_pace(self.film(self.line(5, set={"a": {}}, then=[{"at": "nobody said", "set": {"b": {}}}]))), ['w-0: "nobody said" is not in the line'])
+
+    def test_changes_must_run_forward(self):
+        self.assertEqual(cv.judge_pace(self.film(self.line(9, set={"a": {}}, then=[{"at": "w6", "set": {"b": {}}}, {"at": "w3", "set": {"c": {}}}]))), ['w-0: "w3" comes before the change above it'])
+
+    def test_the_phrase_may_span_words_and_ignores_case_and_commas(self):
+        line = {"text": "Lan waits, so The Seat holds.", "ref": "x", "world": {"set": {"a": {}}, "then": [{"at": "so the seat", "set": {"b": {}}}]}}
+        self.assertEqual(cv.judge_pace(self.film(line)), [])
+
+    def test_only_a_world_is_paced(self):
+        s = {"language": "en", "scenes": [{"id": "p", "kind": "points", "beats": [self.line(20)]}]}
+        self.assertEqual(cv.judge_pace(s), [])
+
+
+class Holds(unittest.TestCase):
+    def test_runs_of_small_change_become_spans(self):
+        self.assertEqual(cv.hold_spans([500, 3, 3, 3, 500, 3], fps=1), [(1, 3), (5, 1)])
+
+    def test_a_label_changing_is_not_a_hold_and_a_moving_dot_is(self):
+        self.assertEqual(cv.hold_spans([cv.STILL_PIXELS + 1], fps=1), [])
+        self.assertEqual(cv.hold_spans([cv.STILL_PIXELS - 1], fps=1), [(0, 1)])
+
+    def test_changed_pixels_come_from_the_share_of_a_binary_plane(self):
+        self.assertEqual(cv.changed_pixels("lavfi.signalstats.YAVG=255\nlavfi.signalstats.YAVG=0\n"), [cv.STILL_AREA, 0])
+
+    def test_the_closing_line_may_rest(self):
+        m = {"width": 1920, "height": 1080, "has_audio": True, "peak": -3, "duration": 60, "freezes": [(52, 7.0)], "silences": []}
+        self.assertEqual(cv.judge_media(m, max_still=4.5), [])
+
+    def test_a_hold_is_judged_against_the_limit_given(self):
+        m = {"width": 1920, "height": 1080, "has_audio": True, "peak": -3, "duration": 60, "freezes": [(10, 4.0)], "silences": []}
+        self.assertEqual(cv.judge_media(m), [])
+        self.assertEqual(cv.judge_media(m, max_still=3.0), ["still for 4.0s at 10.0s"])
 
 
 if __name__ == "__main__":

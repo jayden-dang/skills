@@ -343,3 +343,37 @@ English: the owner listened to eight English voices speaking one passage of the 
 **Final text, Haiku, English, the chosen voice, render.** 80.1s, PASS re-run by the scorer, 10 of 16 lines give a reason, 3 IDs left out, no camera fault, and its sheet shows nothing cut. It hit two faults on the way and fixed both: a label too long for its pill, stopped by the render, and a still of 6.2 seconds, which it answered with `then`. It asked for a guide to label widths, because fit errors only appear at preview. Not added: the check names the label.
 
 **Not covered.** A real `/shape --auto --video` through live peers, so the script review by `interpret` and the thin page with `out/uncited.json` have never run. Nobody but the owner has heard a film. Feature, PR and release films were not re-run on Vibi: they share `voice.py`, and their footage path did not change.
+
+## 3.0.0: one look, and things change on the word (2026-11-04)
+
+The owner found the films monotonous, and pointed at a site's look and at a film whose motion they wanted. They saw a throwaway re-staging of one passage, moved its parts about, and chose it. Then they reversed the rule that a project's film follows its design system: one look on every film, and the project's only when asked.
+
+**RED, 2.0.0, on the repo with an Approved design-tokens file.** Same request, one run each, scored from the files. Sonnet and Haiku both filled the tokens from `web/tokens.css` and dropped the fonts because "the standard requires" the system stack. Both made about one change a line (1.00 and 1.08), and 13 of 13 and 8 of 12 world lines ran past 9 words on one state, longest 18 and 16.
+
+**The measure of a hold, three tries.** `freezedetect` passes anything that drifts, and the new template never stops drifting. A mean over the frame came next, calibrated on the films to hand, and it failed in use: a label changing did not count, so one Haiku run added seats sliding and notes shifting to pass it, and it passed two films that held for nearly 7 seconds. What ships counts pixels that changed between the two bands, at 640 wide. Thresholds of 40 to 160 pixels move the answer by under a second on every film:
+
+| Film | Longest hold at 80 pixels |
+|---|---|
+| The owner's reference film | 2.7s |
+| The approved look | 2.2s |
+| The sample through the template | 3.1s |
+| The old rebooking film, an agent's on 2.0.0 | 5.3s |
+| PINWIN, by hand on 2.0.0 | 8.1s |
+
+The limit on a spec film is 4.5 seconds, and the closing line may rest, since it is the one place a film stops to let its last words land. The word limit came second: 12 words passed the script and then failed the render, since 8 words after a last change held 3.7 seconds, so it is 9 (14 in Vietnamese, about 3.5 tokens a second on this voice).
+
+**GREEN, 3.0.0, Haiku, three full films.** The agents stopped before the voice, because their sandbox has no `VIBI_API`. The scorer spoke the lines, and the same agents went on through preview, render and check. The scorer re-ran each check.
+
+| Run | Look | Changes a line | Lines past the limit | Length | Longest hold | Check |
+|---|---|---|---|---|---|---|
+| English | template, untouched | 2.77 | 0 of 13 | 68.2s | 4.2s | PASS |
+| Vietnamese | template, untouched | 3.08 | 0 of 12 | 73.8s | 4.3s | PASS |
+| `--project-style` | `web/tokens.css`, `cut` 0, `spectrum` [] | 2.57 | 0 of 14 | 76.5s | 4.2s | PASS |
+
+Sonnet on the same request before the word limit tightened: template untouched, 1.77 changes a line. It was not re-run at 9 words.
+
+Faults the agents hit and fixed themselves: a label too long, which the render stopped by name; a row overlapping two code objects, seen on the sheet; a hold of 5.1 seconds answered with more changes. The Vietnamese run met the pixel measure at a hold of 4.6 seconds and fixed it with state changes on the words, with nothing sliding. Diacritics draw correctly in both fonts, in the frames and on the sheet.
+
+`shape` 1.6.0: a shape check, Haiku reading `auto.md` for three commands, got film, language, look and spec language right on all three, citing the new sentences.
+
+**Not covered.** `--project-style` through a real `/shape --auto --video`, which has still never run through live peers. The project film kept the moves its agent added against the old measure, so it shows more sliding than the text now needs. Nobody but the owner can hear the sound layer: the bed and the hits are synthesized, and only their levels are measured. Gauges, bar charts and photographs, which the reference film has, were not built, and neither was a way for an agent to write its own scene. Feature, PR and release films were not re-run: they share the look and the check, and `clip` keeps its 6-second limit. A Haiku story still let Lan come "back in time" after her hold expired, against the recipe's rule, and no check sees that.

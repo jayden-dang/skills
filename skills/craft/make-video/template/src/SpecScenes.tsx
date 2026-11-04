@@ -10,7 +10,7 @@ type Props = {scene: Scene; starts: number[]; lengths: number[]};
 
 const W = 1640;
 const PAD = 72;
-const MAX_H = 760;
+const MAX_H = 840;
 const INNER = W - PAD * 2;
 const head = {fontFamily: t.fontHead, fontWeight: t.headWeight, letterSpacing: t.headTracking};
 const MONO = {font: t.fontMono, weight: 500};

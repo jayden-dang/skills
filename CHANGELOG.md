@@ -2,6 +2,14 @@
 
 ## Unreleased
 
+### Added: a film of the spec in `/shape --auto --video`, with `--en` and `--vi` (2026-11-03)
+
+`/shape #N --auto --video` makes a film that explains the closed spec, 120 seconds at most, and the review page thins to the film, what needs you, a scene index, what the film leaves out, and links to the spec. `--vi` writes the film and the page in Vietnamese, and `--en` is the default whatever language you type in; the spec and both sessions stay English. `shape` 1.5.0.
+
+`make-video` 2.0.0 takes a spec folder and tells it as an explanation: a problem, one example, each "but what if". A `world` scene keeps things on screen and changes them under a camera, and `check_video.py` fails a film with no `world`, too few lines giving a reason, an unknown ID, a reworded rule or code line, footage, or a second bullet scene. It can now be called by another skill, so it is no longer user-invoked.
+
+**Breaking:** the voice is ElevenLabs only. `say` and `--engine` are gone, and a run with no key stops. A rerun pays only for the lines that changed.
+
 ### Changed: `make-video` 1.2.0, the right font, no empty footage, larger type (2026-11-03)
 
 A film now stops on a font the machine cannot draw. Before, a run named a Google font and never loaded it: the film came out in Helvetica and the check passed. Font files go in `public/fonts/` and `src/fonts.tsx`. The window keeps only the height a `focus` rect needs, so the app's empty lower half stays out of the film. Captions, points and titles are larger, and the contact sheet shows the end of each line instead of fixed steps. Three Haiku runs and one Sonnet run passed, including a font from a service. A new preview did not cut full renders; it stays because the sheet reads its frames. See `skills/craft/make-video/TESTS.md`.

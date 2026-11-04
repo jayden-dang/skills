@@ -2,8 +2,8 @@
 
 One self-contained `RUN/review.html`, written when the spec is closed. The operator reads it, then types `approve`
 or says what to change. It has no input controls: no radio buttons, no checkboxes, no text box to copy. REQUIRED
-SUB-SKILL: use `craft-page`, treatment Utilitarian, with a sequence or flowchart as the primary figure. Write it in the
-language the operator writes to you in. Code identifiers stay verbatim. Every value comes from a file or a command output you read.
+SUB-SKILL: use `craft-page`, treatment Utilitarian, with a sequence or flowchart as the primary figure. Write it in `LANG`
+from `auto.md`. Code identifiers stay verbatim. Every value comes from a file or a command output you read.
 
 Parts 1 to 5 stay open and hold under 800 words together; a real page ran to 5,310. The rest stay collapsed.
 
@@ -30,3 +30,17 @@ Collapsed:
 11. **Detail.** Stories with their ID ranges, the task list, the spec's paths.
 
 The page ends on one line: type `approve`, or say what to change in plain words.
+
+## With a film
+
+When `RUN/film.mp4` printed `PASS`, the film carries parts 2 and 5, and the page is thin, in this order, under 400 words open.
+Its primary figure is the film, so it draws no other.
+
+1. **Header**, as part 1.
+2. **The film.** `<video controls src="film.mp4">`, its length, and that it describes planned behavior and approves nothing.
+3. **Needs you**, as part 3.
+4. **The scenes.** From the film's `out/scenes.json`, one row each: a link to `film.mp4#t=<seconds>` with the time, the title, the IDs it cites.
+5. **Not in the film.** From the film's `out/uncited.json`: how many requirements it leaves out, and those IDs. The film explains; it does not cover.
+6. **Read further.** A link to each of `requirements.md`, `design.md` and `tasks.md`.
+
+Collapsed: parts 4, 6, 7, 8 and 9. It ends on the same line.

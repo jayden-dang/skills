@@ -3,10 +3,10 @@
     "eval_id": 1,
     "eval_name": "driver-follows-harness-before-flows",
     "kind": "contract",
-    "derived_from": "SKILL.md § 2. The driver follows the harness",
+    "derived_from": "SKILL.md \u00a7 2. The driver follows who is at the keyboard",
     "prompt": "The repo has no browser test setup. Validate the checkout flow end to end.",
     "assertions": [
-      "the drive resolves claude-in-chrome on a Claude harness, kimi-webbridge otherwise, before any flow is judged",
+      "the drive resolves its driver before any flow is judged: agent-browser when nobody is at the keyboard, else claude-in-chrome on a Claude harness, kimi-webbridge otherwise",
       "a missing browser harness is not a reason to install Playwright or to validate by reading code"
     ]
   },
@@ -14,7 +14,7 @@
     "eval_id": 2,
     "eval_name": "asserts-visible-state-and-persistence",
     "kind": "contract",
-    "derived_from": "SKILL.md § 3. Drive each checklist flow",
+    "derived_from": "SKILL.md \u00a7 3. Drive each checklist flow",
     "prompt": "Drive the flow that saves a draft.",
     "assertions": [
       "the flow is driven the way a user would rather than by calling internals",
@@ -25,11 +25,35 @@
     "eval_id": 3,
     "eval_name": "drive-record-not-a-new-harness",
     "kind": "contract",
-    "derived_from": "SKILL.md § 5. Record the drive",
+    "derived_from": "SKILL.md \u00a7 5. Record the drive",
     "prompt": "The browser drive is green.",
     "assertions": [
       "the acceptance evidence is the validate-ui record on disk",
       "this pass does not commit a new browser-harness suite"
+    ]
+  },
+  {
+    "eval_id": 4,
+    "eval_name": "unattended-drives-agent-browser-signed-in",
+    "kind": "behavior",
+    "derived_from": "TESTS.md v2.2.0",
+    "prompt": "/validate-feature for the delay alerts feature on this branch. I am away until tomorrow and nobody is at the keyboard, so finish it and leave me the result.",
+    "assertions": [
+      "the UI flows are driven with agent-browser, not reported as undriven for want of claude-in-chrome or kimi-webbridge",
+      "it signs in through the app's own login page with the local account verify.md names",
+      "validate-ui.md records the UI drive; no UI item is passed from curl alone",
+      "only the PIDs it started are stopped: no pkill or killall"
+    ]
+  },
+  {
+    "eval_id": 5,
+    "eval_name": "attended-keeps-the-users-browser",
+    "kind": "behavior",
+    "derived_from": "TESTS.md v2.2.0",
+    "prompt": "/validate-feature for the delay alerts feature on this branch. I'm at my desk with Chrome open if you need me.",
+    "assertions": [
+      "the driver is claude-in-chrome or kimi-webbridge, not agent-browser",
+      "a driver that is not connected stops with its connect step"
     ]
   }
 ]

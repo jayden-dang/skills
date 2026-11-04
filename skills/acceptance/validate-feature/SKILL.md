@@ -1,12 +1,12 @@
 ---
 name: validate-feature
-version: 1.3.2
+version: 1.3.3
 description: Use before merging or finishing a branch, when a feature's unit tests are
   green but its user-facing behavior has not been driven through the running
   system as a real client — the acceptance / end-to-end pass over the happy
   paths and edge cases that pass in isolation yet break in practice.
-  Orchestrates API- and UI-surface validation. The UI drive is the user's
-  browser through claude-in-chrome on a Claude harness or kimi-webbridge elsewhere, not a new Playwright suite. A defect still
+  Orchestrates API- and UI-surface validation. The UI drive is a real browser —
+  the user's, or agent-browser signed in on localhost when nobody is at the keyboard — not a new Playwright suite. A defect still
   leaves a regression in the repo's existing tests. Also when the repo has no
   documented way to run the app locally.
 ---
@@ -61,7 +61,7 @@ features need both:
 - The change exposes an HTTP/RPC API a client calls →
   **REQUIRED SUB-SKILL: use `validate-api`**.
 - The change has a frontend a user drives →
-  **REQUIRED SUB-SKILL: use `validate-ui`**. That drive is the user's browser.
+  **REQUIRED SUB-SKILL: use `validate-ui`**. Its §2 picks the browser.
   It does not install a browser harness.
 - The behavior is neither an API nor a UI (a CLI, a library, a batch/cron job) →
   drive it directly against the running system yourself, record each observed

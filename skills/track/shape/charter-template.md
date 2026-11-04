@@ -54,7 +54,7 @@ the roadmap stays Draft and every change goes in the report. A milestone is neve
 This ticket is the only one. Create no issue. A skill that wants a claim uses this ticket.
 
 ## Hard stops: write the report and end
-- A persisted format or a migration, or anything that moves money.
+- A persisted format or a migration, unless the section "Under --go" below is present; anything that moves money, always.
 - A test or a step that would change a config or data file outside `{WT}`, `{RUN}` or a temporary directory.
 - Two Lock lines that contradict each other.
 - A change to the vision, or a pivot (`/define-project`, `/assess-pivot-impact`), or a catalog needing `/map-features`.
@@ -69,3 +69,9 @@ back twice with no new evidence counts as stuck.
 ## The end report
 Stage reached; each gate's rounds; a decision table (decision, class Lock / Weigh / agent-decided, source); every
 place a skill stopped for the user and what answered it; every skill run and skipped; anything this charter failed to answer.
+
+## Under --go
+{only with --go: copy this section; without --go, delete it}
+- The operator's `/shape {ticket} --go` approved the spec before they read it. The conductor pushes `feat/{slug}` and opens the draft pull request. The build session's `land-branch` then pushes, rewrites the body, posts its verdict and makes the PR ready: that is the build's job, not the conductor's. Other sessions commit locally.
+- A migration may be written. It runs only against a local database: the worktree's own where the repo provisions one, else an isolated plane the repo documents, else the local dev database. A database URL that is not local stops the run.
+- A question only the operator could answer: build the option that keeps every documented contract, and put the question under `## Needs a decision before merge` in the pull request.

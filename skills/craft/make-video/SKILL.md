@@ -89,7 +89,8 @@ A request to explain how a built feature works reads `explainer.md` too.
 
 A `flow` or `points` item appears when its matching beat starts.
 
-*Done when: `src/script.json` opens with a `title` scene and ends on one. A film of a spec opens on its `world` instead.*
+*Done when: `src/script.json` opens with a `title` scene and ends on one, a film of a spec opening on its `world` instead, and
+`python3 "$SKILL/scripts/check_video.py" <project> . --script` prints `PASS`. It judges the script before you pay for a voice.*
 
 ## 4. Speak it
 
@@ -100,9 +101,10 @@ python3 "$SKILL/scripts/voice.py" <project>
 It prints each line's length. Those lengths time your recording. Three of ten runs recorded first,
 then failed the check on a still of up to 8.5 seconds or a silence of up to 6, and had to redo it.
 
-`voice.py` speaks with ElevenLabs, so the script goes to that vendor, and your report says so. With
-no key in the environment it stops: say so and leave the film unmade, because there is no other
-voice. Run it again whenever you change a line; it pays only for the lines that changed.
+`voice.py` speaks through Vibi, so the script goes to Vibi and the provider behind it, and your report
+says so. With no `VIBI_API` in the environment it stops: say so and leave the film unmade, because
+there is no other voice. A long script can take minutes, and one run outlasted its shell's 2-minute limit, so give it a long
+timeout. Run it again whenever you change a line; it pays only for the lines that changed.
 
 *Done when: it printed a length for every beat.*
 

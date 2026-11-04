@@ -315,3 +315,31 @@ catches a list of facts, which is what was measured, and does not measure unders
 **Three things the PINWIN capture found, fixed.** A refused voice call printed only "401", which reads as a bad key and hid an unpaid invoice: `voice.py` now prints the vendor's sentence, test first. Vietnamese writes each syllable as a token, so 20 "words" was about 4 seconds and the lines came out clipped: the limit is 30 there. A line can change the world part way through, with `then`, because a long line left one still frame for 7.9 seconds.
 
 **Not covered.** A render of an agent's explainer with real voice. Anyone hearing any film. A built feature through this recipe by an agent: PINWIN's footage film was hand-written, and its server claims were checked by hand on an isolated plane. Footage of today's behavior inside a spec film is left out, since running an app under `--auto` has never been measured.
+
+## 2026-11-04: the voice moves to Vibi
+
+ElevenLabs refused the key over an unpaid invoice, and the owner asked to try Vibi, which fronts ElevenLabs, MiniMax and CapCut. The same 37-word Vietnamese line, spoken once on each voice and transcribed by Vibi's Scribe, with number words read as digits by hand:
+
+| Voice | Wrong words | Credits per character | Wait |
+|---|---|---|---|
+| MiniMax `speech-2.8-hd`, Professional Narrator | 0 of 37 | 1 | 4.6s |
+| MiniMax `speech-2.8-hd`, Articulate Assistant | 0 of 37 | 1 | 4.8s |
+| ElevenLabs v4, Sarah | 1 of 37 | 1 | 7.4s |
+| ElevenLabs Flash, Sarah | 2 of 37 | 0.5 | 20s |
+| CapCut, Trung Caha and Ha Nu | about 3 in 4 | near 0 | 14s |
+
+The owner chose the Professional Narrator. English took Flash by default, which the owner has not ruled on: 0 of 18 like v4, at half the credits. A transcription measures recognition, not how a voice sounds, and the CapCut transcripts read like phonetic spelling, so the transcriber may be part of that result.
+
+Vibi's calls differ from a direct call: a job to poll, then a file to fetch. Unit tests in `scripts/test_voice.py` were watched red first and cover the choice of voice per language, a job that fails, one that never ends, a missing key, the old key, and that the key goes to Vibi alone. Version stays 2.0.0: this branch had not shipped.
+
+English: the owner listened to eight English voices speaking one passage of the film, and chose MiniMax Insightful Speaker. All eight transcribed with no wrong word, so the choice was by ear. Through Vibi, MiniMax waited 5 to 7 seconds and ElevenLabs 22 to 181 while two agents also ran, and the same passage ran 13.5 to 20 seconds by voice.
+
+**First full films by agents, real voice, render, PASS re-run by the scorer.** Haiku in Vietnamese: 92.0s, 13 of 19 lines give a reason, 3 IDs left out. Sonnet in English on Flash Sarah, before the choice above: 78.4s, 12 of 18, 3 left out.
+
+**The camera, a check and not a rule.** The recipe's camera rule was already in the text, and the Sonnet film still framed "10:00 C" and "held fo". So `judge_world` replays each scene and fails anything on screen cut by the frame, the background it sits inside excepted. Unit tests watched red first. Against every film so far, before any tuning: 22 faults on the Sonnet film the sheet had caught, and 0 on the Haiku recheck, the Haiku Vietnamese film and both hand-made PINWIN films.
+
+`check_video.py --script` runs every script rule before a voice exists. Agents had been paying for a voice, then finding a fault after a render.
+
+**Final text, Haiku, English, the chosen voice, render.** 80.1s, PASS re-run by the scorer, 10 of 16 lines give a reason, 3 IDs left out, no camera fault, and its sheet shows nothing cut. It hit two faults on the way and fixed both: a label too long for its pill, stopped by the render, and a still of 6.2 seconds, which it answered with `then`. It asked for a guide to label widths, because fit errors only appear at preview. Not added: the check names the label.
+
+**Not covered.** A real `/shape --auto --video` through live peers, so the script review by `interpret` and the thin page with `out/uncited.json` have never run. Nobody but the owner has heard a film. Feature, PR and release films were not re-run on Vibi: they share `voice.py`, and their footage path did not change.

@@ -61,7 +61,7 @@ again. Use several only for parts that share nothing.
 | `objects` | Everything in the world, hidden until a beat names it. `shape` is `card`, `pill`, `seat`, `code` or `note`. `tone` is `ink`, `accent`, `bad` or `muted` |
 | `world.set` | Only what this line changes: `{}` shows a thing, `hidden: true` removes it, a new `x`, `y`, `label` or `tone` moves or morphs it |
 | `world.arrows` | The arrows from this line on. `[]` clears them |
-| `world.camera` | The part of the world in frame, `h` = `w` x 740 / 1780. It carries over until set again. Set it to hold everything the line names: 3 of 4 first previews cut something off |
+| `world.camera` | The part of the world in frame, `h` = `w` x 740 / 1780. It carries over until set again. Nothing on screen may be cut by the frame, and the check fails one that is: hide it, or widen the camera |
 | `world.then` | A second change, `after` a share of the line, for a line over about 5 seconds |
 
 Draw it so that it reads at a glance. Each rule here answers something a contact sheet showed:

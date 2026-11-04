@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Check a finished video and its script. Usage: check_video.py <project> <repo-root> <mp4> [--sheet <png>]
 
+With --script in place of <mp4>, judge the script alone: run that before paying for a voice.
 Exits 1 and prints one FAIL line per fault. Prints the numbers either way.
 """
 import json
@@ -16,6 +17,8 @@ MAX_STILL = 6.0
 MAX_SILENCE = 3.0
 MIN_CLIP_WIDTH = 1600
 SPEC_MAX = 120
+WORLD_W = 1780
+WORLD_H = 740
 # Lines that say why. Walkthrough films measured 0 to 9% of their lines; explanations 42 to 64%.
 REASON_WORDS = {
     "en": r"\b(so|because|but|if|since|otherwise)\b",
@@ -114,6 +117,41 @@ def judge_quotes(s, read):
     return faults
 
 
+def judge_world(s):
+    """Nothing on screen is cut by the frame. A thing the frame sits wholly inside is its background."""
+    faults = []
+    for scene in s.get("scenes", []):
+        if scene.get("kind") != "world":
+            continue
+        objects = {o["id"]: {"hidden": True, **o} for o in scene.get("objects", [])}
+        camera = {"x": 0, "y": 0, "w": WORLD_W, "h": WORLD_H}
+        told = set()
+        for i, beat in enumerate(scene.get("beats", [])):
+            change = beat.get("world") or {}
+            for step in (change, change.get("then") or {}):
+                for oid, values in (step.get("set") or {}).items():
+                    if oid in objects:
+                        objects[oid] = {**objects[oid], "hidden": False, **values}
+                camera = step.get("camera") or camera
+                # The template fits the box to the frame, so the frame may show more than the box.
+                zoom = min(WORLD_W / camera["w"], WORLD_H / camera["h"])
+                left = camera["x"] + camera["w"] / 2 - WORLD_W / zoom / 2
+                top = camera["y"] + camera["h"] / 2 - WORLD_H / zoom / 2
+                right, bottom = left + WORLD_W / zoom, top + WORLD_H / zoom
+                view = (left, top, right, bottom)
+                for oid, o in objects.items():
+                    if o.get("hidden"):
+                        continue
+                    x, y, r, b = o["x"], o["y"], o["x"] + o["w"], o["y"] + o["h"]
+                    apart = r <= left or x >= right or b <= top or y >= bottom
+                    inside = x >= left - 1 and y >= top - 1 and r <= right + 1 and b <= bottom + 1
+                    behind = x <= left and y <= top and r >= right and b >= bottom
+                    if not (apart or inside or behind) and (oid, view) not in told:
+                        told.add((oid, view))
+                        faults.append(f"{scene.get('id')}-{i}: {oid} is cut by the camera")
+    return faults
+
+
 def judge_clip(width, height):
     if width < MIN_CLIP_WIDTH or width * 9 != height * 16:
         return f"clip is {width}x{height}; it needs 16:9 at {MIN_CLIP_WIDTH} wide or more"
@@ -205,31 +243,53 @@ def contact_sheet(mp4, out, frames, duration):
     run("ffmpeg", "-v", "error", "-y", "-i", mp4, "-vf", sheet_filter(frames, duration), "-frames:v", "1", out)
 
 
-def main(argv):
-    project, repo, mp4 = argv[1:4]
-    sheet = argv[argv.index("--sheet") + 1] if "--sheet" in argv else None
-    s = json.load(open(os.path.join(project, "src", "script.json")))
-    m = probe(mp4)
-    print(json.dumps({k: m[k] for k in ("width", "height", "duration", "loudness", "peak", "freezes", "silences")}))
-    faults = validate_script(s) + check_refs(s, repo) + judge_media(m)
+def spec_text(s, repo):
+    source = s.get("source") or {}
+    if source.get("kind") != "spec" or not source.get("spec"):
+        return None
+    shown = run("git", "-C", repo, "show", f"{source.get('ref')}:{source['spec']}/requirements.md")
+    return shown.stdout if shown.returncode == 0 else None
+
+
+def script_faults(s, repo):
+    """Everything that can be judged before a voice or a render exists."""
+    faults = validate_script(s) + check_refs(s, repo) + judge_world(s)
     source = s.get("source") or {}
     if source.get("kind") == "spec" and source.get("spec"):
-        shown = run("git", "-C", repo, "show", f"{source.get('ref')}:{source['spec']}/requirements.md")
-        if shown.returncode != 0:
+        text = spec_text(s, repo)
+        if text is None:
             faults.append(f"{source['spec']}/requirements.md is not in {source.get('ref')}")
         else:
             def read(path):
                 held = run("git", "-C", repo, "show", f"{source.get('ref')}:{path}")
                 return held.stdout if held.returncode == 0 else None
 
-            faults += judge_spec(s, shown.stdout) + judge_length(m["duration"]) + judge_quotes(s, read)
-            left_out = uncited(s, shown.stdout)
-            print(f"not in the film: {len(left_out)} of {len(live_ids(shown.stdout))} IDs, in out/uncited.json")
-            os.makedirs(os.path.join(project, "out"), exist_ok=True)
-            json.dump(left_out, open(os.path.join(project, "out", "uncited.json"), "w"))
-    if sheet:
-        contact_sheet(mp4, sheet, beat_frames(project), m["duration"])
-        print(f"sheet: {sheet}")
+            faults += judge_spec(s, text) + judge_quotes(s, read)
+    return faults
+
+
+def main(argv):
+    project, repo = argv[1:3]
+    only_script = "--script" in argv
+    mp4 = None if only_script else argv[3]
+    sheet = argv[argv.index("--sheet") + 1] if "--sheet" in argv else None
+    s = json.load(open(os.path.join(project, "src", "script.json")))
+    faults = script_faults(s, repo)
+    text = spec_text(s, repo)
+    if not only_script:
+        m = probe(mp4)
+        print(json.dumps({k: m[k] for k in ("width", "height", "duration", "loudness", "peak", "freezes", "silences")}))
+        faults += judge_media(m)
+        if text is not None:
+            faults += judge_length(m["duration"])
+        if sheet:
+            contact_sheet(mp4, sheet, beat_frames(project), m["duration"])
+            print(f"sheet: {sheet}")
+    if text is not None:
+        left_out = uncited(s, text)
+        print(f"not in the film: {len(left_out)} of {len(live_ids(text))} IDs, in out/uncited.json")
+        os.makedirs(os.path.join(project, "out"), exist_ok=True)
+        json.dump(left_out, open(os.path.join(project, "out", "uncited.json"), "w"))
     for f in faults:
         print(f"FAIL {f}")
     print("PASS" if not faults else f"{len(faults)} fault(s)")

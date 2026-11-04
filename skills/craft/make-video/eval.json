@@ -96,6 +96,7 @@
       "the first line states the problem on a named example, and the first scene is a world",
       "a third of the lines or more give a reason, by check_video.py's word list",
       "time in the example only runs forward: nobody loses a state they already reached so a what-if can be told",
+      "scripts/check_video.py --script printed PASS before voice.py ran, and no world line has anything cut by the camera",
       "scripts/check_video.py prints PASS and writes out/uncited.json"
     ],
     "eval_id": 8

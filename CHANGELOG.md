@@ -6,9 +6,9 @@
 
 `/shape #N --auto --video` makes a film that explains the closed spec, 120 seconds at most, and the review page thins to the film, what needs you, a scene index, what the film leaves out, and links to the spec. `--vi` writes the film and the page in Vietnamese, and `--en` is the default whatever language you type in; the spec and both sessions stay English. `shape` 1.5.0.
 
-`make-video` 2.0.0 takes a spec folder and tells it as an explanation: a problem, one example, each "but what if". A `world` scene keeps things on screen and changes them under a camera, and `check_video.py` fails a film with no `world`, too few lines giving a reason, an unknown ID, a reworded rule or code line, footage, or a second bullet scene. It can now be called by another skill, so it is no longer user-invoked.
+`make-video` 2.0.0 takes a spec folder and tells it as an explanation: a problem, one example, each "but what if". A `world` scene keeps things on screen and changes them under a camera, and `check_video.py` fails a film with no `world`, anything cut by the camera, too few lines giving a reason, an unknown ID, a reworded rule or code line, footage, or a second bullet scene. It can now be called by another skill, so it is no longer user-invoked.
 
-**Breaking:** the voice is ElevenLabs only. `say` and `--engine` are gone, and a run with no key stops. A rerun pays only for the lines that changed.
+**Breaking:** every voice now comes through Vibi and needs `VIBI_API`. `say`, `--engine` and the direct ElevenLabs call are gone, and a run with no key stops. English and Vietnamese are the MiniMax voices the owner chose; other languages are ElevenLabs Flash. A rerun pays only for the lines that changed.
 
 ### Changed: `make-video` 1.2.0, the right font, no empty footage, larger type (2026-11-03)
 

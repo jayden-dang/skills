@@ -8,7 +8,7 @@
 | **Invocation** | `/make-video <feature, branch, tag, or spec folder>`, or when you ask for a video |
 | **Reads** | the code or spec at the pinned commit, the repo's design tokens, `docs/agents/verify.md` when it exists |
 | **Writes** | `.skills/video/<slug>/` (git-ignored), and the finished MP4 at the path you name |
-| **Calls** | nothing. Uses `agent-browser`, `ffmpeg`, ElevenLabs, and Remotion from npm |
+| **Calls** | nothing. Uses `agent-browser`, `ffmpeg`, Vibi, and Remotion from npm |
 | **Called by** | [`shape`](shape.md) under `--auto --video` |
 
 ## What it makes
@@ -22,7 +22,7 @@
 
 Narration and captions are English. Ask for another language by name, for example `/make-video v1.3.0 in Vietnamese`.
 
-The voice is ElevenLabs, with no other engine, so the script goes to that vendor and the run needs `ELEVENLABS_API_KEY`; without a key it stops. A rerun pays only for lines that changed. On a free plan, library voices are refused over the API and premade voices work. Vietnamese needs a model that lists it, which `voice.py` already picks.
+The voice comes through [Vibi](https://vibi.pro/docs), with no other engine, so the script goes to Vibi and the provider behind it, and the run needs `VIBI_API`; without a key it stops. English and Vietnamese are the MiniMax voices the owner chose, and other languages are ElevenLabs Flash. A rerun pays only for lines that changed, and `--voice` picks another voice from the same provider. Vibi keeps each job with its text in its history until you delete it, and the pages read state no retention period.
 
 ## A film of a spec
 
@@ -30,7 +30,7 @@ A spec film is what `/shape #N --auto --video` makes in place of most of the rev
 
 It explains and does not walk the spec. It opens on what goes wrong today, follows one named example, and takes each "but what if" to the rule that answers it. Films made by following the spec's files gave a reason in 0 to 9% of their lines; these give one in 42 to 64%. Everything happens in one `world` scene, where things stay on screen and change, with a camera. `ears`, `code` and `table` scenes hold exact spec text when the point needs it.
 
-`check_video.py` fails a film with no `world`, fewer than a third of its lines giving a reason, an ID the spec does not define, a reworded rule or code line, footage, or more than one bullet scene. It does not require every requirement: it writes the ones the film leaves out to `out/uncited.json`, and the review page lists them. The recipe is `explainer.md`. A built feature can use the same recipe, with real footage for what a person sees and a `world` for what no screen shows.
+`check_video.py` fails a film with no `world`, anything on screen cut by the camera, fewer than a third of its lines giving a reason, an ID the spec does not define, a reworded rule or code line, footage, or more than one bullet scene. It does not require every requirement: it writes the ones the film leaves out to `out/uncited.json`, and the review page lists them. The recipe is `explainer.md`. A built feature can use the same recipe, with real footage for what a person sees and a `world` for what no screen shows.
 
 ## Why it is a template and a check
 

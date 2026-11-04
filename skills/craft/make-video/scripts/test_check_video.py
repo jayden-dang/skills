@@ -192,6 +192,81 @@ class SpecQuotes(unittest.TestCase):
         self.assertIn("c: offers.js is not at the pinned commit", cv.judge_quotes(s, self.read))
 
 
+def world(objects, beats):
+    return {"scenes": [{"id": "w", "kind": "world", "title": "T", "objects": objects, "beats": beats}]}
+
+
+def box(id, x, y, w, h, **more):
+    return {"id": id, "shape": "card", "x": x, "y": y, "w": w, "h": h, **more}
+
+
+def showing(**world_change):
+    return {"text": "A line.", "ref": "x", "world": world_change}
+
+
+class WorldCamera(unittest.TestCase):
+    def test_a_camera_holding_all_it_shows_has_no_faults(self):
+        s = world([box("a", 100, 100, 200, 100)], [showing(set={"a": {}}, camera={"x": 0, "y": 0, "w": 890, "h": 370})])
+        self.assertEqual(cv.judge_world(s), [])
+
+    def test_a_thing_cut_by_the_camera_is_a_fault(self):
+        s = world([box("late", 800, 100, 400, 100)], [showing(set={"late": {}}, camera={"x": 0, "y": 0, "w": 890, "h": 370})])
+        self.assertIn("w-0: late is cut by the camera", cv.judge_world(s))
+
+    def test_a_thing_wholly_out_of_frame_is_no_fault(self):
+        s = world([box("far", 3000, 100, 200, 100)], [showing(set={"far": {}}, camera={"x": 0, "y": 0, "w": 890, "h": 370})])
+        self.assertEqual(cv.judge_world(s), [])
+
+    def test_a_hidden_thing_is_no_fault(self):
+        s = world([box("a", 800, 100, 400, 100)], [showing(camera={"x": 0, "y": 0, "w": 890, "h": 370})])
+        self.assertEqual(cv.judge_world(s), [])
+
+    def test_a_background_filling_the_frame_is_no_fault(self):
+        s = world([box("desk", 0, 0, 1780, 740)], [showing(set={"desk": {}}, camera={"x": 100, "y": 100, "w": 890, "h": 370})])
+        self.assertEqual(cv.judge_world(s), [])
+
+    def test_the_default_camera_is_the_whole_world(self):
+        s = world([box("wide", 1700, 100, 200, 100)], [showing(set={"wide": {}})])
+        self.assertIn("w-0: wide is cut by the camera", cv.judge_world(s))
+
+    def test_a_camera_carries_over_and_a_later_move_is_judged(self):
+        s = world([box("a", 100, 100, 200, 100)], [
+            showing(set={"a": {}}, camera={"x": 0, "y": 0, "w": 890, "h": 370}),
+            showing(set={"a": {"x": 800}}),
+        ])
+        self.assertIn("w-1: a is cut by the camera", cv.judge_world(s))
+
+    def test_a_change_part_way_through_a_line_is_judged(self):
+        s = world([box("a", 100, 100, 200, 100), box("b", 800, 100, 400, 100)], [
+            showing(set={"a": {}}, camera={"x": 0, "y": 0, "w": 890, "h": 370}, then={"after": 0.5, "set": {"b": {}}}),
+        ])
+        self.assertIn("w-0: b is cut by the camera", cv.judge_world(s))
+
+    def test_a_frame_wider_than_its_camera_shows_more_than_the_box(self):
+        # A tall camera box is letterboxed, so the frame is wider than the box that asked for it.
+        s = world([box("a", 300, 100, 200, 100)], [showing(set={"a": {}}, camera={"x": 0, "y": 0, "w": 370, "h": 370})])
+        self.assertEqual(cv.judge_world(s), [])
+
+    def test_one_cut_thing_reports_once_while_the_camera_holds(self):
+        s = world([box("a", 800, 100, 400, 100)], [
+            showing(set={"a": {}}, camera={"x": 0, "y": 0, "w": 890, "h": 370}),
+            showing(),
+        ])
+        self.assertEqual(cv.judge_world(s), ["w-0: a is cut by the camera"])
+
+
+class ScriptFaults(unittest.TestCase):
+    def test_it_judges_a_script_with_no_film(self):
+        s = script()
+        s["scenes"][0]["beats"][0]["ref"] = ""
+        self.assertIn("a-0: no source", cv.script_faults(s, "."))
+
+    def test_it_judges_a_world_camera(self):
+        s = script()
+        s["scenes"] = world([box("wide", 1700, 100, 200, 100)], [showing(set={"wide": {}})])["scenes"]
+        self.assertIn("w-0: wide is cut by the camera", cv.script_faults(s, "."))
+
+
 class SpecLength(unittest.TestCase):
     def test_every_spec_gets_two_minutes(self):
         self.assertEqual(cv.judge_length(120.0), [])

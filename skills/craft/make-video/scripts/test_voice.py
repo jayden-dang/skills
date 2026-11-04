@@ -24,110 +24,175 @@ def tone():
 
 
 TONE = tone()
+AUDIO = "https://api.vibi.pro/audio/job.mp3"
 
 
 class Speak(unittest.TestCase):
-    """The HTTP call is the system boundary, so it is the only thing replaced."""
+    """The HTTP calls are the system boundary, so they are the only thing replaced."""
 
     def setUp(self):
         self.project = tempfile.mkdtemp()
         os.makedirs(os.path.join(self.project, "src"))
-        self.sent = []
+        self.posts = []
+        self.requests = []
+        self.polls = [{"status": "completed", "result": {"audio_url": AUDIO}}]
         self.real_open = urllib.request.urlopen
         urllib.request.urlopen = self.answer
         self.addCleanup(setattr, urllib.request, "urlopen", self.real_open)
-        self.key = os.environ.pop("ELEVENLABS_API_KEY", None)
-        self.old = os.environ.pop("ELEVENLABS", None)
-        os.environ["ELEVENLABS_API_KEY"] = "test"
+        self.saved = {k: os.environ.pop(k, None) for k in ("VIBI_API", "ELEVENLABS_API_KEY", "ELEVENLABS")}
+        os.environ["VIBI_API"] = "test-key"
         self.addCleanup(self.restore)
+        self.addCleanup(setattr, voice, "POLL_SECONDS", voice.POLL_SECONDS)
+        voice.POLL_SECONDS = 0
         quiet = contextlib.redirect_stdout(io.StringIO())
         quiet.__enter__()
         self.addCleanup(quiet.__exit__, None, None, None)
 
     def restore(self):
-        os.environ.pop("ELEVENLABS_API_KEY", None)
-        if self.key:
-            os.environ["ELEVENLABS_API_KEY"] = self.key
-        if self.old:
-            os.environ["ELEVENLABS"] = self.old
+        os.environ.pop("VIBI_API", None)
+        for k, v in self.saved.items():
+            if v:
+                os.environ[k] = v
 
-    def answer(self, req):
-        self.sent.append(json.loads(req.data))
+    def answer(self, req, timeout=None):
+        self.requests.append(req)
+        if req.get_method() == "POST":
+            self.posts.append((req.full_url, json.loads(req.data)))
+            return io.BytesIO(json.dumps({"id": "job", "status": "pending"}).encode())
+        if "/history/" in req.full_url:
+            step = self.polls.pop(0) if len(self.polls) > 1 else self.polls[0]
+            return io.BytesIO(json.dumps(step).encode())
         return io.BytesIO(TONE)
 
     def write(self, beats, language="en"):
         script = {"language": language, "scenes": [{"id": "a", "kind": "title", "title": "T", "beats": beats}]}
         json.dump(script, open(os.path.join(self.project, "src", "script.json"), "w"))
 
-    def test_every_line_goes_to_elevenlabs_in_the_script_language(self):
-        self.write([{"text": "Xin chào.", "ref": "x"}], language="vi")
-        self.assertEqual(voice.main(["voice.py", self.project]), 0)
-        self.assertEqual(self.sent[0]["language_code"], "vi")
-        self.assertEqual(self.sent[0]["text"], "Xin chào.")
-        self.assertTrue(os.path.exists(os.path.join(self.project, "public", "voice", "a-0.mp3")))
+    def line(self, text="Hello.", **more):
+        return {"text": text, "ref": "x", **more}
 
-    def test_no_key_stops_before_any_call(self):
-        del os.environ["ELEVENLABS_API_KEY"]
-        self.write([{"text": "Hello.", "ref": "x"}])
+    def test_vietnamese_is_the_chosen_minimax_narrator(self):
+        self.write([self.line("Xin chào.")], language="vi")
+        self.assertEqual(voice.main(["voice.py", self.project]), 0)
+        url, body = self.posts[0]
+        self.assertTrue(url.endswith("/v1/text-to-speech/362703657091265"))
+        self.assertEqual(body["provider"], "minimax")
+        self.assertEqual(body["model_id"], "speech-2.8-hd")
+        self.assertEqual(body["language_code"], "Vietnamese")
+        self.assertEqual(body["text"], "Xin chào.")
+
+    def test_english_is_the_chosen_minimax_speaker(self):
+        self.write([self.line()])
+        voice.main(["voice.py", self.project])
+        url, body = self.posts[0]
+        self.assertTrue(url.startswith("https://api.vibi.pro/v1/text-to-speech/273587280617674"))
+        self.assertEqual(body["provider"], "minimax")
+        self.assertEqual(body["model_id"], "speech-2.8-hd")
+        self.assertEqual(body["language_code"], "English")
+
+    def test_another_language_goes_to_elevenlabs_with_its_code(self):
+        self.write([self.line("Hallo.")], language="de")
+        voice.main(["voice.py", self.project])
+        self.assertEqual(self.posts[0][1]["language_code"], "de")
+        self.assertEqual(self.posts[0][1]["model_id"], "eleven_flash_v2_5")
+
+    def test_the_voice_flag_replaces_the_voice_and_keeps_the_provider(self):
+        self.write([self.line("Xin chào.")], language="vi")
+        voice.main(["voice.py", self.project, "--voice", "123"])
+        self.assertTrue(self.posts[0][0].endswith("/text-to-speech/123"))
+        self.assertEqual(self.posts[0][1]["provider"], "minimax")
+
+    def test_it_waits_for_the_job_and_saves_the_audio(self):
+        self.polls = [{"status": "pending"}, {"status": "processing"}, {"status": "completed", "result": {"audio_url": AUDIO}}]
+        self.write([self.line()])
+        voice.main(["voice.py", self.project])
+        self.assertTrue(os.path.exists(os.path.join(self.project, "public", "voice", "a-0.mp3")))
+        self.assertEqual(sum("/history/job" in r.full_url for r in self.requests), 3)
+
+    def test_a_failed_job_says_why_and_leaves_no_file(self):
+        self.polls = [{"status": "failed", "error": "Voice not available"}]
+        self.write([self.line()])
         with self.assertRaises(SystemExit) as stop:
             voice.main(["voice.py", self.project])
-        self.assertIn("ELEVENLABS_API_KEY", str(stop.exception))
-        self.assertEqual(self.sent, [])
+        self.assertIn("Voice not available", str(stop.exception))
+        self.assertFalse(os.path.exists(os.path.join(self.project, "public", "voice", "a-0.mp3")))
+
+    def test_a_job_that_never_ends_stops_with_its_id(self):
+        self.polls = [{"status": "processing"}]
+        self.write([self.line()])
+        original, voice.POLL_LIMIT = voice.POLL_LIMIT, 3
+        self.addCleanup(setattr, voice, "POLL_LIMIT", original)
+        with self.assertRaises(SystemExit) as stop:
+            voice.main(["voice.py", self.project])
+        self.assertIn("job", str(stop.exception))
+
+    def test_no_key_stops_before_any_call(self):
+        del os.environ["VIBI_API"]
+        self.write([self.line()])
+        with self.assertRaises(SystemExit) as stop:
+            voice.main(["voice.py", self.project])
+        self.assertIn("VIBI_API", str(stop.exception))
+        self.assertEqual(self.requests, [])
+
+    def test_the_old_elevenlabs_key_is_not_used(self):
+        del os.environ["VIBI_API"]
+        os.environ["ELEVENLABS_API_KEY"] = "old"
+        self.addCleanup(os.environ.pop, "ELEVENLABS_API_KEY", None)
+        self.write([self.line()])
+        with self.assertRaises(SystemExit):
+            voice.main(["voice.py", self.project])
+        self.assertEqual(self.requests, [])
 
     def test_the_old_engine_flag_is_gone(self):
-        self.write([{"text": "Hello.", "ref": "x"}])
+        self.write([self.line()])
         with self.assertRaises(SystemExit) as stop:
             voice.main(["voice.py", self.project, "--engine", "say"])
         self.assertIn("--engine", str(stop.exception))
-        self.assertEqual(self.sent, [])
-
-    def test_a_refused_call_names_the_code_and_leaves_no_file(self):
-        def refuse(req):
-            raise urllib.error.HTTPError(req.full_url, 429, "busy", {}, io.BytesIO(b""))
-
-        urllib.request.urlopen = refuse
-        self.write([{"text": "Hello.", "ref": "x"}])
-        with self.assertRaises(SystemExit) as stop:
-            voice.main(["voice.py", self.project])
-        self.assertIn("429", str(stop.exception))
-        self.assertFalse(os.path.exists(os.path.join(self.project, "public", "voice", "a-0.mp3")))
+        self.assertEqual(self.requests, [])
 
     def test_a_refusal_says_why_in_the_vendors_words(self):
-        body = b'{"detail":{"status":"payment_issue","message":"Complete the latest invoice to continue usage."}}'
-
-        def refuse(req):
-            raise urllib.error.HTTPError(req.full_url, 401, "no", {}, io.BytesIO(body))
+        def refuse(req, timeout=None):
+            raise urllib.error.HTTPError(req.full_url, 401, "no", {}, io.BytesIO(b'{"error":"missing or invalid authentication credentials"}'))
 
         urllib.request.urlopen = refuse
-        self.write([{"text": "Hello.", "ref": "x"}])
+        self.write([self.line()])
         with self.assertRaises(SystemExit) as stop:
             voice.main(["voice.py", self.project])
         self.assertIn("401", str(stop.exception))
-        self.assertIn("Complete the latest invoice", str(stop.exception))
+        self.assertIn("missing or invalid", str(stop.exception))
+        self.assertFalse(os.path.exists(os.path.join(self.project, "public", "voice", "a-0.mp3")))
+
+    def test_the_key_goes_only_to_the_vendor(self):
+        self.polls = [{"status": "completed", "result": {"audio_url": "https://cdn.example.com/a.mp3"}}]
+        self.write([self.line()])
+        voice.main(["voice.py", self.project])
+        download = next(r for r in self.requests if "cdn.example.com" in r.full_url)
+        self.assertIsNone(download.get_header("Xi-api-key"))
+        self.assertEqual(self.requests[0].get_header("Xi-api-key"), "test-key")
 
     def test_spoken_replaces_what_is_said_and_text_stays_on_screen(self):
-        self.write([{"text": "POST /api/offers answers 409.", "spoken": "The offers route answers four oh nine.", "ref": "x"}])
+        self.write([self.line("POST /api/offers answers 409.", spoken="The offers route answers four oh nine.")])
         voice.main(["voice.py", self.project])
-        self.assertEqual(self.sent[0]["text"], "The offers route answers four oh nine.")
+        self.assertEqual(self.posts[0][1]["text"], "The offers route answers four oh nine.")
 
     def test_a_second_run_pays_only_for_the_line_that_changed(self):
-        self.write([{"text": "One.", "ref": "x"}, {"text": "Two.", "ref": "x"}])
+        self.write([self.line("One."), self.line("Two.")])
         voice.main(["voice.py", self.project])
-        self.assertEqual(len(self.sent), 2)
-        self.sent.clear()
-        self.write([{"text": "One.", "ref": "x"}, {"text": "Three.", "ref": "x"}])
+        self.assertEqual(len(self.posts), 2)
+        self.posts.clear()
+        self.write([self.line("One."), self.line("Three.")])
         voice.main(["voice.py", self.project])
-        self.assertEqual([b["text"] for b in self.sent], ["Three."])
+        self.assertEqual([b["text"] for _, b in self.posts], ["Three."])
         lengths = json.load(open(os.path.join(self.project, "src", "voice.json")))
         self.assertEqual(len(lengths["a"]), 2)
 
     def test_a_new_language_is_not_served_from_the_old_recording(self):
-        self.write([{"text": "One.", "ref": "x"}])
+        self.write([self.line("One.")])
         voice.main(["voice.py", self.project])
-        self.sent.clear()
-        self.write([{"text": "One.", "ref": "x"}], language="vi")
+        self.posts.clear()
+        self.write([self.line("One.")], language="vi")
         voice.main(["voice.py", self.project])
-        self.assertEqual(len(self.sent), 1)
+        self.assertEqual(len(self.posts), 1)
 
 
 if __name__ == "__main__":

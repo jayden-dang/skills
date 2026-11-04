@@ -25,7 +25,9 @@ PROGRESS LIVES IN THE LEDGER — NEVER IN GUIDE localStorage
 THE RUN ENDS ONLY WHEN EVERY CASE IS PASS OR PARKED — NO REPORT BEFORE THAT
 ```
 
-A case is **parked** in two situations only: it still fails after 3 fix attempts (Gate 3), or it is blocked on something only a person can supply (a credential, a non-local origin, a real payment, a missing browser driver).
+A case is **parked** in two situations only: it still fails after 3 fix attempts (Gate 3), or it is blocked on something only a person can supply (a credential, a non-local origin, a real payment, a missing browser driver). A defect in code older than the feature, or one no requirement covers, is still fixed: the fix lands `pending disposition`, so the call stays yours.
+
+With nobody at the keyboard the drive is `agent-browser`, signed in with the local account `verify.md` names, on localhost only. With someone there it is your browser through `claude-in-chrome` or kimi-webbridge.
 
 State-touching cases need both `saw` and `server` before `pass`. Presentational cases use `server: none — presentational`.
 
@@ -66,5 +68,5 @@ Earlier runs still burned browser tokens ticking guide checkboxes even though D1
 ## See also
 
 - [`write-dogfood`](write-dogfood.md) — author cases + render shell
-- [`validate-ui`](validate-ui.md) — the kimi-webbridge acceptance drive
+- [`validate-ui`](validate-ui.md) — the acceptance drive
 - [`root-cause`](root-cause.md) — product defects mid-run (deferred accept)

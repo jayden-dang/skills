@@ -18,3 +18,9 @@ persist check. IF missing, continue from **Run locally** and **name**
 `docs/agents/verify.md` for Launch/Doctor; third action mapped the
 create-note persist-reload check. Did not invent a start command from
 memory.
+
+## v1.3.3 — the UI drive follows validate-ui 2.2.0 (2026-11-04)
+
+Wording only: the description and §2 no longer say the drive is always the user's browser, since
+`validate-ui` 2.2.0 uses `agent-browser` when nobody is at the keyboard. Its GREEN ran through
+`/validate-feature`; evidence in `validate-ui`'s TESTS.md.

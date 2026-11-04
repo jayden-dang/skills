@@ -239,3 +239,53 @@ that presses Next six times on load renders step 7 of 7: the cancelled sailing i
 not) and put it under Needs you rather than fixing a spec file, which is right with the peers closed. Not covered: a live run through
 peers, a refused film, the walk on a narrow screen, and whether the owner reads the sheet faster than the old page; only they can judge that.
 Renders and scores: `.skills/SPECSHEET/` in the authoring checkout.
+
+## 1.8.0 — `--go`: from the closed spec to a pull request, and a model per role (2026-11-04)
+
+Owner's request and rulings: `--go` is the approval; unattended acceptance signs in on localhost;
+migrations on a local database only; a product walk before the PR when the front end changed; a model
+per role, default work opus, interpret opus, build sonnet. Design: `docs/design/2026-11-04-shape-go.md`.
+
+**RED, 1.6.0 + full kit, Sonnet.** A conductor resumed after step 8 and told in words to carry on to a
+finished PR (stub `gh`, bare origin). It wrote every line of code itself: 0 skills loaded, 0 subagents,
+so no task review, `inspect-change`, `validate-feature`, receipt or `land-branch`. Its demo was 15 s of
+stitched screenshots, 1280x474, silent. Both films were committed under `docs/specs/` (7.3 MB) and
+linked as `blob/…mp4`. Its ER diagram was a hand-written string in a script headed "generated". The
+ticket read `shaping` throughout. It did open a draft first and stamp `Approved` quoting the command.
+
+**Live run 1, void.** The fixture's `RUN` lacked `charter.md`, the film project and one outcome. The
+conductor stopped at step 9 with a stop note and a ticket comment, and pushed nothing. That was correct.
+It says nothing about `go.md`.
+
+**Live run 2, Sonnet conductor; work, interpret and build on Sonnet from `Shape roles:`.** Real
+tmux sessions; folder-trust dialogs accepted by a script scoped to the fixture, on the owner's word;
+`VIBI_API` from `pass`. Scored from the stub tracker, git, the receipt and transcripts.
+
+- Step 10–11: three files `Approved` with the `Approval:` line, the ticket published Ready, a draft PR
+  with the sheet's Needs you items on top, and the spec film and sheet picture attached, not committed.
+- Step 12: `<slug>-build` ran `deliver-issues`: 5 tasks, 22 subagents, the whole-branch review in 3
+  fix rounds, polish, the suite green. **The receipt caught a skip:** `missing: build-in-waves,
+  validate-feature, land-branch` — the build had run the waves loop by hand and stopped before
+  acceptance and landing. One send, and it ran all three against the same head; receipt `missing: none`.
+- **Two defects in this text, fixed after the run:**
+  1. The charter said "the conductor … opens the pull request", so `land-branch` in the build declined
+     `gh pr edit` and `gh pr ready` "by your instruction". The charter now gives those to the build.
+  2. The conductor sent the missing line and ended its turn; nothing woke it when the build finished.
+     `go.md` now re-arms the watch. The run was resumed with one message standing in for that watch,
+     naming the corrected files, so the rest of this run is not clean.
+- Step 13, after the resume: the build's body and verdict comment kept, the PR ready, the spec's Needs
+  you items and the build's eight decisions on top. Evidence block between the markers: spec film,
+  sheet picture, a 46 s 1920x1080 demo film with audio from `make-video` at `254f1b4` (the last code
+  commit, not the delivery line), "No schema exists" with real JSON from the running app, the receipt,
+  and what nobody ran. Nothing added to the branch after `9808b2b`.
+- `build-prompt.md` now asks the build to load every skill through the Skill tool.
+
+**Found outside this skill, not fixed here.** A whole-branch reviewer (Opus) started the app on port
+4711 without checking it was free, and sent requests to another process there (a leftover server from
+an earlier fixture), which stopped after a malformed POST. One more fixture server from the build was
+still listening 48 minutes later. Both belong to `inspect-change`'s reviewer prompt and the build's
+teardown.
+
+Not covered: a run from `/shape #N --auto --go` with live peers from step 1; Opus defaults (the run set
+every role to Sonnet); a hard stop under `--go`; a migration; the walk inside `--go` (this build changed
+no page); a real GitHub upload over 10 MB; Codex or Grok roles (refused by name in this version).

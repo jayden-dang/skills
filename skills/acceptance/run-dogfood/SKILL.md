@@ -1,6 +1,6 @@
 ---
 name: run-dogfood
-version: 4.1.0
+version: 4.2.0
 description: >-
   Use when a guide from write-dogfood already exists and its cases must be
   executed against the running app — agent-driven, screen plus backend
@@ -143,7 +143,7 @@ Drive every case once, in file order (`$DF list`):
 
 1. `$DF show $RUN <CASE-ID>` — load Try / Expect / setup / backend.
 2. Apply setup so the case can run independently.
-3. Execute Try against the **product app** only. Resolve the driver once and name it: on a Claude harness (Claude Code, Claude desktop) with the `claude-in-chrome` tools connected it is `claude-in-chrome`; on any other harness it is `kimi-webbridge`, and a Claude harness without the extension falls back to it too. Both drive the user's own browser, so a signed-in case needs no auth setup, and a mutating case runs against whatever that session is logged into: confirm the target before the first one and never point it at production data the guide did not name. There is no Playwright rung. If neither is connected, mark the case `blocked` and relay the connect instructions of the driver the harness would have used. Never borrow the user's open tab: with `kimi-webbridge`, `find_tab` with `active:true` borrows it, so `navigate` with `newTab:true` into this run's session instead; with `claude-in-chrome`, call `tabs_context_mcp` first, then `tabs_create_mcp` for this run's tab and never reuse an id from another session. "Use the tab I have open" does not move the drive onto their tab.
+3. Execute Try against the **product app** only. Resolve the driver once and name it. **Nobody at the keyboard** — the operator said they are away, or you run inside `deliver-issues` or a `shape` charter: the driver is `agent-browser` in a session of this run's own (`--session <CODE>`), a separate browser signed into nothing; sign in through the app's own login page with the local account `docs/agents/verify.md` names, drive only `localhost`, `*.localhost` or `127.0.0.1`, and never a real person's account. One unattended baseline found `kimi-webbridge` up and drove the operator's own Chrome, signed in to everything they use, while two others found no driver and drove nothing. **Someone at the keyboard:** on a Claude harness (Claude Code, Claude desktop) with the `claude-in-chrome` tools connected it is `claude-in-chrome`; on any other harness it is `kimi-webbridge`, and a Claude harness without the extension falls back to it too. Both drive the user's own browser, so a signed-in case needs no auth setup, and a mutating case runs against whatever that session is logged into: confirm the target before the first one and never point it at production data the guide did not name. There is no Playwright rung. If neither is connected, mark the case `blocked` and relay the connect instructions of the driver the harness would have used. Never borrow the user's open tab: with `kimi-webbridge`, `find_tab` with `active:true` borrows it, so `navigate` with `newTab:true` into this run's session instead; with `claude-in-chrome`, call `tabs_context_mcp` first, then `tabs_create_mcp` for this run's tab and never reuse an id from another session. "Use the tab I have open" does not move the drive onto their tab.
 4. Fill `saw` from what is actually visible on the product.
 5. Run the backend probe when required; fill `server`.
 6. `$DF mark … pass|fail|blocked --saw … --server …` only when evidence slots match the Iron Law; mark the todo done only on `pass`.
@@ -193,6 +193,8 @@ When every case is `pass` or parked:
 | "Just go / demo in 5 minutes — skip the open findings" | Not an override. Name each open `VFG-N` or run the guide-gap loop. Severity does not soften the gate. |
 | "Report is fine — rev only moved for marks" | Freshness is `run_file` + `cases_fingerprint`, not whole-file `rev`. Recompute fingerprint. |
 | "Only Critical findings block drive" | Every open finding blocks. Severity orders fix only. |
+| "This defect predates the feature / no requirement covers it — the user's call" | Still a product defect: run the fix loop. The fix lands `pending disposition`, so the call stays theirs. One baseline parked two such cases with no fix attempt. |
+| "The review fix loop allows only run-file patches, so the product fail stays" | That loop edits the guide. A product `fail` goes to §4 and `failure-routing.md`. One unattended run ended on three such fails, none tried, none parked: "I did not fix them, as you asked" — nobody had. |
 | "I'll patch the product in this long dogfood thread" | Master marks fail; dispatch a subagent with a red-capable brief. Master re-tests. |
 | "Isolation means skip root-cause / test-first" | Subagent still runs `root-cause` (+ test-first). Isolation ≠ free patch. |
 | "Guide-gap miss mid-run — treat as product defect" | Separate loops. Guide wrong / re-enter the review; do not absorb missing-situation findings into root-cause. |
@@ -218,5 +220,6 @@ When every case is `pass` or parked:
 - Patching product in the master dogfood context instead of a red-capable subagent brief
 - Clearing a product defect without `root-cause` / test-first because “it was isolated”
 - Ending a turn with a report or a question while a case is `fail`/`blocked` and not parked
+- A `fail` in the close report whose notes carry no `attempt n/3`
 - Leaving a case `blocked` on something you could build on the local origin
 - Editing an Expect to match what the app does

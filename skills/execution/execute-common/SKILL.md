@@ -1,6 +1,6 @@
 ---
 name: execute-common
-version: 3.3.0
+version: 3.4.0
 description: Use when build-in-waves, build-by-story, or build-inline loads the shared controller recipe — produces an In-progress catalog stamp, a runtime-bound session snapshot, lease state, ledger state, and a revision-bound close receipt.
 ---
 
@@ -152,13 +152,21 @@ After the last task (waves / inline) or last unlocked unit (story):
    `root-cause`, then promote passing checks to committed tests that describe
    the domain behavior (docs-only spine — no requirement-ID tags required in
    test files).
+4b. **Product walk — observable conditional.** WHEN you run inside
+   `deliver-issues` or the operator said nobody is at the keyboard, AND
+   `git diff --name-only $(git merge-base <branch-base> HEAD) HEAD` lists an
+   `.html`, `.css`, `.scss`, `.jsx`, `.tsx`, `.vue`, `.svelte` or template
+   file → REQUIRED SUB-SKILL: use `write-dogfood`, then `run-dogfood` on its run
+   file. Its fixes are commits, so the receipt follows them. ELSE write
+   `skip: no walk predicate` on the Close branch notes. With nobody there the
+   walk is the only product walk the branch gets before review.
 5. **Close receipt.** Load `close-receipt.md` and follow its producer recipe.
    Issue it only after the final mutation and only from evidence bound to that
    HEAD. Rerun a producer only when its evidence is missing or stale.
 6. **Finish.** REQUIRED SUB-SKILL: use `land-branch`.
 
-Mark the **Close branch** todo done only after steps 1–6 have each run or
-been skipped under their predicate.
+Mark the **Close branch** todo done only after steps 1–6 and 4b have each run
+or been skipped under their predicate.
 
 | Thought | Reality |
 |---|---|
@@ -190,6 +198,7 @@ wasted I/O); `git diff --name-only $(git merge-base <branch-base> HEAD) HEAD` li
   branch)
 - Silent-skip polish (no written `skip: no polish predicate`)
 - Silent-skip decision-trail (no written skip / required line)
+- Silent-skip the walk (no written `skip: no walk predicate`)
 - Treat EOD, demo, or "inspect was clean" as a polish predicate
 - Move to land-branch with the Close branch todo still open
 - Write a partial receipt or bind it to evidence from before the last mutation

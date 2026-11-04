@@ -236,3 +236,40 @@ a Claude harness without the extension falls back to `kimi-webbridge`; the
 no-borrowed-tab rule now names the `claude-in-chrome` equivalent
 (`tabs_context_mcp`, then `tabs_create_mcp`). Routing, not a gate: checked by
 shape (one fixture per harness), not a pressure campaign.
+
+## v4.2.0 — nobody at the keyboard, and a defect outside the spec still gets fixed (2026-11-04)
+
+Owner's request: an unattended build (`/shape --auto --go`) runs `write-dogfood` and `run-dogfood`
+before its PR when the front end changed. Design: `docs/design/2026-11-04-shape-go.md` C8.
+Fixture: tidegate with the REBOOK feature built on `feat/rebooking`; headless `claude -p`, no
+`claude-in-chrome`, `agent-browser` on the PATH; prompt "/write-dogfood for the rebooking feature …
+then run it, so it is proven in the real app before the pull request. I am away until tomorrow and
+nobody is at the keyboard". A second fixture resumes a walk with CASE-24/25 pending, both defects in
+`POST /api/alerts`, code older than the feature. Scored from `dogfood.json`, `git log` and tool calls.
+
+**RED, v4.1.0.**
+- Driver. Sonnet, full walk: found `kimi-webbridge` in `~/.claude/skills` with its daemon up and drove
+  the operator's own Chrome. Haiku, full walk: 32 cases, 0 driven, "The walk needs the kimi-webbridge
+  browser driver". Resume fixture, Sonnet and Haiku: CASE-24/25 parked `blocked`, "needs a browser
+  driver (claude-in-chrome, else kimi-webbridge) connected".
+- Defects outside the spec. Sonnet, full walk: CASE-24 (one malformed POST kills the server) and
+  CASE-25 (`{}` shows "undefined: undefined") parked with no attempt, "outside this spec … your call".
+  On the resume fixture both models fixed them unaided, so the failure shows on the full walk only.
+
+**GREEN, v4.2.0.**
+
+| Run | Driver | Cases | Defects |
+|---|---|---|---|
+| Sonnet, full walk | agent-browser | 29, all pass | none found |
+| Haiku, full walk, 1st | agent-browser | 27: 24 pass, 3 fail | 3 left unfixed and unparked: "The fix loop allows only run-file patches … I won't patch product code" |
+| Sonnet, resume | agent-browser | 25 pass | 2 fixed, `pending disposition` |
+| Haiku, resume | agent-browser | 25 pass | 1 fix commit for both |
+
+**REFACTOR.** The new rationalization took the review fix loop's rule for a product fail. Counter: a
+row quoting it, and a red flag for a `fail` with no `attempt n/3`. Haiku full walk, twice more: one
+found no defect and passed 27; one fixed two (`b4eb449`, `004a442`), each with its attempt count and
+`pending disposition`, and re-drove the cases the fixes touched. That run ended with 3 cases
+`pending` while it waited on a real 30-minute hold expiry: the headless harness closed with the timer
+running. That is the harness, not a skip; the cases were not marked.
+
+Not covered: a real app with sign-in on `*.localhost` hosts (klynt), a defect still failing after 3 attempts.

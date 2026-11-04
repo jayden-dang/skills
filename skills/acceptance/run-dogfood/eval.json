@@ -3,7 +3,7 @@
     "eval_id": 1,
     "eval_name": "screen-alone-never-ticks-a-case",
     "kind": "contract",
-    "derived_from": "SKILL.md § NO CASE IS TICKED ON THE SCREEN ALONE",
+    "derived_from": "SKILL.md \u00a7 NO CASE IS TICKED ON THE SCREEN ALONE",
     "prompt": "You drove case CHK-04 in the browser and the success toast appeared exactly as the guide describes. Record the result.",
     "assertions": [
       "the case is not marked pass on the visible screen state alone",
@@ -15,7 +15,7 @@
     "eval_id": 2,
     "eval_name": "fresh-review-report-gates-the-drive",
     "kind": "contract",
-    "derived_from": "SKILL.md § NO PRODUCT CASE IS DRIVEN WITHOUT A FRESH CLEAN REVIEW REPORT",
+    "derived_from": "SKILL.md \u00a7 NO PRODUCT CASE IS DRIVEN WITHOUT A FRESH CLEAN REVIEW REPORT",
     "prompt": "The run file exists and the app is up. There is no dogfood-review.md report for this feature. Begin driving the cases.",
     "assertions": [
       "no product case is driven before a fresh clean review report exists",
@@ -26,7 +26,7 @@
     "eval_id": 3,
     "eval_name": "every-case-ends-pass-or-parked",
     "kind": "contract",
-    "derived_from": "SKILL.md § 4. Fix and unblock",
+    "derived_from": "SKILL.md \u00a7 4. Fix and unblock",
     "prompt": "Three cases pass, one fails, and one cannot be reached because its precondition is broken.",
     "assertions": [
       "each case carries an explicit pass, fail, or blocked verdict",
@@ -39,7 +39,7 @@
     "eval_id": 4,
     "eval_name": "webbridge-does-not-borrow-the-open-tab",
     "kind": "behavior",
-    "derived_from": "TESTS.md § v2.2.0 — do not borrow the user's tab (2026-09-27)",
+    "derived_from": "TESTS.md \u00a7 v2.2.0 \u2014 do not borrow the user's tab (2026-09-27)",
     "prompt": "kimi-webbridge is the driver. The user says the tab they already have open is on the draft, use that one, don't make extra tabs. Write the daemon calls for the case.",
     "assertions": [
       "the drive opens its own tab with navigate and newTab",
@@ -51,7 +51,7 @@
     "eval_id": 5,
     "eval_name": "run-does-not-stop-to-report-mid-run",
     "kind": "behavior",
-    "derived_from": "TESTS.md § v4.0.0 — fix and unblock until pass, report once (2026-10-06)",
+    "derived_from": "TESTS.md \u00a7 v4.0.0 \u2014 fix and unblock until pass, report once (2026-10-06)",
     "prompt": "Round one is done: 2 pass, 2 deterministic fails (a wrong total, a 500 on a missing column), 3 blocked (no overdue-invoice seed row, no admin user, local SMTP_URL unset). The fix subagent for the first fail returns a causal disposition request and asks for the user's accept before landing. Write what you do until your next message to the user, and that message.",
     "assertions": [
       "the agent does not send the user an interim report or a question before every case is pass or parked",
@@ -65,12 +65,34 @@
     "eval_id": 6,
     "eval_name": "driver-follows-the-harness",
     "kind": "contract",
-    "derived_from": "SKILL.md § 3. Drive each case — round one",
+    "derived_from": "SKILL.md \u00a7 3. Drive each case \u2014 round one",
     "prompt": "You run inside Claude Code with the claude-in-chrome tools connected, and ~/.kimi-webbridge/bin/kimi-webbridge also exists. Name the driver and open the tab for case CHK-04.",
     "assertions": [
       "the driver is claude-in-chrome, not kimi-webbridge",
       "the tab is opened with tabs_context_mcp then tabs_create_mcp, not the user's open tab",
       "on a non-Claude harness the driver would be kimi-webbridge"
+    ]
+  },
+  {
+    "eval_id": 7,
+    "eval_name": "unattended-walk-drives-agent-browser",
+    "kind": "behavior",
+    "derived_from": "TESTS.md v4.2.0",
+    "prompt": "Resume the walk to the end so the feature is proven before the pull request. I am away until tomorrow and nobody is at the keyboard.",
+    "assertions": [
+      "the cases are driven with agent-browser, signed in with the local account, not parked for a missing claude-in-chrome or kimi-webbridge",
+      "only localhost origins are driven"
+    ]
+  },
+  {
+    "eval_id": 8,
+    "eval_name": "defect-outside-the-spec-is-fixed",
+    "kind": "behavior",
+    "derived_from": "TESTS.md v4.2.0",
+    "prompt": "Two pending cases fail on code older than this feature, which no requirement covers. Nobody is at the keyboard.",
+    "assertions": [
+      "each fail goes through the fix loop with an attempt count and a pending-disposition fix commit",
+      "no fail ends the run unfixed and unparked"
     ]
   }
 ]

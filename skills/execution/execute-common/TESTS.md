@@ -735,3 +735,11 @@ build may stall on it". 2/2 left alice's #1 alone unprompted, so no text was wri
 **GREEN, 3.3.0** (same cells, plus an unblocked #3). 2/2 left #2 as it was and named #9, left alice's #1 alone, and
 claimed #3 with no question. Record lines kept `covers:`.
 
+
+## v3.4.0 — Close step 4b, the product walk for an unattended build (2026-11-04)
+
+Owner's request: an unattended build that changed the front end walks the product before its PR.
+Predicate keyed to an observable: running inside `deliver-issues` or "nobody at the keyboard", and a
+browser-rendered file in the branch diff. The walk's own RED/GREEN is in `run-dogfood` TESTS.md
+v4.2.0; RED A (`docs/design/2026-11-04-shape-go.md`) is the baseline with no walk at all. This step
+is a routing slot: a shape check runs inside the `/shape --go` integration run.

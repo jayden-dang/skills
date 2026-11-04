@@ -1,4 +1,4 @@
-# /shape #N --auto [--video] [--project-style] [--en | --vi]
+# /shape #N --auto [--go] [--video] [--project-style] [--en | --vi] [--work=… --interpret=… --build=…]
 
 The operator asked for the whole spec with nobody at the keyboard, then one sheet to read it on.
 The session they typed in is the **conductor**. It opens two more sessions, watches them, checks
@@ -15,7 +15,7 @@ what they really ran, and writes the sheet. It writes no spec itself.
 
 ```
 AGENTS REVIEW. ONLY THE OPERATOR APPROVES.
-EVERY SPEC FILE STAYS Status: Draft UNTIL THE OPERATOR HAS ANSWERED THE SHEET.
+EVERY SPEC FILE STAYS Status: Draft UNTIL THE OPERATOR HAS ANSWERED THE SHEET, OR TYPED --go.
 ```
 
 `--auto` replaces every stop before the sheet, and the sheet is one stop, on a closed spec. Without this file, one run on
@@ -27,8 +27,10 @@ read, so the word meant nothing when they opened them.
 
 1. **Check.** Tools `SendMessage` and `Monitor`, commands `tmux` and `claude`. Any missing, or a tier-1
    bug (its root cause waits on the operator's disposition) → say which, and run the plain `/shape`.
-   A ticket naming a `ROAD-N`: REQUIRED SUB-SKILL: use `brief-road`. Any verdict but **Ready** → comment on
-   the ticket what it waits on, say so, and end. A run on a road whose `After:` was still in progress
+   A ticket naming a `ROAD-N`, or a command naming the road itself (`/shape ROAD-N --auto`): REQUIRED SUB-SKILL:
+   use `brief-road`. Any verdict but **Ready** → comment on the ticket, when there is one, what it waits on, say so,
+   and end. **Ready** with no ticket → file one with the tracker ops and the issue format in
+   `docs/agents/issue-tracker.md`, titled for the road, its body the brief, and continue with it as `#N`. A run on a road whose `After:` was still in progress
    opened a worktree and wrote "follows ROAD-3" as a Lock without looking up ROAD-3.
    Otherwise step 1 of `SKILL.md`. Pick a short `<slug>` from the ticket.
    `LANG` is Vietnamese with `--vi`, otherwise English, whatever language the operator types in: a command typed in
@@ -37,6 +39,13 @@ read, so the word meant nothing when they opened them.
    prompt to "Companion language Vietnamese". `--video` adds the film in step 9, and without it there is none.
    `--project-style` gives that film the project's own look. Without it the film keeps `make-video`'s default look, in any repo.
    `RUN` = absolute path of `.skills/_pending-<slug>/auto/` in this checkout. Create it.
+   With `--go`, read `go.md` beside this file now: it replaces steps 10 and 11 and adds the build.
+   **Models.** For each role take, in order: its flag (`--work=claude-opus`), its entry on the
+   `Shape roles:` line in `docs/agents/project.md`, then the default **work opus, interpret opus,
+   build sonnet**. A value is `claude-<alias or model ID>`. Check each with a one-line
+   `claude -p --model <it> "ok"`; one that fails stops the run, naming it. A value for another
+   vendor (`codex-…`, `grok-…`) is not supported yet: say so and stop. Work and interpret on one
+   model → the sheet's limits say so.
    *Done when: the ticket's only state role is `shaping` and `RUN` exists.*
 2. **Charter.** Copy `charter-template.md` to `RUN/charter.md` and fill every `{slot}`. `{conductor}` is this
    session's name, from the first line `ListAgents` prints. For Locks, read:
@@ -49,10 +58,10 @@ read, so the word meant nothing when they opened them.
    background and stop it at step 10. A run with nothing holding the Mac died mid-response when it slept.
 5. **Open the peers.** Fill `interpret-prompt.md` and `work-prompt.md` into `RUN/`. In one tmux session
    `<slug>`, from `WT`:
-   `claude --name <slug>-interpret --model sonnet --permission-mode auto "$(cat RUN/interpret-prompt.md)"`,
-   wait until `ListAgents` shows it idle, then the same for `<slug>-work`. Both flags are fixed: a peer on
-   `default` sat 26 minutes on a prompt to read its own charter, and two with no `--model` ran on the
-   machine's Opus default. Other sessions `ListAgents` shows are not part of this run, whatever they are named.
+   `claude --name <slug>-interpret --model <interpret model> --permission-mode auto "$(cat RUN/interpret-prompt.md)"`,
+   wait until `ListAgents` shows it idle, then the same for `<slug>-work` with its model. Both flags are always
+   written: a peer on `default` sat 26 minutes on a prompt to read its own charter, and two with no `--model`
+   ran on whatever the machine's default was. Other sessions `ListAgents` shows are not part of this run, whatever they are named.
    A pane asking to trust the folder → stop and tell the operator to trust it; answering it is theirs.
    *Done when: `ListAgents` lists both.*
 6. **Watch.** Start `Monitor` with this command, filled in, and re-arm it whenever it expires:
@@ -127,7 +136,7 @@ read, so the word meant nothing when they opened them.
 
 ## Red flags
 
-- A spec file reading `Approved` before the operator answered the sheet
+- A spec file reading `Approved` before the operator answered the sheet, in a run without `--go`
 - The conductor writing `requirements.md`, `design.md` or `tasks.md`
 - A step 7 result taken from `report.md` instead of the command's output
 - Answering a dialog in a peer's pane

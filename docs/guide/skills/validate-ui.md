@@ -1,6 +1,6 @@
 # `validate-ui`
 
-> Drive the app in the user's browser the way a user will: click, type, submit, reload, and assert on what is actually on screen. Component tests mock the network; this proves the wired stack — render, request, response, re-render, persistence.
+> Drive the app in a real browser the way a user will: click, type, submit, reload, and assert on what is actually on screen. Component tests mock the network; this proves the wired stack — render, request, response, re-render, persistence.
 
 |  |  |
 |---|---|
@@ -13,9 +13,9 @@
 
 ## When it fires
 
-To validate a frontend against its spec by driving it in the user's Chrome or Edge through kimi-webbridge — click, type, reload — and asserting visible state and persistence, before merging. It covers the flows component tests mock away. It also fires when the repo has no documented local run command, because it records that command first.
+To validate a frontend against its spec by driving it in a real browser — yours through `claude-in-chrome` or kimi-webbridge, or `agent-browser` when nobody is at the keyboard — click, type, reload — and asserting visible state and persistence, before merging. It covers the flows component tests mock away. It also fires when the repo has no documented local run command, because it records that command first.
 
-It does not install Playwright, Cypress, or any other browser harness. A fresh headless browser is a different session from the one the user is signed into.
+It does not install Playwright, Cypress, or any other browser harness.
 
 Usually [`validate-feature`](validate-feature.md) invokes it with a slice of the acceptance ledger. It can also run directly against a frontend change.
 
@@ -25,9 +25,13 @@ Read `docs/agents/project.md` for `## Run locally (dev)` and start the frontend,
 
 If a flow needs a signed-in session, the browser's existing login is that session. A login wall stops for the user to sign in once in the drive's tab. An empty screen is not a pass.
 
-## 2. The driver is kimi-webbridge
+## 2. The driver follows who is at the keyboard
 
-One session name for the feature. The first navigation opens a new tab. Do not borrow the tab the user is already viewing. If the daemon is down, start it. If the extension is not connected, relay its help page and stop. Do not substitute a headless browser because the repo already has one.
+**Nobody there** (you said you are away, or it runs inside `deliver-issues` or `/shape --go`): `agent-browser`, in a session of the feature's own. It is a separate browser signed into nothing, so it signs in through the app's own login page with the local account `docs/agents/verify.md` names, and it drives only localhost. Two baseline runs on their own signed in with `curl` and drove no UI at all.
+
+**Someone there:** `claude-in-chrome` on a Claude harness, kimi-webbridge otherwise, in your browser. It opens its own tab and never borrows yours. If the driver is not connected, it relays the connect step and stops.
+
+Either way it stops only the processes it started: three of four baseline runs cleaned up with `pkill` on every Node server.
 
 ## 3. Drive each checklist flow
 

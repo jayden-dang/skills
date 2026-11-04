@@ -158,13 +158,14 @@ use \`x\`` is for model-invocable targets only — pointing it at a
 
 **Two reachability paths, and one of them is fragile.** A skill is reached either
 by a `REQUIRED SUB-SKILL` hand-off or by its description matching what the user
-said. Eight model-invocable skills have no `REQUIRED SUB-SKILL` caller —
-`amend-feature`, `vet-feedback`, `vet-source`, `speak-outer`, `hold-stage`, `run-dogfood`,
+said. Seven model-invocable skills have no `REQUIRED SUB-SKILL` caller —
+`amend-feature`, `vet-feedback`, `vet-source`, `speak-outer`, `hold-stage`,
 `draft-ux`, `understand`. Reverse-track is **not** a
 separate skill: when the reverse predicate holds, callers **name** `/map-features`
 (dispose step 0). `write-dogfood` is reached from
 `prove-claim` (alternative to `validate-feature`); the execute-family close
-sequence never opens a product walk, the user does. The remaining entry points fire
+sequence opens a product walk only for an unattended build that changed a
+browser-rendered surface (`execute-common` Close step 4b); otherwise the user does. The remaining entry points fire
 on what the user said, which makes their descriptions the only thing
 standing between them and never running. An entry point that undertriggers
 is invisible: it does not fail, it simply never appears.

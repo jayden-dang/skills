@@ -10,7 +10,7 @@ subagent.
 
 | Observation | Action |
 |---|---|
-| Deterministic fail on a real Expect / backend assertion | **Product defect.** Run the fix loop below. |
+| Deterministic fail on a real Expect / backend assertion | **Product defect.** Run the fix loop below — also when the code predates this feature or no requirement covers it. A baseline parked two such cases as "outside this spec, your call" with no attempt; one malformed POST took the whole server down. |
 | Flaky: passes and fails across three drives from clean setup | A race is a product defect too. Run the fix loop, and put the pass/fail ratio in the brief. |
 | Guide wrong: a stale label or selector, or an Expect the spec contradicts (`docs/specs/<feature>/requirements.md`, the design, a decision record) | Fix the case's authored slots in the **run file** and cite the spec line in its notes. The edit stales `cases_fingerprint`, so run `write-dogfood`'s review fix loop yourself, then re-drive. What the app does is never, alone, evidence that the guide is wrong: with no spec line behind the edit, it is a product defect. Do not send guide bugs to `root-cause`. |
 
@@ -55,4 +55,4 @@ a product defect. Product defects do not absorb missing-situation findings.
 
 Durable asset for a product fix: the regression test `root-cause` already requires
 under TDD — not a silent promotion of the whole guide into a new browser
-harness. `validate-ui` is the kimi-webbridge acceptance drive, not a second suite.
+harness. `validate-ui` is the acceptance drive, not a second suite.

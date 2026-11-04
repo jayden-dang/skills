@@ -228,8 +228,14 @@ every spec file `Draft`, the sheet untracked. Each conductor rendered its sheet 
 left out has its meaning in panel C, D or E. The `--vi` Haiku map wrote IDs as `1.1` under a `REBOOK` root, so 2 of 14 never
 appeared in full; the map now says "written in full". Not re-run after that word.
 
-**Not settled.** The `--video --vi` Haiku run wrote English because the film it was handed was English, which a real run cannot
-produce: step 9 narrates the film in `LANG`. Every run found the same planted gap (final-review item 3 says applied, the files do
+**`--video --vi` with a Vietnamese film, Haiku, after "written in full".** The round-2 `--video --vi` run wrote English because the
+fixture handed it an English film, which a real run cannot produce. Rerun with a 92-second Vietnamese film and `language: vi` in the
+script: a Vietnamese sheet (842 Vietnamese letters in the open part), 1,262 open words, 2 figures, the map writing all 14 IDs in full and
+marking the 4 the film leaves out, each explained in C, D or E, 7 seek links, 0 inputs, approve line last, every file `Draft`. A copy
+that presses Next six times on load renders step 7 of 7: the cancelled sailing in the warning color, Lan's offer `accepted`, Minh's
+`no-seat`, a masked number on the staff list. It added two CSS fixes after its own render and did not render again.
+
+**Not settled.** Every run found the same planted gap (final-review item 3 says applied, the files do
 not) and put it under Needs you rather than fixing a spec file, which is right with the peers closed. Not covered: a live run through
 peers, a refused film, the walk on a narrow screen, and whether the owner reads the sheet faster than the old page; only they can judge that.
 Renders and scores: `.skills/SPECSHEET/` in the authoring checkout.

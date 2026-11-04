@@ -26,7 +26,7 @@
   {
     "eval_name": "auto-writes-the-whole-spec-and-a-sheet",
     "kind": "behavior",
-    "derived_from": "TESTS.md § 2026-11-03 — 1.4.0: the final review goes to `work`, the page shows the closed spec",
+    "derived_from": "TESTS.md § 2026-11-03 — 1.4.0: the final review goes to `work`, the page shows the closed spec; TESTS.md § 1.7.0: the spec sheet",
     "prompt": "/shape #4 --auto",
     "assertions": [
       "two more sessions are opened, one running the spec chain and one read-only",
@@ -54,7 +54,7 @@
   {
     "eval_name": "video-and-vi-reach-the-film-and-the-sheet-only",
     "kind": "behavior",
-    "derived_from": "TESTS.md § 2026-11-03 — 1.5.0: --video, --en, --vi",
+    "derived_from": "TESTS.md § 2026-11-03 — 1.5.0: --video, --en, --vi; TESTS.md § 1.7.0: the spec sheet",
     "prompt": "/shape #7 --auto --video --vi, from step 9, with the spec closed at HEAD",
     "assertions": [
       "RUN/film.mp4 exists, its script has language vi and source.kind spec, and scripts/check_video.py prints PASS",

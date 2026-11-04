@@ -236,7 +236,7 @@ and countered by name. See [The gates](docs/guide/concepts/gates.md).
 | execution | `build-in-waves`, `build-by-story`, `build-inline`, `execute-common`, `test-first`, `root-cause`, `debug-remote`, `assess-observability`, `prove-claim`, `audit-trace`, `load-subgraph`, `isolate-workspace`, `hold-stage` |
 | review | `inspect-change`, `polish-diff`, `vet-feedback`, `vet-source`, `speak-outer`, `inspect-invariants`, `inspect-ui` |
 | acceptance | `validate-feature`, `validate-api`, `validate-ui`, `write-dogfood`, `run-dogfood` |
-| craft | `craft-page`, `draft-ui`, `draft-ux`, `/make-video` |
+| craft | `craft-page`, `draft-ui`, `draft-ux`, `make-video` |
 | ship | `land-branch`, `record-verdict`, `cut-release` |
 | track | `amend-feature`, `reroute-plan`, `triage`, `realign-spec`, `refresh-roadmap-status`, `chart-progress`, `brief-road`, `assess-milestone`, `scan-architecture`, `map-features`, `write-handoff`, `publish-issues`, `record-debt` |
 | project | `define-project`, `assess-pivot-impact`, `plan-milestones` (optional project / multi-milestone layer) |

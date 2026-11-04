@@ -10,7 +10,7 @@ execFileSync('npx', ['remotion', 'bundle', `--out-dir=${serveUrl}`, '--log=error
 
 const browser = await openBrowser('chrome');
 const composition = await selectComposition({serveUrl, id: 'Film', puppeteerInstance: browser});
-const {beats} = composition.props;
+const {beats, scenes} = composition.props;
 
 rmSync('out/preview', {recursive: true, force: true});
 mkdirSync('out/preview', {recursive: true});
@@ -21,6 +21,7 @@ for (const [i, frame] of beats.entries()) {
 await browser.close({silent: true});
 
 writeFileSync('out/beats.json', JSON.stringify(beats));
+writeFileSync('out/scenes.json', JSON.stringify(scenes, null, 1));
 const rows = Math.ceil(beats.length / 4);
 execFileSync('ffmpeg', ['-v', 'error', '-y', '-framerate', '1', '-pattern_type', 'glob', '-i', 'out/preview/*.png', '-vf', `scale=640:-1,tile=4x${rows}`, '-frames:v', '1', 'out/preview.png'], {stdio: 'inherit'});
 console.log(`preview: ${resolve('out/preview.png')} (${beats.length} lines; full size in out/preview/)`);

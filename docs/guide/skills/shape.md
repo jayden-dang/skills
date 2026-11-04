@@ -8,7 +8,7 @@
 | **Invocation** | `/shape #N` (user-invoked; `disable-model-invocation: true`) |
 | **Reads** | the ticket and its comments, `docs/agents/issue-tracker.md`, `docs/agents/triage-labels.md`, the feature's spec files |
 | **Writes** | `shaping` as the ticket's only state role, a comment at each stop saying what waits and on whom, `.skills/<CODE>/tickets.md`, and what the skills below write |
-| **Calls** | [`frame-change`](frame-change.md) when the ticket has no tier; [`root-cause`](root-cause.md) for tier 1; [`specify-behavior`](specify-behavior.md), [`design-solution`](design-solution.md) and [`plan-tasks`](plan-tasks.md) for tier 2 |
+| **Calls** | [`frame-change`](frame-change.md) when the ticket has no tier; [`root-cause`](root-cause.md) for tier 1; [`specify-behavior`](specify-behavior.md), [`design-solution`](design-solution.md) and [`plan-tasks`](plan-tasks.md) for tier 2; [`make-video`](make-video.md) under `--auto --video` |
 | **Called by** | nobody — it is user-invoked |
 
 ## When it fires
@@ -28,6 +28,11 @@ At every stop it comments what is waiting and on whom, such as "requirements.md 
 `/shape #N --auto` writes the whole spec with nobody at the keyboard, then hands you one page. The session you typed in conducts: it checks the road with [`brief-road`](brief-road.md), writes a charter from what the repo already decided, opens a `work` session and a read-only [`interpret-session`](interpret-session.md) session in tmux, keeps the machine awake, and wakes a session that stops. When they finish it reads their transcripts to see which skills really ran, audits the files, and runs one outside advisor. It sends those findings straight to `work`, which fixes or rejects each with a reason and has `interpret` review what moved. Only then does it write `review.html`.
 
 The page shows the closed spec: what changes for you, the few things that need you, what the final review changed, and what happens when it runs, with the rest collapsed. It has nothing to fill in. Type `approve`, or say what to change in plain words, and changes go back through both sessions. Every file stays `Status: Draft` until you approve, and only then is the ticket Ready for [`/go`](go.md).
+
+Two more flags go with `--auto`:
+
+- **`--video`** adds a film that explains the closed spec, up to 120 seconds, made by [`make-video`](make-video.md). The page then gets thin: the film, what needs you, an index of its scenes, the requirements the film leaves out, and links to the spec files. There is no film without this flag, and a film that cannot be made leaves you the full page with the reason at the top. The spec's narration goes to Vibi and the provider behind it, so leave this flag off a repo whose specs must stay on the machine.
+- **`--vi`** writes the film and the page in Vietnamese. `--en` is the default, whatever language you type the command in. The spec, the charter and both sessions stay in English under either flag.
 
 It needs Claude Code's cross-session messaging, `tmux`, and a trusted repo. Expect about 45 minutes for even a small feature, so start it when you are leaving the machine. Tier-1 bugs use the plain command, because a root cause waits on you. A road that is not Ready stops with what it waits on.
 

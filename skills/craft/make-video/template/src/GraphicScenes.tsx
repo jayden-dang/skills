@@ -63,7 +63,7 @@ export const TitleScene: React.FC<Props> = ({scene}) => {
 };
 
 // A point arrives on its beat. Extra points arrive evenly through the last beat.
-const pointAt = (starts: number[], lengths: number[], count: number, i: number) => {
+export const pointAt = (starts: number[], lengths: number[], count: number, i: number) => {
   const last = starts.length - 1;
   if (i < last || count <= starts.length) return starts[Math.min(i, last)];
   return starts[last] + (i - last) * (lengths[last] / (count - last));

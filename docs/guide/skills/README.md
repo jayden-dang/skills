@@ -109,7 +109,7 @@ The visual layer. Fires before any HTML a human will look at.
 | [`craft-page`](craft-page.md) | model | Names the treatment, writes the color/type/layout plan, holds the page fundamentals; figure-gated diagram recipes when a primary figure is warranted |
 | [`draft-ui`](draft-ui.md) | model | Divergent real-HTML screen variants + review loop + locked ui-brief the design chain lifts |
 | [`draft-ux`](draft-ux.md) | model | Runnable takes of one flow that differ in when the world changes + review loop + a locked `## Interaction` section in the same brief |
-| [`make-video`](make-video.md) | `/make-video` | A narrated 1080p film of a built feature, a branch, or a release, on a Remotion template: real footage with a camera on each line, a source for each line, and a fixed check before it ships. |
+| [`make-video`](make-video.md) | model | A narrated 1080p film of a built feature, a branch, a release, or a closed spec, on a Remotion template: real footage with a camera on each line, a source for each line, and a fixed check before it ships. |
 
 ## ship
 

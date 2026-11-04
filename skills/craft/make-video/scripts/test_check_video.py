@@ -34,8 +34,15 @@ class ValidateScript(unittest.TestCase):
         s["scenes"][0]["beats"][0]["text"] = " ".join(["word"] * 21)
         self.assertIn("a-0: over 20 words", cv.validate_script(s))
 
+    def test_vietnamese_counts_syllables_so_it_gets_more_tokens(self):
+        s = script(language="vi")
+        s["scenes"][0]["beats"][0]["text"] = " ".join(["từ"] * 30)
+        self.assertEqual(cv.validate_script(s), [])
+        s["scenes"][0]["beats"][0]["text"] = " ".join(["từ"] * 31)
+        self.assertIn("a-0: over 30 words", cv.validate_script(s))
+
     def test_an_unknown_source_kind_is_a_fault(self):
-        self.assertIn("source.kind must be feature, pr or release", cv.validate_script(script(source={"kind": "spec", "ref": "x"})))
+        self.assertIn("source.kind must be feature, pr, release or spec", cv.validate_script(script(source={"kind": "pitch", "ref": "x"})))
 
     def test_a_missing_language_is_a_fault(self):
         s = script()
@@ -46,6 +53,226 @@ class ValidateScript(unittest.TestCase):
         s = script()
         s["scenes"][0] = {"id": "c", "kind": "clip", "title": "T", "beats": [{"text": "Hi.", "ref": "a.js:1"}]}
         self.assertIn("c: clip scene names no clip", cv.validate_script(s))
+
+
+REQUIREMENTS = """# Requirements: Rebooking
+## 1. Offer
+- **REBOOK-1.1** WHEN staff cancel THE SYSTEM SHALL offer.
+- **REBOOK-1.2** THE SYSTEM SHALL pick the next sailing.
+## 2. Hold
+- **REBOOK-2.1** THE SYSTEM SHALL hold a seat.
+- ~~**REBOOK-2.2**~~ retired.
+"""
+
+
+def spec_script(**over):
+    base = {
+        "language": "en",
+        "planned": "Planned, not built",
+        "source": {"kind": "spec", "ref": "abc123", "spec": "docs/specs/rebooking"},
+        "scenes": [
+            {"id": "world", "kind": "world", "title": "T", "beats": [
+                {"text": "Lan has a seat on the ferry.", "ref": "REBOOK-1.1"},
+                {"text": "It is cancelled, so she needs another.", "ref": "REBOOK-1.2"},
+                {"text": "But the seat could go, so it is held.", "ref": "REBOOK-2.1"},
+            ]},
+        ],
+    }
+    base.update(over)
+    return base
+
+
+def beats(*texts):
+    return [{"text": t, "ref": "REBOOK-1.1"} for t in texts]
+
+
+class SpecFilm(unittest.TestCase):
+    def test_an_explanation_has_no_faults(self):
+        self.assertEqual(cv.judge_spec(spec_script(), REQUIREMENTS), [])
+
+    def test_a_story_it_does_not_tell_is_no_fault(self):
+        s = spec_script()
+        s["scenes"][0]["beats"] = beats("So this.", "Because that.", "But then.")
+        self.assertEqual(cv.judge_spec(s, REQUIREMENTS), [])
+
+    def test_an_id_the_spec_does_not_define_is_a_fault(self):
+        s = spec_script()
+        s["scenes"][0]["beats"][0]["ref"] = "REBOOK-9.9"
+        self.assertIn("REBOOK-9.9 is not in requirements.md", cv.judge_spec(s, REQUIREMENTS))
+
+    def test_a_retired_id_is_a_fault(self):
+        s = spec_script()
+        s["scenes"][0]["beats"][0]["ref"] = "REBOOK-2.2"
+        self.assertIn("REBOOK-2.2 is not in requirements.md", cv.judge_spec(s, REQUIREMENTS))
+
+    def test_footage_is_a_fault_because_nothing_is_built(self):
+        s = spec_script()
+        s["scenes"].append({"id": "shot", "kind": "clip", "title": "T", "beats": beats("So a clip.")})
+        self.assertIn("shot: a spec film shows no footage", cv.judge_spec(s, REQUIREMENTS))
+
+    def test_a_second_bullet_scene_is_a_fault(self):
+        s = spec_script()
+        for name in ("one", "two"):
+            s["scenes"].append({"id": name, "kind": "points", "title": "T", "points": ["p"], "beats": beats("So this, because that.")})
+        self.assertIn("2 points scenes: a spec film has at most 1", cv.judge_spec(s, REQUIREMENTS))
+
+    def test_a_film_with_no_world_is_a_fault(self):
+        s = spec_script()
+        s["scenes"][0]["kind"] = "table"
+        self.assertIn("no world scene", cv.judge_spec(s, REQUIREMENTS))
+
+    def test_a_list_of_facts_is_a_fault(self):
+        s = spec_script()
+        s["scenes"][0]["beats"] = beats("Then offers.", "The sweep.", "The routes.", "So it ends.")
+        self.assertIn("1 of 4 lines give a reason; an explanation needs a third", cv.judge_spec(s, REQUIREMENTS))
+
+    def test_reasons_count_in_vietnamese(self):
+        s = spec_script(language="vi")
+        s["scenes"][0]["beats"] = beats("Nên cửa sổ mở ra.", "Hết giờ.", "Vì vậy ghế được giữ.")
+        self.assertEqual(cv.judge_spec(s, REQUIREMENTS), [])
+        s["scenes"][0]["beats"] = beats("Kế hoạch.", "Hết giờ.", "Năm task.")
+        self.assertIn("0 of 3 lines give a reason; an explanation needs a third", cv.judge_spec(s, REQUIREMENTS))
+
+    def test_a_language_with_no_word_list_is_not_judged_on_reasons(self):
+        s = spec_script(language="de")
+        s["scenes"][0]["beats"] = beats("Eins.", "Zwei.", "Drei.")
+        self.assertEqual(cv.judge_spec(s, REQUIREMENTS), [])
+
+    def test_no_planned_label_is_a_fault(self):
+        s = spec_script()
+        del s["planned"]
+        self.assertIn("planned label is missing", cv.judge_spec(s, REQUIREMENTS))
+
+    def test_no_spec_folder_is_a_fault(self):
+        s = spec_script()
+        del s["source"]["spec"]
+        self.assertIn("source.spec is missing", cv.validate_script(s))
+
+    def test_it_lists_what_the_film_leaves_out_in_order(self):
+        s = spec_script()
+        s["scenes"][0]["beats"] = beats("One.")
+        reqs = REQUIREMENTS + "- **REBOOK-1.10** THE SYSTEM SHALL.\n"
+        self.assertEqual(cv.uncited(s, reqs), ["REBOOK-1.2", "REBOOK-1.10", "REBOOK-2.1"])
+
+
+DESIGN = """# Design
+```js
+type Offer = {
+  token: string;
+};
+```
+"""
+
+
+class SpecQuotes(unittest.TestCase):
+    def read(self, path):
+        return {"docs/specs/rebooking/design.md": DESIGN, "docs/specs/rebooking/requirements.md": REQUIREMENTS}.get(path)
+
+    def quoting(self, scene):
+        return spec_script(scenes=[scene])
+
+    def test_a_rule_in_the_spec_words_passes(self):
+        s = self.quoting({"id": "r", "kind": "ears", "rules": [{"id": "REBOOK-1.2", "text": "THE SYSTEM SHALL pick the next sailing."}], "beats": []})
+        self.assertEqual(cv.judge_quotes(s, self.read), [])
+
+    def test_a_reworded_rule_is_a_fault(self):
+        s = self.quoting({"id": "r", "kind": "ears", "rules": [{"id": "REBOOK-1.2", "text": "THE SYSTEM SHALL choose a sailing."}], "beats": []})
+        self.assertIn("r: REBOOK-1.2 is not in the spec's words", cv.judge_quotes(s, self.read))
+
+    def test_code_from_the_file_passes(self):
+        s = self.quoting({"id": "c", "kind": "code", "file": "docs/specs/rebooking/design.md", "lines": ["type Offer = {", "  token: string;", "};"], "beats": []})
+        self.assertEqual(cv.judge_quotes(s, self.read), [])
+
+    def test_code_the_file_does_not_hold_is_a_fault(self):
+        s = self.quoting({"id": "c", "kind": "code", "file": "docs/specs/rebooking/design.md", "lines": ["type Offer = {", "  id: number;"], "beats": []})
+        self.assertIn("c: line 2 is not in docs/specs/rebooking/design.md", cv.judge_quotes(s, self.read))
+
+    def test_code_from_a_file_that_is_not_there_is_a_fault(self):
+        s = self.quoting({"id": "c", "kind": "code", "file": "offers.js", "lines": ["x"], "beats": []})
+        self.assertIn("c: offers.js is not at the pinned commit", cv.judge_quotes(s, self.read))
+
+
+def world(objects, beats):
+    return {"scenes": [{"id": "w", "kind": "world", "title": "T", "objects": objects, "beats": beats}]}
+
+
+def box(id, x, y, w, h, **more):
+    return {"id": id, "shape": "card", "x": x, "y": y, "w": w, "h": h, **more}
+
+
+def showing(**world_change):
+    return {"text": "A line.", "ref": "x", "world": world_change}
+
+
+class WorldCamera(unittest.TestCase):
+    def test_a_camera_holding_all_it_shows_has_no_faults(self):
+        s = world([box("a", 100, 100, 200, 100)], [showing(set={"a": {}}, camera={"x": 0, "y": 0, "w": 890, "h": 370})])
+        self.assertEqual(cv.judge_world(s), [])
+
+    def test_a_thing_cut_by_the_camera_is_a_fault(self):
+        s = world([box("late", 800, 100, 400, 100)], [showing(set={"late": {}}, camera={"x": 0, "y": 0, "w": 890, "h": 370})])
+        self.assertIn("w-0: late is cut by the camera", cv.judge_world(s))
+
+    def test_a_thing_wholly_out_of_frame_is_no_fault(self):
+        s = world([box("far", 3000, 100, 200, 100)], [showing(set={"far": {}}, camera={"x": 0, "y": 0, "w": 890, "h": 370})])
+        self.assertEqual(cv.judge_world(s), [])
+
+    def test_a_hidden_thing_is_no_fault(self):
+        s = world([box("a", 800, 100, 400, 100)], [showing(camera={"x": 0, "y": 0, "w": 890, "h": 370})])
+        self.assertEqual(cv.judge_world(s), [])
+
+    def test_a_background_filling_the_frame_is_no_fault(self):
+        s = world([box("desk", 0, 0, 1780, 740)], [showing(set={"desk": {}}, camera={"x": 100, "y": 100, "w": 890, "h": 370})])
+        self.assertEqual(cv.judge_world(s), [])
+
+    def test_the_default_camera_is_the_whole_world(self):
+        s = world([box("wide", 1700, 100, 200, 100)], [showing(set={"wide": {}})])
+        self.assertIn("w-0: wide is cut by the camera", cv.judge_world(s))
+
+    def test_a_camera_carries_over_and_a_later_move_is_judged(self):
+        s = world([box("a", 100, 100, 200, 100)], [
+            showing(set={"a": {}}, camera={"x": 0, "y": 0, "w": 890, "h": 370}),
+            showing(set={"a": {"x": 800}}),
+        ])
+        self.assertIn("w-1: a is cut by the camera", cv.judge_world(s))
+
+    def test_a_change_part_way_through_a_line_is_judged(self):
+        s = world([box("a", 100, 100, 200, 100), box("b", 800, 100, 400, 100)], [
+            showing(set={"a": {}}, camera={"x": 0, "y": 0, "w": 890, "h": 370}, then={"after": 0.5, "set": {"b": {}}}),
+        ])
+        self.assertIn("w-0: b is cut by the camera", cv.judge_world(s))
+
+    def test_a_frame_wider_than_its_camera_shows_more_than_the_box(self):
+        # A tall camera box is letterboxed, so the frame is wider than the box that asked for it.
+        s = world([box("a", 300, 100, 200, 100)], [showing(set={"a": {}}, camera={"x": 0, "y": 0, "w": 370, "h": 370})])
+        self.assertEqual(cv.judge_world(s), [])
+
+    def test_one_cut_thing_reports_once_while_the_camera_holds(self):
+        s = world([box("a", 800, 100, 400, 100)], [
+            showing(set={"a": {}}, camera={"x": 0, "y": 0, "w": 890, "h": 370}),
+            showing(),
+        ])
+        self.assertEqual(cv.judge_world(s), ["w-0: a is cut by the camera"])
+
+
+class ScriptFaults(unittest.TestCase):
+    def test_it_judges_a_script_with_no_film(self):
+        s = script()
+        s["scenes"][0]["beats"][0]["ref"] = ""
+        self.assertIn("a-0: no source", cv.script_faults(s, "."))
+
+    def test_it_judges_a_world_camera(self):
+        s = script()
+        s["scenes"] = world([box("wide", 1700, 100, 200, 100)], [showing(set={"wide": {}})])["scenes"]
+        self.assertIn("w-0: wide is cut by the camera", cv.script_faults(s, "."))
+
+
+class SpecLength(unittest.TestCase):
+    def test_every_spec_gets_two_minutes(self):
+        self.assertEqual(cv.judge_length(120.0), [])
+
+    def test_over_two_minutes_is_a_fault(self):
+        self.assertIn("120.5s is over the 120s limit", cv.judge_length(120.5))
 
 
 class JudgeClip(unittest.TestCase):

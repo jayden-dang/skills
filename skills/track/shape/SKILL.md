@@ -1,7 +1,7 @@
 ---
 name: shape
-version: 1.4.0
-description: Writes what a ticket needs before an agent can build it — the spec triad, or the root cause for a bug — and stops at your approval, or with --auto writes the whole spec unattended and hands you one review page. Run it with /shape #N.
+version: 1.5.0
+description: Writes what a ticket needs before an agent can build it — the spec triad, or the root cause for a bug — and stops at your approval, or with --auto writes the whole spec unattended and hands you one review page, with a film of the spec under --video and in Vietnamese under --vi. Run it with /shape #N.
 disable-model-invocation: true
 ---
 

@@ -1,48 +1,98 @@
 #!/usr/bin/env python3
-"""Speak every line of src/script.json, level it, and record its length.
+"""Speak every line of src/script.json through Vibi, level it, and record its length.
 
-Usage: voice.py <project> [--engine say|elevenlabs] [--voice NAME]
+A line already spoken with the same words, language and voice is reused, so a rerun pays only
+for what changed.
+
+Usage: voice.py <project> [--voice ID]
 """
+import hashlib
 import json
 import os
 import re
+import shutil
 import subprocess
 import sys
+import time
 import urllib.error
 import urllib.request
 
-SAY_VOICE = {"en": "Samantha", "vi": "Linh"}
-ELEVEN_VOICE = "EXAVITQu4vr4xnSDxMaL"
-# eleven_multilingual_v2 does not list Vietnamese; the flash model carries every language this set has used.
-ELEVEN_MODEL = "eleven_flash_v2_5"
+API = "https://api.vibi.pro/v1"
+# The owner chose these two voices from the trials in TESTS.md. Other languages go to ElevenLabs,
+# whose flash model carries every language this set has used, at half the credits of v4.
+SARAH = {"voice": "EXAVITQu4vr4xnSDxMaL", "model_id": "eleven_flash_v2_5"}
+VOICES = {
+    "en": {"voice": "273587280617674", "provider": "minimax", "model_id": "speech-2.8-hd", "language_code": "English"},
+    "vi": {"voice": "362703657091265", "provider": "minimax", "model_id": "speech-2.8-hd", "language_code": "Vietnamese"},
+}
 TARGET_LUFS = -16.0
+POLL_SECONDS = 2
+POLL_LIMIT = 150  # Jobs took 5 to 20 seconds in the trial; this waits five minutes
 
 
 def arg(argv, name, default):
     return argv[argv.index(name) + 1] if name in argv else default
 
 
-def eleven(text, language, voice, out):
-    key = os.environ.get("ELEVENLABS_API_KEY") or os.environ.get("ELEVENLABS")
+def api_key():
+    key = os.environ.get("VIBI_API")
     if not key:
-        raise SystemExit("FAIL no ELEVENLABS_API_KEY in the environment")
+        raise SystemExit("FAIL no VIBI_API in the environment")
+    return key
+
+
+def settings(language, voice):
+    """What to ask for in this language: the fields of the request, and the voice for its path."""
+    chosen = dict(VOICES.get(language) or {**SARAH, "language_code": language})
+    path_voice = voice or chosen.pop("voice")
+    chosen.pop("voice", None)
+    return path_voice, chosen
+
+
+def vendor_reason(error):
+    """The vendor's own sentence: a 401 means a bad key or an unpaid invoice, and only this tells them apart."""
+    try:
+        body = json.loads(error.read())
+    except ValueError:
+        return "no reason given"
+    detail = body.get("detail") if isinstance(body, dict) else None
+    reason = detail.get("message") if isinstance(detail, dict) else detail
+    return reason or (body.get("error") if isinstance(body, dict) else None) or "no reason given"
+
+
+def call(key, path, body=None):
     req = urllib.request.Request(
-        f"https://api.elevenlabs.io/v1/text-to-speech/{voice}?output_format=mp3_44100_128",
-        method="POST",
-        headers={"xi-api-key": key, "Content-Type": "application/json"},
-        data=json.dumps({"text": text, "model_id": ELEVEN_MODEL, "language_code": language}).encode(),
+        API + path,
+        method="POST" if body is not None else "GET",
+        headers={"xi-api-key": key, "Content-Type": "application/json", "User-Agent": "make-video"},
+        data=json.dumps(body).encode() if body is not None else None,
     )
     try:
-        data = urllib.request.urlopen(req).read()
+        return json.loads(urllib.request.urlopen(req, timeout=60).read())
     except urllib.error.HTTPError as e:
-        hint = " A free plan cannot use library voices over the API; use a premade voice." if e.code == 402 else ""
-        raise SystemExit(f"FAIL ElevenLabs answered {e.code}.{hint}")
+        raise SystemExit(f"FAIL Vibi answered {e.code}: {vendor_reason(e)}")
+
+
+def speak(key, text, language, voice, out):
+    path_voice, fields = settings(language, voice)
+    job = call(key, f"/text-to-speech/{path_voice}", {"text": text, **fields})
+    for _ in range(POLL_LIMIT):
+        done = call(key, f"/history/{job['id']}")
+        if done.get("status") == "failed":
+            raise SystemExit(f"FAIL Vibi could not speak a line: {done.get('error') or 'no reason given'}")
+        if done.get("status") == "completed":
+            break
+        time.sleep(POLL_SECONDS)
+    else:
+        raise SystemExit(f"FAIL Vibi job {job['id']} did not finish")
+    url = done["result"]["audio_url"]
+    # The key goes to Vibi alone, wherever the audio happens to be served from.
+    headers = {"User-Agent": "make-video"}
+    if url.startswith("https://api.vibi.pro/"):
+        headers["xi-api-key"] = key
+    data = urllib.request.urlopen(urllib.request.Request(url, headers=headers), timeout=120).read()
     with open(out, "wb") as f:
         f.write(data)
-
-
-def say(text, voice, out):
-    subprocess.check_call(["say", "-v", voice, "-o", out, text])
 
 
 def loudness(path):
@@ -50,35 +100,49 @@ def loudness(path):
     return float(re.findall(r"I:\s+(-?[\d.]+) LUFS", log)[-1])
 
 
+def recording(cache, key, text, language, voice):
+    """The levelled mp3 for these words, spoken now only if it is not already on disk."""
+    path_voice, fields = settings(language, voice)
+    name = hashlib.sha256("\0".join((text, language, path_voice, json.dumps(fields, sort_keys=True))).encode()).hexdigest()[:24]
+    done = os.path.join(cache, f"{name}.mp3")
+    if os.path.exists(done):
+        return done, False
+    raw = os.path.join(cache, f"{name}.raw.mp3")
+    speak(key, text, language, voice, raw)
+    gain = TARGET_LUFS - loudness(raw)
+    subprocess.check_call(["ffmpeg", "-v", "error", "-y", "-i", raw, "-af", f"volume={gain:.2f}dB,alimiter=limit=0.84:level=false", "-ar", "44100", "-b:a", "160k", done])
+    os.remove(raw)
+    return done, True
+
+
 def main(argv):
+    if "--engine" in argv:
+        raise SystemExit("FAIL --engine is gone: every line is spoken through Vibi")
     project = argv[1]
-    engine = arg(argv, "--engine", "say")
+    key = api_key()
     script = json.load(open(os.path.join(project, "src", "script.json")))
     language = script.get("language", "en")
-    voice = arg(argv, "--voice", ELEVEN_VOICE if engine == "elevenlabs" else SAY_VOICE.get(language))
-    if not voice:
-        raise SystemExit(f"FAIL no default say voice for {language}; pass --voice")
+    voice = arg(argv, "--voice", None)
     folder = os.path.join(project, "public", "voice")
+    cache = os.path.join(project, ".voice-cache")
     os.makedirs(folder, exist_ok=True)
+    os.makedirs(cache, exist_ok=True)
     frames = {}
+    paid = 0
     for scene in script["scenes"]:
         frames[scene["id"]] = []
         for i, beat in enumerate(scene["beats"]):
-            raw = os.path.join(folder, f"{scene['id']}-{i}.raw" + (".mp3" if engine == "elevenlabs" else ".aiff"))
+            text = beat.get("spoken") or beat["text"]
+            source, fresh = recording(cache, key, text, language, voice)
+            paid += len(text) if fresh else 0
             out = os.path.join(folder, f"{scene['id']}-{i}.mp3")
-            if engine == "elevenlabs":
-                eleven(beat["text"], language, voice, raw)
-            else:
-                say(beat["text"], voice, raw)
-            gain = TARGET_LUFS - loudness(raw)
-            subprocess.check_call(["ffmpeg", "-v", "error", "-y", "-i", raw, "-af", f"volume={gain:.2f}dB,alimiter=limit=0.84:level=false", "-ar", "44100", "-b:a", "160k", out])
-            os.remove(raw)
+            shutil.copyfile(source, out)
             seconds = float(subprocess.check_output(["ffprobe", "-v", "error", "-show_entries", "format=duration", "-of", "csv=p=0", out]))
             frames[scene["id"]].append(int(seconds * 30) + 1)
             print(f"{scene['id']}-{i} {seconds:.1f}s")
     json.dump(frames, open(os.path.join(project, "src", "voice.json"), "w"), indent=1)
     total = sum(sum(v) for v in frames.values()) / 30
-    print(f"spoke {sum(len(v) for v in frames.values())} lines with {engine}/{voice}: {total:.1f}s of speech")
+    print(f"spoke {sum(len(v) for v in frames.values())} lines through Vibi: {total:.1f}s of speech, {paid} characters billed")
     return 0
 
 

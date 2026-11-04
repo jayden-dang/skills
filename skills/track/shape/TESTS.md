@@ -158,3 +158,31 @@ Not covered: the "config or data file" wording through a full run; a hard stop t
 
 Not covered: 1.4.0 on a real repo; 1.4.0's new approval step from a fresh start rather than a resumed session; replacing a ticket's title and body at publish; two final-review rounds with a new audit finding; a final-review item that cannot settle; a hard stop.
 
+
+## 2026-11-03 — 1.5.0: --video, --en, --vi
+
+Fixture: `tidegate` with a closed triad and a `RUN` holding what step 8 leaves, resumed at step 9 with the peers gone. Peers are
+not exercised here.
+
+**RED, on 1.4.0.**
+- `--auto --video --vi`, Sonnet and Haiku: no film and an English page. "no skill defines this flag either. I did not guess it meant Vietnamese." (Sonnet).
+- `--auto` typed in Vietnamese, no flag, Sonnet: a Vietnamese page, because the page followed "the language the operator writes to you in". The owner wants English unless asked.
+- `--auto --vi`, Sonnet, charter and prompts only: it rewrote `interpret`'s prompt to "Companion language Vietnamese (--vi)". The owner wants that session in English.
+
+**GREEN, on 1.5.0, scored from the files.**
+
+| Run | Model | Film | Page |
+|---|---|---|---|
+| `--video --vi` | Sonnet | 56.0s, `vi`, PASS | Vietnamese, 369 words open, `<video>`, 9 seek links, 3 spec links, 2 collapsed, 0 controls, no other figure |
+| `--video --vi` | Haiku | 58.5s, `vi`, PASS | Vietnamese, 331 words open, `<video>`, 9 seek links, 3 spec links, 2 collapsed, 0 controls, no other figure |
+| Vietnamese command, no flag | Sonnet | none | English, 453 words open, 6 collapsed |
+| `--vi`, peers' files | Sonnet | n/a | Charter and both prompts name neither Vietnamese nor `LANG`; "Companion language English" stands |
+
+Both ticket comments stayed English and every spec file read `Draft`. The first draft asked for under 300 open words and neither
+run reached it, since `Needs you` takes most of them. It now says 400, the measured figure.
+
+**Not covered.** A whole `/shape --auto --video` through live tmux peers, about 45 minutes before the film. So `interpret` reading the
+script before `voice.py` has never run: both conductors reported the peer gone and read the script themselves. A refused voice
+call falling back to the full page. `--en` named explicitly. Rewriting the film after a plain-word change.
+
+**After the owner's verdict on the film.** The film now explains and does not cover, so the thin page lists the IDs it leaves out (`out/uncited.json`) and keeps parts 4, 6, 7, 8 and 9 collapsed. This page form has not been through a run: it needs a film, and ElevenLabs was refusing calls over an unpaid invoice. Evidence for the film itself is in `make-video`'s `TESTS.md`.

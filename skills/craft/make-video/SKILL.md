@@ -1,8 +1,7 @@
 ---
 name: make-video
-version: 1.2.0
-description: Makes a narrated 1080p video of a built feature, a pull request, or a release, from the real code and the running app. Run it with /make-video <feature, branch, or tag>.
-disable-model-invocation: true
+version: 2.0.0
+description: Use when someone wants a narrated video or film of a built feature, a pull request or branch, a release, or a closed spec — "/make-video", "make a video of this", "explainer film", "a film of the spec" — produces a checked 1080p MP4 with a source on every line. Not for a written or HTML explanation (understand), slides, or proving a feature works (validate-feature).
 ---
 
 # Make Video
@@ -36,6 +35,7 @@ The film shows one commit. Bind it to `$REF` and write it to `source.ref`.
 | A feature | `feature` | current `HEAD` | a temporary worktree at `$REF` |
 | A branch or range | `pr` | the branch head; film the base too when the change is a before and after | one temporary worktree for each |
 | A version | `release` | the tag | a temporary worktree at the tag |
+| A spec folder | `spec` | the commit holding it | nowhere: read `explainer.md` beside this file now, and skip step 5 |
 
 ```bash
 git worktree add --detach "$(mktemp -d)/app" "$REF"
@@ -44,7 +44,7 @@ git worktree add --detach "$(mktemp -d)/app" "$REF"
 One release run filmed `main`, which showed a change made after the tag. Another deleted a CSS
 line by hand to imitate the tag. The worktree needs neither.
 
-A subject with no code yet is out of scope: stop and say so.
+A subject with no code and no spec folder is out of scope: stop and say so.
 
 *Done when: `$REF` resolves with `git rev-parse` and each worktree exists.*
 
@@ -74,7 +74,7 @@ the request names one. A request written in Vietnamese with no language named st
 the one run given that request narrated in Vietnamese because "the team and route names are
 Vietnamese".
 
-Every beat is one spoken line, 20 words at most, with a `ref`: a repo-relative `file:line` you
+Every beat is one spoken line, 20 words at most (30 tokens in Vietnamese, which writes each syllable as one), with a `ref`: a repo-relative `file:line` you
 opened at `$REF`, or the run output that showed it.
 
 | `kind` | Use it for | Slots |
@@ -83,10 +83,14 @@ opened at `$REF`, or the run output that showed it.
 | `clip` | Anything the app shows | each beat may set `clip`, `rate`, `focus`, `ring` |
 | `flow` | Several things meeting in one result | `title`, `sources`, `target`, optional `note` |
 | `points` | What changed, or what it does not do | `title`, `points` |
+| `world` | Things that stay on screen and change as the line explains them | `explainer.md` |
+
+A request to explain how a built feature works reads `explainer.md` too.
 
 A `flow` or `points` item appears when its matching beat starts.
 
-*Done when: `src/script.json` opens with a `title` scene and ends on one.*
+*Done when: `src/script.json` opens with a `title` scene and ends on one, a film of a spec opening on its `world` instead, and
+`python3 "$SKILL/scripts/check_video.py" <project> . --script` prints `PASS`. It judges the script before you pay for a voice.*
 
 ## 4. Speak it
 
@@ -97,9 +101,10 @@ python3 "$SKILL/scripts/voice.py" <project>
 It prints each line's length. Those lengths time your recording. Three of ten runs recorded first,
 then failed the check on a still of up to 8.5 seconds or a silence of up to 6, and had to redo it.
 
-`voice.py` uses the machine's `say`, so no text leaves the machine. Add `--engine elevenlabs` only
-when the request asks for it and a key is in the environment. It sends the script to that vendor,
-and your report says so. Run it again whenever you change a line.
+`voice.py` speaks through Vibi, so the script goes to Vibi and the provider behind it, and your report
+says so. With no `VIBI_API` in the environment it stops: say so and leave the film unmade, because
+there is no other voice. A long script can take minutes, and one run outlasted its shell's 2-minute limit, so give it a long
+timeout. Run it again whenever you change a line; it pays only for the lines that changed.
 
 *Done when: it printed a length for every beat.*
 
@@ -190,3 +195,4 @@ check result, every `staged` line, and that you have not heard the audio.
 - Clicking before `lsof` showed your own server
 - A changed clock, hidden column, or painted box with no `staged` line
 - A server still listening after your report
+- A spec film with footage, or with lines it reworded from `rules` or `lines`

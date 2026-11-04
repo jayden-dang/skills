@@ -1,4 +1,4 @@
-# /shape #N --auto
+# /shape #N --auto [--video] [--en | --vi]
 
 The operator asked for the whole spec with nobody at the keyboard, then one page to review it on.
 The session they typed in is the **conductor**. It opens two more sessions, watches them, checks
@@ -31,6 +31,10 @@ read, so the word meant nothing when they opened them.
    the ticket what it waits on, say so, and end. A run on a road whose `After:` was still in progress
    opened a worktree and wrote "follows ROAD-3" as a Lock without looking up ROAD-3.
    Otherwise step 1 of `SKILL.md`. Pick a short `<slug>` from the ticket.
+   `LANG` is Vietnamese with `--vi`, otherwise English, whatever language the operator types in: a command typed in
+   Vietnamese with no flag got a Vietnamese page. It sets the film and the page, and nothing else. The
+   charter, both prompts, the spec and the ticket comment stay English, as written: one run on `--vi` changed `interpret`'s
+   prompt to "Companion language Vietnamese". `--video` adds the film in step 9, and without it there is none.
    `RUN` = absolute path of `.skills/_pending-<slug>/auto/` in this checkout. Create it.
    *Done when: the ticket's only state role is `shaping` and `RUN` exists.*
 2. **Charter.** Copy `charter-template.md` to `RUN/charter.md` and fill every `{slot}`. `{conductor}` is this
@@ -91,14 +95,19 @@ read, so the word meant nothing when they opened them.
    rounds in all, and the advisor never runs twice. A real run put ten audit findings on the page instead;
    its operator's whole answer was "fix the audit findings", then "approve", with 32 choices untouched.
    *Done when: `RUN/final-review.md` has an outcome per item and every spec file is committed.*
-9. **The page, on the closed spec.** Read `review-page.md` beside this file and write `RUN/review.html`.
+9. **The film and the page, on the closed spec.** With `--video`, REQUIRED SUB-SKILL: use `make-video` on the spec
+   folder at `HEAD` in `WT`, narrated in `LANG`, the film at `RUN/film.mp4`. Before `voice.py` runs, send `interpret` the path of
+   `src/script.json` to read each line against the spec, and fix what it finds: one script said a delete removed a whole course,
+   and no check caught it. A refused voice call, or no `PASS` after 3 renders, ends the film and not the run: write the full page,
+   and its header says the film is missing and why.
+   Then read `review-page.md` beside this file and write `RUN/review.html` in `LANG`.
    Nothing changes a spec file after this without the operator's word.
-   *Done when: the page exists with every part and its commit matches `git rev-parse HEAD` in `WT`.*
+   *Done when: the page exists with every part its form requires, its commit matches `git rev-parse HEAD` in `WT`, and with `--video` the film printed `PASS` or the header says why not.*
 10. **Hand over.** Stop `caffeinate`. Leave the peers open. Comment on the ticket, tracker ops as usual: what
     waits and on whom, with the page's path. End with five lines at most: what was written, how many items
     need them, anything missing, the page's path, and that `approve` or plain words is all they need to send.
 11. **The operator's reply.** Plain-word changes → send them to `work`, have `interpret` review only what moved,
-    rerun step 7's audit, rewrite the page. `approve` → write their words to `RUN/operator-reply.md`. Have `work`
+    rerun step 7's audit, rewrite the page, and with `--video` the film. `approve` → write their words to `RUN/operator-reply.md`. Have `work`
     set `Status: Approved` on the three files quoting them, commit, and draft `plan-tasks` Step 5's publish into
     `RUN/ticket-body.md`. Then publish onto this ticket yourself, which makes it Ready: the operator's word
     reached this session directly, and auto mode refused one `work` session the same tracker write as an
@@ -125,3 +134,5 @@ read, so the word meant nothing when they opened them.
 - A second advisor round, or an advisor claim forwarded unopened
 - `RUN/review.html` written before `RUN/final-review.md` has an outcome per item
 - A radio button, checkbox or copy box on the page
+- `LANG` anywhere in the charter or a peer's prompt
+- A film treated as approval, or a film when the command had no `--video`

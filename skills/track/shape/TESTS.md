@@ -186,3 +186,7 @@ script before `voice.py` has never run: both conductors reported the peer gone a
 call falling back to the full page. `--en` named explicitly. Rewriting the film after a plain-word change.
 
 **After the owner's verdict on the film.** The film now explains and does not cover, so the thin page lists the IDs it leaves out (`out/uncited.json`) and keeps parts 4, 6, 7, 8 and 9 collapsed. This page form has not been through a run: it needs a film, and ElevenLabs was refusing calls over an unpaid invoice. Evidence for the film itself is in `make-video`'s `TESTS.md`.
+
+## 1.6.0: `--project-style` (2026-11-04)
+
+The owner reversed the rule that a film follows the project's design system: `make-video` keeps one look, and this flag asks for the project's. A shape check, one Haiku run reading `auto.md` for `--auto`, `--auto --video --vi` and `--auto --video --project-style`: film, language, look and spec language right on all three. Not run through live peers. The look itself is measured in `make-video`'s `TESTS.md`.

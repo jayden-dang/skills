@@ -1,13 +1,13 @@
 ---
 name: make-video
-version: 2.0.0
+version: 3.0.0
 description: Use when someone wants a narrated video or film of a built feature, a pull request or branch, a release, or a closed spec — "/make-video", "make a video of this", "explainer film", "a film of the spec" — produces a checked 1080p MP4 with a source on every line. Not for a written or HTML explanation (understand), slides, or proving a feature works (validate-feature).
 ---
 
 # Make Video
 
 One narrated film, about a minute, built on the Remotion project in `template/`. You write
-two files, `src/script.json` and `src/tokens.ts`. The scripts here do the rest. `$SKILL` below
+one file, `src/script.json`. The scripts here do the rest. `$SKILL` below
 means the folder holding this file.
 
 Seven runs without this skill got the facts right and made slideshows: none was 1080p, none
@@ -48,24 +48,22 @@ A subject with no code and no spec folder is out of scope: stop and say so.
 
 *Done when: `$REF` resolves with `git rev-parse` and each worktree exists.*
 
-## 2. Start the project and match the project's look
+## 2. Start the project
 
 ```bash
 python3 "$SKILL/scripts/new_video.py" . <slug>
 ```
 
-It prints the project path, under `.skills/video/`. Fill every value in `src/tokens.ts` from the
-repo's design tokens and name that file in its `Source:` comment. Find them through
-`docs/standards/`, `docs/agents/`, then any theme or tokens file. A repo with none keeps the
-template's values, and your report says so.
+It prints the project path, under `.skills/video/`. `src/tokens.ts` and `src/fonts.tsx` already hold the
+film's look, with its fonts in `public/fonts/`, Vietnamese included. Leave them as they are, in any repo. A
+repo's design tokens and its rules on fonts govern its product and not this film: two runs filled the
+tokens from `web/tokens.css` and dropped the fonts because "the standard requires" the system stack, and
+their owner had asked for one look across every film.
 
-List every font the tokens name in `src/fonts.tsx`, with its file copied into `public/fonts/`. A font
-the repo only links from a service gets downloaded the same way. One run named a Google font and never
-loaded it: the film came out in Helvetica, the check passed, and its report called it "Figtree-like".
-The render now stops on a font it cannot draw. With no file to be had, take that name out of the tokens
-and say so in your report.
+When the request asks for the project's own look, by those words or `--project-style` from `/shape`, read
+`project-look.md` beside this file now and follow it.
 
-*Done when: `Source:` names a file, or your report will say there is none.*
+*Done when: the project exists, and its tokens are untouched or the request asked for the project's look.*
 
 ## 3. Write the script
 
@@ -88,6 +86,8 @@ opened at `$REF`, or the run output that showed it.
 A request to explain how a built feature works reads `explainer.md` too.
 
 A `flow` or `points` item appears when its matching beat starts.
+
+`name` at the top of the script is the subject in a word or two, printed in the top band. Each scene's `title` is printed beside it.
 
 *Done when: `src/script.json` opens with a `title` scene and ends on one, a film of a spec opening on its `world` instead, and
 `python3 "$SKILL/scripts/check_video.py" <project> . --script` prints `PASS`. It judges the script before you pay for a voice.*
@@ -119,7 +119,7 @@ PORT=$(python3 -c 'import socket;s=socket.socket();s.bind(("",0));print(s.getsoc
 lsof -nP -iTCP:"$PORT" -sTCP:LISTEN -t      # must print $SERVER or its child before you click anything
 agent-browser open "http://localhost:$PORT/"
 agent-browser set viewport 1600 900 2       # after open, or it is ignored; 2 keeps zoomed text sharp
-agent-browser set media light               # or dark: the scheme src/tokens.ts describes
+agent-browser set media light               # or dark: the scheme people use the app in
 agent-browser reload
 agent-browser get box "<selector>"          # the x, y, width, height for focus and ring
 agent-browser record start /tmp/<name>.mp4 --cursor
@@ -161,7 +161,7 @@ recording. Use `rate` up to 2 when a recording runs longer than its lines.
 (cd <project> && npx tsc --noEmit && node preview.mjs)
 ```
 
-Read `out/preview.png` as an image: one frame at the end of each line. Fix what it shows, then render.
+Read `out/preview.png` as an image: one frame at the end of each line. Fix what it shows, then render. It also writes the quiet sound layer under the voice, so run it again whenever a line changes.
 
 ```bash
 (cd <project> && npx remotion render Film out/film.mp4)

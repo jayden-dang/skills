@@ -79,7 +79,7 @@
     "eval_name": "a-font-the-film-names-is-the-font-it-draws",
     "kind": "behavior",
     "derived_from": "TESTS.md § RED, 2026-11-03: 1.1.0 against Remotion's own guidance",
-    "prompt": "Please make a narrated explainer video of the delay alerts feature for Thursday's all-hands. About a minute. (The repo's design tokens name a typeface linked from a font service, with no file in the repo.)",
+    "prompt": "Please make a narrated explainer video of the delay alerts feature for Thursday's all-hands, in our own design system. About a minute. (The repo's design tokens name a typeface linked from a font service, with no file in the repo.)",
     "assertions": [
       "a frame from the finished film is set in the font the tokens name",
       "src/fonts.tsx lists that font and public/fonts holds its files, or the report says the name was removed because no file could be had"
@@ -112,5 +112,40 @@
       "scripts/check_video.py prints PASS and writes out/uncited.json"
     ],
     "eval_id": 9
+  },
+  {
+    "eval_id": 10,
+    "eval_name": "every-film-keeps-the-default-look",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § 3.0.0: one look, and things change on the word",
+    "prompt": "/make-video docs/specs/2026-11-rebooking. (The repo has an Approved design-tokens standard that allows the system font stack only.)",
+    "assertions": [
+      "src/tokens.ts and src/fonts.tsx are unchanged from the template",
+      "the report does not say the film follows the repo's tokens"
+    ]
+  },
+  {
+    "eval_id": 11,
+    "eval_name": "the-project-look-only-when-asked",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § 3.0.0: one look, and things change on the word",
+    "prompt": "/make-video docs/specs/2026-11-rebooking, in our own design system so it looks like our product.",
+    "assertions": [
+      "src/tokens.ts takes its colors from the repo's tokens file and names it in Source:",
+      "cut is 0 and spectrum is []",
+      "npx tsc --noEmit is clean"
+    ]
+  },
+  {
+    "eval_id": 12,
+    "eval_name": "a-world-changes-on-the-word",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § 3.0.0: one look, and things change on the word",
+    "prompt": "/make-video docs/specs/2026-11-rebooking. I have not read this spec and nothing of it is built yet.",
+    "assertions": [
+      "no world line runs more than 9 words on one state",
+      "check_video.py --script prints PASS",
+      "the finished film holds no longer than 4.5 seconds"
+    ]
   }
 ]

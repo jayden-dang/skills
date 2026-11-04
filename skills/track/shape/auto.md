@@ -1,4 +1,4 @@
-# /shape #N --auto [--video] [--en | --vi]
+# /shape #N --auto [--video] [--project-style] [--en | --vi]
 
 The operator asked for the whole spec with nobody at the keyboard, then one page to review it on.
 The session they typed in is the **conductor**. It opens two more sessions, watches them, checks
@@ -35,6 +35,7 @@ read, so the word meant nothing when they opened them.
    Vietnamese with no flag got a Vietnamese page. It sets the film and the page, and nothing else. The
    charter, both prompts, the spec and the ticket comment stay English, as written: one run on `--vi` changed `interpret`'s
    prompt to "Companion language Vietnamese". `--video` adds the film in step 9, and without it there is none.
+   `--project-style` gives that film the project's own look. Without it the film keeps `make-video`'s default look, in any repo.
    `RUN` = absolute path of `.skills/_pending-<slug>/auto/` in this checkout. Create it.
    *Done when: the ticket's only state role is `shaping` and `RUN` exists.*
 2. **Charter.** Copy `charter-template.md` to `RUN/charter.md` and fill every `{slot}`. `{conductor}` is this
@@ -96,7 +97,7 @@ read, so the word meant nothing when they opened them.
    its operator's whole answer was "fix the audit findings", then "approve", with 32 choices untouched.
    *Done when: `RUN/final-review.md` has an outcome per item and every spec file is committed.*
 9. **The film and the page, on the closed spec.** With `--video`, REQUIRED SUB-SKILL: use `make-video` on the spec
-   folder at `HEAD` in `WT`, narrated in `LANG`, the film at `RUN/film.mp4`. Before `voice.py` runs, send `interpret` the path of
+   folder at `HEAD` in `WT`, narrated in `LANG`, with `--project-style` passed on if the command had it, the film at `RUN/film.mp4`. Before `voice.py` runs, send `interpret` the path of
    `src/script.json` to read each line against the spec, and fix what it finds: one script said a delete removed a whole course,
    and no check caught it. A refused voice call, or no `PASS` after 3 renders, ends the film and not the run: write the full page,
    and its header says the film is missing and why.

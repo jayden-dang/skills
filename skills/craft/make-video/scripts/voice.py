@@ -110,9 +110,50 @@ def recording(cache, key, text, language, voice):
     raw = os.path.join(cache, f"{name}.raw.mp3")
     speak(key, text, language, voice, raw)
     gain = TARGET_LUFS - loudness(raw)
-    subprocess.check_call(["ffmpeg", "-v", "error", "-y", "-i", raw, "-af", f"volume={gain:.2f}dB,alimiter=limit=0.84:level=false", "-ar", "44100", "-b:a", "160k", done])
+    subprocess.check_call(["ffmpeg", "-v", "error", "-y", "-i", raw, "-af", f"volume={gain:.2f}dB,alimiter=limit=0.78:level=false", "-ar", "44100", "-b:a", "160k", done])
     os.remove(raw)
     return done, True
+
+
+def spans_from(log, duration):
+    """The stretches of speech between the pauses silencedetect logged."""
+    starts = [float(x) for x in re.findall(r"silence_start: (-?[\d.]+)", log)]
+    ends = [float(x) for x in re.findall(r"silence_end: ([\d.]+)", log)]
+    out = []
+    at = 0.0
+    for i, start in enumerate(starts):
+        if start > at:
+            out.append((at, start))
+        at = ends[i] if i < len(ends) else duration
+    if at < duration:
+        out.append((at, duration))
+    return out or [(0.0, duration)]
+
+
+def word_starts(text, spans):
+    """When each word starts: speech is shared among words by length, and a pause belongs to none of them."""
+    words = text.split()
+    weights = [len(w) + 1 for w in words]
+    total = sum(weights)
+    speech = sum(b - a for a, b in spans)
+    out = []
+    done = 0
+    for weight in weights:
+        left = speech * done / total
+        for a, b in spans:
+            if left < b - a:
+                out.append(round(a + left, 3))
+                break
+            left -= b - a
+        else:
+            out.append(round(spans[-1][1], 3))
+        done += weight
+    return out
+
+
+def speech_spans(path, duration):
+    log = subprocess.run(["ffmpeg", "-hide_banner", "-i", path, "-af", "silencedetect=noise=-30dB:d=0.18", "-f", "null", "-"], capture_output=True, text=True).stderr
+    return spans_from(log, duration)
 
 
 def main(argv):
@@ -128,9 +169,11 @@ def main(argv):
     os.makedirs(folder, exist_ok=True)
     os.makedirs(cache, exist_ok=True)
     frames = {}
+    words = {}
     paid = 0
     for scene in script["scenes"]:
         frames[scene["id"]] = []
+        words[scene["id"]] = []
         for i, beat in enumerate(scene["beats"]):
             text = beat.get("spoken") or beat["text"]
             source, fresh = recording(cache, key, text, language, voice)
@@ -139,8 +182,10 @@ def main(argv):
             shutil.copyfile(source, out)
             seconds = float(subprocess.check_output(["ffprobe", "-v", "error", "-show_entries", "format=duration", "-of", "csv=p=0", out]))
             frames[scene["id"]].append(int(seconds * 30) + 1)
+            words[scene["id"]].append([int(at * 30) for at in word_starts(beat["text"], speech_spans(out, seconds))])
             print(f"{scene['id']}-{i} {seconds:.1f}s")
     json.dump(frames, open(os.path.join(project, "src", "voice.json"), "w"), indent=1)
+    json.dump(words, open(os.path.join(project, "src", "words.json"), "w"))
     total = sum(sum(v) for v in frames.values()) / 30
     print(f"spoke {sum(len(v) for v in frames.values())} lines through Vibi: {total:.1f}s of speech, {paid} characters billed")
     return 0

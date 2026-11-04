@@ -1,16 +1,18 @@
 import clips from './clips.json';
 import script from './script.json';
 import voice from './voice.json';
+import words from './words.json';
 
 export const FPS = 30;
 export const TRANSITION = 14;
 
 export type Rect = {x: number; y: number; w: number; h: number};
-export type WorldObject = {id: string; shape: 'card' | 'pill' | 'seat' | 'code' | 'note'; x: number; y: number; w: number; h: number; label?: string; sub?: string; tone?: 'ink' | 'accent' | 'bad' | 'muted'; fill?: boolean; head?: boolean; size?: number; hidden?: boolean};
-export type WorldArrow = {from: string; to: string; label?: string};
+export type Tone = 'ink' | 'accent' | 'warn' | 'bad' | 'muted';
+export type WorldObject = {id: string; shape: 'card' | 'row' | 'seat' | 'code' | 'note'; x: number; y: number; w: number; h: number; label?: string; sub?: string; subTone?: Tone; index?: string; tone?: Tone; fill?: boolean; head?: boolean; size?: number; timer?: number; hidden?: boolean};
+export type WorldArrow = {from: string; to: string; label?: string; tone?: Tone};
 export type WorldCamera = Rect;
-export type WorldChange = {set?: Record<string, Partial<WorldObject>>; arrows?: WorldArrow[]; camera?: WorldCamera};
-export type Beat = {text: string; spoken?: string; ref: string; clip?: string; rate?: number; focus?: Rect; ring?: Rect; mark?: number[]; world?: WorldChange & {then?: WorldChange & {after: number}}};
+export type WorldChange = {set?: Record<string, Partial<WorldObject>>; arrows?: WorldArrow[]; camera?: WorldCamera; stats?: Record<string, number | string>};
+export type Beat = {text: string; spoken?: string; ref: string; clip?: string; rate?: number; focus?: Rect; ring?: Rect; mark?: number[]; world?: WorldChange & {then?: (WorldChange & {at: string})[]}};
 export type Scene = {
   id: string;
   kind: 'title' | 'points' | 'flow' | 'clip' | 'ears' | 'sequence' | 'code' | 'table' | 'world';
@@ -32,10 +34,13 @@ export type Scene = {
   beats: Beat[];
 };
 
-export const scenes = (script as unknown as {scenes: Scene[]}).scenes;
-export const planned = (script as unknown as {planned?: string}).planned;
+const held = script as unknown as {name?: string; planned?: string; scenes: Scene[]};
+export const scenes = held.scenes;
+export const planned = held.planned;
+export const filmName = held.name;
 const clipFrames = clips as unknown as Record<string, {frames: number}>;
 const voiceFrames = voice as unknown as Record<string, number[]>;
+const wordFrames = words as unknown as Record<string, number[][]>;
 
 const PACE: Record<Scene['kind'], {head: number; gap: number; tail: number}> = {
   title: {head: 24, gap: 10, tail: 28},
@@ -53,7 +58,7 @@ export const clipLength = (beat: Beat) => (beat.clip ? Math.ceil(clipFrames[beat
 
 export const layout = (scene: Scene) => {
   const pace = PACE[scene.kind];
-  const lengths = voiceFrames[scene.id] ?? scene.beats.map(() => 60);
+  const lengths = voiceFrames[scene.id] ?? scene.beats.map((b) => Math.max(45, b.text.split(' ').length * 12));
   const starts: number[] = [];
   let at = pace.head;
   let clipEnd = 0;
@@ -66,6 +71,36 @@ export const layout = (scene: Scene) => {
   const last = starts.length - 1;
   return {starts, lengths, duration: Math.max(starts[last] + lengths[last] + pace.tail, clipEnd + 10)};
 };
+
+// Where each word of a line starts, in frames from the line's start: measured by voice.py, shared evenly before there is a voice.
+export const wordStarts = (scene: Scene, beat: number, length: number) => {
+  const count = scene.beats[beat].text.split(/\s+/).length;
+  const measured = wordFrames[scene.id]?.[beat];
+  return measured && measured.length === count ? measured : Array.from({length: count}, (_, i) => Math.round((length * i) / count));
+};
+
+const bare = (text: string) => text.split(/\s+/).map((w) => w.replace(/^[^\p{L}\p{N}]+|[^\p{L}\p{N}]+$/gu, '').toLowerCase());
+
+// The word of a line that a phrase starts on.
+export const phraseAt = (scene: Scene, beat: number, phrase: string) => {
+  const line = bare(scene.beats[beat].text);
+  const wanted = bare(phrase);
+  for (let i = 0; i <= line.length - wanted.length; i++) {
+    if (wanted.every((w, k) => line[i + k] === w)) return i;
+  }
+  throw new Error(`${scene.id}-${beat}: "${phrase}" is not in the line.`);
+};
+
+// Every change a world makes, in order, with the frame it lands on inside its scene.
+export const worldSteps = (scene: Scene, starts: number[], lengths: number[]) =>
+  scene.beats.flatMap((beat, i) => {
+    const times = wordStarts(scene, i, lengths[i]);
+    const {then, ...first} = beat.world ?? {};
+    return [
+      {change: first as WorldChange, at: starts[i], beat: i},
+      ...(then ?? []).map((step) => ({change: step as WorldChange, at: starts[i] + times[phraseAt(scene, i, step.at)], beat: i})),
+    ];
+  });
 
 // Each scene with its absolute start. Neighbours overlap by TRANSITION.
 export const placed = (() => {
@@ -87,4 +122,24 @@ export const sceneIndex = () =>
 export const totalFrames = () => {
   const last = placed[placed.length - 1];
   return last ? last.from + last.duration : 0;
+};
+
+// What the sound layer plays over the voice: a soft hit on each change, a heavier one when something goes wrong.
+export type SoundEvent = {at: number; kind: 'tick' | 'whoosh' | 'thud'};
+export const soundEvents = (): SoundEvent[] => {
+  const events: SoundEvent[] = [{at: 0, kind: 'whoosh'}];
+  for (const {scene, from, starts, lengths} of placed) {
+    if (from > 0) events.push({at: from, kind: 'whoosh'});
+    if (scene.kind !== 'world') {
+      starts.forEach((start) => events.push({at: from + start, kind: 'tick'}));
+      continue;
+    }
+    for (const {change, at} of worldSteps(scene, starts, lengths)) {
+      const values = Object.values(change.set ?? {});
+      if (values.some((v) => v.tone === 'bad' || v.subTone === 'bad')) events.push({at: from + at, kind: 'thud'});
+      else if (change.arrows?.length) events.push({at: from + at, kind: 'whoosh'});
+      else if (values.length || change.stats) events.push({at: from + at, kind: 'tick'});
+    }
+  }
+  return events.sort((a, b) => a.at - b.at).filter((e, i, all) => i === 0 || e.at - all[i - 1].at >= 6);
 };

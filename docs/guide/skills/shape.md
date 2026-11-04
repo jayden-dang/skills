@@ -32,6 +32,7 @@ The page shows the closed spec: what changes for you, the few things that need y
 Two more flags go with `--auto`:
 
 - **`--video`** adds a film that explains the closed spec, up to 120 seconds, made by [`make-video`](make-video.md). The page then gets thin: the film, what needs you, an index of its scenes, the requirements the film leaves out, and links to the spec files. There is no film without this flag, and a film that cannot be made leaves you the full page with the reason at the top. The spec's narration goes to Vibi and the provider behind it, so leave this flag off a repo whose specs must stay on the machine.
+- **`--project-style`** gives that film your project's fonts, colors and radii. Without it the film has `make-video`'s default look, in any repo.
 - **`--vi`** writes the film and the page in Vietnamese. `--en` is the default, whatever language you type the command in. The spec, the charter and both sessions stay in English under either flag.
 
 It needs Claude Code's cross-session messaging, `tmux`, and a trusted repo. Expect about 45 minutes for even a small feature, so start it when you are leaving the machine. Tier-1 bugs use the plain command, because a root cause waits on you. A road that is not Ready stops with what it waits on.

@@ -14,11 +14,20 @@ KINDS = ("feature", "pr", "release", "spec")
 MAX_WORDS = 20
 MAX_WORDS_BY_LANGUAGE = {"vi": 30}  # Vietnamese writes each syllable as a token
 MAX_STILL = 6.0
+MAX_SPEC_STILL = 4.5  # A net under MAX_WORDS_STILL. Longest hold measured: the owner's reference film 2.7s, the approved look 2.2s, the old rebooking film 5.3s, PINWIN 8.1s
+# A hold is a run of frames where fewer than STILL_PIXELS changed, between the two bands, at 640 wide. A label changing counts and
+# a dot moving along an arrow does not. A mean over the whole frame could not tell: one run added seats sliding to pass it.
+STILL_PIXELS = 80
+CLOSING = 1.5  # The closing line may rest: the line that crosses the frame a second before the end ends its hold
+STILL_AREA = 640 * 304
+HOLD_FILTER = "crop=1920:912:0:72,scale=640:-1:flags=area,tblend=all_mode=difference,lutyuv=y='if(gt(val\\,14)\\,255\\,0)',signalstats,metadata=print:key=lavfi.signalstats.YAVG:file=-"
 MAX_SILENCE = 3.0
 MIN_CLIP_WIDTH = 1600
 SPEC_MAX = 120
-WORLD_W = 1780
-WORLD_H = 740
+WORLD_W = 1800
+WORLD_H = 840
+MAX_WORDS_STILL = 9  # About 3.5 seconds of speech: one film's 8 words after its last change held 3.7
+MAX_WORDS_STILL_BY_LANGUAGE = {"vi": 14}
 # Lines that say why. Walkthrough films measured 0 to 9% of their lines; explanations 42 to 64%.
 REASON_WORDS = {
     "en": r"\b(so|because|but|if|since|otherwise)\b",
@@ -128,7 +137,7 @@ def judge_world(s):
         told = set()
         for i, beat in enumerate(scene.get("beats", [])):
             change = beat.get("world") or {}
-            for step in (change, change.get("then") or {}):
+            for step in (change, *(change.get("then") or [])):
                 for oid, values in (step.get("set") or {}).items():
                     if oid in objects:
                         objects[oid] = {**objects[oid], "hidden": False, **values}
@@ -152,13 +161,52 @@ def judge_world(s):
     return faults
 
 
+def phrase_at(text, phrase):
+    """The index of the word a phrase of this line starts on, or None. Case and punctuation do not count."""
+    norm = lambda t: [re.sub(r"^\W+|\W+$", "", w).lower() for w in t.split()]
+    words, wanted = norm(text), norm(phrase)
+    for i in range(len(words) - len(wanted) + 1):
+        if wanted and words[i : i + len(wanted)] == wanted:
+            return i
+    return None
+
+
+def judge_pace(s):
+    """In a world, what is on screen changes as the line goes on: a long line on one change reads as a still."""
+    faults = []
+    limit = MAX_WORDS_STILL_BY_LANGUAGE.get(s.get("language"), MAX_WORDS_STILL)
+    for scene in s.get("scenes", []):
+        if scene.get("kind") != "world":
+            continue
+        for i, beat in enumerate(scene.get("beats", [])):
+            where = f"{scene.get('id')}-{i}"
+            world = beat.get("world") or {}
+            text = beat.get("text", "")
+            if not (world.get("set") or "arrows" in world or world.get("camera") or world.get("then") or world.get("stats")):
+                faults.append(f"{where}: nothing changes on this line")
+            marks = [0]
+            for step in world.get("then") or []:
+                at = phrase_at(text, step.get("at", ""))
+                if at is None:
+                    faults.append(f'{where}: "{step.get("at")}" is not in the line')
+                elif at < marks[-1]:
+                    faults.append(f'{where}: "{step.get("at")}" comes before the change above it')
+                else:
+                    marks.append(at)
+            marks.append(len(text.split()))
+            longest = max(b - a for a, b in zip(marks, marks[1:]))
+            if longest > limit:
+                faults.append(f"{where}: {longest} words with nothing changing")
+    return faults
+
+
 def judge_clip(width, height):
     if width < MIN_CLIP_WIDTH or width * 9 != height * 16:
         return f"clip is {width}x{height}; it needs 16:9 at {MIN_CLIP_WIDTH} wide or more"
     return None
 
 
-def judge_media(m):
+def judge_media(m, max_still=MAX_STILL):
     faults = []
     if (m["width"], m["height"]) != (1920, 1080):
         faults.append(f"video is {m['width']}x{m['height']}, not 1920x1080")
@@ -167,7 +215,7 @@ def judge_media(m):
     if m["peak"] is not None and m["peak"] > -1.0:
         faults.append(f"peak {m['peak']} dBFS is above -1")
     for start, length in m["freezes"]:
-        if start + length < m["duration"] - 0.5 and length > MAX_STILL:
+        if start + length < m["duration"] - CLOSING and length > max_still:
             faults.append(f"still for {length:.1f}s at {start:.1f}s")
     for start, length in m["silences"]:
         if start + length < m["duration"] - 0.5 and length > MAX_SILENCE:
@@ -191,8 +239,9 @@ def probe(mp4):
     loud = run("ffmpeg", "-hide_banner", "-i", mp4, "-af", "ebur128=peak=true", "-vn", "-f", "null", "-").stderr
     i = re.findall(r"I:\s+(-?[\d.]+) LUFS", loud)
     peak = re.findall(r"Peak:\s+(-?[\d.]+) dBFS", loud)
-    freeze = run("ffmpeg", "-hide_banner", "-i", mp4, "-vf", "freezedetect=n=0.001:d=4", "-an", "-f", "null", "-").stderr
-    silence = run("ffmpeg", "-hide_banner", "-i", mp4, "-af", "silencedetect=noise=-40dB:d=1.5", "-vn", "-f", "null", "-").stderr
+    change = run("ffmpeg", "-v", "error", "-i", mp4, "-vf", HOLD_FILTER, "-an", "-f", "null", "-").stdout
+    # -30 dB, because the quiet bed under the voice sits below that and speech above it.
+    silence = run("ffmpeg", "-hide_banner", "-i", mp4, "-af", "silencedetect=noise=-30dB:d=1.5", "-vn", "-f", "null", "-").stderr
     return {
         "width": video["width"],
         "height": video["height"],
@@ -200,9 +249,27 @@ def probe(mp4):
         "duration": duration,
         "loudness": float(i[-1]) if i else None,
         "peak": float(peak[-1]) if peak else None,
-        "freezes": spans(freeze, "freeze_start", "freeze_end", duration),
+        "freezes": hold_spans(changed_pixels(change)),
         "silences": spans(silence, "silence_start", "silence_end", duration),
     }
+
+
+def changed_pixels(log):
+    """HOLD_FILTER leaves a plane of 0 or 255, so its mean is the share of pixels that changed."""
+    return [round(float(x) / 255 * STILL_AREA) for x in re.findall(r"YAVG=([0-9.]+)", log)]
+
+
+def hold_spans(changes, fps=30):
+    """Each run of frames with fewer than STILL_PIXELS changed, as (start, length) in seconds."""
+    out = []
+    start = None
+    for i, value in enumerate([*changes, None]):
+        if value is not None and value < STILL_PIXELS:
+            start = i if start is None else start
+        elif start is not None:
+            out.append((start / fps, (i - start) / fps))
+            start = None
+    return out
 
 
 def spans(log, start_key, end_key, duration):
@@ -253,7 +320,7 @@ def spec_text(s, repo):
 
 def script_faults(s, repo):
     """Everything that can be judged before a voice or a render exists."""
-    faults = validate_script(s) + check_refs(s, repo) + judge_world(s)
+    faults = validate_script(s) + check_refs(s, repo) + judge_world(s) + judge_pace(s)
     source = s.get("source") or {}
     if source.get("kind") == "spec" and source.get("spec"):
         text = spec_text(s, repo)
@@ -278,8 +345,8 @@ def main(argv):
     text = spec_text(s, repo)
     if not only_script:
         m = probe(mp4)
-        print(json.dumps({k: m[k] for k in ("width", "height", "duration", "loudness", "peak", "freezes", "silences")}))
-        faults += judge_media(m)
+        print(json.dumps({**{k: m[k] for k in ("width", "height", "duration", "loudness", "peak", "silences")}, "longest_still": round(max((length for start, length in m["freezes"] if start + length < m["duration"] - CLOSING), default=0), 1)}))
+        faults += judge_media(m, MAX_SPEC_STILL if text is not None else MAX_STILL)
         if text is not None:
             faults += judge_length(m["duration"])
         if sheet:

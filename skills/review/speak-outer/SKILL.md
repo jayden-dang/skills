@@ -1,6 +1,6 @@
 ---
 name: speak-outer
-version: 1.3.0
+version: 1.3.1
 description: Use when writing anything a person will read (a status, a reply,
   a standup note, a PR body, a ticket comment). Produces outer-register prose with no process
   machinery.
@@ -44,8 +44,8 @@ These tokens do not appear in anything a person reads:
 - sentences over **25 words**. Two PR bodies written under "make it read well"
   carried 6 such sentences each, topping out at 46 and 44 words. Split them; the
   reader is skimming, and a 40-word sentence is where the claim gets lost.
-- an AI co-authorship trailer (`Co-Authored-By: Claude …`) pasted into prose a
-  person reads. A commit convention at most, never PR-body or status text.
+- an AI authorship line of any kind: a `Co-Authored-By: Claude …` trailer, a
+  "Generated with" footer, or "drafted by AI". Not in a commit, PR, issue, comment, or status.
 
 The ledger, session notes, and inner working set may still use those
 tokens. They are not the reply.

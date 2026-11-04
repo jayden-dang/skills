@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### Changed: nothing posted says an AI wrote it (2026-11-04)
+
+`speak-outer` no longer allows an AI authorship line anywhere: no `Co-Authored-By` trailer, "Generated with" footer, or "drafted by AI" line in a commit, PR, issue, comment, or status. Before, a commit trailer was still allowed. `speak-outer` 1.3.1.
+
 ### Changed: `/shape --auto` hands you one spec sheet, with or without a film (2026-11-04)
 
 The review page is now a technical sheet: one page of lettered panels in a ruled frame, like an engineering drawing. It holds a map of every requirement, one example you step through with Back and Next, the most important rules with their clauses labelled, what happens when something fails, what agents decided for you, the plan, the few things that need you, and a title block. Under `--video` the film sits in the first panel, each walk step links to its moment in the film, and every requirement the film leaves out is explained on the sheet. Before, the page with a film had no figure, and it listed what the film left out as bare IDs. The sheet stays in the run folder, uncommitted, and is written again when the spec changes. `shape` 1.7.0.

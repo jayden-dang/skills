@@ -1,6 +1,6 @@
 ---
 name: write-dogfood
-version: 3.0.0
+version: 3.0.1
 description: Use when a finished feature needs dogfooding — a hands-on product
   walk in the real running app covering visuals, feel, and eyeball edge cases —
   or when an existing dogfood guide needs re-reviewing for missing situations.
@@ -165,9 +165,8 @@ clean review.
 
 4. **Agent dogfood — run it.** After a clean review report (or a
    named override on open findings), REQUIRED SUB-SKILL: use `run-dogfood`
-   on this run file. Before the report exists, do not name it at all. That
-   drive is kimi-webbridge via `run-dogfood` — do not author a Playwright
-   suite as the walk. The hand-off is a **route, not a gate**: a control measured on 2026-09-09
+   on this run file. Before the report exists, do not name it at all. `run-dogfood`
+   picks the browser — do not author a Playwright suite as the walk. The hand-off is a **route, not a gate**: a control measured on 2026-09-09
    drove the app unprompted rather than stopping at the artifact it had just
    written, so nothing here needs to argue it into verifying. What it does need
    is the address — verification done ad hoc produces no run file, no per-case
@@ -196,7 +195,7 @@ recorded as the user's explicit choice.*
 | "I'll review it myself — I know the code by now" | The author's context is exactly what hides the gaps. A fresh subagent, or `AUTHORING CLOSED` when there are none |
 | "I'll name the review as next and stop" | Step 2 **dispatches** the reviewer; naming is not completion |
 | "Artifacts are on disk — authoring is done" | Done when the review report exists, not when the JSON/HTML land |
-| "I'll add a Playwright suite so the walk is repeatable" | The walk is the run file, driven through kimi-webbridge |
+| "I'll add a Playwright suite so the walk is repeatable" | The walk is the run file, driven by `run-dogfood` |
 
 ## Red Flags
 

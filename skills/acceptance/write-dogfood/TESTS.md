@@ -158,3 +158,8 @@ CLI smoke after the rename: `--help`, `init`, `list`, `render`, `status`, and
 
 Not re-run: the fix loop (`references/review-fix-loop.md`) and the inline
 `AUTHORING CLOSED` path — both moved over with their wording intact.
+
+## v3.0.1 — the walk's browser is run-dogfood's choice (2026-11-04)
+
+Wording only. Two lines named `kimi-webbridge` as the walk's driver; `run-dogfood` 4.2.0 drives
+`agent-browser` when nobody is at the keyboard. Evidence in `run-dogfood`'s TESTS.md.

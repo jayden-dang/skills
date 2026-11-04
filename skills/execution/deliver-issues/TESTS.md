@@ -209,3 +209,10 @@ approved, to `shaping`, "my judgment call", since the rule said every other read
 **GREEN, 2.4.0** (sonnet 1). #1 and #2 stayed as they were with a row each, naming alice and #9. #3, #5, #4 eligible in
 that order, with #4 based on #5's branch. No haiku GREEN, since haiku held this at RED.
 
+
+## v2.5.0 — build on the spec's branch; the walk count replaces "not walked" (2026-11-04)
+
+Two routing lines for `/shape --auto --go`. A spec committed only on `feat/<slug>` is invisible to
+a branch cut from the base (read from the text; the `/shape --auto` → `/go` hand-off had never run).
+A PR that changed a browser-rendered surface now carries the walk from `execute-common` step 4b, so
+its row reports the walk instead of `not walked by hand`. Checked inside the `/shape --go` run.

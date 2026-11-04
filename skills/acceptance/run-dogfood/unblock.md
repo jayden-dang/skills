@@ -14,7 +14,7 @@ before single-case ones, because it unblocks every case that depends on it.
 | Data in a given state | Create it through the app's own UI or API. Else use the repo's seed or fixture scripts. Else insert directly into the local store. Local dev store only. |
 | An account or role | Create a local test user through the app's admin path, a seed script, or the local DB. Never reuse or change a real person's account. |
 | Local config (env var, feature flag, mailer) | Set it in a local-only, untracked env file. Use a local stand-in the repo already supports or documents, such as a dev mail catcher or a log transport. Never point at a real external service, and never commit a secret. |
-| A browser driver | Claude harness: `claude-in-chrome`, else `kimi-webbridge`. Other harness: `kimi-webbridge`. Neither connected → human-only. |
+| A browser driver | Nobody at the keyboard: `agent-browser`, signed in with the local account (`SKILL.md` §3). Someone there, Claude harness: `claude-in-chrome`, else `kimi-webbridge`. Other harness: `kimi-webbridge`. Neither connected → human-only. |
 | A native `alert` / `confirm` | Use the driver's dialog handling if it has one. Otherwise human-only. |
 
 Prefer runtime setup over editing tracked files. Edit a tracked file (a seed

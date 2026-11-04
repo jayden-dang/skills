@@ -1,6 +1,6 @@
 ---
 name: deliver-issues
-version: 2.4.0
+version: 2.5.0
 description: Use when every ready ticket on the board, or a named set of tickets, must be built, reviewed and opened as pull requests in one unattended run — the multi-ticket delivery behind /go, /deliver-issues, "deliver the board", "build every ready ticket", ending with one message for whatever needs the operator.
 ---
 
@@ -53,7 +53,9 @@ lacks.*
 ## 2. Each eligible ticket, in order
 
 1. **Branch** from `Default PR base:` in `docs/agents/project.md`. A ticket blocked by
-   one delivered in this run branches from that ticket's branch instead.
+   one delivered in this run branches from that ticket's branch instead. A ticket whose
+   approved spec is committed on the branch this session already has checked out builds on
+   that branch: a new branch from the base would not hold the spec.
 2. REQUIRED SUB-SKILL: use `build-in-waves` on its `tasks.md`. For a tier-1 fix, first
    claim the ticket the way `../execute-common/tracker-sync.md` says and record it in
    `.skills/<CODE>/tickets.md`. Then REQUIRED SUB-SKILL: use `test-first`, with one red
@@ -94,8 +96,9 @@ approved plans ended the afternoon with no PR.
 One message, in this order:
 
 1. A table with one row per ready ticket: PR and base, or not eligible and what it lacks.
-   A row whose PR adds a command a person runs or a new user-facing screen ends with
-   `not walked by hand — /write-dogfood`; the build never opens that walk itself.
+   A row whose PR changed a browser-rendered surface ends with the walk's count from the
+   Close sequence: `walked: N pass, M parked`. A row whose PR adds a command a person runs ends with
+   `not walked by hand — /write-dogfood`.
 2. Every **Needs a decision before merge** item, each with its PR and the option built.
 
 *Done when: the message is sent and every ready ticket has a row.*

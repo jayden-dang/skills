@@ -21,7 +21,7 @@ A ticket is eligible when its status is the tracker's ready state and its `requi
 
 For each eligible ticket, in order:
 
-1. Branch from `Default PR base:`. A ticket blocked by one delivered in this run branches from that ticket's branch.
+1. Branch from `Default PR base:`. A ticket blocked by one delivered in this run branches from that ticket's branch. A ticket whose approved spec is committed on the branch the session already has (the hand-off from `/shape --go`) builds on that branch.
 2. Build it with `build-in-waves`.
 3. Review it with `inspect-change`.
 4. Land it with `land-branch` as a pull request. A stacked ticket's pull request is based on its blocker's branch.
@@ -38,7 +38,7 @@ A sub-skill that would normally stop and ask you does not stop here. It builds t
 
 ## The message
 
-One message at the end: a table with one row per ready ticket (its pull request and base, or not eligible and what it lacks), then every **Needs a decision before merge** item with its pull request and the option built.
+One message at the end: a table with one row per ready ticket (its pull request and base, or not eligible and what it lacks), then every **Needs a decision before merge** item with its pull request and the option built. A pull request that changed a browser-rendered file carries the count of the product walk the close sequence ran on it.
 
 ## What the tests showed
 

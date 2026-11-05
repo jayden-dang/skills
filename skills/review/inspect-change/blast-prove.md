@@ -17,7 +17,8 @@ the change is safe because of, chase edges **grep on symbols misses**, and
    consumers, feature flags, teardown/microtask timing, pinned library behavior.
 4. Grade each risk honestly (likely × cost). Keep confirmed risks; list cleared.
 5. Prove the one fact: smallest script or test that imports the real code / drives
-   the real consumer and fails loud if wrong. Paste the command and output.
+   the real consumer and fails loud if wrong. Paste the command and output. A server you start
+   for it takes an OS-picked port and is stopped by its PID, as SKILL.md's dispatch step says.
    Cannot prove cheaply → mark **unproven** out loud. Do not round up.
 6. Hand back under `## Blast prove`: What it does · The one fact (+ rung:
    said-so / pointed-at-line / walked-impossibility / ran-it / ran-in-app) ·

@@ -75,6 +75,13 @@ Subagent (general-purpose):
     instead. Warnings or noise in the reported test output are findings —
     output must be pristine.
 
+    **A server you start** — to render, to prove a claim, to drive a request: let the OS pick its
+    port, `PORT=$(python3 -c 'import socket;s=socket.socket();s.bind(("",0));print(s.getsockname()[1]);s.close()')`,
+    confirm `lsof -nP -iTCP:$PORT -sTCP:LISTEN -t` prints the PID you started before the first
+    request, and stop that PID before you report. A reviewer that picked 4711 by hand sent a
+    malformed POST to another app's server listening there, and it went down; a build left one
+    listening 48 minutes after it ended.
+
     Check the report's task gate against the diff. Each of these is an
     Important finding: a changed unit, or a unit that depends on one, missing
     from the gate's scope; no lint result, or a lint finding outside the

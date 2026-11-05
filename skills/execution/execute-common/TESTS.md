@@ -768,8 +768,19 @@ controllers always read (`build-in-waves/SKILL.md`, this `SKILL.md`,
 `task-lifecycle.md` step 5) named none. The zroute controller looked for the template
 with `find ~/.claude -name task-reviewer-prompt.md`, which returns nothing because
 `~/.claude/skills/*` are symlinks. It also looked in `build-in-waves/` because that
-SKILL.md cited `implementer-prompt.md` with no folder. The NAVORI controller listed the
-folder and still did not open the template. Neither dispatch passed `model`.
+SKILL.md cited `implementer-prompt.md` with no folder. The zroute controller then told the user, verbatim:
+
+> skill nhắc tới `implementer-prompt.md` và `task-reviewer-prompt.md`, nhưng hai file này không có trong bản cài. Tôi tự soạn brief và hợp đồng report theo mô tả của `task-lifecycle.md`.
+
+("the skill mentions the two prompt files, but they are not in the install; I wrote the brief and
+report contract myself from `task-lifecycle.md`.") The NAVORI controller listed the folder and
+still did not open the template. Neither dispatch passed `model`.
+
+**What the plugin reviews cost, as recorded.** The reviews still returned both verdicts, so the
+contract was not replaced outright. The plugin definition says `model: opus`, but all 11 zroute
+reviewers ran on Sonnet 5.5, so "its definition fixes the model" was not observed and is not in the
+text. What is verified is that the plugin's own instructions run alongside the dispatch prompt;
+they include "Only report issues with confidence ≥ 80" (`agents/code-reviewer.md:41`).
 
 **Synthetic RED did not reproduce: 0 of 12.** Fixture `.skills/REVTYPE`, with a roster
 that includes the four `pr-review-toolkit` agents. Run A gave the full skill folders
@@ -780,13 +791,22 @@ own review format as the reason to avoid it. A one-question run does not recreat
 build session. The user accepted the production transcripts as the baseline and chose
 to ship.
 
-**Change.** `task-lifecycle.md` step 5 names the reviewer (and the worker and fixer) as the
-harness's plain general-purpose subagent, never a roster or plugin review agent, gives the
-reason (its own prompt replaces the contract, its definition fixes the model), and places
-the template "beside this file".
+**Change.** `task-lifecycle.md` step 5 names the reviewer as a general-purpose subagent, never
+a roster or plugin review agent, and gives the recorded reason (the 80%-confidence filter). It
+places the template "beside this file", says to open it by that path, and cites the empty `find`.
+An early draft also covered the worker and fixer. That was cut: every worker and fixer dispatch
+in both sessions was already `general-purpose`.
 
 **GREEN (no-regression sweep, run B fixture with the new `task-lifecycle.md`): 2 of 2.** One Sonnet run
-and one Haiku run wrote `general-purpose`. Both cited the new step-5 sentence as the reason
-("the plain general-purpose subagent … never a named review agent"). Before the change, the RED arms
-reasoned from the plugin's description instead. This proves the text is read and obeyed. It does not
-prove the long-session failure is gone; the next real build with `pr-review-toolkit` installed is that check.
+and one Haiku run wrote `general-purpose`. Both cited the new step-5 sentence as the reason. Before the change, run-B arms reasoned from the
+plugin's scope ("covers only style"). This shows the sentence is read and cited in a one-question run.
+It does not show the long-session failure is gone; the next real build with `pr-review-toolkit`
+installed is that check.
+
+**Wording review (`author-skills`, same day).** The first draft gave two reasons the transcripts do
+not support ("replaces the two-verdict contract", "fixes the model") and covered the worker and fixer
+with no failure behind it. Both reasons were replaced with the verified 80% filter, the worker/fixer
+clause was cut, and the controller's "not in the install" conclusion went into the text as the
+counter. GREEN re-run on the reworded run-B fixture: 2 of 2 (Sonnet, Haiku) wrote `general-purpose`
+and cited step 5. Meta-test, "UNCLEAR:": both named only the fixture's missing template, which run B
+leaves out on purpose.

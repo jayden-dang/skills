@@ -229,5 +229,5 @@ skill's subagent loop without dispatches.
 - Let implementer self-review substitute for task review
 - Tell a reviewer what not to flag, or pre-rate severity in the dispatch
 - Dispatch a reviewer without a diff package
-- Send a review to a named review agent or plugin (`code-reviewer` and the like) instead of a general-purpose subagent carrying the contract
+- Send a review to a named review agent from the roster or a plugin (`code-reviewer` and the like) instead of a general-purpose subagent carrying the contract
 - Re-dispatch a task the ledger marks complete

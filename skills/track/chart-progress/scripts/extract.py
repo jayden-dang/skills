@@ -22,6 +22,7 @@ DONE = {"Implemented", "Shipped"}
 STATUS_WORDS = "Draft|Approved|In-progress|Implemented|Shipped|Recognized|Retired"
 ROW = re.compile(r"^\| (~~)?([A-Z][A-Z0-9]{1,11})(~~)? \|(.*)\| (" + STATUS_WORDS + r") \|([^|]*)\|\s*$")
 MILE_ROW = re.compile(r"^\| (~~)?(?:\*\*)?(MILE-\d+)(?:\*\*)?(~~)? \| ([^|]*) \| ([^|]*) \| ([^|]*) \| ([^|]*) \|")
+MILE_ROW_LEAN = re.compile(r"^\| (~~)?(?:\*\*)?(MILE-\d+)(?:\*\*)?(~~)? \| ([^|]*) \| ([^|]*) \| ([^|]*) \|\s*$")
 MEMBER = re.compile(r"^- (~~)?\*\*(ROAD-\d+)\*\*(~~)?\s*(.*)$")
 AFTER = re.compile(r"^(\S+) — After: ([^—]+?) — ")
 ID = re.compile(r"^(ROAD-\d+|MILE-\d+|none)$")
@@ -45,14 +46,18 @@ def parse_roadmap(text: str) -> tuple[list[dict], dict[str, dict]]:
     by_id: dict[str, dict] = {}
     for line in text.splitlines():
         m = MILE_ROW.match(line)
-        if m:
-            mid = m.group(2)
-            deps = re.findall(r"MILE-\d+", m.group(6))
+        lean = None if m else MILE_ROW_LEAN.match(line)
+        if m or lean:
+            # The lean table has no Outcome column: the outcome is read from the block below.
+            g = (m.group(1), m.group(2), m.group(4), m.group(5), m.group(6), m.group(7)) if m else \
+                (lean.group(1), lean.group(2), lean.group(4), "", lean.group(5), lean.group(6))
+            mid = g[1]
+            deps = re.findall(r"MILE-\d+", g[4])
             ms = {
-                "id": mid, "name": m.group(4).strip(), "outcome": m.group(5).strip(),
-                "depends_on": deps, "commitment": m.group(7).strip().split(" ")[0] or "Planned",
-                "table_commitment": m.group(7).strip().split(" ")[0],
-                "retired": bool(m.group(1)), "order": len(milestones), "members": [], "deferred": [],
+                "id": mid, "name": g[2].strip(), "outcome": g[3].strip(),
+                "depends_on": deps, "commitment": g[5].strip().split(" ")[0] or "Planned",
+                "table_commitment": g[5].strip().split(" ")[0],
+                "retired": bool(g[0]), "order": len(milestones), "members": [], "deferred": [],
             }
             milestones.append(ms)
             by_id[mid] = ms
@@ -77,6 +82,8 @@ def parse_roadmap(text: str) -> tuple[list[dict], dict[str, dict]]:
             rest = f.group(2)
             if slot == "Commitment" and rest:
                 current["commitment"] = rest.split(" ")[0]
+            if slot == "Outcome" and rest and not current.get("outcome"):
+                current["outcome"] = rest.strip()
             if slot == "Deferred":
                 for rid in re.findall(r"\*\*(ROAD-\d+)\*\*", rest):
                     add_item(items, current, rid, rest, deferred=True)

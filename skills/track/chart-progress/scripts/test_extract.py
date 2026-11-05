@@ -320,6 +320,21 @@ class TestExtract(unittest.TestCase):
         self.assertIn(("S7", "MILE-3"), details)
         self.assertIn(("ADR", "ADR-0003"), details)
 
+    def test_a_table_without_an_outcome_column_reads_each_outcome_from_its_block(self):
+        from extract import parse_roadmap
+        lean = ROADMAP.replace("| ID | Milestone | Outcome | Depends-on | Commitment |\n|---|---|---|---|---|",
+                               "| ID | Milestone | Depends-on | Commitment |\n|---|---|---|---|")
+        for row, short in [("| MILE-1 | Accounts | A person signs in. | none | Closed |", "| MILE-1 | Accounts | none | Closed |"),
+                           ("| MILE-2 | Reading | A person reads posts. | MILE-1 | Committed |", "| MILE-2 | Reading | MILE-1 | Committed |"),
+                           ("| MILE-3 | Sharing | A person shares a post. | MILE-2 | Planned |", "| MILE-3 | Sharing | MILE-2 | Planned |")]:
+            self.assertIn(row, lean)
+            lean = lean.replace(row, short)
+        old_ms, old_items = parse_roadmap(ROADMAP)
+        new_ms, new_items = parse_roadmap(lean)
+        self.assertEqual(new_ms, old_ms)
+        self.assertEqual(new_items, old_items)
+        self.assertEqual([m["outcome"] for m in new_ms], ["A person signs in.", "A person reads posts.", "A person shares a post."])
+
     def test_adr_number_comes_from_the_filename_and_title_from_either_heading_style(self):
         with tempfile.TemporaryDirectory() as t:
             root = Path(t) / "demo"

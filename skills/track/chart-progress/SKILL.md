@@ -1,6 +1,6 @@
 ---
 name: chart-progress
-version: 1.2.1
+version: 1.3.0
 description: Generates a weekly progress dashboard (one HTML page) of what finished, what is building, what is ready to start, and the roadmap graph, plus the docs/roadmap/lanes.md file of parallel lanes. Run it with /chart-progress.
 disable-model-invocation: true
 ---

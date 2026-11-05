@@ -39,3 +39,7 @@ line per row with the sign-off role's newest comment quoted verbatim.
 | `notion-get-comments` on MILE-2 | 3/3 | 1/1 |
 | Quang's comment quoted | 3/3 | 1/1 |
 | Harbor Portal's `In review` row reported | 0/3 | 0/1 |
+
+## 1.3.1 — template copy follows plan-milestones 1.7.0 (2026-11-05)
+
+The roadmap template copy drops the table's Outcome column. Table order, which S4 reads, is unchanged.

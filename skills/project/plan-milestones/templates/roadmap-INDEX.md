@@ -57,7 +57,8 @@ ID rules:
   (~~**MILE-3**~~ superseded by MILE-5) — never renumber, never reuse.
 - A ROAD-N keeps its ID when it moves between milestones.
 - Table row order is dependency order (S4), not priority; milestone IDENTITY is the
-  MILE-N. Reordering the table never renumbers anything.
+  MILE-N. Reordering the table never renumbers anything. A milestone's Outcome is written
+  once, in its block; the table carries no Outcome column.
 - ITEM order is the After: field, written between the slug and Surfaces:
   `- **ROAD-7** <slug> — After: ROAD-5, MILE-2 — Surfaces: ...`. It names what must
   be done before this item starts: a ROAD-N in any milestone, or a MILE-N meaning
@@ -85,10 +86,10 @@ ID rules:
 **Now:** MILE-2, ROAD-1
 **Next:** None
 
-| ID | Milestone | Outcome | Depends-on | Commitment |
-|---|---|---|---|---|
-| MILE-1 | <name> | <one testable user-value sentence> | none | Committed |
-| MILE-2 | <name> | <one testable user-value sentence> | MILE-1 | Planned |
+| ID | Milestone | Depends-on | Commitment |
+|---|---|---|---|
+| MILE-1 | <name> | none | Committed |
+| MILE-2 | <name> | MILE-1 | Planned |
 
 ## MILE-1 — <name>
 

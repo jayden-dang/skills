@@ -267,3 +267,11 @@ reading the rule. The check became part of Update's Done-when, with that count a
 with the notes file.
 
 S10 joins the template's structural rules, so `refresh-roadmap-status` reports a long line as R11.
+
+## 1.7.0 — the milestone table drops its Outcome column (2026-11-05)
+
+The table repeated each block's `**Outcome:**`, 21,516 characters of klynt's roadmap. The template's table is now
+`| ID | Milestone | Depends-on | Commitment |`; the Outcome is written once, in the block (S3 already requires it there).
+Shape check, fixture `quay` with no roadmap, "Plan the milestones for this project from the vision": Sonnet and Haiku both
+wrote the four-column table, and `chart-progress` read each milestone's outcome from its block. A five-column roadmap
+still parses.

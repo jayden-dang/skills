@@ -131,3 +131,9 @@ group must exist (else specced), any open box means building, and done needs eve
 delivered (else in-review). R6 now judges primary binds only. 69 tests green. klynt after the
 backfill (`ROAD-127 amends ROAD-219`, `ROAD-179 amends ROAD-219, ROAD-220`): ROAD-219 and
 ROAD-220 read done instead of ready.
+
+## 1.3.0 — the lean milestone table (2026-11-05)
+
+`extract.py` reads a four-column table (`| ID | Milestone | Depends-on | Commitment |`) and takes each outcome from the
+block's `**Outcome:**` line; a five-column table reads as before. Unit test: the same roadmap in both forms parses to
+identical milestones and items. 24 extract tests pass.

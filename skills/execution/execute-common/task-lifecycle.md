@@ -38,9 +38,17 @@ worker context after a semantic-unit boundary or any hard rotation trigger.
    `.skills/<CODE>/review-<base7>..<head7>.diff`. Never use `HEAD~1` as base.
 5. Dispatch or resume the reviewer with the task brief path, report path, diff
    package path, evidence manifest, reviewer lease ID, and explicit model, against
-   the contract in `task-reviewer-prompt.md`. The reviewer returns separate
-   Standards and Spec verdicts. A task review is independent of the whole-branch
-   review.
+   the contract in `task-reviewer-prompt.md` beside this file. Open it by that
+   path: `find` does not follow the symlinks an install uses, and one controller
+   took an empty `find` to mean the template "is not in the install" and wrote
+   its own. The reviewer returns separate Standards and Spec verdicts. A task
+   review is independent of the whole-branch review. The reviewer is a
+   general-purpose subagent carrying that contract, never a named review agent
+   from the roster or a plugin (`code-reviewer` and the like), whatever its
+   description says: that agent's own instructions run on top of the contract,
+   and `pr-review-toolkit:code-reviewer`'s drop every finding it rates under 80%
+   confidence. Two builds sent all 22 of their task reviews to it; neither had
+   opened the template.
 6. Critical/Important findings go through one fix dispatch for the complete
    finding set, then a fresh re-review. Three surviving cycles stop the build
    and escalate. The controller never fixes reviewer findings directly.

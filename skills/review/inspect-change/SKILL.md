@@ -1,6 +1,6 @@
 ---
 name: inspect-change
-version: 1.11.0
+version: 1.12.0
 description: Use when a branch, PR, diff, or set of changes needs review before merging —
   produces a two-axis verdict (repo-standards conformance plus
   spec/requirements conformance, reported separately) — when build-in-waves
@@ -122,7 +122,7 @@ unproven, or "no runtime surface".*
 
 ## 4. Dispatch both subagents in parallel
 
-Send ONE message containing both dispatches so they run concurrently and neither pollutes the other's context. Both are **read-only**: no mutation of the working tree, index, HEAD, or branch state; to inspect another revision, use a temporary worktree (`git worktree add <tmpdir> <sha>`), never move HEAD. Keep each brief under 400 words. Never pre-judge findings in a dispatch — no "do not flag", no pre-rated severities. A subagent that starts the app or any server to prove a finding lets the OS pick its port, `PORT=$(python3 -c 'import socket;s=socket.socket();s.bind(("",0));print(s.getsockname()[1]);s.close()')`, confirms `lsof -nP -iTCP:$PORT -sTCP:LISTEN -t` prints its own PID before the first request, and stops that PID before it reports; put this in both briefs. Two reviewers picked 4871 and 4711 by hand and checked nothing first; a whole-branch reviewer on 4711 sent a malformed POST to another app's server there, and it went down.
+Send ONE message containing both dispatches so they run concurrently and neither pollutes the other's context. Both are **read-only**: no mutation of the working tree, index, HEAD, or branch state; to inspect another revision, use a temporary worktree (`git worktree add <tmpdir> <sha>`), never move HEAD. Both are a general-purpose subagent carrying its brief, never a named review agent from the roster or a plugin (`code-reviewer` and the like), whatever its description says: that agent's own instructions run on top of the brief, and `pr-review-toolkit:code-reviewer`'s drop every finding it rates under 80% confidence. One build sent its whole-branch Standards and Spec reviews to it. Keep each brief under 400 words. Never pre-judge findings in a dispatch — no "do not flag", no pre-rated severities. A subagent that starts the app or any server to prove a finding lets the OS pick its port, `PORT=$(python3 -c 'import socket;s=socket.socket();s.bind(("",0));print(s.getsockname()[1]);s.close()')`, confirms `lsof -nP -iTCP:$PORT -sTCP:LISTEN -t` prints its own PID before the first request, and stops that PID before it reports; put this in both briefs. Two reviewers picked 4871 and 4711 by hand and checked nothing first; a whole-branch reviewer on 4711 sent a malformed POST to another app's server there, and it went down.
 
 **Standards subagent** gets: the diff command and commit list; the standards-source paths; the path to `standards-baseline.md`, which it MUST read first.
 

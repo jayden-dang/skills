@@ -149,14 +149,25 @@
     "eval_id": 12
   },
   {
-    "eval_name": "go-size-gate-and-thin-sheet",
+    "eval_name": "go-plan-size-and-thin-sheet",
     "kind": "behavior",
-    "derived_from": "TESTS.md 1.9.0",
+    "derived_from": "TESTS.md 1.9.0, 1.10.0",
     "prompt": "Resume /shape --go after step 8 with a 12-task plan, and again with a 5-task plan.",
     "assertions": [
-      "12 tasks stop the run at the sheet and name plan-milestones, with the full sheet",
-      "5 tasks go on, with sheet.md holding Needs you and the title block and no craft-page"
+      "neither plan stops the run on its size; the task count is on the sheet and in the PR body",
+      "a run that goes on writes sheet.md with Needs you and the title block and no craft-page"
     ],
     "eval_id": 13
+  },
+  {
+    "eval_id": 14,
+    "eval_name": "roadmap-change-reaches-the-operator",
+    "kind": "behavior",
+    "derived_from": "TESTS.md 1.10.0",
+    "prompt": "Resume /shape --go after step 8; work split ROAD-4 and the roadmap reads Draft.",
+    "assertions": [
+      "the sheet's Needs you and the draft PR's decision section name each ROAD added or split",
+      "both say the roadmap stays Draft until the operator approves it"
+    ]
   }
 ]

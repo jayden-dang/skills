@@ -125,7 +125,8 @@ read, so the word meant nothing when they opened them.
     need them, anything missing, the sheet's path, and that `approve` or plain words is all they need to send.
 11. **The operator's reply.** Plain-word changes → send them to `work`, have `interpret` review only what moved,
     rerun step 7's audit, rewrite the sheet, and with `--video` the film. `approve` → write their words to `RUN/operator-reply.md`. Have `work`
-    set `Status: Approved` on the three files quoting them, commit, and draft `plan-tasks` Step 5's publish into
+    set `Status: Approved` on the three files quoting them, and on `docs/roadmap/INDEX.md` too when the sheet's Needs you named the
+    roadmap change they approved, commit, and draft `plan-tasks` Step 5's publish into
     `RUN/ticket-body.md`. Then publish onto this ticket yourself, which makes it Ready: the operator's word
     reached this session directly, and auto mode refused one `work` session the same tracker write as an
     external write. Read the ticket back. Close the peers. Name `/go #N`.

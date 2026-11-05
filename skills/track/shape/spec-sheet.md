@@ -10,7 +10,7 @@ left out as bare IDs, with no word of what they ask. A film explains and does no
 **Under `--go`, when the run goes on to the pull request,** nobody reads the sheet: the operator reads the PR. Write `RUN/sheet.md`
 instead, plain markdown with panel H and the title block only, and skip `craft-page` and every other panel. One `--go` run loaded
 `craft-page` three times for a 2,750-pixel page whose only consumed part was Needs you. When `go.md` step 10 will stop the run (a hard
-stop, an Ask me fork, more than 8 tasks), the operator reads the sheet: write the full one below.
+stop or an Ask me fork), the operator reads the sheet: write the full one below.
 
 REQUIRED SUB-SKILL: use `craft-page`, treatment Utilitarian. Write it in `LANG` from `auto.md`. Code identifiers and IDs stay verbatim.
 Every value comes from a file or a command output you read. A name or a value in the example may be invented, and comes from the film when there is one.
@@ -50,7 +50,9 @@ Each ID the film leaves out has its meaning in panel C, D or E: a bare ID in the
 
 **H. Needs you.** At most 5 items of at most 50 words, biggest consequence first, from `agent-decided` lines where reversing changes what the person sees or does, or where the
 final review could not settle it. A value of a kind the card's Delegated line names is never one, not even marked as information: the operator gave it away. Two runs listed event IDs,
-time zones and flag names here anyway, one writing "ROAD-4 delegates flag names to the agent. Lean (mine): keep."; a third kept the hold sweep, "so this is informational". Every Ask me fork the report names is one, first. Each: what was picked, the risk, what reversing changes, your lean labelled as yours. When `work` declined any OPTIONAL cut, one item is
+time zones and flag names here anyway, one writing "ROAD-4 delegates flag names to the agent. Lean (mine): keep."; a third kept the hold sweep, "so this is informational". Every Ask me fork the report names is one, first.
+When `git diff <base>...HEAD -- docs/roadmap/` in `WT` is not empty, one item is always the roadmap change: each ROAD added, split or deferred, and that
+`docs/roadmap/INDEX.md` reads `Status: Draft` until the operator approves it. A run whose work split ROAD-4 left this off its sheet and its PR. Each: what was picked, the risk, what reversing changes, your lean labelled as yours. When `work` declined any OPTIONAL cut, one item is
 always the largest it declined, by plan lines, with its IDs: authors judged their own text, and one run declined all 7. None → say so.
 
 **I. The title block**, at the sheet's bottom right, as on a drawing: feature, ticket, branch at commit, `Status: Draft`, spec paths linked to `requirements.md`, `design.md`

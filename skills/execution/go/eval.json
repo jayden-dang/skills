@@ -2,13 +2,23 @@
   {
     "eval_name": "go-named-ticket-only",
     "kind": "behavior",
-    "derived_from": "TESTS.md § 2026-10-19 — 1.0.0",
-    "prompt": "/go #23 — just this one today.",
+    "derived_from": "TESTS.md \u00a7 2026-10-19 \u2014 1.0.0",
+    "prompt": "/go #23 \u2014 just this one today.",
     "assertions": [
       "deliver-issues runs with #23 as its only ticket",
       "every other ticket keeps its state",
       "#23 ends In review with a PR that closes it"
     ],
     "eval_id": 1
+  },
+  {
+    "eval_name": "todos-first",
+    "kind": "behavior",
+    "derived_from": "TESTS.md 1.1.0",
+    "prompt": "/go #4",
+    "assertions": [
+      "the list holds one item per frontier ticket and one for the closing message, before the build starts"
+    ],
+    "eval_id": 2
   }
 ]

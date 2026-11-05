@@ -95,3 +95,11 @@ Neither kept "your call" apart from "ask me first"; Sonnet turned the second int
 - Sonnet: ROAD-5 added with `— Card: [ROAD-5](roads/ROAD-5.md)`, title starts `ROAD-5`, card passes `check_card.py`, every answer in one slot, Delegated "Which SMS provider, and how retries work", Ask me the one cost rule.
 - Haiku, first text: card and ROAD-5 made, but its eleven open questions went under Ask me, and the title lacked ROAD-5. Countered both.
 - Haiku, after: 3 of 3 runs put only the operator's cost rule under Ask me; the last run's title starts `ROAD-5`.
+
+## 1.4.0 — todos first (2026-11-05)
+
+Fixtures: `quay` for /idea, /shape #4 and /shape #4 --auto (tmux replaced by a stub so the conductor stops after step 1); tidegate with an approved REBOOK triad and #4 ready for /go #4. Scored from `TaskCreate`/`TodoWrite` calls in the transcript.
+
+RED: 0 of 7 runs made a list (/idea Sonnet+Haiku, /shape Sonnet+Haiku, /shape --auto Sonnet+Haiku, /go Sonnet through its first 8 tool calls), even though frame-change, which /idea runs, has its own todos rule.
+
+GREEN, 1.4.0: Sonnet and Haiku each loaded `TaskCreate` and made the four steps by their 5th and 3rd tool calls.

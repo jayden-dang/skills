@@ -334,3 +334,13 @@ the branch read `Status: Draft`, named in the report. Ask: step 9, step 10, and 
 - GREEN, 1.10.0: Sonnet and Haiku twice: each sheet and each PR body carry ROAD-6 and that the roadmap stays Draft until approved.
   The task count reached all three sheets and two of three PR bodies.
 - Plain `--auto`: an `approve` on a sheet that named the roadmap change now also stamps the roadmap Approved. Not run.
+
+## 1.11.0 — todos first, with or without --auto (2026-11-05)
+
+Fixtures: `quay` for /idea, /shape #4 and /shape #4 --auto (tmux replaced by a stub so the conductor stops after step 1); tidegate with an approved REBOOK triad and #4 ready for /go #4. Scored from `TaskCreate`/`TodoWrite` calls in the transcript.
+
+RED: 0 of 7 runs made a list (/idea Sonnet+Haiku, /shape Sonnet+Haiku, /shape --auto Sonnet+Haiku, /go Sonnet through its first 8 tool calls), even though frame-change, which /idea runs, has its own todos rule.
+
+GREEN: plain /shape, Sonnet 3 items and Haiku 9, by the 4th and 3rd tool calls. --auto: the first text sat after the line sending
+--auto to auto.md and was never read (0 of 2); moved above it, Haiku listed all 11 steps, Sonnet listed 11 on a second run and 1
+on the first, which stopped at step 1 for the missing tmux.

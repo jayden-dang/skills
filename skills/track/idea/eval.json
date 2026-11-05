@@ -35,5 +35,16 @@
       "the ticket title starts with the new ROAD-N"
     ],
     "eval_id": 3
+  },
+  {
+    "eval_name": "todos-first",
+    "kind": "behavior",
+    "derived_from": "TESTS.md 1.4.0",
+    "prompt": "/idea The dock crew get a text the evening before a vessel arrives.",
+    "assertions": [
+      "the first tool calls load the todo tool and create the list before any step's work",
+      "each item is ticked at its Done when"
+    ],
+    "eval_id": 4
   }
 ]

@@ -1,6 +1,6 @@
 ---
 name: shape
-version: 1.10.0
+version: 1.11.0
 description: Writes what a ticket needs before an agent can build it — the spec triad, or the root cause for a bug — and stops at your approval, or with --auto writes the whole spec unattended and hands you one technical sheet of the spec, with a film on it under --video and in Vietnamese under --vi, and with --go builds it through to a pull request with a film of the real app. Run it with /shape #N.
 disable-model-invocation: true
 ---
@@ -9,6 +9,11 @@ disable-model-invocation: true
 
 The second of the five commands. It moves a ticket from Shaping to Ready, and stops at
 each gate that only the operator may pass. The states are the roles in `docs/agents/triage-labels.md`.
+
+**Todos first, with or without `--auto`.** Your first action puts this run's steps on the harness's todo tool (`TaskCreate` in Claude Code; load it with `ToolSearch` when it is deferred), else a checklist in your first reply,
+one item each, ticked at its Done when. Plain: Take the ticket, Route by tier with one item per skill it runs,
+and Ready. `--auto`: each numbered step of `auto.md`, and with `--go` each step of `go.md` in place of 10 and 11;
+the peers' own work stays off this list. Two runs of `/shape #4` and two `--auto` conductors made no list.
 
 WHEN the command carries `--auto`, read `auto.md` beside this file and follow it exactly, in place of the steps below.
 

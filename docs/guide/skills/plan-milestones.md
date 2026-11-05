@@ -62,7 +62,7 @@ An item's line holds its order and surfaces; its intent lives in `docs/roadmap/r
 
 ## Lines stay short
 
-A Blockers, Deferred or Closed line, and a retired item's reason, is one sentence of at most 300 characters (rule S10). The full account goes into `docs/roadmap/milestones/MILE-N.notes.md`, or `roads/ROAD-N.notes.md` for one item, linked from the line. `INDEX.md` stays something a person and an agent can read whole.
+A Blockers, Deferred or Closed line is one sentence of at most 300 characters, and several deferred items go one per line (rule S10). The full account goes into `docs/roadmap/milestones/MILE-N.notes.md`, or `roads/ROAD-N.notes.md` for one item, linked from the line. `INDEX.md` stays something a person and an agent can read whole.
 
 ## The approval gate
 

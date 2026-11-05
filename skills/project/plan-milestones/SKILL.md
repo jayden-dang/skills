@@ -168,15 +168,16 @@ semantics as Locks before any spec was written.
 
 ## Lines stay short
 
-A Blockers, Deferred or Closed line, and a retired item's reason, is one sentence of at most
-300 characters. Everything else the operator said goes word for word into
+A Blockers, Deferred or Closed line is one sentence of at most 300 characters, and a Deferred
+slot holding several items lists them one per line, as Members does. A retired item's reason is
+one sentence too. Everything else the operator said goes word for word into
 `docs/roadmap/milestones/MILE-N.notes.md` (or `roads/ROAD-N.notes.md` for one item), linked at
 the end of the line: `— Notes: [MILE-1](milestones/MILE-1.notes.md)`. Two runs asked to record
 a blocker wrote 690 and 747 characters into the Blockers line; klynt's grew to 5,660, and its
 roadmap reached 505,863 characters before its prose was moved out. Check it before the gate:
 
 ```bash
-awk 'length > 300 && /^(\*\*(Blockers|Deferred|Closed):\*\*|- ~~\*\*ROAD-)/' docs/roadmap/INDEX.md
+awk 'length > 300 && /^\*\*(Blockers|Deferred|Closed):\*\*/' docs/roadmap/INDEX.md
 ```
 
 It prints nothing, or the line is not done: shorten it and run it again. One run wrote a 305-character line after reading this rule, and left it.

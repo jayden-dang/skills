@@ -35,6 +35,9 @@ defective when any of these does not hold:
   S9  Focus holds two lines, Now: and Next:, each `None` or comma-separated MILE-N /
       ROAD-N, each defined once and live; no ID appears twice across both lines; Now
       holds at most 5 entries
+  S10 no Blockers:, Deferred: or Closed: line runs over 300 characters, and a Deferred
+      slot with several items lists them one per line; the full reasoning lives in
+      docs/roadmap/milestones/MILE-N.notes.md, linked from the line as `— Notes: [MILE-N](…)`
 
 Focus rules:
 - PRIORITY lives only in ## Focus: the human's order of attention, first entry highest.

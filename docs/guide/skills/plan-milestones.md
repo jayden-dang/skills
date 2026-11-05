@@ -60,6 +60,10 @@ Note that `ARCH-4` covers `CODE-N.M` and `ARCH-N` only. These namespaces are gov
 
 An item's line holds its order and surfaces; its intent lives in `docs/roadmap/roads/ROAD-N.md`, linked at the end of the line with `— Card: [ROAD-N](roads/ROAD-N.md)`. The card is written from `templates/road-card.md` when `/idea` adds an item, or before an item runs `/shape --auto --go`: Outcome, 2–5 Examples, Must keep, Off limits, Decided, Delegated, Ask me, UI, in under 30 lines. File paths, tables and API shapes belong to the spec. Keeping intent out of the line also keeps `INDEX.md` short: klynt's lines run to a median of 1,306 characters.
 
+## Lines stay short
+
+A Blockers, Deferred or Closed line is one sentence of at most 300 characters, and several deferred items go one per line (rule S10). The full account goes into `docs/roadmap/milestones/MILE-N.notes.md`, or `roads/ROAD-N.notes.md` for one item, linked from the line. `INDEX.md` stays something a person and an agent can read whole.
+
 ## The approval gate
 
 The skill validates the eight structural rules `S1`–`S8` carried in the template's comment block — the same set [`refresh-roadmap-status`](refresh-roadmap-status.md) re-checks as finding `R11`. Any defect is reported and the roadmap does not reach the user for approval. When clean, the whole file is presented and the skill stops; `Status: Approved` is written only after an explicit approval.

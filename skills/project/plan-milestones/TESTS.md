@@ -254,3 +254,16 @@ second; the order inside Now is the requester's to set, and both readings are fa
 design stays out of it. Reached from `/idea` 1.3.0, whose GREEN wrote ROAD-5's card through this skill on Sonnet and Haiku (evidence in
 `idea`'s TESTS.md). The line grammar change was checked against its parsers: `chart-progress/scripts/extract.py` reads `After:` and
 backticked Surfaces and ignores a trailing markdown link; `brief-road` greps the line start.
+
+## 1.6.0 — lines stay short, S10 (2026-11-05)
+
+Recorded in use: klynt's roadmap, written through this skill, reached 505,863 characters; its ROAD lines ran to a median of 1,306
+characters and its Blockers lines to 5,660. Fixture `quay`; prompt: record that MILE-1 is blocked by the crew phones' IT policy, a
+paragraph of who, when, what was checked and what still works.
+
+**RED, 1.5.0:** Sonnet wrote a 690-character Blockers line, Haiku 747. No notes file.
+**GREEN, 1.6.0:** Sonnet 279 characters plus `milestones/MILE-1.notes.md` holding the whole account. Haiku, first text: 305, after
+reading the rule. The check became part of Update's Done-when, with that count as the counter; Haiku twice more: 243 and 250, each
+with the notes file.
+
+S10 joins the template's structural rules, so `refresh-roadmap-status` reports a long line as R11.

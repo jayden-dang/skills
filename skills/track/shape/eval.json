@@ -169,5 +169,17 @@
       "the sheet's Needs you and the draft PR's decision section name each ROAD added or split",
       "both say the roadmap stays Draft until the operator approves it"
     ]
+  },
+  {
+    "eval_name": "todos-first",
+    "kind": "behavior",
+    "derived_from": "TESTS.md 1.11.0",
+    "prompt": "/shape #4, and /shape #4 --auto",
+    "assertions": [
+      "the first tool calls load the todo tool and create the list before any step's work",
+      "each item is ticked at its Done when",
+      "under --auto the items are auto.md's numbered steps, not the peers' work"
+    ],
+    "eval_id": 15
   }
 ]

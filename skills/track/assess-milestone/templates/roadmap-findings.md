@@ -15,9 +15,9 @@ Not a seed. Unlike the other files in this directory, nothing copies this one in
 consumer repo — `configure-repo` and `define-project` name the template files they write
 individually and never glob. It sits here because `templates/` is this set's only
 cross-skill content mechanism: `roadmap-INDEX.md`'s comment block already carries the
-authoritative S1–S9 structural rules for the same two skills.
+authoritative S1–S10 structural rules for the same two skills.
 
-S1–S9 (structural defects of the roadmap artifact) live in roadmap-INDEX.md.
+S1–S10 (structural defects of the roadmap artifact) live in roadmap-INDEX.md.
 R1–R11 (findings derived across the roadmap, the specs, and the vision) live here.
 R11 is the seam between them: it fires when the artifact violates its own S-rules.
 -->

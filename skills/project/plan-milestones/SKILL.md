@@ -1,6 +1,6 @@
 ---
 name: plan-milestones
-version: 1.5.0
+version: 1.6.0
 description: Use when a project's milestones need planning, sequencing, replanning, or
   ANY edit to an existing roadmap — produces or revises docs/roadmap/INDEX.md, the
   milestone intent registry carrying stable MILE-N and ROAD-N IDs that later feature specs
@@ -49,7 +49,7 @@ decision* that nobody can derive — keep that field, and keep nothing that trac
 
 Resolve pack seeds in this order, first path that exists: (1) `templates/` beside this SKILL.md, (2) `${CLAUDE_PLUGIN_ROOT}/templates` when that variable is set, (3) `../../../templates` relative to this SKILL.md. Every heading in `templates/roadmap-INDEX.md`
 is a REQUIRED slot — fill it or write `None`. Its comment block carries the authoritative
-structural rules **S1–S9** and the ID rules; read them there rather than restating them.
+structural rules **S1–S10** and the ID rules; read them there rather than restating them.
 
 ## Create
 
@@ -132,7 +132,7 @@ anything.
 Once the gate clears, read `closure-writeback.md` beside this file and follow it exactly —
 it covers writing the `Closed:` SHA and re-running the approval gate.
 
-*Done when: the change is applied, no ID moved or vanished, and the gate has run.*
+*Done when: the change is applied, no ID moved or vanished, the **Lines stay short** check prints nothing, and the gate has run.*
 
 ## The approval gate
 
@@ -140,18 +140,18 @@ WHEN `docs/agents/issue-tracker.md` reads **Draft surface** `notion`, read `noti
 beside this file and follow it before this gate: the sign-off role signs off that page.
 
 <HARD-GATE>
-Validate S1–S9 from the template's rule block. Report every defect you find and STOP —
+Validate S1–S10 from the template's rule block. Report every defect you find and STOP —
 a roadmap with a structural defect does not reach the user for approval. When the file is
 clean, present it WHOLE and STOP. `Status: Approved` is written only after the user has
 explicitly approved it. Conversational agreement is not approval; a roadmap you approved
 yourself was never approved.
 </HARD-GATE>
 
-Walk S1–S9 as a checklist, naming each defect and where it sits, then present the file and
+Walk S1–S10 as a checklist, naming each defect and where it sits, then present the file and
 stop. On approval, set `Status: Approved`; `/refresh-roadmap-status` reports where the plan
 stands whenever the user wants it.
 
-*Done when: the S1–S9 walk is clean, the user has approved the written file, and `Status:`
+*Done when: the S1–S10 walk is clean, the user has approved the written file, and `Status:`
 reads `Approved`.*
 
 ## The road card
@@ -165,6 +165,21 @@ thing they said in exactly one slot; a slot they gave nothing for reads `None`. 
 table, an API shape or a library is design: it goes to the spec, never into the card, which
 stays under 30 lines. klynt's lines, median 1,306 characters, froze crate names and webhook
 semantics as Locks before any spec was written.
+
+## Lines stay short
+
+A Blockers, Deferred or Closed line, and a retired item's reason, is one sentence of at most
+300 characters. Everything else the operator said goes word for word into
+`docs/roadmap/milestones/MILE-N.notes.md` (or `roads/ROAD-N.notes.md` for one item), linked at
+the end of the line: `— Notes: [MILE-1](milestones/MILE-1.notes.md)`. Two runs asked to record
+a blocker wrote 690 and 747 characters into the Blockers line; klynt's grew to 5,660, and its
+roadmap reached 505,863 characters before its prose was moved out. Check it before the gate:
+
+```bash
+awk 'length > 300 && /^(\*\*(Blockers|Deferred|Closed):\*\*|- ~~\*\*ROAD-)/' docs/roadmap/INDEX.md
+```
+
+It prints nothing, or the line is not done: shorten it and run it again. One run wrote a 305-character line after reading this rule, and left it.
 
 ## ROAD-N is a slot, not a feature
 

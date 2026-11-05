@@ -247,3 +247,10 @@ entry meaning was replaced with a pointer to the template's Focus rules, and the
 repeated on haiku ×2. 2/2 again added only `## Focus` (7+/2−), with no change to table
 rows, After, Blockers or Commitment. One run placed ROAD-57 after MILE-56 rather than
 second; the order inside Now is the requester's to set, and both readings are faithful.
+
+## 1.5.0 — the road card (2026-11-05)
+
+`templates/road-card.md` and a `— Card:` link at the end of an item's line; `## The road card` says when a card is written and that
+design stays out of it. Reached from `/idea` 1.3.0, whose GREEN wrote ROAD-5's card through this skill on Sonnet and Haiku (evidence in
+`idea`'s TESTS.md). The line grammar change was checked against its parsers: `chart-progress/scripts/extract.py` reads `After:` and
+backticked Surfaces and ignores a trailing markdown link; `brief-road` greps the line start.

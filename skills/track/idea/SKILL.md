@@ -1,6 +1,6 @@
 ---
 name: idea
-version: 1.2.0
+version: 1.3.0
 description: Puts an idea on the board as a ticket and frames it, so it waits in Shaping with its tier and open questions. Run it with /idea <the idea>.
 disable-model-invocation: true
 ---
@@ -21,10 +21,27 @@ The states are the roles in `docs/agents/triage-labels.md`.
    *Done when: the ticket exists with one state role and the operator assigned, or the draft
    names its approver.*
 2. **Frame it.** REQUIRED SUB-SKILL: use `frame-change` on the ticket's idea.
-3. **Record the frame on the ticket.** In one edit, swap `needs-triage` for `shaping`.
+3. **Write the card.** This is the one moment the operator is at the keyboard, and an
+   unattended `/shape --auto` takes the card as their word. Its slots are Outcome, Examples,
+   Must keep, Off limits, Decided, Delegated, Ask me and UI (`none`, `reuse`, `reference` or
+   `new`). Fill them from their own words and the confirmed close package: what they fixed goes to Decided, what they
+   left to you ("your call", "I don't care") to Delegated, and to Ask me only the kinds of choice
+   they said to ask them about first. Your own open questions go in the frame comment, never in
+   the card: one run filed eleven of them under Ask me, which would stop every unattended run.
+   Ask them for what is still empty, Examples first: at least two, with a named person and
+   real values. WHERE `docs/roadmap/INDEX.md` exists, REQUIRED SUB-SKILL: use `plan-milestones`
+   to add the item when the frame named none, and to write its card; where the roadmap is
+   shared, start the ticket's title with that `ROAD-N` in the same pass. Three Haiku runs added
+   ROAD-5 and its card and left the title without it, so no claim check could find the ticket. Otherwise the card is a
+   `## Card` section of the ticket body. A body slot the card answers never reads "Not decided
+   yet": one baseline wrote that under the operator's three examples, and neither baseline
+   touched the roadmap or kept "your call" apart from "ask me first".
+   *Done when: the card exists, or its empty slots are named in the comment below.*
+4. **Record the frame on the ticket.** In one edit, swap `needs-triage` for `shaping`.
    Then comment the stated tier, the neighbours `frame-change` found, and the open
    questions, numbered. Tier 0 skips Shaping: swap to `ready-for-agent` and say so.
-   WHEN the frame added roadmap items and the operator named the one they carry on with,
+   WHEN the frame added roadmap items and the operator named the one they carry on with, or
+   step 3 added the one item,
    record the claim in the same edit, for the check before a spec is written. Where the roadmap is
    shared, that `ROAD-N` starts the title (`ROAD-251 Weekly digest…`). Where it is private, the title
    stays and `.skills/_pending-<slug>/tickets.md` gets the line `<ticket id> road: ROAD-N`, since the

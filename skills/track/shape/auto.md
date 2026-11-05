@@ -40,10 +40,16 @@ read, so the word meant nothing when they opened them.
    `--project-style` gives that film the project's own look. Without it the film keeps `make-video`'s default look, in any repo.
    `RUN` = absolute path of `.skills/_pending-<slug>/auto/` in this checkout. Create it.
    With `--go`, read `go.md` beside this file now: it replaces steps 10 and 11 and adds the build.
+   **The card.** It is `docs/roadmap/roads/ROAD-N.md` for a ticket naming a road, else the `## Card` section of
+   the ticket body, copied to `RUN/card.md`. With `--go`, run `python3 -I <this skill>/scripts/check_card.py <card>
+   --root .`: anything but `card: ready` → comment its lines on the ticket, name `/idea` or `plan-milestones` to
+   finish the card, and end. A road with predecessors built and no intent in it was called "ready to go through
+   `/shape --auto --go` tonight".
    **Models.** For each role take, in order: its flag (`--work=claude-opus`), its entry on the
    `Shape roles:` line in `docs/agents/project.md`, then the default **work opus, interpret opus,
-   build sonnet**. A value is `claude-<alias or model ID>`. Check each with a one-line
-   `claude -p --model <it> "ok"`; one that fails stops the run, naming it. A value for another
+   build sonnet**. A value is `claude-` and then the model: `claude-opus` runs `--model opus`,
+   `claude-sonnet-5-5` runs `--model claude-sonnet-5-5`. Check each with a one-line
+   `claude -p --model <model> "ok"`; one run passed `claude-sonnet` whole, and it was refused; one that fails stops the run, naming it. A value for another
    vendor (`codex-…`, `grok-…`) is not supported yet: say so and stop. Work and interpret on one
    model → the sheet's limits say so.
    *Done when: the ticket's only state role is `shaping` and `RUN` exists.*
@@ -51,7 +57,9 @@ read, so the word meant nothing when they opened them.
    session's name, from the first line `ListAgents` prints. For Locks, read:
    the ticket; its `ROAD-N` line and milestone outcome in `docs/roadmap/INDEX.md`; every line
    `grep -n` finds for the road's name or feature in `docs/ARCHITECTURE.md`, `docs/architecture/`,
-   `CONTEXT.md`, `docs/adr/`; every `close-package.md` under `.skills/` naming that `ROAD-N`.
+   `CONTEXT.md`, `docs/adr/`; every `close-package.md` under `.skills/` naming that `ROAD-N`; the card's Outcome,
+   Examples, Must keep, Off limits and Decided, each line a Lock. Its Delegated and Ask me lines fill the
+   charter's sections of those names.
    *Done when: no `{slot}` remains and each Lock carries `file:line`.*
 3. **Workspace.** `git worktree add .worktrees/<slug> -b feat/<slug> <Default PR base>`. `WT` = its absolute path.
 4. **Keep the machine awake.** Where `caffeinate` exists, start `caffeinate -i -t 21600` in the

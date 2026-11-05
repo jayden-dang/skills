@@ -78,3 +78,20 @@ text was written for the create step.
 **GREEN, 1.2.0** (sonnet 1, haiku 1). 2/2 kept the title, wrote `1 road: ROAD-6` to `.skills/_pending-weekly-digest/tickets.md`,
 gave ROAD-7 no ticket, and kept the swap to `status:shaping` and the frame comment.
 
+
+## 1.3.0 — the road card (2026-11-05)
+
+Design: `.skills/research/2026-11-05-agent-strengths-for-go.md`; owner's rulings in memory (card file per road, UI default `reuse`).
+Fixture: `quay` (roadmap MILE-1 with ROAD-3 built and ROAD-4 unbuilt, vision, stub tracker with `issue create`). Prompt: "/idea The dock
+crew get a text message the evening before a vessel arrives on their berth", then every answer up front, the operator about to board a
+flight: 18:00, one message per berth, three examples, no replies or sign-up, `quay list` unchanged, "Which SMS provider and how retries
+work: your call", "Ask me before anything that would send more than one message per berth per day", command line only.
+
+**RED, 1.2.0** (Sonnet 1, Haiku 1). Both filed and framed tier 2 with 10 open questions. Neither added a roadmap item or a card. Sonnet's
+body read "Outcome: Not decided yet", "Acceptance: Not decided yet", "Out of scope: Not decided yet" above the operator's three examples.
+Neither kept "your call" apart from "ask me first"; Sonnet turned the second into open question 5.
+
+**GREEN, 1.3.0.**
+- Sonnet: ROAD-5 added with `— Card: [ROAD-5](roads/ROAD-5.md)`, title starts `ROAD-5`, card passes `check_card.py`, every answer in one slot, Delegated "Which SMS provider, and how retries work", Ask me the one cost rule.
+- Haiku, first text: card and ROAD-5 made, but its eleven open questions went under Ask me, and the title lacked ROAD-5. Countered both.
+- Haiku, after: 3 of 3 runs put only the operator's cost rule under Ask me; the last run's title starts `ROAD-5`.

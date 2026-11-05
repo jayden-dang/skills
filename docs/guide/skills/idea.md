@@ -7,8 +7,8 @@
 | **Bucket** | track |
 | **Invocation** | `/idea <the idea>` (user-invoked; `disable-model-invocation: true`) |
 | **Reads** | `docs/agents/issue-tracker.md`, `docs/agents/triage-labels.md`, the repo's working agreement for new tickets |
-| **Writes** | one ticket and one comment on it, or a draft naming who must approve it when the working agreement gates new tickets |
-| **Calls** | [`frame-change`](frame-change.md) |
+| **Writes** | one ticket, its road card, and one comment on it, or a draft naming who must approve it when the working agreement gates new tickets |
+| **Calls** | [`frame-change`](frame-change.md); [`plan-milestones`](plan-milestones.md) for the roadmap item and its card |
 | **Called by** | nobody — it is user-invoked |
 
 ## When it fires
@@ -17,9 +17,10 @@ When you have an idea and want it on the board, not in your head. It is the firs
 
 ## What it does
 
-1. **File it.** One ticket: the title is the idea in a line, your words go verbatim under Problem, and the other sections read `Not decided yet`. It gets exactly one state role, `needs-triage`, and you as assignee, so everyone else sees the idea is being framed. If the working agreement gates new tickets, it drafts the ticket, creates nothing, and says who must approve it.
+1. **File it.** One ticket: the title is the idea in a line, your words go verbatim under Problem. It gets exactly one state role, `needs-triage`, and you as assignee, so everyone else sees the idea is being framed. If the working agreement gates new tickets, it drafts the ticket, creates nothing, and says who must approve it.
 2. **Frame it.** It runs [`frame-change`](frame-change.md) on the idea.
-3. **Record the frame.** In one edit the ticket swaps `needs-triage` for `shaping`. A comment carries the stated tier, the neighbours found, and the open questions, numbered. Tier 0 skips Shaping: the ticket goes straight to `ready-for-agent`. When the frame added roadmap items and you named the one you carry on with, the claim is recorded for the check before a spec. Where the roadmap is shared, that `ROAD-N` starts the title. Where it is private, the title stays and `.skills/_pending-<slug>/tickets.md` holds it. The other new items get a ticket only when someone claims them.
+3. **Write the card.** This is the one time you are at the keyboard, and an unattended `/shape --auto` takes the card as your word. Your answers go into its slots: what you fixed under Decided, what you left to the agent under Delegated, what you want asked first under Ask me, and at least two Examples with a named person and real values. It asks you for what is still empty. Where the repo has a roadmap, the card is `docs/roadmap/roads/ROAD-N.md`, linked from a new roadmap item whose ID starts the ticket's title; otherwise it is a `## Card` section of the ticket.
+4. **Record the frame.** In one edit the ticket swaps `needs-triage` for `shaping`. A comment carries the stated tier, the neighbours found, and the open questions, numbered. Tier 0 skips Shaping: the ticket goes straight to `ready-for-agent`. When the frame added roadmap items and you named the one you carry on with, the claim is recorded for the check before a spec. Where the roadmap is shared, that `ROAD-N` starts the title. Where it is private, the title stays and `.skills/_pending-<slug>/tickets.md` holds it. The other new items get a ticket only when someone claims them.
 
 It ends with the ticket's URL and the next command, `/shape #N`.
 

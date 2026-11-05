@@ -289,3 +289,35 @@ teardown.
 Not covered: a run from `/shape #N --auto --go` with live peers from step 1; Opus defaults (the run set
 every role to Sonnet); a hard stop under `--go`; a migration; the walk inside `--go` (this build changed
 no page); a real GitHub upload over 10 MB; Codex or Grok roles (refused by name in this version).
+
+## 1.9.0 — the card, held-out acceptance, a size gate and a thin sheet under --go (2026-11-05)
+
+Research and ranking: `.skills/research/2026-11-05-agent-strengths-for-go.md`. Fixtures: `quay` for the charter; the tidegate `--go`
+fixture after step 8 with the card in the ticket body; RED A's built REBOOK branch for acceptance. Card in `.skills/ROADCARD/card-rebook.md`.
+
+**Card gate (`check_card.py`, 12 unit tests).** RED: `brief-road` called a card-less road ready for `--go`. GREEN, step 1 only, no card:
+Sonnet named the missing card as the next stop (it stopped first on a model name, below); Haiku stopped, commented the check's lines on
+the ticket, and named `/idea`.
+
+**Charter reads the card.** Sonnet found an unlinked card and made its slots Locks without new text (a no-op for reading). The new text
+gives Delegated and Ask me sections of their own.
+
+**Delegated stays off Needs you.** RED: with 4 delegated values in the ledger, Sonnet listed all 4 under "Made for you" and Haiku 3 of 4,
+one writing "ROAD-4 delegates flag names to the agent. Lean (mine): keep." GREEN, first text: Sonnet still kept the sweep, "so this is
+informational"; countered. After: Sonnet and Haiku each left the sweep and in-memory offers off, saying the card delegates them.
+
+**Thin sheet.** RED (go2): `craft-page` loaded 3 times for a 2,750 px page whose only consumed part was Needs you. GREEN on a run that goes
+on: Sonnet and Haiku wrote `sheet.md` with panel H and the title block, 0 `craft-page`. Haiku showed that a run that stops at the sheet
+must keep the full sheet, because the operator reads it then; the rule says so, and a stopping Haiku run wrote the full sheet.
+
+**Size gate.** A plan of 12 tasks: Sonnet and Haiku both stopped at step 10 and named the split. This counters no failure we observed:
+it rests on METR's shorter 80% horizon (secondary source) and a 5-task build taking about an hour.
+
+**Held-out acceptance.** RED: go2's builder passed its own 11 checks with 8 decisions unread; on RED A's branch, a Sonnet walk passed 29
+of 29 without finding that a passenger could accept onto a sailing staff had cancelled. GREEN, step 13 only, one fresh subagent per run:
+Sonnet failed Example 4 with the exact defect and passed 1–3. Haiku, first text: all four "not run", since no client sees the offer token;
+countered with the probe ladder and seeded names. After: Haiku passed 1–3 and failed 4.
+
+**Model names.** A `Shape roles:` value `claude-sonnet` was run whole as `--model claude-sonnet` and refused; the rule now strips `claude-`.
+
+Not covered: the whole `--go` run with these changes; an Ask me fork; a `new` UI card and its `ui-brief.md`; the acceptance send-back loop.

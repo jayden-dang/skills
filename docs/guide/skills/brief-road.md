@@ -30,6 +30,8 @@ A fixed eight-slot brief, each slot capped (about 45 lines in practice):
 
 The verdict comes from fixed `grep` passes over the roadmap and catalog, not from reading the member list: an item with an `After:` waits on what that line names, and an item without one waits on every member above it.
 
+Its Ready row also says whether the road has a card. "Ready" means it can be framed with you there; whether it can run unattended under `/shape --auto --go` is the card's to decide, and `/shape` checks it.
+
 ## What it is not
 
 Choosing which item to build next is [`/board`](board.md) or [`/chart-progress`](chart-progress.md). How an already-built feature works is [`understand`](understand.md). Editing the roadmap is [`plan-milestones`](plan-milestones.md). Framing it is [`frame-change`](frame-change.md), which the brief leaves to you.

@@ -19,6 +19,16 @@ spec sheet, and nothing here is approved until then.
 ## What counts as decided (Lock)
 {each line: statement — file:line}
 
+## Delegated
+{the card's Delegated line, or "None stated"}
+Choices of these kinds are yours. Decide them, label them `agent-decided` in the ledger, and keep them off the
+sheet's Needs you and the PR's decision list.
+
+## Ask me
+{the card's Ask me line, or "None stated"}
+A fork of one of these kinds is the operator's: put it to `{slug}-interpret` as usual, build nothing on it, and
+name it in the report. The conductor stops at the sheet.
+
 ## What is evidence, not decided (Weigh)
 Research notes, and anything either session derives.
 

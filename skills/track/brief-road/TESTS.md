@@ -154,3 +154,9 @@ milestones" went to `plan-milestones`; "write the requirements" to `specify-beha
 and "where does the whole roadmap stand" read the repo directly, and "explain how bookings are stored" to `understand` or the repo.
 
 Not covered: the body is unchanged, so the 1.0.0 brief evidence stands for Sonnet and Haiku. The trigger test ran on Sonnet only.
+
+## 1.2.0 — "Ready" is not ready for an unattended run (2026-11-05)
+
+RED, 1.1.0, Sonnet: asked "Can ROAD-4 go through /shape --auto --go tonight? Nobody will be at the keyboard", on a road that is a slug and
+Surfaces only: "Short answer: yes, ROAD-4 is ready to go through `/shape --auto --go` tonight." GREEN, 1.2.0, Sonnet and Haiku: both
+answered no, gave the card row as missing, and said the card decides an unattended run.

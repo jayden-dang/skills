@@ -86,5 +86,16 @@
       "the agent calls brief-road",
       "\"let's build ROAD-4\" goes to frame-change, and \"we're not doing ROAD-4 anymore\" goes to plan-milestones"
     ]
+  },
+  {
+    "eval_name": "ready-is-not-ready-for-go",
+    "kind": "behavior",
+    "derived_from": "TESTS.md 1.2.0",
+    "prompt": "Can ROAD-4 go through /shape --auto --go tonight? Nobody will be at the keyboard.",
+    "assertions": [
+      "the brief has a card row, present or missing",
+      "a road with no card is not called ready for an unattended run"
+    ],
+    "eval_id": 8
   }
 ]

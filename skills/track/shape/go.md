@@ -17,11 +17,11 @@ ran. Its demo was 15 seconds of stitched screenshots. Its ticket read `shaping` 
 
 ## Steps
 
-10. **Stop or approve.** A charter hard stop or an Ask me fork ended the work, or `tasks.md` holds more
-    than 8 tasks (`grep -c '^### Task' tasks.md`) → run `auto.md` steps 10 and 11 as written, and say
-    that `--go` stopped at the sheet and why. A plan over 8 tasks is more than one unattended run
-    should carry: name `plan-milestones` to split the road. Agents' success falls as tasks grow
-    (METR's 80% horizon is far shorter than its 50% one), and a 5-task build here took about an hour. Otherwise write the command, verbatim, to
+10. **Stop or approve.** A charter hard stop or an Ask me fork ended the work → run `auto.md` steps 10
+    and 11 as written, and say that `--go` stopped at the sheet and why. The plan's size never stops the
+    run: count its tasks (`grep -c '^### Task' tasks.md`) and put the count on the sheet's title block
+    and in the PR body, so the operator sees it. A 29-task plan on klynt built through to Implemented;
+    no unattended run has yet failed on size. Otherwise write the command, verbatim, to
     `RUN/operator-reply.md`. `work` sets `Status: Approved` on the three files quoting it, adds
     `Approval: the operator's /shape --go, before reading the spec`, commits, and drafts `plan-tasks`
     Step 5's publish into `RUN/ticket-body.md`; a `work` session that is gone comes back with

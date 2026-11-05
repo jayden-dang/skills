@@ -321,3 +321,16 @@ countered with the probe ladder and seeded names. After: Haiku passed 1–3 and 
 **Model names.** A `Shape roles:` value `claude-sonnet` was run whole as `--model claude-sonnet` and refused; the rule now strips `claude-`.
 
 Not covered: the whole `--go` run with these changes; an Ask me fork; a `new` UI card and its `ui-brief.md`; the acceptance send-back loop.
+
+## 1.10.0 — plan size is reported, not a stop; a roadmap change reaches the operator (2026-11-05)
+
+**Size.** 1.9.0 stopped `--go` at the sheet over 8 tasks. That rule countered no failure we had seen: it rested on METR summaries.
+klynt's PINWIN, 29 tasks, built through `build-in-waves` from plan (2026-11-02 17:51) to Implemented (2026-11-04 10:23), with the
+operator present at times. The owner chose to report the count instead. Re-add a stop only after an unattended run fails on size.
+
+**Roadmap change.** Fixture: the `--go` run after step 8, where `work` had split ROAD-4 (staff list → ROAD-6) and the roadmap on
+the branch read `Status: Draft`, named in the report. Ask: step 9, step 10, and the draft PR body.
+- RED, 1.9.0: Sonnet named the split and the Draft roadmap on the sheet and in the PR. Haiku named neither.
+- GREEN, 1.10.0: Sonnet and Haiku twice: each sheet and each PR body carry ROAD-6 and that the roadmap stays Draft until approved.
+  The task count reached all three sheets and two of three PR bodies.
+- Plain `--auto`: an `approve` on a sheet that named the roadmap change now also stamps the roadmap Approved. Not run.

@@ -749,3 +749,44 @@ is a routing slot: a shape check runs inside the `/shape --go` integration run.
 Same rule and evidence as `inspect-change` 1.11.0: a hand-picked port collided with another app's server in a live `--go` run, and a
 build left a server listening 48 minutes. The implementer prompt's render check and the task reviewer's focused test both start
 servers. GREEN was measured on `inspect-change`'s dispatch; these two prompts carry the same text and were not run separately.
+
+## 3.6.0 — the task reviewer is a general-purpose subagent, never a named review agent (2026-11-05)
+
+**Baseline (production, two sessions, not synthetic).** With the `pr-review-toolkit`
+plugin installed, two `build-in-waves` controllers sent every task review to
+`pr-review-toolkit:code-reviewer`:
+
+| Session | Controller | Task reviews to the plugin | Opened `task-reviewer-prompt.md` |
+|---|---|---|---|
+| zroute `daaf1e36` (CUSTEP) | Sonnet 5.5 | 11 of 11 (Tasks 1–7, re-reviews included) | no |
+| NAVORI `d63d9dba` (RELEASE) | Sonnet 5.5 + Opus 5.5 | 11, plus the whole-branch Standards and Spec reviews | no |
+
+Across every other transcript on the machine, no session that opened the template sent
+a review anywhere but `general-purpose` (or the default). The only text naming the
+agent type was `task-reviewer-prompt.md:7` (`Subagent (general-purpose):`). The files
+controllers always read (`build-in-waves/SKILL.md`, this `SKILL.md`,
+`task-lifecycle.md` step 5) named none. The zroute controller looked for the template
+with `find ~/.claude -name task-reviewer-prompt.md`, which returns nothing because
+`~/.claude/skills/*` are symlinks. It also looked in `build-in-waves/` because that
+SKILL.md cited `implementer-prompt.md` with no folder. The NAVORI controller listed the
+folder and still did not open the template. Neither dispatch passed `model`.
+
+**Synthetic RED did not reproduce: 0 of 12.** Fixture `.skills/REVTYPE`, with a roster
+that includes the four `pr-review-toolkit` agents. Run A gave the full skill folders
+(3 Sonnet, 3 Haiku). Run B gave only `build-in-waves/SKILL.md`, `execute-common/SKILL.md`
+and `task-lifecycle.md`, stating that a find for other prompt files returned nothing
+(3 Sonnet, 3 Haiku). All 12 runs wrote `general-purpose`, and both arms named the plugin's
+own review format as the reason to avoid it. A one-question run does not recreate a long
+build session. The user accepted the production transcripts as the baseline and chose
+to ship.
+
+**Change.** `task-lifecycle.md` step 5 names the reviewer (and the worker and fixer) as the
+harness's plain general-purpose subagent, never a roster or plugin review agent, gives the
+reason (its own prompt replaces the contract, its definition fixes the model), and places
+the template "beside this file".
+
+**GREEN (no-regression sweep, run B fixture with the new `task-lifecycle.md`): 2 of 2.** One Sonnet run
+and one Haiku run wrote `general-purpose`. Both cited the new step-5 sentence as the reason
+("the plain general-purpose subagent … never a named review agent"). Before the change, the RED arms
+reasoned from the plugin's description instead. This proves the text is read and obeyed. It does not
+prove the long-session failure is gone; the next real build with `pr-review-toolkit` installed is that check.

@@ -1,6 +1,6 @@
 ---
 name: build-in-waves
-version: 2.5.0
+version: 2.6.0
 description: Use when an approved tasks.md has Execution-mode continuous and needs
   dependency-aware subagent execution with serial or parallel lanes, bounded
   worker/reviewer leases, dual-verdict task review, and a whole-branch receipt.
@@ -161,7 +161,7 @@ Before each worker or reviewer resume, run the lease preflight from
 | Status | Your move |
 |---|---|
 | **DONE** | Package the diff → task review. |
-| **DONE_WITH_CONCERNS** | Read concerns **and** `.skills/<CODE>/implementation-notes.md`. Entries must match the nine-field **Deviations** recipe in `implementer-prompt.md`. Missing notes path, incomplete fields, or five-field-only while claiming deviation → incomplete — re-dispatch to log first. **Map impact** `reroute-plan` / `realign-spec` or plan-falsifying → REQUIRED SUB-SKILL: use `reroute-plan` (do not accept as clean DONE). |
+| **DONE_WITH_CONCERNS** | Read concerns **and** `.skills/<CODE>/implementation-notes.md`. Entries must match the nine-field **Deviations** recipe in `../execute-common/implementer-prompt.md`. Missing notes path, incomplete fields, or five-field-only while claiming deviation → incomplete — re-dispatch to log first. **Map impact** `reroute-plan` / `realign-spec` or plan-falsifying → REQUIRED SUB-SKILL: use `reroute-plan` (do not accept as clean DONE). |
 | **NEEDS_CONTEXT** | Supply what was named; re-dispatch same model. |
 | **BLOCKED** | Context → supply; ceiling → stronger model; too large → split; plan wrong → REQUIRED SUB-SKILL: use `reroute-plan`. |
 
@@ -229,4 +229,5 @@ skill's subagent loop without dispatches.
 - Let implementer self-review substitute for task review
 - Tell a reviewer what not to flag, or pre-rate severity in the dispatch
 - Dispatch a reviewer without a diff package
+- Send a review to a named review agent or plugin (`code-reviewer` and the like) instead of a general-purpose subagent carrying the contract
 - Re-dispatch a task the ledger marks complete

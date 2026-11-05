@@ -422,3 +422,11 @@ RED, 1.10.0: Sonnet chose `P=4871`, Haiku `4711`, `4712`, `4713`; neither checke
 `lsof` only afterwards, to confirm cleanup). An earlier pass without the "prove it" line started no server at all.
 GREEN, 1.11.0: Sonnet and Haiku twice: every start took an OS-picked port, ran `lsof … -sTCP:LISTEN -t` before its first request,
 and stopped its PID; nothing still listened after the run.
+
+## 1.12.0 — both reviewers are general-purpose subagents, never a named review agent (2026-11-05)
+
+**Baseline (production).** NAVORI session `d63d9dba` (RELEASE, `build-in-waves` close) sent
+"Standards review pass A" and "Spec review of RELEASE" to `pr-review-toolkit:code-reviewer`.
+§4 named no agent type for either dispatch. Synthetic runs and the full evidence are under
+`skills/execution/execute-common/TESTS.md` § 3.6.0. **Change:** §4 says both dispatches are the
+harness's plain general-purpose subagent carrying the brief, and why.

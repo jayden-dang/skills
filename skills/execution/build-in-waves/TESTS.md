@@ -514,3 +514,10 @@ After these runs only the counter sentence changed: the PINWIN figures were corr
 
 Not run: a controller carrying the release across a whole multi-wave build, or a real Rust cold rebuild. The
 cold-rebuild cost after a serial stretch is accepted, not measured. `build-by-story` was not edited or tested.
+
+## v2.6.0 — review agent type, and a findable implementer prompt (2026-11-05)
+
+Evidence is under `skills/execution/execute-common/TESTS.md` § 3.6.0: two production builds sent
+22 task reviews to `pr-review-toolkit:code-reviewer`. This file gains one Red Flag line. The
+DONE_WITH_CONCERNS row now cites `../execute-common/implementer-prompt.md`, because the zroute
+controller searched `build-in-waves/` for the bare filename and found nothing.

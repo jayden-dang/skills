@@ -177,10 +177,10 @@ a blocker wrote 690 and 747 characters into the Blockers line; klynt's grew to 5
 roadmap reached 505,863 characters before its prose was moved out. Check it before the gate:
 
 ```bash
-awk 'length > 300 && /^\*\*(Blockers|Deferred|Closed):\*\*/' docs/roadmap/INDEX.md
+perl -CSD -nle 'print if length > 300 && /^\*\*(Blockers|Deferred|Closed):\*\*/' docs/roadmap/INDEX.md
 ```
 
-It prints nothing, or the line is not done: shorten it and run it again. One run wrote a 305-character line after reading this rule, and left it.
+It counts characters, where `awk` on macOS counts bytes, so an arrow counts once. It prints nothing, or the line is not done: shorten it and run it again. One run wrote a 305-character line after reading this rule, and left it.
 
 ## ROAD-N is a slot, not a feature
 

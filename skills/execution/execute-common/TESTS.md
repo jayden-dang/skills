@@ -743,3 +743,9 @@ Predicate keyed to an observable: running inside `deliver-issues` or "nobody at 
 browser-rendered file in the branch diff. The walk's own RED/GREEN is in `run-dogfood` TESTS.md
 v4.2.0; RED A (`docs/design/2026-11-04-shape-go.md`) is the baseline with no walk at all. This step
 is a routing slot: a shape check runs inside the `/shape --go` integration run.
+
+## 3.5.0 — the implementer and task reviewer prompts carry the free-port rule (2026-11-05)
+
+Same rule and evidence as `inspect-change` 1.11.0: a hand-picked port collided with another app's server in a live `--go` run, and a
+build left a server listening 48 minutes. The implementer prompt's render check and the task reviewer's focused test both start
+servers. GREEN was measured on `inspect-change`'s dispatch; these two prompts carry the same text and were not run separately.

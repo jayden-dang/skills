@@ -114,5 +114,49 @@
       "the PR ends ready, with the decisions on top and an evidence block holding the demo film at the last code commit and the data model labelled by source",
       "no film, picture or diagram script is committed to the branch"
     ]
+  },
+  {
+    "eval_name": "go-needs-a-ready-card",
+    "kind": "behavior",
+    "derived_from": "TESTS.md 1.9.0",
+    "prompt": "/shape #4 --auto --go on a ticket with no card",
+    "assertions": [
+      "the card check runs and the run ends at step 1",
+      "the ticket gets the check's lines and the way to finish the card"
+    ],
+    "eval_id": 10
+  },
+  {
+    "eval_name": "delegated-never-in-needs-you",
+    "kind": "behavior",
+    "derived_from": "TESTS.md 1.9.0",
+    "prompt": "Write the sheet's Needs you from a ledger holding values of kinds the card delegates.",
+    "assertions": [
+      "no delegated value appears in Needs you, not even as information"
+    ],
+    "eval_id": 11
+  },
+  {
+    "eval_name": "held-out-acceptance-from-card",
+    "kind": "behavior",
+    "derived_from": "TESTS.md 1.9.0",
+    "prompt": "Resume /shape --go at step 13 on a built branch with a card of four Examples.",
+    "assertions": [
+      "a fresh subagent, not the build, drives each Example in the running app",
+      "state no screen shows is probed, not marked not run",
+      "a passenger accepted onto a cancelled sailing is recorded as a failed Example"
+    ],
+    "eval_id": 12
+  },
+  {
+    "eval_name": "go-size-gate-and-thin-sheet",
+    "kind": "behavior",
+    "derived_from": "TESTS.md 1.9.0",
+    "prompt": "Resume /shape --go after step 8 with a 12-task plan, and again with a 5-task plan.",
+    "assertions": [
+      "12 tasks stop the run at the sheet and name plan-milestones, with the full sheet",
+      "5 tasks go on, with sheet.md holding Needs you and the title block and no craft-page"
+    ],
+    "eval_id": 13
   }
 ]

@@ -1,6 +1,6 @@
 ---
 name: brief-road
-version: 1.1.0
+version: 1.2.0
 description: Use when one roadmap item (ROAD-N) needs explaining or checking before anyone frames it — what is ROAD-81, what does it deliver, can we start ROAD-9, is it ready or blocked, what does it leave out — produces a two-minute plain-words brief with a Ready / Blocked by / In flight / Built verdict. Not for where the whole roadmap stands, and not for building the item (frame-change) or editing the roadmap (plan-milestones).
 ---
 
@@ -81,6 +81,11 @@ told the reader the opposite of its own quote.
    10 words or fewer; use `CONTEXT.md`'s definition when it has one.
 5. **Ready?** — the verdict, then one row per predecessor: `ROAD-X · CODE or — ·
    Status or not started`. Quote the milestone's Blockers line when it is not `None`.
+   Then one row for the card: `Card · docs/roadmap/roads/ROAD-N.md · present or missing`.
+   Ready means it can be framed, not that it can run with nobody there: asked about
+   `/shape --auto --go` or an overnight run, say the card decides that, and `/shape` checks
+   it. One brief called a road with no outcome, example or decision "ready to go through
+   `/shape --auto --go` tonight".
 6. **Decided / open** — *Decided:* at most 5 locks or ADRs that shape this item, each
    with its number and file, then the file that holds the rest. No decisions file →
    "nothing recorded". *Open:* at most 5 questions framing must settle, highest blast

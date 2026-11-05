@@ -72,6 +72,9 @@ ID rules:
   A ROAD delivered by changing an existing feature is bound in that feature's cell after
   the word `amends`: `ROAD-127 amends ROAD-219`.
   Same slug language does not make the IDs the same object.
+- CARD is the item's intent, in docs/roadmap/roads/ROAD-<n>.md from templates/road-card.md,
+  linked at the end of its line: `— Card: [ROAD-7](roads/ROAD-7.md)`. The line keeps order and
+  Surfaces; the card holds outcome, examples and who decides what. An item may have no card yet.
 -->
 
 ## Focus
@@ -90,7 +93,7 @@ ID rules:
 do once it lands, not what was built>
 **Goals:** GOAL-1, GOAL-2
 **Members:**
-- **ROAD-1** <slug> — After: none — Surfaces: `src/<area>/`, `src/<file>.ts`
+- **ROAD-1** <slug> — After: none — Surfaces: `src/<area>/`, `src/<file>.ts` — Card: [ROAD-1](roads/ROAD-1.md)
 - **ROAD-2** <slug> — After: ROAD-1 — Surfaces: None — <reason the surface is not yet knowable>
 **Depends-on:** none
 **Commitment:** Committed <YYYY-MM-DD>

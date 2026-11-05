@@ -1,6 +1,6 @@
 ---
 name: plan-milestones
-version: 1.4.0
+version: 1.5.0
 description: Use when a project's milestones need planning, sequencing, replanning, or
   ANY edit to an existing roadmap — produces or revises docs/roadmap/INDEX.md, the
   milestone intent registry carrying stable MILE-N and ROAD-N IDs that later feature specs
@@ -153,6 +153,18 @@ stands whenever the user wants it.
 
 *Done when: the S1–S9 walk is clean, the user has approved the written file, and `Status:`
 reads `Approved`.*
+
+## The road card
+
+WHEN an item is created for an idea the operator framed, or an item is about to run
+`/shape --auto --go`: write its card to `docs/roadmap/roads/ROAD-N.md` from
+`templates/road-card.md` and link it at the end of the item's line, as the template's ID
+rules show. The card is the operator's word, in their words: Outcome, 2 to 5 Examples with
+named people and real values, Must keep, Off limits, Decided, Delegated, Ask me, UI. Put each
+thing they said in exactly one slot; a slot they gave nothing for reads `None`. A file path, a
+table, an API shape or a library is design: it goes to the spec, never into the card, which
+stays under 30 lines. klynt's lines, median 1,306 characters, froze crate names and webhook
+semantics as Locks before any spec was written.
 
 ## ROAD-N is a slot, not a feature
 

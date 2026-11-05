@@ -56,6 +56,10 @@ Authoritative wording lives in the skill body under the same heading: ROAD = pro
 
 Note that `ARCH-4` covers `CODE-N.M` and `ARCH-N` only. These namespaces are governed by the skill's own rules, not by that invariant — a deliberate choice, so planning IDs can be reshuffled while unstarted without breaking a repo-wide invariant.
 
+## The road card
+
+An item's line holds its order and surfaces; its intent lives in `docs/roadmap/roads/ROAD-N.md`, linked at the end of the line with `— Card: [ROAD-N](roads/ROAD-N.md)`. The card is written from `templates/road-card.md` when `/idea` adds an item, or before an item runs `/shape --auto --go`: Outcome, 2–5 Examples, Must keep, Off limits, Decided, Delegated, Ask me, UI, in under 30 lines. File paths, tables and API shapes belong to the spec. Keeping intent out of the line also keeps `INDEX.md` short: klynt's lines run to a median of 1,306 characters.
+
 ## The approval gate
 
 The skill validates the eight structural rules `S1`–`S8` carried in the template's comment block — the same set [`refresh-roadmap-status`](refresh-roadmap-status.md) re-checks as finding `R11`. Any defect is reported and the roadmap does not reach the user for approval. When clean, the whole file is presented and the skill stops; `Status: Approved` is written only after an explicit approval.

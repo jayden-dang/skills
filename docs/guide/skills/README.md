@@ -1,6 +1,6 @@
 # Skill reference
 
-77 skills in eleven buckets (engineering package); every one has its own page.
+78 skills in eleven buckets (engineering package); every one has its own page.
 See also [Start here](../START-HERE.md).
 
 **Invocation** is the thing to check first. A **model-invocable** skill is invoked by the agent on its own when its description matches the situation. A **user-invoked** skill carries `disable-model-invocation: true` in its frontmatter — the agent *cannot* invoke it, so you run it as a slash command.
@@ -28,6 +28,7 @@ Run once per repo.
 |---|---|---|
 | [`configure-repo`](configure-repo.md) | `/configure-repo` | The seven-step wizard. Writes `docs/agents/*.md` markdown config and **proves every configured command actually runs** |
 | [`bootstrap-repo`](bootstrap-repo.md) | `/bootstrap-repo` | Greenfield bootstrap to a verified baseline: one passing example test, every tool wired |
+| [`tune-rust-loop`](tune-rust-loop.md) | `/tune-rust-loop` | Measures where a Rust repo's builds and tests spend agent time, keeps the config changes that pay, ranks the code changes that would |
 
 ## discovery
 

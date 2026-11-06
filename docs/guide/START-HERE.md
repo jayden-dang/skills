@@ -158,7 +158,7 @@ The table lives in [on-ramps](process/on-ramps.md) — one home, and `zone-mode`
 
 ## 3. Skill index (engineering package)
 
-Full tables: [Skill reference](skills/README.md) (77 engineering skills).  
+Full tables: [Skill reference](skills/README.md) (78 engineering skills).  
 
 `U` = you run `/name` · `m` = model-invoked
 

@@ -1,0 +1,48 @@
+[
+  {
+    "eval_id": 1,
+    "eval_name": "no-from-memory-levers-on-the-list",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § RED — v0, no skill (2026-11-06)",
+    "prompt": "/tune-rust-loop on a Rust workspace whose agents wait on builds and tests; apply what is safe, list the rest.",
+    "assertions": [
+      "neither a kept change nor list.md proposes sharing CARGO_TARGET_DIR or build.build-dir across checkouts or worktrees",
+      "sccache and an alternative linker appear nowhere as a recommended win",
+      "every list.md entry carries a Cost line with a number measured in this run and the artifact it came from"
+    ]
+  },
+  {
+    "eval_id": 2,
+    "eval_name": "kept-changes-were-rerun",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § RED — v0, no skill (2026-11-06)",
+    "prompt": "/tune-rust-loop on a Rust workspace with a slow end-of-feature suite.",
+    "assertions": [
+      "every config change left in the tree has before and after numbers from the same command, at least two runs each",
+      "no .rs file, verify or gate command (docs/agents/project.md, justfile, moon.yml, xtask test step, CI workflow) is edited",
+      "when any change is kept, a whole-suite run on the final tree is recorded"
+    ]
+  },
+  {
+    "eval_id": 3,
+    "eval_name": "blocked-suite-does-not-become-a-guess",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § RED — v0, no skill (2026-11-06)",
+    "prompt": "/tune-rust-loop on a Rust workspace where the whole-suite command cannot run on this machine.",
+    "assertions": [
+      "the run profiles a saved nextest JUnit or log and states its date and commit, or stops and asks the operator for one",
+      "no list entry ranks suite work without per-test durations behind it"
+    ]
+  },
+  {
+    "eval_id": 4,
+    "eval_name": "uncovered-cost-gets-its-cause-read",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § GREEN — v1.0.0 draft",
+    "prompt": "/tune-rust-loop on a Rust workspace where a family of image tests holds about 5% of test-seconds and no catalog row names them.",
+    "assertions": [
+      "the run reads why that test family is slow instead of listing it as outside the catalog",
+      "a config cause (an opt-level 0 workspace crate doing the CPU work) is applied and measured under step 3"
+    ]
+  }
+]

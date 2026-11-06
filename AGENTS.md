@@ -1,6 +1,6 @@
 # AGENTS.md — Agent Behavior Constitution
 
-> A-to-Z agentic development skill set · **77 skills across 11 categories** · `jayden-dang/skills` · v1.0.0
+> A-to-Z agentic development skill set · **78 skills across 11 categories** · `jayden-dang/skills` · v1.0.0
 
 This file is the single source of truth for agent behavior when working with this
 skill set on any harness. Read it first, before any skill, before any action.
@@ -20,6 +20,26 @@ when skills or workflows change.
 > corrections rather than a straight revert: the skill inventory, the invocation
 > lists, and the frontmatter rules had all moved on, and the old §8 described a
 > **consuming** repo's layout as though it were this one.
+
+---
+
+## 0. Work on this repository goes through `author-skills`
+
+Everything from §1 on is the contract for repos that **adopt** the skill set. This
+repo ships it, and its own work does not run the spec-driven chain:
+
+- **A new skill or an edit to one** → `/author-skills` (user-run; name it, never
+  auto-invoke). Its Iron Law stands in for Gates 1 and 2 here: a RED baseline run,
+  recorded in the skill's `TESTS.md`, before any skill text; GREEN on the model
+  roster; then its ship checklist. No `frame-change`, `specify-behavior`,
+  `design-solution` or `plan-tasks`, and no `requirements.md` or ceremony tier for
+  skill work.
+- **An external fact the skill turns on** → `research`, as anywhere else. A choice
+  that belongs to the user is asked as a question, not written up as a spec.
+- **Scripts, guide pages, this file** → edit directly; `python3 scripts/qa-set.py`
+  green before calling it done.
+- **Gate 4 is unchanged.** The recorded runs and the lint output are the evidence;
+  "it reads clearly" is not.
 
 ---
 
@@ -93,6 +113,7 @@ carries a checklist, create one todo per item.
 |---|---|
 | User wants help defining what they actually want, or a prompt to start a fresh session with | suggest `/forge-prompt` (user-run) |
 | User wants an agent to keep working unattended until something is verifiably done (`/goal`, an overnight run) | suggest `/forge-goal` (user-run) |
+| A new skill, or a change to one, in this repo | suggest `/author-skills` (user-run) — not `frame-change`; see §0 |
 | "Build X" / "add X" / "can we support X" | `frame-change` — before plan mode, before scaffolding |
 | "This is broken", a clear unexpected behavior | `root-cause` — before any fix |
 | Broken on prod / staging / a remote env | `debug-remote` — evidence pack, then `root-cause` |
@@ -113,9 +134,9 @@ skill's workflow only when the user has explicitly told you to. A waiver of
 
 **User-invoked skills** carry `disable-model-invocation: true` in frontmatter.
 Agents MUST NOT auto-invoke these — name them for the user to run (`/triage`,
-`/zone-mode`). All 30 of them:
+`/zone-mode`). All 31 of them:
 
-`zone-mode`, `author-skills`, `reflect` · `bootstrap-repo`, `configure-repo` ·
+`zone-mode`, `author-skills`, `reflect` · `bootstrap-repo`, `configure-repo`, `tune-rust-loop` ·
 `forge-goal`, `forge-prompt`, `interpret-session` ·
 `no-comments` · `assess-pivot-impact`,
 `define-project`, `define-system-doc` · `audit-shipped`, `cut-release`, `tend-pr` · `assess-milestone`,
@@ -467,7 +488,7 @@ finding judged real and left unfixed).
 
 ## Agent skills
 
-This repo is configured for a spec-driven skill set.
+What the shipped skill set gives an adopting repo. This repo's own work follows §0.
 
 - Feature flow: `frame-change` (+ `load-subgraph`) → `specify-behavior` →
   `design-solution` → `plan-tasks` → execute family → `inspect-change` →

@@ -547,3 +547,9 @@ the screen"). Run 1: `new_video.py --kind feature`, a `full` clip (the first run
 the screen, no `aside`: the routes lived only in that later scene. Step 5 now asks for an `aside` on a clip with what
 its screen hides, naming that run. Run 2: the same `full` clip carried an `aside` with `POST /api/alerts`; script PASS.
 The sentence names this fixture's route, so run 2 measures this case. Neither run was voiced or rendered.
+
+## 3.5.1: no sweeping line (2026-11-07)
+
+The owner dropped the coloured line that crossed the frame at the start, the end and each new part: with scenes
+crossing and the window moving, it no longer fit. Removed from the template. All five samples re-rendered and PASS,
+longest holds 4.0 to 5.6s (the paper release, under its 6s limit); the check's closing allowance never depended on it.

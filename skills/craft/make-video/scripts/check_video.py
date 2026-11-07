@@ -18,7 +18,7 @@ MAX_SPEC_STILL = 4.5  # A net under MAX_WORDS_STILL. Longest hold measured: the 
 # A hold is a run of frames where fewer than STILL_PIXELS changed, between the two bands, at 640 wide. A label changing counts and
 # a dot moving along an arrow does not. A mean over the whole frame could not tell: one run added seats sliding to pass it.
 STILL_PIXELS = 80
-CLOSING = 1.5  # The closing line may rest: the line that crosses the frame a second before the end ends its hold
+CLOSING = 1.5  # The closing line may rest: a hold that runs into the film's last 1.5 seconds is its ending
 STILL_AREA = 640 * 304
 HOLD_FILTER = "crop=1920:912:0:72,scale=640:-1:flags=area,tblend=all_mode=difference,lutyuv=y='if(gt(val\\,14)\\,255\\,0)',signalstats,metadata=print:key=lavfi.signalstats.YAVG:file=-"
 MAX_SILENCE = 3.0

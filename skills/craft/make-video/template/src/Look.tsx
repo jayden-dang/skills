@@ -139,12 +139,3 @@ export const Backdrop: React.FC = () => {
   if (backdrop === 'none') return null;
   return <Glow />;
 };
-
-// A colored line that crosses the frame when the film moves on to something new.
-export const SweepLine: React.FC<{start: number; length?: number}> = ({start, length = 26}) => {
-  const frame = useCurrentFrame();
-  const p = interpolate(frame, [start, start + length], [0, 1], {...clamp, easing: IO});
-  if (t.spectrum.length === 0 || p <= 0 || p >= 1) return null;
-  const x = p * 2140 - 110;
-  return <div style={{position: 'absolute', left: x, top: -10, width: 3, height: 1120, rotate: '6deg', background: `linear-gradient(180deg,${t.spectrum.join(',')})`, boxShadow: `0 0 24px ${t.spectrum[2]}aa`}} />;
-};

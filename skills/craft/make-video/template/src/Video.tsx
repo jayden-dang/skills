@@ -5,7 +5,7 @@ import {ASIDE_CLIP_W, CLIP_W, clipHeights, ClipScene, FULL, MOVE, MOVE_EASING} f
 import {fit} from './fit';
 import {WithFonts} from './fonts';
 import {clamp, enter, FlowScene, graphicSize, PointsScene, TitleScene} from './GraphicScenes';
-import {Backdrop, cutShape, Decode, Edge, glide, rise, Roll, SweepLine} from './Look';
+import {Backdrop, cutShape, Decode, Edge, glide, rise, Roll} from './Look';
 import {CodeScene, EarsScene, SequenceScene, SPEC_KINDS, specSize, TableScene} from './SpecScenes';
 import {Beat, filmName, placed, planned, Scene, SoundEvent, totalFrames, TRANSITION, wordStarts, worldSteps} from './timing';
 import {worldSize, WorldScene} from './WorldScene';
@@ -97,8 +97,6 @@ const handOf = (a: Scene | undefined, b: Scene | undefined): Hand => {
   const [x, y] = [sizeOf(a), sizeOf(b)];
   return Math.abs(x.w - y.w) < 80 && Math.abs(x.h - y.h) < 120 ? 'push' : 'cross';
 };
-// A new part of the film starts at a title or where the kind of picture changes; only there does the line sweep across.
-const opensPart = (a: Scene, b: Scene) => b.kind === 'title' || KIN(a) !== KIN(b);
 
 const SceneFade: React.FC<{duration: number; first: boolean; last: boolean; inHand?: Hand; outHand?: Hand; children: React.ReactNode}> = ({duration, first, last, inHand = 'cross', outHand = 'cross', children}) => {
   const frame = useCurrentFrame();
@@ -307,9 +305,6 @@ const Scenes: React.FC = () => {
           </SceneFade>
         </Sequence>
       ))}
-      {placed.map(({from, scene}, s) => (s > 0 && opensPart(placed[s - 1].scene, scene) ? <SweepLine key={scene.id} start={from - 4} /> : null))}
-      <SweepLine start={0} />
-      <SweepLine start={totalFrames() - 30} />
     </AbsoluteFill>
   );
 };

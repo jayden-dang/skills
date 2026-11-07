@@ -1,7 +1,7 @@
 import {Audio} from '@remotion/media';
 import {useState} from 'react';
 import {AbsoluteFill, Easing, getStaticFiles, interpolate, Sequence, staticFile, useCurrentFrame} from 'remotion';
-import {CLIP_W, clipHeights, ClipScene, FULL, MOVE, MOVE_EASING} from './ClipScene';
+import {ASIDE_CLIP_W, CLIP_W, clipHeights, ClipScene, FULL, MOVE, MOVE_EASING} from './ClipScene';
 import {fit} from './fit';
 import {WithFonts} from './fonts';
 import {clamp, enter, FlowScene, graphicSize, PointsScene, TitleScene} from './GraphicScenes';
@@ -26,6 +26,11 @@ const CELL_C = 1597;
 const MONO = (size: number) => ({font: t.fontMono, weight: 400, tracking: 0.08, size});
 const sizeOf = (scene: Scene) => (scene.kind === 'compare' ? compareSize() : scene.kind === 'stat' ? statSize(scene) : scene.kind === 'timeline' ? timelineSize() : scene.kind === 'manim' ? MANIM_SIZE : scene.kind === 'world' ? worldSize(scene) : SPEC_KINDS.includes(scene.kind) ? specSize(scene) : graphicSize(scene));
 const centered = (w: number, h: number): Box => ({x: (1920 - w) / 2, y: CENTER_Y - h / 2, w, h});
+// A scene with notes leaves them a column on the right; its picture centres in what is left, scaled down to fit.
+const ASIDE_W = 400;
+const MAIN_W = 1920 - ASIDE_W - 120;
+const besideNotes = (w: number, h: number): Box => ({x: 40 + (MAIN_W - w) / 2, y: CENTER_Y - h / 2, w, h});
+const asideScale = (scene: Scene) => (scene.aside?.length && scene.kind !== 'clip' ? Math.min(1, MAIN_W / sizeOf(scene).w) : 1);
 // A scene change lands softly; a small change of shape takes less time than a large one, and always ends with the transition.
 const LAND = Easing.bezier(0.22, 1, 0.36, 1);
 const morphFrames = (a: Box, b: Box) => Math.round(12 + 12 * Math.min(1, Math.max(Math.abs(a.x - b.x), Math.abs(a.y - b.y), Math.abs(a.w - b.w), Math.abs(a.h - b.h)) / 600));
@@ -36,10 +41,11 @@ const shapesOf = () =>
   placed.flatMap(({scene, from, starts}) => {
     if (scene.kind !== 'clip') {
       const {w, h} = sizeOf(scene);
-      return [{at: from, box: centered(w, h), bare: scene.kind === 'world' || scene.kind === 'manim' ? 1 : 0, cut: true}];
+      const k = asideScale(scene);
+      return [{at: from, box: scene.aside?.length ? besideNotes(w * k, h * k) : centered(w, h), bare: scene.kind === 'world' || scene.kind === 'manim' ? 1 : 0, cut: true}];
     }
     if (scene.full) return [{at: from, box: FULL, bare: 1, cut: true}];
-    return clipHeights(scene).map((h, i) => ({at: i === 0 ? from : from + starts[i], box: centered(CLIP_W, h), bare: 0, cut: i === 0}));
+    return clipHeights(scene).map((h, i) => ({at: i === 0 ? from : from + starts[i], box: scene.aside?.length ? besideNotes(ASIDE_CLIP_W, h) : centered(CLIP_W, h), bare: 0, cut: i === 0}));
   });
 
 const Window: React.FC<{children: React.ReactNode}> = ({children}) => {
@@ -198,14 +204,45 @@ const Caption: React.FC<{scene: Scene; beat: Beat; index: number; length: number
   );
 };
 
-const Where: React.FC<{line: number; lines: number}> = ({line, lines}) => (
-  <Cell left={CELL_C + 28} top={BOTTOM} height={1080 - BOTTOM} gap={18}>
-    <span style={{fontFamily: t.fontMono, fontSize: 20, letterSpacing: '0.08em', color: t.onGround, opacity: 0.6, whiteSpace: 'nowrap'}}>{`${String(line + 1).padStart(2, '0')}/${String(lines).padStart(2, '0')}`}</span>
-    <div style={{width: 130, height: 3, background: t.line, position: 'relative'}}>
-      <div style={{position: 'absolute', left: 0, top: 0, bottom: 0, width: `${((line + 1) / lines) * 100}%`, background: t.onGroundAccent}} />
+// Where the film stands: one segment per scene, sized by its length, the current one filling as its lines go by.
+const Where: React.FC<{line: number; lines: number; scene: number; done: number}> = ({line, lines, scene, done}) => {
+  const total = placed.reduce((sum, p) => sum + p.duration, 0);
+  return (
+    <Cell left={CELL_C + 28} top={BOTTOM} height={1080 - BOTTOM} gap={18}>
+      <span style={{fontFamily: t.fontMono, fontSize: 20, letterSpacing: '0.08em', color: t.onGround, opacity: 0.6, whiteSpace: 'nowrap'}}>{`${String(line + 1).padStart(2, '0')}/${String(lines).padStart(2, '0')}`}</span>
+      <div style={{width: 150, height: 4, display: 'flex', gap: 3}}>
+        {placed.map((p, k) => (
+          <div key={k} style={{flexGrow: p.duration / total, height: 4, background: t.line, position: 'relative', overflow: 'hidden'}}>
+            <div style={{position: 'absolute', left: 0, top: 0, bottom: 0, width: `${k < scene ? 100 : k === scene ? done * 100 : 0}%`, background: t.onGroundAccent}} />
+          </div>
+        ))}
+      </div>
+    </Cell>
+  );
+};
+
+// Notes beside the picture: each arrives on its line and stays, the newest lit, so the screen keeps what was said.
+const Aside: React.FC<{scene: Scene; starts: number[]; lengths: number[]}> = ({scene, starts, lengths}) => {
+  const frame = useCurrentFrame();
+  const notes = scene.aside ?? [];
+  const ats = notes.map((note, i) => starts[Math.min(note.at ?? i, starts.length - 1)] + (note.at === undefined && i >= starts.length ? Math.round(((i - starts.length + 1) * lengths[starts.length - 1]) / (notes.length - starts.length + 1)) : 0) + 6);
+  const lit = ats.reduce((last, a, i) => (frame >= a ? i : last), -1);
+  const x = 40 + MAIN_W + 40;
+  return (
+    <div style={{position: 'absolute', left: x, width: ASIDE_W, top: TOP + 40, bottom: 1080 - BOTTOM + (scene.staged ? 96 : 40), display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 18}}>
+      {notes.map((note, i) => {
+        const p = rise(frame, ats[i], 14);
+        const size = fit(`${scene.id}-aside-${i}`, note.text, [30, 27, 24], ASIDE_W - 44, 3).size;
+        return (
+          <div key={i} style={{position: 'relative', padding: '16px 18px 16px 24px', background: t.panelSoft, border: `${t.borderWidth}px solid ${i === lit ? t.accent : t.panelBorder}`, borderRadius: t.radiusSmall, fontSize: size, lineHeight: 1.25, color: i === lit ? t.ink : t.muted, opacity: p, translate: `${(1 - p) * 24}px 0px`}}>
+            <div style={{position: 'absolute', left: 0, top: 12, bottom: 12, width: 4, background: i === lit ? t.accent : t.panelBorder}} />
+            {note.text}
+          </div>
+        );
+      })}
     </div>
-  </Cell>
-);
+  );
+};
 
 const Staged: React.FC<{text: string}> = ({text}) => (
   <div style={{position: 'absolute', right: 40, bottom: 1080 - BOTTOM + 14, padding: '6px 18px', borderRadius: Math.max(t.radiusSmall, 0), background: t.panelSoft, border: `${t.borderWidth}px solid ${t.bad}`, color: t.bad, fontSize: 24, fontWeight: 500}}>{text}</div>
@@ -229,7 +266,7 @@ const Scenes: React.FC = () => {
                   <ClipScene {...props} duration={duration} />
                 ) : (
                   // Sized to the scene's own shape and held at the window's centre, so its text stays put while the window moves.
-                  <div style={{position: 'absolute', left: '50%', top: '50%', translate: '-50% -50%', width: sizeOf(scene).w, height: sizeOf(scene).h}}>
+                  <div style={{position: 'absolute', left: '50%', top: '50%', translate: '-50% -50%', width: sizeOf(scene).w, height: sizeOf(scene).h, scale: String(asideScale(scene))}}>
                     {scene.kind === 'title' ? <TitleScene {...props} /> : null}
                     {scene.kind === 'points' ? <PointsScene {...props} /> : null}
                     {scene.kind === 'flow' ? <FlowScene {...props} /> : null}
@@ -261,10 +298,11 @@ const Scenes: React.FC = () => {
                 <Sequence key={i} from={starts[i]} durationInFrames={(starts[i + 1] ?? duration) - starts[i]} layout="none" name={`line ${i + 1}`}>
                   <Audio src={staticFile(`voice/${scene.id}-${i}.mp3`)} />
                   <Caption scene={scene} beat={beat} index={i} length={lengths[i]} />
-                  <Where line={here} lines={lines} />
+                  <Where line={here} lines={lines} scene={s} done={(i + 1) / scene.beats.length} />
                 </Sequence>
               );
             })}
+            {scene.aside?.length ? <Aside scene={scene} starts={starts} lengths={lengths} /> : null}
             {scene.staged ? <Staged text={scene.staged} /> : null}
           </SceneFade>
         </Sequence>

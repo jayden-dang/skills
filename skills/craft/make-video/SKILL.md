@@ -1,6 +1,6 @@
 ---
 name: make-video
-version: 3.4.0
+version: 3.5.0
 description: Use when someone wants a narrated video or film of a built feature, a pull request or branch, a release, or a closed spec, or a video that teaches a concept, protocol or algorithm — "/make-video", "make a video of this", "explainer film", "a film of the spec", "teach me X in a video", 3Blue1Brown-style, Manim — produces a checked 1080p MP4 with a source on every line. Not for a written or HTML explanation (understand), slides, or proving a feature works (validate-feature).
 ---
 
@@ -84,6 +84,7 @@ opened at `$REF`, or the run output that showed it.
 | `world` | Things that stay on screen and change as the line explains them | `explainer.md` |
 | `manim` | An idea drawn in Manim: shapes that move, morph, or plot | `concept.md` |
 | `compare`, `stat`, `timeline` | Two recordings side by side, a number that is the news, the order of changes | `pr.md`, `release.md` |
+| `aside` on a `clip`, `compare`, `world` or `manim` | 1 to 4 notes beside the picture, each `{text, at}` arriving on line `at`: a route, a number, a condition the voice does not say | the check fails a note that repeats its line |
 
 A request to explain how a built feature works reads `explainer.md` too.
 
@@ -149,6 +150,8 @@ because a beat with `clip` waits for the clip before it. The beats after it keep
 recording. Use `rate` up to 2 when a recording runs longer than its lines.
 Set `"full": true` on the scene that carries a feature film's main flow: the recording fills the frame between the
 two bands, with no window, and `focus` still moves the camera.
+Give a `clip` an `aside` with what its screen hides: the route the button calls, the limit, the rule behind what
+appears. One film for new engineers showed the button full-frame and kept `POST /api/alerts` for a later scene.
 
 ```json
 {"id": "report", "kind": "clip", "title": "Report a delay", "beats": [

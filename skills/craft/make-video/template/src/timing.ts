@@ -23,6 +23,7 @@ export type Scene = {
   subtitle?: string;
   staged?: string;
   full?: boolean;
+  aside?: {text: string; at?: number}[];
   points?: string[];
   sources?: string[];
   target?: string;

@@ -17,30 +17,33 @@ const head = {fontFamily: t.fontHead, fontWeight: t.headWeight, letterSpacing: t
 
 const titleMetrics = (scene: Scene) => {
   const w = 1500;
-  const title = fit(scene.id, scene.title, [136, 112, 92, 76], w - 120, 2, headFace);
-  const sub = scene.subtitle ? fit(scene.id, scene.subtitle, [46, 40], w - 120, 2) : null;
+  const title = fit(scene.id, scene.title, [104, 88, 74, 62], w - 120, 2, headFace);
+  const sub = scene.subtitle ? fit(scene.id, scene.subtitle, [36, 32], w - 120, 2) : null;
   const h = Math.max(340, 150 + title.lines * title.size * 1.05 + (sub ? 24 + sub.lines * sub.size * 1.2 : 0));
   return {w, h, title, sub};
 };
 
+// Up to eight points, in two columns past five, so a list and its context share one screen.
 const pointsMetrics = (scene: Scene) => {
   const points = scene.points ?? [];
-  const dense = points.length > 3;
-  const w = dense ? 1640 : 1500;
-  const textWidth = w - 144 - 46;
-  const title = fit(scene.id, scene.title, [76, 62], w - 144, 2, headFace);
-  const titleH = title.lines * title.size * 1.1 + 32;
-  for (const size of dense ? [48, 42, 36, 30] : [62, 52, 42, 36, 30]) {
-    const rows = points.map((p) => fit(scene.id, p, [size], textWidth, 2).lines * size * 1.15 + size * 0.95);
-    const h = 112 + titleH + rows.reduce((a, b) => a + b, 0);
-    if (h <= MAX_H) return {w, h, title, size, rows};
+  const cols = points.length > 5 ? 2 : 1;
+  const w = points.length > 3 ? 1640 : 1500;
+  const colW = (w - 144 - (cols - 1) * 56) / cols;
+  const title = fit(scene.id, scene.title, [56, 48], w - 144, 2, headFace);
+  const titleH = title.lines * title.size * 1.1 + 28;
+  const perCol = Math.ceil(points.length / cols);
+  for (const size of [44, 40, 36, 32, 28]) {
+    const rows = points.map((p) => fit(scene.id, p, [size], colW - 46, 2).lines * size * 1.15 + size * 0.8);
+    const tallest = Math.max(0, ...Array.from({length: cols}, (_, c) => rows.slice(c * perCol, (c + 1) * perCol).reduce((a, b) => a + b, 0)));
+    const h = 112 + titleH + tallest;
+    if (h <= MAX_H) return {w, h, title, size, rows, cols, colW, perCol};
   }
   throw new Error(`${scene.id}: too many points for one scene. Split it.`);
 };
 
 const flowMetrics = (scene: Scene) => {
   const w = 1560;
-  const title = fit(scene.id, scene.title, [76, 62], w - 144, 2, headFace);
+  const title = fit(scene.id, scene.title, [56, 48], w - 144, 2, headFace);
   const top = 60 + title.lines * title.size * 1.1 + 40;
   return {w, h: 720, title, top};
 };
@@ -77,11 +80,12 @@ export const pointAt = (starts: number[], lengths: number[], count: number, i: n
 
 export const PointsScene: React.FC<Props> = ({scene, starts, lengths}) => {
   const frame = useCurrentFrame();
-  const {title, size, rows} = pointsMetrics(scene);
+  const {title, size, rows, cols, colW, perCol} = pointsMetrics(scene);
   const points = scene.points ?? [];
   return (
     <div style={{position: 'absolute', inset: 0, padding: '56px 72px', boxSizing: 'border-box'}}>
-      <div style={{...head, fontSize: title.size, lineHeight: 1.1, marginBottom: 32, opacity: enter(frame, 6, 20)}}>{scene.title}</div>
+      <div style={{...head, fontSize: title.size, lineHeight: 1.1, marginBottom: 28, opacity: enter(frame, 6, 20)}}>{scene.title}</div>
+      <div style={{display: 'grid', gridTemplateColumns: `repeat(${cols}, ${colW}px)`, gridTemplateRows: `repeat(${perCol}, auto)`, gridAutoFlow: 'column', columnGap: 56, alignItems: 'start'}}>
       {points.map((p, i) => {
         const shown = enter(frame, pointAt(starts, lengths, points.length, i), 16);
         return (
@@ -91,6 +95,7 @@ export const PointsScene: React.FC<Props> = ({scene, starts, lengths}) => {
           </div>
         );
       })}
+      </div>
     </div>
   );
 };
@@ -108,10 +113,10 @@ export const FlowScene: React.FC<Props> = ({scene, starts}) => {
   const y = (i: number) => midY + (i - (sources.length - 1) / 2) * spread;
   const targetX = width * 0.66;
   const targetW = width - targetX;
-  const target = fit(scene.id, scene.target ?? '', [190, 140, 100, 70, 54], targetW, 2, headFace);
-  const note = scene.note ? fit(scene.id, scene.note, [36, 30], targetW, 3) : null;
+  const target = fit(scene.id, scene.target ?? '', [120, 96, 76, 60, 48], targetW, 2, headFace);
+  const note = scene.note ? fit(scene.id, scene.note, [30, 26], targetW, 3) : null;
   const targetP = enter(frame, starts[0] + 24);
-  const labelSize = [46, 38, 30].find((size) => sources.every((s) => {
+  const labelSize = [36, 30, 26].find((size) => sources.every((s) => {
     const lines = linesOf(s, size, chipW - 52);
     return lines <= 2 && lines * size * 1.1 <= chipH - 14;
   }));

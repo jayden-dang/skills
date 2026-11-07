@@ -12,7 +12,10 @@ export const FULL = {x: 0, y: 72, w: 1920, h: 912};
 type Fit = {w: number; maxH: number; minH: number; u: number};
 const WINDOWED: Fit = {w: CLIP_W, maxH: (CLIP_W * 9) / 16, minH: 300, u: CLIP_W / 1920};
 const FILLED: Fit = {w: FULL.w, maxH: FULL.h, minH: FULL.h, u: 1};
-const fitOf = (scene: Scene) => (scene.full ? FILLED : WINDOWED);
+// Beside an aside the recording narrows to leave the notes their column.
+export const ASIDE_CLIP_W = 1360;
+const BESIDE: Fit = {w: ASIDE_CLIP_W, maxH: (ASIDE_CLIP_W * 9) / 16, minH: 300, u: ASIDE_CLIP_W / 1920};
+const fitOf = (scene: Scene) => (scene.full ? FILLED : scene.aside?.length ? BESIDE : WINDOWED);
 export const MOVE = 24;
 export const MOVE_EASING = Easing.bezier(0.5, 0, 0.1, 1);
 const clamp = {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'} as const;

@@ -428,6 +428,29 @@ class Kinds(unittest.TestCase):
         self.assertIn("a release film opens its changes with a timeline or a stat scene", cv.script_faults(s, "."))
 
 
+class Aside(unittest.TestCase):
+    def scene(self, aside, kind="clip", text="Press it, and the alert appears on the right."):
+        return script(scenes=[{"id": "s", "kind": kind, "title": "T", "clip": "board", "aside": aside, "beats": [{"text": text, "ref": "alerts.js:3", "clip": "board"}]}])
+
+    def test_facts_the_line_does_not_say_pass(self):
+        self.assertEqual(cv.judge_kinds(self.scene([{"text": "POST /api/alerts"}, {"text": "newest first, max 20"}])), [])
+
+    def test_more_than_four_is_a_fault(self):
+        self.assertIn("s: an aside holds 1 to 4 notes", cv.judge_kinds(self.scene([{"text": f"note {i}"} for i in range(5)])))
+
+    def test_a_long_note_is_a_fault(self):
+        self.assertIn("s: aside note 1 is over 60 characters", cv.judge_kinds(self.scene([{"text": "x" * 61}])))
+
+    def test_a_note_that_repeats_its_line_is_a_fault(self):
+        self.assertIn("s: aside note 1 repeats its line; give a fact the voice does not say", cv.judge_kinds(self.scene([{"text": "the alert appears on the right"}])))
+
+    def test_an_aside_on_a_list_is_a_fault(self):
+        self.assertIn("s: an aside sits beside a clip, compare, world or manim scene", cv.judge_kinds(self.scene([{"text": "POST /api/alerts"}], kind="points")))
+
+    def test_a_note_names_a_line_that_exists(self):
+        self.assertIn("s: aside note 1 arrives on line 3, and the scene has 1", cv.judge_kinds(self.scene([{"text": "POST /api/alerts", "at": 3}])))
+
+
 class JudgeClip(unittest.TestCase):
     def test_sixteen_by_nine_at_1600_passes(self):
         self.assertIsNone(cv.judge_clip(1600, 900))

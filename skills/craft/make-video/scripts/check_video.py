@@ -138,8 +138,38 @@ def judge_kinds(s):
                     faults.append(f'{sid}: stat value "{stat.get("value")}" is over 8 characters')
         if kind == "timeline" and not 2 <= len(scene.get("events") or []) <= 6:
             faults.append(f"{sid}: a timeline holds 2 to 6 events")
+        aside = scene.get("aside")
+        if aside is not None:
+            faults += judge_aside(scene, aside)
     if (s.get("source") or {}).get("kind") == "release" and not any(sc.get("kind") in ("timeline", "stat") for sc in scenes):
         faults.append("a release film opens its changes with a timeline or a stat scene")
+    return faults
+
+
+ASIDE_KINDS = ("clip", "compare", "world", "manim")
+
+
+def words_of(text):
+    return {w for w in re.findall(r"[\w/.-]+", text.lower()) if len(w) > 2}
+
+
+def judge_aside(scene, aside):
+    """Notes beside a picture carry what the voice does not say: a route, a number, a condition."""
+    sid, beats = scene.get("id"), scene.get("beats", [])
+    if scene.get("kind") not in ASIDE_KINDS:
+        return [f"{sid}: an aside sits beside a clip, compare, world or manim scene"]
+    faults = [] if 1 <= len(aside) <= 4 else [f"{sid}: an aside holds 1 to 4 notes"]
+    for i, note in enumerate(aside, 1):
+        text = note.get("text", "")
+        if len(text) > 60:
+            faults.append(f"{sid}: aside note {i} is over 60 characters")
+        at = note.get("at", min(i - 1, len(beats) - 1))
+        if not 0 <= at < len(beats):
+            faults.append(f"{sid}: aside note {i} arrives on line {at}, and the scene has {len(beats)}")
+            continue
+        mine = words_of(text)
+        if mine and len(mine & words_of(beats[at].get("text", ""))) * 2 > len(mine):
+            faults.append(f"{sid}: aside note {i} repeats its line; give a fact the voice does not say")
     return faults
 
 

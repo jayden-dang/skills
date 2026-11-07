@@ -99,8 +99,8 @@ export const CompareScene: React.FC<Props> = ({scene, starts}) => {
 
 const STAT_W = 1500;
 export const statSize = (scene: Scene) => {
-  const title = fit(scene.id, scene.title, [76, 62], STAT_W - 144, 2, headFace);
-  return {w: STAT_W, h: Math.min(840, 112 + title.lines * title.size * 1.1 + 40 + 300), title};
+  const title = fit(scene.id, scene.title, [56, 48], STAT_W - 144, 2, headFace);
+  return {w: STAT_W, h: Math.min(840, 112 + title.lines * title.size * 1.1 + 40 + 240), title};
 };
 
 // A number that is the news: it rolls up from zero on its line.
@@ -118,10 +118,10 @@ export const StatScene: React.FC<Props> = ({scene, starts, lengths}) => {
           const n = Number(stat.value.replace(/,/g, ''));
           const counting = Number.isFinite(n) && Number.isInteger(n) && n > 0 && n < 100000;
           const shown = counting ? String(Math.round(n * interpolate(frame, [at, at + 24], [0, 1], clamp))) : stat.value;
-          const label = fit(`${scene.id}-${i}`, stat.label, [34, 30, 26], cell - 40, 2);
+          const label = fit(`${scene.id}-${i}`, stat.label, [28, 26, 24], cell - 40, 2);
           return (
             <div key={i} style={{width: cell, opacity: enter(frame, at, 14)}}>
-              {counting ? <div style={{...head, fontSize: 168, lineHeight: 1, color: t.accent, fontVariantNumeric: 'tabular-nums'}}>{shown}</div> : <Roll value={stat.value} since={at} size={168} color={t.accent} />}
+              {counting ? <div style={{...head, fontSize: 128, lineHeight: 1, color: t.accent, fontVariantNumeric: 'tabular-nums'}}>{shown}</div> : <Roll value={stat.value} since={at} size={128} color={t.accent} />}
               <div style={{fontSize: label.size, lineHeight: 1.2, color: t.muted, marginTop: 18, paddingRight: 40}}>{stat.label}</div>
             </div>
           );
@@ -138,7 +138,7 @@ export const timelineSize = () => ({w: LINE_W, h: 560});
 export const TimelineScene: React.FC<Props> = ({scene, starts, lengths}) => {
   const frame = useCurrentFrame();
   const events = scene.events ?? [];
-  const title = fit(scene.id, scene.title, [70, 58], LINE_W - 144, 1, headFace);
+  const title = fit(scene.id, scene.title, [56, 48], LINE_W - 144, 1, headFace);
   const left = 110;
   const right = LINE_W - 110;
   const y = 330;
@@ -154,8 +154,8 @@ export const TimelineScene: React.FC<Props> = ({scene, starts, lengths}) => {
       {events.map((event, i) => {
         const x = left + i * step;
         const p = enter(frame, ats[i], 14);
-        const label = fit(`${scene.id}-${i}`, event.label, [36, 30, 26], Math.max(180, step - 24), 2);
-        const note = event.note ? fit(`${scene.id}-${i}n`, event.note, [26, 22], Math.max(180, step - 24), 3) : null;
+        const label = fit(`${scene.id}-${i}`, event.label, [30, 27, 24], Math.max(180, step - 24), 2);
+        const note = event.note ? fit(`${scene.id}-${i}n`, event.note, [24, 22], Math.max(180, step - 24), 3) : null;
         const color = i === lit ? t.accent : t.ink;
         // A label stays inside the frame: the first and last sit flush with the line's ends.
         const boxW = Math.max(180, step - 24);

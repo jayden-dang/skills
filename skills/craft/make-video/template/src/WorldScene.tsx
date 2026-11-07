@@ -13,7 +13,8 @@ export const WORLD_H = 840;
 const MOVE = 22;
 const EASE = Easing.bezier(0.45, 0, 0.2, 1);
 
-const FONT: Record<string, number> = {card: 44, head: 96, row: 64, seat: 56, code: 31, note: 30};
+// Labels sized so a world holds more at once; code and notes stay at 30, the smallest a camera's widest view reads.
+const FONT: Record<string, number> = {card: 38, head: 76, row: 50, seat: 46, code: 31, note: 30};
 const toneOf = (tone?: Tone, fallback = t.ink) => (tone === 'accent' ? t.accent : tone === 'bad' ? t.bad : tone === 'warn' ? t.warn : tone === 'muted' ? t.muted : tone === 'ink' ? t.ink : fallback);
 const sizeOf = (o: WorldObject) => o.size ?? (o.shape === 'card' && o.head ? FONT.head : FONT[o.shape]);
 

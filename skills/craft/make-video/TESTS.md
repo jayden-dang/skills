@@ -522,3 +522,28 @@ sweeping line on every change, even between two lists.
 Re-rendered four films: the PR compare film, the full-clip release film and the real-voice Raft film PASS. The
 blueprint smoke failed at 4.5s on its own Manim scene, which drew nothing between its opening and "B's timer"; one
 `Indicate` on "waits" fixed it, as an agent would after the check. Not re-run on an agent.
+
+## 3.5.0: more on one screen (2026-11-07)
+
+The owner asked for more on a screen, so a viewer keeps the context while the voice moves on. The graphic scenes had
+been sized for one idea a screen: a title up to 136px, a list line up to 62, a flow's target up to 190, a stat 168.
+
+- Type scale cut to about 70%: titles 104 to 62, scene heads 56 and 48, list lines 44 to 28, flow target 120 to 48,
+  stat 128, timeline labels 30 to 24; world labels 38, 76, 50 and 46, with code and notes kept at 30, the floor
+  `explainer.md` sets for a camera's widest view.
+- A list takes up to eight points, in two columns past five.
+- `aside`: 1 to 4 notes in a column beside a `clip`, `compare`, `world` or `manim`, each arriving on its line and staying,
+  the newest lit; the picture moves left and scales into what remains. The check fails more than four, a note over 60
+  characters, a line number the scene lacks, and a note sharing more than half its words with the line it arrives on
+  (6 tests, 5 failing first; the sixth passed on the old code because notes were not judged at all).
+- The progress bar is one segment per scene, sized by its length.
+
+Rendered with the real voice and PASS: the PR film with two notes beside its compare, the blueprint smoke with three
+beside its Manim scene, the release film with a seven-point list. A compare beside notes shrinks to about 72%, so its
+app text is small unless `focus` zooms in.
+
+**Shape checks, Haiku, a feature film for new engineers** ("they need to see it working and know what happens behind
+the screen"). Run 1: `new_video.py --kind feature`, a `full` clip (the first run to use it), a `world` for what is behind
+the screen, no `aside`: the routes lived only in that later scene. Step 5 now asks for an `aside` on a clip with what
+its screen hides, naming that run. Run 2: the same `full` clip carried an `aside` with `POST /api/alerts`; script PASS.
+The sentence names this fixture's route, so run 2 measures this case. Neither run was voiced or rendered.

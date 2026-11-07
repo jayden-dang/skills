@@ -377,3 +377,55 @@ Faults the agents hit and fixed themselves: a label too long, which the render s
 `shape` 1.6.0: a shape check, Haiku reading `auto.md` for three commands, got film, language, look and spec language right on all three, citing the new sentences.
 
 **Not covered.** `--project-style` through a real `/shape --auto --video`, which has still never run through live peers. The project film kept the moves its agent added against the old measure, so it shows more sliding than the text now needs. Nobody but the owner can hear the sound layer: the bed and the hits are synthesized, and only their levels are measured. Gauges, bar charts and photographs, which the reference film has, were not built, and neither was a way for an agent to write its own scene. Feature, PR and release films were not re-run: they share the look and the check, and `clip` keeps its 6-second limit. A Haiku story still let Lan come "back in time" after her hold expired, against the recipe's rule, and no check sees that.
+
+## RED, 2026-11-07: one shape for every kind, on 3.0.0
+
+Same `tidegate` fixture, skill at `.claude/skills/make-video/`, no `VIBI_API`, so every run stopped at step 4 and the
+script is the artifact. One run per request per model. Requests: what is new in 1.3.0 for harbour staff; a video for the
+reviewers of `feat/quiet-hours`; "teach me how Raft leader election works — I want to actually learn it".
+
+| Run | Model | Scenes | Look |
+|---|---|---|---|
+| release | Sonnet | title, clip, clip, title | template, untouched |
+| release | Haiku | title, clip, clip, title | template, untouched |
+| PR | Sonnet | title, points, clip, points, title | template, untouched |
+| PR | Haiku | title, flow, points, title | template, untouched |
+| concept | Sonnet | none: stopped, "A subject with no code and no spec folder is out of scope" | — |
+| concept | Haiku | none: stopped on the same line, pointed at `understand` | — |
+
+- Both release films are a feature film with a different title: two clips, no segment per change, nothing that counts or lists what changed.
+- Neither PR film shows a before and an after, though the change is one (day path vs night path). Sonnet filmed only the night; Haiku filmed nothing.
+- The concept request is refused by the text itself, on both models.
+- Content faults were absent, as in 2026-11-03: all four left out the reverted fare banner and the post-tag dark panels, and both PR films reported the `cancelled` exception.
+
+**Failure form.** Wrong shape on release and PR, so a recipe per kind; a missing kind on concept, so a new branch with its
+own source rule. Not a gate: no pressure.
+
+**Manim spike** (`.skills/MANIMSPIKE/`): Manim CE 0.22.1 installs in a py3.11 venv in 15 s; a 4 s transparent 1080p30 clip
+renders in 4.1 s as VP9 alpha with exactly 120 frames; Remotion `<OffthreadVideo transparent>` composites it with clean
+edges. Pango does not load the template's woff2.
+
+## GREEN, 2026-11-07: `concept` and `manim`, 3.1.0
+
+Same Raft request on fresh `tidegate` copies, `research` installed beside the skill. Both runs researched the Raft paper
+(sections 5.1, 5.2, 5.4.1), wrote a `concept` script that passed `--script`, and stopped at the voice. The scorer then
+laid a stand-in voice (a tone per line, 9 frames a word, about 200 words a minute, faster than the real voice's ~150) and
+told each agent the voice was in place; both went on through preview, Manim, render and check. Scored by re-running
+`check_video.py` and reading each contact sheet.
+
+| Run | Model | Scenes | Length | Longest hold | Check |
+|---|---|---|---|---|---|
+| concept | Sonnet | `manim` x6, closing title | 111.8s | 3.7s | PASS |
+| concept | Haiku | title, `manim` x5, closing title | 136.1s | 4.4s | PASS |
+
+- Sonnet kept one set of five servers through every scene, the persistent-object style `world` gives spec films.
+- Sonnet's first render failed on a 5.3s hold over its opening `title`; it redrew the opening in Manim. Haiku's first
+  failed on a 5.6s hold over a `points` scene and redrew it in Manim. The check caught both; no text added.
+- Both changed labels with `Transform`/`ReplacementTransform` on `Text`, and both sheets caught a label mid-morph as
+  broken letters ("C·ndid·te", "le·der?"). One bullet in `concept.md` now names `FadeTransform`. Not re-run.
+- Haiku's story contradicted itself across scenes (C wins, then "has already voted" in the next); it reported this itself.
+  No check sees it, as on 3.0.0.
+- Haiku reported that `voice.py` sent the script to Vibi; the scorer's stand-in did, nothing was sent.
+- `render_manim.py`'s first-run install was exercised only by the scorer's smoke test: both agents found the venv in
+  `~/.cache/make-video/manim` already built.
+- `check_video.py` gained `judge_concept` and `judge_manim_renders`; 11 tests, 9 of them failing on 3.0.0's code.

@@ -42,7 +42,7 @@ class ValidateScript(unittest.TestCase):
         self.assertIn("a-0: over 30 words", cv.validate_script(s))
 
     def test_an_unknown_source_kind_is_a_fault(self):
-        self.assertIn("source.kind must be feature, pr, release or spec", cv.validate_script(script(source={"kind": "pitch", "ref": "x"})))
+        self.assertIn("source.kind must be feature, pr, release, spec or concept", cv.validate_script(script(source={"kind": "pitch", "ref": "x"})))
 
     def test_a_missing_language_is_a_fault(self):
         s = script()
@@ -273,6 +273,69 @@ class SpecLength(unittest.TestCase):
 
     def test_over_two_minutes_is_a_fault(self):
         self.assertIn("120.5s is over the 120s limit", cv.judge_length(120.5))
+
+
+def concept(**over):
+    base = {
+        "language": "en",
+        "source": {"kind": "concept", "topic": "Raft leader election"},
+        "sources": [{"id": "raft-5.2", "cite": "Ongaro and Ousterhout 2014, In Search of an Understandable Consensus Algorithm, section 5.2"}],
+        "scenes": [
+            {"id": "elect", "kind": "manim", "title": "An election", "beats": [
+                {"text": "A follower hears nothing, so it starts an election.", "ref": "raft-5.2"},
+                {"text": "It votes for itself because it wants to lead.", "ref": "raft-5.2"},
+            ]}
+        ],
+    }
+    base.update(over)
+    return base
+
+
+class Concept(unittest.TestCase):
+    def test_a_concept_film_with_sources_has_no_faults(self):
+        self.assertEqual(cv.judge_concept(concept()), [])
+
+    def test_a_concept_needs_no_commit(self):
+        self.assertEqual(cv.validate_script(concept()), [])
+
+    def test_no_sources_is_a_fault(self):
+        self.assertIn("sources is missing: a concept film lists each source as {id, cite}", cv.judge_concept(concept(sources=[])))
+
+    def test_a_ref_to_no_listed_source_is_a_fault(self):
+        s = concept()
+        s["scenes"][0]["beats"][0]["ref"] = "the Raft paper"
+        self.assertIn("elect-0: ref names no source in sources and no file:line", cv.judge_concept(s))
+
+    def test_a_source_id_inside_another_word_does_not_count(self):
+        s = concept()
+        s["scenes"][0]["beats"][0]["ref"] = "raft-5.2x"
+        self.assertIn("elect-0: ref names no source in sources and no file:line", cv.judge_concept(s))
+
+    def test_a_file_and_line_counts_as_a_source(self):
+        s = concept()
+        s["scenes"][0]["beats"][0]["ref"] = "src/raft.rs:40"
+        self.assertEqual(cv.judge_concept(s), [])
+
+    def test_a_concept_film_that_draws_nothing_is_a_fault(self):
+        s = concept()
+        s["scenes"][0]["kind"] = "points"
+        self.assertIn("no manim or world scene: a concept film draws the idea", cv.judge_concept(s))
+
+    def test_a_concept_film_explains(self):
+        s = concept()
+        for b in s["scenes"][0]["beats"]:
+            b["text"] = "A follower starts an election."
+        self.assertIn("0 of 2 lines give a reason; an explanation needs a third", cv.judge_concept(s))
+
+    def test_a_concept_film_may_run_five_minutes(self):
+        self.assertEqual(cv.judge_length(300.0, cv.CONCEPT_MAX), [])
+        self.assertIn("300.5s is over the 300s limit", cv.judge_length(300.5, cv.CONCEPT_MAX))
+
+    def test_an_unrendered_manim_scene_is_a_fault(self):
+        self.assertIn("elect: public/manim/elect.webm is missing; run render_manim.py", cv.judge_manim_renders(concept(), "/nonexistent"))
+
+    def test_a_feature_film_still_needs_a_commit(self):
+        self.assertIn("source.ref is missing", cv.validate_script(script(source={"kind": "feature"})))
 
 
 class JudgeClip(unittest.TestCase):

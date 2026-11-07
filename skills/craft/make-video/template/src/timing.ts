@@ -15,7 +15,7 @@ export type WorldChange = {set?: Record<string, Partial<WorldObject>>; arrows?: 
 export type Beat = {text: string; spoken?: string; ref: string; clip?: string; rate?: number; focus?: Rect; ring?: Rect; mark?: number[]; world?: WorldChange & {then?: (WorldChange & {at: string})[]}};
 export type Scene = {
   id: string;
-  kind: 'title' | 'points' | 'flow' | 'clip' | 'ears' | 'sequence' | 'code' | 'table' | 'world';
+  kind: 'title' | 'points' | 'flow' | 'clip' | 'ears' | 'sequence' | 'code' | 'table' | 'world' | 'manim';
   title: string;
   subtitle?: string;
   staged?: string;
@@ -52,6 +52,7 @@ const PACE: Record<Scene['kind'], {head: number; gap: number; tail: number}> = {
   code: {head: 18, gap: 8, tail: 20},
   table: {head: 18, gap: 8, tail: 20},
   world: {head: 18, gap: 10, tail: 30},
+  manim: {head: 18, gap: 10, tail: 30},
 };
 
 export const clipLength = (beat: Beat) => (beat.clip ? Math.ceil(clipFrames[beat.clip].frames / (beat.rate ?? 1)) : 0);
@@ -118,6 +119,10 @@ export const beatFrames = () => placed.flatMap(({from, starts, lengths}) => star
 // Where each scene starts and what it cites: the index beside a finished film.
 export const sceneIndex = () =>
   placed.map(({scene, from}) => ({id: scene.id, title: scene.title, seconds: Math.round(from / FPS), refs: scene.beats.map((b) => b.ref).join(', ')}));
+
+// What a Manim scene times itself to: preview.mjs writes it to out/timing.json, and render_manim.py reads it.
+export const sceneTiming = () =>
+  Object.fromEntries(placed.map(({scene, duration, starts, lengths}) => [scene.id, {duration, starts, lengths, words: scene.beats.map((_, i) => wordStarts(scene, i, lengths[i]))}]));
 
 export const totalFrames = () => {
   const last = placed[placed.length - 1];

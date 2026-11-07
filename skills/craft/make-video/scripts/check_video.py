@@ -10,7 +10,7 @@ import re
 import subprocess
 import sys
 
-KINDS = ("feature", "pr", "release", "spec")
+KINDS = ("feature", "pr", "release", "spec", "concept")
 MAX_WORDS = 20
 MAX_WORDS_BY_LANGUAGE = {"vi": 30}  # Vietnamese writes each syllable as a token
 MAX_STILL = 6.0
@@ -24,6 +24,7 @@ HOLD_FILTER = "crop=1920:912:0:72,scale=640:-1:flags=area,tblend=all_mode=differ
 MAX_SILENCE = 3.0
 MIN_CLIP_WIDTH = 1600
 SPEC_MAX = 120
+CONCEPT_MAX = 300  # Guo, Kim and Rubin 2014: engagement falls past about six minutes
 WORLD_W = 1800
 WORLD_H = 840
 MAX_WORDS_STILL = 9  # About 3.5 seconds of speech: one film's 8 words after its last change held 3.7
@@ -41,10 +42,10 @@ def validate_script(s):
         faults.append("language is missing")
     source = s.get("source") or {}
     if source.get("kind") not in KINDS:
-        faults.append("source.kind must be feature, pr, release or spec")
+        faults.append("source.kind must be feature, pr, release, spec or concept")
     if source.get("kind") == "spec" and not source.get("spec"):
         faults.append("source.spec is missing")
-    if not source.get("ref"):
+    if not source.get("ref") and source.get("kind") != "concept":
         faults.append("source.ref is missing")
     for scene in s.get("scenes", []):
         sid = scene.get("id", "?")
@@ -84,13 +85,39 @@ def judge_spec(s, requirements):
         faults.append(f"{kinds.count('points')} points scenes: a spec film has at most 1")
     if "world" not in kinds:
         faults.append("no world scene")
+    return faults + judge_reasons(s)
+
+
+def judge_reasons(s):
     words = REASON_WORDS.get(s.get("language"))
-    if words:
-        lines = [beat.get("text", "") for scene in scenes for beat in scene.get("beats", [])]
-        reasons = sum(1 for line in lines if re.search(words, line, re.I))
-        if lines and reasons * 3 < len(lines):
-            faults.append(f"{reasons} of {len(lines)} lines give a reason; an explanation needs a third")
-    return faults
+    if not words:
+        return []
+    lines = [beat.get("text", "") for scene in s.get("scenes", []) for beat in scene.get("beats", [])]
+    reasons = sum(1 for line in lines if re.search(words, line, re.I))
+    if lines and reasons * 3 < len(lines):
+        return [f"{reasons} of {len(lines)} lines give a reason; an explanation needs a third"]
+    return []
+
+
+def judge_concept(s):
+    """A film that teaches a topic cites the sources it was learned from, and draws the idea."""
+    faults = []
+    sources = s.get("sources") or []
+    ids = [src.get("id") for src in sources if src.get("id") and src.get("cite")]
+    if not ids:
+        faults.append("sources is missing: a concept film lists each source as {id, cite}")
+    for scene in s.get("scenes", []):
+        for i, beat in enumerate(scene.get("beats", [])):
+            ref = beat.get("ref", "")
+            if ref.strip() and not file_refs(ref) and not any(re.search(rf"(?<![\w-]){re.escape(x)}(?![\w-])", ref) for x in ids):
+                faults.append(f"{scene.get('id')}-{i}: ref names no source in sources and no file:line")
+    if not any(scene.get("kind") in ("manim", "world") for scene in s.get("scenes", [])):
+        faults.append("no manim or world scene: a concept film draws the idea")
+    return faults + judge_reasons(s)
+
+
+def judge_manim_renders(s, project):
+    return [f"{scene.get('id')}: public/manim/{scene.get('id')}.webm is missing; run render_manim.py" for scene in s.get("scenes", []) if scene.get("kind") == "manim" and not os.path.exists(os.path.join(project, "public", "manim", f"{scene.get('id')}.webm"))]
 
 
 def uncited(s, requirements):
@@ -99,8 +126,8 @@ def uncited(s, requirements):
     return sorted(live_ids(requirements) - cited_ids(s), key=key)
 
 
-def judge_length(duration):
-    return [f"{duration:.1f}s is over the {SPEC_MAX}s limit"] if duration > SPEC_MAX else []
+def judge_length(duration, limit=SPEC_MAX):
+    return [f"{duration:.1f}s is over the {limit}s limit"] if duration > limit else []
 
 
 def judge_quotes(s, read):
@@ -322,6 +349,8 @@ def script_faults(s, repo):
     """Everything that can be judged before a voice or a render exists."""
     faults = validate_script(s) + check_refs(s, repo) + judge_world(s) + judge_pace(s)
     source = s.get("source") or {}
+    if source.get("kind") == "concept":
+        faults += judge_concept(s)
     if source.get("kind") == "spec" and source.get("spec"):
         text = spec_text(s, repo)
         if text is None:
@@ -343,12 +372,15 @@ def main(argv):
     s = json.load(open(os.path.join(project, "src", "script.json")))
     faults = script_faults(s, repo)
     text = spec_text(s, repo)
+    concept = (s.get("source") or {}).get("kind") == "concept"
     if not only_script:
         m = probe(mp4)
         print(json.dumps({**{k: m[k] for k in ("width", "height", "duration", "loudness", "peak", "silences")}, "longest_still": round(max((length for start, length in m["freezes"] if start + length < m["duration"] - CLOSING), default=0), 1)}))
-        faults += judge_media(m, MAX_SPEC_STILL if text is not None else MAX_STILL)
+        faults += judge_media(m, MAX_SPEC_STILL if text is not None or concept else MAX_STILL) + judge_manim_renders(s, project)
         if text is not None:
             faults += judge_length(m["duration"])
+        if concept:
+            faults += judge_length(m["duration"], CONCEPT_MAX)
         if sheet:
             contact_sheet(mp4, sheet, beat_frames(project), m["duration"])
             print(f"sheet: {sheet}")

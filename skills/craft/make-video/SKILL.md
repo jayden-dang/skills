@@ -1,7 +1,7 @@
 ---
 name: make-video
-version: 3.0.0
-description: Use when someone wants a narrated video or film of a built feature, a pull request or branch, a release, or a closed spec — "/make-video", "make a video of this", "explainer film", "a film of the spec" — produces a checked 1080p MP4 with a source on every line. Not for a written or HTML explanation (understand), slides, or proving a feature works (validate-feature).
+version: 3.1.0
+description: Use when someone wants a narrated video or film of a built feature, a pull request or branch, a release, or a closed spec, or a video that teaches a concept, protocol or algorithm — "/make-video", "make a video of this", "explainer film", "a film of the spec", "teach me X in a video", 3Blue1Brown-style, Manim — produces a checked 1080p MP4 with a source on every line. Not for a written or HTML explanation (understand), slides, or proving a feature works (validate-feature).
 ---
 
 # Make Video
@@ -36,6 +36,7 @@ The film shows one commit. Bind it to `$REF` and write it to `source.ref`.
 | A branch or range | `pr` | the branch head; film the base too when the change is a before and after | one temporary worktree for each |
 | A version | `release` | the tag | a temporary worktree at the tag |
 | A spec folder | `spec` | the commit holding it | nowhere: read `explainer.md` beside this file now, and skip step 5 |
+| A topic to learn, in this repo or not | `concept` | the commit, only when a line cites a file here | nowhere: read `concept.md` and `explainer.md` beside this file now, and skip step 5 |
 
 ```bash
 git worktree add --detach "$(mktemp -d)/app" "$REF"
@@ -44,9 +45,7 @@ git worktree add --detach "$(mktemp -d)/app" "$REF"
 One release run filmed `main`, which showed a change made after the tag. Another deleted a CSS
 line by hand to imitate the tag. The worktree needs neither.
 
-A subject with no code and no spec folder is out of scope: stop and say so.
-
-*Done when: `$REF` resolves with `git rev-parse` and each worktree exists.*
+*Done when: `$REF` resolves with `git rev-parse` and each worktree exists, or the film is a `concept` that cites no file here.*
 
 ## 2. Start the project
 
@@ -82,6 +81,7 @@ opened at `$REF`, or the run output that showed it.
 | `flow` | Several things meeting in one result | `title`, `sources`, `target`, optional `note` |
 | `points` | What changed, or what it does not do | `title`, `points` |
 | `world` | Things that stay on screen and change as the line explains them | `explainer.md` |
+| `manim` | An idea drawn in Manim: shapes that move, morph, or plot | `concept.md` |
 
 A request to explain how a built feature works reads `explainer.md` too.
 

@@ -9,6 +9,7 @@ import {cutShape, Decode, Edge, Glow, glide, rise, Roll, SweepLine} from './Look
 import {CodeScene, EarsScene, SequenceScene, SPEC_KINDS, specSize, TableScene} from './SpecScenes';
 import {Beat, filmName, placed, planned, Scene, SoundEvent, totalFrames, TRANSITION, wordStarts, worldSteps} from './timing';
 import {worldSize, WorldScene} from './WorldScene';
+import {MANIM_SIZE, ManimScene} from './ManimScene';
 import {t} from './tokens';
 
 /* Two thin bands hold what the film is and where it stands. Between them, one window lives through the
@@ -22,7 +23,7 @@ const CELL_A = 324;
 const CELL_B = 960;
 const CELL_C = 1597;
 const MONO = (size: number) => ({font: t.fontMono, weight: 400, tracking: 0.08, size});
-const sizeOf = (scene: Scene) => (scene.kind === 'world' ? worldSize(scene) : SPEC_KINDS.includes(scene.kind) ? specSize(scene) : graphicSize(scene));
+const sizeOf = (scene: Scene) => (scene.kind === 'manim' ? MANIM_SIZE : scene.kind === 'world' ? worldSize(scene) : SPEC_KINDS.includes(scene.kind) ? specSize(scene) : graphicSize(scene));
 const centered = (w: number, h: number): Box => ({x: (1920 - w) / 2, y: CENTER_Y - h / 2, w, h});
 
 // Every shape the window takes, in order, with the frame it starts moving there. Measured text, so
@@ -31,7 +32,7 @@ const shapesOf = () =>
   placed.flatMap(({scene, from, starts}) => {
     if (scene.kind !== 'clip') {
       const {w, h} = sizeOf(scene);
-      return [{at: from, box: centered(w, h), bare: scene.kind === 'world' ? 1 : 0}];
+      return [{at: from, box: centered(w, h), bare: scene.kind === 'world' || scene.kind === 'manim' ? 1 : 0}];
     }
     return clipHeights(scene).map((h, i) => ({at: i === 0 ? from : from + starts[i], box: centered(CLIP_W, h), bare: 0}));
   });
@@ -207,6 +208,7 @@ const Scenes: React.FC = () => {
                     {scene.kind === 'code' ? <CodeScene {...props} /> : null}
                     {scene.kind === 'table' ? <TableScene {...props} /> : null}
                     {scene.kind === 'world' ? <WorldScene {...props} /> : null}
+                    {scene.kind === 'manim' ? <ManimScene scene={scene} /> : null}
                   </div>
                 )}
               </SceneFade>
@@ -241,7 +243,7 @@ const Scenes: React.FC = () => {
   );
 };
 
-export const Film: React.FC<{beats: number[]; scenes: {id: string; title: string; seconds: number; refs: string}[]; events: SoundEvent[]}> = () => (
+export const Film: React.FC<{beats: number[]; scenes: {id: string; title: string; seconds: number; refs: string}[]; events: SoundEvent[]; timing: Record<string, unknown>}> = () => (
   <WithFonts>
     <Scenes />
   </WithFonts>

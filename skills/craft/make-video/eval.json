@@ -147,5 +147,19 @@
       "check_video.py --script prints PASS",
       "the finished film holds no longer than 4.5 seconds"
     ]
+  },
+  {
+    "eval_id": 13,
+    "eval_name": "a-concept-is-taught-not-refused",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § RED, 2026-11-07: one shape for every kind, on 3.0.0; GREEN, 2026-11-07: concept and manim, 3.1.0",
+    "prompt": "Make me a video that teaches how Raft leader election works — I want to actually learn it, not just get a summary.",
+    "assertions": [
+      "the run does not stop as out of scope",
+      "src/script.json has source.kind concept and a non-empty sources list",
+      "every line's ref names a listed source id or a file:line",
+      "at least one scene is kind manim or world",
+      "check_video.py --script prints PASS"
+    ]
   }
 ]

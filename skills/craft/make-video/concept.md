@@ -23,7 +23,15 @@ commit, only when a line cites a file.
 Write it as `explainer.md` sections 1 and 2 say: the problem on a named example first, then the idea, then the example
 moving forward with each complication as it happens. A third of the lines give a reason; the check counts them.
 
+In each `manim` or `world` scene, set `"rest": true` on the one line that lands its key idea, such as "so two candidates cannot both win".
+The picture stands 2.5 seconds after the words so the viewer can take it in, and that hold may run to 8 seconds. One
+rested line a scene; the check fails a second, and a rest in any film but a concept.
+
 ## 3. Draw the idea in Manim
+
+Before the script, run `python3 "$SKILL/scripts/render_manim.py" --check`. It finds a Python new enough, installs Manim
+the first time (under a minute), and prints `manim ready`. Only a `FAIL` from it means a `world` instead: one run drew a
+world because `python3 --version` said 3.9, while a newer Python sat on the path and Manim would have run.
 
 The scene that carries the idea is `{"id": "elect", "kind": "manim", "title": ..., "beats": [...]}`: the lines only.
 Its picture is `manim/elect.py` in the project, a class `Film` built on `FilmScene`, drawn with Manim Community Edition.
@@ -59,7 +67,6 @@ class Film(FilmScene):
   mid-morph as broken letters, "C·ndid·te" and "le·der?".
 - `cue` stops the render by name when the animation before it runs past its words: shorten that animation.
 - `render_manim.py` prints `rendered <id>: N frames` for each scene. Run `node preview.mjs` again, then go on to step 6.
-- With no Python 3.11 or later, the script says so: draw that scene as a `world` instead.
 
 ## 4. Length and report
 

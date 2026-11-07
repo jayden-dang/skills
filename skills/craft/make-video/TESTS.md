@@ -429,3 +429,19 @@ told each agent the voice was in place; both went on through preview, Manim, ren
 - `render_manim.py`'s first-run install was exercised only by the scorer's smoke test: both agents found the venv in
   `~/.cache/make-video/manim` already built.
 - `check_video.py` gained `judge_concept` and `judge_manim_renders`; 11 tests, 9 of them failing on 3.0.0's code.
+
+## 3.2.0: a rested line in a concept film (2026-11-07)
+
+The owner chose the rule after reading the GREEN sheets above: 31 lines in 136 seconds read as rushed for a film meant
+for learning. A line with `"rest": true` adds 75 frames (2.5s) after its words; `preview.mjs` writes those windows to
+`out/rests.json`, and the check lets a hold or a silence that reaches into one run to 8 seconds. One rest a scene, concept
+films only. Nine tests, all failing before the code; a smoke film with a rest held 5.0s and passed.
+
+**Shape check 1, Haiku, LRU eviction request.** No `rest` anywhere: the rule sat in the Manim section, and the run never
+read it, because it drew a `world` instead: "the machine has Python 3.9.6 and no Manim, and the skill says to draw a world
+in that case". `python3.11` was on the path and Manim would have run. The rest rule moved to the story step, and
+`render_manim.py --check` now installs Manim and prints `manim ready` before the script is written.
+
+**Shape check 2, Haiku, same request, Manim cache deleted first.** Ran `--check`, which installed Manim (25s) and printed
+`manim ready`; drew two `manim` scenes; one `rest`, on the line that lands the idea ("Evicting the oldest arrival instead
+would have dropped S-101..."). The three-line summary scene took none. Stopped at the voice; not rendered.

@@ -1,6 +1,9 @@
 #!/usr/bin/env python3
 """Render every `manim` scene of src/script.json to public/manim/<id>.webm. Usage: render_manim.py <project>
 
+With --check in place of <project>, install Manim if needed and print `manim ready`, or FAIL and why: run
+that before choosing between a `manim` scene and a `world`.
+
 Each scene is manim/<id>.py with `class Film(FilmScene)`. It times itself to out/timing.json, which
 `node preview.mjs` writes, so run that after voice.py and before this. The first run installs Manim
 Community Edition into ~/.cache/make-video/manim.
@@ -58,6 +61,11 @@ def frames(path):
 
 
 def main(argv):
+    if argv[1:2] == ["--check"]:
+        py = venv()
+        version = subprocess.check_output([os.path.join(VENV, "bin", "manim"), "--version"], text=True).strip()
+        print(f"manim ready: {version}, {py}")
+        return 0
     project = os.path.abspath(argv[1])
     script = json.load(open(os.path.join(project, "src", "script.json")))
     scenes = [s for s in script["scenes"] if s.get("kind") == "manim"]

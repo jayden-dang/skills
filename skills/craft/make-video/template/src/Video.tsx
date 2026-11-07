@@ -243,7 +243,7 @@ const Scenes: React.FC = () => {
   );
 };
 
-export const Film: React.FC<{beats: number[]; scenes: {id: string; title: string; seconds: number; refs: string}[]; events: SoundEvent[]; timing: Record<string, unknown>}> = () => (
+export const Film: React.FC<{beats: number[]; scenes: {id: string; title: string; seconds: number; refs: string}[]; events: SoundEvent[]; timing: Record<string, unknown>; rests: number[][]}> = () => (
   <WithFonts>
     <Scenes />
   </WithFonts>

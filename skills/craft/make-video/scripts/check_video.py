@@ -22,6 +22,7 @@ CLOSING = 1.5  # The closing line may rest: the line that crosses the frame a se
 STILL_AREA = 640 * 304
 HOLD_FILTER = "crop=1920:912:0:72,scale=640:-1:flags=area,tblend=all_mode=difference,lutyuv=y='if(gt(val\\,14)\\,255\\,0)',signalstats,metadata=print:key=lavfi.signalstats.YAVG:file=-"
 MAX_SILENCE = 3.0
+MAX_REST = 8.0  # A rested line in a concept film lets its picture stand while the viewer thinks
 MIN_CLIP_WIDTH = 1600
 SPEC_MAX = 120
 CONCEPT_MAX = 300  # Guo, Kim and Rubin 2014: engagement falls past about six minutes
@@ -114,6 +115,25 @@ def judge_concept(s):
     if not any(scene.get("kind") in ("manim", "world") for scene in s.get("scenes", [])):
         faults.append("no manim or world scene: a concept film draws the idea")
     return faults + judge_reasons(s)
+
+
+def judge_rests(s):
+    """A rest is a pause after one line of a concept film, at most one a scene."""
+    faults = []
+    concept = (s.get("source") or {}).get("kind") == "concept"
+    for scene in s.get("scenes", []):
+        rested = [i for i, b in enumerate(scene.get("beats", [])) if b.get("rest")]
+        if rested and not concept:
+            faults += [f"{scene.get('id')}-{i}: rest is for concept films" for i in rested]
+        elif len(rested) > 1:
+            faults.append(f"{scene.get('id')}: {len(rested)} rested lines; a scene rests once")
+    return faults
+
+
+def rest_spans(project):
+    """The pauses preview.mjs placed after rested lines, in seconds."""
+    path = os.path.join(project, "out", "rests.json")
+    return [(a / 30, b / 30) for a, b in json.load(open(path))] if os.path.exists(path) else []
 
 
 def judge_manim_renders(s, project):
@@ -233,7 +253,8 @@ def judge_clip(width, height):
     return None
 
 
-def judge_media(m, max_still=MAX_STILL):
+def judge_media(m, max_still=MAX_STILL, rests=()):
+    """rests: (start, end) seconds of each rested line's pause. A hold that reaches into one may run to MAX_REST."""
     faults = []
     if (m["width"], m["height"]) != (1920, 1080):
         faults.append(f"video is {m['width']}x{m['height']}, not 1920x1080")
@@ -242,10 +263,12 @@ def judge_media(m, max_still=MAX_STILL):
     if m["peak"] is not None and m["peak"] > -1.0:
         faults.append(f"peak {m['peak']} dBFS is above -1")
     for start, length in m["freezes"]:
-        if start + length < m["duration"] - CLOSING and length > max_still:
+        rested = any(start < end and start + length > begin for begin, end in rests)
+        if start + length < m["duration"] - CLOSING and length > (MAX_REST if rested else max_still):
             faults.append(f"still for {length:.1f}s at {start:.1f}s")
     for start, length in m["silences"]:
-        if start + length < m["duration"] - 0.5 and length > MAX_SILENCE:
+        rested = any(start < end and start + length > begin for begin, end in rests)
+        if start + length < m["duration"] - 0.5 and length > (MAX_REST if rested else MAX_SILENCE):
             faults.append(f"silent for {length:.1f}s at {start:.1f}s")
     return faults
 
@@ -347,7 +370,7 @@ def spec_text(s, repo):
 
 def script_faults(s, repo):
     """Everything that can be judged before a voice or a render exists."""
-    faults = validate_script(s) + check_refs(s, repo) + judge_world(s) + judge_pace(s)
+    faults = validate_script(s) + check_refs(s, repo) + judge_world(s) + judge_pace(s) + judge_rests(s)
     source = s.get("source") or {}
     if source.get("kind") == "concept":
         faults += judge_concept(s)
@@ -376,7 +399,7 @@ def main(argv):
     if not only_script:
         m = probe(mp4)
         print(json.dumps({**{k: m[k] for k in ("width", "height", "duration", "loudness", "peak", "silences")}, "longest_still": round(max((length for start, length in m["freezes"] if start + length < m["duration"] - CLOSING), default=0), 1)}))
-        faults += judge_media(m, MAX_SPEC_STILL if text is not None or concept else MAX_STILL) + judge_manim_renders(s, project)
+        faults += judge_media(m, MAX_SPEC_STILL if text is not None or concept else MAX_STILL, rest_spans(project)) + judge_manim_renders(s, project)
         if text is not None:
             faults += judge_length(m["duration"])
         if concept:

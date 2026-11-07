@@ -5,6 +5,8 @@ import words from './words.json';
 
 export const FPS = 30;
 export const TRANSITION = 14;
+// A rested line in a concept film: the picture stands this long after the words, while the viewer thinks.
+export const REST = 75;
 
 export type Rect = {x: number; y: number; w: number; h: number};
 export type Tone = 'ink' | 'accent' | 'warn' | 'bad' | 'muted';
@@ -12,7 +14,7 @@ export type WorldObject = {id: string; shape: 'card' | 'row' | 'seat' | 'code' |
 export type WorldArrow = {from: string; to: string; label?: string; tone?: Tone};
 export type WorldCamera = Rect;
 export type WorldChange = {set?: Record<string, Partial<WorldObject>>; arrows?: WorldArrow[]; camera?: WorldCamera; stats?: Record<string, number | string>};
-export type Beat = {text: string; spoken?: string; ref: string; clip?: string; rate?: number; focus?: Rect; ring?: Rect; mark?: number[]; world?: WorldChange & {then?: (WorldChange & {at: string})[]}};
+export type Beat = {text: string; spoken?: string; ref: string; rest?: boolean; clip?: string; rate?: number; focus?: Rect; ring?: Rect; mark?: number[]; world?: WorldChange & {then?: (WorldChange & {at: string})[]}};
 export type Scene = {
   id: string;
   kind: 'title' | 'points' | 'flow' | 'clip' | 'ears' | 'sequence' | 'code' | 'table' | 'world' | 'manim';
@@ -67,10 +69,10 @@ export const layout = (scene: Scene) => {
     const start = beat.clip ? Math.max(at, clipEnd) : at;
     starts.push(start);
     if (beat.clip) clipEnd = start + clipLength(beat);
-    at = start + lengths[i] + pace.gap;
+    at = start + lengths[i] + pace.gap + (beat.rest ? REST : 0);
   });
   const last = starts.length - 1;
-  return {starts, lengths, duration: Math.max(starts[last] + lengths[last] + pace.tail, clipEnd + 10)};
+  return {starts, lengths, duration: Math.max(starts[last] + lengths[last] + pace.tail + (scene.beats[last].rest ? REST : 0), clipEnd + 10)};
 };
 
 // Where each word of a line starts, in frames from the line's start: measured by voice.py, shared evenly before there is a voice.
@@ -123,6 +125,10 @@ export const sceneIndex = () =>
 // What a Manim scene times itself to: preview.mjs writes it to out/timing.json, and render_manim.py reads it.
 export const sceneTiming = () =>
   Object.fromEntries(placed.map(({scene, duration, starts, lengths}) => [scene.id, {duration, starts, lengths, words: scene.beats.map((_, i) => wordStarts(scene, i, lengths[i]))}]));
+
+// The pause after each rested line, in film frames: preview.mjs writes them to out/rests.json for the check.
+export const restWindows = () =>
+  placed.flatMap(({scene, from, starts, lengths}) => scene.beats.flatMap((beat, i) => (beat.rest ? [[from + starts[i] + lengths[i], from + starts[i] + lengths[i] + REST]] : [])));
 
 export const totalFrames = () => {
   const last = placed[placed.length - 1];

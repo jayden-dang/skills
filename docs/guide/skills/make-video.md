@@ -38,7 +38,8 @@ It explains and does not walk the spec. It opens on what goes wrong today, follo
 Ask for a video that teaches you something, such as Raft leader election, and the film is a `concept`. The topic needs no
 code in the repo. Every line cites a source the run found first (a paper section, an RFC, official docs, or a `file:line`),
 listed with its full citation in the script. The idea is drawn in Manim, scene by scene, timed to the words of the voice,
-and composited over the film's own look. It tells the story the way a spec film does, and may run 300 seconds.
+and composited over the film's own look. It tells the story the way a spec film does, and may run 300 seconds. One line
+a scene may rest: the picture stands 2.5 seconds after its words, a hold of up to 8 seconds, so the key idea lands.
 
 `check_video.py` fails a concept film with no sources, a line citing none of them, no `manim` or `world` scene, fewer than
 a third of its lines giving a reason, a hold over 4.5 seconds, or a Manim scene that was not rendered. The first Manim

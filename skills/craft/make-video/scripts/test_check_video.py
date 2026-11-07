@@ -338,6 +338,53 @@ class Concept(unittest.TestCase):
         self.assertIn("source.ref is missing", cv.validate_script(script(source={"kind": "feature"})))
 
 
+class Rest(unittest.TestCase):
+    def media(self, freezes):
+        return {"width": 1920, "height": 1080, "has_audio": True, "duration": 60.0, "peak": -2.0, "loudness": -16.0, "freezes": freezes, "silences": []}
+
+    def test_one_rested_line_in_a_concept_scene_has_no_faults(self):
+        s = concept()
+        s["scenes"][0]["beats"][1]["rest"] = True
+        self.assertEqual(cv.judge_rests(s), [])
+
+    def test_a_rest_outside_a_concept_film_is_a_fault(self):
+        s = script()
+        s["scenes"][0]["beats"][0]["rest"] = True
+        self.assertIn("a-0: rest is for concept films", cv.judge_rests(s))
+
+    def test_two_rests_in_one_scene_is_a_fault(self):
+        s = concept()
+        for b in s["scenes"][0]["beats"]:
+            b["rest"] = True
+        self.assertIn("elect: 2 rested lines; a scene rests once", cv.judge_rests(s))
+
+    def test_it_judges_rests_with_the_script(self):
+        s = script()
+        s["scenes"][0]["beats"][0]["rest"] = True
+        self.assertIn("a-0: rest is for concept films", cv.script_faults(s, "."))
+
+    def test_a_long_hold_inside_a_rest_passes(self):
+        self.assertEqual(cv.judge_media(self.media([(10.0, 7.0)]), 4.5, rests=[(14.0, 16.5)]), [])
+
+    def test_a_long_hold_away_from_a_rest_fails(self):
+        faults = cv.judge_media(self.media([(30.0, 7.0)]), 4.5, rests=[(14.0, 16.5)])
+        self.assertTrue(any("still for 7.0s at 30.0s" in f for f in faults))
+
+    def test_a_silence_inside_a_rest_passes(self):
+        m = self.media([])
+        m["silences"] = [(14.0, 3.4)]
+        self.assertEqual(cv.judge_media(m, 4.5, rests=[(14.0, 16.5)]), [])
+
+    def test_a_long_silence_away_from_a_rest_fails(self):
+        m = self.media([])
+        m["silences"] = [(30.0, 3.4)]
+        self.assertTrue(any("silent for 3.4s at 30.0s" in f for f in cv.judge_media(m, 4.5, rests=[(14.0, 16.5)])))
+
+    def test_a_rest_holds_eight_seconds_at_most(self):
+        faults = cv.judge_media(self.media([(10.0, 8.5)]), 4.5, rests=[(14.0, 16.5)])
+        self.assertTrue(any("still for 8.5s at 10.0s" in f for f in faults))
+
+
 class JudgeClip(unittest.TestCase):
     def test_sixteen_by_nine_at_1600_passes(self):
         self.assertIsNone(cv.judge_clip(1600, 900))

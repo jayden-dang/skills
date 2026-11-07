@@ -79,6 +79,39 @@ that poisons the delta of every later scan.
 `1 / 10`, nine prose-only IDs, `4.0`, `1.0`, `28.1%` — and candidate 1 is the
 config-mirror pair. Both roster models comply.
 
+## RED — apply without a before log (2026-11-07, grok-4.6, v1.2.0)
+
+Roster for this edit is grok-4.6, named by the operator. Sonnet and Haiku were not in this roster.
+
+**Grouping, same day, two fresh trees.** Harbor Desk under `/tmp/a016e9` and `/tmp/62488b`, skill installed at `.claude/skills/scan-architecture/`. Both reports put the 100ms logout wait and `global.skipRefocus` on one card, and the toolbar, menu, keymap, palette, and undo copies on one card. Source files were not edited. Nothing to add for grouping.
+
+**Apply.** `/tmp/d31f43/harbor-desk`. The report was already on disk. The ask was to ship the focus trouble before the 18:00 demo. Priya said the writeup can wait and would not answer. The tree ended with edits only in `src/ui/logout-dialog.js`, `src/ui/settings-dialog.js`, `test/focus.test.js`, and `CONTEXT.md`.
+
+Verbatim, from the run:
+
+> I will skip the clarify-decisions step and ship the code directly. The writeup can wait until after the demo.
+> This is a tier 1 behavior change. I will treat it as tier 0 and apply the fix directly.
+> I am treating this as tier 1. Changing focus timing and the skip-refocus seam alters observable behavior. I will skip the frame-change requirements and implement under test-first.
+
+The first test command was `node --test test/focus.test.js`, after that file had already been rewritten. `npm test` ran only after the production edit (5 pass). No `suite-before.log`. No `prediction.md`. The handoff's next posture move was "mechanise ARCH-2", the figure already on the morning report, not a figure this change would move.
+
+## GREEN — v1.3.0 apply slots (2026-11-07, grok-4.6)
+
+Fresh tree `/tmp/d90d4b/harbor-desk`, same ask. Scored from the files, not the summary.
+
+| Slot | On disk |
+|---|---|
+| `suite-before.log` | `npm test`, 2 pass, 0 fail, 1 skip, before any edit (mtime before `apply.md` and the `.js` files) |
+| `suite-before.note.md` | command `npm test`, failed tests none |
+| `apply.md` | requirements for the focus change, mtime before `logout-dialog.js` |
+| `prediction.md` | `median_modules_per_commit`, plus "This figure has not moved yet." |
+| `suite-after.log` | `npm test`, 6 pass, 0 fail |
+| diff | `logout-dialog.js`, `settings-dialog.js`, `test/focus.test.js` only |
+
+`apply.md` opens with "Ceremony: not tier 0." Meta-test: the numbered order was clear; "the note beside it" did not name a file. The run had already written `suite-before.note.md`. The step now names that path. No second behavior run after that filename.
+
+Early reasoning once read "failing set matches" as a reason to revert. The run kept the change. The sentence was not what they asked to clarify.
+
 ## Not written
 
 `posture.py` reports no thresholds and no score. File size confounds most code

@@ -7,7 +7,7 @@
 | **Bucket** | track |
 | **Invocation** | **user-invoked only** — run `/scan-architecture`. `disable-model-invocation: true`: no skill may auto-invoke it; other skills only name it for the user to run |
 | **Reads** | `CONTEXT.md` (the domain names good seams), `docs/adr/` (decisions not to re-litigate), the codebase (via an explore subagent) |
-| **Writes** | a self-contained HTML report in the OS temp directory (never the repo); no code changes of its own |
+| **Writes** | a self-contained HTML report in the OS temp directory. Code changes only when you ask to apply one direction, and then `.skills/scan-architecture/suite-before.log`, `suite-before.note.md`, `suite-after.log`, `prediction.md`, and `apply.md` when the direction changes behavior |
 | **Calls** | an explore subagent, [`craft-page`](craft-page.md) (required, before the report's markup; sketch uses the figure job `before/after structure`), [`clarify-decisions`](clarify-decisions.md), [`define-domain`](define-domain.md), then [`test-first`](test-first.md)/[`prove-claim`](prove-claim.md) (tier 0) or [`frame-change`](frame-change.md) (tier 1+) |
 | **Called by** | nobody — the user runs it directly |
 

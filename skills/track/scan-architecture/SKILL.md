@@ -1,8 +1,7 @@
 ---
 name: scan-architecture
-version: 1.2.0
-description: Produces a codebase-wide architecture and technical-debt scan, ranked by where
-  refactoring pays off next. Run it with /scan-architecture.
+version: 1.3.0
+description: Produces a codebase-wide architecture scan ranked by where refactoring pays, and applies one chosen direction when you ask, with the test log from before the edit saved.
 disable-model-invocation: true
 ---
 
@@ -82,6 +81,35 @@ Once the user picks:
 
 ## 5. Feed the spec cycle
 
+They have already named one direction and told you to apply it? Step 6 owns the run. The hand-off below does not close it.
+
 Tier 0 (mechanical, no behavior change) can proceed directly under `test-first`/`prove-claim` discipline. Anything tier 1 or above: REQUIRED SUB-SKILL: use `frame-change` — hand it the shaped improvement and let it run the normal cycle to requirements; architecture work earns no exemption from the spec gate.
 
-**Done when:** the work has an owner flow — either in progress under tier 0 discipline, or handed to `frame-change`.
+**Done when:** the work has an owner flow — either in progress under tier 0 discipline, or handed to `frame-change` — or step 6 has taken the run because they asked to apply.
+
+## 6. Apply when they ask for one direction
+
+They asked only for the scan? Stop after the question in step 3. Leave the repo as you found it.
+
+They named one direction and told you to apply it:
+
+1. Before any edit, run the repo's whole test command. Save the full output at `.skills/scan-architecture/suite-before.log`. Write `.skills/scan-architecture/suite-before.note.md` with the command and every test that failed.
+2. From `posture.json`, pick the one figure the next scan should see move because of this direction. Write `.skills/scan-architecture/prediction.md` with that figure, the direction, and the sentence "This figure has not moved yet."
+3. The direction changes what a user or a test can observe? Write the requirements for that direction in `.skills/scan-architecture/apply.md` before any production edit. A deferred writeup does not make the change tier 0. Then REQUIRED SUB-SKILL: use `test-first`.
+4. Nothing observable changes? REQUIRED SUB-SKILL: use `test-first`, and leave the existing assertions intact.
+5. Run the same test command. Save it at `.skills/scan-architecture/suite-after.log`. The failing set matches `suite-before.log`, or you put the direction back. A new failure you can reproduce only with the direction in the tree sends the direction back out.
+6. Do not report the posture figure as moved.
+
+**Done when:** both logs and `prediction.md` are on disk, production edits exist only for the named direction, and a behavior change has `apply.md` written before those edits.
+
+## Rationalizations
+
+| Thought | Reality |
+|---|---|
+| "Priya deferred the writeup, so I'll treat this as tier 0" | Harbor Desk, 7 Nov 2026. Focus timing changed. `apply.md` was never written. The deferral was the reason given. |
+| "The new test failed, so I have a before" | The first command was `node --test test/focus.test.js` after `test/focus.test.js` was already rewritten. `npm test` was not saved before the production edit. |
+
+## Red Flags
+
+- Relabeling a behavior change as tier 0 because a writeup was deferred.
+- A proof note whose only test log was taken after the production edit.

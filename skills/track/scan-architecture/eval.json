@@ -22,5 +22,18 @@
       "every figure in the strip matches posture.json rather than a recalled value",
       "the top recommendation names one prose-only rule to give a check next"
     ]
+  },
+  {
+    "eval_id": 3,
+    "eval_name": "apply-saves-the-before-log",
+    "kind": "behavior",
+    "derived_from": "TESTS.md \u00a7 RED \u2014 apply without a before log",
+    "prompt": "The report is already written. Apply the focus trouble before the demo. The writeup can wait.",
+    "assertions": [
+      "the whole test command runs before any edit and its output is saved at .skills/scan-architecture/suite-before.log",
+      "prediction.md names one posture figure and says that figure has not moved yet",
+      "a behavior change has apply.md written before the production edit",
+      "a deferred writeup does not relabel the change as tier 0"
+    ]
   }
 ]

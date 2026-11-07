@@ -14,13 +14,14 @@ export type WorldObject = {id: string; shape: 'card' | 'row' | 'seat' | 'code' |
 export type WorldArrow = {from: string; to: string; label?: string; tone?: Tone};
 export type WorldCamera = Rect;
 export type WorldChange = {set?: Record<string, Partial<WorldObject>>; arrows?: WorldArrow[]; camera?: WorldCamera; stats?: Record<string, number | string>};
-export type Beat = {text: string; spoken?: string; ref: string; rest?: boolean; clip?: string; rate?: number; focus?: Rect; ring?: Rect; mark?: number[]; world?: WorldChange & {then?: (WorldChange & {at: string})[]}};
+export type Beat = {text: string; spoken?: string; ref: string; rest?: boolean; side?: 'before' | 'after'; clip?: string; rate?: number; focus?: Rect; ring?: Rect; mark?: number[]; world?: WorldChange & {then?: (WorldChange & {at: string})[]}};
 export type Scene = {
   id: string;
-  kind: 'title' | 'points' | 'flow' | 'clip' | 'ears' | 'sequence' | 'code' | 'table' | 'world' | 'manim';
+  kind: 'title' | 'points' | 'flow' | 'clip' | 'ears' | 'sequence' | 'code' | 'table' | 'world' | 'manim' | 'compare' | 'stat' | 'timeline';
   title: string;
   subtitle?: string;
   staged?: string;
+  full?: boolean;
   points?: string[];
   sources?: string[];
   target?: string;
@@ -33,6 +34,12 @@ export type Scene = {
   columns?: string[];
   rows?: string[][];
   objects?: WorldObject[];
+  before?: string;
+  after?: string;
+  labels?: string[];
+  rate?: number;
+  stats?: {value: string; label: string}[];
+  events?: {label: string; note?: string}[];
   beats: Beat[];
 };
 
@@ -55,6 +62,9 @@ const PACE: Record<Scene['kind'], {head: number; gap: number; tail: number}> = {
   table: {head: 18, gap: 8, tail: 20},
   world: {head: 18, gap: 10, tail: 30},
   manim: {head: 18, gap: 10, tail: 30},
+  compare: {head: 8, gap: 8, tail: 18},
+  stat: {head: 20, gap: 10, tail: 24},
+  timeline: {head: 20, gap: 10, tail: 24},
 };
 
 export const clipLength = (beat: Beat) => (beat.clip ? Math.ceil(clipFrames[beat.clip].frames / (beat.rate ?? 1)) : 0);
@@ -72,6 +82,8 @@ export const layout = (scene: Scene) => {
     at = start + lengths[i] + pace.gap + (beat.rest ? REST : 0);
   });
   const last = starts.length - 1;
+  // A compare plays both recordings from its first line, so it lasts at least as long as the longer one.
+  if (scene.kind === 'compare') clipEnd = starts[0] + Math.max(...[scene.before, scene.after].map((c) => (c && clipFrames[c] ? Math.ceil(clipFrames[c].frames / (scene.rate ?? 1)) : 0)));
   return {starts, lengths, duration: Math.max(starts[last] + lengths[last] + pace.tail + (scene.beats[last].rest ? REST : 0), clipEnd + 10)};
 };
 

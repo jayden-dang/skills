@@ -9,9 +9,18 @@ const VIETNAMESE = 'U+0102-0103,U+0110-0111,U+0128-0129,U+0168-0169,U+01A0-01A1,
 const subsets = (family: string, stem: string, weight: string) =>
   ([['latin', LATIN], ['latin-ext', LATIN_EXT], ['vietnamese', VIETNAMESE]] as const).map(([name, unicodeRange]) => ({family, file: `${stem}-${name}-wght-normal.woff2`, weight, unicodeRange}));
 
-// Every font file src/tokens.ts names, each in public/fonts/. A project's own look lists its own files here,
+// Every font file src/tokens.ts names, each in public/fonts/. A project's own look replaces fontFiles with its own files,
 // one entry per weight, such as {family: 'Inter', file: 'Inter-Bold.woff2', weight: '700'}.
-const fontFiles: {family: string; file: string; weight?: string; unicodeRange?: string}[] = [...subsets('Space Grotesk', 'space-grotesk', '300 700'), ...subsets('Roboto Mono', 'roboto-mono', '100 700')];
+// The faces the template ships, in public/fonts/, each with Vietnamese. A look loads the ones its tokens name.
+const SHIPPED: Record<string, [string, string]> = {
+  'Space Grotesk': ['space-grotesk', '300 700'],
+  'Roboto Mono': ['roboto-mono', '100 700'],
+  Newsreader: ['newsreader', '200 800'],
+  'IBM Plex Sans': ['ibm-plex-sans', '100 700'],
+  'JetBrains Mono': ['jetbrains-mono', '100 800'],
+};
+const named = [...new Set([t.fontSans, t.fontHead, t.fontMono].map((stack) => stack.split(',')[0].trim().replace(/^['"]|['"]$/g, '')))];
+const fontFiles: {family: string; file: string; weight?: string; unicodeRange?: string}[] = named.flatMap((family) => (SHIPPED[family] ? subsets(family, ...SHIPPED[family]) : []));
 
 // Keywords, plus Apple's system faces: a browser reaches those through a keyword, never by name.
 const BUILT_IN = ['serif', 'sans-serif', 'monospace', 'cursive', 'fantasy', 'system-ui', 'ui-serif', 'ui-sans-serif', 'ui-monospace', 'ui-rounded', '-apple-system', 'blinkmacsystemfont', 'sf mono', 'sf pro', 'sf pro text', 'sf pro display'];

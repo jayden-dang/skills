@@ -16,8 +16,8 @@
 | You name | Film shows | Made from |
 |---|---|---|
 | A feature | What the feature does today | `HEAD`, run from a temporary worktree |
-| A branch or range | What changes for reviewers, with both sides when it helps | The branch head, and the base when compared |
-| A version | What is new for people who use the product | The tag |
+| A branch or range | What changes for reviewers: the base and the branch side by side, zoomed to the same place | The branch head and the merge base, each from its own worktree |
+| A version | What is new for people who use the product: a timeline of the changes, then one scene per change | The tag, and the previous tag for a before and after |
 | A spec folder | Why it is built this way: a problem, an idea, one example followed through what could go wrong | The commit holding the spec, with no app and no footage |
 | A topic to learn | One idea taught: a protocol, an algorithm, a data structure, in this repo or not | The sources that own it, found by `research`, and Manim |
 
@@ -51,7 +51,8 @@ scene installs Manim Community Edition into `~/.cache/make-video/manim`, which n
 Seven runs without this skill got every fact right, including the traps a stale README and a reverted feature set for them. All seven still made slideshows: none reached 1080p, and five had no captions. So the skill holds no rule about reading the code. It carries what those runs lacked:
 
 - **A Remotion project in `template/`.** The agent fills `src/script.json`.
-- **One layout, one look.** Two thin bands hold the subject, the scene, its numbers and the narration, and everything between them is content. Every film has the same look: near-black, hairlines, cut-corner frames with a moving spectrum edge, Space Grotesk and Roboto Mono, both under the Open Font License and shipped in the template with Vietnamese. Ask for "our own design system", or pass `--project-style` from `/shape`, and the fonts, colors, radii and shadows come from your repo's tokens instead. Text too long for its box stops the render and names the scene, and so does a font the machine cannot draw.
+- **Three looks, one per kind.** `night` for features, branches and specs, `paper` for releases, `blueprint` for concepts; `--look` picks another. The layout below is the same in all three, and a clip scene may run `full`, filling the frame between the bands.
+- **One layout.** Two thin bands hold the subject, the scene, its numbers and the narration, and everything between them is content. The default `night` look is near-black, hairlines, cut-corner frames with a moving spectrum edge, Space Grotesk and Roboto Mono; every face the looks use is under the Open Font License and shipped in the template with Vietnamese. Ask for "our own design system", or pass `--project-style` from `/shape`, and the fonts, colors, radii and shadows come from your repo's tokens instead. Text too long for its box stops the render and names the scene, and so does a font the machine cannot draw.
 - **A quiet sound layer.** A low bed and a small hit on each change, synthesized by the template, under the voice.
 - **A camera on each line.** A `focus` rect on a beat moves the camera there, so the thing named fills the frame.
 - **A source on each line.** Every spoken line carries a `file:line` or a run output, shown beside the narration.

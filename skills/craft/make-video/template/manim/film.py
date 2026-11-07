@@ -31,8 +31,22 @@ def _tokens():
 
 _t = _tokens()
 INK, MUTED, ACCENT, WARN, BAD = (_t[k] for k in ("ink", "muted", "accent", "warn", "bad"))
-FONT = os.environ.get("FILM_FONT", "Space Grotesk Light")
-MONO = os.environ.get("FILM_MONO", "Roboto Mono")
+
+
+def _family(stack, fallback):
+    """The registered face a token names: Pango lists a variable font by its default instance, such as "Space Grotesk Light"."""
+    want = stack.split(",")[0].strip().strip("\"'")
+    try:
+        import manimpango
+
+        names = manimpango.list_fonts()
+    except ImportError:
+        return fallback
+    return next((n for n in names if n == want), next((n for n in names if n.startswith(want)), fallback))
+
+
+FONT = os.environ.get("FILM_FONT") or _family(_t["fontHead"], "sans-serif")
+MONO = os.environ.get("FILM_MONO") or _family(_t["fontMono"], "monospace")
 
 
 class FilmScene(Scene):

@@ -1,15 +1,16 @@
 import {Audio} from '@remotion/media';
 import {useState} from 'react';
 import {AbsoluteFill, getStaticFiles, interpolate, Sequence, staticFile, useCurrentFrame} from 'remotion';
-import {CLIP_W, clipHeights, ClipScene, MOVE, MOVE_EASING} from './ClipScene';
+import {CLIP_W, clipHeights, ClipScene, FULL, MOVE, MOVE_EASING} from './ClipScene';
 import {fit} from './fit';
 import {WithFonts} from './fonts';
 import {clamp, enter, FlowScene, graphicSize, PointsScene, TitleScene} from './GraphicScenes';
-import {cutShape, Decode, Edge, Glow, glide, rise, Roll, SweepLine} from './Look';
+import {Backdrop, cutShape, Decode, Edge, glide, rise, Roll, SweepLine} from './Look';
 import {CodeScene, EarsScene, SequenceScene, SPEC_KINDS, specSize, TableScene} from './SpecScenes';
 import {Beat, filmName, placed, planned, Scene, SoundEvent, totalFrames, TRANSITION, wordStarts, worldSteps} from './timing';
 import {worldSize, WorldScene} from './WorldScene';
 import {MANIM_SIZE, ManimScene} from './ManimScene';
+import {CompareScene, compareSize, StatScene, statSize, TimelineScene, timelineSize} from './ChangeScenes';
 import {t} from './tokens';
 
 /* Two thin bands hold what the film is and where it stands. Between them, one window lives through the
@@ -23,7 +24,7 @@ const CELL_A = 324;
 const CELL_B = 960;
 const CELL_C = 1597;
 const MONO = (size: number) => ({font: t.fontMono, weight: 400, tracking: 0.08, size});
-const sizeOf = (scene: Scene) => (scene.kind === 'manim' ? MANIM_SIZE : scene.kind === 'world' ? worldSize(scene) : SPEC_KINDS.includes(scene.kind) ? specSize(scene) : graphicSize(scene));
+const sizeOf = (scene: Scene) => (scene.kind === 'compare' ? compareSize() : scene.kind === 'stat' ? statSize(scene) : scene.kind === 'timeline' ? timelineSize() : scene.kind === 'manim' ? MANIM_SIZE : scene.kind === 'world' ? worldSize(scene) : SPEC_KINDS.includes(scene.kind) ? specSize(scene) : graphicSize(scene));
 const centered = (w: number, h: number): Box => ({x: (1920 - w) / 2, y: CENTER_Y - h / 2, w, h});
 
 // Every shape the window takes, in order, with the frame it starts moving there. Measured text, so
@@ -34,6 +35,7 @@ const shapesOf = () =>
       const {w, h} = sizeOf(scene);
       return [{at: from, box: centered(w, h), bare: scene.kind === 'world' || scene.kind === 'manim' ? 1 : 0}];
     }
+    if (scene.full) return [{at: from, box: FULL, bare: 1}];
     return clipHeights(scene).map((h, i) => ({at: i === 0 ? from : from + starts[i], box: centered(CLIP_W, h), bare: 0}));
   });
 
@@ -187,7 +189,7 @@ const Scenes: React.FC = () => {
   const hasSound = getStaticFiles().some((f) => f.name === 'sound.wav');
   return (
     <AbsoluteFill style={{background: t.ground, fontFamily: t.fontSans, overflow: 'hidden'}}>
-      <Glow />
+      <Backdrop />
       {hasSound ? <Audio src={staticFile('sound.wav')} /> : null}
       <Window>
         {placed.map(({scene, from, duration, starts, lengths}, s) => {
@@ -209,6 +211,9 @@ const Scenes: React.FC = () => {
                     {scene.kind === 'table' ? <TableScene {...props} /> : null}
                     {scene.kind === 'world' ? <WorldScene {...props} /> : null}
                     {scene.kind === 'manim' ? <ManimScene scene={scene} /> : null}
+                    {scene.kind === 'compare' ? <CompareScene {...props} /> : null}
+                    {scene.kind === 'stat' ? <StatScene {...props} /> : null}
+                    {scene.kind === 'timeline' ? <TimelineScene {...props} /> : null}
                   </div>
                 )}
               </SceneFade>

@@ -121,6 +121,25 @@ export const Glow: React.FC = () => {
   return <div style={{position: 'absolute', inset: 0, background: `radial-gradient(900px 620px at ${x}% ${y}%, ${t.spectrum[3]}22, transparent 70%), radial-gradient(700px 500px at ${100 - x}% ${100 - y}%, ${t.spectrum[2]}10, transparent 70%)`}} />;
 };
 
+// What sits behind everything, chosen by the look. A grid and a sheet stand still, so they never hide a hold from the check.
+export const Backdrop: React.FC = () => {
+  // A project's own tokens may predate the slot, so a missing one is the default glow.
+  const backdrop = (t as {backdrop?: string}).backdrop ?? 'glow';
+  if (backdrop === 'grid') {
+    const minor = `${t.line}55`;
+    return (
+      <div style={{position: 'absolute', inset: 0, backgroundImage: `linear-gradient(${t.line} 1px, transparent 1px), linear-gradient(90deg, ${t.line} 1px, transparent 1px), linear-gradient(${minor} 1px, transparent 1px), linear-gradient(90deg, ${minor} 1px, transparent 1px)`, backgroundSize: '160px 160px, 160px 160px, 32px 32px, 32px 32px', backgroundPosition: '-1px -1px', opacity: 0.55}}>
+        <div style={{position: 'absolute', inset: 0, background: `radial-gradient(1200px 700px at 50% 45%, transparent 40%, ${t.ground} 100%)`}} />
+      </div>
+    );
+  }
+  if (backdrop === 'paper') {
+    return <div style={{position: 'absolute', inset: 0, background: `radial-gradient(1400px 900px at 50% 40%, #ffffff55, transparent 70%), radial-gradient(1200px 800px at 50% 50%, transparent 55%, #00000014 100%)`}} />;
+  }
+  if (backdrop === 'none') return null;
+  return <Glow />;
+};
+
 // A colored line that crosses the frame when the film moves on to something new.
 export const SweepLine: React.FC<{start: number; length?: number}> = ({start, length = 26}) => {
   const frame = useCurrentFrame();

@@ -1,6 +1,6 @@
 ---
 name: make-video
-version: 3.2.1
+version: 3.3.0
 description: Use when someone wants a narrated video or film of a built feature, a pull request or branch, a release, or a closed spec, or a video that teaches a concept, protocol or algorithm — "/make-video", "make a video of this", "explainer film", "a film of the spec", "teach me X in a video", 3Blue1Brown-style, Manim — produces a checked 1080p MP4 with a source on every line. Not for a written or HTML explanation (understand), slides, or proving a feature works (validate-feature).
 ---
 
@@ -33,8 +33,8 @@ The film shows one commit. Bind it to `$REF` and write it to `source.ref`.
 | Request names | `source.kind` | `$REF` | Run the app from |
 |---|---|---|---|
 | A feature | `feature` | current `HEAD` | a temporary worktree at `$REF` |
-| A branch or range | `pr` | the branch head; film the base too when the change is a before and after | one temporary worktree for each |
-| A version | `release` | the tag | a temporary worktree at the tag |
+| A branch or range | `pr` | the branch head; film the base too when the change is a before and after | one temporary worktree for each; read `pr.md` beside this file now |
+| A version | `release` | the tag | a temporary worktree at the tag; read `release.md` beside this file now |
 | A spec folder | `spec` | the commit holding it | nowhere: read `explainer.md` beside this file now, and skip step 5 |
 | A topic to learn, in this repo or not | `concept` | the commit, only when a line cites a file here | nowhere: read `concept.md` and `explainer.md` beside this file now, and skip step 5 |
 
@@ -50,14 +50,15 @@ line by hand to imitate the tag. The worktree needs neither.
 ## 2. Start the project
 
 ```bash
-python3 "$SKILL/scripts/new_video.py" . <slug>
+python3 "$SKILL/scripts/new_video.py" . <slug> --kind <source.kind>
 ```
 
-It prints the project path, under `.skills/video/`. `src/tokens.ts` and `src/fonts.tsx` already hold the
-film's look, with its fonts in `public/fonts/`, Vietnamese included. Leave them as they are, in any repo. A
-repo's design tokens and its rules on fonts govern its product and not this film: two runs filled the
-tokens from `web/tokens.css` and dropped the fonts because "the standard requires" the system stack, and
-their owner had asked for one look across every film.
+It prints the project path, under `.skills/video/`, and the look it chose for the kind: `paper` for a release,
+`blueprint` for a concept, `night` for the rest. `src/tokens.ts` and `src/fonts.tsx` already hold that look, with its
+fonts in `public/fonts/`, Vietnamese included. Leave them as they are, in any repo; `--look <name>` picks another of
+`template/looks/` only when the request names one. A repo's design tokens and its rules on fonts govern its product and
+not this film: two runs filled the tokens from `web/tokens.css` and dropped the fonts because "the standard requires"
+the system stack, and their owner had asked for the film's own looks.
 
 When the request asks for the project's own look, by those words or `--project-style` from `/shape`, read
 `project-look.md` beside this file now and follow it.
@@ -82,6 +83,7 @@ opened at `$REF`, or the run output that showed it.
 | `points` | What changed, or what it does not do | `title`, `points` |
 | `world` | Things that stay on screen and change as the line explains them | `explainer.md` |
 | `manim` | An idea drawn in Manim: shapes that move, morph, or plot | `concept.md` |
+| `compare`, `stat`, `timeline` | Two recordings side by side, a number that is the news, the order of changes | `pr.md`, `release.md` |
 
 A request to explain how a built feature works reads `explainer.md` too.
 
@@ -117,19 +119,21 @@ run it, use graphic scenes only and say so in your report.
 PORT=$(python3 -c 'import socket;s=socket.socket();s.bind(("",0));print(s.getsockname()[1]);s.close()')
 <launch command from the run recipe, with this port> & SERVER=$!
 lsof -nP -iTCP:"$PORT" -sTCP:LISTEN -t      # must print $SERVER or its child before you click anything
-agent-browser open "http://localhost:$PORT/"
-agent-browser set viewport 1600 900 2       # after open, or it is ignored; 2 keeps zoomed text sharp
-agent-browser set media light               # or dark: the scheme people use the app in
-agent-browser reload
-agent-browser get box "<selector>"          # the x, y, width, height for focus and ring
-agent-browser record start /tmp/<name>.mp4 --cursor
+agent-browser --session film-<slug> open "http://localhost:$PORT/"
+agent-browser --session film-<slug> set viewport 1600 900 2       # after open, or it is ignored; 2 keeps zoomed text sharp
+agent-browser --session film-<slug> set media light               # or dark: the scheme people use the app in
+agent-browser --session film-<slug> reload
+agent-browser --session film-<slug> get box "<selector>"          # the x, y, width, height for focus and ring
+agent-browser --session film-<slug> record start /tmp/<name>.mp4 --cursor
 # drive the flow, waiting between actions for the length voice.py printed for each line
-agent-browser record stop
+agent-browser --session film-<slug> record stop
 python3 "$SKILL/scripts/add_clip.py" <project> <name> /tmp/<name>.mp4
 ```
 
 Two runs hit a port someone else's server held. Their own server failed to start, so they clicked
 through a stranger's app and wrote alerts into its data, four in one run. The `lsof` line stops that.
+The browser is shared the same way: two runs at once on the default session recorded each other's pages, and one's
+`record stop` saved the other's clip. `--session film-<slug>` gives each film its own.
 
 **Film the app as it is.** Five runs staged what they filmed: four moved a clock, three of them to
 hide a negative countdown, and one painted a box over that column. Only one told its viewers.
@@ -143,6 +147,8 @@ CSS pixels, so the camera moves on every line and the thing named fills the fram
 control the line tells people to press. Set `clip` once, on the beat where that recording starts,
 because a beat with `clip` waits for the clip before it. The beats after it keep playing the same
 recording. Use `rate` up to 2 when a recording runs longer than its lines.
+Set `"full": true` on the scene that carries a feature film's main flow: the recording fills the frame between the
+two bands, with no window, and `focus` still moves the camera.
 
 ```json
 {"id": "report", "kind": "clip", "title": "Report a delay", "beats": [
@@ -177,7 +183,7 @@ box, a frame with the subject off screen, and any `FAIL` line, then render and c
 
 ```bash
 kill "$SERVER"
-agent-browser close
+agent-browser --session film-<slug> close
 git worktree remove --force <each temporary worktree>
 ```
 

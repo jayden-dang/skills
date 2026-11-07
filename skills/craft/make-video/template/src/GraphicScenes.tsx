@@ -1,7 +1,7 @@
 import {AbsoluteFill, Easing, interpolate, useCurrentFrame} from 'remotion';
-import {fit, headFace, linesOf} from './fit';
+import {fit, headFace, linesOf, wrap} from './fit';
 import {Letters} from './Look';
-import {Scene} from './timing';
+import {Scene, wordStarts} from './timing';
 import {t} from './tokens';
 
 type Props = {scene: Scene; starts: number[]; lengths: number[]};
@@ -51,14 +51,19 @@ export const graphicSize = (scene: Scene) => {
   return flowMetrics(scene);
 };
 
-export const TitleScene: React.FC<Props> = ({scene}) => {
+// The title rises letter by letter, a later line and the subtitle on later words of the first line, so a long
+// opening line does not stand still: a two-line title that only faded in held 5.1s.
+export const TitleScene: React.FC<Props> = ({scene, starts, lengths}) => {
   const frame = useCurrentFrame();
-  const {title, sub} = titleMetrics(scene);
-  const p = enter(frame, 6, 26);
+  const {w, title, sub} = titleMetrics(scene);
+  const lines = wrap(scene.title, title.size, w - 120, headFace);
+  const words = wordStarts(scene, 0, lengths[0]);
+  const at = (share: number) => starts[0] + words[Math.min(words.length - 1, Math.floor(words.length * share))];
+  const lineStart = (i: number) => (i === 0 ? 8 : Math.max(8 + i * 14, at((0.35 * i) / Math.max(1, lines.length - 1))));
   return (
     <AbsoluteFill style={{justifyContent: 'center', alignItems: 'center', textAlign: 'center', padding: '0 60px'}}>
-      {title.lines === 1 ? <Letters text={scene.title} start={8} size={title.size} /> : <div style={{...head, fontSize: title.size, lineHeight: 1.05, textWrap: 'balance', opacity: p, translate: `0px ${(1 - p) * 18}px`}}>{scene.title}</div>}
-      {sub ? <div style={{fontSize: sub.size, fontWeight: 500, lineHeight: 1.2, color: t.muted, marginTop: 24, textWrap: 'balance', opacity: enter(frame, 18, 22)}}>{scene.subtitle}</div> : null}
+      {lines.map((line, i) => <Letters key={i} text={line} start={lineStart(i)} size={title.size} />)}
+      {sub ? <div style={{fontSize: sub.size, fontWeight: 500, lineHeight: 1.2, color: t.muted, marginTop: 24, textWrap: 'balance', opacity: enter(frame, Math.max(18, at(0.6)), 22)}}>{scene.subtitle}</div> : null}
     </AbsoluteFill>
   );
 };

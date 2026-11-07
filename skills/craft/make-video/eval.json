@@ -161,5 +161,30 @@
       "at least one scene is kind manim or world",
       "check_video.py --script prints PASS"
     ]
+  },
+  {
+    "eval_id": 14,
+    "eval_name": "a-branch-film-shows-both-sides",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § 3.3.0: release and branch films, three looks, a full-frame clip",
+    "prompt": "Make a video for the reviewers of feat/quiet-hours, so they get the change before they read the diff.",
+    "assertions": [
+      "src/script.json has a compare scene naming a before clip and an after clip",
+      "the compare scene's labels name the base and the branch",
+      "every compare line sets a focus",
+      "check_video.py --script prints PASS"
+    ]
+  },
+  {
+    "eval_id": 15,
+    "eval_name": "a-release-film-maps-its-changes",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § 3.3.0: release and branch films, three looks, a full-frame clip",
+    "prompt": "Make a short film of what's new in 1.3.0 for the harbour staff who use the board.",
+    "assertions": [
+      "src/script.json has a timeline or stat scene before the first change",
+      "the project was made with new_video.py --kind release and src/tokens.ts is the paper look",
+      "check_video.py --script prints PASS"
+    ]
   }
 ]

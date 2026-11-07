@@ -459,3 +459,44 @@ Voiced through Vibi (MiniMax, English): 323 words in 126.4s of speech, **153 wor
   both, as it caught the stand-in runs' holds; no text added.
 
 Sample: `.skills/video-samples/raft-concept-real-voice.mp4`, 141.2s, PASS, longest hold 4.0s. Not yet heard by the owner.
+
+## 3.3.0: release and branch films, three looks, a full-frame clip (2026-11-07)
+
+**Release and branch, GREEN on the 2026-11-07 RED.** New scenes `compare`, `stat`, `timeline`; recipes `release.md` and
+`pr.md`; `check_video.py` fails a release film with no `timeline` or `stat`, and malformed new scenes (9 tests, all
+failing first). Fresh `tidegate` copies, same requests, stand-in voice laid by the scorer where a run went on to render.
+
+| Run | Model | Scenes | Result |
+|---|---|---|---|
+| release | Sonnet | title, timeline, clip, clip, title | script PASS; stopped at the voice |
+| release | Haiku | title, timeline, clip, clip, title | rendered, PASS, 30.0s |
+| PR | Sonnet | title, compare, points, points, title | rendered, PASS, 43.7s; both sides recorded from their own worktrees, clock staged on both |
+| PR | Haiku | title, points, flow, points, title | no `compare`: "The change has no visible effect on the board... showing night behaviour would mean changing the machine's clock" |
+| PR, re-run | Haiku | title, compare, points, points, title | `compare` with the clock staged on both sides; stopped at the voice |
+
+- `pr.md` now carries Haiku's sentence and answers it. The counter names this fixture's branch, so the re-run measures
+  this case, not the rule on a branch it has not seen.
+- Sonnet's compare had no `focus`: the board filled the top third of each side. `compare` now takes a `focus` that zooms
+  both sides to the same rect, and `pr.md` asks for one on every line. Re-rendered with focus: `main` shows "S-101:
+  delay", the branch an empty panel, PASS.
+- Both runs that went on to record shared `agent-browser`'s default session: Haiku's first two clips "came from a foreign
+  page", and Sonnet's `record stop` saved Haiku's `/tmp/delay.mp4`. Every `agent-browser` line in step 5 now carries
+  `--session film-<slug>`. Caused by the test running agents in parallel; the same collision waits for any user with two
+  agents on one machine. Not re-run.
+
+**Looks.** `template/looks/` holds `night` (the 3.0.0 look), `paper` (Newsreader, IBM Plex Sans, JetBrains Mono, a warm
+sheet) and `blueprint` (JetBrains Mono and IBM Plex Sans on a drafting grid), all OFL with Vietnamese subsets in
+`public/fonts/`. `new_video.py --kind` picks paper for a release, blueprint for a concept, night for the rest (5 tests);
+`fonts.tsx` loads only the faces the tokens name; Manim takes the look's faces from the tokens. Backdrops stand still, so
+none of them hides a hold from the check. The same release script rendered in all three; the owner has not picked yet.
+Haiku shape check on the release request: called `new_video.py --kind release` and got `paper`, tokens untouched.
+
+**Full frame.** A `clip` scene with `"full": true` fills 1920 by 912 between the bands with no window, and `focus` still
+moves the camera. Smoke film PASS. No run has been asked to use it yet.
+
+**A title stood still in the new looks.** The blueprint smoke film failed `still for 5.1s at 0.7s` on its opening title,
+where night passed: the mono face broke the title onto two lines, and a two-line title only faded in, then held for the
+rest of a 13-word line. Measured at 8 frames of 160 with 80 or more pixels changing, against night's 34. Every title
+line now rises letter by letter, a later line and the subtitle on later words of the first line; `paper` and `blueprint`
+also turn their edges in their own tones instead of standing still. After: blueprint and night concept smokes PASS
+(their 5.0s holds sit inside the rest), paper and night release smokes PASS at 2.3s.

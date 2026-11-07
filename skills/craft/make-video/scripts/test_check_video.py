@@ -385,6 +385,49 @@ class Rest(unittest.TestCase):
         self.assertTrue(any("still for 8.5s at 10.0s" in f for f in faults))
 
 
+class Kinds(unittest.TestCase):
+    def scene(self, **over):
+        base = {"id": "s", "title": "T", "beats": [{"text": "One line.", "ref": "alerts.js:3"}]}
+        base.update(over)
+        return base
+
+    def test_a_compare_with_both_sides_has_no_faults(self):
+        self.assertEqual(cv.judge_kinds(script(scenes=[self.scene(kind="compare", before="day", after="night")])), [])
+
+    def test_a_compare_missing_a_side_is_a_fault(self):
+        self.assertIn("s: a compare scene names a before clip and an after clip", cv.judge_kinds(script(scenes=[self.scene(kind="compare", after="night")])))
+
+    def test_a_beat_side_must_be_before_or_after(self):
+        sc = self.scene(kind="compare", before="day", after="night")
+        sc["beats"][0]["side"] = "left"
+        self.assertIn("s-0: side is before or after", cv.judge_kinds(script(scenes=[sc])))
+
+    def test_stats_are_one_to_three(self):
+        many = [{"value": str(i), "label": "x"} for i in range(4)]
+        self.assertIn("s: a stat scene holds 1 to 3 stats", cv.judge_kinds(script(scenes=[self.scene(kind="stat", stats=many)])))
+        self.assertEqual(cv.judge_kinds(script(scenes=[self.scene(kind="stat", stats=many[:2])])), [])
+
+    def test_a_stat_value_is_short(self):
+        self.assertIn("s: stat value \"1,234,567,890\" is over 8 characters", cv.judge_kinds(script(scenes=[self.scene(kind="stat", stats=[{"value": "1,234,567,890", "label": "rows"}])])))
+
+    def test_a_timeline_holds_two_to_six_events(self):
+        one = [{"label": "v1.2.0"}]
+        self.assertIn("s: a timeline holds 2 to 6 events", cv.judge_kinds(script(scenes=[self.scene(kind="timeline", events=one)])))
+        self.assertEqual(cv.judge_kinds(script(scenes=[self.scene(kind="timeline", events=one * 3)])), [])
+
+    def test_a_release_film_needs_a_map_of_its_changes(self):
+        s = script(source={"kind": "release", "ref": "v1.3.0"})
+        self.assertIn("a release film opens its changes with a timeline or a stat scene", cv.judge_kinds(s))
+
+    def test_a_release_film_with_a_timeline_passes(self):
+        s = script(source={"kind": "release", "ref": "v1.3.0"}, scenes=[self.scene(kind="timeline", events=[{"label": "a"}, {"label": "b"}])])
+        self.assertEqual(cv.judge_kinds(s), [])
+
+    def test_it_judges_kinds_with_the_script(self):
+        s = script(source={"kind": "release", "ref": "v1.3.0"})
+        self.assertIn("a release film opens its changes with a timeline or a stat scene", cv.script_faults(s, "."))
+
+
 class JudgeClip(unittest.TestCase):
     def test_sixteen_by_nine_at_1600_passes(self):
         self.assertIsNone(cv.judge_clip(1600, 900))

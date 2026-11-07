@@ -117,6 +117,32 @@ def judge_concept(s):
     return faults + judge_reasons(s)
 
 
+def judge_kinds(s):
+    """The shape each newer scene kind needs, and the map a release film opens its changes with."""
+    faults = []
+    scenes = s.get("scenes", [])
+    for scene in scenes:
+        sid, kind = scene.get("id"), scene.get("kind")
+        if kind == "compare":
+            if not (scene.get("before") and scene.get("after")):
+                faults.append(f"{sid}: a compare scene names a before clip and an after clip")
+            for i, beat in enumerate(scene.get("beats", [])):
+                if beat.get("side") not in (None, "before", "after"):
+                    faults.append(f"{sid}-{i}: side is before or after")
+        if kind == "stat":
+            stats = scene.get("stats") or []
+            if not 1 <= len(stats) <= 3:
+                faults.append(f"{sid}: a stat scene holds 1 to 3 stats")
+            for stat in stats:
+                if len(str(stat.get("value", ""))) > 8:
+                    faults.append(f'{sid}: stat value "{stat.get("value")}" is over 8 characters')
+        if kind == "timeline" and not 2 <= len(scene.get("events") or []) <= 6:
+            faults.append(f"{sid}: a timeline holds 2 to 6 events")
+    if (s.get("source") or {}).get("kind") == "release" and not any(sc.get("kind") in ("timeline", "stat") for sc in scenes):
+        faults.append("a release film opens its changes with a timeline or a stat scene")
+    return faults
+
+
 def judge_rests(s):
     """A rest is a pause after one line of a concept film, at most one a scene."""
     faults = []
@@ -370,7 +396,7 @@ def spec_text(s, repo):
 
 def script_faults(s, repo):
     """Everything that can be judged before a voice or a render exists."""
-    faults = validate_script(s) + check_refs(s, repo) + judge_world(s) + judge_pace(s) + judge_rests(s)
+    faults = validate_script(s) + check_refs(s, repo) + judge_world(s) + judge_pace(s) + judge_rests(s) + judge_kinds(s)
     source = s.get("source") or {}
     if source.get("kind") == "concept":
         faults += judge_concept(s)

@@ -7,9 +7,12 @@ import {t} from './tokens';
 const VIEW_W = 1600;
 const K = 1920 / VIEW_W;
 export const CLIP_W = 1540;
-const CLIP_MAX_H = (CLIP_W * 9) / 16;
-const CLIP_MIN_H = 300;
-const U = CLIP_W / 1920;
+// A full scene fills the frame between the two bands, edge to edge, with no window.
+export const FULL = {x: 0, y: 72, w: 1920, h: 912};
+type Fit = {w: number; maxH: number; minH: number; u: number};
+const WINDOWED: Fit = {w: CLIP_W, maxH: (CLIP_W * 9) / 16, minH: 300, u: CLIP_W / 1920};
+const FILLED: Fit = {w: FULL.w, maxH: FULL.h, minH: FULL.h, u: 1};
+const fitOf = (scene: Scene) => (scene.full ? FILLED : WINDOWED);
 export const MOVE = 24;
 export const MOVE_EASING = Easing.bezier(0.5, 0, 0.1, 1);
 const clamp = {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'} as const;
@@ -18,7 +21,7 @@ type View = {h: number; s: number; x: number; y: number};
 
 // What the window shows for one rect. It keeps only as much height as the rect needs, so the app's
 // empty space below a short subject stays out of the film.
-const viewOf = (focus?: Rect): View => {
+const viewOf = (focus: Rect | undefined, {maxH: CLIP_MAX_H, minH: CLIP_MIN_H, u: U}: Fit): View => {
   if (!focus) return {h: CLIP_MAX_H, s: 1, x: 0, y: 0};
   const fw = focus.w * K;
   const fh = focus.h * K;
@@ -36,8 +39,9 @@ const viewOf = (focus?: Rect): View => {
 
 // One view per line. A line with no focus keeps the view before it.
 const viewsOf = (scene: Scene) => {
-  let previous = viewOf();
-  return scene.beats.map((beat) => (previous = beat.focus ? viewOf(beat.focus) : previous));
+  const fit = fitOf(scene);
+  let previous = viewOf(undefined, fit);
+  return scene.beats.map((beat) => (previous = beat.focus ? viewOf(beat.focus, fit) : previous));
 };
 
 export const clipHeights = (scene: Scene) => viewsOf(scene).map((view) => view.h);
@@ -59,7 +63,7 @@ export const ClipScene: React.FC<{scene: Scene; starts: number[]; lengths: numbe
   const at = (key: 's' | 'x' | 'y') => (input.length ? interpolate(frame, input, values.map((v) => v[key]), {...clamp, easing: MOVE_EASING}) : views[0][key]);
   const entries = scene.beats.flatMap((beat, i) => (beat.clip ? [{beat, from: starts[i]}] : []));
   return (
-    <div style={{position: 'absolute', left: 0, top: 0, width: 1920, height: 1080, transformOrigin: '0 0', scale: String(U)}}>
+    <div style={{position: 'absolute', left: 0, top: 0, width: 1920, height: 1080, transformOrigin: '0 0', scale: String(fitOf(scene).u)}}>
       <div style={{position: 'absolute', left: 0, top: 0, width: 1920, height: 1080, transformOrigin: '0 0', translate: `${at('x')}px ${at('y')}px`, scale: String(at('s'))}}>
         {entries.map(({beat, from}, i) => {
           const until = entries[i + 1]?.from ?? duration;

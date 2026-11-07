@@ -26,4 +26,5 @@ export const t = {
   shadow: 'none',
   cut: 26, // the corner cut from a window and a card; 0 draws radius instead
   spectrum: ['#fc6756', '#f8cf3e', '#26f4d0', '#724ce8'], // the moving edge of a frame; [] draws panelBorder instead
+  backdrop: 'glow', // behind everything: 'glow' drifting color, 'grid' a drafting grid, 'paper' a warm sheet, 'none'
 };

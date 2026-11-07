@@ -21,6 +21,8 @@ def main(argv):
     os.makedirs(clips, exist_ok=True)
     subprocess.check_call(["ffmpeg", "-v", "error", "-y", "-i", recording, "-c:v", "libx264", "-crf", "16", "-pix_fmt", "yuv420p", "-an", os.path.join(clips, f"{name}.mp4")])
     subprocess.check_call(["ffmpeg", "-v", "error", "-y", "-sseof", "-0.1", "-i", recording, "-frames:v", "1", "-update", "1", os.path.join(clips, f"{name}-last.png")])
+    # The first frame stands in the window while the scene comes in, before the recording starts to play.
+    subprocess.check_call(["ffmpeg", "-v", "error", "-y", "-i", recording, "-frames:v", "1", "-update", "1", os.path.join(clips, f"{name}-first.png")])
     manifest = os.path.join(project, "src", "clips.json")
     data = json.load(open(manifest))
     data[name] = {"frames": round(float(info["format"]["duration"]) * 30), "width": width, "height": height}

@@ -11,7 +11,7 @@ execFileSync('npx', ['remotion', 'bundle', `--out-dir=${serveUrl}`, '--log=error
 
 const browser = await openBrowser('chrome');
 const composition = await selectComposition({serveUrl, id: 'Film', puppeteerInstance: browser});
-const {beats, scenes, events, timing, rests} = composition.props;
+const {beats, scenes, events, timing, rests, cuts} = composition.props;
 mkdirSync('public', {recursive: true});
 writeSound(events, composition.durationInFrames, composition.fps, 'public/sound.wav');
 
@@ -20,6 +20,16 @@ mkdirSync('out/preview', {recursive: true});
 for (const [i, frame] of beats.entries()) {
   const output = `out/preview/${String(i).padStart(3, '0')}.png`;
   await renderStill({composition, serveUrl, frame, output, puppeteerInstance: browser, imageFormat: 'png'});
+}
+// Every scene change, frame by frame: the window should never stand empty, and the new scene should land before it speaks.
+rmSync('out/transitions', {recursive: true, force: true});
+mkdirSync('out/transitions', {recursive: true});
+const STEPS = [0, 5, 10, 15, 20, 26];
+for (const [k, cut] of cuts.entries()) {
+  for (const [j, step] of STEPS.entries()) {
+    const frame = Math.min(composition.durationInFrames - 1, cut + step);
+    await renderStill({composition, serveUrl, frame, output: `out/transitions/${String(k).padStart(3, '0')}-${j}.png`, puppeteerInstance: browser, imageFormat: 'png'});
+  }
 }
 await browser.close({silent: true});
 
@@ -30,3 +40,7 @@ writeFileSync('out/rests.json', JSON.stringify(rests));
 const rows = Math.ceil(beats.length / 4);
 execFileSync('ffmpeg', ['-v', 'error', '-y', '-framerate', '1', '-pattern_type', 'glob', '-i', 'out/preview/*.png', '-vf', `scale=640:-1,tile=4x${rows}`, '-frames:v', '1', 'out/preview.png'], {stdio: 'inherit'});
 console.log(`preview: ${resolve('out/preview.png')} (${beats.length} lines; full size in out/preview/)`);
+if (cuts.length) {
+  execFileSync('ffmpeg', ['-v', 'error', '-y', '-framerate', '1', '-pattern_type', 'glob', '-i', 'out/transitions/*.png', '-vf', `scale=480:-1,tile=${STEPS.length}x${cuts.length}`, '-frames:v', '1', 'out/transitions.png'], {stdio: 'inherit'});
+  console.log(`transitions: ${resolve('out/transitions.png')} (${cuts.length} scene changes, one row each)`);
+}

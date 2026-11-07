@@ -500,3 +500,25 @@ rest of a 13-word line. Measured at 8 frames of 160 with 80 or more pixels chang
 line now rises letter by letter, a later line and the subtitle on later words of the first line; `paper` and `blueprint`
 also turn their edges in their own tones instead of standing still. After: blueprint and night concept smokes PASS
 (their 5.0s holds sit inside the rest), paper and night release smokes PASS at 2.3s.
+
+## 3.4.0: scene changes (2026-11-07)
+
+The owner found the scene changes rough. Strips of frames every 4 frames across eight changes in two sample films
+showed: a frame with the window empty at every change (the old scene was gone at frame 7 of 14 before the new one
+started); the new content arriving at frame 14 while the window was still moving until 24, pinned to the window's top
+left so it slid as the window grew; a clip's first line starting 8 frames in, mid-move; the same 24-frame move and
+sweeping line on every change, even between two lists.
+
+- The scenes now cross: the old fades over the first 58% of a 24-frame overlap, the new over the last 58%. Content is
+  held at the window's centre. The window's move takes 12 to 24 frames by how far its shape changes, ends with the
+  overlap, and lands on an ease-out. A scene after a change speaks at frame 19.
+- The kind of change follows the two scenes: the same kind in the same window pushes sideways; a window giving way to a
+  `world` or `manim` scene draws its edge off; the line sweeps across only at a title or where the kind of picture
+  changes.
+- A `compare` brings both sides in with the change; a clip shows its first frame (`<name>-first.png`, new in
+  `add_clip.py`) until it plays. Both had left the window empty for up to 12 frames after it landed.
+- `preview.mjs` writes `out/transitions.png`, six frames across each change, which is how each of these was found.
+
+Re-rendered four films: the PR compare film, the full-clip release film and the real-voice Raft film PASS. The
+blueprint smoke failed at 4.5s on its own Manim scene, which drew nothing between its opening and "B's timer"; one
+`Indicate` on "waits" fixed it, as an agent would after the check. Not re-run on an agent.

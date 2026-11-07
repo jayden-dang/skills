@@ -4,7 +4,8 @@ import voice from './voice.json';
 import words from './words.json';
 
 export const FPS = 30;
-export const TRANSITION = 14;
+// Neighbouring scenes overlap this long: the old one fades out, the window takes its new shape, the new one fades in.
+export const TRANSITION = 24;
 // A rested line in a concept film: the picture stands this long after the words, while the viewer thinks.
 export const REST = 75;
 
@@ -69,11 +70,13 @@ const PACE: Record<Scene['kind'], {head: number; gap: number; tail: number}> = {
 
 export const clipLength = (beat: Beat) => (beat.clip ? Math.ceil(clipFrames[beat.clip].frames / (beat.rate ?? 1)) : 0);
 
-export const layout = (scene: Scene) => {
+export const layout = (scene: Scene, first = false) => {
   const pace = PACE[scene.kind];
+  // A scene after a transition speaks once its window has nearly landed and its content is most of the way in.
+  const head = first ? pace.head : Math.max(pace.head, Math.round(TRANSITION * 0.8));
   const lengths = voiceFrames[scene.id] ?? scene.beats.map((b) => Math.max(45, b.text.split(' ').length * 12));
   const starts: number[] = [];
-  let at = pace.head;
+  let at = head;
   let clipEnd = 0;
   scene.beats.forEach((beat, i) => {
     const start = beat.clip ? Math.max(at, clipEnd) : at;
@@ -83,7 +86,7 @@ export const layout = (scene: Scene) => {
   });
   const last = starts.length - 1;
   // A compare plays both recordings from its first line, so it lasts at least as long as the longer one.
-  if (scene.kind === 'compare') clipEnd = starts[0] + Math.max(...[scene.before, scene.after].map((c) => (c && clipFrames[c] ? Math.ceil(clipFrames[c].frames / (scene.rate ?? 1)) : 0)));
+  if (scene.kind === 'compare') clipEnd = Math.round(TRANSITION * 0.42) + Math.max(...[scene.before, scene.after].map((c) => (c && clipFrames[c] ? Math.ceil(clipFrames[c].frames / (scene.rate ?? 1)) : 0)));
   return {starts, lengths, duration: Math.max(starts[last] + lengths[last] + pace.tail + (scene.beats[last].rest ? REST : 0), clipEnd + 10)};
 };
 
@@ -120,8 +123,8 @@ export const worldSteps = (scene: Scene, starts: number[], lengths: number[]) =>
 // Each scene with its absolute start. Neighbours overlap by TRANSITION.
 export const placed = (() => {
   let from = 0;
-  return scenes.map((scene) => {
-    const entry = {scene, from, ...layout(scene)};
+  return scenes.map((scene, i) => {
+    const entry = {scene, from, ...layout(scene, i === 0)};
     from += entry.duration - TRANSITION;
     return entry;
   });
@@ -141,6 +144,9 @@ export const sceneTiming = () =>
 // The pause after each rested line, in film frames: preview.mjs writes them to out/rests.json for the check.
 export const restWindows = () =>
   placed.flatMap(({scene, from, starts, lengths}) => scene.beats.flatMap((beat, i) => (beat.rest ? [[from + starts[i] + lengths[i], from + starts[i] + lengths[i] + REST]] : [])));
+
+// Where each scene change starts: preview.mjs draws a strip of frames across each one.
+export const cutFrames = () => placed.slice(1).map(({from}) => from);
 
 export const totalFrames = () => {
   const last = placed[placed.length - 1];

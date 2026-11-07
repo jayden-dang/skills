@@ -1,6 +1,6 @@
 import {Audio} from '@remotion/media';
 import {useState} from 'react';
-import {AbsoluteFill, getStaticFiles, interpolate, Sequence, staticFile, useCurrentFrame} from 'remotion';
+import {AbsoluteFill, Easing, getStaticFiles, interpolate, Sequence, staticFile, useCurrentFrame} from 'remotion';
 import {CLIP_W, clipHeights, ClipScene, FULL, MOVE, MOVE_EASING} from './ClipScene';
 import {fit} from './fit';
 import {WithFonts} from './fonts';
@@ -26,6 +26,9 @@ const CELL_C = 1597;
 const MONO = (size: number) => ({font: t.fontMono, weight: 400, tracking: 0.08, size});
 const sizeOf = (scene: Scene) => (scene.kind === 'compare' ? compareSize() : scene.kind === 'stat' ? statSize(scene) : scene.kind === 'timeline' ? timelineSize() : scene.kind === 'manim' ? MANIM_SIZE : scene.kind === 'world' ? worldSize(scene) : SPEC_KINDS.includes(scene.kind) ? specSize(scene) : graphicSize(scene));
 const centered = (w: number, h: number): Box => ({x: (1920 - w) / 2, y: CENTER_Y - h / 2, w, h});
+// A scene change lands softly; a small change of shape takes less time than a large one, and always ends with the transition.
+const LAND = Easing.bezier(0.22, 1, 0.36, 1);
+const morphFrames = (a: Box, b: Box) => Math.round(12 + 12 * Math.min(1, Math.max(Math.abs(a.x - b.x), Math.abs(a.y - b.y), Math.abs(a.w - b.w), Math.abs(a.h - b.h)) / 600));
 
 // Every shape the window takes, in order, with the frame it starts moving there. Measured text, so
 // this runs inside WithFonts, once the project's fonts are in.
@@ -33,10 +36,10 @@ const shapesOf = () =>
   placed.flatMap(({scene, from, starts}) => {
     if (scene.kind !== 'clip') {
       const {w, h} = sizeOf(scene);
-      return [{at: from, box: centered(w, h), bare: scene.kind === 'world' || scene.kind === 'manim' ? 1 : 0}];
+      return [{at: from, box: centered(w, h), bare: scene.kind === 'world' || scene.kind === 'manim' ? 1 : 0, cut: true}];
     }
-    if (scene.full) return [{at: from, box: FULL, bare: 1}];
-    return clipHeights(scene).map((h, i) => ({at: i === 0 ? from : from + starts[i], box: centered(CLIP_W, h), bare: 0}));
+    if (scene.full) return [{at: from, box: FULL, bare: 1, cut: true}];
+    return clipHeights(scene).map((h, i) => ({at: i === 0 ? from : from + starts[i], box: centered(CLIP_W, h), bare: 0, cut: i === 0}));
   });
 
 const Window: React.FC<{children: React.ReactNode}> = ({children}) => {
@@ -45,22 +48,33 @@ const Window: React.FC<{children: React.ReactNode}> = ({children}) => {
   const input: number[] = [];
   const boxes: Box[] = [];
   const bares: number[] = [];
-  shapes.forEach(({at, box, bare}, i) => {
+  const eases: boolean[] = [];
+  shapes.forEach(({at, box, bare, cut}, i) => {
     if (i === 0) return;
-    const start = Math.max(at, (input[input.length - 1] ?? -1) + 1);
-    input.push(start, start + MOVE);
+    const length = cut ? morphFrames(shapes[i - 1].box, box) : MOVE;
+    const start = Math.max(cut ? at + TRANSITION - length : at, (input[input.length - 1] ?? -1) + 1);
+    input.push(start, start + length);
     boxes.push(shapes[i - 1].box, box);
     bares.push(shapes[i - 1].bare, bare);
+    eases.push(Boolean(cut));
   });
-  const at = (key: keyof Box) => (input.length ? interpolate(frame, input, boxes.map((b) => b[key]), {...clamp, easing: MOVE_EASING}) : shapes[0].box[key]);
+  // Each move eases on its own: a scene change lands softly, a camera move inside a clip keeps its own curve.
+  const at = (key: keyof Box) => {
+    if (!input.length) return shapes[0].box[key];
+    for (let k = 0; k < input.length; k += 2) {
+      if (frame < input[k]) return boxes[k][key];
+      if (frame <= input[k + 1]) return interpolate(frame, [input[k], input[k + 1]], [boxes[k][key], boxes[k + 1][key]], {...clamp, easing: eases[k / 2] ? LAND : MOVE_EASING});
+    }
+    return boxes[boxes.length - 1][key];
+  };
   const bare = input.length ? interpolate(frame, input, bares, clamp) : shapes[0].bare;
   const [w, h] = [at('w'), at('h')];
   const shape = t.cut > 0 ? cutShape(w, h) : undefined;
   return (
     <div style={{position: 'absolute', left: at('x'), top: at('y'), width: w, height: h, color: t.ink, opacity: enter(frame, 0, 12)}}>
       <div style={{position: 'absolute', inset: 0, background: t.panel, backdropFilter: t.panelBlur, boxShadow: t.shadow, clipPath: shape, borderRadius: t.cut > 0 ? 0 : t.radius, opacity: 1 - bare}} />
-      <div style={{position: 'absolute', inset: 0, opacity: 1 - bare}}>
-        <Edge id="window-edge" w={w} h={h} draw={glide(frame, 0, 34)} width={Math.max(t.borderWidth, 2)} />
+      <div style={{position: 'absolute', inset: 0, opacity: bare < 1 ? 1 : 0}}>
+        <Edge id="window-edge" w={w} h={h} draw={Math.min(glide(frame, 0, 34), 1 - bare)} width={Math.max(t.borderWidth, 2)} />
       </div>
       {/* A window cuts what it holds; a world keeps the room its corner marks need. */}
       <div style={{position: 'absolute', inset: 0, clipPath: bare > 0.5 ? 'inset(-30px)' : (shape ?? `inset(0 round ${t.radius}px)`)}}>{children}</div>
@@ -68,11 +82,25 @@ const Window: React.FC<{children: React.ReactNode}> = ({children}) => {
   );
 };
 
-const SceneFade: React.FC<{duration: number; first: boolean; last: boolean; children: React.ReactNode}> = ({duration, first, last, children}) => {
+// How one scene hands over to the next, chosen from what the two are, never by the script:
+// the same kind in the same window pushes sideways like a page; anything else crosses in place.
+type Hand = 'cross' | 'push';
+const KIN = (scene: Scene) => (scene.kind === 'world' || scene.kind === 'manim' ? 'bare' : scene.kind === 'clip' && scene.full ? 'full' : scene.kind);
+const handOf = (a: Scene | undefined, b: Scene | undefined): Hand => {
+  if (!a || !b || KIN(a) !== KIN(b) || a.kind === 'clip' || a.kind === 'world' || a.kind === 'manim') return 'cross';
+  const [x, y] = [sizeOf(a), sizeOf(b)];
+  return Math.abs(x.w - y.w) < 80 && Math.abs(x.h - y.h) < 120 ? 'push' : 'cross';
+};
+// A new part of the film starts at a title or where the kind of picture changes; only there does the line sweep across.
+const opensPart = (a: Scene, b: Scene) => b.kind === 'title' || KIN(a) !== KIN(b);
+
+const SceneFade: React.FC<{duration: number; first: boolean; last: boolean; inHand?: Hand; outHand?: Hand; children: React.ReactNode}> = ({duration, first, last, inHand = 'cross', outHand = 'cross', children}) => {
   const frame = useCurrentFrame();
-  const inn = first ? 1 : interpolate(frame, [TRANSITION / 2, TRANSITION], [0, 1], clamp);
-  const out = last ? 1 : interpolate(frame, [duration - TRANSITION, duration - TRANSITION / 2], [1, 0], clamp);
-  return <AbsoluteFill style={{opacity: Math.min(inn, out)}}>{children}</AbsoluteFill>;
+  // The two scenes cross: the old one is still fading while the new one comes in, so the window is never empty.
+  const inn = first ? 1 : interpolate(frame, [TRANSITION * 0.42, TRANSITION], [0, 1], clamp);
+  const out = last ? 1 : interpolate(frame, [duration - TRANSITION, duration - TRANSITION * 0.42], [1, 0], clamp);
+  const shift = (inHand === 'push' ? (1 - inn) * 90 : 0) - (outHand === 'push' ? (1 - out) * 90 : 0);
+  return <AbsoluteFill style={{opacity: Math.min(inn, out), translate: `${shift}px 0px`}}>{children}</AbsoluteFill>;
 };
 
 const Cell: React.FC<{left: number; width?: number; top: number; height: number; children: React.ReactNode; gap?: number}> = ({left, width, top, height, children, gap = 0}) => (
@@ -196,12 +224,12 @@ const Scenes: React.FC = () => {
           const props = {scene, starts, lengths};
           return (
             <Sequence key={scene.id} from={from} durationInFrames={duration} name={scene.title}>
-              <SceneFade duration={duration} first={s === 0} last={s === placed.length - 1}>
+              <SceneFade duration={duration} first={s === 0} last={s === placed.length - 1} inHand={handOf(placed[s - 1]?.scene, scene)} outHand={handOf(scene, placed[s + 1]?.scene)}>
                 {scene.kind === 'clip' ? (
                   <ClipScene {...props} duration={duration} />
                 ) : (
-                  // Sized to the scene's own shape, so its text holds still while the window moves.
-                  <div style={{position: 'absolute', left: 0, top: 0, width: sizeOf(scene).w, height: sizeOf(scene).h}}>
+                  // Sized to the scene's own shape and held at the window's centre, so its text stays put while the window moves.
+                  <div style={{position: 'absolute', left: '50%', top: '50%', translate: '-50% -50%', width: sizeOf(scene).w, height: sizeOf(scene).h}}>
                     {scene.kind === 'title' ? <TitleScene {...props} /> : null}
                     {scene.kind === 'points' ? <PointsScene {...props} /> : null}
                     {scene.kind === 'flow' ? <FlowScene {...props} /> : null}
@@ -241,14 +269,14 @@ const Scenes: React.FC = () => {
           </SceneFade>
         </Sequence>
       ))}
-      {placed.map(({from, scene}) => (from > 0 ? <SweepLine key={scene.id} start={from - 4} /> : null))}
+      {placed.map(({from, scene}, s) => (s > 0 && opensPart(placed[s - 1].scene, scene) ? <SweepLine key={scene.id} start={from - 4} /> : null))}
       <SweepLine start={0} />
       <SweepLine start={totalFrames() - 30} />
     </AbsoluteFill>
   );
 };
 
-export const Film: React.FC<{beats: number[]; scenes: {id: string; title: string; seconds: number; refs: string}[]; events: SoundEvent[]; timing: Record<string, unknown>; rests: number[][]}> = () => (
+export const Film: React.FC<{beats: number[]; scenes: {id: string; title: string; seconds: number; refs: string}[]; events: SoundEvent[]; timing: Record<string, unknown>; rests: number[][]; cuts: number[]}> = () => (
   <WithFonts>
     <Scenes />
   </WithFonts>

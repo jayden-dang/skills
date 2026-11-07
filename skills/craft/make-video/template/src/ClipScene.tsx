@@ -1,5 +1,5 @@
 import {Video} from '@remotion/media';
-import {Easing, Img, interpolate, Sequence, staticFile, useCurrentFrame} from 'remotion';
+import {Easing, getStaticFiles, Img, interpolate, Sequence, staticFile, useCurrentFrame} from 'remotion';
 import {clipLength, Rect, Scene} from './timing';
 import {t} from './tokens';
 
@@ -65,6 +65,11 @@ export const ClipScene: React.FC<{scene: Scene; starts: number[]; lengths: numbe
   return (
     <div style={{position: 'absolute', left: 0, top: 0, width: 1920, height: 1080, transformOrigin: '0 0', scale: String(fitOf(scene).u)}}>
       <div style={{position: 'absolute', left: 0, top: 0, width: 1920, height: 1080, transformOrigin: '0 0', translate: `${at('x')}px ${at('y')}px`, scale: String(at('s'))}}>
+        {entries[0] && getStaticFiles().some((f) => f.name === `clips/${entries[0].beat.clip}-first.png`) ? (
+          <Sequence durationInFrames={entries[0].from} layout="none" name="before the recording">
+            <Img src={staticFile(`clips/${entries[0].beat.clip}-first.png`)} style={{position: 'absolute', left: 0, top: 0, width: 1920, height: 1080}} />
+          </Sequence>
+        ) : null}
         {entries.map(({beat, from}, i) => {
           const until = entries[i + 1]?.from ?? duration;
           return (

@@ -1,6 +1,6 @@
 ---
 name: make-video
-version: 3.3.0
+version: 3.4.0
 description: Use when someone wants a narrated video or film of a built feature, a pull request or branch, a release, or a closed spec, or a video that teaches a concept, protocol or algorithm — "/make-video", "make a video of this", "explainer film", "a film of the spec", "teach me X in a video", 3Blue1Brown-style, Manim — produces a checked 1080p MP4 with a source on every line. Not for a written or HTML explanation (understand), slides, or proving a feature works (validate-feature).
 ---
 
@@ -167,7 +167,8 @@ two bands, with no window, and `focus` still moves the camera.
 (cd <project> && npx tsc --noEmit && node preview.mjs)
 ```
 
-Read `out/preview.png` as an image: one frame at the end of each line. Fix what it shows, then render. It also writes the quiet sound layer under the voice, so run it again whenever a line changes.
+Read `out/preview.png` as an image: one frame at the end of each line. Read `out/transitions.png` too, one row per
+scene change: a frame where the window stands empty is a fault. Fix what they show, then render. It also writes the quiet sound layer under the voice, so run it again whenever a line changes.
 
 ```bash
 (cd <project> && npx remotion render Film out/film.mp4)

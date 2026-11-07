@@ -4,7 +4,7 @@ import {fit, headFace} from './fit';
 import {clamp, enter, pointAt} from './GraphicScenes';
 import {Decode, Roll} from './Look';
 import {MOVE, MOVE_EASING} from './ClipScene';
-import {Rect, Scene} from './timing';
+import {Rect, Scene, TRANSITION} from './timing';
 import {t} from './tokens';
 
 /* Scenes for what changed: two recordings side by side, a number that is the news, and the order things happened in. */
@@ -90,8 +90,9 @@ export const CompareScene: React.FC<Props> = ({scene, starts}) => {
   const view = useView(scene, starts);
   return (
     <div style={{position: 'absolute', inset: 0}}>
-      <Pane clip={scene.before} label={before} x={40} start={starts[0]} dim={sideAt('before')} rate={rate} view={view} />
-      <Pane clip={scene.after} label={after} x={40 + PANE_W + GAP} start={starts[0]} dim={sideAt('after')} rate={rate} view={view} />
+      {/* Both sides come in with the transition and start playing as the window lands, so the frame is never empty. */}
+      <Pane clip={scene.before} label={before} x={40} start={Math.round(TRANSITION * 0.42)} dim={sideAt('before')} rate={rate} view={view} />
+      <Pane clip={scene.after} label={after} x={40 + PANE_W + GAP} start={Math.round(TRANSITION * 0.42)} dim={sideAt('after')} rate={rate} view={view} />
     </div>
   );
 };

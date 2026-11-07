@@ -17,9 +17,9 @@ import json
 import os
 import re
 
+from cue import FPS, wait_for
 from manim import Scene
 
-FPS = 30
 HERE = os.path.dirname(os.path.abspath(__file__))
 PROJECT = os.path.dirname(HERE)
 
@@ -61,18 +61,13 @@ class FilmScene(Scene):
 
     def cue(self, line, phrase=None):
         """Wait until line `line` (or the word `phrase` in it) is spoken."""
-        target = self.moment(line, phrase)
-        late = self.time - target
-        if late > 1 / FPS:
-            where = f'"{phrase}" in line {line}' if phrase else f"line {line}"
-            raise ValueError(f"{self.film_id}: {where} is spoken at {target:.2f}s, but the animation before it runs to {self.time:.2f}s. Shorten that animation by {late:.2f}s.")
-        if target - self.time >= 1 / FPS:
-            self.wait(target - self.time)
+        where = f'{self.film_id}: "{phrase}" in line {line}' if phrase else f"{self.film_id}: line {line}"
+        wait = wait_for(self.time, self.moment(line, phrase), where)
+        if wait:
+            self.wait(wait)
 
     def finish(self):
         """Hold the last picture to the scene's end, so the clip is exactly as long as the scene."""
-        end = self.timing["duration"] / FPS
-        if self.time - end > 1 / FPS:
-            raise ValueError(f"{self.film_id}: the animation runs to {self.time:.2f}s; the scene ends at {end:.2f}s.")
-        if end - self.time >= 1 / FPS:
-            self.wait(end - self.time)
+        wait = wait_for(self.time, self.timing["duration"] / FPS, f"{self.film_id}: the scene's end")
+        if wait:
+            self.wait(wait)

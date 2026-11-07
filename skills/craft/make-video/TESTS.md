@@ -445,3 +445,17 @@ in that case". `python3.11` was on the path and Manim would have run. The rest r
 **Shape check 2, Haiku, same request, Manim cache deleted first.** Ran `--check`, which installed Manim (25s) and printed
 `manim ready`; drew two `manim` scenes; one `rest`, on the line that lands the idea ("Evicting the oldest arrival instead
 would have dropped S-101..."). The three-line summary scene took none. Stopped at the voice; not rendered.
+
+## 3.2.1: the Sonnet Raft film in the real voice (2026-11-07)
+
+Voiced through Vibi (MiniMax, English): 323 words in 126.4s of speech, **153 words a minute**, against the stand-in's
+200. Two things the stand-in hid:
+
+- `render_manim.py` stopped on `restrict: "rule" in line 0 is spoken at 1.07s, but the animation before it runs to
+  1.10s`: one frame late. `cue` now lets a change land up to 3 frames (0.1s) after its word, in `template/manim/cue.py`
+  with five tests, since Manim cannot be imported where the tests run.
+- The longer lines held 5.1s and 5.3s: one changed a single digit ("term 4" to "term 5"), the other drew two thin arcs
+  over 3 seconds; neither moves 80 pixels a frame. Fixed in the sample by an `Indicate` on a later word. The check caught
+  both, as it caught the stand-in runs' holds; no text added.
+
+Sample: `.skills/video-samples/raft-concept-real-voice.mp4`, 141.2s, PASS, longest hold 4.0s. Not yet heard by the owner.

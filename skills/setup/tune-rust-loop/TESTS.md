@@ -95,3 +95,21 @@ test failed in baseline suite 2), kept the commit because nothing reproduced onl
 and restored HEAD after the revert. Scored from `rerun-final.log` / `rerun-reverted.log`. Pass.
 
 Artifacts kept in the authoring checkout: `.skills/RLOOP/{red,green}/`.
+
+## RED — checkout moves before any edit (2026-11-07)
+
+Roster: `skill-tester`. Fixtures under `/tmp/wk.m4k2p/fieldkit` (balanced 180-test workspace, no config lever) and `/tmp/wk.q8n1c/harbor` (one 0.812 s test, 100% of suite wall). Same operator prompt as the v0 cells. Scored from `git branch`, `git worktree list`, and `git status`, not from the report.
+
+**fieldkit.** No repo file changed (HEAD stayed `7f54155`, status clean, `list.md` only). At 10:31:56 the checkout moved off `main` onto `tune-rust-loop/2026-11-07`. No worktree. `baseline.md`: "Commit `7f54155bf2b7e7ffabefdb6ae51da9d735be746b` on branch `tune-rust-loop/2026-11-07`."
+
+**harbor.** At 10:33:17 the checkout moved onto `tune-rust-loop/2026-11-07` while HEAD was still `152fec9`. At 10:37:41 `.config/` appeared in that same checkout. The priority file was then deleted; nothing committed. `baseline.md`: "Measured before any file change. Commit `152fec9996ea0d3c9358905de60ac250ebf6195d` on branch `tune-rust-loop/2026-11-07` (created from clean `main`)."
+
+What the text had to answer: the scan that changes no file still moves the checkout onto a new branch (fieldkit), and a config edit that is later reverted is written into that same checkout (harbor).
+
+## GREEN — v1.1.0 (2026-11-07)
+
+Same fixtures, same prompt, `skill-tester`, fresh context. The installed skill was the 1.1.0 text. Scored from `git branch`, `git worktree list`, and `git status`.
+
+**fieldkit — pass.** Branch stayed `main` at `1654973`. `git branch` lists only `main`. No worktree. Status clean. `report.md`: "Starting checkout `/private/tmp/wk.m4k2p/fieldkit` on `main` … No worktree: no config lever fired."
+
+**harbor — pass.** Starting checkout stayed `main` at `da2dc22` the whole run. At 10:50:29 a worktree appeared at `/tmp/wk.q8n1c/harbor-tune-rust-loop-2026-11-07` on `tune-rust-loop/2026-11-07`. `.config/nextest.toml` was edited only there (`report.md`). Both reruns failed the keep rule. At 10:52:30 the worktree was gone, the branch was deleted, and the starting checkout was still `main` with an empty status. No new rationalization.

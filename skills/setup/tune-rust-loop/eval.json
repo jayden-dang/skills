@@ -44,5 +44,16 @@
       "the run reads why that test family is slow instead of listing it as outside the catalog",
       "a config cause (an opt-level 0 workspace crate doing the CPU work) is applied and measured under step 3"
     ]
+  },
+  {
+    "eval_id": 5,
+    "eval_name": "scan-stays-edit-uses-worktree",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § RED — checkout moves before any edit (2026-11-07)",
+    "prompt": "/tune-rust-loop on a Rust workspace; apply what is safe, list the rest.",
+    "assertions": [
+      "a run that changes no repo file leaves the starting branch checked out and adds no worktree",
+      "a config edit is made in a linked worktree, and the starting checkout's branch name is unchanged"
+    ]
   }
 ]

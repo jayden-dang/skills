@@ -1,7 +1,6 @@
 import {Video} from '@remotion/media';
 import {Easing, getStaticFiles, Img, interpolate, Sequence, staticFile, useCurrentFrame} from 'remotion';
 import {clipLength, Rect, Scene} from './timing';
-import {t} from './tokens';
 
 // Recordings are driven at this CSS size; focus and ring rects use its pixels.
 const VIEW_W = 1600;
@@ -15,7 +14,7 @@ const FILLED: Fit = {w: FULL.w, maxH: FULL.h, minH: FULL.h, u: 1};
 // Beside an aside the recording narrows to leave the notes their column.
 export const ASIDE_CLIP_W = 1360;
 const BESIDE: Fit = {w: ASIDE_CLIP_W, maxH: (ASIDE_CLIP_W * 9) / 16, minH: 300, u: ASIDE_CLIP_W / 1920};
-const fitOf = (scene: Scene) => (scene.full ? FILLED : scene.aside?.length ? BESIDE : WINDOWED);
+export const fitOf = (scene: Scene) => (scene.full ? FILLED : scene.aside?.length ? BESIDE : WINDOWED);
 export const MOVE = 24;
 export const MOVE_EASING = Easing.bezier(0.5, 0, 0.1, 1);
 const clamp = {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'} as const;
@@ -41,7 +40,7 @@ const viewOf = (focus: Rect | undefined, {maxH: CLIP_MAX_H, minH: CLIP_MIN_H, u:
 };
 
 // One view per line. A line with no focus keeps the view before it.
-const viewsOf = (scene: Scene) => {
+export const viewsOf = (scene: Scene) => {
   const fit = fitOf(scene);
   let previous = viewOf(undefined, fit);
   return scene.beats.map((beat) => (previous = beat.focus ? viewOf(beat.focus, fit) : previous));
@@ -50,7 +49,7 @@ const viewsOf = (scene: Scene) => {
 export const clipHeights = (scene: Scene) => viewsOf(scene).map((view) => view.h);
 
 // Plays inside the window; everything here is drawn at 1920x1080 and scaled down.
-export const ClipScene: React.FC<{scene: Scene; starts: number[]; lengths: number[]; duration: number}> = ({scene, starts, lengths, duration}) => {
+export const ClipScene: React.FC<{scene: Scene; starts: number[]; lengths: number[]; duration: number}> = ({scene, starts, duration}) => {
   const frame = useCurrentFrame();
   const views = viewsOf(scene);
   const input: number[] = [];
@@ -84,26 +83,7 @@ export const ClipScene: React.FC<{scene: Scene; starts: number[]; lengths: numbe
             </Sequence>
           );
         })}
-        {scene.beats.map((beat, i) => {
-          if (!beat.ring) return null;
-          const from = starts[i];
-          const to = from + lengths[i] + 6;
-          return (
-            <div
-              key={`ring-${i}`}
-              style={{
-                position: 'absolute',
-                left: beat.ring.x * K - 6,
-                top: beat.ring.y * K - 6,
-                width: beat.ring.w * K + 12,
-                height: beat.ring.h * K + 12,
-                borderRadius: t.radiusSmall,
-                border: `3px solid ${t.accent}`,
-                opacity: interpolate(frame, [from + 8, from + 14, to - 6, to], [0, 1, 1, 0], clamp),
-              }}
-            />
-          );
-        })}
+        {/* A ring is drawn by the mark, which travels to it from wherever it was. */}
       </div>
     </div>
   );

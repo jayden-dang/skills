@@ -64,6 +64,7 @@ Seven runs without this skill got every fact right, including the traps a stale 
 - **A quiet sound layer.** A low bed and a small hit on each change, synthesized by the template, under the voice.
 - **More on a screen.** Type sized to hold a list and its context together, lists of up to eight points in two columns, and `aside` notes beside a picture: the route, the number or the rule the voice does not say, each arriving on its line and staying. The check fails a note that repeats its line.
 - **Smooth scene changes.** Scenes cross instead of dipping to an empty frame, the window lands before the next line, and like scenes push sideways. `preview.mjs` strips every change into `out/transitions.png`.
+- **One mark carries the film.** An accent dot is the full stop of a title, the newest timeline node, the bullet being read, the line under a number, the frame of the side being talked about and the ring on a control to press; a recording, world or Manim scene opens out of it and folds back into it. The template places it from each scene's layout, so a script never sets it, and a `ring` outside what its `focus` shows stops the render by name.
 - **A camera on each line.** A `focus` rect on a beat moves the camera there, so the thing named fills the frame.
 - **A source on each line.** Every spoken line carries a `file:line` or a run output, shown beside the narration.
 - **`check_video.py`.** It fails a film under 1920x1080, a hold over 6 seconds, a silence over 3 seconds, a line with no source, and a `file:line` that does not exist at the pinned commit.

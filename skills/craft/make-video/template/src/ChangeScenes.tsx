@@ -12,10 +12,10 @@ import {t} from './tokens';
 type Props = {scene: Scene; starts: number[]; lengths: number[]};
 const head = {fontFamily: t.fontHead, fontWeight: t.headWeight, letterSpacing: t.headTracking};
 
-const PANE_W = 880;
-const PANE_H = (PANE_W * 9) / 16;
-const GAP = 40;
-const LABEL_H = 64;
+export const PANE_W = 880;
+export const PANE_H = (PANE_W * 9) / 16;
+export const GAP = 40;
+export const LABEL_H = 64;
 export const compareSize = () => ({w: PANE_W * 2 + GAP + 80, h: PANE_H + LABEL_H + 80});
 
 const has = (name: string) => getStaticFiles().some((f) => f.name === name);
@@ -97,7 +97,7 @@ export const CompareScene: React.FC<Props> = ({scene, starts}) => {
   );
 };
 
-const STAT_W = 1500;
+export const STAT_W = 1500;
 export const statSize = (scene: Scene) => {
   const title = fit(scene.id, scene.title, [56, 48], STAT_W - 144, 2, headFace);
   return {w: STAT_W, h: Math.min(840, 112 + title.lines * title.size * 1.1 + 40 + 240), title};
@@ -131,7 +131,7 @@ export const StatScene: React.FC<Props> = ({scene, starts, lengths}) => {
   );
 };
 
-const LINE_W = 1640;
+export const LINE_W = 1640;
 export const timelineSize = () => ({w: LINE_W, h: 560});
 
 // The order things happened in: one mark per event, each arriving on its line, the newest lit.

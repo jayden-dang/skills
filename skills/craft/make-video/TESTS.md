@@ -608,3 +608,41 @@ Seven runs hit a rate limit mid-way and were resumed from their own transcripts.
 - Series re-run, Haiku, after the move: three linked episodes, every picture a `manim` scene (2, 2 and 3), script PASS.
   It still did not run `--check` and still believed "Manim is not installed here", but it put the scenes in the script;
   `render_manim.py` installs Manim on its first render either way. Not rendered.
+
+## 3.7.0: one mark carried across every scene change (2026-11-08)
+
+Taken from onetake's one-dot film (github.com/feitangyuan/onetake, PolyForm Noncommercial: the idea only, no code or
+text): one element survives every boundary and becomes the next beat, so nothing on screen replaces anything.
+
+**RED is the template, not an agent.** The 3.6.0 render of the release fixture (`rel-night`: title, timeline, points,
+stat, compare, full clip, title) had every boundary bare: `out/transitions.png` showed card replaced by card. The check's
+own hold filter measured a 4.8s longest hold; by onetake's thresholds (320 px, mean difference under 0.5) the median
+gap between moves was 4.2s and the longest still 9.5s, against 1.6 to 2.0s in onetake's films. An agent run would only
+re-prove that the template has no path for a carry, so none was run.
+
+**GREEN: the same script, voice and clips through `Mark.tsx`.** The longest hold fell to 2.9s, the median gap to 1.7s,
+PASS. The owner watched the two films stacked (`.skills/video-samples/carry-before-after.mp4`) and kept the direction.
+
+What the first render showed and the text now answers:
+
+- A dot that grew into a compare frame was a solid teal block halfway, and so was a frame shrinking to the clip's corner.
+  Only a mark whose short side is under about 40 px is solid now.
+- A dot parked in a recording's corner was invisible on the footage and meant nothing. A recording, a world and a Manim
+  scene now open out of the mark and fold back into it; inside them it shows only as a `ring`.
+- The ring drawn by `ClipScene` would have sat beside the mark's own. The mark is the ring now.
+
+Fixtures re-rendered on 3.7.0 with their recorded voice, each PASS and read on `transitions.png`:
+
+| Fixture | Kinds | Longest hold |
+|---|---|---|
+| release `rel-night` | title, timeline, points, stat, compare, full clip | 2.9s |
+| branch `quiet-hours` | title, compare with notes, points | 4.5s |
+| tour | world, tree, tokens, terminal, chart, title | 4.8s |
+| concept `raft-election` | title, five Manim scenes | 4.2s |
+| release `release-1-3-0` | title, timeline, clip | 4.7s |
+
+One agent run, Sonnet, fresh `tidegate`, "a short video for harbour staff: which button to press for a delay and
+what happens after", unreachable requester: a full clip with two `ring`s and two notes, PASS at 5.2s. The mark landed
+on the Report delay button on both ringed lines (`out/preview.png`). SKILL.md says nothing about the mark and the run
+needed nothing: it set `ring` as step 5 already asks. A `ring` moved outside its line's `focus` stops `preview.mjs`
+with "report-1: its ring is outside what its focus shows. Widen focus to take in the ring."

@@ -15,7 +15,7 @@ const head = {fontFamily: t.fontHead, fontWeight: t.headWeight, letterSpacing: t
 
 /* The window hugs its text, so each scene measures before it draws. */
 
-const titleMetrics = (scene: Scene) => {
+export const titleMetrics = (scene: Scene) => {
   const w = 1500;
   const title = fit(scene.id, scene.title, [104, 88, 74, 62], w - 120, 2, headFace);
   const sub = scene.subtitle ? fit(scene.id, scene.subtitle, [36, 32], w - 120, 2) : null;
@@ -24,7 +24,7 @@ const titleMetrics = (scene: Scene) => {
 };
 
 // Up to eight points, in two columns past five, so a list and its context share one screen.
-const pointsMetrics = (scene: Scene) => {
+export const pointsMetrics = (scene: Scene) => {
   const points = scene.points ?? [];
   const cols = points.length > 5 ? 2 : 1;
   const w = points.length > 3 ? 1640 : 1500;

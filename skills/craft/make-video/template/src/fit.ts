@@ -5,7 +5,7 @@ type Face = {font?: string; weight?: number; tracking?: number};
 
 let context: CanvasRenderingContext2D | null = null;
 
-const widthOf = (text: string, size: number, face: Face) => {
+export const widthOf = (text: string, size: number, face: Face) => {
   context = context ?? document.createElement('canvas').getContext('2d');
   if (!context) throw new Error('no canvas to measure text with');
   context.font = `${face.weight ?? 500} ${size}px ${face.font ?? t.fontSans}`;

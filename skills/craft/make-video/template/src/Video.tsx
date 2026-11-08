@@ -13,6 +13,7 @@ import {MANIM_SIZE, ManimScene} from './ManimScene';
 import {CompareScene, compareSize, StatScene, statSize, TimelineScene, timelineSize} from './ChangeScenes';
 import {TokensScene, tokensSize, TreeScene, treeSize} from './TourScenes';
 import {ChartScene, dataSceneSize, TerminalScene} from './DataScenes';
+import {Mark, Stage} from './Mark';
 import {t} from './tokens';
 
 /* Two thin bands hold what the film is and where it stands. Between them, one window lives through the
@@ -49,6 +50,20 @@ const shapesOf = () =>
     if (scene.full) return [{at: from, box: FULL, bare: 1, cut: true}];
     return clipHeights(scene).map((h, i) => ({at: i === 0 ? from : from + starts[i], box: scene.aside?.length ? besideNotes(ASIDE_CLIP_W, h) : centered(CLIP_W, h), bare: 0, cut: i === 0}));
   });
+
+// Where each scene sits, for the mark: its window on every line and the scale its content is drawn at.
+const stagesOf = (): Stage[] =>
+  placed.map(({scene}) => {
+    const size = sizeOf(scene);
+    const k = asideScale(scene);
+    if (scene.kind !== 'clip') return {size, k, boxes: [scene.aside?.length ? besideNotes(size.w * k, size.h * k) : centered(size.w, size.h)]};
+    return {size, k, boxes: clipHeights(scene).map((h) => (scene.full ? FULL : scene.aside?.length ? besideNotes(ASIDE_CLIP_W, h) : centered(CLIP_W, h)))};
+  });
+
+const Marked: React.FC = () => {
+  const [stages] = useState(stagesOf);
+  return <Mark stages={stages} />;
+};
 
 const Window: React.FC<{children: React.ReactNode}> = ({children}) => {
   const frame = useCurrentFrame();
@@ -290,6 +305,7 @@ const Scenes: React.FC = () => {
           );
         })}
       </Window>
+      <Marked />
       <Bands />
       {placed.map(({scene, from, duration, starts, lengths}, s) => (
         <Sequence key={scene.id} from={from} durationInFrames={duration} name={`${scene.title}: narration`}>

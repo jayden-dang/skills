@@ -120,17 +120,21 @@ read, so the word meant nothing when they opened them.
    Then read `spec-sheet.md` beside this file and write `RUN/sheet.html` in `LANG`, with or without a film.
    Nothing changes a spec file after this without the operator's word.
    *Done when: the sheet exists with every panel, every live ID in `requirements.md` is on it, its commit matches `git rev-parse HEAD` in `WT`, and with `--video` the film printed `PASS` or panel A says why not.*
-10. **Hand over.** Stop `caffeinate`. Leave the peers open. Comment on the ticket, tracker ops as usual: what
-    waits and on whom, with the sheet's path. End with five lines at most: what was written, how many items
+10. **Hand over.** Stop `caffeinate`. Leave the peers open. Comment on the ticket, tracker ops as usual, written
+    the way `SKILL.md` says a stop's comment is: for teammates, no path, no status. End with five lines at most: what was written, how many items
     need them, anything missing, the sheet's path, and that `approve` or plain words is all they need to send.
 11. **The operator's reply.** Plain-word changes → send them to `work`, have `interpret` review only what moved,
     rerun step 7's audit, rewrite the sheet, and with `--video` the film. `approve` → write their words to `RUN/operator-reply.md`. Have `work`
     set `Status: Approved` on the three files quoting them, and on `docs/roadmap/INDEX.md` too when the sheet's Needs you named the
     roadmap change they approved, commit, and draft `plan-tasks` Step 5's publish into
-    `RUN/ticket-body.md`. Then publish onto this ticket yourself, which makes it Ready: the operator's word
+    `RUN/ticket-body.md`. Run `grep -q '^## Issue format' docs/agents/issue-tracker.md` in this checkout. No match →
+    publish nothing, by `plan-tasks`' publish recipe: the ticket stays in Shaping, and you name `/configure-repo`, then
+    `/shape #N`, to the operator. Their `approve` was for the spec, not the ticket's shape: two of four runs on a file
+    without that section published the draft as written, its first line "drafted by AI" and its `ROAD-N` on a ticket
+    the whole team reads. A match → publish onto this ticket yourself, which makes it Ready: the operator's word
     reached this session directly, and auto mode refused one `work` session the same tracker write as an
     external write. Read the ticket back. Close the peers. Name `/go #N`.
-    *Done when: the read shows `ready-for-agent` and the peers are closed.*
+    *Done when: the read shows `ready-for-agent`, or the section was missing and the ticket's body and labels are untouched; and the peers are closed.*
 
 ## Rationalizations
 

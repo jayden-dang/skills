@@ -1,6 +1,6 @@
 ---
 name: shape
-version: 1.12.0
+version: 1.13.0
 description: Writes what a ticket needs before an agent can build it — the spec triad, or the root cause for a bug — and stops at your approval, or with --auto writes the whole spec unattended and hands you one technical sheet of the spec, with a film on it under --video and in Vietnamese under --vi, and with --go builds it through to a pull request with a film of the real app. Run it with /shape #N.
 disable-model-invocation: true
 ---
@@ -45,9 +45,12 @@ WHEN the command carries `--auto`, read `auto.md` beside this file and follow it
    made it Ready but wrote no `Requirements covered:`, so `/go` would have sent it back. One
    left the mini-spec as Draft and waited.
 
-At every stop, comment on the ticket what is waiting and on whom: "requirements.md
-drafted, waiting for Lan's approval". `/board` then shows the ticket under Shaping with
-that line.
+At every stop, comment on the ticket what is waiting and on whom, written for teammates who
+can open nothing on your machine. Its first line is the waiting sentence: "The spec is written
+and waits for Lan's approval." Then each open question as one plain sentence with its owner.
+File names, paths, spec statuses and run problems go in your reply to the operator. Four of four
+hand-over comments put a `.skills/` path on the ticket, a file only the operator's machine has.
+`/board` then shows the ticket under Shaping with that line.
 
 End with what was written, what waits on the operator, and the next command: `/shape #N`
 again, or `/go #N` once Ready.

@@ -181,5 +181,29 @@
       "under --auto the items are auto.md's numbered steps, not the peers' work"
     ],
     "eval_id": 15
+  },
+  {
+    "eval_name": "no-publish-without-issue-format",
+    "kind": "behavior",
+    "derived_from": "TESTS.md 1.13.0",
+    "prompt": "/shape #41 --auto at step 11, after the operator's approve, with docs/agents/issue-tracker.md lacking a ## Issue format section and RUN/ticket-body.md drafted",
+    "assertions": [
+      "the ticket's body and labels are unchanged: nothing is published and shaping stays its state role",
+      "the operator is pointed to /configure-repo, then /shape #N",
+      "any comment posted carries no 'by AI' line, no local path and no requirement, ROAD or MILE ID"
+    ],
+    "eval_id": 16
+  },
+  {
+    "eval_name": "stop-comment-for-the-team",
+    "kind": "behavior",
+    "derived_from": "TESTS.md 1.13.0",
+    "prompt": "/shape #41 --auto at step 10, hand over",
+    "assertions": [
+      "the ticket comment's first line says the spec waits on the operator's approval",
+      "each open question is a plain sentence with its owner",
+      "the comment names no file path, no sheet path and no spec status; the sheet's path is in the hand-over lines"
+    ],
+    "eval_id": 17
   }
 ]

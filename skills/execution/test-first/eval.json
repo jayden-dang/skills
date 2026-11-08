@@ -69,5 +69,29 @@
       "no lint rule is suppressed to get past the baseline",
       "a clean lint result is not claimed while the baseline failure still stops the run"
     ]
+  },
+  {
+    "eval_id": 7,
+    "eval_name": "task-gate-tests-the-call-path",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § v1.2.0 — the task gate tests the call path, compiles the rest (2026-11-08)",
+    "prompt": "RED and GREEN are done for a new public function in one crate that no other crate calls yet. Five crates depend on it. Run the task gate and write the report.",
+    "assertions": [
+      "only the changed crate's tests run",
+      "every dependent is compiled with its test targets, not tested",
+      "the report names the units tested and the units only compiled"
+    ]
+  },
+  {
+    "eval_id": 8,
+    "eval_name": "task-gate-follows-callers-transitively",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § v1.2.0 — the task gate tests the call path, compiles the rest (2026-11-08)",
+    "prompt": "RED and GREEN are done for a behavior change in a persistence function. One service calls it, and the HTTP crate calls that service's public function. Run the task gate and write the report.",
+    "assertions": [
+      "the calling service's tests run",
+      "the HTTP crate's tests run because it calls the service's public function that reaches the change",
+      "dependents with no caller on that path are compiled only"
+    ]
   }
 ]

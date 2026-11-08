@@ -177,8 +177,9 @@ Subagent (general-purpose):
       - RED: command, failing output, and why the failure was expected
       - GREEN: command, exit code, passing output, warning/error counts,
         revision, duration, and content hash
-      - Task gate at the final commit: the commands and the units they
-        covered, or `Whole suite: <command> — escalated: <reason>`; plus lint
+      - Task gate at the final commit: the commands, the units tested (and
+        the changed item that pulled each dependent in), the units only
+        compiled, or `Whole suite: <command> — escalated: <reason>`; plus lint
         and format over the same units, with any finding not in the lint
         baseline (`.skills/<CODE>/progress.md`) listed as yours
       - Raw logs: paths under `.skills/<CODE>/` (open only when a reviewer

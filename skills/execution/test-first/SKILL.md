@@ -1,6 +1,6 @@
 ---
 name: test-first
-version: 1.1.0
+version: 1.2.0
 description: Use when writing or changing any production code — a new feature, a bugfix,
   a behavior change, or a refactor — and before the first line of
   implementation exists; the test-first (TDD) gate. Also use when about to add
@@ -49,11 +49,16 @@ Then take the next slice.
 
 Each step above stays narrow; breadth is paid once, at the final commit:
 
-1. **Tests** of every unit you changed plus every unit that depends on it — the project's **Task gate** command, else derive it from the build graph (changed packages and their reverse dependencies).
+1. **Tests of what can see the change; a compile of everything else that depends on it.** In klynt, testing every dependent turned one `persistence` task gate into 33 packages and 7,105 tests. Across 732 such runs, a dependent's tests caught what the changed package's own tests missed in about one task in eleven, and 12 of the 14 catches were in a package that calls the changed one directly. So:
+   - **Test** every unit you changed.
+   - **Follow the changed behavior up its callers.** List each public item whose signature or behavior your diff changes, including through private code it calls. `grep -rlw <name>` over the dependents' source and tests. Every unit with a hit gets its tests run, and the public item there that calls the changed one joins the list. Repeat until a round adds no unit.
+   - **Compile and lint, with test targets, every other dependent** (`cargo check --all-targets` or the project's equivalent): a broken signature still fails here.
+
+   The project's **Task gate** commands supply the syntax. Without them, derive the dependents from the build graph (reverse dependencies).
 2. **Lint and format** over the same units, against the lint baseline recorded at session start. A finding absent from the baseline is yours. Never suppress a lint rule to get past a red baseline.
 3. **Escalate to the whole suite** when the change reaches what the build graph cannot see: schema or migrations, shared fixtures or test data, build manifests or feature flags, generated contracts, a root package nearly everything depends on. You judge it and name the reason.
 
-When the whole suite is cheap (a couple of minutes), it *is* the gate — run it. Report the scope you ran: `Task gate: <commands> — covering <units>`, or `Whole suite: <command> — escalated: <reason>`. A gate run is never quoted as the suite; the whole suite runs at close.
+When the whole suite is cheap (a couple of minutes), it *is* the gate — run it. Report the scope you ran: `Task gate: <commands> — tested <units> (changed) + <units> (calls <item>); compiled <units>`, or `Whole suite: <command> — escalated: <reason>`. A gate run is never quoted as the suite; the whole suite runs at close.
 
 ## Requirement linkage (docs-only)
 
@@ -109,6 +114,8 @@ Mock setup longer than the test logic, or a test that fails when a mock is remov
 | "The scoped run passed — tests pass" | Name the scope you ran. "Tests pass" is the whole suite's claim |
 | "Lint was already red, so allow the rule / it can't be checked" | Compare against the baseline. Suppressing the rule hides your findings with the old one |
 | "It's only a migration file, the crate tests cover it" | Every test reads that schema. Escalate |
+| "Run every dependent's tests to be safe" | A dependent that never calls the changed code cannot see it — compiling it proves the signature still fits. Follow the callers; test the units they reach |
+| "No dependent mentions the changed function, so nothing downstream needs testing" | Grep for the callers of the callers too: 2 of klynt's 14 dependent catches sat one package further up the call path |
 
 ## Red flags — stop and start over
 

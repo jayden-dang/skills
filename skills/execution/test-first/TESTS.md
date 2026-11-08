@@ -63,3 +63,54 @@ single-test pattern, Task gate / Wave gate slots), AGENTS.md Gate 2.
 
 **Open:** a parallel-lane fixture (no shared database) to exercise lane worktrees and
 the wave gate under pressure; Haiku/Opus rosters not run.
+
+## v1.2.0 — the task gate tests the call path, compiles the rest (2026-11-08)
+
+**Trigger.** In klynt the task gate (changed units + every dependent) grows with the
+workspace: one `persistence` task gated 33 packages and 7,105 tests (CDESK Task 6, 501 s);
+implementers spent 52% of wall time waiting on test and build runs. Measured over 732 wide
+runs in klynt implementer/fix transcripts (2026-10-20 → 11-07): red in a package the dispatch
+did not edit, and that package a real reverse dependency (cargo metadata), 14 test runs (12
+direct, 2 transitive, ≈ one task in eleven) plus 11 compile failures. Test catches sat in
+`gateways` (11), `tenant_service` (3), `assistant_turn_service` (1). base/domain each have 35
+direct dependents, so a direct-only gate saves nothing. User ruling: judged dependents, GREEN
+scored on cases shaped like those catches. Evidence: `.skills/EXECLITE/measurements.md`.
+
+**Protocol.** Headless `claude -p --setting-sources project --strict-mcp-config`, Sonnet and
+Haiku, prompt = the filled `implementer-prompt.md` dispatch plus "RED/GREEN done and committed;
+the build host runs the gate commands you write; 01:40, fourteen tasks queued, branch by 07:00".
+No cargo in the agent's shell. Fixture `tutorly` (real compiling 9-crate workspace, per-crate
+test times in `project.md`; gateways 9:30). Three cases, each a real commit:
+`thread` (service response gains a field; `gateways` pins the exact body — fails),
+`roles` (persistence `seed_roles` gains a role; `tenant_service` pins the list and `gateways`
+reaches it through `create_tenant` — both fail), `media` (new pub fn nothing calls — nothing
+can fail). Scored from the written report's commands.
+
+### RED — v1.1.0, 12 runs (3 cases × Sonnet/Haiku × 2)
+
+All 12 tested every reverse dependency. `media`: 5 packages, ~12 min, for a function no one
+calls — "Units covered: `media_service` (changed) plus its dependents `user_service`…,
+`cleanup_job`…, `gateways`…, and `server`" (Haiku). `roles`: 8 packages, ~24 min —
+"Unit set: the changed crate `persistence` and every crate that depends on it" (Haiku).
+`thread`: thread_service + gateways (+ server) — right, and the cheapest case anyway.
+
+### GREEN — v1.2.0 + project.md template, 12 runs: 12/12
+
+| Case | Tested | Compiled only | Runs |
+|---|---|---|---|
+| media | media_service | user_service, cleanup_job, gateways, server | 4/4 |
+| thread | thread_service, gateways; server tested 1/4, compiled 3/4 | server | 4/4 on what fails |
+| roles | persistence, tenant_service, gateways — the transitive hit via `create_tenant` | the other 5 | 4/4 |
+
+Both models walked the caller chain with `grep -rlw`; no run dropped a package that fails.
+Variance: on `thread`, 3/4 stopped one hop early — `server/main.rs` calls `post_thread`, the
+gateways item that calls the changed code, so the rule puts `server` in the tested set. Nothing
+was lost only because the fixture's `server` pins nothing. On `roles` 4/4 went the extra hop.
+Name-grep cannot see behavior that travels by trait dispatch or serde; the close run is the
+backstop there.
+
+**Adoption probe — new skill, old `project.md` wording** ("Task gate (changed units + their
+dependents)"), 4 runs: mixed. Haiku ran every dependent (2/2); Sonnet on `roles` tested
+persistence + tenant_service and **missed gateways**, which fails. A repo's `project.md`
+outranks the skill, so `configure-repo`'s template line changed with it; klynt's own
+`project.md` (`--depth 1` reverse deps) still carries the old line — adoption owed there.

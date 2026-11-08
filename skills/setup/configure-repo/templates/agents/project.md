@@ -97,8 +97,8 @@ Run in this order; all must pass before any completion claim.
 Single test file: `<command pattern, e.g. npx vitest run <path>>` — must narrow what
 gets built, not only what runs.
 
-Task gate (changed units + their dependents; `none` when the whole suite is fast):
-`<command pattern, e.g. cargo nextest run -p <crate> -p <dependent>>`
+Task gate (tests of the changed units and the dependents that call what changed, plus a compile of every other dependent; `none` when the whole suite is fast):
+`<test pattern, e.g. cargo nextest run -p <crate> -p <caller>>` · `<compile pattern, e.g. cargo check -p <dependent> --all-targets>`
 
 Wave gate (compile + lint every target after a parallel merge; `none` = typecheck + lint):
 `<command>`

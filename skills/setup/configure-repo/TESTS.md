@@ -301,3 +301,7 @@ that always merges locally never recorded it.
 `keep` and the push permission: 2/2. A guessed value in `project.md`: 0/2. The GitHub close op written
 into `docs/agents/issue-tracker.md`: 2/2.
 
+
+## v1.16.0 — task gate slot names the call path (2026-11-08)
+
+The `project.md` template's Task gate line now asks for tests of the changed units and of the dependents that call what changed, plus a compile of every other dependent. Evidence: `test-first/TESTS.md` § v1.2.0 — with the old line in `project.md`, the new test-first text gave mixed results (Sonnet missed a failing `gateways` once), so the template had to move with the skill.

@@ -59,8 +59,9 @@ code before the test? Delete it — no exceptions, no "keep as reference", no
 "adapt it while tests catch up". Verify RED (fails for the right reason) and
 verify GREEN (pristine output, zero warnings) are mandatory, never skip.
 Breadth is tiered, not repeated: each RED/GREEN/refactor step runs the narrowest
-target; once per task, at its final commit, the **task gate** runs the changed
-units plus their dependents and lint against the session's baseline — escalated
+target; once per task, at its final commit, the **task gate** tests the changed
+units and the dependents on the changed code's call path, compiles every other
+dependent, and lints against the session's baseline — escalated
 to the whole suite when the change reaches what the build graph cannot see
 (schema, migrations, shared fixtures, manifests, generated contracts, a root
 package); a parallel merge runs the **wave gate**; the whole suite runs at close.

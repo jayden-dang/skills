@@ -49,7 +49,7 @@ Work one vertical slice at a time: one behavior, one test, one minimal implement
 
 Then take the next slice.
 
-**The task gate — once per task, at the final commit.** Tests of every unit you changed plus every unit that depends on it, then lint and format over the same units against the lint baseline recorded at session start (a finding not in the baseline is yours; never suppress a rule to get past it). Escalate to the whole suite when the change reaches what the build graph cannot see — schema or migrations, shared fixtures, build manifests or feature flags, generated contracts, a root package — and name the reason. When the whole suite takes a couple of minutes, it *is* the gate. The report names the scope it ran; a gate run is never quoted as the suite, which runs once at close.
+**The task gate — once per task, at the final commit.** Tests of every unit you changed and of every dependent on the changed code's call path (grep the changed public items over the dependents, then their callers, until nothing new turns up), a compile of every other dependent, then lint and format over the same units against the lint baseline recorded at session start (a finding not in the baseline is yours; never suppress a rule to get past it). Escalate to the whole suite when the change reaches what the build graph cannot see — schema or migrations, shared fixtures, build manifests or feature flags, generated contracts, a root package — and name the reason. When the whole suite takes a couple of minutes, it *is* the gate. The report names the scope it ran; a gate run is never quoted as the suite, which runs once at close.
 
 ## Requirement tagging
 

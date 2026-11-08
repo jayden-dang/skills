@@ -4,7 +4,7 @@ import {fit, headFace} from './fit';
 import {clamp, enter, pointAt} from './GraphicScenes';
 import {Decode, Roll} from './Look';
 import {MOVE, MOVE_EASING} from './ClipScene';
-import {Rect, Scene, TRANSITION} from './timing';
+import {LEAD, Rect, Scene, TRANSITION} from './timing';
 import {t} from './tokens';
 
 /* Scenes for what changed: two recordings side by side, a number that is the news, and the order things happened in. */
@@ -37,7 +37,7 @@ const useView = (scene: Scene, starts: number[]) => {
   const values: View[] = [];
   views.forEach((view, i) => {
     if (i === 0) return;
-    const start = Math.max(starts[i], (input[input.length - 1] ?? -1) + 1);
+    const start = Math.max(starts[i] - LEAD, (input[input.length - 1] ?? -1) + 1);
     input.push(start, start + MOVE);
     values.push(views[i - 1], view);
   });

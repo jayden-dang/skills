@@ -1,7 +1,7 @@
 import {Easing, interpolate, useCurrentFrame} from 'remotion';
 import {linesOf} from './fit';
 import {Arc, clamp, cutShape, Decode, Edge, glide, Letters, Point, rise} from './Look';
-import {Scene, Tone, WorldArrow, WorldCamera, WorldChange, WorldObject, worldSteps} from './timing';
+import {LEAD, Scene, Tone, WorldArrow, WorldCamera, WorldChange, WorldObject, worldSteps} from './timing';
 import {t} from './tokens';
 
 /* One world for the whole explanation. Things stay on screen and change on the word that names the change, so the eye never has to find its place again. */
@@ -214,7 +214,11 @@ export const WorldScene: React.FC<Props> = ({scene, starts, lengths}) => {
   const from = frames[Math.max(0, step - 1)];
   const at = step === 0 ? 0 : times[step - 1];
   const p = step === 0 ? 1 : interpolate(frame, [at, at + MOVE], [0, 1], {...clamp, easing: EASE});
-  const camera = {x: between(from.camera.x, to.camera.x, p), y: between(from.camera.y, to.camera.y, p), w: between(from.camera.w, to.camera.w, p), h: between(from.camera.h, to.camera.h, p)};
+  // Things change on their word; the camera sets off before it, so it is already there when the word lands.
+  const shot = times.reduce((last, when, i) => (frame >= when - LEAD ? i : last), -1) + 1;
+  const [a, b] = [frames[Math.max(0, shot - 1)].camera, frames[shot].camera];
+  const pc = shot === 0 ? 1 : interpolate(frame, [times[shot - 1] - LEAD, times[shot - 1] - LEAD + MOVE], [0, 1], {...clamp, easing: EASE});
+  const camera = {x: between(a.x, b.x, pc), y: between(a.y, b.y, pc), w: between(a.w, b.w, pc), h: between(a.h, b.h, pc)};
   const zoom = Math.min(WORLD_W / camera.w, WORLD_H / camera.h);
   const live = (id: string): State => {
     const a = from.objects[id];

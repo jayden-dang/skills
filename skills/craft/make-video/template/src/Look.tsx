@@ -122,9 +122,19 @@ export const Glow: React.FC = () => {
 };
 
 // What sits behind everything, chosen by the look. A grid and a sheet stand still, so they never hide a hold from the check.
-export const Backdrop: React.FC = () => {
+export const Backdrop: React.FC<{camera?: {x: number; y: number}}> = ({camera = {x: 0, y: 0}}) => {
   // A project's own tokens may predate the slot, so a missing one is the default glow.
   const backdrop = (t as {backdrop?: string}).backdrop ?? 'glow';
+  // A lattice of faint dots far behind the window: the camera's moves read against it, as a dark ground alone cannot show them.
+  if (backdrop === 'lattice') {
+    return (
+      <>
+        <Glow />
+        <div style={{position: 'absolute', inset: -96, backgroundImage: `radial-gradient(circle, ${t.line} 0 1.5px, transparent 2px)`, backgroundSize: '48px 48px', backgroundPosition: `${camera.x}px ${camera.y}px`}} />
+        <div style={{position: 'absolute', inset: 0, background: `radial-gradient(1300px 760px at 50% 48%, transparent 35%, ${t.ground} 100%)`}} />
+      </>
+    );
+  }
   if (backdrop === 'grid') {
     const minor = `${t.line}55`;
     return (

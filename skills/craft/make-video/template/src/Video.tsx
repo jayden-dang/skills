@@ -7,13 +7,13 @@ import {WithFonts} from './fonts';
 import {clamp, enter, FlowScene, graphicSize, PointsScene, TitleScene} from './GraphicScenes';
 import {Backdrop, cutShape, Decode, Edge, glide, rise, Roll} from './Look';
 import {CodeScene, EarsScene, SequenceScene, SPEC_KINDS, specSize, TableScene} from './SpecScenes';
-import {Beat, filmName, placed, planned, Scene, SoundEvent, totalFrames, TRANSITION, wordStarts, worldSteps} from './timing';
+import {Beat, filmName, LEAD, placed, planned, Scene, SoundEvent, totalFrames, TRANSITION, wordStarts, worldSteps} from './timing';
 import {worldSize, WorldScene} from './WorldScene';
 import {MANIM_SIZE, ManimScene} from './ManimScene';
 import {CompareScene, compareSize, StatScene, statSize, TimelineScene, timelineSize} from './ChangeScenes';
 import {TokensScene, tokensSize, TreeScene, treeSize} from './TourScenes';
 import {ChartScene, dataSceneSize, TerminalScene} from './DataScenes';
-import {Mark, Stage} from './Mark';
+import {follow, Mark, markPoses, Stage} from './Mark';
 import {t} from './tokens';
 
 /* Two thin bands hold what the film is and where it stands. Between them, one window lives through the
@@ -48,7 +48,7 @@ const shapesOf = () =>
       return [{at: from, box: scene.aside?.length ? besideNotes(w * k, h * k) : centered(w, h), bare: scene.kind === 'world' || scene.kind === 'manim' ? 1 : 0, cut: true}];
     }
     if (scene.full) return [{at: from, box: FULL, bare: 1, cut: true}];
-    return clipHeights(scene).map((h, i) => ({at: i === 0 ? from : from + starts[i], box: scene.aside?.length ? besideNotes(ASIDE_CLIP_W, h) : centered(CLIP_W, h), bare: 0, cut: i === 0}));
+    return clipHeights(scene).map((h, i) => ({at: i === 0 ? from : from + starts[i] - LEAD, box: scene.aside?.length ? besideNotes(ASIDE_CLIP_W, h) : centered(CLIP_W, h), bare: 0, cut: i === 0}));
   });
 
 // Where each scene sits, for the mark: its window on every line and the scale its content is drawn at.
@@ -59,11 +59,6 @@ const stagesOf = (): Stage[] =>
     if (scene.kind !== 'clip') return {size, k, boxes: [scene.aside?.length ? besideNotes(size.w * k, size.h * k) : centered(size.w, size.h)]};
     return {size, k, boxes: clipHeights(scene).map((h) => (scene.full ? FULL : scene.aside?.length ? besideNotes(ASIDE_CLIP_W, h) : centered(CLIP_W, h)))};
   });
-
-const Marked: React.FC = () => {
-  const [stages] = useState(stagesOf);
-  return <Mark stages={stages} />;
-};
 
 const Window: React.FC<{children: React.ReactNode}> = ({children}) => {
   const frame = useCurrentFrame();
@@ -264,12 +259,14 @@ const Staged: React.FC<{text: string}> = ({text}) => (
 );
 
 const Scenes: React.FC = () => {
+  const frame = useCurrentFrame();
+  const [poses] = useState(() => markPoses(stagesOf()));
   const lines = placed.reduce((sum, {scene}) => sum + scene.beats.length, 0);
   let line = 0;
   const hasSound = getStaticFiles().some((f) => f.name === 'sound.wav');
   return (
     <AbsoluteFill style={{background: t.ground, fontFamily: t.fontSans, overflow: 'hidden'}}>
-      <Backdrop />
+      <Backdrop camera={follow(poses, frame)} />
       {hasSound ? <Audio src={staticFile('sound.wav')} /> : null}
       <Window>
         {placed.map(({scene, from, duration, starts, lengths}, s) => {
@@ -305,7 +302,7 @@ const Scenes: React.FC = () => {
           );
         })}
       </Window>
-      <Marked />
+      <Mark poses={poses} />
       <Bands />
       {placed.map(({scene, from, duration, starts, lengths}, s) => (
         <Sequence key={scene.id} from={from} durationInFrames={duration} name={`${scene.title}: narration`}>

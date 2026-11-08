@@ -1,10 +1,9 @@
-import {useState} from 'react';
 import {spring, useCurrentFrame} from 'remotion';
 import {compareSize, GAP, LABEL_H, LINE_W, PANE_H, PANE_W, STAT_W, statSize} from './ChangeScenes';
 import {fitOf, viewsOf} from './ClipScene';
 import {fit, headFace, widthOf, wrap} from './fit';
 import {pointAt, pointsMetrics, titleMetrics} from './GraphicScenes';
-import {placed, Scene} from './timing';
+import {LEAD as CAMERA_LEAD, placed, Scene} from './timing';
 import {t} from './tokens';
 
 /* One mark lives through the whole film, so the eye never has to find its place again. It is the full stop of
@@ -16,7 +15,7 @@ import {t} from './tokens';
 type Box = {x: number; y: number; w: number; h: number};
 // Where a scene sits on screen: its window for each line, and the scale its content is drawn at.
 export type Stage = {size: {w: number; h: number}; k: number; boxes: Box[]};
-type Pose = {at: number; box: Box; r: number; fill: number; o: number};
+export type Pose = {at: number; box: Box; r: number; fill: number; o: number};
 
 const TOP = 72;
 const BOTTOM = 984;
@@ -110,7 +109,8 @@ const posesOf = (scene: Scene, from: number, starts: number[], lengths: number[]
         if (ring.x < box.x - 1 || ring.y < box.y - 1 || ring.x + ring.w > box.x + box.w + 1 || ring.y + ring.h > box.y + box.h + 1) {
           throw new Error(`${scene.id}-${i}: its ring is outside what its focus shows. Widen focus to take in the ring.`);
         }
-        out.push(pose(from + starts[i] + 2, ring, 0, t.radiusSmall), hide(from + starts[i] + lengths[i] + 6, pose(0, ring, 0, t.radiusSmall)));
+        // It lands on the control with the camera, which sets off before the line.
+        out.push(pose(from + starts[i] - CAMERA_LEAD + 6, ring, 0, t.radiusSmall), hide(from + starts[i] + lengths[i] + 6, pose(0, ring, 0, t.radiusSmall)));
       });
     }
     // Before the next scene, the frame comes back and folds into the mark.
@@ -131,7 +131,7 @@ const settle = (poses: Pose[]) => {
   return poses;
 };
 
-const allPoses = (stages: Stage[]) =>
+export const markPoses = (stages: Stage[]) =>
   settle(placed.flatMap(({scene, from, starts, lengths}, s) => posesOf(scene, from, starts, lengths, stages[s], placed[s + 1] ? placed[s + 1].from : undefined).sort((a, b) => a.at - b.at)));
 
 type State = Box & {r: number; fill: number; o: number};
@@ -142,9 +142,30 @@ const mix = (a: State, b: State, k: number): State => {
 };
 const travel = (frame: number) => spring({frame, fps: 30, config: {damping: 16, stiffness: 140, mass: 0.9}});
 
-export const Mark: React.FC<{stages: Stage[]}> = ({stages}) => {
+// The film's camera follows the mark, and leads it: it turns toward where the mark is going a little before the mark
+// sets off. Only the ground moves, so a hold is still a hold. It rests while the mark is hidden inside a stage.
+const CENTER = {x: 960, y: (TOP + BOTTOM) / 2};
+const FOLLOW = 0.07;
+const HEAD_START = 6;
+const pan = (frame: number) => spring({frame, fps: 30, config: {damping: 30, stiffness: 50, mass: 1.2}});
+export const follow = (poses: Pose[], frame: number) => {
+  const keys = poses.filter((p) => p.o > 0).map((p) => ({at: p.at - HEAD_START, x: (CENTER.x - (p.box.x + p.box.w / 2)) * FOLLOW, y: (CENTER.y - (p.box.y + p.box.h / 2)) * FOLLOW}));
+  if (!keys.length || frame < keys[0].at) return {x: keys[0]?.x ?? 0, y: keys[0]?.y ?? 0};
+  let from = keys[0];
+  let k = 0;
+  for (let i = 1; i < keys.length && keys[i].at <= frame; i++) {
+    if (i > 1) {
+      const q = pan(keys[i].at - keys[i - 1].at);
+      from = {at: 0, x: from.x + (keys[i - 1].x - from.x) * q, y: from.y + (keys[i - 1].y - from.y) * q};
+    }
+    k = i;
+  }
+  const q = k === 0 ? 1 : pan(frame - keys[k].at);
+  return {x: from.x + (keys[k].x - from.x) * q, y: from.y + (keys[k].y - from.y) * q};
+};
+
+export const Mark: React.FC<{poses: Pose[]}> = ({poses}) => {
   const frame = useCurrentFrame();
-  const [poses] = useState(() => allPoses(stages));
   if (!poses.length || frame < poses[0].at) return null;
   // Each move starts from wherever the last one had got to, so a quick second move never jumps.
   let from = of(poses[0]);

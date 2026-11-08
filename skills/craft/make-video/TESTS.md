@@ -646,3 +646,29 @@ what happens after", unreachable requester: a full clip with two `ring`s and two
 on the Report delay button on both ringed lines (`out/preview.png`). SKILL.md says nothing about the mark and the run
 needed nothing: it set `ring` as step 5 already asks. A `ring` moved outside its line's `focus` stops `preview.mjs`
 with "report-1: its ring is outside what its focus shows. Widen focus to take in the ring."
+
+## 3.8.0: a camera that leads, and a lattice behind the night look (2026-11-08)
+
+The two other moves onetake's one-dot film taught: a camera keyed ahead of its subject, because one that chases it gets
+outrun, and a faint lattice far behind, because "the dark ground gave the camera nothing to move against".
+
+**RED, read from the 3.7.0 code and its renders.** Every camera move started on its cue and took 24 frames (22 in a
+world): a recording zoomed to the control 0.8s after the line naming it began. In the agent's feature film on 3.7.0,
+the frame where "Find the sailing that is late, and press Report delay" starts still showed the whole board, and 12
+frames later the mark's ring sat to the left of the button it had already reached while the camera was still panning.
+The night ground was a flat fill with a drifting glow, so a move of the window had nothing to read against.
+
+**GREEN.**
+
+- One `LEAD` of 15 frames in `timing.ts`. Recordings, compares, the window's height inside a clip, and a world's camera
+  set off that long before their line or word; a world's things still change on the word. On the same film, the first
+  frame of that line is already on the button and the ring is locked on it 12 frames later.
+- `backdrop: 'lattice'` on the night look and the template's default tokens: dots every 48 px in the hairline colour
+  behind a vignette, over the glow. The lattice slides 7% of the way toward where the mark is going, setting off six
+  frames before the mark does, on a soft spring, and rests while the mark is hidden inside a stage. Measured on the
+  release film: 32 px (mod 48) across the title's full stop flying to the first timeline node.
+- Holds did not shorten, which they would if the lattice added motion the words do not cause: the feature film 5.2s,
+  tour 4.8s, branch 4.6s (4.5s before), all PASS. The four script test files pass.
+
+No agent run: SKILL.md gains no text and the inputs an agent writes are unchanged; the feature film above is that
+agent's own script and recordings, re-rendered.

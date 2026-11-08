@@ -1,6 +1,6 @@
 import {Video} from '@remotion/media';
 import {Easing, getStaticFiles, Img, interpolate, Sequence, staticFile, useCurrentFrame} from 'remotion';
-import {clipLength, Rect, Scene} from './timing';
+import {clipLength, LEAD, Rect, Scene} from './timing';
 
 // Recordings are driven at this CSS size; focus and ring rects use its pixels.
 const VIEW_W = 1600;
@@ -57,7 +57,7 @@ export const ClipScene: React.FC<{scene: Scene; starts: number[]; lengths: numbe
   let current = views[0];
   views.forEach((view, i) => {
     if (i === 0) return;
-    const start = Math.max(starts[i], (input[input.length - 1] ?? -1) + 1);
+    const start = Math.max(starts[i] - LEAD, (input[input.length - 1] ?? -1) + 1);
     input.push(start, start + MOVE);
     values.push(current, view);
     current = view;

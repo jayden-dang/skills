@@ -6,6 +6,8 @@ import words from './words.json';
 export const FPS = 30;
 // Neighbouring scenes overlap this long: the old one fades out, the window takes its new shape, the new one fades in.
 export const TRANSITION = 24;
+// A camera sets off this long before the line or word that names where it goes, so it is there as the words land.
+export const LEAD = 15;
 // A rested line in a concept film: the picture stands this long after the words, while the viewer thinks.
 export const REST = 75;
 

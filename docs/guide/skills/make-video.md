@@ -19,6 +19,7 @@
 | A branch or range | What changes for reviewers: the base and the branch side by side, zoomed to the same place | The branch head and the merge base, each from its own worktree |
 | A version | What is new for people who use the product: a timeline of the changes, then one scene per change | The tag, and the previous tag for a before and after |
 | A spec folder | Why it is built this way: a problem, an idea, one example followed through what could go wrong | The commit holding the spec, with no app and no footage |
+| A spec folder, technical cut | For whoever builds or reviews it: story by story, what each part does, its design, and each decision beside what it rejected | The commit holding the spec, with no app and no footage |
 | A topic to learn | One idea taught: a protocol, an algorithm, a data structure, in this repo or not | The sources that own it, found by `research`, and Manim |
 | How it is built | A project, a module or a change the way an engineer reads it: a map that zooms in, one request end to end, where the code lives, why, the design system's own tokens, how to change it safely | The commit, its ADRs and design docs |
 
@@ -28,11 +29,13 @@ The voice comes through [Vibi](https://vibi.pro/docs), with no other engine, so 
 
 ## A film of a spec
 
-A spec film is what `/shape #N --auto --video` puts on its spec sheet, and you can ask for one directly. It runs 120 seconds at most. Every frame says it is planned and not built, and watching it approves nothing.
+A spec has two films. The technical cut is what `/shape #N --auto --video` puts on its spec sheet: story by story, in the order `requirements.md` gives them, each with what it does on a running example, the design that serves it (a call path, a type, a table of answers) and a `choice` scene for every decision in `design.md`, set beside what it rejected and why. It leaves build order and task counts to the agents, never goes back to an earlier story, and runs up to five minutes. Its recipe is `technical.md`.
+
+The explainer is the short one you ask for directly. It runs 120 seconds at most. Every frame says it is planned and not built, and watching it approves nothing.
 
 It explains and does not walk the spec. It opens on what goes wrong today, follows one named example, and takes each "but what if" to the rule that answers it. Films made by following the spec's files gave a reason in 0 to 9% of their lines; these give one in 42 to 64%. Everything happens in one `world` scene, where things stay on screen and change on the word that names the change, with a camera. `ears`, `code` and `table` scenes hold exact spec text when the point needs it.
 
-`check_video.py` fails a film with no `world`, anything on screen cut by the camera, a line that changes nothing or runs more than 9 words (14 in Vietnamese) on one state, a hold over 4.5 seconds, fewer than a third of its lines giving a reason, an ID the spec does not define, a reworded rule or code line, footage, or more than one bullet scene. It does not require every requirement: it writes the ones the film leaves out to `out/uncited.json`, and the spec sheet says what each of them asks. The recipe is `explainer.md`. A built feature can use the same recipe, with real footage for what a person sees and a `world` for what no screen shows.
+`check_video.py` fails a film with no `world`, anything on screen cut by the camera, a line that changes nothing or runs more than 9 words (14 in Vietnamese) on one state, a hold over 4.5 seconds, fewer than a third of its lines giving a reason, an ID the spec does not define, a reworded rule or code line, a world held on one view for more than 5 lines, footage, or more than one bullet scene. It does not require every requirement: it writes the ones the film leaves out to `out/uncited.json`, and the spec sheet says what each of them asks. The recipe is `explainer.md`. A built feature can use the same recipe, with real footage for what a person sees and a `world` for what no screen shows.
 
 ## A film that teaches a concept
 

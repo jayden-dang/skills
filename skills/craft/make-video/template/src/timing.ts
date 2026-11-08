@@ -20,7 +20,7 @@ export type WorldChange = {set?: Record<string, Partial<WorldObject>>; arrows?: 
 export type Beat = {text: string; spoken?: string; ref: string; rest?: boolean; side?: 'before' | 'after'; run?: string; clip?: string; rate?: number; focus?: Rect; ring?: Rect; mark?: number[]; world?: WorldChange & {then?: (WorldChange & {at: string})[]}};
 export type Scene = {
   id: string;
-  kind: 'title' | 'points' | 'flow' | 'clip' | 'ears' | 'sequence' | 'code' | 'table' | 'world' | 'manim' | 'compare' | 'stat' | 'timeline' | 'tree' | 'tokens' | 'terminal' | 'chart';
+  kind: 'title' | 'points' | 'flow' | 'clip' | 'ears' | 'sequence' | 'code' | 'table' | 'choice' | 'world' | 'manim' | 'compare' | 'stat' | 'timeline' | 'tree' | 'tokens' | 'terminal' | 'chart';
   title: string;
   subtitle?: string;
   staged?: string;
@@ -33,6 +33,8 @@ export type Scene = {
   series?: string[];
   groups?: {label: string; values: string[]}[];
   points?: string[];
+  options?: {label: string; why: string; chosen?: boolean}[];
+  cost?: string;
   sources?: string[];
   target?: string;
   note?: string;
@@ -70,6 +72,7 @@ const PACE: Record<Scene['kind'], {head: number; gap: number; tail: number}> = {
   sequence: {head: 18, gap: 8, tail: 20},
   code: {head: 18, gap: 8, tail: 20},
   table: {head: 18, gap: 8, tail: 20},
+  choice: {head: 18, gap: 10, tail: 28},
   world: {head: 18, gap: 10, tail: 30},
   manim: {head: 18, gap: 10, tail: 30},
   compare: {head: 8, gap: 8, tail: 18},

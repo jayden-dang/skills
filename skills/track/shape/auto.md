@@ -113,8 +113,8 @@ read, so the word meant nothing when they opened them.
    rounds in all, and the advisor never runs twice. A real run put ten audit findings on its page instead;
    its operator's whole answer was "fix the audit findings", then "approve", with 32 choices untouched.
    *Done when: `RUN/final-review.md` has an outcome per item and every spec file is committed.*
-9. **The film and the sheet, on the closed spec.** With `--video`, REQUIRED SUB-SKILL: use `make-video` on the spec
-   folder at `HEAD` in `WT`, narrated in `LANG`, with `--project-style` passed on if the command had it, the film at `RUN/film.mp4`. Before `voice.py` runs, send `interpret` the path of
+9. **The film and the sheet, on the closed spec.** With `--video`, REQUIRED SUB-SKILL: use `make-video` for the technical
+   film of the spec folder (`cut: technical`: story by story, its design and why) at `HEAD` in `WT`, narrated in `LANG`, with `--project-style` passed on if the command had it, the film at `RUN/film.mp4`. Before `voice.py` runs, send `interpret` the path of
    `src/script.json` to read each line against the spec, and fix what it finds: one script said a delete removed a whole course,
    and no check caught it. A refused voice call, or no `PASS` after 3 renders, ends the film and not the run.
    Then read `spec-sheet.md` beside this file and write `RUN/sheet.html` in `LANG`, with or without a film.

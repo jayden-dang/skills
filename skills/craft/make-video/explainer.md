@@ -74,7 +74,7 @@ Draw it so that it reads at a glance. Each rule here answers something a contact
 
 - List containers first and what moves last: `objects` order is depth, and a passenger moved onto a later ferry vanished behind it.
 - Set `head: true` on a container, or what it holds sits on its name, and leave its top 190 for the name.
-- Put parts far apart, `x` past 2000, and move the camera between them. Keep every label at 30 or larger at the widest view of its part.
+- Put parts far apart, `x` past 2000, and move the camera between them, within 5 lines: two films held one view for 19 lines, and the check fails more than 5. Keep every label at 30 or larger at the widest view of its part.
 - Place things so an arrow crosses nothing: it leaves the side of its box that faces its target.
 - Give a route, a type or a code name as a `code` object, in the spec's own characters.
 

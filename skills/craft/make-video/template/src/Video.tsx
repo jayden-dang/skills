@@ -6,7 +6,7 @@ import {fit} from './fit';
 import {WithFonts} from './fonts';
 import {clamp, enter, FlowScene, graphicSize, PointsScene, TitleScene} from './GraphicScenes';
 import {Backdrop, cutShape, Decode, Edge, glide, rise, Roll} from './Look';
-import {CodeScene, EarsScene, SequenceScene, SPEC_KINDS, specSize, TableScene} from './SpecScenes';
+import {ChoiceScene, CodeScene, EarsScene, SequenceScene, SPEC_KINDS, specSize, TableScene} from './SpecScenes';
 import {Beat, filmName, LEAD, placed, planned, Scene, SoundEvent, totalFrames, TRANSITION, wordStarts, worldSteps} from './timing';
 import {worldSize, WorldScene} from './WorldScene';
 import {MANIM_SIZE, ManimScene} from './ManimScene';
@@ -286,6 +286,7 @@ const Scenes: React.FC = () => {
                     {scene.kind === 'sequence' ? <SequenceScene {...props} /> : null}
                     {scene.kind === 'code' ? <CodeScene {...props} /> : null}
                     {scene.kind === 'table' ? <TableScene {...props} /> : null}
+                    {scene.kind === 'choice' ? <ChoiceScene {...props} /> : null}
                     {scene.kind === 'world' ? <WorldScene {...props} /> : null}
                     {scene.kind === 'manim' ? <ManimScene scene={scene} /> : null}
                     {scene.kind === 'compare' ? <CompareScene {...props} /> : null}

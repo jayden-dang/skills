@@ -672,3 +672,39 @@ The night ground was a flat fill with a drifting glow, so a move of the window h
 
 No agent run: SKILL.md gains no text and the inputs an agent writes are unchanged; the feature film above is that
 agent's own script and recordings, re-rendered.
+
+## 3.9.0: the technical cut of a spec, and a world that moves (2026-11-08)
+
+The owner wants a second film of a spec for the people who will build it and review it: story by story, what each part
+does, its design and why it was chosen, without build order or task counts, up to five minutes, and the film `/shape
+--auto --video` makes. They also called the spec films' contact sheets monotonous.
+
+**RED on 3.8.0**, rebooking fixture (`.skills/SHAPEVIDEO/prep.sh`), the tech lead's request for exactly that film:
+
+| Model | What it made |
+|---|---|
+| Sonnet | one `world` of 21 lines, one camera move, 118.8s; each decision a note box ("no table, no database"); the call path, states, `Offer` type and refusals spoken, never shown |
+| Haiku | one `world` of 19 lines, no camera move, 113.8s; the state machine and both seams cut "to fit the 120 s ceiling"; stories interleaved four times; closing line cited `tasks.md:6` ("the five tasks") |
+
+Wrong shape, so a recipe (`technical.md`), a REQUIRED marker (`source.cut: "technical"`), one new scene (`choice`) and
+checks keyed on the cut, each failing a RED script: a line citing `tasks.md`; a story after a later one; fewer than three
+kinds of scene besides titles; fewer `choice` scenes than Decisions bullets in `design.md`; and 300s for the cut. A world
+held on one view for more than 5 lines fails in every spec film: both RED films held 19, and the one explainer script the
+owner approved (`.skills/SHAPEVIDEO/explainer-script.json`) holds 5 at most. 21 new tests, all failing first.
+
+**GREEN on 3.9.0**, fresh fixtures, the same request:
+
+| Model | Kinds besides titles | `choice` of decisions | Longest one view | Order | `tasks.md` | Length | Uncited |
+|---|---|---|---|---|---|---|---|
+| Sonnet | world, sequence, code, choice, table | 3 of 3 | 4 lines | in order | none | 246.0s | 1 of 14 (a guard) |
+| Haiku | world, sequence, code, choice, table | 3 of 3 | 4 lines | in order | none | 226.8s | 0 of 14 |
+
+Both PASS, contact sheets read: the call path drawn step by step, the states as a world with arrows, the `Offer` type
+with the line in question lit, the refusals as a table lit row by row, each decision beside what it rejected. Both split
+the world into one scene per part rather than one long world, which the check's message allows.
+
+Left as they are: Sonnet gave two reasons in its own words and said so in its report ("so a repeat can be matched"),
+which `explainer.md` already rules out; it showed an invented unmasked phone for a moment before masking it, and flagged
+it. Some world scenes leave much of the frame empty around small cards. None of the three is new with this cut.
+
+`/shape` 1.12.0 asks for this cut under `--video`.

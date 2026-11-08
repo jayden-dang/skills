@@ -238,11 +238,72 @@ export const TableScene: React.FC<Props> = ({scene, starts, lengths}) => {
   );
 };
 
-export const SPEC_KINDS = ['ears', 'sequence', 'code', 'table'];
+// A decision beside what it rejected: the options arrive through the first line, the verdict lands on the second.
+const CHOICE_GAP = 32;
+export const choiceMetrics = (scene: Scene) => {
+  const {title, top} = titled(scene);
+  const options = scene.options ?? [];
+  const n = Math.max(1, options.length);
+  const cardW = (INNER - CHOICE_GAP * (n - 1)) / n;
+  for (const [size, why] of [[44, 30], [40, 28], [36, 26], [32, 24]]) {
+    const labels = options.map((o) => linesOf(o.label, size, cardW - 64, headFace));
+    const whys = options.map((o) => linesOf(o.why, why, cardW - 64));
+    if (![...labels, ...whys].every(Number.isFinite) || Math.max(...labels) > 2 || Math.max(...whys) > 3) continue;
+    const cardH = 40 + 44 + 18 + Math.max(...labels) * size * 1.12 + 18 + Math.max(...whys) * why * 1.28 + 40;
+    const cost = scene.cost ? fit(`${scene.id}-cost`, scene.cost, [30, 28, 26], INNER - 48, 2) : null;
+    const costH = cost ? 28 + cost.lines * cost.size * 1.28 + 32 : 0;
+    const h = top + cardH + costH + 56;
+    if (h > MAX_H) continue;
+    const cards = options.map((_, i) => ({x: PAD + i * (cardW + CHOICE_GAP), y: top, w: cardW, h: cardH}));
+    return {w: W, h, title, top, size, why, cards, cost, costTop: top + cardH + 28};
+  }
+  throw new Error(`${scene.id}: these options do not fit. Shorten their labels or reasons.`);
+};
+
+export const ChoiceScene: React.FC<Props> = ({scene, starts, lengths}) => {
+  const frame = useCurrentFrame();
+  const {title, size, why, cards, cost, costTop} = choiceMetrics(scene);
+  const options = scene.options ?? [];
+  const verdict = enter(frame, (starts[1] ?? starts[0] + lengths[0]) + 4, 18);
+  const costAt = enter(frame, (starts[2] ?? starts[1] ?? 0) + 10, 18);
+  return (
+    <div style={{position: 'absolute', inset: 0}}>
+      <Title scene={scene} size={title.size} />
+      {options.map((o, i) => {
+        const box = cards[i];
+        const shown = enter(frame, starts[0] + Math.round((lengths[0] * i) / options.length), 16);
+        const lit = o.chosen ? verdict : 0;
+        const out = o.chosen ? 0 : verdict;
+        return (
+          <div key={i} style={{position: 'absolute', left: box.x, top: box.y, width: box.w, height: box.h, boxSizing: 'border-box', padding: '40px 32px', borderRadius: t.radiusSmall, background: t.panelSoft, border: `${Math.max(t.borderWidth, 1) + lit}px solid ${lit > 0.5 ? t.accent : t.panelBorder}`, opacity: shown * (1 - 0.55 * out), translate: `0px ${(1 - shown) * 24}px`}}>
+            <div style={{height: 44, display: 'flex', alignItems: 'center'}}>
+              <div style={{width: 40, height: 40, borderRadius: 40, display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: t.fontMono, fontSize: 24, fontWeight: 600, border: `2px solid ${lit > 0.5 ? t.accent : t.muted}`, color: lit > 0.5 ? t.accent : t.muted, background: lit > 0.5 ? wash(18) : 'transparent'}}>
+                {verdict < 0.5 ? String.fromCharCode(65 + i) : o.chosen ? '✓' : '✕'}
+              </div>
+            </div>
+            <div style={{...head, marginTop: 18, fontSize: size, lineHeight: 1.12, color: t.ink}}>
+              <span style={{position: 'relative'}}>
+                {o.label}
+                {!o.chosen ? <span style={{position: 'absolute', left: 0, top: '55%', height: 3, width: `${out * 100}%`, background: t.muted}} /> : null}
+              </span>
+            </div>
+            <div style={{marginTop: 18, fontSize: why, lineHeight: 1.28, color: t.muted}}>{o.why}</div>
+          </div>
+        );
+      })}
+      {cost ? (
+        <div style={{position: 'absolute', left: PAD, right: PAD, top: costTop, padding: '14px 24px', boxSizing: 'border-box', borderLeft: `4px solid ${t.warn}`, background: t.panelSoft, fontSize: cost.size, lineHeight: 1.28, color: t.ink, opacity: costAt, translate: `${(1 - costAt) * 20}px 0px`}}>{scene.cost}</div>
+      ) : null}
+    </div>
+  );
+};
+
+export const SPEC_KINDS = ['ears', 'sequence', 'code', 'table', 'choice'];
 
 export const specSize = (scene: Scene) => {
   if (scene.kind === 'ears') return earsMetrics(scene);
   if (scene.kind === 'sequence') return sequenceMetrics(scene);
   if (scene.kind === 'code') return codeMetrics(scene);
+  if (scene.kind === 'choice') return choiceMetrics(scene);
   return tableMetrics(scene);
 };

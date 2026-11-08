@@ -344,3 +344,13 @@ RED: 0 of 7 runs made a list (/idea Sonnet+Haiku, /shape Sonnet+Haiku, /shape --
 GREEN: plain /shape, Sonnet 3 items and Haiku 9, by the 4th and 3rd tool calls. --auto: the first text sat after the line sending
 --auto to auto.md and was never read (0 of 2); moved above it, Haiku listed all 11 steps, Sonnet listed 11 on a second run and 1
 on the first, which stopped at step 1 for the missing tmux.
+
+## 1.12.0 — `--video` makes the technical film (2026-11-08)
+
+The owner wants the film on a closed spec to serve the people who will build it and review it: story by story, the design
+and why it was chosen, without build order or task counts, and the short explainer kept as a second film made on request.
+Step 9 asked `make-video` for a film "on the spec folder", which makes the explainer. Two make-video 3.8.0 runs given
+the technical request on the rebooking fixture still made an explainer (one world, 19 and 21 lines on one view, decisions as
+note boxes, one closing on "the five tasks"); the evidence and the new `cut: technical` are in make-video's `TESTS.md`,
+3.9.0. Step 9 now names the technical cut. No `/shape` run was made for this wording; the film it asks for is measured
+on make-video's own GREEN.

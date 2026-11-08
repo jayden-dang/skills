@@ -709,3 +709,127 @@ class Holds(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+TECH_DESIGN = """# Design
+## Decisions
+
+- **Offers live in a new `offers.js`, in memory.** Rejected: a table, because the board has no database.
+- **Holds expire by a sweep every 60 seconds.** Rejected: one timer per offer, which is lost on restart.
+
+## Architecture
+"""
+
+
+def choice(cid, ref="REBOOK-1.1"):
+    return {"id": cid, "kind": "choice", "title": "Where offers live", "options": [
+        {"label": "In memory", "why": "no database to add", "chosen": True},
+        {"label": "A new table", "why": "needs a database"}],
+        "beats": [{"text": "Offers could live in memory or in a table.", "ref": ref},
+                  {"text": "Memory, because the board has no database.", "ref": ref}]}
+
+
+def technical(**over):
+    s = spec_script()
+    s["source"]["cut"] = "technical"
+    s["scenes"] = [
+        {"id": "world", "kind": "world", "title": "T", "beats": beats("Lan has a seat, so she boards.", "But it is cancelled.")},
+        choice("where"),
+        {"id": "flow", "kind": "sequence", "title": "Raising an offer", "beats": [{"text": "The server asks offers for each booking.", "ref": "REBOOK-1.1"}]},
+        choice("sweep", "REBOOK-2.1"),
+    ]
+    s.update(over)
+    return s
+
+
+class TechnicalFilm(unittest.TestCase):
+    def test_story_by_story_with_its_decisions_has_no_faults(self):
+        self.assertEqual(cv.judge_technical(technical(), TECH_DESIGN), [])
+
+    def test_a_line_citing_the_task_plan_is_a_fault(self):
+        s = technical()
+        s["scenes"][2]["beats"][0]["ref"] = "docs/specs/rebooking/tasks.md:6"
+        self.assertIn("flow-0: cites tasks.md; the plan is for the agents who build it, not for this film", cv.judge_technical(s, TECH_DESIGN))
+
+    def test_going_back_to_an_earlier_story_is_a_fault(self):
+        s = technical()
+        s["scenes"][2]["beats"][0]["ref"] = "REBOOK-2.1, REBOOK-1.3"
+        s["scenes"][3]["beats"][0]["ref"] = "REBOOK-1.2"
+        faults = cv.judge_technical(s, TECH_DESIGN)
+        self.assertIn("sweep-0: back to story 1 after story 2; take the stories in order", faults)
+
+    def test_a_line_naming_two_stories_counts_from_its_first(self):
+        s = technical()
+        s["scenes"][0]["beats"][1]["ref"] = "REBOOK-2.1, REBOOK-1.3"
+        self.assertIn("world-1: back to story 1 after story 2; take the stories in order", cv.judge_technical(s, TECH_DESIGN))
+
+    def test_one_picture_for_the_whole_film_is_a_fault(self):
+        s = technical()
+        s["scenes"] = [s["scenes"][0], {"id": "end", "kind": "title", "title": "Read", "beats": beats("Read the spec.")}]
+        self.assertIn("1 kind of scene besides titles; show each story's design in a sequence, code, table or choice scene", cv.judge_technical(s, TECH_DESIGN))
+
+    def test_a_world_held_on_one_view_too_long_is_a_fault(self):
+        s = technical()
+        s["scenes"][0]["beats"] = beats(*[f"Line {n}, so on." for n in range(6)])
+        self.assertIn("world: 6 lines on one view; move the camera within 5 lines, or give the next part its own scene", cv.judge_views(s))
+
+    def test_a_camera_move_resets_the_run(self):
+        s = technical()
+        s["scenes"][0]["beats"] = beats(*[f"Line {n}, so on." for n in range(6)])
+        s["scenes"][0]["beats"][3]["world"] = {"camera": {"x": 0, "y": 0, "w": 900, "h": 420}}
+        self.assertEqual(cv.judge_views(s), [])
+
+    def test_a_camera_change_inside_a_line_resets_the_run(self):
+        s = technical()
+        s["scenes"][0]["beats"] = beats(*[f"Line {n}, so on." for n in range(6)])
+        s["scenes"][0]["beats"][2]["world"] = {"then": [{"at": "Line", "camera": {"x": 900, "y": 0, "w": 900, "h": 420}}]}
+        self.assertEqual(cv.judge_views(s), [])
+
+    def test_a_decision_with_no_choice_scene_is_a_fault(self):
+        s = technical()
+        s["scenes"] = [sc for sc in s["scenes"] if sc["id"] != "sweep"]
+        self.assertIn("1 choice scene for 2 decisions in design.md; show each decision beside what it rejected", cv.judge_technical(s, TECH_DESIGN))
+
+    def test_a_design_with_no_decisions_needs_no_choice(self):
+        s = technical()
+        s["scenes"] = [sc for sc in s["scenes"] if sc["kind"] != "choice"] + [{"id": "c", "kind": "code", "title": "Offer", "beats": beats("An offer holds a token, so no account is needed.")}]
+        self.assertEqual(cv.judge_technical(s, "# Design\n## Architecture\n"), [])
+
+    def test_an_explainer_is_not_judged_as_technical(self):
+        s = spec_script()
+        s["scenes"][0]["beats"] = beats(*[f"Line {n}, so on." for n in range(4)])
+        self.assertEqual(cv.judge_technical(s, TECH_DESIGN), [])
+
+    def test_an_explainer_held_on_one_view_too_long_is_a_fault_too(self):
+        s = spec_script()
+        s["scenes"][0]["beats"] = beats(*[f"Line {n}, so on." for n in range(6)])
+        self.assertIn("world: 6 lines on one view; move the camera within 5 lines, or give the next part its own scene", cv.judge_spec(s, REQUIREMENTS))
+
+    def test_a_technical_film_may_run_five_minutes(self):
+        self.assertEqual(cv.spec_limit(technical()), 300)
+        self.assertEqual(cv.spec_limit(spec_script()), 120)
+
+    def test_an_unknown_cut_is_a_fault(self):
+        s = technical()
+        s["source"]["cut"] = "deep"
+        self.assertIn("source.cut is technical, or left out for the explainer", cv.validate_script(s))
+
+
+class ChoiceScene(unittest.TestCase):
+    def test_a_choice_with_one_chosen_option_passes(self):
+        self.assertEqual(cv.judge_kinds({"scenes": [choice("c")]}), [])
+
+    def test_a_choice_with_no_chosen_option_is_a_fault(self):
+        c = choice("c")
+        c["options"][0]["chosen"] = False
+        self.assertIn("c: a choice marks exactly one option chosen", cv.judge_kinds({"scenes": [c]}))
+
+    def test_a_choice_needs_something_it_rejected(self):
+        c = choice("c")
+        c["options"] = c["options"][:1]
+        self.assertIn("c: a choice holds 2 or 3 options", cv.judge_kinds({"scenes": [c]}))
+
+    def test_a_choice_needs_a_line_for_the_options_and_one_for_the_verdict(self):
+        c = choice("c")
+        c["beats"] = c["beats"][:1]
+        self.assertIn("c: a choice needs a line that sets out the options and a line that gives the verdict", cv.judge_kinds({"scenes": [c]}))

@@ -27,6 +27,8 @@ MAX_SILENCE = 3.0
 MAX_REST = 8.0  # A rested line in a concept film lets its picture stand while the viewer thinks
 MIN_CLIP_WIDTH = 1600
 SPEC_MAX = 120
+TECHNICAL_MAX = 300  # The technical cut takes the spec story by story; the owner set five minutes, as for a concept
+MAX_ONE_VIEW = 5  # Lines a spec film's world may hold on one camera: two films held one view for 19 lines; the approved explainer's longest was 5
 CONCEPT_MAX = 300  # Guo, Kim and Rubin 2014: engagement falls past about six minutes
 WORLD_W = 1800
 WORLD_H = 840
@@ -46,6 +48,8 @@ def validate_script(s):
     source = s.get("source") or {}
     if source.get("kind") not in KINDS:
         faults.append("source.kind must be feature, pr, release, spec, concept or tour")
+    if source.get("cut") not in (None, "technical"):
+        faults.append("source.cut is technical, or left out for the explainer")
     if source.get("kind") == "spec" and not source.get("spec"):
         faults.append("source.spec is missing")
     if not source.get("ref") and source.get("kind") != "concept":
@@ -88,7 +92,69 @@ def judge_spec(s, requirements):
         faults.append(f"{kinds.count('points')} points scenes: a spec film has at most 1")
     if "world" not in kinds:
         faults.append("no world scene")
-    return faults + judge_reasons(s)
+    return faults + judge_views(s) + judge_reasons(s)
+
+
+def is_technical(s):
+    return (s.get("source") or {}).get("cut") == "technical"
+
+
+def spec_limit(s):
+    return TECHNICAL_MAX if is_technical(s) else SPEC_MAX
+
+
+def decisions(design):
+    """The bullets under design.md's Decisions heading: each is a choice the film shows beside what it rejected."""
+    m = re.search(r"^## Decisions\s*$(.*?)(?=^## |\Z)", design or "", re.M | re.S)
+    return re.findall(r"^- \*\*", m.group(1), re.M) if m else []
+
+
+def judge_views(s):
+    """A spec film's world moves its camera at least every few lines: one view held through a film is a slideshow."""
+    faults = []
+    for scene in s.get("scenes", []):
+        if scene.get("kind") != "world":
+            continue
+        run, longest, camera = 0, 0, None
+        for beat in scene.get("beats", []):
+            change = beat.get("world") or {}
+            moved = False
+            for step in (change, *(change.get("then") or [])):
+                if step.get("camera") and step["camera"] != camera:
+                    camera, moved = step["camera"], True
+            run = 1 if moved else run + 1
+            longest = max(longest, run)
+        if longest > MAX_ONE_VIEW:
+            faults.append(f"{scene.get('id')}: {longest} lines on one view; move the camera within {MAX_ONE_VIEW} lines, or give the next part its own scene")
+    return faults
+
+
+def judge_technical(s, design):
+    """The technical cut: story by story, each design shown and each decision set beside what it rejected."""
+    if not is_technical(s):
+        return []
+    faults = []
+    scenes = s.get("scenes", [])
+    furthest = 0
+    for scene in scenes:
+        sid = scene.get("id")
+        for i, beat in enumerate(scene.get("beats", [])):
+            ref = beat.get("ref", "")
+            if re.search(r"(^|/)tasks\.md\b", ref):
+                faults.append(f"{sid}-{i}: cites tasks.md; the plan is for the agents who build it, not for this film")
+            for story in (int(n) for n in re.findall(r"[A-Z][A-Z0-9]*-(\d+)\.\d+", ref)):
+                if story < furthest:
+                    faults.append(f"{sid}-{i}: back to story {story} after story {furthest}; take the stories in order")
+                    break
+                furthest = story
+    kinds = {scene.get("kind") for scene in scenes} - {"title"}
+    if len(kinds) < 3:
+        faults.append(f"{len(kinds)} kind of scene besides titles; show each story's design in a sequence, code, table or choice scene")
+    wanted = len(decisions(design))
+    chosen = sum(1 for scene in scenes if scene.get("kind") == "choice")
+    if chosen < wanted:
+        faults.append(f"{chosen} choice scene for {wanted} decisions in design.md; show each decision beside what it rejected")
+    return faults
 
 
 def judge_reasons(s):
@@ -138,6 +204,14 @@ def judge_kinds(s):
             for stat in stats:
                 if len(str(stat.get("value", ""))) > 8:
                     faults.append(f'{sid}: stat value "{stat.get("value")}" is over 8 characters')
+        if kind == "choice":
+            options = scene.get("options") or []
+            if not 2 <= len(options) <= 3:
+                faults.append(f"{sid}: a choice holds 2 or 3 options")
+            if sum(1 for o in options if o.get("chosen")) != 1:
+                faults.append(f"{sid}: a choice marks exactly one option chosen")
+            if len(scene.get("beats", [])) < 2:
+                faults.append(f"{sid}: a choice needs a line that sets out the options and a line that gives the verdict")
         if kind == "timeline" and not 2 <= len(scene.get("events") or []) <= 6:
             faults.append(f"{sid}: a timeline holds 2 to 6 events")
         aside = scene.get("aside")
@@ -558,7 +632,7 @@ def script_faults(s, repo):
                 held = run("git", "-C", repo, "show", f"{source.get('ref')}:{path}")
                 return held.stdout if held.returncode == 0 else None
 
-            faults += judge_spec(s, text) + judge_quotes(s, read)
+            faults += judge_spec(s, text) + judge_quotes(s, read) + judge_technical(s, read(f"{source['spec']}/design.md"))
     return faults
 
 
@@ -587,7 +661,7 @@ def main(argv):
         print(json.dumps({**{k: m[k] for k in ("width", "height", "duration", "loudness", "peak", "silences")}, "longest_still": round(max((length for start, length in m["freezes"] if start + length < m["duration"] - CLOSING), default=0), 1)}))
         faults += judge_media(m, MAX_SPEC_STILL if text is not None or concept else MAX_STILL, rest_spans(project)) + judge_manim_renders(s, project)
         if text is not None:
-            faults += judge_length(m["duration"])
+            faults += judge_length(m["duration"], spec_limit(s))
         if concept:
             faults += judge_length(m["duration"], CONCEPT_MAX)
         if sheet:

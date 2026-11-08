@@ -2,6 +2,7 @@ import {spring, useCurrentFrame} from 'remotion';
 import {compareSize, GAP, LABEL_H, LINE_W, PANE_H, PANE_W, STAT_W, statSize} from './ChangeScenes';
 import {fitOf, viewsOf} from './ClipScene';
 import {fit, headFace, widthOf, wrap} from './fit';
+import {choiceMetrics} from './SpecScenes';
 import {pointAt, pointsMetrics, titleMetrics} from './GraphicScenes';
 import {LEAD as CAMERA_LEAD, placed, Scene} from './timing';
 import {t} from './tokens';
@@ -31,7 +32,7 @@ const hide = (at: number, p: Pose): Pose => ({...p, at, o: 0});
 const headOf = (scene: Scene, w: number) => {
   if (scene.kind === 'terminal') return {left: 56, top: 40, size: 34};
   if (scene.kind === 'chart') return {left: 56, top: 44, size: fit(scene.id, scene.title, [52, 44], w - 112, 1, headFace).size};
-  if (['ears', 'sequence', 'code', 'table'].includes(scene.kind)) return {left: 72, top: 52, size: fit(scene.id, scene.title, [64, 54], w - 144, 1, headFace).size};
+  if (['ears', 'sequence', 'code', 'table', 'choice'].includes(scene.kind)) return {left: 72, top: 52, size: fit(scene.id, scene.title, [64, 54], w - 144, 1, headFace).size};
   return {left: 72, top: 56, size: fit(scene.id, scene.title, [56, 48], w - 144, 2, headFace).size};
 };
 
@@ -118,7 +119,15 @@ const posesOf = (scene: Scene, from: number, starts: number[], lengths: number[]
     return out;
   }
   const head = headOf(scene, size.w);
-  return [pose(arrive, at(head.left / 2, head.top + head.size * 0.6, 16))];
+  const bullet = pose(arrive, at(head.left / 2, head.top + head.size * 0.6, 16));
+  if (kind === 'choice') {
+    // On the verdict it leaves the title and frames the option chosen.
+    const card = choiceMetrics(scene).cards[(scene.options ?? []).findIndex((o) => o.chosen)];
+    if (!card || starts.length < 2) return [bullet];
+    const box = {x: ox + (card.x - 10) * k, y: oy + (card.y - 10) * k, w: (card.w + 20) * k, h: (card.h + 20) * k};
+    return [bullet, pose(from + starts[1], box, 0, t.radiusSmall + 8)];
+  }
+  return [bullet];
 };
 
 const settle = (poses: Pose[]) => {

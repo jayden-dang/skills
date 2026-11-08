@@ -1,6 +1,6 @@
 ---
 name: execute-common
-version: 3.6.0
+version: 3.7.0
 description: Use when build-in-waves, build-by-story, or build-inline loads the shared controller recipe — produces an In-progress catalog stamp, a runtime-bound session snapshot, lease state, ledger state, and a revision-bound close receipt.
 ---
 
@@ -92,10 +92,9 @@ uncommitted spec dirt for the feature, and workspace choice is clear.*
 
 Before the first dispatch (inline route: before the first production edit),
 read `runtime-binding.md` beside this file and follow it exactly. It defines
-the `.skills/<CODE>/execution-session.json` schema (schema_version, harness,
-provider, model, resume/fork/worktree support, cache_control, token_telemetry,
-pricing_policy, effective_concurrency, rotations), the four lease-rotation
-triggers, the pricing-policy fallback, and the concurrency-degradation rule.
+the `.skills/<CODE>/execution-session.json` schema (harness, model, resume and
+worktree support, effective concurrency and its reason, rotations), when a
+role is resumed or started fresh, and the concurrency-degradation rule.
 
 *Done when: the runtime snapshot exists before dispatch, every unavailable
 capability is explicit, and the first effective concurrency/lease decision is

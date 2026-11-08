@@ -85,7 +85,7 @@
     "prompt": "Start an inline run for an approved tasks.md under a non-default harness.",
     "assertions": [
       "runtime binding runs before the first production edit",
-      "execution-session.json records the active harness/provider/model and pricing policy",
+      "execution-session.json records the active harness, model and effective concurrency",
       "the task capsule references the canonical Global Constraints path and hash"
     ]
   },

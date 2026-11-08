@@ -86,3 +86,7 @@ should-not-fire pure-logic case). Steps 8–11 renumbered; evidence bundle
 Step 10 now points to `execute-common/task-lifecycle.md` step 7's "tick the plan" after the
 ledger line, so inline builds leave the same tracked record as subagent builds. Evidence lives
 in execute-common's TESTS.md (3.2.0). No separate inline run was made.
+
+## v1.5.1 — runtime sidecar slimmed (2026-11-08)
+
+The lease preflight now points at **Resume or start fresh** in `execute-common/runtime-binding.md`; the price-safety step and its eval are gone. Evidence and ruling: `execute-common/TESTS.md` § v3.7.0 (five klynt sidecars, pricing/cache/telemetry always `unknown`). No baseline re-run: a deleted step.

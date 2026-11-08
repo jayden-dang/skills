@@ -1,6 +1,6 @@
 ---
 name: build-in-waves
-version: 2.6.0
+version: 2.7.0
 description: Use when an approved tasks.md has Execution-mode continuous and needs
   dependency-aware subagent execution with serial or parallel lanes, bounded
   worker/reviewer leases, dual-verdict task review, and a whole-branch receipt.
@@ -90,19 +90,9 @@ supplies the task ID, lane, current base revision, brief path, report path,
 review package path, and active lease IDs; the lifecycle owns dispatch, status,
 review, fix, evidence, and ledger rules.
 
-Before each worker or reviewer resume, run the lease preflight from
-`../execute-common/SKILL.md`:
-
-1. **Semantic boundary:** rotate at the end of the bounded unit or when the next
-   task changes the role's required context materially.
-2. **Context safety:** estimate system instructions, tools, retained history,
-   capsule, task delta, and output reserve against the active context limit.
-3. **Price safety:** apply the dated provider/model `pricing_policy`. If the
-   projected request crosses an all-token cliff, or continuing costs materially
-   more than a fresh role context, rotate before dispatch.
-4. **Hard rotation:** rotate after compaction, broad scope/invariant change,
-   harness change, or first context-confusion signal. Record the reason and
-   preserve continuity through the capsule and ledger.
+Before each worker or reviewer resume, apply **Resume or start fresh** from
+`../execute-common/runtime-binding.md`. Record the reason on every fresh start
+and carry continuity through the capsule and ledger.
 
 ### Ready sets, lanes, and barriers
 

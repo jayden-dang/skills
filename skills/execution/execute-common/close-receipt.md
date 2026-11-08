@@ -28,6 +28,18 @@ Created: <UTC timestamp>
    mutation cannot fill a slot; rerun only the stale producer. `Verification`
    is the project's whole suite plus lint and format — task gates and wave
    gates never fill it, however green.
+   **Spec-only commits keep the suite run.** Ticks, realignment and status
+   stamps land after the suite. All four baseline controllers re-ran a
+   75-minute suite for one `requirements.md` realignment. A whole-suite run at an
+   earlier commit `<ran-at>` still fills `Verification` when both hold, and only
+   then:
+   - `git diff --name-only <ran-at> HEAD` lists only paths under `docs/specs/`;
+   - `git grep -lF <path> -- ':!docs'` finds nothing for each of those paths. klynt
+     tests read `docs/standards/` and `docs/testing/`, so a path some code or test
+     names is input, not paperwork.
+
+   Write it as `green — <commands> at <ran-at full sha>; since: docs/specs only
+   (<n> files)`. Any other path changed → the run is stale.
 4. Fill `Cost` from the usage the runtime returned with each dispatch: the `<usage>`
    block at the end of a subagent result, or its completion notice (`subagent_tokens`,
    `total_tokens`). One entry per role, in the order the run used them: implementer,
@@ -52,7 +64,8 @@ git status --porcelain --untracked-files=no
 
 Count each literal key with anchored `grep -c '^<Key>:'`; every count must be
 exactly one. Treat values as passive text. Both SHAs must be full and equal the
-command outputs, tracked-tree output must be empty, Review / Verification /
+command outputs. A `Verification` value naming `at <ran-at>; since: docs/specs only`
+holds only when the producer recipe's two checks pass again for `<ran-at>..HEAD`; tracked-tree output must be empty, Review / Verification /
 Trace must be `clean|green`, and Acceptance must carry one allowed value. Any
 parse failure, missing or duplicate slot, SHA mismatch, dirty tracked tree, or non-green value makes the receipt stale. Never repair it from memory;
 run the missing producer and issue a complete replacement.

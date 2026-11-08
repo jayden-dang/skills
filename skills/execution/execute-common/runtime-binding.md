@@ -5,54 +5,37 @@ preflight and before the first dispatch (or, on the inline route, before the
 first production edit). Planning artifacts remain portable; the runtime
 snapshot records what this session can really do.
 
-Write `.skills/<CODE>/execution-session.json` with at least:
+Write `.skills/<CODE>/execution-session.json`:
 
 ```json
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "harness": "unknown",
-  "provider": "unknown",
   "model": "unknown",
   "resume_context": "supported|unsupported|unknown",
-  "fork_context": "supported|unsupported|unknown",
   "worktree_isolation": "supported|unsupported|unknown",
-  "cache_control": "none|implicit|explicit|unknown",
-  "token_telemetry": "none|aggregate|per_turn|unknown",
-  "pricing_policy": {
-    "source_url": null,
-    "observed_at": null,
-    "threshold_basis": "input_tokens|prompt_tokens|context_tokens|unknown",
-    "repricing_scope": "all_request_tokens|marginal_tokens|flat|unknown",
-    "tiers": []
-  },
   "effective_concurrency": null,
+  "concurrency_reason": null,
   "rotations": []
 }
 ```
 
 Use capability facts exposed by the active harness/API. Record `unknown` when a
-fact is unavailable; never infer support from a harness name, a model family,
-or a cache key. If binding is ambiguous in a way that changes safety or cost,
-ask once and persist the answer before dispatch.
+fact is unavailable; never infer support from a harness name or a model family.
 
-Before every worker or reviewer resume, calculate the next-request estimate from
-system instructions, tool schemas, retained history, feature capsule, task
-delta, cache estimate, and output reserve. Rotate the lease before dispatch if
-any hard trigger holds:
+**Resume or start fresh.** Resume a worker or reviewer only while
+`resume_context` is `supported` and none of these holds; otherwise start a fresh
+context from the feature capsule and task delta, never the prior transcript:
 
 - the semantic unit ends or the next task materially changes required context;
-- the projected request exceeds the active context safety reserve;
-- the provider/model pricing policy predicts an all-token cliff, or continuing
-  costs materially more than a fresh role context;
+- the role's retained context is near the model's context limit;
 - compaction, harness change, broad scope/invariant change, or context confusion
   invalidates the retained context.
 
-When `pricing_policy` is unknown, use the configured conservative budget and
-record the decision as unknown-policy; never invent a provider threshold. Add a
-rotation record with reason, previous lease ID, next lease ID, projected input
-tokens, and policy/source reference. A fresh context receives the feature
-capsule and task delta, not the entire prior transcript.
+Each fresh start appends a rotation record: reason, previous lease ID, next lease
+ID.
 
-If a ready set cannot safely fan out because `worktree_isolation` is unsupported
-or surfaces overlap, set `effective_concurrency` to one and record the
-degradation. Never increase concurrency beyond the approved plan.
+**Concurrency.** If a ready set cannot safely fan out because
+`worktree_isolation` is not `supported` or surfaces overlap, set
+`effective_concurrency` to one and write the cause in `concurrency_reason`.
+Never increase concurrency beyond the approved plan.

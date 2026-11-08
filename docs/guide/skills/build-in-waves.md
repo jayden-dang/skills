@@ -23,7 +23,7 @@ An approved `tasks.md` has **`Execution-mode: continuous`** and subagent waves a
 Three ideas run underneath the whole skill:
 
 **Bounded leases.** Each semantic lane receives exactly the context it needs;
-the worker may resume while context, pricing, harness, and scope remain safe.
+the worker may resume while its context, the harness, and the scope remain safe.
 Hard triggers rotate to a fresh worker or reviewer. Bulk artifacts travel as
 **file paths under `.skills/`**, never as pasted text.
 

@@ -810,3 +810,71 @@ clause was cut, and the controller's "not in the install" conclusion went into t
 counter. GREEN re-run on the reworded run-B fixture: 2 of 2 (Sonnet, Haiku) wrote `general-purpose`
 and cited step 5. Meta-test, "UNCLEAR:": both named only the fixture's missing template, which run B
 leaves out on purpose.
+
+## v3.7.0 — spec-only commits keep the suite run; fix verification; slim runtime sidecar (2026-11-08)
+
+Evidence base: `.skills/EXECLITE/measurements.md` (klynt transcripts, 18 sessions since
+2026-10-20). Headless `claude -p --setting-sources project --strict-mcp-config`, Sonnet and
+Haiku; no toolchain in the agent's shell, so scored from what it writes for the build host.
+
+### Close receipt after a spec-only commit
+
+Fixture `harborline`: close done, whole suite green at P (logged as `Verified:`), then the
+controller committed a `docs/specs/late-fees/requirements.md` realignment. Prompt: write the
+receipt; list under "Before receipt:" anything the build host must run first. 02:35, PR by 09:00.
+
+**RED — 3.6.0, 4/4 re-ran the ~75-minute suite.** "Reason: HEAD 0e034be (docs-only
+requirements.md realignment) is newer than the Verified: run at 0cbfb21, so that evidence is
+stale for the receipt." (Sonnet). Haiku: "the Verification slot must be produced at HEAD."
+
+**Change.** `close-receipt.md` producer step 3: a whole-suite run at `<ran-at>` still fills
+`Verification` when `git diff --name-only <ran-at> HEAD` lists only `docs/specs/` paths and
+`git grep -lF <path> -- ':!docs'` finds none of them; written `… at <sha>; since: docs/specs
+only (<n> files)`, and re-checked by the consumer. Scoped to `docs/specs/` because klynt
+tests read `docs/standards/api.md` and `docs/testing/` (checked with `grep` over the repo).
+
+**GREEN — 3.7.0, 4/4 reused the run.** "Before receipt: none — the 7eb6d7b whole-suite run
+still fills Verification: 85c92ea changes only docs/specs/late-fees/requirements.md (1 file)
+and no non-docs file names that path." Three runs then declined the receipt over other slots
+(the polish commit post-dated the review; the fixture's code is stubs) — correct under the
+contract and unrelated to this rule.
+
+### Close ordering — no change (no-op)
+
+Same fixture before the close: 4/4 RED plans (Sonnet, Haiku) already merged `dev` first and
+ran the whole suite once, at the final HEAD. No text written. The field's repeat runs came
+from polish's baseline (see `polish-diff` v1.5.0) and spec commits (above).
+
+### Resume the implementer as fixer — no change (no-op)
+
+Fixture `tutorly`, Task 4 review back with two Important test-only findings, implementer still
+reachable; choose A resume / B fresh fixer / C fix yourself. 9 RED runs: 8 chose A, 1 chose B.
+No text written for the choice.
+
+### Fix verification
+
+Same fixture. RED — 3.6.0, clean fixture, 6 runs: Sonnet 3/3 sent the covering tests only
+("gateways and server are not rerun because only a thread_service test file changes");
+Haiku 3/3 attached the task's full gate, `cargo nextest run -p thread_service -p gateways -p
+server — ~14 min`, to a test-only fix. Change: `task-lifecycle.md` step 6 — the fix message
+names the covering tests, plus `test-first`'s gate for the amendment only when the fix changes
+production code.
+
+RED and GREEN re-run with the controller told it loaded build-in-waves and its task loop at
+Setup (as in a real session). RED — 3.6.0, Haiku 3/3 attached the full gate. GREEN — 3.7.0:
+Sonnet 2/2 and Haiku 2/3 sent the covering tests only, Haiku once with the gate held for "(b)
+Production-change path (test-first task gate for this amendment)"; the one Haiku that attached
+the gate never opened `task-lifecycle.md` (0 reads in its transcript). In a real build the file
+is loaded at Setup, so that run measures the fixture, not the rule.
+
+### Runtime sidecar — deletion, field evidence as baseline
+
+All five klynt sidecars read (PSTUDY, CBIMG, LMEDIA, AVMED, CBUILD) recorded
+`pricing_policy`, `token_telemetry` and `cache_control` as `unknown`; 4/5 had zero rotations.
+No decision in any ledger or transcript traced to the pricing fields; the one field that
+carried a decision was concurrency and its reason (PSTUDY: "cargo builds share one machine
+with the road128 worktree … Tasks 1-2 share learner_access.rs"). Change (user ruling): drop
+pricing/cache/telemetry, the per-resume token projection and the price-cliff trigger; keep
+harness, model, resume/worktree support, effective concurrency with a `concurrency_reason`
+slot, and rotations. Evals 8 (price cliff) removed; 7 and 9 narrowed. `build-in-waves` and
+`build-inline` point at **Resume or start fresh**. No baseline re-run: this deletes a step.

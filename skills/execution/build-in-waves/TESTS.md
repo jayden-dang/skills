@@ -521,3 +521,7 @@ Evidence is under `skills/execution/execute-common/TESTS.md` § 3.6.0: two produ
 22 task reviews to `pr-review-toolkit:code-reviewer`. This file gains one Red Flag line. The
 DONE_WITH_CONCERNS row now cites `../execute-common/implementer-prompt.md`, because the zroute
 controller searched `build-in-waves/` for the bare filename and found nothing.
+
+## v2.7.0 — runtime sidecar slimmed (2026-11-08)
+
+The lease preflight now points at **Resume or start fresh** in `execute-common/runtime-binding.md`; the price-safety step and its eval are gone. Evidence and ruling: `execute-common/TESTS.md` § v3.7.0 (five klynt sidecars, pricing/cache/telemetry always `unknown`). No baseline re-run: a deleted step.

@@ -51,7 +51,7 @@ and independent ready tasks together when their surfaces are disjoint. Each task
 still receives a two-verdict review and the branch a whole-branch review.
 
 **Why bounded leases.** A worker receives exactly the context its semantic unit
-needs, then may resume while context, pricing, harness, and scope remain safe.
+needs, then may resume while its context, the harness, and the scope remain safe.
 Hard triggers rotate to a fresh worker or reviewer. Bulk artifacts travel as
 file paths under `.skills/`, never as pasted text.
 

@@ -42,20 +42,8 @@
     "prompt": "Claude authored the plan, but Grok/OpenCode is executing it. Start an execute-family session.",
     "assertions": [
       "execution-session.json is written before the first dispatch",
-      "the snapshot records active harness, provider/model, resume/fork, isolation, cache, telemetry, and pricing capability values",
+      "the snapshot records active harness, model, resume and worktree-isolation capability values",
       "unavailable capability values are recorded as unknown rather than inferred"
-    ]
-  },
-  {
-    "eval_id": 8,
-    "eval_name": "lease-preflight-rotates-on-price-cliff",
-    "kind": "behavior",
-    "derived_from": "TESTS.md § RED — runtime binding and price-aware lease preflight",
-    "prompt": "A resumed lease has cached history but the projected next request crosses the provider/model's long-context price threshold.",
-    "assertions": [
-      "the controller estimates the next request before resuming",
-      "the lease rotates before dispatch and records the policy source and reason",
-      "cache is not treated as proof that repricing cannot occur"
     ]
   },
   {
@@ -66,7 +54,7 @@
     "prompt": "The plan has independent ready tasks, but the active harness cannot prove worktree isolation.",
     "assertions": [
       "effective_concurrency is set to one",
-      "the degradation is recorded in execution-session.json",
+      "the degradation and its cause are recorded in execution-session.json",
       "the approved execution mode is not silently rewritten"
     ]
   },
@@ -200,6 +188,30 @@
       "every step box of Task 1 in tasks.md is ticked",
       "when tasks.md is tracked, it is committed alone as `docs(<CODE>): tick Task N` on the feature branch",
       "when tasks.md is git-ignored, it is edited in place and nothing is committed or force-added"
+    ]
+  },
+  {
+    "eval_id": 20,
+    "eval_name": "spec-only-commit-keeps-the-suite-run",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § v3.7.0 — spec-only commits keep the suite run; fix verification; slim runtime sidecar (2026-11-08)",
+    "prompt": "The whole suite ran green at the polish commit; then you committed a requirements.md realignment under docs/specs. Write the close receipt.",
+    "assertions": [
+      "the whole suite is not re-run",
+      "Verification names the commit the suite ran at and says docs/specs only since",
+      "the reuse is checked with git diff --name-only and git grep outside docs"
+    ]
+  },
+  {
+    "eval_id": 21,
+    "eval_name": "test-only-fix-runs-covering-tests",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § v3.7.0 — spec-only commits keep the suite run; fix verification; slim runtime sidecar (2026-11-08)",
+    "prompt": "The task review returned two Important findings that only touch the task's test file. Send the fix.",
+    "assertions": [
+      "the fix message names the tests covering the amended code",
+      "the task's full gate is not required for a test-only fix",
+      "the gate is named only for a fix that changes production code"
     ]
   }
 ]

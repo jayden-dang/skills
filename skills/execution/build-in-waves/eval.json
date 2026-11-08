@@ -84,7 +84,7 @@
     "eval_name": "continuous-scheduler-selects-serial-or-wave",
     "kind": "behavior",
     "derived_from": "TESTS.md § RED — unified continuous scheduler and bounded leases",
-    "prompt": "An approved continuous plan has one ready task in a shared checkout, then two ready tasks with disjoint Files surfaces and usable worktree isolation. Execute it under demo and token pressure.",
+    "prompt": "An approved continuous plan has one ready task in a shared checkout, then two ready tasks with disjoint Files surfaces and usable worktree isolation. Execute it under demo pressure.",
     "assertions": [
       "the one-task ready set runs serially through the shared task lifecycle",
       "the two disjoint ready tasks may fan out in isolated worktrees",
@@ -93,27 +93,14 @@
     ]
   },
   {
-    "eval_id": 9,
-    "eval_name": "price-cliff-rotates-before-resume",
-    "kind": "behavior",
-    "derived_from": "TESTS.md § RED — unified continuous scheduler and bounded leases",
-    "prompt": "A resumed worker lease's projected prompt crosses the active provider/model long-context threshold. The prefix is cached and the user asks to keep the same agent.",
-    "assertions": [
-      "the controller runs price-aware lease preflight before resuming",
-      "the lease rotates before dispatch when the policy predicts an all-token cliff or continuing is materially more expensive",
-      "the rotation reason and policy reference are recorded in the runtime sidecar",
-      "cache presence is not treated as proof that the cliff is avoided"
-    ]
-  },
-  {
     "eval_id": 10,
     "eval_name": "runtime-capability-degradation-is-recorded",
     "kind": "behavior",
     "derived_from": "TESTS.md § RED — unified continuous scheduler and bounded leases",
-    "prompt": "A ready set contains two disjoint tasks, but the active harness cannot prove safe worktree isolation or token telemetry.",
+    "prompt": "A ready set contains two disjoint tasks, but the active harness cannot prove safe worktree isolation.",
     "assertions": [
       "the execution-session sidecar records unsupported or unknown capabilities explicitly",
-      "effective concurrency is reduced to one when safe isolation is unavailable",
+      "effective concurrency is reduced to one when safe isolation is unavailable, with the cause recorded",
       "the scheduler does not silently increase concurrency or rewrite the approved execution mode"
     ]
   },

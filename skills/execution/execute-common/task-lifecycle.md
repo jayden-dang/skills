@@ -20,8 +20,8 @@ Dispatch the worker with:
 - the current lane/worker lease ID;
 - the report path and explicit model tier.
 
-Resume the worker only while the lease preflight remains clean. Start a fresh
-worker context after a semantic-unit boundary or any hard rotation trigger.
+Resume or start the worker fresh per **Resume or start fresh** in
+`runtime-binding.md`.
 
 ## Task barrier
 
@@ -52,6 +52,10 @@ worker context after a semantic-unit boundary or any hard rotation trigger.
 6. Critical/Important findings go through one fix dispatch for the complete
    finding set, then a fresh re-review. Three surviving cycles stop the build
    and escalate. The controller never fixes reviewer findings directly.
+   The fix message names its verification: the tests covering the amended code,
+   plus `test-first`'s task gate for that amendment only when the fix changes
+   production code. Both Haiku baseline controllers sent a test-only fix back
+   with the full 14–17 minute gate of the task attached.
 7. Resolve ⚠️ items the reviewer could not prove from the diff. Only after both
    verdicts are clean append:
 
@@ -74,6 +78,6 @@ synthesis at its barrier.
 ## Lease handoff
 
 At task completion, retain the worker and reviewer leases only if the scheduler
-will continue on the same semantic lane and the lease preflight remains clean.
-Otherwise write the rotation reason to the runtime sidecar and start fresh from
-the feature capsule plus the next task delta.
+will continue on the same semantic lane and **Resume or start fresh** in
+`runtime-binding.md` allows it. Otherwise record the rotation and start fresh
+from the feature capsule plus the next task delta.

@@ -1,6 +1,6 @@
 ---
 name: build-inline
-version: 1.5.0
+version: 1.5.1
 description: Use when an approved tasks.md needs controller-side sequential
   execution without implementer subagents — inline TDD per task, progress
   ledger, stop-on-blocker, whole-branch review — for no-subagent environments
@@ -86,8 +86,8 @@ keeps the human in the conversation turn-by-turn.
    *Done when: that section's Done when holds.*
 4. **Runtime binding.** Apply `../execute-common/SKILL.md` **Runtime binding
    and lease preflight**. Inline execution has no worker lease, but it records
-   the active harness/provider/model, pricing policy, context reserve, and
-   effective concurrency in `.skills/<CODE>/execution-session.json`.
+   the active harness, model and effective concurrency in
+   `.skills/<CODE>/execution-session.json`.
    *Done when: the runtime snapshot exists before the first production edit.*
 5. **Ledger check.** Apply `../execute-common/SKILL.md` **Ledger check**.
    *Done when: next task is known.*

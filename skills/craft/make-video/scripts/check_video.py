@@ -4,13 +4,15 @@
 With --script in place of <mp4>, judge the script alone: run that before paying for a voice.
 Exits 1 and prints one FAIL line per fault. Prints the numbers either way.
 """
+import csv
+import io
 import json
 import os
 import re
 import subprocess
 import sys
 
-KINDS = ("feature", "pr", "release", "spec", "concept")
+KINDS = ("feature", "pr", "release", "spec", "concept", "tour")
 MAX_WORDS = 20
 MAX_WORDS_BY_LANGUAGE = {"vi": 30}  # Vietnamese writes each syllable as a token
 MAX_STILL = 6.0
@@ -43,7 +45,7 @@ def validate_script(s):
         faults.append("language is missing")
     source = s.get("source") or {}
     if source.get("kind") not in KINDS:
-        faults.append("source.kind must be feature, pr, release, spec or concept")
+        faults.append("source.kind must be feature, pr, release, spec, concept or tour")
     if source.get("kind") == "spec" and not source.get("spec"):
         faults.append("source.spec is missing")
     if not source.get("ref") and source.get("kind") != "concept":
@@ -176,7 +178,7 @@ def judge_aside(scene, aside):
 def judge_rests(s):
     """A rest is a pause after one line of a concept film, at most one a scene."""
     faults = []
-    concept = (s.get("source") or {}).get("kind") == "concept"
+    concept = (s.get("source") or {}).get("kind") in ("concept", "tour")  # both explain, and may run five minutes
     for scene in s.get("scenes", []):
         rested = [i for i, b in enumerate(scene.get("beats", [])) if b.get("rest")]
         if rested and not concept:
@@ -190,6 +192,112 @@ def rest_spans(project):
     """The pauses preview.mjs placed after rested lines, in seconds."""
     path = os.path.join(project, "out", "rests.json")
     return [(a / 30, b / 30) for a, b in json.load(open(path))] if os.path.exists(path) else []
+
+
+def judge_tour(s):
+    """A tour opens on a map that zooms from the whole system into a part, and shows where the code lives."""
+    faults = []
+    scenes = s.get("scenes", [])
+    worlds = [sc for sc in scenes if sc.get("kind") == "world"]
+    if not worlds:
+        faults.append("no world scene: a tour opens on a map")
+    for sc in worlds[:1]:
+        cameras = [step for b in sc.get("beats", []) for step in ((b.get("world") or {}), *((b.get("world") or {}).get("then") or [])) if step.get("camera")]
+        if len(cameras) < 2:
+            faults.append(f"{sc.get('id')}: the map never moves its camera; a tour zooms from the whole system into a part")
+    if not any(sc.get("kind") == "tree" for sc in scenes):
+        faults.append("no tree scene: a tour shows where the code lives")
+    return faults + judge_reasons(s)
+
+
+def judge_files(s, read):
+    """What a tree or a tokens scene shows is the repo's own: read(path) gives a file at the pinned commit, or None."""
+    faults = []
+    for sc in s.get("scenes", []):
+        sid = sc.get("id")
+        if sc.get("kind") == "tree":
+            for p in sc.get("paths", []):
+                if read(p.get("path", "")) is None:
+                    faults.append(f"{sid}: {p.get('path')} is not at the pinned commit")
+        if sc.get("kind") == "tokens":
+            text = read(sc.get("file", ""))
+            if text is None:
+                faults.append(f"{sid}: {sc.get('file')} is not at the pinned commit")
+                continue
+            for tok in sc.get("tokens", []):
+                name, value = tok.get("name", ""), tok.get("value", "")
+                if not re.search(rf"{re.escape(name)}\s*[:=]\s*['\"]?{re.escape(value)}", text):
+                    faults.append(f"{sid}: {name} is not {value} in {sc.get('file')}")
+    return faults
+
+
+def resolve(text, filename, path):
+    """A number from a data file: a dot path into JSON (array indexes are numbers), or `row.column` into a CSV."""
+    try:
+        if filename.endswith(".csv"):
+            row, col = path.split(".", 1)
+            value = list(csv.DictReader(io.StringIO(text)))[int(row)][col]
+        else:
+            value = json.loads(text)
+            for key in path.split("."):
+                value = value[int(key)] if isinstance(value, list) else value[key]
+        if isinstance(value, bool):
+            return None
+        if isinstance(value, (int, float)):
+            return value
+        text = str(value).strip()
+        return int(text) if re.fullmatch(r"-?\d+", text) else float(text)
+    except (KeyError, IndexError, ValueError, TypeError):
+        return None
+
+
+def chart_values(scene, read):
+    text = read(scene.get("data", ""))
+    if text is None:
+        return None
+    return [[resolve(text, scene.get("data", ""), p) for p in g.get("values", [])] for g in scene.get("groups", [])]
+
+
+def judge_charts(s, read):
+    """A chart draws numbers read from a file at the pinned commit, never numbers typed into the script."""
+    faults = []
+    for sc in s.get("scenes", []):
+        if sc.get("kind") != "chart":
+            continue
+        sid, series = sc.get("id"), sc.get("series") or []
+        if not 1 <= len(series) <= 4:
+            faults.append(f"{sid}: a chart holds 1 to 4 series")
+        values = chart_values(sc, read)
+        if values is None:
+            faults.append(f"{sid}: {sc.get('data')} is not at the pinned commit")
+            continue
+        for g, got in zip(sc.get("groups", []), values):
+            if len(g.get("values", [])) != len(series):
+                faults.append(f"{sid}: group {g.get('label')} has {len(g.get('values', []))} values for {len(series)} series")
+            for p, v in zip(g.get("values", []), got):
+                if v is None:
+                    faults.append(f"{sid}: {p} is not a number in {sc.get('data')}")
+    return faults
+
+
+def judge_chart_data(s, read, rendered):
+    """What the film draws, src/data.json, is what the file holds now."""
+    return [f"{sc.get('id')}: src/data.json is stale; run chart_data.py" for sc in s.get("scenes", []) if sc.get("kind") == "chart" and rendered.get(sc.get("id")) != chart_values(sc, read)]
+
+
+def judge_terminals(s, recorded):
+    """A terminal plays back commands that really ran, recorded by record_terminal.py into src/terminals.json."""
+    faults = []
+    for sc in s.get("scenes", []):
+        if sc.get("kind") != "terminal":
+            continue
+        runs = [(i, b.get("run")) for i, b in enumerate(sc.get("beats", [])) if b.get("run")]
+        if not runs:
+            faults.append(f"{sc.get('id')}: a terminal scene runs at least one recorded command")
+        for i, name in runs:
+            if name not in recorded:
+                faults.append(f"{sc.get('id')}-{i}: run {name} is not recorded; run record_terminal.py")
+    return faults
 
 
 def judge_manim_renders(s, project):
@@ -430,6 +538,17 @@ def script_faults(s, repo):
     source = s.get("source") or {}
     if source.get("kind") == "concept":
         faults += judge_concept(s)
+    if source.get("kind") == "tour":
+        faults += judge_tour(s)
+
+    def at_ref(path):
+        if path.endswith("/"):
+            held = run("git", "-C", repo, "cat-file", "-e", f"{source.get('ref', 'HEAD')}:{path.rstrip('/')}")
+            return "" if held.returncode == 0 else None
+        held = run("git", "-C", repo, "show", f"{source.get('ref', 'HEAD')}:{path}")
+        return held.stdout if held.returncode == 0 else None
+
+    faults += judge_files(s, at_ref) + judge_charts(s, at_ref)
     if source.get("kind") == "spec" and source.get("spec"):
         text = spec_text(s, repo)
         if text is None:
@@ -450,8 +569,19 @@ def main(argv):
     sheet = argv[argv.index("--sheet") + 1] if "--sheet" in argv else None
     s = json.load(open(os.path.join(project, "src", "script.json")))
     faults = script_faults(s, repo)
+    recorded = os.path.join(project, "src", "terminals.json")
+    faults += judge_terminals(s, json.load(open(recorded)) if os.path.exists(recorded) else {})
+    if any(sc.get("kind") == "chart" for sc in s.get("scenes", [])):
+        ref = (s.get("source") or {}).get("ref", "HEAD")
+
+        def read(path):
+            held = run("git", "-C", repo, "show", f"{ref}:{path}")
+            return held.stdout if held.returncode == 0 else None
+
+        data = os.path.join(project, "src", "data.json")
+        faults += judge_chart_data(s, read, json.load(open(data)) if os.path.exists(data) else {})
     text = spec_text(s, repo)
-    concept = (s.get("source") or {}).get("kind") == "concept"
+    concept = (s.get("source") or {}).get("kind") in ("concept", "tour")  # both explain, and may run five minutes
     if not only_script:
         m = probe(mp4)
         print(json.dumps({**{k: m[k] for k in ("width", "height", "duration", "loudness", "peak", "silences")}, "longest_still": round(max((length for start, length in m["freezes"] if start + length < m["duration"] - CLOSING), default=0), 1)}))

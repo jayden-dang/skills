@@ -1,6 +1,6 @@
 ---
 name: make-video
-version: 3.5.1
+version: 3.6.0
 description: Use when someone wants a narrated video or film of a built feature, a pull request or branch, a release, or a closed spec, or a video that teaches a concept, protocol or algorithm — "/make-video", "make a video of this", "explainer film", "a film of the spec", "teach me X in a video", 3Blue1Brown-style, Manim — produces a checked 1080p MP4 with a source on every line. Not for a written or HTML explanation (understand), slides, or proving a feature works (validate-feature).
 ---
 
@@ -36,7 +36,8 @@ The film shows one commit. Bind it to `$REF` and write it to `source.ref`.
 | A branch or range | `pr` | the branch head; film the base too when the change is a before and after | one temporary worktree for each; read `pr.md` beside this file now |
 | A version | `release` | the tag | a temporary worktree at the tag; read `release.md` beside this file now |
 | A spec folder | `spec` | the commit holding it | nowhere: read `explainer.md` beside this file now, and skip step 5 |
-| A topic to learn, in this repo or not | `concept` | the commit, only when a line cites a file here | nowhere: read `concept.md` and `explainer.md` beside this file now, and skip step 5 |
+| How a project, a module or a change is built | `tour` | current `HEAD` | a temporary worktree, when it shows the app; read `tour.md` beside this file now |
+| A topic to learn, in this repo or not | `concept` | the commit, only when a line cites a file here | nowhere: read `concept.md` and `explainer.md` beside this file now, run `python3 "$SKILL/scripts/render_manim.py" --check` before the script, and skip step 5 |
 
 ```bash
 git worktree add --detach "$(mktemp -d)/app" "$REF"
@@ -84,6 +85,8 @@ opened at `$REF`, or the run output that showed it.
 | `world` | Things that stay on screen and change as the line explains them | `explainer.md` |
 | `manim` | An idea drawn in Manim: shapes that move, morph, or plot | `concept.md` |
 | `compare`, `stat`, `timeline` | Two recordings side by side, a number that is the news, the order of changes | `pr.md`, `release.md` |
+| `tree`, `tokens` | Where the code lives; the design system's own values | `tour.md` |
+| `terminal`, `chart` | A command's real output; numbers read from a data file | `data.md` |
 | `aside` on a `clip`, `compare`, `world` or `manim` | 1 to 4 notes beside the picture, each `{text, at}` arriving on line `at`: a route, a number, a condition the voice does not say | the check fails a note that repeats its line |
 
 A request to explain how a built feature works reads `explainer.md` too.
@@ -113,7 +116,7 @@ timeout. Run it again whenever you change a line; it pays only for the lines tha
 
 ## 5. Record the app
 
-Run this when the repo has a way to run the app, usually `docs/agents/verify.md`. With no way to
+Run this when the repo has a way to run the app, usually `docs/agents/verify.md`. A command-line tool is recorded with `record_terminal.py` instead (`data.md`). With no way to
 run it, use graphic scenes only and say so in your report.
 
 ```bash

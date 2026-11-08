@@ -18,6 +18,8 @@ side.
    - A state the app needs set up, such as a night clock, is staged on both sides the same way, and the scene's `staged`
      says so.
 3. What no screen shows, such as a rule in the server or a new endpoint, in a `flow`, `world` or `code` scene.
+   A change whose point is a number, such as a speed-up or a smaller reply, gets a `chart` read from the measured file
+   (`data.md` beside this file).
 4. A closing `title`.
 
 ```json

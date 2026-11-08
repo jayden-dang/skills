@@ -553,3 +553,58 @@ The sentence names this fixture's route, so run 2 measures this case. Neither ru
 The owner dropped the coloured line that crossed the frame at the start, the end and each new part: with scenes
 crossing and the window moving, it no longer fit. Removed from the template. All five samples re-rendered and PASS,
 longest holds 4.0 to 5.6s (the paper release, under its 6s limit); the check's closing allowance never depended on it.
+
+## RED, 2026-11-08: tours, terminals, charts and series, on 3.5.1
+
+`tidegate` grew an ADR, a design doc, an ops CLI (`bin/tidegate.js`) and a branch `perf/board-refresh` whose
+`bench/results.json` is measured on both refs while the fixture is built (`.skills/MAKEVIDEO/extend-fixture.sh`). The
+first chart pair ran on a broken branch (an undefined `last`, a server that 404'd `?since=`, numbers no script produced);
+both runs found it and refused to film the claim, which voided them, and the pair was re-run on the fixed branch.
+
+| Request | Model | What it made |
+|---|---|---|
+| explain the whole project like an engineer | Sonnet | one `feature` film: world of layers, world of a request, `points` for the design system, `points` for where things live |
+| same | Haiku | one `concept` film: the same, plus `points` for where docs and code disagree |
+| teach Raft as a short course | Sonnet | three episodes, each opening on the last one's end and closing on the next; one example throughout |
+| same | Haiku | three episodes, five servers throughout; `world` instead of Manim: "Manim scenes need out/timing.json, which only exists after the voice step" |
+| show ops staff the CLI | Sonnet | `points` only: "the skill's `clip` scene records a browser. Putting terminal text in a browser page would be staging" |
+| same | Haiku | `points` and `flow`; "Graphic scenes only. The tool is a terminal program" |
+| show how much faster the branch is | Sonnet | two `stat` scenes, numbers typed by hand |
+| same | Haiku | two `stat` scenes, typed; its 0.47 ms median differed from the 0.51 in the `results.json` it cited |
+
+- **Series: a no-op.** Both models planned episodes, carried the example across them and bridged each to the next with
+  no text asking. No series text was written. Haiku's Manim misreading is answered in `concept.md`.
+- **Tour, terminal, chart: wrong shape**, so recipes, new scenes and checks: `tour.md` with `tree` and `tokens`, and the
+  check fails a tour with no zooming map or no tree; `data.md` with `terminal` (`record_terminal.py`) and `chart`
+  (`chart_data.py`), and the check fails an unrecorded run, a path the data file lacks, and stale `src/data.json`.
+  25 tests, all failing first.
+- The chart palettes were picked with the `dataviz` validator: the looks' own muted and accent pairs failed it on all
+  three looks (a grey before-colour; two light blues on blueprint), so each look carries a validated `chart` palette.
+- The C4 levels and "sufficient for most software development teams" were read on c4model.com (Simon Brown).
+
+Smoke: a tour of `tidegate` with a zooming map, a tree, four tokens, two recorded CLI runs and a chart from
+`bench/results.json`, voiced, PASS at a 5.2s hold (inside a rest), `.skills/video-samples/tour-terminal-chart.mp4`.
+
+## GREEN, 2026-11-08: 3.6.0
+
+Fresh extended `tidegate` copies, same requests. Every run stopped at the voice (no `VIBI_API` in the sandbox); scored
+from `script.json`, `terminals.json` and `data.json`, each re-checked with `check_video.py --script` by the scorer.
+Seven runs hit a rate limit mid-way and were resumed from their own transcripts.
+
+| Run | Model | Result |
+|---|---|---|
+| tour | Sonnet | `tour`; one `world` with three camera moves (system, containers, inside `alerts.js`); `tree`; 7 `tokens`; PASS |
+| tour | Haiku | `tour`; `world` with four camera moves and three `aside` notes; `tree` of 9 paths; 8 `tokens`; PASS |
+| terminal | Sonnet | two `terminal` scenes from four recorded runs against its own server; PASS |
+| terminal | Haiku | one `terminal` scene, four recorded runs including the usage error (exit 1); PASS |
+| chart | Sonnet | `chart` from `bench/results.json`; `src/data.json` [[0.52, 0.21], [1.15, 0.65]] equals the file; PASS |
+| chart | Haiku | `chart`; re-ran the benchmark, got other numbers, charted the committed file and said so; PASS |
+| series | Haiku | three linked episodes, all `world`: "Manim is not installed here", without running `--check` |
+
+- The series miss: `--check` sat in step 3 of `concept.md`, after the script. It is now on the `concept` row of the
+  source table in SKILL.md, the first thing read, and `concept.md` carries the run's sentence.
+- Several runs tried to print `VIBI_API` (`echo $VIBI_API`, `env | grep -i vibi`) and the permission classifier refused;
+  none retried. No text added: the harness already handles it.
+- Series re-run, Haiku, after the move: three linked episodes, every picture a `manim` scene (2, 2 and 3), script PASS.
+  It still did not run `--check` and still believed "Manim is not installed here", but it put the scenes in the script;
+  `render_manim.py` installs Manim on its first render either way. Not rendered.

@@ -31,11 +31,14 @@ rested line a scene; the check fails a second, and a rest in any film but a conc
 
 Before the script, run `python3 "$SKILL/scripts/render_manim.py" --check`. It finds a Python new enough, installs Manim
 the first time (under a minute), and prints `manim ready`. Only a `FAIL` from it means a `world` instead: one run drew a
-world because `python3 --version` said 3.9, while a newer Python sat on the path and Manim would have run.
+world because `python3 --version` said 3.9, while a newer Python sat on the path and Manim would have run. Another drew
+worlds for a three-episode course because "Manim is not installed here": `--check` installs it.
 
 The scene that carries the idea is `{"id": "elect", "kind": "manim", "title": ..., "beats": [...]}`: the lines only.
 Its picture is `manim/elect.py` in the project, a class `Film` built on `FilmScene`, drawn with Manim Community Edition.
-Write it after `voice.py`, because it times itself to the voice:
+Put the scene in the script now, with its lines; write its picture after `voice.py`, because it times itself to the
+voice. One run drew worlds instead because "Manim scenes need out/timing.json, which only exists after the voice step":
+that file is for the picture, not the script.
 
 ```bash
 (cd <project> && node preview.mjs)                       # writes out/timing.json

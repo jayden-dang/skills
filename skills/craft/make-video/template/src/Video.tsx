@@ -11,6 +11,8 @@ import {Beat, filmName, placed, planned, Scene, SoundEvent, totalFrames, TRANSIT
 import {worldSize, WorldScene} from './WorldScene';
 import {MANIM_SIZE, ManimScene} from './ManimScene';
 import {CompareScene, compareSize, StatScene, statSize, TimelineScene, timelineSize} from './ChangeScenes';
+import {TokensScene, tokensSize, TreeScene, treeSize} from './TourScenes';
+import {ChartScene, dataSceneSize, TerminalScene} from './DataScenes';
 import {t} from './tokens';
 
 /* Two thin bands hold what the film is and where it stands. Between them, one window lives through the
@@ -24,7 +26,7 @@ const CELL_A = 324;
 const CELL_B = 960;
 const CELL_C = 1597;
 const MONO = (size: number) => ({font: t.fontMono, weight: 400, tracking: 0.08, size});
-const sizeOf = (scene: Scene) => (scene.kind === 'compare' ? compareSize() : scene.kind === 'stat' ? statSize(scene) : scene.kind === 'timeline' ? timelineSize() : scene.kind === 'manim' ? MANIM_SIZE : scene.kind === 'world' ? worldSize(scene) : SPEC_KINDS.includes(scene.kind) ? specSize(scene) : graphicSize(scene));
+const sizeOf = (scene: Scene) => (scene.kind === 'terminal' || scene.kind === 'chart' ? dataSceneSize() : scene.kind === 'tree' ? treeSize(scene) : scene.kind === 'tokens' ? tokensSize(scene) : scene.kind === 'compare' ? compareSize() : scene.kind === 'stat' ? statSize(scene) : scene.kind === 'timeline' ? timelineSize() : scene.kind === 'manim' ? MANIM_SIZE : scene.kind === 'world' ? worldSize(scene) : SPEC_KINDS.includes(scene.kind) ? specSize(scene) : graphicSize(scene));
 const centered = (w: number, h: number): Box => ({x: (1920 - w) / 2, y: CENTER_Y - h / 2, w, h});
 // A scene with notes leaves them a column on the right; its picture centres in what is left, scaled down to fit.
 const ASIDE_W = 400;
@@ -277,6 +279,10 @@ const Scenes: React.FC = () => {
                     {scene.kind === 'compare' ? <CompareScene {...props} /> : null}
                     {scene.kind === 'stat' ? <StatScene {...props} /> : null}
                     {scene.kind === 'timeline' ? <TimelineScene {...props} /> : null}
+                    {scene.kind === 'tree' ? <TreeScene {...props} /> : null}
+                    {scene.kind === 'tokens' ? <TokensScene {...props} /> : null}
+                    {scene.kind === 'terminal' ? <TerminalScene {...props} /> : null}
+                    {scene.kind === 'chart' ? <ChartScene {...props} /> : null}
                   </div>
                 )}
               </SceneFade>

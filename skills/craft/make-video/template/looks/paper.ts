@@ -26,5 +26,6 @@ export const t = {
   shadow: '0 24px 60px rgba(70, 50, 20, 0.16)',
   cut: 0,
   spectrum: ['#b4441b', '#d9d0bd', '#a86b00', '#e8dfcc'], // the edge's slow turn, in this look's own tones: with [] a title stands still past the check's limit
+  chart: ['#2a78d6', '#eb6834', '#1baf7a', '#eda100'], // bars and lines, in this order; checked with the dataviz validator against this look's panel
   backdrop: 'paper',
 };

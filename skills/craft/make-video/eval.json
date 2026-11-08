@@ -186,5 +186,41 @@
       "the project was made with new_video.py --kind release and src/tokens.ts is the paper look",
       "check_video.py --script prints PASS"
     ]
+  },
+  {
+    "eval_id": 16,
+    "eval_name": "a-tour-zooms-and-shows-where-code-lives",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § RED, 2026-11-08: tours, terminals, charts and series, on 3.5.1",
+    "prompt": "I vibe-code here but I don't really get how this project is built. Make me a video that explains the whole project like an engineer would.",
+    "assertions": [
+      "source.kind is tour",
+      "the first world scene moves its camera at least twice",
+      "there is a tree scene whose paths exist at the pinned commit",
+      "check_video.py --script prints PASS"
+    ]
+  },
+  {
+    "eval_id": 17,
+    "eval_name": "a-cli-is-filmed-from-real-runs",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § RED, 2026-11-08: tours, terminals, charts and series, on 3.5.1",
+    "prompt": "Make a short video showing the ops staff how to use the new command-line tool.",
+    "assertions": [
+      "a terminal scene names runs recorded in src/terminals.json by record_terminal.py",
+      "check_video.py --script prints PASS"
+    ]
+  },
+  {
+    "eval_id": 18,
+    "eval_name": "a-speedup-is-charted-from-its-file",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § RED, 2026-11-08: tours, terminals, charts and series, on 3.5.1",
+    "prompt": "Make a video for the reviewers of perf/board-refresh — I want them to see how much faster it really is.",
+    "assertions": [
+      "a chart scene names a data file at the pinned commit",
+      "src/data.json equals the values that file holds",
+      "check_video.py --script prints PASS"
+    ]
   }
 ]

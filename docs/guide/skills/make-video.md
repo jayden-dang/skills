@@ -20,6 +20,7 @@
 | A version | What is new for people who use the product: a timeline of the changes, then one scene per change | The tag, and the previous tag for a before and after |
 | A spec folder | Why it is built this way: a problem, an idea, one example followed through what could go wrong | The commit holding the spec, with no app and no footage |
 | A topic to learn | One idea taught: a protocol, an algorithm, a data structure, in this repo or not | The sources that own it, found by `research`, and Manim |
+| How it is built | A project, a module or a change the way an engineer reads it: a map that zooms in, one request end to end, where the code lives, why, the design system's own tokens, how to change it safely | The commit, its ADRs and design docs |
 
 Narration and captions are English. Ask for another language by name, for example `/make-video v1.3.0 in Vietnamese`.
 
@@ -45,6 +46,13 @@ a scene may rest: the picture stands 2.5 seconds after its words, a hold of up t
 a third of its lines giving a reason, a hold over 4.5 seconds, or a Manim scene that was not rendered. The first Manim
 scene installs Manim Community Edition into `~/.cache/make-video/manim`, which needs Python 3.11 or later. The recipe is
 `concept.md`.
+
+## Recorded scenes
+
+A command-line tool is filmed with `record_terminal.py`: it runs the real command and the `terminal` scene types it and
+prints what it printed. A number is charted from a file in the repo: `chart_data.py` reads the paths a `chart` scene
+names at the pinned commit, and the check fails a chart whose numbers no longer match the file. Ask for a course and
+the films come as linked episodes, each opening on the last one's end.
 
 ## Why it is a template and a check
 

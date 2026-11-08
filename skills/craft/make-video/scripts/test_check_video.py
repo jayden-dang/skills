@@ -42,7 +42,7 @@ class ValidateScript(unittest.TestCase):
         self.assertIn("a-0: over 30 words", cv.validate_script(s))
 
     def test_an_unknown_source_kind_is_a_fault(self):
-        self.assertIn("source.kind must be feature, pr, release, spec or concept", cv.validate_script(script(source={"kind": "pitch", "ref": "x"})))
+        self.assertIn("source.kind must be feature, pr, release, spec, concept or tour", cv.validate_script(script(source={"kind": "pitch", "ref": "x"})))
 
     def test_a_missing_language_is_a_fault(self):
         s = script()
@@ -449,6 +449,135 @@ class Aside(unittest.TestCase):
 
     def test_a_note_names_a_line_that_exists(self):
         self.assertIn("s: aside note 1 arrives on line 3, and the scene has 1", cv.judge_kinds(self.scene([{"text": "POST /api/alerts", "at": 3}])))
+
+
+def tour(**over):
+    base = {
+        "language": "en",
+        "source": {"kind": "tour", "ref": "abc123"},
+        "scenes": [
+            {"id": "map", "kind": "world", "title": "The map", "objects": [{"id": "a", "shape": "card", "x": 0, "y": 0, "w": 400, "h": 300, "label": "web"}],
+             "beats": [{"text": "The board talks to one server, so there is one place to look.", "ref": "server.js:1", "world": {"set": {"a": {}}, "camera": {"x": 0, "y": 0, "w": 1800, "h": 840}}},
+                       {"text": "Inside the server there are two modules because alerts need their own store.", "ref": "alerts.js:1", "world": {"camera": {"x": 0, "y": 0, "w": 900, "h": 420}}}]},
+            {"id": "files", "kind": "tree", "title": "Where it lives", "paths": [{"path": "web/", "note": "the board"}, {"path": "server.js", "note": "routes"}],
+             "beats": [{"text": "The board lives in web, so start there for anything on screen.", "ref": "web/app.js:1"}]},
+        ],
+    }
+    base.update(over)
+    return base
+
+
+class Tour(unittest.TestCase):
+    def test_a_tour_with_a_map_and_a_tree_has_no_faults(self):
+        self.assertEqual(cv.judge_tour(tour()), [])
+
+    def test_a_tour_needs_a_tree(self):
+        s = tour()
+        s["scenes"] = s["scenes"][:1]
+        self.assertIn("no tree scene: a tour shows where the code lives", cv.judge_tour(s))
+
+    def test_a_tour_needs_a_map_that_zooms(self):
+        s = tour()
+        for b in s["scenes"][0]["beats"]:
+            b["world"].pop("camera")
+        self.assertIn("map: the map never moves its camera; a tour zooms from the whole system into a part", cv.judge_tour(s))
+
+    def test_a_tour_needs_a_world(self):
+        s = tour()
+        s["scenes"] = s["scenes"][1:]
+        self.assertIn("no world scene: a tour opens on a map", cv.judge_tour(s))
+
+    def test_a_tour_explains(self):
+        s = tour()
+        for sc in s["scenes"]:
+            for b in sc["beats"]:
+                b["text"] = "Here is a part."
+        self.assertIn("0 of 3 lines give a reason; an explanation needs a third", cv.judge_tour(s))
+
+    def test_tour_is_a_kind(self):
+        self.assertEqual(cv.validate_script(tour()), [])
+
+
+class TreeAndTokens(unittest.TestCase):
+    def read(self, files):
+        return lambda path: files.get(path)
+
+    def test_paths_that_exist_pass(self):
+        s = tour()
+        self.assertEqual(cv.judge_files(s, self.read({"web/": "", "server.js": "x"})), [])
+
+    def test_a_path_not_at_the_commit_is_a_fault(self):
+        s = tour()
+        self.assertIn("files: web/ is not at the pinned commit", cv.judge_files(s, self.read({"server.js": "x"})))
+
+    def test_a_token_with_its_file_value_passes(self):
+        s = tour(scenes=[{"id": "ds", "kind": "tokens", "title": "T", "file": "web/tokens.css", "tokens": [{"name": "--tg-sea", "value": "#0e3a4a", "role": "ground"}], "beats": [{"text": "x", "ref": "web/tokens.css:2"}]}])
+        self.assertEqual(cv.judge_files(s, self.read({"web/tokens.css": ":root{--tg-sea:#0e3a4a;--tg-ink:#10262e}"})), [])
+
+    def test_a_token_whose_value_differs_is_a_fault(self):
+        s = tour(scenes=[{"id": "ds", "kind": "tokens", "title": "T", "file": "web/tokens.css", "tokens": [{"name": "--tg-sea", "value": "#123456", "role": "ground"}], "beats": [{"text": "x", "ref": "web/tokens.css:2"}]}])
+        self.assertIn("ds: --tg-sea is not #123456 in web/tokens.css", cv.judge_files(s, self.read({"web/tokens.css": ":root{--tg-sea:#0e3a4a}"})))
+
+
+RESULTS = '{"before": {"median_ms": 0.48, "p95_ms": 1.23}, "after": {"median_ms": 0.23, "p95_ms": 0.69}, "runs": [3, 4]}'
+
+
+def chart(**over):
+    sc = {"id": "speed", "kind": "chart", "title": "One poll", "unit": "ms", "data": "bench/results.json", "series": ["main", "branch"],
+          "groups": [{"label": "median", "values": ["before.median_ms", "after.median_ms"]}, {"label": "p95", "values": ["before.p95_ms", "after.p95_ms"]}],
+          "beats": [{"text": "x", "ref": "bench/results.json:1"}]}
+    sc.update(over)
+    return script(scenes=[sc])
+
+
+class Charts(unittest.TestCase):
+    read = staticmethod(lambda path: {"bench/results.json": RESULTS, "bench/r.csv": "ref,ms\nmain,0.48\nbranch,0.23\n"}.get(path))
+
+    def test_values_from_the_file_resolve(self):
+        self.assertEqual(cv.chart_values(chart()["scenes"][0], self.read), [[0.48, 0.23], [1.23, 0.69]])
+
+    def test_a_chart_reading_its_file_has_no_faults(self):
+        self.assertEqual(cv.judge_charts(chart(), self.read), [])
+
+    def test_a_path_the_file_lacks_is_a_fault(self):
+        s = chart(groups=[{"label": "median", "values": ["before.mean_ms", "after.median_ms"]}])
+        self.assertIn("speed: before.mean_ms is not a number in bench/results.json", cv.judge_charts(s, self.read))
+
+    def test_a_missing_file_is_a_fault(self):
+        self.assertIn("speed: bench/none.json is not at the pinned commit", cv.judge_charts(chart(data="bench/none.json"), self.read))
+
+    def test_each_group_has_a_value_per_series(self):
+        s = chart(groups=[{"label": "median", "values": ["before.median_ms"]}])
+        self.assertIn("speed: group median has 1 values for 2 series", cv.judge_charts(s, self.read))
+
+    def test_array_indexes_resolve(self):
+        s = chart(series=["a"], groups=[{"label": "runs", "values": ["runs.1"]}])
+        self.assertEqual(cv.chart_values(s["scenes"][0], self.read), [[4]])
+
+    def test_a_csv_cell_resolves_by_row_and_column(self):
+        s = chart(data="bench/r.csv", groups=[{"label": "median", "values": ["0.ms", "1.ms"]}])
+        self.assertEqual(cv.chart_values(s["scenes"][0], self.read), [[0.48, 0.23]])
+
+    def test_stale_rendered_data_is_a_fault(self):
+        s = chart()
+        self.assertIn("speed: src/data.json is stale; run chart_data.py", cv.judge_chart_data(s, self.read, {"speed": [[0.5, 0.23], [1.23, 0.69]]}))
+
+    def test_rendered_data_that_matches_passes(self):
+        self.assertEqual(cv.judge_chart_data(chart(), self.read, {"speed": [[0.48, 0.23], [1.23, 0.69]]}), [])
+
+
+class Terminals(unittest.TestCase):
+    def scene(self, runs):
+        return script(scenes=[{"id": "cli", "kind": "terminal", "title": "T", "beats": [{"text": "Run it.", "ref": "run: sailings", "run": r} for r in runs]}])
+
+    def test_recorded_runs_pass(self):
+        self.assertEqual(cv.judge_terminals(self.scene(["sailings"]), {"sailings": {"command": "x", "lines": []}}), [])
+
+    def test_a_run_never_recorded_is_a_fault(self):
+        self.assertIn("cli-0: run alerts is not recorded; run record_terminal.py", cv.judge_terminals(self.scene(["alerts"]), {}))
+
+    def test_a_terminal_with_no_run_is_a_fault(self):
+        self.assertIn("cli: a terminal scene runs at least one recorded command", cv.judge_terminals(self.scene([None]), {}))
 
 
 class JudgeClip(unittest.TestCase):

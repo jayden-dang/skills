@@ -48,5 +48,17 @@
       "the false-positive drop is not banked",
       "/record-debt is named for the user"
     ]
+  },
+  {
+    "eval_id": 5,
+    "eval_name": "no-whole-suite-baseline-inside-a-close",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § v1.5.0 — no whole-suite baseline inside an execute-family close (2026-11-08)",
+    "prompt": "The execute-family close reached its polish step on a 28-file branch. Start polish-diff and record the baseline.",
+    "assertions": [
+      "Polish base is recorded as a full sha",
+      "no whole-suite run is queued as the baseline",
+      "the close's single whole-suite run is named as the proof"
+    ]
   }
 ]

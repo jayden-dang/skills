@@ -136,3 +136,30 @@ already asks for — the concrete cost per finding, and `prove-claim` on the res
 
 Comment-heavy diffs may name `/no-comments`. Extreme keep-list lives there;
 this skill keeps the soft default-zero pass.
+
+## v1.5.0 — no whole-suite baseline inside an execute-family close (2026-11-08)
+
+**Trigger.** klynt CBIMG's close ran the whole workspace suite five times in 9 h 17 min;
+one of them was polish-diff's step-2 baseline, queued beside the four cleanup agents, and
+another its step-6 re-run. The close then runs the suite again for the receipt.
+
+**Protocol.** Headless `claude -p` (Sonnet, Haiku), fixture `harborline` (Rust + React,
+28-file branch, dev merged, whole-branch review and fix done; `just test` ~40 min, ~70 with a
+second build on the test DB). Prompt: the controller is at close step 3, start polish-diff
+and take it as far as its baseline, logging each command it has the build host run.
+
+**RED — v1.4.0, 4 runs: 3/4 queued the whole suite as the baseline.** Sonnet: "Close step 3
+baseline: `just test` — at feat/late-fees HEAD 43cc0c6 … expected ~40 min warm, ~70 min while
+the second build holds the shared test DB … Step 6 must re-run this exact command." Haiku 1/2
+the same; Haiku 2/2 picked `cargo nextest run -p billing -p api`.
+
+**Change.** Step 2: inside a close, record `Polish base: <sha>` and run nothing. Step 6: inside
+a close, run `test-first`'s task gate over the units the cleanups changed; on red, run it at
+`Polish base` to tell a pre-existing break from one the cleanup made. The slow-suite
+rationalization row now says which proof applies where.
+
+**GREEN — v1.5.0, 4 runs: 4/4.** Every run wrote `Polish base: <full sha>` and ran nothing:
+"no command run — inside a close the baseline is the recorded sha only; the whole suite …
+runs once at close, after the last change" (Sonnet).
+
+**Not exercised:** step 6 inside a close (gate at the polished HEAD, attribution run at `Polish base` on red). The fixture stops before cleanup.

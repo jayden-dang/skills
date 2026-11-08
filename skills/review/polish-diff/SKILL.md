@@ -1,6 +1,6 @@
 ---
 name: polish-diff
-version: 1.4.0
+version: 1.5.0
 description: Use when changed code needs a quality cleanup actually applied rather than
   reported — code that reimplements a helper the repo already has, needless
   complexity, dead code, wasted work or repeated I/O, tech debt, a bandaid fix
@@ -28,6 +28,8 @@ Run `git diff @{upstream}...HEAD` (falling back to `git diff main...HEAD`, then 
 ## 2. Record the green baseline
 
 Find and run the suite covering the changed files, and record the result **before touching anything**. Green is the baseline you must reproduce in step 6. Red here means the branch is already broken — stop and name `root-cause`; polishing on top of a failing suite destroys the only evidence that your cleanup preserved behavior. *Done when: the suite is green and the command that proved it is written down.*
+
+**Inside an execute-family close** — the close sequence named this skill — record `Polish base: <full sha>` and run nothing yet. The close runs the whole suite once, after its last change, as the receipt's `Verification`. A baseline here is a second whole-suite run: three of four baseline controllers queued a 70-minute `just test` at this step, and one klynt close ran the suite five times in nine hours. *Done when: `Polish base:` is written down.*
 
 ## 3. Dispatch four cleanup agents in parallel
 
@@ -86,7 +88,9 @@ Re-run step 2's exact command. It must be green, and the only test-file change p
 
 The permitted deletion, and its three conditions: a test may be **deleted** when the only thing it pinned was code the Simplification angle removed as dead — the target is gone, the behavior is still covered elsewhere by a test you **name**, and the deletion is stated in step 7's report. Fewer than three met, the test stays. A test may never be *rewritten, retargeted, renamed, or moved*; that is the goalpost move rule 1 forbids, and "I retargeted the same assertion at the canonical function" is that move. If a test resists deletion, keep the old symbol as a thin alias delegating to the canonical one — the duplicated *rule* dies, which was the finding, and the suite never moves.
 
-*Done when: the suite is green by the same command that was green in step 2, and any deleted test is named in the report with its replacement coverage.*
+**Inside an execute-family close**, the command is `test-first`'s task gate over the units your cleanups changed, run at the polished HEAD. Commit the cleanups first. Red → run that same command at `Polish base` in a throwaway worktree (`git worktree add <tmp> <Polish base>`, removed after). Red there too means the branch was already broken: stop and name `root-cause`. Green there means a cleanup broke it: revert that cleanup. The close's whole-suite run completes the proof.
+
+*Done when: the suite is green by the same command that was green in step 2 (inside a close: the task gate is green at the polished HEAD), and any deleted test is named in the report with its replacement coverage.*
 
 ## 7. Report
 
@@ -130,6 +134,6 @@ Run the four angles yourself, sequentially, in one context — Reuse, then Simpl
 | "The test asserted the old internals, so I updated it" | You changed behavior and moved the goalposts that would have caught it. Revert. If a test genuinely must change, this is not polish-diff |
 | "I only *repointed* the test at the canonical function — identical assertion, no coverage lost" | The most common way this rule is broken, and the most reasonable-sounding. You deleted the test that stood in the way and wrote a new one that does not. Keep the old symbol as a thin alias instead: the duplicated rule still dies, and the suite never moves |
 | "It's much cleaner if I also touch these three files" | Outside the pinned diff is outside scope. The cleanup you cannot bound is the cleanup nobody can review |
-| "The suite is slow — the affected tests are enough" | The baseline you recorded in step 2 is the only proof you have. A narrower re-run proves something narrower than what you are about to claim |
+| "The suite is slow — the affected tests are enough" | Outside a close, the baseline you recorded in step 2 is the only proof you have, and a narrower re-run proves something narrower than what you are about to claim. Inside a close, the close's whole-suite run is that proof |
 | "No findings came back, so I'll look harder for something" | Confirming the code is already clean IS the deliverable. A manufactured finding costs a real edit against a fake cost |
 | "Behavior technically changed, but strictly for the better" | That is a design change wearing a cleanup's clothes. Route it to `amend-feature` and let it be seen |

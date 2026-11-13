@@ -59,7 +59,7 @@ If creation fails on a sandbox or permission error, tell the user and work in pl
 
 ## Step 2 — install dependencies
 
-**A Rust worktree is seeded before its first build.** When `Cargo.toml` is present, the workspace has no `target/` yet, and `cargo hive --version` succeeds, the skill registers the main checkout with [cargo-hive](https://github.com/jayden-dang/cargo-hive) (`cargo hive repo add`, a no-op when it is already registered), runs `cargo hive seed` on the new worktree, and only then runs `cargo build`. Seeding clones the registry dependencies the main checkout has already built, so the worktree does not compile them again. It has to come first: once `cargo build` has created a `target/`, there is nothing left to seed. If seed refuses, the worktree builds cold and the report names the finding. Without the binary (Linux, or hive not installed) this step is skipped.
+**A Rust worktree is seeded before its first build.** When `Cargo.toml` is present, the workspace has no `target/` yet, and `cargo hive --version` succeeds, the skill registers the main checkout with [cargo-hive](https://github.com/jayden-dang/cargo-hive) (`cargo hive repo add`, a no-op when it is already registered), runs `cargo hive seed` on the new worktree, and only then runs `cargo build`. Seeding clones the registry dependencies the main checkout has already built, so the worktree does not compile them again. It has to come first: once `cargo build` has created a `target/`, there is nothing left to seed. Without the binary (Linux, or hive not installed) this step is skipped.
 
 Otherwise, auto-detect the package manager from the lockfile or manifest that is present, then run its install:
 

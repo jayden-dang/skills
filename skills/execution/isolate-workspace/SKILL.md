@@ -70,7 +70,7 @@ cargo hive seed "$(pwd -P)" --json
 cargo build
 ```
 
-Seed however fast the build looks. With hive installed, four of six agents built this step cold: two because the crate built in 3 s, two reading hive as a disk-reclaim tool — and once `cargo build` has made a `target/`, seed has nothing left to do. A seed refusal → build cold and name the receipt's finding in the report. The `hive` skill, when installed, explains its receipts.
+Seed however fast the build looks. With hive installed, four of six agents built this step cold: two judged a 3 s build not worth seeding, one read hive as a disk-reclaim tool, and one ran `cargo build` first — once a `target/` exists, seed has nothing left to do.
 
 Otherwise auto-detect the package manager from lockfiles/manifests and run its install: `pnpm-lock.yaml` → pnpm, `bun.lock*` → bun, `yarn.lock` → yarn, `package-lock.json`/bare `package.json` → npm, `Cargo.toml` → `cargo build`, `uv.lock` → uv, `poetry.lock` → poetry, `requirements.txt` → pip, `go.mod` → `go mod download`. No manifest → skip.
 

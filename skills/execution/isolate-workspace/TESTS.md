@@ -32,7 +32,11 @@ Classified as an omitted step in something the skill already produces (Step 2), 
 behaviour depends on an observable condition. Form: a conditional keyed to `Cargo.toml`
 present, no `target/` yet, and `cargo hive --version` exiting 0, with the exact commands,
 placed ahead of the existing manifest table. The counter carries the recorded excuses
-(3 s build, disk-reclaim reading, built-first).
+(3 s build, disk-reclaim reading, built-first). A first draft also told the agent what to
+do on a seed refusal and pointed at the `hive` skill for receipts. Both were cut, because
+no run reached either case. The refusal recovery belongs to the `hive` skill, which says
+to build the main checkout and seed again. Rerun on the trimmed text, one run per model on a fresh
+fixture: both seeded before building (`reused_fresh` 26 each).
 
 **GREEN (v1.2.0).** 6 of 6 seeded before the first `cargo build` (Sonnet 3/3, Haiku 3/3).
 Every worktree target reads `reused_fresh` 26, with 27 units cloned and 0 failed. Every
@@ -52,7 +56,12 @@ skill's own rule, "seed one lane first, build it, then seed the other lanes". Th
 two went serial because both tasks need a `pub mod` line in `src/export.rs`, which
 neither `Files:` list names (a fixture flaw), and both said they would seed the lanes in
 the parallel case. That makes the lanes a no-op, so `build-in-waves` text was not written.
-Confound: every run had also read this skill's v1.2.0 Step 2. `land-branch` cleanup was
+Confound: every run had also read this skill's v1.2.0 Step 2. Limit: the prompt asked the
+controller to get everything in place "so its implementers can start at once", which
+invites prep work. A real run dispatches straight after `git worktree add`, and the
+implementer's first build comes from its brief, so a check on a real run is still owed.
+Side finding: three runs put the lanes beside the feature worktree and one nested them
+inside it. Step 4's `.worktrees/<branch>-lane<k>` does not say which root it is relative to. `land-branch` cleanup was
 not tested. `git worktree remove` already deletes the worktree's `target/`, and a `gc`
 scenario would act on the machine's real hive registry and store.
 

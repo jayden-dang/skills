@@ -42,6 +42,20 @@ the isolate-workspace skill requires." No new rationalization appeared. Not test
 machine without `cargo-hive` (the predicate fails and Step 2 is unchanged), and the seed
 refusal path.
 
+**Measured alongside, left unchanged: `build-in-waves` lanes.** Lanes are made with a
+plain `git worktree add` (step 4) and never pass through this skill, so they got their
+own RED with v1.2.0 here installed. Fixture: a feature worktree off a built main, Task 1
+ledgered clean, Tasks 2 and 3 ready with disjoint `Files:`. The controller is asked to
+take the run up to dispatch. Of the six runs, four created two lanes, and all four seeded
+every lane before its first build (Sonnet 2/2, Haiku 2/2). Each followed the `hive`
+skill's own rule, "seed one lane first, build it, then seed the other lanes". The other
+two went serial because both tasks need a `pub mod` line in `src/export.rs`, which
+neither `Files:` list names (a fixture flaw), and both said they would seed the lanes in
+the parallel case. That makes the lanes a no-op, so `build-in-waves` text was not written.
+Confound: every run had also read this skill's v1.2.0 Step 2. `land-branch` cleanup was
+not tested. `git worktree remove` already deletes the worktree's `target/`, and a `gc`
+scenario would act on the machine's real hive registry and store.
+
 ## Edit — share `.worktrees/` instead of minting `.isolate-workspace/` (v1.1.0)
 
 **Origin.** User request: isolation for skills / execute / check should live

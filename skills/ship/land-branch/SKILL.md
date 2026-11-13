@@ -217,7 +217,8 @@ in build and the next item still waiting on it. On a PR branch it prints `not on
 the file catches up at the next refresh on the base.
 
 **Done when:** `refresh-lanes` printed its word and the action its table gives for that word
-is done — for `written` after a local merge, the remote base again equals the local base.
+is done — for `written` after step 9 pushed, the remote base again equals the local base.
+When step 9 did not run, the lanes commit stays local with the rest of the merge.
 
 ## Red Flags
 

@@ -86,6 +86,22 @@ RED: both wrote `Approved`, no ROAD-3 lane in `lanes.md` — Sonnet: "It is gene
 to bring it in line." Haiku: "Re-run `/chart-progress` to refresh it." GREEN: both printed
 `written`; Next lists ROAD-3, then MILE-2.
 
+### land-branch: a local merge with no push permission
+
+The Done-when first read "for `written` after a local merge, the remote base again equals the
+local base", which could be taken as an order to push. Reworded to "after step 9 pushed", and
+the `written` row to "push it only where the record was pushed". Re-run with no
+`Default landing action:` and "a local merge, nothing more": Sonnet and Haiku both committed
+`docs(roadmap): refresh lanes` (ROAD-2 Done, ROAD-3 Ready) and left the remote at `611b0c0`
+(`git ls-remote` read after the run).
+
+### klynt dry run
+
+The new scripts on `~/Developer/klynt/klynt` (`dev`, `Default PR base: dev`), output to
+`/tmp`, nothing written in klynt: `written`. Against the committed 2026-10-30 file, ROAD-57,
+ROAD-128, ROAD-180 and ROAD-217 moved from "In build" / "Ready" / "Not started" to Done, and
+ROAD-131 and ROAD-132 became Ready — the drift the user reported.
+
 ### Not tested
 
 - The PR path of `land-branch` (`not on <base>`, then the next refresh on the base) — the
@@ -93,6 +109,10 @@ to bring it in line." Haiku: "Re-run `/chart-progress` to refresh it." GREEN: bo
 - `Delivery proof: required`: with proof on, done needs `Delivered-by` on the integration
   ref, which is why `land-branch` refreshes after the push. No agent run with proof on.
 - A real GitHub tracker read (`gh issue list`); every fixture had none.
+- A git-ignored `lanes.md` (private roadmap repos): the `check-ignore` row has no agent run.
+- `specify-behavior`'s tier-1 amend path (`ROAD-2 amends ROAD-5`) skips Step 1, so it does
+  not reach the call; an amendment shows in build only at the next refresh.
+- Two clones both writing on the base conflict on the header at pull; regenerating resolves it.
 
 ### Description routing
 

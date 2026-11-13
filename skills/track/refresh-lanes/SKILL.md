@@ -36,7 +36,7 @@ Claims come from open GitHub issues. With another tracker, or no `gh` access, sk
 
 | Printed | Then |
 |---|---|
-| `written` | Put `docs/roadmap/lanes.md` in the commit that carries the record you just wrote. When that commit is already made, commit it alone as `docs(roadmap): refresh lanes`, and push it wherever the record was pushed. When the caller writes no commit, leave it beside the uncommitted record. `git check-ignore -q docs/roadmap/lanes.md` succeeding means the file is private: leave it written and uncommitted, never `git add -f` |
+| `written` | Put `docs/roadmap/lanes.md` in the commit that carries the record you just wrote. When that commit is already made, commit it alone as `docs(roadmap): refresh lanes`. Push it only where the record was pushed; an unpushed record keeps it unpushed. When the caller writes no commit, leave it beside the uncommitted record. `git check-ignore -q docs/roadmap/lanes.md` succeeding means the file is private: leave it written and uncommitted, never `git add -f` |
 | `unchanged` | No lane line moved; only the header would have. Nothing to stage |
 | `no Focus` | The roadmap has no `## Focus`, so there are no lanes. Nothing to stage |
 | `not on <base>` | The record sits on a branch other than `Default PR base:`. Leave it: the file is regenerated where the record lands on the base, and a copy written on a branch conflicts with every other branch's copy at merge |

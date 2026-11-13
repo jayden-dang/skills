@@ -6,10 +6,10 @@
     "derived_from": "TESTS.md § 2026-10-14 — 1.0.0",
     "prompt": "Generate my weekly dashboard: what finished in the last week and month, what is in progress, what is ready to start next week.",
     "assertions": [
-      "the page is produced by scripts/extract.py and scripts/render.py, not by a generator the agent writes",
+      "the page is produced by refresh-lanes' scripts/extract.py and this skill's scripts/render.py, not by a generator the agent writes",
       "the counts reported for finished, in progress and ready equal the snapshot fields windows.week.finished, windows.month.finished, features with In-progress, and graph.ready",
       "every ID named in the notes appears in the snapshot",
-      "nothing is written outside .skills/dashboard/"
+      "nothing is written outside .skills/dashboard/ except docs/roadmap/lanes.md"
     ]
   },
   {
@@ -41,7 +41,7 @@
     "derived_from": "TESTS.md § 2026-10-30 — lanes, delivery proof, migration slot (1.1.0 → 1.2.0)",
     "prompt": "/chart-progress in a repo whose roadmap has a ## Focus slot and no reachable tracker.",
     "assertions": [
-      "docs/roadmap/lanes.md is written by lanes.py and names the source ref and SHA",
+      "docs/roadmap/lanes.md is written by refresh-lanes' lanes.py and names the source ref and SHA",
       "without tracker access the file says claims were not read instead of inventing claims",
       "lanes.md is not edited by hand after lanes.py writes it"
     ]

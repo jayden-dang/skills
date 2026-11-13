@@ -878,3 +878,11 @@ pricing/cache/telemetry, the per-resume token projection and the price-cliff tri
 harness, model, resume/worktree support, effective concurrency with a `concurrency_reason`
 slot, and rotations. Evals 8 (price cliff) removed; 7 and 9 narrowed. `build-in-waves` and
 `build-inline` point at **Resume or start fresh**. No baseline re-run: this deletes a step.
+
+## v3.8.0 — the In-progress stamp carries the lanes file (2026-11-13)
+
+Occupancy calls `refresh-lanes` before the stamp commit. RED on Sonnet and Haiku
+(`build-inline`, stop before Task 1's first test): both committed the stamp and left
+`docs/roadmap/lanes.md` offering the item as "Ready", without mentioning the file. GREEN:
+both put `lanes.md` ("In build") in the stamp commit. Details:
+`skills/track/refresh-lanes/TESTS.md` § 2026-11-13.

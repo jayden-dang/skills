@@ -8,7 +8,7 @@
 | **Invocation** | model-invocable — fires on roadmap planning and on **any** edit to an existing roadmap |
 | **Reads** | `templates/roadmap-INDEX.md`; `docs/product/vision.md` (`GOAL-N` citations); `docs/specs/INDEX.md` (work that already exists) |
 | **Writes** | `docs/roadmap/INDEX.md` — nothing else |
-| **Calls** | nothing |
+| **Calls** | [`refresh-lanes`](refresh-lanes.md), once an edit is approved |
 | **Called by** | [`frame-change`](frame-change.md), when its step-5 decomposition names two or more independent sub-features |
 
 ## When it fires

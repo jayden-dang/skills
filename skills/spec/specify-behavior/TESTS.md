@@ -193,3 +193,14 @@ its state.
 
 `notion-draft.md` is unedited, so its sign-off list behaves as before.
 
+
+## 2026-11-13 — the ROAD binding refreshes the lanes (1.7.0 → 1.8.0)
+
+Step 1 calls `refresh-lanes` once the card's Roadmap item cell holds a `ROAD-N`. RED on
+Sonnet and Haiku (tier-2 hand-off for ROAD-2, leave Draft): both wrote the Draft card bound
+to ROAD-2, left the repo uncommitted, and left `docs/roadmap/lanes.md` untouched, without
+mentioning it. GREEN round 1: both called `refresh-lanes`, which printed `unchanged` —
+`lanes.py` showed a ready item with a spec as plain "Ready", so the binding was invisible
+in the file. `lanes.py` now writes "Ready · spec written" (test-first). GREEN round 2: both
+printed `written`; ROAD-2 reads "Ready · spec written", left uncommitted beside the card.
+Details: `skills/track/refresh-lanes/TESTS.md` § 2026-11-13.

@@ -1,6 +1,6 @@
 ---
 name: land-branch
-version: 4.8.0
+version: 4.9.0
 description: >
   Use when a finished feature branch needs integration or disposition —
   produces a local merge, pull request, kept branch, discard, or block with
@@ -207,6 +207,17 @@ One real merge left its ticket on `building` beside a spec already `Implemented`
 
 **Done when:** the remote base equals the local base and each ticket reads as `tickets.md` says,
 or the report names what stopped it.
+
+## 10. Refresh the lanes
+
+Runs after step 8 wrote a status or a delivery record, and after step 9 when step 9 ran, so
+the lanes read what the remote now holds. REQUIRED SUB-SKILL: use `refresh-lanes`. Both
+baseline landings pushed `Implemented` and left `docs/roadmap/lanes.md` showing the feature
+in build and the next item still waiting on it. On a PR branch it prints `not on <base>`, and
+the file catches up at the next refresh on the base.
+
+**Done when:** `refresh-lanes` printed its word and the action its table gives for that word
+is done — for `written` after a local merge, the remote base again equals the local base.
 
 ## Red Flags
 

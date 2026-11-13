@@ -158,7 +158,7 @@ The table lives in [on-ramps](process/on-ramps.md) — one home, and `zone-mode`
 
 ## 3. Skill index (engineering package)
 
-Full tables: [Skill reference](skills/README.md) (78 engineering skills).  
+Full tables: [Skill reference](skills/README.md) (79 engineering skills).  
 
 `U` = you run `/name` · `m` = model-invoked
 
@@ -173,7 +173,7 @@ Full tables: [Skill reference](skills/README.md) (78 engineering skills).
 | **acceptance** | `validate-feature`, `validate-api`, `validate-ui`, `write-dogfood`, `run-dogfood` |
 | **craft** | `craft-page`, `make-video` |
 | **ship** | `land-branch`, `record-verdict`, `/cut-release` |
-| **track** | `amend-feature`, `reroute-plan`, `realign-spec`, `/triage`, `/publish-issues`, `/scan-architecture`, **`/map-features`**, `/write-handoff`, `/refresh-roadmap-status`, `/chart-progress`, `/brief-road`, `/assess-milestone`, `/sweep-backlog`, `/show-run-status`, `/idea`, `/shape`, `/board` |
+| **track** | `amend-feature`, `reroute-plan`, `realign-spec`, `/triage`, `/publish-issues`, `/scan-architecture`, **`/map-features`**, `/write-handoff`, `/refresh-roadmap-status`, `/chart-progress`, `refresh-lanes`, `/brief-road`, `/assess-milestone`, `/sweep-backlog`, `/show-run-status`, `/idea`, `/shape`, `/board` |
 | **project** | `/define-project`, `/assess-pivot-impact`, `plan-milestones` |
 
 ## Where to go next

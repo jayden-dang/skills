@@ -7,13 +7,13 @@
 | **Bucket** | track |
 | **Invocation** | `/chart-progress` (user-invoked; `disable-model-invocation: true`) |
 | **Reads** | `docs/roadmap/INDEX.md`, `docs/specs/INDEX.md` and `docs/specs/catalog/*.md`, each spec folder's `tasks.md` and `design.md`, `docs/adr/`, `docs/architecture/INDEX.md`, `.skills/<CODE>/progress.md`, `.skills/_pending-road*/`, and first-parent `git` history |
-| **Writes** | `.skills/dashboard/<date>.json`, `<date>.notes.json`, `<date>.html` — nothing else |
-| **Calls** | nothing. Names [`plan-milestones`](plan-milestones.md) and [`/assess-milestone`](assess-milestone.md) in its notes |
+| **Writes** | `.skills/dashboard/<date>.notes.json` and `<date>.html`; through `refresh-lanes`, the snapshot `<date>.json` and `docs/roadmap/lanes.md`, left for you to commit |
+| **Calls** | [`refresh-lanes`](refresh-lanes.md), for the snapshot and the lanes file. Names [`plan-milestones`](plan-milestones.md) and [`/assess-milestone`](assess-milestone.md) in its notes |
 | **Called by** | nobody — it is user-invoked |
 
 ## Two scripts and one paragraph
 
-`scripts/extract.py` turns the repo into one JSON snapshot; `scripts/render.py` turns the snapshot into one self-contained HTML page with inline SVG, light and dark. Both are deterministic: the same revision and date give the same bytes. The agent's only authored content is the notes — a summary and up to five recommendations — and every ID it names must appear in the snapshot.
+`extract.py`, which lives in [`refresh-lanes`](refresh-lanes.md), turns the repo into one JSON snapshot; `scripts/render.py` turns the snapshot into one self-contained HTML page with inline SVG, light and dark. Both are deterministic: the same revision and date give the same bytes. The agent's only authored content is the notes — a summary and up to five recommendations — and every ID it names must appear in the snapshot.
 
 The split exists because the baseline did not hold still. Two agents asked for this page on the same repo and the same day each wrote a generator of its own: one counted 7 features finished that week and the other 14, one listed 30 items ready to start and the other 16, and each took about seven minutes and 140k tokens. The scripts take a quarter of a second.
 
@@ -39,13 +39,13 @@ The ready set is only as good as the edges. [`plan-milestones`](plan-milestones.
 
 ## Lanes, delivery proof and the migration slot
 
-When the roadmap carries `## Focus` ([`plan-milestones`](plan-milestones.md) 1.4.0), `scripts/lanes.py` writes `docs/roadmap/lanes.md`: one lane per Focus entry (a milestone's live members, or one item, plus the items they name directly in `After:`), who has claimed each item (an open, assigned issue whose title names the ROAD), and who waits for a serialized surface such as `migrations/`. It replaces a hand-kept lanes table; in klynt that table was refreshed five times in six days. The header records the integration ref, its SHA and when the tracker was read, because claims change without a commit.
+When the roadmap carries `## Focus` ([`plan-milestones`](plan-milestones.md) 1.4.0), [`refresh-lanes`](refresh-lanes.md) writes `docs/roadmap/lanes.md` — on every run of this page, and right after each skill that moves a roadmap item: one lane per Focus entry (a milestone's live members, or one item, plus the items they name directly in `After:`), who has claimed each item (an open, assigned issue whose title names the ROAD), and who waits for a serialized surface such as `migrations/`. It replaces a hand-kept lanes table; in klynt that table was refreshed five times in six days. The header records the integration ref, its SHA and when the tracker was read, because claims change without a commit.
 
 With `Delivery proof: required` in `docs/agents/project.md`, "done" means merged: an Implemented feature, or a fully ticked `## ROAD-N amendment` group, counts only when its `Delivered-by:` (`PR #N` or a merge SHA) resolves to one commit on the integration ref. A squash subject ending `(#N)`, a "Merge pull request #N" commit, or ancestry all count. Anything else is *in review* and unlocks nothing downstream. The switch is opt-in because klynt's 99 finished features had no `Delivered-by:` yet, and only 13 had a single obvious candidate commit.
 
 ## Read-only by contract
 
-Nothing outside `.skills/dashboard/` is written except `docs/roadmap/lanes.md`, which `lanes.py` generates. A number the agent doubts is noted beside it, never corrected on the page — the page shows what the record says. Repairs go to [`plan-milestones`](plan-milestones.md) (roadmap), [`realign-spec`](realign-spec.md) (a drifted `Status:`), or `/assess-milestone` (a milestone ready to close).
+Nothing outside `.skills/dashboard/` is written except `docs/roadmap/lanes.md`, which `refresh-lanes` generates. A number the agent doubts is noted beside it, never corrected on the page — the page shows what the record says. Repairs go to [`plan-milestones`](plan-milestones.md) (roadmap), [`realign-spec`](realign-spec.md) (a drifted `Status:`), or `/assess-milestone` (a milestone ready to close).
 
 ## See also
 

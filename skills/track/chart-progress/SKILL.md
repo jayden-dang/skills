@@ -1,7 +1,7 @@
 ---
 name: chart-progress
-version: 1.3.0
-description: Generates a weekly progress dashboard (one HTML page) of what finished, what is building, what is ready to start, and the roadmap graph, plus the docs/roadmap/lanes.md file of parallel lanes. Run it with /chart-progress.
+version: 1.4.0
+description: Generates a weekly progress dashboard (one HTML page) of what finished, what is building, what is ready to start, and the roadmap graph, plus a fresh docs/roadmap/lanes.md. Run it with /chart-progress.
 disable-model-invocation: true
 ---
 
@@ -11,7 +11,7 @@ One self-contained HTML page for the end-of-week review: what finished in the la
 days, what is building, what is ready to start next, the roadmap as a dependency graph, each
 catalog domain, the architecture invariants and latest decisions, and structural health.
 
-Every number on the page comes from `scripts/extract.py`, a fixed parse of the repo's
+Every number on the page comes from `extract.py` in `refresh-lanes`, a fixed parse of the repo's
 markdown and git history. The agent writes one thing: the notes — a short summary and the
 recommendations for next week, read off that snapshot.
 
@@ -30,12 +30,10 @@ reader cannot be compared week to week, which is the only thing a weekly dashboa
 
 ## Run it
 
-From the root of the repo under review, `<skill>` being this skill's folder:
-
-```bash
-d=.skills/dashboard; today=$(date +%F)
-python3 <skill>/scripts/extract.py . --today "$today" --out "$d/$today.json"
-```
+From the root of the repo under review: REQUIRED SUB-SKILL: use `refresh-lanes`. It writes
+the snapshot this page renders from, `.skills/dashboard/<today>.json`, and regenerates
+`docs/roadmap/lanes.md`. This run writes no record, so leave the lanes file for the user to
+commit.
 
 *Done when: the snapshot JSON exists. A missing `docs/roadmap/INDEX.md` is not an error — the
 page then says there is no roadmap, and the rest still renders.*
@@ -85,35 +83,17 @@ rule code or hash does.*
 ## Render and hand over
 
 ```bash
+d=.skills/dashboard; today=$(date +%F)
 python3 <skill>/scripts/render.py "$d/$today.json" --notes "$d/$today.notes.json" --out "$d/$today.html"
 ```
 
 Open it (`open` / `xdg-open` / `start`) and reply with the absolute path, the summary, and the
 recommendations — nothing else. The page is local and read-only: outside `.skills/dashboard/`
-the only file written is `lanes.py`'s `docs/roadmap/lanes.md`, and no status, roadmap line, or
-spec is touched. Repairs the
+the only file written is `refresh-lanes`' `docs/roadmap/lanes.md`, and no status, roadmap line,
+or spec is touched. Repairs the
 page points at belong to `plan-milestones`, `realign-spec`, or `/assess-milestone`.
 
 *Done when: the HTML opens and the reply names its path.*
-
-## Write the lanes file
-
-When the snapshot's `focus.present` is true, regenerate `docs/roadmap/lanes.md` — the lanes
-each `## Focus` entry implies, who has claimed what, and who waits for a serialized surface.
-Claims are open tracker issues read once, so take the reading first; with no GitHub tracker or
-no `gh` access, drop `--issues` and the file says claims were not read:
-
-```bash
-gh issue list --state open --json number,title,assignees,labels,updatedAt,state --limit 500 > "$d/issues.json"
-python3 <skill>/scripts/lanes.py "$d/$today.json" --issues "$d/issues.json" \
-  --tracker-read "$(date -u +%FT%TZ)" --out docs/roadmap/lanes.md
-```
-
-The file is generated: it is never edited by hand, and a wrong line is fixed at its source —
-`## Focus`, an `After:`, a `Delivered-by:`, or the issue. Leave committing it to the user.
-
-*Done when: `docs/roadmap/lanes.md` names the source ref and SHA and the tracker reading time,
-or the snapshot has no Focus and the file was not written.*
 
 ## What the page derives, and from where
 
@@ -136,8 +116,8 @@ or the snapshot has no Focus and the file was not written.*
 - A count in the notes that differs from the snapshot
 - A snapshot field name, file path, rule code or commit hash in the notes
 - Reading `Blockers:` prose to decide what is ready
-- Editing the HTML after `render.py` wrote it, or `lanes.md` after `lanes.py` wrote it
-- Writing anywhere outside `.skills/dashboard/` other than `lanes.py`'s `docs/roadmap/lanes.md`
+- Editing the HTML after `render.py` wrote it, or `lanes.md` after `refresh-lanes` wrote it
+- Writing anywhere outside `.skills/dashboard/` other than `refresh-lanes`' `docs/roadmap/lanes.md`
 
 ## No-op
 

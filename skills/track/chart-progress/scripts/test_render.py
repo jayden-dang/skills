@@ -5,11 +5,14 @@ from __future__ import annotations
 import re
 import tempfile
 import unittest
+import sys
 from pathlib import Path
 
-from extract import extract
-from render import render
-from test_extract import build
+# The snapshot comes from refresh-lanes; in this repo its scripts sit in the sibling skill folder.
+sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "refresh-lanes" / "scripts"))
+from extract import extract  # noqa: E402
+from render import render  # noqa: E402
+from test_extract import build  # noqa: E402
 
 
 def json_copy(o):

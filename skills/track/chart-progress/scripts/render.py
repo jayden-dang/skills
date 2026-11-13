@@ -1,4 +1,4 @@
-"""Render a progress snapshot (from extract.py) into one self-contained HTML page.
+"""Render a progress snapshot (from refresh-lanes' extract.py) into one self-contained HTML page.
 
 The page is a weekly briefing for a person: names before IDs, plain states, human
 dates. Deterministic: the same snapshot and notes give the same bytes. The only prose
@@ -19,11 +19,9 @@ import sys
 import zlib
 from pathlib import Path
 
-# Plain words for item states. One home: every label on the page comes from here.
-STATE = {
-    "done": "Done", "in-review": "In review", "building": "In build", "specced": "Spec written", "framing": "Being shaped",
-    "unspecced": "Not started", "ready": "Ready", "deferred": "Deferred", "retired": "Dropped",
-}
+# Plain words for item states. Their one home is extract.py, which writes them into the
+# snapshot as `labels`; render() loads them here before drawing anything.
+STATE: dict[str, str] = {}
 ACRONYMS = {"ai", "api", "ui", "ux", "adr", "ci", "url", "pdf", "sql", "s3", "tts", "id", "os",
             "e2e", "csp", "fsrs", "llm", "otlp", "sso", "oauth", "rpo", "rto", "dns", "cdn"}
 FINDING = {"S8": "Roadmap order", "S7": "Milestone status", "S1": "Defined twice", "ADR": "Decision number",
@@ -637,6 +635,8 @@ def context(s: dict) -> dict:
 
 
 def render(s: dict, notes: dict | None = None) -> str:
+    STATE.clear()
+    STATE.update(s["labels"])
     ctx = context(s)
     w = s["windows"]["week"]
     heading = week_title(w["since"], s["today"])

@@ -19,6 +19,11 @@ import sys
 from pathlib import Path
 
 DONE = {"Implemented", "Shipped"}
+# Plain words for item states. One home: lanes.md and the dashboard both read them from the snapshot.
+STATE = {
+    "done": "Done", "in-review": "In review", "building": "In build", "specced": "Spec written", "framing": "Being shaped",
+    "unspecced": "Not started", "ready": "Ready", "deferred": "Deferred", "retired": "Dropped",
+}
 STATUS_WORDS = "Draft|Approved|In-progress|Implemented|Shipped|Recognized|Retired"
 ROW = re.compile(r"^\| (~~)?([A-Z][A-Z0-9]{1,11})(~~)? \|(.*)\| (" + STATUS_WORDS + r") \|([^|]*)\|\s*$")
 MILE_ROW = re.compile(r"^\| (~~)?(?:\*\*)?(MILE-\d+)(?:\*\*)?(~~)? \| ([^|]*) \| ([^|]*) \| ([^|]*) \| ([^|]*) \|")
@@ -184,7 +189,9 @@ def integration(root: Path, settings: dict[str, str], override: str | None) -> d
     base = settings.get("Default PR base", "").strip("` ")
     ref = override or settings.get("Integration ref", "").strip("` ") or (f"origin/{base}" if base else "")
     sha = run_git(root, "rev-parse", "--verify", "-q", f"{ref}^{{commit}}").strip() if ref else ""
-    return {"ref": ref or None, "sha": sha or None,
+    # The branch lanes.md is committed on: the configured base, else the remote's default branch.
+    home = base or run_git(root, "symbolic-ref", "-q", "--short", "refs/remotes/origin/HEAD").strip().removeprefix("origin/")
+    return {"ref": ref or None, "sha": sha or None, "base": home or None,
             "proof_required": settings.get("Delivery proof", "").strip("` ").lower() == "required"}
 
 
@@ -774,6 +781,7 @@ def extract(root: Path | str, today: str | None = None, integration_ref: str | N
         "head": run_git(root, "rev-parse", "--short", "HEAD").strip(),
         "branch": run_git(root, "rev-parse", "--abbrev-ref", "HEAD").strip(),
         "has_roadmap": roadmap.exists(),
+        "labels": STATE,
         "integration": integ,
         "focus": focus,
         "slots": slots,

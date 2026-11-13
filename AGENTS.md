@@ -1,6 +1,6 @@
 # AGENTS.md — Agent Behavior Constitution
 
-> A-to-Z agentic development skill set · **78 skills across 11 categories** · `jayden-dang/skills` · v1.0.0
+> A-to-Z agentic development skill set · **79 skills across 11 categories** · `jayden-dang/skills` · v1.0.0
 
 This file is the single source of truth for agent behavior when working with this
 skill set on any harness. Read it first, before any skill, before any action.
@@ -155,8 +155,8 @@ the description matches the situation. Everything not listed above, including
 `vet-source`,
 `speak-outer`, `make-video`,
 `inspect-invariants`, the acceptance suite, `land-branch`,
-`record-verdict`, `amend-feature`, `reroute-plan`, `realign-spec`, and
-`plan-milestones`.
+`record-verdict`, `amend-feature`, `reroute-plan`, `realign-spec`,
+`plan-milestones`, and `refresh-lanes`.
 
 **Execute family installs as a unit.** A skill folder is otherwise self-contained,
 because `npx skills add` copies one folder at a time and a `../other-skill/file.md`

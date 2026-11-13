@@ -137,3 +137,11 @@ ROAD-220 read done instead of ready.
 `extract.py` reads a four-column table (`| ID | Milestone | Depends-on | Commitment |`) and takes each outcome from the
 block's `**Outcome:**` line; a five-column table reads as before. Unit test: the same roadmap in both forms parses to
 identical milestones and items. 24 extract tests pass.
+
+## 1.4.0 — the snapshot and the lanes file come from refresh-lanes (2026-11-13)
+
+`extract.py` and `lanes.py` moved to the model-invocable `refresh-lanes`, so the skills that
+write a roadmap-moving record can regenerate `lanes.md` themselves; a model-invoked skill
+may not invoke this one or reach into its folder. Behavior-preserving move: 70 tests green
+before and after; state labels now travel in the snapshot. `test_render.py` imports the
+extractor from the sibling folder in this repo. Evidence: `skills/track/refresh-lanes/TESTS.md`.

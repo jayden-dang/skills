@@ -8,7 +8,7 @@
 | **Invocation** | model-invocable (the agent calls it on its own) |
 | **Reads** | `templates/requirements.md`, `docs/specs/INDEX.md`, the approved frame-change outcome; optional Hybrid 1A system docs for NFR grounding via `define-system-doc/consult-recipe` (metrics, threat-model, reliability, accessibility, personas) when Approved and material |
 | **Writes** | `docs/specs/<date>-<feature>/requirements.md`, a row in `docs/specs/INDEX.md`, an independent review to `.skills/<slug>-req-review.md` (via subagent) |
-| **Calls** | a review subagent (independent code-claim check), then [`design-solution`](design-solution.md) (tier 2) or [`test-first`](test-first.md) (tier 1) |
+| **Calls** | a review subagent (independent code-claim check), then [`design-solution`](design-solution.md) (tier 2) or [`test-first`](test-first.md) (tier 1), [`refresh-lanes`](refresh-lanes.md) (once the card is bound to a `ROAD-N`) |
 | **Called by** | [`frame-change`](frame-change.md) |
 
 ## When it fires

@@ -1,6 +1,6 @@
 ---
 name: specify-behavior
-version: 1.7.0
+version: 1.8.0
 description: Use when discovery is complete and a tier-1 or tier-2 change needs its requirements
   written — the user stories and EARS acceptance criteria in requirements.md that every later
   task, test, and commit cites by ID. After frame-change, before any design or code.
@@ -47,6 +47,8 @@ Flat INDEX → stop and name `/map-features` Domain boundary migrate.
 
 **Bind the roadmap item.** WHERE `docs/roadmap/INDEX.md` exists, follow `roadmap-bind.md`
 exactly — the shard row's **Roadmap item** column is the only plan↔spec join. WHERE there is no roadmap, or the work was never a roadmap item, write `—`.
+Once the cell holds a `ROAD-N`: REQUIRED SUB-SKILL: use `refresh-lanes`. Both baseline
+runs bound ROAD-2 and left `docs/roadmap/lanes.md` offering it as "Ready" to whoever picks next.
 
 **Promote ephemera.** IF a `.skills/_pending-<slug>/` directory was used for this work, move it to `.skills/<CODE>/` (`mv` when CODE dir absent) so subsequent writes use the Feature root — see `templates/skills-ephemera-paths.md`.
 **Done when:** the code has a Draft card in the owning shard, and its Roadmap item cell

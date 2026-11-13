@@ -1,6 +1,6 @@
 ---
 name: execute-common
-version: 3.7.0
+version: 3.8.0
 description: Use when build-in-waves, build-by-story, or build-inline loads the shared controller recipe — produces an In-progress catalog stamp, a runtime-bound session snapshot, lease state, ledger state, and a revision-bound close receipt.
 ---
 
@@ -62,7 +62,10 @@ and any first production edit:
 
    Before isolation, commit this checkout's dirty spec files for the feature
    (`requirements.md`, `design.md`, `tasks.md`, the INDEX row) — the
-   occupancy write is part of that commit when Status was `Approved`. A
+   occupancy write is part of that commit when Status was `Approved`, and so is
+   `docs/roadmap/lanes.md`: after writing `In-progress`, REQUIRED SUB-SKILL: use
+   `refresh-lanes` before committing. Both baseline kickoffs committed the stamp
+   and left the lanes file calling the item "Ready" for any session choosing work. A
    worktree is created from HEAD, so uncommitted spec docs stay behind,
    invisible to the new tree and other sessions. `isolate-workspace` still
    must not commit `.gitignore` — occupancy is this step, not that skill.

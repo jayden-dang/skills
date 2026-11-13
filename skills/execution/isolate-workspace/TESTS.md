@@ -1,5 +1,47 @@
 # `isolate-workspace` — tests
 
+## Edit — seed a Rust worktree with cargo-hive before its first build (v1.2.0)
+
+**Origin.** User request: integrate cargo-hive (`cargo-hive` 0.1.0, installed, with its
+`hive` skill) so Rust worktrees reuse the main checkout's built dependencies. Question
+asked first: does the installed `hive` skill already make agents seed?
+
+**Scenario (RED and GREEN, unchanged between them).** A fresh git repo
+`~/Developer/clients/<random>/ledgerline`: one Rust crate depending on `anyhow`,
+`serde`, `serde_json`, with the main checkout already built. `.claude/skills/` holds
+`isolate-workspace`, `hive` (cargo-hive's plugin skill, verbatim) and `test-first`, all
+three listed with name, description and path. The user asks for `feat/csv-export` in an
+isolated worktree, ready to implement. No native worktree tool. The prompt never mentions
+seeding, cache or hive. Roster: Sonnet (`skill-tester`), Haiku (`skill-tester-haiku`).
+Three runs per model, one fixture per run. Scored from hive's own record:
+`cargo hive status <main> --json`, counter `reused_fresh:<worktree>/target` > 0, plus
+the command order.
+
+**RED (v1.1.0 Step 2: `Cargo.toml` → `cargo build`).** 2 of 6 seeded (Sonnet 1/3, Haiku
+1/3). All six read the `hive` SKILL.md. The four that built cold, verbatim:
+
+- Sonnet: "`cargo hive` 0.1.0 is installed, but I built before considering `seed`, so the
+  worktree has already done its own full build. Seeding no longer applies to it." (ran
+  `cargo hive --version` and `cargo build` in one command)
+- Sonnet: "I read it but didn't use it: I wasn't reclaiming disk and the build took 2.5s."
+- Haiku: "hive is for reclaiming disk space and seeding target/ dirs … The worktree built
+  from scratch in about 3s, so seeding wasn't worth it"
+- Haiku: "I did not use it: this is a plain `cargo build` with no seeding or disk reclaim"
+
+Classified as an omitted step in something the skill already produces (Step 2), and the
+behaviour depends on an observable condition. Form: a conditional keyed to `Cargo.toml`
+present, no `target/` yet, and `cargo hive --version` exiting 0, with the exact commands,
+placed ahead of the existing manifest table. The counter carries the recorded excuses
+(3 s build, disk-reclaim reading, built-first).
+
+**GREEN (v1.2.0).** 6 of 6 seeded before the first `cargo build` (Sonnet 3/3, Haiku 3/3).
+Every worktree target reads `reused_fresh` 26, with 27 units cloned and 0 failed. Every
+run ran `repo add` on the main checkout, then `seed`, then `cargo build` (0.23–0.39 s).
+One Haiku run cited the rule: "I seeded the worktree with hive before the first build, as
+the isolate-workspace skill requires." No new rationalization appeared. Not tested: a
+machine without `cargo-hive` (the predicate fails and Step 2 is unchanged), and the seed
+refusal path.
+
 ## Edit — share `.worktrees/` instead of minting `.isolate-workspace/` (v1.1.0)
 
 **Origin.** User request: isolation for skills / execute / check should live

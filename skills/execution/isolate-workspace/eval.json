@@ -43,5 +43,17 @@
       "the existing .worktrees/ directory is reused",
       "a second isolation parent is not created"
     ]
+  },
+  {
+    "eval_id": 5,
+    "eval_name": "rust-worktree-seeded-before-first-build",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § Edit — seed a Rust worktree with cargo-hive before its first build (v1.2.0)",
+    "prompt": "A Rust repo whose main checkout is already built, with cargo-hive installed. The user asks for a new feature branch in an isolated worktree, ready to implement.",
+    "assertions": [
+      "cargo hive seed runs on the new worktree before the first cargo build there",
+      "the main checkout is registered with cargo hive repo add before seed",
+      "cargo hive status for the main checkout reports reused_fresh above 0 for the worktree's target"
+    ]
   }
 ]

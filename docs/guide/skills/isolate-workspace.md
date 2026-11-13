@@ -7,7 +7,7 @@
 | **Bucket** | execution |
 | **Invocation** | model-invocable (the agent calls it on its own) |
 | **Reads** | `git rev-parse` output (git-dir vs common-dir, superproject), lockfiles and manifests, `docs/agents/project.md` (the test command) |
-| **Writes** | a new git worktree and branch (fallback path), an **uncommitted** `.gitignore` entry, installed dependencies |
+| **Writes** | a new git worktree and branch (fallback path), an **uncommitted** `.gitignore` entry, installed dependencies; for Rust with cargo-hive, a registry entry for the main checkout and a seeded `target/` |
 | **Calls** | the harness's native workspace tool when one exists (e.g. `EnterWorktree`); suggests `configure-repo` if `docs/agents/project.md` is missing |
 | **Called by** | [`build-in-waves`](build-in-waves.md), [`plan-tasks`](plan-tasks.md), [`land-branch`](land-branch.md), [`configure-repo`](configure-repo.md) |
 
@@ -59,7 +59,9 @@ If creation fails on a sandbox or permission error, tell the user and work in pl
 
 ## Step 2 — install dependencies
 
-Auto-detect the package manager from the lockfile or manifest that is present, then run its install:
+**A Rust worktree is seeded before its first build.** When `Cargo.toml` is present, the workspace has no `target/` yet, and `cargo hive --version` succeeds, the skill registers the main checkout with [cargo-hive](https://github.com/jayden-dang/cargo-hive) (`cargo hive repo add`, a no-op when it is already registered), runs `cargo hive seed` on the new worktree, and only then runs `cargo build`. Seeding clones the registry dependencies the main checkout has already built, so the worktree does not compile them again. It has to come first: once `cargo build` has created a `target/`, there is nothing left to seed. If seed refuses, the worktree builds cold and the report names the finding. Without the binary (Linux, or hive not installed) this step is skipped.
+
+Otherwise, auto-detect the package manager from the lockfile or manifest that is present, then run its install:
 
 - `pnpm-lock.yaml` → pnpm; `bun.lock*` → bun; `yarn.lock` → yarn; `package-lock.json` or a bare `package.json` → npm
 - `Cargo.toml` → `cargo build`

@@ -1,6 +1,6 @@
 ---
 name: isolate-workspace
-version: 1.1.0
+version: 1.2.0
 description: Use when starting feature work, executing a plan, or making any multi-commit
   change that should not touch the user's current checkout — set up an
   isolated git worktree before the first file is edited.
@@ -61,7 +61,18 @@ Done when: you are in the workspace (or have reported why not).
 
 ## Step 2 — Install dependencies
 
-Auto-detect the package manager from lockfiles/manifests and run its install: `pnpm-lock.yaml` → pnpm, `bun.lock*` → bun, `yarn.lock` → yarn, `package-lock.json`/bare `package.json` → npm, `Cargo.toml` → `cargo build`, `uv.lock` → uv, `poetry.lock` → poetry, `requirements.txt` → pip, `go.mod` → `go mod download`. No manifest → skip.
+**Seed a Rust worktree first.** `Cargo.toml` present, no `target/` in the workspace yet, and `cargo hive --version` exits 0 → seed, then build. `$GIT_COMMON` is from Step 0; its parent is the main checkout:
+
+```bash
+MAIN=$(dirname "$GIT_COMMON")
+cargo hive repo add "$MAIN" --json   # no-op when already registered
+cargo hive seed "$(pwd -P)" --json
+cargo build
+```
+
+Seed however fast the build looks. With hive installed, four of six agents built this step cold: two because the crate built in 3 s, two reading hive as a disk-reclaim tool — and once `cargo build` has made a `target/`, seed has nothing left to do. A seed refusal → build cold and name the receipt's finding in the report. The `hive` skill, when installed, explains its receipts.
+
+Otherwise auto-detect the package manager from lockfiles/manifests and run its install: `pnpm-lock.yaml` → pnpm, `bun.lock*` → bun, `yarn.lock` → yarn, `package-lock.json`/bare `package.json` → npm, `Cargo.toml` → `cargo build`, `uv.lock` → uv, `poetry.lock` → poetry, `requirements.txt` → pip, `go.mod` → `go mod download`. No manifest → skip.
 
 ## Step 3 — Clean baseline
 

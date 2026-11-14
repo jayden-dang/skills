@@ -222,10 +222,21 @@ Execute `python3 -I .claude/skills/evolve-system/scripts/sense.py … ; echo "EX
 headless run cannot ask for approval". That is a runner requirement, now in the guide page. It is not a
 skill failure, and a full grok cell is still not run.
 
+## Portability — grok, headless (2026-11-14, run by the user)
+
+`grok --cwd <fernhollow fixture> --prompt-file <the GREEN fernhollow prompt> --always-approve --max-turns 40`.
+The fixture was pinned to the 1.0.0 text and sensor at `0e84945`. Scored from the fixture:
+- no tracked edit, no commit, `dev` unchanged;
+- one cycle `ci:change_fail` in `{"schema_version":1,"cycles":[…]}`, predicted "goes from 3/6 … to 0
+  failures in the next 3 landings", settle "3 landings after the change, within 30 days";
+- a draft ticket only (no `Evolve filing` line, `--unattended`), and it re-ran the sensor to see the key `tracked`.
+
+The same cell under `--permission-mode acceptEdits` with scoped `--allow` rules stopped at step 1, because
+the runner could not approve the sensor command.
+
 ## Not run
 
-- **A complete run under another runner**: grok read the skill correctly but its headless permissions
-  blocked the sensor (see v1.1.0). A full cell needs the runner to allow `python3` on the sensor.
+- **Another runner on 1.1+**: the passing grok cell ran the 1.0.0 text and sensor.
 - **Ticket read-back and verdict comments on a remote tracker** (step 2 and step 4 with `Evolve filing:
   tracker`): never run by an agent; fixtures had no remote and filing now defaults to drafts.
 - **"Reverted key first"** end to end: the sensor's ordering is unit-tested; no agent run met a reverted cycle.

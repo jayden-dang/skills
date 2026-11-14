@@ -55,8 +55,9 @@ started from a real failure):
 ## Running it from a bot or scheduler
 
 The runner must be allowed to run `python3` on the sensor and to write under `.skills/evolve/`.
-In a headless `grok -p` run, grok read the skill correctly. It stopped at the sensor because the
-runner's permission rules did not allow the command, and a headless run cannot ask for approval.
+Under `grok -p` with `--always-approve` the run completed: one cycle, a draft, no commit.
+With scoped allow rules that did not cover the sensor command, it stopped at step 1, because a
+headless run cannot ask for approval.
 
 ## Why it is shaped this way
 

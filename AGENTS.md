@@ -145,6 +145,12 @@ Agents MUST NOT auto-invoke these — name them for the user to run (`/triage`,
 `scan-architecture`, `show-run-status`, `sweep-backlog`, `triage`, `write-handoff` ·
 the five-command path: `board`, `idea`, `shape`, `go` (with `cut-release` above).
 
+**A runner the user configured counts as the user.** A scheduler, NAVORI or a
+bot that sends a user-invoked skill's command (`/evolve-system --unattended`)
+invokes it on the user's behalf. When nobody will answer, it passes
+`--unattended`, and the skill reads that flag, never the harness's name. This
+does not let a model-invoked skill invoke a user-invoked one.
+
 **Model-invoked skills** (no `disable-model-invocation`) are auto-invoked when
 the description matches the situation. Everything not listed above, including
 `frame-change`, `clarify-decisions`, `research`,

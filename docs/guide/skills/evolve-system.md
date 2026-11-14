@@ -48,7 +48,7 @@ To set a repo up, add to `docs/agents/project.md` (the jobs line is optional; it
 started from a real failure):
 
 ```markdown
-- **Integration CI:** `gh run list --workflow <name> --branch <integration branch> --limit 200 --json databaseId,conclusion,headSha,createdAt`
+- **Integration CI:** `gh run list --workflow <name> --branch <integration branch> --limit 1000 --json databaseId,conclusion,headSha,createdAt`
 - **Integration CI jobs:** `gh run view {run_id} --json jobs`
 ```
 

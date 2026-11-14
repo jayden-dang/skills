@@ -183,6 +183,10 @@ def landings(repo, feats, runs, now):
                "violates": sorted(set(VIOLATES.findall("".join(
                    open(f, errors="replace").read() for f in glob.glob(os.path.join(d, "*.md"))))))}
         at = ts(landed) - timedelta(hours=1)  # a run created before the landing cannot contain it
+        if not any(ts(r["createdAt"]) < ts(landed) for r in known):
+            row["first_real_ci"] = "unknown"  # the CI history starts after this landing
+            rows.append(row)
+            continue
         for i, r in enumerate(known):
             if ts(r["createdAt"]) < at or not contains(repo, head, r["headSha"]) or real(r) == "infra":
                 continue
@@ -236,6 +240,7 @@ def counts(repo, feats, rows, lo, hi):
                        rx.search("".join(open(f, errors="replace").read() for f in glob.glob(os.path.join(d, "*.md"))))]
     return {"w": w, "green": green, "red": [r for r in green if r["first_real_ci"] == "failure"],
             "on_red": [r for r in w if r["base_before"] == "failure"],
+            "known_base": [r for r in w if r["base_before"] in ("success", "failure")],
             "missing": [r for r in w if not r["receipt"]], "lanes": lanes, "codes": codes,
             "commits": sum(len(r["commit_modules"]) for r in w),
             "wide_commits": sum(1 for r in w for m in r["commit_modules"] if m >= 2),
@@ -255,8 +260,8 @@ def signals(repo, feats, rows, runs, err, since, now):
         out.append(rated("ci:change_fail", "ci", (len(cur["red"]), len(cur["green"])),
                          pair(len(prev["red"]), len(prev["green"])),
                          [{k: r.get(k) for k in ("code", "head_sha", "landed_at", "ci_run")} for r in cur["red"]]))
-        out.append(rated("ci:landed_on_red", "ci", (len(cur["on_red"]), len(cur["w"])),
-                         pair(len(prev["on_red"]), len(prev["w"])), [r["code"] for r in cur["on_red"]]))
+        out.append(rated("ci:landed_on_red", "ci", (len(cur["on_red"]), len(cur["known_base"])),
+                         pair(len(prev["on_red"]), len(prev["known_base"])), [r["code"] for r in cur["on_red"]]))
         recent = [r for r in runs if ts(r["createdAt"]) >= since]
         infra = [r for r in recent if real(r) == "infra"]
         out.append({"key": "ci:runs_real", "rung": "ci", "value": f"{len(infra)} of {len(recent)} runs ran 0 steps",

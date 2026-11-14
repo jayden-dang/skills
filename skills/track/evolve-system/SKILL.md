@@ -1,6 +1,6 @@
 ---
 name: evolve-system
-version: 1.2.0
+version: 1.2.1
 description: Measures how reliably a repo's delivery loop holds, settles what earlier runs set out to improve, and opens at most one new improvement with a prediction. Run it with /evolve-system.
 disable-model-invocation: true
 ---
@@ -57,7 +57,7 @@ Open nothing when any of these holds; say which, with the report path, and stop:
   `docs/agents/project.md` (the command prints JSON runs; the jobs line is optional):
 
   ```markdown
-  - **Integration CI:** `gh run list --workflow <name> --branch <integration branch> --limit 200 --json databaseId,conclusion,headSha,createdAt`
+  - **Integration CI:** `gh run list --workflow <name> --branch <integration branch> --limit 1000 --json databaseId,conclusion,headSha,createdAt`
   - **Integration CI jobs:** `gh run view {run_id} --json jobs`
   ```
 

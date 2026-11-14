@@ -268,6 +268,18 @@ class Sense(unittest.TestCase):
         _, rep = sense(repo, "--now", "2026-11-20T00:00:00Z", "--since", ALL)
         self.assertEqual(rep["cycles"][0]["state"], "inconclusive")
 
+    def test_landings_without_ci_history_are_not_a_baseline(self):
+        repo = fixture("harborline")
+        p = os.path.join(repo, "ci/runs.json")
+        runs = json.load(open(p))
+        json.dump([r for r in runs if r["createdAt"] >= "2026-10-28"], open(p, "w"))  # CI history cut short
+        _, rep = sense(repo, "--now", NOW, "--since", "2026-10-28T00:00:00Z", "--min-baseline", "1")
+        s = sig(rep, "ci:landed_on_red")
+        self.assertEqual(s["trend"], "no-baseline")  # earlier landings have no CI to judge them by
+        self.assertIsNone(s["previous"])
+        early = {l["code"]: l for l in rep["landings"]}["LEDGER"]
+        self.assertEqual(early["first_real_ci"], "unknown")  # CI history starts after it landed
+
     def test_awaiting_cycle_settles_reverted_when_a_green_base_landing_turns_red(self):
         repo = fixture("tidewater")
         cycles(repo, [{"key": "ci:change_fail", "state": "awaiting", "changed_at": "2026-10-21T10:00:00Z"}])

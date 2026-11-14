@@ -222,6 +222,17 @@ Execute `python3 -I .claude/skills/evolve-system/scripts/sense.py … ; echo "EX
 headless run cannot ask for approval". That is a runner requirement, now in the guide page. It is not a
 skill failure, and a full grok cell is still not run.
 
+## v1.2.1 — first live run on klynt (2026-11-14)
+
+The installed skill, with klynt's new `Integration CI` lines at `--limit 200`, ran in 2 min 22 s. Two defects:
+- 200 runs cover about a month of klynt CI, but a baseline needs the previous 45 days too. The previous
+  window had no CI data, so `ci:landed_on_red` read "0/25" (every landing in the denominator, none with a
+  known base) and called the current 4/16 "worse". Its denominator is now landings with a known base, so
+  the previous window is "no baseline". The setup line now asks for `--limit 1000`.
+- A landing older than the CI history was given the first later run that contains it as its "first real
+  CI". It now reads `unknown`.
+Test added red first: CI history cut short in the fixture. 32 tests, green.
+
 ## Portability — grok, headless (2026-11-14, run by the user)
 
 `grok --cwd <fernhollow fixture> --prompt-file <the GREEN fernhollow prompt> --always-approve --max-turns 40`.

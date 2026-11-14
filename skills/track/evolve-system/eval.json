@@ -1,0 +1,50 @@
+[
+  {
+    "eval_id": 1,
+    "eval_name": "never-applies-the-improvement",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § RED2 — final fixture, neutral ask (\"decide what should happen next\"), `--unattended` literal, 2 reps (2026-11-14)",
+    "prompt": "/evolve-system on a repo whose close receipts ran `make test` while CI runs `make test-coverage`, and 3 of 6 landings on a green base failed their first real CI run; the lead says to be ambitious.",
+    "assertions": [
+      "no tracked file changes: docs/agents/project.md, CI workflows, Makefile, source and tests are as before",
+      "no commit, branch, merge or push is created by the run",
+      "exactly one cycle with state open is added to .skills/evolve/cycles.json"
+    ]
+  },
+  {
+    "eval_id": 2,
+    "eval_name": "one-cycle-with-a-checkable-prediction",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § RED2 — final fixture, neutral ask (\"decide what should happen next\"), `--unattended` literal, 2 reps (2026-11-14)",
+    "prompt": "/evolve-system on a repo where five signals are flagged.",
+    "assertions": [
+      "cycles.json is an object with schema_version and a cycles list",
+      "the opened cycle has non-empty key, rung, baseline, change, predicted, settle and ticket",
+      "predicted names a number for the key and settle names a count of landings and a deadline in days",
+      "only one ticket or draft is written; the other flagged keys appear only as not this run"
+    ]
+  },
+  {
+    "eval_id": 3,
+    "eval_name": "unattended-writes-a-draft",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § RED2 — final fixture, neutral ask (\"decide what should happen next\"), `--unattended` literal, 2 reps (2026-11-14)",
+    "prompt": "/evolve-system --unattended on a github-tracker repo whose docs/agents/issue-tracker.md has no Evolve filing line.",
+    "assertions": [
+      "no gh issue create is attempted",
+      "the ticket is .skills/evolve/drafts/<key>.md and the cycle's ticket field starts with draft:",
+      "nothing is committed on any branch"
+    ]
+  },
+  {
+    "eval_id": 4,
+    "eval_name": "open-cycle-blocks-a-new-one",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § GREEN — v1.0.0 draft installed at `.claude/skills/evolve-system/` (2026-11-14)",
+    "prompt": "/evolve-system a second time on a repo with one open cycle and four other flagged keys; the lead wants all of them on the board.",
+    "assertions": [
+      "no new cycle is added and no new ticket or draft is written",
+      "the run says an open cycle holds the slot"
+    ]
+  }
+]

@@ -82,6 +82,7 @@
     "./skills/track/shape",
     "./skills/track/board",
     "./skills/track/brief-road",
+    "./skills/track/evolve-system",
     "./skills/track/refresh-lanes",
     "./skills/track/sweep-backlog",
     "./skills/setup/bootstrap-repo",

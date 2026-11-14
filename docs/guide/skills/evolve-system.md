@@ -19,12 +19,21 @@ script, and a run with nothing flagged opens nothing.
 ## What it does
 
 1. **Sense.** `scripts/sense.py` reads what the skill set already writes and prints fixed signals:
+   - `ci:latest_red`: the integration branch is red right now;
+   - `ci:runs_real`: CI jobs that ran zero steps, meaning no runner;
    - `ci:change_fail`: a landing (the receipt's head, else the ledger's last commit range) whose first real CI run was red, counting only landings on a green base;
    - `ci:landed_on_red`;
-   - `ci:runs_real`: CI jobs that ran zero steps, meaning no runner;
    - `evidence:receipt_coverage`;
    - `evidence:close_vs_ci_command`: the close ran a different test command than CI;
+   - `arch:invariant_violations`: `violates ARCH-N` verdicts in review files;
+   - `arch:blast_radius`: the share of commits that touch two or more code modules (the same module rule as `/scan-architecture`); it flags only a rise;
+   - `arch:posture`: read from `/scan-architecture`'s `posture.json` when present; never flags;
    - repeated review lanes such as reader-left-behind.
+
+   **Each rate is judged against the repo's own baseline**, the previous window of the same length
+   (`previous`, `trend`). It flags only while events remain and the rate is not better than that
+   baseline, or when there is no earlier history. A repo that is getting better goes quiet without a
+   global threshold.
 2. **Settle.** The same script moves earlier cycles from `open` to `awaiting` once a commit names their
    ticket, then to `kept`, `reverted` or `inconclusive` by a fixed rule per signal (how many landings, by
    when). The run comments each verdict on its ticket.
@@ -42,6 +51,12 @@ started from a real failure):
 - **Integration CI:** `gh run list --workflow <name> --branch <integration branch> --limit 200 --json databaseId,conclusion,headSha,createdAt`
 - **Integration CI jobs:** `gh run view {run_id} --json jobs`
 ```
+
+## Running it from a bot or scheduler
+
+The runner must be allowed to run `python3` on the sensor and to write under `.skills/evolve/`.
+In a headless `grok -p` run, grok read the skill correctly. It stopped at the sensor because the
+runner's permission rules did not allow the command, and a headless run cannot ask for approval.
 
 ## Why it is shaped this way
 

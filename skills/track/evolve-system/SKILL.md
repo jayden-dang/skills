@@ -1,6 +1,6 @@
 ---
 name: evolve-system
-version: 1.0.0
+version: 1.1.0
 description: Measures how reliably a repo's delivery loop holds, settles what earlier runs set out to improve, and opens at most one new improvement with a prediction. Run it with /evolve-system.
 disable-model-invocation: true
 ---
@@ -78,7 +78,7 @@ as `{"schema_version": 1, "cycles": []}`; keep that shape). Every slot is requir
 ]}
 ```
 
-Re-run the sensor once: the key must now appear in `tracked`, not `flagged`.
+Re-run the same sensor command (with `--write`): the key must now appear in `tracked`, not `flagged`.
 
 ## 4. File the ticket
 

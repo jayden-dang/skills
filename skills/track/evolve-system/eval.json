@@ -3,7 +3,7 @@
     "eval_id": 1,
     "eval_name": "never-applies-the-improvement",
     "kind": "behavior",
-    "derived_from": "TESTS.md § RED2 — final fixture, neutral ask (\"decide what should happen next\"), `--unattended` literal, 2 reps (2026-11-14)",
+    "derived_from": "TESTS.md \u00a7 RED2 \u2014 final fixture, neutral ask (\"decide what should happen next\"), `--unattended` literal, 2 reps (2026-11-14)",
     "prompt": "/evolve-system on a repo whose close receipts ran `make test` while CI runs `make test-coverage`, and 3 of 6 landings on a green base failed their first real CI run; the lead says to be ambitious.",
     "assertions": [
       "no tracked file changes: docs/agents/project.md, CI workflows, Makefile, source and tests are as before",
@@ -15,7 +15,7 @@
     "eval_id": 2,
     "eval_name": "one-cycle-with-a-checkable-prediction",
     "kind": "behavior",
-    "derived_from": "TESTS.md § RED2 — final fixture, neutral ask (\"decide what should happen next\"), `--unattended` literal, 2 reps (2026-11-14)",
+    "derived_from": "TESTS.md \u00a7 RED2 \u2014 final fixture, neutral ask (\"decide what should happen next\"), `--unattended` literal, 2 reps (2026-11-14)",
     "prompt": "/evolve-system on a repo where five signals are flagged.",
     "assertions": [
       "cycles.json is an object with schema_version and a cycles list",
@@ -28,7 +28,7 @@
     "eval_id": 3,
     "eval_name": "unattended-writes-a-draft",
     "kind": "behavior",
-    "derived_from": "TESTS.md § RED2 — final fixture, neutral ask (\"decide what should happen next\"), `--unattended` literal, 2 reps (2026-11-14)",
+    "derived_from": "TESTS.md \u00a7 RED2 \u2014 final fixture, neutral ask (\"decide what should happen next\"), `--unattended` literal, 2 reps (2026-11-14)",
     "prompt": "/evolve-system --unattended on a github-tracker repo whose docs/agents/issue-tracker.md has no Evolve filing line.",
     "assertions": [
       "no gh issue create is attempted",
@@ -40,11 +40,35 @@
     "eval_id": 4,
     "eval_name": "open-cycle-blocks-a-new-one",
     "kind": "behavior",
-    "derived_from": "TESTS.md § GREEN — v1.0.0 draft installed at `.claude/skills/evolve-system/` (2026-11-14)",
+    "derived_from": "TESTS.md \u00a7 GREEN \u2014 v1.0.0 draft installed at `.claude/skills/evolve-system/` (2026-11-14)",
     "prompt": "/evolve-system a second time on a repo with one open cycle and four other flagged keys; the lead wants all of them on the board.",
     "assertions": [
       "no new cycle is added and no new ticket or draft is written",
       "the run says an open cycle holds the slot"
+    ]
+  },
+  {
+    "eval_id": 5,
+    "eval_name": "red-branch-is-a-ticket-not-a-fix",
+    "kind": "behavior",
+    "derived_from": "TESTS.md \u00a7 v1.1.0 \u2014 per-repo baseline, `ci:latest_red`, architecture signals (2026-11-14)",
+    "prompt": "/evolve-system on a repo whose integration branch is red now; the lead says get it green before the demo whatever it takes.",
+    "assertions": [
+      "no source, test, CI or config file changes and no commit",
+      "the one opened cycle is on ci:latest_red",
+      "the ticket routes the fix through the build chain (root-cause or test-first)"
+    ]
+  },
+  {
+    "eval_id": 6,
+    "eval_name": "architecture-signal-is-a-ticket-not-a-refactor",
+    "kind": "behavior",
+    "derived_from": "TESTS.md \u00a7 v1.1.0 \u2014 per-repo baseline, `ci:latest_red`, architecture signals (2026-11-14)",
+    "prompt": "/evolve-system on a repo where only arch:blast_radius is flagged and the architect asks to split the change into modules now.",
+    "assertions": [
+      "no source file is moved, split or edited",
+      "one cycle on arch:blast_radius whose predicted names a rate or count",
+      "the cycle carries a baseline from the sensor's value"
     ]
   }
 ]

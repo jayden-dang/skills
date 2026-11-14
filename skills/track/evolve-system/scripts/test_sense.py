@@ -35,6 +35,22 @@ def commit(repo, msg, date):
     subprocess.run(["git", "-C", repo, "commit", "-qm", msg], check=True, env=env)
 
 
+def land(repo, code, files, date, review=None):
+    """A landed feature: one commit touching `files`, a ledger range, an optional review file."""
+    base = subprocess.run(["git", "-C", repo, "rev-parse", "HEAD"], capture_output=True, text=True).stdout.strip()
+    for f in files:
+        os.makedirs(os.path.join(repo, os.path.dirname(f)), exist_ok=True)
+        open(os.path.join(repo, f), "a").write("x = 1\n")
+    commit(repo, f"feat({code.lower()}): wide change", date)
+    head = subprocess.run(["git", "-C", repo, "rev-parse", "HEAD"], capture_output=True, text=True).stdout.strip()
+    d = os.path.join(repo, ".skills", code)
+    os.makedirs(d)
+    open(os.path.join(d, "progress.md"), "w").write(f"Task 1: complete (commits {base[:9]}..{head[:9]}, review clean)\n")
+    if review:
+        open(os.path.join(d, "whole-branch-review.md"), "w").write(review)
+    return head
+
+
 class Sense(unittest.TestCase):
     def test_red_repo_flags_change_fail_and_skips_infra_runs(self):
         code, rep = sense(fixture("harborline"), "--now", NOW, "--since", ALL)
@@ -48,6 +64,7 @@ class Sense(unittest.TestCase):
         self.assertFalse(sig(rep, "ci:runs_real")["flag"])  # the outage is over
         self.assertTrue(sig(rep, "evidence:close_vs_ci_command")["flag"])
         self.assertEqual(sig(rep, "evidence:receipt_coverage")["missing"], ["FEES", "SPLIT"])
+        self.assertEqual(sig(rep, "evidence:receipt_coverage")["value"], "6/8 with a receipt")
         self.assertTrue(sig(rep, "review:lane_repeat:reader-left-behind")["flag"])
 
     def test_green_repo_is_a_no_op(self):
@@ -165,6 +182,69 @@ class Sense(unittest.TestCase):
         c = rep["cycles"][0]
         self.assertEqual(c["state"], "reverted")  # TAX (11-12) still had the hit after the change
         self.assertIn("TAX", c["why"])
+
+    def test_a_rate_better_than_the_repo_baseline_does_not_flag(self):
+        # tidewater: before 10-21 one of two green-base landings went red, after it one of four
+        _, rep = sense(fixture("tidewater"), "--now", NOW, "--since", "2026-10-21T00:00:00Z")
+        s = sig(rep, "ci:change_fail")
+        self.assertEqual(s["trend"], "better")
+        self.assertFalse(s["flag"])
+        self.assertIn("previous", s)
+
+    def test_a_rate_no_better_than_baseline_flags(self):
+        _, rep = sense(fixture("harborline"), "--now", NOW, "--since", "2026-10-15T00:00:00Z")
+        s = sig(rep, "ci:change_fail")
+        self.assertIn(s["trend"], ("same", "worse"))
+        self.assertTrue(s["flag"])
+
+    def test_no_history_before_the_window_means_no_baseline_and_events_flag(self):
+        _, rep = sense(fixture("harborline"), "--now", NOW, "--since", ALL)
+        self.assertEqual(sig(rep, "ci:change_fail")["trend"], "no-baseline")
+        self.assertTrue(sig(rep, "ci:change_fail")["flag"])
+
+    def test_latest_red_flags_while_the_integration_branch_is_red(self):
+        _, rep = sense(fixture("harborline"), "--now", "2026-10-31T00:00:00Z", "--since", ALL)
+        self.assertTrue(sig(rep, "ci:latest_red")["flag"])
+        _, rep = sense(fixture("harborline"), "--now", NOW, "--since", ALL)
+        self.assertFalse(sig(rep, "ci:latest_red")["flag"])
+
+    def test_blast_radius_flags_when_multi_module_landings_rise(self):
+        repo = fixture("quillmark")  # every quillmark landing touches one module (src)
+        land(repo, "WIDE", ["billing/core/a.py", "notify/core/b.py", "ledger/core/c.py"], "2026-11-13T10:00:00")
+        _, rep = sense(repo, "--now", NOW, "--since", "2026-10-25T00:00:00Z")
+        s = sig(rep, "arch:blast_radius")
+        self.assertEqual(s["events"], ["WIDE"])
+        self.assertEqual(s["value"], "1/" + s["value"].split("/")[1])  # one commit crossed modules
+        self.assertTrue(s["flag"])
+        self.assertEqual(s["trend"], "worse")
+
+    def test_a_violates_verdict_is_an_architecture_signal(self):
+        repo = fixture("quillmark")
+        land(repo, "PORTX", ["src/ports.py"], "2026-11-13T10:00:00",
+             review="inspect-invariants (1 citation)\n  violates ARCH-2  calls persistence directly\n")
+        _, rep = sense(repo, "--now", NOW, "--since", ALL)
+        s = sig(rep, "arch:invariant_violations")
+        self.assertEqual(s["events"], [{"code": "PORTX", "invariant": "ARCH-2"}])
+        self.assertTrue(s["flag"])
+
+    def test_posture_is_read_when_present_and_never_flags(self):
+        repo = fixture("quillmark")
+        os.makedirs(os.path.join(repo, ".skills/scan-architecture"))
+        json.dump({"rules_total": 12, "rules_mechanised": 1, "multi_module_commit_pct": 18.7},
+                  open(os.path.join(repo, ".skills/scan-architecture/posture.json"), "w"))
+        _, rep = sense(repo, "--now", NOW, "--since", ALL)
+        s = sig(rep, "arch:posture")
+        self.assertEqual(s["value"], "1/12 rules mechanised; 18.7% multi-module commits")
+        self.assertFalse(s["flag"])
+
+    def test_blast_radius_cycle_settles_from_the_baseline_slot_when_no_rate_was_recorded(self):
+        repo = fixture("quillmark")
+        for i, day in enumerate(("15", "16", "17", "18", "19")):
+            land(repo, f"NARROW{i}", [f"billing/core/n{i}.py"], f"2026-11-{day}T10:00:00")
+        cycles(repo, [{"key": "arch:blast_radius", "state": "awaiting", "baseline": "1/7 (INVOICE)",
+                       "changed_at": "2026-11-14T12:00:00Z"}])
+        _, rep = sense(repo, "--now", "2026-11-20T00:00:00Z", "--since", ALL)
+        self.assertEqual(rep["cycles"][0]["state"], "kept")
 
     def test_awaiting_cycle_settles_reverted_when_a_green_base_landing_turns_red(self):
         repo = fixture("tidewater")

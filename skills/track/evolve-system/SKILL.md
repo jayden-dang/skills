@@ -1,6 +1,6 @@
 ---
 name: evolve-system
-version: 1.1.0
+version: 1.2.0
 description: Measures how reliably a repo's delivery loop holds, settles what earlier runs set out to improve, and opens at most one new improvement with a prediction. Run it with /evolve-system.
 disable-model-invocation: true
 ---
@@ -60,6 +60,10 @@ Open nothing when any of these holds; say which, with the report path, and stop:
   - **Integration CI:** `gh run list --workflow <name> --branch <integration branch> --limit 200 --json databaseId,conclusion,headSha,createdAt`
   - **Integration CI jobs:** `gh run view {run_id} --json jobs`
   ```
+
+Whichever way the run ends, a flagged `ci:latest_red` or `ci:runs_real` (the integration branch is
+red now, or CI is not running) is the first line of the run summary, even when an open cycle means
+nothing new is opened.
 
 Otherwise take the **first** key in `pick_order` (the sensor's fixed order). Every other key in it
 goes in the run summary under "not this run". It is not filed: the next run sees it again.

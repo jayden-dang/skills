@@ -32,7 +32,7 @@ script, and a run with nothing flagged opens nothing.
 
    **Each rate is judged against the repo's own baseline**, the previous window of the same length
    (`previous`, `trend`). It flags only while events remain and the rate is not better than that
-   baseline, or when there is no earlier history. A repo that is getting better goes quiet without a
+   baseline, or when there is no earlier history (fewer than 3 observations counts as none). A repo that is getting better goes quiet without a
    global threshold.
 2. **Settle.** The same script moves earlier cycles from `open` to `awaiting` once a commit names their
    ticket, then to `kept`, `reverted` or `inconclusive` by a fixed rule per signal (how many landings, by
@@ -69,3 +69,9 @@ Twelve runs without the skill, on Sonnet and Haiku across four fixture repos:
 
 Re-checking an earlier improvement and stopping when everything is green both passed without the skill,
 so the skill adds nothing there. Evidence: `skills/track/evolve-system/TESTS.md`.
+
+## What a baseline cannot see
+
+A rate that is bad but improving reads "better" and stays quiet. On klynt, change-fail at 5/10 is not
+flagged because the previous window was 8/10. The loop measures direction, not level. A red branch is
+caught anyway by `ci:latest_red`, which has no baseline.

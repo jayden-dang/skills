@@ -185,14 +185,14 @@ class Sense(unittest.TestCase):
 
     def test_a_rate_better_than_the_repo_baseline_does_not_flag(self):
         # tidewater: before 10-21 one of two green-base landings went red, after it one of four
-        _, rep = sense(fixture("tidewater"), "--now", NOW, "--since", "2026-10-21T00:00:00Z")
+        _, rep = sense(fixture("tidewater"), "--now", NOW, "--since", "2026-10-21T00:00:00Z", "--min-baseline", "2")
         s = sig(rep, "ci:change_fail")
         self.assertEqual(s["trend"], "better")
         self.assertFalse(s["flag"])
         self.assertIn("previous", s)
 
     def test_a_rate_no_better_than_baseline_flags(self):
-        _, rep = sense(fixture("harborline"), "--now", NOW, "--since", "2026-10-15T00:00:00Z")
+        _, rep = sense(fixture("harborline"), "--now", NOW, "--since", "2026-10-15T00:00:00Z", "--min-baseline", "2")
         s = sig(rep, "ci:change_fail")
         self.assertIn(s["trend"], ("same", "worse"))
         self.assertTrue(s["flag"])
@@ -211,7 +211,7 @@ class Sense(unittest.TestCase):
     def test_blast_radius_flags_when_multi_module_landings_rise(self):
         repo = fixture("quillmark")  # every quillmark landing touches one module (src)
         land(repo, "WIDE", ["billing/core/a.py", "notify/core/b.py", "ledger/core/c.py"], "2026-11-13T10:00:00")
-        _, rep = sense(repo, "--now", NOW, "--since", "2026-10-25T00:00:00Z")
+        _, rep = sense(repo, "--now", NOW, "--since", "2026-10-25T00:00:00Z")  # previous window: 3 commits
         s = sig(rep, "arch:blast_radius")
         self.assertEqual(s["events"], ["WIDE"])
         self.assertEqual(s["value"], "1/" + s["value"].split("/")[1])  # one commit crossed modules
@@ -245,6 +245,28 @@ class Sense(unittest.TestCase):
                        "changed_at": "2026-11-14T12:00:00Z"}])
         _, rep = sense(repo, "--now", "2026-11-20T00:00:00Z", "--since", ALL)
         self.assertEqual(rep["cycles"][0]["state"], "kept")
+
+    def test_a_previous_window_below_the_minimum_sample_is_no_baseline(self):
+        # tidewater before 10-21 has two green-base landings: too few to judge a trend by default
+        _, rep = sense(fixture("tidewater"), "--now", NOW, "--since", "2026-10-21T00:00:00Z")
+        self.assertEqual(sig(rep, "ci:change_fail")["trend"], "no-baseline")
+
+    def test_an_open_cycle_on_a_red_branch_is_kept_once_the_branch_is_green(self):
+        repo = fixture("harborline")
+        cycles(repo, [{"key": "ci:latest_red", "state": "open", "opened_at": "2026-10-31T00:00:00Z",
+                       "ticket": "draft:.skills/evolve/drafts/ci-latest_red.md"}])
+        _, rep = sense(repo, "--now", NOW, "--since", ALL)
+        self.assertEqual(rep["cycles"][0]["state"], "kept")
+        self.assertNotIn("ci:latest_red", rep["tracked"])
+
+    def test_an_unreadable_blast_baseline_is_inconclusive(self):
+        repo = fixture("quillmark")
+        for i, day in enumerate(("15", "16", "17", "18", "19")):
+            land(repo, f"NARROW{i}", [f"billing/core/n{i}.py"], f"2026-11-{day}T10:00:00")
+        cycles(repo, [{"key": "arch:blast_radius", "state": "awaiting", "baseline": "about a third",
+                       "changed_at": "2026-11-14T12:00:00Z"}])
+        _, rep = sense(repo, "--now", "2026-11-20T00:00:00Z", "--since", ALL)
+        self.assertEqual(rep["cycles"][0]["state"], "inconclusive")
 
     def test_awaiting_cycle_settles_reverted_when_a_green_base_landing_turns_red(self):
         repo = fixture("tidewater")

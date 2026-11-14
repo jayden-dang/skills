@@ -43,7 +43,9 @@ SETTLE = {"ci:change_fail": (3, 30), "ci:landed_on_red": (3, 30), "ci:runs_real"
           "evidence:receipt_coverage": (3, 30), "evidence:close_vs_ci_command": (1, 30),
           "review:lane_repeat:reader-left-behind": (3, 45), "review:lane_repeat:silent-degradation": (3, 45)}
 MANIFESTS = ("Cargo.toml", "package.json", "go.mod", "pyproject.toml", "pom.xml", "build.gradle")
-NON_CODE = re.compile(r"^(docs/|\.skills/|\.scratch/|\.github/|ops/)|\.(md|txt|json|ya?ml|lock|toml)$")
+# the same file filters as scan-architecture's posture.py: source files only, generated code dropped
+SOURCE = re.compile(r"\.(rs|ts|tsx|js|jsx|py|go|java|kt|rb|php|cs|swift|sql|sh)$")
+GENERATED = re.compile(r"\.gen\.|/generated\.|\.generated\.|/\.sqlx/|\.pb\.|_pb2\.")
 VIOLATES = re.compile(r"^\s*[-*]?\s*violates\s+(ARCH-\d+)\b", re.M)
 RANGE = re.compile(r"commits?\s+`?([0-9a-f]{7,40})`?\s*\.\.\s*`?([0-9a-f]{7,40})`?")
 
@@ -108,7 +110,7 @@ def landing_commits(repo, d):
             if not lines or lines[0] in seen:
                 continue
             seen.add(lines[0])
-            mods = {module_of(repo, f) for f in lines[1:] if f and not NON_CODE.search(f)}
+            mods = {module_of(repo, f) for f in lines[1:] if f and SOURCE.search(f) and not GENERATED.search(f)}
             if mods:
                 out.append(len(mods))
     return out
@@ -204,9 +206,12 @@ def ci_test_commands(repo):
     return cmds
 
 
+MIN_BASELINE = 3  # a previous window with fewer observations than this is no baseline
+
+
 def trend(cur, base):
     """cur/base are (events, total). Returns better | same | worse | no-baseline."""
-    if not base or base[1] == 0:
+    if not base or base[1] < MIN_BASELINE:
         return "no-baseline"
     rc, rb = cur[0] / cur[1] if cur[1] else 0, base[0] / base[1]
     return "better" if rc < rb else ("worse" if rc > rb else "same")
@@ -217,7 +222,7 @@ def rated(key, rung, cur, base, events, **extra):
     it flags while events remain and the rate is not better than that baseline."""
     t = trend(cur, base)
     return {"key": key, "rung": rung, "value": f"{cur[0]}/{cur[1]}", "rate": round(cur[0] / cur[1], 3) if cur[1] else 0,
-            "previous": f"{base[0]}/{base[1]}" if base and base[1] else None, "trend": t,
+            "previous": f"{base[0]}/{base[1]}" if base and base[1] >= MIN_BASELINE else None, "trend": t,
             "flag": cur[0] > 0 and t in ("no-baseline", "same", "worse"), "events": events, **extra}
 
 
@@ -258,10 +263,12 @@ def signals(repo, feats, rows, runs, err, since, now):
                     "flag": bool(runs) and real(runs[-1]) == "infra",
                     "infra_window": [infra[0]["createdAt"], infra[-1]["createdAt"]] if infra else None,
                     "latest": real(runs[-1]) if runs else None})
-        reals = [r for r in runs if real(r) != "infra"]
         streak = []
-        for r in reversed(reals):
-            if real(r) != "failure":
+        for r in reversed(runs):  # newest first; classify only until the first green
+            c_ = real(r)
+            if c_ == "infra":
+                continue
+            if c_ != "failure":
                 break
             streak.append(r)
         out.append({"key": "ci:latest_red", "rung": "ci", "flag": bool(streak),
@@ -273,7 +280,7 @@ def signals(repo, feats, rows, runs, err, since, now):
                   missing=[r["code"] for r in cur["missing"]])
         # shown as landings WITH a receipt, as in 1.0; the rate and trend are about the missing ones
         s["value"] = f"{len(cur['w']) - len(cur['missing'])}/{len(cur['w'])} with a receipt"
-        if s["previous"]:
+        if s["previous"] is not None:
             s["previous"] = f"{len(prev['w']) - len(prev['missing'])}/{len(prev['w'])} with a receipt"
         out.append(s)
     ci_cmds = ci_test_commands(repo)
@@ -335,6 +342,8 @@ def advance(repo, cfg, cycles, now):
 
 
 OPEN_DAYS = 30  # an improvement nobody delivered within this many days frees the slot
+# keys with no rate: once the flag clears there is nothing left to wait for, delivered or not
+ABSOLUTE = ("ci:configured", "ci:runs_real", "ci:latest_red", "evidence:close_vs_ci_command")
 
 
 def settle(cycles, rows, sigs, now):
@@ -353,7 +362,10 @@ def _settle(cycles, rows, sigs, now):
         if c.get("state") == "open" and c.get("opened_at"):
             age = (now - ts(c["opened_at"])).days
             c["age_days"] = age
-            if age > OPEN_DAYS:
+            s_ = by_key.get(c["key"])
+            if c["key"] in ABSOLUTE and s_ is not None and not s_.get("flag"):
+                c["state"], c["why"] = "kept", f"{c['key']} cleared ({s_['value']})"
+            elif age > OPEN_DAYS:
                 c["state"], c["why"] = "expired", f"no commit delivered its ticket within {OPEN_DAYS} days"
             continue
         if c.get("state") != "awaiting":
@@ -391,8 +403,10 @@ def _settle(cycles, rows, sigs, now):
                 m = re.match(r"\s*(\d+)\s*/\s*(\d+)", str(c.get("baseline", "")))
                 if base is None and m and int(m.group(2)):
                     base = int(m.group(1)) / int(m.group(2))  # the slot the run wrote, e.g. "1/7"
-                if base is not None and rate < base:
-                    c["state"], c["why"] = "kept", f"multi-module landings fell from {base:.0%} to {rate:.0%}"
+                if base is None:
+                    c["state"], c["why"] = "inconclusive", "no numeric baseline to compare with"
+                elif rate < base:
+                    c["state"], c["why"] = "kept", f"multi-module commits fell from {base:.0%} to {rate:.0%}"
                 else:
                     c["state"], c["why"] = "reverted", f"multi-module landings at {rate:.0%}, not below {base}"
         elif c["key"].startswith("review:lane_repeat:"):
@@ -430,7 +444,9 @@ def main():
     ap.add_argument("--since")
     ap.add_argument("--ci-cmd")
     ap.add_argument("--jobs-cmd")
+    ap.add_argument("--min-baseline", type=int, default=MIN_BASELINE)
     a = ap.parse_args()
+    globals()["MIN_BASELINE"] = a.min_baseline
     repo = os.path.abspath(a.repo)
     if not git(repo, "rev-parse", "--git-dir"):
         print(f"not a git repo: {repo}", file=sys.stderr)

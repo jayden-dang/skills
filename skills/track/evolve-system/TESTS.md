@@ -178,11 +178,11 @@ Measured on klynt (cached `gh` output), the same four dates:
 |---|---|---|
 | 2026-09-18 | 7 keys | `ci:runs_real` first (dead runner), 6 more (no earlier history) |
 | 2026-10-23 | 6 keys | `ci:latest_red`, `ci:change_fail` (8/9 vs 3/7, worse), `close_vs_ci`, `arch:blast_radius` |
-| 2026-11-09 | 6 keys | 3: `ci:landed_on_red` (8/14 vs 14/27, worse), `close_vs_ci`, `arch:blast_radius` (83/210 vs 66/287) |
+| 2026-11-09 | 6 keys | 3: `ci:landed_on_red` (8/14 vs 14/27, worse), `close_vs_ci`, `arch:blast_radius` (65/208 vs 50/286 after the posture filters) |
 | 2026-11-14 | 6 keys | `ci:latest_red` (DSPAN) first, `close_vs_ci`, `arch:blast_radius`; change-fail, receipts and both lanes read **better** and go quiet |
 
 The first blast-radius draft counted whole features (10/11 "multi-module": a feature spans backend and
-frontend by nature); counting commits, as posture.py does, gives klynt 39% now against 23% before.
+frontend by nature); counting commits, as posture.py does, gives klynt 31% now against 19% before (with posture.py's file filters; see the review pass below).
 
 **Agent cells on 1.0 text + 1.1 sensor** (scored from artifacts):
 
@@ -198,6 +198,21 @@ Failures found and fixed:
   means the value now. Renamed `previous`.
 - Haiku re-ran the sensor without `--write`, so its cycle had no `baseline_rate`. The text now says to
   re-run the same command with `--write`, and settling falls back to the `baseline` slot. Shape check only.
+
+**Review pass on 1.1** (deterministic, unit-tested, red first then green; 31 tests):
+- `arch:blast_radius` used a deny-list (docs, json, yaml…, and a fixture-only `ops/`), so images, CSS and
+  generated code counted as modules. It now uses posture.py's own SOURCE / GENERATED filters. Five sampled
+  klynt "wide" commits were read by hand and were real cross-crate changes, e.g. `crates/gateways` with
+  `crates/services/media_service`. klynt reads 19% (48/256) in the previous window against posture.json's
+  18.7% over 180 days, and 31% (66/211) now. The populations differ: ledger-range commits against all commits.
+- An open cycle on a key with no rate (`ci:latest_red`, `ci:runs_real`, `ci:configured`,
+  `close_vs_ci_command`) now settles `kept` once its flag clears. A draft never advances, so it would
+  otherwise hold the slot for 30 days after the branch went green.
+- A previous window with fewer than 3 observations is no baseline (`--min-baseline`). In the fixture a
+  previous 0/1 had been enough to call a rate "worse".
+- A blast-radius cycle with no readable baseline settles `inconclusive`, not `reverted`.
+- Text: a flagged `ci:latest_red` / `ci:runs_real` leads the run summary even when an open cycle blocks a new
+  one. This is an added observable line with a shape check only, because no agent run reached that state.
 
 **grok -p** (2 attempts, `--permission-mode acceptEdits` with scoped `--allow` rules; `--always-approve`
 was refused by this session's safety classifier). Grok read the skill and stated its rules correctly:

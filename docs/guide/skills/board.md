@@ -37,6 +37,12 @@ Since 1.1.0 a Shaping line names its assignee, so a ticket someone else is frami
 
 Not covered: Linear, Notion drafts passed with `--drafts`, and a board of more than 30 tickets.
 
+## Modes folded in (2026-11-15)
+
+Each is a file beside `SKILL.md`, opened on the condition `SKILL.md` names.
+
+- `run-status.md` — where one feature's build stands, from the plan, ledger, git, tests, ticket and pull request.
+
 ## See also
 
 - [The workflow](../workflow.md) — the states and who moves each one

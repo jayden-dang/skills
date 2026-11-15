@@ -17,7 +17,7 @@ Committing is not enough; the fix is durable only once it is on origin. Use
 
 A cite is a greppable templates/<relpath> in that skill's SKILL.md whose
 relpath names a file or directory under repo-root templates/. A skill's
-private tree (for example define-system-doc/templates/) is ignored because
+private tree (for example define-project/templates/) is ignored because
 those paths are not files under the pack SSOT.
 
 Usage:

@@ -7,13 +7,15 @@ listing budget, without losing quality). Moved whole, not rewritten: amend-featu
 `SKILL.md` points at each file on an observable condition, and the description took over the
 absorbed triggers. The absorbed skills' own records are appended at the end of this file.
 
-Checked on Sonnet and Haiku against the frozen routing suite (`.skills/fixtures/routing/suite.py`,
+Checked on Sonnet and Haiku against the frozen routing suite (`scripts/skill-tests/routing/suite.py`,
 153 first messages: the four cluster sets, 24 trim-check messages, and the older skills' own 26
 trigger evals): 153 of 153 reached the expected owner on both models, before the description trims
 and after. One ticket was run from `/idea` through `/shape` and `/go` before and after
-(`.skills/fixtures/baselines/`): same stops for the operator, same artifacts. A real Claude Code
+(`scripts/skill-tests/baselines/`): same stops for the operator, same artifacts. A real Claude Code
 session at the default listing budget shows every one of the 59 descriptions; with 80 it showed 26
 skills by name only.
+
+**`amend.md` run on its own (Haiku).** On a repo with the PAY feature shipped, the operator asks for the refusal message to read "amount must be above zero" ("Just the wording"). The run read `SKILL.md`, then `amend.md`, grounded the change in PAY-1.4, and called it tier 1, not tier 0, because an existing criterion quotes the old string; it stopped before code, tests or spec edits.
 
 Not covered: each mode file was not re-run on its own scenario. The absorbed skills' contract
 evals, which cited headings of a `SKILL.md` that no longer exists, were dropped.

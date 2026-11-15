@@ -96,10 +96,11 @@ DELETED = ["gate-session", "ask-me-bro", "tour-system", "deepen-codebase",
            "pathfind", "work-the-problem", "zone-mode", "sweep-backlog", "publish-issues", "deliver-issues", "validate-api", "validate-ui", "hold-stage", "show-run-status", "brief-road", "chart-progress", "define-system-doc", "assess-pivot-impact", "draft-ux", "forge-goal", "amend-feature", "bootstrap-repo", "no-comments", "build-in-waves", "build-by-story", "build-inline", "execute-common"]
 dead = subprocess.run(["grep", "-rl", *[a for n in DELETED for a in ("-e", n)],
                        "--include=*.md", "--include=*.json", "--include=*.mdc",
-                       "--include=*.sh", "."], capture_output=True, text=True).stdout.split()
+                       "--include=*.sh", "--include=*.py", "."], capture_output=True, text=True).stdout.split()
 dead = [f for f in dead if "/.git/" not in f and "CHANGELOG" not in f and "/TESTS.md" not in f
         and "/.skills/" not in f and "/docs/releases/" not in f and "settings.local.json" not in f
-        and "/.remember/" not in f and "/docs/design/" not in f]
+        and "/.remember/" not in f and "/docs/design/" not in f and "scripts/qa-set.py" not in f
+        and "/skill-tests/" not in f]
 check("no live references to deleted skills", not dead, "; ".join(dead[:4]))
 
 # 7 manifests match the tree

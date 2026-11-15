@@ -64,7 +64,7 @@ def harness_setup(names, own_cycle_on=None):
     reg = os.path.join(home, "registry.json")
     json.dump({"repos": [{"path": r} for r in repos]}, open(reg, "w"))
     lock = os.path.join(home, "skill-lock.json")
-    json.dump({"skills": {"execute-common": {"updatedAt": "2026-11-01T00:00:00Z"}}}, open(lock, "w"))
+    json.dump({"skills": {"build": {"updatedAt": "2026-11-01T00:00:00Z"}}}, open(lock, "w"))
     return home, reg, lock, repos
 
 
@@ -312,7 +312,7 @@ class Sense(unittest.TestCase):
         s = next(x for x in rep["signals"] if x["key"] == "evidence:receipt_coverage")
         self.assertEqual(len(s["repos"]), 2)
         self.assertTrue(s["flag"])
-        self.assertEqual(s["owner"]["skill"], "execute-common")
+        self.assertEqual(s["owner"]["skill"], "build")
         self.assertEqual(code, 10)
 
     def test_harness_ignores_a_key_only_one_repo_flags(self):
@@ -336,11 +336,11 @@ class Sense(unittest.TestCase):
     def test_a_harness_cycle_waits_for_the_owning_skill_to_be_installed_then_settles_on_pooled_landings(self):
         home, reg, lock, repos = harness_setup(["harborline", "fernhollow"])
         json.dump({"schema_version": 1, "cycles": [{"key": "evidence:receipt_coverage", "state": "open",
-                    "opened_at": "2026-10-01T00:00:00Z", "owner": "execute-common", "ticket": "draft:x"}]},
+                    "opened_at": "2026-10-01T00:00:00Z", "owner": "build", "ticket": "draft:x"}]},
                   open(os.path.join(home, "cycles.json"), "w"))
         _, rep = harness(reg, lock, "--now", NOW, "--write")
         c = rep["cycles"][0]
-        self.assertNotEqual(c["state"], "open")  # execute-common was reinstalled on 11-01
+        self.assertNotEqual(c["state"], "open")  # build was reinstalled on 11-01
         self.assertEqual(c["changed_at"], "2026-11-01T00:00:00Z")
         self.assertEqual(c["state"], "reverted")  # SPLIT landed on 11-06 in both repos with no receipt
         self.assertIn("SPLIT", c["why"])

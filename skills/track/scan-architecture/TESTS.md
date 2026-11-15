@@ -7,7 +7,7 @@ own; approving, answering and merging stay with the operator). Step 6 still appl
 The description became trigger + outcome with its neighbours named.
 
 Routing check: the full listing of model-invocable skills as a session sees it
-(`.skills/fixtures/routing/listing.py`), 32 first messages (`cluster-b-messages.md`),
+(`scripts/skill-tests/routing/listing.py`), 32 first messages (`cluster-b-messages.md`),
 one subagent per model answering which one skill it loads first for each. Messages are batched
 in one context, one rep per model, lighter than `pressure-testing.md`'s fresh context per query.
 
@@ -22,11 +22,11 @@ Should-fire messages: "where would refactoring pay off most in this codebase?" Â
 
 Roster: sonnet and haiku, as subagents, the skill read from `.claude/skills/scan-architecture/SKILL.md`
 (`craft-page`, `clarify-decisions`, `board`, `idea`, `frame-change` installed beside it). Fixture:
-`quayside` (`.skills/fixtures/make-quayside.sh`): about 100 lines of source, 4 commits, a github
+`quayside` (`scripts/skill-tests/make-quayside.sh`): about 100 lines of source, 4 commits, a github
 tracker behind a stateful `bin/gh`. Prompt: "/scan-architecture â€” where would refactoring pay in
 this repo? I'm at the Port Authority until 5 and won't read your reply until tomorrow morning, so
 don't wait on me." The run is told it has no display and cannot dispatch agents. Scored from the
-tracker's state file, `.skills/inbox/` and `board.py` (`.skills/fixtures/score-inbox.py`).
+tracker's state file, `.skills/inbox/` and `board.py` (`scripts/skill-tests/score-inbox.py`).
 
 A first pair of baseline runs is void: the prompt ended "leave things so I can pick it up from
 the board", which names the behaviour under test. Both filed tickets (one of them two).

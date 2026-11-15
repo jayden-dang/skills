@@ -7,11 +7,11 @@ listing budget, without losing quality). Moved whole, not rewritten: brief-road 
 `SKILL.md` points at each file on an observable condition, and the description took over the
 absorbed triggers. The absorbed skills' own records are appended at the end of this file.
 
-Checked on Sonnet and Haiku against the frozen routing suite (`.skills/fixtures/routing/suite.py`,
+Checked on Sonnet and Haiku against the frozen routing suite (`scripts/skill-tests/routing/suite.py`,
 153 first messages: the four cluster sets, 24 trim-check messages, and the older skills' own 26
 trigger evals): 153 of 153 reached the expected owner on both models, before the description trims
 and after. One ticket was run from `/idea` through `/shape` and `/go` before and after
-(`.skills/fixtures/baselines/`): same stops for the operator, same artifacts. A real Claude Code
+(`scripts/skill-tests/baselines/`): same stops for the operator, same artifacts. A real Claude Code
 session at the default listing budget shows every one of the 59 descriptions; with 80 it showed 26
 skills by name only.
 
@@ -26,7 +26,7 @@ took its consent from being typed, so the body is unchanged. The description bec
 outcome with its neighbours named.
 
 Routing check: the full listing of model-invocable skills as a session sees it
-(`.skills/fixtures/routing/listing.py`), 22 first messages (`cluster-a-messages.md`), one
+(`scripts/skill-tests/routing/listing.py`), 22 first messages (`cluster-a-messages.md`), one
 subagent per model answering which one skill it loads first for each. Messages are batched in one
 context, one rep per model, which is lighter than `pressure-testing.md`'s fresh context per query.
 
@@ -262,7 +262,7 @@ took its consent from being typed, so the body is unchanged. The description bec
 outcome with its neighbours named.
 
 Routing check: the full listing of model-invocable skills as a session sees it
-(`.skills/fixtures/routing/listing.py`), 22 first messages (`cluster-a-messages.md`), one
+(`scripts/skill-tests/routing/listing.py`), 22 first messages (`cluster-a-messages.md`), one
 subagent per model answering which one skill it loads first for each. Messages are batched in one
 context, one rep per model, which is lighter than `pressure-testing.md`'s fresh context per query.
 

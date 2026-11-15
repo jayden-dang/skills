@@ -25,6 +25,12 @@ It ends with `go`' one message: a row per ticket, then every **Needs a decision 
 
 With `/go #23` as a user-invoked skill, one haiku run built only #23, so scoping was already a no-op; that run also skipped the claim at the start. `/go` exists as one of the five short commands, and `go` became model-invocable (2.0.0) so that `/go` can invoke it. With `/go #23`, the run built only #23, claimed it, moved it to `in-review`, and put `Closes #23` in the pull request. See `skills/execution/go/TESTS.md`.
 
+## Modes folded in (2026-11-15)
+
+Each is a file beside `SKILL.md`, opened on the condition `SKILL.md` names.
+
+- `deliver.md` — the delivery run itself: the frontier of ready tickets, one build, review and pull request per ticket, one message at the end.
+
 ## See also
 
 - [The workflow](../workflow.md) — the states and who moves each one

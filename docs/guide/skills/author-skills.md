@@ -72,6 +72,12 @@ An author wants a skill that stops agents from marking a task done on a stale te
 
 `author-skills` is itself a gate — its Iron Law is a hard prohibition with a rationalization table and a deployment checklist, exactly the form its own table prescribes for a "knows the rule, breaks it under pressure" failure (here, the author who is sure the text is clear and skips the baseline). It is user-invoked because authoring is a deliberate human-initiated act, not something an agent should trigger mid-task, and it pushes its two heaviest bodies of detail — the test protocol and the phrasing psychology — behind well-worded pointers so their tokens are paid only when an author is actually testing or phrasing.
 
+## Modes folded in (2026-11-15)
+
+Each is a file beside `SKILL.md`, opened on the condition `SKILL.md` names.
+
+- `reflect.md` — mining a hard session for skill edits that wait for approval.
+
 ## See also
 
 - [The skill model](../concepts/skill-model.md) — what a skill is and how it loads

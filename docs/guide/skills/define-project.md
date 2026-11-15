@@ -29,6 +29,13 @@ The spine is not a diagram doc — it is the small set of **invariants** that ke
 
 The whole layer is optional. `configure-repo` gates it behind a default-**No** decision; feature skills consult it through no-op-if-absent hooks. A repo that opts into nothing behaves exactly as it did before this layer existed.
 
+## Modes folded in (2026-11-15)
+
+Each is a file beside `SKILL.md`, opened on the condition `SKILL.md` names.
+
+- `system-doc.md` — one system-documentation artifact from the catalog, written after its proposal is approved.
+- `pivot.md` — the disposition ledger when a new direction contradicts shipped features.
+
 ## See also
 
 - [`inspect-invariants`](inspect-invariants.md) — the advisory conformance check `define-project` runs in validate mode

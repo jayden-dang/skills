@@ -26,3 +26,9 @@
 ## Downstream
 
 [`design-solution`](design-solution.md) Step 2b lifts `## UI design` from an existing ui-brief instead of re-deciding. A brief authored before any spec waits in `docs/design/` for the feature that adopts it.
+
+## Modes folded in (2026-11-15)
+
+Each is a file beside `SKILL.md`, opened on the condition `SKILL.md` names.
+
+- `interaction.md` — what a surface does when used: two or three runnable takes of one flow and a locked Interaction section.

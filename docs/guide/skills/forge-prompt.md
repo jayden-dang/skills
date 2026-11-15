@@ -91,6 +91,12 @@ cold. That is the cross-context review configuration the literature backs.
 | The open item is a design fork, not a missing target | [`clarify-decisions`](clarify-decisions.md) |
 | The ask already names targets, boundaries, and a done signal | just start the work |
 
+## Modes folded in (2026-11-15)
+
+Each is a file beside `SKILL.md`, opened on the condition `SKILL.md` names.
+
+- `goal.md` — the goal prompt for an unattended run, with its checks, guards and stop lines.
+
 ## See also
 
 - Skill body: [`skills/discovery/forge-prompt/SKILL.md`](../../../skills/discovery/forge-prompt/SKILL.md)

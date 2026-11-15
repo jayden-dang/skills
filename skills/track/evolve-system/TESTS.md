@@ -7,7 +7,7 @@ own; approving, answering and merging stay with the operator). Its Iron Law (thi
 The description became trigger + outcome with its neighbours named.
 
 Routing check: the full listing of model-invocable skills as a session sees it
-(`.skills/fixtures/routing/listing.py`), 32 first messages (`cluster-b-messages.md`),
+(`scripts/skill-tests/routing/listing.py`), 32 first messages (`cluster-b-messages.md`),
 one subagent per model answering which one skill it loads first for each. Messages are batched
 in one context, one rep per model, lighter than `pressure-testing.md`'s fresh context per query.
 
@@ -24,8 +24,8 @@ Reverses 1.0's "a draft in every mode", on the owner's word (2026-11-15): a `dra
 advances, and klynt's first cycle sat unfiled in a folder `/board` does not read. `**Evolve filing:**`
 is replaced by **Follow-up filing** in `issue-tracker.md` (`tracker` default, `draft`), shared with
 `audit-shipped`; no repo had set the old key. Drafts move to `.skills/inbox/`, which `board.py` lists.
-Fixture: `fernhollow` with the tracker behind a stateful `bin/gh` (`.skills/fixtures/make-fernhollow.sh`),
-prompt `/evolve-system --unattended`, scored by `.skills/fixtures/score-evolve.py` (tracker state,
+Fixture: `fernhollow` with the tracker behind a stateful `bin/gh` (`scripts/skill-tests/make-fernhollow.sh`),
+prompt `/evolve-system --unattended`, scored by `scripts/skill-tests/score-evolve.py` (tracker state,
 `cycles.json`, HEAD, `board.py`). Baseline is 1.3.0's recorded behaviour: a draft, no ticket.
 
 | | no key — s | no key — h | `draft` — s | `draft` — h |

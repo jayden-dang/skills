@@ -134,6 +134,12 @@ That failure class calls for a hard prohibition plus a rationalization table plu
 
 The tier decision is forced to be spoken out loud so it cannot be quietly skipped, and the two exits are named exhaustively so there is no third path into code. The output can be three sentences, but the process runs every time — that invariance is the whole point.
 
+## Modes folded in (2026-11-15)
+
+Each is a file beside `SKILL.md`, opened on the condition `SKILL.md` names.
+
+- `amend.md` — the light lane for a small in-scope change to a shipped, spec'd feature.
+
 ## See also
 
 - [Ceremony tiers](../methodology/ceremony-tiers.md) — the 0/1/2 decision in full

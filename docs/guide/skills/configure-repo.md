@@ -114,6 +114,12 @@ Adopting the set into an existing TypeScript + Vitest library with a GitHub remo
 
 The whole skill is built around a single failure mode: a config that reads plausible but does not run. Everything downstream — `test-first`'s tight loop, `prove-claim`'s completion claims, `cut-release`'s ordered steps, `triage`'s label writes — trusts these files blindly, so a wrong path stays invisible until it fails far from the context that could fix it. Hence the one-decision-at-a-time conversation (a dumped questionnaire gets rubber-stamped), the additive write rule (never clobber the user's own instructions), and above all the Step 6 gate, which refuses to call setup done on the strength of what was confirmed rather than what was proven to run. The wiring-versus-content split is the load-bearing idea: it lets the gate be strict about the one thing setup controls (wiring) without demanding the user fix a pre-existing lint backlog before they can start.
 
+## Modes folded in (2026-11-15)
+
+Each is a file beside `SKILL.md`, opened on the condition `SKILL.md` names.
+
+- `bootstrap.md` — a verified skeleton in an empty directory, before the config is written.
+
 ## See also
 
 - [Adopting the skill set](../resources/adopting.md) — the wider story of bringing an existing repo under the set

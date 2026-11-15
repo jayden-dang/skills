@@ -148,6 +148,12 @@ The read-only constraint exists because a reviewer that mutates the tree is no l
 
 Two smaller instructions carry weight for the same reason. **Skip anything tooling already enforces**: a finding that repeats the linter or formatter is noise that buries the findings a human or an agent actually had to reason about. And each subagent brief is capped **under 400 words** and forbidden from pre-judging — a brief that grows unbounded or seeds its own conclusions turns the subagent into an echo of the dispatcher rather than an independent reviewer, which is the failure the two-axis design exists to prevent.
 
+## Modes folded in (2026-11-15)
+
+Each is a file beside `SKILL.md`, opened on the condition `SKILL.md` names.
+
+- `stage.md` — admit only the requirement IDs the pinned diff implements or violates before the Spec walk.
+
 ## See also
 
 - [`vet-feedback`](vet-feedback.md) — the other side: how the author evaluates these findings as claims

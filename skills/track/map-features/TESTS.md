@@ -7,7 +7,7 @@ own; approving, answering and merging stay with the operator). Every write still
 The description became trigger + outcome with its neighbours named.
 
 Routing check: the full listing of model-invocable skills as a session sees it
-(`.skills/fixtures/routing/listing.py`), 32 first messages (`cluster-c-messages.md`),
+(`scripts/skill-tests/routing/listing.py`), 32 first messages (`cluster-c-messages.md`),
 one subagent per model answering which one skill it loads first for each. Messages are batched
 in one context, one rep per model, lighter than `pressure-testing.md`'s fresh context per query.
 

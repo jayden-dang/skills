@@ -7,7 +7,7 @@ own; approving, answering and merging stay with the operator). Its admission tes
 The description became trigger + outcome with its neighbours named.
 
 Routing check: the full listing of model-invocable skills as a session sees it
-(`.skills/fixtures/routing/listing.py`), 32 first messages (`cluster-b-messages.md`),
+(`scripts/skill-tests/routing/listing.py`), 32 first messages (`cluster-b-messages.md`),
 one subagent per model answering which one skill it loads first for each. Messages are batched
 in one context, one rep per model, lighter than `pressure-testing.md`'s fresh context per query.
 
@@ -25,13 +25,13 @@ owner's word (2026-11-15). The evidence that the hand-off was dead: klynt's ledg
 `DEBT-N` rows and all 65 read `Ticket: none`.
 
 Roster: sonnet and haiku, as subagents, the skill read from `.claude/skills/record-debt/SKILL.md`.
-Fixture: `quayside` (`.skills/fixtures/make-quayside.sh`): a github tracker behind a stateful
+Fixture: `quayside` (`scripts/skill-tests/make-quayside.sh`): a github tracker behind a stateful
 `bin/gh`, no ledger yet. Prompt, every run (Lan): "/record-debt — bank these two from the review
 of the refund branch; we judged both real and left them out of that branch on purpose. (1) 'Is
 this invoice paid in full' is worked out in three places … a proper piece of work that should be
 scheduled this month. (2) [a test-file nit]. Tiny, not worth scheduling. I'm at the Port
 Authority until 5, so don't wait on me." Scored from `docs/quality/debt.md`, the tracker's state
-file and `board.py` (`.skills/fixtures/score-inbox.py`).
+file and `board.py` (`scripts/skill-tests/score-inbox.py`).
 
 | | RED 1.2.0 — s | RED 1.2.0 — h | GREEN — s | GREEN — h | GREEN, Follow-up filing `draft` — h |
 |---|---|---|---|---|---|

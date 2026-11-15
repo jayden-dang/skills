@@ -103,6 +103,13 @@ The git-ignored ledger is the connective tissue: it lets a fan-out of children s
 
 It is also why the skill is an orchestrator rather than a monolith. API validation, browser validation, and human-eyeball judgment are genuinely different disciplines with different tools — `curl` and a fresh `GET`, a kimi-webbridge drive in the user's browser, a hand-checked artifact. Rather than fold all three into one skill, `validate-feature` keeps its own job small — decide what to check and where each check lives — and delegates the exercising to a child built for that surface. The orchestrator owns the accounting; the children own the driving.
 
+## Modes folded in (2026-11-15)
+
+Each is a file beside `SKILL.md`, opened on the condition `SKILL.md` names.
+
+- `api.md` — drive an HTTP or RPC API as a real client and assert status, body and persistence.
+- `ui.md` — drive a frontend in a real browser and assert visible state.
+
 ## See also
 
 - [The gates](../concepts/gates.md) — where acceptance sits relative to the prove-claim and audit-trace gates

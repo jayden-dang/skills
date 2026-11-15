@@ -466,14 +466,14 @@ OWNERS = {
     "ci:configured": ("configure-repo", "skills/setup/configure-repo"),
     "ci:runs_real": ("assess-observability", "skills/execution/assess-observability"),
     "ci:latest_red": ("land-branch", "skills/ship/land-branch"),
-    "ci:change_fail": ("execute-common", "skills/execution/execute-common/close-receipt.md"),
+    "ci:change_fail": ("build", "skills/execution/build/close-receipt.md"),
     "ci:landed_on_red": ("land-branch", "skills/ship/land-branch"),
-    "evidence:close_vs_ci_command": ("execute-common", "skills/execution/execute-common/close-receipt.md"),
-    "evidence:receipt_coverage": ("execute-common", "skills/execution/execute-common/close-receipt.md"),
+    "evidence:close_vs_ci_command": ("build", "skills/execution/build/close-receipt.md"),
+    "evidence:receipt_coverage": ("build", "skills/execution/build/close-receipt.md"),
     "arch:invariant_violations": ("inspect-invariants", "skills/review/inspect-invariants"),
     "arch:blast_radius": ("plan-tasks", "skills/spec/plan-tasks"),
-    "review:lane_repeat:reader-left-behind": ("execute-common", "skills/execution/execute-common/implementer-prompt.md"),
-    "review:lane_repeat:silent-degradation": ("execute-common", "skills/execution/execute-common/implementer-prompt.md"),
+    "review:lane_repeat:reader-left-behind": ("build", "skills/execution/build/implementer-prompt.md"),
+    "review:lane_repeat:silent-degradation": ("build", "skills/execution/build/implementer-prompt.md"),
 }
 STALE_DAYS = 14
 

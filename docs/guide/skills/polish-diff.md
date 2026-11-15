@@ -59,6 +59,12 @@ Every dropped finding is recorded with its one-line reason, because a silently d
 
 The inline fallback runs the four angles sequentially in one context, closing one out completely — findings written down — before opening the next. The whole value of four separate contexts is that no angle sees another's conclusions; finishing one before starting the next is the closest single-context approximation. Step 6 is not optional just because the review was cheaper.
 
+## Modes folded in (2026-11-15)
+
+Each is a file beside `SKILL.md`, opened on the condition `SKILL.md` names.
+
+- `comments.md` — the aggressive comment-deletion pass, only on the user's ask.
+
 ## See also
 
 - [`inspect-change`](inspect-change.md) — the two-axis merge verdict, and where correctness findings go

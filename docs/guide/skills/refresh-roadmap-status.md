@@ -67,6 +67,13 @@ The same derivation, rendered as a card — the milestone in flight, the status 
 
 No `docs/roadmap/INDEX.md` means the layer is absent: the skill says so and stops. No findings, no recommendation, no complaint.
 
+## Modes folded in (2026-11-15)
+
+Each is a file beside `SKILL.md`, opened on the condition `SKILL.md` names.
+
+- `brief.md` — a two-minute brief of one roadmap item with a Ready, Blocked by, In flight or Built verdict.
+- `chart.md` — the weekly progress dashboard and a fresh `docs/roadmap/lanes.md`.
+
 ## See also
 
 - [`plan-milestones`](plan-milestones.md) — authors the intent this reads

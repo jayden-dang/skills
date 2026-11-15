@@ -1,7 +1,7 @@
 ---
 name: define-project
-version: 1.3.0
-description: "Use when a repo needs its project-level documentation written, updated or checked: the product vision, the architecture invariants (ARCH-N), the product guidelines, or one system-documentation artifact from the catalog such as the codebase map. Also when a new product direction contradicts features that have already shipped, before any rewrite. Produces docs/product/vision.md, docs/architecture/ and docs/product/guidelines.md, that one system document after its proposal is approved, or a disposition ledger naming each affected shipped feature. Not for one decision record or glossary term (define-domain) or a roadmap (plan-milestones)."
+version: 1.3.1
+description: "Use when a repo needs its project-level documentation written, updated or checked — the product vision, the architecture invariants (ARCH-N), the product guidelines, or one system document from the catalog such as the codebase map — or when a new product direction contradicts features that already shipped. Produces docs/product/vision.md, docs/architecture/ and docs/product/guidelines.md, that one system document, or a disposition ledger for each affected shipped feature. Not for one decision record or glossary term (define-domain) or a roadmap (plan-milestones)."
 ---
 
 # Define Project

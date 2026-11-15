@@ -1,7 +1,7 @@
 ---
 name: frame-change
-version: 2.4.0
-description: "Use at the very start of the idea-to-ship chain — when the user wants to add, build, or change a feature, behavior, or component, or to start a new project, and the asked-for behavior has no spec yet; or when an already-shipped, spec'd feature needs a small in-scope change such as a recolor, a copy edit, a tweak or a follow-on. Produces an agreed shape and a spoken ceremony tier, or for a shipped feature a tier decision and a light-lane route. Triggers on \"let's add…\", \"can we build…\", \"I'm thinking about…\", \"we should support…\" before implementation has begun. Not for broken behavior (root-cause) or a drifted spec (realign-spec)."
+version: 2.4.1
+description: "Use at the very start of the idea-to-ship chain — when the user wants to add, build, or change a feature, behavior, or component, or start a new project, and the behavior has no spec yet (\"let's add…\", \"can we build…\", \"we should support…\") — or when a shipped, spec'd feature needs a small in-scope change such as a recolor, a copy edit or a follow-on. Produces an agreed shape and a spoken ceremony tier. Not for broken behavior (root-cause) or a drifted spec (realign-spec)."
 ---
 
 # Frame Change

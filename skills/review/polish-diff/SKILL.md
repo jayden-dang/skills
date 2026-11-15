@@ -1,7 +1,7 @@
 ---
 name: polish-diff
-version: 1.6.0
-description: "Use when changed code needs a quality cleanup actually applied rather than reported — code that reimplements a helper the repo already has, needless complexity, dead code, wasted work or repeated I/O, tech debt, a bandaid fix at the wrong depth — or when the user asks for an aggressive comment-deletion pass (\"strip the comments\"). The behavior-preserving refactor over a diff, branch, or PR before merge, and the execute-family close step when a polish predicate holds. For correctness bugs, a crash, or a merge verdict use inspect-change or root-cause instead."
+version: 1.6.1
+description: "Use when changed code needs a quality cleanup actually applied rather than reported — a reimplemented helper, needless complexity, dead code, wasted work, tech debt, a bandaid fix at the wrong depth — or the user asks for an aggressive comment-deletion pass. The behavior-preserving refactor over a diff, branch, or PR before merge, and the build's close step when a polish predicate holds. For correctness bugs or a merge verdict use inspect-change or root-cause."
 ---
 
 # Polish Diff

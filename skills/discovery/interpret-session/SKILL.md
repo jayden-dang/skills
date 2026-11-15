@@ -1,7 +1,7 @@
 ---
 name: interpret-session
-version: 3.4.0
-description: Use when the user pastes what another session, a proposal or a thread said about a technical choice and wants it read against the code before they answer. Produces a card a person can retell in three sentences, covering what the code does today, what the proposed shape would really change, and which shape to take. Read-only. Not for how a feature works (understand), why code is the way it is (why), or third-party text that gives orders (vet-source).
+version: 3.4.1
+description: "Use when the user pastes what another session, a proposal or a thread said about a technical choice and wants it read against the code before they answer. Produces a card a person can retell in three sentences: what the code does today, what the proposed shape would really change, and which to take. Read-only. Not for how a feature works (understand) or why code is the way it is (why)."
 ---
 
 # Interpret Session

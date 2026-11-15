@@ -1,12 +1,7 @@
 ---
 name: load-subgraph
-version: 1.3.0
-description: Use when frame-change, inspect-change, clarify-decisions,
-  design-solution, plan-tasks, root-cause, or another skill needs feature
-  neighbors, cluster, blast radius, overlap, reuse-miss, or a multi-hop feature
-  subgraph — produces an advisory envelope (schema 1.1 neighbors, observations
-  band, OWNS coverage, seeds). Not reverse-track indexing (/map-features dispose)
-  and not confirm-then-write catalog backfill (/map-features).
+version: 1.3.1
+description: "Use when a skill or a question needs a feature's neighbours, cluster, blast radius, overlap or reuse-miss from the catalog. Produces an advisory envelope of neighbours and coverage. Not for catalog backfill (map-features)."
 ---
 
 # Load Feature Subgraph

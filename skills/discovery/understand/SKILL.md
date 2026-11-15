@@ -1,7 +1,7 @@
 ---
 name: understand
-version: 1.0.0
-description: Use when someone wants to understand how a feature, component, module, flow, endpoint, job, or change works — or a library, protocol, or concept they need for it — "explain X", "how does X work", "walk me through X", "what happens when", "I'm new to this repo", onboarding, "what does this diff / PR / branch do", "teach me", "quiz me" — produces a code-grounded explainer — a short plain-language answer and, when the subject spans several files, one local HTML page with a runtime-path diagram, a step-through of one example, the surprises, and self-check questions. Not for why a design was chosen (why) or for picking between options (interpret-session).
+version: 1.0.1
+description: "Use when someone wants to understand how a feature, component, flow, endpoint, job or change works, or a library or concept they need for it: \"explain X\", \"how does X work\", \"walk me through X\", \"I'm new to this repo\", \"what does this PR do\", \"teach me\", \"quiz me\". Produces a code-grounded explainer: a short plain answer and, when the subject spans several files, one local HTML page with a runtime-path diagram and self-check questions. Not for why a design was chosen (why) or picking between options (interpret-session)."
 ---
 
 # Understand

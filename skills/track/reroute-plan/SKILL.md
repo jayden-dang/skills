@@ -1,15 +1,7 @@
 ---
 name: reroute-plan
-version: 1.1.0
-description: Use when a mid-execution discovery invalidates an already-approved plan —
-  "the plan is wrong," a re-plan is needed, scope changed mid-flight, or a
-  divergence surfaces during build-in-waves or test-first that the current task can't
-  absorb — or when the operator amends a running build — adds a constraint, cuts
-  scope, drops a requirement. Produces a blast-radius classification of the lowest invalidated
-  artifact plus a re-entry decision or change proposal, never a silent
-  rewrite. Not for a post-ship in-scope tweak (frame-change), broken code against a
-  still-valid spec (root-cause), or the mechanical reconciliation that runs after
-  the decision (realign-spec).
+version: 1.1.1
+description: "Use when a mid-execution discovery invalidates an approved plan — the plan is wrong, scope changed mid-flight, a divergence the current task cannot absorb — or the operator amends a running build by adding a constraint, cutting scope or dropping a requirement. Produces a blast-radius classification of the lowest invalidated artifact and a re-entry decision, never a silent rewrite. Not for broken code against a valid spec (root-cause)."
 ---
 
 # Reroute Plan

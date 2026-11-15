@@ -1,7 +1,7 @@
 ---
 name: board
-version: 1.5.0
-description: Use when someone asks what is waiting on them, what the agents are doing, what is on the board, for a standup summary across the open tickets and pull requests, or where one feature's build stands right now. Produces the whole board by state, starting with everything waiting on the user, plus every place the board and the repo disagree; or one build's status read from its plan, ledger, git, tests, ticket and pull request. Not for the roadmap (refresh-roadmap-status).
+version: 1.5.1
+description: "Use when someone asks what is waiting on them, what the agents are doing, what is on the board, for a standup summary, or where one feature's build stands right now. Produces the whole board by state, starting with everything waiting on the user, plus where the board and the repo disagree; or one build's status read from its plan, ledger, git, tests, ticket and pull request. Not for the roadmap (refresh-roadmap-status)."
 ---
 
 # Board

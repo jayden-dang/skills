@@ -1,7 +1,7 @@
 ---
 name: draft-ui
-version: 1.4.0
-description: "Use when a screen or feature's look, or what it does when used, needs deciding with the user before it is specified or built: \"show me a few design directions\", \"make it clickable so I can feel it\", undo versus confirm, how a slow or failed call feels. Produces 2 to 5 divergent real-HTML variants behind a switcher, or 2 to 3 runnable takes of one flow, a pick from the user, and a locked ui-brief.md that design-solution lifts. Not for judging a built diff (inspect-ui), a logic spike (run-spike), or a standalone page (craft-page)."
+version: 1.4.1
+description: "Use when a screen or feature's look, or what it does when used, needs deciding with the user before it is specified or built: \"show me a few design directions\", \"make it clickable so I can feel it\", undo versus confirm. Produces divergent real-HTML variants or runnable takes of one flow, a pick from the user, and a locked ui-brief.md that design-solution lifts. Not for judging a built diff (inspect-ui), a logic spike (run-spike), or a standalone page (craft-page)."
 ---
 
 # Draft UI

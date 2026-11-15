@@ -1,7 +1,7 @@
 ---
 name: refresh-roadmap-status
-version: 1.5.0
-description: Use when someone asks where the roadmap or a multi-milestone plan stands and what to do next, asks about one roadmap item (what is ROAD-81, can we start it, is it ready or blocked), or asks for the weekly progress dashboard. Produces a status report derived fresh from the roadmap, the specs and git; a two-minute brief of one item with a Ready, Blocked, In flight or Built verdict; or one HTML dashboard and a fresh docs/roadmap/lanes.md. Not for tickets waiting on someone (board) or editing the roadmap (plan-milestones).
+version: 1.5.1
+description: "Use when someone asks where the roadmap or a multi-milestone plan stands and what to do next, asks about one roadmap item (what is ROAD-81, can we start it, is it ready or blocked), or asks for the weekly progress dashboard. Produces a status report derived fresh from the roadmap, the specs and git; a two-minute brief of one item; or one HTML dashboard with a fresh docs/roadmap/lanes.md. Not for tickets waiting on someone (board) or editing the roadmap (plan-milestones)."
 ---
 
 # Refresh Roadmap Status

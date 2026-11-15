@@ -1,18 +1,7 @@
 ---
 name: inspect-ui
-version: 2.2.0
-description: Use when a diff or branch touching browser-rendered surfaces (HTML,
-  CSS/styling, JSX/TSX/Vue/Svelte components, templates) needs its visual and
-  interaction quality judged in the real running app before merge — the live
-  design review invoked by `inspect-change`'s UI lane, or when the user asks to
-  design-review a change, check how it looks, responsive breakage at mobile
-  widths, focus visibility, contrast, dark mode, or off-token styling. Produces
-  a screenshot-backed UI finding set across desktop/tablet/mobile viewports,
-  interaction and composed states, and design-contract conformance — settling
-  cascade and severity questions by driving the app, never by inference from
-  the diff. Not for asserting spec'd behavior e2e (validate-feature), authoring a
-  human product walk (write-dogfood), or styling a standalone page
-  (craft-page).
+version: 2.2.1
+description: "Use when a diff or branch touching browser-rendered surfaces needs its visual and interaction quality judged in the running app before merge, or the user asks to design-review a change: how it looks, mobile widths, focus, contrast, dark mode, off-token styling. Produces a screenshot-backed UI finding set across viewports and states. Not for asserting spec'd behavior (validate-feature), a product walk (write-dogfood), or a standalone page (craft-page)."
 ---
 
 # Inspect UI

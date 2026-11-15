@@ -1,7 +1,7 @@
 ---
 name: make-video
-version: 3.9.0
-description: Use when someone wants a narrated video or film of a built feature, a pull request or branch, a release, or a closed spec, or a video that teaches a concept, protocol or algorithm — "/make-video", "make a video of this", "explainer film", "a film of the spec", "teach me X in a video", 3Blue1Brown-style, Manim — produces a checked 1080p MP4 with a source on every line. Not for a written or HTML explanation (understand), slides, or proving a feature works (validate-feature).
+version: 3.9.1
+description: "Use when someone wants a narrated video or film of a built feature, a pull request, a release or a closed spec, or a video that teaches a concept: \"make a video of this\", \"explainer film\", \"teach me X in a video\". Produces a checked 1080p MP4 with a source on every line. Not for a written or HTML explanation (understand) or proving a feature works (validate-feature)."
 ---
 
 # Make Video

@@ -1,11 +1,7 @@
 ---
 name: realign-spec
-version: 1.2.0
-description: Use when a feature's spec has drifted from reality — requirements changed
-  mid-implementation, the implementation deviated from the approved plan, the
-  feature just shipped, the specs have gone stale or out of sync, or
-  the audit-trace check is failing — and the requirements/design/tasks triad needs
-  realigning back to what the code and tests actually do.
+version: 1.2.1
+description: "Use when a feature's spec has drifted from reality — the implementation deviated from the plan, the feature just shipped, the specs went stale, or audit-trace is failing — and the triad needs realigning to what the code and tests actually do."
 ---
 
 # Sync a Spec

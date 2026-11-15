@@ -1,7 +1,7 @@
 ---
 name: triage
-version: 1.3.0
-description: Use when an incoming tracker issue, bug report or external pull request needs triaging, or someone asks what in the tracker needs attention. Produces a classification with the claim checked first, and for accepted work an investigation or an agent-ready brief. Not for the operator's own new idea (idea), a bug to fix now (root-cause), review comments on their own pull request (vet-feedback), or reviewing a branch (inspect-change).
+version: 1.3.1
+description: "Use when an incoming tracker issue, bug report or external pull request needs triaging, or someone asks what in the tracker needs attention. Produces a classification with the claim checked first, and for accepted work an investigation or an agent-ready brief. Not for the operator's own idea (idea), a bug to fix now (root-cause), or review comments on their own pull request (vet-feedback)."
 ---
 
 # Triage

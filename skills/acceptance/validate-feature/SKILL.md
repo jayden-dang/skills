@@ -1,14 +1,7 @@
 ---
 name: validate-feature
-version: 1.3.3
-description: Use before merging or finishing a branch, when a feature's unit tests are
-  green but its user-facing behavior has not been driven through the running
-  system as a real client — the acceptance / end-to-end pass over the happy
-  paths and edge cases that pass in isolation yet break in practice.
-  Orchestrates API- and UI-surface validation. The UI drive is a real browser —
-  the user's, or agent-browser signed in on localhost when nobody is at the keyboard — not a new Playwright suite. A defect still
-  leaves a regression in the repo's existing tests. Also when the repo has no
-  documented way to run the app locally.
+version: 1.3.4
+description: "Use before merging or finishing a branch, when a feature's unit tests are green but its user-facing behavior has not been driven through the running system as a real client, API or browser. Produces an acceptance pass over the happy paths and edge cases, with a regression test for each defect. Also when the repo has no documented way to run the app locally."
 ---
 
 # Validate Feature

@@ -1,19 +1,7 @@
 ---
 name: plan-milestones
-version: 1.8.0
-description: Use when a project's milestones need planning, sequencing, replanning, or
-  ANY edit to an existing roadmap — produces or revises docs/roadmap/INDEX.md, the
-  milestone intent registry carrying stable MILE-N and ROAD-N IDs that later feature specs
-  bind to. Triggers on "plan the milestones", "build a roadmap", "what order
-  should we build this in", "break this project into milestones", a frame-change that
-  decomposed work into independent sub-features, and equally on any edit to a roadmap that
-  already exists — "update the roadmap", "drop this item", "we're not doing X anymore",
-  "reorder the milestones", "move sharing ahead of search", "reword this outcome", "commit
-  to the next milestone", "this milestone shipped", "draft the next milestone in Notion for
-  sign-off", or any request touching docs/roadmap/INDEX.md or a roadmap draft awaiting the
-  TPM's sign-off. Not for one feature's
-  requirements (specify-behavior), and not for reporting where the plan currently stands
-  (refresh-roadmap-status).
+version: 1.8.1
+description: "Use when a project's milestones need planning, sequencing or replanning, or for ANY edit to an existing roadmap: \"plan the milestones\", \"what order should we build this in\", \"drop this item\", \"reorder the milestones\", \"this milestone shipped\", \"commit to the next milestone\", or any request touching docs/roadmap/INDEX.md or a roadmap draft awaiting sign-off. Produces or revises docs/roadmap/INDEX.md with stable MILE-N and ROAD-N IDs. Not for one feature's requirements (specify-behavior) or reporting where the plan stands (refresh-roadmap-status)."
 ---
 
 # Plan Milestones

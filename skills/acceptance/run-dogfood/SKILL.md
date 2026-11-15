@@ -1,14 +1,7 @@
 ---
 name: run-dogfood
-version: 4.2.0
-description: >-
-  Use when a guide from write-dogfood already exists and its cases must be
-  executed against the running app — agent-driven, screen plus backend
-  evidence. Produces a run file in which every case ends pass or parked, with
-  product defects fixed and blockers cleared inside the same unattended run,
-  and one end-of-run report saying why each case failed or was blocked and
-  what changed. Not for authoring the guide (`write-dogfood`) or committed e2e
-  (`validate-feature`).
+version: 4.2.1
+description: "Use when a dogfood guide already exists and its cases must be executed against the running app. Produces a run file in which every case ends pass or parked, with defects fixed in the same run, and one end-of-run report. Not for authoring the guide (write-dogfood)."
 ---
 
 # Run Dogfood

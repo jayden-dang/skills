@@ -1,13 +1,7 @@
 ---
 name: research
-version: 1.2.0
-description: Use when a design, planning, or implementation question turns on external
-  facts — how a library or API actually behaves, what a standard, spec, or RFC
-  says, platform limits, version differences — rather than opinion, or when
-  the user asks to look into or investigate such a fact and write it up with
-  citations. Do not use when "looks" means visual or UI variants or screen
-  mockups — that is run-spike, not a cited note; or for investigating a paper
-  plus experimental variants, training runs, or candidate ranking.
+version: 1.2.1
+description: "Use when a design, planning or implementation question turns on external facts — how a library or API actually behaves, what a standard or RFC says, platform limits, version differences — or the user asks to look into such a fact and write it up with citations. Not when \"looks\" means UI variants or mockups (run-spike, draft-ui), or for a paper plus experimental variants or training runs."
 ---
 
 # Research

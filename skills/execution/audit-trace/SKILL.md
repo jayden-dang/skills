@@ -1,13 +1,7 @@
 ---
 name: audit-trace
-version: 1.3.1
-description: Use when checking that requirement IDs agree where they are defined
-  and task-cited in docs/specs, or that the capability catalog INDEX / shards
-  stay intact — the docs-only vertical pass invoked by prove-claim, cut-release,
-  realign-spec, and plan-tasks. Produces a traceability finding set (unknown
-  citations, duplicate definitions, approved-but-uncited, Respects / system-ID
-  integrity, duplicate Feature CODEs, OBS-<6hex> in Code cells, missing shard
-  refs). Does not search application source or tests for requirement IDs.
+version: 1.3.2
+description: "Use when checking that requirement IDs agree where they are defined and where tasks cite them in docs/specs, or that the catalog INDEX and shards are intact. Produces a traceability finding set from fixed docs-only passes. Does not search source or tests for IDs."
 ---
 
 # Audit Trace

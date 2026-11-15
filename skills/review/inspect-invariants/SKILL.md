@@ -1,12 +1,7 @@
 ---
 name: inspect-invariants
-version: 2.0.0
-description: Use when a design or diff cites architecture invariants (a `Respects`
-  line naming ARCH-N, or a change under a repo that has `docs/architecture/`)
-  and you need to judge whether it actually conforms — the advisory,
-  LLM-judged invariant-conformance check invoked by `inspect-change`, `build-in-waves`'s
-  task review, and `define-project` validate mode. Produces a per-citation
-  respects / violates / unclear verdict with a one-line rationale.
+version: 2.0.1
+description: "Use when a design or diff cites architecture invariants (a Respects line naming ARCH-N, or a repo with docs/architecture/) and conformance needs judging. Produces a per-citation respects, violates or unclear verdict with a one-line rationale."
 ---
 
 # Inspect Invariants

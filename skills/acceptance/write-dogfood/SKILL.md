@@ -1,12 +1,7 @@
 ---
 name: write-dogfood
-version: 3.0.1
-description: Use when a finished feature needs dogfooding — a hands-on product
-  walk in the real running app covering visuals, feel, and eyeball edge cases —
-  or when an existing dogfood guide needs re-reviewing for missing situations.
-  Produces a checkable dogfood guide (run file + HTML) plus an independent review
-  report from a clean-context reviewer. Not for executing an already-written
-  guide (`run-dogfood`).
+version: 3.0.2
+description: "Use when a finished feature needs dogfooding — a hands-on product walk in the running app covering visuals, feel and eyeball edge cases — or an existing guide needs re-reviewing. Produces a checkable dogfood guide and an independent review report. Not for executing a guide (run-dogfood)."
 ---
 
 # Write Dogfood

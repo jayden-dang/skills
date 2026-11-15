@@ -1,7 +1,7 @@
 ---
 name: forge-prompt
-version: 1.2.0
-description: Use when an ask is short and unclear and the user wants it turned into a proper prompt for a fresh session, or wants an agent to keep working unattended until something is verifiably done and what done means is not pinned down. Produces one paste-ready prompt block with targets, boundaries, evidence, open questions and a done signal; or one goal prompt with the outcome, its checks, guards, a verify-every-round loop and stop lines. Not for a handoff of work in progress (write-handoff) or an interview about a feature to build (clarify-decisions).
+version: 1.2.1
+description: "Use when an ask is short and unclear and the user wants it turned into a proper prompt for a fresh session, or wants an agent to keep working unattended until something is verifiably done and what done means is not pinned down. Produces one paste-ready prompt block, or one goal prompt with its checks, guards, a verify-every-round loop and stop lines. Not for a handoff of work in progress (write-handoff) or an interview about a feature (clarify-decisions)."
 ---
 
 # Forge Prompt

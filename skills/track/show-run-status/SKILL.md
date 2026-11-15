@@ -1,8 +1,7 @@
 ---
 name: show-run-status
-version: 1.0.0
-description: Reports where one feature's build stands right now — done, in flight, waiting on you, not yet shipped, tracker — from every source at once. Run it with /show-run-status.
-disable-model-invocation: true
+version: 1.1.0
+description: "Use when someone asks where one feature's build stands right now: is it done, what is left, why did the run stop, is it waiting on them. Produces a status report for that one build, read from the plan, ledger, git, tests, ticket and pull request at once. Not for every open ticket (board) or the roadmap (refresh-roadmap-status)."
 ---
 
 # Show Run Status

@@ -1,8 +1,7 @@
 ---
 name: chart-progress
-version: 1.4.0
-description: Generates a weekly progress dashboard (one HTML page) of what finished, what is building, what is ready to start, and the roadmap graph, plus a fresh docs/roadmap/lanes.md. Run it with /chart-progress.
-disable-model-invocation: true
+version: 1.5.0
+description: Use when someone asks for the weekly progress dashboard, a progress page, or a chart of what finished, what is building and what is ready to start, with the roadmap graph. Produces one HTML dashboard and a fresh docs/roadmap/lanes.md. Not for a spoken status (board, refresh-roadmap-status) or any other HTML page (craft-page).
 ---
 
 # Chart Progress

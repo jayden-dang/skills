@@ -5,11 +5,11 @@
 |  |  |
 |---|---|
 | **Bucket** | track |
-| **Invocation** | `/refresh-roadmap-status` (user-invoked; `disable-model-invocation: true`) |
+| **Invocation** | model-invoked when its description matches, or `/refresh-roadmap-status` |
 | **Reads** | `docs/roadmap/INDEX.md`, `docs/product/vision.md`, `docs/specs/INDEX.md`, each bound feature's `requirements.md`, `git`, and `.skills/progress.md` when it exists |
 | **Writes** | nothing — by contract |
 | **Calls** | nothing. Names [`realign-spec`](realign-spec.md), [`plan-milestones`](plan-milestones.md), [`audit-trace`](audit-trace.md) and the feature-flow skills in its output |
-| **Called by** | nobody — it is user-invoked |
+| **Called by** | nobody yet — it fires on what the user asks, or on `/refresh-roadmap-status` |
 
 ## The horizontal counterpart to `audit-trace`
 

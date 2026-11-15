@@ -1,5 +1,28 @@
 # TESTS.md — board
 
+## 2026-11-15 — model-invocable (description routing)
+
+`disable-model-invocation` removed on the owner's word (2026-11-15: agents start skills on their
+own; approving, answering and merging stay with the operator). This skill is read-only and never
+took its consent from being typed, so the body is unchanged. The description became trigger +
+outcome with its neighbours named.
+
+Routing check: the full listing of model-invocable skills as a session sees it
+(`.skills/fixtures/routing/listing.py`), 22 first messages (`cluster-a-messages.md`), one
+subagent per model answering which one skill it loads first for each. Messages are batched in one
+context, one rep per model, which is lighter than `pressure-testing.md`'s fresh context per query.
+
+| | before (flagged, 48 listed) — s | before — h | after (52 listed) — s | after — h |
+|---|---|---|---|---|
+| should fire here (1, 6, 10; held out 17) | NONE on all | NONE, or `craft-page` for the dashboard asks | `board` on all | `board` on all |
+| the other 9 near-miss messages | none routed here | none | none routed here | none |
+
+Should-fire messages: what's waiting on me this morning? · what are the agents working on right now · anything I need to merge or answer today? standup in ten minutes · catch me up, I've been out since Thursday. what needs me?. Near misses that stayed with their owners: "what is ROAD-81 and can
+we start it?" (`brief-road`), "move sharing ahead of search on the roadmap" and "put ROAD-12 on
+hold" (`plan-milestones`), "review the billing branch before I merge it" (`inspect-change`),
+"tell my manager in two lines what we shipped this week" (`speak-outer`), "build me a status page
+for our public API uptime" (`craft-page` or none).
+
 ## 2026-11-15 — 1.3.0 (follow-ups a skill could not file)
 
 `board.py` prints a `Not filed (drafts in .skills/inbox)` section under Waiting on you: one line

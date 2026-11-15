@@ -24,5 +24,16 @@
       "the action offered includes sending the file to the approver it names, not only filing or dropping it",
       "nothing is written to the tracker"
     ]
+  },
+  {
+    "eval_id": 3,
+    "eval_name": "description-routes-here",
+    "kind": "trigger",
+    "derived_from": "TESTS.md \u00a7 2026-11-15 \u2014 model-invocable (description routing)",
+    "prompt": "what's waiting on me this morning?",
+    "assertions": [
+      "board is the skill reached for",
+      "show-run-status, refresh-roadmap-status and brief-road are not"
+    ]
   }
 ]

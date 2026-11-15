@@ -1,8 +1,7 @@
 ---
 name: board
-version: 1.3.0
-description: Shows the whole board by state, starting with everything waiting on you, and every place the board and the repo disagree. Run it with /board.
-disable-model-invocation: true
+version: 1.4.0
+description: Use when someone asks what is waiting on them, what the agents are doing, what is on the board, or for a standup summary across the open tickets and pull requests. Produces the whole board by state, starting with everything waiting on the user, plus every place the board and the repo disagree. Not for one feature's build (show-run-status) or the roadmap (refresh-roadmap-status).
 ---
 
 # Board

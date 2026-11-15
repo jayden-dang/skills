@@ -1,10 +1,7 @@
 ---
 name: refresh-roadmap-status
-version: 1.3.1
-description: Reports where a multi-milestone plan actually stands and what to do next,
-  derived fresh from the roadmap, the specs, and git — never from a stored status
-  file. Run it with /refresh-roadmap-status.
-disable-model-invocation: true
+version: 1.4.0
+description: "Use when someone asks where the roadmap or a multi-milestone plan stands and what to do next: which milestone they are in, what is done, what comes next. Produces a status report derived fresh from the roadmap, the specs and git, never from a stored status file. Not for one roadmap item (brief-road), one feature's build (show-run-status), tickets waiting on someone (board), or editing the roadmap (plan-milestones)."
 ---
 
 # Refresh Roadmap Status

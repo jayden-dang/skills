@@ -5,11 +5,11 @@
 |  |  |
 |---|---|
 | **Bucket** | track |
-| **Invocation** | `/show-run-status` (user-invoked; `disable-model-invocation: true`) |
+| **Invocation** | model-invoked when its description matches, or `/show-run-status` |
 | **Reads** | everything `scripts/collect.sh <CODE>` prints: the plan, the ledger, git, the unit tests, entries waiting on a person, the tracker ticket, and the pull request with its checks |
 | **Writes** | nothing. The only command it runs besides reading is the project's unit-test command |
 | **Calls** | nothing |
-| **Called by** | nobody — it is user-invoked |
+| **Called by** | nobody yet — it fires on what the user asks, or on `/show-run-status` |
 
 ## When it fires
 

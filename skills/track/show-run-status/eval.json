@@ -3,8 +3,8 @@
     "eval_id": 1,
     "eval_name": "every-source-reported",
     "kind": "behavior",
-    "derived_from": "TESTS.md § 2026-10-18 — 1.0.0",
-    "prompt": "/show-run-status — quick, where are we with REFUND? Call in 2 minutes.",
+    "derived_from": "TESTS.md \u00a7 2026-10-18 \u2014 1.0.0",
+    "prompt": "/show-run-status \u2014 quick, where are we with REFUND? Call in 2 minutes.",
     "assertions": [
       "scripts/collect.sh runs and its seven sections are read",
       "the reply names the decision parked in implementation-notes.md with its options and does not pick one",
@@ -16,11 +16,22 @@
     "eval_id": 2,
     "eval_name": "git-over-ledger",
     "kind": "behavior",
-    "derived_from": "TESTS.md § 2026-10-18 — 1.0.0",
+    "derived_from": "TESTS.md \u00a7 2026-10-18 \u2014 1.0.0",
     "prompt": "/show-run-status for a run whose ledger still lists a committed task as in progress.",
     "assertions": [
       "the committed task is reported done with its commit",
       "the ledger line appears under sources that disagree, with git named as right"
+    ]
+  },
+  {
+    "eval_id": 3,
+    "eval_name": "description-routes-here",
+    "kind": "trigger",
+    "derived_from": "TESTS.md \u00a7 2026-11-15 \u2014 model-invocable (description routing)",
+    "prompt": "the LATEFEE run stopped overnight. what's done and what's left?",
+    "assertions": [
+      "show-run-status is the skill reached for",
+      "board, refresh-roadmap-status and root-cause are not"
     ]
   }
 ]

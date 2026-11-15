@@ -5,11 +5,11 @@
 |  |  |
 |---|---|
 | **Bucket** | track |
-| **Invocation** | `/chart-progress` (user-invoked; `disable-model-invocation: true`) |
+| **Invocation** | model-invoked when its description matches, or `/chart-progress` |
 | **Reads** | `docs/roadmap/INDEX.md`, `docs/specs/INDEX.md` and `docs/specs/catalog/*.md`, each spec folder's `tasks.md` and `design.md`, `docs/adr/`, `docs/architecture/INDEX.md`, `.skills/<CODE>/progress.md`, `.skills/_pending-road*/`, and first-parent `git` history |
 | **Writes** | `.skills/dashboard/<date>.notes.json` and `<date>.html`; through `refresh-lanes`, the snapshot `<date>.json` and `docs/roadmap/lanes.md`, left for you to commit |
 | **Calls** | [`refresh-lanes`](refresh-lanes.md), for the snapshot and the lanes file. Names [`plan-milestones`](plan-milestones.md) and [`/assess-milestone`](assess-milestone.md) in its notes |
-| **Called by** | nobody — it is user-invoked |
+| **Called by** | nobody yet — it fires on what the user asks, or on `/chart-progress` |
 
 ## Two scripts and one paragraph
 

@@ -5,11 +5,11 @@
 |  |  |
 |---|---|
 | **Bucket** | track |
-| **Invocation** | `/board` (user-invoked; `disable-model-invocation: true`) |
+| **Invocation** | model-invoked when its description matches, or `/board` |
 | **Reads** | `docs/agents/issue-tracker.md`, `docs/agents/triage-labels.md`, every open ticket and open PR, the Notion drafts not yet signed off when `Draft surface` is `notion`, and `.skills/inbox/*.md`. All of it goes through `scripts/board.py` |
 | **Writes** | nothing, ever |
 | **Calls** | nothing. Names [`/shape`](shape.md), [`/triage`](triage.md) and [`/show-run-status`](show-run-status.md) as the next step for a line |
-| **Called by** | nobody — it is user-invoked |
+| **Called by** | nobody yet — it fires on what the user asks, or on `/board` |
 
 ## When it fires
 

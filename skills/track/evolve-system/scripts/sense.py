@@ -201,13 +201,25 @@ def landings(repo, feats, runs, now):
     return rows
 
 
-def ci_test_commands(repo):
-    cmds = []
-    for wf in glob.glob(os.path.join(repo, ".github/workflows/*.y*ml")):
-        for m in re.findall(r"^\s*-?\s*run:\s*(.+)$", open(wf, errors="replace").read(), re.M):
-            if re.search(r"\btest", m):
-                cmds.append(m.strip())
-    return cmds
+TEST_TASK = re.compile(r"(?:^|(?<=[\s'\"]))(?:[\w.-]+:)?(test(?:-[\w-]+)?)(?=[\s'\"]|$)")
+
+
+def ci_test_tasks(repo, cfg):
+    """Test task names the gating CI workflow runs: `make test-coverage`, `moon ci api:test-coverage`
+    and `just test` give test-coverage, test-coverage and test. Only the workflow named by
+    `--workflow <name>` in the Integration CI command counts, when it names one."""
+    m = re.search(r"--workflow[ =]['\"]?([^'\"\s]+)", cfg.get("ci") or "")
+    tasks = []
+    for wf in sorted(glob.glob(os.path.join(repo, ".github/workflows/*.y*ml"))):
+        text = open(wf, errors="replace").read()
+        name = re.search(r"^name:\s*['\"]?(.+?)['\"]?\s*$", text, re.M)
+        if m and m.group(1) not in ((name.group(1) if name else ""), os.path.basename(wf)):
+            continue
+        for line in re.findall(r"^\s*-?\s*run:\s*(.+)$", text, re.M):
+            for t in TEST_TASK.findall(line.strip().strip("'\"")):
+                if t not in tasks:
+                    tasks.append(t)
+    return tasks
 
 
 MIN_BASELINE = 3  # a previous window with fewer observations than this is no baseline
@@ -248,7 +260,7 @@ def counts(repo, feats, rows, lo, hi):
             "violations": [(r["code"], v) for r in w for v in r["violates"]]}
 
 
-def signals(repo, feats, rows, runs, err, since, now):
+def signals(repo, feats, rows, runs, err, since, now, cfg=None):
     cur = counts(repo, feats, rows, since, now + timedelta(seconds=1))
     prev = counts(repo, feats, rows, since - (now - since), since)
     has_prev = bool(prev["w"])
@@ -288,13 +300,15 @@ def signals(repo, feats, rows, runs, err, since, now):
         if s["previous"] is not None:
             s["previous"] = f"{len(prev['w']) - len(prev['missing'])}/{len(prev['w'])} with a receipt"
         out.append(s)
-    ci_cmds = ci_test_commands(repo)
+    ci_tasks = ci_test_tasks(repo, cfg or {})
     with_v = [r for r in cur["w"] if r["verification"]]
-    if ci_cmds and with_v:
+    if ci_tasks and with_v:
         latest = with_v[-1]
-        lacking = [c for c in ci_cmds if c not in latest["verification"]]
+        ran = set(TEST_TASK.findall(" " + latest["verification"].replace("(", " ").replace(",", " ") + " "))
+        lacking = [t for t in ci_tasks if t not in ran]
         out.append({"key": "evidence:close_vs_ci_command", "rung": "local", "flag": bool(lacking),
-                    "value": "match" if not lacking else "differs", "ci_test_commands": ci_cmds,
+                    "value": "match" if not lacking else f"differs: the close did not run {', '.join(lacking)}",
+                    "ci_test_tasks": ci_tasks, "lacking": lacking,
                     "latest_receipt": {"code": latest["code"], "verification": latest["verification"]}})
     if cur["commits"]:
         s = rated("arch:blast_radius", "local", (cur["wide_commits"], cur["commits"]),
@@ -462,7 +476,7 @@ def main():
     feats = features(repo)
     runs, err = ci_runs(repo, cfg, now)
     rows = landings(repo, feats, runs, now)
-    sigs = signals(repo, feats, rows, runs, err, since, now)
+    sigs = signals(repo, feats, rows, runs, err, since, now, cfg)
     cpath = os.path.join(repo, ".skills/evolve/cycles.json")
     doc = json.load(open(cpath)) if os.path.exists(cpath) else {"schema_version": 1, "cycles": []}
     if isinstance(doc, list):  # a hand-written bare list: keep its cycles, restore the shape

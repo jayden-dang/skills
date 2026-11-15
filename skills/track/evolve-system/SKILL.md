@@ -1,6 +1,6 @@
 ---
 name: evolve-system
-version: 1.2.1
+version: 1.2.2
 description: Measures how reliably a repo's delivery loop holds, settles what earlier runs set out to improve, and opens at most one new improvement with a prediction. Run it with /evolve-system.
 disable-model-invocation: true
 ---

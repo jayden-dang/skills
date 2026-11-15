@@ -304,8 +304,27 @@ class Sense(unittest.TestCase):
         wf = os.path.join(repo, ".github/workflows/ci.yml")
         open(wf, "a").write("      - run: make lint\n")
         _, rep = sense(repo, "--now", NOW, "--since", ALL)
-        self.assertEqual(sig(rep, "evidence:close_vs_ci_command")["ci_test_commands"], ["make test-coverage"])
+        self.assertEqual(sig(rep, "evidence:close_vs_ci_command")["ci_test_tasks"], ["test-coverage"])
         self.assertTrue(sig(rep, "evidence:close_vs_ci_command")["flag"])
+
+    def test_only_the_gating_workflow_counts_and_tasks_are_compared_by_name(self):
+        repo = fixture("quillmark")  # receipts ran `make test-coverage`, the gating CI runs it too
+        os.makedirs(os.path.join(repo, ".github/workflows"), exist_ok=True)
+        open(os.path.join(repo, ".github/workflows/latency.yml"), "w").write(
+            "name: Latency\njobs:\n  bench:\n    steps:\n      - run: cargo nextest run --test latency --run-ignored only\n")
+        p = os.path.join(repo, "docs/agents/project.md")
+        open(p, "w").write(open(p).read().replace("`cat ci/runs.json`", "`cat ci/runs.json # --workflow CI`"))
+        _, rep = sense(repo, "--now", NOW, "--since", ALL)
+        s = sig(rep, "evidence:close_vs_ci_command")
+        self.assertEqual(s["ci_test_tasks"], ["test-coverage"])
+        self.assertFalse(s["flag"])
+
+    def test_a_close_that_skips_the_ci_test_task_differs(self):
+        repo = fixture("harborline")  # receipts ran `make test`; CI runs `make test-coverage`
+        _, rep = sense(repo, "--now", NOW, "--since", ALL)
+        s = sig(rep, "evidence:close_vs_ci_command")
+        self.assertEqual(s["lacking"], ["test-coverage"])
+        self.assertTrue(s["flag"])
 
     def test_missing_ci_command_is_a_flag_not_silence(self):
         repo = fixture("quillmark")

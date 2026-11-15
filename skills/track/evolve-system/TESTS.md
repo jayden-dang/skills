@@ -233,6 +233,17 @@ The installed skill, with klynt's new `Integration CI` lines at `--limit 200`, r
   CI". It now reads `unknown`.
 Test added red first: CI history cut short in the fixture. 32 tests, green.
 
+## v1.2.2 — the first real /evolve-system run on klynt stopped at a sensor defect (2026-11-15)
+
+`pick_order` led with `evidence:close_vs_ci_command`, built from every `run:` line containing "test" in
+every workflow, the latency benchmarks included. A receipt had to contain all seven lines verbatim, so a cycle
+on that key could never settle. The run opened nothing. The sensor now:
+- reads only the workflow that `--workflow <name>` in the Integration CI command names;
+- compares test task names (`make test-coverage`, `moon ci api:test-coverage` → `test-coverage`),
+  reporting what the close lacked.
+On klynt the gating `CI` workflow runs `test-doc` and `test-coverage`, and DSPAN's receipt ran `test` only.
+Two tests added red first; 34 tests green.
+
 ## Portability — grok, headless (2026-11-14, run by the user)
 
 `grok --cwd <fernhollow fixture> --prompt-file <the GREEN fernhollow prompt> --always-approve --max-turns 40`.

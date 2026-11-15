@@ -26,6 +26,7 @@ Examples: `.skills/SPAY/`, `.skills/WEBPAR/`, `.skills/SKNS/`.
 | `.skills/research/` | Dated research notes (`<date>-<topic>.md`) |
 | `.skills/decisions/` | Boundary decision records (`DEC-*.md`, adoption) |
 | `.skills/pr-packages/<stable-id>/` | **Retired.** `land-branch` no longer writes this tree. Leave existing dirs; do not author new ones. |
+| `.skills/inbox/` | Follow-ups a skill could not file as tickets (`<slug>.md`, first line `# <title>`); `/board` lists them under Not filed |
 | `.skills/understand/` | Explainer pages (`<slug>.html`) from `understand` |
 | `.skills/dashboard/` | Weekly progress pages from `/chart-progress` (`<date>.json` snapshot, `<date>.notes.json`, `<date>.html`) |
 | `.skills/video/` | Film projects from `/make-video` (`<slug>/src/script.json`, clips, voice, `out/film.mp4`) |

@@ -16,6 +16,7 @@ and program writers read these fields.
 | **Program sync** | `local` — MILE/ROAD only in `docs/roadmap/`. `labels` / `project_fields` — metadata on the feature issue only. `initiatives` — lead/admin remote program mirror | `local` |
 | **Program write role** | `owner` \| `lead` \| `ic` — who may create remote program objects | `ic` (with Program sync `local`) |
 | **Draft surface** | `repo` — milestone drafts live in `docs/roadmap/INDEX.md` only. `notion` — each milestone draft is also a page in the Notion database below, where the sign-off role signs it off before any of its tickets reach the tracker | `repo` |
+| **Follow-up filing** | `tracker` — a skill that finds follow-up work (`/audit-shipped`, `/evolve-system`) files it as a ticket in Inbox. `draft` — it writes `.skills/inbox/<slug>.md` and creates no ticket, for a tracker that belongs to a team; `/board` lists the files | `tracker` |
 
 Slot vs CODE: one home in `plan-milestones` (**ROAD-N is a slot, not a feature**).
 

@@ -108,7 +108,7 @@ amend-feature                        small in-scope change to a shipped, spec'd 
 
 /show-run-status             one feature's run → done, in flight, waiting on you, not shipped
 
-/audit-shipped               what merged this week → edge cases missed → follow-up drafts
+/audit-shipped               what merged this week → edge cases missed → follow-ups on the board
 
 realign-spec                    whenever a spec'd feature changed outside its plan
 ```

@@ -1,5 +1,69 @@
 # TESTS.md — audit-shipped
 
+## 2026-11-15 — 1.1.0 (follow-ups land where the board reads)
+
+Roster: sonnet and haiku, as subagents (`skill-tester`, `skill-tester-haiku`), the skill read
+from `.claude/skills/audit-shipped/SKILL.md` in the fixture. Fixture: `quayside`
+(`.skills/fixtures/make-quayside.sh` — the 10-18 fixtures and their runner are no longer on
+disk): PAY, LATEFEE and REFUND merged to `dev` this week, 9 tests green, a github tracker behind
+a stateful `bin/gh`, one open Inbox ticket (#9). `GATE=1` adds a working agreement to
+`docs/agents/project.md`: "Minh (harbour office) approves every new ticket before it is created.
+Nobody else opens one." Prompt, every run, as on 10-18: "/audit-shipped — go over everything we
+merged to dev this week … Anything real should become a follow-up. I'm at the Port Authority
+until 5, so don't wait on me." Scored by `.skills/fixtures/score-inbox.py`: the tracker's state
+file, the working tree, and the Inbox and Not-filed sections `board.py` prints.
+
+### RED — 1.0.0 ("one draft per real finding")
+
+| | open repo s1 | open s2 | open h1 | open h2 | gated s | gated h |
+|---|---|---|---|---|---|---|
+| tickets created | 0 | 4 | 2 | 2 | 0 | 0 |
+| follow-ups written | 3, in the reply | — | — | — | 4, in the reply | 4, in one `tmp/followup-drafts.md` |
+| follow-ups `board.py` shows | 0 | 4 | 2 | 2 | 0 | 0 |
+
+s1, verbatim: "I drafted follow-ups but did not file them, because the skill says draft." The
+gated runs obeyed the agreement and left the approver nothing he would see: "The follow-ups
+below are drafts for Minh to approve", in a reply addressed to Lan. Tickets that were created
+were right without help: one state role (`status:inbox`), a category role, assigned to `lan`, the
+repo's bug sections (8 of 8 tickets). Finding quality is 10-18's subject and was not re-scored.
+
+Failure class → form: the output lands in the wrong place, and which place is right depends on
+the repo → a recipe for the Follow-ups slot with one conditional on what `docs/agents/` says.
+`board.py` gained a `Not filed (drafts in .skills/inbox)` section, test-first
+(`test_board.py::TestLocalDrafts`), so the gated branch has a reader.
+
+### GREEN — 1.1.0
+
+| | open s | open h | gated s | gated h |
+|---|---|---|---|---|
+| tickets created | 2 | 3 | 0 | 0 |
+| `.skills/inbox/` files, one per finding, `# <title>` first | — | — | 3 | 3 |
+| approver named | — | — | Minh | Minh |
+| follow-ups `board.py` shows | 2 of 2 | 3 of 3 | 3 of 3 | 3 of 3 |
+| tracked files changed | 0 | 0 | 0 | 0 |
+
+After GREEN the ticket bullet's "state role `needs-triage`, one category role, assigned to the
+operator" was deleted as a no-op (right on 8 of 8 baseline tickets; `issue-tracker.md` is its
+home). One more open-repo Sonnet run on the shipped text: 2 tickets, `bug` + `status:inbox`,
+assigned `lan`, both on the board.
+
+Both open runs gave the conditional as their reason ("No one else is named in `docs/agents/` as
+approving or opening tickets, so I filed tickets"). No REFACTOR round: no run argued with the slot.
+
+**Follow-up filing key.** A repo whose tracker is a team's has no third person to name, so the
+conditional above cannot protect it. With `**Follow-up filing:** draft` in `issue-tracker.md` and
+the text above, 2 of 2 runs (s, h) filed tickets anyway (5 in all); Sonnet: "no other approver is
+named in `docs/agents/`, and Lan is the operator. So I created real tickets". The conditional now
+also reads that key: 2 of 2 wrote one inbox file per finding (3 and 2) and created no ticket.
+
+**A ticket that already exists.** With open ticket #10 holding the refund bug the audit finds:
+on the text above, Sonnet commented on #10 and filed two new tickets; Haiku filed #15 for it,
+then noticed #10 and closed #15 as a duplicate. With "list the open tickets first", Haiku
+commented on #10 and filed only the two new ones (#14, #15, both open; #10 has one comment).
+
+Not covered: a team tracker with no such key (the audit files there); Linear; whether `/board` tells the operator what to do with a
+Not-filed line (board's own TESTS.md).
+
 ## 2026-10-18 — 1.0.0
 
 Roster: sonnet and haiku, headless (`skill-fixtures/run-headless.sh`, `claude -p

@@ -114,7 +114,7 @@ When the guide already exists and its review is clean, and the agent should driv
 
 ## `/audit-shipped` — after the merge
 
-[`inspect-change`](../skills/inspect-change.md) reviews a branch before it merges. [`/audit-shipped`](../skills/audit-shipped.md) looks at work that has already merged in a window (the last 7 days unless you say otherwise). It lists every reader of each new field state across the repo, runs the inputs that cross features, and checks each glossary term against the line that implements it. Each real finding becomes a follow-up draft.
+[`inspect-change`](../skills/inspect-change.md) reviews a branch before it merges. [`/audit-shipped`](../skills/audit-shipped.md) looks at work that has already merged in a window (the last 7 days unless you say otherwise). It lists every reader of each new field state across the repo, runs the inputs that cross features, and checks each glossary term against the line that implements it. Each real finding becomes a follow-up on the board: a ticket in Inbox, or a file in `.skills/inbox/` where the repo says someone else opens tickets.
 
 ## Next
 

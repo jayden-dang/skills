@@ -8,6 +8,7 @@ Any other tracker: write the same JSON shapes from its own ops and pass the file
 ({"nodes": [{"number": n}]}) is optional. A `.skills/<CODE>/tickets.md` line gives a private ticket's
 feature and covered IDs: `<ticket id> covers: <ids> road: <ROAD-N>`, with only the ID required.
 --drafts is a JSON list of {"title", "status", "comment"} rows awaiting sign-off.
+`.skills/inbox/*.md` are follow-ups a skill wrote and could not file: each is listed by its first line.
 
 Every section always prints, `none` when empty, so a missing source shows as missing.
 """
@@ -207,6 +208,13 @@ for i in by["ready-for-human"]:
     who = ", ".join(names(i.get("assignees"), "login")) or "unassigned"
     print(f"- #{i['number']} {i['title']} — {who}{' (you)' if me and me in who else ''} — {last_comment(i)}")
 if not by["ready-for-human"]:
+    print("none")
+print("\n### Not filed (drafts in .skills/inbox)")
+local = sorted(Path(".skills/inbox").glob("*.md"))
+for f in local:
+    first = next((l.strip().lstrip("#").strip() for l in f.read_text().splitlines() if l.strip()), f.stem)
+    print(f"- {first} — {f.as_posix()}")
+if not local:
     print("none")
 print("\n### Drafts awaiting sign-off")
 if drafts is None:

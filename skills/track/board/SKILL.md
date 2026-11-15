@@ -1,6 +1,6 @@
 ---
 name: board
-version: 1.2.0
+version: 1.3.0
 description: Shows the whole board by state, starting with everything waiting on you, and every place the board and the repo disagree. Run it with /board.
 disable-model-invocation: true
 ---
@@ -46,7 +46,8 @@ The script is read-only, and so is this skill: write nothing to the tracker.
    - Shaping: write the spec (`/shape #N`) or approve it — each line names who is framing it;
    - Inbox: triage it (`/triage`);
    - Human-only: do it (yours), or who holds it;
-   - a draft: sign off, or answer its comment.
+   - a draft: sign off, or answer its comment;
+   - a Not-filed line: open the file, then send it to the approver it names, file it, or delete it.
 
    Write `none` only for a section that printed `none`.
 2. **With agents.** What is being built and by whom. Then the ready tickets that are

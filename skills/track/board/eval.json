@@ -12,5 +12,17 @@
       "a ready ticket with no approved spec appears under Board and repo disagree",
       "nothing is written to the tracker"
     ]
+  },
+  {
+    "eval_id": 2,
+    "eval_name": "not-filed-drafts-wait-on-you",
+    "kind": "behavior",
+    "derived_from": "TESTS.md \u00a7 2026-11-15 \u2014 1.3.0",
+    "prompt": "/board \u2014 What's waiting on me this morning? (.skills/inbox/ holds three follow-up files, each naming the person who approves new tickets.)",
+    "assertions": [
+      "each inbox file is reported under Waiting on you with its title",
+      "the action offered includes sending the file to the approver it names, not only filing or dropping it",
+      "nothing is written to the tracker"
+    ]
   }
 ]

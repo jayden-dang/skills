@@ -6,7 +6,7 @@
 |---|---|
 | **Bucket** | track |
 | **Invocation** | `/board` (user-invoked; `disable-model-invocation: true`) |
-| **Reads** | `docs/agents/issue-tracker.md`, `docs/agents/triage-labels.md`, every open ticket and open PR, and the Notion drafts not yet signed off when `Draft surface` is `notion`. All of it goes through `scripts/board.py` |
+| **Reads** | `docs/agents/issue-tracker.md`, `docs/agents/triage-labels.md`, every open ticket and open PR, the Notion drafts not yet signed off when `Draft surface` is `notion`, and `.skills/inbox/*.md`. All of it goes through `scripts/board.py` |
 | **Writes** | nothing, ever |
 | **Calls** | nothing. Names [`/shape`](shape.md), [`/triage`](triage.md) and [`/show-run-status`](show-run-status.md) as the next step for a line |
 | **Called by** | nobody — it is user-invoked |
@@ -21,7 +21,7 @@ It runs `scripts/board.py`, which prints every section every time. A blocker com
 
 The report has three parts, in this order:
 
-1. **Waiting on you.** Each open PR to review and merge (with its parked decision quoted), each `needs-info` question, each Shaping ticket with who is framing it, each untriaged ticket, each Human-only ticket, and each Notion draft awaiting sign-off. Each line carries the one thing to do.
+1. **Waiting on you.** Each open PR to review and merge (with its parked decision quoted), each `needs-info` question, each Shaping ticket with who is framing it, each untriaged ticket, each Human-only ticket, each Notion draft awaiting sign-off, and each follow-up a skill left in `.skills/inbox/` because it could not file a ticket. Each line carries the one thing to do.
 2. **With agents.** What is being built and by whom, then the ready tickets that [`/go`](go.md) would take next.
 3. **Board and repo disagree.** A ready ticket with no approved spec, an open PR whose ticket lacks `in-review`, an open ticket whose spec reads `Implemented` or `Shipped`, and a ticket with two state roles. Each line comes with the edit that fixes it. The skill does not make the edit.
 

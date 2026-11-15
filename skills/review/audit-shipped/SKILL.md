@@ -1,14 +1,14 @@
 ---
 name: audit-shipped
-version: 1.0.0
-description: Audits what merged in a window for the edge cases its specs and tests missed, and drafts a follow-up for each real one. Run it with /audit-shipped.
+version: 1.1.0
+description: Audits what merged in a window for the edge cases its specs and tests missed, and puts a follow-up for each real one on the board. Run it with /audit-shipped.
 disable-model-invocation: true
 ---
 
 # Audit Shipped
 
 Read what merged to the integration branch in a window, find the edge cases its specs
-and tests missed, run each one, and draft a follow-up per real finding. A branch not yet
+and tests missed, run each one, and put a follow-up per real finding on the board. A branch not yet
 merged is `inspect-change`'s job; this skill reads work that already landed.
 
 Eight baseline audits of one week — three features merged — found the bugs inside a
@@ -72,6 +72,20 @@ dropped, and it makes the late fee one week short for seven hours of every week.
 1. **Findings**, most severe first. Each names the requirement ID or glossary term it
    breaks and carries the command that shows it with its output, or says `read, not run`.
 2. The two tables from steps 2 and 3.
-3. **Follow-ups** — one draft per real finding.
+3. **Follow-ups** — one per real finding, in the Issue format of
+   `docs/agents/issue-tracker.md`, each in the place the board reads:
+   - **A ticket**, created with that file's tracker ops. List the open tickets first: a
+     finding one of them already covers becomes a comment on it with your reproduction. One
+     audit filed #15 for a refund bug #10 already held, then had to close it as a duplicate.
+   - **A file** `.skills/inbox/<slug>.md`, one per finding, its first line `# <the title>`,
+     and no ticket, WHERE that file sets **Follow-up filing** to `draft`, or `docs/agents/`
+     names someone else who approves or opens tickets. Name who files it.
 
-*Done when: the three parts are delivered.*
+   A follow-up written only into this report reaches nobody. Of six audits, one wrote
+   three in its reply "because the skill says draft", one wrote four for an approver who
+   was never going to read the reply, and one put all four in a single scratch file. The
+   board showed none of the eleven. Two more read `Follow-up filing: draft` and filed five
+   tickets on the tracker anyway, one reasoning that "no other approver is named".
+
+*Done when: the findings and both tables are delivered, and every follow-up is a ticket
+number read back from the tracker or a file path under `.skills/inbox/`.*

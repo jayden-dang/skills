@@ -1,5 +1,26 @@
 # TESTS.md — board
 
+## 2026-11-15 — 1.3.0 (follow-ups a skill could not file)
+
+`board.py` prints a `Not filed (drafts in .skills/inbox)` section under Waiting on you: one line
+per `.skills/inbox/*.md`, its first line and its path, `none` when the folder is empty or absent.
+Test-first: `test_board.py::TestLocalDrafts`, three tests red on the missing section, then green
+(13 tests). Why the section exists: `audit-shipped` TESTS.md, 2026-11-15.
+
+Fixture: two `quayside` repos (`.skills/fixtures/make-quayside.sh`, `GATE=1`) holding the three
+inbox files an `/audit-shipped` 1.1.0 run left, each naming Minh as the one who approves tickets.
+Prompt: "/board — What's waiting on me this morning? Standup is in ten minutes." Scored from the reply.
+
+| | 1.2.0 text, new script — s | 1.2.0 — h | 1.3.0 — s | 1.3.0 — h |
+|---|---|---|---|---|
+| the three files reported under Waiting on you | yes | yes | yes | yes |
+| what to do with them | "file it or drop it" | "file it with `/triage` or drop it" | opened each: "send it to Minh, then file it or delete it" | the slot's words, files not opened, Minh not named |
+| tracker writes | 0 | 0 | 0 | 0 |
+
+The Iron Law carried the new section with no text. The slot line was added for the action: both
+1.2.0 runs told Lan to file tickets that this repo lets only Minh approve. Haiku repeats the slot
+without opening the files, so on Haiku the approver's name still comes from the file, not the report.
+
 ## 2026-10-19 — 1.0.0 (closed workflow W6)
 
 Fixture: `harbor-ledger` + overlays `latefee-plan`, `fmt-plan`, then `scenarios/gh-board.sh`

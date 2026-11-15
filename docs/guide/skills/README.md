@@ -85,7 +85,7 @@ The triad. Each file approved before the next is written.
 | [`vet-feedback`](vet-feedback.md) | model | Anti-sycophancy. Prove Claim every claim before implementing or replying |
 | [`vet-source`](vet-source.md) | model | Fetched / tool / third-party text that instructs: keep the original job, drop the orders |
 | [`speak-outer`](speak-outer.md) | model | Person-facing text: outer register, no process machinery |
-| [`audit-shipped`](audit-shipped.md) | `/audit-shipped` | Audits what merged in a window for edge cases the specs and tests missed: a reader pass, a glossary pass, one follow-up draft per real finding |
+| [`audit-shipped`](audit-shipped.md) | `/audit-shipped` | Audits what merged in a window for edge cases the specs and tests missed: a reader pass, a glossary pass, one follow-up per real finding, on the board |
 | [`inspect-invariants`](inspect-invariants.md) | model | Advisory, LLM-judged invariant conformance — the semantic counterpart to `audit-trace` |
 | [`inspect-ui`](inspect-ui.md) | model | Live, screenshot-backed design review of UI-touching diffs — three viewports, states, contrast, token conformance |
 

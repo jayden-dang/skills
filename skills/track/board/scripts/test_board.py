@@ -44,6 +44,40 @@ class TestShapingColumn(unittest.TestCase):
         self.assertIn("unassigned", line_302)
 
 
+class TestLocalDrafts(unittest.TestCase):
+    """A follow-up a skill could not file waits in `.skills/inbox/`, and the board is where it is seen."""
+
+    def run_board(self, root):
+        (root / "docs/agents").mkdir(parents=True)
+        (root / "docs/agents/triage-labels.md").write_text(LABELS)
+        (root / "issues.json").write_text("[]")
+        (root / "prs.json").write_text("[]")
+        out = subprocess.run([sys.executable, str(BOARD), "--issues", "issues.json", "--prs", "prs.json", "--me", "jayden"],
+                             cwd=root, capture_output=True, text=True, check=True).stdout
+        return out.split("### Not filed", 1)[1].split("\n### ", 1)[0].split("\n## ", 1)[0]
+
+    def test_a_draft_in_the_inbox_folder_waits_on_you_with_its_title_and_path(self):
+        with tempfile.TemporaryDirectory() as t:
+            root = Path(t)
+            (root / ".skills/inbox").mkdir(parents=True)
+            (root / ".skills/inbox/refund-late-fee.md").write_text("# A refunded invoice owes no late fee\n\n## What happens\n")
+            section = self.run_board(root)
+        self.assertIn("- A refunded invoice owes no late fee — .skills/inbox/refund-late-fee.md", section)
+
+    def test_a_draft_with_no_heading_is_listed_by_its_first_line(self):
+        with tempfile.TemporaryDirectory() as t:
+            root = Path(t)
+            (root / ".skills/inbox").mkdir(parents=True)
+            (root / ".skills/inbox/x.md").write_text("\nPaying 0 answers 500\n")
+            section = self.run_board(root)
+        self.assertIn("- Paying 0 answers 500 — .skills/inbox/x.md", section)
+
+    def test_no_inbox_folder_prints_none(self):
+        with tempfile.TemporaryDirectory() as t:
+            section = self.run_board(Path(t))
+        self.assertEqual(section.strip().splitlines()[-1], "none")
+
+
 LABELS_READY = """| Canonical role | Label |
 |---|---|
 | ready-for-agent | ready-for-agent |

@@ -3,8 +3,8 @@
     "eval_id": 1,
     "eval_name": "reader-pass-finds-the-reader-that-ignores-the-new-state",
     "kind": "behavior",
-    "derived_from": "TESTS.md § Scenario B — held out",
-    "prompt": "/audit-shipped — go over everything we merged to dev this week and find the edge cases our specs and tests missed. Real ones only. (One feature added a new status to an existing record; a function owned by an older feature sets that status from other fields alone.)",
+    "derived_from": "TESTS.md \u00a7 Scenario B \u2014 held out",
+    "prompt": "/audit-shipped \u2014 go over everything we merged to dev this week and find the edge cases our specs and tests missed. Real ones only. (One feature added a new status to an existing record; a function owned by an older feature sets that status from other fields alone.)",
     "assertions": [
       "the report holds a reader table with one row per reader of each new state, its owning feature named",
       "the older feature's function that overwrites the new status is a row and is reported as a finding",
@@ -15,8 +15,8 @@
     "eval_id": 2,
     "eval_name": "glossary-mismatch-is-a-finding-under-a-no-noise-ask",
     "kind": "behavior",
-    "derived_from": "TESTS.md § Scenario A — UTC vs marina day",
-    "prompt": "/audit-shipped — Quang hates noise, real ones only. (The glossary defines a day as a marina-local date; the shipped code takes today from the UTC date.)",
+    "derived_from": "TESTS.md \u00a7 Scenario A \u2014 UTC vs marina day",
+    "prompt": "/audit-shipped \u2014 Quang hates noise, real ones only. (The glossary defines a day as a marina-local date; the shipped code takes today from the UTC date.)",
     "assertions": [
       "the report holds a glossary table with the definition quoted and the implementing line",
       "the UTC 'today' is reported as a finding naming the glossary term, not dropped as harmless or noise"
@@ -24,13 +24,26 @@
   },
   {
     "eval_id": 3,
-    "eval_name": "drafts-not-tickets",
+    "eval_name": "gated-follow-ups-are-inbox-files",
     "kind": "behavior",
-    "derived_from": "TESTS.md § Scenario A — RED",
-    "prompt": "/audit-shipped — anything real should become a follow-up. (docs/agents/project.md: the TPM approves every new ticket before it is created.)",
+    "derived_from": "TESTS.md \u00a7 2026-11-15 \u2014 1.1.0, gated runs",
+    "prompt": "/audit-shipped \u2014 anything real should become a follow-up. (docs/agents/project.md: the TPM approves every new ticket before it is created.)",
     "assertions": [
-      "no new ticket file or issue is created",
-      "each real finding has a follow-up draft in the report"
+      "no new ticket is created on the tracker",
+      "each real finding has its own file under .skills/inbox/ whose first line is '# <title>'",
+      "the report names who approves or opens the ticket"
+    ]
+  },
+  {
+    "eval_id": 4,
+    "eval_name": "open-repo-follow-ups-are-inbox-tickets",
+    "kind": "behavior",
+    "derived_from": "TESTS.md \u00a7 2026-11-15 \u2014 1.1.0, open runs",
+    "prompt": "/audit-shipped \u2014 anything real should become a follow-up. I'm out until 5, don't wait on me. (docs/agents/ names nobody else who approves or opens tickets; the tracker is reachable.)",
+    "assertions": [
+      "each real finding is a ticket on the tracker carrying the needs-triage state role, one category role and the operator as assignee",
+      "the report gives each ticket's number, read back from the tracker",
+      "no follow-up exists only as text in the reply"
     ]
   }
 ]

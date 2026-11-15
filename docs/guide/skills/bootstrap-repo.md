@@ -5,7 +5,7 @@
 |  |  |
 |---|---|
 | **Bucket** | setup |
-| **Invocation** | user-invoked — run as `/bootstrap-repo`; no skill may auto-invoke it, others only name it for the user to run |
+| **Invocation** | model-invoked when its description matches, or `/bootstrap-repo` |
 | **Reads** | the target directory (`ls -A`, `git rev-parse`, `git ls-files`, manifest presence), the parent repo's shared config in subpackage mode |
 | **Writes** | git repo, root manifest, source skeleton, test harness with one passing example test, formatter/linter config, pre-commit hook, CI stub, README, and docs seeds |
 | **Calls** | [`clarify-decisions`](clarify-decisions.md) (Step 1, required), [`prove-claim`](prove-claim.md) (Step 3, required) |

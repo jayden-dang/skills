@@ -5,11 +5,11 @@
 |  |  |
 |---|---|
 | **Bucket** | project |
-| **Invocation** | `/define-project` (user-invoked; `disable-model-invocation: true`) |
+| **Invocation** | model-invoked when its description matches, or `/define-project` |
 | **Reads** | the templates; the existing layer docs (update/validate); the codebase (brownfield ratification) |
 | **Writes** | `docs/product/vision.md`, `docs/architecture/INDEX.md` (+ per-domain files), `docs/product/guidelines.md` |
 | **Calls** | [`clarify-decisions`](clarify-decisions.md), [`define-domain`](define-domain.md) (ADR gate), [`inspect-invariants`](inspect-invariants.md) (validate mode) |
-| **Called by** | nobody — it is user-invoked. Offered by [`configure-repo`](configure-repo.md) (decision **I**) and [`bootstrap-repo`](bootstrap-repo.md) at init |
+| **Called by** | nobody yet — it fires on what the user asks, or on `/define-project` |
 
 ## When it fires
 

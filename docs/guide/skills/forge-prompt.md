@@ -5,11 +5,11 @@
 |  |  |
 |---|---|
 | **Bucket** | discovery |
-| **Invocation** | user-invoked (`/forge-prompt`) — agents must never auto-invoke it |
+| **Invocation** | model-invoked when its description matches, or `/forge-prompt` |
 | **Reads** | the repository when the ask is about it (never asks what it can read); otherwise only what the user supplies |
 | **Writes** | the prompt block in chat; optionally the block plus the Q&A trail to `.skills/prompts/<slug>.md` |
 | **Calls** | `clarify-decisions` for the interview channel |
-| **Called by** | nobody — it sits outside every chain by design |
+| **Called by** | nobody yet — it fires on what the user asks, or on `/forge-prompt` |
 
 ## Why it exists
 

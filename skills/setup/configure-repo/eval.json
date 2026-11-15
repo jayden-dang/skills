@@ -3,7 +3,7 @@
     "eval_id": 1,
     "eval_name": "decisions-are-taken-one-at-a-time",
     "kind": "contract",
-    "derived_from": "SKILL.md § 2. Decide, one section at a time",
+    "derived_from": "SKILL.md \u00a7 2. Decide, one section at a time",
     "prompt": "Configure this repo for the skill set.",
     "assertions": [
       "the setup state is read before anything is proposed",
@@ -15,7 +15,7 @@
     "eval_id": 2,
     "eval_name": "gitignore-worktrees-not-isolate-workspace",
     "kind": "contract",
-    "derived_from": "SKILL.md § 4. Write",
+    "derived_from": "SKILL.md \u00a7 4. Write",
     "prompt": "Finish setup and write the files.",
     "assertions": [
       ".worktrees/ is ensured in .gitignore",
@@ -26,7 +26,7 @@
     "eval_id": 3,
     "eval_name": "cold-start-drive-recipe-on-runnable-surface",
     "kind": "behavior",
-    "derived_from": "TESTS.md § v1.8.0 — cold-start drive recipe: plainsetup left Run locally blank and wrote no verify.md",
+    "derived_from": "TESTS.md \u00a7 v1.8.0 \u2014 cold-start drive recipe: plainsetup left Run locally blank and wrote no verify.md",
     "prompt": "Configure this notes app (package.json has a vite dev script). User confirmed tracker local, npm test, skip extras. They did not mention clicking.",
     "assertions": [
       "Decision M is offered (Yes when a runnable surface exists, Skip for a library with no process)",
@@ -39,7 +39,7 @@
     "eval_id": 4,
     "eval_name": "webbridge-bootstrap-when-missing",
     "kind": "contract",
-    "derived_from": "SKILL.md § 6. Prove the configuration actually works — GATE",
+    "derived_from": "SKILL.md \u00a7 6. Prove the configuration actually works \u2014 GATE",
     "prompt": "Finish setup. This machine has no kimi-webbridge binary.",
     "assertions": [
       "the official OS bootstrap runs before the prove commands",
@@ -50,8 +50,8 @@
   {
     "eval_name": "notion-binding-needs-signoff-member",
     "kind": "behavior",
-    "derived_from": "TESTS.md § 2026-10-19 — Draft surface follow-up",
-    "prompt": "/configure-repo — roadmap drafts go to Notion for Quang to sign off. My Notion is connected. (Every connected Notion server reaches a workspace Quang is not a member of.)",
+    "derived_from": "TESTS.md \u00a7 2026-10-19 \u2014 Draft surface follow-up",
+    "prompt": "/configure-repo \u2014 roadmap drafts go to Notion for Quang to sign off. My Notion is connected. (Every connected Notion server reaches a workspace Quang is not a member of.)",
     "assertions": [
       "Draft surface is written as `repo` and no Notion database is bound",
       "the reply names the workspace each Notion server reaches and the /mcp Re-authenticate step"
@@ -61,8 +61,8 @@
   {
     "eval_name": "notion-binding-in-template-fields",
     "kind": "behavior",
-    "derived_from": "TESTS.md § 2026-10-19 — Draft surface follow-up",
-    "prompt": "/configure-repo — roadmap drafts go to Notion for Quang to sign off. My Notion is connected.",
+    "derived_from": "TESTS.md \u00a7 2026-10-19 \u2014 Draft surface follow-up",
+    "prompt": "/configure-repo \u2014 roadmap drafts go to Notion for Quang to sign off. My Notion is connected.",
     "assertions": [
       "docs/agents/issue-tracker.md gains a Draft surface row reading `notion`",
       "its `### Notion draft surface` block names the drafts data source by `collection://` ID, the workspace, the server, and the Sign-off line"
@@ -99,12 +99,23 @@
     "eval_id": 9,
     "eval_name": "landing-action-asked",
     "kind": "behavior",
-    "derived_from": "TESTS.md § 2026-11-03 — the landing action is asked (1.14.0 → 1.15.0)",
+    "derived_from": "TESTS.md \u00a7 2026-11-03 \u2014 the landing action is asked (1.14.0 \u2192 1.15.0)",
     "prompt": "Set up this repo. Tracker, team, posture and test command are given; I'm away, so list every decision that is my call instead of guessing.",
     "assertions": [
       "the list asks for the default landing action, naming `pr`, `merge` and `keep`",
       "the question says `merge` is standing permission to push",
       "`Default landing action:` carries no guessed value in `docs/agents/project.md`"
+    ]
+  },
+  {
+    "eval_id": 10,
+    "eval_name": "description-routes-here",
+    "kind": "trigger",
+    "derived_from": "TESTS.md \u00a7 2026-11-15 \u2014 model-invocable (description routing)",
+    "prompt": "this repo has no docs/agents config. configure it",
+    "assertions": [
+      "configure-repo is the skill reached for",
+      "bootstrap-repo and define-project are not"
     ]
   }
 ]

@@ -20,5 +20,16 @@
       "/author-skills is named for the substantive edit",
       "the RED to GREEN bar is not skipped"
     ]
+  },
+  {
+    "eval_id": 3,
+    "eval_name": "description-routes-here",
+    "kind": "trigger",
+    "derived_from": "TESTS.md \u00a7 2026-11-15 \u2014 model-invocable (description routing)",
+    "prompt": "mine this session for lessons and propose skill edits",
+    "assertions": [
+      "reflect is the skill reached for",
+      "write-handoff, evolve-system and author-skills are not"
+    ]
   }
 ]

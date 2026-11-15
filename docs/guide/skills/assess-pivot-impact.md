@@ -6,11 +6,11 @@
 |  |  |
 |---|---|
 | **Bucket** | project |
-| **Invocation** | `/assess-pivot-impact` (user-invoked; `disable-model-invocation: true`) |
+| **Invocation** | model-invoked when its description matches, or `/assess-pivot-impact` |
 | **Reads** | `docs/product/vision.md`, `docs/architecture/`, `docs/specs/INDEX.md`, shipped feature requirements, the code they name |
 | **Writes** | `docs/product/pivot-ledger.md` (or `.skills/pivot-ledger.md`) only |
 | **Calls** | names `/define-project` (update) after confirmation; never invokes user-invoked skills |
-| **Called by** | nobody auto — offered by `define-project` update when a pivot collides with shipped reality; named by `reroute-plan` on Vision-level rewinds with collisions |
+| **Called by** | nobody yet — it fires on what the user asks, or on `/assess-pivot-impact` |
 
 ## When it fires
 

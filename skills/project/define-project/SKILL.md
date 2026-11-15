@@ -1,10 +1,7 @@
 ---
 name: define-project
-version: 1.1.0
-description: Establishes or updates the repo-level documentation layer — docs/product/vision.md,
-  docs/architecture/ invariants, and docs/product/guidelines.md. Run it with /establish-
-  project.
-disable-model-invocation: true
+version: 1.2.0
+description: Use when a repo needs its project-level documentation written, updated or checked, meaning the product vision, the architecture invariants (ARCH-N) or the product guidelines. Produces docs/product/vision.md, docs/architecture/ and docs/product/guidelines.md. Not for one decision record or glossary term (define-domain), a roadmap (plan-milestones), or a pivot against shipped code (assess-pivot-impact).
 ---
 
 # Define Project
@@ -102,11 +99,10 @@ found.
 
 - **Pivot with shipped collisions.** WHERE the new direction contradicts a
   `Shipped`/`Implemented` feature, a live `**GOAL-N**`, a live `**ARCH-N**`, or a
-  non-goal/hard constraint, **stop** and name `/assess-pivot-impact` for the user to
-  run — that skill owns the disposition ledger; this skill continues only after
-  the ledger is confirmed (or the user explicitly declines it). Agents never
-  auto-run it (`disable-model-invocation: true`). WHERE there is no such
-  collision, continue.
+  non-goal/hard constraint, **stop** revising. REQUIRED SUB-SKILL: use
+  `assess-pivot-impact` — that skill owns the disposition ledger; this skill continues
+  only after the user has confirmed the ledger (or explicitly declined it). WHERE there
+  is no such collision, continue.
 - Revise the affected doc(s) only.
 - A hard-to-reverse, surprising architecture decision gets an ADR (REQUIRED SUB-SKILL:
   use `define-domain` — it owns the ADR gate).

@@ -3,7 +3,7 @@
     "eval_id": 1,
     "eval_name": "greenfield-is-a-hard-gate",
     "kind": "contract",
-    "derived_from": "SKILL.md § 0. Confirm the target is greenfield — GATE",
+    "derived_from": "SKILL.md \u00a7 0. Confirm the target is greenfield \u2014 GATE",
     "prompt": "Bootstrap a repo in a directory that already contains a src/ tree and a package.json.",
     "assertions": [
       "the non-empty target halts the run at the gate rather than scaffolding over existing files",
@@ -14,11 +14,22 @@
     "eval_id": 2,
     "eval_name": "baseline-is-verified-before-handoff",
     "kind": "contract",
-    "derived_from": "SKILL.md § 3. Verify the baseline",
+    "derived_from": "SKILL.md \u00a7 3. Verify the baseline",
     "prompt": "The scaffold is written.",
     "assertions": [
       "the scaffolded baseline is actually run and verified rather than declared working",
       "hand-off happens only after that verification"
+    ]
+  },
+  {
+    "eval_id": 3,
+    "eval_name": "description-routes-here",
+    "kind": "trigger",
+    "derived_from": "TESTS.md \u00a7 2026-11-15 \u2014 model-invocable (description routing)",
+    "prompt": "scaffold a greenfield Rust CLI here, nothing exists yet",
+    "assertions": [
+      "bootstrap-repo is the skill reached for",
+      "configure-repo and frame-change are not"
     ]
   }
 ]

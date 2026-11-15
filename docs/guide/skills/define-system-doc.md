@@ -5,7 +5,7 @@
 |  |  |
 |---|---|
 | **Bucket** | project |
-| **Invocation** | `/define-system-doc <entry-key>` — user-invoked; the agent cannot call it |
+| **Invocation** | model-invoked when its description matches, or `/define-system-doc` |
 | **Reads** | `catalog/CATALOG.md` beside the skill, then only the one entry package the key names, and only the templates and validators that package names |
 | **Writes** | `.skills/system-docs/<entry-key>/` while working, and the single canonical consumer file on approval |
 | **Calls** | the entry package's structural validator |

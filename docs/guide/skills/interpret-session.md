@@ -5,7 +5,7 @@
 |  |  |
 |---|---|
 | **Bucket** | discovery |
-| **Invocation** | user-invoked (`/interpret-session`) — a session mode you turn on, not auto-fired |
+| **Invocation** | model-invoked when its description matches, or `/interpret-session` |
 | **Reads** | the pasted responses; the codebase when a response touches code that lives here |
 | **Writes** | nothing in the product repo; it enacts no code, files, or plan execution. One optional gitignored note at `.skills/interpret-session/<slug>/model.md`, offered once and written only if the user asks |
 | **Calls** | [`research`](research.md) when an alternative or assumption turns on external fact, or on how a shipped product does the feature on the table |

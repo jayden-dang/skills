@@ -5,12 +5,12 @@
 |  |  |
 |---|---|
 | **Bucket** | discovery |
-| **Invocation** | user-invoked (`/forge-goal`) — agents must never auto-invoke it |
+| **Invocation** | model-invoked when its description matches, or `/forge-goal` |
 | **Reads** | the repository first — scripts, tests, bench commands, every caller of what the ask names, contract comments — so it never asks what it can read |
 | **Runs** | only checks that change nothing, each exactly as it will appear in the goal, to prove it runs and is not already green |
 | **Writes** | the goal prompt in chat; edits no file |
 | **Calls** | `clarify-decisions` for the interview channel (its own card, no recommendation) |
-| **Called by** | nobody — it sits outside every chain, like `/forge-prompt` |
+| **Called by** | nobody yet — it fires on what the user asks, or on `/forge-goal` |
 
 ## Why it exists
 

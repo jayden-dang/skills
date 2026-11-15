@@ -1,8 +1,7 @@
 ---
 name: configure-repo
-version: 1.16.0
-description: Sets up docs/agents config so this skill set can run in an existing repo.
-disable-model-invocation: true
+version: 1.17.0
+description: Use when an existing repo is to adopt this skill set, its docs/agents config is missing or incomplete, or another skill reports a missing config file. Produces docs/agents/project.md, issue-tracker.md, triage-labels.md and verify.md, the seed spec files and the pointer block in the agent instructions. Not for an empty directory (bootstrap-repo).
 ---
 
 # Set Up the Repo

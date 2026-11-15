@@ -1,10 +1,7 @@
 ---
 name: bootstrap-repo
-version: 1.2.0
-description: Produces a working repository skeleton in an empty directory — stack chosen, test
-  harness wired, tooling and CI in place. Redirects when the directory is not greenfield.
-  Run it with /bootstrap-repo.
-disable-model-invocation: true
+version: 1.3.0
+description: Use when a new project is to be started in an empty directory, in words like "scaffold", "bootstrap" or "start a new service". Produces a working repository skeleton with the stack chosen, a test harness wired, tooling and CI in place and one passing test, and redirects when the directory is not greenfield. Not for an existing repo (configure-repo) or a new feature (frame-change).
 ---
 
 # Scaffold a Project

@@ -3,7 +3,7 @@
     "eval_id": 1,
     "eval_name": "block-names-no-method-or-next-step",
     "kind": "behavior",
-    "derived_from": "TESTS.md § RED-4 — crossover effect and cross-context review rows; § Design decisions — no Route, no lane name, no classification",
+    "derived_from": "TESTS.md \u00a7 RED-4 \u2014 crossover effect and cross-context review rows; \u00a7 Design decisions \u2014 no Route, no lane name, no classification",
     "prompt": "The interview is finished for a report-sharing feature. Render the prompt the user will paste into a fresh session.",
     "assertions": [
       "the block contains no skill name, no lane, no step list, and no 'start with' line",
@@ -16,7 +16,7 @@
     "eval_id": 2,
     "eval_name": "targets-carry-a-confirmation-mark",
     "kind": "behavior",
-    "derived_from": "TESTS.md § RED-2 — \"onboarding\" resolves to no file, screen, flow, or feature code; § RED-3 — wrong-target 9.6% to 75.1%",
+    "derived_from": "TESTS.md \u00a7 RED-2 \u2014 \"onboarding\" resolves to no file, screen, flow, or feature code; \u00a7 RED-3 \u2014 wrong-target 9.6% to 75.1%",
     "prompt": "The user says: 'our onboarding is bad, we should probably add a wizard.' The repo has src/onboarding/signup/, src/onboarding/first-run/, and src/workspace/invite/.",
     "assertions": [
       "the first interview card pins target identity rather than asking for a preferred approach",
@@ -29,7 +29,7 @@
     "eval_id": 3,
     "eval_name": "boundaries-are-declared-not-inferred",
     "kind": "behavior",
-    "derived_from": "TESTS.md § RED-1 — do-not-touch slot absent from all four on-ramps; § RED-3 — shared 65.5% vs contained 64.0% action rates",
+    "derived_from": "TESTS.md \u00a7 RED-1 \u2014 do-not-touch slot absent from all four on-ramps; \u00a7 RED-3 \u2014 shared 65.5% vs contained 64.0% action rates",
     "prompt": "The user says: 'clean up the stale rows in the accounts table, it's getting big.' The database is shared with billing.",
     "assertions": [
       "the block carries an Off limits line and a Must keep working line",
@@ -40,7 +40,7 @@
     "eval_id": 4,
     "eval_name": "interview-stops-on-the-open-set-not-a-count",
     "kind": "behavior",
-    "derived_from": "TESTS.md § Design decisions — open-set stop instead of a fixed three-question cap; § RED-3 — answerability decay",
+    "derived_from": "TESTS.md \u00a7 Design decisions \u2014 open-set stop instead of a fixed three-question cap; \u00a7 RED-3 \u2014 answerability decay",
     "prompt": "A rate-limiter change where the user answers the first two cards precisely and then replies 'I don't know' and 'whatever you think' to the next two.",
     "assertions": [
       "questions are asked one at a time in ordinary chat, not through a picker",
@@ -53,7 +53,7 @@
     "eval_id": 5,
     "eval_name": "interview-language-differs-from-prompt-language",
     "kind": "behavior",
-    "derived_from": "TESTS.md § Design decisions — interview language chosen at setup; the prompt stays in the receiving session's language",
+    "derived_from": "TESTS.md \u00a7 Design decisions \u2014 interview language chosen at setup; the prompt stays in the receiving session's language",
     "prompt": "At setup the user picks Vietnamese for the interview and says nothing about the receiving session.",
     "assertions": [
       "every question, label, and explanation after setup is in Vietnamese",
@@ -66,7 +66,7 @@
     "eval_id": 6,
     "eval_name": "does-not-ask-what-the-repo-answers",
     "kind": "contract",
-    "derived_from": "SKILL.md § **Never ask what you can read.**",
+    "derived_from": "SKILL.md \u00a7 **Never ask what you can read.**",
     "prompt": "Setup established the territory is this repository. The user's ask names a module whose files the agent can list.",
     "assertions": [
       "the agent reads the repository and puts what it found in the card's Territory lines",
@@ -77,11 +77,22 @@
     "eval_id": 7,
     "eval_name": "no-work-is-started-in-this-session",
     "kind": "contract",
-    "derived_from": "SKILL.md § Write NO code, edit NO project file, and begin NO part of the work the prompt describes.",
+    "derived_from": "SKILL.md \u00a7 Write NO code, edit NO project file, and begin NO part of the work the prompt describes.",
     "prompt": "After the block is rendered the user says 'great, go ahead'.",
     "assertions": [
       "no project file is edited and no code is written in this session",
       "the skill does not offer to start the work here"
+    ]
+  },
+  {
+    "eval_id": 8,
+    "eval_name": "description-routes-here",
+    "kind": "trigger",
+    "derived_from": "TESTS.md \u00a7 2026-11-15 \u2014 model-invocable (description routing)",
+    "prompt": "my ask is vague, I know: \"make onboarding better\". sharpen it into a prompt before I open a new session",
+    "assertions": [
+      "forge-prompt is the skill reached for",
+      "forge-goal, clarify-decisions and frame-change are not"
     ]
   }
 ]

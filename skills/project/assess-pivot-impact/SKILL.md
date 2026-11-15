@@ -1,9 +1,7 @@
 ---
 name: assess-pivot-impact
-version: 1.0.0
-description: Produces a disposition ledger when a product pivot puts shipped code at
-  odds with a new vision or architecture. Run it with /assess-pivot-impact.
-disable-model-invocation: true
+version: 1.1.0
+description: Use when a new product direction, goal or invariant contradicts features that have already shipped, before any vision or architecture rewrite. Produces a disposition ledger naming each affected shipped feature and what happens to it. Not for a direction with nothing shipped against it (define-project) or a plan invalidated mid-build (reroute-plan).
 ---
 
 # Assess Pivot Impact
@@ -57,9 +55,8 @@ same shape either way). It never writes `docs/product/vision.md`,
 `docs/architecture/**`, or feature `requirements.md` itself.
 
 `define-project` remains the sole writer of the vision layer. `plan-milestones` remains
-the sole writer of `docs/roadmap/INDEX.md`. After the ledger is confirmed, **name**
-`/define-project` (update) for the user to run — agents never auto-run it
-(`disable-model-invocation: true`).
+the sole writer of `docs/roadmap/INDEX.md`. After the user has confirmed the ledger,
+REQUIRED SUB-SKILL: use `define-project` (update).
 
 ## Steps
 

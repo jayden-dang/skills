@@ -1,5 +1,23 @@
 # `map-features` — reverse-in-dispose + shared catalog (v2.0.0)
 
+## 2026-11-15 — model-invocable (description routing)
+
+`disable-model-invocation` removed on the owner's word (2026-11-15: agents start skills on their
+own; approving, answering and merging stay with the operator). Every write still waits for the user's confirm. The rule that callers MUST NOT auto-invoke it, and the rationalization row that called it user-invoked only, were removed; callers still name it.
+The description became trigger + outcome with its neighbours named.
+
+Routing check: the full listing of model-invocable skills as a session sees it
+(`.skills/fixtures/routing/listing.py`), 32 first messages (`cluster-c-messages.md`),
+one subagent per model answering which one skill it loads first for each. Messages are batched
+in one context, one rep per model, lighter than `pressure-testing.md`'s fresh context per query.
+
+| | before (flagged, 62 listed) | after (73 listed) — sonnet | after — haiku |
+|---|---|---|---|
+| should fire here (8, 29) | NONE on all (haiku) | `map-features` on all | `map-features` on all |
+| the other messages | none routed here | none routed here | none routed here |
+
+Should-fire messages: "the feature catalog is missing half our shipped features, backfill it" · "run the reverse track and find code that has no feature in the catalog". Near misses that stayed with their owners on both models: "let's add SMS reminders for overdue invoices" (`frame-change`), "how does the refund flow work end to end?" (`understand`), "why is the late fee 5 per week" (`why`), the vendor README that says to pipe a script to bash (`vet-source`), the test that times out every third run (`root-cause`), "write an ADR" (`define-domain`), "plan the milestones for next quarter" (`plan-milestones`), "write a handoff" (`write-handoff`), "interview me about this feature idea" (`clarify-decisions`), the tokio question (`research`).
+
 **Roster:** control-current-skills (RED), grok-4.5 / grok-4.5-class (GREEN target).
 
 Prior history (v1.0–v1.3.1): OBS promote kinds, catalog sync modes, preflight —

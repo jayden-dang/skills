@@ -1,8 +1,7 @@
 ---
 name: reflect
-version: 1.0.0
-description: Mine the active session for durable process lessons and propose concrete skill edits — wait for approval before changing any skill.
-disable-model-invocation: true
+version: 1.1.0
+description: Use when a hard session has just ended and someone asks what the skill set should learn from it, or asks to mine the session for lessons. Produces proposed skill edits sorted into accepted, rejected and backlog, applied only after approval. Not for a handoff of unfinished work (write-handoff) or the repo's delivery numbers (evolve-system).
 ---
 
 # Reflect
@@ -16,7 +15,7 @@ covers transcript→skill edit. User override required a dedicated `/reflect`.
 
 ## When
 
-User said `/reflect`, or a complex task (many tool calls) just landed with a
+Someone asks what to learn from the session, or a complex task (many tool calls) just landed with a
 generalizable path, dead-ends, or mid-task corrections. Skip trivial chats.
 
 ## Steps

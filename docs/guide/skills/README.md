@@ -26,9 +26,9 @@ Run once per repo.
 
 | Skill | Invocation | What it does |
 |---|---|---|
-| [`configure-repo`](configure-repo.md) | `/configure-repo` | The seven-step wizard. Writes `docs/agents/*.md` markdown config and **proves every configured command actually runs** |
-| [`bootstrap-repo`](bootstrap-repo.md) | `/bootstrap-repo` | Greenfield bootstrap to a verified baseline: one passing example test, every tool wired |
-| [`tune-rust-loop`](tune-rust-loop.md) | `/tune-rust-loop` | Measures where a Rust repo's builds and tests spend agent time, keeps the config changes that pay, ranks the code changes that would |
+| [`configure-repo`](configure-repo.md) | model, or `/configure-repo` | The seven-step wizard. Writes `docs/agents/*.md` markdown config and **proves every configured command actually runs** |
+| [`bootstrap-repo`](bootstrap-repo.md) | model, or `/bootstrap-repo` | Greenfield bootstrap to a verified baseline: one passing example test, every tool wired |
+| [`tune-rust-loop`](tune-rust-loop.md) | model, or `/tune-rust-loop` | Measures where a Rust repo's builds and tests spend agent time, keeps the config changes that pay, ranks the code changes that would |
 
 ## discovery
 
@@ -36,15 +36,15 @@ Turn an idea into an agreed shape. Produces no code.
 
 | Skill | Invocation | What it does |
 |---|---|---|
-| [`forge-goal`](forge-goal.md) | user | Native-language interview that finds what you want an unattended run to achieve → one paste-ready goal prompt for any agent: probed checks, guards, a verify-every-round loop, a fresh final audit, and `BLOCKED:` / `STOPPED:` lines |
-| [`forge-prompt`](forge-prompt.md) | user | Vague ask → one paste-ready prompt block for a fresh session, via a question-by-question interview; names no next step |
+| [`forge-goal`](forge-goal.md) | model, or `/forge-goal` | Native-language interview that finds what you want an unattended run to achieve → one paste-ready goal prompt for any agent: probed checks, guards, a verify-every-round loop, a fresh final audit, and `BLOCKED:` / `STOPPED:` lines |
+| [`forge-prompt`](forge-prompt.md) | model, or `/forge-prompt` | Vague ask → one paste-ready prompt block for a fresh session, via a question-by-question interview; names no next step |
 | [`frame-change`](frame-change.md) | model | **The hard gate.** No code until the ceremony tier is stated out loud; neighbors via `load-subgraph` schema 1.1 |
 | [`clarify-decisions`](clarify-decisions.md) | model | The interview primitive; nested reuses retrieval package, standalone loads once |
 | [`research`](research.md) | model | Primary sources only. One cited markdown file, ending in Open decisions |
 | [`run-spike`](run-spike.md) | model | Throwaway code answering one design question. The answer is the only deliverable |
 | [`define-domain`](define-domain.md) | model | Maintains `CONTEXT.md` and `docs/adr/`. ADRs pass a three-part write gate; prune classifies keep / archive / drop |
 | [`understand`](understand.md) | model, or `/understand` | How a feature, component, or change works: a short plain answer plus, past 3 files, one local HTML page — diagram, step-through, surprises, self-check — ending on one question |
-| [`interpret-session`](interpret-session.md) | `/interpret-session` | Companion window: a card you can retell — fork, lean, the picture, the pick — then a paste-back reply |
+| [`interpret-session`](interpret-session.md) | model, or `/interpret-session` | Companion window: a card you can retell — fork, lean, the picture, the pick — then a paste-back reply |
 
 ## spec
 
@@ -142,7 +142,7 @@ The visual layer. Fires before any HTML a human will look at.
 | [`show-run-status`](show-run-status.md) | model, or `/show-run-status` | Where one feature's build stands, from the plan, ledger, git, tests, parked decisions, ticket and PR. Writes nothing |
 | [`scan-architecture`](scan-architecture.md) | model, or `/scan-architecture` | Codebase-wide friction scan → an HTML report of deepening candidates |
 | [`catalog-sync`](catalog-sync.md) | (guide) | INDEX-only catalog sync: configure-repo posture + map-features export/materialize |
-| [`map-features`](map-features.md) | `/map-features` | Shared catalog ops: dispose step 0 reverse + gaps / Domain-boundary migrate; index-only export/materialize |
+| [`map-features`](map-features.md) | model, or `/map-features` | Shared catalog ops: dispose step 0 reverse + gaps / Domain-boundary migrate; index-only export/materialize |
 | [`write-handoff`](write-handoff.md) | model, or `/write-handoff` | A resumable document in the OS temp dir. Reference, never duplicate |
 | [`record-debt`](record-debt.md) | model, or `/record-debt` | Banks a finding judged real and deliberately left unfixed into `docs/quality/debt.md`. Decisions, never observations |
 
@@ -152,9 +152,9 @@ The optional documentation layer above the feature workflow. Absent by default.
 
 | Skill | Invocation | What it does |
 |---|---|---|
-| [`define-project`](define-project.md) | `/define-project` | Authors and maintains the optional project layer — product vision, IDed architecture-invariant spine, and engineering guidelines |
-| [`define-system-doc`](define-system-doc.md) | `/define-system-doc` | One Hybrid 1A system-doc artifact per run (e.g. Codebase Map); pack catalog under the skill |
-| [`assess-pivot-impact`](assess-pivot-impact.md) | `/assess-pivot-impact` | Disposition ledger when a product pivot puts shipped code at odds with a new vision or architecture — before vision rewrites |
+| [`define-project`](define-project.md) | model, or `/define-project` | Authors and maintains the optional project layer — product vision, IDed architecture-invariant spine, and engineering guidelines |
+| [`define-system-doc`](define-system-doc.md) | model, or `/define-system-doc` | One Hybrid 1A system-doc artifact per run (e.g. Codebase Map); pack catalog under the skill |
+| [`assess-pivot-impact`](assess-pivot-impact.md) | model, or `/assess-pivot-impact` | Disposition ledger when a product pivot puts shipped code at odds with a new vision or architecture — before vision rewrites |
 | [`plan-milestones`](plan-milestones.md) | model-invocable | Authors and maintains `docs/roadmap/INDEX.md` — `MILE-N` milestones and `ROAD-N` items, intent only, progress never stored |
 
 ---

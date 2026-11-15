@@ -5,7 +5,7 @@
 |  |  |
 |---|---|
 | **Bucket** | setup |
-| **Invocation** | user-invoked — run as `/configure-repo`; no skill may auto-invoke it, others only name it for the user to run |
+| **Invocation** | model-invoked when its description matches, or `/configure-repo` |
 | **Reads** | `git remote`, `CLAUDE.md` / `AGENTS.md`, existing lockfiles and CI, tracker labels, `docs/agents/` |
 | **Writes** | `docs/agents/project.md`, `docs/agents/issue-tracker.md`, `docs/agents/triage-labels.md`, `docs/agents/verify.md` (Decision M), seed spec files, the `## Agent skills` block |
 | **Calls** | the discipline of [`prove-claim`](prove-claim.md) (Step 6 gate) |

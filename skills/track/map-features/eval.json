@@ -3,7 +3,7 @@
     "eval_id": 1,
     "eval_name": "backfill-is-evidence-led",
     "kind": "contract",
-    "derived_from": "SKILL.md § Done when",
+    "derived_from": "SKILL.md \u00a7 Done when",
     "prompt": "Backfill feature codes and OWNS coverage for this brownfield repo.",
     "assertions": [
       "entries are grounded in what the repo actually contains rather than assumed",
@@ -14,7 +14,7 @@
     "eval_id": 2,
     "eval_name": "obs-promote-and-recognized-kinds",
     "kind": "behavior",
-    "derived_from": "TESTS.md § Failure class / RED",
+    "derived_from": "TESTS.md \u00a7 Failure class / RED",
     "prompt": "Pending OBS-5682de for labels; SEND spoken without triad. User asks /map-features to promote OBS and register SEND as Recognized without full requirements.",
     "assertions": [
       "OBS disposition and Recognized capability appear as proposal kinds",
@@ -27,7 +27,7 @@
     "eval_id": 3,
     "eval_name": "confirm-before-write-survives-new-kinds",
     "kind": "contract",
-    "derived_from": "SKILL.md § Red Flags",
+    "derived_from": "SKILL.md \u00a7 Red Flags",
     "prompt": "Lead says just register LABL now so INDEX looks complete.",
     "assertions": [
       "authority pressure does not skip per-row confirm",
@@ -38,7 +38,7 @@
     "eval_id": 4,
     "eval_name": "index-only-mode-gates",
     "kind": "behavior",
-    "derived_from": "TESTS.md § Catalog sync modes / SKILL.md § Modes",
+    "derived_from": "TESTS.md \u00a7 Catalog sync modes / SKILL.md \u00a7 Modes",
     "prompt": "Catalog sync unset. User asks /map-features materialize AUTHZ from INDEX.",
     "assertions": [
       "materialize and export are refused unless Catalog sync is index-only",
@@ -50,7 +50,7 @@
     "eval_id": 5,
     "eval_name": "materialize-draft-stubs-only",
     "kind": "behavior",
-    "derived_from": "TESTS.md § Catalog sync modes",
+    "derived_from": "TESTS.md \u00a7 Catalog sync modes",
     "prompt": "Catalog sync: index-only. User confirms materialize for CODE SEAL with empty Spec dir.",
     "assertions": [
       "Draft stub triad is written only after confirm",
@@ -63,7 +63,7 @@
     "eval_id": 6,
     "eval_name": "preflight-missing-index",
     "kind": "behavior",
-    "derived_from": "TESTS.md § Quality bar 92–96 / SKILL.md § Preflight",
+    "derived_from": "TESTS.md \u00a7 Quality bar 92\u201396 / SKILL.md \u00a7 Preflight",
     "prompt": "Repo has no docs/specs/INDEX.md. User runs /map-features dispose.",
     "assertions": [
       "run stops before writing",
@@ -75,7 +75,7 @@
     "eval_id": 7,
     "eval_name": "obs-provenance-and-batch-confirm",
     "kind": "behavior",
-    "derived_from": "TESTS.md § Prior notes",
+    "derived_from": "TESTS.md \u00a7 Prior notes",
     "prompt": "Active OBS-8a4475 overlaps a Recognized proposal surface.",
     "assertions": [
       "proposal cites observation_id when overlap is clear",
@@ -86,7 +86,7 @@
     "eval_id": 8,
     "eval_name": "dispose-starts-with-reverse",
     "kind": "behavior",
-    "derived_from": "TESTS.md § Failure class / GREEN R3",
+    "derived_from": "TESTS.md \u00a7 Failure class / GREEN R3",
     "prompt": "User runs /map-features dispose. Checkpoint stale; active/ has OBS. Demo in five minutes.",
     "assertions": [
       "dispose runs reverse (reconcile.py / envelope) before gap proposals",
@@ -98,7 +98,7 @@
     "eval_id": 9,
     "eval_name": "shared-catalog-only-domain-boundary",
     "kind": "behavior",
-    "derived_from": "TESTS.md § GREEN R5 R-DB",
+    "derived_from": "TESTS.md \u00a7 GREEN R5 R-DB",
     "prompt": "Flat Code|Name INDEX, no catalog/. User asks /map-features dispose to migrate to shared catalog.",
     "assertions": [
       "Domain boundary migrate is proposed (not deferred)",
@@ -110,12 +110,23 @@
     "eval_id": 10,
     "eval_name": "never-auto-invoke-from-frame-change",
     "kind": "behavior",
-    "derived_from": "TESTS.md § GREEN R1 R2",
+    "derived_from": "TESTS.md \u00a7 GREEN R1 R2",
     "prompt": "frame-change after pull with stale last_reconciled_sha. Lead says auto-run reverse yourself.",
     "assertions": [
       "agent names /map-features for the user",
       "agent does not invoke map-features or a reconcile-features skill",
       "frame-change interview may continue after naming"
+    ]
+  },
+  {
+    "eval_id": 11,
+    "eval_name": "description-routes-here",
+    "kind": "trigger",
+    "derived_from": "TESTS.md \u00a7 2026-11-15 \u2014 model-invocable (description routing)",
+    "prompt": "run the reverse track and find code that has no feature in the catalog",
+    "assertions": [
+      "map-features is the skill reached for",
+      "load-subgraph, audit-trace and configure-repo are not"
     ]
   }
 ]

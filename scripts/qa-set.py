@@ -136,7 +136,7 @@ check(".kimi-plugin/plugin.json equals plugin.json", listed_in(".kimi-plugin/plu
 # The figures are prose in several files and were edited by hand to 94/76/31 once;
 # the tree is the only source of truth.
 total, n_eng = len(tree), len(engineering)
-user_invoked = sum("disable-model-invocation: true" in open(p).read() for p in skills)
+user_invoked = sum("disable-model-invocation: true" in open(p).read().split("---", 2)[1] for p in skills)
 def claim(path, pattern, expect, label):
     m = re.search(pattern, open(path).read())
     got = int(m.group(1)) if m else None

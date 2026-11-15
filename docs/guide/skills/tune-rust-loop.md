@@ -5,7 +5,7 @@
 |  |  |
 |---|---|
 | **Bucket** | setup |
-| **Invocation** | user-invoked — run as `/tune-rust-loop`; no skill may auto-invoke it |
+| **Invocation** | model-invoked when its description matches, or `/tune-rust-loop` |
 | **Reads** | `Cargo.toml`, `.cargo/config.toml`, `.config/nextest.toml`, `docs/agents/project.md` (suite and single-test commands), nextest logs or JUnit, `cargo metadata`, `cargo build --timings` |
 | **Writes** | kept config changes on a `tune-rust-loop/<date>` branch in a linked worktree; the checkout you started in stays on its current branch. Reports in `.skills/tune-rust-loop/<date>/` (`baseline.md`, `list.md`, logs) |
 | **Calls** | nothing; it names `/publish-issues` for the list |

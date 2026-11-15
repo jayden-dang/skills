@@ -102,7 +102,7 @@ def main() -> int:
     user_invoked = sum(
         1
         for f in ROOT.glob("skills/*/*/SKILL.md")
-        if "disable-model-invocation: true" in f.read_text()
+        if "disable-model-invocation: true" in f.read_text().split("---", 2)[1]
     )
     print(f"OK — {total} skills, {user_invoked} user-invoked, 0 dead hand-offs.")
     return 0

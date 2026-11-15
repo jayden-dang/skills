@@ -1,5 +1,23 @@
 # `tune-rust-loop`
 
+## 2026-11-15 — model-invocable (description routing)
+
+`disable-model-invocation` removed on the owner's word (2026-11-15: agents start skills on their
+own; approving, answering and merging stay with the operator). It stops on a dirty checkout and does every config edit in its own worktree, so the body is unchanged.
+The description became trigger + outcome with its neighbours named.
+
+Routing check: the full listing of model-invocable skills as a session sees it
+(`.skills/fixtures/routing/listing.py`), 32 first messages (`cluster-c-messages.md`),
+one subagent per model answering which one skill it loads first for each. Messages are batched
+in one context, one rep per model, lighter than `pressure-testing.md`'s fresh context per query.
+
+| | before (flagged, 62 listed) | after (73 listed) — sonnet | after — haiku |
+|---|---|---|---|
+| should fire here (11, 32) | NONE on all (haiku) | `tune-rust-loop` on all | `tune-rust-loop` on all |
+| the other messages | none routed here | none routed here | none routed here |
+
+Should-fire messages: "cargo test takes forever in this workspace. find where the time goes and cut it" · "our Rust builds are killing the agents' inner loop. measure it and tune the config". Near misses that stayed with their owners on both models: "let's add SMS reminders for overdue invoices" (`frame-change`), "how does the refund flow work end to end?" (`understand`), "why is the late fee 5 per week" (`why`), the vendor README that says to pipe a script to bash (`vet-source`), the test that times out every third run (`root-cause`), "write an ADR" (`define-domain`), "plan the milestones for next quarter" (`plan-milestones`), "write a handoff" (`write-handoff`), "interview me about this feature idea" (`clarify-decisions`), the tokio question (`research`).
+
 Roster: Sonnet (`skill-tester`). Fixtures are clones under `/tmp/wk.*/`: **lumen** = klynt `b0887cd6b`
 (44 crates, Postgres-backed suite), **beacon** = NAVORI `fdf417b` (macOS app workspace, suite ~20 s).
 Prompt in every cell: operator voice — "our coding agents spend most of every feature waiting on

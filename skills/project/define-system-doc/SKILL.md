@@ -1,10 +1,7 @@
 ---
 name: define-system-doc
-version: 1.1.0
-description: >
-  Authors or updates one Hybrid 1A system-documentation artifact at the
-  catalog's canonical path. Run with /define-system-doc <entry-key>.
-disable-model-invocation: true
+version: 1.2.0
+description: Use when one system-documentation artifact from the catalog needs authoring or updating, such as the codebase map, named by its entry key. Produces that one document at its canonical path, written only after its proposal is approved. Not for the vision or invariants (define-project) or for explaining code to a person (understand).
 ---
 
 # Define System Doc

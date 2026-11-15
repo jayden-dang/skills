@@ -3,7 +3,7 @@
     "eval_id": 1,
     "eval_name": "no-from-memory-levers-on-the-list",
     "kind": "behavior",
-    "derived_from": "TESTS.md § RED — v0, no skill (2026-11-06)",
+    "derived_from": "TESTS.md \u00a7 RED \u2014 v0, no skill (2026-11-06)",
     "prompt": "/tune-rust-loop on a Rust workspace whose agents wait on builds and tests; apply what is safe, list the rest.",
     "assertions": [
       "neither a kept change nor list.md proposes sharing CARGO_TARGET_DIR or build.build-dir across checkouts or worktrees",
@@ -15,7 +15,7 @@
     "eval_id": 2,
     "eval_name": "kept-changes-were-rerun",
     "kind": "behavior",
-    "derived_from": "TESTS.md § RED — v0, no skill (2026-11-06)",
+    "derived_from": "TESTS.md \u00a7 RED \u2014 v0, no skill (2026-11-06)",
     "prompt": "/tune-rust-loop on a Rust workspace with a slow end-of-feature suite.",
     "assertions": [
       "every config change left in the tree has before and after numbers from the same command, at least two runs each",
@@ -27,7 +27,7 @@
     "eval_id": 3,
     "eval_name": "blocked-suite-does-not-become-a-guess",
     "kind": "behavior",
-    "derived_from": "TESTS.md § RED — v0, no skill (2026-11-06)",
+    "derived_from": "TESTS.md \u00a7 RED \u2014 v0, no skill (2026-11-06)",
     "prompt": "/tune-rust-loop on a Rust workspace where the whole-suite command cannot run on this machine.",
     "assertions": [
       "the run profiles a saved nextest JUnit or log and states its date and commit, or stops and asks the operator for one",
@@ -38,7 +38,7 @@
     "eval_id": 4,
     "eval_name": "uncovered-cost-gets-its-cause-read",
     "kind": "behavior",
-    "derived_from": "TESTS.md § GREEN — v1.0.0 draft",
+    "derived_from": "TESTS.md \u00a7 GREEN \u2014 v1.0.0 draft",
     "prompt": "/tune-rust-loop on a Rust workspace where a family of image tests holds about 5% of test-seconds and no catalog row names them.",
     "assertions": [
       "the run reads why that test family is slow instead of listing it as outside the catalog",
@@ -49,11 +49,22 @@
     "eval_id": 5,
     "eval_name": "scan-stays-edit-uses-worktree",
     "kind": "behavior",
-    "derived_from": "TESTS.md § RED — checkout moves before any edit (2026-11-07)",
+    "derived_from": "TESTS.md \u00a7 RED \u2014 checkout moves before any edit (2026-11-07)",
     "prompt": "/tune-rust-loop on a Rust workspace; apply what is safe, list the rest.",
     "assertions": [
       "a run that changes no repo file leaves the starting branch checked out and adds no worktree",
       "a config edit is made in a linked worktree, and the starting checkout's branch name is unchanged"
+    ]
+  },
+  {
+    "eval_id": 6,
+    "eval_name": "description-routes-here",
+    "kind": "trigger",
+    "derived_from": "TESTS.md \u00a7 2026-11-15 \u2014 model-invocable (description routing)",
+    "prompt": "our Rust builds are killing the agents' inner loop. measure it and tune the config",
+    "assertions": [
+      "tune-rust-loop is the skill reached for",
+      "root-cause and polish-diff are not"
     ]
   }
 ]

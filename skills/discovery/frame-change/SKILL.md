@@ -1,6 +1,6 @@
 ---
 name: frame-change
-version: 2.3.0
+version: 2.3.1
 description: Use at the very start of the idea-to-ship chain — when the user wants to
   add, build, or change a feature, behavior, or component, or to start a new
   project, and the asked-for behavior has no spec yet. Produces an agreed shape
@@ -36,7 +36,7 @@ simple it looks.
 | "I'll sketch a little code to clarify my thinking" | That is a run-spike. REQUIRED SUB-SKILL: use `run-spike` so it is throwaway by contract. |
 | "Scaffolding isn't really implementation" | A repo skeleton is a stack decision. It is implementation. |
 | "The other sub-features aren't in scope, so Out-of-Scope" | Out-of-Scope records a rejection. Work you intend later is deferred via `plan-milestones`. |
-| "I'll just invoke /map-features myself" | `/map-features` is user-invoked — name it only. |
+| "I'll just invoke /map-features myself" | `map-features` writes the shared catalog on the user's confirm — name it and keep framing. |
 | "INDEX is small — paste all 120 rows" | Catalog is query-first; `catalog-query.md` is the one home. |
 
 ## Checklist

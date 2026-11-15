@@ -1,8 +1,7 @@
 ---
 name: map-features
-version: 2.0.0
-description: Confirm-then-write the shared capability catalog (reverse-track, dispose, export/materialize).
-disable-model-invocation: true
+version: 2.1.0
+description: Use when the shared feature catalog needs backfilling or repair, such as shipped code with no feature row, a reverse-track pass over unowned code, a flat INDEX to migrate to domains, or an export of the catalog. Produces catalog rows written only after the user confirms them. Not for reading a feature's neighbours (load-subgraph) or checking requirement IDs (audit-trace).
 ---
 
 # Map Features
@@ -12,8 +11,8 @@ Confirm-then-write ops for the **shared** capability catalog
 `configure-repo`. Reverse-track (ex-`reconcile-features`) is **dispose step 0** —
 not a separate skill.
 
-Model-invoked skills that see mapping gaps or a stale reverse checkpoint MUST
-**name** `/map-features` for the user and MUST NOT auto-invoke this skill.
+A skill that sees mapping gaps or a stale reverse checkpoint **names** `map-features`
+and carries on. Every write here waits for the user's confirm, whoever started it.
 
 **Load when needed:** `load-subgraph`’s `catalog-query.md` (shared card grammar);
 `references/passes.md` + `references/envelope.md` (reverse); `references/export-fields.md`;
@@ -102,7 +101,7 @@ For each CODE, resolve Spec dir under `docs/specs/`:
 Stubs: Status Draft, CODE + title from shard card, no invented Approved EARS. After
 write, name `specify-behavior` when SHALLs are needed.
 
-## Callers (name only — never invoke)
+## Callers
 
 | Skill | When to **name** `/map-features` |
 |---|---|
@@ -128,7 +127,6 @@ envelope; it must not perform dispose writes.
 | "Materialize while Catalog sync is unset" | export/materialize require index-only |
 | "Overwrite their half-written requirements" | Refuse without stub fingerprint |
 | "Skip reverse — active/ already has OBS" | Step 0 still runs (checkpoint/range); active/ alone is not a substitute |
-| "REQUIRED SUB-SKILL map-features from frame-change" | User-invoked only; name it |
 
 ## Red Flags
 

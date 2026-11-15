@@ -1,10 +1,7 @@
 ---
 name: forge-prompt
-version: 1.0.1
-description: Turns a short, unclear ask into one paste-ready prompt block — targets, boundaries,
-  evidence, open questions, and a done signal — for a fresh session to pick up. Run it with
-  /forge-prompt.
-disable-model-invocation: true
+version: 1.1.0
+description: Use when an ask is short and unclear, names no file, screen or endpoint, and the user wants it turned into a proper prompt for a fresh session. Produces one paste-ready prompt block with targets, boundaries, evidence, open questions and a done signal. Not for the goal of an unattended run (forge-goal), a handoff of work in progress (write-handoff), or an interview about a feature to build (clarify-decisions).
 ---
 
 # Forge Prompt

@@ -1,8 +1,7 @@
 ---
 name: forge-goal
-version: 2.0.0
-description: Interviews you until what you want an agent to chase unattended is defined, then hands back one paste-ready goal prompt — the outcome, its checks, guards, a verify-every-round loop, and stop lines — for a fresh session on any agent. Run it with /forge-goal.
-disable-model-invocation: true
+version: 2.1.0
+description: Use when someone wants an agent to keep working unattended until something is verifiably done, such as an overnight run or a /goal, and what done means is not yet pinned down. Produces one paste-ready goal prompt holding the outcome, its checks, guards, a verify-every-round loop and stop lines, after an interview. Not for a vague one-off ask (forge-prompt) or for starting the work itself (frame-change).
 ---
 
 # Forge Goal

@@ -8,7 +8,7 @@
 |  |  |
 |---|---|
 | **Bucket** | track |
-| **Invocation** | user-invoked only — `/map-features` |
+| **Invocation** | model-invoked when its description matches, or `/map-features` |
 | **Reads** | Domain router INDEX + `docs/specs/catalog/*.md`, optional roadmap, `.skills/reverse-features/`, `docs/agents/project.md` Catalog sync |
 | **Writes** | confirmed SSOT edits only; dispose never scaffolds a full triad; materialize may write **Draft** stubs under index-only |
 | **Preflight** | Missing INDEX → stop; name `/configure-repo`. Flat `| Code | … |` table on INDEX → propose **Domain boundary** migrate (not a valid live registry) |

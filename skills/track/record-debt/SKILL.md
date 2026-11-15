@@ -1,9 +1,7 @@
 ---
 name: record-debt
-version: 1.3.0
-description: Banks findings that were judged real and deliberately left unfixed into the
-  durable debt ledger at docs/quality/debt.md. Run it with /record-debt.
-disable-model-invocation: true
+version: 1.4.0
+description: Use when findings that were judged real and deliberately left unfixed need banking, in words like "bank what the review found" or "record this as debt", or when a review or cleanup pass ends with a banked list. Produces rows in the debt ledger at docs/quality/debt.md and a ticket for a row worth scheduling. Not for fixing the finding (polish-diff, root-cause) or a new idea (idea).
 ---
 
 # Record Debt
@@ -17,12 +15,12 @@ Everything this skill writes goes to `docs/quality/debt.md` — a tracked file, 
 
 ## Intake
 
-The user runs this, so the findings arrive however they arrive. Take them in this order:
+The findings arrive however they arrive. Take them in this order:
 
 1. **Findings named in the invocation** — a pasted list, or "bank what polish-diff just found".
    This is the live path: `polish-diff` and `inspect-change` each close their report with a
    **banked** slot naming the findings they judged real and left unfixed, and name this skill
-   for you to run while that report is still in front of you.
+   while that report is still in front of you.
 2. **Nothing given** — ask what to bank. Do **not** go read the code and invent findings;
    a fresh reading produces observations, and observations fail the admission test below.
 

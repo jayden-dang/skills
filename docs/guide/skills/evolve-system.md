@@ -5,7 +5,7 @@
 |  |  |
 |---|---|
 | **Bucket** | track |
-| **Invocation** | user-invoked — run as `/evolve-system`, or `/evolve-system --unattended` when nobody will answer; no skill may auto-invoke it |
+| **Invocation** | model-invoked when its description matches, or `/evolve-system` |
 | **Reads** | `.skills/<CODE>/progress.md` and `close-receipt.md`, git history, the CI runs printed by `**Integration CI:**` (and `**Integration CI jobs:**`) in `docs/agents/project.md`, `.github/workflows/*`, `.skills/evolve/cycles.json`, `docs/agents/issue-tracker.md` |
 | **Writes** | `.skills/evolve/signals.json`, `.skills/evolve/cycles.json`, and one ticket: on the configured tracker, or a draft at `.skills/inbox/<key>.md` when `docs/agents/issue-tracker.md` says `**Evolve filing:** tracker` |
 | **Calls** | nothing; the improvement is built later through `/idea` → `/shape` → `/go`, or `/author-skills` |

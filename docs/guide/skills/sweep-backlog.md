@@ -5,11 +5,11 @@
 |  |  |
 |---|---|
 | **Bucket** | track |
-| **Invocation** | `/sweep-backlog` (user-invoked; `disable-model-invocation: true`) |
+| **Invocation** | model-invoked when its description matches, or `/sweep-backlog` |
 | **Reads** | `docs/agents/issue-tracker.md`, `docs/agents/triage-labels.md`, every open ticket assigned to you (body, comments, `Blocked by:`), and git history on all branches through `scripts/landed.sh` |
 | **Writes** | nothing until you answer the question. After that, status changes and a why-comment on each ticket you decided |
 | **Calls** | nothing. Names [`/publish-issues`](publish-issues.md) when a new ticket is needed |
-| **Called by** | nobody — it is user-invoked |
+| **Called by** | nobody yet — it fires on what the user asks, or on `/sweep-backlog` |
 
 ## When it fires
 

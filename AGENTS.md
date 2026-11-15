@@ -135,15 +135,12 @@ skill's workflow only when the user has explicitly told you to. A waiver of
 
 **User-invoked skills** carry `disable-model-invocation: true` in frontmatter.
 Agents MUST NOT auto-invoke these — name them for the user to run (`/triage`,
-`/zone-mode`). All 28 of them:
+`/zone-mode`). All 18 of them:
 
 `zone-mode`, `author-skills`, `reflect` · `bootstrap-repo`, `configure-repo`, `tune-rust-loop` ·
-`forge-goal`, `forge-prompt`, `interpret-session` ·
-`no-comments` · `assess-pivot-impact`,
-`define-project`, `define-system-doc` · `audit-shipped`, `cut-release`, `tend-pr` · `assess-milestone`, `evolve-system`,
-`map-features`, `publish-issues`, `record-debt`, 
-`scan-architecture`, `sweep-backlog`, `triage`, `write-handoff` ·
-the five-command path: `idea`, `shape`, `go` (with `cut-release` above).
+`forge-goal`, `forge-prompt`, `interpret-session` · `no-comments` · `assess-pivot-impact`,
+`define-project`, `define-system-doc`, `map-features` · `tend-pr` ·
+and three of the five-command path: `shape`, `go`, `cut-release`.
 
 **A runner the user configured counts as the user.** A scheduler, NAVORI or a
 bot that sends a user-invoked skill's command (`/evolve-system --unattended`)

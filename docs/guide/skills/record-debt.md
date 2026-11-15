@@ -5,7 +5,7 @@
 |  |  |
 |---|---|
 | **Bucket** | track |
-| **Invocation** | `/record-debt` — user-invoked; the agent cannot call it |
+| **Invocation** | model-invoked when its description matches, or `/record-debt` |
 | **Reads** | findings named in the invocation, `docs/agents/issue-tracker.md` |
 | **Writes** | `docs/quality/debt.md` (created from `templates/quality-debt.md` when absent), and one ticket (or `.skills/inbox/debt-<N>.md`) for a row big enough to schedule |
 | **Calls** | [`prove-claim`](prove-claim.md) (before an entry may be closed) |

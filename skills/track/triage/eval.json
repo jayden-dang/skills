@@ -3,7 +3,7 @@
     "eval_id": 1,
     "eval_name": "state-machine-governs",
     "kind": "contract",
-    "derived_from": "SKILL.md § The state machine",
+    "derived_from": "SKILL.md \u00a7 The state machine",
     "prompt": "Triage a newly filed bug report.",
     "assertions": [
       "the issue moves through the defined state machine rather than an ad-hoc disposition",
@@ -14,7 +14,7 @@
     "eval_id": 2,
     "eval_name": "issues-with-a-state-are-skipped",
     "kind": "contract",
-    "derived_from": "SKILL.md § Scope rule",
+    "derived_from": "SKILL.md \u00a7 Scope rule",
     "prompt": "The queue contains issues already carrying a state role beyond needs-triage.",
     "assertions": [
       "issues already carrying a state are not re-triaged",
@@ -24,12 +24,23 @@
   {
     "eval_name": "unconfirmed-bug-to-shaping",
     "kind": "behavior",
-    "derived_from": "TESTS.md § 1.1.0",
-    "prompt": "/triage #242 — recommend its state.",
+    "derived_from": "TESTS.md \u00a7 1.1.0",
+    "prompt": "/triage #242 \u2014 recommend its state.",
     "assertions": [
       "a confirmed bug whose root cause is not established is recommended for shaping, not ready-for-agent",
       "the brief marks the cause open and names /shape #N"
     ],
     "eval_id": 3
+  },
+  {
+    "eval_id": 4,
+    "eval_name": "description-routes-here",
+    "kind": "trigger",
+    "derived_from": "TESTS.md \u00a7 2026-11-15 \u2014 model-invocable (description routing)",
+    "prompt": "someone opened an external PR adding dark mode, what do we do with it",
+    "assertions": [
+      "triage is the skill reached for",
+      "root-cause, vet-feedback and idea are not"
+    ]
   }
 ]

@@ -1,8 +1,7 @@
 ---
 name: evolve-system
-version: 1.4.0
-description: Measures how reliably a repo's delivery loop holds, settles what earlier runs set out to improve, and opens at most one new improvement with a prediction. Run it with /evolve-system.
-disable-model-invocation: true
+version: 1.5.0
+description: Use when someone asks how reliably the repo's delivery loop is holding, wants the improvement loop run, or a scheduler sends /evolve-system. Produces a sensor reading, verdicts on earlier improvements, and at most one new improvement filed as a ticket with a prediction. Not for whether telemetry is good enough (assess-observability) or a failing test (root-cause).
 ---
 
 # Evolve System

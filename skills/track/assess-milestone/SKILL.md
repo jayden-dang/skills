@@ -1,8 +1,7 @@
 ---
 name: assess-milestone
-version: 1.2.1
-description: Produces a verdict on whether a milestone delivered what it promised, read fresh from the specs, the tests, and git. Run it with /assess-milestone.
-disable-model-invocation: true
+version: 1.3.0
+description: Use when someone asks whether a milestone delivered what it promised, or whether it is ready to close. Produces a verdict read fresh from the specs, the tests and git, with the findings behind it. Not for where the plan stands (refresh-roadmap-status) or for editing the roadmap, closing included (plan-milestones).
 ---
 
 # Assess Milestone
@@ -178,7 +177,6 @@ One full read each of the roadmap, the spec index, the vision, and the assessmen
 ## Red flags — stop
 
 - You are about to write to `docs/roadmap/INDEX.md` — that file is `plan-milestones`'s alone
-- You are about to run `/refresh-roadmap-status` yourself rather than naming it for the user — it is user-invoked
 - You are about to resolve a baseline from a date instead of a SHA
 - You are about to produce a verdict while a relevant withholding finding stands
 - You are about to let a value that failed its shape check reach a command

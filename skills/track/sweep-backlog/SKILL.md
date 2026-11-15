@@ -1,8 +1,7 @@
 ---
 name: sweep-backlog
-version: 1.0.0
-description: Sweeps the tickets assigned to you into a classified, dependency-ordered list with one question holding every call that needs you. Run it with /sweep-backlog.
-disable-model-invocation: true
+version: 1.1.0
+description: Use when someone wants the tickets assigned to them cleaned up before planning, to see which are done, duplicate, stale or blocked. Produces a classified, dependency-ordered list and one question holding every call that needs them. Not for what is waiting on them today (board) or incoming reports (triage).
 ---
 
 # Sweep Backlog

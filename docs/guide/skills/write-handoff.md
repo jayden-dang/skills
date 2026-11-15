@@ -5,11 +5,11 @@
 |  |  |
 |---|---|
 | **Bucket** | track |
-| **Invocation** | **user-invoked only** — run `/write-handoff`. `disable-model-invocation: true`: no skill may auto-invoke it; other skills only name it for the user to run |
+| **Invocation** | model-invoked when its description matches, or `/write-handoff` |
 | **Reads** | the current conversation, git branch/worktree state, the specs/plans/ADRs/issues it will cite |
 | **Writes** | a single `handoff-<topic>-<timestamp>.md` in the OS temp directory — never in the repo |
 | **Calls** | nothing required; optionally launches a background successor agent, only if the user asks |
-| **Called by** | nobody — the user runs it directly |
+| **Called by** | nobody yet — it fires on what the user asks, or on `/write-handoff` |
 
 ## When it fires
 

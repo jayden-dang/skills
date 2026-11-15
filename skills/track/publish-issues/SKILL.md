@@ -1,10 +1,7 @@
 ---
 name: publish-issues
-version: 1.1.0
-description: Turns a conversation, an approved spec, or a rough idea into agent-ready tracker issues
-  — tracer-bullet slices with blocking edges, published to the configured tracker. Run it
-  with /publish-issues.
-disable-model-invocation: true
+version: 1.2.0
+description: Use when a conversation, an approved spec or a rough plan should become several tracker issues, in words like "break this into tickets" or "file issues for this". Produces agent-ready tracer-bullet issues with blocking edges on the configured tracker. Not for one idea (idea), the single feature issue of an approved plan (plan-tasks), or incoming issues (triage).
 ---
 
 # Publish Issues
@@ -21,7 +18,7 @@ Pick the right skill before drafting; do not duplicate a heavier one.
 |---|---|---|
 | A conversation / idea / spec to capture as grabbable work | **`publish-issues`** (this) | — |
 | A tier-2 feature needing traceable `requirements.md` → `design.md` → `tasks.md` | `plan-tasks` (publishes **one feature issue** by default) | `publish-issues` |
-| A raw incoming issue or external PR to evaluate | `/triage` — user-invoked; name it for the user to run | `publish-issues` |
+| A raw incoming issue or external PR to evaluate | `triage` | `publish-issues` |
 
 If the user already ran the full spec triad, `plan-tasks` publishes **one feature issue** with union `Requirements covered:` — do not re-file plan tasks here. `publish-issues` is for work that never went through the triad.
 

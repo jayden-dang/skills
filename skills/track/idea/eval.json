@@ -46,5 +46,16 @@
       "each item is ticked at its Done when"
     ],
     "eval_id": 4
+  },
+  {
+    "eval_id": 5,
+    "eval_name": "description-routes-here",
+    "kind": "trigger",
+    "derived_from": "TESTS.md \u00a7 2026-11-15 \u2014 model-invocable (description routing)",
+    "prompt": "ticket this so we don't forget: the CSV export should include refunds",
+    "assertions": [
+      "idea is the skill reached for",
+      "frame-change, triage and publish-issues are not"
+    ]
   }
 ]

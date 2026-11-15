@@ -1,9 +1,7 @@
 ---
 name: write-handoff
-version: 1.0.2
-description: Produces a self-contained handoff document a fresh agent can resume the work from. Run
-  it with /write-handoff.
-disable-model-invocation: true
+version: 1.1.0
+description: Use when a session is ending with work unfinished, the context is about to run out, or someone asks for a handoff. Produces a self-contained handoff document a fresh agent can resume the work from. Not for a status note to a person (speak-outer).
 ---
 
 # Hand Off

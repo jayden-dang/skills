@@ -32,5 +32,16 @@
       "the tiny item is a row with Ticket: none and no ticket is created for it",
       "the reply does not hand the ticket to a command for the operator to run"
     ]
+  },
+  {
+    "eval_id": 4,
+    "eval_name": "description-routes-here",
+    "kind": "trigger",
+    "derived_from": "TESTS.md \u00a7 2026-11-15 \u2014 model-invocable (description routing)",
+    "prompt": "record that auth module smell as debt, we're not fixing it now",
+    "assertions": [
+      "record-debt is the skill reached for",
+      "polish-diff, root-cause and idea are not"
+    ]
   }
 ]

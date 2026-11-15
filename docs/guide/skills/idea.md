@@ -5,11 +5,11 @@
 |  |  |
 |---|---|
 | **Bucket** | track |
-| **Invocation** | `/idea <the idea>` (user-invoked; `disable-model-invocation: true`) |
+| **Invocation** | model-invoked when its description matches, or `/idea` |
 | **Reads** | `docs/agents/issue-tracker.md`, `docs/agents/triage-labels.md`, the repo's working agreement for new tickets |
 | **Writes** | one ticket, its road card, and one comment on it, or a draft naming who must approve it when the working agreement gates new tickets |
 | **Calls** | [`frame-change`](frame-change.md); [`plan-milestones`](plan-milestones.md) for the roadmap item and its card |
-| **Called by** | nobody — it is user-invoked |
+| **Called by** | nobody yet — it fires on what the user asks, or on `/idea` |
 
 ## When it fires
 

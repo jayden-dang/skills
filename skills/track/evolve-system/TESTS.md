@@ -1,5 +1,23 @@
 # `evolve-system`
 
+## 2026-11-15 — model-invocable (description routing)
+
+`disable-model-invocation` removed on the owner's word (2026-11-15: agents start skills on their
+own; approving, answering and merging stay with the operator). Its Iron Law (this run never applies the improvement) holds whoever starts it, so the body is unchanged.
+The description became trigger + outcome with its neighbours named.
+
+Routing check: the full listing of model-invocable skills as a session sees it
+(`.skills/fixtures/routing/listing.py`), 32 first messages (`cluster-b-messages.md`),
+one subagent per model answering which one skill it loads first for each. Messages are batched
+in one context, one rep per model, lighter than `pressure-testing.md`'s fresh context per query.
+
+| | before (flagged, 52 listed) | after (62 listed) — sonnet | after — haiku |
+|---|---|---|---|
+| should fire here (10, 30) | NONE on all (haiku) | `evolve-system` on all | `evolve-system` on all |
+| the other messages | none routed here | none routed here | none routed here |
+
+Should-fire messages: "how reliably is our delivery loop holding up lately? run the improvement loop" · "/evolve-system --unattended". Near misses that stayed with their owners on both models: "let's add SMS reminders for overdue invoices" (`frame-change`), "the late fee comes out wrong for refunded invoices, fix it" (`root-cause`), "review the refund branch before I merge it" (`inspect-change`), "the reviewer left six comments on my PR" (`vet-feedback`), "reorder the roadmap so sharing comes before search" (`plan-milestones`), "clean up the duplication in this diff" (`polish-diff`), "what's waiting on me this morning?" (`board`).
+
 ## 2026-11-15 — 1.4.0 (a tracker ticket by default; one filing key)
 
 Reverses 1.0's "a draft in every mode", on the owner's word (2026-11-15): a `draft:` ticket never

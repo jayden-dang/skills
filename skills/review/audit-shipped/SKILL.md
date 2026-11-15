@@ -1,8 +1,7 @@
 ---
 name: audit-shipped
-version: 1.1.0
-description: Audits what merged in a window for the edge cases its specs and tests missed, and puts a follow-up for each real one on the board. Run it with /audit-shipped.
-disable-model-invocation: true
+version: 1.2.0
+description: Use when someone wants work that has already merged checked for what it missed, in words like "audit what we shipped this week" or "what edge cases did last week's merges miss". Produces findings with their reproductions and a follow-up on the board for each real one. Not for a branch that has not merged (inspect-change) or a reported failure (root-cause).
 ---
 
 # Audit Shipped

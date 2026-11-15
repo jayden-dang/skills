@@ -1,6 +1,24 @@
 
 ## 1.1.0 — an unconfirmed bug goes to `shaping` (2026-10-19), closed workflow W10
 
+## 2026-11-15 — model-invocable (description routing)
+
+`disable-model-invocation` removed on the owner's word (2026-11-15: agents start skills on their
+own; approving, answering and merging stay with the operator). It already asks for the operator's go-ahead before it touches the tracker, so the body is unchanged.
+The description became trigger + outcome with its neighbours named.
+
+Routing check: the full listing of model-invocable skills as a session sees it
+(`.skills/fixtures/routing/listing.py`), 32 first messages (`cluster-b-messages.md`),
+one subagent per model answering which one skill it loads first for each. Messages are batched
+in one context, one rep per model, lighter than `pressure-testing.md`'s fresh context per query.
+
+| | before (flagged, 52 listed) | after (62 listed) — sonnet | after — haiku |
+|---|---|---|---|
+| should fire here (2, 22) | `root-cause` for the customer issue, NONE for the external PR (haiku) | `triage` on all | `triage` on all |
+| the other messages | none routed here | none routed here | none routed here |
+
+Should-fire messages: "issue #44 came in overnight from a customer, can you look at whether it's real" · "someone opened an external PR adding dark mode, what do we do with it". Near misses that stayed with their owners on both models: "let's add SMS reminders for overdue invoices" (`frame-change`), "the late fee comes out wrong for refunded invoices, fix it" (`root-cause`), "review the refund branch before I merge it" (`inspect-change`), "the reviewer left six comments on my PR" (`vet-feedback`), "reorder the roadmap so sharing comes before search" (`plan-milestones`), "clean up the duplication in this diff" (`polish-diff`), "what's waiting on me this morning?" (`board`).
+
 Found by the klynt dogfood, W9. `/triage` put #242 ("Soft-deleted users stay
 authenticated on existing sessions") into `ready-for-agent` with a brief, and the brief
 itself said the fix needs a root-cause investigation first. `/go` and `/board` count a

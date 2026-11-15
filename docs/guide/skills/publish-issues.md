@@ -5,11 +5,11 @@
 |  |  |
 |---|---|
 | **Bucket** | track |
-| **Invocation** | **user-invoked only** — run `/publish-issues`. `disable-model-invocation: true`: the agent never auto-files issues; deciding what enters the backlog stays a human call |
+| **Invocation** | model-invoked when its description matches, or `/publish-issues` |
 | **Reads** | `docs/agents/issue-tracker.md` (tracker operations), `docs/agents/triage-labels.md` (label strings), `CONTEXT.md` (glossary), `docs/adr/`, the source spec/issue if one is referenced |
 | **Writes** | new issues on the configured tracker (or `.scratch/<feature>/issues/*.md` locally), with blocking edges and the `ready-for-agent` label |
 | **Calls** | [`clarify-decisions`](clarify-decisions.md) (when a slice is underspecified); names [`configure-repo`](configure-repo.md) if the tracker config is missing |
-| **Called by** | nobody — the user runs it directly |
+| **Called by** | nobody yet — it fires on what the user asks, or on `/publish-issues` |
 
 ## When it fires
 

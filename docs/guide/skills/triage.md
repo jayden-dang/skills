@@ -5,11 +5,11 @@
 |  |  |
 |---|---|
 | **Bucket** | track |
-| **Invocation** | **user-invoked only** — run `/triage`. `disable-model-invocation: true`: no skill may auto-invoke it; other skills only name it for the user to run |
+| **Invocation** | model-invoked when its description matches, or `/triage` |
 | **Reads** | `docs/agents/issue-tracker.md` (tracker operations), `docs/agents/triage-labels.md` (label strings), `CONTEXT.md` (glossary), `docs/adr/`, `.out-of-scope/*.md`, the issue/PR itself |
 | **Writes** | tracker labels, state, and comments; `.out-of-scope/*.md` rejection files |
 | **Calls** | [`clarify-decisions`](clarify-decisions.md) (when a request is underspecified), and names [`configure-repo`](configure-repo.md) if the tracker config is missing |
-| **Called by** | nobody — the user runs it directly |
+| **Called by** | nobody yet — it fires on what the user asks, or on `/triage` |
 
 ## When it fires
 

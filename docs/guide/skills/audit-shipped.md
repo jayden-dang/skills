@@ -5,11 +5,11 @@
 |  |  |
 |---|---|
 | **Bucket** | review |
-| **Invocation** | `/audit-shipped` (user-invoked; `disable-model-invocation: true`) |
+| **Invocation** | model-invoked when its description matches, or `/audit-shipped` |
 | **Reads** | `git log --first-parent --merges` on the integration branch, each merge's ticket and spec (`requirements.md`, `design.md`), the diff for the window, the whole repo for readers of changed fields, `docs/agents/project.md`, and the glossary (`CONTEXT.md`) |
 | **Writes** | one ticket per real finding (Inbox), or one file per finding in `.skills/inbox/` where the repo says someone else approves or opens tickets. No tracked file. It may run probes |
 | **Calls** | nothing |
-| **Called by** | nobody — it is user-invoked |
+| **Called by** | nobody yet — it fires on what the user asks, or on `/audit-shipped` |
 
 ## When it fires
 

@@ -1,8 +1,7 @@
 ---
 name: idea
-version: 1.4.0
-description: Puts an idea on the board as a ticket and frames it, so it waits in Shaping with its tier and open questions. Run it with /idea <the idea>.
-disable-model-invocation: true
+version: 1.5.0
+description: Use when someone wants an idea, request or note put on the board for later rather than built now, in words like "put this on the board", "file an idea", "add it to the backlog" or "ticket this". Produces one ticket in Shaping, framed, with its tier, its card and its open questions. Not for building or changing something now (frame-change), a report someone else filed (triage), or splitting a spec into several tickets (publish-issues).
 ---
 
 # Idea

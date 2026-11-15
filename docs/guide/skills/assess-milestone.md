@@ -5,11 +5,11 @@
 |  |  |
 |---|---|
 | **Bucket** | track |
-| **Invocation** | `/assess-milestone` (user-invoked; `disable-model-invocation: true`) |
+| **Invocation** | model-invoked when its description matches, or `/assess-milestone` |
 | **Reads** | `docs/roadmap/INDEX.md`, `docs/specs/INDEX.md`, `docs/product/vision.md`, each member's `requirements.md`, `git`, `templates/roadmap-findings.md`, and any existing assessment |
 | **Writes** | `docs/roadmap/assessments/<MILE-N>.md` — and nothing else, ever |
 | **Calls** | [`plan-milestones`](plan-milestones.md) with a verified handoff. Names [`refresh-roadmap-status`](refresh-roadmap-status.md) and [`publish-issues`](publish-issues.md) for the user |
-| **Called by** | nobody — it is user-invoked. [`refresh-roadmap-status`](refresh-roadmap-status.md) names it in ladder row 8 |
+| **Called by** | nobody yet — it fires on what the user asks, or on `/assess-milestone` |
 
 ## The other half of the close
 

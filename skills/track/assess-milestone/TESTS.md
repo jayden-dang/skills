@@ -1,5 +1,23 @@
 # `assess-milestone` — test record
 
+## 2026-11-15 — model-invocable (description routing)
+
+`disable-model-invocation` removed on the owner's word (2026-11-15: agents start skills on their
+own; approving, answering and merging stay with the operator). The verdict still goes to a person for the decision. The red flag against running `refresh-roadmap-status` "because it is user-invoked" was deleted: it no longer is.
+The description became trigger + outcome with its neighbours named.
+
+Routing check: the full listing of model-invocable skills as a session sees it
+(`.skills/fixtures/routing/listing.py`), 32 first messages (`cluster-b-messages.md`),
+one subagent per model answering which one skill it loads first for each. Messages are batched
+in one context, one rep per model, lighter than `pressure-testing.md`'s fresh context per query.
+
+| | before (flagged, 52 listed) | after (62 listed) — sonnet | after — haiku |
+|---|---|---|---|
+| should fire here (6, 26) | NONE on all (haiku) | `assess-milestone` on all | `assess-milestone` on all |
+| the other messages | none routed here | none routed here | none routed here |
+
+Should-fire messages: "did MILE-3 actually deliver what it promised?" · "is the second milestone ready to close?". Near misses that stayed with their owners on both models: "let's add SMS reminders for overdue invoices" (`frame-change`), "the late fee comes out wrong for refunded invoices, fix it" (`root-cause`), "review the refund branch before I merge it" (`inspect-change`), "the reviewer left six comments on my PR" (`vet-feedback`), "reorder the roadmap so sharing comes before search" (`plan-milestones`), "clean up the duplication in this diff" (`polish-diff`), "what's waiting on me this morning?" (`board`).
+
 ## Length pass (v1.1.1, 2026-09-07)
 
 Brought `SKILL.md` from 335 to 193 lines (2626 to 2523 words) by tightening prose

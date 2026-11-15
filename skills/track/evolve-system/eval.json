@@ -94,5 +94,16 @@
       "the cycle's ticket field is that ticket's ID, read back",
       "nothing is committed on any branch"
     ]
+  },
+  {
+    "eval_id": 9,
+    "eval_name": "description-routes-here",
+    "kind": "trigger",
+    "derived_from": "TESTS.md \u00a7 2026-11-15 \u2014 model-invocable (description routing)",
+    "prompt": "/evolve-system --unattended",
+    "assertions": [
+      "evolve-system is the skill reached for",
+      "assess-observability and root-cause are not"
+    ]
   }
 ]

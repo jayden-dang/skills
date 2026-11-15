@@ -30,7 +30,7 @@ plan-tasks                   vertical-slice tasks with _Requirements:_ footers;
       ▼
 execute family               occupancy first: Approved → In-progress on INDEX
                              (this checkout, before worktrees), then isolate-workspace
-                             build-in-waves | build-by-story | build-inline
+                             build (wave mode) | build (story mode) | build (inline mode)
                              per task: brief → implement (test-first) → review/ledger →
                              two-verdict review → fixes → ledger
                              [debug on failures; prove-claim before any claim]
@@ -39,14 +39,14 @@ execute family               occupancy first: Approved → In-progress on INDEX
 inspect-change                  whole-branch, two axes: Standards + Spec-by-ID
       │
       ▼
-[polish-diff if predicate]   execute-common close sequence — polish only when its
+[polish-diff if predicate]   build close sequence — polish only when its
       │                      observable predicate holds
       ▼
 validate-feature             drive the running system through the spec's user-facing
                              behaviors (API + UI); fix; promote to domain-language tests
       │
       ▼
-[close receipt]            execute-common binds evidence + advisory sample to base/HEAD
+[close receipt]            build binds evidence + advisory sample to base/HEAD
       │
       ▼
 land-branch                resolve intent + crossing + Status: Implemented (realign-spec
@@ -117,7 +117,7 @@ realign-spec                    whenever a spec'd feature changed outside its pl
 | Project layer *(optional, above the feature loop)* | `define-project`, `inspect-invariants` | [`define-project`](../skills/define-project.md) |
 | Discovery | `frame-change` (+ `load-subgraph`), `clarify-decisions`, `research`, `run-spike`, `define-domain`, `/interpret-session`, `understand` | [Discovery](discovery.md) |
 | Specification | `specify-behavior`, `design-solution`, `plan-tasks` | [Specification](specification.md) |
-| Execution | `isolate-workspace`, `build-in-waves`, `build-by-story`, `build-inline`, `/go`, `test-first`, `root-cause`, `prove-claim`, `audit-trace`, `load-subgraph` | [Execution](execution.md) |
+| Execution | `isolate-workspace`, `build` (wave mode), `build` (story mode), `build` (inline mode), `/go`, `test-first`, `root-cause`, `prove-claim`, `audit-trace`, `load-subgraph` | [Execution](execution.md) |
 | Review & acceptance | `inspect-change` (+ `load-subgraph`), `/audit-shipped`, `polish-diff`, `vet-feedback`, `inspect-invariants`, `acceptance-*`, `write-dogfood`, `run-dogfood` | [Review and acceptance](review-and-acceptance.md) |
 | Ship & maintain | `land-branch`, `cut-release`, `realign-spec`, `frame-change`, `/map-features`, `triage`, `board`, `scan-architecture`, `write-handoff` | [Ship and maintain](ship-and-maintain.md) |
 
@@ -129,11 +129,11 @@ Two facts about context shape how you run this chain, and violating either is ex
 
 **Discovery through planning belongs in one unbroken context window.** `frame-change` → `specify-behavior` → `design-solution` → `plan-tasks` is a single continuous act of thinking; each step's output depends on decisions and code knowledge accumulated in the previous ones. If the window is filling before the plan is done, do not push through — run `/write-handoff`, which writes a resumable document to the OS temp directory, and start a fresh session from it.
 
-**Execution is the opposite.** Subagent routes (`build-in-waves`,
-`build-by-story`) use bounded semantic worker leases: serial lanes protect
+**Execution is the opposite.** Subagent routes (`build` (wave mode),
+`build` (story mode)) use bounded semantic worker leases: serial lanes protect
 overlap, while disjoint isolated ready sets may run together. The controller
 stays for coordination; progress goes to `.skills/progress.md` and hard
-triggers rotate the lease. `build-inline` keeps the controller as implementer.
+triggers rotate the lease. `build` (inline mode) keeps the controller as implementer.
 
 ## Where a chain can restart
 

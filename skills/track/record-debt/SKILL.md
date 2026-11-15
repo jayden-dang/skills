@@ -1,7 +1,7 @@
 ---
 name: record-debt
-version: 1.4.0
-description: Use when findings that were judged real and deliberately left unfixed need banking, in words like "bank what the review found" or "record this as debt", or when a review or cleanup pass ends with a banked list. Produces rows in the debt ledger at docs/quality/debt.md and a ticket for a row worth scheduling. Not for fixing the finding (polish-diff, root-cause) or a new idea (idea).
+version: 1.4.1
+description: "Use when findings that were judged real and deliberately left unfixed need banking, in words like \"bank what the review found\" or \"record this as debt\", or when a review or cleanup pass ends with a banked list. Produces rows in the debt ledger at docs/quality/debt.md and a ticket for a row worth scheduling."
 ---
 
 # Record Debt

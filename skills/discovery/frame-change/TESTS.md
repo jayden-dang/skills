@@ -1,5 +1,23 @@
 # `frame-change` — knowns inventory + blindspot (unknowns loop)
 
+## 2026-11-15 — absorbed amend-feature as mode file(s)
+
+On the owner's word (2026-11-15: simplify the set around idea, shape and go, inside the skill
+listing budget, without losing quality). Moved whole, not rewritten: amend-feature → `amend.md`.
+`SKILL.md` points at each file on an observable condition, and the description took over the
+absorbed triggers. The absorbed skills' own records are appended at the end of this file.
+
+Checked on Sonnet and Haiku against the frozen routing suite (`.skills/fixtures/routing/suite.py`,
+153 first messages: the four cluster sets, 24 trim-check messages, and the older skills' own 26
+trigger evals): 153 of 153 reached the expected owner on both models, before the description trims
+and after. One ticket was run from `/idea` through `/shape` and `/go` before and after
+(`.skills/fixtures/baselines/`): same stops for the operator, same artifacts. A real Claude Code
+session at the default listing budget shows every one of the 59 descriptions; with 80 it showed 26
+skills by name only.
+
+Not covered: each mode file was not re-run on its own scenario. The absorbed skills' contract
+evals, which cited headings of a `SKILL.md` that no longer exists, were dropped.
+
 ## v2.2.0 — itinerary trim (2026-09-14)
 
 **RED.** Research session + OpenAI Astra: high-freedom product-shaping written

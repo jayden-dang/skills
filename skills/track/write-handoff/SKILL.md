@@ -1,7 +1,7 @@
 ---
 name: write-handoff
-version: 1.1.0
-description: Use when a session is ending with work unfinished, the context is about to run out, or someone asks for a handoff. Produces a self-contained handoff document a fresh agent can resume the work from. Not for a status note to a person (speak-outer).
+version: 1.1.1
+description: "Use when a session is ending with work unfinished, the context is about to run out, or someone asks for a handoff. Produces a self-contained handoff document a fresh agent can resume the work from."
 ---
 
 # Hand Off
@@ -18,7 +18,7 @@ If the user passed an argument to this skill, treat it as what the next session 
 - **Knowns / unknowns (when present)** — path to the latest knowns inventory and a one-line summary of what it locks, what it leaves open, and which blindspots are still unresolved; point at `.skills/*-knowns.md` or `.skills/*-scan.md` Blindspot when those files exist.
 - **Deviations (when present)** — path to `.skills/<CODE>/implementation-notes.md`; one-line summary of each logged deviation **and** the count of entries whose **Map impact** is not `none` (or state zero non-none); the successor must not rediscover them from chat memory.
 - **Next actions** — concrete, ordered, starting with the very next command or edit.
-- **Suggested skills** — which skills of this set the successor should invoke, and at which step (e.g. "resume `build-in-waves` at task 4", "run `prove-claim` before claiming task 3 done"). Name `/understand <range>` for the user when a multi-task branch is ready for author self-check before merge (do not run it yourself).
+- **Suggested skills** — which skills of this set the successor should invoke, and at which step (e.g. "resume `build` (wave mode) at task 4", "run `prove-claim` before claiming task 3 done"). Name `/understand <range>` for the user when a multi-task branch is ready for author self-check before merge (do not run it yourself).
 - **Team context (when present)** — if `docs/agents/project.md` has `## Team` with a non-empty **roster** or band override, one line: band + how packaging applies; Small/Multi: if the roster or ownership notes name an owner for this work, state who owns the next actions; if they do not, omit the owner line. Missing Team → omit the whole section (do not invent a team).
 
 ## Rules

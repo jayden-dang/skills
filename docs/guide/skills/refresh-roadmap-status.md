@@ -47,7 +47,7 @@ A **withholding** finding replaces the recommendation with the reason — becaus
 
 Ten rows, first match wins, ties broken by milestone table order then lowest `ROAD-N`. Identical artifact state therefore yields an identical recommendation — the ladder is a pure function of what is written down, not a judgment.
 
-It walks from "the roadmap isn't approved yet" (→ `plan-milestones`) through the feature flow for the first incomplete member of the first committed milestone — `frame-change`, `specify-behavior`, `design-solution`, `plan-tasks`, `build-in-waves` — and ends at either naming `/cut-release` for you or reporting the roadmap complete.
+It walks from "the roadmap isn't approved yet" (→ `plan-milestones`) through the feature flow for the first incomplete member of the first committed milestone — `frame-change`, `specify-behavior`, `design-solution`, `plan-tasks`, `build` (wave mode) — and ends at either naming `/cut-release` for you or reporting the roadmap complete.
 
 ## Structural presence, never judgment
 

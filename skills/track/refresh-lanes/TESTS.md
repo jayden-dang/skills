@@ -1,5 +1,12 @@
 # `refresh-lanes` — tests
 
+## 2026-11-15 — 1.0.1 (the description was being cut by YAML)
+
+The unquoted description held ` ## Focus`, and YAML reads ` #` as the start of a comment, so every
+harness saw it end at "an edit to". A real Claude Code session listed it as the one description
+that stops mid-sentence. Quoted, and `## Focus` written as "Focus". No behaviour was re-run: its
+five callers reach it by hand-off, not by description.
+
 ## 2026-11-13 — 1.0.0
 
 **Roster:** Sonnet (`skill-tester`) and Haiku (`skill-tester-haiku`), one fresh fixture per run.

@@ -92,7 +92,7 @@ Horizontal retrieval is **advisory** at every moment. Required callers:
 | [`plan-tasks`](../skills/plan-tasks.md) | after Step 2 file map, before task bodies | `blast_radius` **and** `cluster(feature CODE)` |
 | [`root-cause`](../skills/root-cause.md) | after Phase 2 only — never Phases 1–2 RED loop | retrieval for context |
 
-Build-family skills (`build-in-waves` / `build-by-story` / `build-inline`) are
+Build-family skills (`build` (wave mode) / `build` (story mode) / `build` (inline mode)) are
 **not** required callers.
 
 **Grounded claims.** Every overlap, reuse-miss, or Out-of-Scope / “already

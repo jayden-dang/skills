@@ -146,6 +146,6 @@ If the harness can load a repo-root convention file (`AGENTS.md`, `CLAUDE.md`,
 or similar), point it there. The skills and templates work unchanged.
 
 ## What is not portable
-- **Subagent dispatch** in `build-in-waves` assumes a harness that can spawn
-  fresh, isolated subagents. Where that is unavailable, `build-in-waves`'s inline
+- **Subagent dispatch** in `build` (wave mode) assumes a harness that can spawn
+  fresh, isolated subagents. Where that is unavailable, `build` (wave mode)'s inline
   fallback runs the same loop in a single context.

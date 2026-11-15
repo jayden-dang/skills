@@ -1,6 +1,6 @@
 # AGENTS.md — Agent Behavior Constitution
 
-> A-to-Z agentic development skill set · **62 skills across 11 categories** · `jayden-dang/skills` · v1.0.0
+> A-to-Z agentic development skill set · **59 skills across 11 categories** · `jayden-dang/skills` · v1.0.0
 
 This file is the single source of truth for agent behavior when working with this
 skill set on any harness. Read it first, before any skill, before any action.
@@ -85,7 +85,7 @@ the territory (codebase, runtime, users, history). Strong models still fail when
 unknowns stay implicit. Discover unknowns before build (`frame-change` knowns
 inventory + blindspot, `clarify-decisions`, `research` / `run-spike`), surface
 high-blast decisions in `plan-tasks`, take story-derived review units at
-`build-by-story`, log mid-build **deviations** in
+`build` (story mode), log mid-build **deviations** in
 `.skills/<CODE>/implementation-notes.md` during execute, and let the human
 re-check understanding with `understand` before merge. Do not freeze
 unverified solution shape into requirement SHALLs.
@@ -156,18 +156,13 @@ bot that sends a skill's command (`/evolve-system --unattended`) invokes it on t
 user's behalf, and a flag it sends is the operator's. When nobody will answer, it
 passes `--unattended`, and the skill reads that flag, never the harness's name.
 
-**Execute family installs as a unit.** A skill folder is otherwise self-contained,
-because `npx skills add` copies one folder at a time and a `../other-skill/file.md`
-pointer breaks for anyone installing that skill alone. One exception is written
-down rather than tolerated: `build-in-waves`, `build-by-story` and `build-inline`
-share a controller recipe in `execute-common` — the task lifecycle, the ledger
-check, the close receipt, the runtime binding, and the prompt contracts for the
-implementer and reviewer roles it dispatches. That is roughly four hundred lines
-referenced twenty-odd times by the three, and `build-inline` without it is not a
-degraded skill, it is not a skill. Copying it three ways would make every change
-to the shared lifecycle a three-place edit. So `execute-common` is the **only**
-folder any skill may reference across a boundary; every other `../` still fails,
-which is what stops the exception widening into "cross-folder is fine".
+**One skill folder is self-contained.** `npx skills add` copies one folder at a time,
+so a `../other-skill/file.md` pointer breaks for anyone installing that skill alone.
+The build modes used to be three skills sharing a fourth across folders; they are now
+one skill, `build`, whose mode files (`waves.md`, `story.md`, `inline.md`) and shared
+recipe (`common.md`) sit side by side. `go` and `land-branch` still read two of
+`build`'s files (the tracker sync and the close receipt), so `build` is the **only**
+folder any skill may reference across a boundary; every other `../` fails.
 `scripts/lint-cross-folder.py` enforces it.
 
 **Orchestration rule:** `REQUIRED SUB-SKILL: use \`x\`` invokes; naming `/x` in a
@@ -185,7 +180,7 @@ Reverse-track is **not** a separate skill: when the reverse predicate holds, cal
 **name** `map-features` (dispose step 0). `write-dogfood` is reached from
 `prove-claim` (alternative to `validate-feature`); the execute-family close
 sequence opens a product walk only for an unattended build that changed a
-browser-rendered surface (`execute-common` Close step 4b); otherwise the user does. The remaining entry points fire
+browser-rendered surface (`build` Close step 4b); otherwise the user does. The remaining entry points fire
 on what the user said, which makes their descriptions the only thing
 standing between them and never running. An entry point that undertriggers
 is invisible: it does not fail, it simply never appears.
@@ -407,8 +402,8 @@ than inventing the content.
 - Skip re-review after a fix, or accept a review missing either verdict
 - Move to the next task with open Critical/Important findings
 - Fix reviewer findings in the controller context — dispatch a fixer
-- Pause for permission between tasks under continuous `build-in-waves` /
-  `build-inline` (human stops belong to `build-by-story`)
+- Pause for permission between tasks in `build`'s wave or inline mode (human stops
+  belong to its story mode)
 - Re-dispatch a task the ledger marks complete
 - Start implementation on main/master without explicit user consent
 - Tell a reviewer what not to flag, or pre-rate a finding's severity
@@ -447,13 +442,13 @@ Can't tick a box? The work is not done.
 Full inventory: [`docs/guide/skills/README.md`](docs/guide/skills/README.md).
 Do not paste that table into context.
 
-**Execute family — pick one after an approved `tasks.md`:**
+**`build` — one mode after an approved `tasks.md`:**
 
-| Skill | When |
+| Mode | When |
 |---|---|
-| `build-in-waves` | Subagent waves (writes `Execution-mode: continuous`) |
-| `build-by-story` | Human-gated review units (writes `Execution-mode: story-unit`) |
-| `build-inline` | No implementer subagents; the user watches the controller implement |
+| wave (`waves.md`) | Subagent waves (writes `Execution-mode: continuous`) |
+| story (`story.md`) | Human-gated review units (writes `Execution-mode: story-unit`) |
+| inline (`inline.md`) | No implementer subagents; the user watches the controller implement |
 
 **Main flow:** `frame-change` (+ `load-subgraph`) → `specify-behavior` →
 `design-solution` → `plan-tasks` → execute family (`Approved` → `In-progress`

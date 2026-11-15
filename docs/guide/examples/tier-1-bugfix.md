@@ -159,7 +159,7 @@ Then `inspect-change` (Spec axis, against the two new IDs) and `land-branch`.
 
 Two requirement criteria. Two tagged tests. One three-line fix. One commit with two trailers.
 
-No `design.md`. No `tasks.md`. No `build-in-waves`.
+No `design.md`. No `tasks.md`. No `build` (wave mode).
 
 What tier 1 bought that a bare fix would not have: the guard requirement, which is now a permanent, machine-checked assertion that hydration does not eat unsaved editor state — a behavior nobody would have thought to protect, found only because the process required actively looking for it.
 

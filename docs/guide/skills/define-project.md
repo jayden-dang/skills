@@ -13,7 +13,7 @@
 
 ## When it fires
 
-At the start of a **large or long-lived project**, before feature work, to establish the optional project-documentation layer — or later to update or validate it. Small repos do not need it: the feature workflow (`frame-change` → spec → `build-in-waves`) runs fully without it, and nothing here is a gate.
+At the start of a **large or long-lived project**, before feature work, to establish the optional project-documentation layer — or later to update or validate it. Small repos do not need it: the feature workflow (`frame-change` → spec → `build` (wave mode)) runs fully without it, and nothing here is a gate.
 
 ## The three modes
 

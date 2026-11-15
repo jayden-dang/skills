@@ -52,5 +52,5 @@ inspect-invariants (3 citations, spine: docs/architecture/INDEX.md)
 ```
 
 Report all verdicts; do not drop `unclear` ones — they are the point. This skill
-returns findings, never a pass/fail. The caller (`inspect-change`, `build-in-waves`,
+returns findings, never a pass/fail. The caller (`inspect-change`, `build` (wave mode),
 `define-project`) decides what to do with a `violates`.

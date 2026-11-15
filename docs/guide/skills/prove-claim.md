@@ -9,7 +9,7 @@
 | **Reads** | `docs/agents/project.md` (the proving commands); the full output of whatever command it runs |
 | **Writes** | nothing — it runs proving commands and reads their output; it produces evidence, not files |
 | **Calls** | [`validate-feature`](validate-feature.md) or [`write-dogfood`](write-dogfood.md) (to prove "the feature works"), the [`audit-trace`](audit-trace.md) check (to prove "requirements met") |
-| **Called by** | nearly every skill before a completion claim — [`test-first`](test-first.md), [`root-cause`](root-cause.md), [`build-in-waves`](build-in-waves.md), [`land-branch`](land-branch.md), [`write-handoff`](write-handoff.md), and more |
+| **Called by** | nearly every skill before a completion claim — [`test-first`](test-first.md), [`root-cause`](root-cause.md), [`build`](build.md) (wave mode), [`land-branch`](land-branch.md), [`write-handoff`](write-handoff.md), and more |
 
 ## When it fires
 

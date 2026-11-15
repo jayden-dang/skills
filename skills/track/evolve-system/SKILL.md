@@ -1,7 +1,7 @@
 ---
 name: evolve-system
-version: 1.5.0
-description: Use when someone asks how reliably the repo's delivery loop is holding, wants the improvement loop run, or a scheduler sends /evolve-system. Produces a sensor reading, verdicts on earlier improvements, and at most one new improvement filed as a ticket with a prediction. Not for whether telemetry is good enough (assess-observability) or a failing test (root-cause).
+version: 1.5.1
+description: "Use when someone asks how reliably the repo's delivery loop is holding, wants the improvement loop run, or a scheduler sends /evolve-system. Produces a sensor reading, verdicts on earlier improvements, and at most one new improvement filed as a ticket with a prediction."
 ---
 
 # Evolve System

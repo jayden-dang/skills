@@ -1,7 +1,7 @@
 ---
 name: author-skills
-version: 1.5.0
-description: Use when creating, authoring, or editing a skill — its SKILL.md, frontmatter, or description — reviewing a skill someone else wrote, deciding whether a skill is ready to ship, diagnosing why a skill won't trigger, or mining a hard session for what the skill set should learn. Produces skill text with a failing baseline run recorded before it and a passing run after, or proposed skill edits that wait for approval.
+version: 1.5.1
+description: "Use when creating, authoring, or editing a skill — its SKILL.md, frontmatter, or description — reviewing a skill someone else wrote, deciding whether a skill is ready to ship, diagnosing why a skill won't trigger, or mining a hard session for what the skill set should learn. Produces tested skill text, or proposed edits that wait for approval."
 ---
 
 # Author Skills

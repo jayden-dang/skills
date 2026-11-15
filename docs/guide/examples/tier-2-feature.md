@@ -191,7 +191,7 @@ An **independent plan review subagent** then verifies every symbol, signature, p
 
 ---
 
-## `isolate-workspace` → `build-in-waves`
+## `isolate-workspace` → `build` (wave mode)
 
 An isolated workspace, dependencies installed, and a **clean baseline**. Baseline red would stop everything — you cannot tell your bugs from pre-existing ones.
 

@@ -9,7 +9,7 @@
 | **Reads** | the pinned diff (`git diff @{upstream}...HEAD`, falling back to `main...HEAD`, then `HEAD~1`, plus `git diff HEAD` when the tree is dirty), the suite covering the changed files |
 | **Writes** | the changed files themselves — this skill applies its findings |
 | **Calls** | [`test-first`](test-first.md) (its refactor discipline is the apply step), [`prove-claim`](prove-claim.md) (before claiming behavior held) |
-| **Called by** | [`build-in-waves`](build-in-waves.md), [`build-by-story`](build-by-story.md), [`build-inline`](build-inline.md) — all three carry it in their Setup Todos gate |
+| **Called by** | [`build`](build.md) (wave mode), [`build`](build.md) (story mode), [`build`](build.md) (inline mode) — all three carry it in their Setup Todos gate |
 
 ## When it fires
 

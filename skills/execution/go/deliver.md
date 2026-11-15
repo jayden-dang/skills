@@ -50,12 +50,12 @@ lacks.*
    one delivered in this run branches from that ticket's branch instead. A ticket whose
    approved spec is committed on the branch this session already has checked out builds on
    that branch: a new branch from the base would not hold the spec.
-2. REQUIRED SUB-SKILL: use `build-in-waves` on its `tasks.md`. For a tier-1 fix, first
-   claim the ticket the way `../execute-common/tracker-sync.md` says and record it in
+2. REQUIRED SUB-SKILL: use `build` (wave mode) on its `tasks.md`. For a tier-1 fix, first
+   claim the ticket the way `../build/tracker-sync.md` says and record it in
    `.skills/<CODE>/tickets.md`. Then REQUIRED SUB-SKILL: use `test-first`, with one red
    test for the fix requirement and one for its guard.
-3. The Close sequence in `../execute-common/SKILL.md` owns the whole-branch `inspect-change`
-   and `land-branch`; this run asks it for action `pr`. A tier-1 fix has no `build-in-waves`
+3. The Close sequence in `../build/common.md` owns the whole-branch `inspect-change`
+   and `land-branch`; this run asks it for action `pr`. A tier-1 fix has no `build` (wave mode)
    run, so it takes `inspect-change` on its range and then `land-branch` itself. A stacked
    ticket's `<branch-base>` and PR base are its blocker's branch.
 

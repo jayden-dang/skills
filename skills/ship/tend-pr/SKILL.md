@@ -1,7 +1,7 @@
 ---
 name: tend-pr
-version: 1.2.0
-description: Use when an open pull request needs taking to merge-ready, because its checks are red or pending, it has conflicts or a stale base, or someone asks to tend or babysit it. Produces a merge-ready pull request or the named blocker, and never merges. Not for judging review comments (vet-feedback), opening or landing the branch (land-branch), or finding why a test fails (root-cause).
+version: 1.2.1
+description: "Use when an open pull request needs taking to merge-ready, because its checks are red or pending, it has conflicts or a stale base, or someone asks to tend or babysit it. Produces a merge-ready pull request or the named blocker, and never merges. Review comments go to vet-feedback."
 ---
 
 # Tend a Pull Request

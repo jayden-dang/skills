@@ -45,7 +45,7 @@ One operational rule that is easy to miss and expensive to violate:
 
 **Keep discovery through planning in one unbroken context window.** `frame-change` → `specify-behavior` → `design-solution` → `plan-tasks` is a single continuous act of thinking. If the window is filling before the plan is done, do not push through — run `/write-handoff` and move to a fresh session with a document a successor can resume from.
 
-Execution is different. `build-in-waves` sessions are context-bounded **per
+Execution is different. `build` (wave mode) sessions are context-bounded **per
 semantic lane**: a worker may resume while its lease is safe, and a fresh
 session is required at a semantic boundary or hard trigger. The world is a
 generated capsule plus task delta.

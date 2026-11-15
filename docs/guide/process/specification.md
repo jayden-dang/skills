@@ -124,9 +124,9 @@ Finally, an **independent plan review subagent** verifies against real code ever
 
 `plan-tasks` approves the written plan, then offers three execution routes — no
 separate continuous/story-unit interview. `Execution-mode:` may stay `unset`;
-the chosen skill writes it on start: `build-in-waves` (subagent waves →
-`continuous`), `build-by-story` (human review units → `story-unit`), or
-`build-inline` (controller implements, no implementer subagents). Prefer an
+the chosen skill writes it on start: `build` (wave mode) (subagent waves →
+`continuous`), `build` (story mode) (human review units → `story-unit`), or
+`build` (inline mode) (controller implements, no implementer subagents). Prefer an
 isolated workspace via `isolate-workspace` for the subagent routes.
 
 ## Next

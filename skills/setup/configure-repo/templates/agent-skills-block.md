@@ -3,7 +3,7 @@
 This repo is configured for a spec-driven skill set.
 
 - Feature flow: `frame-change` → `specify-behavior` → `design-solution` →
-  `plan-tasks` → `build-in-waves`
+  `plan-tasks` → `build` (wave mode)
 - Vague ask you want turned into a prompt for a fresh session: `forge-prompt`
 - Work you want an agent to keep doing unattended until it is verifiably done: `forge-prompt`
 - Bug on-ramp: `root-cause` (clear unexpected behavior first, then a guarded fix);

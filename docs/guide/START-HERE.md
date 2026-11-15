@@ -39,7 +39,7 @@ is the full chain they wrap.
  [GATE: no code]  (EARS + IDs)     (Satisfies:)      (_Requirements:_ + audit-trace)
  + load-subgraph (neighbors 1.1)   + fresh load-subgraph   + blast_radius + cluster
         │                                                 │
-        │ tier 0/1 shortcuts     isolate-workspace ─► build-in-waves | build-by-story | build-inline
+        │ tier 0/1 shortcuts     isolate-workspace ─► build (wave mode) | build (story mode) | build (inline mode)
         ▼                                                 │
   root-cause / debug-remote / assess-observability / test-first / prove-claim / audit-trace │
   (+ load-subgraph after Phase 2 only)                    ▼
@@ -60,8 +60,8 @@ is the full chain they wrap.
 - **Tier 0 (trivial):** `test-first` + `prove-claim` only — no specs.
 - **Tier 1 (bugfix):** `root-cause` (or `debug-remote` then `root-cause` if the failure is on a deployed env) → a mini-spec (fix requirement + a `SHALL CONTINUE TO`
   guard) → tagged regression test → `prove-claim` → `inspect-change` → `land-branch`.
-- **Tier 2 (feature):** the full triad + execute family (`build-in-waves` /
-  `build-by-story` / `build-inline`).
+- **Tier 2 (feature):** the full triad + execute family (`build` (wave mode) /
+  `build` (story mode) / `build` (inline mode)).
 
 **Optional project layer** (large projects, off by default): before feature work,
 `/define-project` writes a repo-level product vision and an IDed
@@ -136,13 +136,13 @@ You mostly describe the idea and **approve files**; the rest chains:
    **`audit-trace`** coverage check; **you approve** and pick execute route.
 5. **`isolate-workspace`** (recommended) unless you explicitly consent to main.
 6. **Execute family** (exactly one):
-   - **`build-in-waves`** — continuous subagent waves
-   - **`build-by-story`** — human-gated story units
-   - **`build-inline`** — controller implements with `test-first` (no implementers)
+   - **`build` (wave mode)** — continuous subagent waves
+   - **`build` (story mode)** — human-gated story units
+   - **`build` (inline mode)** — controller implements with `test-first` (no implementers)
 7. Per task: **`test-first`** · **`prove-claim`** (and **`audit-trace`** when claiming
    requirements met).
 8. **`inspect-change`** — Standards + Spec; neighbors again via **`load-subgraph`**.
-9. **Close sequence** (one home: `skills/execution/execute-common/SKILL.md`):
+9. **Close sequence** (one home: `skills/execution/build/SKILL.md`):
    **`polish-diff`** only when a polish predicate holds; **`validate-feature`**
    (`validate-feature`). A product walk (`write-dogfood`, `run-dogfood`) is yours to run.
 10. **`land-branch`** — validate close evidence, commit residue, then perform the resolved merge / PR / keep / discard / block action
@@ -156,7 +156,7 @@ The table lives in [on-ramps](process/on-ramps.md) — one home, reads it when t
 
 ## 3. Skill index (engineering package)
 
-Full tables: [Skill reference](skills/README.md) (62 engineering skills).  
+Full tables: [Skill reference](skills/README.md) (59 engineering skills).  
 
 `U` = you run `/name` · `m` = model-invoked
 
@@ -166,7 +166,7 @@ Full tables: [Skill reference](skills/README.md) (62 engineering skills).
 | **setup** | `/configure-repo` |
 | **discovery** | `frame-change`, `clarify-decisions`, `research`, `run-spike`, `define-domain`, `/forge-prompt`, `/interpret-session`, `understand` |
 | **spec** | `specify-behavior`, `design-solution`, `plan-tasks` |
-| **execution** | `build-in-waves`, `build-by-story`, `build-inline`, `/go`, `go`, `execute-common`, `test-first`, `root-cause`, `debug-remote`, `assess-observability`, `prove-claim`, `audit-trace`, **`load-subgraph`**, `isolate-workspace`, `inspect-change` |
+| **execution** | `build` (wave mode), `build` (story mode), `build` (inline mode), `/go`, `go`, `build`, `test-first`, `root-cause`, `debug-remote`, `assess-observability`, `prove-claim`, `audit-trace`, **`load-subgraph`**, `isolate-workspace`, `inspect-change` |
 | **review** | `inspect-change`, `/audit-shipped`, `polish-diff`, `vet-feedback`, `vet-source`, `speak-outer`, `inspect-invariants` |
 | **acceptance** | `validate-feature`, `write-dogfood`, `run-dogfood` |
 | **craft** | `craft-page`, `make-video` |

@@ -9,7 +9,7 @@
 | **Reads** | the spec triad — `requirements.md`, `design.md`, `tasks.md`; the working ledger `.skills/<slug>-acceptance.md` |
 | **Writes** | `.skills/<slug>-acceptance.md` (a git-ignored acceptance ledger, one todo per item); committed ID-tagged tests for non-API/non-UI surfaces |
 | **Calls** | [`validate-feature`](validate-feature.md), [`validate-feature`](validate-feature.md), [`write-dogfood`](write-dogfood.md), [`root-cause`](root-cause.md) (through its children) |
-| **Called by** | [`build-in-waves`](build-in-waves.md), [`land-branch`](land-branch.md), [`prove-claim`](prove-claim.md) |
+| **Called by** | [`build`](build.md) (wave mode), [`land-branch`](land-branch.md), [`prove-claim`](prove-claim.md) |
 
 ## When it fires
 

@@ -61,7 +61,7 @@ tracked residue is unhandled.
 This step applies only to `pr` and `merge`. `keep`, `discard`, and `block` do
 not claim the branch is verified.
 
-REQUIRED: load `../../execution/execute-common/close-receipt.md` and run its
+REQUIRED: load `../../execution/build/close-receipt.md` and run its
 fixed validation recipe against `.skills/<CODE>/close-receipt.md`.
 
 - **Valid receipt:** consume it. Do not rerun equivalent verification,

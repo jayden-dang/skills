@@ -61,12 +61,7 @@ for p in skills:
 # Known unreachable siblings, recorded rather than silently tolerated. This list
 # may shrink and may never grow; each entry is architecture debt with its own note
 # in the owning skill's TESTS.md.
-KNOWN_ORPHANS = {
-    # A tombstone from the execute-family split: fifteen lines redirecting to
-    # build-by-story. Unreachable by pointer on purpose — it catches someone who
-    # arrives by guessing a path. Permanent, not debt.
-    "skills/execution/build-in-waves/story-unit-mode.md",
-}
+KNOWN_ORPHANS = set()  # the last tombstone went when the execute family became `build`
 new_orph = [f for f in orph if f not in KNOWN_ORPHANS]
 stale = KNOWN_ORPHANS - set(orph)
 check("no new orphan sibling files", not new_orph, "; ".join(new_orph[:4]))
@@ -98,7 +93,7 @@ check("every SKILL.md eval anchor resolves", not bad, "; ".join(bad[:3]))
 DELETED = ["gate-session", "ask-me-bro", "tour-system", "deepen-codebase",
            "study-change", "teach-build", "teach-pack", "brief-team",
            "vet-flow-guide", "write-flow-guide", "run-flow-guide", "select-sample",
-           "pathfind", "work-the-problem", "zone-mode", "sweep-backlog", "publish-issues", "deliver-issues", "validate-api", "validate-ui", "hold-stage", "show-run-status", "brief-road", "chart-progress", "define-system-doc", "assess-pivot-impact", "draft-ux", "forge-goal", "amend-feature", "bootstrap-repo", "no-comments"]
+           "pathfind", "work-the-problem", "zone-mode", "sweep-backlog", "publish-issues", "deliver-issues", "validate-api", "validate-ui", "hold-stage", "show-run-status", "brief-road", "chart-progress", "define-system-doc", "assess-pivot-impact", "draft-ux", "forge-goal", "amend-feature", "bootstrap-repo", "no-comments", "build-in-waves", "build-by-story", "build-inline", "execute-common"]
 dead = subprocess.run(["grep", "-rl", *[a for n in DELETED for a in ("-e", n)],
                        "--include=*.md", "--include=*.json", "--include=*.mdc",
                        "--include=*.sh", "."], capture_output=True, text=True).stdout.split()

@@ -1,7 +1,7 @@
 ---
 name: tune-rust-loop
-version: 1.2.0
-description: Use when builds or tests in a Rust workspace are slow enough to cost agent time and someone wants the time found and cut. Produces a measured baseline, the configuration changes that paid kept in place, and a ranked list of the code changes that would cut the rest. Not for one failing or flaky test (root-cause) or a repo that is not a Cargo workspace.
+version: 1.2.1
+description: "Use when builds or tests in a Rust workspace are slow enough to cost agent time and someone wants the time found and cut. Produces a measured baseline, the configuration changes that paid kept in place, and a ranked list of the code changes that would cut the rest."
 ---
 
 # Tune the Rust Loop

@@ -1,22 +1,16 @@
 #!/usr/bin/env python3
-"""Allow a skill to reach across a folder boundary only into `execute-common`.
+"""Allow a skill to reach across a folder boundary only into `build`.
 
 `npx skills add` copies one skill folder at a time, so a `../other-skill/file.md`
 pointer is a promise that breaks for anyone installing that skill alone. AGENTS.md
 forbids the shape.
 
-One exception is real and is written down rather than tolerated silently. The
-execute family — build-in-waves, build-by-story, build-inline — shares a
-controller recipe that lives in `execute-common`: the task lifecycle, the ledger
-check, the close receipt, the runtime binding, and the prompt contracts for the
-two roles it dispatches. That is roughly four hundred lines referenced twenty-odd
-times by three skills, and `build-inline` without it is not a degraded skill, it
-is not a skill. Copying it three ways would make every change to the shared
-lifecycle a three-place edit.
-
-So the family installs as a unit, and `execute-common` is the only folder any
-skill may reference across a boundary. Every other `../` still fails, which is
-what keeps the exception from widening into "cross-folder is fine".
+One exception is real and is written down rather than tolerated silently. `build`
+holds the controller recipe every build mode shares: the task lifecycle, the ledger
+check, the close receipt, the runtime binding and the tracker sync. `go` and
+`land-branch` read two of those files instead of carrying copies, so `build` is the
+only folder any skill may reference across a boundary. Every other `../` still
+fails, which is what keeps the exception from widening into "cross-folder is fine".
 
 Usage: python3 scripts/lint-cross-folder.py
 """
@@ -27,7 +21,7 @@ import re
 import sys
 
 POINTER = re.compile(r"(\.\./(?:\.\./)*)([A-Za-z0-9_-]+(?:/[A-Za-z0-9_-]+)*\.md)")
-ALLOWED_DIR = "execute-common"
+ALLOWED_DIR = "build"
 
 
 def skill_nav_files():

@@ -1,6 +1,6 @@
 # Skill reference
 
-62 skills in eleven buckets (engineering package); every one has its own page.
+59 skills in eleven buckets (engineering package); every one has its own page.
 See also [Start here](../START-HERE.md).
 
 **Invocation** is the thing to check first. Every skill is **model-invocable**: the agent loads it on its own when its description matches the situation, and you can still type it as a slash command. "model, or `/x`" in the table marks the ones that used to be typed only.
@@ -59,12 +59,9 @@ The triad. Each file approved before the next is written.
 
 | Skill | Invocation | What it does |
 |---|---|---|
-| [`build-in-waves`](build-in-waves.md) | model | Continuous dependency-aware scheduler: bounded leases, serial/parallel ready sets, two-verdict reviews, ledger |
-| [`build-by-story`](build-by-story.md) | model | Story-unit: derived review units, human unlock after each unit, mode-change write-back |
 | [`go`](go.md) | model, or `/go` | The third of the five commands. The named tickets, or every Ready one, through `go`: built, reviewed, one PR each, one message at the end |
 | [`go`](go.md) | model, or `/go` | Every approved, ready ticket on the board (or the ones named) through its own build, review and PR in one unattended run, with one message at the end. Reached through `/go` |
-| [`build-inline`](build-inline.md) | model | Controller implements with `test-first`; no implementer subagents; stop-on-blocker; sequential |
-| [`execute-common`](execute-common.md) | model | Shared execute-family controller recipe (In-progress stamp, preflight, ledger, close). Not an entry point |
+| [`build`](build.md) | model | An approved plan executed task by task, as subagent waves, human-gated story units, or inline, with a ledger, two-verdict task reviews and a close receipt |
 | [`test-first`](test-first.md) | model | **Iron Law:** no production code without a failing test first |
 | [`root-cause`](root-cause.md) | model | **Iron Law:** no fixes without root cause; `load-subgraph` only after Phase 2 (never the RED loop) |
 | [`debug-remote`](debug-remote.md) | model | Deployed-env evidence pack (read-only); then `root-cause`. No prod writes |
@@ -128,7 +125,7 @@ The visual layer. Fires before any HTML a human will look at.
 | [`realign-spec`](realign-spec.md) | model | The anti-rot skill. Realigns the triad with what the code actually does |
 | [`refresh-roadmap-status`](refresh-roadmap-status.md) | model, or `/refresh-roadmap-status` | The horizontal check. Derives where the plan stands from the roadmap, the specs and git, then names one next action. Writes nothing |
 | [`refresh-roadmap-status`](refresh-roadmap-status.md) | model, or `/refresh-roadmap-status` | The weekly dashboard. One HTML page of what finished, what is building, what is ready to start, the roadmap graph, catalog domains and architecture, every number from a fixed parse. Writes only under `.skills/dashboard/` |
-| [`refresh-lanes`](refresh-lanes.md) | model | The lanes file kept current. Regenerates `docs/roadmap/lanes.md` right after a write that moves a roadmap item, and rides in the same push. Called by `specify-behavior`, `execute-common`, `land-branch`, `plan-milestones` and `/refresh-roadmap-status` |
+| [`refresh-lanes`](refresh-lanes.md) | model | The lanes file kept current. Regenerates `docs/roadmap/lanes.md` right after a write that moves a roadmap item, and rides in the same push. Called by `specify-behavior`, `build`, `land-branch`, `plan-milestones` and `/refresh-roadmap-status` |
 | [`refresh-roadmap-status`](refresh-roadmap-status.md) | `/refresh-roadmap-status ROAD-N` | One roadmap item before you frame it. What it delivers in plain words, what it leaves out, whether it is ready, blocked or built — every predecessor looked up in the catalog — and what is decided and still open. Writes nothing |
 | [`evolve-system`](evolve-system.md) | model, or `/evolve-system` | One measured improvement at a time. Reads the delivery sensor (receipts against real CI, a red integration branch, receipt coverage, architecture blast radius and invariant verdicts, repeated review lanes, each judged against the repo's own previous window), settles what earlier runs predicted; `--harness` does the same across every registered repo for the skill set itself, and opens at most one new improvement with a prediction, as a ticket. Never applies it |
 | [`assess-milestone`](assess-milestone.md) | model, or `/assess-milestone` | The close gate. Judges whether a milestone's outcome was achieved, records it append-only, and holds the close until you dispose of the verdict |

@@ -1,7 +1,7 @@
 ---
 name: map-features
-version: 2.1.0
-description: Use when the shared feature catalog needs backfilling or repair, such as shipped code with no feature row, a reverse-track pass over unowned code, a flat INDEX to migrate to domains, or an export of the catalog. Produces catalog rows written only after the user confirms them. Not for reading a feature's neighbours (load-subgraph) or checking requirement IDs (audit-trace).
+version: 2.1.1
+description: "Use when the shared feature catalog needs backfilling or repair, such as shipped code with no feature row, a reverse-track pass over unowned code, a flat INDEX to migrate to domains, or an export of the catalog. Produces catalog rows written only after the user confirms them."
 ---
 
 # Map Features

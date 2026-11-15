@@ -98,7 +98,7 @@ And it is why [`validate-feature`](../skills/validate-feature.md) exists at all.
 
 **Guard requirements.** A `SHALL CONTINUE TO` criterion is the mechanism that stops an agent from breaking load-bearing behavior nobody thought to mention. `specify-behavior` will not accept "found nothing to guard" as a default; its completion criterion is that you *actively searched the touched surface*.
 
-**Honest resumption.** After compaction, the requirements file is the only surviving record of what was agreed. [`build-in-waves`](../skills/build-in-waves.md)'s ledger and `git log` outrank the agent's own recollection, and the plan's task footers say which requirement each completed commit served.
+**Honest resumption.** After compaction, the requirements file is the only surviving record of what was agreed. [`build`](../skills/build.md) (wave mode)'s ledger and `git log` outrank the agent's own recollection, and the plan's task footers say which requirement each completed commit served.
 
 **Anti-rot.** [`realign-spec`](../skills/realign-spec.md) exists because a spec that is not resynced after change becomes fiction, and fiction is worse than no spec. It diffs requirements against design, tasks, and tests; surfaces orphans as *decisions*, not cleanup; and applies status transitions only where evidence exists.
 

@@ -3,7 +3,7 @@
 Load this file **only when Decision H (Team) runs**. Follow every step in order.
 Local files and local `git` only — no code-host membership APIs.
 
-Explainer: **team** composition — the **roster** of people/roles and optional CODEOWNERS ownership notes — is standing context for `frame-change`, `clarify-decisions`, `plan-tasks`, `build-in-waves`, `inspect-change`, `land-branch`, and `write-handoff`. Those skills **package** collaboration by **band** (Solo / Small / Multi) using the rules written in `docs/agents/project.md` `## Team`. Wrong band → wrong packaging (invented reviewers on a solo repo, or silent ownership on a multi-person one). Same class of fact as Project posture; orthogonal to delivery intent / lifecycle stage.
+Explainer: **team** composition — the **roster** of people/roles and optional CODEOWNERS ownership notes — is standing context for `frame-change`, `clarify-decisions`, `plan-tasks`, `build` (wave mode), `inspect-change`, `land-branch`, and `write-handoff`. Those skills **package** collaboration by **band** (Solo / Small / Multi) using the rules written in `docs/agents/project.md` `## Team`. Wrong band → wrong packaging (invented reviewers on a solo repo, or silent ownership on a multi-person one). Same class of fact as Project posture; orthogonal to delivery intent / lifecycle stage.
 
 Explainer for the user (short): you will see a draft roster from local metadata; edit names, roles, or switch to count form (`N × Role`); nothing is written until you confirm.
 

@@ -228,8 +228,8 @@ the branch is already published, and re-read the log to confirm the shape landed
 
 **Two carve-outs**, both mechanical rather than preference:
 
-- **Execute-family task commits stay.** `build-in-waves`, `build-by-story`, and
-  `build-inline` already emit one commit per task, each with its own report,
+- **Execute-family task commits stay.** `build` (wave mode), `build` (story mode), and
+  `build` (inline mode) already emit one commit per task, each with its own report,
   evidence, and two verdicts bound to it. Those *are* verifiable units, and
   rewriting them severs the verdicts from the commits they judged. Sequence the
   residue around them; leave them addressed as they are.

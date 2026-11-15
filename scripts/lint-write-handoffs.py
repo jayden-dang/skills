@@ -34,6 +34,9 @@ INVOKE = [
 ]
 
 
+EXPLICIT_ASK_ONLY = {"cut-release"}
+
+
 class Failure(NamedTuple):
     path: Path
     line: int
@@ -60,7 +63,9 @@ def scan(root: Path) -> list[Failure]:
         bodies[name] = (f, fm.group(2), body_start)
 
     failures, seen = [], set()
-    for target in sorted(user_invoked):
+    # AGENTS.md §3: `cut-release` publishes, so it starts only on the operator's explicit ask.
+    # No flag says so any more, and a hand-off to it would be an agent starting a release.
+    for target in sorted(set(user_invoked) | EXPLICIT_ASK_ONLY):
         for pat in INVOKE:
             # Substitute rather than .format(): a pattern is a regex, so a
             # quantifier like `\s{1,3}` must not be read as a format field.
@@ -90,10 +95,10 @@ def scan(root: Path) -> list[Failure]:
 def main() -> int:
     failures = scan(ROOT)
     if failures:
-        print("DEAD HAND-OFF — a skill directs the agent to invoke a user-invoked skill:\n")
+        print("DEAD HAND-OFF — a skill directs the agent to invoke a skill only the operator may start:\n")
         for f in failures:
             print(f"  {f.path}:{f.line}")
-            print(f"    {f.caller} -> {f.target} (user-invoked)")
+            print(f"    {f.caller} -> {f.target} (operator-started only)")
             print(f"    {f.snippet}\n")
         print(f"{len(failures)} dead hand-off(s). Name the skill for the user to run instead.")
         return 1

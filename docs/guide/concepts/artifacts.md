@@ -131,7 +131,7 @@ For large or long-lived projects only, and **absent by default**. Authored and m
 | File | Contents | Read by |
 |---|---|---|
 | `docs/product/vision.md` | the repo-level product north star — problem, users, goals, non-goals, scope | `frame-change` (checks a new idea's product scope) |
-| `docs/architecture/INDEX.md` (+ per-domain files) | the architecture spine: cross-cutting invariants, each a bold `**ARCH-N**` ID plus one imperative rule | `design-solution` (cites `Respects: ARCH-N`), `plan-tasks`, `build-in-waves`, `inspect-change`, `audit-trace` |
+| `docs/architecture/INDEX.md` (+ per-domain files) | the architecture spine: cross-cutting invariants, each a bold `**ARCH-N**` ID plus one imperative rule | `design-solution` (cites `Respects: ARCH-N`), `plan-tasks`, `build` (wave mode), `inspect-change`, `audit-trace` |
 | `docs/product/guidelines.md` | human-facing engineering guidelines — coding standards, naming/i18n, house rules | `plan-tasks` (sources Global Constraints from here, else `project.md`) |
 
 ADRs are the *decisions*; the architecture spine is the *current invariant set* those decisions produced. Every consult is no-op-if-absent, so a repo that never creates these files behaves exactly as it did before the layer existed. See [`define-project`](../skills/define-project.md) and the [traceability spine](traceability.md).
@@ -142,7 +142,7 @@ Written once by [`configure-repo`](../skills/configure-repo.md) and then read by
 
 | File | Contents | Read by |
 |---|---|---|
-| `project.md` | verify commands (typecheck/lint/unit/e2e), the single-test-file pattern, test annotation conventions per layer, release steps, `## Run locally (dev)`, the audit-trace check's test globs + ignore list | `test-first`, `prove-claim`, `build-in-waves`, `isolate-workspace`, `cut-release`, `acceptance-*`, `write-dogfood`, `realign-spec`, the [audit-trace check](../resources/scripts.md#the-trace-check) |
+| `project.md` | verify commands (typecheck/lint/unit/e2e), the single-test-file pattern, test annotation conventions per layer, release steps, `## Run locally (dev)`, the audit-trace check's test globs + ignore list | `test-first`, `prove-claim`, `build` (wave mode), `isolate-workspace`, `cut-release`, `acceptance-*`, `write-dogfood`, `realign-spec`, the [audit-trace check](../resources/scripts.md#the-trace-check) |
 | `issue-tracker.md` | tracker choice, operations, PR surface, **Publish unit** (default feature), **Program sync** (default local), close linkage | `triage`, `plan-tasks`, `land-branch`, `cut-release` |
 | `triage-labels.md` | canonical role → this repo's label strings | `triage` |
 
@@ -178,14 +178,14 @@ Pre-CODE: `.skills/_pending-<slug>/`. Ad-hoc: `.skills/_adhoc/<short-slug>/`.
 
 
 
-Working artifacts that pass between agents as **file paths**, never as pasted text. `configure-repo` and `build-in-waves` both ensure the directory is git-ignored, idempotently.
+Working artifacts that pass between agents as **file paths**, never as pasted text. `configure-repo` and `build` (wave mode) both ensure the directory is git-ignored, idempotently.
 
 | File | Written by | Purpose |
 |---|---|---|
-| `progress.md` (under `<CODE>/`) | execute family | The ledger. One line per completed task (and unit lines under `build-by-story`). **Source of truth after compaction** |
+| `progress.md` (under `<CODE>/`) | execute family | The ledger. One line per completed task (and unit lines under `build` (story mode)). **Source of truth after compaction** |
 | `task-N-brief.md` | execute family | Task N + Global Constraints. The implementer's (or controller's) contract |
 | `task-N-report.md` | the implementer subagent | Status, TDD evidence (RED and GREEN commands and outputs), files changed, concerns |
-| `review-<base7>..<head7>.diff` | `build-in-waves` | Commit list, diffstat, and full diff — assembled by the agent from `git log`/`git diff` as the reviewer's view |
+| `review-<base7>..<head7>.diff` | `build` (wave mode) | Commit list, diffstat, and full diff — assembled by the agent from `git log`/`git diff` as the reviewer's view |
 | `<slug>-scan.md` | scan subagents | A findings digest of a touched surface, so raw source never floods the controller's context |
 | `<slug>-req-review.md`, `<slug>-design-review.md`, `<slug>-plan-review.md` | review subagents | Independent verification of a spec/design/plan's code-facing claims. One file **per phase** so the requirements, design, and plan reviews never clobber each other |
 | `<slug>-acceptance.md` | `validate-feature` | The acceptance ledger, sliced between `validate-feature` |

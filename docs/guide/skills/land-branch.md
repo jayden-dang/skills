@@ -10,7 +10,7 @@
 | **Reads** | `docs/agents/project.md`, `docs/agents/issue-tracker.md`, `.skills/<CODE>/close-receipt.md`, the base…head diff, worktree state |
 | **Writes** | commits it creates itself; local merges; pushed branches and PRs; deleted branches; isolate-workspace cleanup |
 | **Calls** | [`prove-claim`](prove-claim.md), [`validate-feature`](validate-feature.md) (when user-facing behavior is undriven), [`speak-outer`](speak-outer.md) (PR title and body), [`record-verdict`](record-verdict.md), [`realign-spec`](realign-spec.md), [`refresh-lanes`](refresh-lanes.md) (after the delivery record and the push) |
-| **Called by** | [`execute-common`](execute-common.md) (close sequence) |
+| **Called by** | [`build`](build.md) (close sequence) |
 
 `package-change` is retired. This skill authors remaining commits and the PR
 description itself. There is no `.skills/pr-packages/` tree and no
@@ -54,7 +54,7 @@ short question. Discard and block are never inferred, and a local merge is infer
 
 ## After merge or PR — spec status
 
-Read `Status:`. Still `Approved` or `In-progress`, no `- [ ]` left in `tasks.md`, a clean trace and green verify → land-branch writes `Implemented` in `requirements.md` and the INDEX row itself, together with the delivery record. The execute family ticks each task as it closes (execute-common 3.2.0), so the boxes can be trusted here. An open box or a trace finding → run [`realign-spec`](realign-spec.md) (forgot-net). Already `Implemented` and no drift → skip. This is not `/cut-release`.
+Read `Status:`. Still `Approved` or `In-progress`, no `- [ ]` left in `tasks.md`, a clean trace and green verify → land-branch writes `Implemented` in `requirements.md` and the INDEX row itself, together with the delivery record. The execute family ticks each task as it closes (build 3.2.0), so the boxes can be trusted here. An open box or a trace finding → run [`realign-spec`](realign-spec.md) (forgot-net). Already `Implemented` and no drift → skip. This is not `/cut-release`.
 
 ## Recording the delivery
 

@@ -40,7 +40,7 @@ the exact revision so landing can validate instead of replay them.
 
 ## Where it sits in the close sequence
 
-`execute-common` already sequences the layers. It does not read this page
+`build` already sequences the layers. It does not read this page
 to do that.
 
 ```
@@ -59,7 +59,7 @@ That is how a judgment leftover becomes a durable human record.
 ## See also
 
 - [The gates](gates.md) — *when* work is forbidden
-- [`execute-common`](../skills/execute-common.md) — close-sequence home
+- [`build`](../skills/build.md) — close-sequence home
 - [`land-branch`](../skills/land-branch.md) — exact-revision receipt consumer
 - [`inspect-change`](../skills/inspect-change.md) — two-axis judgment
 - [`prove-claim`](../skills/prove-claim.md) — computational claim gate

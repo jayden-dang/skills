@@ -1,7 +1,7 @@
 ---
 name: scan-architecture
-version: 1.5.0
-description: Use when someone asks where refactoring would pay, for an architecture review, or for a codebase-health or technical-debt scan across the whole repo. Produces a posture reading, ranked candidates in an HTML report and one follow-up on the board, and applies one direction only when asked to. Not for cleaning a diff (polish-diff), explaining how code works (understand), or designing one feature (design-solution).
+version: 1.5.1
+description: "Use when someone asks where refactoring would pay, for an architecture review, or for a codebase-health or technical-debt scan across the whole repo. Produces a posture reading, ranked candidates in an HTML report and one follow-up on the board, and applies one direction only when asked to."
 ---
 
 # Improve the Architecture

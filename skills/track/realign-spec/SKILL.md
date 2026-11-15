@@ -16,7 +16,7 @@ Work one feature at a time. Identify the spec directory first (from the user, th
 - **Never delete a requirement.** Retire it: `~~**CODE-N.M**~~ <reason>` — struck-through IDs stop counting as defined, but the history stays legible.
 - New requirements get the next free number under their story; new tasks match the existing task format exactly.
 - **Never write `Status: Shipped`.** That transition is `cut-release` step i on the release cohort. This skill realigns one triad; it does not stamp a release.
-- **Never write `Status: In-progress`.** That transition is `execute-common` session preflight.
+- **Never write `Status: In-progress`.** That transition is `build` session preflight.
 
 ## Steps
 

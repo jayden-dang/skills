@@ -6,7 +6,7 @@ description: "Use when a mid-execution discovery invalidates an approved plan �
 
 # Reroute Plan
 
-The mid-flight rewind decision for when a discovery falsifies an approved plan. It is a **thin router**: it decides *which artifact is now false and how far back to rewind*, then delegates, per Thin-router exit below. `build-in-waves` hands off here when it hits "the plan itself is wrong" or a circuit breaker whose root cause sits above the current task; a user may also invoke it directly the moment something feels off.
+The mid-flight rewind decision for when a discovery falsifies an approved plan. It is a **thin router**: it decides *which artifact is now false and how far back to rewind*, then delegates, per Thin-router exit below. `build` (wave mode) hands off here when it hits "the plan itself is wrong" or a circuit breaker whose root cause sits above the current task; a user may also invoke it directly the moment something feels off.
 
 Three phases, in order: diagnose, classify, route. Two hard stops, never an auto-rewrite.
 
@@ -55,7 +55,7 @@ Only after the diagnosis go-ahead. Identify the **lowest** level in the chain ge
 
 | Level | The discovery falsified… | Re-entry (Phase 3) |
 |---|---|---|
-| **Task-local** | only the current task's approach; the spec still holds | back to `build-in-waves`/`test-first` |
+| **Task-local** | only the current task's approach; the spec still holds | back to `build` (wave mode)/`test-first` |
 | **Plan** | task breakdown / sequencing / coverage; design holds | `plan-tasks` |
 | **Design** | an architecture/design decision; requirements hold | `design-solution` → `plan-tasks` |
 | **Requirements** | what was promised — a criterion is wrong or missing | `specify-behavior` → design → plan |
@@ -73,7 +73,7 @@ The proposal is **ephemeral**: it lives in the conversation for the go/no-go and
 
 Every rewind must be driven by **newly discovered evidence** — not a second look at the same fact. Before classifying, read `.skills/<CODE>/corrections.md` (ephemeral, git-ignored scratch, parallel to `.skills/<CODE>/progress.md`, scoped to the in-flight plan). It carries one line per acted-on correction: an **evidence fingerprint**, the **chosen level**, and the **outcome**.
 
-IF the current divergence would re-classify the **same already-acted-on evidence to the same lowest invalidated artifact**, with no new evidence, do **NOT** re-enter that level again. Escalate to the user instead — this breaks the `build-in-waves → reroute-plan → write-* → realign-spec → build-in-waves` loop before it spins. A genuinely new discovery is not blocked by this: record its fingerprint, its level, and its outcome as a new ledger line, and classify normally.
+IF the current divergence would re-classify the **same already-acted-on evidence to the same lowest invalidated artifact**, with no new evidence, do **NOT** re-enter that level again. Escalate to the user instead — this breaks the `build (wave mode) → reroute-plan → write-* → realign-spec → build (wave mode)` loop before it spins. A genuinely new discovery is not blocked by this: record its fingerprint, its level, and its outcome as a new ledger line, and classify normally.
 
 **Done when:** the ledger has been read before classifying, and either escalation fired (repeat, no new evidence) or a new line was recorded (genuinely new evidence).
 
@@ -83,7 +83,7 @@ Note the ledger is scratch, not a durable spec artifact — recording to it does
 
 On proposal approval, route to the matching re-entry. Invoke each as a REQUIRED SUB-SKILL **directly** — never merely suggest the user run it — and let that skill run its **own** approval gate:
 
-- **Task-local** → return to `build-in-waves`/`test-first`; no upstream artifact is rewound.
+- **Task-local** → return to `build` (wave mode)/`test-first`; no upstream artifact is rewound.
 - **Plan** → REQUIRED SUB-SKILL: use `plan-tasks`.
 - **Design** → REQUIRED SUB-SKILL: use `design-solution`, which flows forward into `plan-tasks`.
 - **Requirements** → REQUIRED SUB-SKILL: use `specify-behavior`, which flows forward into design and plan.
@@ -104,16 +104,16 @@ After the re-entry skill's approval gate passes:
 
 1. **Reconcile.** WHEN the re-entry changed already-approved artifacts or their trace links, REQUIRED SUB-SKILL: use `realign-spec` to realign `Status` and the audit-trace — it owns the strikethrough-with-reason retirement and the INDEX update; `reroute-plan` does not reimplement any of it.
 2. **Record.** WHEN the final approved change carries an **architectural consequence**, record it as an ADR via REQUIRED SUB-SKILL: use `define-domain`. Design-level rewinds usually qualify; Requirements or Vision rewinds only when architecturally weighty. **Task-local and Plan-level never** get an ADR. **Never** persist an ADR for a proposal the user did not approve.
-3. **Resume.** Return control to `build-in-waves`, which resumes **automatically** against the corrected plan off its own ledger — no manual restart. For a **Task-local** rewind, `.skills/<CODE>/progress.md` is untouched. For a **Plan / Design / Requirements** rewind that rewrote `tasks.md`, **re-baseline the ledger** first: keep the entries whose committed work survives the rewrite, drop the entries the rewrite superseded, so `build-in-waves` resumes after the last *still-valid* completed task rather than a stale task number. The ledger is git-ignored scratch, so this touches no spec artifact.
+3. **Resume.** Return control to `build` (wave mode), which resumes **automatically** against the corrected plan off its own ledger — no manual restart. For a **Task-local** rewind, `.skills/<CODE>/progress.md` is untouched. For a **Plan / Design / Requirements** rewind that rewrote `tasks.md`, **re-baseline the ledger** first: keep the entries whose committed work survives the rewrite, drop the entries the rewrite superseded, so `build` (wave mode) resumes after the last *still-valid* completed task rather than a stale task number. The ledger is git-ignored scratch, so this touches no spec artifact.
 
-**Done when:** reconciliation has run if artifacts changed, an ADR exists only if warranted and approved, and `build-in-waves` is resuming against a ledger that matches the (possibly rewritten) `tasks.md`.
+**Done when:** reconciliation has run if artifacts changed, an ADR exists only if warranted and approved, and `build` (wave mode) is resuming against a ledger that matches the (possibly rewritten) `tasks.md`.
 
 ## Red Flags — wrong skill
 
 - **A post-ship, in-scope tweak** to a shipped feature (a recolor, a copy edit, a small follow-on) → that is `frame-change`, not reroute-plan. Nothing was "approved and then invalidated" here — the feature already shipped.
 - **Broken code against a still-valid spec** → that is `root-cause`, not reroute-plan. The spec is still true; only the implementation is wrong.
 - **`realign-spec` is an exit, not a decision-maker.** It is the mechanical reconciler that runs *after* the rewind decision, realigning `Status` and the trace. reroute-plan makes the call about which artifact is false; it does not do realign-spec's bookkeeping, and realign-spec does not make the rewind call.
-- The pre-flight plan review inside `build-in-waves` (its pre-dispatch consistency scan) is pre-execution, not a mid-flight discovery — it is not this skill's trigger.
+- The pre-flight plan review inside `build` (wave mode) (its pre-dispatch consistency scan) is pre-execution, not a mid-flight discovery — it is not this skill's trigger.
 
 | Thought | Reality |
 |---|---|

@@ -92,13 +92,13 @@ Write every vertical slice of the approved design and requirements into this `ta
 
 After the written plan is Approved, the exit offers **exactly three execute routes** — no separate continuous/story-unit interview. `Execution-mode:` stays `unset` at approval; the chosen skill writes the matching value on start.
 
-When the feature is user-facing UI/UX, Team is Solo/Small, or requirements have ≥2 behavioral stories, mark **`build-by-story` (Recommended)** first — still offer all three; still wait for an explicit pick. That mark is **not** writing `Execution-mode` (no size-based silent waves / mode invent).
+When the feature is user-facing UI/UX, Team is Solo/Small, or requirements have ≥2 behavioral stories, mark **`build` (story mode) (Recommended)** first — still offer all three; still wait for an explicit pick. That mark is **not** writing `Execution-mode` (no size-based silent waves / mode invent).
 
 | Route | Meaning |
 |---|---|
-| [`build-by-story`](build-by-story.md) | Human-gated story review units (writes `story-unit`; prefer [`isolate-workspace`](isolate-workspace.md)) |
-| [`build-in-waves`](build-in-waves.md) | Subagent waves (writes `continuous`; prefer isolate-workspace) |
-| [`build-inline`](build-inline.md) | Controller implements; no implementer subagents (bookkeeping `continuous`; no unit barriers) |
+| [`build`](build.md) (story mode) | Human-gated story review units (writes `story-unit`; prefer [`isolate-workspace`](isolate-workspace.md)) |
+| [`build`](build.md) (wave mode) | Subagent waves (writes `continuous`; prefer isolate-workspace) |
+| [`build`](build.md) (inline mode) | Controller implements; no implementer subagents (bookkeeping `continuous`; no unit barriers) |
 
 The spec's `INDEX.md` row is updated to note the plan exists.
 
@@ -149,4 +149,4 @@ The plan is where an approved intent becomes something a stranger can build with
 - [Traceability](../concepts/traceability.md) — footer citation versus tagged-test coverage
 - [`audit-trace`](audit-trace.md) — the check this step runs, and its E1/E2/E3/W1/W2 findings
 - [`design-solution`](design-solution.md) — the seam table this plan must reconcile against
-- [`build-in-waves`](build-in-waves.md) · [`build-by-story`](build-by-story.md) · [`build-inline`](build-inline.md) — execute-family routes
+- [`build`](build.md) (wave mode) · [`build`](build.md) (story mode) · [`build`](build.md) (inline mode) — execute-family routes

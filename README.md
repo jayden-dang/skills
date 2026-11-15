@@ -182,7 +182,7 @@ frame-change (+ load-subgraph) ──► specify-behavior ──► design-solut
 (gate: no code)                    (EARS + IDs)         (Satisfies:)         (_Requirements:_)
         │                                                                               │
         │ tier 0/1 shortcuts                                                            ▼
-        │                          isolate-workspace ──► build-in-waves | build-by-story | build-inline
+        │                          isolate-workspace ──► build (wave mode) | build (story mode) | build (inline mode)
         ▼                                                                               │
   root-cause / debug-remote / assess-observability / test-first / prove-claim  ◄── discipline ────────────────┘
                                                                                         │
@@ -232,7 +232,7 @@ and countered by name. See [The gates](docs/guide/concepts/gates.md).
 | setup | `configure-repo` |
 | discovery | `frame-change`, `clarify-decisions`, `research`, `run-spike`, `define-domain`, `forge-prompt`, `interpret-session`, `understand` |
 | spec | `specify-behavior`, `design-solution`, `plan-tasks` |
-| execution | `build-in-waves`, `build-by-story`, `build-inline`, `execute-common`, `test-first`, `root-cause`, `debug-remote`, `assess-observability`, `prove-claim`, `audit-trace`, `load-subgraph`, `isolate-workspace`, `inspect-change` |
+| execution | `build` (wave mode), `build` (story mode), `build` (inline mode), `build`, `test-first`, `root-cause`, `debug-remote`, `assess-observability`, `prove-claim`, `audit-trace`, `load-subgraph`, `isolate-workspace`, `inspect-change` |
 | review | `inspect-change`, `polish-diff`, `vet-feedback`, `vet-source`, `speak-outer`, `inspect-invariants`, `inspect-ui` |
 | acceptance | `validate-feature`, `write-dogfood`, `run-dogfood` |
 | craft | `craft-page`, `draft-ui`, `make-video` |

@@ -1,10 +1,10 @@
 # Phase 3 — Execution
 
 **Skills:** one of
-[`build-in-waves`](../skills/build-in-waves.md) |
-[`build-by-story`](../skills/build-by-story.md) |
-[`build-inline`](../skills/build-inline.md)
-(session preflight in [`execute-common`](../skills/execute-common.md) stamps
+[`build`](../skills/build.md) (wave mode) |
+[`build`](../skills/build.md) (story mode) |
+[`build`](../skills/build.md) (inline mode)
+(session preflight in [`build`](../skills/build.md) stamps
 `In-progress`, then [`isolate-workspace`](../skills/isolate-workspace.md)),
 governed throughout by
 [`test-first`](../skills/test-first.md), [`root-cause`](../skills/root-cause.md),
@@ -16,7 +16,7 @@ Horizontal neighbors for review are [`load-subgraph`](../skills/load-subgraph.md
 
 ## Occupancy, then isolate
 
-[`execute-common`](../skills/execute-common.md) **Session preflight** is the
+[`build`](../skills/build.md) **Session preflight** is the
 one home: `Approved` → `In-progress` on this checkout, then
 [`isolate-workspace`](../skills/isolate-workspace.md) before the first
 production edit. Isolation order of preference is strict: **never fight the harness.**
@@ -39,11 +39,11 @@ Pick **one** skill (offered at `plan-tasks` Exit). Each skill owns writing
 
 | Skill | When |
 |---|---|
-| [`build-in-waves`](../skills/build-in-waves.md) | Subagent waves (writes `Execution-mode: continuous`) |
-| [`build-by-story`](../skills/build-by-story.md) | Human-gated review units (writes `Execution-mode: story-unit`) |
-| [`build-inline`](../skills/build-inline.md) | No implementer subagents / user watches the controller implement |
+| [`build`](../skills/build.md) (wave mode) | Subagent waves (writes `Execution-mode: continuous`) |
+| [`build`](../skills/build.md) (story mode) | Human-gated review units (writes `Execution-mode: story-unit`) |
+| [`build`](../skills/build.md) (inline mode) | No implementer subagents / user watches the controller implement |
 
-### `build-in-waves` (continuous + subagents)
+### `build` (wave mode) (continuous + subagents)
 
 Drives the plan with one dependency-aware scheduler. It uses bounded worker and
 reviewer leases: one ready task when surfaces overlap or isolation is unavailable,
@@ -57,29 +57,29 @@ file paths under `.skills/`, never as pasted text.
 
 **Continuous execution.** Do not pause between tasks to ask "should I continue?" — check-ins waste the user's time. The only legitimate stops are a `BLOCKED` status you cannot resolve, ambiguity that genuinely prevents progress, or all tasks complete.
 
-### `build-by-story` (story-unit + human gates)
+### `build` (story mode) (story-unit + human gates)
 
 Uses the same continuous task scheduler inside **review units** derived from
 stories. After each unit: unit synthesis → **STOP for human** → unlock.
 "continue" advances one unit; "stop stopping" / "just run it all" must write
-`Execution-mode: continuous` then hand off to `build-in-waves`.
+`Execution-mode: continuous` then hand off to `build` (wave mode).
 
-### `build-inline` (controller implements)
+### `build` (inline mode) (controller implements)
 
-No implementer or task-reviewer subagents. You implement each task yourself under `test-first`, append the same style of ledger lines, stop and ask on blockers (never guess), and finish with whole-branch `inspect-change`. **No unit barriers** even if the header is `story-unit` — barriers belong to `build-by-story`.
+No implementer or task-reviewer subagents. You implement each task yourself under `test-first`, append the same style of ledger lines, stop and ask on blockers (never guess), and finish with whole-branch `inspect-change`. **No unit barriers** even if the header is `story-unit` — barriers belong to `build` (story mode).
 
 ### Setup
 
 Session preflight plus setup, of which occupancy and workspace are easy to skip and expensive to have skipped:
 
-- **Catalog occupancy.** `execute-common` Session preflight question 2 — before any worktree.
+- **Catalog occupancy.** `build` Session preflight question 2 — before any worktree.
 - **Workspace check.** Never begin implementation on `main`/`master` without the user's explicit consent.
 - **Ledger check.** `.skills/` is git-ignored, then `.skills/<CODE>/progress.md` is read. **Every task it marks complete IS complete** — resume at the first task it does not list.
 - **Read the plan once**, record the canonical Global Constraints path and hash,
   and create the runtime sidecar. Briefs reference that source instead of
   duplicating its prose.
 - **Todos**, one per task **and** one terminal **Close branch** todo
-  (the shared close sequence in `skills/execution/execute-common/SKILL.md`).
+  (the shared close sequence in `skills/execution/build/SKILL.md`).
 - **Pre-flight plan review.** Scan the plan once for internal defects — tasks that contradict each other or the Global Constraints, and anything the plan explicitly *mandates* that a reviewer would flag as a defect (an assertion-free test, a copy-pasted logic block). Batch **all** findings into **one** question to the user, each shown beside the plan text that mandates it. One interrupt, not one per discovery mid-run.
 
 ### The per-task loop
@@ -145,7 +145,7 @@ State the model **explicitly on every dispatch** — an omitted model inherits y
 
 ## After the last task
 
-One home: [`execute-common`](../../../skills/execution/execute-common/SKILL.md)
+One home: [`build`](../../../skills/execution/build/SKILL.md)
 **Close sequence**. Default path is `inspect-change` → `validate-feature` →
 exact-revision close receipt → `land-branch`. `polish-diff`
 runs only when its observable predicate holds — EOD, a clean inspect, and
@@ -155,7 +155,7 @@ runs only when its observable predicate holds — EOD, a clean inspect, and
 
 ## `/go` — a whole board, unattended
 
-When several tickets are approved and ready, [`/go`](../skills/go.md) (or [`go`](../skills/go.md) directly; `/go #N` names the tickets) takes each one through the chain above: `build-in-waves`, then `inspect-change`, then `land-branch` as a pull request. Tickets run in dependency order, and a ticket blocked by another branches from that ticket's branch. A question that would stop a single-ticket run is built the safe way and put at the top of that pull request. The run ends with one message. While a build is running or stopped, [`board`](../skills/board.md) reports where one feature stands.
+When several tickets are approved and ready, [`/go`](../skills/go.md) (or [`go`](../skills/go.md) directly; `/go #N` names the tickets) takes each one through the chain above: `build` (wave mode), then `inspect-change`, then `land-branch` as a pull request. Tickets run in dependency order, and a ticket blocked by another branches from that ticket's branch. A question that would stop a single-ticket run is built the safe way and put at the top of that pull request. The run ends with one message. While a build is running or stopped, [`board`](../skills/board.md) reports where one feature stands.
 
 ## Next
 
@@ -164,6 +164,6 @@ When several tickets are approved and ready, [`/go`](../skills/go.md) (or [`go`]
 ## See also
 
 - [The gates](../concepts/gates.md) — `test-first`, `root-cause`, and `prove-claim` in detail
-- [`build-in-waves`](../skills/build-in-waves.md) · [`build-by-story`](../skills/build-by-story.md) · [`build-inline`](../skills/build-inline.md)
+- [`build`](../skills/build.md) (wave mode) · [`build`](../skills/build.md) (story mode) · [`build`](../skills/build.md) (inline mode)
 - [`go`](../skills/go.md) · [`board`](../skills/board.md)
 - [The artifact model](../concepts/artifacts.md) — what lives in `.skills/`

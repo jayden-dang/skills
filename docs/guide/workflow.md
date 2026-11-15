@@ -40,7 +40,7 @@ Won't do                 Human-only
 | Inbox | `needs-triage` | `/idea`, `/triage` | `/idea` (after framing), `/triage` |
 | Shaping | `shaping` | `/idea`, `/shape`, `/go` (a ready ticket with no spec) | **you approve**; then `plan-tasks` publishes it Ready |
 | Ready | `ready-for-agent` | `plan-tasks`, `/triage` | the build that claims it |
-| Building | `building` + assignee | the build's tracker sync (`execute-common`) | `land-branch` when the PR opens |
+| Building | `building` + assignee | the build's tracker sync (`build`) | `land-branch` when the PR opens |
 | In review | `in-review` | `land-branch` | **you merge**; `Closes #N` closes it |
 | Done | closed | the merge | `/cut-release` |
 | Shipped | `shipped` | `/cut-release` | — |

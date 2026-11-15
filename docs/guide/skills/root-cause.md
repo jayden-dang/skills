@@ -9,7 +9,7 @@
 | **Reads** | the failing signal (test, error, trace, log), git history and recent changes, the owning feature's `requirements.md` |
 | **Writes** | a red-capable feedback loop and a failing regression test, a causal disposition request (human accept/reject/supersede), one fix commit stating proposition + disposition status, a tier-1 mini-spec (fix requirement + `SHALL CONTINUE TO` guard) in `requirements.md` (or `docs/specs/fixes.md`) |
 | **Calls** | [`debug-remote`](debug-remote.md) (when the failure is already deployed and no pack exists), [`test-first`](test-first.md) (the regression test and the fix), [`prove-claim`](prove-claim.md) (before claiming fixed), [`scan-architecture`](scan-architecture.md) (architectural findings) |
-| **Called by** | [`test-first`](test-first.md) (when the change is a bugfix), [`frame-change`](frame-change.md), [`build-in-waves`](build-in-waves.md), [`validate-feature`](validate-feature.md), [`validate-feature`](validate-feature.md), [`validate-feature`](validate-feature.md) |
+| **Called by** | [`test-first`](test-first.md) (when the change is a bugfix), [`frame-change`](frame-change.md), [`build`](build.md) (wave mode), [`validate-feature`](validate-feature.md), [`validate-feature`](validate-feature.md), [`validate-feature`](validate-feature.md) |
 
 ## When it fires
 

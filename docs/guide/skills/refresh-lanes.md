@@ -9,7 +9,7 @@
 | **Reads** | the same inputs as the dashboard snapshot: `docs/roadmap/INDEX.md`, the spec catalog, spec folders, `docs/agents/project.md`, git; open GitHub issues for claims |
 | **Writes** | `docs/roadmap/lanes.md`, and the snapshot under `.skills/dashboard/` |
 | **Calls** | nothing |
-| **Called by** | [`specify-behavior`](specify-behavior.md) (a catalog row bound to a `ROAD-N`), [`execute-common`](execute-common.md) (the `In-progress` stamp), [`land-branch`](land-branch.md) (`Implemented` and `Delivered-by`), [`plan-milestones`](plan-milestones.md) (an approved roadmap edit), [`refresh-roadmap-status`](refresh-roadmap-status.md) |
+| **Called by** | [`specify-behavior`](specify-behavior.md) (a catalog row bound to a `ROAD-N`), [`build`](build.md) (the `In-progress` stamp), [`land-branch`](land-branch.md) (`Implemented` and `Delivered-by`), [`plan-milestones`](plan-milestones.md) (an approved roadmap edit), [`refresh-roadmap-status`](refresh-roadmap-status.md) |
 
 ## Why it exists
 

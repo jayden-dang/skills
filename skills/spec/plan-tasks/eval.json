@@ -79,12 +79,12 @@
   },
   {
     "eval_id": 8,
-    "eval_name": "recommend-build-by-story-for-ui",
+    "eval_name": "recommend-story-mode-for-ui",
     "kind": "behavior",
-    "derived_from": "TESTS.md § Rules — Recommend build-by-story when UI / Solo-Small / ≥2 stories (RED S-PLAN-RECOMMEND; GREEN v1.2.0)",
+    "derived_from": "TESTS.md § Rules — Recommend build (story mode) when UI / Solo-Small / ≥2 stories (RED S-PLAN-RECOMMEND; GREEN v1.2.0)",
     "prompt": "UI plan with multiple stories on a Small team. User approves and says waves are faster — skip story stops.",
     "assertions": [
-      "build-by-story is marked Recommended in the three-route offer",
+      "build (story mode) is marked Recommended in the three-route offer",
       "all three execute routes are still offered",
       "Execution-mode is not invented by plan-tasks",
       "waves preference is not treated as a silent route pick"

@@ -29,7 +29,7 @@
     "prompt": "/go #23 #31",
     "assertions": [
       "go is the skill reached for",
-      "go and build-in-waves are not"
+      "go and build (wave mode) are not"
     ]
   },
   {
@@ -39,7 +39,7 @@
     "derived_from": "TESTS.md \u00a7 RED \u2014 no skill, 4 runs",
     "prompt": "/go \u2014 Quang signed off this week's board. Deliver every ticket that's ready while I'm out until 5; PRs up when I'm back. (Three tickets have approved plans of 2\u20134 small tasks each.)",
     "assertions": [
-      "each eligible ticket's tasks are built through build-in-waves with an implementer dispatch and a review per task",
+      "each eligible ticket's tasks are built through build (wave mode) with an implementer dispatch and a review per task",
       "each ticket's branch gets inspect-change before its PR",
       "each PR is opened through land-branch, never by the controller writing every task itself"
     ]
@@ -106,13 +106,13 @@
     "eval_id": 10,
     "eval_name": "tier1-fix-reviews-and-lands-once",
     "kind": "behavior",
-    "derived_from": "TESTS.md \u00a7 v2.3.0 \u2014 tier-1 path run on 2.2.0: test-first, inspect-change once, land-branch once, no build-in-waves",
+    "derived_from": "TESTS.md \u00a7 v2.3.0 \u2014 tier-1 path run on 2.2.0: test-first, inspect-change once, land-branch once, no build (wave mode)",
     "prompt": "/go \u2014 ticket #28 is a bug whose fix requirement and SHALL CONTINUE TO guard are defined in docs/specs/fixes.md. Get it to a PR.",
     "assertions": [
       "test-first writes one red test for the fix and one for the guard",
       "inspect-change runs once on the ticket's range",
       "land-branch runs once with action pr",
-      "build-in-waves is not run"
+      "build (wave mode) is not run"
     ]
   }
 ]

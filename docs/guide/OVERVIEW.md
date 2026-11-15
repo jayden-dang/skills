@@ -75,7 +75,7 @@ Three ways in: by role, by problem, or by phase.
 | **0. Setup** | `/configure-repo` | [Adopting](resources/adopting.md) |
 | **1. Discovery** | `frame-change` (+ `load-subgraph`), `clarify-decisions`, `research`, `run-spike`, `define-domain`, `/interpret-session`, `understand` | [Discovery](process/discovery.md) |
 | **2. Specification** | `specify-behavior`, `design-solution`, `plan-tasks` | [Specification](process/specification.md) |
-| **3. Execution** | `isolate-workspace`, `build-in-waves` / `build-by-story` / `build-inline`, `/go`, `go`, `test-first`, `root-cause`, `prove-claim`, `audit-trace`, `load-subgraph` | [Execution](process/execution.md) |
+| **3. Execution** | `isolate-workspace`, `build` (wave mode) / `build` (story mode) / `build` (inline mode), `/go`, `go`, `test-first`, `root-cause`, `prove-claim`, `audit-trace`, `load-subgraph` | [Execution](process/execution.md) |
 | **4. Review & acceptance** | `inspect-change` (+ `load-subgraph`), `/audit-shipped`, `polish-diff`, `vet-feedback`, `validate-*`, product-flow suite | [Review and acceptance](process/review-and-acceptance.md) |
 | **5. Ship & maintain** | `land-branch`, `/cut-release`, `realign-spec`, `frame-change`, `/map-features`, `/triage`, `/board`, `/scan-architecture`, `/write-handoff` | [Ship and maintain](process/ship-and-maintain.md) |
 

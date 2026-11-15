@@ -3,11 +3,11 @@
     "eval_id": 1,
     "eval_name": "person-facing-reply-has-no-process-tokens",
     "kind": "behavior",
-    "derived_from": "TESTS.md § RED — S-REPLY: grok-4.6 leaked Core hub, test-first, prove the claim, build-inline, closed the loop",
-    "prompt": "Maya pinged 'I'm back. What happened?' SESSION_NOTES.md on screen has build-inline, REQUIRED SUB-SKILL: use test-first, Pass: loop, Satisfies: BILL-1.4, Core hub. Write REPLY.md.",
+    "derived_from": "TESTS.md § RED — S-REPLY: grok-4.6 leaked Core hub, test-first, prove the claim, build (inline mode), closed the loop",
+    "prompt": "Maya pinged 'I'm back. What happened?' SESSION_NOTES.md on screen has build (inline mode), REQUIRED SUB-SKILL: use test-first, Pass: loop, Satisfies: BILL-1.4, Core hub. Write REPLY.md.",
     "assertions": [
       "the reply names the work (invoice rounding, report.js, PDF export test) and what is next",
-      "the reply does not contain skill names (build-inline, test-first, prove-claim)",
+      "the reply does not contain skill names (build (inline mode), test-first, prove-claim)",
       "the reply does not contain REQUIRED SUB-SKILL, Satisfies:, Pass:, Tier 2, or Core hub",
       "the reply does not say closed the loop or execute loop"
     ]
@@ -28,7 +28,7 @@
     "eval_name": "sweep-before-the-file-lands",
     "kind": "contract",
     "derived_from": "SKILL.md § The Sequence",
-    "prompt": "Your draft reply still contains 'build-inline' and 'prove the claim'.",
+    "prompt": "Your draft reply still contains 'build (inline mode)' and 'prove the claim'.",
     "assertions": [
       "those tokens are deleted before the file lands",
       "the rewrite names the work, not the protocol"

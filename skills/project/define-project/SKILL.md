@@ -11,7 +11,7 @@ workflow — the product north star, and the architecture invariants that keep
 independently-built features from drifting apart.
 
 This layer is OPTIONAL and pays off on large, multi-feature projects. A small repo does
-not need it — the feature workflow (`frame-change` → spec → `build-in-waves`) works fully
+not need it — the feature workflow (`frame-change` → spec → `build` (wave mode)) works fully
 without it, and nothing here is a gate. If the user is not sure they need it, say so and
 let them decide.
 

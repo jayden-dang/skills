@@ -9,7 +9,7 @@
 | **Reads** | `git rev-parse` output (git-dir vs common-dir, superproject), lockfiles and manifests, `docs/agents/project.md` (the test command) |
 | **Writes** | a new git worktree and branch (fallback path), an **uncommitted** `.gitignore` entry, installed dependencies; for Rust with cargo-hive, a registry entry for the main checkout and a seeded `target/` |
 | **Calls** | the harness's native workspace tool when one exists (e.g. `EnterWorktree`); suggests `configure-repo` if `docs/agents/project.md` is missing |
-| **Called by** | [`build-in-waves`](build-in-waves.md), [`plan-tasks`](plan-tasks.md), [`land-branch`](land-branch.md), [`configure-repo`](configure-repo.md) |
+| **Called by** | [`build`](build.md) (wave mode), [`plan-tasks`](plan-tasks.md), [`land-branch`](land-branch.md), [`configure-repo`](configure-repo.md) |
 
 ## When it fires
 
@@ -77,7 +77,7 @@ Run the test suite using the command in `docs/agents/project.md` (missing → sa
 - **Baseline green** → proceed.
 - **Baseline red** → **STOP and ask the user before proceeding.** Starting on a failing baseline makes it impossible to tell your own bugs from pre-existing ones.
 
-The report at the end is three lines: the workspace path and branch, the baseline result (e.g. "N tests passing, 0 failures"), and the task that is ready to start. It exists so the caller — usually [`build-in-waves`](build-in-waves.md) — can confirm the promise was kept before it edits anything.
+The report at the end is three lines: the workspace path and branch, the baseline result (e.g. "N tests passing, 0 failures"), and the task that is ready to start. It exists so the caller — usually [`build`](build.md) (wave mode) — can confirm the promise was kept before it edits anything.
 
 ## Never
 
@@ -98,7 +98,7 @@ The skill exists to make one promise — the user's current checkout is not touc
 
 ## See also
 
-- [`build-in-waves`](build-in-waves.md) — the main caller, which requires an isolated workspace before Task 1
+- [`build`](build.md) (wave mode) — the main caller, which requires an isolated workspace before Task 1
 - [`land-branch`](land-branch.md) — decides what becomes of the branch this skill created
 - [`configure-repo`](configure-repo.md) — writes the `docs/agents/project.md` this skill reads for the test command
 - [When to use](../methodology/when-to-use.md) — where workspace isolation sits in the flow

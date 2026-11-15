@@ -35,7 +35,7 @@ labels, requirement-citation grammar, and ledger jargon stay off the page.
 
 These tokens do not appear in anything a person reads:
 
-- skill names (`build-inline`, `test-first`, `prove-claim`, `frame-change`)
+- skill names (`build` (inline mode), `test-first`, `prove-claim`, `frame-change`)
 - `REQUIRED SUB-SKILL`
 - `Pass:`, `Tier 2`, `Satisfies:`, `Core hub`
 - "closed the loop", "execute loop", "prove the claim" as process talk
@@ -69,7 +69,7 @@ short sentences, in the record's language.
 | "She already knows how we work" | She asked what happened, not which skill is loaded. |
 | "test-first, then prove the claim" is just being precise | Those are skill names. The domain sentence is "next is the failing PDF-export test." |
 | "Core hub is how we say where rounding lives" | Say `report.js`. "Hub" is inner register. |
-| "build-inline / Pass: loop belongs in a status" | That is the inner track leaking. The outer names the work, not the protocol. |
+| "build (inline mode) / Pass: loop belongs in a status" | That is the inner track leaking. The outer names the work, not the protocol. |
 | "I'll leave the jargon; she can skip it" | If she has to skip it, it should not have been written. |
 | "Staff said polish it for the board" | The boardline PR sold trust-erosion with an em dash. Facts in two short sentences. |
 | "A VP will read it, so it should sound weighty" | Measured: that framing produced 4 em dashes and a 46-word sentence, 2 of 2. Weight comes from the number, not the clause. |
@@ -89,7 +89,7 @@ If a leak already landed, rewrite the file before doing anything else.
 
 Session notes still on screen:
 
-`Using build-inline` · `REQUIRED SUB-SKILL: use test-first` · `Pass: loop` ·
+`Using build (inline mode)` · `REQUIRED SUB-SKILL: use test-first` · `Pass: loop` ·
 `Satisfies: BILL-1.4` · `Core hub: rounding lives in report.js`
 
 Maya: "I'm back. What happened?"

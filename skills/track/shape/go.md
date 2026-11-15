@@ -43,7 +43,7 @@ ran. Its demo was 15 seconds of stitched screenshots. Its ticket read `shaping` 
 
     ```sh
     python3 -I <this skill>/scripts/skill_receipt.py --cwd WT --name <slug>-build \
-      --require go,build-in-waves,inspect-change,validate-feature,land-branch --min-subagents 2
+      --require go,build (wave mode),inspect-change,validate-feature,land-branch --min-subagents 2
     ```
 
     Add `write-dogfood,run-dogfood` to `--require` when `git diff --name-only <base>...HEAD` lists an

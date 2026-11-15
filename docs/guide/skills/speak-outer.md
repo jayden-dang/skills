@@ -37,7 +37,7 @@ The reply to you is in the language you wrote in. Anything written into the repo
 A softer prompt ("put status in STATUS.md, I have to read it out loud")
 already produced clean prose with no skill. The baseline that failed was
 Maya saying only "I'm back. What happened?" with process notes still on
-screen: grok-4.6 wrote `Core hub`, `build-inline`, and "prove the claim"
+screen: grok-4.6 wrote `Core hub`, `build` (inline mode), and "prove the claim"
 into the manager reply. The skill is a sweep list plus an iron law,
 because a "be clear" reminder is a no-op and the leak is specific tokens.
 

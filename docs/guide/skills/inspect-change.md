@@ -9,11 +9,11 @@
 | **Reads** | the diff `git diff <base>...HEAD`, commit list, `docs/specs/INDEX.md`, a feature's `requirements.md`, CLAUDE.md, lint/formatter configs, CONTRIBUTING docs, `CONTEXT.md`, `docs/agents/project.md`, `standards-baseline.md` (beside the skill) |
 | **Writes** | nothing — the review is read-only; it produces a report, not commits |
 | **Calls** | map-features reverse runner **read-only** on the pinned range (step 1b); **names** [`/map-features`](map-features.md) when pending OBS need dispose; two READ-ONLY subagents (Standards, Spec) dispatched in parallel; [`load-subgraph`](load-subgraph.md) for the duplication / neighbor check; [`inspect-change`](inspect-change.md) before the Spec walk |
-| **Called by** | [`build-in-waves`](build-in-waves.md) (final whole-branch review), or the user asking to review work since some ref |
+| **Called by** | [`build`](build.md) (wave mode) (final whole-branch review), or the user asking to review work since some ref |
 
 ## When it fires
 
-When a branch, PR, diff, or set of changes needs review before merging. It fires at the end of [`build-in-waves`](build-in-waves.md) when the plan reaches its final whole-branch review, or whenever the user asks to review the work done since some ref.
+When a branch, PR, diff, or set of changes needs review before merging. It fires at the end of [`build`](build.md) (wave mode) when the plan reaches its final whole-branch review, or whenever the user asks to review the work done since some ref.
 
 The organizing idea is that a diff is judged on **two independent axes**, each run by its own subagent:
 

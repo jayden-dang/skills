@@ -1,8 +1,8 @@
 # Tasks: <Feature Name>
 
 > **For agentic workers:** after plan approval, pick one execute skill —
-> `build-in-waves` (continuous dependency-aware scheduler), `build-by-story` (human-gated story review
-> units), or `build-inline` (controller implements, no implementer subagents).
+> `build` (wave mode) (continuous dependency-aware scheduler), `build` (story mode) (human-gated story review
+> units), or `build` (inline mode) (controller implements, no implementer subagents).
 > The chosen skill writes `Execution-mode:`. Steps use checkbox (`- [ ]`) syntax
 > for tracking.
 
@@ -46,7 +46,7 @@ task. A file not listed here should not be touched.>
 
 **Depends-on:** <earlier tasks that must land first, e.g. `Task 1`; or `none`.
 Omit the line for strict serial order. Tasks sharing no files or interfaces
-declare no edge — the continuous `build-in-waves` scheduler may run those
+declare no edge — the continuous `build` (wave mode) scheduler may run those
 together when worktree isolation is safe.>
 
 - [ ] **Step 1: Write the failing test**

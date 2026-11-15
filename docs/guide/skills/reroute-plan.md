@@ -8,13 +8,13 @@
 | **Invocation** | model-invocable (the agent calls it on its own); also user-invocable |
 | **Reads** | `.skills/progress.md` and `.skills/corrections.md` (the evidence ledger); the spec triad it may route into |
 | **Writes** | nothing durable — an ephemeral diagnosis/change-proposal that lives only in the conversation, plus a new line in the git-ignored `.skills/corrections.md` ledger |
-| **Calls** | [`specify-behavior`](specify-behavior.md), [`design-solution`](design-solution.md), [`plan-tasks`](plan-tasks.md), [`frame-change`](frame-change.md) (vision-level only, with user agreement), [`realign-spec`](realign-spec.md) (reconcile after re-entry), [`define-domain`](define-domain.md) (ADR when the change is architecturally weighty), [`build-in-waves`](build-in-waves.md) / [`test-first`](test-first.md) (task-local re-entry and resume) |
-| **Called by** | [`build-in-waves`](build-in-waves.md) when the plan itself is wrong or a circuit breaker's root cause sits above the current task; or the user directly the moment something feels off |
+| **Calls** | [`specify-behavior`](specify-behavior.md), [`design-solution`](design-solution.md), [`plan-tasks`](plan-tasks.md), [`frame-change`](frame-change.md) (vision-level only, with user agreement), [`realign-spec`](realign-spec.md) (reconcile after re-entry), [`define-domain`](define-domain.md) (ADR when the change is architecturally weighty), [`build`](build.md) (wave mode) / [`test-first`](test-first.md) (task-local re-entry and resume) |
+| **Called by** | [`build`](build.md) (wave mode) when the plan itself is wrong or a circuit breaker's root cause sits above the current task; or the user directly the moment something feels off |
 
 ## When it fires
 
 A mid-execution discovery invalidates an already-approved plan — "the plan is wrong," scope
-changed mid-flight, or a divergence surfaces during [`build-in-waves`](build-in-waves.md) or
+changed mid-flight, or a divergence surfaces during [`build`](build.md) (wave mode) or
 [`test-first`](test-first.md) that the current task can't absorb. It is a **thin router**: it decides which
 artifact is now false and how far back to rewind, then delegates — it never rewrites a
 requirement, a design, a plan, or audit-trace metadata itself.
@@ -40,7 +40,7 @@ invalidated, with evidence:
 
 | Level | The discovery falsified… | Re-entry |
 |---|---|---|
-| **Task-local** | only the current task's approach; the spec still holds | back to `build-in-waves`/`test-first` |
+| **Task-local** | only the current task's approach; the spec still holds | back to `build` (wave mode)/`test-first` |
 | **Plan** | task breakdown / sequencing / coverage; design holds | `plan-tasks` |
 | **Design** | an architecture/design decision; requirements hold | `design-solution` → `plan-tasks` |
 | **Requirements** | what was promised — a criterion is wrong or missing | `specify-behavior` → design → plan |
@@ -59,7 +59,7 @@ the conversation for the go/no-go and is never written as a standalone artifact 
 
 On proposal approval, route to the matching re-entry, invoking it as a REQUIRED SUB-SKILL
 directly — never merely suggesting the user run it — and letting that skill run its own
-approval gate: Task-local returns to `build-in-waves`/`test-first`; Plan uses
+approval gate: Task-local returns to `build` (wave mode)/`test-first`; Plan uses
 [`plan-tasks`](plan-tasks.md); Design uses [`design-solution`](design-solution.md) (which flows
 forward into `plan-tasks`); Requirements uses
 [`specify-behavior`](specify-behavior.md) (which flows forward into design and plan);
@@ -71,13 +71,13 @@ After the re-entry skill's own gate passes: reconcile via
 [`realign-spec`](realign-spec.md) when already-approved artifacts or trace links changed; record an
 ADR via [`define-domain`](define-domain.md) when the approved change carries an
 architectural consequence (Design-level rewinds usually qualify; Task-local and Plan-level
-never do); then resume `build-in-waves` automatically off its own ledger — re-baselining
+never do); then resume `build` (wave mode) automatically off its own ledger — re-baselining
 `.skills/progress.md` first if `tasks.md` was rewritten, so execution resumes after the last
 still-valid completed task.
 
 **Done when:** the matching sub-skill has been invoked directly and its own gate is running;
 reconciliation has run if artifacts changed; an ADR exists only if warranted and approved; and
-`build-in-waves` is resuming against a ledger that matches the (possibly rewritten) `tasks.md`.
+`build` (wave mode) is resuming against a ledger that matches the (possibly rewritten) `tasks.md`.
 
 ## Idempotency — the evidence ledger
 
@@ -110,7 +110,7 @@ That block is where the approval it skipped happens. In twelve baseline runs of 
 - **[`realign-spec`](realign-spec.md) is an exit, not a decision-maker.** It is the mechanical
   reconciler that runs *after* the rewind decision; reroute-plan makes the call about which
   artifact is false, and realign-spec does not make the rewind call.
-- The pre-flight plan review inside [`build-in-waves`](build-in-waves.md) (its pre-dispatch
+- The pre-flight plan review inside [`build`](build.md) (wave mode) (its pre-dispatch
   consistency scan) is pre-execution, not a mid-flight discovery — it is not this skill's
   trigger.
 
@@ -136,7 +136,7 @@ decision, which flows forward into `plan-tasks` to re-sequence the remaining tas
 already-approved design artifact changed, REQUIRED SUB-SKILL: use `realign-spec` to realign
 `Status:` and the trace. The design change is architecturally weighty, so REQUIRED SUB-SKILL:
 use `define-domain` to record an ADR. `.skills/progress.md` is re-baselined to drop the
-tasks the rewrite superseded, and `build-in-waves` resumes automatically against the corrected
+tasks the rewrite superseded, and `build` (wave mode) resumes automatically against the corrected
 plan.
 
 ## Why it is written the way it is
@@ -149,8 +149,8 @@ never earned — so the classification must cite evidence for the level it picks
 The **two hard stops** (diagnose go/no-go, then change-proposal approval) are separate because
 agreeing something is wrong is not the same as approving a specific re-entry — collapsing them
 would let a rewind happen without the user ever seeing the proposed blast radius. The
-**evidence ledger** exists to break the `build-in-waves → reroute-plan → write-* → realign-spec →
-build-in-waves` loop before it spins on the same fact twice.
+**evidence ledger** exists to break the `build (wave mode) → reroute-plan → write-* → realign-spec →
+build (wave mode)` loop before it spins on the same fact twice.
 
 ## See also
 
@@ -158,5 +158,5 @@ build-in-waves` loop before it spins on the same fact twice.
   then invalidated"
 - [`realign-spec`](realign-spec.md) — the mechanical reconciler this skill delegates to after a
   re-entry changes approved artifacts
-- [`build-in-waves`](build-in-waves.md) — the caller this skill hands control back to once the
+- [`build`](build.md) (wave mode) — the caller this skill hands control back to once the
   rewind is resolved

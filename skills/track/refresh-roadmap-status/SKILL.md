@@ -150,7 +150,7 @@ First match wins, top to bottom. Ties break on **milestone table order**, then l
 | 3 | a `Committed` milestone has a bound member whose feature `Status:` is `Draft` | `specify-behavior` for that feature |
 | 4 | …`Approved`, and the spec folder has no `design.md` | `design-solution` |
 | 5 | …`Approved`, `design.md` exists, no `tasks.md` | `plan-tasks` |
-| 6 | …`Approved`, `tasks.md` exists | `build-in-waves` |
+| 6 | …`Approved`, `tasks.md` exists | `build` (wave mode) |
 | 7 | …`Implemented` | name `/cut-release` for the user to run |
 | 8 | a `Committed` milestone whose members are all bound and `Shipped` | name `/assess-milestone` for that `MILE-N` |
 | 9 | no `Committed` milestone, a `Planned` one exists | `plan-milestones` — commit the next milestone |

@@ -9,7 +9,7 @@
 | **Reads** | `docs/architecture/` (the spine); a feature `design.md` or a diff |
 | **Writes** | nothing — it returns verdicts |
 | **Calls** | nobody |
-| **Called by** | [`inspect-change`](inspect-change.md), [`build-in-waves`](build-in-waves.md) (task review), [`define-project`](define-project.md) (validate mode) |
+| **Called by** | [`inspect-change`](inspect-change.md), [`build`](build.md) (wave mode) (task review), [`define-project`](define-project.md) (validate mode) |
 
 ## When it fires
 

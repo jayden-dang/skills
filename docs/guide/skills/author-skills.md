@@ -5,7 +5,7 @@
 |  |  |
 |---|---|
 | **Bucket** | meta |
-| **Invocation** | user-invoked — run as `/author-skills` (the frontmatter sets `disable-model-invocation: true`) |
+| **Invocation** | model-invoked when its description matches, or `/author-skills` |
 | **Reads** | the skill being authored or edited; its two sibling reference files `pressure-testing.md` and `influence-principles.md` |
 | **Writes** | `SKILL.md` bodies, frontmatter, descriptions, and reference files |
 | **Calls** | nothing — it is a technique skill, not a hand-off point |

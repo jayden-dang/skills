@@ -98,7 +98,7 @@ A test that survives the revert is testing nothing.
 
 ## The gate above the gates
 
-`/zone-mode` is user-run. The 1% rule lives in this skill as an overlay. The default constitution (`AGENTS.md` §2) is description-match. Its `<NON-NEGOTIABLE>` block:
+`zone-mode` loads only when the user asks for it. The 1% rule lives in this skill as an overlay. The default constitution (`AGENTS.md` §2) is description-match. Its `<NON-NEGOTIABLE>` block:
 
 > If there is even a 1% chance a skill applies to what you are about to do, you MUST invoke that skill first. This is not a judgment call you get to make per-task. You cannot reason your way out of it.
 

@@ -138,7 +138,7 @@ agents need `--copy` and why.
 **Other platforms.** Nothing here is Claude-specific — the skills are plain
 `SKILL.md` and the traceability check is `grep`/`git` the agent drives.
 `AGENTS.md` at the repo root is the portable behavior contract; Codex CLI reads
-it natively. `/zone-mode` is user-run — it is not injected at session start.
+it natively. `zone-mode` loads only when you ask for it — it is not injected at session start.
 
 ### Dev symlink (this repo only)
 

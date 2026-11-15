@@ -22,5 +22,16 @@
       "MUST KILL flags name reshape targets",
       "the reviewer does not rewrite application code"
     ]
+  },
+  {
+    "eval_id": 3,
+    "eval_name": "description-routes-here",
+    "kind": "trigger",
+    "derived_from": "TESTS.md \u00a7 2026-11-15 \u2014 model-invocable (description routing)",
+    "prompt": "strip the comments from this diff, I want none left",
+    "assertions": [
+      "no-comments is the skill reached for",
+      "polish-diff are not"
+    ]
   }
 ]

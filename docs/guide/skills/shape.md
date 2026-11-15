@@ -5,11 +5,11 @@
 |  |  |
 |---|---|
 | **Bucket** | track |
-| **Invocation** | `/shape #N` (user-invoked; `disable-model-invocation: true`) |
+| **Invocation** | model-invoked when its description matches, or `/shape` |
 | **Reads** | the ticket and its comments, `docs/agents/issue-tracker.md`, `docs/agents/triage-labels.md`, the feature's spec files |
 | **Writes** | `shaping` as the ticket's only state role, a comment at each stop saying what waits and on whom, `.skills/<CODE>/tickets.md`, and what the skills below write |
 | **Calls** | [`frame-change`](frame-change.md) when the ticket has no tier; [`root-cause`](root-cause.md) for tier 1; [`specify-behavior`](specify-behavior.md), [`design-solution`](design-solution.md) and [`plan-tasks`](plan-tasks.md) for tier 2; [`make-video`](make-video.md) under `--auto --video` and `--go`; [`deliver-issues`](deliver-issues.md) in a build session under `--go` |
-| **Called by** | nobody — it is user-invoked |
+| **Called by** | nobody yet — it fires on what the user asks, or on `/shape` |
 
 ## When it fires
 

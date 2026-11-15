@@ -9,7 +9,7 @@
 | **Reads** | the target directory (`ls -A`, `git rev-parse`, `git ls-files`, manifest presence), the parent repo's shared config in subpackage mode |
 | **Writes** | git repo, root manifest, source skeleton, test harness with one passing example test, formatter/linter config, pre-commit hook, CI stub, README, and docs seeds |
 | **Calls** | [`clarify-decisions`](clarify-decisions.md) (Step 1, required), [`prove-claim`](prove-claim.md) (Step 3, required) |
-| **Called by** | nothing — it is user-invoked; it hands off to [`configure-repo`](configure-repo.md) at the end |
+| **Called by** | nothing yet — it fires on what the user asks; it hands off to [`configure-repo`](configure-repo.md) at the end |
 
 ## When it fires
 

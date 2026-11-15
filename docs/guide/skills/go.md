@@ -5,11 +5,11 @@
 |  |  |
 |---|---|
 | **Bucket** | execution |
-| **Invocation** | `/go [#N…]` (user-invoked; `disable-model-invocation: true`) |
+| **Invocation** | model-invoked when its description matches, or `/go` |
 | **Reads** | what [`deliver-issues`](deliver-issues.md) reads |
 | **Writes** | what `deliver-issues` writes: one branch and one pull request per ticket, and the state changes on each ticket |
 | **Calls** | [`deliver-issues`](deliver-issues.md) |
-| **Called by** | nobody — it is user-invoked |
+| **Called by** | nobody yet — it fires on what the user asks, or on `/go` |
 
 ## When it fires
 

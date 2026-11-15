@@ -121,7 +121,7 @@ listed, then `/plugin install jdk@jayden-dang-skills`.
 
 ### The agent answers without invoking any skill
 
-Default invocation is description-match (`AGENTS.md` §2). `/zone-mode` is user-run and is not injected at session start. Run `/zone-mode` when you want the 1% overlay. Model-invocable skills still fire from their descriptions.
+Default invocation is description-match (`AGENTS.md` §2). `zone-mode` loads only when you ask for it and is not injected at session start. Ask for zone mode, or run `/zone-mode`, when you want the 1% overlay. Model-invocable skills still fire from their descriptions.
 
 ### A specific skill never triggers
 
@@ -137,11 +137,10 @@ The opposite failure, and a subtler one. A description that summarizes the *work
 
 Rewrite the description as **trigger + outcome noun, never the workflow**.
 
-### The agent says it will invoke `/triage` and then does nothing
+### A skill that should have started on its own did not
 
-`triage` carries `disable-model-invocation: true`. The agent *cannot* invoke it. Some skill body is directing a hand-off to a user-invoked target — that is a real bug, not a style nit. A hand-off reaches a user-invoked skill only by *naming it for the user to run*.
+Every skill is model-invocable, so the usual cause is the listing budget: the harness lists skill descriptions inside 1% of the context window, and past that it keeps the names and drops the descriptions of the least recently used skills. A skill listed by name alone is rarely reached by what you say. Check `/context` (Skills row) or `/doctor`, then raise `skillListingBudgetFraction` in the harness settings, or type the command.
 
-The user-invoked set includes (non-exhaustive): `/author-skills`, `/configure-repo`, `/bootstrap-repo`, `/define-project`, `/assess-pivot-impact`, `/triage`, `/scan-architecture`, `/map-features`, `/interpret-session`, `/write-handoff`, `/publish-issues`, `/cut-release`, `/refresh-roadmap-status`, `/assess-milestone`. Full list: [`AGENTS.md` §3](../../../AGENTS.md#3-skill-types--invocation-rules).
 
 ---
 

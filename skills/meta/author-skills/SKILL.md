@@ -1,10 +1,7 @@
 ---
 name: author-skills
-version: 1.3.1
-description: Use when creating, authoring, or editing a skill — its SKILL.md,
-  frontmatter, or description — reviewing a skill someone else wrote, deciding
-  whether a skill is ready to ship, or diagnosing why a skill won't trigger.
-disable-model-invocation: true
+version: 1.4.0
+description: Use when creating, authoring, or editing a skill — its SKILL.md, frontmatter, or description — reviewing a skill someone else wrote, deciding whether a skill is ready to ship, or diagnosing why a skill won't trigger. Produces skill text with a failing baseline run recorded before it and a passing run after.
 ---
 
 # Author Skills

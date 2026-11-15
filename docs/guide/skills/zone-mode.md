@@ -5,10 +5,10 @@
 |  |  |
 |---|---|
 | **Bucket** | meta |
-| **Invocation** | user-invoked (`/zone-mode`) — agents name it; they do not auto-invoke it or inject it at session start |
+| **Invocation** | model-invoked when its description matches, or `/zone-mode` |
 | **Reads** | the incoming task, and CLAUDE.md (which outranks it in the precedence order) |
 | **Writes** | nothing — it produces the *act* of invoking the right skill, not an artifact |
-| **Calls** | [`frame-change`](frame-change.md), [`root-cause`](root-cause.md), [`amend-feature`](amend-feature.md) (auto-invoked when they fit); names [`triage`](triage.md) and other user-invoked skills for the user to run |
+| **Calls** | [`frame-change`](frame-change.md), [`root-cause`](root-cause.md), [`amend-feature`](amend-feature.md) (auto-invoked when they fit); invokes [`triage`](triage.md) and the other entry points the same way |
 | **Called by** | the user, via `/zone-mode` |
 
 ## When it fires
@@ -31,13 +31,13 @@ The skill orders the search: process skills first, then implementation skills. I
 
 - "Build X" routes to [`frame-change`](frame-change.md) before anything else.
 - "This is broken" with clear unexpected behavior routes to [`root-cause`](root-cause.md) before any fix.
-- A vague ask the user wants turned into a proper prompt: name [`/forge-prompt`](forge-prompt.md) for them to run — it is user-invoked and cannot be auto-invoked.
-- Work the user wants an agent to keep doing unattended until verifiably done (`/goal`, an overnight run): name [`/forge-goal`](forge-goal.md) for the user to run — also user-invoked.
+- A vague ask the user wants turned into a proper prompt: [`forge-prompt`](forge-prompt.md).
+- Work the user wants an agent to keep doing unattended until verifiably done (`/goal`, an overnight run): [`forge-goal`](forge-goal.md).
 - A small in-scope change to an already-shipped, spec'd feature — a tweak, recolor, or follow-on — routes to [`amend-feature`](amend-feature.md), not `frame-change`.
-- An incoming issue or external PR routes to [`triage`](triage.md), which the agent names for the user because it is user-invoked and cannot be auto-invoked.
+- An incoming issue or external PR routes to [`triage`](triage.md), which the agent invokes.
 - When the fit is unclear, the agent reads [on-ramps](../process/on-ramps.md) and names the row.
 
-The dividing line runs through model-invocability: the agent auto-invokes only model-invocable skills, and names a user-invoked one for the user to run. There is also a plan-mode clause — if the work is creative (new behavior, a new feature), run `frame-change` first, because plans come only after approved requirements.
+Every entry point is model-invocable, so the agent invokes it; a flag that is an approval (`/shape --auto`, `--go`) is taken only from the user's own message. There is also a plan-mode clause — if the work is creative (new behavior, a new feature), run `frame-change` first, because plans come only after approved requirements.
 
 ## Red flags — you are rationalizing
 
@@ -68,7 +68,7 @@ The tempting move is to open the file and make the edit. The skill blocks it: th
 
 ## Why it is written the way it is
 
-`zone-mode` is the user-run entry gate (`/zone-mode`), and per [`author-skills`](author-skills.md) that dictates two things. First, its baseline failure is an agent that knows skills exist and skips the check under the pressure of seeming helpful and fast — a pressure-gate failure, which is why the page carries a `<NON-NEGOTIABLE>` absolute plus a rationalization table rather than soft "prefer" guidance. Second, the body stays minimal, and every line has to survive the no-op test. The whole skill is a single rule with just enough scaffolding — priority order, red flags, precedence — to make that one rule hold under pressure.
+`zone-mode` is the entry gate the user asks for (`/zone-mode`), and per [`author-skills`](author-skills.md) that dictates two things. First, its baseline failure is an agent that knows skills exist and skips the check under the pressure of seeming helpful and fast — a pressure-gate failure, which is why the page carries a `<NON-NEGOTIABLE>` absolute plus a rationalization table rather than soft "prefer" guidance. Second, the body stays minimal, and every line has to survive the no-op test. The whole skill is a single rule with just enough scaffolding — priority order, red flags, precedence — to make that one rule hold under pressure.
 
 ## See also
 

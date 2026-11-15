@@ -5,11 +5,11 @@
 |  |  |
 |---|---|
 | **Bucket** | ship |
-| **Invocation** | user-invoked only (`disable-model-invocation: true`) — run it as `/cut-release` |
+| **Invocation** | model-invoked when its description matches, or `/cut-release` |
 | **Reads** | `docs/agents/project.md` (verify commands, release steps, smoke command), `docs/specs/` (requirement text), git tags and log |
 | **Writes** | version files, `CHANGELOG.md`, the cut-release commit, the git tag, draft release notes |
 | **Calls** | [`audit-trace`](audit-trace.md) (prove-claim gate); [`record-verdict`](record-verdict.md) (before the tag). Does **not** call [`realign-spec`](realign-spec.md) |
-| **Called by** | no skill — it is user-invoked and may never be auto-invoked |
+| **Called by** | no skill — it starts only when the user asks for a release |
 
 ## When it fires
 
@@ -17,9 +17,9 @@ Only when the user runs `/cut-release` to cut a release for work already merged 
 
 The whole skill is one strict sequence of gates. It is not a menu of independent actions the agent picks from; it is a pipeline where each gate proves something before the next may run, and any failure stops the pipeline dead.
 
-## Why it is user-invoked
+## Why it starts only on your ask
 
-Alone among the ship-bucket skills, `cut-release` carries `disable-model-invocation: true`. That flag is load-bearing, not decorative: it means no skill body may auto-invoke it, and the agent may not reach for it on its own. A hand-off arrives here only by naming `/cut-release` for the user to run — the same way [`write-handoff`](write-handoff.md) is reached — never through a `REQUIRED SUB-SKILL` directive, which is reserved for model-invocable targets. If another skill's body tried to invoke `cut-release`, that would be a dead-end hand-off and a real bug. The practical effect is that a cut-release only ever happens because a human asked for one.
+`cut-release` no longer carries `disable-model-invocation`, but its description fires only when the user asks to cut, tag or publish a release, and no skill names it as a `REQUIRED SUB-SKILL`: other skills name `/cut-release` and leave it to you. Inside the run, the version and the tag each wait for your approval. The practical effect is unchanged: a release only ever happens because a human asked for one and approved each irreversible step.
 
 ## The stop rule
 
@@ -102,7 +102,7 @@ Had gate e's build failed instead, the stop rule would apply: report the failing
 
 ## Why it is written the way it is
 
-`cut-release` is user-invoked by design. Cutting a version is irreversible in practice — a pushed tag and published notes are public facts — so the set forbids any skill from auto-invoking it and requires the user to type `/cut-release`. The nine gates are ordered so that no artifact of the cut-release exists until the thing it describes is proven: the changelog is assembled before the version is chosen, the build runs before the tag, the smoke check runs against the artifact rather than the source, and the tag is pushed only on explicit approval.
+`cut-release` starts only on the user's ask by design. Cutting a version is irreversible in practice — a pushed tag and published notes are public facts — so no skill hands off to it and each irreversible step waits for approval. The nine gates are ordered so that no artifact of the cut-release exists until the thing it describes is proven: the changelog is assembled before the version is chosen, the build runs before the tag, the smoke check runs against the artifact rather than the source, and the tag is pushed only on explicit approval.
 
 The requirement-grouped changelog is the direct dividend of the trace spine that [`test-first`](test-first.md) and the [`audit-trace`](audit-trace.md) check maintain across the whole methodology. Because every commit carries the ID of the requirement it implements or guards, and every ID resolves to requirement text in `docs/specs/`, the release notes can be assembled at the level of shipped behavior for free — no one has to hand-write them from commit prose. Gate a's insistence that the audit-trace check be clean is what keeps that dividend honest: a cut-release cannot ship an implemented requirement that has no covering test.
 

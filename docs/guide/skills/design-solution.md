@@ -44,7 +44,7 @@ Vocabulary matches [`scan-architecture`](scan-architecture.md): **module, interf
 
 For the genuinely hard parts, the skill designs it twice. It dispatches two or three parallel subagents with **divergent constraints** — minimize the interface, maximize flexibility, optimize the common caller — compares on interface depth and seam placement, and commits to one with a stated reason. A strong recommendation, not a menu.
 
-`scan-architecture` still owns **brownfield debt** across an existing codebase (user-invoked, after friction accumulates). `design-solution` owns **feature-local structure** before code — so a greenfield or feature design does not wait for a later debt scan to ask whether modules are deep.
+`scan-architecture` still owns **brownfield debt** across an existing codebase (after friction accumulates). `design-solution` owns **feature-local structure** before code — so a greenfield or feature design does not wait for a later debt scan to ask whether modules are deep.
 
 ## The seam table — the contract with `test-first`
 

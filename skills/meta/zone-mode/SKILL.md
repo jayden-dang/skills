@@ -1,8 +1,7 @@
 ---
 name: zone-mode
-version: 1.3.0
-description: Load the 1% skill-check gate and hand off to the right entry point.
-disable-model-invocation: true
+version: 1.4.0
+description: Use only when the user asks for zone mode or the strict 1% skill check. Produces the full skill-check gate loaded for the session and a hand-off to the right entry point. Never for a subagent's single task.
 ---
 
 <SUBAGENT-EXEMPT>
@@ -51,12 +50,9 @@ not happen.
 
 Once the entry point is named, how you reach it depends on the target:
 
-- **Model-invocable** (no `disable-model-invocation` in its frontmatter) — invoke
-  it and let it take over.
-- **User-invoked** (`disable-model-invocation: true`) — you cannot invoke it.
-  Name it for the user to run: "run `/triage`". Telling the agent to invoke one
-  is a dead-end hand-off, a real bug rather than a style nit, and
-  `scripts/lint-write-handoffs.py` fails it.
+- Invoke it and let it take over. Every skill in this set is model-invocable.
+- Where it carries a flag that is an approval (`/shape --auto`, `--go`), invoke it
+  without the flag unless the user's own message gave it.
 
 Do not start executing a chosen flow from inside this skill. Route, then hand
 over.

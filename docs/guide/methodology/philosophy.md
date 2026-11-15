@@ -60,9 +60,9 @@ The distinction that step-6 gate draws is worth internalizing: a **wiring failur
 
 ## 6. Small skills that compose
 
-User-invoked skills orchestrate. Model-invoked skills hold reusable discipline.
+Some skills orchestrate; others hold reusable discipline. Every one is model-invocable.
 
-The rule that falls out of this: **a user-invoked skill may invoke model-invoked skills, never another user-invoked one.** A user-invoked skill carries `disable-model-invocation: true` in its frontmatter, which means the agent *cannot* auto-invoke it. Directing the agent to invoke such a skill is a dead-end hand-off — a real bug, not a style nit. A hand-off reaches a user-invoked skill only by naming it for the user to run: "run `/triage`".
+The rule that replaces the old user-invoked class: **an agent may start any skill, and may not supply an approval, an answer or a merge that is the operator's.** `REQUIRED SUB-SKILL: use \`x\`` invokes the next skill; naming `/x` leaves it to the operator, and a skill does that when the next step is theirs to decide.
 
 Splitting a skill is allowed in exactly two cases: a genuinely distinct trigger that should fire it on its own, or hiding post-completion steps behind a real context boundary so they stop tugging the agent into rushing the current step. Anything else is granularity for its own sake, paid for in context load.
 
@@ -87,5 +87,5 @@ Context windows fill. Compaction deletes. Subagents do not inherit session histo
 
 - [Overview](overview.md) — what the system is
 - [The gates](../concepts/gates.md) — the four Iron Laws in detail
-- [The skill model](../concepts/skill-model.md) — user-invoked vs model-invoked, and how skills reach each other
+- [The skill model](../concepts/skill-model.md) — who starts a skill, who approves, and how skills reach each other
 - [`author-skills`](../skills/author-skills.md) — the doctrine these principles are written in

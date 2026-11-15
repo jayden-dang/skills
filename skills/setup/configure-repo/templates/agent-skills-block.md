@@ -4,13 +4,13 @@ This repo is configured for a spec-driven skill set.
 
 - Feature flow: `frame-change` → `specify-behavior` → `design-solution` →
   `plan-tasks` → `build-in-waves`
-- Vague ask you want turned into a prompt for a fresh session: `/forge-prompt` (user-run)
-- Work you want an agent to keep doing unattended until it is verifiably done: `/forge-goal` (user-run)
+- Vague ask you want turned into a prompt for a fresh session: `forge-prompt`
+- Work you want an agent to keep doing unattended until it is verifiably done: `forge-goal`
 - Bug on-ramp: `root-cause` (clear unexpected behavior first, then a guarded fix);
   deployed env: `debug-remote` then `root-cause`; telemetry readiness:
   `assess-observability`
-- Capture a conversation/spec/idea into tracker issues: `/publish-issues` (user-run)
-- Incoming issues and PRs: `/triage` (user-run)
+- Capture a conversation/spec/idea into tracker issues: `publish-issues`
+- Incoming issues and PRs: `triage`
 - Traceability check: the docs-only `audit-trace` skill — run by `prove-claim` and `cut-release`;
   keep it clean
 - Project docs (layer enabled): `/define-project` maintains

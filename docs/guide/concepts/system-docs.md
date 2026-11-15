@@ -28,7 +28,7 @@ Consumer adoption is **derived** (`Absent` | `Non-authoritative` | `Approved`), 
 
 ## Authoring: `/define-system-doc`
 
-User-invoked skill `define-system-doc` authors **one** entry per run. Unfinished work:
+`define-system-doc` authors **one** entry per run. Unfinished work:
 
 ```
 .skills/system-docs/<entry-key>/{state,evidence,proposal}.md

@@ -1,8 +1,7 @@
 ---
 name: go
-version: 1.1.0
-description: Builds the named tickets, or every ready one, through review to an open pull request each, and ends with one message. Run it with /go or /go #N.
-disable-model-invocation: true
+version: 1.2.0
+description: Use when the operator sends /go, with or without ticket numbers. Produces a pull request for each named ticket, or for every ready one, and one message at the end. The same delivery asked for in any other words is deliver-issues.
 ---
 
 # Go

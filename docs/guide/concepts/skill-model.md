@@ -28,19 +28,19 @@ Three loading levels, and each costs differently:
 
 That budget is why discipline skills keep their core body to roughly 500 words, why a SKILL.md body aims for 200 lines under a hard ceiling of 300 held by `scripts/lint-skill-length.py`, and why `zone-mode` is the shortest gate in the set. Length is a failure mode in itself, even when every line is live.
 
-## The two invocation kinds
+## Who starts a skill, and who approves
 
-**Model-invocable** skills have no special frontmatter. The agent invokes them on its own when the description matches the situation. These hold reusable discipline: `test-first`, `prove-claim`, `root-cause`, `clarify-decisions`, `design-solution`.
+Every skill is **model-invocable**. It loads when its description matches what the user asked, when another skill names it as `REQUIRED SUB-SKILL`, or when the user types its command (`/board`, `/shape #N`). Until 2026-11-15, thirty-two skills carried `disable-model-invocation: true` and ran only when typed; none does now.
 
-**User-invoked** skills carry `disable-model-invocation: true`. The agent *cannot* auto-invoke them; the user runs them as a slash command. These orchestrate: `/configure-repo`, `/bootstrap-repo`, `/define-project`, `/map-features`, `/triage`, `/scan-architecture`, `/write-handoff`, `/publish-issues`, `/cut-release`, `/author-skills`, and others listed in [`AGENTS.md` §3](../../../AGENTS.md#3-skill-types--invocation-rules).
+That flag used to carry two things: who may start a skill, and what the operator had approved by typing it. Only the first changed. The rule is in [`AGENTS.md` §3](../../../AGENTS.md#3-who-starts-a-skill-and-who-approves):
 
-The composition rule falls out of that:
+> An agent may start any skill. It may not supply what only the operator can: an approval, an answer, a merge.
 
-> A user-invoked skill may invoke model-invoked skills, never another user-invoked one.
+So a skill that stops for approval stops for whoever started it. `/shape`'s `--auto` and `--go` are approvals given in advance, and come only from the operator's own message or a runner they configured. Four skills start only on an explicit ask, because loading them changes the whole session, deletes text or publishes: `zone-mode`, `no-comments`, `cut-release` and `go`.
 
-And the corollary, which `author-skills` calls a real bug rather than a style nit: **no skill body may tell the agent to *invoke* a user-invoked skill.** Directing the agent to invoke a `disable-model-invocation` target is a dead-end hand-off — the invocation silently cannot happen. A hand-off reaches a user-invoked skill only by *naming it for the user to run*: "run `/triage`", "suggest the user run `/write-handoff`".
+**Two kinds of hand-off.** `REQUIRED SUB-SKILL: use \`x\`` invokes the next skill. Naming `/x` in a reply leaves it to the operator. A skill uses the first when the next step needs nothing from them and the second when the step is theirs to decide. A skill may still carry `disable-model-invocation: true`; a hand-off to one is a dead end, and `scripts/lint-write-handoffs.py` fails it.
 
-You can see the rule being obeyed in the wild. `root-cause` hands architectural findings to `scan-architecture` — but `scan-architecture` is user-invoked, so `zone-mode` says: *"name a user-invoked one for the user to run."* Meanwhile `build-in-waves` writes `REQUIRED SUB-SKILL: use \`inspect-change\`` freely, because `inspect-change` is model-invocable.
+**The cost is context.** Each model-invocable skill's description is listed in every session, inside a budget of 1% of the model's context window. Past it, the harness keeps every name and drops the descriptions of the least recently used skills, and a skill listed by name alone is rarely reached by what the user says. A clean Sonnet session holding only this set saw 68 descriptions and 18 bare names (2026-11-15). Raise the budget with `skillListingBudgetFraction` in the harness settings.
 
 | Bucket | Skills | Kind |
 |---|---|---|
@@ -71,12 +71,12 @@ engineering skills (2026-08-16):
 
 | Path | Count |
 |---|---|
-| User-invoked — reachable only when the human types the name | 24 |
+| User-invoked — reachable only when the human types the name | 24 (0 since 2026-11-15) |
 | Model-invocable with at least one `REQUIRED SUB-SKILL` caller | 32 |
 | Model-invocable with **no** caller — description-triggered entry points | 5 |
 
 The third row is the one worth reading carefully, because "no caller" looks like
-an orphan and mostly is not. `/zone-mode` is user-run. `amend-feature`,
+an orphan and mostly is not. `zone-mode` loads only on request. `amend-feature`,
 `vet-feedback`, `vet-source`, `speak-outer`, `hold-stage`, and
 `run-dogfood` are **entry points**: they fire on what the user
 says (walkthrough is only *named* by `write-dogfood`). `write-dogfood`
@@ -160,7 +160,7 @@ This is why the rationalization tables in `test-first`, `root-cause`, `prove-cla
 
 ## Activation
 
-The set ships as a Claude Code plugin. There is no SessionStart hook. Default invocation is description-match (`AGENTS.md` §2). `/zone-mode` is user-run when you want the 1% overlay loaded.
+The set ships as a Claude Code plugin. There is no SessionStart hook. Default invocation is description-match (`AGENTS.md` §2). `zone-mode` loads when you ask for the 1% overlay.
 
 ## See also
 

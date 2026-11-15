@@ -90,8 +90,8 @@ which fires every single time carries no information — an always-on signal is 
 and that catalog currency is better handled deliberately.
 
 **So: run [`/map-features`](map-features.md) yourself** when you have pulled work you did not
-write, after a batch of merges, or whenever the catalog feels behind. It is a user-invoked
-skill (`disable-model-invocation: true`) and always was — this change removes the automatic
+write, after a batch of merges, or whenever the catalog feels behind. It is a confirm-then-write
+skill and always was — this change removes the automatic
 nagging, not the capability.
 
 ## The ceremony tiers

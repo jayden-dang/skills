@@ -15,7 +15,7 @@
 
 The user is frame-changeing or being grilled in another window and wants a **companion** mind: either (1) they think in L1 while that window is English, or (2) they want an **English second opinion / debate partner** while the main session is also English (or mixed). They open `/interpret-session`, paste each response here, reason with a committed stance, and carry a reply back.
 
-It is deliberately **user-invoked**: a companion mode you switch on, not something that hijacks every "translate this" request. It does not replace `frame-change` or `clarify-decisions`, and it drives no spec or code of its own.
+It fires only when you paste what another session said about a technical choice: a companion mode, not something that hijacks every "translate this" request. It does not replace `frame-change` or `clarify-decisions`, and it drives no spec or code of its own.
 
 ## The setup, run once
 

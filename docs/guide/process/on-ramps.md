@@ -48,5 +48,4 @@ Three rules of thumb:
 
 > When two skills both seem to apply, the process skill wins. It will invoke the implementation skill itself.
 
-`zone-mode` owns **how** to hand off — invoke a model-invocable skill, name a
-user-invoked one for the user to run. This file owns **which** name to pick.
+`zone-mode` owns **how** to hand off. This file owns **which** name to pick.

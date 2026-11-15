@@ -60,7 +60,7 @@ Commits landing on `HEAD` afterwards do not stale an assessment. Validity is SHA
 ## What it will not do
 
 - **Write the roadmap.** `docs/roadmap/INDEX.md` belongs to [`plan-milestones`](plan-milestones.md). This skill hands it a verified handoff; that skill re-derives every value from the assessment file and refuses on any mismatch.
-- **Run `/refresh-roadmap-status`.** It is user-invoked. It names it.
+- **Run `refresh-roadmap-status` in its place.** It reads the same reference itself.
 - **Forecast.** Plan-accuracy counts are recorded as observed facts, with no velocity, capacity, estimate, or projected date derived from them.
 - **Hold an action-item list.** Every finding carries exactly one destination: `amend-feature`, `reroute-plan`, `plan-milestones`, `define-domain`, or `/publish-issues`.
 - **Run a team retrospective.** What went well, what went badly, who did what — not this skill. It assesses an outcome against a written intent.

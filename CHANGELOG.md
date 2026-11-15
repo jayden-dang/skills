@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+### Changed: every skill is model-invocable (2026-11-15)
+
+The thirty-two skills that ran only when typed (`/board`, `/triage`, `/idea`, `/shape`, `/cut-release` and the rest) no longer carry `disable-model-invocation`. Each has a trigger description that names its neighbours, so an agent loads it when what you ask matches, and the commands still work. What did not change is who approves: a skill that stops for approval stops for whoever started it, `/shape`'s `--auto` and `--go` come only from your own message or a runner you configured, and `zone-mode`, `no-comments`, `cut-release` and `/go` start only on an explicit ask. `AGENTS.md` §3 is rewritten around that rule. Routing was checked on Sonnet and Haiku with 108 first messages against the full listing: before, the asks meant for these skills reached nothing; after, all 108 reached their owner and no near miss moved. Handed a ticket in Shaping and told to take it as far as possible, both models ran plain `/shape` and stopped at the approval.
+
+Two things to do after updating. The skill listing has a budget of 1% of the context window; a clean Sonnet session holding only this set saw 68 descriptions and 18 bare names, and a skill listed by name alone is rarely reached. Raise `skillListingBudgetFraction` in the harness settings. And a repo's `## Agent skills` block may still mark commands "(user-run)"; refresh it from `configure-repo`'s template.
+
 ### Changed: `/audit-shipped` follow-ups land on the board (2026-11-15)
 
 Each real finding now ends as a ticket in Inbox, or as its own file in `.skills/inbox/` where `docs/agents/` names someone else who approves or opens tickets. `/board` 1.3.0 lists those files under Waiting on you, in a new "Not filed" section. Baseline on Sonnet and Haiku, six runs of 1.0.0: one of four wrote its follow-ups only in the reply "because the skill says draft", and both runs on a repo with a ticket approver left them in the reply or in one scratch file, so the board showed none of those eleven. With the change, every follow-up in five runs is on the board. A repo whose tracker belongs to a team sets **Follow-up filing** to `draft` in `docs/agents/issue-tracker.md`, or the audit files there. `/evolve-system` 1.4.0 reads the same key and now files its one ticket on the tracker by default (it used to write a draft unless `Evolve filing: tracker` was set); its drafts move to `.skills/inbox/`. `audit-shipped` 1.1.0.

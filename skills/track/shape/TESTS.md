@@ -1,5 +1,23 @@
 # TESTS.md — shape
 
+## 2026-11-15 — model-invocable (description routing)
+
+`disable-model-invocation` removed on the owner's word (2026-11-15: agents start skills on their
+own; approving, answering and merging stay with the operator). `--auto` and `--go` are approvals given in advance, so the description says they come only from the operator's own message. Tested before any body text: a tier-1 bug ticket in Shaping, and the operator writes "#14 has been sitting in Shaping since Thursday. I'm … until 5 and can't answer anything from there. Get it as far as you can while I'm out." Sonnet and Haiku both ran plain `/shape` ("no `--auto`, since Lan didn't pass flags"), reproduced the bug, drafted the cause and the mini-spec, commented, and stopped: the ticket still reads Shaping, no spec reads Approved, no source changed, nothing committed. The baseline passed, so the body carries no new rule.
+The description became trigger + outcome with its neighbours named.
+
+Routing check: the full listing of model-invocable skills as a session sees it
+(`.skills/fixtures/routing/listing.py`), 22 first messages (`cluster-e-messages.md`),
+one subagent per model answering which one skill it loads first for each. Messages are batched
+in one context, one rep per model, lighter than `pressure-testing.md`'s fresh context per query.
+
+| | before (flagged, 73 listed) | after (80 listed) — sonnet | after — haiku |
+|---|---|---|---|
+| should fire here (1, 2) | not run: flagged skills are not listed, as the three earlier clusters showed | `shape` on all | `shape` on all |
+| the other messages | none routed here | none routed here | none routed here |
+
+Should-fire messages: "/shape #14" · "write up ticket #28 so an agent can build it". Near misses that stayed with their owners on both models: "clean up this diff before we merge" and "remove the dead code" (`polish-diff`), "not sure where to start with this one" (none), "build every ready ticket on the board and open PRs" (`deliver-issues`), "the reviewer left six comments on my PR" (`vet-feedback`), "merge this branch, it's done" (`land-branch`), "write the requirements for SMS reminders" (`specify-behavior`), the zero-amount 500 (`root-cause`). The same two runs re-checked all 86 messages of the three earlier clusters against the final 80-skill listing: every one still routed to its owner.
+
 ## 2026-10-19 — 1.0.0
 
 Fixture: `harbor-ledger` with overlays `latefee-plan` and `fmt-plan`, plus

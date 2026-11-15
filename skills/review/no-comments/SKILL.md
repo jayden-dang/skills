@@ -1,8 +1,7 @@
 ---
 name: no-comments
-version: 1.0.0
-description: Delete narrating and workaround comments in a scoped diff; keep only the narrow exception list — license, public API contracts, and constraints forced by systems we cannot change.
-disable-model-invocation: true
+version: 1.1.0
+description: Use only when the user asks for an aggressive comment-deletion pass, in words like "strip the comments" or "no comments". Produces a scoped diff with narrating and workaround comments deleted, keeping license headers, public API contracts and constraints forced by systems we cannot change. Not for general cleanup of a diff (polish-diff).
 ---
 
 # No comments

@@ -1,5 +1,23 @@
 # `tend-pr` — CI and mergeability for one PR (v1.0.0)
 
+## 2026-11-15 — model-invocable (description routing)
+
+`disable-model-invocation` removed on the owner's word (2026-11-15: agents start skills on their
+own; approving, answering and merging stay with the operator). It never merges, whoever started it, so the body is unchanged. Review comments stay with `vet-feedback`.
+The description became trigger + outcome with its neighbours named.
+
+Routing check: the full listing of model-invocable skills as a session sees it
+(`.skills/fixtures/routing/listing.py`), 22 first messages (`cluster-e-messages.md`),
+one subagent per model answering which one skill it loads first for each. Messages are batched
+in one context, one rep per model, lighter than `pressure-testing.md`'s fresh context per query.
+
+| | before (flagged, 73 listed) | after (80 listed) — sonnet | after — haiku |
+|---|---|---|---|
+| should fire here (7, 8) | not run: flagged skills are not listed, as the three earlier clusters showed | `tend-pr` on all | `tend-pr` on all |
+| the other messages | none routed here | none routed here | none routed here |
+
+Should-fire messages: "PR #41 has two red checks and a stale base. get it merge-ready" · "babysit my open PR until CI is green". Near misses that stayed with their owners on both models: "clean up this diff before we merge" and "remove the dead code" (`polish-diff`), "not sure where to start with this one" (none), "build every ready ticket on the board and open PRs" (`deliver-issues`), "the reviewer left six comments on my PR" (`vet-feedback`), "merge this branch, it's done" (`land-branch`), "write the requirements for SMS reminders" (`specify-behavior`), the zero-amount 500 (`root-cause`). The same two runs re-checked all 86 messages of the three earlier clusters against the final 80-skill listing: every one still routed to its owner.
+
 **Status of the evidence: one measured capability gap and a four-scenario RED
 baseline, two of which failed.** Two evals are `behavior` and cite those
 failures; the rest are `contract` because their controls complied.

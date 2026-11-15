@@ -6,7 +6,7 @@
 
 **Produces no code.** This is the gate.
 
-## Before the chain — forging the ask (optional, user-run)
+## Before the chain — forging the ask (optional)
 
 Underspecification does not make an agent stop; it makes it act on the wrong object. When the ask does not name the exact files, objects, or IDs it means, what must not be touched, or what would settle it, the user can run [`/forge-prompt`](../skills/forge-prompt.md) first. It interviews one card at a time, in a language chosen at setup, and hands back **one paste-ready prompt block**.
 
@@ -83,7 +83,7 @@ Then return to the interview with the evidence and put the decision back to the 
 
 **Done when** no pending question is being answered by guesswork.
 
-### Companion sessions (optional, user-invoked)
+### Companion sessions (optional)
 
 Parallel windows beside the main work thread (any phase — not discovery-only):
 

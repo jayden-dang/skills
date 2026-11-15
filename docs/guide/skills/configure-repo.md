@@ -9,7 +9,7 @@
 | **Reads** | `git remote`, `CLAUDE.md` / `AGENTS.md`, existing lockfiles and CI, tracker labels, `docs/agents/` |
 | **Writes** | `docs/agents/project.md`, `docs/agents/issue-tracker.md`, `docs/agents/triage-labels.md`, `docs/agents/verify.md` (Decision M), seed spec files, the `## Agent skills` block |
 | **Calls** | the discipline of [`prove-claim`](prove-claim.md) (Step 6 gate) |
-| **Called by** | nothing — it is user-invoked; [`bootstrap-repo`](bootstrap-repo.md) redirects the user here when a directory is not greenfield |
+| **Called by** | nothing yet — it fires on what the user asks; [`bootstrap-repo`](bootstrap-repo.md) redirects the user here when a directory is not greenfield |
 
 ## When it fires
 
@@ -74,7 +74,7 @@ The `## Agent skills` block lives in exactly **one** canonical file; any second 
 
 ### 5. Offer Context7 MCP
 
-One optional recommendation — offered, acted on only with a yes: install the Context7 MCP for live library docs, and record that choice in `docs/agents/project.md`. There is no session-start hook. `/zone-mode` is user-run.
+One optional recommendation — offered, acted on only with a yes: install the Context7 MCP for live library docs, and record that choice in `docs/agents/project.md`. There is no session-start hook. `zone-mode` loads only on request.
 
 Nothing else is written into the repo — no scripts, no CI steps, no git hooks. The [`audit-trace`](audit-trace.md) check is a set of `grep`/`git` passes an agent runs directly, so there is nothing to install and nothing to wire; `prove-claim` and `cut-release` run it inline when they need it. Step 6 also bootstraps kimi-webbridge on the machine when `~/.kimi-webbridge/bin/kimi-webbridge` is missing. That install lives in the home directory, not in the repo. The browser extension itself is a store install the user finishes.
 

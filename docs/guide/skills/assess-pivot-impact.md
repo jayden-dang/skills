@@ -9,7 +9,7 @@
 | **Invocation** | model-invoked when its description matches, or `/assess-pivot-impact` |
 | **Reads** | `docs/product/vision.md`, `docs/architecture/`, `docs/specs/INDEX.md`, shipped feature requirements, the code they name |
 | **Writes** | `docs/product/pivot-ledger.md` (or `.skills/pivot-ledger.md`) only |
-| **Calls** | names `/define-project` (update) after confirmation; never invokes user-invoked skills |
+| **Calls** | [`define-project`](define-project.md) (update), after the user has confirmed the ledger |
 | **Called by** | nobody yet — it fires on what the user asks, or on `/assess-pivot-impact` |
 
 ## When it fires

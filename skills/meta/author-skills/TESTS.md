@@ -1,5 +1,23 @@
 # author-skills — recorded test evidence
 
+## 2026-11-15 — model-invocable (description routing)
+
+`disable-model-invocation` removed on the owner's word (2026-11-15: agents start skills on their
+own; approving, answering and merging stay with the operator). It now loads on any skill edit, in any repo that has it installed, and its Iron Law spends baseline runs there too. Its rules about `disable-model-invocation` stay as written: they describe a flag no skill carries today.
+The description became trigger + outcome with its neighbours named.
+
+Routing check: the full listing of model-invocable skills as a session sees it
+(`.skills/fixtures/routing/listing.py`), 22 first messages (`cluster-e-messages.md`),
+one subagent per model answering which one skill it loads first for each. Messages are batched
+in one context, one rep per model, lighter than `pressure-testing.md`'s fresh context per query.
+
+| | before (flagged, 73 listed) | after (80 listed) — sonnet | after — haiku |
+|---|---|---|---|
+| should fire here (11, 12) | not run: flagged skills are not listed, as the three earlier clusters showed | `author-skills` on all | `author-skills` on all |
+| the other messages | none routed here | none routed here | none routed here |
+
+Should-fire messages: "I need to edit the description of the root-cause skill, it never triggers" · "write a new skill for database migrations". Near misses that stayed with their owners on both models: "clean up this diff before we merge" and "remove the dead code" (`polish-diff`), "not sure where to start with this one" (none), "build every ready ticket on the board and open PRs" (`deliver-issues`), "the reviewer left six comments on my PR" (`vet-feedback`), "merge this branch, it's done" (`land-branch`), "write the requirements for SMS reminders" (`specify-behavior`), the zero-amount 500 (`root-cause`). The same two runs re-checked all 86 messages of the three earlier clusters against the final 80-skill listing: every one still routed to its owner.
+
 ## 1.2.0 — counter with the recorded consequence
 
 **Change under test.** One paragraph after the *Match the form to the failure* table,

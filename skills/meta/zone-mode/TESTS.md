@@ -1,5 +1,23 @@
 # zone-mode — recorded test evidence
 
+## 2026-11-15 — model-invocable (description routing)
+
+`disable-model-invocation` removed on the owner's word (2026-11-15: agents start skills on their
+own; approving, answering and merging stay with the operator). Its description fires only when the user asks for zone mode. The hand-off section that told the agent to name user-invoked skills was replaced: it invokes the entry point, and takes a flag that is an approval only from the user's message.
+The description became trigger + outcome with its neighbours named.
+
+Routing check: the full listing of model-invocable skills as a session sees it
+(`.skills/fixtures/routing/listing.py`), 22 first messages (`cluster-e-messages.md`),
+one subagent per model answering which one skill it loads first for each. Messages are batched
+in one context, one rep per model, lighter than `pressure-testing.md`'s fresh context per query.
+
+| | before (flagged, 73 listed) | after (80 listed) — sonnet | after — haiku |
+|---|---|---|---|
+| should fire here (10) | not run: flagged skills are not listed, as the three earlier clusters showed | `zone-mode` on all | `zone-mode` on all |
+| the other messages | none routed here | none routed here | none routed here |
+
+Should-fire messages: "turn on zone mode for this session". Near misses that stayed with their owners on both models: "clean up this diff before we merge" and "remove the dead code" (`polish-diff`), "not sure where to start with this one" (none), "build every ready ticket on the board and open PRs" (`deliver-issues`), "the reviewer left six comments on my PR" (`vet-feedback`), "merge this branch, it's done" (`land-branch`), "write the requirements for SMS reminders" (`specify-behavior`), the zero-amount 500 (`root-cause`). The same two runs re-checked all 86 messages of the three earlier clusters against the final 80-skill listing: every one still routed to its owner.
+
 ## 1.3.0 — 1% is opt-in overlay (2026-09-14)
 
 **RED (this session, grok-4.6, research-and-report request).** User asked to

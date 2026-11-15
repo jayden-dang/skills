@@ -108,7 +108,7 @@ Its completion criterion is a sentence the agent must be able to say: *which exi
 
 **[`inspect-change`](../skills/inspect-change.md), at the back of the chain.** It runs **`load-subgraph`** with the diff's changed paths (and optional terms). When a neighbor comes back, the **Spec** subagent receives its card, with a brief directing it to flag — as a *reuse-miss* finding citing the neighbor's feature code and a path or term — any place the diff reimplements behavior a neighbor already owns.
 
-**[`/map-features`](../skills/map-features.md)** (user-invoked) runs reverse-track as dispose step 0, then backfills brownfield gaps — Domain-boundary migrate, missing Feature codes, ROAD binds, OWNS via Files edits, DEPENDS_ON *candidates*, OBS promote/absorb/dismiss — with human confirm only. It does not materialize a graph.
+**[`/map-features`](../skills/map-features.md)** runs reverse-track as dispose step 0, then backfills brownfield gaps — Domain-boundary migrate, missing Feature codes, ROAD binds, OWNS via Files edits, DEPENDS_ON *candidates*, OBS promote/absorb/dismiss — with human confirm only. It does not materialize a graph.
 
 ## An advisory signal, never a gate
 

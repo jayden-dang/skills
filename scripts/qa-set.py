@@ -142,7 +142,7 @@ def claim(path, pattern, expect, label):
     got = int(m.group(1)) if m else None
     check(f"{path}: {label} = {expect}", got == expect, f"found {got}")
 claim("AGENTS.md", r"\*\*(\d+) skills across", total, "skills")
-claim("AGENTS.md", r"All (\d+) of them", user_invoked, "user-invoked")
+claim("AGENTS.md", r"\*\*(\d+)\*\* skills carry `disable-model-invocation: true`", user_invoked, "user-invoked")
 claim("docs/guide/skills/README.md", r"(?m)^(\d+) skills in eleven buckets", n_eng, "engineering")
 claim("docs/guide/START-HERE.md", r"\((\d+) engineering skills\)", n_eng, "engineering")
 claim("docs/guide/methodology/overview.md", r"\*\*~(\d+) skills\*\*", n_eng, "engineering")

@@ -24,7 +24,7 @@ Worktree cleanup happens only for merge and discard, and only for a worktree who
 
 ## `cut-release` — nine gates, no partial releases
 
-User-invoked (`/cut-release`). Distinct from `land-branch`, which only integrates a branch.
+Starts only when the user asks for a release (`/cut-release`). Distinct from `land-branch`, which only integrates a branch.
 
 > **The stop rule:** any step that fails means STOP. There are no partial releases: no tag without a passing build, no notes for artifacts that do not exist, no "we'll fix it after tagging."
 

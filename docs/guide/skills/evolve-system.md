@@ -9,7 +9,7 @@
 | **Reads** | `.skills/<CODE>/progress.md` and `close-receipt.md`, git history, the CI runs printed by `**Integration CI:**` (and `**Integration CI jobs:**`) in `docs/agents/project.md`, `.github/workflows/*`, `.skills/evolve/cycles.json`, `docs/agents/issue-tracker.md` |
 | **Writes** | `.skills/evolve/signals.json`, `.skills/evolve/cycles.json`, and one ticket: on the configured tracker, or a draft at `.skills/inbox/<key>.md` when `docs/agents/issue-tracker.md` says `**Evolve filing:** tracker` |
 | **Calls** | nothing; the improvement is built later through `/idea` → `/shape` → `/go`, or `/author-skills` |
-| **Called by** | nothing — user-invoked |
+| **Called by** | nothing yet — it fires on what the user asks, or on a runner's `/evolve-system` |
 
 ## When to run it
 

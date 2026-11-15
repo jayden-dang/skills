@@ -1,9 +1,7 @@
 ---
 name: tend-pr
-version: 1.1.0
-description: Takes one open pull request to merge-ready, or names the blocker that stops it.
-  Run it with /tend-pr.
-disable-model-invocation: true
+version: 1.2.0
+description: Use when an open pull request needs taking to merge-ready, because its checks are red or pending, it has conflicts or a stale base, or someone asks to tend or babysit it. Produces a merge-ready pull request or the named blocker, and never merges. Not for judging review comments (vet-feedback), opening or landing the branch (land-branch), or finding why a test fails (root-cause).
 ---
 
 # Tend a Pull Request

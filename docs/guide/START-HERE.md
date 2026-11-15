@@ -23,7 +23,7 @@ The short path is five commands on one board: `/idea`, `/shape #N`, `/go`, `/boa
 is the full chain they wrap.
 
 ```
-                        /zone-mode    ── user-run gate: opt-in 1% overlay + router
+                        /zone-mode    ── on request: opt-in 1% overlay + router  
                              │
         ┌────────────────────┴─────────────────────────────────────────────┐
         ▼                                                                    │

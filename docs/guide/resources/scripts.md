@@ -80,7 +80,7 @@ Two skills invoke it:
 - **[`frame-change`](../skills/frame-change.md)** — key terms + candidate paths before the interview; summary cards + coverage.
 - **[`inspect-change`](../skills/inspect-change.md)** — diff paths (+ optional terms); Spec axis reuse-miss findings.
 
-Brownfield fill-in of missing codes/binds/Files is **[`/map-features`](../skills/map-features.md)** (user-invoked, confirm-only).
+Brownfield fill-in of missing codes/binds/Files is **[`/map-features`](../skills/map-features.md)** (confirm-only).
 
 See [feature overlap](../concepts/feature-graph.md) for the concept in full.
 

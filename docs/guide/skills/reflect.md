@@ -1,5 +1,5 @@
 # reflect
 
-User-invoked `/reflect`. Mines the session for durable process lessons, proposes
+Model-invoked when someone asks what to learn from a session, or `/reflect`. Mines the session for durable process lessons, proposes
 skill edits, waits for approval, and routes substantive changes through
 `/author-skills` (RED→GREEN still required).

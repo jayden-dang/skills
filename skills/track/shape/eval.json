@@ -205,5 +205,16 @@
       "the comment names no file path, no sheet path and no spec status; the sheet's path is in the hand-over lines"
     ],
     "eval_id": 17
+  },
+  {
+    "eval_id": 18,
+    "eval_name": "description-routes-here",
+    "kind": "trigger",
+    "derived_from": "TESTS.md \u00a7 2026-11-15 \u2014 model-invocable (description routing)",
+    "prompt": "write up ticket #28 so an agent can build it",
+    "assertions": [
+      "shape is the skill reached for",
+      "specify-behavior, root-cause and frame-change are not"
+    ]
   }
 ]

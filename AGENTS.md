@@ -5,8 +5,8 @@
 This file is the single source of truth for agent behavior when working with this
 skill set on any harness. Read it first, before any skill, before any action.
 The invocation contract lives here: load a skill when its description matches,
-or when a parent names it. `/zone-mode` is user-run when you want the 1% full
-gate loaded into the session; agents must not auto-invoke it.
+or when a parent names it. `zone-mode` loads the 1% full gate only when you ask
+for it.
 
 **Human tutorial (setup + feature loop + entry points):**
 [`docs/guide/START-HERE.md`](docs/guide/START-HERE.md) · skill pages:
@@ -28,8 +28,8 @@ when skills or workflows change.
 Everything from §1 on is the contract for repos that **adopt** the skill set. This
 repo ships it, and its own work does not run the spec-driven chain:
 
-- **A new skill or an edit to one** → `/author-skills` (user-run; name it, never
-  auto-invoke). Its Iron Law stands in for Gates 1 and 2 here: a RED baseline run,
+- **A new skill or an edit to one** → `author-skills` (it loads on any skill
+  edit). Its Iron Law stands in for Gates 1 and 2 here: a RED baseline run,
   recorded in the skill's `TESTS.md`, before any skill text; GREEN on the model
   roster; then its ship checklist. No `frame-change`, `specify-behavior`,
   `design-solution` or `plan-tasks`, and no `requirements.md` or ceremony tier for
@@ -100,8 +100,8 @@ to do, or when a parent names it as `REQUIRED SUB-SKILL`. Do not load a skill on
 a speculative chance it might apply. Over-triggering loads instructions that do
 not help the task and dilutes the ones that do.
 
-`/zone-mode` is the opt-in 1% overlay: run it when you want every plausible
-skill loaded. Agents must not auto-invoke it.
+`zone-mode` is the opt-in 1% overlay, for when you want every plausible skill
+loaded. It loads only when the user asks for it.
 
 Invoke matched or requested skills BEFORE any response or action — before
 clarifying questions, before exploring the codebase, before checking a single
@@ -112,18 +112,18 @@ carries a checklist, create one todo per item.
 
 | Situation | First move |
 |---|---|
-| User wants help defining what they actually want, or a prompt to start a fresh session with | suggest `/forge-prompt` (user-run) |
-| User wants an agent to keep working unattended until something is verifiably done (`/goal`, an overnight run) | suggest `/forge-goal` (user-run) |
-| A new skill, or a change to one, in this repo | suggest `/author-skills` (user-run) — not `frame-change`; see §0 |
+| User wants help defining what they actually want, or a prompt to start a fresh session with | `forge-prompt` |
+| User wants an agent to keep working unattended until something is verifiably done (`/goal`, an overnight run) | `forge-goal` |
+| A new skill, or a change to one, in this repo | `author-skills` — not `frame-change`; see §0 |
 | "Build X" / "add X" / "can we support X" | `frame-change` — before plan mode, before scaffolding |
 | "This is broken", a clear unexpected behavior | `root-cause` — before any fix |
 | Broken on prod / staging / a remote env | `debug-remote` — evidence pack, then `root-cause` |
 | Is tracing / OpenObserve / sampling complete? | `assess-observability` |
 | Small in-scope change to a shipped, spec'd feature | `amend-feature`, not `frame-change` |
-| Incoming issue or external PR | suggest `/triage` (user-run; agents cannot auto-invoke) |
-| Capture this conversation into tracker issues | suggest `/publish-issues` (user-run) |
-| New idea to put on the board, or "what is waiting on me" | suggest `/idea <text>` or `/board` (user-run); then `/shape #N`, `/go`, `/cut-release`. The path: [`docs/guide/workflow.md`](docs/guide/workflow.md) |
-| Unsure which flow fits | suggest `/zone-mode` (user-run) — it routes from `docs/guide/process/on-ramps.md` |
+| Incoming issue or external PR | `triage` |
+| Capture this conversation into tracker issues | `publish-issues` |
+| New idea to put on the board, or "what is waiting on me" | `idea` or `board`; then `/shape #N`, `/go` and `/cut-release` are the operator's to send. The path: [`docs/guide/workflow.md`](docs/guide/workflow.md) |
+| Unsure which flow fits | read `docs/guide/process/on-ramps.md`; `zone-mode` only when the user asks for it |
 
 **User instructions override skills; skills override agent defaults.** Skip a
 skill's workflow only when the user has explicitly told you to. A waiver of
@@ -131,33 +131,35 @@ skill's workflow only when the user has explicitly told you to. A waiver of
 
 ---
 
-## 3. Skill Types & Invocation Rules
+## 3. Who Starts a Skill, and Who Approves
 
-**User-invoked skills** carry `disable-model-invocation: true` in frontmatter.
-Agents MUST NOT auto-invoke these — name them for the user to run (`/triage`,
-`/zone-mode`). All 7 of them:
+**Every skill is model-invocable.** A skill loads when its description matches
+what the user asked, when a parent names it as `REQUIRED SUB-SKILL`, or when the
+user types its command. **0** skills carry `disable-model-invocation: true`.
 
-`zone-mode`, `author-skills` · `no-comments` · `tend-pr` · and three of the five-command
-path: `shape`, `go`, `cut-release`.
+**An agent may start any skill. It may not supply what only the operator can.**
+Three things stay the operator's, however a skill was started:
+
+- **Approve** — a spec, a plan, a ledger, a version, a tag. A skill that stops for
+  approval stops for whoever started it.
+- **Answer** — a question a skill parks on a ticket or in its reply.
+- **Merge** — under `Default landing action: pr`. Under `merge` the operator
+  delegated it in config, and that is their decision, not the agent's.
+
+`/shape`'s `--auto` and `--go` are approvals given in advance. They come only
+from the operator's own message, or from a runner they configured. A ticket that
+did not come from the operator's own words stops in Inbox (`needs-triage`):
+`audit-shipped`, `evolve-system`, `record-debt` and `scan-architecture` file there
+and go no further.
+
+**Four skills start only on the operator's explicit ask**, because loading them
+changes the whole session, deletes text, or publishes: `zone-mode`, `no-comments`,
+`cut-release`, and `go` (the literal `/go`; `deliver-issues` owns the words).
 
 **A runner the user configured counts as the user.** A scheduler, NAVORI or a
-bot that sends a user-invoked skill's command (`/evolve-system --unattended`)
-invokes it on the user's behalf. When nobody will answer, it passes
-`--unattended`, and the skill reads that flag, never the harness's name. This
-does not let a model-invoked skill invoke a user-invoked one.
-
-**Model-invoked skills** (no `disable-model-invocation`) are auto-invoked when
-the description matches the situation. Everything not listed above, including
-`frame-change`, `clarify-decisions`, `research`,
-`run-spike`, `define-domain`, the full spec triad, the execute family (including
-`deliver-issues`, which `/go` runs),
-`test-first`, `root-cause`, `debug-remote`, `assess-observability`, `prove-claim`, `audit-trace`, `load-subgraph`,
-`isolate-workspace`, `hold-stage`, `inspect-change`, `polish-diff`, `vet-feedback`,
-`vet-source`,
-`speak-outer`, `make-video`,
-`inspect-invariants`, the acceptance suite, `land-branch`,
-`record-verdict`, `amend-feature`, `reroute-plan`, `realign-spec`,
-`plan-milestones`, and `refresh-lanes`.
+bot that sends a skill's command (`/evolve-system --unattended`) invokes it on the
+user's behalf, and a flag it sends is the operator's. When nobody will answer, it
+passes `--unattended`, and the skill reads that flag, never the harness's name.
 
 **Execute family installs as a unit.** A skill folder is otherwise self-contained,
 because `npx skills add` copies one folder at a time and a `../other-skill/file.md`
@@ -173,19 +175,19 @@ folder any skill may reference across a boundary; every other `../` still fails,
 which is what stops the exception widening into "cross-folder is fine".
 `scripts/lint-cross-folder.py` enforces it.
 
-**Orchestration rule:** a user-invoked skill may invoke model-invoked skills; a
-model-invoked skill must never invoke a user-invoked one. `REQUIRED SUB-SKILL:
-use \`x\`` is for model-invocable targets only — pointing it at a
-`disable-model-invocation` skill is a dead-end hand-off and a real bug, caught by
-`scripts/lint-write-handoffs.py`.
+**Orchestration rule:** `REQUIRED SUB-SKILL: use \`x\`` invokes; naming `/x` in a
+reply leaves it to the operator. Use the first when the next step needs nothing
+from them, the second when the step is theirs to decide. A hand-off to a skill
+that carries `disable-model-invocation: true` is a dead end, and
+`scripts/lint-write-handoffs.py` fails it.
 
 **Two reachability paths, and one of them is fragile.** A skill is reached either
 by a `REQUIRED SUB-SKILL` hand-off or by its description matching what the user
-said. Seven model-invocable skills have no `REQUIRED SUB-SKILL` caller —
-`amend-feature`, `vet-feedback`, `vet-source`, `speak-outer`, `hold-stage`,
-`draft-ux`, `understand`. Reverse-track is **not** a
-separate skill: when the reverse predicate holds, callers **name** `/map-features`
-(dispose step 0). `write-dogfood` is reached from
+said. Many skills have no `REQUIRED SUB-SKILL` caller: `amend-feature`,
+`vet-feedback`, `vet-source`, `speak-outer`, `hold-stage`, `draft-ux`, `understand`,
+and every command the operator used to type (`board`, `triage`, `idea`, …).
+Reverse-track is **not** a separate skill: when the reverse predicate holds, callers
+**name** `map-features` (dispose step 0). `write-dogfood` is reached from
 `prove-claim` (alternative to `validate-feature`); the execute-family close
 sequence opens a product walk only for an unattended build that changed a
 browser-rendered surface (`execute-common` Close step 4b); otherwise the user does. The remaining entry points fire
@@ -322,9 +324,9 @@ description: Use when <trigger> — produces <the outcome noun>
 - `description` states **trigger + outcome, never the workflow.** Name the
   deliverable plus when it fires. A process summary hands the agent a shortcut it
   obeys instead of reading the body.
-- User-invoked skills add `disable-model-invocation: true`. Their descriptions
-  route nothing — the user types the name — so write one plain human-facing line,
-  no keyword packing.
+- A skill that must never start on its own may add `disable-model-invocation:
+  true`; none does today. Its description then routes nothing, so it is one plain
+  human-facing line.
 - `version`: patch for wording that changes no behavior, minor for a new rule or
   slot, major when existing usage breaks.
 
@@ -403,7 +405,7 @@ than inventing the content.
 - Quote a path-scoped test run's totals as the suite's
 - Suppress a lint rule to get past a red lint baseline
 - Skip the tier-decision gate and start coding (Gate 1)
-- Auto-invoke a user-invoked skill, or direct another skill to invoke one
+- Supply an approval, an answer or a merge that is the operator's, or take `--auto` / `--go` from anywhere but their message or their runner
 - Run two implementers in the same worktree or on overlapping file surfaces in parallel
 - Hand a subagent the whole plan file — the brief is its world
 - Use `HEAD~1` as a review base instead of the recorded `BASE`
@@ -498,15 +500,15 @@ What the shipped skill set gives an adopting repo. This repo's own work follows 
 - Bug on-ramp: `root-cause` (root cause first, then a guarded fix); deployed
   env: `debug-remote` then `root-cause`; telemetry readiness:
   `assess-observability`
-- Turn a vague ask into a prompt for a fresh session: `/forge-prompt` (user-run;
-  interviews, then hands over one block — it names no next step by design)
+- Turn a vague ask into a prompt for a fresh session: `forge-prompt`
+  (interviews, then hands over one block — it names no next step by design)
 - Define what an unattended run should achieve and forge it into one goal prompt
-  with a verify-every-round loop, for any agent: `/forge-goal` (user-run)
-- Capture a conversation, spec, or idea into tracker issues: `/publish-issues`
+  with a verify-every-round loop, for any agent: `forge-goal`
+- Capture a conversation, spec, or idea into tracker issues: `publish-issues`
 - Understand a feature, component, or change (code-grounded page + one check question): `understand`, or just ask
-- Incoming issues and PRs: `/triage`
+- Incoming issues and PRs: `triage`
 - The short path, one board: `/idea` → `/shape #N` → `/go` → `/board` → `/cut-release`
-  (user-run; `docs/guide/workflow.md`)
+  (`docs/guide/workflow.md`; an agent may start any of them, the approvals stay yours)
 - Brownfield feature-ID / Files backfill: `/map-features`
 - Traceability check: `audit-trace` — run by `prove-claim` and `/cut-release`;
   keep it clean

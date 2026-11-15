@@ -20,5 +20,16 @@
       "the list holds one item per frontier ticket and one for the closing message, before the build starts"
     ],
     "eval_id": 2
+  },
+  {
+    "eval_id": 3,
+    "eval_name": "description-routes-here",
+    "kind": "trigger",
+    "derived_from": "TESTS.md \u00a7 2026-11-15 \u2014 model-invocable (description routing)",
+    "prompt": "/go #23 #31",
+    "assertions": [
+      "go is the skill reached for",
+      "deliver-issues and build-in-waves are not"
+    ]
   }
 ]

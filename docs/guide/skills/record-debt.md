@@ -78,7 +78,7 @@ Closing an entry needs the same proof any other completion claim does — [`prov
 
 ## The gap worth knowing about
 
-Nothing can *invoke* this skill, and nothing ever will — it is user-invoked, and directing an agent to invoke a `disable-model-invocation` target is a dead-end hand-off. So the connection had to be the other legal one: a skill **names it for the user to run**, the same way `root-cause` names `/scan-architecture`.
+When this was written the skill was user-invoked, so the connection was a skill **naming it for the user to run**. It is model-invocable since 1.4.0, and the review skills still name it at the end of their report rather than invoking it.
 
 Two skills now do, at the exact moment a bankable finding is created:
 

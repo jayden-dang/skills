@@ -1,10 +1,7 @@
 ---
 name: cut-release
-version: 1.3.0
-description: Cuts a release for work already merged to the release branch — version bump, tag,
-  changelog, release notes, and Implemented specs in range marked Shipped.
-  Run it with /cut-release.
-disable-model-invocation: true
+version: 1.4.0
+description: Use when the user asks to cut, tag or publish a release of work already merged to the release branch. Produces the version bump, tag, changelog, release notes and the Implemented specs in range marked Shipped, each irreversible step after the user's approval. Not for landing a branch (land-branch) or judging a milestone (assess-milestone).
 ---
 
 # Cut Release

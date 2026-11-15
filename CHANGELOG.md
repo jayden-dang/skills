@@ -2,6 +2,18 @@
 
 ## Unreleased
 
+### Changed: `/audit-shipped` follow-ups land on the board (2026-11-15)
+
+Each real finding now ends as a ticket in Inbox, or as its own file in `.skills/inbox/` where `docs/agents/` names someone else who approves or opens tickets. `/board` 1.3.0 lists those files under Waiting on you, in a new "Not filed" section. Baseline on Sonnet and Haiku, six runs of 1.0.0: one of four wrote its follow-ups only in the reply "because the skill says draft", and both runs on a repo with a ticket approver left them in the reply or in one scratch file, so the board showed none of those eleven. With the change, every follow-up in five runs is on the board. A repo whose tracker belongs to a team sets **Follow-up filing** to `draft` in `docs/agents/issue-tracker.md`, or the audit files there. `/evolve-system` 1.4.0 reads the same key and now files its one ticket on the tracker by default (it used to write a draft unless `Evolve filing: tracker` was set); its drafts move to `.skills/inbox/`. `audit-shipped` 1.1.0.
+
+### Changed: `/scan-architecture` puts its top recommendation on the board (2026-11-15)
+
+A scan used to end on a question in the reply, with its report in a temp folder. It now also leaves the top recommendation as one follow-up: a ticket in Inbox, or a file in `.skills/inbox/` where Follow-up filing is `draft`. Its acceptance line is the posture figure the next scan should see move, and the other candidates are listed as out of scope. Baseline on Sonnet and Haiku: two of two scans left nothing on the board. With the change, three of three left exactly one follow-up. `scan-architecture` 1.4.0.
+
+### Changed: `/record-debt` files the ticket for a debt worth scheduling (2026-11-15)
+
+A banked finding that is big enough to schedule now gets its ticket in the same run, with the ID on the row's `Ticket` line, instead of a note telling you to run `/publish-issues`. A small one is still a row with `Ticket: none`. In one repo all 65 ledger rows read `Ticket: none`. Baseline on Sonnet and Haiku: both runs wrote the row and left the ticket to a command for later. With the change, three of three filed it (or wrote the inbox file where Follow-up filing is `draft`). `record-debt` 1.3.0.
+
 ### Changed: a new Rust worktree reuses what main already built (2026-11-13)
 
 When `isolate-workspace` sets up a Rust worktree and [cargo-hive](https://github.com/jayden-dang/cargo-hive) is installed, it registers the main checkout and runs `cargo hive seed` on the worktree before the first `cargo build`, so the registry dependencies main has already compiled are cloned instead of rebuilt. Without cargo-hive, or once the worktree has a `target/`, nothing changes. Baseline on Sonnet and Haiku: with hive and its skill installed, four of six runs built cold. Two judged a 3-second build not worth seeding, and one noticed seeding only after it had built. With the change, all six seeded first. `isolate-workspace` 1.2.0.

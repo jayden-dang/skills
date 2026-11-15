@@ -51,14 +51,14 @@ Which entry point depends on what you are standing in.
 
 | Situation | Run |
 |---|---|
-| An empty (or nearly empty) directory | `/bootstrap-repo` |
+| An empty (or nearly empty) directory | `/configure-repo` |
 | An existing or mature repo | `/configure-repo` |
 
-`bootstrap-repo` will detect that you are *not* in a greenfield directory and redirect you to `configure-repo` rather than scaffolding on top of a real project. It ends by handing off to `configure-repo` anyway, so the two compose.
+`configure-repo` will detect that you are *not* in a greenfield directory and redirect you to `configure-repo` rather than scaffolding on top of a real project. It ends by handing off to `configure-repo` anyway, so the two compose.
 
 Neither can be auto-invoked. Both carry `disable-model-invocation: true`; you run them.
 
-## What `bootstrap-repo` does
+## What `configure-repo` does
 
 Bootstraps a greenfield repo to a **verified baseline**: a skeleton where every quality tool is wired and demonstrably working, so the first feature starts from green.
 
@@ -167,5 +167,5 @@ The spine grows from the edges inward. Each new feature registers its code in `d
 
 - [When to use it](../methodology/when-to-use.md) — and when not to
 - [`configure-repo`](../skills/configure-repo.md) — the full wizard
-- [`bootstrap-repo`](../skills/bootstrap-repo.md) — the greenfield path
+- [`configure-repo`](../skills/configure-repo.md) — the greenfield path
 - [Troubleshooting](troubleshooting.md) — when something does not fire

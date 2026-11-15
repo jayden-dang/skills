@@ -117,8 +117,8 @@ Specs directory override: `<leave blank for docs/specs/>`
 
 ## Run locally (dev)
 
-How to start the app for user-facing acceptance checks (read by `validate-api`
-and `validate-ui`). Fill in once the app can be run locally; leave a row blank
+How to start the app for user-facing acceptance checks (read by `validate-feature`
+and `validate-feature`). Fill in once the app can be run locally; leave a row blank
 if that surface does not exist.
 
 | Surface | Start command | Ready signal |

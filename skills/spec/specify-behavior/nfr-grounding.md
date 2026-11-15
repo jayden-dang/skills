@@ -3,7 +3,7 @@
 Loaded from Step 2b's `WHEN` pointer, once per quality attribute that is
 material for this feature.
 
-**Load:** `skills/project/define-system-doc/consult-recipe.md` (authority,
+**Load:** `skills/project/define-project/consult-recipe.md` (authority,
 hard-constraint precedence, no-op when absent/non-authoritative, once-per-entry
 suggest, never auto-invoke).
 
@@ -36,7 +36,7 @@ already relies on stays binding; do not invent a contradicting NFR.
   (no-op). Then, in order: (1) frame-change lock that already states a target →
   use it; (2) else domain-judgment EARS **without** a fabricated greppable ID;
   (3) else `None — no standing <entry> target`. Suggest
-  `/define-system-doc <entry-key>` **at most once per entry** when the gap is
+  `/define-project <entry-key>` **at most once per entry** when the gap is
   material for *this* feature; never auto-invoke.
 - **Do not invent** TB/THR/CMP/SLO (or product metric IDs) without a bold
   definition in an Approved doc. Prefer omitting the ID (prose target from a

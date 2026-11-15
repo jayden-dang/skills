@@ -1,6 +1,6 @@
 # System docs consult during File Structure (optional)
 
-**Load:** `skills/project/define-system-doc/consult-recipe.md` (one home for authority,
+**Load:** `skills/project/define-project/consult-recipe.md` (one home for authority,
 hard-constraint precedence, no-op, once-per-entry suggest, never auto-invoke).
 
 **Applicability:** this step writes or revises File Structure / path placement.
@@ -15,7 +15,7 @@ hard-constraint precedence, no-op, once-per-entry suggest, never auto-invoke).
 
 **When Approved:** align the plan **within** hard constraints from consult-recipe;
 note which docs were consulted. **Conflict** with a hard constraint → surface, keep
-hard constraint, suggest `/define-system-doc <entry-key>`.
+hard constraint, suggest `/define-project <entry-key>`.
 
 **When absent / non-authoritative:** CONTINUE (no-op). Suggest only when the gap is
 material. Standards fallback chain stays: `docs/standards/` → legacy guidelines →

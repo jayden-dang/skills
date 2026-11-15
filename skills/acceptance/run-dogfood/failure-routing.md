@@ -55,4 +55,4 @@ a product defect. Product defects do not absorb missing-situation findings.
 
 Durable asset for a product fix: the regression test `root-cause` already requires
 under TDD — not a silent promotion of the whole guide into a new browser
-harness. `validate-ui` is the acceptance drive, not a second suite.
+harness. `validate-feature` is the acceptance drive, not a second suite.

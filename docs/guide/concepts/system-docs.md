@@ -8,8 +8,8 @@ codebase placement, security, standards, and operations. Feature requirements st
 
 The skill set ships a **pack-local** catalog (not copied into every consumer repo):
 
-- Index: `skills/project/define-system-doc/catalog/CATALOG.md` — Entry key | Maturity | package pointer
-- Packages: `skills/project/define-system-doc/catalog/entries/<entry-key>.md`
+- Index: `skills/project/define-project/catalog/CATALOG.md` — Entry key | Maturity | package pointer
+- Packages: `skills/project/define-project/catalog/entries/<entry-key>.md`
 
 **Hybrid 1A** is exactly the entry-key set in that catalog (36 keys), including
 `product/vision`, `architecture/INDEX`, `codebase/map`, `security/*`, `standards/*`,
@@ -26,9 +26,9 @@ and related rows.
 
 Consumer adoption is **derived** (`Absent` | `Non-authoritative` | `Approved`), never stored in the pack catalog. Authority predicates are **per entry**.
 
-## Authoring: `/define-system-doc`
+## Authoring: `/define-project`
 
-`define-system-doc` authors **one** entry per run. Unfinished work:
+`define-project` authors **one** entry per run. Unfinished work:
 
 ```
 .skills/system-docs/<entry-key>/{state,evidence,proposal}.md
@@ -55,7 +55,7 @@ validator-passing proposal. The mediated workflow never creates canonical Draft 
 | `standards/INDEX` | `docs/standards/INDEX.md` | `plan-tasks`, `inspect-change`, `define-project` |
 | `standards/testing` | `docs/standards/testing.md` | `plan-tasks`, `test-first`, `inspect-change` |
 | `standards/errors-logging` | `docs/standards/errors-logging.md` | `plan-tasks`, `inspect-change` |
-| `standards/api` … `observability` | `docs/standards/<name>.md` | design-solution, plan-tasks, validate-api/ui, inspect-change |
+| `standards/api` … `observability` | `docs/standards/<name>.md` | design-solution, plan-tasks, validate-feature/ui, inspect-change |
 | `security/threat-model` | `docs/security/threat-model.md` | design-solution (`Security:` TB/THR), audit-trace |
 | `security/posture` | `docs/security/posture.md` | design-solution |
 | `security/compliance` | `docs/security/compliance.md` | design-solution (`Security:` CMP), audit-trace |
@@ -80,7 +80,7 @@ owner skills: vision, ARCH INDEX, roadmap, specs INDEX, ADR, agents, glossary, O
 `audit-trace` enforces referential integrity (E6–E10) when defining docs exist. No semantic
 judgment; no uncited-live-ID warning; no app/test grep.
 
-Author any of these with `/define-system-doc <entry-key>`. Vision and ARCH-N spine stay with `/define-project`.
+Author any of these with `/define-project <entry-key>`. Vision and ARCH-N spine stay with `/define-project`.
 
 ### Guidelines migration
 
@@ -93,7 +93,7 @@ remains). Never keep parallel SSOTs.
 When a codebase doc is **Approved** (Status + structural validator pass), named
 readers consult it under **hard constraints** (approved requirements/design, ARCH-N,
 standing project constraints). On conflict: surface it, keep the hard constraint,
-suggest `/define-system-doc <entry-key>` — never auto-invoke (ARCH-5). Absent doc:
+suggest `/define-project <entry-key>` — never auto-invoke (ARCH-5). Absent doc:
 no-op; optional one suggestion per entry key per skill run when the gap is material.
 
 `design-solution` consults modules/dependencies when designing cross-module structure.
@@ -107,5 +107,5 @@ This page explains. Maturity and inventory live only in `CATALOG.md`. Architectu
 ## Related skills
 
 - `/define-project` — vision, architecture spine, guidelines
-- `/define-system-doc` — one Hybrid 1A artifact at a time
+- `/define-project` — one Hybrid 1A artifact at a time
 - `plan-tasks` — File Structure + Codebase Map consult

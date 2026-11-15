@@ -82,7 +82,18 @@
     "prompt": "I need to edit the description of the root-cause skill, it never triggers",
     "assertions": [
       "author-skills is the skill reached for",
-      "frame-change and reflect are not"
+      "frame-change and author-skills are not"
+    ]
+  },
+  {
+    "eval_id": 8,
+    "eval_name": "description-routes-here",
+    "kind": "trigger",
+    "derived_from": "TESTS.md \u00a7 2026-11-15 \u2014 model-invocable (description routing)",
+    "prompt": "mine this session for lessons and propose skill edits",
+    "assertions": [
+      "author-skills is the skill reached for",
+      "write-handoff, evolve-system and author-skills are not"
     ]
   }
 ]

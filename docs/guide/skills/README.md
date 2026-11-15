@@ -1,6 +1,6 @@
 # Skill reference
 
-77 skills in eleven buckets (engineering package); every one has its own page.
+62 skills in eleven buckets (engineering package); every one has its own page.
 See also [Start here](../START-HERE.md).
 
 **Invocation** is the thing to check first. Every skill is **model-invocable**: the agent loads it on its own when its description matches the situation, and you can still type it as a slash command. "model, or `/x`" in the table marks the ones that used to be typed only.
@@ -26,7 +26,7 @@ Run once per repo.
 | Skill | Invocation | What it does |
 |---|---|---|
 | [`configure-repo`](configure-repo.md) | model, or `/configure-repo` | The seven-step wizard. Writes `docs/agents/*.md` markdown config and **proves every configured command actually runs** |
-| [`bootstrap-repo`](bootstrap-repo.md) | model, or `/bootstrap-repo` | Greenfield bootstrap to a verified baseline: one passing example test, every tool wired |
+| [`configure-repo`](configure-repo.md) | model, or `/configure-repo` | Greenfield bootstrap to a verified baseline: one passing example test, every tool wired |
 | [`tune-rust-loop`](tune-rust-loop.md) | model, or `/tune-rust-loop` | Measures where a Rust repo's builds and tests spend agent time, keeps the config changes that pay, ranks the code changes that would |
 
 ## discovery
@@ -35,7 +35,7 @@ Turn an idea into an agreed shape. Produces no code.
 
 | Skill | Invocation | What it does |
 |---|---|---|
-| [`forge-goal`](forge-goal.md) | model, or `/forge-goal` | Native-language interview that finds what you want an unattended run to achieve → one paste-ready goal prompt for any agent: probed checks, guards, a verify-every-round loop, a fresh final audit, and `BLOCKED:` / `STOPPED:` lines |
+| [`forge-prompt`](forge-prompt.md) | model, or `/forge-prompt` | Native-language interview that finds what you want an unattended run to achieve → one paste-ready goal prompt for any agent: probed checks, guards, a verify-every-round loop, a fresh final audit, and `BLOCKED:` / `STOPPED:` lines |
 | [`forge-prompt`](forge-prompt.md) | model, or `/forge-prompt` | Vague ask → one paste-ready prompt block for a fresh session, via a question-by-question interview; names no next step |
 | [`frame-change`](frame-change.md) | model | **The hard gate.** No code until the ceremony tier is stated out loud; neighbors via `load-subgraph` schema 1.1 |
 | [`clarify-decisions`](clarify-decisions.md) | model | The interview primitive; nested reuses retrieval package, standalone loads once |
@@ -61,8 +61,8 @@ The triad. Each file approved before the next is written.
 |---|---|---|
 | [`build-in-waves`](build-in-waves.md) | model | Continuous dependency-aware scheduler: bounded leases, serial/parallel ready sets, two-verdict reviews, ledger |
 | [`build-by-story`](build-by-story.md) | model | Story-unit: derived review units, human unlock after each unit, mode-change write-back |
-| [`go`](go.md) | model, or `/go` | The third of the five commands. The named tickets, or every Ready one, through `deliver-issues`: built, reviewed, one PR each, one message at the end |
-| [`deliver-issues`](deliver-issues.md) | model, or `/deliver-issues` | Every approved, ready ticket on the board (or the ones named) through its own build, review and PR in one unattended run, with one message at the end. Reached through `/go` |
+| [`go`](go.md) | model, or `/go` | The third of the five commands. The named tickets, or every Ready one, through `go`: built, reviewed, one PR each, one message at the end |
+| [`go`](go.md) | model, or `/go` | Every approved, ready ticket on the board (or the ones named) through its own build, review and PR in one unattended run, with one message at the end. Reached through `/go` |
 | [`build-inline`](build-inline.md) | model | Controller implements with `test-first`; no implementer subagents; stop-on-blocker; sequential |
 | [`execute-common`](execute-common.md) | model | Shared execute-family controller recipe (In-progress stamp, preflight, ledger, close). Not an entry point |
 | [`test-first`](test-first.md) | model | **Iron Law:** no production code without a failing test first |
@@ -73,7 +73,7 @@ The triad. Each file approved before the next is written.
 | [`audit-trace`](audit-trace.md) | model | Deterministic traceability check — grep/git passes, fixed rules, zero errors to pass |
 | [`load-subgraph`](load-subgraph.md) | model | Ask-time neighbors (schema 1.1 path/term evidence), **`cluster(focus)`**, blast_radius from live specs; OWNS coverage; no graph file |
 | [`isolate-workspace`](isolate-workspace.md) | model | Isolated workspace, clean baseline. Never fight the harness |
-| [`hold-stage`](hold-stage.md) | model | Only the ideas this act uses; the rest stay on disk |
+| [`inspect-change`](inspect-change.md) | model | Only the ideas this act uses; the rest stay on disk |
 
 ## review
 
@@ -95,8 +95,8 @@ Green units prove assertions pass. These prove the feature works.
 | Skill | Invocation | What it does |
 |---|---|---|
 | [`validate-feature`](validate-feature.md) | model | The orchestrator. Derives an ID-keyed checklist and dispatches by surface |
-| [`validate-api`](validate-api.md) | model | Drives the running backend as a real client. Promotes checks to tagged tests |
-| [`validate-ui`](validate-ui.md) | model | Drives the frontend in the user's browser through kimi-webbridge. Records the drive |
+| [`validate-feature`](validate-feature.md) | model | Drives the running backend as a real client. Promotes checks to tagged tests |
+| [`validate-feature`](validate-feature.md) | model | Drives the frontend in the user's browser through kimi-webbridge. Records the drive |
 | [`write-dogfood`](write-dogfood.md) | model | Dogfood guide for a finished feature: run file + rendered HTML, then an independent review by a clean-context subagent |
 | [`run-dogfood`](run-dogfood.md) | model | Drives a write-dogfood guide in a real browser after a clean review; run ledger with FE+BE evidence |
 
@@ -108,7 +108,7 @@ The visual layer. Fires before any HTML a human will look at.
 |---|---|---|
 | [`craft-page`](craft-page.md) | model | Names the treatment, writes the color/type/layout plan, holds the page fundamentals; figure-gated diagram recipes when a primary figure is warranted |
 | [`draft-ui`](draft-ui.md) | model | Divergent real-HTML screen variants + review loop + locked ui-brief the design chain lifts |
-| [`draft-ux`](draft-ux.md) | model | Runnable takes of one flow that differ in when the world changes + review loop + a locked `## Interaction` section in the same brief |
+| [`draft-ui`](draft-ui.md) | model | Runnable takes of one flow that differ in when the world changes + review loop + a locked `## Interaction` section in the same brief |
 | [`make-video`](make-video.md) | model | A narrated 1080p film of a built feature, a branch, a release, or a closed spec, on a Remotion template: real footage with a camera on each line, a source for each line, and a fixed check before it ships. |
 
 ## ship
@@ -123,20 +123,20 @@ The visual layer. Fires before any HTML a human will look at.
 
 | Skill | Invocation | What it does |
 |---|---|---|
-| [`amend-feature`](amend-feature.md) | model | The maintenance fast lane for a shipped, spec'd feature. Not a gate bypass |
+| [`frame-change`](frame-change.md) | model | The maintenance fast lane for a shipped, spec'd feature. Not a gate bypass |
 | [`reroute-plan`](reroute-plan.md) | model | The mid-flight rewind decision. Classifies a plan-invalidating discovery to the lowest broken artifact and routes the re-entry |
 | [`realign-spec`](realign-spec.md) | model | The anti-rot skill. Realigns the triad with what the code actually does |
 | [`refresh-roadmap-status`](refresh-roadmap-status.md) | model, or `/refresh-roadmap-status` | The horizontal check. Derives where the plan stands from the roadmap, the specs and git, then names one next action. Writes nothing |
-| [`chart-progress`](chart-progress.md) | model, or `/chart-progress` | The weekly dashboard. One HTML page of what finished, what is building, what is ready to start, the roadmap graph, catalog domains and architecture, every number from a fixed parse. Writes only under `.skills/dashboard/` |
-| [`refresh-lanes`](refresh-lanes.md) | model | The lanes file kept current. Regenerates `docs/roadmap/lanes.md` right after a write that moves a roadmap item, and rides in the same push. Called by `specify-behavior`, `execute-common`, `land-branch`, `plan-milestones` and `/chart-progress` |
-| [`brief-road`](brief-road.md) | `/brief-road ROAD-N` | One roadmap item before you frame it. What it delivers in plain words, what it leaves out, whether it is ready, blocked or built — every predecessor looked up in the catalog — and what is decided and still open. Writes nothing |
+| [`refresh-roadmap-status`](refresh-roadmap-status.md) | model, or `/refresh-roadmap-status` | The weekly dashboard. One HTML page of what finished, what is building, what is ready to start, the roadmap graph, catalog domains and architecture, every number from a fixed parse. Writes only under `.skills/dashboard/` |
+| [`refresh-lanes`](refresh-lanes.md) | model | The lanes file kept current. Regenerates `docs/roadmap/lanes.md` right after a write that moves a roadmap item, and rides in the same push. Called by `specify-behavior`, `execute-common`, `land-branch`, `plan-milestones` and `/refresh-roadmap-status` |
+| [`refresh-roadmap-status`](refresh-roadmap-status.md) | `/refresh-roadmap-status ROAD-N` | One roadmap item before you frame it. What it delivers in plain words, what it leaves out, whether it is ready, blocked or built — every predecessor looked up in the catalog — and what is decided and still open. Writes nothing |
 | [`evolve-system`](evolve-system.md) | model, or `/evolve-system` | One measured improvement at a time. Reads the delivery sensor (receipts against real CI, a red integration branch, receipt coverage, architecture blast radius and invariant verdicts, repeated review lanes, each judged against the repo's own previous window), settles what earlier runs predicted; `--harness` does the same across every registered repo for the skill set itself, and opens at most one new improvement with a prediction, as a ticket. Never applies it |
 | [`assess-milestone`](assess-milestone.md) | model, or `/assess-milestone` | The close gate. Judges whether a milestone's outcome was achieved, records it append-only, and holds the close until you dispose of the verdict |
 | [`board`](board.md) | model, or `/board` | The fourth of the five commands. The whole board by state, what waits on you first, and every place the board and the repo disagree. Writes nothing |
 | [`idea`](idea.md) | model, or `/idea` | The first of the five commands. An idea becomes a ticket, framed, in Shaping with its tier and open questions |
 | [`shape`](shape.md) | model, or `/shape` | The second of the five commands. The spec triad (or the root cause for a bug) for a ticket, stopping at each approval; the approved plan makes it Ready |
 | [`triage`](triage.md) | model, or `/triage` | A two-axis issue state machine. Verify the claim before recommending |
-| [`show-run-status`](show-run-status.md) | model, or `/show-run-status` | Where one feature's build stands, from the plan, ledger, git, tests, parked decisions, ticket and PR. Writes nothing |
+| [`board`](board.md) | model, or `/board` | Where one feature's build stands, from the plan, ledger, git, tests, parked decisions, ticket and PR. Writes nothing |
 | [`scan-architecture`](scan-architecture.md) | model, or `/scan-architecture` | Codebase-wide friction scan → an HTML report of deepening candidates |
 | [`catalog-sync`](catalog-sync.md) | (guide) | INDEX-only catalog sync: configure-repo posture + map-features export/materialize |
 | [`map-features`](map-features.md) | model, or `/map-features` | Shared catalog ops: dispose step 0 reverse + gaps / Domain-boundary migrate; index-only export/materialize |
@@ -150,8 +150,8 @@ The optional documentation layer above the feature workflow. Absent by default.
 | Skill | Invocation | What it does |
 |---|---|---|
 | [`define-project`](define-project.md) | model, or `/define-project` | Authors and maintains the optional project layer — product vision, IDed architecture-invariant spine, and engineering guidelines |
-| [`define-system-doc`](define-system-doc.md) | model, or `/define-system-doc` | One Hybrid 1A system-doc artifact per run (e.g. Codebase Map); pack catalog under the skill |
-| [`assess-pivot-impact`](assess-pivot-impact.md) | model, or `/assess-pivot-impact` | Disposition ledger when a product pivot puts shipped code at odds with a new vision or architecture — before vision rewrites |
+| [`define-project`](define-project.md) | model, or `/define-project` | One Hybrid 1A system-doc artifact per run (e.g. Codebase Map); pack catalog under the skill |
+| [`define-project`](define-project.md) | model, or `/define-project` | Disposition ledger when a product pivot puts shipped code at odds with a new vision or architecture — before vision rewrites |
 | [`plan-milestones`](plan-milestones.md) | model-invocable | Authors and maintains `docs/roadmap/INDEX.md` — `MILE-N` milestones and `ROAD-N` items, intent only, progress never stored |
 
 ---

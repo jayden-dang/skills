@@ -8,7 +8,7 @@
 | **Invocation** | model-invocable (the agent calls it on its own) |
 | **Reads** | the spec triad — `requirements.md`, `design.md`, `tasks.md`; the working ledger `.skills/<slug>-acceptance.md` |
 | **Writes** | `.skills/<slug>-acceptance.md` (a git-ignored acceptance ledger, one todo per item); committed ID-tagged tests for non-API/non-UI surfaces |
-| **Calls** | [`validate-api`](validate-api.md), [`validate-ui`](validate-ui.md), [`write-dogfood`](write-dogfood.md), [`root-cause`](root-cause.md) (through its children) |
+| **Calls** | [`validate-feature`](validate-feature.md), [`validate-feature`](validate-feature.md), [`write-dogfood`](write-dogfood.md), [`root-cause`](root-cause.md) (through its children) |
 | **Called by** | [`build-in-waves`](build-in-waves.md), [`land-branch`](land-branch.md), [`prove-claim`](prove-claim.md) |
 
 ## When it fires
@@ -47,8 +47,8 @@ The checklist splits by where each behavior lives, and most features need more t
 
 | Surface | Handler |
 |---|---|
-| HTTP/RPC API a client calls | **required sub-skill** [`validate-api`](validate-api.md) |
-| A frontend a user drives | **required sub-skill** [`validate-ui`](validate-ui.md) |
+| HTTP/RPC API a client calls | **required sub-skill** [`validate-feature`](validate-feature.md) |
+| A frontend a user drives | **required sub-skill** [`validate-feature`](validate-feature.md) |
 | Neither — a CLI, a library, a batch/cron job | drive it directly against the running system yourself, record each observed result in the ledger, and promote the passing checks into committed, ID-tagged tests |
 | Human-eyeball qualities — visuals, feel | hand off to [`write-dogfood`](write-dogfood.md) |
 
@@ -80,7 +80,7 @@ Deriving the checklist writes `.skills/note-acceptance.md`:
 - [ ] NOTE-1.2 (ui) submitting empty shows an error and leaves the typed text in the input
 ```
 
-The API rows dispatch to [`validate-api`](validate-api.md); the UI rows to [`validate-ui`](validate-ui.md). Both receive `.skills/note-acceptance.md` by path and write their observed results back. Suppose `validate-api` finds `NOTE-1.2` returns `201` with a blank title instead of `422` — a real defect the unit tests missed because they asserted the handler's return value, not the wire status. It fixes the root cause through `root-cause`, leaves a committed `@NOTE-1.2` regression test, and marks the ledger row green.
+The API rows dispatch to [`validate-feature`](validate-feature.md); the UI rows to [`validate-feature`](validate-feature.md). Both receive `.skills/note-acceptance.md` by path and write their observed results back. Suppose `validate-feature` finds `NOTE-1.2` returns `201` with a blank title instead of `422` — a real defect the unit tests missed because they asserted the handler's return value, not the wire status. It fixes the root cause through `root-cause`, leaves a committed `@NOTE-1.2` regression test, and marks the ledger row green.
 
 Closing the loop reports the ledger back with each observed result:
 
@@ -106,7 +106,7 @@ It is also why the skill is an orchestrator rather than a monolith. API validati
 ## See also
 
 - [The gates](../concepts/gates.md) — where acceptance sits relative to the prove-claim and audit-trace gates
-- [`validate-api`](validate-api.md) and [`validate-ui`](validate-ui.md) — the two automated children
+- [`validate-feature`](validate-feature.md) and [`validate-feature`](validate-feature.md) — the two automated children
 - [`write-dogfood`](write-dogfood.md) — the manual child, for judgment a test cannot make
 - [`run-dogfood`](run-dogfood.md) — run an existing guide from write-dogfood end to end in the browser
 - [`land-branch`](land-branch.md) — the skill that runs it before offering Merge or PR

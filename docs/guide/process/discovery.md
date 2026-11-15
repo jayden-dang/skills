@@ -1,6 +1,6 @@
 # Phase 1 — Discovery
 
-**Skills:** [`forge-prompt`](../skills/forge-prompt.md) · [`forge-goal`](../skills/forge-goal.md) · [`frame-change`](../skills/frame-change.md) (+ [`load-subgraph`](../skills/load-subgraph.md)) · [`clarify-decisions`](../skills/clarify-decisions.md) · [`research`](../skills/research.md) · [`run-spike`](../skills/run-spike.md) · [`define-domain`](../skills/define-domain.md) · [`/interpret-session`](../skills/interpret-session.md) · [`understand`](../skills/understand.md)
+**Skills:** [`forge-prompt`](../skills/forge-prompt.md) · [`forge-prompt`](../skills/forge-prompt.md) · [`frame-change`](../skills/frame-change.md) (+ [`load-subgraph`](../skills/load-subgraph.md)) · [`clarify-decisions`](../skills/clarify-decisions.md) · [`research`](../skills/research.md) · [`run-spike`](../skills/run-spike.md) · [`define-domain`](../skills/define-domain.md) · [`/interpret-session`](../skills/interpret-session.md) · [`understand`](../skills/understand.md)
 
 **Produces:** an agreed shape, a stated ceremony tier, an updated glossary, possibly an ADR, and — for tier ≥ 1 — an invocation of `specify-behavior`.
 
@@ -10,7 +10,7 @@
 
 Underspecification does not make an agent stop; it makes it act on the wrong object. When the ask does not name the exact files, objects, or IDs it means, what must not be touched, or what would settle it, the user can run [`/forge-prompt`](../skills/forge-prompt.md) first. It interviews one card at a time, in a language chosen at setup, and hands back **one paste-ready prompt block**.
 
-When the ask is for an **unattended run** — `/goal`, an overnight session, any agent — run [`/forge-goal`](../skills/forge-goal.md) instead. It interviews in the user's language until the want is defined, then hands back one goal prompt whose every done line is settled by printed output, with a verify-every-round loop, a fresh final audit, and `BLOCKED:` / `STOPPED:` lines.
+When the ask is for an **unattended run** — `/goal`, an overnight session, any agent — run [`forge-prompt`](../skills/forge-prompt.md) instead. It interviews in the user's language until the want is defined, then hands back one goal prompt whose every done line is settled by printed output, with a verify-every-round loop, a fresh final audit, and `BLOCKED:` / `STOPPED:` lines.
 
 That `/forge-prompt` block deliberately **names no lane and no next step** — it carries targets, boundaries, evidence, assumptions, open questions, and a done signal, and nothing about what to do with them. The session it is pasted into reads it cold and picks its own entry point. That is what keeps a forged prompt from anchoring the chain on a conclusion nobody tested.
 
@@ -128,11 +128,11 @@ If the work spans multiple independent subsystems, decompose here: name the sub-
 
 Any one missing means no ADR. The body is one to three sentences. Recording *that* and *why* is the value, not filling sections.
 
-## When it is `amend-feature` instead
+## When it is `frame-change` instead
 
-`frame-change` is for shaping something *new*. A small in-scope change to an already-shipped, spec'd feature is [`amend-feature`](../skills/amend-feature.md) — it reads the existing triad, classifies the change against it, and routes to the lightest lane, escalating back here only when the change is genuinely new scope.
+`frame-change` is for shaping something *new*. A small in-scope change to an already-shipped, spec'd feature is [`frame-change`](../skills/frame-change.md) — it reads the existing triad, classifies the change against it, and routes to the lightest lane, escalating back here only when the change is genuinely new scope.
 
-If you were handed such a change, hand it to `amend-feature`.
+If you were handed such a change, hand it to `frame-change`.
 
 ## Next
 

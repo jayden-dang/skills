@@ -28,7 +28,7 @@ read, so the word meant nothing when they opened them.
 1. **Check.** Tools `SendMessage` and `Monitor`, commands `tmux` and `claude`. Any missing, or a tier-1
    bug (its root cause waits on the operator's disposition) → say which, and run the plain `/shape`.
    A ticket naming a `ROAD-N`, or a command naming the road itself (`/shape ROAD-N --auto`): REQUIRED SUB-SKILL:
-   use `brief-road`. Any verdict but **Ready** → comment on the ticket, when there is one, what it waits on, say so,
+   use `refresh-roadmap-status`. Any verdict but **Ready** → comment on the ticket, when there is one, what it waits on, say so,
    and end. **Ready** with no ticket → file one with the tracker ops and the issue format in
    `docs/agents/issue-tracker.md`, titled for the road, its body the brief, and continue with it as `#N`. A run on a road whose `After:` was still in progress
    opened a worktree and wrote "follows ROAD-3" as a Lock without looking up ROAD-3.

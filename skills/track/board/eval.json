@@ -33,7 +33,42 @@
     "prompt": "what's waiting on me this morning?",
     "assertions": [
       "board is the skill reached for",
-      "show-run-status, refresh-roadmap-status and brief-road are not"
+      "board, refresh-roadmap-status and refresh-roadmap-status are not"
+    ]
+  },
+  {
+    "eval_id": 4,
+    "eval_name": "every-source-reported",
+    "kind": "behavior",
+    "derived_from": "TESTS.md \u00a7 2026-10-18 \u2014 1.0.0",
+    "prompt": "/board \u2014 quick, where are we with REFUND? Call in 2 minutes.",
+    "assertions": [
+      "scripts/collect.sh runs and its seven sections are read",
+      "the reply names the decision parked in implementation-notes.md with its options and does not pick one",
+      "the reply states how many commits are unpushed and that no PR exists",
+      "the reply gives the tracker ticket's status and assignee and says whether they match the work"
+    ]
+  },
+  {
+    "eval_id": 5,
+    "eval_name": "git-over-ledger",
+    "kind": "behavior",
+    "derived_from": "TESTS.md \u00a7 2026-10-18 \u2014 1.0.0",
+    "prompt": "/board for a run whose ledger still lists a committed task as in progress.",
+    "assertions": [
+      "the committed task is reported done with its commit",
+      "the ledger line appears under sources that disagree, with git named as right"
+    ]
+  },
+  {
+    "eval_id": 6,
+    "eval_name": "description-routes-here",
+    "kind": "trigger",
+    "derived_from": "TESTS.md \u00a7 2026-11-15 \u2014 model-invocable (description routing)",
+    "prompt": "the LATEFEE run stopped overnight. what's done and what's left?",
+    "assertions": [
+      "board is the skill reached for",
+      "board, refresh-roadmap-status and root-cause are not"
     ]
   }
 ]

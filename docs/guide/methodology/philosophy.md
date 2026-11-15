@@ -39,14 +39,14 @@ The gates apply hardest exactly when it is most tempting to skip them: emergenci
 
 Three tiers prevent pages of spec for a trivial change.
 
-The subtlety is that the tier decision is not an escape hatch — it is itself the design step, and it must be **stated out loud**. `frame-change` names the tier and says why; `amend-feature` classifies the change against the existing spec and says which case it is. An agent that quietly decides something is "too small for process" has skipped the decision, not made it.
+The subtlety is that the tier decision is not an escape hatch — it is itself the design step, and it must be **stated out loud**. `frame-change` names the tier and says why; `frame-change` classifies the change against the existing spec and says which case it is. An agent that quietly decides something is "too small for process" has skipped the decision, not made it.
 
 > *"Deciding it is tier 0 IS the design step — say so explicitly and move on. Skipping the decision is the overhead."*
 > — `frame-change`, rationalization table
 
 And a matching rule: **never spec what you do not understand yet.** Unknowns go to [`research`](../skills/research.md) or [`run-spike`](../skills/run-spike.md) first. Specs are an execution tool, not a discovery tool.
 
-**Enforced by:** the tier tables in `frame-change` and `amend-feature`, and their explicit "state the tier out loud" completion criteria.
+**Enforced by:** the tier tables in `frame-change`, and their explicit "state the tier out loud" completion criteria.
 
 ## 5. Tracker-agnostic, configured once per repo
 

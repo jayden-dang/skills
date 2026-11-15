@@ -8,8 +8,8 @@ The skill set is a chain. Each link is a hand-off written into a skill body as a
       │
       ▼
 /forge-prompt (optional)    vague ask → one prompt block for a fresh session (names no lane)
-/forge-goal (optional)      interview → one goal prompt for an unattended run (checks, guards, round loop, stops)
-      │                      (skip when root-cause / frame-change / amend-feature already clear)
+/forge-prompt (optional)      interview → one goal prompt for an unattended run (checks, guards, round loop, stops)
+      │                      (skip when root-cause / frame-change already clear)         
       ▼
 frame-change                   clarify-decisions + define-domain; research/run-spike detours;
                              load-subgraph neighbors; tier decision; approach chosen
@@ -85,7 +85,7 @@ prove-claim → inspect-change → land-branch
 ## The maintenance loop
 
 ```
-amend-feature                        small in-scope change to a shipped, spec'd feature
+frame-change                        small in-scope change to a shipped, spec'd feature
                              → tier 0: test-first
                              → tier 1: mini-spec (specify-behavior) → test-first
                              → genuinely new scope: escalate to frame-change
@@ -100,10 +100,10 @@ amend-feature                        small in-scope change to a shipped, spec'd 
 
                              → nothing written to the tracker until you answer
 
-/go [#N…]                    (runs deliver-issues) the named or every ready ticket → its own build, review and PR
+/go [#N…]                    (runs go) the named or every ready ticket → its own build, review and PR
                              → one message at the end
 
-/show-run-status             one feature's run → done, in flight, waiting on you, not shipped
+/board             one feature's run → done, in flight, waiting on you, not shipped
 
 /audit-shipped               what merged this week → edge cases missed → follow-ups on the board
 
@@ -117,9 +117,9 @@ realign-spec                    whenever a spec'd feature changed outside its pl
 | Project layer *(optional, above the feature loop)* | `define-project`, `inspect-invariants` | [`define-project`](../skills/define-project.md) |
 | Discovery | `frame-change` (+ `load-subgraph`), `clarify-decisions`, `research`, `run-spike`, `define-domain`, `/interpret-session`, `understand` | [Discovery](discovery.md) |
 | Specification | `specify-behavior`, `design-solution`, `plan-tasks` | [Specification](specification.md) |
-| Execution | `isolate-workspace`, `build-in-waves`, `build-by-story`, `build-inline`, `/deliver-issues`, `test-first`, `root-cause`, `prove-claim`, `audit-trace`, `load-subgraph` | [Execution](execution.md) |
+| Execution | `isolate-workspace`, `build-in-waves`, `build-by-story`, `build-inline`, `/go`, `test-first`, `root-cause`, `prove-claim`, `audit-trace`, `load-subgraph` | [Execution](execution.md) |
 | Review & acceptance | `inspect-change` (+ `load-subgraph`), `/audit-shipped`, `polish-diff`, `vet-feedback`, `inspect-invariants`, `acceptance-*`, `write-dogfood`, `run-dogfood` | [Review and acceptance](review-and-acceptance.md) |
-| Ship & maintain | `land-branch`, `cut-release`, `realign-spec`, `amend-feature`, `/map-features`, `triage`, `show-run-status`, `scan-architecture`, `write-handoff` | [Ship and maintain](ship-and-maintain.md) |
+| Ship & maintain | `land-branch`, `cut-release`, `realign-spec`, `frame-change`, `/map-features`, `triage`, `board`, `scan-architecture`, `write-handoff` | [Ship and maintain](ship-and-maintain.md) |
 
 The **project layer** is optional and sits above the per-feature chain: on a large project, [`define-project`](../skills/define-project.md) writes a repo-level product vision and an IDed architecture-invariant spine that the discovery, spec, execution, and review phases consult when present — and ignore cleanly when absent. See [the artifact model](../concepts/artifacts.md#docsproduct-and-docsarchitecture--the-optional-project-layer).
 
@@ -142,8 +142,8 @@ The chain is not one-way. Several skills feed back into earlier phases:
 - `design-solution` and `plan-tasks` both perform **upstream sync-back**: if designing or planning reveals an approved requirement is *wrong as written* — a false premise, a mechanism named wrong — the requirement's own text is corrected and re-surfaced for approval. Never satisfy a requirement by quietly reinterpreting words you now know are false.
 - `root-cause` exits into the tier-1 mini-spec flow, which means it re-enters `specify-behavior`.
 - `scan-architecture` ends by handing its chosen candidate to `frame-change`. Architecture work earns no exemption from the spec gate.
-- `amend-feature` escalates to `frame-change` the moment a "small" change turns out to be new scope.
-- `realign-spec` is invoked from `land-branch` (Approved / In-progress + evidence) and `amend-feature` — and directly, whenever the audit-trace check comes back dirty. `cut-release` does not call it.
+- `frame-change`'s amend lane hands back to its main lane the moment a "small" change turns out to be new scope.
+- `realign-spec` is invoked from `land-branch` (Approved / In-progress + evidence) and `frame-change` — and directly, whenever the audit-trace check comes back dirty. `cut-release` does not call it.
 
 ## See also
 

@@ -18,7 +18,29 @@
     "prompt": "update the architecture invariants: modules may now share the event bus",
     "assertions": [
       "define-project is the skill reached for",
-      "define-domain, plan-milestones and assess-pivot-impact are not"
+      "define-domain, plan-milestones and define-project are not"
+    ]
+  },
+  {
+    "eval_id": 3,
+    "eval_name": "description-routes-here",
+    "kind": "trigger",
+    "derived_from": "TESTS.md \u00a7 2026-11-15 \u2014 model-invocable (description routing)",
+    "prompt": "author the codebase map system doc",
+    "assertions": [
+      "define-project is the skill reached for",
+      "define-project and understand are not"
+    ]
+  },
+  {
+    "eval_id": 4,
+    "eval_name": "description-routes-here",
+    "kind": "trigger",
+    "derived_from": "TESTS.md \u00a7 2026-11-15 \u2014 model-invocable (description routing)",
+    "prompt": "the new vision contradicts the offline-first feature we shipped. I need a disposition for each feature it touches",
+    "assertions": [
+      "define-project is the skill reached for",
+      "define-project and reroute-plan are not"
     ]
   }
 ]

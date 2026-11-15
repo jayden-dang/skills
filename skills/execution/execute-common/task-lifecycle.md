@@ -63,7 +63,7 @@ Resume or start the worker fresh per **Resume or start fresh** in
 
    Then **tick the plan**: mark every step of Task N `- [x]` in `tasks.md` — inside its
    `## ROAD-N amendment` group when the task belongs to one. The ledger is local; the tick
-   is the record other people, `land-branch` and `chart-progress` read. WHEN
+   is the record other people, `land-branch` and `refresh-roadmap-status` read. WHEN
    `git check-ignore -q <path to tasks.md>` fails (the plan is tracked), commit that file
    alone as `docs(<CODE>): tick Task N` on the feature branch, so the tick reaches the
    integration branch with the code. WHEN it succeeds (specs are kept out of git), edit the

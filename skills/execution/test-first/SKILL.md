@@ -79,10 +79,10 @@ still write domain-named tests at agreed seams.
 ### Testing standards doc (optional)
 
 **Applicability:** seams, mock boundaries, or suite commands. **Load:**
-`skills/project/define-system-doc/consult-recipe.md`. **Path:** `docs/standards/testing.md`
+`skills/project/define-project/consult-recipe.md`. **Path:** `docs/standards/testing.md`
 (pack SSOT counts as present standing rules). Apply when present **in addition to**
 this skill's Iron Law (Iron Law never weakens). No-op when absent; suggest once
-`/define-system-doc standards/testing` only if material; never auto-invoke.
+`/define-project standards/testing` only if material; never auto-invoke.
 
 ## Anti-patterns and their counters
 

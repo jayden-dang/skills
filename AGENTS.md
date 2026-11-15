@@ -1,6 +1,6 @@
 # AGENTS.md — Agent Behavior Constitution
 
-> A-to-Z agentic development skill set · **77 skills across 11 categories** · `jayden-dang/skills` · v1.0.0
+> A-to-Z agentic development skill set · **62 skills across 11 categories** · `jayden-dang/skills` · v1.0.0
 
 This file is the single source of truth for agent behavior when working with this
 skill set on any harness. Read it first, before any skill, before any action.
@@ -109,13 +109,13 @@ carries a checklist, create one todo per item.
 | Situation | First move |
 |---|---|
 | User wants help defining what they actually want, or a prompt to start a fresh session with | `forge-prompt` |
-| User wants an agent to keep working unattended until something is verifiably done (`/goal`, an overnight run) | `forge-goal` |
+| User wants an agent to keep working unattended until something is verifiably done (`/goal`, an overnight run) | `forge-prompt` |
 | A new skill, or a change to one, in this repo | `author-skills` — not `frame-change`; see §0 |
 | "Build X" / "add X" / "can we support X" | `frame-change` — before plan mode, before scaffolding |
 | "This is broken", a clear unexpected behavior | `root-cause` — before any fix |
 | Broken on prod / staging / a remote env | `debug-remote` — evidence pack, then `root-cause` |
 | Is tracing / OpenObserve / sampling complete? | `assess-observability` |
-| Small in-scope change to a shipped, spec'd feature | `amend-feature`, not `frame-change` |
+| Small in-scope change to a shipped, spec'd feature | `frame-change` (its `amend.md` lane) |
 | Incoming issue or external PR | `triage` |
 | New idea to put on the board, or "what is waiting on me" | `idea` or `board`; then `/shape #N`, `/go` and `/cut-release` are the operator's to send. The path: [`docs/guide/workflow.md`](docs/guide/workflow.md) |
 | Unsure which flow fits | read `docs/guide/process/on-ramps.md` |
@@ -147,9 +147,9 @@ did not come from the operator's own words stops in Inbox (`needs-triage`):
 `audit-shipped`, `evolve-system`, `record-debt` and `scan-architecture` file there
 and go no further.
 
-**Three skills start only on the operator's explicit ask**, because they delete text
-or publish: `no-comments`, `cut-release`, and `go` (the literal `/go`;
-`deliver-issues` owns the words).
+**Two things start only on the operator's explicit ask**: `cut-release`, because it
+publishes, and the comment-deletion pass inside `polish-diff` (`comments.md`), because
+it deletes text.
 
 **A runner the user configured counts as the user.** A scheduler, NAVORI or a
 bot that sends a skill's command (`/evolve-system --unattended`) invokes it on the
@@ -178,8 +178,8 @@ that carries `disable-model-invocation: true` is a dead end, and
 
 **Two reachability paths, and one of them is fragile.** A skill is reached either
 by a `REQUIRED SUB-SKILL` hand-off or by its description matching what the user
-said. Many skills have no `REQUIRED SUB-SKILL` caller: `amend-feature`,
-`vet-feedback`, `vet-source`, `speak-outer`, `hold-stage`, `draft-ux`, `understand`,
+said. Many skills have no `REQUIRED SUB-SKILL` caller: `frame-change`,
+`vet-feedback`, `vet-source`, `speak-outer`, `inspect-change`, `draft-ui`, `understand`,
 and every command the operator used to type (`board`, `triage`, `idea`, …).
 Reverse-track is **not** a separate skill: when the reverse predicate holds, callers
 **name** `map-features` (dispose step 0). `write-dogfood` is reached from
@@ -253,8 +253,8 @@ smallest scale the change deserves.
 | **1 — Bugfix / small** | Behavior change ≤ ~half a day | mini-spec: fix requirement + `SHALL CONTINUE TO` guard in the owning `requirements.md`, plus a regression test | `specify-behavior` → `test-first` |
 | **2 — Feature** | Multi-task work | the full triad, then the execute family | full chain |
 
-Tier is decided by `frame-change` (new work) or `amend-feature` (changes to a
-shipped, spec'd feature). Never spec what you do not understand yet — detour
+Tier is decided by `frame-change`, for new work and (through its `amend.md` lane) for
+changes to a shipped, spec'd feature. Never spec what you do not understand yet — detour
 through `research` or `run-spike` first. **The tier controls the artifacts; it
 never softens the gates.**
 
@@ -472,9 +472,9 @@ failure is on a deployed environment) → mini-spec → `test-first` → `prove-
 flow above, one roadmap item at a time. Every edit to an existing roadmap — a
 dropped item, a reorder, a commit or close — goes through `plan-milestones`,
 never a direct file edit. A pivot that collides with shipped code goes through
-`/assess-pivot-impact` first.
+`/define-project` first.
 
-**Maintenance:** `amend-feature` (small in-scope changes), `/triage` (incoming
+**Maintenance:** `frame-change` (small in-scope changes), `/triage` (incoming
 issues), `/board` (what waits on whom), `realign-spec` (spec drift), `/scan-architecture` (periodic deepening),
 `/map-features` (reverse OBS, dispose gaps, Domain-boundary migrate), `/record-debt` (bank a
 finding judged real and left unfixed).
@@ -498,7 +498,7 @@ What the shipped skill set gives an adopting repo. This repo's own work follows 
 - Turn a vague ask into a prompt for a fresh session: `forge-prompt`
   (interviews, then hands over one block — it names no next step by design)
 - Define what an unattended run should achieve and forge it into one goal prompt
-  with a verify-every-round loop, for any agent: `forge-goal`
+  with a verify-every-round loop, for any agent: `forge-prompt`
 - Understand a feature, component, or change (code-grounded page + one check question): `understand`, or just ask
 - Incoming issues and PRs: `triage`
 - The short path, one board: `/idea` → `/shape #N` → `/go` → `/board` → `/cut-release`
@@ -509,7 +509,7 @@ What the shipped skill set gives an adopting repo. This repo's own work follows 
 - Horizontal neighbors: `load-subgraph` — advisory, live specs only
 - Project docs: `/define-project` maintains `docs/product/vision.md`, the
   `docs/architecture/` invariant spine, and `docs/product/guidelines.md`
-- Pivot against shipped code: `/assess-pivot-impact` produces the disposition
+- Pivot against shipped code: `/define-project` produces the disposition
   ledger before any vision or architecture rewrite
 - Tutorial: [`docs/guide/START-HERE.md`](docs/guide/START-HERE.md)
 

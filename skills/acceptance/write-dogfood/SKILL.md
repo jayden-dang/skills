@@ -83,7 +83,7 @@ tokens, CSS), never guessed. Where the code reveals an honest caveat
 ## 3. Boot the real app and find the honest observation point
 
 Start the app with the `Run locally (dev)` command from `docs/agents/project.md`
-(discover and record it if missing — see `validate-ui`). Surface any degraded
+(discover and record it if missing — see `validate-feature`). Surface any degraded
 area up front: a feature needing a key, a sub-feature not built yet. A behavior
 with no UI surface still gets a case — with a real way to observe it (a devtools
 `invoke(...)`, a read-only DB peek), never a pretend screen. *Done when: the app

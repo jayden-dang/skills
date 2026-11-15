@@ -8,12 +8,12 @@
 | **Invocation** | model-invoked when its description matches, or `/board` |
 | **Reads** | `docs/agents/issue-tracker.md`, `docs/agents/triage-labels.md`, every open ticket and open PR, the Notion drafts not yet signed off when `Draft surface` is `notion`, and `.skills/inbox/*.md`. All of it goes through `scripts/board.py` |
 | **Writes** | nothing, ever |
-| **Calls** | nothing. Names [`/shape`](shape.md), [`/triage`](triage.md) and [`/show-run-status`](show-run-status.md) as the next step for a line |
+| **Calls** | nothing. Names [`/shape`](shape.md), [`/triage`](triage.md) and [`board`](board.md) as the next step for a line |
 | **Called by** | nobody yet — it fires on what the user asks, or on `/board` |
 
 ## When it fires
 
-When you sit down and want to know what is waiting on you and what the agents are doing. It is the fourth of the [five commands](../workflow.md). One feature's build in detail is [`/show-run-status`](show-run-status.md); the roadmap is [`/refresh-roadmap-status`](refresh-roadmap-status.md).
+When you sit down and want to know what is waiting on you and what the agents are doing. It is the fourth of the [five commands](../workflow.md). One feature's build in detail is [`board`](board.md); the roadmap is [`/refresh-roadmap-status`](refresh-roadmap-status.md).
 
 ## What it does
 
@@ -40,5 +40,5 @@ Not covered: Linear, Notion drafts passed with `--drafts`, and a board of more t
 ## See also
 
 - [The workflow](../workflow.md) — the states and who moves each one
-- [`/show-run-status`](show-run-status.md) — one feature's build in detail
+- [`board`](board.md) — one feature's build in detail
 - Design: `docs/design/2026-10-19-closed-workflow.md`

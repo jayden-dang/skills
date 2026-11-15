@@ -83,7 +83,7 @@ Write the approved version into the project's version files (manifest, lockfile 
 Execute the ordered release steps from `docs/agents/project.md` exactly. Do not improvise flags or substitute commands; an unclear step is a failing step under the stop rule.
 
 **Optional deployment narrative:** follow
-`skills/project/define-system-doc/consult-recipe.md` for
+`skills/project/define-project/consult-recipe.md` for
 `docs/ops/deployment.md` — **narrative only**. It MUST NOT replace or override
 executable release commands in `docs/agents/project.md`. Suggest once if material;
 never auto-invoke.

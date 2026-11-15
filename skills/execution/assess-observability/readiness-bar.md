@@ -44,6 +44,6 @@ Pyroscope / pprof / eBPF as a **Should** follow-on.
 
 ## Disposition of a fail
 
-One `frame-change` or `amend-feature` per row (or a small epic that still
+One `frame-change` per row (or a small epic that still
 lands one row at a time). Promotion stays local → dev → staging → prod.
 This skill does not implement the rows.

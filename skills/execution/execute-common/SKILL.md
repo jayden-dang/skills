@@ -137,7 +137,7 @@ After the last task (waves / inline) or last unlocked unit (story):
 1. **Whole-branch review.** REQUIRED SUB-SKILL: use `inspect-change` with
    base = `git merge-base <branch-base> HEAD` — never a mid-branch sha.
    `<branch-base>` is `main`, or the blocker's branch when the ticket is
-   stacked on one (`deliver-issues`): a stacked ticket reviewed against `main`
+   stacked on one (`go`): a stacked ticket reviewed against `main`
    re-reviews its blocker's diff and counts that diff's files toward polish.
    Feed ledger Minors. Top model tier.
 2. **One fixer** for the complete findings list → re-review. Never one fixer
@@ -155,7 +155,7 @@ After the last task (waves / inline) or last unlocked unit (story):
    the domain behavior (docs-only spine — no requirement-ID tags required in
    test files).
 4b. **Product walk — observable conditional.** WHEN you run inside
-   `deliver-issues` or the operator said nobody is at the keyboard, AND
+   `go` or the operator said nobody is at the keyboard, AND
    `git diff --name-only $(git merge-base <branch-base> HEAD) HEAD` lists an
    `.html`, `.css`, `.scss`, `.jsx`, `.tsx`, `.vue`, `.svelte` or template
    file → REQUIRED SUB-SKILL: use `write-dogfood`, then `run-dogfood` on its run

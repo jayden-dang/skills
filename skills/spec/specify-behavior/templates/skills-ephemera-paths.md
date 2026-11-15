@@ -28,9 +28,9 @@ Examples: `.skills/SPAY/`, `.skills/WEBPAR/`, `.skills/SKNS/`.
 | `.skills/pr-packages/<stable-id>/` | **Retired.** `land-branch` no longer writes this tree. Leave existing dirs; do not author new ones. |
 | `.skills/inbox/` | Follow-ups a skill could not file as tickets (`<slug>.md`, first line `# <title>`); `/board` lists them under Not filed |
 | `.skills/understand/` | Explainer pages (`<slug>.html`) from `understand` |
-| `.skills/dashboard/` | Weekly progress pages from `/chart-progress` (`<date>.json` snapshot, `<date>.notes.json`, `<date>.html`) |
+| `.skills/dashboard/` | Weekly progress pages from `/refresh-roadmap-status` (`<date>.json` snapshot, `<date>.notes.json`, `<date>.html`) |
 | `.skills/video/` | Film projects from `/make-video` (`<slug>/src/script.json`, clips, voice, `out/film.mp4`) |
-| `.skills/system-docs/<entry-key>/` | System-doc authoring digests (`state.md`, `evidence.md`, `proposal.md`) for `/define-system-doc`; entry-key path mirroring (e.g. `codebase/map`) |
+| `.skills/system-docs/<entry-key>/` | System-doc authoring digests (`state.md`, `evidence.md`, `proposal.md`) for `/define-project`; entry-key path mirroring (e.g. `codebase/map`) |
 
 ## Resolution order for `<CODE>`
 

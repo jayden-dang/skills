@@ -8,7 +8,7 @@ They will read the pull request, and nothing else, so everything they need goes 
 
 ```
 THE CONDUCTOR WRITES NO CODE, AS IT WRITES NO SPEC.
-THE BUILD IS A SESSION OF ITS OWN, RUNNING deliver-issues.
+THE BUILD IS A SESSION OF ITS OWN, RUNNING go.
 ```
 
 One baseline conductor told to carry on to a PR wrote every line itself. It loaded 0 skills and
@@ -43,7 +43,7 @@ ran. Its demo was 15 seconds of stitched screenshots. Its ticket read `shaping` 
 
     ```sh
     python3 -I <this skill>/scripts/skill_receipt.py --cwd WT --name <slug>-build \
-      --require deliver-issues,build-in-waves,inspect-change,validate-feature,land-branch --min-subagents 2
+      --require go,build-in-waves,inspect-change,validate-feature,land-branch --min-subagents 2
     ```
 
     Add `write-dogfood,run-dogfood` to `--require` when `git diff --name-only <base>...HEAD` lists an

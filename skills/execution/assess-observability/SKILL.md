@@ -14,7 +14,7 @@ description: >
 
 A readiness verdict for deployed telemetry. It does not investigate an
 incident (`debug-remote`) and it does not write Hybrid 1A canonical
-docs (`/define-system-doc`).
+docs (`/define-project`).
 
 ## The Iron Law
 
@@ -31,7 +31,7 @@ This skill never writes `docs/ops/observability.md` or
 <HARD-GATE>
 Do not PR a one-liner (4xx → span Error, blanket `RecordException`,
 raise head sample "for the board") as the completeness close. Each
-failed row is a tracked change via `frame-change` or `amend-feature`.
+failed row is a tracked change via `frame-change`.
 Promotion: `readiness-bar.md` § Disposition (one home).
 </HARD-GATE>
 
@@ -50,7 +50,7 @@ unless **every Must row is `pass`**. `pass` requires a proving **read**
 ## Must
 | Row | Result | Evidence | Tracked change |
 |---|---|---|---|
-| Identity `service.name` not `unknown_service*` | pass/fail/unresolved | <read> | <none \| frame-change/amend-feature> |
+| Identity `service.name` not `unknown_service*` | pass/fail/unresolved | <read> | <none \| frame-change> |
 | `service.version` deploy-correlatable | | | |
 | `deployment.environment.name` set | | | |
 | W3C `traceparent` across hops | | | |
@@ -83,10 +83,10 @@ backend examples live only there.
 ## After the set
 
 - `not-complete`: do not stamp. Each `fail` row is one change
-  (`frame-change` / `amend-feature`). Do not batch them into a live
+  (`frame-change`). Do not batch them into a live
   prod patch.
 - `complete`: still do not write the Hybrid 1A file. Suggest
-  `/define-system-doc ops/observability` so the map can be Approved
+  `/define-project ops/observability` so the map can be Approved
   there.
 - A live symptom appearing during the assess: REQUIRED SUB-SKILL: use
   `debug-remote` — this skill stops.
@@ -97,7 +97,7 @@ backend examples live only there.
 |---|---|
 | "OpenObserve is on — stamp Approved / complete" | A backend is a row, not the verdict |
 | "Legal / VP / standup — write the complete doc" | A false stamp is worse in the room than a short not-complete set |
-| "I'll write Draft to docs/ops/observability.md" | Canonical path is `/define-system-doc`; this skill writes the set only |
+| "I'll write Draft to docs/ops/observability.md" | Canonical path is `/define-project`; this skill writes the set only |
 | "404s don't show — set SERVER Error on all 4xx" | SERVER 4xx MUST stay unset; that is a fail row, not a close |
 | "5% head sample is traces on" | Rare errors are dropped; tail or 100% is the Must |
 | "One-liner now, assess later" | The one-liner becomes the stamp |

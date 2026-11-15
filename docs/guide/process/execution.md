@@ -153,9 +153,9 @@ runs only when its observable predicate holds — EOD, a clean inspect, and
 
 **`test-first`** tests describe domain behavior; requirement IDs stay in docs.
 
-## `/deliver-issues` — a whole board, unattended
+## `/go` — a whole board, unattended
 
-When several tickets are approved and ready, [`/go`](../skills/go.md) (or [`/deliver-issues`](../skills/deliver-issues.md) directly; `/go #N` names the tickets) takes each one through the chain above: `build-in-waves`, then `inspect-change`, then `land-branch` as a pull request. Tickets run in dependency order, and a ticket blocked by another branches from that ticket's branch. A question that would stop a single-ticket run is built the safe way and put at the top of that pull request. The run ends with one message. While a build is running or stopped, [`/show-run-status`](../skills/show-run-status.md) reports where one feature stands.
+When several tickets are approved and ready, [`/go`](../skills/go.md) (or [`go`](../skills/go.md) directly; `/go #N` names the tickets) takes each one through the chain above: `build-in-waves`, then `inspect-change`, then `land-branch` as a pull request. Tickets run in dependency order, and a ticket blocked by another branches from that ticket's branch. A question that would stop a single-ticket run is built the safe way and put at the top of that pull request. The run ends with one message. While a build is running or stopped, [`board`](../skills/board.md) reports where one feature stands.
 
 ## Next
 
@@ -165,5 +165,5 @@ When several tickets are approved and ready, [`/go`](../skills/go.md) (or [`/del
 
 - [The gates](../concepts/gates.md) — `test-first`, `root-cause`, and `prove-claim` in detail
 - [`build-in-waves`](../skills/build-in-waves.md) · [`build-by-story`](../skills/build-by-story.md) · [`build-inline`](../skills/build-inline.md)
-- [`deliver-issues`](../skills/deliver-issues.md) · [`show-run-status`](../skills/show-run-status.md)
+- [`go`](../skills/go.md) · [`board`](../skills/board.md)
 - [The artifact model](../concepts/artifacts.md) — what lives in `.skills/`

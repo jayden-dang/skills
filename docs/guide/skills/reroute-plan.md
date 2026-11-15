@@ -103,7 +103,7 @@ That block is where the approval it skipped happens. In twelve baseline runs of 
 ## Red flags — you are in the wrong lane
 
 - **A post-ship, in-scope tweak** to a shipped feature (a recolor, a copy edit, a small
-  follow-on) → that is [`amend-feature`](amend-feature.md), not reroute-plan. Nothing was "approved and then
+  follow-on) → that is [`frame-change`](frame-change.md), not reroute-plan. Nothing was "approved and then
   invalidated" here — the feature already shipped.
 - **Broken code against a still-valid spec** → that is [`root-cause`](root-cause.md), not reroute-plan.
   The spec is still true; only the implementation is wrong.
@@ -154,7 +154,7 @@ build-in-waves` loop before it spins on the same fact twice.
 
 ## See also
 
-- [`amend-feature`](amend-feature.md) — the lane for a post-ship, in-scope tweak; nothing here was "approved
+- [`frame-change`](frame-change.md) — the lane for a post-ship, in-scope tweak; nothing here was "approved
   then invalidated"
 - [`realign-spec`](realign-spec.md) — the mechanical reconciler this skill delegates to after a
   re-entry changes approved artifacts

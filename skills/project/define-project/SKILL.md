@@ -1,7 +1,7 @@
 ---
 name: define-project
-version: 1.2.0
-description: Use when a repo needs its project-level documentation written, updated or checked, meaning the product vision, the architecture invariants (ARCH-N) or the product guidelines. Produces docs/product/vision.md, docs/architecture/ and docs/product/guidelines.md. Not for one decision record or glossary term (define-domain), a roadmap (plan-milestones), or a pivot against shipped code (assess-pivot-impact).
+version: 1.3.0
+description: "Use when a repo needs its project-level documentation written, updated or checked: the product vision, the architecture invariants (ARCH-N), the product guidelines, or one system-documentation artifact from the catalog such as the codebase map. Also when a new product direction contradicts features that have already shipped, before any rewrite. Produces docs/product/vision.md, docs/architecture/ and docs/product/guidelines.md, that one system document after its proposal is approved, or a disposition ledger naming each affected shipped feature. Not for one decision record or glossary term (define-domain) or a roadmap (plan-milestones)."
 ---
 
 # Define Project
@@ -16,6 +16,10 @@ without it, and nothing here is a gate. If the user is not sure they need it, sa
 let them decide.
 
 ## Modes
+
+**One system-documentation artifact from the catalog** (the codebase map, a standards or
+ops document, named by its entry key) → read `system-doc.md` beside this file and follow it
+in place of the modes below.
 
 Pick the mode from what the user asked; ask if it is unclear.
 
@@ -73,16 +77,16 @@ guidelines has an answer or an explicit `None`.*
    *Done when: the spine exists with at least one invariant.*
 4b. **Optional product context and architecture shape.** WHERE the user wants personas,
    metrics, principles, or architecture domain narratives (system/data/integrations/runtime),
-   **name** `/define-system-doc product/personas|metrics|principles` or
-   `/define-system-doc architecture/system|data|integrations|runtime` for one-artifact
+   **name** `/define-project product/personas|metrics|principles` or
+   `/define-project architecture/system|data|integrations|runtime` for one-artifact
    progressive authoring (First-class templates live under that skill). Do **not**
    auto-invoke it. You may also draft those files here if the user insists on one
    interview — then use the structural templates/validators under
-   `skills/project/define-system-doc/` and set `Status: Approved` only when validators pass.
+   `skills/project/define-project/` and set `Status: Approved` only when validators pass.
    Domain files never redefine ARCH-N; vision remains the product north star.
 5. **Write engineering standards (not a parallel SSOT).** Prefer First-class
-   `docs/standards/` via naming `/define-system-doc standards/INDEX|testing|errors-logging`
-   (or draft those files using pack templates under `define-system-doc`). IF creating
+   `docs/standards/` via naming `/define-project standards/INDEX|testing|errors-logging`
+   (or draft those files using pack templates under `define-project`). IF creating
    legacy `docs/product/guidelines.md`, it MUST be a **pointer** to `docs/standards/`
    when standards exist — never a second body of rules. While unmigrated rule bodies
    still live only in guidelines, treat them as temporary fallback and migrate on
@@ -99,8 +103,8 @@ found.
 
 - **Pivot with shipped collisions.** WHERE the new direction contradicts a
   `Shipped`/`Implemented` feature, a live `**GOAL-N**`, a live `**ARCH-N**`, or a
-  non-goal/hard constraint, **stop** revising. REQUIRED SUB-SKILL: use
-  `assess-pivot-impact` — that skill owns the disposition ledger; this skill continues
+  non-goal/hard constraint, **stop** revising. REQUIRED: read `pivot.md` beside this file and follow it — it
+  produces the disposition ledger; this skill continues
   only after the user has confirmed the ledger (or explicitly declined it). WHERE there
   is no such collision, continue.
 - Revise the affected doc(s) only.
@@ -123,7 +127,7 @@ found.
 - Update mode CONTINUES TO avoid dispatching the create-mode brownfield scan — Step 1
   above is create-only.
 
-*Done when: the docs reflect the change and any superseding ADR is recorded.*
+*Done when: the docs author-skills the change and any superseding ADR is recorded.*
 
 ## Validate
 

@@ -67,7 +67,7 @@ This ticket is the only one. Create no issue. A skill that wants a claim uses th
 - A persisted format or a migration, unless the section "Under --go" below is present; anything that moves money, always.
 - A test or a step that would change a config or data file outside `{WT}`, `{RUN}` or a temporary directory.
 - Two Lock lines that contradict each other.
-- A change to the vision, or a pivot (`/define-project`, `/assess-pivot-impact`), or a catalog needing `/map-features`.
+- A change to the vision, or a pivot (`/define-project`), or a catalog needing `/map-features`.
 
 ## The final review
 After your report, `{conductor}` sends a final review. Vet each item with the fork order above, apply or reject it with a reason in that file, send `{slug}-interpret` only what moved, commit, and rewrite the report. The operator sees the result, not the list.

@@ -3,7 +3,7 @@
     "eval_id": 1,
     "eval_name": "green-baseline-before-any-change",
     "kind": "contract",
-    "derived_from": "SKILL.md § 2. Record the green baseline",
+    "derived_from": "SKILL.md \u00a7 2. Record the green baseline",
     "prompt": "Clean up the changed code on this branch.",
     "assertions": [
       "the green baseline is recorded before any cleanup is applied",
@@ -14,7 +14,7 @@
     "eval_id": 2,
     "eval_name": "four-angles-all-run",
     "kind": "contract",
-    "derived_from": "SKILL.md § 3. Dispatch four cleanup agents in parallel",
+    "derived_from": "SKILL.md \u00a7 3. Dispatch four cleanup agents in parallel",
     "prompt": "Run the cleanup pass on the diff.",
     "assertions": [
       "all four angles are covered: reuse, simplification, efficiency, altitude",
@@ -26,7 +26,7 @@
     "eval_id": 3,
     "eval_name": "banked-slot-routes-scope-drops",
     "kind": "behavior",
-    "derived_from": "TESTS.md § RED — S-BANKED-SLOT: 2/3 produced fixed/dropped/referred-out and omitted the routing element; Haiku called the drops \"debt left on the table\" and still routed them nowhere",
+    "derived_from": "TESTS.md \u00a7 RED \u2014 S-BANKED-SLOT: 2/3 produced fixed/dropped/referred-out and omitted the routing element; Haiku called the drops \"debt left on the table\" and still routed them nowhere",
     "prompt": "Write the step-7 report for a finished run: three findings applied, three dropped (two as 'outside the pinned diff', each judged real by a named angle; one as a false positive), one correctness bug referred out, suite green. /record-debt is available and is user-invoked.",
     "assertions": [
       "the report carries a banked slot alongside fixed, dropped and referred-out",
@@ -40,8 +40,8 @@
     "eval_id": 4,
     "eval_name": "banked-payload-slots-no-debt-id",
     "kind": "behavior",
-    "derived_from": "TESTS.md § Edit — banked payload (v1.3.0)",
-    "prompt": "Write the step-7 report. Two scope-drops judged real, one false-positive drop. Standup in five — just list the scope-drops, don't invent a ledger.",
+    "derived_from": "TESTS.md \u00a7 Edit \u2014 banked payload (v1.3.0)",
+    "prompt": "Write the step-7 report. Two scope-drops judged real, one false-positive drop. Standup in five \u2014 just list the scope-drops, don't invent a ledger.",
     "assertions": [
       "each scope-drop is a paste-ready block with Found, Cost, Deferred because, Fix shape, Ticket, and Status",
       "no DEBT-N is assigned in the polish report",
@@ -53,12 +53,23 @@
     "eval_id": 5,
     "eval_name": "no-whole-suite-baseline-inside-a-close",
     "kind": "behavior",
-    "derived_from": "TESTS.md § v1.5.0 — no whole-suite baseline inside an execute-family close (2026-11-08)",
+    "derived_from": "TESTS.md \u00a7 v1.5.0 \u2014 no whole-suite baseline inside an execute-family close (2026-11-08)",
     "prompt": "The execute-family close reached its polish step on a 28-file branch. Start polish-diff and record the baseline.",
     "assertions": [
       "Polish base is recorded as a full sha",
       "no whole-suite run is queued as the baseline",
       "the close's single whole-suite run is named as the proof"
+    ]
+  },
+  {
+    "eval_id": 6,
+    "eval_name": "description-routes-here",
+    "kind": "trigger",
+    "derived_from": "TESTS.md \u00a7 2026-11-15 \u2014 model-invocable (description routing)",
+    "prompt": "strip the comments from this diff, I want none left",
+    "assertions": [
+      "polish-diff is the skill reached for",
+      "polish-diff are not"
     ]
   }
 ]

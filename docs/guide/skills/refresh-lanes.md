@@ -9,11 +9,11 @@
 | **Reads** | the same inputs as the dashboard snapshot: `docs/roadmap/INDEX.md`, the spec catalog, spec folders, `docs/agents/project.md`, git; open GitHub issues for claims |
 | **Writes** | `docs/roadmap/lanes.md`, and the snapshot under `.skills/dashboard/` |
 | **Calls** | nothing |
-| **Called by** | [`specify-behavior`](specify-behavior.md) (a catalog row bound to a `ROAD-N`), [`execute-common`](execute-common.md) (the `In-progress` stamp), [`land-branch`](land-branch.md) (`Implemented` and `Delivered-by`), [`plan-milestones`](plan-milestones.md) (an approved roadmap edit), [`/chart-progress`](chart-progress.md) |
+| **Called by** | [`specify-behavior`](specify-behavior.md) (a catalog row bound to a `ROAD-N`), [`execute-common`](execute-common.md) (the `In-progress` stamp), [`land-branch`](land-branch.md) (`Implemented` and `Delivered-by`), [`plan-milestones`](plan-milestones.md) (an approved roadmap edit), [`refresh-roadmap-status`](refresh-roadmap-status.md) |
 
 ## Why it exists
 
-`lanes.md` used to be regenerated only when someone ran `/chart-progress`. In klynt it went fourteen days without a regeneration while deliveries were recorded under it. Two baseline landings stamped a feature `Implemented`, pushed, and left the file showing it in build, with the next item still waiting on it. Two baseline kickoffs committed the `In-progress` stamp and left the item showing as ready for any other session choosing work.
+`lanes.md` used to be regenerated only when someone ran `/refresh-roadmap-status`. In klynt it went fourteen days without a regeneration while deliveries were recorded under it. Two baseline landings stamped a feature `Implemented`, pushed, and left the file showing it in build, with the next item still waiting on it. Two baseline kickoffs committed the `In-progress` stamp and left the item showing as ready for any other session choosing work.
 
 ## How it decides
 
@@ -30,4 +30,4 @@ The base is `Default PR base:` in `docs/agents/project.md`, else the remote's de
 
 ## What it is not
 
-It never edits the roadmap, a status, or a claim, and it never fixes a line of `lanes.md` by hand: a wrong line is fixed at its source and the file regenerated. The weekly page is [`/chart-progress`](chart-progress.md), which calls this skill for its snapshot.
+It never edits the roadmap, a status, or a claim, and it never fixes a line of `lanes.md` by hand: a wrong line is fixed at its source and the file regenerated. The weekly page is [`refresh-roadmap-status`](refresh-roadmap-status.md), which calls this skill for its snapshot.

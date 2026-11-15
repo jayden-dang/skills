@@ -45,12 +45,12 @@ concrete, observable check with an expected result.*
 ### Product context docs (optional)
 
 **Applicability:** acceptance criteria touch personas or measurable success outcomes.  
-**Load:** `skills/project/define-system-doc/consult-recipe.md`.  
+**Load:** `skills/project/define-project/consult-recipe.md`.  
 **Paths:** `docs/product/personas.md`, `metrics.md`, `principles.md`.
 
 **When Approved:** fold relevant constraints into checklist expectations (advisory;
 requirements remain normative). **When absent:** CONTINUE; suggest once
-`/define-system-doc product/personas|metrics|principles` only if the gap makes
+`/define-project product/personas|metrics|principles` only if the gap makes
 acceptance materially clearer; never auto-invoke.
 
 ## 2. Dispatch by surface
@@ -59,9 +59,9 @@ The checklist splits by where each behavior lives. Run whichever apply — most
 features need both:
 
 - The change exposes an HTTP/RPC API a client calls →
-  **REQUIRED SUB-SKILL: use `validate-api`**.
+  **REQUIRED: read `api.md` beside this file and follow it**.
 - The change has a frontend a user drives →
-  **REQUIRED SUB-SKILL: use `validate-ui`**. Its §2 picks the browser.
+  **REQUIRED: read `ui.md` beside this file and follow it**. Its §2 picks the browser.
   It does not install a browser harness.
 - The behavior is neither an API nor a UI (a CLI, a library, a batch/cron job) →
   drive it directly against the running system yourself, record each observed
@@ -77,7 +77,7 @@ same file.
 
 Report the checklist with each item's observed result. Any item you could not
 exercise is an open risk — name it; do not let it pass silently. Then hand back
-to `land-branch`. The UI acceptance evidence is `.skills/<CODE>/validate-ui.md`
+to `land-branch`. The UI acceptance evidence is `.skills/<CODE>/validate-feature.md`
 from the browser drive. A product defect still gets its regression in the
 repo's existing test stack. *Done when: every checklist item is observed green
 against the running system, each failure fixed with a regression test in that

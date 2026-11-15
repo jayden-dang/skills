@@ -8,11 +8,11 @@ This is the smallest possible unit of work the system handles. It is here becaus
 
 ## The feature already has a spec
 
-`SHELL` shipped months ago. Its `requirements.md` is `Status: Shipped`. So this is not `frame-change` — it is [`amend-feature`](../skills/amend-feature.md), the lane for a small in-scope change to an already-shipped, spec'd feature.
+`SHELL` shipped months ago. Its `requirements.md` is `Status: Shipped`. So this is not new work — it is the amend lane of [`frame-change`](../skills/frame-change.md), for a small in-scope change to an already-shipped, spec'd feature.
 
 ## Step 1 — Ground the change in the existing spec
 
-`amend-feature` finds the spec via `docs/specs/INDEX.md`, reads the requirements the change touches, and the design section that owns them.
+`frame-change` finds the spec via `docs/specs/INDEX.md`, reads the requirements the change touches, and the design section that owns them.
 
 ```markdown
 - **SHELL-1.7** WHILE a module is active THE SYSTEM SHALL render its rail icon
@@ -31,7 +31,7 @@ The distinction is not pedantry. It is the difference between a change that keep
 
 ## Step 3 — `test-first`, because every path exits through it
 
-Tier 0 is not an exemption from the test-first gate. From `amend-feature`:
+Tier 0 is not an exemption from the test-first gate. From `frame-change`:
 
 > This is a fast lane, not a gate bypass. Every path still exits through `test-first`.
 
@@ -84,24 +84,24 @@ No `frame-change`. No `requirements.md` edit. No `design.md`. No `tasks.md`. No 
 
 ## Where this would have escalated
 
-Three variations that are *not* tier 0, and how `amend-feature` catches each:
+Three variations that are *not* tier 0, and how `frame-change` catches each:
 
 | Variation | Tier | Why |
 |---|---|---|
 | `SHELL-1.7` had said "render its rail icon in blue" | **1** | The requirement's own text becomes false. Amend Feature the criterion, add a `SHALL CONTINUE TO` guard for whatever else consumes the accent token, then `test-first` |
 | "…and add a subtle glow animation" | **1** | New observable behavior extending a spec'd one. Mini-spec |
-| "…and let users pick their own accent color" | **new scope** | A real UX decision with live alternatives (per-user? per-workspace? persisted where?). `amend-feature` stops and escalates to `frame-change` |
+| "…and let users pick their own accent color" | **new scope** | A real UX decision with live alternatives (per-user? per-workspace? persisted where?). the amend lane stops and `frame-change` takes it as new work |
 
-The honest test for that last row, from `amend-feature`:
+The honest test for that last row, from `frame-change`:
 
 > Does the existing spec's intent already cover this behavior? **If you are inventing what it should do, it is new scope.**
 
-Nothing in `SHELL`'s spec says anything about who chooses the accent color. Inventing that answer inside a "recolor the icon" request is exactly the failure `amend-feature`'s red flags name: *the "small" change grew a design decision with real alternatives.*
+Nothing in `SHELL`'s spec says anything about who chooses the accent color. Inventing that answer inside a "recolor the icon" request is exactly the failure `frame-change`'s red flags name: *the "small" change grew a design decision with real alternatives.*
 
-And if the request had bundled both — "make it indigo, and let users pick their own" — `amend-feature` splits it: the tweak stays in the fast lane, the new behavior goes to `frame-change`. Route each half separately.
+And if the request had bundled both — "make it indigo, and let users pick their own" — `frame-change` splits it: the tweak stays in the fast lane, the new behavior goes to `frame-change`. Route each half separately.
 
 ## See also
 
 - [Ceremony tiers](../methodology/ceremony-tiers.md) — the full three-tier system
-- [`amend-feature`](../skills/amend-feature.md) — the skill this example runs
+- [`frame-change`](../skills/frame-change.md) — the skill this example runs
 - [Tier 1: a bugfix](tier-1-bugfix.md) — the next step up

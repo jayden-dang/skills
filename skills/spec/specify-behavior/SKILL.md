@@ -13,7 +13,7 @@ this conversation, and every task, test, and commit will cite their IDs.
 ## Two modes — pick by what you were handed
 
 **Tier-1 mini-spec** — a fix plus a guard for an **already-approved** feature
-(from `amend-feature` or `root-cause`). Not a new `requirements.md`: append to
+(from `frame-change` or `root-cause`). Not a new `requirements.md`: append to
 the owning feature's `requirements.md` (or `docs/specs/fixes.md` if unowned)
 the **fix requirement** (one EARS criterion, Step 2's forms) and its
 **`SHALL CONTINUE TO` guard** (Step 3, for the behavior the fix must not break).

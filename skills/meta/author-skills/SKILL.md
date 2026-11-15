@@ -1,14 +1,18 @@
 ---
 name: author-skills
-version: 1.4.0
-description: Use when creating, authoring, or editing a skill — its SKILL.md, frontmatter, or description — reviewing a skill someone else wrote, deciding whether a skill is ready to ship, or diagnosing why a skill won't trigger. Produces skill text with a failing baseline run recorded before it and a passing run after.
+version: 1.5.0
+description: Use when creating, authoring, or editing a skill — its SKILL.md, frontmatter, or description — reviewing a skill someone else wrote, deciding whether a skill is ready to ship, diagnosing why a skill won't trigger, or mining a hard session for what the skill set should learn. Produces skill text with a failing baseline run recorded before it and a passing run after, or proposed skill edits that wait for approval.
 ---
 
 # Author Skills
 
+**A hard session just ended and the ask is what the skill set should learn from it**: read
+`reflect.md` beside this file first. It ends in proposed edits, and each approved one comes
+back through the Iron Law below.
+
 ## Why a skill exists
 
-A skill wrangles determinism out of a stochastic system. The root virtue is **predictability**: the agent takes the same *process* on every run — not that it emits identical output. A frame-changeing skill should reliably diverge; its tokens vary, its behavior doesn't. Every rule in this document is a lever on predictability.
+A skill wrangles determinism out of a stochastic system. The root virtue is **predictability**: the agent takes the same *process* on every run — not that it emits identical output. A brainstorming skill should reliably diverge; its tokens vary, its behavior doesn't. Every rule in this document is a lever on predictability.
 
 ## The Iron Law
 

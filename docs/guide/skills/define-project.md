@@ -18,7 +18,7 @@ At the start of a **large or long-lived project**, before feature work, to estab
 ## The three modes
 
 - **create** — nothing exists yet. Brownfield check (if source already exists, the spine *ratifies* it rather than designing greenfield), then a [`clarify-decisions`](clarify-decisions.md) interview draws out the vision and the load-bearing invariants, then the three docs are written from templates.
-- **update** — revise against a change signal. WHERE the change is a pivot that collides with shipped features or live invariants, stop and name [`/assess-pivot-impact`](assess-pivot-impact.md) first (disposition ledger); continue only after that ledger is confirmed. Hard-to-reverse decisions get an ADR via [`define-domain`](define-domain.md); a retired invariant is struck (strikethrough on the live `**ARCH-N**` line only — never in comments/templates), never renumbered.
+- **update** — revise against a change signal. WHERE the change is a pivot that collides with shipped features or live invariants, stop and name [`define-project`](define-project.md) first (disposition ledger); continue only after that ledger is confirmed. Hard-to-reverse decisions get an ADR via [`define-domain`](define-domain.md); a retired invariant is struck (strikethrough on the live `**ARCH-N**` line only — never in comments/templates), never renumbered.
 - **validate** — walk each doc against its template, run [`inspect-invariants`](inspect-invariants.md) across the feature `design.md` files, and run the [`audit-trace`](audit-trace.md) invariant integrity check.
 
 ## The architecture spine

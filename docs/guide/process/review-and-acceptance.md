@@ -1,6 +1,6 @@
 # Phase 4 — Review and acceptance
 
-**Skills:** [`inspect-change`](../skills/inspect-change.md) · [`vet-feedback`](../skills/vet-feedback.md) · [`validate-feature`](../skills/validate-feature.md) → [`validate-api`](../skills/validate-api.md) / [`validate-ui`](../skills/validate-ui.md) · [`write-dogfood`](../skills/write-dogfood.md) · [`run-dogfood`](../skills/run-dogfood.md)
+**Skills:** [`inspect-change`](../skills/inspect-change.md) · [`vet-feedback`](../skills/vet-feedback.md) · [`validate-feature`](../skills/validate-feature.md) → [`validate-feature`](../skills/validate-feature.md) / [`validate-feature`](../skills/validate-feature.md) · [`write-dogfood`](../skills/write-dogfood.md) · [`run-dogfood`](../skills/run-dogfood.md)
 
 **Produces:** a two-axis merge verdict, and committed ID-tagged tests that prove the feature works against the running system.
 
@@ -81,16 +81,16 @@ The spec is the source: *a behavior nobody hand-fed you is still on the hook, an
 
 | Surface | Skill |
 |---|---|
-| An HTTP/RPC API a client calls | `validate-api` |
-| A frontend a user drives | `validate-ui` |
+| An HTTP/RPC API a client calls | `validate-feature` |
+| A frontend a user drives | `validate-feature` |
 | Neither — a CLI, a library, a batch job | drive it directly, record results, promote to ID-tagged tests |
 | Human-eyeball qualities (visuals, feel) | `write-dogfood` |
 
 Most features need both of the first two. Each child gets its slice of the ledger **by path** and writes results back to the same file.
 
-**`validate-api`** starts the server — and if `docs/agents/project.md` has no `## Run locally (dev)` entry, it discovers the command, confirms the server answers, and *writes the command back into project.md* so the next run is cheap. Then each checklist item becomes a real request, and the assertion is the **full expectation**: status, body shape (names, casing, id type), and — where the criterion says "persists" — a fresh `GET` reading it back; where it says "across restart", a restart and another read.
+**`validate-feature`** starts the server — and if `docs/agents/project.md` has no `## Run locally (dev)` entry, it discovers the command, confirms the server answers, and *writes the command back into project.md* so the next run is cheap. Then each checklist item becomes a real request, and the assertion is the **full expectation**: status, body shape (names, casing, id type), and — where the criterion says "persists" — a fresh `GET` reading it back; where it says "across restart", a restart and another read.
 
-**`validate-ui`** does the same for the frontend, in the user's browser through kimi-webbridge. It does not install a Playwright harness. Each flow is driven as a user: locate by role or name, type and click, and assert on **visible outcomes** — text on screen, the input cleared, list order, an error shown. Where the criterion says "persists", open the same URL again and assert the state survives.
+**`validate-feature`** does the same for the frontend, in the user's browser through kimi-webbridge. It does not install a Playwright harness. Each flow is driven as a user: locate by role or name, type and click, and assert on **visible outcomes** — text on screen, the input cleared, list order, an error shown. Where the criterion says "persists", open the same URL again and assert the state survives.
 
 Both fix what breaks through `root-cause`. API checks are promoted into the repo's existing tests. The UI acceptance evidence is the webbridge drive record; a UI defect's regression lands in that same existing stack, not in a new browser harness.
 
@@ -110,7 +110,7 @@ It scopes the happy path, the edge cases, **and the deliberate non-behaviors** �
 
 ## `run-dogfood` — run the guide
 
-When the guide already exists and its review is clean, and the agent should drive every case: `dogfood init` the run state first, confirm local origin (or explicit non-local consent), execute Try against the **product app** only, `dogfood mark` with `saw` + `server` evidence, never open the guide HTML to tick localStorage boxes, route product defects to one `root-cause` fix subagent at a time, build missing local preconditions instead of stopping on them, re-drive with a regression sweep, and loop until every case passes or is parked. Only then does it `dogfood report` and tell the user why each case failed or was blocked and what changed. This is a **run** through kimi-webbridge. `validate-ui` is the same driver used as the acceptance pass, not a separate Playwright suite.
+When the guide already exists and its review is clean, and the agent should drive every case: `dogfood init` the run state first, confirm local origin (or explicit non-local consent), execute Try against the **product app** only, `dogfood mark` with `saw` + `server` evidence, never open the guide HTML to tick localStorage boxes, route product defects to one `root-cause` fix subagent at a time, build missing local preconditions instead of stopping on them, re-drive with a regression sweep, and loop until every case passes or is parked. Only then does it `dogfood report` and tell the user why each case failed or was blocked and what changed. This is a **run** through kimi-webbridge. `validate-feature` is the same driver used as the acceptance pass, not a separate Playwright suite.
 
 ## `/audit-shipped` — after the merge
 

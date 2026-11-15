@@ -44,9 +44,9 @@ Three ways in: by role, by problem, or by phase.
 | I want to… | Go here |
 |---|---|
 | …add a new feature | [`frame-change`](skills/frame-change.md) → [Discovery](process/discovery.md) |
-| …tweak something that already shipped | [`amend-feature`](skills/amend-feature.md) → [Tier 0 example](examples/tier-0-tweak.md) |
+| …tweak something that already shipped | [`frame-change`](skills/frame-change.md) → [Tier 0 example](examples/tier-0-tweak.md) |
 | …fix a bug | [`root-cause`](skills/root-cause.md) → [Tier 1 example](examples/tier-1-bugfix.md) |
-| …start a brand-new project | [`/bootstrap-repo`](skills/bootstrap-repo.md) |
+| …start a brand-new project | [`configure-repo`](skills/configure-repo.md) |
 | …adopt this on an existing repo | [`/configure-repo`](skills/configure-repo.md) → [Adopting](resources/adopting.md) |
 | …set up a product vision + architecture spine for a large project | [`/define-project`](skills/define-project.md) |
 | …understand why my tests aren't enough | [`validate-feature`](skills/validate-feature.md) → [Review and acceptance](process/review-and-acceptance.md) |
@@ -56,8 +56,8 @@ Three ways in: by role, by problem, or by phase.
 | …cut a release | [`/cut-release`](skills/cut-release.md) |
 | …handle an incoming issue | [`/triage`](skills/triage.md) |
 | …put an idea on the board, shape it, build it, and see what waits on me | the five commands: [`/idea`](skills/idea.md) → [`/shape #N`](skills/shape.md) → [`/go`](skills/go.md) → [`/board`](skills/board.md) → [`/cut-release`](skills/cut-release.md); see [the workflow](workflow.md) |
-| …turn every ready ticket on the board into a reviewed PR while I am away | [`/go`](skills/go.md) (runs [`deliver-issues`](skills/deliver-issues.md)) |
-| …see where one feature's build stands right now | [`/show-run-status`](skills/show-run-status.md) |
+| …turn every ready ticket on the board into a reviewed PR while I am away | [`/go`](skills/go.md) (runs [`go`](skills/go.md)) |
+| …see where one feature's build stands right now | [`board`](skills/board.md) |
 | …check what merged this week for missed edge cases | [`/audit-shipped`](skills/audit-shipped.md) |
 | …find where to refactor next | [`/scan-architecture`](skills/scan-architecture.md) |
 | …backfill feature codes / ROAD / OWNS on brownfield | [`/map-features`](skills/map-features.md) |
@@ -72,12 +72,12 @@ Three ways in: by role, by problem, or by phase.
 
 | Phase | Skills | Guide page |
 |---|---|---|
-| **0. Setup** | `/configure-repo`, `/bootstrap-repo` | [Adopting](resources/adopting.md) |
+| **0. Setup** | `/configure-repo` | [Adopting](resources/adopting.md) |
 | **1. Discovery** | `frame-change` (+ `load-subgraph`), `clarify-decisions`, `research`, `run-spike`, `define-domain`, `/interpret-session`, `understand` | [Discovery](process/discovery.md) |
 | **2. Specification** | `specify-behavior`, `design-solution`, `plan-tasks` | [Specification](process/specification.md) |
-| **3. Execution** | `isolate-workspace`, `build-in-waves` / `build-by-story` / `build-inline`, `/go`, `deliver-issues`, `test-first`, `root-cause`, `prove-claim`, `audit-trace`, `load-subgraph` | [Execution](process/execution.md) |
+| **3. Execution** | `isolate-workspace`, `build-in-waves` / `build-by-story` / `build-inline`, `/go`, `go`, `test-first`, `root-cause`, `prove-claim`, `audit-trace`, `load-subgraph` | [Execution](process/execution.md) |
 | **4. Review & acceptance** | `inspect-change` (+ `load-subgraph`), `/audit-shipped`, `polish-diff`, `vet-feedback`, `validate-*`, product-flow suite | [Review and acceptance](process/review-and-acceptance.md) |
-| **5. Ship & maintain** | `land-branch`, `/cut-release`, `realign-spec`, `amend-feature`, `/map-features`, `/triage`, `/show-run-status`, `/scan-architecture`, `/write-handoff` | [Ship and maintain](process/ship-and-maintain.md) |
+| **5. Ship & maintain** | `land-branch`, `/cut-release`, `realign-spec`, `frame-change`, `/map-features`, `/triage`, `/board`, `/scan-architecture`, `/write-handoff` | [Ship and maintain](process/ship-and-maintain.md) |
 
 ---
 

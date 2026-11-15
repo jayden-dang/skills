@@ -1,11 +1,7 @@
 ---
 name: frame-change
-version: 2.3.1
-description: Use at the very start of the idea-to-ship chain — when the user wants to
-  add, build, or change a feature, behavior, or component, or to start a new
-  project, and the asked-for behavior has no spec yet. Produces an agreed shape
-  and a spoken ceremony tier. Triggers on "let's add…", "can we build…",
-  "I'm thinking about…", "we should support…" before implementation has begun.
+version: 2.4.0
+description: "Use at the very start of the idea-to-ship chain — when the user wants to add, build, or change a feature, behavior, or component, or to start a new project, and the asked-for behavior has no spec yet; or when an already-shipped, spec'd feature needs a small in-scope change such as a recolor, a copy edit, a tweak or a follow-on. Produces an agreed shape and a spoken ceremony tier, or for a shipped feature a tier decision and a light-lane route. Triggers on \"let's add…\", \"can we build…\", \"I'm thinking about…\", \"we should support…\" before implementation has begun. Not for broken behavior (root-cause) or a drifted spec (realign-spec)."
 ---
 
 # Frame Change
@@ -15,8 +11,11 @@ judgment once the open set is named; do not script the interview as an itinerary
 
 **Where this sits:** first stage. Tier 0 exits to `test-first`; tier 1 to a
 mini-spec in `specify-behavior`; tier 2 walks the full triad. Do not pre-load
-downstream checklists. A small in-scope change to an already-shipped spec'd
-feature is `amend-feature` — hand it there.
+downstream checklists.
+
+**The feature already shipped and has a spec, and the change is small and inside it** (a
+recolor, a copy edit, a tweak, a follow-on): read `amend.md` beside this file and follow it
+in place of the checklist below.
 
 <HARD-GATE>
 Write NO code, scaffold NOTHING, and invoke NO implementation skill until this

@@ -18,7 +18,7 @@ Design and evidence: `docs/design/2026-10-19-closed-workflow.md`.
 | `/board` | Everything waiting on you, what the agents are doing, and where the board and the repo disagree |
 | `/cut-release` | A release. The tickets it ships read `shipped` |
 
-Every other skill still works when you type it (`/deliver-issues`, `/show-run-status`,
+Every other skill still works when you type it (`/go`, `/board`,
 `/triage`, …). The five are the short path.
 
 ## The states

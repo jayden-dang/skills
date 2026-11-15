@@ -105,7 +105,7 @@ Every finding gets exactly one destination — this skill keeps no action-item l
 
 | Finding | Destination |
 |---|---|
-| a small in-scope change to a shipped feature | `amend-feature` |
+| a small in-scope change to a shipped feature | `frame-change` |
 | an approved plan invalidated mid-flight | `reroute-plan` |
 | milestone intent that turned out wrong | `plan-milestones` |
 | a hard-to-reverse architecture decision | `define-domain` |

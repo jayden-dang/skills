@@ -30,7 +30,7 @@ That ID then flows outward into everything downstream: the test that verifies th
 
 And then — this is the part that makes it real rather than aspirational — a **deterministic check**, not human diligence, keeps the chain honest. The [`audit-trace`](../resources/scripts.md#the-trace-check) skill runs a fixed sequence of `grep` and `git` passes — invoked by `prove-claim`, `cut-release`, and `realign-spec` — and reports it when a task cites a requirement that does not exist, when a shipped requirement has no covering test, or when an ID is defined twice. Unchecked audit-trace matrices rot; this one is machine-checked from primitives every repo already has.
 
-Around that spine sit **~77 skills** in eleven engineering buckets, each one a piece of process the agent is required to follow, and four **hard gates** that cannot be talked past. One of those buckets, `project/`, is an **optional layer above the feature loop**: on a large project, [`define-project`](../skills/define-project.md) maintains a repo-level product vision and an IDed architecture-invariant spine that the feature skills consult when present and ignore when absent. Horizontal neighbors (does this idea already exist?) are answered at ask time by [`load-subgraph`](../skills/load-subgraph.md) over live specs — no generated graph file.
+Around that spine sit **~62 skills** in eleven engineering buckets, each one a piece of process the agent is required to follow, and four **hard gates** that cannot be talked past. One of those buckets, `project/`, is an **optional layer above the feature loop**: on a large project, [`define-project`](../skills/define-project.md) maintains a repo-level product vision and an IDed architecture-invariant spine that the feature skills consult when present and ignore when absent. Horizontal neighbors (does this idea already exist?) are answered at ask time by [`load-subgraph`](../skills/load-subgraph.md) over live specs — no generated graph file.
 
 ## The four gates
 
@@ -53,7 +53,7 @@ The obvious objection to spec-driven development is that it drowns a two-line ch
 | **1 — bugfix / small change** | behavior change, ≤ ~half a day | a mini-spec: one fix requirement plus a `SHALL CONTINUE TO` guard, and a tagged regression test |
 | **2 — feature** | multi-task work | the full triad, then the execute family (`build-in-waves` / `build-by-story` / `build-inline`) |
 
-`frame-change` and `amend-feature` decide the tier explicitly and say so out loud. Deciding a change is tier 0 *is* the design step. Skipping the decision is the overhead, not performing it.
+`frame-change` decide the tier explicitly and say so out loud. Deciding a change is tier 0 *is* the design step. Skipping the decision is the overhead, not performing it.
 
 See [Ceremony tiers](ceremony-tiers.md).
 

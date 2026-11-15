@@ -15,7 +15,7 @@
 
 When a write-dogfood catalog **already exists** and cases must be executed rather than handed to a human.
 
-**Not for:** authoring ([`write-dogfood`](write-dogfood.md)) or committed e2e ([`validate-ui`](validate-ui.md)).
+**Not for:** authoring ([`write-dogfood`](write-dogfood.md)) or committed e2e ([`validate-feature`](validate-feature.md)).
 
 ## The Iron Law
 
@@ -68,5 +68,5 @@ Earlier runs still burned browser tokens ticking guide checkboxes even though D1
 ## See also
 
 - [`write-dogfood`](write-dogfood.md) — author cases + render shell
-- [`validate-ui`](validate-ui.md) — the acceptance drive
+- [`validate-feature`](validate-feature.md) — the acceptance drive
 - [`root-cause`](root-cause.md) — product defects mid-run (deferred accept)

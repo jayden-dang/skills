@@ -14,7 +14,7 @@ The standard objection to spec-driven development is that it buries a two-line c
 
 This is the part that gets missed.
 
-Naming the tier is not a way to get out of designing. It is the design, performed at the smallest scale the change deserves. `frame-change` requires the tier to be **stated out loud** — its completion criterion is literally "you have said *This is tier N because…*" — and `amend-feature` requires the same classification against the existing spec.
+Naming the tier is not a way to get out of designing. It is the design, performed at the smallest scale the change deserves. `frame-change` requires the tier to be **stated out loud** — its completion criterion is literally "you have said *This is tier N because…*" — and `frame-change` requires the same classification against the existing spec.
 
 An agent that silently concludes "this is too small for process" has not made the decision. It has skipped it. From `frame-change`'s rationalization table:
 
@@ -31,7 +31,7 @@ The output of a tier-0 pass can be three sentences. The *process* runs every tim
 Two skills own the tier decision, and they cover different ground:
 
 - [`frame-change`](../skills/frame-change.md) decides the tier for **new** work — a feature or component nothing has spec'd. Step 5 of its checklist is "Decide the ceremony tier — out loud."
-- [`amend-feature`](../skills/amend-feature.md) decides it for a small change to an **already-shipped, spec'd** feature. Step 2 is "Classify the change — out loud," against the existing requirements.
+- [`frame-change`](../skills/frame-change.md) decides it for a small change to an **already-shipped, spec'd** feature. Step 2 is "Classify the change — out loud," against the existing requirements.
 
 Two other skills feed into the decision rather than making it. [`root-cause`](../skills/root-cause.md) exits into the tier-1 mini-spec flow by construction: a fix requirement plus a guard. [`scan-architecture`](../skills/scan-architecture.md) ends by assigning its chosen candidate a tier, and explicitly denies architecture work any exemption — anything tier 1 or above goes to `frame-change` like everything else.
 
@@ -63,11 +63,11 @@ If no existing feature owns the behavior, the mini-spec lands in `docs/specs/fix
 
 ## What escalation looks like
 
-The tier is a claim about the work, and claims get falsified. Both `frame-change` and `amend-feature` are built to escalate mid-flight.
+The tier is a claim about the work, and claims get falsified. Both `frame-change` are built to escalate mid-flight.
 
 `frame-change` decomposes when the request spans multiple independent subsystems: it names the sub-features, their relationships, and the build order, then continues with the first one only. Each sub-feature gets its own full spec cycle.
 
-`amend-feature` escalates when the change turns out to be genuinely new scope. Its red flags are precise about what that means:
+`frame-change` escalates when the change turns out to be genuinely new scope. Its red flags are precise about what that means:
 
 - You are inventing behavior the spec never described.
 - The "small" change grew a design decision with real alternatives.
@@ -87,5 +87,5 @@ There is no tier at which an agent may write production code without a failing t
 
 - [The gates](../concepts/gates.md) — what stays constant across all three tiers
 - [`frame-change`](../skills/frame-change.md) — decides the tier for new work
-- [`amend-feature`](../skills/amend-feature.md) — decides it for changes to shipped features
+- [`frame-change`](../skills/frame-change.md) — decides it for changes to shipped features
 - [Tier 1 bugfix walkthrough](../examples/tier-1-bugfix.md) — the mini-spec, end to end

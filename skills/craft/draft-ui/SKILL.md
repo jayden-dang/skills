@@ -1,21 +1,14 @@
 ---
 name: draft-ui
-version: 1.3.0
-description: >-
-  Use when a screen or feature's look and feel needs deciding with
-  the user before it is specified or built — "what should this look like",
-  "show me a few design directions", "make some variants and let me pick", a
-  UI mockup exploration clicked through in the real browser. Produces 2–5
-  divergent real-HTML variants behind a floating switcher (embedded in the
-  running app, or standalone pages when no app exists) and a review-and-amend
-  loop. An unshipped surface locks a ui-brief.md that design-solution lifts.
-  A surface that already ships promotes the winner in place and updates the
-  owning design.md UI design lines. Not for judging an already built diff
-  (inspect-ui), logic or state spikes (run-spike), or a standalone document
-  page (craft-page).
+version: 1.4.0
+description: "Use when a screen or feature's look, or what it does when used, needs deciding with the user before it is specified or built: \"show me a few design directions\", \"make it clickable so I can feel it\", undo versus confirm, how a slow or failed call feels. Produces 2 to 5 divergent real-HTML variants behind a switcher, or 2 to 3 runnable takes of one flow, a pick from the user, and a locked ui-brief.md that design-solution lifts. Not for judging a built diff (inspect-ui), a logic spike (run-spike), or a standalone page (craft-page)."
 ---
 
 # Draft UI
+
+**What the surface does is the open question, not how it looks** (what happens on the
+press, optimistic versus after the call, undo versus confirm, how a slow or failed call
+feels): read `interaction.md` beside this file and follow it in place of the steps below.
 
 Deciding a surface's look is a workflow, not a one-shot render: divergent
 directions built as real HTML, reviewed by the user in the browser, amended,
@@ -106,7 +99,7 @@ not stop for `design-solution` or `plan-tasks`. Delete the switcher and the
 losing variants. Keep the existing tests green. WHEN that surface has no test
 at the view-model seam, add a characterization test there before the
 promotion. A winner that adds behavior the spec never described routes that
-part through `amend-feature`.
+part through `frame-change`.
 
 *Done when: the tree has the winner, no switcher, `## UI design` matches it,
 and the seam test is green.*

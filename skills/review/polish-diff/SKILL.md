@@ -1,16 +1,13 @@
 ---
 name: polish-diff
-version: 1.5.0
-description: Use when changed code needs a quality cleanup actually applied rather than
-  reported — code that reimplements a helper the repo already has, needless
-  complexity, dead code, wasted work or repeated I/O, tech debt, a bandaid fix
-  at the wrong depth. The behavior-preserving refactor over a diff, branch, or
-  PR before merge, and the execute-family close step when a polish predicate
-  holds. For correctness bugs, a crash, or a merge verdict use inspect-change
-  or root-cause instead.
+version: 1.6.0
+description: "Use when changed code needs a quality cleanup actually applied rather than reported — code that reimplements a helper the repo already has, needless complexity, dead code, wasted work or repeated I/O, tech debt, a bandaid fix at the wrong depth — or when the user asks for an aggressive comment-deletion pass (\"strip the comments\"). The behavior-preserving refactor over a diff, branch, or PR before merge, and the execute-family close step when a polish predicate holds. For correctness bugs, a crash, or a merge verdict use inspect-change or root-cause instead."
 ---
 
 # Polish Diff
+
+**The user asked for an aggressive comment-deletion pass** ("strip the comments", "no
+comments"): read `comments.md` beside this file and follow it. It runs only on that ask.
 
 Four cleanup agents read the diff from four angles, then you apply what they find. The deliverable is **cleaner code that behaves identically** — not a report, and not a bug fix.
 
@@ -56,7 +53,7 @@ Flag changes implemented at the wrong depth. Special cases layered onto shared i
 ### Comment discipline (controller applies; may fold into Simplification)
 
 Default-zero still applies here. WHEN the diff is comment-heavy or the user
-asked for an aggressive comment pass → **name** `/no-comments` for them to run
+asked for an aggressive comment pass → **name** `/polish-diff` for them to run
 (do not invoke it). Otherwise:
 
 - **Delete or rewrite:** comments that restate the next line; narrate control
@@ -72,7 +69,7 @@ pass by the controller when subagents are the four angles only).*
 
 Dedup findings that point at the same line or the same underlying mechanism — four angles routinely see one flaw from four sides. Then drop, without arguing:
 
-- anything whose fix would change observable behavior (that is a design change; route it to `amend-feature` or `reroute-plan`)
+- anything whose fix would change observable behavior (that is a design change; route it to `frame-change` or `reroute-plan`)
 - anything requiring edits well outside the pinned diff
 - anything you judge a false positive
 
@@ -136,4 +133,4 @@ Run the four angles yourself, sequentially, in one context — Reuse, then Simpl
 | "It's much cleaner if I also touch these three files" | Outside the pinned diff is outside scope. The cleanup you cannot bound is the cleanup nobody can review |
 | "The suite is slow — the affected tests are enough" | Outside a close, the baseline you recorded in step 2 is the only proof you have, and a narrower re-run proves something narrower than what you are about to claim. Inside a close, the close's whole-suite run is that proof |
 | "No findings came back, so I'll look harder for something" | Confirming the code is already clean IS the deliverable. A manufactured finding costs a real edit against a fake cost |
-| "Behavior technically changed, but strictly for the better" | That is a design change wearing a cleanup's clothes. Route it to `amend-feature` and let it be seen |
+| "Behavior technically changed, but strictly for the better" | That is a design change wearing a cleanup's clothes. Route it to `frame-change` and let it be seen |

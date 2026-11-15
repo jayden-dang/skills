@@ -71,7 +71,7 @@
     "eval_name": "amend-delivered-road-binding",
     "kind": "behavior",
     "derived_from": "TESTS.md § 2026-10-30 — a roadmap item delivered by amending a feature (1.5.0 → 1.6.0)",
-    "prompt": "Tier-1 mini-spec from amend-feature: this change to PLAN (bound to ROAD-2) is how roadmap item ROAD-5 gets delivered; there is no separate feature.",
+    "prompt": "Tier-1 mini-spec from frame-change: this change to PLAN (bound to ROAD-2) is how roadmap item ROAD-5 gets delivered; there is no separate feature.",
     "assertions": [
       "the catalog cell reads `ROAD-2 amends ROAD-5`",
       "tasks.md gains a `## ROAD-5 amendment:` group with unticked tasks before any code",

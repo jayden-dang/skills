@@ -247,7 +247,7 @@ The reports are **not merged**. They are presented under separate headings, un-r
 
 Green unit tests prove the assertions someone wrote pass. They do not prove the feature works.
 
-The checklist is derived from the spec, keyed to requirement ID, and written to `.skills/shell-acceptance.md`. The UI slice goes to [`validate-ui`](../skills/validate-ui.md):
+The checklist is derived from the spec, keyed to requirement ID, and written to `.skills/shell-acceptance.md`. The UI slice goes to [`validate-feature`](../skills/validate-feature.md):
 
 ```ts
 test('switching modules preserves unsaved editor text', { tag: '@SHELL-1.3' }, async ({ page }) => {

@@ -36,7 +36,7 @@ That flag used to carry two things: who may start a skill, and what the operator
 
 > An agent may start any skill. It may not supply what only the operator can: an approval, an answer, a merge.
 
-So a skill that stops for approval stops for whoever started it. `/shape`'s `--auto` and `--go` are approvals given in advance, and come only from the operator's own message or a runner they configured. Four skills start only on an explicit ask, because loading them changes the whole session, deletes text or publishes: `no-comments`, `cut-release` and `go`.
+So a skill that stops for approval stops for whoever started it. `/shape`'s `--auto` and `--go` are approvals given in advance, and come only from the operator's own message or a runner they configured. Four skills start only on an explicit ask, because loading them changes the whole session, deletes text or publishes: `polish-diff`, `cut-release` and `go`.
 
 **Two kinds of hand-off.** `REQUIRED SUB-SKILL: use \`x\`` invokes the next skill. Naming `/x` in a reply leaves it to the operator. A skill uses the first when the next step needs nothing from them and the second when the step is theirs to decide. A skill may still carry `disable-model-invocation: true`; a hand-off to one is a dead end, and `scripts/lint-write-handoffs.py` fails it.
 
@@ -45,20 +45,20 @@ So a skill that stops for approval stops for whoever started it. `/shape`'s `--a
 | Bucket | Skills | Kind |
 |---|---|---|
 | meta | `author-skills` | user |
-| setup | `configure-repo`, `bootstrap-repo` | user |
+| setup | `configure-repo` | user |
 | discovery | `frame-change`, `clarify-decisions`, `research`, `run-spike`, `define-domain`, `understand` | model |
 | | `interpret-session` | user |
 | spec | `specify-behavior`, `design-solution`, `plan-tasks` | model |
-| execution | `build-in-waves`, `build-by-story`, `build-inline`, `execute-common`, `test-first`, `root-cause`, `prove-claim`, `audit-trace`, `load-subgraph`, `isolate-workspace`, `hold-stage` | model |
+| execution | `build-in-waves`, `build-by-story`, `build-inline`, `execute-common`, `test-first`, `root-cause`, `prove-claim`, `audit-trace`, `load-subgraph`, `isolate-workspace`, `inspect-change` | model |
 | review | `inspect-change`, `polish-diff`, `vet-feedback`, `vet-source`, `speak-outer`, `inspect-invariants` | model |
-| acceptance | `validate-feature`, `validate-api`, `validate-ui`, `write-dogfood`, `run-dogfood` | model |
+| acceptance | `validate-feature`, `write-dogfood`, `run-dogfood` | model |
 | craft | `craft-page` | model |
 | ship | `land-branch`, `record-verdict` | model |
 | | `cut-release` | user |
-| track | `amend-feature`, `reroute-plan`, `realign-spec` | model |
+| track | `frame-change`, `reroute-plan`, `realign-spec` | model |
 | | `triage`, `refresh-roadmap-status`, `assess-milestone`, `scan-architecture`, `map-features`, `write-handoff` | user |
 | project | `plan-milestones` | model |
-| | `define-project`, `assess-pivot-impact` | user |
+| | `define-project` | user |
 
 Full tables: [Skill reference](../skills/README.md) and [`AGENTS.md` §11](../../../AGENTS.md#11-quick-reference-every-skill).
 
@@ -76,8 +76,8 @@ engineering skills (2026-08-16):
 | Model-invocable with **no** caller — description-triggered entry points | 5 |
 
 The third row is the one worth reading carefully, because "no caller" looks like
-an orphan and mostly is not. `amend-feature`,
-`vet-feedback`, `vet-source`, `speak-outer`, `hold-stage`, and
+an orphan and mostly is not. `frame-change`,
+`vet-feedback`, `vet-source`, `speak-outer`, `inspect-change`, and
 `run-dogfood` are **entry points**: they fire on what the user
 says (walkthrough is only *named* by `write-dogfood`). `write-dogfood`
 is a REQUIRED alternative of `prove-claim`; the execute-family close sequence
@@ -86,7 +86,7 @@ invisible — it does not fail, it simply never appears — so those seven carry
 the highest trigger-testing burden in the set.
 
 The census also surfaced its own gaps — `polish-diff`, `record-verdict`,
-`record-debt`, and `define-system-doc` were shipping without a page, and
+`record-debt`, and `define-project` were shipping without a page, and
 `record-debt` was not in the index at all. All four now have one, so
 [`docs/guide/skills/`](../skills/README.md) covers every engineering skill.
 

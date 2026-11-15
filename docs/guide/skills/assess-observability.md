@@ -8,7 +8,7 @@
 | **Invocation** | model-invocable |
 | **Reads** | live telemetry (read-only), `docs/agents/project.md` Remote environments |
 | **Writes** | a finding set in the session only |
-| **Calls** | [`debug-remote`](debug-remote.md) if a live symptom appears; names `/define-system-doc` and `/configure-repo` |
+| **Calls** | [`debug-remote`](debug-remote.md) if a live symptom appears; names `/define-project` and `/configure-repo` |
 | **Called by** | description match; on-ramp “is tracing complete enough?” |
 
 ## When it fires
@@ -22,13 +22,13 @@ NO COMPLETENESS STAMP WITHOUT A GREEN FINDING SET
 NO CANONICAL OPS OR STANDARDS FILE FROM THIS SKILL
 ```
 
-OTLP to a backend is one row. `docs/ops/observability.md` is authored by `/define-system-doc`, never here — including not as Draft.
+OTLP to a backend is one row. `docs/ops/observability.md` is authored by `/define-project`, never here — including not as Draft.
 
 ## Finding set
 
 Must rows (identity, version, environment, propagation, current semconv, SERVER 4xx unset, log join, golden signals, sampling that keeps rare errors, searchable backend, PII, black-box). `pass` needs a proving **read**. Any `fail` or `unresolved` Must row → verdict `not-complete`. Profiles are not-must (Alpha).
 
-Failed rows become `frame-change` / `amend-feature`, promoted local → dev → staging → prod. Do not PR 4xx → Error “for the board.”
+Failed rows become `frame-change`, promoted local → dev → staging → prod. Do not PR 4xx → Error “for the board.”
 
 ## Why it is written the way it is
 
@@ -37,5 +37,5 @@ Open stamp RED **refused** the VP stamp — the gate already held. The recorded 
 ## See also
 
 - [`debug-remote`](debug-remote.md) — incident, not readiness
-- [`define-system-doc`](define-system-doc.md) — Approved ops/standards maps
+- [`define-project`](define-project.md) — Approved ops/standards maps
 - [On-ramps](../process/on-ramps.md)

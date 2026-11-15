@@ -8,13 +8,13 @@ model-invocable skill, or name the `/slash` for the user to run.
 
 | Situation | Start here |
 |---|---|
-| Brand-new project, empty directory | `/bootstrap-repo` |
+| Brand-new project, empty directory | `/configure-repo` |
 | Existing repo, adopting this skill set | `/configure-repo` |
 | Ask is short and vague; you want it turned into a proper prompt first | `/forge-prompt` |
-| You want an agent to keep working unattended until a condition holds (`/goal`) | `/forge-goal` |
+| You want an agent to keep working unattended until a condition holds (`/goal`) | `/forge-prompt` |
 | You do not yet have a path-verified model of the subsystem (never read it, cannot trace a request to its store) | `understand` (or just ask how it works) |
 | New feature, nothing spec'd yet | `frame-change` |
-| Small change to an already-shipped, spec'd feature | `amend-feature` |
+| Small change to an already-shipped, spec'd feature | `frame-change` |
 | Something is broken (clear unexpected behavior) | `root-cause` |
 | Broken on a **deployed** environment (prod / staging / remote dev; traces, OpenObserve, request id) | `debug-remote` (then `root-cause` with the pack) |
 | Is our tracing / OpenObserve / sampling complete enough? | `assess-observability` |
@@ -22,12 +22,12 @@ model-invocable skill, or name the `/slash` for the user to run.
 | Want to try a finished feature by hand | `write-dogfood` |
 | Have a guide from write-dogfood and want the agent to run every case | `run-dogfood` |
 | Incoming issue or external PR you did not author | `/triage` |
-| Several approved tickets on the board, and you want PRs when you are back | `/go` (runs `deliver-issues`; `/go #N` for named tickets) |
-| A build is running or stopped halfway and you need to say where it stands | `/show-run-status` |
+| Several approved tickets on the board, and you want PRs when you are back | `/go` (runs `go`; `/go #N` for named tickets) |
+| A build is running or stopped halfway and you need to say where it stands | `/board` |
 | Work merged last week and you want the edge cases it missed | `/audit-shipped` |
 | Tool output, retrieved docs, or vendor README is instructing you | `vet-source` |
 | Manager / user asked what happened; standup status; person-facing reply | `speak-outer` |
-| Working set is a dozen IDs; this act uses one file | `hold-stage` |
+| Working set is a dozen IDs; this act uses one file | `inspect-change` |
 | Codebase feels muddy, want a refactor target | `/scan-architecture` |
 | Session ending with work unfinished | `/write-handoff` |
 | Cutting a version | `/cut-release` |
@@ -35,8 +35,8 @@ model-invocable skill, or name the `/slash` for the user to run.
 | Mid-execution plan is wrong | `reroute-plan` |
 
 | Why was this designed this way / design archaeology | `why` |
-| Aggressive comment deletion pass | `/no-comments` |
-| Session lessons into skill edits | `/reflect` |
+| Aggressive comment deletion pass | `/polish-diff` |
+| Session lessons into skill edits | `/author-skills` |
 
 Three rules of thumb:
 

@@ -27,10 +27,10 @@ is the full chain they wrap.
         ┌────────────────────┴─────────────────────────────────────────────┐
         ▼                                                                    │
   /forge-prompt ── "my ask is vague" ── hands back one prompt to paste       │
-  /forge-goal  ── "run it unattended" ── hands back one /goal to paste       │
+  /forge-prompt  ── "run it unattended" ── hands back one /goal to paste       │
         │                                                                    │
  SETUP (once)                                                                 │
-  /bootstrap-repo (greenfield)  or  /configure-repo (existing code)           │
+  /configure-repo (an empty directory, or existing code)                    │
   optional: /define-project · plan-milestones · /map-features (brownfield)    │
         │                                                                    │
  IDEATION → SPEC                          BUILD                    SHIP
@@ -49,9 +49,9 @@ is the full chain they wrap.
 
  FIVE COMMANDS (docs/guide/workflow.md): /idea ─► /shape #N ─► /go ─► /board ─► /cut-release
 
- MAINTENANCE: amend-feature · /triage · /scan-architecture
+ MAINTENANCE: frame-change · /triage · /scan-architecture
               · /map-features · understand · /write-handoff · realign-spec
-              · /show-run-status · /deliver-issues (model-invocable; /go runs it) · /audit-shipped
+              · /board · /go (model-invocable; /go runs it) · /audit-shipped
 ```
 
 **Ceremony tiers** decide how much of the chain you run (see
@@ -103,7 +103,7 @@ Full skill index: [Skill reference](skills/README.md) · laws: [`AGENTS.md`](../
    flatten Engineer Pack onto a harness that already has the `jdk` plugin.
    Nothing is installed *into* your app repo beyond optional markdown.
 2. **Wire the repo**
-   - **Greenfield / empty:** **`/bootstrap-repo`** → stack + harness + one green test → then configure.
+   - **Greenfield / empty:** **`/configure-repo`** → stack + harness + one green test → then configure.
    - **Existing codebase:** **`/configure-repo` only** (do not bootstrap).
 3. **`/configure-repo`** — tracker, labels, verify commands, cold-start drive recipe, release steps, team,
    posture, optional Remote environments; writes `docs/agents/*.md`, seeds
@@ -144,7 +144,7 @@ You mostly describe the idea and **approve files**; the rest chains:
 8. **`inspect-change`** — Standards + Spec; neighbors again via **`load-subgraph`**.
 9. **Close sequence** (one home: `skills/execution/execute-common/SKILL.md`):
    **`polish-diff`** only when a polish predicate holds; **`validate-feature`**
-   (`validate-api` / `validate-ui`). A product walk (`write-dogfood`, `run-dogfood`) is yours to run.
+   (`validate-feature`). A product walk (`write-dogfood`, `run-dogfood`) is yours to run.
 10. **`land-branch`** — validate close evidence, commit residue, then perform the resolved merge / PR / keep / discard / block action
     (agent-authored PR title and body are reviewer truth).
 11. **`/cut-release`** when shipping a version.
@@ -156,23 +156,23 @@ The table lives in [on-ramps](process/on-ramps.md) — one home, reads it when t
 
 ## 3. Skill index (engineering package)
 
-Full tables: [Skill reference](skills/README.md) (77 engineering skills).  
+Full tables: [Skill reference](skills/README.md) (62 engineering skills).  
 
 `U` = you run `/name` · `m` = model-invoked
 
 | Category | Skills (see also [AGENTS.md §11](../../AGENTS.md#11-quick-reference-every-skill)) |
 |---|---|
 | **meta** | `/author-skills` |
-| **setup** | `/configure-repo`, `/bootstrap-repo` |
-| **discovery** | `frame-change`, `clarify-decisions`, `research`, `run-spike`, `define-domain`, `/forge-goal`, `/forge-prompt`, `/interpret-session`, `understand` |
+| **setup** | `/configure-repo` |
+| **discovery** | `frame-change`, `clarify-decisions`, `research`, `run-spike`, `define-domain`, `/forge-prompt`, `/interpret-session`, `understand` |
 | **spec** | `specify-behavior`, `design-solution`, `plan-tasks` |
-| **execution** | `build-in-waves`, `build-by-story`, `build-inline`, `/go`, `deliver-issues`, `execute-common`, `test-first`, `root-cause`, `debug-remote`, `assess-observability`, `prove-claim`, `audit-trace`, **`load-subgraph`**, `isolate-workspace`, `hold-stage` |
+| **execution** | `build-in-waves`, `build-by-story`, `build-inline`, `/go`, `go`, `execute-common`, `test-first`, `root-cause`, `debug-remote`, `assess-observability`, `prove-claim`, `audit-trace`, **`load-subgraph`**, `isolate-workspace`, `inspect-change` |
 | **review** | `inspect-change`, `/audit-shipped`, `polish-diff`, `vet-feedback`, `vet-source`, `speak-outer`, `inspect-invariants` |
-| **acceptance** | `validate-feature`, `validate-api`, `validate-ui`, `write-dogfood`, `run-dogfood` |
+| **acceptance** | `validate-feature`, `write-dogfood`, `run-dogfood` |
 | **craft** | `craft-page`, `make-video` |
 | **ship** | `land-branch`, `record-verdict`, `/cut-release` |
-| **track** | `amend-feature`, `reroute-plan`, `realign-spec`, `/triage`, `/scan-architecture`, **`/map-features`**, `/write-handoff`, `/refresh-roadmap-status`, `/chart-progress`, `refresh-lanes`, `/brief-road`, `/assess-milestone`, `/show-run-status`, `/idea`, `/shape`, `/board` |
-| **project** | `/define-project`, `/assess-pivot-impact`, `plan-milestones` |
+| **track** | `frame-change`, `reroute-plan`, `realign-spec`, `/triage`, `/scan-architecture`, **`/map-features`**, `/write-handoff`, `/refresh-roadmap-status`, `refresh-lanes`, `/assess-milestone`, `/board`, `/idea`, `/shape`, `/board` |
+| **project** | `/define-project`, `plan-milestones` |
 
 ## Where to go next
 

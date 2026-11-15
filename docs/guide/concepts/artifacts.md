@@ -146,7 +146,7 @@ Written once by [`configure-repo`](../skills/configure-repo.md) and then read by
 | `issue-tracker.md` | tracker choice, operations, PR surface, **Publish unit** (default feature), **Program sync** (default local), close linkage | `triage`, `plan-tasks`, `land-branch`, `cut-release` |
 | `triage-labels.md` | canonical role → this repo's label strings | `triage` |
 
-`## Run locally (dev)` is notable because it is written *by* the acceptance skills rather than by `configure-repo`: if `validate-api` or `validate-ui` has to discover how to start the app, it records the command it found, so the next run is cheap.
+`## Run locally (dev)` is notable because it is written *by* the acceptance skills rather than by `configure-repo`: if `validate-feature` has to discover how to start the app, it records the command it found, so the next run is cheap.
 
 ## `.out-of-scope/` — the rejection knowledge base
 
@@ -188,7 +188,7 @@ Working artifacts that pass between agents as **file paths**, never as pasted te
 | `review-<base7>..<head7>.diff` | `build-in-waves` | Commit list, diffstat, and full diff — assembled by the agent from `git log`/`git diff` as the reviewer's view |
 | `<slug>-scan.md` | scan subagents | A findings digest of a touched surface, so raw source never floods the controller's context |
 | `<slug>-req-review.md`, `<slug>-design-review.md`, `<slug>-plan-review.md` | review subagents | Independent verification of a spec/design/plan's code-facing claims. One file **per phase** so the requirements, design, and plan reviews never clobber each other |
-| `<slug>-acceptance.md` | `validate-feature` | The acceptance ledger, sliced between `validate-api` and `validate-ui` |
+| `<slug>-acceptance.md` | `validate-feature` | The acceptance ledger, sliced between `validate-feature` |
 
 Every per-feature scratch file is keyed by `<slug>` — the feature's short identifier (its feature code once one exists) — and suffixed by the phase that writes it, so concurrent features and successive phases never share a filename.
 

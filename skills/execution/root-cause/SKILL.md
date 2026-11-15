@@ -65,7 +65,7 @@ When Phase 2 is complete and you have a **path or stable term**, and **before** 
 
 ### Ops docs after Phase 2 (optional — never replaces the red loop)
 
-**Only after Phase 2** (Phases 1–2 still require a red-capable command first). **Load:** `skills/project/define-system-doc/consult-recipe.md`. **Paths when applicable:** `docs/ops/runbooks.md` (and runbook slugs), `docs/ops/observability.md`, `docs/ops/disaster-recovery.md` — advisory Phase 3+ context only, never a substitute for the red loop. No-op when absent; suggest once `/define-system-doc ops/runbooks|observability|disaster-recovery` if material; never auto-invoke.
+**Only after Phase 2** (Phases 1–2 still require a red-capable command first). **Load:** `skills/project/define-project/consult-recipe.md`. **Paths when applicable:** `docs/ops/runbooks.md` (and runbook slugs), `docs/ops/observability.md`, `docs/ops/disaster-recovery.md` — advisory Phase 3+ context only, never a substitute for the red loop. No-op when absent; suggest once `/define-project ops/runbooks|observability|disaster-recovery` if material; never auto-invoke.
 
 ### External dependency evidence after Phase 2 (conditional — before Phase 3)
 

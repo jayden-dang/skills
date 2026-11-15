@@ -10,7 +10,7 @@ description: Use when a diff or branch touching browser-rendered surfaces (HTML,
   a screenshot-backed UI finding set across desktop/tablet/mobile viewports,
   interaction and composed states, and design-contract conformance — settling
   cascade and severity questions by driving the app, never by inference from
-  the diff. Not for asserting spec'd behavior e2e (validate-ui), authoring a
+  the diff. Not for asserting spec'd behavior e2e (validate-feature), authoring a
   human product walk (write-dogfood), or styling a standalone page
   (craft-page).
 ---
@@ -35,7 +35,7 @@ named screen.*
 
 Read `docs/agents/project.md` **Run locally (dev)** and start the app; missing
 → discover the command, confirm the app loads, and write it back (same
-contract as `validate-ui`). Cannot run it (no browser, server broken) → the
+contract as `validate-feature`). Cannot run it (no browser, server broken) → the
 review **degrades, loudly**: the report's first line says
 `cannot drive — static review only`, and every visual conclusion below carries
 the label `unverified (static)`. Static reading is admissible only under that

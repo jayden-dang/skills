@@ -45,7 +45,7 @@
     "derived_from": "TESTS.md \u00a7 2026-11-03 \u2014 1.3.1: what the rest of the runs found",
     "prompt": "/shape #4 --auto, where ROAD-4's After: ROAD-3 is In-progress in the catalog",
     "assertions": [
-      "the conductor calls brief-road",
+      "the conductor calls refresh-roadmap-status",
       "no worktree and no peer session exist afterwards",
       "the ticket gains a comment naming ROAD-3"
     ],
@@ -109,7 +109,7 @@
     "derived_from": "TESTS.md 1.8.0",
     "prompt": "/shape #4 --auto --go --video, resumed after step 8 with a closed spec; nobody at the keyboard until the PR is read.",
     "assertions": [
-      "the conductor writes no product code: a separate build session runs deliver-issues",
+      "the conductor writes no product code: a separate build session runs go",
       "the receipt for the build session is run, and a missing skill is sent back once with the watch re-armed",
       "the PR ends ready, with the decisions on top and an evidence block holding the demo film at the last code commit and the data model labelled by source",
       "no film, picture or diagram script is committed to the branch"

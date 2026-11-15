@@ -6,7 +6,7 @@ steps.
 A later agent has never seen this app. `npm test` does not teach it how to boot
 the process, click a feature, and prove the result survived reload. That agent
 reads `docs/agents/verify.md` (and the **Run locally (dev)** table in
-`project.md`). `validate-feature`, `validate-ui`, `validate-api`, and
+`project.md`). `validate-feature`, and
 `write-dogfood` consume it.
 
 ## Offer
@@ -23,7 +23,7 @@ Wait for Yes or Skip. Do not generate on a silent default.
 
 | Thought | Reality |
 |---|---|
-| "`npm test` is enough — validate-ui will discover the rest" | RED: a notes app with `"dev": "vite"` left **Run locally** blank and wrote no drive file. The next agent invented clicks. |
+| "`npm test` is enough — validate-feature will discover the rest" | RED: a notes app with `"dev": "vite"` left **Run locally** blank and wrote no drive file. The next agent invented clicks. |
 | "I'll fill Run locally later" | Empty rows are what shipped. Fill them in this decision. |
 | "A Playwright spec is the recipe" | Specs are durable tests. The recipe is how a cold agent launches and drives before those specs exist. |
 | "I'll install Playwright so the drive is repeatable" | A web UI is driven with kimi-webbridge in the user's browser. Do not create a browser harness for the recipe |

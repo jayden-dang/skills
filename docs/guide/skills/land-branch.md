@@ -58,7 +58,7 @@ Read `Status:`. Still `Approved` or `In-progress`, no `- [ ]` left in `tasks.md`
 
 ## Recording the delivery
 
-On a PR or a merge, land-branch writes `Delivered-by: PR #N` or `Delivered-by: <merge sha>` into the feature's `tasks.md` (inside the `## ROAD-N amendment` group for an amendment) and commits it as `docs(<CODE>): record delivery`. With `Delivery proof: required`, [`chart-progress`](chart-progress.md) counts an item done only when that line resolves to a commit on the integration ref. Without the step, both clean baseline runs merged and left the item in review.
+On a PR or a merge, land-branch writes `Delivered-by: PR #N` or `Delivered-by: <merge sha>` into the feature's `tasks.md` (inside the `## ROAD-N amendment` group for an amendment) and commits it as `docs(<CODE>): record delivery`. With `Delivery proof: required`, [`refresh-roadmap-status`](refresh-roadmap-status.md) counts an item done only when that line resolves to a commit on the integration ref. Without the step, both clean baseline runs merged and left the item in review.
 
 ## The ticket
 

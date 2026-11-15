@@ -1,10 +1,13 @@
 ---
 name: configure-repo
-version: 1.17.0
-description: Use when an existing repo is to adopt this skill set, its docs/agents config is missing or incomplete, or another skill reports a missing config file. Produces docs/agents/project.md, issue-tracker.md, triage-labels.md and verify.md, the seed spec files and the pointer block in the agent instructions. Not for an empty directory (bootstrap-repo).
+version: 1.18.0
+description: Use when an existing repo is to adopt this skill set, its docs/agents config is missing or incomplete, another skill reports a missing config file, or a new project is to be scaffolded in an empty directory. Produces docs/agents/project.md, issue-tracker.md, triage-labels.md and verify.md, the seed spec files and the pointer block in the agent instructions; for an empty directory, first a working skeleton with a test harness, tooling, CI and one passing test.
 ---
 
 # Set Up the Repo
+
+**The directory is empty and a new project is to be started in it**: read `bootstrap.md`
+beside this file and follow it first. It ends by handing back here.
 
 Configure a repository, once, so every other skill can read its answers instead of guessing. The output is a set of agent-facing config files under `docs/agents/`, seed spec files, and a pointer block in the repo's agent instructions.
 

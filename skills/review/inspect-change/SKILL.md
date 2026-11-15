@@ -80,7 +80,7 @@ When `docs/architecture/` exists, REQUIRED SUB-SKILL: use `inspect-invariants` o
 ## 3c. Codebase navigation docs (optional context)
 
 **Applicability:** diff paths intersect modules, ownership, or dependency surfaces in
-standing nav docs. **Load:** `skills/project/define-system-doc/consult-recipe.md`.
+standing nav docs. **Load:** `skills/project/define-project/consult-recipe.md`.
 
 **Paths:** `docs/codebase/modules.md`, `ownership.md`, `dependencies.md`.
 
@@ -89,7 +89,7 @@ boundaries/ownership/deps as advisory findings (not a hard merge gate by themsel
 Ownership docs are **not** access-control enforcement.
 
 **When absent / non-authoritative:** CONTINUE (no-op). Suggest once
-`/define-system-doc codebase/modules|ownership|dependencies` only when a missing
+`/define-project codebase/modules|ownership|dependencies` only when a missing
 nav doc would clarify the review; never auto-invoke.
 
 *Done when: nav context is held or an explicit no-op for absence.*
@@ -105,7 +105,7 @@ explicit "no rendered surface".*
 
 ## 3e. Stage the spec
 
-REQUIRED SUB-SKILL: use `hold-stage` before the Spec dispatch (and before
+REQUIRED: read `stage.md` beside this file before the Spec dispatch (and before
 the inline Spec walk). Admit the IDs this pinned diff implements or
 violates. Every other ID in the governing spec is **not in this range** —
 still report that list once if the spec promised them; do not write a
@@ -193,4 +193,4 @@ A slot with no answer gets `Unknown` — never omit the line. "Just list the lef
 
 ## Inline fallback (no subagent capability)
 
-No subagent capability in this harness? Run the two axes yourself, sequentially, in one context: **Standards first** — read `standards-baseline.md`, walk the diff against each of its twelve smells, the Security section, and the Production-readiness section — then **Spec** — hold-stage first, then walk admitted IDs (not-in-range once) — then, when step 3d fired, the **UI lane** per `inspect-ui`. Finish and record one axis completely before starting the next, and still present them under separate `## Standards`, `## Spec` (and `## UI`) headings without reranking one against the other. This loses the context isolation two subagents provide, so the discipline of closing out one axis before opening the next is what keeps them from bleeding together.
+No subagent capability in this harness? Run the two axes yourself, sequentially, in one context: **Standards first** — read `standards-baseline.md`, walk the diff against each of its twelve smells, the Security section, and the Production-readiness section — then **Spec** — inspect-change first, then walk admitted IDs (not-in-range once) — then, when step 3d fired, the **UI lane** per `inspect-ui`. Finish and record one axis completely before starting the next, and still present them under separate `## Standards`, `## Spec` (and `## UI`) headings without reranking one against the other. This loses the context isolation two subagents provide, so the discipline of closing out one axis before opening the next is what keeps them from bleeding together.

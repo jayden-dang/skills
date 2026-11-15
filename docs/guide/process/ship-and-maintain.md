@@ -1,6 +1,6 @@
 # Phase 5 — Ship and maintain
 
-**Skills:** [`land-branch`](../skills/land-branch.md) · [`cut-release`](../skills/cut-release.md) · [`realign-spec`](../skills/realign-spec.md) · [`amend-feature`](../skills/amend-feature.md) · [`triage`](../skills/triage.md) · [`show-run-status`](../skills/show-run-status.md) · [`scan-architecture`](../skills/scan-architecture.md) · [`write-handoff`](../skills/write-handoff.md)
+**Skills:** [`land-branch`](../skills/land-branch.md) · [`cut-release`](../skills/cut-release.md) · [`realign-spec`](../skills/realign-spec.md) · [`frame-change`](../skills/frame-change.md) · [`triage`](../skills/triage.md) · [`board`](../skills/board.md) · [`scan-architecture`](../skills/scan-architecture.md) · [`write-handoff`](../skills/write-handoff.md)
 
 ## `land-branch` — prepare locally, then the integration decision
 
@@ -79,19 +79,19 @@ If evidence is partial, say exactly what is missing instead of transitioning.
 
 Finally, re-run the audit-trace check and print the before and after reports side by side, and update the feature's `docs/specs/INDEX.md` entry. Feature overlap is answered by **`load-subgraph`** over live specs, so the refreshed triad and its `INDEX.md` registration are all the next feature's `frame-change` needs — there is nothing to harvest or regenerate.
 
-## `amend-feature` — the maintenance fast lane
+## `frame-change` — the maintenance fast lane
 
 A small in-scope change to an already-shipped, spec'd feature. **A fast lane, not a gate bypass**: every path still exits through `test-first`.
 
 Ground the change in the existing spec, then classify **out loud**:
 
 - **Tier 0** — no behavior change (a recolor, an icon, a label, a copy edit); every existing acceptance criterion still reads true unchanged → `test-first`.
-- **Tier 1** — changes or extends existing spec'd behavior, ≤ ~half a day → mini-spec via `specify-behavior` (amend-feature the requirement, add a `SHALL CONTINUE TO` guard) → `test-first`.
+- **Tier 1** — changes or extends existing spec'd behavior, ≤ ~half a day → mini-spec via `specify-behavior` (frame-change the requirement, add a `SHALL CONTINUE TO` guard) → `test-first`.
 - **Genuinely new scope** → stop amending. Escalate to `frame-change`.
 
 The honest test for escalation: **does the existing spec's intent already cover this behavior?** If you are inventing what it should do, it is new scope.
 
-If the feature has no spec at all, `amend-feature` is the wrong skill — a brand-new capability is `frame-change`, a break is `root-cause`.
+If the feature has no spec at all, `frame-change` is the wrong skill — a brand-new capability is `frame-change`, a break is `root-cause`.
 
 ## `/triage` — the incoming queue
 
@@ -109,9 +109,9 @@ Two rules that are easy to get backwards:
 - **Issues that already carry a state are out of scope.** Triage takes issues with no state role, `needs-triage`, and `needs-info` with reporter activity. Running a planned ticket through triage adds a second, weaker spec.
 - **An "already implemented" close does not write to `.out-of-scope/`.** That knowledge base records *rejections*; logging built features there poisons future dedup checks.
 
-## `/show-run-status` — where a build stands
+## `/board` — where a build stands
 
-[`/show-run-status`](../skills/show-run-status.md) answers "where are we with this feature?" for a build that is running or stopped. It reads the plan, the ledger, git, the unit tests, parked decisions, the ticket and the pull request, and says where they disagree. It changes nothing.
+[`board`](../skills/board.md) answers "where are we with this feature?" for a build that is running or stopped. It reads the plan, the ledger, git, the unit tests, parked decisions, the ticket and the pull request, and says where they disagree. It changes nothing.
 
 ## `/scan-architecture` — the periodic scan
 
@@ -140,5 +140,5 @@ The completion criterion is a skeptic's read: could a fresh agent, given only th
 ## See also
 
 - [Traceability](../concepts/traceability.md) — why `cut-release` can derive its own changelog
-- [Ceremony tiers](../methodology/ceremony-tiers.md) — where `amend-feature` routes each change
+- [Ceremony tiers](../methodology/ceremony-tiers.md) — where `frame-change` routes each change
 - [`realign-spec`](../skills/realign-spec.md) — the skill that keeps specs from becoming fiction

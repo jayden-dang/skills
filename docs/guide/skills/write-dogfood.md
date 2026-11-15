@@ -22,7 +22,7 @@ case, over every user-facing ability — including the visuals, feel, and edge
 cases a human must eyeball. Also when an existing guide needs re-reviewing for
 missing situations.
 
-It complements [`validate-ui`](validate-ui.md), which automates flows into
+It complements [`validate-feature`](validate-feature.md), which automates flows into
 tests. To **execute** a written guide in the browser (with backend probes and a
 fix loop), use [`run-dogfood`](run-dogfood.md).
 
@@ -75,6 +75,6 @@ context carries a one-page brief.
 ## See also
 
 - [`run-dogfood`](run-dogfood.md) — drive the cases with the ledger CLI; gated on a fresh clean review
-- [`validate-ui`](validate-ui.md) — automated sibling
+- [`validate-feature`](validate-feature.md) — automated sibling
 - [`validate-feature`](validate-feature.md) — orchestrator
 - [`prove-claim`](prove-claim.md) — names a dogfood pass for "the feature works"

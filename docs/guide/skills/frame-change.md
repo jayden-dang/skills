@@ -9,7 +9,7 @@
 | **Reads** | `CONTEXT.md` (glossary vocabulary), catalog query over `docs/specs/INDEX.md` (selected cards — not a full-table dump), `docs/agents/project.md`; code, docs, and recent commits near the idea via a scan subagent digest at `.skills/<CODE>/scan.md` |
 | **Writes** | notes, the glossary (`CONTEXT.md`), ADRs, and — via sub-skills — research notes and explicitly-marked throwaway run-spikes; nothing else |
 | **Calls** | [`load-subgraph`](load-subgraph.md); [`clarify-decisions`](clarify-decisions.md), [`define-domain`](define-domain.md), [`research`](research.md), [`run-spike`](run-spike.md), [`specify-behavior`](specify-behavior.md) (tier ≥ 1), [`test-first`](test-first.md) (tier 0) |
-| **Called by** | the user (entry point of the chain); [`amend-feature`](amend-feature.md) when a change turns out to be genuinely new scope |
+| **Called by** | the user (entry point of the chain); [`frame-change`](frame-change.md) when a change turns out to be genuinely new scope |
 
 ## When it fires
 
@@ -17,7 +17,7 @@ At the very start of the idea-to-ship chain — the user wants to add, build, or
 
 `frame-change` is for shaping something *new* — nothing spec'd yet.
 
-A small in-scope change to an **already-shipped, spec'd** feature is [`amend-feature`](amend-feature.md) instead: it reads the existing spec and routes the change to the light lane, escalating back here only when the change is genuinely new scope. If you were handed such a change, hand it to `amend-feature`. The two skills share a shape — both end on a spoken tier decision — but they start from opposite places: `frame-change` from a blank page, `amend-feature` from a spec that already exists.
+A small in-scope change to an **already-shipped, spec'd** feature is [`frame-change`](frame-change.md) instead: it reads the existing spec and routes the change to the light lane, escalating back here only when the change is genuinely new scope. If you were handed such a change, hand it to `frame-change`. The two skills share a shape — both end on a spoken tier decision — but they start from opposite places: `frame-change` from a blank page, `frame-change` from a spec that already exists.
 
 ## The hard gate
 
@@ -137,5 +137,5 @@ The tier decision is forced to be spoken out loud so it cannot be quietly skippe
 ## See also
 
 - [Ceremony tiers](../methodology/ceremony-tiers.md) — the 0/1/2 decision in full
-- [`amend-feature`](amend-feature.md) — the sibling for changes to already-shipped features
+- [`frame-change`](frame-change.md) — the sibling for changes to already-shipped features
 - [`specify-behavior`](specify-behavior.md) — the tier ≥ 1 exit

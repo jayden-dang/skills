@@ -9,7 +9,7 @@
 | **Reads** | the feature's `requirements.md` / `design.md` / `tasks.md` triad, `docs/specs/INDEX.md`, `docs/agents/project.md` (test globs and ignore list for the audit-trace check), the code and tests |
 | **Writes** | edits to the triad (retired/added requirements, task boxes, `Status:`), the feature's row in `docs/specs/INDEX.md` |
 | **Calls** | [`audit-trace`](audit-trace.md) (before and after) |
-| **Called by** | [`land-branch`](land-branch.md) (Approved + Implemented evidence), [`amend-feature`](amend-feature.md); or the user when a spec has drifted or the audit-trace check is reporting errors. **Not** [`cut-release`](cut-release.md) |
+| **Called by** | [`land-branch`](land-branch.md) (Approved + Implemented evidence), [`frame-change`](frame-change.md); or the user when a spec has drifted or the audit-trace check is reporting errors. **Not** [`cut-release`](cut-release.md) |
 
 ## When it fires
 

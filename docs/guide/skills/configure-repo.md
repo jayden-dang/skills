@@ -9,11 +9,11 @@
 | **Reads** | `git remote`, `CLAUDE.md` / `AGENTS.md`, existing lockfiles and CI, tracker labels, `docs/agents/` |
 | **Writes** | `docs/agents/project.md`, `docs/agents/issue-tracker.md`, `docs/agents/triage-labels.md`, `docs/agents/verify.md` (Decision M), seed spec files, the `## Agent skills` block |
 | **Calls** | the discipline of [`prove-claim`](prove-claim.md) (Step 6 gate) |
-| **Called by** | nothing yet — it fires on what the user asks; [`bootstrap-repo`](bootstrap-repo.md) redirects the user here when a directory is not greenfield |
+| **Called by** | nothing yet — it fires on what the user asks; [`configure-repo`](configure-repo.md) redirects the user here when a directory is not greenfield |
 
 ## When it fires
 
-Run it once against a repository that has not been configured for the skill set yet — no `docs/agents/` directory, verify commands unknown, triage labels unmapped. Run it again later only to change the tracker, labels, verify commands, or release steps. It is the entry point for adopting the set into an existing or mature repo, and it is where [`bootstrap-repo`](bootstrap-repo.md) sends the user when the target directory turns out to hold a real project.
+Run it once against a repository that has not been configured for the skill set yet — no `docs/agents/` directory, verify commands unknown, triage labels unmapped. Run it again later only to change the tracker, labels, verify commands, or release steps. It is the entry point for adopting the set into an existing or mature repo, and it is where [`configure-repo`](configure-repo.md) sends the user when the target directory turns out to hold a real project.
 
 Because `disable-model-invocation` is set, no other skill can start it automatically. Skills that depend on its output — [`triage`](triage.md), [`cut-release`](cut-release.md), [`test-first`](test-first.md), [`prove-claim`](prove-claim.md) — name it so the user runs it themselves.
 
@@ -117,6 +117,6 @@ The whole skill is built around a single failure mode: a config that reads plaus
 ## See also
 
 - [Adopting the skill set](../resources/adopting.md) — the wider story of bringing an existing repo under the set
-- [`bootstrap-repo`](bootstrap-repo.md) — the greenfield sibling that hands off here
+- [`configure-repo`](configure-repo.md) — the greenfield sibling that hands off here
 - [Templates](../resources/templates.md) — the `docs/agents/*` seeds this skill writes from
 - [`audit-trace`](audit-trace.md) — the traceability check the configured specs directory and test globs feed

@@ -199,7 +199,7 @@ frame-change (+ load-subgraph) ──► specify-behavior ──► design-solut
 - **Tier 2** (feature): the full triad.
 
 **Optional project layer** (large projects, off by default): `define-project`,
-`assess-pivot-impact` (pivot disposition ledger when shipped code collides with new intent)
+`define-project` (pivot disposition ledger when shipped code collides with new intent)
 maintains a repo-level product vision plus an IDed architecture-invariant spine
 (`docs/architecture/`, each rule an `**ARCH-N**`) that `frame-change`, `design-solution`,
 `plan-tasks`, the execute family, and `inspect-change` consult when present. Feature
@@ -229,17 +229,17 @@ and countered by name. See [The gates](docs/guide/concepts/gates.md).
 
 | Bucket | Skills |
 |---|---|
-| setup | `configure-repo`, `bootstrap-repo` |
-| discovery | `frame-change`, `clarify-decisions`, `research`, `run-spike`, `define-domain`, `forge-goal`, `forge-prompt`, `interpret-session`, `understand` |
+| setup | `configure-repo` |
+| discovery | `frame-change`, `clarify-decisions`, `research`, `run-spike`, `define-domain`, `forge-prompt`, `interpret-session`, `understand` |
 | spec | `specify-behavior`, `design-solution`, `plan-tasks` |
-| execution | `build-in-waves`, `build-by-story`, `build-inline`, `execute-common`, `test-first`, `root-cause`, `debug-remote`, `assess-observability`, `prove-claim`, `audit-trace`, `load-subgraph`, `isolate-workspace`, `hold-stage` |
+| execution | `build-in-waves`, `build-by-story`, `build-inline`, `execute-common`, `test-first`, `root-cause`, `debug-remote`, `assess-observability`, `prove-claim`, `audit-trace`, `load-subgraph`, `isolate-workspace`, `inspect-change` |
 | review | `inspect-change`, `polish-diff`, `vet-feedback`, `vet-source`, `speak-outer`, `inspect-invariants`, `inspect-ui` |
-| acceptance | `validate-feature`, `validate-api`, `validate-ui`, `write-dogfood`, `run-dogfood` |
-| craft | `craft-page`, `draft-ui`, `draft-ux`, `make-video` |
+| acceptance | `validate-feature`, `write-dogfood`, `run-dogfood` |
+| craft | `craft-page`, `draft-ui`, `make-video` |
 | ship | `land-branch`, `record-verdict`, `cut-release` |
 | meta | `author-skills` |
-| track | `amend-feature`, `reroute-plan`, `triage`, `realign-spec`, `refresh-roadmap-status`, `chart-progress`, `refresh-lanes`, `brief-road`, `assess-milestone`, `scan-architecture`, `map-features`, `write-handoff`, `record-debt` |
-| project | `define-project`, `assess-pivot-impact`, `plan-milestones` (optional project / multi-milestone layer) |
+| track | `frame-change`, `reroute-plan`, `triage`, `realign-spec`, `refresh-roadmap-status`, `refresh-lanes`, `assess-milestone`, `scan-architecture`, `map-features`, `write-handoff`, `record-debt` |
+| project | `define-project`, `plan-milestones` (optional project / multi-milestone layer) |
 
 One page per skill in the [skill reference](docs/guide/skills/README.md).
 

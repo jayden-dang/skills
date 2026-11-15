@@ -7,7 +7,7 @@ description: Use when a mid-execution discovery invalidates an already-approved 
   absorb — or when the operator amends a running build — adds a constraint, cuts
   scope, drops a requirement. Produces a blast-radius classification of the lowest invalidated
   artifact plus a re-entry decision or change proposal, never a silent
-  rewrite. Not for a post-ship in-scope tweak (amend-feature), broken code against a
+  rewrite. Not for a post-ship in-scope tweak (frame-change), broken code against a
   still-valid spec (root-cause), or the mechanical reconciliation that runs after
   the decision (realign-spec).
 ---
@@ -67,7 +67,7 @@ Only after the diagnosis go-ahead. Identify the **lowest** level in the chain ge
 | **Plan** | task breakdown / sequencing / coverage; design holds | `plan-tasks` |
 | **Design** | an architecture/design decision; requirements hold | `design-solution` → `plan-tasks` |
 | **Requirements** | what was promised — a criterion is wrong or missing | `specify-behavior` → design → plan |
-| **Vision** | the feature's premise conflicts with product scope | name `/assess-pivot-impact` when shipped code/specs collide with the new premise; else the vision layer (`/define-project`), else escalate to a human |
+| **Vision** | the feature's premise conflicts with product scope | name `/define-project` when shipped code/specs collide with the new premise; else the vision layer (`/define-project`), else escalate to a human |
 
 **The classification law:** pick the *lowest* level with evidence. Rewinding to a higher level "to be safe," without evidence for that higher level, is **prohibited**. A discovery that only breaks the current task's approach does not earn a trip to `specify-behavior` just because the rewind feels safer big.
 
@@ -96,7 +96,7 @@ On proposal approval, route to the matching re-entry. Invoke each as a REQUIRED 
 - **Design** → REQUIRED SUB-SKILL: use `design-solution`, which flows forward into `plan-tasks`.
 - **Requirements** → REQUIRED SUB-SKILL: use `specify-behavior`, which flows forward into design and plan.
 - **Vision** → WHERE shipped code or specs collide with the new premise, **name**
-  `/assess-pivot-impact` for the user (user-invoked; do not invoke it). WHERE the
+  `/define-project` for the user (user-invoked; do not invoke it). WHERE the
   collision is doc-only and `docs/product/vision.md` exists, name
   `/define-project` (update). WHERE neither layer exists, **escalate to the
   user**, and re-enter REQUIRED SUB-SKILL: use `frame-change` **only if** the user
@@ -118,7 +118,7 @@ After the re-entry skill's approval gate passes:
 
 ## Red Flags — wrong skill
 
-- **A post-ship, in-scope tweak** to a shipped feature (a recolor, a copy edit, a small follow-on) → that is `amend-feature`, not reroute-plan. Nothing was "approved and then invalidated" here — the feature already shipped.
+- **A post-ship, in-scope tweak** to a shipped feature (a recolor, a copy edit, a small follow-on) → that is `frame-change`, not reroute-plan. Nothing was "approved and then invalidated" here — the feature already shipped.
 - **Broken code against a still-valid spec** → that is `root-cause`, not reroute-plan. The spec is still true; only the implementation is wrong.
 - **`realign-spec` is an exit, not a decision-maker.** It is the mechanical reconciler that runs *after* the rewind decision, realigning `Status` and the trace. reroute-plan makes the call about which artifact is false; it does not do realign-spec's bookkeeping, and realign-spec does not make the rewind call.
 - The pre-flight plan review inside `build-in-waves` (its pre-dispatch consistency scan) is pre-execution, not a mid-flight discovery — it is not this skill's trigger.

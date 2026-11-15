@@ -1,14 +1,17 @@
 ---
 name: board
-version: 1.4.0
-description: Use when someone asks what is waiting on them, what the agents are doing, what is on the board, or for a standup summary across the open tickets and pull requests. Produces the whole board by state, starting with everything waiting on the user, plus every place the board and the repo disagree. Not for one feature's build (show-run-status) or the roadmap (refresh-roadmap-status).
+version: 1.5.0
+description: Use when someone asks what is waiting on them, what the agents are doing, what is on the board, for a standup summary across the open tickets and pull requests, or where one feature's build stands right now. Produces the whole board by state, starting with everything waiting on the user, plus every place the board and the repo disagree; or one build's status read from its plan, ledger, git, tests, ticket and pull request. Not for the roadmap (refresh-roadmap-status).
 ---
 
 # Board
 
 Answer "what's waiting on me, and what are the agents doing?" across every open ticket,
-in the time it takes to sit down for standup. One feature's build in detail is
-`/show-run-status`; the roadmap is `/refresh-roadmap-status`.
+in the time it takes to sit down for standup. The roadmap is `/refresh-roadmap-status`.
+
+**Asked where one feature's build stands** ("where is the SPAY build", "the LATEFEE run
+stopped, what is left", `/board <CODE>`): read `run-status.md` beside this file and follow
+it in place of the steps below.
 
 ## The Iron Law
 
@@ -50,14 +53,14 @@ The script is read-only, and so is this skill: write nothing to the tracker.
 
    Write `none` only for a section that printed `none`.
 2. **With agents.** What is being built and by whom. Then the ready tickets that are
-   eligible, which `/deliver-issues` would take next, with any open blocker.
+   eligible, which `/go` would take next, with any open blocker.
 3. **Board and repo disagree.** Each line as printed, plus the edit that fixes it. Give
    the label to swap, or the spec to finish. Do not make the edit.
 
 Then one sentence the operator can say at standup, drawn only from slots 1 and 2.
 
 Asked about one ticket (`/board #23`), report its line from each section it appears in,
-and name `/show-run-status <CODE>` for that feature's build.
+and for that feature's build follow `run-status.md`.
 
 ## Red Flags
 

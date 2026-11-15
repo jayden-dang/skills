@@ -31,13 +31,13 @@ rules of thumb live in [on-ramps](../process/on-ramps.md) — one home.
 
 ## The distinction people get wrong most often
 
-**`frame-change` versus `amend-feature`.** They look similar and they are not.
+**New work versus a change to a shipped feature.** Both start in `frame-change`, and they take different lanes.
 
-`frame-change` is for *new* behavior — a feature or component nothing has spec'd. It runs the full discovery interview and it will not let you write code until requirements are approved.
+The main lane is for *new* behavior — a feature or component nothing has spec'd. It runs the full discovery interview and it will not let you write code until requirements are approved.
 
-`amend-feature` is for a small, in-scope change to a feature that *already shipped with a spec*. It reads the existing triad, classifies the change against it, and routes to the lightest lane that keeps the spec and the tests true. It is a fast lane, not a gate bypass: every path still exits through `test-first`.
+The amend lane (`amend.md`) is for a small, in-scope change to a feature that *already shipped with a spec*. It reads the existing triad, classifies the change against it, and routes to the lightest lane that keeps the spec and the tests true. It is a fast lane, not a gate bypass: every path still exits through `test-first`.
 
-The honest test for escalating from `amend-feature` back to `frame-change`: **does the existing spec's intent already cover this behavior?** If you are inventing what it should do, that is new scope, and it earns the full cycle.
+The honest test for escalating from the amend lane back to the main one: **does the existing spec's intent already cover this behavior?** If you are inventing what it should do, that is new scope, and it earns the full cycle.
 
 ## Context hygiene
 

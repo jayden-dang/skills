@@ -6,9 +6,9 @@
 |---|---|
 | **Bucket** | execution |
 | **Invocation** | model-invoked when its description matches, or `/go` |
-| **Reads** | what [`deliver-issues`](deliver-issues.md) reads |
-| **Writes** | what `deliver-issues` writes: one branch and one pull request per ticket, and the state changes on each ticket |
-| **Calls** | [`deliver-issues`](deliver-issues.md) |
+| **Reads** | what [`go`](go.md) reads |
+| **Writes** | what `go` writes: one branch and one pull request per ticket, and the state changes on each ticket |
+| **Calls** | [`go`](go.md) |
 | **Called by** | nobody yet — it fires on what the user asks, or on `/go` |
 
 ## When it fires
@@ -17,17 +17,17 @@ When tickets are Ready and you want them turned into pull requests while you are
 
 ## What it does
 
-It runs [`deliver-issues`](deliver-issues.md). With IDs (`/go #23 #31`), the run covers those tickets only and every other ticket keeps its state. With no IDs it covers every Ready ticket. Each ticket is claimed (`building` and an assignee) when its build starts and moves to `in-review` when its pull request opens, with `Closes #N` in the body.
+It runs [`go`](go.md). With IDs (`/go #23 #31`), the run covers those tickets only and every other ticket keeps its state. With no IDs it covers every Ready ticket. Each ticket is claimed (`building` and an assignee) when its build starts and moves to `in-review` when its pull request opens, with `Closes #N` in the body.
 
-It ends with `deliver-issues`' one message: a row per ticket, then every **Needs a decision before merge** item.
+It ends with `go`' one message: a row per ticket, then every **Needs a decision before merge** item.
 
 ## What the tests showed
 
-With `/deliver-issues #23` as a user-invoked skill, one haiku run built only #23, so scoping was already a no-op; that run also skipped the claim at the start. `/go` exists as one of the five short commands, and `deliver-issues` became model-invocable (2.0.0) so that `/go` can invoke it. With `/go #23`, the run built only #23, claimed it, moved it to `in-review`, and put `Closes #23` in the pull request. See `skills/execution/go/TESTS.md`.
+With `/go #23` as a user-invoked skill, one haiku run built only #23, so scoping was already a no-op; that run also skipped the claim at the start. `/go` exists as one of the five short commands, and `go` became model-invocable (2.0.0) so that `/go` can invoke it. With `/go #23`, the run built only #23, claimed it, moved it to `in-review`, and put `Closes #23` in the pull request. See `skills/execution/go/TESTS.md`.
 
 ## See also
 
 - [The workflow](../workflow.md) — the states and who moves each one
-- [`deliver-issues`](deliver-issues.md) — the skill it runs
+- [`go`](go.md) — the skill it runs
 - [`/board`](board.md) — what the run left waiting on you
 - Design: `docs/design/2026-10-19-closed-workflow.md`

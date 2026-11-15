@@ -115,7 +115,18 @@
     "prompt": "this repo has no docs/agents config. configure it",
     "assertions": [
       "configure-repo is the skill reached for",
-      "bootstrap-repo and define-project are not"
+      "configure-repo and define-project are not"
+    ]
+  },
+  {
+    "eval_id": 11,
+    "eval_name": "description-routes-here",
+    "kind": "trigger",
+    "derived_from": "TESTS.md \u00a7 2026-11-15 \u2014 model-invocable (description routing)",
+    "prompt": "scaffold a greenfield Rust CLI here, nothing exists yet",
+    "assertions": [
+      "configure-repo is the skill reached for",
+      "configure-repo and frame-change are not"
     ]
   }
 ]

@@ -52,6 +52,18 @@ started from a real failure):
 - **Integration CI jobs:** `gh run view {run_id} --json jobs`
 ```
 
+## Improving the skill set itself (`--harness`)
+
+`/evolve-system --harness` reads the `signals.json` that each repo listed in `~/.agents/evolve/registry.json`
+wrote on its own run. A key that two or more repos share points at the skill set, not one team. Each key
+names its owning skill, the one that writes the artifact the signal reads, for example
+`execute-common` for close receipts. The run opens one cycle with that `owner` and a draft for
+`/author-skills`. The cycle moves on once the owning skill is reinstalled, and settles on the landings of every
+repo after that. A repo already running its own cycle on the key is left out of the count.
+
+A repo with no CI on its integration branch writes `- **Integration CI:** none`, so its receipts, review
+lanes and architecture still count.
+
 ## Running it from a bot or scheduler
 
 The runner must be allowed to run `python3` on the sensor and to write under `.skills/evolve/`.

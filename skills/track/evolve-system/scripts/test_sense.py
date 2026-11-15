@@ -51,6 +51,32 @@ def land(repo, code, files, date, review=None):
     return head
 
 
+def harness_setup(names, own_cycle_on=None):
+    """Fixture repos with their own signals.json, plus a registry and an empty skill lock."""
+    home = tempfile.mkdtemp(prefix="wk.")
+    repos = []
+    for n in names:
+        repo = fixture(n)
+        if own_cycle_on and n == own_cycle_on[0]:
+            cycles(repo, [{"key": own_cycle_on[1], "state": "open", "opened_at": "2026-11-14T09:00:00Z", "ticket": "#7"}])
+        sense(repo, "--now", NOW, "--since", ALL, "--write", "--out", os.path.join(repo, ".skills/evolve/signals.json"))
+        repos.append(repo)
+    reg = os.path.join(home, "registry.json")
+    json.dump({"repos": [{"path": r} for r in repos]}, open(reg, "w"))
+    lock = os.path.join(home, "skill-lock.json")
+    json.dump({"skills": {"execute-common": {"updatedAt": "2026-11-01T00:00:00Z"}}}, open(lock, "w"))
+    return home, reg, lock, repos
+
+
+def harness(reg, lock, *extra):
+    return sense_raw("--harness", reg, "--lock", lock, *extra)
+
+
+def sense_raw(*args):
+    r = subprocess.run([sys.executable, "-I", os.path.join(HERE, "sense.py"), *args], capture_output=True, text=True)
+    return r.returncode, (json.loads(r.stdout) if r.stdout.strip() else None)
+
+
 class Sense(unittest.TestCase):
     def test_red_repo_flags_change_fail_and_skips_infra_runs(self):
         code, rep = sense(fixture("harborline"), "--now", NOW, "--since", ALL)
@@ -280,6 +306,45 @@ class Sense(unittest.TestCase):
         early = {l["code"]: l for l in rep["landings"]}["LEDGER"]
         self.assertEqual(early["first_real_ci"], "unknown")  # CI history starts after it landed
 
+    def test_harness_flags_a_key_two_repos_share_and_names_its_owner(self):
+        home, reg, lock, repos = harness_setup(["harborline", "fernhollow"])
+        code, rep = harness(reg, lock, "--now", NOW)
+        s = next(x for x in rep["signals"] if x["key"] == "evidence:receipt_coverage")
+        self.assertEqual(len(s["repos"]), 2)
+        self.assertTrue(s["flag"])
+        self.assertEqual(s["owner"]["skill"], "execute-common")
+        self.assertEqual(code, 10)
+
+    def test_harness_ignores_a_key_only_one_repo_flags(self):
+        home, reg, lock, repos = harness_setup(["harborline", "quillmark"])
+        _, rep = harness(reg, lock, "--now", NOW)
+        self.assertEqual(rep["flagged"], [])
+
+    def test_a_repo_with_its_own_open_cycle_on_the_key_is_not_counted(self):
+        home, reg, lock, repos = harness_setup(["harborline", "fernhollow"],
+                                               own_cycle_on=("harborline", "evidence:receipt_coverage"))
+        _, rep = harness(reg, lock, "--now", NOW)
+        self.assertNotIn("evidence:receipt_coverage", rep["flagged"])
+
+    def test_a_repo_without_signals_is_reported_unmeasured(self):
+        home, reg, lock, repos = harness_setup(["harborline"])
+        reg2 = json.load(open(reg)); reg2["repos"].append({"path": tempfile.mkdtemp(prefix="wk.")})
+        json.dump(reg2, open(reg, "w"))
+        _, rep = harness(reg, lock, "--now", NOW)
+        self.assertEqual(len(rep["unmeasured"]), 1)
+
+    def test_a_harness_cycle_waits_for_the_owning_skill_to_be_installed_then_settles_on_pooled_landings(self):
+        home, reg, lock, repos = harness_setup(["harborline", "fernhollow"])
+        json.dump({"schema_version": 1, "cycles": [{"key": "evidence:receipt_coverage", "state": "open",
+                    "opened_at": "2026-10-01T00:00:00Z", "owner": "execute-common", "ticket": "draft:x"}]},
+                  open(os.path.join(home, "cycles.json"), "w"))
+        _, rep = harness(reg, lock, "--now", NOW, "--write")
+        c = rep["cycles"][0]
+        self.assertNotEqual(c["state"], "open")  # execute-common was reinstalled on 11-01
+        self.assertEqual(c["changed_at"], "2026-11-01T00:00:00Z")
+        self.assertEqual(c["state"], "reverted")  # SPLIT landed on 11-06 in both repos with no receipt
+        self.assertIn("SPLIT", c["why"])
+
     def test_awaiting_cycle_settles_reverted_when_a_green_base_landing_turns_red(self):
         repo = fixture("tidewater")
         cycles(repo, [{"key": "ci:change_fail", "state": "awaiting", "changed_at": "2026-10-21T10:00:00Z"}])
@@ -313,7 +378,7 @@ class Sense(unittest.TestCase):
         open(os.path.join(repo, ".github/workflows/latency.yml"), "w").write(
             "name: Latency\njobs:\n  bench:\n    steps:\n      - run: cargo nextest run --test latency --run-ignored only\n")
         p = os.path.join(repo, "docs/agents/project.md")
-        open(p, "w").write(open(p).read().replace("`cat ci/runs.json`", "`cat ci/runs.json # --workflow CI`"))
+        text = open(p).read(); open(p, "w").write(text.replace("`cat ci/runs.json`", "`cat ci/runs.json # --workflow CI`"))
         _, rep = sense(repo, "--now", NOW, "--since", ALL)
         s = sig(rep, "evidence:close_vs_ci_command")
         self.assertEqual(s["ci_test_tasks"], ["test-coverage"])
@@ -326,10 +391,21 @@ class Sense(unittest.TestCase):
         self.assertEqual(s["lacking"], ["test-coverage"])
         self.assertTrue(s["flag"])
 
+    def test_a_repo_that_declares_no_ci_still_gets_its_other_signals(self):
+        repo = fixture("harborline")
+        p = os.path.join(repo, "docs/agents/project.md")
+        text = open(p).read(); open(p, "w").write(text.replace("`cat ci/runs.json`", "none"))
+        code, rep = sense(repo, "--now", NOW, "--since", ALL)
+        keys = {s["key"] for s in rep["signals"]}
+        self.assertFalse(any(k.startswith("ci:") for k in keys))
+        self.assertEqual(rep["pick_order"][0], "evidence:close_vs_ci_command")
+        self.assertIn("evidence:receipt_coverage", rep["flagged"])
+        self.assertEqual(code, 10)
+
     def test_missing_ci_command_is_a_flag_not_silence(self):
         repo = fixture("quillmark")
         p = os.path.join(repo, "docs/agents/project.md")
-        open(p, "w").write(open(p).read().replace("**Integration CI:**", "**Old CI:**"))
+        text = open(p).read(); open(p, "w").write(text.replace("**Integration CI:**", "**Old CI:**"))
         code, rep = sense(repo, "--now", NOW, "--since", ALL)
         self.assertEqual(code, 10)
         self.assertIn("ci:configured", rep["flagged"])

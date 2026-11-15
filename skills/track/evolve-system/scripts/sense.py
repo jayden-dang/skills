@@ -70,7 +70,10 @@ def config(repo, a):
     text = open(p, errors="replace").read() if os.path.exists(p) else ""
     def key(name):
         m = re.search(r"\*\*" + re.escape(name) + r":\*\*\s*`([^`]+)`", text)
-        return m.group(1) if m else None
+        if m:
+            return m.group(1)
+        m = re.search(r"\*\*" + re.escape(name) + r":\*\*\s*none\b", text, re.I)
+        return "none" if m else None
     base = re.search(r"\*\*Default PR base:\*\*\s*`?([\w./-]+)", text)
     return {"ci": a.ci_cmd or key("Integration CI"), "jobs": a.jobs_cmd or key("Integration CI jobs"),
             "branch": base.group(1) if base else "HEAD"}
@@ -133,6 +136,8 @@ def landing_head(repo, d):
 def ci_runs(repo, cfg, now):
     if not cfg["ci"]:
         return None, "no `**Integration CI:**` command in docs/agents/project.md and no --ci-cmd"
+    if cfg["ci"].strip().lower() == "none":
+        return "none", None  # the repo says it has no integration CI: skip every ci: signal
     code, out, err = run(cfg["ci"], repo)
     if code != 0:
         return None, f"Integration CI command failed: {err.strip()[:160]}"
@@ -268,6 +273,8 @@ def signals(repo, feats, rows, runs, err, since, now, cfg=None):
     out = []
     if runs is None:
         out.append({"key": "ci:configured", "rung": "ci", "value": "no", "flag": True, "detail": err})
+    elif runs == "none":
+        pass  # declared `**Integration CI:** none`
     else:
         out.append(rated("ci:change_fail", "ci", (len(cur["red"]), len(cur["green"])),
                          pair(len(prev["red"]), len(prev["green"])),
@@ -454,9 +461,97 @@ def _settle(cycles, rows, sigs, now):
     return cycles
 
 
+# Which skill writes the artifact each signal reads: the place a skill-set-level fix would go.
+OWNERS = {
+    "ci:configured": ("configure-repo", "skills/setup/configure-repo"),
+    "ci:runs_real": ("assess-observability", "skills/execution/assess-observability"),
+    "ci:latest_red": ("land-branch", "skills/ship/land-branch"),
+    "ci:change_fail": ("execute-common", "skills/execution/execute-common/close-receipt.md"),
+    "ci:landed_on_red": ("land-branch", "skills/ship/land-branch"),
+    "evidence:close_vs_ci_command": ("execute-common", "skills/execution/execute-common/close-receipt.md"),
+    "evidence:receipt_coverage": ("execute-common", "skills/execution/execute-common/close-receipt.md"),
+    "arch:invariant_violations": ("inspect-invariants", "skills/review/inspect-invariants"),
+    "arch:blast_radius": ("plan-tasks", "skills/spec/plan-tasks"),
+    "review:lane_repeat:reader-left-behind": ("execute-common", "skills/execution/execute-common/implementer-prompt.md"),
+    "review:lane_repeat:silent-degradation": ("execute-common", "skills/execution/execute-common/implementer-prompt.md"),
+}
+STALE_DAYS = 14
+
+
+def harness(a, now):
+    """Skill-set level: read each registered repo's own signals.json (never re-run CI reads), flag a
+    key two or more repos share, and settle skill-set cycles on landings pooled across repos."""
+    reg = json.load(open(a.harness))
+    home = os.path.dirname(os.path.abspath(a.harness))
+    lock = json.load(open(a.lock)).get("skills", {}) if a.lock and os.path.exists(a.lock) else {}
+    measured, unmeasured, rows, by_repo = [], [], [], {}
+    for entry in reg.get("repos", []):
+        path = os.path.expanduser(entry["path"])
+        name = entry.get("name") or os.path.basename(path.rstrip("/"))
+        sp = os.path.expanduser(entry.get("signals") or os.path.join(path, ".skills/evolve/signals.json"))
+        if not os.path.exists(sp):
+            unmeasured.append({"repo": name, "why": "no .skills/evolve/signals.json: run /evolve-system there first"})
+            continue
+        d = json.load(open(sp))
+        age = (now - ts(d["generated_at"])).days
+        if age > STALE_DAYS:
+            unmeasured.append({"repo": name, "why": f"signals.json is {age} days old"})
+            continue
+        measured.append(name)
+        own = {c["key"] for c in d.get("cycles", []) if c.get("state") in ("open", "awaiting")}
+        for sg in d.get("signals", []):
+            by_repo.setdefault(sg["key"], {"flagged": [], "features": []})
+            if sg.get("flag") and sg["key"] not in own:
+                by_repo[sg["key"]]["flagged"].append(name)
+            by_repo[sg["key"]]["features"] += [f"{name}/{f}" for f in sg.get("features", [])]
+        for r in d.get("landings", []):
+            rows.append(dict(r, code=f"{name}/{r['code']}", violates=r.get("violates", []),
+                             commit_modules=r.get("commit_modules", [])))
+    rows.sort(key=lambda r: r["landed_at"])
+    sigs = []
+    for key, v in sorted(by_repo.items()):
+        skill, where = OWNERS.get(key, (None, None))
+        sigs.append({"key": key, "repos": v["flagged"], "flag": len(v["flagged"]) >= 2,
+                     "value": f"flagged in {len(v['flagged'])} of {len(measured)} measured repos",
+                     "features": v["features"],
+                     "owner": {"skill": skill, "where": where,
+                               "evidence": f"{os.path.dirname(where) if where and where.endswith('.md') else where}/TESTS.md" if where else None}})
+    cpath = os.path.join(home, "cycles.json")
+    doc = json.load(open(cpath)) if os.path.exists(cpath) else {"schema_version": 1, "cycles": []}
+    for c in doc["cycles"]:  # open -> awaiting once the owning skill's change is installed here
+        upd = lock.get(c.get("owner") or "", {}).get("updatedAt")
+        if c.get("state") == "open" and upd and ts(upd) > ts(c["opened_at"]):
+            c.update(state="awaiting", changed_at=upd)
+    cycles = settle(doc["cycles"], rows, sigs, now)
+    tracked = {c["key"] for c in cycles if c.get("state") in ("open", "awaiting")}
+    flagged = [x["key"] for x in sigs if x["flag"] and x["key"] not in tracked]
+    rank = list(OWNERS)
+    order = sorted(flagged, key=lambda k: (rank.index(k) if k in rank else len(rank),
+                                           -len(by_repo[k]["flagged"])))
+    settled_now = [c for c in cycles if c.pop("_now", False)]
+    report = {"schema_version": 1, "mode": "harness", "generated_at": now.isoformat(),
+              "measured": measured, "unmeasured": unmeasured, "signals": sigs, "cycles": cycles,
+              "flagged": flagged, "tracked": sorted(tracked), "pick_order": order,
+              "settled_now": [{k: c.get(k) for k in ("key", "state", "why", "ticket")} for c in settled_now]}
+    text = json.dumps(report, indent=2) + "\n"
+    if a.out:
+        os.makedirs(os.path.dirname(os.path.abspath(a.out)), exist_ok=True)
+        open(a.out, "w").write(text)
+    else:
+        sys.stdout.write(text)
+    if a.write:
+        doc["cycles"] = cycles
+        open(cpath, "w").write(json.dumps(doc, indent=2) + "\n")
+    if any(c["state"] == "reverted" for c in report["settled_now"]):
+        return 20
+    return 10 if flagged else 0
+
+
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--repo", required=True)
+    ap.add_argument("--repo")
+    ap.add_argument("--harness", metavar="REGISTRY", help="skill-set level: a registry JSON {repos:[{path}]}")
+    ap.add_argument("--lock", default=os.path.expanduser("~/.agents/.skill-lock.json"))
     ap.add_argument("--out")
     ap.add_argument("--write", action="store_true", help="save advanced/settled cycles to cycles.json")
     ap.add_argument("--now")
@@ -466,6 +561,10 @@ def main():
     ap.add_argument("--min-baseline", type=int, default=MIN_BASELINE)
     a = ap.parse_args()
     globals()["MIN_BASELINE"] = a.min_baseline
+    if a.harness:
+        return harness(a, ts(a.now) if a.now else datetime.now(timezone.utc))
+    if not a.repo:
+        ap.error("--repo or --harness is required")
     repo = os.path.abspath(a.repo)
     if not git(repo, "rev-parse", "--git-dir"):
         print(f"not a git repo: {repo}", file=sys.stderr)
@@ -475,7 +574,7 @@ def main():
     cfg = config(repo, a)
     feats = features(repo)
     runs, err = ci_runs(repo, cfg, now)
-    rows = landings(repo, feats, runs, now)
+    rows = landings(repo, feats, [] if runs == "none" else runs, now)
     sigs = signals(repo, feats, rows, runs, err, since, now, cfg)
     cpath = os.path.join(repo, ".skills/evolve/cycles.json")
     doc = json.load(open(cpath)) if os.path.exists(cpath) else {"schema_version": 1, "cycles": []}

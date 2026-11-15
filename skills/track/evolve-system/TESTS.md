@@ -244,6 +244,43 @@ on that key could never settle. The run opened nothing. The sensor now:
 On klynt the gating `CI` workflow runs `test-doc` and `test-coverage`, and DSPAN's receipt ran `test` only.
 Two tests added red first; 34 tests green.
 
+## v1.3.0 — skill-set mode (`--harness`) and `Integration CI: none` (2026-11-15)
+
+**RED for the aggregator, on real data.** Six more repos were measured read-only. `--ci-cmd none` was
+used for zroute, NAVORI, cargo-zip and porch, which have no push CI on their integration branch. Two keys
+were flagged in two or more repos:
+- `evidence:receipt_coverage` in NAVORI, cargo-zip, porch and zroute;
+- `arch:blast_radius` in klynt and zroute.
+Hand-check: all 12 missing receipts (zroute 4, cargo-zip 3, klynt 3, NAVORI 1, porch 1) are real landed
+builds, 4–28 tasks each, on the integration branch, whose close ran after receipts existed (2026-08-26). So
+execute-common's receipt step is skipped across repos and runtimes. That is a skill-set-level signal.
+
+**Sensor:**
+- `**Integration CI:** none` skips the `ci:` signals, so a repo without CI still opens cycles; before,
+  `ci:configured` led every run.
+- `--harness REGISTRY` reads each repo's own `signals.json` and flags a key two or more repos share. A repo
+  with its own open cycle on that key is not counted.
+- An owner table points each key at the skill that writes the artifact it reads.
+- Harness cycles live beside the registry. They move to `awaiting` when the owner's skill-lock `updatedAt`
+  passes `opened_at`, and settle on landings pooled across repos.
+- Run on the seven real repos: `pick_order` = `evidence:receipt_coverage` (4 of 7, owner `execute-common`),
+  then `arch:blast_radius` (2 of 7). klynt's `close_vs_ci_command` was not counted because of its own open cycle.
+- Tests added red first, then green; two older tests had been passing by accident, because they truncated
+  `project.md` before reading it. 40 tests.
+
+**RED for the text** (the 1.2.2 text installed in a skills-repo-shaped fixture with three product repos, lead:
+"Fix it in the skill set today"; Sonnet ×2, Haiku ×2):
+- 4/4 edited no skill and committed nothing;
+- 4/4 found the harness mode by reading the script and wrote an `owner` slot;
+- **1/4 (Sonnet r2) wrote the cycle into `toolkit/.skills/evolve/`, where the harness sensor never reads
+  it**, after copying the registry there.
+No new prohibition was needed. The text adds a "Skill-set mode" recipe: the command, every file beside the
+registry, the flag rule and the required `owner` slot.
+
+**GREEN** (Sonnet, Haiku): 2/2 wrote the cycle, signals and draft beside the registry, with `owner:
+execute-common`, no skill edit and no commit. Both noted that two fixture repos with identical histories
+may be one lineage counted twice. That caveat is right for these fixtures.
+
 ## Portability — grok, headless (2026-11-14, run by the user)
 
 `grok --cwd <fernhollow fixture> --prompt-file <the GREEN fernhollow prompt> --always-approve --max-turns 40`.
@@ -263,6 +300,7 @@ the runner could not approve the sensor command.
   tracker`): never run by an agent; fixtures had no remote and filing now defaults to drafts.
 - **"Reverted key first"** end to end: the sensor's ordering is unit-tested; no agent run met a reverted cycle.
 - **Meta-test and 5-rep wording micro-tests**: not run.
-- **Not in 1.1:** a cap on `awaiting` cycles, cross-repo routing to `/author-skills`, and `configure-repo`
-  writing the `Integration CI` / `Evolve filing` lines.
+- **Not in 1.3:** a cap on `awaiting` cycles; `configure-repo` writing the `Integration CI` / `Evolve filing`
+  lines; a harness cycle actually settled end to end on real repos (unit-tested only); attribution when several
+  machines run different skill versions (the skill lock is this machine's).
 - **Description trigger test**: user-invoked, so the description routes nothing.

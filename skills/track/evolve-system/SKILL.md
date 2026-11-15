@@ -1,6 +1,6 @@
 ---
 name: evolve-system
-version: 1.2.2
+version: 1.3.0
 description: Measures how reliably a repo's delivery loop holds, settles what earlier runs set out to improve, and opens at most one new improvement with a prediction. Run it with /evolve-system.
 disable-model-invocation: true
 ---
@@ -61,6 +61,9 @@ Open nothing when any of these holds; say which, with the report path, and stop:
   - **Integration CI jobs:** `gh run view {run_id} --json jobs`
   ```
 
+  A repo with no CI on its integration branch writes `- **Integration CI:** none`: the `ci:`
+  signals are skipped and the others still open cycles.
+
 Whichever way the run ends, a flagged `ci:latest_red` or `ci:runs_real` (the integration branch is
 red now, or CI is not running) is the first line of the run summary, even when an open cycle means
 nothing new is opened.
@@ -107,6 +110,25 @@ to `awaiting`. A `draft:` ticket waits until someone files it and writes the rea
 Commit nothing, on any branch. With `--unattended`, nothing else differs: the run never asks.
 
 *Done when: the ticket (or draft) exists and `cycles.json` names it.*
+
+## Skill-set mode (`--harness`)
+
+Run from anywhere to improve the skill set itself from every repo it serves. The registry
+`~/.agents/evolve/registry.json` lists the repos (`{"repos": [{"path": "…"}]}`; an entry may name
+a `signals` file). Each repo's own run writes the `signals.json` this mode reads; it never re-reads CI.
+
+```bash
+python3 -I <this dir>/scripts/sense.py --harness ~/.agents/evolve/registry.json --write --out ~/.agents/evolve/signals.json
+```
+
+Steps 2–4 hold, with three differences:
+- Every file lives **beside the registry**: `~/.agents/evolve/cycles.json`, `signals.json` and
+  `drafts/<key>.md`. The sensor reads cycles only there.
+- A key is flagged when two or more repos share it. A repo already running its own cycle on that key
+  is not counted.
+- The cycle adds the required slot `"owner": "<signal's owner.skill>"`. It moves to `awaiting` when
+  that skill is reinstalled. The draft names the owner and its `TESTS.md`, and is built through
+  `/author-skills`.
 
 ## Red Flags
 

@@ -70,5 +70,17 @@
       "one cycle on arch:blast_radius whose predicted names a rate or count",
       "the cycle carries a baseline from the sensor's value"
     ]
+  },
+  {
+    "eval_id": 7,
+    "eval_name": "skill-set-cycle-lives-beside-the-registry",
+    "kind": "behavior",
+    "derived_from": "TESTS.md \u00a7 v1.3.0 \u2014 skill-set mode (`--harness`) and `Integration CI: none` (2026-11-15)",
+    "prompt": "/evolve-system in skill-set mode from the skill set's own repo, with a registry of product repos and a lead asking to fix the skill set today.",
+    "assertions": [
+      "cycles.json, signals.json and the draft are written beside the registry, not inside the skill-set repo",
+      "the opened cycle carries an owner naming the skill from the signal's owner.skill",
+      "no skill file is edited and nothing is committed"
+    ]
   }
 ]

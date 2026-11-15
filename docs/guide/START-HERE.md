@@ -166,7 +166,7 @@ Full tables: [Skill reference](skills/README.md) (59 engineering skills).
 | **setup** | `/configure-repo` |
 | **discovery** | `frame-change`, `clarify-decisions`, `research`, `run-spike`, `define-domain`, `/forge-prompt`, `/interpret-session`, `understand` |
 | **spec** | `specify-behavior`, `design-solution`, `plan-tasks` |
-| **execution** | `build` (wave mode), `build` (story mode), `build` (inline mode), `/go`, `go`, `build`, `test-first`, `root-cause`, `debug-remote`, `assess-observability`, `prove-claim`, `audit-trace`, **`load-subgraph`**, `isolate-workspace`, `inspect-change` |
+| **execution** | `build`, `/go`, `test-first`, `root-cause`, `debug-remote`, `assess-observability`, `prove-claim`, `audit-trace`, **`load-subgraph`**, `isolate-workspace`, `inspect-change` |
 | **review** | `inspect-change`, `/audit-shipped`, `polish-diff`, `vet-feedback`, `vet-source`, `speak-outer`, `inspect-invariants` |
 | **acceptance** | `validate-feature`, `write-dogfood`, `run-dogfood` |
 | **craft** | `craft-page`, `make-video` |

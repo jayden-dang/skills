@@ -139,7 +139,7 @@ Rewrite the description as **trigger + outcome noun, never the workflow**.
 
 ### A skill that should have started on its own did not
 
-Every skill is model-invocable, so the usual cause is the listing budget: the harness lists skill descriptions inside 1% of the context window, and past that it keeps the names and drops the descriptions of the least recently used skills. A skill listed by name alone is rarely reached by what you say. Check `/context` (Skills row) or `/doctor`, then set `"skillListingBudgetFraction": 0.02` or higher in the harness settings (0.02 shows all 80 in a project with nothing else installed), or type the command.
+Every skill is model-invocable, so the usual cause is the listing budget: the harness lists skill descriptions inside 1% of the context window, and past that it keeps the names and drops the descriptions of the least recently used skills. A skill listed by name alone is rarely reached by what you say. Check `/context` (Skills row) or `/doctor`, then raise `skillListingBudgetFraction` in the harness settings, or type the command. This set alone (59 skills) fits the default budget; other installed skills share it.
 
 
 ---

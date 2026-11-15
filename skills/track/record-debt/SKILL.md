@@ -1,6 +1,6 @@
 ---
 name: record-debt
-version: 1.2.0
+version: 1.3.0
 description: Banks findings that were judged real and deliberately left unfixed into the
   durable debt ledger at docs/quality/debt.md. Run it with /record-debt.
 disable-model-invocation: true
@@ -95,13 +95,17 @@ Read `docs/agents/issue-tracker.md` when it exists.
 
 - **Tracker configured AND the item is big enough to schedule** → the ledger row is the
   record of the *decision*; the ticket is the record of the *work*. Write the row, then
-  name `/publish-issues` for the user to run, and put the returned ID on the **Ticket**
-  line. Never open a ticket yourself from here.
+  create one ticket for it with the tracker ops and Issue format of that file, read it
+  back, and put its ID on the **Ticket** line. WHERE that file sets **Follow-up filing**
+  to `draft`, create no ticket: write `.skills/inbox/debt-<N>.md`, its first line
+  `# <title>`, and put `draft:<path>` on the **Ticket** line.
 - **Tracker configured, item too small to schedule** → row only, `Ticket: none`.
 - **No tracker, or `local`** → row only. The ledger is the tracker for this class of item.
 
 The ledger holds every deferred finding; the tracker holds the subset someone will
-schedule. A row without a ticket is normal, not a gap.
+schedule. A row without a ticket is normal, not a gap. A row big enough to schedule with
+`Ticket: none` is the gap: one repo's ledger reached 65 rows, every one `Ticket: none`,
+while each run named a command for someone to type later.
 
 ## Closing an entry
 
@@ -127,6 +131,6 @@ rather than improvising one.
 - Open an entry for something no pass judged real
 - Bank a Critical or Important finding instead of fixing it before merge
 - Renumber, reuse, or delete a `DEBT-N`
-- Open a tracker ticket from inside this skill
+- Open a tracker ticket for an item too small to schedule, or where Follow-up filing is `draft`
 - Close an entry without a fresh proving run
 - Answer "what debt do we have?" from a fresh reading of the code

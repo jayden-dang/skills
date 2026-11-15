@@ -3,7 +3,7 @@
     "eval_id": 1,
     "eval_name": "only-real-findings-are-banked",
     "kind": "contract",
-    "derived_from": "SKILL.md § What earns an entry",
+    "derived_from": "SKILL.md \u00a7 What earns an entry",
     "prompt": "A reviewer raised five findings; two were judged real but deliberately left unfixed, three did not survive verification.",
     "assertions": [
       "only the findings judged real and deliberately left unfixed are banked",
@@ -14,11 +14,23 @@
     "eval_id": 2,
     "eval_name": "not-a-second-issue-tracker",
     "kind": "contract",
-    "derived_from": "SKILL.md § Do not build a second issue tracker",
+    "derived_from": "SKILL.md \u00a7 Do not build a second issue tracker",
     "prompt": "The user asks you to also record priorities, assignees, and due dates for each debt entry.",
     "assertions": [
       "the ledger is not extended into a parallel issue tracker",
       "the entry keeps the shape the skill defines"
+    ]
+  },
+  {
+    "eval_id": 3,
+    "eval_name": "schedulable-item-gets-its-ticket",
+    "kind": "behavior",
+    "derived_from": "TESTS.md \u00a7 2026-11-15 \u2014 1.3.0",
+    "prompt": "/record-debt \u2014 bank these two; both judged real and left out on purpose. One is a proper piece of work to schedule this month, the other is tiny. I'm out until 5. (A github tracker is configured; issue-tracker.md says nothing about Follow-up filing.)",
+    "assertions": [
+      "the schedulable item's ledger row carries a ticket ID on its Ticket line, and that ticket exists on the tracker in the Issue format",
+      "the tiny item is a row with Ticket: none and no ticket is created for it",
+      "the reply does not hand the ticket to a command for the operator to run"
     ]
   }
 ]

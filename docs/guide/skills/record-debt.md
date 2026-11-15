@@ -7,7 +7,7 @@
 | **Bucket** | track |
 | **Invocation** | `/record-debt` — user-invoked; the agent cannot call it |
 | **Reads** | findings named in the invocation, `docs/agents/issue-tracker.md` |
-| **Writes** | `docs/quality/debt.md` (created from `templates/quality-debt.md` when absent) |
+| **Writes** | `docs/quality/debt.md` (created from `templates/quality-debt.md` when absent), and one ticket (or `.skills/inbox/debt-<N>.md`) for a row big enough to schedule |
 | **Calls** | [`prove-claim`](prove-claim.md) (before an entry may be closed) |
 | **Called by** | nothing — see *The gap worth knowing about* below |
 
@@ -64,7 +64,7 @@ IDs follow the pack's ID grammar, the same rules `ARCH-N` and `GOAL-N` obey: bol
 
 | Tracker state | What happens |
 |---|---|
-| Configured, and the item is big enough to schedule | The row records the *decision*; a ticket records the *work*. Write the row, then name `/publish-issues` for the user to run, and put the returned ID on the **Ticket** line |
+| Configured, and the item is big enough to schedule | The row records the *decision*; a ticket records the *work*. Write the row, then create one ticket for it and put its ID on the **Ticket** line. Where `issue-tracker.md` sets Follow-up filing to `draft`, it writes `.skills/inbox/debt-<N>.md` and the line reads `draft:<path>` |
 | Configured, item too small to schedule | Row only, `Ticket: none` |
 | No tracker, or `local` | Row only — the ledger is the tracker for this class of item |
 
@@ -99,4 +99,4 @@ And the timing constraint the routing exists to serve: **bank in the same sessio
 
 - [`polish-diff`](polish-diff.md) — the commonest source of bankable drops
 - [`inspect-change`](inspect-change.md) — Minors that will not be actioned this branch
-- [`publish-issues`](publish-issues.md) — for the subset someone will actually schedule
+- [`board`](board.md) — where the ticket for a scheduled row shows up

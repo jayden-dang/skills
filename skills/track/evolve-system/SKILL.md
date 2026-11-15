@@ -1,6 +1,6 @@
 ---
 name: evolve-system
-version: 1.3.0
+version: 1.4.0
 description: Measures how reliably a repo's delivery loop holds, settles what earlier runs set out to improve, and opens at most one new improvement with a prediction. Run it with /evolve-system.
 disable-model-invocation: true
 ---
@@ -81,7 +81,7 @@ as `{"schema_version": 1, "cycles": []}`; keep that shape). Every slot is requir
    "change": "<one sentence: the single change the build should make>",
    "predicted": "<key> goes from <baseline> to <target>",
    "settle": "<the key's settle.observations> landings after the change, within <settle.days> days",
-   "ticket": "<tracker id or ticket file path, or draft:.skills/evolve/drafts/<key>.md>"}
+   "ticket": "<tracker id or ticket file path, or draft:.skills/inbox/<key>.md>"}
 ]}
 ```
 
@@ -99,13 +99,13 @@ Write it in the **Issue format** of `docs/agents/issue-tracker.md` (the non-bug 
 
 The build that delivers it names the ticket in its commit (the tracker's close linkage), or for a
 local tracker edits the ticket file; that is how the next run's sensor moves the cycle from `open`
-to `awaiting`. A `draft:` ticket waits until someone files it and writes the real ID into `ticket`.
-
-- **`docs/agents/issue-tracker.md` has the line `**Evolve filing:** tracker`:** create it on the
-  configured tracker, read it back, and put its ID in `ticket`.
-- **Otherwise** (the default, in every mode, because a filed ticket is read by the repo's team):
-  write it to `.skills/evolve/drafts/<key>.md` (`:` in the key becomes `-`), set `ticket` to
-  `draft:<path>`, and name the draft in the run summary for the user to file.
+to `awaiting`. 
+- **`docs/agents/issue-tracker.md` sets Follow-up filing to `draft`** (a tracker that belongs to
+  a team): create no ticket. Write it to `.skills/inbox/<key>.md` (`:` in the key becomes `-`),
+  its first line `# <title>`, set `ticket` to `draft:<path>`, and name the file in the run
+  summary. `/board` lists it until someone files it, writes the real ID into `ticket` and
+  deletes the file.
+- **Otherwise:** create it on the configured tracker, read it back, and put its ID in `ticket`.
 
 Commit nothing, on any branch. With `--unattended`, nothing else differs: the run never asks.
 
@@ -123,7 +123,8 @@ python3 -I <this dir>/scripts/sense.py --harness ~/.agents/evolve/registry.json 
 
 Steps 2–4 hold, with three differences:
 - Every file lives **beside the registry**: `~/.agents/evolve/cycles.json`, `signals.json` and
-  `drafts/<key>.md`. The sensor reads cycles only there.
+  the ticket, always a draft at `drafts/<key>.md`: the skill set has no tracker. The sensor
+  reads cycles only there.
 - A key is flagged when two or more repos share it. A repo already running its own cycle on that key
   is not counted.
 - The cycle adds the required slot `"owner": "<signal's owner.skill>"`. It moves to `awaiting` when
@@ -135,7 +136,7 @@ Steps 2–4 hold, with three differences:
 - Editing a verify command, CI, Makefile, source, test or agent config "because it is one line"
 - A second improvement opened in the same run, or the rest filed "while I'm here"
 - A `predicted` without a number, or a `settle` without a count and a deadline
-- Any commit or merge; a tracker ticket without `**Evolve filing:** tracker`
+- Any commit or merge; a tracker ticket where Follow-up filing is `draft`
 
 | Thought | Reality |
 |---|---|

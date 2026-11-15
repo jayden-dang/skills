@@ -7,7 +7,7 @@
 | **Bucket** | track |
 | **Invocation** | user-invoked — run as `/evolve-system`, or `/evolve-system --unattended` when nobody will answer; no skill may auto-invoke it |
 | **Reads** | `.skills/<CODE>/progress.md` and `close-receipt.md`, git history, the CI runs printed by `**Integration CI:**` (and `**Integration CI jobs:**`) in `docs/agents/project.md`, `.github/workflows/*`, `.skills/evolve/cycles.json`, `docs/agents/issue-tracker.md` |
-| **Writes** | `.skills/evolve/signals.json`, `.skills/evolve/cycles.json`, and one ticket: a draft at `.skills/evolve/drafts/<key>.md`, or on the configured tracker when `docs/agents/issue-tracker.md` says `**Evolve filing:** tracker` |
+| **Writes** | `.skills/evolve/signals.json`, `.skills/evolve/cycles.json`, and one ticket: on the configured tracker, or a draft at `.skills/inbox/<key>.md` when `docs/agents/issue-tracker.md` says `**Evolve filing:** tracker` |
 | **Calls** | nothing; the improvement is built later through `/idea` → `/shape` → `/go`, or `/author-skills` |
 | **Called by** | nothing — user-invoked |
 
@@ -41,8 +41,9 @@ script, and a run with nothing flagged opens nothing.
    30 days), nothing is flagged, or CI is not configured (it names the line to add). Otherwise it takes the
    first key of the sensor's fixed `pick_order` and records `baseline`, `change`, `predicted` and
    `settle` in `cycles.json`.
-4. **File it.** One ticket in the tracker's Issue format, whose acceptance line is the prediction. It is a
-   draft for you to file unless the repo opts in with `**Evolve filing:** tracker`.
+4. **File it.** One ticket in the tracker's Issue format, whose acceptance line is the prediction. It goes on
+   the configured tracker, in Inbox. Where `docs/agents/issue-tracker.md` sets Follow-up filing to `draft`, it is a
+   file in `.skills/inbox/` that `/board` lists, and no ticket is created.
 
 To set a repo up, add to `docs/agents/project.md` (the jobs line is optional; it tells a run that never
 started from a real failure):

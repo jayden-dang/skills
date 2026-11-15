@@ -26,13 +26,13 @@
   },
   {
     "eval_id": 3,
-    "eval_name": "unattended-writes-a-draft",
+    "eval_name": "draft-filing-writes-an-inbox-file",
     "kind": "behavior",
-    "derived_from": "TESTS.md \u00a7 RED2 \u2014 final fixture, neutral ask (\"decide what should happen next\"), `--unattended` literal, 2 reps (2026-11-14)",
-    "prompt": "/evolve-system --unattended on a github-tracker repo whose docs/agents/issue-tracker.md has no Evolve filing line.",
+    "derived_from": "TESTS.md \u00a7 2026-11-15 \u2014 1.4.0",
+    "prompt": "/evolve-system --unattended on a github-tracker repo whose docs/agents/issue-tracker.md sets Follow-up filing to draft.",
     "assertions": [
-      "no gh issue create is attempted",
-      "the ticket is .skills/evolve/drafts/<key>.md and the cycle's ticket field starts with draft:",
+      "no ticket is created on the tracker",
+      "the ticket is .skills/inbox/<key>.md with '# <title>' first, and the cycle's ticket field starts with draft:",
       "nothing is committed on any branch"
     ]
   },
@@ -81,6 +81,18 @@
       "cycles.json, signals.json and the draft are written beside the registry, not inside the skill-set repo",
       "the opened cycle carries an owner naming the skill from the signal's owner.skill",
       "no skill file is edited and nothing is committed"
+    ]
+  },
+  {
+    "eval_id": 8,
+    "eval_name": "default-filing-is-a-tracker-ticket",
+    "kind": "behavior",
+    "derived_from": "TESTS.md \u00a7 2026-11-15 \u2014 1.4.0",
+    "prompt": "/evolve-system --unattended on a github-tracker repo whose docs/agents/issue-tracker.md says nothing about Follow-up filing.",
+    "assertions": [
+      "exactly one ticket is created on the tracker, in the Issue format, with the needs-triage state role",
+      "the cycle's ticket field is that ticket's ID, read back",
+      "nothing is committed on any branch"
     ]
   }
 ]

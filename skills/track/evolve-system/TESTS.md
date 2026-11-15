@@ -1,5 +1,27 @@
 # `evolve-system`
 
+## 2026-11-15 — 1.4.0 (a tracker ticket by default; one filing key)
+
+Reverses 1.0's "a draft in every mode", on the owner's word (2026-11-15): a `draft:` ticket never
+advances, and klynt's first cycle sat unfiled in a folder `/board` does not read. `**Evolve filing:**`
+is replaced by **Follow-up filing** in `issue-tracker.md` (`tracker` default, `draft`), shared with
+`audit-shipped`; no repo had set the old key. Drafts move to `.skills/inbox/`, which `board.py` lists.
+Fixture: `fernhollow` with the tracker behind a stateful `bin/gh` (`.skills/fixtures/make-fernhollow.sh`),
+prompt `/evolve-system --unattended`, scored by `.skills/fixtures/score-evolve.py` (tracker state,
+`cycles.json`, HEAD, `board.py`). Baseline is 1.3.0's recorded behaviour: a draft, no ticket.
+
+| | no key — s | no key — h | `draft` — s | `draft` — h |
+|---|---|---|---|---|
+| tickets created | 1 (#42, Issue format, `status:inbox`, lan) | 1 | 0 | 0 |
+| `cycles.json` `ticket` | `42` | `42` | `draft:.skills/inbox/ci-change_fail.md` | same |
+| on the board | Inbox | Inbox | Not filed | Not filed |
+| one cycle, first of `pick_order`, key now `tracked` | yes | yes | yes | yes |
+| commit, branch or tracked edit | none | none | none | none |
+
+Both no-key runs left the ticket body file under `.skills/evolve/`. Not covered: Linear; `--harness`
+(always a draft beside the registry, text only); what removes an inbox file once it is filed beyond
+the sentence in step 4.
+
 Roster: Sonnet (`skill-tester`), Haiku (`skill-tester-haiku`). Fixtures built by `build_fixture.py`
 into `/private/tmp/wk.*/<name>`: **harborline** (red signals), **tidewater** (an earlier improvement,
 ticket 07, whose result is mixed), **quillmark** (all green), **fernhollow** (red, unattended, github

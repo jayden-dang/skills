@@ -121,7 +121,7 @@ listed, then `/plugin install jdk@jayden-dang-skills`.
 
 ### The agent answers without invoking any skill
 
-Default invocation is description-match (`AGENTS.md` §2). `zone-mode` loads only when you ask for it and is not injected at session start. Ask for zone mode, or run `/zone-mode`, when you want the 1% overlay. Model-invocable skills still fire from their descriptions.
+Default invocation is description-match (`AGENTS.md` §2). Model-invocable skills still fire from their descriptions.
 
 ### A specific skill never triggers
 
@@ -238,4 +238,3 @@ Upgrade: `npx skills@latest update -g` (or re-add the pack). Then `configure-rep
 - [Traceability — the spine](../concepts/traceability.md) — what the audit-trace check is and the finding codes
 - [The gates](../concepts/gates.md) — what each Iron Law is preventing
 - [`realign-spec`](../skills/realign-spec.md) — the skill for realigning a drifted spec
-- [`zone-mode`](../skills/zone-mode.md) — the session gate; it routes when you do not know which flow you are in

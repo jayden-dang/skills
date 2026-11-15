@@ -172,6 +172,7 @@ def build(name, parent):
     root = os.path.join(parent, name)
     os.makedirs(root)
     sh(root, "git", "init", "-q", "-b", "dev")
+    sh(root, "git", "config", "core.fsmonitor", "false")  # a global fsmonitor stalls git in a throwaway repo
     for rel, text in SRC.items():
         write(root, rel, text)
     write(root, "README.md", f"# {name}\n\nPayout service for small merchants.\n")

@@ -5,7 +5,6 @@ The skill set is a chain. Each link is a hand-off written into a skill body as a
 ## The main flow: idea → ship (tier 2)
 
 ```
-zone-mode                    session gate and router, injected on startup/clear/compact
       │
       ▼
 /forge-prompt (optional)    vague ask → one prompt block for a fresh session (names no lane)
@@ -94,13 +93,11 @@ amend-feature                        small in-scope change to a shipped, spec'd 
 /scan-architecture        periodic codebase-wide friction scan → HTML report
                              → clarify-decisions on the chosen candidate → frame-change
 
-/publish-issues                 a conversation, spec, or idea → tracer-bullet issues
                              on the tracker → execute or implement directly
 
 /triage                      incoming issues and external PRs → the state machine
                              → ready-for-agent brief → execute or implement directly
 
-/sweep-backlog               your assigned tickets → one classified list, one question
                              → nothing written to the tracker until you answer
 
 /go [#N…]                    (runs deliver-issues) the named or every ready ticket → its own build, review and PR
@@ -122,7 +119,7 @@ realign-spec                    whenever a spec'd feature changed outside its pl
 | Specification | `specify-behavior`, `design-solution`, `plan-tasks` | [Specification](specification.md) |
 | Execution | `isolate-workspace`, `build-in-waves`, `build-by-story`, `build-inline`, `/deliver-issues`, `test-first`, `root-cause`, `prove-claim`, `audit-trace`, `load-subgraph` | [Execution](execution.md) |
 | Review & acceptance | `inspect-change` (+ `load-subgraph`), `/audit-shipped`, `polish-diff`, `vet-feedback`, `inspect-invariants`, `acceptance-*`, `write-dogfood`, `run-dogfood` | [Review and acceptance](review-and-acceptance.md) |
-| Ship & maintain | `land-branch`, `cut-release`, `realign-spec`, `amend-feature`, `/map-features`, `publish-issues`, `triage`, `sweep-backlog`, `show-run-status`, `scan-architecture`, `write-handoff` | [Ship and maintain](ship-and-maintain.md) |
+| Ship & maintain | `land-branch`, `cut-release`, `realign-spec`, `amend-feature`, `/map-features`, `triage`, `show-run-status`, `scan-architecture`, `write-handoff` | [Ship and maintain](ship-and-maintain.md) |
 
 The **project layer** is optional and sits above the per-feature chain: on a large project, [`define-project`](../skills/define-project.md) writes a repo-level product vision and an IDed architecture-invariant spine that the discovery, spec, execution, and review phases consult when present — and ignore cleanly when absent. See [the artifact model](../concepts/artifacts.md#docsproduct-and-docsarchitecture--the-optional-project-layer).
 
@@ -153,5 +150,4 @@ The chain is not one-way. Several skills feed back into earlier phases:
 - [Overview](../methodology/overview.md) — what the system is and why
 - [Ceremony tiers](../methodology/ceremony-tiers.md) — which flow your work belongs in
 - [On-ramps](on-ramps.md) — one home for which skill starts a situation
-- [`zone-mode`](../skills/zone-mode.md) — the session gate; it routes when the entry point is unclear
 - [Examples](../examples/tier-2-feature.md) — the chain run end to end

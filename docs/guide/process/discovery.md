@@ -14,7 +14,7 @@ When the ask is for an **unattended run** — `/goal`, an overnight session, any
 
 That `/forge-prompt` block deliberately **names no lane and no next step** — it carries targets, boundaries, evidence, assumptions, open questions, and a done signal, and nothing about what to do with them. The session it is pasted into reads it cold and picks its own entry point. That is what keeps a forged prompt from anchoring the chain on a conclusion nobody tested.
 
-It sits outside this phase rather than in front of it: no skill invokes it, and an ask that already names its targets skips it entirely. Unsure which entry point applies at all → `zone-mode` reads the on-ramps table.
+It sits outside this phase rather than in front of it: no skill invokes it, and an ask that already names its targets skips it entirely.
 
 ## The hard gate
 

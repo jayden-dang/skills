@@ -55,7 +55,7 @@
     "prompt": "ticket this so we don't forget: the CSV export should include refunds",
     "assertions": [
       "idea is the skill reached for",
-      "frame-change, triage and publish-issues are not"
+      "frame-change and triage are not"
     ]
   }
 ]

@@ -1,6 +1,6 @@
 # Skill reference
 
-80 skills in eleven buckets (engineering package); every one has its own page.
+77 skills in eleven buckets (engineering package); every one has its own page.
 See also [Start here](../START-HERE.md).
 
 **Invocation** is the thing to check first. Every skill is **model-invocable**: the agent loads it on its own when its description matches the situation, and you can still type it as a slash command. "model, or `/x`" in the table marks the ones that used to be typed only.
@@ -17,7 +17,6 @@ The skills that govern the other skills.
 
 | Skill | Invocation | What it does |
 |---|---|---|
-| [`zone-mode`](zone-mode.md) | model, or `/zone-mode` | The gate and router. Run `/zone-mode` to load the opt-in 1% overlay and hand off by invocability |
 | [`author-skills`](author-skills.md) | model, or `/author-skills` | TDD for process documentation. The standard every skill here is written against |
 
 ## setup
@@ -133,12 +132,10 @@ The visual layer. Fires before any HTML a human will look at.
 | [`brief-road`](brief-road.md) | `/brief-road ROAD-N` | One roadmap item before you frame it. What it delivers in plain words, what it leaves out, whether it is ready, blocked or built — every predecessor looked up in the catalog — and what is decided and still open. Writes nothing |
 | [`evolve-system`](evolve-system.md) | model, or `/evolve-system` | One measured improvement at a time. Reads the delivery sensor (receipts against real CI, a red integration branch, receipt coverage, architecture blast radius and invariant verdicts, repeated review lanes, each judged against the repo's own previous window), settles what earlier runs predicted; `--harness` does the same across every registered repo for the skill set itself, and opens at most one new improvement with a prediction, as a ticket. Never applies it |
 | [`assess-milestone`](assess-milestone.md) | model, or `/assess-milestone` | The close gate. Judges whether a milestone's outcome was achieved, records it append-only, and holds the close until you dispose of the verdict |
-| [`publish-issues`](publish-issues.md) | model, or `/publish-issues` | Context → tracker issues. Tracer-bullet slices with blocking edges, published agent-ready |
 | [`board`](board.md) | model, or `/board` | The fourth of the five commands. The whole board by state, what waits on you first, and every place the board and the repo disagree. Writes nothing |
 | [`idea`](idea.md) | model, or `/idea` | The first of the five commands. An idea becomes a ticket, framed, in Shaping with its tier and open questions |
 | [`shape`](shape.md) | model, or `/shape` | The second of the five commands. The spec triad (or the root cause for a bug) for a ticket, stopping at each approval; the approved plan makes it Ready |
 | [`triage`](triage.md) | model, or `/triage` | A two-axis issue state machine. Verify the claim before recommending |
-| [`sweep-backlog`](sweep-backlog.md) | model, or `/sweep-backlog` | Your assigned tickets as one classified, ordered list plus one question. Writes nothing until you answer |
 | [`show-run-status`](show-run-status.md) | model, or `/show-run-status` | Where one feature's build stands, from the plan, ledger, git, tests, parked decisions, ticket and PR. Writes nothing |
 | [`scan-architecture`](scan-architecture.md) | model, or `/scan-architecture` | Codebase-wide friction scan → an HTML report of deepening candidates |
 | [`catalog-sync`](catalog-sync.md) | (guide) | INDEX-only catalog sync: configure-repo posture + map-features export/materialize |
@@ -166,12 +163,6 @@ frame-change   Write NO code, scaffold NOTHING, until the ceremony tier is state
 test-first          NO PRODUCTION CODE WITHOUT A FAILING TEST FIRST
 root-cause        NO FIXES WITHOUT ROOT CAUSE INVESTIGATION FIRST
 prove-claim       NO COMPLETION CLAIMS WITHOUT FRESH VERIFICATION EVIDENCE
-```
-
-And the opt-in overlay, loaded only when the user runs `/zone-mode`:
-
-```
-zone-mode     If there is even a 1% chance a skill applies, you MUST invoke it first.
 ```
 
 Default constitution (`AGENTS.md` §2): load when the description matches or a parent names the skill.

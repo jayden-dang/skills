@@ -122,7 +122,7 @@ It writes markdown only — no scripts, no linters, no CI, no git hooks land in 
 
 ### The one opt-in
 
-Offered, and applied only on a yes: **Context7 MCP** for live library docs. There is no session-start hook. Run [`/zone-mode`](../skills/zone-mode.md) when you want the full gate loaded.
+Offered, and applied only on a yes: **Context7 MCP** for live library docs. There is no session-start hook.
 
 A hard headless gate — running the audit-trace check in CI, or a git pre-push hook — is optional and team-specific. It lives outside the default path, so `configure-repo` does not wire one; the audit-trace check runs inside `prove-claim` and `cut-release` regardless.
 

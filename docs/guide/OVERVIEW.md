@@ -20,7 +20,7 @@ Three ways in: by role, by problem, or by phase.
 2. [Ceremony tiers](methodology/ceremony-tiers.md) — this answers "do I really have to write a spec for *this*?"
 3. [The process](process/README.md) — the chain, and which flow your work belongs in
 4. [Examples](examples/tier-0-tweak.md) — start with tier 0; it is the shortest
-5. When lost: `zone-mode` routes from the [on-ramps table](process/on-ramps.md)
+5. When lost: read the [on-ramps table](process/on-ramps.md)
 
 ### I maintain this skill set
 
@@ -54,10 +54,8 @@ Three ways in: by role, by problem, or by phase.
 | …review a branch before merging | [`inspect-change`](skills/inspect-change.md) |
 | …respond to review feedback | [`vet-feedback`](skills/vet-feedback.md) |
 | …cut a release | [`/cut-release`](skills/cut-release.md) |
-| …capture a conversation or idea into tracker issues | [`/publish-issues`](skills/publish-issues.md) |
 | …handle an incoming issue | [`/triage`](skills/triage.md) |
 | …put an idea on the board, shape it, build it, and see what waits on me | the five commands: [`/idea`](skills/idea.md) → [`/shape #N`](skills/shape.md) → [`/go`](skills/go.md) → [`/board`](skills/board.md) → [`/cut-release`](skills/cut-release.md); see [the workflow](workflow.md) |
-| …sort my assigned tickets before planning | [`/sweep-backlog`](skills/sweep-backlog.md) |
 | …turn every ready ticket on the board into a reviewed PR while I am away | [`/go`](skills/go.md) (runs [`deliver-issues`](skills/deliver-issues.md)) |
 | …see where one feature's build stands right now | [`/show-run-status`](skills/show-run-status.md) |
 | …check what merged this week for missed edge cases | [`/audit-shipped`](skills/audit-shipped.md) |
@@ -67,7 +65,6 @@ Three ways in: by role, by problem, or by phase.
 | …fix a spec that drifted from the code | [`realign-spec`](skills/realign-spec.md) |
 | …write a new skill | [`author-skills`](skills/author-skills.md) → [The skill model](concepts/skill-model.md) |
 | …understand the requirement-ID syntax | [Requirement IDs](concepts/requirement-ids.md) + [EARS](resources/ears.md) |
-| …know which flow I'm even in | `zone-mode` routes it; the table is [on-ramps](process/on-ramps.md) |
 
 ---
 
@@ -80,7 +77,7 @@ Three ways in: by role, by problem, or by phase.
 | **2. Specification** | `specify-behavior`, `design-solution`, `plan-tasks` | [Specification](process/specification.md) |
 | **3. Execution** | `isolate-workspace`, `build-in-waves` / `build-by-story` / `build-inline`, `/go`, `deliver-issues`, `test-first`, `root-cause`, `prove-claim`, `audit-trace`, `load-subgraph` | [Execution](process/execution.md) |
 | **4. Review & acceptance** | `inspect-change` (+ `load-subgraph`), `/audit-shipped`, `polish-diff`, `vet-feedback`, `validate-*`, product-flow suite | [Review and acceptance](process/review-and-acceptance.md) |
-| **5. Ship & maintain** | `land-branch`, `/cut-release`, `realign-spec`, `amend-feature`, `/map-features`, `/publish-issues`, `/triage`, `/sweep-backlog`, `/show-run-status`, `/scan-architecture`, `/write-handoff` | [Ship and maintain](process/ship-and-maintain.md) |
+| **5. Ship & maintain** | `land-branch`, `/cut-release`, `realign-spec`, `amend-feature`, `/map-features`, `/triage`, `/show-run-status`, `/scan-architecture`, `/write-handoff` | [Ship and maintain](process/ship-and-maintain.md) |
 
 ---
 

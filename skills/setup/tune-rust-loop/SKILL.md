@@ -117,7 +117,7 @@ One entry per fired code lever, ranked by measured cost. Each entry has these pa
 - **Expected gain:** the estimate and what it rests on (measured here / measured elsewhere /
   source only).
 
-Write it to `list.md`. Publishing it is the operator's call (`/publish-issues`).
+Write it to `list.md`.
 
 ## 5. Close
 

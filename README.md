@@ -138,7 +138,7 @@ agents need `--copy` and why.
 **Other platforms.** Nothing here is Claude-specific — the skills are plain
 `SKILL.md` and the traceability check is `grep`/`git` the agent drives.
 `AGENTS.md` at the repo root is the portable behavior contract; Codex CLI reads
-it natively. `zone-mode` loads only when you ask for it — it is not injected at session start.
+it natively.
 
 ### Dev symlink (this repo only)
 
@@ -207,7 +207,7 @@ maintains a repo-level product vision plus an IDed architecture-invariant spine
 checks those citations the same way it checks requirement IDs. A repo that opts into
 nothing behaves exactly as above.
 
-Lost? run `/zone-mode` — it routes any situation to the right entry point, from the on-ramps table.
+Lost? Read the on-ramps table: [`docs/guide/process/on-ramps.md`](docs/guide/process/on-ramps.md).
 
 ## The four gates
 
@@ -229,7 +229,6 @@ and countered by name. See [The gates](docs/guide/concepts/gates.md).
 
 | Bucket | Skills |
 |---|---|
-| meta | `zone-mode` (session gate + router), `author-skills` |
 | setup | `configure-repo`, `bootstrap-repo` |
 | discovery | `frame-change`, `clarify-decisions`, `research`, `run-spike`, `define-domain`, `forge-goal`, `forge-prompt`, `interpret-session`, `understand` |
 | spec | `specify-behavior`, `design-solution`, `plan-tasks` |
@@ -238,7 +237,8 @@ and countered by name. See [The gates](docs/guide/concepts/gates.md).
 | acceptance | `validate-feature`, `validate-api`, `validate-ui`, `write-dogfood`, `run-dogfood` |
 | craft | `craft-page`, `draft-ui`, `draft-ux`, `make-video` |
 | ship | `land-branch`, `record-verdict`, `cut-release` |
-| track | `amend-feature`, `reroute-plan`, `triage`, `realign-spec`, `refresh-roadmap-status`, `chart-progress`, `refresh-lanes`, `brief-road`, `assess-milestone`, `scan-architecture`, `map-features`, `write-handoff`, `publish-issues`, `record-debt` |
+| meta | `author-skills` |
+| track | `amend-feature`, `reroute-plan`, `triage`, `realign-spec`, `refresh-roadmap-status`, `chart-progress`, `refresh-lanes`, `brief-road`, `assess-milestone`, `scan-architecture`, `map-features`, `write-handoff`, `record-debt` |
 | project | `define-project`, `assess-pivot-impact`, `plan-milestones` (optional project / multi-milestone layer) |
 
 One page per skill in the [skill reference](docs/guide/skills/README.md).

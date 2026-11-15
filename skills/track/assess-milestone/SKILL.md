@@ -109,7 +109,6 @@ Every finding gets exactly one destination — this skill keeps no action-item l
 | an approved plan invalidated mid-flight | `reroute-plan` |
 | milestone intent that turned out wrong | `plan-milestones` |
 | a hard-to-reverse architecture decision | `define-domain` |
-| tracker work | name `/publish-issues` for the user to run |
 
 `record-verdict` is **not** a destination: its caller set is closed to `land-branch` and `cut-release`, and a milestone assessment is neither.
 

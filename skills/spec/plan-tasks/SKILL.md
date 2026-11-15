@@ -133,7 +133,6 @@ feature PR.
 |---|---|
 | "Four tasks → four issues so agents can grab in parallel" | Waves read `tasks.md` + Depends-on. Tracker noise is not parallelism |
 | "Sub-issues keep hierarchy without noise" | Under unit `feature`, tasks are not tracker tickets |
-| "publish-issues always means one issue per slice" | Non-triad path only. This step follows Publish unit |
 | "I'll publish tasks; the user can close extras" | Extras are the defect under unit `feature` |
 | "Many tasks — config must mean tasks" | Size never sets Publish unit; only the file line or explicit user order |
 

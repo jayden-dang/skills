@@ -35,6 +35,4 @@
    (shared only, as in step 4); record all ids under `.skills/<CODE>/`. Still no
    silent invent of this unit.
 
-Work that never went through the triad uses `/publish-issues` (multi-slice) —
-do not re-file this plan there, and do not re-split a triad plan into
-publish-issues slices under unit `feature`.
+Do not re-split a triad plan into several issues under unit `feature`.

@@ -5,7 +5,7 @@ Everything is plain text a reasoning agent acts on: the skills are `SKILL.md`
 files, the portable behavior contract is `AGENTS.md`, and the audit-trace check is a
 set of `grep`/`git` passes the agent drives itself — there is no interpreter or
 binary to port. There is no session-start injector. Default invocation is
-description-match in `AGENTS.md`; `/zone-mode` is the opt-in 1% overlay. This page
+description-match in `AGENTS.md`. This page
 covers how each platform loads the pack.
 
 The portable contract for every platform is [`AGENTS.md`](../../../AGENTS.md) at
@@ -76,8 +76,7 @@ Do not also flatten Engineer Pack into `~/.agents/skills` / `~/.codex/skills`
 on the same machine.
 
 Codex also reads `AGENTS.md` from the repo root natively. After a long session,
-re-point it at `AGENTS.md` if it drifts. Run `/zone-mode` when you want the
-full gate loaded.
+re-point it at `AGENTS.md` if it drifts.
 
 Fallback without the plugin: `npx skills@latest add jayden-dang/skills --copy -a codex`
 (bare skill names, not `jdk:`).
@@ -139,7 +138,7 @@ for OpenCode — category names are not skills.
 ## Cursor
 
 Cursor reads `AGENTS.md`. There is no always-apply rule and no session-start
-hook. Run `/zone-mode` when you want the full gate loaded.
+hook.
 
 ## Any other harness
 

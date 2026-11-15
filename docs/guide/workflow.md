@@ -19,7 +19,7 @@ Design and evidence: `docs/design/2026-10-19-closed-workflow.md`.
 | `/cut-release` | A release. The tickets it ships read `shipped` |
 
 Every other skill still works when you type it (`/deliver-issues`, `/show-run-status`,
-`/triage`, `/sweep-backlog`, …). The five are the short path.
+`/triage`, …). The five are the short path.
 
 ## The states
 
@@ -39,14 +39,14 @@ Won't do                 Human-only
 |---|---|---|---|
 | Inbox | `needs-triage` | `/idea`, `/triage` | `/idea` (after framing), `/triage` |
 | Shaping | `shaping` | `/idea`, `/shape`, `/go` (a ready ticket with no spec) | **you approve**; then `plan-tasks` publishes it Ready |
-| Ready | `ready-for-agent` | `plan-tasks`, `/publish-issues`, `/triage` | the build that claims it |
+| Ready | `ready-for-agent` | `plan-tasks`, `/triage` | the build that claims it |
 | Building | `building` + assignee | the build's tracker sync (`execute-common`) | `land-branch` when the PR opens |
 | In review | `in-review` | `land-branch` | **you merge**; `Closes #N` closes it |
 | Done | closed | the merge | `/cut-release` |
 | Shipped | `shipped` | `/cut-release` | — |
 | Needs input | `needs-info` | whoever asks you a question, on the ticket | **you answer** |
 | Human-only | `ready-for-human` | `/triage` | you |
-| Won't do | `wontfix` | you, or `/triage` and `/sweep-backlog` on your word | — |
+| Won't do | `wontfix` | you, or `/triage` on your word | — |
 
 You own three gates: **approve** (a spec, a plan, or a Notion draft when `Draft surface`
 is `notion`), **answer** a question on a ticket, and **merge** a PR. Agents do the rest,

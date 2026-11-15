@@ -1,7 +1,7 @@
 # On-ramps
 
-**One home** for which skill starts a situation. `zone-mode` and
-[START-HERE](../START-HERE.md) point here — they do not restate this table.
+**One home** for which skill starts a situation. [START-HERE](../START-HERE.md)
+points here and does not restate this table.
 
 Load this file when the entry point is unclear. Then invoke the named
 model-invocable skill, or name the `/slash` for the user to run.
@@ -21,9 +21,7 @@ model-invocable skill, or name the `/slash` for the user to run.
 | Unit tests green, unsure it truly works | `validate-feature` |
 | Want to try a finished feature by hand | `write-dogfood` |
 | Have a guide from write-dogfood and want the agent to run every case | `run-dogfood` |
-| A conversation, spec, or idea to capture as tracker issues | `/publish-issues` |
 | Incoming issue or external PR you did not author | `/triage` |
-| Your own assigned tickets, before planning: what is done, duplicate, stale or blocked | `/sweep-backlog` |
 | Several approved tickets on the board, and you want PRs when you are back | `/go` (runs `deliver-issues`; `/go #N` for named tickets) |
 | A build is running or stopped halfway and you need to say where it stands | `/show-run-status` |
 | Work merged last week and you want the edge cases it missed | `/audit-shipped` |
@@ -48,4 +46,4 @@ Three rules of thumb:
 
 > When two skills both seem to apply, the process skill wins. It will invoke the implementation skill itself.
 
-`zone-mode` owns **how** to hand off. This file owns **which** name to pick.
+This file owns **which** name to pick.

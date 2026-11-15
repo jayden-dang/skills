@@ -35,7 +35,7 @@ Our-code surprises are not keep-list meat for comments — kill the comment and 
 
 1. Spawn one read-only subagent with the brief in `comment-sicko-brief.md` beside this file (verbatim + scope paths). Prefer a different model family from the parent when the harness allows.
 2. Triage the report. Reject application-code rewrites by the reviewer, scope escapes, and keep-claims that lack proof of an exception above. Doubt → delete.
-3. Apply accepted deletions and trivial in-scope fixes (dead path, unused param) yourself. Shape changes → REQUIRED SUB-SKILL: use `polish-diff` or name `/architect`-style design work; do not widen the fence here.
+3. Apply accepted deletions and trivial in-scope fixes (dead path, unused param) yourself. Shape changes → REQUIRED SUB-SKILL: use `polish-diff`, or name the design work for `design-solution`; do not widen the fence here.
 4. Constraint comments (`do not remove`, `talk to X`): offer the cheapest encoding (type, test, lint, runtime assert). Wait for approval before encoding; unattended runs need caller pre-approval. Else delete and report the constraint open.
 5. Report: deletion count, restored keeps with proof, `MUST KILL` flags, encodings offered/done, open work.
 

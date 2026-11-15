@@ -1,6 +1,6 @@
 # Phase 5 — Ship and maintain
 
-**Skills:** [`land-branch`](../skills/land-branch.md) · [`cut-release`](../skills/cut-release.md) · [`realign-spec`](../skills/realign-spec.md) · [`amend-feature`](../skills/amend-feature.md) · [`publish-issues`](../skills/publish-issues.md) · [`triage`](../skills/triage.md) · [`sweep-backlog`](../skills/sweep-backlog.md) · [`show-run-status`](../skills/show-run-status.md) · [`scan-architecture`](../skills/scan-architecture.md) · [`write-handoff`](../skills/write-handoff.md)
+**Skills:** [`land-branch`](../skills/land-branch.md) · [`cut-release`](../skills/cut-release.md) · [`realign-spec`](../skills/realign-spec.md) · [`amend-feature`](../skills/amend-feature.md) · [`triage`](../skills/triage.md) · [`show-run-status`](../skills/show-run-status.md) · [`scan-architecture`](../skills/scan-architecture.md) · [`write-handoff`](../skills/write-handoff.md)
 
 ## `land-branch` — prepare locally, then the integration decision
 
@@ -93,12 +93,6 @@ The honest test for escalation: **does the existing spec's intent already cover 
 
 If the feature has no spec at all, `amend-feature` is the wrong skill — a brand-new capability is `frame-change`, a break is `root-cause`.
 
-## `/publish-issues` — the outgoing capture
-
-The mirror of `/triage`. Where triage moves work *in* from the tracker, `publish-issues` pushes work *out* onto it — turning the current conversation, an approved spec, or a rough idea into **tracer-bullet issues**, each declaring the issues that block it. It is the fast lane that skips the full requirements → design → plan triad; `plan-tasks` remains the heavyweight, traceable publish path for tier-2 features.
-
-The slices follow the same discipline as a plan: each cuts a **vertical** path through every layer, is demoable on its own, and fits one fresh context window; a **wide refactor** is sequenced expand → migrate → contract instead of forced into one slice. After the user approves the breakdown, the issues publish in dependency order — blockers first — with native blocking links (or local `.scratch/` files) and the `ready-for-agent` label.
-
 ## `/triage` — the incoming queue
 
 Issues (and, when configured, external PRs — *a PR is an issue with attached code*) move through a two-axis state machine. Every triaged issue carries **exactly one label from each axis**:
@@ -114,10 +108,6 @@ Two rules that are easy to get backwards:
 
 - **Issues that already carry a state are out of scope.** Triage takes issues with no state role, `needs-triage`, and `needs-info` with reporter activity. Running a planned ticket through triage adds a second, weaker spec.
 - **An "already implemented" close does not write to `.out-of-scope/`.** That knowledge base records *rejections*; logging built features there poisons future dedup checks.
-
-## `/sweep-backlog` — your own queue
-
-[`/triage`](../skills/triage.md) handles tickets coming in. [`/sweep-backlog`](../skills/sweep-backlog.md) reads the ones already assigned to you. It checks every branch for commits that name each ticket, puts each ticket in one class (landed, duplicate, obsolete, blocked outside the team, blocked, ready), orders the rest by what blocks them, and asks one question for the calls only you can make, each with a pick. It writes nothing to the tracker until you answer.
 
 ## `/show-run-status` — where a build stands
 

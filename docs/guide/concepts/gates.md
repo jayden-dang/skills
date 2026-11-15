@@ -9,7 +9,7 @@ Four hard prohibitions. They are not guidance, they are not preferences, and the
 | No fix before a root cause | [`root-cause`](../skills/root-cause.md) | `NO FIXES WITHOUT ROOT CAUSE INVESTIGATION FIRST` |
 | No completion claim without fresh evidence | [`prove-claim`](../skills/prove-claim.md) | `NO COMPLETION CLAIMS WITHOUT FRESH VERIFICATION EVIDENCE` |
 
-A fifth is opt-in: [`zone-mode`](../skills/zone-mode.md), the session gate. Run `/zone-mode` when you want the **1%** overlay (if there is even a 1% chance a skill applies, invoke it first). The default constitution (`AGENTS.md` §2) loads a skill when its description matches or a parent names it.
+The default constitution (`AGENTS.md` §2) loads a skill when its description matches or a parent names it.
 
 ## Why they are written as prohibitions
 
@@ -95,23 +95,6 @@ write test → passes → revert the fix → test MUST fail → restore fix → 
 ```
 
 A test that survives the revert is testing nothing.
-
-## The gate above the gates
-
-`zone-mode` loads only when the user asks for it. The 1% rule lives in this skill as an overlay. The default constitution (`AGENTS.md` §2) is description-match. Its `<NON-NEGOTIABLE>` block:
-
-> If there is even a 1% chance a skill applies to what you are about to do, you MUST invoke that skill first. This is not a judgment call you get to make per-task. You cannot reason your way out of it.
-
-Its red-flags table catches the agent mid-rationalization:
-
-| Thought | Reality |
-|---|---|
-| "This is just a quick question" | Questions are tasks. Check for skills |
-| "Let me look around first" | Skills define HOW to look. Check first |
-| "This is too small for process" | Small things grow. The tier system handles size — the skill decides, not you |
-| "I remember what that skill says" | Skills change. Read the current text |
-| "I'll do this one step, then check" | The check comes before the first step |
-| "Being helpful means answering fast" | Being helpful means following the process that works |
 
 ## Precedence
 

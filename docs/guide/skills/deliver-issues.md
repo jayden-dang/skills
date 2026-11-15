@@ -53,4 +53,3 @@ Not covered by the tests: the host agent cap, a change of plan from you mid-run,
 - [`build-in-waves`](build-in-waves.md) — the build step
 - [`land-branch`](land-branch.md) — the landing step
 - [`show-run-status`](show-run-status.md) — where one feature's run stands
-- [`publish-issues`](publish-issues.md) — how tickets reach the board

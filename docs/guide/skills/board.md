@@ -41,5 +41,4 @@ Not covered: Linear, Notion drafts passed with `--drafts`, and a board of more t
 
 - [The workflow](../workflow.md) — the states and who moves each one
 - [`/show-run-status`](show-run-status.md) — one feature's build in detail
-- [`/sweep-backlog`](sweep-backlog.md) — your own assigned tickets, with one question
 - Design: `docs/design/2026-10-19-closed-workflow.md`

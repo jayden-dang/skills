@@ -8,7 +8,7 @@
 | **Invocation** | model-invoked when its description matches, or `/assess-milestone` |
 | **Reads** | `docs/roadmap/INDEX.md`, `docs/specs/INDEX.md`, `docs/product/vision.md`, each member's `requirements.md`, `git`, `templates/roadmap-findings.md`, and any existing assessment |
 | **Writes** | `docs/roadmap/assessments/<MILE-N>.md` — and nothing else, ever |
-| **Calls** | [`plan-milestones`](plan-milestones.md) with a verified handoff. Names [`refresh-roadmap-status`](refresh-roadmap-status.md) and [`publish-issues`](publish-issues.md) for the user |
+| **Calls** | [`plan-milestones`](plan-milestones.md) with a verified handoff. Names [`refresh-roadmap-status`](refresh-roadmap-status.md) for the user |
 | **Called by** | nobody yet — it fires on what the user asks, or on `/assess-milestone` |
 
 ## The other half of the close
@@ -62,7 +62,7 @@ Commits landing on `HEAD` afterwards do not stale an assessment. Validity is SHA
 - **Write the roadmap.** `docs/roadmap/INDEX.md` belongs to [`plan-milestones`](plan-milestones.md). This skill hands it a verified handoff; that skill re-derives every value from the assessment file and refuses on any mismatch.
 - **Run `refresh-roadmap-status` in its place.** It reads the same reference itself.
 - **Forecast.** Plan-accuracy counts are recorded as observed facts, with no velocity, capacity, estimate, or projected date derived from them.
-- **Hold an action-item list.** Every finding carries exactly one destination: `amend-feature`, `reroute-plan`, `plan-milestones`, `define-domain`, or `/publish-issues`.
+- **Hold an action-item list.** Every finding carries exactly one destination: `amend-feature`, `reroute-plan`, `plan-milestones`, `define-domain`,.
 - **Run a team retrospective.** What went well, what went badly, who did what — not this skill. It assesses an outcome against a written intent.
 
 ## One consequence worth knowing

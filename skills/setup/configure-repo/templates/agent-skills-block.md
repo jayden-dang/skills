@@ -9,7 +9,6 @@ This repo is configured for a spec-driven skill set.
 - Bug on-ramp: `root-cause` (clear unexpected behavior first, then a guarded fix);
   deployed env: `debug-remote` then `root-cause`; telemetry readiness:
   `assess-observability`
-- Capture a conversation/spec/idea into tracker issues: `publish-issues`
 - Incoming issues and PRs: `triage`
 - Traceability check: the docs-only `audit-trace` skill — run by `prove-claim` and `cut-release`;
   keep it clean

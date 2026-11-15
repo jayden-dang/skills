@@ -1,12 +1,11 @@
 # AGENTS.md — Agent Behavior Constitution
 
-> A-to-Z agentic development skill set · **80 skills across 11 categories** · `jayden-dang/skills` · v1.0.0
+> A-to-Z agentic development skill set · **77 skills across 11 categories** · `jayden-dang/skills` · v1.0.0
 
 This file is the single source of truth for agent behavior when working with this
 skill set on any harness. Read it first, before any skill, before any action.
 The invocation contract lives here: load a skill when its description matches,
-or when a parent names it. `zone-mode` loads the 1% full gate only when you ask
-for it.
+or when a parent names it.
 
 **Human tutorial (setup + feature loop + entry points):**
 [`docs/guide/START-HERE.md`](docs/guide/START-HERE.md) · skill pages:
@@ -100,9 +99,6 @@ to do, or when a parent names it as `REQUIRED SUB-SKILL`. Do not load a skill on
 a speculative chance it might apply. Over-triggering loads instructions that do
 not help the task and dilutes the ones that do.
 
-`zone-mode` is the opt-in 1% overlay, for when you want every plausible skill
-loaded. It loads only when the user asks for it.
-
 Invoke matched or requested skills BEFORE any response or action — before
 clarifying questions, before exploring the codebase, before checking a single
 file. Announce "Using [skill] to [purpose]", then follow the skill exactly. If it
@@ -121,9 +117,8 @@ carries a checklist, create one todo per item.
 | Is tracing / OpenObserve / sampling complete? | `assess-observability` |
 | Small in-scope change to a shipped, spec'd feature | `amend-feature`, not `frame-change` |
 | Incoming issue or external PR | `triage` |
-| Capture this conversation into tracker issues | `publish-issues` |
 | New idea to put on the board, or "what is waiting on me" | `idea` or `board`; then `/shape #N`, `/go` and `/cut-release` are the operator's to send. The path: [`docs/guide/workflow.md`](docs/guide/workflow.md) |
-| Unsure which flow fits | read `docs/guide/process/on-ramps.md`; `zone-mode` only when the user asks for it |
+| Unsure which flow fits | read `docs/guide/process/on-ramps.md` |
 
 **User instructions override skills; skills override agent defaults.** Skip a
 skill's workflow only when the user has explicitly told you to. A waiver of
@@ -152,9 +147,9 @@ did not come from the operator's own words stops in Inbox (`needs-triage`):
 `audit-shipped`, `evolve-system`, `record-debt` and `scan-architecture` file there
 and go no further.
 
-**Four skills start only on the operator's explicit ask**, because loading them
-changes the whole session, deletes text, or publishes: `zone-mode`, `no-comments`,
-`cut-release`, and `go` (the literal `/go`; `deliver-issues` owns the words).
+**Three skills start only on the operator's explicit ask**, because they delete text
+or publish: `no-comments`, `cut-release`, and `go` (the literal `/go`;
+`deliver-issues` owns the words).
 
 **A runner the user configured counts as the user.** A scheduler, NAVORI or a
 bot that sends a skill's command (`/evolve-system --unattended`) invokes it on the
@@ -299,8 +294,8 @@ and the final whole-branch review.
 feature across compaction and crash. Trust the ledger and `git log`, never
 memory. Never re-dispatch a task the ledger marks complete.
 
-**Subagent-exempt:** a subagent dispatched for one specific task ignores
-`/zone-mode` and follows its brief only.
+**Subagent-exempt:** a subagent dispatched for one specific task follows its brief
+only.
 
 ---
 
@@ -504,7 +499,6 @@ What the shipped skill set gives an adopting repo. This repo's own work follows 
   (interviews, then hands over one block — it names no next step by design)
 - Define what an unattended run should achieve and forge it into one goal prompt
   with a verify-every-round loop, for any agent: `forge-goal`
-- Capture a conversation, spec, or idea into tracker issues: `publish-issues`
 - Understand a feature, component, or change (code-grounded page + one check question): `understand`, or just ask
 - Incoming issues and PRs: `triage`
 - The short path, one board: `/idea` → `/shape #N` → `/go` → `/board` → `/cut-release`

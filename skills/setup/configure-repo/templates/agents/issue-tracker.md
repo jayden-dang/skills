@@ -55,7 +55,7 @@ Two access paths: a connected **Linear MCP server** (preferred — lower frictio
 handles auth) or the **GraphQL API**. Whichever you use, you must be able to
 perform every operation below. Find the MCP tool for each; **fall back to the API
 for any operation the MCP server does not expose.** Blocking relations are the
-common MCP gap for multi-issue graphs (`publish-issues`). Default
+common MCP gap for multi-issue graphs. Default
 `plan-tasks` publish is one feature issue — no task-to-task blocking edges.
 
 | Operation | GraphQL |

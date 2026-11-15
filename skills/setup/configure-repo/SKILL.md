@@ -41,7 +41,7 @@ Walk the fourteen decisions below (A–N; I is optional project-docs; K is optio
 
 ### A. Issue tracker
 
-Explainer: skills that read or write issues (`triage`, `publish-issues`, `plan-tasks` when publishing a plan, `land-branch`, `cut-release`) need to know where issues live and which commands touch them. Options: **github**, **gitlab**, **linear**, **local**, **other**. Recommend only from the repo's local git remote — a GitHub remote → github, a GitLab remote → gitlab, no remote → local — and always let the user overrule it. Do not probe a service or its auth to guess the tracker. Linear is a separate service and will not appear in `git remote`, so present it as an option and pick it whenever the user says the team lives in Linear, even if the code host is GitHub/GitLab.
+Explainer: skills that read or write issues (`triage`, `plan-tasks` when publishing a plan, `land-branch`, `cut-release`) need to know where issues live and which commands touch them. Options: **github**, **gitlab**, **linear**, **local**, **other**. Recommend only from the repo's local git remote — a GitHub remote → github, a GitLab remote → gitlab, no remote → local — and always let the user overrule it. Do not probe a service or its auth to guess the tracker. Linear is a separate service and will not appear in `git remote`, so present it as an option and pick it whenever the user says the team lives in Linear, even if the code host is GitHub/GitLab.
 
 **WHEN the tracker is chosen, read `issue-tracker-followups.md` beside this file and follow it exactly** — what each option means, the PR-surface, Publish unit, Program sync, and Draft surface follow-up questions, the write-scope table, and the IC-default rule all live there.
 

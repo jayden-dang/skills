@@ -23,11 +23,9 @@ The short path is five commands on one board: `/idea`, `/shape #N`, `/go`, `/boa
 is the full chain they wrap.
 
 ```
-                        /zone-mode    ── on request: opt-in 1% overlay + router  
                              │
         ┌────────────────────┴─────────────────────────────────────────────┐
         ▼                                                                    │
-  /zone-mode   ── routes any situation to an entry point below              │
   /forge-prompt ── "my ask is vague" ── hands back one prompt to paste       │
   /forge-goal  ── "run it unattended" ── hands back one /goal to paste       │
         │                                                                    │
@@ -51,7 +49,7 @@ is the full chain they wrap.
 
  FIVE COMMANDS (docs/guide/workflow.md): /idea ─► /shape #N ─► /go ─► /board ─► /cut-release
 
- MAINTENANCE: amend-feature · /publish-issues · /triage · /sweep-backlog · /scan-architecture
+ MAINTENANCE: amend-feature · /triage · /scan-architecture
               · /map-features · understand · /write-handoff · realign-spec
               · /show-run-status · /deliver-issues (model-invocable; /go runs it) · /audit-shipped
 ```
@@ -88,7 +86,7 @@ absent. See [the artifact model](concepts/artifacts.md#docsproduct-and-docsarchi
 
 **Mental model:** you drive with **slash commands** (`/…`) and plain-English
 requests; most skills are **model-invoked** and fire when their trigger matches.
-Default invocation is description-match (`AGENTS.md` §2). Run [`/zone-mode`](skills/zone-mode.md)
+Default invocation is description-match (`AGENTS.md` §2).
 when you want the 1% overlay loaded — it is not injected at session start.
 Full skill index: [Skill reference](skills/README.md) · laws: [`AGENTS.md`](../../AGENTS.md).
 
@@ -154,17 +152,17 @@ You mostly describe the idea and **approve files**; the rest chains:
 
 ### Other entry points
 
-The table lives in [on-ramps](process/on-ramps.md) — one home, and `zone-mode` reads it when the entry point is unclear.
+The table lives in [on-ramps](process/on-ramps.md) — one home, reads it when the entry point is unclear.
 
 ## 3. Skill index (engineering package)
 
-Full tables: [Skill reference](skills/README.md) (80 engineering skills).  
+Full tables: [Skill reference](skills/README.md) (77 engineering skills).  
 
 `U` = you run `/name` · `m` = model-invoked
 
 | Category | Skills (see also [AGENTS.md §11](../../AGENTS.md#11-quick-reference-every-skill)) |
 |---|---|
-| **meta** | `/zone-mode`, `/author-skills` |
+| **meta** | `/author-skills` |
 | **setup** | `/configure-repo`, `/bootstrap-repo` |
 | **discovery** | `frame-change`, `clarify-decisions`, `research`, `run-spike`, `define-domain`, `/forge-goal`, `/forge-prompt`, `/interpret-session`, `understand` |
 | **spec** | `specify-behavior`, `design-solution`, `plan-tasks` |
@@ -173,7 +171,7 @@ Full tables: [Skill reference](skills/README.md) (80 engineering skills).
 | **acceptance** | `validate-feature`, `validate-api`, `validate-ui`, `write-dogfood`, `run-dogfood` |
 | **craft** | `craft-page`, `make-video` |
 | **ship** | `land-branch`, `record-verdict`, `/cut-release` |
-| **track** | `amend-feature`, `reroute-plan`, `realign-spec`, `/triage`, `/publish-issues`, `/scan-architecture`, **`/map-features`**, `/write-handoff`, `/refresh-roadmap-status`, `/chart-progress`, `refresh-lanes`, `/brief-road`, `/assess-milestone`, `/sweep-backlog`, `/show-run-status`, `/idea`, `/shape`, `/board` |
+| **track** | `amend-feature`, `reroute-plan`, `realign-spec`, `/triage`, `/scan-architecture`, **`/map-features`**, `/write-handoff`, `/refresh-roadmap-status`, `/chart-progress`, `refresh-lanes`, `/brief-road`, `/assess-milestone`, `/show-run-status`, `/idea`, `/shape`, `/board` |
 | **project** | `/define-project`, `/assess-pivot-impact`, `plan-milestones` |
 
 ## Where to go next

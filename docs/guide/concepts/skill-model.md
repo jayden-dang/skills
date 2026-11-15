@@ -26,7 +26,7 @@ Three loading levels, and each costs differently:
 | **Body** — the SKILL.md text | paid every turn *once the skill fires* |
 | **Reference file** — a sibling `.md` behind a pointer | costs nothing until the pointer is followed |
 
-That budget is why discipline skills keep their core body to roughly 500 words, why a SKILL.md body aims for 200 lines under a hard ceiling of 300 held by `scripts/lint-skill-length.py`, and why `zone-mode` is the shortest gate in the set. Length is a failure mode in itself, even when every line is live.
+That budget is why discipline skills keep their core body to roughly 500 words, and why a SKILL.md body aims for 200 lines under a hard ceiling of 300 held by `scripts/lint-skill-length.py`. Length is a failure mode in itself, even when every line is live.
 
 ## Who starts a skill, and who approves
 
@@ -36,7 +36,7 @@ That flag used to carry two things: who may start a skill, and what the operator
 
 > An agent may start any skill. It may not supply what only the operator can: an approval, an answer, a merge.
 
-So a skill that stops for approval stops for whoever started it. `/shape`'s `--auto` and `--go` are approvals given in advance, and come only from the operator's own message or a runner they configured. Four skills start only on an explicit ask, because loading them changes the whole session, deletes text or publishes: `zone-mode`, `no-comments`, `cut-release` and `go`.
+So a skill that stops for approval stops for whoever started it. `/shape`'s `--auto` and `--go` are approvals given in advance, and come only from the operator's own message or a runner they configured. Four skills start only on an explicit ask, because loading them changes the whole session, deletes text or publishes: `no-comments`, `cut-release` and `go`.
 
 **Two kinds of hand-off.** `REQUIRED SUB-SKILL: use \`x\`` invokes the next skill. Naming `/x` in a reply leaves it to the operator. A skill uses the first when the next step needs nothing from them and the second when the step is theirs to decide. A skill may still carry `disable-model-invocation: true`; a hand-off to one is a dead end, and `scripts/lint-write-handoffs.py` fails it.
 
@@ -44,7 +44,7 @@ So a skill that stops for approval stops for whoever started it. `/shape`'s `--a
 
 | Bucket | Skills | Kind |
 |---|---|---|
-| meta | `zone-mode`, `author-skills` | user |
+| meta | `author-skills` | user |
 | setup | `configure-repo`, `bootstrap-repo` | user |
 | discovery | `frame-change`, `clarify-decisions`, `research`, `run-spike`, `define-domain`, `understand` | model |
 | | `interpret-session` | user |
@@ -56,7 +56,7 @@ So a skill that stops for approval stops for whoever started it. `/shape`'s `--a
 | ship | `land-branch`, `record-verdict` | model |
 | | `cut-release` | user |
 | track | `amend-feature`, `reroute-plan`, `realign-spec` | model |
-| | `triage`, `refresh-roadmap-status`, `assess-milestone`, `scan-architecture`, `map-features`, `write-handoff`, `publish-issues` | user |
+| | `triage`, `refresh-roadmap-status`, `assess-milestone`, `scan-architecture`, `map-features`, `write-handoff` | user |
 | project | `plan-milestones` | model |
 | | `define-project`, `assess-pivot-impact` | user |
 
@@ -76,7 +76,7 @@ engineering skills (2026-08-16):
 | Model-invocable with **no** caller — description-triggered entry points | 5 |
 
 The third row is the one worth reading carefully, because "no caller" looks like
-an orphan and mostly is not. `zone-mode` loads only on request. `amend-feature`,
+an orphan and mostly is not. `amend-feature`,
 `vet-feedback`, `vet-source`, `speak-outer`, `hold-stage`, and
 `run-dogfood` are **entry points**: they fire on what the user
 says (walkthrough is only *named* by `write-dogfood`). `write-dogfood`
@@ -160,11 +160,10 @@ This is why the rationalization tables in `test-first`, `root-cause`, `prove-cla
 
 ## Activation
 
-The set ships as a Claude Code plugin. There is no SessionStart hook. Default invocation is description-match (`AGENTS.md` §2). `zone-mode` loads when you ask for the 1% overlay.
+The set ships as a Claude Code plugin. There is no SessionStart hook. Default invocation is description-match (`AGENTS.md` §2).
 
 ## See also
 
 - [The gates](gates.md) — the four skills that guard rules the agent breaks under pressure
 - [`author-skills`](../skills/author-skills.md) — the full authoring doctrine and its deployment checklist
-- [`zone-mode`](../skills/zone-mode.md) — the session gate and router
 - [Skill reference](../skills/README.md) — 63 engineering skills

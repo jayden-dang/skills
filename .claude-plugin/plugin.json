@@ -62,7 +62,6 @@
     "./skills/track/refresh-roadmap-status",
     "./skills/track/chart-progress",
     "./skills/track/reroute-plan",
-    "./skills/track/publish-issues",
     "./skills/track/write-handoff",
     "./skills/track/scan-architecture",
     "./skills/track/show-run-status",
@@ -76,7 +75,6 @@
     "./skills/track/brief-road",
     "./skills/track/evolve-system",
     "./skills/track/refresh-lanes",
-    "./skills/track/sweep-backlog",
     "./skills/setup/bootstrap-repo",
     "./skills/setup/configure-repo",
     "./skills/setup/tune-rust-loop",
@@ -84,7 +82,6 @@
     "./skills/project/define-system-doc",
     "./skills/project/assess-pivot-impact",
     "./skills/project/plan-milestones",
-    "./skills/meta/zone-mode",
     "./skills/meta/author-skills",
     "./skills/meta/reflect"
   ]

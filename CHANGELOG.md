@@ -8,7 +8,7 @@ The set went from 80 skills to 59 without losing a behaviour. Three were dropped
 
 The reason is the listing budget. Descriptions for the whole set now take 19,450 characters, against 30,385 after the flag was removed and about 20,800 for the version installed before today. In a real Claude Code session at the default budget every one of the 59 descriptions is shown; with 80 it showed 26 skills by name only. The `skillListingBudgetFraction` setting recommended below is no longer needed for this set alone.
 
-Checks, before and after: 153 first messages routed on Sonnet and Haiku (153 of 153 both times), and one ticket run from `/idea` through `/shape` and `/go` (same three stops for the operator, same commits and tests). Token use for that run was about 17% higher in the two later runs than in the single baseline run; with one run each that is not yet explained. The absorbed skills' mode files were not each re-run on their own scenarios.
+Checks, before and after: 153 first messages routed on Sonnet and Haiku (153 of 153 both times), and one ticket run from `/idea` through `/shape` and `/go` (same three stops for the operator, same commits and tests). Token use for that run was 76k and 90k on the old set (two runs) and 89k and 90k on the new one, so the merges neither cost nor saved tokens that these runs can show. The absorbed skills' mode files were not each re-run on their own scenarios.
 
 ### Changed: every skill is model-invocable (2026-11-15)
 

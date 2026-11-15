@@ -40,7 +40,7 @@ So a skill that stops for approval stops for whoever started it. `/shape`'s `--a
 
 **Two kinds of hand-off.** `REQUIRED SUB-SKILL: use \`x\`` invokes the next skill. Naming `/x` in a reply leaves it to the operator. A skill uses the first when the next step needs nothing from them and the second when the step is theirs to decide. A skill may still carry `disable-model-invocation: true`; a hand-off to one is a dead end, and `scripts/lint-write-handoffs.py` fails it.
 
-**The cost is context.** Each model-invocable skill's description is listed in every session, inside a budget of 1% of the model's context window. Past it, the harness keeps every name and drops the descriptions of the least recently used skills, and a skill listed by name alone is rarely reached by what the user says. A clean Sonnet session holding only this set saw 68 descriptions and 18 bare names (2026-11-15). Raise the budget with `skillListingBudgetFraction` in the harness settings.
+**The cost is context.** Each model-invocable skill's description is listed in every session, inside a budget of 1% of the model's context window. Past it, the harness keeps every name and drops the descriptions of the least recently used skills, and a skill listed by name alone is rarely reached by what the user says. Measured on 2026-11-15 (Claude Code 2.1.325, Sonnet, a clean project holding only this set): with 48 skills listed every one had its description; with all 80 listed, 68 do and 26 are bare names, including `debug-remote`, `vet-source`, `why`, `build-by-story` and `build-inline`. With `"skillListingBudgetFraction": 0.02` in the harness settings all of them show. Set it higher when other skills are installed beside this set.
 
 | Bucket | Skills | Kind |
 |---|---|---|

@@ -35,5 +35,18 @@
       "a behavior change has apply.md written before the production edit",
       "a deferred writeup does not relabel the change as tier 0"
     ]
+  },
+  {
+    "eval_id": 4,
+    "eval_name": "top-recommendation-is-one-follow-up",
+    "kind": "behavior",
+    "derived_from": "TESTS.md \u00a7 2026-11-15 \u2014 1.4.0",
+    "prompt": "/scan-architecture \u2014 where would refactoring pay in this repo? I won't read your reply until tomorrow, don't wait on me. (A github tracker is configured.)",
+    "assertions": [
+      "exactly one follow-up exists after the run: a ticket on the tracker, or one file under .skills/inbox/ where Follow-up filing is draft",
+      "its Acceptance names one figure from posture.json",
+      "the other candidates are listed under Out of scope, not filed",
+      "no tracked file is changed"
+    ]
   }
 ]

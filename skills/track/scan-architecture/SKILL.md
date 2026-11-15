@@ -1,6 +1,6 @@
 ---
 name: scan-architecture
-version: 1.3.0
+version: 1.4.0
 description: Produces a codebase-wide architecture scan ranked by where refactoring pays, and applies one chosen direction when you ask, with the test log from before the edit saved.
 disable-model-invocation: true
 ---
@@ -67,7 +67,9 @@ End with a top-recommendation section: which candidate first, one sentence why, 
 
 **ADR conflicts:** a candidate that contradicts an existing ADR is included only when its evidence carries a `Strong` confidence badge; below that it is dropped, not listed. An included one is marked with the ADR reference and why the decision deserves revisiting. Do not list every refactor an ADR forbids.
 
-**Done when:** the posture strip carries every count from step 1, the report is open in the user's browser, and you have asked which candidate to pursue.
+REQUIRED — the top recommendation leaves the session as one follow-up, in the Issue format of `docs/agents/issue-tracker.md`: a ticket created with that file's tracker ops, or the file `.skills/inbox/<slug>.md` (first line `# <title>`) and no ticket WHERE that file sets **Follow-up filing** to `draft`. Problem is the friction and the posture figure behind it; Outcome is the proposed direction; Acceptance is the one figure in `posture.json` the next scan should see move; Out of scope names the other candidates. One follow-up, not one per candidate. The report sits in a temp directory and the question in one reply: a scan run for an operator who was out until morning ended "Nothing proceeds until Lan picks one", with nothing on the board for her to pick from.
+
+**Done when:** the posture strip carries every count from step 1, the report is open in the user's browser, the follow-up is a ticket number read back from the tracker or a path under `.skills/inbox/`, and you have asked which candidate to pursue.
 
 ## 4. Shape the chosen candidate
 
@@ -89,7 +91,7 @@ Tier 0 (mechanical, no behavior change) can proceed directly under `test-first`/
 
 ## 6. Apply when they ask for one direction
 
-They asked only for the scan? Stop after the question in step 3. Leave the repo as you found it.
+They asked only for the scan? Stop after the question in step 3. Leave the repo's tracked files as you found them.
 
 They named one direction and told you to apply it:
 

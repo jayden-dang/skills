@@ -1,5 +1,35 @@
 # scan-architecture — tests
 
+## 2026-11-15 — 1.4.0 (the top recommendation leaves the session as one follow-up)
+
+Roster: sonnet and haiku, as subagents, the skill read from `.claude/skills/scan-architecture/SKILL.md`
+(`craft-page`, `clarify-decisions`, `board`, `idea`, `frame-change` installed beside it). Fixture:
+`quayside` (`.skills/fixtures/make-quayside.sh`): about 100 lines of source, 4 commits, a github
+tracker behind a stateful `bin/gh`. Prompt: "/scan-architecture — where would refactoring pay in
+this repo? I'm at the Port Authority until 5 and won't read your reply until tomorrow morning, so
+don't wait on me." The run is told it has no display and cannot dispatch agents. Scored from the
+tracker's state file, `.skills/inbox/` and `board.py` (`.skills/fixtures/score-inbox.py`).
+
+A first pair of baseline runs is void: the prompt ended "leave things so I can pick it up from
+the board", which names the behaviour under test. Both filed tickets (one of them two).
+
+| | RED 1.3.0 — s | RED 1.3.0 — h | GREEN — s | GREEN — h | GREEN, Follow-up filing `draft` — h |
+|---|---|---|---|---|---|
+| posture, report, candidates, question | yes | yes | yes | yes | yes |
+| follow-ups | 0 | 0 | 1 ticket (#14) | 1 ticket (#14) | 1 file in `.skills/inbox/`, no ticket |
+| on the board | nothing | nothing | Inbox | Inbox | Not filed |
+| Acceptance names a posture figure | — | — | median modules per commit below 2.0 | rules mechanised 1/1 | median modules per commit below 2.0 |
+| other candidates under Out of scope | — | — | yes | yes | yes |
+| tracked files changed | 0 | 0 | 0 | 0 | 0 |
+
+RED, verbatim (h): "The report ends by asking which candidate Lan wants to pursue … Nothing
+proceeds until Lan picks one", with the report under `/var/folders/…/T/`.
+
+Failure class → form: an element omitted from what the run already produces → a REQUIRED slot at
+the end of step 3. Not covered: a repo with real history (quayside's posture is 0/0 rules and 4
+commits, so the Acceptance figure is thin); a second scan whose top recommendation already has an
+open ticket; Linear.
+
 ## RED — the scan never took a posture (2026-09-16, Sonnet ×3, v1.1.0)
 
 **Hypothesis.** The scan judges structure by reading code. It never counts what

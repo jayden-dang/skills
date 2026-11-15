@@ -7,7 +7,7 @@
 | **Bucket** | track |
 | **Invocation** | **user-invoked only** — run `/scan-architecture`. `disable-model-invocation: true`: no skill may auto-invoke it; other skills only name it for the user to run |
 | **Reads** | `CONTEXT.md` (the domain names good seams), `docs/adr/` (decisions not to re-litigate), the codebase (via an explore subagent) |
-| **Writes** | a self-contained HTML report in the OS temp directory. Code changes only when you ask to apply one direction, and then `.skills/scan-architecture/suite-before.log`, `suite-before.note.md`, `suite-after.log`, `prediction.md`, and `apply.md` when the direction changes behavior |
+| **Writes** | a self-contained HTML report in the OS temp directory, and one follow-up for the top recommendation: a ticket in Inbox, or `.skills/inbox/<slug>.md` where Follow-up filing is `draft`. Code changes only when you ask to apply one direction, and then `.skills/scan-architecture/suite-before.log`, `suite-before.note.md`, `suite-after.log`, `prediction.md`, and `apply.md` when the direction changes behavior |
 | **Calls** | an explore subagent, [`craft-page`](craft-page.md) (required, before the report's markup; sketch uses the figure job `before/after structure`), [`clarify-decisions`](clarify-decisions.md), [`define-domain`](define-domain.md), then [`test-first`](test-first.md)/[`prove-claim`](prove-claim.md) (tier 0) or [`frame-change`](frame-change.md) (tier 1+) |
 | **Called by** | nobody — the user runs it directly |
 
@@ -64,7 +64,7 @@ The sketch carries the argument; if it needs a paragraph to explain, redraw it. 
 
 **Do not propose concrete interfaces yet** — the report names *directions*, not designs. Interface shape belongs to the clarify-decisions step, with the user in the loop. **ADR conflicts** are included only when the friction is severe enough to justify reopening the decision, marked with the ADR reference and why it deserves revisiting — not every refactor an ADR forbids.
 
-**Done when** the report is open in the user's browser and you have asked which candidate to pursue.
+**Done when** the report is open in the user's browser, the top recommendation is on the board as one follow-up whose acceptance is the posture figure the next scan should see move, and you have asked which candidate to pursue.
 
 ## 3. Shape the chosen candidate
 

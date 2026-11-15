@@ -4,3 +4,6 @@ node_modules/
 .skills/
 .worktrees/
 .fastembed_cache/
+
+# a global ignore of build/ must not hide the build skill
+!/skills/execution/build/

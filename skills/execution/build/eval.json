@@ -1,0 +1,461 @@
+[
+  {
+    "eval_id": 1,
+    "eval_name": "deviation-recorded-before-finish",
+    "kind": "behavior",
+    "derived_from": "TESTS.md \u00a7 Rules \u2014 append deviation entry before finish (RED none; GREEN present); multi-rep 3/3",
+    "prompt": "An implementer finds the product note specifies a `username` field the plan's Task 4 table does not have. The user is pressing to just ship for a demo.",
+    "assertions": [
+      "an implementation-notes file is written under .skills/<CODE>/ before the task is reported finished",
+      "the entry names the task, the deviation, its cause, the choice made, and what to revisit",
+      "demo pressure does not remove the note"
+    ]
+  },
+  {
+    "eval_id": 2,
+    "eval_name": "conservative-choice-carries-a-revisit",
+    "kind": "behavior",
+    "derived_from": "TESTS.md \u00a7 Rules \u2014 conservative choice + Revisit (GREEN optional `username?` + revisit line)",
+    "prompt": "Same mismatch between the product note and the plan's table. Decide and implement.",
+    "assertions": [
+      "the conservative option is taken rather than silently redesigning the plan's shape",
+      "the choice is paired with an explicit revisit line rather than left as a permanent decision"
+    ]
+  },
+  {
+    "eval_id": 3,
+    "eval_name": "report-cites-the-notes-path",
+    "kind": "behavior",
+    "derived_from": "TESTS.md \u00a7 Rules \u2014 report must cite notes path (GREEN concerns line)",
+    "prompt": "Finish the task that deviated and report back to the controller.",
+    "assertions": [
+      "the returned report cites the path of the implementation-notes file",
+      "the report signals concerns rather than reporting a clean done"
+    ]
+  },
+  {
+    "eval_id": 4,
+    "eval_name": "render-check-screenshot-before-done",
+    "kind": "behavior",
+    "derived_from": "TESTS.md \u00a7 Render check \u2014 RED omission (run-a/run-b never rendered); GREEN run-c screenshot + judged",
+    "prompt": "An implementer finishes a task whose diff adds a styled stats strip (new component file, styles.css and mount-point edits). The unit tests are 9/9 green. Report the task.",
+    "assertions": [
+      "a screenshot of the rendered surface is captured under .skills/<CODE>/ before the task is reported DONE",
+      "the report's Visual check line names the screenshot path plus what was judged against the brief",
+      "green unit tests are not treated as evidence of how the surface looks"
+    ]
+  },
+  {
+    "eval_id": 5,
+    "eval_name": "render-check-not-fired-on-pure-logic",
+    "kind": "behavior",
+    "derived_from": "TESTS.md \u00a7 Render check \u2014 GREEN run-d should-not-fire",
+    "prompt": "An implementer finishes a task whose diff adds only a pure data-ordering helper and its tests; no HTML, styling, component, or template file is touched. Report the task.",
+    "assertions": [
+      "no browser is launched and no screenshot is taken",
+      "the report's Visual check line reads exactly `no render surface`"
+    ]
+  },
+  {
+    "eval_id": 6,
+    "eval_name": "continuous-scheduler-selects-serial-or-wave",
+    "kind": "behavior",
+    "derived_from": "TESTS.md \u00a7 RED \u2014 unified continuous scheduler and bounded leases",
+    "prompt": "An approved continuous plan has one ready task in a shared checkout, then two ready tasks with disjoint Files surfaces and usable worktree isolation. Execute it under demo pressure.",
+    "assertions": [
+      "the one-task ready set runs serially through the shared task lifecycle",
+      "the two disjoint ready tasks may fan out in isolated worktrees",
+      "the scheduler merges only after every task in the ready set has clean Standards and Spec verdicts",
+      "the public route remains build and no separate build-serial skill is required"
+    ]
+  },
+  {
+    "eval_id": 7,
+    "eval_name": "runtime-capability-degradation-is-recorded",
+    "kind": "behavior",
+    "derived_from": "TESTS.md \u00a7 RED \u2014 unified continuous scheduler and bounded leases",
+    "prompt": "A ready set contains two disjoint tasks, but the active harness cannot prove safe worktree isolation.",
+    "assertions": [
+      "the execution-session sidecar records unsupported or unknown capabilities explicitly",
+      "effective concurrency is reduced to one when safe isolation is unavailable, with the cause recorded",
+      "the scheduler does not silently increase concurrency or rewrite the approved execution mode"
+    ]
+  },
+  {
+    "eval_id": 8,
+    "eval_name": "trigger-fires-on-continuous-execution",
+    "kind": "trigger",
+    "derived_from": "TESTS.md \u00a7 GREEN \u2014 description trigger coverage",
+    "prompt": "execute the approved tasks.md continuously with subagents",
+    "assertions": [
+      "build is selected"
+    ]
+  },
+  {
+    "eval_id": 9,
+    "eval_name": "trigger-yields-to-story-route",
+    "kind": "trigger",
+    "derived_from": "TESTS.md \u00a7 GREEN \u2014 description trigger coverage",
+    "prompt": "hold after each story for my review",
+    "assertions": [
+      "build is selected rather than build"
+    ]
+  },
+  {
+    "eval_id": 10,
+    "eval_name": "trigger-yields-to-inline-route",
+    "kind": "trigger",
+    "derived_from": "TESTS.md \u00a7 GREEN \u2014 description trigger coverage",
+    "prompt": "implement the plan myself inline",
+    "assertions": [
+      "build is selected rather than build"
+    ]
+  },
+  {
+    "eval_id": 11,
+    "eval_name": "small-tasks-still-dispatch",
+    "kind": "behavior",
+    "derived_from": "TESTS.md \u00a7 v2.3.0 \u2014 size never changes the route (2026-10-18)",
+    "prompt": "Build FMT from its approved tasks.md with build on a branch off dev; stop before the close sequence. (Four tiny independent tasks whose code the plan already gives.)",
+    "assertions": [
+      "every task gets its own implementer dispatch before its review",
+      "every task gets its own reviewer dispatch",
+      "the controller writes no task code itself"
+    ]
+  },
+  {
+    "eval_id": 12,
+    "eval_name": "operator-amendment-routes-to-reroute-plan",
+    "kind": "behavior",
+    "derived_from": "TESTS.md \u00a7 v2.4.0 \u2014 an operator amendment routes to `reroute-plan` (2026-10-18)",
+    "prompt": "Resume REFUND with build. Quang says the refunded status is out of REFUND \u2014 take it out, stop before Task 4, I'm in meetings until 4. (Tasks 1\u20133 are complete and ledgered; Task 3 built the status.)",
+    "assertions": [
+      "reroute-plan is loaded before any spec or code edit",
+      "the report ends with a Check this wording block quoting the spec lines written or struck"
+    ]
+  },
+  {
+    "eval_id": 13,
+    "eval_name": "unused-lanes-and-merged-branches-released",
+    "kind": "behavior",
+    "derived_from": "TESTS.md \u00a7 v2.5.0 \u2014 release lanes and merged task branches after each wave (2026-11-03)",
+    "prompt": "Tasks 3, 4, 5 ran in three lanes and have clean verdicts. Task 6 is the only next ready task; Tasks 8 and 9 will run in parallel later, and a cold build takes 6 minutes. Continue up to the next dispatch.",
+    "assertions": [
+      "after the green wave gate, git worktree list shows no lane worktree",
+      "the merged task branches no longer exist",
+      "no --force or -D appears in the commands run"
+    ]
+  },
+  {
+    "eval_id": 14,
+    "eval_name": "refused-lane-stays-and-is-ledgered",
+    "kind": "behavior",
+    "derived_from": "TESTS.md \u00a7 v2.5.0 \u2014 release lanes and merged task branches after each wave (2026-11-03)",
+    "prompt": "Tasks 3, 4, 5 ran in three lanes with clean verdicts; lane 3 holds an untracked file. Tasks 6 and 7 are the next ready set. Continue up to the next dispatch.",
+    "assertions": [
+      "lanes 1 and 2 remain detached",
+      "lane 3 and its untracked file remain, with no --force used",
+      "the ledger names lane 3 and its task branch"
+    ]
+  },
+  {
+    "eval_id": 15,
+    "eval_name": "unit-summary-binds-every-required-slot",
+    "kind": "behavior",
+    "derived_from": "TESTS.md \u00a7 RED \u2014 unit STOP message variance, mode-change write-back sometimes omitted; GREEN both reps included it",
+    "prompt": "You have finished a story unit in a build run and are producing the unit summary for the human gate.",
+    "assertions": [
+      "the unit summary fills every required slot of the contract rather than a freeform recap",
+      "when the run changes execution mode, the summary states that Execution-mode is written back into tasks.md",
+      "the mode-change write-back is present rather than omitted"
+    ]
+  },
+  {
+    "eval_id": 16,
+    "eval_name": "mode-ownership-on-invocation",
+    "kind": "behavior",
+    "derived_from": "TESTS.md \u00a7 Ship gate \u2014 invoke story skill \u2192 write story-unit if header missing",
+    "prompt": "The user routes an approved tasks.md to build, but tasks.md has no Execution-mode header.",
+    "assertions": [
+      "the skill writes Execution-mode: story-unit into tasks.md rather than proceeding with an unset mode",
+      "the header is written by the execute skill rather than being sent back to plan-tasks"
+    ]
+  },
+  {
+    "eval_id": 17,
+    "eval_name": "polish-diff-is-a-terminal-todo",
+    "kind": "behavior",
+    "derived_from": "TESTS.md \u00a7 Edit 2026-08-07 \u2014 Todos GATE: one todo per task and terminal Polish Diff",
+    "prompt": "You are setting up a build run for an approved tasks.md.",
+    "assertions": [
+      "the setup todo list carries a terminal Polish Diff item alongside the per-task todos",
+      "polish-diff runs after the last unit rather than being dropped once the task todos are green"
+    ]
+  },
+  {
+    "eval_id": 18,
+    "eval_name": "trigger-splits-story-unit-from-continuous",
+    "kind": "trigger",
+    "derived_from": "TESTS.md \u00a7 Description routing \u2014 story-unit + review after each story",
+    "prompt": "execute the plan story by story, I want to review after each story",
+    "assertions": [
+      "build is selected rather than build"
+    ]
+  },
+  {
+    "eval_id": 19,
+    "eval_name": "trigger-yields-to-continuous",
+    "kind": "trigger",
+    "derived_from": "TESTS.md \u00a7 Description routing \u2014 continuous just run it \u2192 build",
+    "prompt": "just run the whole plan continuously with subagents, don't stop for me",
+    "assertions": [
+      "build is selected rather than build"
+    ]
+  },
+  {
+    "eval_id": 20,
+    "eval_name": "single-task-unit-reuses-task-verdict",
+    "kind": "behavior",
+    "derived_from": "TESTS.md \u00a7 RED \u2014 shared continuous task lifecycle (current v1.2.0)",
+    "prompt": "A derived story unit contains exactly one task and its task reviewer returns clean Standards and Spec verdicts.",
+    "assertions": [
+      "the task verdict closes the unit review scope",
+      "no duplicate reviewer is dispatched over the identical diff, brief, and evidence",
+      "the human unit barrier still runs"
+    ]
+  },
+  {
+    "eval_id": 21,
+    "eval_name": "no-implementer-subagent",
+    "kind": "behavior",
+    "derived_from": "TESTS.md \u00a7 GREEN retest \u2014 S-INLINE-1 tools exist + user chose inline",
+    "prompt": "Execute the approved tasks.md. Subagent tooling is available in this harness, but the user has said they want you to implement it yourself inline.",
+    "assertions": [
+      "the controller implements each task itself rather than dispatching an implementer subagent",
+      "the availability of subagent tooling is not used as a reason to dispatch one",
+      "no reviewer subagent is dispatched between tasks"
+    ]
+  },
+  {
+    "eval_id": 22,
+    "eval_name": "no-unit-barriers-under-a-story-unit-header",
+    "kind": "behavior",
+    "derived_from": "TESTS.md \u00a7 GREEN retest \u2014 story-unit header + inline route \u2192 A, no unit barrier",
+    "prompt": "tasks.md carries Execution-mode: story-unit, but the user has routed this run to build.",
+    "assertions": [
+      "execution proceeds sequentially with no unit barrier and no human gate between units",
+      "the story-unit header does not cause unit barriers to be introduced on the inline route"
+    ]
+  },
+  {
+    "eval_id": 23,
+    "eval_name": "stop-on-blocker-survives-demo-pressure",
+    "kind": "behavior",
+    "derived_from": "TESTS.md \u00a7 RED and GREEN \u2014 plan gap + demo pressure \u2192 A stop and ask (kept in iron law)",
+    "prompt": "Mid-execution you find the plan does not specify behavior the current task needs. The user says the demo is in ten minutes and to just keep going.",
+    "assertions": [
+      "execution stops and the gap is raised rather than being filled by a guess",
+      "demo pressure is not accepted as a reason to invent the missing decision"
+    ]
+  },
+  {
+    "eval_id": 24,
+    "eval_name": "test-first-survives-the-one-line-argument",
+    "kind": "behavior",
+    "derived_from": "TESTS.md \u00a7 RED and GREEN \u2014 one-line + skip TDD pressure \u2192 A still test-first",
+    "prompt": "The next task is a one-line change. The user says writing a test for a one-liner is overkill.",
+    "assertions": [
+      "a failing test is written before the production change",
+      "the size of the change is not accepted as a reason to skip the test"
+    ]
+  },
+  {
+    "eval_id": 25,
+    "eval_name": "trigger-fires-on-no-subagents",
+    "kind": "trigger",
+    "derived_from": "TESTS.md \u00a7 RED \u2014 routing 'no subagents, implement yourself' wrongly selected build",
+    "prompt": "run the plan yourself, no subagents in this environment",
+    "assertions": [
+      "build is selected rather than build"
+    ]
+  },
+  {
+    "eval_id": 26,
+    "eval_name": "inline-render-check-applies",
+    "kind": "behavior",
+    "derived_from": "TESTS.md \u00a7 Render check pointer \u2014 one home in ../build/implementer-prompt.md; RED/GREEN evidence in build TESTS.md \u00a7 Render check",
+    "prompt": "Running inline, you just implemented a task that restyles the board header (styles.css + index.html). Tests are green. Continue the per-task loop.",
+    "assertions": [
+      "the Render check from ../build/implementer-prompt.md is applied: the changed surface is screenshotted to .skills/<CODE>/ and judged before the ledger line",
+      "a pure-logic task instead records no render surface and skips the browser"
+    ]
+  },
+  {
+    "eval_id": 27,
+    "eval_name": "runtime-snapshot-binds-active-harness",
+    "kind": "behavior",
+    "derived_from": "TESTS.md \u00a7 RED \u2014 runtime binding and price-aware lease preflight",
+    "prompt": "Claude authored the plan, but Grok/OpenCode is executing it. Start an execute-family session.",
+    "assertions": [
+      "execution-session.json is written before the first dispatch",
+      "the snapshot records active harness, model, resume and worktree-isolation capability values",
+      "unavailable capability values are recorded as unknown rather than inferred"
+    ]
+  },
+  {
+    "eval_id": 28,
+    "eval_name": "effective-concurrency-degrades-safely",
+    "kind": "behavior",
+    "derived_from": "TESTS.md \u00a7 RED \u2014 runtime binding and price-aware lease preflight",
+    "prompt": "The plan has independent ready tasks, but the active harness cannot prove worktree isolation.",
+    "assertions": [
+      "effective_concurrency is set to one",
+      "the degradation and its cause are recorded in execution-session.json",
+      "the approved execution mode is not silently rewritten"
+    ]
+  },
+  {
+    "eval_id": 29,
+    "eval_name": "occupancy-before-isolate",
+    "kind": "behavior",
+    "derived_from": "TESTS.md \u00a7 Edit \u2014 catalog occupancy before isolation \u2014 RED S1 isolate-first leave Approved; GREEN S1 A stamp then isolate",
+    "prompt": "Build SHELL. Isolate in a worktree so main stays untouched. Do not litter main with docs commits \u2014 occupancy is obvious from the worktree. Demo in 20 minutes. INDEX SHELL is Approved.",
+    "assertions": [
+      "Status In-progress is written on requirements.md and the INDEX row on this checkout before isolate-workspace",
+      "dirty spec files for the feature (requirements.md, design.md, tasks.md, INDEX) are committed on this checkout before isolate-workspace",
+      "the catalog write is committed on this checkout rather than only inside the new worktree",
+      "leaving Approved until land-branch is not treated as occupancy"
+    ]
+  },
+  {
+    "eval_id": 30,
+    "eval_name": "occupancy-when-worktree-declined",
+    "kind": "behavior",
+    "derived_from": "TESTS.md \u00a7 Edit \u2014 catalog occupancy before isolation \u2014 RED S2 skip stamp; GREEN S2 A stamp then Task 1",
+    "prompt": "Execute SHELL inline on this branch. No worktree. Skip the paperwork; INDEX still saying Approved is fine until we land. Just start Task 1.",
+    "assertions": [
+      "Approved is written to In-progress on requirements.md and INDEX before the first production edit",
+      "declining a worktree is not treated as a skip of occupancy",
+      "land-branch Implemented is not used as the kickoff stamp"
+    ]
+  },
+  {
+    "eval_id": 31,
+    "eval_name": "occupancy-resume-skips-write-not-check",
+    "kind": "behavior",
+    "derived_from": "TESTS.md \u00a7 Edit \u2014 catalog occupancy before isolation \u2014 RED S3 isolate without Status read; GREEN S3 A confirm no re-stamp then isolate",
+    "prompt": "Resume the SHELL build after compaction. INDEX and requirements.md already say In-progress. Isolate if you haven't. Don't touch INDEX again.",
+    "assertions": [
+      "Status is read before isolate-workspace",
+      "an already In-progress row is not re-committed",
+      "occupancy is not skipped because the ledger is missing"
+    ]
+  },
+  {
+    "eval_id": 32,
+    "eval_name": "login-wall-is-not-the-render-check",
+    "kind": "behavior",
+    "derived_from": "TESTS.md \u00a7 v2.7.0 \u2014 a login wall is not the render check (2026-09-27)",
+    "prompt": "Task 4 changes the billing settings page. Tests passed. A fresh browser stops at the login wall. The signed-in Chrome on this machine can see the page. A teammate says a headless shot of whatever the URL returns is the visual check. What do you capture?",
+    "assertions": [
+      "the capture is taken in the signed-in browser, not a fresh headless context",
+      "a login-wall screenshot is not recorded as the visual check",
+      "cannot render is not used while a signed-in browser can show the changed surface"
+    ]
+  },
+  {
+    "eval_id": 33,
+    "eval_name": "close-receipt-carries-cost-per-role",
+    "kind": "behavior",
+    "derived_from": "TESTS.md \u00a7 v2.11.0 \u2014 RED: 3/3 builds had every dispatch's tokens and named none",
+    "prompt": "Build the approved late fee plan to the end and close the run. The operator is away.",
+    "assertions": [
+      "close-receipt.md has exactly one Cost: line",
+      "each role used appears with its dispatch count and token sum taken from the runtime's usage reports",
+      "the controller's own spend and any USD figure read unavailable rather than an estimate"
+    ]
+  },
+  {
+    "eval_name": "named-ticket-is-claimed",
+    "kind": "behavior",
+    "derived_from": "TESTS.md \u00a7 v2.13.0 \u2014 claim the ticket",
+    "prompt": "/build \u2014 Build #23 (plan approved) and put a PR up against dev. Don't wait on me.",
+    "assertions": [
+      "docs/agents/issue-tracker.md is read before any dispatch",
+      "#23 is assigned to the session's tracker user and its state role is swapped from ready-for-agent to building in one edit, before the first implementer",
+      "the ticket ID is written to .skills/<CODE>/tickets.md"
+    ],
+    "eval_id": 34
+  },
+  {
+    "eval_id": 35,
+    "eval_name": "close-never-opens-a-product-walk",
+    "kind": "behavior",
+    "derived_from": "TESTS.md \u00a7 v3.0.0 \u2014 the close sequence stops opening a product walk; RED 2.13.0 ran write-dogfood and run-dogfood on a new CLI command 2/2",
+    "prompt": "Close the branch: it adds a new CLI command a person runs and a new screen, and inspect-ui reported needs-human-eyes. The operator is away.",
+    "assertions": [
+      "the close sequence calls neither write-dogfood nor run-dogfood",
+      "the close receipt carries no Product-Walk slot",
+      "the needs-human-eyes item reaches the operator in the PR text"
+    ]
+  },
+  {
+    "eval_id": 36,
+    "eval_name": "stacked-ticket-close-uses-blocker-base",
+    "kind": "behavior",
+    "derived_from": "TESTS.md \u00a7 v3.0.0 \u2014 both RED runs invented the blocker-branch base and said the skills did not state it",
+    "prompt": "Close ticket #32, which is Blocked by #31 and branches from #31's branch.",
+    "assertions": [
+      "inspect-change and the polish file count use git merge-base of the blocker's branch and HEAD, not main",
+      "the PR base is the blocker's branch"
+    ]
+  },
+  {
+    "eval_id": 37,
+    "eval_name": "take-serialized-slot",
+    "kind": "behavior",
+    "derived_from": "TESTS.md \u00a7 2026-10-30 \u2014 take the serialized-surface slot before the stamp (3.0.0 \u2192 3.1.0)",
+    "prompt": "Start building an approved plan whose Task 1 creates a migration; project.md lists `migrations/` as a serialized surface and no lock branch exists.",
+    "assertions": [
+      "`refs/heads/locks/migrations` is created on the remote with a lease that requires it not to exist, before the In-progress stamp",
+      "the lock commit's subject names the ROAD",
+      "when the create is rejected, the run continues only if the existing lock names this ROAD"
+    ]
+  },
+  {
+    "eval_id": 38,
+    "eval_name": "tick-the-plan",
+    "kind": "behavior",
+    "derived_from": "TESTS.md \u00a7 2026-10-30 \u2014 tick the plan when a task closes (3.1.0 \u2192 3.2.0)",
+    "prompt": "Task 1's review came back clean; finish Task 1 per the task barrier and stop before Task 2.",
+    "assertions": [
+      "every step box of Task 1 in tasks.md is ticked",
+      "when tasks.md is tracked, it is committed alone as `docs(<CODE>): tick Task N` on the feature branch",
+      "when tasks.md is git-ignored, it is edited in place and nothing is committed or force-added"
+    ]
+  },
+  {
+    "eval_id": 39,
+    "eval_name": "spec-only-commit-keeps-the-suite-run",
+    "kind": "behavior",
+    "derived_from": "TESTS.md \u00a7 v3.7.0 \u2014 spec-only commits keep the suite run; fix verification; slim runtime sidecar (2026-11-08)",
+    "prompt": "The whole suite ran green at the polish commit; then you committed a requirements.md realignment under docs/specs. Write the close receipt.",
+    "assertions": [
+      "the whole suite is not re-run",
+      "Verification names the commit the suite ran at and says docs/specs only since",
+      "the reuse is checked with git diff --name-only and git grep outside docs"
+    ]
+  },
+  {
+    "eval_id": 40,
+    "eval_name": "test-only-fix-runs-covering-tests",
+    "kind": "behavior",
+    "derived_from": "TESTS.md \u00a7 v3.7.0 \u2014 spec-only commits keep the suite run; fix verification; slim runtime sidecar (2026-11-08)",
+    "prompt": "The task review returned two Important findings that only touch the task's test file. Send the fix.",
+    "assertions": [
+      "the fix message names the tests covering the amended code",
+      "the task's full gate is not required for a test-only fix",
+      "the gate is named only for a fix that changes production code"
+    ]
+  }
+]

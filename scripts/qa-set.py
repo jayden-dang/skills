@@ -27,6 +27,13 @@ for s in sorted(glob.glob("scripts/lint-*.py")):
     r = subprocess.run(["python3", s], capture_output=True, text=True)
     check(os.path.basename(s), r.returncode == 0, r.stdout.strip().splitlines()[-1] if r.stdout.strip() else "")
 
+# 1b every skill file is tracked
+# A machine-wide ignore of `build/` kept the whole `build` skill out of a push that had already
+# deleted the four skills it replaced; every check below read the working tree and passed.
+tracked = set(subprocess.run(["git", "ls-files", "skills"], capture_output=True, text=True).stdout.split("\n"))
+untracked = [p for p in skills if p not in tracked]
+check("every SKILL.md is tracked by git", not untracked, "; ".join(untracked[:3]))
+
 # 2 frontmatter completeness
 bad = [p for p in skills if not re.search(r"^name:\s*\S", open(p).read(), re.M)
        or not re.search(r"^version:\s*\d+\.\d+\.\d+", open(p).read(), re.M)]

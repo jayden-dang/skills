@@ -156,7 +156,7 @@ The table lives in [on-ramps](process/on-ramps.md) — one home, reads it when t
 
 ## 3. Skill index (engineering package)
 
-Full tables: [Skill reference](skills/README.md) (59 engineering skills).  
+Full tables: [Skill reference](skills/README.md) (58 engineering skills).  
 
 `U` = you run `/name` · `m` = model-invoked
 
@@ -171,7 +171,7 @@ Full tables: [Skill reference](skills/README.md) (59 engineering skills).
 | **acceptance** | `validate-feature`, `write-dogfood`, `run-dogfood` |
 | **craft** | `craft-page`, `make-video` |
 | **ship** | `land-branch`, `record-verdict`, `/cut-release` |
-| **track** | `frame-change`, `reroute-plan`, `realign-spec`, `/triage`, `/scan-architecture`, **`/map-features`**, `/write-handoff`, `/refresh-roadmap-status`, `refresh-lanes`, `/assess-milestone`, `/board`, `/idea`, `/shape`, `/board` |
+| **track** | `frame-change`, `reroute-plan`, `realign-spec`, `/triage`, `/scan-architecture`, **`/map-features`**, `/write-handoff`, `/refresh-roadmap-status`, `refresh-lanes`, `/board`, `/idea`, `/shape`, `/board` |
 | **project** | `/define-project`, `plan-milestones` |
 
 ## Where to go next

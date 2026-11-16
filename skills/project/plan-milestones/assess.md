@@ -1,14 +1,8 @@
----
-name: assess-milestone
-version: 1.3.0
-description: Use when someone asks whether a milestone delivered what it promised, or whether it is ready to close. Produces a verdict read fresh from the specs, the tests and git, with the findings behind it. Not for where the plan stands (refresh-roadmap-status) or for editing the roadmap, closing included (plan-milestones).
----
-
 # Assess Milestone
 
-`refresh-roadmap-status` checks whether a milestone's **structure** is sound. This skill judges the other half — did it **deliver what its `Outcome:` sentence promised** — and records that judgment where a reader six months later can still check it.
+`refresh-roadmap-status` checks whether a milestone's **structure** is sound. This mode judges the other half — did it **deliver what its `Outcome:` sentence promised** — and records that judgment where a reader six months later can still check it.
 
-**Where this sits:** `plan-milestones` (intent) → the feature flow → **`assess-milestone`** (did it land?) → `plan-milestones` (records the close). This skill writes exactly one file, `docs/roadmap/assessments/<MILE-N>.md`, and never touches `docs/roadmap/INDEX.md`.
+**Where this sits:** the roadmap (intent) → the feature flow → **this assessment** (did it land?) → the close in `SKILL.md` (records it). This mode writes exactly one file, `docs/roadmap/assessments/<MILE-N>.md`, and never touches `docs/roadmap/INDEX.md`.
 
 ## The two halves
 
@@ -101,13 +95,13 @@ These are observed facts and nothing else. Derive **no** velocity, capacity, est
 
 ### Routing findings
 
-Every finding gets exactly one destination — this skill keeps no action-item list of its own, because a second list is a second place for work to rot.
+Every finding gets exactly one destination — this mode keeps no action-item list of its own, because a second list is a second place for work to rot.
 
 | Finding | Destination |
 |---|---|
 | a small in-scope change to a shipped feature | `frame-change` |
 | an approved plan invalidated mid-flight | `reroute-plan` |
-| milestone intent that turned out wrong | `plan-milestones` |
+| milestone intent that turned out wrong | the update mode in `SKILL.md` |
 | a hard-to-reverse architecture decision | `define-domain` |
 
 `record-verdict` is **not** a destination: its caller set is closed to `land-branch` and `cut-release`, and a milestone assessment is neither.
@@ -120,7 +114,7 @@ Write to `docs/roadmap/assessments/<MILE-N>.md`, creating it from `templates/mil
 Write the block **before** evaluating close eligibility. If the write fails — unwritable path, missing directory that cannot be created — report the failure and withhold close eligibility. The gate never opens on evidence that was not durably recorded: the whole reason this file exists is that a verdict living only in a conversation dies with it.
 </HARD-GATE>
 
-When to append a block, what stays byte-identical, how an override is attributed, and how a human rationale is stored are all in that comment block and its `## Disposition states` table. Validate against them there. `plan-milestones` validates against the same list before it records a close, so a second copy here would be a rule two skills could come to disagree about.
+When to append a block, what stays byte-identical, how an override is attributed, and how a human rationale is stored are all in that comment block and its `## Disposition states` table. Validate against them there. The close in `SKILL.md` validates against the same list before it records a close, so a second copy here would be a rule two files could come to disagree about.
 
 ### The disposition state machine
 
@@ -146,7 +140,7 @@ A milestone is close-eligible only when **both** hold. Evaluate them in this ord
 Either missing → withhold, and say which.
 </HARD-GATE>
 
-When both hold, hand `plan-milestones` four values: the `MILE-N`, the **assessment ordinal**, the effective verdict, and the candidate closing revision SHA. `plan-milestones` is model-invocable and owns every write to `docs/roadmap/INDEX.md`, including the closure record. A negative effective verdict with a `Close` decision **proceeds** — a milestone whose members all shipped but whose outcome still was not achieved cannot be fixed by shipping more code, and leaving it open forever makes the roadmap lie by omission. The verdict stays in the assessment file permanently: the roadmap says closed, and the assessment says what closing it actually meant.
+When both hold, return to the close in `SKILL.md` with four values: the `MILE-N`, the **assessment ordinal**, the effective verdict, and the candidate closing revision SHA. That close owns every write to `docs/roadmap/INDEX.md`, including the closure record. A negative effective verdict with a `Close` decision **proceeds** — a milestone whose members all shipped but whose outcome still was not achieved cannot be fixed by shipping more code, and leaving it open forever makes the roadmap lie by omission. The verdict stays in the assessment file permanently: the roadmap says closed, and the assessment says what closing it actually meant.
 
 ### One invocation, and the honest exception
 
@@ -166,7 +160,7 @@ One full read each of the roadmap, the spec index, the vision, and the assessmen
 
 | Thought | Reality |
 |---|---|
-| "The roadmap is missing, so I should offer to create one" | Report no milestone scope and stop. The layer is optional; `plan-milestones` exists for when they want one |
+| "The roadmap is missing, so I should offer to create one" | Report no milestone scope and stop. The layer is optional; the create mode in `SKILL.md` is for when they want one |
 | "The binding is obvious even though two codes claim it" | Two claims is not a binding. Withhold — a verdict resting on a guess is worse than no verdict |
 | "The commitment date is right there, I can find the commit from it" | Two milestones committed the same day share a date and not a SHA. Use the pickaxe |
 | "HEAD moved while I was working, so I should reassess" | The candidate revision is fixed at pass 4. A moving HEAD is not new evidence |
@@ -175,7 +169,7 @@ One full read each of the roadmap, the spec index, the vision, and the assessmen
 
 ## Red flags — stop
 
-- You are about to write to `docs/roadmap/INDEX.md` — that file is `plan-milestones`'s alone
+- You are about to write to `docs/roadmap/INDEX.md` — in this mode that file changes only through the close in `SKILL.md`, after the disposition
 - You are about to resolve a baseline from a date instead of a SHA
 - You are about to produce a verdict while a relevant withholding finding stands
 - You are about to let a value that failed its shape check reach a command

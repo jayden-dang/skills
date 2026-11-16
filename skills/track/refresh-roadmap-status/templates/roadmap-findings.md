@@ -1,7 +1,7 @@
 # Roadmap findings — R1–R11 and the withholding set
 
 Authoritative. Read by `refresh-roadmap-status`, which reports these findings, and by
-`assess-milestone`, which evaluates the withholding subset as a precondition before it
+`plan-milestones`, which evaluates the withholding subset as a precondition before it
 judges a milestone's outcome. Do not restate these rules in either skill body — one
 statement, two readers.
 
@@ -66,6 +66,6 @@ order), `members` (item → milestone), `bindings` (code → `ROAD-N`), and `sta
 - **R11** — the roadmap failing to parse, or violating `S1`, `S3`, `S4`, `S5`, `S7`, `S8`, or a
   `Depends-on` not resolving to exactly one live `MILE-N`.
 
-Scoping these findings to a single milestone is `assess-milestone`'s concern, not a property
+Scoping these findings to a single milestone is `plan-milestones`'s concern, not a property
 of the findings themselves — that rule lives in its skill body. `refresh-roadmap-status` reports the
 whole repo and needs no scoping.

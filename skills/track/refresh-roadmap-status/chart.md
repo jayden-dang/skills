@@ -84,7 +84,7 @@ Open it (`open` / `xdg-open` / `start`) and reply with the absolute path, the su
 recommendations — nothing else. The page is local and read-only: outside `.skills/dashboard/`
 the only file written is `refresh-lanes`' `docs/roadmap/lanes.md`, and no status, roadmap line,
 or spec is touched. Repairs the
-page points at belong to `plan-milestones`, `realign-spec`, or `/assess-milestone`.
+page points at belong to `plan-milestones` or `realign-spec`.
 
 *Done when: the HTML opens and the reply names its path.*
 

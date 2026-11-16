@@ -1,15 +1,15 @@
 # Assessments: MILE-&lt;n&gt; — &lt;milestone name&gt;
 
 <!--
-Outcome truth for one milestone, written only by `assess-milestone` to
+Outcome truth for one milestone, written only by `plan-milestones` (its `assess.md`) to
 docs/roadmap/assessments/<MILE-N>.md. One file per milestone. Optional — a project
 without a roadmap layer never has one.
 
 This file records whether the milestone DELIVERED. docs/roadmap/INDEX.md keeps recording
-what was INTENDED, and is written only by `plan-milestones`. Neither writes into the other.
+what was INTENDED, and is written only by the close in `plan-milestones`. Neither step writes into the other's file.
 See docs/adr/0002-outcome-truth-outside-the-roadmap.md.
 
-Structural rules — AUTHORITATIVE. `assess-milestone` validates against this list before it
+Structural rules — AUTHORITATIVE. `assess.md` validates against this list before it
 writes, and `plan-milestones` validates against it before it records a close:
 
   A1  every `## Assessment <N>` ordinal is unique and blocks appear in ascending order

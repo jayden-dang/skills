@@ -402,7 +402,7 @@ def plan_section(s: dict, ctx: dict) -> str:
     close = ""
     if closable:
         close = ('<h3>Milestones ready to close</h3><p class="sub">Every item in these milestones is done. '
-                 'Confirm each with /assess-milestone before marking it Closed.</p><ul class="items">'
+                 'Ask plan-milestones to close each one: it assesses the outcome first, and closes on your word.</p><ul class="items">'
                  + "".join(f'<li><span><span class="name">{e(ms[m]["name"])}</span>{tag(m)}</span>'
                            f'<span class="sub clamp" title="{e(ms[m]["outcome"])}">{e(ms[m]["outcome"])}</span></li>' for m in closable) + "</ul>")
 

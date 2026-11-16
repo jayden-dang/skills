@@ -5,7 +5,7 @@ left unfixed**, with the reason it was deferred. Observations nobody evaluated d
 belong here; neither do Critical or Important review findings, which are fixed before
 merge rather than banked.
 
-`assess-milestone`, `cut-release`, and `plan-milestones` read the open rows.
+`plan-milestones` and `cut-release` read the open rows.
 
 **ID rules** — same grammar as `ARCH-N` and `GOAL-N`: `**DEBT-N**` is bold, flat, and
 repo-wide. Never renumber, never reuse. Retire by strikethrough with a reason

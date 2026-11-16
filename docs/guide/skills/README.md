@@ -1,6 +1,6 @@
 # Skill reference
 
-59 skills in eleven buckets (engineering package); every one has its own page.
+58 skills in eleven buckets (engineering package); every one has its own page.
 See also [Start here](../START-HERE.md).
 
 **Invocation** is the thing to check first. Every skill is **model-invocable**: the agent loads it on its own when its description matches the situation, and you can still type it as a slash command. "model, or `/x`" in the table marks the ones that used to be typed only.
@@ -128,7 +128,6 @@ The visual layer. Fires before any HTML a human will look at.
 | [`refresh-lanes`](refresh-lanes.md) | model | The lanes file kept current. Regenerates `docs/roadmap/lanes.md` right after a write that moves a roadmap item, and rides in the same push. Called by `specify-behavior`, `build`, `land-branch`, `plan-milestones` and `/refresh-roadmap-status` |
 | [`refresh-roadmap-status`](refresh-roadmap-status.md) | `/refresh-roadmap-status ROAD-N` | One roadmap item before you frame it. What it delivers in plain words, what it leaves out, whether it is ready, blocked or built — every predecessor looked up in the catalog — and what is decided and still open. Writes nothing |
 | [`evolve-system`](evolve-system.md) | model, or `/evolve-system` | One measured improvement at a time. Reads the delivery sensor (receipts against real CI, a red integration branch, receipt coverage, architecture blast radius and invariant verdicts, repeated review lanes, each judged against the repo's own previous window), settles what earlier runs predicted; `--harness` does the same across every registered repo for the skill set itself, and opens at most one new improvement with a prediction, as a ticket. Never applies it |
-| [`assess-milestone`](assess-milestone.md) | model, or `/assess-milestone` | The close gate. Judges whether a milestone's outcome was achieved, records it append-only, and holds the close until you dispose of the verdict |
 | [`board`](board.md) | model, or `/board` | The fourth of the five commands. The whole board by state, what waits on you first, and every place the board and the repo disagree. Writes nothing |
 | [`idea`](idea.md) | model, or `/idea` | The first of the five commands. An idea becomes a ticket, framed, in Shaping with its tier and open questions |
 | [`shape`](shape.md) | model, or `/shape` | The second of the five commands. The spec triad (or the root cause for a bug) for a ticket, stopping at each approval; the approved plan makes it Ready |
@@ -149,7 +148,7 @@ The optional documentation layer above the feature workflow. Absent by default.
 | [`define-project`](define-project.md) | model, or `/define-project` | Authors and maintains the optional project layer — product vision, IDed architecture-invariant spine, and engineering guidelines |
 | [`define-project`](define-project.md) | model, or `/define-project` | One Hybrid 1A system-doc artifact per run (e.g. Codebase Map); pack catalog under the skill |
 | [`define-project`](define-project.md) | model, or `/define-project` | Disposition ledger when a product pivot puts shipped code at odds with a new vision or architecture — before vision rewrites |
-| [`plan-milestones`](plan-milestones.md) | model-invocable | Authors and maintains `docs/roadmap/INDEX.md` — `MILE-N` milestones and `ROAD-N` items, intent only, progress never stored |
+| [`plan-milestones`](plan-milestones.md) | model-invocable | Authors and maintains `docs/roadmap/INDEX.md` — `MILE-N` milestones and `ROAD-N` items, intent only, progress never stored. Also the close gate: judges whether a milestone delivered its outcome (`assess.md`), records it append-only, and closes only on your disposition |
 
 ---
 

@@ -7,7 +7,7 @@
 | **Bucket** | project |
 | **Invocation** | model-invocable — fires on roadmap planning and on **any** edit to an existing roadmap |
 | **Reads** | `templates/roadmap-INDEX.md`; `docs/product/vision.md` (`GOAL-N` citations); `docs/specs/INDEX.md` (work that already exists) |
-| **Writes** | `docs/roadmap/INDEX.md` — nothing else |
+| **Writes** | `docs/roadmap/INDEX.md`; in its assess mode, `docs/roadmap/assessments/<MILE-N>.md` and nothing else |
 | **Calls** | [`refresh-lanes`](refresh-lanes.md), once an edit is approved |
 | **Called by** | [`frame-change`](frame-change.md), when its step-5 decomposition names two or more independent sub-features |
 
@@ -63,6 +63,14 @@ An item's line holds its order and surfaces; its intent lives in `docs/roadmap/r
 ## Lines stay short
 
 A Blockers, Deferred or Closed line is one sentence of at most 300 characters, and several deferred items go one per line (rule S10). The full account goes into `docs/roadmap/milestones/MILE-N.notes.md`, or `roads/ROAD-N.notes.md` for one item, linked from the line. `INDEX.md` stays something a person and an agent can read whole.
+
+## Closing a milestone: assess, then close
+
+A close asserts that a milestone delivered what its `Outcome:` promised. Nothing in `INDEX.md` can show that on its own, so a `Committed → Closed` edit needs a terminal assessment in `docs/roadmap/assessments/<MILE-N>.md`. The assessment mode (`assess.md`) writes it. It has two halves. The mechanical half is fixed `grep` and `git` passes: scope, bindings, the committed baseline found by pickaxe, a candidate SHA held for the whole run, and the withholding findings. The judged half covers the outcome, goal coverage and deferral honesty. Each block starts `Pending`, and only you accept, override or defer it.
+
+When you ask to close a milestone that has no assessment yet, the skill runs the assessment in that same turn, shows you the verdict, and stops. "Close it, everything shipped" is the ask, not the acceptance. Once you accept, it re-reads the assessment file, checks the SHA and the disposition, and writes `Closed:`. Then the roadmap goes back to Draft for your approval. Asking whether a milestone delivered, with no close, runs only the assessment and leaves the roadmap alone.
+
+Until 2026-11-16 the assessment was a separate skill. A close ask was refused and you had to start the assessment yourself, which cost one extra turn per close.
 
 ## The approval gate
 

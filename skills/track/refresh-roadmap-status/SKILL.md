@@ -1,6 +1,6 @@
 ---
 name: refresh-roadmap-status
-version: 1.5.1
+version: 1.5.2
 description: "Use when someone asks where the roadmap or a multi-milestone plan stands and what to do next, asks about one roadmap item (what is ROAD-81, can we start it, is it ready or blocked), or asks for the weekly progress dashboard. Produces a status report derived fresh from the roadmap, the specs and git; a two-minute brief of one item; or one HTML dashboard with a fresh docs/roadmap/lanes.md. Not for tickets waiting on someone (board) or editing the roadmap (plan-milestones)."
 ---
 
@@ -33,7 +33,7 @@ The finding codes `R1`–`R11`, their conditions, and the **withholding set**
 authoritative — read the codes there, do not restate them. Resolve pack seeds in this
 order, first path that exists: (1) `templates/` beside this SKILL.md, (2)
 `${CLAUDE_PLUGIN_ROOT}/templates` when that variable is set, (3)
-`../../../templates` relative to this SKILL.md. `assess-milestone` reads the same file.
+`../../../templates` relative to this SKILL.md. `plan-milestones` reads the same file.
 
 A **withholding** finding replaces the next action with the reason.
 
@@ -124,7 +124,7 @@ and `statuses` (code → INDEX status, spec status). Apply `R1`–`R11` to them 
 
 A finding fires on structure alone. Do **not** read a milestone's outcome and decide whether
 it was *achieved*, whether a feature "really" delivers its item, or whether a deferral was
-wise. That judgment is `assess-milestone`'s, and adding it here makes the result depend on
+wise. That judgment is `plan-milestones`'s (its assess mode), and adding it here makes the result depend on
 the reader — the one thing this check exists to prevent. Row 8 of the ladder is where the
 milestone is handed on for it.
 
@@ -152,7 +152,7 @@ First match wins, top to bottom. Ties break on **milestone table order**, then l
 | 5 | …`Approved`, `design.md` exists, no `tasks.md` | `plan-tasks` |
 | 6 | …`Approved`, `tasks.md` exists | `build` (wave mode) |
 | 7 | …`Implemented` | name `/cut-release` for the user to run |
-| 8 | a `Committed` milestone whose members are all bound and `Shipped` | name `/assess-milestone` for that `MILE-N` |
+| 8 | a `Committed` milestone whose members are all bound and `Shipped` | `plan-milestones` — assess that `MILE-N` |
 | 9 | no `Committed` milestone, a `Planned` one exists | `plan-milestones` — commit the next milestone |
 | 10 | every milestone `Closed` | report the roadmap complete |
 

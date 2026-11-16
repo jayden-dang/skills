@@ -55,7 +55,6 @@
     "./skills/ship/tend-pr",
     "./skills/ship/record-verdict",
     "./skills/ship/cut-release",
-    "./skills/track/assess-milestone",
     "./skills/track/refresh-roadmap-status",
     "./skills/track/reroute-plan",
     "./skills/track/write-handoff",

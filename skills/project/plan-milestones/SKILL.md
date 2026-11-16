@@ -1,7 +1,7 @@
 ---
 name: plan-milestones
-version: 1.8.1
-description: "Use when a project's milestones need planning, sequencing or replanning, or for ANY edit to an existing roadmap: \"plan the milestones\", \"what order should we build this in\", \"drop this item\", \"reorder the milestones\", \"this milestone shipped\", \"commit to the next milestone\", or any request touching docs/roadmap/INDEX.md or a roadmap draft awaiting sign-off. Produces or revises docs/roadmap/INDEX.md with stable MILE-N and ROAD-N IDs. Not for one feature's requirements (specify-behavior) or reporting where the plan stands (refresh-roadmap-status)."
+version: 1.9.0
+description: "Use when a project's milestones need planning, sequencing or replanning, for ANY edit to an existing roadmap, or when someone asks whether a milestone delivered what it promised or is ready to close: \"plan the milestones\", \"what order should we build this in\", \"drop this item\", \"reorder the milestones\", \"this milestone shipped, close it\", \"did MILE-3 deliver?\", \"commit to the next milestone\", or any request touching docs/roadmap/INDEX.md or a roadmap draft awaiting sign-off. Produces or revises docs/roadmap/INDEX.md with stable MILE-N and ROAD-N IDs, and a milestone's assessment verdict in docs/roadmap/assessments/. Not for one feature's requirements (specify-behavior) or reporting where the plan stands (refresh-roadmap-status)."
 ---
 
 # Plan Milestones
@@ -34,6 +34,9 @@ decision* that nobody can derive — keep that field, and keep nothing that trac
 
 - **create** — no `docs/roadmap/INDEX.md`. Author it.
 - **update** — it exists. Revise it against a change signal.
+- **assess** — the question is whether a milestone delivered what its `Outcome:` promised, or
+  a close needs that judgment first. Read `assess.md` beside this file and follow it. It
+  writes only `docs/roadmap/assessments/<MILE-N>.md`.
 
 Resolve pack seeds in this order, first path that exists: (1) `templates/` beside this SKILL.md, (2) `${CLAUDE_PLUGIN_ROOT}/templates` when that variable is set, (3) `../../../templates` relative to this SKILL.md. Every heading in `templates/roadmap-INDEX.md`
 is a REQUIRED slot — fill it or write `None`. Its comment block carries the authoritative
@@ -97,9 +100,20 @@ state, or goal citations (see Rationalizations for why an edit does not stay pre
 edit — asserts a milestone *delivered*, which nothing in this file can establish on its own say-so.
 
 <HARD-GATE>
-Refuse a `Committed → Closed` transition that arrives without an assessment handoff, and name
-`/assess-milestone` for the user to run. This holds in every repo, including one that has
-never run that skill.
+A `Committed → Closed` transition needs a terminal assessment in
+`docs/roadmap/assessments/<MILE-N>.md`. This holds in every repo, including one that has
+never assessed a milestone.
+
+WHEN the ask to close arrives and a named milestone has no assessment block yet: read
+`assess.md` beside this file and run it **now, in this turn**, for every such milestone. That is one assessment pass and one commit, with every new block
+reading `Pending`. Then show each verdict and stop for the user's disposition. Do not hand
+the assessment back to them to run. Asked to close three shipped milestones, both baseline
+runs (Sonnet and Haiku) refused and told the owner to run the assessment command herself for
+MILE-2, MILE-3 and MILE-4. Her next turn went to "fine, you run the assessments then".
+"Close them, everything shipped" is the ask, not the disposition. Leave
+`docs/roadmap/INDEX.md` unchanged until the user has accepted or overridden a verdict you
+showed them. WHERE a block already exists, `assess.md` decides what happens to it: a
+disposition lands on that block, and a new block is written only for a different revision.
 
 Given a write-handoff — a `MILE-N`, an assessment ordinal, an effective verdict, and a candidate
 closing revision SHA — **re-derive every value by reading**

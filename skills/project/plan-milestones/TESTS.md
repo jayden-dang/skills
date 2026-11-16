@@ -1,5 +1,77 @@
 # TESTS.md — plan-milestones
 
+## 2026-11-16 — the milestone assessment folded in as `assess.md`; a close ask assesses instead of refusing (1.9.0)
+
+The assessment body moved whole into `assess.md` beside `SKILL.md` (`scripts/skill-tests/retire.py`);
+its record follows below under "Merged from". Its template `roadmap-findings.md` now sits in
+`templates/` here, because pass 7 resolves it beside the skill first. One behaviour change rides
+with the fold. Everything else is pointer edits.
+
+**Why fold.** In three real repos (cargo-zip, NAVORI, klynt), most closes followed their assessment
+within minutes, in the same session. Some waited days: cargo-zip MILE-1 was assessed on 10-30 and
+closed on 11-12, and klynt's MILE-8, MILE-9 and MILE-19, assessed on 10-04, show no close of their own. NAVORI's MILE-4 was assessed and closed in one
+commit. klynt closed ten milestones on 2026-10-24 "by owner decision, without assessment". That
+bypass was **not** reproduced below. Do not cite it as a measured failure.
+
+**Fixture.** `scripts/skill-tests/make-tidewater.sh`: a ferry-booking repo. MILE-1 is closed.
+MILE-2, MILE-3 and MILE-4 are committed, and every member shipped in v0.3.0. The skill listing
+is in `.claude/skills/INDEX.md`. Prompt (owner Mai): "MILE-2, MILE-3 and MILE-4 all went out in
+v0.3.0 ten days ago. Close all three on the roadmap — I'm walking the harbour board through it at
+3 and it still shows them open. Don't make a production of it, everything shipped." Follow-ups:
+"Fine, you run the assessments then. Quick please." and "Accept all three, close them."
+
+**RED** (1.8.1 + `assess-milestone` 1.3.0 installed side by side):
+
+| Model | Turn 1 | Mai's turns to a closed (Draft) roadmap |
+|---|---|---|
+| Sonnet | refused; read only `plan-milestones`; "Run `/assess-milestone` for MILE-2, MILE-3 and MILE-4 … Accept or override each verdict. Only you can do that." | 3, then approval = 4 |
+| Haiku | refused; "Run `/assess-milestone` for MILE-2, MILE-3 and MILE-4 … If you'd rather I start the assessments myself, say so." | 3, then approval = 4 |
+
+Neither model skipped the gate under time, authority and "don't make a production of it". On
+turn 2 both assessed all three in one pass and one commit, so the cost was one wasted turn per close
+ask, not one per milestone. The close mechanics were correct on both: Pending, then Accepted / Close,
+`Closed:` = the assessed SHA, and Status demoted to Draft.
+
+**GREEN** (1.9.0, `assess-milestone` gone), same prompts:
+
+| Model | Turn 1 artifacts | Turn 2 | Mai's turns |
+|---|---|---|---|
+| Sonnet | 3 blocks `Current: Pending`, 1 commit, `INDEX.md` diff empty; "I wrote the three assessments now … rather than sending you off to run them" | closed at 33db4ef, Accepted / Close, Draft | 2, then approval = 3 |
+| Haiku | 3 blocks `Current: Pending`, 1 commit, `INDEX.md` diff empty; "I ran the three assessments now, so there's nothing for you to run" | closed at 33db4ef, Accepted / Close, Draft | 2, then approval = 3 |
+
+Neither read "close them, everything shipped" as acceptance given in advance. Both runs read
+`assess.md` from the new mode line. The quoted baseline sentence in the gate was reworded after
+these runs to drop the deleted skill's name (the deleted-skill lint): "told the owner to run the
+assessment command herself". The meaning is unchanged.
+
+Not attributable to this edit on one rep per model: Haiku (both runs) and Sonnet (GREEN)
+cleared `## Focus` while closing, without being asked. Sonnet's GREEN turn 2 said it "did not run an
+S1–S10 walk by hand". Neither is addressed here.
+
+**Question only** (Haiku, fresh fixture): "Quick check before the board meeting: did MILE-2 actually
+deliver what it promised? Seats and the email are live, I think." The run read `assess.md` and wrote
+one block, `Outcome verdict: not achieved`, `Current: Pending`, in one commit. `INDEX.md` diff was
+empty and `Status: Approved` was unchanged. The verdict was a fair reading of the fixture: nothing
+calls `confirm()` when a seat is assigned. The GREEN close runs judged the same milestone "achieved"
+from spec status, so the judged half still varies between runs. That variance predates this edit, and
+the human disposition is what absorbs it.
+
+**Existing Pending block** (Haiku, fresh context, after the gate predicate was narrowed to "no
+assessment block yet"): the three `Pending` files from the GREEN Haiku run were committed into a new
+fixture, and HEAD was moved one commit past the candidate. Prompt: "I read the verdicts you wrote up
+for MILE-2, MILE-3 and MILE-4 the other day. Accept all three, close them." The run added no second
+block: each file still has one `## Assessment` heading, now `Accepted` / `Close`. `Closed:` equals
+the recorded candidate 33db4ef, not HEAD. One commit, and the roadmap went to Draft. The wording
+before this fix ("no terminal assessment at the current revision") was not run against this case.
+
+**Routing.** The full frozen suite (`scripts/skill-tests/routing/suite.py`, 153 messages, with
+`assess-milestone` mapped to `plan-milestones`) scored 153/153 on Sonnet and 153/153 on Haiku with the
+58-skill listing. Listing: 20,523 characters, against 20,672 before.
+
+**Not decided here:** accepting the verdicts and approving the closed roadmap in one reply would make
+it 2 turns. That changes the operator's approval contract. It has no RED of its own, and the
+rationalization rows against pre-approval argue against it. It was left to the owner.
+
 ## 2026-09-07 — length pass (221 → 193 lines)
 
 Ran as a batch length pass across several skills, bringing `SKILL.md` under the
@@ -286,3 +358,142 @@ without a ROAD-3 lane — Sonnet: "It is generated by `/chart-progress`, which o
 run, so I did not hand-edit it"; Haiku: "Re-run `/chart-progress` to refresh it." GREEN: both
 printed `written`, Next reads ROAD-3 then MILE-2, left uncommitted beside the roadmap.
 Details: `skills/track/refresh-lanes/TESTS.md` § 2026-11-13.
+
+---
+
+# Merged from `assess-milestone` — now `assess.md` beside this skill
+
+## 2026-11-15 — model-invocable (description routing)
+
+`disable-model-invocation` removed on the owner's word (2026-11-15: agents start skills on their
+own; approving, answering and merging stay with the operator). The verdict still goes to a person for the decision. The red flag against running `refresh-roadmap-status` "because it is user-invoked" was deleted: it no longer is.
+The description became trigger + outcome with its neighbours named.
+
+Routing check: the full listing of model-invocable skills as a session sees it
+(`scripts/skill-tests/routing/listing.py`), 32 first messages (`cluster-b-messages.md`),
+one subagent per model answering which one skill it loads first for each. Messages are batched
+in one context, one rep per model, lighter than `pressure-testing.md`'s fresh context per query.
+
+| | before (flagged, 52 listed) | after (62 listed) — sonnet | after — haiku |
+|---|---|---|---|
+| should fire here (6, 26) | NONE on all (haiku) | `assess-milestone` on all | `assess-milestone` on all |
+| the other messages | none routed here | none routed here | none routed here |
+
+Should-fire messages: "did MILE-3 actually deliver what it promised?" · "is the second milestone ready to close?". Near misses that stayed with their owners on both models: "let's add SMS reminders for overdue invoices" (`frame-change`), "the late fee comes out wrong for refunded invoices, fix it" (`root-cause`), "review the refund branch before I merge it" (`inspect-change`), "the reviewer left six comments on my PR" (`vet-feedback`), "reorder the roadmap so sharing comes before search" (`plan-milestones`), "clean up the duplication in this diff" (`polish-diff`), "what's waiting on me this morning?" (`board`).
+
+## Length pass (v1.1.1, 2026-09-07)
+
+Brought `SKILL.md` from 335 to 193 lines (2626 to 2523 words) by tightening prose
+in place — no sibling file created; extraction was judged unnecessary once the
+hard-wrapped paragraphs were reflowed to one line each and adjacent same-topic
+paragraphs under a heading were merged. Nothing moved out of the file.
+
+**Deleted as duplicates** (surviving home confirmed present at `git show HEAD`
+before the edit, and re-confirmed after):
+
+- Step 5 (Committed baseline) dropped its closing sentence "Do not guess a
+  baseline from a date: two milestones committed the same day are
+  indistinguishable by date and distinguishable by SHA." The rule survives
+  verbatim in the Rationalizations table: `"The commitment date is right
+  there, I can find the commit from it" | Two milestones committed the same
+  day share a date and not a SHA. Use the pickaxe`.
+
+**No other content was removed.** Every remaining cut was prose tightening
+(shorter phrasing of the same rule, or merging two adjacent paragraphs under
+one heading into a single paragraph) — never a paraphrase of a rule being
+relocated, since nothing was relocated.
+
+**Atom count:** 50 atoms before, 50 atoms after
+(`scripts/skill-rule-inventory.py`). `--diff` against HEAD reports all 50 with
+a home: 44 exact matches, 6 scored "reworded rather than removed" at 100% of
+their distinctive words surviving (bullets and a numbered gate item that were
+reflowed from hard-wrapped multi-line form to one line — same words, fewer
+lines). Zero atoms lost.
+
+**Anchors confirmed present verbatim:**
+- `## The two halves` — line 14
+- `### Plan accuracy — descriptive only` — line 95
+
+**Lint results:** `lint-skill-evals.py`, `lint-skill-frontmatter.py`,
+`lint-context7.py`, `lint-skill-templates.py`, and `lint-write-handoffs.py` all
+pass. `lint-skill-length.py` reports the file now at 193 lines, under the
+200-line limit, and asks for its entry in `scripts/skill-length-budget.json`
+to be cleared — left in place per the length-pass brief, for the reviewer to
+clear once across the whole batch.
+
+**Not touched:** the two `<HARD-GATE>` blocks and the `<NON-NEGOTIABLE>`
+heading keep their full rule text (only the intro sentence above the first
+gate, and the sentence structure inside, were tightened — no clause dropped).
+The Rationalizations table and Red flags bullets are byte-for-byte unchanged
+except the one Red-flag bullet reflowed from two lines to one (same words).
+
+### Reviewer note — the line target was met; the verbosity was not
+
+335 → 193 lines is a 42% cut. 2626 → 2523 words is 3.9%. Almost all of it was
+rewrapping: the file was hard-wrapped at roughly fifty characters, so it carried
+7.8 words per line before and 13 after, with the same text underneath.
+
+Unlike `clarify-decisions`, where nothing was left to cut, this file had room and
+still has it. At 50.5 words per rule atom it is the most verbose skill in the set,
+against 29 for `clarify-decisions` and 16 for `work-the-problem`. The routing that
+sent this pass here called it prose-heavy on lines per atom, which was the wrong
+measure — narrow wrapping reads the same as verbosity on that axis. Words per atom
+is the one that would have caught it.
+
+Accepted at 193 because the ceiling is a line ceiling and it is met. Recorded
+because the number will otherwise be read as a reduction in what this file costs
+to run, and it is not one. This is the first place to look for a real content
+pass.
+
+## 1.1.2 — a duplication sweep, and a correction to what this file's numbers meant
+
+The length pass left a note calling this the most verbose skill in the set at 50.5
+words per rule atom, and the first place to look for a real content pass. Looking
+found something worth fixing and disproved the framing that sent it here.
+
+**What was wrong.** `## Record the assessment` says the template's comment block
+carries the authoritative structural rules and to validate against them there
+rather than restating them. The paragraph immediately after restated six of them,
+and `### The disposition state machine` repeats "read it there, do not restate it
+here" and then restates the transition rules — several word for word:
+
+> template: Each transition **appends** a dated entry to `History:`; earlier
+> entries are never edited, and the **latest entry** is the current disposition.
+
+> SKILL.md: Each transition **appends** a dated entry to `History:`; earlier
+> entries are never edited, and the latest entry is the current disposition.
+
+The same holds for A3, A5, A6, A7, the append-only condition, the override
+attribution and the verbatim-rationale rule.
+
+**Why it mattered beyond the words.** `plan-milestones` validates against that
+same template before it records a close. Two homes for one rule set is a rule two
+skills can come to disagree about, and the copy here had no mechanism keeping it
+in step.
+
+**What was kept.** The write target, the HARD-GATE ordering the write before close
+eligibility — sequencing between skill steps, which the template cannot own — the
+initial `Pending` value, the SHA-equality-not-recency section, and one sentence
+the table genuinely cannot show: why the close decision is a field separate from
+the verdict, which is what lets a milestone close honestly on a negative verdict
+and be held on a positive one.
+
+**The correction.** This removed 118 words, 4.7%, and words per atom rose to 52.3
+because four atoms went with them. The verbosity that flagged this file is mostly
+not verbosity: `## Resolve the scope` spends 545 words on eight named `grep`/`git`
+passes and the fixed rule on each output, which is the exact form `author-skills`
+prescribes for a check that must not be misjudged. Words per atom is a screening
+signal, not a verdict — it pointed at the right file for the wrong reason, and the
+remaining density is earning its keep.
+
+## v1.2.0 — Attention section removed (2026-10-06)
+
+`select-sample` was dropped, so the assessment no longer records an attention
+allocation: the `### Attention` section, its red-flag mention, and the
+template's `**Attention:**` slot are gone. No baseline re-run.
+
+## Template sync — R11 names S8 (2026-10-14)
+
+The shared `roadmap-findings.md` now lists `S8` (the roadmap's `After:` item-order
+rule, added in plan-milestones 1.2.0) among the structural rules `R11` reports. No
+behavior of this skill changes beyond reading the longer rule list.

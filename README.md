@@ -238,7 +238,7 @@ and countered by name. See [The gates](docs/guide/concepts/gates.md).
 | craft | `craft-page`, `draft-ui`, `make-video` |
 | ship | `land-branch`, `record-verdict`, `cut-release` |
 | meta | `author-skills` |
-| track | `frame-change`, `reroute-plan`, `triage`, `realign-spec`, `refresh-roadmap-status`, `refresh-lanes`, `assess-milestone`, `scan-architecture`, `map-features`, `write-handoff`, `record-debt` |
+| track | `frame-change`, `reroute-plan`, `triage`, `realign-spec`, `refresh-roadmap-status`, `refresh-lanes`, `scan-architecture`, `map-features`, `write-handoff`, `record-debt` |
 | project | `define-project`, `plan-milestones` (optional project / multi-milestone layer) |
 
 One page per skill in the [skill reference](docs/guide/skills/README.md).

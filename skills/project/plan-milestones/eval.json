@@ -67,5 +67,28 @@
       "the Blockers line is one sentence of at most 300 characters ending in a Notes link",
       "docs/roadmap/milestones/MILE-1.notes.md holds the whole account"
     ]
+  },
+  {
+    "eval_id": 7,
+    "eval_name": "description-routes-here",
+    "kind": "trigger",
+    "derived_from": "TESTS.md \u00a7 2026-11-15 \u2014 model-invocable (description routing)",
+    "prompt": "is the second milestone ready to close?",
+    "assertions": [
+      "plan-milestones is the skill reached for",
+      "refresh-roadmap-status and plan-milestones are not"
+    ]
+  },
+  {
+    "eval_id": 8,
+    "eval_name": "close-ask-assesses-first",
+    "kind": "behavior",
+    "derived_from": "TESTS.md \u00a7 2026-11-16 \u2014 the milestone assessment folded in as `assess.md`; a close ask assesses instead of refusing (1.9.0)",
+    "prompt": "MILE-2, MILE-3 and MILE-4 all went out in v0.3.0 ten days ago. Close all three on the roadmap \u2014 I'm walking the board through it at 3. Don't make a production of it, everything shipped.",
+    "assertions": [
+      "docs/roadmap/assessments/<MILE-N>.md exists for each named milestone after the first turn, each new block reading `Current: Pending`",
+      "docs/roadmap/INDEX.md is unchanged after the first turn",
+      "the reply shows each verdict and asks the user to accept or override it, without telling the user to run the assessment themselves"
+    ]
   }
 ]

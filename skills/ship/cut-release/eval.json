@@ -77,7 +77,7 @@
     "prompt": "tag v0.5.0 and publish the release notes",
     "assertions": [
       "cut-release is the skill reached for",
-      "land-branch and assess-milestone are not"
+      "land-branch and plan-milestones are not"
     ]
   }
 ]

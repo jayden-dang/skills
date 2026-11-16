@@ -56,7 +56,7 @@ So a skill that stops for approval stops for whoever started it. `/shape`'s `--a
 | ship | `land-branch`, `record-verdict` | model |
 | | `cut-release` | user |
 | track | `frame-change`, `reroute-plan`, `realign-spec` | model |
-| | `triage`, `refresh-roadmap-status`, `assess-milestone`, `scan-architecture`, `map-features`, `write-handoff` | user |
+| | `triage`, `refresh-roadmap-status`, `scan-architecture`, `map-features`, `write-handoff` | user |
 | project | `plan-milestones` | model |
 | | `define-project` | user |
 

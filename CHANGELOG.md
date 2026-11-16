@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+### Changed: a milestone close takes one reply (2026-11-16)
+
+`plan-milestones` 1.10.0 now shows two things beside the verdicts. The first is the exact roadmap lines the close will change: each milestone's row, its `Commitment:` and `Closed:` lines, the closed IDs taken out of `## Focus`, and `Date:`. The second is one reply to offer, worded with "approve", that accepts the verdicts and approves those lines. When you send it, the close is written and the roadmap stays Approved, but only if the written diff is exactly what you were shown. Anything else, or an accept without the word approve, leaves it Draft for a separate approval as before. The close goes from three of your turns to two.
+
+Baseline on Sonnet and Haiku: told "approve the roadmap with those closes, I don't need to see it again" before any diff had been shown, both runs kept the roadmap Approved over a cleared `## Focus` you had never seen, and one also rewrote `Date:`. One Haiku run of the first draft offered "accept all three, close them" as the approving reply and then treated a plain accept as approval. The wording rule was added, and two further Haiku runs held. Evidence: `skills/project/plan-milestones/TESTS.md`.
+
 ### Changed: `assess-milestone` is part of `plan-milestones`, and a close ask runs the assessment itself (2026-11-16)
 
 The set is now 58 skills. `assess-milestone` moved whole into `plan-milestones` as `assess.md`, and its template `roadmap-findings.md` moved with it. When you ask to close a milestone that has no assessment, `plan-milestones` 1.9.0 now assesses it in the same turn, shows you the verdict and stops. Before, it refused and told you to run the assessment yourself. "Close it, everything shipped" still is not an acceptance. The roadmap is untouched until you accept or override the verdict, and the close re-reads the assessment file before it writes `Closed:`.

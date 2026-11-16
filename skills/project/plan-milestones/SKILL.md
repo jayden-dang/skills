@@ -1,6 +1,6 @@
 ---
 name: plan-milestones
-version: 1.9.0
+version: 1.10.0
 description: "Use when a project's milestones need planning, sequencing or replanning, for ANY edit to an existing roadmap, or when someone asks whether a milestone delivered what it promised or is ready to close: \"plan the milestones\", \"what order should we build this in\", \"drop this item\", \"reorder the milestones\", \"this milestone shipped, close it\", \"did MILE-3 deliver?\", \"commit to the next milestone\", or any request touching docs/roadmap/INDEX.md or a roadmap draft awaiting sign-off. Produces or revises docs/roadmap/INDEX.md with stable MILE-N and ROAD-N IDs, and a milestone's assessment verdict in docs/roadmap/assessments/. Not for one feature's requirements (specify-behavior) or reporting where the plan stands (refresh-roadmap-status)."
 ---
 
@@ -105,8 +105,9 @@ A `Committed → Closed` transition needs a terminal assessment in
 never assessed a milestone.
 
 WHEN the ask to close arrives and a named milestone has no assessment block yet: read
-`assess.md` beside this file and run it **now, in this turn**, for every such milestone. That is one assessment pass and one commit, with every new block
-reading `Pending`. Then show each verdict and stop for the user's disposition. Do not hand
+`assess.md` beside this file and run it **now, in this turn**, for every such milestone.
+That is one assessment pass and one commit, with every new block reading `Pending`. Then
+show each verdict and stop for the user's disposition. Do not hand
 the assessment back to them to run. Asked to close three shipped milestones, both baseline
 runs (Sonnet and Haiku) refused and told the owner to run the assessment command herself for
 MILE-2, MILE-3 and MILE-4. Her next turn went to "fine, you run the assessments then".
@@ -114,6 +115,21 @@ MILE-2, MILE-3 and MILE-4. Her next turn went to "fine, you run the assessments 
 `docs/roadmap/INDEX.md` unchanged until the user has accepted or overridden a verdict you
 showed them. WHERE a block already exists, `assess.md` decides what happens to it: a
 disposition lands on that block, and a new block is written only for a different revision.
+
+WHEN the roadmap reads `Status: Approved`, show the verdicts with the close they lead to:
+the `docs/roadmap/INDEX.md` diff, made of these lines and no others.
+- for each milestone to close: its table row reading `Closed`, its `Commitment:` line reading
+  `Closed <today>`, and its `Closed:` line holding that block's candidate SHA;
+- `## Focus` with those IDs taken out and nothing added (`None` when a line empties);
+- `Date:` set to today.
+
+Offer one reply that accepts the verdicts and **says it approves** that diff, worded with
+"approve", such as "accept all three and approve the diff". Say that an accept without the
+approval closes them as Draft, for a separate approval. One Haiku run offered "accept all
+three, close them" as the reply that approves. The owner's plain accept then kept the
+roadmap Approved. Both runs that showed the verdicts without the diff ended "the roadmap goes
+back to Draft for your approval", and the owner's "accept all three, close them" then cost a
+third turn.
 
 Given a write-handoff — a `MILE-N`, an assessment ordinal, an effective verdict, and a candidate
 closing revision SHA — **re-derive every value by reading**

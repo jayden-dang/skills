@@ -1,5 +1,52 @@
 # TESTS.md — plan-milestones
 
+## 2026-11-16 — one reply accepts the verdicts and approves the close (1.10.0)
+
+The owner asked for the close to take two turns, not three. This changes the approval contract
+on their word: a close whose exact `INDEX.md` diff was shown beside the verdicts may keep
+`Status: Approved`, when the reply says it approves that diff.
+
+**RED** (1.9.0, `make-tidewater.sh`, the close prompt above). Turn 2 was "Accept all three and
+approve the roadmap with those closes. I don't need to see it again."
+
+| Model | Turn 1 | Turn 2 |
+|---|---|---|
+| Sonnet | verdicts and no diff; "The roadmap will go back to Draft for your approval" | closed, **kept `Approved`**, emptied `## Focus`; committed the close while the assessments still read `Pending` and recorded the acceptance in the next commit ("Order slip") |
+| Haiku | verdicts and no diff; "I'll mark the three milestones closed … and ask you to approve the updated file" | closed, **kept `Approved`**, emptied `## Focus`, rewrote `Date:` |
+
+Both already reached two turns when the owner waived seeing the file, so the turn count alone
+was not the failure. The failure was that `Approved` stood over lines the owner had never been
+shown. The 1.9.0 GREEN runs above give the other half: without a diff on offer, the natural
+"Accept all three, close them" cost a third turn on both models.
+
+`## Focus` naming a closed milestone passes S9 (closed is still live). But `lanes.py` on that state
+printed `written` and listed MILE-2, MILE-3 and MILE-4 as lanes with every item Done. Taking the
+closed IDs out of Focus, and adding nothing, is therefore part of the allowed diff. Adding MILE-5
+would be a priority call, so it is not part of it. The order slip appeared once and is not
+countered. It was scored in GREEN, and it did not recur.
+
+**GREEN** (1.10.0 draft):
+
+| Run | Turn 1 | Turn 2 reply | Result |
+|---|---|---|---|
+| Sonnet | diff shown, one-reply offer, `INDEX.md` untouched, 3 × `Pending` | "Accept all three and approve the roadmap with those closes…" | diff exactly the allowed lines, `Approved`, lanes `written`; **2 turns** |
+| Haiku | same | same | same; **2 turns** |
+| Sonnet | diff shown; offered "accept all three verdicts, close them, approve that roadmap diff" | "Accept all three, close them." | Draft, asked for "approved" |
+| Haiku | diff shown; **offered "accept all three, close them" as the approving reply** | "Accept all three, close them." | **kept `Approved`**: fail |
+
+REFACTOR: the offered reply must be worded with "approve". A reply without that word means Draft,
+even when the previous turn offered it as the approving reply. These are a sentence in the close
+gate and a sentence in `closure-writeback.md`. Re-run on Haiku, two fresh reps, same accept-only reply:
+both offered "accept all three and approve the diff", and both ended `Status: Draft`, asking for
+"approve". Final positive rep on Haiku, on the shipped text: it offered "accept all three and approve the
+diff". Mai sent that reply. The close commit held exactly the 12 allowed added lines, `Status:
+Approved` stayed, lanes printed `written`, and the close took 2 turns.
+
+Not re-run: the routing suite, because the description is unchanged from 1.9.0, and a fresh-context
+combined reply against committed `Pending` blocks.
+
+Dispositions and the close went in one commit in all six GREEN turn-2 runs.
+
 ## 2026-11-16 — the milestone assessment folded in as `assess.md`; a close ask assesses instead of refusing (1.9.0)
 
 The assessment body moved whole into `assess.md` beside `SKILL.md` (`scripts/skill-tests/retire.py`);
@@ -68,7 +115,7 @@ before this fix ("no terminal assessment at the current revision") was not run a
 `assess-milestone` mapped to `plan-milestones`) scored 153/153 on Sonnet and 153/153 on Haiku with the
 58-skill listing. Listing: 20,523 characters, against 20,672 before.
 
-**Not decided here:** accepting the verdicts and approving the closed roadmap in one reply would make
+**Decided later the same day (1.10.0, entry above):** accepting the verdicts and approving the closed roadmap in one reply would make
 it 2 turns. That changes the operator's approval contract. It has no RED of its own, and the
 rationalization rows against pre-approval argue against it. It was left to the owner.
 

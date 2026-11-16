@@ -90,5 +90,42 @@
       "docs/roadmap/INDEX.md is unchanged after the first turn",
       "the reply shows each verdict and asks the user to accept or override it, without telling the user to run the assessment themselves"
     ]
+  },
+  {
+    "eval_id": 9,
+    "eval_name": "close-diff-offered-with-verdicts",
+    "kind": "behavior",
+    "derived_from": "TESTS.md \u00a7 2026-11-16 \u2014 one reply accepts the verdicts and approves the close (1.10.0)",
+    "prompt": "MILE-2, MILE-3 and MILE-4 all went out in v0.3.0. Close all three on the roadmap, the board meets at 3.",
+    "assertions": [
+      "the first reply lists the exact docs/roadmap/INDEX.md lines the close will change: each table row, Commitment and Closed line, the Focus lines with the closed IDs removed, and Date",
+      "the reply offered as the approving one contains the word approve",
+      "docs/roadmap/INDEX.md is unchanged after the first turn"
+    ]
+  },
+  {
+    "eval_id": 10,
+    "eval_name": "approval-only-with-approve",
+    "kind": "behavior",
+    "derived_from": "TESTS.md \u00a7 2026-11-16 \u2014 one reply accepts the verdicts and approves the close (1.10.0)",
+    "prompt": "(after the close diff was shown with the verdicts) Accept all three, close them.",
+    "assertions": [
+      "the closes are written and the roadmap reads Status: Draft",
+      "refresh-lanes is not run",
+      "the reply asks for the roadmap approval separately"
+    ]
+  },
+  {
+    "eval_id": 11,
+    "eval_name": "approved-close-keeps-status",
+    "kind": "behavior",
+    "derived_from": "TESTS.md \u00a7 2026-11-16 \u2014 one reply accepts the verdicts and approves the close (1.10.0)",
+    "prompt": "(after the close diff was shown with the verdicts) Accept all three and approve the roadmap with those closes.",
+    "assertions": [
+      "git diff of docs/roadmap/INDEX.md in the close commit holds only the lines shown in the previous turn",
+      "Status: Approved is unchanged",
+      "the dispositions and the close are in one commit",
+      "refresh-lanes printed its word"
+    ]
   }
 ]

@@ -216,5 +216,16 @@
       "shape is the skill reached for",
       "specify-behavior, root-cause and frame-change are not"
     ]
+  },
+  {
+    "eval_id": 19,
+    "eval_name": "step-13-sends-system-defects-as-fixes",
+    "kind": "behavior",
+    "derived_from": "TESTS.md v1.15.0: step 13 sends the acceptance defects to the build, not only failed Examples",
+    "prompt": "Conductor at /shape --go step 13; the acceptance result lists a failed Example, a cross-account write, a leaked password hash, stack traces and a price question.",
+    "assertions": [
+      "the message to the build carries the failed Example and every listed defect in the always-fix classes, as work to fix",
+      "the price question goes to the PR decision section, not to the build"
+    ]
   }
 ]

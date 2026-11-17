@@ -6,8 +6,8 @@
 The receipt pointer used to read `../../execution/build/close-receipt.md`. That path resolves only in this
 repo's `skills/<category>/<name>/` layout. `npx skills add` copies each skill flat into
 `~/.agents/skills/<name>/`, and there the path names `~/.agents/execution/build/`, which does not
-exist (checked on this machine's install). One landing run had to be told the mapping in its
-prompt. The fix has two parts:
+exist (checked on this machine's install). Both landing runs were told the mapping up front, so no
+run was seen failing on it. The RED is the lint below. The fix has two parts:
 - **The lint.** `scripts/lint-cross-folder.py` now fails any pointer into `build/` that is not
   written `../build/<file>`, and any that names a file `build/` lacks. Before the fix it failed on
   this line.

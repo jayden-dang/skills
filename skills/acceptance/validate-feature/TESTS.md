@@ -29,8 +29,15 @@ hand-off whenever step 4b's predicate holds.
 fixture and no walk named. It drove `/book` in `agent-browser`, quoted the page's text for
 BOOK-3.1 and BOOK-3.2, and wrote `validate-feature.md`.
 
-**Not covered:** a real `/go` run in which build's controller has to pass the hand-off line itself.
-These runs were given that line in the prompt.
+**Full close without the hand-off line.** This is recorded in `build`'s TESTS.md, v1.1.0. Both
+models wrote the ledger line themselves from `common.md`. When Haiku's walk stalled at the review
+gate, that run led to the 4b fallback. Still not covered: a real `/go` with subagents, and Close
+step 5 (the receipt). The receipt's `Acceptance:` slot names the observed surface, not
+`validate-feature.md`, so the skip does not break its format.
+
+**Spec edits.** Grepping every saved diff and fixture: only the two `land-branch` runs touched
+`docs/specs/`. Both made status stamps, and one Sonnet run also added an unapproved Story 3. No
+acceptance run edited a spec, so `system.md` gets no line for it.
 
 ## v1.4.0: what reaches the pull request
 

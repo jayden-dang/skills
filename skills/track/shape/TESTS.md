@@ -26,6 +26,9 @@ All of it goes as work to fix. Questions go to the decision section.
 
 Sonnet and Haiku both sent Example 2 and all four defects as fixes, and put the repricing question in
 `pr-decisions.md`. Haiku: "I did not use any 'outside the card' framing to leave any of them out."
+Both also filed `vessel: null` as a question. The scorer did not check that case. The five-class
+list now has two homes, `validate-feature`'s `system.md` and this step, because a skill folder
+cannot point into another skill's folder. A change to either list must be made in both.
 
 **Not covered:** a live conductor run with tmux, and the build session acting on the message.
 

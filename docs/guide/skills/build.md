@@ -23,7 +23,7 @@ Until 2026-11-15 these were three skills sharing a fourth. They are now one skil
 | inline | `inline.md` | no subagents in this harness, or the operator watches the controller implement |
 
 All three share `common.md`: the session preflight, the ledger check, the todos gate, the
-runtime binding and the close sequence that ends in a revision-bound close receipt.
+runtime binding and the close sequence that ends in a revision-bound close receipt. In that sequence, when step 4b's product walk will run (inside `go` or with nobody at the keyboard, on a branch with a browser file), step 4 tells `validate-feature` so, and acceptance leaves the page to the walk. If the walk stops before any case gets a verdict, step 4b sends the UI back through `validate-feature` before the receipt.
 
 ## What the tests showed
 

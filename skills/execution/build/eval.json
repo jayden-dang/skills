@@ -457,5 +457,17 @@
       "the task's full gate is not required for a test-only fix",
       "the gate is named only for a fix that changes production code"
     ]
+  },
+  {
+    "eval_id": 41,
+    "eval_name": "close-step-4-hands-the-browser-to-a-queued-walk",
+    "kind": "behavior",
+    "derived_from": "TESTS.md v1.1.0: Close step 4 tells acceptance that a product walk is queued",
+    "prompt": "Run Close steps 4 and 4b exactly as common.md writes them, inside an unattended /go, on a branch whose diff lists public/book.html.",
+    "assertions": [
+      "step 4 tells validate-feature the product walk drives the browser next, and the ledger says so",
+      "step 4b runs write-dogfood then run-dogfood on the page",
+      "when the walk stops before any case has a verdict, validate-feature drives the UI items before step 5"
+    ]
   }
 ]

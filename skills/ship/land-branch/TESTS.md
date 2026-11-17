@@ -1,5 +1,20 @@
 # `land-branch` — merge of `package-change` (v2.0.0)
 
+
+## v4.9.1: the receipt pointer resolves in an install (2026-11-17)
+
+The receipt pointer used to read `../../execution/build/close-receipt.md`. That path resolves only in this
+repo's `skills/<category>/<name>/` layout. `npx skills add` copies each skill flat into
+`~/.agents/skills/<name>/`, and there the path names `~/.agents/execution/build/`, which does not
+exist (checked on this machine's install). One landing run had to be told the mapping in its
+prompt. The fix has two parts:
+- **The lint.** `scripts/lint-cross-folder.py` now fails any pointer into `build/` that is not
+  written `../build/<file>`, and any that names a file `build/` lacks. Before the fix it failed on
+  this line.
+- **The pointer.** It is now `../build/close-receipt.md`. Lint and `qa-set` are green.
+
+`go`'s two `../build/` pointers already had that form.
+
 ## Edit — In-progress close-loop (v3.2.0)
 
 §8 Status table treats `In-progress` like `Approved` (realign when evidence

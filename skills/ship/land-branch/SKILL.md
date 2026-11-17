@@ -1,6 +1,6 @@
 ---
 name: land-branch
-version: 4.9.0
+version: 4.9.1
 description: >
   Use when a finished feature branch needs integration or disposition —
   produces a local merge, pull request, kept branch, discard, or block with
@@ -61,7 +61,7 @@ tracked residue is unhandled.
 This step applies only to `pr` and `merge`. `keep`, `discard`, and `block` do
 not claim the branch is verified.
 
-REQUIRED: load `../../execution/build/close-receipt.md` and run its
+REQUIRED: load `../build/close-receipt.md` (the `build` skill's receipt recipe) and run its
 fixed validation recipe against `.skills/<CODE>/close-receipt.md`.
 
 - **Valid receipt:** consume it. Do not rerun equivalent verification,

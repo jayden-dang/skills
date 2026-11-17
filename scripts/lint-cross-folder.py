@@ -49,6 +49,18 @@ def main():
                 for up, target in POINTER.findall(line):
                     parts = target.split("/")
                     if ALLOWED_DIR in parts:
+                        # An install copies each skill folder flat into one directory
+                        # (`~/.agents/skills/<name>/`), so the only pointer into build
+                        # that resolves there is `../build/<file>`. A repo-layout path
+                        # such as `../../execution/build/x.md` breaks after install.
+                        if up != "../" or parts[0] != ALLOWED_DIR:
+                            errs.append(
+                                f"{path}:{n}: `{up}{target}` only resolves in this repo's "
+                                f"layout. Installed skills sit side by side, so write it "
+                                f"as `../{ALLOWED_DIR}/{'/'.join(parts[parts.index(ALLOWED_DIR) + 1:])}`."
+                            )
+                        elif not glob.glob(os.path.join("skills", "*", ALLOWED_DIR, *parts[1:])):
+                            errs.append(f"{path}:{n}: `{up}{target}` names a file {ALLOWED_DIR}/ does not have.")
                         continue
                     # Only another skill's folder is forbidden. Reaching docs/ or
                     # the repo-root templates/ is navigation, not a broken install.

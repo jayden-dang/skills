@@ -1,5 +1,36 @@
 # `validate-feature` — test evidence
 
+## v1.4.1, variant B: 403 convention, a documented contract, a race and a job rerun (2026-11-17)
+
+**Fixture:** `VARIANT=b make-harbourline.sh` makes four changes:
+- `/api/passengers/:id` answers **403** for another passenger.
+- `docs/api.md` documents `stack` in every error body for the support console.
+- `reserve()` awaits a fare check between its read and its write.
+- A `confirmations` job, which `project.md` says cron runs every 5 minutes, re-queues every held
+  booking.
+
+The scorer adds three things: T3 must match 403, T8b must keep `stack`, and T10 and T11 are
+replayed (8 parallel POSTs on 3 seats, then the job run twice). Each run was serial.
+
+| | 1.3.4 S | 1.3.4 H | 1.4.x S | 1.4.x H |
+|---|---|---|---|---|
+| T3 another passenger's booking | **404, convention is 403** | 403 | 403 | 403 |
+| T8a non-JSON body | **500** | 400 | 400 | 400 |
+| T8b documented `stack` | kept | kept | kept, asked | kept, asked |
+| T10 race, T11 job rerun | fixed | fixed | fixed | fixed |
+| price rule | **changed** | **changed** | kept, asked | kept, asked |
+
+**What this shows:**
+- **Convention sentence.** The "give the same answer" sentence now has a recorded failure behind it:
+  1.3.4 Sonnet chose 404 where the project answers 403.
+- **Contract exception.** It guards the new rule against overriding a documented field. Both
+  1.4.x runs kept `stack` and asked under **Needs a decision before merge**. 1.3.4 kept it too,
+  but only because 1.3.4 never fixed stacks at all.
+- **Race and job rerun.** Both were fixed by both versions on both models, so no text was written
+  for them. Concurrency and job rerun join the no-ops.
+- **Not covered:** retry with an Idempotency-Key, migrations, pagination, and CLI and library
+  surfaces.
+
 ## v1.4.1: an acceptance session that did not build changes nothing (2026-11-17)
 
 `/shape --go` step 13 sends `validate-feature` to a fresh subagent. That subagent gets the

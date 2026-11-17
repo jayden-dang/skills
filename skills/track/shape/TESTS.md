@@ -1,5 +1,34 @@
 # TESTS.md — shape
 
+
+## v1.15.0: step 13 sends the acceptance defects to the build, not only failed Examples (2026-11-17)
+
+`validate-feature` 1.4.1 has the acceptance session (the one that did not build) record each
+system defect as a finding and change nothing. Step 13 then sent the build only "a failed Example".
+
+**Scenario.** The conductor is at step 13, holding a real acceptance result from a 1.4.1 run on
+harbourline: Example 2 fails, plus four system defects and a price question. It writes what it
+would type into the build session to `RUN/to-build.md`, and the decision section to
+`RUN/pr-decisions.md`.
+
+**RED, 1.14.1:**
+- Sonnet sent only Example 2: "I kept the side findings out because they are outside the card."
+- Haiku listed the leaked password hash, the cross-account write and the stack traces under "fix
+  only what your spec covers and say what you left", and mixed the price question in with them.
+
+**GREEN, 1.15.0.** The message to the build carries:
+- each failed Example
+- each defect in these classes: another account's record, a missing sign-in, a write of fields the
+  caller should not set or a read that returns secrets, a refused request that still wrote, a 5xx
+  or stack trace
+
+All of it goes as work to fix. Questions go to the decision section.
+
+Sonnet and Haiku both sent Example 2 and all four defects as fixes, and put the repricing question in
+`pr-decisions.md`. Haiku: "I did not use any 'outside the card' framing to leave any of them out."
+
+**Not covered:** a live conductor run with tmux, and the build session acting on the message.
+
 ## 2026-11-15 — model-invocable (description routing)
 
 `disable-model-invocation` removed on the owner's word (2026-11-15: agents start skills on their

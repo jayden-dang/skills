@@ -15,7 +15,11 @@ Measured and needing no text:
 
 Concurrent overselling and a cron job that re-queues on every run were fixed by both versions. But the fixture's own diff and docs pointed at both, so neither was measured blind.
 
-Still owed: a real `/go` run that checks build's controller writes the hand-off line, and `shape/go.md` step 13 forwarding the acceptance findings to the build. Found on the way and not fixed: `land-branch` points at `../../execution/build/close-receipt.md`, a path that only exists in this repo's layout, not in a flat install.
+`shape` 1.15.0: at `/shape --go` step 13 the conductor now sends the build every defect of those classes that acceptance found, not only failed Examples. Questions go to the PR's decision section. Baseline: one conductor dropped the leaked password hash as "outside the card", and another passed it on as "fix only what your spec covers". With the change, both runs sent the defects as fixes.
+
+`land-branch` 4.9.1 points at `../build/close-receipt.md`, the path that exists in an install. The old `../../execution/build/` path resolved only in this repo. `scripts/lint-cross-folder.py` now fails any pointer into `build/` that would break after install.
+
+Still owed: a real `/go` run with subagents, to check that the build controller writes the step-4 hand-off line and that the walk's review gate opens.
 
 ### Changed: `validate-feature` fixes backend defects the spec never names (2026-11-17)
 

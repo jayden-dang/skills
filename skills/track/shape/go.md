@@ -64,9 +64,20 @@ ran. Its demo was 15 seconds of stitched screenshots. Its ticket read `shaping` 
     outside the repo that leaves product code untouched; "not run" is for an Example nothing can
     reach. One drive marked all four Examples not run because the offer token never reaches a client;
     another wrapped the server, read the offers, and found Example 4 fail: a passenger accepted onto a
-    sailing staff had cancelled. A failed Example → send the build session that example and what
-    was seen, once, re-arm the watch, and rerun this step on the new head. Still failing → it heads the
-    PR's decision section, as an Example the build does not meet.
+    sailing staff had cancelled. Send the build session one message, once, as work to fix. It carries
+    each failed Example with what was seen. It also carries each defect the result names in these
+    classes, which the build fixes whatever the card says:
+    - another account's record read or changed
+    - a route without its siblings' sign-in
+    - a write of fields the caller should not set, or a read that returns secrets
+    - a refused request that still wrote
+    - a 5xx or a stack trace for bad input
+
+    A question the result raises, such as a price rule or a business limit, goes to the PR's decision
+    section, not to the build. Then re-arm the watch and rerun this step on the new head. Still
+    failing → it heads the PR's decision section, as an Example or defect the build does not meet.
+    One conductor sent only the failed Example: "I kept the side findings out because they are
+    outside the card". Another sent the leaked password hash under "fix only what your spec covers".
     *Done when: `RUN/acceptance.md` has a result per Example, from the drive.*
 14. **Evidence on the PR.** `land-branch` adds the delivery line after the PR opens, so the film
     and the model are taken at `CODE_SHA`.

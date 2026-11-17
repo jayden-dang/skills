@@ -38,8 +38,12 @@ not both hold, and aborted it. It pushed nothing (the tip was unchanged) and sta
 on the PR: "If `PATCH` stays open … anyone could change anyone's seats. If `PATCH` is protected,
 the kiosk's unauthenticated seat change breaks, and ops signed that off."
 
-**Not covered:** the linear-history rebase path (`HL_LINEAR=1` in the shim, never run), a stack,
-and a stale base without a conflict that breaks CI on the merge result.
+**Linear history, Haiku.** The same conflict was run with the shim's branch protection answering
+`required_linear_history: enabled`. The run read the protection, rebased onto `origin/main` and
+pushed `--force-with-lease`. It kept both sides; the branch had 0 merge commits, `main` was its
+ancestor, and the verdict was `CLEAN` with CI green.
+
+**Not covered:** a stack, and a stale base without a conflict that breaks CI on the merge result.
 
 ## v4.10.0: tend-pr folds in; a PR is tended to merge-ready after it opens (2026-11-17)
 

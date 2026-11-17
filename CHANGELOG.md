@@ -6,7 +6,7 @@
 
 When a pull request conflicts with its base, or the base has moved on, `land-branch` 4.11.0 now merges the base into the branch. It keeps both sides of each conflicted hunk, runs the whole suite and pushes, with no force-push. Where branch protection requires linear history, it rebases and pushes `--force-with-lease`. A conflict whose two sides cannot both hold, for example one side opening a route the other locks, is still reported, with the question, and nothing is pushed. It still never merges.
 
-Baseline on Sonnet and Haiku: both stopped at a one-line conflict in the auth method list and reported it as needing a rebase. With the change, both merged `main` in, kept both sides, and ended `MERGEABLE` / `CLEAN` with CI green. A product-choice conflict on Haiku stopped with the question and an unchanged branch. The linear-history rebase path was not run.
+Baseline on Sonnet and Haiku: both stopped at a one-line conflict in the auth method list and reported it as needing a rebase. With the change, both merged `main` in, kept both sides, and ended `MERGEABLE` / `CLEAN` with CI green. A product-choice conflict on Haiku stopped with the question and an unchanged branch. Against a base that requires linear history, Haiku rebased, pushed with a lease and ended linear and `CLEAN`.
 
 `/shape --go` was not edited. The worry was that a long CI wait in `/go`'s end-of-run tend would be cut off as a stall, but a conductor shown four STALLs with the build pane waiting on CI kept the run on both models.
 

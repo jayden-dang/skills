@@ -125,7 +125,7 @@ if a[:2] == ["api", "user"]:
     print(json.dumps({"login": "thao"}))
 elif a[:1] == ["api"] and len(a) > 1 and a[1].endswith("/protection"):
     print(json.dumps({"required_status_checks": {"strict": False, "contexts": ["npm test"]},
-                      "required_linear_history": {"enabled": os.environ.get("HL_LINEAR") == "1"}}))
+                      "required_linear_history": {"enabled": os.environ.get("HL_LINEAR") == "1" or bool(S.get("linear"))}}))
 elif a[:2] == ["repo", "view"]:
     print(json.dumps({"nameWithOwner": "harbourline/app", "defaultBranchRef": {"name": "main"}}) if "--json" in a else "harbourline/app")
 elif a[:2] == ["pr", "create"]:

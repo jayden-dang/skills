@@ -7,8 +7,8 @@
 | **Bucket** | acceptance |
 | **Invocation** | model-invocable (the agent calls it on its own) |
 | **Reads** | the spec triad — `requirements.md`, `design.md`, `tasks.md`; the working ledger `.skills/<slug>-acceptance.md` |
-| **Writes** | `.skills/<slug>-acceptance.md` (a git-ignored acceptance ledger, one todo per item); committed ID-tagged tests for non-API/non-UI surfaces |
-| **Calls** | [`validate-feature`](validate-feature.md), [`validate-feature`](validate-feature.md), [`write-dogfood`](write-dogfood.md), [`root-cause`](root-cause.md) (through its children) |
+| **Writes** | `.skills/<slug>-acceptance.md` (a git-ignored acceptance ledger, one todo per item); committed tests named for the domain behavior; fixes for system-property defects the drive found |
+| **Calls** | its mode files `api.md`, `ui.md` and `system.md`; [`write-dogfood`](write-dogfood.md); [`root-cause`](root-cause.md) and [`test-first`](test-first.md) for each defect |
 | **Called by** | [`build`](build.md) (wave mode), [`land-branch`](land-branch.md), [`prove-claim`](prove-claim.md) |
 
 ## When it fires
@@ -23,7 +23,7 @@ Its place in the chain is fixed: it runs **after [`inspect-change`](inspect-chan
 
 Each of those passes every assertion someone wrote and still ships broken. The unit tests are green because they assert what the code does; none of them drove the feature as a real client, which is the only thing that surfaces the mismatch.
 
-This is an orchestrator. It does little validation itself; it derives the work, splits it by surface, hands each slice to a child skill, and closes the loop. What sets it apart from a manual [`write-dogfood`](write-dogfood.md) pass is what it leaves behind: committed, ID-tagged tests, not a one-time walkthrough.
+This is an orchestrator. It does little validation itself; it derives the work, splits it by surface, hands each slice to a child skill, and closes the loop. What sets it apart from a manual [`write-dogfood`](write-dogfood.md) pass is what it leaves behind: committed tests, not a one-time walkthrough.
 
 ## The three steps
 
@@ -47,12 +47,13 @@ The checklist splits by where each behavior lives, and most features need more t
 
 | Surface | Handler |
 |---|---|
-| HTTP/RPC API a client calls | **required sub-skill** [`validate-feature`](validate-feature.md) |
-| A frontend a user drives | **required sub-skill** [`validate-feature`](validate-feature.md) |
-| Neither — a CLI, a library, a batch/cron job | drive it directly against the running system yourself, record each observed result in the ledger, and promote the passing checks into committed, ID-tagged tests |
+| HTTP/RPC API a client calls | `api.md` |
+| A frontend a user drives | `ui.md` |
+| Neither — a CLI, a library, a batch/cron job | drive it directly against the running system yourself, record each observed result in the ledger, and promote the passing checks into committed tests named for the behavior |
+| Anything a client, command or job calls | then `system.md`: the system properties no spec has to name |
 | Human-eyeball qualities — visuals, feel | hand off to [`write-dogfood`](write-dogfood.md) |
 
-Each child locates and persists how to run its surface, exercises its slice of the checklist against the live system, fixes failures through [`root-cause`](root-cause.md), and promotes the passing checks into committed, ID-tagged tests. Hand each child its slice of the ledger **by path** — it writes its results back into the same file, so the ledger stays the single record of what was observed.
+Each child locates and persists how to run its surface, exercises its slice of the checklist against the live system, fixes failures through [`root-cause`](root-cause.md), and promotes the passing checks into committed tests. Hand each child its slice of the ledger **by path** — it writes its results back into the same file, so the ledger stays the single record of what was observed.
 
 ## 3. Close the loop
 
@@ -80,7 +81,7 @@ Deriving the checklist writes `.skills/note-acceptance.md`:
 - [ ] NOTE-1.2 (ui) submitting empty shows an error and leaves the typed text in the input
 ```
 
-The API rows dispatch to [`validate-feature`](validate-feature.md); the UI rows to [`validate-feature`](validate-feature.md). Both receive `.skills/note-acceptance.md` by path and write their observed results back. Suppose `validate-feature` finds `NOTE-1.2` returns `201` with a blank title instead of `422` — a real defect the unit tests missed because they asserted the handler's return value, not the wire status. It fixes the root cause through `root-cause`, leaves a committed `@NOTE-1.2` regression test, and marks the ledger row green.
+The API rows dispatch to [`validate-feature`](validate-feature.md); the UI rows to [`validate-feature`](validate-feature.md). Both receive `.skills/note-acceptance.md` by path and write their observed results back. Suppose `validate-feature` finds `NOTE-1.2` returns `201` with a blank title instead of `422` — a real defect the unit tests missed because they asserted the handler's return value, not the wire status. It fixes the root cause through `root-cause`, leaves a committed regression test, and marks the ledger row green.
 
 Closing the loop reports the ledger back with each observed result:
 
@@ -88,7 +89,7 @@ Closing the loop reports the ledger back with each observed result:
 NOTE acceptance — 4/4 observed green
   NOTE-1.1 (api)  green — POST 201, GET reads it back after restart
   NOTE-1.1 (ui)   green — note visible, survives reload
-  NOTE-1.2 (api)  green — now 422 (was 201, fixed via debug; @NOTE-1.2 committed)
+  NOTE-1.2 (api)  green — now 422 (was 201, fixed via root-cause; regression test committed)
   NOTE-1.2 (ui)   green — error shown, input retained
 Open risks: none
 ```
@@ -110,10 +111,15 @@ Each is a file beside `SKILL.md`, opened on the condition `SKILL.md` names.
 - `api.md` — drive an HTTP or RPC API as a real client and assert status, body and persistence.
 - `ui.md` — drive a frontend in a real browser and assert visible state.
 
+## System properties (1.4.0, 2026-11-17)
+
+`system.md` runs after the spec checklist on every endpoint, command or job the branch adds or changes. It sends one probe the spec never names: a body that is not JSON. It also holds one disposition rule. Some failures count as this branch's defect, whether or not the spec names them and wherever the cause sits, shared server code included: another account's record can be read or changed, a route skips the sign-in its siblings need, a write takes fields it should not, a read returns secrets, a refused request still wrote something, or bad input gets a 5xx or a stack trace back. Fix each in the same run, giving the same answer the project already gives elsewhere. There is one exception: when the fix would change a documented contract, build the option that keeps it and ask under **Needs a decision before merge**. A gap outside that list, such as a price rule or a business limit, is asked about and not built. Each fix is listed under **Beyond the spec** in the result.
+
+Why so short: on a booking API with seven planted defects, the unedited skill already found and fixed missing auth, mass assignment, leaked secrets and partial writes in six of six runs. What it got wrong was the disposition. Three runs left another passenger's booking readable because "the spec doesn't say", every run left the shared server's 500 on a non-JSON body standing, and three never sent one. Retry, concurrency, migrations, jobs and pagination are not in the file because no run has measured them yet.
+
 ## See also
 
 - [The gates](../concepts/gates.md) — where acceptance sits relative to the prove-claim and audit-trace gates
-- [`validate-feature`](validate-feature.md) and [`validate-feature`](validate-feature.md) — the two automated children
 - [`write-dogfood`](write-dogfood.md) — the manual child, for judgment a test cannot make
 - [`run-dogfood`](run-dogfood.md) — run an existing guide from write-dogfood end to end in the browser
 - [`land-branch`](land-branch.md) — the skill that runs it before offering Merge or PR

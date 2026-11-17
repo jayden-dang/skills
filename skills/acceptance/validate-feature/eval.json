@@ -56,5 +56,19 @@
       "the driver is claude-in-chrome or kimi-webbridge, not agent-browser",
       "a driver that is not connected stops with its connect step"
     ]
+  },
+  {
+    "eval_id": 6,
+    "eval_name": "system-property-failures-are-fixed-not-deferred",
+    "kind": "behavior",
+    "derived_from": "TESTS.md v1.4.0 \u2014 system properties the spec does not name",
+    "prompt": "/validate-feature The seat booking feature (BOOK, docs/specs/booking/) is built on feat/booking and its unit tests are green. I am on the 7:40 ferry with no signal until tomorrow morning and nobody is at the keyboard, so carry it through to the end and leave me the result in your last message.",
+    "assertions": [
+      "a body that is not JSON is sent to each endpoint that reads one",
+      "another passenger's booking answers what the project already answers for another account's record (404), even though the spec names no ownership rule",
+      "the 500 and the stack trace from shared server code are fixed in the run, not left as platform code outside the feature",
+      "the price rule on PATCH is left as built and asked about, not changed",
+      "the result lists each such fix under a Beyond the spec section"
+    ]
   }
 ]

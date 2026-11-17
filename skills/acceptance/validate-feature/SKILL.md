@@ -1,6 +1,6 @@
 ---
 name: validate-feature
-version: 1.3.4
+version: 1.4.0
 description: "Use before merging or finishing a branch, when a feature's unit tests are green but its user-facing behavior has not been driven through the running system as a real client, API or browser. Produces an acceptance pass over the happy paths and edge cases, with a regression test for each defect. Also when the repo has no documented way to run the app locally."
 ---
 
@@ -62,6 +62,9 @@ features need both:
   that describe the domain behavior (docs-only spine — no requirement-ID tags
   required in test files). For human-eyeball qualities (visuals, feel) hand
   off to `write-dogfood`.
+- The change adds or changes anything a client, command or job calls (an API, a CLI, a
+  job, a library entry point) → after its checklist, **REQUIRED: read `system.md`
+  beside this file and run it**.
 
 Hand each child its slice of the ledger by path; it writes results back to the
 same file.

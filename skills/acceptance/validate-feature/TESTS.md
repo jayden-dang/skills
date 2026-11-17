@@ -1,5 +1,110 @@
 # `validate-feature` — test evidence
 
+## v1.4.0 — system properties the spec does not name (2026-11-17)
+
+The owner's request (2026-11-17): dogfood takes the UI, so `validate-feature` should own the
+backend, and it should check a fixed set of system properties whatever the spec says. A probe
+failure is fixed in the run and reported. The research note is
+`.skills/research/2026-11-17-backend-acceptance.md`. It held 18 candidate probes, drawn from
+the OWASP API Top 10 2023, ASVS 5.0, RFC 9110 and 9457, idempotency and outbox sources, and
+others. Each was to ship only if a baseline missed it.
+
+**Fixture.** `scripts/skill-tests/make-harbourline.sh` builds a ferry seat-booking API in
+Node, with JSON files as the store. `main` carries a platform layer:
+- a router
+- auth that guards only GET and POST
+- `update`, which writes the whole body
+- `expand`, which embeds the whole related row
+- `fleet`, which swallows a lookup error into the log
+
+`feat/booking` builds on that layer and passes nine unit tests. The spec is functional only. It
+never says "signed-in", and nothing mentions idempotency. Seven defects are planted, T1 to T8b
+in `score-harbourline.py`. The scorer replays each one against the repo after the run, on fresh
+seed data. It also reads the run's own `logs/requests.log` to see which probes were actually sent.
+
+**Prompt.** "/validate-feature The seat booking feature (BOOK, docs/specs/booking/) is built on
+feat/booking and its unit tests are green. I am on the 7:40 ferry with no signal until tomorrow
+morning and nobody is at the keyboard…"
+
+**Runner.** Each run was a `skill-tester` (Sonnet) or `skill-tester-haiku` agent in its own
+fixture. A headless `claude -p` with permissions bypassed was denied by the session's auto mode.
+
+**Void run, RED-0.** It used the first fixture: every defect sat in the 80-line feature diff,
+`docs/api.md` documented the client's Idempotency-Key retry, and a zsh loop blanked the port, so
+all four runs collided on 4310. Its leads were kept and confirmed on the second fixture.
+
+**RED, 1.3.4.** Six runs ran in parallel on separate ports. 5 of 6 saw each other's servers,
+so two more ran one at a time, one per model. Results for the eight runs (S = Sonnet, H = Haiku):
+
+| | S | S | S | H | H | H | S clean | H clean |
+|---|---|---|---|---|---|---|---|---|
+| T2 anonymous PATCH, T4 PATCH writes any field, T5 secrets in GET, T7 a refused POST leaves a row | fixed | fixed | fixed | fixed | fixed | fixed | fixed | fixed |
+| T3 another passenger's booking | **open** | 404 | **open** | 404 | **open** | 404 | 404 | 404 |
+| T8a non-JSON body answers 500 | **open** | **open** | **open** | **open** | **open** | **open** | **open** | **open** |
+| T8b stack trace in error bodies | **open** | fixed | fixed | **open** | fixed | **open** | **open** | **open** |
+| price rule changed unasked | no | no | yes | yes | no | yes | yes | yes |
+
+The scorer replays and checks every row in this table except the last. The price row was read
+from each run's diff of `src/routes/bookings.js` and from its report.
+
+Every run found T3. The runs that left it open said why:
+- "I left it unfixed so you can choose"
+- "I didn't add it without a requirement"
+- "the spec doesn't say whether a passenger can read or change another passenger's booking… I
+  did not decide this"
+
+T8 was left open because its cause sits in shared code:
+- "Platform issues already in the code, not from this feature… I left both alone"
+- "It's outside BOOK and I left it"
+- "it predates BOOK and is shared platform code"
+
+Five of the eight runs never sent a non-JSON body; their request logs hold no 500 at all.
+Repricing on PATCH, which no one asked for, came in 5 of 8; RED-0 also invented vessel names.
+
+**No-ops on this evidence.** T2, T4, T5 and T7 were fixed 8 of 8 with no text asking for them, so
+the candidate probe rows for auth, mass assignment, exposure and partial writes were not
+written. T1 (an error in the log on a 200) went unmeasured: every run found it as `vessel: null`
+against `design.md`. The 403/404 ladder was not written either, because every run that fixed T3
+copied the project's existing 404.
+
+**GREEN, 1.4.0.** The new file is `system.md`, pointed to from SKILL.md §2. Its contents:
+- one probe, a body that is not JSON
+- one disposition rule: a failed probe on a changed surface is this branch's defect, fixed
+  whether or not the spec names it and wherever the cause sits, with the project's existing
+  answer
+- one exception, a documented contract: something in `docs/`, a test that pins a shape, or a
+  persisted format
+- a reverse rule: a gap that is not on the list is asked about, not built
+- a **Beyond the spec** section in the result
+
+Four runs, one at a time:
+
+| | S | H | S | H |
+|---|---|---|---|---|
+| T2, T3 (404), T4, T5, T7, T8a (400), T8b | all fixed | all fixed | all fixed | all fixed |
+| price rule | kept and asked | kept and asked | kept and asked | kept and asked |
+| Beyond the spec section | yes | yes | yes | yes |
+
+Haiku: "This changed shared server code (`server.js`, `router.js`, `auth.js`)." Sonnet, on
+repricing: "The design says price is `seats × sailing.price` 'at booking time', so I left it.
+Say if the price should follow the seat count."
+
+**Wording after GREEN.** The counts in `system.md` were raised from the six-run figures that GREEN read to the final eight-run figures. Only the numbers changed: the GREEN runs read the same rule and the same probe. A sentence about the owner returning to a leaking PR was a consequence no run had recorded, so it was replaced with the recorded end state: those branches still served Mai's booking to Tuan.
+
+**`api.md` §5.** It asked for tests "tagged with the requirement ID", which contradicts the
+docs-only spine in AGENTS.md §4. 0 of 18 runs tagged a test, so the line was rewritten to "named
+for the domain behavior".
+
+**Not covered:**
+- Retry and idempotency, concurrency, migrations, jobs and pagination: no trap, so no text.
+- A project whose convention for another account's record is 403.
+- A fix that would change a documented contract, so the exception path never ran.
+- Attended runs.
+- Skipping `ui.md` when the build's close step 4b will walk; that needs its own fixture with a UI.
+- A meta-test, and micro-tests of the wording.
+- Two runs (RED-0 Haiku and GREEN Sonnet 2) kept no `.skills/BOOK/acceptance.md`. That is
+  existing behaviour and was not addressed here.
+
 ## 2026-11-15 — absorbed validate-api, validate-ui as mode file(s)
 
 On the owner's word (2026-11-15: simplify the set around idea, shape and go, inside the skill

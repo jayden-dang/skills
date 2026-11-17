@@ -58,6 +58,6 @@ red-capable loop. Fix the root cause, add the regression test, re-run the item.
 ## 5. Promote to a durable test
 
 Turn the exercised requests into a committed test that hits the server (or the
-handler at its real seam), tagged with the requirement ID per the conventions in
-`docs/agents/project.md`, so it joins the verify suite and guards the behavior
-after this run. *Done when: the durable test is committed, tagged, and green.*
+handler at its real seam), named for the domain behavior it guards, so it joins
+the verify suite and guards the behavior after this run. *Done when: the durable
+test is committed and green.*

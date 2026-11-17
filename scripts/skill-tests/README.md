@@ -7,6 +7,8 @@ git-ignored folder and were lost.
 |---|---|
 | `make-quayside.sh` | A small billing repo: three features merged to `dev` this week, 9 tests, a github tracker behind a stateful `bin/gh`. `GATE=1` adds a ticket approver, `FILING=draft` sets Follow-up filing, `DUP=1` and `SHAPE=1` pre-file tickets. Installs the named skills in `.claude/skills/` |
 | `make-tidewater.sh` | A ferry-booking repo with a roadmap layer: MILE-1 closed, MILE-2 to MILE-4 committed with every member shipped in v0.3.0, MILE-5 planned. Used for the milestone close and assessment runs |
+| `make-harbourline.sh` | A ferry seat-booking API in Node, with JSON files as the store. `main` has a platform layer whose helpers carry seven defects that `feat/booking` inherits or adds; the comment at the top of the script lists them. Set `HL_PORT` to give each fixture its own port. Used for `validate-feature` 1.4.0 |
+| `score-harbourline.py` | `<dir> <port> [start-sha]`: replays each defect against the repo as the run left it, on fresh seed data. Also reads the run's `logs/requests.log` to see which probes were sent |
 | `make-fernhollow.sh` | The `evolve-system` fixture with the same tracker shim |
 | `gh-shim.py` | The stateful `gh` stand-in; its state lives in `.git/gh.json` |
 | `score-inbox.py`, `score-evolve.py` | Score a run from the tracker state, the working tree and what `board.py` prints |

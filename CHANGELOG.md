@@ -2,6 +2,25 @@
 
 ## Unreleased
 
+### Changed: `validate-feature` fixes backend defects the spec never names (2026-11-17)
+
+`validate-feature` 1.4.0 adds `system.md`, which runs after the spec checklist on every endpoint, command or job a branch adds or changes. It sends one probe the spec never names: a body that is not JSON. It also sets one rule. On a changed surface, each of the following is this branch's defect, fixed in the same run whether or not the spec names it and even when the cause sits in shared server code:
+- another account's record can be read or changed
+- a route skips the sign-in its siblings need
+- a write accepts fields it should not
+- a read returns secrets
+- a refused request still wrote something
+- bad input gets a 5xx or a stack trace back
+
+The fix gives the same answer the project already gives elsewhere. A fix that would change a documented contract is built the contract-keeping way and asked about under **Needs a decision before merge**. A gap outside the list, such as a price rule, is asked about and not built. Each fix is listed under **Beyond the spec** in the result.
+
+What prompted it: a booking API with seven planted defects, run on Sonnet and Haiku. With the old text, every run found and fixed missing auth, mass assignment, leaked secrets and partial writes unaided, so none of the 18 researched probe rows for those was written. The failures were in what happened next:
+- three of eight runs left another passenger's booking readable because "the spec doesn't say"
+- every run left the shared server's 500 on a non-JSON body, and five never sent one
+- five changed the price rule unasked
+
+With 1.4.0, four of four runs fixed all seven defects, kept the price rule and asked about it. `api.md` no longer asks for tests tagged with requirement IDs, which contradicted the docs-only spine and which no run ever did. Not yet measured: retry, concurrency, migrations, jobs, a project whose convention is 403, and skipping the UI pass when the build's product walk will run. Evidence: `skills/acceptance/validate-feature/TESTS.md`.
+
 ### Changed: a milestone close takes one reply (2026-11-16)
 
 `plan-milestones` 1.10.0 now shows two things beside the verdicts. The first is the exact roadmap lines the close will change: each milestone's row, its `Commitment:` and `Closed:` lines, the closed IDs taken out of `## Focus`, and `Date:`. The second is one reply to offer, worded with "approve", that accepts the verdicts and approves those lines. When you send it, the close is written and the roadmap stays Approved, but only if the written diff is exactly what you were shown. Anything else, or an accept without the word approve, leaves it Draft for a separate approval as before. The close goes from three of your turns to two.

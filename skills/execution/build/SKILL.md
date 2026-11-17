@@ -1,6 +1,6 @@
 ---
 name: build
-version: 1.0.0
+version: 1.1.0
 description: Use when an approved tasks.md is to be executed. Produces the built feature task by task, with a progress ledger, a two-verdict review of each task and a revision-bound close receipt, run as continuous subagent waves, as human-gated story units, or inline without subagents, as the plan's Execution-mode line and the environment say.
 ---
 

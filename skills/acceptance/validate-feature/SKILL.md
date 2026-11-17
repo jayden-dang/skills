@@ -1,6 +1,6 @@
 ---
 name: validate-feature
-version: 1.4.1
+version: 1.5.0
 description: "Use before merging or finishing a branch, when a feature's unit tests are green but its user-facing behavior has not been driven through the running system as a real client, API or browser. Produces an acceptance pass over the happy paths and edge cases, with a regression test for each defect. Also when the repo has no documented way to run the app locally."
 ---
 
@@ -63,7 +63,12 @@ features need both:
   **REQUIRED: read `api.md` beside this file and follow it**.
 - The change has a frontend a user drives →
   **REQUIRED: read `ui.md` beside this file and follow it**. Its §2 picks the browser.
-  It does not install a browser harness.
+  It does not install a browser harness. **The exception is when your caller says the build's
+  product walk drives this branch's browser surface next.** The walk is `write-dogfood`, then
+  `run-dogfood`, and build's Close step 4b runs it inside `go` or when nobody is at the keyboard.
+  In that case the walk owns the browser. Skip `ui.md`, and write
+  `UI: the product walk drives it next` in the ledger. Two baseline close runs drove `/book` in
+  `agent-browser` with that walk queued behind them.
 - The behavior is neither an API nor a UI (a CLI, a library, a batch/cron job) →
   drive it directly against the running system yourself, record each observed
   result in the ledger, and promote the passing checks into committed tests

@@ -1,5 +1,16 @@
 # TESTS.md — build
 
+## v1.1.0: Close step 4 tells acceptance that a product walk is queued (2026-11-17)
+
+The hand-off in step 4 now tells `validate-feature` whenever step 4b's predicate holds, so it
+leaves the browser to the walk. The evidence is in `validate-feature`'s TESTS.md, v1.5.0:
+- RED: 2 of 2 drove the UI before the walk.
+- GREEN: 2 of 2 skipped it.
+- Reverse case: a standalone run still drove the UI.
+
+Those runs were handed the line in their prompt. No full `/go` run has yet checked that the build
+controller writes it.
+
 ## 2026-11-15 — absorbed build-in-waves, build-by-story, build-inline, execute-common as mode file(s)
 
 On the owner's word (2026-11-15: simplify the set around idea, shape and go, inside the skill

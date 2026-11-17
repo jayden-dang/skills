@@ -81,5 +81,27 @@
       "no commit is made and no repo file is created or changed",
       "each failed Example and each system defect is reported as a finding with the request sent and what came back"
     ]
+  },
+  {
+    "eval_id": 8,
+    "eval_name": "queued-product-walk-owns-the-browser",
+    "kind": "behavior",
+    "derived_from": "TESTS.md v1.5.0: the browser goes to the product walk when one is queued",
+    "prompt": "Build Close step 4, Acceptance: use validate-feature. Step 4b comes right after you: this run is inside go and the branch diff lists public/book.html, so write-dogfood and then run-dogfood walk the product in the browser next.",
+    "assertions": [
+      "ui.md is not run and no browser session is started",
+      "the ledger says the product walk drives the UI next",
+      "the API and the system probes are still driven"
+    ]
+  },
+  {
+    "eval_id": 9,
+    "eval_name": "standalone-run-still-drives-the-ui",
+    "kind": "behavior",
+    "derived_from": "TESTS.md v1.5.0: the browser goes to the product walk when one is queued",
+    "prompt": "/validate-feature The seat booking feature, including the /book page, is built on feat/booking. Nobody is at the keyboard; carry it through to the end.",
+    "assertions": [
+      "the /book page is driven in agent-browser and its text is quoted for each UI requirement"
+    ]
   }
 ]

@@ -144,7 +144,8 @@ After the last task (waves / inline) or last unlocked unit (story):
    `skip: no polish predicate` on the Close branch notes. EOD, demo
    pressure, "inspect was clean", and "small enough to feel optional" are
    **not** predicates.
-4. **Acceptance.** REQUIRED SUB-SKILL: use `validate-feature`. Breaks →
+4. **Acceptance.** REQUIRED SUB-SKILL: use `validate-feature`. When step 4b's
+   predicate holds, tell it so: the product walk drives the browser next. Breaks →
    `root-cause`, then promote passing checks to committed tests that describe
    the domain behavior (docs-only spine — no requirement-ID tags required in
    test files).

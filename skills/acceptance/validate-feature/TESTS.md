@@ -1,5 +1,53 @@
 # `validate-feature` — test evidence
 
+## v1.5.0: the browser goes to the product walk when one is queued (2026-11-17)
+
+The owner's request (2026-11-17): dogfood takes the UI. With nobody at the keyboard, build's Close
+step 4 runs `validate-feature` and step 4b then runs `write-dogfood` and `run-dogfood` on any
+branch with a browser-rendered file. The browser surface was therefore driven twice.
+
+**Fixture:** `VARIANT=ui make-harbourline.sh` adds `public/book.html`, served at `/book`, plus
+BOOK-3.1 and BOOK-3.2. The prompt is the build session at Close step 4 inside an unattended `/go`,
+told that step 4b walks `public/book.html` next. Each run was serial.
+
+**RED, 1.4.1.** Sonnet and Haiku both drove `/book` in `agent-browser --session BOOK` and wrote
+`.skills/BOOK/validate-feature.md`, with the walk queued behind them. The runs took 16 and 17 tool
+calls, 98 s and 107 s.
+
+**GREEN, 1.5.0.** One exception was added to the §2 UI bullet: when the caller says the build's product
+walk drives this branch's browser surface next, skip `ui.md` and write
+`UI: the product walk drives it next` in the ledger. Build's `common.md` step 4 now says so in its
+hand-off whenever step 4b's predicate holds.
+- Both models skipped `ui.md`, wrote the ledger line, started no browser and wrote no
+  `validate-feature.md`.
+- Both still drove the API and the system probes.
+- The runs took 12 and 11 tool calls, 80 s and 79 s.
+- Haiku: "UI: skipped on purpose… BOOK-3.1 and BOOK-3.2: not exercised here. They are the
+  open risk for step 4b."
+
+**Reverse case.** Haiku got a standalone `/validate-feature` with nobody at the keyboard, the same UI
+fixture and no walk named. It drove `/book` in `agent-browser`, quoted the page's text for
+BOOK-3.1 and BOOK-3.2, and wrote `validate-feature.md`.
+
+**Not covered:** a real `/go` run in which build's controller has to pass the hand-off line itself.
+These runs were given that line in the prompt.
+
+## v1.4.1: what reaches the pull request
+
+The concern was that the **Beyond the spec** list lives only in the run's last message, so it would
+never reach a PR. The test called `/land-branch` with no receipt, on harbourline v2 with
+`GH=1` (a local bare origin, plus `bin/gh` = `gh-pr-shim.py`, whose PR state lives in
+`.git/gh-pr.json`). `land-branch` ran `validate-feature` itself and opened the PR. **No-op, 2 of 2:**
+- Sonnet's body listed all six fixes, with "The last three touch shared server code… so they
+  affect every route".
+- Haiku's body listed all eight fixes, named the shared files and asked about the price rule.
+
+`land-branch` is unedited.
+
+Sonnet also added a Story 3 (BOOK-3.1 to 3.4) to the Approved requirements without being asked,
+and asked in the PR for the owner to confirm it. Haiku did not. That is one run, so it is
+recorded and no text was written for it.
+
 ## v1.4.1, variant B: 403 convention, a documented contract, a race and a job rerun (2026-11-17)
 
 **Fixture:** `VARIANT=b make-harbourline.sh` makes four changes:

@@ -548,6 +548,56 @@ test("the confirmations job queues an SMS for a held booking", async () => {
 });
 E2
 fi
+if [ "${VARIANT:-}" = ui ]; then
+  # A booking page served at /book: the passenger pastes a token, picks a sailing, books.
+  mkdir -p public
+  cat > public/book.html <<'E2'
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Book a seat · Harbourline</title>
+<style>body{font:16px system-ui;max-width:32rem;margin:2rem auto}label{display:block;margin:.6rem 0}#out{margin-top:1rem}</style></head>
+<body>
+<h1>Book a seat</h1>
+<label>Your token <input id="tok" autocomplete="off"></label>
+<label>Sailing <select id="sailing"></select></label>
+<label>Seats <input id="seats" type="number" min="1" max="9" value="1"></label>
+<button id="book">Book</button>
+<div id="out" role="status"></div>
+<script>
+const $ = (id) => document.getElementById(id);
+fetch("/api/sailings").then((r) => r.json()).then((xs) => {
+  for (const s of xs) $("sailing").add(new Option(`${s.route} ${s.departs.slice(11, 16)} (${s.seats_left} left)`, s.id));
+});
+$("book").onclick = async () => {
+  const r = await fetch("/api/bookings", { method: "POST", headers: { "content-type": "application/json", authorization: `Bearer ${$("tok").value}` },
+    body: JSON.stringify({ sailing_id: $("sailing").value, seats: Number($("seats").value) }) });
+  const b = await r.json();
+  $("out").textContent = r.ok ? `Booked ${b.id}: ${b.seats} seat(s), ${b.price}k VND` : `Could not book: ${b.error}`;
+};
+</script>
+</body></html>
+E2
+  python3 - <<'PY'
+p = "src/http/server.js"; s = open(p).read()
+s = s.replace('  const path = new URL(req.url, "http://x").pathname;\n',
+  '  const path = new URL(req.url, "http://x").pathname;\n  if (req.method === "GET" && path === "/book") {\n    res.writeHead(200, { "content-type": "text/html" });\n    return res.end(fs.readFileSync(new URL("../../public/book.html", import.meta.url)));\n  }\n')
+open(p, "w").write(s)
+PY
+  cat >> docs/specs/booking/requirements.md <<'E2'
+
+## Story 3 — a passenger books from the web
+
+**BOOK-3.1** WHEN a passenger opens `/book`, enters their token, picks a sailing and a seat count
+and presses Book THE SYSTEM SHALL book it and show the booking id, seats and price on the page.
+
+**BOOK-3.2** IF the booking is refused THEN THE SYSTEM SHALL show the reason on the page.
+E2
+  cat >> docs/specs/booking/tasks.md <<'E2'
+
+## Task 3: booking page
+`public/book.html` served at `/book`. Checked in the browser: books and shows the result; shows a refusal.
+_Requirements: BOOK-3.1, BOOK-3.2_
+E2
+fi
 git add -A; ci "$(d 2)" "feat(booking): book seats on a sailing"
 echo "- \`POST /api/bookings\`, \`GET\` and \`PATCH /api/bookings/:id\` — seat bookings" >> docs/api.md
 git add -A; ci "$(d 1)" "docs(booking): list the booking endpoints"

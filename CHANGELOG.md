@@ -2,6 +2,19 @@
 
 ## Unreleased
 
+### Changed: acceptance leaves the browser to the product walk, and changes nothing for a build it did not run (2026-11-17)
+
+`validate-feature` 1.5.0 skips its browser pass when its caller says the build's product walk (`write-dogfood`, then `run-dogfood`) drives the branch's UI next. `build` 1.1.0's Close step 4 now says that whenever step 4b's predicate holds: inside `/go`, or with nobody at the keyboard, on a branch with a browser-rendered file. Acceptance then drives the API and the system probes, and the walk drives the page once. Baseline: both models drove `/book` in a browser with the walk queued behind them. With the change both skipped it, at 11 to 12 tool calls instead of 16 to 17. A standalone `/validate-feature` with no walk queued still drives the UI.
+
+1.4.1: when the brief says another session built the branch, as `/shape --go`'s acceptance from the card does, `validate-feature` changes no file. Every fix becomes a finding with the request sent and what came back. Baseline: one run committed six fixes from outside the build, and another left an untracked test file after its edits to `src/` were refused. With the change, both runs made no commit and left the tree clean.
+
+Measured and needing no text:
+- A `/land-branch` PR body already carries the fixes acceptance made beyond the spec, 2 of 2.
+- Concurrent overselling and a cron job that re-queues on every run were found and fixed by the old text too.
+- A documented error field was kept and asked about. The convention sentence does have a failure behind it: the old text answered 404 where the project answers 403.
+
+Still owed: a real `/go` run that checks build's controller writes the hand-off line, and `shape/go.md` step 13 forwarding the acceptance findings to the build. Found on the way and not fixed: `land-branch` points at `../../execution/build/close-receipt.md`, a path that only exists in this repo's layout, not in a flat install.
+
 ### Changed: `validate-feature` fixes backend defects the spec never names (2026-11-17)
 
 `validate-feature` 1.4.0 adds `system.md`, which runs after the spec checklist on every endpoint, command or job a branch adds or changes. It sends one probe the spec never names: a body that is not JSON. It also sets one rule. On a changed surface, each of the following is this branch's defect, fixed in the same run whether or not the spec names it and even when the cause sits in shared server code:

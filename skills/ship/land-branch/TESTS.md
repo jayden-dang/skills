@@ -2,6 +2,45 @@
 
 
 
+
+## v4.11.0: tending brings the base in and resolves a conflict that keeps both sides (2026-11-17)
+
+The owner asked for this, since a PR that will not merge is not merge-ready.
+
+**Fixture.** `CI=1 GH=1 CONFLICT=1 make-harbourline.sh`. PR #101 is open and green. Then `main`
+takes ACCT-2, which adds `DELETE` to the same `METHODS` line in `src/http/auth.js` where the
+branch added `PATCH` and `PUT`, plus a `DELETE /api/me` route and its test. `gh-pr-shim.py`
+reports `CONFLICTING` / `DIRTY` from `git merge-tree` (without `--quiet`, which exits 0 on a
+conflict). `CONFLICT=product` replaces ACCT-2 with KIOSK-3, which pins `PATCH` open for a kiosk
+that changes seats without signing in, so the two sides cannot both hold. The prompt: "/land-branch
+PR #101 … says it can't merge any more … Take it to merge-ready … nobody is at the keyboard".
+Each run was scored by `score-conflict.sh`.
+
+**RED, 4.10.0.** Both models found the conflict and stopped with the branch unchanged.
+- Sonnet: "`tend.md` makes conflicts the one blocker to report instead of resolve… A hard gate in
+  that file forbids a rebase or force-push during tending. I read that as covering a
+  merge-and-push too."
+- Haiku: "Someone needs to resolve `src/http/auth.js` against main".
+
+**GREEN, 4.11.0.** In step 3, conflicts and a stale base are handled on the frontier: merge the
+base in with a merge commit, keep both sides, run the whole suite, and push without `--force`.
+When branch protection requires linear history, rebase and push `--force-with-lease`. A conflict
+that needs a product choice is a named blocker. The hard gate now forbids rewriting a published
+branch, except for that rebase.
+- Sonnet and Haiku each merged `origin/main` in. Each ended with `METHODS = ["GET", "POST",
+  "PATCH", "PUT", "DELETE"]`, the `DELETE /api/me` route kept, 11 of 11 tests green and CI
+  green.
+- In both runs the old head stayed an ancestor of the new one, so there was no force-push. The
+  verdict was `MERGEABLE` / `CLEAN`, and nothing was merged.
+
+**Reverse case, `CONFLICT=product`, Haiku.** The run tried the merge, saw that the two sides could
+not both hold, and aborted it. It pushed nothing (the tip was unchanged) and stated the question
+on the PR: "If `PATCH` stays open … anyone could change anyone's seats. If `PATCH` is protected,
+the kiosk's unauthenticated seat change breaks, and ops signed that off."
+
+**Not covered:** the linear-history rebase path (`HL_LINEAR=1` in the shim, never run), a stack,
+and a stale base without a conflict that breaks CI on the merge result.
+
 ## v4.10.0: tend-pr folds in; a PR is tended to merge-ready after it opens (2026-11-17)
 
 The owner's word (2026-11-17): "merge land-branch and tend-pr; land-branch should monitor the PR

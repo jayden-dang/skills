@@ -84,7 +84,10 @@ The PR-tending skill is now part of this one, as `tend.md`. After a PR opens, `l
 until it is merge-ready or has a named blocker. It works in this order: conflicts, then
 review threads, then CI on the head those pushes produced. It classifies each red check as a
 stale base, a flake (one fresh build), or a real failure (`root-cause` and `test-first`), and
-reads the forge's merge verdict rather than the check list. It never merges. The one
+reads the forge's merge verdict rather than the check list. A conflict or a stale base is handled by merging the base in. Both sides are kept, the suite
+runs, and the push is a plain one: a rebase with `--force-with-lease` happens only where branch
+protection requires linear history. A conflict that needs a product choice is reported with the
+question. It never merges. The one
 exception is a caller with more branches still to land, such as `/go` with tickets left to
 build. There, `land-branch` returns the URL and the caller tends every PR it opened at the end,
 so one slow CI does not stall the next ticket. Asking about a PR that is already open ("CI is

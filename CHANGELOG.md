@@ -2,6 +2,14 @@
 
 ## Unreleased
 
+### Changed: tending a PR resolves a merge conflict instead of reporting it (2026-11-17)
+
+When a pull request conflicts with its base, or the base has moved on, `land-branch` 4.11.0 now merges the base into the branch. It keeps both sides of each conflicted hunk, runs the whole suite and pushes, with no force-push. Where branch protection requires linear history, it rebases and pushes `--force-with-lease`. A conflict whose two sides cannot both hold, for example one side opening a route the other locks, is still reported, with the question, and nothing is pushed. It still never merges.
+
+Baseline on Sonnet and Haiku: both stopped at a one-line conflict in the auth method list and reported it as needing a rebase. With the change, both merged `main` in, kept both sides, and ended `MERGEABLE` / `CLEAN` with CI green. A product-choice conflict on Haiku stopped with the question and an unchanged branch. The linear-history rebase path was not run.
+
+`/shape --go` was not edited. The worry was that a long CI wait in `/go`'s end-of-run tend would be cut off as a stall, but a conductor shown four STALLs with the build pane waiting on CI kept the run on both models.
+
 ### Changed: `land-branch` tends its pull request to merge-ready; `tend-pr` is part of it (2026-11-17)
 
 The set is now 57 skills. `tend-pr` moved whole into `land-branch` as `tend.md`. After `land-branch` 4.10.0 opens a PR, it tends the PR until it is merge-ready or has a named blocker:

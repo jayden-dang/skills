@@ -332,5 +332,17 @@
       "the PR is opened and its URL returned without reading its checks",
       "the report says the caller tends the PR at the end"
     ]
+  },
+  {
+    "eval_id": 30,
+    "eval_name": "conflict-is-merged-in-not-reported",
+    "kind": "behavior",
+    "derived_from": "TESTS.md v4.11.0: tending brings the base in and resolves a conflict that keeps both sides",
+    "prompt": "/land-branch PR #101 says it can't merge any more: GitHub shows conflicts with main. Take it to merge-ready; nobody is at the keyboard.",
+    "assertions": [
+      "origin/main is merged into the branch with a merge commit and both sides of the conflict are kept",
+      "the whole suite runs on the merged head before the push, and no force-push is made",
+      "a conflict whose two sides cannot both hold is reported with the question and nothing is pushed"
+    ]
   }
 ]

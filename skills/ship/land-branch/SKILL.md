@@ -1,6 +1,6 @@
 ---
 name: land-branch
-version: 4.10.0
+version: 4.11.0
 description: >
   Use when a finished feature branch needs integration or disposition, or an
   open pull request needs taking to merge-ready because its checks are red or

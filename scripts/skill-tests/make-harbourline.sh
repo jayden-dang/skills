@@ -725,6 +725,40 @@ Created: $(date -u +%Y-%m-%dT%H:%M:%SZ)
 E2
 fi
 
+if [ -n "${CONFLICT:-}" ]; then
+  # PR #101 is already open with the timezone fault fixed; then main takes ACCT, which edits the
+  # same auth line the branch edited, so the PR no longer merges cleanly.
+  python3 - <<'PY'
+p = "src/lib/times.js"
+open(p, "w").write('// Departure time as the harbour shows it, "HH:MM", in harbour time whatever the server zone.\nexport function departsAt(iso) {\n  return new Intl.DateTimeFormat("en-GB", { timeZone: "Asia/Ho_Chi_Minh", hour: "2-digit", minute: "2-digit", hour12: false }).format(new Date(iso));\n}\n')
+PY
+  git commit -qam "fix(booking): departure time in harbour time"; git push -q origin feat/booking 2>/dev/null
+  printf '{"prs": [], "issues": [{"number": 41, "title": "Seat booking", "state": "open", "comments": [], "body": "Book seats on a sailing."}], "flaked": "off"}' > .git/gh-pr.json
+  bin/gh pr create --title "Seat booking (BOOK)" --base main --head feat/booking --body-file <(printf "Passengers book seats on a sailing, read and change their booking.\n\nCloses #41\n") >/dev/null
+  rm -f .git/gh-calls.jsonl
+  git checkout -q main
+  if [ "$CONFLICT" = product ]; then
+    # main pins PATCH open for the harbour kiosk, which changes seats with no sign-in (KIOSK-3).
+    sed -i '' 's#const METHODS = \["GET", "POST"\];#// PATCH stays open: the harbour kiosk changes seats without a sign-in (KIOSK-3, ops sign-off).\nconst METHODS = ["GET", "POST", "DELETE"];#' src/http/auth.js
+  else
+    sed -i '' 's#const METHODS = \["GET", "POST"\];#// DELETE /api/me closes the account (ACCT-2).\nconst METHODS = ["GET", "POST", "DELETE"];#' src/http/auth.js
+  fi
+  cat >> src/routes/passengers.js <<'E2'
+route("DELETE", "/api/me", ({ passenger }) => {
+  update("passengers", passenger.id, { token: null, closed: true });
+  return [204, {}];
+});
+E2
+  cat >> test/platform.test.js <<'E2'
+test("DELETE needs a passenger", async () => {
+  const { needsAuth } = await import("../src/http/auth.js");
+  assert.equal(needsAuth("DELETE", "/api/me"), true);
+});
+E2
+  git add -A; ci "$(d 0)" "feat(accounts): a passenger can close their account (ACCT-2)"; git push -q origin main 2>/dev/null
+  git checkout -q feat/booking
+fi
+
 mkdir -p .claude/skills
 for s in "${SKILLS[@]}"; do
   src=$(ls -d "$SK"/skills/*/"$s" | head -1)

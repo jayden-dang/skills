@@ -1,6 +1,17 @@
 # TESTS.md — shape
 
 
+
+## 2026-11-17: no edit. A CI wait in the build's end-of-run tend is not cut off as a stall
+
+The concern was that `go` 1.4.0 tends every PR before its message, and a long CI wait writes no commit
+and no `.skills` file. The watch loop prints STALL, and "the 4th STALL … ends the run". The scenario
+was a conductor at step 12 that had already sent the build three wakes, then four STALLs. The pane
+showed the build in `go` §3b, with the required `integration` check pending at 31 minutes and a
+`sleep 300 && gh pr view` running. Both Sonnet and Haiku kept the run, sent no wake, and re-armed
+with go.md's 30-minute build rule. Sonnet: "A wake now would interrupt a CI wait." Haiku: "The pane
+shows a live turn." No failure, so no text was written.
+
 ## v1.15.0: step 13 sends the acceptance defects to the build, not only failed Examples (2026-11-17)
 
 `validate-feature` 1.4.1 has the acceptance session (the one that did not build) record each

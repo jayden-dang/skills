@@ -89,14 +89,29 @@ def pending(sha):
     return S["reads"][sha] <= int(os.environ.get("HL_PENDING", "2"))
 
 
+def merge_state(sha):
+    """CONFLICTING when the PR head cannot merge into origin's base; BEHIND when base moved but merges."""
+    origin = subprocess.run(["git", "remote", "get-url", "origin"], capture_output=True, text=True).stdout.strip()
+    r = subprocess.run(["git", "--git-dir", origin, "merge-tree", "--write-tree", "main", sha], capture_output=True)
+    if r.returncode == 1:
+        return "CONFLICTING", "DIRTY"
+    behind = subprocess.run(["git", "--git-dir", origin, "merge-base", "--is-ancestor", "main", sha]).returncode != 0
+    return "MERGEABLE", ("BEHIND" if behind else None)
+
+
 def verdict(p):
     sha, jobs = ci_for(p)
+    mergeable, state = merge_state(sha)
+    if mergeable == "CONFLICTING":
+        return {"mergeable": "CONFLICTING", "mergeStateStatus": "DIRTY",
+                "statusCheckRollup": [{"name": j["name"], "conclusion": j["state"], "status": "COMPLETED"} for j in jobs],
+                "reviewDecision": "REVIEW_REQUIRED"}
     if pending(sha):
         return {"mergeable": "MERGEABLE", "mergeStateStatus": "BLOCKED",
                 "statusCheckRollup": [{"name": j["name"], "conclusion": None, "status": "IN_PROGRESS"} for j in jobs],
                 "reviewDecision": "REVIEW_REQUIRED"}
     clean = all(j["state"] == "SUCCESS" for j in jobs)
-    return {"mergeable": "MERGEABLE", "mergeStateStatus": "CLEAN" if clean else "BLOCKED",
+    return {"mergeable": "MERGEABLE", "mergeStateStatus": state or ("CLEAN" if clean else "BLOCKED"),
             "statusCheckRollup": [{"name": j["name"], "conclusion": j["state"], "status": "COMPLETED"} for j in jobs],
             "reviewDecision": "REVIEW_REQUIRED"}
 
@@ -108,6 +123,9 @@ with open(os.path.join(git_dir, "gh-calls.jsonl"), "a") as log:
 URL = "https://github.com/harbourline/app/pull/{}"
 if a[:2] == ["api", "user"]:
     print(json.dumps({"login": "thao"}))
+elif a[:1] == ["api"] and len(a) > 1 and a[1].endswith("/protection"):
+    print(json.dumps({"required_status_checks": {"strict": False, "contexts": ["npm test"]},
+                      "required_linear_history": {"enabled": os.environ.get("HL_LINEAR") == "1"}}))
 elif a[:2] == ["repo", "view"]:
     print(json.dumps({"nameWithOwner": "harbourline/app", "defaultBranchRef": {"name": "main"}}) if "--json" in a else "harbourline/app")
 elif a[:2] == ["pr", "create"]:

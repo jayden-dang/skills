@@ -10,8 +10,10 @@
 
 Measured and needing no text:
 - A `/land-branch` PR body already carries the fixes acceptance made beyond the spec, 2 of 2.
-- Concurrent overselling and a cron job that re-queues on every run were found and fixed by the old text too.
-- A documented error field was kept and asked about. The convention sentence does have a failure behind it: the old text answered 404 where the project answers 403.
+- A documented error field was kept and asked about by both versions.
+- The convention sentence has one failure behind it, in two runs: the old text answered 404 where the project answers 403.
+
+Concurrent overselling and a cron job that re-queues on every run were fixed by both versions. But the fixture's own diff and docs pointed at both, so neither was measured blind.
 
 Still owed: a real `/go` run that checks build's controller writes the hand-off line, and `shape/go.md` step 13 forwarding the acceptance findings to the build. Found on the way and not fixed: `land-branch` points at `../../execution/build/close-receipt.md`, a path that only exists in this repo's layout, not in a flat install.
 

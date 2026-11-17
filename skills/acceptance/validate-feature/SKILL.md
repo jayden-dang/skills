@@ -90,4 +90,5 @@ to `land-branch`. The UI acceptance evidence is `.skills/<CODE>/validate-feature
 from the browser drive. A product defect still gets its regression in the
 repo's existing test stack. *Done when: every checklist item is observed green
 against the running system, each failure fixed with a regression test in that
-existing stack, and the UI drive record is on disk.*
+existing stack, and the UI drive record is on disk, or the ledger names the product walk
+that drives the UI next.*

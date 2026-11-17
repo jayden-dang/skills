@@ -156,7 +156,13 @@ After the last task (waves / inline) or last unlocked unit (story):
    file → REQUIRED SUB-SKILL: use `write-dogfood`, then `run-dogfood` on its run
    file. Its fixes are commits, so the receipt follows them. ELSE write
    `skip: no walk predicate` on the Close branch notes. With nobody there the
-   walk is the only product walk the branch gets before review.
+   walk is the only product walk the branch gets before review. The walk may
+   stop before any case in its run file has a verdict, for example at
+   `run-dogfood`'s review gate. In that case step 4 has left the browser
+   undriven: REQUIRED SUB-SKILL: use `validate-feature` again on the UI items,
+   telling it that no walk follows, before step 5. One Haiku close skipped the
+   UI at step 4 and then stopped at the walk's review gate, so nothing drove
+   `/book`.
 5. **Close receipt.** Load `close-receipt.md` and follow its producer recipe.
    Issue it only after the final mutation and only from evidence bound to that
    HEAD. Rerun a producer only when its evidence is missing or stale.

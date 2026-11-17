@@ -32,7 +32,7 @@ BOOK-3.1 and BOOK-3.2, and wrote `validate-feature.md`.
 **Not covered:** a real `/go` run in which build's controller has to pass the hand-off line itself.
 These runs were given that line in the prompt.
 
-## v1.4.1: what reaches the pull request
+## v1.4.0: what reaches the pull request
 
 The concern was that the **Beyond the spec** list lives only in the run's last message, so it would
 never reach a PR. The test called `/land-branch` with no receipt, on harbourline v2 with
@@ -71,11 +71,16 @@ replayed (8 parallel POSTs on 3 seats, then the job run twice). Each run was ser
 **What this shows:**
 - **Convention sentence.** The "give the same answer" sentence now has a recorded failure behind it:
   1.3.4 Sonnet chose 404 where the project answers 403.
-- **Contract exception.** It guards the new rule against overriding a documented field. Both
-  1.4.x runs kept `stack` and asked under **Needs a decision before merge**. 1.3.4 kept it too,
-  but only because 1.3.4 never fixed stacks at all.
-- **Race and job rerun.** Both were fixed by both versions on both models, so no text was written
-  for them. Concurrency and job rerun join the no-ops.
+- **Contract exception.** Both 1.4.x runs kept `stack` and asked under **Needs a decision before
+  merge**. Both 1.3.4 runs also kept it, citing `docs/api.md`. On the base fixture, three 1.3.4
+  runs removed stacks that no document named. So no baseline failure stands behind the
+  exception. It is there to stop the new fix rule from overriding a documented field, and it held
+  2 of 2.
+- **The convention failure is one run of two.** 1.3.4 Haiku answered 403 correctly.
+- **Race and job rerun.** All four runs fixed both, but neither was measured blind. The feature
+  commit itself adds the `await` in `reserve()`, and `project.md` states the 5-minute cron.
+  On the base fixture, several runs said they "did not test" concurrency. No text was written,
+  and both stay unmeasured.
 - **Not covered:** retry with an Idempotency-Key, migrations, pagination, and CLI and library
   surfaces.
 

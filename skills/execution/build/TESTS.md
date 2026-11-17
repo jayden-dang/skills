@@ -8,8 +8,26 @@ leaves the browser to the walk. The evidence is in `validate-feature`'s TESTS.md
 - GREEN: 2 of 2 skipped it.
 - Reverse case: a standalone run still drove the UI.
 
-Those runs were handed the line in their prompt. No full `/go` run has yet checked that the build
-controller writes it.
+**Full close, steps 4 and 4b, with no hand-off line in the prompt.** The build session was told
+only to run steps 4 and 4b of `common.md`, on harbourline `VARIANT=ui` with build, validate-feature,
+write-dogfood and run-dogfood installed. Scored on the ledger line, on `validate-feature.md`, and on
+`dogfood status`.
+- Sonnet: step 4 wrote "UI: the product walk drives it next" itself and skipped `ui.md`. Step 4b
+  then wrote an 11-case guide, reviewed it in context, and drove it in `agent-browser`: 11 pass.
+- Haiku: step 4 skipped the UI the same way, but step 4b stopped at `run-dogfood`'s review gate.
+  The harness has no subagent tool, and the classifier refused the self-written review. So no
+  case got a verdict and nothing drove `/book`. That is the failure the skip opens.
+
+**Fallback, added to 4b.** When the walk stops before any case in its run file has a verdict,
+run `validate-feature` again on the UI items, telling it no walk follows, before step 5. Haiku
+was re-run on a fresh fixture. The walk stopped at the same gate, and the run then drove `/book`
+in `agent-browser` and quoted every result in `validate-feature.md`: "Booked B-1: 2 seat(s),
+24k VND", "Could not book: only 0 seats left", and persistence after a restart.
+
+**Not covered.**
+- A real `/go` in which the build controller has subagents. There, the review gate would normally
+  open, so this harness overstates how often the walk stalls.
+- `go.md` and the receipt's own accounting of a walk that stopped.
 
 ## 2026-11-15 — absorbed build-in-waves, build-by-story, build-inline, execute-common as mode file(s)
 

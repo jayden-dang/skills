@@ -31,6 +31,13 @@ Each is a file beside `SKILL.md`, opened on the condition `SKILL.md` names.
 
 - `deliver.md` — the delivery run itself: the frontier of ready tickets, one build, review and pull request per ticket, one message at the end.
 
+## Tending the PRs before the message (1.4.0, 2026-11-17)
+
+Inside a run, `land-branch` opens each PR and returns without waiting on its checks, so the next
+ticket starts at once. Once every ticket has its PR, the run tends each one, the lowest in a stack
+first, in `land-branch`'s tend mode. That takes it to merge-ready or a named blocker, and the
+message gives each PR's merge state. Nothing is merged.
+
 ## See also
 
 - [The workflow](../workflow.md) — the states and who moves each one

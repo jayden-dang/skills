@@ -20,7 +20,7 @@ for d in sys.argv[1:]:
     rc = os.path.join(d, ".skills", "BOOK", "close-receipt.md")
     main_start = next((l.split(": ", 1)[1].strip() for l in open(rc) if l.startswith("Base-SHA:")), "") if os.path.exists(rc) else git("rev-parse", "main")
     for p in S["prs"]:
-        r = subprocess.run([os.path.join(d, "bin", "gh"), "pr", "checks", str(p["number"])], cwd=d, capture_output=True, text=True)
+        r = subprocess.run([os.path.join(d, "bin", "gh"), "pr", "checks", str(p["number"])], cwd=d, capture_output=True, text=True, env={**os.environ, "HL_PENDING": "0"})
         S = json.load(open(state_path))
         head = subprocess.run(["git", "--git-dir", origin, "rev-parse", p["headRefName"]], capture_output=True, text=True).stdout.strip()
         jobs = S.get("ci", {}).get(head, [])

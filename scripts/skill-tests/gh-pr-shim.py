@@ -80,8 +80,21 @@ def ci_for(p):
     return sha, S["ci"][sha]
 
 
+def pending(sha):
+    """A real forge reports a fresh head as queued, then in progress, before any result: the first
+    HL_PENDING reads (default 2) of each head see that, and only later reads see the outcome."""
+    S.setdefault("reads", {})
+    S["reads"][sha] = S["reads"].get(sha, 0) + 1
+    save()
+    return S["reads"][sha] <= int(os.environ.get("HL_PENDING", "2"))
+
+
 def verdict(p):
     sha, jobs = ci_for(p)
+    if pending(sha):
+        return {"mergeable": "MERGEABLE", "mergeStateStatus": "BLOCKED",
+                "statusCheckRollup": [{"name": j["name"], "conclusion": None, "status": "IN_PROGRESS"} for j in jobs],
+                "reviewDecision": "REVIEW_REQUIRED"}
     clean = all(j["state"] == "SUCCESS" for j in jobs)
     return {"mergeable": "MERGEABLE", "mergeStateStatus": "CLEAN" if clean else "BLOCKED",
             "statusCheckRollup": [{"name": j["name"], "conclusion": j["state"], "status": "COMPLETED"} for j in jobs],
@@ -144,6 +157,10 @@ elif a[:2] == ["pr", "checks"]:
     if not p:
         sys.exit("no pull requests found")
     sha, jobs = ci_for(p)
+    if pending(sha) and "--watch" not in a:
+        for j in jobs:
+            print(f"{j['name']}\tpending\t0\thttps://ci.harbourline.example/run/{sha[:7]}")
+        sys.exit(8)
     for j in jobs:
         print(f"{j['name']}\t{'pass' if j['state'] == 'SUCCESS' else 'fail'}\t1m2s\thttps://ci.harbourline.example/run/{sha[:7]}")
     if any(j["state"] != "SUCCESS" for j in jobs):

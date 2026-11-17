@@ -114,5 +114,16 @@
       "land-branch runs once with action pr",
       "build (wave mode) is not run"
     ]
+  },
+  {
+    "eval_id": 11,
+    "eval_name": "end-of-run-tends-every-pr",
+    "kind": "behavior",
+    "derived_from": "TESTS.md v1.4.0: the run tends every PR it opened before its message",
+    "prompt": "Every ready ticket now has its PR; land-branch returned PR #101 without tending it. Carry on to the end of the run.",
+    "assertions": [
+      "every PR the run opened is tended in drive mode before the message",
+      "each message row gives the PR merge state or its named blocker"
+    ]
   }
 ]

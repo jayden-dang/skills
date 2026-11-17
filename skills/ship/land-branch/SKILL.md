@@ -126,16 +126,8 @@ process-temp files, never interpolated as shell input; keep the worktree.
 **Open it ready, never as a draft** — omit `--draft`, pass `draft: false` to a
 tool that defaults to draft, and make ready any PR that still opened as one. A
 draft is not a crossing. Post step 3's evidence onto the PR per `prepare.md`
-**Post the verdict**, and move the ticket set per `tickets.md` **After the PR opens**. Then tend it:
-
-- **Your caller has more branches to land in this run** (`go` with tickets still to build, or
-  a parent that dispatched you as a subagent): report the URL and return. Waiting here stalls
-  the next branch, and the caller tends every PR it opened at the end.
-- **Otherwise:** REQUIRED: read `tend.md` beside this file and run its `drive` mode on this PR
-  until it is merge-ready or has a named blocker. Report that state, not "opened".
-
-Two baseline landings opened the PR, read no check, and ended by naming a separate command for the CI
-watch. One of those PRs sat red on a runner flake that a single fresh build clears.
+**Post the verdict**, and move the ticket set per `tickets.md` **After the PR opens**. Step 8b tends its checks once step 8 has pushed the delivery line,
+because every push restarts CI.
 
 ### Local merge
 
@@ -202,6 +194,19 @@ resolves to a commit on the integration ref; without it a merged item stays in r
 
 For PR, merge, or keep: name `/understand <range>` when multi-task or risk paths are
 present. It is optional and never withholds the resolved action.
+
+## 8b. Tend the pull request
+
+Runs for `pr`, after step 8's delivery push, which is the branch's last push.
+
+- **Your caller says it has more branches to land in this run and tends the PRs at the end**
+  (`go` with tickets still to build): report the URL and return. Waiting here stalls the next
+  branch.
+- **Otherwise:** REQUIRED: read `tend.md` beside this file and run its `drive` mode on this PR
+  until it is merge-ready or has a named blocker. Report that state, not "opened".
+
+Two baseline landings opened the PR, read no check, and ended by naming a separate command for
+the CI watch. One of those PRs sat red on a runner flake that a single fresh build clears.
 
 ## 9. Publish a local merge
 

@@ -13,7 +13,11 @@ It still never merges.
 
 The exception is a caller with more branches to land, such as `/go` with tickets still to build. There, `land-branch` returns the URL so a slow CI does not stall the next ticket, and `go` 1.4.0 tends every PR it opened before sending its message. Each row of that message now gives the merge state. An ask about a PR that is already open ("CI is red on #41", "babysit my PR") routes to `land-branch` and goes straight to `tend.md`. `/tend-pr` is gone.
 
-Baseline on Sonnet and Haiku: both opened the PR, read no check, and named `/tend-pr` for later. Haiku's PR sat red on a runner flake. With the change, both read CI and recognised the flake after checking for a stale base. Both got a fresh build, reached green with a `CLEAN` verdict, and merged nothing. Inside `/go` with tickets still to build, Haiku returned the URL without tending. At the end of a `/go`, the old `go` let Haiku send its message over a red PR; the new one tended it to green first. Evidence: `skills/ship/land-branch/TESTS.md`, `skills/execution/go/TESTS.md`; fixture `make-harbourline.sh` with `CI=1 GH=1`, simulated CI in `gh-pr-shim.py`, and scorer `score-tend.py`.
+The tend runs after the delivery commit, the branch's last push. A fix commit made while tending marks the close receipt stale, so the evidence is re-run on the new head.
+
+Baseline on Sonnet and Haiku: both opened the PR, read no check, and named `/tend-pr` for later. Haiku's PR sat red on a runner flake. With the change, and simulated CI that answers "pending" before each result, both models re-read until the checks finished, recognised the flake and reached green with a `CLEAN` verdict. Sonnet checked that the base was current and pushed an empty commit for a fresh build. Neither merged anything. Inside `/go` with tickets still to build, Haiku returned the URL without reading checks. At the end of a `/go`, the old `go` let Haiku send its message over a red PR. With the new one, one Haiku run tended it to green first.
+
+Not covered: conflicts and a stale base still end as a named blocker, because nothing rebases an open PR. A real forge has not been tried either. Evidence: `skills/ship/land-branch/TESTS.md`, `skills/execution/go/TESTS.md`; fixture `make-harbourline.sh` with `CI=1 GH=1`, simulated CI in `gh-pr-shim.py`, and scorer `score-tend.py`.
 
 ### Changed: acceptance leaves the browser to the product walk, and changes nothing for a build it did not run (2026-11-17)
 

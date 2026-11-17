@@ -309,5 +309,28 @@
       "land-branch is the skill reached for",
       "vet-feedback, land-branch and root-cause are not"
     ]
+  },
+  {
+    "eval_id": 28,
+    "eval_name": "opened-pr-is-tended-to-merge-ready",
+    "kind": "behavior",
+    "derived_from": "TESTS.md v4.10.0: a PR is tended to merge-ready after it opens",
+    "prompt": "/land-branch Land it as a pull request to main. Nobody is at the keyboard; I will read the PR tomorrow and want to merge it then.",
+    "assertions": [
+      "after the delivery push, the PR checks are read until they finish, not reported as pending",
+      "a runner flake gets one fresh build after a stale-base check, not a job retry",
+      "the run ends with the PR merge-ready (CI green, verdict CLEAN) or a named blocker, and nothing is merged"
+    ]
+  },
+  {
+    "eval_id": 29,
+    "eval_name": "inside-go-returns-the-url",
+    "kind": "behavior",
+    "derived_from": "TESTS.md v4.10.0: a PR is tended to merge-ready after it opens",
+    "prompt": "Build session inside an unattended /go with #42 and #43 still to build; Close step 6: land-branch, action pr, for #41.",
+    "assertions": [
+      "the PR is opened and its URL returned without reading its checks",
+      "the report says the caller tends the PR at the end"
+    ]
   }
 ]

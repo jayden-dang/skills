@@ -89,7 +89,7 @@ approved plans ended the afternoon with no PR.
 
 `land-branch` returned each PR without waiting on its checks, so the next ticket could start.
 Now that every ticket has its PR, REQUIRED SUB-SKILL: use `land-branch` on each PR this run
-opened, as an open PR to take to merge-ready. In a stack, start with the lowest. The operator
+opened, as an open PR to take to merge-ready, in `tend.md`'s `drive` mode. In a stack, start with the lowest. The operator
 reads the message tomorrow, so a PR still red at that point is a PR nobody tended.
 
 *Done when: every PR this run opened is merge-ready or has a named blocker.*

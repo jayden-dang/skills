@@ -39,8 +39,28 @@ and run `drive` until merge-ready or a named blocker.
 build. It opened the PR and returned: "I did not run `tend.md`, because the run still has #42 and
 #43 to build, so the caller tends PR #101 at the end."
 
-**Seen, not addressed:** after its own fix commit, one Haiku GREEN run reused the close receipt
-bound to the earlier head, and re-ran only the suite.
+**First Sonnet GREEN void.** In that run's shim, `pr view` computed CI as a side effect, so the
+flake fell on a head the run never asked about.
+
+**After review (same day), three fixes:**
+- **The tend moved to step 8b**, after the delivery commit, which is the branch's last push.
+- **A real-class fix while tending makes the receipt stale.** One Haiku GREEN fixed the timezone
+  fault, kept the receipt bound to the earlier head, and re-ran only the suite. Now the step-3
+  evidence is re-run on the new head and a fresh verdict is posted.
+- **Pending checks.** The shim answers `pending` (exit 8) for the first two reads of every head.
+  No run before this had seen a check still running.
+
+**Re-run on both models, one at a time, with those three changes.** No text about waiting was
+added. Both re-read through `pending`:
+- **Sonnet** read its heads 9 and 7 times. Its flake landed on the delivery commit, and it pushed an
+  empty commit for a fresh build ("The skill says a fresh build, never a job retry"). It ended
+  green with `pr checks --required` passing.
+- **Haiku** read its heads 10 and 4 times. Its commit order was the fix, then
+  `docs(BOOK): record delivery`, then the flake on that head, then
+  `ci: fresh build after a runner network failure`, then green. After its fix it re-proved the branch
+  ("The receipt went stale with the new head, so I re-proved the branch") with a full suite in
+  three zones, an HTTP drive and a restart.
+- Neither merged, and origin's `main` did not move.
 
 **Not covered:**
 - conflicts and review threads through `tend.md`

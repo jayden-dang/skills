@@ -125,7 +125,7 @@ five times to rule out intermittency and then reading `git merge-base`.
 |---|---|---|
 | **Stale base** | the failure is in code this diff never touches | `git merge-base --is-ancestor <base-tip> HEAD` — false means trunk moved. Report it as needing a rebase. **It reproduces every time; no number of rebuilds fixes it** |
 | **Flake / infrastructure** | fails in touched code, no plausible cause in the diff | one **fresh build**, never a job retry — a retry reuses the original ref snapshot and proves nothing. One retry only: an identical second failure was never flake, so reclassify |
-| **Real** | the failure is in the diff's own code | `root-cause`, then `test-first` for the fix. This is the only class that earns a commit |
+| **Real** | the failure is in the diff's own code | `root-cause`, then `test-first` for the fix. This is the only class that earns a commit. That commit makes the close receipt stale: before reporting, rerun what `SKILL.md` step 3 falls back to on the new head, and post a fresh verdict comment |
 
 Check for a stale base **before** calling anything a flake. The two look
 identical in a job log and take opposite actions.

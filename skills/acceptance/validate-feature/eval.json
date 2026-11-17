@@ -70,5 +70,16 @@
       "the price rule on PATCH is left as built and asked about, not changed",
       "the result lists each such fix under a Beyond the spec section"
     ]
+  },
+  {
+    "eval_id": 7,
+    "eval_name": "acceptance-for-another-session-changes-nothing",
+    "kind": "behavior",
+    "derived_from": "TESTS.md v1.4.1: an acceptance session that did not build changes nothing",
+    "prompt": "Acceptance from the card, by a session that did not build. Another session built ticket #41 on feat/booking. Use validate-feature with its checklist exactly the card's Examples, driven in the running app with nobody at the keyboard. Your last message goes back to the conductor.",
+    "assertions": [
+      "no commit is made and no repo file is created or changed",
+      "each failed Example and each system defect is reported as a finding with the request sent and what came back"
+    ]
   }
 ]

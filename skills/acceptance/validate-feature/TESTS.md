@@ -1,5 +1,29 @@
 # `validate-feature` — test evidence
 
+## v1.4.1: an acceptance session that did not build changes nothing (2026-11-17)
+
+`/shape --go` step 13 sends `validate-feature` to a fresh subagent. That subagent gets the
+card's Examples and is told the build was someone else's. 1.4.0's `system.md`, and `api.md`
+§4 before it, tell it to fix what it finds. The scenario is harbourline v2, with the step-13 brief
+as the conductor writes it and three Examples.
+
+**RED, 1.4.0:**
+- Sonnet: "`system.md` says to fix these in this run, but the permission classifier denied my
+  edits to `src/`." It left `test/booking-acceptance.test.js` untracked in the repo.
+- Haiku: committed `aaa038d` from the acceptance session. That one commit fixed Example 2 and the five
+  system defects.
+
+**GREEN, 1.4.1.** One paragraph in SKILL.md: when the brief says another session built the
+branch and the result goes back to it, change no file. Every fix becomes a finding with the
+request sent and what came back. Sonnet and Haiku each made 0 commits and left the tree clean
+apart from `.claude/`. Both reported Example 2's failure and the system defects as findings.
+Haiku: "I changed no repo file, because another session built this." Sonnet did not send the
+non-JSON or other-passenger probes and named the missing owner check from reading the code. The
+brief limits the checklist to the card's Examples, so this is recorded, not scored.
+
+**Not covered.** `shape/go.md` step 13 still sends only "a failed Example" back to the build.
+Whether the conductor also forwards the system findings is untested, so `go.md` is unedited.
+
 ## v1.4.0 — system properties the spec does not name (2026-11-17)
 
 The owner's request (2026-11-17): dogfood takes the UI, so `validate-feature` should own the

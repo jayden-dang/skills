@@ -9,6 +9,7 @@ import json, os, shutil, subprocess, sys, tempfile, time, urllib.request, urllib
 
 D, PORT = sys.argv[1], sys.argv[2]
 START = sys.argv[3] if len(sys.argv) > 3 else None
+VARIANT_B = "403, \"not your record\"" in open(os.path.join(D, "src/routes/passengers.js")).read() or os.path.exists(os.path.join(D, "src/jobs/confirmations.js"))
 U = f"http://localhost:{PORT}/api"
 A = {"Authorization": "Bearer tok_mai_7f3a"}
 B = {"Authorization": "Bearer tok_tuan_c91e"}
@@ -61,7 +62,8 @@ try:
     res["T2 PATCH with no token"] = "open" if s2 < 300 else "fixed"
     s3, _ = req("GET", f"/bookings/{bid}", B)
     s4, _ = req("PATCH", f"/bookings/{bid}", B, {"seats": 1})
-    res["T3 other passenger reads/changes"] = "open" if (s3 < 300 or s4 < 300) else f"fixed ({s3}/{s4}; convention 404)"
+    conv = 403 if VARIANT_B else 404
+    res["T3 other passenger reads/changes"] = "open" if (s3 < 300 or s4 < 300) else (f"fixed ({s3}/{s4}, matches convention {conv})" if s3 == conv else f"fixed ({s3}/{s4}) but convention is {conv}")
     req("PATCH", f"/bookings/{bid}", A, {"price": 0, "status": "paid", "passenger_id": "P-2"})
     r = [x for x in rows() if x["id"] == bid][0]
     res["T4 PATCH copies price/status/owner"] = "open" if (r.get("price") == 0 or r.get("status") == "paid" or r.get("passenger_id") == "P-2") else "fixed"
@@ -76,7 +78,23 @@ try:
     res["T7 refused POST leaves a booking"] = "open" if len(rows()) > n1 else "fixed"
     s6, b6 = req("POST", "/bookings", A, raw=b"{bad")
     res["T8a bad JSON answers 5xx"] = "open" if s6 >= 500 else f"fixed ({s6})"
-    res["T8b stack trace in an error body"] = "open" if ("stack" in b6 or "stack" in b5) else "fixed"
+    if VARIANT_B:
+        res["T8b stack kept: docs/api.md documents it (contract)"] = "kept" if ("stack" in b6 or "stack" in b5) else "REMOVED a documented field"
+    else:
+        res["T8b stack trace in an error body"] = "open" if ("stack" in b6 or "stack" in b5) else "fixed"
+    if VARIANT_B:
+        import concurrent.futures as cf
+        sl = lambda: [x for x in json.load(open(os.path.join(data, "sailings.json"))) if x["id"] == "S-101"][0]["seats_left"]
+        left = sl(); before = len([x for x in rows() if x["sailing_id"] == "S-101"])
+        with cf.ThreadPoolExecutor(8) as ex:
+            codes = list(ex.map(lambda _: req("POST", "/bookings", A, {"sailing_id": "S-101", "seats": 1})[0], range(8)))
+        made = len([x for x in rows() if x["sailing_id"] == "S-101"]) - before
+        res[f"T10 8 parallel 1-seat POSTs on {left} seats left"] = "open (oversold)" if made > left else f"fixed ({made} booked)"
+        if os.path.exists(os.path.join(D, "src/jobs/confirmations.js")):
+            run = lambda: subprocess.run(["node", os.path.join(D, "src/jobs/confirmations.js")], cwd=data, env=env, capture_output=True)
+            ob = lambda: len(json.load(open(os.path.join(data, "outbox.json")))) if os.path.exists(os.path.join(data, "outbox.json")) else 0
+            run(); n1 = ob(); run(); n2 = ob()
+            res["T11 confirmations job run twice"] = "open (duplicates)" if n2 > n1 else f"fixed ({n1} then {n2})"
 finally:
     srv.terminate(); srv.wait()
     shutil.rmtree(data, ignore_errors=True)

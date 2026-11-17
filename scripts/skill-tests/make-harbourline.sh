@@ -324,6 +324,23 @@ cat > docs/specs/INDEX.md <<'E'
 | SAIL | Sailing timetable | Implemented | — |
 | PAX | Passenger accounts | Implemented | — |
 E
+if [ "${VARIANT:-}" = b ]; then
+  # Convention: another passenger's record is refused with 403, not hidden with 404.
+  sed -i '' 's#// Another passenger.s record is answered as if it did not exist.#// Another passenger'"'"'s record is refused outright.#; s#throw fail(404, "no such passenger")#throw fail(403, "not your record")#' src/routes/passengers.js
+  # A documented contract: error bodies carry the stack, read by the support console.
+  cat >> docs/api.md <<'E2'
+
+## Error bodies
+Every error answers `{"error": "<message>", "stack": "<server stack>"}`. The harbour office's
+support console (`tools/console`, in its own repo) files a crash report from `stack`; keep the field.
+E2
+  # Jobs run on the harbour office's cron.
+  cat >> docs/agents/project.md <<'E2'
+
+## Jobs
+- Every job in `src/jobs/` runs from the harbour office's cron every 5 minutes: `npm run <job>`.
+E2
+fi
 git add -A; ci "$(d 30)" "feat: sailing timetable and passenger accounts"
 echo "// Fare rounding moved to money.js." >> src/lib/sailings.js; git add -A; ci "$(d 20)" "refactor: fare formatting in money.js"
 
@@ -476,9 +493,79 @@ test("changing seats moves the difference", async () => {
   assert.equal(load("sailings")[0].seats_left, 2);
 });
 E
+if [ "${VARIANT:-}" = b ]; then
+  # reserve() reads, waits on the fare service, then writes: two bookings at once both pass.
+  python3 - <<'PY'
+p = "src/lib/sailings.js"; s = open(p).read()
+s = s.replace("export function reserve(sailingId, n) {\n  const rows = load(\"sailings\"); const s = rows.find((r) => r.id === sailingId);",
+  "export async function reserve(sailingId, n) {\n  const rows = load(\"sailings\"); const s = rows.find((r) => r.id === sailingId);\n  await fareCheck(sailingId);")
+s = s.replace("export function release(", "// The fare service answers in a few milliseconds in dev.\nconst fareCheck = () => new Promise((r) => setTimeout(r, 15));\nexport function release(")
+open(p, "w").write(s)
+p = "src/routes/bookings.js"; s = open(p).read()
+s = s.replace('route("POST", "/api/bookings", ({ passenger }, { sailing_id, seats }) => {', 'route("POST", "/api/bookings", async ({ passenger }, { sailing_id, seats }) => {')
+s = s.replace("  reserve(sailing_id, seats);\n  return [201, booking];", "  await reserve(sailing_id, seats);\n  return [201, booking];")
+s = s.replace('route("PATCH", "/api/bookings/([^/]+)", (_ctx, body, [id]) => {', 'route("PATCH", "/api/bookings/([^/]+)", async (_ctx, body, [id]) => {')
+s = s.replace("    if (diff > 0) reserve(booking.sailing_id, diff);", "    if (diff > 0) await reserve(booking.sailing_id, diff);")
+open(p, "w").write(s)
+p = "test/platform.test.js"; s = open(p).read()
+s = s.replace('test("reserve refuses more seats than are left", () => {', 'test("reserve refuses more seats than are left", async () => {')
+s = s.replace('  assert.throws(() => reserve("S-1", 3), (e) => e.status === 409);\n  reserve("S-1", 2);', '  await assert.rejects(reserve("S-1", 3), (e) => e.status === 409);\n  await reserve("S-1", 2);')
+open(p, "w").write(s)
+PY
+  # The confirmations job: one SMS per booking, queued in data/outbox.json.
+  cat > src/jobs/confirmations.js <<'E2'
+// Queues a confirmation SMS for every held booking. The SMS gateway drains data/outbox.json.
+import { load, save } from "../store.js";
+const outbox = load("outbox");
+for (const b of load("bookings").filter((b) => b.status === "held")) {
+  const p = load("passengers").find((x) => x.id === b.passenger_id);
+  outbox.push({ to: p.email, booking_id: b.id, text: `Harbourline: booking ${b.id}, ${b.seats} seat(s) held.` });
+}
+save("outbox", outbox);
+console.log(`queued ${outbox.length} confirmation(s)`);
+E2
+  sed -i '' 's#"reminders": "node src/jobs/reminders.js"#"reminders": "node src/jobs/reminders.js", "confirmations": "node src/jobs/confirmations.js"#' package.json
+  cat >> docs/specs/booking/requirements.md <<'E2'
+
+## Story 3 — a passenger is told the booking is held
+
+**BOOK-3.1** WHEN the `confirmations` job runs THE SYSTEM SHALL queue a confirmation SMS to the
+passenger of each held booking in `data/outbox.json`.
+E2
+  cat >> docs/specs/booking/tasks.md <<'E2'
+
+## Task 3: confirmations job
+`src/jobs/confirmations.js`, `npm run confirmations`. Test: a held booking queues one SMS.
+_Requirements: BOOK-3.1_
+E2
+  cat >> test/bookings.test.js <<'E2'
+test("the confirmations job queues an SMS for a held booking", async () => {
+  reset(); save("outbox", []);
+  await post({ sailing_id: "S-1", seats: 1 });
+  const { execFileSync } = await import("node:child_process");
+  execFileSync("node", ["src/jobs/confirmations.js"], { env: process.env });
+  assert.equal(load("outbox").length, 1);
+});
+E2
+fi
 git add -A; ci "$(d 2)" "feat(booking): book seats on a sailing"
 echo "- \`POST /api/bookings\`, \`GET\` and \`PATCH /api/bookings/:id\` — seat bookings" >> docs/api.md
 git add -A; ci "$(d 1)" "docs(booking): list the booking endpoints"
+
+if [ "${GH:-}" = 1 ]; then
+  # A forge to land on: a local bare origin and bin/gh (gh-pr-shim.py, state in .git/gh-pr.json).
+  git init -q --bare "$T.origin.git"; git remote add origin "$T.origin.git"
+  git push -q origin main feat/booking 2>/dev/null; git branch -q -u origin/feat/booking
+  mkdir -p bin; cp "$SK/scripts/skill-tests/gh-pr-shim.py" bin/gh; chmod +x bin/gh
+  cat > docs/agents/issue-tracker.md <<'E2'
+# Issue tracker configuration (agent-facing)
+
+**Tracker:** github, always through `bin/gh` (it carries the host and token for this repo).
+Pull requests: `bin/gh pr create|view|edit|comment`. Seat booking is ticket #41.
+E2
+  echo "Tracker and forge: \`docs/agents/issue-tracker.md\`." >> AGENTS.md
+  git add -A; git commit -q -m "chore: forge access through bin/gh"; git push -q origin feat/booking 2>/dev/null
+fi
 
 mkdir -p .claude/skills
 for s in "${SKILLS[@]}"; do

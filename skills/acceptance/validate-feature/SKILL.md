@@ -1,6 +1,6 @@
 ---
 name: validate-feature
-version: 1.4.0
+version: 1.4.1
 description: "Use before merging or finishing a branch, when a feature's unit tests are green but its user-facing behavior has not been driven through the running system as a real client, API or browser. Produces an acceptance pass over the happy paths and edge cases, with a regression test for each defect. Also when the repo has no documented way to run the app locally."
 ---
 
@@ -20,6 +20,14 @@ app). Drive each item with its Feature section when one matches; Evidence must
 include the persist/reload check that file names. IF it is missing, continue
 from `project.md` **Run locally (dev)** as today, and **name** `/configure-repo`
 once so the user can generate the recipe (Decision M) — do not invoke it.
+
+**When another session built the branch.** Your brief may say that a different session built
+the branch and that your result goes back to it, as `/shape --go`'s acceptance from the card
+does. In that case, change no file in the repo: no fix, no test, no commit. Every fix this skill
+or its files would make becomes a finding in your result instead, giving the Example or probe,
+the request sent and what came back. The build session fixes the findings. One such run
+committed six fixes from outside the build. Another left an untracked test file and had its
+edits to `src/` refused.
 
 ## 1. Derive the acceptance checklist from the spec
 

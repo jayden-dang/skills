@@ -19,7 +19,7 @@ What prompted it: a booking API with seven planted defects, run on Sonnet and Ha
 - every run left the shared server's 500 on a non-JSON body, and five never sent one
 - five changed the price rule unasked
 
-With 1.4.0, four of four runs fixed all seven defects, kept the price rule and asked about it. `api.md` no longer asks for tests tagged with requirement IDs, which contradicted the docs-only spine and which no run ever did. Not yet measured: retry, concurrency, migrations, jobs, a project whose convention is 403, and skipping the UI pass when the build's product walk will run. Evidence: `skills/acceptance/validate-feature/TESTS.md`.
+With 1.4.0, four of four runs fixed all seven defects, kept the price rule and asked about it. `api.md` no longer asks for tests tagged with requirement IDs, which contradicted the docs-only spine and which none of the 12 baseline runs did. Not yet measured: retry, concurrency, migrations, jobs, a project whose convention is 403, and skipping the UI pass when the build's product walk will run. Evidence: `skills/acceptance/validate-feature/TESTS.md`.
 
 ### Changed: a milestone close takes one reply (2026-11-16)
 

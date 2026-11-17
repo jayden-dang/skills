@@ -27,8 +27,8 @@ or helper code the branch calls. When the project already answers the same case 
 In eight baseline runs, every one found that any passenger could read and change another's
 booking. Three left it open ("I left it unfixed so you can choose", "I didn't add it without a
 requirement"), and those branches still served Mai's booking to Tuan when the run ended. Every
-run left the `500` on a non-JSON body standing. The runs that saw it in shared server code said
-"It is platform code, so I left it."
+run left the `500` on a non-JSON body standing. The runs that sent one and saw the cause in
+shared server code said "It's outside BOOK and I left it."
 
 **The one exception: the fix would change a documented contract.** That is something named in
 `docs/`, a test that pins a response shape, or a persisted format. Build the option that keeps

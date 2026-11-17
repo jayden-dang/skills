@@ -64,8 +64,7 @@ Repricing on PATCH, which no one asked for, came in 5 of 8; RED-0 also invented 
 **No-ops on this evidence.** T2, T4, T5 and T7 were fixed 8 of 8 with no text asking for them, so
 the candidate probe rows for auth, mass assignment, exposure and partial writes were not
 written. T1 (an error in the log on a 200) went unmeasured: every run found it as `vessel: null`
-against `design.md`. The 403/404 ladder was not written either, because every run that fixed T3
-copied the project's existing 404.
+against `design.md`. The 403/404 ladder (standards doc, then sibling route, then either) was not written, because every run that fixed T3 copied the project's existing 404. `system.md` does carry one sentence, "give the same answer" the project already gives, on the owner's decision of 2026-11-17 to follow project convention. No baseline failure stands behind that sentence.
 
 **GREEN, 1.4.0.** The new file is `system.md`, pointed to from SKILL.md §2. Its contents:
 - one probe, a body that is not JSON
@@ -89,10 +88,10 @@ Haiku: "This changed shared server code (`server.js`, `router.js`, `auth.js`)." 
 repricing: "The design says price is `seats × sailing.price` 'at booking time', so I left it.
 Say if the price should follow the seat count."
 
-**Wording after GREEN.** The counts in `system.md` were raised from the six-run figures that GREEN read to the final eight-run figures. Only the numbers changed: the GREEN runs read the same rule and the same probe. A sentence about the owner returning to a leaking PR was a consequence no run had recorded, so it was replaced with the recorded end state: those branches still served Mai's booking to Tuan.
+**Wording after GREEN.** After GREEN, a quote in `system.md` was moved to the run it came from: Sonnet-3, on the 500. The counts in `system.md` were raised from the six-run figures that GREEN read to the final eight-run figures. Only the numbers changed: the GREEN runs read the same rule and the same probe. A sentence about the owner returning to a leaking PR was a consequence no run had recorded, so it was replaced with the recorded end state: those branches still served Mai's booking to Tuan.
 
 **`api.md` §5.** It asked for tests "tagged with the requirement ID", which contradicts the
-docs-only spine in AGENTS.md §4. 0 of 18 runs tagged a test, so the line was rewritten to "named
+docs-only spine in AGENTS.md §4. None of the 12 baseline runs tagged a test (RED-0's four fixtures and the eight saved RED diffs, grepped for `BOOK-<n>`), so the line was rewritten to "named
 for the domain behavior".
 
 **Not covered:**

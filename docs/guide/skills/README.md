@@ -1,6 +1,6 @@
 # Skill reference
 
-58 skills in eleven buckets (engineering package); every one has its own page.
+57 skills in eleven buckets (engineering package); every one has its own page.
 See also [Start here](../START-HERE.md).
 
 **Invocation** is the thing to check first. Every skill is **model-invocable**: the agent loads it on its own when its description matches the situation, and you can still type it as a slash command. "model, or `/x`" in the table marks the ones that used to be typed only.

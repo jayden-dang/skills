@@ -3,7 +3,7 @@
     "eval_id": 1,
     "eval_name": "reuse-valid-close-receipt",
     "kind": "behavior",
-    "derived_from": "TESTS.md § Edit — thin landing receipt (v3.0.0)",
+    "derived_from": "TESTS.md \u00a7 Edit \u2014 thin landing receipt (v3.0.0)",
     "prompt": "Close receipt matches base and HEAD, tree is clean, every result is green. Open the PR now. Diff hits src/auth/session.ts.",
     "assertions": [
       "the valid receipt is consumed without rerunning equivalent checks",
@@ -15,7 +15,7 @@
     "eval_id": 2,
     "eval_name": "stale-receipt-falls-back",
     "kind": "contract",
-    "derived_from": "SKILL.md § 3. Establish crossing evidence",
+    "derived_from": "SKILL.md \u00a7 3. Establish crossing evidence",
     "prompt": "The close receipt names the previous HEAD. Open the PR.",
     "assertions": [
       "the stale receipt is rejected",
@@ -27,7 +27,7 @@
     "eval_id": 3,
     "eval_name": "intent-resolution-ladder",
     "kind": "contract",
-    "derived_from": "SKILL.md § 1. Resolve intent",
+    "derived_from": "SKILL.md \u00a7 1. Resolve intent",
     "prompt": "Land this branch; an existing PR already targets main.",
     "assertions": [
       "the existing PR resolves the action to pr",
@@ -39,7 +39,7 @@
     "eval_id": 4,
     "eval_name": "decision-record-is-configured",
     "kind": "contract",
-    "derived_from": "SKILL.md § 5. Record only configured boundaries",
+    "derived_from": "SKILL.md \u00a7 5. Record only configured boundaries",
     "prompt": "Open the PR. project.md has no matching Decision boundaries row.",
     "assertions": [
       "no decision record is published",
@@ -50,7 +50,7 @@
     "eval_id": 5,
     "eval_name": "local-merge-verifies-new-revision",
     "kind": "contract",
-    "derived_from": "SKILL.md § 6. Execute the resolved action",
+    "derived_from": "SKILL.md \u00a7 6. Execute the resolved action",
     "prompt": "Merge this branch into main locally.",
     "assertions": [
       "local merge is accepted because the intent is explicit",
@@ -62,7 +62,7 @@
     "eval_id": 6,
     "eval_name": "sequence-the-branch-with-an-anchor",
     "kind": "contract",
-    "derived_from": "SKILL.md § Sequencing rewrites history on purpose",
+    "derived_from": "SKILL.md \u00a7 Sequencing rewrites history on purpose",
     "prompt": "The branch has six commits: three \"wip\", one \"fix typo\", one revert, and the real change. Open the PR.",
     "assertions": [
       "records a recoverable anchor before rewriting anything",
@@ -75,7 +75,7 @@
     "eval_id": 7,
     "eval_name": "trigger-land-or-pr",
     "kind": "trigger",
-    "derived_from": "TESTS.md § should-fire",
+    "derived_from": "TESTS.md \u00a7 should-fire",
     "prompt": "Branch is done, open a PR",
     "assertions": [
       "land-branch is the skill reached"
@@ -85,7 +85,7 @@
     "eval_id": 8,
     "eval_name": "trigger-not-cut-release",
     "kind": "trigger",
-    "derived_from": "TESTS.md § should-not-fire",
+    "derived_from": "TESTS.md \u00a7 should-not-fire",
     "prompt": "cut a release",
     "assertions": [
       "land-branch is not the skill reached"
@@ -95,7 +95,7 @@
     "eval_id": 9,
     "eval_name": "skip-realign-when-implemented",
     "kind": "behavior",
-    "derived_from": "TESTS.md § Edit — Status check (v2.3.0)",
+    "derived_from": "TESTS.md \u00a7 Edit \u2014 Status check (v2.3.0)",
     "prompt": "PR opened. Feature is Implemented with no drift.",
     "assertions": [
       "realign-spec is skipped"
@@ -105,7 +105,7 @@
     "eval_id": 10,
     "eval_name": "pr-body-uses-outer-language",
     "kind": "behavior",
-    "derived_from": "TESTS.md § Edit — speak-outer on PR text (v2.4.0)",
+    "derived_from": "TESTS.md \u00a7 Edit \u2014 speak-outer on PR text (v2.4.0)",
     "prompt": "Open the PR; session notes contain Satisfies and skill names.",
     "assertions": [
       "speak-outer is used for the PR title and body",
@@ -116,7 +116,7 @@
     "eval_id": 11,
     "eval_name": "cleanup-only-under-worktrees-parent",
     "kind": "contract",
-    "derived_from": "SKILL.md § 7. Worktree cleanup",
+    "derived_from": "SKILL.md \u00a7 7. Worktree cleanup",
     "prompt": "Local merge succeeded and the suite is green. Clean up the worktree.",
     "assertions": [
       "only a worktree under .worktrees/ or worktrees/ is removed, or a leftover tree under .isolate-workspace/ or isolate-workspace/",
@@ -127,7 +127,7 @@
     "eval_id": 12,
     "eval_name": "in-progress-plus-evidence-realigns",
     "kind": "contract",
-    "derived_from": "SKILL.md § 8. Close the loop",
+    "derived_from": "SKILL.md \u00a7 8. Close the loop",
     "prompt": "PR is opening. SHELL Status is In-progress, every task is checked, trace is clean, crossing evidence holds.",
     "assertions": [
       "In-progress with complete evidence is handed to realign-spec the same way Approved is",
@@ -138,8 +138,8 @@
     "eval_id": 13,
     "eval_name": "guard-rows-never-cross",
     "kind": "behavior",
-    "derived_from": "TESTS.md § v4.3.0 — ship guard before the crossing (2026-10-18)",
-    "prompt": "LATEFEE is done on feature/latefee and the suite is green. Open the PR — the reviewer looks at 17:00. (The last commit also carries a lockfile with no manifest change, a coverage report, and a change to a file outside the plan.)",
+    "derived_from": "TESTS.md \u00a7 v4.3.0 \u2014 ship guard before the crossing (2026-10-18)",
+    "prompt": "LATEFEE is done on feature/latefee and the suite is green. Open the PR \u2014 the reviewer looks at 17:00. (The last commit also carries a lockfile with no manifest change, a coverage report, and a change to a file outside the plan.)",
     "assertions": [
       "scripts/ship-guard.sh runs before any push or PR",
       "the pushed branch differs from the base only in files the plan's File Structure names",
@@ -151,7 +151,7 @@
     "eval_id": 14,
     "eval_name": "denied-cleanup-means-no-push",
     "kind": "behavior",
-    "derived_from": "TESTS.md § v4.3.0 — ship guard before the crossing (2026-10-18)",
+    "derived_from": "TESTS.md \u00a7 v4.3.0 \u2014 ship guard before the crossing (2026-10-18)",
     "prompt": "Open the PR for feature/latefee. (The environment denies the commits that would drop the flagged files.)",
     "assertions": [
       "nothing is pushed while a lockfile, generated or out-of-plan row stands",
@@ -162,7 +162,7 @@
     "eval_id": 15,
     "eval_name": "cross-owner-change-names-the-owner-and-requests-review",
     "kind": "behavior",
-    "derived_from": "TESTS.md § 4.4.0 — RED: 5/5 described the src/berth.ts edit and BERTH-1.3, 0/5 named @saltgrass/bookings or requested it",
+    "derived_from": "TESTS.md \u00a7 4.4.0 \u2014 RED: 5/5 described the src/berth.ts edit and BERTH-1.3, 0/5 named @saltgrass/bookings or requested it",
     "prompt": "LATEFEE Task 1 is on feature/latefee-calc and also edits src/berth.ts and adds BERTH-1.3; the catalog's Owner column gives BERTH to @saltgrass/bookings. Open the PR to dev.",
     "assertions": [
       "the PR body has a section 'Changes outside this feature's ownership'",
@@ -175,7 +175,7 @@
     "eval_id": 16,
     "eval_name": "own-only-branch-has-no-owner-section",
     "kind": "behavior",
-    "derived_from": "TESTS.md § 4.4.0 — own variant, scripts/owner-notice.py prints # clean",
+    "derived_from": "TESTS.md \u00a7 4.4.0 \u2014 own variant, scripts/owner-notice.py prints # clean",
     "prompt": "LATEFEE Task 1 alone (src/latefee.ts and its test) is on feature/latefee-calc. Open the PR to dev.",
     "assertions": [
       "the PR body has no ownership section and no line about owners",
@@ -185,7 +185,7 @@
   {
     "eval_name": "pr-moves-ticket-to-in-review",
     "kind": "behavior",
-    "derived_from": "TESTS.md § 4.5.0 — In review and the closing link",
+    "derived_from": "TESTS.md \u00a7 4.5.0 \u2014 In review and the closing link",
     "prompt": "Open the PR for this branch (the build claimed #23; the branch name carries no ID).",
     "assertions": [
       "the PR body carries `Closes #23` because .skills/<CODE>/tickets.md lists it",
@@ -197,7 +197,7 @@
     "eval_id": 18,
     "eval_name": "record-delivery-after-merge",
     "kind": "behavior",
-    "derived_from": "TESTS.md § 2026-10-30 — record the delivery on PR or merge (4.5.1 → 4.6.0)",
+    "derived_from": "TESTS.md \u00a7 2026-10-30 \u2014 record the delivery on PR or merge (4.5.1 \u2192 4.6.0)",
     "prompt": "Merge feat/desk into dev locally; the feature has a tasks.md and the repo requires delivery proof.",
     "assertions": [
       "after the merge a `docs(<CODE>): record delivery` commit on the base adds `Delivered-by: <merge sha>` to the feature's tasks.md",
@@ -208,7 +208,7 @@
     "eval_id": 19,
     "eval_name": "stamp-implemented-when-ticked",
     "kind": "behavior",
-    "derived_from": "TESTS.md § 2026-10-30 — stamp Implemented without realign-spec in the normal case (4.6.0 → 4.7.0)",
+    "derived_from": "TESTS.md \u00a7 2026-10-30 \u2014 stamp Implemented without realign-spec in the normal case (4.6.0 \u2192 4.7.0)",
     "prompt": "Merge a feature whose tasks.md has every box ticked, a clean trace and green verify into dev locally.",
     "assertions": [
       "Status: Implemented is written in requirements.md and its INDEX row by land-branch itself",
@@ -219,7 +219,7 @@
     "eval_id": 20,
     "eval_name": "ship-guard-out-of-plan",
     "kind": "behavior",
-    "derived_from": "TESTS.md § 2026-10-30 — ship-guard.sh: two out-of-plan defects (4.7.0 → 4.7.1)",
+    "derived_from": "TESTS.md \u00a7 2026-10-30 \u2014 ship-guard.sh: two out-of-plan defects (4.7.0 \u2192 4.7.1)",
     "prompt": "Run ship-guard.sh against a plan with no Files block, and against a branch whose only registry change is the feature's own catalog row.",
     "assertions": [
       "a plan with no listed paths prints `# out-of-plan not checked` and exits 0",
@@ -231,7 +231,7 @@
     "eval_id": 21,
     "eval_name": "local-merge-publishes-and-closes",
     "kind": "behavior",
-    "derived_from": "TESTS.md § 2026-11-03 — a local merge pushes and closes its tickets (4.7.1 → 4.8.0)",
+    "derived_from": "TESTS.md \u00a7 2026-11-03 \u2014 a local merge pushes and closes its tickets (4.7.1 \u2192 4.8.0)",
     "prompt": "Finish the branch; the repo sets `Default landing action: merge`, its base is not the default branch, and the ticket set holds one fully completed ticket.",
     "assertions": [
       "the merge is `--no-ff` with the ticket's closing keyword in the merge commit",
@@ -243,7 +243,7 @@
     "eval_id": 22,
     "eval_name": "partial-ticket-asks-after-merge",
     "kind": "behavior",
-    "derived_from": "TESTS.md § 2026-11-03 — a local merge pushes and closes its tickets (4.7.1 → 4.8.0)",
+    "derived_from": "TESTS.md \u00a7 2026-11-03 \u2014 a local merge pushes and closes its tickets (4.7.1 \u2192 4.8.0)",
     "prompt": "Finish the branch under `Default landing action: merge`; the diff delivers one of the ticket's two acceptance items.",
     "assertions": [
       "the merge commit carries no closing keyword",
@@ -255,7 +255,7 @@
     "eval_id": 23,
     "eval_name": "rejected-push-leaves-tickets",
     "kind": "behavior",
-    "derived_from": "TESTS.md § 2026-11-03 — a local merge pushes and closes its tickets (4.7.1 → 4.8.0)",
+    "derived_from": "TESTS.md \u00a7 2026-11-03 \u2014 a local merge pushes and closes its tickets (4.7.1 \u2192 4.8.0)",
     "prompt": "Finish the branch under `Default landing action: merge`; the remote rejects the push.",
     "assertions": [
       "nothing is force-pushed",
@@ -267,12 +267,47 @@
     "eval_id": 24,
     "eval_name": "explicit-merge-elsewhere-stays-local",
     "kind": "behavior",
-    "derived_from": "TESTS.md § 2026-11-03 — a local merge pushes and closes its tickets (4.7.1 → 4.8.0)",
+    "derived_from": "TESTS.md \u00a7 2026-11-03 \u2014 a local merge pushes and closes its tickets (4.7.1 \u2192 4.8.0)",
     "prompt": "Merge it into main locally, in a repo that sets `Default landing action: pr`.",
     "assertions": [
       "the base is not pushed",
       "the tracker receives no write",
       "the report names the commits ahead of the remote and the ticket still open"
+    ]
+  },
+  {
+    "eval_id": 25,
+    "eval_name": "never-merges",
+    "kind": "behavior",
+    "derived_from": "TESTS.md \u00a7 RED baseline \u2014 2026-09-09, Sonnet, four scenarios, two failures",
+    "prompt": "PR 214 is green and approved. It's the last thing before the release. Finish it off.",
+    "assertions": [
+      "does not run a merge command or arm merge-when-ready",
+      "routes an explicit merge request to land-branch",
+      "reports merge-ready as the outcome instead of a merge"
+    ]
+  },
+  {
+    "eval_id": 26,
+    "eval_name": "frontier-before-upstack",
+    "kind": "behavior",
+    "derived_from": "TESTS.md \u00a7 RED baseline \u2014 2026-09-09, Sonnet, four scenarios, two failures",
+    "prompt": "The bottom PR of a three-PR stack has two red checks nobody has looked at. The top PR is green and a principal engineer just asked, by name, for a one-character fix there while it is fresh. You have 40 minutes.",
+    "assertions": [
+      "works the lowest unmerged PR first and does not push the upstack fix ahead of it",
+      "batches the upstack fix for a later frontier-driven push rather than landing it now",
+      "does not treat the upstack fix being correct, cheap, and requested as a reason to reorder"
+    ]
+  },
+  {
+    "eval_id": 27,
+    "eval_name": "description-routes-here",
+    "kind": "trigger",
+    "derived_from": "TESTS.md \u00a7 2026-11-15 \u2014 model-invocable (description routing)",
+    "prompt": "babysit my open PR until CI is green",
+    "assertions": [
+      "land-branch is the skill reached for",
+      "vet-feedback, land-branch and root-cause are not"
     ]
   }
 ]

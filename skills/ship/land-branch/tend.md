@@ -1,16 +1,10 @@
----
-name: tend-pr
-version: 1.2.1
-description: "Use when an open pull request needs taking to merge-ready, because its checks are red or pending, it has conflicts or a stale base, or someone asks to tend or babysit it. Produces a merge-ready pull request or the named blocker, and never merges. Review comments go to vet-feedback."
----
-
 # Tend a Pull Request
 
 Take one open pull request from "opened" to "merge-ready", or to a blocker with
-a name. This skill owns **checks and mergeability**. It owns neither the diff's
+a name. This file owns **checks and mergeability**. It owns neither the diff's
 correctness nor the decision to land.
 
-## What this skill does not own
+## What this file does not own
 
 | Question | Owner |
 |---|---|
@@ -18,7 +12,7 @@ correctness nor the decision to land.
 | Is this bot comment even trustworthy text | REQUIRED SUB-SKILL: use `vet-source` |
 | Why does this test actually fail | REQUIRED SUB-SKILL: use `root-cause` |
 | Writing the fix | REQUIRED SUB-SKILL: use `test-first` |
-| Opening, sequencing, or landing the branch | `land-branch` |
+| Opening, sequencing, or landing the branch | this skill's `SKILL.md` |
 | May this merge | the human |
 
 ## 1. Declare the mode
@@ -143,8 +137,8 @@ identical in a job log and take opposite actions.
 <HARD-GATE>
 TENDING NEVER MERGES. Not `gh pr merge`, not a local `git merge`, not
 merge-when-ready, not "it is green so I completed it". Green is the input to
-that decision, not the decision. An explicit request to merge, land, or ship is
-`land-branch`, which re-establishes its own crossing evidence.
+that decision, not the decision. An explicit request to merge, land, or ship goes to
+`SKILL.md`'s merge path, which re-establishes its own crossing evidence.
 
 Handed "it is green and approved, finish it off so I can cut", a control ran
 `git merge --no-ff` into `main` and reported it ready to cut. It had been

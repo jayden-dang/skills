@@ -2,6 +2,19 @@
 
 ## Unreleased
 
+### Changed: `land-branch` tends its pull request to merge-ready; `tend-pr` is part of it (2026-11-17)
+
+The set is now 57 skills. `tend-pr` moved whole into `land-branch` as `tend.md`. After `land-branch` 4.10.0 opens a PR, it tends the PR until it is merge-ready or has a named blocker:
+- It works conflicts first, then review threads, then CI on the head those produced.
+- It classes each red check as a stale base, a flake (one fresh build) or a real failure (`root-cause` and `test-first`).
+- It reads the forge's merge verdict, not the check list.
+
+It still never merges.
+
+The exception is a caller with more branches to land, such as `/go` with tickets still to build. There, `land-branch` returns the URL so a slow CI does not stall the next ticket, and `go` 1.4.0 tends every PR it opened before sending its message. Each row of that message now gives the merge state. An ask about a PR that is already open ("CI is red on #41", "babysit my PR") routes to `land-branch` and goes straight to `tend.md`. `/tend-pr` is gone.
+
+Baseline on Sonnet and Haiku: both opened the PR, read no check, and named `/tend-pr` for later. Haiku's PR sat red on a runner flake. With the change, both read CI and recognised the flake after checking for a stale base. Both got a fresh build, reached green with a `CLEAN` verdict, and merged nothing. Inside `/go` with tickets still to build, Haiku returned the URL without tending. At the end of a `/go`, the old `go` let Haiku send its message over a red PR; the new one tended it to green first. Evidence: `skills/ship/land-branch/TESTS.md`, `skills/execution/go/TESTS.md`; fixture `make-harbourline.sh` with `CI=1 GH=1`, simulated CI in `gh-pr-shim.py`, and scorer `score-tend.py`.
+
 ### Changed: acceptance leaves the browser to the product walk, and changes nothing for a build it did not run (2026-11-17)
 
 `validate-feature` 1.5.0 skips its browser pass when its caller says the build's product walk (`write-dogfood`, then `run-dogfood`) drives the branch's UI next. `build` 1.1.0's Close step 4 now says that whenever step 4b's predicate holds: inside `/go`, or with nobody at the keyboard, on a branch with a browser-rendered file. Acceptance then drives the API and the system probes, and the walk drives the page once. Baseline: both models drove `/book` in a browser with the walk queued behind them. With the change both skipped it, at 11 to 12 tool calls instead of 16 to 17. A standalone `/validate-feature` with no walk queued still drives the UI. If the walk stops before any case gets a verdict, for example at `run-dogfood`'s review gate, step 4b now runs `validate-feature` again on the UI items, so the page is never left undriven. One Haiku close hit exactly that before the fallback existed.

@@ -85,11 +85,21 @@ the skipped step in that PR. One run had its refund worker's
 stopped there with "I'm not doing either without your OK", and two tickets with
 approved plans ended the afternoon with no PR.
 
+## 3b. Tend every pull request this run opened
+
+`land-branch` returned each PR without waiting on its checks, so the next ticket could start.
+Now that every ticket has its PR, REQUIRED SUB-SKILL: use `land-branch` on each PR this run
+opened, as an open PR to take to merge-ready. In a stack, start with the lowest. The operator
+reads the message tomorrow, so a PR still red at that point is a PR nobody tended.
+
+*Done when: every PR this run opened is merge-ready or has a named blocker.*
+
 ## 4. The message
 
 One message, in this order:
 
-1. A table with one row per ready ticket: PR and base, or not eligible and what it lacks.
+1. A table with one row per ready ticket: PR, base and merge state (merge-ready, or its named
+   blocker), or not eligible and what it lacks.
    A row whose PR changed a browser-rendered surface ends with the walk's count from the
    Close sequence: `walked: N pass, M parked`. A row whose PR adds a command a person runs ends with
    `not walked by hand — /write-dogfood`.

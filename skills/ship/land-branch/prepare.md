@@ -306,8 +306,8 @@ one with `gh pr edit <pr> --base <parent-branch>`. A child pointed at the trunk
 shows the parent's commits as its own and makes the diff unreadable, which is
 the failure this ordering prevents.
 
-Nothing here reshapes a stack after the fact: retargeting an **open** chain is
-`tend-pr` territory, and that skill refuses it. Get the bases right at creation.
+Nothing here reshapes a stack after the fact: retargeting an **open** chain falls to
+`tend.md`, and `tend.md` refuses it. Get the bases right at creation.
 
 **A subagent that opens the PR** runs the same preparation — review, comment
 cleanup, PR text — then returns the URL to its parent and stops. It does not

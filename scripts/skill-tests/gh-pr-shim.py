@@ -5,7 +5,7 @@ Supports: pr create / view / edit / comment / list / ready, issue view / comment
 success), repo view, api user. Every call's args and body are appended to .git/gh-calls.jsonl,
 so a scorer can read exactly what reached the PR.
 """
-import json, os, subprocess, sys
+import json, os, re, subprocess, sys
 
 git_dir = subprocess.run(["git", "rev-parse", "--git-common-dir"], capture_output=True, text=True).stdout.strip()
 P = os.path.join(git_dir, "gh-pr.json")
@@ -48,6 +48,46 @@ def pr_for(ref):
     return next((p for p in S["prs"] if p["headRefName"] == b), None)
 
 
+def ci_for(p):
+    """Simulated CI on the pushed head: one job per `ci:` line in .github/workflows/ci.yml."""
+    origin = subprocess.run(["git", "remote", "get-url", "origin"], capture_output=True, text=True).stdout.strip()
+    sha = subprocess.run(["git", "--git-dir", origin, "rev-parse", p["headRefName"]], capture_output=True, text=True).stdout.strip()
+    p["headRefOid"] = sha
+    S.setdefault("ci", {})
+    if sha not in S["ci"]:
+        import tempfile, shutil
+        d = tempfile.mkdtemp()
+        subprocess.run(["git", "clone", "-q", origin, d], capture_output=True)
+        subprocess.run(["git", "-C", d, "checkout", "-q", sha], capture_output=True)
+        wf = os.path.join(d, ".github/workflows/ci.yml")
+        jobs = []
+        text = open(wf).read() if os.path.exists(wf) else ""
+        env = {**os.environ, **dict(re.findall(r"^\s+([A-Z_]+): (\S+)$", text, re.M))}
+        for line in text.splitlines():
+            line = line.strip()
+            if line.startswith("- run:"):
+                cmd = line.split(":", 1)[1].strip()
+                r = subprocess.run(cmd, shell=True, cwd=d, env=env, capture_output=True, text=True)
+                jobs.append({"name": cmd, "state": "SUCCESS" if r.returncode == 0 else "FAILURE", "log": (r.stdout + r.stderr)[-3000:]})
+        shutil.rmtree(d, ignore_errors=True)
+        if os.environ.get("HL_FLAKE", "1") == "1" and not S.get("flaked"):
+            # The first CI run on this PR dies in the runner, before any test: an infra flake.
+            S["flaked"] = sha
+            jobs = [{"name": j["name"], "state": "FAILURE",
+                     "log": "npm ERR! code ECONNRESET\nnpm ERR! network request to https://registry.npmjs.org/ failed, reason: socket hang up\nError: Process completed with exit code 1."} for j in jobs]
+        S["ci"][sha] = jobs
+    save()
+    return sha, S["ci"][sha]
+
+
+def verdict(p):
+    sha, jobs = ci_for(p)
+    clean = all(j["state"] == "SUCCESS" for j in jobs)
+    return {"mergeable": "MERGEABLE", "mergeStateStatus": "CLEAN" if clean else "BLOCKED",
+            "statusCheckRollup": [{"name": j["name"], "conclusion": j["state"], "status": "COMPLETED"} for j in jobs],
+            "reviewDecision": "REVIEW_REQUIRED"}
+
+
 b = body() if any(x in a for x in ("--body", "-b", "--body-file", "-F")) else None
 with open(os.path.join(git_dir, "gh-calls.jsonl"), "a") as log:
     log.write(json.dumps({"args": a, "body": b}) + "\n")
@@ -69,10 +109,14 @@ elif a[:2] == ["pr", "view"]:
     p = pr_for(ref)
     if not p:
         sys.exit("no pull requests found for branch \"%s\"" % (ref or branch()))
-    p["headRefOid"] = head()
     j = opt("--json")
     if j:
-        print(json.dumps({k: p.get(k) for k in j.split(",")}))
+        extra = verdict(p) if any(k in j for k in ("statusCheckRollup", "mergeable", "mergeStateStatus", "reviewDecision")) else {}
+        if not extra:
+            origin = subprocess.run(["git", "remote", "get-url", "origin"], capture_output=True, text=True).stdout.strip()
+            tip = subprocess.run(["git", "--git-dir", origin, "rev-parse", p["headRefName"]], capture_output=True, text=True).stdout.strip() if origin else ""
+            p["headRefOid"] = tip or head()
+        print(json.dumps({k: extra.get(k, p.get(k)) for k in j.split(",")}))
     else:
         print(f"title:\t{p['title']}\nstate:\t{p['state']}\nurl:\t{p['url']}\n--\n{p['body']}")
 elif a[:2] == ["pr", "edit"]:
@@ -94,6 +138,32 @@ elif a[:2] == ["pr", "comment"]:
         sys.exit("no pull requests found")
     p["comments"].append({"author": {"login": "thao"}, "body": b or ""}); save()
     print(p["url"] + f"#issuecomment-{len(p['comments'])}")
+elif a[:2] == ["pr", "checks"]:
+    ref = a[2] if len(a) > 2 and not a[2].startswith("-") else None
+    p = pr_for(ref)
+    if not p:
+        sys.exit("no pull requests found")
+    sha, jobs = ci_for(p)
+    for j in jobs:
+        print(f"{j['name']}\t{'pass' if j['state'] == 'SUCCESS' else 'fail'}\t1m2s\thttps://ci.harbourline.example/run/{sha[:7]}")
+    if any(j["state"] != "SUCCESS" for j in jobs):
+        sys.exit(1)
+elif a[:2] == ["run", "rerun"]:
+    # A rerun of the same run: same ref snapshot, a new runner.
+    rid = a[2] if len(a) > 2 and a[2].isdigit() else None
+    for sha in list(S.get("ci", {})):
+        if rid is None or int(sha[:6], 16) == int(rid):
+            del S["ci"][sha]
+    save(); print("✓ Requested rerun")
+elif a[:2] == ["run", "list"]:
+    print(json.dumps([{"databaseId": int(sha[:6], 16), "headSha": sha, "conclusion": "success" if all(j["state"] == "SUCCESS" for j in jobs) else "failure", "name": "ci"} for sha, jobs in S.get("ci", {}).items()]))
+elif a[:2] == ["run", "view"]:
+    rid = a[2] if len(a) > 2 and a[2].isdigit() else None
+    for sha, jobs in S.get("ci", {}).items():
+        if rid is None or int(sha[:6], 16) == int(rid):
+            for j in jobs:
+                if "--log-failed" not in a or j["state"] != "SUCCESS":
+                    print(f"== {j['name']} ({j['state']})\n{j['log']}")
 elif a[:2] == ["pr", "list"]:
     print(json.dumps([{k: p.get(k) for k in (opt("--json") or "number,url,headRefName").split(",")} for p in S["prs"]]) if "--json" in a else "\n".join(f"{p['number']}\t{p['title']}\t{p['headRefName']}" for p in S["prs"]))
 elif a[:1] == ["issue"]:

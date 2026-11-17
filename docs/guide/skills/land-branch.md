@@ -78,6 +78,18 @@ Push, then create or update the PR from session title/body files. A custom
 decision record is required only when `project.md` configures that boundary.
 The worktree is kept for review iteration.
 
+## Tending the PR to merge-ready (4.10.0, 2026-11-17)
+
+The PR-tending skill is now part of this one, as `tend.md`. After a PR opens, `land-branch` tends it
+until it is merge-ready or has a named blocker. It works in this order: conflicts, then
+review threads, then CI on the head those pushes produced. It classifies each red check as a
+stale base, a flake (one fresh build), or a real failure (`root-cause` and `test-first`), and
+reads the forge's merge verdict rather than the check list. It never merges. The one
+exception is a caller with more branches still to land, such as `/go` with tickets left to
+build. There, `land-branch` returns the URL and the caller tends every PR it opened at the end,
+so one slow CI does not stall the next ticket. Asking about a PR that is already open ("CI is
+red on #41", "babysit my PR") goes straight to `tend.md`.
+
 ## See also
 
 - [Verification layers](../concepts/verification-layers.md) — receipt-bound evidence layers

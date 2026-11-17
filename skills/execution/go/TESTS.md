@@ -1,5 +1,33 @@
 # TESTS.md — go
 
+
+## v1.4.0: the run tends every PR it opened before its message (2026-11-17)
+
+`land-branch` 4.10.0 returns a PR's URL without waiting on its checks when the caller still has
+branches to land. `go` is that caller, so it now tends every PR it opened (§3b) before the
+message, and each row in the message carries the merge state.
+
+**Scenario.** `/go` with one ticket, at the point where `land-branch` has returned PR #101.
+The fixture is harbourline `CI=1 GH=1`: the timezone fault is already fixed, and the first CI read
+on the PR dies with `ECONNRESET`. The prompt says every ticket now has its PR and the run should
+carry on to its end.
+
+**RED, go 1.3.0 with land-branch 4.10.0:**
+- **Haiku** sent the message without tending: "PR #101 … I did not re-run `inspect-change` or
+  `land-branch`… I did not run the tests." `score-tend.py`: the PR was RED on its only head, with
+  no `pr checks` call.
+- **Sonnet** went back through `land-branch` on its own, which now tends, and brought the PR to
+  green.
+
+The step is load-bearing on the weaker model.
+
+**GREEN, go 1.4.0, Haiku.** It tended PR #101 in drive mode, claimed and released, ruled out a
+stale base, pushed an empty commit for a fresh build, and CI went green. The message table has a
+"Merge state" column: "Merge-ready. The forge reports mergeable=MERGEABLE and
+mergeStateStatus=CLEAN".
+
+**Not covered:** several PRs in one run, and a stack.
+
 ## 2026-11-15 — absorbed deliver-issues as mode file(s)
 
 On the owner's word (2026-11-15: simplify the set around idea, shape and go, inside the skill

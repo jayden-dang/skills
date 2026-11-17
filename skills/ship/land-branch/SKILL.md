@@ -1,11 +1,15 @@
 ---
 name: land-branch
-version: 4.9.1
+version: 4.10.0
 description: >
-  Use when a finished feature branch needs integration or disposition —
-  produces a local merge, pull request, kept branch, discard, or block with
-  reviewer-readable commits and pull-request text. Not for reviewing an
-  existing PR (inspect-change) or cutting a version (cut-release).
+  Use when a finished feature branch needs integration or disposition, or an
+  open pull request needs taking to merge-ready because its checks are red or
+  pending, it has conflicts or a stale base, or someone asks to tend or babysit
+  it. Produces a local merge, a pull request tended to merge-ready (never merged
+  by this skill), a kept branch, a discard, or a block with reviewer-readable
+  commits and pull-request text. Not for reviewing an existing PR
+  (inspect-change), review comments (vet-feedback), or cutting a version
+  (cut-release).
 ---
 
 # Finish a Branch
@@ -22,6 +26,10 @@ NEVER DELETE WORK WITHOUT LITERAL CONFIRMATION.
 
 Agent-authored PR title and body remain reviewer truth. There is no package
 approval loop and no `.skills/pr-packages/` tree.
+
+**An open pull request to take to merge-ready.** The ask may be red or pending checks,
+conflicts, a stale base, "tend it" or "babysit it". REQUIRED: read `tend.md` beside this file
+and follow it. Steps 1 to 6 do not run.
 
 ## 1. Resolve intent
 
@@ -118,10 +126,16 @@ process-temp files, never interpolated as shell input; keep the worktree.
 **Open it ready, never as a draft** — omit `--draft`, pass `draft: false` to a
 tool that defaults to draft, and make ready any PR that still opened as one. A
 draft is not a crossing. Post step 3's evidence onto the PR per `prepare.md`
-**Post the verdict**, and move the ticket set per `tickets.md` **After the PR opens**. Then
-report the URL and stop: name `/tend-pr` for the CI
-watch rather than waiting here, which stalls the next branch and burns runs on
-commits a later push restarts.
+**Post the verdict**, and move the ticket set per `tickets.md` **After the PR opens**. Then tend it:
+
+- **Your caller has more branches to land in this run** (`go` with tickets still to build, or
+  a parent that dispatched you as a subagent): report the URL and return. Waiting here stalls
+  the next branch, and the caller tends every PR it opened at the end.
+- **Otherwise:** REQUIRED: read `tend.md` beside this file and run its `drive` mode on this PR
+  until it is merge-ready or has a named blocker. Report that state, not "opened".
+
+Two baseline landings opened the PR, read no check, and ended by naming a separate command for the CI
+watch. One of those PRs sat red on a runner flake that a single fresh build clears.
 
 ### Local merge
 

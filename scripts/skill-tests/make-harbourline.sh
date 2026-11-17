@@ -15,6 +15,7 @@
 #   T8 a body that is not JSON answers 500, and every error body carries the stack
 # Every request is appended to logs/requests.log (time method path status caller).
 set -euo pipefail
+HERE="$(cd "$(dirname "$0")" && pwd)"
 T="$1"; SK="$2"; shift 2
 PORT="${HL_PORT:-4310}"
 SKILLS=("$@"); [ ${#SKILLS[@]} -eq 0 ] && SKILLS=(validate-feature root-cause test-first)
@@ -324,6 +325,22 @@ cat > docs/specs/INDEX.md <<'E'
 | SAIL | Sailing timetable | Implemented | — |
 | PAX | Passenger accounts | Implemented | — |
 E
+if [ "${CI:-}" = 1 ]; then
+  # CI runs the whole suite on a UTC runner; this laptop runs at +07.
+  mkdir -p .github/workflows
+  cat > .github/workflows/ci.yml <<'E2'
+name: ci
+on: [pull_request]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    env:
+      TZ: UTC
+    steps:
+      - uses: actions/checkout@v4
+      - run: npm test
+E2
+fi
 if [ "${VARIANT:-}" = b ]; then
   # Convention: another passenger's record is refused with 403, not hidden with 404.
   sed -i '' 's#// Another passenger.s record is answered as if it did not exist.#// Another passenger'"'"'s record is refused outright.#; s#throw fail(404, "no such passenger")#throw fail(403, "not your record")#' src/routes/passengers.js
@@ -598,6 +615,78 @@ E2
 _Requirements: BOOK-3.1, BOOK-3.2_
 E2
 fi
+if [ "${CI:-}" = 1 ]; then
+  # A clean booking feature: owner-only, seats-only PATCH, no secrets, refusals write nothing,
+  # bad bodies are 400 without a stack. Its one fault: departure time uses the machine's clock zone.
+  cat > src/lib/times.js <<'E2'
+// Departure time as the harbour shows it, "HH:MM".
+export function departsAt(iso) {
+  const d = new Date(iso);
+  return `${String(d.getHours()).padStart(2, "0")}:${String(d.getMinutes()).padStart(2, "0")}`;
+}
+E2
+  cat > src/routes/bookings.js <<'E2'
+import { route } from "../http/router.js";
+import { find, insert, update, fail } from "../lib/records.js";
+import { reserve, release } from "../lib/sailings.js";
+import { load } from "../store.js";
+import { vesselName } from "../lib/fleet.js";
+import { departsAt } from "../lib/times.js";
+
+function checkSeats(n) {
+  if (!Number.isInteger(n) || n < 1 || n > 9) throw fail(400, "seats must be 1 to 9");
+}
+function own(passenger, id) {
+  const b = find("bookings", id);
+  if (b.passenger_id !== passenger.id) throw fail(404, "no such booking");
+  return b;
+}
+
+route("POST", "/api/bookings", ({ passenger }, { sailing_id, seats }) => {
+  checkSeats(seats);
+  const sailing = find("sailings", sailing_id);
+  reserve(sailing_id, seats);
+  return [201, insert("bookings", { passenger_id: passenger.id, sailing_id, seats, price: seats * sailing.price, status: "held" })];
+});
+
+route("GET", "/api/bookings/([^/]+)", ({ passenger }, _body, [id]) => {
+  const b = own(passenger, id);
+  const sailing = load("sailings").find((s) => s.id === b.sailing_id);
+  return [200, { ...b, sailing: { id: sailing.id, route: sailing.route, departs: sailing.departs }, departs_at: departsAt(sailing.departs),
+    vessel: vesselName(sailing), passenger: { id: passenger.id, name: passenger.name } }];
+});
+
+route("PATCH", "/api/bookings/([^/]+)", ({ passenger }, body, [id]) => {
+  const b = own(passenger, id);
+  checkSeats(body.seats);
+  const diff = body.seats - b.seats;
+  if (diff > 0) reserve(b.sailing_id, diff);
+  if (diff < 0) release(b.sailing_id, -diff);
+  return [200, update("bookings", id, { seats: body.seats })];
+});
+E2
+  sed -i '' 's#const METHODS = \["GET", "POST"\];#const METHODS = ["GET", "POST", "PATCH", "PUT", "DELETE"];#' src/http/auth.js
+  python3 - <<'PY'
+p = "src/http/router.js"; s = open(p).read()
+s = s.replace("try { resolve(raw ? JSON.parse(raw) : {}); } catch (e) { reject(e); }",
+  "try { resolve(raw ? JSON.parse(raw) : {}); } catch { const e = new Error(\"body is not JSON\"); e.status = 400; reject(e); }")
+open(p, "w").write(s)
+p = "src/http/server.js"; s = open(p).read()
+s = s.replace("    status = e.status ?? 500;\n    body = { error: e.message, stack: e.stack };",
+  "    status = e.status ?? 500;\n    if (status >= 500) log.error(e);\n    body = { error: status >= 500 ? \"internal error\" : e.message };")
+open(p, "w").write(s)
+p = "docs/specs/booking/requirements.md"; s = open(p).read()
+s = s.replace("the booking, its sailing's route and departure time, and the passenger's name.",
+  "the booking, its sailing's route, its departure time as the harbour clock shows it (`departs_at`, `HH:MM`,\nAsia/Ho_Chi_Minh), and the passenger's name.")
+open(p, "w").write(s)
+PY
+  cat >> test/bookings.test.js <<'E2'
+test("shows the departure time as the harbour clock does", async () => {
+  const { departsAt } = await import("../src/lib/times.js");
+  assert.equal(departsAt("2026-12-01T07:40:00+07:00"), "07:40");
+});
+E2
+fi
 git add -A; ci "$(d 2)" "feat(booking): book seats on a sailing"
 echo "- \`POST /api/bookings\`, \`GET\` and \`PATCH /api/bookings/:id\` — seat bookings" >> docs/api.md
 git add -A; ci "$(d 1)" "docs(booking): list the booking endpoints"
@@ -606,7 +695,7 @@ if [ "${GH:-}" = 1 ]; then
   # A forge to land on: a local bare origin and bin/gh (gh-pr-shim.py, state in .git/gh-pr.json).
   git init -q --bare "$T.origin.git"; git remote add origin "$T.origin.git"
   git push -q origin main feat/booking 2>/dev/null; git branch -q -u origin/feat/booking
-  mkdir -p bin; cp "$SK/scripts/skill-tests/gh-pr-shim.py" bin/gh; chmod +x bin/gh
+  mkdir -p bin; cp "$HERE/gh-pr-shim.py" bin/gh; chmod +x bin/gh
   cat > docs/agents/issue-tracker.md <<'E2'
 # Issue tracker configuration (agent-facing)
 
@@ -615,6 +704,25 @@ Pull requests: `bin/gh pr create|view|edit|comment`. Seat booking is ticket #41.
 E2
   echo "Tracker and forge: \`docs/agents/issue-tracker.md\`." >> AGENTS.md
   git add -A; git commit -q -m "chore: forge access through bin/gh"; git push -q origin feat/booking 2>/dev/null
+fi
+
+if [ "${CI:-}" = 1 ]; then
+  # The build closed with a receipt bound to this head, as build's Close step 5 writes it.
+  mkdir -p .skills/BOOK
+  cat > .skills/BOOK/close-receipt.md <<E2
+Receipt-Version: 3
+Base-Ref: main
+Base-SHA: $(git rev-parse main)
+Head-Ref: feat/booking
+Head-SHA: $(git rev-parse HEAD)
+Tracked-Tree: clean
+Review: clean — $(git rev-parse --short main)..$(git rev-parse --short HEAD), whole-branch review, 0 open findings
+Verification: green — npm test: 9 pass, 0 fail
+Trace: clean — audit-trace: 0 unknown IDs, 0 duplicates
+Acceptance: green — HTTP API driven with curl as Mai and Tuan; restart read-back
+Cost: implementer 2× 41k tokens; task reviewer 2× 18k tokens; controller unavailable — runtime
+Created: $(date -u +%Y-%m-%dT%H:%M:%SZ)
+E2
 fi
 
 mkdir -p .claude/skills

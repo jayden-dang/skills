@@ -100,7 +100,7 @@ check("every SKILL.md eval anchor resolves", not bad, "; ".join(bad[:3]))
 DELETED = ["gate-session", "ask-me-bro", "tour-system", "deepen-codebase",
            "study-change", "teach-build", "teach-pack", "brief-team",
            "vet-flow-guide", "write-flow-guide", "run-flow-guide", "select-sample",
-           "pathfind", "work-the-problem", "zone-mode", "sweep-backlog", "publish-issues", "deliver-issues", "validate-api", "validate-ui", "hold-stage", "show-run-status", "brief-road", "chart-progress", "define-system-doc", "assess-pivot-impact", "draft-ux", "forge-goal", "amend-feature", "bootstrap-repo", "no-comments", "build-in-waves", "build-by-story", "build-inline", "execute-common", "assess-milestone"]
+           "pathfind", "work-the-problem", "zone-mode", "sweep-backlog", "publish-issues", "deliver-issues", "validate-api", "validate-ui", "hold-stage", "show-run-status", "brief-road", "chart-progress", "define-system-doc", "assess-pivot-impact", "draft-ux", "forge-goal", "amend-feature", "bootstrap-repo", "no-comments", "build-in-waves", "build-by-story", "build-inline", "execute-common", "assess-milestone", "tend-pr"]
 dead = subprocess.run(["grep", "-rl", *[a for n in DELETED for a in ("-e", n)],
                        "--include=*.md", "--include=*.json", "--include=*.mdc",
                        "--include=*.sh", "--include=*.py", "."], capture_output=True, text=True).stdout.split()

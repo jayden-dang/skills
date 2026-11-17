@@ -1,6 +1,6 @@
 ---
 name: go
-version: 1.3.0
+version: 1.4.0
 description: Use when the operator sends /go, or asks in other words for every ready ticket on the board, or named tickets, to be built, reviewed and opened as pull requests in one unattended run. Produces a pull request for each ticket and one message at the end for whatever needs the operator.
 ---
 

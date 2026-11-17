@@ -11,7 +11,7 @@ MERGED = {"show-run-status": "board", "chart-progress": "refresh-roadmap-status"
           "bootstrap-repo": "configure-repo", "reflect": "author-skills", "no-comments": "polish-diff", "deliver-issues": "go",
           "amend-feature": "frame-change", "draft-ux": "draft-ui", "validate-api": "validate-feature", "validate-ui": "validate-feature",
           "build-by-story": "build", "build-in-waves": "build", "build-inline": "build",
-          "assess-milestone": "plan-milestones"}
+          "assess-milestone": "plan-milestones", "tend-pr": "land-branch"}
 GONE = {"zone-mode", "sweep-backlog", "publish-issues"}
 KEYS = {
  "a": "board show-run-status refresh-roadmap-status chart-progress brief-road board root-cause plan-milestones show-run-status board frame-change refresh-roadmap-status inspect-change chart-progress understand speak-outer board show-run-status refresh-roadmap-status chart-progress craft-page|NONE|frame-change plan-milestones",

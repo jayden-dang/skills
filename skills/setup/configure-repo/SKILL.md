@@ -1,6 +1,6 @@
 ---
 name: configure-repo
-version: 1.18.1
+version: 2.0.0
 description: "Use when an existing repo is to adopt this skill set, its docs/agents config is missing or incomplete, another skill reports a missing config file, or a new project is to be scaffolded in an empty directory. Produces the docs/agents config files, the seed spec files and the pointer block in the agent instructions; for an empty directory, first a working skeleton with one passing test."
 ---
 
@@ -25,7 +25,7 @@ This step does one thing: determine whether the repo is already configured for t
 
 - `docs/agents/project.md`, `docs/agents/issue-tracker.md`, `docs/agents/triage-labels.md`, `docs/agents/verify.md` — present and filled in, or missing?
 - `## Team` section inside `docs/agents/project.md` — present and filled, or a gap?
-- An `## Agent skills` section in `CLAUDE.md` / `AGENTS.md` (note which of the two files exists)
+- An `## Agent skills` section in `AGENTS.md`, and whether a `CLAUDE.md` or `.claude/CLAUDE.md` exists
 - Seed files the skill set expects: `docs/specs/INDEX.md` (domain router) + `docs/specs/catalog/<domain>.md`, a glossary (`CONTEXT.md` or `CONTEXT-MAP.md`)
 - `.skills/` and `.worktrees/` present in `.gitignore`
 
@@ -135,7 +135,7 @@ Explainer: `land-branch` reads `Default landing action:` when a request does not
 Show the user, before writing anything:
 
 - the `docs/agents/*.md` files' contents (including `verify.md` when Decision M is Yes, and confirmed `## Team` when Decision H was confirmed)
-- the `## Agent skills` block destined for CLAUDE.md/AGENTS.md
+- the `## Agent skills` block destined for `AGENTS.md`, and any `CLAUDE.md` Step 4 item 7 will move into it and delete
 
 Let them edit. **Done when:** the user approves the drafts.
 
@@ -150,13 +150,10 @@ Let them edit. **Done when:** the user approves the drafts.
 4. Fill the **Project posture** section of `docs/agents/project.md` with the confirmed delivery intent and lifecycle stage (decision G), replacing the template placeholders. Write a `- **Compat obligation:** \`<value>\`` line only when decision G confirmed an override; when it left the derivation standing, delete the placeholder line so the derivation applies. (Additive: if the section already carries real values, update only what the user changed.) If decision L confirmed **index-only** or **full-triad**, set `- **Catalog sync:** \`<value>\`` in the same section (additive). If L left unset, write no Catalog sync line.
 5. Fill **`## Team`** from the confirmed Decision H content (roster, ownership notes, optional band override), merging into the template shape from `templates/agents/project.md`. Replace only the Team section's confirmed fields; do not clobber other sections. If the user deferred Team, leave the section as template placeholders or omit until a fill-the-gaps run.
 6. **If the project-docs layer was opted in (decision I):** seed `docs/product/vision.md`, `docs/architecture/INDEX.md`, and `docs/product/guidelines.md` from `templates/product-vision.md`, `templates/architecture-INDEX.md`, and `templates/product-guidelines.md` (additive, per the rule above). If migrating, move the existing engineering rules into `docs/product/guidelines.md` and leave a pointer in `docs/agents/project.md`. If the layer was declined, skip this — write none of these files.
-7. Add the `## Agent skills` block. It lives in exactly **one** canonical file; any second file is a thin pointer, never a copy of the block.
-   - **Neither `CLAUDE.md` nor `AGENTS.md` exists** (the default): make `AGENTS.md` canonical (it holds the block) and write a short `CLAUDE.md` whose entire body points at `AGENTS.md` — so Claude Code finds instructions by its native filename without duplicating them. Do not ask which to create; this pattern serves both.
-   - **Only one exists:** that file is canonical — add or update the block in it. If it is `AGENTS.md` and Claude Code is a target, also add the `CLAUDE.md` pointer. If it is `CLAUDE.md`, leave it canonical — do not demote it to a pointer or create a competing `AGENTS.md`.
-   - **Both exist:** put the block in whichever already carries real agent instructions; make the other a pointer only if it is not already substantive. Never place the block in both.
-   - If an `## Agent skills` section already exists in the canonical file, update it in place — never append a duplicate, never touch surrounding sections.
-
-   The `CLAUDE.md` pointer, when you create one, is seeded verbatim from `templates/claude-md-pointer.md`.
+7. Add the `## Agent skills` block to the root `AGENTS.md`:
+   - **No `AGENTS.md`:** create it.
+   - **A `CLAUDE.md` or `.claude/CLAUDE.md` exists:** move its instructions into `AGENTS.md` — `git mv` it when there is no `AGENTS.md`, otherwise append its content below what `AGENTS.md` already says — then delete it. Lines that only point at or import `AGENTS.md` are dropped, so a file that is nothing but such a pointer is simply deleted.
+   - **An `## Agent skills` section already exists:** update it in place — never append a duplicate, never touch surrounding sections.
 
 The block (include the project-docs bullet only if decision I was Yes) is seeded verbatim from `templates/agent-skills-block.md`.
 

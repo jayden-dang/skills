@@ -342,6 +342,48 @@ into `docs/agents/issue-tracker.md`: 2/2.
 
 The `project.md` template's Task gate line now asks for tests of the changed units and of the dependents that call what changed, plus a compile of every other dependent. Evidence: `test-first/TESTS.md` § v1.2.0 — with the old line in `project.md`, the new test-first text gave mixed results (Sonnet missed a failing `gateways` once), so the template had to move with the skill.
 
+## v2.0.0 — `AGENTS.md` is the only agent-instructions file (2026-11-18)
+
+Owner's ask: drop `CLAUDE.md` entirely; Claude Code now reads `AGENTS.md` natively. Docs
+(code.claude.com/docs/en/memory, fetched 2026-11-18): from v2.1.277 the default
+`claude-md-or-agents-md` loads `AGENTS.md` only when no `CLAUDE.md`, `.claude/CLAUDE.md` or
+`CLAUDE.local.md` sits in the working directory or above — so the pointer 1.x seeded (a markdown
+link, not an `@AGENTS.md` import) *hid* `AGENTS.md` from Claude on current versions. Owner ruled an
+existing substantive `CLAUDE.md` is moved into `AGENTS.md` and deleted, and that the skill text
+carries no load-rule rationale or changelog — it says what to write, not why.
+
+Fixtures (`/tmp`, git repos): `notes-app` (no instructions file), `ledger-svc` (`AGENTS.md` + the 1.x
+pointer; GREEN adds `.claude/agents/reviewer.md` + `.claude/settings.json`), `inventory-api`
+(substantive `CLAUDE.md` only; GREEN adds `.claude/CLAUDE.md`), `billing-web` (GREEN only:
+`AGENTS.md` + a `CLAUDE.md` of `@AGENTS.md` plus a `## Claude Code` rule), `web-shop` (decoys only:
+`AGENTS.md` + `GEMINI.md`, `.cursorrules`, a gitignored `CLAUDE.local.md` naming a 1Password item,
+`.claude/rules/api.md` with `paths:`). Ask: Step 2 pre-answered, drafts pre-approved, perform only
+Step 4 item 7. Scored by `find`/`grep`/`diff` of the fixtures, not by the report. Step 3's showing of
+the move/delete before acting is unmeasured — every run had the drafts pre-approved.
+
+**RED, 1.18.1** (sonnet 1, haiku 1), 3 fixtures: `notes-app` gained a `CLAUDE.md` pointer 2/2;
+`ledger-svc` kept the pointer 2/2 ("`CLAUDE.md` is untouched. It was already a pointer");
+`inventory-api` kept `CLAUDE.md` canonical, no `AGENTS.md` 2/2 ("leave it canonical — do not demote
+it"). 6/6 runs left a `CLAUDE.md`.
+
+**Draft 1** (named `CLAUDE.md` / `.claude/CLAUDE.md`, with the load-rule rationale), 4 fixtures: 8/8
+end with `AGENTS.md` only; `billing-web`'s plan-mode rule carried over and `@AGENTS.md` dropped 2/2.
+Owner struck the rationale ("only while no CLAUDE.md…") as changelog in the skill.
+
+**Draft 2** (no name: "another agent-instructions file at the repo root or in `.claude/`"): the four
+fixtures 8/8, `.claude/agents/` + `settings.json` untouched 2/2 — but `web-shop` 2/2 moved
+`GEMINI.md` and `.cursorrules` into `AGENTS.md` and deleted them; `CLAUDE.local.md` and
+`.claude/rules/` survived only on judgment ("The skill gives no exception for either file"; "Under a
+literal reading of 'or in `.claude/`' it would also move"). A category sweeps other tools' files.
+Owner ruled the name back into the rule — naming what to move is not a rationale.
+
+**GREEN, 2.0.0** (names `CLAUDE.md` / `.claude/CLAUDE.md`, no why), 5 fixtures: 10/10 — every
+`AGENTS.md` holds one `## Agent skills` section, no `CLAUDE.md` / `.claude/CLAUDE.md` remains,
+moved content present (zod, seed.sql, plan-mode lines); `web-shop` decoys and `.claude/agents/` byte
+-identical to the pristine copy 2/2. Meta-test noise not acted on (no failure behind it): where merged
+content sits, demoting a merged H1, both `CLAUDE.md` files present (both merged 2/2), and the
+pre-existing project-docs-bullet / Team-bullet seeding questions.
+
 ---
 
 # Merged from `bootstrap-repo` — now `bootstrap.md` beside this skill

@@ -74,7 +74,7 @@ Every template application obeys one rule, stated in `configure-repo`:
 
 > **Existing files are edited in place, never clobbered.** If a target file already exists, merge your content into it and preserve everything the user wrote.
 
-This applies to `.gitignore` (idempotent line-presence checks) and to `CLAUDE.md` / `AGENTS.md` (the `## Agent skills` block lives in exactly one canonical file; any second file is a thin pointer, never a copy).
+This applies to `.gitignore` (idempotent line-presence checks) and to `AGENTS.md` (an existing `## Agent skills` block is updated in place, never duplicated).
 
 ## See also
 

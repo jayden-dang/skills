@@ -108,7 +108,7 @@ Full skill index: [Skill reference](skills/README.md) · laws: [`AGENTS.md`](../
 3. **`/configure-repo`** — tracker, labels, verify commands, cold-start drive recipe, release steps, team,
    posture, optional Remote environments; writes `docs/agents/*.md`, seeds
    `docs/specs/INDEX.md` / glossary as needed, `## Agent skills` in
-   `AGENTS.md`/`CLAUDE.md`; offers Context7 MCP.
+   `AGENTS.md`; offers Context7 MCP.
    Proves commands are *wired* (content failures on an old repo are listed, not
    blocking). Installs **no** consumer linters/CI by default.
 4. **Optional**

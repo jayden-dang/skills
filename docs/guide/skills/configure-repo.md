@@ -6,7 +6,7 @@
 |---|---|
 | **Bucket** | setup |
 | **Invocation** | model-invoked when its description matches, or `/configure-repo` |
-| **Reads** | `git remote`, `CLAUDE.md` / `AGENTS.md`, existing lockfiles and CI, tracker labels, `docs/agents/` |
+| **Reads** | `git remote`, `AGENTS.md`, any `CLAUDE.md`, existing lockfiles and CI, tracker labels, `docs/agents/` |
 | **Writes** | `docs/agents/project.md`, `docs/agents/issue-tracker.md`, `docs/agents/triage-labels.md`, `docs/agents/verify.md` (Decision M), seed spec files, the `## Agent skills` block |
 | **Calls** | the discipline of [`prove-claim`](prove-claim.md) (Step 6 gate) |
 | **Called by** | nothing yet — it fires on what the user asks; [`configure-repo`](configure-repo.md) redirects the user here when a directory is not greenfield |
@@ -23,7 +23,7 @@ It is a conversation, not a script: explore, present what you found, decide one 
 
 ### 1. Explore
 
-Before asking anything, learn the repo's starting state: `git remote -v` (GitHub, GitLab, or none), whether a Linear MCP server is connected or `LINEAR_API_KEY` is set, which of `CLAUDE.md` / `AGENTS.md` exists and whether either already carries an `## Agent skills` section, whether `docs/agents/` has run here before, the spec and glossary directories, the package manager and toolchain, the test runners and CI, and existing tracker labels. Done when a short findings summary is presented — what exists, what is missing, what can be pre-filled.
+Before asking anything, learn the repo's starting state: `git remote -v` (GitHub, GitLab, or none), whether a Linear MCP server is connected or `LINEAR_API_KEY` is set, whether `AGENTS.md` already carries an `## Agent skills` section and whether a `CLAUDE.md` or `.claude/CLAUDE.md` exists, whether `docs/agents/` has run here before, the spec and glossary directories, the package manager and toolchain, the test runners and CI, and existing tracker labels. Done when a short findings summary is presented — what exists, what is missing, what can be pre-filled.
 
 ### 2. Decide, one section at a time
 
@@ -64,13 +64,13 @@ Fourteen decisions (A–N), walked strictly one at a time: a two-or-three-senten
 
 ### 3. Draft and confirm
 
-Before writing anything, show the user the three `docs/agents/*.md` files' contents and the `## Agent skills` block destined for `CLAUDE.md` / `AGENTS.md`, and let them edit. Done when the drafts are approved.
+Before writing anything, show the user the three `docs/agents/*.md` files' contents and the `## Agent skills` block destined for `AGENTS.md`, plus any `CLAUDE.md` the write step will move into it and delete, and let them edit. Done when the drafts are approved.
 
 ### 4. Write
 
 **The additive rule: existing files are edited in place, never clobbered** — if a target already exists, content is merged and everything the user wrote is preserved. The step writes `docs/agents/project.md`, `docs/agents/issue-tracker.md`, and `docs/agents/triage-labels.md` from the matching `templates/agents/*` seeds, keeping only the chosen tracker's operations section and recording the PR-surface answer; creates `docs/specs/INDEX.md` if missing; and creates the glossary (`CONTEXT.md` or `CONTEXT-MAP.md`) if missing.
 
-The `## Agent skills` block lives in exactly **one** canonical file; any second file is a thin pointer, never a copy. When neither `CLAUDE.md` nor `AGENTS.md` exists (the default), `AGENTS.md` becomes canonical and a short `CLAUDE.md` points at it. When only one exists it is canonical. When both exist the block goes in whichever already carries real agent instructions, and never in both; an existing `## Agent skills` section is updated in place, never duplicated. Finally the step git-ignores `.skills/` (the `build` (wave mode) ledger and scan digests) and `.worktrees/` idempotently by line-presence check. Done when all files are written, both dirs are ignored, and `git status` shows only expected changes.
+The `## Agent skills` block goes into the root `AGENTS.md`, created if missing. A `CLAUDE.md` or `.claude/CLAUDE.md` has its instructions moved into `AGENTS.md` (`git mv` when there is no `AGENTS.md`, appended otherwise, pointer lines dropped) and is then deleted. An existing `## Agent skills` section is updated in place, never duplicated. Finally the step git-ignores `.skills/` (the `build` (wave mode) ledger and scan digests) and `.worktrees/` idempotently by line-presence check. Done when all files are written, both dirs are ignored, and `git status` shows only expected changes.
 
 ### 5. Offer Context7 MCP
 
@@ -100,11 +100,11 @@ Tell the user setup is complete, which skills now read the config, that the prov
 
 Adopting the set into an existing TypeScript + Vitest library with a GitHub remote and no prior `docs/agents/`.
 
-**Explore.** `git remote -v` shows a GitHub origin; no Linear signal. `AGENTS.md` is absent, `CLAUDE.md` absent. `pnpm-lock.yaml` and a `package.json` with `test`, `lint`, `typecheck` scripts. A `.github/workflows/ci.yml` exists. `gh label list` returns the default GitHub label set.
+**Explore.** `git remote -v` shows a GitHub origin; no Linear signal. No `AGENTS.md` or other agent-instructions file. `pnpm-lock.yaml` and a `package.json` with `test`, `lint`, `typecheck` scripts. A `.github/workflows/ci.yml` exists. `gh label list` returns the default GitHub label set.
 
 **Decide.** A is **github**; external PRs are a request surface, so `triage` will pull them in. B maps the state roles to new labels (offered for creation with consent) and `bug`/`enhancement` to the existing GitHub defaults. C confirms `pnpm exec tsc -b`, `pnpm lint`, `pnpm test`, no e2e, single-file pattern `pnpm exec vitest run <path>`. D records a single Vitest layer using `annotate('CODE-N.M', 'requirement')`. E is an empty cut-release list — a library with no bundling. F is single-context `CONTEXT.md`.
 
-**Write.** The three `docs/agents/*.md` files land, the issue-tracker file keeps only the github section, `AGENTS.md` is created canonical with the `## Agent skills` block and a thin `CLAUDE.md` pointer, and `.skills/` and `.worktrees/` are added to `.gitignore`. Nothing is copied into the repo but markdown config.
+**Write.** The three `docs/agents/*.md` files land, the issue-tracker file keeps only the github section, `AGENTS.md` is created with the `## Agent skills` block, and `.skills/` and `.worktrees/` are added to `.gitignore`. Nothing is copied into the repo but markdown config.
 
 **Opt-in.** The user accepts Context7 MCP; the choice is recorded in `docs/agents/project.md`.
 

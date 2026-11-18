@@ -6,7 +6,7 @@
 |---|---|
 | **Bucket** | review |
 | **Invocation** | model-invocable (the agent calls it on its own) |
-| **Reads** | the diff `git diff <base>...HEAD`, commit list, `docs/specs/INDEX.md`, a feature's `requirements.md`, CLAUDE.md, lint/formatter configs, CONTRIBUTING docs, `CONTEXT.md`, `docs/agents/project.md`, `standards-baseline.md` (beside the skill) |
+| **Reads** | the diff `git diff <base>...HEAD`, commit list, `docs/specs/INDEX.md`, a feature's `requirements.md`, `AGENTS.md`, lint/formatter configs, CONTRIBUTING docs, `CONTEXT.md`, `docs/agents/project.md`, `standards-baseline.md` (beside the skill) |
 | **Writes** | nothing — the review is read-only; it produces a report, not commits |
 | **Calls** | map-features reverse runner **read-only** on the pinned range (step 1b); **names** [`/map-features`](map-features.md) when pending OBS need dispose; two READ-ONLY subagents (Standards, Spec) dispatched in parallel; [`load-subgraph`](load-subgraph.md) for the duplication / neighbor check; [`inspect-change`](inspect-change.md) before the Spec walk |
 | **Called by** | [`build`](build.md) (wave mode) (final whole-branch review), or the user asking to review work since some ref |
@@ -46,7 +46,7 @@ If the user confirms no spec exists, the Spec axis is skipped and the final repo
 
 ### 3. Gather the standards sources
 
-Collect whatever documents how code here should be written: CLAUDE.md, lint and formatter configs, CONTRIBUTING-style docs, plus `CONTEXT.md` for the repo's canonical vocabulary. If `docs/agents/project.md` is missing, note it, suggest running [`configure-repo`](configure-repo.md), and proceed with what exists.
+Collect whatever documents how code here should be written: `AGENTS.md`, lint and formatter configs, CONTRIBUTING-style docs, plus `CONTEXT.md` for the repo's canonical vocabulary. If `docs/agents/project.md` is missing, note it, suggest running [`configure-repo`](configure-repo.md), and proceed with what exists.
 
 On top of the repo's own documents, the Standards axis always carries `standards-baseline.md` (beside the skill). Two rules bind the baseline: **a documented repo standard always overrides it**, and **every baseline hit is a labeled judgment call, never a hard violation**. Skip anything tooling already enforces — a reviewer repeating the linter is noise. *Done when the source list and the baseline path are in hand.*
 
@@ -111,7 +111,7 @@ The Standards subagent walks `standards-baseline.md` and checks the diff against
 
 ## Worked example
 
-Reviewing a branch since `main`. Step 1 resolves the base and the diff is non-empty. Step 2 finds `Implements: BILLING-2.3` trailers, which `docs/specs/INDEX.md` maps to `docs/specs/2026-06-01-billing/requirements.md`. Step 3 gathers CLAUDE.md and the lint config, adds `standards-baseline.md`, and drops the formatter's own rules since tooling enforces them. Step 3a runs `load-subgraph` on the changed paths and surfaces neighbor `PRICING` with OWNS coverage. Both subagents run in one message; the aggregate comes back under separate headings, unmerged:
+Reviewing a branch since `main`. Step 1 resolves the base and the diff is non-empty. Step 2 finds `Implements: BILLING-2.3` trailers, which `docs/specs/INDEX.md` maps to `docs/specs/2026-06-01-billing/requirements.md`. Step 3 gathers `AGENTS.md` and the lint config, adds `standards-baseline.md`, and drops the formatter's own rules since tooling enforces them. Step 3a runs `load-subgraph` on the changed paths and surfaces neighbor `PRICING` with OWNS coverage. Both subagents run in one message; the aggregate comes back under separate headings, unmerged:
 
 ```
 ## Standards

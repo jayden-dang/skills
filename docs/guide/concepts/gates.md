@@ -100,7 +100,7 @@ A test that survives the revert is testing nothing.
 
 The gates are not the top of the hierarchy.
 
-> The user's explicit instructions (including CLAUDE.md) override skills; skills override your defaults.
+> The user's explicit instructions (including `AGENTS.md`) override skills; skills override your defaults.
 
 A skill's workflow is skipped only when the user has explicitly said to skip it. The gates constrain the agent, not the human.
 

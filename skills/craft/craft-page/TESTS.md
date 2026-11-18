@@ -199,3 +199,14 @@ No real failure stands behind "Look before you hand it over", and with a
 are removed; the text is back to 1.1.4. Narrow shots for any future baseline:
 `Emulation.setDeviceMetricsOverride` over CDP (as `inspect-ui` already
 prescribes), never `--window-size` below 500.
+
+
+## v1.3.2 — standards source named `AGENTS.md` (2026-11-18)
+
+Wording only. `configure-repo` 2.0.0 makes `AGENTS.md` the only agent-instructions file and moves any
+`CLAUDE.md` into it, so this skill's source list named a file adopting repos no longer have.
+RED, 1.3.1 (sonnet 1, haiku 1), fixture `shop-ui`: `AGENTS.md` with code and design rules, no
+`CLAUDE.md`, a `promo` branch breaking three of them. 2/2 used `AGENTS.md` anyway, found by listing
+the repo ("It is the repo's convention doc and stands in for `CLAUDE.md`"; "neither skill names
+AGENTS.md … I found it by listing the repo"). No behavior failure, so no new rule and no eval: the
+stale name is replaced, nothing added.

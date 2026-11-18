@@ -6,7 +6,7 @@
 |---|---|
 | **Bucket** | craft |
 | **Invocation** | model-invocable (the agent calls it on its own) |
-| **Reads** | the design system already in the repo — `CLAUDE.md`, `docs/agents/*.md`, a tokens or theme file, existing component styles |
+| **Reads** | the design system already in the repo — `AGENTS.md`, `docs/agents/*.md`, a tokens or theme file, existing component styles |
 | **Writes** | a three-slot design plan (color / type / layout) before any markup, then the page derived from it |
 | **Called by** | [`scan-architecture`](scan-architecture.md) (required, before the architecture report's markup; sketch is figure-gated `before/after structure`), [`understand`](understand.md) (**required** for the Map figure and page design), [`write-dogfood`](write-dogfood.md) (**optional** page craft only — default is the checked-in shell) |
 

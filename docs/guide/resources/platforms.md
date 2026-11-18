@@ -142,8 +142,7 @@ hook.
 
 ## Any other harness
 
-If the harness can load a repo-root convention file (`AGENTS.md`, `CLAUDE.md`,
-or similar), point it there. The skills and templates work unchanged.
+If the harness can load a repo-root convention file (`AGENTS.md` or similar), point it there. The skills and templates work unchanged.
 
 ## What is not portable
 - **Subagent dispatch** in `build` (wave mode) assumes a harness that can spawn

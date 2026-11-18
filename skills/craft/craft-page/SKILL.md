@@ -1,6 +1,6 @@
 ---
 name: craft-page
-version: 1.3.1
+version: 1.3.2
 description: "Use before the first line of markup for any HTML a human will look at — a report, a dashboard, a guide, a landing page, a standalone .html — or when a figure, architecture diagram, sequence or flowchart must be drawn inside it, or a page came out looking generic. Produces a written design plan and a self-contained, theme-aware page derived from it, with inline SVG figures from the diagram recipe."
 ---
 
@@ -28,7 +28,7 @@ identity sometimes is. *Done when: the treatment is named out loud.*
 
 Precedence is fixed: **the user's own words, then the project's existing system,
 then your choices.** Before inventing anything, look for a design system already
-in the repo — an Approved `docs/standards/design-tokens.md`, `CLAUDE.md`,
+in the repo — an Approved `docs/standards/design-tokens.md`, `AGENTS.md`,
 `docs/agents/*.md`, a tokens or theme file, existing component styles. When one exists, apply it; everything below fills its gaps and
 never overrides it.
 

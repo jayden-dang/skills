@@ -492,3 +492,14 @@ wrong cut. The replacement iron law is the one that bound.
 
 SF1–SF3 → `hold-stage`. SN1 `inspect-change`, SN2 `speak-outer`,
 SN3 `prove-claim`, SN4 `specify-behavior`, SN5 `load-subgraph`.
+
+
+## v1.12.1 — standards source named `AGENTS.md` (2026-11-18)
+
+Wording only. `configure-repo` 2.0.0 makes `AGENTS.md` the only agent-instructions file and moves any
+`CLAUDE.md` into it, so this skill's source list named a file adopting repos no longer have.
+RED, 1.12.0 (sonnet 1, haiku 1), fixture `shop-ui`: `AGENTS.md` with code and design rules, no
+`CLAUDE.md`, a `promo` branch breaking three of them. 2/2 used `AGENTS.md` anyway, found by listing
+the repo ("It is the repo's convention doc and stands in for `CLAUDE.md`"; "neither skill names
+AGENTS.md … I found it by listing the repo"). No behavior failure, so no new rule and no eval: the
+stale name is replaced, nothing added.

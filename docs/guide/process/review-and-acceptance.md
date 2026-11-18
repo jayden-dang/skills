@@ -27,7 +27,7 @@ At aggregation time this is enforced rather than merely suggested. The reports a
 
 **Locate the spec**, in order: requirement-ID trailers in the commits (`Implements:`, `Guards:`), whose feature code maps to a spec folder via `docs/specs/INDEX.md`; then a `requirements.md` matching the branch or feature name; then a caller-supplied path; then ask. An explicit "no spec exists" means the Spec axis is skipped and the report says so.
 
-**Gather standards sources.** Whatever documents how code here should be written — `CLAUDE.md`, lint and formatter configs, CONTRIBUTING-style docs — plus `CONTEXT.md` for the repo's canonical vocabulary, plus `standards-baseline.md`: twelve smells that apply even in a repo that documents nothing.
+**Gather standards sources.** Whatever documents how code here should be written — `AGENTS.md`, lint and formatter configs, CONTRIBUTING-style docs — plus `CONTEXT.md` for the repo's canonical vocabulary, plus `standards-baseline.md`: twelve smells that apply even in a repo that documents nothing.
 
 Two rules bind the baseline. **A documented repo standard always overrides it**, and **every baseline hit is a labeled judgment call**, never a hard violation. And: skip anything tooling already enforces. A reviewer repeating the linter is noise.
 

@@ -52,7 +52,21 @@ pane, which the scorer dismissed.
   rebuilds the screen.
 - Post-go edits to the brief were named on the report as the agent's, not the owner's.
 
-Not covered: Haiku as work or interpret; `--go` through 6b to a PR; a native app; a second amendment round.
+Checked from the tree, not the report:
+- At the lock commit a198faa, `npm test` gives 11/11.
+- A production build has 0 hits for the fake's own error strings. The `import.meta.env.DEV` branch was
+  tree-shaken out.
+- The receipt ran with `draft-ui` required and did not list it as missing. It listed clarify-decisions and
+  load-subgraph.
+- `git diff a198faa..HEAD -- src test` is empty, so no kept code or lock-test assertion moved after the go.
+
+**Open finding.** After the go, `work` edited the locked brief and `design.md`. It changed what the screen
+does after a 409 (re-read the counts instead of restoring), on its own authority, and named it on the report.
+No code moved yet, but the build would carry a screen change the operator never clicked. Send post-go screen
+changes back through the UI stop: this run is the RED for that rule.
+
+Not covered: Haiku as work or interpret; `--go` through 6b to a PR; a native app; a second amendment round;
+the should-not-fire cards (`UI: none`, a backend ticket with no `UI:` line, a card naming `UI brief:`).
 
 
 

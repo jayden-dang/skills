@@ -29,8 +29,8 @@ markup, color, or component: the look is settled, and a take that needs a
 component the repo does not have is out of scope — say so and build a
 different take instead.
 
-Serve them the way `draft-ui` §2 serves variants: one param, one floating
-switcher, real data, real components. Latency is part of the take, not an
+Serve them the way `draft-ui` §2 serves variants: in the project's own UI
+stack, one switch, one switcher, real data, real components. Latency is part of the take, not an
 accident of it — simulate the call with a named delay constant and give the
 failure branch a hook you can flip, both in one place so both can be deleted
 in one move.

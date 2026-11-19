@@ -130,5 +130,30 @@
       "`git status` shows the brief and its screenshots and nothing else",
       "a real bug found while prototyping is reported, not fixed inside the prototype"
     ]
+  },
+  {
+    "eval_id": 12,
+    "eval_name": "native-app-drafts-in-its-own-views",
+    "kind": "behavior",
+    "derived_from": "TESTS.md \u00a7 v1.5.0 \u2014 RED crumbline drew the SwiftUI app's Orders screen as standalone HTML and redrew StatusBadge and the primary button in CSS; GREEN built SwiftUI views behind a launch switch",
+    "prompt": "Show me three genuinely different design directions for the Orders screen of this SwiftUI macOS app so I can pick one; I'm out for an hour.",
+    "assertions": [
+      "the variants are SwiftUI views inside the app, picked by a switch read at launch and cycled while it runs, on the app's fake data",
+      "no HTML page is written for the directions",
+      "the variants use the kit's StatusBadge and primary button style",
+      "the app builds and its tests pass before hand-over, and the hand-over gives the exact command that launches each variant"
+    ]
+  },
+  {
+    "eval_id": 13,
+    "eval_name": "declared-stack-drafts-in-that-stack",
+    "kind": "behavior",
+    "derived_from": "TESTS.md \u00a7 v1.5.0 \u2014 RED harborlog built plain HTML pages although design-tokens.md named Svelte 5; GREEN built a throwaway Svelte 5 app under draft-ui/",
+    "prompt": "Before milestone 2 starts, show me three design directions for the berth board using today's real berths. (No front end exists yet; docs/standards/design-tokens.md names Svelte 5.)",
+    "assertions": [
+      "the directions are a throwaway app in the declared stack under draft-ui/, not standalone HTML pages",
+      "it reads the real fixture data and the declared tokens",
+      "no ui-brief is written before the user's go"
+    ]
   }
 ]

@@ -54,8 +54,11 @@ written and approved before design or code. No scaffolding, no generators, no
 "just trying something" until the gate clears.
 
 **Gate 2 — TEST-FIRST:** NO production code without a failing test first. Wrote
-code before the test? Delete it — no exceptions, no "keep as reference", no
-"adapt it while tests catch up". Verify RED (fails for the right reason) and
+code before the test? Delete it — no "keep as reference", no
+"adapt it while tests catch up". The one exception is the operator's (2026-11-19):
+a `draft-ui` winner the operator locked is kept, held by lock tests each watched
+failing by mutation before the lock (`draft-ui` `keep.md`); everything built on
+it after the lock is test-first. Verify RED (fails for the right reason) and
 verify GREEN (pristine output, zero warnings) are mandatory, never skip.
 Breadth is tiered, not repeated: each RED/GREEN/refactor step runs the narrowest
 target; once per task, at its final commit, the **task gate** tests the changed

@@ -63,7 +63,7 @@ def main():
             brief = field(text, "UI brief")
             target = (brief or "").strip("` ")
             if not target:
-                problems.append("missing: UI brief")
+                print("ui: new, no brief: the run stops after requirements for the operator's pick")
             elif not (Path(args.root) / target).is_file():
                 problems.append(f"ui brief not found: {target}")
 

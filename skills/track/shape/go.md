@@ -17,7 +17,8 @@ ran. Its demo was 15 seconds of stitched screenshots. Its ticket read `shaping` 
 
 ## Steps
 
-10. **Stop or approve.** A charter hard stop or an Ask me fork ended the work → run `auto.md` steps 10
+10. **Stop or approve.** `--go` does not skip `auto.md` step 6b: the screen still waits for the operator's
+    pick. A charter hard stop or an Ask me fork ended the work → run `auto.md` steps 10
     and 11 as written, and say that `--go` stopped at the sheet and why. The plan's size never stops the
     run: count its tasks (`grep -c '^### Task' tasks.md`) and put the count on the sheet's title block
     and in the PR body, so the operator sees it. A 29-task plan on klynt built through to Implemented;

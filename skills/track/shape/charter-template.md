@@ -27,7 +27,23 @@ sheet's Needs you and the PR's decision list.
 ## Ask me
 {the card's Ask me line, or "None stated"}
 A fork of one of these kinds is the operator's: put it to `{slug}-interpret` as usual, build nothing on it, and
-name it in the report. The conductor stops at the sheet.
+name it in the report. The conductor stops at the sheet. A fork about how a screen looks or behaves goes to
+`## The UI stop` instead, when this charter has one.
+
+## The UI stop
+{keep when the card's UI line is not `none` and it names no `UI brief:`; otherwise delete this section}
+The screen is the operator's, and they pick it in the running app. Once `{slug}-interpret` has approved
+`requirements.md`, run `draft-ui` in `{WT}` before `design-solution`. Use variants in the app's own stack, on a
+fake behind its client, and look at every variant. Leave the app running. Write `{RUN}/ui-pick.md` with:
+- how to open each variant (its URL or launch command);
+- a one-line pitch and the capture path for each;
+- your recommendation and its reason.
+
+Then end your turn. `{slug}-interpret` may review the variants' code, but it never picks one or says go.
+The operator's replies arrive from `{conductor}` as `{RUN}/ui-reply.md`. Apply what they change, show the
+variants again, rewrite `ui-pick.md`, and wait again. On their explicit go, lock as `draft-ui` says, keeping
+the winner on this branch. Then run `design-solution`, which lifts the brief and its `## Contract`, and
+`plan-tasks`, whose tasks finish the kept code.
 
 ## What is evidence, not decided (Weigh)
 Research notes, and anything either session derives.
@@ -48,7 +64,8 @@ the operator's own choice.
 
 ## Gates in this run
 Where a skill stops for the user, `{slug}-interpret`'s `approve` on the file on disk opens the next step:
-the close package, each story's one-demoable-act check, requirements, design and tasks. Every file stays
+the close package, each story's one-demoable-act check, requirements, design and tasks. `draft-ui`'s pick
+and go are not on that list: they are the operator's, through `## The UI stop`. Every file stays
 `Status: Draft`, and `plan-tasks` does not publish or offer routes in this run. Evidence rules stay in force:
 a claim about the code needs the file opened.
 

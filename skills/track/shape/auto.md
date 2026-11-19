@@ -18,7 +18,9 @@ AGENTS REVIEW. ONLY THE OPERATOR APPROVES.
 EVERY SPEC FILE STAYS Status: Draft UNTIL THE OPERATOR HAS ANSWERED THE SHEET, OR TYPED --go.
 ```
 
-`--auto` replaces every stop before the sheet, and the sheet is one stop, on a closed spec. Without this file, one run on
+`--auto` replaces every stop before the sheet but one, and the sheet is one stop, on a closed spec. The one
+is the screen: when the charter keeps `## The UI stop`, the operator picks in the running app after
+requirements and before any design (step 6b). Without this file, one run on
 `--auto` stopped at requirements ("`--auto` doesn't waive that per-story yes") and another skipped
 the interview outright. An earlier run stamped `Approved` on three files its operator had never
 read, so the word meant nothing when they opened them.
@@ -60,6 +62,8 @@ read, so the word meant nothing when they opened them.
    `CONTEXT.md`, `docs/adr/`; every `close-package.md` under `.skills/` naming that `ROAD-N`; the card's Outcome,
    Examples, Must keep, Off limits and Decided, each line a Lock. Its Delegated and Ask me lines fill the
    charter's sections of those names.
+   Keep the charter's `## The UI stop` when the card's `UI:` line is anything but `none` (a missing line reads
+   `reuse`) and the card names no `UI brief:`; otherwise delete it.
    *Done when: no `{slot}` remains and each Lock carries `file:line`.*
 3. **Workspace.** `git worktree add .worktrees/<slug> -b feat/<slug> <Default PR base>`. `WT` = its absolute path.
 4. **Keep the machine awake.** Where `caffeinate` exists, start `caffeinate -i -t 21600` in the
@@ -77,6 +81,7 @@ read, so the word meant nothing when they opened them.
    ```sh
    while :; do
      [ -f RUN/report.md ] && { echo REPORT; exit 0; }
+     [ -f RUN/ui-pick.md ] && { [ ! -f RUN/ui-reply.md ] || [ RUN/ui-pick.md -nt RUN/ui-reply.md ]; } && { echo UI; exit 0; }
      tmux has-session -t <slug> 2>/dev/null || { echo GONE; exit 1; }
      [ -z "$(find RUN WT/docs/specs WT/.skills -type f -mmin -10 2>/dev/null | head -1)" ] && echo STALL
      sleep 300
@@ -87,6 +92,16 @@ read, so the word meant nothing when they opened them.
    waiting on the other → `SendMessage` to the stuck peer: what stopped, continue under the charter.
    A dialog in a pane → stop and tell the operator. Each peer gets 3 wakes; the 4th `STALL` or a `GONE`
    ends the run at step 9 with what exists. Two of two silent stops in one run never recovered alone.
+   On `UI`, run step 6b.
+6b. **The UI pick.** `work` has the variants running and `RUN/ui-pick.md` written. Open each variant for the
+   operator: `open <url>` for a page, the launch command for a native app. Comment on the ticket that the screen
+   waits on them. Tell them in five lines at most: what is open, one line per variant, the recommendation, and
+   that plain words pick or amend and `go` locks it. End your turn. Their reply → write it verbatim to
+   `RUN/ui-reply.md`, send `work` its path, and re-arm the watch. Only the operator's own message picks or
+   locks: `interpret`, the advisor and you never do. In one run the card's Ask me named the screen; `work`
+   skipped `draft-ui` ("the screen is the operator's"), `interpret` picked a page as a Weigh value, and the
+   operator's only view of it was the sheet's text, with two tasks "gated until you confirm the screen".
+   *Done when: the operator said go on a variant, and `ui-reply.md` holds their words.*
 7. **Receipt and audit**, when `RUN/report.md` exists. Run, from `WT`:
 
    ```sh
@@ -94,6 +109,7 @@ read, so the word meant nothing when they opened them.
      --require frame-change,clarify-decisions,load-subgraph,specify-behavior,design-solution,plan-tasks --min-subagents 1
    ```
 
+   With `## The UI stop` kept, add `draft-ui` to `--require`.
    Exit 1 → send `work` the `missing:` line once: run them now against the current files, say what
    changed, and rewrite the report. Still missing → it goes on the sheet. The session's own report is
    not evidence: one listed two skipped steps, and the transcript showed a third.
@@ -145,6 +161,7 @@ read, so the word meant nothing when they opened them.
 | "I will just write the spec here, it is faster" | Then nothing independent read it. Work and interpret are separate sessions so that one can catch the other |
 | "The report says everything ran" | Run the receipt |
 | "The operator should see this finding and choose" | They did not. 32 choices went untouched. Send it to `work`; the sheet shows what was done about it |
+| "The screen is the operator's, so skip `draft-ui` and put the pick on the sheet" | The sheet is text. They pick in the running app, before design, at step 6b |
 | "The advisor says cut it, so it is cut" | A Lock-required item stays and gets one line on the sheet. Everything else goes through `work` and the fork order |
 
 ## Red flags
@@ -158,3 +175,4 @@ read, so the word meant nothing when they opened them.
 - A radio button, checkbox or copy box on the sheet
 - `LANG` anywhere in the charter or a peer's prompt
 - A film treated as approval, or a film when the command had no `--video`
+- A UI pick or go from `interpret`, the advisor or the conductor, or `design.md` written before the operator's go on a kept `## The UI stop`

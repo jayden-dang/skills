@@ -1,5 +1,59 @@
 # TESTS.md — shape
 
+## 1.16.0 — the UI stop: the operator picks in the running app before design (2026-11-19, Sonnet)
+
+On the owner's word (2026-11-19, translated): after `work` and `interpret` finish requirements, the run stops
+and drafts the UI in the worktree as real code on real components with a fake API, opened for the owner;
+losers go, the winner stays, and design and tasks finish it. `--go` stops there too.
+
+**RED, live `/shape #1 --auto`** (conductor, work and interpret on Sonnet; fixture
+`.skills/fixtures/make-tidewell-board.sh`: tidewell plus every skill, tracker through `bin/gh`, ticket #1 with a
+card whose Ask me is "how the screen looks and behaves" and `UI: new`). Run 1 ended on fixture defects (a flat
+INDEX, a code that looked retired, `bin/gh` outside the worktree). Even so, the screen went into the report as
+prose: "Still open: placement (new per-trip page vs gear on trip cards vs a Gear page with trip picker)…".
+Run 2 reached the sheet:
+- The skipped list read "run-spike and draft-ui (screen is the operator's)".
+- `interpret` picked the page as a Weigh value. `design.md ## UI design` said "No `ui-brief.md` exists. Every
+  choice below is **Weigh** (interpret pick B)".
+- The owner's only view was the sheet's text: "Tasks 3 and 4 build it and are gated until you confirm the
+  screen."
+
+**Text.**
+- `auto.md`: the Iron Law paragraph names the one extra stop. Step 2 keeps the charter's `## The UI stop`
+  unless the card's UI is `none` or it names a `UI brief:`. The watch exits `UI` on a fresh
+  `RUN/ui-pick.md`. Step 6b opens every variant, comments on the ticket, waits, and relays the operator's
+  words through `RUN/ui-reply.md`. The receipt requires `draft-ui`. There is one new rationalization row and
+  one new red flag.
+- `charter-template.md`: `## The UI stop` takes `draft-ui`'s pick and go out of `interpret`'s approvals.
+- `go.md`: `--go` stops at 6b too.
+- `check_card.py`: `UI: new` without a brief passes with a note. TDD: red "missing: UI brief", then 13/13.
+
+**GREEN, same fixture and roster, a fresh run.** Harness note: skills in `~/.claude/skills` shadow a project's
+`.claude/skills` of the same name (`draft-ui` loaded 1.6.0). The run used its own tmux server with a `claude`
+wrapper adding `--setting-sources project,local`, and that wrapper surfaced an auto-mode dialog in each new
+pane, which the scorer dismissed.
+- After `interpret` approved requirements, `work` ran `draft-ui` 2.0. Only `requirements.md` existed. The app
+  was live on :5180 with three variants on a fake behind `src/api/wetsuits.ts`, plus captures and a
+  recommendation. `ui-pick.md` ended "Until then no ui-brief, design.md or tasks.md are written."
+- **Defect found and fixed:** the first watch line, `[ ui-pick -nt ui-reply ]`, is false under zsh when
+  `ui-reply.md` is missing, and the Monitor ran zsh, so the conductor sat 10+ minutes without `UI`. The line
+  is now `{ [ ! -f ui-reply ] || [ ui-pick -nt ui-reply ]; }`, checked under zsh. This run was unblocked with
+  an old-dated empty `ui-reply.md`.
+- Step 6b: "I've opened all three in your browser". It posted a ticket comment naming Thu as owner of the
+  choice, handed over in five lines, and waited. It refused a prompt-suggestion line sitting in work's pane
+  ("didn't come from you").
+- The scorer, as Thu, replied "A, the sheet. One change: cancelling asks first, like C does. … go — lock it."
+  That landed verbatim in `ui-reply.md` and was relayed to work.
+- The lock commit a198faa deleted Variants A/B/C and the switcher, and kept the winner as `TripWetsuits.tsx`,
+  with lock tests `test/wetsuits.test.tsx`, `## Contract` and `Code:` in the brief.
+- `design.md` opened with "The screen is already built and locked … the design finishes those and removes the
+  fake from the production path." `tasks.md` has ten tasks: server routes, the real client path with the fake
+  only in tests and absent from production, a lost race, and holding the rest of the sheet's behaviour. None
+  rebuilds the screen.
+- Post-go edits to the brief were named on the report as the agent's, not the owner's.
+
+Not covered: Haiku as work or interpret; `--go` through 6b to a PR; a native app; a second amendment round.
+
 
 
 ## 2026-11-17: no edit. A CI wait in the build's end-of-run tend is not cut off as a stall

@@ -89,7 +89,12 @@ class CheckCard(unittest.TestCase):
         code, out = self.run_card(GOOD.replace("**UI:** none", "**UI:** reference\n**Reference:** Google Calendar's import dialog"))
         self.assertEqual(code, 0, out)
 
-    def test_new_ui_needs_a_ui_brief_on_disk(self):
+    def test_new_ui_without_a_brief_stops_for_the_pick(self):
+        code, out = self.run_card(GOOD.replace("**UI:** none", "**UI:** new"))
+        self.assertEqual(code, 0, out)
+        self.assertIn("ui: new, no brief: the run stops after requirements for the operator's pick", out)
+
+    def test_new_ui_needs_a_named_brief_on_disk(self):
         card = GOOD.replace("**UI:** none", "**UI:** new\n**UI brief:** docs/specs/2026-11-cal/ui-brief.md")
         code, out = self.run_card(card)
         self.assertEqual(code, 1)

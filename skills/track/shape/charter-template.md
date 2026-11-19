@@ -45,6 +45,15 @@ variants again, rewrite `ui-pick.md`, and wait again. On their explicit go, lock
 the winner on this branch. Then run `design-solution`, which lifts the brief and its `## Contract`, and
 `plan-tasks`, whose tasks finish the kept code.
 
+When `requirements.md` has no requirement a person sees or does on a screen, skip this stop and say so in
+one line of the report.
+
+After the lock, any change to what the locked screen shows or does goes back through this stop. That holds
+whether the change is in the brief, the design, the tasks or the code. Apply it to the running app, rewrite
+`ui-pick.md` to name the change, and wait for the operator's go. In one run, after the go, `work` rewrote what
+the screen does after a refused reservation in the brief and the design, "on my own authority". The build
+would have shipped a screen the operator never clicked.
+
 ## What is evidence, not decided (Weigh)
 Research notes, and anything either session derives.
 

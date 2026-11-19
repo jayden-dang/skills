@@ -65,6 +65,23 @@ does after a 409 (re-read the counts instead of restoring), on its own authority
 No code moved yet, but the build would carry a screen change the operator never clicked. Send post-go screen
 changes back through the UI stop: this run is the RED for that rule.
 
+**Post-lock rule, the owner's ruling (2026-11-19): a screen change after the lock goes back through the UI
+stop.** The live run above is the RED: `work` edited the brief and the design "on my own authority".
+
+Scenario: the live run's worktree at a198faa, the filled charter, and `interpret` asking that the screen
+re-read counts after a 409.
+- **Control, Haiku, charter without the paragraph.** It did not design the change. It recorded it as
+  Still-open "for the operator" on the report, which is the sheet-as-text path the owner turned down, and
+  wrote `design.md`. One contamination: `origin` carried the Sonnet cell's held commit, which it saw and
+  did not merge.
+- **GREEN, Sonnet and Haiku, the charter with the paragraph.** Both left brief, design and tasks untouched.
+  Each applied the change to the running app test-first, in its own revertable commit (10c7e6f, edcecce),
+  with a demo hook for the lost race. Each rewrote `ui-pick.md` to name before and after, and stopped for
+  the operator's go: "I did not start design-solution."
+
+Text: the charter's `## The UI stop` gains the no-screen skip (one report line) and the post-lock paragraph.
+`auto.md`'s receipt does not require `draft-ui` when the report says the stop was skipped.
+
 Not covered: Haiku as work or interpret; `--go` through 6b to a PR; a native app; a second amendment round;
 the should-not-fire cards (`UI: none`, a backend ticket with no `UI:` line, a card naming `UI brief:`).
 

@@ -109,7 +109,8 @@ read, so the word meant nothing when they opened them.
      --require frame-change,clarify-decisions,load-subgraph,specify-behavior,design-solution,plan-tasks --min-subagents 1
    ```
 
-   With `## The UI stop` kept, add `draft-ui` to `--require`.
+   With `## The UI stop` kept, add `draft-ui` to `--require`, unless the report says the stop was skipped
+   because no requirement reaches a screen.
    Exit 1 → send `work` the `missing:` line once: run them now against the current files, say what
    changed, and rewrite the report. Still missing → it goes on the sheet. The session's own report is
    not evidence: one listed two skipped steps, and the transcript showed a third.

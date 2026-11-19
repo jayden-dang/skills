@@ -38,3 +38,9 @@ code, even when invited to." Several gave the owner's file as a second reason: "
 `src/latefee.ts` now would also mean deciding the `today` source ahead of Minh's review."
 
 Not covered: the UI branch (`draft-ui`), which is its own skill.
+
+## v2.0.1 — pointer wording (2026-11-19)
+
+Wording only: the UI-branch pointer in `SKILL.md` and `UI.md` now says draft-ui builds variants
+in the project's own UI stack, matching draft-ui 1.5.0 (evidence in draft-ui's TESTS.md § v1.5.0).
+No behavior change, so no run.

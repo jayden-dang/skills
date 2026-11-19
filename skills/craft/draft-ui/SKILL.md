@@ -11,7 +11,7 @@ press, optimistic versus after the call, undo versus confirm, how a slow or fail
 feels): read `interaction.md` beside this file and follow it in place of the steps below.
 
 Deciding a surface's look is a workflow, not a one-shot render: divergent
-directions built as real HTML, reviewed by the user in the browser, amended,
+directions built in the project's own UI stack, reviewed by the user running them, amended,
 and only then either promoted onto a surface that already ships (§4) or
 locked into a brief the build chain lifts instead of re-deciding.
 

@@ -4,11 +4,11 @@
 
 On the owner's report that draft-ui "always uses React" and so drifts from the project's system.
 The text never named React; what the field sessions show is narrower: §2 knew only a browser page
-or standalone HTML. Eight 2026-11 sessions in two native apps — RENO (Rust, GPUI) and NAVORI
-(Swift, AppKit) — drew every draft as `draft-ui/<surface>/*.html|css|js`. Verbatim from a RENO
-session: "App là GPUI nên không nhúng bản draft vào app thật được." (the app is GPUI, so the draft
-cannot be embedded in the real app). RENO's locked settings brief then had to list "the draft's
-invented lines ... do not ship". Owner rulings before RED: a native app gets its variants as real
+or standalone HTML. Seven 2026-11 sessions in RENO (Rust, GPUI) wrote their drafts as
+`draft-ui/<surface>/*.html|css|js`, and NAVORI (a Swift macOS app) holds
+`draft-ui/needs-you/index.html`. A RENO session gave its reason as (translated from the owner's
+language) "the app is GPUI, so the draft cannot be embedded in the real app". RENO's locked
+settings brief then had to list "the draft's invented lines ... do not ship". Owner rulings before RED: a native app gets its variants as real
 views inside the app; a repo with no screens but a declared stack drafts in that stack; plain HTML
 only when nothing is declared.
 
@@ -36,11 +36,14 @@ hour, hand over how to see them.
 | crumbline | Sonnet | `Sources/Crumbline/Drafts/{DraftSwitch,VariantA,B,C}.swift`, `CrumblineApp.swift` wired to `CRUMBLINE_VARIANT` + a Variant menu (⌥←/⌥→) | `StatusBadge(` in all three, `.buttonStyle(.primary)`; `swift build` + `swift test` green (re-run by the scorer); no HTML |
 | crumbline | Haiku | `Drafts/{DraftSwitch,OrdersDrafts}.swift`, same env-var switch, ⌘[/⌘] cycle | kit used 7×; build + tests green (re-run); no HTML |
 | harborlog | Sonnet | `draft-ui/` Vite + Svelte 5 app, `src/variants/{A,B,C}.svelte`, reads the fixture and the declared tokens | dev server returned 200 on `?variant=b` (scorer's curl) |
-| harborlog | Haiku | `draft-ui/` SvelteKit + adapter-static app, `src/lib/variants/{Quay,Ledger,Arrivals}.svelte` | `npm run build` clean per its log; variants present |
+| harborlog | Haiku | `draft-ui/` SvelteKit + adapter-static app, `src/lib/variants/{Quay,Ledger,Arrivals}.svelte` | `npm run build` clean (re-run by the scorer: adapter-static wrote the site) |
 
 Every run named the medium from the new branch ("native apps get real views behind a launch switch,
 not HTML"; "design-tokens.md declares Svelte 5, so … a throwaway app in that stack"). The other
 rules held: three named directions, finding stated in words, stop at hand-over with no brief.
+Both native drafts were then launched by the scorer (`CRUMBLINE_FAKE=1 CRUMBLINE_VARIANT=B`, and
+`=A` on the Haiku tree) and captured by window ID: the window opened on the chosen variant, with
+the kit's badge and button (disabled state included) and the `key — name` pill.
 
 ### Routing
 
@@ -48,12 +51,14 @@ The first description edit ("variants built in the project's own UI stack (HTML 
 views in a native app such as SwiftUI or GPUI)") pulled "this module is a mess, design the new
 invoice-status component" (owner `design-solution|frame-change`) to draft-ui on **both** models;
 the 1.4.1 listing scored 77/77 on that half on both. Cut to "divergent variants in the app's own
-stack": frozen suite half s1 77/77 and s2 76/76 (s2 on the first wording, which changed nothing it
-reaches), plus ten new draft-ui messages (six should-fire including SwiftUI and GPUI asks, four
+stack": frozen suite s1 77/77 and s2 76/76, plus ten new draft-ui messages (six should-fire including SwiftUI and GPUI asks, four
 near-misses owned by inspect-ui, craft-page, run-spike) 10/10, on Sonnet and Haiku.
 
-Not covered: a GPUI fixture (RENO's own stack — its compile was out of budget here); the review
-loop, lock and cleanup on a native draft; RED on Haiku.
+Not covered: a GPUI fixture (RENO's own stack — its compile was out of budget here); the
+browser-embed branch re-run on 1.5.0 (restructured, not re-run); the review loop, lock and cleanup
+on a native draft; `interaction.md` on a native app; RED on Haiku. Seen but not acted on: neither
+native run looked at its own screens before hand-over (both said so), where both RED HTML runs
+screenshotted every direction — a candidate done-when, with these two runs as its baseline.
 
 ## 2026-11-15 — absorbed draft-ux as mode file(s)
 

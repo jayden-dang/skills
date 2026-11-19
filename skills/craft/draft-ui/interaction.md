@@ -55,7 +55,7 @@ has an answer for the call that takes far longer than its budget.*
 
 ## 4. Show, recommend, then wait for the go
 
-Hand over the URL and one line per take naming **what it costs the user** —
+Hand over the URL — or the launch command, for a native app — and one line per take naming **what it costs the user** —
 not what it does. Recommend one, with the reason, in your own voice. Anything
 you gave *every* take — a retry action, a focus rule, a line of copy — is not
 part of the pick: name it on its own line, because the user is not choosing it

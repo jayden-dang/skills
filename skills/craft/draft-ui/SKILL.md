@@ -1,7 +1,7 @@
 ---
 name: draft-ui
-version: 1.6.0
-description: "Use when a screen or feature's look, or what it does when used, needs deciding with the user before it is specified or built: \"show me a few design directions\", \"make it clickable so I can feel it\", undo versus confirm. Produces divergent variants in the app's own stack or runnable takes of one flow, a pick from the user, and a locked ui-brief.md that design-solution lifts. Not for judging a built diff (inspect-ui), a logic spike (run-spike), or a standalone page (craft-page)."
+version: 2.0.0
+description: "Use when a screen or feature's look, or what it does when used, needs deciding with the user before it is specified or built: \"show me a few design directions\", \"make it clickable so I can feel it\", undo versus confirm. Produces divergent variants in the app's own stack on a fake API, or runnable takes of one flow, a pick from the user, the winner kept as the surface's code behind lock tests, and a locked ui-brief.md that design-solution lifts. Not for judging a built diff (inspect-ui), a logic spike (run-spike), or a standalone page (craft-page)."
 ---
 
 # Draft UI
@@ -13,7 +13,7 @@ feels): read `interaction.md` beside this file and follow it in place of the ste
 Deciding a surface's look is a workflow, not a one-shot render: divergent
 directions built in the project's own UI stack, reviewed by the user running them, amended,
 and only then either promoted onto a surface that already ships (§4) or
-locked into a brief the build chain lifts instead of re-deciding.
+locked into a brief, with the winner kept as the code the build finishes (§6).
 
 ## 1. Ground, then plan N directions
 
@@ -69,8 +69,9 @@ docs. Then take the first branch that holds:
   the kit's badge and button in CSS and invented copy its brief then had to
   list as not shipping. The app builds and its tests stay green before
   hand-over.
-- **No screens yet, stack declared** → a throwaway app in the declared stack
-  under `draft-ui/`, on the real data, reading the declared tokens. A repo
+- **No screens yet, stack declared** → the app's first screens in the declared
+  stack, at the path the app will live at, on the real data, reading the
+  declared tokens. A repo
   whose design tokens named Svelte 5 got plain HTML pages, which the build
   would have translated a second time.
 - **No screens, no stack declared** → a `draft-ui/` folder of standalone
@@ -82,7 +83,18 @@ label, next arrow, wrap-around, arrow-key cycling (not while an input has
 focus), styled to obviously not belong to any design under evaluation, hidden
 in production builds; natively, the same cycle on the key or menu command,
 with the variant's `key — name` shown in the window. Real content throughout,
-never lorem. Variants stay read-only — stub any mutation.
+never lorem.
+
+**Data that no endpoint serves yet comes through a fake behind the app's own
+client.** Name the fake's place in the plan. If the app has a fake mode (a
+`--fake` flag, a `*_FAKE` env var, a fixture server), extend it. Otherwise
+write a fake implementation of the client module the real call will live in,
+selected in one place. Every read and every mutation the variants make goes
+through the fake, including the failure branch, so the user clicks real flows.
+The calls the fake answers become the contract the backend is built to. Two
+drafts on one approved spec kept stock and reservations in a store inside the
+page ("held in the browser, not the real API"). The user could click through
+them, and the backend had no shape to build against.
 
 **Compose the kit before writing chrome.** Where the repo already ships a
 control — button, badge, toast, field — every variant uses it: its render
@@ -96,7 +108,7 @@ Every styling choice in a variant traces to its plan; a variant sharing every
 choice with its neighbor betrays step 1.
 
 *Done when: the switcher serves all variants on real content, written in the
-stack the plan named.*
+stack the plan named, and every call the feature makes goes through the fake.*
 
 ## 3. Look at every variant, show, then loop — before lock
 
@@ -169,19 +181,27 @@ cites:
 Keep one screenshot of the locked direction beside the brief. *Done when: the
 brief exists with every slot filled and the user-visible decision quoted.*
 
-## 6. Clean up — unshipped only
+## 6. Keep the winner, or clean up
 
-Skip this step when §4 already promoted the winner. Otherwise delete the
-losing variants, the switcher, and all scaffolding. The winner's code was
-written under draft constraints — the production build **rewrites it from the
-brief** under `test-first`, never promotes it as-is. What survives: the brief,
-its screenshot, and a cleanup commit referencing the brief path.
+Skip this step when §4 already promoted the winner.
+
+**Screens exist, or a stack is declared** (the first three branches of §2): the
+winner stays. Read `keep.md` beside this file and follow it. In one app, a
+4,587-line draft that ran on the app's own fake was deleted at the lock. The
+build then spent three slices re-deriving the same sidebar, status bar,
+conversation rows and composer panels in new files.
+
+**No stack is declared** (standalone pages): delete the losing variants, the
+switcher, and all scaffolding. The build writes the surface from the brief
+under `test-first`. What survives is the brief, its screenshot, and a cleanup
+commit that references the brief path.
 
 ## Hand-off
 
 A promotion (§4) ends here. Otherwise the chain consumes the lock:
-`design-solution` Step 2b lifts `## UI design` from an existing ui-brief
-instead of re-deciding. When no spec exists yet, the brief waits in
+`design-solution` Step 2b lifts `## UI design` (and `## Contract`, when the
+winner was kept) from the ui-brief instead of re-deciding, and the tasks finish
+the kept code rather than rebuild it. When no spec exists yet, the brief waits in
 `docs/design/` for the feature that adopts it.
 
 ## Rationalizations
@@ -196,7 +216,8 @@ instead of re-deciding. When no spec exists yet, the brief waits in
 | "The app is native, with no web page to embed in, so standalone HTML" | The variants go in the app as real views behind a launch switch. The HTML draft redrew the kit's badge and button in CSS |
 | "I saw the truncation and left it; I'll mention it in case they lean toward C" | The owner judges directions, not your defects. Fix it and capture again — a draft shown broken is judged broken |
 | "The front end doesn't exist yet, so standalone HTML" | The design tokens name the stack. Draft in it; HTML is for a repo that names none |
-| "The winning variant works — promote its code" | Draft code, when the surface is not shipped yet. The build rewrites from the brief under test-first |
+| "It's a throwaway prototype, so no tests and delete it at the lock" | When the app has a stack, the winner is kept, and its lock tests are what allow it to stay. A 4,587-line draft on the app's own fake was deleted, then rebuilt across three slices |
+| "The page can hold the data in its own state for now" | Then the backend has no contract and the build re-wires every call. The fake sits behind the client the real call will use |
 | "It already shipped, so lock a brief and rewrite it under the spec chain" | The user said build it. Update the owning `## UI design` and promote the winner. A new ui-brief restarts a cycle they did not ask for |
 
 ## Red Flags
@@ -212,3 +233,6 @@ instead of re-deciding. When no spec exists yet, the brief waits in
 - The decision surviving only in a commit message or ADR — no ui-brief, on a surface that has no `## UI design` yet
 - A go on a shipped surface that writes a ui-brief, or leaves `## UI design` describing the previous look
 - Losing variants or the switcher left in the tree
+- A winner deleted, or committed as "throwaway", in a repo whose screens or declared stack exist
+- A variant whose data lives in page state, not in a fake behind the app's client
+- A kept winner with no lock test that was seen red

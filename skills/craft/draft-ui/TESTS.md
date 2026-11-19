@@ -1,5 +1,66 @@
 # draft-ui — test evidence
 
+## v2.0.0 — the winner is kept, on a fake behind the app's client (2026-11-19, Sonnet + Haiku)
+
+On the owner's word (2026-11-19, translated): drafts are real code in the app, on real components and a
+fake API, so the owner sees how the product will actually work; at the lock the losers go and the winner
+stays, and design and tasks finish it instead of rebuilding it. Rulings: Gate 2 may carry a lock-test
+exception; the no-stack path keeps draft-then-delete.
+
+**RED, fixture `tidewell`** (React 19 + Vite, kit, dev-server API, Approved GEAR requirements, no gear
+backend; `.skills/fixtures/make-tidewell.sh`). Prompt: Thu wants to "actually click through reserving a
+wetsuit for Jonas … cancel it, and see what the screen does when the M wetsuits run out". v1.6.0:
+
+- Both models drafted in the app with live mutations (Haiku took `interaction.md`, with latency and
+  race toggles). Interactivity was not the gap.
+- Neither had an API seam. Sonnet: `STOCK` constant + `useGear` store in `src/draft/gearModel.ts`.
+  Haiku: "Stock and reservations are held in the browser, not the real API".
+- Neither wrote a test: "I did not add tests, because this is a throwaway prototype."
+- On go, both deleted the winner. "the draft code has to be deleted rather than promoted. That means
+  removing `src/draft/`". The code was never committed, so no history of it remains.
+- A rebuild from the brief (fresh Sonnet and Haiku, design.md a 1:1 lift) came out near pixel-identical
+  to the locked screenshot, because both builders opened it. So on one screen, drift was not the cost.
+  The rebuild was: 141 s / 68k tokens and 135 s / 65k tokens, re-deriving a screen that already ran.
+
+**RED, the owner's repo RENO** (GPUI, same day). The draft branch `draft/ui-direction` held 5 commits and
+4,587 lines in reno-app on the app's own `--fake` daemon. Its plan read "The draft is THROWAWAY (draft-ui
+§6): the winner is rewritten from a ui-brief". After the lock, three slices (12:06–16:18) re-implemented
+the sidebar, status bar, conversation rows, tick rail, folds and composer panels in new files. The draft
+was never merged. A later draft (`draft/palette`) was again committed "(throwaway, not for merge)".
+Checked and dropped: "slice 2 designed UI the draft never had". The tick rail and folds were in the
+draft (`draft_rows.rs:562`); slice 2 grew them.
+
+**Text.** §2 routes every read and mutation through a fake behind the app's client: the app's fake mode
+when it has one, else a fake implementation of the client module. §6 splits: with screens or a declared
+stack, keep the winner per `keep.md`. That file covers stripping the draft, the fake behind one switch
+plus a production check, `## Contract`, lock tests seen red by mutation, and one commit that is not
+"throwaway". With no stack declared, delete as before. `interaction.md` §2/§6 follow suit.
+
+**GREEN, same fixture and prompts, pick relayed "B/b, exactly as it is … Go, lock it."** Scored from the
+tree:
+
+| Check | Sonnet | Haiku |
+|---|---|---|
+| Fake behind the client, one switch | `src/api/gear.ts` + `gearFake.ts`, `import.meta.env.DEV` | `src/api/gear.ts` + `gear.fake.ts`, same switch |
+| Winner kept and committed with fake, tests, brief | 403899a on `gear-rentals-ui` | aca9b84 on `gear-rentals-reserve` |
+| Losers and switcher gone (git grep) | yes | yes |
+| `## Contract` + `Code:` + `Lock tests:` in brief | yes (3 calls, 409/503/404) | yes |
+| Lock tests green (scorer re-ran) | 10/10 | 10/10 |
+| Seen red | 10 mutations, self-reported | 8 self-reported; scorer mutated the slow-call copy and the reserving label, and 1 test went red each time |
+| Fake absent from `dist/` (scorer grep) | 0 hits | 0 hits |
+
+**Routing** (listing from this branch, 10 first messages, one batch per model): Sonnet 10/10, Haiku 10/10.
+Five should-fire messages ("put 3 directions right in the app", "clickable on fake data … undo vs confirm",
+"build the settings page for real on a fake api first") all reached draft-ui. The traps landed on inspect-ui,
+run-spike, craft-page and design-solution, and "swap the fake gear client for the real endpoints" landed on
+frame-change.
+
+Not covered: a no-screens-but-declared-stack repo on the keep path (eval 13 reworded, not re-run); a
+native app on the keep path (RENO's own `--fake`); the look path (§1–§5) on keep, since both GREEN runs
+went to `interaction.md`; the downstream finish (`design-solution`, `plan-tasks`, `test-first`), which is
+the next edit in this chain.
+
+
 ## v1.6.0 — look at every variant before hand-over (2026-11-19, Sonnet + Haiku)
 
 On the owner's word (translated: add the condition so the UI is good enough). RED is the v1.5.0 GREEN pair below: both native runs handed over screens nobody had seen

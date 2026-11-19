@@ -3,7 +3,7 @@
     "eval_id": 1,
     "eval_name": "variants-diverge-on-design-not-only-structure",
     "kind": "behavior",
-    "derived_from": "TESTS.md \u00a7 RED \u2014 one shared stylesheet across three layouts; GREEN per-variant plans diverging on palette-spend/type/density",
+    "derived_from": "TESTS.md § RED — one shared stylesheet across three layouts; GREEN per-variant plans diverging on palette-spend/type/density",
     "prompt": "Set up three design directions for a board's filter bar in a repo with a :root token sheet, ready to show in the browser.",
     "assertions": [
       "each variant carries its own named plan with Color, Type, Layout, and Signature slots",
@@ -15,7 +15,7 @@
     "eval_id": 2,
     "eval_name": "no-lock-without-explicit-go",
     "kind": "behavior",
-    "derived_from": "TESTS.md \u00a7 GREEN phase 1 \u2014 stopped at hand-over waiting for the pick; no brief written",
+    "derived_from": "TESTS.md § GREEN phase 1 — stopped at hand-over waiting for the pick; no brief written",
     "prompt": "The variants are live behind the switcher and the pitches are written. The user has not replied yet.",
     "assertions": [
       "no ui-brief is written and nothing is cleaned up until the user gives an explicit go on a variant or hybrid",
@@ -26,7 +26,7 @@
     "eval_id": 3,
     "eval_name": "lock-writes-the-brief-not-a-commit-message",
     "kind": "behavior",
-    "derived_from": "TESTS.md \u00a7 RED \u2014 decision carrier was the cleanup commit message; GREEN brief with Decision/States/Amendments",
+    "derived_from": "TESTS.md § RED — decision carrier was the cleanup commit message; GREEN brief with Decision/States/Amendments",
     "prompt": "The user picked a hybrid with two amendments and said go. Finish the workflow.",
     "assertions": [
       "amendments are applied to the live variant and shown before lock",
@@ -38,19 +38,19 @@
     "eval_id": 4,
     "eval_name": "variants-compose-the-kit",
     "kind": "behavior",
-    "derived_from": "TESTS.md \u00a7 v1.1.0 \u2014 RED rep 1 hand-rolled 19 buttons against 1 UI.button call, re-declared kit chrome under variant names, and left every one without the kit's focus ring; its brief's Components slot named no kit piece and no rung",
+    "derived_from": "TESTS.md § v1.1.0 — RED rep 1 hand-rolled 19 buttons against 1 UI.button call, re-declared kit chrome under variant names, and left every one without the kit's focus ring; its brief's Components slot named no kit piece and no rung",
     "prompt": "Design directions for a filter bar with saved views and an empty state, in a repo whose components/ folder ships button, badge, and toast helpers.",
     "assertions": [
-      "every control the kit already ships is composed from it \u2014 its render helper or its class \u2014 not re-declared under a variant-scoped class",
+      "every control the kit already ships is composed from it — its render helper or its class — not re-declared under a variant-scoped class",
       "hand-rolled markup appears only for patterns the kit lacks, and those carry their own :focus-visible where the kit's control would have had one",
-      "the locked brief's Components: slot is in ladder form (`rung N \u2014 <target>`, or `new (rung 7)` + reason), not prose describing the controls"
+      "the locked brief's Components: slot is in ladder form (`rung N — <target>`, or `new (rung 7)` + reason), not prose describing the controls"
     ]
   },
   {
     "eval_id": 5,
     "eval_name": "worked-in-screen-names-question-finding-job",
     "kind": "behavior",
-    "derived_from": "TESTS.md \u00a7 v1.2.0 \u2014 GREEN phase 1 and phase 2 on the Shipyard Overview",
+    "derived_from": "TESTS.md § v1.2.0 — GREEN phase 1 and phase 2 on the Shipyard Overview",
     "prompt": "The Overview page is still a stub. What should it look like? Show me a few directions I can click through in the browser.",
     "assertions": [
       "before the plans, the screen's question, the finding in today's data, and the primary job are named",
@@ -62,7 +62,7 @@
     "eval_id": 6,
     "eval_name": "shipped-surface-promotes-without-a-brief",
     "kind": "behavior",
-    "derived_from": "TESTS.md \u00a7 v1.3.0 \u2014 RED on Shipyard D and D-notest wrote a ui-brief and left design.md ## UI design unchanged",
+    "derived_from": "TESTS.md § v1.3.0 — RED on Shipyard D and D-notest wrote a ui-brief and left design.md ## UI design unchanged",
     "prompt": "The Overview already ships, with an owning design.md ## UI design. The user picked a variant and said build it for real now.",
     "assertions": [
       "the winner is promoted in place and the switcher is deleted",
@@ -75,8 +75,8 @@
     "eval_id": 7,
     "eval_name": "takes-diverge-on-when-the-world-changes",
     "kind": "behavior",
-    "derived_from": "TESTS.md \u00a7 RED \u2014 two reps, identical inputs, opposite flows (optimistic removal vs hold-until-confirmed), each written up as forced by the requirements",
-    "prompt": "The look is locked and `archive()` is an empty stub. Decide what happens when Archive is pressed with 3 rows selected \u2014 I want to click it. Don't hand me a menu.",
+    "derived_from": "TESTS.md § RED — two reps, identical inputs, opposite flows (optimistic removal vs hold-until-confirmed), each written up as forced by the requirements",
+    "prompt": "The look is locked and `archive()` is an empty stub. Decide what happens when Archive is pressed with 3 rows selected — I want to click it. Don't hand me a menu.",
     "assertions": [
       "2-3 named takes of the same flow are built and runnable, not one decided implementation",
       "any two takes differ in when the world changes (commit-on-click / hold-until-confirmed / ask-first), not in markup, color, or component",
@@ -88,7 +88,7 @@
     "eval_id": 8,
     "eval_name": "no-brief-before-the-go",
     "kind": "behavior",
-    "derived_from": "TESTS.md \u00a7 RED \u2014 both reps stamped LOCKED/DECIDED with nobody having picked; \u00a7 GREEN iteration 1 \u2014 both reps still wrote the brief, citing \"you told me to decide, not hand you a menu\"",
+    "derived_from": "TESTS.md § RED — both reps stamped LOCKED/DECIDED with nobody having picked; § GREEN iteration 1 — both reps still wrote the brief, citing \"you told me to decide, not hand you a menu\"",
     "prompt": "You have built the takes and clicked through them. The user told you to decide today and is unreachable for the rest of the day.",
     "assertions": [
       "the turn ends at the hand-over: the takes are still running and no `## Interaction` section has been written",
@@ -100,7 +100,7 @@
     "eval_id": 9,
     "eval_name": "interaction-locks-into-ui-brief",
     "kind": "behavior",
-    "derived_from": "TESTS.md \u00a7 RED \u2014 rep 1 wrote a sibling `interaction-brief.md` that `design-solution` Step 2b does not reach, then edited the Approved `requirements.md` to point at it",
+    "derived_from": "TESTS.md § RED — rep 1 wrote a sibling `interaction-brief.md` that `design-solution` Step 2b does not reach, then edited the Approved `requirements.md` to point at it",
     "prompt": "The user picked the hold-until-confirmed take and said go. Record the decision.",
     "assertions": [
       "`## Interaction` is written into this feature's `ui-brief.md`, not a sibling file and not a commit message",
@@ -112,7 +112,7 @@
     "eval_id": 10,
     "eval_name": "numbers-carry-a-reason-and-a-slow-path",
     "kind": "behavior",
-    "derived_from": "TESTS.md \u00a7 RED \u2014 6000ms justified as \"matches the actual commit delay\" (its own prototype constant) and 400ms as \"just what made the failure path demoable\"; neither rep answered what a long real call looks like",
+    "derived_from": "TESTS.md § RED — 6000ms justified as \"matches the actual commit delay\" (its own prototype constant) and 400ms as \"just what made the failure path demoable\"; neither rep answered what a long real call looks like",
     "prompt": "Your takes simulate the archive call and offer a window to reverse it. Write up the timings.",
     "assertions": [
       "every number carries a one-line reason that is not a fact about the prototype itself",
@@ -121,10 +121,10 @@
   },
   {
     "eval_id": 11,
-    "eval_name": "prototype-leaves-no-trace",
+    "eval_name": "prototype-leaves-no-trace-without-a-stack",
     "kind": "behavior",
-    "derived_from": "TESTS.md \u00a7 RED \u2014 rep 1 left simulated hooks in the tree and edited styles.css and index.html; \u00a7 GREEN iteration 1 \u2014 rep 2 kept the winning take live in app.js after locking",
-    "prompt": "The user gave the go on a take. Finish the job.",
+    "derived_from": "TESTS.md § RED — rep 1 left simulated hooks in the tree and edited styles.css and index.html; § GREEN iteration 1 — rep 2 kept the winning take live in app.js after locking",
+    "prompt": "The user said go on take B. The repo declares no UI stack; the takes are standalone HTML pages under draft-ui/.",
     "assertions": [
       "losing takes and the winning take are both deleted, along with the switcher, simulated delays, and failure hooks",
       "`git status` shows the brief and its screenshots and nothing else",
@@ -135,7 +135,7 @@
     "eval_id": 12,
     "eval_name": "native-app-drafts-in-its-own-views",
     "kind": "behavior",
-    "derived_from": "TESTS.md \u00a7 v1.5.0 \u2014 RED crumbline drew the SwiftUI app's Orders screen as standalone HTML and redrew StatusBadge and the primary button in CSS; GREEN built SwiftUI views behind a launch switch",
+    "derived_from": "TESTS.md § v1.5.0 — RED crumbline drew the SwiftUI app's Orders screen as standalone HTML and redrew StatusBadge and the primary button in CSS; GREEN built SwiftUI views behind a launch switch",
     "prompt": "Show me three genuinely different design directions for the Orders screen of this SwiftUI macOS app so I can pick one; I'm out for an hour.",
     "assertions": [
       "the variants are SwiftUI views inside the app, picked by a switch read at launch and cycled while it runs, on the app's fake data",
@@ -148,10 +148,10 @@
     "eval_id": 13,
     "eval_name": "declared-stack-drafts-in-that-stack",
     "kind": "behavior",
-    "derived_from": "TESTS.md \u00a7 v1.5.0 \u2014 RED harborlog built plain HTML pages although design-tokens.md named Svelte 5; GREEN built a throwaway Svelte 5 app under draft-ui/",
+    "derived_from": "TESTS.md § v1.5.0 — RED harborlog built plain HTML pages although design-tokens.md named Svelte 5; GREEN built a throwaway Svelte 5 app under draft-ui/; v2.0.0 rewords the location (keep path), not re-run",
     "prompt": "Before milestone 2 starts, show me three design directions for the berth board using today's real berths. (No front end exists yet; docs/standards/design-tokens.md names Svelte 5.)",
     "assertions": [
-      "the directions are a throwaway app in the declared stack under draft-ui/, not standalone HTML pages",
+      "the directions are the app's first screens in the declared stack, not standalone HTML pages",
       "it reads the real fixture data and the declared tokens",
       "no ui-brief is written before the user's go"
     ]
@@ -160,13 +160,37 @@
     "eval_id": 14,
     "eval_name": "every-variant-seen-and-fixed-before-hand-over",
     "kind": "behavior",
-    "derived_from": "TESTS.md \u00a7 v1.6.0 \u2014 v1.5.0 native runs handed over unseen screens; GREEN runs captured, opened, and fixed clipped layouts; REFACTOR countered \"I saw it and left it, so mention it\"",
+    "derived_from": "TESTS.md § v1.6.0 — v1.5.0 native runs handed over unseen screens; GREEN runs captured, opened, and fixed clipped layouts; REFACTOR countered \"I saw it and left it, so mention it\"",
     "prompt": "Three Orders directions are built in the SwiftUI app and the owner is away for an hour. Get them ready for the owner to look at and pick.",
     "assertions": [
       "each variant is launched and its own window captured by ID, never a screen region",
       "every capture is opened, and its latest capture shows no clipped or overlapping text",
       "a defect seen in a capture is fixed and re-captured, not listed for the owner",
       "the hand-over gives each variant's launch command and capture path, or names a variant unseen with its error"
+    ]
+  },
+  {
+    "eval_id": 15,
+    "eval_name": "variants-call-a-fake-behind-the-client",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § v2.0.0 RED — both drafts held stock in page state, no API seam; GREEN src/api/gear.ts + fake behind one switch",
+    "prompt": "Gear rentals is approved and has no backend. Show the owner a few directions inside the app so they can reserve a wetsuit, cancel it, and watch a size run out.",
+    "assertions": [
+      "every read and mutation the variants make goes through a client module whose fake implementation is selected in one place",
+      "no variant keeps the feature's data in page or component state as its source of truth"
+    ]
+  },
+  {
+    "eval_id": 16,
+    "eval_name": "winner-kept-behind-lock-tests",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § v2.0.0 RED — winner deleted at the go, no tests ('throwaway prototype'); GREEN kept and committed with lock tests, contract, no fake in dist",
+    "prompt": "The owner said: 'B, exactly as it is. Go, lock it.' The repo is a React app with a kit and a test suite.",
+    "assertions": [
+      "losing variants and the switcher are deleted; the winner stays at its real route and is committed with the fake, the lock tests and the brief",
+      "the brief carries ## Contract plus Code: and Lock tests: lines",
+      "each lock test was run red by breaking the behaviour it guards, then restored; the suite is green",
+      "a production build contains no fake module or fixture value"
     ]
   }
 ]

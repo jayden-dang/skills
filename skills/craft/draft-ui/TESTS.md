@@ -2,8 +2,7 @@
 
 ## v1.6.0 — look at every variant before hand-over (2026-11-19, Sonnet + Haiku)
 
-On the owner's word ("thêm điều kiện đó để đảm bảo ui đủ tốt" — add the condition so the UI is good
-enough). RED is the v1.5.0 GREEN pair below: both native runs handed over screens nobody had seen
+On the owner's word (translated: add the condition so the UI is good enough). RED is the v1.5.0 GREEN pair below: both native runs handed over screens nobody had seen
 ("I haven't seen the rendered screens. No screenshots were taken"; the Haiku run launched one variant
 for 8 s, found no process, and handed over anyway). A second recorded cost: while verifying those
 runs, the scorer captured a screen *region* from window coordinates and got another app's window on

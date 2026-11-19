@@ -1,5 +1,45 @@
 # draft-ui — test evidence
 
+## v1.6.0 — look at every variant before hand-over (2026-11-19, Sonnet + Haiku)
+
+On the owner's word ("thêm điều kiện đó để đảm bảo ui đủ tốt" — add the condition so the UI is good
+enough). RED is the v1.5.0 GREEN pair below: both native runs handed over screens nobody had seen
+("I haven't seen the rendered screens. No screenshots were taken"; the Haiku run launched one variant
+for 8 s, found no process, and handed over anyway). A second recorded cost: while verifying those
+runs, the scorer captured a screen *region* from window coordinates and got another app's window on
+the owner's screen instead of the draft. And one Haiku run had stopped its server with
+`pkill -f "vite dev"`, which matches every such server on the machine.
+
+Text: §3 opens with "look at every variant" — capture each variant's own page or window, open every
+image, judge it against its plan, fix and re-capture; a variant that cannot be captured is named
+unseen. `capture.md` holds the commands (headless Chrome; macOS window by ID via
+`CGWindowListCopyWindowInfo` + `screencapture -l`; X11 `xdotool` + `import`; never a region; stop by
+PID).
+
+### GREEN (v1.6.0 first wording, 1 rep each, fresh fixtures)
+
+| Fixture | Model | Captures opened (transcript `Read` calls) | Fixed after looking |
+|---|---|---|---|
+| crumbline | Haiku | a, b, c — each before and after its fix | B clipped and centred (overflowed the window) → ScrollView; C badges squeezed into blank pills → narrower ticket, `fixedSize`; A last row under the pill |
+| crumbline | Sonnet | a, b, c; c twice | C buttons wrapping, headline wrap. **Left one:** "In C's right-hand queue the item text is truncated ("2 × bague…"). I saw it and left it, so mention it if you lean toward C." |
+| harborlog | Haiku | a, b, c (browser) | A's overstay label clipped, axis label colliding with the now tag; C's out-of-service hatching overridden by a background shorthand |
+
+Contamination found and fixed: the first `capture.md` used one fixed `/tmp/draft-shots`, and the three
+parallel runs saw each other's files there (each named them "unrelated files … left alone"). It now
+makes a directory per run (`mktemp -d`).
+
+### REFACTOR (v1.6.0, Sonnet, 1 rep, owner "in a hurry")
+
+Counter added: "a defect you saw is fixed, never handed over as a note for the owner to weigh", a
+rationalization row quoting the Sonnet line, and a done-when on the latest capture showing none of the
+defects. Re-run: captures opened a ×3, b ×2, c ×8 (24 reads over the loop); fixed a 12-hour formatter
+that showed 15:00 as "03:00", **C rendering blank** (a `maxHeight: .infinity` frame), "Mark r…" and
+"$…" truncations, B's cut-off rows. The scorer opened the final C capture: no truncation, kit button
+and badge states intact. `swift build` + `swift test` green (re-run by the scorer). No defect was
+handed over as a note.
+
+Not covered: Haiku on the REFACTOR wording; a GPUI app; Linux capture; the unseen path (no run hit it).
+
 ## v1.5.0 — draft in the project's own UI stack (2026-11-19, Sonnet RED; Sonnet + Haiku GREEN)
 
 On the owner's report that draft-ui "always uses React" and so drifts from the project's system.

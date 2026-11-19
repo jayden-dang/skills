@@ -155,5 +155,18 @@
       "it reads the real fixture data and the declared tokens",
       "no ui-brief is written before the user's go"
     ]
+  },
+  {
+    "eval_id": 14,
+    "eval_name": "every-variant-seen-and-fixed-before-hand-over",
+    "kind": "behavior",
+    "derived_from": "TESTS.md \u00a7 v1.6.0 \u2014 v1.5.0 native runs handed over unseen screens; GREEN runs captured, opened, and fixed clipped layouts; REFACTOR countered \"I saw it and left it, so mention it\"",
+    "prompt": "Three Orders directions are built in the SwiftUI app and the owner is away for an hour. Get them ready for the owner to look at and pick.",
+    "assertions": [
+      "each variant is launched and its own window captured by ID, never a screen region",
+      "every capture is opened, and its latest capture shows no clipped or overlapping text",
+      "a defect seen in a capture is fixed and re-captured, not listed for the owner",
+      "the hand-over gives each variant's launch command and capture path, or names a variant unseen with its error"
+    ]
   }
 ]

@@ -1,6 +1,6 @@
 ---
 name: draft-ui
-version: 1.5.0
+version: 1.6.0
 description: "Use when a screen or feature's look, or what it does when used, needs deciding with the user before it is specified or built: \"show me a few design directions\", \"make it clickable so I can feel it\", undo versus confirm. Produces divergent variants in the app's own stack or runnable takes of one flow, a pick from the user, and a locked ui-brief.md that design-solution lifts. Not for judging a built diff (inspect-ui), a logic spike (run-spike), or a standalone page (craft-page)."
 ---
 
@@ -98,11 +98,25 @@ choice with its neighbor betrays step 1.
 *Done when: the switcher serves all variants on real content, written in the
 stack the plan named.*
 
-## 3. Show, then the review loop — before lock
+## 3. Look at every variant, show, then loop — before lock
+
+Before the user sees anything, run each variant and capture its screen —
+`capture.md` beside this file has the commands per stack; read it before the
+first capture. Open every image and judge it against its plan: the signature
+visible, the finding (worked-in screens) readable without scrolling, no
+clipped or overlapping text, kit controls in their real states. Fix what
+fails and capture again; a defect you saw is fixed, never handed over as a
+note for the owner to weigh. Two native drafts went to their owner with neither
+screen ever seen by the agent that built them; "it builds and launches" is not
+"it looks right".
 
 Hand over the URL — or, for a native app, the exact command that launches each
-variant — plus a one-line pitch per variant naming its signature.
-Then loop:
+variant — plus a one-line pitch per variant naming its signature, and the path
+of each capture. A variant you could not capture is named as unseen, with the
+error that stopped you.
+
+*Done when: every variant's latest capture, opened by you, shows none of
+those defects — or the variant is named unseen with its error.* Then loop:
 
 1. Collect the pick — a winner or a hybrid ("A's layout with C's density";
    the hybrid is the common real answer) — **and the amendments** that come
@@ -180,6 +194,7 @@ instead of re-deciding. When no spec exists yet, the brief waits in
 | "User picked — skip the amendments round" | The pick usually arrives with amendments. Apply, show once more, lock on their word |
 | "No app yet, so describe the options in chat" | Runnable variants are the medium. No screens → the declared stack, or standalone pages when none is declared |
 | "The app is native, with no web page to embed in, so standalone HTML" | The variants go in the app as real views behind a launch switch. The HTML draft redrew the kit's badge and button in CSS |
+| "I saw the truncation and left it; I'll mention it in case they lean toward C" | The owner judges directions, not your defects. Fix it and capture again — a draft shown broken is judged broken |
 | "The front end doesn't exist yet, so standalone HTML" | The design tokens name the stack. Draft in it; HTML is for a repo that names none |
 | "The winning variant works — promote its code" | Draft code, when the surface is not shipped yet. The build rewrites from the brief under test-first |
 | "It already shipped, so lock a brief and rewrite it under the spec chain" | The user said build it. Update the owning `## UI design` and promote the winner. A new ui-brief restarts a cycle they did not ask for |
@@ -190,6 +205,7 @@ instead of re-deciding. When no spec exists yet, the brief waits in
 - HTML variants for a native app, or for a repo whose design tokens name its UI framework
 - All variants sharing every palette, type, and density choice
 - A variant-scoped class that re-declares a control the kit already ships — or a hand-rolled control with no `:focus-visible` where the kit's has one
+- A hand-over with a variant nobody has looked at, and not named unseen
 - A lock without the user's explicit go
 - A worked-in screen whose variants show the data but never state the finding
   in words, or put the action on an object other than the one the finding names

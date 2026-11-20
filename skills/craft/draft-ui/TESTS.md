@@ -65,6 +65,28 @@ covering the same moments. That brings the total to 4 of 4 cells.
   directory.
 - `agent-browser close --all`, run by Haiku in the charter cell, "reported closing a session named `g-a`.
   I don't know whose that was." The recipe now closes sessions by name.
+- Under shape, captures go in `{RUN}/ui/`, so `$(basename $SHOTS)` named every run's session `ui-a`. The
+  session name is now a hash of the full path.
+- Both B walks in the charter GREEN cells lost two moments from the contact sheet at the default 0.05
+  threshold. The recipe now passes 0.01.
+
+**Final GREEN, takes-shaped (`interaction.md`), committed text plus the fixes above** (shared-store fixture,
+charter 1.17.0). Thu's ask was about what pressing Reserve does on slow wifi or a lost race. The scorer opened
+a contact sheet in each cell:
+
+| Check | Sonnet | Haiku |
+|---|---|---|
+| Session name | `draft-$(printf … \| shasum …)` | same |
+| Threshold 0.01 | yes | yes |
+| Walks | a/b/c; slow save "Reserving… / Still saving", the lost race, cancel | a/b/c; undo, "Saving…", stalled, the lost race |
+| Sign-in host not shared with the owner's | `127.0.0.1` (owner on `localhost`) | `127.0.0.1` |
+
+Takes got walks with no slot in `interaction.md`, because its §2 serves takes the way §2/§3 serve variants,
+so no text was added there. Haiku did not reopen the a and b sheets after a re-record. The done-when now says
+"latest walk contact sheet", the same rule captures already follow.
+
+Scorer-opened contact sheets: Sonnet and Haiku GREEN (a, b), charter GREEN Sonnet (a), charter RED Haiku
+(c), final Sonnet (b), final Haiku (a). The other cells' walks were checked by file and duration only.
 
 ## v2.0.0 — the winner is kept, on a fake behind the app's client (2026-11-19, Sonnet + Haiku)
 

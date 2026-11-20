@@ -38,15 +38,16 @@ in as a real user, on this worktree's own instance. That instance has its own po
 the way `project.md` says to run a second instance; failing that, with the repo's own create, migrate and seed
 commands, on the local database server, under a name taken from the worktree. That database belongs to the
 worktree. It is not data outside it, and making it is not a hard stop. The developer database and the
-operator's running instance stay untouched. The fake behind the client answers only the calls no endpoint serves
-yet. Two runs on a shared local database store read the per-run database as outside the worktree and faked
-every call, sign-in included. The operator would have picked on invented data. In klynt the same reading put the
-draft on a separate page with no desktop around it. When neither `project.md` nor the code offers a way to point
-an instance at its own database, stop and name what the repo is missing in the report.
+operator's running instance stay untouched. The fake behind the client answers the calls no endpoint serves yet,
+and any existing call a take must slow or fail. Two runs on a shared local database store read the per-run database as outside the worktree and faked
+every call, sign-in included. The operator would have picked on invented data. In one run the same reading put the
+draft on a separate page with no desktop around it.
 
 Look at every variant and record each one's walk, with captures and walks saved under `{RUN}/ui/`. Leave the
 app running. Write `{RUN}/ui-pick.md` with:
-- how to open each variant (its URL or launch command), and the login to use;
+- how to open each variant (its URL or launch command), and the login to use, on a host whose sign-in cookie
+  the operator's own instance does not share. Four hand-overs gave `localhost` while the operator worked on
+  `localhost`; signing in to the draft would have signed them out of their own app;
 - a one-line pitch, the capture path and the walk video path for each;
 - your recommendation and its reason.
 

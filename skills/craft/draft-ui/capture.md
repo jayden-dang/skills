@@ -32,12 +32,12 @@ viewport through `agent-browser` (`set viewport`) or the DevTools protocol.
 
 Write the walk once, before the first recording: one line per moment, in order
 (`reserve M for Jonas → Jonas fitted, M 2→1`). Every variant walks that list.
-Then per variant, in an `agent-browser` session of its own, named after this
-run's capture directory. A fixed `draft-a` was already in use by a draft running
+Then per variant, in an `agent-browser` session of its own, named from the full
+path of this run's capture directory. A fixed `draft-a` was already in use by a draft running
 next to it: one walk clicked into the other run's recording and stopped it.
 
 ```sh
-S=$(basename $SHOTS)-a                      # one session per variant, unique to this run
+S=draft-$(printf %s "$SHOTS" | shasum | cut -c1-8)-a   # one session per variant, unique to this run
 agent-browser --session $S open "http://127.0.0.1:5341/gear?variant=a"
 # sign in now, if the app asks, so the video starts on the screen itself
 agent-browser --session $S set viewport 1440 900

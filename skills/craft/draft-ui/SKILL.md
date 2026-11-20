@@ -136,7 +136,7 @@ of each capture, and the path of each walk. A variant you could not capture or
 record is named as unseen or unrecorded, with the error that stopped you.
 
 *Done when: every variant's latest capture, opened by you, shows none of
-those defects, and every browser variant's walk contact sheet, opened by you,
+those defects, and every browser variant's latest walk contact sheet, opened by you,
 shows each moment's result — or the variant is named unseen or unrecorded with
 its error.* Then loop:
 

@@ -43,6 +43,14 @@ exists. Captures and walks go under `{RUN}/ui/`; `ui-pick.md` names the login an
 Both B walks' contact sheets dropped the first two moments at the default 0.05 threshold. Both agents named
 the moments rather than re-recording. draft-ui's recipe now passes `--contact-sheet-threshold 0.01`.
 
+**REFACTOR.** All four signed-in GREEN hand-overs gave `localhost` URLs while the owner's app ran on
+`localhost`. The cookie is per host, so signing in to the draft would have signed the owner out; every
+baseline hand-over had said `127.0.0.1`. `ui-pick.md`'s login line now requires a host whose sign-in cookie
+the operator's instance does not share. Three more changes: the fake may slow or fail an existing call for a
+take (STALL's autosave case); "stop and name what is missing" was cut because no failure stands behind it;
+"In klynt" became "In one run". A final takes-shaped pair (draft-ui TESTS.md § v2.1.0) gave `127.0.0.1` on
+both models, each with its own database and the owner's `dev.sqlite` unchanged.
+
 Not covered: the conductor's step 6b opening the videos (no conductor run); a repo with no knob at all (the
 stop-and-name branch); klynt itself, whose second-instance recipe does not exist yet.
 

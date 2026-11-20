@@ -94,7 +94,8 @@ read, so the word meant nothing when they opened them.
    ends the run at step 9 with what exists. Two of two silent stops in one run never recovered alone.
    On `UI`, run step 6b.
 6b. **The UI pick.** `work` has the variants running and `RUN/ui-pick.md` written. Open each variant for the
-   operator: `open <url>` for a page, the launch command for a native app. Comment on the ticket that the screen
+   operator: `open <url>` for a page, the launch command for a native app, and `open` each walk video
+   `ui-pick.md` names. Comment on the ticket that the screen
    waits on them. Tell them in five lines at most: what is open, one line per variant, the recommendation, and
    that plain words pick or amend and `go` locks it. End your turn. Their reply → write it verbatim to
    `RUN/ui-reply.md`, send `work` its path, and re-arm the watch. Only the operator's own message picks or

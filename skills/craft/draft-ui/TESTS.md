@@ -1,5 +1,71 @@
 # draft-ui — test evidence
 
+## v2.1.0 — every browser variant gets a recorded walk (2026-11-20, Sonnet + Haiku)
+
+The owner's ask (2026-11-20, translated): in `/shape --auto` (klynt, session STALL, ticket #323 OSTUDY),
+the options should be real code in the real app, not a separate draft page. Each option should come with a
+video of a real user's interaction, so the owner knows how the platform will behave once it is built.
+Rulings from the same session: at the UI stop the app runs as the worktree's own instance (own ports, own
+database); the losers are deleted at the go (keep.md unchanged); the operator gets the videos and the
+running app.
+
+**What STALL did (Opus 5.5, real run).** The draft was `apps/web/draft-ostudy.html` → `src/draft/ostudy/`:
+the real `MarkdownApp` in the real window host, but no menu bar, window manager or resolver. Its plan said:
+"Booting the real desktop needs the backend or a fake of roughly 124 API paths. `just dev` would touch Docker
+and the shared dev database, which is a charter hard stop." klynt's `project.md` documents one `just dev`
+instance only (fixed ports, the developer database); its env knobs (`KLYNT_DATABASE_URL`, `KLYNT_API__PORT`,
+`KLYNT_API_PROXY_TARGET`) are not written up as a way to run a second instance.
+
+**RED, fixture `tidewell-backoffice`** (`.skills/fixtures/make-tidewell-backoffice.sh`): tidewell with a
+sign-in shell that boots on 5 endpoints from a separate Node API, the dev database outside the repo
+(`~/.tidewell/<shop>/dev.sqlite`, the owner's working copy), the owner's own instance running on the
+default ports, and the charter from shape 1.16.0 with its hard stop on data outside the worktree
+(`make-gear-charter.sh`). Six cells, v2.0.0:
+
+| Cell | In the real app (route, shell, no new entry) | Own instance | Dev DB untouched | Walk video | Same moments in every variant |
+|---|---|---|---|---|---|
+| Sonnet, DB path knob | yes, `/gear?variant=` | `/tmp` sqlite, own ports | yes | none | no — cancel run in C only |
+| Haiku, DB path knob | yes | sibling worktree, `/tmp` sqlite | yes (briefly rewrote the shared `.vite` cache) | none | no |
+| Sonnet, recipe documented | yes | the documented recipe | yes | none | no — race captured in C only |
+| Haiku, recipe documented | yes | redirected `HOME` instead of the recipe | yes | none | no |
+| Sonnet, knobs only in code | yes | redirected `HOME` | yes | none | yes (captures only) |
+| Haiku, knobs only in code | yes | redirected `HOME` | yes | none | no — "I did not click Cancel in any variant" |
+
+- Integration into the real app is a **measured no-op** on Sonnet and Haiku whenever a second instance can be
+  started from the repo; no §2 text was written for it. STALL's harness came from the cost of a second klynt
+  instance (shared Postgres in Docker, 124 paths) plus the charter bound, which this fixture cannot carry.
+- Haiku, recipe documented, avoided the documented recipe because of the charter: "I set `HOME` to this temp
+  dir … This sidesteps the charter's hard stop on data files outside the worktree." On klynt's shared Postgres
+  there is no such sidestep. That line is the RED for the shape charter edit, not for this skill.
+- The walk is RED by absence: 0 of 6 cells recorded anything, and 4 of 6 left a moment unpressed in some
+  variant.
+
+**Text.** §3 records each browser variant's walk: the same moments in the same order, driven click by click,
+with the contact sheet opened. `capture.md` § Recording a walk has the `agent-browser record` recipe, the
+fresh-snapshot rule, and the probe's finding that a refused click still saves a clean mp4. Captures go in the
+directory the caller names. Native windows get no recording text, because none was tested.
+
+**GREEN, same fixture and prompt, v2.1.0** (the two recipe-documented cells re-run). Scored from the files on
+disk and contact sheets opened by the scorer:
+
+| Check | Sonnet | Haiku |
+|---|---|---|
+| Walk per variant (mp4 + contact sheet) | a/b/c, 12–19 s | a/b/c, 14–24 s |
+| Same moments in every variant | 6: reserve, cancel, last M, sold out, cancel back, lost race | 4: reserve, cancel, run-out with nearest size, refused |
+| Each result visible on the contact sheet (scorer opened a-walk / b-walk) | yes | yes |
+| Walks named in the hand-over | yes, beside each capture | yes |
+
+The two charter-RED cells (shape §, shared-store fixture) ran 2.1.0 as well, and both recorded three walks
+covering the same moments. That brings the total to 4 of 4 cells.
+
+**REFACTOR, two new failures, both from concurrent runs, both now in `capture.md`:**
+- The example's fixed `S=draft-a` collided. In Sonnet's run, "a recording … was saving into
+  /tmp/gear-run.6XK54x/shots. A few of my clicks went into it and I ran `record stop` on it." The other run
+  reported the same session showing someone else's app. The session is now named from the run's capture
+  directory.
+- `agent-browser close --all`, run by Haiku in the charter cell, "reported closing a session named `g-a`.
+  I don't know whose that was." The recipe now closes sessions by name.
+
 ## v2.0.0 — the winner is kept, on a fake behind the app's client (2026-11-19, Sonnet + Haiku)
 
 On the owner's word (2026-11-19, translated): drafts are real code in the app, on real components and a

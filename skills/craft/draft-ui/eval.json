@@ -192,5 +192,18 @@
       "each lock test was run red by breaking the behaviour it guards, then restored; the suite is green",
       "a production build contains no fake module or fixture value"
     ]
+  },
+  {
+    "eval_id": 17,
+    "eval_name": "every-browser-variant-gets-a-recorded-walk",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § v2.1.0 RED — 0 of 6 cells recorded a walk, 4 of 6 left a moment unpressed in some variant; GREEN recorded one walk per variant over the same moments, contact sheets opened",
+    "prompt": "Unattended UI stop on a sign-in React back office with the owner's instance on the default ports: 'I want to click through reserving a wetsuit for Jonas, cancel it, and see what the screen does when the M wetsuits run out.'",
+    "assertions": [
+      "each variant has a walk video and a contact sheet, recorded from an agent-browser session whose name is unique to this run",
+      "every variant's walk covers the same moments in the same order, including the run-out and the cancel",
+      "the hand-over names each walk's path beside its capture, and the agent opened every contact sheet",
+      "no browser session the run did not open is closed or recorded into"
+    ]
   }
 ]

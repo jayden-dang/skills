@@ -1,5 +1,51 @@
 # TESTS.md — shape
 
+## v1.17.0 — the UI stop runs on the worktree's own instance and hands over walk videos (2026-11-20, Sonnet + Haiku)
+
+The owner's ask: at the UI stop, `/shape --auto` should show the options as real code in the real app, with a
+video of a real user's interaction for each. Rulings: the app runs as the worktree's own instance (own ports,
+own database); the operator gets the videos and the running app.
+
+**RED, real run (Opus 5.5, klynt STALL, #323).** The charter carried only the template's hard stop on data
+outside the worktree. The work session's plan: "`just dev` would touch Docker and the shared dev database,
+which is a charter hard stop. So the draft is a dev-only page, `apps/web/draft-ostudy.html`." The operator
+got a harness with the real editor and no desktop around it.
+
+**RED, fixture `tidewell-backoffice` in `server` mode** (databases live in one machine-wide store,
+`/Users/Shared/tidewell-data/<shop>/`, like klynt's Docker Postgres; the knob `TIDEWELL_DB_NAME` exists in
+code only; the owner's instance runs on the default ports from a separate checkout). 1.16.0 UI stop:
+
+- Sonnet: Vite with `VITE_TIDEWELL_FAKE=1`, "No API server is running, and nothing touches the shared dev
+  database." Every call faked, sign-in included ("no sign-in").
+- Haiku: the same. "The app is entirely in-browser fake: no API, no database, and nothing in /Users/Shared
+  was touched."
+- With the store under `~/` (documented second-instance recipe), Haiku still avoided the recipe:
+  "I set `HOME` to this temp dir … This sidesteps the charter's hard stop on data files outside the worktree"
+  (draft-ui TESTS.md § v2.1.0). On a server database there is no `HOME` to redirect.
+
+**Text.** The UI stop says where the app runs: signed in, on the worktree's own instance (`project.md`'s
+second-instance recipe, else the repo's own create/migrate/seed under a worktree name on the local database
+server). It says that database is the worktree's own and not a hard stop, keeps the developer database and the
+operator's instance untouched, fakes only unserved calls, and stops naming what is missing when no knob
+exists. Captures and walks go under `{RUN}/ui/`; `ui-pick.md` names the login and each walk video;
+`auto.md` 6b opens the videos.
+
+**GREEN, same fixture, 1.17.0** (draft-ui 2.1.0 installed). Scored from disk:
+
+| Check | Sonnet | Haiku |
+|---|---|---|
+| Own database in the shared store | `tidewell-ugrtm5.sqlite` via `TIDEWELL_DB_NAME … npm run seed` | `feat-gear.sqlite`, same way |
+| Owner's `dev.sqlite` unchanged (sha) | yes | yes |
+| Real sign-in, trips and divers from the API; only gear faked | yes | yes (`src/api/client.ts` unchanged) |
+| Variants at `/gear?variant=` in the shell | yes | yes |
+| Walks under `{RUN}/ui/`, named in `ui-pick.md` with the login | yes | yes |
+
+Both B walks' contact sheets dropped the first two moments at the default 0.05 threshold. Both agents named
+the moments rather than re-recording. draft-ui's recipe now passes `--contact-sheet-threshold 0.01`.
+
+Not covered: the conductor's step 6b opening the videos (no conductor run); a repo with no knob at all (the
+stop-and-name branch); klynt itself, whose second-instance recipe does not exist yet.
+
 ## 1.16.0 — the UI stop: the operator picks in the running app before design (2026-11-19, Sonnet)
 
 On the owner's word (2026-11-19, translated): after `work` and `interpret` finish requirements, the run stops

@@ -33,10 +33,21 @@ name it in the report. The conductor stops at the sheet. A fork about how a scre
 ## The UI stop
 {keep when the card's UI line is not `none` and it names no `UI brief:`; otherwise delete this section}
 The screen is the operator's, and they pick it in the running app. Once `{slug}-interpret` has approved
-`requirements.md`, run `draft-ui` in `{WT}` before `design-solution`. Use variants in the app's own stack, on a
-fake behind its client, and look at every variant. Leave the app running. Write `{RUN}/ui-pick.md` with:
-- how to open each variant (its URL or launch command);
-- a one-line pitch and the capture path for each;
+`requirements.md`, run `draft-ui` in `{WT}` before `design-solution`. The variants live in the app itself, signed
+in as a real user, on this worktree's own instance. That instance has its own ports and its own database: made
+the way `project.md` says to run a second instance; failing that, with the repo's own create, migrate and seed
+commands, on the local database server, under a name taken from the worktree. That database belongs to the
+worktree. It is not data outside it, and making it is not a hard stop. The developer database and the
+operator's running instance stay untouched. The fake behind the client answers only the calls no endpoint serves
+yet. Two runs on a shared local database store read the per-run database as outside the worktree and faked
+every call, sign-in included. The operator would have picked on invented data. In klynt the same reading put the
+draft on a separate page with no desktop around it. When neither `project.md` nor the code offers a way to point
+an instance at its own database, stop and name what the repo is missing in the report.
+
+Look at every variant and record each one's walk, with captures and walks saved under `{RUN}/ui/`. Leave the
+app running. Write `{RUN}/ui-pick.md` with:
+- how to open each variant (its URL or launch command), and the login to use;
+- a one-line pitch, the capture path and the walk video path for each;
 - your recommendation and its reason.
 
 Then end your turn. `{slug}-interpret` may review the variants' code, but it never picks one or says go.

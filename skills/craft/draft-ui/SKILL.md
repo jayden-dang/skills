@@ -1,6 +1,6 @@
 ---
 name: draft-ui
-version: 2.0.0
+version: 2.1.0
 description: "Use when a screen or feature's look, or what it does when used, needs deciding with the user before it is specified or built: \"show me a few design directions\", \"make it clickable so I can feel it\", undo versus confirm. Produces divergent variants in the app's own stack on a fake API, or runnable takes of one flow, a pick from the user, the winner kept as the surface's code behind lock tests, and a locked ui-brief.md that design-solution lifts. Not for judging a built diff (inspect-ui), a logic spike (run-spike), or a standalone page (craft-page)."
 ---
 
@@ -122,13 +122,23 @@ note for the owner to weigh. Two native drafts went to their owner with neither
 screen ever seen by the agent that built them; "it builds and launches" is not
 "it looks right".
 
+**In a browser, record each variant's walk** — a video of the variant used the
+way the user will use it, driven click by click through the running app. Every
+variant walks the **same moments in the same order**: the user's own words
+first, then each requirement's happy path, its failure branch and the way back.
+`capture.md` § Recording a walk has the recipe. In six runs before this rule,
+no variant had a video, and three variants were handed over with a moment
+(cancel) never pressed in them.
+
 Hand over the URL — or, for a native app, the exact command that launches each
-variant — plus a one-line pitch per variant naming its signature, and the path
-of each capture. A variant you could not capture is named as unseen, with the
-error that stopped you.
+variant — plus a one-line pitch per variant naming its signature, the path
+of each capture, and the path of each walk. A variant you could not capture or
+record is named as unseen or unrecorded, with the error that stopped you.
 
 *Done when: every variant's latest capture, opened by you, shows none of
-those defects — or the variant is named unseen with its error.* Then loop:
+those defects, and every browser variant's walk contact sheet, opened by you,
+shows each moment's result — or the variant is named unseen or unrecorded with
+its error.* Then loop:
 
 1. Collect the pick — a winner or a hybrid ("A's layout with C's density";
    the hybrid is the common real answer) — **and the amendments** that come

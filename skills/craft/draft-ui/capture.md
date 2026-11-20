@@ -8,7 +8,8 @@ be deleted unread. Stop anything you started by its PID, never by a pattern:
 owner's included.
 
 Save captures outside the repo's tracked tree (or in a path the cleanup
-deletes), in a directory of this run's own — `SHOTS=$(mktemp -d /tmp/draft-shots.XXXXXX)` —
+deletes), in a directory of this run's own — the one your caller names for
+captures when it names one, else `SHOTS=$(mktemp -d /tmp/draft-shots.XXXXXX)` —
 one per variant, named `<key>-<name>.png`. Three drafts run at once in one fixed
 `/tmp/draft-shots` each saw the others' captures beside their own. Then open each image with
 your file-reading tool. A capture you did not open is not a look.
@@ -26,6 +27,41 @@ Serve the draft, then per variant:
 On Linux the binary is `google-chrome` or `chromium`. A width under 500 crops a
 wider layout instead of reflowing it; for a narrow screen, emulate the
 viewport through `agent-browser` (`set viewport`) or the DevTools protocol.
+
+## Recording a walk
+
+Write the walk once, before the first recording: one line per moment, in order
+(`reserve M for Jonas → Jonas fitted, M 2→1`). Every variant walks that list.
+Then per variant, in an `agent-browser` session of its own, named after this
+run's capture directory. A fixed `draft-a` was already in use by a draft running
+next to it: one walk clicked into the other run's recording and stopped it.
+
+```sh
+S=$(basename $SHOTS)-a                      # one session per variant, unique to this run
+agent-browser --session $S open "http://127.0.0.1:5341/gear?variant=a"
+# sign in now, if the app asks, so the video starts on the screen itself
+agent-browser --session $S set viewport 1440 900
+agent-browser --session $S record start $SHOTS/a-walk.mp4 --cursor --contact-sheet \
+  --contact-sheet-threshold 0.01            # a badge or toast changes ~1% of the frame
+agent-browser --session $S snapshot -i      # fresh refs before every action
+agent-browser --session $S click @e12       # one moment's action, as the user would
+agent-browser --session $S wait 1500        # long enough for a viewer to see the result
+# …next moment: snapshot, act, wait…
+agent-browser --session $S record stop      # writes a-walk.mp4 and a-walk.contact-sheet.png
+agent-browser --session $S close            # your own sessions, by name; never `close --all`
+```
+
+`close --all` once closed a session belonging to a draft running beside it.
+
+Use a fresh snapshot before each action: after the screen changes, an old ref can
+point at an element that is now covered.
+
+A step that fails still leaves a saved video. In one trial walk a click landed
+on a covering element, the command printed `✗`, and the mp4 saved anyway.
+Read every command's output, then open the contact sheet: each moment's result
+must appear on it. At the default threshold (0.05) one sheet skipped a reserve and a
+cancel whose only change was a row label. If a result is missing, fix the cause and record the walk
+again; if you cannot, name that moment unrecorded.
 
 ## macOS native app
 

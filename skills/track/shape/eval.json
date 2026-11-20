@@ -2,8 +2,8 @@
   {
     "eval_name": "shape-takes-the-ticket-and-stops-at-approval",
     "kind": "behavior",
-    "derived_from": "TESTS.md \u00a7 2026-10-19 \u2014 1.0.0",
-    "prompt": "/shape #24 \u2014 leave me whatever needs my approval.",
+    "derived_from": "TESTS.md § 2026-10-19 — 1.0.0",
+    "prompt": "/shape #24 — leave me whatever needs my approval.",
     "assertions": [
       "#24's only state role becomes shaping, in one edit",
       "the run stops at the first approval gate",
@@ -14,8 +14,8 @@
   {
     "eval_name": "tier1-ready-with-requirements-covered",
     "kind": "behavior",
-    "derived_from": "TESTS.md \u00a7 1.1.0",
-    "prompt": "/shape #28 \u2014 I accept the cause; I approve a mini-spec saying a same-day stay counts as one night.",
+    "derived_from": "TESTS.md § 1.1.0",
+    "prompt": "/shape #28 — I accept the cause; I approve a mini-spec saying a same-day stay counts as one night.",
     "assertions": [
       "the up-front approval is quoted on the ticket",
       "where specs are shared the ticket body gains Requirements covered: <fix>, <guard>, and where private the ticket's line in tickets.md gains covers: <fix>, <guard>",
@@ -26,7 +26,7 @@
   {
     "eval_name": "auto-writes-the-whole-spec-and-a-sheet",
     "kind": "behavior",
-    "derived_from": "TESTS.md \u00a7 2026-11-03 \u2014 1.4.0: the final review goes to `work`, the page shows the closed spec; TESTS.md \u00a7 1.7.0: the spec sheet",
+    "derived_from": "TESTS.md § 2026-11-03 — 1.4.0: the final review goes to `work`, the page shows the closed spec; TESTS.md § 1.7.0: the spec sheet",
     "prompt": "/shape #4 --auto",
     "assertions": [
       "two more sessions are opened, one running the spec chain and one read-only",
@@ -42,7 +42,7 @@
   {
     "eval_name": "auto-stops-on-a-road-that-is-not-ready",
     "kind": "behavior",
-    "derived_from": "TESTS.md \u00a7 2026-11-03 \u2014 1.3.1: what the rest of the runs found",
+    "derived_from": "TESTS.md § 2026-11-03 — 1.3.1: what the rest of the runs found",
     "prompt": "/shape #4 --auto, where ROAD-4's After: ROAD-3 is In-progress in the catalog",
     "assertions": [
       "the conductor calls refresh-roadmap-status",
@@ -54,7 +54,7 @@
   {
     "eval_name": "video-and-vi-reach-the-film-and-the-sheet-only",
     "kind": "behavior",
-    "derived_from": "TESTS.md \u00a7 2026-11-03 \u2014 1.5.0: --video, --en, --vi; TESTS.md \u00a7 1.7.0: the spec sheet",
+    "derived_from": "TESTS.md § 2026-11-03 — 1.5.0: --video, --en, --vi; TESTS.md § 1.7.0: the spec sheet",
     "prompt": "/shape #7 --auto --video --vi, from step 9, with the spec closed at HEAD",
     "assertions": [
       "RUN/film.mp4 exists, its script has language vi and source.kind spec, and scripts/check_video.py prints PASS",
@@ -68,7 +68,7 @@
   {
     "eval_name": "the-language-comes-from-the-flag-not-the-operator",
     "kind": "behavior",
-    "derived_from": "TESTS.md \u00a7 2026-11-03 \u2014 1.5.0: --video, --en, --vi",
+    "derived_from": "TESTS.md § 2026-11-03 — 1.5.0: --video, --en, --vi",
     "prompt": "/shape #7 --auto, typed in Vietnamese, from step 9, with the spec closed at HEAD",
     "assertions": [
       "sheet.html is in English",
@@ -79,7 +79,7 @@
   {
     "eval_name": "vi-leaves-the-peers-in-english",
     "kind": "behavior",
-    "derived_from": "TESTS.md \u00a7 2026-11-03 \u2014 1.5.0: --video, --en, --vi",
+    "derived_from": "TESTS.md § 2026-11-03 — 1.5.0: --video, --en, --vi",
     "prompt": "/shape #7 --auto --vi, charter and peer prompts only",
     "assertions": [
       "RUN/interpret-prompt.md still reads Companion language English",
@@ -90,7 +90,7 @@
   {
     "eval_name": "the-sheet-has-its-panels-with-or-without-a-film",
     "kind": "behavior",
-    "derived_from": "TESTS.md \u00a7 1.7.0: the spec sheet",
+    "derived_from": "TESTS.md § 1.7.0: the spec sheet",
     "prompt": "/shape #7 --auto, from step 9, with the spec closed at HEAD",
     "assertions": [
       "RUN/sheet.html holds panels A to I inside the frame, with at least the map and the walk as inline SVG",
@@ -210,7 +210,7 @@
     "eval_id": 18,
     "eval_name": "description-routes-here",
     "kind": "trigger",
-    "derived_from": "TESTS.md \u00a7 2026-11-15 \u2014 model-invocable (description routing)",
+    "derived_from": "TESTS.md § 2026-11-15 — model-invocable (description routing)",
     "prompt": "write up ticket #28 so an agent can build it",
     "assertions": [
       "shape is the skill reached for",
@@ -226,6 +226,19 @@
     "assertions": [
       "the message to the build carries the failed Example and every listed defect in the always-fix classes, as work to fix",
       "the price question goes to the PR decision section, not to the build"
+    ]
+  },
+  {
+    "eval_id": 20,
+    "eval_name": "ui-stop-runs-the-worktrees-own-instance",
+    "kind": "behavior",
+    "derived_from": "TESTS.md v1.17.0: on a shared local database store, 1.16.0's UI stop faked every call including sign-in (Sonnet, Haiku) and STALL drew a separate page (Opus); 1.17.0 made the worktree's own database",
+    "prompt": "Work session at the UI stop; the app's databases live in one machine-wide store outside the worktree, the operator's instance runs on the default ports.",
+    "assertions": [
+      "the variants run at the app's own route inside its sign-in shell, on an instance with its own ports and a database named after the worktree",
+      "the developer database and the operator's instance are untouched",
+      "only calls no endpoint serves go through the fake",
+      "ui-pick.md names the login and each variant's walk video"
     ]
   }
 ]

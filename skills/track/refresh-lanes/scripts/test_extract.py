@@ -366,6 +366,37 @@ class TestExtract(unittest.TestCase):
         f = {x["code"]: x for x in self.snap["features"]}
         self.assertEqual(f["READ"]["started"], "2026-10-12")
 
+    def test_a_catalog_in_the_eight_column_template_shape_is_read(self):
+        # configure-repo seeds shards as Code | Feature | Spec | Status | Owner | Roadmap item | Match terms | Surface roots
+        from extract import parse_catalog
+        with tempfile.TemporaryDirectory() as t:
+            root = Path(t)
+            (root / "docs/specs/catalog").mkdir(parents=True)
+            (root / "docs/specs/INDEX.md").write_text(INDEX)
+            (root / "docs/specs/catalog/core.md").write_text(
+                "# Core catalog\n\n"
+                "| Code | Feature | Spec | Status | Owner | Roadmap item | Match terms | Surface roots |\n"
+                "|---|---|---|---|---|---|---|---|\n"
+                "| ACCT | Accounts (login) | [spec](../2026-09-01-acct/) | Implemented |  | ROAD-1 | login, account | `api/` |\n"
+                "| SUBS | Subscriptions | — | In-progress | @org/billing | ROAD-2 amends ROAD-3 | plan | `api/subs/` |\n"
+                "| ~~OLD~~ | Retired thing | — | Retired |  | — | old | `api/old/` |\n")
+            feats = {f["code"]: f for f in parse_catalog(root)}
+        self.assertEqual(sorted(feats), ["ACCT", "SUBS"])
+        self.assertEqual(feats["ACCT"]["status"], "Implemented")
+        self.assertEqual(feats["ACCT"]["roads"], ["ROAD-1"])
+        self.assertEqual(feats["ACCT"]["name"], "Accounts")
+        self.assertEqual(feats["ACCT"]["spec"], "docs/specs/2026-09-01-acct")
+        self.assertEqual(feats["SUBS"]["roads"], ["ROAD-2"])
+        self.assertEqual(feats["SUBS"]["amends"], ["ROAD-3"])
+        self.assertIsNone(feats["SUBS"]["spec"])
+
+    def test_status_history_is_read_from_the_eight_column_shape(self):
+        from extract import parse_row
+        row = parse_row("| SUBS | Subscriptions | — | Implemented | @org/billing | ROAD-2 | plan | `api/subs/` |")
+        self.assertEqual((row["code"], row["status"], row["struck"]), ("SUBS", "Implemented", False))
+        self.assertIsNone(parse_row("| Code | Feature | Spec | Status | Owner | Roadmap item | Match terms | Surface roots |"))
+        self.assertIsNone(parse_row("|---|---|---|---|---|---|---|---|"))
+
     def test_after_coverage_is_reported(self):
         cov = self.snap["coverage"]
         self.assertEqual(cov["live_items"], 9)

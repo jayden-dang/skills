@@ -25,7 +25,8 @@ STATE = {
     "unspecced": "Not started", "ready": "Ready", "deferred": "Deferred", "retired": "Dropped",
 }
 STATUS_WORDS = "Draft|Approved|In-progress|Implemented|Shipped|Recognized|Retired"
-ROW = re.compile(r"^\| (~~)?([A-Z][A-Z0-9]{1,11})(~~)? \|(.*)\| (" + STATUS_WORDS + r") \|([^|]*)\|\s*$")
+STATUSES = set(STATUS_WORDS.split("|"))
+CODE_CELL = re.compile(r"^(~~)?([A-Z][A-Z0-9]{1,11})(~~)?$")
 MILE_ROW = re.compile(r"^\| (~~)?(?:\*\*)?(MILE-\d+)(?:\*\*)?(~~)? \| ([^|]*) \| ([^|]*) \| ([^|]*) \| ([^|]*) \|")
 MILE_ROW_LEAN = re.compile(r"^\| (~~)?(?:\*\*)?(MILE-\d+)(?:\*\*)?(~~)? \| ([^|]*) \| ([^|]*) \| ([^|]*) \|\s*$")
 MEMBER = re.compile(r"^- (~~)?\*\*(ROAD-\d+)\*\*(~~)?\s*(.*)$")
@@ -123,6 +124,27 @@ def add_item(items: dict, ms: dict, rid: str, rest: str, deferred: bool, retired
 # ---------------------------------------------------------------- catalog / specs
 
 
+def parse_row(line: str) -> dict | None:
+    """One feature row of a catalog table, in any column order the templates use.
+
+    The status is the first cell holding a status word, and the roadmap bind is the first
+    later cell naming a ROAD-N, so both the five-column shape (Status | Roadmap item last)
+    and the eight-column shard template (Owner, Match terms, Surface roots after them) read."""
+    text = line.strip()
+    if not (text.startswith("|") and text.endswith("|")):
+        return None
+    cells = [c.strip() for c in text[1:-1].split("|")]
+    code = CODE_CELL.match(cells[0]) if cells else None
+    if not code:
+        return None
+    at = next((i for i, c in enumerate(cells[1:], 1) if c in STATUSES), None)
+    if at is None:
+        return None
+    road = next((c for c in cells[at + 1:] if re.search(r"ROAD-\d+", c)), "")
+    return {"struck": bool(code.group(1)), "code": code.group(2), "middle": cells[1:at],
+            "status": cells[at], "road": road}
+
+
 def parse_catalog(root: Path) -> list[dict]:
     files = []
     index = root / "docs/specs/INDEX.md"
@@ -134,11 +156,10 @@ def parse_catalog(root: Path) -> list[dict]:
     feats = []
     for domain, path in files:
         for line in path.read_text().splitlines():
-            m = ROW.match(line)
-            if not m or m.group(1):
+            row = parse_row(line)
+            if not row or row["struck"]:
                 continue
-            middle = m.group(4)
-            spec = re.search(r"\]\(([^)]+)\)", middle)
+            spec = re.search(r"\]\(([^)]+)\)", " | ".join(row["middle"]))
             spec_dir = None
             if spec:
                 spec_dir = (path.parent / spec.group(1)).resolve()
@@ -146,13 +167,12 @@ def parse_catalog(root: Path) -> list[dict]:
                     spec_dir = spec_dir.relative_to(root.resolve()).as_posix()
                 except ValueError:
                     spec_dir = None
-            name = middle.split("|")[0].strip()
-            name = re.sub(r"\s*\(.*$", "", name)
+            name = re.sub(r"\s*\(.*$", "", row["middle"][0] if row["middle"] else "")
             # `ROAD-127 amends ROAD-219, ROAD-220`: one primary bind, then the items it amends
-            primary, _, amended = m.group(6).partition("amends")
+            primary, _, amended = row["road"].partition("amends")
             feats.append({
-                "code": m.group(2), "name": name, "domain": domain, "spec": spec_dir,
-                "status": m.group(5), "roads": re.findall(r"ROAD-\d+", primary),
+                "code": row["code"], "name": name, "domain": domain, "spec": spec_dir,
+                "status": row["status"], "roads": re.findall(r"ROAD-\d+", primary),
                 "amends": re.findall(r"ROAD-\d+", amended),
             })
     return feats
@@ -515,9 +535,9 @@ def transitions(root: Path, since: str) -> list[dict]:
             minus, plus = {}, {}
             continue
         if line[:1] in "+-" and not line.startswith(("+++", "---")):
-            m = ROW.match(line[1:])
-            if m and not m.group(1):
-                (plus if line[0] == "+" else minus)[m.group(2)] = m.group(5)
+            row = parse_row(line[1:])
+            if row and not row["struck"]:
+                (plus if line[0] == "+" else minus)[row["code"]] = row["status"]
     if sha:
         flush()
     return events

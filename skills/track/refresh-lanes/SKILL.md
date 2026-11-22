@@ -1,6 +1,6 @@
 ---
 name: refresh-lanes
-version: 1.0.1
+version: 1.0.2
 description: "Use right after a write that moves a roadmap item (a catalog row bound to a ROAD-N, an In-progress or Implemented stamp, a Delivered-by line, an edit to Focus or After in docs/roadmap/INDEX.md), or when docs/roadmap/lanes.md is stale or still shows a finished item as in build. Produces a regenerated docs/roadmap/lanes.md in the same push as the record, plus the roadmap snapshot JSON."
 ---
 

@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### Fixed: lanes read the eight-column catalog shard (2026-11-22)
+
+`refresh-lanes` 1.0.2 reads a catalog row by finding its status cell and the first later cell naming a `ROAD-N`, instead of expecting Status and Roadmap item as the last two columns. The shard template `configure-repo` seeds (`Code | Feature | Spec | Status | Owner | Roadmap item | Match terms | Surface roots`) previously matched no row at all, so every bound item read "Not started" and no status change showed in the weekly windows. The five-column shape still reads.
+
 ### Changed: tending a PR resolves a merge conflict instead of reporting it (2026-11-17)
 
 When a pull request conflicts with its base, or the base has moved on, `land-branch` 4.11.0 now merges the base into the branch. It keeps both sides of each conflicted hunk, runs the whole suite and pushes, with no force-push. Where branch protection requires linear history, it rebases and pushes `--force-with-lease`. A conflict whose two sides cannot both hold, for example one side opening a route the other locks, is still reported, with the question, and nothing is pushed. It still never merges.

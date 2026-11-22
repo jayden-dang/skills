@@ -2,7 +2,13 @@
 
 The model and reasoning effort for every session and subagent this skill set opens: `shape`'s peers
 and advisor, the `/go` build session, and `build`'s implementers and reviewers. Read the role's row,
-in the column of the harness **this** session runs in, and pass both values on the launch or dispatch.
+in the column of the vendor the session runs on, and pass both values on the launch or dispatch.
+
+Every role runs on the harness **this** session runs in, except `interpret`, which runs on the other vendor:
+Codex `gpt-6.2-sol` high when the command is typed in Claude Code, Claude `opus` high when it is typed in
+Codex. `--interpret=` picks either vendor, so `--interpret=claude-opus@high` typed in Claude Code is a
+same-vendor run. When the other vendor's CLI is missing or its check fails, interpret takes this harness's
+row and the sheet's limits say why.
 
 ## Roles
 
@@ -54,7 +60,9 @@ model runs only when the operator names it.
 |---|---|---|
 | peer or build session | `spawn_agent` with `model` and `reasoning_effort` | `claude --model <m> --effort <e>` |
 | subagent | `spawn_agent` with `model` and `reasoning_effort` | `Agent`: the row's effort in `effort`; the model in `model` where the tool lists that parameter, else an agent type whose definition runs that model. A value the tool cannot carry → say so in the report |
-| check a value before a run | `codex exec -m <m> -c model_reasoning_effort=<e> --skip-git-repo-check "ok"` | `claude -p --model <m> --effort <e> "ok"` |
+| check a value before a run | `codex exec -m <m> -c model_reasoning_effort=<e> --skip-git-repo-check "ok" </dev/null` | `claude -p --model <m> --effort <e> "ok"` |
+| interpret on the other vendor | `shape`'s `peer.py open` / `peer.py ask`, headless, one resumed turn per message | the same |
 
-A value for the other harness's vendor (`codex-…` typed in Claude Code, `claude-…` in Codex) stops the
-run, naming it: sessions run on the harness the operator typed in. A check that fails stops the run, naming it.
+A `work`, `advisor` or `build` value for the other vendor (`--work=codex-…` typed in Claude Code) stops the
+run, naming it: those run on the harness the operator typed in. To have `work` on Codex, type the command in Codex. A check that fails stops
+the run, naming it, except interpret's check on the other vendor, which falls back as above.

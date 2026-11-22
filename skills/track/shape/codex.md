@@ -21,18 +21,22 @@ escalated permissions and a one-line reason." In a smoke run a peer without that
 `codex --approve-for-me`. In any other session each commit waits on a person: say so at step 1, and run the
 plain `/shape` unless the operator says to go on.
 
-**Step 5, open the peers.** `spawn_agent` with `task_name` `<slug>_interpret`, the interpret row's `model`
+**Interpret on Claude, the default here,** opens by `auto.md` step 5's other-vendor branch. Run every
+`peer.py` call with escalated permissions and a one-line reason, and give `work`'s `{send}` the same line:
+inside the sandbox `claude` answers "Not logged in".
+
+**Step 5, open the peers.** With interpret on Codex, `spawn_agent` with `task_name` `<slug>_interpret`, the interpret row's `model`
 and `reasoning_effort` from `model-routing.md`, `fork_turns` `none`, and the filled `interpret-prompt.md` as
 `message`. Then the same for `<slug>_work`. Every field is written on every spawn: a spawn with no `model`
 runs on whatever this session runs on.
-*Done when: `list_agents` lists both.*
+*Done when: `list_agents` lists both, or lists `<slug>_work` and `RUN/interpret.json` exists.*
 
 **Step 6, watch.** In a loop: `wait_agent` with `timeout_ms` 600000. After each return, run these checks once:
 
 ```sh
 [ -f RUN/report.md ] && echo REPORT
 [ -f RUN/ui-pick.md ] && { [ ! -f RUN/ui-reply.md ] || [ RUN/ui-pick.md -nt RUN/ui-reply.md ]; } && echo UI
-[ -z "$(find RUN WT/docs/specs WT/.skills -type f -mmin -10 2>/dev/null | head -1)" ] && echo STALL
+! kill -0 "$(cat RUN/interpret.lock 2>/dev/null)" 2>/dev/null && [ -z "$(find RUN WT/docs/specs WT/.skills -type f -mmin -10 2>/dev/null | head -1)" ] && echo STALL
 ```
 
 `REPORT` and `UI` go on as in `auto.md`. A peer that has finished its turn is not stuck: the prompts tell

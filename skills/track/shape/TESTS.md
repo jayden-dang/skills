@@ -1,5 +1,60 @@
 # TESTS.md — shape
 
+## v1.19.0 — one of each: `work` on the harness typed in, `interpret` on the other vendor, headless (2026-11-22, Sonnet + Haiku + Codex `gpt-6.2-sol`)
+
+The owner asked for Claude `work` with a ChatGPT `interpret` by default, with a way to change it. Rulings: typed
+in Codex, the pair mirrors (Codex `work`, Claude `interpret`); the change is where the command is typed plus
+`--interpret=`; a machine without the other vendor falls back to one vendor and the sheet says so.
+
+**Spikes, Codex CLI 0.171.0 and Claude Code, before any text.**
+- `codex exec resume <id>` and `claude -p --resume <id>` each kept a code word across turns (9 s and 5 s).
+- `claude -p` from inside Codex's sandbox: "Not logged in"; escalated, it answered.
+- `codex exec` with stdin an open pipe hung before its session began ("Reading additional input from stdin...").
+- A Codex resume run from `WT` came back with cwd `WT` and an empty write list: its ledger append was refused.
+  Resumed from `RUN` with `sandbox_mode="workspace-write"`, it wrote.
+- `claude -p … --add-dir WT "prompt"` read the prompt as a directory; `--` before it fixed that. Headless
+  `/interpret-session` loaded the skill and wrote its ledger.
+
+**RED, Claude conductor, `/shape #12 --auto`, Sonnet and Haiku.** 2/2 opened both peers on `opus` high, one vendor.
+With `--interpret=codex-gpt-6.2-sol@high`, 2/2 stopped the run: "A value for the other harness's vendor ... stops the run".
+
+**GREEN, 1.19.0.**
+
+| Run | work | interpret | fork |
+|---|---|---|---|
+| Sonnet, no flag | `claude … --model opus --effort high` in tmux | `peer.py open --vendor codex --model gpt-6.2-sol --effort high`, before work | `peer.py ask`, in the background, output is the reply |
+| Sonnet, `--interpret=codex-…@high` | the same | the same, "not a raise" | the same |
+| Haiku, both | the same | the same, check `… "ok" </dev/null` first | the same |
+| Codex, typed in Codex | `spawn_agent` `invoice_ledger_work`, `gpt-6.2-sol` high | `peer.py open --vendor claude --model opus --effort high`, escalated | `peer.py ask`, escalated |
+
+`peer.py` was written test-first: six cases with fake `codex` and `claude` on `PATH` failed on the missing
+script, then passed. The same script ran against the real CLIs: a Codex `gpt-6-luna` and a Claude `haiku`
+interpret each answered a fork with `README.md:1` and wrote a ledger line.
+
+**Live smoke, the default direction.** `peer.py open` started a Codex `gpt-6-luna` interpret. A real
+`claude --permission-mode auto` `work` peer, Haiku, in tmux, ran `sleep 650; … | peer.py ask` with Bash
+`run_in_background`, ended its turn, and woke on the notification after 11 minutes. Auto mode refused
+nothing. The reply came back as the command's output ("Pick: `# Harbour ledger` … `README.md:1`"), and the
+interpret's ledger line landed in `RUN`.
+
+**Live smoke, the mirror direction.** A Codex conductor (`--approve-for-me`) opened a Claude `haiku` interpret
+with `peer.py open`, escalated, and spawned a `gpt-6-luna` `work` child. The child ran `sleep 200; … | peer.py
+ask`, escalated, and stayed in its turn, polling that exec session every 30 s until it exited, rather than
+ending the turn. The reply and the ledger line came back as in the other direction. The conductor sent 0 wakes.
+
+**The lock.** Review asked what a killed or hung `ask` leaves behind. Two more cases, written first and failing
+on the unknown `--timeout` and on a lock left by SIGTERM: a call past `--timeout` is killed and exits 1, and a
+terminated `ask` removes its lock. The watch now runs `kill -0` on the lock's pid, so a dead holder does not
+hide a stall: checked by hand with a live pid (skipped), a dead pid and no lock (both checked).
+
+**Fallback, Sonnet and Haiku.** `codex` installed but its check printing "Not logged in": both opened interpret
+as a tmux `claude` peer on `opus` high with `SendMessage`, no `peer.py`, and put on the sheet's limits that the
+pair fell back and why. `--interpret=claude-opus@high` with Codex logged in: the same launch, no fallback reason.
+
+Not covered: a full mixed `--auto` run to its sheet; whether a sandboxed Codex interpret reaches the network
+when `research` needs it.
+
+
 ## v1.18.0 — `--auto` runs in Codex, and every role takes its model and effort from `model-routing.md` (2026-11-22, Sonnet + Haiku + Codex `gpt-6.2-sol`)
 
 The owner asked for `shape` and `go` on Codex and a model per task type from their table, then ruled:

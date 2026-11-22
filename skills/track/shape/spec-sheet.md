@@ -62,7 +62,7 @@ and `tasks.md`, and in one sentence: agents closed this spec, the operator has n
 
 - **What the final review changed.** From `RUN/final-review.md`: how many items, how many applied or rejected, every item with its outcome.
 - **What it touches.** Files outside the repo, with what each holds today from reading it, and when it changes. Repo areas with the guard protecting each. What it leaves alone. What it does not do.
-- **How far to trust this.** Each gate's rounds; the receipt's `ran`, `subagents`, `missing` lines verbatim; Lock-required items the advisor would cut, one line each; the limits (same model, picks it approved itself); what nobody has verified.
+- **How far to trust this.** Each gate's rounds; the receipt's `ran`, `subagents`, `missing` lines verbatim; Lock-required items the advisor would cut, one line each; the limits (work and interpret on one vendor or one model when they were, with the reason a mixed pair fell back; picks it approved itself); what nobody has verified.
 
 The sheet ends on one line: type `approve`, or say what to change in plain words.
 

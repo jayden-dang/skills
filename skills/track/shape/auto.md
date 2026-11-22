@@ -51,7 +51,7 @@ read, so the word meant nothing when they opened them.
    finish the card, and end. A road with predecessors built and no intent in it was called "ready to go through
    `/shape --auto --go` tonight".
    **Models.** REQUIRED: read `../build/model-routing.md`. Each role (work, interpret, advisor, build) takes
-   its row's model and effort in this harness's column, unless the operator's flag or the `Model routing:`
+   its row's model and effort in the column that file names for it, so interpret runs on the other vendor, unless the operator's flag or the `Model routing:`
    line names it; an older `Shape roles:` line reads the same way. A flag is the vendor, a dash, the model and
    `@effort`: `claude-opus@high` runs `--model opus --effort high`, `codex-gpt-6.2-sol@high` runs that model at
    high. Check each value with that file's one-line check; one run passed `claude-sonnet` whole, and it was
@@ -81,7 +81,14 @@ read, so the word meant nothing when they opened them.
    written: a peer on `default` sat 26 minutes on a prompt to read its own charter, and two with no `--model`
    ran on whatever the machine's default was. Other sessions `ListAgents` shows are not part of this run, whatever they are named.
    A pane asking to trust the folder → stop and tell the operator to trust it; answering it is theirs.
-   *Done when: `ListAgents` lists both.*
+   **Interpret on the other vendor** opens headless, before `work`, from this checkout:
+   `python3 -I <this skill>/scripts/peer.py open --run RUN --vendor <vendor> --model <model> --effort <effort> --read WT --name <slug>-interpret < RUN/interpret-prompt.md`.
+   Its prompt's `{send}` is "your final message: work reads it as the output of the command it ran". On Codex its
+   first line `/interpret-session …` becomes "Read and follow the skill `interpret-session` from its `SKILL.md`: …".
+   `work`'s `{send}` is "`python3 -I <this skill>/scripts/peer.py ask --run RUN` with the message on stdin, run in
+   the background and waited for (Bash `run_in_background` in Claude Code), since a review can outlast 10 minutes:
+   its output is the reply". Every message to interpret goes through `peer.py ask`, yours at steps 9 and 11 too.
+   *Done when: `ListAgents` lists both, or lists `work` and `RUN/interpret.json` exists.*
 6. **Watch.** Start `Monitor` with this command, filled in, and re-arm it whenever it expires:
 
    ```sh
@@ -89,12 +96,13 @@ read, so the word meant nothing when they opened them.
      [ -f RUN/report.md ] && { echo REPORT; exit 0; }
      [ -f RUN/ui-pick.md ] && { [ ! -f RUN/ui-reply.md ] || [ RUN/ui-pick.md -nt RUN/ui-reply.md ]; } && { echo UI; exit 0; }
      tmux has-session -t <slug> 2>/dev/null || { echo GONE; exit 1; }
-     [ -z "$(find RUN WT/docs/specs WT/.skills -type f -mmin -10 2>/dev/null | head -1)" ] && echo STALL
+     ! kill -0 "$(cat RUN/interpret.lock 2>/dev/null)" 2>/dev/null && [ -z "$(find RUN WT/docs/specs WT/.skills -type f -mmin -10 2>/dev/null | head -1)" ] && echo STALL
      sleep 300
    done
    ```
 
-   On `STALL` read both panes with `tmux capture-pane -p`. An ended turn, an API error, or one peer
+   `RUN/interpret.lock` holding a live pid is a headless interpret still answering, so it is not a stall.
+   On `STALL` read both panes with `tmux capture-pane -p` (a headless interpret has none). An ended turn, an API error, or one peer
    waiting on the other → `SendMessage` to the stuck peer: what stopped, continue under the charter.
    A dialog in a pane → stop and tell the operator. Each peer gets 3 wakes; the 4th `STALL` or a `GONE`
    ends the run at step 9 with what exists. Two of two silent stops in one run never recovered alone.

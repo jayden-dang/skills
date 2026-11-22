@@ -1,5 +1,12 @@
 # TESTS.md — build
 
+## v1.3.0: `interpret` runs on the other vendor in `model-routing.md` (2026-11-22)
+
+`model-routing.md` now says `interpret` runs on the other vendor, names `shape`'s `peer.py` as its launch,
+falls back to one vendor when the other's check fails, and puts `</dev/null` on the Codex check, which hung
+on an open stdin in a spike. The evidence is in `shape`'s TESTS.md, v1.19.0. No `build` dispatch changed.
+
+
 ## v1.2.0: every dispatch takes its model and effort from `model-routing.md` (2026-11-22, Sonnet + Haiku + Codex `gpt-6.2-sol`)
 
 Scenario: a wave controller with five tasks (a migration, a 7-file refactor, a one-file rename, a browser

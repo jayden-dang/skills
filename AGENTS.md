@@ -164,7 +164,8 @@ so a `../other-skill/file.md` pointer breaks for anyone installing that skill al
 The build modes used to be three skills sharing a fourth across folders; they are now
 one skill, `build`, whose mode files (`waves.md`, `story.md`, `inline.md`) and shared
 recipe (`common.md`) sit side by side. `go` and `land-branch` still read two of
-`build`'s files (the tracker sync and the close receipt), so `build` is the **only**
+`build`'s files (the tracker sync and the close receipt), and `shape` reads its
+`model-routing.md` (each role's model and effort per harness), so `build` is the **only**
 folder any skill may reference across a boundary; every other `../` fails.
 `scripts/lint-cross-folder.py` enforces it.
 

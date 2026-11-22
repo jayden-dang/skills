@@ -6,7 +6,7 @@ spec compliance and code quality. Placeholders in `[BRACKETS]`.
 ```
 Subagent (general-purpose):
   description: "Review Task [N] (spec + quality)"
-  model: [MODEL — required; mid tier minimum, per SKILL.md Model Tiering]
+  model: [MODEL and effort — required; the reviewer row of model-routing.md]
   prompt: |
     You are reviewing one task's implementation on two axes: does it satisfy
     its requirements (Spec), and is it well built (Quality). Reach the two

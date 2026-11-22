@@ -1,5 +1,34 @@
 # TESTS.md — build
 
+## v1.2.0: every dispatch takes its model and effort from `model-routing.md` (2026-11-22, Sonnet + Haiku + Codex `gpt-6.2-sol`)
+
+Scenario: a wave controller with five tasks (a migration, a 7-file refactor, a one-file rename, a browser
+page checked from screenshots, a webhook signature check), then the whole-branch review and acceptance.
+Asked for each dispatch's model and effort, and whether it asks the operator.
+
+**RED, the Cheap / Mid / Top tiers.**
+- Sonnet controller: `opus` for the T2 implementer, the T2 and T5 reviewers, the whole-branch review and the
+  fixer, five dispatches above itself. "I would not ask for any of these." No effort passed.
+- Codex controller, `gpt-6.2-sol` medium: `gpt-6.2-astra` high for the T5 implementer, its reviewer and the
+  whole-branch review, "the model guidance specifies no separate approval gate for choosing a tier above the
+  controller". Acceptance ran on `gpt-6.2-sol`.
+
+**GREEN, `model-routing.md`.**
+- Sonnet and Haiku: 0 `opus`; T3 `haiku` low; the migration and signature reviews plus the whole-branch
+  review `sonnet` high; nothing asked; "Opus here would be a raise, so I would not use it unasked."
+- Codex: 0 `gpt-6.2-astra`; T3 `gpt-6-luna` low; acceptance `gpt-6.1-terra` medium; both values passed on
+  every dispatch.
+
+The BLOCKED row's "ceiling → stronger model" now needs the operator's word, the same rule.
+
+**Rerun with the real `Agent` tool (effort, `subagent_type`, no `model`), Sonnet and Haiku.** The first
+Launching row said `Agent` takes a model and no effort, the reverse of this harness. With the row fixed,
+both passed `effort` and chose the model through `subagent_type` (`reviewer-sonnet`, `worker-haiku`), 0 Opus,
+nothing asked.
+
+Not covered: a real build dispatching on these rows; the raise list reaching a PR's decision section.
+
+
 ## v1.1.0: Close step 4 tells acceptance that a product walk is queued (2026-11-17)
 
 The hand-off in step 4 now tells `validate-feature` whenever step 4b's predicate holds, so it

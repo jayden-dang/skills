@@ -1,5 +1,52 @@
 # TESTS.md — shape
 
+## v1.18.0 — `--auto` runs in Codex, and every role takes its model and effort from `model-routing.md` (2026-11-22, Sonnet + Haiku + Codex `gpt-6.2-sol`)
+
+The owner asked for `shape` and `go` on Codex and a model per task type from their table, then ruled:
+peers run on the harness the command is typed in; work and interpret run Sol or Opus; a cheaper pick needs
+nobody, a stronger model or more effort needs their word, because it costs more.
+
+**Spike, Codex CLI 0.171.0, before any text.** `mcp__codex_tui__create_thread` failed under approval `never`
+("MCP tool call requires approval"). `spawn_agent` takes `model` and `reasoning_effort`, and two `gpt-6-luna`
+children messaged each other with `followup_task` and `send_message` (ping, then pong, in 27 s). Each child has its own
+rollout under `~/.codex/sessions`, with `agent_path` `/root/<task_name>`, and `turn_context` records model
+and effort. A task name with `-` is refused ("lowercase letters, digits, and underscores"). Codex loads a
+skill by reading `~/.agents/skills/<name>/SKILL.md`.
+
+**RED A, Codex conductor, `/shape #12 --auto`, tier 2, `gpt-6.2-sol` medium, 2 runs.** 2/2: "Step 1 fails...
+the required `SendMessage` and `Monitor` tools are missing", fell back to the plain `/shape`, 0 `spawn_agent`.
+
+**RED B, Claude conductor, same ticket with an `ARCH-3` change and a 40-million-row migration, Sonnet and
+Haiku.** 2/2 launched `--model opus` with no effort: "I will not invent an effort flag." Advisor "a mid-tier
+model, for example Sonnet". Difficulty changed nothing, and nothing was asked.
+
+**GREEN, 1.18.0 with `../build/model-routing.md` and `codex.md`.**
+
+| Run | Check | Peers | Effort | Raise |
+|---|---|---|---|---|
+| A, Codex 1 | passes, reads `codex.md` | `invoice_ledger_interpret`, then `_work`, `gpt-6.2-sol` | high, both; advisor medium | none listed |
+| A, Codex 2 | passes | `tenant_invoice_ledger_interpret`, then `_work`, with the `cd WT` line and "Read and follow the skill `interpret-session`" | high | `gpt-6.2-astra` xhigh for work on Needs you, not used |
+| B, Sonnet | passes | `claude --model opus --effort high` both | high; advisor `sonnet`, "takes no effort, so the report says so" | `claude-fable-5-2` high on Needs you, not used |
+| B, Haiku | passes | the same | the same | the same, "It waits on the sheet's Needs you" |
+
+`skill_receipt.py --harness codex` reads a child's rollout: skills from `skills/<name>/SKILL.md` reads,
+subagents from `spawn_agent`, and a `model:` line. Four new cases in `test_skill_receipt.py`, written first:
+they failed on the unknown `--harness`, and pass now, 10 of 10 with the six Claude cases.
+
+**Live smoke, Codex 0.171.0, `codex --approve-for-me`, conductor `gpt-6.2-sol` low, peers `gpt-6-luna` low.**
+A conductor made a worktree, spawned `cxsmoke_interpret` and `cxsmoke_work`, and watched with `wait_agent`
+plus the file checks. `work` read a skill, committed, sent one fork, got "`# Skills` (README.md:1)" back,
+and wrote the report: 0 wakes sent. The receipt on its rollout printed `ran: speak-outer`, `model: gpt-6-luna low`.
+- Run 1: `git worktree add` in the conductor was refused by the sandbox, then went through on automatic
+  review. The peer's `git commit` failed ("Unable to create … index.lock: Operation not permitted"), and it
+  reported the failure instead of asking. `codex.md` now adds the escalation line to `work` and `build`.
+- Run 2, with that line: commit `7cb7de3` landed. An earlier draft woke any peer `list_agents` showed
+  finished; peers finish on purpose, so the wake is keyed on `STALL` alone.
+
+Not covered: a full Codex `--auto` run to its sheet; a Codex session without `--approve-for-me`;
+`--go` building in Codex.
+
+
 ## v1.17.0 — the UI stop runs on the worktree's own instance and hands over walk videos (2026-11-20, Sonnet + Haiku)
 
 The owner's ask: at the UI stop, `/shape --auto` should show the options as real code in the real app, with a

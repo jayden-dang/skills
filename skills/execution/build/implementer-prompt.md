@@ -7,7 +7,7 @@ briefs, reports, notes — see `templates/skills-ephemera-paths.md`).
 ```
 Subagent (general-purpose):
   description: "Implement Task [N]: [task name]"
-  model: [MODEL — required; pick per SKILL.md Model Tiering]
+  model: [MODEL and effort — required; the implementer row of model-routing.md]
   prompt: |
     You are implementing Task [N]: [task name].
 

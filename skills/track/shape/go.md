@@ -35,8 +35,9 @@ ran. Its demo was 15 seconds of stitched screenshots. Its ticket read `shaping` 
     Needs you items, then one line saying no person has read the spec and `--go` approved it.
     Attach the spec film per **Attach a film** below, when there is one.
     *Done when: `gh pr view --json isDraft,url` shows a draft, and the body read back carries the decisions.*
-12. **The build.** Fill `build-prompt.md` into `RUN/`. In the tmux session `<slug>`, from `WT`:
-    `claude --name <slug>-build --model <build model> --permission-mode auto "$(cat RUN/build-prompt.md)"`.
+12. **The build.** Fill `build-prompt.md` into `RUN/`, `{build}` and `{load}` as `auto.md` step 5 fills its
+    slots. In the tmux session `<slug>`, from `WT`, on the build row:
+    `claude --name <slug>-build --model <model> --effort <effort> --permission-mode auto "$(cat RUN/build-prompt.md)"`.
     Watch it with `auto.md` step 6's loop, with two changes: the end file is `RUN/build-report.md`,
     and STALL means 30 minutes with no new commit on `feat/<slug>` and no file changed under `WT/.skills`.
     A build is long: one klynt lock push took 7.5 minutes, one lane ran 13 hours. Restart `caffeinate`

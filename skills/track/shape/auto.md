@@ -1,4 +1,4 @@
-# /shape #N --auto [--go] [--video] [--project-style] [--en | --vi] [--work=… --interpret=… --build=…]
+# /shape #N --auto [--go] [--video] [--project-style] [--en | --vi] [--work=… --interpret=… --advisor=… --build=…]
 
 The operator asked for the whole spec with nobody at the keyboard, then one sheet to read it on.
 The session they typed in is the **conductor**. It opens two more sessions, watches them, checks
@@ -27,7 +27,10 @@ read, so the word meant nothing when they opened them.
 
 ## Steps
 
-1. **Check.** Tools `SendMessage` and `Monitor`, commands `tmux` and `claude`. Any missing, or a tier-1
+1. **Check.** The harness this session runs in opens the peers. Claude Code: tools `SendMessage` and
+   `Monitor`, commands `tmux` and `claude`. Codex: tools `spawn_agent`, `followup_task` and `wait_agent`, and
+   then read `codex.md` beside this file now: it replaces parts of steps 5 to 8. Two Codex conductors without
+   it looked for `SendMessage`, found none, and ran the plain `/shape`. Any missing, or a tier-1
    bug (its root cause waits on the operator's disposition) → say which, and run the plain `/shape`.
    A ticket naming a `ROAD-N`, or a command naming the road itself (`/shape ROAD-N --auto`): REQUIRED SUB-SKILL:
    use `refresh-roadmap-status`. Any verdict but **Ready** → comment on the ticket, when there is one, what it waits on, say so,
@@ -47,13 +50,14 @@ read, so the word meant nothing when they opened them.
    --root .`: anything but `card: ready` → comment its lines on the ticket, name `/idea` or `plan-milestones` to
    finish the card, and end. A road with predecessors built and no intent in it was called "ready to go through
    `/shape --auto --go` tonight".
-   **Models.** For each role take, in order: its flag (`--work=claude-opus`), its entry on the
-   `Shape roles:` line in `docs/agents/project.md`, then the default **work opus, interpret opus,
-   build sonnet**. A value is `claude-` and then the model: `claude-opus` runs `--model opus`,
-   `claude-sonnet-5-5` runs `--model claude-sonnet-5-5`. Check each with a one-line
-   `claude -p --model <model> "ok"`; one run passed `claude-sonnet` whole, and it was refused; one that fails stops the run, naming it. A value for another
-   vendor (`codex-…`, `grok-…`) is not supported yet: say so and stop. Work and interpret on one
-   model → the sheet's limits say so.
+   **Models.** REQUIRED: read `../build/model-routing.md`. Each role (work, interpret, advisor, build) takes
+   its row's model and effort in this harness's column, unless the operator's flag or the `Model routing:`
+   line names it; an older `Shape roles:` line reads the same way. A flag is the vendor, a dash, the model and
+   `@effort`: `claude-opus@high` runs `--model opus --effort high`, `codex-gpt-6.2-sol@high` runs that model at
+   high. Check each value with that file's one-line check; one run passed `claude-sonnet` whole, and it was
+   refused. Two baseline conductors launched both peers with no effort at all ("I will not invent an effort
+   flag"). A raise above a row that the operator did not give runs the row, and goes on the sheet's Needs you.
+   Work and interpret on one model → the sheet's limits say so.
    *Done when: the ticket's only state role is `shaping` and `RUN` exists.*
 2. **Charter.** Copy `charter-template.md` to `RUN/charter.md` and fill every `{slot}`. `{conductor}` is this
    session's name, from the first line `ListAgents` prints. For Locks, read:
@@ -68,10 +72,12 @@ read, so the word meant nothing when they opened them.
 3. **Workspace.** `git worktree add .worktrees/<slug> -b feat/<slug> <Default PR base>`. `WT` = its absolute path.
 4. **Keep the machine awake.** Where `caffeinate` exists, start `caffeinate -i -t 21600` in the
    background and stop it at step 10. A run with nothing holding the Mac died mid-response when it slept.
-5. **Open the peers.** Fill `interpret-prompt.md` and `work-prompt.md` into `RUN/`. In one tmux session
-   `<slug>`, from `WT`:
-   `claude --name <slug>-interpret --model <interpret model> --permission-mode auto "$(cat RUN/interpret-prompt.md)"`,
-   wait until `ListAgents` shows it idle, then the same for `<slug>-work` with its model. Both flags are always
+5. **Open the peers.** Fill `interpret-prompt.md` and `work-prompt.md` into `RUN/`: `{work}` and `{interpret}`
+   are `<slug>-work` and `<slug>-interpret`, `{send}` is "SendMessage (load it with ToolSearch if deferred),
+   copying the from attribute as your to", and `{load}` is "Load every skill a step names through the Skill
+   tool, not by reading it." In one tmux session `<slug>`, from `WT`:
+   `claude --name <slug>-interpret --model <model> --effort <effort> --permission-mode auto "$(cat RUN/interpret-prompt.md)"`,
+   wait until `ListAgents` shows it idle, then the same for `<slug>-work` with its row. Every flag is always
    written: a peer on `default` sat 26 minutes on a prompt to read its own charter, and two with no `--model`
    ran on whatever the machine's default was. Other sessions `ListAgents` shows are not part of this run, whatever they are named.
    A pane asking to trust the folder → stop and tell the operator to trust it; answering it is theirs.
@@ -123,7 +129,7 @@ read, so the word meant nothing when they opened them.
      with no `agent-decided` label → a finding.
    - every `Status:` line reads `Draft`, and a sample of ten `file:line` citations open to what they claim.
    *Done when: `RUN/audit.md` holds each pass's result, and the receipt prints `missing: none` or its line is on the sheet.*
-8. **Final review.** Dispatch one read-only subagent with `advisor-prompt.md` filled in, on a mid-tier model.
+8. **Final review.** Dispatch one read-only subagent with `advisor-prompt.md` filled in, on the advisor row.
    Open what each of its claims cites and drop any the file contradicts. Then write `RUN/final-review.md`:
    every audit finding, every missing item, every OPTIONAL item no Lock requires. Send `work` its path.
    `work` vets each with the charter's fork order, applies or rejects it with a reason, sends `interpret`
@@ -164,6 +170,7 @@ read, so the word meant nothing when they opened them.
 | "The report says everything ran" | Run the receipt |
 | "The operator should see this finding and choose" | They did not. 32 choices went untouched. Send it to `work`; the sheet shows what was done about it |
 | "The screen is the operator's, so skip `draft-ui` and put the pick on the sheet" | The sheet is text. They pick in the running app, before design, at step 6b |
+| "This ticket is hard, so `work` gets the strongest model" | The row runs. The raise goes on the sheet with its cost, and the operator says yes |
 | "The advisor says cut it, so it is cut" | A Lock-required item stays and gets one line on the sheet. Everything else goes through `work` and the fork order |
 
 ## Red flags

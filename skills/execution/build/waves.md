@@ -145,7 +145,7 @@ and carry continuity through the capsule and ledger.
 | **DONE** | Package the diff → task review. |
 | **DONE_WITH_CONCERNS** | Read concerns **and** `.skills/<CODE>/implementation-notes.md`. Entries must match the nine-field **Deviations** recipe in `implementer-prompt.md`. Missing notes path, incomplete fields, or five-field-only while claiming deviation → incomplete — re-dispatch to log first. **Map impact** `reroute-plan` / `realign-spec` or plan-falsifying → REQUIRED SUB-SKILL: use `reroute-plan` (do not accept as clean DONE). |
 | **NEEDS_CONTEXT** | Supply what was named; re-dispatch same model. |
-| **BLOCKED** | Context → supply; ceiling → stronger model; too large → split; plan wrong → REQUIRED SUB-SKILL: use `reroute-plan`. |
+| **BLOCKED** | Context → supply; ceiling → a raise, only on the operator's word (`model-routing.md`); too large → split; plan wrong → REQUIRED SUB-SKILL: use `reroute-plan`. |
 
 Cap redispatches at 2 per task; still not DONE → escalate to the user. Never
 force the same model to retry with nothing changed.
@@ -155,14 +155,10 @@ requirement → REQUIRED SUB-SKILL: use `reroute-plan` before any spec or code e
 
 ## Model Tiering
 
-State the model **explicitly on every dispatch** — omitted model inherits the
-session's (usually most expensive).
-
-- **Cheap:** transcription / single-file mechanical fixes.
-- **Mid floor:** every reviewer; every implementer working from prose.
-- **Top:** design judgment, broad codebase understanding, whole-branch review.
-
-Scale reviewer tier to diff size and risk.
+State the model and effort **explicitly on every dispatch** — omitted model inherits the
+session's (usually most expensive). REQUIRED: read `model-routing.md` beside this file and take
+each dispatch's values from its role's row, in this harness's column. Going below a row needs
+nobody; going above it needs the operator's word, as that file says.
 
 ## Reviewer-Prompt Hygiene
 

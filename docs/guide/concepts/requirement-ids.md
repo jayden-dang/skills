@@ -45,7 +45,7 @@ Defining the same ID twice is error **E3**.
 |---|---|
 | `design.md` section | a `Satisfies: SHELL-1.1, SHELL-1.2` line |
 | `tasks.md` task | a `_Requirements: SHELL-1.1, SHELL-1.2_` footer |
-| Existing end-to-end test | the test's domain name. This pack's UI acceptance drive is kimi-webbridge, not a new browser suite |
+| Existing end-to-end test | the test's domain name. This pack's UI acceptance drive is the session's browser driver, not a new browser suite |
 | Vitest test | `annotate('SHELL-1.2', 'requirement')`, or the ID in the test name |
 | Rust test | `/// REQ: SHELL-1.2` doc comment above the test |
 | Commit message | an `Implements: SHELL-1.2` or `Guards: SHELL-1.3` trailer |

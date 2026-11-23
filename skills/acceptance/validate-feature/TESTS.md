@@ -1,5 +1,10 @@
 # `validate-feature` — test evidence
 
+## v1.6.0 — driver resolved by `build/browser-driver.md` (2026-11-23)
+
+`ui.md` §2 now points to the shared recipe instead of naming two drivers. Evidence: run-dogfood
+`TESTS.md` v4.3.0 (same recipe, same fixtures).
+
 ## v1.5.0: the browser goes to the product walk when one is queued (2026-11-17)
 
 The owner's request (2026-11-17): dogfood takes the UI. With nobody at the keyboard, build's Close

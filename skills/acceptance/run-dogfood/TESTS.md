@@ -1,5 +1,39 @@
 # TESTS
 
+## v4.3.0 — the browser driver is read off the tool list (2026-11-23)
+
+Owner's request: the set named two drivers (`claude-in-chrome`, `kimi-webbridge`); a Codex / ChatGPT
+desktop user's own browser tool should replace them. Design: driver choice moves to
+`build/browser-driver.md` (class by who is at the keyboard, driver by the session's tool list).
+
+**RED, current text.** One fixture per harness, `run-dogfood` installed as a consumer would, scenario
+"drive CHK-04 on localhost now", someone at the keyboard, Sonnet.
+- Codex with `Chrome` (signed-in Chrome extension) and `Browser` (in-app) both connected: no driver, no
+  action. "The skill ... has no rung for Codex's `Chrome` extension or `Browser` plugin ... I'd be picking
+  one the skill never approved." Case recorded `PARKED — needs kimi-webbridge connected`.
+- Codex with only `Browser`: no action. "The built-in `Browser` tool is not a rung in the skill ...
+  a separate signed-out profile is exactly the substitute the skill rules out." Marked `blocked`.
+- Claude Code with only `chrome-devtools` MCP: no action. "`chrome-devtools` MCP isn't on the ladder at
+  all." Marked `blocked`, relayed claude-in-chrome connect steps.
+Cost: a connected, working browser tool unused three times in three; the user's "drive it now" ends
+in a connect request for a driver they do not have.
+
+**GREEN, `build/browser-driver.md` (new, one home) read from each caller.**
+
+| Fixture | Model | Driver chosen |
+|---|---|---|
+| Codex, `Chrome` + `Browser`, attended | Sonnet | `Chrome`, own browser; run's own tab |
+| Codex, `Chrome` + `Browser`, attended | Haiku | `Chrome`, own browser |
+| Codex, `Browser` only, attended | Sonnet | `Browser`, separate profile, local-account sign-in |
+| Claude, `chrome-devtools` only, attended | Sonnet | `chrome-devtools`, separate profile; "not blocked for the driver" |
+| Codex, `Chrome` + `Browser`, operator away | Sonnet | `agent-browser` (separate profile); `Chrome` excluded; ran `open`, `snapshot -i` |
+
+Every GREEN run then stopped at run-dogfood §2a because the fixture has no run file; that gate is
+unchanged and is the fixture, not the driver rule. Routing, not a gate: shape check, one fixture per
+harness, no pressure campaign. Not covered: a real Codex session calling the `Chrome` / `Browser`
+tools (the Codex tool names in `browser-driver.md` §3 come from OpenAI's docs, not a live run), and
+`inspect-ui` / the implementer render check, which read the same file but were not driven separately.
+
 ## Length pass — 280 to 194 lines (2026-09-07, v2.0.1)
 
 Patch: no new rule, no new evidence slot, no wording changed inside a block

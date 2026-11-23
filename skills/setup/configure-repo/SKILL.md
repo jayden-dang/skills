@@ -1,6 +1,6 @@
 ---
 name: configure-repo
-version: 2.0.0
+version: 2.0.1
 description: "Use when an existing repo is to adopt this skill set, its docs/agents config is missing or incomplete, another skill reports a missing config file, or a new project is to be scaffolded in an empty directory. Produces the docs/agents config files, the seed spec files and the pointer block in the agent instructions; for an empty directory, first a working skeleton with one passing test."
 ---
 

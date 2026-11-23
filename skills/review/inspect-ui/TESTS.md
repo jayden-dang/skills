@@ -1,5 +1,11 @@
 # inspect-ui — test evidence
 
+## v2.3.0 — driver resolved by `build/browser-driver.md` (2026-11-23)
+
+§4 and the Playwright rationalization row point to the shared recipe instead of kimi-webbridge.
+Evidence: run-dogfood `TESTS.md` v4.3.0. The viewport step is the driver's own (§3 of the recipe);
+a driver without one records `not drivable here`. Not driven separately.
+
 ## RED (v1.0.0 baseline, 2026-08-18, sonnet)
 
 Fixture: static vanilla-JS board, branch `filt` implementing FILT (filter bar +

@@ -27,7 +27,7 @@ THE RUN ENDS ONLY WHEN EVERY CASE IS PASS OR PARKED — NO REPORT BEFORE THAT
 
 A case is **parked** in two situations only: it still fails after 3 fix attempts (Gate 3), or it is blocked on something only a person can supply (a credential, a non-local origin, a real payment, a missing browser driver). A defect in code older than the feature, or one no requirement covers, is still fixed: the fix lands `pending disposition`, so the call stays yours.
 
-With nobody at the keyboard the drive is `agent-browser`, signed in with the local account `verify.md` names, on localhost only. With someone there it is your browser through `claude-in-chrome` or kimi-webbridge.
+The browser driver is read off the session's tool list (`skills/execution/build/browser-driver.md`). With nobody at the keyboard it is a separate profile — `agent-browser`, the harness's own browser such as Codex's in-app `Browser`, or `chrome-devtools` — signed in with the local account `verify.md` names, on localhost only. With someone there it is your signed-in browser through `claude-in-chrome`, the Codex / ChatGPT `Chrome` extension, or kimi-webbridge, whichever is connected.
 
 State-touching cases need both `saw` and `server` before `pass`. Presentational cases use `server: none — presentational`.
 

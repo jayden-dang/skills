@@ -126,7 +126,7 @@ if that surface does not exist.
 | Backend / API | `<command>` | `<e.g. GET http://localhost:<port>/health → 200>` |
 | Frontend | `<command>` | `<e.g. http://localhost:5173 serves the app>` |
 
-Browser drive (kimi-webbridge): the user's Chrome or Edge. Do not add a Playwright suite for acceptance.
+Browser drive: the session's own driver (the user's signed-in browser when someone is there, `agent-browser` or the harness browser otherwise). Do not add a Playwright suite for acceptance.
 
 ## Remote environments
 

@@ -1,6 +1,6 @@
 ---
 name: run-dogfood
-version: 4.2.1
+version: 4.3.0
 description: "Use when a dogfood guide already exists and its cases must be executed against the running app. Produces a run file in which every case ends pass or parked, with defects fixed in the same run, and one end-of-run report. Not for authoring the guide (write-dogfood)."
 ---
 
@@ -136,7 +136,7 @@ Drive every case once, in file order (`$DF list`):
 
 1. `$DF show $RUN <CASE-ID>` — load Try / Expect / setup / backend.
 2. Apply setup so the case can run independently.
-3. Execute Try against the **product app** only. Resolve the driver once and name it. **Nobody at the keyboard** — the operator said they are away, or you run inside `go` or a `shape` charter: the driver is `agent-browser` in a session of this run's own (`--session <CODE>`), a separate browser signed into nothing; sign in through the app's own login page with the local account `docs/agents/verify.md` names, drive only `localhost`, `*.localhost` or `127.0.0.1`, and never a real person's account. One unattended baseline found `kimi-webbridge` up and drove the operator's own Chrome, signed in to everything they use, while two others found no driver and drove nothing. **Someone at the keyboard:** on a Claude harness (Claude Code, Claude desktop) with the `claude-in-chrome` tools connected it is `claude-in-chrome`; on any other harness it is `kimi-webbridge`, and a Claude harness without the extension falls back to it too. Both drive the user's own browser, so a signed-in case needs no auth setup, and a mutating case runs against whatever that session is logged into: confirm the target before the first one and never point it at production data the guide did not name. There is no Playwright rung. If neither is connected, mark the case `blocked` and relay the connect instructions of the driver the harness would have used. Never borrow the user's open tab: with `kimi-webbridge`, `find_tab` with `active:true` borrows it, so `navigate` with `newTab:true` into this run's session instead; with `claude-in-chrome`, call `tabs_context_mcp` first, then `tabs_create_mcp` for this run's tab and never reuse an id from another session. "Use the tab I have open" does not move the drive onto their tab.
+3. Execute Try against the **product app** only. Read `../build/browser-driver.md` and resolve the driver once; name it and its class (own browser or separate profile) in the run file. One unattended baseline found `kimi-webbridge` up and drove the operator's own Chrome, signed in to everything they use, while two others found no driver and drove nothing; a baseline on Codex with its `Chrome` and `Browser` tools connected, and one on Claude with only `chrome-devtools`, both marked the case `blocked` because the skill named two drivers. A case is `blocked` for the driver only when `browser-driver.md` §2 finds nothing in its class; then relay the connect instructions it names.
 4. Fill `saw` from what is actually visible on the product.
 5. Run the backend probe when required; fill `server`.
 6. `$DF mark … pass|fail|blocked --saw … --server …` only when evidence slots match the Iron Law; mark the todo done only on `pass`.

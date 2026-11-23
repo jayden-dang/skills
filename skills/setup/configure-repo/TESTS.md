@@ -1,5 +1,10 @@
 # `configure-repo` — tests
 
+## v2.0.1 — verify-control and seeds stop naming kimi-webbridge (2026-11-23)
+
+Wording only: the Drive line and the project/verify seeds say "the session's browser driver".
+`webbridge-setup.md` is unchanged: kimi-webbridge stays one optional driver. No behavior test.
+
 ## 2026-11-15 — absorbed bootstrap-repo as mode file(s)
 
 On the owner's word (2026-11-15: simplify the set around idea, shape and go, inside the skill

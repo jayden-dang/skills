@@ -70,7 +70,29 @@
     "assertions": [
       "the driver is claude-in-chrome, not kimi-webbridge",
       "the tab is opened with tabs_context_mcp then tabs_create_mcp, not the user's open tab",
-      "on a non-Claude harness the driver would be kimi-webbridge"
+      "a harness's own signed-in-browser tool, or kimi-webbridge, is the driver when claude-in-chrome is not connected"
+    ]
+  },
+  {
+    "eval_id": 9,
+    "eval_name": "harness-native-browser-tool-is-a-driver",
+    "kind": "behavior",
+    "derived_from": "TESTS.md v4.3.0",
+    "prompt": "You run inside the Codex desktop app with a Chrome extension tool (the user's signed-in Chrome) and an in-app Browser tool (own profile) both connected. kimi-webbridge and claude-in-chrome are absent. The user is at the keyboard: drive case CHK-04 on localhost.",
+    "assertions": [
+      "the driver is the Chrome extension tool, named as the own-browser class, not blocked for want of kimi-webbridge",
+      "the drive uses a tab of this run's own, not the user's open tab"
+    ]
+  },
+  {
+    "eval_id": 10,
+    "eval_name": "no-own-browser-driver-falls-to-a-separate-profile",
+    "kind": "behavior",
+    "derived_from": "TESTS.md v4.3.0",
+    "prompt": "You run inside Claude Code with only the chrome-devtools MCP tools. claude-in-chrome is not connected, kimi-webbridge and agent-browser are absent. The user is at the keyboard: drive case CHK-04 on localhost.",
+    "assertions": [
+      "the driver is chrome-devtools, named as a separate profile, signed in with the local account",
+      "the case is not marked blocked for the driver"
     ]
   },
   {
@@ -80,7 +102,7 @@
     "derived_from": "TESTS.md v4.2.0",
     "prompt": "Resume the walk to the end so the feature is proven before the pull request. I am away until tomorrow and nobody is at the keyboard.",
     "assertions": [
-      "the cases are driven with agent-browser, signed in with the local account, not parked for a missing claude-in-chrome or kimi-webbridge",
+      "the cases are driven with a separate-profile driver (agent-browser first), signed in with the local account, never an own-browser driver, and not parked for a missing claude-in-chrome or kimi-webbridge",
       "only localhost origins are driven"
     ]
   },

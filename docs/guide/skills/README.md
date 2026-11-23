@@ -93,7 +93,7 @@ Green units prove assertions pass. These prove the feature works.
 |---|---|---|
 | [`validate-feature`](validate-feature.md) | model | The orchestrator. Derives an ID-keyed checklist and dispatches by surface |
 | [`validate-feature`](validate-feature.md) | model | Drives the running backend as a real client. Promotes checks to tagged tests |
-| [`validate-feature`](validate-feature.md) | model | Drives the frontend in the user's browser through kimi-webbridge. Records the drive |
+| [`validate-feature`](validate-feature.md) | model | Drives the frontend in a real browser through the session's own driver. Records the drive |
 | [`write-dogfood`](write-dogfood.md) | model | Dogfood guide for a finished feature: run file + rendered HTML, then an independent review by a clean-context subagent |
 | [`run-dogfood`](run-dogfood.md) | model | Drives a write-dogfood guide in a real browser after a clean review; run ledger with FE+BE evidence |
 

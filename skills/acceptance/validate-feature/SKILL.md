@@ -1,6 +1,6 @@
 ---
 name: validate-feature
-version: 1.5.0
+version: 1.6.0
 description: "Use before merging or finishing a branch, when a feature's unit tests are green but its user-facing behavior has not been driven through the running system as a real client, API or browser. Produces an acceptance pass over the happy paths and edge cases, with a regression test for each defect. Also when the repo has no documented way to run the app locally."
 ---
 

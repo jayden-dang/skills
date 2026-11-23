@@ -61,21 +61,19 @@ Subagent (general-purpose):
     5. **Render check — REQUIRED when your diff touches anything a browser
        renders** (HTML, CSS/styling, JSX/TSX/Vue/Svelte components,
        templates): run the app the brief names, open the changed surface,
-       and capture screenshot(s) with kimi-webbridge to
+       and capture screenshot(s) with the driver `browser-driver.md` resolves, to
        `.skills/<CODE>/task-[N]-render*.png` — one suffix per state or
        viewport, and a new suffix after each fix, never overwriting the shot
-       that showed the problem. Follow that skill: one session for the task,
-       `navigate` with `newTab:true`, never `find_tab` `active:true`. A sized
-       shot sets the viewport first with `cdp` `Emulation.setDeviceMetricsOverride`
-       (`width`, `height`, `deviceScaleFactor` 1, `mobile` false), then
-       `screenshot`. Do not use Playwright or a fresh headless browser.
+       that showed the problem. Follow `browser-driver.md` (beside this file): one tab of the task's own, never
+       the user's. A sized shot sets the viewport first with that driver's viewport
+       step, then takes the screenshot. Do not use Playwright.
        Passing tests are not evidence of how it looks — Read the image and
        judge it against the brief and the page's existing visual language:
        placement, spacing, alignment, readable text. Fix what looks broken
        or unintentional, then re-screenshot. A login-wall file does not
        satisfy Visual check. Record `cannot render: <why>` only when no
-       browser, no display, the server will not start, or kimi-webbridge
-       cannot connect — never skip silently, and never label a login-wall
+       browser driver, no display, the server will not start, or the resolved
+       driver cannot connect — never skip silently, and never label a login-wall
        shot as the check.
     **A server you start** — to render, to prove a claim, to drive a request: let the OS pick its
     port, `PORT=$(python3 -c 'import socket;s=socket.socket();s.bind(("",0));print(s.getsockname()[1]);s.close()')`,

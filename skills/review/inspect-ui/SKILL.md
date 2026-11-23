@@ -1,6 +1,6 @@
 ---
 name: inspect-ui
-version: 2.2.1
+version: 2.3.0
 description: "Use when a diff or branch touching browser-rendered surfaces needs its visual and interaction quality judged in the running app before merge, or the user asks to design-review a change: how it looks, mobile widths, focus, contrast, dark mode, off-token styling. Produces a screenshot-backed UI finding set across viewports and states. Not for asserting spec'd behavior (validate-feature), a product walk (write-dogfood), or a standalone page (craft-page)."
 ---
 
@@ -57,11 +57,10 @@ screens around the change. Name which contract you hold. *Done when: the contrac
 
 ## 4. Drive, capture, judge
 
-Per changed surface, in the running app, driven with kimi-webbridge (one
-session, `navigate` with `newTab:true`, never `find_tab` `active:true`). Set
-each viewport with `cdp` `Emulation.setDeviceMetricsOverride` before
-`screenshot`: 1440×900, 768×900, and 375×900 (`deviceScaleFactor` 1, `mobile`
-false). A shot of the window's current size is not one of those three. Do not
+Per changed surface, in the running app, driven through the driver `../build/browser-driver.md`
+resolves (its own tab, never the user's). Set each viewport with that driver's
+viewport step (§3) before `screenshot`: 1440×900, 768×900, and 375×900 (scale factor 1, not mobile
+emulation). A shot of the window's current size is not one of those three. Do not
 use Playwright. Screenshots land under
 `.skills/<CODE>/inspect-ui/` (no CODE → `.skills/inspect-ui/<branch>/`); the
 working tree stays untouched.
@@ -121,7 +120,7 @@ three viewport shots plus one per exercised state, all read.*
 | "Both classes probably compose — different properties" | Produce the composed state and look. Declaration order is not a verdict |
 | "Screenshot captured — attach and move on" | An unread screenshot is not evidence. Read it, then judge |
 | "Is the full-width red error banner too loud, or right? — needs-human-eyes" | Loudness is taste; three blocks that loaded and are now hidden is lost data. That is a finding |
-| "Playwright is the reliable camera" | The review drives the user's browser through kimi-webbridge, at the three set sizes |
+| "Playwright is the reliable camera" | The review drives the resolved driver from `../build/browser-driver.md`, at the three set sizes |
 
 ## Red Flags
 

@@ -1,5 +1,11 @@
 # TESTS.md — build
 
+## v1.4.0 — `browser-driver.md` added (2026-11-23)
+
+New shared file: the one home for which browser driver a skill uses. Callers: `run-dogfood`,
+`validate-feature`, `inspect-ui` (via `../build/`), and the implementer's render check (sibling).
+Evidence: run-dogfood `TESTS.md` v4.3.0.
+
 ## v1.3.0: `interpret` runs on the other vendor in `model-routing.md` (2026-11-22)
 
 `model-routing.md` now says `interpret` runs on the other vendor, names `shape`'s `peer.py` as its launch,

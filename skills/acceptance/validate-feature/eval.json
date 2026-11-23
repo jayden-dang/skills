@@ -53,7 +53,7 @@
     "derived_from": "TESTS.md v2.2.0",
     "prompt": "/validate-feature for the delay alerts feature on this branch. I'm at my desk with Chrome open if you need me.",
     "assertions": [
-      "the driver is claude-in-chrome or kimi-webbridge, not agent-browser",
+      "the driver is an own-browser driver (claude-in-chrome, the harness's signed-in Chrome tool, or kimi-webbridge), not a separate profile",
       "a driver that is not connected stops with its connect step"
     ]
   },

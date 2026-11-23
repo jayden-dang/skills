@@ -1,6 +1,8 @@
 # Acceptance — UI
 
-Drive the running app in a real browser through the driver §2 resolves.
+Drive the running app in a real browser through the driver §2 resolves. Step names below
+(`snapshot`, `click`, `fill`, `network`) are generic; the driver's own tool for each is in
+`../build/browser-driver.md` §3.
 Click, type, submit, reload, and assert on what is actually on screen.
 Component tests mock the network; this proves the wired stack. This skill
 installs no browser harness.
@@ -21,7 +23,7 @@ recorded.*
 
 **Preconditions — auth, data, environment.** If the flows need a logged-in
 session, a seeded account, or environment configuration, discover how the repo
-provides them and record it in project.md. The signed-in browser is the
+provides them and record it in project.md. The drive's browser is the
 session. Do not mint a `storageState` file for a headless runner. A run that
 stalls on a login wall stops for the user to sign in once in the drive's tab,
 then continues. An empty screen is not a pass.
@@ -35,39 +37,13 @@ Consult when Approved; no-op when absent; suggest once
 
 ## 2. The driver follows who is at the keyboard
 
-Resolve the driver once and name it.
-
-**Nobody at the keyboard** — the operator said they are away, or you run inside
-`go` or a `shape` charter: the driver is `agent-browser`, in a
-session of this feature's own (`agent-browser --session <CODE> …` on every
-command). It is a separate browser and signed into nothing, so sign in through
-the app's own login page with the local account `docs/agents/verify.md` or
-`project.md` names, then drive. No account named → create one through the app's
-sign-up or seed command on the local store, and write how into `verify.md`;
-never a real person's account. Drive only `localhost`, `*.localhost` or
-`127.0.0.1`; any other origin stops the drive. Two baseline runs left alone
-signed in with the seed account through `curl`, then stopped at "No browser
-tool (claude-in-chrome or kimi-webbridge) was available" with `agent-browser`
-on the PATH, and the UI was never driven.
-
-**Someone at the keyboard:** on a Claude harness (Claude Code, Claude
-desktop) with the `claude-in-chrome` tools connected, it is `claude-in-chrome`.
-On any other harness, or a Claude harness without that extension, it is
-`kimi-webbridge`. Step names below are `kimi-webbridge`'s; `claude-in-chrome`
-uses its equivalents (`read_page`, `find`, `computer`, `form_input`,
-`read_network_requests`).
-
-- **`claude-in-chrome`:** `tabs_context_mcp` first, then `tabs_create_mcp` for
-  this feature's tab. Never reuse an id from another session or the user's tab.
-- **`kimi-webbridge`:** follow its skill. One session name for this feature, on
-  every command. First `navigate` uses `newTab:true`. `find_tab` with
-  `active:true` borrows the user's tab — do not. If the daemon is down, start it.
-
-If the chosen driver is not connected, relay its connect instructions and stop.
-Do not install `@playwright/test`, Cypress, or any other browser harness for
-this pass, and do not drive the flow through a browser suite because one is
-already in the repo. *Done when: the drive tab is open on the app through
-the resolved driver, or the not-connected stop is on the record.*
+Read `../build/browser-driver.md` and resolve the driver once; name it and its class in the
+record. Two baseline runs left alone signed in with the seed account through `curl`, then
+stopped at "No browser tool (claude-in-chrome or kimi-webbridge) was available" with
+`agent-browser` on the PATH, and the UI was never driven. Do not install `@playwright/test`,
+Cypress, or any other browser harness for this pass, and do not drive the flow through a
+browser suite because one is already in the repo. *Done when: the drive tab is open on the app
+through the resolved driver, or the not-connected stop is on the record.*
 
 ## 3. Drive each checklist flow
 
@@ -108,16 +84,17 @@ from this pass. *Done when: the record is on disk and every flow in it passed.*
 | Thought | Reality |
 |---|---|
 | "No Playwright, so I'll install it and CI can re-run" | This pass is the user's browser. Do not create that harness here |
-| "Headless is more reliable" | With someone at the keyboard it is a different session from their signed-in browser. Use it only when nobody is there |
-| "No claude-in-chrome or kimi, so the UI stays undriven" | Nobody at the keyboard → `agent-browser`, signed in with the local account |
+| "Headless is more reliable" | With an own-browser driver connected and someone at the keyboard, a separate profile is a different session from their signed-in browser. Use it when nobody is there, or when no own-browser driver is connected |
+| "No claude-in-chrome or kimi, so the UI stays undriven" | Read the tool list: a harness-native browser tool, `chrome-devtools` or `agent-browser` drives it, signed in with the local account |
 | "The repo already has a browser suite, so drive that" | Leave it. This acceptance drive is still the user's browser through the resolved driver |
 | "A login wall means the feature failed" | Stop for one sign-in in the drive tab, then continue |
 
 ## Red Flags
 
 - Adding a browser test dependency or config for this pass
-- A pass recorded from `agent-browser` while someone is at the keyboard
+- A pass recorded from a separate-profile driver while an own-browser driver is connected and someone is at the keyboard
 - A UI item recorded as passed from `curl`
 - `pkill` or `killall` on the app: stop only the PID you started
 - Borrowing the user's open tab (`find_tab` with `active:true`, or reusing their tab id)
+- Stopping at "not connected" with a browser tool in the tool list that `browser-driver.md` §2 names
 - A login-wall screenshot treated as the flow's result

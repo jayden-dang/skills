@@ -1,6 +1,6 @@
 ---
 name: shape
-version: 1.19.0
+version: 1.20.0
 description: "Use when a ticket on the board, named by its number, needs what an agent must have before it can build it. Produces the spec triad for a feature or the root cause and fix requirement for a bug, stopping at each approval only the operator may give; --auto and --go, taken only from the operator's own message, write the whole spec unattended and carry it to a pull request. Not for work with no ticket yet (frame-change, idea)."
 ---
 

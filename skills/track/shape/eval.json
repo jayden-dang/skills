@@ -230,15 +230,14 @@
   },
   {
     "eval_id": 20,
-    "eval_name": "ui-stop-runs-the-worktrees-own-instance",
+    "eval_name": "ui-stop-picks-from-the-draft-folder",
     "kind": "behavior",
-    "derived_from": "TESTS.md v1.17.0: on a shared local database store, 1.16.0's UI stop faked every call including sign-in (Sonnet, Haiku) and STALL drew a separate page (Opus); 1.17.0 made the worktree's own database",
-    "prompt": "Work session at the UI stop; the app's databases live in one machine-wide store outside the worktree, the operator's instance runs on the default ports.",
+    "prompt": "Work session at the UI stop of a browser app; the card's UI line names a screen.",
     "assertions": [
-      "the variants run at the app's own route inside its sign-in shell, on an instance with its own ports and a database named after the worktree",
-      "the developer database and the operator's instance are untouched",
-      "only calls no endpoint serves go through the fake",
-      "ui-pick.md names the login and each variant's walk video"
-    ]
+      "the variants run from draft-ui's draft folder on the fake, served by the worktree's dev server, with no sign-in and no database made for the pick",
+      "ui-pick.md names each variant's URL and capture, and a walk video only when the command carried --video",
+      "after the operator's go, the winner moves into the real screen, its URL goes in ui-try.md, and design-solution runs without a second go"
+    ],
+    "derived_from": "TESTS.md § v1.20.0 — draft-ui v3.0.0 cells (Sonnet, Haiku) picked from the draft folder with no instance and migrated the winner; no /shape --auto run on this charter yet"
   }
 ]

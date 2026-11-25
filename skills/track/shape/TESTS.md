@@ -1,5 +1,18 @@
 # TESTS.md — shape
 
+
+## v1.20.0 — the UI pick runs from draft-ui's draft folder; videos only with --video (2026-11-25)
+
+The owner's ruling (2026-11-25): the pick needs no own instance, sign-in or database. The variants run from
+`draft-ui` 3.0.0's draft folder on the fake, served by the worktree's dev server; no walk per variant. After the
+go the winner moves into the real screen, and the operator tries it from the sheet (`RUN/ui-try.md`, a line in
+panel A), with no extra stop. The own-instance recipe from v1.17.0 moves to that try, for a real screen that needs
+sign-in. `--video` now also records one walk of the real screen after the lock.
+
+Evidence is `draft-ui`'s v3.0.0 cells (Sonnet and Haiku, the draft folder, the migration, a single walk on
+request). No `/shape --auto` run on this charter yet: the conductor's step 6b, `ui-try.md` and panel A's
+try line are unmeasured end to end.
+
 ## v1.19.0 — one of each: `work` on the harness typed in, `interpret` on the other vendor, headless (2026-11-22, Sonnet + Haiku + Codex `gpt-6.2-sol`)
 
 The owner asked for Claude `work` with a ChatGPT `interpret` by default, with a way to change it. Rulings: typed

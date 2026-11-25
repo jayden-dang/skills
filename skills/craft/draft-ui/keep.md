@@ -4,10 +4,13 @@ The winner is the surface's first real code. After the lock, `design.md` and
 `tasks.md` finish it: they polish it, wire the real calls, and take the fake out
 of the production path. They do not rewrite it.
 
-## 1. Strip the draft
+## 1. Migrate the winner into the real screen
 
-Delete the losing variants and the switcher. Move the winner to the route, view
-or window the surface will ship at, under the names the codebase would give it.
+Delete the losing variants and the switcher. Move the winner out of the draft
+folder into the route, view or window the surface will ship at, under the names
+the codebase would give it, and delete the draft folder and its dev-only mount.
+The winner keeps importing the same kit, shell and client it was drafted on, so
+the move changes paths and names, not markup.
 No draft folder, no `v3`, and no variant key may remain in a path or symbol.
 Undo whatever a variant added to a shared file for the switcher.
 
@@ -16,7 +19,8 @@ Undo whatever a variant added to a shared file for the switcher.
 
 ## 2. The fake stays, behind one switch
 
-The fake from SKILL.md §2 stays, and the app selects it in exactly one place.
+The fake from SKILL.md §2 stays: out of the draft folder, it moves behind the
+app's client, and the app selects it in exactly one place.
 How you check it depends on whether the app had a fake mode before the draft:
 
 - **The app had a fake mode before the draft** (`--fake`, `*_FAKE=1`, a fixture
@@ -70,6 +74,22 @@ for merge".
 
 *Done when: `git status` is clean, and the commit holds the winner, the fake,
 the lock tests and the brief, with no losing variant.*
+
+## 5. The user tries the real screen
+
+Run the app on the fake and hand the user the real screen's URL (or, for a
+native app, its launch command), with one line on what to try: the moments the
+lock tests hold. Leave it running. This is the first time the winner runs as the
+product will, and the user's word on it is a change or a go, as in SKILL.md §3.
+When your caller says where the try goes and runs the next step itself (a
+charter), write the URL there and go on: the caller collects that word later.
+
+Record no video here unless the user asks for one, or your caller passed
+`--video`. Then record one walk of this screen, per `capture.md` § Recording a
+walk, and hand over its path with the URL.
+
+*Done when: the user has the URL, and a video exists exactly when it was asked
+for.*
 
 ## What the build does next
 

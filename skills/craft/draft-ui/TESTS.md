@@ -1,5 +1,59 @@
 # draft-ui — test evidence
 
+## v3.0.0 — variants in a draft folder on the real kit; video only on request (2026-11-25, Sonnet + Haiku)
+
+The owner's ask (2026-11-25, translated): drafting inside the real code and recording a walk video per
+variant is the bottleneck of `draft-ui` and of `/shape`'s UI stop: slow, and poor value. Variants are still
+built from the code first, but in their own draft folder, never written into real code early, and on the
+app's real components, never invented UI. After the pick, the two losers are deleted, the winner is migrated
+into the real UI code, and the owner tries it there. A video only when the owner asks (a hard, many-step
+flow), or `/shape --video`, and then of the winner. Rulings, same session: native apps keep the in-app launch
+switch (untested for a draft folder, left as it was); in `/shape --auto` the pick runs from the draft folder
+on the fake, with no own instance or sign-in, and the operator tries the real screen from the spec sheet,
+with no extra stop.
+
+This reverses two earlier rulings: v2.1.0's walk for every browser variant (and its finding that 4 of 6
+cells left a moment unpressed in some variant, which the owner accepts: they click the variants themselves)
+and v2.0.0's "embed in the real page". v2.0.0's keep path (lock tests, fake behind one switch, `## Contract`)
+stands; the winner now moves out of the draft folder into it.
+
+**RED, fixture `tidewell`** (`.skills/fixtures/make-tidewell.sh`; `/tmp/tw-template` rebuilt from a
+package.json with React 19, Vite 6, Vitest 2). Prompt: Thu wants "a few different design directions … running,
+that I can click around in". v2.1.0, Sonnet, to the hand-over:
+
+- Real code edited before any pick: `server/api.ts` +96 (gear routes as the fake), `src/App.tsx` (nav link and
+  `/gear` routes), `src/api/client.ts`; the variants in `src/pages/gear/`.
+- Three walk videos (`a-manifest-walk.mp4` …) plus three contact sheets.
+- 707 s, 146k tokens, 48 tool calls.
+
+**GREEN, v3.0.0, same fixture and prompt**, then "a/A, exactly as it is … Go, lock it." Scored from the tree:
+
+| Check | Sonnet | Haiku |
+|---|---|---|
+| Before the go: `git status` | `M src/App.tsx` (+5, one `import.meta.env.DEV` route) and `?? src/draft-ui/` only | same (+4) |
+| Variants import the kit (`Button`, `Badge`, `Field`, `Toast`) | all three | all three |
+| Fake in the draft folder, shaped as the future `src/api/gear.ts` | yes, throws the real `ApiError` | yes |
+| Videos before the go | none | none |
+| After the go: draft folder gone, winner at `/gear` | yes (`3d7c4e0`) | yes (`23c0e38`) |
+| Suite green (scorer re-ran) | 10/10 | 13/13 |
+| Lock tests seen red (self-reported, not re-run by the scorer) | 8 of 8 | 11 of 11 |
+| Fake absent from the build (self-reported) | yes | yes |
+| Real screen handed to the owner to try, server left up | `/gear`, 200 | `/gear`, 200 |
+| Video after the go, unasked | none | none |
+| Phase 1 cost | 806 s, 140k tokens, 76 calls | 582 s, 112k tokens, 34 calls |
+
+**Video on request (Haiku, same run, after the lock).** Thu: "it's right … can you make me a short video of
+it so I can show the counter staff?" One `walk.mp4` (31 s) of the real `/gear` screen, session named from the
+capture path, threshold 0.01, walk written first; the scorer opened the contact sheet and every moment
+(reserve, XS out, the lost XL race, cancel) shows. No other video in either run.
+
+**Cost is not settled by one sample.** Sonnet GREEN took longer than Sonnet RED to the hand-over (806 s vs
+707 s). Its notes show why: with no walk to record, it clicked every flow in every variant in `agent-browser`
+and kept 11 captures. No text was written against it: one sample, and the clicking is the owner's work now.
+Re-measure before adding a rule. RED was not taken past the go, so there is no like-for-like total either. What the edit does remove is real-code churn before the go (RED: 3 real files,
++103 lines; GREEN: one dev-only mount line) and the three videos.
+
+
 ## v2.1.0 — every browser variant gets a recorded walk (2026-11-20, Sonnet + Haiku)
 
 The owner's ask (2026-11-20, translated): in `/shape --auto` (klynt, session STALL, ticket #323 OSTUDY),

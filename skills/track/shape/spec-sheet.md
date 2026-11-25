@@ -29,6 +29,9 @@ Sentences: one idea, at most 20 words, active voice, one word per thing, the exa
 **A. The film.** With a film: `<video controls src="film.mp4">`, its length, and that it describes planned behavior and approves nothing. Under it,
 one sentence for the problem and one for the idea. A film that was refused or never reached `PASS`: say so and why, then the two sentences.
 Without `--video`: the two sentences alone.
+When `RUN/ui-try.md` exists, a line under them: the real screen's URL and login from it, as a link, saying it runs the
+locked winner on the fake for the operator to try before `approve`, and the walk video's link when it names one.
+Under `--go`, that line opens panel H in `sheet.md` instead, so it reaches the PR.
 
 **B. The map.** An inline SVG tree: the feature, its stories, and every live requirement ID written in full, each with a gloss of at most six words. With a film,
 mark each ID as in the film or not, from the film's `out/uncited.json`.

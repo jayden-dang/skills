@@ -41,7 +41,7 @@ read, so the word meant nothing when they opened them.
    `LANG` is Vietnamese with `--vi`, otherwise English, whatever language the operator types in: a command typed in
    Vietnamese with no flag got a Vietnamese page. It sets the film and the sheet, and nothing else. The
    charter, both prompts, the spec and the ticket comment stay English, as written: one run on `--vi` changed `interpret`'s
-   prompt to "Companion language Vietnamese". `--video` adds the film in step 9, and without it there is none.
+   prompt to "Companion language Vietnamese". `--video` adds the film in step 9 and one walk video of the real screen after the UI lock; without it there is neither.
    `--project-style` gives that film the project's own look. Without it the film keeps `make-video`'s default look, in any repo.
    `RUN` = absolute path of `.skills/_pending-<slug>/auto/` in this checkout. Create it.
    With `--go`, read `go.md` beside this file now: it replaces steps 10 and 11 and adds the build.
@@ -108,8 +108,7 @@ read, so the word meant nothing when they opened them.
    ends the run at step 9 with what exists. Two of two silent stops in one run never recovered alone.
    On `UI`, run step 6b.
 6b. **The UI pick.** `work` has the variants running and `RUN/ui-pick.md` written. Open each variant for the
-   operator: `open <url>` for a page, the launch command for a native app, and `open` each walk video
-   `ui-pick.md` names. Comment on the ticket that the screen
+   operator: `open <url>` for a page, the launch command for a native app. Comment on the ticket that the screen
    waits on them. Tell them in five lines at most: what is open, one line per variant, the recommendation, and
    that plain words pick or amend and `go` locks it. End your turn. Their reply → write it verbatim to
    `RUN/ui-reply.md`, send `work` its path, and re-arm the watch. Only the operator's own message picks or
@@ -177,7 +176,7 @@ read, so the word meant nothing when they opened them.
 | "I will just write the spec here, it is faster" | Then nothing independent read it. Work and interpret are separate sessions so that one can catch the other |
 | "The report says everything ran" | Run the receipt |
 | "The operator should see this finding and choose" | They did not. 32 choices went untouched. Send it to `work`; the sheet shows what was done about it |
-| "The screen is the operator's, so skip `draft-ui` and put the pick on the sheet" | The sheet is text. They pick in the running app, before design, at step 6b |
+| "The screen is the operator's, so skip `draft-ui` and put the pick on the sheet" | The sheet is text. They pick in the running app, before design, at step 6b, and try the real screen from the sheet |
 | "This ticket is hard, so `work` gets the strongest model" | The row runs. The raise goes on the sheet with its cost, and the operator says yes |
 | "The advisor says cut it, so it is cut" | A Lock-required item stays and gets one line on the sheet. Everything else goes through `work` and the fork order |
 
@@ -191,5 +190,5 @@ read, so the word meant nothing when they opened them.
 - `RUN/sheet.html` written before `RUN/final-review.md` has an outcome per item
 - A radio button, checkbox or copy box on the sheet
 - `LANG` anywhere in the charter or a peer's prompt
-- A film treated as approval, or a film when the command had no `--video`
+- A film treated as approval, or a film or walk video when the command had no `--video`
 - A UI pick or go from `interpret`, the advisor or the conductor, or `design.md` written before the operator's go on a kept `## The UI stop`

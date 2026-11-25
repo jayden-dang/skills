@@ -33,29 +33,35 @@ name it in the report. The conductor stops at the sheet. A fork about how a scre
 ## The UI stop
 {keep when the card's UI line is not `none` and it names no `UI brief:`; otherwise delete this section}
 The screen is the operator's, and they pick it in the running app. Once `{slug}-interpret` has approved
-`requirements.md`, run `draft-ui` in `{WT}` before `design-solution`. The variants live in the app itself, signed
-in as a real user, on this worktree's own instance. That instance has its own ports and its own database: made
-the way `project.md` says to run a second instance; failing that, with the repo's own create, migrate and seed
-commands, on the local database server, under a name taken from the worktree. That database belongs to the
-worktree. It is not data outside it, and making it is not a hard stop. The developer database and the
-operator's running instance stay untouched. The fake behind the client answers the calls no endpoint serves yet,
-and any existing call a take must slow or fail. Two runs on a shared local database store read the per-run database as outside the worktree and faked
-every call, sign-in included. The operator would have picked on invented data. In one run the same reading put the
-draft on a separate page with no desktop around it.
+`requirements.md`, run `draft-ui` in `{WT}` before `design-solution`. The variants live in `draft-ui`'s draft
+folder, built from the app's own components, on the fake behind the client, served by this worktree's dev server
+on its own ports; a native app's variants stay inside the app behind its launch switch, as `draft-ui` says. Picking needs no sign-in and no database, so make neither for the pick.
 
-Look at every variant and record each one's walk, with captures and walks saved under `{RUN}/ui/`. Leave the
-app running. Write `{RUN}/ui-pick.md` with:
-- how to open each variant (its URL or launch command), and the login to use, on a host whose sign-in cookie
-  the operator's own instance does not share. Four hand-overs gave `localhost` while the operator worked on
-  `localhost`; signing in to the draft would have signed them out of their own app;
-- a one-line pitch, the capture path and the walk video path for each;
+Look at every variant, with captures saved under `{RUN}/ui/`, and record no video of a variant. Leave the dev
+server running. Write `{RUN}/ui-pick.md` with:
+- the URL of each variant (a native app: its launch command), on a host other than the operator's own instance (`127.0.0.1` when they work on
+  `localhost`);
+- a one-line pitch and the capture path for each;
 - your recommendation and its reason.
 
 Then end your turn. `{slug}-interpret` may review the variants' code, but it never picks one or says go.
 The operator's replies arrive from `{conductor}` as `{RUN}/ui-reply.md`. Apply what they change, show the
-variants again, rewrite `ui-pick.md`, and wait again. On their explicit go, lock as `draft-ui` says, keeping
-the winner on this branch. Then run `design-solution`, which lifts the brief and its `## Contract`, and
-`plan-tasks`, whose tasks finish the kept code.
+variants again, rewrite `ui-pick.md`, and wait again. On their explicit go, lock as `draft-ui` says: the losers
+and the draft folder go, and the winner moves into the real screen on this branch. Then run `design-solution`,
+which lifts the brief and its `## Contract`, and `plan-tasks`, whose tasks finish the kept code.
+
+The operator tries the real screen at the sheet, so the lock does not wait for a second go: go on to
+`design-solution` once `ui-try.md` is written. Leave the app running with the winner in place, and write its
+URL and login to `{RUN}/ui-try.md`. When the real screen needs a sign-in or data the fake does not serve, run
+this worktree's own instance, with its own ports and its own database: made the way `project.md` says to run a
+second instance; failing that, with the repo's own create, migrate and seed commands, on the local database
+server, under a name taken from the worktree. That database belongs to the worktree. It is not data outside it,
+and making it is not a hard stop. The developer database and the operator's running instance stay untouched,
+and the host's sign-in cookie must not be one the operator's own instance shares.
+
+{keep this paragraph only when the command carried `--video`; otherwise delete it}
+The operator asked for a video: after the lock, record one walk of the real screen as `draft-ui`'s `capture.md`
+says, and put its path in `{RUN}/ui-try.md`.
 
 When `requirements.md` has no requirement a person sees or does on a screen, skip this stop and say so in
 one line of the report.

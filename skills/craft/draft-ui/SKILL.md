@@ -1,7 +1,7 @@
 ---
 name: draft-ui
-version: 2.1.0
-description: "Use when a screen or feature's look, or what it does when used, needs deciding with the user before it is specified or built: \"show me a few design directions\", \"make it clickable so I can feel it\", undo versus confirm. Produces divergent variants in the app's own stack on a fake API, or runnable takes of one flow, a pick from the user, the winner kept as the surface's code behind lock tests, and a locked ui-brief.md that design-solution lifts. Not for judging a built diff (inspect-ui), a logic spike (run-spike), or a standalone page (craft-page)."
+version: 3.0.0
+description: "Use when a screen or feature's look, or what it does when used, needs deciding with the user before it is specified or built: \"show me a few design directions\", \"make it clickable so I can feel it\", undo versus confirm. Produces divergent variants built from the app's own components in a separate draft folder on a fake API, or runnable takes of one flow, a pick from the user, the winner migrated into the surface's real code behind lock tests for the user to try, and a locked ui-brief.md that design-solution lifts. Not for judging a built diff (inspect-ui), a logic spike (run-spike), or a standalone page (craft-page)."
 ---
 
 # Draft UI
@@ -11,9 +11,9 @@ press, optimistic versus after the call, undo versus confirm, how a slow or fail
 feels): read `interaction.md` beside this file and follow it in place of the steps below.
 
 Deciding a surface's look is a workflow, not a one-shot render: divergent
-directions built in the project's own UI stack, reviewed by the user running them, amended,
+directions built from the project's own components, reviewed by the user running them, amended,
 and only then either promoted onto a surface that already ships (§4) or
-locked into a brief, with the winner kept as the code the build finishes (§6).
+locked into a brief, with the winner migrated into the real code the build finishes (§6).
 
 ## 1. Ground, then plan N directions
 
@@ -58,9 +58,13 @@ manifest the screens build with (`package.json`, `Cargo.toml`,
 `UI framework` row of `docs/standards/design-tokens.md` or the architecture
 docs. Then take the first branch that holds:
 
-- **Screens render in a browser** → embed in the real page: route, params,
-  and data stay; only the rendered subtree swaps on a `?variant=` param, so
-  every direction is judged against real header, real data, real density.
+- **Screens render in a browser** → the variants live in one draft folder
+  inside the app's source tree (`src/draft-ui/<feature>/`), one file per
+  variant, switched on a `?variant=` param. Each variant imports the app's
+  kit, layout shell and client, never a copy of them, so every direction is
+  judged against the real header, controls and density. Until the go, the only
+  change outside the folder is one dev-only mount (a route line or a second
+  page the dev server serves); no existing screen file is edited.
 - **Screens render natively** (SwiftUI, AppKit, GPUI, Qt, Flutter, …) →
   each variant is a real view in that stack, inside the app, picked by one
   switch read at launch (an env var) and cycled by a key or menu command
@@ -91,7 +95,8 @@ client.** Name the fake's place in the plan. If the app has a fake mode (a
 write a fake implementation of the client module the real call will live in,
 selected in one place. Every read and every mutation the variants make goes
 through the fake, including the failure branch, so the user clicks real flows.
-The calls the fake answers become the contract the backend is built to. Two
+In a browser draft with no fake mode, that fake sits in the draft folder until
+the lock, then moves behind the client (`keep.md` §2, no-fake-mode branch). The calls the fake answers become the contract the backend is built to. Two
 drafts on one approved spec kept stock and reservations in a store inside the
 page ("held in the browser, not the real API"). The user could click through
 them, and the backend had no shape to build against.
@@ -122,23 +127,17 @@ note for the owner to weigh. Two native drafts went to their owner with neither
 screen ever seen by the agent that built them; "it builds and launches" is not
 "it looks right".
 
-**In a browser, record each variant's walk** — a video of the variant used the
-way the user will use it, driven click by click through the running app. Every
-variant walks the **same moments in the same order**: the user's own words
-first, then each requirement's happy path, its failure branch and the way back.
-`capture.md` § Recording a walk has the recipe. In six runs before this rule,
-no variant had a video, and three variants were handed over with a moment
-(cancel) never pressed in them.
+The user picks by clicking, so record no video of a variant: three per pick were
+a draft's slowest part. A video comes only on the user's ask or the caller's
+`--video`, of the winner on the real screen (`keep.md` §5).
 
 Hand over the URL — or, for a native app, the exact command that launches each
-variant — plus a one-line pitch per variant naming its signature, the path
-of each capture, and the path of each walk. A variant you could not capture or
-record is named as unseen or unrecorded, with the error that stopped you.
+variant — plus a one-line pitch per variant naming its signature and the path
+of each capture. A variant you could not capture is named as unseen, with the
+error that stopped you.
 
-*Done when: every variant's latest capture, opened by you, shows none of
-those defects, and every browser variant's latest walk contact sheet, opened by you,
-shows each moment's result — or the variant is named unseen or unrecorded with
-its error.* Then loop:
+*Done when: every variant's latest capture, opened by you, shows none of those
+defects, or the variant is named unseen with its error.* Then loop:
 
 1. Collect the pick — a winner or a hybrid ("A's layout with C's density";
    the hybrid is the common real answer) — **and the amendments** that come
@@ -196,7 +195,8 @@ brief exists with every slot filled and the user-visible decision quoted.*
 Skip this step when §4 already promoted the winner.
 
 **Screens exist, or a stack is declared** (the first three branches of §2): the
-winner stays. Read `keep.md` beside this file and follow it. In one app, a
+winner stays. Read `keep.md` beside this file and follow it: the losers and the
+draft folder go, the winner moves into the real screen, and the user tries it there. In one app, a
 4,587-line draft that ran on the app's own fake was deleted at the lock. The
 build then spent three slices re-deriving the same sidebar, status bar,
 conversation rows and composer panels in new files.
@@ -242,7 +242,8 @@ the kept code rather than rebuild it. When no spec exists yet, the brief waits i
   in words, or put the action on an object other than the one the finding names
 - The decision surviving only in a commit message or ADR — no ui-brief, on a surface that has no `## UI design` yet
 - A go on a shipped surface that writes a ui-brief, or leaves `## UI design` describing the previous look
-- Losing variants or the switcher left in the tree
+- A browser draft editing an existing screen before the go; a video nobody asked for, or of a variant
+- Losing variants, the switcher or the draft folder left in the tree
 - A winner deleted, or committed as "throwaway", in a repo whose screens or declared stack exist
 - A variant whose data lives in page state, not in a fake behind the app's client
 - A kept winner with no lock test that was seen red

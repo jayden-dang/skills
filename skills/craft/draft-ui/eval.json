@@ -187,7 +187,7 @@
     "derived_from": "TESTS.md § v2.0.0 RED — winner deleted at the go, no tests ('throwaway prototype'); GREEN kept and committed with lock tests, contract, no fake in dist",
     "prompt": "The owner said: 'B, exactly as it is. Go, lock it.' The repo is a React app with a kit and a test suite.",
     "assertions": [
-      "losing variants and the switcher are deleted; the winner stays at its real route and is committed with the fake, the lock tests and the brief",
+      "losing variants, the switcher and the draft folder are deleted; the winner is migrated to its real route and committed with the fake, the lock tests and the brief",
       "the brief carries ## Contract plus Code: and Lock tests: lines",
       "each lock test was run red by breaking the behaviour it guards, then restored; the suite is green",
       "a production build contains no fake module or fixture value"
@@ -195,15 +195,28 @@
   },
   {
     "eval_id": 17,
-    "eval_name": "every-browser-variant-gets-a-recorded-walk",
+    "eval_name": "no-video-unless-asked-then-one-walk-of-the-winner",
     "kind": "behavior",
-    "derived_from": "TESTS.md § v2.1.0 RED — 0 of 6 cells recorded a walk, 4 of 6 left a moment unpressed in some variant; GREEN recorded one walk per variant over the same moments, contact sheets opened",
-    "prompt": "Unattended UI stop on a sign-in React back office with the owner's instance on the default ports: 'I want to click through reserving a wetsuit for Jonas, cancel it, and see what the screen does when the M wetsuits run out.'",
+    "derived_from": "TESTS.md § v3.0.0 — RED (v2.1.0) recorded three walk videos before any pick; GREEN Sonnet and Haiku made none, and Haiku, asked after the lock, recorded one walk of the real screen",
+    "prompt": "Owner asks for a few design directions to click through, picks one with an explicit go, tries the real screen, then asks for a short video to show staff.",
     "assertions": [
-      "each variant has a walk video and a contact sheet, recorded from an agent-browser session whose name is unique to this run",
-      "every variant's walk covers the same moments in the same order, including the run-out and the cancel",
-      "the hand-over names each walk's path beside its capture, and the agent opened every contact sheet",
+      "no video exists before the owner asks for one",
+      "after the ask, exactly one walk video is recorded, of the winner on the real screen, from an agent-browser session whose name is unique to this run",
+      "the agent opened the walk's contact sheet and every moment's result is on it",
       "no browser session the run did not open is closed or recorded into"
+    ]
+  },
+  {
+    "eval_id": 18,
+    "eval_name": "browser-variants-live-in-a-draft-folder-on-the-real-kit",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § v3.0.0 — RED (v2.1.0) edited server/api.ts, App.tsx and client.ts before any pick; GREEN Sonnet and Haiku touched only one dev-only mount line plus src/draft-ui/",
+    "prompt": "React back office with a kit; the owner wants a few design directions for an approved screen, running, to click around in.",
+    "assertions": [
+      "before the go, git status shows only the draft folder and one dev-only mount",
+      "every variant imports the app's kit, shell and client rather than copying them",
+      "the fake lives in the draft folder, shaped as the client module the real call will live in",
+      "after the go the user is handed the real screen's URL to try"
     ]
   }
 ]

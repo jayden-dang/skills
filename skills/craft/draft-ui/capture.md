@@ -30,24 +30,25 @@ viewport through `agent-browser` (`set viewport`) or the DevTools protocol.
 
 ## Recording a walk
 
-Write the walk once, before the first recording: one line per moment, in order
-(`reserve M for Jonas → Jonas fitted, M 2→1`). Every variant walks that list.
-Then per variant, in an `agent-browser` session of its own, named from the full
-path of this run's capture directory. A fixed `draft-a` was already in use by a draft running
+Only when the user asked for a video, or the caller passed `--video`: one walk
+of the winner on the real screen after the lock (`keep.md` §5), never one per
+variant. Write the walk once, before recording: one line per moment, in order
+(`reserve M for Jonas → Jonas fitted, M 2→1`). Record it in an `agent-browser`
+session of its own, named from the full path of this run's capture directory. A fixed `draft-a` was already in use by a draft running
 next to it: one walk clicked into the other run's recording and stopped it.
 
 ```sh
-S=draft-$(printf %s "$SHOTS" | shasum | cut -c1-8)-a   # one session per variant, unique to this run
-agent-browser --session $S open "http://127.0.0.1:5341/gear?variant=a"
+S=draft-$(printf %s "$SHOTS" | shasum | cut -c1-8)-walk   # unique to this run
+agent-browser --session $S open "http://127.0.0.1:5341/gear"   # the real screen, after the lock
 # sign in now, if the app asks, so the video starts on the screen itself
 agent-browser --session $S set viewport 1440 900
-agent-browser --session $S record start $SHOTS/a-walk.mp4 --cursor --contact-sheet \
+agent-browser --session $S record start $SHOTS/walk.mp4 --cursor --contact-sheet \
   --contact-sheet-threshold 0.01            # a badge or toast changes ~1% of the frame
 agent-browser --session $S snapshot -i      # fresh refs before every action
 agent-browser --session $S click @e12       # one moment's action, as the user would
 agent-browser --session $S wait 1500        # long enough for a viewer to see the result
 # …next moment: snapshot, act, wait…
-agent-browser --session $S record stop      # writes a-walk.mp4 and a-walk.contact-sheet.png
+agent-browser --session $S record stop      # writes walk.mp4 and walk.contact-sheet.png
 agent-browser --session $S close            # your own sessions, by name; never `close --all`
 ```
 

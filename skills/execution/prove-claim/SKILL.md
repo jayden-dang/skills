@@ -1,6 +1,6 @@
 ---
 name: prove-claim
-version: 1.5.1
+version: 1.6.0
 description: Use when about to say anything that implies success — "done",
   "fixed", "passing", "works", or any paraphrase — and before committing,
   opening a PR, closing a task, or reporting a subagent's result.
@@ -33,6 +33,7 @@ Skip any step and you are lying, not verifying.
 |---|---|---|
 | "Tests pass" | Full fresh run, zero failures, output read | An earlier run; a subset; "should pass" |
 | "Task gate green" | That gate at the final commit, its scope named: changed units, their dependents, lint against the baseline — or the whole suite with the escalation reason | Quoting it as "Tests pass"; a scope missing a changed unit or a dependent |
+| "Integration gate green" | Exact combined revision, actual affected tests and compile/lint scope or full fallback, fresh command and observed result | Combining worker logs as if they came from the merged revision; counting an unexplained empty selection or a skipped job |
 | "Build/lint/typecheck clean" | That command, exit 0, zero warnings | A different tool passing |
 | "The feature works" | The affected flow driven through the running system and observed (REQUIRED SUB-SKILL: use `validate-feature`; for a product walk, the guide **executed** — `run-dogfood`'s run file, or recorded human ticks) | Green unit tests alone; a `write-dogfood` guide that exists but was never walked |
 | "The bug is fixed" | Original symptom re-tested and gone | The code changed |

@@ -1,6 +1,6 @@
 ---
 name: test-first
-version: 1.2.0
+version: 1.3.0
 description: Use when writing or changing any production code — a new feature, a bugfix,
   a behavior change, or a refactor — and before the first line of
   implementation exists; the test-first (TDD) gate. Also use when about to add
@@ -31,11 +31,25 @@ Work one vertical slice at a time: one behavior → one test → one minimal imp
 domain language, expectations against real code at an agreed seam. Do **not**
 require embedding a requirement ID in application or test source (docs-only
 spine). Map the test to its requirement ID in the task report / Spec review.
+Look for an existing check at that seam first. Extend it when the same setup
+can expose the new failure. A second check earns its setup by witnessing a
+different failure or boundary. Name the expected result from the requirement
+or an independent worked example before running.
 Fixing a bug? REQUIRED SUB-SKILL: use `root-cause` to establish the root cause
 first — the RED test must reproduce *that* bug, failing for the bug's reason,
 before any fix.
 
-**Verify RED — mandatory, never skip.** Run the test (single-file command from `docs/agents/project.md`). Confirm it fails, that the failure message is the one you expected, and that it fails because the behavior is missing — not because of a typo or import error. **Test passes immediately?** You are testing behavior that already exists — fix the test, not the code. Test errors instead of failing? Fix the error and re-run until it fails correctly.
+**Verify RED — mandatory.** Run the check with the project's narrow command.
+For behavioral RED record the assertion reached and expected versus observed
+result. Fix a missing symbol, setup error or unrelated timeout before counting
+RED. A compile-time contract uses its explicitly expected diagnostic.
+If a check passes immediately, compare it to the required change. Fix a weak
+assertion or record an unchanged-behavior guard separately. A guard cannot
+replace the failing test for changed behavior.
+
+**Time and ordering.** Use the repo's controllable clock for logical time and
+observable synchronization for race ordering. Put a deadline around the wait.
+Use elapsed real time when the contract itself needs that measurement.
 
 **GREEN — write the simplest code that passes.** No speculative parameters, no extra features, no touching unrelated code.
 
@@ -47,14 +61,18 @@ Then take the next slice.
 
 ## The task gate — once, before you claim the work done
 
-Each step above stays narrow; breadth is paid once, at the final commit:
+Each step above stays narrow. Run the task gate at the final commit by default.
+If a continuous build brief explicitly assigns broad checks to its configured
+integration gate, run fresh narrow checks at the final commit and report scope
+and shared inputs. The controller verifies the integrated revision before
+marking the task complete. All other work uses the task gate:
 
-1. **Tests of what can see the change; a compile of everything else that depends on it.** In klynt, testing every dependent turned one `persistence` task gate into 33 packages and 7,105 tests. Across 732 such runs, a dependent's tests caught what the changed package's own tests missed in about one task in eleven, and 12 of the 14 catches were in a package that calls the changed one directly. So:
-   - **Test** every unit you changed.
-   - **Follow the changed behavior up its callers.** List each public item whose signature or behavior your diff changes, including through private code it calls. `grep -rlw <name>` over the dependents' source and tests. Every unit with a hit gets its tests run, and the public item there that calls the changed one joins the list. Repeat until a round adds no unit.
-   - **Compile and lint, with test targets, every other dependent** (`cargo check --all-targets` or the project's equivalent): a broken signature still fails here.
-
-   The project's **Task gate** commands supply the syntax. Without them, derive the dependents from the build graph (reverse dependencies).
+1. **Test what can see the change.** Use the project's **Task gate** command and
+   its declared scope. Include changed units and affected callers and boundaries.
+   Build or typecheck the remaining dependents when the repo has that check.
+   Without a configured selector, use the repo's dependency data and check
+   consumers of changed interfaces and shared inputs. Choose the full suite
+   if you cannot establish the scope. A text search alone cannot rule out a consumer.
 2. **Lint and format** over the same units, against the lint baseline recorded at session start. A finding absent from the baseline is yours. Never suppress a lint rule to get past a red baseline.
 3. **Escalate to the whole suite** when the change reaches what the build graph cannot see: schema or migrations, shared fixtures or test data, build manifests or feature flags, generated contracts, a root package nearly everything depends on. You judge it and name the reason.
 
@@ -78,11 +96,11 @@ still write domain-named tests at agreed seams.
 
 ### Testing standards doc (optional)
 
-**Applicability:** seams, mock boundaries, or suite commands. **Load:**
-`skills/project/define-project/consult-recipe.md`. **Path:** `docs/standards/testing.md`
-(pack SSOT counts as present standing rules). Apply when present **in addition to**
-this skill's Iron Law (Iron Law never weakens). No-op when absent; suggest once
-`/define-project standards/testing` only if material; never auto-invoke.
+Read approved `docs/standards/testing.md` for test layers, seam and dependency
+rules. Commands come from `docs/agents/project.md`. Apply the project rules
+alongside the Iron Law. When the standard is absent, use the repo's existing
+tests and the agreed design. Suggest `/define-project standards/testing` once
+only when a missing standard matters to the change.
 
 ## Anti-patterns and their counters
 
@@ -115,12 +133,12 @@ Mock setup longer than the test logic, or a test that fails when a mock is remov
 | "Lint was already red, so allow the rule / it can't be checked" | Compare against the baseline. Suppressing the rule hides your findings with the old one |
 | "It's only a migration file, the crate tests cover it" | Every test reads that schema. Escalate |
 | "Run every dependent's tests to be safe" | A dependent that never calls the changed code cannot see it — compiling it proves the signature still fits. Follow the callers; test the units they reach |
-| "No dependent mentions the changed function, so nothing downstream needs testing" | Grep for the callers of the callers too: 2 of klynt's 14 dependent catches sat one package further up the call path |
+| "The selector matched no source path" | Check shared inputs and the consumers the selector covers. An unknown input or an unexplained empty scope requires the full check |
 
 ## Red flags — stop and start over
 
 - Implementation exists and its test doesn't
-- A new test passed on its first run
+- A green guard is used as RED evidence for changed behavior
 - You can't say why the test failed in RED
 - A test targets a seam not in the design's seam table
 - A new behavior has no mapping to a requirement in the brief (tier ≥1)
@@ -131,7 +149,7 @@ Any of these: delete the untested code, return to RED.
 ## Before claiming done
 
 - [ ] Every new behavior has a test you watched fail first, for the expected reason — error paths and boundary values count as behaviors
-- [ ] Task gate green at the final commit with its scope named — or the whole suite, with the escalation reason — output pristine, no lint finding outside the baseline
+- [ ] Configured scope verified and named at its scheduled gate, with no lint finding outside the baseline. For lane handoff under integration placement, final narrow evidence and affected inputs recorded, integration still pending until verified by the controller
 - [ ] Each new behavior maps to a requirement in the task brief / report (IDs stay in docs, not required in test source)
 - [ ] All tests sit at seams agreed in `design.md` (or agreed with the user)
 - [ ] Mocks only at system boundaries, complete data structures, no assertions on mocks

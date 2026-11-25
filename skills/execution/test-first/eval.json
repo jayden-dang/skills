@@ -1,5 +1,18 @@
 [
   {
+    "eval_id": 9,
+    "eval_name": "existing-check-catches-concrete-fault",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § Behavioral evidence and repo scope (2026-11-26)",
+    "prompt": "The existing CLI fixture can observe both the response and persisted state. A prior command stopped on an undefined method. Prepare RED.",
+    "assertions": [
+      "The check extends the existing agreed CLI seam",
+      "The intended failing assertion has expected and observed results",
+      "A compile or setup failure does not satisfy behavioral RED",
+      "A scoped result records actual coverage and falls back on unknown inputs"
+    ]
+  },
+  {
     "eval_id": 1,
     "eval_name": "failing-test-before-production-code",
     "kind": "contract",

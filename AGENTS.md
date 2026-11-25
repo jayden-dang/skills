@@ -60,13 +60,13 @@ a `draft-ui` winner the operator locked is kept, held by lock tests each watched
 failing by mutation before the lock (`draft-ui` `keep.md`); everything built on
 it after the lock is test-first. Verify RED (fails for the right reason) and
 verify GREEN (pristine output, zero warnings) are mandatory, never skip.
-Breadth is tiered, not repeated: each RED/GREEN/refactor step runs the narrowest
-target; once per task, at its final commit, the **task gate** tests the changed
-units and the dependents on the changed code's call path, compiles every other
-dependent, and lints against the session's baseline — escalated
-to the whole suite when the change reaches what the build graph cannot see
-(schema, migrations, shared fixtures, manifests, generated contracts, a root
-package); a parallel merge runs the **wave gate**; the whole suite runs at close.
+Each RED/GREEN/refactor step runs the narrowest target. By default the task's
+final commit gets a **task gate** covering the change and affected consumers, plus
+compile/lint as configured. Continuous builds can use an explicitly configured
+**integration gate** on the merged candidate in place of per-task breadth and
+the separate wave gate. Narrow task evidence and independent review still
+precede integration. Unclassified shared inputs require the full fallback.
+The gate must be green before releasing dependent work. The whole suite runs at close.
 
 **Gate 3 — ROOT-CAUSE:** NO fixes without root-cause investigation. A
 red-capable command (fast, deterministic, agent-runnable pass/fail) MUST exist

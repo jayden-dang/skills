@@ -48,12 +48,18 @@ For the genuinely hard parts, the skill designs it twice. It dispatches two or t
 
 ## The seam table — the contract with `test-first`
 
+Use the project's test layers. For each requirement, record the fault to catch,
+the observable result, and an existing check to extend or a gap. Several
+assertions can share a seam when the same setup observes them.
+
 Step 3 fills the "Seams for testing" table: the public boundaries tests will be written at, which requirement IDs each seam covers, and the test kind (unit, integration, or e2e). Two rules govern it:
 
 - **Prefer existing seams.** The ideal number of *new* seams is zero or one — every new seam is new surface to maintain.
 - **Cover every requirement.** Every requirement ID maps to at least one seam row; an ID with no seam has no place a test can prove-claim it.
 
-This table is a contract, not a suggestion. The [`test-first`](test-first.md) skill refuses to write a test at any seam this table does not list, and [`plan-tasks`](plan-tasks.md) must tag a test for every ID in every row or the coverage is dropped. Agreeing the seams here is how the design pre-commits where the testing budget gets spent, so it lands on critical paths instead of on every internal detail.
+The table guides [`test-first`](test-first.md) and [`plan-tasks`](plan-tasks.md).
+Plan a behavioral check for every promised observation at its agreed seam.
+Requirement IDs belong in the docs.
 
 The step is done when every requirement ID maps to at least one seam row. See [artifacts](../concepts/artifacts.md) for how the seam table threads through the rest of the flow.
 
@@ -112,10 +118,10 @@ resolves; an unknown id falls back to `defaultModuleId`.
 
 ## Seams for testing
 
-| Seam | Kind | Covers |
-|---|---|---|
-| `moduleStore` (setActive / restoreModule) | unit | SHELL-1.1, SHELL-1.2, SHELL-1.3 |
-| Rail click → panel render | e2e | SHELL-1.1 |
+| Public seam | Project test layer | Covers | Fault and expected observation | Check |
+|---|---|---|---|---|
+| `moduleStore` restore | unit | SHELL-1.2, SHELL-1.3 | An unknown persisted ID falls back to Home | Extend the store restore check |
+| Rail click → panel render | e2e | SHELL-1.1 | Clicking Notes activates and renders Notes | Extend the rail interaction check |
 ```
 
 Reading the excerpt against the four steps:

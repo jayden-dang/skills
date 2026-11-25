@@ -1,6 +1,6 @@
 ---
 name: configure-repo
-version: 2.0.1
+version: 2.1.0
 description: "Use when an existing repo is to adopt this skill set, its docs/agents config is missing or incomplete, another skill reports a missing config file, or a new project is to be scaffolded in an empty directory. Produces the docs/agents config files, the seed spec files and the pointer block in the agent instructions; for an empty directory, first a working skeleton with one passing test."
 ---
 
@@ -58,7 +58,7 @@ Explainer: skills that read or write issues (`triage`, `plan-tasks` when publish
 
 ### C. verify commands
 
-Explainer: `test-first`, `prove-claim`, `build` (wave mode), and `cut-release` all run this repo's proof commands; they must be exact, not guessed. Confirm each, pre-filled from what you detected: typecheck, lint, unit tests, e2e/smoke, and the **single-test-file pattern** (the command shape for running one test file — the tight loop `test-first` lives in; it must narrow what gets *built*, not only what runs — e.g. `cargo nextest run -p <crate> --test <file>`, never a bare name filter that compiles every test binary in the package). Then the two optional gates: **Task gate** (tests of the changed units and of the dependents that call what changed, plus a compile of every other dependent — e.g. `cargo nextest run -p a -p b` with `cargo check -p c --all-targets`, `vitest related`, `nx affected`) and **Wave gate** (compile and lint every target, e.g. `cargo check --workspace --all-targets` + lint). Mark them "none" when the whole suite takes a couple of minutes — then the suite is the gate. **Done when:** each command has been confirmed by the user (or explicitly marked "none").
+Confirm the detected typecheck, lint, full suite, e2e/smoke, and **single-test-file pattern** (narrow build targets as well as executed cases). Confirm the project template's **Task gate** and **Wave gate** or explicitly mark them `none`. When the project opts into integration placement, apply the template's verification before writing the two settings. **Done when:** the commands are confirmed and any integration opt-in has observed scope and fallback evidence.
 
 ### D. Traceability (docs-only)
 

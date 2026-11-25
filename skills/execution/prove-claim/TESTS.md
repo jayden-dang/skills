@@ -1,5 +1,10 @@
 # `prove-claim` — test evidence
 
+## Evidence on the combined revision (2026-11-26)
+
+RED: the Fenwick GPT-6.2-sol worker handoff scheduled a configured gate and a duplicate compile/lint run rather than defining one scope-bound result. GREEN: the revised handoff distinguished narrow lane evidence from pending integration on Haiku 5.5, Sonnet 5.5 and GPT-6.2-sol. Ashford exercised three Node checks and actual lint on the assembled SHA; its records reported scoped evidence and left the full suite for close. On the separate stub fixture, no execution claim was accepted from declared scope alone. The rule adds an evidence row without relaxing the full-suite claim.
+
+
 ## RED — S-TRACKER-WRITEBACK (2026-08-13, Sonnet)
 
 **Origin.** Baselined while evaluating Bậc-2 item #6 (a tracker contract ported

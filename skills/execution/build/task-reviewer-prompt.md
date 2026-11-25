@@ -82,7 +82,16 @@ Subagent (general-purpose):
     malformed POST to another app's server listening there, and it went down; a build left one
     listening 48 minutes after it ended.
 
-    Check the report's task gate against the diff. Each of these is an
+    Read the approved project testing standard for the changed seam when present.
+    Compare the test inputs and assertions to the contract. For a doubtful
+    important behavior, name a plausible fault and the observation that would
+    catch it. Request a focused replay on an isolated checkout if reading
+    cannot settle it. Keep this review checkout read-only. Judge new tests
+    for unique behavior, determinism and fixture cost alongside existing checks.
+
+    Under integration placement, check the lane's narrow evidence and changed
+    paths, consumers and shared inputs for the controller. Under task placement,
+    check the reported gate against the diff. In a completed gate each of these is an
     Important finding: a changed unit, or a unit that depends on one, missing
     from the gate's scope; no lint result, or a lint finding outside the
     baseline; a lint rule suppressed to get past the baseline; a diff that

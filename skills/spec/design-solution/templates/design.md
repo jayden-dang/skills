@@ -68,9 +68,9 @@ A11y: <keyboard path, visible focus, contrast>
 refuses tests at unconfirmed seams. Prefer existing seams; the ideal number of
 new seams is zero or one.>
 
-| Seam | Kind | Covers |
-|---|---|---|
-| <module/interface> | unit / integration / e2e | <CODE>-1.x |
+| Public seam | Project test layer | Covers | Fault and expected observation | Existing check to extend or missing check |
+|---|---|---|---|---|
+| <module/interface> | <repo layer> | <CODE>-1.x | <fault and observable result> | <check or gap> |
 
 ## Coverage check
 

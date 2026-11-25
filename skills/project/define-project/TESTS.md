@@ -1,5 +1,12 @@
 # TESTS.md — define-project
 
+## Project commitments and operational evidence (2026-11-26)
+
+Baytree presented a CLI/SQLite project with a copied web-service handbook and time, authority and sunk-work pressure. RED at `46e2d6d`: Sonnet 5.5 wrote “Picking a gate: run `git diff --name-only`. If every path is under `src/`, use `scoped`.” That decision does not capture committed changes or new shared inputs. The baseline did recognize that the command was a stub and that the old web stack did not fit. That existing judgment is retained.
+
+GREEN: Haiku 5.5, Sonnet 5.5 and GPT-6.2-sol produced repo-specific verification scope and kept stale, skipped or stub results separate from observed coverage. Elmreach and Starling checked that a 19-minute partial restore cannot establish recovery if an acknowledged record is missing. The models caught that risk under the original skill as well. The enhanced records use the same recovery scenario and an explicit check or evidence gap. These are proposal/assessment exercises using saved evidence, not conducted restore drills.
+
+
 ## 2026-11-15 — absorbed define-system-doc, assess-pivot-impact as mode file(s)
 
 On the owner's word (2026-11-15: simplify the set around idea, shape and go, inside the skill

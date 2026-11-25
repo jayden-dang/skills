@@ -35,6 +35,10 @@ Before writing a single task, the skill maps every file the plan creates or modi
 
 ## Tasks as vertical slices
 
+Keep modules and test steps that deliver one independently reviewable
+outcome in the same task. Name the specific failing observation and the
+command that collects it. Write the test source during implementation.
+
 The right-sizing rule: a task is the smallest unit that carries its own test cycle and deserves its own review verdict — split only where a reviewer could reject one task while approving its neighbor. Tasks are **vertical slices** (demoable end-to-end) rather than horizontal layers; if a slice needs prefactoring, that prefactoring is its own earlier task — "make the change easy, then make the easy change".
 
 Each task carries five blocks:
@@ -42,7 +46,9 @@ Each task carries five blocks:
 - **Files** — Create / Modify (exact paths, line ranges when known) / Test.
 - **Interfaces** — Consumes and Produces: the names and types neighboring tasks share. This is how an isolated implementer learns what to call things.
 - **Depends-on** — the earlier tasks this one truly needs (interface it Consumes, files it builds on), as `Depends-on: Task 2, Task 4` or `Depends-on: none`. This is the ready-set signal: tasks that share no files or interfaces may run together only when worktree isolation is safe. Omit the line to fall back to strict serial order. Over-declaring serializes needlessly; under-declaring is caught by the executor's disjoint-surface check before it can collide.
-- **Steps** — bite-sized checkboxes, 2 to 5 minutes each, following the TDD cycle: write the failing test (complete code) → run and expect the stated failure → implement (complete code) → run and expect pass → commit with an `Implements: CODE-N.M` trailer. Exact commands and expected output, every time.
+- **Steps** name the check to extend, the failing observation, the command,
+  and the implementation scope. A task ends with a focused passing run
+  and a conventional commit. Implementation is where the test and code are written.
 - **Footer** — `_Requirements: CODE-N.M, CODE-N.M_`, the IDs this task implements or guards. Every task has one.
 
 **No placeholders.** "TBD", "add appropriate error handling", "similar to Task 3", or a type referenced but defined in no task — each of these is a plan bug fixed before the plan ships.
@@ -52,27 +58,19 @@ Each task carries five blocks:
 Step 4 is the subtle one, and getting it right is the point of the skill.
 
 - **Run the [`audit-trace`](audit-trace.md) check:** every Approved requirement must be cited by at least one task footer. An uncited ID means the plan is incomplete, or the requirement should be struck through with a reason.
-- **Test coverage, not just citation.** Every requirement ID must *also* appear in a **test annotation** inside some task's steps — `[CODE-N.M]` in a Vitest title, `/// REQ: CODE-N.M` on a Rust test, or the domain name of an existing end-to-end test — not merely in a footer. This is the trap: a footer citation with no tagged test **passes audit-trace now** (Approved satisfies the W1 warning) but **fails E2** the instant the feature is marked Implemented, because E2 requires every requirement in an Implemented spec to have a test reference. A guard or negative requirement counts only if a real test asserts it; when a behavior cannot be unit-tested in isolation, tag the e2e task or an existing test that already exercises it — one test may carry several IDs.
-- **Reconcile against the design's seam table.** Every ID in every row of `design.md`'s seam table must be tagged on a test in the plan. An ID the design promised to cover but the plan left untagged is *dropped coverage* — you add the test, you do not renumber.
+- **Behavior coverage.** For each cited requirement, name the test or
+  acceptance step that will check the outcome in domain language. Several
+  requirements can share one well-chosen check. IDs stay in the docs.
+- **Reconcile against the design's seam table.** Every planned observation
+  needs a verification step on its agreed seam.
 - **Type/name consistency** across tasks: the same function has the same name and signature everywhere it is mentioned.
 - **Spec alignment:** re-read `requirements.md` once, checking each criterion against the task that claims it.
 - **Upstream sync-back:** if planning reveals a requirement is *wrong or infeasible as written* — not merely uncovered — you correct it in `requirements.md` and re-surface for approval. You never bury a workaround in a task that leaves the requirement lying.
 
-The five checks the coverage step is reconciling against, from the [`audit-trace`](audit-trace.md) check's own finding set:
-
-| Code | Meaning |
-|---|---|
-| **E1** | a task or test cites an ID defined in no requirements file |
-| **E2** | an Implemented/Shipped spec has a requirement with zero test references |
-| **E3** | the same ID is defined more than once |
-| **W1** | an Approved spec has a requirement not cited by any task |
-| **W2** | a requirements file is missing its Status line or feature code |
-
-The plan is written while the spec is Approved, so the linter is enforcing W1 — every requirement cited by a task. But the plan must be built to survive the flip to Implemented, when E2 turns on and a footer without a tagged test becomes a hard error. That is why "footer citation is not test coverage" is a check the plan runs *now*, against a failure that only fires *later*.
-
 Then the **independent plan review**, dispatched not self-run. The doc-only checks above stay in this context; the codebase comparison does not. A review subagent gets the plan, `requirements.md`, `design.md`, and the repo, and verifies against real code every symbol, signature, path, import, and **hardcoded test value** the plan asserts — a fabricated golden or a guessed API is the classic plan defect. It cites `file:line`, defaults to flag, writes to `.skills/<slug>-plan-review.md`, and you fix before offering execution.
 
-The step is done when every requirement ID has both a task footer and a tagged test, [`audit-trace`](audit-trace.md) is clean, the design's seam-table IDs are all covered, and the placeholder scan is clean.
+The step is done when every requirement has a task citation and a behavioral
+check, [`audit-trace`](audit-trace.md) is clean, and the plan has no placeholders.
 
 ## A change map, when you ask for one
 
@@ -110,23 +108,23 @@ Continuing `SHELL` — the left icon rail — from the [`design-solution`](desig
 ### Task 2: Activate a module on rail click
 
 **Files:**
-- Modify: src/shell/module-store.ts
-- Test: src/shell/module-store.test.ts
+- Modify: `src/shell/rail.tsx`
+- Test: `tests/e2e/rail.spec.ts`
+
+**Reuse:** existing rail interaction fixture and module store.
 
 **Interfaces:**
 - Consumes: Module { id: string; label: string }
-- Produces: moduleStore.setActive(id: string): void
+- Consumes: moduleStore.setActive(id: string): void
+- Produces: The clicked module's panel.
 
-- [ ] **Step 1: failing test**
-  test('activates the clicked module [SHELL-1.1]', () => {
-    store.setActive('notes')
-    expect(store.activeModule).toBe('notes')
-  })
-  Run: `npx vitest run src/shell/module-store.test.ts` — expect: fail,
-  `setActive is not a function`.
+**Depends-on:** none
 
-- [ ] **Step 2: implement** … Run: same command — expect: pass.
-- [ ] **Step 3: commit** — trailer `Implements: SHELL-1.1`.
+- [ ] Extend the rail interaction test. With Home active, click Notes and
+  expect the Notes panel to render. RED reaches the panel assertion and
+  observes Home still active. Run `./scripts/check rail`.
+- [ ] Wire the click to the selected module and rerun that same check.
+- [ ] Commit the rail activation behavior.
 
 _Requirements: SHELL-1.1_
 ```
@@ -134,15 +132,16 @@ _Requirements: SHELL-1.1_
 Reading the task against the five steps:
 
 - **Step 1's** Global Constraints — the Vitest command, the lint rule, the forbidden changes — are copied at the top of the file, so this implementer needs nothing but the task and that block.
-- **Step 2's** file map already listed `src/shell/module-store.ts`, so touching it here is legal; a file the map omitted could not be touched.
-- **Step 3** made this a vertical slice from click to state change, right-sized to one test cycle, with complete test and implementation code and a footer.
-- **Step 4** is where both `[SHELL-1.1]` in the title and `SHELL-1.1` in the footer matter: the footer alone satisfies audit-trace's W1 while `SHELL` is Approved, but only the tagged test keeps it clean under E2 once `SHELL` is Implemented.
-
-The footer cites `SHELL-1.1` and the test title tags `[SHELL-1.1]` — both are required. `SHELL-1.2` and `SHELL-1.3` from the design's seam table each get their own tagged test in their own task; the coverage check confirms none of the three seam-table IDs was left with a footer citation but no tagged test, the failure that would surface as E2 the moment `SHELL` is marked Implemented.
+- **Step 2's** file map lists the rail and its existing interaction check.
+- **Step 3** keeps one outcome from click to panel in one task.
+- **Step 4** checks the footer against the named observation. Other rows
+  can reuse a check when its assertions distinguish their failure cases.
 
 ## Why it is written the way it is
 
-The plan is where an approved intent becomes something a stranger can build without ever seeing the design conversation — so the skill optimizes relentlessly for the isolated implementer: verbatim constraints, a bounding file map, complete code in every step, no placeholders. The coverage check is the most careful part because it guards a gap the other checks miss: a footer alone satisfies today's linter but leaves a requirement untested, and that debt comes due exactly when the feature ships. Dispatching the codebase comparison to a fresh reviewer catches the defect that self-review structurally cannot — the confidently guessed API or fabricated golden value that reads fine on the page and fails on first run.
+The plan gives an isolated implementer the constraints, paths, interfaces,
+and exact observations that define the work. Independent review checks those
+claims against the code before implementation.
 
 ## See also
 

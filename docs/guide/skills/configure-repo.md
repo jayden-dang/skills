@@ -122,6 +122,11 @@ Each is a file beside `SKILL.md`, opened on the condition `SKILL.md` names.
 
 ## See also
 
+Continuous builds can opt in to one verification command on the combined
+candidate. Verify ordinary affected scope, compile/lint coverage, and the
+full fallback on an unknown input before setting integration placement in
+`docs/agents/project.md`.
+
 - [Adopting the skill set](../resources/adopting.md) — the wider story of bringing an existing repo under the set
 - [`configure-repo`](configure-repo.md) — the greenfield sibling that hands off here
 - [Templates](../resources/templates.md) — the `docs/agents/*` seeds this skill writes from

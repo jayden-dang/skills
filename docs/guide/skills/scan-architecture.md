@@ -32,6 +32,11 @@ The skill never drifts into "component", "service", "layer", or "boundary": prec
 
 ## 1. Explore for friction
 
+When the project links targets to recent measurements, compare them before
+ranking improvements. Use the same scope and environment for before/after
+measurements. A test setup delay may offer more leverage than splitting a
+frequently changed module.
+
 Read `CONTEXT.md` and `docs/adr/` first. Then dispatch an explore subagent to walk the codebase **organically — no rigid checklist**, just noting where work hurts. Four friction kinds:
 
 - **Shallow modules** — an interface nearly as complex as the implementation behind it.

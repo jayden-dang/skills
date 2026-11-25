@@ -1,6 +1,6 @@
 ---
 name: plan-tasks
-version: 1.10.0
+version: 1.11.0
 description: Use when a design is approved and the tasks.md implementation plan
   (vertical-slice tasks with requirement footers and behavior tests) needs writing,
   after design-solution and before the execute family (build (wave mode) /
@@ -70,16 +70,16 @@ and blast_radius/cluster(feature CODE) ran once (or no-op if specs/seeds are mis
 **Contract:** a task is a vertical slice — the smallest unit with its own test
 cycle and review verdict; split only where a reviewer could reject one task
 while approving its neighbor. **Shape:** one demoable end-to-end outcome per
-task per user story; prefactoring that only enables a later slice is its own
-**earlier task** ("make the change easy, then make the easy change") via
-`Depends-on` edges — never buried horizontal layers inside a story task.
+task per user story. Keep modules and RED/GREEN steps serving one outcome in
+that task. A second test seam alone is a step. Resolve missing seams and runners
+in review. A prefactor enabling a later slice is an earlier task with a `Depends-on` edge.
 
 Each task carries these slots:
 
 | Slot | Rule |
 |---|---|
 | **Files, Reuse, Interfaces, Depends-on** | Files: Create / Modify / Test, each path **hardened** in backticks (e.g. `` `src/foo/bar.ts` ``); never glue a line number/range into the path token (`path:86-103` is forbidden) — ranges go in surrounding prose or a separate annotation (new plans only; P1 ownership extraction still accepts legacy glued forms in already-written `tasks.md`). Reuse: the concrete existing code/library/pattern this task builds on, copied **verbatim** from the design section's `Reuse:` line — same `<rung> — <concrete target>` grammar (e.g. `Reuse: existing — src/util/dates:parseISO (rung 2)`); copy, don't reinterpret — Step 4 checks it against the design's line. Interfaces: Consumes / Produces — the names and types neighboring tasks share, so an isolated implementer learns what to call things. Depends-on: the earlier tasks this one truly needs — those whose interface it Consumes or whose files it builds on — as `Depends-on: Task 2, Task 4`, or `Depends-on: none`. Parallelism signal: two tasks sharing no files and no interface declare no edge, so the continuous `build` (wave mode) scheduler may place them in one ready set when surfaces are disjoint and worktree isolation is safe; omitting the line falls back to depending on every prior task (safe but fully serial) — over-declaring needlessly serializes, under-declaring is caught by the executor's file-disjoint check before it can collide. Governs build waves — never reorder or narrow dependencies solely to tidy review units if that would lie about what the task needs. |
-| **Steps (thin, 3–8 checkboxes)** | Bite-sized checkboxes (2–5 min each, prefer **3–8** per task), TDD cycle: failing test (complete code describing **behavior**, not embedding requirement IDs in application/test source) → run, expect the stated failure → implement (complete code) → run, expect pass → commit with a conventional subject explaining the change (no `Implements:` / `Guards:` trailer required or taught). No novel-length essays here — that bloats review surface; long how-to narration for one worker goes in the execute brief (`.skills/<CODE>/task-N-brief.md`) at execute time, while the shared plan keeps **identifiers** (paths, type names, commands) in Files / Interfaces / Reuse so the brief cannot invent APIs. |
+| **Steps (thin, 3–8 checkboxes)** | Use the agreed seam and existing check from the design. Name the wrong outcome the check should expose, its expected assertion failure, and the command that collects it. For behavioral RED, a missing symbol or fixture failure cannot substitute for that assertion. Then implement → rerun, expect pass → commit with a conventional subject. Keep the test source in the implementation; the plan carries identifiers, inputs and expected behavior. |
 | **Footer** | `` `_Requirements: CODE-N.M, CODE-N.M_` `` — the IDs this task implements or guards; every task has one. **Default: one story's IDs** (same story number N); multi-story footers **merge** those stories into one review unit under `build` (story mode) (plan-quality signal — not a ban, not a reason to lie about Depends-on). IDs live in this footer (and in requirements/design), not in production source or test titles. No placeholders anywhere in a slot — "TBD", "add appropriate error handling", "similar to Task 3", or a type referenced but defined in no task — each is a plan bug; fix it before the plan ships. |
 
 | Thought | Reality |

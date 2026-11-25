@@ -1,6 +1,6 @@
 ---
 name: build
-version: 1.4.0
+version: 1.5.0
 description: Use when an approved tasks.md is to be executed. Produces the built feature task by task, with a progress ledger, a two-verdict review of each task and a revision-bound close receipt, run as continuous subagent waves, as human-gated story units, or inline without subagents, as the plan's Execution-mode line and the environment say.
 ---
 
@@ -24,7 +24,7 @@ else `inline.md`. Each mode file says when to hand over to another.
 All three share one controller recipe, `common.md`: session preflight, the ledger check, the
 todos gate, runtime binding and the close sequence. Its parts are `task-lifecycle.md`,
 `ledger-check.md`, `runtime-binding.md`, `tracker-sync.md`, `decision-trail.md`,
-`implementer-prompt.md`, `task-reviewer-prompt.md` and `close-receipt.md`. Each mode file names
+`implementer-prompt.md`, `task-reviewer-prompt.md`, `verification.md` and `close-receipt.md`. Each mode file names
 the moment to load them.
 
 *Done when: you have said which mode is running and why, and opened that one file.*

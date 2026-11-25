@@ -1,5 +1,18 @@
 [
   {
+    "eval_id": 5,
+    "eval_name": "project-testing-scope-and-evidence",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § Project commitments and operational evidence (2026-11-26)",
+    "prompt": "Draft testing standards for a CLI with local SQLite and a shared file. The current selector sees only source paths and the last full log predates the adapter.",
+    "assertions": [
+      "Layers come from the actual repo",
+      "The verification scope accounts for shared and unknown inputs on the candidate",
+      "A structural pass or historical partial result does not establish runtime coverage",
+      "Commands are referenced from project config"
+    ]
+  },
+  {
     "eval_id": 1,
     "eval_name": "validate-mode-does-not-mutate",
     "kind": "contract",

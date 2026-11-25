@@ -103,7 +103,24 @@ Task gate (tests of the changed units and the dependents that call what changed,
 Wave gate (compile + lint every target after a parallel merge; `none` = typecheck + lint):
 `<command>`
 
-The whole suite runs once, at close. Each task runs its task gate instead, escalating
+Continuous builds may opt in by adding both exact lines below with a verified
+project command. Otherwise omit them.
+
+```text
+Verification gate placement: integration
+Integration gate: <command and covered scope>
+```
+
+The integration command runs once on the combined candidate and covers affected
+tests plus wave compile/lint. Document how it takes the pinned base and candidate,
+which shared inputs it handles, and the canonical full fallback for unknown scope.
+Each lane still provides fresh narrow evidence and a clean review.
+Before enabling placement, run the command on a representative combined change
+and a case with an input the selector cannot classify. Read the affected tests,
+compile/lint coverage and the actual complete fallback. A stub or empty selection
+on an unknown input leaves the default gates in force.
+
+The whole suite runs at close. By default, each task runs its task gate, escalating
 to the whole suite when the change reaches what the build graph cannot see (schema,
 migrations, shared fixtures, manifests, generated contracts, a root package).
 

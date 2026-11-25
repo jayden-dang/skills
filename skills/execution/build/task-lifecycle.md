@@ -11,6 +11,8 @@ the canonical Global Constraints section and its content hash. Include relevant
 architecture seams, prior-task interfaces, ambiguity resolutions, and the
 task's requirement footer. Do not paste the entire plan or duplicate global
 constraints into each reviewer prompt.
+In continuous mode pass the controller's gate placement from `verification.md`
+to both roles. Story units use task placement.
 
 Dispatch the worker with:
 
@@ -53,11 +55,14 @@ Resume or start the worker fresh per **Resume or start fresh** in
    finding set, then a fresh re-review. Three surviving cycles stop the build
    and escalate. The controller never fixes reviewer findings directly.
    The fix message names its verification: the tests covering the amended code,
-   plus `test-first`'s task gate for that amendment only when the fix changes
-   production code. Both Haiku baseline controllers sent a test-only fix back
+   plus `test-first`'s task gate for a production fix under task placement.
+   For an integration-placement fix, renew the integrated evidence before
+   releasing dependents. Both Haiku baseline controllers sent a test-only fix back
    with the full 14–17 minute gate of the task attached.
-7. Resolve ⚠️ items the reviewer could not prove from the diff. Only after both
-   verdicts are clean append:
+7. Resolve ⚠️ items the reviewer could not prove from the diff. In continuous
+   mode, return a reviewed lane to the scheduler without ledgering or ticking
+   when the set is parallel or uses integration placement. The scheduler runs
+   the combined gate first. Otherwise close the task here. To close it, append:
 
    `Task N: complete (commits <base7>..<head7>, review clean)`
 

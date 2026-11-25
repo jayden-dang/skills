@@ -38,6 +38,10 @@ The steps are ordered on purpose: you cannot run a command you have not identifi
 
 ## Claim → evidence
 
+For a configured integration gate, read the actual commands, tested scope,
+and result on the combined revision. Worker runs and skipped jobs cannot
+fill that record. Report the result as scoped unless the full suite ran.
+
 Each claim has a required proof and a set of things that are never sufficient for it. The last row is the strictest: "requirements met" needs the [`audit-trace`](audit-trace.md) check to pass with zero errors **and** every acceptance criterion checked off individually.
 
 | Claim | Requires | Never sufficient |

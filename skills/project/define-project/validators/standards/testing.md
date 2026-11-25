@@ -10,5 +10,8 @@ Returns **pass** or **fail**. No semantic judgment of whether standards are wise
 5. Unresolved `Blocker:` lines.
 6. Missing `Status: Approved` for write readiness.
 
+`Verification scope` is conditional. Older approved standards remain structurally
+valid without it. Validate its rows when an update adds a scoped verification policy.
+
 ## Non-goals
 Does not enforce standards at runtime; does not replace linters.

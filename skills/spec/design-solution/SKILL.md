@@ -1,6 +1,6 @@
 ---
 name: design-solution
-version: 1.8.1
+version: 1.9.0
 description: Use when approved requirements need their technical design — the design.md /
   architecture doc spelling out HOW the requirements get built. After
   specify-behavior, before plan-tasks.
@@ -127,11 +127,15 @@ has all five slots filled — with a line for each reachable visible state.
 
 ## Step 3: Agree the seams for testing
 
-Fill the "Seams for testing" table: the public boundaries tests will be written at, which
-requirement IDs each seam covers, and the test kind (unit/integration/e2e). Prefer existing
-seams; the ideal number of NEW seams is zero or one. The `test-first` skill refuses to write
-tests at seams not agreed here — this table is the contract.
-**Done when:** every requirement ID maps to at least one seam row.
+Fill the "Seams for testing" table. Read the approved `docs/standards/testing.md` if present
+and use its test layers and boundary rules. Otherwise infer the seam from existing tests
+and the behavior being specified. Choose the cheapest public seam that can witness
+the failure. Name the fault, the observation that distinguishes it, and the existing
+check to extend (name a new check only for an uncovered behavior or boundary).
+A second seam earns a row when it can witness a separate failure. For example, code
+can return the right answer and still write the wrong durable state. If one existing
+entry point can observe both, keep the observations in that row.
+**Done when:** every requirement ID maps to a row with an observable result and a named check.
 
 ## Step 4: Coverage self-check, then the approval gate
 

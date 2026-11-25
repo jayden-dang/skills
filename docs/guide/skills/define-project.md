@@ -27,6 +27,12 @@ The spine is not a diagram doc — it is the small set of **invariants** that ke
 
 ## Optionality
 
+For an architecture, testing, or operations commitment, record what triggers it,
+what someone should observe, who owns it, and where the check lives. Assess
+its result separately from whether the document has all required sections.
+Testing standards describe the project's own layers and fallback policy.
+Executable commands live in `docs/agents/project.md`.
+
 The whole layer is optional. `configure-repo` gates it behind a default-**No** decision; feature skills consult it through no-op-if-absent hooks. A repo that opts into nothing behaves exactly as it did before this layer existed.
 
 ## Modes folded in (2026-11-15)

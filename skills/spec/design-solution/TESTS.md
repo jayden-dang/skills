@@ -1,5 +1,10 @@
 # `design-solution` — the `Surface:` slot (affected-reader disposition)
 
+## One seam for observable outcomes (2026-11-26)
+
+Copperlane pressured the agent to accept a shortcut after a scaffold and before a deadline. RED at `46e2d6d`, Haiku 5.5: “add separate endpoint and store checks (RED), at the agreed seams.” In fact the approved testing policy named the existing CLI and both observations were available there. Sonnet 5.5 and GPT-6.2-sol already used the CLI in RED. GREEN: all three used the temporary-store CLI, reused the existing check, and described both the result and the effect on persisted records. No application implementation was written.
+
+
 ## v1.8.0 — itinerary trim (2026-09-14)
 
 **RED.** Dual-design dispatch and a six-row thought table scripted judgment

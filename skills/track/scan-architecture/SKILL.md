@@ -1,6 +1,6 @@
 ---
 name: scan-architecture
-version: 1.5.1
+version: 1.6.0
 description: "Use when someone asks where refactoring would pay, for an architecture review, or for a codebase-health or technical-debt scan across the whole repo. Produces a posture reading, ranked candidates in an HTML report and one follow-up on the board, and applies one direction only when asked to."
 ---
 
@@ -26,6 +26,13 @@ The record lands in `.skills/scan-architecture/posture.json` (local, never commi
 
 Then read `CONTEXT.md` (the domain names good seams) and `docs/adr/` (decisions not to re-litigate), with the numbers already in hand. Co-change pairs and the most-changed files name the modules to open first: design defects that only history reveals never surface in a reading pass.
 
+If the project links approved engineering or operating targets to saved
+measurements, read the relevant pair before ranking. Compare scope,
+environment and revision or measurement window. A frequent edit is a lead,
+not evidence of a measured quality gap. Check the measured stage before
+attributing a delay to code structure. Per-stage percentiles diagnose stages;
+use the separately measured end-to-end percentile for the improvement target.
+
 **Done when:** `posture.json` is written, and you can name the prose-only rule IDs aloud.
 
 ## 2. Explore for friction
@@ -36,6 +43,8 @@ Dispatch an explore subagent to walk the codebase, starting at the modules the p
 - **Poor locality** — one conceptual change fans out across many files
 - **Missing or weak seams** — places substitution is needed but impossible, or a seam exists with only one hypothetical adapter
 - **Untested-through-interface** — code only testable by reaching past its interface into internals
+- **Measured quality gap** — a project target misses on comparable evidence. Trace
+  the cost or failure to the relevant module, setup, or runtime path before ranking.
 
 Apply the **deletion test** to anything suspect: if this module vanished, how much would its callers need to know to rebuild the behavior? "Almost everything" means the module was shallow — deleting it would concentrate complexity rather than lose it. That concentration point is your candidate.
 
@@ -55,18 +64,21 @@ One card per candidate:
 
 - **Files** — the modules involved (monospaced list; this report is ephemeral, so paths are fine here)
 - **Problem** — one sentence: what hurts and which friction kind it is
-- **Proposed direction** — one sentence, in the strict vocabulary: what would deepen
+- **Proposed direction** — one sentence: what would deepen or which measured gap the change addresses
 - **Win** — bullets of at most 6 words each, named as qualities ("locality: change lands in one module", "interface shrinks, tests hit one seam")
 - **Confidence badge** — exactly one of `Strong` / `Worth exploring` / `Speculative`
-- **Before/after structure sketch** — side-by-side recipe SVG (`before/after structure`): shallow-vs-deep mass diagrams, fan-out collapses, seam lines. The sketch carries the argument; if it needs a paragraph to explain, redraw it.
+- **Before/after sketch** — for structure use the `before/after structure` figure. For a measured gap use the observed path with the bottleneck and proposed change marked. Label a predicted result as a target until measured.
 
-End with a top-recommendation section: which candidate first, one sentence why, and which single prose-only rule to give a check next — the cheapest way the posture moves before the next scan. Then ask the user which candidate they want to pursue.
+End with the first candidate and why, then the measurement that should move.
+Use the project target and comparable baseline when available. Otherwise use
+the posture measure or one prose-only rule to mechanize. Ask the user which
+candidate they want to pursue.
 
 **Do not propose concrete interfaces yet** — the report names directions, not designs. Interface shape belongs to the clarify-decisions step, with the user in the loop.
 
 **ADR conflicts:** a candidate that contradicts an existing ADR is included only when its evidence carries a `Strong` confidence badge; below that it is dropped, not listed. An included one is marked with the ADR reference and why the decision deserves revisiting. Do not list every refactor an ADR forbids.
 
-REQUIRED — the top recommendation leaves the session as one follow-up, in the Issue format of `docs/agents/issue-tracker.md`: a ticket created with that file's tracker ops, or the file `.skills/inbox/<slug>.md` (first line `# <title>`) and no ticket WHERE that file sets **Follow-up filing** to `draft`. Problem is the friction and the posture figure behind it; Outcome is the proposed direction; Acceptance is the one figure in `posture.json` the next scan should see move; Out of scope names the other candidates. One follow-up, not one per candidate. The report sits in a temp directory and the question in one reply: a scan run for an operator who was out until morning ended "Nothing proceeds until Lan picks one", with nothing on the board for her to pick from.
+REQUIRED — the top recommendation leaves the session as one follow-up, in the Issue format of `docs/agents/issue-tracker.md`: a ticket created with that file's tracker ops, or the file `.skills/inbox/<slug>.md` (first line `# <title>`) and no ticket WHERE that file sets **Follow-up filing** to `draft`. Problem is the measured friction; Outcome is the proposed direction; Acceptance is the baseline, desired movement and comparable measurement to repeat; Out of scope names the other candidates. One follow-up, not one per candidate. The report sits in a temp directory and the question in one reply: a scan run for an operator who was out until morning ended "Nothing proceeds until Lan picks one", with nothing on the board for her to pick from.
 
 **Done when:** the posture strip carries every count from step 1, the report is open in the user's browser, the follow-up is a ticket number read back from the tracker or a path under `.skills/inbox/`, and you have asked which candidate to pursue.
 

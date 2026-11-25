@@ -1,5 +1,28 @@
 # TESTS.md — build
 
+## Project-owned verification stages (2026-11-26)
+
+Fenwick observed deadline, costly per-lane evidence and authority pressure in a two-worker handoff. RED at `46e2d6d`: Haiku 5.5 wrote “Run `sh bin/check task` at the final commit” for both workers and left the project placement unresolved. GPT-6.2-sol scheduled the integrated command, then “Run the configured wave gate, `sh bin/check compile`, on the same candidate” although the accepted integration command already included compile/lint. Sonnet's RED handoff did not produce the requested artifact.
+
+GREEN: Fenwick on Haiku 5.5, Sonnet 5.5 and GPT-6.2-sol described one combined gate once configured and detected the unverified stub instead of calling it green. Ashford's Node fixture exercised the positive path on all three: command logs contain one `integrated` invocation per run, the three affected checks ran, and syntax/lint passed. The old Ashford executions also passed; the observed scheduling failure is Fenwick. In Riverlease all three ran the canonical complete command against an out-of-graph contract and held the dependent when the fixture returned exit 1. Cliffmarket and Marshfield were review controls for reaching the intended branch, redundant tests and timing. The baseline already caught their obvious defects. Raw artifacts are in `.skills/project-verification/` in the authoring checkout.
+
+Loops exercised isolated CLI fixtures and handoff artifacts. They do not prove live klynt timing or a complete multi-task build.
+
+An early Ashford Haiku run attempted the gate again “Confirm integrated gate exit code.”
+The recipe now captures exit and log together. The executable reruns and follow-up
+sessions on all three models recorded exactly one scoped invocation each. Direct
+fixture checks also exercised the unknown-input fallback: 4 checks with fallback
+versus 3 affected checks in the normal case. The follow-ups identified project
+scope, the selected combined check, and the dependent release barrier.
+
+The first Fenwick revision still let two handoffs select integration because
+both settings were present, while refusing to claim it passed the stub. After
+making incomplete wiring override the opt-in explicitly, all three final
+Fenwick handoffs chose default placement and held the dependent. All three
+final Ashford runs still invoked exactly one combined check and released the
+dependent based on its scoped result.
+
+
 ## v1.4.0 — `browser-driver.md` added (2026-11-23)
 
 New shared file: the one home for which browser driver a skill uses. Callers: `run-dogfood`,

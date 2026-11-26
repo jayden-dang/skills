@@ -1,5 +1,10 @@
 # `configure-repo` — tests
 
+## Prove an opted-in integration gate (2026-11-26)
+
+Fenwick RED at `46e2d6d`: GPT-6.2-sol added a wave check that the declared command already included. Haiku 5.5 retained two broad lane gates and deferred the integration command. On GREEN, Haiku 5.5, Sonnet 5.5 and GPT-6.2-sol diagnosed the stub and named the ordinary combined scope, compile/lint and full fallback to verify before adoption. Ashford used the Node fixture to run a working configured combined check. The test does not establish speed on a consumer repo.
+
+
 ## v2.0.1 — verify-control and seeds stop naming kimi-webbridge (2026-11-23)
 
 Wording only: the Drive line and the project/verify seeds say "the session's browser driver".

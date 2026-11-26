@@ -1,5 +1,17 @@
 [
   {
+    "eval_id": 9,
+    "eval_name": "fault-observation-and-test-seam",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § One seam for observable outcomes (2026-11-26)",
+    "prompt": "Design a duplicate receipt change. The current CLI check can observe the duplicate response and row count with one fixture.",
+    "assertions": [
+      "Uses the project-approved test layer and existing seam",
+      "Names the concrete wrong result and the required observable outcome",
+      "Keeps both observations in one seam unless the second boundary is necessary"
+    ]
+  },
+  {
     "eval_id": 1,
     "eval_name": "surface-disposition-on-a-contract-change",
     "kind": "behavior",

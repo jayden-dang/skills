@@ -51,14 +51,14 @@ together when worktree isolation is safe.>
 
 - [ ] **Step 1: Write the failing test**
 
-<complete test code block>
+<existing check to extend or agreed gap, inputs, expected observable
+result and the concrete fault this check catches>
 
-Run: `<exact command>` — expect: <failure message>
+Run: `<exact command>` — expect: <assertion reached and expected versus observed>
 
 - [ ] **Step 2: Implement**
 
-<complete code block — no placeholders, no "add appropriate error handling",
-no "similar to Task N">
+<specific behavior to implement at the named paths and interfaces>
 
 Run: `<exact command>` — expect: pass.
 

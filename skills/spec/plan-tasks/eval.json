@@ -1,5 +1,17 @@
 [
   {
+    "eval_id": 13,
+    "eval_name": "single-reviewable-outcome-with-behavioral-red",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § Keep verification steps within one outcome (2026-11-26)",
+    "prompt": "Plan a receipt idempotency change spanning parser, endpoint and persistence. The repo has an existing CLI test that observes the response and stored row.",
+    "assertions": [
+      "One independently reviewable task covers the outcome",
+      "The existing check supplies both observations",
+      "The plan states the expected behavioral failure and a command that collects it"
+    ]
+  },
+  {
     "eval_id": 1,
     "eval_name": "three-execute-routes-at-exit",
     "kind": "behavior",

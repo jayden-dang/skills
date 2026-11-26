@@ -88,9 +88,14 @@ and carry continuity through the capsule and ledger.
 
 ### Ready sets, lanes, and barriers
 
+Read `verification.md` before the first ready set. It resolves the project's
+gate placement and the evidence owed before the next set can start.
+
 1. Compute the next ready set from `Depends-on:`. A task is ready only after all
    prerequisites are ledgered clean.
 2. If the set has one task, run the shared task lifecycle on the feature branch.
+   With integration placement, the single-task HEAD goes through step 5's gate
+   and completion rules without a merge.
 3. If the set has multiple tasks, prove each pair's `Files:` surfaces are
    disjoint and check `worktree_isolation`. Overlap or missing isolation reduces
    the effective set to serial; record the degradation in the runtime sidecar.
@@ -100,16 +105,16 @@ and carry continuity through the capsule and ledger.
    missing: `git worktree add .worktrees/<branch>-lane<k> -b <branch>-taskN WBASE`.
    Invoke the shared lifecycle. A worker/reviewer lease may continue across
    ready sets only along its own dependency lane.
-5. After every task in the set has clean Standards and Spec verdicts, merge in
-   deterministic task order. A conflict stops the scheduler; it is never solved
-   blind. Then run the **wave gate** at the merged HEAD: compile and lint every
-   target in the workspace (`project.md` **Wave gate**, else its typecheck and
-   lint commands), judged against the lint baseline. Red → no ledger lines;
-   REQUIRED SUB-SKILL: use `root-cause`, one fix dispatch, gate again. Green →
-   one ledger line per task.
+5. When the set needs a combined gate, wait for clean Standards and Spec
+   verdicts and record the pending set. Merge parallel sets in deterministic
+   task order. A conflict stops the scheduler. Verify the resulting HEAD
+   using the selected gate in `verification.md`. Red or
+   incomplete → no ledger lines or ticks; REQUIRED SUB-SKILL: use `root-cause`,
+   one fix dispatch, re-review the fix and verify the resulting HEAD. Green →
+   ledger and tick the tasks using `task-lifecycle.md`.
 6. Recompute the ready set. There is no permission pause between tasks in
    continuous mode, and no task advances while its review barrier is open.
-7. **Release before the next dispatch.** After every green wave gate, let `N` be
+7. **Release before the next dispatch.** After every green combined gate, let `N` be
    the lanes the **next** ready set uses: its effective concurrency when above 1,
    otherwise 0 — a one-task set runs on the feature branch and an empty set is
    the end of the run. From the feature checkout:
@@ -198,7 +203,7 @@ skill's subagent loop without dispatches.
 - Pause between tasks to ask permission to continue
 - Run two implementers in the **same worktree**, or parallel without isolated
   isolate-workspace and a disjoint-surface check
-- Merge a parallel wave before every task in it passed review, or ledger it before the wave gate is green
+- Merge a parallel wave before every task passed review, or ledger it before the selected combined gate is green
 - Hand a subagent the whole plan file — the brief is its world
 - Skip re-review after a fix, or accept a review missing either verdict
 - Move to the next task with open Critical/Important findings

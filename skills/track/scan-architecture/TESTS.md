@@ -1,5 +1,12 @@
 # scan-architecture — tests
 
+## Rank measurable gaps against project targets (2026-11-26)
+
+Woodmere RED at `46e2d6d` with manager, sunk design and time pressure: Haiku 5.5 deferred the measured CI gap because “the snapshot does not tie it to the importer, so it is not the pick here.” Its proposed measure was the importer's change count after a full 180-day window. Sonnet 5.5 picked fixture work, but described builder and check p95s as “about 31 s at p95.” GPT-6.2-sol picked the fixture stage and treated the stage percentiles separately.
+
+GREEN on all three: prioritized the measured fixture stage, kept the real database checks and ranked on the approved end-to-end warm CI p95 objective using a comparable scope and runner. The fixture used saved evidence; the scope is selection and recommendation, not a fresh architecture audit or an applied optimization.
+
+
 ## 2026-11-15 — model-invocable (description routing)
 
 `disable-model-invocation` removed on the owner's word (2026-11-15: agents start skills on their

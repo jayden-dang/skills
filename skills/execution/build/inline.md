@@ -128,7 +128,8 @@ For each Task N in order:
    the Visual check line lands in the step-9 evidence bundle.
 8. **Self-check (controller, not a subagent).** Re-read the brief against the
    diff: every requirement ID's behavior covered? TDD evidence (RED then GREEN) real?
-   Output pristine? Plan File Structure respected? Fix gaps now — you have no
+   Apply the test-quality checks in `task-reviewer-prompt.md` to your own test
+   diff and evidence. Output pristine? Plan File Structure respected? Fix gaps now — you have no
    separate task-reviewer pass.
 9. **Optional evidence bundle.** For non-trivial tasks, write
    `.skills/<CODE>/task-N-report.md` with what changed, IDs covered, RED/GREEN

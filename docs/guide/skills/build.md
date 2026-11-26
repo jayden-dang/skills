@@ -33,6 +33,11 @@ running one ticket from `/idea` through `/shape` and `/go` before and after.
 
 ## See also
 
+Continuous builds use task gates and a parallel wave gate by default. A
+project can configure one integration gate instead. Each lane still needs
+fresh narrow evidence and independent review. Dependents wait for the
+combined candidate to pass. The feature close requires the full suite.
+
 - [`plan-tasks`](plan-tasks.md) — writes the plan and offers the three modes
 - [`go`](go.md) — builds every ready ticket through this skill
 - [The process: execution](../process/execution.md)

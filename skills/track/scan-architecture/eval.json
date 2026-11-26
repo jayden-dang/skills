@@ -1,5 +1,17 @@
 [
   {
+    "eval_id": 6,
+    "eval_name": "rank-observed-quality-gap-over-churn",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § Rank measurable gaps against project targets (2026-11-26)",
+    "prompt": "A popular module has frequent edits. The project has a comparable warm CI measurement that misses its target and names fixture preparation as the longest stage.",
+    "assertions": [
+      "Reports baseline scope and the project target",
+      "Ranks the supported gap ahead of speculative restructuring",
+      "Uses end-to-end p95 as the outcome and stage observations for diagnosis"
+    ]
+  },
+  {
     "eval_id": 1,
     "eval_name": "ranked-by-friction-evidence",
     "kind": "contract",

@@ -1,5 +1,8 @@
 # Validator: architecture/system (structural only)
 
+`Quality scenarios` is conditional. Older approved architecture documents
+remain structurally valid without it.
+
 Returns **pass** or **fail**. No semantic judgment.
 
 ## Required headings

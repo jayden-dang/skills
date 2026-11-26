@@ -1,5 +1,18 @@
 [
   {
+    "eval_id": 42,
+    "eval_name": "integration-gate-replaces-duplicate-breadth",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § Project-owned verification stages (2026-11-26)",
+    "prompt": "Two reviewed lanes share an affected caller. The repo opts into integrated verification with a checked command that includes wave compile/lint. Prepare the worker and controller handoff.",
+    "assertions": [
+      "Every lane supplies focused evidence and review before integration",
+      "The affected tests and wave checks execute once on the combined candidate",
+      "An uncovered shared input runs the complete check",
+      "Dependent work waits for a successful combined result"
+    ]
+  },
+  {
     "eval_id": 1,
     "eval_name": "deviation-recorded-before-finish",
     "kind": "behavior",

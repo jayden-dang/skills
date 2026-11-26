@@ -1,6 +1,6 @@
 ---
 name: define-project
-version: 1.3.1
+version: 1.4.0
 description: "Use when a repo needs its project-level documentation written, updated or checked — the product vision, the architecture invariants (ARCH-N), the product guidelines, or one system document from the catalog such as the codebase map — or when a new product direction contradicts features that already shipped. Produces docs/product/vision.md, docs/architecture/ and docs/product/guidelines.md, that one system document, or a disposition ledger for each affected shipped feature. Not for one decision record or glossary term (define-domain) or a roadmap (plan-milestones)."
 ---
 
@@ -133,6 +133,10 @@ found.
 
 - Walk each doc against its template — every REQUIRED slot filled or `None`; the vision
   has real scope boundaries; every invariant is one imperative rule with a unique ID.
+- For the architecture, codebase, testing, or ops commitment in scope, use the evidence
+  check in `system-doc.md`. Report structural validity and observed conformance
+  separately. A skipped check, missing check, or different environment leaves
+  that commitment unverified. Keep validation read-only.
 - REQUIRED SUB-SKILL: use `inspect-invariants` across the feature `design.md` files to
   surface any design that violates an invariant it cites.
 - Run the `audit-trace` check for invariant referential integrity (E4/E5/W3).

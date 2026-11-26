@@ -1,5 +1,17 @@
 [
   {
+    "eval_id": 6,
+    "eval_name": "integration-result-binds-scope-and-revision",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § Evidence on the combined revision (2026-11-26)",
+    "prompt": "A worker submits logs for both lanes, and the combined job reports one check skipped. Can the next dependent start?",
+    "assertions": [
+      "Requires the actual combined revision and actual coverage",
+      "A skipped or unexplained empty required check leaves integration incomplete",
+      "A scoped result is not a whole-suite claim"
+    ]
+  },
+  {
     "eval_id": 1,
     "eval_name": "tracker-write-read-back",
     "kind": "behavior",

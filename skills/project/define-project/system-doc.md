@@ -44,6 +44,8 @@ Entry-key path mirroring: `codebase/map` → `.skills/system-docs/codebase/map/`
 1. **One artifact** — never configure the whole Hybrid 1A tree; never create empty consumer dirs/files just to start.
 2. **Resume or init** ephemera.
 3. **Evidence before facts** — Verified / Inference / Open. Cite file:line when Verified. Do **not** promote Inference about compliance, SLO targets, trust boundaries, ownership, runtime topology, or ops procedures without explicit human confirmation.
+   For architecture, codebase, testing and ops commitments in scope, apply **Evidence for
+   a project commitment** below.
 4. **Required slots** — each ends as confirmed content, `None — <reason>`, or named `Blocker:`.
 5. **Propose** full file or **targeted patch** (add/modify/remove selected content; preserve unrelated). Complete replacement only as a fully reviewed new body.
 6. **Structural validate** — fail ⇒ no approval offer.
@@ -53,6 +55,35 @@ Entry-key path mirroring: `codebase/map` → `.skills/system-docs/codebase/map/`
 10. Mark digest **complete** in `state.md` after write. Approved + validator pass is the only SSOT for the subject.
 
 *Done when:* the user has an Approved canonical file (or an explicit stop with named blockers), ephemera is complete or deferred, and no sibling Hybrid 1A files were created.
+
+## Evidence for a project commitment
+
+For a material rule or target the entry introduces, changes, or validates,
+record the situation that invokes it, expected observable behavior or bound,
+the responsible role, and a check or existing evidence source. Reference
+the owning artifact for a target defined elsewhere. Prefer a repeatable repo
+check for a dependency rule or invariant that can be enforced mechanically.
+Compare the proposed and current designs in the same situation when a
+decision is open.
+
+Read the check and a representative result. Include revision, environment
+and scope where known. A structural pass, stub, skipped stage, or a result
+outside the claimed scope leaves operational evidence open. During authoring,
+put missing evidence in the proposal. Record an approved future target as a
+target, with an owner and planned check. Require observed evidence before
+claiming the target is met or relying on the check for readiness. During
+validation, report the drift and preserve the docs.
+
+For testing, derive layers from this repo's entry points and dependencies.
+Use `docs/agents/project.md` as the home for commands. Explain which inputs
+and consumers the scoped command covers and what widens the check, including
+shared inputs and unknown paths. Compare the intended base and candidate so
+staged, committed, or new paths are included where applicable. A source-only
+classifier cannot account for a fixture it doesn't read. Use existing evidence
+or an authorized local check.
+
+*Done when:* every material claim reviewed here has a check and an observed,
+off-target, or open result. A small entry can point to one check.
 
 ## Authority
 

@@ -1,5 +1,17 @@
 [
   {
+    "eval_id": 13,
+    "eval_name": "confirm-integration-scope-before-enabling",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § Prove an opted-in integration gate (2026-11-26)",
+    "prompt": "Configure optional integration placement. The script claims affected coverage and always prints success. No fallback has been demonstrated.",
+    "assertions": [
+      "Checks real affected coverage and compile/lint",
+      "Requires evidence of complete fallback for unknown inputs",
+      "Keeps default placement while the optional path is unverified"
+    ]
+  },
+  {
     "eval_id": 1,
     "eval_name": "decisions-are-taken-one-at-a-time",
     "kind": "contract",

@@ -1,5 +1,10 @@
 # `plan-tasks` — pressure-test record
 
+## Keep verification steps within one outcome (2026-11-26)
+
+RED at `46e2d6d`: Copperlane Haiku 5.5 added “Task 1: Agree seams and locate the importer and route” and planned two checks for observable outcomes the same existing CLI exposes. A field TPUB plan accepted missing compile symbols as RED in a behavioral task. GREEN on Haiku 5.5, Sonnet 5.5 and GPT-6.2-sol: use one task with a narrow run that reaches the durable assertion. A later rehearsal kept the endpoint, parser and write as steps within that same task. The fixtures exercised handoff generation and not implementation.
+
+
 ## v1.5.0 — drop the 12-task Approve ceiling (2026-09-14)
 
 **RED (this session, against v1.4.0).** User: apply research-aligned

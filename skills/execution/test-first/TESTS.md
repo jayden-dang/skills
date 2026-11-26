@@ -1,5 +1,12 @@
 # `test-first` — RED/GREEN record
 
+## Behavioral evidence and repo scope (2026-11-26)
+
+RED at `46e2d6d`: in Copperlane, Haiku 5.5 chose “add separate endpoint and store checks (RED)” despite the existing CLI checking both observable outcomes. The TPUB plan in the klynt field evidence declared “expect compile failures on the missing readers” as behavioral RED. It is concrete evidence of upstream drift. In the Copperlane control all three models did reject the missing-symbol log itself. The historical klynt selector returned an empty selection for shared files that its Rust tests consume. Its fast profile also left exclusions under a catch-all filter.
+
+GREEN on Haiku 5.5, Sonnet 5.5 and GPT-6.2-sol: the Copperlane handoffs used one existing CLI check, identified the durable-record assertion, and treated compile/setup errors as insufficient. Riverlease caught the changed JSON contract outside the selector on all three and left the dependent blocked. The Ashford Node fixture checked the integration handoff. Cliffmarket and Marshfield preserved independent diagnosis of a different early-return path, shared fake outcomes and a fixed sleep. No new runtime behavior is inferred from the planning artifacts.
+
+
 ## Verify tiers (v1.1.0, 2026-10-03)
 
 **Trigger.** Field evidence from a klynt build (feature LIVE, 25 tasks, ~31 h, grok-4.6

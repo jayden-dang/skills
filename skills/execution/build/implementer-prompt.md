@@ -175,7 +175,10 @@ Subagent (general-purpose):
       - RED: command, failing output, and why the failure was expected
       - GREEN: command, exit code, passing output, warning/error counts,
         revision, duration, and content hash
-      - Task gate at the final commit: the commands, the units tested (and
+      - Gate placement from the brief: under integration placement, report
+        final narrow checks on the lane and the changed paths, exercised
+        boundaries and shared inputs for the controller's integration run.
+        Otherwise report the Task gate at the final commit: the commands, the units tested (and
         the changed item that pulled each dependent in), the units only
         compiled, or `Whole suite: <command> — escalated: <reason>`; plus lint
         and format over the same units, with any finding not in the lint

@@ -49,7 +49,16 @@ Work one vertical slice at a time: one behavior, one test, one minimal implement
 
 Then take the next slice.
 
-**The task gate — once per task, at the final commit.** Tests of every unit you changed and of every dependent on the changed code's call path (grep the changed public items over the dependents, then their callers, until nothing new turns up), a compile of every other dependent, then lint and format over the same units against the lint baseline recorded at session start (a finding not in the baseline is yours; never suppress a rule to get past it). Escalate to the whole suite when the change reaches what the build graph cannot see — schema or migrations, shared fixtures, build manifests or feature flags, generated contracts, a root package — and name the reason. When the whole suite takes a couple of minutes, it *is* the gate. The report names the scope it ran; a gate run is never quoted as the suite, which runs once at close.
+Start by extending an existing test that can expose the failure. Record the
+specific assertion reached and the expected and observed results. Keep a
+green regression guard separate from RED for changed behavior. For timing,
+use a controlled clock or wait for an explicit event with a deadline.
+
+**Verify the affected scope.** The default is a task gate at the final commit.
+Use the project's commands and include affected consumers and shared inputs.
+If you cannot establish the scope, run the full suite. In a configured
+continuous build, workers provide narrow evidence and the controller runs the
+integration gate on the combined revision. Close still requires the full suite.
 
 ## Requirement tagging
 
@@ -85,7 +94,7 @@ Two heuristics decide when a mock has become the problem: mock setup longer than
 Any of these means: delete the untested code and return to RED.
 
 - Implementation exists and its test does not
-- A new test passed on its first run
+- A passing guard is offered as RED for changed behavior
 - You cannot say why the test failed in RED
 - A test targets a seam not in the design's seam table
 - A test has no requirement ID
@@ -127,7 +136,7 @@ Note what the expected value is *not*: `store.read('activeModule')`. That would 
 The skill ends on a checklist, and it hands off to [`prove-claim`](prove-claim.md) before any completion claim is spoken:
 
 - Every new behavior has a test you watched fail first, for the expected reason
-- Task gate green at the final commit with its scope named (or the whole suite, with the escalation reason), output pristine, no lint finding outside the baseline
+- The scheduled gate is green with its scope named and no lint finding outside the baseline
 - Every test tagged with its requirement ID
 - All tests sit at seams agreed in `design.md` (or agreed with the user)
 - Mocks only at system boundaries, complete data structures, no assertions on mocks

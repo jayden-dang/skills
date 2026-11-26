@@ -27,7 +27,8 @@ ran. Its demo was 15 seconds of stitched screenshots. Its ticket read `shaping` 
     `Approval: the operator's /shape --go, before reading the spec`, commits, and drafts `plan-tasks`
     Step 5's publish into `RUN/ticket-body.md`; a `work` session that is gone comes back with
     `claude --resume <slug>-work`, and one never opened here is opened as in `auto.md` step 5. Publish it onto the ticket yourself, which makes it
-    Ready. Read the ticket back. Close `work` and `interpret`.
+    Ready. Read the ticket back. Close `work` and `interpret`. For a Claude/Codex run, leave the
+    interpret transcript pane open so the tmux session and the exchange remain available during the build.
     *Done when: the read shows `ready-for-agent` and the three files read `Approved`.*
 11. **The draft.** Push `feat/<slug>`. Open a draft PR to `<Default PR base>` with the forge from
     `docs/agents/issue-tracker.md`, title and body through REQUIRED SUB-SKILL `speak-outer`, no

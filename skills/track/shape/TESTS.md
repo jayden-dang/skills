@@ -1,5 +1,26 @@
 # TESTS.md — shape
 
+## v1.21.0 — watch Codex interpret in tmux (2026-11-26)
+
+**RED, step 5 handoff, Claude Sonnet and Haiku.** From the v1.20.0 instructions both opened headless
+Codex via `peer.py open` before creating a tmux pane for `work`. Sonnet: "Only work gets a tmux pane."
+Haiku: "It is Codex, so it does not use tmux." A fake Codex emitted a turn start, a command start and
+its first message, then waited for the test to release it. The new test failed at `AssertionError: False
+is not true : the question and live Codex events must reach interpret.log`. A second test could not
+capture the viewer because the old script had no `watch` command.
+
+**GREEN, same step 5 handoff and roster.** Both returned `tmux new-session` with `peer.py watch`, the
+attach command, a successful `peer.py open` before `tmux split-window` for Opus, and the original
+stdin/stdout `peer.py ask` exchange. These were launch handoffs, not full tracker runs. The boundary
+tests observe the question, tool and first message while Codex is still running, the final answer alone
+on stdout, failure and timeout in the transcript, and replay from a restarted viewer in real tmux.
+
+**Live smoke, isolated fixture.** Codex CLI 0.172.0 opened `gpt-6.2-sol` high and returned `READY`.
+Claude Code 2.1.332 used Opus high in print mode in the adjacent pane. Its Bash call resumed the same
+Codex thread and received `harbor-codex tenant_id`, combining a phrase from the first turn with a column
+from a local schema. `tmux capture-pane` showed the question, command progress, reply and idle status.
+The full tracker run and a human edit sent through the conductor during a live run were outside this smoke.
+
 
 ## v1.20.0 — the UI pick runs from draft-ui's draft folder; videos only with --video (2026-11-25)
 

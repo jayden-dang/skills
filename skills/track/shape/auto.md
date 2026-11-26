@@ -75,20 +75,41 @@ read, so the word meant nothing when they opened them.
 5. **Open the peers.** Fill `interpret-prompt.md` and `work-prompt.md` into `RUN/`: `{work}` and `{interpret}`
    are `<slug>-work` and `<slug>-interpret`, `{send}` is "SendMessage (load it with ToolSearch if deferred),
    copying the from attribute as your to", and `{load}` is "Load every skill a step names through the Skill
-   tool, not by reading it." In one tmux session `<slug>`, from `WT`:
+   tool, not by reading it." **When both peers are Claude**, open them in one tmux session `<slug>`, from `WT`:
    `claude --name <slug>-interpret --model <model> --effort <effort> --permission-mode auto "$(cat RUN/interpret-prompt.md)"`,
    wait until `ListAgents` shows it idle, then the same for `<slug>-work` with its row. Every flag is always
    written: a peer on `default` sat 26 minutes on a prompt to read its own charter, and two with no `--model`
    ran on whatever the machine's default was. Other sessions `ListAgents` shows are not part of this run, whatever they are named.
    A pane asking to trust the folder → stop and tell the operator to trust it; answering it is theirs.
-   **Interpret on the other vendor** opens headless, before `work`, from this checkout:
-   `python3 -I <this skill>/scripts/peer.py open --run RUN --vendor <vendor> --model <model> --effort <effort> --read WT --name <slug>-interpret < RUN/interpret-prompt.md`.
+   **When interpret is Codex**, set shell variables `RUN`, `WT`, `slug`, `PEER` (absolute path to `scripts/peer.py`),
+   `interpret_model`, `interpret_effort`, `work_model` and `work_effort`. Open the viewer first:
+
+   ```sh
+   interpret_pane=$(tmux new-session -d -P -F '#{pane_id}' -s "$slug" -n shape -c "$RUN" \
+     python3 -I "$PEER" watch --run "$RUN") || exit 1
+   tmux select-pane -t "$interpret_pane" -T interpret
+   ```
+
+   Tell the operator `tmux attach -t <slug>` (or `tmux switch-client -t <slug>` from inside tmux).
+   The viewer shows the opening prompt and later exchanges as Codex emits events. From this checkout,
+   open the headless interpret and wait for it to succeed before splitting off the Claude work pane:
+
+   ```sh
+   python3 -I "$PEER" open --run "$RUN" --vendor codex --model "$interpret_model" --effort "$interpret_effort" \
+     --read "$WT" --name "${slug}-interpret" < "$RUN/interpret-prompt.md" || exit 1
+   work_pane=$(tmux split-window -hb -P -F '#{pane_id}' -t "$interpret_pane" -c "$WT" \
+     claude --name "${slug}-work" --model "$work_model" --effort "$work_effort" --permission-mode auto "$(cat "$RUN/work-prompt.md")"
+   )
+   ```
+
+   The transcript stays in `RUN/interpret.log` and can be reopened with `peer.py watch --run RUN`.
    Its prompt's `{send}` is "your final message: work reads it as the output of the command it ran". On Codex its
    first line `/interpret-session …` becomes "Read and follow the skill `interpret-session` from its `SKILL.md`: …".
    `work`'s `{send}` is "`python3 -I <this skill>/scripts/peer.py ask --run RUN` with the message on stdin, run in
    the background and waited for (Bash `run_in_background` in Claude Code), since a review can outlast 10 minutes:
    its output is the reply". Every message to interpret goes through `peer.py ask`, yours at steps 9 and 11 too.
-   *Done when: `ListAgents` lists both, or lists `work` and `RUN/interpret.json` exists.*
+   *Done when: `ListAgents` lists both Claude peers, or it lists `work`, `RUN/interpret.json` exists and
+   the `interpret` pane shows the Codex exchange.*
 6. **Watch.** Start `Monitor` with this command, filled in, and re-arm it whenever it expires:
 
    ```sh
@@ -102,8 +123,11 @@ read, so the word meant nothing when they opened them.
    ```
 
    `RUN/interpret.lock` holding a live pid is a headless interpret still answering, so it is not a stall.
-   On `STALL` read both panes with `tmux capture-pane -p` (a headless interpret has none). An ended turn, an API error, or one peer
-   waiting on the other → `SendMessage` to the stuck peer: what stopped, continue under the charter.
+   On `STALL` read both panes with `tmux capture-pane -p` or read `RUN/interpret.log` if the viewer is closed.
+   An ended turn, an API error, or one peer waiting on the other → `SendMessage` to `work` or a stuck Claude
+   peer. To retry an unanswered Codex question, have `work` send it again via `peer.py ask`.
+   During the watch, send the operator's changes from this conversation to `work` verbatim. `work` applies
+   them after any current interpret reply, reviews affected decisions again and continues under the charter.
    A dialog in a pane → stop and tell the operator. Each peer gets 3 wakes; the 4th `STALL` or a `GONE`
    ends the run at step 9 with what exists. Two of two silent stops in one run never recovered alone.
    On `UI`, run step 6b.

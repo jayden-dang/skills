@@ -239,5 +239,18 @@
       "after the operator's go, the winner moves into the real screen, its URL goes in ui-try.md, and design-solution runs without a second go"
     ],
     "derived_from": "TESTS.md § v1.20.0 — draft-ui v3.0.0 cells (Sonnet, Haiku) picked from the draft folder with no instance and migrated the winner; no /shape --auto run on this charter yet"
+  },
+  {
+    "eval_id": 21,
+    "eval_name": "mixed-auto-shows-live-codex-interpret",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § v1.21.0 — watch Codex interpret in tmux",
+    "prompt": "Resume /shape #12 --auto in Claude Code at step 5. Work is Claude Opus high and interpret is Codex gpt-6.2-sol high.",
+    "assertions": [
+      "the tmux viewer opens before peer.py open and the operator gets a command to attach",
+      "Claude work opens in the same tmux window after peer.py open succeeds",
+      "a question and command progress appear in the interpret pane before the turn ends",
+      "work still gets the final reply alone on peer.py ask stdout from the same Codex thread"
+    ]
   }
 ]

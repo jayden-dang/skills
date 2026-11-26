@@ -7,6 +7,7 @@ for `codex` and `claude` on PATH and record how they were called.
 """
 import json
 import os
+import shutil
 import stat
 import subprocess
 import sys
@@ -34,8 +35,16 @@ FAKE = textwrap.dedent('''\
         sys.stderr.write("boom\\n"); sys.exit(3)
     if os.path.basename(sys.argv[0]) == "codex":
         print(json.dumps({{"type": "thread.started", "thread_id": "th-1"}}))
-        print(json.dumps({{"type": "item.completed", "item": {{"type": "agent_message", "text": "first"}}}}))
+        print(json.dumps({{"type": "turn.started"}}))
+        print(json.dumps({{"type": "item.started", "item": {{"type": "command_execution", "command": "rg tenant_id schema.sql"}}}}))
+        print(json.dumps({{"type": "item.completed", "item": {{"type": "agent_message", "text": "first"}}}}), flush=True)
+        if os.environ.get("FAKE_WAIT_FOR_RELEASE"):
+            import time
+            open(os.path.join(run, "turn-in-flight"), "w").close()
+            while not os.path.exists(os.path.join(run, "release-turn")):
+                time.sleep(0.05)
         print(json.dumps({{"type": "item.completed", "item": {{"type": "agent_message", "text": "codex says hi"}}}}))
+        print(json.dumps({{"type": "turn.completed"}}))
     else:
         print(json.dumps({{"type": "result", "result": "claude says hi", "session_id": "ignored"}}))
 ''')
@@ -111,6 +120,66 @@ class Peer(unittest.TestCase):
         self.assertEqual(call["cwd"], str(self.run_dir), "a resume from WT loses write access to RUN")
         self.assertTrue(call["stdin_devnull"])
 
+    def test_codex_ask_publishes_question_progress_and_messages_before_the_turn_finishes(self):
+        self.assertEqual(self.open("codex", "gpt-6.2-sol", "high").returncode, 0)
+        transcript = self.run_dir / "interpret.log"
+        if transcript.exists():
+            transcript.unlink()
+        env = dict(os.environ, PATH=f"{self.bin}{os.pathsep}{os.environ['PATH']}", FAKE_LOG=str(self.log),
+                   FAKE_RUN=str(self.run_dir), FAKE_WAIT_FOR_RELEASE="1")
+        question = "Which column owns tenant_id?"
+        with subprocess.Popen([sys.executable, "-I", str(SCRIPT), "ask", "--run", str(self.run_dir), "--timeout", "10"],
+                              stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, env=env, text=True) as proc:
+            proc.stdin.write(question)
+            proc.stdin.close()
+            try:
+                for _ in range(100):
+                    if transcript.exists() and "first" in transcript.read_text():
+                        break
+                    time.sleep(0.03)
+                self.assertTrue((self.run_dir / "turn-in-flight").exists(), "Codex emitted events before waiting")
+                self.assertIsNone(proc.poll(), "Codex is still answering")
+                self.assertTrue(transcript.exists(), "the question and live Codex events must reach interpret.log")
+                content = transcript.read_text()
+                self.assertIn(question, content)
+                self.assertIn("rg tenant_id schema.sql", content)
+                self.assertIn("first", content)
+                self.assertNotIn("codex says hi", content)
+            finally:
+                (self.run_dir / "release-turn").touch()
+            self.assertEqual(proc.wait(timeout=10), 0, proc.stderr.read() if proc.returncode else "")
+            self.assertEqual(proc.stdout.read(), "codex says hi\n")
+        self.assertIn("codex says hi", transcript.read_text())
+
+    @unittest.skipUnless(shutil.which("tmux"), "requires tmux")
+    def test_interpret_pane_can_open_before_codex_and_replay_the_conversation(self):
+        tmux = ["tmux", "-f", "/dev/null", "-S", str(self.run_dir.parent / "tmux.sock")]
+        pane = subprocess.check_output(tmux + ["new-session", "-dPF", "#{pane_id}", "-s", "harbor",
+                                               sys.executable, "-I", str(SCRIPT), "watch", "--run", str(self.run_dir)],
+                                       text=True).strip()
+        self.addCleanup(subprocess.run, tmux + ["kill-server"], capture_output=True)
+
+        def wait_for_content(text):
+            content = ""
+            for _ in range(80):
+                result = subprocess.run(tmux + ["capture-pane", "-p", "-S", "-", "-t", pane],
+                                        capture_output=True, text=True)
+                content = result.stdout or result.stderr
+                if text in content or result.returncode:
+                    break
+                time.sleep(0.05)
+            self.assertIn(text, content)
+
+        wait_for_content("Watch Codex interpret")
+        result = self.open("codex", "gpt-6.2-sol", "high")
+        self.assertEqual(result.returncode, 0, result.stderr)
+        wait_for_content("the filled prompt")
+        wait_for_content("codex says hi")
+
+        subprocess.run(tmux + ["respawn-pane", "-k", "-t", pane], check=True)
+        wait_for_content("the filled prompt")
+        wait_for_content("codex says hi")
+
     def test_claude_open_and_ask_keep_one_session_and_read_the_worktree(self):
         opened = self.open("claude", "opus", "high")
         self.assertEqual(opened.returncode, 0, opened.stderr)
@@ -142,6 +211,7 @@ class Peer(unittest.TestCase):
         result = self.peer("ask", fail=True)
         self.assertEqual(result.returncode, 1)
         self.assertIn("boom", result.stderr)
+        self.assertIn("[Error] codex exited 3: boom", (self.run_dir / "interpret.log").read_text())
         self.assertFalse((self.run_dir / "interpret.lock").exists())
 
     def test_a_hung_answer_times_out_exits_non_zero_and_releases_the_lock(self):
@@ -149,6 +219,7 @@ class Peer(unittest.TestCase):
         result = self.peer("ask", "--timeout", "1", sleep=20)
         self.assertEqual(result.returncode, 1)
         self.assertIn("timed out", result.stderr)
+        self.assertIn("[Error] codex timed out", (self.run_dir / "interpret.log").read_text())
         self.assertFalse((self.run_dir / "interpret.lock").exists(), "a hung call must not hide a stall")
 
     def test_a_terminated_ask_releases_the_lock(self):
@@ -157,6 +228,8 @@ class Peer(unittest.TestCase):
                    FAKE_RUN=str(self.run_dir), FAKE_SLEEP="20")
         proc = subprocess.Popen([sys.executable, "-I", str(SCRIPT), "ask", "--run", str(self.run_dir)],
                                 stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, env=env, text=True)
+        self.addCleanup(proc.stdout.close)
+        self.addCleanup(proc.stderr.close)
         proc.stdin.write("hello")
         proc.stdin.close()
         lock = self.run_dir / "interpret.lock"

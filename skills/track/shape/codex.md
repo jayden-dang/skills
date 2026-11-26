@@ -21,9 +21,11 @@ escalated permissions and a one-line reason." In a smoke run a peer without that
 `codex --approve-for-me`. In any other session each commit waits on a person: say so at step 1, and run the
 plain `/shape` unless the operator says to go on.
 
-**Interpret on Claude, the default here,** opens by `auto.md` step 5's other-vendor branch. Run every
-`peer.py` call with escalated permissions and a one-line reason, and give `work`'s `{send}` the same line:
-inside the sandbox `claude` answers "Not logged in".
+**Interpret on Claude, the default here,** opens headless before `work`. Use `auto.md` step 5's
+`peer.py open` command with `--vendor claude`, Claude's model and effort, and the underscore name.
+Use step 5's prompts for the headless reply and `peer.py ask`. Run every `peer.py` call with escalated
+permissions and a one-line reason, and give `work`'s `{send}` the same line: inside the sandbox `claude`
+answers "Not logged in".
 
 **Step 5, open the peers.** With interpret on Codex, `spawn_agent` with `task_name` `<slug>_interpret`, the interpret row's `model`
 and `reasoning_effort` from `model-routing.md`, `fork_turns` `none`, and the filled `interpret-prompt.md` as

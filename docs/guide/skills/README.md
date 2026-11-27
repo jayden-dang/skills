@@ -1,6 +1,6 @@
 # Skill reference
 
-57 skills in eleven buckets (engineering package); every one has its own page.
+58 skills in eleven buckets (engineering package); every one has its own page.
 See also [Start here](../START-HERE.md).
 
 **Invocation** is the thing to check first. Every skill is **model-invocable**: the agent loads it on its own when its description matches the situation, and you can still type it as a slash command. "model, or `/x`" in the table marks the ones that used to be typed only.
@@ -141,10 +141,11 @@ The visual layer. Fires before any HTML a human will look at.
 
 ## project
 
-The optional documentation layer above the feature workflow. Absent by default.
+Optional foundation design, project records, and milestones above the feature workflow.
 
 | Skill | Invocation | What it does |
 |---|---|---|
+| [`design-project`](design-project.md) | model, or `/design-project` | Compares and prototypes the shared design system and architecture, then identifies what is ready to build |
 | [`define-project`](define-project.md) | model, or `/define-project` | Authors and maintains the optional project layer — product vision, IDed architecture-invariant spine, and engineering guidelines |
 | [`define-project`](define-project.md) | model, or `/define-project` | One Hybrid 1A system-doc artifact per run (e.g. Codebase Map); pack catalog under the skill |
 | [`define-project`](define-project.md) | model, or `/define-project` | Disposition ledger when a product pivot puts shipped code at odds with a new vision or architecture — before vision rewrites |

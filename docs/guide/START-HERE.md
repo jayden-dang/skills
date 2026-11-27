@@ -31,7 +31,8 @@ is the full chain they wrap.
         │                                                                    │
  SETUP (once)                                                                 │
   /configure-repo (an empty directory, or existing code)                    │
-  optional: /define-project · plan-milestones · /map-features (brownfield)    │
+  optional: /design-project · /define-project · plan-milestones             │
+            /map-features (brownfield)                                      │
         │                                                                    │
  IDEATION → SPEC                          BUILD                    SHIP
  ─────────────────                        ─────                    ────
@@ -63,9 +64,10 @@ is the full chain they wrap.
 - **Tier 2 (feature):** the full triad + execute family (`build` (wave mode) /
   `build` (story mode) / `build` (inline mode)).
 
-**Optional project layer** (large projects, off by default): before feature work,
-`/define-project` writes a repo-level product vision and an IDed
-architecture-invariant spine (`docs/architecture/`, each rule an `**ARCH-N**`). The
+**Optional project layer**: when the design system and technical foundation are
+still open, [`/design-project`](skills/design-project.md) compares and prototypes the
+directions before feature work. `/define-project` writes a repo-level product
+vision and an IDed architecture-invariant spine (`docs/architecture/`, each rule an `**ARCH-N**`). The
 discovery, spec, execution, and review skills consult it when present — a `design.md`
 cites `Respects: ARCH-N`, and `audit-trace` checks those citations — and ignore it cleanly when
 absent. See [the artifact model](concepts/artifacts.md#docsproduct-and-docsarchitecture--the-optional-project-layer).
@@ -112,6 +114,8 @@ Full skill index: [Skill reference](skills/README.md) · laws: [`AGENTS.md`](../
    Proves commands are *wired* (content failures on an old repo are listed, not
    blocking). Installs **no** consumer linters/CI by default.
 4. **Optional**
+   - **[`/design-project`](skills/design-project.md)** tests the shared design system
+     and architecture and names the first slice that can start.
    - **`/define-project`** — vision + `ARCH-N` spine + guidelines (large projects).
    - **`plan-milestones`** — `docs/roadmap/INDEX.md` (`MILE-N` / `ROAD-N`).
    - **`/map-features`** — shared catalog ops: dispose step 0 reverse-tracks OBS,
@@ -156,7 +160,7 @@ The table lives in [on-ramps](process/on-ramps.md) — one home, reads it when t
 
 ## 3. Skill index (engineering package)
 
-Full tables: [Skill reference](skills/README.md) (57 engineering skills).  
+Full tables: [Skill reference](skills/README.md) (58 engineering skills).
 
 `U` = you run `/name` · `m` = model-invoked
 
@@ -172,7 +176,7 @@ Full tables: [Skill reference](skills/README.md) (57 engineering skills).
 | **craft** | `craft-page`, `make-video` |
 | **ship** | `land-branch`, `record-verdict`, `/cut-release` |
 | **track** | `frame-change`, `reroute-plan`, `realign-spec`, `/triage`, `/scan-architecture`, **`/map-features`**, `/write-handoff`, `/refresh-roadmap-status`, `refresh-lanes`, `/board`, `/idea`, `/shape`, `/board` |
-| **project** | `/define-project`, `plan-milestones` |
+| **project** | `/design-project`, `/define-project`, `plan-milestones` |
 
 ## Where to go next
 

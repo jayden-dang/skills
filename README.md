@@ -198,9 +198,9 @@ frame-change (+ load-subgraph) ──► specify-behavior ──► design-solut
   regression test of the fixed behavior.
 - **Tier 2** (feature): the full triad.
 
-**Optional project layer** (large projects, off by default): `define-project`,
-`define-project` (pivot disposition ledger when shipped code collides with new intent)
-maintains a repo-level product vision plus an IDed architecture-invariant spine
+**Optional project layer**: [`design-project`](docs/guide/skills/design-project.md) helps
+choose and test a shared design system and technical foundation. `define-project` maintains
+a repo-level product vision plus an IDed architecture-invariant spine
 (`docs/architecture/`, each rule an `**ARCH-N**`) that `frame-change`, `design-solution`,
 `plan-tasks`, the execute family, and `inspect-change` consult when present. Feature
 `design.md` files cite the invariants they rely on as `Respects: ARCH-N`, and `audit-trace`
@@ -239,7 +239,7 @@ and countered by name. See [The gates](docs/guide/concepts/gates.md).
 | ship | `land-branch`, `record-verdict`, `cut-release` |
 | meta | `author-skills` |
 | track | `frame-change`, `reroute-plan`, `triage`, `realign-spec`, `refresh-roadmap-status`, `refresh-lanes`, `scan-architecture`, `map-features`, `write-handoff`, `record-debt` |
-| project | `define-project`, `plan-milestones` (optional project / multi-milestone layer) |
+| project | `design-project`, `define-project`, `plan-milestones` (optional project / multi-milestone layer) |
 
 One page per skill in the [skill reference](docs/guide/skills/README.md).
 

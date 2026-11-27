@@ -1,7 +1,7 @@
 # Diagram views for the design decision
 
-Start with an **architecture map** for the representative flow. Mark design
-system consumers and where the authoritative outcome lives. Label significant
+Start with an **architecture map** for the representative flow. Mark the
+consumers of each shared part and where the authoritative outcome lives. Label significant
 arrows with the contract, data or action crossing them. Keep dependency arrows
 distinct from runtime calls. Use a separate view when the meaning would mix.
 
@@ -10,7 +10,7 @@ Add a view when it answers a decision the map cannot:
 | Question | View |
 |---|---|
 | Where does an outcome change after failure or retry? | Sequence or state machine covering that transition. |
-| What can two consumers reuse or extend? | Design-system layer stack or a dependency view with the shared interface and its consumers. Indicate where feature-specific state stays. |
+| What can two consumers reuse or extend? | A dependency view with the shared interface and its consumers. Indicate where feature-specific state stays. |
 | What changes in an existing system? | Before/after architecture delta. Show the current path and the proposed path or migration seam. |
 | What persists, runs or crosses a trust boundary? | Data, deployment or dependency view for the risk in question. |
 

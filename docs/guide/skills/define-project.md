@@ -8,8 +8,8 @@
 | **Invocation** | model-invoked when its description matches, or `/define-project` |
 | **Reads** | the templates; the existing layer docs (update/validate); the codebase (brownfield ratification) |
 | **Writes** | `docs/product/vision.md`, `docs/architecture/INDEX.md` (+ per-domain files), `docs/product/guidelines.md` |
-| **Calls** | [`clarify-decisions`](clarify-decisions.md), [`define-domain`](define-domain.md) (ADR gate), [`inspect-invariants`](inspect-invariants.md) (validate mode) |
-| **Called by** | nobody yet — it fires on what the user asks, or on `/define-project` |
+| **Calls** | [`clarify-decisions`](clarify-decisions.md), [`architect-system`](architect-system.md) (an open architecture choice), [`define-domain`](define-domain.md) (ADR gate), [`inspect-invariants`](inspect-invariants.md) (validate mode) |
+| **Called by** | [`architect-system`](architect-system.md) (records what the user approved); otherwise it fires on what the user asks, or on `/define-project` |
 
 ## When it fires
 
@@ -20,6 +20,13 @@ At the start of a **large or long-lived project**, before feature work, to estab
 - **create** — nothing exists yet. Brownfield check (if source already exists, the spine *ratifies* it rather than designing greenfield), then a [`clarify-decisions`](clarify-decisions.md) interview draws out the vision and the load-bearing invariants, then the three docs are written from templates.
 - **update** — revise against a change signal. WHERE the change is a pivot that collides with shipped features or live invariants, stop and name [`define-project`](define-project.md) first (disposition ledger); continue only after that ledger is confirmed. Hard-to-reverse decisions get an ADR via [`define-domain`](define-domain.md); a retired invariant is struck (strikethrough on the live `**ARCH-N**` line only — never in comments/templates), never renumbered.
 - **validate** — walk each doc against its template, run [`inspect-invariants`](inspect-invariants.md) across the feature `design.md` files, and run the [`audit-trace`](audit-trace.md) invariant integrity check.
+
+## Deciding versus recording
+
+`define-project` records architecture; [`architect-system`](architect-system.md)
+decides it. When a request still has to choose between options (one store or several, a
+call or a queue, what to cache), `define-project` hands it to `architect-system` and
+records only the `ARCH-N` and documents the user approved there.
 
 ## The architecture spine
 

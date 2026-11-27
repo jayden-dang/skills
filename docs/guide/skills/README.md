@@ -145,7 +145,7 @@ Optional foundation design, project records, and milestones above the feature wo
 
 | Skill | Invocation | What it does |
 |---|---|---|
-| [`design-project`](design-project.md) | model, or `/design-project` | Compares and prototypes the shared design system and architecture, then identifies what is ready to build |
+| [`architect-system`](architect-system.md) | model, or `/architect-system` | Chooses the system architecture part by part and proposes `ARCH-N` invariants with their checks, ready for approval |
 | [`define-project`](define-project.md) | model, or `/define-project` | Authors and maintains the optional project layer — product vision, IDed architecture-invariant spine, and engineering guidelines |
 | [`define-project`](define-project.md) | model, or `/define-project` | One Hybrid 1A system-doc artifact per run (e.g. Codebase Map); pack catalog under the skill |
 | [`define-project`](define-project.md) | model, or `/define-project` | Disposition ledger when a product pivot puts shipped code at odds with a new vision or architecture — before vision rewrites |

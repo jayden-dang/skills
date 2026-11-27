@@ -1,7 +1,7 @@
 ---
 name: define-project
-version: 1.4.0
-description: "Use when a repo needs its project-level documentation written, updated or checked — the product vision, the architecture invariants (ARCH-N), the product guidelines, or one system document from the catalog such as the codebase map — or when a new product direction contradicts features that already shipped. Produces docs/product/vision.md, docs/architecture/ and docs/product/guidelines.md, that one system document, or a disposition ledger for each affected shipped feature. Not for one decision record or glossary term (define-domain) or a roadmap (plan-milestones)."
+version: 1.5.0
+description: "Use when a repo needs its project-level documentation written, updated or checked — the product vision, the architecture invariants (ARCH-N), the product guidelines, or one system document from the catalog such as the codebase map — or when a new product direction contradicts features that already shipped. Produces docs/product/vision.md, docs/architecture/ and docs/product/guidelines.md, that one system document, or a disposition ledger for each affected shipped feature. Not for choosing between architecture options (architect-system), one decision record or glossary term (define-domain) or a roadmap (plan-milestones)."
 ---
 
 # Define Project
@@ -16,6 +16,13 @@ without it, and nothing here is a gate. If the user is not sure they need it, sa
 let them decide.
 
 ## Modes
+
+**An architecture choice still open between options** (one store or several, a call or a
+queue, what to cache) is not settled by this skill in any mode, and no version of it is
+written under `docs/architecture/`, not even one marked proposed. A run that skipped this
+marked a new ARCH-3 "(proposed)" in `INDEX.md` and rewrote an approved `data.md` before
+anyone approved it. REQUIRED SUB-SKILL: use `architect-system` first; it returns the list
+of `ARCH-N` and part documents the user approved, and this skill records exactly that list.
 
 **One system-documentation artifact from the catalog** (the codebase map, a standards or
 ops document, named by its entry key) → read `system-doc.md` beside this file and follow it

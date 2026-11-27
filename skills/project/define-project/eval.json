@@ -16,7 +16,7 @@
     "eval_id": 1,
     "eval_name": "validate-mode-does-not-mutate",
     "kind": "contract",
-    "derived_from": "SKILL.md \u00a7 Validate",
+    "derived_from": "SKILL.md § Validate",
     "prompt": "Check whether the repo-level documentation layer is complete and current.",
     "assertions": [
       "validate mode reports without creating or modifying any file",
@@ -27,7 +27,7 @@
     "eval_id": 2,
     "eval_name": "description-routes-here",
     "kind": "trigger",
-    "derived_from": "TESTS.md \u00a7 2026-11-15 \u2014 model-invocable (description routing)",
+    "derived_from": "TESTS.md § 2026-11-15 — model-invocable (description routing)",
     "prompt": "update the architecture invariants: modules may now share the event bus",
     "assertions": [
       "define-project is the skill reached for",
@@ -38,7 +38,7 @@
     "eval_id": 3,
     "eval_name": "description-routes-here",
     "kind": "trigger",
-    "derived_from": "TESTS.md \u00a7 2026-11-15 \u2014 model-invocable (description routing)",
+    "derived_from": "TESTS.md § 2026-11-15 — model-invocable (description routing)",
     "prompt": "author the codebase map system doc",
     "assertions": [
       "define-project is the skill reached for",
@@ -49,11 +49,22 @@
     "eval_id": 4,
     "eval_name": "description-routes-here",
     "kind": "trigger",
-    "derived_from": "TESTS.md \u00a7 2026-11-15 \u2014 model-invocable (description routing)",
+    "derived_from": "TESTS.md § 2026-11-15 — model-invocable (description routing)",
     "prompt": "the new vision contradicts the offline-first feature we shipped. I need a disposition for each feature it touches",
     "assertions": [
       "define-project is the skill reached for",
       "define-project and reroute-plan are not"
+    ]
+  },
+  {
+    "eval_id": 6,
+    "eval_name": "open-architecture-choice-goes-to-architect-system",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § 1.5.0 — an open architecture choice goes to architect-system (2026-11-27)",
+    "prompt": "Update our architecture docs: we still have to settle whether each module keeps its own SQLite file or we move everything to one shared Postgres, and then add it as an invariant.",
+    "assertions": [
+      "Hands the open choice to architect-system instead of recommending or interviewing inside define-project",
+      "Leaves docs/architecture/ unchanged until the user approves the decision"
     ]
   }
 ]

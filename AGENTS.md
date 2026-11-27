@@ -120,7 +120,7 @@ carries a checklist, create one todo per item.
 | Is tracing / OpenObserve / sampling complete? | `assess-observability` |
 | Small in-scope change to a shipped, spec'd feature | `frame-change` (its `amend.md` lane) |
 | Incoming issue or external PR | `triage` |
-| Choose or evolve a project’s shared design system and technical foundation | `design-project` |
+| Choose or rethink the system architecture: structure, data, communication, messaging, caching, recovery | `architect-system` (it decides; `define-project` records what was approved) |
 | New idea to put on the board, or "what is waiting on me" | `idea` or `board`; then `/shape #N`, `/go` and `/cut-release` are the operator's to send. The path: [`docs/guide/workflow.md`](docs/guide/workflow.md) |
 | Unsure which flow fits | read `docs/guide/process/on-ramps.md` |
 
@@ -507,8 +507,9 @@ What the shipped skill set gives an adopting repo. This repo's own work follows 
 - Traceability check: `audit-trace` — run by `prove-claim` and `/cut-release`;
   keep it clean
 - Horizontal neighbors: `load-subgraph` — advisory, live specs only
-- Project foundation: `/design-project` compares directions and tests a representative
-  flow before a team commits to shared design and architecture.
+- System architecture: `/architect-system` chooses each part of the system (structure,
+  data, communication, messaging, caching, recovery) and proposes `ARCH-N` invariants with
+  the check that keeps each true; `/define-project` records them once approved.
 - Project docs: `/define-project` maintains `docs/product/vision.md`, the
   `docs/architecture/` invariant spine, and `docs/product/guidelines.md`
 - Pivot against shipped code: `/define-project` produces the disposition

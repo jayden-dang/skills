@@ -15,7 +15,8 @@ git-ignored folder and were lost.
 | `make-fernhollow.sh` | The `evolve-system` fixture with the same tracker shim |
 | `gh-shim.py` | The stateful `gh` stand-in; its state lives in `.git/gh.json` |
 | `score-inbox.py`, `score-evolve.py` | Score a run from the tracker state, the working tree and what `board.py` prints |
-| `design-project.py` | Replays the three project-foundation scenarios on Haiku, Sonnet and GPT-6.2-sol. Run `python3 scripts/skill-tests/design-project.py red` without the skill, or `python3 scripts/skill-tests/design-project.py green` with it. Each run saves its report, scratch probes and tool transcript under `.skills/design-project/`. |
+| `architect-system.py` | Replays five system-design scenarios (caching, messaging, a greenfield foundation, the 1.0.0 takeover case, and an open choice sent to `define-project`) on Haiku and Sonnet. `red` installs `design-project` 1.0.0 and `define-project` 1.4.0 from commit `39c0f86`; `green` installs the current skills. Each run saves its note, scratch probes, diff and transcript under `.skills/architect-system/`. The 1.0.0 harness, `design-project.py`, is at commit `fa64751`. |
+| `architect-system-routing.py` | `red\|green [reps]`: routes 19 first messages (9 system-design requests and their near misses in `define-project`, `design-solution`, `scan-architecture` and others) against the whole skill listing, at commit `39c0f86` for `red` and the working tree for `green`, on Haiku and Sonnet |
 | `routing/listing.py` | The skill listing a session sees |
 | `routing/suite.py` | The frozen routing suite: 153 first messages and the skill each should reach |
 | `routing/cluster-*.md`, `routing/older-trigger-evals.md` | The messages |

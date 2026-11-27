@@ -1,0 +1,81 @@
+[
+  {
+    "eval_id": 1,
+    "eval_name": "cache-plan-records-nothing-before-approval",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § 2.0.0 — renamed, system architecture only, decides and does not record (2026-11-27)",
+    "prompt": "Ledgerline's lead wants a 5-minute Redis TTL in front of every read, and an incident file says a stale balance caused a double withdrawal. Work out how caching should work across the codebase.",
+    "assertions": [
+      "No file under docs/architecture/, docs/adr/, docs/standards/ or production code changes",
+      "Balances are never cached and rates are, with the incident as the reason",
+      "Every proposed ARCH-N carries a keeping check such as a CI grep or a test",
+      "The note ends with Awaiting approval and the list define-project will record"
+    ]
+  },
+  {
+    "eval_id": 2,
+    "eval_name": "messaging-rules-become-checked-invariants",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § 2.0.0 — renamed, system architecture only, decides and does not record (2026-11-27)",
+    "prompt": "Kettle is three developers on one Postgres with duplicate confirmation emails, and the CTO wants Kafka. Decide how the parts of the system talk and hand off work.",
+    "assertions": [
+      "Compares Kafka with a Postgres outbox against ARCH-1 and the team size",
+      "Each rule every feature follows is a proposed ARCH-N with a keeping check",
+      "The Parts table has a row for every part in parts.md"
+    ]
+  },
+  {
+    "eval_id": 3,
+    "eval_name": "foundation-leaves-product-policy-to-user",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § 2.0.0 — renamed, system architecture only, decides and does not record (2026-11-27)",
+    "prompt": "Fernway is greenfield with offline technicians. Lay out the foundation every feature follows.",
+    "assertions": [
+      "The conflict rule for a late offline update after a reassignment is listed as the user's call, not written as a principle",
+      "Backup, secrets and observability each have a row with a status",
+      "The parts that depend on an open user call are held"
+    ]
+  },
+  {
+    "eval_id": 4,
+    "eval_name": "takeover-draws-claims-separately",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § RED — Three entry cases (2026-11-27)",
+    "prompt": "Cairn Register's handover says every write goes through a hosted gateway. Review the workbook, local checkout and quick check, then name the work that can begin.",
+    "assertions": [
+      "Draws the reported topology, exercised local SQLite path and unknown production routing distinctly",
+      "Treats two callable local paths as two entry points rather than proof of two live production processes",
+      "Allows bounded read-only work and names evidence and roles needed for the write path or cutover"
+    ]
+  },
+  {
+    "eval_id": 5,
+    "eval_name": "system-design-routes-here-not-define-project",
+    "kind": "trigger",
+    "derived_from": "TESTS.md § 2.0.0 — renamed, system architecture only, decides and does not record (2026-11-27)",
+    "prompt": "Starting a new project next week: lay out how the code is structured, who owns which data, background jobs and the principles we build by.",
+    "assertions": [
+      "The first skill is architect-system in the full listing"
+    ]
+  },
+  {
+    "eval_id": 6,
+    "eval_name": "caching-design-routes-here-not-scan-architecture",
+    "kind": "trigger",
+    "derived_from": "TESTS.md § 2.0.0 — renamed, system architecture only, decides and does not record (2026-11-27)",
+    "prompt": "Pages are slow and the platform lead wants Redis in front of everything. Work out how caching should work across this codebase.",
+    "assertions": [
+      "The first skill is architect-system in the full listing"
+    ]
+  },
+  {
+    "eval_id": 7,
+    "eval_name": "settled-invariant-routes-to-define-project",
+    "kind": "trigger",
+    "derived_from": "TESTS.md § 2.0.0 — renamed, system architecture only, decides and does not record (2026-11-27)",
+    "prompt": "We already decided every external call has a timeout. Add it to docs/architecture as ARCH-3.",
+    "assertions": [
+      "The first skill is define-project in the full listing"
+    ]
+  }
+]

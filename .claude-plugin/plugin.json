@@ -61,7 +61,7 @@
     "./skills/track/refresh-lanes",
     "./skills/setup/configure-repo",
     "./skills/setup/tune-rust-loop",
-    "./skills/project/design-project",
+    "./skills/project/architect-system",
     "./skills/project/define-project",
     "./skills/project/plan-milestones",
     "./skills/meta/author-skills"

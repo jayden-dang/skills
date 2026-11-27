@@ -1,5 +1,27 @@
 # TESTS.md — define-project
 
+## 1.5.0 — an open architecture choice goes to architect-system (2026-11-27)
+
+RED at `39c0f86` (1.4.0), Haiku 5.5 and Sonnet 5.5, Brightpost fixture: "we still have to settle
+whether each module keeps its own SQLite file or we move everything to one shared Postgres, and
+then add it as an invariant." Neither wrote a file. Both decided the choice inside this skill:
+Haiku offered two options and "My recommendation is option 2" from the README alone; Sonnet ran
+a `clarify-decisions` interview card in update mode. Routing RED sent three design requests to
+this skill (`architect-system` TESTS.md).
+
+GREEN (1.5.0 beside `architect-system` 2.0.0): both models handed the choice to
+`architect-system`, wrote a decision note outside `docs/`, and left `docs/architecture/`
+unchanged. Sonnet: "The skill says an open choice like this has to go through
+`architect-system` and get your approval before anything is recorded." Replay:
+`python3 scripts/skill-tests/architect-system.py green settle-data`.
+
+REFACTOR after the rename to `architect-system`: one Haiku rerun never opened `architect-system`. It
+settled on Postgres itself, added `**ARCH-3** (proposed)` to `INDEX.md`, rewrote the approved
+`data.md` as "Proposed", and reported "recorded it as **proposed**, not approved". The rule moved
+from an update-mode bullet to the top of `## Modes`, covering every mode and naming that
+consequence. Rerun: Haiku 3/3 and Sonnet 1/1 opened `architect-system`, wrote the decision note
+outside `docs/architecture/`, and left the seeded docs unchanged.
+
 ## Project commitments and operational evidence (2026-11-26)
 
 Baytree presented a CLI/SQLite project with a copied web-service handbook and time, authority and sunk-work pressure. RED at `46e2d6d`: Sonnet 5.5 wrote “Picking a gate: run `git diff --name-only`. If every path is under `src/`, use `scoped`.” That decision does not capture committed changes or new shared inputs. The baseline did recognize that the command was a stub and that the old web stack did not fit. That existing judgment is retained.

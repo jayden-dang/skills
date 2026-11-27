@@ -15,6 +15,7 @@ git-ignored folder and were lost.
 | `make-fernhollow.sh` | The `evolve-system` fixture with the same tracker shim |
 | `gh-shim.py` | The stateful `gh` stand-in; its state lives in `.git/gh.json` |
 | `score-inbox.py`, `score-evolve.py` | Score a run from the tracker state, the working tree and what `board.py` prints |
+| `design-project.py` | Replays the three project-foundation scenarios on Haiku, Sonnet and GPT-6.2-sol. Run `python3 scripts/skill-tests/design-project.py red` without the skill, or `python3 scripts/skill-tests/design-project.py green` with it. Each run saves its report, scratch probes and tool transcript under `.skills/design-project/`. |
 | `routing/listing.py` | The skill listing a session sees |
 | `routing/suite.py` | The frozen routing suite: 153 first messages and the skill each should reach |
 | `routing/cluster-*.md`, `routing/older-trigger-evals.md` | The messages |

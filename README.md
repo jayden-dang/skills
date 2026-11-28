@@ -237,7 +237,7 @@ and countered by name. See [The gates](docs/guide/concepts/gates.md).
 | execution | `build`, `test-first`, `root-cause`, `debug-remote`, `assess-observability`, `prove-claim`, `audit-trace`, `load-subgraph`, `isolate-workspace`, `inspect-change` |
 | review | `inspect-change`, `polish-diff`, `vet-feedback`, `vet-source`, `speak-outer`, `inspect-invariants`, `inspect-ui` |
 | acceptance | `validate-feature`, `write-dogfood`, `run-dogfood` |
-| craft | `craft-page`, `draft-ui`, `make-video` |
+| craft | `codify-design-system`, `craft-page`, `draft-ui`, `make-video` |
 | ship | `land-branch`, `record-verdict`, `cut-release` |
 | meta | `author-skills` |
 | track | `frame-change`, `reroute-plan`, `triage`, `realign-spec`, `refresh-roadmap-status`, `refresh-lanes`, `scan-architecture`, `map-features`, `write-handoff`, `record-debt` |

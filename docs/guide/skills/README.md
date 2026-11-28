@@ -1,6 +1,6 @@
 # Skill reference
 
-58 skills in eleven buckets (engineering package); every one has its own page.
+59 skills in eleven buckets (engineering package); every one has its own page.
 See also [Start here](../START-HERE.md).
 
 **Invocation** is the thing to check first. Every skill is **model-invocable**: the agent loads it on its own when its description matches the situation, and you can still type it as a slash command. "model, or `/x`" in the table marks the ones that used to be typed only.
@@ -103,6 +103,7 @@ The visual layer. Fires before any HTML a human will look at.
 
 | Skill | Invocation | What it does |
 |---|---|---|
+| [`codify-design-system`](codify-design-system.md) | model, or `/codify-design-system` | Decides the project-wide UI design system (tokens, themes, foundations, components, docs, governance, adoption) for any platform, drafts it in a separate folder, and stops for approval |
 | [`craft-page`](craft-page.md) | model | Names the treatment, writes the color/type/layout plan, holds the page fundamentals; figure-gated diagram recipes when a primary figure is warranted |
 | [`draft-ui`](draft-ui.md) | model | Divergent screen variants in the project's own UI stack + review loop + locked ui-brief the design chain lifts |
 | [`draft-ui`](draft-ui.md) | model | Runnable takes of one flow that differ in when the world changes + review loop + a locked `## Interaction` section in the same brief |

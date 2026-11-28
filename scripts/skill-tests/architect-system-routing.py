@@ -4,11 +4,11 @@ python3 scripts/skill-tests/architect-system-routing.py red|green [reps]
 """
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
-import json, subprocess, sys, tempfile, yaml
+import json, os, subprocess, sys, tempfile, yaml
 
 ROOT = Path(__file__).resolve().parents[2]
 OUT = ROOT / ".skills/architect-system"
-OLD = "39c0f86"
+OLD = os.environ.get("ROUTING_BASE", "39c0f86")  # 39c0f86 = design-project era; 6f8f36c = architect-system 2.0.0
 MODELS = ("haiku", "sonnet")
 NEW = "architect-system"
 QUERIES = [
@@ -21,6 +21,12 @@ QUERIES = [
     (NEW, "We inherited this API from a contractor. Decide which parts of its architecture we keep (module boundaries, where state lives, how failures recover) before we build on it."),
     (NEW, "Pick how tenant isolation should work across the whole system: a tenant column, a schema per tenant, or a database per tenant."),
     (NEW, "Design how logging, config and secrets should work across all our services so every feature follows the same rules."),
+    (NEW, "Decide how our React app should handle state, data fetching and errors across every screen, so new screens stop doing their own thing."),
+    (NEW, "Our SPA keeps the access token in localStorage and old bundles break after API deploys. Set the front-end rules for auth, caching and version skew for the whole app."),
+    (NEW, "Lay out the client architecture for our Rust desktop app: UI thread, how panels talk to the local daemon, error handling and updates."),
+    (NEW, "Pick a rendering strategy for the whole web app: CSR, SSR or server components, and the performance budget every route must meet."),
+    ("design-solution", "Requirements for the booking-history screen are approved. Write its design.md, including its client state."),
+    ("inspect-ui", "Review this branch's settings screen in the running app: contrast, focus and mobile widths."),
     ("define-project", "We already decided every external call has a timeout. Add it to docs/architecture as ARCH-3."),
     ("define-project", "Update docs/architecture/data.md to match what the code does today."),
     ("define-project", "Check our architecture docs against their templates and report what is missing."),
@@ -65,7 +71,7 @@ def main():
     with ThreadPoolExecutor(max_workers=8) as pool:
         results = list(pool.map(lambda a: run(*a), [(i, catalog, m) for _ in range(reps) for i in range(len(QUERIES)) for m in MODELS]))
     (OUT / f"routing-{phase}-x{reps}.json").write_text(json.dumps(results, indent=1) + "\n")
-    expect_old = {"architect-system": "design-project"} if phase == "red" else {}
+    expect_old = {"architect-system": "design-project"} if phase == "red" and OLD == "39c0f86" else {}
     ok = [r for r in results if r["actual"] == expect_old.get(r["expected"], r["expected"])]
     for r in results:
         if r not in ok:

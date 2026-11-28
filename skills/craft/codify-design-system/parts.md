@@ -1,0 +1,15 @@
+# The parts of a UI design system
+
+One row of the note's **Parts** table per part below, in this order. Tokens and themes come
+before the components built on them.
+
+| # | Part | Pin before choosing | A keeping check usually looks like |
+|---|---|---|---|
+| 1 | **Design tokens**: the source of truth (a DTCG JSON file, design-tool variables, or constants in code), tiers (primitive and semantic, component tokens only when needed), naming, the build that emits each platform's format | Which platforms consume them, whether a design tool must stay in sync | A build that fails on an unresolved alias; a test that every platform output has every semantic token |
+| 2 | **Theming**: light and dark, high contrast and forced colors, density, brand; following the OS or a user override | Which themes ship now, what the OS offers on each platform | Every semantic token has a value in every theme; components rendered in each theme |
+| 3 | **Foundations**: color and contrast targets, type scale, spacing unit, radii, elevation (with a cue that survives forced colors, where shadows are removed), breakpoints or container rules, motion and reduced motion, icons | The conformance target, the content and devices | A contrast script over every text and component pair (4.5:1 text, 3:1 large text and UI parts at WCAG 2.2 AA); a reduced-motion test |
+| 4 | **Components**: layers (behavior primitives, styled components, patterns), build or adopt, API conventions, the state matrix (default, hover, focus visible, pressed, disabled, loading, error, empty), keyboard and screen-reader behavior per widget, target size (24 by 24 CSS px at WCAG 2.2 AA) | Which widgets the screens need first, the platform's accessibility API | A story or test per state; an automated accessibility check per component plus a manual pass for what it misses |
+| 5 | **Content and UX patterns**: voice and capitalization, error messages, feedback (inline, toast, blocking), forms, empty and loading states | Who writes the copy, what users must never miss | A copy lint for banned words; a test that an error keeps the user's input |
+| 6 | **Documentation and tooling**: where the living docs are and what each component page shows, design-tool sync direction, visual regression | Who reads the docs (developers, the designer), the design tool and its plan | Every component has a docs page with all states; visual snapshots per component and theme |
+| 7 | **Governance**: owner, how a new component is proposed and approved, lifecycle labels (experimental, stable, deprecated), versioning and the deprecation period, what is measured | Team size, how many apps consume the system | A changelog entry per release; a usage count of deprecated components |
+| 8 | **Adoption**: inventory of raw values, migration order, the visual baseline before migrating, the lint against raw values, the removal date for old styles | How many screens exist and which hurt most | The lint fails on a raw value in a migrated screen; the visual diff is reviewed per screen |

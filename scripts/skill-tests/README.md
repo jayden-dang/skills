@@ -16,7 +16,10 @@ git-ignored folder and were lost.
 | `gh-shim.py` | The stateful `gh` stand-in; its state lives in `.git/gh.json` |
 | `score-inbox.py`, `score-evolve.py` | Score a run from the tracker state, the working tree and what `board.py` prints |
 | `architect-system.py` | Replays five system-design scenarios (caching, messaging, a greenfield foundation, the 1.0.0 takeover case, and an open choice sent to `define-project`) on Haiku and Sonnet. `red` installs `design-project` 1.0.0 and `define-project` 1.4.0 from commit `39c0f86`; `green` installs the current skills. Each run saves its note, scratch probes, diff and transcript under `.skills/architect-system/`. The 1.0.0 harness, `design-project.py`, is at commit `fa64751`. |
+| `architect-system-frontend.py` | `red\|green`: two front-end cases for `architect-system` 2.1.0, a React SPA (`tideline-web`) and a Rust GPUI desktop client (`harbor-desk`); `red` installs the skill at `6f8f36c` |
 | `architect-system-routing.py` | `red\|green [reps]`: routes 19 first messages (9 system-design requests and their near misses in `define-project`, `design-solution`, `scan-architecture` and others) against the whole skill listing, at commit `39c0f86` for `red` and the working tree for `green`, on Haiku and Sonnet |
+| `ui-system.py` | `red\|green --skill NAME`: three design-system cases (a React app whose screens style themselves, Rust GPUI panels, a greenfield web + React Native + Astro brand) for `codify-design-system` |
+| `ui-system-routing.py` | `NAME [reps] [--as OTHER]`: 12 first messages for `codify-design-system` and its near misses against the whole listing; `--as` renames the skill in the listing only, to compare names |
 | `routing/listing.py` | The skill listing a session sees |
 | `routing/suite.py` | The frozen routing suite: 153 first messages and the skill each should reach |
 | `routing/cluster-*.md`, `routing/older-trigger-evals.md` | The messages |

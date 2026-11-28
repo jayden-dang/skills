@@ -1,7 +1,7 @@
 ---
 name: architect-system
-version: 2.0.0
-description: "Use when deciding how the whole system should work, across every feature (one feature's architecture is design-solution): caching (Redis or none), messaging and queues (Kafka, outbox, background jobs), sync or async calls between modules and services, data stores and consistency, module boundaries, tenant isolation, retries and idempotency, failure and recovery, logging and secrets, or the principles every feature builds by, for a new project, a running codebase, a takeover or a migration. Produces a diagrammed system design decision note with proposed ARCH-N invariants, each with the check that keeps it true, ready for approval. Not for recording a decision already made (define-project), one feature's design.md (design-solution) or a refactor or tech-debt scan of existing code (scan-architecture)."
+version: 2.1.0
+description: "Use when deciding how the whole system should work, never for one feature (a single feature's architecture or design.md is design-solution): the front end of a web, desktop or mobile client (rendering, client state, data fetching, auth tokens, version skew, performance budget, accessibility), caching (Redis or none), messaging and queues (Kafka, outbox, background jobs), sync or async calls between modules and services, data stores and consistency, module boundaries, tenant isolation, retries and idempotency, failure and recovery, logging and secrets, or the principles every feature builds by, for a new project, a running codebase, a takeover or a migration. Produces a diagrammed system design decision note with proposed ARCH-N invariants, each with the check that keeps it true, ready for approval. Not for recording a decision already made (define-project), one feature's design.md (design-solution) or a refactor or tech-debt scan of existing code (scan-architecture)."
 ---
 
 # Architect System
@@ -15,8 +15,8 @@ review it was preparing for, while its own note said nothing had been recorded.
 
 The user owns the note's location. A filename alone means a file at the
 checkout root. When the location is open, use the repo's review-note
-convention. A project-wide UI design system (tokens, components) is not
-designed here: say so in the note. One screen's look belongs to `draft-ui`, one
+convention. A project-wide UI design system (tokens, components) belongs to
+`codify-design-system`: name it in the note. One screen's look belongs to `draft-ui`, one
 feature's design to `design-solution`.
 
 ## 1. Establish the starting point
@@ -64,6 +64,12 @@ reopens it) or **not needed yet** (with why). Baseline foundations covered
 exactly the parts the request named; backup, secrets and observability went
 unmentioned. A request for one part still gets the table: decide that part and
 the parts it depends on, in the order `parts.md` gives.
+
+When the project has a client a person uses (a web, desktop or mobile app), also
+read `frontend-parts.md` and add one row per part there. Baseline front-end
+notes folded rendering, accessibility and i18n into "Code structure" and
+"Principles" rows, and one web note never mentioned accessibility or a
+Content Security Policy although an incident file reported rendered user HTML.
 
 **Done when:** every row has a status, and every decided part's dependencies
 are decided or already settled.

@@ -40,6 +40,7 @@
     "./skills/acceptance/validate-feature",
     "./skills/acceptance/write-dogfood",
     "./skills/acceptance/run-dogfood",
+    "./skills/craft/codify-design-system",
     "./skills/craft/craft-page",
     "./skills/craft/draft-ui",
     "./skills/craft/make-video",

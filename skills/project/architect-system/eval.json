@@ -77,5 +77,39 @@
     "assertions": [
       "The first skill is define-project in the full listing"
     ]
+  },
+  {
+    "eval_id": 8,
+    "eval_name": "web-client-gets-every-frontend-row",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § 2.1.0 — front-end parts (2026-11-28)",
+    "prompt": "Tideline is a React SPA on a CDN with the token in localStorage, a stale-bundle crash and rendered user HTML. Decide how the web front end works across all screens.",
+    "assertions": [
+      "The Parts table carries a row with a status for every part in frontend-parts.md",
+      "Accessibility, a Content Security Policy and i18n each get a decision or a not-needed-yet reason",
+      "Token storage and the raw-HTML sink become ARCH-N rules with keeping checks"
+    ]
+  },
+  {
+    "eval_id": 9,
+    "eval_name": "native-client-measures-toolkit-accessibility",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § 2.1.0 — front-end parts (2026-11-28)",
+    "prompt": "Harbor Desk is a Rust GPUI desktop client of a local daemon with a frozen window and a VoiceOver user. Lay out its client architecture.",
+    "assertions": [
+      "Rows that do not apply to a desktop client are marked not needed yet with a reason",
+      "Whether GPUI exposes an accessibility tree is a probe to run, not an assertion",
+      "Blocking calls leave the UI thread"
+    ]
+  },
+  {
+    "eval_id": 10,
+    "eval_name": "desktop-client-architecture-routes-here",
+    "kind": "trigger",
+    "derived_from": "TESTS.md § 2.1.0 — front-end parts (2026-11-28)",
+    "prompt": "Lay out the client architecture for our Rust desktop app: UI thread, how panels talk to the local daemon, error handling and updates.",
+    "assertions": [
+      "The first skill is architect-system in the full listing"
+    ]
   }
 ]

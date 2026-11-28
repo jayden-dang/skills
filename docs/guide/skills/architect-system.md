@@ -3,7 +3,10 @@
 Use this when the system's architecture needs choosing or rethinking for the
 whole codebase: how the code is structured, who owns which data, how modules
 and services talk, how work is handed off, what is cached, how it recovers,
-and the principles every feature builds by. It works for a new project, a
+and the principles every feature builds by. When the project has a client (web,
+desktop or mobile), it also covers the front end: rendering and the UI thread,
+client state, data access, version skew, accessibility, i18n, performance budget,
+client security, offline, packaging and updates. It works for a new project, a
 running codebase, a takeover or a migration.
 
 It decides and does not record. Production code and `docs/architecture/`

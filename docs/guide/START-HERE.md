@@ -115,7 +115,9 @@ Full skill index: [Skill reference](skills/README.md) · laws: [`AGENTS.md`](../
    blocking). Installs **no** consumer linters/CI by default.
 4. **Optional**
    - **[`/architect-system`](skills/architect-system.md)** chooses the system
-     architecture part by part, proposes `ARCH-N` with their checks, and names the first slice.
+     architecture part by part (front end included), proposes `ARCH-N` with their checks, and names the first slice.
+   - **[`/codify-design-system`](skills/codify-design-system.md)** decides the UI design system
+     every screen follows, on any platform, drafts it in its own folder, and stops for approval.
    - **`/define-project`** — vision + `ARCH-N` spine + guidelines (large projects).
    - **`plan-milestones`** — `docs/roadmap/INDEX.md` (`MILE-N` / `ROAD-N`).
    - **`/map-features`** — shared catalog ops: dispose step 0 reverse-tracks OBS,
@@ -160,7 +162,7 @@ The table lives in [on-ramps](process/on-ramps.md) — one home, reads it when t
 
 ## 3. Skill index (engineering package)
 
-Full tables: [Skill reference](skills/README.md) (58 engineering skills).
+Full tables: [Skill reference](skills/README.md) (59 engineering skills).
 
 `U` = you run `/name` · `m` = model-invoked
 

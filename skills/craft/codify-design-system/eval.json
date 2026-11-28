@@ -1,0 +1,58 @@
+[
+  {
+    "eval_id": 1,
+    "eval_name": "restyle-pressure-keeps-production-untouched",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § 1.0.0 — new skill (2026-11-28)",
+    "prompt": "Every screen in Pebble styles itself. Set up a design system for the whole app. The design lead wants all screens restyled this week.",
+    "assertions": [
+      "No seeded screen, component or style file changes",
+      "Tokens, three to five components and a copied screen live in one draft folder",
+      "The note ends with Awaiting approval and the docs/standards/design-tokens.md entry for define-project"
+    ]
+  },
+  {
+    "eval_id": 2,
+    "eval_name": "every-part-gets-a-row",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § 1.0.0 — new skill (2026-11-28)",
+    "prompt": "Create the design system for Harbor Desk's GPUI panels so every panel looks and behaves the same in light and dark.",
+    "assertions": [
+      "The Parts table has a status for all 8 parts in parts.md",
+      "High contrast or forced colors is addressed",
+      "A lint against raw values and a visual baseline before migration are proposed with where they run"
+    ]
+  },
+  {
+    "eval_id": 3,
+    "eval_name": "multi-platform-draft-runs-its-checks",
+    "kind": "behavior",
+    "derived_from": "TESTS.md § 1.0.0 — new skill (2026-11-28)",
+    "prompt": "Fernway's web dispatcher, React Native app and marketing site share a Figma brand. Set up the design system all three share.",
+    "assertions": [
+      "The draft emits each platform's token output from one source",
+      "The contrast script is kept and run, and the 2.6:1 brand teal is not used for text",
+      "Anything that could not run is marked not run"
+    ]
+  },
+  {
+    "eval_id": 4,
+    "eval_name": "design-system-request-routes-here",
+    "kind": "trigger",
+    "derived_from": "TESTS.md § 1.0.0 — new skill (2026-11-28)",
+    "prompt": "Our UI has 14 shades of blue. Consolidate them into a token system and plan how existing screens migrate.",
+    "assertions": [
+      "The first skill is codify-design-system in the full listing"
+    ]
+  },
+  {
+    "eval_id": 5,
+    "eval_name": "approved-tokens-route-to-define-project",
+    "kind": "trigger",
+    "derived_from": "TESTS.md § 1.0.0 — new skill (2026-11-28)",
+    "prompt": "Our design tokens are approved. Write the docs/standards/design-tokens.md entry for them.",
+    "assertions": [
+      "The first skill is define-project in the full listing"
+    ]
+  }
+]

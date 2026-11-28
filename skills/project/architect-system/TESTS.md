@@ -1,5 +1,59 @@
 # TESTS.md — architect-system (formerly design-project)
 
+## 2.1.0 — front-end parts (2026-11-28)
+
+**Ask (operator).** Cover the front end project-wide as well: everything beyond the visual system,
+on every platform. Research: `.skills/research/2026-11-28-frontend-design-system.md` (main
+checkout). Operator rulings: front-end architecture goes into this skill as a parts file; the
+visual system goes to a separate skill; web, desktop and mobile are all in scope.
+
+**Roster:** Haiku 5.5 and Sonnet 5.5. Replay: `python3 scripts/skill-tests/architect-system-frontend.py red|green`.
+Cases: **tideline-web** (React SPA on a CDN, token in `localStorage`, an incident file with a stale
+bundle crash and rendered user HTML, the lead wants one Redux store by Friday) and **harbor-desk**
+(Rust GPUI desktop client of a local daemon, a frozen window during sync, a VoiceOver user,
+offices on a four-month-old build).
+
+### RED — 2.0.0
+
+All four notes kept `docs/` and the seeded code untouched, caught the stale bundle and the HTML
+sink, and left GPUI's accessibility tree as something to measure. Kept. What failed:
+
+| Run | Observed | Became |
+|---|---|---|
+| Sonnet tideline-web | Parts rows "Code structure (incl. **rendering**)" and "Principles (**performance**, a11y, i18n)": front-end decisions folded into backend rows | `frontend-parts.md`, one row per front-end part |
+| Haiku tideline-web | "**Extension outside `parts.md`:** rendering and performance" added by hand; accessibility, Content Security Policy and i18n each 0 mentions, though INC-9 reported rendered user HTML | Step 3: a client project reads `frontend-parts.md` |
+| Both harbor-desk | Accessibility covered only because the prompt named VoiceOver; no row for packaging and update, navigation or i18n | Same |
+
+Routing RED at `6f8f36c` (19 own queries plus 6 front-end ones, 2 reps): 95/100. Haiku sent "client
+architecture for our Rust desktop app" to `understand` (2/2) and "pick a rendering strategy for the
+whole web app" to NONE once.
+
+### GREEN — 2.1.0
+
+| Check | Haiku | Sonnet |
+|---|---|---|
+| Seeded files and `docs/` untouched | 2/2 | 2/2 |
+| All 12 `parts.md` rows plus all 14 F rows with a status | 2/2 | 2/2 |
+| Haiku tideline-web: CSP, accessibility, i18n | 3, 7, 3 mentions (was 0, 0, 0): "F10 … Token not in storage (ARCH-5) … CSP at the CDN", "F7 … WCAG 2.2 AA. Lint plus axe per screen" | — |
+| Rows that do not apply marked as such | "F2 Navigation **not needed yet**: three panels in one window, no deep links" (harbor-desk) | yes |
+| GPUI accessibility measured, not asserted | "GPUI's macOS accessibility tree is not verified … open probe P1" | yes |
+
+Routing: the description now names the front end (rendering, client state, data fetching, auth
+tokens, version skew, performance budget, accessibility). Own set 99/100 (Sonnet 50/50); the Rust
+desktop and rendering queries route here on both models. The frozen neighbors 97/100. "design the
+architecture for this feature" went here on Haiku 9/10 with the first front-end wording, against
+6/10 at `6f8f36c` (this row varies: 2/10 wrong on 2026-11-27, 6/10 today on the same text).
+"never for one feature (a single feature's architecture or design.md is design-solution)" brought
+it back to 6/10 wrong, level with `6f8f36c`. It stays a known Haiku miss.
+
+With `codify-design-system` in the listing (final listing): own set Haiku 46/50, Sonnet 50/50.
+"Decide how our React app should handle state, data fetching and errors across every screen, so
+new screens stop doing their own thing" now goes to `codify-design-system` on Haiku (7-9 of 10
+under every name and wording tried; Sonnet 6/6 here); opened there, both models hand it back
+here (`codify-design-system` TESTS.md, hand-off case). Frozen neighbors Haiku 49/50, Sonnet 50/50.
+The two pointer lines naming `codify-design-system` (opening paragraph, `frontend-parts.md`
+intro) changed after the GREEN runs and were not rerun.
+
 ## 2.0.0 — renamed, system architecture only, decides and does not record (2026-11-27)
 
 **Ask (operator).** `design-project` and `define-project` read as the same skill. Make this one
